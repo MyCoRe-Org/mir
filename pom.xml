@@ -11,4 +11,7 @@
   <packaging>pom</packaging>
   <name>MIR</name>
   <description>MyCoRe Institutional Repository</description>
+  <modules>
+    <module>mir-module</module>
+  </modules>
 </project>
