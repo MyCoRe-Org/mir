@@ -1,0 +1,55 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.mycore.mir</groupId>
+    <artifactId>mir-parent</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+  </parent>
+  <artifactId>mir-default-layout</artifactId>
+  <name>MIR: Default Layout</name>
+  <description>A simple and clean layout</description>
+  <properties>
+    <lesscss.version>1.3.3</lesscss.version>
+    <lesscss.compress>true</lesscss.compress>
+    <template.cssdir>${project.build.directory}/classes/META-INF/resources/mir-default-layout/css</template.cssdir>
+  </properties>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <configuration>
+          <archive>
+            <manifest>
+              <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+              <addExtensions />
+            </manifest>
+            <manifestEntries>
+              <MCR-Application-Module>${project.name}</MCR-Application-Module>
+            </manifestEntries>
+          </archive>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.lesscss</groupId>
+        <artifactId>lesscss-maven-plugin</artifactId>
+        <version>${lesscss.version}</version>
+        <configuration>
+          <compress>${lesscss.compress}</compress>
+          <outputDirectory>${template.cssdir}</outputDirectory>
+          <includes>
+            <include>layout.less</include>
+          </includes>
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>compile</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+</project>

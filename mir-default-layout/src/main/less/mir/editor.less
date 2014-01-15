@@ -1,0 +1,113 @@
+/* =================================================================== */
+/* Editor forms (see editor.xsl and org.mycore.frontend.editor.*       */
+/* =================================================================== */
+
+form.editor {
+	display: inline;
+	.border {
+		border-top: 2px dotted #ccc;
+		border-bottom: 2px dotted #ccc;
+	}
+
+	.editorPMUD {
+		vertical-align: top;
+	}
+
+	.mandatory:after {
+		content: "*";
+	}
+
+	select {
+		width: auto;
+	}
+
+	input[type="submit"].editorButton , input[type="button"].editorButton {
+		.btn;
+		margin-left: 0;
+	}
+
+	input[type="submit"].editorButton {
+		.btn-primary;
+	}
+}
+
+table.editor {
+	//.sidebox;
+	border-radius: @border-radius-large;
+	border-collapse: separate;
+	background-color: @mirPrimary-c-5;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	tbody td {
+		margin: 0;
+		padding: 0;
+		border-bottom-width: 0px;
+	}
+
+	td.editorHeadline {
+		background-color: @mirPrimary-4;
+		color: @body-bg;
+		text-align: left;
+	}
+
+	td.editorSubHeadlines {
+		border-top-radius: @border-radius-large;
+		background-color: @mirPrimary-4;
+		color: @body-bg;
+		label {
+			font-weight: bold;
+			margin: 5px 10px;
+		}
+	}
+
+	input.editorList {
+		vertical-align: middle;
+		margin: 0px 5px 0px 0px;
+	}
+
+	label.editorText {
+		display: inline;
+	}
+
+	label.editorCheckbox {
+		display: inline-block;
+		max-width: 80%;
+		vertical-align: top;
+	}
+
+	input.editorCheckbox {
+		vertical-align: top;
+		margin: 0px 5px 0px 0px;
+	}
+
+	td.editorValidationMessage {
+		background-color: @state-danger-bg;
+		color: @state-danger-text;
+		padding: 0px 0px 2px 5px;
+	}
+
+	td.editorValidationFailed {
+		border: 0px dotted @state-danger-border;
+		input , textarea , select {
+			background-color: lighten(@state-danger-bg, 25%);
+			color: black;
+		}
+	}
+}
+
+table.editorRepeater {
+	margin: 0px;
+	padding: 0px;
+	td {
+		padding: 2px;
+	}
+}
+
+table.editorPanel {
+	width: 100%;
+	tbody td {
+		padding: 2px;
+	}
+}
+
