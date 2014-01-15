@@ -12,6 +12,9 @@
   <packaging>pom</packaging>
   <name>MIR</name>
   <description>MyCoRe Institutional Repository</description>
+  <properties>
+    <mycore.version>2014.02-SNAPSHOT</mycore.version>
+  </properties>
   <pluginRepositories>
     <pluginRepository>
       <id>MyCoRe HQ</id>
@@ -53,5 +56,6 @@
   <modules>
     <module>mir-module</module>
     <module>mir-default-layout</module>
+    <module>mir-webapp</module>
   </modules>
 </project>
