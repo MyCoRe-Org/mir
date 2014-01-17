@@ -2,58 +2,14 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <parent>
-    <artifactId>mycore</artifactId>
-    <groupId>org.mycore</groupId>
-    <version>2013.12-SNAPSHOT</version>
+    <artifactId>mir-parent</artifactId>
+    <groupId>org.mycore.mir</groupId>
+    <version>0.1-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
-  <groupId>org.mycore.mymaker</groupId>
   <artifactId>mir-module</artifactId>
-  <version>0.1-SNAPSHOT</version>
-  <name>MyMaker MODS Institutional Repository Module</name>
-  <properties>
-    <lesscss.version>1.3.3</lesscss.version>
-    <lesscss.compress>true</lesscss.compress>
-    <template.cssdir>${project.build.directory}/classes/META-INF/resources/templates/master/template_mir/CSS</template.cssdir>
-  </properties>
-  <pluginRepositories>
-    <pluginRepository>
-      <id>MyCoRe HQ</id>
-      <url>http://artifactory.mycore.de/mycore-releases</url>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-    </pluginRepository>
-    <pluginRepository>
-      <id>MyCoRe HQ Snapshots</id>
-      <url>http://artifactory.mycore.de/mycore-snapshots</url>
-      <releases>
-        <enabled>false</enabled>
-      </releases>
-      <snapshots>
-        <enabled>true</enabled>
-      </snapshots>
-    </pluginRepository>
-  </pluginRepositories>
-  <repositories>
-    <repository>
-      <id>MyCoRe HQ</id>
-      <url>http://artifactory.mycore.de/mycore-releases</url>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-    </repository>
-    <repository>
-      <id>MyCoRe HQ Snapshots</id>
-      <url>http://artifactory.mycore.de/mycore-snapshots</url>
-      <releases>
-        <enabled>false</enabled>
-      </releases>
-      <snapshots>
-        <enabled>true</enabled>
-      </snapshots>
-    </repository>
-  </repositories>
+  <name>MIR: Application Module</name>
+  <description>Contains all files and classes for a Institutional Repository</description>
   <build>
     <resources>
       <resource>
@@ -87,25 +43,6 @@
           </archive>
         </configuration>
       </plugin>
-      <plugin>
-        <groupId>org.lesscss</groupId>
-        <artifactId>lesscss-maven-plugin</artifactId>
-        <version>${lesscss.version}</version>
-        <configuration>
-          <compress>${lesscss.compress}</compress>
-          <outputDirectory>${template.cssdir}</outputDirectory>
-          <includes>
-            <include>layout.less</include>
-          </includes>
-        </configuration>
-        <executions>
-          <execution>
-            <goals>
-              <goal>compile</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
     </plugins>
   </build>
   <dependencies>
@@ -125,19 +62,19 @@
       <scope>provided</scope>
       <groupId>org.mycore</groupId>
       <artifactId>mycore-solr</artifactId>
-      <version>${project.parent.version}</version>
+      <version>${mycore.version}</version>
     </dependency>
     <dependency>
       <scope>provided</scope>
       <groupId>org.mycore</groupId>
       <artifactId>mycore-wfc</artifactId>
-      <version>${project.parent.version}</version>
+      <version>${mycore.version}</version>
     </dependency>
     <dependency>
       <scope>test</scope>
       <groupId>org.mycore</groupId>
       <artifactId>mycore-base</artifactId>
-      <version>${project.parent.version}</version>
+      <version>${mycore.version}</version>
       <type>test-jar</type>
     </dependency>
   </dependencies>

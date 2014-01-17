@@ -48,12 +48,17 @@
     <dependency>
       <groupId>org.mycore.mir</groupId>
       <artifactId>mir-default-layout</artifactId>
-      <version>0.0.1-SNAPSHOT</version>
+      <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>org.mycore.mymaker</groupId>
+      <groupId>org.mycore.mir</groupId>
       <artifactId>mir-module</artifactId>
-      <version>0.1-SNAPSHOT</version>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.mycore.mir</groupId>
+      <artifactId>mir-common-resources</artifactId>
+      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.mycore</groupId>
@@ -90,11 +95,6 @@
           <artifactId>mycore-z3950</artifactId>
         </exclusion>
       </exclusions>
-    </dependency>
-    <dependency>
-      <groupId>org.mycore.mir</groupId>
-      <artifactId>mir-common-resources</artifactId>
-      <version>0.0.1-SNAPSHOT</version>
     </dependency>
   </dependencies>
 </project>
