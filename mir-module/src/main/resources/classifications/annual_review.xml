@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mycoreclass xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="MCRClassification.xsd" ID="annual_review">
+  <label xml:lang="de" text="Jahresberichtskategorien" />
+  <label xml:lang="en" text="Annual Report Categories" />
+  <categories>
+    <category ID="Z">
+      <label xml:lang="en" text="Publications in journals (Z)" description="Übergeordnete Kategorie für Z1 und Z2" />
+      <label xml:lang="de" text="Zeitschriftenbeiträge (Z)" />
+      <category ID="Z1">
+        <label xml:lang="de" text="Beiträge in referierten Zeitschriften (Z1)" />
+        <label xml:lang="en" text="Publications in refereed journals (Z1)" />
+      </category>
+      <category ID="Z2">
+        <label xml:lang="de" text="Beiträge in nicht referierten Zeitschriften (Z2)" />
+        <label xml:lang="en" text="Publications in non-refereed journals (Z2)" />
+      </category>
+    </category>
+    <category ID="S">
+      <label xml:lang="en" text="Articles in books, anthologies, conference proceedings (S)" description="Übergeordnete Kategorie für S1 und S2" />
+      <label xml:lang="de" text="Beiträge in Büchern, Sammelwerken, Tagungsbänden (S)" />
+      <category ID="S1">
+        <label xml:lang="de" text="Beiträge in Büchern, Sammelwerken, Tagungsbänden im Fremdverlag (S1)" />
+        <label xml:lang="en" text="Articles in books, anthologies, conference proceedings in the foreign publisher (S1)" />
+      </category>
+      <category ID="S2">
+        <label xml:lang="de" text="Beiträge in Büchern, Sammelwerken, Tagungsbänden im Eigenverlag (S2)" />
+        <label xml:lang="en" text="Articles in books, anthologies, conference proceedings in the self-publishing (S2)" />
+      </category>
+    </category>
+    <category ID="M">
+      <label xml:lang="en" text="Books, papers, editorship (M)" description="Übergeordnete Kategorie für Monographien" />
+      <label xml:lang="de" text="Bücher, Berichte, Herausgeberschaften (M)" />
+      <category ID="M1">
+        <label xml:lang="de" text="Dissertationen (M1)" />
+        <label xml:lang="en" text="Dissertations (M1)" />
+      </category>
+      <category ID="M2">
+        <label xml:lang="de" text="Habilitationen (M2)" />
+        <label xml:lang="en" text="Habilitationen (M2)" />
+      </category>
+      <category ID="M3">
+        <label xml:lang="de" text="Arbeitsberichte (M3)" />
+        <label xml:lang="en" text="Working Papers (M3)" />
+      </category>
+      <category ID="M4">
+        <label xml:lang="de" text="Bücher (M4)" />
+        <label xml:lang="en" text="Books (M4)" />
+      </category>
+      <category ID="M5">
+        <label xml:lang="de" text="Sonstige Monographien (M5)" />
+        <label xml:lang="en" text="Other Monographies (M5)" />
+      </category>
+      <category ID="M6">
+        <label xml:lang="de" text="Herausgeberschaften (M6)" />
+        <label xml:lang="en" text="Editorship (M6)" />
+      </category>
+      <category ID="M7">
+        <label xml:lang="de" text="Diplomarbeiten, Bachelor, Master (M7)" />
+        <label xml:lang="en" text="Diploma Thesis, Bachelor, Master (M7)" />
+      </category>
+    </category>
+    <category ID="G1">
+      <label xml:lang="de" text="Gutachten (G1)" />
+      <label xml:lang="en" text="Reviews (G1)" />
+    </category>
+    <category ID="X1">
+      <label xml:lang="de" text="Sonstige Berichte (X1)" />
+      <label xml:lang="en" text="Other (X1)" />
+    </category>
+    <category ID="ID">
+      <label xml:lang="de" text="Im Druck" />
+      <label xml:lang="en" text="On print" />
+    </category>
+    <category ID="NZ">
+      <label xml:lang="de" text="Nicht zugeordnet" />
+      <label xml:lang="en" text="Not assigned" />
+    </category>
+    <category ID="NJ">
+      <label xml:lang="de" text="Nicht im Jahresbericht" />
+      <label xml:lang="en" text="Not within annual report" />
+    </category>
+  </categories>
+</mycoreclass>

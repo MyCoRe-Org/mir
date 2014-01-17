@@ -1,0 +1,5 @@
+load permissions data from file permissions.xml
+
+update permission read for id default_mods with rulefile grant-all.xml
+update permission writedb for id default_mods with rulefile grant-editors.xml
+update permission deletedb for id default_mods with rulefile grant-admin.xml

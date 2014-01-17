@@ -1,0 +1,67 @@
+<project name="mir-module" basedir="../../../../../../docportal" xmlns:mcr="antlib:org.mycore.buildtools">
+  <import file="${basedir}/common-modules.xml" />
+  <property name="module.directory" location="${ant.file}/.." />
+  <property name="module.web.dir" location="${module.directory}/../../web" />
+  <property file="${module.directory}/build.properties" />
+  <property name="module.jar" location="${build.lib}/${module.jar.name}" />
+
+  <!-- ================================= 
+          target: config              
+         ================================= -->
+  <target name="config" description="adds configuration options for ${ant.project.name}">
+    <copy todir="${basedir}/config/solr-home">
+      <fileset dir="${basedir}/config/solr-home.template">
+        <exclude name="conf/schema.xml" />
+        <exclude name="conf/solrconfig.xml" />
+      </fileset>
+    </copy>
+    <copy todir="${basedir}/config/solr-home" overwrite="true">
+      <fileset dir="${module.directory}/solr-home" />
+    </copy>
+  </target>
+
+
+  <!-- ================================= 
+          target: create.default-rules              
+         ================================= -->
+  <target name="create.default-rules" description="loads default acl rules for mir application">
+    <antcall target="invoke.cli">
+      <param name="cli.directory" value="${module.directory}/acl" />
+      <param name="cli.command" value="process defaultrules-commands.txt" />
+    </antcall>
+    <antcall target="invoke.cli">
+      <param name="cli.directory" value="${module.directory}/acl" />
+      <param name="cli.command" value="process webacl-commands.txt" />
+    </antcall>
+  </target>
+
+  <!-- ================================= 
+          target: create.webapp              
+         ================================= -->
+  <target name="create.webapp" depends="mvn-init" description="overwrites files from docportal">
+    <delete dir="${build.webapps}/content" />
+    <mkdir dir="${build.webapps}/content" />
+    <unjar dest="${build.webapps}" overwrite="true">
+      <fileset file="${module.jar}" />
+      <patternset>
+        <include name="META-INF/resources/config/navigation.xml" />
+        <include name="META-INF/resources/content/**" />
+        <include name="META-INF/resources/editor/**" />
+        <include name="META-INF/resources/images/**" />
+        <include name="META-INF/resources/index.html" />
+      </patternset>
+      <regexpmapper from="^(META-INF/resources/)(.*)" to="\2" />
+    </unjar>
+    <unjar dest="${build.webapps}/WEB-INF/classes/xsl" overwrite="true">
+      <fileset file="${module.jar}" />
+      <patternset>
+        <include name="xsl/layout/mycoreobject.xsl" />
+        <include name="xsl/*-external.xsl" />
+        <include name="xsl/basket-objects.xsl" />
+        <include name="xsl/xsl-output-html.fragment" />
+      </patternset>
+      <flattenmapper />
+    </unjar>
+  </target>
+
+</project>

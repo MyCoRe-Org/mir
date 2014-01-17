@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE MyCoReWebPage>
+<MyCoReWebPage>
+
+  <section title="Willkommen bei MIR!" xml:lang="de">
+    <div class="jumbotron">
+      <h1>Sie suchen Literatur?</h1>
+      <h2>Versuchen Sie es doch hier</h2>
+
+      <p>Die hier gespeicherten Dokumente stehen jedem
+        Interessierten für die Nutzung zur Verfügung.
+      </p>
+      <p>Welcher Suchtyp sind Sie?</p>
+      <p>
+        <a class="btn btn-success btn-large" href="search/simple.xml">Ich mag es einfach</a>
+        <a class="btn btn-warning btn-large" href="search/complex.xml">Ich bin kompliziert</a>
+        <a class="btn btn-default btn-large" href="#" onclick="jQuery('.search-query').focus();">Der Suchschlitz ist MIR</a>
+      </p>
+    </div>
+  </section>
+
+  <section xml:lang="de">
+
+    <div class="row">
+      <div class="col-md-6">
+        <h2>Hinweis</h2>
+        <p>
+          In der Aufbauphase werden es überwiegend Literaturnachweise sein, die in der Folgezeit nach
+          und nach mit Volltexten,
+          Abbildungen
+          und anderen Medien ergänzt werden. Das Repositorium weist
+          Hochschulschriften, Reports, Konferenzbände, Bücher und
+          Zeitschriften
+          sowie AV-Medien nach.
+        </p>
+      </div>
+
+      <div class="col-md-6">
+        <div class="sidebox">
+          <h2>Aktuelle Dokumente</h2>
+          <printlatestobjects objecttype="mods" sortfield="modified" maxresults="3" overwritelayout="true"
+            mcrqlcond="category = mir_status:published"></printlatestobjects>
+        </div>
+      </div>
+    </div> <!-- subcolumns -->
+
+  </section>
+  <meta>
+    <log date="2011-11-15" time="10:53" labelPath=" » Start" lastEditor="Kathleen Neumann" />
+  </meta>
+</MyCoReWebPage>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE MyCoReWebPage>
+<MyCoReWebPage>
+    <section xml:lang="de" title="Kontakt">
+<p>
+  <strong>Für technische Fragen</strong>
+</p>
+<p>Projektkoordination und Geschäftsstelle MyCoRe</p>
+<p>Wiebke Oeltjen</p>
+<p>Mail: <a href="mailto:info@mycore.de">info@mycore.de</a></p>
+<p>Tel: +49 (0)40-42838-2652</p>
+<p>
+  <br />
+  <strong>Mail an die Benutzerliste</strong>
+</p>
+<p>Für Fragen, Tipps und Hinweise auf Fehler haben wir folgende
+Kontaktadresse eingerichtet:  
+<a href="mailto:mycore-user@lists.sourceforge.net">mycore-user@lists.sourceforge.net</a>.
+<br /> 
+<br /></p>
+    </section>
+    <section xml:lang="en" title="Kontakt">
+<p>
+  <strong>For technical support</strong>
+</p>
+<p>Project coordination and MyCoRe head quater</p>
+<p>Wiebke Oeltjen</p>
+<p>Mail: <a href="mailto:info@mycore.net">info@mycore.net</a></p>
+<p>Tel: +49 (0)40-42838-2652</p>
+<p>
+  <br />
+  <strong>Mail to the user list</strong>
+</p>
+<p>Send us your questions, tips and hints of errors to the address
+<a href="mailto:mycore-user@lists.sourceforge.net">mycore-user@lists.sourceforge.net</a>.
+<br /> 
+<br /></p>
+    </section>
+<meta><log date="2007-02-26" time="16:02" labelPath="/Kontakt" lastEditor="Wiebke Oeltjen" /></meta></MyCoReWebPage>

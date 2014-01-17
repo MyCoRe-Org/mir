@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mycoreclass xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="MCRClassification.xsd" ID="mcr-roles">
+  <label xml:lang="en" text="system user roles" />
+  <label xml:lang="de" text="Systemnutzerrollen" />
+  <categories>
+    <category ID="admin">
+      <label xml:lang="en" text="Administrator" />
+      <label xml:lang="de" text="Administrator" />
+    </category>
+    <category ID="editor">
+      <label xml:lang="en" text="Editor" />
+      <label xml:lang="de" text="Bearbeiter" />
+    </category>
+    <category ID="submitter">
+      <label xml:lang="en" text="Author" />
+      <label xml:lang="de" text="Autoren" />
+    </category>
+    <category ID="reader">
+      <label xml:lang="de" text="Leser" />
+      <label xml:lang="de" text="Reader" />
+    </category>
+  </categories>
+</mycoreclass>

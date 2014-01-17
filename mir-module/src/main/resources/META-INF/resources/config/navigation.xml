@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<navigation dir="/content" href="navigation" hrefStartingPage="/content/main/index.xml" template="template_mir">
+  <!-- main menu  -->
+  <navi-main dir="/content/main" href="navi-main">
+    <label xml:lang="de">Hauptmenü</label>
+    <label xml:lang="en">Main menu</label>
+
+	<item href="/content/main/about.xml" type="intern" target="_self" style="normal" replaceMenu="false">
+      <label xml:lang="de">Einrichtungen</label>
+      <label xml:lang="en">Institutions</label>
+    </item>
+
+	<item href="/content/main/admin.xml" type="intern" target="_self" style="normal" replaceMenu="false">
+      <label xml:lang="de">Admin</label>
+      <label xml:lang="en">Admin</label>
+    </item>
+
+  </navi-main>
+  <!-- main menu  -->
+  <!-- navi bar below -->
+  <navi-below dir="/content/below" href="navi-below">
+    <label xml:lang="de">Menü oben</label>
+    <label xml:lang="en">Menu above</label>
+
+    <item href="/content/below/impressum.xml" replaceMenu="false" style="normal" target="_self" type="intern">
+      <label xml:lang="de">Impressum</label>
+      <label xml:lang="en">Impressum</label>
+    </item>
+	
+    <item href="/content/below/contact.xml" replaceMenu="false" style="normal" target="_self" type="intern">
+      <label xml:lang="de">Kontakt</label>
+      <label xml:lang="en">Contact</label>
+    </item>
+
+    <item href="/servlets/MCRWCMSLoginServlet" style="normal" target="_self" template="template_wcms" type="extern">
+      <label xml:lang="de">WCMS</label>
+      <label xml:lang="en">WCMS</label>
+      <dynamicContentBinding>
+        <rootTag>cms</rootTag>
+      </dynamicContentBinding>
+    </item>
+    
+  </navi-below>
+  <!-- END OF: navi bar below -->
+</navigation>

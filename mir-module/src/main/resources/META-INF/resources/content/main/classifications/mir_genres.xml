@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE MyCoReWebPage>
+
+<MyCoReWebPage>
+
+  <section i18n="component.mods.browse.genre" xml:lang="all">
+    <div class="blockbox">
+      <br />
+      <classificationbrowser classification="mir_genres" objecttype="mods" restriction="+category:&quot;mir_status:published&quot;" field="category" countresults="true" parameters="numPerPage=10" addclassid="true" emptyleaves="false" style="bootstrap" addParameter="XSL.template=template_mir" />
+    </div>
+  </section>
+
+</MyCoReWebPage>

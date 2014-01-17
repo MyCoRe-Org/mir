@@ -1,0 +1,21 @@
+<display-name>mir</display-name>
+<filter>
+  <filter-name>PersistenceFilter</filter-name>
+  <filter-class>org.mycore.wfc.actionmapping.MCRPersistenceServletFilter</filter-class>
+</filter>
+
+<filter-mapping>
+  <filter-name>PersistenceFilter</filter-name>
+  <servlet-name>CreateObjectServlet</servlet-name>
+  <dispatcher>REQUEST</dispatcher>
+</filter-mapping>
+<filter-mapping>
+  <filter-name>PersistenceFilter</filter-name>
+  <servlet-name>UpdateObjectServlet</servlet-name>
+  <dispatcher>REQUEST</dispatcher>
+</filter-mapping>
+<filter-mapping>
+  <filter-name>PersistenceFilter</filter-name>
+  <servlet-name>DeleteObjectServlet</servlet-name>
+  <dispatcher>REQUEST</dispatcher>
+</filter-mapping>

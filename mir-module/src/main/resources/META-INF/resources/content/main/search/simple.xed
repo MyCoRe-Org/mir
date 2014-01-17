@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<MyCoReWebPage>
+  <section title="Einfache Suche über alle Publikationen" xml:lang="de" />
+
+  <section title="Simple search in all publications" xml:lang="en" />
+
+  <section xml:lang="all" xmlns:xed="http://www.mycore.de/xeditor" xmlns:mir="http://www.mycore.de/mir">
+    <xed:form class="form-horizontal" role="form">
+      <xed:post-processor xsl="query-postprocessor.xsl" />
+      <xed:source uri="searchInput:{id}" />
+      <xed:source uri="webapp:editor/search/template/simple.xml" />
+      <xed:bind xpath="query">
+        <xed:bind xpath="@mask" default="content/main/search/simple.xed" />
+        <xed:bind xpath="conditions/boolean">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title">
+                <xed:output i18n="component.mods.editor.search.label" />
+              </h3>
+            </div>
+            <div class="panel-body">
+            <!-- Title -->
+              <mir:template name="textInput" xpath="condition[@field='mods.title']/@value" id="inputTitle1" i18n="editor.search.mir.title" />
+            <!-- Name -->
+              <mir:template name="textInput" xpath="condition[@field='mods.name']/@value" id="inputName1" i18n="editor.search.mir.name"
+                tooltip="editor.search.mir.name.tooltip" />
+            <!-- Metadata -->
+              <mir:template name="textInput" xpath="condition[@field='allMeta']/@value" id="inputMeta1" i18n="editor.search.metadata"
+                tooltip="editor.search.metadata.tooltip" />
+            <!-- Content -->
+              <mir:template name="textInput" xpath="condition[@field='content']/@value" id="inputContent1" i18n="editor.search.derivate"
+                tooltip="editor.search.derivate.tooltip" />
+            <!-- Institution -->
+              <mir:template name="selectInput" xpath="condition[@field='category'][1]/@value" id="inputInst1" i18n="editor.search.mir.institute"
+                tooltip="editor.search.mir.institute.tooltip" uri="xslStyle:items2options:classification:editorComplete:-1:children:mir_institutes" />
+            <!-- submit -->
+              <mir:template name="submitButton" i18n="editor.search.search" target="servlet_MCRLegacySearchServlet" />
+            </div>
+          </div>
+        </xed:bind>
+      </xed:bind>
+    </xed:form>
+  </section>
+
+</MyCoReWebPage>

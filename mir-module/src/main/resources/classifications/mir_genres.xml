@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mycoreclass xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="MCRClassification.xsd" ID="mir_genres">
+  <label xml:lang="en" text="genre" description="A list of publication types" />
+  <label xml:lang="de" text="Genre" description="Liste der Publikationsarten" />
+  <label xml:lang="x-uri" text="http://www.mycore.org/classifications/mir_genres" />
+  <categories>
+    <category ID="series">
+      <label xml:lang="en" text="series" />
+      <label xml:lang="de" text="Serie" />
+    </category>
+    <category ID="journal">
+      <label xml:lang="en" text="journal" />
+      <label xml:lang="de" text="Zeitschrift" />
+    </category>
+    <category ID="article">
+      <label xml:lang="en" text="article" />
+      <label xml:lang="de" text="Zeitschriftenaufsatz" />
+    </category>
+    <category ID="book">
+      <label xml:lang="en" text="book" />
+      <label xml:lang="de" text="Buch" />
+    </category>
+    <category ID="chapter">
+      <label xml:lang="en" text="book chapter" />
+      <label xml:lang="de" text="Buchkapitel" />
+    </category>
+    <category ID="confpro">
+      <label xml:lang="en" text="Conference Proceeding" />
+      <label xml:lang="de" text="Konferenzband" />
+    </category>
+    <category ID="confpub">
+      <label xml:lang="en" text="Conference Publication" />
+      <label xml:lang="de" text="Konferenzbeitrag" />
+      <category ID="confpubposter">
+        <label xml:lang="en" text="Poster" />
+        <label xml:lang="de" text="Poster" />
+      </category>
+      <category ID="confpubpres">
+        <label xml:lang="en" text="Presentation" />
+        <label xml:lang="de" text="Vortrag" />
+      </category>
+      <category ID="confpubatt">
+        <label xml:lang="en" text="Attachment" />
+        <label xml:lang="de" text="Aufsatz" />
+      </category>
+    </category>
+    <category ID="thesis">
+      <label xml:lang="en" text="Thesis" />
+      <label xml:lang="de" text="Hochschulschrift" />
+      <category ID="diploma_thesis">
+        <label xml:lang="en" text="Diploma Thesis" />
+        <label xml:lang="de" text="Diplomarbeit" />
+      </category>
+      <category ID="master_thesis">
+        <label xml:lang="en" text="Master Thesis" />
+        <label xml:lang="de" text="Abschlussarbeit (Master)" />
+      </category>
+      <category ID="bachelor_thesis">
+        <label xml:lang="en" text="Bachelor Thesis" />
+        <label xml:lang="de" text="Abschlussarbeit (Bachelor)" />
+      </category>
+      <category ID="student_resarch_project">
+        <label xml:lang="en" text="Student Research Project" />
+        <label xml:lang="de" text="Studienarbeit" />
+      </category>
+      <category ID="dissertation">
+        <label xml:lang="en" text="Dissertation" />
+        <label xml:lang="de" text="Dissertation" />
+      </category>
+      <category ID="habilitation">
+        <label xml:lang="en" text="Habilitation" />
+        <label xml:lang="de" text="Habilitation" />
+      </category>
+      <category ID="magister_thesis">
+        <label xml:lang="en" text="Magister Thesis" />
+        <label xml:lang="de" text="Magisterarbeit" />
+      </category>
+    </category>
+    <category ID="av">
+      <label xml:lang="en" text="Audio/Video Media" />
+      <label xml:lang="de" text="Audio/Video Medium" />
+      <category ID="picture">
+        <label xml:lang="en" text="Picture" />
+        <label xml:lang="de" text="Bild" />
+      </category>
+      <category ID="film">
+        <label xml:lang="en" text="Film" />
+        <label xml:lang="de" text="Film" />
+      </category>
+      <category ID="filmstrip">
+        <label xml:lang="en" text="Filmstrip" />
+        <label xml:lang="de" text="Filmstreifen" />
+      </category>
+      <category ID="audiorec">
+        <label xml:lang="en" text="Audio Recording" />
+        <label xml:lang="de" text="Tonaufnahme" />
+      </category>
+      <category ID="videorec">
+        <label xml:lang="en" text="Video Recording" />
+        <label xml:lang="de" text="Videoaufnahme" />
+      </category>
+      <category ID="tvBroadcast">
+        <label xml:lang="en" text="TV Broadcast" />
+        <label xml:lang="de" text="Fernsehsendung" />
+      </category>
+      <category ID="radioBroadcast">
+        <label xml:lang="en" text="Radio Broadcast" />
+        <label xml:lang="de" text="Radiosendung" />
+      </category>
+    </category>
+    <category ID="report">
+      <label xml:lang="de" text="Report" />
+      <label xml:lang="en" text="Report" />
+      <category ID="research_results">
+        <label xml:lang="en" text="Research Results" />
+        <label xml:lang="de" text="Forschungsergebnisse" />
+      </category>
+      <category ID="in_house">
+        <label xml:lang="en" text="In House" />
+        <label xml:lang="de" text="In House" />
+      </category>
+      <category ID="press_release">
+        <label xml:lang="en" text="Press Release" />
+        <label xml:lang="de" text="Presseerklärung" />
+      </category>
+      <category ID="poster">
+        <label xml:lang="en" text="Poster" />
+        <label xml:lang="de" text="Poster" />
+      </category>
+      <category ID="declaration">
+        <label xml:lang="de" text="Fachliche Stellungnahme" />
+        <label xml:lang="en" text="Professional Declaration" />
+      </category>
+    </category>
+  </categories>
+</mycoreclass>

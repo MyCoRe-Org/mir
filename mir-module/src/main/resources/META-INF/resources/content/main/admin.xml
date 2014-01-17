@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE MyCoReWebPage>
+<MyCoReWebPage>
+  <section xml:lang="de" title="Interner Zugang">
+
+    <div class="blockbox">
+      <h2>Publizieren</h2>
+      <p>Sie können folgende Publikationen neu anlegen:</p>
+      <ul>
+        <li>
+          <a href="../../servlets/object/create?type=mods&amp;layout=thesis&amp;sourceURI=webapp:modules/mods/template-thesis.xml">Hochschulschriften</a>
+        </li>
+        <li>
+          <a href="../../servlets/object/create?type=mods&amp;layout=report">Report</a>
+        </li>
+        <li>
+          <a href="../../servlets/object/create?type=mods&amp;layout=confpro&amp;sourceURI=webapp:modules/mods/template-confpro.xml">Konferenzband</a>
+        </li>
+        <li>
+          <a href="../../servlets/object/create?type=mods&amp;layout=book">Buch</a>
+        </li>
+        <li>
+          <a href="../../servlets/object/create?type=mods&amp;layout=journal">Zeitschrift/Serie</a>
+          <form action="../../servlets/object/create" method="post" class="yform" id="zdb_form">
+            <input type="hidden" name="type" value="mods" />
+            <input type="hidden" name="layout" value="journal" />
+            <input type="hidden" name="cancelUrl" value="/content/main/admin.xml" />
+            <fieldset>
+              <div class="type-text">
+                <label for="zdbid">
+                  ZDB-ID
+                </label>
+                <input type="text" name="zdbid" size="20" />
+              </div>
+              <div class="type-button">
+                <input type="submit" value="Importieren" />
+              </div>
+            </fieldset>
+          </form>
+        </li>
+        <li>
+          <a href="../../servlets/object/create?type=mods&amp;layout=av">AV-Medium</a>
+        </li>
+        <li>
+          <a href="../../servlets/object/create?type=mods&amp;layout=all">beliebiges MODS-Dokument</a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="blockbox">
+      <h2>Expertensuche</h2>
+
+      <editor id="searchmask">
+        <source uri="searchInput:{id}" />
+        <target type="servlet" name="MCRSearchServlet" method="post" format="xml" />
+        <components root="root" var="/query">
+
+          <headline anchor="LEFT">
+            <text i18n="editor.search.mir.expert" />
+          </headline>
+
+          <panel id="root">
+            <hidden var="@mask" default="content/main/admin.xml" />
+            <hidden var="conditions/@format" default="text" />
+            <hidden var="@numPerPage" default="10" />
+
+            <cell row="1" col="1" anchor="WEST" var="conditions">
+              <textfield width="100" maxlength="1000" id="tf.query">
+                <condition id="cond.query.length" required="true" minLength="5" maxLength="1000" i18n="editor.search.length" />
+                <condition id="cond.query.syntax" class="org.mycore.services.fieldquery.MCRQueryParser" method="validateQueryExpression"
+                  i18n="editor.search.syntax" />
+              </textfield>
+            </cell>
+
+            <cell row="3" col="1" anchor="EAST">
+              <submitButton i18n="editor.search.search" width="150px" />
+            </cell>
+
+            <cell row="4" col="1" anchor="SOUTHWEST" height="50px">
+              <text i18n="editor.search.document.esample" />
+            </cell>
+            <cell row="5" col="1" anchor="WEST">
+              <text>
+                <label>
+                  mods.title contains Anbauversuche
+                  <br />
+                  (mods.genre = "report") and ((mods.title contains "Anbauversuche") or (mods.author contains "Schiemann"))
+                </label>
+              </text>
+            </cell>
+            <cell row="6" col="1" anchor="WEST">
+              <text i18n="editor.search.document.esyntax" />
+            </cell>
+            <cell row="7" col="1" anchor="WEST">
+              <text i18n="editor.search.document.esyntaxt" />
+            </cell>
+            <cell row="8" col="1" anchor="NORTHWEST">
+              <text>
+                <label>
+                  <include uri="xslStyle:searchfields-help:resource:searchfields.xml" />
+                </label>
+              </text>
+            </cell>
+          </panel>
+
+        </components>
+      </editor>
+
+    </div>
+  </section>
+  <meta>
+    <log date="2011-11-10" time="11:50" labelPath=" » Admin" lastEditor="Kathleen Neumann" />
+  </meta>
+</MyCoReWebPage>

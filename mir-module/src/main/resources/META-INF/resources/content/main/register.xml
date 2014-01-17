@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE MyCoReWebPage>
+<MyCoReWebPage>
+  <section xml:lang="de" title="Registrieren">
+  <div class="blockbox">
+    <h2>Anmeldeformular</h2>
+    <p>Hier folgt in Kürze ein Anmeldeformular für Mitarbeiter, die ihre Publikationen direkt
+    und online melden wollen.</p>
+  </div>
+</section>
+	<meta>
+		<log date="2011-11-15" time="15:09" labelPath=" » Registrieren" lastEditor="Kathleen Neumann" />
+	</meta>
+</MyCoReWebPage>

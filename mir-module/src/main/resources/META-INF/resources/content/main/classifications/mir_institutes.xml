@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE MyCoReWebPage>
+
+<MyCoReWebPage>
+
+  <section i18n="browse.mods.institution.corporate" xml:lang="all">
+    <div class="blockbox">
+      <br />
+      <classificationbrowser classification="mir_institutes" objecttype="mods" restriction="+category:&quot;mir_status:published&quot;" field="corporate" countresults="true" parameters="numPerPage=10" emptyleaves="false" style="bootstrap" addParameter="XSL.template=template_mir" />
+    </div>
+  </section>
+
+</MyCoReWebPage>

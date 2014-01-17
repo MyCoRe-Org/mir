@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mycoreclass xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="MCRClassification.xsd" ID="mir_institutes">
+  <label xml:lang="en" text="Sample Institutions" description="A list of institutions" />
+  <label xml:lang="de" text="Beispiel-Einrichtungen" description="Liste der Einrichtungen" />
+  <label xml:lang="x-uri" text="http://www.mycore.org/classifications/mir_institutes" />
+  <categories>
+    <category ID="Unis">
+      <label xml:lang="de" text="Universität in Deutschland" />
+      <label xml:lang="en" text="Universities of Germany" />
+      <category ID="Unis.Dresden">
+        <label xml:lang="de" text="Universität Dresden" />
+        <label xml:lang="en" text="Dresden University" />
+        <url xlink:href="http://www.uni-dresden.de/" />
+      </category>
+      <category ID="Unis.Essen">
+        <label xml:lang="de" text="Universität Duisburg-Essen" />
+        <label xml:lang="en" text="Duisburg-Essen University" />
+        <url xlink:href="http://www.uni-duisburg-essen.de/" />
+      </category>
+      <category ID="Unis.Freiburg">
+        <label xml:lang="de" text="Universität Freiburg" />
+        <label xml:lang="en" text="Freiburg University" />
+        <url xlink:href="http://www.uni-freiburg.de/" />
+      </category>
+      <category ID="Unis.Greifswald">
+        <label xml:lang="de" text="Universität Greifswald" />
+        <label xml:lang="en" text="University of Greifswald" />
+        <url xlink:href="http://www.uni-greifswald.de/" />
+      </category>
+      <category ID="Unis.Hamburg">
+        <label xml:lang="de" text="Universität Hamburg" />
+        <label xml:lang="en" text="University of Hamburg" />
+        <url xlink:href="http://www.uni-hamburg.de/" />
+      </category>
+      <category ID="Unis.Jena">
+        <label xml:lang="de" text="Universität Jena" />
+        <label xml:lang="en" text="Jena University" />
+        <url xlink:href="http://www.uni-jena.de/" />
+      </category>
+      <category ID="Unis.Kiel">
+        <label xml:lang="de" text="Universität Kiel" />
+        <label xml:lang="en" text="Kiel University" />
+        <url xlink:href="http://www.uni-kiel.de/" />
+      </category>
+      <category ID="Unis.Leipzig">
+        <label xml:lang="de" text="Universität Leipzig" />
+        <label xml:lang="en" text="Leipzig University" />
+        <url xlink:href="http://www.uni-leipzig.de/" />
+      </category>
+      <category ID="Unis.TUMuenchen">
+        <label xml:lang="de" text="Technische Universität München" />
+        <label xml:lang="en" text="Technical University of München" />
+        <url xlink:href="http://www.tu-muenchen.de/" />
+      </category>
+      <category ID="Unis.Muenster">
+        <label xml:lang="de" text="Universität Münster" />
+        <label xml:lang="en" text="University of Münster" />
+        <url xlink:href="http://www.uni-muenster.de/" />
+      </category>
+      <category ID="Unis.Rostock">
+        <label xml:lang="de" text="Universität Rostock" />
+        <label xml:lang="en" text="University of Rostock" />
+        <url xlink:href="http://www.uni-rostock.de/" />
+      </category>
+    </category>
+    <category ID="Firma">
+      <label xml:lang="de" text="Firmen in Deutschland" />
+      <label xml:lang="en" text="Companies in Germany" />
+      <category ID="Firma.IBM">
+        <label xml:lang="de" text="IBM" />
+        <label xml:lang="en" text="IBM" />
+      </category>
+      <category ID="Firma.Reber">
+        <label xml:lang="de" text="DUR Consult" />
+        <label xml:lang="en" text="DUR Consult" />
+      </category>
+    </category>
+    <category ID="Other">
+      <label xml:lang="de" text="Andere" />
+      <label xml:lang="en" text="Other" />
+    </category>
+  </categories>
+</mycoreclass>

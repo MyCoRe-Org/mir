@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE MyCoReWebPage>
+<MyCoReWebPage>
+  <section xml:lang="de" title="Kontakt">
+  <div class="blockbox">
+    <h2>Kontakt</h2>
+    <p>Hier folgt in Kürze die Kontaktdaten der zuständigen Betreiber.</p>
+  </div>
+  <div class="blockbox">
+    <h2>Die Technik</h2>
+    <p>
+      In diesem Projekt im Rahmen des Konjunkturpaketes II der Bundesregierung wurde ein institutionelles Repositorium (IR) für
+      Literaturnachweise und Volltexte von Mitarbeitern und Einrichtungen im Geschäftsbereich des BMELV aufgebaut. Das MIR-Modul
+      ist Kopie dieser Lösung.
+    </p>
+    <p>
+      Die Entwicklung und Implementierung des IR erfolgt auf Basis der DMS-Umgebung MyCoRe. Analoge Projekte wurden bereits mit
+      den Hochschulschriftenservern DBT und DuEPublico umgesetzt. MyCoRe bildet die sowohl Grundlage für den DMS-Service der
+      Verbundzentrale als auch für den zentralen Betrieb der digitalen Bibliothek des Freistaates Thüringen unter Federführung
+      der Thüringischen Landes- und Universitätsbibliothek (ThULB) Jena, so dass ein langfristiger Betrieb sowie eine
+      kontinuierliche Weiterentwicklung durch die VZG und die ThULB Jena garantiert sind. Außerdem wird somit die Anbindung des
+      DMS an die CBS-/LBS-Struktur zur automatischen Übernahme der Metadaten und Verknüpfung der Nachweise mit dem DMS sowie die
+      Replizierung der Institutsstruktur in die OPACs gewährleistet.
+    </p>
+  </div>
+  </section>
+  <meta>
+    <log date="2011-11-16" time="09:41" labelPath=" » Kontakt" lastEditor="Kathleen Neumann" />
+  </meta>
+</MyCoReWebPage>
