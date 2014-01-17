@@ -9,14 +9,13 @@
   <xsl:output method="html" doctype-system="about:legacy-compat" indent="yes" omit-xml-declaration="yes" media-type="text/html"
     version="5" />
   <xsl:strip-space elements="*" />
-  <xsl:param name="CurrentLang" select="'de'" />
-  <xsl:param name="WebApplicationBaseURL" />
+  <xsl:include href="resource:xsl/layout/mir-common-layout.xsl"/>
   <!-- Various versions -->
-  <xsl:variable name="bootstrap.version" select="'3.0.3'"/>
-  <xsl:variable name="bootswatch.version" select="$bootstrap.version"/>
-  <xsl:variable name="fontawesome.version" select="'4.0.3'"/>
-  <xsl:variable name="jquery.version" select="'1.10.1'"/>
-  <xsl:variable name="jquery.migrate.version" select="'1.2.1'"/>
+  <xsl:variable name="bootstrap.version" select="'3.0.3'" />
+  <xsl:variable name="bootswatch.version" select="$bootstrap.version" />
+  <xsl:variable name="fontawesome.version" select="'4.0.3'" />
+  <xsl:variable name="jquery.version" select="'1.10.1'" />
+  <xsl:variable name="jquery.migrate.version" select="'1.2.1'" />
   <!-- End of various versions -->
   <xsl:variable name="PageTitle" select="/*/@title" />
   <xsl:template match="/site">
@@ -30,9 +29,7 @@
           Mobile viewport optimisation
         </xsl:comment>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<!--         <link href="//netdna.bootstrapcdn.com/bootstrap/{$bootstrap.version}/css/bootstrap.min.css" rel="stylesheet" /> -->
-        <link href="//netdna.bootstrapcdn.com/font-awesome/{$fontawesome.version}/css/font-awesome.min.css" rel="stylesheet" />
-        <link href="//netdna.bootstrapcdn.com/bootswatch/{$bootswatch.version}/readable/bootstrap.min.css" rel="stylesheet" />
+        <link href="{$WebApplicationBaseURL}mir-default-layout/css/layout.css" rel="stylesheet" />
         <script type="text/javascript" src="//code.jquery.com/jquery-{$jquery.version}.min.js"></script>
         <script type="text/javascript" src="//code.jquery.com/jquery-migrate-{$jquery.migrate.version}.min.js"></script>
       </head>
@@ -40,12 +37,21 @@
       <body>
         <div id="wrapper">
           <header>
-            <xsl:value-of select="$PageTitle" />
+            <xsl:call-template name="mir.navigation" />
           </header>
           <a name="All" />
           <div class="container">
             <div id="main">
-              <xsl:copy-of select="*" />
+              <xsl:call-template name="print.writeProtectionMessage" />
+              <xsl:choose>
+                <xsl:when test="$readAccess='true'">
+        <!-- xsl:call-template name="getFastWCMS" / -->
+                  <xsl:copy-of select="*" />
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:call-template name="printNotLoggedIn" />
+                </xsl:otherwise>
+              </xsl:choose>
             </div>
           </div>
         </div>
@@ -71,7 +77,8 @@
                 <p>
                   ©
                   <a href="http://www.mycore.de">
-                    <img src="http://www.mycore.de/images/mycore_logo_110x19_blaue_schrift_frei.png" style="height:0.8em" title="Logo von MyCoRe" alt="MyCoRe" />
+                    <img src="http://www.mycore.de/images/mycore_logo_110x19_blaue_schrift_frei.png" style="height:0.8em" title="Logo von MyCoRe"
+                      alt="MyCoRe" />
                   </a>
                   Community
                 </p>

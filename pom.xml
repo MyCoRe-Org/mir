@@ -57,5 +57,6 @@
     <module>mir-module</module>
     <module>mir-default-layout</module>
     <module>mir-webapp</module>
+    <module>mir-common-resources</module>
   </modules>
 </project>

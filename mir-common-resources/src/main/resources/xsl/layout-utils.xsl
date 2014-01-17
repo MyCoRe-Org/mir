@@ -1,12 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:acl="xalan://org.mycore.access.MCRAccessManager"
-  xmlns:xlink="http://www.w3.org/1999/xlink" exclude-result-prefixes="acl xlink">
+  xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions" xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
+  xmlns:websiteWriteProtection="xalan://org.mycore.frontend.MCRWebsiteWriteProtection" exclude-result-prefixes="acl i18n xlink mcrxsl websiteWriteProtection">
   <xsl:param name="WebApplicationBaseURL" />
   <xsl:param name="ServletsBaseURL" />
   <xsl:param name="RequestURL" />
   <xsl:param name="HttpSession" />
   <xsl:param name="objectHost" select="'local'" />
-  <xsl:include href="coreFunctions.xsl"/>
+  <xsl:include href="coreFunctions.xsl" />
+  <!-- website write protected ? -->
+  <xsl:variable name="writeProtectedWebsite" select="not(mcrxsl:isCurrentUserGuestUser()) and websiteWriteProtection:isActive()" />
+  <xsl:template name="printNotLoggedIn">
+    <div class="alert alert-error">
+      <xsl:value-of select="i18n:translate('webpage.notLoggedIn')" disable-output-escaping="yes" />
+    </div>
+  </xsl:template>
+  <xsl:template name="print.writeProtectionMessage">
+    <xsl:if test="$writeProtectedWebsite">
+      <div class="alert alert-warning alert-dismissable">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
+          <xsl:value-of select="'&#215;'" />
+        </button>
+        <strong>
+          <xsl:copy-of select="websiteWriteProtection:getMessage()" />
+        </strong>
+      </div>
+    </xsl:if>
+  </xsl:template>
+ 
+  <xsl:variable name="direction">
+    <xsl:choose>
+      <xsl:when test="$CurrentLang = 'ar'">
+        <xsl:text>rtl</xsl:text>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:text>ltr</xsl:text>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:variable>
+
   <xsl:template name="printI18N">
     <xsl:param name="nodes" />
     <xsl:param name="next" />
