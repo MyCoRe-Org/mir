@@ -5,14 +5,19 @@
  ------
  2014-01-20
  ------
- 
+
+Download Instructions
+
  Thanks for you interest in MIR!
  
  To download the current version simply use the links provided on this page.
  
- * MIR Webapp
+* MIR Webapp
   
 %{snippet|id=downloadLink|file=src/site/download-helper.html|verbatim=false}
   
 %{snippet|id=downloadCode|file=src/site/download-helper.html|verbatim=false}
-  
+
+* MIR CLI
+
+ More information will appear here later.  
