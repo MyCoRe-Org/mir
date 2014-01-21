@@ -14,7 +14,6 @@
   <description>MyCoRe Institutional Repository</description>
   <properties>
     <mycore.version>2014.02-SNAPSHOT</mycore.version>
-    <download.url>http://artifactory.mycore.de/mycore-snapshots/org/mycore/mir/</download.url>
     <site.suffix />
   </properties>
   <url>http://www.mycore.de/generated/mir${site.suffix}</url>
@@ -116,7 +115,6 @@
       <id>release-profile</id>
       <properties>
         <site.suffix>-${project.version}</site.suffix>
-        <download.url>http://artifactory.mycore.de/mycore-snapshots/org/mycore/mir/</download.url>
       </properties>
     </profile>
   </profiles>
