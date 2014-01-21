@@ -1,0 +1,69 @@
+ ------
+ Download
+ ------
+ Thomas Scheffler
+ ------
+ 2014-01-20
+ ------
+
+Installation of WAR Archive
+
+ If you processed the {{{./download.html}download instructions}} you have received a WAR archive that is ready for deployment.
+ Without configuration you will not get a running system.
+ 
+
+* Determine the configuration directory
+
+ All your configuration goes into the configuration directory. Please see the
+ {{{http://www.mycore.de/generated/mycore/apidocs/org/mycore/common/config/MCRConfigurationDir.html}JavaDocs of MCRConfigurationDir}}
+ where to find and how to configure it.
+ 
+ An easy way to get the default value is to simply start the web application and look
+ for the statement at the beginning of log output:
+
++--------------------------------------------------------------------------------------------------------------------------------+
+ INFO [localhost-startStop-1] (MCRConfigurationInputStream.java:129) - Current configuration directory: /home/mcruser/.mycore/mir
++--------------------------------------------------------------------------------------------------------------------------------+
+
+ After that you simply create the directory if you are satisfied with it and start putting configuration files in it:
+ 
+ 
+* Structure of configuration directory
+
++------------------------------------------------+
+  {configDir}
+    |- data/
+    |	\ {content of MCR.dataDir}
+    |
+    |- libs/
+    |   \ {any *.jar files you need in classpath}
+    |
+    |- hibernate.cfg.xml
+    |- mycore.properties
+    |- mycore.active.properties
+    \  mycore.resolved.properties
++------------------------------------------------+
+
+** <<<mycore.properties>>>
+ 
+ Your most important file is <<<mycore.properties>>> where you configure installation details like the
+ <<<MCR.Module-solr.ServerURL>>> property or relocate the data directory (see above) via
+ <<<MCR.datadir>>> property. This is also the right place to overwrite any property default.
+ 
+ You will find all default values in <<<mycore.active.properties>>>. This file includes variables and may contain
+ double definition of properties. The last definition is always that counts.
+ 
+ In <<<mycore.resolved.properties>>> you will find a dump of what properties are actually used with all doublets
+ removed and variables replaced.
+ 
+** <<<hibernate.cfg.xml>>>
+
+ The <<<hibernate.cfg.xml>>> is used to configure your database connection. For the moment use the
+ {{{http://www.mycore.de/svn/docportal/trunk/config/hibernate/}example in docportal}}<(deprecated MyCoRe project)>
+ as a starting point. In nearly 100% of all cases you need an additional java library that contains the JDBC driver
+ for your DBMS. You simply put this file into the <<<libs>>> directory under the configuration dir.
+ 
+* How to start
+ 
+ More information will appear here later.
+   

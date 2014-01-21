@@ -23,6 +23,7 @@
   <body>
     <menu name="Documentation">
       <item name="Download" href="download.html" />
+      <item name="Installation" href="install.html" />
     </menu>
     <menu ref="reports" />
     <menu ref="parent" />
