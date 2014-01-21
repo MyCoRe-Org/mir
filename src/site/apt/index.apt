@@ -1,0 +1,119 @@
+ ------
+ Introduction
+ ------
+ Thomas Scheffler
+ ------
+ 2014-01-21
+ ------
+ 
+MIR ({{{http://www.mycore.de}MyCoRe}}|{{{http://www.loc.gov/standards/mods/}MODS}} Institutional Repository)
+
+ Contents:
+
+==================
+
+%{toc|fromDepth=2}
+
+==================
+ 
+* About
+ 
+ The MIR application is used to give quick start in setting up your own institutional repository.
+ Your repository will feature support for the most important standards:
+  
+ * {{{http://www.loc.gov/standards/mods/}MODS}} as it only metadata format
+ 
+ * {{{http://www.loc.gov/standards/mets/}METS}} for structuring digital content
+
+ * {{{http://www.openarchives.org/pmh/}OAI-PMH}} to share your repository content with others
+
+ * {{{http://www.w3.org/Style/XSL/}XSL}} to transform your metadata to different formats
+
+ * {{{http://www.sitemaps.org/}Sitemaps protocol}}
+ 
+ * {{{http://www.dnb.de/gnd}GND}}
+ 
+ []
+  
+ In addition to that MIR features also are range of convenient functions, as of:
+  
+ * Online editor to insert and alter meta data
+
+ * Supports different type of documents with inheritance support:
+
+   * Articles
+
+   * Audio/Video material
+
+   * Books (w/w.o. chapters)
+
+   * Conference proceedings
+
+   * Conference publications
+
+   * Journals
+
+   * Reports
+
+   * Thesis
+
+ * File upload (Upload a bunch of files easily)
+
+ * Multi-Language support
+
+ * Classifications (including online editor)
+
+ * Fulltext embargoes
+
+ * ACLs to restrict access further
+
+ * Versioning of metadata
+
+ * Audio-/Video- Streaming (through {{{http://www.realnetworks.com/helix/streaming-media-server/}Helix Universal Server}})
+
+ * uses {{{http://lucene.apache.org/solr/}SOLR}} as search engine with all its rich feature set
+
+ * Internal and external user system
+ 
+   Link-in your {{{http://en.wikipedia.org/wiki/Lightweight_Directory_Access_Protocol}LDAP}} or {{{http://shibboleth.net/}Shibboleth}} infrastructure
+
+ * Export to:
+ 
+   * {{{http://www.bibtex.org}BibTex}}
+ 
+   * {{{http://www.loc.gov/standards/mods/}MODS}}
+ 
+   * {{{http://www.refman.com/support/risformat_intro.asp}RIS}} format
+ 
+   * {{{http://endnote.com/}EndNote®}}
+ 
+   * {{{http://wos.isitrial.com/help/helpprn.html}Thompson Scientific/ISI}}
+ 
+   * {{{http://office.microsoft.com/en-us/word-help/apa-mla-chicago-automatically-format-bibliographies-HA102435469.aspx}Word 2007 bibliograpy}}
+ 
+   * {{{http://dublincore.org/}Dublin Core®}}
+ 
+ * Support Import from public catalogs:
+ 
+   * {{{http://www.zeitschriftendatenbank.de/}ZDB}}
+ 
+   * More to come ...
+ 
+ * Powerful Image-Viewer
+ 
+   Supports books with more than 1000 pages and maps larger than 1 {{{http://en.wikipedia.org/wiki/Gigapixel_image}Gigapixel}}
+   
+ * You will find more if you try it out
+ 
+* Quick-Start
+
+ As of now there is no real quick start. So stay tuned. But for now you can already read early documentation:
+ 
+ * {{{./download.html}Download}} 
+ 
+ * {{{./install.html}Installation}}
+ 
+* Support
+
+ Currently MIR is not ready for productive deployment but feel free to give it a try.
+ If you need support or want to help out. Please do not wait and ask at the MyCoRe-User {{{./mail-lists.html}mailing list}}.
