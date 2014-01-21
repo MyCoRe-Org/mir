@@ -1,0 +1,18 @@
+ ------
+ Download
+ ------
+ Thomas Scheffler
+ ------
+ 2014-01-20
+ ------
+ 
+ Thanks for you interest in MIR!
+ 
+ To download the current version simply use the links provided on this page.
+ 
+ * MIR Webapp
+  
+%{snippet|id=downloadLink|file=src/site/download-helper.html|verbatim=false}
+  
+%{snippet|id=downloadCode|file=src/site/download-helper.html|verbatim=false}
+  

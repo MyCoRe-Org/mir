@@ -14,7 +14,22 @@
   <description>MyCoRe Institutional Repository</description>
   <properties>
     <mycore.version>2014.02-SNAPSHOT</mycore.version>
+    <download.url>http://artifactory.mycore.de/mycore-snapshots/org/mycore/mir/</download.url>
+    <site.suffix />
   </properties>
+  <url>http://www.mycore.de/generated/mir${site.suffix}</url>
+  <scm>
+    <connection>scm:svn:http://server.mycore.de/svn/maven/mir/trunk</connection>
+    <developerConnection>scm:svn:https://server.mycore.de/svn/maven/mir/trunk</developerConnection>
+    <url>http://www.mycore.de/viewvc/viewvc.cgi/maven/mir/trunk</url>
+  </scm>
+  <distributionManagement>
+    <site>
+      <id>MyCoRe HQ</id>
+      <name>MyCoRe HQ-sites</name>
+      <url>scp://server.mycore.de/mcr/mycore.de/generated/mir${site.suffix}</url>
+    </site>
+  </distributionManagement>
   <pluginRepositories>
     <pluginRepository>
       <id>MyCoRe HQ</id>
@@ -59,4 +74,50 @@
     <module>mir-webapp</module>
     <module>mir-common-resources</module>
   </modules>
+  <developers>
+    <developer>
+      <id>mcrtchef</id>
+      <name>Thomas Scheffler</name>
+      <organization>Friedrich-Schiller-Universität Jena, Thüringer Universitäts- und Landesbibliothek</organization>
+      <email>thomas.scheffler (at) uni-jena.de</email>
+      <organizationUrl>http://www.thulb.uni-jena.de/</organizationUrl>
+      <timezone>+1</timezone>
+      <roles>
+        <role>architect</role>
+        <role>developer</role>
+      </roles>
+    </developer>
+    <developer>
+      <id>mcrshofm</id>
+      <name>Sebastian Hofmann</name>
+      <organization>Friedrich-Schiller-Universität Jena, Thüringer Universitäts- und Landesbibliothek</organization>
+      <email>vo62xat (at) uni-jena.de</email>
+      <organizationUrl>http://www.thulb.uni-jena.de/</organizationUrl>
+      <timezone>+1</timezone>
+      <roles>
+        <role>programmer</role>
+      </roles>
+    </developer>
+    <developer>
+      <id>mcrkrebs</id>
+      <name>Kathleen Neumann</name>
+      <organization>Verbundzentrale des GBV (VZG), Document Management System</organization>
+      <email>Kathleen.Neumann (at) gbv.de</email>
+      <organizationUrl>http://www.gbv.de</organizationUrl>
+      <timezone>+1</timezone>
+      <roles>
+        <role>coordination</role>
+        <role>developer</role>
+      </roles>
+    </developer>
+  </developers>
+  <profiles>
+    <profile>
+      <id>release-profile</id>
+      <properties>
+        <site.suffix>-${project.version}</site.suffix>
+        <download.url>http://artifactory.mycore.de/mycore-snapshots/org/mycore/mir/</download.url>
+      </properties>
+    </profile>
+  </profiles>
 </project>
