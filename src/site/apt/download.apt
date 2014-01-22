@@ -14,10 +14,10 @@ Download Instructions
  
 * MIR Webapp
   
-%{snippet|id=downloadLink|file=src/site/download-helper.html|verbatim=false}
+%{snippet|id=downloadLinkWebApp|file=src/site/download-helper.html|verbatim=false}
   
-%{snippet|id=downloadCode|file=src/site/download-helper.html|verbatim=false}
-
 * MIR CLI
 
- More information will appear here later.  
+%{snippet|id=downloadLinkCLI|file=src/site/download-helper.html|verbatim=false}
+
+%{snippet|id=downloadCode|file=src/site/download-helper.html|verbatim=false}

@@ -1,33 +1,54 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <html>
-<!-- START SNIPPET: downloadLink -->
-This is the main artifact of this project and provides a
-<a id="downloadLink" href="#">WAR archive</a> that can be deployed in a servlet container.
-<!-- END SNIPPET: downloadLink -->
-<!-- START SNIPPET: downloadCode -->
-<script type="text/javascript">
-  "use strict";
-  (function($) {
-    $(document).ready(function() {
-      var version = jQuery('#projectVersion').text().split(': ')[1].trim();
-      $.getJSON('http://artifactory.mycore.de/api/search/gavc', {
-        "g" : "org.mycore.mir",
-        "a" : "mir-webapp",
-        "v" : version
-      }, function(data, textStatus, jqXHR) {
-        var results = data.results;
-        var uri
-        for (var i=data.results.length - 1; i >= 0; i--) {
-			var e=results[i];
-			if (e.uri.endsWith(".war")){
-			  uri=e.uri;
-			  break;
-			}
-        }
-        $('#downloadLink').attr('href', uri);
-      });
-    });
-  })(jQuery);
-</script>
-<!-- END SNIPPET: downloadCode -->
+<body>
+  <!-- START SNIPPET: downloadLinkWebApp -->
+  This is the main artifact of this project and provides a
+  <a href="#" data-role="artifactResolver" data-artifact="mir-webapp" data-suffix=".war">WAR archive</a> that can be
+  deployed in a servlet container.
+  <!-- END SNIPPET: downloadLinkWebApp -->
+  <!-- START SNIPPET: downloadLinkCLI -->
+  The MIR command line interface can be downloaded in two formats:
+  <ol>
+    <li><a href="#" data-role="artifactResolver" data-artifact="mir-cli" data-suffix=".zip">ZIP archive</a></li>
+    <li><a href="#" data-role="artifactResolver" data-artifact="mir-cli" data-suffix=".tar.gz">tar.gz
+        archive</a></li>
+  </ol>
+  Choose what is appropriate for you and your operating system.
+  <!-- END SNIPPET: downloadLinkCLI -->
+  <!-- START SNIPPET: downloadCode -->
+  <script type="text/javascript">
+      "use strict";
+      (function($) {
+        $(document).ready(function() {
+          $.fn.resolveArtifacts = function(version) {
+            this.each(function() {
+              var element = $(this);
+              var artifact = element.attr('data-artifact');
+              var suffix = element.attr('data-suffix');
+              $.getJSON('http://artifactory.mycore.de/api/search/gavc', {
+                "g" : "org.mycore.mir",
+                "a" : artifact,
+                "v" : version
+              }, function(data, textStatus, jqXHR) {
+                var results = data.results;
+                var uri
+                for (var i = data.results.length - 1; i >= 0; i--) {
+                  var e = results[i];
+                  if (e.uri.endsWith(suffix)) {
+                    uri = e.uri;
+                    break;
+                  }
+                }
+                element.attr('href', uri);
+              });
+            });
+            return this;
+          };
+          var version = $('#projectVersion').text().split(': ')[1].trim();
+          $('[data-role=artifactResolver]').resolveArtifacts(version);
+        });
+      })(jQuery);
+    </script>
+  <!-- END SNIPPET: downloadCode -->
+</body>
 </html>
