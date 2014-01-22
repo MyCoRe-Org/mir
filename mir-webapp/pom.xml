@@ -63,38 +63,7 @@
     <dependency>
       <groupId>org.mycore</groupId>
       <artifactId>mycore-meta</artifactId>
-      <version>${mycore.version}</version>
       <type>pom</type>
-      <exclusions>
-        <exclusion>
-          <groupId>org.mycore</groupId>
-          <artifactId>mycore-sfw</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.mycore</groupId>
-          <artifactId>mycore-acl-editor</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.mycore</groupId>
-          <artifactId>mycore-broadcasting</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.mycore</groupId>
-          <artifactId>mycore-sword</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.mycore</groupId>
-          <artifactId>mycore-wcms</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.mycore</groupId>
-          <artifactId>mycore-webservices</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.mycore</groupId>
-          <artifactId>mycore-z3950</artifactId>
-        </exclusion>
-      </exclusions>
     </dependency>
   </dependencies>
 </project>
