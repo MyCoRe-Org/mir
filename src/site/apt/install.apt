@@ -3,13 +3,25 @@
  ------
  Thomas Scheffler
  ------
- 2014-01-20
+ 2014-01-23
  ------
-
-Installation of WAR Archive
+ 
+Installation of Command Line and WAR Archive
 
  If you processed the {{{./download.html}download instructions}} you have received a WAR archive that is ready for deployment.
- Without configuration you will not get a running system.
+ Furthermore you should have downloaded a .ZIP or .tar.gz file that contains the MIR Command Line Interface.
+ 
+* Initial Setup via MIR Command Line Interface
+
+ Unpack the MIR Command Line to a directory of your choice. It contains three directories: <<<bin>>>, <<<config>>> and <<<lib>>>.
+ In <<<bin>>> you will find two shell script files and two corresponding Windows batch files: <<<setup>>> and <<<mir>>>.
+ We will come to them shortly. In <<<config>>> reside the files we will need to do some initial setups, whereas in <<<lib>>>
+ you will find all JAVA libraries we use to run the MIR Command Line.
+ 
+ Throughout this guide we refer to the shell scripts <<<mir.sh>>> and <<<setup.sh>>>. If you use Windows you would simply to the
+ same but with <<<mir.bat>>> and <<<setup.bat>>>.
+   
+ Without configuration you will not get a running system. So start beginning to configure your MIR instance:
  
 
 * Determine the configuration directory
@@ -18,15 +30,15 @@ Installation of WAR Archive
  {{{http://www.mycore.de/generated/mycore/apidocs/org/mycore/common/config/MCRConfigurationDir.html}JavaDocs of MCRConfigurationDir}}
  where to find and how to configure it.
  
- An easy way to get the default value is to simply start the web application and look
+ An easy way to get the default value is to simply start <<<bin/mir.sh quit>>> and look
  for the statement at the beginning of log output:
 
-+--------------------------------------------------------------------------------------------------------------------------------+
- INFO [localhost-startStop-1] (MCRConfigurationInputStream.java:129) - Current configuration directory: /home/mcruser/.mycore/mir
-+--------------------------------------------------------------------------------------------------------------------------------+
-
- After that you simply create the directory if you are satisfied with it and start putting configuration files in it:
++------------------------------------------------------------------+
+ INFO: Current configuration directory: /home/miradmin/.mycore/mir
++------------------------------------------------------------------+
  
+ Ignore any errors concerning a database connection and focus on the first lines of the output.
+ After that you simply create the directory if you are satisfied with it and start putting configuration files in it:
  
 * Structure of configuration directory
 
@@ -64,6 +76,26 @@ Installation of WAR Archive
  for your DBMS. You simply put this file into the <<<libs>>> directory under the configuration dir.
  
 * How to start
+
+ When you are successful you could try running a simple command:
  
++------------------------------------------------------------------+
+ $ bin/mir.sh create configuration directory
++------------------------------------------------------------------+
+
+ Basically it will create some sub directories you may need later. If the command exits without an error, you are almost done.
+ Simply run <<<setup.sh>>> and it will create a super user <<administrator>> with the default password <<alleswirdgut>>,
+ load some classifications and sets some default ACL rules to secure your system.
+ 
+* Deploy <<<mir.war>>>
+
+ You are now ready to deploy your WAR archive to your servlet container. Please pay attention that if you deploy it to a context
+ other than ROOT ("/"), the context name defines where MIR should look for its configuration directory. Simply rename the WAR
+ file to <<<mir.war>>> and the context should be "/mir" with most servlet containers.
+ 
+* Setup Solr-Server
+
  More information will appear here later.
+
+ 
    
