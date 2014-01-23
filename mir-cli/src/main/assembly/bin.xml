@@ -19,6 +19,10 @@
       </includes>
     </fileSet>
     <fileSet>
+      <directory>${project.basedir}/src/main/config</directory>
+      <outputDirectory>config</outputDirectory>
+    </fileSet>
+    <fileSet>
       <directory>${project.build.directory}/appassembler/lib</directory>
       <outputDirectory>lib</outputDirectory>
       <excludes>
@@ -27,6 +31,7 @@
     </fileSet>
     <fileSet>
       <directory>${project.build.directory}/appassembler/bin</directory>
+      <directoryMode>0775</directoryMode>
       <outputDirectory>bin</outputDirectory>
       <fileMode>0755</fileMode>
       <lineEnding>unix</lineEnding>
@@ -36,8 +41,9 @@
     </fileSet>
     <fileSet>
       <directory>${project.build.directory}/appassembler/bin</directory>
+      <directoryMode>0775</directoryMode>
       <outputDirectory>bin</outputDirectory>
-      <fileMode>0755</fileMode>
+      <fileMode>0644</fileMode>
       <lineEnding>dos</lineEnding>
       <includes>
         <include>*.bat</include>

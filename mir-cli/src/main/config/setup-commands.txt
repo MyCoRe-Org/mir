@@ -1,0 +1,4 @@
+load all classifications from directory ${app.home}/config/classifications
+init superuser
+process ${app.home}/config/acl/defaultrules-commands.txt
+process ${app.home}/config/acl/webacl-commands.txt

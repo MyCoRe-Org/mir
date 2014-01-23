@@ -1,4 +1,4 @@
-update permission read for id webpage:/servlets/MCRWCMSLoginServlet with rulefile grant-never.xml
-update permission read for id webpage:/content/main/register.xml with rulefile not-logged-in.xml
-update permission read for id webpage:/content/main/admin.xml with rulefile require-login.xml
-update permission read for id webpage:/servlets/MCRLockServlet?url=/editor_form_commit-mods-all.xml with rulefile grant-admin.xml
+update permission read for id webpage:/servlets/MCRWCMSLoginServlet with rulefile ${app.home}/config/acl/grant-never.xml
+update permission read for id webpage:/content/main/register.xml with rulefile ${app.home}/config/acl/not-logged-in.xml
+update permission read for id webpage:/content/main/admin.xml with rulefile ${app.home}/config/acl/require-login.xml
+update permission read for id webpage:/servlets/MCRLockServlet?url=/editor_form_commit-mods-all.xml with rulefile ${app.home}/config/acl/grant-admin.xml
