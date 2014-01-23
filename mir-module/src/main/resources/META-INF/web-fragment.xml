@@ -1,0 +1,24 @@
+<web-fragment xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" version="3.0" metadata-complete="true">
+  <name>mir-module</name>
+  <filter>
+    <filter-name>PersistenceFilter</filter-name>
+    <filter-class>org.mycore.wfc.actionmapping.MCRPersistenceServletFilter</filter-class>
+  </filter>
+
+  <filter-mapping>
+    <filter-name>PersistenceFilter</filter-name>
+    <servlet-name>CreateObjectServlet</servlet-name>
+    <dispatcher>REQUEST</dispatcher>
+  </filter-mapping>
+  <filter-mapping>
+    <filter-name>PersistenceFilter</filter-name>
+    <servlet-name>UpdateObjectServlet</servlet-name>
+    <dispatcher>REQUEST</dispatcher>
+  </filter-mapping>
+  <filter-mapping>
+    <filter-name>PersistenceFilter</filter-name>
+    <servlet-name>DeleteObjectServlet</servlet-name>
+    <dispatcher>REQUEST</dispatcher>
+  </filter-mapping>
+</web-fragment>
