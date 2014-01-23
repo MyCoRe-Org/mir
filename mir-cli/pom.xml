@@ -31,6 +31,7 @@
           <binFileExtensions>
             <unix>.sh</unix>
           </binFileExtensions>
+          <licenseHeaderFile>license-header.txt</licenseHeaderFile>
           <programs>
             <program>
               <mainClass>org.mycore.frontend.cli.MCRCommandLineInterface</mainClass>
