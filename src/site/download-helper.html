@@ -10,8 +10,7 @@
   The MIR command line interface can be downloaded in two formats:
   <ol>
     <li><a href="#" data-role="artifactResolver" data-artifact="mir-cli" data-suffix=".zip">ZIP archive</a></li>
-    <li><a href="#" data-role="artifactResolver" data-artifact="mir-cli" data-suffix=".tar.gz">tar.gz
-        archive</a></li>
+    <li><a href="#" data-role="artifactResolver" data-artifact="mir-cli" data-suffix=".tar.gz">tar.gz archive</a></li>
   </ol>
   Choose what is appropriate for you and your operating system.
   <!-- END SNIPPET: downloadLinkCLI -->
@@ -20,6 +19,12 @@
       "use strict";
       (function($) {
         $(document).ready(function() {
+          //Chrome support
+          if (typeof String.prototype.endsWith !== 'function') {
+            String.prototype.endsWith = function(suffix) {
+              return this.indexOf(suffix, this.length - suffix.length) !== -1;
+            };
+          }
           $.fn.resolveArtifacts = function(version) {
             this.each(function() {
               var element = $(this);
@@ -31,15 +36,15 @@
                 "v" : version
               }, function(data, textStatus, jqXHR) {
                 var results = data.results;
-                var uri
-                for (var i = data.results.length - 1; i >= 0; i--) {
+                for (var i = results.length - 1; i >= 0; i--) {
                   var e = results[i];
                   if (e.uri.endsWith(suffix)) {
-                    uri = e.uri;
+                    $.getJSON(e.uri, function(data, textStatus, jqXHR) {
+                      element.attr('href', data.downloadUri);
+                    });
                     break;
                   }
                 }
-                element.attr('href', uri);
               });
             });
             return this;
