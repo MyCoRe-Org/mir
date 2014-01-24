@@ -16,9 +16,9 @@
 
 <!-- - - - - variables for starting applet - - - - -->
 
-<xsl:variable name="applet.mime"              select="'application/x-java-applet;version=1.3.1'" />
+<xsl:variable name="applet.mime"              select="'application/x-java-applet;version=1.7'" />
 <xsl:variable name="applet.codebase"          select="concat($WebApplicationBaseURL,'applet')" />
-<xsl:variable name="applet.class"             select="'org.mycore.frontend.fileupload.MCRUploadApplet.class'" />
+<xsl:variable name="applet.class"             select="'org.mycore.fileupload.MCRUploadApplet.class'" />
 <xsl:variable name="applet.archives"          select="'upload.jar'" />
 <xsl:variable name="applet.cache"             select="'Plugin'" />
 <xsl:variable name="applet.width"             select="'380'" />
