@@ -37,8 +37,15 @@ Installation of Command Line and WAR Archive
  INFO: Current configuration directory: /home/miradmin/.mycore/mir
 +------------------------------------------------------------------+
  
- Ignore any errors concerning a database connection and focus on the first lines of the output.
- After that you simply create the directory if you are satisfied with it and start putting configuration files in it:
+ When you were successful you could try running a simple command:
+ 
++------------------------------------------------------------------+
+ $ bin/mir.sh create configuration directory
++------------------------------------------------------------------+
+
+ Basically it will create the configuration directory with some sub directories you may need later.
+ If the command exits without an error, you are almost done. Go to the newly created directory and
+ configure your MIR installation.
  
 * Structure of configuration directory
 
@@ -75,15 +82,8 @@ Installation of Command Line and WAR Archive
  as a starting point. In nearly 100% of all cases you need an additional java library that contains the JDBC driver
  for your DBMS. You simply put this file into the <<<libs>>> directory under the configuration dir.
  
-* How to start
+* Setup your installation
 
- When you are successful you could try running a simple command:
- 
-+------------------------------------------------------------------+
- $ bin/mir.sh create configuration directory
-+------------------------------------------------------------------+
-
- Basically it will create some sub directories you may need later. If the command exits without an error, you are almost done.
  Simply run <<<setup.sh>>> and it will create a super user <<administrator>> with the default password <<alleswirdgut>>,
  load some classifications and sets some default ACL rules to secure your system.
  
@@ -96,6 +96,3 @@ Installation of Command Line and WAR Archive
 * Setup Solr-Server
 
  More information will appear here later.
-
- 
-   
