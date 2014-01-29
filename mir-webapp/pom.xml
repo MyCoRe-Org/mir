@@ -12,12 +12,35 @@
   <description>MIR web application that bundles are part in a single artifact</description>
   <properties>
     <MCR.AppName>mir</MCR.AppName>
+    <MCR.Home.Integration>${project.build.directory}/mycore-home</MCR.Home.Integration>
   </properties>
   <profiles>
     <profile>
       <id>dev</id>
       <properties>
         <MCR.DataPrefix>dev</MCR.DataPrefix>
+      </properties>
+    </profile>
+    <profile>
+      <id>windows</id>
+      <activation>
+        <os>
+          <family>windows</family>
+        </os>
+      </activation>
+      <properties>
+        <script.suffix>bat</script.suffix>
+      </properties>
+    </profile>
+    <profile>
+      <id>unix</id>
+      <activation>
+        <os>
+          <family>unix</family>
+        </os>
+      </activation>
+      <properties>
+        <script.suffix>sh</script.suffix>
       </properties>
     </profile>
   </profiles>
@@ -69,25 +92,138 @@
               <overWriteSnapshots>true</overWriteSnapshots>
             </configuration>
           </execution>
+          <execution>
+            <id>unpack-cli</id>
+            <phase>pre-integration-test</phase>
+            <goals>
+              <goal>unpack</goal>
+            </goals>
+            <configuration>
+              <artifactItems>
+                <artifactItem>
+                  <groupId>${project.groupId}</groupId>
+                  <artifactId>mir-cli</artifactId>
+                  <version>${project.version}</version>
+                  <type>tar.gz</type>
+                </artifactItem>
+              </artifactItems>
+            </configuration>
+          </execution>
+          <execution>
+            <id>copy-test-libs</id>
+            <phase>pre-integration-test</phase>
+            <goals>
+              <goal>copy</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${MCR.Home.Integration}/${MCR.AppName}/libs</outputDirectory>
+              <artifactItems>
+                <artifactItem>
+                  <groupId>org.hsqldb</groupId>
+                  <artifactId>hsqldb</artifactId>
+                  <version>2.3.1</version>
+                </artifactItem>
+              </artifactItems>
+            </configuration>
+          </execution>
         </executions>
       </plugin>
+      <plugin>
+        <artifactId>maven-resources-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>copy-test-config</id>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <phase>pre-integration-test</phase>
+            <configuration>
+              <outputDirectory>${MCR.Home.Integration}/${MCR.AppName}</outputDirectory>
+              <resources>
+                <resource>
+                  <directory>src/test/integration</directory>
+                  <filtering>true</filtering>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>setup-cli</id>
+            <phase>pre-integration-test</phase>
+            <goals>
+              <goal>exec</goal>
+            </goals>
+            <configuration>
+              <workingDirectory>${project.build.directory}/dependency/mir-cli-${project.version}</workingDirectory>
+              <executable>bin/setup.${script.suffix}</executable>
+            </configuration>
+          </execution>
+        </executions>
+        <configuration>
+          <environmentVariables>
+            <JAVA_OPTS>-DMCR.Home=${MCR.Home.Integration}</JAVA_OPTS>
+          </environmentVariables>
+        </configuration>
+      </plugin>
     </plugins>
+    <pluginManagement>
+      <plugins>
+        <!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
+        <plugin>
+          <groupId>org.eclipse.m2e</groupId>
+          <artifactId>lifecycle-mapping</artifactId>
+          <version>1.0.0</version>
+          <configuration>
+            <lifecycleMappingMetadata>
+              <pluginExecutions>
+                <pluginExecution>
+                  <pluginExecutionFilter>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-dependency-plugin</artifactId>
+                    <versionRange>[2.8,)</versionRange>
+                    <goals>
+                      <goal>unpack</goal>
+                    </goals>
+                  </pluginExecutionFilter>
+                  <action>
+                    <ignore></ignore>
+                  </action>
+                </pluginExecution>
+              </pluginExecutions>
+            </lifecycleMappingMetadata>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
   </build>
   <dependencies>
     <dependency>
-      <groupId>org.mycore.mir</groupId>
+      <groupId>${project.groupId}</groupId>
       <artifactId>mir-default-layout</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>org.mycore.mir</groupId>
+      <groupId>${project.groupId}</groupId>
       <artifactId>mir-module</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>org.mycore.mir</groupId>
+      <groupId>${project.groupId}</groupId>
       <artifactId>mir-common-resources</artifactId>
       <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>mir-cli</artifactId>
+      <version>${project.version}</version>
+      <type>tar.gz</type>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.mycore</groupId>
