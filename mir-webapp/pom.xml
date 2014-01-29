@@ -48,6 +48,26 @@
     <finalName>mir-${project.version}</finalName>
     <plugins>
       <plugin>
+        <artifactId>maven-clean-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>clean-integration</id>
+            <goals>
+              <goal>clean</goal>
+            </goals>
+            <phase>pre-integration-test</phase>
+            <configuration>
+              <excludeDefaultDirectories>true</excludeDefaultDirectories>
+              <filesets>
+                <fileset>
+                  <directory>${MCR.Home.Integration}/${MCR.AppName}</directory>
+                </fileset>
+              </filesets>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
         <groupId>org.apache.tomcat.maven</groupId>
         <artifactId>tomcat7-maven-plugin</artifactId>
         <version>2.2</version>
