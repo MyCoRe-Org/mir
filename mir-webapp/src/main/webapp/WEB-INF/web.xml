@@ -2,10 +2,10 @@
   xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" version="3.0">
   <display-name>MIR</display-name>
   <absolute-ordering>
-    <others/>
     <name>mir-default-layout</name>
     <name>mir-module</name>
     <name>mycore</name>
+    <others/>
   </absolute-ordering>
   
 </web-app>

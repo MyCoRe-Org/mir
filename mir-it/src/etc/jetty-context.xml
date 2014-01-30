@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE Configure PUBLIC "-//Jetty//Configure//EN" "http://www.eclipse.org/jetty/configure.dtd">
+<Configure class="org.eclipse.jetty.webapp.WebAppContext">
+  <Get name="securityHandler">
+    <Set name="loginService">
+      <New class="org.eclipse.jetty.security.HashLoginService">
+        <Set name="name">Restricted</Set>
+        <Set name="config">jetty-realm.properties</Set>
+        <Call name="start"/>
+      </New>
+    </Set>
+    <Set name="checkWelcomeFiles">true</Set>
+  </Get>
+  <Call name="addAliasCheck">
+    <Arg><New class="org.eclipse.jetty.server.handler.AllowSymLinkAliasChecker"/></Arg>
+  </Call>
+</Configure>
