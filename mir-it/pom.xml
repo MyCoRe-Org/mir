@@ -78,40 +78,26 @@
         </executions>
       </plugin>
       <plugin>
+        <artifactId>maven-invoker-plugin</artifactId>
+        <version>1.8</version>
+        <configuration>
+          <cloneProjectsTo>${project.build.directory}/it</cloneProjectsTo>
+        </configuration>
+        <executions>
+          <execution>
+            <id>integration-test</id>
+            <phase>pre-integration-test</phase>
+            <goals>
+              <goal>run</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-dependency-plugin</artifactId>
         <version>2.8</version>
         <executions>
-          <execution>
-            <id>unpack-solr</id>
-            <phase>prepare-package</phase>
-            <goals>
-              <goal>unpack</goal>
-            </goals>
-            <configuration>
-              <artifactItems>
-                <artifactItem>
-                  <groupId>org.apache.solr</groupId>
-                  <artifactId>solr</artifactId>
-                  <version>${solr.version}</version>
-                  <type>war</type>
-                  <outputDirectory>${project.build.directory}/war/solr</outputDirectory>
-                </artifactItem>
-              </artifactItems>
-            </configuration>
-          </execution>
-          <execution>
-            <id>add-solr-libs</id>
-            <phase>prepare-package</phase>
-            <goals>
-              <goal>copy-dependencies</goal>
-            </goals>
-            <configuration>
-              <scope>test</scope>
-              <outputDirectory>${project.build.directory}/war/solr/WEB-INF/lib</outputDirectory>
-              <excludeGroupIds>${project.groupId}</excludeGroupIds>
-            </configuration>
-          </execution>
           <execution>
             <id>unpack-cli</id>
             <phase>pre-integration-test</phase>
@@ -257,7 +243,7 @@
           <stopPort>${jetty.stop.port}</stopPort>
           <contextHandlers>
             <contextHandler implementation="org.eclipse.jetty.webapp.WebAppContext">
-              <war>${project.build.directory}/war/solr</war>
+              <war>${project.build.directory}/it/solr/target/solr.war</war>
               <contextPath>/solr</contextPath>
             </contextHandler>
             <contextHandler implementation="org.eclipse.jetty.webapp.WebAppContext">
