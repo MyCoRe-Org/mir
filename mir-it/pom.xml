@@ -272,6 +272,10 @@
               <name>solr.solr.home</name>
               <value>${solr.home}</value>
             </systemProperty>
+            <systemProperty>
+              <name>jetty.port</name>
+              <value>${jetty.port}</value>
+            </systemProperty>
           </systemProperties>
         </configuration>
         <executions>
