@@ -41,6 +41,7 @@
           <includes>
             <include>layout.less</include>
           </includes>
+          <lessJs>src/main/js/less-1.6.2.min.js</lessJs>
         </configuration>
         <executions>
           <execution>
