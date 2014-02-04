@@ -10,6 +10,14 @@
   <packaging>pom</packaging>
   <name>MIR: Command Line Interface</name>
   <description>ZIP package ready to run MyCoRe commands from shell</description>
+  <properties>
+    <acl-description.never>never allowed</acl-description.never>
+    <acl-description.all>always allowed</acl-description.all>
+    <acl-description.require-login>require login</acl-description.require-login>
+    <acl-description.not-logged-in>not logged-in</acl-description.not-logged-in>
+    <acl-description.admins>administrators only</acl-description.admins>
+    <acl-description.editors>administrators and editors</acl-description.editors>
+  </properties>
   <build>
     <plugins>
       <plugin>
