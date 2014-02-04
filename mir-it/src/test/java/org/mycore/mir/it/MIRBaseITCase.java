@@ -23,6 +23,8 @@
 
 package org.mycore.mir.it;
 
+import static org.junit.Assert.*;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -31,9 +33,9 @@ import java.io.PrintWriter;
 
 import junit.framework.TestCase;
 
-import org.apache.commons.codec.binary.Base64;
 import org.apache.log4j.Logger;
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
@@ -42,15 +44,17 @@ import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
-
-import com.thoughtworks.selenium.DefaultSelenium;
-import com.thoughtworks.selenium.SeleneseTestBase;
+import org.openqa.selenium.By;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
 
 /**
  * @author Thomas Scheffler (yagee)
  *
  */
-public class MIRBaseITCase extends SeleneseTestBase {
+public class MIRBaseITCase {
 
     private static final Logger LOGGER = Logger.getLogger(MIRBaseITCase.class);
 
@@ -82,7 +86,7 @@ public class MIRBaseITCase extends SeleneseTestBase {
                 File screenshot = new File(failedTestDirectory, "screenshot.png");
                 try (FileOutputStream fout = new FileOutputStream(screenshot);) {
                     System.out.println("Saving screenshot to " + screenshot.getAbsolutePath());
-                    fout.write(Base64.decodeBase64(screenShotBase64));
+                    fout.write(screenShot);
                 } catch (IOException e1) {
                     throw new RuntimeException(e1);
                 }
@@ -105,9 +109,11 @@ public class MIRBaseITCase extends SeleneseTestBase {
 
     private static String testApp;
 
-    private static int seleniumPort;
+    private static String startURL, sourceHTML, testURL;
 
-    private static String startURL, screenShotBase64, sourceHTML, testURL;
+    private byte[] screenShot;
+
+    private static WebDriver driver;
 
     @BeforeClass
     public static void setupClass() {
@@ -126,34 +132,33 @@ public class MIRBaseITCase extends SeleneseTestBase {
         testApp = System.getProperty("it.context", "");
         startURL = "http://localhost:" + localPort + "/" + testApp;
         LOGGER.info("Server running on '" + startURL + "'");
-        seleniumPort = Integer.parseInt(System.getProperty("selenium.port", "4444"));
+        driver = new FirefoxDriver();
     }
 
     @Before
     public void setup() {
-        selenium = new DefaultSelenium("localhost", seleniumPort, "*firefox", startURL);
-        selenium.start();
     }
 
     @After
     public void tearDown() {
-        sourceHTML = selenium.getHtmlSource();
-        screenShotBase64 = selenium.captureEntirePageScreenshotToString("");
-        testURL = selenium.getLocation();
-        selenium.stop();
+        sourceHTML = driver.getPageSource();
+        if (driver instanceof TakesScreenshot) {
+            screenShot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
+        }
+        testURL = driver.getCurrentUrl();
     }
 
     @Test
-    public void succeed() {
-        goToStart();
+    public void goToStart() {
+        driver.get(startURL + "/content/main/index.xml");
+        TestCase.assertEquals("Title does not match", "Willkommen bei MIR!", driver.getTitle());
+        assertFalse("Access to start page should not be restricted", driver.findElement(By.tagName("body")).getText()
+            .matches("^[\\s\\S]*Zugriff verweigert[\\s\\S]*$"));
     }
 
-    public void goToStart() {
-        selenium.open(startURL + "/content/main/index.xml");
-        selenium.waitForPageToLoad("1000");
-        TestCase.assertEquals("Title does not match", "Willkommen bei MIR!", selenium.getTitle());
-        assertFalse("Access to start page should not be restricted",
-            selenium.getBodyText().matches("^[\\s\\S]*Zugriff verweigert[\\s\\S]*$"));
+    @AfterClass
+    public static void tearDownClass() {
+        driver.quit();
     }
 
 }

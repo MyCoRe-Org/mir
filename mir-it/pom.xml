@@ -14,7 +14,7 @@
     <MCR.AppName>mir</MCR.AppName>
     <MCR.Home.Integration>${project.build.directory}/mycore-home</MCR.Home.Integration>
     <jetty.version>9.1.1.v20140108</jetty.version>
-    <selenium.port>9101</selenium.port>
+    <selenium.version>2.39.0</selenium.version>
     <jetty.port>9102</jetty.port>
     <jetty.stop.port>9103</jetty.stop.port>
     <solr.home>${MCR.Home.Integration}/solr-home</solr.home>
@@ -300,32 +300,32 @@
           </execution>
         </executions>
       </plugin>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>selenium-maven-plugin</artifactId>
-        <version>2.3</version>
-        <executions>
-          <execution>
-            <id>selenium-start</id>
-            <phase>pre-integration-test</phase>
-            <goals>
-              <goal>start-server</goal>
-            </goals>
-          </execution>
-          <execution>
-            <id>selenium-stop</id>
-            <goals>
-              <goal>stop-server</goal>
-            </goals>
-            <phase>post-integration-test</phase>
-          </execution>
-        </executions>
-        <configuration>
-          <background>true</background>
-          <logOutput>true</logOutput>
-          <port>${selenium.port}</port>
-        </configuration>
-      </plugin>
+<!--       <plugin> -->
+<!--         <groupId>org.codehaus.mojo</groupId> -->
+<!--         <artifactId>selenium-maven-plugin</artifactId> -->
+<!--         <version>2.3</version> -->
+<!--         <executions> -->
+<!--           <execution> -->
+<!--             <id>selenium-start</id> -->
+<!--             <phase>pre-integration-test</phase> -->
+<!--             <goals> -->
+<!--               <goal>start-server</goal> -->
+<!--             </goals> -->
+<!--           </execution> -->
+<!--           <execution> -->
+<!--             <id>selenium-stop</id> -->
+<!--             <goals> -->
+<!--               <goal>stop-server</goal> -->
+<!--             </goals> -->
+<!--             <phase>post-integration-test</phase> -->
+<!--           </execution> -->
+<!--         </executions> -->
+<!--         <configuration> -->
+<!--           <background>true</background> -->
+<!--           <logOutput>true</logOutput> -->
+<!--           <port>${selenium.port}</port> -->
+<!--         </configuration> -->
+<!--       </plugin> -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-failsafe-plugin</artifactId>
@@ -396,14 +396,8 @@
     </dependency>
     <dependency>
       <groupId>org.seleniumhq.selenium</groupId>
-      <artifactId>selenium-java</artifactId>
-      <version>2.35.0</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.seleniumhq.selenium</groupId>
-      <artifactId>selenium-api</artifactId>
-      <version>2.35.0</version>
+      <artifactId>selenium-firefox-driver</artifactId>
+      <version>${selenium.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
