@@ -2,7 +2,8 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xlink="http://www.w3.org/1999/xlink"
   xmlns:basket="xalan://org.mycore.frontend.basket.MCRBasketManager" xmlns:mcr="http://www.mycore.org/" xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
   xmlns:actionmapping="xalan://org.mycore.wfc.actionmapping.MCRURLRetriever" xmlns:mcrver="xalan://org.mycore.common.MCRCoreVersion"
-  xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions" exclude-result-prefixes="xlink basket actionmapping mcr mcrver mcrxsl i18n">
+  xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions" xmlns:layoutUtils="xalan:///org.mycore.frontend.MCRLayoutUtilities"
+  exclude-result-prefixes="layoutUtils xlink basket actionmapping mcr mcrver mcrxsl i18n">
   <xsl:strip-space elements="*" />
   <xsl:param name="CurrentLang" select="'de'" />
   <xsl:param name="CurrentUser" />
@@ -14,9 +15,25 @@
   <xsl:param name="resultListEditorID" />
   <xsl:param name="page" />
   <xsl:param name="breadCrumb" />
-  <xsl:include href="layout-utils.xsl"/>
+  <xsl:include href="layout-utils.xsl" />
   <xsl:variable name="loaded_navigation_xml" select="document('webapp:config/navigation.xml')/navigation" />
-  
+  <xsl:variable name="browserAddress">
+    <xsl:call-template name="getBrowserAddress" />
+  </xsl:variable>
+  <xsl:variable name="whiteList">
+    <xsl:call-template name="get.whiteList" />
+  </xsl:variable>
+  <xsl:variable name="readAccess">
+    <xsl:choose>
+      <xsl:when test="starts-with($RequestURL, $whiteList)">
+        <xsl:value-of select="'true'" />
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:copy-of select="layoutUtils:readAccess($browserAddress)" />
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:variable>
+
   <xsl:template name="mir.loginMenu">
     <xsl:variable xmlns:encoder="xalan://java.net.URLEncoder" name="loginURL"
       select="concat( $ServletsBaseURL, 'MCRLoginServlet',$HttpSession,'?url=', encoder:encode( string( $RequestURL ) ) )" />
