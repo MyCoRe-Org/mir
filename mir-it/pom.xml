@@ -9,11 +9,12 @@
   <artifactId>mir-it</artifactId>
   <name>MIR: Integration Tests</name>
   <description>combines all modules and runs integration tests</description>
-  <packaging>pom</packaging>
+  <packaging>jar</packaging>
   <properties>
     <MCR.AppName>mir</MCR.AppName>
     <MCR.Home.Integration>${project.build.directory}/mycore-home</MCR.Home.Integration>
     <jetty.version>9.1.1.v20140108</jetty.version>
+    <selenium.port>9101</selenium.port>
     <jetty.port>9102</jetty.port>
     <jetty.stop.port>9103</jetty.stop.port>
     <solr.home>${MCR.Home.Integration}/solr-home</solr.home>
@@ -299,7 +300,54 @@
           </execution>
         </executions>
       </plugin>
-
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>selenium-maven-plugin</artifactId>
+        <version>2.3</version>
+        <executions>
+          <execution>
+            <id>selenium-start</id>
+            <phase>pre-integration-test</phase>
+            <goals>
+              <goal>start-server</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>selenium-stop</id>
+            <goals>
+              <goal>stop-server</goal>
+            </goals>
+            <phase>post-integration-test</phase>
+          </execution>
+        </executions>
+        <configuration>
+          <background>true</background>
+          <logOutput>true</logOutput>
+          <port>${selenium.port}</port>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-failsafe-plugin</artifactId>
+        <version>2.15</version>
+        <executions>
+          <execution>
+            <phase>integration-test</phase>
+            <goals>
+              <goal>integration-test</goal>
+              <goal>verify</goal>
+            </goals>
+            <configuration>
+              <systemPropertyVariables>
+                <project.build.directory>${project.build.directory}</project.build.directory>
+                <it.port>${jetty.port}</it.port>
+                <it.context>${MCR.AppName}</it.context>
+                <selenium.port>${selenium.port}</selenium.port>
+              </systemPropertyVariables>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
     <pluginManagement>
       <plugins>
@@ -344,6 +392,23 @@
       <artifactId>mir-webapp</artifactId>
       <version>${project.version}</version>
       <type>war</type>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.seleniumhq.selenium</groupId>
+      <artifactId>selenium-java</artifactId>
+      <version>2.35.0</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.seleniumhq.selenium</groupId>
+      <artifactId>selenium-api</artifactId>
+      <version>2.35.0</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
       <scope>test</scope>
     </dependency>
   </dependencies>
