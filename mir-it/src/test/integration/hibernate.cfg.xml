@@ -5,12 +5,11 @@
 
 <hibernate-configuration>
   <session-factory>
-    <property name="connection.driver_class">org.hsqldb.jdbcDriver</property>
-    <property name="connection.url">jdbc:hsqldb:file:${MCR.Home.Integration}/${MCR.AppName}/data/hsqldb/mir</property>
+    <property name="connection.driver_class">org.h2.Driver</property>
+    <property name="connection.url">jdbc:h2:${MCR.Home.Integration}/${MCR.AppName}/data/h2/mir</property>
     <property name="connection.username">sa</property>
     <property name="connection.password"></property>
-    <property name="dialect">org.hibernate.dialect.HSQLDialect</property>
-    <property name="current_session_context_class">thread</property>
+    <property name="dialect">org.hibernate.dialect.H2Dialect</property>
     <property name="cache.use_second_level_cache">false</property>
     <property name="cache.use_query_cache">false</property>
     <property name="current_session_context_class">org.mycore.backend.hibernate.MCRSessionContext</property>
