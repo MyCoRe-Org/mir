@@ -23,7 +23,8 @@
 
 package org.mycore.mir.it;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -52,7 +53,8 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 
 /**
  * @author Thomas Scheffler (yagee)
- *
+ * Before doing integration test <a href="https://code.google.com/p/selenium/issues/detail?id=6950">selenium issue #6950</a>
+ * has to be fixed.
  */
 public class MIRBaseITCase {
 
@@ -156,9 +158,37 @@ public class MIRBaseITCase {
             .matches("^[\\s\\S]*Zugriff verweigert[\\s\\S]*$"));
     }
 
+    @Test
+    public void logOnLogOff() {
+        driver.get(startURL + "/content/main/index.xml");
+        loginAs("administrator", "alleswirdgut");
+        logOff();
+    }
+
+    public void logOff() {
+        driver.findElement(By.xpath("//a[@id='currentUser']")).click();
+        driver.findElement(By.partialLinkText("Abmelden".toUpperCase())).click();
+        assertEquals("Anmelden".toUpperCase(), driver.findElement(By.id("loginURL")).getText());
+    }
+
+    public void loginAs(String user, String password) {
+        driver.findElement(By.id("loginURL")).click();
+        assertEquals("Anmelden mit lokaler Nutzerkennung", driver.getTitle());
+        driver.findElement(By.name("uid")).clear();
+        driver.findElement(By.name("uid")).sendKeys(user);
+        driver.findElement(By.name("pwd")).clear();
+        driver.findElement(By.name("pwd")).sendKeys(password);
+        driver.findElement(By.name("LoginSubmit")).click();
+        assertEquals(user.toLowerCase(), driver.findElement(By.xpath("//a[@id='currentUser']")).getText().toLowerCase());
+    }
+
     @AfterClass
     public static void tearDownClass() {
         driver.quit();
+    }
+
+    protected boolean isElementPresent(By by) {
+        return !driver.findElements(by).isEmpty();
     }
 
 }

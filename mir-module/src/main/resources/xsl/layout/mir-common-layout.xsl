@@ -40,14 +40,14 @@
     <xsl:choose>
       <xsl:when test="mcrxsl:isCurrentUserGuestUser()">
         <li class="active">
-          <a href="{$loginURL}">
+          <a id="loginURL" href="{$loginURL}">
             <xsl:value-of select="i18n:translate('component.userlogin.button.login')" />
           </a>
         </li>
       </xsl:when>
       <xsl:otherwise>
         <li class="active dropdown">
-          <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+          <a id="currentUser" class="dropdown-toggle" data-toggle="dropdown" href="#">
             <strong>
               <xsl:value-of select="$CurrentUser" />
             </strong>
@@ -239,7 +239,7 @@
             <xsl:call-template name="mir.basketMenu" />
             <xsl:call-template name="mir.searchMenu" />
           </ul>
-          <ul class="nav navbar-nav navbar-right">
+          <ul id="userMenu" class="nav navbar-nav navbar-right">
             <xsl:call-template name="mir.loginMenu" />
           </ul>
         </div><!-- /nav-collapse -->
