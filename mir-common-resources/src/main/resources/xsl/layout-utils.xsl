@@ -6,8 +6,14 @@
   <xsl:param name="ServletsBaseURL" />
   <xsl:param name="RequestURL" />
   <xsl:param name="HttpSession" />
+  <xsl:param name="JSessionID" />
+  <xsl:param name="CurrentUser" />
+  <!-- TODO: remove $wcms.useTargets,$objectHost, $template, printMetaDate, derivateLink and maybe others -->
   <xsl:param name="objectHost" select="'local'" />
+  <xsl:param name="wcms.useTargets" />
+  <xsl:param name="template" select="template_mir" />
   <xsl:include href="coreFunctions.xsl" />
+  <xsl:include href="xslInclude:components" />
   <!-- website write protected ? -->
   <xsl:variable name="writeProtectedWebsite" select="not(mcrxsl:isCurrentUserGuestUser()) and websiteWriteProtection:isActive()" />
   <xsl:template name="printNotLoggedIn">
@@ -336,6 +342,143 @@
       <xsl:value-of select="bis" />
       <xsl:text> )</xsl:text>
     </xsl:for-each>
+  </xsl:template>
+  <xsl:template name="printMetaDate">
+    <!-- prints a table row for a given nodeset -->
+    <xsl:param name="nodes"/>
+    <xsl:param name="label" select="local-name($nodes[1])"/>
+    <xsl:if test="$nodes">
+      <tr>
+        <td valign="top" class="metaname">
+          <xsl:value-of select="concat($label,':')"/>
+        </td>
+        <td class="metavalue">
+          <xsl:variable name="selectPresentLang">
+            <xsl:call-template name="selectPresentLang">
+              <xsl:with-param name="nodes" select="$nodes"/>
+            </xsl:call-template>
+          </xsl:variable>
+          <xsl:for-each select="$nodes">
+            <xsl:choose>
+              <xsl:when test="../@class='MCRMetaClassification'">
+                <xsl:call-template name="printClass">
+                  <xsl:with-param name="nodes" select="."/>
+                  <xsl:with-param name="host" select="$objectHost"/>
+                  <xsl:with-param name="next" select="'&lt;br /&gt;'"/>
+                </xsl:call-template>
+                <xsl:call-template name="printClassInfo">
+                  <xsl:with-param name="nodes" select="."/>
+                  <xsl:with-param name="host" select="$objectHost"/>
+                  <xsl:with-param name="next" select="'&lt;br /&gt;'"/>
+                </xsl:call-template>
+              </xsl:when>
+              <xsl:when test="../@class='MCRMetaISO8601Date'">
+                <xsl:variable name="format">
+                  <xsl:choose>
+                    <xsl:when test="string-length(normalize-space(.))=4">
+                      <xsl:value-of select="i18n:translate('metaData.dateYear')"/>
+                    </xsl:when>
+                    <xsl:when test="string-length(normalize-space(.))=7">
+                      <xsl:value-of select="i18n:translate('metaData.dateYearMonth')"/>
+                    </xsl:when>
+                    <xsl:when test="string-length(normalize-space(.))=10">
+                      <xsl:value-of select="i18n:translate('metaData.dateYearMonthDay')"/>
+                    </xsl:when>
+                    <xsl:otherwise>
+                      <xsl:value-of select="i18n:translate('metaData.dateTime')"/>
+                    </xsl:otherwise>
+                  </xsl:choose>
+                </xsl:variable>
+                <xsl:call-template name="formatISODate">
+                  <xsl:with-param name="date" select="."/>
+                  <xsl:with-param name="format" select="$format"/>
+                </xsl:call-template>
+              </xsl:when>
+              <xsl:when test="../@class='MCRMetaHistoryDate'">
+                <xsl:if test="not(@xml:lang) or @xml:lang=$selectPresentLang">
+                  <xsl:call-template name="printHistoryDate">
+                    <xsl:with-param name="nodes" select="."/>
+                    <xsl:with-param name="next" select="', '"/>
+                  </xsl:call-template>
+                </xsl:if>
+              </xsl:when>
+              <xsl:when test="../@class='MCRMetaLinkID'">
+                <xsl:call-template name="objectLink">
+                  <xsl:with-param name="obj_id" select="@xlink:href"/>
+                </xsl:call-template>
+              </xsl:when>
+              <xsl:when test="@class='MCRMetaDerivateLink'">
+                <xsl:call-template name="derivateLink"/>
+              </xsl:when>
+              <xsl:when test="../@class='MCRMetaLink'">
+                <xsl:call-template name="webLink">
+                  <xsl:with-param name="nodes" select="$nodes"/>
+                  <xsl:with-param name="next" select="'&lt;br /&gt;'"/>
+                </xsl:call-template>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:if test="not(@xml:lang) or @xml:lang=$selectPresentLang">
+                  <xsl:call-template name="printI18N">
+                    <xsl:with-param name="nodes" select="."/>
+                    <xsl:with-param name="host" select="$objectHost"/>
+                    <xsl:with-param name="next" select="'&lt;br /&gt;'"/>
+                  </xsl:call-template>
+                </xsl:if>
+              </xsl:otherwise>
+            </xsl:choose>
+            <xsl:if test="position()!=last()">
+              <br/>
+            </xsl:if>
+          </xsl:for-each>
+        </td>
+      </tr>
+    </xsl:if>
+  </xsl:template>
+  <!-- ******************************************************** -->
+  <!-- * Derivate Link                                        * -->
+  <!-- ******************************************************** -->
+  <xsl:template name="derivateLink">
+    <xsl:param name="staticURL" />
+
+    <xsl:if test="$objectHost != 'local'">
+      <a href="{$staticURL}">nur auf original Server</a>
+    </xsl:if>
+    <xsl:if test="$objectHost = 'local'">
+      <xsl:for-each select="derivateLink">
+        <xsl:variable select="substring-before(@xlink:href, '/')" name="deriv" />
+        <xsl:variable name="derivateWithURN" select="mcrxsl:hasURNDefined(@xlink:href)" />
+        <xsl:choose>
+          <xsl:when test="acl:checkPermissionForReadingDerivate($deriv)">
+            <xsl:variable name="firstSupportedFile" select="concat('/', substring-after(@xlink:href, '/'))" />
+            <table cellpadding="0" cellspacing="0" border="0" width="100%">
+              <tr>
+                <xsl:if test="annotation">
+                  <xsl:value-of select="annotation" />
+                  <br />
+                </xsl:if>
+              </tr>
+              <tr>
+                <td valign="top" align="left">
+                  <!-- MCR-IView ..start -->
+                  <xsl:call-template name="derivateLinkView">
+                    <xsl:with-param name="derivateID" select="$deriv" />
+                    <xsl:with-param name="file" select="$firstSupportedFile" />
+                  </xsl:call-template>
+                  <!-- MCR - IView ..end -->
+                </td>
+              </tr>
+            </table>
+          </xsl:when>
+          <xsl:otherwise>
+            <p>
+              <!-- Zugriff auf 'Abbildung' gesperrt -->
+              <xsl:variable select="substring-before(substring-after(/@ID,'_'),'_')" name="type" />
+              <xsl:value-of select="i18n:translate('metaData.derivateLocked',i18n:translate(concat('metaData.',$type,'.[derivates]')))" />
+            </p>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:for-each>
+    </xsl:if>
   </xsl:template>
 
 </xsl:stylesheet>
