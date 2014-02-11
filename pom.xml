@@ -4,7 +4,7 @@
   <parent>
     <groupId>org.mycore</groupId>
     <artifactId>mycore</artifactId>
-    <version>2014.02-SNAPSHOT</version>
+    <version>2014.03-SNAPSHOT</version>
   </parent>
   <groupId>org.mycore.mir</groupId>
   <artifactId>mir-parent</artifactId>
@@ -14,7 +14,7 @@
   <description>MyCoRe/MODS Institutional Repository</description>
   <inceptionYear>2013</inceptionYear>
   <properties>
-    <mycore.version>2014.02-SNAPSHOT</mycore.version>
+    <mycore.version>2014.03-SNAPSHOT</mycore.version>
     <jetty.version>9.1.1.v20140108</jetty.version>
     <tomcat7.version>2.2</tomcat7.version>
     <cargo.servlet.uriencoding>UTF-8</cargo.servlet.uriencoding>
@@ -262,10 +262,6 @@
           <exclusion>
             <groupId>org.mycore</groupId>
             <artifactId>mycore-swf</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>org.mycore</groupId>
-            <artifactId>mycore-acl-editor</artifactId>
           </exclusion>
           <exclusion>
             <groupId>org.mycore</groupId>
