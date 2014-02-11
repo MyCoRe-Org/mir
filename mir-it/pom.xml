@@ -17,6 +17,7 @@
     <selenium.version>2.39.0</selenium.version>
     <jetty.port>9102</jetty.port>
     <jetty.stop.port>9103</jetty.stop.port>
+    <solr.version>4.6.1-SNAPSHOT</solr.version>
     <solr.home>${MCR.Home.Integration}/solr-home</solr.home>
   </properties>
   <profiles>
@@ -78,25 +79,8 @@
         </executions>
       </plugin>
       <plugin>
-        <artifactId>maven-invoker-plugin</artifactId>
-        <version>1.8</version>
-        <configuration>
-          <cloneProjectsTo>${project.build.directory}/it</cloneProjectsTo>
-        </configuration>
-        <executions>
-          <execution>
-            <id>integration-test</id>
-            <phase>pre-integration-test</phase>
-            <goals>
-              <goal>run</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-dependency-plugin</artifactId>
-        <version>2.8</version>
         <executions>
           <execution>
             <id>unpack-cli</id>
@@ -146,6 +130,13 @@
                   <version>${project.version}</version>
                   <type>war</type>
                   <destFileName>mir.war</destFileName>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.mycore.solr</groupId>
+                  <artifactId>solr</artifactId>
+                  <version>${solr.version}</version>
+                  <type>war</type>
+                  <destFileName>solr.war</destFileName>
                 </artifactItem>
               </artifactItems>
               <outputDirectory>${project.build.directory}/war</outputDirectory>
@@ -236,7 +227,6 @@
       <plugin>
         <groupId>org.eclipse.jetty</groupId>
         <artifactId>jetty-maven-plugin</artifactId>
-        <version>${jetty.version}</version>
         <configuration>
           <scanIntervalSeconds>10</scanIntervalSeconds>
           <stopKey>foo</stopKey>
@@ -244,7 +234,7 @@
           <stopWait>60</stopWait>
           <contextHandlers>
             <contextHandler implementation="org.eclipse.jetty.webapp.WebAppContext">
-              <war>${project.build.directory}/it/solr/target/solr.war</war>
+              <war>${project.build.directory}/war/solr.war</war>
               <contextPath>/solr</contextPath>
             </contextHandler>
             <contextHandler implementation="org.eclipse.jetty.webapp.WebAppContext">
