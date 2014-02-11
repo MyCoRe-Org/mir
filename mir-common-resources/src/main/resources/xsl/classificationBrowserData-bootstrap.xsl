@@ -15,9 +15,9 @@
   <xsl:output method="xml" omit-xml-declaration="yes" />
 
   <xsl:template match="/classificationBrowserData">
-    <xsl:variable name="folder.closed" select="'icon-plus-sign'" />
-    <xsl:variable name="folder.open" select="'icon-minus-sign'" />
-    <xsl:variable name="folder.leaf" select="'icon-check-empty'" />
+    <xsl:variable name="folder.closed" select="'fa fa-plus-square-o'" />
+    <xsl:variable name="folder.open" select="'fa fa-minus-square-o'" />
+    <xsl:variable name="folder.leaf" select="'fa fa-square-o'" />
     <xsl:variable name="maxLinks">
       <xsl:value-of select="category[not(@numLinks &lt; following-sibling::category/@numLinks)]/@numLinks" />
     </xsl:variable>
