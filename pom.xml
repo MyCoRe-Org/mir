@@ -16,7 +16,8 @@
   <properties>
     <mycore.version>2014.03-SNAPSHOT</mycore.version>
     <jetty.version>9.1.1.v20140108</jetty.version>
-    <tomcat7.version>2.2</tomcat7.version>
+    <tomcat7.version>7.0.52</tomcat7.version>
+    <tomcat8.version>8.0.3</tomcat8.version>
     <cargo.version>1.4.7</cargo.version>
     <cargo.servlet.uriencoding>UTF-8</cargo.servlet.uriencoding>
     <cargo.container.zipUrlInstaller.downloadDir>${settings.localRepository}/../cargo/containers</cargo.container.zipUrlInstaller.downloadDir>
@@ -111,11 +112,6 @@
           <groupId>org.eclipse.jetty</groupId>
           <artifactId>jetty-maven-plugin</artifactId>
           <version>${jetty.version}</version>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.tomcat.maven</groupId>
-          <artifactId>tomcat7-maven-plugin</artifactId>
-          <version>${tomcat7.version}</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
@@ -287,7 +283,7 @@
                 <container>
                   <containerId>${cargo.container}</containerId>
                   <zipUrlInstaller>
-                    <url>http://ftp.fau.de/apache/tomcat/tomcat-7/v${tomcat.version}/bin/apache-tomcat-${tomcat.version}.tar.gz</url>
+                    <url>http://ftp.fau.de/apache/tomcat/tomcat-${tomcat}/v${tomcat.version}/bin/apache-tomcat-${tomcat.version}.tar.gz</url>
                     <downloadDir>${cargo.container.zipUrlInstaller.downloadDir}</downloadDir>
                   </zipUrlInstaller>
                 </container>
@@ -314,7 +310,7 @@
         </property>
       </activation>
       <properties>
-        <tomcat.version>7.0.50</tomcat.version>
+        <tomcat.version>${tomcat7.version}</tomcat.version>
       </properties>
     </profile>
     <profile>
@@ -326,7 +322,7 @@
         </property>
       </activation>
       <properties>
-        <tomcat.version>8.0.1</tomcat.version>
+        <tomcat.version>${tomcat8.version}</tomcat.version>
       </properties>
     </profile>
   </profiles>
