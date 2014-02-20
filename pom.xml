@@ -15,7 +15,7 @@
   <inceptionYear>2013</inceptionYear>
   <properties>
     <mycore.version>2014.03-SNAPSHOT</mycore.version>
-    <jetty.version>9.1.1.v20140108</jetty.version>
+    <jetty.version>9.1.2.v20140210</jetty.version>
     <tomcat7.version>7.0.52</tomcat7.version>
     <tomcat8.version>8.0.3</tomcat8.version>
     <cargo.version>1.4.7</cargo.version>
@@ -25,6 +25,7 @@
     <cargo.deployable.default.artifactId>${project.artifactId}</cargo.deployable.default.artifactId>
     <cargo.deployable.default.context>/</cargo.deployable.default.context>
     <cargo.servlet.port>8291</cargo.servlet.port>
+    <cargo.tomcat.ajp.port>8292</cargo.tomcat.ajp.port>
     <cargo.debug.address>8295</cargo.debug.address>
     <cargo.debug.suspend>n</cargo.debug.suspend>
     <site.suffix />
@@ -245,8 +246,6 @@
                 <configuration>
                   <properties>
                     <cargo.servlet.port>${cargo.servlet.port}</cargo.servlet.port>
-                    <cargo.debug.adress>${cargo.debug.adress}</cargo.debug.adress>
-                    <cargo.debug.suspend>${cargo.debug.suspend}</cargo.debug.suspend>
                   </properties>
                   <xmlReplacements>
                     <xmlReplacement>
@@ -291,8 +290,8 @@
                 <configuration>
                   <properties>
                     <cargo.servlet.port>${cargo.servlet.port}</cargo.servlet.port>
-                    <cargo.debug.adress>${cargo.debug.adress}</cargo.debug.adress>
-                    <cargo.debug.suspend>${cargo.debug.suspend}</cargo.debug.suspend>
+                    <cargo.tomcat.ajp.port>${cargo.tomcat.ajp.port}</cargo.tomcat.ajp.port>
+                    <cargo.servlet.uriencoding>${cargo.servlet.uriencoding}</cargo.servlet.uriencoding>
                   </properties>
                 </configuration>
               </configuration>
