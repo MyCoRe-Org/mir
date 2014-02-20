@@ -24,7 +24,6 @@
     <cargo.deployable.default.artifactId>${project.artifactId}</cargo.deployable.default.artifactId>
     <cargo.deployable.default.context>/</cargo.deployable.default.context>
     <cargo.servlet.port>8291</cargo.servlet.port>
-    <cargo.servlet.stop.port>8293</cargo.servlet.stop.port>
     <cargo.debug.address>8295</cargo.debug.address>
     <cargo.debug.suspend>n</cargo.debug.suspend>
     <site.suffix />

@@ -13,12 +13,15 @@
   <properties>
     <MCR.AppName>mir</MCR.AppName>
     <MCR.Home.Integration>${project.build.directory}/mycore-home</MCR.Home.Integration>
-    <jetty.version>9.1.1.v20140108</jetty.version>
     <selenium.version>2.39.0</selenium.version>
-    <jetty.port>9102</jetty.port>
-    <jetty.stop.port>9103</jetty.stop.port>
+    <cargo.servlet.port>9102</cargo.servlet.port>
     <solr.version>4.6.1-SNAPSHOT</solr.version>
     <solr.home>${MCR.Home.Integration}/solr-home</solr.home>
+    <cargo.jvmargs>
+      -DMCR.Home=${MCR.Home.Integration}
+      -DMCR.AppName=${MCR.AppName}
+      -Dsolr.solr.home=${solr.home}
+    </cargo.jvmargs>
   </properties>
   <profiles>
     <profile>
@@ -225,68 +228,43 @@
         </configuration>
       </plugin>
       <plugin>
-        <groupId>org.eclipse.jetty</groupId>
-        <artifactId>jetty-maven-plugin</artifactId>
-        <configuration>
-          <scanIntervalSeconds>10</scanIntervalSeconds>
-          <stopKey>foo</stopKey>
-          <stopPort>${jetty.stop.port}</stopPort>
-          <stopWait>60</stopWait>
-          <contextHandlers>
-            <contextHandler implementation="org.eclipse.jetty.webapp.WebAppContext">
-              <war>${project.build.directory}/war/solr.war</war>
-              <contextPath>/solr</contextPath>
-            </contextHandler>
-            <contextHandler implementation="org.eclipse.jetty.webapp.WebAppContext">
-              <war>${project.build.directory}/war/mir.war</war>
-              <contextPath>/mir</contextPath>
-            </contextHandler>
-          </contextHandlers>
-          <loginServices>
-            <loginService implementation="org.eclipse.jetty.security.HashLoginService">
-              <name>Restricted</name>
-              <config>${basedir}/src/etc/jetty-realm.properties</config>
-            </loginService>
-          </loginServices>
-          <webApp>
-            <tempDirectory>${project.build.directory}/war/tmp</tempDirectory>
-          </webApp>
-          <systemProperties>
-            <systemProperty>
-              <name>com.sun.management.jmxremote</name>
-            </systemProperty>
-            <systemProperty>
-              <name>MCR.Home</name>
-              <value>${MCR.Home.Integration}</value>
-            </systemProperty>
-            <systemProperty>
-              <name>MCR.AppName</name>
-              <value>${MCR.AppName}</value>
-            </systemProperty>
-            <systemProperty>
-              <name>solr.solr.home</name>
-              <value>${solr.home}</value>
-            </systemProperty>
-            <systemProperty>
-              <name>jetty.port</name>
-              <value>${jetty.port}</value>
-            </systemProperty>
-          </systemProperties>
-        </configuration>
+        <groupId>org.codehaus.cargo</groupId>
+        <artifactId>cargo-maven2-plugin</artifactId>
         <executions>
           <execution>
-            <id>start-jetty</id>
+            <id>start-container</id>
             <phase>pre-integration-test</phase>
             <goals>
-              <goal>run</goal>
+              <goal>start</goal>
             </goals>
             <configuration>
-              <scanIntervalSeconds>0</scanIntervalSeconds>
-              <daemon>true</daemon>
+              <deployables>
+                <deployable>
+                  <groupId>org.mycore.solr</groupId>
+                  <artifactId>solr</artifactId>
+                  <type>war</type>
+                  <properties>
+                    <context>/solr</context>
+                  </properties>
+                </deployable>
+                <deployable>
+                  <groupId>${project.groupId}</groupId>
+                  <artifactId>mir-webapp</artifactId>
+                  <type>war</type>
+                  <properties>
+                    <context>/${MCR.AppName}</context>
+                  </properties>
+                </deployable>
+              </deployables>
+              <configuration>
+                <properties>
+                  <cargo.jvmargs>${cargo.jvmargs}</cargo.jvmargs>
+                </properties>
+              </configuration>
             </configuration>
           </execution>
           <execution>
-            <id>stop-jetty</id>
+            <id>stop-container</id>
             <phase>post-integration-test</phase>
             <goals>
               <goal>stop</goal>
@@ -301,9 +279,8 @@
         <configuration>
           <systemPropertyVariables>
             <project.build.directory>${project.build.directory}</project.build.directory>
-            <it.port>${jetty.port}</it.port>
+            <it.port>${cargo.servlet.port}</it.port>
             <it.context>${MCR.AppName}</it.context>
-            <selenium.port>${selenium.port}</selenium.port>
           </systemPropertyVariables>
         </configuration>
         <executions>
@@ -364,6 +341,13 @@
       <groupId>${project.groupId}</groupId>
       <artifactId>mir-webapp</artifactId>
       <version>${project.version}</version>
+      <type>war</type>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.mycore.solr</groupId>
+      <artifactId>solr</artifactId>
+      <version>${solr.version}</version>
       <type>war</type>
       <scope>test</scope>
     </dependency>
