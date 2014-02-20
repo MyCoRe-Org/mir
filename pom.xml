@@ -17,11 +17,16 @@
     <mycore.version>2014.03-SNAPSHOT</mycore.version>
     <jetty.version>9.1.1.v20140108</jetty.version>
     <tomcat7.version>2.2</tomcat7.version>
+    <cargo.version>1.4.7</cargo.version>
     <cargo.servlet.uriencoding>UTF-8</cargo.servlet.uriencoding>
     <cargo.container.zipUrlInstaller.downloadDir>${settings.localRepository}/../cargo/containers</cargo.container.zipUrlInstaller.downloadDir>
     <cargo.deployable.default.groupId>${project.groupId}</cargo.deployable.default.groupId>
     <cargo.deployable.default.artifactId>${project.artifactId}</cargo.deployable.default.artifactId>
     <cargo.deployable.default.context>/</cargo.deployable.default.context>
+    <cargo.servlet.port>8291</cargo.servlet.port>
+    <cargo.servlet.stop.port>8293</cargo.servlet.stop.port>
+    <cargo.debug.address>8295</cargo.debug.address>
+    <cargo.debug.suspend>n</cargo.debug.suspend>
     <site.suffix />
   </properties>
   <url>http://www.mycore.de/generated/mir${site.suffix}</url>
@@ -123,23 +128,6 @@
           <artifactId>maven-assembly-plugin</artifactId>
           <version>2.4</version>
         </plugin>
-        <plugin>
-          <groupId>org.codehaus.cargo</groupId>
-          <artifactId>cargo-maven2-plugin</artifactId>
-          <version>1.4.7</version>
-          <configuration>
-            <deployables>
-              <deployable>
-                <groupId>${cargo.deployable.default.groupId}</groupId>
-                <artifactId>${cargo.deployable.default.artifactId}</artifactId>
-                <type>WAR</type>
-                <properties>
-                  <context>${cargo.deployable.default.context}</context>
-                </properties>
-              </deployable>
-            </deployables>
-          </configuration>
-        </plugin>
         <!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
         <plugin>
           <groupId>org.eclipse.m2e</groupId>
@@ -234,20 +222,106 @@
       </properties>
     </profile>
     <profile>
+      <id>jetty</id>
+      <activation>
+        <property>
+          <name>jetty</name>
+        </property>
+      </activation>
+      <build>
+        <pluginManagement>
+          <plugins>
+            <plugin>
+              <groupId>org.codehaus.cargo</groupId>
+              <artifactId>cargo-maven2-plugin</artifactId>
+              <version>${cargo.version}</version>
+              <configuration>
+                <container>
+                  <containerId>jetty9x</containerId>
+                  <artifactInstaller>
+                    <groupId>org.eclipse.jetty</groupId>
+                    <artifactId>jetty-distribution</artifactId>
+                    <version>${jetty.version}</version>
+                  </artifactInstaller>
+                </container>
+                <configuration>
+                  <properties>
+                    <cargo.servlet.port>${cargo.servlet.port}</cargo.servlet.port>
+                    <cargo.debug.adress>${cargo.debug.adress}</cargo.debug.adress>
+                    <cargo.debug.suspend>${cargo.debug.suspend}</cargo.debug.suspend>
+                  </properties>
+                  <xmlReplacements>
+                    <xmlReplacement>
+                      <file>etc/jetty-logging.xml</file>
+                      <xpathExpression>/Configure</xpathExpression>
+                      <value>&lt;!-- disabled --&gt;</value>
+                    </xmlReplacement>
+                  </xmlReplacements>
+                </configuration>
+              </configuration>
+            </plugin>
+          </plugins>
+        </pluginManagement>
+      </build>
+    </profile>
+    <profile>
+      <id>tomcat</id>
+      <activation>
+        <property>
+          <name>tomcat</name>
+        </property>
+      </activation>
+      <build>
+        <pluginManagement>
+          <plugins>
+            <plugin>
+              <groupId>org.codehaus.cargo</groupId>
+              <artifactId>cargo-maven2-plugin</artifactId>
+              <version>${cargo.version}</version>
+              <configuration>
+                <container>
+                  <containerId>tomcat${tomcat}x</containerId>
+                  <zipUrlInstaller>
+                    <url>http://ftp.fau.de/apache/tomcat/tomcat-7/v${tomcat.version}/bin/apache-tomcat-${tomcat.version}.tar.gz</url>
+                    <downloadDir>${cargo.container.zipUrlInstaller.downloadDir}</downloadDir>
+                  </zipUrlInstaller>
+                </container>
+                <home>${project.build.directory}/catalina-base</home>
+                <configuration>
+                  <properties>
+                    <cargo.servlet.port>${cargo.servlet.port}</cargo.servlet.port>
+                    <cargo.debug.adress>${cargo.debug.adress}</cargo.debug.adress>
+                    <cargo.debug.suspend>${cargo.debug.suspend}</cargo.debug.suspend>
+                  </properties>
+                </configuration>
+              </configuration>
+            </plugin>
+          </plugins>
+        </pluginManagement>
+      </build>
+    </profile>
+    <profile>
       <id>tomcat7</id>
+      <activation>
+        <property>
+          <name>tomcat</name>
+          <value>7</value>
+        </property>
+      </activation>
       <properties>
         <tomcat.version>7.0.50</tomcat.version>
-        <cargo.maven.containerId>tomcat7x</cargo.maven.containerId>
-        <cargo.maven.containerUrl>http://ftp.fau.de/apache/tomcat/tomcat-7/v${tomcat.version}/bin/apache-tomcat-${tomcat.version}.tar.gz</cargo.maven.containerUrl>
       </properties>
     </profile>
     <profile>
       <id>tomcat8</id>
+      <activation>
+        <property>
+          <name>tomcat</name>
+          <value>8</value>
+        </property>
+      </activation>
       <properties>
         <tomcat.version>8.0.1</tomcat.version>
-        <cargo.maven.containerId>tomcat8x</cargo.maven.containerId>
-        <cargo.maven.containerUrl2>http://ftp.fau.de/apache/tomcat/tomcat-8/v${tomcat.version}/bin/apache-tomcat-${tomcat.version}.tar.gz</cargo.maven.containerUrl2>
-        <cargo.maven.containerUrl>file:///home/thosch/temp/tomcat-trunk/output/release/v8.0.3-dev/bin/apache-tomcat-8.0.3-dev.zip</cargo.maven.containerUrl>
       </properties>
     </profile>
   </profiles>
