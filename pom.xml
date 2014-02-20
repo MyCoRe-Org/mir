@@ -227,6 +227,9 @@
           <name>jetty</name>
         </property>
       </activation>
+      <properties>
+        <cargo.container>jetty9x</cargo.container>
+      </properties>
       <build>
         <pluginManagement>
           <plugins>
@@ -236,7 +239,7 @@
               <version>${cargo.version}</version>
               <configuration>
                 <container>
-                  <containerId>jetty9x</containerId>
+                  <containerId>${cargo.container}</containerId>
                   <artifactInstaller>
                     <groupId>org.eclipse.jetty</groupId>
                     <artifactId>jetty-distribution</artifactId>
@@ -270,6 +273,9 @@
           <name>tomcat</name>
         </property>
       </activation>
+      <properties>
+        <cargo.container>tomcat${tomcat}x</cargo.container>
+      </properties>
       <build>
         <pluginManagement>
           <plugins>
@@ -279,7 +285,7 @@
               <version>${cargo.version}</version>
               <configuration>
                 <container>
-                  <containerId>tomcat${tomcat}x</containerId>
+                  <containerId>${cargo.container}</containerId>
                   <zipUrlInstaller>
                     <url>http://ftp.fau.de/apache/tomcat/tomcat-7/v${tomcat.version}/bin/apache-tomcat-${tomcat.version}.tar.gz</url>
                     <downloadDir>${cargo.container.zipUrlInstaller.downloadDir}</downloadDir>

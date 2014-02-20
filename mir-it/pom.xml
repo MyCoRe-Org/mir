@@ -277,6 +277,7 @@
         <artifactId>maven-failsafe-plugin</artifactId>
         <version>2.16</version>
         <configuration>
+          <reportsDirectory>${project.build.directory}/failsafe-reports/${cargo.container}</reportsDirectory>
           <systemPropertyVariables>
             <project.build.directory>${project.build.directory}</project.build.directory>
             <it.port>${cargo.servlet.port}</it.port>
