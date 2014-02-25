@@ -8,8 +8,7 @@
 <!-- ============================================== -->
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xlink="http://www.w3.org/1999/xlink"
-  xmlns:xalan="http://xml.apache.org/xalan" xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
-  exclude-result-prefixes="xlink xalan i18n">
+  xmlns:xalan="http://xml.apache.org/xalan" xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation" exclude-result-prefixes="xlink xalan i18n">
   &html-output;
   <xsl:include href="MyCoReLayout.xsl" />
   <xsl:include href="xslInclude:MyCoReWebPage" />
@@ -41,29 +40,14 @@
 
   <xsl:template match="/MyCoReWebPage">
     <xsl:choose>
+      <xsl:when test="section[@direction = $direction]">
+        <xsl:apply-templates select="section[@direction = $direction]" />
+      </xsl:when>
       <xsl:when test="section[lang($CurrentLang)]">
-        <xsl:for-each select="section">
-          <xsl:choose>
-            <xsl:when test="@direction = $direction">
-              <xsl:apply-templates select="self::*[@direction = $direction]" />
-            </xsl:when>
-            <xsl:when test="self::*[lang($CurrentLang) or lang('all') or contains(@alt,$CurrentLang)] != '' ">
-              <xsl:apply-templates select="self::*[lang($CurrentLang) or lang('all') or contains(@alt,$CurrentLang)]" />
-            </xsl:when>
-          </xsl:choose>
-        </xsl:for-each>
+        <xsl:apply-templates select="section[lang($CurrentLang) or lang('all') or contains(@alt,$CurrentLang)]" />
       </xsl:when>
       <xsl:otherwise>
-        <xsl:for-each select="section">
-          <xsl:choose>
-            <xsl:when test="@direction = $direction">
-              <xsl:apply-templates select="self::*[@direction = $direction]" />
-            </xsl:when>
-            <xsl:when test="self::*[lang($DefaultLang) or lang('all') or contains(@alt,$DefaultLang)] != '' ">
-              <xsl:apply-templates select="self::*[lang($DefaultLang) or lang('all') or contains(@alt,$DefaultLang)]" />
-            </xsl:when>
-          </xsl:choose>
-        </xsl:for-each>
+        <xsl:apply-templates select="section[lang($DefaultLang) or lang('all') or contains(@alt,$DefaultLang)]" />
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
@@ -71,8 +55,7 @@
   <!-- =============================================================================== -->
   <xsl:template match="selectBox">
     <xsl:if test="@classification">
-      <xsl:variable name="classDocument"
-        select="document(concat('xslStyle:items2options:classification:editor:-1:children:', @classification))" />
+      <xsl:variable name="classDocument" select="document(concat('xslStyle:items2options:classification:editor:-1:children:', @classification))" />
       <xsl:variable name="style">
         <xsl:choose>
           <xsl:when test="@style">
