@@ -45,6 +45,7 @@ import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
+import org.mycore.mir.it.selenium.MIRBy;
 import org.openqa.selenium.By;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
@@ -167,8 +168,8 @@ public class MIRBaseITCase {
 
     public void logOff() {
         driver.findElement(By.xpath("//a[@id='currentUser']")).click();
-        driver.findElement(By.partialLinkText("Abmelden".toUpperCase())).click();
-        assertEquals("Anmelden".toUpperCase(), driver.findElement(By.id("loginURL")).getText());
+        driver.findElement(MIRBy.partialLinkText("Abmelden")).click();
+        assertEqualsIgnoreCase("Anmelden", driver.findElement(By.id("loginURL")).getText());
     }
 
     public void loginAs(String user, String password) {
@@ -179,7 +180,15 @@ public class MIRBaseITCase {
         driver.findElement(By.name("pwd")).clear();
         driver.findElement(By.name("pwd")).sendKeys(password);
         driver.findElement(By.name("LoginSubmit")).click();
-        assertEquals(user.toLowerCase(), driver.findElement(By.xpath("//a[@id='currentUser']")).getText().toLowerCase());
+        assertEqualsIgnoreCase(user, driver.findElement(By.xpath("//a[@id='currentUser']")).getText());
+    }
+
+    protected void assertEqualsIgnoreCase(String expected, String actual) {
+        assertEqualsIgnoreCase(null, expected, actual);
+    }
+
+    protected void assertEqualsIgnoreCase(String message, String expected, String actual) {
+        assertEquals(message, expected.toLowerCase(), actual.toLowerCase());
     }
 
     @AfterClass
