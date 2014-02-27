@@ -17,7 +17,7 @@
   <!-- website write protected ? -->
   <xsl:variable name="writeProtectedWebsite" select="not(mcrxsl:isCurrentUserGuestUser()) and websiteWriteProtection:isActive()" />
   <xsl:template name="printNotLoggedIn">
-    <div class="alert alert-error">
+    <div class="alert alert-danger">
       <xsl:value-of select="i18n:translate('webpage.notLoggedIn')" disable-output-escaping="yes" />
     </div>
   </xsl:template>
