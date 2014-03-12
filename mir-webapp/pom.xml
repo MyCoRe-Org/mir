@@ -44,6 +44,18 @@
         <artifactId>maven-dependency-plugin</artifactId>
         <executions>
           <execution>
+            <id>analyze</id>
+            <configuration>
+              <usedDependencies>
+                <!-- used by this war -->
+                <useDependency>org.mycore.mir:mir-default-layout</useDependency>
+                <useDependency>org.mycore:mycore-meta</useDependency>
+                <useDependency>org.mycore.mir:mir-common-resources</useDependency>
+                <useDependency>org.mycore.mir:mir-module</useDependency>
+              </usedDependencies>
+            </configuration>
+          </execution>
+          <execution>
             <id>copy</id>
             <phase>compile</phase>
             <goals>

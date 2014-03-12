@@ -4,7 +4,7 @@
   <parent>
     <groupId>org.mycore</groupId>
     <artifactId>mycore</artifactId>
-    <version>2014.03-SNAPSHOT</version>
+    <version>2014.04-SNAPSHOT</version>
   </parent>
   <groupId>org.mycore.mir</groupId>
   <artifactId>mir-parent</artifactId>
@@ -14,7 +14,7 @@
   <description>MyCoRe/MODS Institutional Repository</description>
   <inceptionYear>2013</inceptionYear>
   <properties>
-    <mycore.version>2014.03-SNAPSHOT</mycore.version>
+    <mycore.version>2014.04-SNAPSHOT</mycore.version>
     <jetty.version>9.1.2.v20140210</jetty.version>
     <tomcat7.version>7.0.52</tomcat7.version>
     <tomcat8.version>8.0.3</tomcat8.version>
