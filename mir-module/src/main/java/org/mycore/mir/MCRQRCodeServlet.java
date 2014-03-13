@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import net.glxn.qrgen.QRCode;
 
+import org.apache.log4j.Logger;
 import org.mycore.common.content.MCRByteContent;
 import org.mycore.common.content.MCRContent;
 import org.mycore.frontend.servlets.MCRContentServlet;
@@ -21,7 +22,9 @@ import org.mycore.frontend.servlets.MCRContentServlet;
  */
 public class MCRQRCodeServlet extends MCRContentServlet {
 
-    private static final int CACHE_TIME = (int) TimeUnit.SECONDS.convert(1000L, TimeUnit.DAYS);
+    private static final long CACHE_TIME = TimeUnit.SECONDS.convert(1000L, TimeUnit.DAYS);
+
+    private static final Logger LOGGER = Logger.getLogger(MCRQRCodeServlet.class);
 
     @Override
     public MCRContent getContent(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -31,7 +34,8 @@ public class MCRQRCodeServlet extends MCRContentServlet {
         if (queryString != null) {
             url += '?' + queryString;
         }
-        byte[] byteArray = QRCode.from(url).stream().toByteArray();
+        LOGGER.info("Generating QR CODE: " + url);
+        byte[] byteArray = QRCode.from(url).withSize(100, 100).stream().toByteArray();
         MCRByteContent content = new MCRByteContent(byteArray);
         content.setMimeType("image/png");
         content.setLastModified(0);
