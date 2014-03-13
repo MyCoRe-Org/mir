@@ -59,6 +59,14 @@
       <artifactId>log4j</artifactId>
     </dependency>
     <dependency>
+      <groupId>net.glxn</groupId>
+      <artifactId>qrgen</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>javax.servlet-api</artifactId>
+    </dependency>
+    <dependency>
       <scope>provided</scope>
       <groupId>org.mycore</groupId>
       <artifactId>mycore-solr</artifactId>
