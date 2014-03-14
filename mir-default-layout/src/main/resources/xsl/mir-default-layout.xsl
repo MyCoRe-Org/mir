@@ -11,10 +11,10 @@
   <xsl:strip-space elements="*" />
   <xsl:include href="resource:xsl/layout/mir-common-layout.xsl"/>
   <!-- Various versions -->
-  <xsl:variable name="bootstrap.version" select="'3.0.3'" />
+  <xsl:variable name="bootstrap.version" select="'3.1.1'" />
   <xsl:variable name="bootswatch.version" select="$bootstrap.version" />
   <xsl:variable name="fontawesome.version" select="'4.0.3'" />
-  <xsl:variable name="jquery.version" select="'1.10.1'" />
+  <xsl:variable name="jquery.version" select="'1.11.0'" />
   <xsl:variable name="jquery.migrate.version" select="'1.2.1'" />
   <!-- End of various versions -->
   <xsl:variable name="PageTitle" select="/*/@title" />
@@ -32,6 +32,7 @@
         <link href="{$WebApplicationBaseURL}mir-default-layout/css/layout.css" rel="stylesheet" />
         <script type="text/javascript" src="//code.jquery.com/jquery-{$jquery.version}.min.js"></script>
         <script type="text/javascript" src="//code.jquery.com/jquery-migrate-{$jquery.migrate.version}.min.js"></script>
+        <xsl:copy-of select="head/*" />
       </head>
 
       <body>
@@ -45,8 +46,7 @@
               <xsl:call-template name="print.writeProtectionMessage" />
               <xsl:choose>
                 <xsl:when test="$readAccess='true'">
-        <!-- xsl:call-template name="getFastWCMS" / -->
-                  <xsl:copy-of select="*" />
+                  <xsl:copy-of select="*[not(name()='head')]" />
                 </xsl:when>
                 <xsl:otherwise>
                   <xsl:call-template name="printNotLoggedIn" />
