@@ -10,10 +10,11 @@
           <a href="{$WebApplicationBaseURL}" class="navtrail">Home</a>
         </li>
         <li>
-          <xsl:variable name="collectionType">
-            <xsl:apply-templates mode="mods.type" select="$mods" />
-          </xsl:variable>
-          <a href="{$WebApplicationBaseURL}collection/{$collectionType}" class="navtrail">Publications</a>
+          <xsl:call-template name="categorySearchLink">
+            <xsl:with-param name="class" select="'navtrail'" />
+            <xsl:with-param name="node" select="$mods/mods:genre[@type='intern']"/>
+            <xsl:with-param name="parent" select="true()" />
+          </xsl:call-template>
         </li>
         <li class="active">
           <xsl:variable name="completeTitle">

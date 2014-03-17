@@ -33,8 +33,32 @@
         </time>
         <!-- TODO: Update badges -->
         <span class="pull-right">
-          <a href="/search?p=980__b:article" class="label label-default" title="Journal article">Journal article</a>
-          <a href="/search?p=542__l:open" class="label label-success" title="Open access">Open access</a>
+          <xsl:call-template name="categorySearchLink">
+            <xsl:with-param name="class" select="'label label-default'" />
+            <xsl:with-param name="node" select="($mods/mods:genre[@type='kindof']|$mods/mods:genre[@type='intern'])[1]" />
+          </xsl:call-template>
+          <xsl:variable name="accessCondition" select="normalize-space($mods/mods:accessCondition[@type='use and reproduction'])" />
+          <xsl:if test="$accessCondition">
+            <xsl:variable name="linkText">
+              <xsl:choose>
+                <xsl:when test="contains($accessCondition, 'cc_by')">
+                  <xsl:variable name="licenseString" select="substring-after(normalize-space(.),'cc_')" />
+                  <img src="http://i.creativecommons.org/l/{$licenseString}/4.0/88x31.png" />
+                </xsl:when>
+                <xsl:when test="contains($accessCondition, 'rights_reserved')">
+                  <xsl:value-of select="i18n:translate('component.mods.metaData.dictionary.rightsReserved')" />
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:value-of select="." />
+                </xsl:otherwise>
+              </xsl:choose>
+            </xsl:variable>
+            <xsl:call-template name="searchLink">
+              <xsl:with-param name="class" select="'label label-success'" />
+              <xsl:with-param name="linkText" select="$linkText" />
+              <xsl:with-param name="query" select="concat('%2BallMeta%3A&quot;',$accessCondition,'&quot;')" />
+            </xsl:call-template>
+          </xsl:if>
         </span>
       </p>
       <h1 itemprop="name">
@@ -79,4 +103,5 @@
       </span>
     </a>
   </xsl:template>
+
 </xsl:stylesheet>

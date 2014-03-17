@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:mods="http://www.loc.gov/mods/v3"
-  exclude-result-prefixes="mods">
+  xmlns:mcrmods="xalan://org.mycore.mods.MCRMODSClassificationSupport" exclude-result-prefixes="mods mcrmods">
   <xsl:import href="xslImport:modsmeta" />
   <xsl:include href="layout-utils.xsl" />
   <xsl:include href="mods-utils.xsl" />
@@ -33,4 +33,73 @@
       </xsl:for-each>
     </xsl:comment>
   </xsl:template>
+
+  <xsl:template name="categorySearchLink">
+    <xsl:param name="class" />
+    <xsl:param name="title" />
+    <xsl:param name="node" select="." />
+    <xsl:param name="parent" select="false()" />
+
+    <xsl:variable name="classlink">
+      <xsl:choose>
+        <xsl:when test="$parent=true()">
+          <xsl:value-of select="mcrmods:getClassCategParentLink($node)" />
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="mcrmods:getClassCategLink($node)" />
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+    <xsl:choose>
+      <xsl:when test="string-length($classlink) &gt; 0">
+        <xsl:for-each select="document($classlink)/mycoreclass/categories/category">
+          <xsl:message>
+            <xsl:value-of select="@ID" />
+          </xsl:message>
+          <xsl:variable name="classText">
+            <xsl:variable name="selectLang">
+              <xsl:call-template name="selectLang">
+                <xsl:with-param name="nodes" select="./label" />
+              </xsl:call-template>
+            </xsl:variable>
+            <xsl:for-each select="./label[lang($selectLang)]">
+              <xsl:value-of select="@text" />
+            </xsl:for-each>
+          </xsl:variable>
+          <xsl:call-template name="searchLink">
+            <xsl:with-param name="class" select="$class" />
+            <xsl:with-param name="title" select="$title" />
+            <xsl:with-param name="linkText" select="$classText" />
+            <xsl:with-param name="query" select="concat('%2Bcategory%3A&quot;',/mycoreclass/@ID,'%3A',@ID,'&quot;')" />
+          </xsl:call-template>
+        </xsl:for-each>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:message terminate="yes">
+          <xsl:value-of select="concat('not a classification: ',name())" />
+        </xsl:message>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
+  <xsl:template name="searchLink">
+    <xsl:param name="class" />
+    <xsl:param name="title" />
+    <xsl:param name="linkText" />
+    <xsl:param name="query" />
+    <a href="{$ServletsBaseURL}solr/select?q={$query}">
+      <xsl:if test="$title">
+        <xsl:attribute name="title">
+          <xsl:value-of select="$title" />
+        </xsl:attribute>
+      </xsl:if>
+      <xsl:if test="$class">
+        <xsl:attribute name="class">
+          <xsl:value-of select="$class" />
+        </xsl:attribute>
+      </xsl:if>
+      <xsl:copy-of select="$linkText" />
+    </a>
+  </xsl:template>
+
 </xsl:stylesheet>
