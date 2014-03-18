@@ -1,3 +1,4 @@
+//@import "../bootstrap/theme.less";
 //
 // Buttons
 // --------------------------------------------------
@@ -50,12 +51,12 @@
 }
 
 // Apply the mixin to the buttons
-.btn-default { .btn-styles(@btn-default-bg); text-shadow: 0 1px 0 #fff; }
+.btn-default { .btn-styles(@btn-default-bg); text-shadow: 0 1px 0 #fff; border-color: #ccc; }
 .btn-primary { .btn-styles(@btn-primary-bg); }
 .btn-success { .btn-styles(@btn-success-bg); }
+.btn-info    { .btn-styles(@btn-info-bg); }
 .btn-warning { .btn-styles(@btn-warning-bg); }
 .btn-danger  { .btn-styles(@btn-danger-bg); }
-.btn-info    { .btn-styles(@btn-info-bg); }
 
 
 
@@ -97,7 +98,7 @@
   #gradient > .vertical(@start-color: lighten(@navbar-default-bg, 10%); @end-color: @navbar-default-bg);
   .reset-filter(); // Remove gradient in IE<10 to fix bug where dropdowns don't get triggered
   border-radius: @navbar-border-radius;
-  @shadow: inset 0 1px 0 rgba(255,255,255,.25), 0 1px 5px rgba(0,0,0,.15);
+  @shadow: inset 0 1px 0 rgba(255,255,255,.15), 0 1px 5px rgba(0,0,0,.075);
   .box-shadow(@shadow);
 
   .navbar-nav > .active > a {
@@ -235,8 +236,19 @@
   @shadow: inset 0 1px 3px rgba(0,0,0,.05), 0 1px 0 rgba(255,255,255,.1);
   .box-shadow(@shadow);
 }
-
-//end of theme import
-.navbar-nav.navbar-right:last-child{
-	margin-right:0;
+// end of imported template
+.navbar-default .navbar-nav {
+	& > li {
+		& > a {
+          margin: 0;
+          padding: 15px 12px;
+          border-radius: 0;
+		}
+		&.active > a {
+			box-shadow: none;
+		}
+	}
+	&.navbar-right:last-child{
+      margin-right:0;
+	}
 }
