@@ -12,7 +12,14 @@
   <properties>
     <lesscss.compress>true</lesscss.compress>
     <template.cssdir>${project.build.directory}/classes/META-INF/resources/mir-default-layout/css</template.cssdir>
+    <grunt.projectBase>${project.build.directory}/grunt</grunt.projectBase>
   </properties>
+  <pluginRepositories>
+    <pluginRepository>
+      <id>pyx4me</id>
+      <url>http://www.pyx4me.com/maven2/</url>
+    </pluginRepository>
+  </pluginRepositories>
   <build>
     <plugins>
       <plugin>
@@ -31,21 +38,65 @@
         </configuration>
       </plugin>
       <plugin>
-        <groupId>org.lesscss</groupId>
-        <artifactId>lesscss-maven-plugin</artifactId>
+        <groupId>pl.allegro</groupId>
+        <artifactId>grunt-maven-plugin</artifactId>
+        <version>1.2.1</version>
         <configuration>
-          <compress>${lesscss.compress}</compress>
-          <outputDirectory>${template.cssdir}</outputDirectory>
-          <includes>
-            <include>layout.less</include>
-          </includes>
-          <lessJs>src/main/js/less-1.6.2.min.js</lessJs>
+          <gruntBuildDirectory>${grunt.projectBase}</gruntBuildDirectory>
         </configuration>
+
+        <executions>
+          <execution>
+            <phase>process-resources</phase>
+            <goals>
+              <goal>npm</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
         <executions>
           <execution>
             <goals>
-              <goal>compile</goal>
+              <goal>exec</goal>
             </goals>
+            <phase>compile</phase>
+            <configuration>
+              <executable>${grunt.projectBase}/node_modules/less/bin/lessc</executable>
+              <arguments>
+                <argument>--verbose</argument>
+                <argument>--clean-css</argument>
+                <argument>${basedir}/src/main/less/layout.less</argument>
+                <argument>${template.cssdir}/layout.css</argument>
+              </arguments>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <artifactId>maven-resources-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>create-resources</id>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${grunt.projectBase}</outputDirectory>
+              <resources>
+                <resource>
+                  <filtering>true</filtering>
+                  <directory>${basedir}/src/main/grunt</directory>
+                  <includes>
+                    <include>GruntFile.js</include>
+                    <include>package.json</include>
+                  </includes>
+                </resource>
+              </resources>
+            </configuration>
           </execution>
         </executions>
       </plugin>

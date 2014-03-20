@@ -1,21 +1,21 @@
 //always first for bootstrap
-@import "bootstrap-includes/variables-mixin.less";
-@import "readable/variables.less";
+@import (reference) "bootstrap-includes/variables-mixin.less";
+@import (reference) "readable/variables.less";
 @import "mir/variables.less";
 @import "mir/mixins.less";
 //bootstrap and customizations
-@import "bootstrap-includes/main.less";
-@import "readable/my-bootswatch.less";
+@import (reference) "bootstrap-includes/main.less";
+@import (reference) "readable/my-bootswatch.less";
 @import "mir/bootstrap-override.less";
 //bootstrap final
-@import "bootstrap-includes/utilities.less";
+@import (reference) "bootstrap-includes/utilities.less";
 //fontawesome
-@import "fontawesome/font-awesome.less";
+@import (reference) "fontawesome/font-awesome.less";
 
 //mir layout
 //@import "mir/design.less";
-@import url(~"'//fonts.googleapis.com/css?family=Droid+Serif:400,400italic,700,700italic'");
-@import url(~"'//fonts.googleapis.com/css?family=Droid+Sans:400,700'");
+@import (css) url("//fonts.googleapis.com/css?family=Droid+Serif:400,400italic,700,700italic");
+@import (css) url("//fonts.googleapis.com/css?family=Droid+Sans:400,700");
 @import "mir/editor.less";
 @import "mir/language.less";
 @import "mir/classificationBrowser.less";

@@ -1,0 +1,14 @@
+{
+    "name": "${project.artifactId}",
+    "version": "1.0.0",
+    "description": "${project.description}",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "devDependencies": {
+        "less" : "^1.7.0"
+    },
+    "author": "Thomas Scheffler",
+    "license": "GPLv3"
+}
