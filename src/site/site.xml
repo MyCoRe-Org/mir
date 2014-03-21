@@ -24,6 +24,7 @@
     <menu name="Documentation">
       <item name="Download" href="download.html" />
       <item name="Installation" href="install.html" />
+      <item name="Developer" href="developer.html" />
     </menu>
     <menu ref="reports" />
     <menu ref="parent" />
