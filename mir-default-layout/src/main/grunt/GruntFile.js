@@ -10,6 +10,7 @@ module.exports = function (grunt) {
   grunt.initConfig({
     globalConfig: globalConfig,
     pkg: grunt.file.readJSON('package.json'),
+    bootstrap: grunt.file.readJSON('bower_components/bootstrap/package.json'),
     banner: '/*!\n' +
             ' * <%= pkg.name %> v<%= pkg.version %>\n' +
             ' * Homepage: <%= pkg.homepage %>\n' +
@@ -56,7 +57,8 @@ module.exports = function (grunt) {
         options: {
           compress: false,
           modifyVars: {
-            bootswatch_theme: "readable"
+            bootswatch_theme: "readable",
+            "icon-font-path": "'//netdna.bootstrapcdn.com/bootstrap/<%= bootstrap.version %>/fonts/'",
           }
         },
         files: {}
