@@ -1,5 +1,6 @@
 module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-less');
+  grunt.loadNpmTasks('grunt-replace');
   
   var globalConfig = {
   	lessFile: grunt.option('lessFile'),
@@ -18,6 +19,27 @@ module.exports = function (grunt) {
             '*/\n',
     mir: {
       readable:{}, spacelab:{}, superhero:{}, yeti:{}
+    },
+    replace: {
+      dist: {
+        options: {
+          patterns:[
+            //resolve css from google fonts on build time 
+            {
+              match: /@import url\("\/\/fonts/,
+              replacement: '@import (inline) url("http://fonts'
+            }
+          ]
+        },
+        files: [
+           {
+             expand: true,
+             //flatten: true,
+             src: ['bower_components/bootswatch/*/bootswatch.less'],
+             //dest: 'build/'
+           }
+        ]
+      }
     },
     concat: {
               options: {
@@ -79,6 +101,7 @@ module.exports = function (grunt) {
   });
 
   grunt.registerTask('default', 'build a theme', function() {
+    grunt.task.run('replace');
     grunt.task.run('mir');
   });
 	
