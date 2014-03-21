@@ -10,6 +10,7 @@
     version="5" />
   <xsl:strip-space elements="*" />
   <xsl:include href="resource:xsl/layout/mir-common-layout.xsl"/>
+  <xsl:param name="MIR.DefaultLayout.CSS" select="'readable'" />
   <!-- Various versions -->
   <xsl:variable name="bootstrap.version" select="'3.1.1'" />
   <xsl:variable name="bootswatch.version" select="$bootstrap.version" />
@@ -29,11 +30,8 @@
           Mobile viewport optimisation
         </xsl:comment>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <link href="//netdna.bootstrapcdn.com/bootstrap/{$bootstrap.version}/css/bootstrap.min.css" rel="stylesheet" />
-        <link href="//netdna.bootstrapcdn.com/bootswatch/{$bootswatch.version}/readable/bootstrap.min.css" rel="stylesheet" />
-        <link href="//netdna.bootstrapcdn.com/bootstrap/{$bootstrap.version}/css/bootstrap-theme.min.css" rel="stylesheet" />
         <link href="//netdna.bootstrapcdn.com/font-awesome/{$fontawesome.version}/css/font-awesome.min.css" rel="stylesheet" />
-        <link href="{$WebApplicationBaseURL}mir-default-layout/css/layout.css" rel="stylesheet" />
+        <link href="{$WebApplicationBaseURL}mir-default-layout/css/{$MIR.DefaultLayout.CSS}.min.css" rel="stylesheet" />
         <script type="text/javascript" src="//code.jquery.com/jquery-{$jquery.version}.min.js"></script>
         <script type="text/javascript" src="//code.jquery.com/jquery-migrate-{$jquery.migrate.version}.min.js"></script>
         <xsl:copy-of select="head/*" />
