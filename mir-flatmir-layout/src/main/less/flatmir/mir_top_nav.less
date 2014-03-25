@@ -1,0 +1,90 @@
+//
+// Top Menu
+// --------------------------------------------------
+
+// main nav
+.mir-prop-nav {
+    top: 0;
+    z-index: 2030;
+    background-color: white;
+    border-radius: 0px;
+    border: none;
+    margin: 0;
+    padding: 0;
+
+    // navigation container
+    nav
+    {
+        padding-left: 0px;                          // align to left
+        padding-right: 0px;                          // align to right
+    }
+
+    // Dropdown menu items and carets
+    .navbar-nav {
+        // menu entry
+        > li > a
+        {
+            color: #aaa;
+            font-size:85%;
+            // caret
+            .caret {
+                border-top-color: @mir-prop-nav-main-caret-color !important; // allways white
+            }
+            // menu entry - hover and focus
+            &:hover,
+            &:focus
+            {
+                color: @link-color;
+                background-color: white;
+            }
+        }
+        // active entry
+        > li.active > a {
+            // current menu entry - hover and focus
+            &:hover,
+            &:focus
+            {
+                color: @link-color;
+            }
+        }
+        // Remove background color from open dropdown
+        > .open > a {
+            &,
+            &:hover,
+            &:focus {
+                color: @link-color;
+                background-color: @mir-prop-nav-main-entry-bg;
+                .caret {
+                    border-top-color: @mir-prop-nav-main-caret-color !important; // allways white
+                }
+            }
+        }
+    }
+
+    // The dropdown menu (ul)
+    .dropdown-menu {
+        background-color: @mir-prop-nav-dropdown-bg;
+        border-radius: 4px !important;
+        margin-top: 4px !important;
+        // Links within the dropdown menu
+        > li > a {
+            color: @mir-prop-nav-dropdown-link-color;
+            // Hover/Focus state
+            &:hover,
+            &:focus {
+                color: @mir-prop-nav-dropdown-link-hover-color;
+                background-color: @mir-prop-nav-dropdown-link-hover-bg;
+            }
+        }
+        // Active state
+        > .active > a {
+            &,
+            &:hover,
+            &:focus {
+                color: @mir-prop-nav-dropdown-link-active-color;
+                background-color: @mir-prop-nav-dropdown-link-active-bg;
+            }
+        }
+    }
+}
+

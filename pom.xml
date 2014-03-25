@@ -178,6 +178,7 @@
   <modules>
     <module>mir-module</module>
     <module>mir-default-layout</module>
+    <module>mir-flatmir-layout</module>
     <module>mir-webapp</module>
     <module>mir-common-resources</module>
     <module>mir-cli</module>
