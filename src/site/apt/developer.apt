@@ -72,6 +72,10 @@ Developer Instructions
 +-----------------------------------------------------------------------------------------------------------------------+
 
  If you are using Windows you need to change the paths to match your installation.
+ 
+ As a quick starting point to configure SOLR you can copy the directory <<<mir-it/src/test/solr>>> to
+ <<<${user.home}/.mycore/dev-mir/data/>>> and overwrite <<<schema.xml>>> and <<<solrconfig.xml>>> with
+ those provided in <<<mir-cli/src/main/config/solr-home/conf>>>.
 
 *** Hibernate
 
@@ -106,6 +110,12 @@ Developer Instructions
  
 ** How to build and start
 
+ After you set-up Hibernate and SOLR you can proceed with the {{{./install.html}Installation instructions}} to create admin user,
+ add classification and basic ACL rules. Set <<<JAVA_OPTS>>> environment variable to <<<-DMCR.DataPrefix=dev>>> before running
+ the setup script.
+ 
+ Starting up a servlet container in development environment is quite simple: 
+
  If you use Linux or Mac OS X you can just enter:
  
 +-----------------------------------------------------------------------------------------------------------------------+
@@ -118,7 +128,3 @@ Developer Instructions
  
  The parameter <<<-Pdev>>> triggers the maven profile <dev>. This activates remote debugging on port <<<8295>>> and sets system
  property <<<MCR.DataPrefix=dev>>>. 
-
- 
- 
- 
