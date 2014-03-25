@@ -2,80 +2,77 @@
 <!DOCTYPE MyCoReWebPage>
 <MyCoReWebPage>
 <section xml:lang="de" title="Vertragsbedingungen">
-  <div class="row">
-    <div class="col-md-12">
-      <h2>Vertragsbedingungen für Veröffentlichungen auf dem Publikationsserver</h2>
-      <h3>1. Online-Bereitstellung</h3>
-      <p>
-        Dem Betreiber des Publikationsservers wird das nicht-ausschließliche (einfache) Recht zur
-        freien elektronischen Publikation im Internet und zur Archivierung auf ihrem Schriftenserver
-        eingeräumt. Im Rahmen der einfachen Nutzung ist es dem Betreiber erlaubt, ergänzend eine
-        kostendeckende Printing-on-Demand Möglichkeit anzubieten, soweit diese nicht mit den
-        Verwertungsrechten Dritter am Werk des Autors kollidiert. Alle weiteren Rechte für die Verwertung
-        der Arbeit verbleiben beim Autor. Mit der Anmeldung ist kein rechtlich verbindlicher Anspruch
-        auf die Online-Bereitstellung eines Dokumentes verbunden. Im Rahmen der öffentlichen Bereitstellung
-        sind Nutzer berechtigt, Dokumente zum privaten und sonstigen eigenen Gebrauch herunterzuladen,
-        zu speichern oder in kleiner Zahl zu drucken (§ 53 UrhG<sup><a id="anker1" title="Zur Erläuterung"
-        href="#fn1">[1]</a></sup>). Weitergehende Rechte kann der Autor durch die Hinzufügung einer
-        Creative-Common-Lizenz<sup><a id="anker2" title="Zur Erläuterung"
-        href="#fn2">[2]</a></sup> einräumen.
-      </p>
 
-      <h3>2. Rechte Dritter</h3>
-      <p>
-        Der Veröffentlichende erklärt, dass mit der Veröffentlichung des Dokumentes und jedem ihrer
-        Bestandteile, z.B. bei kumulativen Dissertationsschriften, keine Rechte Dritter verletzt werden.
-        Der Veröffentlichende stellt den Betreiber von etwaigen Ansprüchen
-        Dritter frei. Der Betreiber ist berechtigt, den Zugriff auf eine Publikation
-        zu sperren, soweit konkrete Anhaltspunkte für eine Verletzung von Rechten Dritter bestehen. Der Betreiber
-        wird den Veröffentlichenden in einem solchen Fall über die Sperrung informieren.
-      </p>
+  <h2>Vertragsbedingungen für Veröffentlichungen auf dem Publikationsserver</h2>
+  <h3>1. Online-Bereitstellung</h3>
+  <p>
+    Dem Betreiber des Publikationsservers wird das nicht-ausschließliche (einfache) Recht zur
+    freien elektronischen Publikation im Internet und zur Archivierung auf ihrem Schriftenserver
+    eingeräumt. Im Rahmen der einfachen Nutzung ist es dem Betreiber erlaubt, ergänzend eine
+    kostendeckende Printing-on-Demand Möglichkeit anzubieten, soweit diese nicht mit den
+    Verwertungsrechten Dritter am Werk des Autors kollidiert. Alle weiteren Rechte für die Verwertung
+    der Arbeit verbleiben beim Autor. Mit der Anmeldung ist kein rechtlich verbindlicher Anspruch
+    auf die Online-Bereitstellung eines Dokumentes verbunden. Im Rahmen der öffentlichen Bereitstellung
+    sind Nutzer berechtigt, Dokumente zum privaten und sonstigen eigenen Gebrauch herunterzuladen,
+    zu speichern oder in kleiner Zahl zu drucken (§ 53 UrhG<sup><a id="anker1" title="Zur Erläuterung"
+    href="#fn1">[1]</a></sup>). Weitergehende Rechte kann der Autor durch die Hinzufügung einer
+    Creative-Common-Lizenz<sup><a id="anker2" title="Zur Erläuterung"
+    href="#fn2">[2]</a></sup> einräumen.
+  </p>
 
-      <h3>3. Langzeitarchivierung und Transformation in andere Formate</h3>
-      <p>
-        Dem Betreiber des Publikationsservers wird das Recht eingeräumt, das Dokument durch die
-        Bibliothek in einem Langzeitarchiv zu speichern und bei Bedarf (z.B. Migration, Barrierefreiheit,
-        bessere Zugänglichkeit, Erschließung) in andere elektronische und physische Formate zu überführen
-        und diese gemäß Nr. 1 zu verwerten.
-      </p>
+  <h3>2. Rechte Dritter</h3>
+  <p>
+    Der Veröffentlichende erklärt, dass mit der Veröffentlichung des Dokumentes und jedem ihrer
+    Bestandteile, z.B. bei kumulativen Dissertationsschriften, keine Rechte Dritter verletzt werden.
+    Der Veröffentlichende stellt den Betreiber von etwaigen Ansprüchen
+    Dritter frei. Der Betreiber ist berechtigt, den Zugriff auf eine Publikation
+    zu sperren, soweit konkrete Anhaltspunkte für eine Verletzung von Rechten Dritter bestehen. Der Betreiber
+    wird den Veröffentlichenden in einem solchen Fall über die Sperrung informieren.
+  </p>
 
-      <h3>4. Weitergabe an die Deutsche Nationalbibliothek</h3>
-      <p>
-        Dem Betreiber ist es gestattet, über die Bibliothek die elektronische
-        Version der Deutschen Nationalbibliothek (DNB) im Rahmen der Pflichtabgabe nach dem Gesetz über
-        die Deutsche Nationalbibliothek zur Verfügung zu stellen.
-      </p>
+  <h3>3. Langzeitarchivierung und Transformation in andere Formate</h3>
+  <p>
+    Dem Betreiber des Publikationsservers wird das Recht eingeräumt, das Dokument durch die
+    Bibliothek in einem Langzeitarchiv zu speichern und bei Bedarf (z.B. Migration, Barrierefreiheit,
+    bessere Zugänglichkeit, Erschließung) in andere elektronische und physische Formate zu überführen
+    und diese gemäß Nr. 1 zu verwerten.
+  </p>
 
-      <h3>5. Dissertationen, Habilitationen und Qualifikationsarbeiten</h3>
-      <p>
-        Handelt es sich bei dem Dokument um eine Qualifikationsarbeit (Dissertation, Habilitation,
-        Master-, Bachelor-, Diplomarbeit etc.), so versichert der Veröffentlichende, dass die gelieferten
-        Dateien der vom Fachbereich genehmigten Fassung entsprechen und die zuständige Einrichtung der
-        Veröffentlichung des Dokumentes zugestimmt hat. Gehört zur Qualifizierungsarbeit ein Lebenslauf,
-        ist der Veröffentlichende damit einverstanden, dass dieser maschinell gespeichert und öffentlich
-        zur Verfügung gestellt wird.
-      </p>
+  <h3>4. Weitergabe an die Deutsche Nationalbibliothek</h3>
+  <p>
+    Dem Betreiber ist es gestattet, über die Bibliothek die elektronische
+    Version der Deutschen Nationalbibliothek (DNB) im Rahmen der Pflichtabgabe nach dem Gesetz über
+    die Deutsche Nationalbibliothek zur Verfügung zu stellen.
+  </p>
 
-      <h3>6. Rücknahme der Einverständniserklärung</h3>
-      <p>
-        Eine Rücknahme dieser Einverständniserklärung ist nur unter Berufung auf § 42 UrhG (Werk entspricht
-        nicht mehr der Überzeugung des Autors) möglich. Der Betreiber ist berechtigt,
-        dem Veröffentlichenden den hierdurch entstandenen zusätzlichen Aufwand in Rechnung zu stellen.
-      </p>
+  <h3>5. Dissertationen, Habilitationen und Qualifikationsarbeiten</h3>
+  <p>
+    Handelt es sich bei dem Dokument um eine Qualifikationsarbeit (Dissertation, Habilitation,
+    Master-, Bachelor-, Diplomarbeit etc.), so versichert der Veröffentlichende, dass die gelieferten
+    Dateien der vom Fachbereich genehmigten Fassung entsprechen und die zuständige Einrichtung der
+    Veröffentlichung des Dokumentes zugestimmt hat. Gehört zur Qualifizierungsarbeit ein Lebenslauf,
+    ist der Veröffentlichende damit einverstanden, dass dieser maschinell gespeichert und öffentlich
+    zur Verfügung gestellt wird.
+  </p>
 
-      <p>
-        Sie können hier das <a href="#">Formular für die Erklärung (PDF-Format)</a>,
-        in der Sie den genannten Vertragsbedingungen schriftlich zustimmen, ausdrucken. Das Formular ist auch
-        per Mail beim Betreiber erhältlich.
-      </p>
+  <h3>6. Rücknahme der Einverständniserklärung</h3>
+  <p>
+    Eine Rücknahme dieser Einverständniserklärung ist nur unter Berufung auf § 42 UrhG (Werk entspricht
+    nicht mehr der Überzeugung des Autors) möglich. Der Betreiber ist berechtigt,
+    dem Veröffentlichenden den hierdurch entstandenen zusätzlichen Aufwand in Rechnung zu stellen.
+  </p>
 
-      <h3>Fußnoten</h3>
-      <ol class="fn">
-        <li id="fn1"><a href="#anker1">[1]</a> Gesetz über Urheberrecht und verwandte Schutzrechte, <a href="http://www.bundesrecht.juris.de/urhg">http://www.bundesrecht.juris.de/urhg</a></li>
-        <li id="fn2"><a href="#anker2">[2]</a> Creative Commons Urheberrechtslizenzen, <a href="http://creativecommons.org/licenses/?lang=de">http://creativecommons.org/licenses</a></li>
-      </ol>
-    </div>
-  </div>
+  <p>
+    Sie können hier das <a href="#">Formular für die Erklärung (PDF-Format)</a>,
+    in der Sie den genannten Vertragsbedingungen schriftlich zustimmen, ausdrucken. Das Formular ist auch
+    per Mail beim Betreiber erhältlich.
+  </p>
+
+  <h3>Fußnoten</h3>
+  <ol class="fn">
+    <li id="fn1"><a href="#anker1">[1]</a> Gesetz über Urheberrecht und verwandte Schutzrechte, <a href="http://www.bundesrecht.juris.de/urhg">http://www.bundesrecht.juris.de/urhg</a></li>
+    <li id="fn2"><a href="#anker2">[2]</a> Creative Commons Urheberrechtslizenzen, <a href="http://creativecommons.org/licenses/?lang=de">http://creativecommons.org/licenses</a></li>
+  </ol>
 
 </section>
 <meta>
