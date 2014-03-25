@@ -9,7 +9,7 @@
   <xsl:output method="html" doctype-system="about:legacy-compat" indent="yes" omit-xml-declaration="yes" media-type="text/html"
     version="5" />
   <xsl:strip-space elements="*" />
-  <xsl:include href="resource:xsl/layout/mir-common-layout.xsl"/>
+  <xsl:include href="resource:xsl/mir-flatmir-layout-utils.xsl"/>
   <!-- Various versions -->
   <xsl:variable name="bootstrap.version" select="'3.0.3'" />
   <xsl:variable name="bootswatch.version" select="$bootstrap.version" />
