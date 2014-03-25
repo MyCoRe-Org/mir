@@ -49,6 +49,7 @@
               <usedDependencies>
                 <!-- used by this war -->
                 <useDependency>org.mycore.mir:mir-default-layout</useDependency>
+                <useDependency>org.mycore.mir:mir-flatmir-layout</useDependency>
                 <useDependency>org.mycore:mycore-meta</useDependency>
                 <useDependency>org.mycore.mir:mir-common-resources</useDependency>
                 <useDependency>org.mycore.mir:mir-module</useDependency>
@@ -120,6 +121,11 @@
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>mir-default-layout</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>mir-flatmir-layout</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
