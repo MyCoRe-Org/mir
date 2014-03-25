@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE MyCoReWebPage>
+<MyCoReWebPage>
+<section xml:lang="de" title="Publizieren">
+
+  <div class="row">
+    <div class="col-md-12">
+      <h2>Publizieren</h2>
+      <p>Sie können folgende Publikationen neu anlegen:</p>
+      <ul>
+        <li><a href="../../../servlets/object/create?type=mods&amp;layout=thesis&amp;sourceURI=webapp:modules/mods/template-thesis.xml">Hochschulschriften (Diss., MA, BA, u.a.)</a></li>
+        <li><a href="../../../servlets/object/create?type=mods&amp;layout=report">Report</a></li>
+        <li><a href="../../../servlets/object/create?type=mods&amp;layout=av">AV-Medium</a></li>
+      </ul>
+
+      <figure style="float:right;border:1px solid #F0F0F0;margin:10px;">
+          <img src="new_chapter.png" title="Neues Buchkapitel anlegen" alt="Screenshot zum Anlegen eines neuen Buchkapitels" style="margin:5px;"/>
+          <figcaption>Abb.: Buchkapitel anlegen</figcaption>
+      </figure>
+      <p>
+        Um ein Buchkapitel oder einen Konferenzbeitrag anzulegen, suchen Sie bitte zuerst das passende <img src="link.gif" />&#160;<a href="../../../servlets/SolrSelectProxy?q=%2Bcategory%3A%22genres%3Abook%22+%2BobjectType%3Amods+%2Bcategory%3A%22status%3Apublished%22&amp;rows=20"
+        >Buch</a> oder die passende <img src="link.gif" />&#160;<a href="../../../servlets/SolrSelectProxy?q=%2Bcategory%3A%22genres%3Aconfpro%22+%2BobjectType%3Amods+%2Bcategory%3A%22status%3Apublished%22&amp;rows=20"
+        >Konferenz</a> heraus oder legen Sie diese neu an:
+      </p>
+      <ul>
+        <li><a href="../../../servlets/object/create?type=mods&amp;layout=book">Buch</a></li>
+        <li><a href="../../../servlets/object/create?type=mods&amp;layout=confpro&amp;sourceURI=webapp:modules/mods/template-confpro.xml">Konferenzband</a></li>
+      </ul>
+      <p>
+        Mit Hilfe der Dokumentoptionen <img src="icon_arrow_circled_red_down.png" /> können Sie dann z.B. mittels des
+        Menüpunktes „Buchkapitel“ ein neues Kapitel anlegen (siehe auch Abbildung rechts).
+      </p>
+      <p>
+        Um einen Zeitschriftenartikel anzulegen gehen Sie analog vor. Im 1. Schritt suchen Sie sich die passende
+        <img src="link.gif" />&#160;<a href="../../../servlets/SolrSelectProxy?q=%2Bcategory%3A%22genres%3Ajournal%22+%2BobjectType%3Amods+%2Bcategory%3A%22status%3Apublished%22&amp;rows=20"
+        >Zeitschrift</a> heraus oder legen diese neu an:
+      </p>
+      <ul>
+        <li><a href="../../../servlets/object/create?type=mods&amp;layout=journal">Zeitschrift/Serie direkt eingeben</a></li>
+        <li>Zeitschriftendaten mittels ZDB-ID importieren:
+            <form action="../../../servlets/object/create" method="post" class="yform" id="zdb_form">
+              <input type="hidden" name="type" value="mods" />
+              <input type="hidden" name="layout" value="journal" />
+              <input type="hidden" name="cancelUrl" value="/content/main/admin.xml" />
+              <fieldset>
+                <div class="type-text">
+                  <label for="zdbid">
+                    ZDB-ID
+                  </label>
+                  <input type="text" name="zdbid" size="20" />
+                </div>
+                <div class="type-button">
+                  <input type="submit" value="Importieren" />
+                </div>
+              </fieldset>
+            </form>
+        </li>
+      </ul>
+      <p>
+        Dann können Sie im 2. Schritt über die Dokumentoptionen <img src="icon_arrow_circled_red_down.png" />
+        einen neuen Artikel anlegen.
+      </p>
+    </div>
+  </div>
+
+</section>
+
+
+<meta>
+  <log date="2014-03-25" time="16:25" labelPath=" » Admin" lastEditor="Kathleen Neumann" />
+</meta>
+</MyCoReWebPage>

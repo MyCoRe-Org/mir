@@ -5,15 +5,81 @@
     <label xml:lang="de">Hauptmenü</label>
     <label xml:lang="en">Main menu</label>
 
-	<item href="/content/main/about.xml" type="intern" target="_self" style="normal" replaceMenu="false">
-      <label xml:lang="de">Einrichtungen</label>
-      <label xml:lang="en">Institutions</label>
+    <item href="#" type="intern" target="_self" style="normal" replaceMenu="false">
+      <label xml:lang="de">Blättern im Bestand</label>
+      <label xml:lang="en">Browse</label>
+      <item href="/content/main/classifications/institutes.xml" type="intern" target="_self" style="normal" replaceMenu="false">
+        <label xml:lang="de">Nach Einrichtung</label>
+        <label xml:lang="en">Institutions</label>
+      </item>
+      <item href="/content/main/classifications/genres.xml" type="intern" target="_self" style="normal" replaceMenu="false">
+        <label xml:lang="de">Nach Dokumenttyp</label>
+        <label xml:lang="en">Genre</label>
+      </item>
+      <item href="/content/main/classifications/sdnb.xml" type="intern" target="_self" style="normal" replaceMenu="false">
+        <label xml:lang="de">Nach Sachgruppe</label>
+        <label xml:lang="en">SNDB</label>
+      </item>
+    </item>
+    <item href="/content/main/search/simple.xed" type="intern" target="_self" style="normal" replaceMenu="false">
+      <label xml:lang="de">Suche</label>
+      <label xml:lang="en">Search</label>
+    </item>
+    <item href="/servlets/MCRActionMappingServlet/personindex/browse" type="intern" target="_self" style="normal" replaceMenu="false">
+      <label xml:lang="de">Index Personen</label>
+      <label xml:lang="en">Index of Persons</label>
     </item>
 
-	<item href="/content/main/admin.xml" type="intern" target="_self" style="normal" replaceMenu="false">
-      <label xml:lang="de">Admin</label>
-      <label xml:lang="en">Admin</label>
+    <item href="/content/main/authors.xml" type="intern" target="_self" style="normal" replaceMenu="false">
+      <label xml:lang="de">Dokumente einreichen</label>
+      <label xml:lang="en">Submit Document</label>
+      <item href="/content/main/publish/index.xml" type="intern" target="_self" style="normal" replaceMenu="false">
+        <label xml:lang="de">Publizieren</label>
+        <label xml:lang="en">Publish</label>
+      </item>
+      <item href="/content/main/publish/guidelines.xml" type="intern" target="_self" style="normal" replaceMenu="false">
+        <label xml:lang="de">Leitlinien</label>
+        <label xml:lang="en">Guidelines</label>
+      </item>
+      <item href="/content/main/publish/contract.xml" type="intern" target="_self" style="normal" replaceMenu="false">
+        <label xml:lang="de">Vertragsbedingungen</label>
+        <label xml:lang="en">Terms &amp; Conditions</label>
+      </item>
     </item>
+
+<!--     <item href="/content/main/admin.xml" type="intern" target="_self" style="normal" replaceMenu="false"> -->
+<!--       <label xml:lang="de">Administration</label> -->
+<!--       <label xml:lang="en">Administration</label> -->
+<!--       <item href="/modules/classeditor/classificationEditor.xml" type="intern" target="_self" style="normal" replaceMenu="false"> -->
+<!--         <label xml:lang="de">Klassifikationseditor</label> -->
+<!--         <label xml:lang="en">Edit Classifications</label> -->
+<!--       </item> -->
+<!--       <item href="/servlets/MCRUserServlet" type="intern" target="_self" style="normal" replaceMenu="false"> -->
+<!--         <label xml:lang="de">Nutzerverwaltung</label> -->
+<!--         <label xml:lang="en">Admin Users</label> -->
+<!--       </item> -->
+<!--       <item href="/authorization/new-user.xml?action=save" type="intern" target="_self" style="normal" replaceMenu="false"> -->
+<!--         <label xml:lang="de">Nutzer anlegen</label> -->
+<!--         <label xml:lang="en">Create User</label> -->
+<!--       </item> -->
+<!--       <item href="/rsc/ACLE/start" type="intern" target="_self" style="normal" replaceMenu="false"> -->
+<!--         <label xml:lang="de">Rechte &amp; Rollen</label> -->
+<!--         <label xml:lang="en">ACL</label> -->
+<!--       </item> -->
+<!--       <item href="/modules/webcli/launchpad.xml" type="intern" target="_self" style="normal" replaceMenu="false"> -->
+<!--         <label xml:lang="de">WebCLI</label> -->
+<!--         <label xml:lang="en">WebCLI</label> -->
+<!--       </item> -->
+<!--       <item href="/servlets/MCRSessionListingServlet" type="intern" target="_self" style="normal" replaceMenu="false"> -->
+<!--         <label xml:lang="de">Aktive Sitzungen</label> -->
+<!--         <label xml:lang="en">Session Management</label> -->
+<!--       </item> -->
+<!--       <item href="/modules/wcms2/wcms2.xml?XSL.useMT=false" type="extern" target="_self" style="normal"> -->
+<!--         <label xml:lang="de">WCMS</label> -->
+<!--         <label xml:lang="en">WCMS</label> -->
+<!--       </item> -->
+<!--     </item> -->
+
 
   </navi-main>
   <!-- main menu  -->
@@ -26,20 +92,12 @@
       <label xml:lang="de">Impressum</label>
       <label xml:lang="en">Impressum</label>
     </item>
-	
+
     <item href="/content/below/contact.xml" replaceMenu="false" style="normal" target="_self" type="intern">
       <label xml:lang="de">Kontakt</label>
       <label xml:lang="en">Contact</label>
     </item>
 
-    <item href="/servlets/MCRWCMSLoginServlet" style="normal" target="_self" template="template_wcms" type="extern">
-      <label xml:lang="de">WCMS</label>
-      <label xml:lang="en">WCMS</label>
-      <dynamicContentBinding>
-        <rootTag>cms</rootTag>
-      </dynamicContentBinding>
-    </item>
-    
   </navi-below>
   <!-- END OF: navi bar below -->
 </navigation>

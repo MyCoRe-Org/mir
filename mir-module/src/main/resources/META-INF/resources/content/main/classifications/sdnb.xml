@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE MyCoReWebPage>
+
+<MyCoReWebPage>
+
+  <section i18n="browse.sdnb" xml:lang="all">
+    <div class="row">
+      <div class="col-md-6">
+        <h3>Nach Sachgruppe</h3>
+        <classificationbrowser classification="SDNB"
+                                   objecttype="mods"
+                                  restriction="+category.top:&quot;mir_status:published&quot;"
+                                        field="category.top"
+                                 countresults="true"
+                                   addclassid="true"
+                                  emptyleaves="true"
+                                        style="bootstrap"
+                                   parameters="sort=mods.dateIssued+desc"
+                                 addParameter="XSL.template=template_mir"
+        />
+      </div>
+    </div>
+  </section>
+
+</MyCoReWebPage>

@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE MyCoReWebPage>
+<MyCoReWebPage>
+<section xml:lang="de" title="Leitlinie Publikationsserver">
+  <div class="row">
+    <div class="col-md-12">
+      <h2>Leitlinien für den Betrieb des Publikationsservers</h2>
+      <h3>1. Ziele und inhaltliche Kriterien für den Publikationsserver</h3>
+      <p>
+        Der Publikationsserver bietet Wissenschaftlerinnen
+        und Wissenschaftlern die organisatorischen und technischen
+        Rahmenbedingungen zur elektronischen Publikation wissenschaftlicher Dokumente.
+      </p>
+      <p>
+        Die elektronischen Dokumente erhalten dauerhafte Adressen und werden über nationale und internationale
+        Bibliothekskataloge, Suchmaschinen sowie andere Nachweisinstrumente erschlossen. Darüber hinaus wird
+        eine Langzeitarchivierung der elektronischen Dokumente gewährleistet (mindestens 5 Jahre).
+      </p>
+
+      <h3>2. Der Sammelauftrag des Betreibers</h3>
+      <p>
+        Der Sammelauftrag des Betreibers des Publikationsservers umfasst die Speicherung, Katalogisierung
+        und Archivierung aller elektronischen Dokumente, die durch Wissenschaftlerinnen und Wissenschaftler,
+        veröffentlicht werden. Dies bezieht sich sowohl auf rein elektronische Publikationen
+        als auch auf elektronische Versionen gedruckter Dokumente.
+      </p>
+      <p>
+        Die Urheberrechte der Autorinnen und Autoren bleiben gewahrt. Die Veröffentlichung auf dem Publikationsserver
+        steht einer weiteren Veröffentlichung der Dokumente in Fachzeitschriften oder Monografien sowie auf
+        anderen Servern nicht entgegen. Gemäß den Empfehlungen des Wissenschaftsrats werden alle Wissenschaftlerinnen
+        und Wissenschaftler in Deutschland aufgefordert, sich beim Abschluss von Verlagsverträgen ein entsprechendes
+        weiteres Nutzungsrecht zu sichern und die von ihnen verfassten Dokumente zusätzlich - eventuell nach einer
+        Sperrfrist - auf dem Schriftenserver zu veröffentlichen.
+      </p>
+      <p>
+        Die Einhaltung von Urheber- und Verwertungsrechten Dritter liegt in der Verantwortung der Autorinnen und
+        Autoren bzw. der Herausgeber/innen der elektronischen Dokumente.
+      </p>
+
+      <h3>3. Das elektronische Dokument</h3>
+      <p>
+        Unter dem Begriff „elektronisches Dokument” wird im Sinne dieser Leitlinien ein Dokument verstanden,
+        welches auf Text, Grafik, Audio- oder Video-Sequenzen basiert, in digitaler Form auf einem Datenträger
+        gespeichert ist und über Rechnernetze verbreitet wird.
+      </p>
+      <p>
+        Ein über den Publikationsserver zu veröffentlichendes elektronisches Dokument erfüllt folgende Bedingungen:
+      </p>
+      <ol>
+        <li>
+          Es ist zur Verbreitung in der Öffentlichkeit bestimmt.
+        </li>
+        <li>
+          Es stellt kein dynamisches Dokument dar. Sind Veränderungen notwendig, wird das geänderte
+          elektronische Dokument als neue Version gespeichert.
+        </li>
+        <li>
+          Es entspricht den vom Betreiber vorgegebenen technischen Parametern.
+        </li>
+      </ol>
+
+      <h3>4. Elektronische Dokumente, die über den Publikationsserver veröffentlicht und verbreitet werden</h3>
+      <p>
+        Folgende Kategorien elektronischer Dokumente werden gespeichert und über den Publikationsserver verbreitet:
+      </p>
+      <ul>
+        <li>
+          Publikationen und Publikationsreihen der betreibenden Einrichtung mit wissenschaftlichen Inhalten.
+        </li>
+        <li>
+          Dokumente von aktuellen und ehemaligen ...
+        </li>
+        <li>
+          Publikationen von mit dem betreibenden Institut assoziierten Einrichtungen und Personen
+          und Forscher/innen.
+        </li>
+      </ul>
+
+      <h3>5. Technische Besonderheiten des Publikationsservers</h3>
+      <ol>
+        <li>
+          Die elektronischen Dokumente werden mit individuellen und dauerhaften Adressen versehen, welche einen
+          unmittelbaren Zugriff auf die Dokumente erlauben. Die Adressen werden als URNs (Uniform Resource Name)
+          registriert. Die Administration und Pflege der URNs wird vom Betreiber garantiert.
+        </li>
+        <li>
+          Das Auffinden der elektronischen Dokumente ist über Bibliothekskataloge, Recherchen in bibliografischen
+          Metadaten, über alphabetische und klassifikatorische Ordnungen sowie dynamisch erstellte Listen und Indizes
+          möglich.
+        </li>
+        <li>
+          Die Archivierungsdauer der Formate hängt von der Verfügbarkeit des Formates, der Betrachtungssoftware sowie
+          den Konvertierungsmöglichkeiten ab. Die Archivierungsdauer beträgt mindestens 5 Jahre.
+        </li>
+      </ol>
+
+      <h3>6. Organisatorische Regelungen</h3>
+      <ol>
+        <li>
+          Der Publikationsserver wird vom Betreiber XY betrieben. Die technische Betreuung des
+          Katalogsystems (Rechercheinstrument für den Publikationsserver) erfolgt durch die Verbundzentrale des
+          Gemeinsamen Bibliotheksverbundes (VZG).
+        </li>
+        <li>
+          Die elektronische Veröffentlichung von Publikationen ist für die mit der betreibenden Einrichtung
+          verbundenen Wissenschaftlerinnen und Wissenschaftler kostenfrei.
+        </li>
+        <li>
+          Für die Veröffentlichung notwendige zusätzliche Arbeiten wie die Aufbereitung der elektronischen Dokumente
+          oder die Konvertierung in andere Formate werden von den Mitarbeiterinnen und Mitarbeitern des Betreibers
+          nach Absprache betreut oder durchgeführt. Arbeiten, die einen bedeutenden Mehraufwand
+          erfordern, werden in Rechnung gestellt.
+        </li>
+        <li>
+          Ansprechpartnerin für alle den Publikationsserver betreffenden Fragen ist:<br />
+          Max Mustermann<br />
+          Tel.: 0049-0123-456789<br />
+          E-Mail: max.mustermann@pub-betreiber.de<br />
+          Betreiber<br />
+          Weit Weg 7<br />
+          D-12345 Musterstadt
+        </li>
+      </ol>
+      <p>
+        Wir danken der Arbeitsgruppe Elektronisches Publizieren an der Humboldt-Universität zu Berlin
+        und den Kolleginnen der Universität der TU Clausthal. Deren Leitlinie für Hochschulschriftenserver wurden
+        hier als Vorlage benutzt.
+      </p>
+    </div>
+  </div>
+
+</section>
+
+<meta>
+  <log date="2014-03-25" time="16:26" labelPath=" » Admin" lastEditor="Kathleen Neumann" />
+</meta>
+</MyCoReWebPage>
