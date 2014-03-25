@@ -39,14 +39,14 @@
       select="concat( $ServletsBaseURL, 'MCRLoginServlet',$HttpSession,'?url=', encoder:encode( string( $RequestURL ) ) )" />
     <xsl:choose>
       <xsl:when test="mcrxsl:isCurrentUserGuestUser()">
-        <li class="active">
+        <li>
           <a id="loginURL" href="{$loginURL}">
             <xsl:value-of select="i18n:translate('component.userlogin.button.login')" />
           </a>
         </li>
       </xsl:when>
       <xsl:otherwise>
-        <li class="active dropdown">
+        <li class="dropdown">
           <a id="currentUser" class="dropdown-toggle" data-toggle="dropdown" href="#">
             <strong>
               <xsl:value-of select="$CurrentUser" />
@@ -111,7 +111,6 @@
   </xsl:template>
   <xsl:template name="mir.legacy-navigation">
     <xsl:param name="rootNode" />
-    <xsl:param name="topNav" select="false()" />
     <xsl:for-each select="$rootNode/item">
       <xsl:variable name="access">
         <xsl:call-template name="get.readAccess">
@@ -145,11 +144,11 @@
           </xsl:choose>
         </xsl:variable>
         <xsl:choose>
-          <xsl:when test="$topNav">
+          <xsl:when test="item">
             <xsl:call-template name="mir.topNavLink">
               <xsl:with-param name="title" select="$linkText" />
               <xsl:with-param name="active" select="current()[@href = $browserAddress ]" />
-              <xsl:with-param name="url" select="$href" />
+              <xsl:with-param name="childNav" select="." />
             </xsl:call-template>
           </xsl:when>
           <xsl:otherwise>
@@ -360,17 +359,18 @@
   <xsl:template name="mir.topNavLink">
     <xsl:param name="title" />
     <xsl:param name="active" />
-    <xsl:param name="url" select="''" />
-<!--     <xsl:value-of select="' | '" /> -->
-    <li>
-      <a href="{$url}">
-        <xsl:if test="$active">
-          <xsl:attribute name="class">
-              <xsl:value-of select="'active'" />
-            </xsl:attribute>
-        </xsl:if>
+    <xsl:param name="childNav" />
+    <xsl:variable name="menuId" select="generate-id($childNav)" />
+    <li class="dropdown">
+      <a id="{$menuId}" class="dropdown-toggle" data-toggle="dropdown" href="#">
         <xsl:value-of select="$title" />
+        <span class="caret"></span>
       </a>
+      <ul class="dropdown-menu" role="menu" aria-labelledby="{$menuId}">
+        <xsl:call-template name="mir.legacy-navigation">
+          <xsl:with-param name="rootNode" select="$childNav" />
+        </xsl:call-template>
+      </ul>
     </li>
   </xsl:template>
   <!-- ======================================================================================================== -->
