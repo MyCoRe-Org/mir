@@ -165,97 +165,89 @@
   </xsl:template>
 
   <xsl:template name="mir.navigation">
-
-    <div class="navbar navbar-default mir-prop-nav">
-        <div class="container">
-            <div class="navbar-header">
-                <button class="navbar-toggle"
-                        type="button"
-                        data-toggle="collapse"
-                        data-target=".mir-prop-nav-entries">
-            <!-- TODO: translate -->
-                    <span class="sr-only"> Toggle navigation </span>
-                    <span class="icon-bar"> </span>
-                    <span class="icon-bar"> </span>
-                    <span class="icon-bar"> </span>
-                </button>
-                <a href="{concat($WebApplicationBaseURL,substring($loaded_navigation_xml/@hrefStartingPage,2),$HttpSession)}" class="navbar-brand"> <span id="logo_mir">mir</span><span id="logo_modul">modul</span> <span id="logo_slogan">mycore/mods institutional repository</span></a>
-            </div>
-            <nav class="collapse navbar-collapse mir-prop-nav-entries">
-                <ul class="nav navbar-nav pull-right">
-                  <xsl:call-template name="mir.loginMenu" />
-                </ul>
-            </nav>
-        </div>
-    </div>
-
-    <!-- Collect the nav links, forms, and other content for toggling -->
-    <div class="navbar navbar-default mir-main-nav">
-      <div class="container">
-
+    <div class="navbar-fixed-top container" id="mir-navbar-container">
+      <nav class="navbar navbar-default navbar-mir">
         <div class="navbar-header">
-            <button class="navbar-toggle"
-                    type="button"
-                    data-toggle="collapse"
-                    data-target=".mir-main-nav-entries">
-                <span class="sr-only"> Toggle navigation </span>
-                <span class="icon-bar"> </span>
-                <span class="icon-bar"> </span>
-                <span class="icon-bar"> </span>
-            </button>
-
-        </div>
-        <nav class="collapse navbar-collapse mir-main-nav-entries">
-            <ul class="nav navbar-nav pull-left">
-                <li class="dropdown">
-                  <a id="searchMenu" class="dropdown-toggle" data-toggle="dropdown" href="#">
-                    Suche
-                    <span class="caret" />
-                  </a>
-                  <ul class="dropdown-menu" role="menu" aria-labelledby="searchMenu">
-                    <xsl:call-template name="mir.navLink">
-                      <xsl:with-param name="title" select="'einfach'" />
-                      <xsl:with-param name="active" select="contains(@id,'start')" />
-                      <xsl:with-param name="url" select="actionmapping:getURLforCollection('search','simple',true())" />
-                    </xsl:call-template>
-                    <xsl:call-template name="mir.navLink">
-                      <xsl:with-param name="title" select="'komplex'" />
-                      <xsl:with-param name="active" select="contains(@id,'search')" />
-                      <xsl:with-param name="url" select="actionmapping:getURLforCollection('search','complex',true())" />
-                    </xsl:call-template>
-                    <xsl:call-template name="mir.navLink">
-                      <xsl:with-param name="title" select="'expert'" />
-                      <xsl:with-param name="active" select="contains(@id,'search-expert')" />
-                      <xsl:with-param name="url" select="actionmapping:getURLforCollection('search','expert',true())" />
-                    </xsl:call-template>
-                  </ul>
-                </li>
-                <li class="dropdown">
-                  <a id="browseMenu" class="dropdown-toggle" data-toggle="dropdown" href="#">
-                    Blättern
-                    <span class="caret" />
-                  </a>
-                  <ul class="dropdown-menu" role="menu" aria-labelledby="browseMenu">
-                    <li>
-                      <a href="{$WebApplicationBaseURL}content/main/classifications/mir_institutes.xml">Institutionen</a>
-                    </li>
-                    <li>
-                      <a href="{$WebApplicationBaseURL}content/main/classifications/mir_genres.xml">Genre</a>
-                    </li>
-                  </ul>
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+            <!-- TODO: translate -->
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <ul class="nav navbar-nav">
+            <li class="dropdown">
+              <a id="brandMenu" class="navbar-brand" href="#" data-toggle="dropdown">
+                MIR
+                <span class="caret" />
+              </a>
+              <ul class="dropdown-menu" role="menu" aria-labelledby="brandMenu">
+                <li>
+                  <a href="{concat($WebApplicationBaseURL,substring($loaded_navigation_xml/@hrefStartingPage,2),$HttpSession)}">Start</a>
                 </li>
                 <xsl:call-template name="mir.legacy-navigation">
-                  <xsl:with-param name="rootNode" select="$loaded_navigation_xml/navi-main" />
+                  <xsl:with-param name="rootNode" select="$loaded_navigation_xml/navi-below" />
+                  <xsl:with-param name="topNav" select="true()" />
                 </xsl:call-template>
-                <xsl:call-template name="mir.basketMenu" />
-                <!-- xsl:call-template name="mir.searchMenu" / -->
-            </ul>
-        </nav>
-      </div><!-- /container -->
-    </div>
+              </ul>
+            </li>
+          </ul>
+        </div>
+          <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+          <ul class="nav navbar-nav">
+            <li class="dropdown">
+              <a id="searchMenu" class="dropdown-toggle" data-toggle="dropdown" href="#">
+                Suche
+                <span class="caret" />
+              </a>
+              <ul class="dropdown-menu" role="menu" aria-labelledby="searchMenu">
+                <xsl:call-template name="mir.navLink">
+                  <xsl:with-param name="title" select="'einfach'" />
+                  <xsl:with-param name="active" select="contains(@id,'start')" />
+                  <xsl:with-param name="url" select="actionmapping:getURLforCollection('search','simple',true())" />
+                </xsl:call-template>
+                <xsl:call-template name="mir.navLink">
+                  <xsl:with-param name="title" select="'komplex'" />
+                  <xsl:with-param name="active" select="contains(@id,'search')" />
+                  <xsl:with-param name="url" select="actionmapping:getURLforCollection('search','complex',true())" />
+                </xsl:call-template>
+                <xsl:call-template name="mir.navLink">
+                  <xsl:with-param name="title" select="'expert'" />
+                  <xsl:with-param name="active" select="contains(@id,'search-expert')" />
+                  <xsl:with-param name="url" select="actionmapping:getURLforCollection('search','expert',true())" />
+                </xsl:call-template>
+              </ul>
+            </li>
+            <li class="dropdown">
+              <a id="browseMenu" class="dropdown-toggle" data-toggle="dropdown" href="#">
+                Blättern
+                <span class="caret" />
+              </a>
+              <ul class="dropdown-menu" role="menu" aria-labelledby="browseMenu">
+                <li>
+                  <a href="{$WebApplicationBaseURL}content/main/classifications/mir_institutes.xml">Institutionen</a>
+                </li>
+                <li>
+                  <a href="{$WebApplicationBaseURL}content/main/classifications/mir_genres.xml">Genre</a>
+                </li>
+              </ul>
+            </li>
+            <xsl:call-template name="mir.legacy-navigation">
+              <xsl:with-param name="rootNode" select="$loaded_navigation_xml/navi-main" />
+            </xsl:call-template>
+            <xsl:call-template name="mir.basketMenu" />
+            <xsl:call-template name="mir.searchMenu" />
+          </ul>
+          <ul id="userMenu" class="nav navbar-nav navbar-right">
+            <xsl:call-template name="mir.loginMenu" />
+          </ul>
+        </div><!-- /nav-collapse -->
+      </nav>
+    </div><!-- /container -->
   </xsl:template>
   <xsl:template name="mir.searchMenu">
-    <!--
+    <!-- 
      -->
     <li role="search" class="visible-xs">
       <form class="navbar-form navbar-right" role="search" action="{$ServletsBaseURL}solr/find{$HttpSession}" method="get"
