@@ -51,19 +51,17 @@
         </xsl:if>
 
         <div class="container" id="page">
-              <div class="row">
-                <div class="col-md-12" id="main_content">
-                  <xsl:call-template name="print.writeProtectionMessage" />
-                  <xsl:choose>
-                    <xsl:when test="$readAccess='true'">
-                      <xsl:copy-of select="*" />
-                    </xsl:when>
-                    <xsl:otherwise>
-                      <xsl:call-template name="printNotLoggedIn" />
-                    </xsl:otherwise>
-                  </xsl:choose>
-                </div>
-              </div>
+          <div class="row">
+            <div class="col-md-12" id="main_content">
+              <xsl:call-template name="print.writeProtectionMessage" />
+              <xsl:choose>
+                <xsl:when test="$readAccess='true'">
+                  <xsl:copy-of select="*" />
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:call-template name="printNotLoggedIn" />
+                </xsl:otherwise>
+              </xsl:choose>
             </div>
           </div>
         </div>
