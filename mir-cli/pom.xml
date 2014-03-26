@@ -17,6 +17,7 @@
     <acl-description.not-logged-in>not logged-in</acl-description.not-logged-in>
     <acl-description.admins>administrators only</acl-description.admins>
     <acl-description.editors>administrators and editors</acl-description.editors>
+    <acl-description.guests-and-submitters>guests and submitters</acl-description.guests-and-submitters>
   </properties>
   <build>
     <plugins>
