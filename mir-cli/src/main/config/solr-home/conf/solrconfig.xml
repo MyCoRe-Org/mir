@@ -816,8 +816,9 @@
       -->
      <lst name="defaults">
        <str name="echoParams">explicit</str>
-       <int name="rows">10</int>
+       <int name="rows">20</int>
        <str name="df">allMeta</str>
+       <str name="fl">*,score</str>
      </lst>
     <!-- In addition to defaults, "appends" params can be specified
          to identify values which should be appended to the list of
@@ -1818,7 +1819,8 @@
   <requestHandler name="/find" class="solr.SearchHandler">
     <lst name="defaults">
       <str name="echoParams">all</str>
-      <int name="rows">10</int>
+      <int name="rows">20</int>
+      <str name="fl">*,score</str>
       <str name="qf">id^100 mods.gnd^100 mods.identifier^100 isbn^100 mods.title^50 mods.author^40 mods.publisher^40 mods.name^30 mods.abstract^10 mods.place^5 allMeta^2 content^1</str>
       <str name="qry">*</str>
     </lst>
@@ -1832,6 +1834,150 @@
       <str name="group.ngroups">true</str>
       <str name="q">{!type=edismax v=$qry qf=$qf}</str>
     </lst>
+
+  </requestHandler>
+
+  <!-- The search handler for mods.name. -->
+  <requestHandler name="/mods_name" class="solr.StandardRequestHandler">
+    <!-- default values for query parameters -->
+    <lst name="defaults">
+      <str name="defType">edismax</str>
+      <!-- show explicit set parameters in response (literal.<foo>) -->
+      <str name="echoParams">explicit</str>
+      <str name="rows">20</str>
+      <str name="fl">*,score</str>
+      <str name="mask">modules/mods/search-simplemods.xml</str>
+
+      <str name="qs">5</str>
+      <str name="start">0</str>
+
+      <!-- execute this query in case no q parameter is provided -->
+      <str name="q.alt">*:* -objectType:data_file -objectType:derivate</str>
+
+      <!-- sort by score, if user submits empty form, we show the last changed docs first (as the score will be fixed to 1.0) -->
+      <str name="sort">score desc, mods.dateIssued desc</str>
+
+      <!-- set as recommended by http://wiki.apache.org/solr/DisMaxQParserPlugin -->
+      <str name="tie">0.1</str>
+
+      <!-- enable highlighting -->
+      <str name="hl">true</str>
+    </lst>
+    <lst name="appends">
+      <!-- query fields parameter -->
+      <str name="qf">mods.name</str>
+      <str name="pf">mods.name</str>
+
+      <!-- filter query: search only in published mods objects-->
+      <str name="fq">objectType:"mods"</str>
+      <str name="fq">category:"mir_status\:published"</str>
+    </lst>
+
+  </requestHandler>
+
+  <requestHandler name="/mods_gnd" class="solr.StandardRequestHandler">
+    <!-- default values for query parameters -->
+    <lst name="defaults">
+      <str name="defType">edismax</str>
+      <!-- show explicit set parameters in response (literal.<foo>) -->
+      <str name="echoParams">explicit</str>
+      <str name="rows">20</str>
+      <str name="fl">*,score</str>
+      <str name="mask">modules/mods/search-simplemods.xml</str>
+
+      <str name="qs">5</str>
+      <str name="start">0</str>
+
+      <!-- execute this query in case no q parameter is provided -->
+      <str name="q.alt">*:* -objectType:data_file -objectType:derivate</str>
+
+      <!-- sort by score, if user submits empty form, we show the last changed docs first (as the score will be fixed to 1.0) -->
+      <str name="sort">score desc, mods.dateIssued desc</str>
+
+      <!-- set as recommended by http://wiki.apache.org/solr/DisMaxQParserPlugin -->
+      <str name="tie">0.1</str>
+
+      <!-- enable highlighting -->
+      <str name="hl">true</str>
+    </lst>
+    <lst name="appends">
+      <!-- query fields parameter -->
+      <str name="qf">mods.gnd</str>
+      <str name="pf">mods.gnd</str>
+
+      <!-- filter query: search only in published mods objects-->
+      <str name="fq">objectType:"mods"</str>
+      <str name="fq">category:"mir_status\:published"</str>
+    </lst>
+
+  </requestHandler>
+
+  <requestHandler name="/parent" class="solr.StandardRequestHandler">
+    <!-- default values for query parameters -->
+    <lst name="defaults">
+      <str name="defType">edismax</str>
+      <!-- show explicit set parameters in response (literal.<foo>) -->
+      <str name="echoParams">explicit</str>
+      <str name="rows">20</str>
+      <str name="fl">*,score</str>
+      <str name="mask">modules/mods/search-simplemods.xml</str>
+
+      <str name="qs">5</str>
+      <str name="start">0</str>
+
+      <!-- execute this query in case no q parameter is provided -->
+      <str name="q.alt">*:* -objectType:data_file -objectType:derivate</str>
+
+      <!-- sort by score, if user submits empty form, we show the last changed docs first (as the score will be fixed to 1.0) -->
+      <str name="sort">score desc, mods.dateIssued desc</str>
+
+      <!-- set as recommended by http://wiki.apache.org/solr/DisMaxQParserPlugin -->
+      <str name="tie">0.1</str>
+
+      <!-- enable highlighting -->
+      <str name="hl">true</str>
+      <str name="fq">category:"mir_status\:published"</str>
+    </lst>
+    <lst name="appends">
+      <!-- query fields parameter -->
+      <str name="qf">parent</str>
+      <str name="pf">parent</str>
+
+      <!-- filter query: search only in published mods objects-->
+      <str name="fq">objectType:"mods"</str>
+    </lst>
+  </requestHandler>
+
+  <requestHandler name="/personindexp" class="solr.StandardRequestHandler">
+    <lst name="defaults">
+      <str name="echoParams">explicit</str>
+    </lst>
+    <lst name="invariants">
+      <str name="terms">true</str>
+      <str name="terms.fl">mods.pindexname.published</str>
+      <str name="terms.sort">index</str>
+      <str name="terms.regex.flag">case_insensitive</str>
+      <str name="terms.limit">-1</str>
+    </lst>
+    <arr name="components">
+      <str>terms</str>
+    </arr>
+  </requestHandler>
+
+  <requestHandler name="/personindex" class="solr.StandardRequestHandler">
+    <lst name="defaults">
+      <str name="echoParams">explicit</str>
+    </lst>
+    <lst name="invariants">
+      <str name="terms">true</str>
+      <str name="terms.fl">mods.pindexname</str>
+      <str name="terms.sort">index</str>
+      <str name="terms.regex.flag">case_insensitive</str>
+      <str name="terms.limit">-1</str>
+    </lst>
+    <arr name="components">
+      <str>terms</str>
+    </arr>
   </requestHandler>
 
 </config>

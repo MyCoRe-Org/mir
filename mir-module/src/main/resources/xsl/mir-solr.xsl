@@ -4,17 +4,19 @@
   <xsl:import href="xslImport:solr-document:mir-solr.xsl" />
 
   <xsl:template match="mycoreobject[contains(@ID,'_mods_')]">
-    <xsl:param name="foo" />
+    <xsl:variable name="status" select="mcrxsl:isInCategory(@ID,'mir_status:published')" />
     <xsl:apply-imports />
     <!-- fields from mycore-mods -->
-    <xsl:apply-templates select="metadata/def.modsContainer/modsContainer/mods:mods"/>
+    <xsl:apply-templates select="metadata/def.modsContainer/modsContainer/mods:mods" mode="mir">
+      <xsl:with-param name="status" select="$status" />
+    </xsl:apply-templates>
     <field name="hasFiles">
       <xsl:value-of select="count(structure/derobjects/derobject)&gt;0" />
     </field>
   </xsl:template>
 
   <xsl:template match="mods:mods" mode="mir">
-    <xsl:apply-imports/>
+    <xsl:param name="status" />
     <xsl:for-each select="mods:name[@type='corporate' and @authorityURI]">
       <xsl:variable name="uri" xmlns:mcrmods="xalan://org.mycore.mods.MCRMODSClassificationSupport" select="mcrmods:getClassCategParentLink(.)" />
       <xsl:if test="string-length($uri) &gt; 0">
@@ -93,6 +95,26 @@
             <xsl:value-of select="$isbn10Clear" />
           </field>
         </xsl:if>
+      </xsl:if>
+    </xsl:for-each>
+    <xsl:for-each select=".//mods:name[@type='personal']">
+      <!-- person index name entry -->
+      <xsl:variable name="pindexname">
+        <xsl:for-each select="mods:displayForm | mods:namePart | text()">
+          <xsl:value-of select="concat(' ',.)" />
+        </xsl:for-each>
+        <xsl:if test="contains(@valueURI,'http://d-nb.info/gnd/')">
+          <xsl:text>:</xsl:text>
+          <xsl:value-of select="substring-after(@valueURI,'http://d-nb.info/gnd/')" />
+        </xsl:if>
+      </xsl:variable>
+      <field name="mods.pindexname">
+        <xsl:value-of select="normalize-space($pindexname)" />
+      </field>
+      <xsl:if test="$status">
+        <field name="mods.pindexname.published">
+          <xsl:value-of select="normalize-space($pindexname)" />
+        </field>
       </xsl:if>
     </xsl:for-each>
   </xsl:template>

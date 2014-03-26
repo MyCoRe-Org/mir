@@ -16,6 +16,12 @@
       <when condition="not (user = gast )" url="/search/search-expert.xed" />
     </action>
   </collection>
+  <collection name="personindex">
+    <action action="browse">
+      <when condition="(group = admin) or (group = editor)" url="/servlets/solr/personindex?XSL.Style=person&amp;terms.regex=[a|ä].*" />
+      <when condition="true" url="/servlets/solr/personindexp?XSL.Style=person&amp;terms.regex=[a|ä].*" />
+    </action>
+  </collection>
   <collection name="thesis">
     <action action="create">
       <when condition="(group = admin) or (group = editor)" url="/servlets/object/create?type=mods&amp;layout=thesis-admin&amp;sourceUri=webapp:modules/mods/template-thesis.xml" />
