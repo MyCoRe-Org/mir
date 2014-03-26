@@ -41,7 +41,7 @@
         </header>
 
         <!-- show only on startpage -->
-        <xsl:if test="contains($browserAddress, '/content/main/index.xml')">
+        <xsl:if test="//div/@class='container jumbotwo'">
           <div class="jumbotron">
              <div class="container">
                <h1>Mit MIR wird alles gut!</h1>
@@ -51,8 +51,6 @@
         </xsl:if>
 
         <div class="container" id="page">
-          <div class="row">
-            <div class="col-md-12">
               <div class="row">
                 <div class="col-md-12" id="main_content">
                   <xsl:call-template name="print.writeProtectionMessage" />
