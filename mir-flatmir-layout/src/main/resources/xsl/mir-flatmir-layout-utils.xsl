@@ -18,8 +18,8 @@
           </button>
           <a href="{concat($WebApplicationBaseURL,substring($loaded_navigation_xml/@hrefStartingPage,2),$HttpSession)}" class="navbar-brand">
             <span id="logo_mir">mir</span>
-            <span id="logo_modul">modul</span>
-            <span id="logo_slogan">mycore/mods institutional repository</span>
+            <span id="logo_modul">mycore</span>
+            <span id="logo_slogan">mods institutional repository</span>
           </a>
         </div>
         <nav class="collapse navbar-collapse mir-prop-nav-entries">
