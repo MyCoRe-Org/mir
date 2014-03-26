@@ -6,31 +6,45 @@
     <label xml:lang="en">Main menu</label>
 
     <item href="#" type="intern" target="_self" style="normal" replaceMenu="false">
-      <label xml:lang="de">Blättern im Bestand</label>
+      <label xml:lang="de">Suche</label>
+      <label xml:lang="en">Search</label>
+      <item href="/servlets/MCRActionMappingServlet/simple/search" type="intern" target="_self" style="normal" replaceMenu="false">
+        <label xml:lang="de">einfach</label>
+        <label xml:lang="en">simple</label>
+      </item>
+      <item href="/servlets/MCRActionMappingServlet/complex/search" type="intern" target="_self" style="normal" replaceMenu="false">
+        <label xml:lang="de">komplex</label>
+        <label xml:lang="en">complex</label>
+      </item>
+      <item href="/servlets/MCRActionMappingServlet/expert/search" type="intern" target="_self" style="normal" replaceMenu="false">
+        <label xml:lang="de">expert</label>
+        <label xml:lang="en">expert</label>
+      </item>
+    </item>
+
+    <item href="#" type="intern" target="_self" style="normal" replaceMenu="false">
+      <label xml:lang="de">Blättern</label>
       <label xml:lang="en">Browse</label>
       <item href="/content/main/classifications/institutes.xml" type="intern" target="_self" style="normal" replaceMenu="false">
-        <label xml:lang="de">Nach Einrichtung</label>
+        <label xml:lang="de">nach Einrichtung</label>
         <label xml:lang="en">Institutions</label>
       </item>
       <item href="/content/main/classifications/genres.xml" type="intern" target="_self" style="normal" replaceMenu="false">
-        <label xml:lang="de">Nach Dokumenttyp</label>
+        <label xml:lang="de">nach Dokumenttyp</label>
         <label xml:lang="en">Genre</label>
       </item>
       <item href="/content/main/classifications/sdnb.xml" type="intern" target="_self" style="normal" replaceMenu="false">
-        <label xml:lang="de">Nach Sachgruppe</label>
+        <label xml:lang="de">nach Sachgruppe</label>
         <label xml:lang="en">SNDB</label>
       </item>
     </item>
-    <item href="/content/main/search/simple.xed" type="intern" target="_self" style="normal" replaceMenu="false">
-      <label xml:lang="de">Suche</label>
-      <label xml:lang="en">Search</label>
-    </item>
+
     <item href="/servlets/MCRActionMappingServlet/personindex/browse" type="intern" target="_self" style="normal" replaceMenu="false">
       <label xml:lang="de">Index Personen</label>
       <label xml:lang="en">Index of Persons</label>
     </item>
 
-    <item href="/content/main/authors.xml" type="intern" target="_self" style="normal" replaceMenu="false">
+    <item href="#" type="intern" target="_self" style="normal" replaceMenu="false">
       <label xml:lang="de">Dokumente einreichen</label>
       <label xml:lang="en">Submit Document</label>
       <item href="/content/main/publish/index.xml" type="intern" target="_self" style="normal" replaceMenu="false">
