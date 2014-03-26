@@ -3,32 +3,36 @@
 <MyCoReWebPage>
   <section xml:lang="de" title="Layout wechseln">
     <h1>Template Chooser</h1>
-    <form role="form" method="post" name="templateChooser" class="form-horizontal">
-      <div class="form-group">
-        <label for="template" class="col-sm-3 control-label">Template</label>
-        <div class="col-sm-3">
-          <select id="template" name="XSL.MIR.DefaultLayout.CSS.SESSION" onChange="document.templateChooser.submit()" class="form-control">
-            <option value="">Standard</option>
-            <option value="amelia">Amelia</option>
-            <option value="cerulean">Cerulean</option>
-            <option value="cosmo">Cosmo</option>
-            <option value="cyborg">Cyborg</option>
-            <option value="flatly">Flatly</option>
-            <option value="journal">Journal</option>
-            <option value="lumen">Lumen</option>
-            <option value="readable">Readable</option>
-            <option value="simplex">Simplex</option>
-            <option value="slate">Slate</option>
-            <option value="spacelab">Spacelab</option>
-            <option value="superhero">Superhero</option>
-            <option value="united">United</option>
-            <option value="yeti">Yeti</option>
-          </select>
+    <div class="row">
+      <form role="form" method="post" name="templateChooser" class="form-horizontal col-sm-5">
+        <div class="form-group">
+          <label for="template" class="col-sm-6 control-label">Template</label>
+          <div class="col-sm-6">
+            <select id="template" name="XSL.MIR.DefaultLayout.CSS.SESSION" onChange="document.templateChooser.submit()" class="form-control">
+              <option value="">Standard</option>
+              <option value="amelia">Amelia</option>
+              <option value="default">Bootstrap</option>
+              <option value="cerulean">Cerulean</option>
+              <option value="cosmo">Cosmo</option>
+              <option value="cyborg">Cyborg</option>
+              <option value="flatly">Flatly</option>
+              <option value="journal">Journal</option>
+              <option value="lumen">Lumen</option>
+              <option value="readable">Readable</option>
+              <option value="simplex">Simplex</option>
+              <option value="slate">Slate</option>
+              <option value="spacelab">Spacelab</option>
+              <option value="superhero">Superhero</option>
+              <option value="united">United</option>
+              <option value="yeti">Yeti</option>
+            </select>
+          </div>
         </div>
-      </div>
-    </form>
+      </form>
+      <pre id="mycoreProperties" class="col-sm-6"/>
+    </div>
     <h2>Preview</h2>
-    <div class="container" id="remote">
+    <div class="col-xs-12" id="remote">
     </div>
     <style type="text/css">
     <![CDATA[
@@ -62,6 +66,7 @@
           curCss=curCss.substr(curCss.lastIndexOf('/')+1);
           curCss=curCss.substr(0,curCss.indexOf('.'));
           $('form[name="templateChooser"] option[value="'+curCss+'"]').attr("selected","selected");
+          $('#mycoreProperties').text('#add to mycore.properties\nMIR.DefaultLayout.CSS='+curCss+'.min');
         });
       })(jQuery);
     ]]>

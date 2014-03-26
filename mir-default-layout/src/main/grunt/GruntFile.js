@@ -2,6 +2,7 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-less');
   grunt.loadNpmTasks('grunt-replace');
+  grunt.loadNpmTasks('grunt-touch');
   var fs = require('fs');
   var globalConfig = {
     lessFile : grunt.option('lessFile'),
@@ -39,7 +40,7 @@ module.exports = function (grunt) {
             ' * Based on Bootstrap and Bootswatch\n' +
             '*/\n',
     mir: {
-      amelia:{}, cerulean:{}, cosmo:{}, cyborg:{}, 
+      amelia:{}, cerulean:{}, cosmo:{}, cyborg:{}, "default":{},
       flatly:{}, journal:{}, lumen:{}, readable:{},
       simplex:{}, slate:{}, spacelab:{}, superhero:{},
       united:{}, yeti:{}
@@ -63,6 +64,15 @@ module.exports = function (grunt) {
              // dest: 'build/'
            }
         ]
+      }
+    },
+    touch: {
+      bootstrap: {
+        options:{
+          force: true,
+          time: "2014-03-26",
+        },
+        src:['bower_components/bootswatch/default/variables.less', 'bower_components/bootswatch/default/bootswatch.less']
       }
     },
     concat: {
@@ -159,6 +169,7 @@ module.exports = function (grunt) {
   grunt.registerTask('default', 'build a theme', function() {
     grunt.log.writeln('less directory: '+grunt.config('globalConfig').lessDirectory());
     grunt.task.run('replace');
+    grunt.task.run('touch');
     grunt.config(
         'globalConfig.lastModified',
         new Date(
