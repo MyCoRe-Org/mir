@@ -7,7 +7,7 @@
     <version>0.1-SNAPSHOT</version>
   </parent>
   <artifactId>mir-flatmir-layout</artifactId>
-  <name>MIR: flatly layout</name>
+  <name>MIR: Flatly layout</name>
   <description>mir layout template based on bootswatch/flatly</description>
   <properties>
     <lesscss.compress>true</lesscss.compress>
