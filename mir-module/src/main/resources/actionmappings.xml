@@ -8,7 +8,7 @@
   <collection name="complex">
     <action action="search">
       <when condition="not (user = gast )" url="/content/main/search/complex_intern.xml" />
-      <when condition="true" url="/content/main/search/complex.xml" />
+      <when condition="true" url="/content/main/search/complex.xed" />
     </action>
   </collection>
   <collection name="expert">
