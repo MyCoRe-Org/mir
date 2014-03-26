@@ -8,15 +8,4 @@
     <name>mycore</name>
     <others/>
   </absolute-ordering>
-
-<!-- Workaround for current mycore version -->
-<servlet id="ActionMapping">
-      <servlet-name>ActionMapping</servlet-name>
-      <servlet-class>org.mycore.wfc.actionmapping.MCRActionMappingServlet</servlet-class>
-</servlet>
-<servlet-mapping>
-   <servlet-name>ActionMapping</servlet-name>
-   <url-pattern>/servlets/MCRActionMappingServlet/*</url-pattern>
-</servlet-mapping>
-<!-- to be removed -->
 </web-app>
