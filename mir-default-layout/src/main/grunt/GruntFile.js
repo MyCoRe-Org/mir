@@ -2,7 +2,6 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-less');
   grunt.loadNpmTasks('grunt-replace');
-  grunt.loadNpmTasks('grunt-touch');
   var fs = require('fs');
   var globalConfig = {
     lessFile : grunt.option('lessFile'),
@@ -13,14 +12,19 @@ module.exports = function (grunt) {
     targetDirectory : grunt.option('targetDirectory'),
     lastModified:new Date(0)
   };
-  var dirLastModified=function(dir, date){
-    var src=grunt.file.expand(dir+'/**/*.less');
-    var modified=[];
-    src.forEach(function(file, index){
-      var stat=fs.statSync(file);
-      modified[index]=stat.mtime;
+  var dirLastModified = function(dir, date) {
+    var src = grunt.file.expand(dir + '/**/*.less');
+    var modified = [];
+    src.forEach(function(file, index) {
+      var stat = fs.statSync(file);
+      modified[index] = stat.mtime;
     });
     return new Date(Math.max.apply(Math, modified));
+  };
+  var createFileIfNotExist = function(filepath) {
+    if (!grunt.file.exists(filepath)) {
+      grunt.file.write(filepath);
+    }
   };
   var needRebuild=function(dest){
     var destModified = fs.existsSync(dest) ? fs.statSync(dest).mtime : new Date(0);
@@ -66,26 +70,6 @@ module.exports = function (grunt) {
         ]
       }
     },
-    touch: {
-      bootstrap: {
-        options:{
-          force: true,
-          time: null,
-          ref: grunt.option('lessFile')
-        },
-        src:['bower_components/bootswatch/default/variables.less', 'bower_components/bootswatch/default/bootswatch.less']
-      }
-    },
-    concat: {
-              options: {
-                banner: '<%= banner %>',
-                stripBanners: false
-              },
-              dist: {
-                src: [],
-                dest: ''
-              }
-            },
     concat: {
       options: {
         banner: '<%= banner %>',
@@ -179,7 +163,8 @@ module.exports = function (grunt) {
             )
         )
     );
-    grunt.task.run('touch');
+    createFileIfNotExist('bower_components/bootswatch/default/variables.less');
+    createFileIfNotExist('bower_components/bootswatch/default/bootswatch.less');
     grunt.task.run('mir');
   });
 	
