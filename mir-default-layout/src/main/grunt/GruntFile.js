@@ -8,7 +8,7 @@ module.exports = function (grunt) {
     lessFile : grunt.option('lessFile'),
     lessDirectory : function() {
       var lessFile = grunt.config('globalConfig.lessFile');
-      return lessFile.substring(0, Math.max(lessFile.lastIndexOf("/"), lessFile.lastIndexOf("\\\\")));
+      return lessFile.substring(0, Math.max(lessFile.lastIndexOf("/"), lessFile.lastIndexOf("\\")));
     },
     targetDirectory : grunt.option('targetDirectory'),
     lastModified:new Date(0)
