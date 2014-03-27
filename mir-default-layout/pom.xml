@@ -43,19 +43,14 @@
         <version>1.2.1</version>
         <configuration>
           <gruntBuildDirectory>${grunt.projectBase}</gruntBuildDirectory>
-          <gruntExecutable>${grunt.projectBase}/node_modules/grunt-cli/bin/grunt</gruntExecutable>
-          <bowerExecutable>${grunt.projectBase}/node_modules/bower/bin/bower</bowerExecutable>
-          <runGruntWithNode>true</runGruntWithNode>
           <ignoreTasksErrors>false</ignoreTasksErrors>
           <ignoreAllErrors>false</ignoreAllErrors>
-          
           <gruntOptions>
             <gruntOption>--verbose</gruntOption>
             <gruntOption>--lessFile ${basedir}/src/main/less/build.less</gruntOption>
             <gruntOption>--targetDirectory ${template.cssdir}</gruntOption>
           </gruntOptions>
         </configuration>
-
         <executions>
           <execution>
             <phase>process-resources</phase>
@@ -67,7 +62,7 @@
           </execution>
         </executions>
       </plugin>
-   
+
       <plugin>
         <artifactId>maven-resources-plugin</artifactId>
         <executions>
@@ -91,4 +86,27 @@
       </plugin>
     </plugins>
   </build>
+  <profiles>
+    <profile>
+      <id>local-grunt</id>
+      <activation>
+        <os>
+          <family>unix</family>
+        </os>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>pl.allegro</groupId>
+            <artifactId>grunt-maven-plugin</artifactId>
+            <configuration>
+              <gruntExecutable>${grunt.projectBase}/node_modules/grunt-cli/bin/grunt</gruntExecutable>
+              <bowerExecutable>${grunt.projectBase}/node_modules/bower/bin/bower</bowerExecutable>
+              <runGruntWithNode>true</runGruntWithNode>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 </project>
