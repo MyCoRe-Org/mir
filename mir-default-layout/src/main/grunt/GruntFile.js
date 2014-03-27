@@ -70,7 +70,8 @@ module.exports = function (grunt) {
       bootstrap: {
         options:{
           force: true,
-          time: "2014-03-26",
+          time: null,
+          ref: grunt.option('lessFile')
         },
         src:['bower_components/bootswatch/default/variables.less', 'bower_components/bootswatch/default/bootswatch.less']
       }
@@ -169,16 +170,16 @@ module.exports = function (grunt) {
   grunt.registerTask('default', 'build a theme', function() {
     grunt.log.writeln('less directory: '+grunt.config('globalConfig').lessDirectory());
     grunt.task.run('replace');
-    grunt.task.run('touch');
     grunt.config(
         'globalConfig.lastModified',
         new Date(
             Math.max(
                 dirLastModified(grunt.config('globalConfig').lessDirectory()),
                 dirLastModified('bower_components')
-                )
             )
+        )
     );
+    grunt.task.run('touch');
     grunt.task.run('mir');
   });
 	
