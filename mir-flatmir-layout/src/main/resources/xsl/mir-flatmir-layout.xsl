@@ -110,7 +110,7 @@
                   <h4>Layout based on</h4>
                   <ul class="internal_links">
                     <li><a href="http://getbootstrap.com/">Bootstrap</a></li>
-                    <li><a href="#">Lorem</a></li>
+                    <li><a href="{$WebApplicationBaseURL}mir-flatmir-layout/template/flatmir.xml">flatmir</a></li>
                     <li><a href="#">Accusam</a></li>
                   </ul>
                 </div>
