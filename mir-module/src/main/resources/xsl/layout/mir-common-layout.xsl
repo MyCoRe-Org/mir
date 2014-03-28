@@ -147,14 +147,14 @@
           <xsl:when test="item">
             <xsl:call-template name="mir.topNavLink">
               <xsl:with-param name="title" select="$linkText" />
-              <xsl:with-param name="active" select="current()[@href = $browserAddress ]" />
+              <xsl:with-param name="active" select="descendant-or-self::item[@href = $browserAddress ]" />
               <xsl:with-param name="childNav" select="." />
             </xsl:call-template>
           </xsl:when>
           <xsl:otherwise>
             <xsl:call-template name="mir.navLink">
               <xsl:with-param name="title" select="$linkText" />
-              <xsl:with-param name="active" select="current()[@href = $browserAddress ]" />
+              <xsl:with-param name="active" select="descendant-or-self::item[@href = $browserAddress ]" />
               <xsl:with-param name="url" select="$href" />
             </xsl:call-template>
           </xsl:otherwise>
@@ -186,7 +186,6 @@
                 </li>
                 <xsl:call-template name="mir.legacy-navigation">
                   <xsl:with-param name="rootNode" select="$loaded_navigation_xml/navi-below" />
-                  <xsl:with-param name="topNav" select="true()" />
                 </xsl:call-template>
               </ul>
             </li>
@@ -302,12 +301,12 @@
     <xsl:choose>
       <xsl:when test="string-length($url ) &gt; 0">
         <li>
+          <xsl:if test="$active">
+            <xsl:attribute name="class">
+              <xsl:value-of select="'active'" />
+            </xsl:attribute>
+          </xsl:if>
           <a href="{$url}">
-            <xsl:if test="$active">
-              <xsl:attribute name="class">
-                <xsl:value-of select="'active'" />
-              </xsl:attribute>
-            </xsl:if>
             <xsl:value-of select="$title" />
           </a>
         </li>
@@ -325,6 +324,11 @@
     <xsl:param name="childNav" />
     <xsl:variable name="menuId" select="generate-id($childNav)" />
     <li class="dropdown">
+      <xsl:if test="$active">
+        <xsl:attribute name="class">
+          <xsl:value-of select="'active'" />
+        </xsl:attribute>
+      </xsl:if>
       <a id="{$menuId}" class="dropdown-toggle" data-toggle="dropdown" href="#">
         <xsl:value-of select="$title" />
         <span class="caret"></span>
