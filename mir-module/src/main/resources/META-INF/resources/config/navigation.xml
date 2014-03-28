@@ -20,10 +20,6 @@
         <label xml:lang="de">expert</label>
         <label xml:lang="en">expert</label>
       </item>
-      <item href="/servlets/MCRActionMappingServlet/personindex/browse" type="intern" target="_self" style="normal" replaceMenu="false">
-        <label xml:lang="de">Personenindex</label>
-        <label xml:lang="en">Index of Persons</label>
-      </item>
     </item>
 
     <item href="#" type="intern" target="_self" style="normal" replaceMenu="false">
@@ -40,6 +36,10 @@
       <item href="/content/main/classifications/sdnb.xml" type="intern" target="_self" style="normal" replaceMenu="false">
         <label xml:lang="de">nach Sachgruppe</label>
         <label xml:lang="en">SNDB</label>
+      </item>
+      <item href="/servlets/MCRActionMappingServlet/personindex/browse" type="intern" target="_self" style="normal" replaceMenu="false">
+        <label xml:lang="de">nach Personen</label>
+        <label xml:lang="en">Persons</label>
       </item>
     </item>
 
