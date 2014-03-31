@@ -82,7 +82,9 @@
           <!-- End: COLLAPSE -->
         </div>
         <div class="col-md-4">
-
+            <!-- Start: EDIT -->
+            <xsl:apply-templates select="div[@id='mir-edit']" mode="copyContent" />
+            <!-- End: EDIT -->
           <div class="well metadata">
             <!-- Start: CITATION -->
             <xsl:apply-templates select="div[@id='mir-metadata']" mode="newMetadata" />
