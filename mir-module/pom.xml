@@ -59,10 +59,6 @@
       <artifactId>log4j</artifactId>
     </dependency>
     <dependency>
-      <groupId>net.glxn</groupId>
-      <artifactId>qrgen</artifactId>
-    </dependency>
-    <dependency>
       <groupId>javax.servlet</groupId>
       <artifactId>javax.servlet-api</artifactId>
     </dependency>
@@ -90,6 +86,10 @@
     <dependency>
       <groupId>org.apache.pdfbox</groupId>
       <artifactId>pdfbox</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.google.zxing</groupId>
+      <artifactId>core</artifactId>
     </dependency>
     <dependency>
       <scope>test</scope>

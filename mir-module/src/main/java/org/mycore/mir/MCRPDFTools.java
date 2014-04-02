@@ -35,14 +35,6 @@ import java.nio.channels.Channels;
 import java.nio.channels.FileChannel;
 import java.nio.file.StandardOpenOption;
 import java.util.List;
-import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.atomic.AtomicInteger;
-
-import javax.imageio.IIOImage;
-import javax.imageio.ImageIO;
-import javax.imageio.ImageWriteParam;
-import javax.imageio.ImageWriter;
-import javax.imageio.stream.ImageOutputStream;
 
 import org.apache.log4j.Logger;
 import org.apache.pdfbox.io.RandomAccess;
@@ -53,9 +45,7 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDDocumentCatalog;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
-import org.mycore.common.content.MCRByteContent;
 import org.mycore.common.content.MCRContent;
-import org.mycore.common.content.streams.MCRByteArrayOutputStream;
 
 /**
  * @author Thomas Scheffler (yagee)
@@ -69,20 +59,10 @@ class MCRPDFTools implements AutoCloseable {
 
     private static Logger LOGGER = Logger.getLogger(MCRPDFTools.class);
 
-    //stores max png size for byte array buffer of output
-    private static AtomicInteger maxPngSize = new AtomicInteger(64 * 1024);
-
-    private ImageWriteParam imageWriteParam;
-
-    private ConcurrentLinkedQueue<ImageWriter> imageWriters = new ConcurrentLinkedQueue<ImageWriter>();
+    private MCRPNGTools pngTools;
 
     public MCRPDFTools() {
-        imageWriteParam = ImageIO.getImageWritersBySuffix("png").next().getDefaultWriteParam();
-        try {
-            imageWriteParam.setProgressiveMode(ImageWriteParam.MODE_DEFAULT);
-        } catch (UnsupportedOperationException e) {
-            LOGGER.warn("Your PNG encoder does not support progressive PNGs.");
-        }
+        this.pngTools = new MCRPNGTools();
     }
 
     static BufferedImage getThumbnail(File pdfFile, int thumbnailSize, boolean centered) throws IOException {
@@ -198,41 +178,14 @@ class MCRPDFTools implements AutoCloseable {
 
     MCRContent getThumnail(File pdfFile, int thumbnailSize, boolean centered) throws IOException {
         BufferedImage thumbnail = MCRPDFTools.getThumbnail(pdfFile, thumbnailSize, centered);
-        if (thumbnail != null) {
-            ImageWriter imageWriter = getImageWriter();
-            try (MCRByteArrayOutputStream bout = new MCRByteArrayOutputStream(maxPngSize.get());
-                ImageOutputStream imageOutputStream = ImageIO.createImageOutputStream(bout)) {
-                imageWriter.setOutput(imageOutputStream);
-                IIOImage iioImage = new IIOImage(thumbnail, null, null);
-                imageWriter.write(null, iioImage, imageWriteParam);
-                int contentLength = bout.size();
-                maxPngSize.set(Math.max(maxPngSize.get(), contentLength));
-                MCRByteContent imageContent = new MCRByteContent(bout.getBuffer(), 0, bout.size(),
-                    pdfFile.lastModified());
-                imageContent.setMimeType("image/png");
-                return imageContent;
-            } finally {
-                imageWriter.reset();
-                imageWriters.add(imageWriter);
-            }
-        } else {
-            return null;
-        }
-    }
-
-    private ImageWriter getImageWriter() {
-        ImageWriter imageWriter = imageWriters.poll();
-        if (imageWriter == null) {
-            imageWriter = ImageIO.getImageWritersBySuffix("png").next();
-        }
-        return imageWriter;
+        MCRContent pngContent = pngTools.toPNGContent(thumbnail);
+        pngContent.setLastModified(pdfFile.lastModified());
+        return pngContent;
     }
 
     @Override
     public void close() throws Exception {
-        for (ImageWriter imageWriter : imageWriters) {
-            imageWriter.dispose();
-        }
+        this.pngTools.close();
     }
 
 }

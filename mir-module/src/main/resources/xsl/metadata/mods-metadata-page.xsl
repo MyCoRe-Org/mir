@@ -92,7 +92,8 @@
           </div>
           <div class="well clearfix">
             <span class="pull-right hidden-xs" rel="tooltip" title="QR-code for easy mobile access to this page.">
-              <img src="{$WebApplicationBaseURL}img/qrcodes/{substring-after($RequestURL, $WebApplicationBaseURL)}" width="100"
+              <xsl:variable name="qrSize" select="150"/>
+              <img src="{$WebApplicationBaseURL}img/qrcodes/{$qrSize}/{substring-after($RequestURL, $WebApplicationBaseURL)}" style="min-width:{$qrSize}px"
                 alt="QR-code for easy mobile access" />
             </span>
             <h4>Share </h4>
@@ -123,6 +124,7 @@
         <![CDATA[
           jQuery(document).ready(function ($) {
            $('*[data-social-share-privacy=true]:not([data-init=true])').socialSharePrivacy().attr('data-init','true');
+           $("[data-toggle='tooltip']").tooltip();
           });
         ]]>
       </script>
