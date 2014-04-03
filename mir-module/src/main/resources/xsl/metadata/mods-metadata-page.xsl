@@ -92,7 +92,7 @@
           </div>
           <div class="well clearfix">
             <span class="pull-right hidden-xs" rel="tooltip" title="QR-code for easy mobile access to this page.">
-              <xsl:variable name="qrSize" select="150"/>
+              <xsl:variable name="qrSize" select="145"/>
               <img src="{$WebApplicationBaseURL}img/qrcodes/{$qrSize}/{substring-after($RequestURL, $WebApplicationBaseURL)}" style="min-width:{$qrSize}px"
                 alt="QR-code for easy mobile access" />
             </span>
