@@ -34,7 +34,21 @@
                       <xsl:for-each select="$ifsDirectory/mcr_directory/children/child">
                         <tr>
                           <td>
-                            <a href="{$ServletsBaseURL}MCRFileNodeServlet/{$derId}/{mcr:encodeURIPath(name)}{$HttpSession}">
+                            <xsl:variable name="filePath" select="concat($derId,'/',mcr:encodeURIPath(name),$HttpSession)" />
+                            <a href="{$ServletsBaseURL}MCRFileNodeServlet/{$filePath}">
+                              <xsl:if test="'.pdf' = translate(substring(name, string-length(name) - 3),'PDF','pdf')">
+                                <xsl:attribute name="data-toggle">tooltip</xsl:attribute>
+                                <xsl:attribute name="data-placement">top</xsl:attribute>
+                                <xsl:attribute name="data-html">true</xsl:attribute>
+                                <xsl:attribute name="data-title">
+                                  <xsl:text>&lt;img src="</xsl:text>
+                                  <xsl:value-of select="concat($WebApplicationBaseURL,'img/pdfthumb/',$filePath,'?centerThumb=no')"/>
+                                  <xsl:text>"&gt;</xsl:text>
+                                </xsl:attribute>
+                                <xsl:message>
+                                  PDF
+                                </xsl:message>
+                              </xsl:if>
                               <xsl:value-of select="name" />
                             </a>
                           </td>
