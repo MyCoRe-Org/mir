@@ -380,9 +380,9 @@
         <xsl:with-param name="layout" select="'all'" />
       </xsl:call-template>
     </xsl:variable>
-    <xsl:if test="$objectHost = 'local'">
+    <xsl:variable name="basketType" select="'objects'" />
+    <xsl:if test="$accessedit or $accessdelete or not(basket:contains($basketType, /mycoreobject/@ID))">
       <div class="btn-group">
-        <xsl:variable name="basketType" select="'objects'" />
         <xsl:if test="not(basket:contains($basketType, /mycoreobject/@ID))">
           <a class="btn btn-primary"
             href="{$ServletsBaseURL}MCRBasketServlet{$HttpSession}?type={$basketType}&amp;action=add&amp;redirect=referer&amp;id={/mycoreobject/@ID}&amp;uri=mcrobject:{/mycoreobject/@ID}">
