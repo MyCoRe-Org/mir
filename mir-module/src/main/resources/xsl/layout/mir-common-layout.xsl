@@ -80,9 +80,6 @@
                 <span class="caret" />
               </a>
               <ul class="dropdown-menu" role="menu" aria-labelledby="brandMenu">
-                <li>
-                  <a href="{concat($WebApplicationBaseURL,substring($loaded_navigation_xml/@hrefStartingPage,2),$HttpSession)}">Start</a>
-                </li>
                 <xsl:apply-templates select="$loaded_navigation_xml/menu[@id='brand']/*" />
               </ul>
             </li>
