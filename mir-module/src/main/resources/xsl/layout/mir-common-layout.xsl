@@ -16,7 +16,8 @@
   <xsl:param name="page" />
   <xsl:param name="breadCrumb" />
   <xsl:include href="layout-utils.xsl" />
-  <xsl:variable name="loaded_navigation_xml" select="document('webapp:config/navigation.xml')/navigation" />
+  <xsl:include href="resource:xsl/layout/mir-navigation.xsl" />
+  <xsl:variable name="loaded_navigation_xml" select="layoutUtils:getPersonalNavigation()/navigation" />
   <xsl:variable name="browserAddress">
     <xsl:call-template name="getBrowserAddress" />
   </xsl:variable>
@@ -54,113 +55,11 @@
             <span class="caret" />
           </a>
           <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-            <li class="dropdown-header">
-              Cool stuff
-            </li>
-            <li class="divider" />
-            <li>
-              <a href="{$WebApplicationBaseURL}authorization/change-password.xml?action=password&amp;id={$CurrentUser}">Passwort ändern</a>
-            </li>
-            <li>
-              <a href="{$ServletsBaseURL}MCRUserServlet?action=show">Benutzerdaten anzeigen</a>
-            </li>
-            <li>
-              <a href="{$WebApplicationBaseURL}authorization/change-current-user.xml?action=saveCurrentUser">Kontaktdaten ändern</a>
-            </li>
-            <li class="divider" />
-            <li>
-              <a href="{$WebApplicationBaseURL}modules/classeditor/classificationEditor.xml">Klassifikationseditor</a>
-            </li>
-            <xsl:if test="mcrxsl:isCurrentUserInRole('admin')">
-              <li class="divider" />
-              <li>
-                <a href="{$WebApplicationBaseURL}authorization/new-user.xml?action=save">Neuen Nutzer anlegen</a>
-              </li>
-              <li>
-                <a href="{$ServletsBaseURL}MCRUserServlet">Nutzer suchen und verwalten</a>
-              </li>
-              <li>
-                <a href="{$WebApplicationBaseURL}authorization/roles-editor.xml">Gruppen administrieren</a>
-              </li>
-              <li class="divider" />
-              <li>
-                <a href="{$ServletsBaseURL}MCRSessionListingServlet">Aktive Sitzungen anzeigen</a>
-              </li>
-              <li>
-                <a href="{$ServletsBaseURL}MCRBroadcastingServlet?mode=getReceiverList">Module - Broadcasting</a>
-              </li>
-              <li>
-                <a href="{$WebApplicationBaseURL}rsc/ACLE/start">ACL-Editor</a>
-              </li>
-              <li>
-                <a href="{$WebApplicationBaseURL}modules/webcli/launchpad.xml">WebCLI</a>
-              </li>
-            </xsl:if>
-            <li class="divider" />
-            <li>
-              <a href="{$ServletsBaseURL}logout{$HttpSession}">
-                <xsl:value-of select="i18n:translate('component.userlogin.button.logout')" />
-              </a>
-            </li>
+            <xsl:apply-templates select="$loaded_navigation_xml/menu[@id='user']/*" />
           </ul>
         </li>
       </xsl:otherwise>
     </xsl:choose>
-    <xsl:if test="not(mcrxsl:isCurrentUserGuestUser())">
-    </xsl:if>
-  </xsl:template>
-  <xsl:template name="mir.legacy-navigation">
-    <xsl:param name="rootNode" />
-    <xsl:for-each select="$rootNode/item">
-      <xsl:variable name="access">
-        <xsl:call-template name="get.readAccess">
-          <xsl:with-param name="webpage" select="@href" />
-          <xsl:with-param name="blockerWebpage" select="$rootNode" />
-        </xsl:call-template>
-      </xsl:variable>
-      <xsl:if test="$access='true'">
-        <xsl:variable name="href">
-          <xsl:choose>
-            <!-- item @type is "intern" -> add the web application path before the link -->
-            <xsl:when
-              test=" starts-with(@href,'http:') or starts-with(@href,'https:') or starts-with(@href,'mailto:') or starts-with(@href,'ftp:')">
-              <xsl:value-of select="@href" />
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:call-template name="UrlAddSession">
-                <xsl:with-param name="url" select="concat($WebApplicationBaseURL,substring-after(@href,'/'))" />
-              </xsl:call-template>
-            </xsl:otherwise>
-          </xsl:choose>
-        </xsl:variable>
-        <xsl:variable name="linkText">
-          <xsl:choose>
-            <xsl:when test="label[lang($CurrentLang)] != ''">
-              <xsl:value-of select="label[lang($CurrentLang)]" />
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:value-of select="label[lang($DefaultLang)]" />
-            </xsl:otherwise>
-          </xsl:choose>
-        </xsl:variable>
-        <xsl:choose>
-          <xsl:when test="item">
-            <xsl:call-template name="mir.topNavLink">
-              <xsl:with-param name="title" select="$linkText" />
-              <xsl:with-param name="active" select="descendant-or-self::item[@href = $browserAddress ]" />
-              <xsl:with-param name="childNav" select="." />
-            </xsl:call-template>
-          </xsl:when>
-          <xsl:otherwise>
-            <xsl:call-template name="mir.navLink">
-              <xsl:with-param name="title" select="$linkText" />
-              <xsl:with-param name="active" select="descendant-or-self::item[@href = $browserAddress ]" />
-              <xsl:with-param name="url" select="$href" />
-            </xsl:call-template>
-          </xsl:otherwise>
-        </xsl:choose>
-      </xsl:if>
-    </xsl:for-each>
   </xsl:template>
 
   <xsl:template name="mir.navigation">
@@ -184,9 +83,7 @@
                 <li>
                   <a href="{concat($WebApplicationBaseURL,substring($loaded_navigation_xml/@hrefStartingPage,2),$HttpSession)}">Start</a>
                 </li>
-                <xsl:call-template name="mir.legacy-navigation">
-                  <xsl:with-param name="rootNode" select="$loaded_navigation_xml/navi-below" />
-                </xsl:call-template>
+                <xsl:apply-templates select="$loaded_navigation_xml/menu[@id='brand']/*" />
               </ul>
             </li>
           </ul>
@@ -194,9 +91,10 @@
           <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse navbar-ex1-collapse">
           <ul class="nav navbar-nav">
-            <xsl:call-template name="mir.legacy-navigation">
-              <xsl:with-param name="rootNode" select="$loaded_navigation_xml/navi-main" />
-            </xsl:call-template>
+            <xsl:apply-templates select="$loaded_navigation_xml/menu[@id='search']" />
+            <xsl:apply-templates select="$loaded_navigation_xml/menu[@id='browse']" />
+            <xsl:apply-templates select="$loaded_navigation_xml/menu[@id='publish']" />
+            <xsl:apply-templates select="$loaded_navigation_xml/menu[@id='main']" />
             <xsl:call-template name="mir.basketMenu" />
             <xsl:call-template name="mir.searchMenu" />
           </ul>
@@ -293,52 +191,6 @@
     <xsl:call-template name="UrlAddSession">
       <xsl:with-param name="url" select="$langURL" />
     </xsl:call-template>
-  </xsl:template>
-  <xsl:template name="mir.navLink">
-    <xsl:param name="title" />
-    <xsl:param name="active" />
-    <xsl:param name="url" select="''" />
-    <xsl:choose>
-      <xsl:when test="string-length($url ) &gt; 0">
-        <li>
-          <xsl:if test="$active">
-            <xsl:attribute name="class">
-              <xsl:value-of select="'active'" />
-            </xsl:attribute>
-          </xsl:if>
-          <a href="{$url}">
-            <xsl:value-of select="$title" />
-          </a>
-        </li>
-      </xsl:when>
-      <xsl:otherwise>
-        <xsl:comment>
-          <xsl:value-of select="$title" />
-        </xsl:comment>
-      </xsl:otherwise>
-    </xsl:choose>
-  </xsl:template>
-  <xsl:template name="mir.topNavLink">
-    <xsl:param name="title" />
-    <xsl:param name="active" />
-    <xsl:param name="childNav" />
-    <xsl:variable name="menuId" select="generate-id($childNav)" />
-    <li class="dropdown">
-      <xsl:if test="$active">
-        <xsl:attribute name="class">
-          <xsl:value-of select="'active'" />
-        </xsl:attribute>
-      </xsl:if>
-      <a id="{$menuId}" class="dropdown-toggle" data-toggle="dropdown" href="#">
-        <xsl:value-of select="$title" />
-        <span class="caret"></span>
-      </a>
-      <ul class="dropdown-menu" role="menu" aria-labelledby="{$menuId}">
-        <xsl:call-template name="mir.legacy-navigation">
-          <xsl:with-param name="rootNode" select="$childNav" />
-        </xsl:call-template>
-      </ul>
-    </li>
   </xsl:template>
   <!-- ======================================================================================================== -->
   <xsl:template name="mir.write.content">
