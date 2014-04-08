@@ -48,6 +48,11 @@
       </xsl:when>
       <xsl:otherwise>
         <li class="dropdown">
+          <xsl:if test="$loaded_navigation_xml/menu[@id='user']//item[@href = $browserAddress ]">
+            <xsl:attribute name="class">
+              <xsl:value-of select="'active'" />
+            </xsl:attribute>
+          </xsl:if>
           <a id="currentUser" class="dropdown-toggle" data-toggle="dropdown" href="#">
             <strong>
               <xsl:value-of select="$CurrentUser" />
@@ -75,6 +80,11 @@
           </button>
           <ul class="nav navbar-nav">
             <li class="dropdown">
+              <xsl:if test="$loaded_navigation_xml/menu[@id='brand']//item[@href = $browserAddress ]">
+                <xsl:attribute name="class">
+                  <xsl:value-of select="'active'" />
+                </xsl:attribute>
+              </xsl:if>
               <a id="brandMenu" class="navbar-brand" href="#" data-toggle="dropdown">
                 MIR
                 <span class="caret" />
