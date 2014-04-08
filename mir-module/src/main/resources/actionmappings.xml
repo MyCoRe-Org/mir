@@ -2,13 +2,13 @@
 <actionmappings>
   <collection name="simple">
     <action action="search">
-      <when condition="true" url="/content/main/search/simple.xed" />
+      <when condition="true" url="/content/search/simple.xed" />
     </action>
   </collection>
   <collection name="complex">
     <action action="search">
-      <when condition="(group = admin) or (group = editor)" url="/content/main/search/complex_intern.xml" />
-      <when condition="true" url="/content/main/search/complex.xed" />
+      <when condition="(group = admin) or (group = editor)" url="/content/search/complex_intern.xml" />
+      <when condition="true" url="/content/search/complex.xed" />
     </action>
   </collection>
   <collection name="expert">

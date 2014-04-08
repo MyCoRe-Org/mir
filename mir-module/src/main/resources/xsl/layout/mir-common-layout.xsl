@@ -119,7 +119,7 @@
       <form class="navbar-form navbar-right" role="search" action="{$ServletsBaseURL}solr/find{$HttpSession}" method="get"
         onsubmit="return fireMirSSQuery(this)">
         <div class="form-group input-group">
-          <input id="searchInput" type="text" name="qry" class="form-control search-query" placeholder="Suche">
+          <input id="searchInputXS" type="text" name="qry" class="form-control search-query" placeholder="Suche">
             <xsl:variable name="qry" select="/response/lst/lst/str[@name='qry']" />
             <xsl:if test="$qry">
               <xsl:attribute name="value">
