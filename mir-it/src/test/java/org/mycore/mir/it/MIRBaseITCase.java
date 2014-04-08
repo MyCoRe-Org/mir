@@ -153,7 +153,7 @@ public class MIRBaseITCase {
 
     @Test
     public void goToStart() {
-        driver.get(startURL + "/content/main/index.xml");
+        driver.get(startURL + "/content/index.xml");
         TestCase.assertEquals("Title does not match", "Willkommen bei MIR!", driver.getTitle());
         assertFalse("Access to start page should not be restricted", driver.findElement(By.tagName("body")).getText()
             .matches("^[\\s\\S]*Zugriff verweigert[\\s\\S]*$"));
@@ -161,7 +161,7 @@ public class MIRBaseITCase {
 
     @Test
     public void logOnLogOff() {
-        driver.get(startURL + "/content/main/index.xml");
+        goToStart();
         loginAs("administrator", "alleswirdgut");
         logOff();
     }
