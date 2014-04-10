@@ -12,9 +12,9 @@
       </p>
       <p>Welcher Suchtyp sind Sie?</p>
       <p>
-        <a class="btn btn-success btn-large" href="search/simple.xml">Ich mag es einfach</a>
-        <a class="btn btn-warning btn-large" href="search/complex.xml">Ich bin kompliziert</a>
-        <a class="btn btn-default btn-large" href="#" onclick="jQuery('.search-query').focus();">Der Suchschlitz ist MIR</a>
+        <a class="btn btn-success btn-large" href="../servlets/MCRActionMappingServlet/simple/search">Ich mag es einfach</a>
+        <a class="btn btn-warning btn-large" href="../servlets/MCRActionMappingServlet/complex/search">Ich bin kompliziert</a>
+        <a class="btn btn-default btn-large" href="#" onclick="event.preventDefault();jQuery('.search-query').focus();jQuery('#searchInputBox').click()">Der Suchschlitz ist MIR</a>
       </p>
     </div>
   </section>

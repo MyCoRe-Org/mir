@@ -75,7 +75,9 @@
       }
     });
     $(document).click(function(e) {
-      closeSearchBox();
+      if (!e.isDefaultPrevented()){
+        closeSearchBox();
+      }
     });
     function showSearchResult() {
       closeSearchBox();
