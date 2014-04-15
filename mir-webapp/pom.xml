@@ -114,7 +114,7 @@
     <dependency>
       <groupId>org.mycore.solr</groupId>
       <artifactId>solr</artifactId>
-      <version>4.6.1-SNAPSHOT</version>
+      <version>4.7.2-SNAPSHOT</version>
       <type>war</type>
       <scope>provided</scope>
     </dependency>
