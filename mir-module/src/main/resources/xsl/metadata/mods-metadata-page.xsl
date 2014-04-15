@@ -57,7 +57,7 @@
           </div>
         </div>
       </xsl:if>
-      <!-- Start: MESSAGE -->
+      <!-- Start: BREAD-CRUMBS -->
       <xsl:if test="div[@id='mir-breadcrumb']">
         <div class="row">
           <div class="col-xs-12">
@@ -68,6 +68,10 @@
       <!-- End: BREAD-CRUMBS -->
       <div class="row" itemscope="itemscope" itemtype="http://schema.org/ScholarlyArticle">
         <div class="col-md-8">
+          <!-- Start: ABSTRACT -->
+          <xsl:apply-templates select="div[@id='mir-browse']" mode="copyContent" />
+          <!-- End: ABSTRACT -->
+
           <!-- Start: ABSTRACT -->
           <xsl:apply-templates select="div[@id='mir-abstract']" mode="copyContent" />
           <!-- End: ABSTRACT -->
