@@ -217,7 +217,7 @@
     <xsl:variable name="basketType" select="'objects'" />
     <xsl:variable name="basket" select="document(concat('basket:',$basketType))/basket" />
     <xsl:variable name="entryCount" select="count($basket/entry)" />
-    <li class="dropdown">
+    <li class="dropdown" id="basket-list-item">
       <a class="dropdown-toggle" data-toggle="dropdown" href="#" title="{i18n:translate('basket.title.objects')}">
         <i class="fa fa-bookmark"></i>
         <sup>
