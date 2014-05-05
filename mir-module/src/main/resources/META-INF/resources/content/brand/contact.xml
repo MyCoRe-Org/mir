@@ -9,13 +9,8 @@
   <div class="blockbox">
     <h2>Die Technik</h2>
     <p>
-      In diesem Projekt im Rahmen des Konjunkturpaketes II der Bundesregierung wurde ein institutionelles Repositorium (IR) für
-      Literaturnachweise und Volltexte von Mitarbeitern und Einrichtungen im Geschäftsbereich des BMELV aufgebaut. Das MIR-Modul
-      ist Kopie dieser Lösung.
-    </p>
-    <p>
-      Die Entwicklung und Implementierung des IR erfolgt auf Basis der DMS-Umgebung MyCoRe. Analoge Projekte wurden bereits mit
-      den Hochschulschriftenservern DBT und DuEPublico umgesetzt. MyCoRe bildet die sowohl Grundlage für den DMS-Service der
+      Die Entwicklung und Implementierung dieses Dokumentenservers erfolgt auf Basis des Repository-Frameworks MyCoRe. Analoge Projekte wurden bereits mit
+      den Hochschulschriftenservern DBT und DuEPublico umgesetzt. MyCoRe bildet sowohl die Grundlage für den DMS-Service der
       Verbundzentrale als auch für den zentralen Betrieb der digitalen Bibliothek des Freistaates Thüringen unter Federführung
       der Thüringischen Landes- und Universitätsbibliothek (ThULB) Jena, so dass ein langfristiger Betrieb sowie eine
       kontinuierliche Weiterentwicklung durch die VZG und die ThULB Jena garantiert sind. Außerdem wird somit die Anbindung des
@@ -25,6 +20,6 @@
   </div>
   </section>
   <meta>
-    <log date="2011-11-16" time="09:41" labelPath=" » Kontakt" lastEditor="Kathleen Neumann" />
+    <log date="2014-05-05" time="16:37" labelPath=" » Kontakt" lastEditor="Kathleen Neumann" />
   </meta>
 </MyCoReWebPage>
