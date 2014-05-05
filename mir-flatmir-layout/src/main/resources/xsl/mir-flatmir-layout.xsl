@@ -84,10 +84,7 @@
                 <div class="col-md-2">
                   <h4>Navigation</h4>
                   <ul class="internal_links">
-                    <xsl:call-template name="mir.legacy-navigation">
-                      <xsl:with-param name="rootNode" select="$loaded_navigation_xml/navi-below" />
-                      <xsl:with-param name="topNav" select="true()" />
-                    </xsl:call-template>
+                    <xsl:apply-templates select="$loaded_navigation_xml/menu[@id='brand']/*" />
                   </ul>
                 </div>
                 <div class="col-md-2">
