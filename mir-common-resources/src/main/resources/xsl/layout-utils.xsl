@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:acl="xalan://org.mycore.access.MCRAccessManager"
-  xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions" xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
-  xmlns:websiteWriteProtection="xalan://org.mycore.frontend.MCRWebsiteWriteProtection" exclude-result-prefixes="acl i18n xlink mcrxsl websiteWriteProtection">
+  xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions" xmlns:mcrurn="xalan://org.mycore.urn.MCRXMLFunctions" xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
+  xmlns:websiteWriteProtection="xalan://org.mycore.frontend.MCRWebsiteWriteProtection" exclude-result-prefixes="acl i18n xlink mcrxsl mcrurn websiteWriteProtection">
   <xsl:param name="WebApplicationBaseURL" />
   <xsl:param name="ServletsBaseURL" />
   <xsl:param name="RequestURL" />
@@ -446,7 +446,7 @@
     <xsl:if test="$objectHost = 'local'">
       <xsl:for-each select="derivateLink">
         <xsl:variable select="substring-before(@xlink:href, '/')" name="deriv" />
-        <xsl:variable name="derivateWithURN" select="mcrxsl:hasURNDefined(@xlink:href)" />
+        <xsl:variable name="derivateWithURN" select="mcrurn:hasURNDefined(@xlink:href)" />
         <xsl:choose>
           <xsl:when test="acl:checkPermissionForReadingDerivate($deriv)">
             <xsl:variable name="firstSupportedFile" select="concat('/', substring-after(@xlink:href, '/'))" />

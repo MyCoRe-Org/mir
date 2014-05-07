@@ -3,8 +3,8 @@
   xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation" xmlns:mcrmods="xalan://org.mycore.mods.MCRMODSClassificationSupport"
   xmlns:basket="xalan://org.mycore.frontend.basket.MCRBasketManager" xmlns:acl="xalan://org.mycore.access.MCRAccessManager" xmlns:mcr="http://www.mycore.org/"
   xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:mods="http://www.loc.gov/mods/v3" xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions"
-  exclude-result-prefixes="basket xalan xlink mcr i18n acl mods mcrmods mcrxsl" version="1.0" xmlns:ex="http://exslt.org/dates-and-times"
-  extension-element-prefixes="ex">
+  xmlns:mcrurn="xalan://org.mycore.urn.MCRXMLFunctions" exclude-result-prefixes="basket xalan xlink mcr i18n acl mods mcrmods mcrxsl mcrurn"
+  version="1.0" xmlns:ex="http://exslt.org/dates-and-times" extension-element-prefixes="ex">
   
   <!-- do nothing for display parent -->
   <xsl:template match="/mycoreobject" mode="parent" priority="1">
@@ -416,7 +416,7 @@
                     </xsl:otherwise>
                   </xsl:choose>
                 </li>
-                <xsl:if test="$displayAddDerivate='true' and not(mcrxsl:hasURNDefined($id))">
+                <xsl:if test="$displayAddDerivate='true' and not(mcrurn:hasURNDefined($id))">
                   <li>
                     <a href="{$ServletsBaseURL}derivate/create{$HttpSession}?id={$id}">
                       <xsl:value-of select="i18n:translate('derivate.addDerivate')" />
@@ -425,7 +425,7 @@
                 </xsl:if>
 
                 <!-- ToDo: Fix URN/Handle Generator, xpath is not mods valid -->
-                <!-- xsl:if test="mcrxsl:isAllowedObjectForURNAssignment($id) and not(mcrxsl:hasURNDefined($id))">
+                <!-- xsl:if test="mcrxsl:isAllowedObjectForURNAssignment($id) and not(mcrurn:hasURNDefined($id))">
                 <a
                   href="{$ServletsBaseURL}MCRAddURNToObjectServlet{$HttpSession}?object={$id}&amp;xpath=.mycoreobject/metadata/def.modsContainer[@class='MCRMetaXML' and @heritable='false' and @notinherit='true']/modsContainer/mods:mods/mods:identifier[@type='hdl']">
                   <img src="{$WebApplicationBaseURL}images/workflow_addnbn.gif" title="{i18n:translate('derivate.urn.addURN')}" />
@@ -434,7 +434,7 @@
 
               </xsl:if>
               <xsl:if
-                test="$accessdelete and (not(mcrxsl:hasURNDefined($id)) or (mcrxsl:hasURNDefined($id) and $CurrentUser=$MCR.Users.Superuser.UserName))">
+                test="$accessdelete and (not(mcrurn:hasURNDefined($id)) or (mcrurn:hasURNDefined($id) and $CurrentUser=$MCR.Users.Superuser.UserName))">
                 <li>
                   <xsl:choose>
                     <xsl:when test="/mycoreobject/structure/children/child">

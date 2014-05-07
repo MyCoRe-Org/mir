@@ -8,7 +8,7 @@
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xlink="http://www.w3.org/1999/xlink"
   xmlns:acl="xalan://org.mycore.access.MCRAccessManager" xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation" xmlns:mcr="xalan://org.mycore.common.xml.MCRXMLFunctions"
-  exclude-result-prefixes="xlink mcr">
+  xmlns:mcrurn="xalan://org.mycore.urn.MCRXMLFunctions" exclude-result-prefixes="xlink mcr i18n mcrurn">
     &html-output;
   <xsl:param name="MCR.URN.Display.DFG.Viewer.URN" />
   <xsl:param name="MCR.Mets.Filename" />
@@ -401,7 +401,7 @@
         </td>
         <td>
           <xsl:if
-            test="mcr:hasURNDefined($derivid) and string-length($urn) &lt; 1 and $accesseditvalue = 'true' and @type = 'file' and not(name = $MCR.Mets.Filename)">
+            test="mcrurn:hasURNDefined($derivid) and string-length($urn) &lt; 1 and $accesseditvalue = 'true' and @type = 'file' and not(name = $MCR.Mets.Filename)">
             <a title="{i18n:translate('common.metaData.document.addURN')}"
               href="{concat($ServletsBaseURL,'MCRAddURNToObjectServlet',$HttpSession, '?object=', $derivid,'&amp;target=file&amp;fileId=', $currentFileID,'&amp;path=', concat($path,'/',name))}">
               <img class="inputAddUrn" alt=" " />
