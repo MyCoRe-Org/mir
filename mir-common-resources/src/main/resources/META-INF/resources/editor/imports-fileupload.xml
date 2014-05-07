@@ -1,0 +1,78 @@
+<imports>
+  <panel id="fileupload">
+    <cell col="1" row="1" anchor="NORTHWEST">
+      <text id="LFileP">
+        <label xml:lang="de">
+          <span class="editorlabel">Digitale Objekte (*)</span>
+        </label>
+        <label xml:lang="en">
+          <span class="editorlabel">Digital objects (*)</span>
+        </label>
+      </text>
+    </cell>
+    <cell col="2" row="1" anchor="NORTHWEST" var="path">
+      <repeater min="3" max="3" pos="hidden">
+        <file width="60" maxlength="5000000" />
+      </repeater>
+    </cell>
+    <cell col="3" row="1" anchor="NORTHWEST">
+      <space width="20" height="0" />
+    </cell>
+    <cell col="4" row="1" anchor="WEST">
+      <helpPopup id="HFile" width="400px" height="250px">
+        <label xml:lang="de">
+          Hier wird der Dateiname des digitalen Objektes ausgewählt, welches eingestellt werden soll.
+          <p>
+            Die erste angegebene Datei wird für die Präsentation die Primärdatei.
+            Die Datei muss auf einem Laufwerk liegen, das <b>von Ihrem Rechner aus direkt erreichbar ist</b>.
+            Bitte geben Sie den <b>vollständigen Pfad</b> an oder verwenden Sie den <b>Durchsuchen-Knopf</b>.
+          </p>
+          <p>
+            Je nach Dateigröße kann der Upload sehr lange dauern kann. Bitte <b>haben Sie etwas Geduld</b>!
+            Nach dem Abschicken des Formulars wird die gewählte Datei automatisch in die Anwendung übernommen,
+            was je nach Dateigrösse und Übertragungsgeschwindigkeit Ihres Netzanschlusses durchaus längere Zeit
+            beanspruchen kann. Brechen Sie die Übertragung möglichst nicht ab!
+          </p>
+        </label>
+        <label xml:lang="en">
+          Select the filename of the digital object to be added to the system.
+          <p>
+            The first filename is the primary file for the presentation.
+            This file must reside on a system drive with <b>direct access to your computer</b>.
+            Either enter the <b>complete path</b> or use the <b>browse button</b>.
+          </p>
+          <p>
+            Please <b>wait</b> after submission of the form. The selected file
+            is automatically loaded into this application. Uploading large files will take
+            a while. Do not interrupt or cancel the transmission!
+          </p>
+        </label>
+      </helpPopup>
+    </cell>
+    <cell col="2" row="2" anchor="NORTHWEST">
+      <text id="DFileUploadHint">
+        <label xml:lang="de">
+          <span class="editorhints">
+            Achtung! Das Absenden größerer Datendateien
+            kann einige Zeit in Anspruch nehmen. Brechen Sie die Übertragung möglichst nicht ab!
+          </span>
+        </label>
+        <label xml:lang="en">
+          Attention! Uploading large files will take
+          a while. Do not interrupt or cancel the transmission!
+        </label>
+      </text>
+    </cell>
+    <cell col="1" row="3" anchor="EAST">
+
+      <panel id="TwoButtons">
+        <cell col="1" row="1" anchor="WEST">
+          <cancelButton width="100px" i18n="common.button.cancel" />
+        </cell>
+        <cell col="2" row="1" anchor="WEST" var="save">
+          <submitButton width="100px" i18n="common.button.save" />
+        </cell>
+      </panel>
+    </cell>
+  </panel>
+</imports>
