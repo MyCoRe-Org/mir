@@ -37,6 +37,7 @@
           <extraJvmArguments>-DMCR.AppName=mir</extraJvmArguments>
           <repositoryLayout>flat</repositoryLayout>
           <repositoryName>lib</repositoryName>
+          <useWildcardClassPath>true</useWildcardClassPath>
           <binFileExtensions>
             <unix>.sh</unix>
           </binFileExtensions>
