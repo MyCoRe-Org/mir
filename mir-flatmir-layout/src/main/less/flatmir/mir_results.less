@@ -1,0 +1,56 @@
+.resultHeader {
+  .pagination, form {
+    margin: 0;
+  }
+  .result_options {
+    margin-bottom: 1em;
+  }
+}
+
+#resultList {
+  @previewWidth: 73px;
+  article.result {
+    border: @gray-lighter 1px solid;
+    border-radius: @border-radius-small;
+    margin-bottom: 0.4em;
+    & > * {
+      margin-left: 130px;
+    }
+    .number {
+      display: block;
+      margin-bottom: 0.2em;
+    }
+    aside {
+      .pull-left;
+      margin: 0.2em 1.0em 0.2em 0.2em;
+      img {
+        max-width: @previewWidth;
+      }
+    }
+
+    .preview {
+      margin-bottom: 0;
+    }
+
+    ul.actions {
+      list-style: none outside none;
+      display: inline-block;
+      margin: 0;
+      li {
+        display: inline-block;
+        padding-right: 0.2em;
+      }
+    }
+
+    footer {
+      height: auto;
+      background-color: inherit;
+    }
+
+    address {
+      display: inline;
+    }
+
+  }
+}
+

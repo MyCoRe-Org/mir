@@ -5,11 +5,10 @@
   <xsl:template match="/">
     <xsl:variable name="mods" select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods" />
     <div id="mir-abstract">
-      <p data-toggle="tooltip" title="Publication date">
         <xsl:variable name="dateIssued">
           <xsl:apply-templates mode="mods.datePublished" select="$mods" />
         </xsl:variable>
-        <time itemprop="datePublished" datetime="{$dateIssued}">
+        <time itemprop="datePublished" datetime="{$dateIssued}" data-toggle="tooltip" title="Publication date">
           <xsl:variable name="format">
             <xsl:choose>
               <xsl:when test="string-length(normalize-space($dateIssued))=4">
@@ -32,7 +31,7 @@
           </xsl:call-template>
         </time>
         <!-- TODO: Update badges -->
-        <span class="pull-right">
+        <span class="pull-right" id="badges">
           <xsl:call-template name="categorySearchLink">
             <xsl:with-param name="class" select="'label label-default'" />
             <xsl:with-param name="node" select="($mods/mods:genre[@type='kindof']|$mods/mods:genre[@type='intern'])[1]" />
@@ -60,7 +59,6 @@
             </xsl:call-template>
           </xsl:if>
         </span>
-      </p>
       <h1 itemprop="name">
         <xsl:apply-templates mode="mods.title" select="$mods" />
       </h1>
