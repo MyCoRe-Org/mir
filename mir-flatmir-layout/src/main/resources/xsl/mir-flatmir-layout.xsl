@@ -124,6 +124,7 @@
           if (jQuery.fn.button){jQuery.fn.btn = jQuery.fn.button.noConflict();}
         </script>
         <script type="text/javascript" src="//netdna.bootstrapcdn.com/bootstrap/{$bootstrap.version}/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="{$WebApplicationBaseURL}js/mir/base.js"></script>
 <!--         <script src="{$WebApplicationBaseURL}mir-flatmir-layout/datepicker/js/bootstrap-datepicker.js"></script> -->
         <script>
           $( document ).ready(function() {
