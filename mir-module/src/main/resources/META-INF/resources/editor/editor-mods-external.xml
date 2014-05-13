@@ -26,11 +26,13 @@
     <panel id="mods.genre.thesis">
       <hidden var="metadata/def.modsContainer/modsContainer/mods:mods/mods:genre[@type='intern']/@mcr:categId" default="mir_genres:thesis" />
     </panel>
+    <panel id="mods.submissionAtInstitute">
+      <cell anchor="NORTHWEST" var="mods:originInfo/mods:place/mods:placeTerm[@type='text']" ref="TFzeile512" />
+    </panel>
   <!-- END: hidden genre specification -->
 
   <!-- object type specific genre.kindOf specification -->
     <panel id="mods.genre.kindOfPublication.confpub">
-      <hidden var="@type" default="kindof" />
       <hidden var="@displayLabel" default="Kind of Publication" />
       <cell var="@mcr:categId">
         <list width="30" type="dropdown" id="mods.genre.kindOfPublication.list">
@@ -45,8 +47,7 @@
     </panel>
 
     <panel id="mods.genre.kindOfReport">
-      <cell anchor="NORTHWEST" var="mods:genre">
-        <hidden var="@type" default="kindof" />
+      <cell anchor="NORTHWEST" var="mods:genre[@type='kindof']">
         <hidden var="@displayLabel" default="Kind of Report" />
         <panel>
           <cell var="@mcr:categId">
@@ -64,8 +65,7 @@
     </panel>
 
     <panel id="mods.genre.kindOfAVMedia">
-      <cell anchor="NORTHWEST" var="mods:genre">
-        <hidden var="@type" default="kindof" />
+      <cell anchor="NORTHWEST" var="mods:genre[@type='kindof']">
         <hidden var="@displayLabel" default="Kind of AV Media" />
         <panel>
           <cell var="@mcr:categId">
@@ -83,8 +83,7 @@
     </panel>
 
     <panel id="mods.genre.kindOfThesis">
-      <cell anchor="NORTHWEST" var="mods:genre">
-        <hidden var="@type" default="kindof" />
+      <cell anchor="NORTHWEST" var="mods:genre[@type='kindof']">
         <hidden var="@displayLabel" default="Kind of Thesis" />
         <panel>
           <cell var="@mcr:categId">
@@ -102,8 +101,7 @@
     </panel>
 
     <panel id="mods.genre.journal">
-      <cell anchor="NORTHWEST" var="mods:genre">
-        <hidden var="@type" default="intern" />
+      <cell anchor="NORTHWEST" var="mods:genre[@type='intern']">
         <panel>
           <cell var="@mcr:categId">
             <list type="radio" id="mods.genre.journal.list" default="mir_genres:journal">
@@ -121,152 +119,27 @@
   <!-- END: object type specific genre.kindOf specification -->
 
 
-    <panel id="mods.submissionAtInstitute">
-      <cell anchor="NORTHWEST" var="mods:originInfo/mods:place/mods:placeTerm[@type='text']" ref="TFzeile512" />
-    </panel>
-
-  <!-- Institutionszugehörigkeit (wo zugeordnet) -->
-    <text id="mods.assignedInstitute.label" i18n="component.mods.metaData.dictionary.institution.label" />
-
     <panel id="mods.assignedInstitute">
       <cell anchor="NORTHWEST" var="mods:name[@type='corporate']">
         <hidden var="mods:role/mods:roleTerm" default="institution" />
         <hidden var="mods:role/mods:roleTerm/@authority" default="marcrelator" />
         <hidden var="mods:role/mods:roleTerm/@type" default="text" />
-        <hidden var="@mcr:categId" default="" />
-        <panel>
-          <hidden var="@editor.output" />
-          <cell row="1" col="1" anchor="NORTHWEST">
-            <output var="@editor.output" default="(neu)" />
-          </cell>
-          <cell row="1" col="2" anchor="EAST">
-            <subselect id="institutes.subselect" type="webpage"
-              href="content/main/classifications/select-mir_institutes.xml?classid=mir_institutes">
-              <label xml:lang="de">wählen</label>
-              <label xml:lang="en">select</label>
-            </subselect>
-          </cell>
-        </panel>
-      </cell>
-    </panel>
-
-    <helpPopup id="mods.assignedInstitute.help" width="400px" height="250px">
-      <label xml:lang="de">Einrichtung (Institut/Fachgruppe/Organisationseinheit), zu welcher die Autoren bzw. die Beitragenden
-        zum
-        Zeitpunkt der
-        Veröffentlichung des Dokumentes, des Erscheinungsjahres des Konferenzbandes
-        oder Buches gehört haben.</label>
-      <label xml:lang="en">Select an institution from the list.</label>
-    </helpPopup>
-  <!-- Institutionszugehörigkeit END -->
-
-  <!-- application specific internal data -->
-    <panel id="mods.internals">
-    <!-- arev_klassifik -->
-      <cell row="10" col="1" anchor="NORTHEAST" ref="mods.arev.label" />
-      <cell row="10" col="2" anchor="NORTHWEST" ref="mods.arev" />
-      <cell row="10" col="3" anchor="NORTHWEST" ref="mods.arev.help" />
-    <!-- arev_klassifik END -->
- 
-    <!-- arev_jahr -->
-      <cell row="20" col="1" anchor="NORTHEAST" ref="mods.arev.year.label" />
-      <cell row="20" col="2" anchor="NORTHWEST" ref="mods.arev.year" />
-      <cell row="20" col="3" anchor="NORTHWEST" ref="mods.arev.year.help" />
-    <!-- arev_jahr END -->
-
-    <!-- Einrichtung, Standort, Kommentar -->
-      <cell row="30" col="1" colspan="3" anchor="NORTHWEST" ref="mods.noteLocationCorp" />
-      <condition id="annualReview.matchYearAndCateg" xsl="count(mods:classification[@displayLabel='annual_review']/@mcr:categId)=count(mods:classification[@displayLabel='annual_review']/@edition)">
-        <label xml:lang="de">Jahresberichtskategorie und Jahresberichtsjahr müssen zusammen ausgefüllt oder leer sein.</label>
-      </condition>
-    </panel>
-
-<!-- Spezifikation -->
-
-  <!-- Einrichtung, Standort, Kommentar -->
-    <panel id="mods.noteLocationCorp">
-      <cell var="noteLocationCorp">
-        <repeater>
+        <repeater min="1" max="5" pos="right">
           <panel>
-            <cell row="1" col="1" anchor="NORTHEAST" ref="mods.assignedInstitute.label" />
-            <cell row="1" col="2" anchor="NORTHWEST" ref="mods.assignedInstitute" />
-            <cell row="1" col="3" anchor="NORTHWEST" ref="mods.assignedInstitute.help" />
-            <cell row="20" col="1" anchor="NORTHEAST" ref="mods.note.label" />
-            <cell row="20" col="2" anchor="NORTHWEST" ref="mods.note" />
-            <cell row="20" col="3" anchor="NORTHWEST" ref="mods.note.help" />
-            <cell row="30" col="1" anchor="NORTHEAST" ref="mods.physicalLocation.label" />
-            <cell row="30" col="2" anchor="NORTHWEST" ref="mods.physicalLocation" var="mods:location" />
-            <cell row="30" col="3" anchor="NORTHWEST" ref="mods.physicalLocation.help" />
-            <condition id="locationRequiredForNote" xsl="count(mods:name/@mcr:categId)=1 or (count(mods:note)=0 and count(mods:location)=0)">
-              <label xml:lang="de">Für eine Bemerkung oder Standort muss eine Institution angegeben werden.</label>
-            </condition>
+            <cell col="1" row="1" anchor="EAST" var="mods:namePart[@type='given']" ref="TFzeile512" />
           </panel>
         </repeater>
       </cell>
     </panel>
 
-  <!-- Jahresberichts Klassifikation -->
-    <text id="mods.arev.label" i18n="component.mods.metaData.dictionary.annual_review" />
-    <panel id="mods.arev">
-      <cell anchor="NORTHWEST" var="mods:classification[@displayLabel='annual_review']">
-        <panel>
-          <cell var="@mcr:categId">
-            <list width="30" type="dropdown" id="mods.arev.list">
-              <include ref="pleaseSelect" />
-              <include uri="classification:editorComplete:-1:children:annual_review" cacheable="false" />
-            </list>
-          </cell>
-        </panel>
-      </cell>
+  <!-- application specific internal data -->
+    <panel id="mods.internals">
+    <!-- Kommentar -->
+      <cell row="10" col="1" anchor="NORTHEAST" ref="mods.note.label" />
+      <cell row="10" col="2" anchor="NORTHWEST" ref="mods.note" />
+      <cell row="10" col="3" anchor="NORTHWEST" ref="mods.note.help" />
+    <!-- Kommentar END -->
     </panel>
-
-    <helpPopup id="mods.arev.help" width="400px" height="250px">
-      <label xml:lang="de">
-        Die für den Jahresbericht relevanten Dokumente müssen hier eine Zuordnung erhalten.
-        <br />
-        <br />
-        Die Einträge wie „Im Druck“, „nicht zugeordnet“ oder „nicht im JB“ sind keine tatsächlichen
-        Jahresberichtskategorien. Sie dienen der
-        Kontrolle der Jahresberichte und
-        bestimmen einen Zwischenstand bei der Eingruppierung einer Publikation.
-        Die Kontrolllisten eines
-        vorläufigen Jahresberichtes, werden zur Ansicht
-        an alle Institute verschickt, um diese undefinierten Kategorien noch zu bestimmen.
-        <br />
-        <br />
-        Nicht alle Publikationen werden in einen Jahresbericht aufgenommen. Bei
-        diesen Publikationen wird auch keine Kategorie eingegeben. Bei
-        den
-        Publikationen, die theoretisch in einen Jahresbericht aufgenommen werden
-        könnten, dies aber aus einem bestimmten Grund doch nicht
-        erfolgte, wird
-        der Eintrag „nicht im JB“ gemacht. Eine explizite Anmerkung, dass eine
-        Publikation nicht in einen Jahresbericht
-        aufgenommen war, dient ebenfalls
-        einer Kontrolle.
-      </label>
-      <label xml:lang="en">The annual report for the relevant documents have to receive an allocation.</label>
-    </helpPopup>
-  <!-- Jahresberichts Klassifikation  END -->
-
-  <!-- Jahresberichtsjahr -->
-    <text id="mods.arev.year.label" i18n="component.mods.metaData.dictionary.annual_review_year" />
-    <panel id="mods.arev.year">
-      <cell anchor="NORTHWEST" var="mods:classification[@displayLabel='annual_review']/@edition">
-        <textfield width="4" maxlength="4">
-          <condition id="annualReview.yearFormat" type="datetime" format="yyyy">
-            <label>Geben Sie ein Jahr ein.</label>
-          </condition>
-        </textfield>
-      </cell>
-    </panel>
-
-    <helpPopup id="mods.arev.year.help" width="400px" height="250px">
-      <label xml:lang="de">Geben Sie hier das Jahr an, in dem das Dokument im Jahresbericht gelistet werden soll.
-      </label>
-      <label xml:lang="en">Annual review year</label>
-    </helpPopup>
-  <!-- Place END -->
   </include>
 
   <include id="mods.additional.admin">
@@ -330,6 +203,7 @@
     </cell>
     <!-- Datum der Freigabe END -->
   </include>
+
 
   <include id="mods.additional">
     <hidden var="metadata/def.modsContainer/modsContainer/mods:mods/mods:classification[@displayLabel='status']/@mcr:categId"
