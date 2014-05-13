@@ -1,32 +1,68 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE MyCoReWebPage>
+
 <MyCoReWebPage>
-<section xml:lang="de" title="Publizieren">
+    <section xml:lang="de" title="Publizieren">
 
-  <h2>Publizieren</h2>
-  <p>Sie können folgende Publikationen neu anlegen:</p>
-  <ul>
-    <li><a href="../../servlets/object/create?type=mods&amp;layout=thesis&amp;sourceURI=webapp:modules/mods/template-thesis.xml">Hochschulschriften (Diss., MA, BA, u.a.)</a></li>
-    <li><a href="../../servlets/object/create?type=mods&amp;layout=report">Report</a></li>
-    <li><a href="../../servlets/object/create?type=mods&amp;layout=av">AV-Medium</a></li>
-  </ul>
+        <h2>Publizieren</h2>
 
-  <figure style="float:right;border:1px solid #F0F0F0;margin:10px;">
-      <img src="new_chapter.png" title="Neues Buchkapitel anlegen" alt="Screenshot zum Anlegen eines neuen Buchkapitels" style="margin:5px;"/>
-      <figcaption>Abb.: Buchkapitel anlegen</figcaption>
-  </figure>
+        <div class="row">
+            <div class="col-lg-5 col-md-12">
+                <h3>Anlegen</h3>
+                <ul>
+                    <li><a href="../../servlets/object/create?type=mods&amp;layout=thesis&amp;sourceURI=webapp:modules/mods/template-thesis.xml">Hochschulschriften (Diss., MA, BA, u.a.)</a></li>
+                    <li><a href="../../servlets/object/create?type=mods&amp;layout=report">Report</a></li>
+                    <li><a href="../../servlets/object/create?type=mods&amp;layout=av">AV-Medium</a></li>
+                </ul>
+                <ul>
+                    <li><a href="../../servlets/object/create?type=mods&amp;layout=book">Buch</a></li>
+                    <li><a href="../../servlets/object/create?type=mods&amp;layout=confpro&amp;sourceURI=webapp:modules/mods/template-confpro.xml">Konferenzband</a></li>
+                    <li><a href="../../servlets/object/create?type=mods&amp;layout=journal">Zeitschrift/Serie</a></li>
+                </ul>
+
+                <h3>Importieren</h3>
+                <ul>
+                    <li>Zeitschrift/Serie
+                        <form action = "../../servlets/object/create"
+                              method = "post"
+                              class  = "form-inline"
+                              role   = "form"
+                              id     = "zdb_form">
+                            <input type="hidden" name="type" value="mods" />
+                            <input type="hidden" name="layout" value="journal" />
+                            <input type="hidden" name="cancelUrl" value="/content/main/admin.xml" />
+
+                            <div class="form-group">
+                                <input type="text" class="form-control" id="zdbid" name="zdbid" placeholder="ZDB-ID" size="20" />
+                            </div>
+
+                            <button type="submit" class="btn btn-default">Importieren</button>
+                        </form>
+                    </li>
+                </ul>
+
+            </div>
+            <div class="col-lg-7 col-md-12">
+
+                <h3>Anleitung</h3>
+
+                <figure style="float:right;">
+                    <img src="new_chapter.png" title="Neues Buchkapitel anlegen" alt="Screenshot zum Anlegen eines neuen Buchkapitels" style="margin:0px 0px 10px 10px; border:1px solid #F0F0F0;"/>
+                    <figcaption style="text-align:center; font-size: 10px; color: #999;">Abb.: Buchkapitel anlegen</figcaption>
+                </figure>
+
   <p>
     Um ein Buchkapitel oder einen Konferenzbeitrag anzulegen, suchen Sie bitte zuerst das passende <img src="link.gif" />&#160;<a href="../../servlets/SolrSelectProxy?q=%2Bcategory%3A%22genres%3Abook%22+%2BobjectType%3Amods+%2Bcategory%3A%22status%3Apublished%22&amp;rows=20"
-    >Buch</a> oder die passende <img src="link.gif" />&#160;<a href="../../servlets/SolrSelectProxy?q=%2Bcategory%3A%22genres%3Aconfpro%22+%2BobjectType%3Amods+%2Bcategory%3A%22status%3Apublished%22&amp;rows=20"
-    >Konferenz</a> heraus oder legen Sie diese neu an:
+    >Buch</a> bzw. die passende <img src="link.gif" />&#160;<a href="../../servlets/SolrSelectProxy?q=%2Bcategory%3A%22genres%3Aconfpro%22+%2BobjectType%3Amods+%2Bcategory%3A%22status%3Apublished%22&amp;rows=20"
+    >Konferenz</a> heraus oder legen das Elternobjekt neu an:
   </p>
   <ul>
     <li><a href="../../servlets/object/create?type=mods&amp;layout=book">Buch</a></li>
     <li><a href="../../servlets/object/create?type=mods&amp;layout=confpro&amp;sourceURI=webapp:modules/mods/template-confpro.xml">Konferenzband</a></li>
   </ul>
   <p>
-    Mit Hilfe der Dokumentoptionen <img src="icon_arrow_circled_red_down.png" /> können Sie dann z.B. mittels des
-    Menüpunktes „Buchkapitel“ ein neues Kapitel anlegen (siehe auch Abbildung rechts).
+    Mit Hilfe der Dokumentoptionen <img src="icon_arrow_circled_red_down.png" /> können Sie dann z.B. über den
+    Menüpunkte „Buchkapitel“ ein neues Kapitel anlegen (siehe auch Abbildung rechts).
   </p>
   <p>
     Um einen Zeitschriftenartikel anzulegen gehen Sie analog vor. Im 1. Schritt suchen Sie sich die passende
@@ -35,7 +71,7 @@
   </p>
   <ul>
     <li><a href="../../servlets/object/create?type=mods&amp;layout=journal">Zeitschrift/Serie direkt eingeben</a></li>
-    <li>Zeitschriftendaten mittels ZDB-ID importieren:
+    <li>Zeitschrift/Serie
         <form action="../../servlets/object/create" method="post" class="yform" id="zdb_form">
           <input type="hidden" name="type" value="mods" />
           <input type="hidden" name="layout" value="journal" />
@@ -59,10 +95,13 @@
     einen neuen Artikel anlegen.
   </p>
 
+            </div>
+        </div>
+
 </section>
 
 
-<meta>
-  <log date="2014-03-25" time="16:25" labelPath=" » Admin" lastEditor="Kathleen Neumann" />
-</meta>
+    <meta>
+        <log date="2014-03-25" time="16:25" labelPath=" » Admin" lastEditor="Kathleen Neumann" />
+    </meta>
 </MyCoReWebPage>
