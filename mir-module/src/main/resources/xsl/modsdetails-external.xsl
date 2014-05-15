@@ -5,7 +5,7 @@
   xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:mods="http://www.loc.gov/mods/v3" xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions"
   xmlns:mcrurn="xalan://org.mycore.urn.MCRXMLFunctions" exclude-result-prefixes="basket xalan xlink mcr i18n acl mods mcrmods mcrxsl mcrurn"
   version="1.0" xmlns:ex="http://exslt.org/dates-and-times" extension-element-prefixes="ex">
-  
+
   <!-- do nothing for display parent -->
   <xsl:template match="/mycoreobject" mode="parent" priority="1">
   </xsl:template>
@@ -89,7 +89,7 @@
   <xsl:template match="children" mode="printChildren" priority="1">
     <xsl:param name="label" select="'enthält'" />
 
-    <!-- the for-each would iterate over <id> with root not beeing /mycoreobject so we save the current node in variable context to access 
+    <!-- the for-each would iterate over <id> with root not beeing /mycoreobject so we save the current node in variable context to access
       needed nodes -->
     <xsl:variable name="context" select="/mycoreobject" />
 
@@ -286,7 +286,7 @@
                 </xsl:for-each>
               </xsl:variable>
               <xsl:variable select="xalan:nodeset($objectTypes)/id[not(.=following::id)]" name="unique-ids" />
-              <!-- the for-each would iterate over <id> with root not beeing /mycoreobject so we save the current node in variable context to access 
+              <!-- the for-each would iterate over <id> with root not beeing /mycoreobject so we save the current node in variable context to access
                 needed nodes -->
               <xsl:variable select="." name="context" />
               <xsl:for-each select="$unique-ids">
@@ -404,18 +404,26 @@
             <ul class="dropdown-menu">
               <xsl:variable name="type" select="substring-before(substring-after($id,'_'),'_')" />
               <xsl:if test="$accessedit">
-                <li>
-                  <xsl:choose>
-                    <xsl:when test="string-length($editURL) &gt; 0">
+                <xsl:choose>
+                  <xsl:when test="string-length($editURL) &gt; 0">
+                    <li>
                       <a href="{$editURL}">
                         <xsl:value-of select="i18n:translate('object.editObject')" />
                       </a>
-                    </xsl:when>
-                    <xsl:otherwise>
+                    </li>
+                    <li>
+                      <a href="{$WebApplicationBaseURL}editor/change_genre.xed?id={$id}">
+                        <!-- xsl:value-of select="i18n:translate('object.editGenre')" / -->
+                        Genre ändern
+                      </a>
+                    </li>
+                  </xsl:when>
+                  <xsl:otherwise>
+                    <li>
                       <xsl:value-of select="i18n:translate('object.locked')" />
-                    </xsl:otherwise>
-                  </xsl:choose>
-                </li>
+                    </li>
+                  </xsl:otherwise>
+                </xsl:choose>
                 <xsl:if test="$displayAddDerivate='true' and not(mcrurn:hasURNDefined($id))">
                   <li>
                     <a href="{$ServletsBaseURL}derivate/create{$HttpSession}?id={$id}">
