@@ -100,9 +100,11 @@
             <groupId>pl.allegro</groupId>
             <artifactId>grunt-maven-plugin</artifactId>
             <configuration>
+            <!-- 
               <gruntExecutable>${grunt.projectBase}/node_modules/grunt-cli/bin/grunt</gruntExecutable>
               <bowerExecutable>${grunt.projectBase}/node_modules/bower/bin/bower</bowerExecutable>
               <runGruntWithNode>true</runGruntWithNode>
+              -->
             </configuration>
           </plugin>
         </plugins>
