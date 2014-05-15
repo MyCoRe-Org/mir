@@ -14,15 +14,22 @@
   <xsl:template match="/add" mode="doc">
     <xsl:param name="foo" />
     <!-- batch processing -->
-    <xsl:apply-templates>
-      <xsl:with-param name="foo" select="$foo" />
-    </xsl:apply-templates>
+    <xsl:for-each select="*">
+      <doc>
+        <xsl:apply-templates>
+          <xsl:with-param name="foo" select="$foo" />
+        </xsl:apply-templates>
+      </doc>
+    </xsl:for-each>
   </xsl:template>
 
   <xsl:template match="/*[local-name()!='add']" mode="doc">
+    <xsl:param name="foo" />
     <!-- single doc processing -->
     <doc>
-      <xsl:apply-templates select="." />
+        <xsl:apply-templates>
+          <xsl:with-param name="foo" select="$foo" />
+        </xsl:apply-templates>
     </doc>
   </xsl:template>
 
