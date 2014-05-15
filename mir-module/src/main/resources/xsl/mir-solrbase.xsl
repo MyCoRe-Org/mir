@@ -16,7 +16,7 @@
     <!-- batch processing -->
     <xsl:for-each select="*">
       <doc>
-        <xsl:apply-templates>
+        <xsl:apply-templates select=".">
           <xsl:with-param name="foo" select="$foo" />
         </xsl:apply-templates>
       </doc>
@@ -27,9 +27,9 @@
     <xsl:param name="foo" />
     <!-- single doc processing -->
     <doc>
-        <xsl:apply-templates>
-          <xsl:with-param name="foo" select="$foo" />
-        </xsl:apply-templates>
+      <xsl:apply-templates select=".">
+        <xsl:with-param name="foo" select="$foo" />
+      </xsl:apply-templates>
     </doc>
   </xsl:template>
 
