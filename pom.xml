@@ -15,7 +15,7 @@
   <inceptionYear>2013</inceptionYear>
   <properties>
     <mycore.version>2014.04-SNAPSHOT</mycore.version>
-    <jetty.version>9.1.4.v20140401</jetty.version>
+    <jetty.version>9.1.5.v20140505</jetty.version>
     <tomcat7.version>7.0.53</tomcat7.version>
     <tomcat8.version>8.0.5</tomcat8.version>
     <cargo.version>1.4.7</cargo.version>
