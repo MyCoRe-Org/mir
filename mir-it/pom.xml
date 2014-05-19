@@ -109,7 +109,7 @@
               <goal>copy</goal>
             </goals>
             <configuration>
-              <outputDirectory>${MCR.Home.Integration}/${MCR.AppName}/libs</outputDirectory>
+              <outputDirectory>${MCR.Home.Integration}/${MCR.AppName}/lib</outputDirectory>
               <artifactItems>
                 <artifactItem>
                   <groupId>com.h2database</groupId>

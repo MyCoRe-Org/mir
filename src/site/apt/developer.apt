@@ -105,7 +105,7 @@ Developer Instructions
 +-----------------------------------------------------------------------------------------------------------------------+
 
  Additionally please store {{{http://artifactory.mycore.de/mycore-releases/org/hsqldb/hsqldb/2.3.2/hsqldb-2.3.2.jar}hsqldb.jar}}
- in your <<<libs>>> directory under <<<dev-mir>>>.
+ in your <<<lib>>> directory under <<<dev-mir>>>.
   
  
 ** How to build and start

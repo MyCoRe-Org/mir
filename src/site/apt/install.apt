@@ -54,7 +54,7 @@ Installation of Command Line and WAR Archive
     |- data/
     |	\ {content of MCR.dataDir}
     |
-    |- libs/
+    |- lib/
     |   \ {any *.jar files you need in classpath}
     |
     |- hibernate.cfg.xml
@@ -80,7 +80,7 @@ Installation of Command Line and WAR Archive
  The <<<hibernate.cfg.xml>>> is used to configure your database connection. For the moment use the
  {{{http://www.mycore.de/svn/docportal/trunk/config/hibernate/}example in docportal}}<(deprecated MyCoRe project)>
  as a starting point. In nearly 100% of all cases you need an additional java library that contains the JDBC driver
- for your DBMS. You simply put this file into the <<<libs>>> directory under the configuration dir.
+ for your DBMS. You simply put this file into the <<<lib>>> directory under the configuration dir.
  
 * Setup your installation
 
