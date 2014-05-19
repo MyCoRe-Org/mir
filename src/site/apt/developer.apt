@@ -88,11 +88,11 @@ Developer Instructions
 <hibernate-configuration>
 
   <session-factory>
-    <property name="connection.driver_class">org.hsqldb.jdbcDriver</property>
-    <property name="connection.url">jdbc:hsqldb:file:/path/to/.mycore/dev-mir/data/hsqldb/mir</property>
+    <property name="connection.driver_class">org.h2.Driver</property>
+    <property name="connection.url">jdbc:h2:file:/path/to/.mycore/dev-mir/data/h2/mir</property>
     <property name="connection.username">sa</property>
     <property name="connection.password"></property>
-    <property name="dialect">org.hibernate.dialect.HSQLDialect</property>
+    <property name="dialect">org.hibernate.dialect.H2Dialect</property>
     <property name="current_session_context_class">thread</property>
     <property name="cache.use_second_level_cache">false</property>
     <property name="cache.use_query_cache">false</property>
@@ -104,7 +104,7 @@ Developer Instructions
 </hibernate-configuration>
 +-----------------------------------------------------------------------------------------------------------------------+
 
- Additionally please store {{{http://artifactory.mycore.de/mycore-releases/org/hsqldb/hsqldb/2.3.2/hsqldb-2.3.2.jar}hsqldb.jar}}
+ Additionally please store {{{http://artifactory.mycore.de/mycore-releases/com/h2database/h2/1.3.176/h2-1.3.176.jar}h2.jar}}
  in your <<<lib>>> directory under <<<dev-mir>>>.
   
  
