@@ -112,5 +112,11 @@
         </exclusion>
       </exclusions>
     </dependency>
+    <dependency>
+      <!-- required for org.mycore.common.xsl.MCRParameterCollector to work -->
+      <groupId>javax.servlet</groupId>
+      <artifactId>javax.servlet-api</artifactId>
+      <scope>runtime</scope>
+    </dependency>
   </dependencies>
 </project>
