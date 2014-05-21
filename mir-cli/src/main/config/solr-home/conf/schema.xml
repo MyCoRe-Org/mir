@@ -107,6 +107,7 @@
    -->
         
    <field name="_version_" type="long"/>
+   <field name="_root_" type="string"/>
     <!-- kind of mcrobjectid, mcrderivateid, fileid -->
     <field name="id" type="string" required="true" />
     <field name="objectType" type="string" />
