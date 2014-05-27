@@ -11,6 +11,9 @@
     <!-- Choose a label for the button -->
     <xsl:variable name="symbol">
       <xsl:choose>
+	<xsl:when test=".='add'">
+          <xsl:value-of select="'asterisk'" />
+        </xsl:when>
         <xsl:when test=".='append'">
           <xsl:value-of select="'angle-down'" />
         </xsl:when>

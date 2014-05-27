@@ -82,7 +82,7 @@
     <label xml:lang="de">Nutzermenü</label>
     <label xml:lang="en">User menu</label>
     <group id="thisuser">
-      <item href="/authorization/change-password.xml?action=password" type="extern">
+      <item href="/authorization/change-password.xed?action=password" type="extern">
         <label xml:lang="de">Passwort ändern</label>
         <label xml:lang="en">Change Password</label>
       </item>
@@ -90,7 +90,7 @@
         <label xml:lang="de">Benutzerdaten anzeigen</label>
         <label xml:lang="en">Show User Data</label>
       </item>
-      <item href="/authorization/change-current-user.xml?action=saveCurrentUser" type="extern">
+      <item href="/authorization/change-current-user.xed?action=saveCurrentUser" type="extern">
         <label xml:lang="de">Kontaktdaten ändern</label>
         <label xml:lang="en">Change user contact</label>
       </item>
@@ -110,7 +110,7 @@
         <label xml:lang="de">Nutzerverwaltung</label>
         <label xml:lang="en">Admin Users</label>
       </item>
-      <item href="/authorization/new-user.xml?action=save" type="intern">
+      <item href="/authorization/new-user.xed?action=save" type="intern">
         <label xml:lang="de">Nutzer anlegen</label>
         <label xml:lang="en">Create User</label>
       </item>
