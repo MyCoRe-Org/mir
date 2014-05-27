@@ -9,7 +9,7 @@
   <xsl:output method="html" doctype-system="about:legacy-compat" indent="yes" omit-xml-declaration="yes" media-type="text/html"
     version="5" />
   <xsl:strip-space elements="*" />
-  <xsl:include href="resource:xsl/layout/mir-common-layout.xsl"/>
+  <xsl:include href="resource:xsl/layout/mir-common-layout.xsl" />
   <xsl:param name="MIR.DefaultLayout.CSS" select="'readable.min'" />
   <!-- Various versions -->
   <xsl:variable name="bootstrap.version" select="'3.1.1'" />
@@ -96,5 +96,8 @@
         <script type="text/javascript" src="{$WebApplicationBaseURL}js/mir/base.js"></script>
       </body>
     </html>
+  </xsl:template>
+  <xsl:template match="/*[not(local-name()='site')]">
+    <xsl:message terminate="yes">This is not a site document, fix your properties.</xsl:message>
   </xsl:template>
 </xsl:stylesheet>
