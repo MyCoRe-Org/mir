@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE MyCoReWebPage>
+<MyCoReWebPage>
+
+  <section i18n="component.mir.wizard.title" xml:lang="all">
+    <div class="jumbotron">
+      <h1>Wizard of MIR!</h1>
+      <p>
+        <i>Click your heels together three times and say 'There's no better project like MIR' and you'll be there."</i>
+      </p>
+    </div>
+  </section>
+
+  <section xml:lang="all">
+    <xed:form class="form-horizontal" role="form" xmlns:xed="http://www.mycore.de/xeditor" xmlns:wizard="http://www.mycore.de/mir/wizard">
+      <xed:post-processor xsl="wizard-postprocessor.xsl" />
+
+      <xed:bind xpath="wizard">
+        <fieldset>
+          <legend>
+            <xed:output i18n="component.mir.wizard.solr.title" />
+          </legend>
+          <wizard:template name="textInput" xpath="solr/url" id="solrURL" default="http://localhost:8291/solr/collection1" i18n="component.mir.wizard.solr.url"
+            i18n.error="component.mir.wizard.solr.url.required" required="true" />
+        </fieldset>
+        <fieldset>
+          <legend>
+            <xed:output i18n="component.mir.wizard.db.title" />
+          </legend>
+          <xed:bind xpath="database">
+            <wizard:template name="selectInput" xpath="driver" id="dbType" i18n="component.mir.wizard.db.type" i18n.error="component.mir.wizard.db.type.required"
+              required="true" uri="xslStyle:dbtypes2options:webapp:wizard/config/dbtypes.xml" />
+            <wizard:template name="textInput" xpath="url" id="dbURL" i18n="component.mir.wizard.db.url" i18n.error="component.mir.wizard.db.url.required"
+              required="true" />
+            <wizard:template name="textInput" xpath="username" id="dbUsername" i18n="component.mir.wizard.db.username" />
+            <wizard:template name="passwordInput" xpath="password" id="dbPassword" i18n="component.mir.wizard.db.password" />
+          </xed:bind>
+          <div class="pull-right">
+            <wizard:template name="submitButton" i18n="component.mir.wizard.save" target="servlet" href="MIRWizardServlet" />
+          </div>
+        </fieldset>
+      </xed:bind>
+      <script type="text/javascript">
+        jQuery.wizard = {
+        "dbToggleElms" : ["#dbURL", "#dbUsername", "#dbPassword"],
+        "WebApplicationBaseURL" :
+        <xed:output i18n="component.mir.wizard.quote" value="$WebApplicationBaseURL" />
+        ,
+        "MCRDataDir":
+        <xed:output i18n="component.mir.wizard.quote" value="$MCR.datadir" />
+        };
+      </script>
+      <script type="text/javascript" src="{$WebApplicationBaseURL}wizard/js/wizard.js" />
+    </xed:form>
+  </section>
+
+</MyCoReWebPage>
