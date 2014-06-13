@@ -14,12 +14,6 @@
     <template.cssdir>${project.build.directory}/classes/META-INF/resources/mir-default-layout/css</template.cssdir>
     <grunt.projectBase>${project.build.directory}/grunt</grunt.projectBase>
   </properties>
-  <pluginRepositories>
-    <pluginRepository>
-      <id>pyx4me</id>
-      <url>http://www.pyx4me.com/maven2/</url>
-    </pluginRepository>
-  </pluginRepositories>
   <build>
     <plugins>
       <plugin>
