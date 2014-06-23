@@ -26,9 +26,6 @@
           <xsl:value-of select="'text'" />
         </xsl:when>
         <xsl:otherwise>
-          <xsl:comment>
-            <xsl:value-of select="concat('No hint found: ',$genre)" />
-          </xsl:comment>
           <xsl:value-of select="'text'" />
         </xsl:otherwise>
       </xsl:choose>
