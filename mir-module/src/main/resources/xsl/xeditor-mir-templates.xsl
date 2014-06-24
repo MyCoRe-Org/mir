@@ -9,7 +9,7 @@
       <xsl:apply-templates select="." mode="formline" />
     </div>
   </xsl:template>
-  
+
   <!-- MODE=formline -->
 
   <xsl:template match="mir:template[@name='textInput' or @name='selectInput']" mode="formline">
@@ -44,7 +44,7 @@
       </button>
     </div>
   </xsl:template>
-  
+
   <!-- MODE=widget -->
 
   <xsl:template match="mir:template[@name='textInput']" mode="widget">
@@ -68,15 +68,18 @@
 
   <xsl:template match="mir:template" mode="label">
     <label for="{@id}" class="col-md-{$label-width} control-label">
-      <xed:output i18n="{@i18n}" />
+      <xsl:choose>
+        <xsl:when test="@i18n"><xed:output i18n="{@i18n}"/></xsl:when>
+        <xsl:otherwise><xsl:value-of select="@label" /></xsl:otherwise>
+      </xsl:choose>
     </label>
   </xsl:template>
   <xsl:template match="mir:template" mode="inputTooltip">
     <xsl:if test="@tooltip">
       <span class="input-group-addon" data-toggle="tooltip">
         <xsl:attribute name="title">
-              <xsl:value-of select="concat('{i18n:',@tooltip,'}')" />
-            </xsl:attribute>
+          <xsl:value-of select="concat('{i18n:',@tooltip,'}')" />
+        </xsl:attribute>
         <i class="icon-info-sign"></i>
       </span>
     </xsl:if>
