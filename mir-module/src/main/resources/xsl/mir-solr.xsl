@@ -17,6 +17,9 @@
 
   <xsl:template match="mods:mods" mode="mir">
     <xsl:param name="status" />
+    <field name="mir_status">
+      <xsl:value-of select="$status" />
+    </field>
     <xsl:for-each select="mods:name[@type='corporate' and @authorityURI]">
       <xsl:variable name="uri" xmlns:mcrmods="xalan://org.mycore.mods.MCRMODSClassificationSupport" select="mcrmods:getClassCategParentLink(.)" />
       <xsl:if test="string-length($uri) &gt; 0">
