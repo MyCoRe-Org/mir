@@ -182,6 +182,7 @@
     <module>mir-webapp</module>
     <module>mir-common-resources</module>
     <module>mir-cli</module>
+    <module>mir-wizard</module>
     <module>mir-it</module>
   </modules>
   <developers>
@@ -217,6 +218,17 @@
       <timezone>+1</timezone>
       <roles>
         <role>coordination</role>
+        <role>developer</role>
+      </roles>
+    </developer>
+    <developer>
+      <id>mcradler</id>
+      <name>René Adler</name>
+      <organization>TU Ilmenau, Universitätsbibliothek</organization>
+      <email>Rene.Adler (at) tu-ilmenau.de</email>
+      <organizationUrl>http://www.tu-ilmenau.de/ub/</organizationUrl>
+      <timezone>+1</timezone>
+      <roles>
         <role>developer</role>
       </roles>
     </developer>
