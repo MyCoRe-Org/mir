@@ -411,12 +411,11 @@
                         <xsl:value-of select="i18n:translate('object.editObject')" />
                       </a>
                     </li>
-                    <li>
+                    <!-- li> does not work atm
                       <a href="{$WebApplicationBaseURL}editor/change_genre.xed?id={$id}">
-                        <!-- xsl:value-of select="i18n:translate('object.editGenre')" / -->
-                        Genre ändern
+                        <xsl:value-of select="i18n:translate('object.editGenre')" />
                       </a>
-                    </li>
+                    </li -->
                   </xsl:when>
                   <xsl:otherwise>
                     <li>
@@ -515,5 +514,55 @@
     </xsl:if>
   </xsl:template>
 
+  <xsl:template match="derobject" mode="derivateActions">
+    <xsl:param name="deriv" />
+    <xsl:param name="parentObjID" />
+    <xsl:param name="suffix" select="''" />
+    <xsl:if test="acl:checkPermission($deriv,'writedb')">
+
+      <xsl:variable select="concat('mcrobject:',$deriv)" name="derivlink" />
+      <xsl:variable select="document($derivlink)" name="derivate" />
+      <xsl:variable name="derivateWithURN" select="mcrurn:hasURNDefined($deriv)" />
+
+      <div class="btn-group pull-right" style="top: -12px;">
+        <a href="#" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+          <i class="fa fa-cog">
+            <xsl:value-of select="' '" />
+          </i>
+          <xsl:value-of select="' Aktionen'" />
+          <span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu">
+          <xsl:if test="$derivateWithURN=false()">
+            <li>
+              <a href="{$ServletsBaseURL}derivate/update{$HttpSession}?objectid={../../../@ID}&amp;id={$deriv}{$suffix}">
+                <xsl:value-of select="i18n:translate('component.swf.derivate.addFile')" />
+              </a>
+            </li>
+          </xsl:if>
+          <xsl:if test="$derivateWithURN=false() and mcrxsl:isAllowedObjectForURNAssignment($parentObjID)">
+            <xsl:variable name="apos">
+              <xsl:text>'</xsl:text>
+            </xsl:variable>
+            <li>
+              <xsl:if test="not(acl:checkPermission($deriv,'deletedb'))">
+                <xsl:attribute name="class">last</xsl:attribute>
+              </xsl:if>
+              <a href="{$ServletsBaseURL}MCRAddURNToObjectServlet{$HttpSession}?object={$deriv}" onclick="{concat('return confirm(',$apos, i18n:translate('component.mods.metaData.options.urn.confirm'), $apos, ');')}">
+                <xsl:value-of select="i18n:translate('component.mods.metaData.options.urn')" />
+              </a>
+            </li>
+          </xsl:if>
+          <xsl:if test="acl:checkPermission($deriv,'deletedb') and $derivateWithURN=false()">
+            <li class="last">
+              <a href="{$ServletsBaseURL}derivate/delete{$HttpSession}?id={$deriv}" class="confirm_derivate_deletion">
+                <xsl:value-of select="i18n:translate('component.swf.derivate.delDerivate')" />
+              </a>
+            </li>
+          </xsl:if>
+        </ul>
+      </div>
+    </xsl:if>
+  </xsl:template>
 
 </xsl:stylesheet>

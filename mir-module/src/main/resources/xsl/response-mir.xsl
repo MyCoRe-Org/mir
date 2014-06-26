@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:mods="http://www.loc.gov/mods/v3"
-  xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation" xmlns:str="http://exslt.org/strings" exclude-result-prefixes="i18n mods str">
+  xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation" xmlns:str="http://exslt.org/strings" xmlns:mcr="xalan://org.mycore.common.xml.MCRXMLFunctions"
+  xmlns:acl="xalan://org.mycore.access.MCRAccessManager" xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions" exclude-result-prefixes="i18n mods str mcr acl mcrxsl">
+
   <xsl:template match="doc[@objectType='mods']" priority="10" mode="resultList">
-    <!-- 
+    <!--
       Do not read MyCoRe object at this time
     -->
     <xsl:variable name="identifier" select="@id" />
@@ -35,8 +37,16 @@
                 <xsl:with-param name="fileName" select="$derivates/str[@name='iviewFile'][1]" />
               </xsl:call-template>
             </xsl:when>
+            <xsl:when test="str:tokenize($derivates/str[@name='maindoc'][1],'.')[position()=last()] = 'pdf'">
+              <xsl:variable name="filePath" select="concat($derivates/str[@name='id'][1],'/',mcr:encodeURIPath($derivates/str[@name='maindoc'][1]),$HttpSession)" />
+              <img alt="{$mods-type}" title="thumbnail">
+                <xsl:attribute name="src">
+                  <xsl:value-of select="concat($WebApplicationBaseURL,'img/pdfthumb/',$filePath,'?centerThumb=no')"/>
+                </xsl:attribute>
+              </img>
+            </xsl:when>
             <xsl:otherwise>
-              <img src="{$WebApplicationBaseURL}templates/master/{$template}/IMAGES/icons_liste/icon_{$mods-type}.png" itemprop="photo"
+              <img src="{$WebApplicationBaseURL}images/icons/icon_{$mods-type}.png" itemprop="photo"
                 alt="{$mods-type}" />
             </xsl:otherwise>
           </xsl:choose>
@@ -66,11 +76,11 @@
             <a href="{$derivifs}">
               <xsl:choose>
                 <xsl:when test="string-length($fileType) &gt; 0">
-                  <img src="{$WebApplicationBaseURL}templates/master/{$template}/IMAGES/icons_liste/download_{$fileType}.png" alt="{$maindoc}"
+                  <img src="{$WebApplicationBaseURL}images/icons/download_{$fileType}.png" alt="{$maindoc}"
                     title="{$maindoc}" />
                 </xsl:when>
                 <xsl:otherwise>
-                  <img src="{$WebApplicationBaseURL}templates/master/{$template}/IMAGES/icons_liste/download_default.png" alt="{$maindoc}"
+                  <img src="{$WebApplicationBaseURL}images/icons/download_default.png" alt="{$maindoc}"
                     title="{$maindoc}" />
                 </xsl:otherwise>
               </xsl:choose>
@@ -137,7 +147,7 @@
           <span>
             <xsl:value-of select="concat(i18n:translate('component.mods.metaData.dictionary.published'),': ')" />
           </span>
-        
+
 <!--         : -->
           <xsl:variable name="publisher" select="arr[@name='mods.publisher']/str" />
           <xsl:variable name="place" select="arr[@name='mods.place']/str" />
@@ -172,7 +182,7 @@
           </xsl:if>
         </section>
       </xsl:if>
-      <!-- 
+      <!--
       <section>
         <span class="signature" title="Signatur">
           <span>
@@ -207,12 +217,28 @@
       </section>
       <section>
         <ul class="actions">
-          <li>
-            <a href="#">
-              <i class="fa fa-edit"></i>
-              Bearbeiten
-            </a>
-          </li>
+          <xsl:if test="acl:checkPermission($identifier,'writedb')" >
+            <xsl:variable name="editURL">
+              <xsl:call-template name="mods.getObjectEditURL">
+                <xsl:with-param name="id" select="$identifier" />
+                <xsl:with-param name="layout" select="'$'" />
+              </xsl:call-template>
+            </xsl:variable>
+            <xsl:choose>
+              <xsl:when test="string-length($editURL) &gt; 0">
+                <li>
+                  <a href="{$editURL}">
+                    <i class="fa fa-edit"></i><xsl:value-of select="i18n:translate('object.editObject')" />
+                  </a>
+                </li>
+              </xsl:when>
+              <xsl:otherwise>
+                <li>
+                  <i class="fa fa-edit"></i><xsl:value-of select="i18n:translate('object.locked')" />
+                </li>
+              </xsl:otherwise>
+            </xsl:choose>
+          </xsl:if>
           <li>
             <a
               href="{$ServletsBaseURL}MCRBasketServlet{$HttpSession}?type=objects&amp;action=add&amp;id={$identifier}&amp;uri=mcrobject:{$identifier}&amp;redirect=referer">
@@ -224,4 +250,51 @@
       </section>
     </article>
   </xsl:template>
+
+  <!-- copied from mods.xsl -> ToDo: refacture! -->
+  <xsl:template name="mods.getObjectEditURL">
+    <xsl:param name="id" />
+    <xsl:param name="layout" select="'$'" />
+    <xsl:choose>
+      <xsl:when test="mcrxsl:resourceAvailable('actionmappings.xml')">
+      <!-- URL mapping enabled -->
+        <xsl:variable name="url">
+          <xsl:choose>
+            <xsl:when test="$layout = 'all'">
+              <xsl:value-of select="actionmapping:getURLforID('update-xml',$id,true())" xmlns:actionmapping="xalan://org.mycore.wfc.actionmapping.MCRURLRetriever" />
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:value-of select="actionmapping:getURLforID('update',$id,true())" xmlns:actionmapping="xalan://org.mycore.wfc.actionmapping.MCRURLRetriever" />
+            </xsl:otherwise>
+          </xsl:choose>
+        </xsl:variable>
+        <xsl:choose>
+          <xsl:when test="string-length($url)=0" />
+          <xsl:otherwise>
+            <xsl:variable name="urlWithParam">
+              <xsl:call-template name="UrlSetParam">
+                <xsl:with-param name="url" select="$url"/>
+                <xsl:with-param name="par" select="'id'"/>
+                <xsl:with-param name="value" select="$id" />
+              </xsl:call-template>
+            </xsl:variable>
+            <xsl:call-template name="UrlAddSession">
+              <xsl:with-param name="url" select="$urlWithParam" />
+            </xsl:call-template>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:when>
+      <xsl:otherwise>
+      <!-- URL mapping disabled -->
+        <xsl:variable name="layoutSuffix">
+          <xsl:if test="$layout != '$'">
+            <xsl:value-of select="concat('-',$layout)" />
+          </xsl:if>
+        </xsl:variable>
+        <xsl:variable name="form" select="concat('editor_form_commit-mods',$layoutSuffix,'.xml')" />
+        <xsl:value-of select="concat($WebApplicationBaseURL,$form,$HttpSession,'?id=',$id)" />
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
 </xsl:stylesheet>

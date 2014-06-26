@@ -6,6 +6,7 @@
   <xsl:template match="/">
     <xsl:choose>
       <xsl:when test="key('rights', mycoreobject/@ID)/@view">
+        <xsl:variable name="objID" select="mycoreobject/@ID" />
         <div id="mir-collapse-files">
           <xsl:for-each select="mycoreobject/structure/derobjects/derobject[key('rights', @xlink:href)/@read]">
             <div class="panel panel-default" id="files{@xlink:href}">
@@ -15,6 +16,10 @@
                     Files
                     <span class="caret"></span>
                   </a>
+                  <xsl:apply-templates select="." mode="derivateActions">
+                    <xsl:with-param name="deriv" select="@xlink:href" />
+                    <xsl:with-param name="parentObjID" select="$objID" />
+                  </xsl:apply-templates>
                 </h4>
               </div>
               <div id="collapse{@xlink:href}" class="panel-collapse collapse in">
