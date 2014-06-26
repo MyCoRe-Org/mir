@@ -126,12 +126,16 @@
         <script type="text/javascript" src="//netdna.bootstrapcdn.com/bootstrap/{$bootstrap.version}/js/bootstrap.min.js"></script>
         <script type="text/javascript" src="{$WebApplicationBaseURL}js/jquery.confirm.min.js"></script>
         <script type="text/javascript" src="{$WebApplicationBaseURL}js/mir/base.js"></script>
-<!--         <script src="{$WebApplicationBaseURL}mir-flatmir-layout/datepicker/js/bootstrap-datepicker.js"></script> -->
         <script>
           $( document ).ready(function() {
             $('.overtext').tooltip();
-    //        $('#start_date').datepicker();
-    //        $('#end_date').datepicker();
+            $.confirm.options = {
+              text: "<xsl:value-of select="i18n:translate('mir.confirm.text')" />",
+              title: "<xsl:value-of select="i18n:translate('mir.confirm.title')" />",
+              confirmButton: "<xsl:value-of select="i18n:translate('mir.confirm.confirmButton')" />",
+              cancelButton: "<xsl:value-of select="i18n:translate('mir.confirm.cancelButton')" />",
+              post: false
+            }
           });
         </script>
       </body>
