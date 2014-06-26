@@ -16,12 +16,15 @@
     $('table.editorPanel td:has(table)').css('padding', '0');
   });
   $﻿(document).ready(function() {
-    $('#confirm_deletion').click(function(d) {
-      d.preventDefault();
-      jConfirm('Wollen Sie dieses Dokument wirklich löschen?', 'Löschen bestätigen', function(r) {
-        if (r)
-          location.href = $('#confirm_deletion').attr('href');
-      });
+    $('#confirm_deletion').confirm({
+      text: "Are you sure you want to delete this document?",
+      title: "Confirmation required",
+      confirm: function(button) {
+        location.href = $('#confirm_deletion').attr('href');
+      },
+      confirmButton: "Yes I am",
+      cancelButton: "No",
+      post: true
     });
   });
   $(document).ready(function() {
