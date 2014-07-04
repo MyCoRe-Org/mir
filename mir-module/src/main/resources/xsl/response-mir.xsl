@@ -46,7 +46,7 @@
               </img>
             </xsl:when>
             <xsl:otherwise>
-              <img src="{$WebApplicationBaseURL}images/icons/icon_{$mods-type}.png" itemprop="photo"
+              <img src="{$WebApplicationBaseURL}images/icons/{$CurrentLang}/icon_{$mods-type}.png" itemprop="photo"
                 alt="{$mods-type}" />
             </xsl:otherwise>
           </xsl:choose>
@@ -133,7 +133,7 @@
               <xsl:value-of select="'; '" />
             </xsl:if>
             <address title="Author">
-              <a href="#" itemprop="author" itemscope="itemscope" itemtype="http:/schema.org/Person" rel="author">
+              <a href="#" itemprop="author" itemscope="itemscope" itemtype="http://schema.org/Person" rel="author">
                 <span itemprop="name">
                   <xsl:value-of select="." />
                 </span>
