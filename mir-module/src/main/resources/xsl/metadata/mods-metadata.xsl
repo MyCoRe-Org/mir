@@ -75,9 +75,9 @@
         </xsl:for-each>
       </xsl:when>
       <xsl:otherwise>
-        <xsl:message terminate="yes">
+        <!-- xsl:message terminate="yes">
           <xsl:value-of select="concat('not a classification: ',name())" />
-        </xsl:message>
+        </xsl:message -->
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
