@@ -33,7 +33,7 @@
             <xsl:when test="$derivates/str[@name='iviewFile']">
               <xsl:call-template name="iViewLinkPrev">
                 <xsl:with-param name="mcrid" select="$identifier" />
-                <xsl:with-param name="derivate" select="$derivates/str[@name='id'][1]" />
+                <xsl:with-param name="derivate" select="$derivates/str[@name='iviewFile']/../str[@name='id']" />
                 <xsl:with-param name="fileName" select="$derivates/str[@name='iviewFile'][1]" />
               </xsl:call-template>
             </xsl:when>
