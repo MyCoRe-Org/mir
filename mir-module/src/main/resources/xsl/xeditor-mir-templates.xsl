@@ -80,7 +80,7 @@
         <xsl:attribute name="title">
           <xsl:value-of select="concat('{i18n:',@tooltip,'}')" />
         </xsl:attribute>
-        <i class="icon-info-sign"></i>
+        <i class="glyphicon glyphicon-info-sign"></i>
       </span>
     </xsl:if>
   </xsl:template>
