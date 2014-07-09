@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<MyCoReWebPage>
+  <section title="Neue Publikation" xml:lang="de"/>
+  <section title="New publication" xml:lang="en"/>
+  <section xml:lang="all">
+
+<div class="container">
+  <h1>Neue Publikation melden</h1>
+  <p>
+    Hier können Sie Ihre Publikation melden. 
+    Über diese Auswahl gelangen Sie zu den gewünschten Eingabemasken, über die Sie Ihre Publikationen eintragen können.
+    Bitte wählen Sie den Publikationstyp:
+  </p>
+  <form class="form-inline" role="form" method="get" action="editor-dynamic.xed">
+    <div class="form-group">
+      <label for="genre">
+        <text i18n="ubo.genre" />
+      </label>
+      <select id="genre" class="form-control" name="genre" size="1">
+        <option value="article">
+          <text i18n="ubo.genre.article" />
+        </option>
+        <option value="book">
+          <text i18n="ubo.genre.book" />
+        </option>
+        <option value="dissertation">Dissertation</option>
+        <option value="collection">
+          <text i18n="ubo.genre.collection" />
+          <text i18n="ubo.select.editor" />
+        </option>
+        <option value="festschrift">
+          Festschrift
+          <text i18n="ubo.select.editor" />
+        </option>
+        <option value="proceedings">
+          <text i18n="ubo.genre.proceedings" />
+          <text i18n="ubo.select.editor" />
+        </option>
+        <option value="lexicon">
+          <text i18n="ubo.genre.lexicon" />
+          <text i18n="ubo.select.editor" />
+        </option>
+        <option value="journal">
+          <text i18n="ubo.genre.journal" />
+          <text i18n="ubo.select.editor" />
+        </option>
+        <option value="newspaper">
+          <text i18n="ubo.genre.newspaper" />
+          <text i18n="ubo.select.editor" />
+        </option>
+        <option value="series">
+          <text i18n="ubo.genre.series" />
+          <text i18n="ubo.select.editor" />
+        </option>
+        <option value="entry">
+          <text i18n="ubo.genre.entry" />
+        </option>
+        <option value="preface">
+          <text i18n="ubo.genre.preface" />
+        </option>
+        <option value="interview">Interview</option>
+        <option value="speech">
+          <text i18n="ubo.genre.speech" />
+        </option>
+        <option value="patent">
+          <text i18n="ubo.genre.patent" />
+        </option>
+        <option value="poster">
+          <text i18n="ubo.genre.poster" />
+        </option>
+        <option value="audio">
+          <text i18n="ubo.genre.audio" />
+        </option>
+        <option value="video">
+          <text i18n="ubo.genre.video" />
+        </option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="host"> 
+        <text i18n="ubo.select.host" />
+      </label>
+      <select id="host" class="form-control" name="host" size="1">
+        <option value="standalone">
+          <text i18n="ubo.select" />
+        </option>
+        <option value="journal">
+          <text i18n="ubo.select.journal" />
+        </option>
+        <option value="newspaper">
+          <text i18n="ubo.select.newspaper" />
+        </option>
+        <option value="series">
+          <text i18n="ubo.select.series" />
+        </option>
+        <option value="collection">
+          <text i18n="ubo.select.collection" />
+        </option>
+        <option value="festschrift">
+          <text i18n="ubo.select.festschrift" />
+        </option>
+        <option value="proceedings">
+          <text i18n="ubo.select.proceedings" />
+        </option>
+        <option value="lexicon">
+          <text i18n="ubo.select.lexicon" />
+        </option>
+      </select>
+    </div>
+    <div class="form-group" style="vertical-align:bottom">
+      <button type="submit" class="btn btn-default">OK</button>
+    </div>
+  </form>
+  <p>
+    ... oder Sie sind Admin und nutzen das <a href="editor-admins.xed">ziemlich komplizierte Admin-Formular (für Admins)</a>.
+  </p>
+</div>
+
+  </section>
+</MyCoReWebPage>

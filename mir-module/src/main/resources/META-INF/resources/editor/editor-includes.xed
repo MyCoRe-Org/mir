@@ -1,0 +1,665 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<xed:template xmlns:xed="http://www.mycore.de/xeditor" xmlns:ubo="http://duepublico.uni-due.de/ubo">
+
+  <xed:template id="in.out">
+    <xed:source uri="xslStyle:editor/mycoreobject-template-{$template}:mcrobject:{$source}" />
+    <xed:source uri="xslStyle:editor/mods-preprocessor:mcrobject:{$id}" />
+    <xed:source uri="xslStyle:editor/mycoreobject-duepublico2ubo:http://duepublico.uni-duisburg-essen.de/servlets/DocumentServlet?id={$doc}&amp;format=mycore&amp;XSL.Style=xml" />
+    <xed:cancel url="{$from}" />
+    <xed:cancel url="receive/{$source}?XSL.Transformer=mcrmods2ubo" />
+    <xed:cancel url="ubo/index.xml" />
+    <xed:post-processor xsl="editor/mods-postprocessor.xsl" />
+  </xed:template>
+
+  <xed:template id="mycore.common">
+    <xed:bind xpath="@ID" initially="ubo_mods_0" />
+    <xed:bind xpath="@label" initially="mods" />
+    <xed:bind xpath="@xsi:noNamespaceSchemaLocation" initially="datamodel-mods.xsd" />
+  </xed:template>
+
+  <xed:template id="genre">
+    <div class="form-group">
+      <label class="col-md-3 control-label">
+        <xed:output i18n="ubo.genre" />
+      </label>
+      <div class="col-md-6">
+        <xed:repeat xpath="mods:genre" min="1" max="10">
+          <div class="controls">
+            <select class="form-control form-control-inline">
+              <xed:include uri="xslStyle:items2options:classification:editor:-1:children:ubogenre" />
+            </select>
+            <ubo:pmud />
+          </div>
+        </xed:repeat>
+      </div>
+    </div>
+  </xed:template>
+
+  <xed:template id="title">
+    <ubo:textfield xpath="mods:titleInfo/mods:title" label="ubo.title" />
+  </xed:template>
+
+  <xed:template id="title.abbreviated">
+    <ubo:textfield xpath="mods:titleInfo[@type='abbreviated']/mods:title" label="ubo.title.type.abbreviated" />
+  </xed:template>
+
+  <xed:template id="title.journal">
+    <ubo:textfield xpath="mods:titleInfo/mods:title" label="ubo.title.journal" />
+  </xed:template>
+
+  <xed:template id="title.newspaper">
+    <ubo:textfield xpath="mods:titleInfo/mods:title" label="ubo.title.newspaper" />
+  </xed:template>
+
+  <xed:template id="series.title">
+    <ubo:textfield xpath="mods:titleInfo/mods:title" label="ubo.series.title" placeholder="{i18n:ubo.placeholder.series.title}" />
+  </xed:template>
+
+  <xed:template id="subtitle">
+    <ubo:textfield xpath="mods:titleInfo/mods:subTitle" label="ubo.title.subTitle" />
+  </xed:template>
+
+  <xed:template id="titles.thesis">
+    <div class="form-group">
+      <label class="col-md-3 control-label">
+        <xed:output i18n="ubo.title.thesis" />
+      </label>
+      <div class="col-md-6">
+        <p class="form-control-static">
+          <xed:output i18n="ubo.title.thesis.help" />
+        </p>
+      </div>
+    </div>    
+    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="titles.thesis.common" />
+  </xed:template>
+  
+  <xed:template id="titles.thesisHabil">
+    <div class="form-group">
+      <label class="col-md-3 control-label">
+        <xed:output i18n="ubo.title.thesisHabil" />
+      </label>
+      <div class="col-md-6">
+        <p class="form-control-static">
+          <xed:output i18n="ubo.title.thesis.help" />
+        </p>
+      </div>
+    </div>    
+    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="titles.thesis.common" />
+  </xed:template>
+  
+  <xed:template id="titles.thesis.common">
+    <xed:bind xpath="mods:titleInfo">
+      <div class="form-group">
+        <div class="col-md-3" style="text-align:right; font-weight:bold;">
+          <label>in</label>
+          <xed:bind xpath="@xml:lang" initially="de">
+            <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="lang.list" />
+          </xed:bind>
+        </div>
+        <div class="col-md-6">
+          <xed:bind xpath="mods:title">
+            <input type="text" class="form-control" placeholder="{i18n:ubo.placeholder.title.main}" />
+          </xed:bind>
+        </div>
+      </div>
+      <ubo:textfield xpath="mods:subTitle" label="ubo.title.subTitle" />
+    </xed:bind>
+
+    <xed:bind xpath="mods:titleInfo[2][@type='translated']">
+      <div class="form-group">
+        <div class="col-md-3" style="text-align:right; font-weight:bold;">
+          <label>in</label>
+          <xed:bind xpath="@xml:lang" initially="en">
+            <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="lang.list" />
+          </xed:bind>
+        </div>
+        <div class="col-md-6">
+          <xed:bind xpath="mods:title">
+            <input type="text" class="form-control" placeholder="{i18n:ubo.placeholder.title.translated}" />
+          </xed:bind>
+        </div>
+      </div>
+      <ubo:textfield xpath="mods:subTitle" label="ubo.title.subTitle" />
+    </xed:bind>
+  </xed:template>
+
+  <xed:template id="title.complex.repeated">
+    <xed:repeat xpath="mods:titleInfo" min="1" max="6">
+      <div class="form-group">
+        <label class="col-md-3 control-label">
+          <xed:output i18n="ubo.title.nonSort" />
+        </label>
+        <div class="col-md-6">
+          <div class="controls">
+            <xed:bind xpath="mods:nonSort">
+              <input type="text" size="10" class="form-control form-control-inline" />
+            </xed:bind>
+            <xed:bind xpath="@xml:lang" initially="de">
+              <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="lang.list" />
+            </xed:bind>
+            <xed:bind xpath="@type">
+              <select class="form-control form-control-inline">
+                <option value="">
+                  <xed:output i18n="ubo.title.type.main" />
+                </option>
+                <option value="translated">
+                  <xed:output i18n="ubo.title.type.translated" />
+                </option>
+                <option value="alternative">
+                  <xed:output i18n="ubo.title.type.alternative" />
+                </option>
+                <option value="abbreviated">
+                  <xed:output i18n="ubo.title.type.abbreviated" />
+                </option>
+                <option value="uniform">
+                  <xed:output i18n="ubo.title.type.uniform" />
+                </option>
+              </select>
+            </xed:bind>
+            <ubo:pmud />
+          </div>
+        </div>
+      </div>
+      <ubo:textfield xpath="mods:title" label="ubo.title" />
+      <ubo:textfield xpath="mods:subTitle" label="ubo.title.subTitle" />
+    </xed:repeat>
+  </xed:template>
+
+  <xed:template id="author.repeated">
+    <ubo:role.repeated role="aut" label="ubo.role.author" />
+  </xed:template>
+
+  <xed:template id="editor.repeated">
+    <ubo:role.repeated role="edt" label="ubo.role.editor" />
+  </xed:template>
+
+  <xed:template id="inventor.repeated">
+    <ubo:role.repeated role="inv" label="ubo.role.inventor" />
+  </xed:template>
+
+  <xed:template id="editor.honoree.repeated">
+    <xed:bind xpath="mods:name[@type='personal'][mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']='edt']" />
+    <xed:bind xpath="mods:name[@type='personal'][mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']='hnr']" />
+    <ubo:person.repeated>
+      <option value="edt">
+        <xed:output i18n="ubo.role.editor" />
+      </option>
+      <option value="hnr">
+        <xed:output i18n="ubo.role.honoree" />
+      </option>
+    </ubo:person.repeated>
+  </xed:template>
+
+  <xed:template id="author.interviewee.repeated">
+    <xed:bind xpath="mods:name[@type='personal'][mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']='aut']" />
+    <xed:bind xpath="mods:name[@type='personal'][mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']='ive']" />
+    <ubo:person.repeated>
+      <option value="aut">
+        <xed:output i18n="ubo.role.author" />
+      </option>
+      <option value="ive">
+        <xed:output i18n="ubo.role.interviewee" />
+      </option>
+    </ubo:person.repeated>
+  </xed:template>
+
+  <xed:template id="producer.speaker.repeated">
+    <xed:bind xpath="mods:name[@type='personal'][mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']='pro']" />
+    <xed:bind xpath="mods:name[@type='personal'][mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']='spk']" />
+    <ubo:person.repeated>
+      <option value="pro">
+        <xed:output i18n="ubo.role.producer" />
+      </option>
+      <option value="spk">
+        <xed:output i18n="ubo.role.speaker" />
+      </option>
+    </ubo:person.repeated>
+  </xed:template>
+
+  <xed:template id="thesis.advisor.reviewer.repeated">
+    <xed:bind xpath="mods:name[@type='personal'][mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']='aut']" />
+    <xed:bind xpath="mods:name[@type='personal'][mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']='ths']" />
+    <xed:bind xpath="mods:name[@type='personal'][mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']='rev']" />
+    <ubo:person.repeated>
+      <option value="aut">
+        <xed:output i18n="ubo.role.thesis" />
+      </option>
+      <option value="ths">
+        <xed:output i18n="ubo.role.advisor" />
+      </option>
+      <option value="rev">
+        <xed:output i18n="ubo.role.reviewer" />
+      </option>
+    </ubo:person.repeated>
+  </xed:template>
+  
+  <xed:template id="thesisHabil.reviewer.repeated">
+    <xed:bind xpath="mods:name[@type='personal'][mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']='aut']" />
+    <xed:bind xpath="mods:name[@type='personal'][mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']='rev']" />
+    <xed:bind xpath="mods:name[@type='personal'][mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']='rev']" />
+    <ubo:person.repeated>
+      <option value="aut">
+        <xed:output i18n="ubo.role.thesisHabil" />
+      </option>      
+      <option value="rev">
+        <xed:output i18n="ubo.role.reviewer" />
+      </option>
+    </ubo:person.repeated>
+  </xed:template>
+
+  <xed:template id="name.repeated">
+    <ubo:person.repeated>
+      <xed:include uri="xslStyle:items2options:classification:editor:-1:children:marcrelator" />
+    </ubo:person.repeated>
+  </xed:template>
+
+  <xed:template id="person.fields">
+    <button type="submit" class="btn btn-default" xed:target="subselect" xed:href="../lsfSearch.html?lastName={mods:namePart[@type='family']}">
+      <xed:output i18n="button.selectPerson" />
+    </button> 
+    <xed:if test="mods:namePart">
+      <p class="form-control-static">
+        <xed:output value="concat(mods:namePart[@type='family'],', ',mods:namePart[@type='given'])" />
+      </p>
+    </xed:if>
+    <xed:if test="string-length(@valueURI) &gt; 0">
+      <p class="form-control-static">
+        <a href="{@valueURI}">
+          <xed:output value="concat(' (ID ',substring-after(@valueURI,'pid='),')')" />
+        </a>
+      </p>
+    </xed:if>
+  </xed:template>
+
+  <xed:template id="conference">
+    <ubo:textfield xpath="mods:name[@type='conference']/mods:namePart" label="ubo.conference" placeholder="{i18n:ubo.placeholder.conference}" />
+  </xed:template>
+
+  <xed:template id="year.issued">
+    <ubo:textfield xpath="mods:originInfo/mods:dateIssued[@encoding='w3cdtf']" label="ubo.date.issued.4"
+      placeholder="{i18n:ubo.placeholder.year}" />
+  </xed:template>
+
+  <xed:template id="date.issued">
+    <ubo:textfield xpath="mods:originInfo/mods:dateIssued[@encoding='w3cdtf']" label="ubo.date.issued.10"
+      placeholder="{i18n:ubo.placeholder.date}" />
+  </xed:template>
+
+  <xed:template id="date.broadcasted">
+    <ubo:textfield xpath="mods:originInfo/mods:dateIssued[@encoding='w3cdtf']" label="ubo.date.broadcasted"
+      placeholder="{i18n:ubo.placeholder.date}" />
+  </xed:template>
+
+  <xed:template id="date.accepted">
+    <ubo:textfield xpath="mods:originInfo/mods:dateOther[@type='accepted'][@encoding='w3cdtf']" label="ubo.date.accepted"
+      placeholder="{i18n:ubo.placeholder.date}" />
+  </xed:template>
+  
+  <xed:template id="date.acceptedHabil">
+    <ubo:textfield xpath="mods:originInfo/mods:dateOther[@type='accepted'][@encoding='w3cdtf']" label="ubo.date.acceptedHabil"
+      placeholder="{i18n:ubo.placeholder.date}" />
+  </xed:template>
+
+  <xed:template id="date.submitted">
+    <ubo:textfield xpath="mods:originInfo/mods:dateOther[@type='submitted'][@encoding='w3cdtf']" label="ubo.date.submitted"
+      placeholder="{i18n:ubo.placeholder.date}" />
+  </xed:template>
+
+  <xed:template id="identifier.patent">
+    <div class="form-group">
+      <label class="col-md-3 control-label">
+        <xed:output i18n="ubo.identifier.patent" />
+      </label>
+      <div class="col-md-6">
+        <xed:repeat xpath="mods:identifier[@type='patent']" min="1" max="10">
+          <div class="controls">
+            <input type="text" size="30" class="form-control form-control-inline" />
+            <ubo:pmud />
+          </div>
+        </xed:repeat>
+      </div>
+    </div>
+  </xed:template>
+
+  <xed:template id="identifier.isbn">
+    <ubo:textfield xpath="mods:identifier[@type='isbn']" label="ubo.identifier.isbn" />
+  </xed:template>
+
+  <xed:template id="identifier.issn">
+    <ubo:textfield xpath="mods:identifier[@type='issn']" label="ubo.identifier.issn" />
+  </xed:template>
+
+  <xed:template id="identifier.duepublico">
+    <ubo:textfield xpath="mods:identifier[@type='duepublico']" label="ubo.identifier.duepublico" />
+  </xed:template>
+
+  <xed:template id="identifier.repeated">
+    <xed:repeat xpath="mods:identifier" min="1" max="10">
+      <div class="form-group">
+        <div class="col-md-3" style="text-align:right; font-weight:bold;">
+          <xed:bind xpath="@type">
+            <select class="form-control">
+              <option value="isbn">
+                <xed:output i18n="ubo.identifier.isbn" />
+              </option>
+              <option value="issn">
+                <xed:output i18n="ubo.identifier.issn" />
+              </option>
+              <option value="doi">
+                <xed:output i18n="ubo.identifier.doi" />
+              </option>
+              <option value="hdl">
+                <xed:output i18n="ubo.identifier.hdl" />
+              </option>
+              <option value="urn">
+                <xed:output i18n="ubo.identifier.urn" />
+              </option>
+              <option value="duepublico">
+                <xed:output i18n="ubo.identifier.duepublico" />
+              </option>
+              <option value="patent">
+                <xed:output i18n="ubo.identifier.patent" />
+              </option>
+            </select>
+          </xed:bind>
+        </div>
+        <div class="col-md-6">
+          <input type="text" size="30" class="form-control form-control-inline {$xed-validation-marker}" />
+          <ubo:pmud />
+        </div>
+      </div>
+    </xed:repeat>
+  </xed:template>
+
+  <xed:template id="doi.handle.urn.repeated">
+    <xed:repeat xpath="mods:identifier[contains(' doi hdl urn ',concat(' ',@type,' '))]" min="1" max="10">
+      <div class="form-group">
+        <xed:bind xpath="@type">
+          <div class="col-md-3">
+            <select class="form-control" style="text-align:right; font-weight:bold;">
+              <option value="doi">
+                <xed:output i18n="ubo.identifier.doi" />
+              </option>
+              <option value="hdl">
+                <xed:output i18n="ubo.identifier.hdl" />
+              </option>
+              <option value="urn">
+                <xed:output i18n="ubo.identifier.urn" />
+              </option>
+            </select>
+          </div>
+        </xed:bind>
+        <div class="col-md-6">
+          <input type="text" size="20" class="form-control form-control-inline {$xed-validation-marker}" />
+          <ubo:pmud />
+        </div>
+      </div>
+    </xed:repeat>
+  </xed:template>
+
+  <xed:template id="shelfmark">
+    <ubo:textfield xpath="mods:location/mods:shelfLocator" label="ubo.shelfmark" />
+  </xed:template>
+
+  <xed:template id="link">
+    <ubo:textfield xpath="mods:location/mods:url[@access='raw object']" label="ubo.link.raw_object" />
+  </xed:template>
+
+  <xed:template id="link.repeated">
+    <xed:repeat xpath="mods:location/mods:url" min="1" max="5">
+      <div class="form-group">
+        <div class="col-md-3">
+          <xed:bind xpath="@access">
+            <select class="form-control" style="text-align:right; font-weight:bold;">
+              <option value="">
+                <xed:output i18n="ubo.link" />
+              </option>
+              <option value="preview">
+                <xed:output i18n="ubo.link.preview" />
+              </option>
+              <option value="raw object">
+                <xed:output i18n="ubo.link.raw_object" />
+              </option>
+              <option value="object in context">
+                <xed:output i18n="ubo.link.object_in_context" />
+              </option>
+            </select>
+          </xed:bind>
+        </div>
+        <div class="col-md-6">
+          <input type="text" size="50" class="form-control form-control-inline {$xed-validation-marker}" />
+          <ubo:pmud />
+        </div>
+      </div>
+    </xed:repeat>
+  </xed:template>
+
+  <xed:template id="place">
+    <ubo:textfield xpath="mods:originInfo/mods:place/mods:placeTerm[@type='text']" label="ubo.place" />
+  </xed:template>
+
+  <xed:template id="country">
+    <ubo:textfield xpath="mods:originInfo/mods:place/mods:placeTerm[@type='text']" label="ubo.place.country" />
+  </xed:template>
+
+  <xed:template id="publisher">
+    <ubo:textfield xpath="mods:originInfo/mods:publisher" label="ubo.publisher" />
+  </xed:template>
+
+  <xed:template id="station">
+    <ubo:textfield xpath="mods:originInfo/mods:publisher" label="ubo.publisher.station" />
+  </xed:template>
+
+  <xed:template id="edition">
+    <ubo:textfield xpath="mods:originInfo/mods:edition" label="ubo.edition" placeholder="{i18n:ubo.placeholder.edition}" />
+  </xed:template>
+
+  <xed:template id="extent">
+    <ubo:textfield xpath="mods:physicalDescription/mods:extent" label="ubo.extent" placeholder="{i18n:ubo.placeholder.extent}" />
+  </xed:template>
+
+  <xed:template id="series.volume">
+    <ubo:textfield xpath="mods:part/mods:detail[@type='volume']/mods:number" label="ubo.series.volume"
+      placeholder="{i18n:ubo.placeholder.series.volume}" />
+  </xed:template>
+
+  <xed:template id="host.volume">
+    <ubo:textfield xpath="mods:part/mods:detail[@type='volume']/mods:number" label="ubo.volume" />
+  </xed:template>
+
+  <xed:template id="host.issue">
+    <ubo:textfield xpath="mods:part/mods:detail[@type='issue']/mods:number" label="ubo.issue" />
+  </xed:template>
+
+  <xed:template id="host.pages">
+    <div class="form-group">
+      <label class="col-md-3 control-label">
+        <xed:output i18n="ubo.pages.from" />
+      </label>
+      <div class="col-md-6">
+        <xed:bind xpath="mods:part/mods:extent[@unit='pages']">
+          <xed:bind xpath="mods:start">
+            <input type="text" size="10" class="form-control form-control-inline" />
+          </xed:bind>
+          <label>
+            <xed:output i18n="ubo.pages.to" />
+          </label>
+          <xed:bind xpath="mods:end">
+            <input type="text" size="10" class="form-control form-control-inline" />
+          </xed:bind>
+        </xed:bind>
+      </div>
+    </div>
+  </xed:template>
+
+  <xed:template id="language.simple">
+    <div class="form-group">
+      <label class="col-md-3 control-label">
+        <xed:output i18n="ubo.language" />
+      </label>
+      <div class="col-md-6">
+        <xed:bind xpath="mods:language/mods:languageTerm[@authority='rfc4646'][@type='code']" initially="de">
+          <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="lang.list" />
+        </xed:bind>
+      </div>
+    </div>
+  </xed:template>
+
+  <xed:template id="language.repeated">
+    <div class="form-group">
+      <label class="col-md-3 control-label">
+        <xed:output i18n="ubo.language" />
+      </label>
+      <div class="col-md-6">
+        <xed:repeat xpath="mods:language/mods:languageTerm[@authority='rfc4646'][@type='code']" max="5">
+          <div class="controls">
+            <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="lang.list" />
+            <ubo:pmud />
+          </div>
+        </xed:repeat>
+      </div>
+    </div>
+  </xed:template>
+
+  <xed:template id="lang.list">
+    <select class="form-control form-control-inline">
+      <xed:include uri="xslStyle:items2options:classification:editor:-1:children:rfc4646" />
+    </select>
+  </xed:template>
+
+  <xed:template id="abstract.simple">
+    <ubo:textarea xpath="mods:abstract" label="ubo.abstract.text" rows="5" />
+  </xed:template>
+
+  <xed:template id="abstract.repeated">
+    <xed:repeat xpath="mods:abstract" min="1" max="3">
+      <div class="form-group">
+        <label class="col-md-3 control-label">
+          <xed:output i18n="ubo.abstract.in" />
+        </label>
+        <div class="col-md-6">
+          <xed:bind xpath="@xml:lang" initially="de">
+            <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="lang.list" />
+          </xed:bind>
+          <ubo:pmud />
+        </div>
+      </div>
+      <ubo:textfield xpath="@xlink:href" label="ubo.abstract.aslink" placeholder="{i18n:ubo.placeholder.abstract.link}" />
+      <ubo:textarea xpath="." label="ubo.abstract.ortext" rows="5" />
+    </xed:repeat>
+  </xed:template>
+
+  <xed:template id="comment">
+    <ubo:textarea xpath="mods:note" label="ubo.comment" rows="2" />
+  </xed:template>
+
+  <xed:template id="related.item">
+    <xed:repeat xpath="mods:relatedItem" min="1" max="10">
+      <div class="form-group">
+        <div class="col-md-3">
+          <xed:bind xpath="@type">
+            <select class="form-control">
+              <option value="host">
+                <xed:output i18n="ubo.relatedItem.host" />
+              </option>
+              <option value="series">
+                <xed:output i18n="ubo.relatedItem.series" />
+              </option>
+              <option value="preceding">
+                <xed:output i18n="ubo.relatedItem.preceding" />
+              </option>
+              <option value="original">
+                <xed:output i18n="ubo.relatedItem.original" />
+              </option>
+              <option value="references">
+                <xed:output i18n="ubo.relatedItem.references" />
+              </option>
+              <option value="reviewOf">
+                <xed:output i18n="ubo.relatedItem.reviewOf" />
+              </option>
+            </select>
+          </xed:bind>
+        </div>
+        <div class="col-md-6">
+          <div class="controls">
+            <xed:bind xpath="@xlink:href">
+              <input type="text" class="form-control form-control-inline" size="25" placeholder="{i18n:ubo.editing.related.id}" />
+            </xed:bind>
+            <button type="submit" class="btn btn-default" xed:target="subselect" xed:href="../ubo/search/search-advanced.xed">
+              <xed:output i18n="ubo.editing.related.select" />
+            </button>
+            <ubo:pmud />
+          </div>
+          <xed:if test="string-length(@xlink:href) &gt; 0">
+            <div class="controls">
+              <xed:load-resource name="relatedItem" uri="notnull:mcrobject:{@xlink:href}" />
+              <p class="form-control-static">
+                <xed:output value="$relatedItem/metadata/def.modsContainer/modsContainer/mods:mods/mods:titleInfo/mods:nonSort" />
+                <xed:output value="$relatedItem/metadata/def.modsContainer/modsContainer/mods:mods/mods:titleInfo/mods:title" />
+                <xed:output value="$relatedItem/metadata/def.modsContainer/modsContainer/mods:mods/mods:titleInfo/mods:subTitle" />
+                <br />
+                <xed:output value="$relatedItem/metadata/def.modsContainer/modsContainer/mods:mods/mods:name[@type='conference']/mods:namePart" />
+                <xed:output value="$relatedItem/metadata/def.modsContainer/modsContainer/mods:mods/mods:name[@type='personal']/mods:namePart[@type='family']" />
+                <xed:output value="$relatedItem/metadata/def.modsContainer/modsContainer/mods:mods/mods:name[@type='personal']/mods:namePart[@type='given']" />
+              </p>
+            </div>
+          </xed:if>
+        </div>
+      </div>
+      <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="host.volume" />
+      <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="host.issue" />
+      <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="host.pages" />
+    </xed:repeat>
+  </xed:template>
+
+  <xed:template id="cancel.submit">
+    <script src="{$WebApplicationBaseURL}external/jquery.placeholder.min.js"></script>
+    <script>
+      jQuery("input[placeholder]").placeholder();
+      jQuery("textarea[placeholder]").placeholder();
+    </script>
+    <div class="form-group">
+      <div class="col-md-offset-3 col-md-6">
+        <button type="submit" class="btn btn-default" xed:target="debug">Debug</button>
+        <button type="submit" class="btn btn-default" xed:target="cancel">
+          <xed:output i18n="button.cancel" />
+        </button>
+        <button type="submit" class="btn btn-primary" xed:target="servlet" xed:href="UBOServlet">
+          <xed:output i18n="button.save" />
+        </button>
+      </div>
+    </div>
+  </xed:template>
+  
+  <xed:template id="failed-validation-messages">
+    <xed:if test="$xed-validation-failed">
+      <div>
+        <h3>
+          <xed:output i18n="ubo.validation.failed" />
+        </h3>
+        <ul class="ubo-validation-messages">
+          <xed:display-validation-messages />
+        </ul>
+      </div>
+    </xed:if>
+  </xed:template>
+  
+  <xed:template id="validation-rules">
+    <xed:validate xpath="//mods:identifier[@type='isbn']" matches="^((978|979)-?)?([\d -]{12}|\d{9})(\d|X)$" i18n="ubo.validation.isbn" display="global" />
+    <xed:validate xpath="//mods:identifier[@type='issn']" matches="[\dX]{4}\-[\dX]{4}" i18n="ubo.validation.issn" display="global" />
+    <xed:validate xpath="//mods:identifier[@type='doi']" matches="10\.\d+.*" i18n="ubo.validation.doi" display="global" />
+    <xed:validate xpath="//mods:identifier[@type='hdl']" matches="\S+/\S+" i18n="ubo.validation.handle" display="global" />
+    <xed:validate xpath="//mods:identifier[@type='urn']" matches="urn:nbn:[a-z]{2}:\S*" i18n="ubo.validation.urn" display="global" />
+    <xed:validate xpath="//mods:identifier[@type='duepublico']" matches="[1-9]\d{0,7}" class="miless.persistency.DocumentManager" method="documentExists" i18n="ubo.validation.duepublico" display="global" />
+    <xed:validate xpath="//mods:url|//mods:abstract/@xlink:href" matches="(ftp|http|https)://[\w\d.]+\S*" i18n="ubo.validation.url" display="global" />
+    <xed:validate xpath="//mods:*[@encoding='w3cdtf']" matches="\d{4}(\-d{2}(\-d{2})?)?" type="datetime" format="yyyy;yyyy-MM;yyyy-MM-dd" i18n="ubo.validation.date" display="global" />
+  </xed:template>
+  
+  <xed:template id="cleanup-rules">
+    <xed:cleanup-rule xpath="//mods:*" relevant-if="(string-length(text()) &gt; 0) or mods:* or (string-length(@xlink:href) &gt; 0)" />
+    <xed:cleanup-rule xpath="//mods:name" relevant-if="mods:namePart" />
+    <xed:cleanup-rule xpath="//mods:name/@authorityURI" relevant-if="string-length(../@valueURI) &gt; 0" />
+  </xed:template>
+
+</xed:template>
