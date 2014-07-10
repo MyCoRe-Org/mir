@@ -57,7 +57,8 @@ public class MIRWizardGenerateHibernateCfg extends MIRWizardCommand {
             this.result.setResult(hibCfg.asXML().getRootElement().clone());
             this.result.setSuccess(true);
         } catch (Exception ex) {
-            this.result.setResult(ex.getMessage());
+            ex.printStackTrace();
+            this.result.setResult(ex.toString());
             this.result.setSuccess(false);
         }
     }

@@ -3,7 +3,7 @@
 <!-- $Revision$ $Date$ -->
 <!-- ============================================== -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-  <xsl:variable name="dbtypes" select="document('webapp:wizard/config/dbtypes.xml')" />
+  <xsl:variable name="dbtypes" select="document('resource:dbtypes.xml')" />
 
   <xsl:template match="wizard">
     <wizard>

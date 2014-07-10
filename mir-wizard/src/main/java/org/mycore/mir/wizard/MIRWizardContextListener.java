@@ -82,6 +82,7 @@ public class MIRWizardContextListener implements MCRStartupHandler.AutoExecutabl
             if (sr != null) {
                 sr.setInitParameter("keyname", WIZARD_SERVLET_NAME);
                 sr.addMapping("/servlets/" + WIZARD_SERVLET_NAME);
+                sr.addMapping("/wizard/config/*");
             } else {
                 LOGGER.error("Couldn't map " + WIZARD_SERVLET_NAME + "!");
             }

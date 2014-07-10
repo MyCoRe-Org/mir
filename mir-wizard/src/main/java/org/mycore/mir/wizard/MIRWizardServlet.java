@@ -22,13 +22,21 @@
  */
 package org.mycore.mir.wizard;
 
+import java.util.StringTokenizer;
+
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.output.XMLOutputter;
 import org.mycore.common.content.MCRJDOMContent;
+import org.mycore.common.xml.MCRURIResolver;
 import org.mycore.frontend.servlets.MCRServlet;
 import org.mycore.frontend.servlets.MCRServletJob;
-import org.mycore.mir.wizard.command.*;
+import org.mycore.mir.wizard.command.MIRWizardDownloadDBLib;
+import org.mycore.mir.wizard.command.MIRWizardGenerateHibernateCfg;
+import org.mycore.mir.wizard.command.MIRWizardGenerateProperties;
+import org.mycore.mir.wizard.command.MIRWizardInitHibernate;
+import org.mycore.mir.wizard.command.MIRWizardInitSuperuser;
+import org.mycore.mir.wizard.command.MIRWizardLoadClassifications;
 
 /**
  * @author René Adler
@@ -39,28 +47,40 @@ public class MIRWizardServlet extends MCRServlet {
     private static final long serialVersionUID = 1L;
 
     public void doGetPost(MCRServletJob job) throws Exception {
-        Document doc = (Document) (job.getRequest().getAttribute("MCRXEditorSubmission"));
-        Element wizXML = doc.getRootElement();
+        String path = job.getRequest().getPathInfo();
 
-        System.out.println((new XMLOutputter()).outputString(wizXML));
+        if (path != null) {
+            StringTokenizer st = new StringTokenizer(path, "/");
+            String filename = st.nextToken();
 
-        Element resXML = new Element("wizard");
-        Element results = new Element("results");
+            getLayoutService().doLayout(job.getRequest(), job.getResponse(),
+                    new MCRJDOMContent(MCRURIResolver.instance().resolve("resource:" + filename)));
+        } else {
 
-        MIRWizardCommandChain chain = new MIRWizardCommandChain();
-        chain.addCommand(new MIRWizardGenerateProperties());
-        chain.addCommand(new MIRWizardGenerateHibernateCfg());
-        chain.addCommand(new MIRWizardDownloadDBLib());
-        chain.addCommand(new MIRWizardInitHibernate());
-        chain.addCommand(new MIRWizardInitSuperuser());
-        chain.execute(wizXML);
+            Document doc = (Document) (job.getRequest().getAttribute("MCRXEditorSubmission"));
+            Element wizXML = doc.getRootElement();
 
-        for (MIRWizardCommand cmd : chain.getCommands()) {
-            results.addContent(cmd.getResult().toElement());
+            System.out.println((new XMLOutputter()).outputString(wizXML));
+
+            Element resXML = new Element("wizard");
+            Element results = new Element("results");
+
+            MIRWizardCommandChain chain = new MIRWizardCommandChain();
+            chain.addCommand(new MIRWizardGenerateProperties());
+            chain.addCommand(new MIRWizardGenerateHibernateCfg());
+            chain.addCommand(new MIRWizardDownloadDBLib());
+            chain.addCommand(new MIRWizardInitHibernate());
+            chain.addCommand(new MIRWizardInitSuperuser());
+            chain.addCommand(new MIRWizardLoadClassifications());
+            chain.execute(wizXML);
+
+            for (MIRWizardCommand cmd : chain.getCommands()) {
+                results.addContent(cmd.getResult().toElement());
+            }
+
+            resXML.addContent(results);
+
+            getLayoutService().doLayout(job.getRequest(), job.getResponse(), new MCRJDOMContent(resXML));
         }
-
-        resXML.addContent(results);
-
-        getLayoutService().doLayout(job.getRequest(), job.getResponse(), new MCRJDOMContent(resXML));
     }
 }

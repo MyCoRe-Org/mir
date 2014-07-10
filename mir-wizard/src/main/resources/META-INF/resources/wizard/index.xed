@@ -29,7 +29,7 @@
           </legend>
           <xed:bind xpath="database">
             <wizard:template name="selectInput" xpath="driver" id="dbType" i18n="component.mir.wizard.db.type" i18n.error="component.mir.wizard.db.type.required"
-              required="true" uri="xslStyle:dbtypes2options:webapp:wizard/config/dbtypes.xml" />
+              required="true" uri="xslStyle:dbtypes2options:resource:dbtypes.xml" />
             <wizard:template name="textInput" xpath="url" id="dbURL" i18n="component.mir.wizard.db.url" i18n.error="component.mir.wizard.db.url.required"
               required="true" />
             <wizard:template name="textInput" xpath="username" id="dbUsername" i18n="component.mir.wizard.db.username" />
