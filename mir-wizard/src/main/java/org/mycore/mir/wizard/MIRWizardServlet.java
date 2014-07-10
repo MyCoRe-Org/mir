@@ -70,8 +70,8 @@ public class MIRWizardServlet extends MCRServlet {
             chain.addCommand(new MIRWizardGenerateHibernateCfg());
             chain.addCommand(new MIRWizardDownloadDBLib());
             chain.addCommand(new MIRWizardInitHibernate());
-            chain.addCommand(new MIRWizardInitSuperuser());
             chain.addCommand(new MIRWizardLoadClassifications());
+            chain.addCommand(new MIRWizardInitSuperuser());
             chain.execute(wizXML);
 
             for (MIRWizardCommand cmd : chain.getCommands()) {

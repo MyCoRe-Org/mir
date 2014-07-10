@@ -24,8 +24,12 @@ package org.mycore.mir.wizard.command;
 
 import java.net.URL;
 
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 import org.jdom2.Document;
 import org.jdom2.Element;
+import org.mycore.backend.hibernate.MCRHIBConnection;
 import org.mycore.common.MCRException;
 import org.mycore.common.content.MCRContent;
 import org.mycore.common.content.MCRURLContent;
@@ -53,7 +57,10 @@ public class MIRWizardLoadClassifications extends MIRWizardCommand {
 
     @Override
     public void execute(Element xml) {
+        Session currentSession = MCRHIBConnection.instance().getSession();
+
         try {
+
             String result = "";
             Element classifications = MCRURIResolver.instance().resolve(CLASSIFICATIONS_CFG);
 
@@ -69,8 +76,19 @@ public class MIRWizardLoadClassifications extends MIRWizardCommand {
 
                         result += MCRTranslation.translate("component.mir.wizard.loadClassification",
                                 category.getCurrentLabel());
-                        DAO.addCategory(null, category);
-                        result += MCRTranslation.translate("component.mir.wizard.done").concat(".\n");
+
+                        Transaction tx = currentSession.beginTransaction();;
+                        try {
+                            DAO.addCategory(null, category);
+                            tx.commit();
+                            
+                            result += MCRTranslation.translate("component.mir.wizard.done").concat(".\n");
+                        } catch (HibernateException e) {
+                            tx.rollback();
+                            result += MCRTranslation.translate("component.mir.wizard.error", e.toString())
+                                    .concat(".\n");
+                            e.printStackTrace();
+                        }
                     }
                 } catch (MCRException ex) {
                     result += MCRTranslation.translate("component.mir.wizard.loadClassification.error", classifURL)
