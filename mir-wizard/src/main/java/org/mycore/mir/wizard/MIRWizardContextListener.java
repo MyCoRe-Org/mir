@@ -27,7 +27,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Enumeration;
-import java.util.Random;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
@@ -39,9 +38,9 @@ import org.mycore.common.events.MCRShutdownHandler;
 import org.mycore.common.events.MCRStartupHandler;
 
 /**
- * Default {@link ServletContextListener} for MIR Wizard.
+ * Default {@link MCRStartupHandler} for MIR Wizard.
  * 
- * @author René Adler
+ * @author René Adler (eagle)
  * 
  */
 public class MIRWizardContextListener implements MCRStartupHandler.AutoExecutable, MCRShutdownHandler.Closeable {
