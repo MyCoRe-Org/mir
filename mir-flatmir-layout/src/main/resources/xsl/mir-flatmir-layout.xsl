@@ -10,8 +10,8 @@
     version="5" />
   <xsl:strip-space elements="*" />
   <xsl:include href="resource:xsl/mir-flatmir-layout-utils.xsl"/>
-  <xsl:param name="MIR.DefaultLayout.CSS" select="'default.min'" />
-  <xsl:param name="MIR.CustomLayout.CSS" select="'flatly.min.css'" />
+  <xsl:param name="MIR.DefaultLayout.CSS" select="'flatly.min'" />
+  <xsl:param name="MIR.CustomLayout.CSS" select="''" />
   <!-- Various versions -->
   <xsl:variable name="bootstrap.version" select="'3.1.1'" />
   <xsl:variable name="bootswatch.version" select="$bootstrap.version" />
