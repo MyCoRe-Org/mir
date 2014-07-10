@@ -11,7 +11,7 @@
   <xsl:strip-space elements="*" />
   <xsl:include href="resource:xsl/mir-flatmir-layout-utils.xsl"/>
   <xsl:param name="MIR.DefaultLayout.CSS" select="'default.min'" />
-  <xsl:param name="MIR.CustomLayout.CSS" select="''" />
+  <xsl:param name="MIR.CustomLayout.CSS" select="'flatly.min.css'" />
   <!-- Various versions -->
   <xsl:variable name="bootstrap.version" select="'3.1.1'" />
   <xsl:variable name="bootswatch.version" select="$bootstrap.version" />
@@ -32,7 +32,7 @@
         </xsl:comment>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link href="//netdna.bootstrapcdn.com/font-awesome/{$fontawesome.version}/css/font-awesome.min.css" rel="stylesheet" />
-        <link href="{$WebApplicationBaseURL}mir-flatmir-layout/css/{$MIR.DefaultLayout.CSS}.css" rel="stylesheet" />
+<link href="{$WebApplicationBaseURL}mir-flatmir-layout/css/{$MIR.DefaultLayout.CSS}.css" rel="stylesheet" />
         <xsl:if test="string-length($MIR.CustomLayout.CSS) &gt; 0">
           <link href="{$WebApplicationBaseURL}mir-flatmir-layout/css/{$MIR.CustomLayout.CSS}" rel="stylesheet" />
         </xsl:if>
