@@ -7,7 +7,7 @@
   <xsl:output method="xml" media-type="text/xml" encoding="UTF-8" indent="yes" omit-xml-declaration="no"
     doctype-system="http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd" doctype-public="-//Hibernate/Hibernate Configuration DTD 3.0//EN" />
 
-  <xsl:variable name="hibcfg" select="document('resource:hibernate.cfg.xml.template')" />
+  <xsl:variable name="hibcfg" select="document('resource:template-hibernate.cfg.xml')" />
   <xsl:variable name="dbtypes" select="document('resource:dbtypes.xml')" />
 
   <xsl:template match="wizard">
