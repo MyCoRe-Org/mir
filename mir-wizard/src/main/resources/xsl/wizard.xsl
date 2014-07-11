@@ -76,9 +76,11 @@
     </xsl:for-each>
 
     <xsl:if test="@success = 'true'">
-      <a class="btn btn-default" href="{$ServletsBaseURL}MIRWizardServlet/shutdown">
+      <br />
+      <a class="btn btn-primary pull-right" href="{$ServletsBaseURL}MIRWizardServlet/shutdown">
         <xsl:value-of select="i18n:translate('component.mir.wizard.shutdownServer')" />
       </a>
+      <br />
     </xsl:if>
   </xsl:template>
 
