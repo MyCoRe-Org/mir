@@ -77,7 +77,7 @@ public class MIRWizardLoadClassifications extends MIRWizardCommand {
                         result += MCRTranslation.translate("component.mir.wizard.loadClassification",
                                 category.getCurrentLabel());
 
-                        Transaction tx = currentSession.beginTransaction();;
+                        Transaction tx = currentSession.beginTransaction();
                         try {
                             DAO.addCategory(null, category);
                             tx.commit();
