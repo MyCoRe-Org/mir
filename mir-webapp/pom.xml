@@ -53,6 +53,7 @@
                 <useDependency>org.mycore:mycore-meta</useDependency>
                 <useDependency>org.mycore.mir:mir-common-resources</useDependency>
                 <useDependency>org.mycore.mir:mir-module</useDependency>
+                <useDependency>org.mycore.mir:mir-wizard</useDependency>
               </usedDependencies>
             </configuration>
           </execution>
@@ -136,6 +137,11 @@
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>mir-common-resources</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>mir-wizard</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>

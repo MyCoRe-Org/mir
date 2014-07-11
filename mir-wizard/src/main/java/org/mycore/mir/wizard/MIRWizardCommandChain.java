@@ -36,6 +36,8 @@ public class MIRWizardCommandChain {
 
     private boolean haltOnError = true;
 
+    private boolean success = true;
+
     public MIRWizardCommandChain() {
         setCommands(new ArrayList<MIRWizardCommand>());
     }
@@ -60,14 +62,32 @@ public class MIRWizardCommandChain {
         this.haltOnError = haltOnError;
     }
 
+    /**
+     * @return the success
+     */
+    public boolean isSuccess() {
+        return success;
+    }
+
+    /**
+     * @param success the success to set
+     */
+    public void setSuccess(boolean success) {
+        this.success = success;
+    }
+
     public void execute(Element xml) {
         for (MIRWizardCommand cmd : commands) {
             LOGGER.info("Execute " + cmd.getClass().getSimpleName() + "...");
 
             cmd.execute(xml);
 
-            if (isHaltOnError() && !cmd.getResult().isSuccess())
+            if (!cmd.getResult().isSuccess()) {
+                setSuccess(false);
+            }
+            if (isHaltOnError() && !cmd.getResult().isSuccess()) {
                 break;
+            }
         }
     }
 }

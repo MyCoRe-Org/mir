@@ -34,6 +34,8 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletRegistration;
 
 import org.apache.log4j.Logger;
+import org.mycore.common.config.MCRConfiguration;
+import org.mycore.common.config.MCRConfigurationDir;
 import org.mycore.common.events.MCRShutdownHandler;
 import org.mycore.common.events.MCRStartupHandler;
 
@@ -45,15 +47,14 @@ import org.mycore.common.events.MCRStartupHandler;
  */
 public class MIRWizardContextListener implements MCRStartupHandler.AutoExecutable, MCRShutdownHandler.Closeable {
 
-    private static final Logger LOGGER = Logger.getLogger(MIRWizardContextListener.class);
-
     private static final String HANDLER_NAME = MIRWizardContextListener.class.getName();
-
-    private static final String RESOURCE_DIR = "META-INF/resources";
 
     private static final String WIZARD_SERVLET_NAME = MIRWizardServlet.class.getSimpleName();
 
     private static final String WIZARD_SERVLET_CLASS = MIRWizardServlet.class.getName();
+
+    private static final String WIZARD_STYLESHEET = MCRConfiguration.instance().getString(
+            "MIR.Wizard.LayoutStylesheet", "xsl/mir-wizard-layout.xsl");
 
     @Override
     public String getName() {
@@ -76,49 +77,23 @@ public class MIRWizardContextListener implements MCRStartupHandler.AutoExecutabl
     @Override
     public void startUp(ServletContext servletContext) {
         if (servletContext != null) {
-            LOGGER.info("Register " + WIZARD_SERVLET_NAME + "...");
+            File mcrProps = MCRConfigurationDir.getConfigFile("mycore.properties");
+            File hibCfg = MCRConfigurationDir.getConfigFile("hibernate.cfg.xml");
+
+            if (mcrProps.canRead() || hibCfg.canRead()) {
+                return;
+            }
+
+            MCRConfiguration.instance().set("MCR.LayoutTransformerFactory.Default.Stylesheets", WIZARD_STYLESHEET);
+
+            servletContext.log("Register " + WIZARD_SERVLET_NAME + "...");
             ServletRegistration sr = servletContext.addServlet(WIZARD_SERVLET_NAME, WIZARD_SERVLET_CLASS);
             if (sr != null) {
                 sr.setInitParameter("keyname", WIZARD_SERVLET_NAME);
-                sr.addMapping("/servlets/" + WIZARD_SERVLET_NAME);
+                sr.addMapping("/servlets/" + WIZARD_SERVLET_NAME + "/*");
                 sr.addMapping("/wizard/config/*");
             } else {
-                LOGGER.error("Couldn't map " + WIZARD_SERVLET_NAME + "!");
-            }
-
-            String webRoot = servletContext.getRealPath("/");
-            if (webRoot != null) {
-                String jarFile = getClass().getProtectionDomain().getCodeSource().getLocation().getPath();
-                JarFile jar;
-                try {
-                    LOGGER.info("Deploy Wizard web resources to \"" + webRoot + "\"...");
-
-                    jar = new JarFile(jarFile);
-                    Enumeration<JarEntry> enumEntries = jar.entries();
-                    while (enumEntries.hasMoreElements()) {
-                        JarEntry file = (JarEntry) enumEntries.nextElement();
-                        if (file.getName().startsWith(RESOURCE_DIR)) {
-                            String fileName = file.getName().substring(RESOURCE_DIR.length());
-                            LOGGER.debug("...deploy " + fileName);
-
-                            File f = new File(webRoot + File.separator + fileName);
-                            if (file.isDirectory()) {
-                                f.mkdir();
-                                continue;
-                            }
-
-                            InputStream is = jar.getInputStream(file);
-                            FileOutputStream fos = new FileOutputStream(f);
-                            while (is.available() > 0) {
-                                fos.write(is.read());
-                            }
-                            fos.close();
-                            is.close();
-                        }
-                    }
-                } catch (IOException e) {
-                    LOGGER.error("Couldn't parse JAR!");
-                }
+                servletContext.log("Couldn't map " + WIZARD_SERVLET_NAME + "!");
             }
         }
     }

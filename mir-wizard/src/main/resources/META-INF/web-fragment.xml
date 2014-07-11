@@ -2,4 +2,15 @@
   xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" version="3.0" metadata-complete="true"
 >
   <name>mir-wizard</name>
+
+  <filter>
+    <filter-name>MIRWizardRequestFilter</filter-name>
+    <filter-class>org.mycore.mir.wizard.MIRWizardRequestFilter</filter-class>
+  </filter>
+
+  <filter-mapping>
+    <filter-name>MIRWizardRequestFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+    <dispatcher>REQUEST</dispatcher>
+  </filter-mapping>
 </web-fragment>

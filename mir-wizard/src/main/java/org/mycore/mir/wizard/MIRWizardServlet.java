@@ -24,9 +24,11 @@ package org.mycore.mir.wizard;
 
 import java.util.StringTokenizer;
 
+import org.apache.log4j.Logger;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.output.XMLOutputter;
+import org.mycore.common.config.MCRConfiguration;
 import org.mycore.common.content.MCRJDOMContent;
 import org.mycore.common.xml.MCRURIResolver;
 import org.mycore.frontend.servlets.MCRServlet;
@@ -46,17 +48,25 @@ public class MIRWizardServlet extends MCRServlet {
 
     private static final long serialVersionUID = 1L;
 
+    private static final Logger LOGGER = Logger.getLogger(MIRWizardServlet.class);
+
     public void doGetPost(MCRServletJob job) throws Exception {
         String path = job.getRequest().getPathInfo();
 
         if (path != null) {
             StringTokenizer st = new StringTokenizer(path, "/");
-            String filename = st.nextToken();
+            String request = st.nextToken();
 
-            getLayoutService().doLayout(job.getRequest(), job.getResponse(),
-                    new MCRJDOMContent(MCRURIResolver.instance().resolve("resource:" + filename)));
+            if ("shutdown".equals(request)) {
+                LOGGER.info("Shutdown System....");
+                MCRConfiguration.instance().set("MCR.LayoutTransformerFactory.Default.Stylesheets", "");
+                System.exit(0);
+            } else {
+                LOGGER.info("Request file \"" + request + "\"...");
+                getLayoutService().doLayout(job.getRequest(), job.getResponse(),
+                        new MCRJDOMContent(MCRURIResolver.instance().resolve("resource:" + request)));
+            }
         } else {
-
             Document doc = (Document) (job.getRequest().getAttribute("MCRXEditorSubmission"));
             Element wizXML = doc.getRootElement();
 
@@ -72,11 +82,16 @@ public class MIRWizardServlet extends MCRServlet {
             chain.addCommand(new MIRWizardInitHibernate());
             chain.addCommand(new MIRWizardLoadClassifications());
             chain.addCommand(new MIRWizardInitSuperuser());
+
+            LOGGER.info("Execute Wizard Commands...");
             chain.execute(wizXML);
+            LOGGER.info("done.");
 
             for (MIRWizardCommand cmd : chain.getCommands()) {
                 results.addContent(cmd.getResult().toElement());
             }
+
+            results.setAttribute("success", Boolean.toString(chain.isSuccess()));
 
             resXML.addContent(results);
 
