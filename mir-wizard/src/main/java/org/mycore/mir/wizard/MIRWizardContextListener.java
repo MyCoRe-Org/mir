@@ -81,6 +81,7 @@ public class MIRWizardContextListener implements MCRStartupHandler.AutoExecutabl
             File hibCfg = MCRConfigurationDir.getConfigFile("hibernate.cfg.xml");
 
             if (mcrProps.canRead() || hibCfg.canRead()) {
+                MCRConfiguration.instance().set("MCR.Startup.Class", "%MCR.Startup.Class%");
                 return;
             }
 

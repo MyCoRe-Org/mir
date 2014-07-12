@@ -60,6 +60,7 @@ public class MIRWizardServlet extends MCRServlet {
             if ("shutdown".equals(request)) {
                 LOGGER.info("Shutdown System....");
                 MCRConfiguration.instance().set("MCR.LayoutTransformerFactory.Default.Stylesheets", "");
+                MCRConfiguration.instance().set("MCR.Startup.Class", "%MCR.Startup.Class%");
                 System.exit(0);
             } else {
                 LOGGER.info("Request file \"" + request + "\"...");
