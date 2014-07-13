@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<condition format="xml"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="MCRCondition.xsd">
+  <boolean operator="or">
+    <condition value="admin" operator="=" field="group" />
+    <condition value="editor" operator="=" field="group" />
+    <condition value="submitter" operator="=" field="group" />
+  </boolean>
+</condition>

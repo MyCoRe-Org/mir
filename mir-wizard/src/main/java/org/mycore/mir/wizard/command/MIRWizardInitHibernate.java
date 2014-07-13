@@ -41,7 +41,7 @@ public class MIRWizardInitHibernate extends MIRWizardCommand {
     }
 
     @Override
-    public void execute(Element xml) {
+    public void execute() {
         try {
             File temp = File.createTempFile("hib", ".log");
             SchemaUpdate su = new SchemaUpdate(MCRHIBConnection.instance().getConfiguration());

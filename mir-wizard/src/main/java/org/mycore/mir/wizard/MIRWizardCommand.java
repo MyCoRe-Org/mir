@@ -25,8 +25,11 @@ package org.mycore.mir.wizard;
 import org.jdom2.Element;
 
 public abstract class MIRWizardCommand {
+
     private String name;
-    
+
+    private Element xml;
+
     protected MIRWizardCommandResult result;
 
     public MIRWizardCommand(String name) {
@@ -41,10 +44,24 @@ public abstract class MIRWizardCommand {
     public void setName(String name) {
         this.name = name;
     }
-    
+
+    /**
+     * @return the xml
+     */
+    public Element getInputXML() {
+        return xml;
+    }
+
+    /**
+     * @param xml the xml to set
+     */
+    public void setInputXML(Element xml) {
+        this.xml = xml;
+    }
+
     public MIRWizardCommandResult getResult() {
         return result;
     }
 
-    public abstract void execute(Element xml);
+    public abstract void execute();
 }

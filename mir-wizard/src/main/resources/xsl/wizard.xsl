@@ -50,6 +50,12 @@
               <xsl:when test="name() = 'load.classifications'">
                 <xsl:value-of select="i18n:translate('component.mir.wizard.loadClassifications')" />
               </xsl:when>
+              <xsl:when test="name() = 'import.acls'">
+                <xsl:value-of select="i18n:translate('component.mir.wizard.importACLs')" />
+              </xsl:when>
+              <xsl:when test="name() = 'import.webacls'">
+                <xsl:value-of select="i18n:translate('component.mir.wizard.importWebACLs')" />
+              </xsl:when>
               <xsl:otherwise>
                 <xsl:if test="@file">
                   <xsl:value-of select="i18n:translate('component.mir.wizard.generated.file', name(.))" />

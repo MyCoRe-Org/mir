@@ -56,7 +56,7 @@ public class MIRWizardLoadClassifications extends MIRWizardCommand {
     }
 
     @Override
-    public void execute(Element xml) {
+    public void execute() {
         Session currentSession = MCRHIBConnection.instance().getSession();
 
         try {

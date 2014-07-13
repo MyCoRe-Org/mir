@@ -46,7 +46,7 @@ public class MIRWizardInitSuperuser extends MIRWizardCommand {
     }
 
     @Override
-    public void execute(Element xml) {
+    public void execute() {
         StringWriter consoleWriter = new StringWriter();
         WriterAppender appender = new WriterAppender(new PatternLayout("%d{ISO8601} %p - %m%n"), consoleWriter);
 

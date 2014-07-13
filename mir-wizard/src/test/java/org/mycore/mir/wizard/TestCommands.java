@@ -28,7 +28,9 @@ import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
 import org.junit.Test;
 import org.mycore.common.MCRHibTestCase;
+import org.mycore.common.xml.MCRURIResolver;
 import org.mycore.mir.wizard.command.MIRWizardLoadClassifications;
+import org.mycore.mir.wizard.command.MIRWizardMCRCommand;
 
 /**
  * @author René Adler (eagle)
@@ -51,4 +53,27 @@ public class TestCommands extends MCRHibTestCase {
         assertTrue(result.isSuccess());
     }
 
+    @Test
+    public void testImportACLs() throws Exception {
+        MIRWizardCommandChain chain = new MIRWizardCommandChain();
+
+        MIRWizardMCRCommand importACLs = new MIRWizardMCRCommand("import.acls");
+        importACLs.setInputXML(MCRURIResolver.instance().resolve(
+                "resource:config/mir-wizard/acl/defaultrules-command.xml"));
+        chain.addCommand(importACLs);
+
+        MIRWizardMCRCommand importWebACLs = new MIRWizardMCRCommand("import.webacls");
+        importWebACLs.setInputXML(MCRURIResolver.instance()
+                .resolve("resource:config/mir-wizard/acl/webacl-command.xml"));
+        chain.addCommand(importWebACLs);
+
+        endTransaction();
+        chain.execute(null);
+
+        MIRWizardCommandResult result = chain.getCommands().get(0).getResult();
+
+        new XMLOutputter(Format.getPrettyFormat()).output(result.getResult(), System.out);
+
+        assertTrue(result.isSuccess());
+    }
 }

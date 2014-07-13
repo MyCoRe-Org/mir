@@ -42,13 +42,13 @@ public class MIRWizardGenerateHibernateCfg extends MIRWizardCommand {
     }
 
     @Override
-    public void execute(Element xml) {
+    public void execute() {
         File file = MCRConfigurationDir.getConfigFile("hibernate.cfg.xml");
 
         try {
             this.result.setAttribute("file", file.getAbsolutePath());
 
-            MCRContent source = new MCRJDOMContent(xml.clone());
+            MCRContent source = new MCRJDOMContent(getInputXML().clone());
             MCRXSLTransformer transformer = new MCRXSLTransformer("xsl/" + source.getDocType() + "-hibernate.xsl");
             MCRContent hibCfg = transformer.transform(source);
 

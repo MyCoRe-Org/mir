@@ -80,7 +80,10 @@ public class MIRWizardCommandChain {
         for (MIRWizardCommand cmd : commands) {
             LOGGER.info("Execute " + cmd.getClass().getSimpleName() + "...");
 
-            cmd.execute(xml);
+            if (cmd.getInputXML() == null) {
+                cmd.setInputXML(xml);
+            }
+            cmd.execute();
 
             if (!cmd.getResult().isSuccess()) {
                 setSuccess(false);

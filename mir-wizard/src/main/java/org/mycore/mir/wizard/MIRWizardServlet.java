@@ -39,6 +39,7 @@ import org.mycore.mir.wizard.command.MIRWizardGenerateProperties;
 import org.mycore.mir.wizard.command.MIRWizardInitHibernate;
 import org.mycore.mir.wizard.command.MIRWizardInitSuperuser;
 import org.mycore.mir.wizard.command.MIRWizardLoadClassifications;
+import org.mycore.mir.wizard.command.MIRWizardMCRCommand;
 
 /**
  * @author René Adler
@@ -83,6 +84,16 @@ public class MIRWizardServlet extends MCRServlet {
             chain.addCommand(new MIRWizardInitHibernate());
             chain.addCommand(new MIRWizardLoadClassifications());
             chain.addCommand(new MIRWizardInitSuperuser());
+
+            MIRWizardMCRCommand importACLs = new MIRWizardMCRCommand("import.acls");
+            importACLs.setInputXML(MCRURIResolver.instance().resolve(
+                    "resource:config/mir-wizard/acl/defaultrules-command.xml"));
+            chain.addCommand(importACLs);
+
+            MIRWizardMCRCommand importWebACLs = new MIRWizardMCRCommand("import.webacls");
+            importWebACLs.setInputXML(MCRURIResolver.instance().resolve(
+                    "resource:config/mir-wizard/acl/webacl-command.xml"));
+            chain.addCommand(importWebACLs);
 
             LOGGER.info("Execute Wizard Commands...");
             chain.execute(wizXML);

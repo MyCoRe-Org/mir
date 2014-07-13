@@ -41,8 +41,8 @@ public class MIRWizardGenerateProperties extends MIRWizardCommand {
     }
 
     @Override
-    public void execute(Element xml) {
-        String solrSrvURL = xml.getChild("solr").getChildText("url");
+    public void execute() {
+        String solrSrvURL = getInputXML().getChild("solr").getChildText("url");
         File file = MCRConfigurationDir.getConfigFile("mycore.properties");
 
         try {

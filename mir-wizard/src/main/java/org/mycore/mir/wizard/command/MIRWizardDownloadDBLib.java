@@ -44,8 +44,8 @@ public class MIRWizardDownloadDBLib extends MIRWizardCommand {
     }
 
     @Override
-    public void execute(Element xml) {
-        Element library = xml.getChild("database").getChild("library");
+    public void execute() {
+        Element library = getInputXML().getChild("database").getChild("library");
 
         if (library != null && library.getChildren().size() > 0) {
             String libDir = MCRConfigurationDir.getConfigurationDirectory().getAbsolutePath() + "/lib/";
