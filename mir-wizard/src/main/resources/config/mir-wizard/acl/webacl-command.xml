@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <commands>
   <command file="resource:config/mir-wizard/acl/grant-editors.xml" describeBy="administrators and editors">
-    update permission read for id webpage:/servlets/MCRActionMappingServlet/expert/search with rulefile {file} described by {describeBy}
+    update permission read for id
+    webpage:/servlets/MCRActionMappingServlet/expert/search with rulefile {file} described by {describeBy}
   </command>
   <command file="resource:config/mir-wizard/acl/grant-guest-and-submitter.xml" describeBy="guests and submitters">update permission read for id
     webpage:/content/main/search/complex.xed with rulefile {file} described by {describeBy}
@@ -39,9 +40,9 @@
   <command file="resource:config/mir-wizard/acl/grant-editors.xml" describeBy="administrators and editors">update permission read for id
     webpage:/servlets/solr/personindex?XSL.Style=person&amp;terms.regex=[A|a|�|�].* with rulefile {file} described by {describeBy}</command>
   <command file="resource:config/mir-wizard/acl/grant-admin.xml" describeBy="administrators only">update permission read for id
-    webpage:/modules/wcms2/wcms2.xml?XSL.useMT=false described by {describeBy}
+    webpage:/modules/wcms2/wcms2.xml?XSL.useMT=false with rulefile {file} described by {describeBy}
   </command>
   <command file="resource:config/mir-wizard/acl/grant-admin.xml" describeBy="administrators only">update permission write for id
-    webpage:/modules/wcms2/wcms2.xml?XSL.useMT=false described by {describeBy}
+    webpage:/modules/wcms2/wcms2.xml?XSL.useMT=false with rulefile {file} described by {describeBy}
   </command>
 </commands>

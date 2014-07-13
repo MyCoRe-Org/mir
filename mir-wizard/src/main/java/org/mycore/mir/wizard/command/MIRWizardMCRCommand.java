@@ -25,6 +25,7 @@ package org.mycore.mir.wizard.command;
 import java.io.File;
 import java.io.StringWriter;
 import java.lang.reflect.InvocationTargetException;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.apache.log4j.PatternLayout;
@@ -93,7 +94,10 @@ public class MIRWizardMCRCommand extends MIRWizardCommand {
 
                 Transaction tx = currentSession.beginTransaction();
                 try {
-                    mcrCmdMgr.invokeCommand(cmd);
+                    List<String> res = mcrCmdMgr.invokeCommand(cmd);
+                    for (String str : res) {
+                        result += str;
+                    }
                     tx.commit();
                 } catch (HibernateException e) {
                     tx.rollback();
