@@ -23,17 +23,10 @@
 package org.mycore.mir.wizard;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Enumeration;
-import java.util.jar.JarEntry;
-import java.util.jar.JarFile;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletRegistration;
 
-import org.apache.log4j.Logger;
 import org.mycore.common.config.MCRConfiguration;
 import org.mycore.common.config.MCRConfigurationDir;
 import org.mycore.common.events.MCRShutdownHandler;
@@ -45,16 +38,13 @@ import org.mycore.common.events.MCRStartupHandler;
  * @author René Adler (eagle)
  * 
  */
-public class MIRWizardContextListener implements MCRStartupHandler.AutoExecutable, MCRShutdownHandler.Closeable {
+public class MIRWizardStartupHandler implements MCRStartupHandler.AutoExecutable, MCRShutdownHandler.Closeable {
 
-    private static final String HANDLER_NAME = MIRWizardContextListener.class.getName();
+    private static final String HANDLER_NAME = MIRWizardStartupHandler.class.getName();
 
     private static final String WIZARD_SERVLET_NAME = MIRWizardServlet.class.getSimpleName();
 
     private static final String WIZARD_SERVLET_CLASS = MIRWizardServlet.class.getName();
-
-    private static final String WIZARD_STYLESHEET = MCRConfiguration.instance().getString(
-            "MIR.Wizard.LayoutStylesheet", "xsl/mir-wizard-layout.xsl");
 
     @Override
     public String getName() {
@@ -81,13 +71,16 @@ public class MIRWizardContextListener implements MCRStartupHandler.AutoExecutabl
             File hibCfg = MCRConfigurationDir.getConfigFile("hibernate.cfg.xml");
 
             if (mcrProps.canRead() || hibCfg.canRead()) {
-                MCRConfiguration.instance().set("MCR.Startup.Class", "%MCR.Startup.Class%");
                 return;
             }
 
-            MCRConfiguration.instance().set("MCR.LayoutTransformerFactory.Default.Stylesheets", WIZARD_STYLESHEET);
-
             servletContext.log("Register " + WIZARD_SERVLET_NAME + "...");
+            servletContext.setAttribute(MCRStartupHandler.HALT_ON_ERROR, Boolean.toString(false));
+
+            MCRConfiguration config = MCRConfiguration.instance();
+            String wizStylesheet = config.getString("MIR.Wizard.LayoutStylesheet", "xsl/mir-wizard-layout.xsl");
+            config.set("MCR.LayoutTransformerFactory.Default.Stylesheets", wizStylesheet);
+
             ServletRegistration sr = servletContext.addServlet(WIZARD_SERVLET_NAME, WIZARD_SERVLET_CLASS);
             if (sr != null) {
                 sr.setInitParameter("keyname", WIZARD_SERVLET_NAME);
