@@ -26,7 +26,6 @@ import java.io.File;
 import java.util.Scanner;
 
 import org.hibernate.tool.hbm2ddl.SchemaUpdate;
-import org.jdom2.Element;
 import org.mycore.backend.hibernate.MCRHIBConnection;
 import org.mycore.mir.wizard.MIRWizardCommand;
 

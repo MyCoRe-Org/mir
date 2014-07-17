@@ -30,7 +30,6 @@ import org.apache.log4j.PatternLayout;
 import org.apache.log4j.WriterAppender;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.jdom2.Element;
 import org.mycore.backend.hibernate.MCRHIBConnection;
 import org.mycore.mir.wizard.MIRWizardCommand;
 import org.mycore.user2.MCRUserCommands;

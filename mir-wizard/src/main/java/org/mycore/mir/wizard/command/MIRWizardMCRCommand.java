@@ -41,7 +41,6 @@ import org.mycore.common.content.MCRJDOMContent;
 import org.mycore.common.xml.MCRURIResolver;
 import org.mycore.frontend.cli.MCRCommandManager;
 import org.mycore.mir.wizard.MIRWizardCommand;
-import org.mycore.services.i18n.MCRTranslation;
 
 /**
  * @author René Adler (eagle)

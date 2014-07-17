@@ -27,7 +27,6 @@ import java.io.FileOutputStream;
 import java.util.Properties;
 import java.util.Scanner;
 
-import org.jdom2.Element;
 import org.mycore.common.config.MCRConfigurationDir;
 import org.mycore.mir.wizard.MIRWizardCommand;
 

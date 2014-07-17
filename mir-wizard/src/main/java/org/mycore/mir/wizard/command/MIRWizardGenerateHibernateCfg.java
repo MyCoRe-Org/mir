@@ -24,7 +24,6 @@ package org.mycore.mir.wizard.command;
 
 import java.io.File;
 
-import org.jdom2.Element;
 import org.mycore.common.config.MCRConfigurationDir;
 import org.mycore.common.content.MCRContent;
 import org.mycore.common.content.MCRJDOMContent;

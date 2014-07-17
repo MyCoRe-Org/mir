@@ -72,7 +72,7 @@ public class MIRWizardServlet extends MCRServlet {
             Document doc = (Document) (job.getRequest().getAttribute("MCRXEditorSubmission"));
             Element wizXML = doc.getRootElement();
 
-            System.out.println((new XMLOutputter()).outputString(wizXML));
+            LOGGER.debug(new XMLOutputter().outputString(wizXML));
 
             Element resXML = new Element("wizard");
             Element results = new Element("results");
