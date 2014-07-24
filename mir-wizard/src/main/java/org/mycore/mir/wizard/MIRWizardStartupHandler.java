@@ -70,7 +70,7 @@ public class MIRWizardStartupHandler implements MCRStartupHandler.AutoExecutable
             File mcrProps = MCRConfigurationDir.getConfigFile("mycore.properties");
             File hibCfg = MCRConfigurationDir.getConfigFile("hibernate.cfg.xml");
 
-            if (mcrProps != null || hibCfg != null) {
+            if ((mcrProps != null && mcrProps.canRead()) || (hibCfg != null && hibCfg.canRead())) {
                 return;
             }
 
