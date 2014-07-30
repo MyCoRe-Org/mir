@@ -61,7 +61,7 @@ public class MIRWizardRequestFilter implements Filter {
         File mcrProps = MCRConfigurationDir.getConfigFile("mycore.properties");
         File hibCfg = MCRConfigurationDir.getConfigFile("hibernate.cfg.xml");
 
-        if (!mcrProps.canRead() || !hibCfg.canRead()) {
+        if (mcrProps == null || hibCfg == null || !mcrProps.canRead() || !hibCfg.canRead()) {
             needWizardRun = true;
             context.log("...enable Wizard run.");
         } else {
