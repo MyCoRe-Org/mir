@@ -37,6 +37,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Logger;
 import org.mycore.common.config.MCRConfigurationDir;
 
 /**
@@ -46,26 +47,27 @@ import org.mycore.common.config.MCRConfigurationDir;
 @WebFilter(displayName = "MIRWizardRequestFilter", urlPatterns = { "/*" })
 public class MIRWizardRequestFilter implements Filter {
 
-    private static boolean needWizardRun = false;
+    private static final Logger LOGGER = Logger.getLogger(MIRWizardRequestFilter.class);
 
-    private ServletContext context;
+    private static boolean needWizardRun = false;
+    
+    private static boolean isWizardRunning = false;
 
     /* (non-Javadoc)
      * @see javax.servlet.Filter#init(javax.servlet.FilterConfig)
      */
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-        context = filterConfig.getServletContext();
-        context.log("Initialize MIR Wizard request filter...");
+        LOGGER.info("Initialize MIR Wizard request filter...");
 
         File mcrProps = MCRConfigurationDir.getConfigFile("mycore.properties");
         File hibCfg = MCRConfigurationDir.getConfigFile("hibernate.cfg.xml");
 
         if (mcrProps == null || hibCfg == null || !mcrProps.canRead() || !hibCfg.canRead()) {
             needWizardRun = true;
-            context.log("...enable Wizard run.");
+            LOGGER.info("...enable Wizard run.");
         } else {
-            context.log("...disable Wizard run.");
+            LOGGER.info("...disable Wizard run.");
         }
     }
 
@@ -79,12 +81,11 @@ public class MIRWizardRequestFilter implements Filter {
             HttpServletRequest req = (HttpServletRequest) request;
             HttpServletResponse res = (HttpServletResponse) response;
 
-            HttpSession session = req.getSession(false);
-
             String uri = req.getRequestURI();
 
-            if (session == null && !uri.contains("wizard")) {
-                context.log("Requested Resource " + uri);
+            if (!isWizardRunning && !uri.contains("wizard")) {
+                isWizardRunning = true;
+                LOGGER.info("Requested Resource " + uri);
                 res.sendRedirect(req.getContextPath() + "/wizard");
                 return;
             }

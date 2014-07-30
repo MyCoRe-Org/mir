@@ -23,10 +23,14 @@
 package org.mycore.mir.wizard;
 
 import java.io.File;
+import java.util.EnumSet;
 
+import javax.servlet.DispatcherType;
+import javax.servlet.FilterRegistration.Dynamic;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletRegistration;
 
+import org.apache.log4j.Logger;
 import org.mycore.common.config.MCRConfiguration;
 import org.mycore.common.config.MCRConfigurationDir;
 import org.mycore.common.events.MCRShutdownHandler;
@@ -39,12 +43,18 @@ import org.mycore.common.events.MCRStartupHandler;
  * 
  */
 public class MIRWizardStartupHandler implements MCRStartupHandler.AutoExecutable, MCRShutdownHandler.Closeable {
+    
+    private static final Logger LOGGER = Logger.getLogger(MIRWizardStartupHandler.class);
 
     private static final String HANDLER_NAME = MIRWizardStartupHandler.class.getName();
 
     private static final String WIZARD_SERVLET_NAME = MIRWizardServlet.class.getSimpleName();
 
     private static final String WIZARD_SERVLET_CLASS = MIRWizardServlet.class.getName();
+
+    private static final String WIZARD_FILTER_NAME = MIRWizardRequestFilter.class.getSimpleName();
+
+    private static final String WIZARD_FILTER_CLASS = MIRWizardRequestFilter.class.getName();
 
     @Override
     public String getName() {
@@ -67,28 +77,47 @@ public class MIRWizardStartupHandler implements MCRStartupHandler.AutoExecutable
     @Override
     public void startUp(ServletContext servletContext) {
         if (servletContext != null) {
-            File mcrProps = MCRConfigurationDir.getConfigFile("mycore.properties");
-            File hibCfg = MCRConfigurationDir.getConfigFile("hibernate.cfg.xml");
-
-            if ((mcrProps != null && mcrProps.canRead()) || (hibCfg != null && hibCfg.canRead())) {
-                return;
-            }
-
-            servletContext.log("Register " + WIZARD_SERVLET_NAME + "...");
-            servletContext.setAttribute(MCRStartupHandler.HALT_ON_ERROR, Boolean.toString(false));
+            File baseDir = MCRConfigurationDir.getConfigurationDirectory();
 
             MCRConfiguration config = MCRConfiguration.instance();
-            String wizStylesheet = config.getString("MIR.Wizard.LayoutStylesheet", "xsl/mir-wizard-layout.xsl");
-            config.set("MCR.LayoutTransformerFactory.Default.Stylesheets", wizStylesheet);
 
+            if (!baseDir.exists()) {
+                LOGGER.info("Create missing MCR.basedir (" + baseDir.getAbsolutePath() + ")...");
+                baseDir.mkdir();
+                config.set("MCR.basedir", baseDir.getAbsolutePath());
+            } else {
+                File mcrProps = MCRConfigurationDir.getConfigFile("mycore.properties");
+                File hibCfg = MCRConfigurationDir.getConfigFile("hibernate.cfg.xml");
+
+                if ((mcrProps != null && mcrProps.canRead()) || (hibCfg != null && hibCfg.canRead())) {
+                    return;
+                }
+            }
+
+            servletContext.setAttribute(MCRStartupHandler.HALT_ON_ERROR, Boolean.toString(false));
+            
+            LOGGER.info("Register " + WIZARD_FILTER_NAME + "...");
+            
+            Dynamic ft = servletContext.addFilter(WIZARD_FILTER_NAME, WIZARD_FILTER_CLASS);
+            if (ft != null) {
+                ft.addMappingForUrlPatterns(EnumSet.of(DispatcherType.REQUEST), true, "/*");
+            } else {
+                LOGGER.info("Couldn't map " + WIZARD_FILTER_NAME + "!");
+            }
+            
+            LOGGER.info("Register " + WIZARD_SERVLET_NAME + "...");
+            
             ServletRegistration sr = servletContext.addServlet(WIZARD_SERVLET_NAME, WIZARD_SERVLET_CLASS);
             if (sr != null) {
                 sr.setInitParameter("keyname", WIZARD_SERVLET_NAME);
                 sr.addMapping("/servlets/" + WIZARD_SERVLET_NAME + "/*");
                 sr.addMapping("/wizard/config/*");
             } else {
-                servletContext.log("Couldn't map " + WIZARD_SERVLET_NAME + "!");
+                LOGGER.info("Couldn't map " + WIZARD_SERVLET_NAME + "!");
             }
+            
+            String wizStylesheet = config.getString("MIR.Wizard.LayoutStylesheet", "xsl/mir-wizard-layout.xsl");
+            config.set("MCR.LayoutTransformerFactory.Default.Stylesheets", wizStylesheet);
         }
     }
 }

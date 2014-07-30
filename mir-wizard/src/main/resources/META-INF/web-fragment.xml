@@ -3,14 +3,4 @@
 >
   <name>mir-wizard</name>
 
-  <filter>
-    <filter-name>MIRWizardRequestFilter</filter-name>
-    <filter-class>org.mycore.mir.wizard.MIRWizardRequestFilter</filter-class>
-  </filter>
-
-  <filter-mapping>
-    <filter-name>MIRWizardRequestFilter</filter-name>
-    <url-pattern>/*</url-pattern>
-    <dispatcher>REQUEST</dispatcher>
-  </filter-mapping>
 </web-fragment>
