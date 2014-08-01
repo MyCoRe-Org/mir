@@ -50,7 +50,7 @@ public class MIRWizardRequestFilter implements Filter {
     private static final Logger LOGGER = Logger.getLogger(MIRWizardRequestFilter.class);
 
     private static boolean needWizardRun = false;
-    
+
     private static boolean isWizardRunning = false;
 
     /* (non-Javadoc)
@@ -88,6 +88,8 @@ public class MIRWizardRequestFilter implements Filter {
                 LOGGER.info("Requested Resource " + uri);
                 res.sendRedirect(req.getContextPath() + "/wizard");
                 return;
+            } else if (!isWizardRunning) {
+                isWizardRunning = true;
             }
         }
 
