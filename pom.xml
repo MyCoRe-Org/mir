@@ -15,10 +15,10 @@
   <inceptionYear>2013</inceptionYear>
   <properties>
     <mycore.version>2014.07-SNAPSHOT</mycore.version>
-    <jetty.version>9.2.1.v20140609</jetty.version>
-    <tomcat7.version>7.0.54</tomcat7.version>
-    <tomcat8.version>8.0.8</tomcat8.version>
-    <cargo.version>1.4.7</cargo.version>
+    <jetty.version>9.2.2.v20140723</jetty.version>
+    <tomcat7.version>7.0.55</tomcat7.version>
+    <tomcat8.version>8.0.9</tomcat8.version>
+    <cargo.version>1.4.9</cargo.version>
     <cargo.servlet.uriencoding>UTF-8</cargo.servlet.uriencoding>
     <cargo.container.zipUrlInstaller.downloadDir>${settings.localRepository}/../cargo/containers</cargo.container.zipUrlInstaller.downloadDir>
     <cargo.deployable.default.groupId>${project.groupId}</cargo.deployable.default.groupId>
