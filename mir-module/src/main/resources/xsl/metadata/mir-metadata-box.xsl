@@ -14,13 +14,6 @@
         <dd>metavalue</dd>
       </dl> 
        -->
-      <xsl:variable name="mods-type">
-        <xsl:apply-templates mode="mods-type" select="." />
-      </xsl:variable>
-      <xsl:message>
-        MODS-TYPE:
-        <xsl:value-of select="$mods-type" />
-      </xsl:message>
 
       <xsl:choose>
         <xsl:when test="$mods-type='series'">

@@ -484,6 +484,11 @@
                   </xsl:when>
                 </xsl:choose>
               </xsl:variable>
+              <xsl:message>
+                mods-type: <xsl:value-of select="$mods-type"/>
+                child-layout: <xsl:value-of select="$child-layout"/>
+                accessedit: <xsl:value-of select="$accessedit"/>
+              </xsl:message>
               <xsl:if test="string-length($child-layout) &gt; 0 and $accessedit">
                 <xsl:choose>
                   <xsl:when test="$mods-type = 'series'">

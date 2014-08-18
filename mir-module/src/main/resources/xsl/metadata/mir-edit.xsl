@@ -15,6 +15,7 @@
         <xsl:apply-templates select="mycoreobject" mode="objectActions">
           <xsl:with-param name="accessedit" select="$write" />
           <xsl:with-param name="accessdelete" select="$delete" />
+          <xsl:with-param name="mods-type" select="$mods-type" />
         </xsl:apply-templates>
       </div>
     </div>
