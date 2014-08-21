@@ -106,6 +106,14 @@
             <properties>
               <cargo.jvmargs>${cargo.jvmargs}</cargo.jvmargs>
             </properties>
+            <files>
+              <copy>
+                <file>${project.basedir}/src/main/tomcat/tomcat-users.xml</file>
+                <tofile>conf/tomcat-users.xml</tofile>
+                <configfile>true</configfile>
+                <overwrite>true</overwrite>
+              </copy>
+            </files>
           </configuration>
         </configuration>
       </plugin>
