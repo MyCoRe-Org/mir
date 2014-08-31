@@ -13,7 +13,7 @@
   <xsl:param name="MIR.DefaultLayout.CSS" select="'flatly.min'" />
   <xsl:param name="MIR.CustomLayout.CSS" select="''" />
   <!-- Various versions -->
-  <xsl:variable name="bootstrap.version" select="'3.1.1'" />
+  <xsl:variable name="bootstrap.version" select="'3.2.0'" />
   <xsl:variable name="bootswatch.version" select="$bootstrap.version" />
   <xsl:variable name="fontawesome.version" select="'4.0.3'" />
   <xsl:variable name="jquery.version" select="'1.11.0'" />
