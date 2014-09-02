@@ -29,7 +29,7 @@ jQuery(document).ready(function() {
 	var wizFillForm = function() {
 		if (jQuery("#dbType").val() != "") {
 			var db = jQuery.wizard.dbTypes.find("db > driver:contains('" + jQuery("#dbType").val() + "')").parent();
-			jQuery("#dbURL").val(db.find("> url").text().replace("{PATH}", jQuery.wizard.MCRDataDir.replace("\\", "/")));
+			jQuery("#dbURL").val(db.find("> url").text().replace("{PATH}", jQuery.wizard.MCRDataDir));
 			if (db.find("> username")) {
 				jQuery("#dbUsername").val(db.find("> username").text());
 			}
@@ -37,7 +37,7 @@ jQuery(document).ready(function() {
 	};
 
 	/*
-	 * LOAD DATABASE DEFAULTS 
+	 * LOAD DATABASE DEFAULTS
 	 * 
 	 * Description: Loads database default from given XML.
 	 */
@@ -48,7 +48,7 @@ jQuery(document).ready(function() {
 	});
 
 	/*
-	 * HIDE DATABASE OPTIONS 
+	 * HIDE DATABASE OPTIONS
 	 * 
 	 * Description: Hide database options on startup or on deselect.
 	 */
@@ -59,7 +59,7 @@ jQuery(document).ready(function() {
 	}
 
 	/*
-	 * TOGGLE DATABASE OPTIONS 
+	 * TOGGLE DATABASE OPTIONS
 	 * 
 	 * Description: Toggles database options and fill with defaults.
 	 */
