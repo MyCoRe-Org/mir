@@ -17,7 +17,7 @@
     <mycore.version>2014.07-SNAPSHOT</mycore.version>
     <jetty.version>9.2.2.v20140723</jetty.version>
     <tomcat7.version>7.0.55</tomcat7.version>
-    <tomcat8.version>8.0.9</tomcat8.version>
+    <tomcat8.version>8.0.11</tomcat8.version>
     <cargo.version>1.4.9</cargo.version>
     <cargo.servlet.uriencoding>UTF-8</cargo.servlet.uriencoding>
     <cargo.container.zipUrlInstaller.downloadDir>${settings.localRepository}/../cargo/containers</cargo.container.zipUrlInstaller.downloadDir>
