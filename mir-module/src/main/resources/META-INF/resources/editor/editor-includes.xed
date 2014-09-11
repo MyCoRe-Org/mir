@@ -13,9 +13,7 @@
   </xed:template>
 
   <xed:template id="mycore.common">
-    <xed:bind xpath="@ID" initially="ubo_mods_0" />
-    <xed:bind xpath="@label" initially="mods" />
-    <xed:bind xpath="@xsi:noNamespaceSchemaLocation" initially="datamodel-mods.xsd" />
+    <xed:bind xpath="structure" />
   </xed:template>
 
   <xed:template id="genre">
