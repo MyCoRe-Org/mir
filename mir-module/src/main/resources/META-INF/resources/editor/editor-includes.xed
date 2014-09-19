@@ -3,13 +3,13 @@
 <xed:template xmlns:xed="http://www.mycore.de/xeditor" xmlns:ubo="http://duepublico.uni-due.de/ubo">
 
   <xed:template id="in.out">
-    <xed:source uri="xslStyle:editor/mycoreobject-template-{$template}:mcrobject:{$source}" />
-    <xed:source uri="xslStyle:editor/mods-preprocessor:mcrobject:{$id}" />
-    <xed:source uri="xslStyle:editor/mycoreobject-duepublico2ubo:http://duepublico.uni-duisburg-essen.de/servlets/DocumentServlet?id={$doc}&amp;format=mycore&amp;XSL.Style=xml" />
-    <xed:cancel url="{$from}" />
-    <xed:cancel url="receive/{$source}?XSL.Transformer=mcrmods2ubo" />
-    <xed:cancel url="ubo/index.xml" />
-    <xed:post-processor xsl="editor/mods-postprocessor.xsl" />
+      <xed:source uri="xslStyle:mods2editor:{$sourceUri}"/>
+      <xed:source uri="xslStyle:asParent,mods2editor:mcrobject:{parentId}" />
+      <xed:source uri="xslStyle:mycoreobject-editor,mods2editor:mcrobject:{id}" />
+      <xed:cancel url="servlets/MCRLockServlet?action=unlock&amp;id={$id}&amp;url=/receive/{$id}" />
+      <xed:cancel url="{$cancelUrl}" />
+      <xed:cancel url="../index.html" />
+      <xed:post-processor xsl="xeditor2mods.xsl" />
   </xed:template>
 
   <xed:template id="mycore.common">
@@ -625,7 +625,7 @@
         <button type="submit" class="btn btn-default" xed:target="cancel">
           <xed:output i18n="button.cancel" />
         </button>
-        <button type="submit" class="btn btn-primary" xed:target="servlet" xed:href="UBOServlet">
+        <button type="submit" class="btn btn-primary" xed:target="servlet" xed:href="CreateObjectServlet">
           <xed:output i18n="button.save" />
         </button>
       </div>
@@ -660,6 +660,7 @@
     <xed:cleanup-rule xpath="//mods:*" relevant-if="(string-length(text()) &gt; 0) or mods:* or (string-length(@xlink:href) &gt; 0)" />
     <xed:cleanup-rule xpath="//mods:name" relevant-if="mods:namePart" />
     <xed:cleanup-rule xpath="//mods:name/@authorityURI" relevant-if="string-length(../@valueURI) &gt; 0" />
+    <xed:cleanup-rule xpath="//mods:genre[@type='intern']/@valueURIxEditor" relevant-if="string-length(@valueURIxEditor) &gt; 0" />
   </xed:template>
 
 </xed:template>

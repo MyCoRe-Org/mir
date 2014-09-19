@@ -10,45 +10,51 @@
     <xed:include uri="webapp:editor/editor-includes.xed" ref="in.out" />
 
     <xed:bind xpath="/mycoreobject">
+      <xed:bind xpath="@ID" initially="mir_mods_00000000" />
       <xed:include uri="webapp:editor/editor-includes.xed" ref="mycore.common" />
-      <xed:bind xpath="metadata/def.modsContainer[@class='MCRMetaXML']/modsContainer/mods:mods">
+      <xed:bind xpath="metadata/def.modsContainer[@class='MCRMetaXML']">
+        <xed:bind xpath="@notinherit" initially="true" />
+        <xed:bind xpath="modsContainer/mods:mods">
+          <xed:load-resource name="genres" uri="classification:metadata:-1:children:mir_genres" />
 
-        <xed:load-resource name="genres" uri="classification:metadata:-1:children:mir_genres" />
+          <h1>
+            Publikation erfassen:
+            <xed:output value="$genres//category[@ID=$genre]/label[lang($CurrentLang)]/@text" />
+            <xed:if test="not($host='standalone')">
+              <xed:output value="concat(' in ',$genres//category[@ID=$host]/label[lang($CurrentLang)]/@text)" />
+            </xed:if>
+          </h1>
 
-        <h1>
-          Publikation erfassen:
-          <xed:output value="$genres//category[@ID=$genre]/label[lang($CurrentLang)]/@text" />
-          <xed:if test="not($host='standalone')">
-            <xed:output value="concat(' in ',$genres//category[@ID=$host]/label[lang($CurrentLang)]/@text)" />
-          </xed:if>
-        </h1>
+          <xed:include uri="webapp:editor/editor-includes.xed" ref="failed-validation-messages" />
 
-        <xed:include uri="webapp:editor/editor-includes.xed" ref="failed-validation-messages" />
-
-        <fieldset>
-          <legend>
-            <xed:output value="concat($genres//category[@ID=$genre]/label[lang($CurrentLang)]/@text,':')" />
-          </legend>
-          <xed:bind xpath="mods:genre" initially="{$genre}" />
-          <xed:include uri="webapp:editor/editor-genres.xed" ref="{$genre}" />
-        </fieldset>
-
-        <xed:if test="not($host='standalone')">
           <fieldset>
             <legend>
-              <xed:output value="concat(' in ',$genres//category[@ID=$host]/label[lang($CurrentLang)]/@text,':')" />
+              <xed:output value="concat($genres//category[@ID=$genre]/label[lang($CurrentLang)]/@text,':')" />
             </legend>
-            <xed:include uri="webapp:editor/editor-hosts.xed" ref="{$host}" />
-            <xed:bind xpath="mods:relatedItem[(@type='host') or (@type='series')][1]">
-              <xed:bind xpath="mods:genre" initially="{$host}" />
+            <xed:bind xpath="mods:genre[@type='intern']">
+              <xed:bind xpath="@authorityURI" initially="http://www.mycore.org/classifications/mir_genres" />
+              <xed:bind xpath="@valueURIxEditor" initially="{$genre}" />
             </xed:bind>
+            <xed:include uri="webapp:editor/editor-genres.xed" ref="{$genre}" />
           </fieldset>
-        </xed:if>
 
-        <xed:include uri="webapp:editor/editor-includes.xed" ref="cancel.submit" />
-        <xed:include uri="webapp:editor/editor-includes.xed" ref="cleanup-rules" />
-        <xed:include uri="webapp:editor/editor-includes.xed" ref="validation-rules" />
+          <xed:if test="not($host='standalone')">
+            <fieldset>
+              <legend>
+                <xed:output value="concat(' in ',$genres//category[@ID=$host]/label[lang($CurrentLang)]/@text,':')" />
+              </legend>
+              <xed:include uri="webapp:editor/editor-hosts.xed" ref="{$host}" />
+              <xed:bind xpath="mods:relatedItem[(@type='host') or (@type='series')][1]">
+                <xed:bind xpath="mods:genre" initially="{$host}" />
+              </xed:bind>
+            </fieldset>
+          </xed:if>
 
+          <xed:include uri="webapp:editor/editor-includes.xed" ref="cancel.submit" />
+          <xed:include uri="webapp:editor/editor-includes.xed" ref="cleanup-rules" />
+          <xed:include uri="webapp:editor/editor-includes.xed" ref="validation-rules" />
+
+        </xed:bind>
       </xed:bind>
     </xed:bind>
   </xed:form>
