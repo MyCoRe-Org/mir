@@ -44,15 +44,15 @@
       <label class="col-md-3 control-label">
         <xed:output i18n="{@label}" />
       </label>
-      <div class="col-md-6">
-        <xed:repeat xpath="mods:name[@type='personal']" min="1" max="100">
+      <xed:repeat xpath="mods:name[@type='personal']" min="1" max="100">
+        <div class="col-md-6">
           <div class="controls">
             <xed:bind xpath="mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']" default="{@role}" />
             <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="person.fields" />
-            <xsl:call-template name="ubo-pmud" />
           </div>
-        </xed:repeat>
-      </div>
+        </div>
+        <xsl:call-template name="ubo-pmud" />
+      </xed:repeat>
     </div>
   </xsl:template>
 
@@ -68,28 +68,28 @@
         </div>
         <div class="col-md-6">
           <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="person.fields" />
-          <xsl:call-template name="ubo-pmud" />
         </div>
+        <xsl:call-template name="ubo-pmud" />
       </div>
     </xed:repeat>
   </xsl:template>
-  
+
   <xsl:template match="ubo:pmud">
     <xsl:call-template name="ubo-pmud" />
   </xsl:template>
-  
+
   <xsl:template name="ubo-pmud">
     <div class="form-pmud">
-      <span> 
+      <span>
         <xed:controls>insert</xed:controls>
       </span>
-      <span> 
+      <span>
         <xed:controls>remove</xed:controls>
       </span>
-      <span> 
+      <span>
         <xed:controls>up</xed:controls>
       </span>
-      <span> 
+      <span>
         <xed:controls>down</xed:controls>
       </span>
     </div>
