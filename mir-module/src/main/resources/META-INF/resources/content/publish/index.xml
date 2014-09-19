@@ -6,6 +6,11 @@
 
         <h2>Publizieren</h2>
 
+
+        <p>
+          Hier gehts zur <a href="../../editor/new-publication.xml">neuen Erfassungsmaske</a>. Diese ist jedoch noch im <span class="label label-warning">Beta-Stadium</span>!
+        </p>
+
         <div class="row">
             <div class="col-lg-5 col-md-12">
                 <h3>Anlegen</h3>

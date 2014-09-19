@@ -21,16 +21,16 @@
       <label class="col-md-3 control-label">
         <xed:output i18n="ubo.genre" />
       </label>
-      <div class="col-md-6">
-        <xed:repeat xpath="mods:genre" min="1" max="10">
+      <xed:repeat xpath="mods:genre" min="1" max="10">
+        <div class="col-md-6">
           <div class="controls">
             <select class="form-control form-control-inline">
               <xed:include uri="xslStyle:items2options:classification:editor:-1:children:ubogenre" />
             </select>
-            <ubo:pmud />
           </div>
-        </xed:repeat>
-      </div>
+        </div>
+        <ubo:pmud />
+      </xed:repeat>
     </div>
   </xed:template>
 
@@ -68,10 +68,10 @@
           <xed:output i18n="ubo.title.thesis.help" />
         </p>
       </div>
-    </div>    
+    </div>
     <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="titles.thesis.common" />
   </xed:template>
-  
+
   <xed:template id="titles.thesisHabil">
     <div class="form-group">
       <label class="col-md-3 control-label">
@@ -82,10 +82,10 @@
           <xed:output i18n="ubo.title.thesis.help" />
         </p>
       </div>
-    </div>    
+    </div>
     <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="titles.thesis.common" />
   </xed:template>
-  
+
   <xed:template id="titles.thesis.common">
     <xed:bind xpath="mods:titleInfo">
       <div class="form-group">
@@ -129,9 +129,9 @@
           <xed:output i18n="ubo.title.nonSort" />
         </label>
         <div class="col-md-6">
-          <div class="controls">
+          <div class="form-inline controls">
             <xed:bind xpath="mods:nonSort">
-              <input type="text" size="10" class="form-control form-control-inline" />
+              <input type="text" size="10" class="form-control form-control-inline" placeholder="Der/Die/Das"/>
             </xed:bind>
             <xed:bind xpath="@xml:lang" initially="de">
               <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="lang.list" />
@@ -155,9 +155,9 @@
                 </option>
               </select>
             </xed:bind>
-            <ubo:pmud />
           </div>
         </div>
+        <ubo:pmud />
       </div>
       <ubo:textfield xpath="mods:title" label="ubo.title" />
       <ubo:textfield xpath="mods:subTitle" label="ubo.title.subTitle" />
@@ -231,7 +231,7 @@
       </option>
     </ubo:person.repeated>
   </xed:template>
-  
+
   <xed:template id="thesisHabil.reviewer.repeated">
     <xed:bind xpath="mods:name[@type='personal'][mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']='aut']" />
     <xed:bind xpath="mods:name[@type='personal'][mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']='rev']" />
@@ -239,7 +239,7 @@
     <ubo:person.repeated>
       <option value="aut">
         <xed:output i18n="ubo.role.thesisHabil" />
-      </option>      
+      </option>
       <option value="rev">
         <xed:output i18n="ubo.role.reviewer" />
       </option>
@@ -255,7 +255,7 @@
   <xed:template id="person.fields">
     <button type="submit" class="btn btn-default" xed:target="subselect" xed:href="../lsfSearch.html?lastName={mods:namePart[@type='family']}">
       <xed:output i18n="button.selectPerson" />
-    </button> 
+    </button>
     <xed:if test="mods:namePart">
       <p class="form-control-static">
         <xed:output value="concat(mods:namePart[@type='family'],', ',mods:namePart[@type='given'])" />
@@ -293,7 +293,7 @@
     <ubo:textfield xpath="mods:originInfo/mods:dateOther[@type='accepted'][@encoding='w3cdtf']" label="ubo.date.accepted"
       placeholder="{i18n:ubo.placeholder.date}" />
   </xed:template>
-  
+
   <xed:template id="date.acceptedHabil">
     <ubo:textfield xpath="mods:originInfo/mods:dateOther[@type='accepted'][@encoding='w3cdtf']" label="ubo.date.acceptedHabil"
       placeholder="{i18n:ubo.placeholder.date}" />
@@ -309,14 +309,14 @@
       <label class="col-md-3 control-label">
         <xed:output i18n="ubo.identifier.patent" />
       </label>
-      <div class="col-md-6">
-        <xed:repeat xpath="mods:identifier[@type='patent']" min="1" max="10">
+      <xed:repeat xpath="mods:identifier[@type='patent']" min="1" max="10">
+        <div class="col-md-6">
           <div class="controls">
             <input type="text" size="30" class="form-control form-control-inline" />
-            <ubo:pmud />
           </div>
-        </xed:repeat>
-      </div>
+        </div>
+        <ubo:pmud />
+      </xed:repeat>
     </div>
   </xed:template>
 
@@ -364,8 +364,8 @@
         </div>
         <div class="col-md-6">
           <input type="text" size="30" class="form-control form-control-inline {$xed-validation-marker}" />
-          <ubo:pmud />
         </div>
+        <ubo:pmud />
       </div>
     </xed:repeat>
   </xed:template>
@@ -390,8 +390,8 @@
         </xed:bind>
         <div class="col-md-6">
           <input type="text" size="20" class="form-control form-control-inline {$xed-validation-marker}" />
-          <ubo:pmud />
         </div>
+        <ubo:pmud />
       </div>
     </xed:repeat>
   </xed:template>
@@ -427,8 +427,8 @@
         </div>
         <div class="col-md-6">
           <input type="text" size="50" class="form-control form-control-inline {$xed-validation-marker}" />
-          <ubo:pmud />
         </div>
+        <ubo:pmud />
       </div>
     </xed:repeat>
   </xed:template>
@@ -476,17 +476,19 @@
         <xed:output i18n="ubo.pages.from" />
       </label>
       <div class="col-md-6">
-        <xed:bind xpath="mods:part/mods:extent[@unit='pages']">
-          <xed:bind xpath="mods:start">
-            <input type="text" size="10" class="form-control form-control-inline" />
+        <div class="form-inline">
+          <xed:bind xpath="mods:part/mods:extent[@unit='pages']">
+            <xed:bind xpath="mods:start">
+              <input type="text" size="10" class="form-control form-control-inline" />
+            </xed:bind>
+            <label>
+              <xed:output i18n="ubo.pages.to" />
+            </label>
+            <xed:bind xpath="mods:end">
+              <input type="text" size="10" class="form-control form-control-inline" />
+            </xed:bind>
           </xed:bind>
-          <label>
-            <xed:output i18n="ubo.pages.to" />
-          </label>
-          <xed:bind xpath="mods:end">
-            <input type="text" size="10" class="form-control form-control-inline" />
-          </xed:bind>
-        </xed:bind>
+        </div>
       </div>
     </div>
   </xed:template>
@@ -509,14 +511,14 @@
       <label class="col-md-3 control-label">
         <xed:output i18n="ubo.language" />
       </label>
-      <div class="col-md-6">
-        <xed:repeat xpath="mods:language/mods:languageTerm[@authority='rfc4646'][@type='code']" max="5">
+      <xed:repeat xpath="mods:language/mods:languageTerm[@authority='rfc4646'][@type='code']" max="5">
+        <div class="col-md-6">
           <div class="controls">
             <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="lang.list" />
-            <ubo:pmud />
           </div>
-        </xed:repeat>
-      </div>
+        </div>
+        <ubo:pmud />
+      </xed:repeat>
     </div>
   </xed:template>
 
@@ -540,8 +542,8 @@
           <xed:bind xpath="@xml:lang" initially="de">
             <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="lang.list" />
           </xed:bind>
-          <ubo:pmud />
         </div>
+        <ubo:pmud />
       </div>
       <ubo:textfield xpath="@xlink:href" label="ubo.abstract.aslink" placeholder="{i18n:ubo.placeholder.abstract.link}" />
       <ubo:textarea xpath="." label="ubo.abstract.ortext" rows="5" />
@@ -580,14 +582,13 @@
           </xed:bind>
         </div>
         <div class="col-md-6">
-          <div class="controls">
+          <div class="controls form-inline">
             <xed:bind xpath="@xlink:href">
               <input type="text" class="form-control form-control-inline" size="25" placeholder="{i18n:ubo.editing.related.id}" />
             </xed:bind>
             <button type="submit" class="btn btn-default" xed:target="subselect" xed:href="../ubo/search/search-advanced.xed">
               <xed:output i18n="ubo.editing.related.select" />
             </button>
-            <ubo:pmud />
           </div>
           <xed:if test="string-length(@xlink:href) &gt; 0">
             <div class="controls">
@@ -604,6 +605,7 @@
             </div>
           </xed:if>
         </div>
+        <ubo:pmud />
       </div>
       <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="host.volume" />
       <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="host.issue" />
@@ -629,7 +631,7 @@
       </div>
     </div>
   </xed:template>
-  
+
   <xed:template id="failed-validation-messages">
     <xed:if test="$xed-validation-failed">
       <div>
@@ -642,7 +644,7 @@
       </div>
     </xed:if>
   </xed:template>
-  
+
   <xed:template id="validation-rules">
     <xed:validate xpath="//mods:identifier[@type='isbn']" matches="^((978|979)-?)?([\d -]{12}|\d{9})(\d|X)$" i18n="ubo.validation.isbn" display="global" />
     <xed:validate xpath="//mods:identifier[@type='issn']" matches="[\dX]{4}\-[\dX]{4}" i18n="ubo.validation.issn" display="global" />
@@ -653,7 +655,7 @@
     <xed:validate xpath="//mods:url|//mods:abstract/@xlink:href" matches="(ftp|http|https)://[\w\d.]+\S*" i18n="ubo.validation.url" display="global" />
     <xed:validate xpath="//mods:*[@encoding='w3cdtf']" matches="\d{4}(\-d{2}(\-d{2})?)?" type="datetime" format="yyyy;yyyy-MM;yyyy-MM-dd" i18n="ubo.validation.date" display="global" />
   </xed:template>
-  
+
   <xed:template id="cleanup-rules">
     <xed:cleanup-rule xpath="//mods:*" relevant-if="(string-length(text()) &gt; 0) or mods:* or (string-length(@xlink:href) &gt; 0)" />
     <xed:cleanup-rule xpath="//mods:name" relevant-if="mods:namePart" />
