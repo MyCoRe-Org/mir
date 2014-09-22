@@ -660,7 +660,7 @@
     <xed:cleanup-rule xpath="//mods:*" relevant-if="(string-length(text()) &gt; 0) or mods:* or (string-length(@xlink:href) &gt; 0)" />
     <xed:cleanup-rule xpath="//mods:name" relevant-if="mods:namePart" />
     <xed:cleanup-rule xpath="//mods:name/@authorityURI" relevant-if="string-length(../@valueURI) &gt; 0" />
-    <xed:cleanup-rule xpath="//mods:genre[@type='intern']/@valueURIxEditor" relevant-if="string-length(@valueURIxEditor) &gt; 0" />
+    <xed:cleanup-rule xpath="//mods:genre[@type='intern']" relevant-if="string-length(@valueURIxEditor) &gt; 0" />
   </xed:template>
 
 </xed:template>
