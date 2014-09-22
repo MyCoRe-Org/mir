@@ -23,7 +23,7 @@
       </boolean>
     </condition>
   </mcrpermission>
-  <mcrpermission name="create-wcms" description="Modify rights for WCMS" ruledescription="${acl-description.admins}">
+  <mcrpermission name="use-wcms" description="Modify rights for WCMS" ruledescription="${acl-description.admins}">
     <condition format="xml">
       <boolean operator="or">
         <condition value="admin" operator="=" field="group" />
