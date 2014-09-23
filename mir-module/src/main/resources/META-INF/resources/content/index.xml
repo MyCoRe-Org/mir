@@ -3,7 +3,7 @@
 <MyCoReWebPage>
 
   <section title="Willkommen bei MIR!" xml:lang="de">
-        <div class="container jumbotwo" >
+        <div class="jumbotwo" >
             <div class="row">
                 <div class="col-md-4">
                     <h3><span class="glyphicon glyphicon-check"></span> fertig</h3>

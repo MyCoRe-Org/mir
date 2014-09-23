@@ -47,7 +47,7 @@
         </header>
 
         <!-- show only on startpage -->
-        <xsl:if test="//div/@class='container jumbotwo'">
+        <xsl:if test="//div/@class='jumbotwo'">
           <div class="jumbotron">
              <div class="container">
                <h1>Mit MIR wird alles gut!</h1>
@@ -57,18 +57,16 @@
         </xsl:if>
 
         <div class="container" id="page">
-          <div class="row">
-            <div class="col-md-12" id="main_content">
-              <xsl:call-template name="print.writeProtectionMessage" />
-              <xsl:choose>
-                <xsl:when test="$readAccess='true'">
-                  <xsl:copy-of select="*" />
-                </xsl:when>
-                <xsl:otherwise>
-                  <xsl:call-template name="printNotLoggedIn" />
-                </xsl:otherwise>
-              </xsl:choose>
-            </div>
+          <div id="main_content">
+            <xsl:call-template name="print.writeProtectionMessage" />
+            <xsl:choose>
+              <xsl:when test="$readAccess='true'">
+                <xsl:copy-of select="*" />
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:call-template name="printNotLoggedIn" />
+              </xsl:otherwise>
+            </xsl:choose>
           </div>
         </div>
 
