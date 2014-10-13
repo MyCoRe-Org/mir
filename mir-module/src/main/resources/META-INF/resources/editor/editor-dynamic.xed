@@ -31,10 +31,8 @@
             <legend>
               <xed:output value="concat($genres//category[@ID=$genre]/label[lang($CurrentLang)]/@text,':')" />
             </legend>
-            <xed:bind xpath="mods:genre[@type='intern']">
-              <xed:bind xpath="@authorityURI" initially="http://www.mycore.org/classifications/mir_genres" />
-              <xed:bind xpath="@valueURIxEditor" initially="{$genre}" />
-            </xed:bind>
+            <xed:bind xpath="mods:genre[@type='intern'][@authorityURI='http://www.mycore.org/classifications/mir_genres']/@valueURIxEditor" initially="{$genre}" />
+            <xed:bind xpath="mods:classification[@displayLabel='status'][@authorityURI='http://www.mycore.org/classifications/mir_status']/@valueURIxEditor" initially="submitted" />
             <xed:include uri="webapp:editor/editor-genres.xed" ref="{$genre}" />
           </fieldset>
 
