@@ -625,9 +625,18 @@
         <button type="submit" class="btn btn-default" xed:target="cancel">
           <xed:output i18n="button.cancel" />
         </button>
-        <button type="submit" class="btn btn-primary" xed:target="servlet" xed:href="CreateObjectServlet">
-          <xed:output i18n="button.save" />
-        </button>
+        <xed:choose>
+          <xed:when test="/mycoreobject/@ID = 'mir_mods_00000000'">
+            <button type="submit" class="btn btn-primary" xed:target="servlet" xed:href="CreateObjectServlet">
+              <xed:output i18n="button.save" />
+            </button>
+          </xed:when>
+          <xed:otherwise>
+            <button type="submit" class="btn btn-primary" xed:target="servlet" xed:href="UpdateObjectServlet">
+              <xed:output i18n="button.save" />
+            </button>
+          </xed:otherwise>
+        </xed:choose>
       </div>
     </div>
   </xed:template>
