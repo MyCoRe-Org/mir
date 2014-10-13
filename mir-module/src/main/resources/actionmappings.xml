@@ -22,140 +22,14 @@
       <when condition="true" url="/servlets/solr/personindexp?XSL.Style=person&amp;terms.regex=[a|ä].*" />
     </action>
   </collection>
-  <collection name="thesis">
+  <collection name="mods">
     <action action="create">
-      <when condition="(group = admin) or (group = editor)" url="/servlets/object/create?type=mods&amp;layout=thesis-admin&amp;sourceUri=webapp:modules/mods/template-thesis.xml" />
-      <when condition="true" url="/servlets/object/create?type=mods&amp;layout=thesis&amp;sourceUri=webapp:modules/mods/template-thesis.xml" />
+      <when condition="(group = admin) or (group = editor)" url="/editor/editor-admins.xed" />
+      <when condition="true" url="/editor/editor-dynamic.xed" />
     </action>
     <action action="update">
-      <when condition="(group = admin) or (group = editor)" url="/servlets/MCRLockServlet?url=/editor_form_commit-mods-thesis-admin.xml" />
-      <when condition="(status != published) and (status != review)" url="/servlets/MCRLockServlet?url=/editor_form_commit-mods-thesis.xml" />
-    </action>
-    <action action="update-xml">
-      <when condition="(group = admin)" url="/servlets/MCRLockServlet?url=/editor_form_commit-mods-all.xml" />
-      <when condition="(status != published) and (status != review)" url="/servlets/MCRLockServlet?url=/editor_form_commit-mods-all.xml" />
-    </action>
-  </collection>
-  <collection name="confpro">
-    <action action="create">
-      <when condition="(group = admin) or (group = editor)" url="/servlets/object/create?type=mods&amp;layout=confpro-admin&amp;sourceUri=webapp:modules/mods/template-thesis.xml" />
-      <when condition="true" url="/servlets/object/create?type=mods&amp;layout=confpro&amp;sourceUri=webapp:modules/mods/template-confpro.xml" />
-    </action>
-    <action action="update">
-      <when condition="(group = admin) or (group = editor)" url="/servlets/MCRLockServlet?url=/editor_form_commit-mods-confpro-admin.xml" />
-      <when condition="(status != published) and (status != review)" url="/servlets/MCRLockServlet?url=/editor_form_commit-mods-confpro.xml" />
-    </action>
-    <action action="update-xml">
-      <when condition="(group = admin)" url="/servlets/MCRLockServlet?url=/editor_form_commit-mods-all.xml" />
-      <when condition="(status != published) and (status != review)" url="/servlets/MCRLockServlet?url=/editor_form_commit-mods-all.xml" />
-    </action>
-  </collection>
-  <collection name="confpub">
-    <action action="create">
-      <when condition="(group = admin) or (group = editor)" url="/servlets/object/create?type=mods&amp;layout=confpub-admin" />
-      <when condition="true" url="/servlets/object/create?type=mods&amp;layout=confpub" />
-    </action>
-    <action action="update">
-      <when condition="(group = admin) or (group = editor)" url="/servlets/MCRLockServlet?url=/editor_form_commit-mods-confpub-admin.xml" />
-      <when condition="(status != published) and (status != review)" url="/servlets/MCRLockServlet?url=/editor_form_commit-mods-confpub.xml" />
-    </action>
-    <action action="update-xml">
-      <when condition="(group = admin)" url="/servlets/MCRLockServlet?url=/editor_form_commit-mods-all.xml" />
-      <when condition="(status != published) and (status != review)" url="/servlets/MCRLockServlet?url=/editor_form_commit-mods-all.xml" />
-    </action>
-  </collection>
-  <collection name="report">
-    <action action="create">
-      <when condition="(group = admin) or (group = editor)" url="/servlets/object/create?type=mods&amp;layout=report-admin" />
-      <when condition="true" url="/servlets/object/create?type=mods&amp;layout=report" />
-    </action>
-    <action action="update">
-      <when condition="(group = admin) or (group = editor)" url="/servlets/MCRLockServlet?url=/editor_form_commit-mods-report-admin.xml" />
-      <when condition="(status != published) and (status != review)" url="/servlets/MCRLockServlet?url=/editor_form_commit-mods-report.xml" />
-    </action>
-    <action action="update-xml">
-      <when condition="(group = admin)" url="/servlets/MCRLockServlet?url=/editor_form_commit-mods-all.xml" />
-      <when condition="(status != published) and (status != review)" url="/servlets/MCRLockServlet?url=/editor_form_commit-mods-all.xml" />
-    </action>
-  </collection>
-  <collection name="book">
-    <action action="create">
-      <when condition="(group = admin) or (group = editor)" url="/servlets/object/create?type=mods&amp;layout=book-admin" />
-      <when condition="true" url="/servlets/object/create?type=mods&amp;layout=book" />
-    </action>
-    <action action="update">
-      <when condition="(group = admin) or (group = editor)" url="/servlets/MCRLockServlet?url=/editor_form_commit-mods-book-admin.xml" />
-      <when condition="(status != published) and (status != review)" url="/servlets/MCRLockServlet?url=/editor_form_commit-mods-book.xml" />
-    </action>
-    <action action="update-xml">
-      <when condition="(group = admin)" url="/servlets/MCRLockServlet?url=/editor_form_commit-mods-all.xml" />
-      <when condition="(status != published) and (status != review)" url="/servlets/MCRLockServlet?url=/editor_form_commit-mods-all.xml" />
-    </action>
-  </collection>
-  <collection name="chapter">
-    <action action="create">
-      <when condition="(group = admin) or (group = editor)" url="/servlets/object/create?type=mods&amp;layout=chapter-admin" />
-      <when condition="true" url="/servlets/object/create?type=mods&amp;layout=chapter" />
-    </action>
-    <action action="update">
-      <when condition="(group = admin) or (group = editor)" url="/servlets/MCRLockServlet?url=/editor_form_commit-mods-chapter-admin.xml" />
-      <when condition="(status != published) and (status != review)" url="/servlets/MCRLockServlet?url=/editor_form_commit-mods-chapter.xml" />
-    </action>
-    <action action="update-xml">
-      <when condition="(group = admin)" url="/servlets/MCRLockServlet?url=/editor_form_commit-mods-all.xml" />
-      <when condition="(status != published) and (status != review)" url="/servlets/MCRLockServlet?url=/editor_form_commit-mods-all.xml" />
-    </action>
-  </collection>
-  <collection name="series">
-    <action action="create">
-      <when condition="(group = admin) or (group = editor)" url="/servlets/object/create?type=mods&amp;layout=journal-admin" />
-      <when condition="true" url="/servlets/object/create?type=mods&amp;layout=journal" />
-    </action>
-    <action action="update">
-      <when condition="(group = admin) or (group = editor)" url="/servlets/MCRLockServlet?url=/editor_form_commit-mods-journal-admin.xml" />
-      <when condition="(status != published) and (status != review)" url="/servlets/MCRLockServlet?url=/editor_form_commit-mods-journal.xml" />
-    </action>
-    <action action="update-xml">
-      <when condition="(group = admin)" url="/servlets/MCRLockServlet?url=/editor_form_commit-mods-all.xml" />
-      <when condition="(status != published) and (status != review)" url="/servlets/MCRLockServlet?url=/editor_form_commit-mods-all.xml" />
-    </action>
-  </collection>
-  <collection name="journal">
-    <action action="create">
-      <when condition="(group = admin) or (group = editor)" url="/servlets/object/create?type=mods&amp;layout=journal-admin" />
-      <when condition="true" url="/servlets/object/create?type=mods&amp;layout=journal" />
-    </action>
-    <action action="update">
-      <when condition="(group = admin) or (group = editor)" url="/servlets/MCRLockServlet?url=/editor_form_commit-mods-journal-admin.xml" />
-      <when condition="(status != published) and (status != review)" url="/servlets/MCRLockServlet?url=/editor_form_commit-mods-journal.xml" />
-    </action>
-    <action action="update-xml">
-      <when condition="(group = admin)" url="/servlets/MCRLockServlet?url=/editor_form_commit-mods-all.xml" />
-      <when condition="(status != published) and (status != review)" url="/servlets/MCRLockServlet?url=/editor_form_commit-mods-all.xml" />
-    </action>
-  </collection>
-  <collection name="article">
-    <action action="create">
-      <when condition="(group = admin) or (group = editor)" url="/servlets/object/create?type=mods&amp;layout=article-admin" />
-      <when condition="true" url="/servlets/object/create?type=mods&amp;layout=article" />
-    </action>
-    <action action="update">
-      <when condition="(group = admin) or (group = editor)" url="/servlets/MCRLockServlet?url=/editor_form_commit-mods-article-admin.xml" />
-      <when condition="(status != published) and (status != review)" url="/servlets/MCRLockServlet?url=/editor_form_commit-mods-article.xml" />
-    </action>
-    <action action="update-xml">
-      <when condition="(group = admin)" url="/servlets/MCRLockServlet?url=/editor_form_commit-mods-all.xml" />
-      <when condition="(status != published) and (status != review)" url="/servlets/MCRLockServlet?url=/editor_form_commit-mods-all.xml" />
-    </action>
-  </collection>
-  <collection name="av">
-    <action action="create">
-      <when condition="(group = admin) or (group = editor)" url="/servlets/object/create?type=mods&amp;layout=av-admin" />
-      <when condition="true" url="/servlets/object/create?type=mods&amp;layout=av" />
-    </action>
-    <action action="update">
-      <when condition="(group = admin) or (group = editor)" url="/servlets/MCRLockServlet?url=/editor_form_commit-mods-av-admin.xml" />
-      <when condition="(status != published) and (status != review)" url="/servlets/MCRLockServlet?url=/editor_form_commit-mods-av.xml" />
+      <when condition="(group = admin) or (group = editor)" url="/servlets/MCRLockServlet?url=/editor/editor-admins.xed" />
+      <when condition="(status != published) and (status != review)" url="/servlets/MCRLockServlet?url=/editor/editor-dynamic.xed" />
     </action>
     <action action="update-xml">
       <when condition="(group = admin)" url="/servlets/MCRLockServlet?url=/editor_form_commit-mods-all.xml" />
