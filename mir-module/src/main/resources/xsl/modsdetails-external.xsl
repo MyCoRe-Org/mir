@@ -363,22 +363,45 @@
     <xsl:param name="displayAddDerivate" select="'true'" />
     <xsl:param name="layout" select="'$'" />
     <xsl:param name="mods-type" select="'report'" />
+    <xsl:param name="collection" select="''" />
     <xsl:variable name="layoutparam">
       <xsl:if test="$layout != '$'">
         <xsl:value-of select="concat('&amp;layout=',$layout)" />
       </xsl:if>
     </xsl:variable>
     <xsl:variable name="editURL">
-      <xsl:call-template name="mods.getObjectEditURL">
-        <xsl:with-param name="id" select="$id" />
-        <xsl:with-param name="layout" select="$layout" />
-      </xsl:call-template>
+      <xsl:choose>
+        <xsl:when test="string-length($collection) &gt; 0">
+          <xsl:call-template name="mods.getObjectEditURL">
+            <xsl:with-param name="collection" select="$collection" />
+            <xsl:with-param name="id" select="$id" />
+            <xsl:with-param name="layout" select="$layout" />
+          </xsl:call-template>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:call-template name="mods.getObjectEditURL">
+            <xsl:with-param name="id" select="$id" />
+            <xsl:with-param name="layout" select="$layout" />
+          </xsl:call-template>
+        </xsl:otherwise>
+      </xsl:choose>
     </xsl:variable>
     <xsl:variable name="editURL_allMods">
-      <xsl:call-template name="mods.getObjectEditURL">
-        <xsl:with-param name="id" select="$id" />
-        <xsl:with-param name="layout" select="'all'" />
-      </xsl:call-template>
+      <xsl:choose>
+        <xsl:when test="string-length($collection) &gt; 0">
+          <xsl:call-template name="mods.getObjectEditURL">
+            <xsl:with-param name="collection" select="$collection" />
+            <xsl:with-param name="id" select="$id" />
+            <xsl:with-param name="layout" select="'all'" />
+          </xsl:call-template>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:call-template name="mods.getObjectEditURL">
+            <xsl:with-param name="id" select="$id" />
+            <xsl:with-param name="layout" select="'all'" />
+          </xsl:call-template>
+        </xsl:otherwise>
+      </xsl:choose>
     </xsl:variable>
     <xsl:variable name="basketType" select="'objects'" />
     <xsl:if test="$accessedit or $accessdelete or not(basket:contains($basketType, /mycoreobject/@ID))">
@@ -569,5 +592,4 @@
       </div>
     </xsl:if>
   </xsl:template>
-
 </xsl:stylesheet>

@@ -338,7 +338,7 @@
   <xsl:template name="mods.getObjectEditURL">
     <xsl:param name="id" />
     <xsl:param name="layout" select="'$'" />
-    <xsl:param name="collection" />
+    <xsl:param name="collection" select="''" />
     <xsl:choose>
       <xsl:when test="mcrxsl:resourceAvailable('actionmappings.xml')">
       <!-- URL mapping enabled -->
