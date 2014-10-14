@@ -15,6 +15,7 @@
         <xed:include uri="webapp:editor/editor-includes.xed" ref="failed-validation-messages" />
 
         <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="genre" />
+        <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="status" />
         <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="title.complex.repeated" />
         <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="name.repeated" />
         <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="conference" />
