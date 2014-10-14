@@ -4,13 +4,10 @@
 
   <xsl:include href="copynodes.xsl" />
 
-  <xsl:template match="mods:genre[@type='intern']">
-    <xsl:copy>
-      <xsl:apply-templates select="@*[name()!='valueURIxEditor']" />
-      <xsl:attribute name="valueURI">
-        <xsl:value-of select="concat(@authorityURI,'#',@valueURIxEditor)" />
-      </xsl:attribute>
-    </xsl:copy>
+  <xsl:template match="@valueURIxEditor">
+    <xsl:attribute name="valueURI">
+      <xsl:value-of select="concat(../@authorityURI,'#',.)" />
+    </xsl:attribute>
   </xsl:template>
 
 </xsl:stylesheet>
