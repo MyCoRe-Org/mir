@@ -270,6 +270,23 @@
   </xed:template>
 
   <xed:template id="person.fields">
+    <div class="form-inline">
+      <xed:bind xpath="mods:displayForm">
+        <input type="text" size="26" class="form-control form-control-inline" />
+      </xed:bind>
+      <label class="control-label" style="padding-left:1ex; padding-right:1ex;">GND:</label>
+      <xed:bind xpath="@valueURI">
+        <input type="text" size="26" class="form-control form-control-inline" />
+      </xed:bind>
+    </div>
+    <xed:if test="string-length(@valueURI) &gt; 0">
+      <p class="form-control-static">
+        <a target="_blank" href="{@valueURI}">
+          <xed:output value="concat('GND ',substring-after(@valueURI,'/gnd/'))" />
+        </a>
+      </p>
+    </xed:if>
+    <!-- ========== LSF subselect ==========
     <button type="submit" class="btn btn-default" xed:target="subselect" xed:href="../lsfSearch.html?lastName={mods:namePart[@type='family']}">
       <xed:output i18n="button.selectPerson" />
     </button>
@@ -285,6 +302,7 @@
         </a>
       </p>
     </xed:if>
+    -->
   </xed:template>
 
   <xed:template id="conference">
@@ -684,7 +702,7 @@
 
   <xed:template id="cleanup-rules">
     <xed:cleanup-rule xpath="//mods:*" relevant-if="(string-length(text()) &gt; 0) or mods:* or (string-length(@xlink:href) &gt; 0) or (string-length(@valueURIxEditor) &gt; 0)" />
-    <xed:cleanup-rule xpath="//mods:name" relevant-if="mods:namePart" />
+    <xed:cleanup-rule xpath="//mods:name" relevant-if="mods:namePart|mods:displayForm" />
     <xed:cleanup-rule xpath="//mods:name/@authorityURI" relevant-if="string-length(../@valueURI) &gt; 0" />
   </xed:template>
 
