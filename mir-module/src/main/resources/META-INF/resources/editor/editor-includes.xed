@@ -3,7 +3,7 @@
 <xed:template xmlns:xed="http://www.mycore.de/xeditor" xmlns:ubo="http://duepublico.uni-due.de/ubo">
 
   <xed:template id="in.out">
-      <xed:source uri="xslStyle:mods2editor:{$sourceUri}"/>
+      <xed:source uri="xslStyle:mods2xeditor:{$sourceUri}"/>
       <xed:source uri="xslStyle:asParent,mods2xeditor:mcrobject:{$parentId}" />
       <xed:source uri="xslStyle:mycoreobject-editor,mods2xeditor:mcrobject:{$id}" />
       <xed:cancel url="servlets/MCRLockServlet?action=unlock&amp;id={$id}&amp;url=/receive/{$id}" />
@@ -21,7 +21,7 @@
       <label class="col-md-3 control-label">
         <xed:output i18n="ubo.genre" />
       </label>
-      <xed:repeat xpath="mods:genre" min="1" max="10">
+      <xed:repeat xpath="mods:genre[@type='intern'][@authorityURI='http://www.mycore.org/classifications/mir_genres']/@valueURIxEditor" min="1" max="10">
         <div class="col-md-6">
           <div class="controls">
             <select class="form-control form-control-inline">
