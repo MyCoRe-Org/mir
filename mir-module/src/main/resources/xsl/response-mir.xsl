@@ -3,6 +3,88 @@
   xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation" xmlns:str="http://exslt.org/strings" xmlns:mcr="xalan://org.mycore.common.xml.MCRXMLFunctions"
   xmlns:acl="xalan://org.mycore.access.MCRAccessManager" xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions" exclude-result-prefixes="i18n mods str mcr acl mcrxsl">
 
+  <xsl:template match="/response/result|/response/response[@subresult='groupOwner']/result|lst[@name='grouped']/lst[@name='returnId' and int[@name='matches']='0']" priority="10">
+    <xsl:variable name="ResultPages">
+      <xsl:if test="$hits &gt; 0">
+        <xsl:call-template name="solr.Pagination">
+          <xsl:with-param name="size" select="$rows" />
+          <xsl:with-param name="currentpage" select="$currentPage" />
+          <xsl:with-param name="totalpage" select="$totalPages" />
+          <xsl:with-param name="class" select="'pagination-sm'" />
+        </xsl:call-template>
+      </xsl:if>
+    </xsl:variable>
+
+    <h1><xsl:value-of select="$PageTitle" /></h1>
+
+<!-- Suchschlitz mit Suchbegriff, Treffer - Nummer, Vorschau, Autor, Änderungsdatum, Link zu den Details, Filter  -->
+    <div class="row">
+      <div class="col-lg-3">
+        <h2><small>
+          <xsl:choose>
+            <xsl:when test="$hits=0">
+              <xsl:value-of select="i18n:translate('results.noObject')" />
+            </xsl:when>
+            <xsl:when test="$hits=1">
+              <xsl:value-of select="i18n:translate('results.oneObject')" />
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:value-of select="i18n:translate('results.nObjects',$hits)" />
+            </xsl:otherwise>
+          </xsl:choose>
+        </small></h2>
+      </div>
+
+      <div class="col-lg-6">
+        <div class="search_box">
+          <form action="http://mir/vorlage_trefferliste" class="search_form" method="post">
+            <div class="input-group input-group-sm">
+              <div class="input-group-btn">
+                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" value="Alles" id="search_type_button"><span id="search_type_label">Alles</span> <span class="caret"></span></button>
+                <ul class="dropdown-menu search_type">
+                  <li><a href="#">Alles</a></li>
+                  <li><a href="#">Titel</a></li>
+                  <li><a href="#">Autor</a></li>
+                  <li><a href="#">Name</a></li>
+                  <li><a href="#">GND</a></li>
+                  <li><a href="#">Alle Metadaten</a></li>
+                  <li><a href="#">Volltext</a></li>
+                </ul>
+              </div>
+              <input class="form-control" placeholder="ein oder mehrere Schlagworte" type="text" />
+              <span class="input-group-btn">
+                <button class="btn btn-primary" type="submit"><span class="glyphicon glyphicon-search"></span> Suchen</button>
+              </span>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <div class="col-lg-3">
+      </div>
+    </div> <!-- ENDE: Suchschlitz mit Suchbegriff -->
+
+<!-- Filter, Pagination & Trefferliste -->
+    <div class="row">
+      <div class="col-lg-3">
+        <h3>ToDo: Solr-Filter</h3>
+      </div>
+      <div class="col-lg-9">
+        <xsl:copy-of select="$ResultPages" />
+        <xsl:comment>
+          RESULT LIST START
+        </xsl:comment>
+        <div id="hit_list">
+          <xsl:apply-templates select="doc" />
+        </div>
+        <xsl:comment>
+          RESULT LIST END
+        </xsl:comment>
+        <xsl:copy-of select="$ResultPages" />
+      </div>
+    </div>
+  </xsl:template>
+
   <xsl:template match="doc[@objectType='mods']" priority="10" mode="resultList">
     <!--
       Do not read MyCoRe object at this time
@@ -27,6 +109,7 @@
       </xsl:choose>
     </xsl:variable>
     <xsl:variable name="linkTo" select="concat($WebApplicationBaseURL, 'receive/',$identifier)" />
+    <xsl:variable name="derivates" select="key('derivate', $identifier)" />
 
     <div class="hit_item {$hitItemClass}">
     <article class="result clearfix" itemscope="" itemtype="http://schema.org/Book">
@@ -46,9 +129,34 @@
         </div>
         <div class="col-xs-3">
           <div class="hit_options">
-            <a class="hit_option hit_to_basket" href="#" title="in den Suchkorb"><span class="glyphicon glyphicon-shopping-cart"></span></a>
-            <a class="hit_option hit_download" href="#" title="als PDF herunterladen"><span class="glyphicon glyphicon-download-alt"></span></a>
+            <!-- add to basket -->
+            <a class="hit_option hit_to_basket" href="{$ServletsBaseURL}MCRBasketServlet{$HttpSession}?type=objects&amp;action=add&amp;id={$identifier}&amp;uri=mcrobject:{$identifier}&amp;redirect=referer"
+               title="{i18n:translate('basket.add')}"><span class="glyphicon glyphicon-shopping-cart"></span></a>
 
+            <!-- download main document of first derivate -->
+            <xsl:if test="not($derivates/str[@name='iviewFile']) and $derivates/str[@name='maindoc']">
+              <xsl:variable name="derivid" select="$derivates/str[@name='maindoc'][1]/../str[@name='id']" />
+              <xsl:variable name="maindoc" select="$derivates/str[@name='maindoc'][1]" />
+              <xsl:variable name="fileType">
+                <xsl:variable name="suffix" select="str:tokenize($maindoc,'.')[position()=last()]" />
+                <xsl:choose>
+                  <xsl:when test="$suffix='pdf'">
+                    <xsl:value-of select="$suffix" />
+                  </xsl:when>
+                  <xsl:when test="contains($suffix,'doc')">
+                    <xsl:value-of select="'docx'" />
+                  </xsl:when>
+                  <xsl:when test="contains($suffix,'xls')">
+                    <xsl:value-of select="'xlsx'" />
+                  </xsl:when>
+                </xsl:choose>
+              </xsl:variable>
+              <xsl:variable name="derivbase" select="concat($ServletsBaseURL,'MCRFileNodeServlet/',$derivid,'/')" />
+              <xsl:variable name="derivifs" select="concat($derivbase,$maindoc,$HttpSession)" />
+              <a class="hit_option hit_download" href="{$derivifs}" title="{$maindoc}"><span class="glyphicon glyphicon-download-alt"></span></a>
+            </xsl:if>
+
+            <!-- direct link to editor -->
             <xsl:if test="acl:checkPermission($identifier,'writedb')" >
               <xsl:variable name="editURL">
                 <xsl:call-template name="mods.getObjectEditURL">
@@ -110,7 +218,6 @@
         <div class="col-xs-2">
 
           <aside class="Vorschaubild" itemtype="http://www.schema.org/ImageObject" itemscope="" itemprop="image">
-            <xsl:variable name="derivates" select="key('derivate', $identifier)" />
             <xsl:choose>
               <xsl:when test="$derivates/str[@name='iviewFile']">
                 <xsl:call-template name="iViewLinkPrev">
@@ -134,134 +241,105 @@
             </xsl:choose>
     <!--    <a itemprop="url" href="images/microdata.jpg" title="Im Bildbetrachter öffnen"> -->
     <!--    </a> -->
-            <xsl:if test="not($derivates/str[@name='iviewFile']) and $derivates/str[@name='maindoc']">
-              <xsl:variable name="derivid" select="$derivates/str[@name='maindoc'][1]/../str[@name='id']" />
-              <xsl:variable name="maindoc" select="$derivates/str[@name='maindoc'][1]" />
-              <xsl:variable name="fileType">
-                <xsl:variable name="suffix" select="str:tokenize($maindoc,'.')[position()=last()]" />
-                <xsl:choose>
-                  <xsl:when test="$suffix='pdf'">
-                    <xsl:value-of select="$suffix" />
-                  </xsl:when>
-                  <xsl:when test="contains($suffix,'doc')">
-                    <xsl:value-of select="'docx'" />
-                  </xsl:when>
-                  <xsl:when test="contains($suffix,'xls')">
-                    <xsl:value-of select="'xlsx'" />
-                  </xsl:when>
-                </xsl:choose>
-              </xsl:variable>
-              <xsl:variable name="derivbase" select="concat($ServletsBaseURL,'MCRFileNodeServlet/',$derivid,'/')" />
-              <xsl:variable name="derivifs" select="concat($derivbase,$maindoc,$HttpSession)" />
-              <a href="{$derivifs}">
-                <xsl:choose>
-                  <xsl:when test="string-length($fileType) &gt; 0">
-                    <img class="hit_icon" src="{$WebApplicationBaseURL}images/icons/download_{$fileType}.png" alt="{$maindoc}"
-                      title="{$maindoc}" />
-                  </xsl:when>
-                  <xsl:otherwise>
-                    <img class="hit_icon" src="{$WebApplicationBaseURL}images/icons/download_default.png" alt="{$maindoc}"
-                      title="{$maindoc}" />
-                  </xsl:otherwise>
-                </xsl:choose>
-              </a>
-            </xsl:if>
           </aside>
         </div>
-        <xsl:if test="./arr[@name='mods.author']">
-          <div class="col-xs-10">
+        <div class="col-xs-10">
+          <xsl:if test="./arr[@name='mods.author']">
             <div class="hit_author shorten">
-              <section>
+              <!-- section -->
                 <xsl:for-each select="./arr[@name='mods.author']/str">
                   <xsl:if test="position()!=1">
                     <xsl:value-of select="' / '" />
                   </xsl:if>
-                  <address title="Author">
+                  <!-- address title="Author" -->
                     <a href="#" itemprop="author" itemscope="itemscope" itemtype="http://schema.org/Person" rel="author">
                       <span itemprop="name">
                         <xsl:value-of select="." />
                       </span>
                     </a>
-                  </address>
+                  <!-- /address -->
                 </xsl:for-each>
+              <!-- /section -->
+            </div>
+          </xsl:if>
+
+          <div class="hit_type">
+            <xsl:value-of select="./str[@name='mods.type']" />
+          </div>
+
+          <xsl:if test="./str[@name='parent']">
+            <div class="hit_source shorten">
+              <section>
+                <xsl:text>aus: </xsl:text>
+                <xsl:choose>
+                  <xsl:when test="./str[@name='parentLinkText']">
+                    <xsl:variable name="linkTo" select="concat($WebApplicationBaseURL, 'receive/',./str[@name='parent'])" />
+                    <a href="{$linkTo}">
+                      <xsl:value-of select="./str[@name='parentLinkText']" />
+                    </a>
+                  </xsl:when>
+                  <xsl:otherwise>
+                    <xsl:call-template name="objectLink">
+                      <xsl:with-param select="./str[@name='parent']" name="obj_id" />
+                    </xsl:call-template>
+                  </xsl:otherwise>
+                </xsl:choose>
               </section>
             </div>
-          </div>
-        </xsl:if>
-
-        <div class="hit_type">Konferenzbeitrag</div>
-
-        <xsl:if test="./str[@name='parent']">
-          <div class="hit_source shorten">
-            <section>
-              <xsl:text>aus: </xsl:text>
-              <xsl:choose>
-                <xsl:when test="./str[@name='parentLinkText']">
-                  <xsl:variable name="linkTo" select="concat($WebApplicationBaseURL, 'receive/',./str[@name='parent'])" />
-                  <a href="{$linkTo}">
-                    <xsl:value-of select="./str[@name='parentLinkText']" />
-                  </a>
-                </xsl:when>
-                <xsl:otherwise>
-                  <xsl:call-template name="objectLink">
-                    <xsl:with-param select="./str[@name='parent']" name="obj_id" />
-                  </xsl:call-template>
-                </xsl:otherwise>
-              </xsl:choose>
-            </section>
-          </div>
-        </xsl:if>
-        <xsl:if test="str[@name='mods.dateIssued']|arr[@name='mods.publisher']">
-          <div class="hit_date">
-            <section>
-              <span>
-                <xsl:value-of select="concat(i18n:translate('component.mods.metaData.dictionary.published'),': ')" />
-              </span>
-              <xsl:variable name="publisher" select="arr[@name='mods.publisher']/str" />
-              <xsl:variable name="place" select="arr[@name='mods.place']/str" />
-              <xsl:for-each select="$publisher">
-                <xsl:if test="position()!=1">
-                  <xsl:value-of select="'; '" />
-                </xsl:if>
-                <span itemprop="publisher" itemscope="itemscope" itemtype="http://schema.org/Organize" title="Verlag">
-                  <xsl:value-of select="$publisher" />
+          </xsl:if>
+          <xsl:if test="str[@name='mods.dateIssued']|arr[@name='mods.publisher']">
+            <div class="hit_date">
+              <section>
+                <span>
+                  <xsl:value-of select="concat(i18n:translate('component.mods.metaData.dictionary.published'),': ')" />
                 </span>
-              </xsl:for-each>
-              <xsl:if test="count($publisher)=1 and count($place)=1">
-                <xsl:value-of select="', '" />
-                <span itmeprop="addressRegion" itemscope="itemscope" itemtype="http://schema.org/PostalAddress" title="Ort">
-                  <b>
-                    <xsl:value-of select="$place" />
-                  </b>
-                </span>
-              </xsl:if>
-              <xsl:if test="str[@name='mods.dateIssued']">
-                <xsl:variable name="date">
-                  <xsl:value-of select="str[@name='mods.dateIssued']" />
-                </xsl:variable>
-                <xsl:if test="$publisher">
+                <xsl:variable name="publisher" select="arr[@name='mods.publisher']/str" />
+                <xsl:variable name="place" select="arr[@name='mods.place']/str" />
+                <xsl:for-each select="$publisher">
+                  <xsl:if test="position()!=1">
+                    <xsl:value-of select="'; '" />
+                  </xsl:if>
+                  <span itemprop="publisher" itemscope="itemscope" itemtype="http://schema.org/Organize" title="Verlag">
+                    <xsl:value-of select="$publisher" />
+                  </span>
+                </xsl:for-each>
+                <xsl:if test="count($publisher)=1 and count($place)=1">
                   <xsl:value-of select="', '" />
+                  <span itmeprop="addressRegion" itemscope="itemscope" itemtype="http://schema.org/PostalAddress" title="Ort">
+                    <b>
+                      <xsl:value-of select="$place" />
+                    </b>
+                  </span>
                 </xsl:if>
-                <time pubdate="pubdate" datetime="{$date}" itemprop="datePublished" title="Erschienen">
-                  <b>
-                    <xsl:value-of select="$date" />
-                  </b>
-                </time>
-              </xsl:if>
+                <xsl:if test="str[@name='mods.dateIssued']">
+                  <xsl:variable name="date">
+                    <xsl:value-of select="str[@name='mods.dateIssued']" />
+                  </xsl:variable>
+                  <xsl:if test="$publisher">
+                    <xsl:value-of select="', '" />
+                  </xsl:if>
+                  <time pubdate="pubdate" datetime="{$date}" itemprop="datePublished" title="Erschienen">
+                    <b>
+                      <xsl:value-of select="$date" />
+                    </b>
+                  </time>
+                </xsl:if>
+              </section>
+            </div>
+          </xsl:if>
+
+          <!-- abstract -->
+          <xsl:variable name="description" select="str[@name='mods.abstract']" />
+          <xsl:if test="$description">
+            <section class="summary" title="summary">
+              <div class="hit_source shorten" itemprop="description"> <!-- ToDo eigene Klasse! -->
+                <xsl:value-of select="$description" />
+              </div>
             </section>
-          </div>
-        </xsl:if>
+          </xsl:if>
+
+        </div>
       </div>
-
-      <xsl:variable name="description" select="str[@name='mods.abstract']" />
-      <xsl:if test="$description">
-        <section class="summary" title="summary">
-          <div class="hit_source shorten" itemprop="description"> <!-- ToDo eigene Klasse! -->
-            <xsl:value-of select="$description" />
-          </div>
-        </section>
-      </xsl:if>
-
 
 
 <!--
