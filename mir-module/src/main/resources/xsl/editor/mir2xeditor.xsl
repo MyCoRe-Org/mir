@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xed="http://www.mycore.de/xeditor"
-  xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation" xmlns:ubo="http://duepublico.uni-due.de/ubo"
-  exclude-result-prefixes="xsl ubo">
+  xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation" xmlns:mir="http://www.mycore.de/mir"
+  exclude-result-prefixes="xsl mir">
 
   <xsl:include href="copynodes.xsl" />
 
-  <xsl:template match="ubo:textfield">
+  <xsl:template match="mir:textfield">
     <div class="form-group">
       <label class="col-md-3 control-label">
         <xed:output i18n="{@label}" />
@@ -22,7 +22,7 @@
     </div>
   </xsl:template>
 
-  <xsl:template match="ubo:textarea">
+  <xsl:template match="mir:textarea">
     <div class="form-group">
       <label class="col-md-3 control-label">
         <xed:output i18n="{@label}" />
@@ -39,7 +39,7 @@
     </div>
   </xsl:template>
 
-  <xsl:template match="ubo:role.repeated">
+  <xsl:template match="mir:role.repeated">
     <div class="form-group">
       <label class="col-md-3 control-label">
         <xed:output i18n="{@label}" />
@@ -51,12 +51,12 @@
             <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="person.fields" />
           </div>
         </div>
-        <xsl:call-template name="ubo-pmud" />
+        <xsl:call-template name="mir-pmud" />
       </xed:repeat>
     </div>
   </xsl:template>
 
-  <xsl:template match="ubo:person.repeated">
+  <xsl:template match="mir:person.repeated">
     <xed:repeat xpath="mods:name[@type='personal'][@authorityURI='http://d-nb.info/gnd/']" min="1" max="100">
       <div class="form-group">
         <div class="col-md-3" style="text-align:right; font-weight:bold;">
@@ -69,16 +69,16 @@
         <div class="col-md-6">
           <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="person.fields" />
         </div>
-        <xsl:call-template name="ubo-pmud" />
+        <xsl:call-template name="mir-pmud" />
       </div>
     </xed:repeat>
   </xsl:template>
 
-  <xsl:template match="ubo:pmud">
-    <xsl:call-template name="ubo-pmud" />
+  <xsl:template match="mir:pmud">
+    <xsl:call-template name="mir-pmud" />
   </xsl:template>
 
-  <xsl:template name="ubo-pmud">
+  <xsl:template name="mir-pmud">
     <div class="form-pmud">
       <span>
         <xed:controls>insert</xed:controls>

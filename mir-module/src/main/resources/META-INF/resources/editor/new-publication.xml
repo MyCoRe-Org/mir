@@ -8,103 +8,103 @@
 <div class="container">
   <h1>Neue Publikation melden</h1>
   <p>
-    Hier können Sie Ihre Publikation melden. 
+    Hier können Sie Ihre Publikation melden.
     Über diese Auswahl gelangen Sie zu den gewünschten Eingabemasken, über die Sie Ihre Publikationen eintragen können.
     Bitte wählen Sie den Publikationstyp:
   </p>
   <form class="form-inline" role="form" method="get" action="editor-dynamic.xed">
     <div class="form-group">
       <label for="genre">
-        <text i18n="ubo.genre" />
+        <text i18n="mir.genre" />
       </label>
       <select id="genre" class="form-control" name="genre" size="1">
         <option value="article">
-          <text i18n="ubo.genre.article" />
+          <text i18n="mir.genre.article" />
         </option>
         <option value="book">
-          <text i18n="ubo.genre.book" />
+          <text i18n="mir.genre.book" />
         </option>
         <option value="dissertation">Dissertation</option>
         <option value="collection">
-          <text i18n="ubo.genre.collection" />
-          <text i18n="ubo.select.editor" />
+          <text i18n="mir.genre.collection" />
+          <text i18n="mir.select.editor" />
         </option>
         <option value="festschrift">
           Festschrift
-          <text i18n="ubo.select.editor" />
+          <text i18n="mir.select.editor" />
         </option>
         <option value="proceedings">
-          <text i18n="ubo.genre.proceedings" />
-          <text i18n="ubo.select.editor" />
+          <text i18n="mir.genre.proceedings" />
+          <text i18n="mir.select.editor" />
         </option>
         <option value="lexicon">
-          <text i18n="ubo.genre.lexicon" />
-          <text i18n="ubo.select.editor" />
+          <text i18n="mir.genre.lexicon" />
+          <text i18n="mir.select.editor" />
         </option>
         <option value="journal">
-          <text i18n="ubo.genre.journal" />
-          <text i18n="ubo.select.editor" />
+          <text i18n="mir.genre.journal" />
+          <text i18n="mir.select.editor" />
         </option>
         <option value="newspaper">
-          <text i18n="ubo.genre.newspaper" />
-          <text i18n="ubo.select.editor" />
+          <text i18n="mir.genre.newspaper" />
+          <text i18n="mir.select.editor" />
         </option>
         <option value="series">
-          <text i18n="ubo.genre.series" />
-          <text i18n="ubo.select.editor" />
+          <text i18n="mir.genre.series" />
+          <text i18n="mir.select.editor" />
         </option>
         <option value="entry">
-          <text i18n="ubo.genre.entry" />
+          <text i18n="mir.genre.entry" />
         </option>
         <option value="preface">
-          <text i18n="ubo.genre.preface" />
+          <text i18n="mir.genre.preface" />
         </option>
         <option value="interview">Interview</option>
         <option value="speech">
-          <text i18n="ubo.genre.speech" />
+          <text i18n="mir.genre.speech" />
         </option>
         <option value="patent">
-          <text i18n="ubo.genre.patent" />
+          <text i18n="mir.genre.patent" />
         </option>
         <option value="poster">
-          <text i18n="ubo.genre.poster" />
+          <text i18n="mir.genre.poster" />
         </option>
         <option value="audio">
-          <text i18n="ubo.genre.audio" />
+          <text i18n="mir.genre.audio" />
         </option>
         <option value="video">
-          <text i18n="ubo.genre.video" />
+          <text i18n="mir.genre.video" />
         </option>
       </select>
     </div>
     <div class="form-group">
-      <label for="host"> 
-        <text i18n="ubo.select.host" />
+      <label for="host">
+        <text i18n="mir.select.host" />
       </label>
       <select id="host" class="form-control" name="host" size="1">
         <option value="standalone">
-          <text i18n="ubo.select" />
+          <text i18n="mir.select" />
         </option>
         <option value="journal">
-          <text i18n="ubo.select.journal" />
+          <text i18n="mir.select.journal" />
         </option>
         <option value="newspaper">
-          <text i18n="ubo.select.newspaper" />
+          <text i18n="mir.select.newspaper" />
         </option>
         <option value="series">
-          <text i18n="ubo.select.series" />
+          <text i18n="mir.select.series" />
         </option>
         <option value="collection">
-          <text i18n="ubo.select.collection" />
+          <text i18n="mir.select.collection" />
         </option>
         <option value="festschrift">
-          <text i18n="ubo.select.festschrift" />
+          <text i18n="mir.select.festschrift" />
         </option>
         <option value="proceedings">
-          <text i18n="ubo.select.proceedings" />
+          <text i18n="mir.select.proceedings" />
         </option>
         <option value="lexicon">
-          <text i18n="ubo.select.lexicon" />
+          <text i18n="mir.select.lexicon" />
         </option>
       </select>
     </div>
