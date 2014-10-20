@@ -86,7 +86,7 @@
         </p>
       </div>
     </div>
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="titles.thesis.common" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="titles.thesis.common" />
   </xed:template>
 
   <xed:template id="titles.thesisHabil">
@@ -100,7 +100,7 @@
         </p>
       </div>
     </div>
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="titles.thesis.common" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="titles.thesis.common" />
   </xed:template>
 
   <xed:template id="titles.thesis.common">
@@ -109,7 +109,7 @@
         <div class="col-md-3" style="text-align:right; font-weight:bold;">
           <label>in</label>
           <xed:bind xpath="@xml:lang" initially="de">
-            <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="lang.list" />
+            <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="lang.list" />
           </xed:bind>
         </div>
         <div class="col-md-6">
@@ -126,7 +126,7 @@
         <div class="col-md-3" style="text-align:right; font-weight:bold;">
           <label>in</label>
           <xed:bind xpath="@xml:lang" initially="en">
-            <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="lang.list" />
+            <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="lang.list" />
           </xed:bind>
         </div>
         <div class="col-md-6">
@@ -151,7 +151,7 @@
               <input type="text" size="10" class="form-control form-control-inline" placeholder="Der/Die/Das"/>
             </xed:bind>
             <xed:bind xpath="@xml:lang" initially="de">
-              <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="lang.list" />
+              <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="lang.list" />
             </xed:bind>
             <xed:bind xpath="@type">
               <select class="form-control form-control-inline">
@@ -194,8 +194,8 @@
   </xed:template>
 
   <xed:template id="editor.honoree.repeated">
-    <xed:bind xpath="mods:name[@type='personal'][mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']='edt']" />
-    <xed:bind xpath="mods:name[@type='personal'][mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']='hnr']" />
+    <xed:bind xpath="mods:name[@type='personal'][@authorityURI='http://d-nb.info/gnd/'][mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']='edt']" />
+    <xed:bind xpath="mods:name[@type='personal'][@authorityURI='http://d-nb.info/gnd/'][mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']='hnr']" />
     <ubo:person.repeated>
       <option value="edt">
         <xed:output i18n="ubo.role.editor" />
@@ -207,8 +207,8 @@
   </xed:template>
 
   <xed:template id="author.interviewee.repeated">
-    <xed:bind xpath="mods:name[@type='personal'][mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']='aut']" />
-    <xed:bind xpath="mods:name[@type='personal'][mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']='ive']" />
+    <xed:bind xpath="mods:name[@type='personal'][@authorityURI='http://d-nb.info/gnd/'][mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']='aut']" />
+    <xed:bind xpath="mods:name[@type='personal'][@authorityURI='http://d-nb.info/gnd/'][mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']='ive']" />
     <ubo:person.repeated>
       <option value="aut">
         <xed:output i18n="ubo.role.author" />
@@ -220,8 +220,8 @@
   </xed:template>
 
   <xed:template id="producer.speaker.repeated">
-    <xed:bind xpath="mods:name[@type='personal'][mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']='pro']" />
-    <xed:bind xpath="mods:name[@type='personal'][mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']='spk']" />
+    <xed:bind xpath="mods:name[@type='personal'][@authorityURI='http://d-nb.info/gnd/'][mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']='pro']" />
+    <xed:bind xpath="mods:name[@type='personal'][@authorityURI='http://d-nb.info/gnd/'][mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']='spk']" />
     <ubo:person.repeated>
       <option value="pro">
         <xed:output i18n="ubo.role.producer" />
@@ -233,9 +233,9 @@
   </xed:template>
 
   <xed:template id="thesis.advisor.reviewer.repeated">
-    <xed:bind xpath="mods:name[@type='personal'][mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']='aut']" />
-    <xed:bind xpath="mods:name[@type='personal'][mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']='ths']" />
-    <xed:bind xpath="mods:name[@type='personal'][mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']='rev']" />
+    <xed:bind xpath="mods:name[@type='personal'][@authorityURI='http://d-nb.info/gnd/'][mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']='aut']" />
+    <xed:bind xpath="mods:name[@type='personal'][@authorityURI='http://d-nb.info/gnd/'][mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']='ths']" />
+    <xed:bind xpath="mods:name[@type='personal'][@authorityURI='http://d-nb.info/gnd/'][mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']='rev']" />
     <ubo:person.repeated>
       <option value="aut">
         <xed:output i18n="ubo.role.thesis" />
@@ -250,9 +250,9 @@
   </xed:template>
 
   <xed:template id="thesisHabil.reviewer.repeated">
-    <xed:bind xpath="mods:name[@type='personal'][mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']='aut']" />
-    <xed:bind xpath="mods:name[@type='personal'][mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']='rev']" />
-    <xed:bind xpath="mods:name[@type='personal'][mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']='rev']" />
+    <xed:bind xpath="mods:name[@type='personal'][@authorityURI='http://d-nb.info/gnd/'][mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']='aut']" />
+    <xed:bind xpath="mods:name[@type='personal'][@authorityURI='http://d-nb.info/gnd/'][mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']='rev']" />
+    <xed:bind xpath="mods:name[@type='personal'][@authorityURI='http://d-nb.info/gnd/'][mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']='rev']" />
     <ubo:person.repeated>
       <option value="aut">
         <xed:output i18n="ubo.role.thesisHabil" />
@@ -272,17 +272,17 @@
   <xed:template id="person.fields">
     <div class="form-inline">
       <xed:bind xpath="mods:displayForm">
-        <input type="text" size="26" class="form-control form-control-inline" />
+        <input type="text" size="26" class="form-control form-control-inline search-person" />
       </xed:bind>
       <label class="control-label" style="padding-left:1ex; padding-right:1ex;">GND:</label>
-      <xed:bind xpath="@valueURI">
+      <xed:bind xpath="@valueURIxEditor">
         <input type="text" size="26" class="form-control form-control-inline" />
       </xed:bind>
     </div>
-    <xed:if test="string-length(@valueURI) &gt; 0">
+    <xed:if test="string-length(@valueURIxEditor) &gt; 0">
       <p class="form-control-static">
-        <a target="_blank" href="{@valueURI}">
-          <xed:output value="concat('GND ',substring-after(@valueURI,'/gnd/'))" />
+        <a target="_blank" href="http://d-nb.info/gnd/{@valueURIxEditor}">
+          <xed:output value="concat('GND ',@valueURIxEditor)" />
         </a>
       </p>
     </xed:if>
@@ -535,7 +535,7 @@
       </label>
       <div class="col-md-6">
         <xed:bind xpath="mods:language/mods:languageTerm[@authority='rfc4646'][@type='code']" initially="de">
-          <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="lang.list" />
+          <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="lang.list" />
         </xed:bind>
       </div>
     </div>
@@ -549,7 +549,7 @@
       <xed:repeat xpath="mods:language/mods:languageTerm[@authority='rfc4646'][@type='code']" max="5">
         <div class="col-md-6">
           <div class="controls">
-            <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="lang.list" />
+            <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="lang.list" />
           </div>
         </div>
         <ubo:pmud />
@@ -575,7 +575,7 @@
         </label>
         <div class="col-md-6">
           <xed:bind xpath="@xml:lang" initially="de">
-            <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="lang.list" />
+            <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="lang.list" />
           </xed:bind>
         </div>
         <ubo:pmud />
@@ -642,9 +642,9 @@
         </div>
         <ubo:pmud />
       </div>
-      <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="host.volume" />
-      <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="host.issue" />
-      <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="host.pages" />
+      <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="host.volume" />
+      <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="host.issue" />
+      <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="host.pages" />
     </xed:repeat>
   </xed:template>
 

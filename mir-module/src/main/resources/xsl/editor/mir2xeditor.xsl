@@ -48,7 +48,7 @@
         <div class="col-md-6">
           <div class="controls">
             <xed:bind xpath="mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']" default="{@role}" />
-            <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="person.fields" />
+            <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="person.fields" />
           </div>
         </div>
         <xsl:call-template name="ubo-pmud" />
@@ -57,7 +57,7 @@
   </xsl:template>
 
   <xsl:template match="ubo:person.repeated">
-    <xed:repeat xpath="mods:name[@type='personal']" min="1" max="100">
+    <xed:repeat xpath="mods:name[@type='personal'][@authorityURI='http://d-nb.info/gnd/']" min="1" max="100">
       <div class="form-group">
         <div class="col-md-3" style="text-align:right; font-weight:bold;">
           <xed:bind xpath="mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']">
@@ -67,7 +67,7 @@
           </xed:bind>
         </div>
         <div class="col-md-6">
-          <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="person.fields" />
+          <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="person.fields" />
         </div>
         <xsl:call-template name="ubo-pmud" />
       </div>

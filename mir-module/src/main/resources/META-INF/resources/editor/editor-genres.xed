@@ -3,224 +3,224 @@
 <xed:template xmlns:xed="http://www.mycore.de/xeditor">
 
   <xed:template id="book">
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="title" />
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="subtitle" />
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="author.repeated" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="title" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="subtitle" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="author.repeated" />
     <xed:include uri="webapp:editor/editor-genres.xed" ref="book.common" />
   </xed:template>
 
   <xed:template id="collection">
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="title" />
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="subtitle" />
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="editor.repeated" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="title" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="subtitle" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="editor.repeated" />
     <xed:include uri="webapp:editor/editor-genres.xed" ref="book.common" />
   </xed:template>
 
   <xed:template id="festschrift">
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="title" />
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="subtitle" />
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="editor.honoree.repeated" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="title" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="subtitle" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="editor.honoree.repeated" />
     <xed:include uri="webapp:editor/editor-genres.xed" ref="book.common" />
   </xed:template>
 
   <xed:template id="lexicon">
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="title" />
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="subtitle" />
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="editor.repeated" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="title" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="subtitle" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="editor.repeated" />
     <xed:include uri="webapp:editor/editor-genres.xed" ref="book.common" />
   </xed:template>
 
   <xed:template id="proceedings">
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="title" />
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="subtitle" />
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="conference" />
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="editor.repeated" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="title" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="subtitle" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="conference" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="editor.repeated" />
     <xed:include uri="webapp:editor/editor-genres.xed" ref="book.common" />
   </xed:template>
 
   <xed:template id="book.common">
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="year.issued" />
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="place" />
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="publisher" />
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="edition" />
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="extent" />
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="language.simple" />
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="identifier.isbn" />
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="doi.handle.urn.repeated" />
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="shelfmark" />
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="link" />
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="abstract.repeated" />
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="comment" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="year.issued" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="place" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="publisher" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="edition" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="extent" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="language.simple" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="identifier.isbn" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="doi.handle.urn.repeated" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="shelfmark" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="link" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="abstract.repeated" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="comment" />
   </xed:template>
 
   <xed:template id="journal">
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="title.journal" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="title.journal" />
     <xed:include uri="webapp:editor/editor-genres.xed" ref="journal.common" />
   </xed:template>
 
   <xed:template id="series">
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="title" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="title" />
     <xed:include uri="webapp:editor/editor-genres.xed" ref="journal.common" />
   </xed:template>
 
   <xed:template id="newspaper">
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="title.newspaper" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="title.newspaper" />
     <xed:include uri="webapp:editor/editor-genres.xed" ref="journal.common" />
   </xed:template>
 
   <xed:template id="journal.common">
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="title.abbreviated" />
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="editor.repeated" />
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="place" />
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="publisher" />
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="language.simple" />
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="identifier.issn" />
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="identifier.duepublico" />
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="shelfmark" />
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="link" />
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="abstract.simple" />
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="comment" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="title.abbreviated" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="editor.repeated" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="place" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="publisher" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="language.simple" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="identifier.issn" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="identifier.duepublico" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="shelfmark" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="link" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="abstract.simple" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="comment" />
   </xed:template>
 
   <xed:template id="dissertation">
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="titles.thesis" />
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="thesis.advisor.reviewer.repeated" />
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="year.issued" />
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="date.submitted" />
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="date.accepted" />
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="place" />
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="publisher" />
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="extent" />
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="language.simple" />
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="identifier.isbn" />
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="doi.handle.urn.repeated" />
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="identifier.duepublico" />
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="shelfmark" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="titles.thesis" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="thesis.advisor.reviewer.repeated" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="year.issued" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="date.submitted" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="date.accepted" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="place" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="publisher" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="extent" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="language.simple" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="identifier.isbn" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="doi.handle.urn.repeated" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="identifier.duepublico" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="shelfmark" />
     <xed:bind xpath="mods:abstract[@xml:lang='de']" />
     <xed:bind xpath="mods:abstract[@xml:lang='en']" />
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="abstract.repeated" />
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="comment" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="abstract.repeated" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="comment" />
   </xed:template>
-  
+
   <xed:template id="habilitation">
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="titles.thesisHabil" />
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="thesisHabil.reviewer.repeated" />
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="year.issued" />
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="date.submitted" />
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="date.acceptedHabil" />
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="place" />
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="publisher" />
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="extent" />
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="language.simple" />
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="identifier.isbn" />
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="doi.handle.urn.repeated" />
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="identifier.duepublico" />
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="shelfmark" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="titles.thesisHabil" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="thesisHabil.reviewer.repeated" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="year.issued" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="date.submitted" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="date.acceptedHabil" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="place" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="publisher" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="extent" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="language.simple" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="identifier.isbn" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="doi.handle.urn.repeated" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="identifier.duepublico" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="shelfmark" />
     <xed:bind xpath="mods:abstract[@xml:lang='de']" />
     <xed:bind xpath="mods:abstract[@xml:lang='en']" />
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="abstract.repeated" />
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="comment" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="abstract.repeated" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="comment" />
   </xed:template>
 
   <xed:template id="article">
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="title" />
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="subtitle" />
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="author.repeated" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="title" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="subtitle" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="author.repeated" />
     <xed:if test="$host='standalone'">
-      <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="year.issued" />
+      <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="year.issued" />
     </xed:if>
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="language.simple" />
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="doi.handle.urn.repeated" />
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="identifier.duepublico" />
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="link" />
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="abstract.repeated" />
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="comment" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="language.simple" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="doi.handle.urn.repeated" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="identifier.duepublico" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="link" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="abstract.repeated" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="comment" />
   </xed:template>
 
   <xed:template id="entry">
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="title" />
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="subtitle" />
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="author.repeated" />
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="language.simple" />
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="doi.handle.urn.repeated" />
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="identifier.duepublico" />
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="link" />
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="abstract.repeated" />
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="comment" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="title" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="subtitle" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="author.repeated" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="language.simple" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="doi.handle.urn.repeated" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="identifier.duepublico" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="link" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="abstract.repeated" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="comment" />
   </xed:template>
 
   <xed:template id="preface">
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="title" />
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="subtitle" />
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="author.repeated" />
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="language.simple" />
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="doi.handle.urn.repeated" />
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="identifier.duepublico" />
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="link" />
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="abstract.repeated" />
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="comment" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="title" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="subtitle" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="author.repeated" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="language.simple" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="doi.handle.urn.repeated" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="identifier.duepublico" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="link" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="abstract.repeated" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="comment" />
   </xed:template>
 
   <xed:template id="interview">
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="title" />
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="subtitle" />
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="author.interviewee.repeated" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="title" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="subtitle" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="author.interviewee.repeated" />
     <xed:if test="$host='standalone'">
-      <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="year.issued" />
+      <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="year.issued" />
     </xed:if>
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="language.simple" />
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="doi.handle.urn.repeated" />
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="identifier.duepublico" />
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="link" />
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="abstract.repeated" />
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="comment" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="language.simple" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="doi.handle.urn.repeated" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="identifier.duepublico" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="link" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="abstract.repeated" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="comment" />
   </xed:template>
 
   <xed:template id="speech">
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="title" />
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="subtitle" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="title" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="subtitle" />
     <xed:if test="$host='standalone'">
-      <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="conference" />
+      <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="conference" />
     </xed:if>
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="author.repeated" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="author.repeated" />
     <xed:if test="$host='standalone'">
-      <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="year.issued" />
+      <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="year.issued" />
     </xed:if>
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="language.simple" />
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="doi.handle.urn.repeated" />
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="identifier.duepublico" />
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="link" />
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="abstract.repeated" />
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="comment" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="language.simple" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="doi.handle.urn.repeated" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="identifier.duepublico" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="link" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="abstract.repeated" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="comment" />
   </xed:template>
 
   <xed:template id="patent">
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="title" />
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="subtitle" />
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="inventor.repeated" />
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="identifier.patent" />
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="country" />
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="language.simple" />
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="date.submitted" />
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="date.issued" />
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="link" />
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="abstract.repeated" />
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="comment" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="title" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="subtitle" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="inventor.repeated" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="identifier.patent" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="country" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="language.simple" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="date.submitted" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="date.issued" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="link" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="abstract.repeated" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="comment" />
   </xed:template>
 
   <xed:template id="poster">
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="title" />
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="subtitle" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="title" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="subtitle" />
     <xed:if test="$host='standalone'">
-      <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="conference" />
+      <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="conference" />
     </xed:if>
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="author.repeated" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="author.repeated" />
     <xed:if test="$host='standalone'">
-      <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="year.issued" />    
-      <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="place" />
-    </xed:if>  
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="link" />
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="comment" />
+      <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="year.issued" />
+      <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="place" />
+    </xed:if>
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="link" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="comment" />
   </xed:template>
 
   <xed:template id="audio">
@@ -236,15 +236,15 @@
   </xed:template>
 
   <xed:template id="av.common">
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="title" />
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="subtitle" />
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="producer.speaker.repeated" />
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="date.broadcasted" />
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="station" />
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="language.simple" />
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="link" />
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="abstract.repeated" />
-    <xed:include uri="xslStyle:editor/ubo2xeditor:webapp:editor/editor-includes.xed" ref="comment" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="title" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="subtitle" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="producer.speaker.repeated" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="date.broadcasted" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="station" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="language.simple" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="link" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="abstract.repeated" />
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="comment" />
   </xed:template>
 
 </xed:template>

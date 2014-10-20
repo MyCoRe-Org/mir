@@ -4,10 +4,23 @@
 
   <xsl:include href="copynodes.xsl" />
 
+  <!-- create value URI using valueURIxEditor and authorityURI -->
   <xsl:template match="@valueURIxEditor">
     <xsl:attribute name="valueURI">
       <xsl:value-of select="concat(../@authorityURI,'#',.)" />
     </xsl:attribute>
   </xsl:template>
 
+
+  <!-- A single page (edited as start=end) is represented as mods:detail/@type='page' -->
+  <xsl:template match="mods:detail[@type='page']">
+    <mods:extent unit="pages">
+      <mods:start>
+        <xsl:value-of select="mods:number" />
+      </mods:start>
+      <mods:end>
+        <xsl:value-of select="mods:number" />
+      </mods:end>
+    </mods:extent>
+  </xsl:template>
 </xsl:stylesheet>

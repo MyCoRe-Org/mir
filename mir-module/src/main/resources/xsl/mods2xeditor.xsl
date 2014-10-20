@@ -4,13 +4,28 @@
 
   <xsl:include href="copynodes.xsl" />
 
-  <xsl:template match="mods:genre[@type='intern']">
-    <xsl:copy>
-      <xsl:apply-templates select="@*[name()!='valueURI']" />
-      <xsl:attribute name="valueURIxEditor">
-        <xsl:value-of select="substring-after(@valueURI,'#')" />
-      </xsl:attribute>
-    </xsl:copy>
+  <!-- put value string (after authority URI) in attribute valueURIxEditor -->
+  <xsl:template match="@valueURI">
+    <xsl:attribute name="valueURIxEditor">
+      <xsl:value-of select="substring-after(.,'#')" />
+    </xsl:attribute>
   </xsl:template>
 
+  <!-- A single page (entered as start=end) must be represented as mods:detail/@type='page' -->
+  <xsl:template match="mods:extent[(@unit='pages') and (mods:start=mods:end)]">
+    <mods:detail type="page">
+      <mods:number>
+        <xsl:value-of select="mods:start" />
+      </mods:number>
+    </mods:detail>
+  </xsl:template>
+
+  <!-- Derive dateIssued from dateOther if not present -->
+  <xsl:template match="mods:dateOther[(@type='accepted') and not(../mods:dateIssued)]">
+    <mods:dateIssued>
+      <xsl:copy-of select="@encoding" />
+      <xsl:value-of select="substring(.,1,4)" />
+    </mods:dateIssued>
+    <xsl:copy-of select="." />
+  </xsl:template>
 </xsl:stylesheet>
