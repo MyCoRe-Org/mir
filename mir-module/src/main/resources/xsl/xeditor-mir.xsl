@@ -8,10 +8,10 @@
     <!-- append insert remove up down -->
     <xsl:param name="name" /> <!-- name to submit as request parameter when button/image is clicked -->
 
-    <!-- Choose a label for the button -->
+    <!-- Choose a label for the button and use font awesome -->
     <xsl:variable name="symbol">
       <xsl:choose>
-	<xsl:when test=".='add'">
+        <xsl:when test=".='add'">
           <xsl:value-of select="'asterisk'" />
         </xsl:when>
         <xsl:when test=".='append'">
