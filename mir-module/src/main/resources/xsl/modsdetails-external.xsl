@@ -371,6 +371,7 @@
     </xsl:variable>
     <xsl:variable name="editURL">
       <xsl:choose>
+        <xsl:when test="not($accessedit)"></xsl:when><!-- workaround NPE -->
         <xsl:when test="string-length($collection) &gt; 0">
           <xsl:call-template name="mods.getObjectEditURL">
             <xsl:with-param name="collection" select="$collection" />
@@ -388,6 +389,7 @@
     </xsl:variable>
     <xsl:variable name="editURL_allMods">
       <xsl:choose>
+        <xsl:when test="not($accessedit)"></xsl:when><!-- workaround NPE -->
         <xsl:when test="string-length($collection) &gt; 0">
           <xsl:call-template name="mods.getObjectEditURL">
             <xsl:with-param name="collection" select="$collection" />
