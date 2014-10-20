@@ -57,7 +57,7 @@
   </xsl:template>
 
   <xsl:template match="mir:person.repeated">
-    <xed:repeat xpath="mods:name[@type='personal'][@authorityURI='http://d-nb.info/gnd/']" min="1" max="100">
+    <xed:repeat xpath="mods:name[@type='personal']" min="1" max="100">
       <div class="form-group">
         <div class="col-md-3" style="text-align:right; font-weight:bold;">
           <xed:bind xpath="mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']">

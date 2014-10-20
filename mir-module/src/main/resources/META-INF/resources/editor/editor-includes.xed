@@ -194,8 +194,8 @@
   </xed:template>
 
   <xed:template id="editor.honoree.repeated">
-    <xed:bind xpath="mods:name[@type='personal'][@authorityURI='http://d-nb.info/gnd/'][mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']='edt']" />
-    <xed:bind xpath="mods:name[@type='personal'][@authorityURI='http://d-nb.info/gnd/'][mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']='hnr']" />
+    <xed:bind xpath="mods:name[@type='personal'][mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']='edt']" />
+    <xed:bind xpath="mods:name[@type='personal'][mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']='hnr']" />
     <mir:person.repeated>
       <option value="edt">
         <xed:output i18n="mir.role.editor" />
@@ -207,8 +207,8 @@
   </xed:template>
 
   <xed:template id="author.interviewee.repeated">
-    <xed:bind xpath="mods:name[@type='personal'][@authorityURI='http://d-nb.info/gnd/'][mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']='aut']" />
-    <xed:bind xpath="mods:name[@type='personal'][@authorityURI='http://d-nb.info/gnd/'][mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']='ive']" />
+    <xed:bind xpath="mods:name[@type='personal'][mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']='aut']" />
+    <xed:bind xpath="mods:name[@type='personal'][mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']='ive']" />
     <mir:person.repeated>
       <option value="aut">
         <xed:output i18n="mir.role.author" />
@@ -220,8 +220,8 @@
   </xed:template>
 
   <xed:template id="producer.speaker.repeated">
-    <xed:bind xpath="mods:name[@type='personal'][@authorityURI='http://d-nb.info/gnd/'][mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']='pro']" />
-    <xed:bind xpath="mods:name[@type='personal'][@authorityURI='http://d-nb.info/gnd/'][mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']='spk']" />
+    <xed:bind xpath="mods:name[@type='personal'][mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']='pro']" />
+    <xed:bind xpath="mods:name[@type='personal'][mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']='spk']" />
     <mir:person.repeated>
       <option value="pro">
         <xed:output i18n="mir.role.producer" />
@@ -233,9 +233,9 @@
   </xed:template>
 
   <xed:template id="thesis.advisor.reviewer.repeated">
-    <xed:bind xpath="mods:name[@type='personal'][@authorityURI='http://d-nb.info/gnd/'][mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']='aut']" />
-    <xed:bind xpath="mods:name[@type='personal'][@authorityURI='http://d-nb.info/gnd/'][mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']='ths']" />
-    <xed:bind xpath="mods:name[@type='personal'][@authorityURI='http://d-nb.info/gnd/'][mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']='rev']" />
+    <xed:bind xpath="mods:name[@type='personal'][mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']='aut']" />
+    <xed:bind xpath="mods:name[@type='personal'][mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']='ths']" />
+    <xed:bind xpath="mods:name[@type='personal'][mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']='rev']" />
     <mir:person.repeated>
       <option value="aut">
         <xed:output i18n="mir.role.thesis" />
@@ -250,9 +250,9 @@
   </xed:template>
 
   <xed:template id="thesisHabil.reviewer.repeated">
-    <xed:bind xpath="mods:name[@type='personal'][@authorityURI='http://d-nb.info/gnd/'][mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']='aut']" />
-    <xed:bind xpath="mods:name[@type='personal'][@authorityURI='http://d-nb.info/gnd/'][mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']='rev']" />
-    <xed:bind xpath="mods:name[@type='personal'][@authorityURI='http://d-nb.info/gnd/'][mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']='rev']" />
+    <xed:bind xpath="mods:name[@type='personal'][mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']='aut']" />
+    <xed:bind xpath="mods:name[@type='personal'][mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']='rev']" />
+    <xed:bind xpath="mods:name[@type='personal'][mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']='rev']" />
     <mir:person.repeated>
       <option value="aut">
         <xed:output i18n="mir.role.thesisHabil" />
@@ -275,6 +275,7 @@
         <input type="text" size="26" class="form-control form-control-inline search-person" />
       </xed:bind>
       <label class="control-label" style="padding-left:1ex; padding-right:1ex;">GND:</label>
+      <xed:bind xpath="@authorityURI" initially="'http://d-nb.info/gnd/'" />
       <xed:bind xpath="@valueURIxEditor">
         <input type="text" size="26" class="form-control form-control-inline" />
       </xed:bind>
@@ -703,7 +704,7 @@
   <xed:template id="cleanup-rules">
     <xed:cleanup-rule xpath="//mods:*" relevant-if="(string-length(text()) &gt; 0) or mods:* or (string-length(@xlink:href) &gt; 0) or (string-length(@valueURIxEditor) &gt; 0)" />
     <xed:cleanup-rule xpath="//mods:name" relevant-if="mods:namePart|mods:displayForm" />
-    <xed:cleanup-rule xpath="//mods:name/@authorityURI" relevant-if="string-length(../@valueURI) &gt; 0" />
+    <xed:cleanup-rule xpath="//mods:name/@authorityURI" relevant-if="(string-length(../@valueURI) &gt; 0) or (string-length(../@valueURIxEditor) &gt; 0)" />
   </xed:template>
 
 </xed:template>
