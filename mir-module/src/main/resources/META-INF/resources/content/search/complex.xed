@@ -11,7 +11,7 @@
       <xed:source uri="searchInput:{id}" />
       <xed:source uri="webapp:editor/search/template/complex.xml" />
       <xed:bind xpath="query">
-        <xed:bind xpath="@mask" default="content/main/search/complex.xed" />
+        <xed:bind xpath="@mask" default="content/search/complex.xed" />
         <xed:bind xpath="conditions/boolean/boolean">
           <div class="panel panel-default">
             <div class="panel-heading">
@@ -152,7 +152,7 @@
               </div>
 
             <!-- submit -->
-              <mir:template name="submitButton" i18n="editor.search.search" />
+              <mir:template name="submitButton" i18n="editor.search.search" target="servlet_MCRLegacySearchServlet" />
             </div>
           </div>
         </xed:bind>
