@@ -55,7 +55,7 @@
 
       <div class="col-lg-6">
         <div class="search_box">
-          <form action="http://mir/vorlage_trefferliste" class="search_form" method="post">
+          <form action="{$WebApplicationBaseURL}servlets/solr/find" class="search_form" method="post">
             <div class="input-group input-group-sm">
               <div class="input-group-btn">
                 <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" value="Alles" id="search_type_button"><span id="search_type_label">Alles</span> <span class="caret"></span></button>
@@ -69,7 +69,7 @@
                   <li><a href="#">Volltext</a></li>
                 </ul>
               </div>
-              <input class="form-control" placeholder="ein oder mehrere Schlagworte" type="text" />
+              <input class="form-control" name="qry" placeholder="ein oder mehrere Schlagworte" type="text" />
               <span class="input-group-btn">
                 <button class="btn btn-primary" type="submit"><span class="glyphicon glyphicon-search"></span> Suchen</button>
               </span>
@@ -77,7 +77,6 @@
           </form>
         </div>
       </div>
-
       <div class="col-lg-3">
       </div>
     </div> <!-- ENDE: Suchschlitz mit Suchbegriff -->
@@ -218,7 +217,7 @@
         <div class="col-xs-12">
           <h3 class="hit_title shorten">
             <a href="{$linkTo}">
-              <xsl:attribute name="title"><xsl:value-of select="./str[@name='title']" /></xsl:attribute>
+              <xsl:attribute name="title"><xsl:value-of select="./str[@name='mods.title']" /></xsl:attribute>
               <xsl:choose>
                 <xsl:when test="./str[@name='search_result_link_text']">
                   <xsl:value-of select="./str[@name='search_result_link_text']" />
