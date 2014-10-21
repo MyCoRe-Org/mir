@@ -112,8 +112,6 @@
     <xsl:variable name="derivates" select="key('derivate', $identifier)" />
 
     <div class="hit_item {$hitItemClass}">
-    <article class="result clearfix" itemscope="" itemtype="http://schema.org/Book">
-
       <div class="row">
         <div class="col-xs-2">
           <div class="hit_counter"><xsl:value-of select="$hitCount" /></div>
@@ -192,74 +190,59 @@
       </div>
       <div class="row">
         <div class="col-xs-12">
-          <header class="top-head">
-            <h3 class="hit_title shorten">
-              <a href="{$linkTo}" itemprop="url" title="ToDo Maintitle">
-                <span itemprop="name"><!-- ??? Muss das nicht Titel sein? -->
-                  <xsl:choose>
-                    <xsl:when test="./str[@name='search_result_link_text']">
-                      <xsl:value-of select="./str[@name='search_result_link_text']" />
-                    </xsl:when>
-                    <xsl:when test="./str[@name='fileName']">
-                      <xsl:value-of select="./str[@name='fileName']" />
-                    </xsl:when>
-                    <xsl:otherwise>
-                      <xsl:value-of select="$identifier" />
-                    </xsl:otherwise>
-                  </xsl:choose>
-                </span>
-              </a>
-            </h3>
-          </header>
+          <h3 class="hit_title shorten">
+            <a href="{$linkTo}">
+              <xsl:attribute name="title"><xsl:value-of select="./str[@name='title']" /></xsl:attribute>
+              <xsl:choose>
+                <xsl:when test="./str[@name='search_result_link_text']">
+                  <xsl:value-of select="./str[@name='search_result_link_text']" />
+                </xsl:when>
+                <xsl:when test="./str[@name='fileName']">
+                  <xsl:value-of select="./str[@name='fileName']" />
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:value-of select="$identifier" />
+                </xsl:otherwise>
+              </xsl:choose>
+            </a>
+          </h3>
         </div>
       </div>
 
       <div class="row">
         <div class="col-xs-2">
-
-          <aside class="Vorschaubild" itemtype="http://www.schema.org/ImageObject" itemscope="" itemprop="image">
-            <xsl:choose>
-              <xsl:when test="$derivates/str[@name='iviewFile']">
-                <xsl:call-template name="iViewLinkPrev">
-                  <xsl:with-param name="mcrid" select="$identifier" />
-                  <xsl:with-param name="derivate" select="$derivates/str[@name='iviewFile']/../str[@name='id']" />
-                  <xsl:with-param name="fileName" select="$derivates/str[@name='iviewFile'][1]" />
-                </xsl:call-template>
-              </xsl:when>
-              <xsl:when test="str:tokenize($derivates/str[@name='maindoc'][1],'.')[position()=last()] = 'pdf'">
-                <xsl:variable name="filePath" select="concat($derivates/str[@name='id'][1],'/',mcr:encodeURIPath($derivates/str[@name='maindoc'][1]),$HttpSession)" />
-                <img class="hit_icon" alt="{$mods-type}" title="thumbnail">
-                  <xsl:attribute name="src">
-                    <xsl:value-of select="concat($WebApplicationBaseURL,'img/pdfthumb/',$filePath,'?centerThumb=no')"/>
-                  </xsl:attribute>
-                </img>
-              </xsl:when>
-              <xsl:otherwise>
-                <img class="hit_icon" src="{$WebApplicationBaseURL}images/icons/{$CurrentLang}/icon_{$mods-type}.png" itemprop="photo"
-                  alt="{$mods-type}" />
-              </xsl:otherwise>
-            </xsl:choose>
-    <!--    <a itemprop="url" href="images/microdata.jpg" title="Im Bildbetrachter öffnen"> -->
-    <!--    </a> -->
-          </aside>
+          <xsl:choose>
+            <xsl:when test="$derivates/str[@name='iviewFile']">
+              <xsl:call-template name="iViewLinkPrev">
+                <xsl:with-param name="mcrid" select="$identifier" />
+                <xsl:with-param name="derivate" select="$derivates/str[@name='iviewFile']/../str[@name='id']" />
+                <xsl:with-param name="fileName" select="$derivates/str[@name='iviewFile'][1]" />
+              </xsl:call-template>
+            </xsl:when>
+            <xsl:when test="str:tokenize($derivates/str[@name='maindoc'][1],'.')[position()=last()] = 'pdf'">
+              <xsl:variable name="filePath" select="concat($derivates/str[@name='id'][1],'/',mcr:encodeURIPath($derivates/str[@name='maindoc'][1]),$HttpSession)" />
+              <img class="hit_icon" alt="{$mods-type}" title="thumbnail">
+                <xsl:attribute name="src">
+                  <xsl:value-of select="concat($WebApplicationBaseURL,'img/pdfthumb/',$filePath,'?centerThumb=no')"/>
+                </xsl:attribute>
+              </img>
+            </xsl:when>
+            <xsl:otherwise>
+              <img class="hit_icon" src="{$WebApplicationBaseURL}images/icons/{$CurrentLang}/icon_{$mods-type}.png" alt="{$mods-type}" />
+            </xsl:otherwise>
+          </xsl:choose>
         </div>
         <div class="col-xs-10">
           <xsl:if test="./arr[@name='mods.author']">
             <div class="hit_author shorten">
-              <!-- section -->
-                <xsl:for-each select="./arr[@name='mods.author']/str">
-                  <xsl:if test="position()!=1">
-                    <xsl:value-of select="' / '" />
-                  </xsl:if>
-                  <!-- address title="Author" -->
-                    <a href="#" itemprop="author" itemscope="itemscope" itemtype="http://schema.org/Person" rel="author">
-                      <span itemprop="name">
-                        <xsl:value-of select="." />
-                      </span>
-                    </a>
-                  <!-- /address -->
-                </xsl:for-each>
-              <!-- /section -->
+              <xsl:for-each select="./arr[@name='mods.author']/str">
+                <xsl:if test="position()!=1">
+                  <xsl:value-of select="' / '" />
+                </xsl:if>
+                  <a href="#">
+                    <xsl:value-of select="." />
+                  </a>
+              </xsl:for-each>
             </div>
           </xsl:if>
 
@@ -269,73 +252,54 @@
 
           <xsl:if test="./str[@name='parent']">
             <div class="hit_source shorten">
-              <section>
-                <xsl:text>aus: </xsl:text>
-                <xsl:choose>
-                  <xsl:when test="./str[@name='parentLinkText']">
-                    <xsl:variable name="linkTo" select="concat($WebApplicationBaseURL, 'receive/',./str[@name='parent'])" />
-                    <a href="{$linkTo}">
-                      <xsl:value-of select="./str[@name='parentLinkText']" />
-                    </a>
-                  </xsl:when>
-                  <xsl:otherwise>
-                    <xsl:call-template name="objectLink">
-                      <xsl:with-param select="./str[@name='parent']" name="obj_id" />
-                    </xsl:call-template>
-                  </xsl:otherwise>
-                </xsl:choose>
-              </section>
+              <xsl:text>aus: </xsl:text>
+              <xsl:choose>
+                <xsl:when test="./str[@name='parentLinkText']">
+                  <xsl:variable name="linkTo" select="concat($WebApplicationBaseURL, 'receive/',./str[@name='parent'])" />
+                  <a href="{$linkTo}">
+                    <xsl:value-of select="./str[@name='parentLinkText']" />
+                  </a>
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:call-template name="objectLink">
+                    <xsl:with-param select="./str[@name='parent']" name="obj_id" />
+                  </xsl:call-template>
+                </xsl:otherwise>
+              </xsl:choose>
             </div>
           </xsl:if>
           <xsl:if test="str[@name='mods.dateIssued']|arr[@name='mods.publisher']">
             <div class="hit_date">
-              <section>
-                <span>
-                  <xsl:value-of select="concat(i18n:translate('component.mods.metaData.dictionary.published'),': ')" />
-                </span>
-                <xsl:variable name="publisher" select="arr[@name='mods.publisher']/str" />
-                <xsl:variable name="place" select="arr[@name='mods.place']/str" />
-                <xsl:for-each select="$publisher">
-                  <xsl:if test="position()!=1">
-                    <xsl:value-of select="'; '" />
-                  </xsl:if>
-                  <span itemprop="publisher" itemscope="itemscope" itemtype="http://schema.org/Organize" title="Verlag">
-                    <xsl:value-of select="$publisher" />
-                  </span>
-                </xsl:for-each>
-                <xsl:if test="count($publisher)=1 and count($place)=1">
+              <xsl:value-of select="concat(i18n:translate('component.mods.metaData.dictionary.published'),': ')" />
+              <xsl:variable name="publisher" select="arr[@name='mods.publisher']/str" />
+              <xsl:variable name="place" select="arr[@name='mods.place']/str" />
+              <xsl:for-each select="$publisher">
+                <xsl:if test="position()!=1">
+                  <xsl:value-of select="'; '" />
+                </xsl:if>
+                <xsl:value-of select="$publisher" />
+              </xsl:for-each>
+              <xsl:if test="count($publisher)=1 and count($place)=1">
+                <xsl:value-of select="', '" />
+                <xsl:value-of select="$place" />
+              </xsl:if>
+              <xsl:if test="str[@name='mods.dateIssued']">
+                <xsl:variable name="date">
+                  <xsl:value-of select="str[@name='mods.dateIssued']" />
+                </xsl:variable>
+                <xsl:if test="$publisher">
                   <xsl:value-of select="', '" />
-                  <span itmeprop="addressRegion" itemscope="itemscope" itemtype="http://schema.org/PostalAddress" title="Ort">
-                    <b>
-                      <xsl:value-of select="$place" />
-                    </b>
-                  </span>
                 </xsl:if>
-                <xsl:if test="str[@name='mods.dateIssued']">
-                  <xsl:variable name="date">
-                    <xsl:value-of select="str[@name='mods.dateIssued']" />
-                  </xsl:variable>
-                  <xsl:if test="$publisher">
-                    <xsl:value-of select="', '" />
-                  </xsl:if>
-                  <time pubdate="pubdate" datetime="{$date}" itemprop="datePublished" title="Erschienen">
-                    <b>
-                      <xsl:value-of select="$date" />
-                    </b>
-                  </time>
-                </xsl:if>
-              </section>
+                  <xsl:value-of select="$date" />
+              </xsl:if>
             </div>
           </xsl:if>
 
-          <!-- abstract -->
           <xsl:variable name="description" select="str[@name='mods.abstract']" />
           <xsl:if test="$description">
-            <section class="summary" title="summary">
-              <div class="hit_source shorten" itemprop="description"> <!-- ToDo eigene Klasse! -->
-                <xsl:value-of select="$description" />
-              </div>
-            </section>
+            <div class="hit_source shorten"> <!-- ToDo eigene Klasse! -->
+              <xsl:value-of select="$description" />
+            </div>
           </xsl:if>
 
         </div>
@@ -408,7 +372,7 @@
           </li>
         </ul>
       </section> -->
-      </article>
+
     </div>
   </xsl:template>
 
