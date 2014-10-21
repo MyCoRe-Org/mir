@@ -1,7 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:mods="http://www.loc.gov/mods/v3"
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:mods="http://www.loc.gov/mods/v3" xmlns:encoder="xalan://java.net.URLEncoder"
   xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation" xmlns:str="http://exslt.org/strings" xmlns:mcr="xalan://org.mycore.common.xml.MCRXMLFunctions"
-  xmlns:acl="xalan://org.mycore.access.MCRAccessManager" xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions" exclude-result-prefixes="i18n mods str mcr acl mcrxsl">
+  xmlns:acl="xalan://org.mycore.access.MCRAccessManager" xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions" exclude-result-prefixes="i18n mods str mcr acl mcrxsl encoder">
+
+  <!-- retain the original query and parameters, for attaching them to a url -->
+  <xsl:variable name="query">
+    <xsl:if test="/response/lst[@name='responseHeader']/lst[@name='params']/str[@name='qry'] != '*'">
+      <xsl:value-of select="/response/lst[@name='responseHeader']/lst[@name='params']/str[@name='qry']" />
+    </xsl:if>
+  </xsl:variable>
+
+<!-- throws java.lang.ClassCastException: org.apache.xpath.objects.XRTreeFrag cannot be cast to org.apache.xpath.objects.XNodeSet -->
+<!--   <xsl:variable name="params"> -->
+<!--     <xsl:for-each select="/response/lst[@name='responseHeader']/lst[@name='params']/str[not(@name='start' or @name='rows')]"> -->
+           <!-- parameterName=parameterValue -->
+<!--       <xsl:value-of select="concat(@name,'=', encoder:encode('.', 'UTF-8'))" /> -->
+<!--       <xsl:if test="not (position() = last())"> -->
+<!--         <xsl:value-of select="'&amp;'" /> -->
+<!--       </xsl:if> -->
+<!--     </xsl:for-each> -->
+<!--   </xsl:variable> -->
 
   <xsl:template match="/response/result|/response/response[@subresult='groupOwner']/result|lst[@name='grouped']/lst[@name='returnId' and int[@name='matches']='0']" priority="10">
     <xsl:variable name="ResultPages">
@@ -67,7 +85,14 @@
 <!-- Filter, Pagination & Trefferliste -->
     <div class="row">
       <div class="col-lg-3">
-        <h3>ToDo: Solr-Filter</h3>
+        <xsl:if test="/response/lst[@name='facet_counts']/lst[@name='facet_fields'] and $hits &gt; 0">
+          <h3>Typ</h3>
+          <ul class="filter">
+            <xsl:apply-templates select="/response/lst[@name='facet_counts']/lst[@name='facet_fields']">
+              <xsl:with-param name="facet_name" select="'mods.type'" />
+            </xsl:apply-templates>
+          </ul>
+        </xsl:if>
       </div>
       <div class="col-lg-9">
         <xsl:copy-of select="$ResultPages" />
@@ -101,6 +126,7 @@
         </xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
+    <xsl:variable name="mods-type-i18n" select="i18n:translate(concat('mir.genre.',$mods-type))" />
     <xsl:variable name="hitCount" select="count(preceding-sibling::doc)+1" />
     <xsl:variable name="hitItemClass">
       <xsl:choose>
@@ -221,14 +247,14 @@
             </xsl:when>
             <xsl:when test="str:tokenize($derivates/str[@name='maindoc'][1],'.')[position()=last()] = 'pdf'">
               <xsl:variable name="filePath" select="concat($derivates/str[@name='id'][1],'/',mcr:encodeURIPath($derivates/str[@name='maindoc'][1]),$HttpSession)" />
-              <img class="hit_icon" alt="{$mods-type}" title="thumbnail">
+              <img class="hit_icon" alt="{$mods-type-i18n}" title="thumbnail">
                 <xsl:attribute name="src">
                   <xsl:value-of select="concat($WebApplicationBaseURL,'img/pdfthumb/',$filePath,'?centerThumb=no')"/>
                 </xsl:attribute>
               </img>
             </xsl:when>
             <xsl:otherwise>
-              <img class="hit_icon" src="{$WebApplicationBaseURL}images/icons/{$CurrentLang}/icon_{$mods-type}.png" alt="{$mods-type}" />
+              <img class="hit_icon" src="{$WebApplicationBaseURL}images/icons/{$CurrentLang}/icon_{$mods-type}.png" alt="{$mods-type-i18n}" />
             </xsl:otherwise>
           </xsl:choose>
         </div>
@@ -247,7 +273,7 @@
           </xsl:if>
 
           <div class="hit_type">
-            <xsl:value-of select="./str[@name='mods.type']" />
+            <xsl:value-of select="$mods-type-i18n" />
           </div>
 
           <xsl:if test="./str[@name='parent']">
@@ -435,6 +461,23 @@
         <xsl:value-of select="concat($WebApplicationBaseURL,$form,$HttpSession,'?id=',$id)" />
       </xsl:otherwise>
     </xsl:choose>
+  </xsl:template>
+
+  <xsl:template match="/response/lst[@name='facet_counts']/lst[@name='facet_fields']">
+    <xsl:param name="facet_name" />
+    <xsl:for-each select="lst[@name=$facet_name]/int">
+      <xsl:variable name="queryURL" select="concat($WebApplicationBaseURL,'servlets/solr/find?qry=', $query, ' +mods.type:%22', @name, '%22')" /> <!-- ,'&amp;', $params -->
+      <li>
+        <div class="checkbox">
+          <label>
+            <!-- TODO: use ajax and add filter remove options -->
+            <input type="checkbox" onclick="location.href='{$queryURL}';" /><!-- {$queryURL} -->
+          </label>
+            <span class="title"><xsl:value-of select="i18n:translate(concat('mir.genre.',@name))" /></span>
+            <span class="hits"><xsl:value-of select="." /></span>
+        </div>
+      </li>
+    </xsl:for-each>
   </xsl:template>
 
 </xsl:stylesheet>
