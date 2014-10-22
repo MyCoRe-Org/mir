@@ -276,6 +276,7 @@
           data-search="searchPerson"
           data-search-type="select"
           data-search-output="#valueURIxEditor"
+          data-search-button="{i18n:button.search}"
           data-search-button-loading="{i18n:button.loading}"
           data-search-result-empty="{i18n:mir.searchPerson.noResult}"
           data-target=".search-person"

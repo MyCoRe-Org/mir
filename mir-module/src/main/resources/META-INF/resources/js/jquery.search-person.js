@@ -18,6 +18,7 @@
  * 		- searchOutput			: the output field for person id (URI), 
  * 								  if nothing specified the input field is used
  * 
+ * 		- searchButton			: the search button text
  * 		- searchResultEmpty		: the label if search result was empty
  * 		- searchButtonLoading	: the button text on search
  * </pre>
@@ -61,6 +62,7 @@
 		// TEXT DEFINITIONS
 		// ===============================
 		// default button loading text
+		searchButton : "Search",
 		searchButtonLoading : "Loading...",
 		searchResultEmpty : "<center><b>Nothing found</b></center>"
 	};
@@ -92,7 +94,7 @@
 		var $searchBtn = this.$searchBtn = $(document.createElement("button"));
 		$searchBtn.addClass(options.buttonClass);
 		$searchBtn.attr("data-loading-text", options.searchButtonLoading);
-		$searchBtn.html("Suchen");
+		$searchBtn.html(options.searchButton);
 
 		$searchBtn.on("click", function(e) {
 			e.preventDefault();
