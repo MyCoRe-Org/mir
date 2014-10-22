@@ -8,90 +8,240 @@
  * Usage:
  * 
  * 	Parameters:
- * 		- toggle 			: always &quot;searchPerson&quot;
- * 		- target 			: the parent container to show result
- * 
- * 		- parentClass 		: the CSS class to set on parent container
- * 		- resultClass 		: the CSS class to set on result container
- * 		- resultShownClass	: the CSS class to show the result container
- * 	
+ * 		- target 				: the target container
+ * 		- search 				: always &quot;searchPerson&quot;
+ *  	
  * 		- searchType
- * 			- GND 			: search through http://lobid.org
- * 			- VIAF			: search through http://www.viaf.org
- * 		- searchInput 		: the input field with search term
- * 		- searchOutput		: the output field for person id, 
- * 								if nothing specified the input field is used
+ * 			- SELECT			: add searchType selection menu
+ * 			- GND 				: search through http://lobid.org
+ * 			- VIAF				: search through http://www.viaf.org
+ * 		- searchOutput			: the output field for person id (URI), 
+ * 								  if nothing specified the input field is used
  * 
- * 		- resultEmptyText	: the label if search result was empty
- * 		- loadingText		: the button text on search
+ * 		- searchResultEmpty		: the label if search result was empty
+ * 		- searchButtonLoading	: the button text on search
  * </pre>
  * 
- * All parameters can be use through jQuery <code>data-</code> tag.
+ * All parameters can be also set with jQuery <code>data-</code> attributes.
  */
 +function($) {
 	'use strict';
 
-	var toggle = '[data-toggle="searchPerson"]'
+	var toggle = '[data-search="searchPerson"]'
 
-	var SearchPerson = function(element) {
-		$(element).on('click.mcr.searchperson', this.search)
+	var SearchPerson = function(element, options) {
+		this.options = $.extend({}, SearchPerson.DEFAULTS, options);
+
+		this.$parent = null;
+		this.$element = $(element);
+		this.$inputGroup = null;
+		this.$searchBtn = null;
+		this.$typeBtn = null;
+		this.$typeMenu = null;
+
+		this.selectedType = SearchPerson.DEFAULTS.searchType;
+
+		this.init();
 	};
 
-	SearchPerson.VERSION = '0.1.0';
+	SearchPerson.VERSION = '1.0.0';
+
+	SearchPerson.TYPES = [ "GND", "VIAF" ];
 
 	SearchPerson.DEFAULTS = {
-		parentClass : "dropdown",
-		resultClass : "dropdown-menu",
-		resultShownClass : "open",
+		// Button Style
+		buttonClass : "btn btn-default",
 
+		// min length of search term
+		inputMinLength : 3,
+
+		// default search type
 		searchType : "GND",
 
-		resultEmptyText : "<center><b>Nothing found</b></center>",
-		loadingText : "Loading..."
+		// TEXT DEFINITIONS
+		// ===============================
+		// default button loading text
+		searchButtonLoading : "Loading...",
+		searchResultEmpty : "<center><b>Nothing found</b></center>"
 	};
 
+	SearchPerson.prototype.init = function() {
+		if (typeof $.fn.dropdown !== "function" && typeof $.fn.button !== "function") {
+			console.error("Couldn't initalize SearchPerson because of missing Bootstrap \"dropdown\" and \"button\" plugin!");
+			return;
+		}
+
+		var that = this;
+		var options = this.options;
+
+		var $parent = this.$parent = $(document.createElement("div"));
+
+		var $inputGroup = this.$inputGroup = $(document.createElement("div"));
+		$inputGroup.addClass("input-group");
+
+		var $element = this.$element.clone();
+		$inputGroup.append($element);
+
+		this.$element.before($parent);
+		this.$element.remove();
+		this.$element = $element;
+
+		var $actions = $(document.createElement("div"));
+		$actions.addClass("input-group-btn");
+
+		var $searchBtn = this.$searchBtn = $(document.createElement("button"));
+		$searchBtn.addClass(options.buttonClass);
+		$searchBtn.attr("data-loading-text", options.searchButtonLoading);
+		$searchBtn.html("Suchen");
+
+		$searchBtn.on("click", function(e) {
+			e.preventDefault();
+			that.search(e);
+		});
+
+		$actions.append($searchBtn);
+
+		if (options.searchType.toUpperCase() == "SELECT") {
+			var $typeBtn = this.$typeBtn = $(document.createElement("button"));
+			$typeBtn.addClass(options.buttonClass).addClass("dropdown-toggle");
+			$typeBtn.attr("data-toggle", "dropdown");
+			$typeBtn.html("<span class=\"caret\"></span><span class=\"sr-only\">Toggle Dropdown</span>");
+
+			$actions.append($typeBtn);
+
+			var $typeMenu = this.$typeMenu = $(document.createElement("ul"));
+			$typeMenu.addClass("dropdown-menu dropdown-menu-right");
+			$typeMenu.attr("role", "menu");
+
+			for ( var index in SearchPerson.TYPES) {
+				var $entry = $(document.createElement("li"));
+				var $ea = $(document.createElement("a"));
+				$ea.attr("href", "#");
+				$ea.data("search-type", SearchPerson.TYPES[index]);
+				$ea.text(SearchPerson.TYPES[index]);
+
+				$ea.on("click", function(e) {
+					that.selectedType = $(this).data("search-type");
+				});
+
+				$entry.append($ea);
+				$typeMenu.append($entry);
+			}
+
+			$actions.append($typeMenu);
+			$typeBtn.dropdown();
+		}
+
+		$inputGroup.append($actions);
+		$parent.append($inputGroup);
+	}
+
 	SearchPerson.prototype.search = function(e) {
-		var $this = $(this)
-		var options = $.extend({}, SearchPerson.DEFAULTS, $this.data());
-		$this.data(options);
+		var that = this;
+		var $parent = this.$parent;
+		var options = this.options;
 
-		var $parent = getParent($this);
-		var isActive = $parent.hasClass(options.resultShownClass);
+		var isActive = $parent.hasClass("open");
 
-		clearResults();
+		this.clearAll();
 
 		if (!isActive) {
-			!$parent.hasClass(options.parentClass) && $parent.addClass(options.parentClass);
+			!$parent.hasClass("dropdown") && $parent.addClass("dropdown");
 
-			var input = $(options.searchInput).val();
-			var isBtn = $this.is("input[type=image]") || $this.is("input[type=button]") || $this.is("input[type=submit]") || $this.is("button")
-					|| $this.is("a");
+			var input = this.$element.val();
 
-			isBtn && $this.button("loading");
-			if (options.searchType.toUpperCase() === "GND") {
-				searchGND(input, function(data) {
+			if (input.length < options.inputMinLength)
+				return;
+
+			this.$searchBtn.button("loading");
+			if (this.selectedType.toUpperCase() === "GND") {
+				SearchPerson.searchGND(input, function(data) {
 					if (data !== undefined) {
-						showResult($parent, options, data);
+						that.showResult(data);
 					}
-					isBtn && $this.button("reset");
+					that.$searchBtn.button("reset");
 				});
-			} else if (options.searchType.toUpperCase() === "VIAF") {
-				searchVIAF(input, function(data) {
+			} else if (this.selectedType.toUpperCase() === "VIAF") {
+				SearchPerson.searchVIAF(input, function(data) {
 					if (data !== undefined) {
-						showResult($parent, options, data);
+						that.showResult(data);
 					}
-					isBtn && $this.button("reset");
+					that.$searchBtn.button("reset");
 				});
 			} else {
-				console.error("Search type \"" + options.searchType.toUpperCase() + "\" is unsupported!");
-				isBtn && $this.button("reset");
+				console.error("Search type \"" + this.selectedType.toUpperCase() + "\" is unsupported!");
+				this.$searchBtn.button("reset");
 			}
 		}
 
 		return false;
 	}
 
-	function searchGND(input, callback) {
+	SearchPerson.prototype.showResult = function(data) {
+		var that = this;
+		var $parent = this.$parent;
+		var options = this.options;
+
+		var $output = $(options.searchOutput, getParent(this.$element))[0] !== undefined ? $(options.searchOutput, getParent(this.$element)) : this.$element;
+
+		var $resultBox = $(document.createElement("ul"));
+		$resultBox.attr("role", "menu");
+		$resultBox.addClass("dropdown-menu");
+
+		if (data.length > 0) {
+			$(data).each(function(index, item) {
+				var $li = $(document.createElement("li"));
+
+				var $person = $(document.createElement("a"));
+				$person.attr("href", "#");
+				$person.html(item.label);
+				$person.on("click", function(e) {
+					$output.val(item.value);
+					that.clearAll();
+				});
+
+				$li.append($person);
+
+				$resultBox.append($li);
+			});
+		} else {
+			var $li = $(document.createElement("li"));
+			$li.html(options.searchResultEmpty);
+			$resultBox.append($li);
+		}
+
+		$parent.append($resultBox);
+		$resultBox.dropdown("toggle");
+
+		this.$element.data($.extend({}, {
+			searchResultContainer : $resultBox
+		}, options));
+	}
+
+	SearchPerson.prototype.clearAll = function(e) {
+		if (e && e.which === 3)
+			return;
+
+		$(toggle).each(function() {
+			var $this = $(this);
+			var options = typeof this.options == 'object' ? this.options : $.extend({}, SearchPerson.DEFAULTS, $this.data());
+
+			var $parent = this.$parent === undefined ? getParent($this) : this.$parent;
+
+			$("." + "dropdown-toggle", $parent).each(function(e) {
+				$(this).dropdown();
+			});
+
+			var $searchResultContainer = $(options.searchResultContainer);
+			if ($searchResultContainer[0] !== undefined) {
+				$searchResultContainer.parent().removeClass("open");
+				$searchResultContainer.remove();
+				$this.removeData("searchResultContainer");
+			}
+		});
+	}
+
+	SearchPerson.searchGND = function(input, callback) {
 		$.ajax({
 			url : "http://lobid.org/person",
 			timeout : 5000,
@@ -101,7 +251,7 @@
 				format : "ids"
 			},
 			success : function(data) {
-				callback(data);
+				callback(SearchPerson.sortData(input, data));
 			},
 			error : function() {
 				callback();
@@ -109,7 +259,7 @@
 		});
 	}
 
-	function searchVIAF(input, callback) {
+	SearchPerson.searchVIAF = function(input, callback) {
 		$.ajax({
 			url : "http://www.viaf.org/viaf/AutoSuggest",
 			timeout : 5000,
@@ -124,13 +274,13 @@
 						if (item.nametype.toLowerCase() === "personal") {
 							var person = {
 								label : item.term,
-								value : "http://www.viaf.org/viaf/" + item.viafid + "/"
+								value : "http://www.viaf.org/viaf/" + item.viafid
 							};
 							result.push(person);
 						}
 					});
 
-					callback(result);
+					callback(SearchPerson.sortData(input, result));
 				} else {
 					callback();
 				}
@@ -141,59 +291,53 @@
 		});
 	}
 
-	function showResult($parent, options, data) {
-		var output = $(options.searchOutput)[0] !== undefined ? $(options.searchOutput) : $(options.searchInput);
+	SearchPerson.sortData = function(input, data) {
+		// TheSpanishInquisition - http://jsperf.com/levenshtein-distance/5
+		// Functional implementation of Levenshtein Distance.
+		function levenshteinDistance(strA, strB, limit) {
+			var strALength = strA.length, strBLength = strB.length;
 
-		var resultBox = $(document.createElement("ul"));
-		resultBox.addClass(options.resultClass);
+			if (Math.abs(strALength - strBLength) > (limit || 32))
+				return limit || 32;
+			if (strALength === 0)
+				return strBLength;
+			if (strBLength === 0)
+				return strALength;
 
-		if (data.length > 0) {
-			$(data).each(function(index, item) {
-				var li = $(document.createElement("li"));
+			var matrix = [];
+			for (var i = 0; i < 64; i++) {
+				matrix[i] = [ i ];
+				matrix[i].length = 64;
+			}
+			for (var i = 0; i < 64; i++) {
+				matrix[0][i] = i;
+			}
 
-				var person = $(document.createElement("a"));
-				person.attr("href", "#");
-				person.html(item.label);
-				person.on("click", function(e) {
-					e.preventDefault();
-					output.val(item.value);
-					clearResults();
-				});
+			var strA_i, strB_j, cost, min, t;
+			for (var i = 1; i <= strALength; ++i) {
+				strA_i = strA[i - 1];
 
-				li.append(person);
+				for (var j = 1; j <= strBLength; ++j) {
+					if (i === j && matrix[i][j] > 4)
+						return strALength;
 
-				resultBox.append(li);
-			});
-		} else {
-			var li = $(document.createElement("li"));
-			li.html(options.resultEmptyText);
-			resultBox.append(li);
-		}
+					strB_j = strB[j - 1];
+					cost = (strA_i === strB_j) ? 0 : 1;
+					min = matrix[i - 1][j] + 1;
+					if ((t = matrix[i][j - 1] + 1) < min)
+						min = t;
+					if ((t = matrix[i - 1][j - 1] + cost) < min)
+						min = t;
 
-		$parent.append(resultBox);
-		$parent.addClass(options.resultShownClass);
-
-		$parent.data($.extend({}, {
-			searchResultContainer : resultBox
-		}, options));
-	}
-
-	function clearResults(e) {
-		if (e && e.which === 3)
-			return;
-
-		$(toggle).each(function() {
-			var $parent = getParent($(this))
-			var options = $parent.data();
-
-			if (options !== undefined) {
-				var searchResultContainer = $(options.searchResultContainer);
-				if (searchResultContainer[0] !== undefined) {
-					$parent.removeClass(options.resultShownClass);
-					$parent.removeClass(options.parentClass);
-					$(options.searchResultContainer).remove();
+					matrix[i][j] = min;
 				}
 			}
+
+			return matrix[strALength][strBLength];
+		}
+
+		return data.sort(function(a, b) {
+			return levenshteinDistance(input, a.label) - levenshteinDistance(input, b.label);
 		});
 	}
 
@@ -207,7 +351,7 @@
 
 		var $parent = selector && $(selector)
 
-		return $parent && $parent.length ? $parent : $this.parent()
+		return $parent && $parent.length ? ($parent.length > 1) ? ($parent = $parent.has($this)) : $parent : $this.parent()
 	}
 
 	// SEARCH PERSON PLUGIN DEFINITION
@@ -217,11 +361,12 @@
 		return this.each(function() {
 			var $this = $(this);
 			var data = $this.data('mcr.searchperson');
+			var options = typeof option == 'object' && option
 
 			if (!data)
-				$this.data('mcr.searchperson', (data = new SearchPerson(this)));
+				$this.data('mcr.searchperson', (data = new SearchPerson(this, option)));
 			if (typeof option == 'string')
-				data[option].call($this)
+				data[option]();
 		});
 	}
 
@@ -238,5 +383,14 @@
 		return this;
 	};
 
-	$(document).on('click.mcr.searchperson.data-api', clearResults).on('click.mcr.searchperson.data-api', toggle, SearchPerson.prototype.search);
+	$(window).on('load', function() {
+		$(toggle).each(function() {
+			var $this = $(this)
+			var data = $this.data()
+
+			Plugin.call($this, data);
+		});
+	});
+
+	$(document).on('click.mcr.searchperson.data-api', SearchPerson.prototype.clearAll);
 }(jQuery);

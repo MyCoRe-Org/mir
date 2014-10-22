@@ -270,23 +270,21 @@
   </xed:template>
 
   <xed:template id="person.fields">
-    <div class="form-inline">
+    <div class="search-person">
       <xed:bind xpath="mods:displayForm">
-        <input type="text" size="26" class="form-control form-control-inline search-person" />
+        <input type="text" size="26" class="form-control form-control-inline"
+          data-search="searchPerson"
+          data-search-type="select"
+          data-search-output="#valueURIxEditor"
+          data-search-button-loading="{i18n:button.loading}"
+          data-search-result-empty="{i18n:mir.searchPerson.noResult}"
+          data-target=".search-person"
+        />
       </xed:bind>
-      <label class="control-label" style="padding-left:1ex; padding-right:1ex;">GND:</label>
-      <xed:bind xpath="@authorityURI" initially="'http://d-nb.info/gnd/'" />
       <xed:bind xpath="@valueURIxEditor">
-        <input type="text" size="26" class="form-control form-control-inline" />
+        <input type="hidden" id="valueURIxEditor" />
       </xed:bind>
     </div>
-    <xed:if test="string-length(@valueURIxEditor) &gt; 0">
-      <p class="form-control-static">
-        <a target="_blank" href="http://d-nb.info/gnd/{@valueURIxEditor}">
-          <xed:output value="concat('GND ',@valueURIxEditor)" />
-        </a>
-      </p>
-    </xed:if>
     <!-- ========== LSF subselect ==========
     <button type="submit" class="btn btn-default" xed:target="subselect" xed:href="../lsfSearch.html?lastName={mods:namePart[@type='family']}">
       <xed:output i18n="button.selectPerson" />
@@ -656,6 +654,7 @@
       jQuery("textarea[placeholder]").placeholder();
     </script>
     <script type="text/javascript" src="{$WebApplicationBaseURL}js/jquery.search-person.js"></script>
+
     <div class="form-group">
       <div class="col-md-offset-3 col-md-6">
         <button type="submit" class="btn btn-default" xed:target="debug">Debug</button>

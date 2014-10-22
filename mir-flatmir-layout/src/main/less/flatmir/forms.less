@@ -1,39 +1,31 @@
 //
 // Forms
 // --------------------------------------------------
-
-.form-control-focus(@color: @brand-warning) {
+.form-control-focus (@color: @brand-warning) {
   .navbar-default &:focus {
     border-color: @color;
   }
 }
 
-//
-// Buttons
-// --------------------------------------------------
-
-.btn {
-    margin-right: 5px;
+*:not(.input-group-btn) > .btn {
+  margin-right: 5px;
 }
 
 .navbar-left > .btn {
-    padding: 5px 10px;
-    margin-left: 5px;
-    margin-top: 5px;
+  padding: 5px 10px;
+  margin-left: 5px;
+  margin-top: 5px;
 }
 
-//
-// Confirmation
-// --------------------------------------------------
-
 .modal-content {
-    top: 50px;
+  top: 50px;
 }
 
 //
 // Checkboxes
 // --------------------------------------------------
 .checkbox input[type="checkbox"] {
-    position: relative;
-    margin-bottom: 6px;
+  position: relative;
+  margin-bottom: 6px;
 }
+
