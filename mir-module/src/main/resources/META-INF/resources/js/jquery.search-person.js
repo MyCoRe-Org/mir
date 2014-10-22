@@ -339,7 +339,8 @@
 		}
 
 		return data.sort(function(a, b) {
-			return levenshteinDistance(input, a.label) - levenshteinDistance(input, b.label);
+			return levenshteinDistance(input, a.label.replace(/\s[\(]?[0-9-]+[\)]?/g, ""))
+					- levenshteinDistance(input, b.label.replace(/\s[\(]?[0-9-]+[\)]?/g, ""));
 		});
 	}
 
