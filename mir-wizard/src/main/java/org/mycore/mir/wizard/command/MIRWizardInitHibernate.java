@@ -23,6 +23,7 @@
 package org.mycore.mir.wizard.command;
 
 import java.io.File;
+import java.nio.charset.Charset;
 import java.util.Scanner;
 
 import org.hibernate.tool.hbm2ddl.SchemaUpdate;
@@ -47,7 +48,7 @@ public class MIRWizardInitHibernate extends MIRWizardCommand {
             su.setOutputFile(temp.getAbsolutePath());
             su.execute(true, true);
 
-            Scanner scanner = new Scanner(temp);
+            Scanner scanner = new Scanner(temp, Charset.defaultCharset().name());
             this.result.setResult(scanner.useDelimiter("\\Z").next());
 
             scanner.close();
