@@ -147,10 +147,12 @@
 		});
 
 		$actions.append($searchBtn);
+		$inputGroup.append($actions);
+		$parent.append($inputGroup);
 
 		if (options.searchType.toUpperCase() == "SELECT") {
 			// preselect searchType by given output value
-			var outputVal = $(options.searchOutput).val();
+			var outputVal = $(options.searchOutput, getParent($element))[0] !== undefined ? $(options.searchOutput, getParent($element)).val() : "";
 			if (outputVal.length > 0) {
 				this.selectedType = getTypeFromURL(outputVal);
 			}
@@ -188,9 +190,6 @@
 			$actions.append($typeMenu);
 			$typeBtn.dropdown();
 		}
-
-		$inputGroup.append($actions);
-		$parent.append($inputGroup);
 
 		this.updateOutput();
 	}
