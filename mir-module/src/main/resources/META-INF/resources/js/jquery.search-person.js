@@ -92,8 +92,10 @@
 	SearchPerson.DEFAULTS = {
 		// Button Style
 		buttonClass : "btn btn-default",
-		// Label Style (optical feedback for current selection)
-		labelClass : "label label-primary",
+		// Remove Style (optical feedback for current selection)
+		removerClass : "label btn-primary",
+		// Remover Icon Style
+		removerIconClass : "btn-primary glyphicon glyphicon-remove-circle",
 
 		// min length of search term
 		inputMinLength : 3,
@@ -288,11 +290,12 @@
 	}
 
 	SearchPerson.prototype.updateOutput = function(item) {
+		var that = this;
 		var options = this.options;
 		var $output = $(options.searchOutput, getParent(this.$element))[0] !== undefined ? $(options.searchOutput, getParent(this.$element)) : this.$element;
 
 		if (item) {
-			this.$element != $output && this.$element.val(item.label.replace(SearchPerson.LABEL_CLEANUP, ""));
+			this.$element != $output && item.label && this.$element.val(item.label.replace(SearchPerson.LABEL_CLEANUP, ""));
 			$output.val(item.value);
 		}
 
@@ -300,10 +303,28 @@
 			var $feedback = $(document.createElement("a"));
 			$feedback.attr("href", $output.val());
 			$feedback.attr("target", "_blank");
+			$feedback.css({
+				color : "#fff",
+				textDecoration : "none"
+			});
 
 			var $label = $(document.createElement("span"));
-			$label.addClass(options.labelClass);
-			$label.text(getTypeFromURL($output.val()));
+			$label.addClass(options.removerClass);
+			$label.html(getTypeFromURL($output.val()));
+
+			var $remover = $(document.createElement("a"));
+			$remover.css({
+				marginLeft : 5,
+			});
+			$remover.attr("href", "#");
+			$remover.html("<i class=\"" + options.removerIconClass + "\"></i>");
+			$remover.on("click", function(e) {
+				e.preventDefault();
+				that.updateOutput({
+					value : ""
+				})
+			});
+			$label.append($remover);
 
 			$feedback.append($label);
 
@@ -319,6 +340,9 @@
 				marginTop : Math.floor((this.$element.innerHeight() - $feedback.height()) / 2),
 				zIndex : 100
 			});
+		} else {
+			if (this.$feedback)
+				this.$feedback.remove();
 		}
 	}
 
