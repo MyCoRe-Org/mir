@@ -90,12 +90,12 @@
 	};
 
 	SearchPerson.DEFAULTS = {
-		// Button Style
+		// Button style
 		buttonClass : "btn btn-default",
-		// Remove Style (optical feedback for current selection)
-		removerClass : "label btn-primary",
-		// Remover Icon Style
-		removerIconClass : "btn-primary glyphicon glyphicon-remove-circle",
+		// Feedback style (optical feedback for current selection)
+		feedbackClass : "feedback label btn-primary",
+		// Feedback cleaner icon style
+		feedbackCleanIconClass : "feedback-clean btn-primary glyphicon glyphicon-remove-circle",
 
 		// min length of search term
 		inputMinLength : 3,
@@ -304,12 +304,11 @@
 			$feedback.attr("href", $output.val());
 			$feedback.attr("target", "_blank");
 			$feedback.css({
-				color : "#fff",
 				textDecoration : "none"
 			});
 
 			var $label = $(document.createElement("span"));
-			$label.addClass(options.removerClass);
+			$label.addClass(options.feedbackClass);
 			$label.html(getTypeFromURL($output.val()));
 
 			var $remover = $(document.createElement("a"));
@@ -317,7 +316,7 @@
 				marginLeft : 5,
 			});
 			$remover.attr("href", "#");
-			$remover.html("<i class=\"" + options.removerIconClass + "\"></i>");
+			$remover.html("<i class=\"" + options.feedbackCleanIconClass + "\"></i>");
 			$remover.on("click", function(e) {
 				e.preventDefault();
 				that.updateOutput({
