@@ -43,7 +43,7 @@
               </legend>
               <xed:include uri="webapp:editor/editor-hosts.xed" ref="{$host}" />
               <xed:bind xpath="mods:relatedItem[(@type='host') or (@type='series')][1]">
-                <xed:bind xpath="mods:genre" initially="{$host}" />
+                <xed:bind xpath="mods:genre[@type='intern'][@authorityURI='http://www.mycore.org/classifications/mir_genres']/@valueURIxEditor" initially="{$host}" />
               </xed:bind>
             </fieldset>
           </xed:if>
