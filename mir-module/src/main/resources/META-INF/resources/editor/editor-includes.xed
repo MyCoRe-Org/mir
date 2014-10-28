@@ -13,6 +13,7 @@
   </xed:template>
 
   <xed:template id="mycore.common">
+    <xed:bind xpath="@ID" initially="mir_mods_00000000" />
     <xed:bind xpath="structure" />
   </xed:template>
 
