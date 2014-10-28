@@ -15,18 +15,18 @@
   <form class="form-inline" role="form" method="get" action="../../editor/editor-dynamic.xed">
     <div class="form-group">
       <label for="genre">
-        <text i18n="mir.genre" />
+        <text i18n="component.mods.genre" />
       </label>
       <select id="genre" class="form-control" name="genre" size="1">
         <option value="article">
-          <text i18n="mir.genre.article" />
+          <text i18n="component.mods.genre.article" />
         </option>
         <option value="book">
-          <text i18n="mir.genre.book" />
+          <text i18n="component.mods.genre.book" />
         </option>
         <option value="dissertation">Dissertation</option>
         <option value="collection">
-          <text i18n="mir.genre.collection" />
+          <text i18n="component.mods.genre.collection" />
           <text i18n="mir.select.editor" />
         </option>
         <option value="festschrift">
@@ -34,46 +34,46 @@
           <text i18n="mir.select.editor" />
         </option>
         <option value="proceedings">
-          <text i18n="mir.genre.proceedings" />
+          <text i18n="component.mods.genre.proceedings" />
           <text i18n="mir.select.editor" />
         </option>
         <option value="lexicon">
-          <text i18n="mir.genre.lexicon" />
+          <text i18n="component.mods.genre.lexicon" />
           <text i18n="mir.select.editor" />
         </option>
         <option value="journal">
-          <text i18n="mir.genre.journal" />
+          <text i18n="component.mods.genre.journal" />
           <text i18n="mir.select.editor" />
         </option>
         <option value="newspaper">
-          <text i18n="mir.genre.newspaper" />
+          <text i18n="component.mods.genre.newspaper" />
           <text i18n="mir.select.editor" />
         </option>
         <option value="series">
-          <text i18n="mir.genre.series" />
+          <text i18n="component.mods.genre.series" />
           <text i18n="mir.select.editor" />
         </option>
         <option value="entry">
-          <text i18n="mir.genre.entry" />
+          <text i18n="component.mods.genre.entry" />
         </option>
         <option value="preface">
-          <text i18n="mir.genre.preface" />
+          <text i18n="component.mods.genre.preface" />
         </option>
         <option value="interview">Interview</option>
         <option value="speech">
-          <text i18n="mir.genre.speech" />
+          <text i18n="component.mods.genre.speech" />
         </option>
         <option value="patent">
-          <text i18n="mir.genre.patent" />
+          <text i18n="component.mods.genre.patent" />
         </option>
         <option value="poster">
-          <text i18n="mir.genre.poster" />
+          <text i18n="component.mods.genre.poster" />
         </option>
         <option value="audio">
-          <text i18n="mir.genre.audio" />
+          <text i18n="component.mods.genre.audio" />
         </option>
         <option value="video">
-          <text i18n="mir.genre.video" />
+          <text i18n="component.mods.genre.video" />
         </option>
       </select>
     </div>

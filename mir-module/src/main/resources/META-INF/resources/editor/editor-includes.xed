@@ -19,7 +19,7 @@
   <xed:template id="genre">
     <div class="form-group">
       <label class="col-md-3 control-label">
-        <xed:output i18n="mir.genre" />
+        <xed:output i18n="component.mods.genre" />
       </label>
       <xed:repeat xpath="mods:genre[@type='intern'][@authorityURI='http://www.mycore.org/classifications/mir_genres']/@valueURIxEditor" min="1" max="10">
         <div class="col-md-6">
@@ -39,7 +39,7 @@
       <label class="col-md-3 control-label">
         Status:
       </label>
-      <xed:bind xpath="mods:classification[@displayLabel='status']/@valueURIxEditor" initially="submitted">
+      <xed:bind xpath="mods:classification[@displayLabel='status'][@authorityURI='http://www.mycore.org/classifications/mir_status']/@valueURIxEditor" initially="submitted">
         <div class="col-md-6">
           <div class="controls">
             <select class="form-control form-control-inline">

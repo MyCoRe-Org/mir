@@ -60,13 +60,13 @@
               <div class="input-group-btn">
                 <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" value="Alles" id="search_type_button"><span id="search_type_label">Alles</span> <span class="caret"></span></button>
                 <ul class="dropdown-menu search_type">
-                  <li><a href="#">Alles</a></li>
-                  <li><a href="#">Titel</a></li>
-                  <li><a href="#">Autor</a></li>
-                  <li><a href="#">Name</a></li>
-                  <li><a href="#">GND</a></li>
-                  <li><a href="#">Alle Metadaten</a></li>
-                  <li><a href="#">Volltext</a></li>
+                  <li><a href="#" data-value="all">Alles</a></li>
+                  <li><a href="#" data-value="title">Titel</a></li>
+                  <li><a href="#" data-value="author">Autor</a></li>
+                  <li><a href="#" data-value="name">Name</a></li>
+                  <li><a href="#" data-value="gnd">GND</a></li>
+                  <li><a href="#" data-value="allMeta">Alle Metadaten</a></li>
+                  <li><a href="#" data-value="fullText">Volltext</a></li>
                 </ul>
               </div>
               <input class="form-control" name="qry" placeholder="ein oder mehrere Schlagworte" type="text" />
@@ -125,7 +125,7 @@
         </xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
-    <xsl:variable name="mods-type-i18n" select="i18n:translate(concat('mir.genre.',$mods-type))" />
+    <xsl:variable name="mods-type-i18n" select="i18n:translate(concat('component.mods.genre.',$mods-type))" />
     <xsl:variable name="hitCount" select="count(preceding-sibling::doc)+1" />
     <xsl:variable name="hitItemClass">
       <xsl:choose>
@@ -472,7 +472,7 @@
             <!-- TODO: use ajax and add filter remove options -->
             <input type="checkbox" onclick="location.href='{$queryURL}';" /><!-- {$queryURL} -->
           </label>
-            <span class="title"><xsl:value-of select="i18n:translate(concat('mir.genre.',@name))" /></span>
+            <span class="title"><xsl:value-of select="i18n:translate(concat('component.mods.genre.',@name))" /></span>
             <span class="hits"><xsl:value-of select="." /></span>
         </div>
       </li>
