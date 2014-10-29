@@ -6,7 +6,7 @@
   <section xml:lang="all">
 
 <div class="container">
-  <xed:form xmlns:xed="http://www.mycore.de/xeditor" role="form" class="form-horizontal">
+  <xed:form xmlns:xed="http://www.mycore.de/xeditor" method="post" role="form" class="form-horizontal">
     <xed:include uri="webapp:editor/editor-includes.xed" ref="in.out" />
     <xed:bind xpath="/mycoreobject">
       <xed:include uri="webapp:editor/editor-includes.xed" ref="mycore.common" />
