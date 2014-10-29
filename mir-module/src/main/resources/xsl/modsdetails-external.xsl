@@ -518,19 +518,19 @@
                 <xsl:choose>
                   <xsl:when test="$mods-type = 'series'">
                     <li>
-                      <a href="{$ServletsBaseURL}object/create{$HttpSession}?type=mods&amp;layout=book&amp;parentId={./@ID}">
+                      <a href="{$WebApplicationBaseURL}/editor/editor-dynamic.xed{$HttpSession}?genre=book&amp;parentId={./@ID}">
                         <xsl:value-of select="i18n:translate('component.mods.metaData.types.book')" />
                       </a>
                     </li>
                     <li>
-                      <a href="{$ServletsBaseURL}object/create{$HttpSession}?type=mods&amp;layout=confpro&amp;parentId={./@ID}">
+                      <a href="{$WebApplicationBaseURL}/editor/editor-dynamic.xed{$HttpSession}?genre=confpro&amp;parentId={./@ID}">
                         <xsl:value-of select="i18n:translate('component.mods.metaData.types.confpro')" />
                       </a>
                     </li>
                   </xsl:when>
                   <xsl:otherwise>
                     <li>
-                      <a href="{$ServletsBaseURL}object/create{$HttpSession}?type=mods&amp;layout={$child-layout}&amp;parentId={./@ID}">
+                      <a href="{$WebApplicationBaseURL}/editor/editor-dynamic.xed{$HttpSession}?genre={$child-layout}&amp;parentId={./@ID}">
                         <xsl:value-of select="i18n:translate(concat('component.mods.metaData.types.',$child-layout))" />
                       </a>
                     </li>
