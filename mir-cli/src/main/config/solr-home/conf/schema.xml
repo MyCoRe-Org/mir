@@ -122,6 +122,7 @@
     <field name="modified" type="date" />
     <field name="createdby" type="string" />
     <field name="modifiedby" type="string" />
+    <field name="state" type="string" />
 
 
     <!-- parent handling -->
