@@ -63,7 +63,7 @@
             (int, float, boolean, string...)
      -->
 
- <fields>
+
    <!-- Valid attributes for fields:
      name: mandatory - the name for the field
      type: mandatory - the name of a field type from the
@@ -106,10 +106,24 @@
       trailing underscores (e.g. _version_) are reserved.
    -->
 
-   <field name="_version_" type="long"/>
-   <field name="_root_" type="string"/>
-    <!-- kind of mcrobjectid, mcrderivateid, fileid -->
-    <field name="id" type="string" required="true" />
+   <!-- If you remove this field, you must _also_ disable the update log in solrconfig.xml
+      or Solr won't start. _version_ and update log are required for SolrCloud
+   --> 
+   <field name="_version_" type="long" indexed="true" stored="true"/>
+
+   <!-- points to the root document of a block of nested documents. Required for nested
+      document support, may be removed otherwise
+   -->
+   <field name="_root_" type="string" indexed="true" stored="false"/>
+
+   <!-- Only remove the "id" field if you have a very good reason to. While not strictly
+     required, it is highly recommended. A <uniqueKey> is present in almost all Solr 
+     installations. See the <uniqueKey> declaration below where <uniqueKey> is set to "id".
+   -->
+   <!-- kind of mcrobjectid, mcrderivateid, fileid -->
+   <field name="id" type="string" indexed="true" stored="true" required="true" multiValued="false" /> 
+
+    <!-- Start: MyCoRe specific schema definition -->
     <field name="objectType" type="string" />
     <field name="objectProject" type="string" />
     <field name="returnId" type="string" />
@@ -123,7 +137,6 @@
     <field name="createdby" type="string" />
     <field name="modifiedby" type="string" />
     <field name="state" type="string" />
-
 
     <!-- parent handling -->
     <field name="parent" type="string" />
@@ -196,11 +209,11 @@
     <!-- identifier (gnd, pnd, etc.) -->
     <dynamicField name="id.*" type="string" />
 
-    <!-- mir-module -->
+    <!-- End: MyCoRe specific schema definition -->
+
+    <!-- MIR specific schema -->
     <field name="mir_status" type="string" />
     <field name="isbn" type="string" multiValued="true" />
-
- </fields>
 
 
  <!-- Field to use to determine and enforce document uniqueness.
@@ -208,7 +221,22 @@
    -->
  <uniqueKey>id</uniqueKey>
 
-  <types>
+ <!-- DEPRECATED: The defaultSearchField is consulted by various query parsers when
+  parsing a query string that isn't explicit about the field.  Machine (non-user)
+  generated queries are best made explicit, or they can use the "df" request parameter
+  which takes precedence over this.
+  Note: Un-commenting defaultSearchField will be insufficient if your request handler
+  in solrconfig.xml defines "df", which takes precedence. That would need to be removed.
+ <defaultSearchField>text</defaultSearchField> -->
+
+ <!-- DEPRECATED: The defaultOperator (AND|OR) is consulted by various query parsers
+  when parsing a query string to determine if a clause of the query should be marked as
+  required or optional, assuming the clause isn't already marked by some operator.
+  The default is OR, which is generally assumed so it is not a good idea to change it
+  globally here.  The "q.op" request parameter takes precedence over this.
+ <solrQueryParser defaultOperator="OR"/> -->
+
+  
     <!-- field type definitions. The "name" attribute is
        just a label to be used by field definitions.  The "class"
        attribute and any other attributes determine the real
@@ -307,6 +335,8 @@
       Plain numeric field types that store and index the text
       value verbatim (and hence don't correctly support range queries, since the
       lexicographic ordering isn't equal to the numeric ordering)
+
+      NOTE: These field types are deprecated will be removed in Solr 5.0!
     -->
     <fieldType name="pint" class="solr.IntField"/>
     <fieldType name="plong" class="solr.LongField"/>
@@ -351,6 +381,15 @@
     <fieldType name="text_ws" class="solr.TextField" positionIncrementGap="100">
       <analyzer>
         <tokenizer class="solr.WhitespaceTokenizerFactory"/>
+      </analyzer>
+    </fieldType>
+
+    <!-- A text type for English text where stopwords and synonyms are managed using the REST API -->
+    <fieldType name="managed_en" class="solr.TextField" positionIncrementGap="100">
+      <analyzer>
+        <tokenizer class="solr.StandardTokenizerFactory"/>
+        <filter class="solr.ManagedStopFilterFactory" managed="english" />
+        <filter class="solr.ManagedSynonymFilterFactory" managed="english" />
       </analyzer>
     </fieldType>
 
@@ -549,7 +588,7 @@
              See the Java Regular Expression documentation for more
              information on pattern and replacement string syntax.
 
-             http://java.sun.com/j2se/1.6.0/docs/api/java/util/regex/package-summary.html
+             http://docs.oracle.com/javase/7/docs/api/java/util/regex/package-summary.html
           -->
         <filter class="solr.PatternReplaceFilterFactory"
                 pattern="([^a-z])" replacement="" replace="all"
@@ -703,6 +742,18 @@
         <!-- for any non-CJK -->
         <filter class="solr.LowerCaseFilterFactory"/>
         <filter class="solr.CJKBigramFilterFactory"/>
+      </analyzer>
+    </fieldType>
+
+    <!-- Kurdish -->
+    <fieldType name="text_ckb" class="solr.TextField" positionIncrementGap="100">
+      <analyzer>
+        <tokenizer class="solr.StandardTokenizerFactory"/>
+        <filter class="solr.SoraniNormalizationFilterFactory"/>
+        <!-- for any latin text -->
+        <filter class="solr.LowerCaseFilterFactory"/>
+        <filter class="solr.StopFilterFactory" ignoreCase="true" words="lang/stopwords_ckb.txt"/>
+        <filter class="solr.SoraniStemFilterFactory"/>
       </analyzer>
     </fieldType>
 
@@ -1039,13 +1090,12 @@
     <fieldType name="text_tr" class="solr.TextField" positionIncrementGap="100">
       <analyzer>
         <tokenizer class="solr.StandardTokenizerFactory"/>
+        <filter class="solr.ApostropheFilterFactory"/>
         <filter class="solr.TurkishLowerCaseFilterFactory"/>
         <filter class="solr.StopFilterFactory" ignoreCase="false" words="lang/stopwords_tr.txt" />
         <filter class="solr.SnowballPorterFilterFactory" language="Turkish"/>
       </analyzer>
     </fieldType>
-
- </types>
 
   <!-- Similarity is the scoring routine for each document vs. a query.
        A custom Similarity or SimilarityFactory may be specified here, but
