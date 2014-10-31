@@ -2,6 +2,7 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-less');
   grunt.loadNpmTasks('grunt-replace');
+  grunt.loadNpmTasks('grunt-contrib-watch');
   var fs = require('fs');
   var globalConfig = {
     lessFile : grunt.option('lessFile'),
@@ -31,13 +32,13 @@ module.exports = function (grunt) {
     var srcModified = grunt.config('globalConfig.lastModified');
     return srcModified.getTime() > destModified.getTime();
   }
-  
+
   grunt.initConfig({
     globalConfig: globalConfig,
     pkg: grunt.file.readJSON('package.json'),
     bootstrap: grunt.file.readJSON('bower_components/bootstrap/package.json'),
     banner: '/*!\n' +
-            ' * <%= pkg.name %> v${project.version}\n' +
+            ' * <%= pkg.name %> v0.1-SNAPSHOT\n' +
             ' * Homepage: <%= pkg.homepage %>\n' +
             ' * Copyright 2013-<%= grunt.template.today("yyyy") %> <%= pkg.author %> and others\n' +
             ' * Licensed under <%= pkg.license %>\n' +
@@ -97,6 +98,12 @@ module.exports = function (grunt) {
         },
         files: {}
       }
+    },
+    watch: {
+      styles: {
+        files: ['../../src/main/less/**/*.less'], // which files to watch
+        tasks: ['flatlyBuild'],
+      }
     }
   });
   grunt.registerTask('none', function() {});
@@ -104,7 +111,7 @@ module.exports = function (grunt) {
     var target=grunt.config('globalConfig.targetDirectory')+'/'+theme+'.css';
     if (needRebuild(target)){
       var compress = compress == undefined ? true : compress;
-      
+
       var concatSrc;
       var concatDest;
       var lessDest;
@@ -117,7 +124,7 @@ module.exports = function (grunt) {
       concatDest = '<%=globalConfig.targetDirectory%>/'+ theme + '.css';
       dist = {src: concatSrc, dest: concatDest};
       grunt.config('concat.dist', dist);
-      
+
       files = {}; files[lessDest] = lessSrc;
       grunt.config('less.dist.files', files);
       grunt.config('less.dist.options.compress', false);
@@ -127,7 +134,7 @@ module.exports = function (grunt) {
       grunt.config('less.dist.options.sourceMapURL', theme + '.css.map');
       grunt.config('less.dist.options.sourceMapFilename', '<%=globalConfig.targetDirectory%>/' + theme + '.css.map');
       grunt.log.writeln('compiling file ' + lessSrc + ' ==> ' + lessDest);
-      
+
       grunt.task.run(['less:dist', 'concat',
                       compress ? 'compress:'+concatDest+':'+'<%=globalConfig.targetDirectory%>/' + theme + '.min.css':'none']);
     } else {
@@ -167,5 +174,17 @@ module.exports = function (grunt) {
     createFileIfNotExist('bower_components/bootswatch/default/bootswatch.less');
     grunt.task.run('mir');
   });
-	
+
+  grunt.registerTask('flatlyBuild', 'build flatly theme incl. config', function() {
+      grunt.config(
+          'globalConfig.lastModified',
+          new Date(
+              Math.max(
+                  dirLastModified(grunt.config('globalConfig').lessDirectory()),
+                  dirLastModified('bower_components')
+              )
+          )
+      );
+      grunt.task.run('build:flatly');
+    });
 }

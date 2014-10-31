@@ -16,6 +16,7 @@
     "devDependencies": {
         "grunt-contrib-concat": "^0.4.0",
         "grunt-contrib-less": "^0.11.3",
-        "grunt-replace": "^0.7.5"
+        "grunt-replace": "^0.7.5",
+        "grunt-contrib-watch": "^0.6.1"
     }
 }
