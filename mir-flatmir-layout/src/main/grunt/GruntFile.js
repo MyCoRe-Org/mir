@@ -38,7 +38,7 @@ module.exports = function (grunt) {
     pkg: grunt.file.readJSON('package.json'),
     bootstrap: grunt.file.readJSON('bower_components/bootstrap/package.json'),
     banner: '/*!\n' +
-            ' * <%= pkg.name %> v0.1-SNAPSHOT\n' +
+            ' * <%= pkg.name %> v${project.version}\n' +
             ' * Homepage: <%= pkg.homepage %>\n' +
             ' * Copyright 2013-<%= grunt.template.today("yyyy") %> <%= pkg.author %> and others\n' +
             ' * Licensed under <%= pkg.license %>\n' +
