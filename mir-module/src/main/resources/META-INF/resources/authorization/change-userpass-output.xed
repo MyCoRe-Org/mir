@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE MyCoReWebPage>
+<MyCoReWebPage>
+  <section i18n="component.user2.admin.changepw.title" xml:lang="all">
+    <xed:form class="userEditor form-horizontal" role="form" xmlns:xed="http://www.mycore.de/xeditor" xmlns:mcruser="http://www.mycore.de/components/mcruser">
+      <xed:source uri="user:{$id}" />
+
+      <xed:cancel url="{$ServletsBaseURL}MCRUserServlet?action=show&amp;id={$id}" />
+
+      Zugriff absoluter Pfad:
+      <xed:output value="/user/attributes/attribut[@name='mailtoken']/@value" /> <br/>
+
+      <xed:bind xpath="user">
+        <xed:output value="'Zugriff relativ nach bind to user  Pfad:'" />
+        <xed:output value="attributes/attribut[@name='mailtoken']/@value" /> <br/>
+
+        <xed:bind xpath="attributes">
+          <xed:output value="'Zugriff relativ nach bind to attribute  Pfad:'" />
+          <xed:output value="attribut[@name='mailtoken']/@value" /> <br/>
+
+          <xed:bind xpath="attribute[@name='mailtoken']">
+            <xed:output value="'Zugriff relativ nach bind to attribut  Pfad:'" />
+            <xed:output value="@value" /> <br/>
+          </xed:bind>
+
+        </xed:bind>
+      </xed:bind>
+    </xed:form>
+  </section>
+</MyCoReWebPage>
