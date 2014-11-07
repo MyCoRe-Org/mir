@@ -66,6 +66,13 @@
         closeSearchBox();
       }
     });
+
+    //for select box in search field on hit list page
+    $( ".search_type a" ).click(function() {
+        $( "#search_type_label" ).html( $( this ).html() );
+        $( "#search_type_button" ).attr( 'value', $( this ).html() );
+    });
+
     function showSearchResult() {
       closeSearchBox();
       var searchText = getSearchText();
@@ -84,12 +91,6 @@
         $(searchContainerSelector).removeClass("opened");
       });
     }
-
-    $(".dropdown-menu li a").click(function(){
-      $(this).parents(".input-group-btn").find('.btn').text($(this).text());
-      $(this).parents(".input-group-btn").find('.btn').val($(this).text());
-    });
-
   });
 
   window.fireMirSSQuery = function base_fireMirSSQuery(form) {

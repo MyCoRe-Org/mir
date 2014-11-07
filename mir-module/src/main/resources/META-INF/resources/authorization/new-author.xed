@@ -17,12 +17,6 @@
             <xed:include uri="xslStyle:user-xeditor-templates:webapp:authorization/user-editor.xed" ref="userAccount" />
             <xed:include uri="xslStyle:user-xeditor-templates:webapp:authorization/user-editor.xed" ref="editor4currentUser" />
           </div>
-          <div class="panel-footer clearfix">
-            <div class="pull-right">
-              <xed:include uri="xslStyle:user-xeditor-templates:webapp:authorization/user-editor.xed" ref="buttons" />
-            </div>
-          </div>
-        </div>
 
             <xed:bind xpath="attributes">
               <xed:bind xpath="attribute[@name='mailtoken']">
@@ -31,6 +25,13 @@
                 </xed:bind>
               </xed:bind>
             </xed:bind>
+
+          <div class="panel-footer clearfix">
+            <div class="pull-right">
+              <xed:include uri="xslStyle:user-xeditor-templates:webapp:authorization/user-editor.xed" ref="buttons" />
+            </div>
+          </div>
+        </div>
       </xed:bind>
     </xed:form>
   </section>

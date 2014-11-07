@@ -3,13 +3,13 @@
 <xed:template xmlns:xed="http://www.mycore.de/xeditor" xmlns:mir="http://www.mycore.de/mir">
 
   <xed:template id="in.out">
-      <xed:source uri="xslStyle:editor/mods2xeditor:{$sourceUri}"/>
-      <xed:source uri="xslStyle:asParent,editor/mods2xeditor:mcrobject:{$parentId}" />
-      <xed:source uri="xslStyle:mycoreobject-editor,editor/mods2xeditor:mcrobject:{$id}" />
-      <xed:cancel url="../servlets/MCRLockServlet?action=unlock&amp;id={$id}&amp;url=/receive/{$id}" />
-      <xed:cancel url="{$cancelUrl}" />
-      <xed:cancel url="../index.html" />
-      <xed:post-processor xsl="editor/xeditor2mods.xsl" />
+    <xed:source uri="xslStyle:editor/mods2xeditor:{$sourceUri}"/>
+    <xed:source uri="xslStyle:asParent,editor/mods2xeditor:mcrobject:{$parentId}" />
+    <xed:source uri="xslStyle:mycoreobject-editor,editor/mods2xeditor:mcrobject:{$id}" />
+    <xed:cancel url="../servlets/MCRLockServlet?action=unlock&amp;id={$id}&amp;url=/receive/{$id}" />
+    <xed:cancel url="{$cancelUrl}" />
+    <xed:cancel url="../index.html" />
+    <xed:post-processor xsl="editor/xeditor2mods.xsl" />
   </xed:template>
 
   <xed:template id="mycore.common">
