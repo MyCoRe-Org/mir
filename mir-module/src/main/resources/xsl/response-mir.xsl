@@ -10,17 +10,6 @@
     </xsl:if>
   </xsl:variable>
 
-<!-- throws java.lang.ClassCastException: org.apache.xpath.objects.XRTreeFrag cannot be cast to org.apache.xpath.objects.XNodeSet -->
-<!--   <xsl:variable name="params"> -->
-<!--     <xsl:for-each select="/response/lst[@name='responseHeader']/lst[@name='params']/str[not(@name='start' or @name='rows')]"> -->
-           <!-- parameterName=parameterValue -->
-<!--       <xsl:value-of select="concat(@name,'=', encoder:encode('.', 'UTF-8'))" /> -->
-<!--       <xsl:if test="not (position() = last())"> -->
-<!--         <xsl:value-of select="'&amp;'" /> -->
-<!--       </xsl:if> -->
-<!--     </xsl:for-each> -->
-<!--   </xsl:variable> -->
-
   <xsl:template match="/response/result|/response/response[@subresult='groupOwner']/result|lst[@name='grouped']/lst[@name='returnId' and int[@name='matches']='0']" priority="10">
     <xsl:variable name="ResultPages">
       <xsl:if test="$hits &gt; 0">
@@ -110,6 +99,7 @@
   </xsl:template>
 
   <xsl:template match="doc[@objectType='mods']" priority="10" mode="resultList">
+    <xsl:param name="currentPos" select="'1'" />
     <!--
       Do not read MyCoRe object at this time
     -->
@@ -133,7 +123,13 @@
         <xsl:otherwise>even</xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
-    <xsl:variable name="linkTo" select="concat($WebApplicationBaseURL, 'receive/',$identifier)" />
+
+    <!-- generate browsing url -->
+    <xsl:variable name="href" select="concat($proxyBaseURL,$HttpSession,$solrParams)" />
+    <xsl:variable name="hitHref">
+      <xsl:value-of select="concat($href, '&amp;start=',$currentPos, '&amp;fl=id&amp;rows=1&amp;XSL.Style=browse')" />
+    </xsl:variable>
+
     <xsl:variable name="derivates" select="key('derivate', $identifier)" />
 
     <div class="hit_item {$hitItemClass}">
@@ -216,7 +212,7 @@
       <div class="row">
         <div class="col-xs-12">
           <h3 class="hit_title shorten">
-            <a href="{$linkTo}">
+            <a href="{$hitHref}">
               <xsl:attribute name="title"><xsl:value-of select="./str[@name='mods.title']" /></xsl:attribute>
               <xsl:choose>
                 <xsl:when test="./str[@name='search_result_link_text']">
@@ -329,75 +325,6 @@
 
         </div>
       </div>
-
-
-<!--
-      <section>
-        <span class="signature" title="Signatur">
-          <span>
-            Signatur :
-          </span>
-          <b>INF:HE:4000:HTML:Hog:2011</b>
-        </span>
-      </section>
-
-      <xsl:variable name="description" select="str[@name='mods.abstract']" />
-      <xsl:if test="$description">
-        <section class="summary" title="summary">
-          <p itemprop="description">
-            <xsl:value-of select="$description" />
-          </p>
-        </section>
-      </xsl:if>
-      <footer class="date">
-        <p>
-          <xsl:variable name="dateModified" select="date[@name='modified']" />
-          Zuletzt bearbeitet am :
-          <time itemprop="dateModified" datetime="{$dateModified}">
-            <xsl:call-template name="formatISODate">
-              <xsl:with-param select="$dateModified" name="date" />
-              <xsl:with-param select="i18n:translate('metaData.date')" name="format" />
-            </xsl:call-template>
-          </time>
-        </p>
-      </footer>
-      <section class="files">
-        <xsl:apply-templates select="." mode="hitInFiles" />
-      </section>
-      <section>
-        <ul class="actions">
-          <xsl:if test="acl:checkPermission($identifier,'writedb')" >
-            <xsl:variable name="editURL">
-              <xsl:call-template name="mods.getObjectEditURL">
-                <xsl:with-param name="id" select="$identifier" />
-                <xsl:with-param name="layout" select="'$'" />
-              </xsl:call-template>
-            </xsl:variable>
-            <xsl:choose>
-              <xsl:when test="string-length($editURL) &gt; 0">
-                <li>
-                  <a href="{$editURL}">
-                    <i class="fa fa-edit"></i><xsl:value-of select="i18n:translate('object.editObject')" />
-                  </a>
-                </li>
-              </xsl:when>
-              <xsl:otherwise>
-                <li>
-                  <i class="fa fa-edit"></i><xsl:value-of select="i18n:translate('object.locked')" />
-                </li>
-              </xsl:otherwise>
-            </xsl:choose>
-          </xsl:if>
-          <li>
-            <a
-              href="{$ServletsBaseURL}MCRBasketServlet{$HttpSession}?type=objects&amp;action=add&amp;id={$identifier}&amp;uri=mcrobject:{$identifier}&amp;redirect=referer">
-              <i class="fa fa-plus"></i>
-              <xsl:value-of select="i18n:translate('basket.add')" />
-            </a>
-          </li>
-        </ul>
-      </section> -->
-
     </div>
   </xsl:template>
 
