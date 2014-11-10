@@ -5,12 +5,12 @@
   <xsl:import href="xslImport:modsmeta:metadata/mir-browse.xsl" />
   <xsl:include href="response-utils.xsl" />
   <xsl:template match="/">
-    <div id="mir-browse">
+    <div id="search_options">
       <xsl:apply-templates select="/mycoreobject/response" />
     </div>
     <xsl:apply-imports />
   </xsl:template>
-  
+
   <xsl:template match="/mycoreobject/response">
     <xsl:variable name="ResultPages">
       <xsl:call-template name="solr.Pagination">
@@ -20,38 +20,34 @@
         <xsl:with-param name="totalpage" select="$totalPages" />
       </xsl:call-template>
     </xsl:variable>
-    <!-- table header -->
-    <table class="resultHeader" cellspacing="0" cellpadding="0">
-      <tr>
-        <td class="resultPages">
-          <xsl:copy-of select="$ResultPages" />
-        </td>
-        <td>
-          <xsl:variable name="params">
-            <xsl:for-each select="/response/lst[@name='responseHeader']/lst[@name='params']/str">
-              <xsl:choose>
-                <xsl:when test="@name='rows' or @name='XSL.Style' or @name='fl' or @name='start'">
-              <!-- skip them -->
-                </xsl:when>
-                <xsl:when test="@name='origrows' or @name='origXSL.Style' or @name='origfl'">
-              <!-- ParameterName=origParameterValue -->
-                  <xsl:value-of select="concat(substring-after(@name, 'orig'),'=', encoder:encode(., 'UTF-8'))" />
-                  <xsl:if test="not (position() = last())">
-                    <xsl:value-of select="'&amp;'" />
-                  </xsl:if>
-                </xsl:when>
-                <xsl:otherwise>
-              <!-- parameterName=parameterValue -->
-                  <xsl:value-of select="concat(@name,'=', encoder:encode(., 'UTF-8'))" />
-                  <xsl:if test="not (position() = last())">
-                    <xsl:value-of select="'&amp;'" />
-                  </xsl:if>
-                </xsl:otherwise>
-              </xsl:choose>
+    <xsl:variable name="params">
+      <xsl:for-each select="/response/lst[@name='responseHeader']/lst[@name='params']/str">
+        <xsl:choose>
+          <xsl:when test="@name='rows' or @name='XSL.Style' or @name='fl' or @name='start'">
+        <!-- skip them -->
+          </xsl:when>
+          <xsl:when test="@name='origrows' or @name='origXSL.Style' or @name='origfl'">
+        <!-- ParameterName=origParameterValue -->
+            <xsl:value-of select="concat(substring-after(@name, 'orig'),'=', encoder:encode(., 'UTF-8'))" />
+            <xsl:if test="not (position() = last())">
+              <xsl:value-of select="'&amp;'" />
+            </xsl:if>
+          </xsl:when>
+          <xsl:otherwise>
+        <!-- parameterName=parameterValue -->
+            <xsl:value-of select="concat(@name,'=', encoder:encode(., 'UTF-8'))" />
+            <xsl:if test="not (position() = last())">
+              <xsl:value-of select="'&amp;'" />
+            </xsl:if>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:for-each>
+    </xsl:variable>
 
-            </xsl:for-each>
-          </xsl:variable>
-
+    <button type="button" class="btn btn-default">Suche verfeinern</button>
+    <xsl:copy-of select="$ResultPages" />
+    <button type="button" class="btn btn-default">Trefferliste anzeigen</button>
+       <!--
           <xsl:variable name="origRows" select="/response/lst[@name='responseHeader']/lst[@name='params']/str[@name='origrows']" />
           <xsl:variable name="newStart" select="$start - $start mod $origRows" />
           <xsl:variable name="href" select="concat($proxyBaseURL,'?', $HttpSession, $params, '&amp;start=', $newStart)" />
@@ -59,9 +55,7 @@
           <a href="{$href}">
             <xsl:value-of select="i18n:translate('component.solr.searchresult.back')" />
           </a>
-        </td>
-      </tr>
-    </table>
+        -->
     <xsl:variable name="objId" select="/mycoreobject/@ID" />
     <xsl:variable name="staticUrl" select="concat($WebApplicationBaseURL, 'receive/', $objId)" />
     <div id="permalink">
@@ -79,7 +73,7 @@
     </div>
     <!-- change url in browser -->
     <script type="text/javascript">
-      <xsl:value-of select="concat('var pageurl = &quot;', $staticUrl, '&quot;;')" /> 
+      <xsl:value-of select="concat('var pageurl = &quot;', $staticUrl, '&quot;;')" />
       if(typeof window.history.replaceState == &quot;function&quot;){
         var originalPage = {title: document.title, url: document.location.toString()};
         window.history.replaceState({path:pageurl},&quot; <xsl:value-of select="i18n:translate('component.solr.searchresult.resultList')" /> &quot;,pageurl);
