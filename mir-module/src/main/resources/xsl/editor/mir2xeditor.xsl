@@ -40,11 +40,11 @@
   </xsl:template>
 
   <xsl:template match="mir:role.repeated">
-    <div class="form-group">
-      <label class="col-md-3 control-label">
-        <xed:output i18n="{@label}" />
-      </label>
-      <xed:repeat xpath="mods:name[@type='personal']" min="1" max="100">
+    <xed:repeat xpath="mods:name[@type='personal']" min="1" max="100">
+      <div class="form-group">
+        <label class="col-md-3 control-label">
+          <xed:output i18n="{@label}" />
+        </label>
         <div class="col-md-6">
           <div class="controls">
             <xed:bind xpath="mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']" default="{@role}" />
@@ -52,8 +52,8 @@
           </div>
         </div>
         <xsl:call-template name="mir-pmud" />
-      </xed:repeat>
-    </div>
+      </div>
+    </xed:repeat>
   </xsl:template>
 
   <xsl:template match="mir:person.repeated">
