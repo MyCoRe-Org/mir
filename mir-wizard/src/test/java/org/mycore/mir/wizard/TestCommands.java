@@ -24,8 +24,6 @@ package org.mycore.mir.wizard;
 
 import static org.junit.Assert.assertTrue;
 
-import java.io.IOException;
-
 import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
 import org.junit.Test;
@@ -33,7 +31,6 @@ import org.mycore.common.MCRHibTestCase;
 import org.mycore.common.xml.MCRURIResolver;
 import org.mycore.mir.wizard.command.MIRWizardLoadClassifications;
 import org.mycore.mir.wizard.command.MIRWizardMCRCommand;
-import org.mycore.mir.wizard.command.MIRWizardSolr;
 
 /**
  * @author René Adler (eagle)
