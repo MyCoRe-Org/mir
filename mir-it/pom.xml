@@ -15,7 +15,7 @@
     <MCR.Home.Integration>${project.build.directory}/mycore-home</MCR.Home.Integration>
     <selenium.version>2.39.0</selenium.version>
     <cargo.servlet.port>9102</cargo.servlet.port>
-    <solr.version>4.8.1-SNAPSHOT</solr.version>
+    <solr.version>4.8.1</solr.version>
     <solr.home>${MCR.Home.Integration}/solr-home</solr.home>
     <cargo.jvmargs>
       -DMCR.Home=${MCR.Home.Integration}
