@@ -364,8 +364,12 @@
     <mir:textfield xpath="mods:identifier[@type='issn']" label="mir.identifier.issn" />
   </xed:template>
 
-  <xed:template id="identifier.duepublico">
-    <mir:textfield xpath="mods:identifier[@type='duepublico']" label="mir.identifier.duepublico" />
+  <xed:template id="identifier.intern">
+    <mir:textfield xpath="mods:identifier[@type='intern']" label="mir.identifier.intern" />
+  </xed:template>
+
+  <xed:template id="identifier.project">
+    <mir:textfield xpath="mods:identifier[@type='project']" label="mir.identifier.project" />
   </xed:template>
 
   <xed:template id="identifier.repeated">
@@ -389,8 +393,11 @@
               <option value="urn">
                 <xed:output i18n="mir.identifier.urn" />
               </option>
-              <option value="duepublico">
-                <xed:output i18n="mir.identifier.duepublico" />
+              <option value="intern">
+                <xed:output i18n="mir.identifier.intern" />
+              </option>
+              <option value="project">
+                <xed:output i18n="mir.identifier.project" />
               </option>
               <option value="patent">
                 <xed:output i18n="mir.identifier.patent" />
@@ -564,6 +571,28 @@
     </select>
   </xed:template>
 
+  <xed:template id="rights">
+    <div class="form-group">
+      <label class="col-md-3 control-label">
+        <xed:output i18n="mir.rights" />
+      </label>
+      <div class="col-md-6">
+        <xed:bind xpath="mods:accessCondition[@type='use and reproduction']" initially="rights_reserved">
+          <select  class="form-control form-control-inline">
+            <option value="rights_reserved">Alle Rechte vorbehalten</option>
+            <option value="oa_nlz">Open-Access im Zuge einer Allianz- bzw. Nationallizenz</option>
+            <option value="cc_by">CC BY</option>
+            <option value="cc_by-sa">CC BY-SA</option>
+            <option value="cc_by-nd">CC BY-ND</option>
+            <option value="cc_by-nc">CC BY-NC</option>
+            <option value="cc_by-nc-sa">CC BY-NC-SA</option>
+            <option value="cc_by-nc-nd">CC BY-NC-ND</option>
+          </select>
+        </xed:bind>
+      </div>
+    </div>
+  </xed:template>
+
   <xed:template id="abstract.simple">
     <mir:textarea xpath="mods:abstract" label="mir.abstract.text" rows="5" />
   </xed:template>
@@ -698,7 +727,6 @@
     <xed:validate xpath="//mods:identifier[@type='doi']" matches="10\.\d+.*" i18n="mir.validation.doi" display="global" />
     <xed:validate xpath="//mods:identifier[@type='hdl']" matches="\S+/\S+" i18n="mir.validation.handle" display="global" />
     <xed:validate xpath="//mods:identifier[@type='urn']" matches="urn:nbn:[a-z]{2}:\S*" i18n="mir.validation.urn" display="global" />
-    <xed:validate xpath="//mods:identifier[@type='duepublico']" matches="[1-9]\d{0,7}" class="miless.persistency.DocumentManager" method="documentExists" i18n="mir.validation.duepublico" display="global" />
     <xed:validate xpath="//mods:url|//mods:abstract/@xlink:href" matches="(ftp|http|https)://[\w\d.]+\S*" i18n="mir.validation.url" display="global" />
     <xed:validate xpath="//mods:*[@encoding='w3cdtf']" matches="\d{4}(\-\d{2}(\-\d{2})?)?" type="datetime" format="yyyy;yyyy-MM;yyyy-MM-dd" i18n="mir.validation.date" display="global" />
   </xed:template>
