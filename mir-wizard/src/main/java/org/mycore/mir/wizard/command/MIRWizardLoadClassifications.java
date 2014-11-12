@@ -45,7 +45,7 @@ public class MIRWizardLoadClassifications extends MIRWizardCommand {
 
     private static final MCRCategoryDAO DAO = new MCRCategoryDAOImpl();
 
-    private static final String CLASSIFICATIONS_CFG = "resource:classifications.xml";
+    private static final String CLASSIFICATIONS_CFG = "resource:setup/classifications.xml";
 
     public MIRWizardLoadClassifications() {
         this("load.classifications");
@@ -60,7 +60,6 @@ public class MIRWizardLoadClassifications extends MIRWizardCommand {
         Session currentSession = MCRHIBConnection.instance().getSession();
 
         try {
-
             String result = "";
             Element classifications = MCRURIResolver.instance().resolve(CLASSIFICATIONS_CFG);
 
@@ -81,7 +80,7 @@ public class MIRWizardLoadClassifications extends MIRWizardCommand {
                         try {
                             DAO.addCategory(null, category);
                             tx.commit();
-                            
+
                             result += MCRTranslation.translate("component.mir.wizard.done").concat(".\n");
                         } catch (HibernateException e) {
                             tx.rollback();

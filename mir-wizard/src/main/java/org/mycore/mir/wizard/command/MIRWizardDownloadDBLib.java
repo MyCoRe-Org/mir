@@ -48,14 +48,14 @@ public class MIRWizardDownloadDBLib extends MIRWizardCommand {
         Element library = getInputXML().getChild("database").getChild("library");
 
         if (library != null && library.getChildren().size() > 0) {
-            String libDir = MCRConfigurationDir.getConfigurationDirectory().getAbsolutePath() + "/lib/";
+            String libDir = MCRConfigurationDir.getConfigurationDirectory().getAbsolutePath() + File.separator + "lib";
 
             boolean success = true;
             for (Element lib : library.getChildren()) {
                 String url = lib.getTextTrim();
                 String fname = FilenameUtils.getName(url);
                 try {
-                    File file = new File(libDir + fname);
+                    File file = new File(libDir + File.separator + fname);
 
                     FileUtils.copyURLToFile(new URL(url), file);
                     loadLib(file.toURI().toURL());

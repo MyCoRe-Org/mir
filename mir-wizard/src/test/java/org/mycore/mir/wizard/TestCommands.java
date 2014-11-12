@@ -24,6 +24,8 @@ package org.mycore.mir.wizard;
 
 import static org.junit.Assert.assertTrue;
 
+import java.io.IOException;
+
 import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
 import org.junit.Test;
@@ -31,6 +33,7 @@ import org.mycore.common.MCRHibTestCase;
 import org.mycore.common.xml.MCRURIResolver;
 import org.mycore.mir.wizard.command.MIRWizardLoadClassifications;
 import org.mycore.mir.wizard.command.MIRWizardMCRCommand;
+import org.mycore.mir.wizard.command.MIRWizardSolr;
 
 /**
  * @author René Adler (eagle)
@@ -58,13 +61,11 @@ public class TestCommands extends MCRHibTestCase {
         MIRWizardCommandChain chain = new MIRWizardCommandChain();
 
         MIRWizardMCRCommand importACLs = new MIRWizardMCRCommand("import.acls");
-        importACLs.setInputXML(MCRURIResolver.instance().resolve(
-                "resource:config/mir-wizard/acl/defaultrules-command.xml"));
+        importACLs.setInputXML(MCRURIResolver.instance().resolve("resource:setup/acl/defaultrules-command.xml"));
         chain.addCommand(importACLs);
 
         MIRWizardMCRCommand importWebACLs = new MIRWizardMCRCommand("import.webacls");
-        importWebACLs.setInputXML(MCRURIResolver.instance()
-                .resolve("resource:config/mir-wizard/acl/webacl-command.xml"));
+        importWebACLs.setInputXML(MCRURIResolver.instance().resolve("resource:setup/acl/webacl-command.xml"));
         chain.addCommand(importWebACLs);
 
         endTransaction();

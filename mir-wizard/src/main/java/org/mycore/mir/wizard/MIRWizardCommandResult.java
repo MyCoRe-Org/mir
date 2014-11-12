@@ -73,7 +73,7 @@ public class MIRWizardCommandResult {
     }
 
     protected Element getResult() {
-        return result;
+        return result == null ? this.toElement() : result;
     }
 
     public void setResult(String result) {

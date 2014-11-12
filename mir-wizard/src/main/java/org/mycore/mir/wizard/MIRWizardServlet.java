@@ -22,6 +22,8 @@
  */
 package org.mycore.mir.wizard;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.StringTokenizer;
 
 import org.apache.log4j.Logger;
@@ -33,13 +35,6 @@ import org.mycore.common.content.MCRJDOMContent;
 import org.mycore.common.xml.MCRURIResolver;
 import org.mycore.frontend.servlets.MCRServlet;
 import org.mycore.frontend.servlets.MCRServletJob;
-import org.mycore.mir.wizard.command.MIRWizardDownloadDBLib;
-import org.mycore.mir.wizard.command.MIRWizardGenerateHibernateCfg;
-import org.mycore.mir.wizard.command.MIRWizardGenerateProperties;
-import org.mycore.mir.wizard.command.MIRWizardInitHibernate;
-import org.mycore.mir.wizard.command.MIRWizardInitSuperuser;
-import org.mycore.mir.wizard.command.MIRWizardLoadClassifications;
-import org.mycore.mir.wizard.command.MIRWizardMCRCommand;
 
 /**
  * @author René Adler
@@ -51,12 +46,12 @@ public class MIRWizardServlet extends MCRServlet {
 
     private static final Logger LOGGER = Logger.getLogger(MIRWizardServlet.class);
 
-    public void doGetPost(MCRServletJob job) throws Exception {
-        String path = job.getRequest().getPathInfo();
+    public void doGetPost(final MCRServletJob job) throws Exception {
+        final String path = job.getRequest().getPathInfo();
 
         if (path != null) {
-            StringTokenizer st = new StringTokenizer(path, "/");
-            String request = st.nextToken();
+            final StringTokenizer st = new StringTokenizer(path, "/");
+            final String request = st.nextToken();
 
             if ("shutdown".equals(request)) {
                 LOGGER.info("Shutdown System....");
@@ -66,34 +61,51 @@ public class MIRWizardServlet extends MCRServlet {
             } else {
                 LOGGER.info("Request file \"" + request + "\"...");
                 getLayoutService().doLayout(job.getRequest(), job.getResponse(),
-                        new MCRJDOMContent(MCRURIResolver.instance().resolve("resource:" + request)));
+                        new MCRJDOMContent(MCRURIResolver.instance().resolve("resource:setup/" + request)));
             }
         } else {
-            Document doc = (Document) (job.getRequest().getAttribute("MCRXEditorSubmission"));
-            Element wizXML = doc.getRootElement();
+            final Document doc = (Document) (job.getRequest().getAttribute("MCRXEditorSubmission"));
+            final Element wizXML = doc.getRootElement();
 
             LOGGER.debug(new XMLOutputter().outputString(wizXML));
 
-            Element resXML = new Element("wizard");
-            Element results = new Element("results");
+            final Element resXML = new Element("wizard");
+            final Element results = new Element("results");
 
-            MIRWizardCommandChain chain = new MIRWizardCommandChain();
-            chain.addCommand(new MIRWizardGenerateProperties());
-            chain.addCommand(new MIRWizardGenerateHibernateCfg());
-            chain.addCommand(new MIRWizardDownloadDBLib());
-            chain.addCommand(new MIRWizardInitHibernate());
-            chain.addCommand(new MIRWizardLoadClassifications());
-            chain.addCommand(new MIRWizardInitSuperuser());
+            final Element commands = MCRURIResolver.instance().resolve("resource:setup/install.xml");
 
-            MIRWizardMCRCommand importACLs = new MIRWizardMCRCommand("import.acls");
-            importACLs.setInputXML(MCRURIResolver.instance().resolve(
-                    "resource:config/mir-wizard/acl/defaultrules-command.xml"));
-            chain.addCommand(importACLs);
+            final MIRWizardCommandChain chain = new MIRWizardCommandChain();
 
-            MIRWizardMCRCommand importWebACLs = new MIRWizardMCRCommand("import.webacls");
-            importWebACLs.setInputXML(MCRURIResolver.instance().resolve(
-                    "resource:config/mir-wizard/acl/webacl-command.xml"));
-            chain.addCommand(importWebACLs);
+            for (Element command : commands.getChildren("command")) {
+                final String cls = command.getAttributeValue("class");
+                final String name = command.getAttributeValue("name");
+                final String src = command.getAttributeValue("src");
+
+                try {
+                    final Class<?> cmdCls = Class.forName(cls);
+                    MIRWizardCommand cmd = null;
+
+                    if (name != null) {
+                        final Constructor<?> cmdC = cmdCls.getConstructor(String.class);
+                        cmd = (MIRWizardCommand) cmdC.newInstance(name);
+                    } else {
+                        final Constructor<?> cmdC = cmdCls.getConstructor();
+                        cmd = (MIRWizardCommand) cmdC.newInstance();
+                    }
+
+                    if (src != null) {
+                        cmd.setInputXML(MCRURIResolver.instance().resolve(src));
+                    }
+
+                    if (cmd != null) {
+                        chain.addCommand(cmd);
+                    }
+                } catch (final ClassNotFoundException | NoSuchMethodException | SecurityException
+                        | InstantiationException | IllegalAccessException | IllegalArgumentException
+                        | InvocationTargetException e) {
+                    LOGGER.error(e);
+                }
+            }
 
             LOGGER.info("Execute Wizard Commands...");
             chain.execute(wizXML);
