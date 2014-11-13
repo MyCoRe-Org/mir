@@ -16,7 +16,7 @@
   <command file="resource:setup/acl/grant-submitter.xml" describeBy="submitters, editors and administrators">update permission read for id
     webpage:/content/publish/index.xml with rulefile {file} described by {describeBy}
   </command>
-  <command file="resource:setup/acl/not-logged-in.xml" describeBy="not logged in">update permission read for id
+  <command file="resource:setup/acl/grant-all.xml" describeBy="not logged in">update permission read for id
     webpage:/authorization/new-author.xed?action=save with rulefile {file} described by {describeBy}
   </command>
   <command file="resource:setup/acl/grant-admin.xml" describeBy="administrators only">update permission read for id
