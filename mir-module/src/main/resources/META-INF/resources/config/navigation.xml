@@ -69,6 +69,10 @@
       <label xml:lang="de">Publizieren</label>
       <label xml:lang="en">Publish</label>
     </item>
+    <item href="/authorization/new-author.xed?action=save" type="intern">
+      <label xml:lang="de">Registrieren</label>
+      <label xml:lang="en">Register</label>
+    </item>
     <item href="/content/publish/guidelines.xml" type="intern">
       <label xml:lang="de">Leitlinien</label>
       <label xml:lang="en">Guidelines</label>
