@@ -82,9 +82,14 @@
           </div>
         </div>
         <div class="col-md-4">
-          <div class="detail_block">Administrative Metadaten</div>
           <div class="detail_block">
-            <h4>Share </h4>
+            <h4>Systeminformationen</h4>
+            <!-- Start: ADMINMETADATA -->
+            <xsl:apply-templates select="div[@id='mir-admindata']" mode="newMetadata" />
+            <!-- End: ADMINMETADATA -->
+          </div>
+          <div class="detail_block">
+            <h4>Teilen</h4>
             <div class="row">
               <div class="col-md-7">
                 <!-- SocialSharePrivacy BEGIN -->
@@ -103,7 +108,7 @@
             </div>
           </div>
           <div class="detail_block">
-            <h4>Cite as </h4>
+            <h4>Zitieren</h4>
             <!-- Start: CITATION -->
             <xsl:apply-templates select="div[@id='mir-citation']" mode="copyContent" />
             <!-- End: CITATION -->
@@ -113,7 +118,6 @@
             <xsl:apply-templates select="div[@id='mir-export']" mode="copyContent" />
             <!-- End: EXPORT -->
           </div>
-
         </div>
       </div>
     </xsl:copy>
@@ -132,6 +136,12 @@
       <xsl:apply-templates select=".//div[@id='title_box']/div[@id='title_content']/div/div/table/tr[position() &gt; 1]"
         mode="newMetadata" />
       <xsl:apply-templates select=".//div[@id='category_box']/div[@id='category_content']/table/tr"
+        mode="newMetadata" />
+    </dl>
+  </xsl:template>
+  <xsl:template match="div[@id='mir-admindata']" mode="newMetadata">
+    <dl>
+      <xsl:apply-templates select=".//div[@id='system_box']/div[@id='system_content']/table/tr"
         mode="newMetadata" />
     </dl>
   </xsl:template>
