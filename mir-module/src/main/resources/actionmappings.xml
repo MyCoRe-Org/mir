@@ -18,8 +18,8 @@
   </collection>
   <collection name="personindex">
     <action action="browse">
-      <when condition="(group = admin) or (group = editor)" url="/servlets/solr/personindex?XSL.Style=person&amp;terms.regex=[a|ä].*" />
-      <when condition="true" url="/servlets/solr/personindexp?XSL.Style=person&amp;terms.regex=[a|ä].*" />
+      <when condition="(group = admin) or (group = editor)" url="/servlets/solr/personindex?XSL.Style=person&amp;terms.regex=[a|%C3%A4|%C3%84].*" />
+      <when condition="true" url="/servlets/solr/personindexp?XSL.Style=person&amp;terms.regex=[a|%C3%A4|%C3%84].*" />
     </action>
   </collection>
   <collection name="mods">
