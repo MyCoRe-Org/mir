@@ -1,56 +1,159 @@
-.resultHeader {
-  .pagination, form {
-    margin: 0;
-  }
-  .result_options {
-    margin-bottom: 1em;
-  }
-}
+/******************************************************************************
+ * hit list
+ *****************************************************************************/
 
-#resultList {
-  @previewWidth: 73px;
-  article.result {
-    border: @gray-lighter 1px solid;
-    border-radius: @border-radius-small;
-    margin-bottom: 0.4em;
-    & > * {
-      margin-left: 130px;
+@dark_neutral:  #999;    // dark gray
+@light_neutral: #ccc;    // light gray
+@link_color:    #4b8fbc; // blue
+@highlight:     #f39c12; // orange
+
+#hit_list {
+  .hit_item {
+    margin-bottom: 30px;
+    border-top: 1px solid @light_neutral;
+    border-radius: 10px;
+    .hit_counter {
+      text-align: center;
+      font-weight: bold;
+      color: @light_neutral;
+      border: 1px solid @light_neutral;
+      border-width: 0 0 0 1px;
+      border-top-left-radius: 10px;
+      padding: 1px 0 0 0;
+      width: 73px;
     }
-    .number {
-      display: block;
-      margin-bottom: 0.2em;
-    }
-    aside {
-      .pull-left;
-      margin: 0.2em 1.0em 0.2em 0.2em;
-      img {
-        max-width: @previewWidth;
+    .hit_stars {
+      margin: 0px 0px 5px 15px;
+      overflow: hidden;
+      .hit_star {
+        float:left;
+        width: 5px;
+        height: 5px;
+        background-color: @light_neutral;
+        margin: 8px 2px 0 2px;
+        border-radius: 50%;
       }
     }
-
-    .preview {
-      margin-bottom: 0;
+    .hit_stars_1 .hit_star_1 { background-color: @dark_neutral; }
+    .hit_stars_2 .hit_star_1 { background-color: @dark_neutral; }
+    .hit_stars_2 .hit_star_2 { background-color: @dark_neutral; }
+    .hit_stars_3 .hit_star_1 { background-color: @dark_neutral; }
+    .hit_stars_3 .hit_star_2 { background-color: @dark_neutral; }
+    .hit_stars_3 .hit_star_3 { background-color: @dark_neutral; }
+    .hit_stars_4 .hit_star   { background-color: @dark_neutral; }
+    .hit_stars_4 .hit_star_5 { background-color: @dark_neutral; }
+    .hit_stars_5 .hit_star   { background-color: @dark_neutral; }
+    .hit_star_1 {}
+    .hit_star_2 {}
+    .hit_star_3 {}
+    .hit_star_4 {}
+    .hit_star_5 {}
+    .hit_icon {
+      height: 103px;
+      width: 73px;
+      border: 1px solid @light_neutral;
+      border-bottom-left-radius: 25px;
+      margin: 5px 0 0 0px;
     }
-
-    ul.actions {
-      list-style: none outside none;
-      display: inline-block;
-      margin: 0;
-      li {
-        display: inline-block;
-        padding-right: 0.2em;
+    .hitmid {
+      padding-top: 4px;
+      border-top: 0px solid @light_neutral;
+      .hit_date {
+        color: @dark_neutral;
+        float: left;
+        margin-left: 2px;
+      }
+      .hit_type {
+        float: left;
+        color: @dark_neutral;
       }
     }
-
-    footer {
-      height: auto;
-      background-color: inherit;
+    .hit_title {
+      font-size: 20px;
+      margin: 15px 0 5px 0;
+      border-left: 0px solid @light_neutral;
+      padding-left: 0px;
+      text-decoration: none;
+      a:hover {
+        text-decoration: none;
+      }
     }
-
-    address {
-      display: inline;
+    .hit_author {
+      font-size: 16px;
+      margin: 0 0 0px 0;
     }
-
+    .hit_source {
+      margin-top: 10px;
+    }
+    .hit_options {
+      .dropdown-menu > li > a:hover {
+        background-color: @highlight;
+      }
+      .btn {
+        margin-right: 1px;
+        padding: 2px 10px;
+        background-color: transparent;
+        border: 1px solid @light_neutral;
+        border-width: 0px 1px 0px 0px;
+        border-radius: 0;
+        border-top-right-radius: 10px;
+        color: @dark_neutral;
+        &:hover {
+          color: @link_color;
+          background-color: transparent;
+        }
+      }
+      .caret {
+        margin-left: 6px;
+      }
+      .open > .dropdown-toggle {
+        color: @highlight;
+        .btn-default {
+          background-color: transparent;
+        }
+        &:hover {
+          color: @link_color;
+        }
+      }
+      .hit_option {
+        color: @dark_neutral;
+        background-color: transparent;
+        &:hover {
+          color: white;
+        }
+        .glyphicon {
+          margin-right: 5px;
+        }
+      }
+    }
+  }
+  .hit_item:hover {
+    border-color: @highlight;
+    border-bottom-left-radius: 25%;
+    .hit_counter {
+      color:        @highlight;
+      border-color: @highlight;
+    }
+    .hit_stars_1 .hit_star_1 { background-color: @highlight; }
+    .hit_stars_2 .hit_star_1 { background-color: @highlight; }
+    .hit_stars_2 .hit_star_2 { background-color: @highlight; }
+    .hit_stars_3 .hit_star_1 { background-color: @highlight; }
+    .hit_stars_3 .hit_star_2 { background-color: @highlight; }
+    .hit_stars_3 .hit_star_3 { background-color: @highlight; }
+    .hit_stars_4 .hit_star   { background-color: @highlight; }
+    .hit_stars_5 .hit_star   { background-color: @highlight; }
+    .hit_icon {
+      border-left-color: @highlight;
+    }
+    .hitmid {
+      border-color: @highlight;
+    }
+    .btn {
+      border-color: @highlight;
+    }
+    .hit_title {
+      border-color: @link_color;
+    }
   }
 }
 

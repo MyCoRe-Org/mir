@@ -132,12 +132,19 @@
 
     <xsl:variable name="derivates" select="key('derivate', $identifier)" />
 
+<!-- hit entry -->
     <div class="hit_item {$hitItemClass}">
       <div class="row">
+
+        <!--  left column -->
         <div class="col-xs-2">
-          <div class="hit_counter"><xsl:value-of select="$hitCount" /></div>
-        </div>
-        <div class="col-xs-7">
+
+          <!-- hit number -->
+          <div class="hit_counter">
+            <xsl:value-of select="$hitCount" />
+          </div>
+
+          <!-- relevance -->
           <div class="hit_stars_5 hit_stars" title="ToDo: SolrScore"> <!-- ToDo: hit_stars_3 für nur 3 Sterne ... -->
             <div class="hit_star_1 hit_star"></div>
             <div class="hit_star_2 hit_star"></div>
@@ -145,183 +152,204 @@
             <div class="hit_star_4 hit_star"></div>
             <div class="hit_star_5 hit_star"></div>
           </div>
-        </div>
-        <div class="col-xs-3">
-          <div class="hit_options">
-            <!-- add to basket -->
-            <a class="hit_option hit_to_basket" href="{$ServletsBaseURL}MCRBasketServlet{$HttpSession}?type=objects&amp;action=add&amp;id={$identifier}&amp;uri=mcrobject:{$identifier}&amp;redirect=referer"
-               title="{i18n:translate('basket.add')}"><span class="glyphicon glyphicon-shopping-cart"></span></a>
 
-            <!-- download main document of first derivate -->
-            <xsl:if test="not($derivates/str[@name='iviewFile']) and $derivates/str[@name='maindoc']">
-              <xsl:variable name="derivid" select="$derivates/str[@name='maindoc'][1]/../str[@name='id']" />
-              <xsl:variable name="maindoc" select="$derivates/str[@name='maindoc'][1]" />
-              <xsl:variable name="fileType">
-                <xsl:variable name="suffix" select="str:tokenize($maindoc,'.')[position()=last()]" />
-                <xsl:choose>
-                  <xsl:when test="$suffix='pdf'">
-                    <xsl:value-of select="$suffix" />
-                  </xsl:when>
-                  <xsl:when test="contains($suffix,'doc')">
-                    <xsl:value-of select="'docx'" />
-                  </xsl:when>
-                  <xsl:when test="contains($suffix,'xls')">
-                    <xsl:value-of select="'xlsx'" />
-                  </xsl:when>
-                </xsl:choose>
-              </xsl:variable>
-              <xsl:variable name="derivbase" select="concat($ServletsBaseURL,'MCRFileNodeServlet/',$derivid,'/')" />
-              <xsl:variable name="derivifs" select="concat($derivbase,$maindoc,$HttpSession)" />
-              <a class="hit_option hit_download" href="{$derivifs}" title="{$maindoc}"><span class="glyphicon glyphicon-download-alt"></span></a>
-            </xsl:if>
-
-            <!-- direct link to editor -->
-            <xsl:if test="acl:checkPermission($identifier,'writedb')" >
-              <xsl:variable name="editURL">
-                <xsl:call-template name="mods.getObjectEditURL">
-                  <xsl:with-param name="id" select="$identifier" />
-                  <xsl:with-param name="layout" select="'$'" />
-                  <xsl:with-param name="collection" select="'mods'" />
+          <!-- document preview -->
+          <div>
+            <xsl:choose>
+              <xsl:when test="$derivates/str[@name='iviewFile']">
+                <xsl:call-template name="iViewLinkPrev">
+                  <xsl:with-param name="mcrid" select="$identifier" />
+                  <xsl:with-param name="derivate" select="$derivates/str[@name='iviewFile']/../str[@name='id']" />
+                  <xsl:with-param name="fileName" select="$derivates/str[@name='iviewFile'][1]" />
                 </xsl:call-template>
-              </xsl:variable>
-              <a class="hit_option hit_edit"> <!-- ToDo: was genau soll passieren, wenn nicht bearbeitbar? -->
-                <xsl:choose>
-                  <xsl:when test="string-length($editURL) &gt; 0">
-                    <xsl:attribute name="href">
-                      <xsl:value-of select="$editURL" />
-                    </xsl:attribute>
-                    <xsl:attribute name="title">
-                      <xsl:value-of select="i18n:translate('object.editObject')" />
-                    </xsl:attribute>
-                  </xsl:when>
-                  <xsl:otherwise>
-                    <xsl:attribute name="href">
-                      <xsl:value-of select="'#'" />
-                    </xsl:attribute>
-                    <xsl:attribute name="title">
-                      <xsl:value-of select="i18n:translate('object.locked')" />
-                    </xsl:attribute>
-                  </xsl:otherwise>
-                </xsl:choose>
-                <span class="glyphicon glyphicon-pencil"></span>
-              </a>
-            </xsl:if>
+              </xsl:when>
+              <xsl:when test="str:tokenize($derivates/str[@name='maindoc'][1],'.')[position()=last()] = 'pdf'">
+                <xsl:variable name="filePath" select="concat($derivates/str[@name='id'][1],'/',mcr:encodeURIPath($derivates/str[@name='maindoc'][1]),$HttpSession)" />
+                <img class="hit_icon" alt="{$mods-type-i18n}" title="thumbnail">
+                  <xsl:attribute name="src">
+                    <xsl:value-of select="concat($WebApplicationBaseURL,'img/pdfthumb/',$filePath,'?centerThumb=no')"/>
+                  </xsl:attribute>
+                </img>
+              </xsl:when>
+              <xsl:otherwise>
+                <img class="hit_icon" src="{$WebApplicationBaseURL}images/icons/{$CurrentLang}/icon_{$mods-type}.png" alt="{$mods-type-i18n}" />
+              </xsl:otherwise>
+            </xsl:choose>
           </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-xs-12">
-          <h3 class="hit_title shorten">
-            <a href="{$hitHref}">
-              <xsl:attribute name="title"><xsl:value-of select="./str[@name='mods.title']" /></xsl:attribute>
-              <xsl:choose>
-                <xsl:when test="./str[@name='search_result_link_text']">
-                  <xsl:value-of select="./str[@name='search_result_link_text']" />
-                </xsl:when>
-                <xsl:when test="./str[@name='fileName']">
-                  <xsl:value-of select="./str[@name='fileName']" />
-                </xsl:when>
-                <xsl:otherwise>
-                  <xsl:value-of select="$identifier" />
-                </xsl:otherwise>
-              </xsl:choose>
-            </a>
-          </h3>
-        </div>
-      </div>
 
-      <div class="row">
-        <div class="col-xs-2">
-          <xsl:choose>
-            <xsl:when test="$derivates/str[@name='iviewFile']">
-              <xsl:call-template name="iViewLinkPrev">
-                <xsl:with-param name="mcrid" select="$identifier" />
-                <xsl:with-param name="derivate" select="$derivates/str[@name='iviewFile']/../str[@name='id']" />
-                <xsl:with-param name="fileName" select="$derivates/str[@name='iviewFile'][1]" />
-              </xsl:call-template>
-            </xsl:when>
-            <xsl:when test="str:tokenize($derivates/str[@name='maindoc'][1],'.')[position()=last()] = 'pdf'">
-              <xsl:variable name="filePath" select="concat($derivates/str[@name='id'][1],'/',mcr:encodeURIPath($derivates/str[@name='maindoc'][1]),$HttpSession)" />
-              <img class="hit_icon" alt="{$mods-type-i18n}" title="thumbnail">
-                <xsl:attribute name="src">
-                  <xsl:value-of select="concat($WebApplicationBaseURL,'img/pdfthumb/',$filePath,'?centerThumb=no')"/>
-                </xsl:attribute>
-              </img>
-            </xsl:when>
-            <xsl:otherwise>
-              <img class="hit_icon" src="{$WebApplicationBaseURL}images/icons/{$CurrentLang}/icon_{$mods-type}.png" alt="{$mods-type-i18n}" />
-            </xsl:otherwise>
-          </xsl:choose>
         </div>
+
+        <!-- right column -->
         <div class="col-xs-10">
-          <xsl:if test="./arr[@name='mods.author']">
-            <div class="hit_author shorten">
-              <xsl:for-each select="./arr[@name='mods.author']/str">
-                <xsl:if test="position()!=1">
-                  <xsl:value-of select="' / '" />
-                </xsl:if>
-                  <a href="#">
-                    <xsl:value-of select="." />
-                  </a>
-              </xsl:for-each>
-            </div>
-          </xsl:if>
+          <div class="row">
+            <div class="col-xs-8 hitmid">
+              <div class="hit_type">
+                  <span class="label label-info"><xsl:value-of select="$mods-type-i18n" /></span>
+              </div>
+              <xsl:if test="str[@name='mods.dateIssued']">
+                <div class="hit_date">
+                    <xsl:variable name="date">
+                      <xsl:value-of select="str[@name='mods.dateIssued']" />
+                    </xsl:variable>
+                    <span class="label label-primary"><xsl:value-of select="$date" /></span>
 
-          <div class="hit_type">
-            <xsl:value-of select="$mods-type-i18n" />
+                </div>
+              </xsl:if>
+            </div>
+            <div class="col-xs-4">
+              <div class="hit_options">
+
+                  <div class="btn-group pull-right">
+                    <a data-toggle="dropdown" class="btn btn-default dropdown-toggle" href="#"><i class="fa fa-cog"></i> Aktionen<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li class="">
+                          <!-- add to basket -->
+                          <a class="hit_option hit_to_basket"
+                            href="{$ServletsBaseURL}MCRBasketServlet{$HttpSession}?type=objects&amp;action=add&amp;id={$identifier}&amp;uri=mcrobject:{$identifier}&amp;redirect=referer"
+                            title=""><span class="glyphicon glyphicon-shopping-cart"></span><xsl:value-of select="i18n:translate('basket.add')" /></a>
+                        </li>
+                        <li class="">
+                          <!-- download main document of first derivate -->
+                          <xsl:if test="not($derivates/str[@name='iviewFile']) and $derivates/str[@name='maindoc']">
+                            <xsl:variable name="derivid" select="$derivates/str[@name='maindoc'][1]/../str[@name='id']" />
+                            <xsl:variable name="maindoc" select="$derivates/str[@name='maindoc'][1]" />
+                            <xsl:variable name="fileType">
+                              <xsl:variable name="suffix" select="str:tokenize($maindoc,'.')[position()=last()]" />
+                              <xsl:choose>
+                                <xsl:when test="$suffix='pdf'">
+                                  <xsl:value-of select="$suffix" />
+                                </xsl:when>
+                                <xsl:when test="contains($suffix,'doc')">
+                                  <xsl:value-of select="'docx'" />
+                                </xsl:when>
+                                <xsl:when test="contains($suffix,'xls')">
+                                  <xsl:value-of select="'xlsx'" />
+                                </xsl:when>
+                              </xsl:choose>
+                            </xsl:variable>
+                            <xsl:variable name="derivbase" select="concat($ServletsBaseURL,'MCRFileNodeServlet/',$derivid,'/')" />
+                            <xsl:variable name="derivifs" select="concat($derivbase,$maindoc,$HttpSession)" />
+                            <a class="hit_option hit_download" href="{$derivifs}" title=""><span class="glyphicon glyphicon-download-alt"></span><xsl:value-of select="$maindoc" /></a>
+                          </xsl:if>
+                        </li>
+                        <li class="">
+                          <!-- direct link to editor -->
+                          <xsl:if test="acl:checkPermission($identifier,'writedb')" >
+                            <xsl:variable name="editURL">
+                              <xsl:call-template name="mods.getObjectEditURL">
+                                <xsl:with-param name="id" select="$identifier" />
+                                <xsl:with-param name="layout" select="'$'" />
+                                <xsl:with-param name="collection" select="'mods'" />
+                              </xsl:call-template>
+                            </xsl:variable>
+                            <a class="hit_option hit_edit"> <!-- ToDo: was genau soll passieren, wenn nicht bearbeitbar? -->
+                              <span class="glyphicon glyphicon-pencil"></span>
+                              <xsl:choose>
+                                <xsl:when test="string-length($editURL) &gt; 0">
+                                  <xsl:attribute name="href">
+                                    <xsl:value-of select="$editURL" />
+                                  </xsl:attribute>
+                                  <xsl:value-of select="i18n:translate('object.editObject')" />
+                                </xsl:when>
+                                <xsl:otherwise>
+                                  <xsl:attribute name="href">
+                                    <xsl:value-of select="'#'" />
+                                  </xsl:attribute>
+                                  <xsl:value-of select="i18n:translate('object.locked')" />
+                                </xsl:otherwise>
+                              </xsl:choose>
+                            </a>
+                          </xsl:if>
+                        </li>
+                    </ul>
+                </div>
+
+              </div>
+            </div>
           </div>
 
-          <xsl:if test="./str[@name='parent']">
-            <div class="hit_source shorten">
-              <xsl:text>aus: </xsl:text>
-              <xsl:choose>
-                <xsl:when test="./str[@name='parentLinkText']">
-                  <xsl:variable name="linkTo" select="concat($WebApplicationBaseURL, 'receive/',./str[@name='parent'])" />
-                  <a href="{$linkTo}">
-                    <xsl:value-of select="./str[@name='parentLinkText']" />
-                  </a>
-                </xsl:when>
-                <xsl:otherwise>
-                  <xsl:call-template name="objectLink">
-                    <xsl:with-param select="./str[@name='parent']" name="obj_id" />
-                  </xsl:call-template>
-                </xsl:otherwise>
-              </xsl:choose>
+          <div class="row">
+            <div class="col-xs-12">
+              <h3 class="hit_title shorten">
+                <a href="{$hitHref}">
+                  <xsl:attribute name="title"><xsl:value-of select="./str[@name='mods.title']" /></xsl:attribute>
+                  <xsl:choose>
+                    <xsl:when test="./str[@name='search_result_link_text']">
+                      <xsl:value-of select="./str[@name='search_result_link_text']" />
+                    </xsl:when>
+                    <xsl:when test="./str[@name='fileName']">
+                      <xsl:value-of select="./str[@name='fileName']" />
+                    </xsl:when>
+                    <xsl:otherwise>
+                      <xsl:value-of select="$identifier" />
+                    </xsl:otherwise>
+                  </xsl:choose>
+                </a>
+              </h3>
             </div>
-          </xsl:if>
-          <xsl:if test="str[@name='mods.dateIssued']|arr[@name='mods.publisher']">
-            <div class="hit_date">
-              <xsl:value-of select="concat(i18n:translate('component.mods.metaData.dictionary.published'),': ')" />
-              <xsl:variable name="publisher" select="arr[@name='mods.publisher']/str" />
-              <xsl:variable name="place" select="arr[@name='mods.place']/str" />
-              <xsl:for-each select="$publisher">
-                <xsl:if test="position()!=1">
-                  <xsl:value-of select="'; '" />
-                </xsl:if>
-                <xsl:value-of select="$publisher" />
-              </xsl:for-each>
-              <xsl:if test="count($publisher)=1 and count($place)=1">
-                <xsl:value-of select="', '" />
-                <xsl:value-of select="$place" />
-              </xsl:if>
-              <xsl:if test="str[@name='mods.dateIssued']">
-                <xsl:variable name="date">
-                  <xsl:value-of select="str[@name='mods.dateIssued']" />
-                </xsl:variable>
-                <xsl:if test="$publisher">
-                  <xsl:value-of select="', '" />
-                </xsl:if>
-                  <xsl:value-of select="$date" />
-              </xsl:if>
-            </div>
-          </xsl:if>
+          </div>
 
-          <xsl:variable name="description" select="str[@name='mods.abstract']" />
-          <xsl:if test="$description">
-            <div class="hit_source shorten"> <!-- ToDo eigene Klasse! -->
-              <xsl:value-of select="$description" />
+          <div class="row">
+            <div class="col-xs-12">
+              <xsl:if test="./arr[@name='mods.author']">
+                <div class="hit_author shorten">
+                  <xsl:for-each select="./arr[@name='mods.author']/str">
+                    <xsl:if test="position()!=1">
+                      <xsl:value-of select="' / '" />
+                    </xsl:if>
+                      <a href="#">
+                        <xsl:value-of select="." />
+                      </a>
+                  </xsl:for-each>
+                </div>
+              </xsl:if>
+
+              <xsl:if test="./str[@name='parent']">
+                <div class="hit_source shorten">
+                  <xsl:text>aus: </xsl:text>
+                  <xsl:choose>
+                    <xsl:when test="./str[@name='parentLinkText']">
+                      <xsl:variable name="linkTo" select="concat($WebApplicationBaseURL, 'receive/',./str[@name='parent'])" />
+                      <a href="{$linkTo}">
+                        <xsl:value-of select="./str[@name='parentLinkText']" />
+                      </a>
+                    </xsl:when>
+                    <xsl:otherwise>
+                      <xsl:call-template name="objectLink">
+                        <xsl:with-param select="./str[@name='parent']" name="obj_id" />
+                      </xsl:call-template>
+                    </xsl:otherwise>
+                  </xsl:choose>
+                </div>
+              </xsl:if>
+
+              <xsl:variable name="description" select="str[@name='mods.abstract']" />
+              <xsl:if test="$description">
+                <div class="hit_source"> <!-- ToDo eigene Klasse! -->
+                  <xsl:value-of select="$description" />
+                </div>
+              </xsl:if>
+
+              <xsl:if test="arr[@name='mods.publisher']">
+                <div class="hit_pub_name">
+                  <xsl:value-of select="concat(i18n:translate('component.mods.metaData.dictionary.published'),': ')" />
+                  <xsl:variable name="publisher" select="arr[@name='mods.publisher']/str" />
+                  <xsl:variable name="place" select="arr[@name='mods.place']/str" />
+                  <xsl:for-each select="$publisher">
+                    <xsl:if test="position()!=1">
+                      <xsl:value-of select="'; '" />
+                    </xsl:if>
+                    <xsl:value-of select="$publisher" />
+                  </xsl:for-each>
+                  <xsl:if test="count($publisher)=1 and count($place)=1">
+                    <xsl:value-of select="', '" />
+                    <xsl:value-of select="$place" />
+                  </xsl:if>
+                </div>
+              </xsl:if>
+
             </div>
-          </xsl:if>
+          </div>
 
         </div>
       </div>
