@@ -76,10 +76,13 @@ class MCRPDFTools implements AutoCloseable {
 
             PDPage page = (PDPage) pages.get(0);
             page.findCropBox();
-            PDRectangle cropBox = page.getCropBox();
-            Dimension dimension = cropBox.createDimension();
+            PDRectangle renderBox = page.getCropBox(); //may not be available but is prefered
+            if (renderBox == null) {
+                renderBox = page.getTrimBox(); //should always be available
+            }
+            Dimension dimension = renderBox.createDimension();
             Dimension targetDimension = scaleDimension(dimension, thumbnailSize);
-            level1Image = renderPage(page, cropBox, targetDimension, BufferedImage.TYPE_INT_RGB);
+            level1Image = renderPage(page, renderBox, targetDimension, BufferedImage.TYPE_INT_RGB);
         } finally {
             pdf.close();
         }
@@ -123,11 +126,11 @@ class MCRPDFTools implements AutoCloseable {
         return returns;
     }
 
-    private static BufferedImage renderPage(PDPage page, PDRectangle cropBox, Dimension targetDimension, int imageType)
+    private static BufferedImage renderPage(PDPage page, PDRectangle renderBox, Dimension targetDimension, int imageType)
         throws IOException {
         BufferedImage retval = null;
         Dimension sourceDimension = new Dimension();
-        sourceDimension.setSize(cropBox.getWidth(), cropBox.getHeight());
+        sourceDimension.setSize(renderBox.getWidth(), renderBox.getHeight());
         double scaling = Math.max(targetDimension.getHeight() / sourceDimension.getHeight(), targetDimension.getWidth()
             / sourceDimension.getWidth());
         int rotationAngle = page.findRotation();
