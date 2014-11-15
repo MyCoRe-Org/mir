@@ -14,7 +14,6 @@
 
   <xed:template id="mycore.common">
     <xed:bind xpath="@ID" initially="mir_mods_00000000" />
-    <xed:bind xpath="structure" />
   </xed:template>
 
   <xed:template id="genre">
@@ -80,20 +79,7 @@
     <div class="form-group">
       <label class="col-md-3 control-label">
         <xed:output i18n="mir.title.thesis" />
-      </label>
-      <div class="col-md-6">
-        <p class="form-control-static">
-          <xed:output i18n="mir.title.thesis.help" />
-        </p>
-      </div>
-    </div>
-    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="titles.thesis.common" />
-  </xed:template>
-
-  <xed:template id="titles.thesisHabil">
-    <div class="form-group">
-      <label class="col-md-3 control-label">
-        <xed:output i18n="mir.title.thesisHabil" />
+        <xed:output value="concat($genres//category[@ID=$genre]/label[lang($CurrentLang)]/@text, ':')" />
       </label>
       <div class="col-md-6">
         <p class="form-control-static">

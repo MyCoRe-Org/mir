@@ -18,62 +18,114 @@
         <text i18n="component.mods.genre" />
       </label>
       <select id="genre" class="form-control" name="genre" size="1">
-        <option value="article">
+        <option title="Artikel / Aufsatz" value="article">
           <text i18n="component.mods.genre.article" />
         </option>
-        <option value="book">
-          <text i18n="component.mods.genre.book" />
+        <option title="Buchkapitel" value="chapter">
+          &#160;&#160;&#160;<text i18n="component.mods.genre.chapter" />
         </option>
-        <option value="dissertation">Dissertation</option>
-        <option value="collection">
+        <option title="Lexikoneintrag" value="entry">
+          &#160;&#160;&#160;<text i18n="component.mods.genre.entry" />
+        </option>
+        <option title="Vorwort / Nachwort" value="preface">
+          &#160;&#160;&#160;<text i18n="component.mods.genre.preface" />
+        </option>
+        <option title="Vortrag" value="speech">
+          &#160;&#160;&#160;<text i18n="component.mods.genre.speech" />
+        </option>
+        <option title="Rezension" value="review">
+          &#160;&#160;&#160;<text i18n="component.mods.genre.review" />
+        </option>
+        <option title="Monographie" value="monograph">
+          <text i18n="component.mods.genre.monograph" />
+        </option>
+        <option title="Buch" value="book">
+          &#160;&#160;&#160;<text i18n="component.mods.genre.book" />
+        </option>
+        <option title="Dissertation" value="dissertation">
+          &#160;&#160;&#160;<text i18n="component.mods.genre.dissertation" />
+        </option>
+        <option title="Habilitation" value="habilitation">
+          &#160;&#160;&#160;<text i18n="component.mods.genre.habilitation" />
+        </option>
+        <option title="Diplomarbeit" value="diploma_thesis">
+          &#160;&#160;&#160;<text i18n="component.mods.genre.diploma_thesis" />
+        </option>
+        <option title="Abschlussarbeit (Master)" value="master_thesis">
+          &#160;&#160;&#160;<text i18n="component.mods.genre.master_thesis" />
+        </option>
+        <option title="Abschlussarbeit (Bachelor)" value="bachelor_thesis">
+          &#160;&#160;&#160;<text i18n="component.mods.genre.bachelor_thesis" />
+        </option>
+        <option title="Studienarbeit" value="student_resarch_project">
+          &#160;&#160;&#160;<text i18n="component.mods.genre.student_resarch_project" />
+        </option>
+        <option title="Magisterarbeit" value="magister_thesis">
+          &#160;&#160;&#160;<text i18n="component.mods.genre.magister_thesis" />
+        </option>
+        <option title="Sammelwerk" value="collection">
           <text i18n="component.mods.genre.collection" />
           <text i18n="mir.select.editor" />
         </option>
-        <option value="festschrift">
-          Festschrift
+        <option title="Festschrift" value="festschrift">
+          &#160;&#160;&#160;<text i18n="component.mods.genre.festschrift" />
           <text i18n="mir.select.editor" />
         </option>
-        <option value="proceedings">
-          <text i18n="component.mods.genre.proceedings" />
+        <option title="Tagungsband" value="proceedings">
+          &#160;&#160;&#160;<text i18n="component.mods.genre.proceedings" />
           <text i18n="mir.select.editor" />
         </option>
-        <option value="lexicon">
-          <text i18n="component.mods.genre.lexicon" />
+        <option title="Lexikon" value="lexicon">
+          &#160;&#160;&#160;<text i18n="component.mods.genre.lexicon" />
           <text i18n="mir.select.editor" />
         </option>
-        <option value="journal">
+        <option title="Report" value="report">
+          <text i18n="component.mods.genre.report" />
+        </option>
+        <option title="Forschungsergebnisse" value="research_results">
+          &#160;&#160;&#160;<text i18n="component.mods.genre.research_results" />
+        </option>
+        <option title="Hausinterne Veröffentlichung" value="in_house">
+          &#160;&#160;&#160;<text i18n="component.mods.genre.in_house" />
+        </option>
+        <option title="Presseerklärung" value="press_release">
+          &#160;&#160;&#160;<text i18n="component.mods.genre.press_release" />
+        </option>
+        <option title="Fachliche Stellungnahme" value="declaration">
+          &#160;&#160;&#160;<text i18n="component.mods.genre.declaration" />
+        </option>
+        <option title="Zeitschrift" value="journal">
           <text i18n="component.mods.genre.journal" />
           <text i18n="mir.select.editor" />
         </option>
-        <option value="newspaper">
+        <option title="Zeitung" value="newspaper">
           <text i18n="component.mods.genre.newspaper" />
           <text i18n="mir.select.editor" />
         </option>
-        <option value="series">
+        <option title="Serie" value="series">
           <text i18n="component.mods.genre.series" />
           <text i18n="mir.select.editor" />
         </option>
-        <option value="entry">
-          <text i18n="component.mods.genre.entry" />
+        <option title="Interview" value="interview">
+          <text i18n="component.mods.genre.interview" />
         </option>
-        <option value="preface">
-          <text i18n="component.mods.genre.preface" />
-        </option>
-        <option value="interview">Interview</option>
-        <option value="speech">
-          <text i18n="component.mods.genre.speech" />
-        </option>
-        <option value="patent">
+        <option title="Patent" value="patent">
           <text i18n="component.mods.genre.patent" />
         </option>
-        <option value="poster">
+        <option title="Poster" value="poster">
           <text i18n="component.mods.genre.poster" />
         </option>
-        <option value="audio">
+        <option title="Tondokument" value="audio">
           <text i18n="component.mods.genre.audio" />
         </option>
-        <option value="video">
+        <option title="Film / Video" value="video">
           <text i18n="component.mods.genre.video" />
+        </option>
+        <option title="Bild" value="picture">
+          <text i18n="component.mods.genre.picture" />
+        </option>
+        <option title="Sendung" value="broadcasting">
+          <text i18n="component.mods.genre.broadcasting" />
         </option>
       </select>
     </div>
