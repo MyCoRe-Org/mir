@@ -6,6 +6,9 @@
       <xed:cancel url="{$ServletsBaseURL}MCRUserServlet" />
 
       <xed:bind xpath="user">
+        <xed:bind xpath="roles/role/@name" set="submitter" />
+        <xed:bind xpath="attributes/attribute[@name='mailtoken']/@value" set="{xed:generate-id()}" />
+
         <div class="panel panel-default">
           <div class="panel-heading">
             <h3 class="panel-title">
@@ -17,17 +20,9 @@
             <xed:include uri="xslStyle:user-xeditor-templates:webapp:authorization/user-editor.xed" ref="userAccount" />
             <xed:include uri="xslStyle:user-xeditor-templates:webapp:authorization/user-editor.xed" ref="editor4currentUser" />
           </div>
-
-            <xed:bind xpath="attributes">
-              <xed:bind xpath="attribute[@name='mailtoken']">
-                <xed:bind xpath="@value" >
-                  <input type="hidden" value="{xed:generate-id()}" />
-                </xed:bind>
-              </xed:bind>
-            </xed:bind>
-
           <div class="panel-footer clearfix">
             <div class="pull-right">
+              <button id="debug_submit" xed:target="debug" type="submit" class="btn btn-primary btn-md" name="_xed_submit_debug" >Debug</button>
               <xed:include uri="xslStyle:user-xeditor-templates:webapp:authorization/user-editor.xed" ref="buttons" />
             </div>
           </div>
