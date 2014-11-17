@@ -97,8 +97,8 @@
         <xsl:value-of select="$linkText" />
       </a>
       <xsl:if test="string-length($gnd)>0">
-        <a title="http://d-nb.info/gnd/{$gnd}" href="http://d-nb.info/gnd/{$gnd}" class="gnd">
-          GND
+        <a title="http://d-nb.info/gnd/{$gnd}" href="http://d-nb.info/gnd/{$gnd}">
+          <sup>GND</sup>
         </a>
       </xsl:if>
     </li>

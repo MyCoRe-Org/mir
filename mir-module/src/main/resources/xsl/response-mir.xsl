@@ -130,7 +130,12 @@
       <xsl:value-of select="concat($href, '&amp;start=',$startPosition, '&amp;fl=id&amp;rows=1&amp;XSL.Style=browse')" />
     </xsl:variable>
 
+    <!-- derivate variables -->
     <xsl:variable name="derivates" select="key('derivate', $identifier)" />
+    <xsl:variable name="derivid"   select="$derivates/str[@name='maindoc'][1]/../str[@name='id']" />
+    <xsl:variable name="maindoc"   select="$derivates/str[@name='maindoc'][1]" />
+    <xsl:variable name="derivbase" select="concat($ServletsBaseURL,'MCRFileNodeServlet/',$derivid,'/')" />
+    <xsl:variable name="derivifs"  select="concat($derivbase,$maindoc,$HttpSession)" />
 
 <!-- hit entry -->
     <div class="hit_item {$hitItemClass}">
@@ -156,20 +161,29 @@
           <!-- document preview -->
           <div>
             <xsl:choose>
-              <xsl:when test="$derivates/str[@name='iviewFile']">
-                <xsl:call-template name="iViewLinkPrev">
-                  <xsl:with-param name="mcrid" select="$identifier" />
-                  <xsl:with-param name="derivate" select="$derivates/str[@name='iviewFile']/../str[@name='id']" />
-                  <xsl:with-param name="fileName" select="$derivates/str[@name='iviewFile'][1]" />
-                </xsl:call-template>
-              </xsl:when>
-              <xsl:when test="str:tokenize($derivates/str[@name='maindoc'][1],'.')[position()=last()] = 'pdf'">
-                <xsl:variable name="filePath" select="concat($derivates/str[@name='id'][1],'/',mcr:encodeURIPath($derivates/str[@name='maindoc'][1]),$HttpSession)" />
-                <img class="hit_icon" alt="{$mods-type-i18n}" title="thumbnail">
-                  <xsl:attribute name="src">
-                    <xsl:value-of select="concat($WebApplicationBaseURL,'img/pdfthumb/',$filePath,'?centerThumb=no')"/>
-                  </xsl:attribute>
-                </img>
+              <xsl:when test="string-length($derivid) &gt; 0">
+                <a class="hit_option hit_download" href="{$derivifs}" title="">
+                  <xsl:choose>
+                    <xsl:when test="$derivates/str[@name='iviewFile']">
+                      <xsl:call-template name="iViewLinkPrev">
+                        <xsl:with-param name="mcrid" select="$identifier" />
+                        <xsl:with-param name="derivate" select="$derivid" />
+                        <xsl:with-param name="fileName" select="$derivates/str[@name='iviewFile'][1]" />
+                      </xsl:call-template>
+                    </xsl:when>
+                    <xsl:when test="str:tokenize($derivates/str[@name='maindoc'][1],'.')[position()=last()] = 'pdf'">
+                      <xsl:variable name="filePath" select="concat($derivates/str[@name='id'][1],'/',mcr:encodeURIPath($derivates/str[@name='maindoc'][1]),$HttpSession)" />
+                      <img class="hit_icon" alt="{$mods-type-i18n}" title="thumbnail">
+                        <xsl:attribute name="src">
+                          <xsl:value-of select="concat($WebApplicationBaseURL,'img/pdfthumb/',$filePath,'?centerThumb=no')"/>
+                        </xsl:attribute>
+                      </img>
+                    </xsl:when>
+                    <xsl:otherwise>
+                      <img class="hit_icon" src="{$WebApplicationBaseURL}images/icons/{$CurrentLang}/icon_{$mods-type}.png" alt="{$mods-type-i18n}" />
+                    </xsl:otherwise>
+                  </xsl:choose>
+                </a>
               </xsl:when>
               <xsl:otherwise>
                 <img class="hit_icon" src="{$WebApplicationBaseURL}images/icons/{$CurrentLang}/icon_{$mods-type}.png" alt="{$mods-type-i18n}" />
@@ -184,15 +198,14 @@
           <div class="row">
             <div class="col-xs-8 hitmid">
               <div class="hit_type">
-                  <span class="label label-info"><xsl:value-of select="$mods-type-i18n" /></span>
+                <span class="label label-info"><xsl:value-of select="$mods-type-i18n" /></span>
               </div>
               <xsl:if test="str[@name='mods.dateIssued']">
                 <div class="hit_date">
-                    <xsl:variable name="date">
-                      <xsl:value-of select="str[@name='mods.dateIssued']" />
-                    </xsl:variable>
-                    <span class="label label-primary"><xsl:value-of select="$date" /></span>
-
+                  <xsl:variable name="date">
+                    <xsl:value-of select="str[@name='mods.dateIssued']" />
+                  </xsl:variable>
+                  <span class="label label-primary"><xsl:value-of select="$date" /></span>
                 </div>
               </xsl:if>
             </div>
@@ -208,33 +221,15 @@
                             href="{$ServletsBaseURL}MCRBasketServlet{$HttpSession}?type=objects&amp;action=add&amp;id={$identifier}&amp;uri=mcrobject:{$identifier}&amp;redirect=referer"
                             title=""><span class="glyphicon glyphicon-shopping-cart"></span><xsl:value-of select="i18n:translate('basket.add')" /></a>
                         </li>
-                        <li class="">
-                          <!-- download main document of first derivate -->
-                          <xsl:if test="not($derivates/str[@name='iviewFile']) and $derivates/str[@name='maindoc']">
-                            <xsl:variable name="derivid" select="$derivates/str[@name='maindoc'][1]/../str[@name='id']" />
-                            <xsl:variable name="maindoc" select="$derivates/str[@name='maindoc'][1]" />
-                            <xsl:variable name="fileType">
-                              <xsl:variable name="suffix" select="str:tokenize($maindoc,'.')[position()=last()]" />
-                              <xsl:choose>
-                                <xsl:when test="$suffix='pdf'">
-                                  <xsl:value-of select="$suffix" />
-                                </xsl:when>
-                                <xsl:when test="contains($suffix,'doc')">
-                                  <xsl:value-of select="'docx'" />
-                                </xsl:when>
-                                <xsl:when test="contains($suffix,'xls')">
-                                  <xsl:value-of select="'xlsx'" />
-                                </xsl:when>
-                              </xsl:choose>
-                            </xsl:variable>
-                            <xsl:variable name="derivbase" select="concat($ServletsBaseURL,'MCRFileNodeServlet/',$derivid,'/')" />
-                            <xsl:variable name="derivifs" select="concat($derivbase,$maindoc,$HttpSession)" />
+                        <!-- download main document of first derivate -->
+                        <xsl:if test="not($derivates/str[@name='iviewFile']) and $derivates/str[@name='maindoc']">
+                          <li class="">
                             <a class="hit_option hit_download" href="{$derivifs}" title=""><span class="glyphicon glyphicon-download-alt"></span><xsl:value-of select="$maindoc" /></a>
-                          </xsl:if>
-                        </li>
-                        <li class="">
-                          <!-- direct link to editor -->
-                          <xsl:if test="acl:checkPermission($identifier,'writedb')" >
+                          </li>
+                        </xsl:if>
+                        <!-- direct link to editor -->
+                        <xsl:if test="acl:checkPermission($identifier,'writedb')" >
+                          <li class="">
                             <xsl:variable name="editURL">
                               <xsl:call-template name="mods.getObjectEditURL">
                                 <xsl:with-param name="id" select="$identifier" />
@@ -260,8 +255,8 @@
                                 </xsl:otherwise>
                               </xsl:choose>
                             </a>
-                          </xsl:if>
-                        </li>
+                          </li>
+                        </xsl:if>
                     </ul>
                 </div>
 
@@ -298,9 +293,28 @@
                     <xsl:if test="position()!=1">
                       <xsl:value-of select="' / '" />
                     </xsl:if>
-                      <a href="#">
-                        <xsl:value-of select="." />
-                      </a>
+                    <xsl:variable name="author_name" select="." />
+                    <xsl:variable name="gnd">
+                      <xsl:if test="contains(../../arr[@name='mods.pindexname']/str/text(), $author_name)">
+                        <xsl:value-of select="substring-after(../../arr[@name='mods.pindexname']/str/text()[contains(., $author_name)], ':')" />
+                      </xsl:if>
+                    </xsl:variable>
+                    <xsl:choose>
+                      <xsl:when test="string-length($gnd) &gt; 0">
+                        <a href="{$ServletsBaseURL}solr/mods_gnd?q={$gnd}" title="Suche nach allen Publikationen" >
+                          <xsl:value-of select="$author_name" />
+                        </a>
+                        <xsl:text> </xsl:text><!-- add whitespace here -->
+                        <a href="http://d-nb.info/gnd/{$gnd}" title="Link zur GND">
+                          <sup>GND</sup>
+                        </a>
+                      </xsl:when>
+                      <xsl:otherwise>
+                        <a href="{$ServletsBaseURL}solr/mods_name?q='{$author_name}'" title="Suche nach allen Publikationen">
+                          <xsl:value-of select="$author_name" />
+                        </a>
+                      </xsl:otherwise>
+                    </xsl:choose>
                   </xsl:for-each>
                 </div>
               </xsl:if>
