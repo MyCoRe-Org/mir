@@ -271,7 +271,7 @@
 
           <div class="row">
             <div class="col-xs-12">
-              <h3 class="hit_title shorten">
+              <h3 class="hit_title">
                 <a href="{$hitHref}">
                   <xsl:attribute name="title"><xsl:value-of select="./str[@name='mods.title']" /></xsl:attribute>
                   <xsl:choose>
@@ -293,7 +293,7 @@
           <div class="row">
             <div class="col-xs-12">
               <xsl:if test="./arr[@name='mods.author']">
-                <div class="hit_author shorten">
+                <div class="hit_author">
                   <xsl:for-each select="./arr[@name='mods.author']/str">
                     <xsl:if test="position()!=1">
                       <xsl:value-of select="' / '" />
@@ -306,8 +306,8 @@
               </xsl:if>
 
               <xsl:if test="./str[@name='parent']">
-                <div class="hit_source shorten">
-                  <xsl:text>aus: </xsl:text>
+                <div class="hit_source">
+                  <span class="label_parent">aus: </span>
                   <xsl:choose>
                     <xsl:when test="./str[@name='parentLinkText']">
                       <xsl:variable name="linkTo" select="concat($WebApplicationBaseURL, 'receive/',./str[@name='parent'])" />
@@ -333,7 +333,9 @@
 
               <xsl:if test="arr[@name='mods.publisher']">
                 <div class="hit_pub_name">
-                  <xsl:value-of select="concat(i18n:translate('component.mods.metaData.dictionary.published'),': ')" />
+                  <span class="label_publisher">
+                    <xsl:value-of select="concat(i18n:translate('component.mods.metaData.dictionary.published'),': ')" />
+                  </span>
                   <xsl:variable name="publisher" select="arr[@name='mods.publisher']/str" />
                   <xsl:variable name="place" select="arr[@name='mods.place']/str" />
                   <xsl:for-each select="$publisher">
