@@ -36,7 +36,7 @@
       <label xml:lang="de">komplex</label>
       <label xml:lang="en">complex</label>
     </item>
-    <item href="/servlets/MCRActionMappingServlet/expert/search" type="intern">
+    <item href="/search/search-expert.xed" type="intern">
       <label xml:lang="de">expert</label>
       <label xml:lang="en">expert</label>
     </item>
