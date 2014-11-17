@@ -44,9 +44,18 @@
       </xsl:for-each>
     </xsl:variable>
 
-    <button type="button" class="btn btn-default">Suche verfeinern</button>
-    <xsl:copy-of select="$ResultPages" />
-    <button type="button" class="btn btn-default">Trefferliste anzeigen</button>
+    <div class="row pager_plus">
+      <div class="col-xs-2 pager_option pager_option_left">
+        <button type="button" class="btn btn-default">Suche verfeinern</button>
+      </div>
+      <div class="col-xs-8">
+        <xsl:copy-of select="$ResultPages" />
+      </div>
+      <div class="col-xs-2 pager_option pager_option_right">
+          <button type="button" class="btn btn-default">Trefferliste anzeigen</button>
+      </div>
+    </div>
+
        <!--
           <xsl:variable name="origRows" select="/response/lst[@name='responseHeader']/lst[@name='params']/str[@name='origrows']" />
           <xsl:variable name="newStart" select="$start - $start mod $origRows" />
