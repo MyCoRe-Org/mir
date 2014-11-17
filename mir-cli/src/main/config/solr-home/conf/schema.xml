@@ -108,7 +108,7 @@
 
    <!-- If you remove this field, you must _also_ disable the update log in solrconfig.xml
       or Solr won't start. _version_ and update log are required for SolrCloud
-   --> 
+   -->
    <field name="_version_" type="long" indexed="true" stored="true"/>
 
    <!-- points to the root document of a block of nested documents. Required for nested
@@ -117,11 +117,11 @@
    <field name="_root_" type="string" indexed="true" stored="false"/>
 
    <!-- Only remove the "id" field if you have a very good reason to. While not strictly
-     required, it is highly recommended. A <uniqueKey> is present in almost all Solr 
+     required, it is highly recommended. A <uniqueKey> is present in almost all Solr
      installations. See the <uniqueKey> declaration below where <uniqueKey> is set to "id".
    -->
    <!-- kind of mcrobjectid, mcrderivateid, fileid -->
-   <field name="id" type="string" indexed="true" stored="true" required="true" multiValued="false" /> 
+   <field name="id" type="string" indexed="true" stored="true" required="true" multiValued="false" />
 
     <!-- Start: MyCoRe specific schema definition -->
     <field name="objectType" type="string" />
@@ -191,6 +191,7 @@
     <field name="mods.identifier" type="string" multiValued="true" />
     <field name="mods.identifier.host" type="string" multiValued="true" />
     <field name="mods.abstract" type="text_de" />
+    <field name="mods.abstract.result" type="text_de" indexed="false" />
     <field name="mods.dateIssued" type="string"/>
     <field name="mods.publisher" type="text_de" multiValued="true"/>
     <field name="mods.place" type="text_de" multiValued="true"/>
@@ -236,7 +237,7 @@
   globally here.  The "q.op" request parameter takes precedence over this.
  <solrQueryParser defaultOperator="OR"/> -->
 
-  
+
     <!-- field type definitions. The "name" attribute is
        just a label to be used by field definitions.  The "class"
        attribute and any other attributes determine the real

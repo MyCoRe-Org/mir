@@ -242,19 +242,20 @@
                                 <xsl:with-param name="collection" select="'mods'" />
                               </xsl:call-template>
                             </xsl:variable>
-                            <a class="hit_option hit_edit"> <!-- ToDo: was genau soll passieren, wenn nicht bearbeitbar? -->
-                              <span class="glyphicon glyphicon-pencil"></span>
+                            <a class="hit_option hit_edit">
                               <xsl:choose>
                                 <xsl:when test="string-length($editURL) &gt; 0">
                                   <xsl:attribute name="href">
                                     <xsl:value-of select="$editURL" />
                                   </xsl:attribute>
+                                  <span class="glyphicon glyphicon-pencil"></span>
                                   <xsl:value-of select="i18n:translate('object.editObject')" />
                                 </xsl:when>
                                 <xsl:otherwise>
                                   <xsl:attribute name="href">
                                     <xsl:value-of select="'#'" />
                                   </xsl:attribute>
+                                  <span class="glyphicon glyphicon-pencil"></span>
                                   <xsl:value-of select="i18n:translate('object.locked')" />
                                 </xsl:otherwise>
                               </xsl:choose>
@@ -323,9 +324,9 @@
                 </div>
               </xsl:if>
 
-              <xsl:variable name="description" select="str[@name='mods.abstract']" />
+              <xsl:variable name="description" select="str[@name='mods.abstract.result']" />
               <xsl:if test="$description">
-                <div class="hit_source"> <!-- ToDo eigene Klasse! -->
+                <div class="hit_abstract">
                   <xsl:value-of select="$description" />
                 </div>
               </xsl:if>
