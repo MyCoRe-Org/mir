@@ -18,6 +18,7 @@
         <xsl:with-param name="size" select="$rows" />
         <xsl:with-param name="currentpage" select="$currentPage" />
         <xsl:with-param name="totalpage" select="$totalPages" />
+        <xsl:with-param name="class" select="'pagination-sm'" />
       </xsl:call-template>
     </xsl:variable>
     <xsl:variable name="params">
@@ -44,16 +45,10 @@
       </xsl:for-each>
     </xsl:variable>
 
-    <div class="row pager_plus">
-      <div class="col-xs-2 pager_option pager_option_left">
-        <button type="button" class="btn btn-default">Suche verfeinern</button>
-      </div>
-      <div class="col-xs-8">
-        <xsl:copy-of select="$ResultPages" />
-      </div>
-      <div class="col-xs-2 pager_option pager_option_right">
-          <button type="button" class="btn btn-default">Trefferliste anzeigen</button>
-      </div>
+    <div id="search_options">
+      <button type="button" class="btn btn-default btn-sm">Suche verfeinern</button>
+      <xsl:copy-of select="$ResultPages" />
+      <button type="button" class="btn btn-default btn-sm">Trefferliste anzeigen</button>
     </div>
 
        <!--

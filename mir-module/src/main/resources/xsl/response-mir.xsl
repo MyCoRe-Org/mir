@@ -22,12 +22,14 @@
       </xsl:if>
     </xsl:variable>
 
-    <h1><xsl:value-of select="$PageTitle" /></h1>
+
 
 <!-- Suchschlitz mit Suchbegriff, Treffer - Nummer, Vorschau, Autor, Änderungsdatum, Link zu den Details, Filter  -->
-    <div class="row">
-      <div class="col-lg-3">
-        <h2><small>
+    <div class="row result_head">
+      <div class="col-lg-3 result_titles">
+        <h1><xsl:value-of select="$PageTitle" /></h1>
+        <h2>
+          <small>
           <xsl:choose>
             <xsl:when test="$hits=0">
               <xsl:value-of select="i18n:translate('results.noObject')" />
@@ -39,10 +41,11 @@
               <xsl:value-of select="i18n:translate('results.nObjects',$hits)" />
             </xsl:otherwise>
           </xsl:choose>
-        </small></h2>
+          </small>
+        </h2>
       </div>
 
-      <div class="col-lg-6">
+      <div class="col-lg-9 text-center result_search">
         <div class="search_box">
           <form action="{$WebApplicationBaseURL}servlets/solr/find" class="search_form" method="post">
             <div class="input-group input-group-sm">
@@ -66,23 +69,27 @@
           </form>
         </div>
       </div>
-      <div class="col-lg-3">
-      </div>
     </div> <!-- ENDE: Suchschlitz mit Suchbegriff -->
 
 <!-- Filter, Pagination & Trefferliste -->
-    <div class="row">
-      <div class="col-lg-3">
+    <div class="row result_body">
+      <div class="col-lg-3 result_filter">
         <xsl:if test="/response/lst[@name='facet_counts']/lst[@name='facet_fields'] and $hits &gt; 0">
-          <h3>Typ</h3>
-          <ul class="filter">
-            <xsl:apply-templates select="/response/lst[@name='facet_counts']/lst[@name='facet_fields']">
-              <xsl:with-param name="facet_name" select="'mods.type'" />
-            </xsl:apply-templates>
-          </ul>
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title">Typ</h3>
+            </div>
+            <div class="panel-body">
+              <ul class="filter">
+                <xsl:apply-templates select="/response/lst[@name='facet_counts']/lst[@name='facet_fields']">
+                  <xsl:with-param name="facet_name" select="'mods.type'" />
+                </xsl:apply-templates>
+              </ul>
+            </div>
+          </div>
         </xsl:if>
       </div>
-      <div class="col-lg-9">
+      <div class="col-lg-9 result_list">
         <xsl:copy-of select="$ResultPages" />
         <xsl:comment>
           RESULT LIST START
@@ -93,6 +100,7 @@
         <xsl:comment>
           RESULT LIST END
         </xsl:comment>
+        <div class="result_list_end" />
         <xsl:copy-of select="$ResultPages" />
       </div>
     </div>

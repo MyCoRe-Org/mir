@@ -409,7 +409,7 @@
     <xsl:if test="$accessedit or $accessdelete or not(basket:contains($basketType, /mycoreobject/@ID))">
       <div class="btn-group">
         <xsl:if test="not(basket:contains($basketType, /mycoreobject/@ID))">
-          <a class="btn btn-primary"
+          <a class="btn btn-primary btn-sm"
             href="{$ServletsBaseURL}MCRBasketServlet{$HttpSession}?type={$basketType}&amp;action=add&amp;redirect=referer&amp;id={/mycoreobject/@ID}&amp;uri=mcrobject:{/mycoreobject/@ID}">
             <i class="fa fa-plus">
               <xsl:value-of select="' '" />
@@ -418,8 +418,8 @@
           </a>
         </xsl:if>
         <xsl:if test="$accessedit or $accessdelete">
-          <div class="btn-group">
-            <a href="#" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+          <div class="btn-group pull-right">
+            <a href="#" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
               <i class="fa fa-cog">
                 <xsl:value-of select="' '" />
               </i>

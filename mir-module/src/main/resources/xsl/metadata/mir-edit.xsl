@@ -11,14 +11,14 @@
     <xsl:variable name="write" select="boolean($objectRights/@write)" />
     <xsl:variable name="delete" select="boolean($objectRights/@delete)" />
     <div id="mir-edit">
-      <div class="well edit">
+
         <xsl:apply-templates select="mycoreobject" mode="objectActions">
           <xsl:with-param name="accessedit" select="$write" />
           <xsl:with-param name="accessdelete" select="$delete" />
           <xsl:with-param name="mods-type" select="$mods-type" />
           <xsl:with-param name="collection" select="'mods'" />
         </xsl:apply-templates>
-      </div>
+
     </div>
     <xsl:apply-imports />
   </xsl:template>

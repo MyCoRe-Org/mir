@@ -40,14 +40,13 @@
       </xsl:if>
       <!-- End: MESSAGE -->
 
-      <div class="row detail_row">
-        <div class="col-md-12">
+      <div class="row detail_row bread_plus">
+        <div class="col-xs-12">
           <!-- Start: BREAD-CRUMBS -->
           <xsl:if test="div[@id='mir-breadcrumb']">
             <xsl:copy-of select="div[@id='mir-breadcrumb']/*" />
           </xsl:if>
           <!-- End: BREAD-CRUMBS -->
-
           <div class="detail_block text-right">
             <!-- Start: EDIT -->
             <xsl:apply-templates select="div[@id='mir-edit']" mode="copyContent" />

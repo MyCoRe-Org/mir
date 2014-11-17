@@ -85,20 +85,20 @@
             'services' : {
                 'facebook' : {
                     'status'            : 'on',
-                    'dummy_img'         : '/lib/socialprivacy/socialshareprivacy/images/dummy_facebook.png',
+                    'dummy_img'         : '../js/socialprivacy/socialshareprivacy/images/dummy_facebook.png',
                     'perma_option'      : 'on',
                     'referrer_track'    : '',
                     'action'            : 'recommend',
                     'layout'            : 'button_count',
                     'sharer'            : {
                         'status'        : 'off',
-                        'dummy_img'     : '/lib/socialprivacy/socialshareprivacy/images/dummy_facebook_share_de.png',
-                        'img'           : '/lib/socialprivacy/socialshareprivacy/images/dummy_facebook_share_active_de.png'
+                        'dummy_img'     : '../js/socialprivacy/socialshareprivacy/images/dummy_facebook_share_de.png',
+                        'img'           : '../js/socialprivacy/socialshareprivacy/images/dummy_facebook_share_active_de.png'
                     }
                 },
                 'twitter' : {
                     'status'            : 'on',
-                    'dummy_img'         : '/lib/socialprivacy/socialshareprivacy/images/dummy_twitter.png',
+                    'dummy_img'         : '../js/socialprivacy/socialshareprivacy/images/dummy_twitter.png',
                     'perma_option'      : 'on',
                     'referrer_track'    : '',
                     'tweet_text'        : getTweetText,
@@ -106,7 +106,7 @@
                 },
                 'gplus' : {
                     'status'            : 'on',
-                    'dummy_img'         : '/lib/socialprivacy/socialshareprivacy/images/dummy_gplus.png',
+                    'dummy_img'         : '../js/socialprivacy/socialshareprivacy/images/dummy_gplus.png',
                     'perma_option'      : 'on',
                     'referrer_track'    : '',
                     'size'              : 'medium'
