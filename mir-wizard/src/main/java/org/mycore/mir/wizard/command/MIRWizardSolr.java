@@ -44,6 +44,7 @@ import org.mycore.mir.wizard.utils.MIRWizardUnzip;
  *
  */
 public class MIRWizardSolr extends MIRWizardCommand {
+    private static final Logger LOGGER = Logger.getLogger(MIRWizardSolr.class);
 
     public MIRWizardSolr() {
         this("solr");
@@ -100,7 +101,17 @@ public class MIRWizardSolr extends MIRWizardCommand {
 
                     final String dataDir = MCRConfigurationDir.getConfigurationDirectory().getAbsolutePath()
                             + File.separator + "data";
+                    
                     MIRWizardUnzip.unzip(file.getAbsolutePath(), dataDir);
+
+                    final String confDir = dataDir + File.separator + "solr" + File.separator + "conf";
+                    final String[] confs = { "schema.xml", "solrconfig.xml" };
+                    for (String name : confs) {
+                        LOGGER.info("copy file \"" + name + "\" to \"" + confDir + "\"...");
+                        file = new File(confDir + File.separator + name);
+                        FileUtils.copyInputStreamToFile(
+                                this.getClass().getClassLoader().getResourceAsStream("setup/solr/" + name), file);
+                    }
 
                     this.result.setResult(consoleWriter.toString());
 
