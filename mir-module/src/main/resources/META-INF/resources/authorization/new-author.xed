@@ -6,8 +6,8 @@
       <xed:cancel url="{$ServletsBaseURL}MCRUserServlet" />
 
       <xed:bind xpath="user">
-        <xed:bind xpath="roles/role/@name" set="submitter" />
-        <xed:bind xpath="attributes/attribute[@name='mailtoken']/@value" set="{xed:generate-id()}" />
+        <xed:bind xpath="roles/role/@name" initially="submitter" />
+        <xed:bind xpath="attributes/attribute[@name='mailtoken']/@value" initially="{xed:generate-id()}" />
 
         <div class="panel panel-default">
           <div class="panel-heading">
