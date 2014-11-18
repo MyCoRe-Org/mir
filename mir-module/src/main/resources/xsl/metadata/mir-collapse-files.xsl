@@ -32,7 +32,6 @@
                         <th>Name</th>
                         <th>Date</th>
                         <th>Size</th>
-                        <th></th>
                       </tr>
                     </thead>
                     <tbody>

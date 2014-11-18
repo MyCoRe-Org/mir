@@ -8,32 +8,10 @@
         <xsl:variable name="dateIssued">
           <xsl:apply-templates mode="mods.datePublished" select="$mods" />
         </xsl:variable>
-        <time itemprop="datePublished" datetime="{$dateIssued}" data-toggle="tooltip" title="Publication date">
-          <xsl:variable name="format">
-            <xsl:choose>
-              <xsl:when test="string-length(normalize-space($dateIssued))=4">
-                <xsl:value-of select="i18n:translate('metaData.dateYear')" />
-              </xsl:when>
-              <xsl:when test="string-length(normalize-space($dateIssued))=7">
-                <xsl:value-of select="i18n:translate('metaData.dateYearMonth')" />
-              </xsl:when>
-              <xsl:when test="string-length(normalize-space($dateIssued))=10">
-                <xsl:value-of select="i18n:translate('metaData.dateYearMonthDay')" />
-              </xsl:when>
-              <xsl:otherwise>
-                <xsl:value-of select="i18n:translate('metaData.dateTime')" />
-              </xsl:otherwise>
-            </xsl:choose>
-          </xsl:variable>
-          <xsl:call-template name="formatISODate">
-            <xsl:with-param name="date" select="$dateIssued" />
-            <xsl:with-param name="format" select="$format" />
-          </xsl:call-template>
-        </time>
         <!-- TODO: Update badges -->
-        <span class="pull-right" id="badges">
+        <span class="" id="badges">
           <xsl:call-template name="categorySearchLink">
-            <xsl:with-param name="class" select="'label label-default'" />
+            <xsl:with-param name="class" select="'label label-info'" />
             <xsl:with-param name="node" select="($mods/mods:genre[@type='kindof']|$mods/mods:genre[@type='intern'])[1]" />
           </xsl:call-template>
           <xsl:variable name="accessCondition" select="normalize-space($mods/mods:accessCondition[@type='use and reproduction'])" />
@@ -53,12 +31,36 @@
               </xsl:choose>
             </xsl:variable>
             <xsl:call-template name="searchLink">
-              <xsl:with-param name="class" select="'label label-success'" />
+              <xsl:with-param name="class" select="'label label-info'" />
               <xsl:with-param name="linkText" select="$linkText" />
               <xsl:with-param name="query" select="concat('%2BallMeta%3A&quot;',$accessCondition,'&quot;')" />
             </xsl:call-template>
           </xsl:if>
         </span>
+        <time itemprop="datePublished" datetime="{$dateIssued}" data-toggle="tooltip" title="Publication date">
+          <span class="label label-primary">
+            <xsl:variable name="format">
+              <xsl:choose>
+                <xsl:when test="string-length(normalize-space($dateIssued))=4">
+                  <xsl:value-of select="i18n:translate('metaData.dateYear')" />
+                </xsl:when>
+                <xsl:when test="string-length(normalize-space($dateIssued))=7">
+                  <xsl:value-of select="i18n:translate('metaData.dateYearMonth')" />
+                </xsl:when>
+                <xsl:when test="string-length(normalize-space($dateIssued))=10">
+                  <xsl:value-of select="i18n:translate('metaData.dateYearMonthDay')" />
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:value-of select="i18n:translate('metaData.dateTime')" />
+                </xsl:otherwise>
+              </xsl:choose>
+            </xsl:variable>
+            <xsl:call-template name="formatISODate">
+              <xsl:with-param name="date" select="$dateIssued" />
+              <xsl:with-param name="format" select="$format" />
+            </xsl:call-template>
+          </span>
+        </time>
       <h1 itemprop="name">
         <xsl:apply-templates mode="mods.title" select="$mods" />
       </h1>

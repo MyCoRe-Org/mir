@@ -22,29 +22,14 @@
       </xsl:if>
     </xsl:variable>
 
-
+    <div class="row result_head">
+      <div class="col-xs-12 result_headline">
+        <h1><xsl:value-of select="$PageTitle" /></h1>
+      </div>
+    </div>
 
 <!-- Suchschlitz mit Suchbegriff, Treffer - Nummer, Vorschau, Autor, Änderungsdatum, Link zu den Details, Filter  -->
-    <div class="row result_head">
-      <div class="col-lg-3 result_titles">
-        <h1><xsl:value-of select="$PageTitle" /></h1>
-        <h2>
-          <small>
-          <xsl:choose>
-            <xsl:when test="$hits=0">
-              <xsl:value-of select="i18n:translate('results.noObject')" />
-            </xsl:when>
-            <xsl:when test="$hits=1">
-              <xsl:value-of select="i18n:translate('results.oneObject')" />
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:value-of select="i18n:translate('results.nObjects',$hits)" />
-            </xsl:otherwise>
-          </xsl:choose>
-          </small>
-        </h2>
-      </div>
-
+    <div class="row result_searchline">
       <div class="col-lg-9 text-center result_search">
         <div class="search_box">
           <form action="{$WebApplicationBaseURL}servlets/solr/find" class="search_form" method="post">
@@ -69,11 +54,45 @@
           </form>
         </div>
       </div>
+      <div class="col-lg-3 result_titles">
+
+      </div>
     </div> <!-- ENDE: Suchschlitz mit Suchbegriff -->
 
 <!-- Filter, Pagination & Trefferliste -->
     <div class="row result_body">
+
+      <div class="col-lg-9 result_list">
+        <xsl:copy-of select="$ResultPages" />
+        <xsl:comment>
+          RESULT LIST START
+        </xsl:comment>
+        <div id="hit_list">
+          <xsl:apply-templates select="doc[@objectType='mods']" />
+        </div>
+        <xsl:comment>
+          RESULT LIST END
+        </xsl:comment>
+        <div class="result_list_end" />
+        <xsl:copy-of select="$ResultPages" />
+      </div>
+
       <div class="col-lg-3 result_filter">
+        <h2>
+          <small>
+          <xsl:choose>
+            <xsl:when test="$hits=0">
+              <xsl:value-of select="i18n:translate('results.noObject')" />
+            </xsl:when>
+            <xsl:when test="$hits=1">
+              <xsl:value-of select="i18n:translate('results.oneObject')" />
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:value-of select="i18n:translate('results.nObjects',$hits)" />
+            </xsl:otherwise>
+          </xsl:choose>
+          </small>
+        </h2>
         <xsl:if test="/response/lst[@name='facet_counts']/lst[@name='facet_fields'] and $hits &gt; 0">
           <div class="panel panel-default">
             <div class="panel-heading">
@@ -88,20 +107,6 @@
             </div>
           </div>
         </xsl:if>
-      </div>
-      <div class="col-lg-9 result_list">
-        <xsl:copy-of select="$ResultPages" />
-        <xsl:comment>
-          RESULT LIST START
-        </xsl:comment>
-        <div id="hit_list">
-          <xsl:apply-templates select="doc[@objectType='mods']" />
-        </div>
-        <xsl:comment>
-          RESULT LIST END
-        </xsl:comment>
-        <div class="result_list_end" />
-        <xsl:copy-of select="$ResultPages" />
       </div>
     </div>
   </xsl:template>

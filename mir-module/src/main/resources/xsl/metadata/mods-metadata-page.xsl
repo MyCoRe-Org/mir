@@ -74,50 +74,86 @@
             </xsl:if>
             <!-- End: COLLAPSE -->
           </div>
-          <div class="detail_block">
+
+<!-- metadata -->
+          <div class="panel panel-default mir_metadata">
+            <div class="panel-heading">
+              <h3 class="panel-title">Systeminformationen</h3>
+            </div>
+            <div class="panel-body">
             <!-- Start: METADATA -->
             <xsl:apply-templates select="div[@id='mir-metadata']" mode="newMetadata" />
             <!-- End: METADATA -->
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="detail_block">
-            <h4>Systeminformationen</h4>
-            <!-- Start: ADMINMETADATA -->
-            <xsl:apply-templates select="div[@id='mir-admindata']" mode="newMetadata" />
-            <!-- End: ADMINMETADATA -->
-          </div>
-          <div class="detail_block">
-            <h4>Teilen</h4>
-            <div class="row">
-              <div class="col-md-7">
-                <!-- SocialSharePrivacy BEGIN -->
-                <div id="socialshareprivacy"></div>
-                <!-- SocialSharePrivacy END -->
-              </div>
-              <div class="col-md-5">
-                <!-- QR-Code BEGIN -->
-                <span class="pull-right hidden-xs" rel="tooltip" title="QR-code for easy mobile access to this page.">
-                  <xsl:variable name="qrSize" select="145"/>
-                  <img src="{$WebApplicationBaseURL}img/qrcodes/{$qrSize}/{substring-after($RequestURL, $WebApplicationBaseURL)}" style="min-width:{$qrSize}px"
-                    alt="QR-code for easy mobile access" />
-                </span>
-                <!-- QR-Code END -->
-              </div>
             </div>
           </div>
-          <div class="detail_block">
-            <h4>Zitieren</h4>
-            <!-- Start: CITATION -->
-            <xsl:apply-templates select="div[@id='mir-citation']" mode="copyContent" />
-            <!-- End: CITATION -->
-          </div>
-          <div class="detail_block">
-            <!-- Start: EXPORT -->
-            <xsl:apply-templates select="div[@id='mir-export']" mode="copyContent" />
-            <!-- End: EXPORT -->
-          </div>
+
+<!-- end: left column -->
         </div>
+
+<!-- right column -->
+        <div class="col-md-4">
+<!-- system -->
+            <div class="panel panel-default system">
+              <div class="panel-heading">
+                <h3 class="panel-title">Systeminformationen</h3>
+              </div>
+              <div class="panel-body">
+                <!-- Start: ADMINMETADATA -->
+                <xsl:apply-templates select="div[@id='mir-admindata']" mode="newMetadata" />
+                <!-- End: ADMINMETADATA -->
+              </div>
+            </div>
+<!-- social -->
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h3 class="panel-title">Teilen</h3>
+              </div>
+              <div class="panel-body">
+                <div class="row">
+                  <div class="col-md-7">
+                    <!-- SocialSharePrivacy BEGIN -->
+                    <div id="socialshareprivacy"></div>
+                    <!-- SocialSharePrivacy END -->
+                  </div>
+                  <div class="col-md-5">
+                    <!-- QR-Code BEGIN -->
+                    <span class="pull-right hidden-xs" rel="tooltip" title="QR-code for easy mobile access to this page.">
+                      <xsl:variable name="qrSize" select="145"/>
+                      <img src="{$WebApplicationBaseURL}img/qrcodes/{$qrSize}/{substring-after($RequestURL, $WebApplicationBaseURL)}" style="min-width:{$qrSize}px"
+                        alt="QR-code for easy mobile access" />
+                    </span>
+                    <!-- QR-Code END -->
+                  </div>
+                </div>
+              </div>
+            </div>
+<!-- cites -->
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h3 class="panel-title">Zitieren</h3>
+              </div>
+              <div class="panel-body">
+                <!-- Start: CITATION -->
+                <xsl:apply-templates select="div[@id='mir-citation']" mode="copyContent" />
+                <!-- End: CITATION -->
+              </div>
+            </div>
+<!-- export -->
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h3 class="panel-title">Export</h3>
+              </div>
+              <div class="panel-body">
+                <!-- Start: EXPORT -->
+                <xsl:apply-templates select="div[@id='mir-export']" mode="copyContent" />
+                <!-- End: EXPORT -->
+              </div>
+            </div>
+
+<!-- end: right column -->
+        </div>
+
+<!--  end: detail row -->
       </div>
     </xsl:copy>
   </xsl:template>

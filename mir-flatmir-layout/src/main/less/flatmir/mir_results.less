@@ -8,20 +8,17 @@
 @highlight:     #f39c12; // orange
 
 .result_head {
-  margin-bottom: 20px;
-  .result_titles {
-    h1 {
-      margin: 20px 0 0 0;
-    }
-    h2 {
-      margin: 0;
-    }
+  h1 {
+    margin: 0 0 20px 0;
   }
+}
+.result_searchline {
+  margin-bottom: 20px;
   .result_search {
     .search_box {
       display: inline-block;
       width: 80%;
-      margin-top: 60px;
+      margin-top: 25px;
     }
   }
 }
@@ -33,12 +30,17 @@
 
 .result_body {
   .result_filter {
+    h2 {
+      text-align: right;
+      margin: 0 10px 23px 0;
+    }
     .panel-default {
       border: 1px solid @filter_border;
     }
     .panel {
       color: @filter;
-      margin: 56px 0 0 0;
+      margin: 0px 0 0 0;
+      float: right;
       width: 90%;
       .panel-heading {
         background-color: @filter_back;

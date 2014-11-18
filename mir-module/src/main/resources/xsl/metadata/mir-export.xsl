@@ -5,38 +5,35 @@
   <xsl:template match="/">
     <xsl:variable name="mods" select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods" />
     <div id="mir-export">
-      <div class="well">
-        <h4>Export</h4>
-        <xsl:call-template name="exportLink">
-          <xsl:with-param name="transformer" select="'bibtex'"/>
-          <xsl:with-param name="linkText" select="'BibTeX'"/>
-        </xsl:call-template>
-        ,
-        <xsl:call-template name="exportLink">
-          <xsl:with-param name="transformer" select="'mods'"/>
-          <xsl:with-param name="linkText" select="'MODS'"/>
-        </xsl:call-template>
-        ,
-        <xsl:call-template name="exportLink">
-          <xsl:with-param name="transformer" select="'ris'"/>
-          <xsl:with-param name="linkText" select="'RIS'"/>
-        </xsl:call-template>
-        ,
-        <xsl:call-template name="exportLink">
-          <xsl:with-param name="transformer" select="'isi'"/>
-          <xsl:with-param name="linkText" select="'ISI'"/>
-        </xsl:call-template>
-        ,
-        <xsl:call-template name="exportLink">
-          <xsl:with-param name="transformer" select="'wordbib'"/>
-          <xsl:with-param name="linkText" select="'MS Word bibliography'"/>
-        </xsl:call-template>
-        ,
-        <xsl:call-template name="exportLink">
-          <xsl:with-param name="transformer" select="'mods2dc'"/>
-          <xsl:with-param name="linkText" select="'DC'"/>
-        </xsl:call-template>
-      </div>
+      <xsl:call-template name="exportLink">
+        <xsl:with-param name="transformer" select="'bibtex'"/>
+        <xsl:with-param name="linkText" select="'BibTeX'"/>
+      </xsl:call-template>
+      <xsl:call-template name="printSeperator" />
+      <xsl:call-template name="exportLink">
+        <xsl:with-param name="transformer" select="'mods'"/>
+        <xsl:with-param name="linkText" select="'MODS'"/>
+      </xsl:call-template>
+      <xsl:call-template name="printSeperator" />
+      <xsl:call-template name="exportLink">
+        <xsl:with-param name="transformer" select="'ris'"/>
+        <xsl:with-param name="linkText" select="'RIS'"/>
+      </xsl:call-template>
+      <xsl:call-template name="printSeperator" />
+      <xsl:call-template name="exportLink">
+        <xsl:with-param name="transformer" select="'isi'"/>
+        <xsl:with-param name="linkText" select="'ISI'"/>
+      </xsl:call-template>
+      <xsl:call-template name="printSeperator" />
+      <xsl:call-template name="exportLink">
+        <xsl:with-param name="transformer" select="'wordbib'"/>
+        <xsl:with-param name="linkText" select="'MS Word bibliography'"/>
+      </xsl:call-template>
+      <xsl:call-template name="printSeperator" />
+      <xsl:call-template name="exportLink">
+        <xsl:with-param name="transformer" select="'mods2dc'"/>
+        <xsl:with-param name="linkText" select="'DC'"/>
+      </xsl:call-template>
     </div>
     <xsl:apply-imports />
   </xsl:template>
@@ -49,5 +46,8 @@
       </xsl:attribute>
       <xsl:value-of select="$linkText" />
     </a>
+  </xsl:template>
+  <xsl:template name="printSeperator">
+    <span><xsl:text>, </xsl:text></span>
   </xsl:template>
 </xsl:stylesheet>
