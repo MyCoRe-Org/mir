@@ -95,7 +95,7 @@
           RESULT LIST START
         </xsl:comment>
         <div id="hit_list">
-          <xsl:apply-templates select="doc" />
+          <xsl:apply-templates select="doc[@objectType='mods']" />
         </div>
         <xsl:comment>
           RESULT LIST END
@@ -173,6 +173,7 @@
                 <a class="hit_option hit_download" href="{$derivifs}" title="">
                   <xsl:choose>
                     <xsl:when test="$derivates/str[@name='iviewFile']">
+                      <!-- show IView thumbnail as preview -->
                       <xsl:call-template name="iViewLinkPrev">
                         <xsl:with-param name="mcrid" select="$identifier" />
                         <xsl:with-param name="derivate" select="$derivid" />
@@ -180,6 +181,7 @@
                       </xsl:call-template>
                     </xsl:when>
                     <xsl:when test="str:tokenize($derivates/str[@name='maindoc'][1],'.')[position()=last()] = 'pdf'">
+                      <!-- show PDF thumbnail as preview -->
                       <xsl:variable name="filePath" select="concat($derivates/str[@name='id'][1],'/',mcr:encodeURIPath($derivates/str[@name='maindoc'][1]),$HttpSession)" />
                       <img class="hit_icon" alt="{$mods-type-i18n}" title="thumbnail">
                         <xsl:attribute name="src">
@@ -188,13 +190,25 @@
                       </img>
                     </xsl:when>
                     <xsl:otherwise>
+                      <!-- show default icon with mime-type download icon -->
+                      <!-- xsl:variable name="contentType" select="document(concat('ifs:/',$derivid))/mcr_directory/children/child[name=$maindoc]/contentType" />
+                      <xsl:variable name="fileType" select="document('webapp:FileContentTypes.xml')/FileContentTypes/type[@ID=$contentType]//extension" / -->
+                      <xsl:variable name="fileType" select="'docx'" />
                       <img class="hit_icon" src="{$WebApplicationBaseURL}images/icons/icon_common.png" />
-                      <img class="hit_icon_overlay" src="{$WebApplicationBaseURL}images/icons/download_default.png" /><!-- TODO: add mimetypes -->
+                      <xsl:choose>
+                        <xsl:when test="$fileType='pdf' or $fileType='msexcel' or $fileType='xlsx' or $fileType='msword97' or $fileType='docx'">
+                          <img class="hit_icon_overlay" src="{$WebApplicationBaseURL}images/icons/download_{$fileType}.png" />
+                        </xsl:when>
+                        <xsl:otherwise>
+                          <img class="hit_icon_overlay" src="{$WebApplicationBaseURL}images/icons/download_default.png" />
+                        </xsl:otherwise>
+                      </xsl:choose>
                     </xsl:otherwise>
                   </xsl:choose>
                 </a>
               </xsl:when>
               <xsl:otherwise>
+                <!-- show default icon -->
                 <img class="hit_icon" src="{$WebApplicationBaseURL}images/icons/icon_common_disabled.png" />
               </xsl:otherwise>
             </xsl:choose>
