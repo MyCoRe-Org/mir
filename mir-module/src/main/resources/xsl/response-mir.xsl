@@ -167,7 +167,7 @@
           </div>
 
           <!-- document preview -->
-          <div>
+          <div class="hit_download_box">
             <xsl:choose>
               <xsl:when test="string-length($derivid) &gt; 0">
                 <a class="hit_option hit_download" href="{$derivifs}" title="">
@@ -188,13 +188,14 @@
                       </img>
                     </xsl:when>
                     <xsl:otherwise>
-                      <img class="hit_icon" src="{$WebApplicationBaseURL}images/icons/{$CurrentLang}/icon_{$mods-type}.png" alt="{$mods-type-i18n}" />
+                      <img class="hit_icon" src="{$WebApplicationBaseURL}images/icons/icon_common.png" />
+                      <img class="hit_icon_overlay" src="{$WebApplicationBaseURL}images/icons/download_default.png" /><!-- TODO: add mimetypes -->
                     </xsl:otherwise>
                   </xsl:choose>
                 </a>
               </xsl:when>
               <xsl:otherwise>
-                <img class="hit_icon" src="{$WebApplicationBaseURL}images/icons/{$CurrentLang}/icon_{$mods-type}.png" alt="{$mods-type-i18n}" />
+                <img class="hit_icon" src="{$WebApplicationBaseURL}images/icons/icon_common_disabled.png" />
               </xsl:otherwise>
             </xsl:choose>
           </div>

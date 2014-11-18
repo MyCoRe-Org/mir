@@ -105,12 +105,25 @@
       .hit_star_3 {}
       .hit_star_4 {}
       .hit_star_5 {}
+      .hit_download_box {
+        position:relative;
+      }
+      a .hit_icon {
+        &:hover {
+          box-shadow: 1px 1px 4px #999;
+        }
+      }
       .hit_icon {
         height: 103px;
         width: 73px;
         border: 1px solid @light_neutral;
         border-bottom-left-radius: 25px;
         margin: 5px 0 0 0px;
+      }
+      .hit_icon_overlay {
+        position: absolute;
+        top: 20px;
+        left: -10px;
       }
       .hitmid {
         padding-top: 4px;
