@@ -4,7 +4,17 @@
     //for select box in search field on hit list page
     $( ".search_type a" ).click(function() {
         $( "#search_type_label" ).html( $( this ).html() );
-        $( "#search_type_button" ).attr( 'value', $( this ).html() );
+        $( "#search_type_button" ).attr( 'value', $( this ).attr('value') );
+    });
+
+    //change search string on result page
+    $( ".search_box form" ).submit(function( event ) {
+      if ($('#search_type_button').attr('value') == 'all') {
+        var newAction = $(this).attr('action') + "?qry=" + $('.search_box input').val();
+      } else {
+        var newAction = $(this).attr('action') + "?qry=" + $('.search_box input').val() + "&amp;df=" + $('#search_type_button').attr('value');
+      }
+      $(this).attr('action', newAction);
     });
 
     var languageList = jQuery('#topnav .languageList');

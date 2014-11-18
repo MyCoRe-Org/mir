@@ -50,15 +50,15 @@
           <form action="{$WebApplicationBaseURL}servlets/solr/find" class="search_form" method="post">
             <div class="input-group input-group-sm">
               <div class="input-group-btn">
-                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" value="Alles" id="search_type_button"><span id="search_type_label">Alles</span> <span class="caret"></span></button>
+                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" value="all" id="search_type_button"><span id="search_type_label">Alles</span> <span class="caret"></span></button>
                 <ul class="dropdown-menu search_type">
-                  <li><a href="#" data-value="all">Alles</a></li>
-                  <li><a href="#" data-value="title">Titel</a></li>
-                  <li><a href="#" data-value="author">Autor</a></li>
-                  <li><a href="#" data-value="name">Name</a></li>
-                  <li><a href="#" data-value="gnd">GND</a></li>
-                  <li><a href="#" data-value="allMeta">Alle Metadaten</a></li>
-                  <li><a href="#" data-value="fullText">Volltext</a></li>
+                  <li><a href="#" value="all">Alles</a></li>
+                  <li><a href="#" value="mods.title">Titel</a></li>
+                  <li><a href="#" value="mods.author">Autor</a></li>
+                  <li><a href="#" value="mods.name.top">Name</a></li>
+                  <li><a href="#" value="mods.gnd">GND</a></li>
+                  <li><a href="#" value="allMeta">Alle Metadaten</a></li>
+                  <li><a href="#" value="content">Volltext</a></li>
                 </ul>
               </div>
               <input class="form-control" name="qry" placeholder="ein oder mehrere Schlagworte" type="text" />
@@ -312,7 +312,7 @@
                         <a href="{$ServletsBaseURL}solr/mods_gnd?q={$gnd}" title="Suche nach allen Publikationen" >
                           <xsl:value-of select="$author_name" />
                         </a>
-                        <xsl:text> </xsl:text><!-- add whitespace here -->
+                        <xsl:text>&#160;</xsl:text><!-- add whitespace here -->
                         <a href="http://d-nb.info/gnd/{$gnd}" title="Link zur GND">
                           <sup>GND</sup>
                         </a>
