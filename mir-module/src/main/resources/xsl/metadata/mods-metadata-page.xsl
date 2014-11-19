@@ -109,22 +109,9 @@
                 <h3 class="panel-title">Teilen</h3>
               </div>
               <div class="panel-body">
-                <div class="row">
-                  <div class="col-md-7">
-                    <!-- SocialSharePrivacy BEGIN -->
-                    <div id="socialshareprivacy"></div>
-                    <!-- SocialSharePrivacy END -->
-                  </div>
-                  <div class="col-md-5">
-                    <!-- QR-Code BEGIN -->
-                    <span class="pull-right hidden-xs" rel="tooltip" title="QR-code for easy mobile access to this page.">
-                      <xsl:variable name="qrSize" select="145"/>
-                      <img src="{$WebApplicationBaseURL}img/qrcodes/{$qrSize}/{substring-after($RequestURL, $WebApplicationBaseURL)}" style="min-width:{$qrSize}px"
-                        alt="QR-code for easy mobile access" />
-                    </span>
-                    <!-- QR-Code END -->
-                  </div>
-                </div>
+                <!-- Start: SHARE -->
+                <xsl:apply-templates select="div[@id='mir-share']" mode="copyContent" />
+                <!-- End: SHARE -->
               </div>
             </div>
 <!-- cites -->
