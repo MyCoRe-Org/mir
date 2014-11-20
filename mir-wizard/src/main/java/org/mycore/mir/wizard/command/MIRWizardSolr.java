@@ -101,10 +101,11 @@ public class MIRWizardSolr extends MIRWizardCommand {
 
                     final String dataDir = MCRConfigurationDir.getConfigurationDirectory().getAbsolutePath()
                             + File.separator + "data";
-                    
+
                     MIRWizardUnzip.unzip(file.getAbsolutePath(), dataDir);
 
-                    final String confDir = dataDir + File.separator + "solr" + File.separator + "conf";
+                    final String confDir = dataDir + File.separator + "solr" + File.separator + "collection1"
+                            + File.separator + "conf";
                     final String[] confs = { "schema.xml", "solrconfig.xml" };
                     for (String name : confs) {
                         LOGGER.info("copy file \"" + name + "\" to \"" + confDir + "\"...");
