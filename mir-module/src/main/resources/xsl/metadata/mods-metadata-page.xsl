@@ -92,17 +92,6 @@
 
 <!-- right column -->
         <div class="col-md-4">
-<!-- system -->
-            <div class="panel panel-default system">
-              <div class="panel-heading">
-                <h3 class="panel-title">Systeminformationen</h3>
-              </div>
-              <div class="panel-body">
-                <!-- Start: ADMINMETADATA -->
-                <xsl:apply-templates select="div[@id='mir-admindata']" mode="newMetadata" />
-                <!-- End: ADMINMETADATA -->
-              </div>
-            </div>
 <!-- social -->
             <div class="panel panel-default">
               <div class="panel-heading">
@@ -134,6 +123,17 @@
                 <!-- Start: EXPORT -->
                 <xsl:apply-templates select="div[@id='mir-export']" mode="copyContent" />
                 <!-- End: EXPORT -->
+              </div>
+            </div>
+<!-- system -->
+            <div class="panel panel-default system">
+              <div class="panel-heading">
+                <h3 class="panel-title">Systeminformationen</h3>
+              </div>
+              <div class="panel-body">
+                <!-- Start: ADMINMETADATA -->
+                <xsl:apply-templates select="div[@id='mir-admindata']" mode="newMetadata" />
+                <!-- End: ADMINMETADATA -->
               </div>
             </div>
 
