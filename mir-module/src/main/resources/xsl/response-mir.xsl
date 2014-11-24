@@ -10,7 +10,7 @@
     </xsl:if>
   </xsl:variable>
 
-  <xsl:template match="/response/result|/response/response[@subresult='groupOwner']/result|lst[@name='grouped']/lst[@name='returnId' and int[@name='matches']='0']" priority="10">
+  <xsl:template match="/response/result|lst[@name='grouped']/lst[@name='returnId']" priority="10">
     <xsl:variable name="ResultPages">
       <xsl:if test="$hits &gt; 0">
         <xsl:call-template name="solr.Pagination">
@@ -68,7 +68,7 @@
           RESULT LIST START
         </xsl:comment>
         <div id="hit_list">
-          <xsl:apply-templates select="doc[@objectType='mods']" />
+          <xsl:apply-templates select="doc|arr[@name='groups']/lst/str[@name='groupValue']" />
         </div>
         <xsl:comment>
           RESULT LIST END
@@ -111,7 +111,7 @@
     </div>
   </xsl:template>
 
-  <xsl:template match="doc[@objectType='mods']" priority="10" mode="resultList">
+  <xsl:template match="doc" priority="10" mode="resultList">
     <!--
       Do not read MyCoRe object at this time
     -->
@@ -128,7 +128,7 @@
       </xsl:choose>
     </xsl:variable>
     <xsl:variable name="mods-type-i18n" select="i18n:translate(concat('component.mods.genre.',$mods-type))" />
-    <xsl:variable name="hitCount" select="count(preceding-sibling::doc)+1" />
+    <xsl:variable name="hitCount" select="count(preceding-sibling::*[name()=name(.)])+1" /> <!-- TODO: fix counting, add start parameter -->
     <xsl:variable name="hitItemClass">
       <xsl:choose>
         <xsl:when test="$hitCount mod 2 = 1">odd</xsl:when>
@@ -137,9 +137,9 @@
     </xsl:variable>
 
     <!-- generate browsing url -->
-    <xsl:variable name="href" select="concat($proxyBaseURL,$HttpSession,$solrParams)" />
-      <xsl:variable name="startPosition" select="count(preceding-sibling::*[name()=name(.)]) + (($currentPage) -1) * $rows" />
-      <xsl:variable name="hitHref">
+    <xsl:variable name="href" select="concat($proxyBaseURL,$HttpSession,$solrParams)" /> <!-- TODO: fix $solrParams, loosing current query parameters atm -->
+    <xsl:variable name="startPosition" select="count(preceding-sibling::*[name()=name(.)]) + (($currentPage) -1) * $rows" /> <!-- TODO: fix counting, use $hitCount -->
+    <xsl:variable name="hitHref">
       <xsl:value-of select="concat($href, '&amp;start=',$startPosition, '&amp;fl=id&amp;rows=1&amp;XSL.Style=browse')" />
     </xsl:variable>
 
