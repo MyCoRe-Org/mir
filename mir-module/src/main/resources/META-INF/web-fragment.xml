@@ -31,20 +31,4 @@
     <servlet-name>MCRFileNodeServlet</servlet-name>
     <dispatcher>REQUEST</dispatcher>
   </filter-mapping>
-  <servlet>
-    <servlet-name>MCRQRCodeServlet</servlet-name>
-    <servlet-class>org.mycore.mir.MCRQRCodeServlet</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>MCRQRCodeServlet</servlet-name>
-    <url-pattern>/img/qrcodes/*</url-pattern>
-  </servlet-mapping>
-  <servlet>
-    <servlet-name>MCRPDFThumbnailServlet</servlet-name>
-    <servlet-class>org.mycore.mir.MCRPDFThumbnailServlet</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>MCRPDFThumbnailServlet</servlet-name>
-    <url-pattern>/img/pdfthumb/*</url-pattern>
-  </servlet-mapping>
 </web-fragment>
