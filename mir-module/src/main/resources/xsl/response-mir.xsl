@@ -137,7 +137,7 @@
     </xsl:variable>
 
     <!-- generate browsing url -->
-    <xsl:variable name="href" select="concat($proxyBaseURL,$HttpSession,$solrParams)" /> <!-- TODO: fix $solrParams, loosing current query parameters atm -->
+    <xsl:variable name="href" select="concat($proxyBaseURL,$HttpSession,$solrParams)" />
     <xsl:variable name="startPosition" select="$hitNumberOnPage - 1 + (($currentPage) -1) * $rows" />
     <xsl:variable name="hitHref">
       <xsl:value-of select="concat($href, '&amp;start=',$startPosition, '&amp;fl=id&amp;rows=1&amp;XSL.Style=browse')" />
