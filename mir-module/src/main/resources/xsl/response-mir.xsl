@@ -112,6 +112,7 @@
   </xsl:template>
 
   <xsl:template match="doc" priority="10" mode="resultList">
+    <xsl:param name="hitNumberOnPage" select="count(preceding-sibling::*[name()=name(.)])+1" />
     <!--
       Do not read MyCoRe object at this time
     -->
@@ -128,17 +129,16 @@
       </xsl:choose>
     </xsl:variable>
     <xsl:variable name="mods-type-i18n" select="i18n:translate(concat('component.mods.genre.',$mods-type))" />
-    <xsl:variable name="hitCount" select="count(preceding-sibling::*[name()=name(.)])+1" /> <!-- TODO: fix counting, add start parameter -->
     <xsl:variable name="hitItemClass">
       <xsl:choose>
-        <xsl:when test="$hitCount mod 2 = 1">odd</xsl:when>
+        <xsl:when test="$hitNumberOnPage mod 2 = 1">odd</xsl:when>
         <xsl:otherwise>even</xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
 
     <!-- generate browsing url -->
     <xsl:variable name="href" select="concat($proxyBaseURL,$HttpSession,$solrParams)" /> <!-- TODO: fix $solrParams, loosing current query parameters atm -->
-    <xsl:variable name="startPosition" select="count(preceding-sibling::*[name()=name(.)]) + (($currentPage) -1) * $rows" /> <!-- TODO: fix counting, use $hitCount -->
+    <xsl:variable name="startPosition" select="$hitNumberOnPage - 1 + (($currentPage) -1) * $rows" />
     <xsl:variable name="hitHref">
       <xsl:value-of select="concat($href, '&amp;start=',$startPosition, '&amp;fl=id&amp;rows=1&amp;XSL.Style=browse')" />
     </xsl:variable>
@@ -159,7 +159,7 @@
 
           <!-- hit number -->
           <div class="hit_counter">
-            <xsl:value-of select="$hitCount" />
+            <xsl:value-of select="$hitNumberOnPage" />
           </div>
 
           <!-- relevance -->
