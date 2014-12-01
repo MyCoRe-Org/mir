@@ -78,7 +78,7 @@
 <!-- metadata -->
           <div class="panel panel-default mir_metadata">
             <div class="panel-heading">
-              <h3 class="panel-title">Systeminformationen</h3>
+              <h3 class="panel-title">Einordnung</h3>
             </div>
             <div class="panel-body">
             <!-- Start: METADATA -->
