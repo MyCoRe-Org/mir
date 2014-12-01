@@ -2,16 +2,23 @@
  * hit list
  *****************************************************************************/
 
-@dark_neutral:  #999;    // dark gray
-@light_neutral: #ccc;    // light gray
-@link_color:    #4b8fbc; // blue
-@highlight:     #f39c12; // orange
+@dark_neutral:      #999;       // dark gray
+@light_neutral:     #ccc;       // light gray
+@link_color:        #4b8fbc;    // blue
+@highlight:         #f39c12;    // orange
+
+@filter_back:       #ECF0F1;
+@filter_border:     #ccc;
+@filter_headline:   #999;
+@filter_hits:       #999;
+@filter:            #666;
 
 .result_head {
   h1 {
     margin: 0 0 20px 0;
   }
 }
+
 .result_searchline {
   margin-bottom: 20px;
   .result_search {
@@ -22,16 +29,16 @@
     }
   }
 }
-@filter_back: #ECF0F1;
-@filter_border: #ccc;
-@filter_headline: #999;
-@filter_hits: #999;
-@filter: #666;
+
 
 .result_body {
   .result_filter {
+    float: right;
+    &:after {
+      .clearfix();
+    }
     h2 {
-      text-align: right;
+      text-align: center;
       margin: 0 10px 23px 0;
     }
     .panel-default {
@@ -39,9 +46,9 @@
     }
     .panel {
       color: @filter;
-      margin: 0px 0 0 0;
-      float: right;
-      width: 90%;
+      margin: 0px 0 20px 0;
+      float: left;
+      width: 100%;
       .panel-heading {
         background-color: @filter_back;
         .panel-title {
@@ -80,10 +87,13 @@
         border-top-left-radius: 10px;
         padding: 1px 0 0 0;
         width: 73px;
+        float: left;
       }
       .hit_stars {
         margin: 0px 0px 5px 15px;
         overflow: hidden;
+        width: 73px;
+        float: left;
         .hit_star {
           float:left;
           width: 5px;
@@ -109,6 +119,9 @@
       .hit_star_5 {}
       .hit_download_box {
         position:relative;
+        float: left;
+        width: 73px;
+        display: none;
       }
       a .hit_icon {
         &:hover {
@@ -120,31 +133,31 @@
         width: 73px;
         border: 1px solid @light_neutral;
         border-bottom-left-radius: 25px;
-        margin: 5px 0 0 0px;
+        margin: 0px 0 0 0px;
       }
       .hit_icon_overlay {
         position: absolute;
         top: 20px;
         left: -10px;
       }
-      .hitmid {
-        padding-top: 4px;
-        border-top: 0px solid @light_neutral;
-        .hit_date {
-          color: @dark_neutral;
-          float: left;
-          margin-left: 2px;
-        }
-        .hit_type {
-          float: left;
-          color: @dark_neutral;
-        }
+      .hit_tnd_container {
+      }
+      .hit_tnd_content {
+          overflow:hidden;
+      }
+      .hit_date {
+        color: @dark_neutral;
+        float: left;
+        margin-left: 5px;
+      }
+      .hit_type {
+        float: left;
+        color: @dark_neutral;
       }
       .hit_title {
         font-size: 20px;
         margin: 15px 0 5px 0;
         border-left: 0px solid @light_neutral;
-        padding-left: 0px;
         text-decoration: none;
         a:hover {
           text-decoration: none;
@@ -245,11 +258,58 @@
     border-bottom-right-radius: 5px;
     border: 1px solid @light_neutral;
     border-width: 0 1px 1px 1px;
-    margin: 0 0 20px 73px;
+    margin: 0 0 20px 0px;
   }
   }
 }
 
 
+/* xs: default up to 750px ***************************************************/
 
+
+/* xs hd */
+@media (min-width: 350px) {
+  .result_body .result_list #hit_list .hit_item .hit_download_box {
+    display: block;
+  }
+  .result_body .result_list .result_list_end {
+    margin: 0 0 20px 73px;
+  }
+  .hit_tnd_container,
+  .hit_title,
+  .hit_author,
+  .hit_source,
+  .hit_abstract,
+  .hit_pub_name {
+    padding-left: 88px;
+  }
+  .result_body .result_filter .panel {
+    width: 45%;
+    margin-right: 5%;
+  }
+}
+
+
+/* sm: up to 970 px **********************************************************/
+@media (min-width: @screen-tablet) {
+  .result_body .result_filter .panel {
+    float: right;
+    width: 90%;
+  }
+  .result_body .result_filter h2 {
+      text-align: right;
+  }
+}
+
+
+/* md: up to 1170 px *********************************************************/
+@media (min-width: @screen-desktop) {
+
+}
+
+
+/* lg: larger than 1170 px ***************************************************/
+@media (min-width: @screen-lg-desktop) {
+
+}
 

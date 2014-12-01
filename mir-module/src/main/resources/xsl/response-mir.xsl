@@ -30,7 +30,7 @@
 
 <!-- Suchschlitz mit Suchbegriff, Treffer - Nummer, Vorschau, Autor, Änderungsdatum, Link zu den Details, Filter  -->
     <div class="row result_searchline">
-      <div class="col-lg-9 text-center result_search">
+      <div class="col-xs-12 col-md-9 text-center result_search">
         <div class="search_box">
           <form action="{$WebApplicationBaseURL}servlets/solr/find" class="search_form" method="post">
             <div class="input-group input-group-sm">
@@ -54,30 +54,12 @@
           </form>
         </div>
       </div>
-      <div class="col-lg-3 result_titles">
-
-      </div>
     </div> <!-- ENDE: Suchschlitz mit Suchbegriff -->
 
 <!-- Filter, Pagination & Trefferliste -->
     <div class="row result_body">
 
-      <div class="col-lg-9 result_list">
-        <xsl:copy-of select="$ResultPages" />
-        <xsl:comment>
-          RESULT LIST START
-        </xsl:comment>
-        <div id="hit_list">
-          <xsl:apply-templates select="doc|arr[@name='groups']/lst/str[@name='groupValue']" />
-        </div>
-        <xsl:comment>
-          RESULT LIST END
-        </xsl:comment>
-        <div class="result_list_end" />
-        <xsl:copy-of select="$ResultPages" />
-      </div>
-
-      <div class="col-lg-3 result_filter">
+      <div class="col-xs-12 col-sm-4 col-lg-3 result_filter">
         <h2>
           <small>
           <xsl:choose>
@@ -106,8 +88,48 @@
               </ul>
             </div>
           </div>
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title">Typ</h3>
+            </div>
+            <div class="panel-body">
+              <ul class="filter">
+                <xsl:apply-templates select="/response/lst[@name='facet_counts']/lst[@name='facet_fields']">
+                  <xsl:with-param name="facet_name" select="'mods.type'" />
+                </xsl:apply-templates>
+              </ul>
+            </div>
+          </div>
+                              <div class="panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title">Typ</h3>
+            </div>
+            <div class="panel-body">
+              <ul class="filter">
+                <xsl:apply-templates select="/response/lst[@name='facet_counts']/lst[@name='facet_fields']">
+                  <xsl:with-param name="facet_name" select="'mods.type'" />
+                </xsl:apply-templates>
+              </ul>
+            </div>
+          </div>
         </xsl:if>
       </div>
+
+      <div class="cols-xs-12 col-sm-8 col-lg-9 result_list">
+        <xsl:copy-of select="$ResultPages" />
+        <xsl:comment>
+          RESULT LIST START
+        </xsl:comment>
+        <div id="hit_list">
+          <xsl:apply-templates select="doc|arr[@name='groups']/lst/str[@name='groupValue']" />
+        </div>
+        <xsl:comment>
+          RESULT LIST END
+        </xsl:comment>
+        <div class="result_list_end" />
+        <xsl:copy-of select="$ResultPages" />
+      </div>
+
     </div>
   </xsl:template>
 
@@ -150,19 +172,20 @@
     <xsl:variable name="derivbase" select="concat($ServletsBaseURL,'MCRFileNodeServlet/',$derivid,'/')" />
     <xsl:variable name="derivifs"  select="concat($derivbase,$maindoc,$HttpSession)" />
 
+
 <!-- hit entry -->
     <div class="hit_item {$hitItemClass}">
-      <div class="row">
 
-        <!--  left column -->
-        <div class="col-xs-2">
+<!-- hit head -->
+      <div class="row hit_item_head">
+        <div class="col-xs-12">
 
-          <!-- hit number -->
+<!-- hit number -->
           <div class="hit_counter">
             <xsl:value-of select="$hitNumberOnPage" />
           </div>
 
-          <!-- relevance -->
+<!-- relevance -->
           <div class="hit_stars_5 hit_stars" title="ToDo: SolrScore"> <!-- ToDo: hit_stars_3 für nur 3 Sterne ... -->
             <div class="hit_star_1 hit_star"></div>
             <div class="hit_star_2 hit_star"></div>
@@ -171,7 +194,67 @@
             <div class="hit_star_5 hit_star"></div>
           </div>
 
-          <!-- document preview -->
+<!-- hit options -->
+          <div class="hit_options pull-right">
+              <div class="btn-group">
+                <a data-toggle="dropdown" class="btn btn-default dropdown-toggle" href="#"><i class="fa fa-cog"></i> Aktionen<span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                    <li class="">
+                      <!-- add to basket -->
+                      <a class="hit_option hit_to_basket"
+                        href="{$ServletsBaseURL}MCRBasketServlet{$HttpSession}?type=objects&amp;action=add&amp;id={$identifier}&amp;uri=mcrobject:{$identifier}&amp;redirect=referer"
+                        title=""><span class="glyphicon glyphicon-shopping-cart"></span><xsl:value-of select="i18n:translate('basket.add')" /></a>
+                    </li>
+                    <!-- download main document of first derivate -->
+                    <xsl:if test="not($derivates/str[@name='iviewFile']) and $derivates/str[@name='maindoc']">
+                      <li class="">
+                        <a class="hit_option hit_download" href="{$derivifs}" title=""><span class="glyphicon glyphicon-download-alt"></span><xsl:value-of select="$maindoc" /></a>
+                      </li>
+                    </xsl:if>
+                    <!-- direct link to editor -->
+                    <xsl:if test="acl:checkPermission($identifier,'writedb')" >
+                      <li class="">
+                        <xsl:variable name="editURL">
+                          <xsl:call-template name="mods.getObjectEditURL">
+                            <xsl:with-param name="id" select="$identifier" />
+                            <xsl:with-param name="layout" select="'$'" />
+                            <xsl:with-param name="collection" select="'mods'" />
+                          </xsl:call-template>
+                        </xsl:variable>
+                        <a class="hit_option hit_edit">
+                          <xsl:choose>
+                            <xsl:when test="string-length($editURL) &gt; 0">
+                              <xsl:attribute name="href">
+                                <xsl:value-of select="$editURL" />
+                              </xsl:attribute>
+                              <span class="glyphicon glyphicon-pencil"></span>
+                              <xsl:value-of select="i18n:translate('object.editObject')" />
+                            </xsl:when>
+                            <xsl:otherwise>
+                              <xsl:attribute name="href">
+                                <xsl:value-of select="'#'" />
+                              </xsl:attribute>
+                              <span class="glyphicon glyphicon-pencil"></span>
+                              <xsl:value-of select="i18n:translate('object.locked')" />
+                            </xsl:otherwise>
+                          </xsl:choose>
+                        </a>
+                      </li>
+                    </xsl:if>
+                </ul>
+            </div>
+          </div>
+
+
+        </div><!-- end col -->
+      </div><!-- end row head -->
+
+
+<!-- hit body -->
+      <div class="row hit_item_body">
+        <div class="col-xs-12">
+
+<!-- document preview -->
           <div class="hit_download_box">
             <xsl:choose>
               <xsl:when test="string-length($derivid) &gt; 0">
@@ -219,12 +302,9 @@
             </xsl:choose>
           </div>
 
-        </div>
-
-        <!-- right column -->
-        <div class="col-xs-10">
-          <div class="row">
-            <div class="col-xs-8 hitmid">
+<!-- hit type -->
+          <div class="hit_tnd_container">
+            <div class="hit_tnd_content">
               <div class="hit_type">
                 <span class="label label-info"><xsl:value-of select="$mods-type-i18n" /></span>
               </div>
@@ -237,63 +317,9 @@
                 </div>
               </xsl:if>
             </div>
-            <div class="col-xs-4">
-              <div class="hit_options">
-
-                  <div class="btn-group pull-right">
-                    <a data-toggle="dropdown" class="btn btn-default dropdown-toggle" href="#"><i class="fa fa-cog"></i> Aktionen<span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li class="">
-                          <!-- add to basket -->
-                          <a class="hit_option hit_to_basket"
-                            href="{$ServletsBaseURL}MCRBasketServlet{$HttpSession}?type=objects&amp;action=add&amp;id={$identifier}&amp;uri=mcrobject:{$identifier}&amp;redirect=referer"
-                            title=""><span class="glyphicon glyphicon-shopping-cart"></span><xsl:value-of select="i18n:translate('basket.add')" /></a>
-                        </li>
-                        <!-- download main document of first derivate -->
-                        <xsl:if test="not($derivates/str[@name='iviewFile']) and $derivates/str[@name='maindoc']">
-                          <li class="">
-                            <a class="hit_option hit_download" href="{$derivifs}" title=""><span class="glyphicon glyphicon-download-alt"></span><xsl:value-of select="$maindoc" /></a>
-                          </li>
-                        </xsl:if>
-                        <!-- direct link to editor -->
-                        <xsl:if test="acl:checkPermission($identifier,'writedb')" >
-                          <li class="">
-                            <xsl:variable name="editURL">
-                              <xsl:call-template name="mods.getObjectEditURL">
-                                <xsl:with-param name="id" select="$identifier" />
-                                <xsl:with-param name="layout" select="'$'" />
-                                <xsl:with-param name="collection" select="'mods'" />
-                              </xsl:call-template>
-                            </xsl:variable>
-                            <a class="hit_option hit_edit">
-                              <xsl:choose>
-                                <xsl:when test="string-length($editURL) &gt; 0">
-                                  <xsl:attribute name="href">
-                                    <xsl:value-of select="$editURL" />
-                                  </xsl:attribute>
-                                  <span class="glyphicon glyphicon-pencil"></span>
-                                  <xsl:value-of select="i18n:translate('object.editObject')" />
-                                </xsl:when>
-                                <xsl:otherwise>
-                                  <xsl:attribute name="href">
-                                    <xsl:value-of select="'#'" />
-                                  </xsl:attribute>
-                                  <span class="glyphicon glyphicon-pencil"></span>
-                                  <xsl:value-of select="i18n:translate('object.locked')" />
-                                </xsl:otherwise>
-                              </xsl:choose>
-                            </a>
-                          </li>
-                        </xsl:if>
-                    </ul>
-                </div>
-
-              </div>
-            </div>
           </div>
 
-          <div class="row">
-            <div class="col-xs-12">
+<!-- hit headline -->
               <h3 class="hit_title">
                 <a href="{$hitHref}">
                   <xsl:attribute name="title"><xsl:value-of select="./str[@name='mods.title']" /></xsl:attribute>
@@ -310,11 +336,8 @@
                   </xsl:choose>
                 </a>
               </h3>
-            </div>
-          </div>
 
-          <div class="row">
-            <div class="col-xs-12">
+<!-- hit author -->
               <xsl:if test="./arr[@name='mods.author']">
                 <div class="hit_author">
                   <xsl:for-each select="./arr[@name='mods.author']/str">
@@ -347,6 +370,7 @@
                 </div>
               </xsl:if>
 
+<!-- hit parent -->
               <xsl:if test="./str[@name='parent']">
                 <div class="hit_source">
                   <span class="label_parent">aus: </span>
@@ -366,6 +390,7 @@
                 </div>
               </xsl:if>
 
+<!-- hit abstract -->
               <xsl:variable name="description" select="str[@name='mods.abstract.result']" />
               <xsl:if test="$description">
                 <div class="hit_abstract">
@@ -393,12 +418,9 @@
                 </div>
               </xsl:if>
 
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </div>
+        </div><!-- end hit col -->
+      </div><!-- end hit body -->
+    </div><!-- end hit item -->
   </xsl:template>
 
   <!-- copied from mods.xsl -> ToDo: refacture! -->
