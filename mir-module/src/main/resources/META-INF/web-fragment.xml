@@ -31,4 +31,13 @@
     <servlet-name>MCRFileNodeServlet</servlet-name>
     <dispatcher>REQUEST</dispatcher>
   </filter-mapping>
+  
+  <servlet>
+    <servlet-name>MirSelfRegistrationServlet</servlet-name>
+    <servlet-class>org.mycore.mir.authorization.MirSelfRegistrationServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>MirSelfRegistrationServlet</servlet-name>
+    <url-pattern>/servlets/MirSelfRegistrationServlet</url-pattern>
+  </servlet-mapping>
 </web-fragment>

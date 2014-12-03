@@ -2,10 +2,12 @@
 <!DOCTYPE MyCoReWebPage>
 <MyCoReWebPage>
   <section xml:lang="all" i18n="component.user2.admin.create.title">
-    <xed:form class="userEditor form-horizontal" role="form" xmlns:xed="http://www.mycore.de/xeditor" xmlns:mcruser="http://www.mycore.de/components/mcruser">
-      <xed:cancel url="{$ServletsBaseURL}MCRUserServlet" />
+    <script src='https://www.google.com/recaptcha/api.js'></script>
 
+    <xed:form class="userEditor form-horizontal" role="form" xmlns:xed="http://www.mycore.de/xeditor" xmlns:mcruser="http://www.mycore.de/components/mcruser">
+      <xed:cancel url="{$ServletsBaseURL}MirSelfRegistrationServlet" />
       <xed:bind xpath="user">
+        <xed:bind xpath="@disabled" initially="true" />
         <xed:bind xpath="roles/role/@name" initially="submitter" />
         <xed:bind xpath="attributes/attribute[@name='mailtoken']/@value" initially="{xed:generate-id()}" />
 
@@ -18,12 +20,20 @@
           <div class="panel-body">
             <xed:include uri="xslStyle:user-xeditor-templates:webapp:authorization/user-editor.xed" ref="failed-validation-messages" />
             <xed:include uri="xslStyle:user-xeditor-templates:webapp:authorization/user-editor.xed" ref="userAccount" />
-            <xed:include uri="xslStyle:user-xeditor-templates:webapp:authorization/user-editor.xed" ref="editor4currentUser" />
+            <xed:include uri="xslStyle:user-xeditor-templates:webapp:authorization/new-author-includes.xed" ref="realName" />
+            <xed:include uri="xslStyle:user-xeditor-templates:webapp:authorization/new-author-includes.xed" ref="email" />
+            <xed:include uri="xslStyle:user-xeditor-templates:webapp:authorization/user-editor.xed" ref="passwords" />
+            <xed:include uri="xslStyle:user-xeditor-templates:webapp:authorization/new-author-includes.xed" ref="captcha" />
+
+            <xed:validate display="global" xpath="/user"
+              test="not(xed:call-java('org.mycore.mir.authorization.MirSelfRegistrationServlet', 'userExists', /user))"
+            >
+              <xed:output i18n="selfRegistration.error.userExists" />
+            </xed:validate>
           </div>
           <div class="panel-footer clearfix">
             <div class="pull-right">
-              <button id="debug_submit" xed:target="debug" type="submit" class="btn btn-primary btn-md" name="_xed_submit_debug" >Debug</button>
-              <xed:include uri="xslStyle:user-xeditor-templates:webapp:authorization/user-editor.xed" ref="buttons" />
+              <xed:include uri="xslStyle:user-xeditor-templates:webapp:authorization/new-author-includes.xed" ref="buttons" />
             </div>
           </div>
         </div>
