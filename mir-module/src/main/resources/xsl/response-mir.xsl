@@ -88,30 +88,6 @@
               </ul>
             </div>
           </div>
-          <div class="panel panel-default">
-            <div class="panel-heading">
-              <h3 class="panel-title">Typ</h3>
-            </div>
-            <div class="panel-body">
-              <ul class="filter">
-                <xsl:apply-templates select="/response/lst[@name='facet_counts']/lst[@name='facet_fields']">
-                  <xsl:with-param name="facet_name" select="'mods.type'" />
-                </xsl:apply-templates>
-              </ul>
-            </div>
-          </div>
-                              <div class="panel panel-default">
-            <div class="panel-heading">
-              <h3 class="panel-title">Typ</h3>
-            </div>
-            <div class="panel-body">
-              <ul class="filter">
-                <xsl:apply-templates select="/response/lst[@name='facet_counts']/lst[@name='facet_fields']">
-                  <xsl:with-param name="facet_name" select="'mods.type'" />
-                </xsl:apply-templates>
-              </ul>
-            </div>
-          </div>
         </xsl:if>
       </div>
 
@@ -198,7 +174,7 @@
           <div class="hit_options pull-right">
               <div class="btn-group">
                 <a data-toggle="dropdown" class="btn btn-default dropdown-toggle" href="#"><i class="fa fa-cog"></i> Aktionen<span class="caret"></span></a>
-                <ul class="dropdown-menu">
+                <ul class="dropdown-menu dropdown-menu-right">
                     <li class="">
                       <!-- add to basket -->
                       <a class="hit_option hit_to_basket"
