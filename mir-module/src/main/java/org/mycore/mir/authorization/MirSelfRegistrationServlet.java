@@ -70,7 +70,7 @@ public class MirSelfRegistrationServlet extends MCRServlet {
 
     private void register(final HttpServletRequest req, final HttpServletResponse res) throws Exception {
         final String secretKey = MCRConfiguration.instance().getString("MIR.ReCaptcha.secret.key");
-        if (secretKey != null) {
+        if (secretKey != null && secretKey.length() > 0) {
             final ReCaptcha rc = new ReCaptcha(secretKey);
 
             if (!rc.isSubmittedCaptchaCorrect(req)) {
