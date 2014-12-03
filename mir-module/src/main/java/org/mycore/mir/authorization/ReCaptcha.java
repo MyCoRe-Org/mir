@@ -79,7 +79,7 @@ public class ReCaptcha {
             final Gson gson = new Gson();
             final ReCaptchaResult rcResult = gson.fromJson(json, ReCaptchaResult.class);
 
-            return new Boolean(rcResult.success);
+            return Boolean.valueOf(rcResult.success);
         } catch (final IOException e) {
             e.printStackTrace();
             return Boolean.FALSE;
