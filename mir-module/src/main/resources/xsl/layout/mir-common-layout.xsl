@@ -59,7 +59,7 @@
             </strong>
             <span class="caret" />
           </a>
-          <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+          <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="dLabel">
             <xsl:apply-templates select="$loaded_navigation_xml/menu[@id='user']/*" />
           </ul>
         </li>

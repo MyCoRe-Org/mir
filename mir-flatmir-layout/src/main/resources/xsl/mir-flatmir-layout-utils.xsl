@@ -3,30 +3,21 @@
   <xsl:import href="resource:xsl/layout/mir-common-layout.xsl" />
   <xsl:template name="mir.navigation">
 
-    <div class="navbar navbar-default mir-prop-nav">
-      <div class="container">
-        <div class="navbar-header">
-          <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".mir-prop-nav-entries">
-            <!-- TODO: translate -->
-            <span class="sr-only"> Toggle navigation </span>
-            <span class="icon-bar">
-            </span>
-            <span class="icon-bar">
-            </span>
-            <span class="icon-bar">
-            </span>
-          </button>
-          <a href="{concat($WebApplicationBaseURL,substring($loaded_navigation_xml/@hrefStartingPage,2),$HttpSession)}" class="navbar-brand">
-            <span id="logo_mir">mir</span>
-            <span id="logo_modul">mycore</span>
-            <span id="logo_slogan">mods institutional repository</span>
-          </a>
-        </div>
-        <nav class="collapse navbar-collapse mir-prop-nav-entries">
+    <div id="header_box" class="clearfix container">
+      <div id="options_nav_box" class="mir-prop-nav">
+        <nav>
           <ul class="nav navbar-nav pull-right">
             <xsl:call-template name="mir.loginMenu" />
           </ul>
         </nav>
+      </div>
+      <div id="project_logo_box">
+        <a href="{concat($WebApplicationBaseURL,substring($loaded_navigation_xml/@hrefStartingPage,2),$HttpSession)}"
+           class="">
+          <span id="logo_mir">mir</span>
+          <span id="logo_modul">mycore</span>
+          <span id="logo_slogan">mods institutional repository</span>
+        </a>
       </div>
     </div>
 
