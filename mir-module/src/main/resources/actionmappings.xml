@@ -20,7 +20,7 @@
   <collection name="mods">
     <action action="create">
       <when condition="(group = admin) or (group = editor)" url="/editor/editor-admins.xed" />
-      <when condition="group = submitter" url="/editor/editor-dynamic.xed" />
+      <when condition="group = submitter" url="/content/publish/index.xml" />
       <when condition="true" url="/authorization/new-author.xed" />
     </action>
     <action action="update">
