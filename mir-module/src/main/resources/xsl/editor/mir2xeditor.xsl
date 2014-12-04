@@ -7,41 +7,42 @@
   <xsl:include href="copynodes.xsl" />
 
   <xsl:template match="mir:textfield">
-    <div class="form-group">
-      <label class="col-md-3 control-label">
-        <xed:output i18n="{@label}" />
-      </label>
-      <div class="col-md-6">
-        <xed:bind xpath="{@xpath}">
-          <input type="text">
-            <xsl:attribute name="class">form-control {$xed-validation-marker}</xsl:attribute>
+    <xed:bind xpath="{@xpath}">
+      <div>
+        <xsl:attribute name="class">form-group {$xed-validation-marker}</xsl:attribute>
+        <label class="col-md-3 control-label">
+          <xed:output i18n="{@label}" />
+        </label>
+        <div class="col-md-6">
+          <input type="text" class="form-control">
             <xsl:copy-of select="@placeholder" />
           </input>
-        </xed:bind>
+        </div>
       </div>
-    </div>
+    </xed:bind>
   </xsl:template>
 
   <xsl:template match="mir:textarea">
-    <div class="form-group">
-      <label class="col-md-3 control-label">
-        <xed:output i18n="{@label}" />
-      </label>
-      <div class="col-md-6">
-        <xed:bind xpath="{@xpath}">
-          <textarea>
-            <xsl:attribute name="class">form-control {$xed-validation-marker}</xsl:attribute>
+    <xed:bind xpath="{@xpath}">
+      <div>
+        <xsl:attribute name="class">form-group {$xed-validation-marker}</xsl:attribute>
+        <label class="col-md-3 control-label">
+          <xed:output i18n="{@label}" />
+        </label>
+        <div class="col-md-6">
+          <textarea class="form-control">
             <xsl:copy-of select="@rows" />
             <xsl:copy-of select="@placeholder" />
           </textarea>
-        </xed:bind>
+        </div>
       </div>
-    </div>
+    </xed:bind>
   </xsl:template>
 
   <xsl:template match="mir:role.repeated">
     <xed:repeat xpath="mods:name[@type='personal']" min="1" max="100">
-      <div class="form-group">
+      <div>
+        <xsl:attribute name="class">form-group {$xed-validation-marker}</xsl:attribute>
         <label class="col-md-3 control-label">
           <xed:output i18n="{@label}" />
         </label>
@@ -58,7 +59,8 @@
 
   <xsl:template match="mir:person.repeated">
     <xed:repeat xpath="mods:name[@type='personal']" min="1" max="100">
-      <div class="form-group">
+      <div>
+        <xsl:attribute name="class">form-group {$xed-validation-marker}</xsl:attribute>
         <div class="col-md-3" style="text-align:right; font-weight:bold;">
           <xed:bind xpath="mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']">
             <select class="form-control form-control-inline">
