@@ -7,12 +7,12 @@
 
   <xed:template id="realName">
     <mcruser:template name="textInput" xpath="realName" id="realName" i18n="component.user2.admin.realName" i18n.error="selfRegistration.realName.required"
-      required="true" maxlength="64" />
+      placeholder="mir.register.realName" required="true" maxlength="64" />
   </xed:template>
 
   <xed:template id="email">
     <mcruser:template name="textInput" xpath="eMail" id="email" i18n="component.user2.admin.email" i18n.error="component.user2.admin.email.syntax"
-      required="true" validate="true" matches="\S+@\S+\.\S+" maxlength="64" />
+      placeholder="mir.register.email" required="true" validate="true" matches="\S+@\S+\.\S+" maxlength="64" />
   </xed:template>
 
   <xed:template id="captcha">
