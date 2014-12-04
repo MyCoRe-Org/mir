@@ -125,18 +125,23 @@ public class MirSelfRegistrationServlet extends MCRServlet {
             final MCRUser user = MCRUserManager.getUser(userName, realmId);
             if (user != null) {
                 final String umt = user.getUserAttribute("mailtoken");
-                if (umt.equals(mailToken)) {
-                    user.setDisabled(false);
-                    user.getAttributes().remove("mailtoken");
-                    MCRUserManager.updateUser(user);
+                if (umt != null) {
+                    if (umt.equals(mailToken)) {
+                        user.setDisabled(false);
+                        user.getAttributes().remove("mailtoken");
+                        MCRUserManager.updateUser(user);
 
-                    final Element root = new Element("new-author-verified");
-                    final Element u = MCRUserTransformer.buildExportableSafeXML(user).getRootElement();
-                    root.addContent(u.clone());
+                        final Element root = new Element("new-author-verified");
+                        final Element u = MCRUserTransformer.buildExportableSafeXML(user).getRootElement();
+                        root.addContent(u.clone());
 
-                    getLayoutService().doLayout(req, res, new MCRJDOMContent(root));
+                        getLayoutService().doLayout(req, res, new MCRJDOMContent(root));
+                    } else {
+                        res.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, errorMsg("missingParameter"));
+                    }
                 } else {
-                    res.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, errorMsg("missingParameter"));
+                    LOGGER.warn("No \"mailtoken\" attribute for user " + user.getUserID() + ".");
+                    res.sendRedirect(MCRFrontendUtil.getBaseURL());
                 }
             } else {
                 res.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, errorMsg("userNotFound"));
