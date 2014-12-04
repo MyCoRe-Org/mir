@@ -14,17 +14,14 @@
 
   <xsl:template match="user" mode="email">
     <to>
-      <xsl:value-of select="eMail/text()" />
+      <xsl:value-of select="$MCR.mir-module.EditorMail" />
     </to>
     <subject>
-      Ihre Benutzerkennung wurde angelegt!
+      Eine neue Benutzerkennung wurde angelegt!
     </subject>
     <body>
-      Bitte benutzen Sie folgenden Link um ihre E-Mail-Adresse zu bestätigen und die Registrierung abzuschließen.
-      <xsl:value-of select="$newline" />
-      <xsl:value-of
-        select="concat($ServletsBaseURL, 'MirSelfRegistrationServlet?action=verify&amp;user=', @name, '&amp;realm=', @realm, '&amp;token=', attributes/attribute[@name='mailtoken']/@value)" />
-      <xsl:value-of select="$newline" />
+      Die Benutzerkennung <xsl:value-of select="@name" /> mit der E-Mail-Adresse
+      <xsl:value-of select="eMail/text()" /> wurde soeben angelegt.
     </body>
   </xsl:template>
 </xsl:stylesheet>

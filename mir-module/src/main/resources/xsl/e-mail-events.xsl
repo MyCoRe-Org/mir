@@ -21,7 +21,7 @@
       <xsl:value-of select="$action" />
     </xsl:message>
     <email>
-      <from>"MIR Server" &lt;info@mycore.de&gt;</from>
+      <from><xsl:value-of select="$MCR.mir-module.MailSender" /></from>
       <xsl:apply-templates select="/*" mode="email" />
     </email>
   </xsl:template>
@@ -141,7 +141,7 @@
       </xsl:choose>
     </xsl:for-each>
   </xsl:template>
-  
+
   <!-- Classification support -->
   <xsl:template name="selectDefaultLang">
     <xsl:param name="nodes" />

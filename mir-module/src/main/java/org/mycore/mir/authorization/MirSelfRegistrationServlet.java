@@ -1,5 +1,5 @@
 /*
- * $Id$ 
+ * $Id$
  * $Revision$ $Date$
  *
  * This file is part of ***  M y C o R e  ***
@@ -90,6 +90,7 @@ public class MirSelfRegistrationServlet extends MCRServlet {
         if (!userExists) {
             try {
                 MCRMailer.sendMail(MCRUserTransformer.buildExportableSafeXML(user), "e-mail-new-author");
+                MCRMailer.sendMail(MCRUserTransformer.buildExportableSafeXML(user), "e-mail-new-author-registered");
             } catch (final Exception ex) {
                 LOGGER.error(ex);
                 res.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, errorMsg("mailError"));
@@ -158,7 +159,7 @@ public class MirSelfRegistrationServlet extends MCRServlet {
 
     /**
      * Checks if given user is exists.
-     * 
+     *
      * @param nodes the user element
      * @return true on exists or false if not
      */
