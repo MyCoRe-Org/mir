@@ -43,4 +43,16 @@
     </mods:dateIssued>
     <xsl:copy-of select="." />
   </xsl:template>
+
+  <xsl:template match="mods:name[@type='personal']">
+    <xsl:copy>
+      <xsl:apply-templates select="@*" />
+      <xsl:if test="mods:namePart[@type='family'] and mods:namePart[@type='given']">
+        <mods:displayForm>
+          <xsl:value-of select="concat(mods:namePart[@type='family'],', ',mods:namePart[@type='given'])" />
+        </mods:displayForm>
+      </xsl:if>
+      <xsl:apply-templates select="*[not(mods:namePart[@type='family'] and mods:namePart[@type='given'])]" />
+    </xsl:copy>
+  </xsl:template>
 </xsl:stylesheet>
