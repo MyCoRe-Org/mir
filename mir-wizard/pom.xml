@@ -3,7 +3,7 @@
   <parent>
     <groupId>org.mycore.mir</groupId>
     <artifactId>mir-parent</artifactId>
-    <version>0.1</version>
+    <version>0.2-SNAPSHOT</version>
   </parent>
   <artifactId>mir-wizard</artifactId>
   <name>MIR: The MIR Wizard</name>
