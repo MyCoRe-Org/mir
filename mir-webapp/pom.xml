@@ -68,7 +68,7 @@
                 <artifactItem>
                   <groupId>org.mycore.fileupload</groupId>
                   <artifactId>fileupload-applet</artifactId>
-                  <version>1.2-SNAPSHOT</version>
+                  <version>1.2</version>
                   <type>jar</type>
                   <overWrite>false</overWrite>
                   <destFileName>upload.jar</destFileName>
