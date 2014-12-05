@@ -9,6 +9,7 @@
   <xsl:param name="WebApplicationBaseURL" />
   <xsl:param name="ServletsBaseURL" />
   <xsl:param name="MCR.mir-module.EditorMail" />
+  <xsl:param name="MCR.mir-module.MailSender" />
   <xsl:variable name="newline" select="'&#xA;'" />
   <xsl:variable name="categories" select="document('classification:metadata:1:children:mir_institutes')/mycoreclass/categories" />
   <xsl:variable name="institutemember" select="$categories/category[mcrxsl:isCurrentUserInRole(concat('mir_institutes:',@ID))]" />
