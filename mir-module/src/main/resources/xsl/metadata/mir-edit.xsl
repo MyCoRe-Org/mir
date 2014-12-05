@@ -16,7 +16,7 @@
           <xsl:with-param name="accessedit" select="$write" />
           <xsl:with-param name="accessdelete" select="$delete" />
           <xsl:with-param name="mods-type" select="$mods-type" />
-          <xsl:with-param name="collection" select="'mods'" />
+          <!-- xsl:with-param name="collection" select="'mods'" / --> <!-- TODO: We have to fix this in next mycore release -->
         </xsl:apply-templates>
 
     </div>
