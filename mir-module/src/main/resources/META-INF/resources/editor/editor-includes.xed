@@ -54,7 +54,7 @@
   </xed:template>
 
   <xed:template id="title">
-    <mir:textfield xpath="mods:titleInfo/mods:title" label="mir.title" class="mandatory" />
+    <mir:textfield xpath="mods:titleInfo/mods:title" label="mir.title" class="required" />
   </xed:template>
 
   <xed:template id="title.abbreviated">
@@ -171,7 +171,7 @@
   </xed:template>
 
   <xed:template id="author.repeated">
-    <mir:role.repeated role="aut" label="mir.role.author" />
+    <mir:role.repeated role="aut" label="mir.role.author" class="required" />
   </xed:template>
 
   <xed:template id="editor.repeated">
@@ -300,12 +300,12 @@
   </xed:template>
 
   <xed:template id="year.issued">
-    <mir:textfield xpath="mods:originInfo/mods:dateIssued[@encoding='w3cdtf']" label="mir.date.issued.4"
+    <mir:textfield xpath="mods:originInfo/mods:dateIssued[@encoding='w3cdtf']" label="mir.date.issued.4" class="required"
       placeholder="{i18n:mir.placeholder.year}" />
   </xed:template>
 
   <xed:template id="date.issued">
-    <mir:textfield xpath="mods:originInfo/mods:dateIssued[@encoding='w3cdtf']" label="mir.date.issued.10"
+    <mir:textfield xpath="mods:originInfo/mods:dateIssued[@encoding='w3cdtf']" label="mir.date.issued.10" class="required"
       placeholder="{i18n:mir.placeholder.date}" />
   </xed:template>
 
@@ -562,7 +562,7 @@
 
   <xed:template id="rights">
     <div class="form-group">
-      <label class="col-md-3 control-label">
+      <label class="col-md-3 control-label required">
         <xed:output i18n="mir.rights" />
       </label>
       <div class="col-md-6">
