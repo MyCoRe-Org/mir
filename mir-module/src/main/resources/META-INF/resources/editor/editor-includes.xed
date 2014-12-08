@@ -561,12 +561,12 @@
   </xed:template>
 
   <xed:template id="rights">
-    <div class="form-group">
-      <label class="col-md-3 control-label required">
-        <xed:output i18n="mir.rights" />
-      </label>
+    <xed:bind xpath="mods:accessCondition[@type='use and reproduction']" initially="rights_reserved">
+      <div class="form-group {$xed-validation-marker}">
+        <label class="col-md-3 control-label required">
+          <xed:output i18n="mir.rights" />:
+        </label>
       <div class="col-md-6">
-        <xed:bind xpath="mods:accessCondition[@type='use and reproduction']" initially="rights_reserved">
           <select  class="form-control form-control-inline">
             <option value="rights_reserved">Alle Rechte vorbehalten</option>
             <option value="oa_nlz">Open-Access im Zuge einer Allianz- bzw. Nationallizenz</option>
@@ -577,9 +577,9 @@
             <option value="cc_by-nc-sa">CC BY-NC-SA</option>
             <option value="cc_by-nc-nd">CC BY-NC-ND</option>
           </select>
-        </xed:bind>
+        </div>
       </div>
-    </div>
+    </xed:bind>
   </xed:template>
 
   <xed:template id="embargo">
