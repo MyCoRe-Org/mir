@@ -62,7 +62,7 @@
       <div>
         <xsl:attribute name="class">form-group {$xed-validation-marker}</xsl:attribute>
         <div class="col-md-3" style="text-align:right; font-weight:bold;">
-          <xed:bind xpath="mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']">
+          <xed:bind xpath="mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']" initially="aut">
             <select class="form-control form-control-inline">
               <xsl:apply-templates select="*" />
             </select>
