@@ -583,7 +583,7 @@
   </xed:template>
 
   <xed:template id="embargo">
-    <mir:textfield xpath="mods:accessCondition[@type='embargo']" label="mir.embargo" />
+    <mir:textfield xpath="mods:accessCondition[@type='embargo']" label="mir.embargo" placeholder="{i18n:mir.placeholder.date}" />
   </xed:template>
 
   <xed:template id="abstract.simple">
