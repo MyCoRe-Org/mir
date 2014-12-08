@@ -76,7 +76,7 @@
         <footer class="panel-footer flatmir-footer" role="contentinfo">
           <div class="container">
             <div class="row">
-              <div class="col-md-4">
+              <div class="col-xs-12 col-sm-6 col-md-4">
                 <h4>Über uns</h4>
                   <p>
                       MIR ist die Vorlage für klassiche Publikations- bzw.
@@ -87,13 +87,13 @@
                       </span>
                   </p>
                 </div>
-                <div class="col-md-2">
+                <div class="col-xs-6 col-sm-3 col-md-2">
                   <h4>Navigation</h4>
                   <ul class="internal_links">
                     <xsl:apply-templates select="$loaded_navigation_xml/menu[@id='brand']/*" />
                   </ul>
                 </div>
-                <div class="col-md-2">
+                <div class="col-xs-6 col-sm-3 col-md-2">
                   <h4>Netzwerke</h4>
                   <ul class="social_links">
                       <li><a href="#"><button type="button" class="social_icons social_icon_fb"></button>Facebook</a></li>
@@ -101,15 +101,7 @@
                       <li><a href="#"><button type="button" class="social_icons social_icon_gg"></button>Google+</a></li>
                   </ul>
                 </div>
-                <div class="col-md-2">
-                  <h4>Lorem ipsum</h4>
-                  <ul class="internal_links">
-                    <li><a href="#">Stet</a></li>
-                    <li><a href="#">Lorem</a></li>
-                    <li><a href="#">Accusam</a></li>
-                  </ul>
-                </div>
-                <div class="col-md-2">
+                <div class="col-xs-6 col-sm-3 col-md-2">
                   <h4>Layout based on</h4>
                   <ul class="internal_links">
                     <li><a href="{$WebApplicationBaseURL}mir-flatmir-layout/template/flatmir.xml">flatmir</a></li>

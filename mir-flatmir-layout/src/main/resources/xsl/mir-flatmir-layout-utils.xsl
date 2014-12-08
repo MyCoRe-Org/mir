@@ -35,8 +35,17 @@
             <span class="icon-bar">
             </span>
           </button>
-
         </div>
+
+        <div class="searchfield_box">
+          <form action="{$WebApplicationBaseURL}servlets/solr/find?qry={0}" class="navbar-form navbar-left pull-right" role="search">
+            <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+            <div class="form-group">
+              <input name="qry" placeholder="Suche" class="form-control search-query" id="searchInput" type="text" />
+            </div>
+          </form>
+        </div>
+
         <nav class="collapse navbar-collapse mir-main-nav-entries">
           <ul class="nav navbar-nav pull-left">
             <xsl:apply-templates select="$loaded_navigation_xml/menu[@id='search']" />
@@ -44,13 +53,8 @@
             <xsl:apply-templates select="$loaded_navigation_xml/menu[@id='publish']" />
             <xsl:call-template name="mir.basketMenu" />
           </ul>
-          <form action="{$WebApplicationBaseURL}servlets/solr/find?qry={0}" class="navbar-form navbar-left pull-right" role="search">
-            <div class="form-group">
-              <input name="qry" placeholder="Suche" class="form-control search-query" id="searchInput" type="text" />
-            </div>
-            <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
-          </form>
         </nav>
+
       </div><!-- /container -->
     </div>
   </xsl:template>
