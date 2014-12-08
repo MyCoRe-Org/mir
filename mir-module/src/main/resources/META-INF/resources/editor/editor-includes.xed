@@ -269,6 +269,7 @@
           data-search-button-loading="{i18n:button.loading}"
           data-search-result-empty="{i18n:mir.searchPerson.noResult}"
           data-target=".search-person"
+          placeholder="{i18n:mir.placeholder.name.family}, {i18n:mir.placeholder.name.given}"
         />
       </xed:bind>
       <xed:bind xpath="@valueURIxEditor">
