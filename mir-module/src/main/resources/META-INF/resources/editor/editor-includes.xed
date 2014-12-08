@@ -586,6 +586,25 @@
     <mir:textfield xpath="mods:accessCondition[@type='embargo']" label="mir.embargo" placeholder="{i18n:mir.placeholder.date}" />
   </xed:template>
 
+  <xed:template id="institutes">
+    <div class="form-group">
+      <label class="col-md-3 control-label">
+        <xed:output i18n="mir.institution" />
+      </label>
+      <div class="col-md-6">
+        <xed:bind xpath="mods:name[@type='corporate'][@authorityURI='http://www.mycore.org/classifications/mir_institutes']">
+          <xed:bind xpath="mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']" initially="his" /><!--  Host institution [his] -->
+          <xed:bind xpath="@valueURIxEditor">
+            <select class="form-control form-control-inline">
+              <option value="">bitte wählen</option>
+              <xed:include uri="xslStyle:items2options:classification:editor:-1:children:mir_institutes" />
+            </select>
+          </xed:bind>
+        </xed:bind>
+      </div>
+    </div>
+  </xed:template>
+
   <xed:template id="abstract.simple">
     <mir:textarea xpath="mods:abstract" label="mir.abstract.text" rows="5" />
   </xed:template>
@@ -730,7 +749,7 @@
 
   <xed:template id="cleanup-rules">
     <xed:cleanup-rule xpath="//mods:*" relevant-if="(string-length(text()) &gt; 0) or mods:* or (string-length(@xlink:href) &gt; 0) or (string-length(@valueURIxEditor) &gt; 0)" />
-    <xed:cleanup-rule xpath="//mods:name" relevant-if="mods:namePart|mods:displayForm" />
+    <xed:cleanup-rule xpath="//mods:name" relevant-if="(mods:namePart|mods:displayForm) or (string-length(@valueURI) &gt; 0) or (string-length(@valueURIxEditor) &gt; 0)" />
     <xed:cleanup-rule xpath="//mods:name/@authorityURI" relevant-if="(string-length(../@valueURI) &gt; 0) or (string-length(../@valueURIxEditor) &gt; 0)" />
     <xed:cleanup-rule xpath="//mods:*/@xlink:type" relevant-if="text()!='simple'" />
   </xed:template>
