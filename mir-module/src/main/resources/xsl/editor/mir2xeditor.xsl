@@ -10,7 +10,7 @@
     <xed:bind xpath="{@xpath}">
       <div>
         <xsl:attribute name="class">form-group {$xed-validation-marker}</xsl:attribute>
-        <label class="col-md-3 control-label">
+        <label class="col-md-3 control-label {@class}">
           <xed:output i18n="{@label}" />
         </label>
         <div class="col-md-6">
