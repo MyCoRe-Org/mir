@@ -8,9 +8,9 @@
       <xsl:value-of select="i18n:translate('selfRegistration.title.verified')" />
     </h1>
     <p>
-      Danke für die Bestätigung Ihrer E-Mail Adresse! Sie können sich nun mit Ihrer eingerichteten Benutzerkennung (
+      Vielen Dank für die Bestätigung Ihrer E-Mail Adresse! Sie können sich nun mit Ihrer eingerichteten Benutzerkennung (
       <xsl:value-of select="user/@name" />
-      ) anmelden!
+      ) <a href="{$ServletsBaseURL}MCRLoginServlet?url={$WebApplicationBaseURL}content/index.xml">anmelden</a>!
     </p>
   </xsl:template>
   <xsl:include href="MyCoReLayout.xsl" />
