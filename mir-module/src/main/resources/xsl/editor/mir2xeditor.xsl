@@ -59,20 +59,24 @@
 
   <xsl:template match="mir:person.repeated">
     <xed:repeat xpath="mods:name[@type='personal']" min="1" max="100">
-      <div>
-        <xsl:attribute name="class">form-group {$xed-validation-marker}</xsl:attribute>
-        <div class="col-md-3" style="text-align:right; font-weight:bold;">
-          <xed:bind xpath="mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']" initially="aut">
-            <select class="form-control form-control-inline">
-              <xsl:apply-templates select="*" />
-            </select>
+      <xed:bind xpath="mods:displayForm"> <!-- Move down to get the "required" validation right -->
+        <div>
+          <xsl:attribute name="class">form-group {$xed-validation-marker}</xsl:attribute>
+          <xed:bind xpath=".."> <!-- Move up again after validation marker is set -->
+            <div class="col-md-3" style="text-align:right; font-weight:bold;">
+              <xed:bind xpath="mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']" initially="aut">
+                <select class="form-control form-control-inline">
+                  <xsl:apply-templates select="*" />
+                </select>
+              </xed:bind>
+            </div>
+            <div class="col-md-6">
+              <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="person.fields" />
+            </div>
+            <xsl:call-template name="mir-pmud" />
           </xed:bind>
         </div>
-        <div class="col-md-6">
-          <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="person.fields" />
-        </div>
-        <xsl:call-template name="mir-pmud" />
-      </div>
+     </xed:bind>
     </xed:repeat>
   </xsl:template>
 
