@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" exclude-result-prefixes="xsl">
+<xsl:stylesheet version="1.0"
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  xmlns:xed="http://www.mycore.de/xeditor"
+  xmlns:xalan="http://xml.apache.org/xalan"
+  xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
+  xmlns:transformer="xalan://org.mycore.frontend.xeditor.MCRXEditorTransformer"
+  exclude-result-prefixes="xsl xed xalan i18n transformer">
 
   <!-- ========== Repeater buttons: <xed:repeat><xed:controls> ========== -->
 
@@ -37,5 +43,20 @@
       </i>
     </button>
   </xsl:template>
+
+  <!-- ========== Validation error messages: <xed:validate /> ========== -->
+
+  <xsl:template match="xed:validate[@i18n]" mode="message" priority="10">
+    <li>
+      <xsl:value-of select="i18n:translate(@i18n)" />
+    </li>
+  </xsl:template>
+
+  <xsl:template match="xed:validate" mode="message" priority="10">
+    <li>
+      <xsl:apply-templates select="node()" mode="xeditor" />
+    </li>
+  </xsl:template>
+
 
 </xsl:stylesheet>
