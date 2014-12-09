@@ -26,36 +26,39 @@ package org.mycore.mir.index;
 import static org.mycore.wfc.MCRConstants.STATUS_CLASS_ID;
 
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Collection;
 
 import org.apache.log4j.Logger;
 import org.apache.solr.common.SolrInputDocument;
+import org.mycore.common.MCRPersistenceException;
 import org.mycore.datamodel.classifications2.MCRCategLinkReference;
 import org.mycore.datamodel.classifications2.MCRCategLinkServiceFactory;
 import org.mycore.datamodel.classifications2.MCRCategoryID;
-import org.mycore.datamodel.ifs.MCRFile;
 import org.mycore.datamodel.metadata.MCRObjectID;
-import org.mycore.solr.index.file.MCRSolrMCRFileDocumentFactory;
+import org.mycore.solr.index.file.MCRSolrPathDocumentFactory;
 
 /**
  * @author Thomas Scheffler (yagee)
  *
  */
-public class MirMCRFileDocumentFactory extends MCRSolrMCRFileDocumentFactory {
-    private static Logger LOGGER = Logger.getLogger(MirMCRFileDocumentFactory.class);
+public class MirPathDocumentFactory extends MCRSolrPathDocumentFactory {
+    private static Logger LOGGER = Logger.getLogger(MirPathDocumentFactory.class);
 
     @Override
-    public SolrInputDocument getDocument(MCRFile input) throws IOException {
-        SolrInputDocument document = super.getDocument(input);
+    public SolrInputDocument getDocument(Path input, BasicFileAttributes attr) throws IOException,
+        MCRPersistenceException {
+        SolrInputDocument document = super.getDocument(input, attr);
         Object returnId = document.getFieldValue("returnId");
         if (returnId == null) {
-            LOGGER.warn("No returnId is set for MCRFile: " + input.getAbsolutePath());
+            LOGGER.warn("No returnId is set for Path: " + input);
             return document;
         }
         MCRObjectID objId = MCRObjectID.getInstance(returnId.toString());
         MCRCategoryID status = getStatus(objId);
         if (status == null) {
-            LOGGER.warn("No status set for " + objId + ", could not set for MCRFile: " + input.getAbsolutePath());
+            LOGGER.warn("No status set for " + objId + ", could not set for MCRFile: " + input);
             return document;
         }
         document.setField(status.getRootID(), status.getID());
