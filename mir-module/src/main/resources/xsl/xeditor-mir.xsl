@@ -44,19 +44,4 @@
     </button>
   </xsl:template>
 
-  <!-- ========== Validation error messages: <xed:validate /> ========== -->
-
-  <xsl:template match="xed:validate[@i18n]" mode="message" priority="10">
-    <li>
-      <xsl:value-of select="i18n:translate(@i18n)" />
-    </li>
-  </xsl:template>
-
-  <xsl:template match="xed:validate" mode="message" priority="10">
-    <li>
-      <xsl:apply-templates select="node()" mode="xeditor" />
-    </li>
-  </xsl:template>
-
-
 </xsl:stylesheet>
