@@ -122,19 +122,21 @@
         float: left;
         width: 73px;
         display: none;
+
       }
       a .hit_icon {
         &:hover {
           box-shadow: 1px 1px 4px #999;
         }
       }
-      .hit_icon,
-      .resultListPreviewImage {
-        height: 103px;
-        width: 73px;
+      .hit_icon {
+        height: 100px;
+        background-color: #EDEDED;
+        background-position: center center;
+        background-size: 100% auto;
+        background-repeat: no-repeat;
         border: 1px solid @light_neutral;
         border-bottom-left-radius: 25px;
-        margin: 0px 0 0 0px;
       }
       .hit_icon_overlay {
         position: absolute;
@@ -183,7 +185,7 @@
           background-color: @highlight;
         }
         .btn {
-          margin-right: 1px;
+          margin-right: 0px;
           padding: 2px 10px;
           background-color: transparent;
           border: 1px solid @light_neutral;

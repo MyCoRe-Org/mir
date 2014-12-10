@@ -233,32 +233,42 @@
 <!-- document preview -->
           <div class="hit_download_box">
             <xsl:choose>
+
+              <!-- we got a derivate -->
               <xsl:when test="string-length($derivid) &gt; 0">
-                <a class="hit_option hit_download" href="{$derivifs}" title="">
-                  <xsl:choose>
-                    <xsl:when test="$derivates/str[@name='iviewFile']">
-                      <!-- show IView thumbnail as preview -->
-                      <xsl:call-template name="iViewLinkPrev">
-                        <xsl:with-param name="mcrid" select="$identifier" />
-                        <xsl:with-param name="derivate" select="$derivid" />
-                        <xsl:with-param name="fileName" select="$derivates/str[@name='iviewFile'][1]" />
-                      </xsl:call-template>
-                    </xsl:when>
-                    <xsl:when test="str:tokenize($derivates/str[@name='maindoc'][1],'.')[position()=last()] = 'pdf'">
-                      <!-- show PDF thumbnail as preview -->
+                <xsl:choose>
+
+                  <!-- show IView thumbnail as preview -->
+                  <xsl:when test="$derivates/str[@name='iviewFile']">
+                    <!-- xsl:call-template name="iViewLinkPrev">
+                      <xsl:with-param name="mcrid" select="$identifier" />
+                      <xsl:with-param name="derivate" select="$derivid" />
+                      <xsl:with-param name="fileName" select="$derivates/str[@name='iviewFile'][1]" />
+                    </xsl:call-template -->
+                    <a class="hit_option hit_download" href="{$derivifs}" title="{$mods-type-i18n}">
+                      <div class="hit_icon"
+                           style="background-image: url('{$WebApplicationBaseURL}servlets/MCRTileCombineServlet/THUMBNAIL/{$derivid}/{$derivates/str[@name='iviewFile'][1]}');">
+                      </div>
+                    </a>
+                  </xsl:when>
+
+                  <!-- show PDF thumbnail as preview -->
+                  <xsl:when test="str:tokenize($derivates/str[@name='maindoc'][1],'.')[position()=last()] = 'pdf'">
+                    <a class="hit_option hit_download" href="{$derivifs}" title="{$mods-type-i18n}">
                       <xsl:variable name="filePath" select="concat($derivates/str[@name='id'][1],'/',mcr:encodeURIPath($derivates/str[@name='maindoc'][1]),$HttpSession)" />
-                      <img class="hit_icon" alt="{$mods-type-i18n}" title="thumbnail">
-                        <xsl:attribute name="src">
-                          <xsl:value-of select="concat($WebApplicationBaseURL,'img/pdfthumb/',$filePath,'?centerThumb=no')"/>
-                        </xsl:attribute>
-                      </img>
-                    </xsl:when>
-                    <xsl:otherwise>
-                      <!-- show default icon with mime-type download icon -->
+                      <div class="hit_icon"
+                           style="background-image: url('{$WebApplicationBaseURL}img/pdfthumb/{$filePath}?centerThumb=no');">
+                      </div>
+                    </a>
+                  </xsl:when>
+
+                  <!-- show default icon with mime-type download icon -->
+                  <xsl:otherwise>
+                    <a class="hit_option hit_download" href="{$derivifs}" title="">
                       <!-- xsl:variable name="contentType" select="document(concat('ifs:/',$derivid))/mcr_directory/children/child[name=$maindoc]/contentType" />
                       <xsl:variable name="fileType" select="document('webapp:FileContentTypes.xml')/FileContentTypes/type[@ID=$contentType]//extension" / -->
                       <xsl:variable name="fileType" select="'docx'" />
-                      <img class="hit_icon" src="{$WebApplicationBaseURL}images/icons/icon_common.png" />
+                      <div class="hit_icon" style="background-image: url('{$WebApplicationBaseURL}images/icons/icon_common.png');" />
                       <xsl:choose>
                         <xsl:when test="$fileType='pdf' or $fileType='msexcel' or $fileType='xlsx' or $fileType='msword97' or $fileType='docx'">
                           <img class="hit_icon_overlay" src="{$WebApplicationBaseURL}images/icons/download_{$fileType}.png" />
@@ -267,10 +277,13 @@
                           <img class="hit_icon_overlay" src="{$WebApplicationBaseURL}images/icons/download_default.png" />
                         </xsl:otherwise>
                       </xsl:choose>
-                    </xsl:otherwise>
-                  </xsl:choose>
-                </a>
+                    </a>
+                  </xsl:otherwise>
+                </xsl:choose>
+
               </xsl:when>
+
+              <!-- no derivate -->
               <xsl:otherwise>
                 <!-- show default icon -->
                 <img class="hit_icon" src="{$WebApplicationBaseURL}images/icons/icon_common_disabled.png" />
