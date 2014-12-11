@@ -6,18 +6,6 @@
   <xsl:template match="/site">
     <xsl:copy>
       <head>
-        <script type="text/javascript" src="{$WebApplicationBaseURL}js/socialprivacy/jquery.socialshareprivacy.js"></script>
-        <script type="text/javascript">
-          jQuery(document).ready(function($){
-            if($('#socialshareprivacy').length > 0){
-              $('#socialshareprivacy').socialSharePrivacy({
-                "css_path"  : "<xsl:value-of select="concat($WebApplicationBaseURL, 'js/socialprivacy/socialshareprivacy/socialshareprivacy.css')" />",
-                "lang_path" : "<xsl:value-of select="concat($WebApplicationBaseURL, 'js/socialprivacy/socialshareprivacy/lang/')" />",
-                "language"  : "de"
-              });
-            }
-          });
-        </script>
         <link href="{$WebApplicationBaseURL}js/shariff/shariff.min.css" rel="stylesheet" />
       </head>
 
@@ -143,6 +131,7 @@
 
 <!--  end: detail row -->
       </div>
+      <script src="{$WebApplicationBaseURL}js/shariff/shariff.min.js"></script>
     </xsl:copy>
   </xsl:template>
 

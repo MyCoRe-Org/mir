@@ -9,7 +9,7 @@
       <div class="row">
         <div class="col-md-7">
           <!-- SocialSharePrivacy BEGIN -->
-          <div id="socialshareprivacy"></div>
+          <div class="shariff"></div>
           <!-- SocialSharePrivacy END -->
         </div>
         <div class="col-md-5">
