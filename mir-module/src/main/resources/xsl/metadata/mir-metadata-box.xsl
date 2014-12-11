@@ -6,68 +6,77 @@
   <!-- copied from http://www.loc.gov/standards/mods/v3/MODS3-4_HTML_XSLT1-0.xsl -->
   <xsl:template match="/">
     <xsl:variable name="mods" select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods" />
+    <!-- $mods-type contains genre -->
     <div id="mir-metadata">
       <xsl:apply-templates />
       <!--
       <dl>
         <dt>metaname</dt>
         <dd>metavalue</dd>
-      </dl> 
+      </dl>
        -->
+        <table class="mir-metadata">
 
-      <xsl:choose>
-        <xsl:when test="$mods-type='series'">
-          <xsl:apply-templates select="." mode="objectActions">
-            <xsl:with-param name="layout" select="'journal'" />
-            <xsl:with-param name="mods-type" select="$mods-type" />
-          </xsl:apply-templates>
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:apply-templates select="." mode="objectActions">
-            <xsl:with-param select="$mods-type" name="layout" />
-            <xsl:with-param select="$mods-type" name="mods-type" />
-          </xsl:apply-templates>
-        </xsl:otherwise>
-      </xsl:choose>
+            <!-- mods:name grouped by mods:role/mods:roleTerm excluding author-->
+            <xsl:for-each
+              select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:name[not(@ID) and
+                      not(mods:role/mods:roleTerm='aut') and
+                      count(. | key('name-by-role',mods:role/mods:roleTerm)[1])=1]">
+              <!-- for every role -->
+              <xsl:apply-templates select="." mode="present" />
+            </xsl:for-each>
 
-      <xsl:choose>
-        <!-- xsl:when cases are handled in modsmetadata.xsl -->
-        <xsl:when test="$mods-type = 'report'">
-          <xsl:apply-templates select="." mode="present.report" />
-        </xsl:when>
-        <xsl:when test="$mods-type = 'thesis'">
-          <xsl:apply-templates select="." mode="present.thesis" />
-        </xsl:when>
-        <xsl:when test="$mods-type = 'confpro'">
-          <xsl:apply-templates select="." mode="present.confpro" />
-        </xsl:when>
-        <xsl:when test="$mods-type = 'confpub'">
-          <xsl:apply-templates select="." mode="present.confpub" />
-        </xsl:when>
-        <xsl:when test="$mods-type = 'book'">
-          <xsl:apply-templates select="." mode="present.book" />
-        </xsl:when>
-        <xsl:when test="$mods-type = 'chapter'">
-          <xsl:apply-templates select="." mode="present.chapter" />
-        </xsl:when>
-        <xsl:when test="$mods-type = 'journal'">
-          <xsl:apply-templates select="." mode="present.journal" />
-        </xsl:when>
-        <xsl:when test="$mods-type = 'series'">
-          <xsl:apply-templates select="." mode="present.series" />
-        </xsl:when>
-        <xsl:when test="$mods-type = 'article'">
-          <xsl:apply-templates select="." mode="present.article" />
-        </xsl:when>
-        <xsl:when test="$mods-type = 'av'">
-          <xsl:apply-templates select="." mode="present.av" />
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:apply-templates select="." mode="present.modsDefaultType">
-            <xsl:with-param name="mods-type" select="$mods-type" />
-          </xsl:apply-templates>
-        </xsl:otherwise>
-      </xsl:choose>
+
+            <xsl:if test="mycoreobject/structure/parents/parent/@xlink:href">
+              <xsl:call-template name="printMetaDate.mods.relatedItem">
+                <xsl:with-param name="parentID" select="mycoreobject/structure/parents/parent/@xlink:href" />
+                <xsl:with-param name="label" select="i18n:translate('component.mods.metaData.dictionary.confpubIn')" />
+              </xsl:call-template>
+            </xsl:if>
+            <xsl:apply-templates mode="present" select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:identifier" />
+            <xsl:for-each select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:identifier[@type='issn']">
+              <xsl:variable name="sherpa_issn" select="." />
+              <xsl:for-each select="document(concat('http://www.sherpa.ac.uk/romeo/api29.php?ak=', $MCR.Mods.SherpaRomeo.ApiKey, '&amp;issn=', $sherpa_issn))//publishers/publisher">
+                <tr>
+                  <td class="metaname" valign="top">SHERPA/RoMEO:</td>
+                  <td class="metavalue">
+                    <a href="http://www.sherpa.ac.uk/romeo/search.php?issn={$sherpa_issn}">RoMEO <xsl:value-of select="romeocolour" /> Journal</a>
+                  </td>
+                </tr>
+              </xsl:for-each>
+            </xsl:for-each>
+            <xsl:apply-templates mode="present" select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:language" />
+            <xsl:call-template name="printMetaDate.mods">
+              <xsl:with-param name="nodes"
+                select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:physicalDescription/mods:extent" />
+            </xsl:call-template>
+            <xsl:call-template name="printMetaDate.mods">
+              <xsl:with-param name="nodes" select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:originInfo/mods:publisher" />
+            </xsl:call-template>
+            <xsl:apply-templates select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:originInfo/mods:dateCreated"
+              mode="present" />
+            <xsl:apply-templates select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:originInfo/mods:dateOther[@type='submitted']"
+              mode="present">
+              <xsl:with-param name="label" select="i18n:translate('component.mods.metaData.dictionary.dateSubmitted')" />
+            </xsl:apply-templates>
+            <xsl:apply-templates select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:originInfo/mods:dateOther[@type='accepted']"
+              mode="present">
+              <xsl:with-param name="label" select="i18n:translate('component.mods.metaData.dictionary.dateAccepted')" />
+            </xsl:apply-templates>
+            <xsl:call-template name="printMetaDate.mods">
+              <xsl:with-param name="nodes"
+                select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:originInfo/mods:place/mods:placeTerm" />
+            </xsl:call-template>
+            <xsl:call-template name="printMetaDate.mods">
+              <xsl:with-param name="nodes" select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:subject" />
+              <xsl:with-param name="sep" select="'; '" />
+              <xsl:with-param name="property" select="'keyword'" />
+            </xsl:call-template>
+            <xsl:apply-templates mode="present" select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:part/mods:extent" />
+            <xsl:apply-templates mode="present" select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:location/mods:url" />
+            <xsl:apply-templates mode="present" select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:name[@ID]" />
+          </table>
+
     </div>
     <xsl:apply-imports />
   </xsl:template>

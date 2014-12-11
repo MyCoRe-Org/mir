@@ -154,11 +154,7 @@
 
   <xsl:template match="div[@id='mir-metadata']" mode="newMetadata">
     <dl>
-      <!-- do not print title again -->
-      <xsl:apply-templates select=".//div[@id='title_box']/div[@id='title_content']/div/div/table/tr[position() &gt; 1]"
-        mode="newMetadata" />
-      <xsl:apply-templates select=".//div[@id='category_box']/div[@id='category_content']/table/tr"
-        mode="newMetadata" />
+      <xsl:apply-templates select="table[@class='mir-metadata']/tr" mode="newMetadata" />
     </dl>
   </xsl:template>
   <xsl:template match="div[@id='mir-admindata']" mode="newMetadata">

@@ -12,7 +12,7 @@
         <xsl:apply-templates mode="mods.title" select="$mods" />
         <xsl:value-of select="'.'" />
       </p>
-      <!-- 
+      <!--
       <p>
         <small>
           Further citation formats:
@@ -21,6 +21,34 @@
         </small>
       </p>
        -->
+      <!-- cite url - TODO: Should be URN if one is given -->
+      <p>
+        <a href="{$WebApplicationBaseURL}receive/{mycoreobject/@ID}">
+          <xsl:value-of select="concat($WebApplicationBaseURL,'receive/',mycoreobject/@ID)" />
+        </a>
+      </p>
+      <xsl:choose>
+        <xsl:when test="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:accessCondition/@type='use and reproduction'">
+          <xsl:variable name="trimmed" select="normalize-space(.)" />
+          <xsl:choose>
+            <xsl:when test="contains($trimmed, 'cc_by')">
+              <p><xsl:apply-templates select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:accessCondition[@type='use and reproduction']" mode="cc-logo" /></p>
+            </xsl:when>
+            <xsl:when test="contains($trimmed, 'rights_reserved')">
+              <p><xsl:apply-templates select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:accessCondition[@type='use and reproduction']" mode="rights_reserved" /></p>
+            </xsl:when>
+            <xsl:when test="contains($trimmed, 'oa_nlz')">
+              <p><xsl:apply-templates select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:accessCondition[@type='use and reproduction']" mode="oa_nlz" /></p>
+            </xsl:when>
+            <xsl:otherwise>
+              <p><xsl:value-of select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:accessCondition[@type='use and reproduction']" /></p>
+            </xsl:otherwise>
+          </xsl:choose>
+        </xsl:when>
+        <xsl:otherwise>
+          <p><xsl:value-of select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:accessCondition[@type='use and reproduction']" /></p>
+        </xsl:otherwise>
+      </xsl:choose>
     </div>
     <xsl:apply-imports />
   </xsl:template>
