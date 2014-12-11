@@ -12,11 +12,16 @@
     <xed:bind xpath="/mycoreobject">
       <xed:include uri="webapp:editor/editor-includes.xed" ref="mycore.common" />
       <xed:bind xpath="metadata/def.modsContainer[@class='MCRMetaXML'][@notinherit='true']/modsContainer/mods:mods">
+
+        <!-- If genre is not set in edited XML, it comes from request parameter and must be created -->
+        <!-- Refer genre via variable genre_intern to simplify following code for dynamic headline and includes -->
+        <xed:bind xpath="mods:genre[@type='intern'][@authorityURI='http://www.mycore.org/classifications/mir_genres']/@valueURIxEditor" initially="{$genre}" name="genre_intern" />
+
         <xed:load-resource name="genres" uri="classification:metadata:-1:children:mir_genres" />
 
         <h1>
           Publikation erfassen:
-          <xed:output value="$genres//category[@ID=$genre]/label[lang($CurrentLang)]/@text" />
+          <xed:output value="$genres//category[@ID=$genre_intern]/label[lang($CurrentLang)]/@text" />
           <xed:if test="not($host='standalone')">
             <xed:output value="concat(' in ',$genres//category[@ID=$host]/label[lang($CurrentLang)]/@text)" />
           </xed:if>
@@ -26,11 +31,10 @@
 
         <fieldset>
           <legend>
-            <xed:output value="concat($genres//category[@ID=$genre]/label[lang($CurrentLang)]/@text,':')" />
+            <xed:output value="concat($genres//category[@ID=$genre_intern]/label[lang($CurrentLang)]/@text,':')" />
           </legend>
-          <xed:bind xpath="mods:genre[@type='intern'][@authorityURI='http://www.mycore.org/classifications/mir_genres']/@valueURIxEditor" initially="{$genre}" />
           <xed:bind xpath="mods:classification[@displayLabel='status'][@authorityURI='http://www.mycore.org/classifications/mir_status']/@valueURIxEditor" initially="submitted" />
-          <xed:include uri="webapp:editor/editor-genres.xed" ref="{$genre}" />
+          <xed:include uri="webapp:editor/editor-genres.xed" ref="{$genre_intern}" />
         </fieldset>
 
         <xed:if test="not($host='standalone')">
