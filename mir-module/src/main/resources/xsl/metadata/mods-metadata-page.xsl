@@ -18,6 +18,7 @@
             }
           });
         </script>
+        <link href="{$WebApplicationBaseURL}js/shariff/shariff.min.css" rel="stylesheet" />
       </head>
 
       <div class="row detail_row">

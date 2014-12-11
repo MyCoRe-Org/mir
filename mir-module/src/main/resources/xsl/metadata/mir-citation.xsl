@@ -6,6 +6,8 @@
   <xsl:template match="/">
     <xsl:variable name="mods" select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods" />
     <div id="mir-citation">
+      <div class="shariff"></div>
+      <script src="{$WebApplicationBaseURL}js/shariff/shariff.min.js"></script>
       <p>
         <xsl:apply-templates select="$mods" mode="authorList" />
         <xsl:apply-templates select="$mods" mode="year" />
