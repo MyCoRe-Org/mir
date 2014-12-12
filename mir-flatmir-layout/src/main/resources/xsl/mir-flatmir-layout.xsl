@@ -139,6 +139,12 @@
             }
           });
         </script>
+        <!-- alco add placeholder for older browser -->
+        <script src="{$WebApplicationBaseURL}js/jquery.placeholder.min.js"></script>
+        <script>
+          jQuery("input[placeholder]").placeholder();
+          jQuery("textarea[placeholder]").placeholder();
+        </script>
       </body>
     </html>
   </xsl:template>

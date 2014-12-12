@@ -561,13 +561,14 @@
   </xed:template>
 
   <xed:template id="rights">
-    <xed:bind xpath="mods:accessCondition[@type='use and reproduction']" initially="rights_reserved">
+    <xed:bind xpath="mods:accessCondition[@type='use and reproduction']" initially="">
       <div class="form-group {$xed-validation-marker}">
         <label class="col-md-3 control-label required">
           <xed:output i18n="mir.rights" />:
         </label>
       <div class="col-md-6">
           <select  class="form-control form-control-inline">
+            <option value="">bitte wählen</option>
             <option value="rights_reserved">Alle Rechte vorbehalten</option>
             <option value="oa_nlz">Open-Access im Zuge einer Allianz- bzw. Nationallizenz</option>
             <option value="cc_by">CC BY</option>
@@ -691,11 +692,6 @@
   </xed:template>
 
   <xed:template id="cancel.submit">
-    <script src="{$WebApplicationBaseURL}js/jquery.placeholder.min.js"></script>
-    <script>
-      jQuery("input[placeholder]").placeholder();
-      jQuery("textarea[placeholder]").placeholder();
-    </script>
     <script type="text/javascript" src="{$WebApplicationBaseURL}js/jquery.search-person.js"></script>
 
     <div class="form-group">
@@ -735,10 +731,13 @@
 
   <xed:template id="validation-rules">
     <xed:validate xpath="//mods:mods/mods:titleInfo/mods:title" required="true" i18n="mir.validation.title" display="global" />
-    <!-- "required" checks if there is such an element which has text content, so we must validate mods:displayForm for the moment-->
-    <xed:validate xpath="//mods:mods/mods:name[mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']='aut']/mods:displayForm" required="true" i18n="mir.validation.author" display="global" />
-    <xed:validate xpath="//mods:mods/mods:originInfo/mods:dateIssued[@encoding='w3cdtf']" required="true" i18n="mir.validation.dateIssued" display="global" />
-    <xed:validate xpath="//mods:mods/mods:accessCondition[@type='use and reproduction']" required="true" i18n="mir.validation.rights" display="global" />
+    <!-- don't validate author, date issued and rights for journal etc.  -->
+    <xed:if test="//mods:mods/mods:genre[@valueURIxEditor!='journal']">
+      <!-- "required" checks if there is such an element which has text content, so we must validate mods:displayForm for the moment-->
+      <xed:validate xpath="//mods:mods/mods:name[mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']='aut']/mods:displayForm" required="true" i18n="mir.validation.author" display="global" />
+      <xed:validate xpath="//mods:mods/mods:originInfo/mods:dateIssued[@encoding='w3cdtf']" required="true" i18n="mir.validation.dateIssued" display="global" />
+      <xed:validate xpath="//mods:mods/mods:accessCondition[@type='use and reproduction']" required="true" i18n="mir.validation.rights" display="global" />
+    </xed:if>
     <xed:validate xpath="//mods:identifier[@type='isbn']" matches="^((978|979)-?)?([\d -]{12}|\d{9})(\d|X)$" i18n="mir.validation.isbn" display="global" />
     <xed:validate xpath="//mods:identifier[@type='issn']" matches="[\dX]{4}\-[\dX]{4}" i18n="mir.validation.issn" display="global" />
     <xed:validate xpath="//mods:identifier[@type='doi']" matches="10\.\d+.*" i18n="mir.validation.doi" display="global" />
