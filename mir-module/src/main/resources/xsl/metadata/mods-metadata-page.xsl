@@ -57,7 +57,7 @@
             <!-- Start: COLLAPSE -->
             <xsl:if test="div[contains(@id,'mir-collapse-')]">
               <div class="panel-group" id="record_detail">
-                <xsl:apply-templates select="div[@id='mir-collapse-preview']" mode="copyContent" />
+                <!-- xsl:apply-templates select="div[@id='mir-collapse-preview']" mode="copyContent" / -->
                 <xsl:apply-templates select="div[@id='mir-collapse-files']" mode="copyContent" />
               </div>
             </xsl:if>
