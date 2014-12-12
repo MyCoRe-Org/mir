@@ -353,6 +353,10 @@
     <mir:textfield xpath="mods:identifier[@type='issn']" label="mir.identifier.issn" />
   </xed:template>
 
+<xed:template id="identifier.zdbid">
+    <mir:textfield xpath="mods:identifier[@type='zdbid']" label="mir.identifier.zdbid" />
+  </xed:template>
+
   <xed:template id="identifier.intern">
     <mir:textfield xpath="mods:identifier[@type='intern']" label="mir.identifier.intern" />
   </xed:template>
@@ -373,6 +377,9 @@
               <option value="issn">
                 <xed:output i18n="mir.identifier.issn" />
               </option>
+              <option value="zdbid">
+                <xed:output i18n="mir.identifier.zdbid" />
+              </option>
               <option value="doi">
                 <xed:output i18n="mir.identifier.doi" />
               </option>
@@ -381,6 +388,9 @@
               </option>
               <option value="urn">
                 <xed:output i18n="mir.identifier.urn" />
+              </option>
+              <option value="uri">
+                <xed:output i18n="mir.identifier.uri" />
               </option>
               <option value="intern">
                 <xed:output i18n="mir.identifier.intern" />
@@ -416,6 +426,9 @@
               </option>
               <option value="urn">
                 <xed:output i18n="mir.identifier.urn" />
+              </option>
+              <option value="uri">
+                <xed:output i18n="mir.identifier.uri" />
               </option>
             </select>
           </div>

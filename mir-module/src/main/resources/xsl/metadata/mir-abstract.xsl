@@ -50,8 +50,11 @@
                 <xsl:when test="contains($accessCondition, 'rights_reserved')">
                   <xsl:value-of select="i18n:translate('component.mods.metaData.dictionary.rightsReserved')" />
                 </xsl:when>
+                <xsl:when test="contains($accessCondition, 'oa_nlz')">
+                  <xsl:value-of select="i18n:translate('component.mods.metaData.dictionary.oa_nlz.short')" />
+                </xsl:when>
                 <xsl:otherwise>
-                  <xsl:value-of select="." />
+                  <xsl:value-of select="$mods/mods:accessCondition[@type='use and reproduction']/text()" />
                 </xsl:otherwise>
               </xsl:choose>
             </xsl:variable>
