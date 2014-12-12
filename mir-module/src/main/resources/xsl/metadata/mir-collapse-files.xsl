@@ -13,7 +13,7 @@
               <div class="panel-heading">
                 <h4 class="panel-title">
                   <a data-toggle="collapse" href="#collapse{@xlink:href}">
-                    Files
+                    <xsl:value-of select="i18n:translate('metadata.files.file')" />
                     <span class="caret"></span>
                   </a>
                   <xsl:apply-templates select="." mode="derivateActions">
@@ -29,9 +29,9 @@
                   <table class="table table-striped">
                     <thead>
                       <tr class="">
-                        <th>Name</th>
-                        <th>Date</th>
-                        <th>Size</th>
+                        <th><xsl:value-of select="i18n:translate('metadata.files.name')" /></th>
+                        <th><xsl:value-of select="i18n:translate('metadata.files.date')" /></th>
+                        <th><xsl:value-of select="i18n:translate('metadata.files.size')" /></th>
                       </tr>
                     </thead>
                     <tbody>
