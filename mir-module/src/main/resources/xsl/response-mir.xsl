@@ -194,7 +194,6 @@
                           <xsl:call-template name="mods.getObjectEditURL">
                             <xsl:with-param name="id" select="$identifier" />
                             <xsl:with-param name="layout" select="'$'" />
-                            <!-- xsl:with-param name="collection" select="'mods'" / --> <!-- TODO: We have to fix this in next mycore release -->
                           </xsl:call-template>
                         </xsl:variable>
                         <a class="hit_option hit_edit">

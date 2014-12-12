@@ -363,7 +363,6 @@
     <xsl:param name="displayAddDerivate" select="'true'" />
     <xsl:param name="layout" select="'$'" />
     <xsl:param name="mods-type" select="'report'" />
-    <xsl:param name="collection" select="''" />
     <xsl:variable name="layoutparam">
       <xsl:if test="$layout != '$'">
         <xsl:value-of select="concat('&amp;layout=',$layout)" />
@@ -372,13 +371,6 @@
     <xsl:variable name="editURL">
       <xsl:choose>
         <xsl:when test="not($accessedit)"></xsl:when><!-- workaround NPE -->
-        <xsl:when test="string-length($collection) &gt; 0">
-          <xsl:call-template name="mods.getObjectEditURL">
-            <xsl:with-param name="collection" select="$collection" />
-            <xsl:with-param name="id" select="$id" />
-            <xsl:with-param name="layout" select="$layout" />
-          </xsl:call-template>
-        </xsl:when>
         <xsl:otherwise>
           <xsl:call-template name="mods.getObjectEditURL">
             <xsl:with-param name="id" select="$id" />
@@ -390,13 +382,6 @@
     <xsl:variable name="editURL_allMods">
       <xsl:choose>
         <xsl:when test="not($accessedit)"></xsl:when><!-- workaround NPE -->
-        <xsl:when test="string-length($collection) &gt; 0">
-          <xsl:call-template name="mods.getObjectEditURL">
-            <xsl:with-param name="collection" select="$collection" />
-            <xsl:with-param name="id" select="$id" />
-            <xsl:with-param name="layout" select="'all'" />
-          </xsl:call-template>
-        </xsl:when>
         <xsl:otherwise>
           <xsl:call-template name="mods.getObjectEditURL">
             <xsl:with-param name="id" select="$id" />
