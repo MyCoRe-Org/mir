@@ -81,17 +81,7 @@
 
 <!-- right column -->
         <div class="col-md-4">
-<!-- social -->
-            <div class="panel panel-default">
-              <div class="panel-heading">
-                <h3 class="panel-title">Teilen</h3>
-              </div>
-              <div class="panel-body">
-                <!-- Start: SHARE -->
-                <xsl:apply-templates select="div[@id='mir-share']" mode="copyContent" />
-                <!-- End: SHARE -->
-              </div>
-            </div>
+
 <!-- cites -->
             <div class="panel panel-default">
               <div class="panel-heading">
@@ -100,6 +90,17 @@
               <div class="panel-body">
                 <!-- Start: CITATION -->
                 <xsl:apply-templates select="div[@id='mir-citation']" mode="copyContent" />
+                <!-- End: CITATION -->
+              </div>
+            </div>
+<!-- rights -->
+            <div id="mir_access_rights_panel" class="panel panel-default">
+              <div class="panel-heading">
+                <h3 class="panel-title">Rechte</h3>
+              </div>
+              <div class="panel-body">
+                <!-- Start: CITATION -->
+                <xsl:apply-templates select="div[@id='mir-access-rights']" mode="copyContent" />
                 <!-- End: CITATION -->
               </div>
             </div>

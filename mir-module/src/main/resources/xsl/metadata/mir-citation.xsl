@@ -23,11 +23,36 @@
       </p>
        -->
       <!-- cite url - TODO: Should be URN if one is given -->
-      <p>
-        <a href="{$WebApplicationBaseURL}receive/{mycoreobject/@ID}">
-          <xsl:value-of select="concat($WebApplicationBaseURL,'receive/',mycoreobject/@ID)" />
+      <p id="cite_link_box">
+        <a id="copy_cite_link"
+           href="{$WebApplicationBaseURL}receive/{mycoreobject/@ID}"
+           class="label label-info">Zitier-Link
         </a>
+        <textarea id="cite_link_code_box" class="code">
+          <xsl:value-of select="concat($WebApplicationBaseURL,'receive/',mycoreobject/@ID)" />
+        </textarea>
       </p>
+      <script>
+        $('#copy_cite_link').click(function(){
+          $('#cite_link_code_box').toggle();
+          $("#cite_link_code_box").focus();
+          return false;
+        });
+        $("#cite_link_code_box").focus(function() {
+            var $this = $(this);
+            $this.select();
+
+            // Work around Chrome's little problem
+            $this.mouseup(function() {
+                // Prevent further mouseup intervention
+                $this.unbind("mouseup");
+                return false;
+            });
+        });
+      </script>
+    </div>
+
+    <div id="mir-access-rights">
       <xsl:choose>
         <xsl:when test="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:accessCondition/@type='use and reproduction'">
           <xsl:variable name="trimmed" select="normalize-space(.)" />
@@ -51,6 +76,7 @@
         </xsl:otherwise>
       </xsl:choose>
     </div>
+
     <xsl:apply-imports />
   </xsl:template>
 

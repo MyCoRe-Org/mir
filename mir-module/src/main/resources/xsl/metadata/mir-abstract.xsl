@@ -11,12 +11,12 @@
         <!-- TODO: Update badges -->
         <div id="badges">
           <xsl:call-template name="categorySearchLink">
-            <xsl:with-param name="class" select="'label label-info'" />
+            <xsl:with-param name="class" select="'mods_genre label label-info'" />
             <xsl:with-param name="node" select="($mods/mods:genre[@type='kindof']|$mods/mods:genre[@type='intern'])[1]" />
           </xsl:call-template>
 
           <time itemprop="datePublished" datetime="{$dateIssued}" data-toggle="tooltip" title="Publication date">
-            <span class="label label-primary">
+            <span class="date_published label label-primary">
               <xsl:variable name="format">
                 <xsl:choose>
                   <xsl:when test="string-length(normalize-space($dateIssued))=4">
@@ -56,7 +56,7 @@
               </xsl:choose>
             </xsl:variable>
             <xsl:call-template name="searchLink">
-              <xsl:with-param name="class" select="'label label-success'" />
+              <xsl:with-param name="class" select="'access_condition label label-success'" />
               <xsl:with-param name="linkText" select="$linkText" />
               <xsl:with-param name="query" select="concat('%2BallMeta%3A&quot;',$accessCondition,'&quot;')" />
             </xsl:call-template>
