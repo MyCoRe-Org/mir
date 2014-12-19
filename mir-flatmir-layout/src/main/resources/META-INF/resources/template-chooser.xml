@@ -10,7 +10,6 @@
           <div class="col-sm-6">
             <select id="template" name="XSL.MIR.DefaultLayout.CSS.SESSION" onChange="document.templateChooser.submit()" class="form-control">
               <option value="">Standard</option>
-              <option value="amelia">Amelia</option>
               <option value="default">Bootstrap</option>
               <option value="cerulean">Cerulean</option>
               <option value="cosmo">Cosmo</option>

@@ -45,9 +45,15 @@ module.exports = function (grunt) {
             ' * Based on Bootstrap and Bootswatch\n' +
             '*/\n',
     mir: {
+<<<<<<< .mine
+      cerulean:{}, cosmo:{}, cyborg:{}, "default":{},
+      darkly:{}, flatly:{}, journal:{}, lumen:{}, readable:{},
+      sandstone:{}, simplex:{}, slate:{}, spacelab:{}, superhero:{},
+=======
       amelia:{}, cerulean:{}, cosmo:{}, cyborg:{}, "default":{},
       darkly{}, flatly:{}, journal:{}, lumen:{}, readable:{},
       sandstone:{}, simplex:{}, slate:{}, spacelab:{}, superhero:{},
+>>>>>>> .r31545
       united:{}, yeti:{}
     },
     replace: {
