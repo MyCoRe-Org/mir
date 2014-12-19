@@ -46,8 +46,8 @@ module.exports = function (grunt) {
             '*/\n',
     mir: {
       amelia:{}, cerulean:{}, cosmo:{}, cyborg:{}, "default":{},
-      flatly:{}, journal:{}, lumen:{}, readable:{},
-      simplex:{}, slate:{}, spacelab:{}, superhero:{},
+      darkly{}, flatly:{}, journal:{}, lumen:{}, readable:{},
+      sandstone:{}, simplex:{}, slate:{}, spacelab:{}, superhero:{},
       united:{}, yeti:{}
     },
     replace: {
@@ -185,6 +185,8 @@ module.exports = function (grunt) {
               )
           )
       );
-      grunt.task.run('build:flatly');
+      createFileIfNotExist('bower_components/bootswatch/default/variables.less');
+      createFileIfNotExist('bower_components/bootswatch/default/bootswatch.less');
+      grunt.task.run('mir');
     });
 }
