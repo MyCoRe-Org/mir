@@ -1,0 +1,158 @@
+/* base
+ * - basic (means nothing special) settings of the webpage
+ */
+html {
+    //background-color: @brand-primary;
+}
+body {
+    overflow-y: scroll;      /* always show right scrollbar */
+    background-position:0px 0px;
+    background-attachment:fixed;
+    background-repeat:no-repeat;
+    min-width: 300px;
+}
+#page {
+    padding-top:20px;
+    background-color:white;
+    //background-color:rgba(255,255,255,.8);
+}
+#main_content {
+    min-height: 300px;       /* minimum height */
+}
+#simple_search {
+    /* margin-top: 20px;        optical enhancement */
+}
+#searchInput {
+    padding: 4px 15px;
+    height: auto;
+    margin-top: 4px;
+}
+
+p {
+  -webkit-hyphens: auto;
+  -moz-hyphens: auto;
+  -ms-hyphens: auto;
+  hyphens: auto;
+  text-rendering: optimizeLegibility;
+  line-height: 180%;
+}
+
+#header_box {
+  margin: 20px auto 20px auto;
+  #project_logo_box {
+    float: left;
+    a {
+      font-size: 18px;
+      &:hover,
+      &:focus {
+        text-decoration: none;
+        outline: none;
+      }
+      #logo_mir,
+      #logo_slogan {
+        color: @brand-primary;
+      }
+      #logo_modul {
+        color: #ccc;
+        letter-spacing: 0.4em;
+        padding-left: 12px
+      }
+    }
+  }
+}
+
+.social_links,
+.internal_links {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+.social_links li {
+    margin: 0;
+    padding: 0 0 2px 0;
+}
+.social_icons {
+    color: transparent;
+    background-color:transparent;
+    background-image: url(../images/social_icons_flat_372x200.png);
+    background-repeat: no-repeat;
+    width: 22px;
+    height: 22px;
+    vertical-align:top;
+    border:none;
+    margin-right: 2px;
+}
+.social_icon_fb { background-position: -64px -120px; }
+.social_icon_tw { background-position: -191px -120px; }
+.social_icon_gg { background-position: -95px -120px; }
+
+.mir-bread-nav {
+    margin: 0;
+    padding: 0;
+    background-color: @gray-lighter;
+}
+.mir-bread-nav .breadcrumb {
+    margin-bottom: 0;
+}
+.jumbotron {
+    color: #eee;
+    text-align:center;
+    padding: 3em 0 3em 0;
+    background:-webkit-linear-gradient(70deg,#080f1f 30%,#2b4b5a 87%,#435e67 100%);
+    background:-o-linear-gradient(70deg,#080f1f 30%,#2b4b5a 87%,#435e67 100%);
+    background:-ms-linear-gradient(70deg,#080f1f 30%,#2b4b5a 87%,#435e67 100%);
+    background:-moz-linear-gradient(70deg,#080f1f 30%,#2b4b5a 87%,#435e67 100%);
+    background:linear-gradient(20deg,#080f1f 30%,#2b4b5a 87%,#435e67 100%);
+    background-attachment:fixed;
+    background-color:#1c2533;
+}
+.jumbotron h1 {
+    font-size: 200%;
+}
+.jumbotron h2 {
+    letter-spacing: .3em;
+    font-size: 100%;
+}
+.jumbotwo h3 span {padding-right:20px;}
+@icon-font-path:          "//netdna.bootstrapcdn.com/bootstrap/3.1.1/fonts/";
+@font-size-base:          14px;
+.line-through {text-decoration:line-through;}
+.sub_info {color: @gray;text-align:center;padding: 10px 0 8px 0;}
+.sub_info .number{font-size:150%;padding: 0 10px;}
+
+#powered_by {
+    text-align: center;
+    background-color: #080F1F;
+    border-top: 1px solid #000;
+    padding: 2em 0px;
+}
+
+.filter {
+    border-right: 0px solid #ccc;
+}
+.filter,
+.filter > li ul {
+    list-style:none;
+    margin:0;
+    padding:0;
+}
+.filter > li ul {
+    display:none;
+}
+.filter > li {
+    margin:0 0 0px 0;
+    padding:0 0 0 0;
+}
+.filter > li > ul > li {
+    margin:0 0 0px 0px;
+    padding:0 0 0 0;
+}
+.filter .hits {
+    color: #ccc;
+}
+.filter .hits:before {
+    content: " (";
+}
+.filter .hits:after {
+    content: ")";
+}
