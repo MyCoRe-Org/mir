@@ -112,6 +112,10 @@
         <span itemprop="name">
           <xsl:value-of select="mods:displayForm" />
         </span>
+        <xsl:text>&#160;</xsl:text><!-- add whitespace here -->
+        <a href="http://d-nb.info/gnd/{$gnd}" title="Link zur GND">
+          <sup>GND</sup>
+        </a>
       </span>
     </a>
   </xsl:template>

@@ -334,9 +334,11 @@
                     </xsl:if>
                     <xsl:variable name="author_name" select="." />
                     <xsl:variable name="gnd">
-                      <xsl:if test="contains(../../arr[@name='mods.pindexname']/str/text(), $author_name)">
-                        <xsl:value-of select="substring-after(../../arr[@name='mods.pindexname']/str/text()[contains(., $author_name)], ':')" />
-                      </xsl:if>
+                      <xsl:for-each select="../../arr[@name='mods.pindexname']/str">
+                        <xsl:if test="contains(text(), $author_name)">
+                          <xsl:value-of select="substring-after(text(), ':')" />
+                        </xsl:if>
+                      </xsl:for-each>
                     </xsl:variable>
                     <xsl:choose>
                       <xsl:when test="string-length($gnd) &gt; 0">
