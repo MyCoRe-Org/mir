@@ -35,6 +35,23 @@
                       </tr>
                     </thead>
                     <tbody>
+
+                      <xsl:variable name="derivateXML" select="document(concat('mcrobject:',@xlink:href))" />
+                      <xsl:variable name="derivateURN" select="$derivateXML/mycorederivate/derivate/fileset/@urn" />
+                
+                      <xsl:if test="$derivateURN">
+                        <tr>
+                          <td>
+                            <xsl:value-of select="concat(i18n:translate('derivate.urn'),':')" />
+                          </td>
+                          <td colspan="2">
+                            <a href="{concat('http://nbn-resolving.de/urn/resolver.pl?urn=',$derivateURN)}">
+                              <xsl:value-of select="$derivateURN" />
+                            </a>
+                          </td>
+                        </tr>
+                      </xsl:if>
+
                       <xsl:for-each select="$ifsDirectory/mcr_directory/children/child">
                         <tr>
                           <td>

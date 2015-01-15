@@ -548,13 +548,18 @@
           <span class="caret"></span>
         </a>
         <ul class="dropdown-menu">
-          <xsl:if test="$derivateWithURN=false()">
-            <li>
-              <a href="{$ServletsBaseURL}derivate/update{$HttpSession}?objectid={../../../@ID}&amp;id={$deriv}{$suffix}">
-                <xsl:value-of select="i18n:translate('component.swf.derivate.addFile')" />
-              </a>
-            </li>
-          </xsl:if>
+          <xsl:choose>
+	          <xsl:when test="$derivateWithURN=false()">
+	            <li>
+	              <a href="{$ServletsBaseURL}derivate/update{$HttpSession}?objectid={../../../@ID}&amp;id={$deriv}{$suffix}">
+	                <xsl:value-of select="i18n:translate('component.swf.derivate.addFile')" />
+	              </a>
+	            </li>
+	          </xsl:when>
+	          <xsl:otherwise>
+	            <li><!-- xsl:value-of select="i18n:translate('component.swf.derivate.addFile')" /--> Bearbeitung wg. URN gesperrt</li>
+	          </xsl:otherwise>
+          </xsl:choose>
           <xsl:if test="$derivateWithURN=false() and mcrxsl:isAllowedObjectForURNAssignment($parentObjID)">
             <xsl:variable name="apos">
               <xsl:text>'</xsl:text>
