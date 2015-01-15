@@ -95,10 +95,14 @@
 
   <xsl:template match="mods:name" mode="authors_short">
     <!-- TODO: Link to search? -->
+    <xsl:variable name="gnd">
+      <xsl:if test="starts-with(@valueURI, 'http://d-nb.info/gnd/')">
+        <xsl:value-of select="substring-after(@valueURI, 'http://d-nb.info/gnd/')" />
+      </xsl:if>
+    </xsl:variable>
     <xsl:variable name="query">
       <xsl:choose>
-        <xsl:when test="starts-with(@valueURI, 'http://d-nb.info/gnd/')">
-          <xsl:variable name="gnd" select="substring-after(@valueURI, 'http://d-nb.info/gnd/')" />
+        <xsl:when test="string-length($gnd)&gt;0">
           <xsl:value-of select="concat($ServletsBaseURL,'solr/mods_gnd?q=',$gnd)" />
         </xsl:when>
         <xsl:otherwise>
@@ -112,10 +116,12 @@
         <span itemprop="name">
           <xsl:value-of select="mods:displayForm" />
         </span>
-        <xsl:text>&#160;</xsl:text><!-- add whitespace here -->
-        <a href="http://d-nb.info/gnd/{$gnd}" title="Link zur GND">
-          <sup>GND</sup>
-        </a>
+        <xsl:if test="string-length($gnd)&gt;0">
+	        <xsl:text>&#160;</xsl:text><!-- add whitespace here -->
+	        <a href="http://d-nb.info/gnd/{$gnd}" title="Link zur GND">
+	          <sup>GND</sup>
+	        </a>
+        </xsl:if>
       </span>
     </a>
   </xsl:template>
