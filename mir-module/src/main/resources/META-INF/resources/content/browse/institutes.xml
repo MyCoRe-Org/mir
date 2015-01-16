@@ -5,11 +5,11 @@
 
   <section i18n="browse.mods.institution.corporate" xml:lang="all">
 
-    <h3>Institutionen</h3>
+    <h3><text i18n="browse.mods.institution.corporate" /></h3><!-- FIXME: <text /> generates <label /> -->
     <classificationbrowser classification="mir_institutes"
                                objecttype="mods"
                               restriction="+category.top:&quot;mir_status:published&quot;"
-                                    field="corporate"
+                                    field="category.top"
                              countresults="true"
                                addclassid="true"
                               emptyleaves="true"
