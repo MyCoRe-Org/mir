@@ -112,7 +112,7 @@
                           </xsl:call-template>
                         </span>
                         <span class="file_preview">
-                          <img src="/mir/mir-flatmir-layout/images/mycore_logo_small_invert.png" alt="">
+                          <img src="{$WebApplicationBaseURL}images/icons/icon_common_disabled.png" alt="">
                             <xsl:if test="'.pdf' = translate(substring($fileName, string-length($fileName) - 3),'PDF','pdf')">
                               <xsl:attribute name="data-toggle">tooltip</xsl:attribute>
                               <xsl:attribute name="data-placement">top</xsl:attribute>
