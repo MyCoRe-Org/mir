@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:mods="http://www.loc.gov/mods/v3"
-  exclude-result-prefixes="mods">
+  xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions"
+  exclude-result-prefixes="mods mcrxsl">
   <xsl:include href="layout-utils.xsl" />
 
   <xsl:template match="/site">
@@ -116,6 +117,7 @@
               </div>
             </div>
 <!-- system -->
+            <xsl:if test="not(mcrxsl:isCurrentUserGuestUser())">
             <div class="panel panel-default system">
               <div class="panel-heading">
                 <h3 class="panel-title">Systeminformationen</h3>
@@ -126,6 +128,7 @@
                 <!-- End: ADMINMETADATA -->
               </div>
             </div>
+            </xsl:if>  
 
 <!-- end: right column -->
         </div>
