@@ -125,7 +125,7 @@
       </xsl:variable>
       <xsl:value-of select="concat('Autor(en)       : ',$authors,$newline)" />
     </xsl:if>
-    <xsl:value-of select="concat('Link            : ',$WebApplicationBaseURL,'receive/',@ID)" />
+    <xsl:value-of select="concat('Link            : &lt;',$WebApplicationBaseURL,'receive/',@ID, '&gt;')" />
   </xsl:template>
 
   <xsl:template match="mycoreobject" mode="mailReceiver">
