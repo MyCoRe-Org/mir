@@ -17,6 +17,10 @@
                 <xsl:with-param select="mycoreobject/service/servdates/servdate[@type='createdate']" name="nodes" />
                 <xsl:with-param select="i18n:translate('metaData.createdAt')" name="label" />
               </xsl:call-template>
+              <xsl:call-template name="printMetaDate">
+                <xsl:with-param select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:note" name="nodes" />
+                <xsl:with-param select="i18n:translate('mir.comment')" name="label" />
+              </xsl:call-template>
               <!--*** Last Modified ************************************* -->
               <xsl:call-template name="printMetaDate">
                 <xsl:with-param select="mycoreobject/service/servdates/servdate[@type='modifydate']" name="nodes" />
