@@ -91,6 +91,7 @@
               </strong>
             </xsl:when>
             <xsl:when test="position()=2">
+              <xsl:text>&#160;</xsl:text><!-- add whitespace -->
               <em>et al</em>
             </xsl:when>
             <xsl:otherwise>
@@ -103,7 +104,7 @@
         <xsl:value-of select="'N.N.'" />
       </xsl:otherwise>
     </xsl:choose>
-    <xsl:value-of select="' '" />
+    <xsl:text>&#160;</xsl:text><!-- add whitespace -->
   </xsl:template>
 
   <xsl:template match="mods:mods" mode="year">
