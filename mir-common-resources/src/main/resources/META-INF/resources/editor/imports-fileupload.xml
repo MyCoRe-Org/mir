@@ -53,7 +53,7 @@
       <text id="DFileUploadHint">
         <label xml:lang="de">
           <span class="editorhints">
-            Achtung! Das Absenden größerer Datendateien
+            Achtung! Die Übertragung größerer Datenmengen
             kann einige Zeit in Anspruch nehmen. Brechen Sie die Übertragung möglichst nicht ab!
           </span>
         </label>
