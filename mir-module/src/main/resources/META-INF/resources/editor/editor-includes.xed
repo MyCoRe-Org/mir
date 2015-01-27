@@ -747,7 +747,14 @@
     <!-- don't validate author, date issued and rights for journal etc.  -->
     <xed:if test="//mods:mods/mods:genre[@valueURIxEditor!='journal']">
       <!-- "required" checks if there is such an element which has text content, so we must validate mods:displayForm for the moment-->
-      <xed:validate xpath="//mods:mods/mods:name[mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']='aut']/mods:displayForm" required="true" i18n="mir.validation.author" display="global" />
+      <xed:choose>
+        <xed:when test="//mods:mods/mods:genre[@valueURIxEditor='collection']">
+          <xed:validate xpath="//mods:mods/mods:name[mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']='edt']/mods:displayForm" required="true" i18n="mir.validation.author" display="global" />
+        </xed:when>
+        <xed:otherwise>
+          <xed:validate xpath="//mods:mods/mods:name[mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']='aut']/mods:displayForm" required="true" i18n="mir.validation.author" display="global" />
+        </xed:otherwise>
+      </xed:choose>
       <xed:validate xpath="//mods:originInfo/mods:dateIssued[@encoding='w3cdtf']" required="true" i18n="mir.validation.dateIssued" display="global" />
       <xed:validate xpath="//mods:mods/mods:accessCondition[@type='use and reproduction']" required="true" i18n="mir.validation.rights" display="global" />
     </xed:if>
