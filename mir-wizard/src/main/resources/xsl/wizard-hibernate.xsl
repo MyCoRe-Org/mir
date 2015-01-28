@@ -33,6 +33,7 @@
         <property name="dialect">
           <xsl:value-of select="$dbcfg/dialect" />
         </property>
+        <xsl:apply-templates select="extra_properties//property" />
         <xsl:apply-templates select="$hibcfg//property[not(contains('connection.driver_class|connection.url|connection.username|connection.password|dialect', @name))]" />
         <xsl:apply-templates select="$hibcfg//mapping" />
       </session-factory>

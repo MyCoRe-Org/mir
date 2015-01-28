@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<extra_properties>
+  <option value="default_schema">Schema</option>
+  <option value="default_catalog">Catalog</option>
+</extra_properties>
