@@ -85,8 +85,38 @@
     </xsl:for-each>
 
     <xsl:if test="@success = 'true'">
+      <div class="modal fade" id="confirm-shutdown" tabindex="-1" role="dialog" aria-labelledby="confirmTitle" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                <xsl:text disable-output-escaping="yes">&amp;times;</xsl:text>
+              </button>
+              <h4 class="modal-title" id="confirmTitle">
+                <xsl:value-of select="i18n:translate('component.mir.wizard.shutdownServer.confirmTitle')" />
+              </h4>
+            </div>
+
+            <div class="modal-body">
+              <p>
+                <xsl:value-of select="i18n:translate('component.mir.wizard.shutdownServer.confirmMessage')" />
+              </p>
+            </div>
+
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">
+                <xsl:value-of select="i18n:translate('component.mir.wizard.cancel')" />
+              </button>
+              <a href="{$ServletsBaseURL}MIRWizardServlet/shutdown" class="btn btn-danger danger">
+                <xsl:value-of select="i18n:translate('component.mir.wizard.shutdownServer')" />
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
       <br />
-      <a class="btn btn-primary pull-right" href="{$ServletsBaseURL}MIRWizardServlet/shutdown">
+      <a class="btn btn-primary pull-right" data-toggle="modal" data-target="#confirm-shutdown" href="#">
         <xsl:value-of select="i18n:translate('component.mir.wizard.shutdownServer')" />
       </a>
       <br />
