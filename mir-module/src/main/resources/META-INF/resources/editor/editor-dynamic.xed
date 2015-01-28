@@ -19,6 +19,9 @@
 
         <xed:load-resource name="genres" uri="classification:metadata:-1:children:mir_genres" />
 
+        <!-- If parameter host is missing, "standalone" is default, meaning this publication has no host -->
+        <xed:param name="host" default="standalone" />
+
         <h1>
           Publikation erfassen:
           <xed:output value="$genres//category[@ID=$genre_intern]/label[lang($CurrentLang)]/@text" />
