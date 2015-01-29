@@ -15,9 +15,9 @@
   <inceptionYear>2013</inceptionYear>
   <properties>
     <mycore.version>2015.01-SNAPSHOT</mycore.version>
-    <jetty.version>9.2.6.v20141205</jetty.version>
+    <jetty.version>9.2.7.v20150116</jetty.version>
     <tomcat7.version>7.0.57</tomcat7.version>
-    <tomcat8.version>8.0.15</tomcat8.version>
+    <tomcat8.version>8.0.18</tomcat8.version>
     <cargo.version>1.4.11</cargo.version>
     <cargo.servlet.uriencoding>UTF-8</cargo.servlet.uriencoding>
     <cargo.container.zipUrlInstaller.downloadDir>${settings.localRepository}/../cargo/containers</cargo.container.zipUrlInstaller.downloadDir>
