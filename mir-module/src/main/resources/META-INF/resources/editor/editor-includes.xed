@@ -5,6 +5,7 @@
   <xed:template id="in.out">
     <xed:source uri="xslStyle:editor/mods2xeditor:{$sourceUri}"/>
     <xed:source uri="xslStyle:asParent,editor/mods2xeditor:mcrobject:{$parentId}" />
+    <xed:source uri="xslStyle:asSeries,editor/mods2xeditor:mcrobject:{$seriesId}" />
     <xed:source uri="xslStyle:mycoreobject-editor,editor/mods2xeditor:mcrobject:{$id}" />
     <xed:cancel url="../servlets/MCRLockServlet?action=unlock&amp;id={$id}&amp;url=/receive/{$id}" />
     <xed:cancel url="{$cancelUrl}" />
@@ -552,19 +553,21 @@
   </xed:template>
 
   <xed:template id="language.repeated">
+    <xed:repeat xpath="mods:language" max="5" >
     <div class="form-group">
       <label class="col-md-3 control-label">
         <xed:output i18n="mir.language" />
       </label>
-      <xed:repeat xpath="mods:language/mods:languageTerm[@authority='rfc4646'][@type='code']" max="5">
         <div class="col-md-6">
+          <xed:bind xpath="mods:languageTerm[@authority='rfc4646'][@type='code']" initially="de">
           <div class="controls">
             <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="lang.list" />
           </div>
+          </xed:bind>
         </div>
         <mir:pmud />
-      </xed:repeat>
     </div>
+    </xed:repeat>
   </xed:template>
 
   <xed:template id="lang.list">
@@ -582,14 +585,7 @@
       <div class="col-md-6">
           <select  class="form-control form-control-inline">
             <option value="">bitte wählen</option>
-            <option value="rights_reserved">Alle Rechte vorbehalten</option>
-            <option value="oa_nlz">Open-Access im Zuge einer Allianz- bzw. Nationallizenz</option>
-            <option value="cc_by">CC BY</option>
-            <option value="cc_by-sa">CC BY-SA</option>
-            <option value="cc_by-nd">CC BY-ND</option>
-            <option value="cc_by-nc">CC BY-NC</option>
-            <option value="cc_by-nc-sa">CC BY-NC-SA</option>
-            <option value="cc_by-nc-nd">CC BY-NC-ND</option>
+            <xed:include uri="xslStyle:items2options:classification:editor:-1:children:mir_rights" />
           </select>
         </div>
       </div>
@@ -617,6 +613,21 @@
         </xed:bind>
       </div>
     </div>
+  </xed:template>
+
+  <xed:template id="sdnb">
+    <xed:bind xpath="mods:classification[@authority='sdnb'][@displayLabel='sdnb']">
+      <div class="form-group {$xed-validation-marker}">
+        <label class="col-md-3 control-label">
+          <xed:output i18n="editor.search.mir.sdnb" />:
+        </label>
+        <div class="col-md-6">
+          <select  class="form-control form-control-inline">
+            <xed:include uri="xslStyle:items2options:classification:editor:-1:children:SDNB" />
+          </select>
+        </div>
+      </div>
+    </xed:bind>
   </xed:template>
 
   <xed:template id="abstract.simple">
@@ -745,7 +756,7 @@
   <xed:template id="validation-rules">
     <xed:validate xpath="//mods:mods/mods:titleInfo/mods:title" required="true" i18n="mir.validation.title" display="global" />
     <!-- don't validate author, date issued and rights for journal etc.  -->
-    <xed:if test="//mods:mods/mods:genre[@valueURIxEditor!='journal']">
+    <xed:if test="//mods:mods/mods:genre[@valueURIxEditor!='journal'][@valueURIxEditor!='series']">
       <!-- "required" checks if there is such an element which has text content, so we must validate mods:displayForm for the moment-->
       <xed:choose>
         <xed:when test="//mods:mods/mods:genre[@valueURIxEditor='collection']">
