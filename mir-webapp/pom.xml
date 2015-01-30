@@ -48,6 +48,7 @@
               <usedDependencies>
                 <!-- used by this war -->
                 <useDependency>org.mycore.mir:mir-flatmir-layout</useDependency>
+                <useDependency>org.mycore.mir:mir-leftnav-layout</useDependency>
                 <useDependency>org.mycore:mycore-meta</useDependency>
                 <useDependency>org.mycore.mir:mir-common-resources</useDependency>
                 <useDependency>org.mycore.mir:mir-module</useDependency>
