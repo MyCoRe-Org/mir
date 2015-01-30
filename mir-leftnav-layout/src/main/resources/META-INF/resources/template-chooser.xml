@@ -63,7 +63,7 @@
               $('.bs-component [data-toggle="popover"]').popover();
               $('.bs-component [data-toggle="tooltip"]').tooltip();
           });
-          var curCss=$('link[rel="stylesheet"][href*="mir-flatmir-layout"]').attr('href');
+          var curCss=$('link[rel="stylesheet"][href*="mir-leftnav-layout"]').attr('href');
           curCss=curCss.substr(curCss.lastIndexOf('/')+1);
           curCss=curCss.substr(0,curCss.indexOf('.'));
           $('form[name="templateChooser"] option[value="'+curCss+'"]').attr("selected","selected");

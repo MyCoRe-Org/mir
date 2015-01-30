@@ -9,7 +9,7 @@
   <xsl:output method="html" doctype-system="about:legacy-compat" indent="yes" omit-xml-declaration="yes" media-type="text/html"
     version="5" />
   <xsl:strip-space elements="*" />
-  <xsl:include href="resource:xsl/mir-flatmir-layout-utils.xsl"/>
+  <xsl:include href="resource:xsl/mir-leftnav-layout-utils.xsl"/>
   <xsl:param name="MIR.DefaultLayout.CSS" select="'flatly.min'" />
   <xsl:param name="MIR.CustomLayout.CSS" select="''" />
   <!-- Various versions -->
@@ -36,7 +36,7 @@
         <script type="text/javascript" src="//code.jquery.com/jquery-{$jquery.version}.min.js"></script>
         <script type="text/javascript" src="//code.jquery.com/jquery-migrate-{$jquery.migrate.version}.min.js"></script>
         <xsl:copy-of select="head/*" />
-        <link href="{$WebApplicationBaseURL}mir-flatmir-layout/css/{$MIR.DefaultLayout.CSS}.css" rel="stylesheet" />
+        <link href="{$WebApplicationBaseURL}mir-leftnav-layout/css/{$MIR.DefaultLayout.CSS}.css" rel="stylesheet" />
         <xsl:if test="string-length($MIR.CustomLayout.CSS) &gt; 0">
           <link href="{$WebApplicationBaseURL}css/{$MIR.CustomLayout.CSS}" rel="stylesheet" />
         </xsl:if>
@@ -103,7 +103,7 @@
                 <div class="col-xs-6 col-sm-3 col-md-2">
                   <h4>Layout based on</h4>
                   <ul class="internal_links">
-                    <li><a href="{$WebApplicationBaseURL}mir-flatmir-layout/template/flatmir.xml">flatmir</a></li>
+                    <li><a href="{$WebApplicationBaseURL}mir-leftnav-layout/template/leftnav.xml">leftnav</a></li>
                     <li><a href="http://getbootstrap.com/">Bootstrap</a></li>
                     <li><a href="http://bootswatch.com/">Bootswatch</a></li>
                   </ul>
@@ -116,7 +116,7 @@
         <xsl:variable name="mcr_version" select="concat('MyCoRe ',mcrver:getCompleteVersion())" />
         <div id="powered_by">
           <a href="http://www.mycore.de">
-            <img src="{$WebApplicationBaseURL}mir-flatmir-layout/images/mycore_logo_small_invert.png" title="{$mcr_version}" alt="powered by MyCoRe" />
+            <img src="{$WebApplicationBaseURL}mir-leftnav-layout/images/mycore_logo_small_invert.png" title="{$mcr_version}" alt="powered by MyCoRe" />
           </a>
         </div>
 

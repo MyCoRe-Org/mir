@@ -10,7 +10,7 @@
   <description>mir layout template with left navigation bar</description>
   <properties>
     <lesscss.compress>true</lesscss.compress>
-    <template.cssdir>${project.build.directory}/classes/META-INF/resources/mir-flatmir-layout/css</template.cssdir>
+    <template.cssdir>${project.build.directory}/classes/META-INF/resources/mir-leftnav-layout/css</template.cssdir>
     <grunt.projectBase>${project.build.directory}/grunt</grunt.projectBase>
   </properties>
   <build>
@@ -92,7 +92,7 @@
             <groupId>pl.allegro</groupId>
             <artifactId>grunt-maven-plugin</artifactId>
             <configuration>
-            <!-- 
+            <!--
               <gruntExecutable>${grunt.projectBase}/node_modules/grunt-cli/bin/grunt</gruntExecutable>
               <bowerExecutable>${grunt.projectBase}/node_modules/bower/bin/bower</bowerExecutable>
               <runGruntWithNode>true</runGruntWithNode>
