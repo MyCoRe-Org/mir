@@ -88,6 +88,30 @@
             <xsl:with-param name="label" select="i18n:translate('component.mods.metaData.dictionary.contains')" />
           </xsl:apply-templates>
         </xsl:if>
+
+        <!-- check for relatedItem type!="host" and containing mycoreobject ID using solr query on field mods.relatedItem -->
+        <xsl:variable name="hits"
+                      xmlns:encoder="xalan://java.net.URLEncoder"
+                      select="document(concat('solr:q=',encoder:encode(concat('mods.relatedItem:', mycoreobject/@ID, '* AND NOT(mods.relatedItem:*|host)'))))/response/result" />
+        <xsl:if test="count($hits/doc) &gt; 0">
+          <tr>
+            <td valign="top" class="metaname">
+              <xsl:value-of select="concat(i18n:translate('component.mods.metaData.dictionary.contains'),':')" />
+            </td>
+            <td class="metavalue">
+              <ul>
+                <xsl:for-each select="$hits/doc">
+                  <li>
+                    <xsl:call-template name="objectLink">
+                      <xsl:with-param name="obj_id" select="str[@name='returnId']" />
+                    </xsl:call-template>
+                  </li>
+                </xsl:for-each>
+              </ul>
+            </td>
+          </tr>
+        </xsl:if>
+
       </table>
     </div>
     <xsl:apply-imports />
@@ -117,10 +141,10 @@
           <xsl:value-of select="mods:displayForm" />
         </span>
         <xsl:if test="string-length($gnd)&gt;0">
-	        <xsl:text>&#160;</xsl:text><!-- add whitespace here -->
-	        <a href="http://d-nb.info/gnd/{$gnd}" title="Link zur GND">
-	          <sup>GND</sup>
-	        </a>
+          <xsl:text>&#160;</xsl:text><!-- add whitespace here -->
+          <a href="http://d-nb.info/gnd/{$gnd}" title="Link zur GND">
+            <sup>GND</sup>
+          </a>
         </xsl:if>
       </span>
     </a>

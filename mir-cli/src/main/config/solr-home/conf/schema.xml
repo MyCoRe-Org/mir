@@ -197,7 +197,8 @@
     <field name="mods.place" type="text_de" multiValued="true"/>
     <field name="mods.pindexname" type="string" multiValued="true" />
     <field name="mods.pindexname.published" type="string" multiValued="true" />
-    <field name="mods.embargo" type="string"/>
+    <field name="mods.embargo" type="string" />
+    <field name="mods.relatedItem" type="string" multiValued="true" />
 
     <!-- ******************************************** -->
     <!-- * SEARCH -->

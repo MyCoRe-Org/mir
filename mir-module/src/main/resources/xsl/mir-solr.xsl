@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:mods="http://www.loc.gov/mods/v3"
-  xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions" xmlns:mcrxml="xalan://org.mycore.common.xml.MCRXMLFunctions" exclude-result-prefixes="mods mcrxsl">
+  xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions" xmlns:mcrxml="xalan://org.mycore.common.xml.MCRXMLFunctions"
+  xmlns:xlink="http://www.w3.org/1999/xlink" exclude-result-prefixes="mods mcrxsl xlink">
   <xsl:import href="xslImport:solr-document:mir-solr.xsl" />
 
   <xsl:template match="mycoreobject[contains(@ID,'_mods_')]">
@@ -125,6 +126,11 @@
     <xsl:for-each select="mods:abstract[1]">
       <field name="mods.abstract.result">
         <xsl:value-of select="mcrxml:shortenText(text(),300)" />
+      </field>
+    </xsl:for-each>
+    <xsl:for-each select=".//mods:relatedItem">
+      <field name="mods.relatedItem">
+        <xsl:value-of select="@xlink:href" />|<xsl:value-of select="@type" />
       </field>
     </xsl:for-each>
   </xsl:template>
