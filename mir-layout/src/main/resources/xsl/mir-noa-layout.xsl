@@ -98,11 +98,12 @@
                 <div class="row">
                     <div class="col-xs-6">
                         <ul id="sub_menu">
-                            <xsl:apply-templates select="$loaded_navigation_xml/menu[@id='brand']" />
+                            <xsl:apply-templates select="$loaded_navigation_xml/menu[@id='brand']/item[@href='/content/brand/impressum.xml']" />
+                            <xsl:apply-templates select="$loaded_navigation_xml/menu[@id='brand']/item[@href='/content/brand/contact.xml']" />
                         </ul>
                     </div>
                     <div class="col-xs-6">
-                        <div id="copyright">©NOA 2015</div>
+                        <div id="copyright">© NOA 2015</div>
                     </div>
                 </div>
                 <div class="row">
