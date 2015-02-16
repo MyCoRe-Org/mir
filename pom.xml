@@ -182,8 +182,7 @@
   </build>
   <modules>
     <module>mir-module</module>
-    <module>mir-flatmir-layout</module>
-    <module>mir-leftnav-layout</module>
+    <module>mir-layout</module>
     <module>mir-webapp</module>
     <module>mir-common-resources</module>
     <module>mir-cli</module>

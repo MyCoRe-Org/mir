@@ -1,0 +1,35 @@
+//
+// Forms
+// --------------------------------------------------
+.form-control-focus (@color: @brand-warning) {
+  .navbar-default &:focus {
+    border-color: @color;
+  }
+}
+
+*:not(.input-group-btn) > .btn {
+  margin-right: 5px;
+}
+
+.navbar-left > .btn {
+  padding: 5px 10px;
+  margin-left: 5px;
+  margin-top: 5px;
+}
+
+.modal-content {
+  top: 50px;
+}
+
+.required:before {
+  content:"* ";
+}
+
+//
+// Checkboxes
+// --------------------------------------------------
+.checkbox input[type="checkbox"] {
+  position: relative;
+  margin-bottom: 6px;
+}
+
