@@ -39,8 +39,8 @@
           <ignoreAllErrors>false</ignoreAllErrors>
           <gruntOptions>
             <gruntOption>--verbose</gruntOption>
-            <gruntOption>--lessFile ${basedir}/src/main/less/noa/build.less</gruntOption>
-            <gruntOption>--targetDirectory ${template.cssdir}/noa</gruntOption>
+            <gruntOption>--lessFile ${basedir}/src/main/less/flatmir/build.less</gruntOption>
+            <gruntOption>--targetDirectory ${template.cssdir}/flatmir</gruntOption>
           </gruntOptions>
         </configuration>
         <executions>
