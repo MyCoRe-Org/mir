@@ -236,6 +236,16 @@
         <role>developer</role>
       </roles>
     </developer>
+    <developer>
+      <id>mcrtineu</id>
+      <name>Tilo Neumann</name>
+      <organization>Medieninformatiker</organization>
+      <email>Tilo.Neumann (at) butterlake.de</email>
+      <timezone>+1</timezone>
+      <roles>
+        <role>designer</role>
+      </roles>
+    </developer>
   </developers>
   <profiles>
     <profile>
