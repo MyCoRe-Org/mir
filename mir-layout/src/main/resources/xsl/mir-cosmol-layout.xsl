@@ -9,10 +9,11 @@
   <xsl:output method="html" doctype-system="about:legacy-compat" indent="yes" omit-xml-declaration="yes" media-type="text/html"
     version="5" />
   <xsl:strip-space elements="*" />
-  <xsl:include href="resource:xsl/mir-noa-layout-utils.xsl"/>
+  <xsl:include href="resource:xsl/mir-cosmol-layout-utils.xsl"/>
   <xsl:param name="MIR.DefaultLayout.CSS" select="'cosmo.min'" />
   <xsl:param name="MIR.CustomLayout.CSS" select="''" />
-  <xsl:param name="MIR.Layout.Theme" select="'noa'" />
+  <xsl:param name="MIR.Layout.Theme" select="'cosmol'" />
+  <xsl:param name="MCR.NameOfProject" select="'MIR'" />
   <!-- Various versions -->
   <xsl:variable name="bootstrap.version" select="'3.3.1'" />
   <xsl:variable name="bootswatch.version" select="$bootstrap.version" />
@@ -103,7 +104,7 @@
                         </ul>
                     </div>
                     <div class="col-xs-6">
-                        <div id="copyright">© NOA 2015</div>
+                        <div id="copyright">© <xsl:value-of select="$MCR.NameOfProject" /> 2015</div>
                     </div>
                 </div>
                 <div class="row">

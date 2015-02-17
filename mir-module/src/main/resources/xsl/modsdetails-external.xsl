@@ -3,7 +3,7 @@
   xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation" xmlns:mcrmods="xalan://org.mycore.mods.MCRMODSClassificationSupport"
   xmlns:basket="xalan://org.mycore.frontend.basket.MCRBasketManager" xmlns:acl="xalan://org.mycore.access.MCRAccessManager" xmlns:mcr="http://www.mycore.org/"
   xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:mods="http://www.loc.gov/mods/v3" xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions"
-  xmlns:mcrurn="xalan://org.mycore.urn.MCRXMLFunctions" exclude-result-prefixes="basket xalan xlink mcr i18n acl mods mcrmods mcrxsl mcrurn"
+  xmlns:mcrurn="xalan://org.mycore.urn.MCRXMLFunctions" xmlns:str="http://exslt.org/strings" exclude-result-prefixes="basket xalan xlink mcr i18n acl mods mcrmods mcrxsl mcrurn str"
   version="1.0" xmlns:ex="http://exslt.org/dates-and-times" extension-element-prefixes="ex">
 
   <!-- do nothing for display parent -->
@@ -480,17 +480,17 @@
 
               <xsl:variable name="child-layout">
                 <xsl:choose>
-                  <xsl:when test="$mods-type = 'book'">
+                  <xsl:when test="$mods-type = 'book' or $mods-type = 'monograph' or $mods-type = 'collection' or $mods-type = 'festschrift' or $mods-type = 'proceedings'">
                     <xsl:value-of select="'chapter'" />
                   </xsl:when>
-                  <xsl:when test="$mods-type = 'confpro'">
-                    <xsl:value-of select="'confpub'" />
+                  <xsl:when test="$mods-type = 'lexicon'">
+                    <xsl:value-of select="'entry'" />
                   </xsl:when>
-                  <xsl:when test="$mods-type = 'journal'">
+                  <xsl:when test="$mods-type = 'journal' or $mods-type = 'newspaper'">
                     <xsl:value-of select="'article'" />
                   </xsl:when>
                   <xsl:when test="$mods-type = 'series'">
-                    <xsl:value-of select="'book|confpro'" />
+                    <xsl:value-of select="'book|monograph|collection|festschrift|proceedings|lexicon'" />
                   </xsl:when>
                 </xsl:choose>
               </xsl:variable>
@@ -502,21 +502,18 @@
               <xsl:if test="string-length($child-layout) &gt; 0 and $accessedit">
                 <xsl:choose>
                   <xsl:when test="$mods-type = 'series'">
-                    <li>
-                      <a href="{$WebApplicationBaseURL}/editor/editor-dynamic.xed{$HttpSession}?genre=book&amp;parentId={./@ID}">
-                        <xsl:value-of select="i18n:translate('component.mods.metaData.types.book')" />
-                      </a>
-                    </li>
-                    <li>
-                      <a href="{$WebApplicationBaseURL}/editor/editor-dynamic.xed{$HttpSession}?genre=confpro&amp;parentId={./@ID}">
-                        <xsl:value-of select="i18n:translate('component.mods.metaData.types.confpro')" />
-                      </a>
-                    </li>
+                    <xsl:for-each select="str:tokenize($child-layout,'|')" >
+                      <li>
+                        <a href="{$WebApplicationBaseURL}/editor/editor-dynamic.xed{$HttpSession}?genre={.}&amp;host=series&amp;seriesId={$id}">
+                          <xsl:value-of select="i18n:translate(concat('component.mods.genre.',.))" />
+                        </a>
+                      </li>
+                    </xsl:for-each>
                   </xsl:when>
                   <xsl:otherwise>
                     <li>
-                      <a href="{$WebApplicationBaseURL}/editor/editor-dynamic.xed{$HttpSession}?genre={$child-layout}&amp;parentId={./@ID}">
-                        <xsl:value-of select="i18n:translate(concat('component.mods.metaData.types.',$child-layout))" />
+                      <a href="{$WebApplicationBaseURL}/editor/editor-dynamic.xed{$HttpSession}?genre={$child-layout}&amp;parentId={$id}">
+                        <xsl:value-of select="i18n:translate(concat('component.mods.genre.',$child-layout))" />
                       </a>
                     </li>
                   </xsl:otherwise>
@@ -594,4 +591,5 @@
       </div>
     </xsl:if>
   </xsl:template>
+
 </xsl:stylesheet>
