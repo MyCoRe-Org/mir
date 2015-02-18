@@ -1,6 +1,5 @@
 body {
     //background-color: #c5d3e0;
-
     background-image: -webkit-linear-gradient(top left, white 0%, #c5d3e0 100%);
     background-image: -moz-linear-gradient(right bottom, white 0%, #c5d3e0 100%);
     background-image: -o-linear-gradient(white 0%, #c5d3e0 100%);
@@ -13,6 +12,8 @@ header {
         border-top-left-radius: 10px;
         border-top-right-radius: 10px;
         .row {
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
             position: relative;
             #header_back {
                 width: 100%;
@@ -40,8 +41,6 @@ header {
     padding-bottom: 20px;
     padding-top: 0px;
     background-color: white;
-    border-bottom-left-radius: 10px;
-    border-bottom-right-radius: 10px;
 }
 
 #main_content {
@@ -86,37 +85,53 @@ header {
 
 footer {
     background-color: transparent;
-    padding-bottom: 30px;
+    padding-bottom: 10px;
     .container {
-        border-top: 1px solid #ddd;
-        padding-top: 10px;
-        #sub_menu {
-            margin: 0;
-            padding: 0;
-            li {
-                list-style: none;
-                display: inline;
-                &:before {
-                    color: #999;
-                    content: ' • ';
-                    padding: 0px 3px;
+        #menu {
+            background-color: #1d3d54;
+            background-image: -webkit-linear-gradient(left, #1d3d54 0%, #172232 100%);
+            background-image: -moz-linear-gradient(left, #1d3d54 0%, #172232 100%);
+            background-image: -o-linear-gradient(left, #1d3d54 0%, #172232 100%);
+            background-image: linear-gradient(left, #1d3d54 0%, #172232 100%);
+            border-bottom-left-radius: 10px;
+            border-bottom-right-radius: 10px;
+            padding-top: 10px;
+            padding-bottom: 20px;
+            #sub_menu {
+                margin: 0;
+                padding: 0;
+                li {
+                    list-style: none;
+                    display: inline;
+                    &:before {
+                        color: #eee;
+                        content: ' • ';
+                        padding: 0px 3px;
+                    }
+                    a {
+                        color: #eee;
+                    }
+                }
+                li:first-child {
+                    &:before {
+                        content: '';
+                        padding: 0px 0px;
+                    }
                 }
             }
-            li:first-child {
-                &:before {
-                    content: '';
-                    padding: 0px 0px;
-                }
+            #copyright {
+                color: #eee;
+                text-align: right;
             }
         }
-        #copyright {
-            color: #999;
-            text-align: right;
+        #credits {
+            padding-bottom: 10px;
+            #powered_by {
+                background-color: transparent;
+                border-top: 0px;
+            }
         }
-        #powered_by {
-            background-color: transparent;
-            border-top: 0px;
-        }
+
     }
 }
 .nopad {

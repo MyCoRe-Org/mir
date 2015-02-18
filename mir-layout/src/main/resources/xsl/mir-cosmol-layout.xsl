@@ -97,7 +97,7 @@
 
         <footer>
             <div class="container">
-                <div class="row">
+                <div id="menu" class="row">
                     <div class="col-xs-6">
                         <ul id="sub_menu">
                             <xsl:apply-templates select="$loaded_navigation_xml/menu[@id='brand']/item[@href='/content/brand/impressum.xml']" />
@@ -108,7 +108,7 @@
                         <div id="copyright">© <xsl:value-of select="$MCR.NameOfProject" /> 2015</div>
                     </div>
                 </div>
-                <div class="row">
+                <div id="credits" class="row">
                     <div class="col-xs-12">
                         <div id="powered_by">
                             <a href="http://www.mycore.de">
