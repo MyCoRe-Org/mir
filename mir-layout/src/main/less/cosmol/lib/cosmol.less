@@ -1,19 +1,36 @@
 body {
-    background-color: #f7f7f7;
+    //background-color: #c5d3e0;
+
+    background-image: -webkit-linear-gradient(top left, white 0%, #c5d3e0 100%);
+    background-image: -moz-linear-gradient(right bottom, white 0%, #c5d3e0 100%);
+    background-image: -o-linear-gradient(white 0%, #c5d3e0 100%);
+    background-image: linear-gradient(white 0%, #c5d3e0 100%);
 }
 header {
+    margin-top: 20px;
     .container {
         background-color: white;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
         .row {
             position: relative;
             #header_back {
                 width: 100%;
+                height: 180px;
+                border-top-left-radius: 10px;
+                border-top-right-radius: 10px;
+                background-image: url('../../images/cosmol/header.jpg');
+                background-repeat: no-repeat;
             }
             #header_top {
                 position: absolute;
-                top: 0;
-                left: 0;
-                width: 26%;
+                top: 30px;
+                left: 20px;
+                width: 267px;
+                height: 117px;
+                background-image: url('../../images/cosmol/logo.png');
+                background-repeat: no-repeat;
+                color: transparent;
             }
         }
     }
@@ -23,7 +40,10 @@ header {
     padding-bottom: 20px;
     padding-top: 0px;
     background-color: white;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
 }
+
 #main_content {
     background-color: white;
 }

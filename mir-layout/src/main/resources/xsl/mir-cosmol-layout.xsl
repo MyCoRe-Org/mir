@@ -47,12 +47,13 @@
       <body>
 
         <header>
-          <div class="container" id="head">
+          <div id="head" class="container">
             <div class="row">
-              <img id="header_back" src="{$WebApplicationBaseURL}mir-layout/images/header.png" />
-              <a href="{$WebApplicationBaseURL}">
-                <img id="header_top" src="{$WebApplicationBaseURL}mir-layout/images/logo.png" />
-              </a>
+              <div id="header_back">
+                <a id="header_top" href="{$WebApplicationBaseURL}">
+                    <span id="project_name">mods institutional repository</span>
+                </a>
+              </div>
             </div>
             <div class="row">
               <xsl:call-template name="mir.top-navigation" />
