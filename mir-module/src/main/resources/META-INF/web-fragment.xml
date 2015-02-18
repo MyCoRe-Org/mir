@@ -31,7 +31,7 @@
     <servlet-name>MCRFileNodeServlet</servlet-name>
     <dispatcher>REQUEST</dispatcher>
   </filter-mapping>
-  
+
   <servlet>
     <servlet-name>MirSelfRegistrationServlet</servlet-name>
     <servlet-class>org.mycore.mir.authorization.MirSelfRegistrationServlet</servlet-class>
@@ -39,5 +39,14 @@
   <servlet-mapping>
     <servlet-name>MirSelfRegistrationServlet</servlet-name>
     <url-pattern>/servlets/MirSelfRegistrationServlet</url-pattern>
+  </servlet-mapping>
+
+  <servlet id="OAI2Provider" >
+    <servlet-name>OAI2</servlet-name>
+    <servlet-class>org.mycore.oai.MCROAIDataProvider</servlet-class>
+  </servlet>
+  <servlet-mapping >
+    <servlet-name>OAI2</servlet-name>
+    <url-pattern>/servlets/OAIDataProvider</url-pattern>
   </servlet-mapping>
 </web-fragment>

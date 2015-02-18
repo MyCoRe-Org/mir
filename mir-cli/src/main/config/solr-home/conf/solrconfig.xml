@@ -1981,4 +1981,28 @@
     </arr>
   </requestHandler>
 
+  <!-- OAI search handler, filtes journals and series etc. -->
+  <requestHandler name="/oai_search" class="solr.StandardRequestHandler">
+    <!-- default values for query parameters -->
+    <lst name="defaults">
+      <str name="echoParams">explicit</str>
+      <int name="rows">20</int>
+      <str name="df">allMeta</str>
+      <str name="fl">*,score</str>
+      <str name="q.alt">*:* -objectType:data_file -objectType:derivate</str>
+      <!-- sort by score, if user submits empty form, we show the last changed docs first (as the score will be fixed to 1.0) -->
+      <str name="sort">score desc, mods.dateIssued desc</str>
+      <!-- set as recommended by http://wiki.apache.org/solr/DisMaxQParserPlugin -->
+      <str name="tie">0.1</str>
+    </lst>
+    <lst name="appends">
+      <!-- filter query: search only in published mods objects-->
+      <str name="fq">objectType:"mods"</str>
+      <str name="fq">category.top:"mir_status\:published"</str>
+      <str name="fq">NOT category.top:"mir_genres\:journal"</str>
+      <str name="fq">NOT category.top:"mir_genres\:series"</str>
+    </lst>
+  </requestHandler>
+
+
 </config>
