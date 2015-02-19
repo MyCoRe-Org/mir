@@ -2,13 +2,13 @@
 <!DOCTYPE MyCoReWebPage>
 <MyCoReWebPage>
   <section xml:lang="de" title="Impressum">
-  <div class="blockbox">
+  <div>
     <h2>Impressum</h2>
     <h3>Herausgeber</h3>
     <p>
       Webredakteure der MyCoRe-Community<br /><br />
-      Sitz der MyCoRe-Gesch&auml;ftsstelle:<br />
-      Regionales Rechenzentrum der Universit&auml;t Hamburg<br />
+      Sitz der MyCoRe-Geschäftsstelle:<br />
+      Regionales Rechenzentrum der Universität Hamburg<br />
       Schlüterstr. 70<br />
       D-20146 Hamburg<br />
       Tel: +49 (0)40-42838-2652<br />
@@ -18,13 +18,13 @@
 
     <h3>Verantwortlich</h3>
     <p>
-      MyCoRe-Gesch&auml;ftsstelle<br /><br />
-      Trotz sorgf&auml;ltiger Kontrolle &uuml;bernehmen
-      wir keine Haftung f&uuml;r die Inhalte externer Links.
+      MyCoRe-Geschäftsstelle<br /><br />
+      Trotz sorgfältiger Kontrolle übernehmen
+      wir keine Haftung für die Inhalte externer Links.
     </p>
     <p>
-      F&uuml;r den Inhalt der verlinkten Seiten sind ausschlie&szlig;lich
-      deren Betreiber verantwortlich (vg. &sect; Abs. 3 MDStV), siehe auch
+      Für den Inhalt der verlinkten Seiten sind ausschließlich
+      deren Betreiber verantwortlich (vg. § Abs. 3 MDStV), siehe auch
       nachfolgende Haftungsfreihaltungsklausel.
     </p>
 
@@ -63,6 +63,7 @@
       WWW-Seiten und spiegeln nicht die Meinung des Redakteurs der WWW-Seiten der MyCoRe
       Community.
     </p>
+    <p>
       Falls Ihnen strafbare oder zweifelhafte Inhalte von WWW-Seiten auffallen, auf die
       von der MyCoRe Website durch Links verwiesen wird, teilen Sie uns dies bitte unter
       der Email-Adresse info@mycore.de oder durch Nachricht an die MyCoRe Geschäftsstelle

@@ -2,7 +2,7 @@
 <!DOCTYPE MyCoReWebPage>
 <MyCoReWebPage>
   <section xml:lang="de" title="Kontakt">
-  <div class="blockbox">
+  <div>
     <h2>Kontakt</h2>
     <p>
       MyCoRe-Geschäftsstelle<br />
@@ -18,7 +18,7 @@
       Fax: +49 (0)40-42838-3284
     </p>
   </div>
-  <div class="blockbox">
+  <div>
     <h2>Die Technik</h2>
     <p>
       Die Entwicklung und Implementierung dieses Dokumentenservers erfolgt auf Basis des Repository-Frameworks MyCoRe. Analoge Projekte wurden bereits mit
