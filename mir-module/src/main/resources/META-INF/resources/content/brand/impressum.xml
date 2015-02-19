@@ -4,10 +4,74 @@
   <section xml:lang="de" title="Impressum">
   <div class="blockbox">
     <h2>Impressum</h2>
-    <p>Hier folgt in Kürze das Impressum der zuständigen Betreiber.</p>
+    <h3>Herausgeber</h3>
+    <p>
+      Webredakteure der MyCoRe-Community<br /><br />
+      Sitz der MyCoRe-Gesch&auml;ftsstelle:<br />
+      Regionales Rechenzentrum der Universit&auml;t Hamburg<br />
+      Schlüterstr. 70<br />
+      D-20146 Hamburg<br />
+      Tel: +49 (0)40-42838-2652<br />
+      Fax: +49 (0)40-42838-3284<br />
+      e-Mail: info@mycore.de
+    </p>
+
+    <h3>Verantwortlich</h3>
+    <p>
+      MyCoRe-Gesch&auml;ftsstelle<br /><br />
+      Trotz sorgf&auml;ltiger Kontrolle &uuml;bernehmen
+      wir keine Haftung f&uuml;r die Inhalte externer Links.
+    </p>
+    <p>
+      F&uuml;r den Inhalt der verlinkten Seiten sind ausschlie&szlig;lich
+      deren Betreiber verantwortlich (vg. &sect; Abs. 3 MDStV), siehe auch
+      nachfolgende Haftungsfreihaltungsklausel.
+    </p>
+
+    <h3>Haftungsausschluss (Haftungsfreihaltungsklausel)</h3>
+    <p>
+      Durch die Nutzung unserer WWW-Seiten erkennen Sie folgenden Haftungsausschluss an:<br /><br />
+      Die MyCoRe Community bietet im Rahmen ihrer Serviceleistungen nicht nur
+      eigene WWW-Angebote, sondern auch Hyper-Links (Verweisungen) auf fremde
+      Inhalte an. Es werden nur Links auf WWW-Seiten (Zugangsvermittlung)
+      aufgenommen, deren Inhalt nach billigem Ermessen zum Zeitpunkt der Aufnahme
+      nicht gegen geltendes deutsches Recht verstößt. Trotz sorgfältiger Prüfung
+      kann jedoch nicht ausgeschlossen werden, dass einzelne WWW-Seiten strafbaren
+      Inhalts sind oder ihrerseits direkt oder indirekt auf Seiten mit strafbarem
+      Inhalt verweisen, insbesondere nachdem der Link auf den MyCoRe Webseiten
+      aufgenommen wurde.
+    </p>
+    <p>
+      Der/die verantwortliche Redakteur/-in identifizieren sich ausdrücklich nicht
+      mit dem Inhalt der eingelinkten WWW-Seiten und machen sich die fremden Inhalte
+      nicht zueigen. Alle aufgeführten WWW-Seiten werden im wissenschaftlichen Sinne
+      zitiert und als Information primär für das wissenschaftliche Studium, für Lehre
+      und Forschung und die interessierte Öffentlichkeit zur Verfügung gestellt. Die
+      MyCoRe Redakteure/innen übernehmen außerdem keinerlei Gewähr für die Aktualität,
+      Korrektheit, Vollständigkeit oder Qualität der bereitgestellten Informationen.
+      Haftungsansprüche gegen die MyCoRe Redakteure/innen, die sich auf Schäden
+      materieller oder ideeller Art beziehen, welche durch die Nutzung oder Nichtnutzung
+      der dargebotenen Informationen bzw. durch die Nutzung fehlerhafter und unvollständiger
+      Informationen verursacht wurden, sind ausgeschlossen. Die Nutzung erfolgt
+      ausschließlich auf eigenes Risiko des Anwenders. Die MyCoRe Geschäftsstelle, die
+      MyCoRe Community und die jeweils verantwortlichen WWW-Redakteure/innen übernehmen
+      somit keinerlei inhaltliche Haftung für die Inhalte fremder WWW-Seiten, sondern
+      distanzieren sich grundsätzlich vom Inhalt der aufgeführten Quellen. Für Unwahrheiten
+      und Rechtsverstöße auf zitierte fremde Seiten wird nicht gehaftet. Die auf den gelinkten
+      Seiten wiedergegebenen Meinungsäußerungen und/oder Tatsachenbehauptungen liegen damit
+      in der alleinigen Verantwortung des/der jeweiligen Autors/Autorin dieser gelinkten
+      WWW-Seiten und spiegeln nicht die Meinung des Redakteurs der WWW-Seiten der MyCoRe
+      Community.
+    </p>
+      Falls Ihnen strafbare oder zweifelhafte Inhalte von WWW-Seiten auffallen, auf die
+      von der MyCoRe Website durch Links verwiesen wird, teilen Sie uns dies bitte unter
+      der Email-Adresse info@mycore.de oder durch Nachricht an die MyCoRe Geschäftsstelle
+      mit, sodass wir das weitere veranlassen können.
+    </p>
+
   </div>
   </section>
   <meta>
-    <log date="2011-11-16" time="09:42" labelPath=" » Kontakt" lastEditor="Kathleen Neumann" />
+    <log date="2015-02-19" time="10:10" labelPath=" » Impressum" lastEditor="Kathleen Neumann" />
   </meta>
 </MyCoReWebPage>

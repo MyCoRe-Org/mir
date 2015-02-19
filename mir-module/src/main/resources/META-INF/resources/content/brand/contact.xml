@@ -4,7 +4,19 @@
   <section xml:lang="de" title="Kontakt">
   <div class="blockbox">
     <h2>Kontakt</h2>
-    <p>Hier folgt in Kürze die Kontaktdaten der zuständigen Betreiber.</p>
+    <p>
+      MyCoRe-Geschäftsstelle<br />
+      am Regionalen Rechenzentrum der Universität Hamburg<br />
+      Dr. Wiebke Oeltjen<br />
+      Email: info@mycore.de<br /><br />
+
+      Postanschrift:<br />
+      Schlüterstr. 70<br />
+      D-20146 Hamburg<br /><br />
+
+      Tel: +49 (0)40-42838-2652<br />
+      Fax: +49 (0)40-42838-3284
+    </p>
   </div>
   <div class="blockbox">
     <h2>Die Technik</h2>
@@ -20,6 +32,6 @@
   </div>
   </section>
   <meta>
-    <log date="2014-05-05" time="16:37" labelPath=" » Kontakt" lastEditor="Kathleen Neumann" />
+    <log date="2015-02-19" time="10:00" labelPath=" » Kontakt" lastEditor="Kathleen Neumann" />
   </meta>
 </MyCoReWebPage>
