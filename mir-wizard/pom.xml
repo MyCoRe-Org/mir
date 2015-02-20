@@ -4,6 +4,7 @@
     <groupId>org.mycore.mir</groupId>
     <artifactId>mir-parent</artifactId>
     <version>0.2-SNAPSHOT</version>
+    <relativePath>../pom.xml</relativePath>
   </parent>
   <artifactId>mir-wizard</artifactId>
   <name>MIR: The MIR Wizard</name>
