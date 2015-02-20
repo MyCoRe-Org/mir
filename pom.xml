@@ -3,8 +3,8 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.mycore</groupId>
-    <artifactId>mycore</artifactId>
-    <version>2015.01-SNAPSHOT</version>
+    <artifactId>mycore-parent</artifactId>
+    <version>24-SNAPSHOT</version>
   </parent>
   <groupId>org.mycore.mir</groupId>
   <artifactId>mir-parent</artifactId>
@@ -14,11 +14,12 @@
   <description>MyCoRe/MODS Institutional Repository</description>
   <inceptionYear>2013</inceptionYear>
   <properties>
-    <mycore.version>2015.01-SNAPSHOT</mycore.version>
-    <jetty.version>9.2.7.v20150116</jetty.version>
-    <tomcat7.version>7.0.57</tomcat7.version>
+    <java.version>1.7</java.version>
+    <mycore.version>2015.02</mycore.version>
+    <jetty.version>9.2.8.v20150217</jetty.version>
+    <tomcat7.version>7.0.59</tomcat7.version>
     <tomcat8.version>8.0.18</tomcat8.version>
-    <cargo.version>1.4.11</cargo.version>
+    <cargo.version>1.4.12</cargo.version>
     <cargo.servlet.uriencoding>UTF-8</cargo.servlet.uriencoding>
     <cargo.container.zipUrlInstaller.downloadDir>${settings.localRepository}/../cargo/containers</cargo.container.zipUrlInstaller.downloadDir>
     <cargo.deployable.default.groupId>${project.groupId}</cargo.deployable.default.groupId>
@@ -28,9 +29,26 @@
     <cargo.tomcat.ajp.port>8292</cargo.tomcat.ajp.port>
     <cargo.debug.address>8295</cargo.debug.address>
     <cargo.debug.suspend>n</cargo.debug.suspend>
+    <changelog.since>2014-12-05</changelog.since>
     <site.suffix />
   </properties>
   <url>http://www.mycore.de/generated/mir${site.suffix}</url>
+  <issueManagement>
+    <system>JIRA</system>
+    <url>https://mycore.atlassian.net/browse/MIR</url>
+  </issueManagement>
+  <ciManagement>
+    <system>Bamboo</system>
+    <url>https://bamboo.mycore.de/browse/MIR-BUILD</url>
+    <notifiers>
+      <notifier>
+        <type>mail</type>
+        <sendOnError>true</sendOnError>
+        <sendOnFailure>true</sendOnFailure>
+        <sendOnSuccess>true</sendOnSuccess>
+      </notifier>
+    </notifiers>
+  </ciManagement>
   <scm>
     <connection>scm:svn:http://server.mycore.de/svn/maven/mir/trunk</connection>
     <developerConnection>scm:svn:https://server.mycore.de/svn/maven/mir/trunk</developerConnection>
@@ -100,6 +118,28 @@
             <phase>process-sources</phase>
           </execution>
         </executions>
+      </plugin>
+      <plugin>
+        <artifactId>maven-changes-plugin</artifactId>
+        <configuration>
+          <issueManagementSystems>
+            <issueManagementSystem>JIRA</issueManagementSystem>
+          </issueManagementSystems>
+          <runOnlyAtExecutionRoot>true</runOnlyAtExecutionRoot>
+          <smtpPort implementation="java.lang.Integer">25</smtpPort>
+          <toAddresses>
+            <toAddress implementation="java.lang.String">mycore-user@lists.sourceforge.net</toAddress>
+          </toAddresses>
+          <mailSender>
+            <name>${changes.mailSender.name}</name>
+            <email>${changes.mailSender.email}</email>
+          </mailSender>
+          <template>announcement.vm</template>
+          <useJql>true</useJql>
+          <templateDirectory>src/changes</templateDirectory>
+              <!-- due to: http://jira.codehaus.org/browse/MCHANGES-333 -->
+          <maxEntries>1000</maxEntries>
+        </configuration>
       </plugin>
     </plugins>
     <pluginManagement>
@@ -180,6 +220,39 @@
       </plugins>
     </pluginManagement>
   </build>
+  <reporting>
+    <plugins>
+      <plugin>
+        <artifactId>maven-changelog-plugin</artifactId>
+        <configuration>
+          <issueLinkUrl>https://mycore.atlassian.net/browse/%ISSUE%</issueLinkUrl>
+          <type>date</type>
+          <dates>
+            <date implementation="java.lang.String">${changelog.since}</date>
+          </dates>
+          <dateFormat>yyyy-MM-dd</dateFormat>
+        </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-changes-plugin</artifactId>
+        <version>2.11</version>
+        <inherited>false</inherited>
+        <reportSets>
+          <reportSet>
+            <reports>
+              <report>jira-report</report>
+            </reports>
+          </reportSet>
+        </reportSets>
+        <configuration>
+          <onlyCurrentVersion>true</onlyCurrentVersion>
+          <useJql>true</useJql>
+          <columnNames>Type,Key,Summary,Assignee,Status,Resolution,Component</columnNames>
+          <sortColumnNames>Type,Component,Key DESC</sortColumnNames>
+        </configuration>
+      </plugin>
+    </plugins>
+  </reporting>
   <modules>
     <module>mir-module</module>
     <module>mir-layout</module>
@@ -362,6 +435,13 @@
   </profiles>
   <dependencyManagement>
     <dependencies>
+      <dependency>
+        <groupId>org.mycore</groupId>
+        <artifactId>mycore</artifactId>
+        <version>${mycore.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
       <dependency>
         <groupId>org.mycore</groupId>
         <artifactId>mycore-meta</artifactId>

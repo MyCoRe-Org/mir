@@ -1,0 +1,61 @@
+## Template copied from
+## http://svn.apache.org/repos/asf/maven/plugins/trunk/maven-changes-plugin/src/main/resources/org/apache/maven/plugin/announcement/announcement.vm
+The ${developmentTeam} is pleased to announce the ${project.name}-${version}#if($release.getDescription()) (${release.getDescription()})#end release!
+
+${introduction}
+
+http://www.mycore.de/mir
+http://www.mycore.de/generated/mir
+
+Release Notes - ${project.name} - Version ${version}
+#if ($project.getProperties().get('mycore.version'))
+
+This release of ${finalName} is based on MyCoRe $project.getProperties().get('mycore.version'). So keep an eye on what is new in this MyCoRe release.
+#end
+#if ($release.getActions().size() == 0)
+
+No changes defined in this version.
+#else
+#set($issueTracker="https://mycore.atlassian.net/browse/")
+#if ($release.getActions('fix').size() !=0)
+
+Bug
+#foreach($actionItem in $release.getActions('fix'))
+o [$actionItem.getIssue()] $actionItem.getAction()
+  -- $issueTracker$actionItem.getIssue()
+#end
+#end
+#if ($release.getActions('update').size() !=0)
+
+Improvement
+#foreach($actionItem in $release.getActions('update'))
+o [$actionItem.getIssue()] $actionItem.getAction()
+  -- $issueTracker$actionItem.getIssue()
+#end
+#end
+#if ($release.getActions('add').size() !=0)
+
+New Feature
+#foreach($actionItem in $release.getActions('add'))
+o [$actionItem.getIssue()] $actionItem.getAction()
+  -- $issueTracker$actionItem.getIssue()
+#end
+#end
+#if ($release.getActions('').size() !=0)
+
+Task
+#foreach($actionItem in $release.getActions(''))
+o [$actionItem.getIssue()] $actionItem.getAction()
+  -- $issueTracker$actionItem.getIssue()
+#end
+#end
+## End of main loop
+#end
+#if ($urlDownload)
+
+For a manual installation, you can download the ${finalName} here:
+${urlDownload}
+#end
+
+Goodbye, and remember: "Alles wird gut."
+-The ${developmentTeam}
