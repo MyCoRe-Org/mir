@@ -6,6 +6,11 @@ ${introduction}
 
 http://www.mycore.de/mir
 http://www.mycore.de/generated/mir
+#if ($urlDownload)
+
+You can download this version of ${project.name} here:
+${urlDownload}
+#end
 
 Release Notes - ${project.name} - Version ${version}
 #if ($project.getProperties().get('mycore.version'))
@@ -50,11 +55,6 @@ o [$actionItem.getIssue()] $actionItem.getAction()
 #end
 #end
 ## End of main loop
-#end
-#if ($urlDownload)
-
-For a manual installation, you can download the ${finalName} here:
-${urlDownload}
 #end
 
 Goodbye, and remember: "Alles wird gut."

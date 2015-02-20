@@ -139,6 +139,7 @@
           <templateDirectory>src/changes</templateDirectory>
               <!-- due to: http://jira.codehaus.org/browse/MCHANGES-333 -->
           <maxEntries>1000</maxEntries>
+          <urlDownload>${project.url}/download.html</urlDownload>
         </configuration>
       </plugin>
     </plugins>
