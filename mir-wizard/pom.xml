@@ -20,6 +20,7 @@
               <addExtensions />
             </manifest>
             <manifestEntries>
+              <MCR-Artifact-Id>${project.artifactId}</MCR-Artifact-Id>
               <MCR-Application-Module>${project.name}</MCR-Application-Module>
             </manifestEntries>
           </archive>
