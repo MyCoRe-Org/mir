@@ -134,6 +134,14 @@ footer {
 
     }
 }
+
+.btn {
+    border-radius: 5px;
+}
+.form-control {
+    border-radius: 5px;
+}
+
 .nopad {
     padding-left: 0px;
     padding-right: 0px;
@@ -278,11 +286,11 @@ footer {
 
         // menu entry
         li > a {
-            color: #7bacd4;
+            color: @brand-primary;
             border-left: 4px solid transparent;       //place holder
             border-radius: 0px;
             .caret {
-                border-top-color: #7bacd4 !important; // allways white
+                border-top-color: @brand-primary !important;
             }
             // menu entry - hover and focus
             &:focus {
