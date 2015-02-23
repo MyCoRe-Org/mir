@@ -40,8 +40,7 @@
           <ignoreAllErrors>false</ignoreAllErrors>
           <gruntOptions>
             <gruntOption>--verbose</gruntOption>
-            <gruntOption>--lessFile ${basedir}/src/main/less/flatmir/build.less</gruntOption>
-            <gruntOption>--targetDirectory ${template.cssdir}/flatmir</gruntOption>
+            <gruntOption>--targetDirectory ${template.cssdir}</gruntOption>
           </gruntOptions>
         </configuration>
         <executions>
@@ -78,29 +77,4 @@
       </plugin>
     </plugins>
   </build>
-  <profiles>
-    <profile>
-      <id>local-grunt</id>
-      <activation>
-        <os>
-          <family>unix</family>
-        </os>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>pl.allegro</groupId>
-            <artifactId>grunt-maven-plugin</artifactId>
-            <configuration>
-            <!--
-              <gruntExecutable>${grunt.projectBase}/node_modules/grunt-cli/bin/grunt</gruntExecutable>
-              <bowerExecutable>${grunt.projectBase}/node_modules/bower/bin/bower</bowerExecutable>
-              <runGruntWithNode>true</runGruntWithNode>
-              -->
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-  </profiles>
 </project>
