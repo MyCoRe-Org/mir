@@ -1,0 +1,200 @@
+#side_nav_column {
+    h3 {
+        color: #999;
+        font-size: 18px;
+        padding: 12px 15px;
+    }
+}
+
+.mir-side-nav {
+    border: none;
+    border-radius: 0px;
+    margin: 0 0 0 0px;
+    padding: 0;
+    background-color: transparent;
+    font-size: 18px;
+
+    .navbar-toggle {
+        display: block;
+    }
+
+    // navigation container
+    nav {
+        padding-left: 0px;                          // align to left
+    }
+
+    // Dropdown menu items and carets
+    .navbar-nav {
+        background-color: white;
+        padding: 0px 0px 0px 0px;
+        border-radius: 0px;
+        margin-bottom: 30px;
+        border: 0px solid @gray-lighter;
+        li {
+                margin-bottom: 5px;
+                border-radius: 0px;
+        }
+        li:first-child > a {
+            border-top-right-radius: 0px;
+            border-top-left-radius: 0px;
+        }
+        li:last-child > a {
+            border-bottom-right-radius: 0px;
+            border-bottom-left-radius: 0px;
+        }
+
+        // menu entry
+        li > a {
+            color: @brand-primary;
+            border-left: 4px solid transparent;       //place holder
+            border-radius: 0px;
+            .caret {
+                border-top-color: @brand-primary !important;
+            }
+            // menu entry - hover and focus
+            &:focus {
+                color: #3584d1;
+                background-color: transparent;
+                border-bottom: 0px solid @mir-main-nav-link-marker-hover;
+                // caret
+                .caret {
+                    border-top-color: #3584d1 !important; // allways white
+                }
+            }
+            &:hover {
+                color:  #3584d1;
+                background-color: transparent;
+                border-left: 4px solid #7bacd4;
+                // caret
+                .caret {
+                    border-top-color: #3584d1 !important; // allways white
+                }
+            }
+        }
+
+        // active entry
+        li.active > a {
+            color: #3584d1;
+            background-color: transparent;
+            border-left: 4px solid red;             // white bottom border
+            // current menu entry - hover and focus
+            &:hover,
+            &:focus {
+                color: #3584d1;
+                background-color: transparent;
+                border-left: 4px solid red;
+            }
+        }
+
+        // Remove background color from open dropdown
+        .open > a {
+            color: white;
+            &,
+            &:hover,
+            &:focus {
+                color: white;
+                background-color: @mir-main-nav-link-hover;
+                // caret
+                .caret {
+                    border-top-color: transparent !important; // allways white
+                    border-bottom-width: 4px !important;
+                    border-bottom-color: white !important; // allways white
+                }
+            }
+        }
+    }
+
+    // The dropdown menu (ul)
+    .dropdown-menu {
+        position: static;
+        background-color: transparent;
+        border-radius: 4px !important;
+        margin-top: 4px !important;
+
+        // Links within the dropdown menu
+        > li > a {
+            color: @mir-main-nav-dropdown-link-color;
+            color: @brand-info;
+            // Hover/Focus state
+            &:hover,
+            &:focus {
+                color: @mir-main-nav-dropdown-link-hover-color;
+                background-color: @mir-main-nav-dropdown-link-hover-bg;
+            }
+        }
+        // Active state
+        > .active > a {
+            &,
+            &:hover,
+            &:focus {
+                color: @mir-main-nav-dropdown-link-active-color;
+                background-color: @mir-main-nav-dropdown-link-active-bg;
+            }
+        }
+    }
+        .navbar-form {
+            margin: 0px 0px 20px 15px;
+            padding: 0px;
+        }
+}
+
+
+#side_nav_column {
+    padding-left: 0;
+}
+.button_box {
+    border-bottom: 1px solid #b0ccf1;
+    cursor: hand;
+    #hide_side_button {
+        &.navbar-toggle {
+            float: none;
+            display: inline;
+            background-color: #ccdcf5;
+            border-color: #b0ccf1;
+            border-width: 1px 1px 0px 1px;
+            margin: 0px 0px 0px 0px;
+            color: white;
+            border-bottom-left-radius: 0px;
+            border-bottom-right-radius: 0px;
+            &:hover {
+                color: white;
+                background-color: #3584d1;
+                border-color: @mir-main-nav-link-hover;
+            }
+            #menu-icon {
+                display: none;
+                .icon-bar {
+                    background-color:white;
+                }
+            }
+
+        }
+    }
+}
+
+.mir-side-nav .btn {
+    vertical-align: bottom;
+    padding: 4px 10px;
+}
+
+/* make sidebar nav vertical */
+@media (min-width: 768px) {
+  .mir-side-nav.navbar .navbar-collapse {
+    padding: 0;
+    max-height: none;
+  }
+  .mir-side-nav.navbar ul {
+    float: none;
+  }
+  .mir-side-nav.navbar ul:not {
+    display: block;
+  }
+  .mir-side-nav.navbar li {
+    float: none;
+    display: block;
+  }
+  .mir-side-nav.navbar li a {
+    padding-top: 6px;
+    padding-bottom: 6px;
+  }
+}
