@@ -6,9 +6,19 @@
     <div class="row">
       <form role="form" method="post" name="templateChooser" class="form-horizontal col-sm-5">
         <div class="form-group">
-          <label for="template" class="col-sm-6 control-label">Template</label>
+          <label for="layout" class="col-sm-6 control-label">Layout β</label>
           <div class="col-sm-6">
-            <select id="template" name="XSL.MIR.DefaultLayout.CSS.SESSION" onChange="document.templateChooser.submit()" class="form-control">
+            <select id="layout" name="XSL.MIR.Layout.Theme.SESSION" onChange="document.templateChooser.submit()" class="form-control">
+              <option value="">Standard</option>
+              <option value="cosmol">CosmoL</option>
+              <option value="flatmir">FlatMIR</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="theme" class="col-sm-6 control-label">Theme</label>
+          <div class="col-sm-6">
+            <select id="theme" name="XSL.MIR.DefaultLayout.CSS.SESSION" onChange="document.templateChooser.submit()" class="form-control">
               <option value="">Standard</option>
               <option value="default">Bootstrap</option>
               <option value="cerulean">Cerulean</option>
@@ -18,6 +28,7 @@
               <option value="flatly">Flatly</option>
               <option value="journal">Journal</option>
               <option value="lumen">Lumen</option>
+              <option value="paper">Paper</option>
               <option value="readable">Readable</option>
               <option value="sandstone">Sandstone</option>
               <option value="simplex">Simplex</option>
@@ -63,11 +74,13 @@
               $('.bs-component [data-toggle="popover"]').popover();
               $('.bs-component [data-toggle="tooltip"]').tooltip();
           });
-          var curCss=$('link[rel="stylesheet"][href*="mir-layout"]').attr('href');
-          curCss=curCss.substr(curCss.lastIndexOf('/')+1);
+          var curCssLinkElements=$('link[rel="stylesheet"][href*="mir-layout"]').attr("href").split("/");
+          var curCss=curCssLinkElements.pop();
           curCss=curCss.substr(0,curCss.indexOf('.'));
+          var curLayout=curCssLinkElements.pop();
+          $('form[name="templateChooser"] option[value="'+curLayout+'"]').attr("selected","selected");
           $('form[name="templateChooser"] option[value="'+curCss+'"]').attr("selected","selected");
-          $('#mycoreProperties').text('#add to mycore.properties\nMIR.DefaultLayout.CSS='+curCss+'.min');
+          $('#mycoreProperties').text('#add to mycore.properties\nMIR.DefaultLayout.CSS='+curCss+'.min\nMIR.Layout.Theme='+curLayout);
         });
       })(jQuery);
     ]]>
