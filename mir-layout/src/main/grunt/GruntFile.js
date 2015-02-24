@@ -81,10 +81,12 @@ module.exports = function(grunt) {
       grunt.config('less.dist.options.sourceMap', true);
       grunt.config('less.dist.options.sourceMapURL', theme + '.css.map');
       grunt.config('less.dist.options.sourceMapFilename', themePrefix + '.css.map');
+      grunt.config('less.dist.options.fileSrc', concatDest);
+      grunt.config('less.dist.options.fileDst', themePrefix + '.min.css');
       grunt.log.writeln('compiling file ' + lessSrc + ' ==> ' + lessDest);
 
       grunt.task.run([ 'less:dist', 'concat',
-          compress ? 'compress:' + concatDest + ':' + themePrefix + '.min.css' : 'none' ]);
+          compress ? 'compress' : 'none' ]);
     } else {
       grunt.log.writeln('do not need to rebuild ' + target);
     }
@@ -175,7 +177,9 @@ module.exports = function(grunt) {
     compileLess(layout, theme, compress);
   });
 
-  grunt.registerTask('compress', 'compress a generic css', function(fileSrc, fileDst) {
+  grunt.registerTask('compress', 'compress a generic css', function() {
+    var fileSrc =  grunt.config('less.dist.options.fileSrc');
+    var fileDst =  grunt.config('less.dist.options.fileDst');
     var files = {};
     files[fileDst] = fileSrc;
     grunt.log.writeln('compressing file ' + fileSrc);
