@@ -1,200 +1,159 @@
-#side_nav_column {
-    h3 {
-        color: #999;
-        font-size: 18px;
-        padding: 12px 15px;
-    }
-}
+/*****************************************************************************
+ *
+ * styles for left sided navigation and its components
+ *
+ ****************************************************************************/
 
-.mir-side-nav {
+
+/* left column with side menu ***********************************************/
+#side_nav_column {
+  padding-left: 0;  // ignore col padding
+
+  .mir-side-nav {
     border: none;
-    border-radius: 0px;
-    margin: 0 0 0 0px;
+    border-radius: 0;
     padding: 0;
     background-color: transparent;
-    font-size: 18px;
+    margin: 0 20px 0 0;
 
-    .navbar-toggle {
-        display: block;
-    }
-
-    // navigation container
     nav {
-        padding-left: 0px;                          // align to left
-    }
+      padding-left: 0px;
 
-    // Dropdown menu items and carets
-    .navbar-nav {
-        background-color: white;
-        padding: 0px 0px 0px 0px;
-        border-radius: 0px;
-        margin-bottom: 30px;
-        border: 0px solid @gray-lighter;
-        li {
-                margin-bottom: 5px;
-                border-radius: 0px;
-        }
-        li:first-child > a {
-            border-top-right-radius: 0px;
-            border-top-left-radius: 0px;
-        }
-        li:last-child > a {
-            border-bottom-right-radius: 0px;
-            border-bottom-left-radius: 0px;
-        }
+      .navbar-form {
+        margin: 0px 0px 20px 15px;
+        padding: 0px;
 
-        // menu entry
-        li > a {
-            color: @brand-primary;
-            border-left: 4px solid transparent;       //place holder
-            border-radius: 0px;
-            .caret {
-                border-top-color: @brand-primary !important;
-            }
-            // menu entry - hover and focus
-            &:focus {
-                color: #3584d1;
-                background-color: transparent;
-                border-bottom: 0px solid @mir-main-nav-link-marker-hover;
-                // caret
-                .caret {
-                    border-top-color: #3584d1 !important; // allways white
-                }
-            }
-            &:hover {
-                color:  #3584d1;
-                background-color: transparent;
-                border-left: 4px solid #7bacd4;
-                // caret
-                .caret {
-                    border-top-color: #3584d1 !important; // allways white
-                }
-            }
+        .btn {
+          vertical-align: bottom;
+          padding: 4px 10px;
         }
+      }
 
-        // active entry
-        li.active > a {
-            color: #3584d1;
-            background-color: transparent;
-            border-left: 4px solid red;             // white bottom border
-            // current menu entry - hover and focus
-            &:hover,
-            &:focus {
-                color: #3584d1;
-                background-color: transparent;
-                border-left: 4px solid red;
-            }
-        }
-
-        // Remove background color from open dropdown
-        .open > a {
-            color: white;
-            &,
-            &:hover,
-            &:focus {
-                color: white;
-                background-color: @mir-main-nav-link-hover;
-                // caret
-                .caret {
-                    border-top-color: transparent !important; // allways white
-                    border-bottom-width: 4px !important;
-                    border-bottom-color: white !important; // allways white
-                }
-            }
-        }
-    }
-
-    // The dropdown menu (ul)
-    .dropdown-menu {
-        position: static;
+      .navbar-nav {
+        float: none;
+        display: block;
         background-color: transparent;
-        border-radius: 4px !important;
-        margin-top: 4px !important;
+        padding: 0;
+        margin: 0;
+        border: none;
+        border-radius: 0px;
 
-        // Links within the dropdown menu
-        > li > a {
-            color: @mir-main-nav-dropdown-link-color;
-            color: @brand-info;
-            // Hover/Focus state
-            &:hover,
-            &:focus {
-                color: @mir-main-nav-dropdown-link-hover-color;
-                background-color: @mir-main-nav-dropdown-link-hover-bg;
+// menu: all entries
+        li {
+          float: none;
+          margin: 0;
+          padding: 0;
+          border-radius: 0px;
+          background-color: transparent;
+
+          a {
+            margin: 0;
+            padding: 0;
+            .caret {
+              display: none;
             }
+          }
         }
-        // Active state
-        > .active > a {
-            &,
-            &:hover,
-            &:focus {
-                color: @mir-main-nav-dropdown-link-active-color;
-                background-color: @mir-main-nav-dropdown-link-active-bg;
-            }
-        }
-    }
-        .navbar-form {
-            margin: 0px 0px 20px 15px;
-            padding: 0px;
-        }
-}
 
+// menu: first level
+        & > li,
+        & > li.active {
 
-#side_nav_column {
-    padding-left: 0;
-}
-.button_box {
-    border-bottom: 1px solid #b0ccf1;
-    cursor: hand;
-    #hide_side_button {
-        &.navbar-toggle {
-            float: none;
-            display: inline;
-            background-color: #ccdcf5;
-            border-color: #b0ccf1;
-            border-width: 1px 1px 0px 1px;
-            margin: 0px 0px 0px 0px;
+          & > a {
             color: white;
-            border-bottom-left-radius: 0px;
-            border-bottom-right-radius: 0px;
-            &:hover {
-                color: white;
-                background-color: #3584d1;
-                border-color: @mir-main-nav-link-hover;
+            background-color: @brand-primary;
+            font-size: 18px;
+            border: 1px solid @brand-primary;
+            border-width: 1px 1px 1px 0px;
+            border-color: @brand-primary;
+            border-top-right-radius: 5px;
+            border-bottom-right-radius: 5px;
+            padding: 6px 20px;
+
+            &:hover,
+            &:focus {
+              color: white;
+              background-color: @brand-primary;
+              cursor: default;
             }
-            #menu-icon {
-                display: none;
-                .icon-bar {
-                    background-color:white;
+          }
+
+          .dropdown-menu {
+            display: block;
+            float: none;
+            position: static;
+            background-color: transparent;
+            min-width: auto;
+            padding: 4px 0 8px 0;
+            margin: 0 5px -5px 0 !important;
+            list-style: outside none none;
+            font-size: 14px;
+            text-align: left;
+            border: 0px solid #ccc;
+            border-width: 0 1px 1px 0;
+            border-radius: 0 !important;
+            border-bottom-right-radius: 5px !important;
+            box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.176);
+            background-clip: padding-box;
+
+            & > li {
+              & > a {
+                color: @brand-primary;
+                background-color: transparent;
+                padding: 3px 20px 3px 30px;
+                white-space: normal;
+                border-left: 2px solid transparent;
+
+                &:hover,
+                &:focus {
+                  color: white;
+                  background-color: @brand-warning;
                 }
+              }
+
+              &.active {
+                & > a {
+                  border-left: 2px solid @brand-warning;
+                  &:hover,
+                  &:focus {
+                  }
+                }
+              }
             }
-
+          }
         }
+      }
     }
+  }
 }
 
-.mir-side-nav .btn {
-    vertical-align: bottom;
-    padding: 4px 10px;
-}
 
-/* make sidebar nav vertical */
-@media (min-width: 768px) {
-  .mir-side-nav.navbar .navbar-collapse {
-    padding: 0;
-    max-height: none;
-  }
-  .mir-side-nav.navbar ul {
-    float: none;
-  }
-  .mir-side-nav.navbar ul:not {
-    display: block;
-  }
-  .mir-side-nav.navbar li {
-    float: none;
-    display: block;
-  }
-  .mir-side-nav.navbar li a {
-    padding-top: 6px;
-    padding-bottom: 6px;
+/* close button above main content ******************************************/
+.button_box {
+  border-bottom: 1px solid #b0ccf1;
+  cursor: hand;
+  #hide_side_button {
+    &.navbar-toggle {
+      float: none;
+      display: inline;
+      margin: 0;
+      color: white;
+      background-color: #ccdcf5;
+      border-color: #b0ccf1;
+      border-width: 1px 1px 0px 1px;
+      border-bottom-left-radius: 0px;
+      border-bottom-right-radius: 0px;
+      &:hover {
+        color: white;
+        background-color: #3584d1;
+        border-color: @brand-primary;
+      }
+      #menu-icon {
+        display: none;
+        .icon-bar {
+          background-color:white;
+        }
+      }
+    }
   }
 }
