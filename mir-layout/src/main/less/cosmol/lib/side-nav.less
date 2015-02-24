@@ -26,6 +26,10 @@
         .btn {
           vertical-align: bottom;
           padding: 4px 10px;
+          &:hover {
+              border-color: @brand-warning;
+              background-color: @brand-warning;
+          }
         }
       }
 
@@ -130,28 +134,33 @@
 
 /* close button above main content ******************************************/
 .button_box {
-  border-bottom: 1px solid #b0ccf1;
+  border-bottom: 1px solid #ccc;
   cursor: hand;
+  margin-top: 4px;
   #hide_side_button {
     &.navbar-toggle {
       float: none;
       display: inline;
       margin: 0;
       color: white;
-      background-color: #ccdcf5;
-      border-color: #b0ccf1;
-      border-width: 1px 1px 0px 1px;
-      border-bottom-left-radius: 0px;
-      border-bottom-right-radius: 0px;
+      background-color: @brand-primary;
+      border-color: @brand-primary;
+      border-width: 1px;
+      border-bottom: 1px solid transparent;
+      border-top-left-radius: 5px;
+      border-top-right-radius: 5px;
+      padding: 4px 10px;
       &:hover {
         color: white;
-        background-color: #3584d1;
-        border-color: @brand-primary;
+        background-color: @brand-warning;
+        border-color: @brand-warning;
       }
       #menu-icon {
         display: none;
+        padding: 3px 0 3px 0;
         .icon-bar {
-          background-color:white;
+          background-color: white;
+          width: 14px;
         }
       }
     }
