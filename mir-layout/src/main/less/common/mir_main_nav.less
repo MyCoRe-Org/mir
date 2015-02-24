@@ -70,19 +70,19 @@
           &:focus {
             color: white;
             background-color: transparent;
-            border-bottom: 0px solid @mir-main-nav-link-marker-hover;
+            border-bottom: 0px solid lighten(@brand-primary, 50%);
             // caret
             .caret {
-              border-top-color: @mir-main-nav-main-caret-color !important; // allways white
+              border-top-color: white !important; // allways white
             }
           }
           &:hover {
             color: white;
-            background-color: @mir-main-nav-link-hover;
-            border-bottom: 0px solid @mir-main-nav-link-marker-hover;
+            background-color: lighten(@brand-primary, 25%);
+            border-bottom: 0px solid lighten(@brand-primary, 50%);
             // caret
             .caret {
-              border-top-color: @mir-main-nav-main-caret-color !important; // allways white
+              border-top-color: white !important; // allways white
             }
           }
         }
@@ -101,7 +101,7 @@
           &,
           &:hover,
           &:focus {
-            background-color: @mir-main-nav-main-entry-bg;
+            background-color: lighten(@brand-primary, 15%);
             // caret
             .caret {
               border-top-color: transparent !important; // allways white
@@ -113,7 +113,7 @@
 
         // The dropdown menu (ul)
         .dropdown-menu {
-            background-color: @mir-main-nav-dropdown-bg;
+            background-color: lighten(@brand-primary, 15%);
             border-radius: 4px !important;
             margin-top: 4px !important;
             &:before {
@@ -124,7 +124,7 @@
                 left: 20px;
                 top: -10px;
                 border: 5px solid;
-                border-color: transparent transparent @mir-main-nav-dropdown-bg transparent;
+                border-color: transparent transparent lighten(@brand-primary, 15%) transparent;
             }
             &:after {
                 /*content: ' ';
@@ -138,12 +138,12 @@
             }
             // Links within the dropdown menu
             > li > a {
-                color: @mir-main-nav-dropdown-link-color;
+                color: white;
                 // Hover/Focus state
                 &:hover,
                 &:focus {
-                    color: @mir-main-nav-dropdown-link-hover-color;
-                    background-color: @mir-main-nav-dropdown-link-hover-bg;
+                    color: white;
+                    background-color: lighten(@brand-primary, 30%);
                 }
             }
             // Active state
@@ -151,8 +151,8 @@
                 &,
                 &:hover,
                 &:focus {
-                    color: @mir-main-nav-dropdown-link-active-color;
-                    background-color: @mir-main-nav-dropdown-link-active-bg;
+                    color: white;
+                    background-color: lighten(@brand-primary, 30%);
                 }
             }
         }
