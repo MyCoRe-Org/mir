@@ -7,6 +7,7 @@
   <xsl:template match="/site">
     <xsl:copy>
       <head>
+        <xsl:apply-templates select="citation_meta" mode="copyContent" />
         <link href="{$WebApplicationBaseURL}js/shariff/shariff.min.css" rel="stylesheet" />
       </head>
 
@@ -128,7 +129,7 @@
                 <!-- End: ADMINMETADATA -->
               </div>
             </div>
-            </xsl:if>  
+            </xsl:if>
 
 <!-- end: right column -->
         </div>
@@ -137,6 +138,13 @@
       </div>
       <script src="{$WebApplicationBaseURL}js/shariff/shariff.min.js"></script>
     </xsl:copy>
+  </xsl:template>
+
+  <xsl:template match="citation_meta" mode="copyContent">
+    <xsl:message>
+      <xsl:value-of select="'Handling citation meta tags'" />
+    </xsl:message>
+    <xsl:copy-of select="./*" />
   </xsl:template>
 
   <xsl:template match="div" mode="copyContent">

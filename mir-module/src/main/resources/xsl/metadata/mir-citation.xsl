@@ -3,10 +3,22 @@
   xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation" xmlns:mods="http://www.loc.gov/mods/v3" xmlns:xlink="http://www.w3.org/1999/xlink"
   exclude-result-prefixes="i18n mcr mods xlink">
   <xsl:import href="xslImport:modsmeta:metadata/mir-citation.xsl" />
+  <xsl:include href="mods-highwire.xsl" />
   <xsl:template match="/">
+
+    <!-- ==================== Highwire Press tags ==================== -->
+    <citation_meta>
+      <xsl:apply-templates select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods" mode="highwire" />
+    </citation_meta>
+
     <xsl:variable name="mods" select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods" />
     <div id="mir-citation">
       <div class="shariff" data-theme="white"></div><!-- for more params see http://heiseonline.github.io/shariff/ -->
+      <xsl:if test="//mods:identifier[@type='doi']">
+        <script type='text/javascript' src='https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js'></script>
+        <div data-badge-popover="right" data-badge-type="2" data-doi="{//mods:identifier[@type='doi']}" data-hide-no-mentions="true" class="altmetric-embed"></div>
+      </xsl:if>
+
       <p>
         <xsl:apply-templates select="$mods" mode="authorList" />
         <xsl:apply-templates select="$mods" mode="year" />
