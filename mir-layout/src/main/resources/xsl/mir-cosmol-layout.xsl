@@ -63,17 +63,20 @@
 
         <div class="container" id="page">
           <div class="row" id="main_content">
-            <div id="side_nav_column" class="col-xs-3">
+
+            <div id="side_nav_column" class="hidden-xs col-sm-3">
               <xsl:call-template name="mir.navigation" />
             </div>
-            <div id="main_content_column" class="col-xs-9">
+
+            <div id="main_content_column" class="col-xs-12 col-sm-9">
+
               <div class="button_box">
                 <button id="hide_side_button"
                         class="navbar-toggle"
                         type="button">
                   <span class="sr-only"> Hide side nav </span>
                   <span class="glyphicon glyphicon-chevron-left"> </span>
-                  <div id="menu-icon">
+                  <div id="menu-icon" class="">
                     <span class="icon-bar"> </span>
                     <span class="icon-bar"> </span>
                     <span class="icon-bar"> </span>
@@ -129,25 +132,89 @@
         <script type="text/javascript" src="{$WebApplicationBaseURL}js/jquery.confirm.min.js"></script>
         <script type="text/javascript" src="{$WebApplicationBaseURL}js/mir/base.js"></script>
         <script>
+
+          /*
+           * adjust main content columns
+           * depending from visibility of side nav
+           */
+          function adjustColumns() {
+
+          // define elements
+          var mainCol  = $('#main_content_column');                  // parent
+          var leftCol  = $('#main_content_column #main_col');        // left child
+          var rightCol = $('#main_content_column #aux_col');         // right child
+
+          // scale or enlarge elements
+            if ( $('#side_nav_column').is(":visible") ) {
+              // side nav is visible, make one column
+              mainCol.removeClass('col-sm-12').addClass('col-sm-9');   // parent
+              leftCol.removeClass('col-md-8').addClass('col-xs-12');   // left
+              rightCol.removeClass('col-md-4').addClass('col-xs-12');  // right
+            } else {
+              // side nav is hidden, make two columns
+              mainCol.removeClass( 'col-sm-9').addClass( 'col-sm-12'); // parent
+              leftCol.removeClass( 'col-xs-12').addClass('col-md-8');  // left
+              rightCol.removeClass('col-xs-12').addClass('col-md-4');  // right
+            }
+          }
+
+          /*
+           * adjust toggle button for site menu
+           * depending from visibility of side nav
+           * not only controlled by js, but also by css
+           */
+          function adjustMenuButton() {
+              if ( $('#side_nav_column').is(":visible") ) {
+                // site nav is visible now
+                // hide menu button
+                $('#hide_side_button #menu-icon').hide();
+              // show close button
+                $('#hide_side_button .glyphicon-chevron-left').show();
+              } else {
+                // site nav is hidden now
+                // show menu button
+                $('#hide_side_button #menu-icon').show();
+                // hide close button
+                $('#hide_side_button .glyphicon-chevron-left').hide();
+              }
+          }
+
+          /*
+           * toggle side nav
+           */
+          function toggleSideNav() {
+            if ( $('#side_nav_column').is(":visible") ) {
+              // site nav is visible
+              // hide menu
+              $('#side_nav_column').hide('slow', function() {
+                adjustColumns();
+                adjustMenuButton();
+              });
+            } else {
+              // site nav is hidden
+              // make it visible
+              $('#side_nav_column').show('slow');
+              $('#side_nav_column').removeClass('hidden-xs');
+              $('#side_nav_column').addClass('col-xs-12');
+              adjustColumns();
+              adjustMenuButton();
+            }
+          }
+
           $( document ).ready(function() {
 
+            // if side nav hidden/shown
+            adjustColumns();
+            adjustMenuButton();
+
+            $( window ).resize(function() {
+              // if side nav hidden/shown
+              adjustColumns();
+              adjustMenuButton();
+            });
+
             $('#hide_side_button').click(function(){
-                if ( $('#side_nav_column').is(":visible") ) {
-                    // hide
-                    $('#hide_side_button .glyphicon-chevron-left').hide();
-                    $('#hide_side_button #menu-icon').show();
-                    $('#side_nav_column').hide('slow', function() {
-                        $('#main_content_column').removeClass('col-xs-9');
-                        $('#main_content_column').addClass('col-xs-12');
-                    });
-                } else {
-                    // make visible
-                    $('#side_nav_column').show('slow');
-                    $('#main_content_column').removeClass('col-xs-12');
-                    $('#main_content_column').addClass('col-xs-9');
-                    $('#hide_side_button #menu-icon').hide();
-                    $('#hide_side_button .glyphicon-chevron-left').show();
-                }
+              toggleSideNav();
             });
 
             $('.overtext').tooltip();
