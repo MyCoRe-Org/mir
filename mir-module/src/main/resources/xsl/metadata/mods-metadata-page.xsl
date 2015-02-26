@@ -47,7 +47,7 @@
       </div>
 
       <div class="row detail_row" itemscope="itemscope" itemtype="http://schema.org/ScholarlyArticle">
-        <div class="col-md-8">
+        <div id="main_col" class="col-md-8">
           <div class="detail_block">
 
           <!-- Start: ABSTRACT -->
@@ -82,7 +82,7 @@
         </div>
 
 <!-- right column -->
-        <div class="col-md-4">
+        <div id="aux_col" class="col-md-4">
 
 <!-- cites -->
             <div class="panel panel-default">
