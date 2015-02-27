@@ -40,7 +40,7 @@
   <xed:template id="status">
     <div class="form-group">
       <label class="col-md-3 control-label">
-        Status:
+        <xed:output i18n="component.mods.metaData.dictionary.status" />
       </label>
       <xed:bind xpath="mods:classification[@displayLabel='status'][@authorityURI='http://www.mycore.org/classifications/mir_status']/@valueURIxEditor" initially="submitted">
         <div class="col-md-6">
@@ -594,9 +594,9 @@
         <label class="col-md-3 control-label required">
           <xed:output i18n="mir.rights" />:
         </label>
-      <div class="col-md-6">
+        <div class="col-md-6">
           <select  class="form-control form-control-inline">
-            <option value="">bitte wählen</option>
+            <option value=""><xed:output i18n="mir.select" /></option>
             <xed:include uri="xslStyle:items2options:classification:editor:-1:children:mir_rights" />
           </select>
         </div>
@@ -611,14 +611,14 @@
   <xed:template id="institutes">
     <div class="form-group">
       <label class="col-md-3 control-label">
-        <xed:output i18n="mir.institution" />
+        <xed:output i18n="mir.institution" />:
       </label>
       <div class="col-md-6">
         <xed:bind xpath="mods:name[@type='corporate'][@authorityURI='http://www.mycore.org/classifications/mir_institutes']">
           <xed:bind xpath="mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']" initially="his" /><!--  Host institution [his] -->
           <xed:bind xpath="@valueURIxEditor">
             <select class="form-control form-control-inline">
-              <option value="">bitte wählen</option>
+              <option value=""><xed:output i18n="mir.select" /></option>
               <xed:include uri="xslStyle:items2options:classification:editor:-1:children:mir_institutes" />
             </select>
           </xed:bind>
@@ -662,6 +662,10 @@
       <mir:textfield xpath="@xlink:href" label="mir.abstract.aslink" placeholder="{i18n:mir.placeholder.abstract.link}" />
       <mir:textarea xpath="." label="mir.abstract.ortext" rows="5" />
     </xed:repeat>
+  </xed:template>
+
+  <xed:template id="subject">
+    <mir:textfield xpath="mods:subject/mods:topic" label="mir.subject.topic" />
   </xed:template>
 
   <xed:template id="comment">
