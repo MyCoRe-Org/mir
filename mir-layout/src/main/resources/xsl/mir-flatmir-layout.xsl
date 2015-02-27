@@ -83,7 +83,7 @@
               <div class="col-xs-12 col-sm-6 col-md-4">
                 <h4>Über uns</h4>
                   <p>
-                      MIR ist die Vorlage für klassiche Publikations- bzw.
+                      MIR ein klassicher institutioneller Publikations- bzw.
                       Dokumentenserver. Es basiert auf dem Repository-Framework
                       MyCoRe und dem Metadata Object Description Schema (MODS).
                       <span class="read_more">
