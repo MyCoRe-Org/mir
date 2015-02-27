@@ -138,6 +138,34 @@
         <script>
 
           /*
+           * load side nav settings from session
+           */
+          function setSideNav() {
+            if ( typeof(Storage) !== "undefined" ) {
+              switch ( localStorage.getItem("sideNav") ) {
+                case 'opened':
+                  if ( !$('#side_nav_column').is(":visible") ) {
+                    toggleSideNav(0);
+                  }
+                  break;
+                case 'closed':
+                  if ( $('#side_nav_column').is(":visible") ) {
+                    toggleSideNav(0);
+                  }
+                  break;
+                case null:
+                  if ( $('#side_nav_column').is(":visible") ) {
+                    localStorage.setItem("sideNav", "opened");
+                  } else {
+                    localStorage.setItem("sideNav", "opened");
+                  }
+                  break;
+                default:
+              }
+            }
+          }
+
+          /*
            * adjust main content columns
            * depending from visibility of side nav
            */
@@ -186,14 +214,20 @@
           /*
            * toggle side nav
            */
-          function toggleSideNav() {
+          function toggleSideNav(speed) {
+            if( speed === undefined ) {
+              speed = 'slow';
+            }
             if ( $('#side_nav_column').is(":visible") ) {
               // site nav is visible
               // hide menu
-              $('#side_nav_column').hide('slow', function() {
+              $('#side_nav_column').hide(speed, function() {
                 adjustColumns();
                 adjustMenuButton();
               });
+              if ( typeof(Storage) !== "undefined" ) {
+                localStorage.setItem("sideNav", "closed");
+              }
             } else {
               // site nav is hidden
               // make it visible
@@ -202,10 +236,16 @@
               $('#side_nav_column').addClass('col-xs-12');
               adjustColumns();
               adjustMenuButton();
+              if ( typeof(Storage) !== "undefined" ) {
+                localStorage.setItem("sideNav", "opened");
+              }
             }
           }
 
           $( document ).ready(function() {
+
+            // load side nav settings from session
+            setSideNav();
 
             // if side nav hidden/shown
             adjustColumns();
