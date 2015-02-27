@@ -40,6 +40,7 @@
         <script type="text/javascript" src="//code.jquery.com/jquery-migrate-{$jquery.migrate.version}.min.js"></script>
         <xsl:copy-of select="head/*" />
         <link href="{$WebApplicationBaseURL}mir-layout/css/{$MIR.Layout.Theme}/{$MIR.DefaultLayout.CSS}.css" rel="stylesheet" />
+        <script type="text/javascript" src ="{$WebApplicationBaseURL}mir-layout/js/cosmol.js"></script>
         <xsl:if test="string-length($MIR.CustomLayout.CSS) &gt; 0">
           <link href="{$WebApplicationBaseURL}css/{$MIR.CustomLayout.CSS}" rel="stylesheet" />
         </xsl:if>
@@ -137,131 +138,10 @@
         <script type="text/javascript" src="{$WebApplicationBaseURL}js/mir/base.js"></script>
         <script>
 
-          /*
-           * load side nav settings from session
-           */
-          function setSideNav() {
-            if ( typeof(Storage) !== "undefined" ) {
-              switch ( localStorage.getItem("sideNav") ) {
-                case 'opened':
-                  if ( !$('#side_nav_column').is(":visible") ) {
-                    toggleSideNav(0);
-                  }
-                  break;
-                case 'closed':
-                  if ( $('#side_nav_column').is(":visible") ) {
-                    toggleSideNav(0);
-                  }
-                  break;
-                case null:
-                  if ( $('#side_nav_column').is(":visible") ) {
-                    localStorage.setItem("sideNav", "opened");
-                  } else {
-                    localStorage.setItem("sideNav", "opened");
-                  }
-                  break;
-                default:
-              }
-            }
-          }
-
-          /*
-           * adjust main content columns
-           * depending from visibility of side nav
-           */
-          function adjustColumns() {
-
-          // define elements
-          var mainCol  = $('#main_content_column');                  // parent
-          var leftCol  = $('#main_content_column #main_col');        // left child
-          var rightCol = $('#main_content_column #aux_col');         // right child
-
-          // scale or enlarge elements
-            if ( $('#side_nav_column').is(":visible") ) {
-              // side nav is visible, make one column
-              mainCol.removeClass('col-sm-12').addClass('col-sm-9');   // parent
-              leftCol.removeClass('col-md-8').addClass('col-xs-12');   // left
-              rightCol.removeClass('col-md-4').addClass('col-xs-12');  // right
-            } else {
-              // side nav is hidden, make two columns
-              mainCol.removeClass( 'col-sm-9').addClass( 'col-sm-12'); // parent
-              leftCol.removeClass( 'col-xs-12').addClass('col-md-8');  // left
-              rightCol.removeClass('col-xs-12').addClass('col-md-4');  // right
-            }
-          }
-
-          /*
-           * adjust toggle button for site menu
-           * depending from visibility of side nav
-           * not only controlled by js, but also by css
-           */
-          function adjustMenuButton() {
-              if ( $('#side_nav_column').is(":visible") ) {
-                // site nav is visible now
-                // hide menu button
-                $('#hide_side_button #menu-icon').hide();
-              // show close button
-                $('#hide_side_button .glyphicon-chevron-left').show();
-              } else {
-                // site nav is hidden now
-                // show menu button
-                $('#hide_side_button #menu-icon').show();
-                // hide close button
-                $('#hide_side_button .glyphicon-chevron-left').hide();
-              }
-          }
-
-          /*
-           * toggle side nav
-           */
-          function toggleSideNav(speed) {
-            if( speed === undefined ) {
-              speed = 'slow';
-            }
-            if ( $('#side_nav_column').is(":visible") ) {
-              // site nav is visible
-              // hide menu
-              $('#side_nav_column').hide(speed, function() {
-                adjustColumns();
-                adjustMenuButton();
-              });
-              if ( typeof(Storage) !== "undefined" ) {
-                localStorage.setItem("sideNav", "closed");
-              }
-            } else {
-              // site nav is hidden
-              // make it visible
-              $('#side_nav_column').show('slow');
-              $('#side_nav_column').removeClass('hidden-xs');
-              $('#side_nav_column').addClass('col-xs-12');
-              adjustColumns();
-              adjustMenuButton();
-              if ( typeof(Storage) !== "undefined" ) {
-                localStorage.setItem("sideNav", "opened");
-              }
-            }
-          }
-
           $( document ).ready(function() {
 
-            // load side nav settings from session
-            setSideNav();
-
-            // if side nav hidden/shown
-            adjustColumns();
-            adjustMenuButton();
-
-            $( window ).resize(function() {
-              // if side nav hidden/shown
-              adjustColumns();
-              adjustMenuButton();
-            });
-
-            $('#hide_side_button').click(function(){
-              toggleSideNav();
-            });
-
             $('.overtext').tooltip();
+
             $.confirm.options = {
               text: "<xsl:value-of select="i18n:translate('mir.confirm.text')" />",
               title: "<xsl:value-of select="i18n:translate('mir.confirm.title')" />",
