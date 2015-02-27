@@ -12,6 +12,7 @@
   <xsl:include href="resource:xsl/mir-cosmol-layout-utils.xsl"/>
   <xsl:param name="MIR.DefaultLayout.CSS" select="'cosmo.min'" />
   <xsl:param name="MIR.CustomLayout.CSS" select="''" />
+  <xsl:param name="MIR.CustomLayout.JS" select="''" />
   <xsl:param name="MIR.Layout.Theme" select="'cosmol'" />
   <xsl:param name="MCR.NameOfProject" select="'MIR'" />
   <!-- Various versions -->
@@ -41,6 +42,9 @@
         <link href="{$WebApplicationBaseURL}mir-layout/css/{$MIR.Layout.Theme}/{$MIR.DefaultLayout.CSS}.css" rel="stylesheet" />
         <xsl:if test="string-length($MIR.CustomLayout.CSS) &gt; 0">
           <link href="{$WebApplicationBaseURL}css/{$MIR.CustomLayout.CSS}" rel="stylesheet" />
+        </xsl:if>
+        <xsl:if test="string-length($MIR.CustomLayout.JS) &gt; 0">
+          <script type="text/javascript" src="{$WebApplicationBaseURL}js/{$MIR.CustomLayout.JS}"></script>
         </xsl:if>
       </head>
 
