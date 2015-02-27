@@ -16,7 +16,7 @@
   <xsl:template name="mir.navigation">
     <div class="navbar navbar-default mir-side-nav">
       <nav class="mir-main-nav-entries">
-        <form action="{$WebApplicationBaseURL}servlets/solr/find?qry={0}" class="navbar-form" role="search">
+        <form action="{$WebApplicationBaseURL}servlets/solr/find?qry={0}" class="navbar-form form-inline" role="search">
           <div class="form-group">
             <input name="qry" placeholder="Suche" class="form-control search-query" id="searchInput" type="text" />
           </div>

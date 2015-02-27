@@ -23,6 +23,14 @@
         margin: 0px 0px 20px 15px;
         padding: 0px;
 
+        .form-group {
+          display: inline;
+        }
+
+        #searchInput {
+          width: 60%;
+        }
+
         .btn {
           vertical-align: bottom;
           padding: 4px 10px;
@@ -164,5 +172,21 @@
         }
       }
     }
+  }
+}
+
+@media (min-width: @screen-tablet) {
+  #side_nav_column .mir-side-nav nav .navbar-form #searchInput {
+    width: 65%;
+  }
+}
+@media (min-width: @screen-desktop) {
+  #side_nav_column .mir-side-nav nav .navbar-form #searchInput {
+    width: 70%;
+  }
+}
+@media (min-width: @screen-lg-desktop) {
+  #side_nav_column .mir-side-nav nav .navbar-form #searchInput {
+    width: 80%;
   }
 }
