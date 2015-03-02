@@ -3,6 +3,8 @@
 <xed:template xmlns:xed="http://www.mycore.de/xeditor" xmlns:mir="http://www.mycore.de/mir">
 
   <xed:template id="in.out">
+    <xed:source uri="xslStyle:PPN-mods-simple,mycoreobject-editor,editor/mods2xeditor?parentId={$parentId}:http://unapi.gbv.de/?id=gvk:ppn:{$ppn}&amp;format=mods" />
+    <xed:source uri="xslStyle:PPN-mods-simple,mycoreobject-editor,editor/mods2xeditor:http://unapi.gbv.de/?id=gvk:ppn:{$ppn}&amp;format=mods" />
     <xed:source uri="xslStyle:editor/mods2xeditor:{$sourceUri}"/>
     <xed:source uri="xslStyle:asParent,editor/mods2xeditor:mcrobject:{$parentId}" />
     <xed:source uri="xslStyle:asSeries,editor/mods2xeditor:mcrobject:{$seriesId}" />
