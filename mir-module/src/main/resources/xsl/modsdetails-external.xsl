@@ -477,22 +477,12 @@
                   </a>
                 </li>
               </xsl:if>
-
+              <xsl:variable name="genreHosts" select="document('classification:metadata:-1:children:mir_genres')" />
               <xsl:variable name="child-layout">
-                <xsl:choose>
-                  <xsl:when test="$mods-type = 'book' or $mods-type = 'monograph' or $mods-type = 'collection' or $mods-type = 'festschrift' or $mods-type = 'proceedings'">
-                    <xsl:value-of select="'chapter'" />
-                  </xsl:when>
-                  <xsl:when test="$mods-type = 'lexicon'">
-                    <xsl:value-of select="'entry'" />
-                  </xsl:when>
-                  <xsl:when test="$mods-type = 'journal' or $mods-type = 'newspaper'">
-                    <xsl:value-of select="'article'" />
-                  </xsl:when>
-                  <xsl:when test="$mods-type = 'series'">
-                    <xsl:value-of select="'book|monograph|collection|festschrift|proceedings|lexicon'" />
-                  </xsl:when>
-                </xsl:choose>
+                <xsl:for-each select="$genreHosts//category[contains(label[@xml:lang='x-hosts']/@text, $mods-type)]">
+                  <xsl:value-of select="@ID" />
+                  <xsl:text>|</xsl:text>
+                </xsl:for-each>
               </xsl:variable>
               <xsl:message>
                 mods-type: <xsl:value-of select="$mods-type"/>
@@ -511,11 +501,13 @@
                     </xsl:for-each>
                   </xsl:when>
                   <xsl:otherwise>
-                    <li>
-                      <a href="{$WebApplicationBaseURL}/editor/editor-dynamic.xed{$HttpSession}?genre={$child-layout}&amp;parentId={$id}">
-                        <xsl:value-of select="i18n:translate(concat('component.mods.genre.',$child-layout))" />
-                      </a>
-                    </li>
+                    <xsl:for-each select="str:tokenize($child-layout,'|')" >
+                      <li>
+                        <a href="{$WebApplicationBaseURL}/editor/editor-dynamic.xed{$HttpSession}?genre={.}&amp;parentId={$id}">
+                          <xsl:value-of select="i18n:translate(concat('component.mods.genre.',.))" />
+                        </a>
+                      </li>
+                    </xsl:for-each>
                   </xsl:otherwise>
                 </xsl:choose>
               </xsl:if>
