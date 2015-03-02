@@ -166,8 +166,7 @@ module.exports = function(grunt) {
     },
     watch : {
       styles : {
-        files : [ '../../src/main/less/**/*.less' ], // which files to watch
-        tasks : [ 'reBuild' ],
+        files : [ '../../src/main/less/**/*.less' ] // which files to watch
       }
     }
   });
@@ -214,4 +213,48 @@ module.exports = function(grunt) {
     createFileIfNotExist('bower_components/bootswatch/default/bootswatch.less');
     grunt.task.run('mir');
   });
+
+  grunt.registerTask('watch-forAll', function () {
+    grunt.config.merge({
+      watch: {
+        styles : {
+          tasks : [ 'reBuild' ],
+        }
+      }
+    });
+    grunt.task.run('watch');
+  });
+
+  grunt.registerTask('watch-forCosmoL', function () {
+    grunt.config.merge({
+      watch: {
+        styles : {
+          tasks : [ 'reBuildCosmoL' ],
+        }
+      }
+    });
+    grunt.task.run('watch');
+  });
+
+  grunt.registerTask('watch-forFlatMIR', function () {
+    grunt.config.merge({
+      watch: {
+        styles : {
+          tasks : [ 'reBuildFlatMIR' ],
+        }
+      }
+    });
+    grunt.task.run('watch');
+  });
+
+  grunt.registerTask('reBuildCosmoL', 'rebuild cosmol files if necessary', function() {
+    updateLayout();
+    compileLess('cosmol', 'cosmo', true);
+  });
+
+  grunt.registerTask('reBuildFlatMIR', 'rebuild flatmir files if necessary', function() {
+    updateLayout();
+    compileLess('flatmir', 'flatly', true);
+  });
+
 }
