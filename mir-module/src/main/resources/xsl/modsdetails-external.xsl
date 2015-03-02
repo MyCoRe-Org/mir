@@ -489,12 +489,27 @@
                 child-layout: <xsl:value-of select="$child-layout"/>
                 accessedit: <xsl:value-of select="$accessedit"/>
               </xsl:message>
-              <xsl:if test="string-length($child-layout) &gt; 0 and $accessedit">
+              <!-- actionmapping.xml must be available for this functionality -->
+              <xsl:if test="string-length($child-layout) &gt; 0 and $accessedit and mcrxsl:resourceAvailable('actionmappings.xml')">
+
+              <xsl:variable name="url">
+                <xsl:value-of select="actionmapping:getURLforID('create-child',$id,true())" xmlns:actionmapping="xalan://org.mycore.wfc.actionmapping.MCRURLRetriever" />
+              </xsl:variable>
+
                 <xsl:choose>
+                  <xsl:when test="not(contains($url, 'editor-dynamic.xed'))">
+                    <xsl:for-each select="str:tokenize($child-layout,'|')" >
+                      <li>
+                        <a href="{$url}{$HttpSession}?parentId={$id}">
+                          <xsl:value-of select="i18n:translate(concat('component.mods.genre.',.))" />
+                        </a>
+                      </li>
+                    </xsl:for-each>
+                  </xsl:when>
                   <xsl:when test="$mods-type = 'series'">
                     <xsl:for-each select="str:tokenize($child-layout,'|')" >
                       <li>
-                        <a href="{$WebApplicationBaseURL}/editor/editor-dynamic.xed{$HttpSession}?genre={.}&amp;host=series&amp;seriesId={$id}">
+                        <a href="{$url}{$HttpSession}?genre={.}&amp;host=series&amp;seriesId={$id}">
                           <xsl:value-of select="i18n:translate(concat('component.mods.genre.',.))" />
                         </a>
                       </li>
@@ -503,7 +518,7 @@
                   <xsl:otherwise>
                     <xsl:for-each select="str:tokenize($child-layout,'|')" >
                       <li>
-                        <a href="{$WebApplicationBaseURL}/editor/editor-dynamic.xed{$HttpSession}?genre={.}&amp;parentId={$id}">
+                        <a href="{$url}{$HttpSession}?genre={.}&amp;parentId={$id}">
                           <xsl:value-of select="i18n:translate(concat('component.mods.genre.',.))" />
                         </a>
                       </li>
