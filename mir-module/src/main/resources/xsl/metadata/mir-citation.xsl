@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:mcr="xalan://org.mycore.common.xml.MCRXMLFunctions"
   xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation" xmlns:mods="http://www.loc.gov/mods/v3" xmlns:xlink="http://www.w3.org/1999/xlink"
-  exclude-result-prefixes="i18n mcr mods xlink">
+  xmlns:mcrurn="xalan://org.mycore.urn.MCRXMLFunctions"
+  exclude-result-prefixes="i18n mcr mods xlink mcrurn">
   <xsl:import href="xslImport:modsmeta:metadata/mir-citation.xsl" />
   <xsl:include href="mods-highwire.xsl" />
   <xsl:template match="/">
@@ -36,13 +37,44 @@
        -->
       <!-- cite url - TODO: Should be URN if one is given -->
       <p id="cite_link_box">
-        <a id="copy_cite_link"
-           href="{$WebApplicationBaseURL}receive/{mycoreobject/@ID}"
-           class="label label-info">Zitier-Link
-        </a>
-        <textarea id="cite_link_code_box" class="code">
-          <xsl:value-of select="concat($WebApplicationBaseURL,'receive/',mycoreobject/@ID)" />
-        </textarea>
+
+        <xsl:variable name="derivateURN">
+          <xsl:for-each select="mycoreobject/structure/derobjects/derobject">
+            <xsl:variable name="derId" select="@xlink:href" />
+            <xsl:variable name="derivateXML" select="document(concat('mcrobject:',$derId))" />
+            <xsl:variable name="derivateWithURN" select="mcrurn:hasURNDefined($derId)" />
+            <xsl:if test="$derivateWithURN=true()">
+              <xsl:value-of select="$derivateXML/mycorederivate/derivate/fileset/@urn" />
+              <xsl:text>|</xsl:text>
+            </xsl:if>
+          </xsl:for-each>
+        </xsl:variable>
+
+        <xsl:choose>
+          <xsl:when test="string-length($derivateURN) &gt; 0">
+            <xsl:variable name="urn" select="substring-before($derivateURN,'|')" /><!-- get first URN only -->
+            <a id="url_site_link" href="http://nbn-resolving.de/urn/resolver.pl?urn={$urn}">
+              <xsl:value-of select="$urn" />
+            </a>
+            <br />
+            <a id="copy_cite_link" class="label label-info" href="http://nbn-resolving.de/urn/resolver.pl?urn={$urn}">
+              <xsl:text>Zitier-Link</xsl:text>
+            </a>
+            <textarea id="cite_link_code_box" class="code">
+              <xsl:value-of select="concat('http://nbn-resolving.de/urn/resolver.pl?urn=',$urn)" />
+            </textarea>
+          </xsl:when>
+          <xsl:otherwise>
+            <a id="copy_cite_link"
+               href="{$WebApplicationBaseURL}receive/{mycoreobject/@ID}"
+               class="label label-info">
+               <xsl:text>Zitier-Link</xsl:text>
+            </a>
+            <textarea id="cite_link_code_box" class="code">
+              <xsl:value-of select="concat($WebApplicationBaseURL,'receive/',mycoreobject/@ID)" />
+            </textarea>
+          </xsl:otherwise>
+        </xsl:choose>
       </p>
       <script>
         $('#copy_cite_link').click(function(){
