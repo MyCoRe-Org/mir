@@ -6,6 +6,8 @@
   xmlns:mcrurn="xalan://org.mycore.urn.MCRXMLFunctions" xmlns:str="http://exslt.org/strings" exclude-result-prefixes="basket xalan xlink mcr i18n acl mods mcrmods mcrxsl mcrurn str"
   version="1.0" xmlns:ex="http://exslt.org/dates-and-times" extension-element-prefixes="ex">
 
+  <xsl:param name="MIR.registerDOI" select="''" />
+
   <!-- do nothing for display parent -->
   <xsl:template match="/mycoreobject" mode="parent" priority="1">
   </xsl:template>
@@ -426,6 +428,13 @@
                         <xsl:value-of select="i18n:translate('object.editGenre')" />
                       </a>
                     </li -->
+                    <xsl:if test="not(//mods:mods/mods:identifier[@type='doi']) and $MIR.registerDOI='true'">
+                      <li>
+                        <a href="{$WebApplicationBaseURL}receive/{/mycoreobject/@ID}?XSL.Transformer=datacite">
+                          <xsl:value-of select="i18n:translate('mir.registerDOI')" />
+                        </a>
+                      </li>
+                    </xsl:if>
                   </xsl:when>
                   <xsl:otherwise>
                     <li>
