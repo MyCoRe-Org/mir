@@ -6,6 +6,7 @@
   <xsl:import href="xslImport:modsmeta:metadata/mir-citation.xsl" />
   <xsl:include href="mods-highwire.xsl" />
   <xsl:param name="MCR.URN.Resolver.MasterURL" select="''" />
+  <xsl:param name="MCR.DOI.Prefix" select="'10.5072'" />
   <xsl:template match="/">
 
     <!-- ==================== Highwire Press tags ==================== -->
@@ -16,7 +17,7 @@
     <xsl:variable name="mods" select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods" />
     <div id="mir-citation">
       <div class="shariff" data-theme="white"></div><!-- for more params see http://heiseonline.github.io/shariff/ -->
-      <xsl:if test="//mods:identifier[@type='doi']">
+      <xsl:if test="//mods:mods/mods:identifier[@type='doi']">
         <script type='text/javascript' src='https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js'></script>
         <div data-badge-popover="right" data-badge-type="2" data-doi="{//mods:identifier[@type='doi']}" data-hide-no-mentions="true" class="altmetric-embed"></div>
       </xsl:if>
@@ -52,6 +53,18 @@
         </xsl:variable>
 
         <xsl:choose>
+          <xsl:when test="//mods:mods/mods:identifier[@type='doi'] and contains(//mods:mods/mods:identifier[@type='doi'], $MCR.DOI.Prefix)">
+            <xsl:variable name="doi" select="//mods:mods/mods:identifier[@type='doi']" />
+            <a id="copy_cite_link"
+               href="http://dx.doi.org/{$doi}"
+               class="label label-info">
+               <xsl:text>DOI:</xsl:text>
+               <xsl:value-of select="$doi" />
+            </a>
+            <textarea id="cite_link_code_box" class="code">
+              <xsl:value-of select="$doi" />
+            </textarea>
+          </xsl:when>
           <xsl:when test="string-length($derivateURN) &gt; 0">
             <xsl:variable name="urn" select="substring-before($derivateURN,'|')" /><!-- get first URN only -->
             <a id="url_site_link" href="{$MCR.URN.Resolver.MasterURL}{$urn}">
