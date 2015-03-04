@@ -5,7 +5,7 @@
 
   <section i18n="browse.sdnb" xml:lang="all">
 
-    <h3>Nach Sachgruppe</h3>
+    <h3><i18n key="browse.sdnb" /></h3>
     <classificationbrowser classification="SDNB"
                                objecttype="mods"
                               restriction="+category.top:&quot;mir_status:published&quot;"
