@@ -16,6 +16,7 @@
   <xsl:param name="ServletsBaseURL" select="''" />
   <xsl:param name="WebApplicationBaseURL" select="''" />
   <xsl:param name="HttpSession" select="''" />
+  <xsl:param name="MCR.URN.Resolver.MasterURL" select="''" />
 
   <xsl:include href="mods2dc.xsl" />
   <xsl:include href="mods2record.xsl" />
@@ -59,8 +60,7 @@
 
       <xsl:if test="string-length($derivateURN) &gt; 0">
       <dc:identifier>
-        <xsl:text>http://nbn-resolving.de/</xsl:text>
-        <xsl:value-of select="$derivateURN" />
+        <xsl:value-of select="concat($MCR.URN.Resolver.MasterURL, $derivateURN)" />
       </dc:identifier>
       </xsl:if>
 

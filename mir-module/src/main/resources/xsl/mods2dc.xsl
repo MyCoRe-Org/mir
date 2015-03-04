@@ -10,6 +10,7 @@
   xmlns:mcrmods="xalan://org.mycore.mods.MCRMODSClassificationSupport"
   exclude-result-prefixes="xsl mods mcrurn mcrmods xlink srw_dc">
 
+  <xsl:param name="MCR.URN.Resolver.MasterURL" select="''" />
   <!--
   Version 1.4		2013-12-13 tmee@loc.gov
   Upgraded to MODS 3.5
@@ -377,8 +378,7 @@
         <!-- 2.0: added identifier type attribute to output, if it is present-->
         <!-- add by Paul Borchert -->
         <xsl:when test="@type='urn'">
-            <xsl:text>http://nbn-resolving.de/</xsl:text>
-            <xsl:value-of select="." />
+            <xsl:value-of select="concat($MCR.URN.Resolver.MasterURL, .)" />
         </xsl:when>
         <xsl:when test="@type='doi'">
             <xsl:text>http://dx.doi.org/</xsl:text>

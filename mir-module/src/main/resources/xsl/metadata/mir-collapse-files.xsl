@@ -3,6 +3,7 @@
   xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation" xmlns:mods="http://www.loc.gov/mods/v3" xmlns:xlink="http://www.w3.org/1999/xlink"
   xmlns:acl="xalan://org.mycore.access.MCRAccessManager" xmlns:mcrurn="xalan://org.mycore.urn.MCRXMLFunctions" exclude-result-prefixes="i18n mcr mods acl xlink mcrurn">
   <xsl:import href="xslImport:modsmeta:metadata/mir-collapse-files.xsl" />
+  <xsl:param name="MCR.URN.Resolver.MasterURL" select="''" />
   <xsl:template match="/">
 
     <xsl:choose>
@@ -31,7 +32,7 @@
                       <xsl:if test="$derivateWithURN=true()">
                         <xsl:variable name="derivateURN" select="$derivateXML/mycorederivate/derivate/fileset/@urn" />
                         <sup class="file_urn">
-                          <a href="{concat('http://nbn-resolving.de/urn/resolver.pl?urn=',$derivateURN)}"
+                          <a href="{$MCR.URN.Resolver.MasterURL}{$derivateURN}"
                              title="{$derivateURN}">
                              URN
                           </a>
@@ -135,7 +136,7 @@
                         </span>
                         <xsl:if test="string-length($urn)>0">
                           <sup class="file_urn">
-                            <a href="{concat('http://nbn-resolving.de/urn/resolver.pl?urn=',$urn)}"
+                            <a href="{$MCR.URN.Resolver.MasterURL}{$urn}"
                                title="{$urn}">
                                URN
                             </a>

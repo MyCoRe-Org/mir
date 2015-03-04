@@ -5,6 +5,7 @@
   exclude-result-prefixes="i18n mcr mods xlink mcrurn">
   <xsl:import href="xslImport:modsmeta:metadata/mir-citation.xsl" />
   <xsl:include href="mods-highwire.xsl" />
+  <xsl:param name="MCR.URN.Resolver.MasterURL" select="''" />
   <xsl:template match="/">
 
     <!-- ==================== Highwire Press tags ==================== -->
@@ -53,15 +54,15 @@
         <xsl:choose>
           <xsl:when test="string-length($derivateURN) &gt; 0">
             <xsl:variable name="urn" select="substring-before($derivateURN,'|')" /><!-- get first URN only -->
-            <a id="url_site_link" href="http://nbn-resolving.de/urn/resolver.pl?urn={$urn}">
+            <a id="url_site_link" href="{$MCR.URN.Resolver.MasterURL}{$urn}">
               <xsl:value-of select="$urn" />
             </a>
             <br />
-            <a id="copy_cite_link" class="label label-info" href="http://nbn-resolving.de/urn/resolver.pl?urn={$urn}">
+            <a id="copy_cite_link" class="label label-info" href="{$MCR.URN.Resolver.MasterURL}{$urn}">
               <xsl:text>Zitier-Link</xsl:text>
             </a>
             <textarea id="cite_link_code_box" class="code">
-              <xsl:value-of select="concat('http://nbn-resolving.de/urn/resolver.pl?urn=',$urn)" />
+              <xsl:value-of select="concat($MCR.URN.Resolver.MasterURL, $urn)" />
             </textarea>
           </xsl:when>
           <xsl:otherwise>
