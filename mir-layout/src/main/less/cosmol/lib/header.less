@@ -1,18 +1,11 @@
 header {
-    margin-top: 20px;
     .container {
         background-color: white;
-        border-top-left-radius: 10px;
-        border-top-right-radius: 10px;
         .row {
-            border-top-left-radius: 10px;
-            border-top-right-radius: 10px;
             position: relative;
             #header_back {
                 width: 100%;
                 height: 180px;
-                border-top-left-radius: 10px;
-                border-top-right-radius: 10px;
                 background-image: url('../../images/cosmol/header.jpg');
                 background-repeat: no-repeat;
             }
@@ -28,4 +21,23 @@ header {
             }
         }
     }
+}
+
+@media (min-width: @screen-tablet) {
+  header {
+    margin-top: 20px;
+    #head,
+    .container {
+      border-top-left-radius: 10px;
+      border-top-right-radius: 10px;
+      .row {
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        #header_back {
+          border-top-left-radius: 10px;
+          border-top-right-radius: 10px;
+        }
+      }
+    }
+  }
 }
