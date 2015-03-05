@@ -84,13 +84,21 @@ function adjustMenuButton() {
       // hide menu button
       $('#hide_side_button #menu-icon').hide();
     // show close button
-      $('#hide_side_button .glyphicon-chevron-left').show();
+      $('#hide_side_button #close-icon').show();
+      // adjust icon to viewport
+      if ( $( document ).width() <= 750 ) {
+        // hide top
+        $('#hide_side_button #close-icon').removeClass('glyphicon-chevron-left').addClass('glyphicon-chevron-up');
+      } else {
+        // hide side
+        $('#hide_side_button #close-icon').removeClass('glyphicon-chevron-up').addClass('glyphicon-chevron-left');
+      }
     } else {
       // site nav is hidden now
       // show menu button
       $('#hide_side_button #menu-icon').show();
       // hide close button
-      $('#hide_side_button .glyphicon-chevron-left').hide();
+      $('#hide_side_button #close-icon').hide();
     }
 }
 

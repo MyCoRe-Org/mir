@@ -80,7 +80,7 @@
                         class="navbar-toggle"
                         type="button">
                   <span class="sr-only"> Hide side nav </span>
-                  <span class="glyphicon glyphicon-chevron-left"> </span>
+                  <span id="close-icon" class="glyphicon glyphicon-chevron-left"> </span>
                   <div id="menu-icon" class="">
                     <span class="icon-bar"> </span>
                     <span class="icon-bar"> </span>
