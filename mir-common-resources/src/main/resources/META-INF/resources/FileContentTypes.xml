@@ -59,7 +59,7 @@
 
   <type ID="ps">
     <label>PostScript</label>
-    <url>http://miless.uni-essen.de/plugins/postscript.html</url>
+    <url>http://www.cs.wisc.edu/~ghost/</url>
     <mime>application/postscript</mime>
     <rules>
       <extension score="0.9">ps</extension>
@@ -69,7 +69,7 @@
   
   <type ID="eps">
     <label>Encapsulated PostScript</label>
-    <url>http://miless.uni-essen.de/plugins/postscript.html</url>
+    <url>http://www.cs.wisc.edu/~ghost/</url>
     <mime>application/postscript</mime>
     <rules>
       <extension score="0.9">eps</extension>
@@ -78,8 +78,8 @@
   </type>  
   
   <type ID="pdf">
-    <label>Adobe PDF</label>
-    <url>http://miless.uni-essen.de/plugins/adobe.html</url>
+    <label>PDF</label>
+    <url>http://www.adobe.de/products/acrobat/readstep2.html</url>
     <mime>application/pdf</mime>
     <rules>
       <extension score="0.9">pdf</extension>
@@ -149,24 +149,6 @@
     <rules>
       <extension score="0.9">txt</extension>
       <extension score="0.7">log</extension>
-    </rules>
-  </type>  
-  
-  <type ID="xml">
-    <label>XML</label>
-    <mime>text/xml</mime>
-    <rules>
-      <extension score="0.9">xml</extension>
-      <pattern score="1.0" offset="0" format="text">&lt;?xml</pattern>
-    </rules>
-  </type>  
-  
-  <type ID="xsl">
-    <label>XSL Stylesheet</label>
-    <mime>text/xml</mime>
-    <rules>
-      <extension score="0.9">xsl</extension>
-      <pattern score="0.5" offset="0" format="text">&lt;?xml</pattern>
     </rules>
   </type>  
   
@@ -243,9 +225,9 @@
   </type>  
 
   <type ID="msppt">
-    <label>Microsoft PowerPoint</label>
-    <url>http://miless.uni-essen.de/plugins/powerpoint.html</url>
-    <mime>application/vnd.ms-powerpoint</mime>
+    <label>PowerPoint</label>
+    <url>http://www.microsoft.com/downloads/details.aspx?FamilyID=428d5727-43ab-4f24-90b7-a94784af71a4&amp;displaylang=de</url>
+    <mime>application/powerpoint</mime>
     <rules>
       <extension score="0.8">ppt</extension>
       <extension score="0.7">pps</extension>
@@ -296,7 +278,7 @@
   
   <type ID="class">
     <label>Java Bytecode</label>
-    <url>http://miless.uni-essen.de/plugins/java_runtime.html</url>
+    <url>http://java.sun.com/j2se/1.5.0/download.jsp</url>
     <mime>application/octet-stream</mime>
     <rules>
       <extension score="0.9">class</extension>
@@ -313,8 +295,8 @@
   </type>  
   
   <type ID="jar">
-    <label>Java Archiv</label>
-    <url>http://miless.uni-essen.de/plugins/java_runtime.html</url>
+    <label>Java Library</label>
+    <url>http://java.sun.com/j2se/1.5.0/download.jsp</url>
     <rules>
       <extension score="0.9">jar</extension>
     </rules>
@@ -361,20 +343,65 @@
   </type>  
   
   <type ID="dcr">
-    <label>Macromedia Shockwave</label>
-    <url>http://miless.uni-essen.de/plugins/shockwave.html</url>
+    <label>Shockwave</label>
+    <url>http://www.macromedia.com/de/software/shockwaveplayer/</url>
     <mime>application/x-director</mime>
     <rules>
       <extension score="0.9">dcr</extension>
+      <extension score="0.9">swf</extension>
       <extension score="0.8">dxr</extension>
     </rules>
   </type>  
   
+  <type ID="xml">
+    <label>XML</label>
+    <mime>text/xml</mime>
+    <rules>
+      <extension score="0.9">xml</extension>
+      <pattern score="0.5" offset="0" format="text">&lt;?xml</pattern>
+    </rules>
+  </type>  
+  
+  <type ID="xsl">
+    <label>XSL</label>
+    <mime>text/xml</mime>
+    <rules>
+      <extension score="0.9">xsl</extension>
+      <pattern score="0.5" offset="0" format="text">&lt;?xml</pattern>
+    </rules>
+  </type>  
+  
+  <type ID="xsd">
+    <label>XML Schema</label>
+    <mime>text/xml</mime>
+    <rules>
+      <extension score="0.9">xsd</extension>
+      <pattern score="0.5" offset="0" format="text">&lt;?xml</pattern>
+    </rules>
+  </type>  
+
+  <type ID="ims">
+    <label>SCORM IMS Manifest</label>
+    <mime>text/xml</mime>
+    <rules>
+      <extension score="0.9">imsmanifest.xml</extension>
+      <pattern score="0.5" offset="0" format="text">&lt;?xml</pattern>
+    </rules>
+  </type>  
+
+  <type ID="js">
+    <label>JavaScript</label>
+    <mime>application/x-javascript</mime>
+    <rules>
+      <extension score="0.9">js</extension>
+    </rules>
+  </type>  
+
 <!--==== Audio Video types =========================================-->
 
   <type ID="qtvid">
     <label>Quicktime Video</label>
-    <url>http://miless.uni-essen.de/plugins/quicktime.html</url>
+    <url>http://www.apple.com/quicktime/download/win.html</url>
     <mime>video/quicktime</mime>
     <rules>
       <extension score="0.7">qt</extension>
@@ -382,6 +409,42 @@
     </rules>
   </type>  
   
+  <type ID="mpeg4">
+    <label>MPEG-4 Video</label>
+    <url>http://www.real.com/player/index.html</url>
+    <mime>video/mp4</mime>
+    <rules>
+      <extension score="1.0">mp4</extension>
+    </rules>
+  </type>  
+
+  <type ID="m4v">
+    <label>MPEG-4 Video</label>
+    <url>http://www.apple.com/de/quicktime/download/win.html</url>
+    <mime>video/x-m4v</mime>
+    <rules>
+      <extension score="1.0">m4v</extension>
+    </rules>
+  </type>  
+
+  <type ID="m4a">
+    <label>MPEG-4 Audio</label>
+    <url>http://www.apple.com/de/quicktime/download/win.html</url>
+    <mime>audio/m4a</mime>
+    <rules>
+      <extension score="1.0">m4a</extension>
+    </rules>
+  </type>  
+
+  <type ID="m4b">
+    <label>MPEG-4 Hörbuch </label>
+    <url>http://www.apple.com/de/quicktime/download/win.html</url>
+    <mime>audio/m4a</mime>
+    <rules>
+      <extension score="1.0">m4b</extension>
+    </rules>
+  </type>  
+
   <type ID="avi">
     <label>Windows AVI Video</label>
     <url>ftp://ftp.software.ibm.com/ps/products/videocharger/player/v7.1/english/iscinst.msi</url>
@@ -392,8 +455,8 @@
   </type>  
   
   <type ID="wmv">
-    <label>Windows Media Video</label>
-    <url>http://www.microsoft.com/windows/windowsmedia/download/</url>
+    <label>WMV Video</label>
+    <url>http://www.microsoft.com/windows/windowsmedia/default.aspx</url>
     <mime>video/x-ms-wmv</mime>
     <rules>
       <extension score="1.0">wmv</extension>
@@ -420,8 +483,8 @@
   </type>
 
   <type ID="mpegvid">
-    <label>MPEG1 Video</label>
-    <url>ftp://ftp.software.ibm.com/ps/products/videocharger/player/v7.1/english/iscinst.msi</url>
+    <label>MPEG-1 Video</label>
+    <url>http://www.microsoft.com/windows/windowsmedia/default.aspx</url>
     <mime>video/mpeg</mime>
     <rules>
       <extension score="0.9">mpg</extension>
@@ -430,8 +493,8 @@
   </type>  
 
   <type ID="mpegaud"> 
-    <label>MPEG1 Audio</label>
-    <url>ftp://ftp.software.ibm.com/ps/products/videocharger/player/v7.1/english/iscinst.msi</url>
+    <label>MPEG-1 Audio</label>
+    <url>http://www.microsoft.com/windows/windowsmedia/default.aspx</url>
     <mime>audio/x-mpeg</mime>
     <rules>
       <extension score="0.9">mpa</extension>
@@ -442,10 +505,11 @@
   </type>  
 
   <type ID="mpegvid2">
-    <label>MPEG2 Video</label>
-    <url>ftp://ftp.software.ibm.com/ps/products/videocharger/player/v7.1/english/iscinst.msi</url>
+    <label>MPEG-2 Video</label>
+    <url>http://www.microsoft.com/windows/windowsmedia/default.aspx</url>
     <mime>video/mpeg</mime>
     <rules>
+      <extension score="1.0">m2p</extension>
       <extension score="0.8">mpg</extension>
       <extension score="0.8">mpeg</extension>
     </rules>
@@ -469,6 +533,15 @@
     </rules>
   </type>  
 
+  <type ID="aiff">
+    <label>AIFF Audio</label>
+    <mime>audio/x-aiff</mime>
+    <rules>
+      <extension score="1.0">aiff</extension>
+      <extension score="0.9">aif</extension>
+    </rules>
+  </type>  
+
   <type ID="realaud">
     <label>Real Audio</label>
     <url>http://www.real.com/player/index.html</url>
@@ -487,6 +560,7 @@
     <mime>audio/x-pn-realaudio</mime>
     <rules>
       <extension score="0.9">rm</extension>
+      <extension score="1.0">rmvb</extension>
       <extension score="0.7">ram</extension>
       <pattern score="0.9" offset="0" format="text">.RMF</pattern>
     </rules>
@@ -504,6 +578,15 @@
     </rules>
   </type>  
   
+  <type ID="3gp">
+    <label>3GP Video</label>
+    <mime>video/3gpp</mime>
+    <rules>
+      <extension score="1.0">3gp</extension>
+      <extension score="1.0">3g2</extension>
+    </rules>
+  </type>  
+
   <type ID="flv">
     <label>Flash Video</label>
     <url>http://de.wikipedia.org/wiki/Flash_Video</url>

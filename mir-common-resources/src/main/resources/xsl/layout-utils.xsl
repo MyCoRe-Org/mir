@@ -8,10 +8,8 @@
   <xsl:param name="HttpSession" />
   <xsl:param name="JSessionID" />
   <xsl:param name="CurrentUser" />
-  <!-- TODO: remove $wcms.useTargets,$objectHost, $template, printMetaDate, derivateLink and maybe others -->
+  <!-- TODO: remove $objectHost, printMetaDate, derivateLink and maybe others -->
   <xsl:param name="objectHost" select="'local'" />
-  <xsl:param name="wcms.useTargets" />
-  <xsl:param name="template" select="template_mir" />
   <xsl:include href="coreFunctions.xsl" />
   <xsl:include href="xslInclude:components" />
   <!-- website write protected ? -->
@@ -33,7 +31,7 @@
       </div>
     </xsl:if>
   </xsl:template>
- 
+
   <xsl:variable name="direction">
     <xsl:choose>
       <xsl:when test="$CurrentLang = 'ar'">
@@ -104,7 +102,7 @@
       <xsl:when test="$mcrobj">
         <xsl:choose>
           <xsl:when test="$objectHost != 'local' and string-length($objectHost) &gt; 0">
-            <!-- 
+            <!--
             REMOTE REQUEST
             -->
             <xsl:variable name="mcrobj"
@@ -140,7 +138,7 @@
         <!-- handle old way which may cause a double parsing of mcrobject: -->
         <xsl:choose>
           <xsl:when test="$objectHost != 'local' and string-length($objectHost) &gt; 0">
-            <!-- 
+            <!--
             REMOTE REQUEST
             -->
             <xsl:variable name="mcrobj"
@@ -150,7 +148,7 @@
             </a>
           </xsl:when>
           <xsl:otherwise>
-            <!-- 
+            <!--
             LOCAL REQUEST
             -->
             <xsl:variable name="mcrobj" select="document(concat('mcrobject:',$obj_id))/mycoreobject" />
