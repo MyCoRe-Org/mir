@@ -1,86 +1,11 @@
 .mir-prop-nav {
-    top: 0;
-    z-index: 2030;
-    background-color: white;
-    border-radius: 0px;
-    border: none;
-    margin: 0;
-    padding: 0;
-    min-height: auto;
+  min-height: auto;
 
-    // navigation container
-    nav
-    {
-        padding-left: 0px;                          // align to left
-        padding-right: 0px;                          // align to right
+  // Dropdown menu items and carets
+  .navbar-nav {
+    // menu entry
+    > li > a {
+      padding: 5px 15px;
     }
-
-    // Dropdown menu items and carets
-    .navbar-nav {
-        // menu entry
-        > li > a
-        {
-            color: #aaa;
-            font-size:85%;
-            padding: 5px 15px;
-            // caret
-            .caret {
-                border-top-color: #aaa !important;
-            }
-            // menu entry - hover and focus
-            &:hover,
-            &:focus
-            {
-                color: @link-color;
-                background-color: white;
-            }
-        }
-        // active entry
-        > li.active > a {
-            // current menu entry - hover and focus
-            &:hover,
-            &:focus
-            {
-                color: @link-color;
-            }
-        }
-        // Remove background color from open dropdown
-        > .open > a {
-            &,
-            &:hover,
-            &:focus {
-                color: @link-color;
-                background-color: white;
-                .caret {
-                    border-top-color: #aaa !important;
-                }
-            }
-        }
-    }
-
-    // The dropdown menu (ul)
-    .dropdown-menu {
-        background-color: white;
-        border-radius: 4px !important;
-        margin-top: 4px !important;
-        // Links within the dropdown menu
-        > li > a {
-            color: #aaa;
-            // Hover/Focus state
-            &:hover,
-            &:focus {
-                color: @link-color;
-                background-color: white;
-            }
-        }
-        // Active state
-        > .active > a {
-            &,
-            &:hover,
-            &:focus {
-                color: @link-color;
-                background-color: white;
-            }
-        }
-    }
+  }
 }
