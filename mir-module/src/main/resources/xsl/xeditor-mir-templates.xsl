@@ -16,15 +16,19 @@
     <xsl:apply-templates select="." mode="label" />
     <div>
       <xsl:attribute name="class">
-        <xsl:if test="@tooltip">
-          <xsl:value-of select="'input-group '" />
-        </xsl:if>
         <xsl:value-of select="concat('col-md-',$input-width)" />
       </xsl:attribute>
-      <xed:bind xpath="{@xpath}">
-        <xsl:apply-templates select="." mode="widget" />
-        <xsl:apply-templates select="." mode="inputTooltip" />
-      </xed:bind>
+      <div>
+        <xsl:attribute name="class">
+          <xsl:if test="@tooltip">
+            <xsl:value-of select="'input-group '" />
+          </xsl:if>
+        </xsl:attribute>
+        <xed:bind xpath="{@xpath}">
+          <xsl:apply-templates select="." mode="widget" />
+          <xsl:apply-templates select="." mode="inputTooltip" />
+        </xed:bind>
+      </div>
     </div>
   </xsl:template>
   <xsl:template match="mir:template[@name='submitButton']" mode="formline">
