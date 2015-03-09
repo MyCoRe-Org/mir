@@ -282,7 +282,7 @@
           data-search-output="#valueURIxEditor"
           data-search-button="{i18n:button.search}"
           data-search-button-loading="{i18n:button.loading}"
-          data-search-result-empty="{i18n:mir.searchPerson.noResult}"
+          data-search-result-empty="{i18n:mir.searchIdentifier.noResult}"
           data-target=".search-person"
           placeholder="{i18n:mir.placeholder.name.family}, {i18n:mir.placeholder.name.given}"
         />
@@ -624,6 +624,35 @@
               <xed:include uri="xslStyle:items2options:classification:editor:-1:children:mir_institutes" />
             </select>
           </xed:bind>
+        </xed:bind>
+      </div>
+    </div>
+  </xed:template>
+
+  <xed:template id="editor.organization">
+    <div class="form-group">
+      <label class="col-md-3 control-label">
+        <xed:output i18n="mir.editorOrganization" />:
+      </label>
+      <div class="col-md-6">
+        <xed:bind xpath="mods:name[@type='corporate'][mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']='edt']"><!--  Editor [edt] -->
+          <div class="search-organization">
+            <xed:bind xpath="mods:displayForm">
+              <input type="text" size="26" class="form-control form-control-inline"
+                data-search="searchOrganization"
+                data-search-type="select"
+                data-search-output="#valueURIxEditor"
+                data-search-button="{i18n:button.search}"
+                data-search-button-loading="{i18n:button.loading}"
+                data-search-result-empty="{i18n:mir.searchIdentifier.noResult}"
+                data-target=".search-organization"
+                placeholder="{i18n:mir.placeholder.name.organization}"
+              />
+            </xed:bind>
+            <xed:bind xpath="@valueURIxEditor">
+              <input type="hidden" id="valueURIxEditor" />
+            </xed:bind>
+          </div>
         </xed:bind>
       </div>
     </div>
