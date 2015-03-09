@@ -7,6 +7,7 @@
   version="1.0" xmlns:ex="http://exslt.org/dates-and-times" extension-element-prefixes="ex">
 
   <xsl:param name="MIR.registerDOI" select="''" />
+  <xsl:param name="template" select="'fixme'" />
 
   <!-- do nothing for display parent -->
   <xsl:template match="/mycoreobject" mode="parent" priority="1">
@@ -371,26 +372,16 @@
       </xsl:if>
     </xsl:variable>
     <xsl:variable name="editURL">
-      <xsl:choose>
-        <xsl:when test="not($accessedit)"></xsl:when><!-- workaround NPE -->
-        <xsl:otherwise>
-          <xsl:call-template name="mods.getObjectEditURL">
-            <xsl:with-param name="id" select="$id" />
-            <xsl:with-param name="layout" select="$layout" />
-          </xsl:call-template>
-        </xsl:otherwise>
-      </xsl:choose>
+      <xsl:call-template name="mods.getObjectEditURL">
+        <xsl:with-param name="id" select="$id" />
+        <xsl:with-param name="layout" select="$layout" />
+      </xsl:call-template>
     </xsl:variable>
     <xsl:variable name="editURL_allMods">
-      <xsl:choose>
-        <xsl:when test="not($accessedit)"></xsl:when><!-- workaround NPE -->
-        <xsl:otherwise>
-          <xsl:call-template name="mods.getObjectEditURL">
-            <xsl:with-param name="id" select="$id" />
-            <xsl:with-param name="layout" select="'all'" />
-          </xsl:call-template>
-        </xsl:otherwise>
-      </xsl:choose>
+      <xsl:call-template name="mods.getObjectEditURL">
+        <xsl:with-param name="id" select="$id" />
+        <xsl:with-param name="layout" select="'all'" />
+      </xsl:call-template>
     </xsl:variable>
     <xsl:variable name="basketType" select="'objects'" />
     <xsl:if test="$accessedit or $accessdelete or not(basket:contains($basketType, /mycoreobject/@ID))">
