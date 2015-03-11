@@ -1,0 +1,29 @@
+/**
+ * 
+ */
+package org.mycore.mir.it.admin;
+
+import static org.junit.Assert.*;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.mycore.mir.it.MIRBaseITCase;
+import org.mycore.mir.it.helper.MIRUserHelper;
+
+/**
+ * @author Thomas Scheffler (yagee)
+ */
+public class MIRUserITCase extends MIRBaseITCase {
+
+    @Test
+    public final void testCreateUser() {
+        goToStart();
+        loginAs(ADMIN_LOGIN, ADMIN_PASSWD);
+        MIRUserHelper.createUser(getDriver(), "submitter", "submitter123", "submitter");
+        MIRUserHelper.createUser(getDriver(), "allGroups", "password123", "reader", "submitter", "editor", "admin");
+        MIRUserHelper.deleteUser(getDriver(), "submitter");
+        MIRUserHelper.deleteUser(getDriver(), "allGroups");
+        logOff();
+    }
+
+}

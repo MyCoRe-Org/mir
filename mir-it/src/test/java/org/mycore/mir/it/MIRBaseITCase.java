@@ -53,11 +53,14 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
 /**
- * @author Thomas Scheffler (yagee)
- * Before doing integration test <a href="https://code.google.com/p/selenium/issues/detail?id=6950">selenium issue #6950</a>
- * has to be fixed.
+ * @author Thomas Scheffler (yagee) Before doing integration test <a
+ *         href="https://code.google.com/p/selenium/issues/detail?id=6950">selenium issue #6950</a> has to be fixed.
  */
 public class MIRBaseITCase {
+
+    protected static final String ADMIN_PASSWD = "alleswirdgut";
+
+    protected static final String ADMIN_LOGIN = "administrator";
 
     private static final Logger LOGGER = Logger.getLogger(MIRBaseITCase.class);
 
@@ -138,6 +141,10 @@ public class MIRBaseITCase {
         driver = new FirefoxDriver();
     }
 
+    protected static WebDriver getDriver() {
+        return driver;
+    }
+
     @Before
     public void setup() {
     }
@@ -162,7 +169,7 @@ public class MIRBaseITCase {
     @Test
     public void logOnLogOff() {
         goToStart();
-        loginAs("administrator", "alleswirdgut");
+        loginAs(ADMIN_LOGIN, ADMIN_PASSWD);
         logOff();
     }
 
@@ -193,7 +200,9 @@ public class MIRBaseITCase {
 
     @AfterClass
     public static void tearDownClass() {
-        driver.quit();
+        if (driver != null) {
+            driver.quit();
+        }
     }
 
     protected boolean isElementPresent(By by) {
