@@ -579,7 +579,7 @@
                  <xsl:if test="not(acl:checkPermission($deriv,'deletedb'))">
                    <xsl:attribute name="class">last</xsl:attribute>
                  </xsl:if>
-                 <a href="{$ServletsBaseURL}MCRAddURNToObjectServlet{$HttpSession}?object={$deriv}" onclick="{concat('return confirm(',$apos, i18n:translate('component.mods.metaData.options.urn.confirm'), $apos, ');')}"
+                 <a href="{$ServletsBaseURL}MCRAddURNToObjectServlet{$HttpSession}?object={$deriv}&amp;target=derivate" onclick="{concat('return confirm(',$apos, i18n:translate('component.mods.metaData.options.urn.confirm'), $apos, ');')}"
                     class="option">
                    <xsl:value-of select="i18n:translate('component.mods.metaData.options.urn')" />
                  </a>
