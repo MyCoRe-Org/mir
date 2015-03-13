@@ -1,0 +1,172 @@
+/* TODO: lessify! */
+
+#uploadContainer {
+  display: none;
+  margin: 0 auto;
+  border: 1px solid #CCC;
+  padding: 1em;
+  border-radius: 10px;
+  box-shadow: 0 0 4px 4px #eee;
+  background-image: linear-gradient(bottom, rgb(209, 209, 209) 0%, rgb(232, 232, 232) 18%, rgb(250, 250, 250) 85% );
+  background-image: -o-linear-gradient(bottom, rgb(209, 209, 209) 0%, rgb(232, 232, 232) 18%, rgb(250, 250, 250) 85% );
+  background-image: -moz-linear-gradient(bottom, rgb(209, 209, 209) 0%, rgb(232, 232, 232) 18%, rgb(250, 250, 250) 85% );
+  background-image: -webkit-linear-gradient(bottom, rgb(209, 209, 209) 0%, rgb(232, 232, 232) 18%, rgb(250, 250, 250) 85% );
+  background-image: -ms-linear-gradient(bottom, rgb(209, 209, 209) 0%, rgb(232, 232, 232) 18%, rgb(250, 250, 250) 85% );
+  filter:progid:DXImageTransform.Microsoft.Gradient(GradientType=0, StartColorStr='#FFD1D1D1', EndColorStr='#FFFAFAFA');
+}
+
+#dropbox {
+  border: 3px dashed #304090;
+  height: 15em;
+  position: relative;
+  cursor: default;
+}
+
+#dropbox.highlight {
+  border: 3px dashed green;
+}
+
+#dropbox.highlight h2 {
+  color: green;
+}
+
+#files {
+  height: 15em;
+  overflow-y: auto;
+}
+
+div#dropbox h2 {
+  
+  position:absolute;
+  bottom: 0.25em;
+  right: 0.25em;
+  margin-bottom: 0;
+}
+
+#uploadContainer input[type='file'] {
+  padding: 5px 0;
+}
+
+div.row {
+  margin-bottom: 10px;
+}
+
+#uploadContainer div.label {
+  font-style: italic;
+  color: grey;
+}
+
+.floatLeft {
+  float: left;
+}
+
+.floatRight {
+  float: right;
+}
+
+.clear {
+  clear: both;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+#uploadContainer *:focus {
+  outline: none;
+}
+
+#uploadContainer input:focus {
+  -webkit-box-shadow: 0 0 10px #ccc;
+  -moz-box-shadow: 0 0 10px #ccc;
+  box-shadow: 0 0 5px #ccc;
+  -webkit-transform: scale(1.05);
+  -moz-transform: scale(1.05);
+  transform: scale(1.05);
+}
+
+#fileInfo {
+  font-style: italic;
+  color: #aaa;
+  margin-top: 10px;
+}
+
+#progressBar {
+  height: 14px;
+  border: 1px solid #cccccc;
+  display: none;
+  max-width: 85%;
+  border-radius: 10px;
+  -moz-border-radius: 10px;
+  
+  background-image: linear-gradient(left, rgb(0,114,156), rgb(1,70,139));
+  background-image: -o-linear-gradient(left, rgb(0,114,156), rgb(1,70,139));
+  background-image: -moz-linear-gradient(left, rgb(0,114,156), rgb(1,70,139) );
+  background-image: -webkit-linear-gradient(left, rgb(0,114,156), rgb(1,70,139) );
+  background-image: -ms-linear-gradient(left, rgb(0,114,156), rgb(1,70,139));
+  
+  background-image: -webkit-gradient(
+    linear,
+    left bottom,
+    right bottom,
+    color-stop(0, rgb(0,114,156)),
+    color-stop(0.5, rgb(1,70,139))
+  );
+  filter:progid:DXImageTransform.Microsoft.Gradient(GradientType=0, StartColorStr='#FF00729C', EndColorStr='#FF01468B');
+}
+
+#uploadResponse {
+  margin-top: 10px;
+  padding: 1em;
+  overflow: hidden;
+  display: none;
+  border-radius: 10px;
+  -moz-border-radius: 10px;
+  border: 1px solid #ccc;
+  position: relative;
+  box-shadow: 0 0 5px #ccc;
+  background-image: -moz-linear-gradient(top, #EFE4BF, #D9CFAD);
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#EFE4BF), to(#D9CFAD) );
+  overflow: auto; 
+}
+
+.fileContainer {
+  border-radius: 4px;
+  margin-left: 10px;
+  margin-top: 5px;
+  border: 1px solid gray;
+  width: auto;
+  padding: 5px;
+  display: inline-block;
+  background-image: linear-gradient(top, #FFF3CC, #E6DBB7);
+  background-image: -moz-linear-gradient(top, #FFF3CC, #E6DBB7);
+  background-image: -webkit-gradient(linear, left top, left bottom, from( #FFF3CC), to( #E6DBB7) );
+}
+
+.fileContainer > * {
+  vertical-align: middle;
+}
+
+#files .fileContainer:last-child {
+  margin-bottom: 5px;
+}
+
+.fileContainer .filename {
+  border-right: 1px solid gray;
+  padding: 0 0.4em;
+}
+
+.fileContainer button.removeFile {
+  background-image: url('../../images/fileupload/remove.png');
+  padding: 0;
+  height: 16px;
+  width: 16px;
+  border: 0;
+  background-color: transparent;
+}
+
+.fileContainer button.removeFile:hover,
+.fileContainer button.removeFile:focus {
+  background-image: url('../../images/fileupload/remove_highlight.png');
+}
+

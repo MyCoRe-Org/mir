@@ -1,96 +1,120 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 
-<!-- ============================================== -->
-<!-- $Revision: 1.9 $ $Date: 2007-10-15 09:58:16 $ -->
-<!-- ============================================== --> 
-
 <xsl:stylesheet 
   version="1.0" 
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  xmlns:xalan="http://xml.apache.org/xalan"
+  xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
+  exclude-result-prefixes="xsl xalan i18n"
 >
 
-<xsl:param name="UploadID"/>
-<xsl:param name="MCR.UploadApplet.BackgroundColor" select="'#CAD9E0'"/>
-<xsl:param name="selectMultiple" select="'true'" />
+<xsl:param name="UploadID" />
+<xsl:param name="selectMultiple" select="'true'" /> 
 <xsl:param name="acceptFileTypes" select="'*'" />
+<xsl:param name="MCR.UploadApplet.BackgroundColor" select="'#CAD9E0'"/>
 
-<!-- - - - - variables for starting applet - - - - -->
+<!-- tag to embed applet in Internet Explorer -->
+<xsl:variable name="applet.object.tag">
+  <object class="appletUpload" classid="clsid:8AD9C840-044E-11D1-B3E9-00805F499D93" width="380" height="130">
+    <param name="uploadId" value="{$UploadID}" />
+    <param name="codebase" value="{$WebApplicationBaseURL}applet" />
+    <param name="code" value="org.mycore.fileupload.MCRUploadApplet.class" />
+    <param name="cache_option" value="Plugin" />
+    <param name="cache_archive" value="upload.jar" />
+    <param name="progressbar" value="true" />
+    <param name="progresscolor" value="blue" />
+    <param name="background-color" value="{$MCR.UploadApplet.BackgroundColor}" />
+    <param name="url" value="{$WebApplicationBaseURL}servlets/MCRUploadServlet{$HttpSession}?method=redirecturl&amp;uploadId={$UploadID}" />
+    <param name="ServletsBase" value="{$ServletsBaseURL}" />
+    <param name="selectMultiple" value="{$selectMultiple}" />
+    <param name="acceptFileTypes" value="{$acceptFileTypes}" />
+    <noembed>
+      <xsl:value-of select="i18n:translate('fileUpload.noPlugIn')" />
+    </noembed>
+  </object>
+</xsl:variable>
 
-<xsl:variable name="applet.mime"              select="'application/x-java-applet;version=1.7'" />
-<xsl:variable name="applet.codebase"          select="concat($WebApplicationBaseURL,'applet')" />
-<xsl:variable name="applet.class"             select="'org.mycore.fileupload.MCRUploadApplet.class'" />
-<xsl:variable name="applet.archives"          select="'upload.jar'" />
-<xsl:variable name="applet.cache"             select="'Plugin'" />
-<xsl:variable name="applet.width"             select="'380'" />
-<xsl:variable name="applet.height"            select="'130'" />
-<xsl:variable name="applet.nojava"            select="'In Ihrem Browser ist nicht das erforderliche Java-Plug-in installiert.'" />
-<xsl:variable name="applet.netscape.plugin"   select="concat($WebApplicationBaseURL,'authoring/einrichten.xml')" />
-<xsl:variable name="applet.microsoft.classid" select="'clsid:8AD9C840-044E-11D1-B3E9-00805F499D93'" />
-<xsl:variable name="applet.microsoft.plugin"  select="concat($WebApplicationBaseURL,'plugins/download/j2re-1_4_0_01-windows-i586-i.exe')" />
-<xsl:variable name="applet.progressbar"       select="'true'" />
-<xsl:variable name="applet.progresscolor"     select="'blue'" />
-<xsl:variable name="applet.background-color"  select="$MCR.UploadApplet.BackgroundColor" />
-
-<!-- IE and NE as one tag see http://java.sun.com/products/plugin/1.2/docs/tags.html -->
+<!-- tag to embed applet in both Internet Explorer and Mozilla family of browsers -->
+<!-- copy the object tag and generate the embed tag from the object tag -->
+<xsl:variable name="applet.tag">
+  <xsl:for-each select="xalan:nodeset($applet.object.tag)/object">
+    <xsl:copy>
+      <xsl:copy-of select="@*|*" />
+      <comment>
+        <embed type="application/x-java-applet;version=1.7" pluginspage="http://java.com/download/" archive="upload.jar">
+          <xsl:for-each select="param">
+            <xsl:attribute name="{@name}">
+              <xsl:value-of select="@value" />
+            </xsl:attribute>
+          </xsl:for-each>
+          <xsl:copy-of select="@width|@height|noembed" />
+        </embed>
+      </comment>    
+    </xsl:copy>
+  </xsl:for-each>
+</xsl:variable>
 
 <xsl:template match="fileupload">
-  <xsl:variable name="url">  <!-- when applet ends this is shown --> 
-    <xsl:value-of select="concat($WebApplicationBaseURL,'servlets/MCRUploadServlet',$HttpSession,'?method=redirecturl&amp;uploadId=',$UploadID)"/>
-  </xsl:variable>
-  <xsl:variable name="httpSession">  <!-- httpSession ID --> 
-    <xsl:value-of select="substring-after($JSessionID,'=')"/>
-  </xsl:variable>
-
-  <object 
-    classid  = "{$applet.microsoft.classid}"
-    codebase = "{$applet.microsoft.plugin}"
-    width    = "{$applet.width}" 
-    height   = "{$applet.height}" >
-    <param name="uploadId" value="{$UploadID}"/>
-
-    <param name="codebase"         value="{$applet.codebase}" />
-    <param name="code"             value="{$applet.class}"    />
-    <param name="cache_option"     value="{$applet.cache}"    />
-    <param name="cache_archive"    value="{$applet.archives}" />
-    <param name="progressbar"      value="{$applet.progressbar}" />
-    <param name="progresscolor"    value="{$applet.progresscolor}" />
-    <param name="background-color" value="{$applet.background-color}" />
-    <param name="url"              value="{$url}" />
-    <param name="httpSession"      value="{$httpSession}" />
-    <param name="ServletsBase"     value="{$ServletsBaseURL}" />
-    <param name="selectMultiple"   value="{$selectMultiple}" />
-    <param name="acceptFileTypes"  value="{$acceptFileTypes}" />
-    <param name="locale"           value="{$CurrentLang}" />
-        
-    <noembed> <xsl:value-of select="$applet.nojava" /> </noembed>
-
-    <comment> <!-- for netscape -->
-      <xsl:element name="embed">
-        <xsl:attribute name="type">             <xsl:value-of select="$applet.mime"/>            </xsl:attribute> 
-        <xsl:attribute name="codebase">         <xsl:value-of select="$applet.codebase"/>        </xsl:attribute> 
-        <xsl:attribute name="code">             <xsl:value-of select="$applet.class"/>           </xsl:attribute> 
-        <xsl:attribute name="archive">          <xsl:value-of select="$applet.archives"/>        </xsl:attribute> 
-        <xsl:attribute name="cache_option">     <xsl:value-of select="$applet.cache"/>           </xsl:attribute> 
-        <xsl:attribute name="cache_archive">    <xsl:value-of select="$applet.archives"/>        </xsl:attribute> 
-        <xsl:attribute name="width">            <xsl:value-of select="$applet.width"/>           </xsl:attribute> 
-        <xsl:attribute name="height">           <xsl:value-of select="$applet.height"/>          </xsl:attribute> 
-        <xsl:attribute name="pluginspage">      <xsl:value-of select="$applet.netscape.plugin"/> </xsl:attribute> 
-        <xsl:attribute name="progressbar">      <xsl:value-of select="$applet.progressbar"/>     </xsl:attribute>
-        <xsl:attribute name="progresscolor">    <xsl:value-of select="$applet.progresscolor"/>   </xsl:attribute>
-        <xsl:attribute name="background-color"> <xsl:value-of select="$applet.background-color"/></xsl:attribute>
-        <xsl:attribute name="uploadId">         <xsl:value-of select="$UploadID"/>               </xsl:attribute> 
-        <xsl:attribute name="url">              <xsl:value-of select="$url"/>                    </xsl:attribute>
-        <xsl:attribute name="httpSession">      <xsl:value-of select="$httpSession"/>            </xsl:attribute>
-        <xsl:attribute name="ServletsBase">     <xsl:value-of select="$ServletsBaseURL"/>        </xsl:attribute>
-        <xsl:attribute name="selectMultiple">   <xsl:value-of select="$selectMultiple"/>         </xsl:attribute>
-        <xsl:attribute name="acceptFileTypes">  <xsl:value-of select="$acceptFileTypes"/>        </xsl:attribute>
-        <xsl:attribute name="locale">           <xsl:value-of select="$CurrentLang"/>            </xsl:attribute>
-        
-        <noembed> <xsl:value-of select="$applet.nojava" /> </noembed>
-       </xsl:element>
-    </comment>
-
-  </object>
+  <xsl:variable name="formUploadUrl" select="concat($WebApplicationBaseURL,'servlets/MCRUploadServlet',$HttpSession,'?method=formBasedUpload&amp;uploadId=',$UploadID)" />
+  
+  <div id="uploadContainer">
+    <form id="uploadForm" action="{$formUploadUrl}" enctype="multipart/form-data" method="post">
+      <div class="row">
+        <label for="fileUpload"><xsl:value-of select="i18n:translate('fileUpload.dropAdvice')"/></label>
+        <br />
+        <input type="file" id="fileToUpload" name="file" onchange="fileSelected();" />
+        <div id="dropbox">
+          <div id="files"></div>
+          <h2 id="dropAdvice"><xsl:value-of select="i18n:translate('fileUpload.dropHint')"/></h2>
+        </div>
+      </div>
+      <div class="row">
+        <div id="fileSize" class="label"></div>
+      </div>
+      <div class="row" id="buttons">
+        <a onclick="uploadFile();" class="action toggable" id="uploadBtn"><xsl:value-of select="i18n:translate('fileUpload.submit')"/></a>
+        <a onclick="cancelUpload();" class="action toggable" id="cancelBtn"><xsl:value-of select="i18n:translate('fileUpload.cancel')"/></a>
+        <a onclick="clearFiles();" class="action toggable" id="clearBtn"><xsl:value-of select="i18n:translate('fileUpload.clear')"/></a>
+        <a onclick="window.location.replace(document.referrer);" class="action toggable" id="backBtn"><xsl:value-of select="i18n:translate('fileUpload.back')"/></a>
+      </div>
+    </form>
+    <div id="progressIndicator">
+      <div id="progressBar" class="floatLeft"></div>
+      <div id="progressNumber" class="floatRight"> </div>
+      <div class="clear"></div>
+      <div>
+        <div id="transferSpeedInfo" class="floatLeft" style="width: 80px;"> </div>
+        <div id="timeRemainingInfo" class="floatLeft" style="margin-left: 10px;"> </div>
+        <div id="transferBytesInfo" class="floatRight" style="text-align: right;"> </div>
+        <div class="clear"></div>
+      </div>
+      <div id="uploadResponse">
+        <div id="uploadDone">
+          <p style="font-weight: bold;"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- show applet if needed, modernizr to detect drag-and-drop capability -->
+  <script src="{$WebApplicationBaseURL}mir-layout/js/fileupload/modernizr.js" type="text/javascript" />
+  <script type="text/javascript">
+    if (!window.FileReader || !Modernizr.draganddrop) {
+      document.write('<xsl:copy-of select="translate($applet.tag,'&#10;',' ')"/>');
+    } 
+  </script>
+  <noscript>
+    <xsl:copy-of select="$applet.tag"/>
+  </noscript>
+  
+  <!-- Pre-define some variables used in the file upload javascript -->
+  <script type="text/javascript">
+    var formUploadUrl = '<xsl:value-of select="$formUploadUrl" />';
+    var msgUploadSuccessful = '<xsl:value-of select="i18n:translate('fileUpload.success')"/>';
+    var msgUploadFailed = '<xsl:value-of select="i18n:translate('fileUpload.failure')"/>';
+  </script>
+  <script src="{$WebApplicationBaseURL}mir-layout/js/fileupload/fileupload.js" type="text/javascript" />
 </xsl:template>
 
 </xsl:stylesheet>
+
