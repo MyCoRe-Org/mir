@@ -38,7 +38,6 @@ import org.mycore.frontend.servlets.MCRServletJob;
 
 /**
  * @author René Adler
- *
  */
 public class MIRWizardServlet extends MCRServlet {
 
@@ -61,7 +60,7 @@ public class MIRWizardServlet extends MCRServlet {
             } else {
                 LOGGER.info("Request file \"" + request + "\"...");
                 getLayoutService().doLayout(job.getRequest(), job.getResponse(),
-                        new MCRJDOMContent(MCRURIResolver.instance().resolve("resource:setup/" + request)));
+                    new MCRJDOMContent(MCRURIResolver.instance().resolve("resource:setup/" + request)));
             }
         } else {
             final Document doc = (Document) (job.getRequest().getAttribute("MCRXEditorSubmission"));
@@ -101,8 +100,8 @@ public class MIRWizardServlet extends MCRServlet {
                         chain.addCommand(cmd);
                     }
                 } catch (final ClassNotFoundException | NoSuchMethodException | SecurityException
-                        | InstantiationException | IllegalAccessException | IllegalArgumentException
-                        | InvocationTargetException e) {
+                    | InstantiationException | IllegalAccessException | IllegalArgumentException
+                    | InvocationTargetException e) {
                     LOGGER.error(e);
                 }
             }
@@ -119,7 +118,18 @@ public class MIRWizardServlet extends MCRServlet {
 
             resXML.addContent(results);
 
+            initializeApplication(job);
+
             getLayoutService().doLayout(job.getRequest(), job.getResponse(), new MCRJDOMContent(resXML));
+        }
+    }
+
+    private void initializeApplication(MCRServletJob job) {
+        String accessSystem = (String) job.getRequest().getServletContext()
+            .getAttribute(MIRWizardStartupHandler.ACCESS_CLASS);
+        if (accessSystem != null) {
+            LOGGER.info("Restoring access control system: " + accessSystem);
+            MCRConfiguration.instance().set(MIRWizardStartupHandler.ACCESS_CLASS, accessSystem);
         }
     }
 }
