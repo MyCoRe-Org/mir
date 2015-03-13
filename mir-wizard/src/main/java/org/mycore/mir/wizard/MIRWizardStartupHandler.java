@@ -32,10 +32,12 @@ import javax.servlet.ServletRegistration;
 
 import org.apache.log4j.Logger;
 import org.mycore.access.MCRAccessBaseImpl;
+import org.mycore.access.strategies.MCRObjectIDStrategy;
 import org.mycore.common.config.MCRConfiguration;
 import org.mycore.common.config.MCRConfigurationDir;
 import org.mycore.common.events.MCRShutdownHandler;
 import org.mycore.common.events.MCRStartupHandler;
+import org.mycore.datamodel.metadata.MCRObjectID;
 
 /**
  * Default {@link MCRStartupHandler} for MIR Wizard.
@@ -45,6 +47,8 @@ import org.mycore.common.events.MCRStartupHandler;
 public class MIRWizardStartupHandler implements MCRStartupHandler.AutoExecutable, MCRShutdownHandler.Closeable {
 
     static final String ACCESS_CLASS = "MCR.Access.Class";
+
+    static final String ACCESS_STRATEGY_CLASS = "MCR.Access.Strategy.Class";
 
     private static final Logger LOGGER = Logger.getLogger(MIRWizardStartupHandler.class);
 
@@ -123,7 +127,9 @@ public class MIRWizardStartupHandler implements MCRStartupHandler.AutoExecutable
             //disable ACL system
             //store for later use...
             servletContext.setAttribute(ACCESS_CLASS, config.getString(ACCESS_CLASS, null));
+            servletContext.setAttribute(ACCESS_STRATEGY_CLASS, config.getString(ACCESS_STRATEGY_CLASS, null));
             config.set(ACCESS_CLASS, MCRAccessBaseImpl.class.getName());
+            config.set(ACCESS_STRATEGY_CLASS, MCRObjectIDStrategy.class.getName());
         }
     }
 

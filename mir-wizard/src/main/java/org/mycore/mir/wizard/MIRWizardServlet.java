@@ -125,11 +125,16 @@ public class MIRWizardServlet extends MCRServlet {
     }
 
     private void initializeApplication(MCRServletJob job) {
-        String accessSystem = (String) job.getRequest().getServletContext()
-            .getAttribute(MIRWizardStartupHandler.ACCESS_CLASS);
-        if (accessSystem != null) {
-            LOGGER.info("Restoring access control system: " + accessSystem);
-            MCRConfiguration.instance().set(MIRWizardStartupHandler.ACCESS_CLASS, accessSystem);
+        restoreProperty(job, MIRWizardStartupHandler.ACCESS_CLASS);
+        restoreProperty(job, MIRWizardStartupHandler.ACCESS_STRATEGY_CLASS);
+    }
+
+    private void restoreProperty(MCRServletJob job, String property) {
+        String value = (String) job.getRequest().getServletContext()
+            .getAttribute(property);
+        if (value != null) {
+            LOGGER.info("Restoring " + property + "=" + value);
+            MCRConfiguration.instance().set(property, value);
         }
     }
 }
