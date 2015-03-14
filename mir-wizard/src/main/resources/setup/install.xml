@@ -7,6 +7,6 @@
   <command class="org.mycore.mir.wizard.command.MIRWizardInitHibernate" />
   <command class="org.mycore.mir.wizard.command.MIRWizardLoadClassifications" />
   <command class="org.mycore.mir.wizard.command.MIRWizardInitSuperuser" />
-  <command class="org.mycore.mir.wizard.command.MIRWizardMCRCommand" name="import.acls" src="resource:setup/acl/defaultrules-command.xml" />
-  <command class="org.mycore.mir.wizard.command.MIRWizardMCRCommand" name="import.webacls" src="resource:setup/acl/webacl-command.xml" />
+  <command class="org.mycore.mir.wizard.command.MIRWizardMCRCommand" name="import.acls" src="resource:setup/defaultrules-wizard-commands.xml" />
+  <command class="org.mycore.mir.wizard.command.MIRWizardMCRCommand" name="import.webacls" src="resource:setup/webacl-wizard-commands.xml" />
 </install>

@@ -3,6 +3,7 @@ update permission read for id webpage:/content/main/search/complex.xed with rule
 update permission read for id webpage:/content/main/search/complex_intern.xml with rulefile ${app.home}/config/acl/grant-editors.xml described by ${acl-description.editors}
 update permission read for id webpage:/authorization/new-user.xml?action=save with rulefile ${app.home}/config/acl/grant-admin.xml described by ${acl-description.admins}
 update permission read for id webpage:/content/publish/index.xml with rulefile ${app.home}/config/acl/grant-submitter.xml described by ${acl-description.submitters}
+update permission read for id webpage:/editor/editor-admins.xed with rulefile ${app.home}/config/acl/grant-editors.xml described by ${acl-description.editors}
 update permission read for id webpage:/authorization/new-author.xed?action=save with rulefile ${app.home}/config/acl/not-logged-in.xml described by ${acl-description.guests}
 update permission read for id webpage:/authorization/roles-editor.xml with rulefile ${app.home}/config/acl/grant-admin.xml described by ${acl-description.admins}
 update permission read for id webpage:/servlets/MCRSessionListingServlet with rulefile ${app.home}/config/acl/grant-admin.xml described by ${acl-description.admins}
