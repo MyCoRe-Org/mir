@@ -106,6 +106,8 @@ public class MIRWizardServlet extends MCRServlet {
                 }
             }
 
+            initializeApplication(job);
+
             LOGGER.info("Execute Wizard Commands...");
             chain.execute(wizXML);
             LOGGER.info("done.");
@@ -117,8 +119,6 @@ public class MIRWizardServlet extends MCRServlet {
             results.setAttribute("success", Boolean.toString(chain.isSuccess()));
 
             resXML.addContent(results);
-
-            initializeApplication(job);
 
             getLayoutService().doLayout(job.getRequest(), job.getResponse(), new MCRJDOMContent(resXML));
         }
