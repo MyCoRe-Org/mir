@@ -58,11 +58,11 @@ public class TestCommands extends MCRHibTestCase {
         MIRWizardCommandChain chain = new MIRWizardCommandChain();
 
         MIRWizardMCRCommand importACLs = new MIRWizardMCRCommand("import.acls");
-        importACLs.setInputXML(MCRURIResolver.instance().resolve("resource:setup/acl/defaultrules-command.xml"));
+        importACLs.setInputXML(MCRURIResolver.instance().resolve("resource:setup/defaultrules-wizard-commands.xml"));
         chain.addCommand(importACLs);
 
         MIRWizardMCRCommand importWebACLs = new MIRWizardMCRCommand("import.webacls");
-        importWebACLs.setInputXML(MCRURIResolver.instance().resolve("resource:setup/acl/webacl-command.xml"));
+        importWebACLs.setInputXML(MCRURIResolver.instance().resolve("resource:setup/webacl-wizard-commands.xml"));
         chain.addCommand(importWebACLs);
 
         endTransaction();
