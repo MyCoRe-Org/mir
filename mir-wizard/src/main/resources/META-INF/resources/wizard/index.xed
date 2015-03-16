@@ -29,7 +29,7 @@
               <xed:output i18n="component.mir.wizard.smtp.title" />
             </legend>
             <wizard:template name="textInput" xpath="property[@name='MCR.Mail.Server']" id="smtpHost" i18n="component.mir.wizard.smtp.host" />
-            <wizard:template name="textInput" xpath="property[@name='MCR.Mail.NumTries']" default="1" id="smtpNumTrys" i18n="component.mir.wizard.smtp.numTrys"
+            <wizard:template name="textInput" xpath="property[@name='MCR.Mail.NumTries']" default="1" id="smtpNumTries" i18n="component.mir.wizard.smtp.numTrys"
               i18n.error="component.mir.wizard.smtp.numTrys.error" validate="true" type="integer" min="1" max="10" />
           </fieldset>
         </xed:bind>
