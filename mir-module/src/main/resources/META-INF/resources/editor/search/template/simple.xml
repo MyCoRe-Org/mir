@@ -6,8 +6,8 @@
       <condition field="mods.name" operator="contains" />
       <condition field="allMeta" operator="contains" />
       <condition field="content" operator="contains" />
-      <condition field="category" operator="=" />
-      <condition field="category" operator="=" value="mir_status:published" />
+      <condition field="category.top" operator="=" />
+      <condition field="category.top" operator="=" value="state:published" />
     </boolean>
   </conditions>
 </query>

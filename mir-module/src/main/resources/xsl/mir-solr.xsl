@@ -5,7 +5,7 @@
   <xsl:import href="xslImport:solr-document:mir-solr.xsl" />
 
   <xsl:template match="mycoreobject[contains(@ID,'_mods_')]">
-    <xsl:variable name="status" select="mcrxsl:isInCategory(@ID,'mir_status:published')" />
+    <xsl:variable name="status" select="mcrxsl:isInCategory(@ID,'state:published')" />
     <xsl:apply-imports />
     <!-- fields from mycore-mods -->
     <xsl:apply-templates select="metadata/def.modsContainer/modsContainer/mods:mods" mode="mir">
@@ -18,11 +18,6 @@
 
   <xsl:template match="mods:mods" mode="mir">
     <xsl:param name="status" />
-    <xsl:for-each select="mods:classification[@displayLabel='status']">
-      <field name="mir_status">
-        <xsl:value-of select="substring-after(@valueURI,'#')" />
-      </field>
-    </xsl:for-each>
     <xsl:for-each select="mods:name[@type='corporate' and @authorityURI]">
       <xsl:variable name="uri" xmlns:mcrmods="xalan://org.mycore.mods.MCRMODSClassificationSupport" select="mcrmods:getClassCategParentLink(.)" />
       <xsl:if test="string-length($uri) &gt; 0">

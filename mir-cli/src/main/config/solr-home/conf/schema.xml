@@ -214,7 +214,6 @@
     <!-- End: MyCoRe specific schema definition -->
 
     <!-- MIR specific schema -->
-    <field name="mir_status" type="string" />
     <field name="isbn" type="string" multiValued="true" />
 
 

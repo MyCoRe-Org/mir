@@ -8,7 +8,7 @@
     <h3><i18n key="browse.sdnb" /></h3>
     <classificationbrowser classification="SDNB"
                                objecttype="mods"
-                              restriction="+category.top:&quot;mir_status:published&quot;"
+                              restriction="+category.top:&quot;state:published&quot;"
                                     field="category.top"
                              countresults="true"
                                addclassid="true"

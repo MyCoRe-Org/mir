@@ -144,14 +144,14 @@
                       <label xml:lang="de">(bitte wählen)</label>
                       <label xml:lang="en">(please select)</label>
                     </item>
-                    <include uri="classification:editorComplete:-1:children:mir_status" cacheable="true" />
+                    <include uri="classification:editorComplete:-1:children:state" cacheable="true" />
                   </list>
                 </cell>
 
               </panel>
             </repeater>
           </cell>
-          
+
           <cell row="10" col="1" colspan="3" anchor="SOUTHEAST">
             <panel>
               <cell row="1" col="1" anchor="WEST">

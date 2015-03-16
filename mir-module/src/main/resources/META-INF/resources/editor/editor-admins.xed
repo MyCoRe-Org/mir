@@ -9,12 +9,14 @@
     <xed:include uri="webapp:editor/editor-includes.xed" ref="in.out" />
     <xed:bind xpath="/mycoreobject">
       <xed:include uri="webapp:editor/editor-includes.xed" ref="mycore.common" />
+      <xed:bind xpath="service">
+        <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="status" />
+      </xed:bind>
       <xed:bind xpath="metadata/def.modsContainer[@class='MCRMetaXML'][@notinherit='true']/modsContainer/mods:mods">
 
         <xed:include uri="webapp:editor/editor-includes.xed" ref="failed-validation-messages" />
 
         <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="genre" />
-        <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="status" />
         <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="title.complex.repeated" />
         <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="name.repeated" />
         <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="editor.organization" />

@@ -35,7 +35,6 @@
           <legend>
             <xed:output value="concat($genres//category[@ID=$genre_intern]/label[lang($CurrentLang)]/@text,':')" />
           </legend>
-          <xed:bind xpath="mods:classification[@displayLabel='status'][@authorityURI='http://www.mycore.org/classifications/mir_status']/@valueURIxEditor" initially="submitted" />
           <xed:include uri="webapp:editor/editor-genres.xed" ref="{$genre_intern}" />
         </fieldset>
 

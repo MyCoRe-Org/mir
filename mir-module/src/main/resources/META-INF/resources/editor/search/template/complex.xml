@@ -7,11 +7,11 @@
           <condition field="mods.author" operator="contains" />
           <condition field="id,isbn,mods.identifier" operator="=" />
           <condition operator="=" field="mods.dateIssued" />
-          <condition field="category" operator="=" />
-          <condition field="category" operator="=" />
-          <condition field="category" operator="=" />
+          <condition field="category.top" operator="=" />
+          <condition field="category.top" operator="=" />
+          <condition field="category.top" operator="=" />
           <condition field="hasFiles" operator="=" value="true" />
-          <condition field="category" operator="=" value="mir_status:published" />
+          <condition field="category.top" operator="=" value="state:published" />
         </boolean>
       </boolean>
       <condition field="objectType" operator="=" value="mods" />

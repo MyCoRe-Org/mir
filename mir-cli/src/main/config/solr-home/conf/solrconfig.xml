@@ -1827,7 +1827,7 @@
       <str name="sort">score desc, mods.dateIssued desc</str>
     </lst>
     <lst name="appends">
-      <str name="fq">mir_status:published</str>
+      <str name="fq">state:published</str>
     </lst>
     <lst name="invariants">
       <str name="group">true</str>
@@ -1876,7 +1876,7 @@
 
       <!-- filter query: search only in published mods objects-->
       <str name="fq">objectType:"mods"</str>
-      <str name="fq">mir_status:published</str>
+      <str name="fq">state:published</str>
     </lst>
 
   </requestHandler>
@@ -1913,7 +1913,7 @@
 
       <!-- filter query: search only in published mods objects-->
       <str name="fq">objectType:"mods"</str>
-      <str name="fq">mir_status:published</str>
+      <str name="fq">state:published</str>
     </lst>
 
   </requestHandler>
@@ -1939,7 +1939,7 @@
 
       <!-- set as recommended by http://wiki.apache.org/solr/DisMaxQParserPlugin -->
       <str name="tie">0.1</str>
-      <str name="fq">mir_status:published</str>
+      <str name="fq">state:published</str>
     </lst>
     <lst name="appends">
       <!-- query fields parameter -->
@@ -2000,7 +2000,7 @@
     <lst name="appends">
       <!-- filter query: search only in published mods objects-->
       <str name="fq">objectType:"mods"</str>
-      <str name="fq">category.top:"mir_status\:published"</str>
+      <str name="fq">state:published</str>
       <str name="fq">NOT category.top:"mir_genres\:journal"</str>
       <str name="fq">NOT category.top:"mir_genres\:series"</str>
     </lst>

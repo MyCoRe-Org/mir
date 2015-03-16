@@ -96,7 +96,7 @@
       needed nodes -->
     <xsl:variable name="context" select="/mycoreobject" />
 
-    <xsl:variable name="children" select="$context/structure/children/child[mcrxsl:isInCategory(@xlink:href,'mir_status:published')]" />
+    <xsl:variable name="children" select="$context/structure/children/child[mcrxsl:isInCategory(@xlink:href,'state:published')]" />
     <xsl:variable name="maxElements" select="20" />
     <xsl:variable name="positionMin">
       <xsl:choose>

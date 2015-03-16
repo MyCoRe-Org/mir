@@ -8,7 +8,7 @@
     <h3><i18n key="browse.mods.institution.corporate" /></h3>
     <classificationbrowser classification="mir_institutes"
                                objecttype="mods"
-                              restriction="+category.top:&quot;mir_status:published&quot;"
+                              restriction="+category.top:&quot;state:published&quot;"
                                     field="category.top"
                              countresults="true"
                                addclassid="true"
