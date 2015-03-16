@@ -133,7 +133,7 @@
         <label xml:lang="en">WCMS</label>
       </item>
     </group>
-    <item href="/servlets/logout" type="extern">
+    <item href="/servlets/logout?url=../content/index.xml" type="extern">
       <label xml:lang="de">Abmelden</label>
       <label xml:lang="en">Logout</label>
     </item>
