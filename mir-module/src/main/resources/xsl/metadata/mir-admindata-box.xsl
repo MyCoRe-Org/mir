@@ -12,7 +12,17 @@
           </h4>
           <div id="system_content" class="block_content">
             <table class="metaData">
-              <xsl:apply-templates mode="present" select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:classification[@displayLabel='status']" />
+              <!--*** publication status ************************************* -->
+              <tr>
+                <td class="metaname">
+                  <xsl:value-of select="concat(i18n:translate('component.mods.metaData.dictionary.status'),':')" />
+                </td>
+                <td class="metavalue">
+                  <xsl:call-template name="printClass">
+                    <xsl:with-param select="mycoreobject/service/servstates/servstate" name="nodes" />
+                  </xsl:call-template>
+                </td>
+              </tr>
               <xsl:call-template name="printMetaDate">
                 <xsl:with-param select="mycoreobject/service/servdates/servdate[@type='createdate']" name="nodes" />
                 <xsl:with-param select="i18n:translate('metaData.createdAt')" name="label" />
