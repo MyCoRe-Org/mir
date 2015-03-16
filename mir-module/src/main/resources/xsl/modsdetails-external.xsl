@@ -600,46 +600,105 @@
   </xsl:template>
 
   <xsl:template match="/mycoreobject[contains(@ID,'_mods_')]" mode="basketContent" priority="1">
+    <xsl:variable name="objID" select="@ID" />
+    <xsl:variable name="mods-type">
+      <xsl:apply-templates select="." mode="mods-type" />
+    </xsl:variable>
 
-<!-- Title, Link to presentation -->
-    <h3 class="hit_title">
-      <xsl:call-template name="objectLink">
-        <xsl:with-param select="." name="mcrobj" />
-      </xsl:call-template>
-    </h3>
+    <xsl:for-each select="./metadata/def.modsContainer/modsContainer/mods:mods">
 
+<!-- document preview -->
+          <div class="hit_download_box">
+            <!-- TODO: replace placeholder -->
+            <img class="hit_icon" src="{$WebApplicationBaseURL}images/icons/icon_common_disabled.png" />
+            <!-- end: placeholder -->
+          </div>
 
-      <xsl:for-each select="./metadata/def.modsContainer/modsContainer/*">
+<!-- hit type -->
+          <div class="hit_tnd_container">
+            <div class="hit_tnd_content">
+              <div class="hit_type">
+                <span class="label label-info">
+                  <xsl:value-of select="i18n:translate(concat('component.mods.genre.',$mods-type))" />
+                </span>
+              </div>
+              <xsl:if test="mods:originInfo/mods:dateIssued">
+                <div class="hit_date">
+                  <span class="label label-primary">
+                    <xsl:variable name="dateIssued">
+                      <xsl:apply-templates mode="mods.datePublished" select="mods:originInfo/mods:dateIssued" />
+                    </xsl:variable>
+                    <xsl:variable name="format">
+                      <xsl:choose>
+                        <xsl:when test="string-length(normalize-space($dateIssued))=4">
+                          <xsl:value-of select="i18n:translate('metaData.dateYear')" />
+                        </xsl:when>
+                        <xsl:when test="string-length(normalize-space($dateIssued))=7">
+                          <xsl:value-of select="i18n:translate('metaData.dateYearMonth')" />
+                        </xsl:when>
+                        <xsl:when test="string-length(normalize-space($dateIssued))=10">
+                          <xsl:value-of select="i18n:translate('metaData.dateYearMonthDay')" />
+                        </xsl:when>
+                        <xsl:otherwise>
+                          <xsl:value-of select="i18n:translate('metaData.dateTime')" />
+                        </xsl:otherwise>
+                      </xsl:choose>
+                    </xsl:variable>
+                    <xsl:call-template name="formatISODate">
+                      <xsl:with-param name="date" select="$dateIssued" />
+                      <xsl:with-param name="format" select="$format" />
+                    </xsl:call-template>
+                  </span>
+                </div>
+              </xsl:if>
+            </div>
+          </div>
 
+      <!-- Title, Link to presentation -->
+          <h3 class="hit_title">
+            <xsl:call-template name="objectLink">
+              <xsl:with-param name="obj_id" select="$objID" />
+            </xsl:call-template>
+          </h3>
 
-<!-- Place, ?pt -->
-        <xsl:for-each select="mods:originInfo/mods:place/mods:placeTerm[@type='text']">
-          <xsl:value-of select="." />
-        </xsl:for-each>
+<!-- hit author -->
+          <div class="hit_author">
+            <xsl:for-each select="mods:name[mods:role/mods:roleTerm/text()='aut']">
+              <xsl:if test="position()!=1">
+                <xsl:value-of select="'/ '" />
+              </xsl:if>
+              <xsl:apply-templates select="." mode="authors_short" />
+            </xsl:for-each>
+          </div>
 
-<!-- Author -->
+<!-- hit parent -->
+          <xsl:if test="../../../../structure/parents/parent/@xlink:href">
+            <div class="hit_source">
+              <span class="label_parent">
+                <xsl:value-of select="'aus: '" />
+              </span>
+              <xsl:call-template name="objectLink">
+                <xsl:with-param name="obj_id" select="../../../../structure/parents/parent/@xlink:href" />
+              </xsl:call-template>
+            </div>
+          </xsl:if>
 
-
-        <div class="hit_author">
-          <xsl:for-each select="mods:name[mods:role/mods:roleTerm/text()='aut']">
-            <xsl:if test="position()!=1">
-              <xsl:value-of select="'/ '" />
+<!-- hit abstract -->
+          <div class="hit_abstract">
+            <xsl:if test="mods:abstract">
+              <xsl:value-of select="mcrxsl:shortenText(mods:abstract,300)" />
             </xsl:if>
-            <xsl:apply-templates select="." mode="printName" />
-          </xsl:for-each>
-        </div>
+          </div>
 
-<!-- Shelfmark -->
-        <xsl:for-each select="mods:location/mods:shelfLocator">
-          <xsl:value-of select="." />
-          <br />
-        </xsl:for-each>
-
-<!-- URN -->
-        <xsl:for-each select="mods:identifier[@type='urn']">
-          <xsl:value-of select="." />
-          <br />
-        </xsl:for-each>
+<!-- hit publisher -->
+          <xsl:if test="//mods:originInfo/mods:publisher">
+            <div class="hit_pub_name">
+              <span class="label_publisher">
+                <xsl:value-of select="concat(i18n:translate('component.mods.metaData.dictionary.published'),': ')" />
+              </span>
+              <xsl:value-of select="//mods:originInfo/mods:publisher" />
+            </div>
+          </xsl:if>
       </xsl:for-each>
 
   </xsl:template>

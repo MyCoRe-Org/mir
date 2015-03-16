@@ -108,110 +108,20 @@
       <div class="row hit_item_body">
         <div class="col-xs-12">
 
-<!-- document preview -->
-          <div class="hit_download_box">
-            <!-- TODO: replace placeholder -->
-            <img class="hit_icon" src="{$WebApplicationBaseURL}images/icons/icon_common_disabled.png" />
-            <!-- end: placeholder -->
-          </div>
-
-<!-- hit type -->
-          <div class="hit_tnd_container">
-            <div class="hit_tnd_content">
-              <div class="hit_type">
-                <!-- TODO: replace placeholder -->
-                <span class="label label-info">Typ</span>
-                <!-- end: placeholder -->
-              </div>
-              <div class="hit_date">
-                <!-- TODO: replace placeholder -->
-                <span class="label label-primary">Datum</span>
-                <!-- end: placeholder -->
-              </div>
-            </div>
-          </div>
-
-<!-- hit headline -->
-          <h3 class="hit_title">
-          <!-- TODO: replace placeholder -->
-            <a href="#" title="Titel (laaang)">Titel (gekürzt)</a>
-          <!-- end: placeholder -->
-          </h3>
-
-<!-- hit author -->
-          <div class="hit_author">
-          <!-- TODO: replace placeholder -->
-            <!-- Autor 1 -->
-            <a title="Suche nach allen Publikationen" href="#">Nachname, Vorname</a>
-            <a title="Link zur GND" href="#">
-            <sup>GND</sup></a> /
-            <!-- Autor 2 -->
-            <a title="Suche nach allen Publikationen" href="#">Nachname, Vorname</a>
-          <!-- end: placeholder -->
-          </div>
-
-<!-- hit parent -->
-          <div class="hit_source">
-            <!-- TODO: replace placeholder -->
-            <span class="label_parent">aus: </span><a href="#">Parent</a>
-            <!-- end: placeholder -->
-          </div>
-
-<!-- hit abstract -->
-          <div class="hit_abstract">
-            <!-- TODO: replace placeholder -->
-            Zusammenfassung. Zusammenfassung. Zusammenfassung. Zusammenfassung.
-            Zusammenfassung. Zusammenfassung. Zusammenfassung. Zusammenfassung.
-            Zusammenfassung. Zusammenfassung. Zusammenfassung. Zusammenfassung.
-            Zusammenfassung. Zusammenfassung. Zusammenfassung. Zusammenfassung.
-            Zusammenfassung. Zusammenfassung. Zusammenfassung. Zusammenfassung.
-            Zusammenfassung. Zusammenfassung. Zusammenfassung. Zusammenfassung.
-            <!-- end: placeholder -->
-          </div>
-
-<!-- hit publisher -->
-          <div class="hit_pub_name">
-            <!-- TODO: replace placeholder -->
-            <span class="label_publisher">Erschienen: </span>Publisher
-            <!-- end: placeholder -->
-          </div>
-
-
-<!--
-        <xsl:choose>
-          <xsl:when test="*[not(name()='comment')]">
-            <xsl:apply-templates select="*[not(name()='comment')]" mode="basketContent" />
-          </xsl:when>
-          <xsl:otherwise>
-            <xsl:apply-templates select="document(@uri)/*" mode="basketContent" />
-          </xsl:otherwise>
-        </xsl:choose>
-        <xsl:apply-templates select="comment" mode="basketContent" />
--->
-
+          <xsl:choose>
+            <xsl:when test="*[not(name()='comment')]">
+              <xsl:apply-templates select="*[not(name()='comment')]" mode="basketContent" />
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:apply-templates select="document(@uri)/*" mode="basketContent" />
+            </xsl:otherwise>
+          </xsl:choose>
+          <xsl:apply-templates select="comment" mode="basketContent" />
 
         </div><!-- end hit col -->
       </div><!-- end hit body -->
     </div><!-- end hit item -->
 
-<!--
-    <li class="col-md-8 col-lg-7 basketEntry">
-      <div class="col-md-4 col-lg-3 pull-right basketButtons">
-        <xsl:apply-templates select="." mode="basketButtonsUpDownDelete" />
-      </div>
-      <div class="col-md-4 basketContent">
-        <xsl:choose>
-          <xsl:when test="*[not(name()='comment')]">
-            <xsl:apply-templates select="*[not(name()='comment')]" mode="basketContent" />
-          </xsl:when>
-          <xsl:otherwise>
-            <xsl:apply-templates select="document(@uri)/*" mode="basketContent" />
-          </xsl:otherwise>
-        </xsl:choose>
-        <xsl:apply-templates select="comment" mode="basketContent" />
-      </div>
-    </li>
--->
   </xsl:template>
 
   <xsl:template match="entry" mode="basketButtonsUpDownDelete">
