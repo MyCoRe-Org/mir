@@ -1,5 +1,5 @@
 /**
- * jQuery Plugin to search Person identifier.
+ * jQuery Plugin to search entity identifier.
  * 
  * @author René Adler (eagle)
  * @version $Revision$
@@ -9,7 +9,9 @@
  * 
  * 	Parameters:
  * 		- target 				: the target container
- * 		- search 				: always &quot;searchPerson&quot;
+ * 		- search 				: always &quot;searchEntity&quot;
+ * 
+ * 		- searchEntityType		: can be person or organisation
  *  	
  * 		- searchType
  * 			- SELECT			: add searchType selection menu
@@ -28,10 +30,10 @@
 +function($) {
 	'use strict';
 
-	var toggle = '[data-search="searchPerson"]'
+	var toggle = '[data-search="searchEntity"]'
 
-	var SearchPerson = function(element, options) {
-		this.options = $.extend({}, SearchPerson.DEFAULTS, options);
+	var SearchEntity = function(element, options) {
+		this.options = $.extend({}, SearchEntity.DEFAULTS, options);
 
 		this.$parent = null;
 		this.$element = $(element);
@@ -41,55 +43,98 @@
 		this.$typeMenu = null;
 		this.$feedback = null;
 
-		this.selectedType = options.searchType.toUpperCase() == "SELECT" ? SearchPerson.DEFAULTS.searchType : options.searchType;
+		this.selectedType = options.searchType.toUpperCase() == "SELECT" ? SearchEntity.DEFAULTS.searchType : options.searchType;
 
 		this.init();
 	};
 
-	SearchPerson.VERSION = '1.0.0';
+	SearchEntity.VERSION = '1.1.0';
 
-	SearchPerson.LABEL_CLEANUP = /\s[\(]?[0-9-]+[\)]?/g;
+	SearchEntity.LABEL_CLEANUP = /\s[\(]?[0-9-]+[\)]?/g;
 
-	SearchPerson.TYPES = {
+	SearchEntity.TYPES = {
 		GND : {
-			url : "http://lobid.org/person",
-			data : function(input) {
-				return {
-					name : input,
-					format : "ids"
-				}
-			},
-			dataType : "jsonp",
 			baseURI : "http://d-nb.info/gnd/",
+			person : {
+				enabled : true,
+				url : "http://lobid.org/person",
+				data : function(input) {
+					return {
+						name : input,
+						format : "ids"
+					}
+				},
+				dataType : "jsonp",
+			},
+			organisation : {
+				enabled : false,
+				url : "http://lobid.org/organisation",
+				data : function(input) {
+					return {
+						name : input,
+						format : "ids"
+					}
+				},
+				dataType : "jsonp",
+			}
 		},
 		VIAF : {
-			url : "http://www.viaf.org/viaf/AutoSuggest",
-			data : function(input) {
-				return {
-					query : input,
+			baseURI : "http://www.viaf.org/viaf/",
+			person : {
+				enabled : true,
+				url : "http://www.viaf.org/viaf/AutoSuggest",
+				data : function(input) {
+					return {
+						query : input,
+					}
+				},
+				dataType : "jsonp",
+				dataConvert : function(data) {
+					var result = [];
+					if (data.result !== undefined) {
+						$(data.result).each(function(index, item) {
+							if (item.nametype.toLowerCase() === "personal") {
+								var person = {
+									label : item.term,
+									value : "http://www.viaf.org/viaf/" + item.viafid
+								};
+								result.push(person);
+							}
+						});
+					}
+					return result;
 				}
+
 			},
-			dataType : "jsonp",
-			dataConvert : function(data) {
-				var result = [];
-				if (data.result !== undefined) {
-					$(data.result).each(function(index, item) {
-						if (item.nametype.toLowerCase() === "personal") {
-							var person = {
-								label : item.term,
-								value : "http://www.viaf.org/viaf/" + item.viafid
-							};
-							result.push(person);
-						}
-					});
+			organisation : {
+				enabled : true,
+				url : "http://www.viaf.org/viaf/AutoSuggest",
+				data : function(input) {
+					return {
+						query : input,
+					}
+				},
+				dataType : "jsonp",
+				dataConvert : function(data) {
+					var result = [];
+					if (data.result !== undefined) {
+						$(data.result).each(function(index, item) {
+							if (item.nametype.toLowerCase() === "corporate") {
+								var organisation = {
+									label : item.term,
+									value : "http://www.viaf.org/viaf/" + item.viafid
+								};
+								result.push(organisation);
+							}
+						});
+					}
+					return result;
 				}
-				return result;
-			},
-			baseURI : "http://www.viaf.org/viaf/"
+			}
 		}
 	};
 
-	SearchPerson.DEFAULTS = {
+	SearchEntity.DEFAULTS = {
 		// Button style
 		buttonClass : "btn btn-default",
 		// Feedback style (optical feedback for current selection)
@@ -103,6 +148,9 @@
 		// default search type
 		searchType : "GND",
 
+		// default entity type
+		searchEntityType : "person",
+
 		// the max. height of results container
 		searchResultMaxHeight : 200,
 
@@ -114,9 +162,9 @@
 		searchResultEmpty : "<center><b>Nothing found</b></center>"
 	};
 
-	SearchPerson.prototype.init = function() {
+	SearchEntity.prototype.init = function() {
 		if (typeof $.fn.dropdown !== "function" && typeof $.fn.button !== "function") {
-			console.error("Couldn't initalize SearchPerson because of missing Bootstrap \"dropdown\" and \"button\" plugin!");
+			console.error("Couldn't initalize SearchEntity because of missing Bootstrap \"dropdown\" and \"button\" plugin!");
 			return;
 		}
 
@@ -170,7 +218,14 @@
 			$typeMenu.addClass("dropdown-menu dropdown-menu-right");
 			$typeMenu.attr("role", "menu");
 
-			for ( var type in SearchPerson.TYPES) {
+			for ( var type in SearchEntity.TYPES) {
+				if (SearchEntity.TYPES[type][options.searchEntityType].enabled == false)
+					continue;
+
+				if (SearchEntity.TYPES[this.selectedType][options.searchEntityType].enabled == false) {
+					this.selectedType = type;
+				}
+
 				var $entry = $(document.createElement("li"));
 				(type.toUpperCase() == this.selectedType.toUpperCase()) && $entry.addClass("active");
 
@@ -196,7 +251,7 @@
 		this.updateOutput();
 	}
 
-	SearchPerson.prototype.search = function(e) {
+	SearchEntity.prototype.search = function(e) {
 		var that = this;
 		var $parent = this.$parent;
 		var options = this.options;
@@ -214,18 +269,18 @@
 				return;
 
 			var type = null;
-			for ( var t in SearchPerson.TYPES) {
+			for ( var t in SearchEntity.TYPES) {
 				if (this.selectedType.toUpperCase() == t.toUpperCase()) {
-					type = SearchPerson.TYPES[t];
+					type = SearchEntity.TYPES[t][options.searchEntityType];
 					break;
 				}
 			}
 
 			this.$searchBtn.button("loading");
 			if (type != null) {
-				SearchPerson.loadData(type.url, type.dataType, type.data(input), function(data) {
+				SearchEntity.loadData(type.url, type.dataType, type.data(input), function(data) {
 					if (data !== undefined) {
-						that.showResult(SearchPerson.sortData(input, typeof type.dataConvert == "function" ? type.dataConvert(data) : data));
+						that.showResult(SearchEntity.sortData(input, typeof type.dataConvert == "function" ? type.dataConvert(data) : data));
 					} else {
 						that.showResult();
 					}
@@ -243,7 +298,7 @@
 		return false;
 	}
 
-	SearchPerson.prototype.showResult = function(data) {
+	SearchEntity.prototype.showResult = function(data) {
 		var that = this;
 		var $parent = this.$parent;
 		var options = this.options;
@@ -289,13 +344,13 @@
 		}, options));
 	}
 
-	SearchPerson.prototype.updateOutput = function(item) {
+	SearchEntity.prototype.updateOutput = function(item) {
 		var that = this;
 		var options = this.options;
 		var $output = $(options.searchOutput, getParent(this.$element))[0] !== undefined ? $(options.searchOutput, getParent(this.$element)) : this.$element;
 
 		if (item) {
-			this.$element != $output && item.label && this.$element.val(item.label.replace(SearchPerson.LABEL_CLEANUP, ""));
+			this.$element != $output && item.label && this.$element.val(item.label.replace(SearchEntity.LABEL_CLEANUP, ""));
 			$output.val(item.value);
 		}
 
@@ -309,7 +364,8 @@
 
 			var $label = $(document.createElement("span"));
 			$label.addClass(options.feedbackClass);
-			$label.html(getTypeFromURL($output.val()));
+			var type = getTypeFromURL($output.val());
+			$label.html(type != null ? type : "N/A");
 
 			var $remover = $(document.createElement("a"));
 			$remover.css({
@@ -345,13 +401,13 @@
 		}
 	}
 
-	SearchPerson.prototype.clearAll = function(e) {
+	SearchEntity.prototype.clearAll = function(e) {
 		if (e && e.which === 3)
 			return;
 
 		$(toggle).each(function() {
 			var $this = $(this);
-			var options = typeof this.options == 'object' ? this.options : $.extend({}, SearchPerson.DEFAULTS, $this.data());
+			var options = typeof this.options == 'object' ? this.options : $.extend({}, SearchEntity.DEFAULTS, $this.data());
 
 			var $parent = this.$parent === undefined ? getParent($this) : this.$parent;
 
@@ -368,7 +424,7 @@
 		});
 	}
 
-	SearchPerson.loadData = function(url, dataType, data, successCB, errorCB) {
+	SearchEntity.loadData = function(url, dataType, data, successCB, errorCB) {
 		$.ajax({
 			url : url,
 			timeout : 5000,
@@ -383,7 +439,7 @@
 		});
 	}
 
-	SearchPerson.sortData = function(input, data) {
+	SearchEntity.sortData = function(input, data) {
 		// TheSpanishInquisition - http://jsperf.com/levenshtein-distance/5
 		// Functional implementation of Levenshtein Distance.
 		function levenshteinDistance(strA, strB, limit) {
@@ -429,14 +485,14 @@
 		}
 
 		return data.sort(function(a, b) {
-			return levenshteinDistance(input, a.label.replace(SearchPerson.LABEL_CLEANUP, ""))
-					- levenshteinDistance(input, b.label.replace(SearchPerson.LABEL_CLEANUP, ""));
+			return levenshteinDistance(input, a.label.replace(SearchEntity.LABEL_CLEANUP, ""))
+					- levenshteinDistance(input, b.label.replace(SearchEntity.LABEL_CLEANUP, ""));
 		});
 	}
 
 	function getTypeFromURL(url) {
-		for ( var type in SearchPerson.TYPES) {
-			if (url.indexOf(SearchPerson.TYPES[type].baseURI) != -1)
+		for ( var type in SearchEntity.TYPES) {
+			if (url.indexOf(SearchEntity.TYPES[type].baseURI) != -1)
 				return type;
 		}
 
@@ -456,32 +512,32 @@
 		return $parent && $parent.length ? ($parent.length > 1) ? ($parent = $parent.has($this)) : $parent : $this.parent()
 	}
 
-	// SEARCH PERSON PLUGIN DEFINITION
+	// SEARCH ENTITY PLUGIN DEFINITION
 	// ===============================
 
 	function Plugin(option) {
 		return this.each(function() {
 			var $this = $(this);
-			var data = $this.data('mcr.searchperson');
+			var data = $this.data('mcr.searchentity');
 			var options = typeof option == 'object' && option
 
 			if (!data)
-				$this.data('mcr.searchperson', (data = new SearchPerson(this, option)));
+				$this.data('mcr.searchentity', (data = new SearchEntity(this, option)));
 			if (typeof option == 'string')
 				data[option]();
 		});
 	}
 
-	var old = $.fn.SearchPerson;
+	var old = $.fn.SearchEntity;
 
-	$.fn.searchPerson = Plugin;
-	$.fn.searchPerson.Constructor = SearchPerson;
+	$.fn.searchEntity = Plugin;
+	$.fn.searchEntity.Constructor = SearchEntity;
 
 	// SEARCHPERSON NO CONFLICT
 	// ========================
 
-	$.fn.searchPerson.noConflict = function() {
-		$.fn.SearchPerson = old;
+	$.fn.searchEntity.noConflict = function() {
+		$.fn.SearchEntity = old;
 		return this;
 	};
 
@@ -494,5 +550,5 @@
 		});
 	});
 
-	$(document).on('click.mcr.searchperson.data-api', SearchPerson.prototype.clearAll);
+	$(document).on('click.mcr.searchentity.data-api', SearchEntity.prototype.clearAll);
 }(jQuery);

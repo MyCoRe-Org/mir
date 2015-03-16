@@ -277,8 +277,9 @@
     <div class="search-person">
       <xed:bind xpath="mods:displayForm">
         <input type="text" size="26" class="form-control form-control-inline"
-          data-search="searchPerson"
+          data-search="searchEntity"
           data-search-type="select"
+          data-search-entity-type="person"
           data-search-output="#valueURIxEditor"
           data-search-button="{i18n:button.search}"
           data-search-button-loading="{i18n:button.loading}"
@@ -639,8 +640,9 @@
           <div class="search-organization">
             <xed:bind xpath="mods:displayForm">
               <input type="text" size="26" class="form-control form-control-inline"
-                data-search="searchOrganization"
+                data-search="searchEntity"
                 data-search-type="select"
+                data-search-entity-type="organisation"
                 data-search-output="#valueURIxEditor"
                 data-search-button="{i18n:button.search}"
                 data-search-button-loading="{i18n:button.loading}"
@@ -763,7 +765,7 @@
   </xed:template>
 
   <xed:template id="cancel.submit">
-    <script type="text/javascript" src="{$WebApplicationBaseURL}js/jquery.search-person.js"></script>
+    <script type="text/javascript" src="{$WebApplicationBaseURL}js/jquery.search-entity.js"></script>
 
     <div class="form-group">
       <div class="col-md-offset-3 col-md-6">
