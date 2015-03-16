@@ -1,7 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Renders the output of MCRBasketServlet -->
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xlink="http://www.w3.org/1999/xlink"
-  xmlns:xalan="http://xml.apache.org/xalan" xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation" exclude-result-prefixes="xlink xalan i18n">
+<xsl:stylesheet
+  version="1.0"
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  xmlns:xalan="http://xml.apache.org/xalan"
+  xmlns:mods="http://www.loc.gov/mods/v3"
+  xmlns:encoder="xalan://java.net.URLEncoder"
+  xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
+  xmlns:str="http://exslt.org/strings"
+  xmlns:mcr="xalan://org.mycore.common.xml.MCRXMLFunctions"
+  xmlns:acl="xalan://org.mycore.access.MCRAccessManager"
+  xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions"
+  exclude-result-prefixes="xlink xalan i18n mods str mcr acl mcrxsl encoder">
+
 
   <xsl:include href="MyCoReLayout.xsl" />
 
@@ -12,12 +24,20 @@
   <xsl:variable name="PageTitle" select="i18n:translate(concat('basket.title.',/basket/@type))" />
 
   <xsl:template match="/basket">
-    <h2>
-      <xsl:value-of select="i18n:translate(concat('basket.title.',/basket/@type))" />
-    </h2>
-    <xsl:call-template name="basketNumEntries" />
-    <xsl:call-template name="basketEntries" />
+    <div id="basket">
+      <div id="options" class="btn-group pull-right">
+        <xsl:call-template name="options" />
+      </div>
+      <h2>
+        <xsl:value-of select="i18n:translate(concat('basket.title.',/basket/@type))" />
+      </h2>
+      <xsl:call-template name="basketNumEntries" />
+      <xsl:call-template name="basketEntries" />
+    </div>
   </xsl:template>
+
+
+
 
   <xsl:template name="basketNumEntries">
     <p class="lead">
@@ -36,6 +56,15 @@
   </xsl:template>
 
   <xsl:template name="basketEntries">
+    <div class="result_body">
+      <div class="result_list">
+        <div id="hit_list">
+          <xsl:apply-templates select="entry" />
+        </div>
+      </div>
+    </div>
+
+<!--
     <xsl:if test="entry">
       <div class="document_options">
         <xsl:call-template name="options" />
@@ -46,9 +75,126 @@
         </ol>
       </div>
     </xsl:if>
+-->
   </xsl:template>
 
   <xsl:template match="entry">
+    <xsl:variable name="hitNumberOnPage" select="count(preceding-sibling::*[name()=name(.)])+1" />
+
+<!-- hit entry -->
+    <div class="hit_item">
+
+<!-- hit head -->
+      <div class="row hit_item_head">
+        <div class="col-xs-12">
+
+<!-- hit number -->
+          <div class="hit_counter">
+            <xsl:value-of select="$hitNumberOnPage" />
+          </div>
+
+<!-- hit options -->
+          <div class="hit_options pull-right">
+              <div class="btn-group">
+                <xsl:apply-templates select="." mode="basketButtonsUpDownDelete" />
+            </div>
+          </div>
+
+        </div><!-- end col -->
+      </div><!-- end row head -->
+
+
+<!-- hit body -->
+      <div class="row hit_item_body">
+        <div class="col-xs-12">
+
+<!-- document preview -->
+          <div class="hit_download_box">
+            <!-- TODO: replace placeholder -->
+            <img class="hit_icon" src="{$WebApplicationBaseURL}images/icons/icon_common_disabled.png" />
+            <!-- end: placeholder -->
+          </div>
+
+<!-- hit type -->
+          <div class="hit_tnd_container">
+            <div class="hit_tnd_content">
+              <div class="hit_type">
+                <!-- TODO: replace placeholder -->
+                <span class="label label-info">Typ</span>
+                <!-- end: placeholder -->
+              </div>
+              <div class="hit_date">
+                <!-- TODO: replace placeholder -->
+                <span class="label label-primary">Datum</span>
+                <!-- end: placeholder -->
+              </div>
+            </div>
+          </div>
+
+<!-- hit headline -->
+          <h3 class="hit_title">
+          <!-- TODO: replace placeholder -->
+            <a href="#" title="Titel (laaang)">Titel (gekürzt)</a>
+          <!-- end: placeholder -->
+          </h3>
+
+<!-- hit author -->
+          <div class="hit_author">
+          <!-- TODO: replace placeholder -->
+            <!-- Autor 1 -->
+            <a title="Suche nach allen Publikationen" href="#">Nachname, Vorname</a>
+            <a title="Link zur GND" href="#">
+            <sup>GND</sup></a> /
+            <!-- Autor 2 -->
+            <a title="Suche nach allen Publikationen" href="#">Nachname, Vorname</a>
+          <!-- end: placeholder -->
+          </div>
+
+<!-- hit parent -->
+          <div class="hit_source">
+            <!-- TODO: replace placeholder -->
+            <span class="label_parent">aus: </span><a href="#">Parent</a>
+            <!-- end: placeholder -->
+          </div>
+
+<!-- hit abstract -->
+          <div class="hit_abstract">
+            <!-- TODO: replace placeholder -->
+            Zusammenfassung. Zusammenfassung. Zusammenfassung. Zusammenfassung.
+            Zusammenfassung. Zusammenfassung. Zusammenfassung. Zusammenfassung.
+            Zusammenfassung. Zusammenfassung. Zusammenfassung. Zusammenfassung.
+            Zusammenfassung. Zusammenfassung. Zusammenfassung. Zusammenfassung.
+            Zusammenfassung. Zusammenfassung. Zusammenfassung. Zusammenfassung.
+            Zusammenfassung. Zusammenfassung. Zusammenfassung. Zusammenfassung.
+            <!-- end: placeholder -->
+          </div>
+
+<!-- hit publisher -->
+          <div class="hit_pub_name">
+            <!-- TODO: replace placeholder -->
+            <span class="label_publisher">Erschienen: </span>Publisher
+            <!-- end: placeholder -->
+          </div>
+
+
+<!--
+        <xsl:choose>
+          <xsl:when test="*[not(name()='comment')]">
+            <xsl:apply-templates select="*[not(name()='comment')]" mode="basketContent" />
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:apply-templates select="document(@uri)/*" mode="basketContent" />
+          </xsl:otherwise>
+        </xsl:choose>
+        <xsl:apply-templates select="comment" mode="basketContent" />
+-->
+
+
+        </div><!-- end hit col -->
+      </div><!-- end hit body -->
+    </div><!-- end hit item -->
+
+<!--
     <li class="col-md-8 col-lg-7 basketEntry">
       <div class="col-md-4 col-lg-3 pull-right basketButtons">
         <xsl:apply-templates select="." mode="basketButtonsUpDownDelete" />
@@ -65,6 +211,7 @@
         <xsl:apply-templates select="comment" mode="basketContent" />
       </div>
     </li>
+-->
   </xsl:template>
 
   <xsl:template match="entry" mode="basketButtonsUpDownDelete">
@@ -111,50 +258,48 @@
 
   <xsl:template name="options">
     <div class="btn-group">
-      <div class="btn-group">
-        <a href="#" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-          <i class="fa fa-share"></i>
-          Exportieren
-          <span class="caret"></span>
-        </a>
-        <ul class="dropdown-menu">
-          <li>
-            <a href="{$ServletsBaseURL}MCRExportServlet{$HttpSession}?basket={@type}&amp;transformer=mods">
-              <xsl:value-of select="i18n:translate('basket.export','MODS')" />
-            </a>
-          </li>
-          <li>
-            <a href="{$ServletsBaseURL}MCRExportServlet{$HttpSession}?basket={@type}&amp;transformer=bibtex">
-              <xsl:value-of select="i18n:translate('basket.export','BibTex')" />
-            </a>
-          </li>
-          <li>
-            <a href="{$ServletsBaseURL}MCRExportServlet{$HttpSession}?basket={@type}&amp;transformer=endnote">
-              <xsl:value-of select="i18n:translate('basket.export','Endnote')" />
-            </a>
-          </li>
-          <li>
-            <a href="{$ServletsBaseURL}MCRExportServlet{$HttpSession}?basket={@type}&amp;transformer=ris">
-              <xsl:value-of select="i18n:translate('basket.export','RIS')" />
-            </a>
-          </li>
-          <li>
-            <a href="{$ServletsBaseURL}MCRExportServlet{$HttpSession}?basket={@type}&amp;transformer=isi">
-              <xsl:value-of select="i18n:translate('basket.export','ISI')" />
-            </a>
-          </li>
-          <li>
-            <a href="{$ServletsBaseURL}MCRExportServlet{$HttpSession}?basket={@type}&amp;transformer=wordbib">
-              <xsl:value-of select="i18n:translate('basket.export','Word 2007 bibliography')" />
-            </a>
-          </li>
-        </ul>
-      </div>
-      <a href="{$ServletsBaseURL}MCRBasketServlet{$HttpSession}?type={@type}&amp;action=clear&amp;redirect=referer" class="btn btn-danger">
-        <i class="fa fa-remove"></i>
-        <xsl:value-of select="i18n:translate('basket.clear')" />
+      <a href="#" class="btn btn-primary dropdown-toggle btn-sm" data-toggle="dropdown">
+        <span class="glyphicon glyphicon-export"></span>
+        Exportieren
+        <span class="caret"></span>
       </a>
+      <ul class="dropdown-menu">
+        <li>
+          <a href="{$ServletsBaseURL}MCRExportServlet{$HttpSession}?basket={@type}&amp;transformer=mods">
+            <xsl:value-of select="i18n:translate('basket.export','MODS')" />
+          </a>
+        </li>
+        <li>
+          <a href="{$ServletsBaseURL}MCRExportServlet{$HttpSession}?basket={@type}&amp;transformer=bibtex">
+            <xsl:value-of select="i18n:translate('basket.export','BibTex')" />
+          </a>
+        </li>
+        <li>
+          <a href="{$ServletsBaseURL}MCRExportServlet{$HttpSession}?basket={@type}&amp;transformer=endnote">
+            <xsl:value-of select="i18n:translate('basket.export','Endnote')" />
+          </a>
+        </li>
+        <li>
+          <a href="{$ServletsBaseURL}MCRExportServlet{$HttpSession}?basket={@type}&amp;transformer=ris">
+            <xsl:value-of select="i18n:translate('basket.export','RIS')" />
+          </a>
+        </li>
+        <li>
+          <a href="{$ServletsBaseURL}MCRExportServlet{$HttpSession}?basket={@type}&amp;transformer=isi">
+            <xsl:value-of select="i18n:translate('basket.export','ISI')" />
+          </a>
+        </li>
+        <!-- li>
+          <a href="{$ServletsBaseURL}MCRExportServlet{$HttpSession}?basket={@type}&amp;transformer=wordbib">
+            <xsl:value-of select="i18n:translate('basket.export','Word 2007 bibliography')" />
+          </a>
+        </li -->
+      </ul>
     </div>
+    <a href="{$ServletsBaseURL}MCRBasketServlet{$HttpSession}?type={@type}&amp;action=clear&amp;redirect=referer" class="btn btn-danger btn-sm">
+      <span class="glyphicon glyphicon-trash"></span>
+      <xsl:value-of select="i18n:translate('basket.clear')" />
+    </a>
   </xsl:template>
 
 </xsl:stylesheet>

@@ -599,4 +599,49 @@
     </xsl:if>
   </xsl:template>
 
+  <xsl:template match="/mycoreobject[contains(@ID,'_mods_')]" mode="basketContent" priority="1">
+
+<!-- Title, Link to presentation -->
+    <h3 class="hit_title">
+      <xsl:call-template name="objectLink">
+        <xsl:with-param select="." name="mcrobj" />
+      </xsl:call-template>
+    </h3>
+
+
+      <xsl:for-each select="./metadata/def.modsContainer/modsContainer/*">
+
+
+<!-- Place, ?pt -->
+        <xsl:for-each select="mods:originInfo/mods:place/mods:placeTerm[@type='text']">
+          <xsl:value-of select="." />
+        </xsl:for-each>
+
+<!-- Author -->
+
+
+        <div class="hit_author">
+          <xsl:for-each select="mods:name[mods:role/mods:roleTerm/text()='aut']">
+            <xsl:if test="position()!=1">
+              <xsl:value-of select="'/ '" />
+            </xsl:if>
+            <xsl:apply-templates select="." mode="printName" />
+          </xsl:for-each>
+        </div>
+
+<!-- Shelfmark -->
+        <xsl:for-each select="mods:location/mods:shelfLocator">
+          <xsl:value-of select="." />
+          <br />
+        </xsl:for-each>
+
+<!-- URN -->
+        <xsl:for-each select="mods:identifier[@type='urn']">
+          <xsl:value-of select="." />
+          <br />
+        </xsl:for-each>
+      </xsl:for-each>
+
+  </xsl:template>
+
 </xsl:stylesheet>
