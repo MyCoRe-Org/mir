@@ -63,7 +63,6 @@
             </div>
           </xed:bind>
           <div class="pull-right">
-            <wizard:template name="submitButton" i18n="component.mir.wizard.debug" target="debug" />
             <wizard:template name="submitButton" i18n="component.mir.wizard.save" target="servlet" href="MIRWizardServlet" />
           </div>
         </fieldset>
