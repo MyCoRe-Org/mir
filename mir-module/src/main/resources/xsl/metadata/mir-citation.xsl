@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:mcr="xalan://org.mycore.common.xml.MCRXMLFunctions"
   xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation" xmlns:mods="http://www.loc.gov/mods/v3" xmlns:xlink="http://www.w3.org/1999/xlink"
-  xmlns:mcrurn="xalan://org.mycore.urn.MCRXMLFunctions"
-  exclude-result-prefixes="i18n mcr mods xlink mcrurn">
+  xmlns:mcrurn="xalan://org.mycore.urn.MCRXMLFunctions" xmlns:cmd="http://www.cdlib.org/inside/diglib/copyrightMD"
+  exclude-result-prefixes="i18n mcr mods xlink mcrurn cmd">
   <xsl:import href="xslImport:modsmeta:metadata/mir-citation.xsl" />
   <xsl:include href="mods-highwire.xsl" />
   <xsl:param name="MCR.URN.Resolver.MasterURL" select="''" />
@@ -110,30 +110,47 @@
       </script>
     </div>
 
+  <xsl:if test="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:accessCondition">
     <div id="mir-access-rights">
+      <xsl:if test="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:accessCondition[@type='copyrightMD']">
+        <p>
+          <strong><xsl:value-of select="i18n:translate('mir.rightsHolder')" /></strong>
+          <xsl:text> </xsl:text>
+          <xsl:value-of select="//mods:accessCondition[@type='copyrightMD']/cmd:copyright/cmd:rights.holder/cmd:name" />
+        </p>
+      </xsl:if>
       <xsl:choose>
         <xsl:when test="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:accessCondition/@type='use and reproduction'">
-          <xsl:variable name="trimmed" select="normalize-space(.)" />
-          <xsl:choose>
-            <xsl:when test="contains($trimmed, 'cc_by')">
-              <p><xsl:apply-templates select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:accessCondition[@type='use and reproduction']" mode="cc-logo" /></p>
-            </xsl:when>
-            <xsl:when test="contains($trimmed, 'rights_reserved')">
-              <p><xsl:apply-templates select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:accessCondition[@type='use and reproduction']" mode="rights_reserved" /></p>
-            </xsl:when>
-            <xsl:when test="contains($trimmed, 'oa_nlz')">
-              <p><xsl:apply-templates select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:accessCondition[@type='use and reproduction']" mode="oa_nlz" /></p>
-            </xsl:when>
-            <xsl:otherwise>
-              <p><xsl:value-of select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:accessCondition[@type='use and reproduction']" /></p>
-            </xsl:otherwise>
-          </xsl:choose>
+          <p>
+            <strong><xsl:value-of select="i18n:translate('mir.useAndReproduction')" /></strong>
+            <br />
+            <xsl:variable name="trimmed" select="normalize-space(.)" />
+            <xsl:choose>
+              <xsl:when test="contains($trimmed, 'cc_by')">
+                <xsl:apply-templates select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:accessCondition[@type='use and reproduction']" mode="cc-logo" />
+              </xsl:when>
+              <xsl:when test="contains($trimmed, 'rights_reserved')">
+                <xsl:apply-templates select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:accessCondition[@type='use and reproduction']" mode="rights_reserved" />
+              </xsl:when>
+              <xsl:when test="contains($trimmed, 'oa_nlz')">
+                <xsl:apply-templates select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:accessCondition[@type='use and reproduction']" mode="oa_nlz" />
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:value-of select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:accessCondition[@type='use and reproduction']" />
+              </xsl:otherwise>
+            </xsl:choose>
+          </p>
         </xsl:when>
         <xsl:otherwise>
-          <p><xsl:value-of select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:accessCondition[@type='use and reproduction']" /></p>
+          <p>
+            <strong><xsl:value-of select="i18n:translate('mir.useAndReproduction')" /></strong>
+            <xsl:text> </xsl:text>
+            <xsl:value-of select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:accessCondition[@type='use and reproduction']" />
+          </p>
         </xsl:otherwise>
       </xsl:choose>
     </div>
+  </xsl:if>
 
     <xsl:apply-imports />
   </xsl:template>
