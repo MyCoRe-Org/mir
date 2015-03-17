@@ -357,4 +357,10 @@
     <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="comment" />
   </xed:template>
 
+  <xed:template id="submit">
+    <xed:include uri="webapp:editor/editor-includes.xed" ref="cancel.submit" />
+    <xed:include uri="webapp:editor/editor-includes.xed" ref="cleanup-rules" />
+    <xed:include uri="webapp:editor/editor-includes.xed" ref="validation-rules" />
+  </xed:template>
+
 </xed:template>

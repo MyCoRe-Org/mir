@@ -50,9 +50,7 @@
           </fieldset>
         </xed:if>
 
-        <xed:include uri="webapp:editor/editor-includes.xed" ref="cancel.submit" />
-        <xed:include uri="webapp:editor/editor-includes.xed" ref="cleanup-rules" />
-        <xed:include uri="webapp:editor/editor-includes.xed" ref="validation-rules" />
+        <xed:include uri="webapp:editor/editor-genres.xed" ref="submit" />
 
       </xed:bind>
     </xed:bind>
