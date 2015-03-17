@@ -46,9 +46,10 @@
     </xsl:variable>
 
     <div id="search_options">
-      <button type="button" class="btn btn-default btn-sm">Suche verfeinern</button>
+      <!-- TODO: add functionality to these two bottons, before display them again -->
+      <!-- button type="button" class="btn btn-default btn-sm">Suche verfeinern</button -->
       <xsl:copy-of select="$ResultPages" />
-      <button type="button" class="btn btn-default btn-sm">Trefferliste anzeigen</button>
+      <!-- button type="button" class="btn btn-default btn-sm">Trefferliste anzeigen</button -->
     </div>
 
        <!--
