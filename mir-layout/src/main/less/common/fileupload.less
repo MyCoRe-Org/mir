@@ -1,172 +1,131 @@
-/* TODO: lessify! */
-
-#uploadContainer {
+#appletContainer {
   display: none;
-  margin: 0 auto;
-  border: 1px solid #CCC;
-  padding: 1em;
-  border-radius: 10px;
-  box-shadow: 0 0 4px 4px #eee;
-  background-image: linear-gradient(bottom, rgb(209, 209, 209) 0%, rgb(232, 232, 232) 18%, rgb(250, 250, 250) 85% );
-  background-image: -o-linear-gradient(bottom, rgb(209, 209, 209) 0%, rgb(232, 232, 232) 18%, rgb(250, 250, 250) 85% );
-  background-image: -moz-linear-gradient(bottom, rgb(209, 209, 209) 0%, rgb(232, 232, 232) 18%, rgb(250, 250, 250) 85% );
-  background-image: -webkit-linear-gradient(bottom, rgb(209, 209, 209) 0%, rgb(232, 232, 232) 18%, rgb(250, 250, 250) 85% );
-  background-image: -ms-linear-gradient(bottom, rgb(209, 209, 209) 0%, rgb(232, 232, 232) 18%, rgb(250, 250, 250) 85% );
-  filter:progid:DXImageTransform.Microsoft.Gradient(GradientType=0, StartColorStr='#FFD1D1D1', EndColorStr='#FFFAFAFA');
+  padding: 15px;
 }
 
-#dropbox {
-  border: 3px dashed #304090;
-  height: 15em;
-  position: relative;
-  cursor: default;
-}
-
-#dropbox.highlight {
-  border: 3px dashed green;
-}
-
-#dropbox.highlight h2 {
-  color: green;
-}
-
-#files {
-  height: 15em;
-  overflow-y: auto;
-}
-
-div#dropbox h2 {
-  
-  position:absolute;
-  bottom: 0.25em;
-  right: 0.25em;
-  margin-bottom: 0;
-}
-
-#uploadContainer input[type='file'] {
-  padding: 5px 0;
-}
-
-div.row {
-  margin-bottom: 10px;
-}
-
-#uploadContainer div.label {
-  font-style: italic;
-  color: grey;
-}
-
-.floatLeft {
-  float: left;
-}
-
-.floatRight {
-  float: right;
-}
-
-.clear {
-  clear: both;
-}
-
-.bold {
-  font-weight: bold;
-}
-
-#uploadContainer *:focus {
-  outline: none;
-}
-
-#uploadContainer input:focus {
-  -webkit-box-shadow: 0 0 10px #ccc;
-  -moz-box-shadow: 0 0 10px #ccc;
-  box-shadow: 0 0 5px #ccc;
-  -webkit-transform: scale(1.05);
-  -moz-transform: scale(1.05);
-  transform: scale(1.05);
-}
-
-#fileInfo {
-  font-style: italic;
-  color: #aaa;
-  margin-top: 10px;
-}
-
-#progressBar {
-  height: 14px;
-  border: 1px solid #cccccc;
+#html5Container {
   display: none;
-  max-width: 85%;
-  border-radius: 10px;
-  -moz-border-radius: 10px;
-  
-  background-image: linear-gradient(left, rgb(0,114,156), rgb(1,70,139));
-  background-image: -o-linear-gradient(left, rgb(0,114,156), rgb(1,70,139));
-  background-image: -moz-linear-gradient(left, rgb(0,114,156), rgb(1,70,139) );
-  background-image: -webkit-linear-gradient(left, rgb(0,114,156), rgb(1,70,139) );
-  background-image: -ms-linear-gradient(left, rgb(0,114,156), rgb(1,70,139));
-  
-  background-image: -webkit-gradient(
-    linear,
-    left bottom,
-    right bottom,
-    color-stop(0, rgb(0,114,156)),
-    color-stop(0.5, rgb(1,70,139))
-  );
-  filter:progid:DXImageTransform.Microsoft.Gradient(GradientType=0, StartColorStr='#FF00729C', EndColorStr='#FF01468B');
-}
+  margin: 0;
+  padding: 15px;
 
-#uploadResponse {
-  margin-top: 10px;
-  padding: 1em;
-  overflow: hidden;
-  display: none;
-  border-radius: 10px;
-  -moz-border-radius: 10px;
-  border: 1px solid #ccc;
-  position: relative;
-  box-shadow: 0 0 5px #ccc;
-  background-image: -moz-linear-gradient(top, #EFE4BF, #D9CFAD);
-  background-image: -webkit-gradient(linear, left top, left bottom, from(#EFE4BF), to(#D9CFAD) );
-  overflow: auto; 
-}
+  *:focus {
+    outline: none;
+  }
 
-.fileContainer {
-  border-radius: 4px;
-  margin-left: 10px;
-  margin-top: 5px;
-  border: 1px solid gray;
-  width: auto;
-  padding: 5px;
-  display: inline-block;
-  background-image: linear-gradient(top, #FFF3CC, #E6DBB7);
-  background-image: -moz-linear-gradient(top, #FFF3CC, #E6DBB7);
-  background-image: -webkit-gradient(linear, left top, left bottom, from( #FFF3CC), to( #E6DBB7) );
-}
+  #input_field {
 
-.fileContainer > * {
-  vertical-align: middle;
-}
+    #fileToUpload {
+      color: @brand-info;
+    }
 
-#files .fileContainer:last-child {
-  margin-bottom: 5px;
-}
+    #dropbox {
+      border: 2px dashed @brand-primary;
+      min-height: 15em;
+      position: relative;
+      cursor: default;
+      border-radius: 10px;
 
-.fileContainer .filename {
-  border-right: 1px solid gray;
-  padding: 0 0.4em;
-}
+      h2 {
+        position:absolute;
+        top: 50%;
+        left: 50%;
+        margin: -10px 0 0 -93px;
+        font-size: 18px;
+        color: @brand-primary;
+        z-index: 1;
+      }
 
-.fileContainer button.removeFile {
-  background-image: url('../../images/fileupload/remove.png');
-  padding: 0;
-  height: 16px;
-  width: 16px;
-  border: 0;
-  background-color: transparent;
-}
+      #fileSize {
+        position:absolute;
+        bottom: 10px;
+        right: 10px;
+      }
 
-.fileContainer button.removeFile:hover,
-.fileContainer button.removeFile:focus {
-  background-image: url('../../images/fileupload/remove_highlight.png');
-}
+      &.highlight {
+        border: 2px dashed @brand-success;
 
+        h2 {
+          color: @brand-success;
+        }
+      }
+
+      #files {
+        min-height: 100%;
+        overflow-y: auto;
+
+        .fileContainer {
+          border-radius: 4px;
+          margin-left: 10px;
+          margin-top: 10px;
+          width: auto;
+          padding: 4px 8px;
+          display: inline-block;
+          color: @btn-default-color;
+          background-color: @btn-success-bg;
+          position: relative;
+          z-index: 2;
+
+          &:last-child {
+            margin-bottom: 36px;
+          }
+
+          .filename {
+            border-right: 1px solid @btn-default-color;
+            padding: 0 6px 0 0;
+          }
+
+          button {
+            &.removeFile {
+              background-image: url('../../images/fileupload/remove.png');
+              margin: 0 0 0 4px;
+              height: 16px;
+              width: 16px;
+              border: 0;
+              background-color: transparent;
+              vertical-align: middle;
+              &:hover,
+              &:focus {
+                background-image: url('../../images/fileupload/remove_highlight.png');
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  #button_row {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    #uploadBtn {
+      margin-right: 0;
+    }
+  }
+
+  #progressIndicator {
+    .progress {
+        margin-bottom: 4px;
+        display: none;
+      #progressBar {}
+    }
+    div {
+      #transferSpeedInfo {
+        margin-right: 2px;
+      }
+      #timeRemainingInfo {}
+      #transferBytesInfo {}
+    }
+    #uploadResponse {
+      margin-top: 10px;
+      padding: 15px;
+      display: none;
+      border-radius: 10px;
+      border: 1px solid @brand-info;
+      color: @brand-info;
+      position: relative;
+      #uploadDone {
+        p {}
+      }
+    }
+  }
+}

@@ -28,11 +28,11 @@ function drop(evt) {
     currentUploadState = UPLOAD_STATES.filesSelected;
     noop(evt);
     var dropbox = jQuery('#dropbox');
-    
+
     jQuery('#dropAdvice').remove();
-    
+
     dropbox.toggleClass('highlight');
-    
+
     var files = evt.dataTransfer.files;
     var count = files.length;
     if (count > 0) {
@@ -52,7 +52,7 @@ function fileSelected() {
     currentUploadState = UPLOAD_STATES.filesSelected;
     var file = document.getElementById('fileToUpload').files[0];
     appendFile(file);
-    
+
 }
 
 function appendFile(file) {
@@ -87,6 +87,7 @@ function uploadFile() {
     previousBytesLoaded = 0;
     jQuery('#progressNumber').text('');
     var progressBar = jQuery('#progressBar');
+    progressBar.parent('.progress').css('display', 'block');
     progressBar.css('display', 'block');
     progressBar.css('width', '0px');
     var url = formUploadUrl;
@@ -178,7 +179,7 @@ function uploadComplete(evt) {
 function uploadFailed(evt) {
     currentUploadState = UPLOAD_STATES.failed;
     toggleActions();
-    
+
     clearInterval(intervalTimer);
     showUploadResponse();
     jQuery('#uploadDone p').text(msgUploadFailed);
@@ -187,7 +188,7 @@ function uploadFailed(evt) {
 function uploadCanceled(evt) {
     currentUploadState = UPLOAD_STATES.cancelled;
     toggleActions();
-    
+
     clearInterval(intervalTimer);
     showUploadResponse();
     jQuery('#uploadDone p').text(msgUploadFailed);
@@ -209,7 +210,7 @@ function clearFiles() {
 
     currentUploadState = UPLOAD_STATES.start;
     toggleActions();
-    
+
     chosenFiles = new Array();
     var delay = 0;
     jQuery('#files span').each(function() {
@@ -228,7 +229,7 @@ function toggleActions() {
       object.button.detach();
       object.isAttached = false;
     }
-    
+
     switch (currentUploadState) {
         case UPLOAD_STATES.start:
         case UPLOAD_STATES.finished:
@@ -257,7 +258,7 @@ function toggleActions() {
 function showButton(object) {
     var parent = object.parent;
     var toggable = object.button;
-    
+
     if (!object.isAttached) {
       parent.append(toggable);
       object.isAttached = true;
@@ -267,7 +268,7 @@ function showButton(object) {
 function hideButton(object) {
     var parent = object.parent;
     var toggable = object.button;
-    
+
     if (object.isAttached) {
       toggable.detach();
       object.isAttached = false;
@@ -275,28 +276,28 @@ function hideButton(object) {
 }
 
 jQuery(document).ready(function() {
-    
+
     if (!!window.FileReader && Modernizr.draganddrop) {
-        jQuery('#uploadContainer').css('display', 'block');
-        
+        jQuery('#appletContainer').remove();
+        jQuery('#html5Container').css('display', 'block');
+
         jQuery('#files').delegate('button', 'click', function(evt) {
             noop(evt);
             var fileContainer = jQuery(this).parent();
             index = fileContainer.index();
-            
+
             chosenFiles.splice(index, 1);
             jQuery(fileContainer).fadeOut(400, function() {
                 fileContainer.remove();
             });
             calcSize();
         });
-        jQuery('.appletUpload').remove();
-        
+
         jQuery('.toggable').each(function() {
           toggables[jQuery(this).attr('id')] = {
             'parent': jQuery(this).parent(),
             'button': jQuery(this),
-            'isAttached' : true 
+            'isAttached' : true
           };
         });
         toggleActions();

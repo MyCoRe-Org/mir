@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 
-<xsl:stylesheet 
-  version="1.0" 
+<xsl:stylesheet
+  version="1.0"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:xalan="http://xml.apache.org/xalan"
   xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
@@ -9,7 +9,7 @@
 >
 
 <xsl:param name="UploadID" />
-<xsl:param name="selectMultiple" select="'true'" /> 
+<xsl:param name="selectMultiple" select="'true'" />
 <xsl:param name="acceptFileTypes" select="'*'" />
 <xsl:param name="MCR.UploadApplet.BackgroundColor" select="'#CAD9E0'"/>
 
@@ -49,71 +49,93 @@
           </xsl:for-each>
           <xsl:copy-of select="@width|@height|noembed" />
         </embed>
-      </comment>    
+      </comment>
     </xsl:copy>
   </xsl:for-each>
 </xsl:variable>
 
 <xsl:template match="fileupload">
   <xsl:variable name="formUploadUrl" select="concat($WebApplicationBaseURL,'servlets/MCRUploadServlet',$HttpSession,'?method=formBasedUpload&amp;uploadId=',$UploadID)" />
-  
-  <div id="uploadContainer">
+
+  <div id="html5Container">
     <form id="uploadForm" action="{$formUploadUrl}" enctype="multipart/form-data" method="post">
-      <div class="row">
-        <label for="fileUpload"><xsl:value-of select="i18n:translate('fileUpload.dropAdvice')"/></label>
-        <br />
-        <input type="file" id="fileToUpload" name="file" onchange="fileSelected();" />
-        <div id="dropbox">
-          <div id="files"></div>
-          <h2 id="dropAdvice"><xsl:value-of select="i18n:translate('fileUpload.dropHint')"/></h2>
+
+      <div class="row" id="input_field">
+        <div class="col-xs-12">
+
+          <div class="form-group">
+            <p class="help-block"><xsl:value-of select="i18n:translate('fileUpload.dropAdvice')"/></p>
+            <input type="file" id="fileToUpload" name="file" onchange="fileSelected();" />
+          </div>
+
+          <div id="dropbox">
+            <div id="files"></div>
+            <h2 id="dropAdvice"><xsl:value-of select="i18n:translate('fileUpload.dropHint')"/></h2>
+            <span id="fileSize" class="label label-info"></span>
+          </div>
         </div>
       </div>
-      <div class="row">
-        <div id="fileSize" class="label"></div>
+
+      <div class="row" id="button_row">
+        <div class="col-xs-12">
+          <button id="backBtn"
+                  class="btn btn-primary action toggable"
+                  onclick="window.location.replace(document.referrer);" >
+            <xsl:value-of select="i18n:translate('fileUpload.back')"/>
+          </button>
+          <button id="clearBtn"
+                  class="pull-right btn btn-primary action toggable"
+                  onclick="clearFiles();" >
+            <xsl:value-of select="i18n:translate('fileUpload.clear')"/>
+          </button>
+          <button id="cancelBtn"
+                  class="pull-right btn btn-danger action toggable"
+                  onclick="cancelUpload();" >
+            <xsl:value-of select="i18n:translate('fileUpload.cancel')"/>
+          </button>
+          <button id="uploadBtn"
+                  class="pull-right btn btn-success action toggable"
+                  onclick="uploadFile();" >
+            <xsl:value-of select="i18n:translate('fileUpload.submit')"/>
+          </button>
+        </div>
       </div>
-      <div class="row" id="buttons">
-        <a onclick="uploadFile();" class="action toggable" id="uploadBtn"><xsl:value-of select="i18n:translate('fileUpload.submit')"/></a>
-        <a onclick="cancelUpload();" class="action toggable" id="cancelBtn"><xsl:value-of select="i18n:translate('fileUpload.cancel')"/></a>
-        <a onclick="clearFiles();" class="action toggable" id="clearBtn"><xsl:value-of select="i18n:translate('fileUpload.clear')"/></a>
-        <a onclick="window.location.replace(document.referrer);" class="action toggable" id="backBtn"><xsl:value-of select="i18n:translate('fileUpload.back')"/></a>
-      </div>
+
     </form>
     <div id="progressIndicator">
-      <div id="progressBar" class="floatLeft"></div>
-      <div id="progressNumber" class="floatRight"> </div>
-      <div class="clear"></div>
-      <div>
-        <div id="transferSpeedInfo" class="floatLeft" style="width: 80px;"> </div>
-        <div id="timeRemainingInfo" class="floatLeft" style="margin-left: 10px;"> </div>
-        <div id="transferBytesInfo" class="floatRight" style="text-align: right;"> </div>
-        <div class="clear"></div>
+
+      <div id="progressNumber" class="text-right"></div>
+      <div class="progress progress-striped active">
+        <div id="progressBar" class="progress-bar progress-bar-success"></div>
+      </div>
+      <div class="clearfix">
+        <div id="transferSpeedInfo" class="pull-left"></div>
+        <div id="timeRemainingInfo" class="pull-left"></div>
+        <div id="transferBytesInfo" class="pull-right"></div>
       </div>
       <div id="uploadResponse">
         <div id="uploadDone">
-          <p style="font-weight: bold;"></p>
+          <p></p>
         </div>
       </div>
     </div>
   </div>
-  
-  <!-- show applet if needed, modernizr to detect drag-and-drop capability -->
-  <script src="{$WebApplicationBaseURL}mir-layout/js/fileupload/modernizr.js" type="text/javascript" />
-  <script type="text/javascript">
-    if (!window.FileReader || !Modernizr.draganddrop) {
-      document.write('<xsl:copy-of select="translate($applet.tag,'&#10;',' ')"/>');
-    } 
-  </script>
-  <noscript>
+
+  <div id="appletContainer">
     <xsl:copy-of select="$applet.tag"/>
-  </noscript>
-  
-  <!-- Pre-define some variables used in the file upload javascript -->
+  </div>
+
+  <!-- load modernizr: to detect html5 and css3 capabilities -->
+  <script src="{$WebApplicationBaseURL}mir-layout/js/fileupload/modernizr.js" type="text/javascript" />
+  <!-- pre-define some variables used in the file upload javascript -->
   <script type="text/javascript">
     var formUploadUrl = '<xsl:value-of select="$formUploadUrl" />';
     var msgUploadSuccessful = '<xsl:value-of select="i18n:translate('fileUpload.success')"/>';
     var msgUploadFailed = '<xsl:value-of select="i18n:translate('fileUpload.failure')"/>';
   </script>
+  <!-- show html5 upload if possible and adjust updload -->
   <script src="{$WebApplicationBaseURL}mir-layout/js/fileupload/fileupload.js" type="text/javascript" />
+
 </xsl:template>
 
 </xsl:stylesheet>
