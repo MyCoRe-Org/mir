@@ -26,13 +26,18 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.StringTokenizer;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.log4j.Logger;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.output.XMLOutputter;
+import org.mycore.common.MCRSessionMgr;
 import org.mycore.common.config.MCRConfiguration;
 import org.mycore.common.content.MCRJDOMContent;
 import org.mycore.common.xml.MCRURIResolver;
+import org.mycore.frontend.MCRFrontendUtil;
 import org.mycore.frontend.servlets.MCRServlet;
 import org.mycore.frontend.servlets.MCRServletJob;
 
@@ -46,7 +51,10 @@ public class MIRWizardServlet extends MCRServlet {
     private static final Logger LOGGER = Logger.getLogger(MIRWizardServlet.class);
 
     public void doGetPost(final MCRServletJob job) throws Exception {
-        final String path = job.getRequest().getPathInfo();
+        final HttpServletRequest req = job.getRequest();
+        final HttpServletResponse res = job.getResponse();
+
+        final String path = req.getPathInfo();
 
         if (path != null) {
             final StringTokenizer st = new StringTokenizer(path, "/");
@@ -60,7 +68,7 @@ public class MIRWizardServlet extends MCRServlet {
             } else {
                 LOGGER.info("Request file \"" + request + "\"...");
                 getLayoutService().doLayout(job.getRequest(), job.getResponse(),
-                    new MCRJDOMContent(MCRURIResolver.instance().resolve("resource:setup/" + request)));
+                        new MCRJDOMContent(MCRURIResolver.instance().resolve("resource:setup/" + request)));
             }
         } else {
             final Document doc = (Document) (job.getRequest().getAttribute("MCRXEditorSubmission"));
@@ -69,6 +77,23 @@ public class MIRWizardServlet extends MCRServlet {
             LOGGER.debug(new XMLOutputter().outputString(wizXML));
 
             final Element resXML = new Element("wizard");
+
+            if (!MIRWizardRequestFilter.isAuthenticated(req)) {
+                final String loginToken = wizXML.getChildText("login");
+                String url = "wizard";
+
+                if (loginToken != null && MIRWizardRequestFilter.getLoginToken(req).equals(loginToken)) {
+                    LOGGER.info("Authenticate with token \"" + loginToken + "\"...");
+                    MCRSessionMgr.getCurrentSession().put(MIRWizardStartupHandler.LOGIN_TOKEN, loginToken);
+                } else {
+                    LOGGER.info("Redirect to login...");
+                    url += "/?action=login"
+                            + (!MIRWizardRequestFilter.getLoginToken(req).equals(loginToken) ? "&token=invalid" : "");
+                }
+                res.sendRedirect(res.encodeRedirectURL(MCRFrontendUtil.getBaseURL() + url));
+                return;
+            }
+
             final Element results = new Element("results");
 
             final Element commands = MCRURIResolver.instance().resolve("resource:setup/install.xml");
@@ -100,8 +125,8 @@ public class MIRWizardServlet extends MCRServlet {
                         chain.addCommand(cmd);
                     }
                 } catch (final ClassNotFoundException | NoSuchMethodException | SecurityException
-                    | InstantiationException | IllegalAccessException | IllegalArgumentException
-                    | InvocationTargetException e) {
+                        | InstantiationException | IllegalAccessException | IllegalArgumentException
+                        | InvocationTargetException e) {
                     LOGGER.error(e);
                 }
             }
@@ -130,8 +155,7 @@ public class MIRWizardServlet extends MCRServlet {
     }
 
     private void restoreProperty(MCRServletJob job, String property) {
-        String value = (String) job.getRequest().getServletContext()
-            .getAttribute(property);
+        String value = (String) job.getRequest().getServletContext().getAttribute(property);
         if (value != null) {
             LOGGER.info("Restoring " + property + "=" + value);
             MCRConfiguration.instance().set(property, value);

@@ -13,73 +13,99 @@
 
   <section xml:lang="all">
     <xed:form class="form-horizontal" role="form" xmlns:xed="http://www.mycore.de/xeditor" xmlns:wizard="http://www.mycore.de/mir/wizard">
-      <xed:post-processor xsl="wizard-postprocessor.xsl" />
-
       <xed:bind xpath="wizard">
-        <xed:bind xpath="mcr-properties">
-          <fieldset>
-            <legend>
-              <xed:output i18n="component.mir.wizard.solr.title" />
-            </legend>
-            <wizard:template name="textInput" xpath="property[@name='MCR.Module-solr.ServerURL']" id="solrURL" default="http://localhost:8291/solr/collection1"
-              i18n="component.mir.wizard.solr.url" i18n.error="component.mir.wizard.solr.url.required" required="true" />
-          </fieldset>
-          <fieldset>
-            <legend>
-              <xed:output i18n="component.mir.wizard.smtp.title" />
-            </legend>
-            <wizard:template name="textInput" xpath="property[@name='MCR.Mail.Server']" id="smtpHost" i18n="component.mir.wizard.smtp.host" />
-            <wizard:template name="textInput" xpath="property[@name='MCR.Mail.NumTries']" default="1" id="smtpNumTries" i18n="component.mir.wizard.smtp.numTries"
-              i18n.error="component.mir.wizard.smtp.numTries.error" validate="true" type="integer" min="1" max="10" />
-            <wizard:template name="textInput" xpath="property[@name='MCR.Mail.User']" id="smtpUser" i18n="component.mir.wizard.smtp.user" />
-            <wizard:template name="passwordInput" xpath="property[@name='MCR.Mail.Password']" id="smtpPassword" i18n="component.mir.wizard.smtp.password" />
-          </fieldset>
-        </xed:bind>
-        <fieldset>
-          <legend>
-            <xed:output i18n="component.mir.wizard.db.title" />
-          </legend>
-          <xed:bind xpath="database">
-            <wizard:template name="selectInput" xpath="driver" id="dbType" i18n="component.mir.wizard.db.type" i18n.error="component.mir.wizard.db.type.required"
-              required="true" uri="xslStyle:dbtypes2options:resource:setup/dbtypes.xml" />
-            <wizard:template name="textInput" xpath="url" id="dbURL" i18n="component.mir.wizard.db.url" i18n.error="component.mir.wizard.db.url.required"
-              required="true" />
-            <wizard:template name="textInput" xpath="username" id="dbUsername" i18n="component.mir.wizard.db.username" />
-            <wizard:template name="passwordInput" xpath="password" id="dbPassword" i18n="component.mir.wizard.db.password" />
-            <div class="form-group extraOptions">
-              <label class="col-md-3 control-label">
-                <xed:output i18n="component.mir.wizard.db.extraOptions" />
-              </label>
-              <div class="col-md-9 row">
-                <xed:bind xpath="extra_properties">
-                  <xed:repeat xpath="property">
-                    <wizard:template name="selectInput" xpath="@name" id="hibPropName" inline="true" colwidth="5"
-                      uri="resource:setup/hibernate-extra-properties.xml" />
-                    <wizard:template name="textInput" xpath="." id="hibPropValue" inline="true" colwidth="5" />
-                    <div class="col-md-2">
-                      <xed:controls>append remove</xed:controls>
-                    </div>
-                  </xed:repeat>
-                </xed:bind>
+        <xed:choose>
+          <xed:when test="$action = 'login'">
+            <fieldset>
+              <legend>
+                <xed:output i18n="component.mir.wizard.login.title" />
+              </legend>
+              <xed:if test="$token = 'invalid'">
+                <div class="alert alert-danger text-center" role="alert">
+                  <strong>
+                    <xed:output i18n="component.mir.wizard.login.loginToken.invalid" />
+                  </strong>
+                </div>
+              </xed:if>
+              <div class="alert alert-info text-center">
+                <xed:output i18n="component.mir.wizard.login.instuction" />
               </div>
-            </div>
-          </xed:bind>
-          <div class="pull-right">
-            <wizard:template name="submitButton" i18n="component.mir.wizard.save" target="servlet" href="MIRWizardServlet" />
-          </div>
-        </fieldset>
+              <wizard:template name="textInput" xpath="login" id="loginToken" i18n="component.mir.wizard.loginToken" i18n.error="component.mir.wizard.loginToken.required"
+                required="true" />
+              <div class="pull-right">
+                <wizard:template name="submitButton" i18n="component.mir.wizard.login.button" target="servlet" href="MIRWizardServlet" />
+              </div>
+            </fieldset>
+          </xed:when>
+          <xed:otherwise>
+            <xed:post-processor xsl="wizard-postprocessor.xsl" />
+
+            <xed:bind xpath="mcr-properties">
+              <fieldset>
+                <legend>
+                  <xed:output i18n="component.mir.wizard.solr.title" />
+                </legend>
+                <wizard:template name="textInput" xpath="property[@name='MCR.Module-solr.ServerURL']" id="solrURL"
+                  default="http://localhost:8291/solr/collection1" i18n="component.mir.wizard.solr.url" i18n.error="component.mir.wizard.solr.url.required"
+                  required="true" />
+              </fieldset>
+              <fieldset>
+                <legend>
+                  <xed:output i18n="component.mir.wizard.smtp.title" />
+                </legend>
+                <wizard:template name="textInput" xpath="property[@name='MCR.Mail.Server']" id="smtpHost" i18n="component.mir.wizard.smtp.host" />
+                <wizard:template name="textInput" xpath="property[@name='MCR.Mail.NumTries']" default="1" id="smtpNumTries"
+                  i18n="component.mir.wizard.smtp.numTries" i18n.error="component.mir.wizard.smtp.numTries.error" validate="true" type="integer" min="1" max="10" />
+                <wizard:template name="textInput" xpath="property[@name='MCR.Mail.User']" id="smtpUser" i18n="component.mir.wizard.smtp.user" />
+                <wizard:template name="passwordInput" xpath="property[@name='MCR.Mail.Password']" id="smtpPassword" i18n="component.mir.wizard.smtp.password" />
+              </fieldset>
+            </xed:bind>
+            <fieldset>
+              <legend>
+                <xed:output i18n="component.mir.wizard.db.title" />
+              </legend>
+              <xed:bind xpath="database">
+                <wizard:template name="selectInput" xpath="driver" id="dbType" i18n="component.mir.wizard.db.type" i18n.error="component.mir.wizard.db.type.required"
+                  required="true" uri="xslStyle:dbtypes2options:resource:setup/dbtypes.xml" />
+                <wizard:template name="textInput" xpath="url" id="dbURL" i18n="component.mir.wizard.db.url" i18n.error="component.mir.wizard.db.url.required"
+                  required="true" />
+                <wizard:template name="textInput" xpath="username" id="dbUsername" i18n="component.mir.wizard.db.username" />
+                <wizard:template name="passwordInput" xpath="password" id="dbPassword" i18n="component.mir.wizard.db.password" />
+                <div class="form-group extraOptions">
+                  <label class="col-md-3 control-label">
+                    <xed:output i18n="component.mir.wizard.db.extraOptions" />
+                  </label>
+                  <div class="col-md-9 row">
+                    <xed:bind xpath="extra_properties">
+                      <xed:repeat xpath="property">
+                        <wizard:template name="selectInput" xpath="@name" id="hibPropName" inline="true" colwidth="5"
+                          uri="resource:setup/hibernate-extra-properties.xml" />
+                        <wizard:template name="textInput" xpath="." id="hibPropValue" inline="true" colwidth="5" />
+                        <div class="col-md-2">
+                          <xed:controls>append remove</xed:controls>
+                        </div>
+                      </xed:repeat>
+                    </xed:bind>
+                  </div>
+                </div>
+              </xed:bind>
+              <div class="pull-right">
+                <wizard:template name="submitButton" i18n="component.mir.wizard.save" target="servlet" href="MIRWizardServlet" />
+              </div>
+            </fieldset>
+
+            <script type="text/javascript">
+              jQuery.wizard = { "dbToggleElms" : ["#dbURL", "#dbUsername", "#dbPassword", ".extraOptions > *"], "WebApplicationBaseURL" :
+              <xed:output i18n="component.mir.wizard.quote" value="$WebApplicationBaseURL" />
+              , "MCRDataDir":
+              <xed:output i18n="component.mir.wizard.quote" value="$MCR.datadir" />
+              };
+            </script>
+          </xed:otherwise>
+        </xed:choose>
       </xed:bind>
-      <script type="text/javascript">
-        jQuery.wizard = {
-        "dbToggleElms" : ["#dbURL", "#dbUsername", "#dbPassword", ".extraOptions > *"],
-        "WebApplicationBaseURL" :
-        <xed:output i18n="component.mir.wizard.quote" value="$WebApplicationBaseURL" />
-        ,
-        "MCRDataDir":
-        <xed:output i18n="component.mir.wizard.quote" value="$MCR.datadir" />
-        };
-      </script>
       <script type="text/javascript" src="{$WebApplicationBaseURL}wizard/js/wizard.js" />
+      <br />
     </xed:form>
   </section>
 

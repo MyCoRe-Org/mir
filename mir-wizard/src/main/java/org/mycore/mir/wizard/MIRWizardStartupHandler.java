@@ -24,6 +24,7 @@ package org.mycore.mir.wizard;
 
 import java.io.File;
 import java.util.EnumSet;
+import java.util.UUID;
 
 import javax.servlet.DispatcherType;
 import javax.servlet.FilterRegistration.Dynamic;
@@ -48,6 +49,8 @@ public class MIRWizardStartupHandler implements MCRStartupHandler.AutoExecutable
     static final String ACCESS_CLASS = "MCR.Access.Class";
 
     static final String ACCESS_STRATEGY_CLASS = "MCR.Access.Strategy.Class";
+
+    static final String LOGIN_TOKEN = "MCR.Wizard.LoginToken";
 
     private static final Logger LOGGER = Logger.getLogger(MIRWizardStartupHandler.class);
 
@@ -129,6 +132,12 @@ public class MIRWizardStartupHandler implements MCRStartupHandler.AutoExecutable
             servletContext.setAttribute(ACCESS_STRATEGY_CLASS, config.getString(ACCESS_STRATEGY_CLASS, null));
             config.set(ACCESS_CLASS, MCRAccessBaseImpl.class.getName());
             config.set(ACCESS_STRATEGY_CLASS, MCRObjectIDStrategy.class.getName());
+
+            //generate UUID as login token
+            final String token = UUID.randomUUID().toString();
+            servletContext.setAttribute(LOGIN_TOKEN, token);
+            LOGGER.info("\u001b[41m\u001b[1;37mLogin token: " + token + "\u001b[m");
+
         }
     }
 

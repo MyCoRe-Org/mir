@@ -36,6 +36,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
+import org.mycore.common.MCRSessionMgr;
 import org.mycore.common.config.MCRConfigurationDir;
 
 /**
@@ -79,12 +80,12 @@ public class MIRWizardRequestFilter implements Filter {
             HttpServletRequest req = (HttpServletRequest) request;
             HttpServletResponse res = (HttpServletResponse) response;
 
-            String uri = req.getRequestURI();
+            final String uri = req.getRequestURI();
 
             if (!isWizardRunning && !uri.contains("wizard")) {
                 isWizardRunning = true;
                 LOGGER.info("Requested Resource " + uri);
-                res.sendRedirect(req.getContextPath() + "/wizard");
+                res.sendRedirect(req.getContextPath() + "/wizard" + (!isAuthenticated(req) ? "/?action=login" : ""));
                 return;
             } else if (!isWizardRunning) {
                 isWizardRunning = true;
@@ -102,4 +103,18 @@ public class MIRWizardRequestFilter implements Filter {
         // Nothing to do
     }
 
+    static boolean isAuthenticated(HttpServletRequest req) {
+        final String genToken = getLoginToken(req);
+        final String loginToken = (String) MCRSessionMgr.getCurrentSession().get(MIRWizardStartupHandler.LOGIN_TOKEN);
+
+        if (loginToken == null || !genToken.equals(loginToken)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    static String getLoginToken(HttpServletRequest req) {
+        return (String) req.getServletContext().getAttribute(MIRWizardStartupHandler.LOGIN_TOKEN);
+    }
 }
