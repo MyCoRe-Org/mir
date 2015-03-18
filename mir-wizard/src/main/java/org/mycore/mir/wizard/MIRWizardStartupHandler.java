@@ -37,7 +37,6 @@ import org.mycore.common.config.MCRConfiguration;
 import org.mycore.common.config.MCRConfigurationDir;
 import org.mycore.common.events.MCRShutdownHandler;
 import org.mycore.common.events.MCRStartupHandler;
-import org.mycore.datamodel.metadata.MCRObjectID;
 
 /**
  * Default {@link MCRStartupHandler} for MIR Wizard.
