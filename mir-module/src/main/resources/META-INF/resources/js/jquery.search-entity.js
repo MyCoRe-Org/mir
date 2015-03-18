@@ -67,15 +67,30 @@
 				dataType : "jsonp",
 			},
 			organisation : {
-				enabled : false,
-				url : "http://lobid.org/organisation",
+				enabled : true,
+				url : "http://ws.gbv.de/suggest/gnd/",
 				data : function(input) {
 					return {
-						name : input,
-						format : "ids"
+						searchterm : input,
+						type : "CorporateBody"
 					}
 				},
 				dataType : "jsonp",
+				dataConvert : function(data) {
+					var result = [];
+					if (data.length == 4) {
+						$(data[1]).each(function(index, item) {
+							if (data[2][index] === "CorporateBody") {
+								var organisation = {
+									label : item,
+									value : data[3][index]
+								};
+								result.push(organisation);
+							}
+						});
+					}
+					return result;
+				}
 			}
 		},
 		VIAF : {
