@@ -15,7 +15,7 @@
   <xsl:param name="MIR.CustomLayout.JS" select="''" />
   <xsl:param name="MIR.Layout.Theme" select="'flatmir'" />
   <!-- Various versions -->
-  <xsl:variable name="bootstrap.version" select="'3.3.1'" />
+  <xsl:variable name="bootstrap.version" select="'3.3.4'" />
   <xsl:variable name="bootswatch.version" select="$bootstrap.version" />
   <xsl:variable name="fontawesome.version" select="'4.2.0'" />
   <xsl:variable name="jquery.version" select="'2.1.1'" />
