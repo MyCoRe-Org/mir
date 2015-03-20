@@ -2,6 +2,7 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:mcrmods="xalan://org.mycore.mods.MCRMODSClassificationSupport"
   xmlns:mods="http://www.loc.gov/mods/v3">
   <xsl:include href="copynodes.xsl" />
+  <xsl:param name="MCR.Metadata.Service.State.Category.Default" select="'submitted'" />
   <xsl:variable name="id" select="/mycoreobject/@ID" />
   <xsl:variable name="oldstatus"
     select="mcrmods:getClassCategLink(/mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:classification[@authorityURI='http://www.mycore.org/classifications/mir_status'])" />
@@ -28,10 +29,11 @@
                 <xsl:value-of select="$state/@ID" />
               </xsl:when>
               <xsl:when test="not(servstates)">
+                <xsL:variable name="default" select="$MCR.Metadata.Service.State.Category.Default" />
                 <xsl:message>
-                  <xsl:value-of select="concat('Setting state of ',$id,' to submitted.')" />
+                  <xsl:value-of select="concat('Setting state of ',$id,' to default value ',$default,'.')" />
                 </xsl:message>
-                <xsl:value-of select="'submitted'" />
+                <xsl:value-of select="$default" />
               </xsl:when>
             </xsl:choose>
             </xsl:attribute>
