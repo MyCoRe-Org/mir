@@ -3,38 +3,47 @@
 
 <MyCoReWebPage>
 
-<section title="Dateien oder Verzeichnisse hochladen" xml:lang="de">
-  <fileupload/>
-  <p>
-    Hinweis: Für die Verwendung des hier bereitgestellten Java-Applets zum Hochladen von Daten und Verzeichnissen
-    benötigen Sie ein Java-Plugin. Informationen zur Installation erhalten Sie z.B. auf den Seiten von Mozilla Firefox:
-    <a href="https://support.mozilla.org/de/kb/java-plugin-fuer-interaktive-webinhalte-nutzen">Das Java-Plugin für
-    interaktive Webinhalte nutzen</a>
-  </p>
-</section>
+  <section title="Dateien oder Verzeichnisse hochladen" xml:lang="de" />
+  <section title="Upload of files or directories" xml:lang="en" />
 
-<section title="Upload of files or directories" xml:lang="en">
-  <fileupload/>
-  <p>
-    Attention: You need a java plugin to use this Java applet. For more information look e.g. at mozilla webpage:
-    <a href="https://support.mozilla.org/en-US/kb/use-java-plugin-to-view-interactive-content">Use the Java plugin
-    to view interactive content on websites</a>
-  </p>
-</section>
+  <section xml:lang="all">
 
-<section xml:lang="all">
-  <editor id="commit-addfile">
-    <target type="servlet" name="MCRUploadServlet" method="post" format="xml" />
-    <cancel url="{cancelUrl}" />
+    <div id="fileUpload" role="tabpanel">
 
-    <components root="fileupload" var="/upload">
-      <headline anchor="CENTER">
-        <text i18n="editor.common.addFile" />
-      </headline>
-      <include uri="webapp:editor/imports-fileupload.xml" />
-    </components>
-  </editor>
-</section>
+      <!-- Nav tabs -->
+      <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="active" id="tabModern">
+          <a href="#modern" aria-controls="modern" role="tab" data-toggle="tab">Moderner Dateiupload</a>
+        </li>
+        <li role="presentation" id="tabClassic">
+          <a href="#classic" aria-controls="classic" role="tab" data-toggle="tab">Klassischer Dateiupload</a>
+        </li>
+      </ul>
 
+      <!-- Tab panes -->
+      <div class="tab-content">
+
+        <div role="tabpanel" class="tab-pane active" id="modern">
+          <fileupload/>
+        </div>
+
+        <div role="tabpanel" class="tab-pane" id="classic">
+          <editor id="commit-addfile">
+            <target type="servlet" name="MCRUploadServlet" method="post" format="xml" />
+            <cancel url="{cancelUrl}" />
+
+            <components root="fileupload" var="/upload">
+              <headline anchor="CENTER">
+                <text i18n="editor.common.addFile" />
+              </headline>
+              <include uri="webapp:editor/imports-fileupload.xml" />
+            </components>
+          </editor>
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
 </MyCoReWebPage>
-

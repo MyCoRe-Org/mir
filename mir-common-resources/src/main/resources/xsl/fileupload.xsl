@@ -123,6 +123,9 @@
 
   <div id="appletContainer">
     <xsl:copy-of select="$applet.tag"/>
+    <p>
+      <xsl:value-of select="i18n:translate('fileUpload.appletInfo')"/>
+    </p>
   </div>
 
   <!-- load modernizr: to detect html5 and css3 capabilities -->
