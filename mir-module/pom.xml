@@ -34,6 +34,7 @@
           <archive>
             <manifest>
               <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+              <mainClass>org.mycore.mir.common.MIRCoreVersion</mainClass>
               <addExtensions />
             </manifest>
             <manifestEntries>
@@ -41,6 +42,23 @@
               <MCR-Application-Module>${project.name}</MCR-Application-Module>
             </manifestEntries>
           </archive>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>buildnumber-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <phase>validate</phase>
+            <goals>
+              <goal>create</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <doCheck>false</doCheck>
+          <doUpdate>true</doUpdate>
+          <revisionOnScmFailure>0</revisionOnScmFailure>
         </configuration>
       </plugin>
     </plugins>
