@@ -78,11 +78,12 @@
 
       <div class="row" id="button_row">
         <div class="col-xs-12">
-          <button id="backBtn"
+          <a id="backBtn"
                   class="btn btn-primary action toggable"
-                  onclick="window.location.replace(document.referrer);" >
+                  onclick="window.location.replace(document.referrer);"
+                  href="#">
             <xsl:value-of select="i18n:translate('fileUpload.back')"/>
-          </button>
+          </a>
           <button id="clearBtn"
                   class="pull-right btn btn-primary action toggable"
                   onclick="clearFiles();" >
