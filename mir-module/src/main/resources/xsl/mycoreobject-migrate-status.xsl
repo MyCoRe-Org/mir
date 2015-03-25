@@ -29,7 +29,7 @@
                 <xsl:value-of select="$state/@ID" />
               </xsl:when>
               <xsl:when test="not(servstates)">
-                <xsL:variable name="default" select="$MCR.Metadata.Service.State.Category.Default" />
+                <xsl:variable name="default" select="$MCR.Metadata.Service.State.Category.Default" />
                 <xsl:message>
                   <xsl:value-of select="concat('Setting state of ',$id,' to default value ',$default,'.')" />
                 </xsl:message>
