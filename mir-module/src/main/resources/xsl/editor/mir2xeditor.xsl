@@ -40,7 +40,7 @@
   </xsl:template>
 
   <xsl:template match="mir:role.repeated">
-    <xed:repeat xpath="mods:name[@type='personal']" min="1" max="100">
+    <xed:repeat xpath="mods:name[@type='personal'][mods:role/mods:roleTerm[@type='code'][@authority='marcrelator']='{@role}']" min="1" max="100">
       <xed:bind xpath="mods:displayForm"> <!-- Move down to get the "required" validation right -->
         <div>
           <xsl:attribute name="class">form-group {$xed-validation-marker}</xsl:attribute>
@@ -50,7 +50,6 @@
             </label>
             <div class="col-md-6">
               <div class="controls">
-                <xed:bind xpath="mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']" default="{@role}" />
                 <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="person.fields" />
               </div>
             </div>
