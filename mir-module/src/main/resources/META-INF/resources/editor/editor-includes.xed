@@ -758,10 +758,8 @@
         </div>
         <div class="col-md-6">
           <div class="controls form-inline">
-            <xed:bind xpath="@xlink:href">
-              <input type="submit" xed:target="subselect" xed:href="../servlets/solr/find?qry=&amp;XSL.Style=subselect" value="{i18n:mir.editing.related.select}" />
-              <xed:output value="@xlink:href" />
-            </xed:bind>
+            <input type="submit" xed:target="subselect" xed:href="../servlets/solr/find?qry=&amp;XSL.Style=subselect" value="{i18n:mir.editing.related.select}" />
+            <xed:output value="@xlink:href" />
           </div>
           <xed:if test="string-length(@xlink:href) &gt; 0">
             <div class="controls">
