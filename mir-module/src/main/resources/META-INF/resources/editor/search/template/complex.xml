@@ -11,7 +11,7 @@
           <condition field="category.top" operator="=" />
           <condition field="category.top" operator="=" />
           <condition field="hasFiles" operator="=" value="true" />
-          <condition field="category.top" operator="=" value="state:published" />
+          <condition field="state" operator="=" value="published" />
         </boolean>
       </boolean>
       <condition field="objectType" operator="=" value="mods" />

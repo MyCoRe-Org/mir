@@ -59,7 +59,7 @@
                    <textfield width="40" />
                 </cell>
             <!-- Search in field "category/institutes" with operator "=" -->
-                <hidden var="condition10/@field" default="category" />
+                <hidden var="condition10/@field" default="category.top" />
                 <hidden var="condition10/@operator" default="=" />
                 <cell row="10" col="1" anchor="NORTHEAST">
                   <text i18n="editor.search.mir.institute" />
@@ -74,7 +74,7 @@
                   </list>
                 </cell>
             <!-- Search in field "category/sdnb" with operator "=" -->
-                <hidden var="condition20/@field" default="category" />
+                <hidden var="condition20/@field" default="category.top" />
                 <hidden var="condition20/@operator" default="=" />
                 <cell row="20" col="1" anchor="NORTHEAST">
                   <text i18n="editor.search.mir.sdnb" />
@@ -89,7 +89,7 @@
                   </list>
                 </cell>
             <!-- Search in field "category/genre" with operator "=" -->
-                <hidden var="condition30/@field" default="category" />
+                <hidden var="condition30/@field" default="category.top" />
                 <hidden var="condition30/@operator" default="=" />
                 <cell row="30" col="1" anchor="NORTHEAST">
                   <text i18n="editor.search.mir.genre" />
@@ -133,7 +133,7 @@
                   <checkbox value="true" checked="false" />
                 </cell>
             <!-- search in field publication status -->
-                <hidden var="condition70/@field" default="category" />
+                <hidden var="condition70/@field" default="state" />
                 <hidden var="condition70/@operator" default="=" />
                 <cell row="70" col="1" anchor="NORTHEAST">
                   <text i18n="component.mods.metaData.dictionary.status" />

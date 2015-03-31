@@ -81,14 +81,14 @@
                   <mir:template name="textInput" xpath="condition[@field='id,isbn,mods.identifier']/@value" id="inputIdentifier1"
                     i18n="editor.search.mir.identifier" tooltip="editor.search.mir.identifier.tooltip" />
             <!-- Institution -->
-                  <mir:template name="selectInput" xpath="condition[@field='category'][1]/@value" id="inputInst1"
+                  <mir:template name="selectInput" xpath="condition[@field='category.top'][1]/@value" id="inputInst1"
                     i18n="editor.search.mir.institute" tooltip="editor.search.mir.institute.tooltip"
                     uri="xslStyle:items2options:classification:editorComplete:-1:children:mir_institutes" />
             <!-- DNB Sachgruppe -->
-                  <mir:template name="selectInput" xpath="condition[@field='category'][2]/@value" id="inputSDNB1" i18n="editor.search.mir.sdnb"
+                  <mir:template name="selectInput" xpath="condition[@field='category.top'][2]/@value" id="inputSDNB1" i18n="editor.search.mir.sdnb"
                     uri="xslStyle:items2options:classification:editorComplete:-1:children:SDNB" />
             <!-- Genre -->
-                  <mir:template name="selectInput" xpath="condition[@field='category'][3]/@value" id="inputGenre1" i18n="editor.search.mir.genre"
+                  <mir:template name="selectInput" xpath="condition[@field='category.top'][3]/@value" id="inputGenre1" i18n="editor.search.mir.genre"
                     uri="xslStyle:items2options:classification:editorComplete:-1:children:mir_genres" />
             <!-- Datum -->
                   <div class="form-group">

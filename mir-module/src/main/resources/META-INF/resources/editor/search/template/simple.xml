@@ -7,7 +7,7 @@
       <condition field="allMeta" operator="contains" />
       <condition field="content" operator="contains" />
       <condition field="category.top" operator="=" />
-      <condition field="category.top" operator="=" value="state:published" />
+      <condition field="state" operator="=" value="published" />
     </boolean>
   </conditions>
 </query>
