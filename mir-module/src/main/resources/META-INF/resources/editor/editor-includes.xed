@@ -759,11 +759,9 @@
         <div class="col-md-6">
           <div class="controls form-inline">
             <xed:bind xpath="@xlink:href">
-              <input type="text" class="form-control form-control-inline" size="25" placeholder="{i18n:mir.editing.related.id}" />
+              <input type="submit" xed:target="subselect" xed:href="../servlets/solr/find?qry=&amp;XSL.Style=subselect" value="{i18n:mir.editing.related.select}" />
+              <xed:output value="@xlink:href" />
             </xed:bind>
-            <button type="submit" class="btn btn-default" xed:target="subselect" xed:href="../../mir/search/search-advanced.xed">
-              <xed:output i18n="mir.editing.related.select" />
-            </button>
           </div>
           <xed:if test="string-length(@xlink:href) &gt; 0">
             <div class="controls">
