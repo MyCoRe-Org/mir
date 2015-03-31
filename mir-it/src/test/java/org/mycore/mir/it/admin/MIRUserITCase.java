@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package org.mycore.mir.it.admin;
 
@@ -20,9 +20,9 @@ public class MIRUserITCase extends MIRBaseITCase {
         goToStart();
         loginAs(ADMIN_LOGIN, ADMIN_PASSWD);
         MIRUserHelper.createUser(getDriver(), "submitter", "submitter123", "submitter");
-        MIRUserHelper.createUser(getDriver(), "allGroups", "password123", "reader", "submitter", "editor", "admin");
+        MIRUserHelper.createUser(getDriver(), "allgroups", "password123", "reader", "submitter", "editor", "admin");
         MIRUserHelper.deleteUser(getDriver(), "submitter");
-        MIRUserHelper.deleteUser(getDriver(), "allGroups");
+        MIRUserHelper.deleteUser(getDriver(), "allgroups");
         logOff();
     }
 
