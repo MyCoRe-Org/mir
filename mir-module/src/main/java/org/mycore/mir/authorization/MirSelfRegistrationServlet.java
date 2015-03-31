@@ -82,6 +82,11 @@ public class MirSelfRegistrationServlet extends MCRServlet {
         }
 
         final Document doc = (Document) (req.getAttribute("MCRXEditorSubmission"));
+
+        if (doc == null) {
+            res.sendRedirect(MCRFrontendUtil.getBaseURL() + "authorization/new-author.xed");
+        }
+
         final Element u = doc.getRootElement();
 
         final MCRUser user = MCRUserTransformer.buildMCRUser(u);
