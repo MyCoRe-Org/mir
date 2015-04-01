@@ -15,10 +15,10 @@
   <properties>
     <java.target.version>1.7</java.target.version>
     <mycore.version>2015.03-SNAPSHOT</mycore.version>
-    <jetty.version>9.2.8.v20150217</jetty.version>
+    <jetty.version>9.2.10.v20150310</jetty.version>
     <tomcat7.version>7.0.59</tomcat7.version>
-    <tomcat8.version>8.0.18</tomcat8.version>
-    <cargo.version>1.4.12</cargo.version>
+    <tomcat8.version>8.0.21</tomcat8.version>
+    <cargo.version>1.4.13</cargo.version>
     <cargo.servlet.uriencoding>UTF-8</cargo.servlet.uriencoding>
     <cargo.container.zipUrlInstaller.downloadDir>${settings.localRepository}/../cargo/containers</cargo.container.zipUrlInstaller.downloadDir>
     <cargo.deployable.default.groupId>${project.groupId}</cargo.deployable.default.groupId>
