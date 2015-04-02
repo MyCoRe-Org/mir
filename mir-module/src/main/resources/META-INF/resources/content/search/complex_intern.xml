@@ -144,7 +144,7 @@
                       <label xml:lang="de">(bitte wählen)</label>
                       <label xml:lang="en">(please select)</label>
                     </item>
-                    <include uri="classification:editorComplete:-1:children:state" cacheable="true" />
+                    <include uri="classification:editor:-1:children:state" cacheable="true" />
                   </list>
                 </cell>
 

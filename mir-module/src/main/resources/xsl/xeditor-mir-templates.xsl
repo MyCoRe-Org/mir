@@ -52,14 +52,14 @@
   <!-- MODE=widget -->
 
   <xsl:template match="mir:template[@name='textInput']" mode="widget">
-    <input type="text" class="form-control" id="{@id}">
+    <input type="text" class="form-control" id="{@id}_input">
       <xsl:attribute name="placeholder">
         <xsl:value-of select="concat('{i18n:',@i18n,'}')" />
       </xsl:attribute>
     </input>
   </xsl:template>
   <xsl:template match="mir:template[@name='selectInput']" mode="widget">
-    <select class="form-control" id="inputInst1">
+    <select class="form-control" id="{@id}_select">
       <option value="">
         <xed:multi-lang>
           <xed:lang xml:lang="de">(bitte wählen)</xed:lang>
