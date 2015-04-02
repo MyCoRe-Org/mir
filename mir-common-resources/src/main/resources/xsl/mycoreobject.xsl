@@ -23,7 +23,7 @@
   <xsl:param name="nextObject" />
   <xsl:param name="nextObjectHost" />
 
-  <xsl:template match="/mycoreobject">
+  <xsl:template match="/mycoreobject" priority="0">
     <xsl:variable name="obj_host">
       <xsl:value-of select="$objectHost" />
     </xsl:variable>
