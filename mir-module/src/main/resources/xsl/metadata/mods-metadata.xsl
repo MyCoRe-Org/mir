@@ -73,7 +73,7 @@
             <xsl:with-param name="class" select="$class" />
             <xsl:with-param name="title" select="$title" />
             <xsl:with-param name="linkText" select="$classText" />
-            <xsl:with-param name="query" select="concat('%2Bcategory%3A&quot;',/mycoreclass/@ID,'%3A',@ID,'&quot;')" />
+            <xsl:with-param name="query" select="concat('%2Bcategory.top%3A&quot;',/mycoreclass/@ID,'%3A',@ID,'&quot;')" />
           </xsl:call-template>
         </xsl:for-each>
       </xsl:when>
@@ -90,7 +90,7 @@
     <xsl:param name="title" />
     <xsl:param name="linkText" />
     <xsl:param name="query" />
-    <a href="{$ServletsBaseURL}solr/select?q={$query}">
+    <a href="{$ServletsBaseURL}solr/find?qry={$query}">
       <xsl:if test="$title">
         <xsl:attribute name="title">
           <xsl:value-of select="$title" />

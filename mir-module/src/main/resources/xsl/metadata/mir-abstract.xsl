@@ -130,7 +130,7 @@
           <xsl:value-of select="concat($ServletsBaseURL,'solr/mods_gnd?q=',$gnd)" />
         </xsl:when>
         <xsl:otherwise>
-          <xsl:value-of select="concat($ServletsBaseURL,'solr/select?q=')" />
+          <xsl:value-of select="concat($ServletsBaseURL,'solr/find?qry=')" />
           <xsl:value-of select="concat('+mods.author:&quot;',mods:displayForm,'&quot;')" />
         </xsl:otherwise>
       </xsl:choose>
