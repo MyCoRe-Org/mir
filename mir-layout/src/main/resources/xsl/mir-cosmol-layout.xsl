@@ -55,7 +55,9 @@
           <div id="head" class="container">
             <div class="row">
               <div id="header_back">
+                <img id="header_ratio" src="{$WebApplicationBaseURL}mir-layout/images/cosmol/header_ratio_117x18.png" />
                 <a id="header_top" href="{$WebApplicationBaseURL}">
+                    <img id="logo_ratio" src="{$WebApplicationBaseURL}mir-layout/images/cosmol/logo_ratio_267x117.png" />
                     <span id="project_name">mods institutional repository</span>
                 </a>
               </div>

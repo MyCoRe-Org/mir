@@ -4,20 +4,34 @@ header {
         .row {
             position: relative;
             #header_back {
+                position: relative;
                 width: 100%;
-                height: 180px;
+                height: auto;
                 background-image: url('../../images/cosmol/header.jpg');
                 background-repeat: no-repeat;
+                background-size: cover;
+                background-position: top left;
+
+                #header_ratio {
+                  width: 100%;
+                }
             }
             #header_top {
                 position: absolute;
-                top: 30px;
-                left: 20px;
-                width: 267px;
-                height: 117px;
+                top: 15%;
+                left: 5%;
+                width: 25%;
                 background-image: url('../../images/cosmol/logo.png');
                 background-repeat: no-repeat;
+                background-size: cover;
+                background-position: top left;
                 color: transparent;
+                font-size: 0;
+                line-height: 0;
+
+                #logo_ratio {
+                  width: 100%;
+                }
             }
         }
     }
