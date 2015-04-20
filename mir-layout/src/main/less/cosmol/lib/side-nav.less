@@ -17,11 +17,30 @@
     background-color: transparent;
     margin: 10px 10px;
 
+    #project_home_link {
+      margin-bottom: 30px;
+      width: 100%;
+      a {
+        color: @brand-primary;
+        font-size: 18px;
+        border: 1px solid #ccc;
+        border-width: 0px 0px 1px 0px;
+        padding: 4px 20px;
+        display: block;
+
+        &:hover,
+        &:focus {
+          color: @brand-warning;
+          text-decoration: none;
+        }
+      }
+    }
+
     nav {
       padding-left: 0px;
 
       .navbar-form {
-        margin: 0px 0px 20px 15px;
+        margin: 0px 0px 30px 15px;
         padding: 0px;
         border: none;
 

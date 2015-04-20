@@ -16,6 +16,10 @@
   <xsl:template name="mir.navigation">
     <div class="navbar navbar-default mir-side-nav">
       <nav class="mir-main-nav-entries">
+        <div id="project_home_link">
+          <!-- TODO: do it i18n -->
+          <a href="{$WebApplicationBaseURL}">Start</a>
+        </div>
         <form action="{$WebApplicationBaseURL}servlets/solr/find?qry={0}" class="navbar-form form-inline" role="search">
           <div class="form-group">
             <input name="qry" placeholder="Suche" class="form-control search-query" id="searchInput" type="text" />
