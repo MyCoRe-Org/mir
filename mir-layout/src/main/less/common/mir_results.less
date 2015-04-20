@@ -408,6 +408,39 @@
         }
       }
 
+/* filter *******************************************************************/
+
+.filter {
+    border-right: 0px solid #ccc;
+}
+.filter,
+.filter > li ul {
+    list-style:none;
+    margin:0;
+    padding:0;
+}
+.filter > li ul {
+    display:none;
+}
+.filter > li {
+    margin:0 0 0px 0;
+    padding:0 0 0 0;
+}
+.filter > li > ul > li {
+    margin:0 0 0px 0px;
+    padding:0 0 0 0;
+}
+.filter .hits {
+    color: #ccc;
+}
+.filter .hits:before {
+    content: " (";
+}
+.filter .hits:after {
+    content: ")";
+}
+
+
 /* xs: default up to 750px ***************************************************/
 
 
