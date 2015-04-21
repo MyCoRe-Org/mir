@@ -10,13 +10,16 @@
     <xed:bind xpath="{@xpath}">
       <div>
         <xsl:attribute name="class">form-group {$xed-validation-marker}</xsl:attribute>
-        <label class="col-md-3 control-label {@class}">
+        <label class="col-md-2 control-label {@class}">
           <xed:output i18n="{@label}" />
         </label>
         <div class="col-md-6">
           <input type="text" class="form-control">
             <xsl:copy-of select="@placeholder" />
           </input>
+        </div>
+        <div class="col-md-1">
+          <span class="btn btn-default info-button" data-original-title="{@help-text}" data-toggle="tooltip" data-placement="right" title=""><i class="fa fa-info"></i></span>
         </div>
       </div>
     </xed:bind>
@@ -26,7 +29,7 @@
     <xed:bind xpath="{@xpath}">
       <div>
         <xsl:attribute name="class">form-group {$xed-validation-marker}</xsl:attribute>
-        <label class="col-md-3 control-label {@class}">
+        <label class="col-md-2 control-label {@class}">
           <xed:output i18n="{@label}" />
         </label>
         <div class="col-md-6">
@@ -34,6 +37,9 @@
             <xsl:copy-of select="@rows" />
             <xsl:copy-of select="@placeholder" />
           </textarea>
+        </div>
+        <div class="col-md-1">
+          <span class="btn btn-default info-button" data-original-title="{@help-text}" data-toggle="tooltip" data-placement="right" title=""><i class="fa fa-info"></i></span>
         </div>
       </div>
     </xed:bind>
@@ -45,13 +51,16 @@
         <div>
           <xsl:attribute name="class">form-group {$xed-validation-marker}</xsl:attribute>
           <xed:bind xpath=".."> <!-- Move up again after validation marker is set -->
-            <label class="col-md-3 control-label {@class}">
+            <label class="col-md-2 control-label {@class}">
               <xed:output i18n="{@label}" />
             </label>
             <div class="col-md-6">
               <div class="controls">
                 <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="person.fields" />
               </div>
+            </div>
+            <div class="col-md-1">
+              <span class="btn btn-default info-button" data-original-title="{@help-text}" data-toggle="tooltip" data-placement="right" title=""><i class="fa fa-info"></i></span>
             </div>
             <xsl:call-template name="mir-pmud" />
           </xed:bind>
@@ -66,7 +75,7 @@
         <div>
           <xsl:attribute name="class">form-group {$xed-validation-marker}</xsl:attribute>
           <xed:bind xpath=".."> <!-- Move up again after validation marker is set -->
-            <div class="col-md-3" style="text-align:right; font-weight:bold;">
+            <div class="col-md-2" style="text-align:right; font-weight:bold;">
               <xed:bind xpath="mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']" initially="aut">
                 <select class="form-control form-control-inline">
                   <xsl:apply-templates select="*" />
@@ -75,6 +84,9 @@
             </div>
             <div class="col-md-6">
               <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="person.fields" />
+            </div>
+            <div class="col-md-1">
+              <span class="btn btn-default info-button" data-original-title="{@help-text}" data-toggle="tooltip" data-placement="right" title=""><i class="fa fa-info"></i></span>
             </div>
             <xsl:call-template name="mir-pmud" />
           </xed:bind>
@@ -88,7 +100,7 @@
   </xsl:template>
 
   <xsl:template name="mir-pmud">
-    <div class="form-pmud">
+    <div class="form-pmud col-md-3">
       <span>
         <xed:controls>insert</xed:controls>
       </span>

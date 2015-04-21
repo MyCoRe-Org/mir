@@ -21,7 +21,7 @@
 
   <xed:template id="genre">
     <div class="form-group">
-      <label class="col-md-3 control-label">
+      <label class="col-md-2 control-label">
         <xed:output i18n="component.mods.genre" />
       </label>
       <xed:repeat xpath="mods:genre[@type='intern'][@authorityURI='http://www.mycore.org/classifications/mir_genres']" min="1" max="10">
@@ -34,6 +34,9 @@
             </xed:bind>
           </div>
         </div>
+        <div class="col-md-1">
+          <span class="btn btn-default info-button" data-original-title="{i18n:mir.help.genre}" data-toggle="tooltip" data-placement="right" title=""><i class="fa fa-info"></i></span>
+        </div>
         <mir:pmud />
       </xed:repeat>
     </div>
@@ -41,7 +44,7 @@
 
   <xed:template id="status">
     <div class="form-group">
-      <label class="col-md-3 control-label">
+      <label class="col-md-2 control-label">
         <xed:output i18n="component.mods.metaData.dictionary.status" />
       </label>
       <xed:bind xpath="servstates[@class='MCRMetaClassification']/servstate[@classid='state']/@categid" initially="submitted">
@@ -53,88 +56,93 @@
           </div>
         </div>
       </xed:bind>
+      <div class="col-md-1">
+        <span class="btn btn-default info-button" data-original-title="{i18n:mir.help.status}" data-toggle="tooltip" data-placement="right" title=""><i class="fa fa-info"></i></span>
+      </div>
     </div>
   </xed:template>
 
   <xed:template id="title">
-    <mir:textfield xpath="mods:titleInfo/mods:title" label="mir.title" class="required" />
+    <mir:textfield xpath="mods:titleInfo/mods:title" label="mir.title" help-text="{i18n:mir.help.title}" class="required" />
   </xed:template>
 
   <xed:template id="title.abbreviated">
-    <mir:textfield xpath="mods:titleInfo[@type='abbreviated']/mods:title" label="mir.title.type.abbreviated" />
+    <mir:textfield xpath="mods:titleInfo[@type='abbreviated']/mods:title" label="mir.title.type.abbreviated" help-text="{i18n:mir.help.title.abbreviated}" />
   </xed:template>
 
   <xed:template id="title.journal">
-    <mir:textfield xpath="mods:titleInfo/mods:title" label="mir.title.journal" />
+    <mir:textfield xpath="mods:titleInfo/mods:title" label="mir.title.journal" help-text="{i18n:mir.help.title.journal}" />
   </xed:template>
 
   <xed:template id="title.newspaper">
-    <mir:textfield xpath="mods:titleInfo/mods:title" label="mir.title.newspaper" />
+    <mir:textfield xpath="mods:titleInfo/mods:title" label="mir.title.newspaper" help-text="{i18n:mir.help.title.newspaper}" />
   </xed:template>
 
   <xed:template id="series.title">
-    <mir:textfield xpath="mods:titleInfo/mods:title" label="mir.series.title" placeholder="{i18n:mir.placeholder.series.title}" />
+    <mir:textfield xpath="mods:titleInfo/mods:title" label="mir.series.title" help-text="{i18n:mir.help.series.title}" placeholder="{i18n:mir.placeholder.series.title}" />
   </xed:template>
 
   <xed:template id="subtitle">
-    <mir:textfield xpath="mods:titleInfo/mods:subTitle" label="mir.title.subTitle" />
+    <mir:textfield xpath="mods:titleInfo/mods:subTitle" label="mir.title.subTitle" help-text="{i18n:mir.help.title.subTitle}" />
   </xed:template>
 
   <xed:template id="titles.thesis">
-    <div class="form-group">
-      <label class="col-md-3 control-label">
-        <xed:output i18n="mir.title.thesis" />
-        <xed:output value="concat($genres//category[@ID=$genre]/label[lang($CurrentLang)]/@text, ':')" />
-      </label>
-      <div class="col-md-6">
-        <p class="form-control-static">
-          <xed:output i18n="mir.title.thesis.help" />
-        </p>
-      </div>
-    </div>
     <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="titles.thesis.common" />
   </xed:template>
 
   <xed:template id="titles.thesis.common">
     <xed:bind xpath="mods:titleInfo">
-      <div class="form-group">
-        <div class="col-md-3" style="text-align:right; font-weight:bold;">
-          <label>in</label>
-          <xed:bind xpath="@xml:lang" initially="de">
-            <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="lang.list" />
-          </xed:bind>
+      <div id="titles_thesis">
+        <div class="form-group">
+          <label class="col-md-2 control-label">
+            <xed:output i18n="mir.title.thesis" />
+            <xed:output value="concat($genres//category[@ID=$genre]/label[lang($CurrentLang)]/@text, ':')" />
+          </label>
+          <div class="col-md-6 form-inline">
+            <xed:bind xpath="mods:title">
+              <input type="text" class="form-control form-control-inline" size="46" placeholder="{i18n:mir.placeholder.title.main}" />
+            </xed:bind>
+            in
+            <xed:bind xpath="@xml:lang" initially="de">
+              <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="lang.list" />
+            </xed:bind>
+          </div>
+          <div class="col-md-1">
+            <span class="btn btn-default info-button" data-original-title="{i18n:mir.help.title.thesis}" data-toggle="tooltip" data-placement="right" title=""><i class="fa fa-info"></i></span>
+          </div>
         </div>
-        <div class="col-md-6">
-          <xed:bind xpath="mods:title">
-            <input type="text" class="form-control" placeholder="{i18n:mir.placeholder.title.main}" />
-          </xed:bind>
-        </div>
+        <mir:textfield xpath="mods:subTitle" label="mir.title.subTitle" help-text="{i18n:mir.help.title.subTitle}" />
       </div>
-      <mir:textfield xpath="mods:subTitle" label="mir.title.subTitle" />
     </xed:bind>
 
     <xed:bind xpath="mods:titleInfo[2][@type='translated']">
-      <div class="form-group">
-        <div class="col-md-3" style="text-align:right; font-weight:bold;">
-          <label>in</label>
-          <xed:bind xpath="@xml:lang" initially="en">
-            <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="lang.list" />
-          </xed:bind>
+      <div id="titles_thesis_translated">
+        <div class="form-group">
+          <label class="col-md-2 control-label">
+            <xed:output i18n="mir.placeholder.title.translated" />:
+          </label>
+          <div class="col-md-6 form-inline">
+            <xed:bind xpath="mods:title">
+              <input type="text" class="form-control form-control-inline" size="46" placeholder="{i18n:mir.placeholder.title.translated}" />
+            </xed:bind>
+            in
+            <xed:bind xpath="@xml:lang" initially="en">
+              <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="lang.list" />
+            </xed:bind>
+          </div>
+          <div class="col-md-1">
+            <span class="btn btn-default info-button" data-original-title="{i18n:mir.help.title.thesis.translated}" data-toggle="tooltip" data-placement="right" title=""><i class="fa fa-info"></i></span>
+          </div>
         </div>
-        <div class="col-md-6">
-          <xed:bind xpath="mods:title">
-            <input type="text" class="form-control" placeholder="{i18n:mir.placeholder.title.translated}" />
-          </xed:bind>
-        </div>
+        <mir:textfield xpath="mods:subTitle" label="mir.title.subTitle" help-text="{i18n:mir.help.title.subTitle}" />
       </div>
-      <mir:textfield xpath="mods:subTitle" label="mir.title.subTitle" />
     </xed:bind>
   </xed:template>
 
   <xed:template id="title.complex.repeated">
     <xed:repeat xpath="mods:titleInfo" min="1" max="6">
       <div class="form-group">
-        <label class="col-md-3 control-label">
+        <label class="col-md-2 control-label">
           <xed:output i18n="mir.title.nonSort" />
         </label>
         <div class="col-md-6">
@@ -166,33 +174,36 @@
             </xed:bind>
           </div>
         </div>
+        <div class="col-md-1">
+          <span class="btn btn-default info-button" data-original-title="{i18n:mir.help.title.complex}" data-toggle="tooltip" data-placement="right" title=""><i class="fa fa-info"></i></span>
+        </div>
         <mir:pmud />
       </div>
-      <mir:textfield xpath="mods:title" label="mir.title" class="required" />
-      <mir:textfield xpath="mods:subTitle" label="mir.title.subTitle" />
+      <mir:textfield xpath="mods:title" label="mir.title" help-text="{i18n:mir.help.title}" class="required" />
+      <mir:textfield xpath="mods:subTitle" label="mir.title.subTitle" help-text="{i18n:mir.help.title.subTitle}" />
     </xed:repeat>
   </xed:template>
 
   <xed:template id="author.repeated">
-    <mir:role.repeated role="aut" label="mir.role.author" class="required" />
+    <mir:role.repeated role="aut" label="mir.role.author" help-text="{i18n:mir.help.role.author}" class="required" />
   </xed:template>
 
   <xed:template id="editor.repeated">
-    <mir:role.repeated role="edt" label="mir.role.editor" />
+    <mir:role.repeated role="edt" label="mir.role.editor" help-text="{i18n:mir.help.role.editor}" />
   </xed:template>
 
   <xed:template id="inventor.repeated">
-    <mir:role.repeated role="inv" label="mir.role.inventor" />
+    <mir:role.repeated role="inv" label="mir.role.inventor" help-text="{i18n:mir.help.role.inventor}" />
   </xed:template>
 
   <xed:template id="advisor.repeated">
-    <mir:role.repeated role="ths" label="mir.role.advisor" />
+    <mir:role.repeated role="ths" label="mir.role.advisor" help-text="{i18n:mir.help.role.advisor}" />
   </xed:template>
 
   <xed:template id="editor.honoree.repeated">
     <xed:bind xpath="mods:name[@type='personal'][mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']='edt']" />
     <xed:bind xpath="mods:name[@type='personal'][mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']='hnr']" />
-    <mir:person.repeated>
+    <mir:person.repeated help-text="{i18n:mir.help.editor.honoree}">
       <option value="edt">
         <xed:output i18n="mir.role.editor" />
       </option>
@@ -205,7 +216,7 @@
   <xed:template id="author.interviewee.repeated">
     <xed:bind xpath="mods:name[@type='personal'][mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']='aut']" />
     <xed:bind xpath="mods:name[@type='personal'][mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']='ive']" />
-    <mir:person.repeated>
+    <mir:person.repeated help-text="{i18n:mir.help.author.interviewee}">
       <option value="aut">
         <xed:output i18n="mir.role.author" />
       </option>
@@ -218,7 +229,7 @@
   <xed:template id="producer.speaker.repeated">
     <xed:bind xpath="mods:name[@type='personal'][mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']='pro']" />
     <xed:bind xpath="mods:name[@type='personal'][mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']='spk']" />
-    <mir:person.repeated>
+    <mir:person.repeated help-text="{i18n:mir.help.producer.speaker}">
       <option value="pro">
         <xed:output i18n="mir.role.producer" />
       </option>
@@ -229,15 +240,15 @@
   </xed:template>
 
   <xed:template id="thesis.advisor.repeated">
-    <mir:role.repeated role="ths" label="mir.role.thesis" />
-    <mir:role.repeated role="aut" label="mir.role.advisor" />
+    <mir:role.repeated role="ths" label="mir.role.thesis" help-text="{i18n:mir.help.role.thesis}" />
+    <mir:role.repeated role="aut" label="mir.role.advisor" help-text="{i18n:mir.help.role.advisor}" />
   </xed:template>
 
   <xed:template id="thesis.advisor.reviewer.repeated">
     <xed:bind xpath="mods:name[@type='personal'][mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']='aut']" />
     <xed:bind xpath="mods:name[@type='personal'][mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']='ths']" />
     <xed:bind xpath="mods:name[@type='personal'][mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']='rev']" />
-    <mir:person.repeated>
+    <mir:person.repeated help-text="{i18n:mir.help.thesis.advisor.reviewer}">
       <option value="aut">
         <xed:output i18n="mir.role.thesis" />
       </option>
@@ -251,13 +262,13 @@
   </xed:template>
 
   <xed:template id="thesisHabil.repeated">
-    <mir:role.repeated role="aut" label="mir.role.thesisHabil" />
+    <mir:role.repeated role="aut" label="mir.role.thesisHabil" help-text="{i18n:mir.help.role.thesisHabil}" />
   </xed:template>
 
   <xed:template id="thesisHabil.reviewer.repeated">
     <xed:bind xpath="mods:name[@type='personal'][mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']='aut']" />
     <xed:bind xpath="mods:name[@type='personal'][mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']='rev']" />
-    <mir:person.repeated>
+    <mir:person.repeated help-text="{i18n:mir.help.thesisHabil.reviewer}">
       <option value="aut">
         <xed:output i18n="mir.role.thesisHabil" />
       </option>
@@ -268,7 +279,7 @@
   </xed:template>
 
   <xed:template id="name.repeated">
-    <mir:person.repeated>
+    <mir:person.repeated help-text="{i18n:mir.help.name.repeated}">
       <xed:include uri="xslStyle:items2options:classification:editor:-1:children:marcrelator" />
     </mir:person.repeated>
   </xed:template>
@@ -312,42 +323,42 @@
   </xed:template>
 
   <xed:template id="conference">
-    <mir:textfield xpath="mods:name[@type='conference']/mods:namePart" label="mir.conference" placeholder="{i18n:mir.placeholder.conference}" />
+    <mir:textfield xpath="mods:name[@type='conference']/mods:namePart" label="mir.conference" help-text="{i18n:mir.help.conference}" placeholder="{i18n:mir.placeholder.conference}" />
   </xed:template>
 
   <xed:template id="year.issued">
-    <mir:textfield xpath="mods:originInfo/mods:dateIssued[@encoding='w3cdtf']" label="mir.date.issued.4" class="required"
+    <mir:textfield xpath="mods:originInfo/mods:dateIssued[@encoding='w3cdtf']" label="mir.date.issued.4" help-text="{i18n:mir.help.date.issued.4}" class="required"
       placeholder="{i18n:mir.placeholder.year}" />
   </xed:template>
 
   <xed:template id="date.issued">
-    <mir:textfield xpath="mods:originInfo/mods:dateIssued[@encoding='w3cdtf']" label="mir.date.issued.10" class="required"
+    <mir:textfield xpath="mods:originInfo/mods:dateIssued[@encoding='w3cdtf']" label="mir.date.issued.10" help-text="{i18n:mir.help.date.issued.10}" class="required"
       placeholder="{i18n:mir.placeholder.date}" />
   </xed:template>
 
   <xed:template id="date.broadcasted">
-    <mir:textfield xpath="mods:originInfo/mods:dateIssued[@encoding='w3cdtf']" label="mir.date.broadcasted"
+    <mir:textfield xpath="mods:originInfo/mods:dateIssued[@encoding='w3cdtf']" label="mir.date.broadcasted" help-text="{i18n:mir.help.date.broadcasted}"
       placeholder="{i18n:mir.placeholder.date}" />
   </xed:template>
 
   <xed:template id="date.accepted">
-    <mir:textfield xpath="mods:originInfo/mods:dateOther[@type='accepted'][@encoding='w3cdtf']" label="mir.date.accepted"
+    <mir:textfield xpath="mods:originInfo/mods:dateOther[@type='accepted'][@encoding='w3cdtf']" label="mir.date.accepted" help-text="{i18n:mir.help.date.accepted}"
       placeholder="{i18n:mir.placeholder.date}" />
   </xed:template>
 
   <xed:template id="date.acceptedHabil">
-    <mir:textfield xpath="mods:originInfo/mods:dateOther[@type='accepted'][@encoding='w3cdtf']" label="mir.date.acceptedHabil"
+    <mir:textfield xpath="mods:originInfo/mods:dateOther[@type='accepted'][@encoding='w3cdtf']" label="mir.date.acceptedHabil" help-text="{i18n:mir.help.date.acceptedHabil}"
       placeholder="{i18n:mir.placeholder.date}" />
   </xed:template>
 
   <xed:template id="date.submitted">
-    <mir:textfield xpath="mods:originInfo/mods:dateOther[@type='submitted'][@encoding='w3cdtf']" label="mir.date.submitted"
+    <mir:textfield xpath="mods:originInfo/mods:dateOther[@type='submitted'][@encoding='w3cdtf']" label="mir.date.submitted" help-text="{i18n:mir.help.date.submitted}"
       placeholder="{i18n:mir.placeholder.date}" />
   </xed:template>
 
   <xed:template id="identifier.patent">
     <div class="form-group">
-      <label class="col-md-3 control-label">
+      <label class="col-md-2 control-label">
         <xed:output i18n="mir.identifier.patent" />
       </label>
       <xed:repeat xpath="mods:identifier[@type='patent']" min="1" max="10">
@@ -356,35 +367,38 @@
             <input type="text" size="30" class="form-control form-control-inline" />
           </div>
         </div>
+        <div class="col-md-1">
+          <span class="btn btn-default info-button" data-original-title="{i18n:mir.help.identifier.patent}" data-toggle="tooltip" data-placement="right" title=""><i class="fa fa-info"></i></span>
+        </div>
         <mir:pmud />
       </xed:repeat>
     </div>
   </xed:template>
 
   <xed:template id="identifier.isbn">
-    <mir:textfield xpath="mods:identifier[@type='isbn']" label="mir.identifier.isbn" />
+    <mir:textfield xpath="mods:identifier[@type='isbn']" label="mir.identifier.isbn" help-text="{i18n:mir.help.identifier.isbn}" />
   </xed:template>
 
   <xed:template id="identifier.issn">
-    <mir:textfield xpath="mods:identifier[@type='issn']" label="mir.identifier.issn" />
+    <mir:textfield xpath="mods:identifier[@type='issn']" label="mir.identifier.issn" help-text="{i18n:mir.help.identifier.issn}" />
   </xed:template>
 
 <xed:template id="identifier.zdbid">
-    <mir:textfield xpath="mods:identifier[@type='zdbid']" label="mir.identifier.zdbid" />
+    <mir:textfield xpath="mods:identifier[@type='zdbid']" label="mir.identifier.zdbid" help-text="{i18n:mir.help.identifier.zdbid}" />
   </xed:template>
 
   <xed:template id="identifier.intern">
-    <mir:textfield xpath="mods:identifier[@type='intern']" label="mir.identifier.intern" />
+    <mir:textfield xpath="mods:identifier[@type='intern']" label="mir.identifier.intern" help-text="{i18n:mir.help.identifier.intern}" />
   </xed:template>
 
   <xed:template id="identifier.project">
-    <mir:textfield xpath="mods:identifier[@type='project']" label="mir.identifier.project" />
+    <mir:textfield xpath="mods:identifier[@type='project']" label="mir.identifier.project" help-text="{i18n:mir.help.identifier.project}" />
   </xed:template>
 
   <xed:template id="identifier.repeated">
     <xed:repeat xpath="mods:identifier" min="1" max="10">
       <div class="form-group">
-        <div class="col-md-3" style="text-align:right; font-weight:bold;">
+        <div class="col-md-2" style="text-align:right; font-weight:bold;">
           <xed:bind xpath="@type">
             <select class="form-control">
               <option value="isbn">
@@ -423,6 +437,9 @@
         <div class="col-md-6">
           <input type="text" size="30" class="form-control form-control-inline {$xed-validation-marker}" />
         </div>
+        <div class="col-md-1">
+          <span class="btn btn-default info-button" data-original-title="{i18n:mir.help.identifier}" data-toggle="tooltip" data-placement="right" title=""><i class="fa fa-info"></i></span>
+        </div>
         <mir:pmud />
       </div>
     </xed:repeat>
@@ -432,7 +449,7 @@
     <xed:repeat xpath="mods:identifier[contains(' doi hdl urn ',concat(' ',@type,' '))]" min="1" max="10" method="clone">
       <div class="form-group">
         <xed:bind xpath="@type">
-          <div class="col-md-3">
+          <div class="col-md-2">
             <select class="form-control" style="text-align:right; font-weight:bold;">
               <option value="doi">
                 <xed:output i18n="mir.identifier.doi" />
@@ -452,23 +469,26 @@
         <div class="col-md-6">
           <input type="text" size="20" class="form-control form-control-inline {$xed-validation-marker}" />
         </div>
+        <div class="col-md-1">
+          <span class="btn btn-default info-button" data-original-title="{i18n:mir.help.doi.handle.urn}" data-toggle="tooltip" data-placement="right" title=""><i class="fa fa-info"></i></span>
+        </div>
         <mir:pmud />
       </div>
     </xed:repeat>
   </xed:template>
 
   <xed:template id="shelfmark">
-    <mir:textfield xpath="mods:location/mods:shelfLocator" label="mir.shelfmark" />
+    <mir:textfield xpath="mods:location/mods:shelfLocator" label="mir.shelfmark" help-text="{i18n:mir.help.shelfmark}" />
   </xed:template>
 
   <xed:template id="link">
-    <mir:textfield xpath="mods:location/mods:url[@access='raw object']" label="mir.link.raw_object" />
+    <mir:textfield xpath="mods:location/mods:url[@access='raw object']" label="mir.link.raw_object" help-text="{i18n:mir.help.link.raw_object}" />
   </xed:template>
 
   <xed:template id="link.repeated">
     <xed:repeat xpath="mods:location/mods:url" min="1" max="5">
       <div class="form-group">
-        <div class="col-md-3">
+        <div class="col-md-2">
           <xed:bind xpath="@access">
             <select class="form-control" style="text-align:right; font-weight:bold;">
               <option value="">
@@ -489,51 +509,54 @@
         <div class="col-md-6">
           <input type="text" size="50" class="form-control form-control-inline {$xed-validation-marker}" />
         </div>
+        <div class="col-md-1">
+          <span class="btn btn-default info-button" data-original-title="{i18n:mir.help.link}" data-toggle="tooltip" data-placement="right" title=""><i class="fa fa-info"></i></span>
+        </div>
         <mir:pmud />
       </div>
     </xed:repeat>
   </xed:template>
 
   <xed:template id="place">
-    <mir:textfield xpath="mods:originInfo/mods:place/mods:placeTerm[@type='text']" label="mir.place" />
+    <mir:textfield xpath="mods:originInfo/mods:place/mods:placeTerm[@type='text']" label="mir.place" help-text="{i18n:mir.help.place}" />
   </xed:template>
 
   <xed:template id="country">
-    <mir:textfield xpath="mods:originInfo/mods:place/mods:placeTerm[@type='text']" label="mir.place.country" />
+    <mir:textfield xpath="mods:originInfo/mods:place/mods:placeTerm[@type='text']" label="mir.place.country" help-text="{i18n:mir.help.place.country}" />
   </xed:template>
 
   <xed:template id="publisher">
-    <mir:textfield xpath="mods:originInfo/mods:publisher" label="mir.publisher" />
+    <mir:textfield xpath="mods:originInfo/mods:publisher" label="mir.publisher" help-text="{i18n:mir.help.publisher}" />
   </xed:template>
 
   <xed:template id="station">
-    <mir:textfield xpath="mods:originInfo/mods:publisher" label="mir.publisher.station" />
+    <mir:textfield xpath="mods:originInfo/mods:publisher" label="mir.publisher.station" help-text="{i18n:mir.help.publisher.station}" />
   </xed:template>
 
   <xed:template id="edition">
-    <mir:textfield xpath="mods:originInfo/mods:edition" label="mir.edition" placeholder="{i18n:mir.placeholder.edition}" />
+    <mir:textfield xpath="mods:originInfo/mods:edition" label="mir.edition" help-text="{i18n:mir.help.edition}" placeholder="{i18n:mir.placeholder.edition}" />
   </xed:template>
 
   <xed:template id="extent">
-    <mir:textfield xpath="mods:physicalDescription/mods:extent" label="mir.extent" placeholder="{i18n:mir.placeholder.extent}" />
+    <mir:textfield xpath="mods:physicalDescription/mods:extent" label="mir.extent" help-text="{i18n:mir.help.extent}" placeholder="{i18n:mir.placeholder.extent}" />
   </xed:template>
 
   <xed:template id="series.volume">
-    <mir:textfield xpath="mods:part/mods:detail[@type='volume']/mods:number" label="mir.series.volume"
+    <mir:textfield xpath="mods:part/mods:detail[@type='volume']/mods:number" label="mir.series.volume" help-text="{i18n:mir.help.series.volume}"
       placeholder="{i18n:mir.placeholder.series.volume}" />
   </xed:template>
 
   <xed:template id="host.volume">
-    <mir:textfield xpath="mods:part/mods:detail[@type='volume']/mods:number" label="mir.volume" />
+    <mir:textfield xpath="mods:part/mods:detail[@type='volume']/mods:number" label="mir.volume" help-text="{i18n:mir.help.volume}" />
   </xed:template>
 
   <xed:template id="host.issue">
-    <mir:textfield xpath="mods:part/mods:detail[@type='issue']/mods:number" label="mir.issue" />
+    <mir:textfield xpath="mods:part/mods:detail[@type='issue']/mods:number" label="mir.issue" help-text="{i18n:mir.help.issue}" />
   </xed:template>
 
   <xed:template id="host.pages">
     <div class="form-group">
-      <label class="col-md-3 control-label">
+      <label class="col-md-2 control-label">
         <xed:output i18n="mir.pages.from" />
       </label>
       <div class="col-md-6">
@@ -551,12 +574,15 @@
           </xed:bind>
         </div>
       </div>
+      <div class="col-md-1">
+        <span class="btn btn-default info-button" data-original-title="{i18n:mir.help.host.pages}" data-toggle="tooltip" data-placement="right" title=""><i class="fa fa-info"></i></span>
+      </div>
     </div>
   </xed:template>
 
   <xed:template id="language.simple">
     <div class="form-group">
-      <label class="col-md-3 control-label">
+      <label class="col-md-2 control-label">
         <xed:output i18n="mir.language" />
       </label>
       <div class="col-md-6">
@@ -564,13 +590,16 @@
           <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="lang.list" />
         </xed:bind>
       </div>
+      <div class="col-md-1">
+          <span class="btn btn-default info-button" data-original-title="{i18n:mir.help.language}" data-toggle="tooltip" data-placement="right" title=""><i class="fa fa-info"></i></span>
+        </div>
     </div>
   </xed:template>
 
   <xed:template id="language.repeated">
     <xed:repeat xpath="mods:language" max="5" >
     <div class="form-group">
-      <label class="col-md-3 control-label">
+      <label class="col-md-2 control-label">
         <xed:output i18n="mir.language" />
       </label>
         <div class="col-md-6">
@@ -579,6 +608,9 @@
             <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="lang.list" />
           </div>
           </xed:bind>
+        </div>
+        <div class="col-md-1">
+          <span class="btn btn-default info-button" data-original-title="{i18n:mir.help.language}" data-toggle="tooltip" data-placement="right" title=""><i class="fa fa-info"></i></span>
         </div>
         <mir:pmud />
     </div>
@@ -594,7 +626,7 @@
   <xed:template id="rights">
     <xed:bind xpath="mods:accessCondition[@type='use and reproduction']" initially="">
       <div class="form-group {$xed-validation-marker}">
-        <label class="col-md-3 control-label required">
+        <label class="col-md-2 control-label required">
           <xed:output i18n="mir.rights" />:
         </label>
         <div class="col-md-6">
@@ -603,6 +635,9 @@
             <xed:include uri="xslStyle:items2options:classification:editor:-1:children:mir_rights" />
           </select>
         </div>
+        <div class="col-md-1">
+          <span class="btn btn-default info-button" data-original-title="{i18n:mir.help.rights}" data-toggle="tooltip" data-placement="right" title=""><i class="fa fa-info"></i></span>
+        </div>
       </div>
     </xed:bind>
   </xed:template>
@@ -610,7 +645,7 @@
   <xed:template id="access">
     <xed:bind xpath="mods:accessCondition[@type='restriction on access']" initially="">
       <div class="form-group {$xed-validation-marker}">
-        <label class="col-md-3 control-label">
+        <label class="col-md-2 control-label">
           <xed:output i18n="mir.access" />:
         </label>
         <div class="col-md-6">
@@ -619,25 +654,28 @@
             <xed:include uri="xslStyle:items2options:classification:editor:-1:children:mir_access" />
           </select>
         </div>
+        <div class="col-md-1">
+          <span class="btn btn-default info-button" data-original-title="{i18n:mir.help.access}" data-toggle="tooltip" data-placement="right" title=""><i class="fa fa-info"></i></span>
+        </div>
       </div>
     </xed:bind>
   </xed:template>
 
   <xed:template id="embargo">
-    <mir:textfield xpath="mods:accessCondition[@type='embargo']" label="mir.embargo" placeholder="{i18n:mir.placeholder.date}" />
+    <mir:textfield xpath="mods:accessCondition[@type='embargo']" label="mir.embargo" help-text="{i18n:mir.help.embargo}" placeholder="{i18n:mir.placeholder.date}" />
   </xed:template>
 
   <!-- use external schema copyrightMD, see http://www.cdlib.org/groups/rmg/copyrightMD.html#type_copyright.status -->
   <!-- TODO: copyright.status and publication.status shouldn't be static -->
   <xed:template id="copyrightMD">
     <xed:bind xpath="mods:accessCondition[@type='copyrightMD']/cmd:copyright[@copyright.status='copyrighted'][@publication.status='published'][@xsi:schemaLocation='http://www.cdlib.org/inside/diglib/copyrightMD http://www.cdlib.org/groups/rmg/docs/copyrightMD.xsd']">
-      <mir:textfield xpath="cmd:rights.holder/cmd:name" label="mir.rightsHolder" />
+      <mir:textfield xpath="cmd:rights.holder/cmd:name" label="mir.rightsHolder" help-text="{i18n:mir.help.rightsHolder}" />
     </xed:bind>
   </xed:template>
 
   <xed:template id="institutes">
     <div class="form-group">
-      <label class="col-md-3 control-label">
+      <label class="col-md-2 control-label">
         <xed:output i18n="mir.institution" />:
       </label>
       <div class="col-md-6">
@@ -651,12 +689,15 @@
           </xed:bind>
         </xed:bind>
       </div>
+      <div class="col-md-1">
+          <span class="btn btn-default info-button" data-original-title="{i18n:mir.help.institutes}" data-toggle="tooltip" data-placement="right" title=""><i class="fa fa-info"></i></span>
+        </div>
     </div>
   </xed:template>
 
   <xed:template id="editor.organization">
     <div class="form-group">
-      <label class="col-md-3 control-label">
+      <label class="col-md-2 control-label">
         <xed:output i18n="mir.editorOrganization" />:
       </label>
       <div class="col-md-6">
@@ -681,13 +722,16 @@
           </div>
         </xed:bind>
       </div>
+      <div class="col-md-1">
+        <span class="btn btn-default info-button" data-original-title="{i18n:mir.help.editor.organization}" data-toggle="tooltip" data-placement="right" title=""><i class="fa fa-info"></i></span>
+      </div>
     </div>
   </xed:template>
 
   <xed:template id="sdnb">
     <xed:bind xpath="mods:classification[@authority='sdnb'][@displayLabel='sdnb']">
       <div class="form-group {$xed-validation-marker}">
-        <label class="col-md-3 control-label">
+        <label class="col-md-2 control-label">
           <xed:output i18n="editor.search.mir.sdnb" />:
         </label>
         <div class="col-md-6">
@@ -695,18 +739,21 @@
             <xed:include uri="xslStyle:items2options:classification:editor:-1:children:SDNB" />
           </select>
         </div>
+        <div class="col-md-1">
+          <span class="btn btn-default info-button" data-original-title="{i18n:mir.help.sdnb}" data-toggle="tooltip" data-placement="right" title=""><i class="fa fa-info"></i></span>
+        </div>
       </div>
     </xed:bind>
   </xed:template>
 
   <xed:template id="abstract.simple">
-    <mir:textarea xpath="mods:abstract" label="mir.abstract.text" rows="5" />
+    <mir:textarea xpath="mods:abstract" label="mir.abstract.text" help-text="{i18n:mir.help.abstract}" rows="5" />
   </xed:template>
 
   <xed:template id="abstract.repeated">
     <xed:repeat xpath="mods:abstract" min="1" max="3">
       <div class="form-group">
-        <label class="col-md-3 control-label">
+        <label class="col-md-2 control-label">
           <xed:output i18n="mir.abstract.in" />
         </label>
         <div class="col-md-6">
@@ -714,25 +761,28 @@
             <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="lang.list" />
           </xed:bind>
         </div>
+        <div class="col-md-1">
+          <span class="btn btn-default info-button" data-original-title="{i18n:mir.help.abstract}" data-toggle="tooltip" data-placement="right" title=""><i class="fa fa-info"></i></span>
+        </div>
         <mir:pmud />
       </div>
-      <mir:textfield xpath="@xlink:href" label="mir.abstract.aslink" placeholder="{i18n:mir.placeholder.abstract.link}" />
-      <mir:textarea xpath="." label="mir.abstract.ortext" rows="5" />
+      <mir:textfield xpath="@xlink:href" label="mir.abstract.aslink" help-text="{i18n:mir.help.abstract.repeated}" placeholder="{i18n:mir.placeholder.abstract.link}" />
+      <mir:textarea xpath="." label="mir.abstract.ortext" help-text="{i18n:mir.help.abstract.ortext}" rows="5" />
     </xed:repeat>
   </xed:template>
 
   <xed:template id="subject">
-    <mir:textfield xpath="mods:subject/mods:topic" label="mir.subject.topic" />
+    <mir:textfield xpath="mods:subject/mods:topic" label="mir.subject.topic" help-text="{i18n:mir.help.subject.topic}" />
   </xed:template>
 
   <xed:template id="comment">
-    <mir:textarea xpath="mods:note" label="mir.comment" rows="2" />
+    <mir:textarea xpath="mods:note" label="mir.comment" help-text="{i18n:mir.help.comment}" rows="2" />
   </xed:template>
 
   <xed:template id="related.item">
     <xed:repeat xpath="mods:relatedItem" min="1" max="10">
       <div class="form-group">
-        <div class="col-md-3">
+        <div class="col-md-2">
           <xed:bind xpath="@type">
             <select class="form-control">
               <option value="host">
@@ -776,6 +826,9 @@
             </div>
           </xed:if>
         </div>
+        <div class="col-md-1">
+          <span class="btn btn-default info-button" data-original-title="{i18n:mir.help.related.item}" data-toggle="tooltip" data-placement="right" title=""><i class="fa fa-info"></i></span>
+        </div>
         <mir:pmud />
       </div>
       <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="host.volume" />
@@ -788,7 +841,7 @@
     <script type="text/javascript" src="{$WebApplicationBaseURL}js/jquery.search-entity.js"></script>
 
     <div class="form-group">
-      <div class="col-md-offset-3 col-md-6">
+      <div class="col-md-offset-2 col-md-6">
         <button type="submit" class="btn btn-default" xed:target="debug">Debug</button>
         <button type="submit" class="btn btn-default" xed:target="cancel">
           <xed:output i18n="button.cancel" />
