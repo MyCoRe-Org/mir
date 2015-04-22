@@ -20,11 +20,11 @@
   </xed:template>
 
   <xed:template id="genre">
-    <div class="form-group">
-      <label class="col-md-2 control-label">
-        <xed:output i18n="component.mods.genre" />
-      </label>
-      <xed:repeat xpath="mods:genre[@type='intern'][@authorityURI='http://www.mycore.org/classifications/mir_genres']" min="1" max="10">
+    <xed:repeat xpath="mods:genre[@type='intern'][@authorityURI='http://www.mycore.org/classifications/mir_genres']" min="1" max="10">
+      <div class="form-group">
+        <label class="col-md-2 control-label">
+          <xed:output i18n="component.mods.genre" />
+        </label>
         <div class="col-md-6">
           <div class="controls">
             <xed:bind xpath="@valueURIxEditor">
@@ -38,7 +38,27 @@
           <span class="btn btn-default info-button" data-original-title="{i18n:mir.help.genre}" data-toggle="tooltip" data-placement="right" title=""><i class="fa fa-info"></i></span>
         </div>
         <mir:pmud />
-      </xed:repeat>
+      </div>
+    </xed:repeat>
+  </xed:template>
+
+  <xed:template id="genre.simple">
+    <div class="form-group">
+      <label class="col-md-2 control-label">
+        <xed:output i18n="component.mods.genre" />
+      </label>
+      <div class="col-md-6">
+        <div class="controls">
+          <xed:bind xpath="mods:genre[@type='intern'][@authorityURI='http://www.mycore.org/classifications/mir_genres']/@valueURIxEditor">
+            <select class="form-control form-control-inline">
+              <xed:include uri="xslStyle:items2options:classification:editor:-1:children:mir_genres" />
+            </select>
+          </xed:bind>
+        </div>
+      </div>
+      <div class="col-md-1">
+        <span class="btn btn-default info-button" data-original-title="{i18n:mir.help.genre}" data-toggle="tooltip" data-placement="right" title=""><i class="fa fa-info"></i></span>
+      </div>
     </div>
   </xed:template>
 
@@ -148,7 +168,7 @@
         <div class="col-md-6">
           <div class="form-inline controls">
             <xed:bind xpath="mods:nonSort">
-              <input type="text" size="10" class="form-control form-control-inline" placeholder="Der/Die/Das"/>
+              <input type="text" size="9" class="form-control form-control-inline" placeholder="Der/Die/Das"/>
             </xed:bind>
             <xed:bind xpath="@xml:lang" initially="de">
               <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="lang.list" />
@@ -565,9 +585,7 @@
             <xed:bind xpath="mods:start">
               <input type="text" size="10" class="form-control form-control-inline" />
             </xed:bind>
-            <label>
-              <xed:output i18n="mir.pages.to" />
-            </label>
+            &amp;npsp;<xed:output i18n="mir.pages.to" />&amp;npsp;
             <xed:bind xpath="mods:end">
               <input type="text" size="10" class="form-control form-control-inline" />
             </xed:bind>
@@ -808,7 +826,7 @@
         </div>
         <div class="col-md-6">
           <div class="controls form-inline">
-            <input type="submit" xed:target="subselect" xed:href="../servlets/solr/find?qry=&amp;XSL.Style=subselect" value="{i18n:mir.editing.related.select}" />
+            <input type="submit" class="form-control" xed:target="subselect" xed:href="../servlets/solr/find?qry=&amp;XSL.Style=subselect" value="{i18n:mir.editing.related.select}" />
             <xed:output value="@xlink:href" />
           </div>
           <xed:if test="string-length(@xlink:href) &gt; 0">
@@ -840,7 +858,7 @@
   <xed:template id="cancel.submit">
     <script type="text/javascript" src="{$WebApplicationBaseURL}js/jquery.search-entity.js"></script>
 
-    <div class="form-group">
+    <div class="form-group" id="editor-buttons">
       <div class="col-md-offset-2 col-md-6">
         <button type="submit" class="btn btn-default" xed:target="debug">Debug</button>
         <button type="submit" class="btn btn-default" xed:target="cancel">
