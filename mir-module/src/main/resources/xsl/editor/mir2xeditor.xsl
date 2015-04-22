@@ -10,7 +10,7 @@
     <xed:bind xpath="{@xpath}">
       <div>
         <xsl:attribute name="class">form-group {$xed-validation-marker}</xsl:attribute>
-        <label class="col-md-2 control-label {@class}">
+        <label class="col-md-3 control-label {@class}">
           <xed:output i18n="{@label}" />
         </label>
         <div class="col-md-6">
@@ -29,7 +29,7 @@
     <xed:bind xpath="{@xpath}">
       <div>
         <xsl:attribute name="class">form-group {$xed-validation-marker}</xsl:attribute>
-        <label class="col-md-2 control-label {@class}">
+        <label class="col-md-3 control-label {@class}">
           <xed:output i18n="{@label}" />
         </label>
         <div class="col-md-6">
@@ -51,7 +51,7 @@
         <div>
           <xsl:attribute name="class">form-group {$xed-validation-marker}</xsl:attribute>
           <xed:bind xpath=".."> <!-- Move up again after validation marker is set -->
-            <label class="col-md-2 control-label {@class}">
+            <label class="col-md-3 control-label {@class}">
               <xed:output i18n="{@label}" />
             </label>
             <div class="col-md-6">
@@ -75,7 +75,7 @@
         <div>
           <xsl:attribute name="class">form-group {$xed-validation-marker}</xsl:attribute>
           <xed:bind xpath=".."> <!-- Move up again after validation marker is set -->
-            <div class="col-md-2" style="text-align:right; font-weight:bold;">
+            <div class="col-md-3" style="text-align:right; font-weight:bold;">
               <xed:bind xpath="mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']" initially="aut">
                 <select class="form-control form-control-inline">
                   <xsl:apply-templates select="*" />
@@ -100,7 +100,7 @@
   </xsl:template>
 
   <xsl:template name="mir-pmud">
-    <div class="form-pmud col-md-3">
+    <div class="form-pmud col-md-2">
       <span>
         <xed:controls>insert</xed:controls>
       </span>

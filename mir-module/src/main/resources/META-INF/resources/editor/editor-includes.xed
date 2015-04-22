@@ -22,7 +22,7 @@
   <xed:template id="genre">
     <xed:repeat xpath="mods:genre[@type='intern'][@authorityURI='http://www.mycore.org/classifications/mir_genres']" min="1" max="10">
       <div class="form-group">
-        <label class="col-md-2 control-label">
+        <label class="col-md-3 control-label">
           <xed:output i18n="component.mods.genre" />
         </label>
         <div class="col-md-6">
@@ -44,7 +44,7 @@
 
   <xed:template id="genre.simple">
     <div class="form-group">
-      <label class="col-md-2 control-label">
+      <label class="col-md-3 control-label">
         <xed:output i18n="component.mods.genre" />
       </label>
       <div class="col-md-6">
@@ -64,7 +64,7 @@
 
   <xed:template id="status">
     <div class="form-group">
-      <label class="col-md-2 control-label">
+      <label class="col-md-3 control-label">
         <xed:output i18n="component.mods.metaData.dictionary.status" />
       </label>
       <xed:bind xpath="servstates[@class='MCRMetaClassification']/servstate[@classid='state']/@categid" initially="submitted">
@@ -114,7 +114,7 @@
     <xed:bind xpath="mods:titleInfo">
       <div id="titles_thesis">
         <div class="form-group">
-          <label class="col-md-2 control-label">
+          <label class="col-md-3 control-label">
             <xed:output i18n="mir.title.thesis" />
             <xed:output value="concat($genres//category[@ID=$genre]/label[lang($CurrentLang)]/@text, ':')" />
           </label>
@@ -138,7 +138,7 @@
     <xed:bind xpath="mods:titleInfo[2][@type='translated']">
       <div id="titles_thesis_translated">
         <div class="form-group">
-          <label class="col-md-2 control-label">
+          <label class="col-md-3 control-label">
             <xed:output i18n="mir.placeholder.title.translated" />:
           </label>
           <div class="col-md-6 form-inline">
@@ -162,7 +162,7 @@
   <xed:template id="title.complex.repeated">
     <xed:repeat xpath="mods:titleInfo" min="1" max="6">
       <div class="form-group">
-        <label class="col-md-2 control-label">
+        <label class="col-md-3 control-label">
           <xed:output i18n="mir.title.nonSort" />
         </label>
         <div class="col-md-6">
@@ -378,7 +378,7 @@
 
   <xed:template id="identifier.patent">
     <div class="form-group">
-      <label class="col-md-2 control-label">
+      <label class="col-md-3 control-label">
         <xed:output i18n="mir.identifier.patent" />
       </label>
       <xed:repeat xpath="mods:identifier[@type='patent']" min="1" max="10">
@@ -418,7 +418,7 @@
   <xed:template id="identifier.repeated">
     <xed:repeat xpath="mods:identifier" min="1" max="10">
       <div class="form-group">
-        <div class="col-md-2" style="text-align:right; font-weight:bold;">
+        <div class="col-md-3" style="text-align:right; font-weight:bold;">
           <xed:bind xpath="@type">
             <select class="form-control">
               <option value="isbn">
@@ -469,7 +469,7 @@
     <xed:repeat xpath="mods:identifier[contains(' doi hdl urn ',concat(' ',@type,' '))]" min="1" max="10" method="clone">
       <div class="form-group">
         <xed:bind xpath="@type">
-          <div class="col-md-2">
+          <div class="col-md-3">
             <select class="form-control" style="text-align:right; font-weight:bold;">
               <option value="doi">
                 <xed:output i18n="mir.identifier.doi" />
@@ -508,7 +508,7 @@
   <xed:template id="link.repeated">
     <xed:repeat xpath="mods:location/mods:url" min="1" max="5">
       <div class="form-group">
-        <div class="col-md-2">
+        <div class="col-md-3">
           <xed:bind xpath="@access">
             <select class="form-control" style="text-align:right; font-weight:bold;">
               <option value="">
@@ -576,7 +576,7 @@
 
   <xed:template id="host.pages">
     <div class="form-group">
-      <label class="col-md-2 control-label">
+      <label class="col-md-3 control-label">
         <xed:output i18n="mir.pages.from" />
       </label>
       <div class="col-md-6">
@@ -600,7 +600,7 @@
 
   <xed:template id="language.simple">
     <div class="form-group">
-      <label class="col-md-2 control-label">
+      <label class="col-md-3 control-label">
         <xed:output i18n="mir.language" />
       </label>
       <div class="col-md-6">
@@ -617,7 +617,7 @@
   <xed:template id="language.repeated">
     <xed:repeat xpath="mods:language" max="5" >
     <div class="form-group">
-      <label class="col-md-2 control-label">
+      <label class="col-md-3 control-label">
         <xed:output i18n="mir.language" />
       </label>
         <div class="col-md-6">
@@ -644,7 +644,7 @@
   <xed:template id="rights">
     <xed:bind xpath="mods:accessCondition[@type='use and reproduction']" initially="">
       <div class="form-group {$xed-validation-marker}">
-        <label class="col-md-2 control-label required">
+        <label class="col-md-3 control-label required">
           <xed:output i18n="mir.rights" />:
         </label>
         <div class="col-md-6">
@@ -663,7 +663,7 @@
   <xed:template id="access">
     <xed:bind xpath="mods:accessCondition[@type='restriction on access']" initially="">
       <div class="form-group {$xed-validation-marker}">
-        <label class="col-md-2 control-label">
+        <label class="col-md-3 control-label">
           <xed:output i18n="mir.access" />:
         </label>
         <div class="col-md-6">
@@ -693,7 +693,7 @@
 
   <xed:template id="institutes">
     <div class="form-group">
-      <label class="col-md-2 control-label">
+      <label class="col-md-3 control-label">
         <xed:output i18n="mir.institution" />:
       </label>
       <div class="col-md-6">
@@ -715,7 +715,7 @@
 
   <xed:template id="editor.organization">
     <div class="form-group">
-      <label class="col-md-2 control-label">
+      <label class="col-md-3 control-label">
         <xed:output i18n="mir.editorOrganization" />:
       </label>
       <div class="col-md-6">
@@ -749,7 +749,7 @@
   <xed:template id="sdnb">
     <xed:bind xpath="mods:classification[@authority='sdnb'][@displayLabel='sdnb']">
       <div class="form-group {$xed-validation-marker}">
-        <label class="col-md-2 control-label">
+        <label class="col-md-3 control-label">
           <xed:output i18n="editor.search.mir.sdnb" />:
         </label>
         <div class="col-md-6">
@@ -771,7 +771,7 @@
   <xed:template id="abstract.repeated">
     <xed:repeat xpath="mods:abstract" min="1" max="3">
       <div class="form-group">
-        <label class="col-md-2 control-label">
+        <label class="col-md-3 control-label">
           <xed:output i18n="mir.abstract.in" />
         </label>
         <div class="col-md-6">
@@ -800,7 +800,7 @@
   <xed:template id="related.item">
     <xed:repeat xpath="mods:relatedItem" min="1" max="10">
       <div class="form-group">
-        <div class="col-md-2">
+        <div class="col-md-3">
           <xed:bind xpath="@type">
             <select class="form-control">
               <option value="host">
