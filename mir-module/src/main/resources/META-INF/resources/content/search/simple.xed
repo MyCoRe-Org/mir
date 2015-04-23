@@ -7,11 +7,12 @@
   <section xml:lang="all" xmlns:xed="http://www.mycore.de/xeditor" xmlns:mir="http://www.mycore.de/mir">
     <xed:form class="form-horizontal" role="form">
       <xed:post-processor xsl="query-postprocessor.xsl" />
-      <xed:source uri="searchInput:{id}" />
+      <xed:source uri="searchInput:{$id}" />
       <xed:source uri="webapp:editor/search/template/simple.xml" />
       <xed:bind xpath="query">
         <xed:bind xpath="@mask" default="content/main/search/simple.xed" />
         <xed:bind xpath="conditions/boolean">
+          <xed:bind xpath="boolean[@operator='or']/condition[@field='createdby']/@value" initially="{$CurrentUser}" />
           <div class="panel panel-default">
             <div class="panel-heading">
               <h3 class="panel-title">
