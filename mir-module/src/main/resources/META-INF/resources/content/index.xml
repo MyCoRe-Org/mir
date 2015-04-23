@@ -5,6 +5,11 @@
   <section title="Willkommen bei MIR!" xml:lang="de">
         <div class="jumbotwo" >
             <div class="row">
+
+                <div class="col-xs-12">
+                    <h2>Mods Institutional Repository (MIR)</h2>
+                </div>
+
                 <div class="col-md-4">
                     <h3><span class="glyphicon glyphicon-check"></span> fertig</h3>
                     <p>At vero eos et accusam et justo duo dolores et ea rebum.
