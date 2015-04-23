@@ -24,7 +24,19 @@
 
     <div class="row result_head">
       <div class="col-xs-12 result_headline">
-        <h1><xsl:value-of select="$PageTitle" /></h1>
+        <h1>
+          <xsl:choose>
+            <xsl:when test="$hits=0">
+              <xsl:value-of select="i18n:translate('results.noObject')" />
+            </xsl:when>
+            <xsl:when test="$hits=1">
+              <xsl:value-of select="i18n:translate('results.oneObject')" />
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:value-of select="i18n:translate('results.nObjects',$hits)" />
+            </xsl:otherwise>
+          </xsl:choose>
+        </h1>
       </div>
     </div>
 
@@ -58,23 +70,7 @@
 
 <!-- Filter, Pagination & Trefferliste -->
     <div class="row result_body">
-
       <div class="col-xs-12 col-sm-4 col-lg-3 result_filter">
-        <h2>
-          <small>
-          <xsl:choose>
-            <xsl:when test="$hits=0">
-              <xsl:value-of select="i18n:translate('results.noObject')" />
-            </xsl:when>
-            <xsl:when test="$hits=1">
-              <xsl:value-of select="i18n:translate('results.oneObject')" />
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:value-of select="i18n:translate('results.nObjects',$hits)" />
-            </xsl:otherwise>
-          </xsl:choose>
-          </small>
-        </h2>
         <xsl:if test="/response/lst[@name='facet_counts']/lst[@name='facet_fields'] and $hits &gt; 0">
           <div class="panel panel-default">
             <div class="panel-heading">
@@ -92,7 +88,6 @@
       </div>
 
       <div class="cols-xs-12 col-sm-8 col-lg-9 result_list">
-        <xsl:copy-of select="$ResultPages" />
         <xsl:comment>
           RESULT LIST START
         </xsl:comment>
