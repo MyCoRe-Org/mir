@@ -62,9 +62,6 @@
                 </a>
               </div>
             </div>
-            <div class="row">
-              <xsl:call-template name="mir.top-navigation" />
-            </div>
           </div>
         </header>
 
@@ -89,6 +86,23 @@
                     <span class="icon-bar"> </span>
                   </div>
                 </button>
+                <xsl:call-template name="mir.top-navigation" />
+              </div>
+
+              <div class="row detail_row bread_plus">
+                <div class="col-xs-12">
+<!--  TODO: replace with bread crumb logic -->
+                  <ul itemprop="breadcrumb" class="breadcrumb">
+                    <li>
+                      <a class="navtrail" href="#">Home</a>
+                    </li>
+                    <li>
+                      <a href="#" class="navtrail">Zeitschrift</a>
+                    </li>
+                    <li class="active">The journal of antimicrobial chemotherapy : JAC</li>
+                  </ul>
+<!-- TODO: end -->
+                </div>
               </div>
 
               <xsl:call-template name="print.writeProtectionMessage" />
