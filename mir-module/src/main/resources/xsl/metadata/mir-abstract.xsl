@@ -1,13 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
   xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:mods="http://www.loc.gov/mods/v3" exclude-result-prefixes="i18n mods xlink">
+
   <xsl:import href="xslImport:modsmeta:metadata/mir-abstract.xsl" />
+
   <xsl:template match="/">
+
     <xsl:variable name="mods" select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods" />
-    <div id="mir-abstract">
+
+<!-- badges -->
+    <div id="mir-abstract-badges">
         <xsl:variable name="dateIssued">
           <xsl:apply-templates mode="mods.datePublished" select="$mods" />
         </xsl:variable>
+
         <!-- TODO: Update badges -->
         <div id="badges">
           <xsl:call-template name="categorySearchLink">
@@ -64,56 +70,77 @@
               <xsl:with-param name="query" select="concat('%2BallMeta%3A&quot;',$accessCondition,'&quot;')" />
             </xsl:call-template>
           </xsl:if>
-        </div>
+        </div><!-- end: badges -->
+    </div><!-- end: badgets structure -->
 
+
+<!-- headline -->
+    <div id="mir-abstract-title">
       <h1 itemprop="name">
         <xsl:apply-templates mode="mods.title" select="$mods" />
       </h1>
-      <p id="authors_short">
-        <xsl:for-each select="$mods/mods:name[mods:role/mods:roleTerm/text()='aut']">
-          <xsl:if test="position()!=1">
-            <xsl:value-of select="'; '" />
-          </xsl:if>
-          <xsl:apply-templates select="." mode="authors_short" />
-        </xsl:for-each>
-      </p>
-      <p>
-        <span itemprop="description">
-          <xsl:value-of select="$mods/mods:abstract" />
-        </span>
-      </p>
-      <table class="children">
-        <xsl:if test="mycoreobject/structure/children/child">
-          <xsl:apply-templates mode="printChildren" select="mycoreobject/structure/children">
-            <xsl:with-param name="label" select="i18n:translate('component.mods.metaData.dictionary.contains')" />
-          </xsl:apply-templates>
-        </xsl:if>
-
-        <!-- check for relatedItem type!="host" and containing mycoreobject ID using solr query on field mods.relatedItem -->
-        <xsl:variable name="hits"
-                      xmlns:encoder="xalan://java.net.URLEncoder"
-                      select="document(concat('solr:q=',encoder:encode(concat('mods.relatedItem:', mycoreobject/@ID, '* AND NOT(mods.relatedItem:*|host)'))))/response/result" />
-        <xsl:if test="count($hits/doc) &gt; 0">
-          <tr>
-            <td valign="top" class="metaname">
-              <xsl:value-of select="concat(i18n:translate('component.mods.metaData.dictionary.contains'),':')" />
-            </td>
-            <td class="metavalue">
-              <ul>
-                <xsl:for-each select="$hits/doc">
-                  <li>
-                    <xsl:call-template name="objectLink">
-                      <xsl:with-param name="obj_id" select="str[@name='returnId']" />
-                    </xsl:call-template>
-                  </li>
-                </xsl:for-each>
-              </ul>
-            </td>
-          </tr>
-        </xsl:if>
-
-      </table>
     </div>
+
+
+<!-- authors, description, children -->
+    <div id="mir-abstract-plus">
+
+      <xsl:if test="$mods/mods:name[mods:role/mods:roleTerm/text()='aut']">
+        <p id="authors_short">
+          <xsl:for-each select="$mods/mods:name[mods:role/mods:roleTerm/text()='aut']">
+            <xsl:if test="position()!=1">
+              <xsl:value-of select="'; '" />
+            </xsl:if>
+            <xsl:apply-templates select="." mode="authors_short" />
+          </xsl:for-each>
+        </p>
+      </xsl:if>
+
+
+      <xsl:if test="$mods/mods:abstract">
+        <p>
+          <span itemprop="description">
+            <xsl:value-of select="$mods/mods:abstract" />
+          </span>
+        </p>
+      </xsl:if>
+
+      <!-- check for relatedItem type!="host" and containing mycoreobject ID using solr query on field mods.relatedItem -->
+      <xsl:variable name="hits"
+                    xmlns:encoder="xalan://java.net.URLEncoder"
+                    select="document(concat('solr:q=',encoder:encode(concat('mods.relatedItem:', mycoreobject/@ID, '* AND NOT(mods.relatedItem:*|host)'))))/response/result" />
+
+      <xsl:if test="mycoreobject/structure/children/child or count($hits/doc) &gt; 0">
+        <table class="children">
+          <xsl:if test="mycoreobject/structure/children/child">
+            <xsl:apply-templates mode="printChildren" select="mycoreobject/structure/children">
+              <xsl:with-param name="label" select="i18n:translate('component.mods.metaData.dictionary.contains')" />
+            </xsl:apply-templates>
+          </xsl:if>
+
+          <xsl:if test="count($hits/doc) &gt; 0">
+            <tr>
+              <td valign="top" class="metaname">
+                <xsl:value-of select="concat(i18n:translate('component.mods.metaData.dictionary.contains'),':')" />
+              </td>
+              <td class="metavalue">
+                <ul>
+                  <xsl:for-each select="$hits/doc">
+                    <li>
+                      <xsl:call-template name="objectLink">
+                        <xsl:with-param name="obj_id" select="str[@name='returnId']" />
+                      </xsl:call-template>
+                    </li>
+                  </xsl:for-each>
+                </ul>
+              </td>
+            </tr>
+          </xsl:if>
+
+        </table>
+      </xsl:if>
+    </div><!-- end: authors, description, children -->
+
     <xsl:apply-imports />
   </xsl:template>
 

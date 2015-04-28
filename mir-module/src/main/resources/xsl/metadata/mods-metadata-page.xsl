@@ -11,15 +11,18 @@
         <link href="{$WebApplicationBaseURL}js/shariff/shariff.min.css" rel="stylesheet" />
       </head>
 
-      <div class="row detail_row">
-        <div class="col-md-12">
-          <div class="detail_block text-center">
-            <!-- Start: PAGINATION -->
-            <xsl:apply-templates select="div[@id='search_options']" mode="copyContent" />
-            <!-- End: PAGINATION -->
+      <xsl:if test="div[@id='search_browsing']">
+        <div class="row detail_row">
+          <div class="col-md-12">
+            <div class="detail_block text-center">
+              <span id="pagination_label">gefundende Dokumente</span><br />
+              <!-- Start: PAGINATION -->
+              <xsl:apply-templates select="div[@id='search_browsing']" mode="copyContent" />
+              <!-- End: PAGINATION -->
+            </div>
           </div>
         </div>
-      </div>
+      </xsl:if>
 
       <!-- Start: MESSAGE -->
       <xsl:if test="div[@id='mir-message']">
@@ -31,27 +34,33 @@
       </xsl:if>
       <!-- End: MESSAGE -->
 
-      <div class="row detail_row bread_plus">
-        <div class="col-xs-12">
-          <!-- Start: BREAD-CRUMBS -->
-          <xsl:if test="div[@id='mir-breadcrumb']">
-            <xsl:copy-of select="div[@id='mir-breadcrumb']/*" />
-          </xsl:if>
-          <!-- End: BREAD-CRUMBS -->
-          <div class="detail_block text-right">
-            <!-- Start: EDIT -->
-            <xsl:apply-templates select="div[@id='mir-edit']" mode="copyContent" />
-            <!-- End: EDIT -->
+      <div class="row detail_row" itemscope="itemscope" itemtype="http://schema.org/ScholarlyArticle">
+
+        <div  id="head_col" class="col-xs-12">
+          <div class="row">
+            <div class="col-md-4 col-md-push-8">
+              <div class="pull-right">
+                <!-- Start: EDIT -->
+                <xsl:apply-templates select="div[@id='mir-edit']" mode="copyContent" />
+                <!-- End: EDIT -->
+              </div>
+            </div>
+            <div class="col-md-8 col-md-pull-4">
+              <xsl:apply-templates select="div[@id='mir-abstract-badges']" mode="copyContent" />
+            </div>
+          </div>
+          <div class="row">
+            <div id="headline" class="col-xs-12">
+              <xsl:apply-templates select="div[@id='mir-abstract-title']" mode="copyContent" />
+            </div>
           </div>
         </div>
-      </div>
 
-      <div class="row detail_row" itemscope="itemscope" itemtype="http://schema.org/ScholarlyArticle">
         <div id="main_col" class="col-md-8">
           <div class="detail_block">
 
           <!-- Start: ABSTRACT -->
-          <xsl:apply-templates select="div[@id='mir-abstract']" mode="copyContent" />
+          <xsl:apply-templates select="div[@id='mir-abstract-plus']" mode="copyContent" />
           <!-- End: ABSTRACT -->
 
           </div>

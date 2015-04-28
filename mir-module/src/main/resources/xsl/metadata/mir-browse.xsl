@@ -5,9 +5,7 @@
   <xsl:import href="xslImport:modsmeta:metadata/mir-browse.xsl" />
   <xsl:include href="response-utils.xsl" />
   <xsl:template match="/">
-    <div id="search_options">
-      <xsl:apply-templates select="/mycoreobject/response" />
-    </div>
+    <xsl:apply-templates select="/mycoreobject/response" />
     <xsl:apply-imports />
   </xsl:template>
 
@@ -45,48 +43,51 @@
       </xsl:for-each>
     </xsl:variable>
 
-    <div id="search_options">
-      <!-- TODO: add functionality to these two bottons, before display them again -->
-      <!-- button type="button" class="btn btn-default btn-sm">Suche verfeinern</button -->
-      <xsl:copy-of select="$ResultPages" />
-      <!-- button type="button" class="btn btn-default btn-sm">Trefferliste anzeigen</button -->
-    </div>
+    <div id="search_browsing">
+      <div id="search_options">
+        <!-- TODO: add functionality to these two bottons, before display them again -->
+        <!-- button type="button" class="btn btn-default btn-sm">Suche verfeinern</button -->
+        <xsl:copy-of select="$ResultPages" />
+        <!-- button type="button" class="btn btn-default btn-sm">Trefferliste anzeigen</button -->
+      </div>
 
-       <!--
-          <xsl:variable name="origRows" select="/response/lst[@name='responseHeader']/lst[@name='params']/str[@name='origrows']" />
-          <xsl:variable name="newStart" select="$start - $start mod $origRows" />
-          <xsl:variable name="href" select="concat($proxyBaseURL,'?', $HttpSession, $params, '&amp;start=', $newStart)" />
+         <!--
+            <xsl:variable name="origRows" select="/response/lst[@name='responseHeader']/lst[@name='params']/str[@name='origrows']" />
+            <xsl:variable name="newStart" select="$start - $start mod $origRows" />
+            <xsl:variable name="href" select="concat($proxyBaseURL,'?', $HttpSession, $params, '&amp;start=', $newStart)" />
 
-          <a href="{$href}">
-            <xsl:value-of select="i18n:translate('component.solr.searchresult.back')" />
+            <a href="{$href}">
+              <xsl:value-of select="i18n:translate('component.solr.searchresult.back')" />
+            </a>
+          -->
+      <xsl:variable name="objId" select="/mycoreobject/@ID" />
+      <xsl:variable name="staticUrl" select="concat($WebApplicationBaseURL, 'receive/', $objId)" />
+      <div id="permalink">
+        <span class="linklabel">
+          <xsl:value-of select="concat(i18n:translate('component.solr.searchresult.objectlink'), ' : ')" />
+        </span>
+        <span class="linktext">
+          <xsl:variable name="linkToDocument">
+            <xsl:value-of select="$staticUrl" />
+          </xsl:variable>
+          <a href="{concat($staticUrl,$HttpSession)}">
+            <xsl:value-of select="$staticUrl" />
           </a>
-        -->
-    <xsl:variable name="objId" select="/mycoreobject/@ID" />
-    <xsl:variable name="staticUrl" select="concat($WebApplicationBaseURL, 'receive/', $objId)" />
-    <div id="permalink">
-      <span class="linklabel">
-        <xsl:value-of select="concat(i18n:translate('component.solr.searchresult.objectlink'), ' : ')" />
-      </span>
-      <span class="linktext">
-        <xsl:variable name="linkToDocument">
-          <xsl:value-of select="$staticUrl" />
-        </xsl:variable>
-        <a href="{concat($staticUrl,$HttpSession)}">
-          <xsl:value-of select="$staticUrl" />
-        </a>
-      </span>
-    </div>
-    <!-- change url in browser -->
-    <script type="text/javascript">
-      <xsl:value-of select="concat('var pageurl = &quot;', $staticUrl, '&quot;;')" />
-      if(typeof window.history.replaceState == &quot;function&quot;){
-        var originalPage = {title: document.title, url: document.location.toString()};
-        window.history.replaceState({path:pageurl},&quot; <xsl:value-of select="i18n:translate('component.solr.searchresult.resultList')" /> &quot;,pageurl);
-        document.getElementById(&quot;permalink&quot;).style.display = &quot;none&quot;;
-        window.onbeforeunload = function(){
-          window.history.replaceState({path:originalPage.url}, originalPage.title, originalPage.url);
+        </span>
+      </div>
+
+      <!-- change url in browser -->
+      <script type="text/javascript">
+        <xsl:value-of select="concat('var pageurl = &quot;', $staticUrl, '&quot;;')" />
+        if(typeof window.history.replaceState == &quot;function&quot;){
+          var originalPage = {title: document.title, url: document.location.toString()};
+          window.history.replaceState({path:pageurl},&quot; <xsl:value-of select="i18n:translate('component.solr.searchresult.resultList')" /> &quot;,pageurl);
+          document.getElementById(&quot;permalink&quot;).style.display = &quot;none&quot;;
+          window.onbeforeunload = function(){
+            window.history.replaceState({path:originalPage.url}, originalPage.title, originalPage.url);
+          }
         }
-      }
-    </script>
+      </script>
+    </div>
   </xsl:template>
 </xsl:stylesheet>
