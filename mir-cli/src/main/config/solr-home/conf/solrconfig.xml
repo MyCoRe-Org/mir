@@ -862,6 +862,11 @@
          <str name="facet.query">price:[500 TO *]</str>
        </lst>
       -->
+       <lst name="invariants">
+         <str name="facet">true</str>
+         <str name="facet.field">mods.type</str>
+         <str name="facet.mincount">1</str>
+       </lst>
     <!-- If the default list of SearchComponents is not desired, that
          list can either be overridden completely, or components can be
          prepended or appended to the default list.  (see below)
