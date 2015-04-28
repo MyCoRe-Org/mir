@@ -199,6 +199,73 @@
       <xsl:with-param name="url" select="$langURL" />
     </xsl:call-template>
   </xsl:template>
+
+  <xsl:template name="mir.breadcrumb">
+
+    <!-- get href of starting page -->
+    <!--
+      Variable beinhaltet die url der in navigation.xml angegebenen
+      Startseite
+    -->
+    <xsl:variable name="hrefStartingPage"
+      select="$loaded_navigation_xml/@hrefStartingPage" />
+    <!-- END OF: get href of starting page -->
+
+    <!--
+      fuer jedes Element des Elternknotens <navigation> in
+      navigation.xml
+    -->
+    <xsl:for-each select="$loaded_navigation_xml//item[@href]">
+      <!-- pruefe ob ein Element gerade angezeigt wird -->
+      <xsl:if test="@href = $browserAddress ">
+        <!-- fuer sich selbst und jedes seiner Elternelemente -->
+        <xsl:for-each select="ancestor-or-self::item">
+          <!--
+            und fuer alle Seiten ausser der Startseite zeige den
+            Seitentitel in der Navigationsleiste Verweis auf die
+            Startseite existiert bereits s.o.
+          -->
+          <xsl:if test="$browserAddress != $hrefStartingPage ">
+            <li>
+              <xsl:choose>
+                <xsl:when test="@href = $browserAddress">
+                  <xsl:attribute name="class">active </xsl:attribute>
+                  <xsl:choose>
+                    <xsl:when test="./label[lang($CurrentLang)] != ''">
+                      <xsl:value-of select="ancestor::menu/label[lang($CurrentLang)]" />:
+                      <xsl:value-of select="./label[lang($CurrentLang)]" />
+                    </xsl:when>
+                    <xsl:otherwise>
+                      <xsl:value-of select="./label[lang($DefaultLang)]" />
+                    </xsl:otherwise>
+                  </xsl:choose>
+                </xsl:when>
+                <xsl:otherwise>
+                  <a>
+                    <xsl:attribute name="href">
+                      <xsl:call-template name="UrlAddSession">
+                        <xsl:with-param name="url"
+                      select="concat($WebApplicationBaseURL,substring-after(@href,'/'))" />
+                      </xsl:call-template>
+                    </xsl:attribute>
+                    <xsl:choose>
+                      <xsl:when test="./label[lang($CurrentLang)] != ''">
+                        <xsl:value-of select="./label[lang($CurrentLang)]" />
+                      </xsl:when>
+                      <xsl:otherwise>
+                        <xsl:value-of select="./label[lang($DefaultLang)]" />
+                      </xsl:otherwise>
+                    </xsl:choose>
+                  </a>
+                </xsl:otherwise>
+              </xsl:choose>
+            </li>
+          </xsl:if>
+        </xsl:for-each>
+      </xsl:if>
+    </xsl:for-each>
+  </xsl:template>
+
   <!-- ======================================================================================================== -->
   <xsl:template name="mir.write.content">
     <xsl:call-template name="print.writeProtectionMessage" />

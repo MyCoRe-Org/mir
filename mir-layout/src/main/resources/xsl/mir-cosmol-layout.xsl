@@ -91,24 +91,29 @@
 
               <div class="row detail_row bread_plus">
                 <div class="col-xs-12">
-<!--  TODO: replace with bread crumb logic -->
                   <ul itemprop="breadcrumb" class="breadcrumb">
                     <li>
-                      <a class="navtrail" href="#">Home</a>
+                      <a class="navtrail" href="{$WebApplicationBaseURL}"><xsl:value-of select="i18n:translate('mir.breadcrumb.home')" /></a>
                     </li>
-                    <li>
-                      <a href="#" class="navtrail">Zeitschrift</a>
-                    </li>
-                    <li class="active">The journal of antimicrobial chemotherapy : JAC</li>
+                    <xsl:choose>
+                      <xsl:when test="string-length($breadCrumb)>0">
+                        <xsl:copy-of select="$breadCrumb" />
+                      </xsl:when>
+                      <xsl:when test="breadcrumb/ul[@class='breadcrumb']">
+                        <xsl:copy-of select="breadcrumb/ul[@class='breadcrumb']/*" />
+                      </xsl:when>
+                      <xsl:otherwise>
+                        <xsl:call-template name="mir.breadcrumb" />
+                      </xsl:otherwise>
+                  </xsl:choose>
                   </ul>
-<!-- TODO: end -->
                 </div>
               </div>
 
               <xsl:call-template name="print.writeProtectionMessage" />
               <xsl:choose>
                 <xsl:when test="$readAccess='true'">
-                  <xsl:copy-of select="*[not(name()='head')]" />
+                  <xsl:copy-of select="*[not(name()='head')][not(name()='breadcrumb')] " />
                 </xsl:when>
                 <xsl:otherwise>
                   <xsl:call-template name="printNotLoggedIn" />

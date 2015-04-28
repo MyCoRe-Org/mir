@@ -68,7 +68,19 @@
             <xsl:call-template name="print.writeProtectionMessage" />
             <xsl:choose>
               <xsl:when test="$readAccess='true'">
-                <xsl:copy-of select="*[not(name()='head')]" />
+                <xsl:if test="breadcrumb/ul[@class='breadcrumb']">
+                  <div class="row detail_row bread_plus">
+                    <div class="col-xs-12">
+                      <ul itemprop="breadcrumb" class="breadcrumb">
+                        <li>
+                          <a class="navtrail" href="{$WebApplicationBaseURL}"><xsl:value-of select="i18n:translate('mir.breadcrumb.home')" /></a>
+                        </li>
+                        <xsl:copy-of select="breadcrumb/ul[@class='breadcrumb']/*" />
+                      </ul>
+                    </div>
+                  </div>
+                </xsl:if>
+                <xsl:copy-of select="*[not(name()='head')][not(name()='breadcrumb')] " />
               </xsl:when>
               <xsl:otherwise>
                 <xsl:call-template name="printNotLoggedIn" />

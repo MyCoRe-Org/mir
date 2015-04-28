@@ -11,6 +11,12 @@
         <link href="{$WebApplicationBaseURL}js/shariff/shariff.min.css" rel="stylesheet" />
       </head>
 
+      <xsl:if test="div[@id='mir-breadcrumb']">
+        <breadcrumb>
+          <xsl:copy-of select="div[@id='mir-breadcrumb']/*" />
+        </breadcrumb>
+      </xsl:if>
+
       <xsl:if test="div[@id='search_browsing']">
         <div class="row detail_row">
           <div class="col-md-12">
@@ -186,4 +192,5 @@
       <xsl:copy-of select="node()|*" />
     </dd>
   </xsl:template>
+
 </xsl:stylesheet>

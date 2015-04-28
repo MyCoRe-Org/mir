@@ -7,9 +7,6 @@
     <div id="mir-breadcrumb">
       <ul class="breadcrumb" itemprop="breadcrumb">
         <li>
-          <a href="{$WebApplicationBaseURL}" class="navtrail">Home</a>
-        </li>
-        <li>
           <xsl:call-template name="categorySearchLink">
             <xsl:with-param name="class" select="'navtrail'" />
             <xsl:with-param name="node" select="$mods/mods:genre[@type='intern']"/>
