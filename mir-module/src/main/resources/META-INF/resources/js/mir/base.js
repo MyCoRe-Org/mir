@@ -111,4 +111,10 @@
     container : "body"
   });
 
+  $(document).popover({
+    selector : "[data-toggle=popover]",
+    container : "body",
+    html : "true"
+  });
+
 })(jQuery);

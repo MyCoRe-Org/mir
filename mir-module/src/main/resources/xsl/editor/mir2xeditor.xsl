@@ -19,7 +19,9 @@
           </input>
         </div>
         <div class="col-md-1">
-          <span class="btn btn-default info-button" data-original-title="{@help-text}" data-toggle="tooltip" data-placement="right" title=""><i class="fa fa-info"></i></span>
+          <span class="btn btn-default info-button" data-toggle="popover" data-placement="right" data-content="{@help-text}">
+            <i class="fa fa-info"></i>
+          </span>
         </div>
       </div>
     </xed:bind>
@@ -39,7 +41,9 @@
           </textarea>
         </div>
         <div class="col-md-1">
-          <span class="btn btn-default info-button" data-original-title="{@help-text}" data-toggle="tooltip" data-placement="right" title=""><i class="fa fa-info"></i></span>
+          <span class="btn btn-default info-button" data-toggle="popover" data-placement="right" data-content="{@help-text}">
+            <i class="fa fa-info"></i>
+          </span>
         </div>
       </div>
     </xed:bind>
@@ -60,7 +64,9 @@
               </div>
             </div>
             <div class="col-md-1">
-              <span class="btn btn-default info-button" data-original-title="{@help-text}" data-toggle="tooltip" data-placement="right" title=""><i class="fa fa-info"></i></span>
+              <span class="btn btn-default info-button" data-toggle="popover" data-placement="right" data-content="{@help-text}">
+                <i class="fa fa-info"></i>
+              </span>
             </div>
             <xsl:call-template name="mir-pmud" />
           </xed:bind>
@@ -86,7 +92,9 @@
               <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="person.fields" />
             </div>
             <div class="col-md-1">
-              <span class="btn btn-default info-button" data-original-title="{@help-text}" data-toggle="tooltip" data-placement="right" title=""><i class="fa fa-info"></i></span>
+              <span class="btn btn-default info-button" data-toggle="popover" data-placement="right" data-content="{@help-text}">
+                <i class="fa fa-info"></i>
+              </span>
             </div>
             <xsl:call-template name="mir-pmud" />
           </xed:bind>

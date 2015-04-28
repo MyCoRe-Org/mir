@@ -35,7 +35,9 @@
           </div>
         </div>
         <div class="col-md-1">
-          <span class="btn btn-default info-button" data-original-title="{i18n:mir.help.genre}" data-toggle="tooltip" data-placement="right" title=""><i class="fa fa-info"></i></span>
+          <span class="btn btn-default info-button" data-toggle="popover" data-placement="right" data-content="{i18n:mir.help.genre}">
+            <i class="fa fa-info"></i>
+          </span>
         </div>
         <mir:pmud />
       </div>
@@ -57,7 +59,9 @@
         </div>
       </div>
       <div class="col-md-1">
-        <span class="btn btn-default info-button" data-original-title="{i18n:mir.help.genre}" data-toggle="tooltip" data-placement="right" title=""><i class="fa fa-info"></i></span>
+        <span class="btn btn-default info-button" data-toggle="popover" data-placement="right" data-content="{i18n:mir.help.genre}">
+          <i class="fa fa-info"></i>
+        </span>
       </div>
     </div>
   </xed:template>
@@ -77,7 +81,9 @@
         </div>
       </xed:bind>
       <div class="col-md-1">
-        <span class="btn btn-default info-button" data-original-title="{i18n:mir.help.status}" data-toggle="tooltip" data-placement="right" title=""><i class="fa fa-info"></i></span>
+        <span class="btn btn-default info-button" data-toggle="popover" data-placement="right" data-content="{i18n:mir.help.status}">
+          <i class="fa fa-info"></i>
+        </span>
       </div>
     </div>
   </xed:template>
@@ -128,7 +134,9 @@
             </xed:bind>
           </div>
           <div class="col-md-1">
-            <span class="btn btn-default info-button" data-original-title="{i18n:mir.help.title.thesis}" data-toggle="tooltip" data-placement="right" title=""><i class="fa fa-info"></i></span>
+            <span class="btn btn-default info-button" data-toggle="popover" data-placement="right" data-content="{i18n:mir.help.title.thesis}">
+              <i class="fa fa-info"></i>
+            </span>
           </div>
         </div>
         <mir:textfield xpath="mods:subTitle" label="mir.title.subTitle" help-text="{i18n:mir.help.title.subTitle}" />
@@ -151,7 +159,9 @@
             </xed:bind>
           </div>
           <div class="col-md-1">
-            <span class="btn btn-default info-button" data-original-title="{i18n:mir.help.title.thesis.translated}" data-toggle="tooltip" data-placement="right" title=""><i class="fa fa-info"></i></span>
+            <span class="btn btn-default info-button" data-toggle="popover" data-placement="right" data-content="{i18n:mir.help.title.thesis.translated}">
+              <i class="fa fa-info"></i>
+            </span>
           </div>
         </div>
         <mir:textfield xpath="mods:subTitle" label="mir.title.subTitle" help-text="{i18n:mir.help.title.subTitle}" />
@@ -195,7 +205,9 @@
           </div>
         </div>
         <div class="col-md-1">
-          <span class="btn btn-default info-button" data-original-title="{i18n:mir.help.title.complex}" data-toggle="tooltip" data-placement="right" title=""><i class="fa fa-info"></i></span>
+          <span class="btn btn-default info-button" data-toggle="popover" data-placement="right" data-content="{i18n:mir.help.title.complex}">
+            <i class="fa fa-info"></i>
+          </span>
         </div>
         <mir:pmud />
       </div>
@@ -388,7 +400,9 @@
           </div>
         </div>
         <div class="col-md-1">
-          <span class="btn btn-default info-button" data-original-title="{i18n:mir.help.identifier.patent}" data-toggle="tooltip" data-placement="right" title=""><i class="fa fa-info"></i></span>
+          <span class="btn btn-default info-button" data-toggle="popover" data-placement="right" data-content="{i18n:mir.help.identifier.patent}">
+            <i class="fa fa-info"></i>
+          </span>
         </div>
         <mir:pmud />
       </xed:repeat>
@@ -458,7 +472,9 @@
           <input type="text" size="30" class="form-control form-control-inline {$xed-validation-marker}" />
         </div>
         <div class="col-md-1">
-          <span class="btn btn-default info-button" data-original-title="{i18n:mir.help.identifier}" data-toggle="tooltip" data-placement="right" title=""><i class="fa fa-info"></i></span>
+          <span class="btn btn-default info-button" data-toggle="popover" data-placement="right" data-content="{i18n:mir.help.identifier}">
+            <i class="fa fa-info"></i>
+          </span>
         </div>
         <mir:pmud />
       </div>
@@ -490,7 +506,9 @@
           <input type="text" size="20" class="form-control form-control-inline {$xed-validation-marker}" />
         </div>
         <div class="col-md-1">
-          <span class="btn btn-default info-button" data-original-title="{i18n:mir.help.doi.handle.urn}" data-toggle="tooltip" data-placement="right" title=""><i class="fa fa-info"></i></span>
+          <span class="btn btn-default info-button" data-toggle="popover" data-placement="right" data-content="{i18n:mir.help.doi.handle.urn}">
+            <i class="fa fa-info"></i>
+          </span>
         </div>
         <mir:pmud />
       </div>
@@ -530,7 +548,9 @@
           <input type="text" size="50" class="form-control form-control-inline {$xed-validation-marker}" />
         </div>
         <div class="col-md-1">
-          <span class="btn btn-default info-button" data-original-title="{i18n:mir.help.link}" data-toggle="tooltip" data-placement="right" title=""><i class="fa fa-info"></i></span>
+          <span class="btn btn-default info-button" data-toggle="popover" data-placement="right" data-content="{i18n:mir.help.link}">
+            <i class="fa fa-info"></i>
+          </span>
         </div>
         <mir:pmud />
       </div>
@@ -593,7 +613,9 @@
         </div>
       </div>
       <div class="col-md-1">
-        <span class="btn btn-default info-button" data-original-title="{i18n:mir.help.host.pages}" data-toggle="tooltip" data-placement="right" title=""><i class="fa fa-info"></i></span>
+        <span class="btn btn-default info-button" data-toggle="popover" data-placement="right" data-content="{i18n:mir.help.host.pages}">
+          <i class="fa fa-info"></i>
+        </span>
       </div>
     </div>
   </xed:template>
@@ -609,8 +631,10 @@
         </xed:bind>
       </div>
       <div class="col-md-1">
-          <span class="btn btn-default info-button" data-original-title="{i18n:mir.help.language}" data-toggle="tooltip" data-placement="right" title=""><i class="fa fa-info"></i></span>
-        </div>
+        <span class="btn btn-default info-button" data-toggle="popover" data-placement="right" data-content="{i18n:mir.help.language}">
+          <i class="fa fa-info"></i>
+        </span>
+      </div>
     </div>
   </xed:template>
 
@@ -628,7 +652,9 @@
           </xed:bind>
         </div>
         <div class="col-md-1">
-          <span class="btn btn-default info-button" data-original-title="{i18n:mir.help.language}" data-toggle="tooltip" data-placement="right" title=""><i class="fa fa-info"></i></span>
+          <span class="btn btn-default info-button" data-toggle="popover" data-placement="right" data-content="{i18n:mir.help.language}">
+            <i class="fa fa-info"></i>
+          </span>
         </div>
         <mir:pmud />
     </div>
@@ -654,7 +680,9 @@
           </select>
         </div>
         <div class="col-md-1">
-          <span class="btn btn-default info-button" data-original-title="{i18n:mir.help.rights}" data-toggle="tooltip" data-placement="right" title=""><i class="fa fa-info"></i></span>
+          <span class="btn btn-default info-button" data-toggle="popover" data-placement="right" data-content="{i18n:mir.help.rights}">
+            <i class="fa fa-info"></i>
+          </span>
         </div>
       </div>
     </xed:bind>
@@ -673,7 +701,9 @@
           </select>
         </div>
         <div class="col-md-1">
-          <span class="btn btn-default info-button" data-original-title="{i18n:mir.help.access}" data-toggle="tooltip" data-placement="right" title=""><i class="fa fa-info"></i></span>
+          <span class="btn btn-default info-button" data-toggle="popover" data-placement="right" data-content="{i18n:mir.help.access}">
+            <i class="fa fa-info"></i>
+          </span>
         </div>
       </div>
     </xed:bind>
@@ -708,8 +738,10 @@
         </xed:bind>
       </div>
       <div class="col-md-1">
-          <span class="btn btn-default info-button" data-original-title="{i18n:mir.help.institutes}" data-toggle="tooltip" data-placement="right" title=""><i class="fa fa-info"></i></span>
-        </div>
+        <span class="btn btn-default info-button" data-toggle="popover" data-placement="right" data-content="{i18n:mir.help.institutes}">
+          <i class="fa fa-info"></i>
+        </span>
+      </div>
     </div>
   </xed:template>
 
@@ -741,7 +773,9 @@
         </xed:bind>
       </div>
       <div class="col-md-1">
-        <span class="btn btn-default info-button" data-original-title="{i18n:mir.help.editor.organization}" data-toggle="tooltip" data-placement="right" title=""><i class="fa fa-info"></i></span>
+        <span class="btn btn-default info-button" data-toggle="popover" data-placement="right" data-content="{i18n:mir.help.editor.organization}">
+          <i class="fa fa-info"></i>
+        </span>
       </div>
     </div>
   </xed:template>
@@ -758,7 +792,9 @@
           </select>
         </div>
         <div class="col-md-1">
-          <span class="btn btn-default info-button" data-original-title="{i18n:mir.help.sdnb}" data-toggle="tooltip" data-placement="right" title=""><i class="fa fa-info"></i></span>
+          <span class="btn btn-default info-button" data-toggle="popover" data-placement="right" data-content="{i18n:mir.help.sdnb}">
+            <i class="fa fa-info"></i>
+          </span>
         </div>
       </div>
     </xed:bind>
@@ -780,7 +816,9 @@
           </xed:bind>
         </div>
         <div class="col-md-1">
-          <span class="btn btn-default info-button" data-original-title="{i18n:mir.help.abstract}" data-toggle="tooltip" data-placement="right" title=""><i class="fa fa-info"></i></span>
+          <span class="btn btn-default info-button" data-toggle="popover" data-placement="right" data-content="{i18n:mir.help.abstract}">
+            <i class="fa fa-info"></i>
+          </span>
         </div>
         <mir:pmud />
       </div>
@@ -845,7 +883,9 @@
           </xed:if>
         </div>
         <div class="col-md-1">
-          <span class="btn btn-default info-button" data-original-title="{i18n:mir.help.related.item}" data-toggle="tooltip" data-placement="right" title=""><i class="fa fa-info"></i></span>
+          <span class="btn btn-default info-button" data-toggle="popover" data-placement="right" data-content="{i18n:mir.help.related.item}">
+            <i class="fa fa-info"></i>
+          </span>
         </div>
         <mir:pmud />
       </div>
@@ -865,7 +905,8 @@
           <xed:output i18n="button.cancel" />
         </button>
         <xed:choose>
-          <xed:when test="/mycoreobject/@ID = 'mir_mods_00000000'">
+          <!-- xed:when test="/mycoreobject/@ID = 'mir_mods_00000000'" -->
+          <xed:when test="contains(/mycoreobject/@ID, '_00000000')">
             <button type="submit" class="btn btn-primary" xed:target="servlet" xed:href="CreateObjectServlet">
               <xed:output i18n="button.save" />
             </button>
