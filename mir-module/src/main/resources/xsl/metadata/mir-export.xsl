@@ -24,11 +24,11 @@
         <xsl:with-param name="transformer" select="'isi'"/>
         <xsl:with-param name="linkText" select="'ISI'"/>
       </xsl:call-template>
-      <xsl:call-template name="printSeperator" />
+      <!-- xsl:call-template name="printSeperator" />
       <xsl:call-template name="exportLink">
         <xsl:with-param name="transformer" select="'wordbib'"/>
         <xsl:with-param name="linkText" select="'MS Word bibliography'"/>
-      </xsl:call-template>
+      </xsl:call-template -->
       <xsl:call-template name="printSeperator" />
       <xsl:call-template name="exportLink">
         <xsl:with-param name="transformer" select="'mods2dc'"/>
