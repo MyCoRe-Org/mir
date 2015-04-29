@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:mcr="xalan://org.mycore.common.xml.MCRXMLFunctions"
   xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation" xmlns:mods="http://www.loc.gov/mods/v3" xmlns:xlink="http://www.w3.org/1999/xlink"
-  xmlns:mcrurn="xalan://org.mycore.urn.MCRXMLFunctions" xmlns:cmd="http://www.cdlib.org/inside/diglib/copyrightMD"
-  exclude-result-prefixes="i18n mcr mods xlink mcrurn cmd">
+  xmlns:mcrurn="xalan://org.mycore.urn.MCRXMLFunctions" xmlns:cmd="http://www.cdlib.org/inside/diglib/copyrightMD" xmlns:exslt="http://exslt.org/common"
+  exclude-result-prefixes="i18n mcr mods xlink mcrurn cmd exslt">
   <xsl:import href="xslImport:modsmeta:metadata/mir-citation.xsl" />
   <xsl:include href="mods-highwire.xsl" />
   <xsl:param name="MCR.URN.Resolver.MasterURL" select="''" />
   <xsl:param name="MCR.DOI.Prefix" select="'10.5072'" />
+  <xsl:param name="MIR.citationStyles" select="''" />
   <xsl:template match="/">
 
     <!-- ==================== Highwire Press tags ==================== -->
@@ -30,24 +31,31 @@
       </xsl:choose>
       <div class="shariff" data-theme="white"></div><!-- for more params see http://heiseonline.github.io/shariff/ -->
 
-      <p>
-        <xsl:apply-templates select="$mods" mode="authorList" />
-        <xsl:apply-templates select="$mods" mode="year" />
-        <xsl:apply-templates mode="mods.title" select="$mods" />
-        <xsl:value-of select="'.'" />
-      </p>
-      <!--
-      <p>
-        <small>
-          Further citation formats:
-          <a href="http://crosscite.org/citeproc/">DOI Citation Formatter</a>
-          .
-        </small>
-      </p>
-       -->
-      <!-- cite url - TODO: Should be URN if one is given -->
-      <p id="cite_link_box">
+      <div id="citation-style">
+        <span><strong>Zitierform:</strong></span>
+        <xsl:if test="//mods:mods/mods:identifier[@type='doi'] and string-length($MIR.citationStyles) &gt; 0">
+          <xsl:variable name="cite-styles">
+            <xsl:call-template name="Tokenizer"><!-- use split function from mycore-base/coreFunctions.xsl -->
+              <xsl:with-param name="string" select="$MIR.citationStyles"/>
+              <xsl:with-param name="delimiter" select="','" />
+            </xsl:call-template>
+          </xsl:variable>
+          <select class="form-control input-sm" id="crossref-cite">
+            <option>din-1505-2</option>
+            <xsl:for-each select="exslt:node-set($cite-styles)/token">
+            <option><xsl:value-of select="." /></option>
+            </xsl:for-each>
+          </select>
+        </xsl:if>
+        <p id="citation-text">
+          <xsl:apply-templates select="$mods" mode="authorList" />
+          <xsl:apply-templates select="$mods" mode="year" />
+          <xsl:apply-templates mode="mods.title" select="$mods" />
+          <xsl:value-of select="'.'" />
+        </p>
+      </div>
 
+      <p id="cite_link_box">
         <xsl:variable name="derivateURN">
           <xsl:for-each select="mycoreobject/structure/derobjects/derobject">
             <xsl:variable name="derId" select="@xlink:href" />
@@ -116,6 +124,31 @@
             });
         });
       </script>
+      <xsl:if test="//mods:mods/mods:identifier[@type='doi']">
+        <script>
+          $.ajax({
+            type: 'POST',
+            url: 'http://dx.doi.org/<xsl:value-of select="//mods:mods/mods:identifier[@type='doi']" />',
+            headers: {
+                'Accept': 'text/bibliography; style=din-1505-2; locale=de-DE'
+            }
+          }).done(function(data) {
+            $('#citation-text').html(data);
+          });
+
+          $('#crossref-cite').on('change', function() {
+            $.ajax({
+              type: 'POST',
+              url: 'http://dx.doi.org/<xsl:value-of select="//mods:mods/mods:identifier[@type='doi']" />',
+              headers: {
+                  'Accept': 'text/bibliography; style=' + $(this).val() + '; locale=de-DE'
+              }
+            }).done(function(data) {
+              $('#citation-text').html(data);
+            });
+          });
+        </script>
+      </xsl:if>
     </div>
 
   <xsl:if test="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:accessCondition">
@@ -168,24 +201,18 @@
       <xsl:when test="mods:name[mods:role/mods:roleTerm/text()='aut']">
         <xsl:for-each select="mods:name[mods:role/mods:roleTerm/text()='aut']">
           <xsl:choose>
-            <xsl:when test="position()=1">
+            <xsl:when test="position() &lt; 4">
               <strong>
                 <xsl:value-of select="mods:displayForm" />
               </strong>
             </xsl:when>
-            <xsl:when test="position()=2">
+            <xsl:when test="position() &gt; 3">
               <xsl:text>&#160;</xsl:text><!-- add whitespace -->
               <em>et al</em>
             </xsl:when>
-            <xsl:otherwise>
-              <!-- other authors -->
-            </xsl:otherwise>
           </xsl:choose>
         </xsl:for-each>
       </xsl:when>
-      <xsl:otherwise>
-        <xsl:value-of select="'N.N.'" />
-      </xsl:otherwise>
     </xsl:choose>
     <xsl:text>&#160;</xsl:text><!-- add whitespace -->
   </xsl:template>
