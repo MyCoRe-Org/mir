@@ -16,11 +16,19 @@
 
     <xsl:variable name="mods" select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods" />
     <div id="mir-citation">
+      <script type='text/javascript' src='https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js'></script>
+      <xsl:choose>
+        <xsl:when test="//mods:mods/mods:identifier[@type='doi']">
+          <div data-badge-details="right" data-badge-type="donut" data-doi="{//mods:mods/mods:identifier[@type='doi']}" data-hide-no-mentions="true" class="altmetric-embed"></div>
+        </xsl:when>
+        <xsl:when test="//mods:mods/mods:identifier[@type='uri']">
+          <div data-badge-details="right" data-badge-type="donut" data-uri="{//mods:mods/mods:identifier[@type='uri']}" data-hide-no-mentions="true" class="altmetric-embed"></div>
+        </xsl:when>
+        <xsl:otherwise>
+          <div data-badge-details="right" data-badge-type="donut" data-uri="{$WebApplicationBaseURL}receive/{mycoreobject/@ID}" data-hide-no-mentions="true" class="altmetric-embed"></div>
+        </xsl:otherwise>
+      </xsl:choose>
       <div class="shariff" data-theme="white"></div><!-- for more params see http://heiseonline.github.io/shariff/ -->
-      <xsl:if test="//mods:mods/mods:identifier[@type='doi']">
-        <script type='text/javascript' src='https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js'></script>
-        <div data-badge-popover="right" data-badge-type="2" data-doi="{//mods:identifier[@type='doi']}" data-hide-no-mentions="true" class="altmetric-embed"></div>
-      </xsl:if>
 
       <p>
         <xsl:apply-templates select="$mods" mode="authorList" />
