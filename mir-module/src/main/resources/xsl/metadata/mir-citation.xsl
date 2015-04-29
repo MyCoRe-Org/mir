@@ -32,7 +32,7 @@
       <div class="shariff" data-theme="white"></div><!-- for more params see http://heiseonline.github.io/shariff/ -->
 
       <div id="citation-style">
-        <span><strong>Zitierform:</strong></span>
+        <span><strong><xsl:value-of select="i18n:translate('mir.citationStyle')" /></strong></span>
         <xsl:if test="//mods:mods/mods:identifier[@type='doi'] and string-length($MIR.citationStyles) &gt; 0">
           <xsl:variable name="cite-styles">
             <xsl:call-template name="Tokenizer"><!-- use split function from mycore-base/coreFunctions.xsl -->
@@ -88,7 +88,7 @@
             </a>
             <br />
             <a id="copy_cite_link" class="label label-info" href="{$MCR.URN.Resolver.MasterURL}{$urn}">
-              <xsl:text>Zitier-Link</xsl:text>
+              <xsl:value-of select="i18n:translate('mir.citationLink')" />
             </a>
             <textarea id="cite_link_code_box" class="code">
               <xsl:value-of select="concat($MCR.URN.Resolver.MasterURL, $urn)" />
@@ -98,7 +98,7 @@
             <a id="copy_cite_link"
                href="{$WebApplicationBaseURL}receive/{mycoreobject/@ID}"
                class="label label-info">
-               <xsl:text>Zitier-Link</xsl:text>
+               <xsl:value-of select="i18n:translate('mir.citationLink')" />
             </a>
             <textarea id="cite_link_code_box" class="code">
               <xsl:value-of select="concat($WebApplicationBaseURL,'receive/',mycoreobject/@ID)" />
@@ -202,15 +202,16 @@
         <xsl:for-each select="mods:name[mods:role/mods:roleTerm/text()='aut']">
           <xsl:choose>
             <xsl:when test="position() &lt; 4">
-              <strong>
-                <xsl:value-of select="mods:displayForm" />
-              </strong>
+              <xsl:value-of select="mods:displayForm" />
             </xsl:when>
-            <xsl:when test="position() &gt; 3">
+            <xsl:when test="position() = 4">
               <xsl:text>&#160;</xsl:text><!-- add whitespace -->
               <em>et al</em>
             </xsl:when>
           </xsl:choose>
+          <xsl:if test="not(position()=last()) and position() &lt; 4">
+            <xsl:text>, </xsl:text>
+          </xsl:if>
         </xsl:for-each>
       </xsl:when>
     </xsl:choose>
