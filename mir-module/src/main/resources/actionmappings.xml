@@ -33,8 +33,8 @@
       <when condition="(status != published) and (status != review)" url="/servlets/MCRLockServlet?url=/editor/editor-dynamic.xed" />
     </action>
     <action action="update-xml">
-      <when condition="(group = admin)" url="/servlets/MCRLockServlet?url=/editor_form_commit-mods-all.xml" />
-      <when condition="(status != published) and (status != review)" url="/servlets/MCRLockServlet?url=/editor_form_commit-mods-all.xml" />
+      <when condition="(group = admin)" url="/servlets/MCRLockServlet?url=/editor/editor-xml.xed" />
+      <when condition="(status != published) and (status != review)" url="/servlets/MCRLockServlet?url=/editor/editor-xml.xed" />
     </action>
   </collection>
 
