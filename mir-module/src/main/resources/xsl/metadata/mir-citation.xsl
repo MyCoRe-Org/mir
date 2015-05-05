@@ -8,6 +8,9 @@
   <xsl:param name="MCR.URN.Resolver.MasterURL" select="''" />
   <xsl:param name="MCR.DOI.Prefix" select="'10.5072'" />
   <xsl:param name="MIR.citationStyles" select="''" />
+  <xsl:param name="MIR.altmetrics" select="'show'" />
+  <xsl:param name="MIR.altmetrics.hide" select="'true'" />
+  <xsl:param name="MIR.shariff" select="'show'" />
   <xsl:template match="/">
 
     <!-- ==================== Highwire Press tags ==================== -->
@@ -17,19 +20,23 @@
 
     <xsl:variable name="mods" select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods" />
     <div id="mir-citation">
-      <script type='text/javascript' src='https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js'></script>
-      <xsl:choose>
-        <xsl:when test="//mods:mods/mods:identifier[@type='doi']">
-          <div data-badge-details="right" data-badge-type="donut" data-doi="{//mods:mods/mods:identifier[@type='doi']}" data-hide-no-mentions="true" class="altmetric-embed"></div>
-        </xsl:when>
-        <xsl:when test="//mods:mods/mods:identifier[@type='uri']">
-          <div data-badge-details="right" data-badge-type="donut" data-uri="{//mods:mods/mods:identifier[@type='uri']}" data-hide-no-mentions="true" class="altmetric-embed"></div>
-        </xsl:when>
-        <xsl:otherwise>
-          <div data-badge-details="right" data-badge-type="donut" data-uri="{$WebApplicationBaseURL}receive/{mycoreobject/@ID}" data-hide-no-mentions="true" class="altmetric-embed"></div>
-        </xsl:otherwise>
-      </xsl:choose>
-      <div class="shariff" data-theme="white"></div><!-- for more params see http://heiseonline.github.io/shariff/ -->
+      <xsl:if test="$MIR.altmetrics = 'show'">
+        <script type='text/javascript' src='https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js'></script>
+        <xsl:choose>
+          <xsl:when test="//mods:mods/mods:identifier[@type='doi']">
+            <div data-badge-details="right" data-badge-type="donut" data-doi="{//mods:mods/mods:identifier[@type='doi']}" data-hide-no-mentions="{$MIR.altmetrics.hide}" class="altmetric-embed"></div>
+          </xsl:when>
+          <xsl:when test="//mods:mods/mods:identifier[@type='uri']">
+            <div data-badge-details="right" data-badge-type="donut" data-uri="{//mods:mods/mods:identifier[@type='uri']}" data-hide-no-mentions="{$MIR.altmetrics.hide}" class="altmetric-embed"></div>
+          </xsl:when>
+          <xsl:otherwise>
+            <div data-badge-details="right" data-badge-type="donut" data-uri="{$WebApplicationBaseURL}receive/{mycoreobject/@ID}" data-hide-no-mentions="{$MIR.altmetrics.hide}" class="altmetric-embed"></div>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:if>
+      <xsl:if test="$MIR.shariff = 'show'">
+        <div class="shariff" data-theme="white"></div><!-- for more params see http://heiseonline.github.io/shariff/ -->
+      </xsl:if>
 
       <div id="citation-style">
         <span><strong><xsl:value-of select="i18n:translate('mir.citationStyle')" /></strong></span>
