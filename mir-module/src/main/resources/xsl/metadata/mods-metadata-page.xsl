@@ -56,7 +56,7 @@
             </div>
           </div>
           <div class="row">
-            <div id="headline" class="col-xs-12">
+            <div id="headline" class="col-xs-12 col-md-8">
               <xsl:apply-templates select="div[@id='mir-abstract-title']" mode="copyContent" />
             </div>
           </div>
@@ -64,33 +64,27 @@
 
         <div id="main_col" class="col-md-8">
           <div class="detail_block">
-
           <!-- Start: ABSTRACT -->
           <xsl:apply-templates select="div[@id='mir-abstract-plus']" mode="copyContent" />
           <!-- End: ABSTRACT -->
+        </div>
 
-          </div>
+<!-- files -->
+        <xsl:if test="div[contains(@id,'mir-collapse-')]">
           <div class="detail_block">
-            <!-- Start: COLLAPSE -->
-            <xsl:if test="div[contains(@id,'mir-collapse-')]">
-              <div class="panel-group" id="record_detail">
-                <!-- xsl:apply-templates select="div[@id='mir-collapse-preview']" mode="copyContent" / -->
-                <xsl:apply-templates select="div[@id='mir-collapse-files']" mode="copyContent" />
-              </div>
-            </xsl:if>
-            <!-- End: COLLAPSE -->
+            <div class="" id="record_detail">
+              <!-- xsl:apply-templates select="div[@id='mir-collapse-preview']" mode="copyContent" / -->
+              <xsl:apply-templates select="div[@id='mir-collapse-files']" mode="copyContent" />
+            </div>
           </div>
+        </xsl:if>
 
 <!-- metadata -->
-          <div class="panel panel-default mir_metadata">
-            <div class="panel-heading">
-              <h3 class="panel-title">Einordnung</h3>
-            </div>
-            <div class="panel-body">
+          <div class="mir_metadata">
+            <h3>Einordnung</h3>
             <!-- Start: METADATA -->
             <xsl:apply-templates select="div[@id='mir-metadata']" mode="newMetadata" />
             <!-- End: METADATA -->
-            </div>
           </div>
 
 <!-- end: left column -->

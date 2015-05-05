@@ -96,7 +96,6 @@
         </p>
       </xsl:if>
 
-
       <xsl:if test="$mods/mods:abstract">
         <p>
           <span itemprop="description">
@@ -109,6 +108,8 @@
       <xsl:variable name="hits"
                     xmlns:encoder="xalan://java.net.URLEncoder"
                     select="document(concat('solr:q=',encoder:encode(concat('mods.relatedItem:', mycoreobject/@ID, '* AND NOT(mods.relatedItem:*|host)'))))/response/result" />
+
+      <h3>Inhalt</h3>
 
       <xsl:if test="mycoreobject/structure/children/child or count($hits/doc) &gt; 0">
         <table class="children">
@@ -139,6 +140,7 @@
 
         </table>
       </xsl:if>
+
     </div><!-- end: authors, description, children -->
 
     <xsl:apply-imports />

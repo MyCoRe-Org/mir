@@ -2,6 +2,15 @@
  * detail view
  *****************************************************************************/
 
+.detail_block {
+  h3 {
+    font-size: 16px;
+    margin-bottom: 5px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #ddd;
+  }
+}
+
 #search_options {
   text-align: center;
   margin: 0 0 20px 0;
@@ -18,7 +27,38 @@
     top: 2px;
   }
 }
+
+.children {
+  margin-bottom:20px;
+  .metaname {
+    display: none;
+  }
+  .metavalue {
+    ul {
+      li {
+        border: none;
+        border-radius: 0;
+      }
+      &:nth-child(odd){
+        background-color: #F9F9F9;
+      }
+      &:nth-child(even){
+        background-color: #F5F5F5;
+      }
+    }
+  }
+}
+
 .mir_metadata {
+  overflow: hidden;
+  margin-bottom: 30px;
+  h3 {
+    font-size: 16px;
+    margin-top: 0;
+    margin-bottom: 20px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #ddd;
+  }
   dt {
     width: 30%;
     text-align:right;
@@ -26,6 +66,7 @@
     color: #999;
     font-weight: normal;
     clear: both;
+    margin-bottom: 10px;
   }
   dd {
     float: left;
@@ -33,6 +74,7 @@
     width: 65%;
   }
 }
+
 .system {
   dt {
     width: 40%;

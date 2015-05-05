@@ -20,13 +20,20 @@
                 <div class="col-xs-12">
                   <div class="headline">
                     <div class="title">
-                      <a data-toggle="collapse" href="#collapse{@xlink:href}">
+                      <a class="btn btn-primary btn-sm file_toggle"
+                         data-toggle="collapse"
+                         href="#collapse{@xlink:href}"
+                         aria-expanded="false"
+                         aria-controls="collapse{@xlink:href}">
                         <span>
                           <xsl:choose>
                             <xsl:when test="$derivateXML//titles/title[@xml:lang=$CurrentLang]"><xsl:value-of select="$derivateXML//titles/title[@xml:lang=$CurrentLang]" /></xsl:when>
                             <xsl:otherwise><xsl:value-of select="i18n:translate('metadata.files.file')" /></xsl:otherwise>
                           </xsl:choose>
                         </span>
+                        <xsl:if test="position() > 1">
+                          <span class="set_number"><xsl:value-of select="position()"/></span>
+                        </xsl:if>
                         <span class="caret"></span>
                       </a>
                       <xsl:if test="$derivateWithURN=true()">
@@ -48,6 +55,7 @@
                 </div>
               </div>
               <div id="collapse{@xlink:href}" class="row body collapse in">
+
                   <xsl:variable name="ifsDirectory" select="document(concat('ifs:',$derId,'/'))" />
                   <xsl:variable name="numOfFiles"   select="count($ifsDirectory/mcr_directory/children/child)" />
                   <xsl:variable name="maindoc"      select="$derivateXML/mycorederivate/derivate/internals/internal/@maindoc" />
