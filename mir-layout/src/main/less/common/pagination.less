@@ -2,12 +2,16 @@
 // Pagination
 // --------------------------------------------------
 
+#pagination_label {
+  color: #ddd;
+  padding-bottom:10px;
+}
+
 .pagination {
   margin: 0px;
   a {
     color: #fff;
       &:hover {
-        //color: #fff;
       }
   }
   .disabled {
@@ -15,27 +19,20 @@
     &>a:hover,
     &>a:focus,
     &>span {
-      //background-color: lighten(@gray, 25%);
     }
   }
 }
 .pagination_box {
-    //background-color: #eaeaea;
-    //border-radius: 5px;
-    //margin-bottom: 20px;
-    //padding: 0;
-    //border: 1px solid #ddd;
 }
+
 #search_options {
+  margin-bottom: 45px;
+
   .pagination_box {
-    //background-color: transparent;
-    //border-radius: 0px;
-    //margin-bottom: 0px;
-    //padding: 0px;
-    //border: 0px solid #DDD;
-    //display: inline-block;
+    border-bottom: 1px solid #eee;
+
     .pagination {
-      //margin: 0 0 0 0;
+      margin: 0 0 -15px 0;
     }
   }
 }
