@@ -7,7 +7,7 @@
   <section xml:lang="all">
     <editor id="searchmask" class="editor pull-left">
       <source uri="searchInput:{id}" />
-      <target type="servlet" name="MCRLegacySearchServlet" method="post" format="xml" />
+      <target type="servlet" name="MCRQLSearchServlet" method="post" format="xml" />
 
       <components root="root" var="/query">
         <panel id="root">

@@ -152,7 +152,7 @@
               </div>
 
             <!-- submit -->
-              <mir:template name="submitButton" i18n="editor.search.search" target="servlet_MCRLegacySearchServlet" />
+              <mir:template name="submitButton" i18n="editor.search.search" target="servlet_MCRQLSearchServlet" />
             </div>
           </div>
         </xed:bind>
