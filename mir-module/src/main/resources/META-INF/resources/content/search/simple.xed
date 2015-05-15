@@ -12,7 +12,7 @@
       <xed:bind xpath="query">
         <xed:bind xpath="@mask" default="content/main/search/simple.xed" />
         <xed:bind xpath="conditions/boolean">
-          <xed:bind xpath="boolean[@operator='or']/condition[@field='createdby']/@value" initially="{$CurrentUser}" />
+          <xed:bind xpath="boolean[@operator='or']/condition[@field='createdby']/@value" default="{$CurrentUser}" />
           <div class="panel panel-default">
             <div class="panel-heading">
               <h3 class="panel-title">
