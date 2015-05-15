@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:mods="http://www.loc.gov/mods/v3"
-  xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions"
-  exclude-result-prefixes="mods mcrxsl">
+  xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions" xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
+  exclude-result-prefixes="mods mcrxsl i18n">
   <xsl:include href="layout-utils.xsl" />
 
   <xsl:template match="/site">
@@ -81,7 +81,9 @@
 
 <!-- metadata -->
           <div class="mir_metadata">
-            <h3>Einordnung</h3>
+            <h3>
+              <xsl:value-of select="i18n:translate('component.mods.metaData.dictionary.categorybox')" />
+            </h3>
             <!-- Start: METADATA -->
             <xsl:apply-templates select="div[@id='mir-metadata']" mode="newMetadata" />
             <!-- End: METADATA -->
@@ -132,7 +134,9 @@
             <xsl:if test="not(mcrxsl:isCurrentUserGuestUser())">
             <div class="panel panel-default system">
               <div class="panel-heading">
-                <h3 class="panel-title">Systeminformationen</h3>
+                  <h3 class="panel-title">
+                    <xsl:value-of select="i18n:translate('component.mods.metaData.dictionary.systembox')" />
+                  </h3>
               </div>
               <div class="panel-body">
                 <!-- Start: ADMINMETADATA -->
