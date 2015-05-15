@@ -78,6 +78,11 @@
     <div id="mir-abstract-title">
       <h1 itemprop="name">
         <xsl:apply-templates mode="mods.title" select="$mods" />
+        <xsl:if test="$mods/mods:titleInfo[1]/mods:subTitle">
+          <span class="subtitle">
+            : <xsl:apply-templates mode="mods.subtitle" select="$mods" />
+          </span>
+        </xsl:if>
       </h1>
     </div>
 
@@ -109,9 +114,8 @@
                     xmlns:encoder="xalan://java.net.URLEncoder"
                     select="document(concat('solr:q=',encoder:encode(concat('mods.relatedItem:', mycoreobject/@ID, '* AND NOT(mods.relatedItem:*|host)'))))/response/result" />
 
-      <h3>Inhalt</h3>
-
       <xsl:if test="mycoreobject/structure/children/child or count($hits/doc) &gt; 0">
+        <h3><xsl:value-of select="i18n:translate('mir.metadata.content')" /></h3>
         <table class="children">
           <xsl:if test="mycoreobject/structure/children/child">
             <xsl:apply-templates mode="printChildren" select="mycoreobject/structure/children">

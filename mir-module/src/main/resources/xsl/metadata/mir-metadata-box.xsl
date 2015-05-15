@@ -23,16 +23,51 @@
                       not(mods:role/mods:roleTerm='aut') and
                       count(. | key('name-by-role',mods:role/mods:roleTerm)[1])=1]">
               <!-- for every role -->
-              <xsl:apply-templates select="." mode="present" />
+              <tr>
+                <td valign="top" class="metaname">
+                  <xsl:choose>
+                    <xsl:when test="mods:role/mods:roleTerm[@authority='marcrelator' and @type='code']">
+                      <xsl:apply-templates select="mods:role/mods:roleTerm[@authority='marcrelator' and @type='code']"
+                        mode="printModsClassInfo" />
+                      <xsl:value-of select="':'" />
+                    </xsl:when>
+                    <xsl:when test="mods:role/mods:roleTerm[@authority='marcrelator']">
+                      <xsl:value-of
+                        select="concat(i18n:translate(concat('component.mods.metaData.dictionary.',mods:role/mods:roleTerm[@authority='marcrelator'])),':')" />
+                    </xsl:when>
+                    <xsl:otherwise>
+                      <xsl:value-of select="concat(i18n:translate('component.mods.metaData.dictionary.name'),':')" />
+                    </xsl:otherwise>
+                  </xsl:choose>
+                </td>
+                <td class="metavalue">
+                  <xsl:for-each select="key('name-by-role',mods:role/mods:roleTerm)">
+                    <xsl:if test="position()!=1">
+                      <xsl:value-of select="'; '" />
+                    </xsl:if>
+                    <xsl:apply-templates select="." mode="printName" />
+                  </xsl:for-each>
+                </td>
+              </tr>
             </xsl:for-each>
 
-
-            <xsl:if test="mycoreobject/structure/parents/parent/@xlink:href">
-              <xsl:call-template name="printMetaDate.mods.relatedItem">
-                <xsl:with-param name="parentID" select="mycoreobject/structure/parents/parent/@xlink:href" />
-                <xsl:with-param name="label" select="i18n:translate('component.mods.metaData.dictionary.confpubIn')" />
-              </xsl:call-template>
-            </xsl:if>
+            <xsl:for-each select="mycoreobject">
+              <xsl:if test="./structure/parents/parent/@xlink:href">
+                <xsl:call-template name="printMetaDate.mods.relatedItem">
+                  <xsl:with-param name="parentID" select="./structure/parents/parent/@xlink:href" />
+                  <xsl:with-param name="label" select="i18n:translate('component.mods.metaData.dictionary.confpubIn')" />
+                </xsl:call-template>
+              </xsl:if>
+              <xsl:if test="./metadata/def.modsContainer/modsContainer/mods:mods/mods:relatedItem[@type='series']/@xlink:href">
+                <xsl:call-template name="printMetaDate.mods.relatedItem">
+                  <xsl:with-param name="parentID" select="./metadata/def.modsContainer/modsContainer/mods:mods/mods:relatedItem[@type='series']/@xlink:href" />
+                  <xsl:with-param name="label" select="'in Serie'" />
+                </xsl:call-template>
+              </xsl:if>
+            </xsl:for-each>
+            <xsl:call-template name="printMetaDate.mods">
+              <xsl:with-param name="nodes" select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:originInfo/mods:edition" />
+            </xsl:call-template>
             <xsl:apply-templates mode="present" select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:identifier" />
             <xsl:for-each select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:identifier[@type='issn']">
               <xsl:variable name="sherpa_issn" select="." />
@@ -75,6 +110,13 @@
             <xsl:apply-templates mode="present" select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:classification[@displayLabel!='status' or not(attribute::displayLabel)]" />
             <xsl:apply-templates mode="present" select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:part/mods:extent" />
             <xsl:apply-templates mode="present" select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:location/mods:url" />
+            <xsl:call-template name="printMetaDate.mods">
+              <xsl:with-param name="nodes" select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:location/mods:physicalLocation" />
+            </xsl:call-template>
+            <xsl:call-template name="printMetaDate.mods">
+              <xsl:with-param name="nodes" select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:location/mods:shelfLocator" />
+              <xsl:with-param name="label" select="i18n:translate('mir.shelfmark')" />
+            </xsl:call-template>
             <xsl:apply-templates mode="present" select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:name[@ID]" />
           </table>
 

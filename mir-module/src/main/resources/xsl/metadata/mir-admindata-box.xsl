@@ -28,6 +28,10 @@
                 <xsl:with-param select="i18n:translate('metaData.createdAt')" name="label" />
               </xsl:call-template>
               <xsl:call-template name="printMetaDate">
+                <xsl:with-param select="mycoreobject/service/servflags/servflag[@type='createdby']" name="nodes" />
+                <xsl:with-param select="i18n:translate('metaData.createdBy')" name="label" />
+              </xsl:call-template>
+              <xsl:call-template name="printMetaDate">
                 <xsl:with-param select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:note" name="nodes" />
                 <xsl:with-param select="i18n:translate('mir.comment')" name="label" />
               </xsl:call-template>
@@ -35,6 +39,10 @@
               <xsl:call-template name="printMetaDate">
                 <xsl:with-param select="mycoreobject/service/servdates/servdate[@type='modifydate']" name="nodes" />
                 <xsl:with-param select="i18n:translate('metaData.lastChanged')" name="label" />
+              </xsl:call-template>
+              <xsl:call-template name="printMetaDate">
+                <xsl:with-param select="mycoreobject/service/servflags/servflag[@type='modifiedby']" name="nodes" />
+                <xsl:with-param select="i18n:translate('metaData.modifiedBy')" name="label" />
               </xsl:call-template>
               <!--*** MyCoRe-ID ************************************* -->
               <tr>
@@ -45,14 +53,14 @@
                   <xsl:value-of select="mycoreobject/@ID" />
                 </td>
               </tr>
-              <tr>
+              <!-- tr>
                 <td class="metaname">
                   <xsl:value-of select="concat(i18n:translate('metaData.versions'),' :')" />
                 </td>
                 <td class="metavalue">
-                  <!-- xsl:apply-templates select="." mode="versioninfo" / -->
+                  <xsl:apply-templates select="." mode="versioninfo" />
                 </td>
-              </tr>
+              </tr -->
             </table>
           </div>
         </div>
