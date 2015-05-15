@@ -433,7 +433,7 @@
                     </li>
                   </xsl:otherwise>
                 </xsl:choose>
-                <xsl:if test="$displayAddDerivate='true' and not(mcrurn:hasURNDefined($id))">
+                <xsl:if test="$displayAddDerivate='true'">
                   <li>
                     <a href="{$ServletsBaseURL}derivate/create{$HttpSession}?id={$id}">
                       <xsl:value-of select="i18n:translate('derivate.addDerivate')" />
