@@ -454,11 +454,11 @@
           </exclusion>
           <exclusion>
             <groupId>org.mycore</groupId>
-            <artifactId>mycore-sword</artifactId>
+            <artifactId>mycore-coma</artifactId>
           </exclusion>
           <exclusion>
             <groupId>org.mycore</groupId>
-            <artifactId>mycore-indexing</artifactId>
+            <artifactId>mycore-sword</artifactId>
           </exclusion>
           <exclusion>
             <groupId>org.apache.maven.scm</groupId>
