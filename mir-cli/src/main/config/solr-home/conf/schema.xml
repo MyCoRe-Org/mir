@@ -180,8 +180,9 @@
 
     <!-- mycore-mods -->
     <field name="mods.type" type="string" />
-    <field name="mods.title" type="text_de" multiValued="true" />
-    <field name="mods.title.host" type="text_de" multiValued="true" />
+    <field name="mods.title" type="text_general" multiValued="true" />
+    <field name="mods.title.host" type="text_general" multiValued="true" />
+    <field name="mods.title.main" type="text_de" />
     <field name="mods.gnd" type="string" multiValued="true" />
     <field name="mods.gnd.top" type="string" multiValued="true" />
     <field name="mods.name" type="text_de" multiValued="true" />

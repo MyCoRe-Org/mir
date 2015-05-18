@@ -17,6 +17,27 @@
        -->
         <table class="mir-metadata">
 
+            <xsl:for-each select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:titleInfo[@type]">
+              <tr>
+                <td valign="top" class="metaname">
+                  <xsl:value-of select="i18n:translate('component.mods.metaData.dictionary.title')" />
+                  <xsl:text> (</xsl:text>
+                  <xsl:value-of select="i18n:translate(concat('mir.title.type.', @type))" />
+                  <xsl:if test="@type='translated'">
+                    <xsl:text>, </xsl:text>
+                    <xsl:value-of select="@xml:lang" />
+                  </xsl:if>
+                  <xsl:text>):</xsl:text>
+                </td>
+                <td class="metavalue">
+                  <xsl:apply-templates select="//mods:mods" mode="mods.title">
+                    <xsl:with-param name="type" select="@type" />
+                    <xsl:with-param name="withSubtitle" select="true()" />
+                  </xsl:apply-templates>
+                </td>
+              </tr>
+            </xsl:for-each>
+
             <!-- mods:name grouped by mods:role/mods:roleTerm excluding author-->
             <xsl:for-each
               select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:name[not(@ID) and

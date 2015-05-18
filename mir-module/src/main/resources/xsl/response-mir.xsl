@@ -305,7 +305,7 @@
 <!-- hit headline -->
               <h3 class="hit_title">
                 <a href="{$hitHref}">
-                  <xsl:attribute name="title"><xsl:value-of select="./str[@name='mods.title']" /></xsl:attribute>
+                  <xsl:attribute name="title"><xsl:value-of select="./str[@name='mods.title.main']" /></xsl:attribute>
                   <xsl:choose>
                     <xsl:when test="./str[@name='search_result_link_text']">
                       <xsl:value-of select="./str[@name='search_result_link_text']" />

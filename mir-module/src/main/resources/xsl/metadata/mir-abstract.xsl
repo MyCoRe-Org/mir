@@ -77,12 +77,9 @@
 <!-- headline -->
     <div id="mir-abstract-title">
       <h1 itemprop="name">
-        <xsl:apply-templates mode="mods.title" select="$mods" />
-        <xsl:if test="$mods/mods:titleInfo[1]/mods:subTitle">
-          <span class="subtitle">
-            : <xsl:apply-templates mode="mods.subtitle" select="$mods" />
-          </span>
-        </xsl:if>
+        <xsl:apply-templates mode="mods.title" select="$mods">
+          <xsl:with-param name="withSubtitle" select="true()" />
+        </xsl:apply-templates>
       </h1>
     </div>
 
