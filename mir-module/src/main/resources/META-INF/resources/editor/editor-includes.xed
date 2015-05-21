@@ -828,7 +828,7 @@
   </xed:template>
 
   <xed:template id="subject">
-    <mir:textfield xpath="mods:subject/mods:topic" label="mir.subject.topic" help-text="{i18n:mir.help.subject.topic}" />
+    <mir:textfield.repeat xpath="mods:subject" bind="mods:topic" min="1" max="20" label="mir.subject.topic" help-text="{i18n:mir.help.subject.topic}" />
   </xed:template>
 
   <xed:template id="comment">

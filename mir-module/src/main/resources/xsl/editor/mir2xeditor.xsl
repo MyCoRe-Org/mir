@@ -27,6 +27,32 @@
     </xed:bind>
   </xsl:template>
 
+  <xsl:template match="mir:textfield.repeat">
+    <xed:repeat xpath="{@xpath}" min="{@min}" max="{@max}">
+      <xed:bind xpath="{@bind}">
+        <div>
+          <xsl:attribute name="class">form-group {$xed-validation-marker}</xsl:attribute>
+          <label class="col-md-3 control-label {@class}">
+            <xed:output i18n="{@label}" />
+          </label>
+          <div class="col-md-6">
+            <input type="text" class="form-control">
+              <xsl:copy-of select="@placeholder" />
+            </input>
+          </div>
+          <div class="col-md-1">
+            <span class="btn btn-default info-button" data-toggle="popover" data-placement="right" data-content="{@help-text}">
+              <i class="fa fa-info"></i>
+            </span>
+          </div>
+          <xsl:call-template name="mir-pmud" />
+        </div>
+      </xed:bind>
+    </xed:repeat>
+  </xsl:template>
+
+
+
   <xsl:template match="mir:textarea">
     <xed:bind xpath="{@xpath}">
       <div>
