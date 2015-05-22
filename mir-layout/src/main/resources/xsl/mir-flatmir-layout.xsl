@@ -99,7 +99,7 @@
                       Dokumentenserver. Es basiert auf dem Repository-Framework
                       MyCoRe und dem Metadata Object Description Schema (MODS).
                       <span class="read_more">
-                        <a href="#">Mehr erfahren ...</a>
+                        <a href="http://mycore.de/generated/mir/">Mehr erfahren ...</a>
                       </span>
                   </p>
                 </div>

@@ -12,27 +12,28 @@
 
                 <div class="col-md-4">
                     <h3><span class="glyphicon glyphicon-check"></span> fertig</h3>
-                    <p>At vero eos et accusam et justo duo dolores et ea rebum.
-                    Stet clita kasd gubergren, no sea takimata sanctus est
-                    Lorem ipsum dolor sit amet.</p>
+                    <p>MIR ist eine MyCoRe-Software, die mit nur wenigen Anpassungen
+                    - so wie sie ist - als Repositorium eingesetzt werden kann.</p>
+                    <p><a class="btn btn-default" href="http://mycore.de/documentation/getting_started/mir.html" role="button">weitere Informationen »</a></p>
                 </div>
                 <div class="col-md-4">
                     <h3><span class="glyphicon glyphicon-flash"></span> mächtig</h3>
-                    <p>At vero eos et accusam et justo duo dolores et ea rebum.
-                    Stet clita kasd gubergren, no sea takimata sanctus est
-                    Lorem ipsum dolor sit amet.</p>
+                    <p>MIR verwendet das mächtige und bewährte MODS-Datenmodell. Den
+                    Kern der Webanwendung bildet MyCoRe mit einer Vielzahl von Funktionen.</p>
+                    <p><a class="btn btn-default" href="http://mycore.de/features/index.html" role="button">weitere Informationen »</a></p>
                 </div>
                 <div class="col-md-4">
 
                     <h3><span class="glyphicon glyphicon-heart"></span> lebendig</h3>
-                    <p>At vero eos et accusam et justo duo dolores et ea rebum.
-                    Stet clita kasd gubergren, no sea takimata sanctus est
-                    Lorem ipsum dolor sit amet.</p>
+                    <p>MIR basiert auf dem Software-Kern MyCoRe, der kontinuierlich
+                    weiter entwickelt wird. Eine lebendige Community setzt MIR in
+                    ihren Anwendungen ein.</p>
+                    <p><a class="btn btn-default" href="http://mycore.de/support/index.html" role="button">weitere Informationen »</a></p>
                 </div>
             </div>
         </div>
   </section>
   <meta>
-    <log date="2011-11-15" time="10:53" labelPath=" » Start" lastEditor="Kathleen Neumann" />
+    <log date="2015-05-22" time="11:12" labelPath=" » Start" lastEditor="Kathleen Neumann" />
   </meta>
 </MyCoReWebPage>
