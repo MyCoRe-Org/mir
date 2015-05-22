@@ -96,6 +96,7 @@
         <div id="aux_col" class="col-md-4">
 
 <!-- cites -->
+          <xsl:if test="div[@id='mir-citation']">
             <div class="panel panel-default">
               <div class="panel-heading">
                 <h3 class="panel-title">Zitieren</h3>
@@ -106,8 +107,9 @@
                 <!-- End: CITATION -->
               </div>
             </div>
+          </xsl:if>
 <!-- rights -->
-          <xsl:if test="div[@id='mir-access-rights']">
+
             <div id="mir_access_rights_panel" class="panel panel-default">
               <div class="panel-heading">
                 <h3 class="panel-title">Rechte</h3>
