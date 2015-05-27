@@ -35,11 +35,11 @@ import org.mycore.datamodel.metadata.MCRObjectID;
  * every time checkPermission() is called:
  * <ul>
  * <li> <code>&lt;MCRObjectID&gt;</code></li>
- * <li> if <code>objectType != 'derivate'</code> check via {@link MCRCreatorRuleStrategy}</li>
+ * <li>if <code>objectType != 'derivate'</code> check via {@link MCRCreatorRuleStrategy}</li>
  * <li>all categories of the owning object with the rule ID <code>derivate:&lt;MCRCategoryID&gt;</code> where
- *  &lt;MCRCategoryID&gt; is a linked category</li>
+ * &lt;MCRCategoryID&gt; is a linked category</li>
  * <li>return of <code>checkPermission(&lt;objectID&gt;, permission)</code>, objectID is owning MCRObject
- * <li> fallback to {@link MCRCreatorRuleStrategy}</li>
+ * <li>fallback to {@link MCRCreatorRuleStrategy}</li>
  * </ul>
  * 
  * @author Thomas Scheffler (yagee)
@@ -92,7 +92,8 @@ public class MIRStrategy implements MCRAccessCheckStrategy {
             if (!accessMappedCategories.isEmpty()) {
                 MCRCategLinkReference categLinkReference = new MCRCategLinkReference(objectId);
                 for (MCRCategoryID category : accessMappedCategories) {
-                    LOGGER.debug(MessageFormat.format("Checking if {0} is in category {1}.", id, category));
+                    LOGGER.debug(MessageFormat.format("Checking if {0} is in category {1}.",
+                        categLinkReference.getObjectID(), category));
                     if (LINK_SERVICE.isInCategory(categLinkReference, category)) {
                         LOGGER.debug("using access rule defined for category: " + category);
                         return ACCESS_IMPL.checkPermission(DERIVATE_RULE_PREFIX + category.toString(), permission);
