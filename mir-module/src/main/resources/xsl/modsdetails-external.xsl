@@ -497,19 +497,19 @@
               </xsl:variable>
 
                 <xsl:choose>
-                  <xsl:when test="not(contains($url, 'editor-dynamic.xed'))">
+                  <xsl:when test="not(contains($url, 'editor-dynamic.xed')) and $mods-type != 'series'">
                     <xsl:for-each select="str:tokenize($child-layout,'|')" >
                       <li>
-                        <a href="{$url}{$HttpSession}?parentId={$id}">
+                        <a href="{$url}{$HttpSession}?relatedItemId={$id}&amp;relatedItemType=host&amp;genre={.}">
                           <xsl:value-of select="i18n:translate(concat('component.mods.genre.',.))" />
                         </a>
                       </li>
                     </xsl:for-each>
                   </xsl:when>
-                  <xsl:when test="$mods-type = 'series'">
+                  <xsl:when test="not(contains($url, 'editor-dynamic.xed')) and $mods-type = 'series'">
                     <xsl:for-each select="str:tokenize($child-layout,'|')" >
                       <li>
-                        <a href="{$url}{$HttpSession}?genre={.}&amp;host=series&amp;seriesId={$id}">
+                        <a href="{$url}{$HttpSession}?relatedItemId={$id}&amp;relatedItemType=series&amp;genre={.}">
                           <xsl:value-of select="i18n:translate(concat('component.mods.genre.',.))" />
                         </a>
                       </li>
@@ -518,7 +518,7 @@
                   <xsl:otherwise>
                     <xsl:for-each select="str:tokenize($child-layout,'|')" >
                       <li>
-                        <a href="{$url}{$HttpSession}?genre={.}&amp;parentId={$id}">
+                        <a href="{$url}{$HttpSession}?relatedItemId={$id}&amp;relatedItemType=host&amp;genre={.}">
                           <xsl:value-of select="i18n:translate(concat('component.mods.genre.',.))" />
                         </a>
                       </li>

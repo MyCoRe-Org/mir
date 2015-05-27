@@ -3,11 +3,8 @@
 <xed:template xmlns:xed="http://www.mycore.de/xeditor" xmlns:mir="http://www.mycore.de/mir">
 
   <xed:template id="in.out">
-    <xed:source uri="xslStyle:PPN-mods-simple,mycoreobject-editor,editor/mods2xeditor?parentId={$parentId}:http://unapi.gbv.de/?id=gvk:ppn:{$ppn}&amp;format=mods" />
     <xed:source uri="xslStyle:PPN-mods-simple,mycoreobject-editor,editor/mods2xeditor:http://unapi.gbv.de/?id=gvk:ppn:{$ppn}&amp;format=mods" />
     <xed:source uri="xslStyle:editor/mods2xeditor:{$sourceUri}"/>
-    <xed:source uri="xslStyle:asParent,editor/mods2xeditor:mcrobject:{$parentId}" />
-    <xed:source uri="xslStyle:asSeries,editor/mods2xeditor:mcrobject:{$seriesId}" />
     <xed:source uri="xslStyle:mycoreobject-editor,editor/mods2xeditor:mcrobject:{$id}" />
     <xed:cancel url="../servlets/MCRLockServlet?action=unlock&amp;id={$id}&amp;url=/receive/{$id}" />
     <xed:cancel url="{$cancelUrl}" />
@@ -27,7 +24,7 @@
         </label>
         <div class="col-md-6">
           <div class="controls">
-            <xed:bind xpath="@valueURIxEditor">
+            <xed:bind xpath="@valueURIxEditor" initially="{$genre}">
               <select class="form-control form-control-inline">
                 <xed:include uri="xslStyle:items2options:classification:editor:-1:children:mir_genres" />
               </select>
@@ -837,9 +834,10 @@
 
   <xed:template id="related.item">
     <xed:repeat xpath="mods:relatedItem" min="1" max="10">
+      <xed:bind xpath="@xlink:href" initially="{$relatedItemId}" />
       <div class="form-group">
         <div class="col-md-3">
-          <xed:bind xpath="@type">
+          <xed:bind xpath="@type" initially="{$relatedItemType}">
             <select class="form-control">
               <option value="host">
                 <xed:output i18n="mir.relatedItem.host" />

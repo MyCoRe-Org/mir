@@ -5,7 +5,7 @@
   <xed:template id="series">
     <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="year.issued" />
     <xed:bind xpath="mods:relatedItem[@type='series']">
-      <xed:bind xpath="mods:genre" initially="series" />
+      <xed:bind xpath="@xlink:href" initially="mir_mods_00000000" />
       <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="series.title" />
       <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="series.volume" />
     </xed:bind>
@@ -16,6 +16,7 @@
       <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="editor.repeated" />
       <xed:include uri="webapp:editor/editor-hosts.xed" ref="collection.common" />
       <xed:include uri="webapp:editor/editor-hosts.xed" ref="series" />
+      <xed:bind xpath="mods:relatedItem[@type='series']/mods:genre[@type='intern'][@authorityURI='http://www.mycore.org/classifications/mir_genres']/@valueURIxEditor" initially="series" />
     </xed:bind>
   </xed:template>
 
@@ -24,6 +25,7 @@
       <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="editor.honoree.repeated" />
       <xed:include uri="webapp:editor/editor-hosts.xed" ref="collection.common" />
       <xed:include uri="webapp:editor/editor-hosts.xed" ref="series" />
+      <xed:bind xpath="mods:relatedItem[@type='series']/mods:genre[@type='intern'][@authorityURI='http://www.mycore.org/classifications/mir_genres']/@valueURIxEditor" initially="series" />
     </xed:bind>
   </xed:template>
 
@@ -41,10 +43,12 @@
       <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="conference" />
       <xed:include uri="webapp:editor/editor-hosts.xed" ref="collection.common" />
       <xed:include uri="webapp:editor/editor-hosts.xed" ref="series" />
+      <xed:bind xpath="mods:relatedItem[@type='series']/mods:genre[@type='intern'][@authorityURI='http://www.mycore.org/classifications/mir_genres']/@valueURIxEditor" initially="series" />
     </xed:bind>
   </xed:template>
 
   <xed:template id="collection.common">
+    <xed:bind xpath="@xlink:href" initially="mir_mods_00000000" />
     <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="title" />
     <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="subtitle" />
     <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="place" />
@@ -57,6 +61,7 @@
 
   <xed:template id="journal">
     <xed:bind xpath="mods:relatedItem[@type='host']">
+      <xed:bind xpath="@xlink:href" initially="mir_mods_00000000" />
       <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="title.journal" />
       <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="identifier.issn" />
       <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="shelfmark" />
@@ -71,6 +76,7 @@
 
   <xed:template id="newspaper">
     <xed:bind xpath="mods:relatedItem[@type='host']">
+      <xed:bind xpath="@xlink:href" initially="mir_mods_00000000" />
       <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="title.newspaper" />
       <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="identifier.issn" />
       <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="shelfmark" />
