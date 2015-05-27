@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package org.mycore.mir.it.helper;
 
@@ -20,7 +20,7 @@ public class MIRUserHelper {
         for (int i = 0; i < roles.length; i++) {
             if (i > 0) {
                 //append a role
-                driver.findElement(By.name("_xed_submit_append:/user/roles|" + i + "|build|role|rep-" + (i + 1)))
+                driver.findElement(By.name("_xed_submit_insert:/user/roles|" + i + "|build|role|rep-" + (i + 1)))
                     .click();
                 driver
                     .findElement(
@@ -43,7 +43,7 @@ public class MIRUserHelper {
         assertEquals("Nutzerdaten anzeigen:" + user, driver.getTitle());
         driver.get(currentUrl);
     }
-    
+
     public static void deleteUser(WebDriver driver, String user){
         String currentUrl = driver.getCurrentUrl();
         driver.findElement(By.id("currentUser")).click();
