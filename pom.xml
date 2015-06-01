@@ -14,7 +14,7 @@
   <inceptionYear>2013</inceptionYear>
   <properties>
     <java.target.version>1.7</java.target.version>
-    <mycore.version>2015.03-SNAPSHOT</mycore.version>
+    <mycore.version>2015.06-SNAPSHOT</mycore.version>
     <jetty.version>9.2.10.v20150310</jetty.version>
     <tomcat7.version>7.0.59</tomcat7.version>
     <tomcat8.version>8.0.21</tomcat8.version>
