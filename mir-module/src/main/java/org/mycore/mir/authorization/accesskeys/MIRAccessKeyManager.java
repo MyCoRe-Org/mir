@@ -44,7 +44,16 @@ public final class MIRAccessKeyManager {
     }
 
     public static boolean existsKeyPair(final MCRObjectID mcrObjectId) {
-        return getKeyPair(mcrObjectId) != null;
+        final Session session = MCRHIB_CONNECTION.getSession();
+
+        final MIRAccessKeyPair accKP = getKeyPair(mcrObjectId);
+        boolean exists = accKP != null;
+
+        if (exists) {
+            session.evict(accKP);
+        }
+
+        return exists;
     }
 
     public static void createKeyPair(final MIRAccessKeyPair accKP) {
