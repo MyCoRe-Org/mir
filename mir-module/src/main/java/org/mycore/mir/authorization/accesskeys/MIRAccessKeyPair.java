@@ -137,7 +137,7 @@ public class MIRAccessKeyPair implements Serializable {
      * @return the key the user must know to acquire read permission on the {@link MCRObject}.
      */
     @Column(name = "readkey", nullable = false, length = 128)
-    @XmlElement(name = "readkey", required = true)
+    @XmlAttribute(name = "readkey", required = true)
     public String getReadKey() {
         return readKey;
     }
@@ -163,7 +163,7 @@ public class MIRAccessKeyPair implements Serializable {
      * @return the key the user must know to acquire write permission on the {@link MCRObject}. This key may be empty.
      */
     @Column(name = "writekey", nullable = true, length = 128)
-    @XmlElement(name = "writekey")
+    @XmlAttribute(name = "writekey")
     public String getWriteKey() {
         return writeKey;
     }
