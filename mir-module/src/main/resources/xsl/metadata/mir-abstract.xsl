@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
-  xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:mods="http://www.loc.gov/mods/v3" exclude-result-prefixes="i18n mods xlink">
+  xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:mods="http://www.loc.gov/mods/v3" xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions"
+  exclude-result-prefixes="i18n mods xlink mcrxsl">
 
   <xsl:import href="xslImport:modsmeta:metadata/mir-abstract.xsl" />
 
@@ -106,39 +107,36 @@
         </p>
       </xsl:if>
 
-      <!-- check for relatedItem type!="host" and containing mycoreobject ID using solr query on field mods.relatedItem -->
+      <!-- check for relatedItem containing mycoreobject ID dependent on current user using solr query on field mods.relatedItem -->
+      <xsl:variable name="state">
+        <xsl:choose>
+          <xsl:when test="mcrxsl:isCurrentUserGuestUser()">published</xsl:when>
+          <xsl:otherwise>*</xsl:otherwise>
+        </xsl:choose>
+      </xsl:variable>
       <xsl:variable name="hits"
                     xmlns:encoder="xalan://java.net.URLEncoder"
-                    select="document(concat('solr:q=',encoder:encode(concat('mods.relatedItem:', mycoreobject/@ID, '* AND NOT(mods.relatedItem:*|host)'))))/response/result" />
+                    select="document(concat('solr:q=',encoder:encode(concat('mods.relatedItem:', mycoreobject/@ID, ' AND state:', $state))))/response/result" />
 
-      <xsl:if test="mycoreobject/structure/children/child or count($hits/doc) &gt; 0">
+      <xsl:if test="count($hits/doc) &gt; 0">
         <h3><xsl:value-of select="i18n:translate('mir.metadata.content')" /></h3>
         <table class="children">
-          <xsl:if test="mycoreobject/structure/children/child">
-            <xsl:apply-templates mode="printChildren" select="mycoreobject/structure/children">
-              <xsl:with-param name="label" select="i18n:translate('component.mods.metaData.dictionary.contains')" />
-            </xsl:apply-templates>
-          </xsl:if>
-
-          <xsl:if test="count($hits/doc) &gt; 0">
-            <tr>
-              <td valign="top" class="metaname">
-                <xsl:value-of select="concat(i18n:translate('component.mods.metaData.dictionary.contains'),':')" />
-              </td>
-              <td class="metavalue">
+          <tr>
+            <td valign="top" class="metaname">
+              <xsl:value-of select="concat(i18n:translate('component.mods.metaData.dictionary.contains'),':')" />
+            </td>
+            <td class="metavalue">
+              <xsl:for-each select="$hits/doc">
                 <ul>
-                  <xsl:for-each select="$hits/doc">
-                    <li>
-                      <xsl:call-template name="objectLink">
-                        <xsl:with-param name="obj_id" select="str[@name='returnId']" />
-                      </xsl:call-template>
-                    </li>
-                  </xsl:for-each>
+                  <li>
+                    <xsl:call-template name="objectLink">
+                      <xsl:with-param name="obj_id" select="str[@name='returnId']" />
+                    </xsl:call-template>
+                  </li>
                 </ul>
-              </td>
-            </tr>
-          </xsl:if>
-
+              </xsl:for-each>
+            </td>
+          </tr>
         </table>
       </xsl:if>
 
