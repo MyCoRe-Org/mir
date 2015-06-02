@@ -25,9 +25,10 @@ package org.mycore.mir.authorization.accesskeys;
 import org.apache.log4j.Logger;
 import org.mycore.access.MCRAccessManager;
 import org.mycore.access.strategies.MCRAccessCheckStrategy;
-import org.mycore.access.strategies.MCRObjectTypeStrategy;
+import org.mycore.access.strategies.MCRCreatorRuleStrategy;
 import org.mycore.common.MCRSessionMgr;
 import org.mycore.common.MCRUserInformation;
+import org.mycore.common.config.MCRConfiguration;
 import org.mycore.datamodel.metadata.MCRObjectID;
 
 /**
@@ -38,7 +39,8 @@ public class MIRAccessKeyStrategy implements MCRAccessCheckStrategy {
 
     private static final Logger LOGGER = Logger.getLogger(MIRAccessKeyStrategy.class);
 
-    private static final MCRObjectTypeStrategy BASE_STRATEGY = new MCRObjectTypeStrategy();
+    private static final MCRAccessCheckStrategy BASE_STRATEGY = MCRConfiguration.instance().getInstanceOf(
+            "MIR.AccessKeyStrategy.FallbackClass", new MCRCreatorRuleStrategy());
 
     /* (non-Javadoc)
      * @see org.mycore.access.strategies.MCRAccessCheckStrategy#checkPermission(java.lang.String, java.lang.String)
@@ -79,6 +81,7 @@ public class MIRAccessKeyStrategy implements MCRAccessCheckStrategy {
             }
         }
 
+        LOGGER.debug("use fallback to check permissions");
         return BASE_STRATEGY.checkPermission(id, permission);
     }
 
