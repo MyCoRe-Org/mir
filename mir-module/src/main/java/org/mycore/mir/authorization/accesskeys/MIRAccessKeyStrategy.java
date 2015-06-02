@@ -57,16 +57,17 @@ public class MIRAccessKeyStrategy implements MCRAccessCheckStrategy {
             final MIRAccessKeyPair accKP = MIRAccessKeyManager.getKeyPair(mcrObjectId);
 
             if (accKP != null) {
-                if (permission.equals(MCRAccessManager.PERMISSION_READ)) {
-                    final String uAccKey = getUserAccessKey(id, MIRAccessKeyPair.PERMISSION_READ);
-                    if (uAccKey != null) {
-                        return uAccKey.equals(accKP.getReadKey()) || accKP.getWriteKey() != null
-                                && uAccKey.equals(accKP.getWriteKey());
-                    }
-                } else if (permission.equals(MCRAccessManager.PERMISSION_WRITE) && accKP.getWriteKey() != null) {
+                if (permission.equals(MCRAccessManager.PERMISSION_READ)
+                        || permission.equals(MCRAccessManager.PERMISSION_WRITE) && accKP.getWriteKey() != null) {
                     final String uAccKey = getUserAccessKey(id, MIRAccessKeyPair.PERMISSION_WRITE);
                     if (uAccKey != null) {
                         return uAccKey.equals(accKP.getWriteKey());
+                    }
+                }
+                if (permission.equals(MCRAccessManager.PERMISSION_READ)) {
+                    final String uAccKey = getUserAccessKey(id, MIRAccessKeyPair.PERMISSION_READ);
+                    if (uAccKey != null) {
+                        return uAccKey.equals(accKP.getReadKey());
                     }
                 }
             }
