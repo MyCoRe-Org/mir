@@ -28,7 +28,6 @@ import org.mycore.access.strategies.MCRAccessCheckStrategy;
 import org.mycore.access.strategies.MCRObjectTypeStrategy;
 import org.mycore.common.MCRSessionMgr;
 import org.mycore.common.MCRUserInformation;
-import org.mycore.common.config.MCRConfiguration;
 import org.mycore.datamodel.metadata.MCRObjectID;
 
 /**
@@ -39,9 +38,6 @@ public class MIRAccessKeyStrategy implements MCRAccessCheckStrategy {
 
     private static final Logger LOGGER = Logger.getLogger(MIRAccessKeyStrategy.class);
 
-    private static final String ADMIN_ROLE = MCRConfiguration.instance().getString("MCR.Users.Superuser.GroupName",
-            "admin");
-
     private static final MCRObjectTypeStrategy BASE_STRATEGY = new MCRObjectTypeStrategy();
 
     /* (non-Javadoc)
@@ -49,7 +45,7 @@ public class MIRAccessKeyStrategy implements MCRAccessCheckStrategy {
      */
     @Override
     public boolean checkPermission(String id, String permission) {
-        LOGGER.info("check permission " + permission + " for MCRBaseID " + id);
+        LOGGER.debug("check permission " + permission + " for MCRBaseID " + id);
 
         if (id == null || id.length() == 0 || permission == null || permission.length() == 0) {
             return false;
@@ -88,7 +84,7 @@ public class MIRAccessKeyStrategy implements MCRAccessCheckStrategy {
     private static String getUserAccessKey(final String id, final String permission) {
         final MCRUserInformation currentUser = MCRSessionMgr.getCurrentSession().getUserInformation();
 
-        LOGGER.info("check user access key for " + currentUser.getUserID() + " with permission " + permission
+        LOGGER.debug("check user access key for " + currentUser.getUserID() + " with permission " + permission
                 + " and MCRBaseID " + id);
 
         return currentUser.getUserAttribute(id + "_" + permission);
