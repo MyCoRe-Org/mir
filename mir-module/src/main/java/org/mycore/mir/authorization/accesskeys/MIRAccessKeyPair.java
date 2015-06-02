@@ -64,6 +64,10 @@ import org.mycore.datamodel.metadata.MCRObjectID;
 @XmlAccessorType(XmlAccessType.NONE)
 public class MIRAccessKeyPair implements Serializable {
 
+    public static final String PERMISSION_READ = "read";
+
+    public static final String PERMISSION_WRITE = "write";
+
     private static final long serialVersionUID = 1L;
 
     private MCRObjectID mcrObjectId;
