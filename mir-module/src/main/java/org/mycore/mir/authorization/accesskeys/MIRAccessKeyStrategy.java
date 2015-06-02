@@ -40,7 +40,7 @@ public class MIRAccessKeyStrategy implements MCRAccessCheckStrategy {
     private static final Logger LOGGER = Logger.getLogger(MIRAccessKeyStrategy.class);
 
     private static final MCRAccessCheckStrategy BASE_STRATEGY = MCRConfiguration.instance().getInstanceOf(
-            "MIR.AccessKeyStrategy.FallbackClass", new MCRCreatorRuleStrategy());
+            "MIR.AccessKeyStrategy.FallbackClass", MCRCreatorRuleStrategy.class.getName());
 
     /* (non-Javadoc)
      * @see org.mycore.access.strategies.MCRAccessCheckStrategy#checkPermission(java.lang.String, java.lang.String)
