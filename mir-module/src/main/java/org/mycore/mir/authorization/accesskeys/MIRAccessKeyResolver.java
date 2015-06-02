@@ -28,6 +28,7 @@ import javax.xml.transform.URIResolver;
 
 import org.jdom2.Element;
 import org.jdom2.transform.JDOMSource;
+import org.mycore.access.MCRAccessManager;
 import org.mycore.datamodel.metadata.MCRObjectID;
 
 /**
@@ -50,6 +51,10 @@ public class MIRAccessKeyResolver implements URIResolver {
     @Override
     public Source resolve(String href, String base) throws TransformerException {
         final String objId = href.substring(href.indexOf(":") + 1);
+
+        if (!MCRAccessManager.checkPermission(objId, MCRAccessManager.PERMISSION_WRITE)) {
+            throw new TransformerException("User has insufficient permission to read access keys.");
+        }
 
         MIRAccessKeyPair accKP = MIRAccessKeyManager.getKeyPair(MCRObjectID.getInstance(objId));
 
