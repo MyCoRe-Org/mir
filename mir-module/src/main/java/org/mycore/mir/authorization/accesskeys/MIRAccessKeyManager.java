@@ -37,12 +37,24 @@ public final class MIRAccessKeyManager {
 
     private static final MCRHIBConnection MCRHIB_CONNECTION = MCRHIBConnection.instance();
 
+    /**
+     * Returns the {@link MIRAccessKeyPair} for given {@link MCRObjectID}.
+     * 
+     * @param mcrObjectId the {@link MCRObjectID}
+     * @return the {@link MIRAccessKeyPair}
+     */
     public static MIRAccessKeyPair getKeyPair(final MCRObjectID mcrObjectId) {
         final Session session = MCRHIB_CONNECTION.getSession();
 
         return (MIRAccessKeyPair) session.get(MIRAccessKeyPair.class, mcrObjectId.toString());
     }
 
+    /**
+     * Checks if an {@link MIRAccessKeyPair} exists for given {@link MCRObjectID}.
+     * 
+     * @param mcrObjectId the {@link MCRObjectID}.
+     * @return <code>true</code> if exists or <code>false</code> if not
+     */
     public static boolean existsKeyPair(final MCRObjectID mcrObjectId) {
         final Session session = MCRHIB_CONNECTION.getSession();
 
@@ -56,6 +68,11 @@ public final class MIRAccessKeyManager {
         return exists;
     }
 
+    /**
+     * Persists the given {@link MIRAccessKeyPair}.
+     * 
+     * @param accKP the {@link MIRAccessKeyPair}
+     */
     public static void createKeyPair(final MIRAccessKeyPair accKP) {
         if (existsKeyPair(accKP.getMCRObjectId()))
             throw new IllegalArgumentException("Access key pair for MCRObject " + accKP.getObjectId()
@@ -65,6 +82,11 @@ public final class MIRAccessKeyManager {
         session.save(accKP);
     }
 
+    /**
+     * Updates the given {@link MIRAccessKeyPair} or create a new one if not exists.
+     * 
+     * @param accKP the {@link MIRAccessKeyPair}
+     */
     public static void updateKeyPair(final MIRAccessKeyPair accKP) {
         if (!existsKeyPair(accKP.getMCRObjectId())) {
             createKeyPair(accKP);
@@ -75,6 +97,11 @@ public final class MIRAccessKeyManager {
         session.update(accKP);
     }
 
+    /**
+     * Deletes the {@link MIRAccessKeyPair} for given {@link MCRObjectID}.
+     * 
+     * @param mcrObjectId the {@link MCRObjectID}
+     */
     public static void deleteKeyPair(final MCRObjectID mcrObjectId) {
         if (!existsKeyPair(mcrObjectId))
             throw new IllegalArgumentException("Couldn't delete non exists key pair for MCRObject " + mcrObjectId);
