@@ -121,7 +121,7 @@ public class MIRAccessKeyEventHandler extends MCREventHandlerBase {
     private void removeAccessKeys(final MCRBase obj) {
         LOGGER.info("Remove access keys from pipe");
         for (MIRAccessKeyPair.ServiceFlagType type : MIRAccessKeyPair.ServiceFlagType.values()) {
-            obj.getService().removeFlags(type.toString());
+            obj.getService().removeFlags(type.value());
         }
     }
 }
