@@ -110,13 +110,13 @@
       <!-- check for relatedItem containing mycoreobject ID dependent on current user using solr query on field mods.relatedItem -->
       <xsl:variable name="state">
         <xsl:choose>
-          <xsl:when test="mcrxsl:isCurrentUserGuestUser()">published</xsl:when>
-          <xsl:otherwise>*</xsl:otherwise>
+          <xsl:when test="mcrxsl:isCurrentUserInRole('admin') or mcrxsl:isCurrentUserInRole('editor')">state:*</xsl:when>
+          <xsl:otherwise>state:published OR createdBy:<xsl:value-of select="$CurrentUser" /></xsl:otherwise>
         </xsl:choose>
       </xsl:variable>
       <xsl:variable name="hits"
                     xmlns:encoder="xalan://java.net.URLEncoder"
-                    select="document(concat('solr:q=',encoder:encode(concat('mods.relatedItem:', mycoreobject/@ID, ' AND state:', $state))))/response/result" />
+                    select="document(concat('solr:q=',encoder:encode(concat('mods.relatedItem:', mycoreobject/@ID, ' AND (', $state, ')'))))/response/result" />
 
       <xsl:if test="count($hits/doc) &gt; 0">
         <h3><xsl:value-of select="i18n:translate('mir.metadata.content')" /></h3>
