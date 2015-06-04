@@ -571,7 +571,7 @@
                  <li><!-- xsl:value-of select="i18n:translate('component.swf.derivate.addFile')" /--> Bearbeitung wg. URN gesperrt</li>
                </xsl:otherwise>
              </xsl:choose>
-             <xsl:if test="$derivateWithURN=false() and mcrxsl:isAllowedObjectForURNAssignment($parentObjID)">
+             <xsl:if test="$derivateWithURN=false() and mcrxsl:isAllowedObjectForURNAssignment($parentObjID) and acl:checkPermission($deriv,'addurn')">
                <xsl:variable name="apos">
                  <xsl:text>'</xsl:text>
                </xsl:variable>
