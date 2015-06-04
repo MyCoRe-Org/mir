@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:mir="http://www.mycore.de/mir"
-  xmlns:xed="http://www.mycore.de/xeditor">
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:mir="http://www.mycore.de/mir" xmlns:xed="http://www.mycore.de/xeditor">
   <xsl:variable name="grid-width" select="12" />
   <xsl:variable name="input-width" select="9" />
   <xsl:variable name="label-width" select="$grid-width - $input-width" />
-  <xsl:template match="mir:template[@name='textInput' or @name='selectInput' or @name='submitButton']">
+  <xsl:template match="mir:template[@name='textInput' or @name='selectInput']">
     <div class="form-group">
       <xsl:apply-templates select="." mode="formline" />
     </div>
@@ -31,7 +30,8 @@
       </div>
     </div>
   </xsl:template>
-  <xsl:template match="mir:template[@name='submitButton']" mode="formline">
+
+  <xsl:template match="mir:template[@name='submitButton']">
     <xsl:variable name="target">
       <xsl:choose>
         <xsl:when test="@target">
@@ -42,12 +42,23 @@
         </xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
-    <div class="col-md-offset-{$label-width} col-md-{$input-width}">
-      <button type="submit" xed:target="{$target}" class="btn btn-primary">
-        <xed:output i18n="{@i18n}" />
-      </button>
-    </div>
+    <button type="submit" xed:target="{$target}" class="btn btn-primary">
+      <xsl:if test="string-length(@href) &gt; 0">
+        <xsl:attribute name="xed:href">
+          <xsl:value-of select="@href" />
+        </xsl:attribute>
+      </xsl:if>
+      <xsl:copy-of select="@id" />
+      <xed:output i18n="{@i18n}" />
+    </button>
   </xsl:template>
+
+  <xsl:template match="mir:template[@name='cancelButton']">
+    <button type="submit" xed:target="cancel" class="btn btn-default btn-{$input-size}">
+      <xed:output i18n="{@i18n}" />
+    </button>
+  </xsl:template>
+  
 
   <!-- MODE=widget -->
 
@@ -73,8 +84,12 @@
   <xsl:template match="mir:template" mode="label">
     <label for="{@id}" class="col-md-{$label-width} control-label">
       <xsl:choose>
-        <xsl:when test="@i18n"><xed:output i18n="{@i18n}"/></xsl:when>
-        <xsl:otherwise><xsl:value-of select="@label" /></xsl:otherwise>
+        <xsl:when test="@i18n">
+          <xed:output i18n="{@i18n}" />
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="@label" />
+        </xsl:otherwise>
       </xsl:choose>
     </label>
   </xsl:template>

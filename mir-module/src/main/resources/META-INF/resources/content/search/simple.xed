@@ -23,19 +23,20 @@
             <!-- Title -->
               <mir:template name="textInput" xpath="condition[@field='mods.title']/@value" id="inputTitle1" i18n="editor.search.mir.title" />
             <!-- Name -->
-              <mir:template name="textInput" xpath="condition[@field='mods.name']/@value" id="inputName1" i18n="editor.search.mir.name"
-                tooltip="editor.search.mir.name.tooltip" />
+              <mir:template name="textInput" xpath="condition[@field='mods.name']/@value" id="inputName1" i18n="editor.search.mir.name" tooltip="editor.search.mir.name.tooltip" />
             <!-- Metadata -->
-              <mir:template name="textInput" xpath="condition[@field='allMeta']/@value" id="inputMeta1" i18n="editor.search.metadata"
-                tooltip="editor.search.metadata.tooltip" />
+              <mir:template name="textInput" xpath="condition[@field='allMeta']/@value" id="inputMeta1" i18n="editor.search.metadata" tooltip="editor.search.metadata.tooltip" />
             <!-- Content -->
-              <mir:template name="textInput" xpath="condition[@field='content']/@value" id="inputContent1" i18n="editor.search.derivate"
-                tooltip="editor.search.derivate.tooltip" />
+              <mir:template name="textInput" xpath="condition[@field='content']/@value" id="inputContent1" i18n="editor.search.derivate" tooltip="editor.search.derivate.tooltip" />
             <!-- Institution -->
               <mir:template name="selectInput" xpath="condition[@field='category'][1]/@value" id="inputInst1" i18n="editor.search.mir.institute"
                 tooltip="editor.search.mir.institute.tooltip" uri="xslStyle:items2options:classification:editorComplete:-1:children:mir_institutes" />
+            </div>
             <!-- submit -->
-              <mir:template name="submitButton" i18n="editor.search.search" target="servlet_MCRQLSearchServlet" />
+            <div class="panel-footer clearfix">
+              <div class="pull-right">
+                <mir:template name="submitButton" i18n="editor.search.search" target="servlet_MCRQLSearchServlet" />
+              </div>
             </div>
           </div>
         </xed:bind>
