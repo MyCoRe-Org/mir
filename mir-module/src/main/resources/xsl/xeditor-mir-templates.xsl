@@ -90,21 +90,22 @@
     <xsl:if test="string-length(@i18n) &gt; 0">
       <xsl:apply-templates select="." mode="label" />
     </xsl:if>
-    <div>
-      <xsl:attribute name="class">
-        <xsl:if test="string-length(@i18n) = 0">
-          <xsl:value-of select="concat('col-md-offset-',$label-width, ' ')" />
-        </xsl:if>
-        <xsl:if test="@tooltip">
-          <xsl:value-of select="'input-group '" />
-        </xsl:if>
-        <xsl:value-of select="concat('col-md-',$input-width, ' ')" />
-        <xsl:value-of select="'{$xed-validation-marker}'" />
-      </xsl:attribute>
+    <div class="col-md-{$input-width}">
+      <div>
+        <xsl:attribute name="class">
+          <xsl:if test="string-length(@i18n) = 0">
+            <xsl:value-of select="concat('col-md-offset-',$label-width, ' ')" />
+          </xsl:if>
+          <xsl:if test="@tooltip">
+            <xsl:value-of select="'input-group '" />
+          </xsl:if>
+          <xsl:value-of select="'{$xed-validation-marker}'" />
+        </xsl:attribute>
 
-      <xsl:apply-templates select="." mode="widget" />
-      <xsl:apply-templates select="." mode="inputTooltip" />
-      <xsl:apply-templates select="." mode="validation" />
+        <xsl:apply-templates select="." mode="widget" />
+        <xsl:apply-templates select="." mode="inputTooltip" />
+        <xsl:apply-templates select="." mode="validation" />
+      </div>
     </div>
   </xsl:template>
 
@@ -132,18 +133,20 @@
       </xsl:choose>
     </xsl:variable>
 
-    <div>
-      <xsl:attribute name="class">
-        <xsl:if test="@tooltip">
-          <xsl:value-of select="'input-group '" />
-        </xsl:if>
-        <xsl:value-of select="concat('col-',$colsize,'-',$colwidth,' ')" />
-        <xsl:value-of select="'{$xed-validation-marker}'" />
-      </xsl:attribute>
+    <div class="col-{$colsize}-{$colwidth}">
+      <div>
+        <xsl:attribute name="class">
+          <xsl:if test="@tooltip">
+            <xsl:value-of select="'input-group '" />
+          </xsl:if>
+          <xsl:value-of select="'{$xed-validation-marker}'" />
+        </xsl:attribute>
 
-      <xsl:apply-templates select="." mode="widget" />
-      <xsl:apply-templates select="." mode="inputTooltip" />
-      <xsl:apply-templates select="." mode="validation" />
+
+        <xsl:apply-templates select="." mode="widget" />
+        <xsl:apply-templates select="." mode="inputTooltip" />
+        <xsl:apply-templates select="." mode="validation" />
+      </div>
     </div>
   </xsl:template>
 
