@@ -25,6 +25,8 @@ package org.mycore.mir.authorization.accesskeys;
 import org.hibernate.Session;
 import org.mycore.backend.hibernate.MCRHIBConnection;
 import org.mycore.datamodel.metadata.MCRObjectID;
+import org.mycore.user2.MCRUser;
+import org.mycore.user2.MCRUserManager;
 
 /**
  * Provides methods to store, update, delete and retrieve
@@ -34,6 +36,8 @@ import org.mycore.datamodel.metadata.MCRObjectID;
  * @since 0.3
  */
 public final class MIRAccessKeyManager {
+
+    public static final String ACCESS_KEY_PREFIX = "acckey_";
 
     private static final MCRHIBConnection MCRHIB_CONNECTION = MCRHIBConnection.instance();
 
@@ -108,5 +112,47 @@ public final class MIRAccessKeyManager {
 
         final Session session = MCRHIB_CONNECTION.getSession();
         session.delete(getKeyPair(mcrObjectId));
+    }
+
+    /**
+     * Add the access key to the current {@link MCRUser} for given {@link MCRObjectID}.
+     * 
+     * @param mcrObjectId the {@link MCRObjectID}
+     * @param accessKey the access key
+     */
+    public static void addAccessKey(final MCRObjectID mcrObjectId, final String accessKey) {
+        addAccessKey(MCRUserManager.getCurrentUser(), mcrObjectId, accessKey);
+    }
+
+    /**
+     * Add the access key to the given {@link MCRUser} for {@link MCRObjectID}.
+     * 
+     * @param user the {@link MCRUser}
+     * @param mcrObjectId the {@link MCRObjectID}
+     * @param accessKey the access key
+     */
+    public static void addAccessKey(final MCRUser user, final MCRObjectID mcrObjectId, final String accessKey) {
+        user.getAttributes().put(ACCESS_KEY_PREFIX + mcrObjectId.toString(), accessKey);
+        MCRUserManager.updateUser(user);
+    }
+
+    /**
+     * Deletes the access key from current {@link MCRUser} for given {@link MCRObjectID}.
+     * 
+     * @param mcrObjectId the {@link MCRObjectID}
+     */
+    public static void deleteAccessKey(final MCRObjectID mcrObjectId) {
+        deleteAccessKey(MCRUserManager.getCurrentUser(), mcrObjectId);
+    }
+
+    /**
+     * Deletes the access key from given {@link MCRUser} for {@link MCRObjectID}.
+     * 
+     * @param user the {@link MCRUser}
+     * @param mcrObjectId the {@link MCRObjectID}
+     */
+    public static void deleteAccessKey(final MCRUser user, final MCRObjectID mcrObjectId) {
+        user.getAttributes().remove(ACCESS_KEY_PREFIX + mcrObjectId.toString());
+        MCRUserManager.updateUser(user);
     }
 }

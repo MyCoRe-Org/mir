@@ -59,17 +59,16 @@ public class MIRAccessKeyStrategy implements MCRAccessCheckStrategy {
             final MIRAccessKeyPair accKP = MIRAccessKeyManager.getKeyPair(mcrObjectId);
 
             if (accKP != null) {
-                if (permission.equals(MCRAccessManager.PERMISSION_READ)
-                        || permission.equals(MCRAccessManager.PERMISSION_WRITE) && accKP.getWriteKey() != null) {
-                    final String uAccKey = getUserAccessKey(id, MIRAccessKeyPair.PERMISSION_WRITE);
-                    if (uAccKey != null) {
-                        return uAccKey.equals(accKP.getWriteKey());
+                final String uAccKey = getUserAccessKey(id);
+
+                if (uAccKey != null) {
+                    if (permission.equals(MCRAccessManager.PERMISSION_READ)
+                            || permission.equals(MCRAccessManager.PERMISSION_WRITE)
+                            && uAccKey.equals(accKP.getWriteKey())) {
+                        return true;
                     }
-                }
-                if (permission.equals(MCRAccessManager.PERMISSION_READ)) {
-                    final String uAccKey = getUserAccessKey(id, MIRAccessKeyPair.PERMISSION_READ);
-                    if (uAccKey != null) {
-                        return uAccKey.equals(accKP.getReadKey());
+                    if (permission.equals(MCRAccessManager.PERMISSION_READ) && uAccKey.equals(accKP.getReadKey())) {
+                        return true;
                     }
                 }
             }
@@ -85,12 +84,11 @@ public class MIRAccessKeyStrategy implements MCRAccessCheckStrategy {
         return BASE_STRATEGY.checkPermission(id, permission);
     }
 
-    private static String getUserAccessKey(final String id, final String permission) {
+    private static String getUserAccessKey(final String id) {
         final MCRUserInformation currentUser = MCRSessionMgr.getCurrentSession().getUserInformation();
 
-        LOGGER.debug("check user access key for " + currentUser.getUserID() + " with permission " + permission
-                + " and MCRBaseID " + id);
+        LOGGER.debug("check user access key for " + currentUser.getUserID() + " and MCRBaseID " + id);
 
-        return currentUser.getUserAttribute(id + "_" + permission);
+        return currentUser.getUserAttribute(MIRAccessKeyManager.ACCESS_KEY_PREFIX + id);
     }
 }
