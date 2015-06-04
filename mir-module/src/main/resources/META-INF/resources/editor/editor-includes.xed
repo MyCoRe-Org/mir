@@ -862,7 +862,7 @@
         </div>
         <div class="col-md-6">
           <div class="controls form-inline">
-            <input type="submit" class="form-control" xed:target="subselect" xed:href="../servlets/solr/find?qry=&amp;XSL.Style=subselect" value="{i18n:mir.editing.related.select}" />
+            <input type="submit" class="form-control" xed:target="subselect" xed:href="../servlets/solr/find?qry=&amp;XSL.Style=subselect&amp;rows=1000" value="{i18n:mir.editing.related.select}" />
             <xed:output value="@xlink:href" />
           </div>
           <xed:if test="string-length(@xlink:href) &gt; 0">
