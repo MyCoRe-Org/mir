@@ -22,6 +22,11 @@
  */
 package org.mycore.mir.authorization.accesskeys;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.apache.log4j.Logger;
 import org.mycore.access.MCRAccessManager;
 import org.mycore.access.strategies.MCRAccessCheckStrategy;
@@ -39,8 +44,15 @@ public class MIRAccessKeyStrategy implements MCRAccessCheckStrategy {
 
     private static final Logger LOGGER = Logger.getLogger(MIRAccessKeyStrategy.class);
 
+    private static final String CONFIG_PREFIX = "MIR.AccessKeyStrategy.";
+
     private static final MCRAccessCheckStrategy BASE_STRATEGY = MCRConfiguration.instance().getInstanceOf(
-            "MIR.AccessKeyStrategy.FallbackClass", MCRCreatorRuleStrategy.class.getName());
+            CONFIG_PREFIX + "FallbackClass", MCRCreatorRuleStrategy.class.getName());
+
+    private static final List<String> OBJECT_TYPES = MCRConfiguration.instance().getStrings(
+            CONFIG_PREFIX + "ObjectTypes", new ArrayList<String>());
+
+    private static final Pattern TYPE_PATTERN = Pattern.compile("[^_]*_([^_]*)_*");
 
     /* (non-Javadoc)
      * @see org.mycore.access.strategies.MCRAccessCheckStrategy#checkPermission(java.lang.String, java.lang.String)
@@ -53,35 +65,49 @@ public class MIRAccessKeyStrategy implements MCRAccessCheckStrategy {
             return false;
         }
 
-        MCRObjectID mcrObjectId = null;
-        try {
-            mcrObjectId = MCRObjectID.getInstance(id);
-            final MIRAccessKeyPair accKP = MIRAccessKeyManager.getKeyPair(mcrObjectId);
+        String objectType = getObjectType(id);
 
-            if (accKP != null) {
-                final String uAccKey = getUserAccessKey(id);
+        if (OBJECT_TYPES.contains(objectType)) {
+            MCRObjectID mcrObjectId = null;
+            try {
+                mcrObjectId = MCRObjectID.getInstance(id);
+                final MIRAccessKeyPair accKP = MIRAccessKeyManager.getKeyPair(mcrObjectId);
 
-                if (uAccKey != null) {
-                    if (permission.equals(MCRAccessManager.PERMISSION_READ)
-                            || permission.equals(MCRAccessManager.PERMISSION_WRITE)
-                            && uAccKey.equals(accKP.getWriteKey())) {
-                        return true;
+                if (accKP != null) {
+                    final String uAccKey = getUserAccessKey(id);
+
+                    if (uAccKey != null) {
+                        if (permission.equals(MCRAccessManager.PERMISSION_READ)
+                                || permission.equals(MCRAccessManager.PERMISSION_WRITE)
+                                && uAccKey.equals(accKP.getWriteKey())) {
+                            return true;
+                        }
+                        if (permission.equals(MCRAccessManager.PERMISSION_READ) && uAccKey.equals(accKP.getReadKey())) {
+                            return true;
+                        }
                     }
-                    if (permission.equals(MCRAccessManager.PERMISSION_READ) && uAccKey.equals(accKP.getReadKey())) {
-                        return true;
-                    }
+
+                    return false;
                 }
-            }
-        } catch (RuntimeException e) {
-            if (mcrObjectId == null) {
-                LOGGER.debug("id is not a valid object ID", e);
-            } else {
-                LOGGER.warn("Error while checking permission.", e);
+            } catch (RuntimeException e) {
+                if (mcrObjectId == null) {
+                    LOGGER.debug("id is not a valid object ID", e);
+                } else {
+                    LOGGER.warn("Error while checking permission.", e);
+                }
             }
         }
 
         LOGGER.debug("use fallback to check permissions");
         return BASE_STRATEGY.checkPermission(id, permission);
+    }
+
+    private static String getObjectType(String id) {
+        Matcher m = TYPE_PATTERN.matcher(id);
+        if (m.find() && (m.groupCount() == 1)) {
+            return m.group(1);
+        }
+        return "";
     }
 
     private static String getUserAccessKey(final String id) {
