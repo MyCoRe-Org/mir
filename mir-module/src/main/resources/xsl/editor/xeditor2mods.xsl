@@ -4,7 +4,7 @@
 >
 
   <xsl:include href="copynodes.xsl" />
-    
+
   <!-- create value URI using valueURIxEditor and authorityURI -->
   <xsl:template match="@valueURIxEditor">
     <xsl:choose>
@@ -40,4 +40,14 @@
       </mods:end>
     </mods:extent>
   </xsl:template>
+
+
+  <!-- Copy content of mods:accessCondtition to mods:classification to enable classification support (see MIR-161) -->
+  <xsl:template match="mods:accessCondition[@type='restriction on access']">
+    <xsl:copy>
+      <xsl:apply-templates select="@*|node()" />
+    </xsl:copy>
+    <mods:classification authority="derivateAccess"><xsl:value-of select="." /></mods:classification>
+  </xsl:template>
+
 </xsl:stylesheet>

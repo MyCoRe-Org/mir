@@ -55,4 +55,10 @@
       <xsl:apply-templates select="*[not(mods:namePart[@type='family'] and mods:namePart[@type='given'])]" />
     </xsl:copy>
   </xsl:template>
+
+  <!-- Remove this mods:classification entry, will be created again while saving using mods:accessCondtition (see MIR-161) -->
+  <xsl:template match="mods:classification[@authority='derivateAccess']">
+    <!-- do nothing -->
+  </xsl:template>
+
 </xsl:stylesheet>
