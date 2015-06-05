@@ -53,11 +53,11 @@
                 <legend>
                   <xed:output i18n="component.mir.wizard.smtp.title" />
                 </legend>
-                <wizard:template name="textInput" xpath="property[@name='MCR.Mail.Server']" id="smtpHost" i18n="component.mir.wizard.smtp.host" />
+                <wizard:template name="textInput" xpath="property[@name='MCR.Mail.Server']" id="smtpHost" i18n="component.mir.wizard.smtp.host" placeholder="smtp.mySmtpServer.de" />
                 <wizard:template name="textInput" xpath="property[@name='MCR.Mail.NumTries']" default="1" id="smtpNumTries"
                   i18n="component.mir.wizard.smtp.numTries" i18n.error="component.mir.wizard.smtp.numTries.error" validate="true" type="integer" min="1" max="10" />
-                <wizard:template name="textInput" xpath="property[@name='MCR.Mail.User']" id="smtpUser" i18n="component.mir.wizard.smtp.user" />
-                <wizard:template name="passwordInput" xpath="property[@name='MCR.Mail.Password']" id="smtpPassword" i18n="component.mir.wizard.smtp.password" />
+                <wizard:template name="textInput" xpath="property[@name='MCR.Mail.User']" id="smtpUser" i18n="component.mir.wizard.smtp.user" placeholder="SMTP-Nutzername" />
+                <wizard:template name="passwordInput" xpath="property[@name='MCR.Mail.Password']" id="smtpPassword" i18n="component.mir.wizard.smtp.password" placeholder="Password des SMTP-Nutzers" />
               </fieldset>
             </xed:bind>
             <fieldset>
