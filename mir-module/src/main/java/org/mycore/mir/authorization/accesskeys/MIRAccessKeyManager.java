@@ -24,6 +24,8 @@ package org.mycore.mir.authorization.accesskeys;
 
 import org.hibernate.Session;
 import org.mycore.backend.hibernate.MCRHIBConnection;
+import org.mycore.common.MCRSystemUserInformation;
+import org.mycore.datamodel.metadata.MCRObject;
 import org.mycore.datamodel.metadata.MCRObjectID;
 import org.mycore.user2.MCRUser;
 import org.mycore.user2.MCRUserManager;
@@ -132,6 +134,9 @@ public final class MIRAccessKeyManager {
      * @param accessKey the access key
      */
     public static void addAccessKey(final MCRUser user, final MCRObjectID mcrObjectId, final String accessKey) {
+        if (user.equals(MCRSystemUserInformation.getSuperUserInstance()))
+            return;
+
         user.getAttributes().put(ACCESS_KEY_PREFIX + mcrObjectId.toString(), accessKey);
         MCRUserManager.updateUser(user);
     }
@@ -152,6 +157,9 @@ public final class MIRAccessKeyManager {
      * @param mcrObjectId the {@link MCRObjectID}
      */
     public static void deleteAccessKey(final MCRUser user, final MCRObjectID mcrObjectId) {
+        if (user.equals(MCRSystemUserInformation.getSuperUserInstance()))
+            return;
+
         user.getAttributes().remove(ACCESS_KEY_PREFIX + mcrObjectId.toString());
         MCRUserManager.updateUser(user);
     }
