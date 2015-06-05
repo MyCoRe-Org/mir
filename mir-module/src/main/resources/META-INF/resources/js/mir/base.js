@@ -76,30 +76,11 @@
       }
     });
 
-
-    function showSearchResult() {
-      closeSearchBox();
-      var searchText = getSearchText();
-      var url = $(searchInputSelector).data("url");
-      if (searchText) {
-        window.top.location = url.replace("{0}", encodeURIComponent(searchText));
-      }
-    }
-
-    function getSearchText() {
-      return $.trim($(searchInputSelector).val());
-    }
-
-    function closeSearchBox() {
-      $(searchInputContainerSelector).animate({
-        width : "0"
-      }, 150, function() {
-        $(searchContainerSelector).removeClass("opened");
-      });
-    }
+    $("#index_search_form").submit(function () {
+        $('#index_search').val($('#index_search').val()+".*");
+    });
 
   }); // END $﻿(document).ready()
-
 
   window.fireMirSSQuery = function base_fireMirSSQuery(form) {
     $(form).find(':input[value=""]').attr('disabled', true);
@@ -117,4 +98,25 @@
     html : "true"
   });
 
+
+  function showSearchResult() {
+    closeSearchBox();
+    var searchText = getSearchText();
+    var url = $(searchInputSelector).data("url");
+    if (searchText) {
+      window.top.location = url.replace("{0}", encodeURIComponent(searchText));
+    }
+  }
+
+  function getSearchText() {
+    return $.trim($(searchInputSelector).val());
+  }
+
+  function closeSearchBox() {
+    $(searchInputContainerSelector).animate({
+      width : "0"
+    }, 150, function() {
+      $(searchContainerSelector).removeClass("opened");
+    });
+  }
 })(jQuery);
