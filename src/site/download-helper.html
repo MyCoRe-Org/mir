@@ -36,15 +36,17 @@
                 "v" : version
               }, function(data, textStatus, jqXHR) {
                 var results = data.results;
+                var uris = [];
                 for (var i = results.length - 1; i >= 0; i--) {
                   var e = results[i];
                   if (e.uri.endsWith(suffix)) {
-                    $.getJSON(e.uri, function(data, textStatus, jqXHR) {
-                      element.attr('href', data.downloadUri);
-                    });
-                    break;
+                    uris.push(e.uri);
                   }
                 }
+                uris.sort().reverse();
+                $.getJSON(uris[0], function(data, textStatus, jqXHR) {
+                  element.attr('href', data.downloadUri);
+                });
               });
             });
             return this;
