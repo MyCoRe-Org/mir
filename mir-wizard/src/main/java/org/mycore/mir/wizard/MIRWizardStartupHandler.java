@@ -136,8 +136,8 @@ public class MIRWizardStartupHandler implements MCRStartupHandler.AutoExecutable
             //generate UUID as login token
             final String token = UUID.randomUUID().toString();
             servletContext.setAttribute(LOGIN_TOKEN, token);
-            LOGGER.info("\u001b[41m\u001b[1;37mLogin token: " + token + "\u001b[m");
 
+            outputLoginToken(servletContext);
         }
     }
 
@@ -149,5 +149,22 @@ public class MIRWizardStartupHandler implements MCRStartupHandler.AutoExecutable
         }
 
         return path;
+    }
+
+    static void outputLoginToken(ServletContext servletContext) {
+        final StringBuffer sb = new StringBuffer();
+
+        sb.append("\n\n" + String.format(String.format("%%0%dd", 80), 0).replace("0", "=") + "\n");
+        sb.append(" MIR Wizard");
+        sb.append("\n" + String.format(String.format("%%0%dd", 80), 0).replace("0", "=") + "\n\n");
+
+        if (System.getProperty("os.name").toLowerCase().contains("win"))
+            sb.append(" Login token: " + servletContext.getAttribute(LOGIN_TOKEN));
+        else
+            sb.append(" \u001b[41m\u001b[1;37mLogin token: " + servletContext.getAttribute(LOGIN_TOKEN) + "\u001b[m");
+
+        sb.append("\n\n" + String.format(String.format("%%0%dd", 80), 0).replace("0", "="));
+
+        LOGGER.info(sb.toString());
     }
 }
