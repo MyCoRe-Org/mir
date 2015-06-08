@@ -86,8 +86,6 @@ public class MIRAccessKeyStrategy implements MCRAccessCheckStrategy {
                             return true;
                         }
                     }
-
-                    return false;
                 }
             } catch (RuntimeException e) {
                 if (mcrObjectId == null) {
