@@ -79,7 +79,7 @@ public class MIRWizardServlet extends MCRServlet {
             final Element resXML = new Element("wizard");
 
             if (!MIRWizardRequestFilter.isAuthenticated(req)) {
-                final String loginToken = wizXML.getChildText("login");
+                final String loginToken = wizXML.getChildTextTrim("login");
                 String url = "wizard";
 
                 if (loginToken != null && MIRWizardRequestFilter.getLoginToken(req).equals(loginToken)) {
@@ -89,6 +89,9 @@ public class MIRWizardServlet extends MCRServlet {
                     LOGGER.info("Redirect to login...");
                     url += "/?action=login"
                             + (!MIRWizardRequestFilter.getLoginToken(req).equals(loginToken) ? "&token=invalid" : "");
+                    
+                    // output login token again
+                    MIRWizardStartupHandler.outputLoginToken(req.getServletContext());
                 }
                 res.sendRedirect(res.encodeRedirectURL(MCRFrontendUtil.getBaseURL() + url));
                 return;
