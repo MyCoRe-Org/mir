@@ -16,8 +16,8 @@
           <div class="panel-body">
             <xed:bind xpath="@objId" set="{$objId}" />
             <xed:bind xpath="accessKey">
-              <mir:template name="textInput" xpath="." id="accessKey" i18n="mir.accesskey" i18n.error="mir.accesskey.required" placeholder="mir.accesskey"
-                required="true" maxlength="64" />
+              <mir:template name="textInput" xpath="." id="accessKey" i18n="mir.accesskey" i18n.error="mir.accesskey.required" required="true"
+                maxlength="64" />
             </xed:bind>
           </div>
           <div class="panel-footer clearfix">
