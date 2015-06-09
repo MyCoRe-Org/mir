@@ -41,7 +41,7 @@
             <!-- mods:name grouped by mods:role/mods:roleTerm excluding author-->
             <xsl:for-each
               select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:name[not(@ID) and
-                      not(mods:role/mods:roleTerm='aut') and
+                      @type='personal' and not(mods:role/mods:roleTerm='aut') and
                       count(. | key('name-by-role',mods:role/mods:roleTerm)[1])=1]">
               <!-- for every role -->
               <tr>
@@ -118,7 +118,7 @@
             </xsl:apply-templates>
             <xsl:call-template name="printMetaDate.mods">
               <xsl:with-param name="nodes"
-                select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:originInfo/mods:place/mods:placeTerm" />
+                select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:originInfo/mods:place/mods:placeTerm[not(@authority='marccountry')]" />
             </xsl:call-template>
             <xsl:call-template name="printMetaDate.mods">
               <xsl:with-param name="nodes" select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:originInfo/mods:publisher" />
