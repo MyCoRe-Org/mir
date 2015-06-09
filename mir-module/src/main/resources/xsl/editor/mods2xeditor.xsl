@@ -52,7 +52,24 @@
           <xsl:value-of select="concat(mods:namePart[@type='family'],', ',mods:namePart[@type='given'])" />
         </mods:displayForm>
       </xsl:if>
-      <xsl:apply-templates select="*[not(mods:namePart[@type='family'] and mods:namePart[@type='given'])]" />
+      <xsl:apply-templates select="*" />
+      <xsl:if test="not(mods:role/mods:roleTerm)">
+        <mods:role>
+          <mods:roleTerm authority="marcrelator" type="code">aut</mods:roleTerm>
+        </mods:role>
+      </xsl:if>
+    </xsl:copy>
+  </xsl:template>
+
+  <xsl:template match="mods:originInfo/mods:dateIssued">
+    <xsl:copy>
+      <xsl:apply-templates select="@*" />
+      <xsl:if test="not(@encoding)">
+        <xsl:attribute name="encoding">
+          <xsl:value-of select="'w3cdtf'" />
+        </xsl:attribute>
+      </xsl:if>
+      <xsl:value-of select="." />
     </xsl:copy>
   </xsl:template>
 
