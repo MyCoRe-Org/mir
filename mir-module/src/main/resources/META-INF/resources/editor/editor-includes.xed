@@ -3,9 +3,9 @@
 <xed:template xmlns:xed="http://www.mycore.de/xeditor" xmlns:mir="http://www.mycore.de/mir">
 
   <xed:template id="in.out">
-    <xed:source uri="xslStyle:PPN-mods-simple,mycoreobject-editor,editor/mods2xeditor:http://unapi.gbv.de/?id=gvk:ppn:{$ppn}&amp;format=mods" />
+    <xed:source uri="xslStyle:PPN-mods-simple,editor/mods2xeditor:http://unapi.gbv.de/?id=gvk:ppn:{$ppn}&amp;format=mods" />
     <xed:source uri="xslStyle:editor/mods2xeditor:{$sourceUri}"/>
-    <xed:source uri="xslStyle:mycoreobject-editor,editor/mods2xeditor:mcrobject:{$id}" />
+    <xed:source uri="xslStyle:editor/mods2xeditor:mcrobject:{$id}" />
     <xed:cancel url="../servlets/MCRLockServlet?action=unlock&amp;id={$id}&amp;url=/receive/{$id}" />
     <xed:cancel url="{$cancelUrl}" />
     <xed:cancel url="../index.html" />
@@ -382,6 +382,11 @@
 
   <xed:template id="date.submitted">
     <mir:textfield xpath="mods:originInfo/mods:dateOther[@type='submitted'][@encoding='w3cdtf']" label="mir.date.submitted" help-text="{i18n:mir.help.date.submitted}"
+      placeholder="{i18n:mir.placeholder.date}" />
+  </xed:template>
+
+  <xed:template id="part.date">
+    <mir:textfield xpath="mods:part/mods:date[@encoding='w3cdtf']" label="mir.host.date" help-text="{i18n:mir.help.host.date}"
       placeholder="{i18n:mir.placeholder.date}" />
   </xed:template>
 
@@ -833,7 +838,7 @@
   </xed:template>
 
   <xed:template id="related.item">
-    <xed:repeat xpath="mods:relatedItem" min="1" max="10">
+    <xed:repeat xpath="mods:relatedItem[@xlink:href]" min="1" max="10">
       <xed:bind xpath="@xlink:href" initially="{$relatedItemId}" />
       <div class="form-group">
         <div class="col-md-3">
@@ -961,6 +966,7 @@
     <xed:cleanup-rule xpath="//mods:*" relevant-if="(string-length(text()) &gt; 0) or mods:* or cmd:* or (string-length(@xlink:href) &gt; 0) or (string-length(@valueURIxEditor) &gt; 0)" />
     <xed:cleanup-rule xpath="//mods:name" relevant-if="(mods:namePart|mods:displayForm) or (string-length(@valueURI) &gt; 0) or (string-length(@valueURIxEditor) &gt; 0)" />
     <xed:cleanup-rule xpath="//mods:name/@authorityURI" relevant-if="(string-length(../@valueURI) &gt; 0) or (string-length(../@valueURIxEditor) &gt; 0)" />
+    <xed:cleanup-rule xpath="//mods:name/mods:namePart" relevant-if="not(../mods:displayForm)" />
     <xed:cleanup-rule xpath="//mods:*/@xlink:type" relevant-if="text()!='simple'" />
     <xed:cleanup-rule xpath="//mods:detail" relevant-if="mods:number|mods:caption|mods:title" />
     <xed:cleanup-rule xpath="//mods:accessCondition[@type='copyrightMD']/cmd:copyright" relevant-if="cmd:rights.holder/cmd:name" />

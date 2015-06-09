@@ -3,11 +3,11 @@
 <xed:template xmlns:xed="http://www.mycore.de/xeditor">
 
   <xed:template id="series">
-    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="year.issued" />
     <xed:bind xpath="mods:relatedItem[@type='series']">
       <xed:bind xpath="@xlink:href" initially="mir_mods_00000000" />
       <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="series.title" />
       <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="series.volume" />
+      <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="part.date" />
     </xed:bind>
   </xed:template>
 
