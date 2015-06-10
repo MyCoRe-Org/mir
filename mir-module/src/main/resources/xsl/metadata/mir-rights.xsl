@@ -5,6 +5,7 @@
   <xsl:variable name="read" select="'read'" />
   <xsl:variable name="write" select="'writedb'" />
   <xsl:variable name="delete" select="'deletedb'" />
+  <xsl:variable name="addurn" select="'addurn'" />
   <xsl:template match="/mycoreobject">
     <xsl:copy>
       <xsl:copy-of select="@*|node()" />
@@ -62,6 +63,9 @@
       </xsl:message>
       <xsl:if test="acl:checkPermission($id,$write)">
         <xsl:attribute name="write" />
+        <xsl:if test="acl:checkPermission($id,$addurn)">
+          <xsl:attribute name="addurn" />
+        </xsl:if>
         <xsl:if test="acl:checkPermission($id,$delete)">
           <xsl:attribute name="delete" />
         </xsl:if>
