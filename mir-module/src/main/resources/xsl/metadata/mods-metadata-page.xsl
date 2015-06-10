@@ -80,6 +80,7 @@
         </xsl:if>
 
 <!-- metadata -->
+        <xsl:if test="div[contains(@id,'mir-metadata')]/table[@class='mir-metadata']/tr">
           <div class="mir_metadata">
             <h3>
               <xsl:value-of select="i18n:translate('component.mods.metaData.dictionary.categorybox')" />
@@ -88,6 +89,7 @@
             <xsl:apply-templates select="div[@id='mir-metadata']" mode="newMetadata" />
             <!-- End: METADATA -->
           </div>
+        </xsl:if>
 
 <!-- end: left column -->
         </div>

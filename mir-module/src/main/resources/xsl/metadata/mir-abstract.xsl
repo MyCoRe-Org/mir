@@ -116,7 +116,7 @@
       </xsl:variable>
       <xsl:variable name="hits"
                     xmlns:encoder="xalan://java.net.URLEncoder"
-                    select="document(concat('solr:q=',encoder:encode(concat('mods.relatedItem:', mycoreobject/@ID, ' AND (', $state, ')'))))/response/result" />
+                    select="document(concat('solr:q=',encoder:encode(concat('mods.relatedItem:', mycoreobject/@ID, ' AND (', $state, ')')), '&amp;rows=1000'))/response/result" />
 
       <xsl:if test="count($hits/doc) &gt; 0">
         <h3><xsl:value-of select="i18n:translate('mir.metadata.content')" /></h3>
