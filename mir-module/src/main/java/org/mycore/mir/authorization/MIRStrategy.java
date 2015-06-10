@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package org.mycore.mir.authorization;
 
@@ -41,7 +41,7 @@ import org.mycore.datamodel.metadata.MCRObjectID;
  * <li>return of <code>checkPermission(&lt;objectID&gt;, permission)</code>, objectID is owning MCRObject
  * <li>fallback to {@link MCRCreatorRuleStrategy}</li>
  * </ul>
- * 
+ *
  * @author Thomas Scheffler (yagee)
  * @since 0.3
  */
@@ -100,8 +100,6 @@ public class MIRStrategy implements MCRAccessCheckStrategy {
                     }
                 }
             }
-            LOGGER.debug("try to find rule for derivate in object");
-            return checkPermission(objectId.toString(), permission);
         }
         return BASE_STRATEGY.checkPermission(id, permission);
     }
