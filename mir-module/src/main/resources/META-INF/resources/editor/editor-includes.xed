@@ -33,7 +33,7 @@
         </div>
         <div class="col-md-1">
           <span class="btn btn-default info-button" data-toggle="popover" data-placement="right" data-content="{i18n:mir.help.genre}">
-            <i class="fa fa-info"></i>
+            <i class="fa fa-Finfo"></i>
           </span>
         </div>
         <mir:pmud />
@@ -228,6 +228,10 @@
   <xed:template id="advisor.repeated">
     <mir:role.repeated role="ths" label="mir.role.advisor" help-text="{i18n:mir.help.role.advisor}" />
   </xed:template>
+  
+  <xed:template id="producer.repeated">
+    <mir:role.repeated role="pro" label="mir.role.producer.name" help-text="{i18n:mir.help.role.advisor}" />
+  </xed:template>
 
   <xed:template id="editor.honoree.repeated">
     <xed:bind xpath="mods:name[@type='personal'][mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']='edt']" />
@@ -389,6 +393,11 @@
     <mir:textfield xpath="mods:part/mods:date[@encoding='w3cdtf']" label="mir.host.date" help-text="{i18n:mir.help.host.date}"
       placeholder="{i18n:mir.placeholder.date}" />
   </xed:template>
+  
+  <xed:template id="date.created">
+    <mir:textfield xpath="mods:originInfo/mods:dateCreated[@encoding='w3cdtf']" label="mir.date.created" help-text="{i18n:mir.help.date.created}" class="required"
+      placeholder="{i18n:mir.placeholder.date}" />
+  </xed:template>
 
   <xed:template id="identifier.patent">
     <div class="form-group">
@@ -521,6 +530,43 @@
     <mir:textfield xpath="mods:location/mods:shelfLocator" label="mir.shelfmark" help-text="{i18n:mir.help.shelfmark}" />
   </xed:template>
 
+  <xed:template id="related.item.link">
+  	<xed:repeat xpath="mods:relatedItem" min="1" max="10">
+  		<div class="form-group">
+  			<div class="col-md-3">
+  				<xed:bind xpath="@type" >
+	        	<select class="form-control form-control-inline" style="text-align: right; font-weight:bold;" >
+		          <option value="" >
+		          	<xed:output i18n="mir.link.title" />
+		          </option>
+		 				  <option value="original" >
+		 				  	<xed:output i18n="mir.relatedItem.original" />
+		 				  </option>
+		 				  <option value="otherVersion" >
+		 				  	<xed:output i18n="mir.relatedItem.otherVersion" />
+		 				  </option>
+		 				  <option value="otherFormat" >
+		 				  	<xed:output i18n="mir.relatedItem.otherFormat" />
+		 				  </option>
+	        	</select>
+        	</xed:bind>
+        </div>
+        <div class="col-md-6">
+        	<xed:bind xpath="mods:titleInfo/mods:title">
+	          <input type="text" class="form-control" placeholder="{i18n:mir.placeholder.title.link}" />
+        	</xed:bind>
+        </div>
+        <div class="col-md-1">
+          <span class="btn btn-default info-button" data-toggle="popover" data-placement="right" data-content="{i18n:mir.help.link.title}">
+            <i class="fa fa-info"></i>
+          </span>
+        </div>
+        <mir:pmud />
+      </div>
+	    <mir:textfield xpath="mods:location/mods:url[@access='raw object']" label="mir.link.raw_object" help-text="{i18n:mir.help.link.raw_object}" placeholder="{i18n:mir.placeholder.abstract.link}" />
+  	</xed:repeat>
+  </xed:template>
+
   <xed:template id="link">
     <mir:textfield xpath="mods:location/mods:url[@access='raw object']" label="mir.link.raw_object" help-text="{i18n:mir.help.link.raw_object}" />
   </xed:template>
@@ -581,6 +627,30 @@
 
   <xed:template id="extent">
     <mir:textfield xpath="mods:physicalDescription/mods:extent" label="mir.extent" help-text="{i18n:mir.help.extent}" placeholder="{i18n:mir.placeholder.extent}" />
+  </xed:template>
+  
+  <xed:template id="physical.description.note">
+		<mir:textarea xpath="mods:physicalDescription/mods:note" label="mir.pysicalical.description.note" help-text="{i18n:mir.help.pysicalical.description.note}" rows="5" />
+  </xed:template>
+  
+  <xed:template id="physical.description.form">
+  	<xed:bind xpath="mods:physicalDescription/mods:form[@type='file'][@authorityURI='http://www.mycore.org/classifications/mir_filetype']/@valueURIxEditor">
+	  	<div class="form-group">
+	      <label class="col-md-3 control-label">
+	        <xed:output i18n="mir.physical.description.form" />
+	      </label>
+	      <div class="col-md-6">
+	  			<select class="form-control form-control-inline">
+	  				<xed:include uri="xslStyle:items2options:classification:editor:-1:children:mir_filetype" />
+	  			</select>
+	      </div>
+	      <div class="col-md-1">
+	        <span class="btn btn-default info-button" data-toggle="popover" data-placement="right" data-content="{i18n:mir.help.physical.description.form}">
+	          <i class="fa fa-info"></i>
+	        </span>
+	      </div>
+      </div>
+  	</xed:bind>
   </xed:template>
 
   <xed:template id="series.volume">
@@ -668,7 +738,29 @@
       <xed:include uri="xslStyle:items2options:classification:editor:-1:children:rfc4646" />
     </select>
   </xed:template>
-
+  
+  <xed:template id="type.of.ressource">
+    <xed:bind xpath="mods:typeOfResource">
+      <div class="form-group">
+        <label class="col-md-3 control-label">
+          <xed:output i18n="mir.typeOfResource" />
+        </label>
+        <div class="col-md-6">
+          <div class="controls">
+	          <select class="form-control form-control-inline">
+	            <xed:include uri="xslStyle:items2options:classification:editor:-1:children:typeOfResource" />
+	          </select>
+          </div>
+        </div>
+        <div class="col-md-1">
+          <span class="btn btn-default info-button" data-toggle="popover" data-placement="right" data-content="{i18n:mir.help.typeOfResource}">
+            <i class="fa fa-info"></i>
+          </span>
+        </div>
+      </div>
+    </xed:bind>
+  </xed:template>
+  
   <xed:template id="rights">
     <xed:bind xpath="mods:accessCondition[@type='use and reproduction']" initially="">
       <div class="form-group {$xed-validation-marker}">
@@ -781,6 +873,61 @@
       </div>
     </div>
   </xed:template>
+  
+  <xed:template id="organisation.funding">
+    <xed:bind xpath="mods:name[@type='corporate'][mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']='fnd']">
+	    <div class="form-group">
+	      <label class="col-md-3 control-label">
+	        <xed:output i18n="mir.organisation.funding" />
+	      </label>
+	      <div class="col-md-6">
+	          <div class="search-organization">
+	            <xed:bind xpath="mods:displayForm">
+	              <input type="text" size="26" class="form-control form-control-inline"
+	                data-search="searchEntity"
+	                data-search-type="select"
+	                data-search-entity-type="organisation"
+	                data-search-output="#valueURIxEditor"
+	                data-search-button="{i18n:button.search}"
+	                data-search-button-loading="{i18n:button.loading}"
+	                data-search-result-empty="{i18n:mir.searchIdentifier.noResult}"
+	                data-target=".search-organization"
+	                placeholder="{i18n:mir.placeholder.name.organization}"
+	              />
+	            </xed:bind>
+	            <xed:bind xpath="@valueURIxEditor">
+	              <input type="hidden" id="valueURIxEditor" />
+	            </xed:bind>
+	          </div>
+	      </div>
+	      <div class="col-md-1">
+	        <span class="btn btn-default info-button" data-toggle="popover" data-placement="right" data-content="{i18n:mir.help.organisation.funding}">
+	          <i class="fa fa-info"></i>
+	        </span>
+	      </div>
+	    </div>  
+	    
+	    <div class="form-group">
+	      <label class="col-md-3 control-label">
+	        <xed:output i18n="mir.organisation.funding.grantID" />
+	      </label>
+	      <div class="col-md-6">
+	        <xed:bind xpath="@ID">
+						<input type="text" class="form-control" />
+	        </xed:bind>
+	      </div>
+	      <div class="col-md-1">
+	        <span class="btn btn-default info-button" data-toggle="popover" data-placement="right" data-content="{i18n:mir.help.organisation.funding.grantID}">
+	          <i class="fa fa-info"></i>
+	        </span>
+	      </div>
+	    </div> 
+    </xed:bind>
+  </xed:template>
+  
+  <xed:template id="cartographics">
+    <mir:textfield xpath="mods:subject/mods:cartographics/mods:coordinates" label="mir.cartographics.coordinates" help-text="{i18n:mir.help.cartographics.coordinates}" />
+  </xed:template>
 
   <xed:template id="sdnb">
     <xed:bind xpath="mods:classification[@authority='sdnb'][@displayLabel='sdnb']">
@@ -831,6 +978,10 @@
 
   <xed:template id="subject">
     <mir:textfield.repeat xpath="mods:subject" bind="mods:topic" min="1" max="20" label="mir.subject.topic" help-text="{i18n:mir.help.subject.topic}" />
+  </xed:template>
+  
+  <xed:template id="subject.genre">
+    <mir:textfield.repeat xpath="mods:subject" bind="mods:genre" min="1" max="20" label="mir.subject.genre.researchData" help-text="{i18n:mir.help.subject.genre.researchData}" />
   </xed:template>
 
   <xed:template id="comment">

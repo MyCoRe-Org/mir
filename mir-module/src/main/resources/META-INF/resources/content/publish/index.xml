@@ -120,6 +120,9 @@
             <option title="Interview" value="interview">
               <text i18n="component.mods.genre.interview" />
             </option>
+            <option title="Forschungsdaten" value="research_data">
+              <text i18n="mir.select.research_data" />
+            </option>
             <option title="Patent" value="patent">
               <text i18n="component.mods.genre.patent" />
             </option>
@@ -140,9 +143,8 @@
             </option>
           </select>
         </div>
-
       </div>
-
+	
 <!-- host -->
       <div class="row form-group">
         <label for="host"  class="col-sm-3 col-lg-2 control-label">
