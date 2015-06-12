@@ -70,13 +70,23 @@
       </xsl:choose>
     </xsl:variable>
 
+    <!-- if user is in role editor or admin, show all; other users only gets their own and published publications -->
+    <xsl:variable name="filter_query">
+      <xsl:choose>
+        <xsl:when test="mcrxsl:isCurrentUserInRole('admin') or mcrxsl:isCurrentUserInRole('editor')">state:*</xsl:when>
+        <xsl:otherwise>state:published OR createdBy:<xsl:value-of select="$CurrentUser" /></xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+
     <xsl:variable name="linkTo">
       <xsl:choose>
         <xsl:when test="string-length($gnd)>0">
-          <xsl:value-of select="concat($ServletsBaseURL, 'solr/mods_gnd?q=', $gnd)" />
+          <xsl:value-of select="concat($ServletsBaseURL,'solr/select?q=mods.gnd:', $gnd, ' AND (', $filter_query, ')')" />
         </xsl:when>
         <xsl:otherwise>
-          <xsl:value-of select="concat($ServletsBaseURL, 'solr/mods_name?q=%22', $linkText, '%22')" />
+          <xsl:value-of select="concat($ServletsBaseURL,'solr/select?q=')" />
+          <xsl:value-of select="concat('+mods.author:&quot;',$linkText,'&quot;')" />
+          <xsl:value-of select="concat(' AND (', $filter_query, ')')" />
         </xsl:otherwise>
       </xsl:choose>
     </xsl:variable>

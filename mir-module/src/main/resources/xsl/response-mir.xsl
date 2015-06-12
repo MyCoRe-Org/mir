@@ -58,7 +58,7 @@
                   <li><a href="#" value="content">Volltext</a></li>
                 </ul>
               </div>
-              <input class="form-control" name="qry" placeholder="ein oder mehrere Schlagworte" type="text" />
+              <input class="form-control" name="qry" placeholder="{i18n:translate('mir.placeholder.response.search')}" type="text" />
               <span class="input-group-btn">
                 <button class="btn btn-primary" type="submit"><span class="glyphicon glyphicon-search"></span> Suchen</button>
               </span>
@@ -335,9 +335,16 @@
                         </xsl:if>
                       </xsl:for-each>
                     </xsl:variable>
+                    <!-- if user is in role editor or admin, show all; other users only gets their own and published publications -->
+                    <xsl:variable name="filter_query">
+                      <xsl:choose>
+                        <xsl:when test="mcrxsl:isCurrentUserInRole('admin') or mcrxsl:isCurrentUserInRole('editor')">state:*</xsl:when>
+                        <xsl:otherwise>state:published OR createdBy:<xsl:value-of select="$CurrentUser" /></xsl:otherwise>
+                      </xsl:choose>
+                    </xsl:variable>
                     <xsl:choose>
                       <xsl:when test="string-length($gnd) &gt; 0">
-                        <a href="{$ServletsBaseURL}solr/mods_gnd?q={$gnd}" title="Suche nach allen Publikationen" >
+                        <a href="{$ServletsBaseURL}solr/select?q=mods.gnd:{$gnd} AND ({$filter_query})" title="Suche nach allen Publikationen" >
                           <xsl:value-of select="$author_name" />
                         </a>
                         <xsl:text>&#160;</xsl:text><!-- add whitespace here -->
@@ -346,7 +353,7 @@
                         </a>
                       </xsl:when>
                       <xsl:otherwise>
-                        <a href="{$ServletsBaseURL}solr/mods_name?q='{$author_name}'" title="Suche nach allen Publikationen">
+                        <a href="{$ServletsBaseURL}solr/select?q=mods.name:'{$author_name}' AND ({$filter_query})" title="Suche nach allen Publikationen">
                           <xsl:value-of select="$author_name" />
                         </a>
                       </xsl:otherwise>
@@ -394,7 +401,7 @@
                     <xsl:if test="position()!=1">
                       <xsl:value-of select="'; '" />
                     </xsl:if>
-                    <xsl:value-of select="$publisher" />
+                    <xsl:value-of select="." />
                   </xsl:for-each>
                   <xsl:if test="count($publisher)=1 and count($place)=1">
                     <xsl:value-of select="', '" />

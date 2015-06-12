@@ -1874,6 +1874,8 @@
 
       <!-- enable highlighting -->
       <str name="hl">true</str>
+
+      <str name="fq">state:published</str>
     </lst>
     <lst name="appends">
       <!-- query fields parameter -->
@@ -1882,7 +1884,6 @@
 
       <!-- filter query: search only in published mods objects-->
       <str name="fq">objectType:"mods"</str>
-      <str name="fq">state:published</str>
     </lst>
 
   </requestHandler>
@@ -1911,6 +1912,8 @@
 
       <!-- enable highlighting -->
       <str name="hl">true</str>
+
+      <str name="fq">state:published</str>
     </lst>
     <lst name="appends">
       <!-- query fields parameter -->
@@ -1919,7 +1922,6 @@
 
       <!-- filter query: search only in published mods objects-->
       <str name="fq">objectType:"mods"</str>
-      <str name="fq">state:published</str>
     </lst>
 
   </requestHandler>
