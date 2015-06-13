@@ -1,0 +1,17 @@
+<query numPerPage="20">
+  <conditions format="xml">
+    <boolean operator="and">
+      <condition field="objectType" operator="=" value="mods" />
+      <condition field="mods.title" operator="contains" />
+      <condition field="mods.name" operator="contains" />
+      <condition field="allMeta" operator="contains" />
+      <condition field="content" operator="contains" />
+      <condition field="category.top" operator="=" />
+      <condition field="state" operator="=" />
+      <!-- boolean operator="or">
+        <condition field="state" operator="=" />
+        <condition field="createdby" operator="=" />
+      </boolean -->
+    </boolean>
+  </conditions>
+</query>
