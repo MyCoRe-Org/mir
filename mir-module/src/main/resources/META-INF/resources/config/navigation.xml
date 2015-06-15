@@ -28,11 +28,19 @@
     <!-- search menu  -->
     <label xml:lang="de">Suche</label>
     <label xml:lang="en">Search</label>
-    <item href="/servlets/MCRActionMappingServlet/simple/search" type="intern">
+    <item href="/content/search/simple.xed" type="intern">
       <label xml:lang="de">einfach</label>
       <label xml:lang="en">simple</label>
     </item>
-    <item href="/servlets/MCRActionMappingServlet/complex/search" type="intern">
+    <item href="/content/search/simple_intern.xed" type="intern">
+      <label xml:lang="de">einfach</label>
+      <label xml:lang="en">simple</label>
+    </item>
+    <item href="/content/search/complex.xed" type="intern">
+      <label xml:lang="de">komplex</label>
+      <label xml:lang="en">complex</label>
+    </item>
+    <item href="/content/search/complex_intern.xed" type="intern">
       <label xml:lang="de">komplex</label>
       <label xml:lang="en">complex</label>
     </item>

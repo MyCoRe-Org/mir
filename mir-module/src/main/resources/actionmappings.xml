@@ -1,16 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <actionmappings>
-  <collection name="simple">
-    <action action="search">
-      <when condition="true" url="/content/search/simple.xed" />
-    </action>
-  </collection>
-  <collection name="complex">
-    <action action="search">
-      <when condition="(group = admin) or (group = editor)" url="/content/search/complex_intern.xml" />
-      <when condition="true" url="/content/search/complex.xed" />
-    </action>
-  </collection>
   <collection name="personindex">
     <action action="browse">
       <when condition="(group = admin) or (group = editor)" url="/servlets/solr/personindex?XSL.Style=person&amp;terms.regex=[a|%C3%A4|%C3%84].*" />
