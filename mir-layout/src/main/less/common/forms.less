@@ -36,6 +36,10 @@
   content:"* ";
 }
 
+.required > label:before {
+  content:"* ";
+}
+
 .info-button {
   color: #2C3E50; //#74898A;
   background-color: #ECF0F1;
@@ -86,6 +90,49 @@
 }
 #more_options_box {
   display: none;
+}
+
+// --------------------------------------------------
+//    mir_form_group
+// --------------------------------------------------
+.mir-form-group-head {
+	margin-left: 30px;
+	border-style: solid; 
+	border-width: 0px 0px 2px 0px; 
+	border-color: #ccc; 
+	border-bottom-left-radius: 10px;
+	padding: 3px;
+	padding-left: 21px;
+	font-size:21px;
+}
+div.mir-form-group > div.col-md-6{
+	border-style: solid;
+	border-width: 0px 0px 0px 2px;
+	border-color: #ccc;
+	padding-left:13px;
+}
+div.mir-form-group > div{
+	padding-top:3px;
+	padding-bottom:3px;
+}
+div.mir-form-group:last-child > div.col-md-6 {
+	padding-bottom:6px;
+	border-bottom-left-radius: 10px;
+}
+div.mir-form-group:first-child > div {
+	padding-top:6px;
+}
+.mir-form-group-pmud {
+	border-style: solid;
+	border-width: 0px 0px 0px 2px;
+	border-color: #ccc;
+	border-bottom-left-radius: 10px;
+}
+.mir-form-group{
+	margin-bottom: 0px;
+}
+.mir-form-group-body {
+	margin-bottom: 12px;
 }
 
 /* xs: default up to 750px ***************************************************/
