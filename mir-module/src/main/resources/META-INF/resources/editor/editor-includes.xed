@@ -110,35 +110,39 @@
   </xed:template>
 
   <xed:template id="title.original">
-    <div class="col-md-10 mir-form-group-head">
-      <xed:output i18n="mir.title.type.original" />
-    </div>
-    <xed:bind xpath="mods:titleInfo">
-      <div class="mir-form-group-body">
-        <mir:textfield xpath="mods:title" label="mir.title" placeholder="{i18n:mir.placeholder.title.main}" class="mir-form-group" help-text="{i18n:mir.help.title}"/>
-        <mir:textfield xpath="mods:subTitle" label="mir.title.subTitle" class="mir-form-group" help-text="{i18n:mir.help.title.subTitle}" />
-      </div>
-    </xed:bind>
+    <fieldset>
+      <legend class="mir-fieldset-legend">
+        <xed:output i18n="mir.title.type.original" />
+      </legend>
+      <xed:bind xpath="mods:titleInfo">
+        <div class="mir-fieldset-content">
+          <mir:textfield xpath="mods:title" label="mir.title" placeholder="{i18n:mir.placeholder.title.main}" help-text="{i18n:mir.help.title}"/>
+          <mir:textfield xpath="mods:subTitle" label="mir.title.subTitle" help-text="{i18n:mir.help.title.subTitle}" />
+        </div>
+      </xed:bind>
+    </fieldset>
   </xed:template>
 
   <xed:template id="title.translated">
-    <div class="col-md-10 mir-form-group-head">
-      <xed:output i18n="mir.title.type.translated" />
-    </div>
-    <xed:bind xpath="mods:titleInfo[2][@type='translated']">
-      <div class="mir-form-group-body">
-        <mir:textfield xpath="mods:title" label="mir.title" placeholder="{i18n:mir.placeholder.title.translated}" class="mir-form-group" />
-        <mir:textfield xpath="mods:subTitle" label="mir.title.subTitle" class="mir-form-group" />
-        <div class="form-group mir-form-group">
-          <label class="col-md-3 control-label mir-formgroup-label">Sprache:</label>
-          <div class="col-md-6">
-            <xed:bind xpath="@xml:lang" initially="de">
-              <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="lang.list" />
-            </xed:bind>
+    <fieldset>
+      <legend class="mir-fieldset-legend">
+        <xed:output i18n="mir.title.type.translated" />
+      </legend>
+      <xed:bind xpath="mods:titleInfo[2][@type='translated']">
+        <div class="mir-fieldset-content">
+          <mir:textfield xpath="mods:title" label="mir.title" placeholder="{i18n:mir.placeholder.title.translated}" />
+          <mir:textfield xpath="mods:subTitle" label="mir.title.subTitle" />
+          <div class="form-group">
+            <label class="col-md-3 control-label mir-formgroup-label">Sprache:</label><!-- TODO: i18n -->
+            <div class="col-md-6">
+              <xed:bind xpath="@xml:lang" initially="de">
+                <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="lang.list" />
+              </xed:bind>
+            </div>
           </div>
         </div>
-      </div>
-    </xed:bind>
+      </xed:bind>
+    </fieldset>
   </xed:template>
 
   <xed:template id="titles.thesis">
@@ -151,68 +155,79 @@
   </xed:template>
 
   <xed:template id="title.complex.repeated">
-    <xed:repeat xpath="mods:titleInfo" min="1" max="6">
-      <div class="col-md-10 mir-form-group-head">
+    <fieldset>
+      <legend class="mir-fieldset-legend">
         <xed:output i18n="mir.title.type" />
-      </div>
-      <div class="mir-form-group-body">
-        <div class="form-group mir-form-group">
-          <label class="col-md-3 control-label">
-            <xed:output i18n="mir.title.nonSort" />
-          </label>
-          <div class="col-md-6">
-            <div class="form-inline controls">
-              <xed:bind xpath="mods:nonSort">
-                <input type="text" size="9" class="form-control form-control-inline" placeholder="Der/Die/Das"/>
-              </xed:bind>
-              <xed:bind xpath="@xml:lang" initially="de">
-                <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="lang.list" />
-              </xed:bind>
-              <xed:bind xpath="@type">
-                <select class="form-control form-control-inline">
-                  <option value="">
-                    <xed:output i18n="mir.title.type.main" />
-                  </option>
-                  <option value="translated">
-                    <xed:output i18n="mir.title.type.translated" />
-                  </option>
-                  <option value="alternative">
-                    <xed:output i18n="mir.title.type.alternative" />
-                  </option>
-                  <option value="abbreviated">
-                    <xed:output i18n="mir.title.type.abbreviated" />
-                  </option>
-                  <option value="uniform">
-                    <xed:output i18n="mir.title.type.uniform" />
-                  </option>
-                </select>
-              </xed:bind>
+      </legend>
+      <xed:repeat xpath="mods:titleInfo" min="1" max="6">
+        <div class="mir-fieldset-content">
+          <div class="form-group">
+            <label class="col-md-3 control-label">
+              <xed:output i18n="mir.title.nonSort" />
+            </label>
+            <div class="col-md-6">
+              <div class="form-inline controls">
+                <xed:bind xpath="mods:nonSort">
+                  <input type="text" size="9" class="form-control form-control-inline" placeholder="Der/Die/Das"/>
+                </xed:bind>
+                <xed:bind xpath="@xml:lang" initially="de">
+                  <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="lang.list" />
+                </xed:bind>
+                <xed:bind xpath="@type">
+                  <select class="form-control form-control-inline">
+                    <option value="">
+                      <xed:output i18n="mir.title.type.main" />
+                    </option>
+                    <option value="translated">
+                      <xed:output i18n="mir.title.type.translated" />
+                    </option>
+                    <option value="alternative">
+                      <xed:output i18n="mir.title.type.alternative" />
+                    </option>
+                    <option value="abbreviated">
+                      <xed:output i18n="mir.title.type.abbreviated" />
+                    </option>
+                    <option value="uniform">
+                      <xed:output i18n="mir.title.type.uniform" />
+                    </option>
+                  </select>
+                </xed:bind>
+              </div>
             </div>
+            <div class="col-md-1">
+              <span class="btn btn-default info-button" data-toggle="popover" data-placement="right" data-content="{i18n:mir.help.title.complex}">
+                <i class="fa fa-info"></i>
+              </span>
+            </div>
+            <mir:pmud />
           </div>
-          <mir:pmud class="mir-form-group-pmud"/>
+          <mir:textfield xpath="mods:title" label="mir.title" help-text="{i18n:mir.help.title.complex}" class="required" />
+          <mir:textfield xpath="mods:subTitle" label="mir.title.subTitle" help-text="{i18n:mir.help.title.subTitle}" />
         </div>
-        <mir:textfield xpath="mods:title" label="mir.title" help-text="{i18n:mir.help.title.complex}" class="required mir-form-group" />
-        <mir:textfield xpath="mods:subTitle" label="mir.title.subTitle" help-text="{i18n:mir.help.title.subTitle}" class="mir-form-group" />
-      </div>
-    </xed:repeat>
+      </xed:repeat>
+    </fieldset>
   </xed:template>
 
   <xed:template id="author.repeated">
-    <div class="col-md-10 mir-form-group-head">
-      Autoren
-    </div>
-    <div class="mir-form-group-body">
-      <mir:role.repeated role="aut" label="mir.role.author" help-text="{i18n:mir.help.role.author}" class="required mir-form-group" />
-    </div>
+    <fieldset>
+      <legend class="mir-fieldset-legend">
+        Autoren<!-- TODO: i18n -->
+      </legend>
+      <div class="mir-fieldset-content">
+        <mir:role.repeated role="aut" label="mir.role.author" help-text="{i18n:mir.help.role.author}" class="required" />
+      </div>
+    </fieldset>
   </xed:template>
 
   <xed:template id="editor.repeated">
-    <div class="col-md-10 mir-form-group-head">
-      Herausgeber
-    </div>
-    <div class="mir-form-group-body">
-      <mir:role.repeated role="edt" label="mir.role.editor" help-text="{i18n:mir.help.role.editor}" class="mir-form-group" />
-    </div>
+    <fieldset>
+      <legend class="mir-fieldset-legend">
+        Herausgeber<!-- TODO: i18n -->
+      </legend>
+      <div class="mir-fieldset-content">
+        <mir:role.repeated role="edt" label="mir.role.editor" help-text="{i18n:mir.help.role.editor}" />
+      </div>
+    </fieldset>
   </xed:template>
 
   <xed:template id="inventor.repeated">
@@ -294,10 +309,10 @@
     <xed:bind xpath="mods:name[@type='personal'][mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']='rev']" />
     <mir:person.repeated>
       <option value="aut">
-        Student:
+        Student:<!-- TODO: i18n -->
       </option>
       <option value="ths">
-        Betreuer:
+        Betreuer:<!-- TODO: i18n -->
       </option>
       <option value="rev">
         <xed:output i18n="mir.role.reviewer" />
@@ -972,74 +987,86 @@
   </xed:template>
 
   <xed:template id="abstract.simple">
-    <div class="col-md-11 mir-form-group-head">
-      <xed:output i18n="mir.abstract.text" />
-    </div>
-    <div class="mir-form-group-body">
-      <mir:textarea xpath="mods:abstract[not(@xml:lang) or @xml:lang=../mods:languageTerm[@authority='rfc4646'][@type='code']]" label="mir.abstract.text" help-text="{i18n:mir.help.abstract}" rows="5" class="mir-form-group"/>
-    </div>
+    <fieldset>
+      <legend class="mir-fieldset-legend">
+        <xed:output i18n="mir.abstract.text" />
+      </legend>
+      <div class="mir-fieldset-content">
+        <mir:textarea xpath="mods:abstract[not(@xml:lang) or @xml:lang=../mods:languageTerm[@authority='rfc4646'][@type='code']]" label="mir.abstract.text" help-text="{i18n:mir.help.abstract}" rows="5" />
+      </div>
+    </fieldset>
   </xed:template>
 
   <xed:template id="abstract.simple.uri">
-    <div class="col-md-11 mir-form-group-head">
-      <xed:output i18n="mir.abstract.text" />
-    </div>
-    <div class="mir-form-group-body">
-      <mir:textarea xpath="mods:abstract[not(@xml:lang) or @xml:lang=../mods:languageTerm[@authority='rfc4646'][@type='code']]" label="mir.abstract.text" rows="5" class="mir-form-group"/>
-      <mir:textfield xpath="@xlink:href" label="mir.abstract.aslink" placeholder="{i18n:mir.placeholder.abstract.link}" class="mir-form-group" />
-    </div>
+    <fieldset>
+      <legend class="mir-fieldset-legend">
+        <xed:output i18n="mir.abstract.text" />
+      </legend>
+      <div class="mir-fieldset-content">
+        <mir:textarea xpath="mods:abstract[not(@xml:lang) or @xml:lang=../mods:languageTerm[@authority='rfc4646'][@type='code']]" label="mir.abstract.text" rows="5" />
+        <mir:textfield xpath="@xlink:href" label="mir.abstract.aslink" placeholder="{i18n:mir.placeholder.abstract.link}" />
+      </div>
+    </fieldset>
   </xed:template>
 
   <xed:template id="abstract.translated">
-    <xed:repeat xpath="mods:abstract[@xml:lang]" min="1" max="3">
-      <div class="col-md-11 mir-form-group-head">
+    <fieldset>
+      <legend class="mir-fieldset-legend">
         <xed:output i18n="mir.abstract.translated" />
-      </div>
-      <div class="mir-form-group-body">
-        <div class="form-group mir-form-group">
-          <label class="col-md-3 control-label">
-            <xed:output i18n="mir.abstract.in" />
-          </label>
-          <div class="col-md-6">
-            <xed:bind xpath="@xml:lang">
-              <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="lang.list" />
-            </xed:bind>
+      </legend>
+      <xed:repeat xpath="mods:abstract[@xml:lang]" min="1" max="3">
+        <div class="mir-fieldset-content">
+          <div class="form-group">
+            <label class="col-md-3 control-label">
+              <xed:output i18n="mir.abstract.in" />
+            </label>
+            <div class="col-md-6">
+              <xed:bind xpath="@xml:lang">
+                <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="lang.list" />
+              </xed:bind>
+            </div>
+            <div class="col-md-1">
+              <span class="btn btn-default info-button" data-toggle="popover" data-placement="right" data-content="{i18n:mir.help.abstract}">
+                <i class="fa fa-info"></i>
+              </span>
+            </div>
+            <mir:pmud />
           </div>
-          <div class="col-md-1">
-            <span class="btn btn-default info-button" data-toggle="popover" data-placement="right" data-content="{i18n:mir.help.abstract}">
-              <i class="fa fa-info"></i>
-            </span>
-          </div>
-          <mir:pmud class="mir-form-group-pmud"/>
+          <mir:textfield xpath="@xlink:href" label="mir.abstract.aslink" placeholder="{i18n:mir.placeholder.abstract.link}" />
+          <mir:textarea xpath="." label="mir.abstract.ortext" rows="5" />
         </div>
-        <mir:textfield xpath="@xlink:href" label="mir.abstract.aslink" placeholder="{i18n:mir.placeholder.abstract.link}" class="mir-form-group" />
-        <mir:textarea xpath="." label="mir.abstract.ortext" rows="5" class="mir-form-group"/>
-      </div>
-    </xed:repeat>
+      </xed:repeat>
+    </fieldset>
   </xed:template>
 
   <xed:template id="abstract.repeated">
-    <xed:repeat xpath="mods:abstract" min="1" max="3">
-      <div class="col-md-11 mir-form-group-head">
+    <fieldset>
+      <legend class="mir-fieldset-legend">
         <xed:output i18n="mir.abstract.text" />
-      </div>
-      <div class="mir-form-group-body">
-        <div class="form-group mir-form-group">
-          <label class="col-md-3 control-label">
-            <xed:output i18n="mir.abstract.in" />
-          </label>
-          <div class="col-md-6">
-            <xed:bind xpath="@xml:lang" initially="de">
-              <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="lang.list" />
-            </xed:bind>
+      </legend>
+      <xed:repeat xpath="mods:abstract" min="1" max="3">
+        <div class="mir-fieldset-content">
+          <div class="form-group">
+            <label class="col-md-3 control-label">
+              <xed:output i18n="mir.abstract.in" />
+            </label>
+            <div class="col-md-6">
+              <xed:bind xpath="@xml:lang" initially="de">
+                <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="lang.list" />
+              </xed:bind>
+            </div>
+            <div class="col-md-1">
+              <span class="btn btn-default info-button" data-toggle="popover" data-placement="right" data-content="{i18n:mir.help.abstract}">
+                <i class="fa fa-info"></i>
+              </span>
+            </div>
+            <mir:pmud />
           </div>
-
-          <mir:pmud class="mir-form-group-pmud"/>
+          <mir:textfield xpath="@xlink:href" label="mir.abstract.aslink" help-text="{i18n:mir.help.abstract.repeated}" placeholder="{i18n:mir.placeholder.abstract.link}" />
+          <mir:textarea xpath="." label="mir.abstract.ortext" help-text="{i18n:mir.help.abstract.ortext}" rows="5" />
         </div>
-        <mir:textfield xpath="@xlink:href" label="mir.abstract.aslink" help-text="{i18n:mir.help.abstract.repeated}" placeholder="{i18n:mir.placeholder.abstract.link}" class="mir-form-group"/>
-        <mir:textarea xpath="." label="mir.abstract.ortext" rows="5" class="mir-form-group"/>
-      </div>
-    </xed:repeat>
+      </xed:repeat>
+    </fieldset>
   </xed:template>
 
   <xed:template id="subject">
@@ -1047,12 +1074,14 @@
   </xed:template>
 
   <xed:template id="subjectgroup">
-    <div class="col-md-11 mir-form-group-head">
-      <xed:output i18n="mir.subject.topic.multiple" />
-    </div>
-    <div class="mir-form-group-body">
-      <mir:textfield.repeated xpath="mods:subject/mods:topic" bind="mods:genre" min="1" max="20" label="mir.subject.topic" help-text="{i18n:mir.help.subject.topic}" class="mir-form-group"/>
-    </div>
+    <fieldset>
+      <legend class="mir-fieldset-legend">
+        <xed:output i18n="mir.subject.topic.multiple" />
+      </legend>
+      <div class="mir-fieldset-content">
+        <mir:textfield.repeated xpath="mods:subject/mods:topic" bind="mods:genre" min="1" max="20" label="mir.subject.topic" help-text="{i18n:mir.help.subject.topic}" />
+      </div>
+    </fieldset>
   </xed:template>
 
   <xed:template id="comment">
