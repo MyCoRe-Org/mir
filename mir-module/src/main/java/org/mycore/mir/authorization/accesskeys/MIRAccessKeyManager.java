@@ -128,7 +128,14 @@ public final class MIRAccessKeyManager {
     public static void addAccessKey(final MCRObjectID mcrObjectId, final String accessKey) throws MCRAccessException {
         addAccessKey(MCRUserManager.getCurrentUser(), mcrObjectId, accessKey);
 
-        MCRAccessManager.invalidPermissionCache(mcrObjectId.toString(), getAccessKeyType(mcrObjectId, accessKey));
+        switch (getAccessKeyType(mcrObjectId, accessKey)) {
+        case MIRAccessKeyPair.PERMISSION_READ:
+            MCRAccessManager.invalidPermissionCache(mcrObjectId.toString(), MCRAccessManager.PERMISSION_READ);
+            break;
+        case MIRAccessKeyPair.PERMISSION_WRITE:
+            MCRAccessManager.invalidPermissionCache(mcrObjectId.toString(), MCRAccessManager.PERMISSION_WRITE);
+            break;
+        }
     }
 
     /**
