@@ -13,7 +13,6 @@
   <!-- checks for MIRAccessKeyStrategy -->
   <xsl:param name="MCR.Access.Strategy.Class" />
   <xsl:param name="MIR.AccessKeyStrategy.ObjectTypes" />
-  <xsl:variable name="accKeyEnabled" select="contains($MCR.Access.Strategy.Class, 'MIRAccessKeyStrategy') and contains($MIR.AccessKeyStrategy.ObjectTypes, 'mods')" />
 
   <!-- do nothing for display parent -->
   <xsl:template match="/mycoreobject" mode="parent" priority="1">
@@ -385,6 +384,7 @@
         <xsl:with-param name="layout" select="'all'" />
       </xsl:call-template>
     </xsl:variable>
+    <xsl:variable name="accKeyEnabled" select="contains($MCR.Access.Strategy.Class, 'MIRAccessKeyStrategy') and contains($MIR.AccessKeyStrategy.ObjectTypes, 'mods')" />
     <xsl:variable name="basketType" select="'objects'" />
     <xsl:if test="$accessedit or $accessdelete or not(basket:contains($basketType, /mycoreobject/@ID))">
       <div class="btn-group">
@@ -588,8 +588,28 @@
     <xsl:param name="deriv" />
     <xsl:param name="parentObjID" />
     <xsl:param name="suffix" select="''" />
-    <xsl:if test="acl:checkPermission($deriv,'writedb')">
+    <xsl:variable name="accKeyEnabled" select="contains($MCR.Access.Strategy.Class, 'MIRAccessKeyStrategy') and contains($MIR.AccessKeyStrategy.ObjectTypes, 'derivate')" />
 
+    <xsl:if test="$accKeyEnabled and not(mcrxsl:isCurrentUserGuestUser() or acl:checkPermission($deriv,'read') or acl:checkPermission($deriv,'writedb'))">
+      <div class="options pull-right">
+        <div class="btn-group">
+          <a href="#" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+            <i class="fa fa-cog"></i>
+            <xsl:value-of select="' Aktionen'" />
+            <span class="caret"></span>
+          </a>
+          <ul class="dropdown-menu">
+            <li>
+              <a role="menuitem" tabindex="-1" href="{$WebApplicationBaseURL}authorization/accesskey.xed?objId={$deriv}&amp;url={encoder:encode(string($RequestURL))}">
+                <xsl:value-of select="i18n:translate('mir.accesskey.setOnUser')" />
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </xsl:if>
+
+    <xsl:if test="acl:checkPermission($deriv,'writedb')">
       <xsl:variable select="concat('mcrobject:',$deriv)" name="derivlink" />
       <xsl:variable select="document($derivlink)" name="derivate" />
       <xsl:variable name="derivateWithURN" select="mcrurn:hasURNDefined($deriv)" />
@@ -642,6 +662,33 @@
               <li class="last">
                 <a href="{$ServletsBaseURL}derivate/delete{$HttpSession}?id={$deriv}" class="confirm_derivate_deletion option">
                   <xsl:value-of select="i18n:translate('component.swf.derivate.delDerivate')" />
+                </a>
+              </li>
+            </xsl:if>
+            <xsl:variable name="accesskeys" select="document(concat('accesskeys:', $deriv))" />
+            <xsl:if test="$accKeyEnabled">
+              <xsl:variable name="action">
+                <xsl:choose>
+                  <xsl:when test="string-length($accesskeys/accesskeys/@readkey) &gt; 0">
+                    <xsl:text>edit</xsl:text>
+                  </xsl:when>
+                  <xsl:otherwise>
+                    <xsl:text>create</xsl:text>
+                  </xsl:otherwise>
+                </xsl:choose>
+              </xsl:variable>
+              <li>
+                <a role="menuitem" tabindex="-1"
+                  href="{$WebApplicationBaseURL}authorization/accesskey.xed?action={$action}&amp;objId={$deriv}&amp;url={encoder:encode(string($RequestURL))}"
+                >
+                  <xsl:choose>
+                    <xsl:when test="string-length($accesskeys/accesskeys/@readkey) &gt; 0">
+                      <xsl:value-of select="i18n:translate('mir.accesskey.edit')" />
+                    </xsl:when>
+                    <xsl:otherwise>
+                      <xsl:value-of select="i18n:translate('mir.accesskey.add')" />
+                    </xsl:otherwise>
+                  </xsl:choose>
                 </a>
               </li>
             </xsl:if>
