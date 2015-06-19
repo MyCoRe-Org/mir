@@ -23,6 +23,8 @@
 package org.mycore.mir.authorization.accesskeys;
 
 import org.hibernate.Session;
+import org.mycore.access.MCRAccessException;
+import org.mycore.access.MCRAccessManager;
 import org.mycore.backend.hibernate.MCRHIBConnection;
 import org.mycore.common.MCRSystemUserInformation;
 import org.mycore.datamodel.metadata.MCRObject;
@@ -121,9 +123,12 @@ public final class MIRAccessKeyManager {
      * 
      * @param mcrObjectId the {@link MCRObjectID}
      * @param accessKey the access key
+     * @throws MCRAccessException 
      */
-    public static void addAccessKey(final MCRObjectID mcrObjectId, final String accessKey) {
+    public static void addAccessKey(final MCRObjectID mcrObjectId, final String accessKey) throws MCRAccessException {
         addAccessKey(MCRUserManager.getCurrentUser(), mcrObjectId, accessKey);
+
+        MCRAccessManager.invalidPermissionCache(mcrObjectId.toString(), getAccessKeyType(mcrObjectId, accessKey));
     }
 
     /**
@@ -132,10 +137,15 @@ public final class MIRAccessKeyManager {
      * @param user the {@link MCRUser}
      * @param mcrObjectId the {@link MCRObjectID}
      * @param accessKey the access key
+     * @throws MCRAccessException 
      */
-    public static void addAccessKey(final MCRUser user, final MCRObjectID mcrObjectId, final String accessKey) {
+    public static void addAccessKey(final MCRUser user, final MCRObjectID mcrObjectId, final String accessKey)
+            throws MCRAccessException {
         if (user.equals(MCRSystemUserInformation.getSuperUserInstance()))
             return;
+
+        if (getAccessKeyType(mcrObjectId, accessKey) == null)
+            throw new MCRAccessException("Invalid access key \"" + accessKey + "\"");
 
         user.getAttributes().put(ACCESS_KEY_PREFIX + mcrObjectId.toString(), accessKey);
         MCRUserManager.updateUser(user);
@@ -162,5 +172,16 @@ public final class MIRAccessKeyManager {
 
         user.getAttributes().remove(ACCESS_KEY_PREFIX + mcrObjectId.toString());
         MCRUserManager.updateUser(user);
+    }
+
+    private static String getAccessKeyType(final MCRObjectID mcrObjectId, final String accessKey) {
+        final MIRAccessKeyPair accKP = getKeyPair(mcrObjectId);
+
+        if (accessKey.equals(accKP.getReadKey()))
+            return MIRAccessKeyPair.PERMISSION_READ;
+        if (accessKey.equals(accKP.getWriteKey()))
+            return MIRAccessKeyPair.PERMISSION_WRITE;
+
+        return null;
     }
 }
