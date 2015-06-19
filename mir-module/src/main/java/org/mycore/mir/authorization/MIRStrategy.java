@@ -53,10 +53,7 @@ public class MIRStrategy implements MCRAccessCheckStrategy {
     private static final Logger LOGGER = Logger.getLogger(MIRStrategy.class);
 
     private static final MCRCache<String, List<MCRCategoryID>> PERMISSION_CATEGORY_MAPPING_CACHE = new MCRCache<String, List<MCRCategoryID>>(
-        20,
-        "MIRStrategy");
-
-    private static final String DERIVATE_RULE_PREFIX = "derivate:";
+            20, "MIRStrategy");
 
     private static final String FAV_CLASS = "mir_access"; //generateMCRCategoryIDList() filters this classification
 
@@ -73,34 +70,34 @@ public class MIRStrategy implements MCRAccessCheckStrategy {
     }
 
     public boolean checkPermission(String id, String permission) {
-        String objectType = getObjectType(id);
-        if (!"derivate".equals(objectType)) {
-            return BASE_STRATEGY.checkPermission(id, permission);
-        }
+        final String objectType = getObjectType(id);
+
         LOGGER.debug("checking permission '" + permission + "' for id " + id);
         MCRAccessRule rule = ACCESS_IMPL.getAccessRule(id, permission);
         if (rule != null) {
             return rule.validate();
         }
-        //get MCRObjectID from derivate
-        MCRObjectID objectId = MCRMetadataManager
-            .getObjectId(MCRObjectID.getInstance(id), CACHE_TIME, TimeUnit.SECONDS);
-        if (objectId == null) {
-            LOGGER.warn("Could not get MCRObject for derivate: " + id);
+
+        MCRObjectID objectId = null;
+        if (!"derivate".equals(objectType)) {
+            objectId = MCRObjectID.getInstance(id);
         } else {
-            List<MCRCategoryID> accessMappedCategories = getAccessMappedCategories(permission);
-            if (!accessMappedCategories.isEmpty()) {
-                MCRCategLinkReference categLinkReference = new MCRCategLinkReference(objectId);
-                for (MCRCategoryID category : accessMappedCategories) {
-                    LOGGER.debug(MessageFormat.format("Checking if {0} is in category {1}.",
+            objectId = MCRMetadataManager.getObjectId(MCRObjectID.getInstance(id), CACHE_TIME, TimeUnit.SECONDS);
+        }
+
+        List<MCRCategoryID> accessMappedCategories = getAccessMappedCategories(objectType, permission);
+        if (!accessMappedCategories.isEmpty()) {
+            MCRCategLinkReference categLinkReference = new MCRCategLinkReference(objectId);
+            for (MCRCategoryID category : accessMappedCategories) {
+                LOGGER.info(MessageFormat.format("Checking if {0} is in category {1}.",
                         categLinkReference.getObjectID(), category));
-                    if (LINK_SERVICE.isInCategory(categLinkReference, category)) {
-                        LOGGER.debug("using access rule defined for category: " + category);
-                        return ACCESS_IMPL.checkPermission(DERIVATE_RULE_PREFIX + category.toString(), permission);
-                    }
+                if (LINK_SERVICE.isInCategory(categLinkReference, category)) {
+                    LOGGER.debug("using access rule defined for category: " + category);
+                    return ACCESS_IMPL.checkPermission(objectType + ":" + category.toString(), permission);
                 }
             }
         }
+
         return BASE_STRATEGY.checkPermission(id, permission);
     }
 
@@ -113,26 +110,26 @@ public class MIRStrategy implements MCRAccessCheckStrategy {
     }
 
     @SuppressWarnings("unchecked")
-    private static List<MCRCategoryID> getAccessMappedCategories(String permission) {
-        List<MCRCategoryID> result = PERMISSION_CATEGORY_MAPPING_CACHE.getIfUpToDate(permission,
-            System.currentTimeMillis() - CACHE_TIME);
+    private static List<MCRCategoryID> getAccessMappedCategories(String objectType, String permission) {
+        List<MCRCategoryID> result = PERMISSION_CATEGORY_MAPPING_CACHE.getIfUpToDate(objectType + "_" + permission,
+                System.currentTimeMillis() - CACHE_TIME);
         if (result != null) {
             return result;
         }
         Session session = MCRHIBConnection.instance().getSession();
         Criteria criteria = session.createCriteria(MCRACCESS.class);
-        criteria.add(Restrictions.like("key.objid", DERIVATE_RULE_PREFIX + "%"));
+        criteria.add(Restrictions.like("key.objid", objectType + ":%"));
         criteria.add(Restrictions.eq("key.acpool", permission));
         criteria.setProjection(Projections.property("key.objid"));
-        result = generateMCRCategoryIDList(criteria.list());
-        PERMISSION_CATEGORY_MAPPING_CACHE.put(permission, result);
+        result = generateMCRCategoryIDList(objectType, criteria.list());
+        PERMISSION_CATEGORY_MAPPING_CACHE.put(objectType + "_" + permission, result);
         return result;
     }
 
-    private static List<MCRCategoryID> generateMCRCategoryIDList(List<String> list) {
+    private static List<MCRCategoryID> generateMCRCategoryIDList(String objectType, List<String> list) {
         ArrayList<MCRCategoryID> categIds = new ArrayList<MCRCategoryID>(list.size());
         for (String result : list) {
-            String[] id = result.substring(DERIVATE_RULE_PREFIX.length()).split(":");
+            String[] id = result.substring((objectType + ":").length()).split(":");
             if (id[0].equals(FAV_CLASS)) {
                 categIds.add(new MCRCategoryID(id[0], id[1]));
             }

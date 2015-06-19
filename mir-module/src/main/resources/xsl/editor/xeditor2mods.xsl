@@ -47,7 +47,7 @@
     <xsl:copy>
       <xsl:apply-templates select="@*|node()" />
     </xsl:copy>
-    <mods:classification authority="derivateAccess"><xsl:value-of select="." /></mods:classification>
+    <mods:classification authority="accessRestriction"><xsl:value-of select="." /></mods:classification>
   </xsl:template>
 
 </xsl:stylesheet>

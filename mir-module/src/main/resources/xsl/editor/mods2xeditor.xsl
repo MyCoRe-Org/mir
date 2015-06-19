@@ -74,7 +74,7 @@
   </xsl:template>
 
   <!-- Remove this mods:classification entry, will be created again while saving using mods:accessCondtition (see MIR-161) -->
-  <xsl:template match="mods:classification[@authority='derivateAccess']">
+  <xsl:template match="mods:classification[@authority='accessRestriction']">
     <!-- do nothing -->
   </xsl:template>
 
