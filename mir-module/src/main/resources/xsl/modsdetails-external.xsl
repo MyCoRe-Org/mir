@@ -1,13 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xalan="http://xml.apache.org/xalan"
-  xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation" xmlns:mcrmods="xalan://org.mycore.mods.MCRMODSClassificationSupport"
-  xmlns:basket="xalan://org.mycore.frontend.basket.MCRBasketManager" xmlns:acl="xalan://org.mycore.access.MCRAccessManager" xmlns:mcr="http://www.mycore.org/"
-  xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:mods="http://www.loc.gov/mods/v3" xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions"
-  xmlns:mcrurn="xalan://org.mycore.urn.MCRXMLFunctions" xmlns:str="http://exslt.org/strings" exclude-result-prefixes="basket xalan xlink mcr i18n acl mods mcrmods mcrxsl mcrurn str"
-  version="1.0" xmlns:ex="http://exslt.org/dates-and-times" extension-element-prefixes="ex">
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xalan="http://xml.apache.org/xalan" xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
+  xmlns:mcrmods="xalan://org.mycore.mods.MCRMODSClassificationSupport" xmlns:basket="xalan://org.mycore.frontend.basket.MCRBasketManager" xmlns:acl="xalan://org.mycore.access.MCRAccessManager"
+  xmlns:mcr="http://www.mycore.org/" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:mods="http://www.loc.gov/mods/v3" xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions"
+  xmlns:mcrurn="xalan://org.mycore.urn.MCRXMLFunctions" xmlns:str="http://exslt.org/strings" xmlns:encoder="xalan://java.net.URLEncoder"
+  exclude-result-prefixes="basket xalan xlink mcr i18n acl mods mcrmods mcrxsl mcrurn str encoder" version="1.0" xmlns:ex="http://exslt.org/dates-and-times"
+  extension-element-prefixes="ex"
+>
 
   <xsl:param name="MIR.registerDOI" select="''" />
   <xsl:param name="template" select="'fixme'" />
+  
+  <!-- checks for MIRAccessKeyStrategy -->
+  <xsl:param name="MCR.Access.Strategy.Class" />
+  <xsl:param name="MIR.AccessKeyStrategy.ObjectTypes" />
+  <xsl:variable name="accKeyEnabled" select="contains($MCR.Access.Strategy.Class, 'MIRAccessKeyStrategy') and contains($MIR.AccessKeyStrategy.ObjectTypes, 'mods')" />
 
   <!-- do nothing for display parent -->
   <xsl:template match="/mycoreobject" mode="parent" priority="1">
@@ -26,8 +32,7 @@
     <xsl:if test="./structure/derobjects">
 
       <div class="hit_symbol">
-        <img src="{$WebApplicationBaseURL}templates/master/{$template}/IMAGES/icons_liste/big/icon_{$modsType}.png" alt="{$modsType}"
-          title="{$modsType}" />
+        <img src="{$WebApplicationBaseURL}templates/master/{$template}/IMAGES/icons_liste/big/icon_{$modsType}.png" alt="{$modsType}" title="{$modsType}" />
         <xsl:variable name="embargo" select="metadata/def.modsContainer/modsContainer/mods:mods/mods:accessCondition[@type='embargo']" />
         <xsl:choose>
           <xsl:when test="mcrxsl:isCurrentUserGuestUser() and count($embargo) &gt; 0 and mcrxsl:compare(string($embargo),ex:date-time()) &gt; 0">
@@ -56,19 +61,17 @@
                 <a href="{$derivifs}">
                   <xsl:choose>
                     <xsl:when test="$fileType='pdf' or $fileType='msexcel' or $fileType='xlsx' or $fileType='msword97' or $fileType='docx'">
-                      <img src="{$WebApplicationBaseURL}templates/master/{$template}/IMAGES/icons_liste/download_{$fileType}.png" alt="{$derivmain}"
-                        title="{$derivmain}" />
+                      <img src="{$WebApplicationBaseURL}templates/master/{$template}/IMAGES/icons_liste/download_{$fileType}.png" alt="{$derivmain}" title="{$derivmain}" />
                     </xsl:when>
                     <xsl:otherwise>
-                      <img src="{$WebApplicationBaseURL}templates/master/{$template}/IMAGES/icons_liste/download_default.png" alt="{$derivmain}"
-                        title="{$derivmain}" />
+                      <img src="{$WebApplicationBaseURL}templates/master/{$template}/IMAGES/icons_liste/download_default.png" alt="{$derivmain}" title="{$derivmain}" />
                     </xsl:otherwise>
                   </xsl:choose>
                 </a>
                 <a href="{$derivdir}">
                 <!-- xsl:value-of select="i18n:translate('buttons.details')" / -->
-                  <img src="{$WebApplicationBaseURL}templates/master/{$template}/IMAGES/icons_liste/download_details.png" alt="Details"
-                    title="Details" style="padding-bottom:2px;" />
+                  <img src="{$WebApplicationBaseURL}templates/master/{$template}/IMAGES/icons_liste/download_details.png" alt="Details" title="Details"
+                    style="padding-bottom:2px;" />
                 </a>
               </div>
             </xsl:for-each>
@@ -186,8 +189,7 @@
       </li>
       <xsl:if test="./metadata/def.modsContainer/modsContainer/mods:mods/mods:genre[@type='kindof']">
         <li>
-          <xsl:apply-templates select="./metadata/def.modsContainer/modsContainer/mods:mods/mods:genre[@type='kindof']"
-            mode="printModsClassInfo" />
+          <xsl:apply-templates select="./metadata/def.modsContainer/modsContainer/mods:mods/mods:genre[@type='kindof']" mode="printModsClassInfo" />
         </li>
       </xsl:if>
     </ul>
@@ -271,7 +273,8 @@
       </xsl:choose>
       <!--*** Editor Buttons ************************************* -->
       <xsl:if
-        test="((./structure/children/child) and not($mods-type='series' or $mods-type='journal' or $mods-type='confpro' or $mods-type='book')) or (./structure/derobjects/derobject)">
+        test="((./structure/children/child) and not($mods-type='series' or $mods-type='journal' or $mods-type='confpro' or $mods-type='book')) or (./structure/derobjects/derobject)"
+      >
         <div id="derivate_box" class="accordion-group">
           <h4 id="derivate_switch" data-target="#derivate_content" data-toggle="collapse" class="accordion-heading">
             <a name="derivate_box"></a>
@@ -305,8 +308,7 @@
                   </xsl:choose>
                 </xsl:variable>
                 <xsl:call-template name="printMetaDate">
-                  <xsl:with-param select="$context/structure/children/child[contains(@xlink:href, concat('_',$thisObjectType,'_'))]"
-                    name="nodes" />
+                  <xsl:with-param select="$context/structure/children/child[contains(@xlink:href, concat('_',$thisObjectType,'_'))]" name="nodes" />
                   <xsl:with-param select="$label" name="label" />
                 </xsl:call-template>
               </xsl:for-each>
@@ -388,7 +390,8 @@
       <div class="btn-group">
         <xsl:if test="not(basket:contains($basketType, /mycoreobject/@ID))">
           <a class="btn btn-primary btn-sm"
-            href="{$ServletsBaseURL}MCRBasketServlet{$HttpSession}?type={$basketType}&amp;action=add&amp;redirect=referer&amp;id={/mycoreobject/@ID}&amp;uri=mcrobject:{/mycoreobject/@ID}">
+            href="{$ServletsBaseURL}MCRBasketServlet{$HttpSession}?type={$basketType}&amp;action=add&amp;redirect=referer&amp;id={/mycoreobject/@ID}&amp;uri=mcrobject:{/mycoreobject/@ID}"
+          >
             <i class="fa fa-plus">
               <xsl:value-of select="' '" />
             </i>
@@ -450,8 +453,7 @@
                </xsl:if -->
 
               </xsl:if>
-              <xsl:if
-                test="$accessdelete and (not(mcrurn:hasURNDefined($id)) or (mcrurn:hasURNDefined($id) and $CurrentUser=$MCR.Users.Superuser.UserName))">
+              <xsl:if test="$accessdelete and (not(mcrurn:hasURNDefined($id)) or (mcrurn:hasURNDefined($id) and $CurrentUser=$MCR.Users.Superuser.UserName))">
                 <li>
                   <xsl:choose>
                     <xsl:when test="/mycoreobject/structure/children/child">
@@ -485,20 +487,23 @@
                 </xsl:for-each>
               </xsl:variable>
               <xsl:message>
-                mods-type: <xsl:value-of select="$mods-type"/>
-                child-layout: <xsl:value-of select="$child-layout"/>
-                accessedit: <xsl:value-of select="$accessedit"/>
+                mods-type:
+                <xsl:value-of select="$mods-type" />
+                child-layout:
+                <xsl:value-of select="$child-layout" />
+                accessedit:
+                <xsl:value-of select="$accessedit" />
               </xsl:message>
               <!-- actionmapping.xml must be available for this functionality -->
               <xsl:if test="string-length($child-layout) &gt; 0 and $accessedit and mcrxsl:resourceAvailable('actionmappings.xml')">
 
-              <xsl:variable name="url">
-                <xsl:value-of select="actionmapping:getURLforID('create-child',$id,true())" xmlns:actionmapping="xalan://org.mycore.wfc.actionmapping.MCRURLRetriever" />
-              </xsl:variable>
+                <xsl:variable name="url">
+                  <xsl:value-of select="actionmapping:getURLforID('create-child',$id,true())" xmlns:actionmapping="xalan://org.mycore.wfc.actionmapping.MCRURLRetriever" />
+                </xsl:variable>
 
                 <xsl:choose>
                   <xsl:when test="not(contains($url, 'editor-dynamic.xed')) and $mods-type != 'series'">
-                    <xsl:for-each select="str:tokenize($child-layout,'|')" >
+                    <xsl:for-each select="str:tokenize($child-layout,'|')">
                       <li>
                         <a href="{$url}{$HttpSession}?relatedItemId={$id}&amp;relatedItemType=host&amp;genre={.}">
                           <xsl:value-of select="i18n:translate(concat('component.mods.genre.',.))" />
@@ -507,7 +512,7 @@
                     </xsl:for-each>
                   </xsl:when>
                   <xsl:when test="not(contains($url, 'editor-dynamic.xed')) and $mods-type = 'series'">
-                    <xsl:for-each select="str:tokenize($child-layout,'|')" >
+                    <xsl:for-each select="str:tokenize($child-layout,'|')">
                       <li>
                         <a href="{$url}{$HttpSession}?relatedItemId={$id}&amp;relatedItemType=series&amp;genre={.}">
                           <xsl:value-of select="i18n:translate(concat('component.mods.genre.',.))" />
@@ -516,7 +521,7 @@
                     </xsl:for-each>
                   </xsl:when>
                   <xsl:otherwise>
-                    <xsl:for-each select="str:tokenize($child-layout,'|')" >
+                    <xsl:for-each select="str:tokenize($child-layout,'|')">
                       <li>
                         <a href="{$url}{$HttpSession}?relatedItemId={$id}&amp;relatedItemType=host&amp;genre={.}">
                           <xsl:value-of select="i18n:translate(concat('component.mods.genre.',.))" />
@@ -526,9 +531,55 @@
                   </xsl:otherwise>
                 </xsl:choose>
               </xsl:if>
+
+              <xsl:variable name="accesskeys" select="document(concat('accesskeys:', @ID))" />
+              <xsl:if test="$accKeyEnabled">
+                <xsl:variable name="action">
+                  <xsl:choose>
+                    <xsl:when test="string-length($accesskeys/accesskeys/@readkey) &gt; 0">
+                      <xsl:text>edit</xsl:text>
+                    </xsl:when>
+                    <xsl:otherwise>
+                      <xsl:text>create</xsl:text>
+                    </xsl:otherwise>
+                  </xsl:choose>
+                </xsl:variable>
+                <li>
+                  <a role="menuitem" tabindex="-1"
+                    href="{$WebApplicationBaseURL}authorization/accesskey.xed?action={$action}&amp;objId={@ID}&amp;url={encoder:encode(string($RequestURL))}"
+                  >
+                    <xsl:choose>
+                      <xsl:when test="string-length($accesskeys/accesskeys/@readkey) &gt; 0">
+                        <xsl:value-of select="i18n:translate('mir.accesskey.edit')" />
+                      </xsl:when>
+                      <xsl:otherwise>
+                        <xsl:value-of select="i18n:translate('mir.accesskey.add')" />
+                      </xsl:otherwise>
+                    </xsl:choose>
+                  </a>
+                </li>
+              </xsl:if>
             </ul>
           </div>
         </xsl:if>
+      </div>
+    </xsl:if>
+    <xsl:if test="$accKeyEnabled and not(mcrxsl:isCurrentUserGuestUser() or $accessedit or $accessdelete)">
+      <div class="btn-group pull-right">
+        <a href="#" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
+          <i class="fa fa-cog">
+            <xsl:value-of select="' '" />
+          </i>
+          <xsl:value-of select="' Aktionen'" />
+          <span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu">
+          <li>
+            <a role="menuitem" tabindex="-1" href="{$WebApplicationBaseURL}authorization/accesskey.xed?objId={@ID}&amp;url={encoder:encode(string($RequestURL))}">
+              <xsl:value-of select="i18n:translate('mir.accesskey.setOnUser')" />
+            </a>
+          </li>
+        </ul>
       </div>
     </xsl:if>
   </xsl:template>
@@ -558,41 +609,42 @@
                 Beschriftung bearbeiten
               </a>
             </li>
-             <xsl:choose>
-               <xsl:when test="$derivateWithURN=false()">
-                 <li>
-                   <a href="{$ServletsBaseURL}derivate/update{$HttpSession}?objectid={../../../@ID}&amp;id={$deriv}{$suffix}"
-                      class="option">
-                     <xsl:value-of select="i18n:translate('component.swf.derivate.addFile')" />
-                   </a>
-                 </li>
-               </xsl:when>
-               <xsl:otherwise>
-                 <li><!-- xsl:value-of select="i18n:translate('component.swf.derivate.addFile')" /--> Bearbeitung wg. URN gesperrt</li>
-               </xsl:otherwise>
-             </xsl:choose>
-             <xsl:if test="$derivateWithURN=false() and mcrxsl:isAllowedObjectForURNAssignment($parentObjID) and acl:checkPermission($deriv,'addurn')">
-               <xsl:variable name="apos">
-                 <xsl:text>'</xsl:text>
-               </xsl:variable>
-               <li>
-                 <xsl:if test="not(acl:checkPermission($deriv,'deletedb'))">
-                   <xsl:attribute name="class">last</xsl:attribute>
-                 </xsl:if>
-                 <a href="{$ServletsBaseURL}MCRAddURNToObjectServlet{$HttpSession}?object={$deriv}&amp;target=derivate" onclick="{concat('return confirm(',$apos, i18n:translate('component.mods.metaData.options.urn.confirm'), $apos, ');')}"
-                    class="option">
-                   <xsl:value-of select="i18n:translate('component.mods.metaData.options.urn')" />
-                 </a>
-               </li>
-             </xsl:if>
-             <xsl:if test="acl:checkPermission($deriv,'deletedb') and $derivateWithURN=false()">
-               <li class="last">
-                 <a href="{$ServletsBaseURL}derivate/delete{$HttpSession}?id={$deriv}"
-                    class="confirm_derivate_deletion option">
-                   <xsl:value-of select="i18n:translate('component.swf.derivate.delDerivate')" />
-                 </a>
-               </li>
-             </xsl:if>
+            <xsl:choose>
+              <xsl:when test="$derivateWithURN=false()">
+                <li>
+                  <a href="{$ServletsBaseURL}derivate/update{$HttpSession}?objectid={../../../@ID}&amp;id={$deriv}{$suffix}" class="option">
+                    <xsl:value-of select="i18n:translate('component.swf.derivate.addFile')" />
+                  </a>
+                </li>
+              </xsl:when>
+              <xsl:otherwise>
+                <li><!-- xsl:value-of select="i18n:translate('component.swf.derivate.addFile')" /-->
+                  Bearbeitung wg. URN gesperrt
+                </li>
+              </xsl:otherwise>
+            </xsl:choose>
+            <xsl:if test="$derivateWithURN=false() and mcrxsl:isAllowedObjectForURNAssignment($parentObjID) and acl:checkPermission($deriv,'addurn')">
+              <xsl:variable name="apos">
+                <xsl:text>'</xsl:text>
+              </xsl:variable>
+              <li>
+                <xsl:if test="not(acl:checkPermission($deriv,'deletedb'))">
+                  <xsl:attribute name="class">last</xsl:attribute>
+                </xsl:if>
+                <a href="{$ServletsBaseURL}MCRAddURNToObjectServlet{$HttpSession}?object={$deriv}&amp;target=derivate" onclick="{concat('return confirm(',$apos, i18n:translate('component.mods.metaData.options.urn.confirm'), $apos, ');')}"
+                  class="option"
+                >
+                  <xsl:value-of select="i18n:translate('component.mods.metaData.options.urn')" />
+                </a>
+              </li>
+            </xsl:if>
+            <xsl:if test="acl:checkPermission($deriv,'deletedb') and $derivateWithURN=false()">
+              <li class="last">
+                <a href="{$ServletsBaseURL}derivate/delete{$HttpSession}?id={$deriv}" class="confirm_derivate_deletion option">
+                  <xsl:value-of select="i18n:translate('component.swf.derivate.delDerivate')" />
+                </a>
+              </li>
+            </xsl:if>
           </ul>
         </div>
       </div>
@@ -608,98 +660,98 @@
     <xsl:for-each select="./metadata/def.modsContainer/modsContainer/mods:mods">
 
 <!-- document preview -->
-          <div class="hit_download_box">
+      <div class="hit_download_box">
             <!-- TODO: replace placeholder -->
-            <img class="hit_icon" src="{$WebApplicationBaseURL}images/icons/icon_common_disabled.png" />
+        <img class="hit_icon" src="{$WebApplicationBaseURL}images/icons/icon_common_disabled.png" />
             <!-- end: placeholder -->
-          </div>
+      </div>
 
 <!-- hit type -->
-          <div class="hit_tnd_container">
-            <div class="hit_tnd_content">
-              <div class="hit_type">
-                <span class="label label-info">
-                  <xsl:value-of select="i18n:translate(concat('component.mods.genre.',$mods-type))" />
-                </span>
-              </div>
-              <xsl:if test="mods:originInfo/mods:dateIssued">
-                <div class="hit_date">
-                  <span class="label label-primary">
-                    <xsl:variable name="dateIssued">
-                      <xsl:apply-templates mode="mods.datePublished" select="mods:originInfo/mods:dateIssued" />
-                    </xsl:variable>
-                    <xsl:variable name="format">
-                      <xsl:choose>
-                        <xsl:when test="string-length(normalize-space($dateIssued))=4">
-                          <xsl:value-of select="i18n:translate('metaData.dateYear')" />
-                        </xsl:when>
-                        <xsl:when test="string-length(normalize-space($dateIssued))=7">
-                          <xsl:value-of select="i18n:translate('metaData.dateYearMonth')" />
-                        </xsl:when>
-                        <xsl:when test="string-length(normalize-space($dateIssued))=10">
-                          <xsl:value-of select="i18n:translate('metaData.dateYearMonthDay')" />
-                        </xsl:when>
-                        <xsl:otherwise>
-                          <xsl:value-of select="i18n:translate('metaData.dateTime')" />
-                        </xsl:otherwise>
-                      </xsl:choose>
-                    </xsl:variable>
-                    <xsl:call-template name="formatISODate">
-                      <xsl:with-param name="date" select="$dateIssued" />
-                      <xsl:with-param name="format" select="$format" />
-                    </xsl:call-template>
-                  </span>
-                </div>
-              </xsl:if>
-            </div>
+      <div class="hit_tnd_container">
+        <div class="hit_tnd_content">
+          <div class="hit_type">
+            <span class="label label-info">
+              <xsl:value-of select="i18n:translate(concat('component.mods.genre.',$mods-type))" />
+            </span>
           </div>
+          <xsl:if test="mods:originInfo/mods:dateIssued">
+            <div class="hit_date">
+              <span class="label label-primary">
+                <xsl:variable name="dateIssued">
+                  <xsl:apply-templates mode="mods.datePublished" select="mods:originInfo/mods:dateIssued" />
+                </xsl:variable>
+                <xsl:variable name="format">
+                  <xsl:choose>
+                    <xsl:when test="string-length(normalize-space($dateIssued))=4">
+                      <xsl:value-of select="i18n:translate('metaData.dateYear')" />
+                    </xsl:when>
+                    <xsl:when test="string-length(normalize-space($dateIssued))=7">
+                      <xsl:value-of select="i18n:translate('metaData.dateYearMonth')" />
+                    </xsl:when>
+                    <xsl:when test="string-length(normalize-space($dateIssued))=10">
+                      <xsl:value-of select="i18n:translate('metaData.dateYearMonthDay')" />
+                    </xsl:when>
+                    <xsl:otherwise>
+                      <xsl:value-of select="i18n:translate('metaData.dateTime')" />
+                    </xsl:otherwise>
+                  </xsl:choose>
+                </xsl:variable>
+                <xsl:call-template name="formatISODate">
+                  <xsl:with-param name="date" select="$dateIssued" />
+                  <xsl:with-param name="format" select="$format" />
+                </xsl:call-template>
+              </span>
+            </div>
+          </xsl:if>
+        </div>
+      </div>
 
       <!-- Title, Link to presentation -->
-          <h3 class="hit_title">
-            <xsl:call-template name="objectLink">
-              <xsl:with-param name="obj_id" select="$objID" />
-            </xsl:call-template>
-          </h3>
+      <h3 class="hit_title">
+        <xsl:call-template name="objectLink">
+          <xsl:with-param name="obj_id" select="$objID" />
+        </xsl:call-template>
+      </h3>
 
 <!-- hit author -->
-          <div class="hit_author">
-            <xsl:for-each select="mods:name[mods:role/mods:roleTerm/text()='aut']">
-              <xsl:if test="position()!=1">
-                <xsl:value-of select="'/ '" />
-              </xsl:if>
-              <xsl:apply-templates select="." mode="authors_short" />
-            </xsl:for-each>
-          </div>
+      <div class="hit_author">
+        <xsl:for-each select="mods:name[mods:role/mods:roleTerm/text()='aut']">
+          <xsl:if test="position()!=1">
+            <xsl:value-of select="'/ '" />
+          </xsl:if>
+          <xsl:apply-templates select="." mode="authors_short" />
+        </xsl:for-each>
+      </div>
 
 <!-- hit parent -->
-          <xsl:if test="../../../../structure/parents/parent/@xlink:href">
-            <div class="hit_source">
-              <span class="label_parent">
-                <xsl:value-of select="'aus: '" />
-              </span>
-              <xsl:call-template name="objectLink">
-                <xsl:with-param name="obj_id" select="../../../../structure/parents/parent/@xlink:href" />
-              </xsl:call-template>
-            </div>
-          </xsl:if>
+      <xsl:if test="../../../../structure/parents/parent/@xlink:href">
+        <div class="hit_source">
+          <span class="label_parent">
+            <xsl:value-of select="'aus: '" />
+          </span>
+          <xsl:call-template name="objectLink">
+            <xsl:with-param name="obj_id" select="../../../../structure/parents/parent/@xlink:href" />
+          </xsl:call-template>
+        </div>
+      </xsl:if>
 
 <!-- hit abstract -->
-          <div class="hit_abstract">
-            <xsl:if test="mods:abstract">
-              <xsl:value-of select="mcrxsl:shortenText(mods:abstract,300)" />
-            </xsl:if>
-          </div>
+      <div class="hit_abstract">
+        <xsl:if test="mods:abstract">
+          <xsl:value-of select="mcrxsl:shortenText(mods:abstract,300)" />
+        </xsl:if>
+      </div>
 
 <!-- hit publisher -->
-          <xsl:if test="//mods:originInfo/mods:publisher">
-            <div class="hit_pub_name">
-              <span class="label_publisher">
-                <xsl:value-of select="concat(i18n:translate('component.mods.metaData.dictionary.published'),': ')" />
-              </span>
-              <xsl:value-of select="//mods:originInfo/mods:publisher" />
-            </div>
-          </xsl:if>
-      </xsl:for-each>
+      <xsl:if test="//mods:originInfo/mods:publisher">
+        <div class="hit_pub_name">
+          <span class="label_publisher">
+            <xsl:value-of select="concat(i18n:translate('component.mods.metaData.dictionary.published'),': ')" />
+          </span>
+          <xsl:value-of select="//mods:originInfo/mods:publisher" />
+        </div>
+      </xsl:if>
+    </xsl:for-each>
 
   </xsl:template>
 

@@ -67,23 +67,38 @@ public class MIRAccessKeyServlet extends MCRServlet {
             return;
         }
 
+        final String action = req.getParameter("action");
         final Element xml = doc.getRootElement();
         final String objId = xml.getAttributeValue("objId");
         final MCRObjectID mcrObjId = MCRObjectID.getInstance(objId);
-        final String accessKey = xml.getChildTextTrim("accessKey");
 
-        String message = checkAccessKey(mcrObjId, accessKey);
-        if (message != null) {
-            res.sendError(HttpServletResponse.SC_BAD_REQUEST, message);
+        if (action == null) {
+            final String accessKey = xml.getTextTrim();
+
+            String message = checkAccessKey(mcrObjId, accessKey);
+            if (message != null) {
+                res.sendError(HttpServletResponse.SC_BAD_REQUEST, message);
+                return;
+            }
+
+            final MIRAccessKeyPair accKP = MIRAccessKeyManager.getKeyPair(mcrObjId);
+
+            if (accessKey.equals(accKP.getReadKey()))
+                MIRAccessKeyManager.addAccessKey(mcrObjId, accessKey);
+            else if (accessKey.equals(accKP.getWriteKey()))
+                MIRAccessKeyManager.addAccessKey(mcrObjId, accessKey);
+        } else if ("create".equals(action)) {
+            final MIRAccessKeyPair accKP = MIRAccessKeyPairTransformer.buildAccessKeyPair(xml);
+
+            MIRAccessKeyManager.createKeyPair(accKP);
+        } else if ("edit".equals(action)) {
+            final MIRAccessKeyPair accKP = MIRAccessKeyPairTransformer.buildAccessKeyPair(xml);
+
+            MIRAccessKeyManager.updateKeyPair(accKP);
+        } else {
+            res.sendError(HttpServletResponse.SC_BAD_REQUEST);
             return;
         }
-
-        MIRAccessKeyPair accKP = MIRAccessKeyManager.getKeyPair(mcrObjId);
-
-        if (accessKey.equals(accKP.getReadKey()))
-            MIRAccessKeyManager.addAccessKey(mcrObjId, accessKey);
-        else if (accessKey.equals(accKP.getWriteKey()))
-            MIRAccessKeyManager.addAccessKey(mcrObjId, accessKey);
 
         res.sendRedirect(getReturnURL(req));
     }
