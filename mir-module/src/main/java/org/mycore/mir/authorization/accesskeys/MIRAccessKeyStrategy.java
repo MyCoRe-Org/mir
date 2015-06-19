@@ -68,21 +68,30 @@ public class MIRAccessKeyStrategy implements MCRAccessCheckStrategy {
         String objectType = getObjectType(id);
 
         if (OBJECT_TYPES.contains(objectType)) {
-            MCRObjectID mcrObjectId = MCRObjectID.getInstance(id);
-            final MIRAccessKeyPair accKP = MIRAccessKeyManager.getKeyPair(mcrObjectId);
+            MCRObjectID mcrObjectId = null;
+            try {
+                mcrObjectId = MCRObjectID.getInstance(id);
+                final MIRAccessKeyPair accKP = MIRAccessKeyManager.getKeyPair(mcrObjectId);
 
-            if (accKP != null) {
-                final String uAccKey = getUserAccessKey(id);
+                if (accKP != null) {
+                    final String uAccKey = getUserAccessKey(id);
 
-                if (uAccKey != null) {
-                    if (permission.equals(MCRAccessManager.PERMISSION_READ)
-                            || permission.equals(MCRAccessManager.PERMISSION_WRITE)
-                            && uAccKey.equals(accKP.getWriteKey())) {
-                        return true;
+                    if (uAccKey != null) {
+                        if (permission.equals(MCRAccessManager.PERMISSION_READ)
+                                || permission.equals(MCRAccessManager.PERMISSION_WRITE)
+                                && uAccKey.equals(accKP.getWriteKey())) {
+                            return true;
+                        }
+                        if (permission.equals(MCRAccessManager.PERMISSION_READ) && uAccKey.equals(accKP.getReadKey())) {
+                            return true;
+                        }
                     }
-                    if (permission.equals(MCRAccessManager.PERMISSION_READ) && uAccKey.equals(accKP.getReadKey())) {
-                        return true;
-                    }
+                }
+            } catch (RuntimeException e) {
+                if (mcrObjectId == null) {
+                    LOGGER.debug("id is not a valid object ID", e);
+                } else {
+                    LOGGER.warn("Error while checking permission.", e);
                 }
             }
         }

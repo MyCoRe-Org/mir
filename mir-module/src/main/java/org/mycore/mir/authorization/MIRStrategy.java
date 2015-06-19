@@ -79,22 +79,30 @@ public class MIRStrategy implements MCRAccessCheckStrategy {
         }
 
         MCRObjectID objectId = null;
-        if (!"derivate".equals(objectType)) {
-            objectId = MCRObjectID.getInstance(id);
-        } else {
-            objectId = MCRMetadataManager.getObjectId(MCRObjectID.getInstance(id), CACHE_TIME, TimeUnit.SECONDS);
-        }
+        try {
+            if (!"derivate".equals(objectType)) {
+                objectId = MCRObjectID.getInstance(id);
+            } else {
+                objectId = MCRMetadataManager.getObjectId(MCRObjectID.getInstance(id), CACHE_TIME, TimeUnit.SECONDS);
+            }
 
-        List<MCRCategoryID> accessMappedCategories = getAccessMappedCategories(objectType, permission);
-        if (!accessMappedCategories.isEmpty()) {
-            MCRCategLinkReference categLinkReference = new MCRCategLinkReference(objectId);
-            for (MCRCategoryID category : accessMappedCategories) {
-                LOGGER.info(MessageFormat.format("Checking if {0} is in category {1}.",
-                        categLinkReference.getObjectID(), category));
-                if (LINK_SERVICE.isInCategory(categLinkReference, category)) {
-                    LOGGER.debug("using access rule defined for category: " + category);
-                    return ACCESS_IMPL.checkPermission(objectType + ":" + category.toString(), permission);
+            List<MCRCategoryID> accessMappedCategories = getAccessMappedCategories(objectType, permission);
+            if (!accessMappedCategories.isEmpty()) {
+                MCRCategLinkReference categLinkReference = new MCRCategLinkReference(objectId);
+                for (MCRCategoryID category : accessMappedCategories) {
+                    LOGGER.info(MessageFormat.format("Checking if {0} is in category {1}.",
+                            categLinkReference.getObjectID(), category));
+                    if (LINK_SERVICE.isInCategory(categLinkReference, category)) {
+                        LOGGER.debug("using access rule defined for category: " + category);
+                        return ACCESS_IMPL.checkPermission(objectType + ":" + category.toString(), permission);
+                    }
                 }
+            }
+        } catch (RuntimeException e) {
+            if (objectId == null) {
+                LOGGER.debug("id is not a valid object ID", e);
+            } else {
+                LOGGER.warn("Error while checking permission.", e);
             }
         }
 
