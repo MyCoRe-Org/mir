@@ -1,185 +1,65 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <MyCoReWebPage>
-  <section title="Neue Publikation" xml:lang="de"/>
-  <section title="New publication" xml:lang="en"/>
+  <section title="Publizieren" xml:lang="de"/>
+  <section title="Publication" xml:lang="en"/>
   <section xml:lang="all">
-
-    <h1>Neue Publikation melden</h1>
-
+    <script src='../../js/mir/select-doctype.js'> </script>
+    
     <form id="submit_publication"
           class="form-horizontal"
           role="form"
           method="get"
           action="../../editor/editor-dynamic.xed">
-
-<!-- introduction -->
-      <div class="row">
-        <div class="col-sm-12 col-md-8">
-          <p>
-            <i18n key="mir.publish.intro" />
-          </p>
+      
+   
+      <section xml:lang="de">
+        <h2>Publizieren</h2>
+        <h3> Publikationstyp festlegen </h3>
+        <div class="row">
+          <div class="col-sm-9 col-sm-offset-3 col-md-7 col-md-offset-3 col-lg-5 col-lg-offset-2">
+            <p>
+              Bitte wählen sie den Typ der Publikation aus.
+              Anschließend werden sie auf das passende Eingabeformular weitergeleitet.
+            </p>
+          </div>
         </div>
-      </div>
-
-<!-- genre -->
+      </section>
+      
+      <!--
+      <section xml:lang="en">
+        <h2>Publish</h2>
+        <h3>Set type of publication </h3>
+        <div class="row">
+          <div class="col-sm-9 col-sm-offset-3 col-md-7 col-md-offset-3 col-lg-5 col-lg-offset-2">
+            <p>
+              Please select the type of the publication.
+              Afterwards you will be directed to the appropriate form.
+            </p>
+          </div>
+        </div>
+      </section>-->
+      
       <div class="row form-group">
         <label for="genre" class="col-sm-3 col-lg-2 control-label">
           <text i18n="component.mods.genre" />
         </label>
         <div class="col-sm-7 col-md-5 col-lg-4">
           <select id="genre" class="form-control" name="genre" size="1">
-            <option title="Artikel / Aufsatz" value="article">
-              <text i18n="component.mods.genre.article" />
-            </option>
-            <option title="Buchkapitel" value="chapter">
-              &#160;&#160;&#160;<text i18n="component.mods.genre.chapter" />
-            </option>
-            <option title="Lexikoneintrag" value="entry">
-              &#160;&#160;&#160;<text i18n="component.mods.genre.entry" />
-            </option>
-            <option title="Vorwort / Nachwort" value="preface">
-              &#160;&#160;&#160;<text i18n="component.mods.genre.preface" />
-            </option>
-            <option title="Vortrag" value="speech">
-              &#160;&#160;&#160;<text i18n="component.mods.genre.speech" />
-            </option>
-            <option title="Rezension" value="review">
-              &#160;&#160;&#160;<text i18n="component.mods.genre.review" />
-            </option>
-            <option title="Monographie" value="monograph">
-              <text i18n="component.mods.genre.monograph" />
-            </option>
-            <option title="Buch" value="book">
-              &#160;&#160;&#160;<text i18n="component.mods.genre.book" />
-            </option>
-            <option title="Dissertation" value="dissertation">
-              &#160;&#160;&#160;<text i18n="component.mods.genre.dissertation" />
-            </option>
-            <option title="Habilitation" value="habilitation">
-              &#160;&#160;&#160;<text i18n="component.mods.genre.habilitation" />
-            </option>
-            <option title="Diplomarbeit" value="diploma_thesis">
-              &#160;&#160;&#160;<text i18n="component.mods.genre.diploma_thesis" />
-            </option>
-            <option title="Abschlussarbeit (Master)" value="master_thesis">
-              &#160;&#160;&#160;<text i18n="component.mods.genre.master_thesis" />
-            </option>
-            <option title="Abschlussarbeit (Bachelor)" value="bachelor_thesis">
-              &#160;&#160;&#160;<text i18n="component.mods.genre.bachelor_thesis" />
-            </option>
-            <option title="Studienarbeit" value="student_resarch_project">
-              &#160;&#160;&#160;<text i18n="component.mods.genre.student_resarch_project" />
-            </option>
-            <option title="Magisterarbeit" value="magister_thesis">
-              &#160;&#160;&#160;<text i18n="component.mods.genre.magister_thesis" />
-            </option>
-            <option title="Sammelwerk" value="collection">
-              <text i18n="component.mods.genre.collection" />
-              <text i18n="mir.select.editor" />
-            </option>
-            <option title="Festschrift" value="festschrift">
-              &#160;&#160;&#160;<text i18n="component.mods.genre.festschrift" />
-              <text i18n="mir.select.editor" />
-            </option>
-            <option title="Tagungsband" value="proceedings">
-              &#160;&#160;&#160;<text i18n="component.mods.genre.proceedings" />
-              <text i18n="mir.select.editor" />
-            </option>
-            <option title="Lexikon" value="lexicon">
-              &#160;&#160;&#160;<text i18n="component.mods.genre.lexicon" />
-              <text i18n="mir.select.editor" />
-            </option>
-            <option title="Report" value="report">
-              <text i18n="component.mods.genre.report" />
-            </option>
-            <option title="Forschungsergebnisse" value="research_results">
-              &#160;&#160;&#160;<text i18n="component.mods.genre.research_results" />
-            </option>
-            <option title="Hausinterne Veröffentlichung" value="in_house">
-              &#160;&#160;&#160;<text i18n="component.mods.genre.in_house" />
-            </option>
-            <option title="Presseerklärung" value="press_release">
-              &#160;&#160;&#160;<text i18n="component.mods.genre.press_release" />
-            </option>
-            <option title="Fachliche Stellungnahme" value="declaration">
-              &#160;&#160;&#160;<text i18n="component.mods.genre.declaration" />
-            </option>
-            <option title="Zeitschrift" value="journal">
-              <text i18n="component.mods.genre.journal" />
-              <text i18n="mir.select.editor" />
-            </option>
-            <option title="Zeitung" value="newspaper">
-              <text i18n="component.mods.genre.newspaper" />
-              <text i18n="mir.select.editor" />
-            </option>
-            <option title="Serie" value="series">
-              <text i18n="component.mods.genre.series" />
-              <text i18n="mir.select.editor" />
-            </option>
-            <option title="Interview" value="interview">
-              <text i18n="component.mods.genre.interview" />
-            </option>
-            <option title="Forschungsdaten" value="research_data">
-              <text i18n="mir.select.research_data" />
-            </option>
-            <option title="Patent" value="patent">
-              <text i18n="component.mods.genre.patent" />
-            </option>
-            <option title="Poster" value="poster">
-              <text i18n="component.mods.genre.poster" />
-            </option>
-            <option title="Tondokument" value="audio">
-              <text i18n="component.mods.genre.audio" />
-            </option>
-            <option title="Film / Video" value="video">
-              <text i18n="component.mods.genre.video" />
-            </option>
-            <option title="Bild" value="picture">
-              <text i18n="component.mods.genre.picture" />
-            </option>
-            <option title="Sendung" value="broadcasting">
-              <text i18n="component.mods.genre.broadcasting" />
-            </option>
           </select>
-        </div>
+        </div> 
       </div>
-	
-<!-- host -->
+      
       <div class="row form-group">
         <label for="host"  class="col-sm-3 col-lg-2 control-label">
           <text i18n="mir.select.host" />
         </label>
         <div class="col-sm-7 col-md-5 col-lg-4">
           <select id="host" class="form-control" name="host" size="1">
-            <option value="standalone">
-              <text i18n="mir.select" />
-            </option>
-            <option value="journal">
-              <text i18n="mir.select.journal" />
-            </option>
-            <option value="newspaper">
-              <text i18n="mir.select.newspaper" />
-            </option>
-            <option value="series">
-              <text i18n="mir.select.series" />
-            </option>
-            <option value="collection">
-              <text i18n="mir.select.collection" />
-            </option>
-            <option value="festschrift">
-              <text i18n="mir.select.festschrift" />
-            </option>
-            <option value="proceedings">
-              <text i18n="mir.select.proceedings" />
-            </option>
-            <option value="lexicon">
-              <text i18n="mir.select.lexicon" />
-            </option>
           </select>
         </div>
       </div>
-
+      
       <div id="more_options_toggle" class="row">
         <div class="col-sm-3 col-lg-2"></div>
         <div class="col-sm-9 col-lg-10">
@@ -204,65 +84,14 @@
           </p>
         </div>
       </div>
-
-<!-- submit -->
+      
       <div class="row form-group">
         <div class="col-sm-3 col-md-2"></div>
         <div class="col-sm-5 col-md-4">
-          <button type="submit" class="btn btn-default">Melden</button>
+          <button type="submit" class="btn btn-default">Weiter</button>
         </div>
       </div>
 
     </form>
-
-
-    <script>
-      $(document).ready( function() {
-
-        // load option view from history
-        if ( typeof(Storage) !== "undefined" ) {
-          switch ( localStorage.getItem("moreOptions") ) {
-            case 'opened':
-              if ( !$('#more_options_box').is(":visible") ) {
-                toggleMoreOptions(0);
-              }
-              break;
-            case 'closed':
-              if ( $('#more_options_box').is(":visible") ) {
-                toggleMoreOptions(0);
-              }
-              break;
-            case null:
-              if ( $('#more_options_box').is(":visible") ) {
-                localStorage.setItem("moreOptions", "opened");
-              } else {
-                localStorage.setItem("moreOptions", "closed");
-              }
-              break;
-            default:
-          }
-        }
-
-        $('#more_options_trigger').click(function(){
-          toggleMoreOptions(500);
-        });
-
-      });
-
-      function toggleMoreOptions( duration ) {
-        if ( $('#more_options_box').is(':visible') ) {
-          $('#more_options_box').fadeOut( duration );
-          $('#more_options_label').html('weitere Optionen einblenden');
-          $('#more_options_button').removeClass('glyphicon-chevron-down').addClass('glyphicon-chevron-up');
-          localStorage.setItem("moreOptions", "closed");
-        } else {
-          $('#more_options_box').fadeIn( duration );
-          $('#more_options_label').html('weitere Optionen ausblenden');
-          $('#more_options_button').removeClass('glyphicon-chevron-up').addClass('glyphicon-chevron-down');
-          localStorage.setItem("moreOptions", "opened");
-        }
-      }
-    </script>
-
   </section>
 </MyCoReWebPage>
