@@ -231,4 +231,15 @@
       </ul>
     </li>
   </xsl:template>
+  <xsl:template name="mir.prop4js">
+    <script type="text/javascript">
+      <xsl:text>var webApplicationBaseURL = '</xsl:text>
+      <xsl:value-of select="$WebApplicationBaseURL" />
+      <xsl:text>';</xsl:text>
+      <xsl:text>var currentLang = '</xsl:text>
+      <xsl:value-of select="$CurrentLang" /> 
+      <xsl:text>';</xsl:text>
+    </script>
+  </xsl:template>
+  
 </xsl:stylesheet>
