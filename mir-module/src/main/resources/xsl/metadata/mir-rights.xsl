@@ -45,7 +45,7 @@
               </xsl:call-template>
             </xsl:if>
           </xsl:if>
-          <xsl:if test="derivateAccKeyEnabled">
+          <xsl:if test="$derivateAccKeyEnabled">
             <xsl:call-template name="check-access-keys">
               <xsl:with-param name="id" select="$id" />
             </xsl:call-template>
@@ -59,7 +59,7 @@
           <xsl:call-template name="check-default-rights">
             <xsl:with-param name="id" select="$id" />
           </xsl:call-template>
-          <xsl:if test="modsAccKeyEnabled">
+          <xsl:if test="$modsAccKeyEnabled">
             <xsl:call-template name="check-access-keys">
               <xsl:with-param name="id" select="$id" />
             </xsl:call-template>
@@ -93,12 +93,18 @@
 
   <xsl:template name="check-access-keys">
     <xsl:param name="id" />
+    <xsl:variable name="accKey" select="document(concat('accesskeys:', $id))/accesskeys" />
     <xsl:message>
       checking for access keys
     </xsl:message>
-    <!-- TODO: check if key exists for this id -->
-    <xsl:attribute name="accKeyEnabled" /> <!-- need this to show menu -->
-    <xsl:attribute name="readKey" />
-    <xsl:attribute name="writeKey" />
+    <xsl:if test="$accKey/@readkey or $accKey/@writekey">
+      <xsl:attribute name="accKeyEnabled" /> <!-- need this to show menu -->
+    </xsl:if>
+    <xsl:if test="$accKey/@readkey">
+      <xsl:attribute name="readKey" />
+    </xsl:if>
+    <xsl:if test="$accKey/@writekey">
+      <xsl:attribute name="writeKey" />
+    </xsl:if>
   </xsl:template>
 </xsl:stylesheet>

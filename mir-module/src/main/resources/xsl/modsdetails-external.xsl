@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xalan="http://xml.apache.org/xalan" xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
-  xmlns:mcrmods="xalan://org.mycore.mods.MCRMODSClassificationSupport" xmlns:basket="xalan://org.mycore.frontend.basket.MCRBasketManager"
-  xmlns:mcr="http://www.mycore.org/" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:mods="http://www.loc.gov/mods/v3" xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions"
-  xmlns:mcrurn="xalan://org.mycore.urn.MCRXMLFunctions" xmlns:str="http://exslt.org/strings" xmlns:encoder="xalan://java.net.URLEncoder"
-  exclude-result-prefixes="basket xalan xlink mcr i18n mods mcrmods mcrxsl mcrurn str encoder" version="1.0" xmlns:ex="http://exslt.org/dates-and-times"
-  extension-element-prefixes="ex"
+  xmlns:mcrmods="xalan://org.mycore.mods.MCRMODSClassificationSupport" xmlns:basket="xalan://org.mycore.frontend.basket.MCRBasketManager" xmlns:mcr="http://www.mycore.org/"
+  xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:mods="http://www.loc.gov/mods/v3" xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions" xmlns:mcrurn="xalan://org.mycore.urn.MCRXMLFunctions"
+  xmlns:str="http://exslt.org/strings" xmlns:encoder="xalan://java.net.URLEncoder" exclude-result-prefixes="basket xalan xlink mcr i18n mods mcrmods mcrxsl mcrurn str encoder"
+  version="1.0" xmlns:ex="http://exslt.org/dates-and-times" extension-element-prefixes="ex"
 >
 
   <xsl:param name="MIR.registerDOI" select="''" />
@@ -527,11 +526,10 @@
                 </xsl:choose>
               </xsl:if>
 
-              <xsl:variable name="accesskeys" select="document(concat('accesskeys:', @ID))" />
               <xsl:if test="key('rights', @ID)/@accKeyEnabled">
                 <xsl:variable name="action">
                   <xsl:choose>
-                    <xsl:when test="key('rights', @ID)/@readKey or key('rights', @ID)/@writeKey">
+                    <xsl:when test="key('rights', @ID)/@readKey">
                       <xsl:text>edit</xsl:text>
                     </xsl:when>
                     <xsl:otherwise>
@@ -544,7 +542,7 @@
                     href="{$WebApplicationBaseURL}authorization/accesskey.xed?action={$action}&amp;objId={@ID}&amp;url={encoder:encode(string($RequestURL))}"
                   >
                     <xsl:choose>
-                      <xsl:when test="string-length($accesskeys/accesskeys/@readkey) &gt; 0">
+                      <xsl:when test="key('rights', @ID)/@readKey">
                         <xsl:value-of select="i18n:translate('mir.accesskey.edit')" />
                       </xsl:when>
                       <xsl:otherwise>
@@ -559,7 +557,7 @@
         </xsl:if>
       </div>
     </xsl:if>
-    <xsl:if test="(key('rights', @ID)/@readKey or key('rights', @ID)/@writeKey) and not(mcrxsl:isCurrentUserGuestUser() or $accessedit or $accessdelete)">
+    <xsl:if test="(key('rights', @ID)/@readKey) and not(mcrxsl:isCurrentUserGuestUser() or $accessedit or $accessdelete)">
       <div class="btn-group pull-right">
         <a href="#" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
           <i class="fa fa-cog">
@@ -584,7 +582,7 @@
     <xsl:param name="parentObjID" />
     <xsl:param name="suffix" select="''" />
 
-    <xsl:if test="(key('rights', $deriv)/@readKey or key('rights', $deriv)/@writeKey) and not(mcrxsl:isCurrentUserGuestUser() or key('rights', $deriv)/@read or key('rights', $deriv)/@write)">
+    <xsl:if test="(key('rights', $deriv)/@readKey) and not(mcrxsl:isCurrentUserGuestUser() or key('rights', $deriv)/@read or key('rights', $deriv)/@write)">
       <div class="options pull-right">
         <div class="btn-group">
           <a href="#" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
@@ -659,11 +657,10 @@
                 </a>
               </li>
             </xsl:if>
-            <xsl:variable name="accesskeys" select="document(concat('accesskeys:', $deriv))" />
             <xsl:if test="key('rights', $deriv)/@accKeyEnabled">
               <xsl:variable name="action">
                 <xsl:choose>
-                  <xsl:when test="string-length($accesskeys/accesskeys/@readkey) &gt; 0">
+                  <xsl:when test="key('rights', $deriv)/@readKey">
                     <xsl:text>edit</xsl:text>
                   </xsl:when>
                   <xsl:otherwise>
@@ -676,7 +673,7 @@
                   href="{$WebApplicationBaseURL}authorization/accesskey.xed?action={$action}&amp;objId={$deriv}&amp;url={encoder:encode(string($RequestURL))}"
                 >
                   <xsl:choose>
-                    <xsl:when test="string-length($accesskeys/accesskeys/@readkey) &gt; 0">
+                    <xsl:when test="key('rights', $deriv)/@readKey">
                       <xsl:value-of select="i18n:translate('mir.accesskey.edit')" />
                     </xsl:when>
                     <xsl:otherwise>
