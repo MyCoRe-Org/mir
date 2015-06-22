@@ -557,7 +557,7 @@
         </xsl:if>
       </div>
     </xsl:if>
-    <xsl:if test="(key('rights', @ID)/@readKey) and not(mcrxsl:isCurrentUserGuestUser() or $accessedit or $accessdelete)">
+    <xsl:if test="key('rights', @ID)/@accKeyEnabled and key('rights', @ID)/@readKey and not(mcrxsl:isCurrentUserGuestUser() or $accessedit or $accessdelete)">
       <div class="btn-group pull-right">
         <a href="#" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
           <i class="fa fa-cog">
@@ -582,7 +582,9 @@
     <xsl:param name="parentObjID" />
     <xsl:param name="suffix" select="''" />
 
-    <xsl:if test="(key('rights', $deriv)/@readKey) and not(mcrxsl:isCurrentUserGuestUser() or key('rights', $deriv)/@read or key('rights', $deriv)/@write)">
+    <xsl:if
+      test="(key('rights', $deriv)/@accKeyEnabled and key('rights', $deriv)/@readKey) and not(mcrxsl:isCurrentUserGuestUser() or key('rights', $deriv)/@read or key('rights', $deriv)/@write)"
+    >
       <div class="options pull-right">
         <div class="btn-group">
           <a href="#" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
