@@ -7,6 +7,12 @@
   <xsl:variable name="delete" select="'deletedb'" />
   <xsl:variable name="addurn" select="'addurn'" />
 
+  <!-- checks for MIRAccessKeyStrategy -->
+  <xsl:param name="MCR.Access.Strategy.Class" />
+  <xsl:param name="MIR.AccessKeyStrategy.ObjectTypes" />
+  <xsl:variable name="derivateAccKeyEnabled" select="contains($MCR.Access.Strategy.Class, 'MIRAccessKeyStrategy') and contains($MIR.AccessKeyStrategy.ObjectTypes, 'derivate')" />
+  <xsl:variable name="modsAccKeyEnabled" select="contains($MCR.Access.Strategy.Class, 'MIRAccessKeyStrategy') and contains($MIR.AccessKeyStrategy.ObjectTypes, 'mods')" />
+
   <xsl:template match="/mycoreobject">
     <xsl:copy>
       <xsl:copy-of select="@*|node()" />
@@ -39,6 +45,11 @@
               </xsl:call-template>
             </xsl:if>
           </xsl:if>
+          <xsl:if test="derivateAccKeyEnabled">
+            <xsl:call-template name="check-access-keys">
+              <xsl:with-param name="id" select="$id" />
+            </xsl:call-template>
+          </xsl:if>
         </xsl:when>
         <xsl:otherwise>
         <!-- any mycoreobject here -->
@@ -48,6 +59,11 @@
           <xsl:call-template name="check-default-rights">
             <xsl:with-param name="id" select="$id" />
           </xsl:call-template>
+          <xsl:if test="modsAccKeyEnabled">
+            <xsl:call-template name="check-access-keys">
+              <xsl:with-param name="id" select="$id" />
+            </xsl:call-template>
+          </xsl:if>
         </xsl:otherwise>
       </xsl:choose>
     </right>
@@ -73,5 +89,16 @@
         </xsl:if>
       </xsl:if>
     </xsl:if>
+  </xsl:template>
+
+  <xsl:template name="check-access-keys">
+    <xsl:param name="id" />
+    <xsl:message>
+      checking for access keys
+    </xsl:message>
+    <!-- TODO: check if key exists for this id -->
+    <xsl:attribute name="accKeyEnabled" /> <!-- need this to show menu -->
+    <xsl:attribute name="readKey" />
+    <xsl:attribute name="writeKey" />
   </xsl:template>
 </xsl:stylesheet>

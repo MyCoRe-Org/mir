@@ -1,18 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xalan="http://xml.apache.org/xalan" xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
-  xmlns:mcrmods="xalan://org.mycore.mods.MCRMODSClassificationSupport" xmlns:basket="xalan://org.mycore.frontend.basket.MCRBasketManager" xmlns:acl="xalan://org.mycore.access.MCRAccessManager"
+  xmlns:mcrmods="xalan://org.mycore.mods.MCRMODSClassificationSupport" xmlns:basket="xalan://org.mycore.frontend.basket.MCRBasketManager"
   xmlns:mcr="http://www.mycore.org/" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:mods="http://www.loc.gov/mods/v3" xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions"
   xmlns:mcrurn="xalan://org.mycore.urn.MCRXMLFunctions" xmlns:str="http://exslt.org/strings" xmlns:encoder="xalan://java.net.URLEncoder"
-  exclude-result-prefixes="basket xalan xlink mcr i18n acl mods mcrmods mcrxsl mcrurn str encoder" version="1.0" xmlns:ex="http://exslt.org/dates-and-times"
+  exclude-result-prefixes="basket xalan xlink mcr i18n mods mcrmods mcrxsl mcrurn str encoder" version="1.0" xmlns:ex="http://exslt.org/dates-and-times"
   extension-element-prefixes="ex"
 >
 
   <xsl:param name="MIR.registerDOI" select="''" />
   <xsl:param name="template" select="'fixme'" />
-  
-  <!-- checks for MIRAccessKeyStrategy -->
-  <xsl:param name="MCR.Access.Strategy.Class" />
-  <xsl:param name="MIR.AccessKeyStrategy.ObjectTypes" />
 
   <!-- do nothing for display parent -->
   <xsl:template match="/mycoreobject" mode="parent" priority="1">
@@ -361,8 +357,8 @@
 
   <xsl:template match="/mycoreobject[contains(@ID,'_mods_')]" mode="objectActions" priority="2">
     <xsl:param name="id" select="./@ID" />
-    <xsl:param name="accessedit" select="acl:checkPermission($id,'writedb')" />
-    <xsl:param name="accessdelete" select="acl:checkPermission($id,'deletedb')" />
+    <xsl:param name="accessedit" select="key('rights', $id)/@write" />
+    <xsl:param name="accessdelete" select="key('rights', $id)/@delete" />
     <xsl:param name="hasURN" select="'false'" />
     <xsl:param name="displayAddDerivate" select="'true'" />
     <xsl:param name="layout" select="'$'" />
@@ -384,7 +380,6 @@
         <xsl:with-param name="layout" select="'all'" />
       </xsl:call-template>
     </xsl:variable>
-    <xsl:variable name="accKeyEnabled" select="contains($MCR.Access.Strategy.Class, 'MIRAccessKeyStrategy') and contains($MIR.AccessKeyStrategy.ObjectTypes, 'mods')" />
     <xsl:variable name="basketType" select="'objects'" />
     <xsl:if test="$accessedit or $accessdelete or not(basket:contains($basketType, /mycoreobject/@ID))">
       <div class="btn-group">
@@ -533,10 +528,10 @@
               </xsl:if>
 
               <xsl:variable name="accesskeys" select="document(concat('accesskeys:', @ID))" />
-              <xsl:if test="$accKeyEnabled">
+              <xsl:if test="key('rights', @ID)/@accKeyEnabled">
                 <xsl:variable name="action">
                   <xsl:choose>
-                    <xsl:when test="string-length($accesskeys/accesskeys/@readkey) &gt; 0">
+                    <xsl:when test="key('rights', @ID)/@readKey or key('rights', @ID)/@writeKey">
                       <xsl:text>edit</xsl:text>
                     </xsl:when>
                     <xsl:otherwise>
@@ -564,7 +559,7 @@
         </xsl:if>
       </div>
     </xsl:if>
-    <xsl:if test="$accKeyEnabled and not(mcrxsl:isCurrentUserGuestUser() or $accessedit or $accessdelete)">
+    <xsl:if test="(key('rights', @ID)/@readKey or key('rights', @ID)/@writeKey) and not(mcrxsl:isCurrentUserGuestUser() or $accessedit or $accessdelete)">
       <div class="btn-group pull-right">
         <a href="#" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
           <i class="fa fa-cog">
@@ -588,9 +583,8 @@
     <xsl:param name="deriv" />
     <xsl:param name="parentObjID" />
     <xsl:param name="suffix" select="''" />
-    <xsl:variable name="accKeyEnabled" select="contains($MCR.Access.Strategy.Class, 'MIRAccessKeyStrategy') and contains($MIR.AccessKeyStrategy.ObjectTypes, 'derivate')" />
 
-    <xsl:if test="$accKeyEnabled and not(mcrxsl:isCurrentUserGuestUser() or acl:checkPermission($deriv,'read') or acl:checkPermission($deriv,'writedb'))">
+    <xsl:if test="(key('rights', $deriv)/@readKey or key('rights', $deriv)/@writeKey) and not(mcrxsl:isCurrentUserGuestUser() or key('rights', $deriv)/@read or key('rights', $deriv)/@write)">
       <div class="options pull-right">
         <div class="btn-group">
           <a href="#" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
@@ -609,7 +603,7 @@
       </div>
     </xsl:if>
 
-    <xsl:if test="acl:checkPermission($deriv,'writedb')">
+    <xsl:if test="key('rights', $deriv)/@write">
       <xsl:variable select="concat('mcrobject:',$deriv)" name="derivlink" />
       <xsl:variable select="document($derivlink)" name="derivate" />
       <xsl:variable name="derivateWithURN" select="mcrurn:hasURNDefined($deriv)" />
@@ -643,12 +637,12 @@
                 </li>
               </xsl:otherwise>
             </xsl:choose>
-            <xsl:if test="$derivateWithURN=false() and mcrxsl:isAllowedObjectForURNAssignment($parentObjID) and acl:checkPermission($deriv,'addurn')">
+            <xsl:if test="$derivateWithURN=false() and mcrxsl:isAllowedObjectForURNAssignment($parentObjID) and key('rights', $deriv)/@addurn">
               <xsl:variable name="apos">
                 <xsl:text>'</xsl:text>
               </xsl:variable>
               <li>
-                <xsl:if test="not(acl:checkPermission($deriv,'deletedb'))">
+                <xsl:if test="not(key('rights', $deriv)/@delete)">
                   <xsl:attribute name="class">last</xsl:attribute>
                 </xsl:if>
                 <a href="{$ServletsBaseURL}MCRAddURNToObjectServlet{$HttpSession}?object={$deriv}&amp;target=derivate" onclick="{concat('return confirm(',$apos, i18n:translate('component.mods.metaData.options.urn.confirm'), $apos, ');')}"
@@ -658,7 +652,7 @@
                 </a>
               </li>
             </xsl:if>
-            <xsl:if test="acl:checkPermission($deriv,'deletedb') and $derivateWithURN=false()">
+            <xsl:if test="key('rights', $deriv)/@delete and $derivateWithURN=false()">
               <li class="last">
                 <a href="{$ServletsBaseURL}derivate/delete{$HttpSession}?id={$deriv}" class="confirm_derivate_deletion option">
                   <xsl:value-of select="i18n:translate('component.swf.derivate.delDerivate')" />
@@ -666,7 +660,7 @@
               </li>
             </xsl:if>
             <xsl:variable name="accesskeys" select="document(concat('accesskeys:', $deriv))" />
-            <xsl:if test="$accKeyEnabled">
+            <xsl:if test="key('rights', $deriv)/@accKeyEnabled">
               <xsl:variable name="action">
                 <xsl:choose>
                   <xsl:when test="string-length($accesskeys/accesskeys/@readkey) &gt; 0">
