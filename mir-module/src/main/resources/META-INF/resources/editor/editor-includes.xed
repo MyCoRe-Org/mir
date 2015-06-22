@@ -776,7 +776,7 @@
     </select>
   </xed:template>
 
-  <xed:template id="type.of.ressource">
+  <xed:template id="type.of.resource">
     <xed:bind xpath="mods:typeOfResource">
       <div class="form-group">
         <label class="col-md-3 control-label">
