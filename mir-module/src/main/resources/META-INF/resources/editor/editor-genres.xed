@@ -82,6 +82,11 @@
     <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="comment" />
   </xed:template>
 
+  <xed:template id="thesis">
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="titles.thesis" />
+    <xed:include uri="webapp:editor/editor-genres.xed" ref="other_thesis.common" />
+  </xed:template>
+
   <xed:template id="dissertation">
     <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="titles.thesis" />
     <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="thesis.advisor.reviewer.repeated" />
@@ -155,6 +160,18 @@
   </xed:template>
 
   <xed:template id="article">
+    <xed:include uri="webapp:editor/editor-genres.xed" ref="publication.common" />
+  </xed:template>
+
+  <xed:template id="teaching_material">
+    <xed:include uri="webapp:editor/editor-genres.xed" ref="publication.common" />
+  </xed:template>
+
+  <xed:template id="lecture_resource">
+    <xed:include uri="webapp:editor/editor-genres.xed" ref="publication.common" />
+  </xed:template>
+
+  <xed:template id="course_resources">
     <xed:include uri="webapp:editor/editor-genres.xed" ref="publication.common" />
   </xed:template>
 
