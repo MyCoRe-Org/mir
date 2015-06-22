@@ -97,9 +97,7 @@
     <xsl:message>
       checking for access keys
     </xsl:message>
-    <xsl:if test="$accKey/@readkey or $accKey/@writekey">
-      <xsl:attribute name="accKeyEnabled" /> <!-- need this to show menu -->
-    </xsl:if>
+    <xsl:attribute name="accKeyEnabled" /> <!-- need this to show menu -->
     <xsl:if test="$accKey/@readkey">
       <xsl:attribute name="readKey" />
     </xsl:if>
