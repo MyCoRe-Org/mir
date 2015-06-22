@@ -20,6 +20,7 @@ import org.mycore.access.MCRAccessManager;
 import org.mycore.access.MCRAccessRule;
 import org.mycore.access.strategies.MCRAccessCheckStrategy;
 import org.mycore.access.strategies.MCRCreatorRuleStrategy;
+import org.mycore.access.strategies.MCRObjectTypeStrategy;
 import org.mycore.backend.hibernate.MCRHIBConnection;
 import org.mycore.backend.hibernate.tables.MCRACCESS;
 import org.mycore.common.MCRCache;
@@ -61,18 +62,26 @@ public class MIRStrategy implements MCRAccessCheckStrategy {
 
     private final MCRCategLinkService LINK_SERVICE;
 
+    private final MCRAccessCheckStrategy CREATOR_STRATEGY;
+
     private final MCRAccessCheckStrategy BASE_STRATEGY;
 
     public MIRStrategy() {
         ACCESS_IMPL = MCRAccessManager.getAccessImpl();
         LINK_SERVICE = MCRCategLinkServiceFactory.getInstance();
-        BASE_STRATEGY = new MCRCreatorRuleStrategy();
+        CREATOR_STRATEGY = new MCRCreatorRuleStrategy();
+        BASE_STRATEGY = new MCRObjectTypeStrategy();
     }
 
     public boolean checkPermission(String id, String permission) {
         final String objectType = getObjectType(id);
 
         LOGGER.debug("checking permission '" + permission + "' for id " + id);
+
+        if (CREATOR_STRATEGY.checkPermission(id, permission)) {
+            return true;
+        }
+
         MCRAccessRule rule = ACCESS_IMPL.getAccessRule(id, permission);
         if (rule != null) {
             return rule.validate();
