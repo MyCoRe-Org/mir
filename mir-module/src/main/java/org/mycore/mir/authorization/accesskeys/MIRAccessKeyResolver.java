@@ -52,17 +52,23 @@ public class MIRAccessKeyResolver implements URIResolver {
     public Source resolve(String href, String base) throws TransformerException {
         final String objId = href.substring(href.indexOf(":") + 1);
 
-        if (!MCRAccessManager.checkPermission(objId, MCRAccessManager.PERMISSION_WRITE)) {
-            throw new TransformerException("User has insufficient permission to read access keys.");
-        }
-
         MIRAccessKeyPair accKP = MIRAccessKeyManager.getKeyPair(MCRObjectID.getInstance(objId));
 
         if (accKP != null) {
+            if (!MCRAccessManager.checkPermission(objId, MCRAccessManager.PERMISSION_WRITE)) {
+                final Element root = new Element("accesskeys");
+                root.setAttribute("objId", objId);
+                if (accKP.getReadKey() != null)
+                    root.setAttribute("readkey", "");
+                if (accKP.getWriteKey() != null)
+                    root.setAttribute("writekey", "");
+
+                return new JDOMSource(root);
+            }
+
             return new JDOMSource(MIRAccessKeyPairTransformer.buildExportableXML(accKP));
         }
 
         return new JDOMSource(new Element("null"));
     }
-
 }
