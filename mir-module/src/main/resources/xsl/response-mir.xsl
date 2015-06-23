@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:mods="http://www.loc.gov/mods/v3" xmlns:encoder="xalan://java.net.URLEncoder"
   xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation" xmlns:str="http://exslt.org/strings" xmlns:mcr="xalan://org.mycore.common.xml.MCRXMLFunctions"
-  xmlns:acl="xalan://org.mycore.access.MCRAccessManager" xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions" exclude-result-prefixes="i18n mods str mcr acl mcrxsl encoder">
+                xmlns:acl="xalan://org.mycore.access.MCRAccessManager"
+                xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions"
+                exclude-result-prefixes="i18n mods str mcr acl mcrxsl encoder"
+  >
+
+  <xsl:param name="UserAgent" />
 
   <!-- retain the original query and parameters, for attaching them to a url -->
   <xsl:variable name="query">
@@ -239,7 +244,10 @@
                       <xsl:with-param name="derivate" select="$derivid" />
                       <xsl:with-param name="fileName" select="$derivates/str[@name='iviewFile'][1]" />
                     </xsl:call-template -->
-                    <a class="hit_option hit_download" href="{$derivifs}" title="{$mods-type-i18n}">
+
+                    <xsl:variable name="viewerLink"
+                                  select="concat($WebApplicationBaseURL, 'rsc/viewer/', $derivid,'/', $derivates/str[@name='iviewFile'][1])" />
+                    <a class="hit_option hit_download" href="{$viewerLink}" title="{$mods-type-i18n}">
                       <div class="hit_icon"
                            style="background-image: url('{$WebApplicationBaseURL}servlets/MCRTileCombineServlet/THUMBNAIL/{$derivid}/{$derivates/str[@name='iviewFile'][1]}');">
                       </div>
@@ -248,8 +256,19 @@
 
                   <!-- show PDF thumbnail as preview -->
                   <xsl:when test="str:tokenize($derivates/str[@name='maindoc'][1],'.')[position()=last()] = 'pdf'">
-                    <a class="hit_option hit_download" href="{$derivifs}" title="{$mods-type-i18n}">
-                      <xsl:variable name="filePath" select="concat($derivates/str[@name='id'][1],'/',mcr:encodeURIPath($derivates/str[@name='maindoc'][1]),$HttpSession)" />
+                    <xsl:variable name="filePath"
+                                  select="concat($derivates/str[@name='id'][1],'/',mcr:encodeURIPath($derivates/str[@name='maindoc'][1]),$HttpSession)" />
+                    <xsl:variable name="viewerLink">
+                      <xsl:choose>
+                        <xsl:when test="mcrxsl:isMobileDevice($UserAgent)">
+                          <xsl:value-of select="$derivifs" />
+                        </xsl:when>
+                        <xsl:otherwise>
+                          <xsl:value-of select="concat($WebApplicationBaseURL, 'rsc/viewer/', $filePath)" />
+                        </xsl:otherwise>
+                      </xsl:choose>
+                    </xsl:variable>
+                    <a class="hit_option hit_download" href="{$viewerLink}" title="{$mods-type-i18n}">
                       <div class="hit_icon"
                            style="background-image: url('{$WebApplicationBaseURL}img/pdfthumb/{$filePath}?centerThumb=no');">
                       </div>

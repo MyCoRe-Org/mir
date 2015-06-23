@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.mycore</groupId>
@@ -29,7 +30,7 @@
     <cargo.debug.address>8295</cargo.debug.address>
     <cargo.debug.suspend>n</cargo.debug.suspend>
     <changelog.since>2014-12-05</changelog.since>
-    <site.suffix />
+    <site.suffix/>
   </properties>
   <url>http://www.mycore.de/generated/mir${site.suffix}</url>
   <issueManagement>
@@ -136,7 +137,7 @@
           <template>announcement.vm</template>
           <useJql>true</useJql>
           <templateDirectory>src/changes</templateDirectory>
-              <!-- due to: http://jira.codehaus.org/browse/MCHANGES-333 -->
+          <!-- due to: http://jira.codehaus.org/browse/MCHANGES-333 -->
           <maxEntries>1000</maxEntries>
           <urlDownload>${project.url}/download.html</urlDownload>
         </configuration>
@@ -197,7 +198,7 @@
                     </goals>
                   </pluginExecutionFilter>
                   <action>
-                    <ignore />
+                    <ignore/>
                   </action>
                 </pluginExecution>
                 <pluginExecution>
@@ -210,7 +211,7 @@
                     </goals>
                   </pluginExecutionFilter>
                   <action>
-                    <ignore />
+                    <ignore/>
                   </action>
                 </pluginExecution>
               </pluginExecutions>
@@ -465,6 +466,11 @@
             <artifactId>maven-scm-provider-svnexe</artifactId>
           </exclusion>
         </exclusions>
+      </dependency>
+      <dependency>
+        <groupId>javax.servlet</groupId>
+        <artifactId>javax.servlet-api</artifactId>
+        <version>3.1.0</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
