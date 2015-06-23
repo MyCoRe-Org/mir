@@ -87,6 +87,11 @@
     <xed:include uri="webapp:editor/editor-genres.xed" ref="other_thesis.common" />
   </xed:template>
 
+  <xed:template id="exam">
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="titles.thesis" />
+    <xed:include uri="webapp:editor/editor-genres.xed" ref="other_thesis.common" />
+  </xed:template>
+
   <xed:template id="dissertation">
     <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="titles.thesis" />
     <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="thesis.advisor.reviewer.repeated" />
