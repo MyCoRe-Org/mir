@@ -17,6 +17,7 @@
         <xsl:variable name="viewerNodesTmp">
           <div class="row">
             <div class="col-md-12">
+              <h3 class="mir-viewer">Vorschau</h3>
               <!-- show one viewer for each derivate -->
               <xsl:for-each select="mycoreobject/structure/derobjects/derobject[key('rights', @xlink:href)/@read]">
                 <xsl:call-template name="createViewer"/>
