@@ -28,19 +28,14 @@
     </xsl:choose>
   </xsl:template>
 
-
-  <!-- A single page (edited as start=end) is represented as mods:detail/@type='page' -->
-  <xsl:template match="mods:detail[@type='page']">
-    <mods:extent unit="pages">
-      <mods:start>
-        <xsl:value-of select="mods:number" />
-      </mods:start>
-      <mods:end>
-        <xsl:value-of select="mods:number" />
-      </mods:end>
-    </mods:extent>
+  <!-- A single page (entered as start=end) must be represented as mods:detail/@type='page' -->
+  <xsl:template match="mods:extent[(@unit='pages') and (mods:start=mods:end)]">
+    <mods:detail type="page">
+      <mods:number>
+        <xsl:value-of select="mods:start" />
+      </mods:number>
+    </mods:detail>
   </xsl:template>
-
 
   <!-- Copy content of mods:accessCondtition to mods:classification to enable classification support (see MIR-161) -->
   <xsl:template match="mods:accessCondition[@type='restriction on access']">
