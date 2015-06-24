@@ -77,14 +77,16 @@ public class MIRAccessKeyStrategy implements MCRAccessCheckStrategy {
                     final String uAccKey = getUserAccessKey(id);
 
                     if (uAccKey != null) {
-                        if (permission.equals(MCRAccessManager.PERMISSION_READ)
-                                || permission.equals(MCRAccessManager.PERMISSION_WRITE)
-                                && uAccKey.equals(accKP.getWriteKey())) {
+                        if ((permission.equals(MCRAccessManager.PERMISSION_READ) || permission
+                                .equals(MCRAccessManager.PERMISSION_WRITE)) && uAccKey.equals(accKP.getWriteKey())) {
                             return true;
                         }
                         if (permission.equals(MCRAccessManager.PERMISSION_READ) && uAccKey.equals(accKP.getReadKey())) {
                             return true;
                         }
+
+                        LOGGER.warn("Neither read nor write key matches. Remove access key from user.");
+                        MIRAccessKeyManager.deleteAccessKey(mcrObjectId);
                     }
                 }
             } catch (RuntimeException e) {
