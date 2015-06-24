@@ -209,25 +209,11 @@
   </xed:template>
 
   <xed:template id="author.repeated">
-    <fieldset>
-      <legend class="mir-fieldset-legend">
-        Autoren<!-- TODO: i18n -->
-      </legend>
-      <div class="mir-fieldset-content">
-        <mir:role.repeated role="aut" label="mir.role.author" help-text="{i18n:mir.help.role.author}" class="required" />
-      </div>
-    </fieldset>
+    <mir:role.repeated role="aut" label="mir.role.author" help-text="{i18n:mir.help.role.author}" class="required" />
   </xed:template>
 
   <xed:template id="editor.repeated">
-    <fieldset>
-      <legend class="mir-fieldset-legend">
-        Herausgeber<!-- TODO: i18n -->
-      </legend>
-      <div class="mir-fieldset-content">
-        <mir:role.repeated role="edt" label="mir.role.editor" help-text="{i18n:mir.help.role.editor}" />
-      </div>
-    </fieldset>
+    <mir:role.repeated role="edt" label="mir.role.editor" help-text="{i18n:mir.help.role.editor}" />
   </xed:template>
 
   <xed:template id="inventor.repeated">
@@ -724,7 +710,7 @@
   </xed:template>
 
   <xed:template id="language.simple">
-    <div class="form-group">
+    <div class="form-group {$xed-validation-marker}">
       <label class="col-md-3 control-label">
         <xed:output i18n="mir.language" />
       </label>
@@ -743,7 +729,7 @@
 
   <xed:template id="language.repeated">
     <xed:repeat xpath="mods:language" max="5" >
-    <div class="form-group">
+    <div class="form-group {$xed-validation-marker}">
       <label class="col-md-3 control-label">
         <xed:output i18n="mir.language" />
       </label>
@@ -987,14 +973,7 @@
   </xed:template>
 
   <xed:template id="abstract.simple">
-    <fieldset>
-      <legend class="mir-fieldset-legend">
-        <xed:output i18n="mir.abstract.text" />
-      </legend>
-      <div class="mir-fieldset-content">
-        <mir:textarea xpath="mods:abstract[not(@xml:lang) or @xml:lang=../mods:languageTerm[@authority='rfc4646'][@type='code']]" label="mir.abstract.text" help-text="{i18n:mir.help.abstract}" rows="5" />
-      </div>
-    </fieldset>
+    <mir:textarea xpath="mods:abstract[not(@xml:lang) or @xml:lang=../mods:languageTerm[@authority='rfc4646'][@type='code']]" label="mir.abstract.text" help-text="{i18n:mir.help.abstract}" rows="5" />
   </xed:template>
 
   <xed:template id="abstract.simple.uri">
@@ -1089,64 +1068,69 @@
   </xed:template>
 
   <xed:template id="related.item">
-    <xed:repeat xpath="mods:relatedItem[@xlink:href]" min="1" max="10">
-      <xed:bind xpath="@xlink:href" initially="{$relatedItemId}" />
-      <div class="form-group">
-        <div class="col-md-3">
-          <xed:bind xpath="@type" initially="{$relatedItemType}">
-            <select class="form-control">
-              <option value="host">
-                <xed:output i18n="mir.relatedItem.host" />
-              </option>
-              <option value="series">
-                <xed:output i18n="mir.relatedItem.series" />
-              </option>
-              <option value="preceding">
-                <xed:output i18n="mir.relatedItem.preceding" />
-              </option>
-              <option value="original">
-                <xed:output i18n="mir.relatedItem.original" />
-              </option>
-              <option value="references">
-                <xed:output i18n="mir.relatedItem.references" />
-              </option>
-              <option value="reviewOf">
-                <xed:output i18n="mir.relatedItem.reviewOf" />
-              </option>
-            </select>
-          </xed:bind>
-        </div>
-        <div class="col-md-6">
-          <div class="controls form-inline">
-            <input type="submit" class="form-control" xed:target="subselect" xed:href="../servlets/solr/find?qry=&amp;XSL.Style=subselect" value="{i18n:mir.editing.related.select}" />
-            <xed:output value="@xlink:href" />
-          </div>
-          <xed:if test="string-length(@xlink:href) &gt; 0">
-            <div class="controls">
-              <xed:load-resource name="relatedItem" uri="notnull:mcrobject:{@xlink:href}" />
-              <p class="form-control-static">
-                <xed:output value="$relatedItem/metadata/def.modsContainer/modsContainer/mods:mods/mods:titleInfo/mods:nonSort" />
-                <xed:output value="$relatedItem/metadata/def.modsContainer/modsContainer/mods:mods/mods:titleInfo/mods:title" />
-                <xed:output value="$relatedItem/metadata/def.modsContainer/modsContainer/mods:mods/mods:titleInfo/mods:subTitle" />
-                <br />
-                <xed:output value="$relatedItem/metadata/def.modsContainer/modsContainer/mods:mods/mods:name[@type='conference']/mods:namePart" />
-                <xed:output value="$relatedItem/metadata/def.modsContainer/modsContainer/mods:mods/mods:name[@type='personal']/mods:namePart[@type='family']" />
-                <xed:output value="$relatedItem/metadata/def.modsContainer/modsContainer/mods:mods/mods:name[@type='personal']/mods:namePart[@type='given']" />
-              </p>
+    <fieldset>
+      <legend class="mir-fieldset-legend">Related Item</legend><!-- TODO: i18n -->
+      <div class="mir-fieldset-content">
+        <xed:repeat xpath="mods:relatedItem[@xlink:href]" min="1" max="10">
+          <xed:bind xpath="@xlink:href" initially="{$relatedItemId}" />
+          <div class="form-group">
+            <div class="col-md-3">
+              <xed:bind xpath="@type" initially="{$relatedItemType}">
+                <select class="form-control">
+                  <option value="host">
+                    <xed:output i18n="mir.relatedItem.host" />
+                  </option>
+                  <option value="series">
+                    <xed:output i18n="mir.relatedItem.series" />
+                  </option>
+                  <option value="preceding">
+                    <xed:output i18n="mir.relatedItem.preceding" />
+                  </option>
+                  <option value="original">
+                    <xed:output i18n="mir.relatedItem.original" />
+                  </option>
+                  <option value="references">
+                    <xed:output i18n="mir.relatedItem.references" />
+                  </option>
+                  <option value="reviewOf">
+                    <xed:output i18n="mir.relatedItem.reviewOf" />
+                  </option>
+                </select>
+              </xed:bind>
             </div>
-          </xed:if>
-        </div>
-        <div class="col-md-1">
-          <span class="btn btn-default info-button" data-toggle="popover" data-placement="right" data-content="{i18n:mir.help.related.item}">
-            <i class="fa fa-info"></i>
-          </span>
-        </div>
-        <mir:pmud />
+            <div class="col-md-6">
+              <div class="controls form-inline">
+                <input type="submit" class="form-control" xed:target="subselect" xed:href="../servlets/solr/find?qry=&amp;XSL.Style=subselect" value="{i18n:mir.editing.related.select}" />
+                <xed:output value="@xlink:href" />
+              </div>
+              <xed:if test="string-length(@xlink:href) &gt; 0">
+                <div class="controls">
+                  <xed:load-resource name="relatedItem" uri="notnull:mcrobject:{@xlink:href}" />
+                  <p class="form-control-static">
+                    <xed:output value="$relatedItem/metadata/def.modsContainer/modsContainer/mods:mods/mods:titleInfo/mods:nonSort" />
+                    <xed:output value="$relatedItem/metadata/def.modsContainer/modsContainer/mods:mods/mods:titleInfo/mods:title" />
+                    <xed:output value="$relatedItem/metadata/def.modsContainer/modsContainer/mods:mods/mods:titleInfo/mods:subTitle" />
+                    <br />
+                    <xed:output value="$relatedItem/metadata/def.modsContainer/modsContainer/mods:mods/mods:name[@type='conference']/mods:namePart" />
+                    <xed:output value="$relatedItem/metadata/def.modsContainer/modsContainer/mods:mods/mods:name[@type='personal']/mods:namePart[@type='family']" />
+                    <xed:output value="$relatedItem/metadata/def.modsContainer/modsContainer/mods:mods/mods:name[@type='personal']/mods:namePart[@type='given']" />
+                  </p>
+                </div>
+              </xed:if>
+            </div>
+            <div class="col-md-1">
+              <span class="btn btn-default info-button" data-toggle="popover" data-placement="right" data-content="{i18n:mir.help.related.item}">
+                <i class="fa fa-info"></i>
+              </span>
+            </div>
+            <mir:pmud />
+          </div>
+          <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="host.volume" />
+          <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="host.issue" />
+          <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="host.pages" />
+        </xed:repeat>
       </div>
-      <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="host.volume" />
-      <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="host.issue" />
-      <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="host.pages" />
-    </xed:repeat>
+    </fieldset>
   </xed:template>
 
   <xed:template id="cancel.submit">
