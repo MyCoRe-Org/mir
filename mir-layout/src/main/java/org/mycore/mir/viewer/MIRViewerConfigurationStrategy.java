@@ -25,13 +25,13 @@ public class MIRViewerConfigurationStrategy extends MCRViewerDefaultConfiguratio
             // Default Stylesheet
             String theme = params.getParameter("MIR.Layout.Theme", "flatmir");
             String file = params.getParameter("MIR.DefaultLayout.CSS", "flatly.min");
-            String mirBootstrapCSSURL = String.format(Locale.ROOT, "%smir-layout/css/%s/%s.css", MCRFrontendUtil.getBaseURL(), theme, file);
+            String mirBootstrapCSSURL = String.format(Locale.ROOT, "%smir-layout/css/%s/%s.css", baseURL, theme, file);
             mcrViewerConfiguration.addCSS(mirBootstrapCSSURL);
 
             // customLayout Stylesheet
             String customLayout = params.getParameter("MIR.CustomLayout.CSS", "");
             if (customLayout.length() > 0) {
-                String customLayoutURL = String.format(Locale.ROOT, "%scss/%s", MCRFrontendUtil.getBaseURL(), customLayout);
+                String customLayoutURL = String.format(Locale.ROOT, "%scss/%s", baseURL, customLayout);
                 mcrViewerConfiguration.addCSS(customLayoutURL);
             }
 
@@ -39,7 +39,7 @@ public class MIRViewerConfigurationStrategy extends MCRViewerDefaultConfiguratio
             mcrViewerConfiguration.addScript(String.format(Locale.ROOT, "//netdna.bootstrapcdn.com/bootstrap/%s/js/bootstrap.min.js", BOOTSTRAP_VERSION));
             String customJS = params.getParameter("MIR.CustomLayout.JS", "");
             if (customJS.length() > 0) {
-                mcrViewerConfiguration.addScript(String.format(Locale.ROOT, "%sjs/%s", customJS));
+                mcrViewerConfiguration.addScript(String.format(Locale.ROOT, "%sjs/%s", baseURL,customJS));
             }
 
         }
