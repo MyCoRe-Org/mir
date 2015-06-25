@@ -5,10 +5,16 @@
     webpage:/search/search-expert.xed with rulefile {file} described by {describeBy}
   </command>
   <command file="resource:setup/acl/grant-guest-and-submitter.xml" describeBy="guests and submitters">update permission read for id
+    webpage:/content/main/search/simple.xed with rulefile {file} described by {describeBy}
+  </command>
+  <command file="resource:setup/acl/grant-editors.xml" describeBy="administrators and editors">update permission read for id
+    webpage:/content/search/simple_intern.xed with rulefile {file} described by {describeBy}
+  </command>
+  <command file="resource:setup/acl/grant-guest-and-submitter.xml" describeBy="guests and submitters">update permission read for id
     webpage:/content/main/search/complex.xed with rulefile {file} described by {describeBy}
   </command>
   <command file="resource:setup/acl/grant-editors.xml" describeBy="administrators and editors">update permission read for id
-    webpage:/content/main/search/complex_intern.xml with rulefile {file} described by {describeBy}
+    webpage:/content/main/search/complex_intern.xed with rulefile {file} described by {describeBy}
   </command>
   <command file="resource:setup/acl/grant-admin.xml" describeBy="administrators only">update permission read for id
     webpage:/authorization/new-user.xml?action=save with rulefile {file} described by {describeBy}
