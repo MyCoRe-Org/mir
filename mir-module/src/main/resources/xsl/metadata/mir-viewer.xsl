@@ -12,7 +12,7 @@
   <xsl:param name="UserAgent" />
 
   <xsl:template match="/">
-    <xsl:if test="count(mycoreobject/structure/derobjects)>0">
+    <xsl:if test="mycoreobject/structure/derobjects/derobject[key('rights', @xlink:href)/@read]">
       <div id="mir-viewer">
         <xsl:variable name="viewerNodesTmp">
           <div class="row">
