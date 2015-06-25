@@ -4,6 +4,7 @@
 
   <xed:template id="in.out">
     <xed:source uri="xslStyle:PPN-mods-simple,editor/mods2xeditor:http://unapi.gbv.de/?id=gvk:ppn:{$ppn}&amp;format=mods" />
+    <xed:source uri="xslStyle:RDF-mods-journal,editor/mods2xeditor:http://ld.zdb-services.de/data/{$zdbid}.rdf" />
     <xed:source uri="xslStyle:editor/mods2xeditor:{$sourceUri}"/>
     <xed:source uri="xslStyle:editor/mods2xeditor:mcrobject:{$id}" />
     <xed:cancel url="../servlets/MCRLockServlet?action=unlock&amp;id={$id}&amp;url=/receive/{$id}" />
@@ -48,7 +49,7 @@
       </label>
       <div class="col-md-6">
         <div class="controls">
-          <xed:bind xpath="mods:genre[@type='intern'][@authorityURI='http://www.mycore.org/classifications/mir_genres']/@valueURIxEditor">
+          <xed:bind xpath="mods:genre[@type='intern'][@authorityURI='http://www.mycore.org/classifications/mir_genres']/@valueURIxEditor" initially="{$genre}">
             <select class="form-control form-control-inline">
               <xed:include uri="xslStyle:items2options:classification:editor:-1:children:mir_genres" />
             </select>
