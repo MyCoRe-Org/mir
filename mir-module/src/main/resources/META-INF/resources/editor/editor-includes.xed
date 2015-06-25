@@ -1070,8 +1070,8 @@
   <xed:template id="related.item">
     <fieldset>
       <legend class="mir-fieldset-legend">Related Item</legend><!-- TODO: i18n -->
-      <div class="mir-fieldset-content">
-        <xed:repeat xpath="mods:relatedItem[@xlink:href]" min="1" max="10">
+      <xed:repeat xpath="mods:relatedItem[@xlink:href]" min="1" max="10">
+        <div class="mir-fieldset-content">
           <xed:bind xpath="@xlink:href" initially="{$relatedItemId}" />
           <div class="form-group">
             <div class="col-md-3">
@@ -1128,8 +1128,8 @@
           <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="host.volume" />
           <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="host.issue" />
           <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="host.pages" />
-        </xed:repeat>
-      </div>
+        </div>
+      </xed:repeat>
     </fieldset>
   </xed:template>
 
