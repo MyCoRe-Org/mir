@@ -1036,7 +1036,7 @@
               </xed:bind>
             </div>
             <div class="col-md-1">
-              <span class="btn btn-default info-button" data-toggle="popover" data-placement="right" data-content="{i18n:mir.help.abstract}">
+              <span class="btn btn-default info-button" data-toggle="popover" data-placement="right" data-content="{i18n:mir.help.abstract.language}">
                 <i class="fa fa-info"></i>
               </span>
             </div>
