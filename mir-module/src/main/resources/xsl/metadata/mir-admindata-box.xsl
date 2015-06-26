@@ -29,7 +29,7 @@
               </xsl:call-template>
               <xsl:call-template name="printMetaDate">
                 <xsl:with-param select="mycoreobject/service/servflags/servflag[@type='createdby']" name="nodes" />
-                <xsl:with-param select="i18n:translate('metaData.createdBy')" name="label" />
+                <xsl:with-param select="i18n:translate('metaData.createdby')" name="label" />
               </xsl:call-template>
               <xsl:call-template name="printMetaDate">
                 <xsl:with-param select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:note" name="nodes" />

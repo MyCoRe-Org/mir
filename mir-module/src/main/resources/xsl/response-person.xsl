@@ -74,7 +74,7 @@
     <xsl:variable name="filter_query">
       <xsl:choose>
         <xsl:when test="mcrxsl:isCurrentUserInRole('admin') or mcrxsl:isCurrentUserInRole('editor')">state:*</xsl:when>
-        <xsl:otherwise>state:published OR createdBy:<xsl:value-of select="$CurrentUser" /></xsl:otherwise>
+        <xsl:otherwise>state:published OR createdby:<xsl:value-of select="$CurrentUser" /></xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
 
