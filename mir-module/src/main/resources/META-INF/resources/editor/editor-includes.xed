@@ -202,7 +202,7 @@
             </div>
             <mir:pmud />
           </div>
-          <mir:textfield xpath="mods:title" label="mir.title" help-text="{i18n:mir.help.title.complex}" class="required" />
+          <mir:textfield xpath="mods:title" label="mir.title" help-text="{i18n:mir.help.title}" class="required" />
           <mir:textfield xpath="mods:subTitle" label="mir.title.subTitle" help-text="{i18n:mir.help.title.subTitle}" />
         </div>
       </xed:repeat>
@@ -648,7 +648,7 @@
   </xed:template>
 
   <xed:template id="physical.description.note">
-    <mir:textarea xpath="mods:physicalDescription/mods:note" label="mir.pysicalical.description.note" help-text="{i18n:mir.help.pysicalical.description.note}" rows="5" />
+    <mir:textarea xpath="mods:physicalDescription/mods:note" label="mir.physical.description.note" help-text="{i18n:mir.help.physical.description.note}" rows="5" />
   </xed:template>
 
   <xed:template id="physical.description.form">
@@ -1006,7 +1006,7 @@
               </xed:bind>
             </div>
             <div class="col-md-1">
-              <span class="btn btn-default info-button" data-toggle="popover" data-placement="right" data-content="{i18n:mir.help.abstract}">
+              <span class="btn btn-default info-button" data-toggle="popover" data-placement="right" data-content="{i18n:mir.help.abstract.language}">
                 <i class="fa fa-info"></i>
               </span>
             </div>
@@ -1042,7 +1042,7 @@
             </div>
             <mir:pmud />
           </div>
-          <mir:textfield xpath="@xlink:href" label="mir.abstract.aslink" help-text="{i18n:mir.help.abstract.repeated}" placeholder="{i18n:mir.placeholder.abstract.link}" />
+          <mir:textfield xpath="@xlink:href" label="mir.abstract.aslink" help-text="{i18n:mir.help.abstract.aslink}" placeholder="{i18n:mir.placeholder.abstract.link}" />
           <mir:textarea xpath="." label="mir.abstract.ortext" help-text="{i18n:mir.help.abstract.ortext}" rows="5" />
         </div>
       </xed:repeat>
