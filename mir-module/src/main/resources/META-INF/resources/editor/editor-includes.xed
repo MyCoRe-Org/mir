@@ -6,7 +6,9 @@
     <xed:source uri="xslStyle:PPN-mods-simple,editor/mods2xeditor:http://unapi.gbv.de/?id=gvk:ppn:{$ppn}&amp;format=mods" />
     <xed:source uri="xslStyle:RDF-mods-journal,editor/mods2xeditor:http://ld.zdb-services.de/data/{$zdbid}.rdf" />
     <xed:source uri="xslStyle:editor/mods2xeditor:{$sourceUri}"/>
-    <xed:source uri="xslStyle:editor/mods2xeditor:mcrobject:{$id}" />
+    <xed:source uri="xslStyle:mycoreobject-editor,editor/mods2xeditor:mcrobject:{$id}" />
+    <xed:source uri="xslStyle:asHost,editor/mods2xeditor:mcrobject:{$hostId}" />
+    <xed:source uri="xslStyle:asSeries,editor/mods2xeditor:mcrobject:{$seriesId}" />
     <xed:cancel url="../servlets/MCRLockServlet?action=unlock&amp;id={$id}&amp;url=/receive/{$id}" />
     <xed:cancel url="{$cancelUrl}" />
     <xed:cancel url="../index.html" />
@@ -103,13 +105,45 @@
   </xed:template>
 
   <xed:template id="series.title">
-    <mir:textfield xpath="mods:titleInfo/mods:title" label="mir.series.title" help-text="{i18n:mir.help.series.title}" placeholder="{i18n:mir.placeholder.series.title}" />
+    <mir:textfield xpath="mods:titleInfo/mods:title" label="mir.series.title" placeholder="{i18n:mir.placeholder.series.title}" id="series-title"/>
   </xed:template>
-
+  
+  <xed:template id="title.series.relItemsearch">
+    <mir:relItemsearch searchengine="title" genre="series" responsefield="mods.title" xpath="mods:titleInfo/mods:title" label="mir.title" />
+  </xed:template>
+  
+  <xed:template id="title.book.relItemsearch">
+    <mir:relItemsearch searchengine="title" genre="book" responsefield="mods.title" xpath="mods:titleInfo/mods:title" label="mir.title" />
+  </xed:template>
+  
+  <xed:template id="title.lexicon.relItemsearch">
+    <mir:relItemsearch searchengine="title" genre="lexicon" responsefield="mods.title" xpath="mods:titleInfo/mods:title" label="mir.title" />
+  </xed:template>
+  
+  <xed:template id="title.journal.relItemsearch">
+    <mir:relItemsearch searchengine="title" genre="journal" responsefield="mods.title" xpath="mods:titleInfo/mods:title" label="mir.title.journal" />
+  </xed:template>
+  
+  <xed:template id="title.collection.relItemsearch">
+    <mir:relItemsearch searchengine="title" genre="collection" responsefield="mods.title" xpath="mods:titleInfo/mods:title" label="mir.title" />
+  </xed:template>
+  
+  <xed:template id="title.festschrift.relItemsearch">
+    <mir:relItemsearch searchengine="title" genre="festschrift" responsefield="mods.title" xpath="mods:titleInfo/mods:title" label="mir.title" />
+  </xed:template>
+  
+  <xed:template id="title.proceedings.relItemsearch">
+    <mir:relItemsearch searchengine="title" genre="proceedings" responsefield="mods.title" xpath="mods:titleInfo/mods:title" label="mir.title" />
+  </xed:template>
+  
+  <xed:template id="title.newspaper.relItemsearch">
+    <mir:relItemsearch searchengine="title" genre="newspaper" responsefield="mods.title" xpath="mods:titleInfo/mods:title" label="mir.title" />
+  </xed:template>
+  
   <xed:template id="subtitle">
     <mir:textfield xpath="mods:titleInfo/mods:subTitle" label="mir.title.subTitle" help-text="{i18n:mir.help.title.subTitle}" />
   </xed:template>
-
+  
   <xed:template id="title.original">
     <fieldset>
       <legend class="mir-fieldset-legend">
@@ -373,7 +407,7 @@
   </xed:template>
 
   <xed:template id="year.issued.modspart">
-    <mir:textfield xpath="mods:part/mods:dateIssued[@encoding='w3cdtf']" label="mir.date.issued.4" help-text="{i18n:mir.help.date.issued.4}" class="required mir-modspart"
+    <mir:textfield xpath="mods:part/mods:date[@encoding='w3cdtf']" label="mir.date.issued.4" help-text="{i18n:mir.help.date.issued.4}" class="required mir-modspart"
       placeholder="{i18n:mir.placeholder.year}" />
   </xed:template>
 
@@ -439,11 +473,39 @@
   </xed:template>
 
   <xed:template id="identifier.isbn">
-    <mir:textfield xpath="mods:identifier[@type='isbn']" label="mir.identifier.isbn" help-text="{i18n:mir.help.identifier.isbn}" />
+    <mir:textfield xpath="mods:identifier[@type='isbn']" label="mir.identifier.isbn" />
+  </xed:template>
+  
+  <xed:template id="identifier.isbn.book.relItemsearch">
+    <mir:relItemsearch searchengine="isbn" genre="book" responsefield="identifier.type.isbn" xpath="mods:identifier[@type='isbn']" label="mir.identifier.isbn" help-text="{i18n:mir.help.identifier.isbn}"/>
+  </xed:template>
+  
+  <xed:template id="identifier.isbn.collection.relItemsearch">
+    <mir:relItemsearch searchengine="isbn" genre="collection" responsefield="identifier.type.isbn" xpath="mods:identifier[@type='isbn']" label="mir.identifier.isbn" help-text="{i18n:mir.help.identifier.isbn}"/>
+  </xed:template>
+  
+  <xed:template id="identifier.isbn.proceeding.relItemsearch">
+    <mir:relItemsearch searchengine="isbn" genre="proceeding" responsefield="identifier.type.isbn" xpath="mods:identifier[@type='isbn']" label="mir.identifier.isbn" help-text="{i18n:mir.help.identifier.isbn}"/>
+  </xed:template>
+  
+  <xed:template id="identifier.isbn.lexicon.relItemsearch">
+    <mir:relItemsearch searchengine="isbn" genre="lexicon" responsefield="identifier.type.isbn" xpath="mods:identifier[@type='isbn']" label="mir.identifier.isbn" help-text="{i18n:mir.help.identifier.isbn}"/>
   </xed:template>
 
   <xed:template id="identifier.issn">
-    <mir:textfield xpath="mods:identifier[@type='issn']" label="mir.identifier.issn" help-text="{i18n:mir.help.identifier.issn}" />
+    <mir:textfield xpath="mods:identifier[@type='issn']" label="mir.identifier.issn" />
+  </xed:template>
+  
+  <xed:template id="identifier.issn.series.relItemsearch">
+    <mir:relItemsearch searchengine="issn" genre="series" responsefield="identifier.type.issn" xpath="mods:identifier[@type='issn']" label="mir.identifier.issn" help-text="{i18n:mir.help.identifier.issn}"/>
+  </xed:template>
+  
+  <xed:template id="identifier.issn.journal.relItemsearch">
+    <mir:relItemsearch searchengine="issn" genre="journal" responsefield="identifier.type.issn" xpath="mods:identifier[@type='issn']" label="mir.identifier.issn" help-text="{i18n:mir.help.identifier.issn}"/>
+  </xed:template>
+  
+  <xed:template id="identifier.issn.newspaper.relItemsearch">
+    <mir:relItemsearch searchengine="issn" genre="newspaper" responsefield="identifier.type.issn" xpath="mods:identifier[@type='issn']" label="mir.identifier.issn" help-text="{i18n:mir.help.identifier.issn}"/>
   </xed:template>
 
   <xed:template id="identifier.zdbid">
@@ -545,7 +607,35 @@
   </xed:template>
 
   <xed:template id="shelfmark">
-    <mir:textfield xpath="mods:location/mods:shelfLocator" label="mir.shelfmark" help-text="{i18n:mir.help.shelfmark}" />
+    <mir:textfield xpath="mods:location/mods:shelfLocator" label="mir.shelfmark" />
+  </xed:template>
+  
+  <xed:template id="shelfmark.journal.relItemsearch">
+    <mir:relItemsearch searchengine="shelfmark" genre="journal" responsefield="shelfLocator" xpath="mods:location/mods:shelfLocator" label="mir.shelfmark" help-text="{i18n:mir.help.shelfmark}"/>
+  </xed:template>
+  
+  <xed:template id="shelfmark.book.relItemsearch">
+    <mir:relItemsearch searchengine="shelfmark" genre="book" responsefield="shelfLocator" xpath="mods:location/mods:shelfLocator" label="mir.shelfmark" help-text="{i18n:mir.help.shelfmark}"/>
+  </xed:template>
+  
+  <xed:template id="shelfmark.collection.relItemsearch">
+    <mir:relItemsearch searchengine="shelfmark" genre="collection" responsefield="shelfLocator" xpath="mods:location/mods:shelfLocator" label="mir.shelfmark" help-text="{i18n:mir.help.shelfmark}"/>
+  </xed:template>
+  
+  <xed:template id="shelfmark.festschrift.relItemsearch">
+    <mir:relItemsearch searchengine="shelfmark" genre="festschrift" responsefield="shelfLocator" xpath="mods:location/mods:shelfLocator" label="mir.shelfmark" help-text="{i18n:mir.help.shelfmark}"/>
+  </xed:template>
+  
+  <xed:template id="shelfmark.lexicon.relItemsearch">
+    <mir:relItemsearch searchengine="shelfmark" genre="lexicon" responsefield="shelfLocator" xpath="mods:location/mods:shelfLocator" label="mir.shelfmark" help-text="{i18n:mir.help.shelfmark}"/>
+  </xed:template>
+  
+  <xed:template id="shelfmark.proceedings.relItemsearch">
+    <mir:relItemsearch searchengine="shelfmark" genre="proceedings" responsefield="shelfLocator" xpath="mods:location/mods:shelfLocator" label="mir.shelfmark" help-text="{i18n:mir.help.shelfmark}"/>
+  </xed:template>
+  
+  <xed:template id="shelfmark.proceedings.relItemsearch">
+    <mir:relItemsearch searchengine="shelfmark" genre="collection" responsefield="shelfLocator" xpath="mods:location/mods:shelfLocator" label="mir.shelfmark" help-text="{i18n:mir.help.shelfmark}"/>
   </xed:template>
 
   <xed:template id="related.item.link">
@@ -1050,7 +1140,7 @@
   </xed:template>
 
   <xed:template id="subject">
-    <mir:textfield.repeat xpath="mods:subject" bind="mods:topic" min="1" max="20" label="mir.subject.topic" help-text="{i18n:mir.help.subject.topic}" />
+    <mir:textfield.repeated xpath="mods:subject" bind="mods:topic" min="1" max="20" label="mir.subject.topic" help-text="{i18n:mir.help.subject.topic}" />
   </xed:template>
 
   <xed:template id="subjectgroup">
@@ -1135,8 +1225,7 @@
   </xed:template>
 
   <xed:template id="cancel.submit">
-    <script type="text/javascript" src="{$WebApplicationBaseURL}js/jquery.search-entity.js"></script>
-
+    
     <div class="form-group" id="editor-buttons">
       <div class="col-md-offset-2 col-md-6">
         <button type="submit" class="btn btn-default" xed:target="debug">Debug</button>
@@ -1186,7 +1275,14 @@
           <xed:validate xpath="//mods:mods/mods:name[mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']='aut']/mods:displayForm" required="true" i18n="mir.validation.author" display="global" />
         </xed:otherwise>
       </xed:choose>
-      <xed:validate xpath="//mods:originInfo/mods:dateIssued[@encoding='w3cdtf']" required="true" i18n="mir.validation.dateIssued" display="global" />
+      <xed:choose>
+        <xed:when test="//mods:relatedItem/mods:part">
+          <xed:validate xpath="//mods:part/mods:date[@encoding='w3cdtf']" required="true" i18n="mir.validation.dateIssued" display="global" />
+        </xed:when>
+        <xed:otherwise>
+          <xed:validate xpath="//mods:originInfo/mods:dateIssued[@encoding='w3cdtf']" required="true" i18n="mir.validation.dateIssued" display="global" />
+        </xed:otherwise>
+      </xed:choose>
       <xed:validate xpath="//mods:mods/mods:accessCondition[@type='use and reproduction']" required="true" i18n="mir.validation.rights" display="global" />
     </xed:if>
     <xed:validate xpath="//mods:identifier[@type='isbn']" matches="^((978|979)-?)?([\d -]{12}|\d{9})(\d|X)$" i18n="mir.validation.isbn" display="global" />
@@ -1206,6 +1302,13 @@
     <xed:cleanup-rule xpath="//mods:*/@xlink:type" relevant-if="text()!='simple'" />
     <xed:cleanup-rule xpath="//mods:detail" relevant-if="mods:number|mods:caption|mods:title" />
     <xed:cleanup-rule xpath="//mods:accessCondition[@type='copyrightMD']/cmd:copyright" relevant-if="cmd:rights.holder/cmd:name" />
+  </xed:template>
+  
+  <xed:template id="javascript">
+    <script type="text/javascript" src="{$WebApplicationBaseURL}js/jquery.search-entity.js"></script>
+    <script src="{$WebApplicationBaseURL}js/bootstrap3-typeahead.js" type="text/javascript"></script>
+    <script src="{$WebApplicationBaseURL}js/bloodhound.js" type="text/javascript"></script>
+    <script src="{$WebApplicationBaseURL}js/mir/relatedItem-autocomplete.js" type="text/javascript"></script>
   </xed:template>
 
 </xed:template>
