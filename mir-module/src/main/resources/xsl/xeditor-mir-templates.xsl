@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xed="http://www.mycore.de/xeditor" xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
-  xmlns:mir="http://www.mycore.de/mir" exclude-result-prefixes="xsl i18n mir"
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xalan="http://xml.apache.org/xalan" xmlns:xed="http://www.mycore.de/xeditor"
+  xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation" xmlns:mir="http://www.mycore.de/mir" exclude-result-prefixes="xsl xalan i18n mir"
 >
 
   <xsl:include href="copynodes.xsl" />
@@ -223,30 +223,50 @@
   </xsl:template>
 
   <xsl:template match="mir:template[@name='checkboxList' or @name='radioList']" mode="widget">
-    <xsl:apply-templates select="option" mode="optionList">
-      <xsl:with-param name="inputType">
-        <xsl:if test="@name='radioList'">
+    <xsl:variable name="inputType">
+      <xsl:choose>
+        <xsl:when test="@name='radioList'">
           <xsl:text>radio</xsl:text>
-        </xsl:if>
-        <xsl:if test="@name='checkboxList'">
+        </xsl:when>
+        <xsl:otherwise>
           <xsl:text>checkbox</xsl:text>
-        </xsl:if>
-      </xsl:with-param>
-    </xsl:apply-templates>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+    <xsl:variable name="inline" select="@inline" />
+
+    <xsl:choose>
+      <xsl:when test="string-length(@uri) &gt; 0">
+        <xsl:variable name="options" select="document(@uri)" />
+        <xsl:for-each select="$options//option">
+          <xsl:apply-templates select="." mode="optionList">
+            <xsl:with-param name="inputType" select="$inputType" />
+            <xsl:with-param name="inline" select="$inline" />
+          </xsl:apply-templates>
+        </xsl:for-each>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:apply-templates select="option" mode="optionList">
+          <xsl:with-param name="inputType" select="$inputType" />
+          <xsl:with-param name="inline" select="$inline" />
+        </xsl:apply-templates>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
 
   <xsl:template match="option" mode="optionList">
     <xsl:param name="inputType" select="'checkbox'" />
+    <xsl:param name="inline" select="'false'" />
 
     <div>
       <xsl:attribute name="class">
         <xsl:value-of select="$inputType" />
-        <xsl:if test="../@inline = 'true'">
+        <xsl:if test="$inline = 'true'">
           <xsl:value-of select="concat(' ', $inputType, '-inline')" />
         </xsl:if>
       </xsl:attribute>
       <label>
-        <input type="{$inputType}" id="{../@id}" value="{@value}">
+        <input type="{$inputType}" value="{@value}">
           <xsl:apply-templates select="." mode="inputOptions" />
         </input>
         <xsl:if test="string-length(@i18n) &gt; 0">
