@@ -273,6 +273,11 @@
       </xsl:attribute>
       <label>
         <input type="{$inputType}" value="{@value}">
+          <xsl:if test="@disabled = 'true'">
+            <xsl:attribute name="disabled">
+              <xsl:text>disabled</xsl:text>
+            </xsl:attribute>
+          </xsl:if>
           <xsl:apply-templates select="." mode="inputOptions" />
         </input>
         <xsl:if test="string-length(@i18n) &gt; 0">
