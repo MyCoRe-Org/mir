@@ -74,6 +74,12 @@
   </build>
   <dependencies>
     <dependency>
+      <groupId>${project.parent.groupId}</groupId>
+      <artifactId>mir-module</artifactId>
+      <version>${project.parent.version}</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
       <groupId>org.mycore</groupId>
       <artifactId>mycore-meta</artifactId>
       <type>pom</type>
@@ -102,10 +108,6 @@
         <exclusion>
           <groupId>org.mycore</groupId>
           <artifactId>mycore-webcli</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.mycore</groupId>
-          <artifactId>mycore-wfc</artifactId>
         </exclusion>
         <exclusion>
           <groupId>org.mycore</groupId>
