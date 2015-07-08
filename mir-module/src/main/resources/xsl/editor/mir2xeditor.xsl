@@ -6,6 +6,12 @@
 
   <xsl:include href="copynodes.xsl" />
   
+  <xsl:template name="mir-helpbutton">
+    <span class="btn btn-default info-button" data-toggle="popover" data-placement="right" data-content="{@help-text}">
+      <i class="fa fa-info"></i>
+    </span>
+  </xsl:template>
+  
   <xsl:template name="mir-textfield">
     <label class="col-md-3 control-label ">
       <xed:output i18n="{@label}" /> 
@@ -15,35 +21,49 @@
         <xsl:copy-of select="@placeholder" />
       </input>
     </div>
-    <xsl:if test="string-length(@help-text) &gt; 0">
-      <div class="col-md-1">
-        <span class="btn btn-default info-button" data-toggle="popover" data-placement="right" data-content="{@help-text}">
-          <i class="fa fa-info"></i>
-        </span>
-      </div>
-    </xsl:if>
+    <div class="col-md-3">
+      <xsl:if test="string-length(@help-text) &gt; 0">
+        <xsl:call-template name="mir-helpbutton" />
+      </xsl:if>
+      <xsl:if test="@repeat = 'true'">
+        <xsl:call-template name="mir-pmud" />
+      </xsl:if>
+    </div>
   </xsl:template>
 
   <xsl:template match="mir:textfield">
-    <xed:bind xpath="{@xpath}">
-      <xsl:variable name="xed-val-marker" > {$xed-validation-marker} </xsl:variable>
-      <div class="form-group {@class} {$xed-val-marker}">
-        <xsl:call-template name="mir-textfield" />
-      </div>
-    </xed:bind>
+    <xsl:choose>
+      <xsl:when test="@repeat = 'true'">
+        <xed:repeat xpath="{@xpath}" min="{@min}" max="{@max}">
+          <xsl:variable name="xed-val-marker" > {$xed-validation-marker} </xsl:variable>
+          <div class="form-group {@class} {$xed-val-marker}">
+            <xsl:call-template name="mir-textfield" />
+          </div>
+        </xed:repeat>
+      </xsl:when>
+      <xsl:otherwise>
+        <xed:bind xpath="{@xpath}">
+          <xsl:variable name="xed-val-marker" > {$xed-validation-marker} </xsl:variable>
+          <div class="form-group {@class} {$xed-val-marker}">
+            <xsl:call-template name="mir-textfield" />
+          </div>
+        </xed:bind>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
 
   <xsl:template match="mir:textfield.repeat">
+  <!-- depricated after removing edit mir-textfield-->
     <xed:repeat xpath="{@xpath}" min="{@min}" max="{@max}">
       <xsl:variable name="xed-val-marker" > {$xed-validation-marker} </xsl:variable>
       <div class="form-group {@class} {$xed-val-marker}">
         <xsl:call-template name="mir-textfield" />
-        <xsl:call-template name="mir-pmud" />
+        <div class="col-md-3 {@class}">
+          <xsl:call-template name="mir-pmud" />
+        </div>
       </div>
     </xed:repeat>
   </xsl:template>
-
-
 
   <xsl:template match="mir:textarea">
     <xsl:variable name="xed-val-marker" > {$xed-validation-marker} </xsl:variable>
@@ -58,13 +78,14 @@
             <xsl:copy-of select="@placeholder" />
           </textarea>
         </div>
-        <xsl:if test="@help-text">
-          <div class="col-md-1">
-            <span class="btn btn-default info-button" data-toggle="popover" data-placement="right" data-content="{@help-text}">
-              <i class="fa fa-info"></i>
-            </span>
-          </div>
-        </xsl:if>
+        <div class="col-md-3">
+          <xsl:if test="string-length(@help-text) &gt; 0">
+            <xsl:call-template name="mir-helpbutton" />
+          </xsl:if>
+          <xsl:if test="@pmud = 'true'">
+            <xsl:call-template name="mir-pmud" />
+          </xsl:if>
+        </div>
       </div>
     </xed:bind>
   </xsl:template>
@@ -83,12 +104,12 @@
                 <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="person.fields" />
               </div>
             </div>
-            <div class="col-md-1">
-              <span class="btn btn-default info-button" data-toggle="popover" data-placement="right" data-content="{@help-text}">
-                <i class="fa fa-info"></i>
-              </span>
+            <div class="col-md-3">
+              <xsl:if test="string-length(@help-text) &gt; 0">
+                <xsl:call-template name="mir-helpbutton" />
+              </xsl:if>
+              <xsl:call-template name="mir-pmud" />
             </div>
-            <xsl:call-template name="mir-pmud" />
           </xed:bind>
         </div>
       </xed:bind>
@@ -111,12 +132,12 @@
             <div class="col-md-6">
               <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="person.fields" />
             </div>
-            <div class="col-md-1">
-              <span class="btn btn-default info-button" data-toggle="popover" data-placement="right" data-content="{@help-text}">
-                <i class="fa fa-info"></i>
-              </span>
+            <div class="col-md-3">
+              <xsl:if test="string-length(@help-text) &gt; 0">
+                <xsl:call-template name="mir-helpbutton" />
+              </xsl:if>
+              <xsl:call-template name="mir-pmud" />
             </div>
-            <xsl:call-template name="mir-pmud" />
           </xed:bind>
         </div>
      </xed:bind>
@@ -124,27 +145,35 @@
   </xsl:template>
 
   <xsl:template match="mir:pmud">
-    <xsl:call-template name="mir-pmud" >
-      <xsl:with-param name="class" select="@class" />
-    </xsl:call-template>
+    <div class="col-md-3 {@class}">
+      <xsl:call-template name="mir-pmud" />
+    </div>
+  </xsl:template>
+  
+  <xsl:template match="mir:help-pmud">
+    <div class="col-md-3 {@class}">
+      <xsl:if test="string-length(@help-text) &gt; 0">
+        <xsl:call-template name="mir-helpbutton" />
+      </xsl:if>
+      <xsl:if test="@pmud='true'">
+        <xsl:call-template name="mir-pmud" />
+      </xsl:if>
+    </div>
   </xsl:template>
 
   <xsl:template name="mir-pmud">
-    <xsl:param name="class" />
-    <div class="form-pmud col-md-2 {$class}">
-      <span>
-        <xed:controls>insert</xed:controls>
-      </span>
-      <span>
-        <xed:controls>remove</xed:controls>
-      </span>
-      <span>
-        <xed:controls>up</xed:controls>
-      </span>
-      <span>
-        <xed:controls>down</xed:controls>
-      </span>
-    </div>
+    <span class="pmud-button">
+      <xed:controls>insert</xed:controls>
+    </span>
+    <span class="pmud-button">
+      <xed:controls>remove</xed:controls>
+    </span>
+    <span class="pmud-button">
+      <xed:controls>up</xed:controls>
+    </span>
+    <span class="pmud-button">
+      <xed:controls>down</xed:controls>
+    </span>
   </xsl:template>
 
   <xsl:template match="mir:relItemsearch">
@@ -161,11 +190,6 @@
               
             </span>
 		  </div>
-            <!-- <div class="input-group-btn">
-              <button class="btn btn-default host-reset">
-	            Entsperren
-              </button>
-            </div>-->
         </div>
       </div>
     </xed:bind> 

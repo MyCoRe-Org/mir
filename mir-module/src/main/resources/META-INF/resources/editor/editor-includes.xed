@@ -34,12 +34,7 @@
             </xed:bind>
           </div>
         </div>
-        <div class="col-md-1">
-          <span class="btn btn-default info-button" data-toggle="popover" data-placement="right" data-content="{i18n:mir.help.genre}">
-            <i class="fa fa-info"></i>
-          </span>
-        </div>
-        <mir:pmud />
+        <mir:help-pmud help-text="{i18n:mir.help.genre}" pmud="true" />
       </div>
     </xed:repeat>
   </xed:template>
@@ -58,7 +53,7 @@
           </xed:bind>
         </div>
       </div>
-      <div class="col-md-1">
+      <div class="col-md-2">
         <span class="btn btn-default info-button" data-toggle="popover" data-placement="right" data-content="{i18n:mir.help.genre}">
           <i class="fa fa-info"></i>
         </span>
@@ -80,7 +75,7 @@
           </div>
         </div>
       </xed:bind>
-      <div class="col-md-1">
+      <div class="col-md-2">
         <span class="btn btn-default info-button" data-toggle="popover" data-placement="right" data-content="{i18n:mir.help.status}">
           <i class="fa fa-info"></i>
         </span>
@@ -89,7 +84,7 @@
   </xed:template>
 
   <xed:template id="title">
-    <mir:textfield xpath="mods:titleInfo/mods:title" label="mir.title" help-text="{i18n:mir.help.title}" class="required" />
+    <mir:textfield xpath="mods:titleInfo/mods:title" label="mir.title" class="required" />
   </xed:template>
 
   <xed:template id="title.abbreviated">
@@ -229,12 +224,7 @@
                 </xed:bind>
               </div>
             </div>
-            <div class="col-md-1">
-              <span class="btn btn-default info-button" data-toggle="popover" data-placement="right" data-content="{i18n:mir.help.title.complex}">
-                <i class="fa fa-info"></i>
-              </span>
-            </div>
-            <mir:pmud />
+            <mir:help-pmud help-text="{i18n:mir.help.title.complex}" pmud="true" />
           </div>
           <mir:textfield xpath="mods:title" label="mir.title" help-text="{i18n:mir.help.title}" class="required" />
           <mir:textfield xpath="mods:subTitle" label="mir.title.subTitle" help-text="{i18n:mir.help.title.subTitle}" />
@@ -462,12 +452,7 @@
             <input type="text" size="30" class="form-control form-control-inline" />
           </div>
         </div>
-        <div class="col-md-1">
-          <span class="btn btn-default info-button" data-toggle="popover" data-placement="right" data-content="{i18n:mir.help.identifier.patent}">
-            <i class="fa fa-info"></i>
-          </span>
-        </div>
-        <mir:pmud />
+        <mir:help-pmud help-text="{i18n:mir.help.identifier.patent}" pmud="true" />
       </xed:repeat>
     </div>
   </xed:template>
@@ -562,12 +547,7 @@
         <div class="col-md-6">
           <input type="text" size="30" class="form-control form-control-inline {$xed-validation-marker}" />
         </div>
-        <div class="col-md-1">
-          <span class="btn btn-default info-button" data-toggle="popover" data-placement="right" data-content="{i18n:mir.help.identifier}">
-            <i class="fa fa-info"></i>
-          </span>
-        </div>
-        <mir:pmud />
+        <mir:help-pmud help-text="{i18n:mir.help.identifier}" pmud="true" />
       </div>
     </xed:repeat>
   </xed:template>
@@ -596,12 +576,7 @@
         <div class="col-md-6">
           <input type="text" size="20" class="form-control form-control-inline {$xed-validation-marker}" />
         </div>
-        <div class="col-md-1">
-          <span class="btn btn-default info-button" data-toggle="popover" data-placement="right" data-content="{i18n:mir.help.doi.handle.urn}">
-            <i class="fa fa-info"></i>
-          </span>
-        </div>
-        <mir:pmud />
+        <mir:help-pmud help-text="{i18n:mir.help.doi.handle.urn}" pmud="true" />
       </div>
     </xed:repeat>
   </xed:template>
@@ -664,12 +639,7 @@
             <input type="text" class="form-control" placeholder="{i18n:mir.placeholder.title.link}" />
           </xed:bind>
         </div>
-        <div class="col-md-1">
-          <span class="btn btn-default info-button" data-toggle="popover" data-placement="right" data-content="{i18n:mir.help.link.title}">
-            <i class="fa fa-info"></i>
-          </span>
-        </div>
-        <mir:pmud />
+        <mir:help-pmud help-text="{i18n:mir.help.link.title}" pmud="true" />
       </div>
       <mir:textfield xpath="mods:location/mods:url[@access='raw object']" label="mir.link.raw_object" help-text="{i18n:mir.help.link.raw_object}" placeholder="{i18n:mir.placeholder.abstract.link}" />
     </xed:repeat>
@@ -703,12 +673,7 @@
         <div class="col-md-6">
           <input type="text" size="50" class="form-control form-control-inline {$xed-validation-marker}" />
         </div>
-        <div class="col-md-1">
-          <span class="btn btn-default info-button" data-toggle="popover" data-placement="right" data-content="{i18n:mir.help.link}">
-            <i class="fa fa-info"></i>
-          </span>
-        </div>
-        <mir:pmud />
+        <mir:help-pmud help-text="{i18n:mir.help.link}" pmud="true" />
       </div>
     </xed:repeat>
   </xed:template>
@@ -752,7 +717,7 @@
             <xed:include uri="xslStyle:items2options:classification:editor:-1:children:mir_filetype" />
           </select>
         </div>
-        <div class="col-md-1">
+        <div class="col-md-2">
           <span class="btn btn-default info-button" data-toggle="popover" data-placement="right" data-content="{i18n:mir.help.physical.description.form}">
             <i class="fa fa-info"></i>
           </span>
@@ -792,7 +757,7 @@
           </xed:bind>
         </div>
       </div>
-      <div class="col-md-1">
+      <div class="col-md-2">
         <span class="btn btn-default info-button" data-toggle="popover" data-placement="right" data-content="{i18n:mir.help.host.pages}">
           <i class="fa fa-info"></i>
         </span>
@@ -810,7 +775,7 @@
           <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="lang.list" />
         </xed:bind>
       </div>
-      <div class="col-md-1">
+      <div class="col-md-2">
         <span class="btn btn-default info-button" data-toggle="popover" data-placement="right" data-content="{i18n:mir.help.language}">
           <i class="fa fa-info"></i>
         </span>
@@ -831,13 +796,8 @@
           </div>
           </xed:bind>
         </div>
-        <div class="col-md-1">
-          <span class="btn btn-default info-button" data-toggle="popover" data-placement="right" data-content="{i18n:mir.help.language}">
-            <i class="fa fa-info"></i>
-          </span>
-        </div>
-        <mir:pmud />
-    </div>
+        <mir:help-pmud help-text="{i18n:mir.help.language}" pmud="true" />
+      </div>
     </xed:repeat>
   </xed:template>
 
@@ -866,7 +826,7 @@
             </select>
           </div>
         </div>
-        <div class="col-md-1">
+        <div class="col-md-2">
           <span class="btn btn-default info-button" data-toggle="popover" data-placement="right" data-content="{i18n:mir.help.typeOfResource}">
             <i class="fa fa-info"></i>
           </span>
@@ -887,7 +847,7 @@
             <xed:include uri="xslStyle:items2options:classification:editor:-1:children:mir_rights" />
           </select>
         </div>
-        <div class="col-md-1">
+        <div class="col-md-2">
           <span class="btn btn-default info-button" data-toggle="popover" data-placement="right" data-content="{i18n:mir.help.rights}">
             <i class="fa fa-info"></i>
           </span>
@@ -908,7 +868,7 @@
             <xed:include uri="xslStyle:items2options:classification:editor:-1:children:mir_access" />
           </select>
         </div>
-        <div class="col-md-1">
+        <div class="col-md-2">
           <span class="btn btn-default info-button" data-toggle="popover" data-placement="right" data-content="{i18n:mir.help.access}">
             <i class="fa fa-info"></i>
           </span>
@@ -945,7 +905,7 @@
           </xed:bind>
         </xed:bind>
       </div>
-      <div class="col-md-1">
+      <div class="col-md-2">
         <span class="btn btn-default info-button" data-toggle="popover" data-placement="right" data-content="{i18n:mir.help.institutes}">
           <i class="fa fa-info"></i>
         </span>
@@ -980,7 +940,7 @@
           </div>
         </xed:bind>
       </div>
-      <div class="col-md-1">
+      <div class="col-md-2">
         <span class="btn btn-default info-button" data-toggle="popover" data-placement="right" data-content="{i18n:mir.help.editor.organization}">
           <i class="fa fa-info"></i>
         </span>
@@ -1014,7 +974,7 @@
               </xed:bind>
             </div>
         </div>
-        <div class="col-md-1">
+        <div class="col-md-2">
           <span class="btn btn-default info-button" data-toggle="popover" data-placement="right" data-content="{i18n:mir.help.organisation.funding}">
             <i class="fa fa-info"></i>
           </span>
@@ -1030,7 +990,7 @@
             <input type="text" class="form-control" />
           </xed:bind>
         </div>
-        <div class="col-md-1">
+        <div class="col-md-2">
           <span class="btn btn-default info-button" data-toggle="popover" data-placement="right" data-content="{i18n:mir.help.organisation.funding.grantID}">
             <i class="fa fa-info"></i>
           </span>
@@ -1049,7 +1009,7 @@
 	  	</div>
 	  	<div id="openstreetmap-container" class="col-md-6 col-md-offset-3 collapse" >
 		  	<div id="header">
-			   <div id="osm">© <a href="http://www.openstreetmap.org">OpenStreetMap</a>
+			   <div id="osm">ï¿½ <a href="http://www.openstreetmap.org">OpenStreetMap</a>
 			     und <a href="http://www.openstreetmap.org/copyright">Mitwirkende</a>,
 			     <a href="http://creativecommons.org/licenses/by-sa/2.0/deed.de">CC-BY-SA</a>
 			   </div>
@@ -1074,7 +1034,7 @@
             <xed:include uri="xslStyle:items2options:classification:editor:-1:children:SDNB" />
           </select>
         </div>
-        <div class="col-md-1">
+        <div class="col-md-2">
           <span class="btn btn-default info-button" data-toggle="popover" data-placement="right" data-content="{i18n:mir.help.sdnb}">
             <i class="fa fa-info"></i>
           </span>
@@ -1115,12 +1075,7 @@
                 <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="lang.list" />
               </xed:bind>
             </div>
-            <div class="col-md-1">
-              <span class="btn btn-default info-button" data-toggle="popover" data-placement="right" data-content="{i18n:mir.help.abstract.language}">
-                <i class="fa fa-info"></i>
-              </span>
-            </div>
-            <mir:pmud />
+            <mir:help-pmud help-text="{i18n:mir.help.abstract.language}" pmud="true" />
           </div>
           <mir:textfield xpath="@xlink:href" label="mir.abstract.aslink" placeholder="{i18n:mir.placeholder.abstract.link}" />
           <mir:textarea xpath="." label="mir.abstract.ortext" rows="5" />
@@ -1145,12 +1100,7 @@
                 <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="lang.list" />
               </xed:bind>
             </div>
-            <div class="col-md-1">
-              <span class="btn btn-default info-button" data-toggle="popover" data-placement="right" data-content="{i18n:mir.help.abstract.language}">
-                <i class="fa fa-info"></i>
-              </span>
-            </div>
-            <mir:pmud />
+            <mir:help-pmud help-text="{i18n:mir.help.abstract.language}" pmud="true" />
           </div>
           <mir:textfield xpath="@xlink:href" label="mir.abstract.aslink" help-text="{i18n:mir.help.abstract.aslink}" placeholder="{i18n:mir.placeholder.abstract.link}" />
           <mir:textarea xpath="." label="mir.abstract.ortext" help-text="{i18n:mir.help.abstract.ortext}" rows="5" />
@@ -1160,7 +1110,7 @@
   </xed:template>
 
   <xed:template id="subject">
-    <mir:textfield.repeated xpath="mods:subject" bind="mods:topic" min="1" max="20" label="mir.subject.topic" help-text="{i18n:mir.help.subject.topic}" />
+    <mir:textfield repeated="true" xpath="mods:subject" bind="mods:topic" min="1" max="20" label="mir.subject.topic" help-text="{i18n:mir.help.subject.topic}" />
   </xed:template>
 
   <xed:template id="subjectgroup">
@@ -1169,7 +1119,7 @@
         <xed:output i18n="mir.subject.topic.multiple" />
       </legend>
       <div class="mir-fieldset-content">
-        <mir:textfield.repeated xpath="mods:subject/mods:topic" bind="mods:genre" min="1" max="20" label="mir.subject.topic" help-text="{i18n:mir.help.subject.topic}" />
+        <mir:textfield repeated="true" xpath="mods:subject/mods:topic" bind="mods:genre" min="1" max="20" label="mir.subject.topic" help-text="{i18n:mir.help.subject.topic}" />
       </div>
     </fieldset>
   </xed:template>
@@ -1229,12 +1179,7 @@
                 </div>
               </xed:if>
             </div>
-            <div class="col-md-1">
-              <span class="btn btn-default info-button" data-toggle="popover" data-placement="right" data-content="{i18n:mir.help.related.item}">
-                <i class="fa fa-info"></i>
-              </span>
-            </div>
-            <mir:pmud />
+            <mir:help-pmud help-text="{i18n:mir.help.related.item}" pmud="true" />
           </div>
           <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="host.volume" />
           <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="host.issue" />
