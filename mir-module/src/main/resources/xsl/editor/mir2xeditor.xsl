@@ -15,11 +15,13 @@
         <xsl:copy-of select="@placeholder" />
       </input>
     </div>
-    <div class="col-md-1">
-      <span class="btn btn-default info-button" data-toggle="popover" data-placement="right" data-content="{@help-text}">
-        <i class="fa fa-info"></i>
-      </span>
-    </div>
+    <xsl:if test="string-length(@help-text) &gt; 0">
+      <div class="col-md-1">
+        <span class="btn btn-default info-button" data-toggle="popover" data-placement="right" data-content="{@help-text}">
+          <i class="fa fa-info"></i>
+        </span>
+      </div>
+    </xsl:if>
   </xsl:template>
 
   <xsl:template match="mir:textfield">
