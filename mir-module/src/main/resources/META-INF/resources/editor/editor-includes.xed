@@ -53,11 +53,7 @@
           </xed:bind>
         </div>
       </div>
-      <div class="col-md-2">
-        <span class="btn btn-default info-button" data-toggle="popover" data-placement="right" data-content="{i18n:mir.help.genre}">
-          <i class="fa fa-info"></i>
-        </span>
-      </div>
+      <mir:help-pmud help-text="{i18n:mir.help.genre}" />
     </div>
   </xed:template>
 
@@ -75,16 +71,12 @@
           </div>
         </div>
       </xed:bind>
-      <div class="col-md-2">
-        <span class="btn btn-default info-button" data-toggle="popover" data-placement="right" data-content="{i18n:mir.help.status}">
-          <i class="fa fa-info"></i>
-        </span>
-      </div>
+      <mir:help-pmud help-text="{i18n:mir.help.status}" />
     </div>
   </xed:template>
 
   <xed:template id="title">
-    <mir:textfield xpath="mods:titleInfo/mods:title" label="mir.title" class="required" />
+    <mir:textfield xpath="mods:titleInfo/mods:title" help-text="{i18n:mir.help.title}" label="mir.title" class="required" />
   </xed:template>
 
   <xed:template id="title.abbreviated">
@@ -717,11 +709,7 @@
             <xed:include uri="xslStyle:items2options:classification:editor:-1:children:mir_filetype" />
           </select>
         </div>
-        <div class="col-md-2">
-          <span class="btn btn-default info-button" data-toggle="popover" data-placement="right" data-content="{i18n:mir.help.physical.description.form}">
-            <i class="fa fa-info"></i>
-          </span>
-        </div>
+        <mir:help-pmud help-text="{i18n:mir.help.physical.description.form}" />
       </div>
     </xed:bind>
   </xed:template>
@@ -757,11 +745,7 @@
           </xed:bind>
         </div>
       </div>
-      <div class="col-md-2">
-        <span class="btn btn-default info-button" data-toggle="popover" data-placement="right" data-content="{i18n:mir.help.host.pages}">
-          <i class="fa fa-info"></i>
-        </span>
-      </div>
+      <mir:help-pmud help-text="{i18n:mir.help.host.pages}" />
     </div>
   </xed:template>
 
@@ -775,11 +759,7 @@
           <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="lang.list" />
         </xed:bind>
       </div>
-      <div class="col-md-2">
-        <span class="btn btn-default info-button" data-toggle="popover" data-placement="right" data-content="{i18n:mir.help.language}">
-          <i class="fa fa-info"></i>
-        </span>
-      </div>
+      <mir:help-pmud help-text="{i18n:mir.help.language}" />
     </div>
   </xed:template>
 
@@ -826,11 +806,7 @@
             </select>
           </div>
         </div>
-        <div class="col-md-2">
-          <span class="btn btn-default info-button" data-toggle="popover" data-placement="right" data-content="{i18n:mir.help.typeOfResource}">
-            <i class="fa fa-info"></i>
-          </span>
-        </div>
+        <mir:help-pmud help-text="{i18n:mir.help.typeOfResource}" />
       </div>
     </xed:bind>
   </xed:template>
@@ -847,11 +823,7 @@
             <xed:include uri="xslStyle:items2options:classification:editor:-1:children:mir_rights" />
           </select>
         </div>
-        <div class="col-md-2">
-          <span class="btn btn-default info-button" data-toggle="popover" data-placement="right" data-content="{i18n:mir.help.rights}">
-            <i class="fa fa-info"></i>
-          </span>
-        </div>
+        <mir:help-pmud help-text="{i18n:mir.help.rights}" />
       </div>
     </xed:bind>
   </xed:template>
@@ -868,11 +840,7 @@
             <xed:include uri="xslStyle:items2options:classification:editor:-1:children:mir_access" />
           </select>
         </div>
-        <div class="col-md-2">
-          <span class="btn btn-default info-button" data-toggle="popover" data-placement="right" data-content="{i18n:mir.help.access}">
-            <i class="fa fa-info"></i>
-          </span>
-        </div>
+        <mir:help-pmud help-text="{i18n:mir.help.access}" />
       </div>
     </xed:bind>
   </xed:template>
@@ -905,11 +873,7 @@
           </xed:bind>
         </xed:bind>
       </div>
-      <div class="col-md-2">
-        <span class="btn btn-default info-button" data-toggle="popover" data-placement="right" data-content="{i18n:mir.help.institutes}">
-          <i class="fa fa-info"></i>
-        </span>
-      </div>
+      <mir:help-pmud help-text="{i18n:mir.help.institutes}" />
     </div>
   </xed:template>
 
@@ -940,11 +904,7 @@
           </div>
         </xed:bind>
       </div>
-      <div class="col-md-2">
-        <span class="btn btn-default info-button" data-toggle="popover" data-placement="right" data-content="{i18n:mir.help.editor.organization}">
-          <i class="fa fa-info"></i>
-        </span>
-      </div>
+      <mir:help-pmud help-text="{i18n:mir.help.editor.organization}" />
     </div>
   </xed:template>
 
@@ -974,11 +934,7 @@
               </xed:bind>
             </div>
         </div>
-        <div class="col-md-2">
-          <span class="btn btn-default info-button" data-toggle="popover" data-placement="right" data-content="{i18n:mir.help.organisation.funding}">
-            <i class="fa fa-info"></i>
-          </span>
-        </div>
+        <mir:help-pmud help-text="{i18n:mir.help.organisation.funding}" />
       </div>
 
       <div class="form-group">
@@ -990,11 +946,7 @@
             <input type="text" class="form-control" />
           </xed:bind>
         </div>
-        <div class="col-md-2">
-          <span class="btn btn-default info-button" data-toggle="popover" data-placement="right" data-content="{i18n:mir.help.organisation.funding.grantID}">
-            <i class="fa fa-info"></i>
-          </span>
-        </div>
+        <mir:help-pmud help-text="{i18n:mir.help.organisation.funding.grantID}" />
       </div>
     </xed:bind>
   </xed:template>
@@ -1034,11 +986,7 @@
             <xed:include uri="xslStyle:items2options:classification:editor:-1:children:SDNB" />
           </select>
         </div>
-        <div class="col-md-2">
-          <span class="btn btn-default info-button" data-toggle="popover" data-placement="right" data-content="{i18n:mir.help.sdnb}">
-            <i class="fa fa-info"></i>
-          </span>
-        </div>
+        <mir:help-pmud help-text="{i18n:mir.help.sdnb}" />
       </div>
     </xed:bind>
   </xed:template>
