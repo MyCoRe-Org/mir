@@ -31,7 +31,7 @@ import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
 import org.mycore.access.strategies.MCRAccessCheckStrategy;
-import org.mycore.access.strategies.MCRCreatorRuleStrategy;
+import org.mycore.access.strategies.MCRObjectTypeStrategy;
 import org.mycore.common.MCRSessionMgr;
 import org.mycore.common.MCRSystemUserInformation;
 import org.mycore.common.MCRUserInformation;
@@ -55,7 +55,7 @@ public class MIROwnerStrategy implements MCRAccessCheckStrategy {
     private static final String CONFIG_PREFIX = "MIR.OwnerStrategy.";
 
     private static final MCRAccessCheckStrategy BASE_STRATEGY = MCRConfiguration.instance()
-            .getInstanceOf(CONFIG_PREFIX + "FallbackClass", MCRCreatorRuleStrategy.class.getName());
+            .getInstanceOf(CONFIG_PREFIX + "FallbackClass", MCRObjectTypeStrategy.class.getName());
 
     private static final List<String> OBJECT_TYPES = MCRConfiguration.instance()
             .getStrings(CONFIG_PREFIX + "ObjectTypes", new ArrayList<String>());
