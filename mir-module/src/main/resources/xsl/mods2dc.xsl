@@ -7,7 +7,7 @@
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:xlink="http://www.w3.org/1999/xlink"
   xmlns:mcrurn="xalan://org.mycore.urn.MCRXMLFunctions"
-  xmlns:mcrmods="xalan://org.mycore.mods.MCRMODSClassificationSupport"
+  xmlns:mcrmods="xalan://org.mycore.mods.classification.MCRMODSClassificationSupport"
   exclude-result-prefixes="xsl mods mcrurn mcrmods xlink srw_dc">
 
   <xsl:param name="MCR.URN.Resolver.MasterURL" select="''" />
