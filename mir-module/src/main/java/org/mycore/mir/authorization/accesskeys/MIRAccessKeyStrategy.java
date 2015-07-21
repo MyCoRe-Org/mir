@@ -85,8 +85,9 @@ public class MIRAccessKeyStrategy implements MCRAccessCheckStrategy {
                             return true;
                         }
 
-                        LOGGER.warn("Neither read nor write key matches. Remove access key from user.");
-                        MIRAccessKeyManager.deleteAccessKey(mcrObjectId);
+                        // FIXME enable deletion of invalid keys
+                        // LOGGER.warn("Neither read nor write key matches. Remove access key from user.");
+                        // MIRAccessKeyManager.deleteAccessKey(mcrObjectId);
                     }
                 }
             } catch (RuntimeException e) {
