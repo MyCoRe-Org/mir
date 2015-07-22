@@ -49,6 +49,15 @@
     <servlet-name>MIRAccessKeyServlet</servlet-name>
     <url-pattern>/servlets/MIRAccessKeyServlet</url-pattern>
   </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>MIRClassificationServlet</servlet-name>
+    <servlet-class>org.mycore.mir.MIRClassificationServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>MIRClassificationServlet</servlet-name>
+    <url-pattern>/servlets/MIRClassificationServlet</url-pattern>
+  </servlet-mapping>
 
   <servlet id="OAI2Provider">
     <servlet-name>OAI2</servlet-name>
