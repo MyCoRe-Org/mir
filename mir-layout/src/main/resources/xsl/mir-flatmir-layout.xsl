@@ -15,10 +15,10 @@
   <xsl:param name="MIR.CustomLayout.JS" select="''" />
   <xsl:param name="MIR.Layout.Theme" select="'flatmir'" />
   <!-- Various versions -->
-  <xsl:variable name="bootstrap.version" select="'3.3.4'" />
+  <xsl:variable name="bootstrap.version" select="'3.3.5'" />
   <xsl:variable name="bootswatch.version" select="$bootstrap.version" />
   <xsl:variable name="fontawesome.version" select="'4.2.0'" />
-  <xsl:variable name="jquery.version" select="'2.1.1'" />
+  <xsl:variable name="jquery.version" select="'1.11.3'" />
   <xsl:variable name="jquery.migrate.version" select="'1.2.1'" />
   <!-- End of various versions -->
   <xsl:variable name="PageTitle" select="/*/@title" />
@@ -34,9 +34,9 @@
           Mobile viewport optimisation
         </xsl:comment>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <link href="//netdna.bootstrapcdn.com/font-awesome/{$fontawesome.version}/css/font-awesome.min.css" rel="stylesheet" />
-        <script type="text/javascript" src="//code.jquery.com/jquery-{$jquery.version}.min.js"></script>
-        <script type="text/javascript" src="//code.jquery.com/jquery-migrate-{$jquery.migrate.version}.min.js"></script>
+        <link href="{$WebApplicationBaseURL}webjars/font-awesome/{$fontawesome.version}/css/font-awesome.min.css" rel="stylesheet" />
+        <script type="text/javascript" src="{$WebApplicationBaseURL}webjars/jquery/{$jquery.version}/jquery.min.js"></script>
+        <script type="text/javascript" src="{$WebApplicationBaseURL}webjars/jquery-migrate/{$jquery.migrate.version}/jquery-migrate.min.js"></script>
         <xsl:copy-of select="head/*" />
         <link href="{$WebApplicationBaseURL}mir-layout/css/{$MIR.Layout.Theme}/{$MIR.DefaultLayout.CSS}.css" rel="stylesheet" />
         <xsl:if test="string-length($MIR.CustomLayout.CSS) &gt; 0">
@@ -142,7 +142,7 @@
           <!-- Bootstrap & Query-Ui button conflict workaround  -->
           if (jQuery.fn.button){jQuery.fn.btn = jQuery.fn.button.noConflict();}
         </script>
-        <script type="text/javascript" src="//netdna.bootstrapcdn.com/bootstrap/{$bootstrap.version}/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="{$WebApplicationBaseURL}webjars/bootstrap/{$bootstrap.version}/js/bootstrap.min.js"></script>
         <script type="text/javascript" src="{$WebApplicationBaseURL}js/jquery.confirm.min.js"></script>
         <script type="text/javascript" src="{$WebApplicationBaseURL}js/mir/base.js"></script>
         <script>

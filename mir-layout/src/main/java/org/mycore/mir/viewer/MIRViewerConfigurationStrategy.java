@@ -13,7 +13,7 @@ import org.mycore.iview2.frontend.configuration.MCRViewerDefaultConfigurationStr
 public class MIRViewerConfigurationStrategy extends MCRViewerDefaultConfigurationStrategy {
 
 
-    public static final String BOOTSTRAP_VERSION = "3.3.4";
+    public static final String BOOTSTRAP_VERSION = "3.3.5";
 
     @Override
     public MCRViewerConfiguration get(HttpServletRequest request) {
