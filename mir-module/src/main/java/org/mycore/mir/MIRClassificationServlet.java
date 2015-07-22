@@ -26,7 +26,8 @@ public class MIRClassificationServlet extends MCRServlet {
     private static final String LAYOUT_ELEMENT_KEY = MIRClassificationServlet.class.getName() + ".layoutElement";
 
     @Override
-    public void init() throws ServletException {}
+    public void init() throws ServletException {
+    }
 
     @Override
     protected void think(MCRServletJob job) throws Exception {
@@ -46,16 +47,16 @@ public class MIRClassificationServlet extends MCRServlet {
     }
 
     private Collection<Element> getRoleElements() {
-    		MCRCategoryDAO categoryDao = MCRCategoryDAOFactory.getInstance();
-    		List<MCRCategory> allClassi = categoryDao.getRootCategories();
+        MCRCategoryDAO categoryDao = MCRCategoryDAOFactory.getInstance();
+        List<MCRCategory> allClassi = categoryDao.getRootCategories();
         ArrayList<Element> list = new ArrayList<Element>(allClassi.size());
         for (MCRCategory category : allClassi) {
-        	if(MCRAccessManager.checkPermission(category.getId().toString(), MCRAccessManager.PERMISSION_READ)) {
-            Element role = new Element("classification");
-            role.setAttribute("authority", category.getId().toString());
-            role.setText(category.getCurrentLabel().getText());
-            list.add(role);
-        	}
+            if (MCRAccessManager.checkPermission(category.getId().toString(), MCRAccessManager.PERMISSION_READ)) {
+                Element role = new Element("classification");
+                role.setAttribute("authority", category.getId().toString());
+                role.setText(category.getCurrentLabel().getText());
+                list.add(role);
+            }
         }
         return list;
     }
@@ -69,20 +70,21 @@ public class MIRClassificationServlet extends MCRServlet {
     private static void chooseCategory(HttpServletRequest request) {
         MCRCategoryID categoryID;
         String categID = getProperty(request, "categID");
-        if(MCRAccessManager.checkPermission(categID, MCRAccessManager.PERMISSION_READ)) {
-		        if (categID != null) {
-		            categoryID = MCRCategoryID.fromString(categID);
-		        } else {
-		            String rootID = getProperty(request, "classID");
-		            categoryID = (rootID == null) ? MCRCategoryID.rootID(MCRUser2Constants.getRoleRootId()) : MCRCategoryID.rootID(rootID);
-		        }
-		        Element rootElement = getRootElement(request);
-		        rootElement.setAttribute("classID", categoryID.getRootID());
-		        if (!categoryID.isRootID()) {
-		            rootElement.setAttribute("categID", categoryID.getID());
-		        }
-		        request.setAttribute(LAYOUT_ELEMENT_KEY, new Document(rootElement));
-	    	}
+        if (MCRAccessManager.checkPermission(categID, MCRAccessManager.PERMISSION_READ)) {
+            if (categID != null) {
+                categoryID = MCRCategoryID.fromString(categID);
+            } else {
+                String rootID = getProperty(request, "classID");
+                categoryID = (rootID == null) ? MCRCategoryID.rootID(MCRUser2Constants.getRoleRootId()) : MCRCategoryID
+                        .rootID(rootID);
+            }
+            Element rootElement = getRootElement(request);
+            rootElement.setAttribute("classID", categoryID.getRootID());
+            if (!categoryID.isRootID()) {
+                rootElement.setAttribute("categID", categoryID.getID());
+            }
+            request.setAttribute(LAYOUT_ELEMENT_KEY, new Document(rootElement));
+        }
     }
 
     @Override
@@ -91,7 +93,8 @@ public class MIRClassificationServlet extends MCRServlet {
             //do not handle error here
             throw ex;
         }
-        getLayoutService().doLayout(job.getRequest(), job.getResponse(), new MCRJDOMContent((Document) job.getRequest().getAttribute(LAYOUT_ELEMENT_KEY)));
+        getLayoutService().doLayout(job.getRequest(), job.getResponse(),
+                new MCRJDOMContent((Document) job.getRequest().getAttribute(LAYOUT_ELEMENT_KEY)));
     }
 
 }
