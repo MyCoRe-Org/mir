@@ -46,11 +46,11 @@ public class MIRAccessKeyStrategy implements MCRAccessCheckStrategy {
 
     private static final String CONFIG_PREFIX = "MIR.AccessKeyStrategy.";
 
-    private static final MCRAccessCheckStrategy BASE_STRATEGY = MCRConfiguration.instance().getInstanceOf(
-            CONFIG_PREFIX + "FallbackClass", MCRCreatorRuleStrategy.class.getName());
+    private static final MCRAccessCheckStrategy BASE_STRATEGY = MCRConfiguration.instance()
+            .getInstanceOf(CONFIG_PREFIX + "FallbackClass", MCRCreatorRuleStrategy.class.getName());
 
-    private static final List<String> OBJECT_TYPES = MCRConfiguration.instance().getStrings(
-            CONFIG_PREFIX + "ObjectTypes", new ArrayList<String>());
+    private static final List<String> OBJECT_TYPES = MCRConfiguration.instance()
+            .getStrings(CONFIG_PREFIX + "ObjectTypes", new ArrayList<String>());
 
     private static final Pattern TYPE_PATTERN = Pattern.compile("[^_]*_([^_]*)_*");
 
@@ -67,7 +67,8 @@ public class MIRAccessKeyStrategy implements MCRAccessCheckStrategy {
 
         String objectType = getObjectType(id);
 
-        if (OBJECT_TYPES.contains(objectType)) {
+        if (OBJECT_TYPES.contains(objectType) && permission.equals(MCRAccessManager.PERMISSION_READ)
+                || permission.equals(MCRAccessManager.PERMISSION_WRITE)) {
             MCRObjectID mcrObjectId = null;
             try {
                 mcrObjectId = MCRObjectID.getInstance(id);
@@ -77,17 +78,19 @@ public class MIRAccessKeyStrategy implements MCRAccessCheckStrategy {
                     final String uAccKey = getUserAccessKey(id);
 
                     if (uAccKey != null) {
-                        if ((permission.equals(MCRAccessManager.PERMISSION_READ) || permission
-                                .equals(MCRAccessManager.PERMISSION_WRITE)) && uAccKey.equals(accKP.getWriteKey())) {
+                        if ((permission.equals(MCRAccessManager.PERMISSION_READ)
+                                || permission.equals(MCRAccessManager.PERMISSION_WRITE))
+                                && uAccKey.equals(accKP.getWriteKey())) {
                             return true;
                         }
                         if (permission.equals(MCRAccessManager.PERMISSION_READ) && uAccKey.equals(accKP.getReadKey())) {
                             return true;
                         }
 
-                        // FIXME enable deletion of invalid keys
-                        // LOGGER.warn("Neither read nor write key matches. Remove access key from user.");
-                        // MIRAccessKeyManager.deleteAccessKey(mcrObjectId);
+                        if (!uAccKey.equals(accKP.getReadKey()) && !uAccKey.equals(accKP.getWriteKey())) {
+                            LOGGER.warn("Neither read nor write key matches. Remove access key from user.");
+                            MIRAccessKeyManager.deleteAccessKey(mcrObjectId);
+                        }
                     }
                 }
             } catch (RuntimeException e) {
