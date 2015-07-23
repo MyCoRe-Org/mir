@@ -19,7 +19,7 @@
   	
   	function work(button){
   		initBody();
-			loadClassifications(leftContent);
+			loadClassifications(leftContent, "");
 			
   		function leftContent(data) {
   			var mainBody = $(data).find("#main_content");
@@ -29,13 +29,13 @@
   			
   			$("#main_left_content > a").each(function() {
   				var href = $(this).attr("href");
-  				$(this).attr("data-href", href);
+  				$(this).attr("data-href", href).attr("style", "cursor: pointer");
   				$(this).removeAttr("href");
   				
   				$(this).click(function() {
   					$(".list-group-item").removeClass("active");
   					$(this).addClass("active");
-  					loadClassi(rightContent, $(this).attr("data-href"));
+  					loadClassifications(rightContent, $(this).attr("data-href"));
   				});
   			});
   		};
@@ -52,7 +52,7 @@
   			
   			setTimeout(function() {
   				removeHrefCbList();
-  			}, 400);
+  			}, 300);
   		};
   		
   		function removeHrefCbList() {
@@ -63,7 +63,7 @@
   					classi = classi.split("&")[0];
   					var label = href.substr(href.indexOf("@text=") + 6); 
   					label = label.replace("+", " ");
-  					$(this).removeAttr("href");
+  					$(this).removeAttr("href").attr("style", "cursor: pointer");
   					
   					$(this).click(function() {
   						button.next().val(label);
@@ -74,10 +74,11 @@
   				}
   				
   				if($(this).attr("href") == "#") {
+  					$(this).removeAttr("href").attr("style", "cursor: pointer");
   					$(this).click(function() {
   						setTimeout(function() {
   							removeHrefCbList();
-  						}, 400);
+  						}, 300);
   					});
   				}
   			});
@@ -92,39 +93,25 @@
   			}
   		}
   		
-  		$("#modalFrame-cancel").click(function() {
-  			$("#modalFrame").modal("hide");
-  		});
-  		
   		$("#modalFrame").on('hidden.bs.modal', function() {
   			$("#modalFrame-body").empty();
   		});
   		
   		function initBody() {
-  			$("#modalFrame-title").text("Klassification Auswahl");
+  			$("#modalFrame-title").text("Klassifikation Auswahl");
   			$("#modalFrame-cancel").text("Abbrechen");
   			$("#modalFrame-send").hide();
   			$("#modalFrame").modal("show");
   		};
   		
-  		function loadClassifications(callback){
-  			var session = $("input[name='_xed_session']").val();
+  		function loadClassifications(callback, href){
+  			var url = href;
+  			if(url == "") {
+  				var session = $("input[name='_xed_session']").val();
+  				url = webApplicationBaseURL + "servlets/MIRClassificationServlet?_xed_subselect_session=" + session;
+  			}
   			$.ajax({
-  				url: webApplicationBaseURL + "servlets/MIRClassificationServlet?_xed_subselect_session=" + session,
-  				type: "GET",
-  				dataType: "html",
-  				success: function(data) {
-  					callback(data);
-  				},
-  				error: function(error) {
-  					alert(error);
-  				}
-  			});
-  		};
-  		
-  		function loadClassi(callback, href){
-  			$.ajax({
-  				url: href,
+  				url: url,
   				type: "GET",
   				dataType: "html",
   				success: function(data) {
