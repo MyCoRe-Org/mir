@@ -62,7 +62,7 @@
   					var classi = href.substr(href.indexOf("@name=") + 6); 
   					classi = classi.split("&")[0];
   					var label = href.substr(href.indexOf("@text=") + 6); 
-  					label = label.replace("+", " ");
+  					label = label.replace(/\+/g, " ");
   					$(this).removeAttr("href").attr("style", "cursor: pointer");
   					
   					$(this).click(function() {
