@@ -810,6 +810,24 @@
       </div>
     </xed:bind>
   </xed:template>
+  
+  <xed:template id="type.of.resource.repeated">
+  	<xed:repeat xpath="mods:typeOfResource" min="1" max="10" >
+      <div class="form-group">
+        <label class="col-md-3 control-label">
+          <xed:output i18n="mir.typeOfResource" />
+        </label>
+        <div class="col-md-6">
+          <div class="controls">
+            <select class="form-control form-control-inline">
+              <xed:include uri="xslStyle:items2options:classification:editor:-1:children:typeOfResource" />
+            </select>
+          </div>
+        </div>
+        <mir:help-pmud help-text="{i18n:mir.help.typeOfResource}" pmud="true" />
+      </div>
+    </xed:repeat>
+  </xed:template>
 
   <xed:template id="rights">
     <xed:bind xpath="mods:accessCondition[@type='use and reproduction']" initially="">
@@ -961,7 +979,7 @@
       </div>
       <div id="openstreetmap-container" class="col-md-6 col-md-offset-3 collapse" >
         <div id="header">
-         <div id="osm">� <a href="http://www.openstreetmap.org">OpenStreetMap</a>
+         <div id="osm">(c) <a href="http://www.openstreetmap.org">OpenStreetMap</a>
            und <a href="http://www.openstreetmap.org/copyright">Mitwirkende</a>,
            <a href="http://creativecommons.org/licenses/by-sa/2.0/deed.de">CC-BY-SA</a>
          </div>
@@ -1058,7 +1076,11 @@
   </xed:template>
 
   <xed:template id="subject">
-    <mir:textfield repeated="true" xpath="mods:subject" bind="mods:topic" min="1" max="20" label="mir.subject.topic" help-text="{i18n:mir.help.subject.topic}" />
+    <mir:textfield repeat="true" xpath="mods:subject/mods:topic" min="1" max="10" label="mir.subject.topic" help-text="{i18n:mir.help.subject.topic}" />
+  </xed:template>
+  
+  <xed:template id="subject.genre">
+  	<mir:textfield repeat="true" xpath="mods:subject/mods:genre" min="1" max="10" label="mir.subject.genre" help-text="{i18n:mir.help.subject.genre}" />
   </xed:template>
 
   <xed:template id="subjectgroup">
@@ -1067,12 +1089,12 @@
         <xed:output i18n="mir.subject.topic.multiple" />
       </legend>
       <div class="mir-fieldset-content">
-        <mir:textfield repeated="true" xpath="mods:subject/mods:topic" bind="mods:genre" min="1" max="20" label="mir.subject.topic" help-text="{i18n:mir.help.subject.topic}" />
+        <mir:textfield repeat="true" xpath="mods:subject/mods:topic" bind="mods:genre" min="1" max="20" label="mir.subject.topic" help-text="{i18n:mir.help.subject.topic}" />
       </div>
     </fieldset>
   </xed:template>
-
-	<xed:template id="classification">
+  
+  <xed:template id="classification">
   	<xed:repeat xpath="mods:classification" min="1" max="10">
 	  	<div class="form-group">
 	  		<label class="col-md-3 control-label">
