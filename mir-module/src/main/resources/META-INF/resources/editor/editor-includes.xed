@@ -1135,6 +1135,24 @@
 		<script type="text/javascript" src="{$WebApplicationBaseURL}js/mir/classification-modal-select.js"></script>
   </xed:template>
 
+  <xed:template id="openAIRE">
+    <fieldset>
+      <legend class="mir-fieldset-legend">
+        <xed:output i18n="mir.project.information" />
+      </legend>
+      <div class="mir-fieldset-content mir-openAIRE-container">
+        <mir:textfield.nobind label="mir.project.name" help-text="{i18n:mir.help.project.name}" />
+        <mir:textfield.nobind.complex label="mir.project.acronym" placeholder="{i18n:mir.project.grantID}" divClass2="has-warning" inputClass2="inputWarning" help-text="{i18n:mir.help.project.acronym}" />
+        <mir:textfield.nobind.complex label="mir.project.sponsor.program" data-provide="typeahead" placeholder="{i18n:mir.project.sponsor.programmID}" inputID="programmSearch" divClass2="has-warning" inputClass2="inputWarning" help-text="{i18n:mir.help.sponsor.program}" />
+        <mir:textfield.nobind.complex label="mir.project.sponsor.organisation" placeholder="{i18n:mir.project.sponsor.organisationID}" divClass2="has-warning" inputClass2="inputWarning" help-text="{i18n:mir.help.sponsor.organisation}" />
+        <xed:bind xpath="mods:identifier[@type='open-aire']">
+          <input type="hidden" />
+        </xed:bind>
+      </div>
+    </fieldset>
+    <script type="text/javascript" src="{$WebApplicationBaseURL}js/mir/openaire-cutter.js" />
+  </xed:template>
+
   <xed:template id="comment">
     <mir:textarea xpath="mods:note" label="mir.comment" help-text="{i18n:mir.help.comment}" rows="2" />
   </xed:template>
