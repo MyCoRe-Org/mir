@@ -12,6 +12,48 @@
     </span>
   </xsl:template>
   
+  <xsl:template match="mir:textfield.nobind">
+    <div class="form-group">
+      <label class="col-md-3 control-label">
+        <xed:output i18n="{@label}" /> 
+      </label>
+      <div class="col-md-6 {@divClass}">
+        <input id="{@id}" type="text" class="form-control {@inputClass}" name="">
+          <xsl:copy-of select="@placeholder" />
+        </input>
+      </div>
+      <div class="col-md-3">
+        <xsl:if test="string-length(@help-text) &gt; 0">
+          <xsl:call-template name="mir-helpbutton" />
+        </xsl:if>
+      </div>
+    </div>
+  </xsl:template>
+
+  <xsl:template match="mir:textfield.nobind.complex">
+    <div class="form-group">
+      <label class="col-md-3 control-label">
+        <xed:output i18n="{@label}" /> 
+      </label>
+      <div class="col-md-6">
+        <div class="col-md-8 {@divClass}" style="padding-left: 0">
+          <input id="{@inputID}" type="text" class="form-control {@inputClass}" name="" data-provide="typeahead" >
+          </input>
+        </div>
+        <div class="col-md-4 {@divClass2}" style="padding-right: 0">
+          <input type="text" class="form-control {@inputClass2}" name="">
+            <xsl:copy-of select="@placeholder" />
+          </input>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <xsl:if test="string-length(@help-text) &gt; 0">
+          <xsl:call-template name="mir-helpbutton" />
+        </xsl:if>
+      </div>
+    </div>
+  </xsl:template>
+  
   <xsl:template name="mir-textfield">
     <label class="col-md-3 control-label ">
       <xed:output i18n="{@label}" /> 
