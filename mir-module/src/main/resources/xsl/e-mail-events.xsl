@@ -10,6 +10,7 @@
   <xsl:param name="ServletsBaseURL" />
   <xsl:param name="MCR.mir-module.EditorMail" />
   <xsl:param name="MCR.mir-module.MailSender" />
+  <xsl:param name="MCR.mir-module.sendEditorMailToCurrentAuthor" />
   <xsl:variable name="newline" select="'&#xA;'" />
   <xsl:variable name="categories" select="document('classification:metadata:1:children:mir_institutes')/mycoreclass/categories" />
   <xsl:variable name="institutemember" select="$categories/category[mcrxsl:isCurrentUserInRole(concat('mir_institutes:',@ID))]" />
@@ -130,8 +131,14 @@
 
   <xsl:template match="mycoreobject" mode="mailReceiver">
     <xsl:if test="string-length($MCR.mir-module.EditorMail)&gt;0">
+      <xsl:for-each select="str:tokenize($MCR.mir-module.EditorMail,',')" >
+        <to> <xsl:value-of select="." /> </to>
+      </xsl:for-each>
+    </xsl:if>
+    <xsl:if test="$MCR.mir-module.sendEditorMailToCurrentAuthor = 'true'">
       <to>
-        <xsl:value-of select="$MCR.mir-module.EditorMail" />
+        <xsl:variable  name="user" select="document(concat('user:',service/servflags[@class='MCRMetaLangText']/servflag[@type='createdby']))" />
+        <xsl:value-of select="$user/user/eMail"/>
       </to>
     </xsl:if>
     <xsl:for-each select="$institutemember">
