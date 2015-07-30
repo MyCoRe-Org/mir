@@ -12,7 +12,7 @@
   <properties>
     <MCR.AppName>mir</MCR.AppName>
     <MCR.Home.Integration>${project.build.directory}/mycore-home</MCR.Home.Integration>
-    <selenium.version>2.45.0</selenium.version>
+    <selenium.version>2.46.0</selenium.version>
     <cargo.servlet.port>9102</cargo.servlet.port>
     <solr.version>4.10.4-SNAPSHOT</solr.version>
     <solr.home>${MCR.Home.Integration}/solr-home</solr.home>
