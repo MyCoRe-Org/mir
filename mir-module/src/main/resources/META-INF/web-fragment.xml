@@ -58,6 +58,15 @@
     <servlet-name>MIRClassificationServlet</servlet-name>
     <url-pattern>/servlets/MIRClassificationServlet</url-pattern>
   </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>MIRGetOpenAIREProjectsServlet</servlet-name>
+    <servlet-class>org.mycore.mir.MIRGetOpenAIREProjectsServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>MIRGetOpenAIREProjectsServlet</servlet-name>
+    <url-pattern>/servlets/MIRGetOpenAIREProjectsServlet</url-pattern>
+  </servlet-mapping>
 
   <servlet id="OAI2Provider">
     <servlet-name>OAI2</servlet-name>

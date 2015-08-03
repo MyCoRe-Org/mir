@@ -1095,44 +1095,46 @@
   </xed:template>
   
   <xed:template id="classification">
-  	<xed:repeat xpath="mods:classification" min="1" max="10">
-	  	<div class="form-group">
-	  		<label class="col-md-3 control-label">
-	  			<xed:output i18n="mir.classification" />
-	  		</label>
-	  		<div class="col-md-6">
-	  			<div class="form-inline">
-						<input type="button" class="form-control mir-classification-select" value="{i18n:mir.classification.select}" />
-				    <xed:bind xpath=".">
-							<input type="hidden" />
-				    </xed:bind>
-				    <xed:bind xpath="@mcr:categId">
-				    	<input type="hidden" />
-				    </xed:bind>
-				    <span class="mir-span"></span>
-			    </div>
-	  		</div>
-	  		<mir:help-pmud help-text="{i18n:mir.help.classification}" pmud="true" />
-	  	</div>
-  	</xed:repeat>
+    <xed:repeat xpath="mods:classification" min="1" max="10">
+      <div class="form-group">
+        <label class="col-md-3 control-label">
+          <xed:output i18n="mir.classification" />
+        </label>
+        <div class="col-md-6">
+          <div class="form-inline">
+            <input type="button" class="form-control mir-classification-select" value="{i18n:mir.classification.select}" />
+            <xed:bind xpath="@displayLabel">
+              <input type="hidden" />
+            </xed:bind>
+            <xed:bind xpath="@mcr:categId">
+              <input type="hidden" />
+            </xed:bind>
+            <span class="mir-span"></span>
+          </div>
+        </div>
+        <mir:help-pmud help-text="{i18n:mir.help.classification}" pmud="true" />
+      </div>
+    </xed:repeat>
   	
   	<!-- frame for modal window -->
     <div class="modal fade" id="modalFrame" tabindex="-1" role="dialog" aria-labelledby="modal frame" aria-hidden="true">
-		  <div class="modal-dialog" style="width: 930px">
-		    <div class="modal-content">
-		      <div class="modal-header">
-		        <button type="button" class="close modalFrame-cancel" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
-		        <h4 class="modal-title" id="modalFrame-title"></h4>
-		      </div>
-		      <div id="modalFrame-body" class="modal-body" style="padding-bottom: 0px" />
-		      <div class="modal-footer" style="clear: both">
-		        <button id="modalFrame-cancel" type="button" class="btn btn-danger" data-dismiss="modal"></button>
-		        <button id="modalFrame-send" type="button" class="btn btn-primary" disabled="disabled"></button>
-		      </div>
-		    </div>
-		  </div>
-		</div>
-		<script type="text/javascript" src="{$WebApplicationBaseURL}js/mir/classification-modal-select.js"></script>
+      <div class="modal-dialog" style="width: 930px">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close modalFrame-cancel" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">x</span>
+            </button>
+            <h4 class="modal-title" id="modalFrame-title"></h4>
+          </div>
+          <div id="modalFrame-body" class="modal-body" style="padding-bottom: 0px" />
+          <div class="modal-footer" style="clear: both">
+            <button id="modalFrame-cancel" type="button" class="btn btn-danger" data-dismiss="modal"></button>
+            <button id="modalFrame-send" type="button" class="btn btn-primary" disabled="disabled"></button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script type="text/javascript" src="{$WebApplicationBaseURL}js/mir/classification-modal-select.js"></script>
   </xed:template>
 
   <xed:template id="openAIRE">
@@ -1141,16 +1143,28 @@
         <xed:output i18n="mir.project.information" />
       </legend>
       <div class="mir-fieldset-content mir-openAIRE-container">
-        <mir:textfield.nobind label="mir.project.name" help-text="{i18n:mir.help.project.name}" />
-        <mir:textfield.nobind.complex label="mir.project.acronym" placeholder="{i18n:mir.project.grantID}" divClass2="has-warning" inputClass2="inputWarning" help-text="{i18n:mir.help.project.acronym}" />
-        <mir:textfield.nobind.complex label="mir.project.sponsor.program" data-provide="typeahead" placeholder="{i18n:mir.project.sponsor.programmID}" inputID="programmSearch" divClass2="has-warning" inputClass2="inputWarning" help-text="{i18n:mir.help.sponsor.program}" />
-        <mir:textfield.nobind.complex label="mir.project.sponsor.organisation" placeholder="{i18n:mir.project.sponsor.organisationID}" divClass2="has-warning" inputClass2="inputWarning" help-text="{i18n:mir.help.sponsor.organisation}" />
+        <mir:textfield.nobind id="name" label="mir.project.name" help-text="{i18n:mir.help.project.name}" autocomplete="off" />
+        <mir:textfield.nobind id="acronym" label="mir.project.acronym" help-text="{i18n:mir.help.project.acronym}" autocomplete="off" />
+        <div class="form-group">
+          <label class="col-md-3 control-label" />
+          <div class="col-md-6">
+            <div class="col-md-4 has-warning">
+              <input type="text" class="form-control inputWarning" name="" placeholder="{i18n:mir.project.grantID}" />
+            </div>
+            <div class="col-md-4 has-warning">
+              <input type="text" class="form-control inputWarning" name="" placeholder="{i18n:mir.project.sponsor.programmID}" />
+            </div>
+            <div class="col-md-4 has-warning">
+              <input type="text" class="form-control inputWarning" name="" placeholder="{i18n:mir.project.sponsor.organisationID}" />
+            </div>
+          </div>
+        </div>
         <xed:bind xpath="mods:identifier[@type='open-aire']">
           <input type="hidden" />
         </xed:bind>
       </div>
     </fieldset>
-    <script type="text/javascript" src="{$WebApplicationBaseURL}js/mir/openaire-cutter.js" />
+    <script type="text/javascript" src="{$WebApplicationBaseURL}js/mir/openaire.js" />
   </xed:template>
 
   <xed:template id="comment">
