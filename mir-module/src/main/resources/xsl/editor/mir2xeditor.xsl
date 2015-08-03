@@ -56,7 +56,16 @@
         <xed:repeat xpath="{@xpath}" min="{@min}" max="{@max}">
           <xsl:variable name="xed-val-marker" > {$xed-validation-marker} </xsl:variable>
           <div class="form-group {@class} {$xed-val-marker}">
-            <xsl:call-template name="mir-textfield" />
+            <xsl:choose>
+              <xsl:when test="@bind" >
+                <xed:bind xpath="{@bind}" >
+                  <xsl:call-template name="mir-textfield" />
+                </xed:bind>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:call-template name="mir-textfield" />
+              </xsl:otherwise>
+            </xsl:choose>
           </div>
         </xed:repeat>
       </xsl:when>
