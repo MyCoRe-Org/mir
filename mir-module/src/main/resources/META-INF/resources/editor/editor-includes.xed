@@ -926,49 +926,6 @@
     </div>
   </xed:template>
 
-  <xed:template id="organisation.funding">
-    <xed:bind xpath="mods:name[@type='corporate'][mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']='fnd']">
-      <div class="form-group">
-        <label class="col-md-3 control-label">
-          <xed:output i18n="mir.organisation.funding" />
-        </label>
-        <div class="col-md-6">
-            <div class="search-organization">
-              <xed:bind xpath="mods:displayForm">
-                <input type="text" size="26" class="form-control form-control-inline"
-                  data-search="searchEntity"
-                  data-search-type="select"
-                  data-search-entity-type="organisation"
-                  data-search-output="#valueURIxEditor"
-                  data-search-button="{i18n:button.search}"
-                  data-search-button-loading="{i18n:button.loading}"
-                  data-search-result-empty="{i18n:mir.searchIdentifier.noResult}"
-                  data-target=".search-organization"
-                  placeholder="{i18n:mir.placeholder.name.organization}"
-                />
-              </xed:bind>
-              <xed:bind xpath="@valueURIxEditor">
-                <input type="hidden" id="valueURIxEditor" />
-              </xed:bind>
-            </div>
-        </div>
-        <mir:help-pmud help-text="{i18n:mir.help.organisation.funding}" />
-      </div>
-
-      <div class="form-group">
-        <label class="col-md-3 control-label">
-          <xed:output i18n="mir.organisation.funding.grantID" />
-        </label>
-        <div class="col-md-6">
-          <xed:bind xpath="@ID">
-            <input type="text" class="form-control" />
-          </xed:bind>
-        </div>
-        <mir:help-pmud help-text="{i18n:mir.help.organisation.funding.grantID}" />
-      </div>
-    </xed:bind>
-  </xed:template>
-
   <xed:template id="cartographics">
     <mir:textfield id="mir_coordinates" xpath="mods:subject/mods:cartographics/mods:coordinates" label="mir.cartographics.coordinates" help-text="{i18n:mir.help.cartographics.coordinates}" />
     <div class="form-group openstreetmap" >
