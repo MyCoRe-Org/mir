@@ -14,12 +14,12 @@
   <description>MyCoRe/MODS Institutional Repository</description>
   <inceptionYear>2013</inceptionYear>
   <properties>
-    <java.target.version>1.7</java.target.version>
-    <mycore.version>2015.06-SNAPSHOT</mycore.version>
-    <jetty.version>9.2.11.v20150529</jetty.version>
-    <tomcat7.version>7.0.62</tomcat7.version>
+    <java.target.version>1.8</java.target.version>
+    <mycore.version>2015.08-SNAPSHOT</mycore.version>
+    <jetty.version>9.2.12.v20150709</jetty.version>
+    <tomcat7.version>7.0.63</tomcat7.version>
     <tomcat8.version>8.0.24</tomcat8.version>
-    <cargo.version>1.4.14</cargo.version>
+    <cargo.version>1.4.15</cargo.version>
     <cargo.servlet.uriencoding>UTF-8</cargo.servlet.uriencoding>
     <cargo.container.zipUrlInstaller.downloadDir>${settings.localRepository}/../cargo/containers</cargo.container.zipUrlInstaller.downloadDir>
     <cargo.deployable.default.groupId>${project.groupId}</cargo.deployable.default.groupId>
