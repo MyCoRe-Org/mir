@@ -1,5 +1,5 @@
 /*
- * $Id$ 
+ * $Id$
  * $Revision$ $Date$
  *
  * This file is part of ***  M y C o R e  ***
@@ -33,13 +33,13 @@ import org.mycore.datamodel.metadata.MCRObjectID;
 
 /**
  * This resolver can be used to return a {@link MIRAccessKeyPair} for an given {@link MCRObjectID}.
- * <br />
- * <br />
+ *
+ *
  * Syntax:
- * <ul> 
+ * <ul>
  * <li><code>accesskeys:{mcrObjectId}</code> to resolve an {@link MIRAccessKeyPair}</li>
  * </ul>
- * 
+ *
  * @author Ren\u00E9 Adler (eagle)
  *
  */

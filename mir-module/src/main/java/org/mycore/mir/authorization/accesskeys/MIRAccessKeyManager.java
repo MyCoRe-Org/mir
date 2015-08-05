@@ -1,5 +1,5 @@
 /*
- * $Id$ 
+ * $Id$
  * $Revision$ $Date$
  *
  * This file is part of ***  M y C o R e  ***
@@ -35,7 +35,7 @@ import org.mycore.user2.MCRUserManager;
 /**
  * Provides methods to store, update, delete and retrieve
  * {@link MCRObject} access keys.
- * 
+ *
  * @author Ren\u00E9 Adler (eagle)
  * @since 0.3
  */
@@ -47,7 +47,7 @@ public final class MIRAccessKeyManager {
 
     /**
      * Returns the {@link MIRAccessKeyPair} for given {@link MCRObjectID}.
-     * 
+     *
      * @param mcrObjectId the {@link MCRObjectID}
      * @return the {@link MIRAccessKeyPair}
      */
@@ -59,7 +59,7 @@ public final class MIRAccessKeyManager {
 
     /**
      * Checks if an {@link MIRAccessKeyPair} exists for given {@link MCRObjectID}.
-     * 
+     *
      * @param mcrObjectId the {@link MCRObjectID}.
      * @return <code>true</code> if exists or <code>false</code> if not
      */
@@ -78,7 +78,7 @@ public final class MIRAccessKeyManager {
 
     /**
      * Persists the given {@link MIRAccessKeyPair}.
-     * 
+     *
      * @param accKP the {@link MIRAccessKeyPair}
      */
     public static void createKeyPair(final MIRAccessKeyPair accKP) {
@@ -92,7 +92,7 @@ public final class MIRAccessKeyManager {
 
     /**
      * Updates the given {@link MIRAccessKeyPair} or create a new one if not exists.
-     * 
+     *
      * @param accKP the {@link MIRAccessKeyPair}
      */
     public static void updateKeyPair(final MIRAccessKeyPair accKP) {
@@ -107,7 +107,7 @@ public final class MIRAccessKeyManager {
 
     /**
      * Deletes the {@link MIRAccessKeyPair} for given {@link MCRObjectID}.
-     * 
+     *
      * @param mcrObjectId the {@link MCRObjectID}
      */
     public static void deleteKeyPair(final MCRObjectID mcrObjectId) {
@@ -120,10 +120,11 @@ public final class MIRAccessKeyManager {
 
     /**
      * Add the access key to the current {@link MCRUser} for given {@link MCRObjectID}.
-     * 
+     *
      * @param mcrObjectId the {@link MCRObjectID}
      * @param accessKey the access key
-     * @throws MCRAccessException 
+     * @throws MCRAccessException
+     *             if an error was occured
      */
     public static void addAccessKey(final MCRObjectID mcrObjectId, final String accessKey) throws MCRAccessException {
         addAccessKey(MCRUserManager.getCurrentUser(), mcrObjectId, accessKey);
@@ -140,11 +141,12 @@ public final class MIRAccessKeyManager {
 
     /**
      * Add the access key to the given {@link MCRUser} for {@link MCRObjectID}.
-     * 
+     *
      * @param user the {@link MCRUser}
      * @param mcrObjectId the {@link MCRObjectID}
      * @param accessKey the access key
-     * @throws MCRAccessException 
+     * @throws MCRAccessException
+     *             if an error was occured
      */
     public static void addAccessKey(final MCRUser user, final MCRObjectID mcrObjectId, final String accessKey)
             throws MCRAccessException {
@@ -160,7 +162,7 @@ public final class MIRAccessKeyManager {
 
     /**
      * Deletes the access key from current {@link MCRUser} for given {@link MCRObjectID}.
-     * 
+     *
      * @param mcrObjectId the {@link MCRObjectID}
      */
     public static void deleteAccessKey(final MCRObjectID mcrObjectId) {
@@ -169,7 +171,7 @@ public final class MIRAccessKeyManager {
 
     /**
      * Deletes the access key from given {@link MCRUser} for {@link MCRObjectID}.
-     * 
+     *
      * @param user the {@link MCRUser}
      * @param mcrObjectId the {@link MCRObjectID}
      */

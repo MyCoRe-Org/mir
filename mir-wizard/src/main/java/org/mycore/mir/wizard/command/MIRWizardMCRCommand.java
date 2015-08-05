@@ -48,9 +48,6 @@ import org.mycore.mir.wizard.MIRWizardCommand;
  */
 public class MIRWizardMCRCommand extends MIRWizardCommand {
 
-    /**
-     * @param name
-     */
     public MIRWizardMCRCommand(String name) {
         super(name);
     }
