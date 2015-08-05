@@ -5,14 +5,14 @@
   <section title="Publication" xml:lang="en"/>
   <section xml:lang="all">
     <script src='../../js/mir/select-doctype.js'> </script>
-    
+
     <form id="submit_publication"
           class="form-horizontal"
           role="form"
           method="get"
           action="../../editor/editor-dynamic.xed">
-      
-   
+
+
       <section xml:lang="de">
         <h2>Publizieren</h2>
         <h3> Publikationstyp festlegen </h3>
@@ -25,7 +25,7 @@
           </div>
         </div>
       </section>
-      
+
       <!--
       <section xml:lang="en">
         <h2>Publish</h2>
@@ -39,7 +39,7 @@
           </div>
         </div>
       </section>-->
-      
+
       <div class="row form-group">
         <label for="genre" class="col-sm-3 col-lg-2 control-label">
           <text i18n="component.mods.genre" />
@@ -47,9 +47,9 @@
         <div class="col-sm-7 col-md-5 col-lg-4">
           <select id="genre" class="form-control" name="genre" size="1">
           </select>
-        </div> 
+        </div>
       </div>
-      
+
       <div class="row form-group">
         <label for="host"  class="col-sm-3 col-lg-2 control-label">
           <text i18n="mir.select.host" />
@@ -59,7 +59,7 @@
           </select>
         </div>
       </div>
-      
+
       <div id="more_options_toggle" class="row">
         <div class="col-sm-3 col-lg-2"></div>
         <div class="col-sm-9 col-lg-10">
@@ -84,7 +84,7 @@
           </p>
         </div>
       </div>
-      
+
       <div class="row form-group">
         <div class="col-sm-3 col-md-2"></div>
         <div class="col-sm-5 col-md-4">

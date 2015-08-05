@@ -35,7 +35,7 @@ import org.mycore.datamodel.metadata.MCRObjectID;
  * This resolver can be used to return a {@link MIRAccessKeyPair} for an given {@link MCRObjectID}.
  *
  *
- * Syntax:
+ * <p>Syntax:</p>
  * <ul>
  * <li><code>accesskeys:{mcrObjectId}</code> to resolve an {@link MIRAccessKeyPair}</li>
  * </ul>
