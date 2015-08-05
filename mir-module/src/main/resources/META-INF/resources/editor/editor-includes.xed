@@ -810,9 +810,9 @@
       </div>
     </xed:bind>
   </xed:template>
-  
+
   <xed:template id="type.of.resource.repeated">
-  	<xed:repeat xpath="mods:typeOfResource" min="1" max="10" >
+    <xed:repeat xpath="mods:typeOfResource" min="1" max="10" >
       <div class="form-group">
         <label class="col-md-3 control-label">
           <xed:output i18n="mir.typeOfResource" />
@@ -1033,13 +1033,13 @@
   </xed:template>
 
   <xed:template id="subject.genre">
-  	<mir:textfield repeat="true" xpath="mods:subject/mods:genre" min="1" max="10" label="mir.subject.genre" help-text="{i18n:mir.help.subject.genre}" />
+    <mir:textfield repeat="true" xpath="mods:subject/mods:genre" min="1" max="10" label="mir.subject.genre" help-text="{i18n:mir.help.subject.genre}" />
   </xed:template>
-  
+
   <xed:template id="subject.simple">
     <mir:textfield repeat="true" xpath="mods:subject" bind="mods:topic" min="1" max="10" label="mir.subject.topic" help-text="{i18n:mir.help.subject.topic}" />
   </xed:template>
-  
+
   <xed:template id="subject.complex">
     <mir:textfield repeat="true" xpath="mods:subject/mods:topic" min="1" max="10" label="mir.subject.topic" help-text="{i18n:mir.help.subject.topic}" />
   </xed:template>
@@ -1054,7 +1054,7 @@
       </div>
     </fieldset>
   </xed:template>
-  
+
   <xed:template id="classification">
     <xed:repeat xpath="mods:classification" min="1" max="10">
       <div class="form-group">
@@ -1076,8 +1076,8 @@
         <mir:help-pmud help-text="{i18n:mir.help.classification}" pmud="true" />
       </div>
     </xed:repeat>
-  	
-  	<!-- frame for modal window -->
+
+    <!-- frame for modal window -->
     <div class="modal fade" id="modalFrame" tabindex="-1" role="dialog" aria-labelledby="modal frame" aria-hidden="true">
       <div class="modal-dialog" style="width: 930px">
         <div class="modal-content">
@@ -1099,7 +1099,7 @@
   </xed:template>
 
   <xed:template id="openAIRE">
-    <fieldset>
+    <fieldset id="open-aire_box">
       <legend class="mir-fieldset-legend">
         <xed:output i18n="mir.project.information" />
       </legend>
@@ -1119,8 +1119,9 @@
               <input type="text" class="form-control inputWarning" name="" placeholder="{i18n:mir.project.sponsor.organisationID}" />
             </div>
           </div>
+          <mir:help-pmud help-text="{i18n:mir.help.project.grant}" pmud="false" />
         </div>
-        <xed:bind xpath="mods:identifier[@type='open-aire']">
+        <xed:bind xpath="mods:identifier[@type='open-aire']" >
           <input type="hidden" />
         </xed:bind>
       </div>
