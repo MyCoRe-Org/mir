@@ -5,9 +5,9 @@ $﻿(document).ready(function() {
 		if(!!button.next().val()) {
   		var label = button.next().val();
 			var classi = button.next().next().val();
-			if(classi != "") {
+			if(classi != "" && label != "") {
 				button.parent().find("span").empty();
-				button.parent().find("span").append(classi + "[" + label + "]");
+				button.parent().find("span").append(label);
 			}
 		}
 		
@@ -86,9 +86,9 @@ $﻿(document).ready(function() {
 		function displayComplett() {
 			var label = button.next().val();
 			var classi = button.next().next().val();
-			if(classi != "") {
+			if(classi != "" && label != "") {
 				button.parent().find("span").empty();
-				button.parent().find("span").append(classi + "[" + label + "]");
+				button.parent().find("span").append(label);
 			}
 		}
 		
