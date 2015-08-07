@@ -37,6 +37,14 @@ $﻿(document).ready(function() {
 					loadClassifications(rightContent, $(this).attr("data-href"));
 				});
 			});
+			
+			setTimeout(function() {
+				if(!!button.next().val() && button.next().next().val().indexOf(":") > 0) {
+					var classi = button.next().next().val().split(':')[0];
+					$("a[data-href*='" + classi + "']").addClass("active");
+					loadClassifications(rightContent, $("a.active").attr("data-href"));
+				}
+			}, 300);
 		};
 		
 		function rightContent(data) {
