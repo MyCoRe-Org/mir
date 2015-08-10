@@ -1077,6 +1077,11 @@
       </div>
     </xed:repeat>
 
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="modal.body" />
+    <script type="text/javascript" src="{$WebApplicationBaseURL}js/mir/classification-modal-select.js"></script>
+  </xed:template>
+  
+  <xed:template id="modal.body">
     <!-- frame for modal window -->
     <div class="modal fade" id="modalFrame" tabindex="-1" role="dialog" aria-labelledby="modal frame" aria-hidden="true">
       <div class="modal-dialog" style="width: 930px">
@@ -1086,16 +1091,19 @@
               <span aria-hidden="true">x</span>
             </button>
             <h4 class="modal-title" id="modalFrame-title"></h4>
+            <div id="modal-searchInput" class="has-feedback input-group-sm" style="margin-top: 1em" hidden="">
+              <input type="text" placeholder="Suche in den Publikationen" class="form-control" />
+              <span class="glyphicon glyphicon-search form-control-feedback" style="right: 0; height: 33px; line-height: 36px; cursor: pointer" />
+            </div>
           </div>
           <div id="modalFrame-body" class="modal-body" style="padding-bottom: 0px" />
           <div class="modal-footer" style="clear: both">
             <button id="modalFrame-cancel" type="button" class="btn btn-danger" data-dismiss="modal"></button>
-            <button id="modalFrame-send" type="button" class="btn btn-primary" disabled="disabled"></button>
+            <button id="modalFrame-send" type="button" class="btn btn-primary"></button>
           </div>
         </div>
       </div>
     </div>
-    <script type="text/javascript" src="{$WebApplicationBaseURL}js/mir/classification-modal-select.js"></script>
   </xed:template>
 
   <xed:template id="openAIRE">
@@ -1138,7 +1146,6 @@
       <legend class="mir-fieldset-legend">Related Item</legend><!-- TODO: i18n -->
       <xed:repeat xpath="mods:relatedItem[@xlink:href]" min="1" max="10">
         <div class="mir-fieldset-content">
-          <xed:bind xpath="@xlink:href" initially="{$relatedItemId}" />
           <div class="form-group">
             <div class="col-md-3">
               <xed:bind xpath="@type" initially="{$relatedItemType}">
@@ -1166,23 +1173,12 @@
             </div>
             <div class="col-md-6">
               <div class="controls form-inline">
-                <input type="submit" class="form-control" xed:target="subselect" xed:href="../servlets/solr/find?qry=&amp;XSL.Style=subselect" value="{i18n:mir.editing.related.select}" />
-                <xed:output value="@xlink:href" />
+                <input type="button" class="form-control mir-relatedItem-select" value="{i18n:mir.editing.related.select}" />
+                <span />
+                <xed:bind xpath="@xlink:href" initially="{$relatedItemId}" >
+                  <input type="hidden" />
+                </xed:bind>
               </div>
-              <xed:if test="string-length(@xlink:href) &gt; 0">
-                <div class="controls">
-                  <xed:load-resource name="relatedItem" uri="notnull:mcrobject:{@xlink:href}" />
-                  <p class="form-control-static">
-                    <xed:output value="$relatedItem/metadata/def.modsContainer/modsContainer/mods:mods/mods:titleInfo/mods:nonSort" />
-                    <xed:output value="$relatedItem/metadata/def.modsContainer/modsContainer/mods:mods/mods:titleInfo/mods:title" />
-                    <xed:output value="$relatedItem/metadata/def.modsContainer/modsContainer/mods:mods/mods:titleInfo/mods:subTitle" />
-                    <br />
-                    <xed:output value="$relatedItem/metadata/def.modsContainer/modsContainer/mods:mods/mods:name[@type='conference']/mods:namePart" />
-                    <xed:output value="$relatedItem/metadata/def.modsContainer/modsContainer/mods:mods/mods:name[@type='personal']/mods:namePart[@type='family']" />
-                    <xed:output value="$relatedItem/metadata/def.modsContainer/modsContainer/mods:mods/mods:name[@type='personal']/mods:namePart[@type='given']" />
-                  </p>
-                </div>
-              </xed:if>
             </div>
             <mir:help-pmud help-text="{i18n:mir.help.related.item}" pmud="true" />
           </div>
@@ -1191,6 +1187,7 @@
           <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="host.pages" />
         </div>
       </xed:repeat>
+      <script src="{$WebApplicationBaseURL}js/mir/relatedItem-modal.js" type="text/javascript"></script>
     </fieldset>
   </xed:template>
 
