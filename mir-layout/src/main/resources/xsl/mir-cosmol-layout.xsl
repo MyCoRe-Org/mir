@@ -165,7 +165,6 @@
             $('.overtext').tooltip();
 
             $.confirm.options = {
-              text: "<xsl:value-of select="i18n:translate('mir.confirm.text')" />",
               title: "<xsl:value-of select="i18n:translate('mir.confirm.title')" />",
               confirmButton: "<xsl:value-of select="i18n:translate('mir.confirm.confirmButton')" />",
               cancelButton: "<xsl:value-of select="i18n:translate('mir.confirm.cancelButton')" />",

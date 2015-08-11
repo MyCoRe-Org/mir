@@ -459,7 +459,7 @@
                       </a>
                     </xsl:when>
                     <xsl:otherwise>
-                      <a href="{$ServletsBaseURL}object/delete{$HttpSession}?id={$id}" id="confirm_deletion">
+                      <a href="{$ServletsBaseURL}object/delete{$HttpSession}?id={$id}" class="confirm_deletion" data-text="{i18n:translate('mir.confirm.text')}">
                         <xsl:value-of select="i18n:translate('object.delObject')" />
                       </a>
                     </xsl:otherwise>
@@ -654,7 +654,7 @@
             </xsl:if>
             <xsl:if test="key('rights', $deriv)/@delete and $derivateWithURN=false()">
               <li class="last">
-                <a href="{$ServletsBaseURL}derivate/delete{$HttpSession}?id={$deriv}" class="confirm_derivate_deletion option">
+                <a href="{$ServletsBaseURL}derivate/delete{$HttpSession}?id={$deriv}" class="confirm_deletion option" data-text="{i18n:translate('mir.confirm.derivate.text')}">
                   <xsl:value-of select="i18n:translate('component.swf.derivate.delDerivate')" />
                 </a>
               </li>

@@ -24,9 +24,9 @@
     // editor fix (to many tables)
     $('table.editorPanel td:has(table)').css('padding', '0');
 
-    $('#confirm_deletion').confirm({
+    $('.confirm_deletion, .confirm_derivate_deletion, .confirm_directory_deletion, .confirm_file_deletion').confirm({
       confirm: function(button) {
-        location.href = $('#confirm_deletion').attr('href');
+        location.href = $(this).attr('href');
       },
     });
 

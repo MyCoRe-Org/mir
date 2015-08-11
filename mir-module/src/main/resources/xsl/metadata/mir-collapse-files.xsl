@@ -189,7 +189,7 @@
                   <li>
                     <a title="{i18n:translate('IFS.mainFile')}"
                       href="{$WebApplicationBaseURL}servlets/MCRDerivateServlet{$HttpSession}?derivateid={$derId}&amp;objectid={$objID}&amp;todo=ssetfile&amp;file={$fileName}"
-                      class="option what_ever" >
+                      class="option" >
                       <span class="glyphicon glyphicon-star"></span>
                       <xsl:value-of select="i18n:translate('IFS.mainFile')" />
                     </a>
@@ -198,8 +198,11 @@
                 <xsl:if test="acl:checkPermission($derId,'deletedb')">
                   <li>
                     <a href="{$WebApplicationBaseURL}servlets/MCRDerivateServlet{$HttpSession}?derivateid={$derId}&amp;objectid={$objID}&amp;todo=sdelfile&amp;file={$fileName}"
-                      class="option what_ever" >
-                      <xsl:attribute name="title" >
+                      class="option confirm_deletion">
+                      <xsl:attribute name="data-text">
+                        <xsl:value-of select="i18n:translate(concat('mir.confirm.',@type,'.text'))" />
+                      </xsl:attribute>
+                      <xsl:attribute name="title">
                         <xsl:value-of select="i18n:translate(concat('IFS.',@type,'Delete'))" />
                       </xsl:attribute>
                       <span class="glyphicon glyphicon-trash"></span>
