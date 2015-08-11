@@ -197,11 +197,13 @@
                 </xsl:if>
                 <xsl:if test="acl:checkPermission($derId,'deletedb')">
                   <li>
-                    <a title="{i18n:translate('IFS.fileDelete')}"
-                      href="{$WebApplicationBaseURL}servlets/MCRDerivateServlet{$HttpSession}?derivateid={$derId}&amp;objectid={$objID}&amp;todo=sdelfile&amp;file={$fileName}"
+                    <a href="{$WebApplicationBaseURL}servlets/MCRDerivateServlet{$HttpSession}?derivateid={$derId}&amp;objectid={$objID}&amp;todo=sdelfile&amp;file={$fileName}"
                       class="option what_ever" >
+                      <xsl:attribute name="title" >
+                        <xsl:value-of select="i18n:translate(concat('IFS.',@type,'Delete'))" />
+                      </xsl:attribute>
                       <span class="glyphicon glyphicon-trash"></span>
-                      <xsl:value-of select="i18n:translate('IFS.fileDelete')" />
+                      <xsl:value-of select="i18n:translate(concat('IFS.',@type,'Delete'))" />
                     </a>
                   </li>
                 </xsl:if>
