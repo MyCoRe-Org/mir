@@ -118,7 +118,7 @@
     </xsl:apply-templates>
     
     <xsl:variable name="dirName" select="./name" />
-    <xsl:variable name="directory" select="document(concat('ifs:',$derId,'/',$dirName))" />
+    <xsl:variable name="directory" select="document(concat('ifs:',$derId,'/',mcr:encodeURIPath($dirName)))" />
     <xsl:for-each select="$directory/mcr_directory/children/child">
       <xsl:apply-templates select="." mode="childWriter">
       	<xsl:with-param name="derId"><xsl:value-of select="$derId" /></xsl:with-param>
