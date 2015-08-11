@@ -101,42 +101,14 @@
     </xsl:choose>
     <xsl:apply-imports />
   </xsl:template>
-  
+
   <xsl:template match="child[@type='directory']" >
     <xsl:param name="derId" />
     <xsl:param name="objID" />
     <xsl:param name="derivateWithURN" />
     <xsl:param name="maindoc" />
     <xsl:param name="urn" />
-    
-    <xsl:apply-templates select="." mode="childWriter">
-      <xsl:with-param name="derId"><xsl:value-of select="$derId" /></xsl:with-param>
-      <xsl:with-param name="objID"><xsl:value-of select="$objID" /></xsl:with-param>
-      <xsl:with-param name="derivateWithURN"><xsl:value-of select="$derivateWithURN" /></xsl:with-param>
-      <xsl:with-param name="maindoc"><xsl:value-of select="$maindoc" /></xsl:with-param>
-    	<xsl:with-param name="urn"><xsl:value-of select="$urn" /></xsl:with-param>
-    </xsl:apply-templates>
-    
-    <xsl:variable name="dirName" select="./name" />
-    <xsl:variable name="directory" select="document(concat('ifs:',$derId,'/',mcr:encodeURIPath($dirName)))" />
-    <xsl:for-each select="$directory/mcr_directory/children/child">
-      <xsl:apply-templates select="." mode="childWriter">
-      	<xsl:with-param name="derId"><xsl:value-of select="$derId" /></xsl:with-param>
-        <xsl:with-param name="objID"><xsl:value-of select="$objID" /></xsl:with-param>
-        <xsl:with-param name="derivateWithURN"><xsl:value-of select="$derivateWithURN" /></xsl:with-param>
-        <xsl:with-param name="maindoc"><xsl:value-of select="$maindoc" /></xsl:with-param>
-        <xsl:with-param name="urn"><xsl:value-of select="$urn" /></xsl:with-param>
-      </xsl:apply-templates>
-    </xsl:for-each>
-  </xsl:template>
-  
-  <xsl:template match="child[@type='file']">
-    <xsl:param name="derId" />
-    <xsl:param name="objID" />
-    <xsl:param name="derivateWithURN" />
-    <xsl:param name="maindoc" />
-    <xsl:param name="urn" />
-    
+
     <xsl:apply-templates select="." mode="childWriter">
       <xsl:with-param name="derId"><xsl:value-of select="$derId" /></xsl:with-param>
       <xsl:with-param name="objID"><xsl:value-of select="$objID" /></xsl:with-param>
@@ -144,15 +116,43 @@
       <xsl:with-param name="maindoc"><xsl:value-of select="$maindoc" /></xsl:with-param>
       <xsl:with-param name="urn"><xsl:value-of select="$urn" /></xsl:with-param>
     </xsl:apply-templates>
-  </xsl:template>    
-  
+
+    <xsl:variable name="dirName" select="./name" />
+    <xsl:variable name="directory" select="document(concat('ifs:',$derId,'/',mcr:encodeURIPath($dirName)))" />
+    <xsl:for-each select="$directory/mcr_directory/children/child">
+      <xsl:apply-templates select="." mode="childWriter">
+        <xsl:with-param name="derId"><xsl:value-of select="$derId" /></xsl:with-param>
+        <xsl:with-param name="objID"><xsl:value-of select="$objID" /></xsl:with-param>
+        <xsl:with-param name="derivateWithURN"><xsl:value-of select="$derivateWithURN" /></xsl:with-param>
+        <xsl:with-param name="maindoc"><xsl:value-of select="$maindoc" /></xsl:with-param>
+        <xsl:with-param name="urn"><xsl:value-of select="$urn" /></xsl:with-param>
+      </xsl:apply-templates>
+    </xsl:for-each>
+  </xsl:template>
+
+  <xsl:template match="child[@type='file']">
+    <xsl:param name="derId" />
+    <xsl:param name="objID" />
+    <xsl:param name="derivateWithURN" />
+    <xsl:param name="maindoc" />
+    <xsl:param name="urn" />
+
+    <xsl:apply-templates select="." mode="childWriter">
+      <xsl:with-param name="derId"><xsl:value-of select="$derId" /></xsl:with-param>
+      <xsl:with-param name="objID"><xsl:value-of select="$objID" /></xsl:with-param>
+      <xsl:with-param name="derivateWithURN"><xsl:value-of select="$derivateWithURN" /></xsl:with-param>
+      <xsl:with-param name="maindoc"><xsl:value-of select="$maindoc" /></xsl:with-param>
+      <xsl:with-param name="urn"><xsl:value-of select="$urn" /></xsl:with-param>
+    </xsl:apply-templates>
+  </xsl:template>
+
   <xsl:template match="child" mode="childWriter">
     <xsl:param name="derId" />
     <xsl:param name="objID" />
     <xsl:param name="derivateWithURN" />
     <xsl:param name="maindoc" />
     <xsl:param name="urn" />
-    
+
     <xsl:variable name="path" select="../../path" />
     <xsl:variable name="fileName" >
       <xsl:choose>
@@ -244,14 +244,19 @@
           </img>
         </span>
         <span class="file_name">
-          <a>
-            <xsl:if test="@type!='directory'" >
-              <xsl:attribute name="href" >
-                <xsl:value-of select="concat($ServletsBaseURL,'MCRFileNodeServlet/',$filePath)" />
-              </xsl:attribute>
-            </xsl:if> 
-            <xsl:value-of select="$fileName" />
-          </a>
+          <xsl:choose>
+            <xsl:when test="@type!='directory'" >
+             <a>
+               <xsl:attribute name="href" >
+                 <xsl:value-of select="concat($ServletsBaseURL,'MCRFileNodeServlet/',$filePath)" />
+               </xsl:attribute>
+               <xsl:value-of select="$fileName" />
+             </a>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:value-of select="$fileName" />
+            </xsl:otherwise>
+          </xsl:choose>
         </span>
         <xsl:if test="string-length($urn)>0">
           <sup class="file_urn">
@@ -261,6 +266,6 @@
           </sup>
         </xsl:if>
       </div>
-    </div>    
+    </div>
   </xsl:template>
 </xsl:stylesheet>
