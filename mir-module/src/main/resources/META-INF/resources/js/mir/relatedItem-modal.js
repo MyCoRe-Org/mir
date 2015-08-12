@@ -46,6 +46,7 @@ $﻿(".mir-relatedItem-select").ready(function() {
 			$("#modalFrame-cancel").before("<div class='col-md-4'><select class='form-control'><option value=''>Sortieren nach Typ:</option></select></div>");
 			$("li a").css("cursor", "pointer");
 			$("#modal-searchInput").removeAttr("hidden");
+			$("#modal-searchInput > input").attr("autocomplete", "off");
 			$("#modalFrame").modal("show");
 		}
 		
@@ -136,12 +137,23 @@ $﻿(".mir-relatedItem-select").ready(function() {
 			$(".modal-footer div.col-md-4").remove();
 		});
 		
-		$("#modal-searchInput > input").unbind().keyup(function(event) {
-			if(event.keyCode == '13') {
+		$("#modal-searchInput > input").typeahead({
+			source: function(query, process) {
+				return loadPublikation(function(data){
+					var list = [];
+					$(data).find("arr[name='mods.title']").each(function() {
+						list.push($(this).find("str:first-child").text());
+					});
+					return process(list);
+				}, "" ,query , "0", "xml");
+			},
+			updater: function(item) {
 				$("#main_right_content").empty();
 				sortType = "";
-				loadPublikation(leftContent, "", $(this).val(), "0", "xml");
-			}
+				loadPublikation(leftContent, "", item, "0", "xml");
+				return item;
+			},
+			items: 10
 		});
 		
 		$("#modal-searchInput .glyphicon-search").unbind().click(function() {
