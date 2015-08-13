@@ -71,6 +71,9 @@ $﻿(document).ready(function() {
 					var label = href.substr(href.indexOf("@text=") + 6); 
 					label = label.replace(/\+/g, " ");
 					$(this).removeAttr("href").attr("style", "cursor: pointer");
+					if($("a.list-group-item.active").attr("data-href").indexOf("mcr-roles") > 0) {
+						classi = "mcr-roles:" + classi;
+					}
 					
 					$(this).click(function() {
 						button.next().val(label);
