@@ -71,8 +71,11 @@ $﻿(document).ready(function() {
 					var label = href.substr(href.indexOf("@text=") + 6); 
 					label = label.replace(/\+/g, " ");
 					$(this).removeAttr("href").attr("style", "cursor: pointer");
-					if($("a.list-group-item.active").attr("data-href").indexOf("mcr-roles") > 0) {
-						classi = "mcr-roles:" + classi;
+					//fix when you only get categID without classification ID (like mcr-roles)
+					if(!(classi.indexOf(":") > 0)) {
+						var classiHref = $("a.list-group-item.active").attr("data-href");
+						classiHref = classiHref.substr(classiHref.indexOf("categID=") + 8);
+						classi = classiHref.split("&")[0] + ":" + classi;
 					}
 					
 					$(this).click(function() {
