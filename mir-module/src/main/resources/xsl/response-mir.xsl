@@ -3,7 +3,8 @@
   xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation" xmlns:str="http://exslt.org/strings" xmlns:mcr="xalan://org.mycore.common.xml.MCRXMLFunctions"
                 xmlns:acl="xalan://org.mycore.access.MCRAccessManager"
                 xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions"
-                exclude-result-prefixes="i18n mods str mcr acl mcrxsl encoder"
+                xmlns:basket="xalan://org.mycore.frontend.basket.MCRBasketManager"
+                exclude-result-prefixes="i18n mods str mcr acl mcrxsl basket encoder"
   >
 
   <xsl:param name="UserAgent" />
@@ -175,12 +176,24 @@
               <div class="btn-group">
                 <a data-toggle="dropdown" class="btn btn-default dropdown-toggle" href="#"><i class="fa fa-cog"></i> Aktionen<span class="caret"></span></a>
                 <ul class="dropdown-menu dropdown-menu-right">
-                    <li class="">
-                      <!-- add to basket -->
-                      <a class="hit_option hit_to_basket"
-                        href="{$ServletsBaseURL}MCRBasketServlet{$HttpSession}?type=objects&amp;action=add&amp;id={$identifier}&amp;uri=mcrobject:{$identifier}&amp;redirect=referer"
-                        title=""><span class="glyphicon glyphicon-shopping-cart"></span><xsl:value-of select="i18n:translate('basket.add')" /></a>
-                    </li>
+                    <xsl:choose>
+                      <xsl:when test="basket:contains('objects',$identifier)">
+                        <li class="">
+                          <!-- remove from basket -->
+                          <a class="hit_option remove_from_basket"
+                            href="{$ServletsBaseURL}MCRBasketServlet{$HttpSession}?type=objects&amp;action=remove&amp;id={$identifier}&amp;redirect=referer"
+                            title=""><span class="glyphicon glyphicon-shopping-cart"></span><xsl:value-of select="i18n:translate('basket.remove')" /></a>
+                        </li>
+                      </xsl:when>
+                      <xsl:otherwise>
+                        <li class="">
+                          <!-- add to basket -->
+                          <a class="hit_option hit_to_basket"
+                            href="{$ServletsBaseURL}MCRBasketServlet{$HttpSession}?type=objects&amp;action=add&amp;id={$identifier}&amp;uri=mcrobject:{$identifier}&amp;redirect=referer"
+                            title=""><span class="glyphicon glyphicon-shopping-cart"></span><xsl:value-of select="i18n:translate('basket.add')" /></a>
+                        </li>
+                      </xsl:otherwise>
+                    </xsl:choose>
                     <!-- download main document of first derivate -->
                     <xsl:if test="not($derivates/str[@name='iviewFile']) and $derivates/str[@name='maindoc']">
                       <li class="">
