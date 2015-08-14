@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:mods="http://www.loc.gov/mods/v3"
-  xmlns:mcrmods="xalan://org.mycore.mods.classification.MCRMODSClassificationSupport" exclude-result-prefixes="mcrmods xlink" version="1.0"
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:mcr="http://www.mycore.org/" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:mods="http://www.loc.gov/mods/v3"
+  xmlns:mcrmods="xalan://org.mycore.mods.classification.MCRMODSClassificationSupport" exclude-result-prefixes="mcrmods xlink mcr" version="1.0"
 >
 
   <xsl:include href="copynodes.xsl" />
@@ -44,6 +44,14 @@
         <xsl:value-of select="concat(@xlink:href, '#', .)" />
       </xsl:attribute>
     </mods:accessCondition>
+  </xsl:template>
+  
+  <xsl:template match="@mcr:categId" />
+  <xsl:template match="*[@mcr:categId]">
+    <xsl:copy>
+      <xsl:variable name="classNodes" select="mcrmods:getClassNodes(.)" />
+      <xsl:apply-templates select='$classNodes/@*|@*|node()|$classNodes/node()' />
+    </xsl:copy>
   </xsl:template>
 
 </xsl:stylesheet>
