@@ -12,9 +12,6 @@ import org.mycore.iview2.frontend.configuration.MCRViewerDefaultConfigurationStr
 
 public class MIRViewerConfigurationStrategy extends MCRViewerDefaultConfigurationStrategy {
 
-
-    public static final String BOOTSTRAP_VERSION = "3.3.5";
-
     @Override
     public MCRViewerConfiguration get(HttpServletRequest request) {
         MCRViewerConfiguration mcrViewerConfiguration = super.get(request);
@@ -36,10 +33,11 @@ public class MIRViewerConfigurationStrategy extends MCRViewerDefaultConfiguratio
             }
 
             // Default JS
-            mcrViewerConfiguration.addScript(String.format(Locale.ROOT, "//netdna.bootstrapcdn.com/bootstrap/%s/js/bootstrap.min.js", BOOTSTRAP_VERSION));
+            mcrViewerConfiguration
+                    .addScript(MCRFrontendUtil.getBaseURL() + "mir-layout/assets/bootstrap/js/bootstrap.min.js");
             String customJS = params.getParameter("MIR.CustomLayout.JS", "");
             if (customJS.length() > 0) {
-                mcrViewerConfiguration.addScript(String.format(Locale.ROOT, "%sjs/%s", baseURL,customJS));
+                mcrViewerConfiguration.addScript(String.format(Locale.ROOT, "%sjs/%s", baseURL, customJS));
             }
 
         }
