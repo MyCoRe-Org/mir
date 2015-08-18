@@ -12,6 +12,7 @@
   <properties>
     <lesscss.compress>true</lesscss.compress>
     <template.cssdir>${project.build.directory}/classes/META-INF/resources/mir-layout/css</template.cssdir>
+    <template.assetsdir>${project.build.directory}/classes/META-INF/resources/mir-layout/assets</template.assetsdir>
     <grunt.projectBase>${project.build.directory}/grunt</grunt.projectBase>
   </properties>
   <dependencies>
@@ -53,6 +54,7 @@
           <gruntOptions>
             <gruntOption>--verbose</gruntOption>
             <gruntOption>--targetDirectory ${template.cssdir}</gruntOption>
+            <gruntOption>--assetsDirectory ${template.assetsdir}</gruntOption>
           </gruntOptions>
         </configuration>
         <executions>
