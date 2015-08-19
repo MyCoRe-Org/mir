@@ -176,11 +176,11 @@ public class MIRBaseITCase {
     public void logOff() {
         driver.findElement(By.xpath("//a[@id='currentUser']")).click();
         driver.findElement(MIRBy.partialLinkText("Abmelden")).click();
-        assertEqualsIgnoreCase("Anmelden", driver.findElement(By.id("loginURL")).getText());
+        assertEqualsIgnoreCase("Anmelden", driver.findElement(By.xpath("//a[@id='loginURL']")).getText());
     }
 
     public void loginAs(String user, String password) {
-        driver.findElement(By.id("loginURL")).click();
+        driver.findElement(By.xpath("//a[@id='loginURL']")).click();
         assertEquals("Anmelden mit lokaler Nutzerkennung", driver.getTitle());
         driver.findElement(By.name("uid")).clear();
         driver.findElement(By.name("uid")).sendKeys(user);
