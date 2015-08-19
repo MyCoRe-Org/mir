@@ -17,7 +17,6 @@ import org.mycore.mir.it.helper.MIRUserHelper;
 public class MIRUserITCase extends MIRBaseITCase {
 
     @Test
-    @Ignore("currently not working")
     public final void testCreateUser() {
         goToStart();
         loginAs(ADMIN_LOGIN, ADMIN_PASSWD);
