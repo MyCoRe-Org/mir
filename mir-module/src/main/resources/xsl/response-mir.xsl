@@ -511,12 +511,28 @@
   <xsl:template match="/response/lst[@name='facet_counts']/lst[@name='facet_fields']">
     <xsl:param name="facet_name" />
     <xsl:for-each select="lst[@name=$facet_name]/int">
-      <xsl:variable name="queryURL" select="concat($WebApplicationBaseURL,'servlets/solr/find?qry=', $query, ' +mods.type:%22', @name, '%22')" /> <!-- ,'&amp;', $params -->
+      <xsl:variable name="typeComplete" >
+        <xsl:value-of select="concat('&amp;fq=mods.type:',@name)"></xsl:value-of>
+      </xsl:variable>
+      <xsl:variable name="queryURL" >
+        <xsl:choose>
+          <xsl:when test="contains($RequestURL, $typeComplete)">
+            <xsl:value-of select="concat(substring-before($RequestURL, $typeComplete), substring-after($RequestURL, $typeComplete))" />
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:value-of select="concat($RequestURL, $typeComplete)" />
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:variable>
+      
       <li>
         <div class="checkbox">
           <label>
-            <!-- TODO: use ajax and add filter remove options -->
-            <input type="checkbox" onclick="location.href='{$queryURL}';" /><!-- {$queryURL} -->
+            <input type="checkbox" onclick="location.href='{$queryURL}';" >
+              <xsl:if test="contains($RequestURL, $typeComplete)">
+                <xsl:attribute name="checked">true</xsl:attribute>
+              </xsl:if>
+            </input>
           </label>
             <span class="title"><xsl:value-of select="i18n:translate(concat('component.mods.genre.',@name))" /></span>
             <span class="hits"><xsl:value-of select="." /></span>
