@@ -85,11 +85,13 @@ public class MIRWizardServlet extends MCRServlet {
                 if (loginToken != null && MIRWizardRequestFilter.getLoginToken(req).equals(loginToken)) {
                     LOGGER.info("Authenticate with token \"" + loginToken + "\"...");
                     MCRSessionMgr.getCurrentSession().put(MIRWizardStartupHandler.LOGIN_TOKEN, loginToken);
+                    MCRSessionMgr.getCurrentSession().put("ServerBaseURL",
+                            req.getScheme() + "://" + req.getServerName() + ":" + req.getServerPort());
                 } else {
                     LOGGER.info("Redirect to login...");
                     url += "/?action=login"
                             + (!MIRWizardRequestFilter.getLoginToken(req).equals(loginToken) ? "&token=invalid" : "");
-                    
+
                     // output login token again
                     MIRWizardStartupHandler.outputLoginToken(req.getServletContext());
                 }
