@@ -40,12 +40,14 @@
       }
     });
     
+    //institut and sdnb filter
     $('.mir-search-options select').each(function() {
     	if($(this).attr('data').indexOf(':') > 0) {
     		$(this).val($(this).attr('data'));
     	}
     });
     
+    //institut and sdnb filter
     $('.mir-search-options select').change(function() {
     	var currentURL = window.location.href;
     	//remove old search option
@@ -61,7 +63,73 @@
     	}
     	window.location.href = typeof newURL != 'undefined' ? newURL : currentURL;
     });
-
+    
+    //date filter option
+    $('.mir-search-options-date input').ready(function() {
+    	var currentURL = window.location.href;
+    	var fqDate = '';
+    	//input start val
+    	if(currentURL.indexOf('&fq=mods.dateIssued') > 0) {
+	    	fqDate = currentURL.substr(currentURL.indexOf('&fq=mods.dateIssued'));
+				fqDate = decodeURIComponent(fqDate.split('&')[1]);
+				$(".mir-search-options-date input").val(fqDate.replace(/[a-zA-Z.:"+*={}/\]/\[]/g, ''));
+    	}
+    	//select start val
+    	if(fqDate.indexOf('"') > 0) {
+    		$('.mir-search-options-date select').val('=');
+    	}
+    	if(fqDate.indexOf('+TO+*') > 0 && fqDate.indexOf('{') > 0) {
+    		$('.mir-search-options-date select').val('>');
+    	}
+    	if(fqDate.indexOf('+TO+*') > 0 && fqDate.indexOf('[') > 0) {
+    		$('.mir-search-options-date select').val('>=');
+    	}
+    	if(fqDate.indexOf('*+TO+') > 0 && fqDate.indexOf('}') > 0) {
+    		$('.mir-search-options-date select').val('<');
+    	}
+    	if(fqDate.indexOf('*+TO+') > 0 && fqDate.indexOf(']') > 0) {
+    		$('.mir-search-options-date select').val('<=');
+    	}
+    });
+    
+    //date filter option
+    $('.mir-search-options-date input').keyup(function(event) {
+    	if(event.which === 13) {
+    		var currentURL = window.location.href;
+    		var fqDate = '';
+    		var newURL = currentURL;
+    		if(currentURL.indexOf('&fq=mods.dateIssued') > 0) {
+    			fqDate = currentURL.substr(currentURL.indexOf('&fq=mods.dateIssued'));
+    			fqDate = fqDate.split('&')[1];
+    			newURL = currentURL.replace('&' + fqDate, '');
+      	}
+    		if($(this).val() != '') {
+    			var operator = $('.mir-search-options-date select').val();
+    			if(operator == '=') {
+    				newURL = newURL + '&fq=mods.dateIssued%3A"' + $(this).val() + '"';
+    			}
+    			if(operator == '>') {
+    				newURL = newURL + '&fq=mods.dateIssued%3A{' + $(this).val() + '+TO+*]';
+    			}
+    			if(operator == '>=') {
+    				newURL = newURL + '&fq=mods.dateIssued%3A[' + $(this).val() + '+TO+*]';
+    			}
+    			if(operator == '<') {
+    				newURL = newURL + '&fq=mods.dateIssued%3A[*+TO+' + $(this).val() + '}';
+    			}
+    			if(operator == '<=') {
+    				newURL = newURL + '&fq=mods.dateIssued%3A[*+TO+' + $(this).val() + ']';
+    			}
+    		}
+    		window.location.href = newURL;
+    	}
+    });
+    
+    //colapse the next element
+    $('[data-toggle=collapse-next]').click(function() {
+    	$(this).next().collapse('toggle');
+    });
+    
   }); // END $﻿(document).ready()
 
   window.fireMirSSQuery = function base_fireMirSSQuery(form) {

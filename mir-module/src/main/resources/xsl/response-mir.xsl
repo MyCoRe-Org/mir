@@ -79,10 +79,10 @@
       <div class="col-xs-12 col-sm-4 col-lg-3 result_filter">
         <xsl:if test="/response/lst[@name='facet_counts']/lst[@name='facet_fields'] and $hits &gt; 0">
           <div class="panel panel-default">
-            <div class="panel-heading">
+            <div class="panel-heading" data-toggle="collapse-next">
               <h3 class="panel-title"><xsl:value-of select="i18n:translate('editor.search.mir.genre')" /></h3>
             </div>
-            <div class="panel-body">
+            <div class="panel-body collapse in">
               <ul class="filter">
                 <xsl:apply-templates select="/response/lst[@name='facet_counts']/lst[@name='facet_fields']">
                   <xsl:with-param name="facet_name" select="'mods.type'" />
@@ -99,6 +99,7 @@
           <xsl:with-param name="classId" select="'SDNB'"/>
           <xsl:with-param name="i18nKey" select="'editor.search.mir.sdnb'"/>
         </xsl:call-template>
+        <xsl:call-template name="print.dateOption" />
       </div>
 
       <div class="col-xs-12 col-sm-8 col-lg-9 result_list">
@@ -557,14 +558,36 @@
     </xsl:variable>
     <div class="panel panel-default mir-search-options">
       <xsl:variable name="classiDocument" select="document(concat('xslStyle:items2options:classification:editorComplete:-1:children:',$classId))" />
-      <div class="panel-heading">
+      <div class="panel-heading" data-toggle="collapse-next">
         <h3 class="panel-title"><xsl:value-of select="i18n:translate($i18nKey)" /></h3>
       </div>
-      <div class="panel-body">
+      <div class="panel-body collapse in" >
         <select class="form-control form-control-inline" data="{$classId}{$currentActive}">
           <option value=""><xsl:value-of select="i18n:translate('mir.select')" /></option>
           <xsl:copy-of select="$classiDocument/select/*" />
         </select>
+      </div>
+    </div>
+  </xsl:template>
+  
+  <xsl:template name="print.dateOption">
+    <div class="panel panel-default mir-search-options-date">
+      <div class="panel-heading" data-toggle="collapse-next">
+        <h3 class="panel-title"><xsl:value-of select="i18n:translate('component.mods.metaData.dictionary.dateIssued')" /></h3>
+      </div>
+      <div class="panel-body collapse in">
+        <div class="input-group">
+          <div class="input-group-btn">
+            <select class="btn btn-default">
+              <option value="=">=</option>
+              <option value="&gt;">&gt;</option>
+              <option value="&gt;=">&gt;=</option>
+              <option value="&lt;">&lt;</option>
+              <option value="&lt;=">&lt;=</option>
+            </select>
+          </div>
+          <input class="form-control" placeholder="YYYY-MM-DD" maxlength="10"/>
+        </div>
       </div>
     </div>
   </xsl:template>
