@@ -20,11 +20,14 @@ public class MIRUserITCase extends MIRBaseITCase {
     public final void testCreateUser() {
         goToStart();
         loginAs(ADMIN_LOGIN, ADMIN_PASSWD);
-        MIRUserHelper.createUser(getDriver(), "submitter", "submitter123", "submitter");
-        MIRUserHelper.createUser(getDriver(), "allgroups", "password123", "reader", "submitter", "editor", "admin");
-        MIRUserHelper.deleteUser(getDriver(), "submitter");
-        MIRUserHelper.deleteUser(getDriver(), "allgroups");
-        logOff();
+        try {
+            MIRUserHelper.createUser(getDriver(), "submitter", "submitter123", "submitter");
+            MIRUserHelper.createUser(getDriver(), "allgroups", "password123", "reader", "submitter", "editor", "admin");
+            MIRUserHelper.deleteUser(getDriver(), "submitter");
+            MIRUserHelper.deleteUser(getDriver(), "allgroups");
+        } finally {
+            logOff();
+        }
     }
 
 }
