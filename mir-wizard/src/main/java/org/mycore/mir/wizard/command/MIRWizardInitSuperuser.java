@@ -22,12 +22,8 @@
  */
 package org.mycore.mir.wizard.command;
 
-import java.io.StringWriter;
 import java.util.List;
 
-import org.apache.log4j.Logger;
-import org.apache.log4j.PatternLayout;
-import org.apache.log4j.WriterAppender;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.mycore.backend.hibernate.MCRHIBConnection;
@@ -45,15 +41,8 @@ public class MIRWizardInitSuperuser extends MIRWizardCommand {
     }
 
     @Override
-    public void execute() {
-        StringWriter consoleWriter = new StringWriter();
-        WriterAppender appender = new WriterAppender(new PatternLayout("%d{ISO8601} %p - %m%n"), consoleWriter);
-
+    public void doExecute() {
         try {
-            appender.setName("CONSOLE_APPENDER");
-            appender.setThreshold(org.apache.log4j.Level.INFO);
-            Logger.getRootLogger().addAppender(appender);
-            
             Session session = MCRHIBConnection.instance().getSession();
             Transaction transaction = session.beginTransaction();
             
@@ -68,13 +57,14 @@ public class MIRWizardInitSuperuser extends MIRWizardCommand {
                 this.result.setSuccess(false);
             }
 
-            this.result.setResult(consoleWriter.toString());
-
-            Logger.getRootLogger().removeAppender(appender);
-            appender.close();
-            consoleWriter.close();
         } catch (Exception ex) {
             this.result.setResult(ex.getMessage());
         }
     }
+
+    @Override
+    protected void postExecute() {
+        result.setResult(getLogs());
+    }
+    
 }

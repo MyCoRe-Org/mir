@@ -24,15 +24,12 @@ package org.mycore.mir.wizard.command;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.StringWriter;
 import java.net.URL;
 import java.nio.file.Files;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.log4j.Logger;
-import org.apache.log4j.PatternLayout;
-import org.apache.log4j.WriterAppender;
 import org.jdom2.Element;
 import org.mycore.common.config.MCRConfigurationDir;
 import org.mycore.common.xml.MCRURIResolver;
@@ -45,7 +42,7 @@ import org.mycore.mir.wizard.utils.MIRWizardUnzip;
  */
 public class MIRWizardSolr extends MIRWizardCommand {
     private static final Logger LOGGER = Logger.getLogger(MIRWizardSolr.class);
-
+    
     public MIRWizardSolr() {
         this("solr");
     }
@@ -61,10 +58,7 @@ public class MIRWizardSolr extends MIRWizardCommand {
      * @see org.mycore.mir.wizard.MIRWizardCommand#execute()
      */
     @Override
-    public void execute() {
-        final StringWriter consoleWriter = new StringWriter();
-        final WriterAppender appender = new WriterAppender(new PatternLayout("%d{ISO8601} %p - %m%n"), consoleWriter);
-
+    public void doExecute() {
         final Element xml = MCRURIResolver.instance().resolve("resource:setup/solr.xml");
         // TODO make SOLR version selectable
         final Element config = xml.getChildren("instance").get(0).getChild("config");
@@ -95,10 +89,6 @@ public class MIRWizardSolr extends MIRWizardCommand {
                 }
 
                 if (success && file != null) {
-                    appender.setName("CONSOLE_APPENDER");
-                    appender.setThreshold(org.apache.log4j.Level.INFO);
-                    Logger.getRootLogger().addAppender(appender);
-
                     final String dataDir = MCRConfigurationDir.getConfigurationDirectory().getAbsolutePath()
                             + File.separator + "data";
 
@@ -113,12 +103,6 @@ public class MIRWizardSolr extends MIRWizardCommand {
                         FileUtils.copyInputStreamToFile(
                                 this.getClass().getClassLoader().getResourceAsStream("setup/solr/" + name), file);
                     }
-
-                    this.result.setResult(consoleWriter.toString());
-
-                    Logger.getRootLogger().removeAppender(appender);
-                    appender.close();
-                    consoleWriter.close();
                 }
 
                 this.result.setSuccess(success);
@@ -127,4 +111,10 @@ public class MIRWizardSolr extends MIRWizardCommand {
             }
         }
     }
+
+    @Override
+    protected void postExecute() {
+        result.setResult(getLogs());
+    }
+    
 }

@@ -23,13 +23,9 @@
 package org.mycore.mir.wizard.command;
 
 import java.io.File;
-import java.io.StringWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
-import org.apache.log4j.Logger;
-import org.apache.log4j.PatternLayout;
-import org.apache.log4j.WriterAppender;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -44,31 +40,23 @@ import org.mycore.mir.wizard.MIRWizardCommand;
 
 /**
  * @author René Adler (eagle)
- *
  */
 public class MIRWizardMCRCommand extends MIRWizardCommand {
+    String resultMsg;
 
     public MIRWizardMCRCommand(String name) {
         super(name);
+        this.resultMsg = "";
     }
 
     /* (non-Javadoc)
      * @see org.mycore.mir.wizard.MIRWizardCommand#execute(org.jdom2.Element)
      */
     @Override
-    public void execute() {
+    public void doExecute() {
         Session currentSession = MCRHIBConnection.instance().getSession();
 
-        StringWriter consoleWriter = new StringWriter();
-        WriterAppender appender = new WriterAppender(new PatternLayout("%d{ISO8601} %p - %m%n"), consoleWriter);
-
         try {
-            appender.setName("CONSOLE_APPENDER");
-            appender.setThreshold(org.apache.log4j.Level.INFO);
-            Logger.getRootLogger().addAppender(appender);
-
-            String result = "";
-
             for (Element command : getInputXML().getChildren()) {
                 String cmd = command.getTextTrim();
                 cmd = cmd.replaceAll("\n", "").replaceAll("\r", "").replaceAll("  ", " ");
@@ -92,7 +80,7 @@ public class MIRWizardMCRCommand extends MIRWizardCommand {
                 try {
                     List<String> res = mcrCmdMgr.invokeCommand(cmd);
                     for (String str : res) {
-                        result += str;
+                        resultMsg += str;
                     }
                     tx.commit();
                 } catch (HibernateException e) {
@@ -108,20 +96,19 @@ public class MIRWizardMCRCommand extends MIRWizardCommand {
                     return;
                 }
 
-                result += consoleWriter.toString();
             }
 
-            Logger.getRootLogger().removeAppender(appender);
-            appender.close();
-            consoleWriter.close();
-
-            this.result.setResult(result);
             this.result.setSuccess(true);
         } catch (Exception ex) {
             ex.printStackTrace();
             this.result.setResult(ex.toString());
             this.result.setSuccess(false);
         }
+    }
+
+    @Override
+    protected void postExecute() {
+        result.setResult(resultMsg + "n" + getLogs());
     }
 
 }

@@ -22,6 +22,17 @@
  */
 package org.mycore.mir.wizard;
 
+import java.io.IOException;
+import java.io.StringWriter;
+import java.io.UncheckedIOException;
+
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.core.Filter;
+import org.apache.logging.log4j.core.Layout;
+import org.apache.logging.log4j.core.LogEvent;
+import org.apache.logging.log4j.core.appender.AbstractAppender;
+import org.apache.logging.log4j.core.filter.ThresholdFilter;
+import org.apache.logging.log4j.core.layout.PatternLayout;
 import org.jdom2.Element;
 
 public abstract class MIRWizardCommand {
@@ -29,6 +40,10 @@ public abstract class MIRWizardCommand {
     private String name;
 
     private Element xml;
+
+    private String logs;
+
+    private CommandLogAppender logAppender;
 
     protected MIRWizardCommandResult result;
 
@@ -53,7 +68,8 @@ public abstract class MIRWizardCommand {
     }
 
     /**
-     * @param xml the xml to set
+     * @param xml
+     *            the xml to set
      */
     public void setInputXML(Element xml) {
         this.xml = xml;
@@ -63,5 +79,71 @@ public abstract class MIRWizardCommand {
         return result;
     }
 
-    public abstract void execute();
+    public void execute() {
+        logAppender = new CommandLogAppender(getClass().getName(), getAppenderLogFilter(), getAppenderLogLayout());
+        logAppender.start();
+        doExecute();
+        logAppender.stop();
+        logs = logAppender.getLogs();
+    }
+
+    private Filter getAppenderLogFilter() {
+        return ThresholdFilter.createFilter(Level.INFO, null, null);
+    }
+
+    protected Layout<String> getAppenderLogLayout() {
+        return PatternLayout.newBuilder()
+            .withNoConsoleNoAnsi(true)
+            .withPattern("%d{ISO8601} %p - %m%n%throwable")
+            .build();
+    }
+
+    protected abstract void doExecute();
+
+    protected void postExecute() {
+
+    }
+    
+    protected String getLogs(){
+        return logs;
+    }
+    @SuppressWarnings("serial")
+    private static class CommandLogAppender extends AbstractAppender {
+
+        private StringWriter writer;
+
+        private String logs;
+
+        protected CommandLogAppender(String name, Filter filter, Layout<String> layout) {
+            super(name, filter, layout);
+        }
+
+        @Override
+        public void append(LogEvent event) {
+            writer.write(this.getLayout().toSerializable(event).toString());
+        }
+
+        @Override
+        public void start() {
+            super.start();
+            writer = new StringWriter();
+            logs = null;
+        }
+
+        @Override
+        public void stop() {
+            super.stop();
+            try {
+                writer.close();
+                this.logs = writer.toString();
+            } catch (IOException e) {
+                throw new UncheckedIOException(null, e);
+            }
+        }
+
+        public String getLogs() {
+            return logs;
+        }
+
+    }
 }

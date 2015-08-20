@@ -41,7 +41,7 @@ public class MIRWizardGenerateHibernateCfg extends MIRWizardCommand {
     }
 
     @Override
-    public void execute() {
+    public void doExecute() {
         File file = MCRConfigurationDir.getConfigFile("hibernate.cfg.xml");
 
         try {

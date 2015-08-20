@@ -42,7 +42,7 @@ public class MIRWizardGenerateProperties extends MIRWizardCommand {
     }
 
     @Override
-    public void execute() {
+    public void doExecute() {
         File file = MCRConfigurationDir.getConfigFile("mycore.properties");
 
         try {

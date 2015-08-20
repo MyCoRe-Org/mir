@@ -44,7 +44,7 @@ public class MIRWizardDownloadDBLib extends MIRWizardCommand {
     }
 
     @Override
-    public void execute() {
+    public void doExecute() {
         Element library = getInputXML().getChild("database").getChild("library");
 
         if (library != null && library.getChildren().size() > 0) {
