@@ -101,7 +101,7 @@
         </xsl:call-template>
       </div>
 
-      <div class="cols-xs-12 col-sm-8 col-lg-9 result_list">
+      <div class="col-xs-12 col-sm-8 col-lg-9 result_list">
         <xsl:comment>
           RESULT LIST START
         </xsl:comment>
