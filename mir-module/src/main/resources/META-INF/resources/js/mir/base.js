@@ -39,7 +39,28 @@
         $('#index_search').val($('#index_search').val().replace('*','.*'));
       }
     });
-
+    
+    $('.mir-search-options select').each(function() {
+    	if($(this).attr('data').indexOf(':') > 0) {
+    		$(this).val($(this).attr('data'));
+    	}
+    });
+    
+    $('.mir-search-options select').change(function() {
+    	var currentURL = window.location.href;
+    	//remove old search option
+    	if(currentURL.indexOf('%2Bcategory.top%3A%22' + encodeURIComponent($(this).attr('data'))) > 0) {
+    		currentURL = currentURL.replace('%2Bcategory.top%3A%22' + encodeURIComponent($(this).attr('data')) + '%22%2B', '');
+    	}
+    	//add new search option
+    	if($(this).val() != '') {
+    		var newURL = currentURL.split('&')[0] + '%2Bcategory.top%3A"' + encodeURIComponent($(this).val()) + '"%2B';
+    		if(typeof currentURL.split('&')[1] != 'undefined') {
+    			newURL = newURL + '&' + currentURL.split('&')[1];
+    		}
+    	}
+    	window.location.href = typeof newURL != 'undefined' ? newURL : currentURL;
+    });
 
   }); // END $﻿(document).ready()
 
@@ -58,6 +79,5 @@
     container : "body",
     html : "true"
   });
-
 
 })(jQuery);

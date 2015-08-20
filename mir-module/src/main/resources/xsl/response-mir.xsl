@@ -80,7 +80,7 @@
         <xsl:if test="/response/lst[@name='facet_counts']/lst[@name='facet_fields'] and $hits &gt; 0">
           <div class="panel panel-default">
             <div class="panel-heading">
-              <h3 class="panel-title">Typ</h3>
+              <h3 class="panel-title"><xsl:value-of select="i18n:translate('editor.search.mir.genre')" /></h3>
             </div>
             <div class="panel-body">
               <ul class="filter">
@@ -91,6 +91,14 @@
             </div>
           </div>
         </xsl:if>
+        <xsl:call-template name="print.classiSelect">
+          <xsl:with-param name="classId" select="'mir_institutes'"/>
+          <xsl:with-param name="i18nKey" select="'editor.search.mir.institute'"/>
+        </xsl:call-template>
+        <xsl:call-template name="print.classiSelect">
+          <xsl:with-param name="classId" select="'SDNB'"/>
+          <xsl:with-param name="i18nKey" select="'editor.search.mir.sdnb'"/>
+        </xsl:call-template>
       </div>
 
       <div class="cols-xs-12 col-sm-8 col-lg-9 result_list">
@@ -540,5 +548,24 @@
       </li>
     </xsl:for-each>
   </xsl:template>
-
+  
+  <xsl:template name="print.classiSelect">
+    <xsl:param name="classId" />
+    <xsl:param name="i18nKey" />
+    <xsl:variable name="currentActive">
+    	<xsl:value-of select="substring-before(substring-after($query, $classId), '&quot;+')" />
+    </xsl:variable>
+    <div class="panel panel-default mir-search-options">
+      <xsl:variable name="classiDocument" select="document(concat('xslStyle:items2options:classification:editorComplete:-1:children:',$classId))" />
+      <div class="panel-heading">
+        <h3 class="panel-title"><xsl:value-of select="i18n:translate($i18nKey)" /></h3>
+      </div>
+      <div class="panel-body">
+        <select class="form-control form-control-inline" data="{$classId}{$currentActive}">
+          <option value=""><xsl:value-of select="i18n:translate('mir.select')" /></option>
+          <xsl:copy-of select="$classiDocument/select/*" />
+        </select>
+      </div>
+    </div>
+  </xsl:template>
 </xsl:stylesheet>
