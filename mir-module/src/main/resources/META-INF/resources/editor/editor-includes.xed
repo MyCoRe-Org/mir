@@ -388,11 +388,6 @@
     <mir:textfield xpath="mods:name[@type='conference']/mods:namePart" label="mir.conference" help-text="{i18n:mir.help.conference}" placeholder="{i18n:mir.placeholder.conference}" />
   </xed:template>
 
-  <xed:template id="year.issued.modspart">
-    <mir:textfield xpath="mods:part/mods:date[@encoding='w3cdtf']" label="mir.date.issued.4" help-text="{i18n:mir.help.date.issued.4}" class="required mir-modspart"
-      placeholder="{i18n:mir.placeholder.year}" />
-  </xed:template>
-
   <xed:template id="year.issued">
     <mir:textfield xpath="mods:originInfo/mods:dateIssued[@encoding='w3cdtf']" label="mir.date.issued.4" help-text="{i18n:mir.help.date.issued.4}" class="required"
       placeholder="{i18n:mir.placeholder.year}" />
@@ -1082,7 +1077,7 @@
     <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="modal.body" />
     <script type="text/javascript" src="{$WebApplicationBaseURL}js/mir/classification-modal-select.js"></script>
   </xed:template>
-  
+
   <xed:template id="modal.body">
     <!-- frame for modal window -->
     <div class="modal fade" id="modalFrame" tabindex="-1" role="dialog" aria-labelledby="modal frame" aria-hidden="true">
@@ -1244,14 +1239,7 @@
           <xed:validate xpath="//mods:mods/mods:name[mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']='aut']/mods:displayForm" required="true" i18n="mir.validation.author" display="global" />
         </xed:otherwise>
       </xed:choose>
-      <xed:choose>
-        <xed:when test="//mods:relatedItem/mods:part">
-          <xed:validate xpath="//mods:part/mods:date[@encoding='w3cdtf']" required="true" i18n="mir.validation.dateIssued" display="global" />
-        </xed:when>
-        <xed:otherwise>
-          <xed:validate xpath="//mods:originInfo/mods:dateIssued[@encoding='w3cdtf']" required="true" i18n="mir.validation.dateIssued" display="global" />
-        </xed:otherwise>
-      </xed:choose>
+      <xed:validate xpath="//mods:originInfo/mods:dateIssued[@encoding='w3cdtf']" required="true" i18n="mir.validation.dateIssued" display="global" />
       <xed:validate xpath="//mods:mods/mods:accessCondition[@type='use and reproduction']" required="true" i18n="mir.validation.rights" display="global" />
     </xed:if>
     <xed:validate xpath="//mods:identifier[@type='isbn']" matches="^((978|979)-?)?([\d -]{12}|\d{9})(\d|X)$" i18n="mir.validation.isbn" display="global" />
