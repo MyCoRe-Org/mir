@@ -91,15 +91,15 @@
             </div>
           </div>
         </xsl:if>
-        <xsl:call-template name="print.classiSelect">
+        <xsl:call-template name="print.classiFilter">
           <xsl:with-param name="classId" select="'mir_institutes'"/>
           <xsl:with-param name="i18nKey" select="'editor.search.mir.institute'"/>
         </xsl:call-template>
-        <xsl:call-template name="print.classiSelect">
+        <xsl:call-template name="print.classiFilter">
           <xsl:with-param name="classId" select="'SDNB'"/>
           <xsl:with-param name="i18nKey" select="'editor.search.mir.sdnb'"/>
         </xsl:call-template>
-        <xsl:call-template name="print.dateOption" />
+        <xsl:call-template name="print.dateFilter" />
       </div>
 
       <div class="col-xs-12 col-sm-8 col-lg-9 result_list">
@@ -521,7 +521,7 @@
     <xsl:param name="facet_name" />
     <xsl:for-each select="lst[@name=$facet_name]/int">
       <xsl:variable name="typeComplete" >
-        <xsl:value-of select="concat('&amp;fq=mods.type:',@name)"></xsl:value-of>
+        <xsl:value-of select="concat('&amp;fq=',$facet_name,':',@name)"></xsl:value-of>
       </xsl:variable>
       <xsl:variable name="queryURL" >
         <xsl:choose>
@@ -550,27 +550,90 @@
     </xsl:for-each>
   </xsl:template>
   
-  <xsl:template name="print.classiSelect">
+  <xsl:template name="print.classiFilter">
     <xsl:param name="classId" />
     <xsl:param name="i18nKey" />
-    <xsl:variable name="currentActive">
-    	<xsl:value-of select="substring-before(substring-after($query, $classId), '&quot;+')" />
-    </xsl:variable>
     <div class="panel panel-default mir-search-options">
-      <xsl:variable name="classiDocument" select="document(concat('xslStyle:items2options:classification:editorComplete:-1:children:',$classId))" />
+      <xsl:variable name="classiDocument" select="document(concat('xslStyle:items2options:classification:editor:-1:children:',$classId))" />
       <div class="panel-heading" data-toggle="collapse-next">
         <h3 class="panel-title"><xsl:value-of select="i18n:translate($i18nKey)" /></h3>
       </div>
       <div class="panel-body collapse in" >
-        <select class="form-control form-control-inline" data="{$classId}{$currentActive}">
-          <option value=""><xsl:value-of select="i18n:translate('mir.select')" /></option>
-          <xsl:copy-of select="$classiDocument/select/*" />
-        </select>
+        <xsl:if test="contains($RequestURL, concat('category.top%3A%22',$classId))">
+          <div class="list-group">
+            <xsl:apply-templates select="$classiDocument/select/option" mode="calculate_option_selected" >
+              <xsl:with-param name="classId" select="$classId" />
+            </xsl:apply-templates>
+          </div>
+        </xsl:if>
+        <div class="dropdown container-fluid row">
+          <button class="btn btn-default dropdown-toggle col-md-12 col-xs-12" type="button" data-toggle="dropdown" >
+            Filter
+            <span class="caret"/>
+          </button>
+          <ul class="dropdown-menu" role="menu" style="max-height: 500px; overflow-y: scroll;">
+            <xsl:apply-templates select="$classiDocument/select/option" mode="calculate_option_notselected" >
+              <xsl:with-param name="classId" select="$classId" />
+            </xsl:apply-templates>
+          </ul>
+        </div>
       </div>
     </div>
   </xsl:template>
   
-  <xsl:template name="print.dateOption">
+  <xsl:template match="select/option" mode="calculate_option_notselected">
+    <xsl:param name="classId" />
+    <xsl:variable name="complete"><xsl:value-of select="concat('%2Bcategory.top%3A%22',$classId,'%3A',@value,'%22%2B')" /></xsl:variable>
+    <xsl:if test="not(contains($RequestURL, $complete))">
+      <xsl:variable name="filterHref">
+        <xsl:choose>
+          <xsl:when test="contains($RequestURL,'&amp;')">
+            <xsl:value-of select="concat(substring-before($RequestURL, '&amp;'), $complete, substring-after($RequestURL, '&amp;'))" />
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:value-of select="concat($RequestURL,$complete)" />
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:variable>
+      <li>
+        <xsl:call-template name="print.hyperLink">
+          <xsl:with-param name="href" select="$filterHref"/>
+          <xsl:with-param name="text" select="@title"/>
+        </xsl:call-template>
+      </li>
+    </xsl:if>
+  </xsl:template>
+  
+  <xsl:template match="select/option" mode="calculate_option_selected">
+    <xsl:param name="classId" />
+    <xsl:variable name="complete"><xsl:value-of select="concat('%2Bcategory.top%3A%22',$classId,'%3A',@value,'%22%2B')" /></xsl:variable>
+    <xsl:if test="contains($RequestURL, $complete)">
+      <xsl:variable name="filterHref">
+          <xsl:value-of select="concat(substring-before($RequestURL, $complete), substring-after($RequestURL, $complete))" />
+      </xsl:variable>
+      <xsl:call-template name="print.hyperLink">
+        <xsl:with-param name="href" select="$filterHref"/>
+        <xsl:with-param name="text" select="@title"/>
+        <xsl:with-param name="class" select="'list-group-item active'"/>
+        <xsl:with-param name="icon" select="'remove'"/>
+      </xsl:call-template>
+    </xsl:if>
+  </xsl:template>
+  
+  <xsl:template name="print.hyperLink">
+    <xsl:param name="href" />
+    <xsl:param name="text" />
+    <xsl:param name="class" select="''"/>
+    <xsl:param name="icon" select="''"/>
+    <a class="{$class}" href="{$href}" title="{$text}">
+      <xsl:if test="$icon != ''">
+        <span aria-hidden="true" class="glyphicon glyphicon-{$icon}"></span> 
+      </xsl:if>
+      <xsl:value-of select="$text" />
+    </a>
+  </xsl:template>
+  
+  <xsl:template name="print.dateFilter">
     <div class="panel panel-default mir-search-options-date">
       <div class="panel-heading" data-toggle="collapse-next">
         <h3 class="panel-title"><xsl:value-of select="i18n:translate('component.mods.metaData.dictionary.dateIssued')" /></h3>
