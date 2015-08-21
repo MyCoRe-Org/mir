@@ -5,13 +5,13 @@
   exclude-result-prefixes="xsl mir">
 
   <xsl:include href="copynodes.xsl" />
-  
+
   <xsl:template name="mir-helpbutton">
     <span class="btn btn-default info-button" data-toggle="popover" data-placement="right" data-content="{@help-text}">
       <i class="fa fa-info"></i>
     </span>
   </xsl:template>
-  
+
   <xsl:template match="mir:textfield.nobind">
     <div class="form-group">
       <label class="col-md-3 control-label">
@@ -30,10 +30,10 @@
       </div>
     </div>
   </xsl:template>
-  
+
   <xsl:template name="mir-textfield">
     <label class="col-md-3 control-label ">
-      <xed:output i18n="{@label}" /> 
+      <xed:output i18n="{@label}" />
     </label>
     <div class="col-md-6">
       <input id="{@id}" type="text" class="form-control">
@@ -81,7 +81,7 @@
   </xsl:template>
 
   <xsl:template match="mir:textfield.repeat">
-  <!-- depricated after removing edit mir-textfield-->
+  <!-- deprecated after removing edit mir-textfield-->
     <xed:repeat xpath="{@xpath}" min="{@min}" max="{@max}">
       <xsl:variable name="xed-val-marker" > {$xed-validation-marker} </xsl:variable>
       <div class="form-group {@class} {$xed-val-marker}">
@@ -177,7 +177,7 @@
       <xsl:call-template name="mir-pmud" />
     </div>
   </xsl:template>
-  
+
   <xsl:template match="mir:help-pmud">
     <div class="col-md-3 {@class}">
       <xsl:if test="string-length(@help-text) &gt; 0">
@@ -212,15 +212,15 @@
         </label>
         <div class="col-md-6">
           <div class="input-group">
-            <input class="form-control relItemsearch" data-searchengine="{@searchengine}" data-genre="{@genre}" 
+            <input class="form-control relItemsearch" data-searchengine="{@searchengine}" data-genre="{@genre}"
                   data-responsefield="{@responsefield}" data-provide="typeahead" type="text" autocomplete="off"/>
-            <span class="input-group-addon searchbadge"> 
-              
+            <span class="input-group-addon searchbadge">
+
             </span>
-		  </div>
+      </div>
         </div>
       </div>
-    </xed:bind> 
+    </xed:bind>
   </xsl:template>
 
 </xsl:stylesheet>
