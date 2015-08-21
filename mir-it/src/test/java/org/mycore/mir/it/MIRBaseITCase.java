@@ -184,11 +184,11 @@ public class MIRBaseITCase {
 
     public void loginAs(String user, String password) {
 
-        // waits up to 10 seconds before throwing a TimeoutException or goes on if element is displayed and enabled
+        // waits up to 10 seconds before throwing a TimeoutException or goes on if login is displayed and enabled
         WebDriverWait wait = new WebDriverWait(driver, 10);
-        wait.until(ExpectedConditions.elementToBeClickable(By.id("loginURL")));
+        WebElement loginLink = wait.until(ExpectedConditions.elementToBeClickable(By.id("loginURL")));
+        loginLink.click();
 
-        driver.findElement(By.id("loginURL")).click();
         assertEquals("Anmelden mit lokaler Nutzerkennung", driver.getTitle());
         driver.findElement(By.name("uid")).clear();
         driver.findElement(By.name("uid")).sendKeys(user);
