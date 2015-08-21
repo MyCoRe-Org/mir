@@ -260,7 +260,7 @@
     <module>mir-common-resources</module>
     <module>mir-cli</module>
     <module>mir-wizard</module>
-    <module>mir-it</module>
+    <!-- module>mir-it</module -->
   </modules>
   <developers>
     <developer>
@@ -418,18 +418,6 @@
           </plugins>
         </pluginManagement>
       </build>
-    </profile>
-    <profile>
-      <id>tomcat7</id>
-      <activation>
-        <property>
-          <name>tomcat</name>
-          <value>7</value>
-        </property>
-      </activation>
-      <properties>
-        <tomcat.version>${tomcat7.version}</tomcat.version>
-      </properties>
     </profile>
     <profile>
       <id>tomcat8</id>
