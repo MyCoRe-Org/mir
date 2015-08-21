@@ -288,6 +288,17 @@
       </roles>
     </developer>
     <developer>
+      <id>mcramill</id>
+      <name>Alexander Miller</name>
+      <organization>Friedrich-Schiller-Universität Jena, Thüringer Universitäts- und Landesbibliothek</organization>
+      <email>alexander.miller (at) uni-jena.de</email>
+      <organizationUrl>http://www.thulb.uni-jena.de/</organizationUrl>
+      <timezone>+1</timezone>
+      <roles>
+        <role>programmer</role>
+      </roles>
+    </developer>
+    <developer>
       <id>mcrkrebs</id>
       <name>Kathleen Neumann</name>
       <organization>Verbundzentrale des GBV (VZG), Document Management System</organization>
