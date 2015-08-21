@@ -15,26 +15,26 @@ Developer Instructions
 %{toc|fromDepth=2}
 
 ==================
- 
+
 * Requirements
 
  * General
 
-  	* {{{http://www.oracle.com/technetwork/java/javase/downloads/index.html}Java™ Development Kit v.7 or higher}} 
+    * {{{http://www.oracle.com/technetwork/java/javase/downloads/index.html}Java™ Development Kit v.7 or higher}}
 
-	* {{{http://maven.apache.org/}Apache Maven™ v.3.x}} 
+  * {{{http://maven.apache.org/}Apache Maven™ v.3.x}}
 
-	* {{{http://subversion.apache.org/}Apache™ Subversion®}} 
+  * {{{http://subversion.apache.org/}Apache™ Subversion®}}
 
  * For building mir-default-layout
 
- 	* {{{http://nodejs.org/}node.js}} (including npm)
+   * {{{http://nodejs.org/}node.js}} (including npm)
 
 * Getting started
- 
+
  MIR uses a repository to manage its source code. Instructions on how to check out the code can be found
  at the {{{./source-repository.html}Source Repository}} page.
- 
+
 ** Setup
 
  Please have a look at {{{./install.html}Installation instructions}} for more informations. For the development we
@@ -43,14 +43,14 @@ Developer Instructions
 *** SOLR
 
  For the development process please use this SOLR-URL:
- 
+
 +-----------------------------------------------------------------------------------------------------------------------+
   MCR.Module-solr.ServerURL=http:\/\/localhost:8291/solr/collection1
 +-----------------------------------------------------------------------------------------------------------------------+
 
  You are also required to tell solr where to find its configuration files. You can do so by modifying your Maven
  {{{https://maven.apache.org/settings.html}settings.xml}}:
- 
+
 +-----------------------------------------------------------------------------------------------------------------------+
 <settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -72,7 +72,7 @@ Developer Instructions
 +-----------------------------------------------------------------------------------------------------------------------+
 
  If you are using Windows you need to change the paths to match your installation.
- 
+
  As a quick starting point to configure SOLR you can copy the directory <<<mir-it/src/test/solr>>> to
  <<<${user.home}/.mycore/dev-mir/data/>>> and overwrite <<<schema.xml>>> and <<<solrconfig.xml>>> with
  those provided in <<<mir-cli/src/main/config/solr-home/conf>>>.
@@ -106,25 +106,25 @@ Developer Instructions
 
  Additionally please store {{{http://artifactory.mycore.de/mycore-releases/com/h2database/h2/1.3.176/h2-1.3.176.jar}h2.jar}}
  in your <<<lib>>> directory under <<<dev-mir>>>.
-  
- 
+
+
 ** How to build and start
 
  After you set-up Hibernate and SOLR you can proceed with the {{{./install.html}Installation instructions}} to create admin user,
  add classification and basic ACL rules. Set <<<JAVA_OPTS>>> environment variable to <<<-DMCR.DataPrefix=dev>>> before running
  the setup script.
- 
- Starting up a servlet container in development environment is quite simple: 
+
+ Starting up a servlet container in development environment is quite simple:
 
  If you use Linux or Mac OS X you can just enter:
- 
+
 +-----------------------------------------------------------------------------------------------------------------------+
    mvn install -am -pl mir-webapp && mvn -Pdev -Djetty org.codehaus.cargo:cargo-maven2-plugin:run -pl mir-webapp
 +-----------------------------------------------------------------------------------------------------------------------+
- 
+
  What it does is that it compiles and bundles all artifacts necessary to run <<<mir-webapp>>>.
  After that is starts <<{{{http://www.eclipse.org/jetty/}Jetty}}>> with a <<</solr>>> and a <<</mir>>> application.
- If you want to test the application with {{{http://tomcat.apache.org}Tomcat}} instead replace <<<-Djetty>>> by <<<-Dtomcat=7>>>.
- 
+ If you want to test the application with {{{http://tomcat.apache.org}Tomcat}} instead replace <<<-Djetty>>> by <<<-Dtomcat=8>>>.
+
  The parameter <<<-Pdev>>> triggers the maven profile <dev>. This activates remote debugging on port <<<8295>>> and sets system
- property <<<MCR.DataPrefix=dev>>>. 
+ property <<<MCR.DataPrefix=dev>>>.
