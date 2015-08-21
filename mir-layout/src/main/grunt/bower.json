@@ -19,6 +19,6 @@
     "font-awesome": "4.4.0",
     "jquery": "1.11.3",
     "jquery-migrate": "1.2.1",
-    "jquery-confirm": "2.3.4"
+    "jquery-confirm": "2.5.0"
   }
 }

@@ -24,11 +24,7 @@
     // editor fix (to many tables)
     $('table.editorPanel td:has(table)').css('padding', '0');
 
-    $('.confirm_deletion, .confirm_derivate_deletion, .confirm_directory_deletion, .confirm_file_deletion').confirm({
-      confirm: function(button) {
-        location.href = $(this).attr('href');
-      },
-    });
+    $('.confirm_deletion').confirm();
 
     // activate empty nav-bar search
     $('.navbar-search').find(':input[value=""]').attr('disabled', false);
@@ -39,73 +35,73 @@
         $('#index_search').val($('#index_search').val().replace('*','.*'));
       }
     });
-    
+
     //date filter option
     $('.mir-search-options-date input').ready(function() {
-    	var currentURL = window.location.href;
-    	var fqDate = '';
-    	//input start val
-    	if(currentURL.indexOf('&fq=mods.dateIssued') > 0) {
-	    	fqDate = currentURL.substr(currentURL.indexOf('&fq=mods.dateIssued'));
-				fqDate = decodeURIComponent(fqDate.split('&')[1]);
-				$(".mir-search-options-date input").val(fqDate.replace(/[a-zA-Z.:"+*={}/\]/\[]/g, ''));
-    	}
-    	//select start val
-    	if(fqDate.indexOf('"') > 0) {
-    		$('.mir-search-options-date select').val('=');
-    	}
-    	if(fqDate.indexOf('+TO+*') > 0 && fqDate.indexOf('{') > 0) {
-    		$('.mir-search-options-date select').val('>');
-    	}
-    	if(fqDate.indexOf('+TO+*') > 0 && fqDate.indexOf('[') > 0) {
-    		$('.mir-search-options-date select').val('>=');
-    	}
-    	if(fqDate.indexOf('*+TO+') > 0 && fqDate.indexOf('}') > 0) {
-    		$('.mir-search-options-date select').val('<');
-    	}
-    	if(fqDate.indexOf('*+TO+') > 0 && fqDate.indexOf(']') > 0) {
-    		$('.mir-search-options-date select').val('<=');
-    	}
+      var currentURL = window.location.href;
+      var fqDate = '';
+      //input start val
+      if(currentURL.indexOf('&fq=mods.dateIssued') > 0) {
+        fqDate = currentURL.substr(currentURL.indexOf('&fq=mods.dateIssued'));
+        fqDate = decodeURIComponent(fqDate.split('&')[1]);
+        $(".mir-search-options-date input").val(fqDate.replace(/[a-zA-Z.:"+*={}/\]/\[]/g, ''));
+      }
+      //select start val
+      if(fqDate.indexOf('"') > 0) {
+        $('.mir-search-options-date select').val('=');
+      }
+      if(fqDate.indexOf('+TO+*') > 0 && fqDate.indexOf('{') > 0) {
+        $('.mir-search-options-date select').val('>');
+      }
+      if(fqDate.indexOf('+TO+*') > 0 && fqDate.indexOf('[') > 0) {
+        $('.mir-search-options-date select').val('>=');
+      }
+      if(fqDate.indexOf('*+TO+') > 0 && fqDate.indexOf('}') > 0) {
+        $('.mir-search-options-date select').val('<');
+      }
+      if(fqDate.indexOf('*+TO+') > 0 && fqDate.indexOf(']') > 0) {
+        $('.mir-search-options-date select').val('<=');
+      }
     });
-    
+
     //date filter option
     $('.mir-search-options-date input').keyup(function(event) {
-    	if(event.which === 13) {
-    		var currentURL = window.location.href;
-    		var fqDate = '';
-    		var newURL = currentURL;
-    		if(currentURL.indexOf('&fq=mods.dateIssued') > 0) {
-    			fqDate = currentURL.substr(currentURL.indexOf('&fq=mods.dateIssued'));
-    			fqDate = fqDate.split('&')[1];
-    			newURL = currentURL.replace('&' + fqDate, '');
-      	}
-    		if($(this).val() != '') {
-    			var operator = $('.mir-search-options-date select').val();
-    			if(operator == '=') {
-    				newURL = newURL + '&fq=mods.dateIssued%3A"' + $(this).val() + '"';
-    			}
-    			if(operator == '>') {
-    				newURL = newURL + '&fq=mods.dateIssued%3A{' + $(this).val() + '+TO+*]';
-    			}
-    			if(operator == '>=') {
-    				newURL = newURL + '&fq=mods.dateIssued%3A[' + $(this).val() + '+TO+*]';
-    			}
-    			if(operator == '<') {
-    				newURL = newURL + '&fq=mods.dateIssued%3A[*+TO+' + $(this).val() + '}';
-    			}
-    			if(operator == '<=') {
-    				newURL = newURL + '&fq=mods.dateIssued%3A[*+TO+' + $(this).val() + ']';
-    			}
-    		}
-    		window.location.href = newURL;
-    	}
+      if(event.which === 13) {
+        var currentURL = window.location.href;
+        var fqDate = '';
+        var newURL = currentURL;
+        if(currentURL.indexOf('&fq=mods.dateIssued') > 0) {
+          fqDate = currentURL.substr(currentURL.indexOf('&fq=mods.dateIssued'));
+          fqDate = fqDate.split('&')[1];
+          newURL = currentURL.replace('&' + fqDate, '');
+        }
+        if($(this).val() != '') {
+          var operator = $('.mir-search-options-date select').val();
+          if(operator == '=') {
+            newURL = newURL + '&fq=mods.dateIssued%3A"' + $(this).val() + '"';
+          }
+          if(operator == '>') {
+            newURL = newURL + '&fq=mods.dateIssued%3A{' + $(this).val() + '+TO+*]';
+          }
+          if(operator == '>=') {
+            newURL = newURL + '&fq=mods.dateIssued%3A[' + $(this).val() + '+TO+*]';
+          }
+          if(operator == '<') {
+            newURL = newURL + '&fq=mods.dateIssued%3A[*+TO+' + $(this).val() + '}';
+          }
+          if(operator == '<=') {
+            newURL = newURL + '&fq=mods.dateIssued%3A[*+TO+' + $(this).val() + ']';
+          }
+        }
+        window.location.href = newURL;
+      }
     });
-    
+
     //colapse the next element
     $('[data-toggle=collapse-next]').click(function() {
-    	$(this).next().collapse('toggle');
+      $(this).next().collapse('toggle');
     });
-    
+
   }); // END $﻿(document).ready()
 
   window.fireMirSSQuery = function base_fireMirSSQuery(form) {

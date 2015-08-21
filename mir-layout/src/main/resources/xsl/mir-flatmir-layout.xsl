@@ -14,7 +14,7 @@
   <xsl:param name="MIR.CustomLayout.CSS" select="''" />
   <xsl:param name="MIR.CustomLayout.JS" select="''" />
   <xsl:param name="MIR.Layout.Theme" select="'flatmir'" />
-  
+
   <xsl:variable name="PageTitle" select="/*/@title" />
 
   <xsl:template match="/site">
@@ -146,7 +146,10 @@
               title: "<xsl:value-of select="i18n:translate('mir.confirm.title')" />",
               confirmButton: "<xsl:value-of select="i18n:translate('mir.confirm.confirmButton')" />",
               cancelButton: "<xsl:value-of select="i18n:translate('mir.confirm.cancelButton')" />",
-              post: false
+              post: false,
+              confirmButtonClass: "btn-danger",
+              cancelButtonClass: "btn-default",
+              dialogClass: "modal-dialog modal-lg" // Bootstrap classes for large modal
             }
           });
         </script>
