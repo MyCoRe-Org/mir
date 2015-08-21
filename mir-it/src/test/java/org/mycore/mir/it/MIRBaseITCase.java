@@ -52,7 +52,7 @@ import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 /**
@@ -184,18 +184,9 @@ public class MIRBaseITCase {
 
     public void loginAs(String user, String password) {
 
-        // Here's the explicit wait.
-        WebDriverWait wdw = new WebDriverWait(driver, 10);
-        ExpectedCondition<Boolean> condition = new ExpectedCondition<Boolean>() {
-           @Override
-           public Boolean apply(WebDriver d) {
-              WebElement result = d.findElement(By.id("loginURL"));
-              return "Anmelden".equals(result.getText());
-              // Returns true as soon as an element of id 'loginURL' is found
-              // where the element's text value is "Anmelden".
-          }
-        };
-        wdw.until(condition); // Won't get past here til timeout or element is found
+        // waits up to 10 seconds before throwing a TimeoutException or goes on if element is displayed and enabled
+        WebDriverWait wait = new WebDriverWait(driver, 10);
+        wait.until(ExpectedConditions.elementToBeClickable(By.id("loginURL")));
 
         driver.findElement(By.id("loginURL")).click();
         assertEquals("Anmelden mit lokaler Nutzerkennung", driver.getTitle());
