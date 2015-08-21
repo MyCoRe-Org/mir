@@ -7,6 +7,9 @@ import static org.junit.Assert.assertEquals;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 /**
  * @author Thomas Scheffler (yagee)
@@ -27,8 +30,10 @@ public class MIRUserHelper {
                         By.xpath("//button[starts-with(@name,'_xed_submit_subselect:/user/roles/role[" + (i + 1)
                             + "]:')]")).click();
             } else {
-                driver.findElement(By.xpath("//button[starts-with(@name,'_xed_submit_subselect:/user/roles/role:')]"))
-                    .click();
+                // waits up to 30 seconds before throwing a TimeoutException or goes on if role button is displayed and enabled
+                WebDriverWait wait = new WebDriverWait(driver, 30);
+                WebElement selectRole = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[starts-with(@name,'_xed_submit_subselect:/user/roles/role:')]")));
+                selectRole.click();
             }
             driver.findElement(By.linkText("Systemnutzerrollen")).click();
             driver.findElement(By.id("rmcr-roles_" + roles[i])).click();

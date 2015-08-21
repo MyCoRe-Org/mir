@@ -184,8 +184,8 @@ public class MIRBaseITCase {
 
     public void loginAs(String user, String password) {
 
-        // waits up to 10 seconds before throwing a TimeoutException or goes on if login is displayed and enabled
-        WebDriverWait wait = new WebDriverWait(driver, 10);
+        // waits up to 30 seconds before throwing a TimeoutException or goes on if login is displayed and enabled
+        WebDriverWait wait = new WebDriverWait(driver, 30);
         WebElement loginLink = wait.until(ExpectedConditions.elementToBeClickable(By.id("loginURL")));
         loginLink.click();
 
