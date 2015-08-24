@@ -8,6 +8,7 @@
   >
 
   <xsl:param name="UserAgent" />
+  <xsl:param name="MIR.testEnvironment" />
 
   <!-- retain the original query and parameters, for attaching them to a url -->
   <xsl:variable name="query">
@@ -91,15 +92,17 @@
             </div>
           </div>
         </xsl:if>
-        <xsl:call-template name="print.classiFilter">
-          <xsl:with-param name="classId" select="'mir_institutes'"/>
-          <xsl:with-param name="i18nKey" select="'editor.search.mir.institute'"/>
-        </xsl:call-template>
-        <xsl:call-template name="print.classiFilter">
-          <xsl:with-param name="classId" select="'SDNB'"/>
-          <xsl:with-param name="i18nKey" select="'editor.search.mir.sdnb'"/>
-        </xsl:call-template>
-        <xsl:call-template name="print.dateFilter" />
+        <xsl:if test="$MIR.testEnvironment='true'"> <!-- filters in development, show only in test environments -->
+          <xsl:call-template name="print.classiFilter">
+            <xsl:with-param name="classId" select="'mir_institutes'"/>
+            <xsl:with-param name="i18nKey" select="'editor.search.mir.institute'"/>
+          </xsl:call-template>
+          <xsl:call-template name="print.classiFilter">
+            <xsl:with-param name="classId" select="'SDNB'"/>
+            <xsl:with-param name="i18nKey" select="'editor.search.mir.sdnb'"/>
+          </xsl:call-template>
+          <xsl:call-template name="print.dateFilter" />
+        </xsl:if>
       </div>
 
       <div class="col-xs-12 col-sm-8 col-lg-9 result_list">
@@ -533,7 +536,7 @@
           </xsl:otherwise>
         </xsl:choose>
       </xsl:variable>
-      
+
       <li>
         <div class="checkbox">
           <label>
@@ -549,7 +552,7 @@
       </li>
     </xsl:for-each>
   </xsl:template>
-  
+
   <xsl:template name="print.classiFilter">
     <xsl:param name="classId" />
     <xsl:param name="i18nKey" />
@@ -580,7 +583,7 @@
       </div>
     </div>
   </xsl:template>
-  
+
   <xsl:template match="select/option" mode="calculate_option_notselected">
     <xsl:param name="classId" />
     <xsl:variable name="complete"><xsl:value-of select="concat('%2Bcategory.top%3A%22',$classId,'%3A',@value,'%22%2B')" /></xsl:variable>
@@ -603,7 +606,7 @@
       </li>
     </xsl:if>
   </xsl:template>
-  
+
   <xsl:template match="select/option" mode="calculate_option_selected">
     <xsl:param name="classId" />
     <xsl:variable name="complete"><xsl:value-of select="concat('%2Bcategory.top%3A%22',$classId,'%3A',@value,'%22%2B')" /></xsl:variable>
@@ -619,7 +622,7 @@
       </xsl:call-template>
     </xsl:if>
   </xsl:template>
-  
+
   <xsl:template name="print.hyperLink">
     <xsl:param name="href" />
     <xsl:param name="text" />
@@ -627,12 +630,12 @@
     <xsl:param name="icon" select="''"/>
     <a class="{$class}" href="{$href}" title="{$text}">
       <xsl:if test="$icon != ''">
-        <span aria-hidden="true" class="glyphicon glyphicon-{$icon}"></span> 
+        <span aria-hidden="true" class="glyphicon glyphicon-{$icon}"></span>
       </xsl:if>
       <xsl:value-of select="$text" />
     </a>
   </xsl:template>
-  
+
   <xsl:template name="print.dateFilter">
     <div class="panel panel-default mir-search-options-date">
       <div class="panel-heading" data-toggle="collapse-next">
