@@ -1219,7 +1219,7 @@
         <h3>
           <xed:output i18n="mir.validation.failed" />
         </h3>
-        <ul class="mir-validation-messages">
+        <ul class="mir-validation-messages text-danger">
           <xed:display-validation-messages />
         </ul>
       </div>
