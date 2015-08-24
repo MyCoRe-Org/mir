@@ -1229,11 +1229,11 @@
   <xed:template id="validation-rules">
     <xed:validate xpath="//mods:mods/mods:titleInfo/mods:title" required="true" i18n="mir.validation.title" display="global" />
     <!-- don't validate author, date issued and rights for journal etc.  -->
-    <xed:if test="//mods:mods/mods:genre[@valueURIxEditor!='journal'][@valueURIxEditor!='series']">
+    <xed:if test="//mods:mods/mods:genre[@valueURIxEditor!='journal' or @valueURIxEditor!='series']">
       <!-- "required" checks if there is such an element which has text content, so we must validate mods:displayForm for the moment-->
       <xed:choose>
-        <xed:when test="//mods:mods/mods:genre[@valueURIxEditor='collection']">
-          <xed:validate xpath="//mods:mods/mods:name[mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']='edt']/mods:displayForm" required="true" i18n="mir.validation.author" display="global" />
+        <xed:when test="//mods:mods/mods:genre[@valueURIxEditor='collection' or @valueURIxEditor='proceedings']">
+          <xed:validate xpath="//mods:mods/mods:name[mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']='edt']/mods:displayForm" required="true" i18n="mir.validation.editor" display="global" />
         </xed:when>
         <xed:otherwise>
           <xed:validate xpath="//mods:mods/mods:name[mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']='aut']/mods:displayForm" required="true" i18n="mir.validation.author" display="global" />
