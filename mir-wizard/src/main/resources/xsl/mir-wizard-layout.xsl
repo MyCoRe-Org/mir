@@ -13,14 +13,6 @@
 
   <xsl:param name="CurrentLang" select="'de'" />
 
-  <!-- Various versions -->
-  <xsl:variable name="bootstrap.version" select="'3.3.5'" />
-  <xsl:variable name="bootswatch.version" select="$bootstrap.version" />
-  <xsl:variable name="fontawesome.version" select="'4.2.0'" />
-  <xsl:variable name="jquery.version" select="'1.11.3'" />
-  <xsl:variable name="jquery.migrate.version" select="'1.2.1'" />
-  <!-- End of various versions -->
-
   <xsl:variable name="PageTitle" select="/*/@title" />
 
   <xsl:template match="/site">
@@ -34,11 +26,12 @@
           Mobile viewport optimisation
         </xsl:comment>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <link href="{$WebApplicationBaseURL}webjars/font-awesome/{$fontawesome.version}/css/font-awesome.min.css" rel="stylesheet" />
-        <link href="{$WebApplicationBaseURL}webjars/bootstrap/{$bootstrap.version}/css/bootstrap.min.css" rel="stylesheet" />
+        <link href="{$WebApplicationBaseURL}assets/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+        <link href="{$WebApplicationBaseURL}assets/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
         <link href="{$WebApplicationBaseURL}wizard/css/layout.css" rel="stylesheet" />
-        <script type="text/javascript" src="{$WebApplicationBaseURL}webjars/jquery/{$jquery.version}/jquery.min.js"></script>
-        <script type="text/javascript" src="{$WebApplicationBaseURL}webjars/jquery-migrate/{$jquery.migrate.version}/jquery-migrate.min.js"></script>
+        
+        <script type="text/javascript" src="{$WebApplicationBaseURL}assets/jquery/jquery.min.js"></script>
+        <script type="text/javascript" src="{$WebApplicationBaseURL}assets/bootstrap/js/bootstrap.min.js"></script>
         <xsl:copy-of select="head/*" />
       </head>
 
@@ -77,7 +70,6 @@
             </div>
           </div>
         </footer>
-        <script type="text/javascript" src="{$WebApplicationBaseURL}webjars/bootstrap/{$bootstrap.version}/js/bootstrap.min.js"></script>
       </body>
     </html>
   </xsl:template>
