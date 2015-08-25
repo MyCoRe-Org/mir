@@ -160,7 +160,7 @@ module.exports = function(grunt) {
 					outputSourceFiles : true,
 					modifyVars : {
 						bootswatch_theme : "default",
-						"icon-font-path" : "'../../<%=globalConfig.assetsDirectoryRelative%>/bootstrap/fonts/'",
+						"icon-font-path" : "'../../../<%=globalConfig.assetsDirectoryRelative%>/bootstrap/fonts/'",
 					}
 				},
 				files : {}
@@ -178,16 +178,8 @@ module.exports = function(grunt) {
 					destPrefix : '<%=globalConfig.assetsDirectory%>/'
 				},
 				files : {
-					'bootstrap/fonts' : 'bootstrap/dist/fonts',
-					'bootstrap/js' : 'bootstrap/dist/js',
-
-					'font-awesome/css' : 'font-awesome/css',
-					'font-awesome/fonts' : 'font-awesome/fonts',
-
-					'jquery' : 'jquery/dist/*.js',
-					
-					'jquery/plugins/jquery-confirm' : 'jquery-confirm/*.js',
-					'jquery/plugins/jquery-migrate' : 'jquery-migrate/*.js'
+					'jquery' : 'jquery/dist',
+					'jquery/plugins/jquery-migrate' : 'jquery-migrate/*.js',
 				},
 			}
 		}

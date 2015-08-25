@@ -5,7 +5,7 @@
   <xed:template id="in.out">
     <xed:source uri="xslStyle:PPN-mods-simple,editor/mods2xeditor:http://unapi.gbv.de/?id=gvk:ppn:{$ppn}&amp;format=mods" />
     <xed:source uri="xslStyle:RDF-mods-journal,editor/mods2xeditor:http://ld.zdb-services.de/data/{$zdbid}.rdf" />
-    <xed:source uri="xslStyle:editor/mods2xeditor:{$sourceUri}"/>
+    <xed:source uri="xslStyle:editor/mods2xeditor:{$sourceUri}" />
     <xed:source uri="xslStyle:mycoreobject-editor,editor/mods2xeditor:mcrobject:{$id}" />
     <xed:source uri="xslStyle:asHost,editor/mods2xeditor:mcrobject:{$hostId}" />
     <xed:source uri="xslStyle:asSeries,editor/mods2xeditor:mcrobject:{$seriesId}" />
@@ -92,7 +92,7 @@
   </xed:template>
 
   <xed:template id="series.title">
-    <mir:textfield xpath="mods:titleInfo/mods:title" label="mir.series.title" placeholder="{i18n:mir.placeholder.series.title}" id="series-title"/>
+    <mir:textfield xpath="mods:titleInfo/mods:title" label="mir.series.title" placeholder="{i18n:mir.placeholder.series.title}" id="series-title" />
   </xed:template>
 
   <xed:template id="title.series.relItemsearch">
@@ -138,7 +138,7 @@
       </legend>
       <xed:bind xpath="mods:titleInfo">
         <div class="mir-fieldset-content">
-          <mir:textfield xpath="mods:title" label="mir.title" placeholder="{i18n:mir.placeholder.title.main}" help-text="{i18n:mir.help.title}"/>
+          <mir:textfield xpath="mods:title" label="mir.title" placeholder="{i18n:mir.placeholder.title.main}" help-text="{i18n:mir.help.title}" />
           <mir:textfield xpath="mods:subTitle" label="mir.title.subTitle" help-text="{i18n:mir.help.title.subTitle}" />
         </div>
       </xed:bind>
@@ -190,7 +190,7 @@
             <div class="col-md-6">
               <div class="form-inline controls">
                 <xed:bind xpath="mods:nonSort">
-                  <input type="text" size="9" class="form-control form-control-inline" placeholder="Der/Die/Das"/>
+                  <input type="text" size="9" class="form-control form-control-inline" placeholder="Der/Die/Das" />
                 </xed:bind>
                 <xed:bind xpath="@xml:lang" initially="de">
                   <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="lang.list" />
@@ -349,17 +349,9 @@
   <xed:template id="person.fields">
     <div class="search-person">
       <xed:bind xpath="mods:displayForm">
-        <input type="text" size="26" class="form-control form-control-inline"
-          data-search="searchEntity"
-          data-search-type="select"
-          data-search-entity-type="person"
-          data-search-output="#valueURIxEditor"
-          data-search-button="{i18n:button.search}"
-          data-search-button-loading="{i18n:button.loading}"
-          data-search-result-empty="{i18n:mir.searchIdentifier.noResult}"
-          data-target=".search-person"
-          placeholder="{i18n:mir.placeholder.name.family}, {i18n:mir.placeholder.name.given}"
-        />
+        <input type="text" size="26" class="form-control form-control-inline" data-search="searchEntity" data-search-type="select"
+          data-search-entity-type="person" data-search-output="#valueURIxEditor" data-search-button="{i18n:button.search}" data-search-button-loading="{i18n:button.loading}"
+          data-search-result-empty="{i18n:mir.searchIdentifier.noResult}" data-target=".search-person" placeholder="{i18n:mir.placeholder.name.family}, {i18n:mir.placeholder.name.given}" />
       </xed:bind>
       <xed:bind xpath="@valueURIxEditor">
         <input type="hidden" id="valueURIxEditor" />
@@ -389,13 +381,13 @@
   </xed:template>
 
   <xed:template id="year.issued">
-    <mir:textfield xpath="mods:originInfo/mods:dateIssued[@encoding='w3cdtf']" label="mir.date.issued.4" help-text="{i18n:mir.help.date.issued.4}" class="required"
-      placeholder="{i18n:mir.placeholder.year}" />
+    <mir:textfield xpath="mods:originInfo/mods:dateIssued[@encoding='w3cdtf']" label="mir.date.issued.4" help-text="{i18n:mir.help.date.issued.4}"
+      class="required" placeholder="{i18n:mir.placeholder.year}" />
   </xed:template>
 
   <xed:template id="date.issued">
-    <mir:textfield xpath="mods:originInfo/mods:dateIssued[@encoding='w3cdtf']" label="mir.date.issued.10" help-text="{i18n:mir.help.date.issued.10}" class="required"
-      placeholder="{i18n:mir.placeholder.date}" />
+    <mir:textfield xpath="mods:originInfo/mods:dateIssued[@encoding='w3cdtf']" label="mir.date.issued.10" help-text="{i18n:mir.help.date.issued.10}"
+      class="required" placeholder="{i18n:mir.placeholder.date}" />
   </xed:template>
 
   <xed:template id="date.broadcasted">
@@ -419,13 +411,12 @@
   </xed:template>
 
   <xed:template id="part.date">
-    <mir:textfield xpath="mods:part/mods:date[@encoding='w3cdtf']" label="mir.host.date" help-text="{i18n:mir.help.host.date}"
-      placeholder="{i18n:mir.placeholder.date}" />
+    <mir:textfield xpath="mods:part/mods:date[@encoding='w3cdtf']" label="mir.host.date" help-text="{i18n:mir.help.host.date}" placeholder="{i18n:mir.placeholder.date}" />
   </xed:template>
 
   <xed:template id="date.created">
-    <mir:textfield xpath="mods:originInfo/mods:dateCreated[@encoding='w3cdtf']" label="mir.date.created" help-text="{i18n:mir.help.date.created}" class="required"
-      placeholder="{i18n:mir.placeholder.date}" />
+    <mir:textfield xpath="mods:originInfo/mods:dateCreated[@encoding='w3cdtf']" label="mir.date.created" help-text="{i18n:mir.help.date.created}"
+      class="required" placeholder="{i18n:mir.placeholder.date}" />
   </xed:template>
 
   <xed:template id="identifier.patent">
@@ -449,19 +440,23 @@
   </xed:template>
 
   <xed:template id="identifier.isbn.book.relItemsearch">
-    <mir:relItemsearch searchengine="isbn" genre="book" responsefield="identifier.type.isbn" xpath="mods:identifier[@type='isbn']" label="mir.identifier.isbn" help-text="{i18n:mir.help.identifier.isbn}"/>
+    <mir:relItemsearch searchengine="isbn" genre="book" responsefield="identifier.type.isbn" xpath="mods:identifier[@type='isbn']" label="mir.identifier.isbn"
+      help-text="{i18n:mir.help.identifier.isbn}" />
   </xed:template>
 
   <xed:template id="identifier.isbn.collection.relItemsearch">
-    <mir:relItemsearch searchengine="isbn" genre="collection" responsefield="identifier.type.isbn" xpath="mods:identifier[@type='isbn']" label="mir.identifier.isbn" help-text="{i18n:mir.help.identifier.isbn}"/>
+    <mir:relItemsearch searchengine="isbn" genre="collection" responsefield="identifier.type.isbn" xpath="mods:identifier[@type='isbn']"
+      label="mir.identifier.isbn" help-text="{i18n:mir.help.identifier.isbn}" />
   </xed:template>
 
   <xed:template id="identifier.isbn.proceeding.relItemsearch">
-    <mir:relItemsearch searchengine="isbn" genre="proceeding" responsefield="identifier.type.isbn" xpath="mods:identifier[@type='isbn']" label="mir.identifier.isbn" help-text="{i18n:mir.help.identifier.isbn}"/>
+    <mir:relItemsearch searchengine="isbn" genre="proceeding" responsefield="identifier.type.isbn" xpath="mods:identifier[@type='isbn']"
+      label="mir.identifier.isbn" help-text="{i18n:mir.help.identifier.isbn}" />
   </xed:template>
 
   <xed:template id="identifier.isbn.lexicon.relItemsearch">
-    <mir:relItemsearch searchengine="isbn" genre="lexicon" responsefield="identifier.type.isbn" xpath="mods:identifier[@type='isbn']" label="mir.identifier.isbn" help-text="{i18n:mir.help.identifier.isbn}"/>
+    <mir:relItemsearch searchengine="isbn" genre="lexicon" responsefield="identifier.type.isbn" xpath="mods:identifier[@type='isbn']" label="mir.identifier.isbn"
+      help-text="{i18n:mir.help.identifier.isbn}" />
   </xed:template>
 
   <xed:template id="identifier.issn">
@@ -469,15 +464,18 @@
   </xed:template>
 
   <xed:template id="identifier.issn.series.relItemsearch">
-    <mir:relItemsearch searchengine="issn" genre="series" responsefield="identifier.type.issn" xpath="mods:identifier[@type='issn']" label="mir.identifier.issn" help-text="{i18n:mir.help.identifier.issn}"/>
+    <mir:relItemsearch searchengine="issn" genre="series" responsefield="identifier.type.issn" xpath="mods:identifier[@type='issn']" label="mir.identifier.issn"
+      help-text="{i18n:mir.help.identifier.issn}" />
   </xed:template>
 
   <xed:template id="identifier.issn.journal.relItemsearch">
-    <mir:relItemsearch searchengine="issn" genre="journal" responsefield="identifier.type.issn" xpath="mods:identifier[@type='issn']" label="mir.identifier.issn" help-text="{i18n:mir.help.identifier.issn}"/>
+    <mir:relItemsearch searchengine="issn" genre="journal" responsefield="identifier.type.issn" xpath="mods:identifier[@type='issn']" label="mir.identifier.issn"
+      help-text="{i18n:mir.help.identifier.issn}" />
   </xed:template>
 
   <xed:template id="identifier.issn.newspaper.relItemsearch">
-    <mir:relItemsearch searchengine="issn" genre="newspaper" responsefield="identifier.type.issn" xpath="mods:identifier[@type='issn']" label="mir.identifier.issn" help-text="{i18n:mir.help.identifier.issn}"/>
+    <mir:relItemsearch searchengine="issn" genre="newspaper" responsefield="identifier.type.issn" xpath="mods:identifier[@type='issn']" label="mir.identifier.issn"
+      help-text="{i18n:mir.help.identifier.issn}" />
   </xed:template>
 
   <xed:template id="identifier.zdbid">
@@ -573,51 +571,58 @@
   </xed:template>
 
   <xed:template id="shelfmark.journal.relItemsearch">
-    <mir:relItemsearch searchengine="shelfmark" genre="journal" responsefield="shelfLocator" xpath="mods:location/mods:shelfLocator" label="mir.shelfmark" help-text="{i18n:mir.help.shelfmark}"/>
+    <mir:relItemsearch searchengine="shelfmark" genre="journal" responsefield="shelfLocator" xpath="mods:location/mods:shelfLocator" label="mir.shelfmark"
+      help-text="{i18n:mir.help.shelfmark}" />
   </xed:template>
 
   <xed:template id="shelfmark.book.relItemsearch">
-    <mir:relItemsearch searchengine="shelfmark" genre="book" responsefield="shelfLocator" xpath="mods:location/mods:shelfLocator" label="mir.shelfmark" help-text="{i18n:mir.help.shelfmark}"/>
+    <mir:relItemsearch searchengine="shelfmark" genre="book" responsefield="shelfLocator" xpath="mods:location/mods:shelfLocator" label="mir.shelfmark"
+      help-text="{i18n:mir.help.shelfmark}" />
   </xed:template>
 
   <xed:template id="shelfmark.collection.relItemsearch">
-    <mir:relItemsearch searchengine="shelfmark" genre="collection" responsefield="shelfLocator" xpath="mods:location/mods:shelfLocator" label="mir.shelfmark" help-text="{i18n:mir.help.shelfmark}"/>
+    <mir:relItemsearch searchengine="shelfmark" genre="collection" responsefield="shelfLocator" xpath="mods:location/mods:shelfLocator" label="mir.shelfmark"
+      help-text="{i18n:mir.help.shelfmark}" />
   </xed:template>
 
   <xed:template id="shelfmark.festschrift.relItemsearch">
-    <mir:relItemsearch searchengine="shelfmark" genre="festschrift" responsefield="shelfLocator" xpath="mods:location/mods:shelfLocator" label="mir.shelfmark" help-text="{i18n:mir.help.shelfmark}"/>
+    <mir:relItemsearch searchengine="shelfmark" genre="festschrift" responsefield="shelfLocator" xpath="mods:location/mods:shelfLocator"
+      label="mir.shelfmark" help-text="{i18n:mir.help.shelfmark}" />
   </xed:template>
 
   <xed:template id="shelfmark.lexicon.relItemsearch">
-    <mir:relItemsearch searchengine="shelfmark" genre="lexicon" responsefield="shelfLocator" xpath="mods:location/mods:shelfLocator" label="mir.shelfmark" help-text="{i18n:mir.help.shelfmark}"/>
+    <mir:relItemsearch searchengine="shelfmark" genre="lexicon" responsefield="shelfLocator" xpath="mods:location/mods:shelfLocator" label="mir.shelfmark"
+      help-text="{i18n:mir.help.shelfmark}" />
   </xed:template>
 
   <xed:template id="shelfmark.proceedings.relItemsearch">
-    <mir:relItemsearch searchengine="shelfmark" genre="proceedings" responsefield="shelfLocator" xpath="mods:location/mods:shelfLocator" label="mir.shelfmark" help-text="{i18n:mir.help.shelfmark}"/>
+    <mir:relItemsearch searchengine="shelfmark" genre="proceedings" responsefield="shelfLocator" xpath="mods:location/mods:shelfLocator"
+      label="mir.shelfmark" help-text="{i18n:mir.help.shelfmark}" />
   </xed:template>
 
   <xed:template id="shelfmark.proceedings.relItemsearch">
-    <mir:relItemsearch searchengine="shelfmark" genre="collection" responsefield="shelfLocator" xpath="mods:location/mods:shelfLocator" label="mir.shelfmark" help-text="{i18n:mir.help.shelfmark}"/>
+    <mir:relItemsearch searchengine="shelfmark" genre="collection" responsefield="shelfLocator" xpath="mods:location/mods:shelfLocator" label="mir.shelfmark"
+      help-text="{i18n:mir.help.shelfmark}" />
   </xed:template>
 
   <xed:template id="related.item.link">
     <xed:repeat xpath="mods:relatedItem" min="1" max="10">
       <div class="form-group">
         <div class="col-md-3">
-          <xed:bind xpath="@type" >
-            <select class="form-control form-control-inline" style="text-align: right; font-weight:bold;" >
-              <option value="" >
+          <xed:bind xpath="@type">
+            <select class="form-control form-control-inline" style="text-align: right; font-weight:bold;">
+              <option value="">
                 <xed:output i18n="mir.link.title" />
               </option>
-               <option value="original" >
-                 <xed:output i18n="mir.relatedItem.original" />
-               </option>
-               <option value="otherVersion" >
-                 <xed:output i18n="mir.relatedItem.otherVersion" />
-               </option>
-               <option value="otherFormat" >
-                 <xed:output i18n="mir.relatedItem.otherFormat" />
-               </option>
+              <option value="original">
+                <xed:output i18n="mir.relatedItem.original" />
+              </option>
+              <option value="otherVersion">
+                <xed:output i18n="mir.relatedItem.otherVersion" />
+              </option>
+              <option value="otherFormat">
+                <xed:output i18n="mir.relatedItem.otherFormat" />
+              </option>
             </select>
           </xed:bind>
         </div>
@@ -628,7 +633,8 @@
         </div>
         <mir:help-pmud help-text="{i18n:mir.help.link.title}" pmud="true" />
       </div>
-      <mir:textfield xpath="mods:location/mods:url[@access='raw object']" label="mir.link.raw_object" help-text="{i18n:mir.help.link.raw_object}" placeholder="{i18n:mir.placeholder.abstract.link}" />
+      <mir:textfield xpath="mods:location/mods:url[@access='raw object']" label="mir.link.raw_object" help-text="{i18n:mir.help.link.raw_object}"
+        placeholder="{i18n:mir.placeholder.abstract.link}" />
     </xed:repeat>
   </xed:template>
 
@@ -690,7 +696,8 @@
   </xed:template>
 
   <xed:template id="physical.description.note">
-    <mir:textarea xpath="mods:physicalDescription/mods:note" label="mir.physical.description.note" help-text="{i18n:mir.help.physical.description.note}" rows="5" />
+    <mir:textarea xpath="mods:physicalDescription/mods:note" label="mir.physical.description.note" help-text="{i18n:mir.help.physical.description.note}"
+      rows="5" />
   </xed:template>
 
   <xed:template id="physical.description.form">
@@ -715,11 +722,11 @@
   </xed:template>
 
   <xed:template id="host.volume">
-    <mir:textfield xpath="mods:part/mods:detail[@type='volume']/mods:number" label="mir.volume" help-text="{i18n:mir.help.volume}" class="mir-modspart"/>
+    <mir:textfield xpath="mods:part/mods:detail[@type='volume']/mods:number" label="mir.volume" help-text="{i18n:mir.help.volume}" class="mir-modspart" />
   </xed:template>
 
   <xed:template id="host.issue">
-    <mir:textfield xpath="mods:part/mods:detail[@type='issue']/mods:number" label="mir.issue" help-text="{i18n:mir.help.issue}" class="mir-modspart"/>
+    <mir:textfield xpath="mods:part/mods:detail[@type='issue']/mods:number" label="mir.issue" help-text="{i18n:mir.help.issue}" class="mir-modspart" />
   </xed:template>
 
   <xed:template id="host.pages">
@@ -733,7 +740,9 @@
             <xed:bind xpath="mods:start">
               <input type="text" size="10" class="form-control form-control-inline" />
             </xed:bind>
-            &amp;npsp;<xed:output i18n="mir.pages.to" />&amp;npsp;
+            &amp;npsp;
+            <xed:output i18n="mir.pages.to" />
+            &amp;npsp;
             <xed:bind xpath="mods:end">
               <input type="text" size="10" class="form-control form-control-inline" />
             </xed:bind>
@@ -759,16 +768,16 @@
   </xed:template>
 
   <xed:template id="language.repeated">
-    <xed:repeat xpath="mods:language" max="5" >
-    <div class="form-group {$xed-validation-marker}">
-      <label class="col-md-3 control-label">
-        <xed:output i18n="mir.language" />
-      </label>
+    <xed:repeat xpath="mods:language" max="5">
+      <div class="form-group {$xed-validation-marker}">
+        <label class="col-md-3 control-label">
+          <xed:output i18n="mir.language" />
+        </label>
         <div class="col-md-6">
           <xed:bind xpath="mods:languageTerm[@authority='rfc4646'][@type='code']" initially="de">
-          <div class="controls">
-            <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="lang.list" />
-          </div>
+            <div class="controls">
+              <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="lang.list" />
+            </div>
           </xed:bind>
         </div>
         <mir:help-pmud help-text="{i18n:mir.help.language}" pmud="true" />
@@ -807,7 +816,7 @@
   </xed:template>
 
   <xed:template id="type.of.resource.repeated">
-    <xed:repeat xpath="mods:typeOfResource" min="1" max="10" >
+    <xed:repeat xpath="mods:typeOfResource" min="1" max="10">
       <div class="form-group">
         <label class="col-md-3 control-label">
           <xed:output i18n="mir.typeOfResource" />
@@ -830,11 +839,14 @@
     <xed:bind xpath="mods:accessCondition[@type='use and reproduction']" initially="">
       <div class="form-group {$xed-validation-marker}">
         <label class="col-md-3 control-label required">
-          <xed:output i18n="mir.rights" />:
+          <xed:output i18n="mir.rights" />
+          :
         </label>
         <div class="col-md-6">
-          <select  class="form-control form-control-inline">
-            <option value=""><xed:output i18n="mir.select" /></option>
+          <select class="form-control form-control-inline">
+            <option value="">
+              <xed:output i18n="mir.select" />
+            </option>
             <xed:include uri="xslStyle:items2options:classification:editor:-1:children:mir_rights" />
           </select>
         </div>
@@ -847,11 +859,14 @@
     <xed:bind xpath="mods:accessCondition[@type='restriction on access'][@xlink:href='http://www.mycore.org/classifications/mir_access']" initially="">
       <div class="form-group {$xed-validation-marker}">
         <label class="col-md-3 control-label">
-          <xed:output i18n="mir.access" />:
+          <xed:output i18n="mir.access" />
+          :
         </label>
         <div class="col-md-6">
-          <select  class="form-control form-control-inline">
-            <option value=""><xed:output i18n="mir.select" /></option>
+          <select class="form-control form-control-inline">
+            <option value="">
+              <xed:output i18n="mir.select" />
+            </option>
             <xed:include uri="xslStyle:items2options:classification:editor:-1:children:mir_access" />
           </select>
         </div>
@@ -867,7 +882,9 @@
   <!-- use external schema copyrightMD, see http://www.cdlib.org/groups/rmg/copyrightMD.html#type_copyright.status -->
   <!-- TODO: copyright.status and publication.status shouldn't be static -->
   <xed:template id="copyrightMD">
-    <xed:bind xpath="mods:accessCondition[@type='copyrightMD']/cmd:copyright[@copyright.status='copyrighted'][@publication.status='published'][@xsi:schemaLocation='http://www.cdlib.org/inside/diglib/copyrightMD http://www.cdlib.org/groups/rmg/docs/copyrightMD.xsd']">
+    <xed:bind
+      xpath="mods:accessCondition[@type='copyrightMD']/cmd:copyright[@copyright.status='copyrighted'][@publication.status='published'][@xsi:schemaLocation='http://www.cdlib.org/inside/diglib/copyrightMD http://www.cdlib.org/groups/rmg/docs/copyrightMD.xsd']"
+    >
       <mir:textfield xpath="cmd:rights.holder/cmd:name" label="mir.rightsHolder" help-text="{i18n:mir.help.rightsHolder}" />
     </xed:bind>
   </xed:template>
@@ -875,14 +892,17 @@
   <xed:template id="institutes">
     <div class="form-group">
       <label class="col-md-3 control-label">
-        <xed:output i18n="mir.institution" />:
+        <xed:output i18n="mir.institution" />
+        :
       </label>
       <div class="col-md-6">
         <xed:bind xpath="mods:name[@type='corporate'][@authorityURI='http://www.mycore.org/classifications/mir_institutes']">
           <xed:bind xpath="mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']" initially="his" /><!--  Host institution [his] -->
           <xed:bind xpath="@valueURIxEditor">
             <select class="form-control form-control-inline">
-              <option value=""><xed:output i18n="mir.select" /></option>
+              <option value="">
+                <xed:output i18n="mir.select" />
+              </option>
               <xed:include uri="xslStyle:items2options:classification:editor:-1:children:mir_institutes" />
             </select>
           </xed:bind>
@@ -895,23 +915,17 @@
   <xed:template id="editor.organization">
     <div class="form-group">
       <label class="col-md-3 control-label">
-        <xed:output i18n="mir.editorOrganization" />:
+        <xed:output i18n="mir.editorOrganization" />
+        :
       </label>
       <div class="col-md-6">
         <xed:bind xpath="mods:name[@type='corporate'][mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']='edt']"><!--  Editor [edt] -->
           <div class="search-organization">
             <xed:bind xpath="mods:displayForm">
-              <input type="text" size="26" class="form-control form-control-inline"
-                data-search="searchEntity"
-                data-search-type="select"
-                data-search-entity-type="organisation"
-                data-search-output="#valueURIxEditor"
-                data-search-button="{i18n:button.search}"
-                data-search-button-loading="{i18n:button.loading}"
-                data-search-result-empty="{i18n:mir.searchIdentifier.noResult}"
-                data-target=".search-organization"
-                placeholder="{i18n:mir.placeholder.name.organization}"
-              />
+              <input type="text" size="26" class="form-control form-control-inline" data-search="searchEntity" data-search-type="select"
+                data-search-entity-type="organisation" data-search-output="#valueURIxEditor" data-search-button="{i18n:button.search}"
+                data-search-button-loading="{i18n:button.loading}" data-search-result-empty="{i18n:mir.searchIdentifier.noResult}" data-target=".search-organization"
+                placeholder="{i18n:mir.placeholder.name.organization}" />
             </xed:bind>
             <xed:bind xpath="@valueURIxEditor">
               <input type="hidden" id="valueURIxEditor" />
@@ -925,18 +939,22 @@
 
   <xed:template id="cartographics">
     <mir:textfield id="mir_coordinates" xpath="mods:subject/mods:cartographics/mods:coordinates" label="mir.cartographics.coordinates" help-text="{i18n:mir.help.cartographics.coordinates}" />
-    <div class="form-group openstreetmap" >
+    <div class="form-group openstreetmap">
       <div class="col-md-2 col-md-offset-3">
         <button id="show_openstreetmap" type="button" class="btn btn-default" data-target="#openstreetmap-container" data-toggle="collapse">
           OpenStreetMap
         </button>
       </div>
-      <div id="openstreetmap-container" class="col-md-6 col-md-offset-3 collapse" >
+      <div id="openstreetmap-container" class="col-md-6 col-md-offset-3 collapse">
         <div id="header">
-         <div id="osm">(c) <a href="http://www.openstreetmap.org">OpenStreetMap</a>
-           und <a href="http://www.openstreetmap.org/copyright">Mitwirkende</a>,
-           <a href="http://creativecommons.org/licenses/by-sa/2.0/deed.de">CC-BY-SA</a>
-         </div>
+          <div id="osm">
+            (c)
+            <a href="http://www.openstreetmap.org">OpenStreetMap</a>
+            und
+            <a href="http://www.openstreetmap.org/copyright">Mitwirkende</a>
+            ,
+            <a href="http://creativecommons.org/licenses/by-sa/2.0/deed.de">CC-BY-SA</a>
+          </div>
         </div>
         <div id="map" style="width:555px;height:380px;"></div>
       </div>
@@ -951,10 +969,11 @@
     <xed:bind xpath="mods:classification[@authority='sdnb'][@displayLabel='sdnb']">
       <div class="form-group {$xed-validation-marker}">
         <label class="col-md-3 control-label">
-          <xed:output i18n="editor.search.mir.sdnb" />:
+          <xed:output i18n="editor.search.mir.sdnb" />
+          :
         </label>
         <div class="col-md-6">
-          <select  class="form-control form-control-inline">
+          <select class="form-control form-control-inline">
             <xed:include uri="xslStyle:items2options:classification:editor:-1:children:SDNB" />
           </select>
         </div>
@@ -964,7 +983,8 @@
   </xed:template>
 
   <xed:template id="abstract.simple">
-    <mir:textarea xpath="mods:abstract[not(@xml:lang) or @xml:lang=../mods:languageTerm[@authority='rfc4646'][@type='code']]" label="mir.abstract.text" help-text="{i18n:mir.help.abstract}" rows="5" />
+    <mir:textarea xpath="mods:abstract[not(@xml:lang) or @xml:lang=../mods:languageTerm[@authority='rfc4646'][@type='code']]" label="mir.abstract.text"
+      help-text="{i18n:mir.help.abstract}" rows="5" />
   </xed:template>
 
   <xed:template id="abstract.simple.uri">
@@ -973,7 +993,8 @@
         <xed:output i18n="mir.abstract.text" />
       </legend>
       <div class="mir-fieldset-content">
-        <mir:textarea xpath="mods:abstract[not(@xml:lang) or @xml:lang=../mods:languageTerm[@authority='rfc4646'][@type='code']]" label="mir.abstract.text" rows="5" />
+        <mir:textarea xpath="mods:abstract[not(@xml:lang) or @xml:lang=../mods:languageTerm[@authority='rfc4646'][@type='code']]" label="mir.abstract.text"
+          rows="5" />
         <mir:textfield xpath="@xlink:href" label="mir.abstract.aslink" placeholder="{i18n:mir.placeholder.abstract.link}" />
       </div>
     </fieldset>
@@ -1126,7 +1147,7 @@
           </div>
           <mir:help-pmud help-text="{i18n:mir.help.project.grant}" pmud="false" />
         </div>
-        <xed:bind xpath="mods:identifier[@type='open-aire']" >
+        <xed:bind xpath="mods:identifier[@type='open-aire']">
           <input type="hidden" />
         </xed:bind>
       </div>
@@ -1172,7 +1193,7 @@
               <div class="controls form-inline">
                 <input type="button" class="form-control mir-relatedItem-select" value="{i18n:mir.editing.related.select}" />
                 <span />
-                <xed:bind xpath="@xlink:href" initially="{$relatedItemId}" >
+                <xed:bind xpath="@xlink:href" initially="{$relatedItemId}">
                   <input type="hidden" />
                 </xed:bind>
               </div>
@@ -1233,10 +1254,12 @@
       <!-- "required" checks if there is such an element which has text content, so we must validate mods:displayForm for the moment-->
       <xed:choose>
         <xed:when test="//mods:mods/mods:genre[@valueURIxEditor='collection' or @valueURIxEditor='proceedings']">
-          <xed:validate xpath="//mods:mods/mods:name[mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']='edt']/mods:displayForm" required="true" i18n="mir.validation.editor" display="global" />
+          <xed:validate xpath="//mods:mods/mods:name[mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']='edt']/mods:displayForm"
+            required="true" i18n="mir.validation.editor" display="global" />
         </xed:when>
         <xed:otherwise>
-          <xed:validate xpath="//mods:mods/mods:name[mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']='aut']/mods:displayForm" required="true" i18n="mir.validation.author" display="global" />
+          <xed:validate xpath="//mods:mods/mods:name[mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']='aut']/mods:displayForm"
+            required="true" i18n="mir.validation.author" display="global" />
         </xed:otherwise>
       </xed:choose>
       <xed:validate xpath="//mods:originInfo/mods:dateIssued[@encoding='w3cdtf']" required="true" i18n="mir.validation.dateIssued" display="global" />
@@ -1248,11 +1271,13 @@
     <xed:validate xpath="//mods:identifier[@type='hdl']" matches="\S+/\S+" i18n="mir.validation.handle" display="global" />
     <xed:validate xpath="//mods:identifier[@type='urn']" matches="urn:nbn:[a-z]{2}:\S*" i18n="mir.validation.urn" display="global" />
     <xed:validate xpath="//mods:url|//mods:abstract/@xlink:href" matches="(ftp|http|https)://[\w\d.]+\S*" i18n="mir.validation.url" display="global" />
-    <xed:validate xpath="//mods:*[@encoding='w3cdtf']" matches="\d{4}(\-\d{2}(\-\d{2})?)?" type="datetime" format="yyyy;yyyy-MM;yyyy-MM-dd" i18n="mir.validation.date" display="global" />
+    <xed:validate xpath="//mods:*[@encoding='w3cdtf']" matches="\d{4}(\-\d{2}(\-\d{2})?)?" type="datetime" format="yyyy;yyyy-MM;yyyy-MM-dd" i18n="mir.validation.date"
+      display="global" />
   </xed:template>
 
   <xed:template id="cleanup-rules">
-    <xed:cleanup-rule xpath="//mods:*" relevant-if="(string-length(text()) &gt; 0) or mods:* or cmd:* or (string-length(@xlink:href) &gt; 0) or (string-length(@valueURIxEditor) &gt; 0) or (string-length(@mcr:categId) &gt; 0)" />
+    <xed:cleanup-rule xpath="//mods:*"
+      relevant-if="(string-length(text()) &gt; 0) or mods:* or cmd:* or (string-length(@xlink:href) &gt; 0) or (string-length(@valueURIxEditor) &gt; 0) or (string-length(@mcr:categId) &gt; 0)" />
     <xed:cleanup-rule xpath="//mods:name" relevant-if="(mods:namePart|mods:displayForm) or (string-length(@valueURI) &gt; 0) or (string-length(@valueURIxEditor) &gt; 0)" />
     <xed:cleanup-rule xpath="//mods:name/@authorityURI" relevant-if="(string-length(../@valueURI) &gt; 0) or (string-length(../@valueURIxEditor) &gt; 0)" />
     <xed:cleanup-rule xpath="//mods:name/mods:namePart" relevant-if="not(../mods:displayForm)" />
@@ -1263,8 +1288,8 @@
 
   <xed:template id="javascript">
     <script type="text/javascript" src="{$WebApplicationBaseURL}js/jquery.search-entity.js"></script>
-    <script src="{$WebApplicationBaseURL}js/bootstrap3-typeahead.js" type="text/javascript"></script>
-    <script src="{$WebApplicationBaseURL}js/bloodhound.js" type="text/javascript"></script>
+    <script src="{$WebApplicationBaseURL}assets/jquery/plugins/typeahead/bloodhound.js" type="text/javascript"></script>
+    <script src="{$WebApplicationBaseURL}assets/jquery/plugins/bootstrap3-typeahead/bootstrap3-typeahead.js" type="text/javascript"></script>
     <script src="{$WebApplicationBaseURL}js/mir/relatedItem-autocomplete.js" type="text/javascript"></script>
   </xed:template>
 

@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:mods="http://www.loc.gov/mods/v3"
-  xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions" xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
-  exclude-result-prefixes="mods mcrxsl i18n">
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:mods="http://www.loc.gov/mods/v3" xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions"
+  xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation" exclude-result-prefixes="mods mcrxsl i18n"
+>
   <xsl:include href="layout-utils.xsl" />
 
   <xsl:template match="/site">
     <xsl:copy>
       <head>
         <xsl:apply-templates select="citation_meta" mode="copyContent" />
-        <link href="{$WebApplicationBaseURL}js/shariff/shariff.min.css" rel="stylesheet" />
+        <link href="{$WebApplicationBaseURL}assets/jquery/plugins/shariff/shariff.min.css" rel="stylesheet" />
       </head>
 
       <xsl:if test="div[@id='mir-breadcrumb']">
@@ -21,7 +21,8 @@
         <div class="row detail_row">
           <div class="col-md-12">
             <div class="detail_block text-center">
-              <span id="pagination_label">gefundende Dokumente</span><br />
+              <span id="pagination_label">gefundende Dokumente</span>
+              <br />
               <!-- Start: PAGINATION -->
               <xsl:apply-templates select="div[@id='search_browsing']" mode="copyContent" />
               <!-- End: PAGINATION -->
@@ -42,7 +43,7 @@
 
       <div class="row detail_row" itemscope="itemscope" itemtype="http://schema.org/ScholarlyArticle">
 
-        <div  id="head_col" class="col-xs-12">
+        <div id="head_col" class="col-xs-12">
           <div class="row">
             <div class="col-md-4 col-md-push-8">
               <div class="pull-right">
@@ -65,34 +66,34 @@
         <div id="main_col" class="col-md-8">
           <div class="detail_block">
           <!-- Start: ABSTRACT -->
-          <xsl:apply-templates select="div[@id='mir-abstract-plus']" mode="copyContent" />
+            <xsl:apply-templates select="div[@id='mir-abstract-plus']" mode="copyContent" />
           <!-- End: ABSTRACT -->
-        </div>
+          </div>
           <!-- viewer -->
           <xsl:if test="div[@id = 'mir-viewer']">
             <xsl:apply-templates select="div[@id='mir-viewer']" mode="copyContent" />
           </xsl:if>
           <!-- files -->
           <xsl:if test="div[contains(@id,'mir-collapse-')]">
-          <div class="detail_block">
-            <div class="" id="record_detail">
+            <div class="detail_block">
+              <div class="" id="record_detail">
               <!-- xsl:apply-templates select="div[@id='mir-collapse-preview']" mode="copyContent" / -->
-              <xsl:apply-templates select="div[@id='mir-collapse-files']" mode="copyContent" />
+                <xsl:apply-templates select="div[@id='mir-collapse-files']" mode="copyContent" />
+              </div>
             </div>
-          </div>
-        </xsl:if>
+          </xsl:if>
 
 <!-- metadata -->
-        <xsl:if test="div[contains(@id,'mir-metadata')]/table[@class='mir-metadata']/tr">
-          <div class="mir_metadata">
-            <h3>
-              <xsl:value-of select="i18n:translate('component.mods.metaData.dictionary.categorybox')" />
-            </h3>
+          <xsl:if test="div[contains(@id,'mir-metadata')]/table[@class='mir-metadata']/tr">
+            <div class="mir_metadata">
+              <h3>
+                <xsl:value-of select="i18n:translate('component.mods.metaData.dictionary.categorybox')" />
+              </h3>
             <!-- Start: METADATA -->
-            <xsl:apply-templates select="div[@id='mir-metadata']" mode="newMetadata" />
+              <xsl:apply-templates select="div[@id='mir-metadata']" mode="newMetadata" />
             <!-- End: METADATA -->
-          </div>
-        </xsl:if>
+            </div>
+          </xsl:if>
 
 <!-- end: left column -->
         </div>
@@ -127,23 +128,23 @@
             </div>
           </xsl:if>
 <!-- export -->
-            <div class="panel panel-default">
-              <div class="panel-heading">
-                <h3 class="panel-title">Export</h3>
-              </div>
-              <div class="panel-body">
-                <!-- Start: EXPORT -->
-                <xsl:apply-templates select="div[@id='mir-export']" mode="copyContent" />
-                <!-- End: EXPORT -->
-              </div>
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title">Export</h3>
             </div>
+            <div class="panel-body">
+                <!-- Start: EXPORT -->
+              <xsl:apply-templates select="div[@id='mir-export']" mode="copyContent" />
+                <!-- End: EXPORT -->
+            </div>
+          </div>
 <!-- system -->
-            <xsl:if test="not(mcrxsl:isCurrentUserGuestUser())">
+          <xsl:if test="not(mcrxsl:isCurrentUserGuestUser())">
             <div class="panel panel-default system">
               <div class="panel-heading">
-                  <h3 class="panel-title">
-                    <xsl:value-of select="i18n:translate('component.mods.metaData.dictionary.systembox')" />
-                  </h3>
+                <h3 class="panel-title">
+                  <xsl:value-of select="i18n:translate('component.mods.metaData.dictionary.systembox')" />
+                </h3>
               </div>
               <div class="panel-body">
                 <!-- Start: ADMINMETADATA -->
@@ -151,14 +152,14 @@
                 <!-- End: ADMINMETADATA -->
               </div>
             </div>
-            </xsl:if>
+          </xsl:if>
 
 <!-- end: right column -->
         </div>
 
 <!--  end: detail row -->
       </div>
-      <script src="{$WebApplicationBaseURL}js/shariff/shariff.min.js"></script>
+      <script src="{$WebApplicationBaseURL}assets/jquery/plugins/shariff/shariff.min.js"></script>
     </xsl:copy>
   </xsl:template>
 
@@ -183,8 +184,7 @@
   </xsl:template>
   <xsl:template match="div[@id='mir-admindata']" mode="newMetadata">
     <dl>
-      <xsl:apply-templates select=".//div[@id='system_box']/div[@id='system_content']/table/tr"
-        mode="newMetadata" />
+      <xsl:apply-templates select=".//div[@id='system_box']/div[@id='system_content']/table/tr" mode="newMetadata" />
     </dl>
   </xsl:template>
   <xsl:template match="td[@class='metaname']" mode="newMetadata" priority="2">

@@ -8,6 +8,10 @@
   </parent>
   <artifactId>mir-wizard</artifactId>
   <name>MIR: The MIR Wizard</name>
+  <properties>
+    <template.assetsdir>${project.build.directory}/classes/META-INF/resources/mir-wizard/assets</template.assetsdir>
+    <grunt.projectBase>${project.build.directory}/grunt</grunt.projectBase>
+  </properties>
   <build>
     <plugins>
       <plugin>
@@ -26,6 +30,50 @@
           </archive>
         </configuration>
       </plugin>
+      <plugin>
+        <groupId>pl.allegro</groupId>
+        <artifactId>grunt-maven-plugin</artifactId>
+        <configuration>
+          <gruntBuildDirectory>${grunt.projectBase}</gruntBuildDirectory>
+          <ignoreTasksErrors>false</ignoreTasksErrors>
+          <ignoreAllErrors>false</ignoreAllErrors>
+          <gruntOptions>
+            <gruntOption>--verbose</gruntOption>
+            <gruntOption>--assetsDirectory ${template.assetsdir}</gruntOption>
+          </gruntOptions>
+        </configuration>
+        <executions>
+          <execution>
+            <phase>process-resources</phase>
+            <goals>
+              <goal>npm</goal>
+              <goal>bower</goal>
+              <goal>grunt</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <artifactId>maven-resources-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>create-resources</id>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${grunt.projectBase}</outputDirectory>
+              <resources>
+                <resource>
+                  <filtering>true</filtering>
+                  <directory>${basedir}/src/main/grunt</directory>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
   </build>
   <dependencies>
@@ -34,7 +82,7 @@
       <artifactId>mycore-base</artifactId>
       <version>${mycore.version}</version>
     </dependency>
-    
+
     <dependency>
       <groupId>org.mycore</groupId>
       <artifactId>mycore-base</artifactId>
@@ -48,7 +96,7 @@
       <version>1.4.178</version>
       <scope>test</scope>
     </dependency>
-    
+
     <dependency>
       <groupId>org.mycore</groupId>
       <artifactId>mycore-user2</artifactId>

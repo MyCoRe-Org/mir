@@ -7,6 +7,9 @@
 
   <xed:form xmlns:xed="http://www.mycore.de/xeditor" xmlns:cmd="http://www.cdlib.org/inside/diglib/copyrightMD" method="post" role="form" class="form-horizontal">
     <xed:include uri="webapp:editor/editor-includes.xed" ref="in.out" />
+    
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="javascript" />
+    
     <xed:bind xpath="/mycoreobject">
       <xed:include uri="webapp:editor/editor-includes.xed" ref="mycore.common" />
       

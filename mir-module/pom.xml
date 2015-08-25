@@ -9,6 +9,10 @@
   <artifactId>mir-module</artifactId>
   <name>MIR: Application Module</name>
   <description>Contains all files and classes for a Institutional Repository</description>
+  <properties>
+    <template.assetsdir>${project.build.directory}/classes/META-INF/resources/assets</template.assetsdir>
+    <grunt.projectBase>${project.build.directory}/grunt</grunt.projectBase>
+  </properties>
   <build>
     <resources>
       <resource>
@@ -60,6 +64,50 @@
           <doUpdate>true</doUpdate>
           <revisionOnScmFailure>0</revisionOnScmFailure>
         </configuration>
+      </plugin>
+      <plugin>
+        <groupId>pl.allegro</groupId>
+        <artifactId>grunt-maven-plugin</artifactId>
+        <configuration>
+          <gruntBuildDirectory>${grunt.projectBase}</gruntBuildDirectory>
+          <ignoreTasksErrors>false</ignoreTasksErrors>
+          <ignoreAllErrors>false</ignoreAllErrors>
+          <gruntOptions>
+            <gruntOption>--verbose</gruntOption>
+            <gruntOption>--assetsDirectory ${template.assetsdir}</gruntOption>
+          </gruntOptions>
+        </configuration>
+        <executions>
+          <execution>
+            <phase>process-resources</phase>
+            <goals>
+              <goal>npm</goal>
+              <goal>bower</goal>
+              <goal>grunt</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <artifactId>maven-resources-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>create-resources</id>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${grunt.projectBase}</outputDirectory>
+              <resources>
+                <resource>
+                  <filtering>true</filtering>
+                  <directory>${basedir}/src/main/grunt</directory>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>
@@ -137,27 +185,6 @@
       <version>${mycore.version}</version>
       <type>test-jar</type>
     </dependency>
-
-    <dependency>
-      <groupId>org.webjars</groupId>
-      <artifactId>bootstrap</artifactId>
-      <version>3.3.5</version>
-    </dependency>
-    <dependency>
-      <groupId>org.webjars</groupId>
-      <artifactId>font-awesome</artifactId>
-      <version>4.2.0</version>
-    </dependency>
-    <dependency>
-      <groupId>org.webjars</groupId>
-      <artifactId>jquery</artifactId>
-      <version>1.11.3</version>
-    </dependency>
-    <dependency>
-      <groupId>org.webjars</groupId>
-      <artifactId>jquery-migrate</artifactId>
-      <version>1.2.1</version>
-    </dependency>
-
+    
   </dependencies>
 </project>
