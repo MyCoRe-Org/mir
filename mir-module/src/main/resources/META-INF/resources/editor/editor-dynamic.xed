@@ -7,8 +7,6 @@
 
   <xed:form xmlns:xed="http://www.mycore.de/xeditor" xmlns:cmd="http://www.cdlib.org/inside/diglib/copyrightMD" method="post" role="form" class="form-horizontal" id="dynamic_editor">
     <xed:include uri="webapp:editor/editor-includes.xed" ref="in.out" />
-    
-    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="javascript" />
 
     <xed:bind xpath="/mycoreobject">
       <xed:include uri="webapp:editor/editor-includes.xed" ref="mycore.common" />
@@ -25,7 +23,7 @@
         <xed:param name="series" default="no" />
 
         <h1>
-          Eingabeformular für 
+          Eingabeformular für
           <xed:output value="$genres//category[@ID=$genre_intern]/label[lang($CurrentLang)]/@text" />
           <xed:if test="not($host='standalone')">
             <xed:output value="concat(' in ',$genres//category[@ID=$host]/label[lang($CurrentLang)]/@text)" />
@@ -63,7 +61,7 @@
                       </xed:bind>
                     </div>
                   </fieldset>
-                </xed:bind>  
+                </xed:bind>
               </xed:if>
            </xed:if>
           </fieldset>
@@ -71,10 +69,14 @@
 
         <xed:include uri="webapp:editor/editor-genres.xed" ref="submit" />
 
+        <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="javascript" />
+        <!-- frame for modal window -->
+        <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="modal.body" />
+
       </xed:bind>
     </xed:bind>
   </xed:form>
-  
-  
+
+
   </section>
 </MyCoReWebPage>

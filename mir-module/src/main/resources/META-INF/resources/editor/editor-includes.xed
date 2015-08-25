@@ -1094,8 +1094,6 @@
         <mir:help-pmud help-text="{i18n:mir.help.classification}" pmud="true" />
       </div>
     </xed:repeat>
-
-    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="modal.body" />
     <script type="text/javascript" src="{$WebApplicationBaseURL}js/mir/classification-modal-select.js"></script>
   </xed:template>
 

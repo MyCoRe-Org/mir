@@ -7,12 +7,10 @@
 
   <xed:form xmlns:xed="http://www.mycore.de/xeditor" xmlns:cmd="http://www.cdlib.org/inside/diglib/copyrightMD" method="post" role="form" class="form-horizontal">
     <xed:include uri="webapp:editor/editor-includes.xed" ref="in.out" />
-    
-    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="javascript" />
-    
+
     <xed:bind xpath="/mycoreobject">
       <xed:include uri="webapp:editor/editor-includes.xed" ref="mycore.common" />
-      
+
       <xed:bind xpath="metadata/def.modsContainer[@class='MCRMetaXML'][@notinherit='true']/modsContainer/mods:mods">
         <xed:include uri="webapp:editor/editor-includes.xed" ref="failed-validation-messages" />
         <xed:bind xpath="../../../../service">
@@ -49,6 +47,10 @@
         <xed:include uri="webapp:editor/editor-includes.xed" ref="cancel.submit" />
         <xed:include uri="webapp:editor/editor-includes.xed" ref="cleanup-rules" />
         <xed:include uri="webapp:editor/editor-includes.xed" ref="validation-rules" />
+
+        <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="javascript" />
+        <!-- frame for modal window -->
+        <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="modal.body" />
 
       </xed:bind>
     </xed:bind>
