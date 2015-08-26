@@ -82,7 +82,7 @@
   </xsl:template>
 
   <!-- to @categId -->
-  <xsl:template match="mods:classification[@generator='user selected'] | mods:typeOfResource">
+  <xsl:template match="mods:classification[@generator='user selected']">
     <xsl:copy>
       <xsl:variable name="classNodes" select="mcrmods:getMCRClassNodes(.)" />
       <xsl:apply-templates select="$classNodes/@*|@*|node()" />

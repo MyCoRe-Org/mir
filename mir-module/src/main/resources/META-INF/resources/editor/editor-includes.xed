@@ -798,7 +798,7 @@
   </xed:template>
 
   <xed:template id="type.of.resource">
-    <xed:bind xpath="mods:typeOfResource/@mcr:categId" initially="typeOfResource:text">
+    <xed:bind xpath="mods:typeOfResource" initially="text">
       <div class="form-group">
         <label class="col-md-3 control-label">
           <xed:output i18n="mir.typeOfResource" />
@@ -806,7 +806,7 @@
         <div class="col-md-6">
           <div class="controls">
             <select class="form-control form-control-inline">
-              <xed:include uri="xslStyle:items2options:classification:editorComplete:1:children:typeOfResource" />
+              <xed:include uri="xslStyle:items2options:classification:editor:1:children:typeOfResource" />
             </select>
           </div>
         </div>
@@ -823,11 +823,9 @@
         </label>
         <div class="col-md-6">
           <div class="controls">
-            <xed:bind xpath="@mcr:categId" initially="typeOfResource:text">
-              <select class="form-control form-control-inline">
-                <xed:include uri="xslStyle:items2options:classification:editorComplete:1:children:typeOfResource" />
-              </select>
-            </xed:bind>
+            <select class="form-control form-control-inline">
+              <xed:include uri="xslStyle:items2options:classification:editor:1:children:typeOfResource" />
+            </select>
           </div>
         </div>
         <mir:help-pmud help-text="{i18n:mir.help.typeOfResource}" pmud="true" />
