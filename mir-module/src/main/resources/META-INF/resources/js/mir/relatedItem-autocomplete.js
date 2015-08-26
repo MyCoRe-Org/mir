@@ -16,7 +16,7 @@ var engines = {
 					return list;
 				},
 				prepare : function(query, settings) {
-					var param = "q=%2Bmods.title%3A*" + query + "*";
+					var param = "q=%2BshelfLocator%3A" + query + "*";
 					param += "+%2Bcategory.top%3A%22mir_genres\%3A" + $(document.activeElement).data("genre") + "%22";
 					param += "+%2BobjectType%3A%22mods%22";
 					param += "&fl=mods.title%2Cid%2Cidentifier.type.isbn%2CshelfLocator";
@@ -45,7 +45,7 @@ var engines = {
 					return list;
 				},
 				prepare : function(query, settings) {
-					var param = "q=%2Bmods.title%3A*" + query + "*";
+					var param = "q=%2Bidentifier.type.isbn%3A"+query+"*";
 					param += "+%2Bcategory.top%3A%22mir_genres\%3A" + $(document.activeElement).data("genre") + "%22";
 					param += "+%2BobjectType%3A%22mods%22";
 					param += "&fl=mods.title%2Cid%2Cidentifier.type.isbn%2CshelfLocator";
@@ -74,7 +74,7 @@ var engines = {
 					return list;
 				},
 				prepare : function(query, settings) {
-					var param = "q=%2Bmods.title%3A*" + query + "*";
+					var param = "q=%2Bidentifier.type.issn%3A"+query+"*";
 					param += "+%2Bcategory.top%3A%22mir_genres\%3A" + $(document.activeElement).data("genre") + "%22";
 					param += "+%2BobjectType%3A%22mods%22";
 					param += "&fl=mods.title%2Cid%2Cidentifier.type.issn";
