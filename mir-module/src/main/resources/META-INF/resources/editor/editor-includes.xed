@@ -1248,10 +1248,10 @@
   <xed:template id="validation-rules">
     <xed:validate xpath="//mods:mods/mods:titleInfo/mods:title" required="true" i18n="mir.validation.title" display="global" />
     <!-- don't validate author, date issued and rights for journal etc.  -->
-    <xed:if test="//mods:mods/mods:genre[@valueURIxEditor!='journal' or @valueURIxEditor!='series']">
-      <!-- "required" checks if there is such an element which has text content, so we must validate mods:displayForm for the moment-->
+    <xed:if test="//mods:mods/mods:genre[@valueURIxEditor!='journal'][@valueURIxEditor!='series']">
       <xed:choose>
         <xed:when test="//mods:mods/mods:genre[@valueURIxEditor='collection' or @valueURIxEditor='proceedings']">
+          <!-- "required" checks if there is such an element which has text content, so we must validate mods:displayForm for the moment-->
           <xed:validate xpath="//mods:mods/mods:name[mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']='edt']/mods:displayForm"
             required="true" i18n="mir.validation.editor" display="global" />
         </xed:when>
@@ -1263,6 +1263,7 @@
       <xed:validate xpath="//mods:originInfo/mods:dateIssued[@encoding='w3cdtf']" required="true" i18n="mir.validation.dateIssued" display="global" />
       <xed:validate xpath="//mods:mods/mods:accessCondition[@type='use and reproduction']" required="true" i18n="mir.validation.rights" display="global" />
     </xed:if>
+
     <xed:validate xpath="//mods:identifier[@type='isbn']" matches="^((978|979)-?)?([\d -]{12}|\d{9})(\d|X)$" i18n="mir.validation.isbn" display="global" />
     <xed:validate xpath="//mods:identifier[@type='issn']" matches="[\dX]{4}\-[\dX]{4}" i18n="mir.validation.issn" display="global" />
     <xed:validate xpath="//mods:identifier[@type='doi']" matches="10\.\d+.*" i18n="mir.validation.doi" display="global" />
