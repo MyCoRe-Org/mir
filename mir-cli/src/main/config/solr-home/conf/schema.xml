@@ -215,6 +215,7 @@
 
     <!-- all names (personal and corporate) with role in fieldname -->
     <dynamicField name="mods.nameByRole.*" type="string" multiValued="true" />
+    <dynamicField name="identifier.type.*" type="string" multiValued="true" />
 
     <!-- End: MyCoRe specific schema definition -->
 
