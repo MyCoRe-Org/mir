@@ -20,7 +20,7 @@
     "font-awesome": "4.4.0",
     "jquery-confirm": "2.5.0",
     "jquery.placeholder" : "0.2.4",
-    "typeahead.js": "0.10.5",
+    "typeahead.js": "0.11.1",
     "shariff": "1.16.0"
   }
 }
