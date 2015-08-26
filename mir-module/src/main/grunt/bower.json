@@ -16,11 +16,11 @@
   },
   "devDependencies": {
     "bootstrap": "3.3.5",
-    "bootstrap3-typeahead": "3.1.1",
+    "bootstrap3-typeahead": "3.1.0",
     "font-awesome": "4.4.0",
     "jquery-confirm": "2.5.0",
     "jquery.placeholder" : "0.2.4",
-    "typeahead.js": "0.11.1",
+    "typeahead.js": "0.10.5",
     "shariff": "1.16.0"
   }
 }
