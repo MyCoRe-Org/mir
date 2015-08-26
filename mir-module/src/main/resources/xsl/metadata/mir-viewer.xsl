@@ -12,7 +12,8 @@
   <xsl:param name="UserAgent" />
 
   <xsl:template match="/">
-    <xsl:if test="mycoreobject/structure/derobjects/derobject[key('rights', @xlink:href)/@read]">
+    <!-- TODO: only checks first derivate, fix this -->
+    <xsl:if test="mycoreobject/structure/derobjects/derobject[key('rights', @xlink:href)/@read] and iview2:getSupportedMainFile(mycoreobject/structure/derobjects/derobject/@xlink:href)">
       <div id="mir-viewer">
         <xsl:variable name="viewerNodesTmp">
           <div class="row">

@@ -69,6 +69,7 @@
             <xsl:apply-templates select="div[@id='mir-abstract-plus']" mode="copyContent" />
           <!-- End: ABSTRACT -->
           </div>
+
           <!-- viewer -->
           <xsl:if test="div[@id = 'mir-viewer']">
             <xsl:apply-templates select="div[@id='mir-viewer']" mode="copyContent" />
@@ -77,7 +78,6 @@
           <xsl:if test="div[contains(@id,'mir-collapse-')]">
             <div class="detail_block">
               <div class="" id="record_detail">
-              <!-- xsl:apply-templates select="div[@id='mir-collapse-preview']" mode="copyContent" / -->
                 <xsl:apply-templates select="div[@id='mir-collapse-files']" mode="copyContent" />
               </div>
             </div>
