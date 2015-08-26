@@ -981,7 +981,7 @@
   </xed:template>
 
   <xed:template id="abstract.simple">
-    <mir:textarea xpath="mods:abstract[not(@xml:lang) or @xml:lang=../mods:languageTerm[@authority='rfc4646'][@type='code']]" label="mir.abstract.text"
+    <mir:textarea xpath="mods:abstract[not(@xml:lang) or @xml:lang=../mods:language/mods:languageTerm[@authority='rfc4646' and @type='code']]" label="mir.abstract.text"
       help-text="{i18n:mir.help.abstract}" rows="5" />
   </xed:template>
 
