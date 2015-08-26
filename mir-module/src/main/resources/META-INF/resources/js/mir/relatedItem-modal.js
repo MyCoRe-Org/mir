@@ -1,4 +1,4 @@
-$﻿(".mir-relatedItem-select").ready(function() {
+$﻿(document).ready(function() {
 	$(".mir-relatedItem-select").each(function() {
 		var button = $(this);
 		button.next("span").text(button.next().next("input").val());
