@@ -118,22 +118,22 @@
     -->
   <directoryFactory name="DirectoryFactory"
                     class="${solr.directoryFactory:solr.NRTCachingDirectoryFactory}">
-    
-         
+
+
     <!-- These will be used if you are using the solr.HdfsDirectoryFactory,
          otherwise they will be ignored. If you don't plan on using hdfs,
-         you can safely remove this section. -->      
-    <!-- The root directory that collection data should be written to. -->     
+         you can safely remove this section. -->
+    <!-- The root directory that collection data should be written to. -->
     <str name="solr.hdfs.home">${solr.hdfs.home:}</str>
-    <!-- The hadoop configuration files to use for the hdfs client. -->    
+    <!-- The hadoop configuration files to use for the hdfs client. -->
     <str name="solr.hdfs.confdir">${solr.hdfs.confdir:}</str>
-    <!-- Enable/Disable the hdfs cache. -->    
+    <!-- Enable/Disable the hdfs cache. -->
     <str name="solr.hdfs.blockcache.enabled">${solr.hdfs.blockcache.enabled:true}</str>
-    <!-- Enable/Disable using one global cache for all SolrCores. 
-         The settings used will be from the first HdfsDirectoryFactory created. -->    
+    <!-- Enable/Disable using one global cache for all SolrCores.
+         The settings used will be from the first HdfsDirectoryFactory created. -->
     <str name="solr.hdfs.blockcache.global">${solr.hdfs.blockcache.global:true}</str>
-    
-  </directoryFactory> 
+
+  </directoryFactory>
 
   <!-- The CodecFactory for defining the format of the inverted index.
        The default implementation is SchemaCodecFactory, which is the official Lucene
@@ -328,10 +328,10 @@
          this is enabled here, and controlled through log4j.properties.
       -->
      <infoStream>true</infoStream>
-    
+
     <!--
         Use true to enable this safety check, which can help
-        reduce the risk of propagating index corruption from older segments 
+        reduce the risk of propagating index corruption from older segments
         into new ones, at the expense of slower merging.
     -->
      <checkIntegrityAtMerge>false</checkIntegrityAtMerge>
@@ -862,6 +862,11 @@
          <str name="fq">inStock:true</str>
        </lst>
       -->
+       <lst name="appends">
+         <str name="facet">true</str>
+         <str name="facet.field">mods.type</str>
+         <str name="facet.mincount">1</str>
+       </lst>
     <!-- "invariants" are a way of letting the Solr maintainer lock down
          the options available to Solr clients.  Any params values
          specified here are used regardless of what values may be specified
@@ -886,11 +891,6 @@
          <str name="facet.query">price:[500 TO *]</str>
        </lst>
       -->
-       <lst name="invariants">
-         <str name="facet">true</str>
-         <str name="facet.field">mods.type</str>
-         <str name="facet.mincount">1</str>
-       </lst>
     <!-- If the default list of SearchComponents is not desired, that
          list can either be overridden completely, or components can be
          prepended or appended to the default list.  (see below)
@@ -1194,7 +1194,7 @@
      <requestHandler name="/admin/file"       class="solr.admin.ShowFileRequestHandler" >
     -->
   <!-- If you wish to hide files under ${solr.home}/conf, explicitly
-       register the ShowFileRequestHandler using the definition below. 
+       register the ShowFileRequestHandler using the definition below.
        NOTE: The glob pattern ('*') is the only pattern supported at present, *.xml will
              not exclude all files ending in '.xml'. Use it to exclude _all_ updates
     -->
@@ -1204,7 +1204,7 @@
        <lst name="invariants">
          <str name="hidden">synonyms.txt</str>
          <str name="hidden">anotherfile.txt</str>
-         <str name="hidden">*</str> 
+         <str name="hidden">*</str>
        </lst>
      </requestHandler>
     -->
@@ -1924,6 +1924,9 @@
     </lst>
     <lst name="appends">
       <str name="fq">state:published</str>
+      <str name="facet">true</str>
+      <str name="facet.field">mods.type</str>
+      <str name="facet.mincount">1</str>
     </lst>
     <lst name="invariants">
       <str name="group">true</str>
@@ -1931,10 +1934,6 @@
       <str name="group.field">returnId</str>
       <str name="group.ngroups">true</str>
       <str name="q">{!type=edismax v=$qry qf=$qf}</str>
-
-      <str name="facet">true</str>
-      <str name="facet.field">mods.type</str>
-      <str name="facet.mincount">1</str>
     </lst>
 
   </requestHandler>

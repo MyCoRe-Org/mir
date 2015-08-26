@@ -118,6 +118,20 @@
         </field>
       </xsl:if>
     </xsl:for-each>
+    <xsl:for-each select=".//mods:name[@type='personal' or 'corporate']">
+      <xsl:variable name="name">
+        <xsl:for-each select="mods:displayForm | mods:namePart | text()">
+          <xsl:value-of select="concat(' ',.)" />
+        </xsl:for-each>
+        <xsl:if test="contains(@valueURI,'http://d-nb.info/gnd/')">
+          <xsl:text>:</xsl:text>
+          <xsl:value-of select="substring-after(@valueURI,'http://d-nb.info/gnd/')" />
+        </xsl:if>
+      </xsl:variable>
+      <field name="mods.nameByRole.{@type}.{mods:role/mods:roleTerm[@type='code']}">
+        <xsl:value-of select="normalize-space($name)" />
+      </field>
+    </xsl:for-each>
     <xsl:for-each select="mods:abstract[1]">
       <field name="mods.abstract.result">
         <xsl:value-of select="mcrxml:shortenText(text(),300)" />

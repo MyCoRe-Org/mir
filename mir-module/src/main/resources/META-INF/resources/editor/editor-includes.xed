@@ -912,14 +912,14 @@
     </div>
   </xed:template>
 
-  <xed:template id="editor.organization">
+  <xed:template id="publisher.organization">
     <div class="form-group">
       <label class="col-md-3 control-label">
-        <xed:output i18n="mir.editorOrganization" />
+        <xed:output i18n="mir.publisherOrganization" />
         :
       </label>
       <div class="col-md-6">
-        <xed:bind xpath="mods:name[@type='corporate'][mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']='edt']"><!--  Editor [edt] -->
+        <xed:bind xpath="mods:name[@type='corporate'][mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']='pbl']"><!--  Publisher [pbl]  -->
           <div class="search-organization">
             <xed:bind xpath="mods:displayForm">
               <input type="text" size="26" class="form-control form-control-inline" data-search="searchEntity" data-search-type="select"
@@ -1279,7 +1279,7 @@
       relevant-if="(string-length(text()) &gt; 0) or mods:* or cmd:* or (string-length(@xlink:href) &gt; 0) or (string-length(@valueURIxEditor) &gt; 0) or (string-length(@mcr:categId) &gt; 0)" />
     <xed:cleanup-rule xpath="//mods:name" relevant-if="(mods:namePart|mods:displayForm) or (string-length(@valueURI) &gt; 0) or (string-length(@valueURIxEditor) &gt; 0)" />
     <xed:cleanup-rule xpath="//mods:name/@authorityURI" relevant-if="(string-length(../@valueURI) &gt; 0) or (string-length(../@valueURIxEditor) &gt; 0)" />
-    <xed:cleanup-rule xpath="//mods:name/mods:namePart" relevant-if="not(../mods:displayForm)" />
+    <xed:cleanup-rule xpath="//mods:name/mods:namePart" relevant-if="not(../mods:displayForm) and string-length(text()) &gt; 0" />
     <xed:cleanup-rule xpath="//mods:*/@xlink:type" relevant-if="text()!='simple'" />
     <xed:cleanup-rule xpath="//mods:detail" relevant-if="mods:number|mods:caption|mods:title" />
     <xed:cleanup-rule xpath="//mods:accessCondition[@type='copyrightMD']/cmd:copyright" relevant-if="cmd:rights.holder/cmd:name" />
