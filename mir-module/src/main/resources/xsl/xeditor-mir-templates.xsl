@@ -241,11 +241,18 @@
     </xsl:variable>
     <xsl:variable name="inline" select="@inline" />
 
+    <xsl:if test="string-length(@id) &gt; 0">
+      <xsl:attribute name="id">
+        <xsl:value-of select="@id" />
+      </xsl:attribute>
+    </xsl:if>
+
     <xsl:choose>
       <xsl:when test="string-length(@uri) &gt; 0">
         <xsl:variable name="options" select="document(@uri)" />
         <xsl:for-each select="$options//option">
           <xsl:apply-templates select="." mode="optionList">
+            <xsl:with-param name="id" select="@id" />
             <xsl:with-param name="inputType" select="$inputType" />
             <xsl:with-param name="inline" select="$inline" />
           </xsl:apply-templates>
@@ -253,6 +260,7 @@
       </xsl:when>
       <xsl:otherwise>
         <xsl:apply-templates select="option" mode="optionList">
+          <xsl:with-param name="id" select="@id" />
           <xsl:with-param name="inputType" select="$inputType" />
           <xsl:with-param name="inline" select="$inline" />
         </xsl:apply-templates>
@@ -261,6 +269,7 @@
   </xsl:template>
 
   <xsl:template match="option" mode="optionList">
+    <xsl:param name="id" select="''" />
     <xsl:param name="inputType" select="'checkbox'" />
     <xsl:param name="inline" select="'false'" />
 
@@ -273,6 +282,11 @@
       </xsl:attribute>
       <label>
         <input type="{$inputType}" value="{@value}">
+          <xsl:if test="string-length($id) &gt; 0">
+            <xsl:attribute name="id">
+              <xsl:value-of select="concat($id, '-{xed:generate-id()}')" />
+            </xsl:attribute>
+          </xsl:if>
           <xsl:if test="@disabled = 'true'">
             <xsl:attribute name="disabled">
               <xsl:text>disabled</xsl:text>
