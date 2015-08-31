@@ -100,9 +100,10 @@
       </xsl:attribute>
 
       <xsl:choose>
-        <xsl:when test="@tooltip">
+        <xsl:when test="@tooltip or count(action) &gt; 0">
           <div class="input-group">
             <xsl:apply-templates select="." mode="widget" />
+            <xsl:apply-templates select="." mode="action" />
             <xsl:apply-templates select="." mode="inputTooltip" />
             <xsl:apply-templates select="." mode="validation" />
           </div>
@@ -141,9 +142,10 @@
 
     <div class="col-{$colsize}-{$colwidth} $xed-validation-marker">
       <xsl:choose>
-        <xsl:when test="@tooltip">
+        <xsl:when test="@tooltip or count(action) &gt; 0">
           <div class="input-group">
             <xsl:apply-templates select="." mode="widget" />
+            <xsl:apply-templates select="." mode="action" />
             <xsl:apply-templates select="." mode="inputTooltip" />
             <xsl:apply-templates select="." mode="validation" />
           </div>
@@ -344,6 +346,28 @@
           <xsl:value-of select="concat('{i18n:',@tooltip,'}')" />
         </xsl:attribute>
         <i class="glyphicon glyphicon-info-sign" />
+      </span>
+    </xsl:if>
+  </xsl:template>
+
+  <xsl:template match="mir:template" mode="action">
+    <xsl:if test="count(action) &gt; 0">
+      <span class="input-group-btn">
+        <xsl:for-each select="action">
+          <xsl:variable name="id">
+            <xsl:choose>
+              <xsl:when test="string-length(@id) &gt; 0">
+                <xsl:value-of select="@id" />
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:text>{xed:generate-id()}</xsl:text>
+              </xsl:otherwise>
+            </xsl:choose>
+          </xsl:variable>
+          <button id="{$id}" class="btn btn-default" type="button">
+            <xed:output i18n="{@i18n}" />
+          </button>
+        </xsl:for-each>
       </span>
     </xsl:if>
   </xsl:template>
