@@ -34,6 +34,9 @@
       if ($('#index_search').val().match('[^\\.]\\*' + '$')) {
         $('#index_search').val($('#index_search').val().replace('*','.*'));
       }
+      else {
+        $('#index_search').val($('#index_search').val()+".*");
+      }
     });
 
     //date filter option
