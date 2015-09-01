@@ -54,7 +54,7 @@
               <div class="hit_links">
                 <a href="{$derivifs}">
                   <xsl:choose>
-                    <xsl:when test="$fileType='pdf' or $fileType='msexcel' or $fileType='xlsx' or $fileType='msword97' or $fileType='docx'">
+                    <xsl:when test="$fileType='pdf' or $fileType='msexcel' or $fileType='xlsx' or $fileType='msword97' or $fileType='docx' or $fileType='html' or $fileType='rtf' or $fileType='txt' or $fileType='xml'">
                       <img src="{$WebApplicationBaseURL}templates/master/{$template}/IMAGES/icons_liste/download_{$fileType}.png" alt="{$derivmain}" title="{$derivmain}" />
                     </xsl:when>
                     <xsl:otherwise>
