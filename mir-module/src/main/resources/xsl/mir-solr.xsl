@@ -101,7 +101,7 @@
     <xsl:for-each select=".//mods:name[@type='personal']">
       <!-- person index name entry -->
       <xsl:variable name="pindexname">
-        <xsl:for-each select="mods:displayForm | mods:namePart | text()">
+        <xsl:for-each select="mods:displayForm | mods:namePart[@type!='date'] | text()">
           <xsl:value-of select="concat(' ',.)" />
         </xsl:for-each>
         <xsl:if test="contains(@valueURI,'http://d-nb.info/gnd/')">
@@ -120,7 +120,7 @@
     </xsl:for-each>
     <xsl:for-each select="mods:name[@type='personal' or 'corporate']">
       <xsl:variable name="name">
-        <xsl:for-each select="mods:displayForm | mods:namePart | text()">
+        <xsl:for-each select="mods:displayForm | mods:namePart[@type!='date'] | text()">
           <xsl:value-of select="concat(' ',.)" />
         </xsl:for-each>
       </xsl:variable>
