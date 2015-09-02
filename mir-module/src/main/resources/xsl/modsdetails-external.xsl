@@ -3,7 +3,7 @@
   xmlns:mcrmods="xalan://org.mycore.mods.classification.MCRMODSClassificationSupport" xmlns:basket="xalan://org.mycore.frontend.basket.MCRBasketManager" xmlns:mcr="http://www.mycore.org/"
   xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:mods="http://www.loc.gov/mods/v3" xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions" xmlns:mcrurn="xalan://org.mycore.urn.MCRXMLFunctions"
   xmlns:str="http://exslt.org/strings" xmlns:encoder="xalan://java.net.URLEncoder" exclude-result-prefixes="basket xalan xlink mcr i18n mods mcrmods mcrxsl mcrurn str encoder"
-  version="1.0" xmlns:ex="http://exslt.org/dates-and-times" extension-element-prefixes="ex"
+  version="1.0" xmlns:ex="http://exslt.org/dates-and-times" xmlns:exslt="http://exslt.org/common" extension-element-prefixes="ex exslt"
 >
 
   <xsl:param name="MIR.registerDOI" select="''" />
@@ -803,6 +803,72 @@
       </xsl:if>
     </xsl:for-each>
 
+  </xsl:template>
+
+  <!--  info:eu-repo/grantAgreement/EC/FP7/324387/EU/Risk Management Software System for SMEs in the Construction Industry/RIMACON -->
+  <!--   Projektname: Risk Management Software System for SMEs in the Const -->
+  <!--   Projekt-Akronym: RIMACON -->
+  <!--   Grant-ID: 324387 -->
+  <!--   Programm-ID: FP7 -->
+  <!--   Organisations-ID: EC -->
+  <xsl:template match="mods:identifier[@type='open-aire']" mode="openaire">
+    <xsl:variable name="project-details">
+      <xsl:call-template name="Tokenizer"><!-- use split function from mycore-base/coreFunctions.xsl -->
+        <xsl:with-param name="string" select="."/>
+        <xsl:with-param name="delimiter" select="'/'" />
+      </xsl:call-template>
+    </xsl:variable>
+
+    <xsl:if test="string-length(exslt:node-set($project-details)/token[position() = 7]) &gt; 0">
+      <tr>
+        <td valign="top" class="metaname">
+          <xsl:value-of select="i18n:translate('mir.project.name')" />
+        </td>
+        <td class="metavalue">
+          <xsl:value-of select="exslt:node-set($project-details)/token[position() = 7]" />
+        </td>
+      </tr>
+    </xsl:if>
+    <xsl:if test="string-length(exslt:node-set($project-details)/token[position() = 8]) &gt; 0">
+      <tr>
+        <td valign="top" class="metaname">
+          <xsl:value-of select="i18n:translate('mir.project.acronym')" />
+        </td>
+        <td class="metavalue">
+          <xsl:value-of select="exslt:node-set($project-details)/token[position() = 8]" />
+        </td>
+      </tr>
+    </xsl:if>
+    <xsl:if test="string-length(exslt:node-set($project-details)/token[position() = 5]) &gt; 0">
+      <tr>
+        <td valign="top" class="metaname">
+          <xsl:value-of select="concat(i18n:translate('mir.project.grantID'),':')" />
+        </td>
+        <td class="metavalue">
+          <xsl:value-of select="exslt:node-set($project-details)/token[position() = 5]" />
+        </td>
+      </tr>
+    </xsl:if>
+    <xsl:if test="string-length(exslt:node-set($project-details)/token[position() = 4]) &gt; 0">
+      <tr>
+        <td valign="top" class="metaname">
+          <xsl:value-of select="concat(i18n:translate('mir.project.sponsor.programmID'),':')" />
+        </td>
+        <td class="metavalue">
+          <xsl:value-of select="exslt:node-set($project-details)/token[position() = 4]" />
+        </td>
+      </tr>
+    </xsl:if>
+    <xsl:if test="string-length(exslt:node-set($project-details)/token[position() = 3]) &gt; 0">
+      <tr>
+        <td valign="top" class="metaname">
+          <xsl:value-of select="concat(i18n:translate('mir.project.sponsor.organisationID'),':')" />
+        </td>
+        <td class="metavalue">
+          <xsl:value-of select="exslt:node-set($project-details)/token[position() = 3]" />
+        </td>
+      </tr>
+    </xsl:if>
   </xsl:template>
 
 </xsl:stylesheet>
