@@ -453,6 +453,12 @@
     </xsl:choose>
   </xsl:template>
 
+  <xsl:template match="mods:identifier[@type='open-aire']">
+    <dc:relation>
+      <xsl:value-of select="."/>
+    </dc:relation>
+  </xsl:template>
+
   <!-- von Paul Borchert -->
   <xsl:template match="mods:accessCondition[@type='embargo']">
     <dc:rights>
