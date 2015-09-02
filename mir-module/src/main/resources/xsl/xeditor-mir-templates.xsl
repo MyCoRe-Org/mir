@@ -100,13 +100,19 @@
       </xsl:attribute>
 
       <xsl:choose>
-        <xsl:when test="@tooltip or count(action) &gt; 0">
+        <xsl:when test="count(action) &gt; 0">
+          <div class="input-group">
+            <xsl:apply-templates select="." mode="action" />
+            <xsl:apply-templates select="." mode="widget" />
+          </div>
+          <xsl:apply-templates select="." mode="validation" />
+        </xsl:when>
+        <xsl:when test="@tooltip">
           <div class="input-group">
             <xsl:apply-templates select="." mode="widget" />
-            <xsl:apply-templates select="." mode="action" />
             <xsl:apply-templates select="." mode="inputTooltip" />
-            <xsl:apply-templates select="." mode="validation" />
           </div>
+          <xsl:apply-templates select="." mode="validation" />
         </xsl:when>
         <xsl:otherwise>
           <xsl:apply-templates select="." mode="widget" />
@@ -142,13 +148,19 @@
 
     <div class="col-{$colsize}-{$colwidth} $xed-validation-marker">
       <xsl:choose>
-        <xsl:when test="@tooltip or count(action) &gt; 0">
+        <xsl:when test="count(action) &gt; 0">
+          <div class="input-group">
+            <xsl:apply-templates select="." mode="action" />
+            <xsl:apply-templates select="." mode="widget" />
+          </div>
+          <xsl:apply-templates select="." mode="validation" />
+        </xsl:when>
+        <xsl:when test="@tooltip">
           <div class="input-group">
             <xsl:apply-templates select="." mode="widget" />
-            <xsl:apply-templates select="." mode="action" />
             <xsl:apply-templates select="." mode="inputTooltip" />
-            <xsl:apply-templates select="." mode="validation" />
           </div>
+          <xsl:apply-templates select="." mode="validation" />
         </xsl:when>
         <xsl:otherwise>
           <xsl:apply-templates select="." mode="widget" />
