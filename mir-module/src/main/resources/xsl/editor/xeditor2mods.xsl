@@ -45,13 +45,19 @@
       </xsl:attribute>
     </mods:accessCondition>
   </xsl:template>
-  
+
   <xsl:template match="@mcr:categId" />
   <xsl:template match="*[@mcr:categId]">
     <xsl:copy>
       <xsl:variable name="classNodes" select="mcrmods:getClassNodes(.)" />
       <xsl:apply-templates select='$classNodes/@*|@*|node()|$classNodes/node()' />
     </xsl:copy>
+  </xsl:template>
+
+  <xsl:template match="mods:openAireID">
+    <mods:identifier type="open-aire">
+      <xsl:value-of select="." />
+    </mods:identifier>
   </xsl:template>
 
 </xsl:stylesheet>

@@ -81,6 +81,12 @@
     <!-- do nothing -->
   </xsl:template>
 
+  <xsl:template match="mods:identifier[@type='open-aire']">
+    <mods:openAireID>
+      <xsl:value-of select="." />
+    </mods:openAireID>
+  </xsl:template>
+
   <!-- to @categId -->
   <xsl:template match="mods:classification[@generator='user selected']">
     <xsl:copy>

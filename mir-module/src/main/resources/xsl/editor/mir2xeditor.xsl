@@ -213,11 +213,17 @@
         <div class="col-md-6">
           <div class="input-group">
             <input class="form-control relItemsearch" data-searchengine="{@searchengine}" data-genre="{@genre}"
-                  data-responsefield="{@responsefield}" data-provide="typeahead" type="text" autocomplete="off"/>
-            <span class="input-group-addon searchbadge">
-
-            </span>
-      </div>
+                   data-responsefield="{@responsefield}" data-provide="typeahead" type="text" autocomplete="off"/>
+            <span class="input-group-addon searchbadge"> </span>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <xsl:if test="string-length(@help-text) &gt; 0">
+            <xsl:call-template name="mir-helpbutton" />
+          </xsl:if>
+          <xsl:if test="@pmud = 'true'">
+            <xsl:call-template name="mir-pmud" />
+          </xsl:if>
         </div>
       </div>
     </xed:bind>

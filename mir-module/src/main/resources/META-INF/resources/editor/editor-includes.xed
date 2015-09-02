@@ -108,7 +108,7 @@
   </xed:template>
 
   <xed:template id="title.journal.relItemsearch">
-    <mir:relItemsearch searchengine="title" genre="journal" responsefield="mods.title" xpath="mods:titleInfo/mods:title" label="mir.title.journal" />
+    <mir:relItemsearch searchengine="title" genre="journal" responsefield="mods.title" xpath="mods:titleInfo/mods:title" label="mir.title.journal" help-text="{i18n:mir.help.title.journal}" />
   </xed:template>
 
   <xed:template id="title.collection.relItemsearch">
@@ -138,7 +138,7 @@
       </legend>
       <xed:bind xpath="mods:titleInfo">
         <div class="mir-fieldset-content">
-          <mir:textfield xpath="mods:title" label="mir.title" placeholder="{i18n:mir.placeholder.title.main}" help-text="{i18n:mir.help.title}" />
+          <mir:textfield xpath="mods:title" label="mir.title" placeholder="{i18n:mir.placeholder.title.main}" help-text="{i18n:mir.help.title}" class="required" />
           <mir:textfield xpath="mods:subTitle" label="mir.title.subTitle" help-text="{i18n:mir.help.title.subTitle}" />
         </div>
       </xed:bind>
@@ -383,6 +383,11 @@
   <xed:template id="year.issued">
     <mir:textfield xpath="mods:originInfo/mods:dateIssued[@encoding='w3cdtf']" label="mir.date.issued.4" help-text="{i18n:mir.help.date.issued.4}"
       class="required" placeholder="{i18n:mir.placeholder.year}" />
+  </xed:template>
+
+  <xed:template id="year.issued.relItem">
+    <mir:textfield xpath="mods:originInfo/mods:dateIssued[@encoding='w3cdtf']" label="mir.date.issued.4" help-text="{i18n:mir.help.date.issued.4}"
+      class="required mir-modspart" placeholder="{i18n:mir.placeholder.year}" />
   </xed:template>
 
   <xed:template id="date.issued">
@@ -1143,7 +1148,7 @@
           </div>
           <mir:help-pmud help-text="{i18n:mir.help.project.grant}" pmud="false" />
         </div>
-        <xed:bind xpath="mods:identifier[@type='open-aire']">
+        <xed:bind xpath="mods:openAireID">
           <input type="hidden" />
         </xed:bind>
       </div>
