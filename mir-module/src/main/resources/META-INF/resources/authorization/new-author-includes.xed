@@ -5,6 +5,12 @@
     <mcruser:template name="cancelButton" i18n="component.user2.button.cancel" />
   </xed:template>
 
+  <xed:template id="userAccount">
+    <mcruser:template name="textInput" xpath="@name" id="userName" i18n="component.user2.admin.userAccount" i18n.error="component.user2.admin.inputhints.username"
+      required="true" matches="[a-z0-9\._-]*" maxlength="16" />
+    <xed:bind xpath="@realm" set="local" />
+  </xed:template>
+
   <xed:template id="realName">
     <mcruser:template name="textInput" xpath="realName" id="realName" i18n="component.user2.admin.realName" i18n.error="selfRegistration.realName.required"
       placeholder="mir.register.realName" required="true" maxlength="64" />
