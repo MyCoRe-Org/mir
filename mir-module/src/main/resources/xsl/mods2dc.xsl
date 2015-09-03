@@ -415,12 +415,10 @@
   </xsl:template>
 
   <xsl:template match="mods:language">
+    <!-- Best Practice: use ISO 639-3 (since DRIVER Guidelines v2) -->
     <dc:language>
-      <xsl:value-of select="child::*"/>
-    </dc:language>
-    <dc:language>
-      <xsl:variable name="myURI" > <xsl:value-of select="concat('classification:metadata:0:children:rfc4646:',child::*)" /> </xsl:variable>
-            <xsl:value-of select="document($myURI)//label[@xml:lang='x-bibl']/@text"/>
+      <xsl:variable name="myURI" select="concat('classification:metadata:0:children:rfc4646:',child::*)" />
+      <xsl:value-of select="document($myURI)//label[@xml:lang='x-term']/@text"/>
     </dc:language>
   </xsl:template>
 
@@ -464,11 +462,12 @@
     <dc:rights>
       <xsl:text>Fulltext available at </xsl:text> <xsl:value-of select="."/>
     </dc:rights>
+    <dc:rights>info:eu-repo/semantics/embargoedAccess</dc:rights>
   </xsl:template>
 
   <xsl:template match="mods:accessCondition[@type='use and reproduction']">
+    <xsl:variable name="trimmed" select="normalize-space(.)" />
     <dc:rights>
-      <xsl:variable name="trimmed" select="normalize-space(.)" />
       <xsl:choose>
         <xsl:when test="contains($trimmed, 'cc_by')">
           <xsl:apply-templates select="." mode="cc-text" />
@@ -482,6 +481,27 @@
         <xsl:otherwise>
           <xsl:value-of select="." />
         </xsl:otherwise>
+      </xsl:choose>
+    </dc:rights>
+    <xsl:if test="(contains($trimmed, 'cc_') or contains($trimmed, 'oa_')) and not(../mods:accessCondition[@type='restriction on access']) and not(../mods:accessCondition[@type='embargo'])">
+      <dc:rights>
+        <xsl:text>info:eu-repo/semantics/openAccess</xsl:text>
+      </dc:rights>
+    </xsl:if>
+  </xsl:template>
+
+  <xsl:template match="mods:accessCondition[@type='restriction on access']">
+    <dc:rights>
+      <xsl:choose>
+        <xsl:when test="contains(substring-after(@xlink:href, '#'), 'intern')">
+          <xsl:text>info:eu-repo/semantics/closedAccess</xsl:text>
+        </xsl:when>
+        <xsl:when test="contains(substring-after(@xlink:href, '#'), 'ipAddressRange')">
+          <xsl:text>info:eu-repo/semantics/restrictedAccess</xsl:text>
+        </xsl:when>
+        <xsl:when test="contains(substring-after(@xlink:href, '#'), 'unlimited')">
+          <xsl:text>info:eu-repo/semantics/openAccess</xsl:text>
+        </xsl:when>
       </xsl:choose>
     </dc:rights>
   </xsl:template>
