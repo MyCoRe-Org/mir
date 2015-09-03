@@ -96,7 +96,7 @@
   </xed:template>
 
   <xed:template id="title.series.relItemsearch">
-    <mir:relItemsearch searchengine="title" genre="series" responsefield="mods.title" xpath="mods:titleInfo/mods:title" label="mir.title" />
+    <mir:relItemsearch searchengine="title" genre="series" responsefield="mods.title" xpath="mods:titleInfo/mods:title" label="mir.title"  help-text="{i18n:mir.help.title.journal}" />
   </xed:template>
 
   <xed:template id="title.book.relItemsearch">
