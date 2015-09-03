@@ -1923,6 +1923,8 @@
       <str name="sort">score desc, mods.dateIssued desc</str>
     </lst>
     <lst name="appends">
+      <!-- filter query: search only in published mods objects-->
+      <str name="fq">objectType:"mods"</str>
       <str name="fq">state:published</str>
       <str name="facet">true</str>
       <str name="facet.field">mods.type</str>
