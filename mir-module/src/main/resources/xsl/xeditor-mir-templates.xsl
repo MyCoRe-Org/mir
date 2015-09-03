@@ -376,8 +376,36 @@
               </xsl:otherwise>
             </xsl:choose>
           </xsl:variable>
-          <button id="{$id}" class="btn btn-default" type="button">
-            <xed:output i18n="{@i18n}" />
+          <button id="{$id}" class="btn btn-default" type="button" aria-label="{concat('{i18n:', @i18n,'}')}">
+            <xsl:if test="string-length(@i18n) &gt; 0 and (string-length(@icon) &gt; 0 and @iconOnly = 'true')">
+              <xsl:attribute name="title">
+              <xsl:value-of select="concat('{i18n:',@i18n,'}')" />
+            </xsl:attribute>
+            </xsl:if>
+            <xsl:if test="string-length(@icon) &gt; 0">
+              <span class="{@icon}" aria-hidden="true" />
+            </xsl:if>
+            <xsl:choose>
+              <xsl:when
+                test="string-length(@i18n) &gt; 0 and (string-length(@icon) = 0 or (string-length(@icon) &gt; 0 and (string-length(@iconOnly) = 0 or @iconOnly = 'false')))"
+              >
+                <xsl:choose>
+                  <xsl:when test="string-length(@icon) &gt; 0">
+                    <span class="hidden-xs hidden-sm">
+                      <xed:output i18n="{@i18n}" />
+                    </span>
+                  </xsl:when>
+                  <xsl:otherwise>
+                    <xed:output i18n="{@i18n}" />
+                  </xsl:otherwise>
+                </xsl:choose>
+              </xsl:when>
+              <xsl:when test="string-length(@i18n) &gt; 0 and string-length(@icon) &gt; 0">
+                <span class="sr-only">
+                  <xed:output i18n="{@i18n}" />
+                </span>
+              </xsl:when>
+            </xsl:choose>
           </button>
         </xsl:for-each>
       </span>
