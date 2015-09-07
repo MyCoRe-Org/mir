@@ -44,7 +44,7 @@
     {file} described by {describeBy}
   </command>
   <command file="resource:setup/acl/grant-admin.xml" describeBy="administrators only">update permission read for id
-    webpage:/modules/classeditor/classificationEditor.xml with rulefile {file} described by {describeBy}
+    webpage:/modules/classeditor/classificationEditor.xml?XSL.classeditor.showId=true with rulefile {file} described by {describeBy}
   </command>
   <command file="resource:setup/acl/grant-admin.xml" describeBy="administrators only">update permission read for id
     webpage:/rsc/ACLE/start with rulefile {file}

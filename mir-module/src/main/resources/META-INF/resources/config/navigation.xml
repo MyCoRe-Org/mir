@@ -104,7 +104,7 @@
       </item>
     </group>
     <group id="contentadmin">
-      <item href="/modules/classeditor/classificationEditor.xml" type="extern">
+      <item href="/modules/classeditor/classificationEditor.xml?XSL.classeditor.showId=true" type="extern">
         <label xml:lang="de">Klassifikationseditor</label>
         <label xml:lang="en">Edit Classifications</label>
       </item>
