@@ -126,6 +126,10 @@
       </xsl:variable>
       <field name="mods.nameByRole.{@type}.{mods:role/mods:roleTerm[@type='code']}">
         <xsl:value-of select="normalize-space($name)" />
+        <xsl:if test="contains(@valueURI,'http://d-nb.info/gnd/')">
+          <xsl:text>:</xsl:text>
+          <xsl:value-of select="substring-after(@valueURI,'http://d-nb.info/gnd/')" />
+        </xsl:if>
       </field>
     </xsl:for-each>
     <xsl:for-each select="mods:abstract[1]">
