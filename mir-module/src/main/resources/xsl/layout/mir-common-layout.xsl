@@ -199,30 +199,28 @@
     <xsl:variable name="basketType" select="'objects'" />
     <xsl:variable name="basket" select="document(concat('basket:',$basketType))/basket" />
     <xsl:variable name="entryCount" select="count($basket/entry)" />
+    <xsl:variable name="basketTitle">
+      <xsl:choose>
+        <xsl:when test="$entryCount = 0">
+          <xsl:value-of select="i18n:translate('basket.numEntries.none')" disable-output-escaping="yes" />
+        </xsl:when>
+        <xsl:when test="$entryCount = 1">
+          <xsl:value-of select="i18n:translate('basket.numEntries.one')" disable-output-escaping="yes" />
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="i18n:translate('basket.numEntries.many',$entryCount)" disable-output-escaping="yes" />
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+
     <li class="dropdown" id="basket-list-item">
-      <a class="dropdown-toggle" data-toggle="dropdown" href="#" title="{i18n:translate('basket.title.objects')}">
+      <a class="dropdown-toggle" data-toggle="dropdown" href="#" title="{$basketTitle}">
         <i class="fa fa-bookmark"></i>
         <sup>
           <xsl:value-of select="$entryCount" />
         </sup>
       </a>
       <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-        <li class="disabled">
-          <a>
-            <xsl:choose>
-              <xsl:when test="$entryCount = 0">
-                <xsl:value-of select="i18n:translate('basket.numEntries.none')" disable-output-escaping="yes" />
-              </xsl:when>
-              <xsl:when test="$entryCount = 1">
-                <xsl:value-of select="i18n:translate('basket.numEntries.one')" disable-output-escaping="yes" />
-              </xsl:when>
-              <xsl:otherwise>
-                <xsl:value-of select="i18n:translate('basket.numEntries.many',$entryCount)" disable-output-escaping="yes" />
-              </xsl:otherwise>
-            </xsl:choose>
-          </a>
-        </li>
-        <li class="divider" />
         <li>
           <a href="{$ServletsBaseURL}MCRBasketServlet{$HttpSession}?type={$basket/@type}&amp;action=show">
             <xsl:value-of select="i18n:translate('basket.open')" />
@@ -231,15 +229,16 @@
       </ul>
     </li>
   </xsl:template>
+
   <xsl:template name="mir.prop4js">
     <script type="text/javascript">
       <xsl:text>var webApplicationBaseURL = '</xsl:text>
       <xsl:value-of select="$WebApplicationBaseURL" />
       <xsl:text>';</xsl:text>
       <xsl:text>var currentLang = '</xsl:text>
-      <xsl:value-of select="$CurrentLang" /> 
+      <xsl:value-of select="$CurrentLang" />
       <xsl:text>';</xsl:text>
     </script>
   </xsl:template>
-  
+
 </xsl:stylesheet>
