@@ -769,7 +769,7 @@
           <xsl:if test="position()!=1">
             <xsl:value-of select="'/ '" />
           </xsl:if>
-          <xsl:apply-templates select="." mode="authors_short" />
+          <xsl:apply-templates select="." mode="nameLink" />
         </xsl:for-each>
       </div>
 

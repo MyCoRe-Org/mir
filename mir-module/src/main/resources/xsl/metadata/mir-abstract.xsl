@@ -94,7 +94,7 @@
             <xsl:if test="position()!=1">
               <xsl:value-of select="'; '" />
             </xsl:if>
-            <xsl:apply-templates select="." mode="authors_short" />
+            <xsl:apply-templates select="." mode="nameLink" />
           </xsl:for-each>
         </p>
       </xsl:if>
@@ -143,47 +143,6 @@
     </div><!-- end: authors, description, children -->
 
     <xsl:apply-imports />
-  </xsl:template>
-
-  <xsl:template match="mods:name" mode="authors_short">
-    <!-- TODO: Link to search? -->
-    <xsl:variable name="gnd">
-      <xsl:if test="starts-with(@valueURI, 'http://d-nb.info/gnd/')">
-        <xsl:value-of select="substring-after(@valueURI, 'http://d-nb.info/gnd/')" />
-      </xsl:if>
-    </xsl:variable>
-    <!-- if user is in role editor or admin, show all; other users only gets their own and published publications -->
-    <xsl:variable name="filter_query">
-      <xsl:choose>
-        <xsl:when test="mcrxsl:isCurrentUserInRole('admin') or mcrxsl:isCurrentUserInRole('editor')">state:*</xsl:when>
-        <xsl:otherwise>state:published OR createdby:<xsl:value-of select="$CurrentUser" /></xsl:otherwise>
-      </xsl:choose>
-    </xsl:variable>
-    <xsl:variable name="query">
-      <xsl:choose>
-        <xsl:when test="string-length($gnd)&gt;0">
-          <xsl:value-of select="concat($ServletsBaseURL,'solr/select?q=mods.gnd:', $gnd, ' AND (', $filter_query, ')')" />
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:value-of select="concat($ServletsBaseURL,'solr/select?q=')" />
-          <xsl:value-of select="concat('+mods.author:&quot;',mods:displayForm,'&quot;')" />
-          <xsl:value-of select="concat(' AND (', $filter_query, ')')" />
-        </xsl:otherwise>
-      </xsl:choose>
-    </xsl:variable>
-    <a itemprop="creator" href="{$query}">
-      <span itemscope="itemscope" itemtype="http://schema.org/Person">
-        <span itemprop="name">
-          <xsl:value-of select="mods:displayForm" />
-        </span>
-        <xsl:if test="string-length($gnd)&gt;0">
-          <xsl:text>&#160;</xsl:text><!-- add whitespace here -->
-          <a href="http://d-nb.info/gnd/{$gnd}" title="Link zur GND">
-            <sup>GND</sup>
-          </a>
-        </xsl:if>
-      </span>
-    </a>
   </xsl:template>
 
 </xsl:stylesheet>
