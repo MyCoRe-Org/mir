@@ -381,37 +381,37 @@
   </xed:template>
 
   <xed:template id="year.issued">
-    <mir:textfield xpath="mods:originInfo/mods:dateIssued[@encoding='w3cdtf']" label="mir.date.issued.4" help-text="{i18n:mir.help.date.issued.4}"
+    <mir:textfield xpath="mods:originInfo[@eventType='publication']/mods:dateIssued[@encoding='w3cdtf']" label="mir.date.issued.4" help-text="{i18n:mir.help.date.issued.4}"
       class="required" placeholder="{i18n:mir.placeholder.year}" />
   </xed:template>
 
   <xed:template id="year.issued.relItem">
-    <mir:textfield xpath="mods:originInfo/mods:dateIssued[@encoding='w3cdtf']" label="mir.date.issued.4" help-text="{i18n:mir.help.date.issued.4}"
+    <mir:textfield xpath="mods:originInfo[@eventType='publication']/mods:dateIssued[@encoding='w3cdtf']" label="mir.date.issued.4" help-text="{i18n:mir.help.date.issued.4}"
       class="required mir-modspart" placeholder="{i18n:mir.placeholder.year}" />
   </xed:template>
 
   <xed:template id="date.issued">
-    <mir:textfield xpath="mods:originInfo/mods:dateIssued[@encoding='w3cdtf']" label="mir.date.issued.10" help-text="{i18n:mir.help.date.issued.10}"
+    <mir:textfield xpath="mods:originInfo[@eventType='publication']/mods:dateIssued[@encoding='w3cdtf']" label="mir.date.issued.10" help-text="{i18n:mir.help.date.issued.10}"
       class="required" placeholder="{i18n:mir.placeholder.date}" />
   </xed:template>
 
   <xed:template id="date.broadcasted">
-    <mir:textfield xpath="mods:originInfo/mods:dateIssued[@encoding='w3cdtf']" label="mir.date.broadcasted" help-text="{i18n:mir.help.date.broadcasted}"
+    <mir:textfield xpath="mods:originInfo[@eventType='publication']/mods:dateIssued[@encoding='w3cdtf']" label="mir.date.broadcasted" help-text="{i18n:mir.help.date.broadcasted}"
       placeholder="{i18n:mir.placeholder.date}" />
   </xed:template>
 
   <xed:template id="date.accepted">
-    <mir:textfield xpath="mods:originInfo/mods:dateOther[@type='accepted'][@encoding='w3cdtf']" label="mir.date.accepted" help-text="{i18n:mir.help.date.accepted}"
+    <mir:textfield xpath="mods:originInfo[@eventType='creation']/mods:dateOther[@type='accepted'][@encoding='w3cdtf']" label="mir.date.accepted" help-text="{i18n:mir.help.date.accepted}"
       placeholder="{i18n:mir.placeholder.date}" />
   </xed:template>
 
   <xed:template id="date.acceptedHabil">
-    <mir:textfield xpath="mods:originInfo/mods:dateOther[@type='accepted'][@encoding='w3cdtf']" label="mir.date.acceptedHabil" help-text="{i18n:mir.help.date.acceptedHabil}"
+    <mir:textfield xpath="mods:originInfo[@eventType='creation']/mods:dateOther[@type='accepted'][@encoding='w3cdtf']" label="mir.date.acceptedHabil" help-text="{i18n:mir.help.date.acceptedHabil}"
       placeholder="{i18n:mir.placeholder.date}" />
   </xed:template>
 
   <xed:template id="date.submitted">
-    <mir:textfield xpath="mods:originInfo/mods:dateOther[@type='submitted'][@encoding='w3cdtf']" label="mir.date.submitted" help-text="{i18n:mir.help.date.submitted}"
+    <mir:textfield xpath="mods:originInfo[@eventType='creation']/mods:dateOther[@type='submitted'][@encoding='w3cdtf']" label="mir.date.submitted" help-text="{i18n:mir.help.date.submitted}"
       placeholder="{i18n:mir.placeholder.date}" />
   </xed:template>
 
@@ -420,7 +420,7 @@
   </xed:template>
 
   <xed:template id="date.created">
-    <mir:textfield xpath="mods:originInfo/mods:dateCreated[@encoding='w3cdtf']" label="mir.date.created" help-text="{i18n:mir.help.date.created}"
+    <mir:textfield xpath="mods:originInfo[@eventType='creation']/mods:dateCreated[@encoding='w3cdtf']" label="mir.date.created" help-text="{i18n:mir.help.date.created}"
       class="required" placeholder="{i18n:mir.placeholder.date}" />
   </xed:template>
 
@@ -677,23 +677,23 @@
   </xed:template>
 
   <xed:template id="place">
-    <mir:textfield xpath="mods:originInfo/mods:place/mods:placeTerm[@type='text']" label="mir.place" help-text="{i18n:mir.help.place}" />
+    <mir:textfield xpath="mods:originInfo[@eventType='publication']/mods:place/mods:placeTerm[@type='text']" label="mir.place" help-text="{i18n:mir.help.place}" />
   </xed:template>
 
   <xed:template id="country">
-    <mir:textfield xpath="mods:originInfo/mods:place/mods:placeTerm[@type='text']" label="mir.place.country" help-text="{i18n:mir.help.place.country}" />
+    <mir:textfield xpath="mods:originInfo[@eventType='publication']/mods:place/mods:placeTerm[@type='text']" label="mir.place.country" help-text="{i18n:mir.help.place.country}" />
   </xed:template>
 
   <xed:template id="publisher">
-    <mir:textfield xpath="mods:originInfo/mods:publisher" label="mir.publisher" help-text="{i18n:mir.help.publisher}" />
+    <mir:textfield xpath="mods:originInfo[@eventType='publication']/mods:publisher" label="mir.publisher" help-text="{i18n:mir.help.publisher}" />
   </xed:template>
 
   <xed:template id="station">
-    <mir:textfield xpath="mods:originInfo/mods:publisher" label="mir.publisher.station" help-text="{i18n:mir.help.publisher.station}" />
+    <mir:textfield xpath="mods:originInfo[@eventType='publication']/mods:publisher" label="mir.publisher.station" help-text="{i18n:mir.help.publisher.station}" />
   </xed:template>
 
   <xed:template id="edition">
-    <mir:textfield xpath="mods:originInfo/mods:edition" label="mir.edition" help-text="{i18n:mir.help.edition}" placeholder="{i18n:mir.placeholder.edition}" />
+    <mir:textfield xpath="mods:originInfo[@eventType='publication']/mods:edition" label="mir.edition" help-text="{i18n:mir.help.edition}" placeholder="{i18n:mir.placeholder.edition}" />
   </xed:template>
 
   <xed:template id="extent">
@@ -1263,7 +1263,7 @@
             required="true" i18n="mir.validation.author" display="global" />
         </xed:otherwise>
       </xed:choose>
-      <xed:validate xpath="//mods:originInfo/mods:dateIssued[@encoding='w3cdtf']" required="true" i18n="mir.validation.dateIssued" display="global" />
+      <xed:validate xpath="//mods:originInfo[@eventType='publication']/mods:dateIssued[@encoding='w3cdtf']" required="true" i18n="mir.validation.dateIssued" display="global" />
       <xed:validate xpath="//mods:mods/mods:accessCondition[@type='use and reproduction']" required="true" i18n="mir.validation.rights" display="global" />
     </xed:if>
 
@@ -1294,5 +1294,7 @@
     <script src="{$WebApplicationBaseURL}assets/jquery/plugins/bootstrap3-typeahead/bootstrap3-typeahead.js" type="text/javascript"></script>
     <script src="{$WebApplicationBaseURL}js/mir/relatedItem-autocomplete.js" type="text/javascript"></script>
   </xed:template>
+  
+  
 
 </xed:template>
