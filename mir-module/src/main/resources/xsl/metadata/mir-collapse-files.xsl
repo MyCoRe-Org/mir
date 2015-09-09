@@ -8,7 +8,7 @@
   <xsl:template match="/">
 
     <xsl:choose>
-      <xsl:when test="key('rights', mycoreobject/@ID)/@view or key('rights', mycoreobject/structure/derobjects/derobject/@xlink:href)/@accKeyEnabled">
+      <xsl:when test="key('rights', mycoreobject/@ID)/@read or key('rights', mycoreobject/structure/derobjects/derobject/@xlink:href)/@accKeyEnabled">
 
         <xsl:variable name="objID" select="mycoreobject/@ID" />
         <div id="mir-collapse-files">
