@@ -42,7 +42,7 @@ import org.mycore.mir.wizard.utils.MIRWizardUnzip;
  */
 public class MIRWizardSolr extends MIRWizardCommand {
     private static final Logger LOGGER = Logger.getLogger(MIRWizardSolr.class);
-    
+
     public MIRWizardSolr() {
         this("solr");
     }
@@ -96,7 +96,7 @@ public class MIRWizardSolr extends MIRWizardCommand {
 
                     final String confDir = dataDir + File.separator + "solr" + File.separator + "collection1"
                             + File.separator + "conf";
-                    final String[] confs = { "schema.xml", "solrconfig.xml" };
+                    final String[] confs = { "schema.xml", "solrconfig.xml", "mapping.txt" };
                     for (String name : confs) {
                         LOGGER.info("copy file \"" + name + "\" to \"" + confDir + "\"...");
                         file = new File(confDir + File.separator + name);
@@ -116,5 +116,5 @@ public class MIRWizardSolr extends MIRWizardCommand {
     protected void postExecute() {
         result.setResult(getLogs());
     }
-    
+
 }
