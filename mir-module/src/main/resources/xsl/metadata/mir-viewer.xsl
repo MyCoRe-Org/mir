@@ -12,34 +12,36 @@
   <xsl:param name="UserAgent" />
 
   <xsl:template match="/">
-    <!-- TODO: only checks first derivate, fix this -->
-    <xsl:variable name="derId" select="mycoreobject/structure/derobjects/derobject/@xlink:href"/>
-    <xsl:variable name="derivateXML" select="document(concat('mcrobject:',$derId))"/>
-    <xsl:variable name="mainFile" select="$derivateXML/mycorederivate/derivate/internals/internal/@maindoc"/>
-    <xsl:variable name="fileNameExtension" select="FilenameUtils:getExtension($mainFile)"/>
+    <xsl:if test="mycoreobject/structure/derobjects/derobject">
+      <!-- TODO: only checks first derivate, fix this -->
+      <xsl:variable name="derId" select="mycoreobject/structure/derobjects/derobject/@xlink:href"/>
+      <xsl:variable name="derivateXML" select="document(concat('mcrobject:',$derId))"/>
+      <xsl:variable name="mainFile" select="$derivateXML/mycorederivate/derivate/internals/internal/@maindoc"/>
+      <xsl:variable name="fileNameExtension" select="FilenameUtils:getExtension($mainFile)"/>
 
-    <xsl:if test="key('rights', $derId)/@read and (iview2:getSupportedMainFile($derId) or $fileNameExtension = 'pdf' and not(mcrxsl:isMobileDevice($UserAgent)))">
-      <div id="mir-viewer">
-        <xsl:variable name="viewerNodesTmp">
-          <div class="row">
-            <div class="col-md-12">
-              <h3 class="mir-viewer">Vorschau</h3>
-              <!-- show one viewer for each derivate -->
-              <xsl:for-each select="mycoreobject/structure/derobjects/derobject[key('rights', @xlink:href)/@read]">
-                <xsl:call-template name="createViewer"/>
-              </xsl:for-each>
+      <xsl:if test="key('rights', $derId)/@read and (iview2:getSupportedMainFile($derId) or $fileNameExtension = 'pdf' and not(mcrxsl:isMobileDevice($UserAgent)))">
+        <div id="mir-viewer">
+          <xsl:variable name="viewerNodesTmp">
+            <div class="row">
+              <div class="col-md-12">
+                <h3 class="mir-viewer">Vorschau</h3>
+                <!-- show one viewer for each derivate -->
+                <xsl:for-each select="mycoreobject/structure/derobjects/derobject[key('rights', @xlink:href)/@read]">
+                  <xsl:call-template name="createViewer"/>
+                </xsl:for-each>
+              </div>
             </div>
-          </div>
-        </xsl:variable>
+          </xsl:variable>
 
-        <xsl:variable name="viewerNodes" select="xalan:nodeset($viewerNodesTmp)"/>
+          <xsl:variable name="viewerNodes" select="xalan:nodeset($viewerNodesTmp)"/>
 
-        <xsl:call-template name="addScripts">
-          <xsl:with-param name="generatedNodes" select="$viewerNodes"/>
-        </xsl:call-template>
+          <xsl:call-template name="addScripts">
+            <xsl:with-param name="generatedNodes" select="$viewerNodes"/>
+          </xsl:call-template>
 
-        <xsl:copy-of select="$viewerNodes"/>
-      </div>
+          <xsl:copy-of select="$viewerNodes"/>
+        </div>
+      </xsl:if>
     </xsl:if>
     <xsl:apply-imports/>
   </xsl:template>
