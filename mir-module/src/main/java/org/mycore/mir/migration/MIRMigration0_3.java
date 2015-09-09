@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.TreeSet;
 
 import org.apache.log4j.Logger;
+import org.mycore.datamodel.common.MCRXMLMetadataManager;
 import org.mycore.datamodel.classifications2.MCRCategLinkServiceFactory;
 import org.mycore.datamodel.classifications2.MCRCategory;
 import org.mycore.datamodel.classifications2.MCRCategoryDAOFactory;
@@ -51,6 +52,23 @@ public class MIRMigration0_3 {
             cmds.add("xslt " + id + " with file " + styleFile.toString());
         }
         cmds.add("delete classification mir_status");
+        return cmds;
+    }
+    
+    @MCRCommand(
+            syntax = "migrate mods originInfo eventType",
+            help = "migrates all objects with originInfo without enventType to eventType \"publish\".")
+    public static List<String> updateOriginInfo() {
+        URL styleFile = MIRMigration0_3.class.getResource("/xsl/mycoreobject-migrate-origininfo.xsl");
+        if (styleFile == null) {
+            LOGGER.error("Could not find migration stylesheet. File a bug!");
+            return null;
+        }
+        TreeSet<String> ids = new TreeSet<>(MCRXMLMetadataManager.instance().listIDsOfType("mods"));
+        ArrayList<String> cmds = new ArrayList<>(ids.size());
+        for (String id : ids) {
+        	cmds.add("xslt " + id + " with file " + styleFile.toString());
+        }
         return cmds;
     }
 
