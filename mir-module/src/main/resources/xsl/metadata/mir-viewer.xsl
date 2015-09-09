@@ -13,7 +13,12 @@
 
   <xsl:template match="/">
     <!-- TODO: only checks first derivate, fix this -->
-    <xsl:if test="mycoreobject/structure/derobjects/derobject[key('rights', @xlink:href)/@read] and iview2:getSupportedMainFile(mycoreobject/structure/derobjects/derobject/@xlink:href)">
+    <xsl:variable name="derId" select="mycoreobject/structure/derobjects/derobject/@xlink:href"/>
+    <xsl:variable name="derivateXML" select="document(concat('mcrobject:',$derId))"/>
+    <xsl:variable name="mainFile" select="$derivateXML/mycorederivate/derivate/internals/internal/@maindoc"/>
+    <xsl:variable name="fileNameExtension" select="FilenameUtils:getExtension($mainFile)"/>
+
+    <xsl:if test="key('rights', $derId)/@read and (iview2:getSupportedMainFile($derId) or $fileNameExtension = 'pdf' and not(mcrxsl:isMobileDevice($UserAgent)))">
       <div id="mir-viewer">
         <xsl:variable name="viewerNodesTmp">
           <div class="row">
@@ -46,6 +51,7 @@
 
     <xsl:variable name="mainFile" select="$derivateXML/mycorederivate/derivate/internals/internal/@maindoc"/>
     <xsl:variable name="fileNameExtension" select="FilenameUtils:getExtension($mainFile)"/>
+
     <xsl:choose>
       <xsl:when test="iview2:getSupportedMainFile($derId)">
         <!-- The file will be displayed with mets -->
