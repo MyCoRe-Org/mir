@@ -724,11 +724,11 @@
               <xsl:value-of select="i18n:translate(concat('component.mods.genre.',$mods-type))" />
             </span>
           </div>
-          <xsl:if test="mods:originInfo/mods:dateIssued">
+          <xsl:if test="mods:originInfo[not(@eventType) or @eventType='publication']/mods:dateIssued">
             <div class="hit_date">
               <span class="label label-primary">
                 <xsl:variable name="dateIssued">
-                  <xsl:apply-templates mode="mods.datePublished" select="mods:originInfo/mods:dateIssued" />
+                  <xsl:apply-templates mode="mods.datePublished" select="mods:originInfo[not(@eventType) or @eventType='publication']/mods:dateIssued" />
                 </xsl:variable>
                 <xsl:variable name="format">
                   <xsl:choose>
@@ -793,10 +793,19 @@
       </div>
 
 <!-- hit publisher -->
-      <xsl:if test="//mods:originInfo/mods:publisher">
+      <xsl:if test="//mods:originInfo[not(@eventType) or @eventType='publication']/mods:publisher">
         <div class="hit_pub_name">
           <span class="label_publisher">
             <xsl:value-of select="concat(i18n:translate('component.mods.metaData.dictionary.published'),': ')" />
+          </span>
+          <xsl:value-of select="//mods:originInfo/mods:publisher" />
+        </div>
+      </xsl:if>
+      
+      <xsl:if test="//mods:originInfo[@eventType='creation']/mods:publisher">
+        <div class="hit_pub_name">
+          <span class="label_publisher">
+            <xsl:value-of select="concat(i18n:translate('component.mods.metaData.dictionary.created'),': ')" />
           </span>
           <xsl:value-of select="//mods:originInfo/mods:publisher" />
         </div>
