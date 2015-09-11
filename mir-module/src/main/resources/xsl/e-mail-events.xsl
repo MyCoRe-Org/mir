@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:mcrmods="xalan://org.mycore.mods.classification.MCRMODSClassificationSupport"
   xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:acl="xalan://org.mycore.access.MCRAccessManager"
-  xmlns:mods="http://www.loc.gov/mods/v3" exclude-result-prefixes="acl mcrxsl mcrmods mods xlink">
+  xmlns:mods="http://www.loc.gov/mods/v3" xmlns:str="http://exslt.org/strings" exclude-result-prefixes="acl mcrxsl mcrmods mods xlink str">
   <xsl:param name="action" />
   <xsl:param name="CurrentUser" />
   <xsl:param name="DefaultLang" />
