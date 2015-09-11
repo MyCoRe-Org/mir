@@ -29,6 +29,7 @@
         </xsl:comment>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link href="{$WebApplicationBaseURL}assets/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+        <link href="{$WebApplicationBaseURL}assets/bootstrap3-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
         <script type="text/javascript" src="{$WebApplicationBaseURL}mir-layout/assets/jquery/jquery.min.js"></script>
         <script type="text/javascript" src="{$WebApplicationBaseURL}mir-layout/assets/jquery/plugins/jquery-migrate/jquery-migrate.min.js"></script>
         <xsl:copy-of select="head/*" />
@@ -138,6 +139,8 @@
         </script>
         <script type="text/javascript" src="{$WebApplicationBaseURL}assets/bootstrap/js/bootstrap.min.js"></script>
         <script type="text/javascript" src="{$WebApplicationBaseURL}assets/jquery/plugins/jquery-confirm/jquery.confirm.min.js"></script>
+        <script type="text/javascript" src="{$WebApplicationBaseURL}assets/moment/moment-with-locales.min.js"></script>
+        <script type="text/javascript" src="{$WebApplicationBaseURL}assets/bootstrap3-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
         <script type="text/javascript" src="{$WebApplicationBaseURL}js/mir/base.js"></script>
         <script>
           $( document ).ready(function() {

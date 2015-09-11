@@ -394,34 +394,75 @@
     <mir:textfield xpath="mods:originInfo[@eventType='publication']/mods:dateIssued[@encoding='w3cdtf']" label="mir.date.issued.10" help-text="{i18n:mir.help.date.issued.10}"
       class="required" placeholder="{i18n:mir.placeholder.date}" />
   </xed:template>
+  
+  <xed:template id="date.issued.datetimepicker">
+    <mir:textfield xpath="mods:originInfo[@eventType='publication']/mods:dateIssued[@encoding='w3cdtf']" label="mir.date.issued.10" help-text="{i18n:mir.help.date.issued.10}"
+      class="required datetimepicker" placeholder="{i18n:mir.placeholder.date}" />
+  </xed:template>
 
   <xed:template id="date.broadcasted">
     <mir:textfield xpath="mods:originInfo[@eventType='publication']/mods:dateIssued[@encoding='w3cdtf']" label="mir.date.broadcasted" help-text="{i18n:mir.help.date.broadcasted}"
       placeholder="{i18n:mir.placeholder.date}" />
+  </xed:template>
+  
+  <xed:template id="date.broadcasted.datetimepicker">
+    <mir:textfield xpath="mods:originInfo[@eventType='publication']/mods:dateIssued[@encoding='w3cdtf']" label="mir.date.broadcasted" help-text="{i18n:mir.help.date.broadcasted}"
+      class="datetimepicker" placeholder="{i18n:mir.placeholder.date}" />
   </xed:template>
 
   <xed:template id="date.accepted">
     <mir:textfield xpath="mods:originInfo[@eventType='creation']/mods:dateOther[@type='accepted'][@encoding='w3cdtf']" label="mir.date.accepted" help-text="{i18n:mir.help.date.accepted}"
       placeholder="{i18n:mir.placeholder.date}" />
   </xed:template>
+  
+  <xed:template id="date.accepted.datetimepicker">
+    <mir:textfield xpath="mods:originInfo[@eventType='creation']/mods:dateOther[@type='accepted'][@encoding='w3cdtf']" label="mir.date.accepted" help-text="{i18n:mir.help.date.accepted}"
+      class="datetimepicker" placeholder="{i18n:mir.placeholder.date}" />
+  </xed:template>
 
   <xed:template id="date.acceptedHabil">
     <mir:textfield xpath="mods:originInfo[@eventType='creation']/mods:dateOther[@type='accepted'][@encoding='w3cdtf']" label="mir.date.acceptedHabil" help-text="{i18n:mir.help.date.acceptedHabil}"
       placeholder="{i18n:mir.placeholder.date}" />
+  </xed:template>
+  
+  <xed:template id="date.acceptedHabil.datetimepicker">
+    <mir:textfield xpath="mods:originInfo[@eventType='creation']/mods:dateOther[@type='accepted'][@encoding='w3cdtf']" label="mir.date.acceptedHabil" help-text="{i18n:mir.help.date.acceptedHabil}"
+      class="datetimepicker" placeholder="{i18n:mir.placeholder.date}" />
+  </xed:template>
+  
+  <xed:template id="date.acceptedOtherThesis">
+    <mir:textfield xpath="mods:originInfo[@eventType='creation']/mods:dateOther[@type='accepted'][@encoding='w3cdtf']" label="mir.date.acceptedOthertheis" help-text="{i18n:mir.help.date.accepted}"
+      class="datetimepicker" placeholder="{i18n:mir.placeholder.date}" />
   </xed:template>
 
   <xed:template id="date.submitted">
     <mir:textfield xpath="mods:originInfo[@eventType='creation']/mods:dateOther[@type='submitted'][@encoding='w3cdtf']" label="mir.date.submitted" help-text="{i18n:mir.help.date.submitted}"
       placeholder="{i18n:mir.placeholder.date}" />
   </xed:template>
+  
+  <xed:template id="date.submitted.datetimepicker">
+    <mir:textfield xpath="mods:originInfo[@eventType='creation']/mods:dateOther[@type='submitted'][@encoding='w3cdtf']" label="mir.date.submitted" help-text="{i18n:mir.help.date.submitted}"
+      class="datetimepicker" placeholder="{i18n:mir.placeholder.date}" />
+  </xed:template>
 
   <xed:template id="part.date">
-    <mir:textfield xpath="mods:part/mods:date[@encoding='w3cdtf']" label="mir.host.date" help-text="{i18n:mir.help.host.date}" placeholder="{i18n:mir.placeholder.date}" />
+    <mir:textfield xpath="mods:part/mods:date[@encoding='w3cdtf']" label="mir.host.date" help-text="{i18n:mir.help.host.date}"
+      placeholder="{i18n:mir.placeholder.date}" />
+  </xed:template>
+  
+  <xed:template id="part.date.datetimepicker">
+    <mir:textfield xpath="mods:part/mods:date[@encoding='w3cdtf']" label="mir.host.date" help-text="{i18n:mir.help.host.date}"
+      class="datetimepicker" placeholder="{i18n:mir.placeholder.date}" />
   </xed:template>
 
   <xed:template id="date.created">
     <mir:textfield xpath="mods:originInfo[@eventType='creation']/mods:dateCreated[@encoding='w3cdtf']" label="mir.date.created" help-text="{i18n:mir.help.date.created}"
       class="required" placeholder="{i18n:mir.placeholder.date}" />
+  </xed:template>
+  
+  <xed:template id="date.created.datetimepicker">
+    <mir:textfield xpath="mods:originInfo[@eventType='creation']/mods:dateCreated[@encoding='w3cdtf']" label="mir.date.created" help-text="{i18n:mir.help.date.created}"
+      class="required datetimepicker" placeholder="{i18n:mir.placeholder.date}" />
   </xed:template>
 
   <xed:template id="identifier.patent">

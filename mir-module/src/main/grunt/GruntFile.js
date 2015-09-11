@@ -32,6 +32,11 @@ module.exports = function(grunt) {
 					'jquery/plugins/typeahead' : 'typeahead.js/dist/*.js',
 					'jquery/plugins/bootstrap3-typeahead' : 'bootstrap3-typeahead/bootstrap*.js',
 					'jquery/plugins/shariff' : 'shariff/build',
+					
+					'bootstrap3-datetimepicker/js':'bootstrap3-datetimepicker/build/js',
+					'bootstrap3-datetimepicker/css':'bootstrap3-datetimepicker/build/css',
+					
+					'moment' : 'moment/min'
 				},
 			}
 		}

@@ -21,6 +21,7 @@
     "jquery-confirm": "2.5.0",
     "jquery.placeholder" : "0.2.4",
     "typeahead.js": "0.11.1",
-    "shariff": "1.16.0"
+    "shariff": "1.16.0",
+    "bootstrap3-datetimepicker" : "4.15.35"
   }
 }

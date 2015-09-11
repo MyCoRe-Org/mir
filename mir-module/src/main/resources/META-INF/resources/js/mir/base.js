@@ -104,6 +104,15 @@
     $('[data-toggle=collapse-next]').click(function() {
       $(this).next().collapse('toggle');
     });
+    
+    // Enables the datetimepicker
+    $(function () {
+      $('.datetimepicker').find('input').datetimepicker({
+        locale: 'de',
+        format: 'YYYY-MM-DD',
+        extraFormats: [ 'YYYY','YYYY-MM', 'YYYY-MM-DD' ]
+      });
+    });
 
   }); // END $﻿(document).ready()
 
