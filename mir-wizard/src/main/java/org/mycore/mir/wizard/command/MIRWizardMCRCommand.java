@@ -105,10 +105,4 @@ public class MIRWizardMCRCommand extends MIRWizardCommand {
             this.result.setSuccess(false);
         }
     }
-
-    @Override
-    protected void postExecute() {
-        result.setResult(resultMsg + "n" + getLogs());
-    }
-
 }

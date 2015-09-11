@@ -111,10 +111,4 @@ public class MIRWizardSolr extends MIRWizardCommand {
             }
         }
     }
-
-    @Override
-    protected void postExecute() {
-        result.setResult(getLogs());
-    }
-
 }

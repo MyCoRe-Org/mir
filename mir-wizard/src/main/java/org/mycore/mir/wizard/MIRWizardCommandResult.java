@@ -22,12 +22,28 @@
  */
 package org.mycore.mir.wizard;
 
+import java.io.IOException;
+import java.io.Serializable;
+import java.io.StringWriter;
+import java.io.UncheckedIOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.core.Filter;
+import org.apache.logging.log4j.core.Layout;
+import org.apache.logging.log4j.core.LogEvent;
+import org.apache.logging.log4j.core.Logger;
+import org.apache.logging.log4j.core.appender.AbstractAppender;
+import org.apache.logging.log4j.core.filter.ThresholdFilter;
+import org.apache.logging.log4j.core.layout.PatternLayout;
 import org.jdom2.Element;
 
 public class MIRWizardCommandResult {
+
+    private final static Logger ROOT_LOGGER = (Logger) LogManager.getRootLogger();
+
     private String name;
 
     private boolean success;
@@ -35,6 +51,8 @@ public class MIRWizardCommandResult {
     private Map<String, String> attributes = new HashMap<String, String>();
 
     private Element result;
+
+    private CommandLogAppender logAppender;
 
     public MIRWizardCommandResult(String name) {
         this.name = name;
@@ -85,7 +103,7 @@ public class MIRWizardCommandResult {
     }
 
     public Element toElement() {
-        Element res = new Element(name);
+        final Element res = new Element(name);
         res.setAttribute("success", Boolean.toString(success));
         for (String key : attributes.keySet()) {
             res.setAttribute(key, getAttribute(key));
@@ -93,7 +111,73 @@ public class MIRWizardCommandResult {
 
         if (result != null)
             res.addContent(result);
+        else {
+            res.addContent(logAppender.getLogs());
+        }
 
         return res;
+    }
+
+    protected void startLogging() {
+        logAppender = new CommandLogAppender(name, getAppenderLogFilter(), getAppenderLogLayout());
+        logAppender.start();
+        
+        ROOT_LOGGER.addAppender(logAppender);
+    }
+
+    protected void stopLogging() {
+        logAppender.stop();
+        
+        ROOT_LOGGER.removeAppender(logAppender);
+    }
+
+    private Filter getAppenderLogFilter() {
+        return ThresholdFilter.createFilter(Level.INFO, null, null);
+    }
+
+    protected Layout<String> getAppenderLogLayout() {
+        return PatternLayout.newBuilder().withNoConsoleNoAnsi(true).withPattern("%d{ISO8601} %p - %m%n%throwable")
+                .build();
+    }
+
+    @SuppressWarnings("serial")
+    private static class CommandLogAppender extends AbstractAppender {
+
+        private StringWriter writer;
+
+        private String logs;
+
+        protected CommandLogAppender(final String name, final Filter filter,
+                final Layout<? extends Serializable> layout) {
+            super(name, filter, layout);
+        }
+
+        @Override
+        public void append(LogEvent event) {
+            writer.write(this.getLayout().toSerializable(event).toString());
+        }
+
+        @Override
+        public void start() {
+            super.start();
+            writer = new StringWriter();
+            logs = null;
+        }
+
+        @Override
+        public void stop() {
+            super.stop();
+            try {
+                writer.close();
+                this.logs = writer.toString();
+            } catch (IOException e) {
+                throw new UncheckedIOException(null, e);
+            }
+        }
+
+        public String getLogs() {
+            return logs;
+        }
+
     }
 }

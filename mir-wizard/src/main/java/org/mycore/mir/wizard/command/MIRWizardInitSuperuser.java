@@ -45,12 +45,12 @@ public class MIRWizardInitSuperuser extends MIRWizardCommand {
         try {
             Session session = MCRHIBConnection.instance().getSession();
             Transaction transaction = session.beginTransaction();
-            
+
             List<String> users = MCRUserCommands.initSuperuser();
-            
+
             transaction.commit();
             session.close();
-            
+
             if (users != null && users.size() != 0) {
                 this.result.setSuccess(true);
             } else {
@@ -61,10 +61,4 @@ public class MIRWizardInitSuperuser extends MIRWizardCommand {
             this.result.setResult(ex.getMessage());
         }
     }
-
-    @Override
-    protected void postExecute() {
-        result.setResult(getLogs());
-    }
-    
 }
