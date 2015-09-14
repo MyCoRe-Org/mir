@@ -1294,7 +1294,8 @@
     <!-- don't validate author, date issued and rights for journal etc.  -->
     <xed:if test="//mods:mods/mods:genre[@valueURIxEditor!='journal'][@valueURIxEditor!='series']">
       <xed:choose>
-        <xed:when test="//mods:mods/mods:genre[@valueURIxEditor='collection' or @valueURIxEditor='proceedings']">
+        <xed:when test="//mods:mods/mods:genre[@valueURIxEditor='collection' or @valueURIxEditor='proceedings'] 
+            or //mods:mods/mods:genre[@valueURIxEditor='lexicon' or //mods:mods/mods:genre[@valueURIxEditor='festschrift'">
           <!-- "required" checks if there is such an element which has text content, so we must validate mods:displayForm for the moment-->
           <xed:validate xpath="//mods:mods/mods:name[mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']='edt']/mods:displayForm"
             required="true" i18n="mir.validation.editor" display="global" />
