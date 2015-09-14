@@ -20,8 +20,7 @@
               </h3>
             </div>
             <div class="panel-body">
-              <xed:repeat xpath="boolean[@operator='and']">
-                <div class="well col-md-10">
+              <div class="col-md-10">
                   <xed:repeat xpath="condition[contains(',mods.title,mods.author,mods.name,allMeta,', concat(',',@field,','))]" method="clone">
             <!-- Title -->
                     <div class="form-group">
@@ -55,11 +54,6 @@
                             <option value="phrase">
                               <xed:output i18n="editor.search.phrase" />
                             </option>
-                            <option value="=">=</option>
-                            <option value="&gt;">&gt;</option>
-                            <option value="&gt;=">&gt;=</option>
-                            <option value="&lt;">&lt;</option>
-                            <option value="&lt;=">&lt;=</option>
                           </select>
                         </xed:bind>
                       </div>
@@ -116,39 +110,15 @@
             <!-- Volltext -->
                   <div class="form-group">
                     <div class="col-md-offset-3 col-md-9">
-                      <xed:bind xpath="condition[@field='hasFiles']/@value" default="false">
+                    <xed:bind xpath="condition[@field='derCount'][@value='0']/@operator" default="&gt;=">
                         <label class="checkbox-inline">
-                          <input type="checkbox" value="true" />
+                        <input type="checkbox" value="&gt;" />
                           <xed:output i18n="editor.search.mir.hasFiles" />
                         </label>
                       </xed:bind>
                     </div>
                   </div>
                 </div>
-                <div class="btn-group col-md-2">
-                  <xed:controls>insert remove</xed:controls>
-                </div>
-              </xed:repeat>
-              <div class="form-group">
-                <div class="col-md-offset-3 col-md-9">
-                  <label for="Connect1" class="col-md-6" style="padding-left:0">
-                    <xed:output i18n="editor.search.connect" />
-                  </label>
-                  <div class="col-md-3">
-                    <xed:bind xpath="@operator" default="and">
-                      <select id="Connect1" class="form-control">
-                        <option value="and">
-                          <xed:output i18n="editor.search.and" />
-                        </option>
-                        <option value="or">
-                          <xed:output i18n="editor.search.or" />
-                        </option>
-                      </select>
-                    </xed:bind>
-                  </div>
-
-                </div>
-              </div>
             </div>
             <!-- submit -->
             <div class="panel-footer clearfix">
