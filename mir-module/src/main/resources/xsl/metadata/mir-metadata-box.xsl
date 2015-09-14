@@ -4,6 +4,9 @@
   <xsl:import href="xslImport:modsmeta:metadata/mir-metadata-box.xsl" />
   <xsl:include href="modsmetadata.xsl" />
   <!-- copied from http://www.loc.gov/standards/mods/v3/MODS3-4_HTML_XSLT1-0.xsl -->
+
+  <xsl:key use="@type" name="title-by-type" match="//mods:mods/mods:titleInfo" />
+
   <xsl:template match="/">
     <xsl:variable name="mods" select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods" />
     <!-- $mods-type contains genre -->
@@ -17,7 +20,8 @@
        -->
         <table class="mir-metadata">
 
-            <xsl:for-each select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:titleInfo[@type]">
+            <xsl:for-each select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:titleInfo[@type and
+                                  count(. | key('title-by-type',@type)[1])=1]">
               <tr>
                 <td valign="top" class="metaname">
                   <xsl:value-of select="i18n:translate('component.mods.metaData.dictionary.title')" />
@@ -30,10 +34,16 @@
                   <xsl:text>):</xsl:text>
                 </td>
                 <td class="metavalue">
-                  <xsl:apply-templates select="//mods:mods" mode="mods.title">
-                    <xsl:with-param name="type" select="@type" />
-                    <xsl:with-param name="withSubtitle" select="true()" />
-                  </xsl:apply-templates>
+                  <xsl:for-each select="key('title-by-type',@type)">
+                    <xsl:if test="position()!=1">
+                      <br />
+                    </xsl:if>
+                    <xsl:apply-templates select="//mods:mods" mode="mods.title">
+                      <xsl:with-param name="type" select="@type" />
+                      <xsl:with-param name="withSubtitle" select="true()" />
+                      <xsl:with-param name="position" select="position()" />
+                    </xsl:apply-templates>
+                  </xsl:for-each>
                 </td>
               </tr>
             </xsl:for-each>
