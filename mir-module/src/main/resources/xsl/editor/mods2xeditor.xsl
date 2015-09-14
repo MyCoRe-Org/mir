@@ -64,18 +64,6 @@
     </xsl:copy>
   </xsl:template>
 
-  <xsl:template match="mods:originInfo/mods:dateIssued">
-    <xsl:copy>
-      <xsl:apply-templates select="@*" />
-      <xsl:if test="not(@encoding)">
-        <xsl:attribute name="encoding">
-          <xsl:value-of select="'w3cdtf'" />
-        </xsl:attribute>
-      </xsl:if>
-      <xsl:value-of select="." />
-    </xsl:copy>
-  </xsl:template>
-
   <!-- Remove this mods:classification entry, will be created again while saving using mods:accessCondtition (see MIR-161) -->
   <xsl:template match="mods:classification[@authority='accessRestriction']">
     <!-- do nothing -->
