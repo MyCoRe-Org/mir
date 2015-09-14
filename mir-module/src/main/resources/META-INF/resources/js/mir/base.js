@@ -104,7 +104,7 @@
     $('[data-toggle=collapse-next]').click(function() {
       $(this).next().collapse('toggle');
     });
-    
+
     // Enables the datetimepicker
     $(function () {
       $('.datetimepicker').find('input').datetimepicker({
@@ -129,7 +129,8 @@
   $(document).popover({
     selector : "[data-toggle=popover]",
     container : "body",
-    html : "true"
+    html : "true",
+    trigger: "focus"
   });
 
 })(jQuery);

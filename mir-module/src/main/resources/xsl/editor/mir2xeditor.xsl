@@ -7,9 +7,9 @@
   <xsl:include href="copynodes.xsl" />
 
   <xsl:template name="mir-helpbutton">
-    <span class="btn btn-default info-button" data-toggle="popover" data-placement="right" data-content="{@help-text}">
+    <a tabindex="0" class="btn btn-default info-button" role="button" data-toggle="popover" data-placement="right" data-content="{@help-text}">
       <i class="fa fa-info"></i>
-    </span>
+    </a>
   </xsl:template>
 
   <xsl:template match="mir:textfield.nobind">
