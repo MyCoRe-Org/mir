@@ -140,7 +140,7 @@
           </div>
 <!-- system -->
           <xsl:if test="not(mcrxsl:isCurrentUserGuestUser())">
-            <div id="mir_admindata_panel"class="panel panel-default system">
+            <div id="mir_admindata_panel" class="panel panel-default system">
               <div class="panel-heading">
                 <h3 class="panel-title">
                   <xsl:value-of select="i18n:translate('component.mods.metaData.dictionary.systembox')" />
