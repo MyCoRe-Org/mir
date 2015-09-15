@@ -13,4 +13,7 @@
       </boolean>
     </boolean>
   </conditions>
+  <sortBy>
+    <field name="mods.dateIssued" order="descending" />
+  </sortBy>
 </query>

@@ -14,7 +14,4 @@
       <condition field="objectType" operator="=" value="mods" />
     </boolean>
   </conditions>
-  <sortBy>
-    <field order="ascending" />
-  </sortBy>
 </query>

@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <MyCoReWebPage>
-  <section title="Komplexe Suche über alle Publikationen" xml:lang="de" />
+  <section title="Komplexe Suche über alle Publikationen"
+    xml:lang="de" />
 
-  <section title="Complex search mask for all publications" xml:lang="en" />
+  <section title="Complex search mask for all publications"
+    xml:lang="en" />
 
-  <section xml:lang="all" xmlns:xed="http://www.mycore.de/xeditor" xmlns:mir="http://www.mycore.de/mir">
+  <section xml:lang="all" xmlns:xed="http://www.mycore.de/xeditor"
+    xmlns:mir="http://www.mycore.de/mir">
     <xed:form class="form-horizontal" role="form">
       <xed:cleanup-rule xpath="//condition" relevant-if="string-length(@value)&gt;0" />
       <xed:cleanup-rule xpath="//boolean" relevant-if="boolean|condition" />
@@ -12,122 +15,164 @@
       <xed:source uri="webapp:editor/search/template/complex.xml" />
       <xed:bind xpath="query">
         <xed:bind xpath="@mask" default="content/search/complex.xed" />
-        <xed:bind xpath="conditions/boolean/boolean">
-          <div class="panel panel-default">
-            <div class="panel-heading">
-              <h3 class="panel-title">
-                <xed:output i18n="component.mods.editor.search.label" />
-              </h3>
-            </div>
-            <div class="panel-body">
-              <div class="col-md-10">
-                  <xed:repeat xpath="condition[contains(',mods.title,mods.author,mods.name,allMeta,', concat(',',@field,','))]" method="clone">
-            <!-- Title -->
-                    <div class="form-group">
-                      <div class="col-md-3">
-                        <xed:bind xpath="@field">
-                          <select class="form-control">
-                            <option value="mods.title">
-                              <xed:output i18n="editor.search.mir.title" />
-                            </option>
-                            <option value="mods.author">
-                              <xed:output i18n="editor.search.mir.author" />
-                            </option>
-                            <option value="mods.name">
-                              <xed:output i18n="editor.search.mir.name" />
-                            </option>
-                            <option value="allMeta">
-                              <xed:output i18n="editor.search.mir.metadata" />
-                            </option>
-                          </select>
-                        </xed:bind>
-                      </div>
-                      <div class="col-md-2">
-                        <xed:bind xpath="@operator">
-                          <select class="form-control">
-                            <option value="contains">
-                              <xed:output i18n="editor.search.contains" />
-                            </option>
-                            <option value="like">
-                              <xed:output i18n="editor.search.like" />
-                            </option>
-                            <option value="phrase">
-                              <xed:output i18n="editor.search.phrase" />
-                            </option>
-                          </select>
-                        </xed:bind>
-                      </div>
-                      <div class="col-md-7">
-                        <div class="col-md-8">
-                          <xed:bind xpath="@value">
-                            <input type="text" class="form-control" />
-                          </xed:bind>
-                        </div>
-                        <div class="btn-group col-md-4">
-                          <span class="pull-right">
-                            <xed:controls>insert remove</xed:controls>
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  </xed:repeat>
-            <!-- Identifier -->
-                  <mir:template name="textInput" xpath="condition[@field='id,isbn,mods.identifier']/@value" id="inputIdentifier1" i18n="editor.search.mir.identifier"
-                    tooltip="editor.search.mir.identifier.tooltip" />
-            <!-- Institution -->
-                  <mir:template name="selectInput" xpath="condition[@field='category.top'][1]/@value" id="inputInst1" i18n="editor.search.mir.institute"
-                    tooltip="editor.search.mir.institute.tooltip" uri="xslStyle:items2options:classification:editorComplete:-1:children:mir_institutes" />
-            <!-- DNB Sachgruppe -->
-                  <mir:template name="selectInput" xpath="condition[@field='category.top'][2]/@value" id="inputSDNB1" i18n="editor.search.mir.sdnb"
-                    uri="xslStyle:items2options:classification:editorComplete:-1:children:SDNB" />
-            <!-- Genre -->
-                  <mir:template name="selectInput" xpath="condition[@field='category.top'][3]/@value" id="inputGenre1" i18n="editor.search.mir.genre"
-                    uri="xslStyle:items2options:classification:editorComplete:-1:children:mir_genres" />
-            <!-- Datum -->
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">
+              <xed:output i18n="component.mods.editor.search.label" />
+            </h3>
+          </div>
+          <div class="panel-body">
+            <div class="col-md-10">
+              <xed:bind xpath="conditions/boolean/boolean">
+                <xed:repeat xpath="condition[contains(',mods.title,mods.author,mods.name,allMeta,', concat(',',@field,','))]">
+                  <!-- Title -->
                   <div class="form-group">
-                    <xed:bind xpath="condition[@field='mods.dateIssued']">
-                      <label for="inputDate1" class="col-md-3 control-label">
-                        <xed:output i18n="component.mods.metaData.dictionary.dateIssued" />
-                      </label>
-                      <div class="col-md-2">
-                        <xed:bind xpath="@operator">
-                          <select class="form-control">
-                            <option value="=">=</option>
-                            <option value="&gt;">&gt;</option>
-                            <option value="&gt;=">&gt;=</option>
-                            <option value="&lt;">&lt;</option>
-                            <option value="&lt;=">&lt;=</option>
-                          </select>
-                        </xed:bind>
-                      </div>
-                      <div class="col-md-7">
-                        <xed:bind xpath="@value">
-                          <input type="text" class="form-control" id="inputDate1" placeholder="YYYY-MM-DD" />
-                        </xed:bind>
-                      </div>
-                    </xed:bind>
-                  </div>
-            <!-- Volltext -->
-                  <div class="form-group">
-                    <div class="col-md-offset-3 col-md-9">
-                    <xed:bind xpath="condition[@field='derCount'][@value='0']/@operator" default="&gt;=">
-                        <label class="checkbox-inline">
-                        <input type="checkbox" value="&gt;" />
-                          <xed:output i18n="editor.search.mir.hasFiles" />
-                        </label>
+                    <div class="col-md-3">
+                      <xed:bind xpath="@field">
+                        <select class="form-control">
+                          <option value="mods.title">
+                            <xed:output i18n="editor.search.mir.title" />
+                          </option>
+                          <option value="mods.author">
+                            <xed:output i18n="editor.search.mir.author" />
+                          </option>
+                          <option value="mods.name">
+                            <xed:output i18n="editor.search.mir.name" />
+                          </option>
+                          <option value="allMeta">
+                            <xed:output i18n="editor.search.mir.metadata" />
+                          </option>
+                        </select>
                       </xed:bind>
                     </div>
+                    <div class="col-md-2">
+                      <xed:bind xpath="@operator">
+                        <select class="form-control">
+                          <option value="contains">
+                            <xed:output i18n="editor.search.contains" />
+                          </option>
+                          <option value="like">
+                            <xed:output i18n="editor.search.like" />
+                          </option>
+                          <option value="phrase">
+                            <xed:output i18n="editor.search.phrase" />
+                          </option>
+                        </select>
+                      </xed:bind>
+                    </div>
+                    <div class="col-md-7">
+                      <div class="col-md-8">
+                        <xed:bind xpath="@value">
+                          <input type="text" class="form-control" />
+                        </xed:bind>
+                      </div>
+                      <div class="btn-group col-md-4">
+                        <span class="pull-right">
+                          <xed:controls>insert remove</xed:controls>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </xed:repeat>
+              <!-- Identifier -->
+                <mir:template name="textInput"
+                  xpath="condition[@field='id,isbn,mods.identifier']/@value" id="inputIdentifier1"
+                  i18n="editor.search.mir.identifier" tooltip="editor.search.mir.identifier.tooltip" />
+              <!-- Institution -->
+                <mir:template name="selectInput"
+                  xpath="condition[@field='category.top'][1]/@value" id="inputInst1"
+                  i18n="editor.search.mir.institute" tooltip="editor.search.mir.institute.tooltip"
+                  uri="xslStyle:items2options:classification:editorComplete:-1:children:mir_institutes" />
+              <!-- DNB Sachgruppe -->
+                <mir:template name="selectInput"
+                  xpath="condition[@field='category.top'][2]/@value" id="inputSDNB1"
+                  i18n="editor.search.mir.sdnb" tooltip="editor.search.mir.sdnb.tooltip"
+                  uri="xslStyle:items2options:classification:editorComplete:-1:children:SDNB" />
+              <!-- Genre -->
+                <mir:template name="selectInput"
+                  xpath="condition[@field='category.top'][3]/@value" id="inputGenre1"
+                  i18n="editor.search.mir.genre" tooltip="editor.search.genre.tooltip"
+                  uri="xslStyle:items2options:classification:editorComplete:-1:children:mir_genres" />
+              <!-- Datum -->
+                <div class="form-group">
+                  <xed:bind xpath="condition[@field='mods.dateIssued']">
+                    <label for="inputDate1" class="col-md-3 control-label">
+                      <xed:output i18n="component.mods.metaData.dictionary.dateIssued" />
+                    </label>
+                    <div class="col-md-2">
+                      <xed:bind xpath="@operator">
+                        <select class="form-control">
+                          <option value="=">=</option>
+                          <option value="&gt;">&gt;</option>
+                          <option value="&gt;=">&gt;=</option>
+                          <option value="&lt;">&lt;</option>
+                          <option value="&lt;=">&lt;=</option>
+                        </select>
+                      </xed:bind>
+                    </div>
+                    <div class="col-md-7">
+                      <xed:bind xpath="@value">
+                        <input type="text" class="form-control" id="inputDate1"
+                          placeholder="YYYY-MM-DD" />
+                      </xed:bind>
+                    </div>
+                  </xed:bind>
+                </div>
+              <!-- Volltext -->
+                <div class="form-group">
+                  <div class="col-md-offset-3 col-md-9">
+                    <xed:bind xpath="condition[@field='derCount'][@value='0']/@operator"
+                      default="&gt;=">
+                      <label class="checkbox-inline">
+                        <input type="checkbox" value="&gt;" />
+                        <xed:output i18n="editor.search.mir.hasFiles" />
+                      </label>
+                    </xed:bind>
                   </div>
                 </div>
-            </div>
-            <!-- submit -->
-            <div class="panel-footer clearfix">
-              <div class="pull-right">
-                <mir:template name="submitButton" i18n="editor.search.search" target="servlet_MCRQLSearchServlet" />
-              </div>
+              </xed:bind>
+            <!-- sort -->
+              <xed:bind xpath="sortby/field">
+                <div class="form-group">
+                  <label for="inputSortBy" class="col-md-3 control-label">
+                    <xed:output i18n="editor.search.sortby" />
+                  </label>
+                  <div class="col-md-4">
+                    <xed:bind xpath="@name">
+                      <select class="form-control">
+                        <option value="mods.dateIssued">
+                          <xed:output i18n="component.mods.metaData.dictionary.dateIssued" />
+                        </option>
+                        <option value="score">
+                          <xed:output i18n="editor.search.score" />
+                        </option>
+                      </select>
+                    </xed:bind>
+                  </div>
+                  <div class="col-md-3">
+                    <xed:bind xpath="@order">
+                      <select class="form-control">
+                        <option value="ascending">
+                          <xed:output i18n="editor.search.ascending" />
+                        </option>
+                        <option value="descending">
+                          <xed:output i18n="editor.search.descending" />
+                        </option>
+                      </select>
+                    </xed:bind>
+                  </div>
+                </div>
+              </xed:bind>
             </div>
           </div>
-        </xed:bind>
+        <!-- submit -->
+          <div class="panel-footer clearfix">
+            <div class="pull-right">
+              <mir:template name="submitButton" i18n="editor.search.search"
+                target="servlet_MCRQLSearchServlet" />
+            </div>
+          </div>
+        </div>
       </xed:bind>
     </xed:form>
   </section>
