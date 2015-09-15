@@ -8,7 +8,7 @@
   <!-- put value string (after authority URI) in attribute valueURIxEditor -->
   <xsl:template match="@valueURI">
     <xsl:choose>
-      <xsl:when test="(name(..) = 'mods:name') and (../@type = 'personal' or ../@type = 'corporate')">
+      <xsl:when test="(name(..) = 'mods:name') and (../@type = 'personal' or ../@type = 'corporate') and (starts-with(., 'http://d-nb.info/gnd/') or starts-with(., 'http://www.viaf.org/'))">
         <xsl:choose>
           <xsl:when test="starts-with(., 'http://d-nb.info/gnd/')">
             <xsl:attribute name="valueURIxEditor"><xsl:value-of select="." /></xsl:attribute>
