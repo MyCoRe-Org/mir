@@ -132,7 +132,7 @@
                 </div>
               </xed:bind>
             <!-- sort -->
-              <xed:bind xpath="sortby/field">
+              <xed:bind xpath="sortBy/field">
                 <div class="form-group">
                   <label for="inputSortBy" class="col-md-3 control-label">
                     <xed:output i18n="editor.search.sortby" />
