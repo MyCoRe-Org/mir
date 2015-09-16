@@ -105,7 +105,7 @@
             <xsl:call-template name="printMetaDate.mods">
               <xsl:with-param name="nodes" select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:originInfo/mods:edition" />
             </xsl:call-template>
-            <xsl:apply-templates mode="present" select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:identifier[@type!='open-aire']" />
+            <xsl:apply-templates mode="present" select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:identifier[@type!='open-aire' and @type!='intern']" />
             <xsl:for-each select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:identifier[@type='issn']">
               <xsl:variable name="sherpa_issn" select="." />
               <xsl:for-each select="document(concat('http://www.sherpa.ac.uk/romeo/api29.php?ak=', $MCR.Mods.SherpaRomeo.ApiKey, '&amp;issn=', $sherpa_issn))//publishers/publisher">

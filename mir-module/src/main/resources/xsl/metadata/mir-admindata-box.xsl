@@ -44,7 +44,7 @@
                 <xsl:with-param select="mycoreobject/service/servflags/servflag[@type='modifiedby']" name="nodes" />
                 <xsl:with-param select="i18n:translate('metaData.modifiedBy')" name="label" />
               </xsl:call-template>
-              <!--*** MyCoRe-ID ************************************* -->
+              <!--*** MyCoRe-ID and intern ID *************************** -->
               <tr>
                 <td class="metaname">
                   <xsl:value-of select="concat(i18n:translate('metaData.ID'),':')" />
@@ -53,6 +53,10 @@
                   <xsl:value-of select="mycoreobject/@ID" />
                 </td>
               </tr>
+              <xsl:call-template name="printMetaDate">
+                <xsl:with-param select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:identifier[@type='intern']" name="nodes" />
+                <xsl:with-param select="i18n:translate('component.mods.metaData.dictionary.identifier.intern')" name="label" />
+              </xsl:call-template>
               <!-- tr>
                 <td class="metaname">
                   <xsl:value-of select="concat(i18n:translate('metaData.versions'),' :')" />
