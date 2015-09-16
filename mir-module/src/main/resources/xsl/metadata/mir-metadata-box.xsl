@@ -92,13 +92,13 @@
               <xsl:if test="./metadata/def.modsContainer/modsContainer/mods:mods/mods:relatedItem[@type='series']/@xlink:href">
                 <xsl:call-template name="printMetaDate.mods.relatedItem">
                   <xsl:with-param name="parentID" select="./metadata/def.modsContainer/modsContainer/mods:mods/mods:relatedItem[@type='series']/@xlink:href" />
-                  <xsl:with-param name="label" select="i18n:translate('mir.relatedItem.series')" />
+                  <xsl:with-param name="label" select="i18n:translate('component.mods.metaData.dictionary.articleIn')" />
                 </xsl:call-template>
               </xsl:if>
               <xsl:if test="./metadata/def.modsContainer/modsContainer/mods:mods/mods:relatedItem[@type='series' and not(@xlink:href)]">
                 <xsl:call-template name="printMetaDate.mods">
                   <xsl:with-param name="nodes" select="./metadata/def.modsContainer/modsContainer/mods:mods/mods:relatedItem[@type='series' and not(@xlink:href)]/mods:titleInfo/mods:title" />
-                  <xsl:with-param name="label" select="i18n:translate('mir.relatedItem.series')" />
+                  <xsl:with-param name="label" select="i18n:translate('component.mods.metaData.dictionary.articleIn')" />
                 </xsl:call-template>
               </xsl:if>
             </xsl:for-each>
