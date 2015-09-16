@@ -117,7 +117,7 @@
               </ul>
               <div class="tab-content">
                 <xsl:for-each select="$mods/mods:abstract">
-                  <div class="tab-pane" role="tabpanel" id="tab{position()}">
+                  <div class="tab-pane ellipsis" role="tabpanel" id="tab{position()}">
                     <xsl:if test="position()=1">
                       <xsl:attribute name="class">tab-pane active</xsl:attribute>
                     </xsl:if>
@@ -133,11 +133,13 @@
 
           </xsl:when>
           <xsl:otherwise>
-            <p>
-              <span itemprop="description">
-                <xsl:value-of select="$mods/mods:abstract" />
-              </span>
-            </p>
+            <div class="ellipsis">
+              <p>
+                <span itemprop="description">
+                  <xsl:value-of select="$mods/mods:abstract" />
+                </span>
+              </p>
+            </div>
           </xsl:otherwise>
         </xsl:choose>
       </xsl:if>

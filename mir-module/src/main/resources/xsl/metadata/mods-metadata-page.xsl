@@ -9,6 +9,7 @@
       <head>
         <xsl:apply-templates select="citation_meta" mode="copyContent" />
         <link href="{$WebApplicationBaseURL}assets/jquery/plugins/shariff/shariff.min.css" rel="stylesheet" />
+        <script type="text/javascript" src="{$WebApplicationBaseURL}assets/jquery/plugins/dotdotdot/jquery.dotdotdot.min.js" />
       </head>
 
       <xsl:if test="div[@id='mir-breadcrumb']">
