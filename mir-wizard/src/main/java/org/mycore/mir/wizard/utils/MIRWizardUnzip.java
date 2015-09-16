@@ -31,7 +31,8 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 import org.apache.commons.io.FilenameUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * This utility extracts files and directories of a standard zip file to
@@ -41,7 +42,7 @@ import org.apache.log4j.Logger;
  *
  */
 public class MIRWizardUnzip {
-    private static final Logger LOGGER = Logger.getLogger(MIRWizardUnzip.class);
+    private static final Logger LOGGER = LogManager.getLogger(MIRWizardUnzip.class);
 
     /**
      * Size of the buffer to read/write data.

@@ -29,7 +29,8 @@ import java.nio.file.Files;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jdom2.Element;
 import org.mycore.common.config.MCRConfigurationDir;
 import org.mycore.common.xml.MCRURIResolver;
@@ -41,7 +42,7 @@ import org.mycore.mir.wizard.utils.MIRWizardUnzip;
  *
  */
 public class MIRWizardSolr extends MIRWizardCommand {
-    private static final Logger LOGGER = Logger.getLogger(MIRWizardSolr.class);
+    private static final Logger LOGGER = LogManager.getLogger(MIRWizardSolr.class);
 
     public MIRWizardSolr() {
         this("solr");
