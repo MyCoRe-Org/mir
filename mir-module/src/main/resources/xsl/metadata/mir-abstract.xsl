@@ -100,11 +100,46 @@
       </xsl:if>
 
       <xsl:if test="$mods/mods:abstract">
-        <p>
-          <span itemprop="description">
-            <xsl:value-of select="$mods/mods:abstract" />
-          </span>
-        </p>
+
+        <xsl:choose>
+          <xsl:when test="count($mods/mods:abstract) &gt; 1">
+
+            <div id="mir-abstract-tabs">
+              <ul class="nav nav-tabs" role="tablist">
+                <xsl:for-each select="$mods/mods:abstract">
+                  <li>
+                    <xsl:if test="position()=1">
+                      <xsl:attribute name="class"> active</xsl:attribute>
+                    </xsl:if>
+                    <a href="#tab{position()}" role="tab" data-toggle="tab"><xsl:value-of select="@xml:lang" /></a>
+                  </li>
+                </xsl:for-each>
+              </ul>
+              <div class="tab-content">
+                <xsl:for-each select="$mods/mods:abstract">
+                  <div class="tab-pane" role="tabpanel" id="tab{position()}">
+                    <xsl:if test="position()=1">
+                      <xsl:attribute name="class">tab-pane active</xsl:attribute>
+                    </xsl:if>
+                    <p>
+                      <span itemprop="description">
+                        <xsl:value-of select="." />
+                      </span>
+                    </p>
+                  </div>
+                </xsl:for-each>
+              </div>
+            </div>
+
+          </xsl:when>
+          <xsl:otherwise>
+            <p>
+              <span itemprop="description">
+                <xsl:value-of select="$mods/mods:abstract" />
+              </span>
+            </p>
+          </xsl:otherwise>
+        </xsl:choose>
       </xsl:if>
 
       <!-- check for relatedItem containing mycoreobject ID dependent on current user using solr query on field mods.relatedItem -->
