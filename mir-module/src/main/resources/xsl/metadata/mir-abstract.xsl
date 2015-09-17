@@ -107,11 +107,19 @@
             <div id="mir-abstract-tabs">
               <ul class="nav nav-tabs" role="tablist">
                 <xsl:for-each select="$mods/mods:abstract">
-                  <li>
+                  <xsl:variable name="tabName">
+                    <xsl:choose>
+                      <xsl:when test="@xml:lang"><xsl:value-of select="@xml:lang" /></xsl:when>
+                      <xsl:otherwise><xsl:value-of select="$mods/mods:language/mods:languageTerm[@authority='rfc4646'][@type='code']" /></xsl:otherwise>
+                    </xsl:choose>
+                  </xsl:variable>
+                  <li class="pull-right">
                     <xsl:if test="position()=1">
-                      <xsl:attribute name="class"> active</xsl:attribute>
+                      <xsl:attribute name="class">active pull-right</xsl:attribute>
                     </xsl:if>
-                    <a href="#tab{position()}" role="tab" data-toggle="tab"><xsl:value-of select="@xml:lang" /></a>
+                    <a href="#tab{position()}" role="tab" data-toggle="tab">
+                      <xsl:value-of select="$tabName" />
+                    </a>
                   </li>
                 </xsl:for-each>
               </ul>
@@ -125,6 +133,9 @@
                       <span itemprop="description">
                         <xsl:value-of select="." />
                       </span>
+                      <a href="#" onclick="javascript: $('.ellipsis').trigger('destroy.dot'); $('.ellipsis').css('height', 'auto'); return false;" title="read more" class="readmore">
+                        <xsl:value-of select="i18n:translate('mir.abstract.readmore')" />
+                      </a>
                     </p>
                   </div>
                 </xsl:for-each>
@@ -138,6 +149,9 @@
                 <span itemprop="description">
                   <xsl:value-of select="$mods/mods:abstract" />
                 </span>
+                <a href="#" onclick="javascript: $('.ellipsis').trigger('destroy.dot'); $('.ellipsis').css('height', 'auto'); return false;" title="read more" class="readmore">
+                  <xsl:value-of select="i18n:translate('mir.abstract.readmore')" />
+                </a>
               </p>
             </div>
           </xsl:otherwise>

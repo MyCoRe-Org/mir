@@ -114,6 +114,14 @@
       });
     });
 
+    // for configuration look here: http://dotdotdot.frebsite.nl/
+    if (jQuery.fn.dotdotdot) {
+      $(".ellipsis").dotdotdot({
+        ellipsis	: '... ',
+        after: "a.readmore"
+      });
+    };
+
   }); // END $﻿(document).ready()
 
   window.fireMirSSQuery = function base_fireMirSSQuery(form) {
