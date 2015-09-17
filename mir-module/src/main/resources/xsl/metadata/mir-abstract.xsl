@@ -119,7 +119,7 @@
                 <xsl:for-each select="$mods/mods:abstract">
                   <div class="tab-pane ellipsis" role="tabpanel" id="tab{position()}">
                     <xsl:if test="position()=1">
-                      <xsl:attribute name="class">tab-pane active</xsl:attribute>
+                      <xsl:attribute name="class">tab-pane ellipsis active</xsl:attribute>
                     </xsl:if>
                     <p>
                       <span itemprop="description">
