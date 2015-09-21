@@ -11,27 +11,23 @@
       <xed:source uri="webapp:editor/search/template/simple_intern.xml" />
       <xed:bind xpath="query">
         <xed:bind xpath="@mask" default="search/simple_intern.xed" />
-          <div class="panel panel-default">
-            <div class="panel-heading">
-              <h3 class="panel-title">
-                <xed:output i18n="component.mods.editor.search.label" />
-              </h3>
-            </div>
-            <div class="panel-body">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">
+              <xed:output i18n="component.mods.editor.search.label" />
+            </h3>
+          </div>
+          <div class="panel-body">
 
-        <xed:bind xpath="conditions/boolean[@operator='and']">
+            <xed:bind xpath="conditions/boolean[@operator='and']">
             <!-- Title -->
-              <mir:template name="textInput" xpath="condition[@field='mods.title']/@value" id="inputTitle1" i18n="editor.search.mir.title"
-                tooltip="editor.search.mir.title.tooltip" />
+              <mir:template name="textInput" xpath="condition[@field='mods.title']/@value" id="inputTitle1" i18n="editor.search.mir.title" tooltip="editor.search.mir.title.tooltip" />
             <!-- Name -->
-              <mir:template name="textInput" xpath="condition[@field='mods.name']/@value" id="inputName1" i18n="editor.search.mir.name"
-                tooltip="editor.search.mir.name.tooltip" />
+              <mir:template name="textInput" xpath="condition[@field='mods.name']/@value" id="inputName1" i18n="editor.search.mir.name" tooltip="editor.search.mir.name.tooltip" />
             <!-- Metadata -->
-              <mir:template name="textInput" xpath="condition[@field='allMeta']/@value" id="inputMeta1" i18n="editor.search.metadata"
-                tooltip="editor.search.metadata.tooltip" />
+              <mir:template name="textInput" xpath="condition[@field='allMeta']/@value" id="inputMeta1" i18n="editor.search.metadata" tooltip="editor.search.metadata.tooltip" />
             <!-- Content -->
-              <mir:template name="textInput" xpath="condition[@field='content']/@value" id="inputContent1" i18n="editor.search.derivate"
-                tooltip="editor.search.derivate.tooltip" />
+              <mir:template name="textInput" xpath="condition[@field='content']/@value" id="inputContent1" i18n="editor.search.derivate" tooltip="editor.search.derivate.tooltip" />
             <!-- Institution -->
               <mir:template name="selectInput" xpath="condition[@field='category'][1]/@value" id="inputInst1" i18n="editor.search.mir.institute"
                 tooltip="editor.search.mir.institute.tooltip" uri="xslStyle:items2options:classification:editorComplete:-1:children:mir_institutes" />
@@ -39,8 +35,8 @@
         <xed:bind xpath="boolean[@operator='or']" default="{$CurrentUser}" -->
           <!-- xed:bind xpath="condition[@field='createdby']/@value" default="{$CurrentUser}" / -->
             <!-- Status -->
-              <mir:template name="selectInput" xpath="condition[@field='state']/@value" id="inputStatus1" i18n="editor.search.status"
-                tooltip="editor.search.status.tooltip" uri="xslStyle:items2options:classification:editor:-1:children:state" />
+              <mir:template name="selectInput" xpath="condition[@field='state']/@value" id="inputStatus1" i18n="editor.search.status" tooltip="editor.search.status.tooltip"
+                uri="xslStyle:items2options:classification:editor:-1:children:state" />
         <!-- /xed:bind>
         <xed:bind xpath="conditions/boolean[@operator='and']" -->
             <!--Fulltext -->
@@ -54,16 +50,15 @@
                   </xed:bind>
                 </div>
               </div>
-        </xed:bind>
-            <!-- submit -->
-              <!-- submit -->
-              <div class="panel-footer clearfix">
-                <div class="pull-right">
-                  <mir:template name="submitButton" i18n="editor.search.search" target="servlet_MCRQLSearchServlet" />
-                </div>
-              </div>
+            </xed:bind>
+          </div>
+         <!-- submit -->
+          <div class="panel-footer clearfix">
+            <div class="pull-right">
+              <mir:template name="submitButton" i18n="editor.search.search" target="servlet_MCRQLSearchServlet" />
             </div>
           </div>
+        </div>
       </xed:bind>
     </xed:form>
   </section>
