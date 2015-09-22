@@ -48,6 +48,12 @@
               </tr>
             </xsl:for-each>
 
+            <xsl:call-template name="printMetaDate.mods">
+              <xsl:with-param name="nodes" select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:name[@type='conference']/mods:namePart[not(@type)]" />
+              <xsl:with-param name="label" select="i18n:translate('component.mods.metaData.dictionary.conference.title')" />
+            </xsl:call-template>
+
+
             <!-- mods:name grouped by mods:role/mods:roleTerm excluding author-->
             <xsl:for-each
               select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:name[not(@ID) and
