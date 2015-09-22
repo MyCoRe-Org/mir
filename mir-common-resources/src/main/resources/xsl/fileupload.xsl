@@ -11,6 +11,7 @@
 <xsl:param name="UploadID" />
 <xsl:param name="selectMultiple" select="'true'" />
 <xsl:param name="acceptFileTypes" select="'*'" />
+<xsl:param name="ObjectID" />
 <xsl:param name="MCR.UploadApplet.BackgroundColor" select="'#CAD9E0'"/>
 
 <!-- tag to embed applet in Internet Explorer -->
@@ -80,8 +81,7 @@
         <div class="col-xs-12">
           <a id="backBtn"
                   class="btn btn-primary action toggable"
-                  onclick="window.location.replace(document.referrer);"
-                  href="#">
+                  href="{$WebApplicationBaseURL}receive/{$ObjectID}">
             <xsl:value-of select="i18n:translate('fileUpload.back')"/>
           </a>
           <button id="clearBtn"
