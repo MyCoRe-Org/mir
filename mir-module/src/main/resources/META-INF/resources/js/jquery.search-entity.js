@@ -57,7 +57,7 @@
       baseURI : "http://d-nb.info/gnd/",
       person : {
         enabled : true,
-        url : "http://lobid.org/person",
+        url : "//lobid.org/person",
         data : function(input) {
           return {
             name : input,
