@@ -1384,6 +1384,9 @@
     <script src="{$WebApplicationBaseURL}assets/jquery/plugins/typeahead/bloodhound.js" type="text/javascript"></script>
     <script src="{$WebApplicationBaseURL}assets/jquery/plugins/bootstrap3-typeahead/bootstrap3-typeahead.js" type="text/javascript"></script>
     <script src="{$WebApplicationBaseURL}js/mir/relatedItem-autocomplete.js" type="text/javascript"></script>
+    <link href="{$WebApplicationBaseURL}assets/bootstrap3-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
+    <script type="text/javascript" src="{$WebApplicationBaseURL}assets/moment/moment-with-locales.min.js"></script>
+    <script type="text/javascript" src="{$WebApplicationBaseURL}assets/bootstrap3-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
   </xed:template>
 
 
