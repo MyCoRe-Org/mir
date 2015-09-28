@@ -84,6 +84,9 @@
                     </xsl:if>
                     <xsl:apply-templates select="." mode="nameLink" />
                   </xsl:for-each>
+                    <xsl:if test="$mods/mods:name/mods:etal">
+                        <em>et.al.</em>
+                    </xsl:if>
                 </td>
               </tr>
             </xsl:for-each>

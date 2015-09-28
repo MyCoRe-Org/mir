@@ -111,6 +111,9 @@
               <xsl:value-of select="i18n:translate('mir.abstract.editor')" />
             </xsl:if>
           </xsl:for-each>
+          <xsl:if test="$mods/mods:name[mods:role/mods:roleTerm/text()='aut']/mods:etal or $mods/mods:name[mods:role/mods:roleTerm/text()='edt']/mods:etal">
+            <em>et.al.</em>
+          </xsl:if>
         </p>
       </xsl:if>
 

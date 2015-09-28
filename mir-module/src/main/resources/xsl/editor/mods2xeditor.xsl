@@ -89,4 +89,8 @@
     </mods:accessCondition>
   </xsl:template>
 
+  <xsl:template match="mods:name/mods:etal">
+    <mods:displayForm>et.al.</mods:displayForm>
+  </xsl:template>
+
 </xsl:stylesheet>

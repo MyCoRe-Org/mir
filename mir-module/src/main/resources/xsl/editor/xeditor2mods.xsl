@@ -60,4 +60,16 @@
     </mods:identifier>
   </xsl:template>
 
+  <xsl:template match="mods:name/mods:displayForm">
+    <xsl:variable name="etalShortcut">|etal|et al|et.al.|u.a.|ua|etc|u.s.w.|usw|...</xsl:variable>
+    <xsl:choose>
+      <xsl:when test="contains($etalShortcut,.)">
+          <mods:etal/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:copy-of select="."/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
 </xsl:stylesheet>

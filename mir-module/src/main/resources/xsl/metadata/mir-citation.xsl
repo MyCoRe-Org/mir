@@ -211,13 +211,17 @@
             <xsl:when test="position() &lt; 4">
               <xsl:value-of select="mods:displayForm" />
             </xsl:when>
-            <xsl:when test="position() = 4">
+            <xsl:when test="position() = 4 and not(mods:etal)">
               <xsl:text>&#160;</xsl:text><!-- add whitespace -->
               <em>et al</em>
             </xsl:when>
           </xsl:choose>
-          <xsl:if test="not(position()=last()) and position() &lt; 4">
+          <xsl:if test="not(position()=last()) and position() &lt; 4 and not(mods:etal)">
             <xsl:text>, </xsl:text>
+          </xsl:if>
+          <xsl:if test="mods:etal">
+            <xsl:text>&#160;</xsl:text><!-- add whitespace -->
+            <em>et al</em>
           </xsl:if>
         </xsl:for-each>
       </xsl:when>
