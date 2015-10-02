@@ -216,6 +216,8 @@
     <!-- all names (personal and corporate) with role in fieldname -->
     <dynamicField name="mods.nameByRole.*" type="string" multiValued="true" />
 
+    <field name="mods.name.conference" type="string" multiValued="true" />
+
     <dynamicField name="identifier.type.*" type="string" multiValued="true" />
     <field name="topic" type="string" multiValued="true" />
 

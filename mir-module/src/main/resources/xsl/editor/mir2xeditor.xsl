@@ -229,4 +229,27 @@
     </xed:bind>
   </xsl:template>
 
+  <xsl:template match="mir:itemsearch">
+    <xed:bind xpath="{@xpath}">
+      <div class="form-group">
+        <label class="col-md-3 control-label">
+          <xed:output i18n="{@label}" />
+        </label>
+        <div class="col-md-6">
+          <input class="form-control itemsearch" data-searchengine="{@searchengine}" data-genre="{@genre}"
+                 data-responsefield="{@responsefield}" data-provide="typeahead" type="text" autocomplete="off"
+                 placeholder="{@placeholder}"/>
+        </div>
+        <div class="col-md-3">
+          <xsl:if test="string-length(@help-text) &gt; 0">
+            <xsl:call-template name="mir-helpbutton" />
+          </xsl:if>
+          <xsl:if test="@pmud = 'true'">
+            <xsl:call-template name="mir-pmud" />
+          </xsl:if>
+        </div>
+      </div>
+    </xed:bind>
+  </xsl:template>
+
 </xsl:stylesheet>

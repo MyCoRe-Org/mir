@@ -26,7 +26,7 @@ var engines = {
 					return settings;
 				}
 			}
-		}),
+		})
 	},
 	isbn : {
 		engine : new Bloodhound({
@@ -55,7 +55,7 @@ var engines = {
 					return settings;
 				}
 			}
-		}),
+		})
 	},
 	issn : {
 		engine : new Bloodhound({
@@ -84,7 +84,7 @@ var engines = {
 					return settings;
 				}
 			}
-		}),
+		})
 	},
 	title : {
 		engine : new Bloodhound({
@@ -113,7 +113,7 @@ var engines = {
 					return settings;
 				}
 			}
-		}),
+		})
 	},
 	empty : {
 		engine : new Bloodhound(
@@ -137,7 +137,7 @@ var engines = {
 
 $(document).ready(function() {
 
-	$("input[data-provide='typeahead']").each(function(index, input) {
+	$("input[data-provide='typeahead'].relItemsearch").each(function(index, input) {
 		var Engine;
 		if (engines[$(this).data("searchengine")]) {
 			Engine = engines[$(this).data("searchengine")];
@@ -174,7 +174,7 @@ $(document).ready(function() {
 		if (input.value != "mir_mods_00000000") {
 			fieldset = $(input).closest("fieldset.mir-relatedItem");
 			disableFieldset(fieldset);
-			fillFieldset(fieldset, input.value);
+			getModsAfterTrans(fieldset, input.value);
 			createbadge($(fieldset.find("div.input-group")[0]), input.value);
 		}
 	});
@@ -183,7 +183,7 @@ $(document).ready(function() {
 
 function disableFieldset(fieldset) {
 	relatedItemBody = fieldset.children('div.mir-relatedItem-body');
-	relatedItemBody.find("div.form-group:not(.mir-modspart)").find("input[type!='hidden']").each(function(index, input) {
+	relatedItemBody.find("div.form-group:not(.mir-modspart)").find("input[type!='hidden'], select").each(function(index, input) {
 		if (input != document.activeElement) {
 			$(input).prop('disabled', true);
 			$(input).data('value', $(input).val());
@@ -192,34 +192,54 @@ function disableFieldset(fieldset) {
 	$(".searchbadge").addClass("disabled");
 
 	fieldset.find("fieldset.mir-relatedItem").prop('disabled', true);
-};
+}
 
-function fillFieldset(fieldset, relItemid) {
+function getModsAfterTrans(fieldset, relItemid) {
+	$.ajax({
+		method : "GET",
+		url : webApplicationBaseURL + "receive/" + relItemid + "?XSL.Transformer=mods2xeditor",
+		dataType : "xml"
+	}).done(function(xml) {
+		fillFieldset(fieldset, xml)
+	}).error(function() {
+		console.log("Mycore Propertie 'MCR.ContentTransformer.mods2xeditor.Stylesheet' not set");
+		getMods(fieldset, relItemid)
+	});
+}
+
+function getMods(fieldset, relItemid) {
 	$.ajax({
 		method : "GET",
 		url : webApplicationBaseURL + "receive/" + relItemid + "?XSL.Style=xml",
 		dataType : "xml"
 	}).done(function(xml) {
-		fieldset.find('input').each(function(index, input) {
-			path = input.name.substr(input.name.indexOf("relatedItem/") + 12);
-			path = "/mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/" + path;
-			function nsResolver(prefix) {
-				var ns = {
-					'mods' : 'http://www.loc.gov/mods/v3',
-					'xlink' : 'http://www.w3.org/1999/xlink',
-				};
-				return ns[prefix] || null;
-			}
-			xPathRes = xml.evaluate(path, xml, nsResolver, XPathResult.ANY_TYPE, null)
-			node = xPathRes.iterateNext();
-			if (node) {
+		fillFieldset(fieldset, xml)
+	});
+}
+
+function fillFieldset(fieldset, xml) {
+	fieldset.find('input, select').each(function(index, input) {
+		path = input.name.substr(input.name.indexOf("relatedItem/") + 12);
+		path = "/mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/" + path;
+		function nsResolver(prefix) {
+			var ns = {
+				'mods' : 'http://www.loc.gov/mods/v3',
+				'xlink' : 'http://www.w3.org/1999/xlink'
+			};
+			return ns[prefix] || null;
+		}
+		xPathRes = xml.evaluate(path, xml, nsResolver, XPathResult.ANY_TYPE, null);
+		node = xPathRes.iterateNext();
+		if (node) {
+			if ($(node).text() != "" && $(node).text() != undefined) {
 				input.value = $(node).text();
 			}
-		});
-		// alert(xml);
-
+			else {
+				input.value = node.value;
+			}
+		}
 	});
-};
+}
 
 function createbadge(inputgroup, relItemid) {
 	badge = '<a href="../receive/' + relItemid + '" target="_blank" class="badge"> ';
@@ -242,4 +262,4 @@ function createbadge(inputgroup, relItemid) {
 		inputgroup = $(this).closest("div");
 		inputgroup.find(".searchbadge").html("");
 	});
-};
+}
