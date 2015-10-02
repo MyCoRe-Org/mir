@@ -21,12 +21,24 @@ function createGenreOptions() {
 	var Options="";
   	$(GenreXML).find('categories > category').each(function(){
 		var Title = $(this).children('label[xml\\:lang="de"]').attr('text');
+		var xEditor = $(this).children('label[xml\\:lang="x-editor"]').attr('text');
 		var id = $(this).attr('ID');
-		Options+='<option value="'+id+'">' + Title + '</option>';
+		if (xEditor == "false") {
+			Options+='<option value="'+id+'" disabled>' + Title + '</option>';
+		}
+		else {
+			Options+='<option value="'+id+'">' + Title + '</option>';
+		}
 		$(this).find('category').each(function(){
 	  		var Title = $(this).children('label[xml\\:lang="de"]').attr('text');
+			var xEditor = $(this).children('label[xml\\:lang="x-editor"]').attr('text');
 	  		var id = $(this).attr('ID');
-			Options+='<option value="'+id+'">&nbsp;&nbsp;&nbsp;' + Title + '</option>';
+			if (xEditor == "false") {
+				Options+='<option value="'+id+'" disabled>&nbsp;&nbsp;&nbsp;' + Title + '</option>';
+			}
+			else {
+				Options+='<option value="'+id+'">&nbsp;&nbsp;&nbsp;' + Title + '</option>';
+			}
 	  	});
 	});
 	$('#genre').append(Options);
