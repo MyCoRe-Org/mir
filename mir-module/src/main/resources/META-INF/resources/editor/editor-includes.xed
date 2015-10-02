@@ -16,7 +16,7 @@
   </xed:template>
 
   <xed:template id="mycore.common">
-    <xed:bind xpath="@ID" initially="mir_mods_00000000" />
+    <xed:bind xpath="@ID" initially="{$MIR.projectid.default}_mods_00000000" />
   </xed:template>
 
   <xed:template id="genre">
