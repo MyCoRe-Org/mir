@@ -26,6 +26,7 @@ import java.io.File;
 import java.nio.charset.Charset;
 import java.util.Scanner;
 
+import org.hibernate.boot.spi.MetadataImplementor;
 import org.hibernate.tool.hbm2ddl.SchemaUpdate;
 import org.mycore.backend.hibernate.MCRHIBConnection;
 import org.mycore.mir.wizard.MIRWizardCommand;
@@ -44,7 +45,7 @@ public class MIRWizardInitHibernate extends MIRWizardCommand {
     public void doExecute() {
         try {
             File temp = File.createTempFile("hib", ".log");
-            SchemaUpdate su = new SchemaUpdate(MCRHIBConnection.instance().getConfiguration());
+            SchemaUpdate su = new SchemaUpdate((MetadataImplementor) MCRHIBConnection.instance().getMetadata());
             su.setOutputFile(temp.getAbsolutePath());
             su.execute(true, true);
 
