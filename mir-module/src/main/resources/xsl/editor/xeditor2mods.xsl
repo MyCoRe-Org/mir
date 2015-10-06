@@ -20,6 +20,9 @@
       <xsl:when test="starts-with(., 'http://www.viaf.org/')">
         <mods:nameIdentifier type="viaf" typeURI="http://www.viaf.org/"><xsl:value-of select="substring-after(., 'http://www.viaf.org/')" /></mods:nameIdentifier>
       </xsl:when>
+      <xsl:otherwise>
+        <xsl:copy-of select="."/>
+      </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
 

@@ -72,4 +72,21 @@ public class MIRMigration0_3 {
         return cmds;
     }
 
+    @MCRCommand(
+            syntax = "migrate mods name nameIdentifier",
+            help = "migrates all objects with name property valueURI to nameIdentifier elements.")
+    public static List<String> updateNameIdentifier() {
+        URL styleFile = MIRMigration0_3.class.getResource("/xsl/mycoreobject-migrate-nameIdentifier.xsl");
+        if (styleFile == null) {
+            LOGGER.error("Could not find migration stylesheet. File a bug!");
+            return null;
+        }
+        TreeSet<String> ids = new TreeSet<>(MCRXMLMetadataManager.instance().listIDsOfType("mods"));
+        ArrayList<String> cmds = new ArrayList<>(ids.size());
+        for (String id : ids) {
+            cmds.add("xslt " + id + " with file " + styleFile.toString());
+        }
+        return cmds;
+    }
+
 }
