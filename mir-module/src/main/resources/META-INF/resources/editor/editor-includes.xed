@@ -159,7 +159,7 @@
           <mir:textfield xpath="mods:title" label="mir.title" placeholder="{i18n:mir.placeholder.title.translated}" />
           <mir:textfield xpath="mods:subTitle" label="mir.title.subTitle" />
           <div class="form-group">
-            <label class="col-md-3 control-label mir-formgroup-label">Sprache:</label><!-- TODO: i18n -->
+            <label class="col-md-3 control-label mir-formgroup-label"><xed:output i18n="mir.language.noText" /></label>
             <div class="col-md-6">
               <xed:bind xpath="@xml:lang" initially="de">
                 <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="lang.list" />
