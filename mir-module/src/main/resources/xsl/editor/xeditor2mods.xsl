@@ -7,24 +7,19 @@
 
   <!-- create value URI using valueURIxEditor and authorityURI -->
   <xsl:template match="@valueURIxEditor">
-    <xsl:choose>
-      <xsl:when test="(name(..) = 'mods:name') and (../@type = 'personal' or ../@type = 'corporate') and (starts-with(., 'http://d-nb.info/gnd/') or starts-with(., 'http://www.viaf.org/'))">
-        <xsl:choose>
-          <xsl:when test="starts-with(., 'http://d-nb.info/gnd/')">
-            <xsl:attribute name="authorityURI">http://d-nb.info/gnd/</xsl:attribute>
-            <xsl:attribute name="valueURI"><xsl:value-of select="." /></xsl:attribute>
-          </xsl:when>
-          <xsl:when test="starts-with(., 'http://www.viaf.org/')">
-            <xsl:attribute name="authorityURI">http://www.viaf.org/</xsl:attribute>
-            <xsl:attribute name="valueURI"><xsl:value-of select="." /></xsl:attribute>
-          </xsl:when>
-        </xsl:choose>
-      </xsl:when>
-      <xsl:otherwise>
         <xsl:attribute name="valueURI">
           <xsl:value-of select="concat(../@authorityURI,'#',.)" />
         </xsl:attribute>
-      </xsl:otherwise>
+  </xsl:template>
+
+  <xsl:template match="mods:nameIdentifier">
+    <xsl:choose>
+      <xsl:when test="starts-with(., 'http://d-nb.info/gnd/')">
+        <mods:nameIdentifier type="gnd" typeURI="http://d-nb.info/gnd/"><xsl:value-of select="substring-after(., 'http://d-nb.info/gnd/')" /></mods:nameIdentifier>
+      </xsl:when>
+      <xsl:when test="starts-with(., 'http://www.viaf.org/')">
+        <mods:nameIdentifier type="viaf" typeURI="http://www.viaf.org/"><xsl:value-of select="substring-after(., 'http://www.viaf.org/')" /></mods:nameIdentifier>
+      </xsl:when>
     </xsl:choose>
   </xsl:template>
 

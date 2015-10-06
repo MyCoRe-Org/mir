@@ -7,23 +7,13 @@
 
   <!-- put value string (after authority URI) in attribute valueURIxEditor -->
   <xsl:template match="@valueURI">
-    <xsl:choose>
-      <xsl:when test="(name(..) = 'mods:name') and (../@type = 'personal' or ../@type = 'corporate') and (starts-with(., 'http://d-nb.info/gnd/') or starts-with(., 'http://www.viaf.org/'))">
-        <xsl:choose>
-          <xsl:when test="starts-with(., 'http://d-nb.info/gnd/')">
-            <xsl:attribute name="valueURIxEditor"><xsl:value-of select="." /></xsl:attribute>
-          </xsl:when>
-          <xsl:when test="starts-with(., 'http://www.viaf.org/')">
-            <xsl:attribute name="valueURIxEditor"><xsl:value-of select="." /></xsl:attribute>
-          </xsl:when>
-        </xsl:choose>
-      </xsl:when>
-      <xsl:otherwise>
         <xsl:attribute name="valueURIxEditor">
           <xsl:value-of select="substring-after(.,'#')" />
         </xsl:attribute>
-      </xsl:otherwise>
-    </xsl:choose>
+  </xsl:template>
+
+  <xsl:template match="mods:nameIdentifier">
+    <mods:nameIdentifier type="{@type}" typeURI="{@typeURI}"><xsl:value-of select="concat(@typeURI, .)" /></mods:nameIdentifier>
   </xsl:template>
 
   <!-- A single page (edited as start=end) is represented as mods:detail/@type='page' -->

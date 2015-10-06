@@ -365,7 +365,7 @@
           data-search-entity-type="person" data-search-output="#valueURIxEditor" data-search-button="{i18n:button.search}" data-search-button-loading="{i18n:button.loading}"
           data-search-result-empty="{i18n:mir.searchIdentifier.noResult}" data-target=".search-person" placeholder="{i18n:mir.placeholder.name.family}, {i18n:mir.placeholder.name.given}" />
       </xed:bind>
-      <xed:bind xpath="@valueURIxEditor">
+      <xed:bind xpath="mods:nameIdentifier">
         <input type="hidden" id="valueURIxEditor" />
       </xed:bind>
     </div>
@@ -1025,7 +1025,7 @@
                 data-search-button-loading="{i18n:button.loading}" data-search-result-empty="{i18n:mir.searchIdentifier.noResult}" data-target=".search-organization"
                 placeholder="{i18n:mir.placeholder.name.organization}" />
             </xed:bind>
-            <xed:bind xpath="@valueURIxEditor">
+            <xed:bind xpath="mods:nameIdentifier">
               <input type="hidden" id="valueURIxEditor" />
             </xed:bind>
           </div>
