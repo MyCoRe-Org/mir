@@ -194,7 +194,7 @@
                           <!-- remove from basket -->
                           <a class="hit_option remove_from_basket"
                             href="{$ServletsBaseURL}MCRBasketServlet{$HttpSession}?type=objects&amp;action=remove&amp;id={$identifier}&amp;redirect=referer"
-                            title=""><span class="glyphicon glyphicon-shopping-cart"></span><xsl:value-of select="i18n:translate('basket.remove')" /></a>
+                            title=""><span class="glyphicon glyphicon-bookmark"></span><xsl:value-of select="i18n:translate('basket.remove')" /></a>
                         </li>
                       </xsl:when>
                       <xsl:otherwise>
@@ -202,7 +202,7 @@
                           <!-- add to basket -->
                           <a class="hit_option hit_to_basket"
                             href="{$ServletsBaseURL}MCRBasketServlet{$HttpSession}?type=objects&amp;action=add&amp;id={$identifier}&amp;uri=mcrobject:{$identifier}&amp;redirect=referer"
-                            title=""><span class="glyphicon glyphicon-shopping-cart"></span><xsl:value-of select="i18n:translate('basket.add')" /></a>
+                            title=""><span class="glyphicon glyphicon-bookmark"></span><xsl:value-of select="i18n:translate('basket.add')" /></a>
                         </li>
                       </xsl:otherwise>
                     </xsl:choose>
