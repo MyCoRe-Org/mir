@@ -150,7 +150,7 @@
 
         <div class="row">
           <div class="col-md-4">
-            <h2>Gefundene Personen</h2>
+            <h2><xsl:value-of select="i18n:translate('browse.person.foundPersons')" /></h2>
 
             <xsl:choose>
               <xsl:when test="lst[@name='terms']/lst[@name='mods.pindexname']/int or
@@ -168,13 +168,13 @@
                 </ul>
               </xsl:when>
               <xsl:otherwise>
-                <p>Keine Personen gefunden.</p>
+                <p><xsl:value-of select="i18n:translate('browse.person.personNotFound')" /></p>
               </xsl:otherwise>
             </xsl:choose>
           </div>
 
           <div class="col-md-4">
-            <h3>mit dem Buchstaben</h3>
+            <h3><xsl:value-of select="i18n:translate('browse.person.firstLetter')" /></h3>
             <ul class="names">
               <xsl:for-each select="xalan:nodeset($a2z)/*">
                 <li>
@@ -193,7 +193,7 @@
           </div>
 
           <div class="col-md-4">
-            <h3>oder mit den Zeichen</h3>
+            <h3><xsl:value-of select="i18n:translate('browse.person.searchPerson')" /></h3>
 
             <form class="form-inline"
                   role="form"
@@ -215,6 +215,10 @@
                   </xsl:otherwise>
                 </xsl:choose>
               </xsl:variable>
+              
+              <xsl:variable name="placeholder">
+                <xsl:value-of select="i18n:translate('browse.person.searchplaceholder')" />
+              </xsl:variable>
 
               <div class="form-group">
                 <label class="sr-only" for="index_search">Gesuchte Zeichen</label>
@@ -223,12 +227,13 @@
                        class="search_text_gray focus_form_field form-control"
                        id="index_search"
                        type="text"
-                       placeholder="Zeichen" />
+                       placeholder="{$placeholder}" />
               </div>
               <button type="submit"
                      class="btn btn-default search_button"
                      value="Suchen"
-                     tabindex="1">Suchen
+                     tabindex="1">
+                <xsl:value-of select="i18n:translate('button.search')" />
               </button>
             </form>
           </div>
