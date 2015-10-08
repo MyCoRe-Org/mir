@@ -1051,19 +1051,19 @@
         <div id="header">
           <div id="osm">
             (c)
-            <a href="http://www.openstreetmap.org">OpenStreetMap</a>
+            <a href="//www.openstreetmap.org">OpenStreetMap</a>
             und
-            <a href="http://www.openstreetmap.org/copyright">Mitwirkende</a>
+            <a href="//www.openstreetmap.org/copyright">Mitwirkende</a>
             ,
-            <a href="http://creativecommons.org/licenses/by-sa/2.0/deed.de">CC-BY-SA</a>
+            <a href="//creativecommons.org/licenses/by-sa/2.0/deed.de">CC-BY-SA</a>
           </div>
         </div>
         <div id="map" style="width:555px;height:380px;"></div>
       </div>
     </div>
 
-    <script type="text/javascript" src="http://www.openlayers.org/api/OpenLayers.js"></script>
-    <script type="text/javascript" src="http://www.openstreetmap.org/openlayers/OpenStreetMap.js"></script>
+    <script type="text/javascript" src="//www.openlayers.org/api/OpenLayers.js"></script>
+    <script type="text/javascript" src="//www.openstreetmap.org/openlayers/OpenStreetMap.js"></script>
     <script type="text/javascript" src="{$WebApplicationBaseURL}js/mir/geo-coords.js"></script>
   </xed:template>
 
