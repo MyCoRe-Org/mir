@@ -1,13 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <MyCoReWebPage>
-  <section title="Komplexe Suche über alle Publikationen"
-    xml:lang="de" />
-
-  <section title="Complex search mask for all publications"
-    xml:lang="en" />
-
+  
   <section xml:lang="all" xmlns:xed="http://www.mycore.de/xeditor"
-    xmlns:mir="http://www.mycore.de/mir">
+    xmlns:mir="http://www.mycore.de/mir"
+    i18n="component.mods.editor.search.complex.pagetitle">
     <xed:form class="form-horizontal" role="form">
       <xed:cleanup-rule xpath="//condition" relevant-if="string-length(@value)&gt;0" />
       <xed:cleanup-rule xpath="//boolean" relevant-if="boolean|condition" />
@@ -18,7 +14,7 @@
         <div class="panel panel-default">
           <div class="panel-heading">
             <h3 class="panel-title">
-              <xed:output i18n="component.mods.editor.search.label" />
+              <xed:output i18n="component.mods.editor.search.complex.label" />
             </h3>
           </div>
           <div class="panel-body">

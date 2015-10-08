@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <MyCoReWebPage>
-  <section title="Einfache Suche über alle Publikationen" xml:lang="de" />
-
-  <section title="Simple search in all publications" xml:lang="en" />
-
-  <section xml:lang="all" xmlns:xed="http://www.mycore.de/xeditor" xmlns:mir="http://www.mycore.de/mir">
+  
+  <section xml:lang="all" xmlns:xed="http://www.mycore.de/xeditor" xmlns:mir="http://www.mycore.de/mir"
+      i18n="component.mods.editor.search.simple.pagetitle">
     <xed:form class="form-horizontal" role="form">
       <xed:post-processor xsl="query-postprocessor.xsl" />
       <xed:source uri="searchInput:{$id}" />
