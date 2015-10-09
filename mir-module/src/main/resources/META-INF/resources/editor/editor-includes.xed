@@ -84,11 +84,11 @@
   </xed:template>
 
   <xed:template id="title.journal">
-    <mir:textfield xpath="mods:titleInfo/mods:title" label="mir.title.journal" help-text="{i18n:mir.help.title.journal}" />
+    <mir:textfield xpath="mods:titleInfo/mods:title" label="mir.title.journal" help-text="{i18n:mir.help.title.journal}" class="required" />
   </xed:template>
 
   <xed:template id="title.newspaper">
-    <mir:textfield xpath="mods:titleInfo/mods:title" label="mir.title.newspaper" help-text="{i18n:mir.help.title.newspaper}" />
+    <mir:textfield xpath="mods:titleInfo/mods:title" label="mir.title.newspaper" help-text="{i18n:mir.help.title.newspaper}" class="required" />
   </xed:template>
 
   <xed:template id="series.title">
@@ -237,8 +237,12 @@
     <mir:role.repeated role="edt" label="mir.role.editor" help-text="{i18n:mir.help.role.editor}" />
   </xed:template>
 
+  <xed:template id="editor.repeated.required">
+    <mir:role.repeated role="edt" label="mir.role.editor" help-text="{i18n:mir.help.role.editor}" class="required" />
+  </xed:template>
+
   <xed:template id="inventor.repeated">
-    <mir:role.repeated role="inv" label="mir.role.inventor" help-text="{i18n:mir.help.role.inventor}" />
+    <mir:role.repeated role="inv" label="mir.role.inventor" help-text="{i18n:mir.help.role.inventor}" class="required" />
   </xed:template>
 
   <xed:template id="advisor.repeated">
@@ -428,7 +432,7 @@
 
   <xed:template id="date.recorded.datetimepicker">
     <mir:textfield xpath="mods:originInfo[@eventType='publication']/mods:dateIssued[@encoding='w3cdtf']" label="mir.date.recorded" help-text="{i18n:mir.help.date.recorded}"
-                   class="datetimepicker" placeholder="{i18n:mir.placeholder.date}" />
+                   class="datetimepicker required" placeholder="{i18n:mir.placeholder.date}" />
   </xed:template>
 
   <xed:template id="date.accepted">
@@ -977,6 +981,10 @@
     <mir:textfield xpath="mods:accessCondition[@type='embargo']" label="mir.embargo" help-text="{i18n:mir.help.embargo}" placeholder="{i18n:mir.placeholder.date}" />
   </xed:template>
 
+  <xed:template id="embargo.datetimepicker">
+    <mir:textfield xpath="mods:accessCondition[@type='embargo']" label="mir.embargo" help-text="{i18n:mir.help.embargo}" class="datetimepicker" placeholder="{i18n:mir.placeholder.date}" />
+  </xed:template>
+
   <!-- use external schema copyrightMD, see http://www.cdlib.org/groups/rmg/copyrightMD.html#type_copyright.status -->
   <!-- TODO: copyright.status and publication.status shouldn't be static -->
   <xed:template id="copyrightMD">
@@ -1397,20 +1405,30 @@
   <xed:template id="validation-rules">
     <xed:validate xpath="//mods:mods/mods:titleInfo/mods:title" required="true" i18n="mir.validation.title" display="global" />
     <!-- don't validate author, date issued and rights for journal etc.  -->
-    <xed:if test="//mods:mods/mods:genre[@valueURIxEditor!='journal'][@valueURIxEditor!='series'][@valueURIxEditor!='lecture']">
+    <xed:if test="//mods:mods/mods:genre[@valueURIxEditor!='journal'][@valueURIxEditor!='newspaper'][@valueURIxEditor!='series'][@valueURIxEditor!='lecture']">
       <xed:choose>
-        <xed:when test="//mods:mods/mods:genre[@valueURIxEditor='collection' or @valueURIxEditor='proceedings']
-            or //mods:mods/mods:genre[@valueURIxEditor='lexicon' or //mods:mods/mods:genre[@valueURIxEditor='festschrift'">
+        <xed:when test="//mods:mods/mods:genre[@valueURIxEditor='collection' or @valueURIxEditor='proceedings' or @valueURIxEditor='lexicon' or @valueURIxEditor='festschrift']">
           <!-- "required" checks if there is such an element which has text content, so we must validate mods:displayForm for the moment-->
           <xed:validate xpath="//mods:mods/mods:name[mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']='edt']/mods:displayForm"
             required="true" i18n="mir.validation.editor" display="global" />
+        </xed:when>
+        <xed:when test="//mods:mods/mods:genre[@valueURIxEditor='patent']">
+          <xed:validate xpath="//mods:mods/mods:name[mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']='inv']/mods:displayForm"
+                        required="true" i18n="mir.validation.editor" display="global" />
         </xed:when>
         <xed:otherwise>
           <xed:validate xpath="//mods:mods/mods:name[mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']='aut']/mods:displayForm"
             required="true" i18n="mir.validation.author" display="global" />
         </xed:otherwise>
       </xed:choose>
-      <xed:validate xpath="//mods:originInfo[@eventType='publication' or @eventType='creation']/mods:dateIssued[@encoding='w3cdtf']" required="true" i18n="mir.validation.dateIssued" display="global" />
+      <xed:choose>
+        <xed:when test="//mods:originInfo[@eventType='creation']/mods:dateCreated">
+          <xed:validate xpath="//mods:originInfo[@eventType='creation']/mods:dateCreated[@encoding='w3cdtf']" required="true" i18n="mir.validation.dateIssued" display="global" />
+        </xed:when>
+        <xed:otherwise>
+          <xed:validate xpath="//mods:originInfo[@eventType='publication']/mods:dateIssued[@encoding='w3cdtf']" required="true" i18n="mir.validation.dateIssued" display="global" />
+        </xed:otherwise>
+      </xed:choose>
       <xed:validate xpath="//mods:mods/mods:accessCondition[@type='use and reproduction']" required="true" i18n="mir.validation.rights" display="global" />
     </xed:if>
 
