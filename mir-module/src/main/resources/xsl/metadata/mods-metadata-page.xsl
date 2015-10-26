@@ -75,6 +75,10 @@
           <xsl:if test="div[@id = 'mir-viewer']">
             <xsl:apply-templates select="div[@id='mir-viewer']" mode="copyContent" />
           </xsl:if>
+          <!-- player -->
+          <xsl:if test="div[@id = 'mir-player']">
+            <xsl:apply-templates select="div[@id='mir-player']" mode="copyContent" />
+          </xsl:if>
           <!-- files -->
           <xsl:if test="div[contains(@id,'mir-collapse-')]">
             <div class="detail_block">
