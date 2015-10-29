@@ -57,14 +57,12 @@
               <xsl:apply-templates select="div[@id='mir-abstract-badges']" mode="copyContent" />
             </div>
           </div>
-          <div class="row">
-            <div id="headline" class="col-xs-12 col-md-8">
-              <xsl:apply-templates select="div[@id='mir-abstract-title']" mode="copyContent" />
-            </div>
-          </div>
         </div>
 
-        <div id="main_col" class="col-md-8">
+        <div id="main_col" class="col-xs-12 col-sm-8">
+          <div id="headline">
+            <xsl:apply-templates select="div[@id='mir-abstract-title']" mode="copyContent" />
+          </div>
           <div class="detail_block">
           <!-- Start: ABSTRACT -->
             <xsl:apply-templates select="div[@id='mir-abstract-plus']" mode="copyContent" />
@@ -104,7 +102,7 @@
         </div>
 
 <!-- right column -->
-        <div id="aux_col" class="col-md-4">
+        <div id="aux_col" class="col-xs-12 col-sm-4">
 
 <!-- cites -->
           <xsl:if test="div[@id='mir-citation']">

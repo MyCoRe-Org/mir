@@ -49,7 +49,7 @@
 
 <!-- Suchschlitz mit Suchbegriff, Treffer - Nummer, Vorschau, Autor, Änderungsdatum, Link zu den Details, Filter  -->
     <div class="row result_searchline">
-      <div class="col-xs-12 col-md-9 text-center result_search">
+      <div class="col-xs-12 col-sm-8 text-center result_search">
         <div class="search_box">
           <form action="{$WebApplicationBaseURL}servlets/solr/find" class="search_form" method="post">
             <div class="input-group input-group-sm">
@@ -77,7 +77,7 @@
 
 <!-- Filter, Pagination & Trefferliste -->
     <div class="row result_body">
-      <div class="col-xs-12 col-sm-4 col-lg-3 result_filter">
+      <div class="col-xs-12 col-sm-4 result_filter">
         <xsl:if test="/response/lst[@name='facet_counts']/lst[@name='facet_fields'] and $hits &gt; 0">
           <div class="panel panel-default">
             <div class="panel-heading" data-toggle="collapse-next">
@@ -105,7 +105,7 @@
         </xsl:if>
       </div>
 
-      <div class="col-xs-12 col-sm-8 col-lg-9 result_list">
+      <div class="col-xs-12 col-sm-8 result_list">
         <xsl:comment>
           RESULT LIST START
         </xsl:comment>
