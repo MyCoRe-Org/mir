@@ -16,7 +16,14 @@
   </xed:template>
 
   <xed:template id="mycore.common">
-    <xed:bind xpath="@ID" initially="{$MIR.projectid.default}_mods_00000000" />
+    <xed:choose>
+      <xed:when test="xed:call-java('org.mycore.common.xml.MCRXMLFunctions','getCurrentUserAttribute','origin')">
+        <xed:bind xpath="@ID" initially="{xed:call-java('org.mycore.common.xml.MCRXMLFunctions','getCurrentUserAttribute','origin')}_mods_00000000" />
+      </xed:when>
+      <xed:otherwise>
+        <xed:bind xpath="@ID" initially="{$MIR.projectid.default}_mods_00000000" />
+      </xed:otherwise>
+    </xed:choose>
   </xed:template>
 
   <xed:template id="genre">
