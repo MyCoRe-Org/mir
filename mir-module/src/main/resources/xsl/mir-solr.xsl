@@ -104,9 +104,9 @@
         <xsl:for-each select="mods:displayForm | mods:namePart[@type!='date'] | text()">
           <xsl:value-of select="concat(' ',.)" />
         </xsl:for-each>
-        <xsl:if test="contains(@valueURI,'http://d-nb.info/gnd/')">
+        <xsl:if test="mods:nameIdentifier/@type = 'gnd'">
           <xsl:text>:</xsl:text>
-          <xsl:value-of select="substring-after(@valueURI,'http://d-nb.info/gnd/')" />
+          <xsl:value-of select="mods:nameIdentifier[@type='gnd']" />
         </xsl:if>
       </xsl:variable>
       <field name="mods.pindexname">
