@@ -229,8 +229,8 @@
             </div>
             <mir:help-pmud help-text="{i18n:mir.help.title.complex}" pmud="true" />
           </div>
-          <mir:textfield xpath="mods:title" label="mir.title" help-text="{i18n:mir.help.title}" class="required" />
-          <mir:textfield xpath="mods:subTitle" label="mir.title.subTitle" help-text="{i18n:mir.help.title.subTitle}" />
+          <mir:textarea xpath="mods:title" rows="2" label="mir.title" help-text="{i18n:mir.help.title}" class="required" />
+          <mir:textarea xpath="mods:subTitle" rows="2" label="mir.title.subTitle" help-text="{i18n:mir.help.title.subTitle}" />
         </div>
       </xed:repeat>
     </fieldset>
@@ -1048,6 +1048,31 @@
       </div>
       <mir:help-pmud help-text="{i18n:mir.help.editor.organization}" />
     </div>
+  </xed:template>
+
+  <xed:template id="publisher.organization.repeat">
+    <xed:repeat xpath="mods:name[@type='corporate'][mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']='pbl']"><!--  Publisher [pbl]  -->
+      <div class="form-group">
+        <label class="col-md-3 control-label">
+          <xed:output i18n="mir.publisherOrganization" />
+          :
+        </label>
+        <div class="col-md-6">
+          <div class="search-organization">
+            <xed:bind xpath="mods:displayForm">
+              <input type="text" size="26" class="form-control form-control-inline" data-search="searchEntity" data-search-type="select"
+                data-search-entity-type="organisation" data-search-output="#valueURIxEditor" data-search-button="{i18n:button.search}"
+                data-search-button-loading="{i18n:button.loading}" data-search-result-empty="{i18n:mir.searchIdentifier.noResult}" data-target=".search-organization"
+                placeholder="{i18n:mir.placeholder.name.organization}" />
+            </xed:bind>
+            <xed:bind xpath="mods:nameIdentifier">
+              <input type="hidden" id="valueURIxEditor" />
+            </xed:bind>
+          </div>
+        </div>
+        <mir:help-pmud help-text="{i18n:mir.help.editor.organization}" pmud="true" />
+      </div>
+    </xed:repeat>
   </xed:template>
 
   <xed:template id="geographic">
