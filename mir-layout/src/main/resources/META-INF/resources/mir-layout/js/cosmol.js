@@ -64,14 +64,14 @@ var headline = $('#head_col #headline');                   // title
   if ( $('#side_nav_column').is(":visible") ) {
     // side nav is visible, make one column
     mainCol.removeClass('col-sm-12').addClass('col-sm-9');   // parent
-    leftCol.removeClass('col-md-8').addClass('col-xs-12');   // left
-    rightCol.removeClass('col-md-4').addClass('col-xs-12');  // right
+    leftCol.removeClass('col-sm-8').addClass('col-xs-12');   // left
+    rightCol.removeClass('col-sm-4').addClass('col-xs-12');  // right
     headline.removeClass('col-md-8').addClass('col-xs-12');  // title
   } else {
     // side nav is hidden, make two columns
     mainCol.removeClass( 'col-sm-9').addClass( 'col-sm-12'); // parent
-    leftCol.removeClass( 'col-xs-12').addClass('col-md-8');  // left
-    rightCol.removeClass('col-xs-12').addClass('col-md-4');  // right
+    leftCol.removeClass( 'col-xs-12').addClass('col-sm-8');  // left
+    rightCol.removeClass('col-xs-12').addClass('col-sm-4');  // right
     headline.removeClass('col-xs-12').addClass('col-md-8');  // title
   }
 }
