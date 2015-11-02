@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:mods="http://www.loc.gov/mods/v3" xmlns:encoder="xalan://java.net.URLEncoder"
-  xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation" xmlns:str="http://exslt.org/strings" xmlns:mcr="xalan://org.mycore.common.xml.MCRXMLFunctions"
+  xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation" xmlns:str="http://exslt.org/strings" xmlns:exslt="http://exslt.org/common" xmlns:mcr="xalan://org.mycore.common.xml.MCRXMLFunctions"
                 xmlns:acl="xalan://org.mycore.access.MCRAccessManager"
                 xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions"
                 xmlns:basket="xalan://org.mycore.frontend.basket.MCRBasketManager"
-                exclude-result-prefixes="i18n mods str mcr acl mcrxsl basket encoder"
+                exclude-result-prefixes="i18n mods str exslt mcr acl mcrxsl basket encoder"
   >
 
   <xsl:param name="UserAgent" />
@@ -348,10 +348,24 @@
 <!-- hit headline -->
               <h3 class="hit_title">
                 <a href="{$hitHref}">
-                  <xsl:attribute name="title"><xsl:value-of select="./str[@name='mods.title.main']" /></xsl:attribute>
+                  <xsl:attribute name="title">
+                    <xsl:value-of select="./str[@name='mods.title.main']" />
+                    <xsl:if test="./str[@name='mods.title.subtitle']">
+                      <xsl:value-of select="concat(' : ', ./str[@name='mods.title.subtitle'])" />
+                    </xsl:if>
+                  </xsl:attribute>
                   <xsl:choose>
                     <xsl:when test="./str[@name='search_result_link_text']">
                       <xsl:value-of select="./str[@name='search_result_link_text']" />
+                      <xsl:if test="not(contains(./str[@name='search_result_link_text'], '...')) and ./str[@name='mods.title.subtitle']">
+                        <xsl:variable name="mylength" select="75 - string-length(./str[@name='search_result_link_text'])" />
+                        <xsl:if test="$mylength &gt; 7">
+                          <span class="subtitle">
+                            <xsl:value-of select="concat(' : ', substring(./str[@name='mods.title.subtitle'],1, $mylength))" />
+                            <xsl:if test="string-length(./str[@name='mods.title.subtitle']) &gt; $mylength">...</xsl:if>
+                          </span>
+                      </xsl:if>
+                      </xsl:if>
                     </xsl:when>
                     <xsl:when test="./str[@name='fileName']">
                       <xsl:value-of select="./str[@name='fileName']" />
@@ -364,20 +378,32 @@
               </h3>
 
 <!-- hit author -->
-              <xsl:if test="./arr[@name='mods.author']">
+              <xsl:if test="arr[@name='mods.nameByRole.personal.aut'] or arr[@name='mods.nameByRole.personal.edt'] or arr[@name='mods.nameByRole.personal.pbl']">
                 <div class="hit_author">
-                  <xsl:for-each select="./arr[@name='mods.author']/str">
+                  <xsl:variable name="nameList">
+                    <xsl:choose>
+                      <xsl:when test="arr[@name='mods.nameByRole.personal.aut']">
+                        <xsl:copy-of select="arr[@name='mods.nameByRole.personal.aut']/." />
+                      </xsl:when>
+                      <xsl:when test="arr[@name='mods.nameByRole.personal.edt']">
+                        <xsl:copy-of select="arr[@name='mods.nameByRole.personal.edt']/." />
+                      </xsl:when>
+                      <xsl:when test="arr[@name='mods.nameByRole.personal.pbl']">
+                        <xsl:copy-of select="arr[@name='mods.nameByRole.personal.pbl']/." />
+                      </xsl:when>
+                    </xsl:choose>
+                  </xsl:variable>
+                  <xsl:for-each select="exslt:node-set($nameList)/arr/str[position() &lt;= 3]">
                     <xsl:if test="position()!=1">
                       <xsl:value-of select="' / '" />
                     </xsl:if>
-                    <xsl:variable name="author_name" select="." />
-                    <xsl:variable name="gnd">
-                      <xsl:for-each select="../../arr[@name='mods.pindexname']/str">
-                        <xsl:if test="contains(text(), $author_name)">
-                          <xsl:value-of select="substring-after(text(), ':')" />
-                        </xsl:if>
-                      </xsl:for-each>
+                    <xsl:variable name="author_name">
+                      <xsl:choose>
+                        <xsl:when test="contains(., ':')"><xsl:value-of select="substring-before(., ':')" /></xsl:when>
+                        <xsl:otherwise><xsl:value-of select="." /></xsl:otherwise>
+                      </xsl:choose>
                     </xsl:variable>
+                    <xsl:variable name="gnd" select="substring-after(., ':')" />
                     <!-- if user is in role editor or admin, show all; other users only gets their own and published publications -->
                     <xsl:variable name="filter_query">
                       <xsl:choose>
@@ -433,23 +459,27 @@
                 </div>
               </xsl:if>
 
+<!-- hit publisher -->
               <xsl:if test="arr[@name='mods.publisher']">
                 <div class="hit_pub_name">
-                  <span class="label_publisher">
-                    <xsl:value-of select="concat(i18n:translate('component.mods.metaData.dictionary.published'),': ')" />
-                  </span>
-                  <xsl:variable name="publisher" select="arr[@name='mods.publisher']/str" />
+                  <xsl:variable name="date" select="str[@name='mods.dateIssued']" />
                   <xsl:variable name="place" select="arr[@name='mods.place']/str" />
-                  <xsl:for-each select="$publisher">
+                  <span class="label_publisher">
+                    <xsl:choose>
+                      <xsl:when test="string-length($place) &gt; 0"><xsl:value-of select="concat($place,': ')" /></xsl:when>
+                      <xsl:otherwise><xsl:value-of select="concat(i18n:translate('component.mods.metaData.dictionary.published'),': ')" /></xsl:otherwise>
+                    </xsl:choose>
+                  </span>
+
+                  <xsl:for-each select="arr[@name='mods.publisher']/str">
                     <xsl:if test="position()!=1">
                       <xsl:value-of select="'; '" />
                     </xsl:if>
                     <xsl:value-of select="." />
+                    <xsl:if test="position()=last() and string-length($date) &gt; 0">
+                      <xsl:value-of select="concat(', ', $date)" />
+                    </xsl:if>
                   </xsl:for-each>
-                  <xsl:if test="count($publisher)=1 and count($place)=1">
-                    <xsl:value-of select="', '" />
-                    <xsl:value-of select="$place" />
-                  </xsl:if>
                 </div>
               </xsl:if>
 
