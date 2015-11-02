@@ -42,62 +42,79 @@
     //date filter option
     $('.mir-search-options-date input').ready(function() {
       var currentURL = window.location.href;
-      var fqDate = '';
-      //input start val
       if(currentURL.indexOf('&fq=mods.dateIssued') > 0) {
-        fqDate = currentURL.substr(currentURL.indexOf('&fq=mods.dateIssued'));
-        fqDate = decodeURIComponent(fqDate.split('&')[1]);
-        $(".mir-search-options-date input").val(fqDate.replace(/[a-zA-Z.:"+*={}/\]/\[]/g, ''));
-      }
-      //select start val
-      if(fqDate.indexOf('"') > 0) {
-        $('.mir-search-options-date select').val('=');
-      }
-      if(fqDate.indexOf('+TO+*') > 0 && fqDate.indexOf('{') > 0) {
-        $('.mir-search-options-date select').val('>');
-      }
-      if(fqDate.indexOf('+TO+*') > 0 && fqDate.indexOf('[') > 0) {
-        $('.mir-search-options-date select').val('>=');
-      }
-      if(fqDate.indexOf('*+TO+') > 0 && fqDate.indexOf('}') > 0) {
-        $('.mir-search-options-date select').val('<');
-      }
-      if(fqDate.indexOf('*+TO+') > 0 && fqDate.indexOf(']') > 0) {
-        $('.mir-search-options-date select').val('<=');
+	      var fqDate = currentURL.substr(currentURL.indexOf('&fq=mods.dateIssued'));
+	      fqDate = decodeURIComponent(fqDate.split('&')[1]);
+	      
+	      //comparison val
+	      if(fqDate.indexOf('"') > 0) {
+	        $(".mir-search-options-date .list-group a").append(' = ');
+	      }
+	      if(fqDate.indexOf('+TO+*') > 0 && fqDate.indexOf('{') > 0) {
+	        $(".mir-search-options-date .list-group a").append(' > ');
+	      }
+	      if(fqDate.indexOf('+TO+*') > 0 && fqDate.indexOf('[') > 0) {
+	        $(".mir-search-options-date .list-group a").append(' >= ');
+	      }
+	      if(fqDate.indexOf('*+TO+') > 0 && fqDate.indexOf('}') > 0) {
+	        $(".mir-search-options-date .list-group a").append(' < ');
+	      }
+	      if(fqDate.indexOf('*+TO+') > 0 && fqDate.indexOf(']') > 0) {
+	        $(".mir-search-options-date .list-group a").append(' <= ');
+	      }
+	      
+	      //date val
+	      fqDate = fqDate.replace(/[a-zA-Z.:"+*={}/\]/\[]/g, '');
+        $(".mir-search-options-date .list-group a").append(fqDate);
       }
     });
 
     //date filter option
-    $('.mir-search-options-date input').keyup(function(event) {
-      if(event.which === 13) {
+    $('.mir-search-options-date #dateSearch').click(function() {
         var currentURL = window.location.href;
         var fqDate = '';
         var newURL = currentURL;
-        if(currentURL.indexOf('&fq=mods.dateIssued') > 0) {
-          fqDate = currentURL.substr(currentURL.indexOf('&fq=mods.dateIssued'));
-          fqDate = fqDate.split('&')[1];
-          newURL = currentURL.replace('&' + fqDate, '');
+        var dateInput = $('.mir-search-options-date .dateContainer :input');
+        var date = '';
+        //piece together date        
+        if(!!$(dateInput[2]).val()) {
+        	date = $(dateInput[2]).val();
+        	if(!!$(dateInput[1]).val()) {
+        		date = date + '-' + $(dateInput[1]).val();
+        		if(!!$(dateInput[0]).val()) {
+        			date = date + '-' + $(dateInput[0]).val();
+        		}
+        	}
         }
-        if($(this).val() != '') {
-          var operator = $('.mir-search-options-date select').val();
-          if(operator == '=') {
-            newURL = newURL + '&fq=mods.dateIssued%3A"' + $(this).val() + '"';
-          }
-          if(operator == '>') {
-            newURL = newURL + '&fq=mods.dateIssued%3A{' + $(this).val() + '+TO+*]';
-          }
-          if(operator == '>=') {
-            newURL = newURL + '&fq=mods.dateIssued%3A[' + $(this).val() + '+TO+*]';
-          }
-          if(operator == '<') {
-            newURL = newURL + '&fq=mods.dateIssued%3A[*+TO+' + $(this).val() + '}';
-          }
-          if(operator == '<=') {
-            newURL = newURL + '&fq=mods.dateIssued%3A[*+TO+' + $(this).val() + ']';
-          }
+        
+        if(date != '') {
+	        if(currentURL.indexOf('&fq=mods.dateIssued') > 0) {
+	          fqDate = currentURL.substr(currentURL.indexOf('&fq=mods.dateIssued'));
+	          fqDate = fqDate.split('&')[1];
+	          newURL = currentURL.replace('&' + fqDate, '');
+	        }
+	        var operator = $('.mir-search-options-date select').val();
+	        if(operator == '=') {
+	          newURL = newURL + '&fq=mods.dateIssued%3A"' + date + '"';
+	        }
+	        if(operator == '>') {
+	          newURL = newURL + '&fq=mods.dateIssued%3A{' + date + '+TO+*]';
+	        }
+	        if(operator == '>=') {
+	          newURL = newURL + '&fq=mods.dateIssued%3A[' + date + '+TO+*]';
+	        }
+	        if(operator == '<') {
+	          newURL = newURL + '&fq=mods.dateIssued%3A[*+TO+' + date + '}';
+	        }
+	        if(operator == '<=') {
+	          newURL = newURL + '&fq=mods.dateIssued%3A[*+TO+' + date + ']';
+	        }
+	        window.location.href = newURL;
         }
-        window.location.href = newURL;
-      }
+    });
+    
+    $('.stopAutoclose').click(function(event) {
+    	event.stopPropagation()
     });
 
     //colapse the next element

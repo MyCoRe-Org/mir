@@ -621,7 +621,7 @@
       <xsl:variable name="filterHref">
         <xsl:choose>
           <xsl:when test="contains($RequestURL,'&amp;')">
-            <xsl:value-of select="concat(substring-before($RequestURL, '&amp;'), $complete, substring-after($RequestURL, '&amp;'))" />
+            <xsl:value-of select="concat(substring-before($RequestURL, '&amp;'), $complete, substring-after($RequestURL, substring-before($RequestURL, '&amp;')))" />
           </xsl:when>
           <xsl:otherwise>
             <xsl:value-of select="concat($RequestURL,$complete)" />
@@ -672,17 +672,48 @@
         <h3 class="panel-title"><xsl:value-of select="i18n:translate('component.mods.metaData.dictionary.dateIssued')" /></h3>
       </div>
       <div class="panel-body collapse in">
-        <div class="input-group">
-          <div class="input-group-btn">
-            <select class="btn btn-default">
-              <option value="=">=</option>
-              <option value="&gt;">&gt;</option>
-              <option value="&gt;=">&gt;=</option>
-              <option value="&lt;">&lt;</option>
-              <option value="&lt;=">&lt;=</option>
-            </select>
+        <xsl:if test="contains($RequestURL, 'fq=mods.dateIssued')">
+          <xsl:variable name="dateFilterHelper"> 
+            <xsl:value-of select="concat(substring-before($RequestURL, '&amp;fq=mods.dateIssued'), '&amp;', substring-after(substring-after($RequestURL, '&amp;fq=mods.dateIssued'), '&amp;'))" />
+          </xsl:variable>
+          <div class="list-group">
+            <a class="list-group-item active" href="{$dateFilterHelper}">
+              <span aria-hidden="true" class="glyphicon glyphicon-remove" />
+            </a>
           </div>
-          <input class="form-control" placeholder="YYYY-MM-DD" maxlength="10"/>
+        </xsl:if>
+        <div class="dropdown container-fluid row">
+          <button class="btn btn-default dropdown-toggle col-md-12 col-xs-12" type="button" data-toggle="dropdown" >
+            Filter
+            <span class="caret"/>
+          </button>
+          <div class="dropdown-menu dropdown-menu-right stopAutoclose col-md-12" role="menu">
+            <div class="container-fluid">
+              <div class="col-md-12 form-group">
+                <select class="form-control">
+                  <option value="=">=</option>
+                  <option value="&gt;">&gt;</option>
+                  <option value="&gt;=">&gt;=</option>
+                  <option value="&lt;">&lt;</option>
+                  <option value="&lt;=">&lt;=</option>
+                </select>
+              </div>
+              <div class="col-md-12 form-group dateContainer">
+                <div class="col-md-4">
+                  <input class="form-control" placeholder="DD" type="number" min="1" max="31" style="padding: 0.5em"/>
+                </div>
+                <div class="col-md-4">
+                  <input class="form-control" placeholder="MM" type="number" min="1" max="12" style="padding: 0.5em"/>
+                </div>
+                <div class="col-md-4">
+                  <input class="form-control" placeholder="YYYY" type="number" min="1000" max="2050" style="padding: 0.2em"/>
+                </div>
+              </div>
+              <div class="col-md-12 form-group">
+                <input id="dateSearch" type="button" class="btn btn-default form-control" value="Go!"/>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
