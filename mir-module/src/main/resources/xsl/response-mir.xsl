@@ -378,7 +378,7 @@
               </h3>
 
 <!-- hit author -->
-              <xsl:if test="arr[@name='mods.nameByRole.personal.aut'] or arr[@name='mods.nameByRole.personal.edt'] or arr[@name='mods.nameByRole.personal.pbl']">
+              <xsl:if test="arr[@name='mods.nameByRole.personal.aut'] or arr[@name='mods.nameByRole.personal.edt'] or arr[@name='mods.nameByRole.corporate.pbl']">
                 <div class="hit_author">
                   <xsl:variable name="nameList">
                     <xsl:choose>
@@ -388,8 +388,8 @@
                       <xsl:when test="arr[@name='mods.nameByRole.personal.edt']">
                         <xsl:copy-of select="arr[@name='mods.nameByRole.personal.edt']/." />
                       </xsl:when>
-                      <xsl:when test="arr[@name='mods.nameByRole.personal.pbl']">
-                        <xsl:copy-of select="arr[@name='mods.nameByRole.personal.pbl']/." />
+                      <xsl:when test="arr[@name='mods.nameByRole.corporate.pbl']">
+                        <xsl:copy-of select="arr[@name='mods.nameByRole.corporate.pbl']/." />
                       </xsl:when>
                     </xsl:choose>
                   </xsl:variable>
@@ -673,7 +673,7 @@
       </div>
       <div class="panel-body collapse in">
         <xsl:if test="contains($RequestURL, 'fq=mods.dateIssued')">
-          <xsl:variable name="dateFilterHelper"> 
+          <xsl:variable name="dateFilterHelper">
             <xsl:value-of select="concat(substring-before($RequestURL, '&amp;fq=mods.dateIssued'), '&amp;', substring-after(substring-after($RequestURL, '&amp;fq=mods.dateIssued'), '&amp;'))" />
           </xsl:variable>
           <div class="list-group">
