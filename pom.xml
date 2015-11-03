@@ -16,9 +16,9 @@
   <properties>
     <java.target.version>1.8</java.target.version>
     <mycore.version>2015.08-SNAPSHOT</mycore.version>
-    <jetty.version>9.2.12.v20150709</jetty.version>
-    <tomcat8.version>8.0.26</tomcat8.version>
-    <cargo.version>1.4.15</cargo.version>
+    <jetty.version>9.3.5.v20151012</jetty.version>
+    <tomcat8.version>8.0.28</tomcat8.version>
+    <cargo.version>1.4.16</cargo.version>
     <cargo.servlet.uriencoding>UTF-8</cargo.servlet.uriencoding>
     <cargo.container.zipUrlInstaller.downloadDir>${settings.localRepository}/../cargo/containers</cargo.container.zipUrlInstaller.downloadDir>
     <cargo.deployable.default.groupId>${project.groupId}</cargo.deployable.default.groupId>
