@@ -69,6 +69,7 @@
       </xsl:choose>
     </xsl:variable>
     <button type="submit" xed:target="{$target}" class="btn btn-primary btn-{$input-size} {@class}">
+      <xsl:copy-of select="@order" />
       <xsl:if test="string-length(@href) &gt; 0">
         <xsl:attribute name="xed:href">
           <xsl:value-of select="@href" />

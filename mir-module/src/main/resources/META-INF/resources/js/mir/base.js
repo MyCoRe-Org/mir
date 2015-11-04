@@ -1,5 +1,15 @@
 (function($) {
   $﻿(document).ready(function() {
+  	
+  	//define the primary button in a form with multiple submit buttons
+    $("[order=primary-button]").ready(function() {
+    	var myForm = $("[order=primary-button]").parents("form:first");
+    	$(myForm).find("input[type=text]").keypress(function(event) {
+    		if(event.keyCode == 13 || event.which == 13) {
+    			$("[order=primary-button]").click();
+    		}
+    	});
+    });
 
     //for select box in search field on hit list page
     $( ".search_type a" ).click(function() {
