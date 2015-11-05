@@ -15,6 +15,7 @@ import org.mycore.datamodel.classifications2.MCRCategory;
 import org.mycore.datamodel.classifications2.MCRCategoryDAO;
 import org.mycore.datamodel.classifications2.MCRCategoryDAOFactory;
 import org.mycore.datamodel.classifications2.MCRCategoryID;
+import org.mycore.datamodel.classifications2.MCRLabel;
 import org.mycore.frontend.servlets.MCRServlet;
 import org.mycore.frontend.servlets.MCRServletJob;
 import org.mycore.user2.MCRUser2Constants;
@@ -54,7 +55,7 @@ public class MIRClassificationServlet extends MCRServlet {
             if (MCRAccessManager.checkPermission(category.getId().toString(), MCRAccessManager.PERMISSION_READ)) {
                 Element role = new Element("classification");
                 role.setAttribute("authority", category.getId().toString());
-                category.getCurrentLabel().ifPresent(label -> role.setText(label.getText()));
+                category.getCurrentLabel().map(MCRLabel::getText).ifPresent(role::setText);
                 list.add(role);
             }
         }
