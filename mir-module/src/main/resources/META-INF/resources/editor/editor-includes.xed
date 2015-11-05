@@ -7,8 +7,14 @@
     <xed:source uri="xslStyle:RDF-mods-journal,editor/mods2xeditor:http://ld.zdb-services.de/data/{$zdbid}.rdf" />
     <xed:source uri="xslStyle:editor/mods2xeditor:{$sourceUri}" />
     <xed:source uri="xslStyle:mycoreobject-editor,editor/mods2xeditor:mcrobject:{$id}" />
-    <xed:source uri="xslStyle:asHost,editor/mods2xeditor:mcrobject:{$hostId}" />
-    <xed:source uri="xslStyle:asSeries,editor/mods2xeditor:mcrobject:{$seriesId}" />
+    <xed:choose>
+      <xed:when test="$relatedItemType='series'"> <!-- $seriesId -->
+        <xed:source uri="xslStyle:asSeries,editor/mods2xeditor:mcrobject:{$relatedItemId}" />
+      </xed:when>
+      <xed:otherwise> <!-- $hostId -->
+        <xed:source uri="xslStyle:asHost,editor/mods2xeditor:mcrobject:{$relatedItemId}" />
+      </xed:otherwise>
+    </xed:choose>
     <xed:cancel url="../servlets/MCRLockServlet?action=unlock&amp;id={$id}&amp;url=/receive/{$id}" />
     <xed:cancel url="{$cancelUrl}" />
     <xed:cancel url="../index.html" />
@@ -85,7 +91,7 @@
   <xed:template id="title">
     <mir:textfield xpath="mods:titleInfo/mods:title" help-text="{i18n:mir.help.title}" label="mir.title" class="required" />
   </xed:template>
-  
+
   <xed:template id="title.nonrequired">
     <mir:textfield xpath="mods:titleInfo/mods:title" label="mir.title" help-text="{i18n:mir.help.title}" />
   </xed:template>
@@ -302,7 +308,7 @@
       </option>
     </mir:person.repeated>
   </xed:template>
-  
+
   <xed:template id="artist.photographer.repeated">
     <mir:person.repeated help-text="{i18n:mir.help.artist.photographer}">
       <option value="art">
@@ -1514,6 +1520,6 @@
 
   <xed:template id="sessionpolling">
     <script src="{$WebApplicationBaseURL}js/mir/session-polling.js" type="text/javascript"></script>
-  </xed:template> 
+  </xed:template>
 
 </xed:template>
