@@ -16,7 +16,7 @@
       </boolean>
     </condition>
   </mcrpermission>
-  <mcrpermission name="create-classification" description="Create rights for classifications" ruledescription="administrators only">
+  <mcrpermission name="create-class" description="Create rights for classifications" ruledescription="administrators only">
     <condition format="xml">
       <boolean operator="or">
         <condition value="admin" operator="=" field="group" />
