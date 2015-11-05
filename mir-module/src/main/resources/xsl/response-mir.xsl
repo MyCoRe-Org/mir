@@ -342,6 +342,36 @@
                   <span class="label label-primary"><xsl:value-of select="$date" /></span>
                 </div>
               </xsl:if>
+              <div class="hit_date">
+                <xsl:variable name="status-i18n">
+                  <xsl:value-of select="i18n:translate(concat('mir.state.',str[@name='state']))" />
+                </xsl:variable>
+                <span class="label label-info" title="{$status-i18n}" >
+                  <xsl:choose>
+                    <xsl:when test="str[@name='state'] = 'published' ">
+                      <i class="fa fa-check-square"></i>
+                    </xsl:when>
+                    <xsl:when test="str[@name='state'] = 'review' ">
+                      <i class="fa fa-wrench"></i>
+                    </xsl:when>
+                    <xsl:when test="str[@name='state'] = 'imported' ">
+                      <i class="fa fa-cloud-download"></i>
+                    </xsl:when>
+                    <xsl:when test="str[@name='state'] = 'deleted' ">
+                      <i class="fa fa-times"></i>
+                    </xsl:when>
+                    <xsl:when test="str[@name='state'] = 'new' ">
+                      <i class="fa fa-plus"></i>
+                    </xsl:when>
+                    <xsl:when test="str[@name='state'] = 'submitted' ">
+                      <i class="fa fa-tag"></i>
+                    </xsl:when>
+                    <xsl:otherwise>
+                      <i class="fa fa-lock"></i>
+                    </xsl:otherwise>
+                  </xsl:choose>
+                </span>
+              </div>
             </div>
           </div>
 
