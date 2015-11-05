@@ -54,7 +54,7 @@ public class MIRClassificationServlet extends MCRServlet {
             if (MCRAccessManager.checkPermission(category.getId().toString(), MCRAccessManager.PERMISSION_READ)) {
                 Element role = new Element("classification");
                 role.setAttribute("authority", category.getId().toString());
-                role.setText(category.getCurrentLabel().getText());
+                category.getCurrentLabel().ifPresent(label -> role.setText(label.getText()));
                 list.add(role);
             }
         }
@@ -75,8 +75,8 @@ public class MIRClassificationServlet extends MCRServlet {
                 categoryID = MCRCategoryID.fromString(categID);
             } else {
                 String rootID = getProperty(request, "classID");
-                categoryID = (rootID == null) ? MCRCategoryID.rootID(MCRUser2Constants.getRoleRootId()) : MCRCategoryID
-                        .rootID(rootID);
+                categoryID = (rootID == null) ? MCRCategoryID.rootID(MCRUser2Constants.getRoleRootId())
+                        : MCRCategoryID.rootID(rootID);
             }
             Element rootElement = getRootElement(request);
             rootElement.setAttribute("classID", categoryID.getRootID());
