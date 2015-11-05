@@ -506,18 +506,20 @@
                 <xsl:value-of select="actionmapping:getURLforID('create-child',$id,true())" xmlns:actionmapping="xalan://org.mycore.wfc.actionmapping.MCRURLRetriever" />
               </xsl:variable>
 
-              <xsl:variable name="relItemType">
-                <xsl:choose>
-                  <xsl:when test="$mods-type = 'series'">series</xsl:when>
-                  <xsl:otherwise>host</xsl:otherwise>
-                </xsl:choose>
-              </xsl:variable>
-
               <xsl:choose>
-                <xsl:when test="not(contains($url, 'editor-dynamic.xed'))">
+                <xsl:when test="not(contains($url, 'editor-dynamic.xed')) and $mods-type != 'series'">
                   <xsl:for-each select="str:tokenize($child-layout,'|')">
                     <li>
-                      <a href="{$url}{$HttpSession}?relatedItemId={$id}&amp;relatedItemType={$relItemType}&amp;genre={.}">
+                      <a href="{$url}{$HttpSession}?relatedItemId={$id}&amp;relatedItemType=host&amp;genre={.}">
+                        <xsl:value-of select="i18n:translate(concat('component.mods.genre.',.))" />
+                      </a>
+                    </li>
+                  </xsl:for-each>
+                </xsl:when>
+                <xsl:when test="not(contains($url, 'editor-dynamic.xed')) and $mods-type = 'series'">
+                  <xsl:for-each select="str:tokenize($child-layout,'|')">
+                    <li>
+                      <a href="{$url}{$HttpSession}?relatedItemId={$id}&amp;relatedItemType=series&amp;genre={.}">
                         <xsl:value-of select="i18n:translate(concat('component.mods.genre.',.))" />
                       </a>
                     </li>
@@ -526,7 +528,7 @@
                 <xsl:otherwise>
                   <xsl:for-each select="str:tokenize($child-layout,'|')">
                     <li>
-                      <a href="{$url}{$HttpSession}?relatedItemId={$id}&amp;relatedItemType={$relItemType}&amp;genre={.}">
+                      <a href="{$url}{$HttpSession}?relatedItemId={$id}&amp;relatedItemType=host&amp;genre={.}">
                         <xsl:value-of select="i18n:translate(concat('component.mods.genre.',.))" />
                       </a>
                     </li>
@@ -626,7 +628,7 @@
           </a>
           <ul class="dropdown-menu dropdown-menu-right">
             <li>
-              <a href="{$WebApplicationBaseURL}editor/editor-derivate.xed{$HttpSession}?derivateid={$deriv}"> 
+              <a href="{$WebApplicationBaseURL}editor/editor-derivate.xed{$HttpSession}?derivateid={$deriv}">
                 <!-- xsl:value-of select="i18n:translate('component.swf.derivate.updateFile')" / -->
                 Beschriftung bearbeiten
               </a>
