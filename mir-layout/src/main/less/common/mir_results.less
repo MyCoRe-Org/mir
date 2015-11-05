@@ -161,6 +161,29 @@
         float: left;
         color: @dark_neutral;
       }
+      .hit_state {
+        float: left;
+        margin-left: 5px;
+        color: @dark_neutral;
+        .mir-published {
+          background-color: @label-success-bg;
+        }
+        .mir-submitted, .mir-new, .mir-imported {
+          background-color: @label-warning-bg;
+        }
+        .mir-review {
+          background-color: @label-primary-bg;
+        }
+        .mir-blocked {
+          background-color: @label-danger-bg;
+        }
+        .mir-deleted {
+          background-color: @label-default-bg;
+        }
+        span {
+          background-color: @label-default-bg;
+        }
+      }
       .hit_title {
         font-size: 20px;
         margin: 15px 0 5px 0;

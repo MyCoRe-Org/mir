@@ -342,36 +342,16 @@
                   <span class="label label-primary"><xsl:value-of select="$date" /></span>
                 </div>
               </xsl:if>
-              <div class="hit_date">
+              <xsl:if test="not (mcrxsl:isCurrentUserGuestUser())">
+              <div class="hit_state">
                 <xsl:variable name="status-i18n">
                   <xsl:value-of select="i18n:translate(concat('mir.state.',str[@name='state']))" />
                 </xsl:variable>
-                <span class="label label-info" title="{$status-i18n}" >
-                  <xsl:choose>
-                    <xsl:when test="str[@name='state'] = 'published' ">
-                      <i class="fa fa-check-square"></i>
-                    </xsl:when>
-                    <xsl:when test="str[@name='state'] = 'review' ">
-                      <i class="fa fa-wrench"></i>
-                    </xsl:when>
-                    <xsl:when test="str[@name='state'] = 'imported' ">
-                      <i class="fa fa-cloud-download"></i>
-                    </xsl:when>
-                    <xsl:when test="str[@name='state'] = 'deleted' ">
-                      <i class="fa fa-times"></i>
-                    </xsl:when>
-                    <xsl:when test="str[@name='state'] = 'new' ">
-                      <i class="fa fa-plus"></i>
-                    </xsl:when>
-                    <xsl:when test="str[@name='state'] = 'submitted' ">
-                      <i class="fa fa-tag"></i>
-                    </xsl:when>
-                    <xsl:otherwise>
-                      <i class="fa fa-lock"></i>
-                    </xsl:otherwise>
-                  </xsl:choose>
+                <span class="label mir-{str[@name='state']}" title="{i18n:translate('component.mods.metaData.dictionary.status')}" >
+                  <xsl:value-of select="$status-i18n" />
                 </span>
               </div>
+              </xsl:if>
             </div>
           </div>
 
