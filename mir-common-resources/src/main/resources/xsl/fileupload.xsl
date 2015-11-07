@@ -130,7 +130,7 @@
   </div>
 
   <!-- load modernizr: to detect html5 and css3 capabilities -->
-  <script src="{$WebApplicationBaseURL}mir-layout/js/fileupload/modernizr.js" type="text/javascript" />
+  <script src="{$WebApplicationBaseURL}js/fileupload/modernizr.js" type="text/javascript" />
   <!-- pre-define some variables used in the file upload javascript -->
   <script type="text/javascript">
     var formUploadUrl = '<xsl:value-of select="$formUploadUrl" />';
@@ -138,7 +138,7 @@
     var msgUploadFailed = '<xsl:value-of select="i18n:translate('fileUpload.failure')"/>';
   </script>
   <!-- show html5 upload if possible and adjust updload -->
-  <script src="{$WebApplicationBaseURL}mir-layout/js/fileupload/fileupload.js" type="text/javascript" />
+  <script src="{$WebApplicationBaseURL}js/fileupload/fileupload.js" type="text/javascript" />
 
 </xsl:template>
 
