@@ -8,7 +8,7 @@
   </parent>
   <groupId>org.mycore.mir</groupId>
   <artifactId>mir-parent</artifactId>
-  <version>0.3.0</version>
+  <version>0.3-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>MIR</name>
   <description>MyCoRe/MODS Institutional Repository</description>
