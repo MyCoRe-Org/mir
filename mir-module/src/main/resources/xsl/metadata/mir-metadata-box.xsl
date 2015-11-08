@@ -60,35 +60,43 @@
                       @type='personal' and not(mods:role/mods:roleTerm='aut') and
                       count(. | key('name-by-role',mods:role/mods:roleTerm)[1])=1]">
               <!-- for every role -->
-              <tr>
-                <td valign="top" class="metaname">
-                  <xsl:choose>
-                    <xsl:when test="mods:role/mods:roleTerm[@authority='marcrelator' and @type='code']">
-                      <xsl:apply-templates select="mods:role/mods:roleTerm[@authority='marcrelator' and @type='code']"
-                        mode="printModsClassInfo" />
-                      <xsl:value-of select="':'" />
-                    </xsl:when>
-                    <xsl:when test="mods:role/mods:roleTerm[@authority='marcrelator']">
-                      <xsl:value-of
-                        select="concat(i18n:translate(concat('component.mods.metaData.dictionary.',mods:role/mods:roleTerm[@authority='marcrelator'])),':')" />
-                    </xsl:when>
-                    <xsl:otherwise>
-                      <xsl:value-of select="concat(i18n:translate('component.mods.metaData.dictionary.name'),':')" />
-                    </xsl:otherwise>
-                  </xsl:choose>
-                </td>
-                <td class="metavalue">
-                  <xsl:for-each select="key('name-by-role',mods:role/mods:roleTerm)">
-                    <xsl:if test="position()!=1">
-                      <xsl:value-of select="'; '" />
-                    </xsl:if>
-                    <xsl:apply-templates select="." mode="nameLink" />
-                  </xsl:for-each>
-                    <xsl:if test="$mods/mods:name/mods:etal">
-                        <em>et.al.</em>
-                    </xsl:if>
-                </td>
-              </tr>
+              <xsl:choose>
+                <!-- check if 'aut' and 'edt' show 'edt', otherwise 'edt' is already shown in abstract-box -->
+                <xsl:when test="mods:role/mods:roleTerm='edt' and not(../mods:role/mods:roleTerm='aut')">
+                  <!-- do nothing -->
+                </xsl:when>
+                <xsl:otherwise>
+                  <tr>
+                    <td valign="top" class="metaname">
+                      <xsl:choose>
+                        <xsl:when test="mods:role/mods:roleTerm[@authority='marcrelator' and @type='code']">
+                          <xsl:apply-templates select="mods:role/mods:roleTerm[@authority='marcrelator' and @type='code']"
+                            mode="printModsClassInfo" />
+                          <xsl:value-of select="':'" />
+                        </xsl:when>
+                        <xsl:when test="mods:role/mods:roleTerm[@authority='marcrelator']">
+                          <xsl:value-of
+                            select="concat(i18n:translate(concat('component.mods.metaData.dictionary.',mods:role/mods:roleTerm[@authority='marcrelator'])),':')" />
+                        </xsl:when>
+                        <xsl:otherwise>
+                          <xsl:value-of select="concat(i18n:translate('component.mods.metaData.dictionary.name'),':')" />
+                        </xsl:otherwise>
+                      </xsl:choose>
+                    </td>
+                    <td class="metavalue">
+                      <xsl:for-each select="key('name-by-role',mods:role/mods:roleTerm)">
+                        <xsl:if test="position()!=1">
+                          <xsl:value-of select="'; '" />
+                        </xsl:if>
+                        <xsl:apply-templates select="." mode="nameLink" />
+                      </xsl:for-each>
+                        <xsl:if test="$mods/mods:name/mods:etal">
+                            <em>et.al.</em>
+                        </xsl:if>
+                    </td>
+                  </tr>
+                </xsl:otherwise>
+              </xsl:choose>
             </xsl:for-each>
 
             <xsl:for-each select="mycoreobject">

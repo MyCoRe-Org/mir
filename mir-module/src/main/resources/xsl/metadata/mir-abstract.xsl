@@ -92,28 +92,32 @@
 
       <xsl:if test="$mods/mods:name[mods:role/mods:roleTerm/text()='aut'] or $mods/mods:name[mods:role/mods:roleTerm/text()='edt']">
         <p id="authors_short">
-          <xsl:for-each select="$mods/mods:name[mods:role/mods:roleTerm/text()='aut']">
-            <xsl:if test="position()!=1">
-              <xsl:value-of select="'; '" />
-            </xsl:if>
-            <xsl:apply-templates select="." mode="nameLink" />
-          </xsl:for-each>
-          <xsl:if test="$mods/mods:name[mods:role/mods:roleTerm/text()='aut'] and $mods/mods:name[mods:role/mods:roleTerm/text()='edt']">
-            <xsl:value-of select="'; '" />
-          </xsl:if>
-          <xsl:for-each select="$mods/mods:name[mods:role/mods:roleTerm/text()='edt']">
-            <xsl:if test="position()!=1">
-              <xsl:value-of select="'; '" />
-            </xsl:if>
-            <xsl:apply-templates select="." mode="nameLink" />
-            <xsl:if test="mods:role/mods:roleTerm/text()='edt'">
-              <xsl:text> </xsl:text>
-              <xsl:value-of select="i18n:translate('mir.abstract.editor')" />
-            </xsl:if>
-          </xsl:for-each>
-          <xsl:if test="$mods/mods:name[mods:role/mods:roleTerm/text()='aut']/mods:etal or $mods/mods:name[mods:role/mods:roleTerm/text()='edt']/mods:etal">
-            <em>et.al.</em>
-          </xsl:if>
+          <xsl:choose>
+            <xsl:when test="$mods/mods:name[mods:role/mods:roleTerm/text()='aut']">
+              <xsl:for-each select="$mods/mods:name[mods:role/mods:roleTerm/text()='aut']">
+                <xsl:if test="position()!=1">
+                  <xsl:value-of select="'; '" />
+                </xsl:if>
+                <xsl:apply-templates select="." mode="nameLink" />
+                <xsl:if test="mods:etal">
+                  <em>et.al.</em>
+                </xsl:if>
+              </xsl:for-each>
+            </xsl:when>
+            <xsl:when test="$mods/mods:name[mods:role/mods:roleTerm/text()='edt']">
+              <xsl:for-each select="$mods/mods:name[mods:role/mods:roleTerm/text()='edt']">
+                <xsl:if test="position()!=1">
+                  <xsl:value-of select="'; '" />
+                </xsl:if>
+                <xsl:apply-templates select="." mode="nameLink" />
+                <xsl:text> </xsl:text>
+                <xsl:value-of select="i18n:translate('mir.abstract.editor')" />
+                <xsl:if test="mods:etal">
+                  <em>et.al.</em>
+                </xsl:if>
+              </xsl:for-each>
+            </xsl:when>
+          </xsl:choose>
         </p>
       </xsl:if>
 
