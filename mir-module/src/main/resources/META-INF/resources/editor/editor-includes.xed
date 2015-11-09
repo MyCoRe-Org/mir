@@ -401,7 +401,7 @@
           data-search-entity-type="person" data-search-output="#valueURIxEditor" data-search-button="{i18n:button.search}" data-search-button-loading="{i18n:button.loading}"
           data-search-result-empty="{i18n:mir.searchIdentifier.noResult}" data-target=".search-person" placeholder="{i18n:mir.placeholder.name.family}, {i18n:mir.placeholder.name.given}" />
       </xed:bind>
-      <xed:bind xpath="mods:nameIdentifier">
+      <xed:bind xpath="@valueURIxEditor">
         <input type="hidden" id="valueURIxEditor" />
       </xed:bind>
     </div>
@@ -422,6 +422,33 @@
       </p>
     </xed:if>
     -->
+  </xed:template>
+
+  <xed:template id="person.affiliation">
+    <mir:textfield xpath="mods:affiliation" help-text="{i18n:mir.help.title}" label="mir.affiliation"/>
+  </xed:template>
+
+  <xed:template id="nameIdentifier.repeated">
+    <xed:repeat xpath="mods:nameIdentifier" min="1" max="100">
+      <div class="form-group">
+        <xed:bind xpath="@type">
+          <div class="col-md-3">
+            <select class="form-control" style="text-align:right; font-weight:bold;">
+              <option value="gnd">
+                GND
+              </option>
+              <option value="viaf">
+                VIAF
+              </option>
+            </select>
+          </div>
+        </xed:bind>
+        <div class="col-md-6">
+          <input type="text" size="20" class="form-control form-control-inline {$xed-validation-marker}" />
+        </div>
+        <mir:help-pmud help-text="{i18n:mir.help.doi.handle.urn}" pmud="true" />
+      </div>
+    </xed:repeat>
   </xed:template>
 
   <xed:template id="conference">

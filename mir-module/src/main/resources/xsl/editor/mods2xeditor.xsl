@@ -12,10 +12,6 @@
         </xsl:attribute>
   </xsl:template>
 
-  <xsl:template match="mods:nameIdentifier">
-    <mods:nameIdentifier type="{@type}" typeURI="{@typeURI}"><xsl:value-of select="concat(@typeURI, .)" /></mods:nameIdentifier>
-  </xsl:template>
-
   <!-- A single page (edited as start=end) is represented as mods:detail/@type='page' -->
   <xsl:template match="mods:detail[@type='page']">
     <mods:extent unit="pages">

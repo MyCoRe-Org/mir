@@ -167,6 +167,41 @@
     </xsl:choose>
   </xsl:template>
 
+  <xsl:template match="mir:role.extended.repeated">
+    <fieldset class="personExtended_box">
+      <xsl:variable name="xed-val-marker" > {$xed-validation-marker} </xsl:variable>
+      <xed:repeat xpath="mods:name[@type='personal'][mods:role/mods:roleTerm[@type='code'][@authority='marcrelator']='{@role}']" min="1" max="100">
+        <legend class="mir-fieldset-legend hiddenDetail">
+          <xed:bind xpath="mods:displayForm"> <!-- Move down to get the "required" validation right -->
+            <div class="form-group {@class} {$xed-val-marker}">
+              <xed:bind xpath=".."> <!-- Move up again after validation marker is set -->
+                <label class="col-md-3 control-label">
+                  <xed:output i18n="{@label}" />
+                </label>
+                <div class="col-md-6 center-vertical">
+                  <div class="controls">
+                    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="person.fields" />
+                  </div>
+                  <span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span>
+                </div>
+                <div class="col-md-3">
+                  <xsl:if test="string-length(@help-text) &gt; 0">
+                    <xsl:call-template name="mir-helpbutton" />
+                  </xsl:if>
+                  <xsl:call-template name="mir-pmud" />
+                </div>
+              </xed:bind>
+            </div>
+          </xed:bind>
+        </legend>
+        <div class="mir-fieldset-content personExtended-container hiddenDetail">
+          <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="person.affiliation" />
+          <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="nameIdentifier.repeated" />
+        </div>
+    </xed:repeat>
+    </fieldset>
+  </xsl:template>
+
   <xsl:template match="mir:role.repeated">
     <xsl:variable name="xed-val-marker" > {$xed-validation-marker} </xsl:variable>
     <xed:repeat xpath="mods:name[@type='personal'][mods:role/mods:roleTerm[@type='code'][@authority='marcrelator']='{@role}']" min="1" max="100">
@@ -192,6 +227,43 @@
         <xsl:call-template name="mir-required" />
       </xed:bind>
     </xed:repeat>
+  </xsl:template>
+
+  <xsl:template match="mir:person.extended.repeated">
+    <fieldset class="personExtended_box">
+      <xsl:variable name="xed-val-marker" > {$xed-validation-marker} </xsl:variable>
+      <xed:repeat xpath="mods:name[@type='personal']" min="1" max="100">
+        <legend class="mir-fieldset-legend hiddenDetail">
+          <xed:bind xpath="mods:displayForm"> <!-- Move down to get the "required" validation right -->
+            <div class="form-group {@class} {$xed-val-marker}">
+              <xed:bind xpath=".."> <!-- Move up again after validation marker is set -->
+                <div class="col-md-3" style="text-align:right; font-weight:bold;">
+                  <xed:bind xpath="mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']" initially="aut">
+                    <select class="form-control form-control-inline">
+                      <xsl:apply-templates select="*" />
+                    </select>
+                  </xed:bind>
+                </div>
+                <div class="col-md-6 center-vertical">
+                  <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="person.fields" />
+                  <span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span>
+                </div>
+                <div class="col-md-3">
+                  <xsl:if test="string-length(@help-text) &gt; 0">
+                    <xsl:call-template name="mir-helpbutton" />
+                  </xsl:if>
+                  <xsl:call-template name="mir-pmud" />
+                </div>
+              </xed:bind>
+            </div>
+         </xed:bind>
+        </legend>
+        <div class="mir-fieldset-content personExtended-container hiddenDetail">
+          <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="person.affiliation" />
+          <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="nameIdentifier.repeated" />
+        </div>
+      </xed:repeat>
+    </fieldset>
   </xsl:template>
 
   <xsl:template match="mir:person.repeated">

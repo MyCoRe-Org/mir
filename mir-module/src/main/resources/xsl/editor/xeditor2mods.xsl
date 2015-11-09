@@ -7,22 +7,35 @@
 
   <!-- create value URI using valueURIxEditor and authorityURI -->
   <xsl:template match="@valueURIxEditor">
-        <xsl:attribute name="valueURI">
-          <xsl:value-of select="concat(../@authorityURI,'#',.)" />
-        </xsl:attribute>
+        <xsl:choose>
+          <xsl:when test="starts-with(., 'http://d-nb.info/gnd/')">
+            <mods:nameIdentifier type="gnd" typeURI="http://d-nb.info/gnd/"><xsl:value-of select="substring-after(., 'http://d-nb.info/gnd/')" /></mods:nameIdentifier>
+          </xsl:when>
+          <xsl:when test="starts-with(., 'http://www.viaf.org/')">
+            <mods:nameIdentifier type="viaf" typeURI="http://www.viaf.org/"><xsl:value-of select="substring-after(., 'http://www.viaf.org/')" /></mods:nameIdentifier>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:attribute name="valueURI">
+              <xsl:value-of select="concat(../@authorityURI,'#',.)" />
+            </xsl:attribute>
+          </xsl:otherwise>
+        </xsl:choose>
+  </xsl:template>
+
+  <xsl:template match="mods:nameIdentifier[@type=preceding-sibling::mods:nameIdentifier/@type or contains(../@valueURIxEditor, @type)]">
+    <xsl:message>
+      <xsl:value-of select="concat('Skipping ',@type,' identifier: ',.,' due to previous declaration.')" />
+    </xsl:message>
   </xsl:template>
 
   <xsl:template match="mods:nameIdentifier">
     <xsl:choose>
-      <xsl:when test="starts-with(., 'http://d-nb.info/gnd/')">
-        <mods:nameIdentifier type="gnd" typeURI="http://d-nb.info/gnd/"><xsl:value-of select="substring-after(., 'http://d-nb.info/gnd/')" /></mods:nameIdentifier>
+      <xsl:when test="@type='gnd'">
+        <mods:nameIdentifier type="gnd" typeURI="http://d-nb.info/gnd/"><xsl:value-of select="." /></mods:nameIdentifier>
       </xsl:when>
-      <xsl:when test="starts-with(., 'http://www.viaf.org/')">
-        <mods:nameIdentifier type="viaf" typeURI="http://www.viaf.org/"><xsl:value-of select="substring-after(., 'http://www.viaf.org/')" /></mods:nameIdentifier>
+      <xsl:when test="@type='viaf'">
+        <mods:nameIdentifier type="viaf" typeURI="http://www.viaf.org/"><xsl:value-of select="." /></mods:nameIdentifier>
       </xsl:when>
-      <xsl:otherwise>
-        <xsl:copy-of select="."/>
-      </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
 
