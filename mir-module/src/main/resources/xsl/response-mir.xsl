@@ -77,7 +77,7 @@
 
 <!-- Filter, Pagination & Trefferliste -->
     <div class="row result_body">
-      <div class="hidden-xs col-sm-4 result_filter">
+      <div class="col-xs-12 col-sm-4 result_filter">
         <xsl:if test="/response/lst[@name='facet_counts']/lst[@name='facet_fields'] and $hits &gt; 0">
           <div class="panel panel-default">
             <div class="panel-heading" data-toggle="collapse-next">
