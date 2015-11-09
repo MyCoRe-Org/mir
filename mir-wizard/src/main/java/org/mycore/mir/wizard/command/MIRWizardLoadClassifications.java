@@ -74,7 +74,10 @@ public class MIRWizardLoadClassifications extends MIRWizardCommand {
                         MCRCategory category = MCRXMLTransformer.getCategory(classif);
 
                         result += MCRTranslation.translate("component.mir.wizard.loadClassification",
-                                category.getCurrentLabel());
+                            category
+                                .getCurrentLabel()
+                                .orElseThrow(
+                                    () -> new MCRException("Classification " + category.getId() + " has not label.")));
 
                         Transaction tx = currentSession.beginTransaction();
                         try {

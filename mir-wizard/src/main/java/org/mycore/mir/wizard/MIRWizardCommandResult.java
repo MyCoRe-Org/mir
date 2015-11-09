@@ -112,7 +112,7 @@ public class MIRWizardCommandResult {
         if (result != null)
             res.addContent(result);
         else {
-            res.addContent(logAppender.getLogs());
+            res.addContent(new Element("result").addContent(logAppender.getLogs()));
         }
 
         return res;
@@ -171,7 +171,7 @@ public class MIRWizardCommandResult {
                 writer.close();
                 this.logs = writer.toString();
             } catch (IOException e) {
-                throw new UncheckedIOException(null, e);
+                throw new UncheckedIOException(e);
             }
         }
 
