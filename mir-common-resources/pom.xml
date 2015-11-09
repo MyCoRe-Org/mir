@@ -3,7 +3,7 @@
   <parent>
     <groupId>org.mycore.mir</groupId>
     <artifactId>mir-parent</artifactId>
-    <version>0.3-SNAPSHOT</version>
+    <version>0.3</version>
   </parent>
   <artifactId>mir-common-resources</artifactId>
   <name>MIR: Common Resources</name>
@@ -17,7 +17,7 @@
           <archive>
             <manifest>
               <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
-              <addExtensions/>
+              <addExtensions />
             </manifest>
             <manifestEntries>
               <MCR-Artifact-Id>${project.artifactId}</MCR-Artifact-Id>
