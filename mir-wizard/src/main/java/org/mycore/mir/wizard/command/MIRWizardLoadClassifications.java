@@ -77,7 +77,7 @@ public class MIRWizardLoadClassifications extends MIRWizardCommand {
                             category
                                 .getCurrentLabel()
                                 .orElseThrow(
-                                    () -> new MCRException("Classification " + category.getId() + " has not label.")));
+                                    () -> new MCRException("Classification " + category.getId() + " has no label.")));
 
                         Transaction tx = currentSession.beginTransaction();
                         try {
