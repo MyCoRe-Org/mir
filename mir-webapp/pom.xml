@@ -150,5 +150,9 @@
       <artifactId>mycore-meta</artifactId>
       <type>pom</type>
     </dependency>
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-slf4j-impl</artifactId>
+    </dependency>
   </dependencies>
 </project>
