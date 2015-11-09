@@ -77,7 +77,7 @@
 
 <!-- Filter, Pagination & Trefferliste -->
     <div class="row result_body">
-      <div class="col-xs-12 col-sm-4 result_filter">
+      <div class="hidden-xs col-sm-4 result_filter">
         <xsl:if test="/response/lst[@name='facet_counts']/lst[@name='facet_fields'] and $hits &gt; 0">
           <div class="panel panel-default">
             <div class="panel-heading" data-toggle="collapse-next">
@@ -596,7 +596,7 @@
   <xsl:template name="print.classiFilter">
     <xsl:param name="classId" />
     <xsl:param name="i18nKey" />
-    <div class="panel panel-default mir-search-options">
+    <div class="panel panel-default">
       <xsl:variable name="classiDocument" select="document(concat('xslStyle:items2options:classification:editor:-1:children:',$classId))" />
       <div class="panel-heading" data-toggle="collapse-next">
         <h3 class="panel-title"><xsl:value-of select="i18n:translate($i18nKey)" /></h3>
@@ -684,10 +684,20 @@
       <div class="panel-body collapse in">
         <xsl:if test="contains($RequestURL, 'fq=mods.dateIssued')">
           <xsl:variable name="dateFilterHelper">
-            <xsl:value-of select="concat(substring-before($RequestURL, '&amp;fq=mods.dateIssued'), '&amp;', substring-after(substring-after($RequestURL, '&amp;fq=mods.dateIssued'), '&amp;'))" />
+            <xsl:value-of select="substring-before($RequestURL, '&amp;fq=mods.dateIssued')" />
+          </xsl:variable>
+          <xsl:variable name="dateFilter">
+            <xsl:choose>
+              <xsl:when test="contains(substring-after($RequestURL, '&amp;fq=mods.dateIssued'), '&amp;')">
+                <xsl:value-of select="concat($dateFilterHelper, '&amp;', substring-after(substring-after($RequestURL, '&amp;fq=mods.dateIssued'), '&amp;'))"></xsl:value-of>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:value-of select="$dateFilterHelper"></xsl:value-of>
+              </xsl:otherwise>
+            </xsl:choose>
           </xsl:variable>
           <div class="list-group">
-            <a class="list-group-item active" href="{$dateFilterHelper}">
+            <a class="list-group-item active" href="{$dateFilter}">
               <span aria-hidden="true" class="glyphicon glyphicon-remove" />
             </a>
           </div>
@@ -697,7 +707,7 @@
             Filter
             <span class="caret"/>
           </button>
-          <div class="dropdown-menu dropdown-menu-right stopAutoclose col-md-12" role="menu">
+          <div class="dropdown-menu dropdown-menu-right stopAutoclose col-md-12 mir-date-arrowTop" role="menu">
             <div class="container-fluid">
               <div class="col-md-12 form-group">
                 <select class="form-control">
@@ -710,13 +720,13 @@
               </div>
               <div class="col-md-12 form-group dateContainer">
                 <div class="col-md-4">
-                  <input class="form-control" placeholder="DD" type="number" min="1" max="31" style="padding: 0.5em"/>
+                  <input class="form-control" placeholder="DD" type="number" min="1" max="31" style="padding: 0.4em"/>
                 </div>
                 <div class="col-md-4">
-                  <input class="form-control" placeholder="MM" type="number" min="1" max="12" style="padding: 0.5em"/>
+                  <input class="form-control" placeholder="MM" type="number" min="1" max="12" style="padding: 0.4em"/>
                 </div>
                 <div class="col-md-4">
-                  <input class="form-control" placeholder="YYYY" type="number" min="1000" max="2050" style="padding: 0.2em"/>
+                  <input class="form-control" placeholder="YYYY" type="number" min="1000" max="2050" style="padding: 0.1em"/>
                 </div>
               </div>
               <div class="col-md-12 form-group">
