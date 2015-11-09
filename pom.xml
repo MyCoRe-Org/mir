@@ -7,7 +7,7 @@
   </parent>
   <groupId>org.mycore.mir</groupId>
   <artifactId>mir-parent</artifactId>
-  <version>0.3</version>
+  <version>0.4-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>MIR</name>
   <description>MyCoRe/MODS Institutional Repository</description>
@@ -48,9 +48,9 @@
     </notifiers>
   </ciManagement>
   <scm>
-    <connection>scm:svn:http://server.mycore.de/svn/maven/mir/tags/mir-0.3</connection>
-    <developerConnection>scm:svn:https://server.mycore.de/svn/maven/mir/tags/mir-0.3</developerConnection>
-    <url>http://www.mycore.de/viewvc/viewvc.cgi/maven/mir/tags/mir-0.3</url>
+    <connection>scm:svn:http://server.mycore.de/svn/maven/mir/trunk</connection>
+    <developerConnection>scm:svn:https://server.mycore.de/svn/maven/mir/trunk</developerConnection>
+    <url>http://www.mycore.de/viewvc/viewvc.cgi/maven/mir/trunk</url>
   </scm>
   <distributionManagement>
     <site>
