@@ -89,7 +89,7 @@
   </xed:template>
 
   <xed:template id="title">
-    <mir:textfield xpath="mods:titleInfo/mods:title" help-text="{i18n:mir.help.title}" label="mir.title" class="required" />
+    <mir:textfield xpath="mods:titleInfo/mods:title" label="mir.title" help-text="{i18n:mir.help.title}" class="required" required="true" required-text="{i18n:mir.validation.title}" />
   </xed:template>
 
   <xed:template id="title.nonrequired">
@@ -101,19 +101,22 @@
   </xed:template>
 
   <xed:template id="title.journal">
-    <mir:textfield xpath="mods:titleInfo/mods:title" label="mir.title.journal" help-text="{i18n:mir.help.title.journal}" class="required" />
+    <mir:textfield xpath="mods:titleInfo/mods:title" label="mir.title.journal" help-text="{i18n:mir.help.title.journal}"
+    class="required" required="true" required-i18n="mir.validation.title" />
   </xed:template>
 
   <xed:template id="title.newspaper">
-    <mir:textfield xpath="mods:titleInfo/mods:title" label="mir.title.newspaper" help-text="{i18n:mir.help.title.newspaper}" class="required" />
+    <mir:textfield xpath="mods:titleInfo/mods:title" label="mir.title.newspaper" help-text="{i18n:mir.help.title.newspaper}" 
+    class="required" required="true" required-i18n="mir.validation.title"/>
   </xed:template>
 
   <xed:template id="series.title">
-    <mir:textfield xpath="mods:titleInfo/mods:title" label="mir.series.title" placeholder="{i18n:mir.placeholder.series.title}" id="series-title" />
+    <mir:textfield xpath="mods:titleInfo/mods:title" label="mir.series.title" placeholder="{i18n:mir.placeholder.series.title}" id="series-title" 
+    class="required" required="true" required-i18n="mir.validation.title"/>
   </xed:template>
 
   <xed:template id="title.series.relItemsearch">
-    <mir:relItemsearch searchengine="title" genre="series" responsefield="mods.title" xpath="mods:titleInfo/mods:title" label="mir.title"  help-text="{i18n:mir.help.series.title}" />
+    <mir:relItemsearch searchengine="title" genre="series" responsefield="mods.title" xpath="mods:titleInfo/mods:title" label="mir.title"  help-text="{i18n:mir.help.series.title}" class="required"/>
   </xed:template>
 
   <xed:template id="title.lecture.relItemsearch">
@@ -121,23 +124,23 @@
   </xed:template>
 
   <xed:template id="title.book.relItemsearch">
-    <mir:relItemsearch searchengine="title" genre="book" responsefield="mods.title" xpath="mods:titleInfo/mods:title" label="mir.title" />
+    <mir:relItemsearch searchengine="title" genre="book" responsefield="mods.title" xpath="mods:titleInfo/mods:title" label="mir.title" class="required"/>
   </xed:template>
 
   <xed:template id="title.lexicon.relItemsearch">
-    <mir:relItemsearch searchengine="title" genre="lexicon" responsefield="mods.title" xpath="mods:titleInfo/mods:title" label="mir.title" />
+    <mir:relItemsearch searchengine="title" genre="lexicon" responsefield="mods.title" xpath="mods:titleInfo/mods:title" label="mir.title" class="required"/>
   </xed:template>
 
   <xed:template id="title.journal.relItemsearch">
-    <mir:relItemsearch searchengine="title" genre="journal" responsefield="mods.title" xpath="mods:titleInfo/mods:title" label="mir.title.journal" help-text="{i18n:mir.help.title.journal}" />
+    <mir:relItemsearch searchengine="title" genre="journal" responsefield="mods.title" xpath="mods:titleInfo/mods:title" label="mir.title.journal" help-text="{i18n:mir.help.title.journal}" class="required"/>
   </xed:template>
 
   <xed:template id="title.collection.relItemsearch">
-    <mir:relItemsearch searchengine="title" genre="collection" responsefield="mods.title" xpath="mods:titleInfo/mods:title" label="mir.title" />
+    <mir:relItemsearch searchengine="title" genre="collection" responsefield="mods.title" xpath="mods:titleInfo/mods:title" label="mir.title" class="required"/>
   </xed:template>
 
   <xed:template id="title.festschrift.relItemsearch">
-    <mir:relItemsearch searchengine="title" genre="festschrift" responsefield="mods.title" xpath="mods:titleInfo/mods:title" label="mir.title" />
+    <mir:relItemsearch searchengine="title" genre="festschrift" responsefield="mods.title" xpath="mods:titleInfo/mods:title" label="mir.title" class="required"/>
   </xed:template>
 
   <xed:template id="title.proceedings.relItemsearch">
@@ -145,7 +148,7 @@
   </xed:template>
 
   <xed:template id="title.newspaper.relItemsearch">
-    <mir:relItemsearch searchengine="title" genre="newspaper" responsefield="mods.title" xpath="mods:titleInfo/mods:title" label="mir.title" />
+    <mir:relItemsearch searchengine="title" genre="newspaper" responsefield="mods.title" xpath="mods:titleInfo/mods:title" label="mir.title" class="required"/>
   </xed:template>
 
   <xed:template id="subtitle">
@@ -159,7 +162,8 @@
       </legend>
       <xed:bind xpath="mods:titleInfo">
         <div class="mir-fieldset-content">
-          <mir:textfield xpath="mods:title" label="mir.title" placeholder="{i18n:mir.placeholder.title.main}" help-text="{i18n:mir.help.title}" class="required" />
+          <mir:textfield xpath="mods:title" label="mir.title" placeholder="{i18n:mir.placeholder.title.main}" 
+              help-text="{i18n:mir.help.title}" class="required" required="true" required-i18n="mir.validation.title"/>
           <mir:textfield xpath="mods:subTitle" label="mir.title.subTitle" help-text="{i18n:mir.help.title.subTitle}" />
         </div>
       </xed:bind>
@@ -255,7 +259,7 @@
   </xed:template>
 
   <xed:template id="editor.repeated.required">
-    <mir:role.repeated role="edt" label="mir.role.editor" help-text="{i18n:mir.help.role.editor}" class="required" />
+    <mir:role.repeated role="edt" label="mir.role.editor" help-text="{i18n:mir.help.role.editor}" class="required" required="true" required-i18n="mir.validation.editor"/>
   </xed:template>
 
   <xed:template id="inventor.repeated">
@@ -430,17 +434,17 @@
 
   <xed:template id="year.issued">
     <mir:textfield xpath="mods:originInfo[@eventType='publication']/mods:dateIssued[@encoding='w3cdtf']" label="mir.date.issued.4" help-text="{i18n:mir.help.date.issued.4}"
-      class="required" placeholder="{i18n:mir.placeholder.year}" />
+      class="required" placeholder="{i18n:mir.placeholder.year}" required="true" required-i18n="mir.validation.dateIssued"/>
   </xed:template>
 
   <xed:template id="year.issued.relItem">
     <mir:textfield xpath="mods:originInfo[@eventType='publication']/mods:dateIssued[@encoding='w3cdtf']" label="mir.date.issued.4" help-text="{i18n:mir.help.date.issued.4}"
-      class="required mir-modspart" placeholder="{i18n:mir.placeholder.year}" />
+      class="required mir-modspart" placeholder="{i18n:mir.placeholder.year}" required="true" required-i18n="mir.validation.dateIssued"/>
   </xed:template>
 
   <xed:template id="date.issued">
     <mir:textfield xpath="mods:originInfo[@eventType='publication']/mods:dateIssued[@encoding='w3cdtf']" label="mir.date.issued.10" help-text="{i18n:mir.help.date.issued.10}"
-      class="required" placeholder="{i18n:mir.placeholder.date}" />
+      class="required" placeholder="{i18n:mir.placeholder.date}" required="true" required-i18n="mir.validation.dateIssued"/>
   </xed:template>
 
   <xed:template id="date.issued.datetimepicker">
@@ -812,6 +816,10 @@
   <xed:template id="extent">
     <mir:textfield xpath="mods:physicalDescription/mods:extent" label="mir.extent" help-text="{i18n:mir.help.extent}" placeholder="{i18n:mir.placeholder.extent}" />
   </xed:template>
+  
+  <xed:template id="extent.required">
+    <mir:textfield xpath="mods:physicalDescription/mods:extent" label="mir.extent" help-text="{i18n:mir.help.extent}" placeholder="{i18n:mir.placeholder.extent}" class="required" required="true" required-i18n="mir.validation.extent" />
+  </xed:template>
 
   <xed:template id="physical.description.note">
     <mir:textarea xpath="mods:physicalDescription/mods:note" label="mir.physical.description.note" help-text="{i18n:mir.help.physical.description.note}"
@@ -842,9 +850,17 @@
   <xed:template id="host.volume">
     <mir:textfield xpath="mods:part/mods:detail[@type='volume']/mods:number" label="mir.volume" help-text="{i18n:mir.help.volume}" class="mir-modspart" />
   </xed:template>
+  
+  <xed:template id="host.volume.required">
+    <mir:textfield xpath="mods:part/mods:detail[@type='volume']/mods:number" label="mir.volume" help-text="{i18n:mir.help.volume}" class="required mir-modspart" required="true" required-i18n="mir.validation.host.volume" />
+  </xed:template>
 
   <xed:template id="host.issue">
     <mir:textfield xpath="mods:part/mods:detail[@type='issue']/mods:number" label="mir.issue" help-text="{i18n:mir.help.issue}" class="mir-modspart" />
+  </xed:template>
+  
+  <xed:template id="host.issue.required">
+    <mir:textfield xpath="mods:part/mods:detail[@type='issue']/mods:number" label="mir.issue" help-text="{i18n:mir.help.issue}" class="mir-modspart required" required="true" required-i18n="mir.validation.host.issue"/>
   </xed:template>
 
   <xed:template id="host.pages">

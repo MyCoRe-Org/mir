@@ -2,7 +2,7 @@
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xed="http://www.mycore.de/xeditor"
   xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation" xmlns:mir="http://www.mycore.de/mir"
-  exclude-result-prefixes="xsl mir">
+  exclude-result-prefixes="xsl mir i18n">
 
   <xsl:include href="copynodes.xsl" />
 
@@ -29,6 +29,14 @@
         </xsl:if>
       </div>
     </div>
+  </xsl:template>
+
+  <xsl:template name="mir-required">
+    <xsl:if test="@required='true'">
+      <xed:validate required="true" display="global"> 
+        <xsl:value-of select="i18n:translate(@required-i18n)" /> 
+      </xed:validate>
+    </xsl:if>
   </xsl:template>
 
   <xsl:template name="mir-textfield">
@@ -67,6 +75,7 @@
               </xsl:otherwise>
             </xsl:choose>
           </div>
+          <xsl:call-template name="mir-required" />
         </xed:repeat>
       </xsl:when>
       <xsl:otherwise>
@@ -75,6 +84,7 @@
           <div class="form-group {@class} {$xed-val-marker}">
             <xsl:call-template name="mir-textfield" />
           </div>
+          <xsl:call-template name="mir-required" />
         </xed:bind>
       </xsl:otherwise>
     </xsl:choose>
@@ -127,6 +137,7 @@
               <xsl:call-template name="mir-pmud" />
             </div>
           </div>
+          <xsl:call-template name="mir-required" />
         </xed:repeat>
       </xsl:when>
       <xsl:otherwise>
@@ -150,6 +161,7 @@
               </xsl:if>
             </div>
           </div>
+          <xsl:call-template name="mir-required" />
         </xed:bind>
       </xsl:otherwise>
     </xsl:choose>
@@ -177,6 +189,7 @@
             </div>
           </xed:bind>
         </div>
+        <xsl:call-template name="mir-required" />
       </xed:bind>
     </xed:repeat>
   </xsl:template>
@@ -203,6 +216,7 @@
               </xsl:if>
               <xsl:call-template name="mir-pmud" />
             </div>
+            <xsl:call-template name="mir-required" />
           </xed:bind>
         </div>
      </xed:bind>
