@@ -19,7 +19,6 @@
     <dependency>
       <groupId>org.mycore</groupId>
       <artifactId>mycore-iview2</artifactId>
-      <version>${mycore.version}</version>
     </dependency>
     <dependency>
       <groupId>javax.servlet</groupId>
