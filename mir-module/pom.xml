@@ -189,6 +189,12 @@
       <groupId>org.mycore</groupId>
       <artifactId>mycore-sword</artifactId>
       <version>${mycore.version}</version>
+      <exclusions>
+        <exclusion>
+          <groupId>javax.servlet</groupId>
+          <artifactId>servlet-api</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.mycore</groupId>
