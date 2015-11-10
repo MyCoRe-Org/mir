@@ -3,6 +3,7 @@
   xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation" exclude-result-prefixes="mods mcrxsl i18n"
 >
   <xsl:include href="layout-utils.xsl" />
+  <xsl:include href="mir-history.xsl" />
 
   <xsl:template match="/site">
     <xsl:copy>
@@ -153,6 +154,40 @@
                 <!-- Start: ADMINMETADATA -->
                 <xsl:apply-templates select="div[@id='mir-admindata']" mode="newMetadata" />
                 <!-- End: ADMINMETADATA -->
+              </div>
+              <div class="modal fade" id="historyModal" tabindex="-1" role="dialog" aria-labelledby="modal frame" aria-hidden="true">
+                <div class="modal-dialog" style="width: 930px">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <button type="button" class="close modalFrame-cancel" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">x</span>
+                      </button>
+                      <h4 class="modal-title" id="modalFrame-title">
+                        <xsl:value-of select="i18n:translate('metadata.versionInfo.label')" />
+                      </h4>
+                    </div>
+                    <div id="modalFrame-body" class="modal-body" style="max-height: 560px; overflow: auto">
+                      <xsl:variable name="objID">
+                        <xsl:choose>
+                          <xsl:when test="contains($RequestURL, '?')">
+                            <xsl:value-of select="substring-before(substring-after($RequestURL, '/receive/'), '?')" />
+                          </xsl:when>
+                          <xsl:otherwise>
+                            <xsl:value-of select="substring-after($RequestURL, '/receive/')" />
+                          </xsl:otherwise>
+                        </xsl:choose>
+                      </xsl:variable>
+                      <xsl:call-template name="history">
+                        <xsl:with-param name="ID" select="$objID" />
+                      </xsl:call-template>
+                    </div>
+                    <div class="modal-footer" style="clear: both">
+                      <button id="modalFrame-cancel" type="button" class="btn btn-danger" data-dismiss="modal">
+                        <xsl:value-of select="i18n:translate('button.cancel')" />
+                      </button>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </xsl:if>

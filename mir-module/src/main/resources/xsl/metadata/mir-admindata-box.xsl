@@ -65,6 +65,20 @@
                   <xsl:apply-templates select="." mode="versioninfo" />
                 </td>
               </tr -->
+              <tr>
+                <td class="metaname">
+                  <xsl:value-of select="i18n:translate('metadata.versionInfo.version')"/>
+                  <xsl:text>:</xsl:text>
+                </td>
+                <td class="metavalue">
+                  <xsl:variable name="verinfo" select="document(concat('versioninfo:',mycoreobject/@ID))" />
+                  <xsl:value-of select="count($verinfo/versions/version)" />
+                  <br/>
+                  <a id="historyStarter" class="label label-info">
+                    <xsl:value-of select="i18n:translate('metadata.versionInfo.startLabel')" />
+                  </a>
+                </td>
+              </tr>
             </table>
           </div>
         </div>

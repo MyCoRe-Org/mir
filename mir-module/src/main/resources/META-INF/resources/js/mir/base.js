@@ -1,6 +1,11 @@
 (function($) {
   $﻿(document).ready(function() {
   	
+  	//show full version history in metadata view
+  	$("#historyStarter").click(function() {
+  		$("#historyModal").modal("show");
+  	});
+  	
   	//define the primary button in a form with multiple submit buttons
     $("[order=primary-button]").ready(function() {
     	var myForm = $("[order=primary-button]").parents("form:first");
