@@ -1,0 +1,4 @@
+<?xml version='1.0' encoding='utf-8'?>
+<tomcat-users>
+  <user username="submitter" password="submitter123" roles="users,submitter" />
+</tomcat-users>

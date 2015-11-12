@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE MyCoReWebPage>
+
+<MyCoReWebPage>
+
+  <section title="Dateien oder Verzeichnisse hochladen" xml:lang="de" />
+  <section title="Upload of files or directories" xml:lang="en" />
+
+  <section xml:lang="all">
+
+    <div id="fileUpload" role="tabpanel">
+
+      <!-- Nav tabs -->
+      <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="active" id="tabModern">
+          <a href="#modern" aria-controls="modern" role="tab" data-toggle="tab">Moderner Dateiupload</a>
+        </li>
+        <li role="presentation" id="tabClassic">
+          <a href="#classic" aria-controls="classic" role="tab" data-toggle="tab">Klassischer Dateiupload</a>
+        </li>
+      </ul>
+
+      <!-- Tab panes -->
+      <div class="tab-content">
+
+        <div role="tabpanel" class="tab-pane active" id="modern">
+          <fileupload/>
+        </div>
+
+        <div role="tabpanel" class="tab-pane" id="classic">
+          <editor id="author-addfile">
+            <target type="servlet" name="MCRUploadServlet" method="post" format="xml" />
+            <cancel url="{cancelUrl}" />
+
+            <components root="fileupload" var="/upload">
+              <headline anchor="CENTER">
+                <text i18n="editor.common.addFile" />
+              </headline>
+              <include uri="webapp:editor/imports-fileupload.xml" />
+            </components>
+          </editor>
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+</MyCoReWebPage>

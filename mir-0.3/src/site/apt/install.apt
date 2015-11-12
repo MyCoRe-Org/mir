@@ -1,0 +1,98 @@
+ ------
+ Download
+ ------
+ Thomas Scheffler
+ ------
+ 2014-01-23
+ ------
+ 
+Installation of Command Line and WAR Archive
+
+ If you processed the {{{./download.html}download instructions}} you have received a WAR archive that is ready for deployment.
+ Furthermore you should have downloaded a .ZIP or .tar.gz file that contains the MIR Command Line Interface.
+ 
+* Initial Setup via MIR Command Line Interface
+
+ Unpack the MIR Command Line to a directory of your choice. It contains three directories: <<<bin>>>, <<<config>>> and <<<lib>>>.
+ In <<<bin>>> you will find two shell script files and two corresponding Windows batch files: <<<setup>>> and <<<mir>>>.
+ We will come to them shortly. In <<<config>>> reside the files we will need to do some initial setups, whereas in <<<lib>>>
+ you will find all JAVA libraries we use to run the MIR Command Line.
+ 
+ Throughout this guide we refer to the shell scripts <<<mir.sh>>> and <<<setup.sh>>>. If you use Windows you would simply to the
+ same but with <<<mir.bat>>> and <<<setup.bat>>>.
+   
+ Without configuration you will not get a running system. So start beginning to configure your MIR instance:
+ 
+
+* Determine the configuration directory
+
+ All your configuration goes into the configuration directory. Please see the
+ {{{http://www.mycore.de/generated/mycore/apidocs/org/mycore/common/config/MCRConfigurationDir.html}JavaDocs of MCRConfigurationDir}}
+ where to find and how to configure it.
+ 
+ An easy way to get the default value is to simply start <<<bin/mir.sh quit>>> and look
+ for the statement at the beginning of log output:
+
++------------------------------------------------------------------+
+ INFO: Current configuration directory: /home/miradmin/.mycore/mir
++------------------------------------------------------------------+
+ 
+ When you were successful you could try running a simple command:
+ 
++------------------------------------------------------------------+
+ $ bin/mir.sh create configuration directory
++------------------------------------------------------------------+
+
+ Basically it will create the configuration directory with some sub directories you may need later.
+ If the command exits without an error, you are almost done. Go to the newly created directory and
+ configure your MIR installation.
+ 
+* Structure of configuration directory
+
++------------------------------------------------+
+  {configDir}
+    |- data/
+    |	\ {content of MCR.dataDir}
+    |
+    |- lib/
+    |   \ {any *.jar files you need in classpath}
+    |
+    |- hibernate.cfg.xml
+    |- mycore.properties
+    |- mycore.active.properties
+    \  mycore.resolved.properties
++------------------------------------------------+
+
+** <<<mycore.properties>>>
+ 
+ Your most important file is <<<mycore.properties>>> where you configure installation details like the
+ <<<MCR.Module-solr.ServerURL>>> property or relocate the data directory (see above) via
+ <<<MCR.datadir>>> property. This is also the right place to overwrite any property default.
+ 
+ You will find all default values in <<<mycore.active.properties>>>. This file includes variables and may contain
+ double definition of properties. The last definition is always that counts.
+ 
+ In <<<mycore.resolved.properties>>> you will find a dump of what properties are actually used with all doublets
+ removed and variables replaced.
+ 
+** <<<hibernate.cfg.xml>>>
+
+ The <<<hibernate.cfg.xml>>> is used to configure your database connection. For the moment use the
+ {{{http://www.mycore.de/svn/docportal/trunk/config/hibernate/}example in docportal}}<(deprecated MyCoRe project)>
+ as a starting point. In nearly 100% of all cases you need an additional java library that contains the JDBC driver
+ for your DBMS. You simply put this file into the <<<lib>>> directory under the configuration dir.
+ 
+* Setup your installation
+
+ Simply run <<<setup.sh>>> and it will create a super user <<administrator>> with the default password <<alleswirdgut>>,
+ load some classifications and sets some default ACL rules to secure your system.
+ 
+* Deploy <<<mir.war>>>
+
+ You are now ready to deploy your WAR archive to your servlet container. Please pay attention that if you deploy it to a context
+ other than ROOT ("/"), the context name defines where MIR should look for its configuration directory. Simply rename the WAR
+ file to <<<mir.war>>> and the context should be "/mir" with most servlet containers.
+ 
+* Setup Solr-Server
+
+ More information will appear here later.

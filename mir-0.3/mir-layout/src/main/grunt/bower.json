@@ -1,0 +1,22 @@
+{
+  "name": "${project.artifactId}",
+  "description": "${project.description}",
+  "version": "1.0.0",
+  "author": "Thomas Scheffler",
+  "homepage": "${project.url}",
+  "repository": {
+    "type": "svn",
+    "url": "${project.scm.url}"
+  },
+  "license": "GPLv3",
+  "ignore": [
+    "bower_components"
+  ],
+  "dependencies": {
+  },
+  "devDependencies": {
+    "bootswatch": "3.3.5",
+    "jquery": "1.11.3",
+    "jquery-migrate": "1.2.1"
+  }
+}

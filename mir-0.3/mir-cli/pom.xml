@@ -1,0 +1,125 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.mycore.mir</groupId>
+    <artifactId>mir-parent</artifactId>
+    <version>0.3</version>
+  </parent>
+  <artifactId>mir-cli</artifactId>
+  <packaging>pom</packaging>
+  <name>MIR: Command Line Interface</name>
+  <description>ZIP package ready to run MyCoRe commands from shell</description>
+  <properties>
+    <acl-description.never>never allowed</acl-description.never>
+    <acl-description.all>always allowed</acl-description.all>
+    <acl-description.require-login>require login</acl-description.require-login>
+    <acl-description.not-logged-in>not logged-in</acl-description.not-logged-in>
+    <acl-description.admins>administrators only</acl-description.admins>
+    <acl-description.editors>administrators and editors</acl-description.editors>
+    <acl-description.guests>guests only</acl-description.guests>
+    <acl-description.submitters>submitters, editors and administrators</acl-description.submitters>
+    <acl-description.guests-and-submitters>guests and submitters</acl-description.guests-and-submitters>
+  </properties>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>appassembler-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>assemble</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <!-- Extra JVM arguments that will be included in the bin scripts -->
+          <extraJvmArguments>-DMCR.AppName=mir</extraJvmArguments>
+          <repositoryLayout>flat</repositoryLayout>
+          <repositoryName>lib</repositoryName>
+          <useWildcardClassPath>true</useWildcardClassPath>
+          <binFileExtensions>
+            <unix>.sh</unix>
+          </binFileExtensions>
+          <licenseHeaderFile>license-header.txt</licenseHeaderFile>
+          <programs>
+            <program>
+              <mainClass>org.mycore.frontend.cli.MCRCommandLineInterface</mainClass>
+              <id>mir</id>
+            </program>
+          </programs>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>single</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <descriptors>
+            <descriptor>src/main/assembly/bin.xml</descriptor>
+          </descriptors>
+          <tarLongFileMode>gnu</tarLongFileMode>
+          <appendAssemblyId>false</appendAssemblyId>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+  <dependencies>
+    <dependency>
+      <groupId>${project.parent.groupId}</groupId>
+      <artifactId>mir-module</artifactId>
+      <version>${project.parent.version}</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.mycore</groupId>
+      <artifactId>mycore-meta</artifactId>
+      <type>pom</type>
+      <exclusions>
+        <!-- remove webapp only components -->
+        <exclusion>
+          <groupId>org.mycore</groupId>
+          <artifactId>mycore-acl-editor2</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.mycore</groupId>
+          <artifactId>mycore-classbrowser</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.mycore</groupId>
+          <artifactId>mycore-classeditor</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.mycore</groupId>
+          <artifactId>mycore-oai</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.mycore</groupId>
+          <artifactId>mycore-session-listing</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.mycore</groupId>
+          <artifactId>mycore-webcli</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.mycore</groupId>
+          <artifactId>mycore-xeditor</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <!-- required for org.mycore.common.xsl.MCRParameterCollector to work -->
+      <groupId>javax.servlet</groupId>
+      <artifactId>javax.servlet-api</artifactId>
+      <scope>runtime</scope>
+    </dependency>
+  </dependencies>
+</project>

@@ -1,0 +1,17 @@
+update permission read for id webpage:/servlets/MCRActionMappingServlet/expert/search with rulefile ${app.home}/config/acl/grant-editors.xml described by ${acl-description.editors}
+update permission read for id webpage:/content/search/simple.xed with rulefile ${app.home}/config/acl/grant-guest-and-submitter.xml described by ${acl-description.guests-and-submitters}
+update permission read for id webpage:/content/search/simple_intern.xed with rulefile ${app.home}/config/acl/grant-editors.xml described by ${acl-description.editors}
+update permission read for id webpage:/content/search/complex.xed with rulefile ${app.home}/config/acl/grant-guest-and-submitter.xml described by ${acl-description.guests-and-submitters}
+update permission read for id webpage:/content/search/complex_intern.xed with rulefile ${app.home}/config/acl/grant-editors.xml described by ${acl-description.editors}
+update permission read for id webpage:/authorization/new-user.xed?action=save with rulefile ${app.home}/config/acl/grant-admin.xml described by ${acl-description.admins}
+update permission read for id webpage:/content/publish/index.xml with rulefile ${app.home}/config/acl/grant-submitter.xml described by ${acl-description.submitters}
+update permission read for id webpage:/editor/editor-admins.xed with rulefile ${app.home}/config/acl/grant-editors.xml described by ${acl-description.editors}
+update permission read for id webpage:/authorization/new-author.xed?action=save with rulefile ${app.home}/config/acl/not-logged-in.xml described by ${acl-description.guests}
+update permission read for id webpage:/authorization/roles-editor.xml with rulefile ${app.home}/config/acl/grant-admin.xml described by ${acl-description.admins}
+update permission read for id webpage:/servlets/MCRSessionListingServlet with rulefile ${app.home}/config/acl/grant-admin.xml described by ${acl-description.admins}
+update permission read for id webpage:/servlets/MCRLockServlet?url=/editor_form_commit-mods-all.xml with rulefile ${app.home}/config/acl/grant-admin.xml described by ${acl-description.admins}
+update permission read for id webpage:/servlets/MCRUserServlet with rulefile ${app.home}/config/acl/grant-admin.xml described by ${acl-description.admins}
+update permission read for id webpage:/modules/classeditor/classificationEditor.xml?XSL.classeditor.showId=true with rulefile ${app.home}/config/acl/grant-admin.xml described by ${acl-description.admins}
+update permission read for id webpage:/rsc/ACLE/start with rulefile ${app.home}/config/acl/grant-admin.xml described by ${acl-description.admins}
+update permission read for id webpage:/modules/wcms2/wcms2.xml?XSL.useMT=false with rulefile ${app.home}/config/acl/grant-admin.xml described by ${acl-description.admins}
+update permission write for id webpage:/modules/wcms2/wcms2.xml?XSL.useMT=false with rulefile ${app.home}/config/acl/grant-admin.xml described by ${acl-description.admins}

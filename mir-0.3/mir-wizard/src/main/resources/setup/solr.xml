@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<solr>
+  <instance version="4.10.4">
+    <config>
+      <url>http://artifactory.mycore.de/libs-snapshots-local/org/mycore/solr/solr-home/4.10.4-SNAPSHOT/solr-home-4.10.4-20150727.132634-1.zip</url>
+    </config>
+  </instance>
+</solr>

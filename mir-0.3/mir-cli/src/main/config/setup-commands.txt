@@ -1,0 +1,15 @@
+load all classifications from directory ${app.home}/config/classifications
+load classification from url http://www.mycore.org/classifications/marcrelator.xml
+load classification from url http://www.mycore.org/classifications/mcr-roles.xml
+load classification from url http://www.mycore.org/classifications/mir_access.xml
+load classification from url http://www.mycore.org/classifications/mir_filetype.xml
+load classification from url http://www.mycore.org/classifications/mir_genres.xml
+load classification from url http://www.mycore.org/classifications/mir_institutes.xml
+load classification from url http://www.mycore.org/classifications/mir_rights.xml
+load classification from url http://www.mycore.org/classifications/rfc4646.xml
+load classification from url http://www.mycore.org/classifications/sdnb.xml
+load classification from url http://www.mycore.org/classifications/state.xml
+load classification from url http://www.mycore.org/classifications/typeOfResource.xml
+init superuser
+process ${app.home}/config/acl/defaultrules-commands.txt
+process ${app.home}/config/acl/webacl-commands.txt

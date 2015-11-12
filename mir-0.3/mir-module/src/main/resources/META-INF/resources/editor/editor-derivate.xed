@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE MyCoReWebPage>
+
+<MyCoReWebPage>
+
+  <section title="Bearbeiten des Derivates" xml:lang="de"/>
+  <section title="Edit Derivate" xml:lang="en"/>
+  
+  <section xml:lang="all">
+    <xed:form xmlns:xed="http://www.mycore.de/xeditor" xmlns:cmd="http://www.cdlib.org/inside/diglib/copyrightMD" method="post" role="form" class="form-horizontal" id="dynamic_editor">
+      <xed:include uri="webapp:editor/editor-derivate-includes.xed" ref="in.out" />
+      <h1> Bearbeiten des Derivates </h1>
+      <xed:bind xpath="mycorederivate"> 
+        <fieldset>
+          <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-derivate-includes.xed" ref="label" />
+          <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-derivate-includes.xed" ref="title.repeated" />
+        </fieldset>
+      </xed:bind>
+      <xed:include uri="webapp:editor/editor-derivate-includes.xed" ref="debug.cancel.submit" />
+    </xed:form>
+  </section>
+  
+</MyCoReWebPage>

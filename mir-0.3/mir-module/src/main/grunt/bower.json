@@ -1,0 +1,28 @@
+{
+  "name": "${project.artifactId}",
+  "description": "${project.description}",
+  "version": "1.0.0",
+  "author": "René Adler",
+  "homepage": "${project.url}",
+  "repository": {
+    "type": "svn",
+    "url": "${project.scm.url}"
+  },
+  "license": "GPLv3",
+  "ignore": [
+    "bower_components"
+  ],
+  "dependencies": {
+  },
+  "devDependencies": {
+    "bootstrap": "3.3.5",
+    "bootstrap3-typeahead": "3.1.0",
+    "font-awesome": "4.4.0",
+    "jquery-confirm": "2.5.0",
+    "jquery.placeholder" : "0.2.4",
+    "typeahead.js": "0.11.1",
+    "shariff": "1.16.0",
+    "bootstrap3-datetimepicker" : "4.15.35",
+    "jQuery.dotdotdot" : "1.7.4"
+  }
+}

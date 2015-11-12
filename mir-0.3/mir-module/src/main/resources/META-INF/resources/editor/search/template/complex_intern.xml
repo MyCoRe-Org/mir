@@ -1,0 +1,18 @@
+<query numPerPage="20">
+  <conditions format="xml">
+    <boolean operator="and">
+      <boolean operator="and">
+        <boolean operator="and">
+          <condition field="mods.title" operator="contains" />
+          <condition field="mods.author" operator="contains" />
+          <condition field="id,isbn,mods.identifier" operator="=" />
+          <condition operator="=" field="mods.dateIssued" />
+          <condition field="category.top" operator="=" />
+          <condition field="category.top" operator="=" />
+          <condition field="category.top" operator="=" />
+        </boolean>
+      </boolean>
+      <condition field="objectType" operator="=" value="mods" />
+    </boolean>
+  </conditions>
+</query>

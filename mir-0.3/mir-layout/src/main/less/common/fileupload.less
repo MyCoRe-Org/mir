@@ -1,0 +1,131 @@
+#appletContainer {
+  display: none;
+  padding: 15px;
+}
+
+#html5Container {
+  display: none;
+  margin: 0;
+  padding: 15px;
+
+  *:focus {
+    outline: none;
+  }
+
+  #input_field {
+
+    #fileToUpload {
+      color: @brand-info;
+    }
+
+    #dropbox {
+      border: 2px dashed @brand-primary;
+      min-height: 15em;
+      position: relative;
+      cursor: default;
+      border-radius: 10px;
+
+      h2 {
+        position:absolute;
+        top: 50%;
+        left: 50%;
+        margin: -10px 0 0 -93px;
+        font-size: 18px;
+        color: @brand-primary;
+        z-index: 1;
+      }
+
+      #fileSize {
+        position:absolute;
+        bottom: 10px;
+        right: 10px;
+      }
+
+      &.highlight {
+        border: 2px dashed @brand-success;
+
+        h2 {
+          color: @brand-success;
+        }
+      }
+
+      #files {
+        min-height: 100%;
+        overflow-y: auto;
+
+        .fileContainer {
+          border-radius: 4px;
+          margin-left: 10px;
+          margin-top: 10px;
+          width: auto;
+          padding: 4px 8px;
+          display: inline-block;
+          color: @btn-default-color;
+          background-color: @btn-success-bg;
+          position: relative;
+          z-index: 2;
+
+          &:last-child {
+            margin-bottom: 36px;
+          }
+
+          .filename {
+            border-right: 1px solid @btn-default-color;
+            padding: 0 6px 0 0;
+          }
+
+          button {
+            &.removeFile {
+              background-image: url('../../images/fileupload/remove.png');
+              margin: 0 0 0 4px;
+              height: 16px;
+              width: 16px;
+              border: 0;
+              background-color: transparent;
+              vertical-align: middle;
+              &:hover,
+              &:focus {
+                background-image: url('../../images/fileupload/remove_highlight.png');
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  #button_row {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    #uploadBtn {
+      margin-right: 0;
+    }
+  }
+
+  #progressIndicator {
+    .progress {
+        margin-bottom: 4px;
+        display: none;
+      #progressBar {}
+    }
+    div {
+      #transferSpeedInfo {
+        margin-right: 2px;
+      }
+      #timeRemainingInfo {}
+      #transferBytesInfo {}
+    }
+    #uploadResponse {
+      margin-top: 10px;
+      padding: 15px;
+      display: none;
+      border-radius: 10px;
+      border: 1px solid @brand-info;
+      color: @brand-info;
+      position: relative;
+      #uploadDone {
+        p {}
+      }
+    }
+  }
+}

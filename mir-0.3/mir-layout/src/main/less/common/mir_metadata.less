@@ -1,0 +1,144 @@
+.metadata {
+  overflow: hidden;
+  border: none;
+  font-family: "Droid Sans", Arial, Helvetica, sans-serif;
+  margin: 2em 0;
+  th {
+    text-align: right;
+  }
+
+  th , td {
+    border: none;
+    padding: 0.25em 0.5em;
+  }
+
+  tr.subcaption {
+    font-style: italic;
+    font-size: 116.67%;
+    line-height: 1.2857em;
+    border-bottom: 1px dashed rgba(0, 0, 0, 0.4);
+    th {
+      padding: 1.25em 0.25em 0 0.25em;
+      text-align: left;
+    }
+
+    + tr th , + tr td {
+      padding-top: 0.75em;
+    }
+  }
+
+  caption {
+    font-variant: normal;
+    font-weight: bold;
+    font-size: 116.67%;
+    line-height: 1.2857em;
+    margin: 0 0 1.2857em 0;
+    text-align: left;
+    border-bottom: 1px dashed;
+    margin-bottom: 0.5em;
+    display: none;
+    border-color: #C6C9B7;
+  }
+}
+
+#badges {
+  a.mods_genre {
+    margin-right: 3px;
+  }
+  time {
+    .date_published {
+      margin-right: 3px;
+    }
+  }
+  a.access_condition {
+    margin-right: 3px;
+  }
+}
+
+#mir_access_rights_panel {
+  p {
+    text-align: center;
+  }
+}
+#cite_link_box {
+  text-align: center;
+  .label {
+    margin: 0px 2px;
+  }
+  #copy_cite_link {
+  }
+  #url_site_link {
+    font-size: 12px;
+  }
+  #cite_link_code_box {
+    display: none;
+    border: 1 px solid #ccc;
+    width: 100%;
+    font-family:monospace;
+  }
+}
+
+
+.shariff li {
+  width: 87px;
+}
+
+.altmetric-embed {
+  margin-bottom: 20px;
+}
+
+#citation-style {
+  margin: 20px 0px;
+}
+
+#crossref-cite {
+  margin: 5px 0px;
+}
+
+a.readmore {
+  display: none;
+}
+
+@grayLight: #f6f6f6;
+@grayDark: #ECF0F1;
+
+table.children {
+  margin-bottom: 20px;
+  width: 100%;
+  tr {
+    td {
+    }
+    td.metaname {
+     padding: 10px;
+     border-right: 1px solid #ccc;
+     border-radius: 5px 0 0 5px;
+     background-color: @grayDark;
+    }
+    td.metavalue {
+      ul.document_children {
+        width: 100%;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        li {
+          border: 1px solid @grayLight;
+          margin: 0;
+          padding: 4px 20px;
+          &:nth-child(odd) {
+            background-color: @grayLight;
+          }
+          &:first-child {
+            border-radius: 0px 5px 0 0px;
+          }
+          &:last-child {
+            border-radius: 0px 0px 5px 0px;
+          }
+          a {
+            text-decoration: none;
+          }
+        }
+      }
+    }
+  }
+}
+

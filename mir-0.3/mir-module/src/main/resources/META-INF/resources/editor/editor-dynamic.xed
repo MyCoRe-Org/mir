@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<MyCoReWebPage>
+  <section title="MODS-Dokument erstellen" xml:lang="de"/>
+  <section title="Create MODS document" xml:lang="en"/>
+  <section xml:lang="all">
+
+  <xed:form xmlns:xed="http://www.mycore.de/xeditor" xmlns:cmd="http://www.cdlib.org/inside/diglib/copyrightMD" method="post" role="form" class="form-horizontal" id="dynamic_editor">
+    <xed:include uri="webapp:editor/editor-includes.xed" ref="in.out" />
+
+    <xed:bind xpath="/mycoreobject">
+      <xed:include uri="webapp:editor/editor-includes.xed" ref="mycore.common" />
+      <xed:bind xpath="metadata/def.modsContainer[@class='MCRMetaXML'][@notinherit='true']/modsContainer/mods:mods">
+
+        <!-- If genre is not set in edited XML, it comes from request parameter and must be created -->
+        <!-- Refer genre via variable genre_intern to simplify following code for dynamic headline and includes -->
+        <xed:bind xpath="mods:genre[@type='intern'][@authorityURI='http://www.mycore.org/classifications/mir_genres']/@valueURIxEditor" initially="{$genre}" name="genre_intern" />
+        <xed:bind xpath="mods:typeOfResource" initially="text" />
+
+        <xed:load-resource name="genres" uri="classification:metadata:-1:children:mir_genres" />
+
+        <!-- If parameter host is missing, "standalone" is default, meaning this publication has no host -->
+        <xed:param name="host" default="standalone" />
+        <xed:param name="series" default="no" />
+
+        <h1>
+          Eingabeformular für
+          <xed:output value="$genres//category[@ID=$genre_intern]/label[lang($CurrentLang)]/@text" />
+          <xed:if test="not($host='standalone')">
+            <xed:output value="concat(' in ',$genres//category[@ID=$host]/label[lang($CurrentLang)]/@text)" />
+          </xed:if>
+        </h1>
+
+        <xed:include uri="webapp:editor/editor-includes.xed" ref="failed-validation-messages" />
+
+        <fieldset>
+          <xed:include uri="webapp:editor/editor-genres.xed" ref="{$genre_intern}" />
+        </fieldset>
+
+        <xed:if test="not($host='standalone')">
+          <fieldset class="mir-relatedItem">
+            <div class="col-md-11 mir-relatedItem-head">
+              <xed:output value="concat('erschienen in ',$genres//category[@ID=$host]/label[lang($CurrentLang)]/@text,':')" />
+            </div>
+            <div class="mir-relatedItem-body">
+              <xed:include uri="webapp:editor/editor-hosts.xed" ref="{$host}" />
+              <xed:bind xpath="mods:relatedItem[(@type='host') or (@type='series')][1]">
+                <xed:bind xpath="mods:genre[@type='intern'][@authorityURI='http://www.mycore.org/classifications/mir_genres']/@valueURIxEditor" initially="{$host}" />
+              </xed:bind>
+            </div>
+            <xed:if test="$series='yes'">
+              <xed:if test="contains($genres//category[@ID=$host]/label[lang('x-hosts')]/@text,'series')">
+                <xed:bind xpath="mods:relatedItem[(@type='host')][1]">
+                  <fieldset class="mir-relatedItem">
+                    <div class="col-md-11 mir-relatedItem-head">
+                      <xed:output value="concat($genres//category[@ID=$host]/label[lang($CurrentLang)]/@text,' erschienen in Serie:')" />
+                    </div>
+                    <div class="mir-relatedItem-body">
+                      <xed:include uri="webapp:editor/editor-hosts.xed" ref="series" />
+                      <xed:bind xpath="mods:relatedItem[@type='series'][1]">
+                        <xed:bind xpath="mods:genre[@type='intern'][@authorityURI='http://www.mycore.org/classifications/mir_genres']/@valueURIxEditor" initially="series" />
+                      </xed:bind>
+                    </div>
+                  </fieldset>
+                </xed:bind>
+              </xed:if>
+           </xed:if>
+          </fieldset>
+        </xed:if>
+
+        <xed:include uri="webapp:editor/editor-genres.xed" ref="submit" />
+
+        <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="javascript" />
+        <!-- frame for modal window -->
+        <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="modal.body" />
+
+      </xed:bind>
+    </xed:bind>
+  </xed:form>
+
+
+  </section>
+</MyCoReWebPage>

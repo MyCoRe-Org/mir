@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE MyCoReWebPage>
+<MyCoReWebPage>
+  <section xml:lang="de" title="Kontakt">
+  <div>
+    <h2>Kontakt</h2>
+    <p>
+      MyCoRe-Geschäftsstelle<br />
+      am Regionalen Rechenzentrum der Universität Hamburg<br />
+      Dr. Wiebke Oeltjen<br />
+      Email: info@mycore.de<br /><br />
+
+      Postanschrift:<br />
+      Schlüterstr. 70<br />
+      D-20146 Hamburg<br /><br />
+
+      Tel: +49 (0)40-42838-2652<br />
+      Fax: +49 (0)40-42838-3284
+    </p>
+  </div>
+  <div>
+    <h2>Die Technik</h2>
+    <p>
+      Die Entwicklung und Implementierung dieses Dokumentenservers erfolgt auf Basis des Repository-Frameworks MyCoRe. Analoge Projekte wurden bereits mit
+      den Hochschulschriftenservern DBT und DuEPublico umgesetzt. MyCoRe bildet sowohl die Grundlage für den DMS-Service der
+      Verbundzentrale als auch für den zentralen Betrieb der digitalen Bibliothek des Freistaates Thüringen unter Federführung
+      der Thüringischen Landes- und Universitätsbibliothek (ThULB) Jena, so dass ein langfristiger Betrieb sowie eine
+      kontinuierliche Weiterentwicklung durch die VZG und die ThULB Jena garantiert sind. Außerdem wird somit die Anbindung des
+      DMS an die CBS-/LBS-Struktur zur automatischen Übernahme der Metadaten und Verknüpfung der Nachweise mit dem DMS sowie die
+      Replizierung der Institutsstruktur in die OPACs gewährleistet.
+    </p>
+  </div>
+  </section>
+  <meta>
+    <log date="2015-02-19" time="10:00" labelPath=" » Kontakt" lastEditor="Kathleen Neumann" />
+  </meta>
+</MyCoReWebPage>

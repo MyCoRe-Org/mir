@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE MyCoReWebPage>
+<MyCoReWebPage>
+  <section xml:lang="de" title="Layout wechseln">
+    <h1>Template Chooser</h1>
+    <div class="row">
+      <form role="form" method="post" name="templateChooser" class="form-horizontal col-sm-5">
+        <div class="form-group">
+          <label for="layout" class="col-sm-6 control-label">Layout β</label>
+          <div class="col-sm-6">
+            <select id="layout" name="XSL.MIR.Layout.Theme.SESSION" onChange="document.templateChooser.submit()" class="form-control">
+              <option value="">Standard</option>
+              <option value="cosmol">CosmoL</option>
+              <option value="flatmir">FlatMIR</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="theme" class="col-sm-6 control-label">Theme</label>
+          <div class="col-sm-6">
+            <select id="theme" name="XSL.MIR.DefaultLayout.CSS.SESSION" onChange="document.templateChooser.submit()" class="form-control">
+              <option value="">Standard</option>
+              <option value="default">Bootstrap</option>
+              <option value="cerulean">Cerulean</option>
+              <option value="cosmo">Cosmo</option>
+              <option value="cyborg">Cyborg</option>
+              <option value="darkly">Darkly</option>
+              <option value="flatly">Flatly</option>
+              <option value="journal">Journal</option>
+              <option value="lumen">Lumen</option>
+              <option value="paper">Paper</option>
+              <option value="readable">Readable</option>
+              <option value="sandstone">Sandstone</option>
+              <option value="simplex">Simplex</option>
+              <option value="slate">Slate</option>
+              <option value="spacelab">Spacelab</option>
+              <option value="superhero">Superhero</option>
+              <option value="united">United</option>
+              <option value="yeti">Yeti</option>
+            </select>
+          </div>
+        </div>
+      </form>
+      <pre id="mycoreProperties" class="col-sm-6"/>
+    </div>
+    <h2>Preview</h2>
+    <div class="col-xs-12" id="remote">
+    </div>
+    <style type="text/css">
+    <![CDATA[
+      .bs-component {
+          position: relative;
+      }
+      .bs-component .modal {
+          bottom: auto;
+          display: block;
+          left: auto;
+          position: relative;
+          right: auto;
+          top: auto;
+          z-index: 1;
+      }
+      .bs-component .modal-dialog {
+          width: 90%;
+      }
+    ]]>
+    </style>
+    <script type="text/javascript">
+    <![CDATA[
+      "use strict";
+      (function($) {
+        $(document).ready(function() {
+          $('#remote').load("bootswatch-default.html .bs-docs-section", function(){
+              $('.bs-component [data-toggle="popover"]').popover();
+              $('.bs-component [data-toggle="tooltip"]').tooltip();
+          });
+          var curCssLinkElements=$('link[rel="stylesheet"][href*="mir-layout"]').attr("href").split("/");
+          var curCss=curCssLinkElements.pop();
+          curCss=curCss.substr(0,curCss.indexOf('.'));
+          var curLayout=curCssLinkElements.pop();
+          $('form[name="templateChooser"] option[value="'+curLayout+'"]').attr("selected","selected");
+          $('form[name="templateChooser"] option[value="'+curCss+'"]').attr("selected","selected");
+          $('#mycoreProperties').text('#add to mycore.properties\nMIR.DefaultLayout.CSS='+curCss+'.min\nMIR.Layout.Theme='+curLayout);
+        });
+      })(jQuery);
+    ]]>
+    </script>
+  </section>
+</MyCoReWebPage>

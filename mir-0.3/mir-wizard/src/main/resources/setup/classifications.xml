@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classification>
+  <classification url="http://www.mycore.org/classifications/marcrelator.xml" />
+  <classification url="http://www.mycore.org/classifications/mcr-roles.xml" />
+  <classification url="http://www.mycore.org/classifications/mir_access.xml" />
+  <classification url="http://www.mycore.org/classifications/mir_filetype.xml" />
+  <classification url="http://www.mycore.org/classifications/mir_genres.xml" />
+  <classification url="http://www.mycore.org/classifications/mir_institutes.xml" />
+  <classification url="http://www.mycore.org/classifications/mir_rights.xml" />
+  <classification url="http://www.mycore.org/classifications/rfc4646.xml" />
+  <classification url="http://www.mycore.org/classifications/sdnb.xml" />
+  <classification url="http://www.mycore.org/classifications/state.xml" />
+  <classification url="http://www.mycore.org/classifications/typeOfResource.xml" />
+</classification>

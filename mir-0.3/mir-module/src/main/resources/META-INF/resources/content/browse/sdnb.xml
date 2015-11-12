@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE MyCoReWebPage>
+
+<MyCoReWebPage>
+
+  <section i18n="browse.sdnb" xml:lang="all">
+
+    <h3><i18n key="browse.sdnb" /></h3>
+    <classificationbrowser classification="SDNB"
+                               objecttype="mods"
+                              restriction="+category.top:&quot;state:published&quot;"
+                                    field="category.top"
+                             countresults="true"
+                               addclassid="true"
+                              emptyleaves="true"
+                                    style="bootstrap"
+                               parameters="sort=mods.dateIssued+desc"
+                             addParameter="XSL.template=template_mir"
+    />
+
+  </section>
+
+</MyCoReWebPage>

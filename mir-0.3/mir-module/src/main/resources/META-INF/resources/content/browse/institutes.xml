@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE MyCoReWebPage>
+
+<MyCoReWebPage>
+
+  <section i18n="browse.mods.institution.corporate" xml:lang="all">
+
+    <h3><i18n key="browse.mods.institution.corporate" /></h3>
+    <classificationbrowser classification="mir_institutes"
+                               objecttype="mods"
+                              restriction="+category.top:&quot;state:published&quot;"
+                                    field="category.top"
+                             countresults="true"
+                               addclassid="true"
+                              emptyleaves="true"
+                                    style="bootstrap"
+                               parameters="sort=mods.dateIssued+desc"
+                             addParameter="XSL.template=template_mir"
+    />
+
+  </section>
+
+</MyCoReWebPage>

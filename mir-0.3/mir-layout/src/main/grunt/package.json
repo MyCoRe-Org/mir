@@ -1,0 +1,25 @@
+{
+    "name": "${project.artifactId}",
+  "description": "${project.description}",
+    "version": "1.0.0",
+    "author": "Thomas Scheffler",
+    "homepage": "${project.url}",
+    "repository": {
+      "type": "svn",
+      "url": "${project.scm.url}"
+    },
+    "license": "GPLv3",
+    "description": "${project.description}",
+    "engines": {
+      "node": ">= 0.12.0"
+    },
+    "engineStrict": true,
+    "devDependencies": {
+        "grunt-contrib-concat": "^0.5.1",
+        "grunt-contrib-less": "^1.0.0",
+        "grunt-replace": "^0.8.0",
+        "grunt-contrib-watch": "^0.6.1",
+        "request": "^2.53.0",
+        "grunt-bowercopy": "^1.2.3"
+    }
+}

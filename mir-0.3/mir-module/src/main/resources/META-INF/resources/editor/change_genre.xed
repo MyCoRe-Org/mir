@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE MyCoReWebPage>
+<MyCoReWebPage>
+<section xml:lang="de" title="Publizieren">
+
+    <h2>Genre ändern</h2>
+    <p>Bitte geben Sie das korrekte Genre für die Publikation xy an:</p>
+
+    <xed:form xmlns:xed="http://www.mycore.de/xeditor" role="form" class="form-horizontal">
+      <xed:source uri="xslStyle:mods2editor:{$sourceUri}"/>
+      <xed:source uri="xslStyle:mods2editor:xslStyle:asParent:mcrobject:{$parentId}" />
+      <xed:source uri="xslStyle:mods2editor:xslStyle:mycoreobject-editor:mcrobject:{$id}" />
+      <xed:cancel url="servlets/MCRLockServlet?action=unlock&amp;id={$id}&amp;url=/receive/{$id}" />
+      <xed:cancel url="{$from}" />
+      <xed:cancel url="../index.xml" />
+      <xed:post-processor xsl="editor2mods.xsl" />
+      <xed:bind xpath="/mycoreobject/metadata/def.modsContainer[@class='MCRMetaXML']/modsContainer/mods:mods">
+        <xed:bind xpath="mods:genre[@type='intern']/@mcr:categId">
+          <div class="form-group">
+            <label class="col-md-3 control-label">
+              <xed:output i18n="component.mods.metaData.dictionary.genre" />
+            </label>
+            <div class="col-md-6">
+              <select class="form-control form-control-inline">
+                <xed:include uri="xslStyle:items2options:classification:editorComplete:1:children:mir_genres" />
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-md-offset-3 col-md-6">
+              <button type="submit" class="btn btn-default" xed:target="debug">Debug</button>
+              <button type="submit" class="btn btn-default" xed:target="cancel">
+                <xed:output i18n="common.button.cancel" />
+              </button>
+              <button type="submit" class="btn btn-primary" xed:target="servlet" xed:href="UpdateObjectServlet">
+                <xed:output i18n="common.button.save" />
+              </button>
+            </div>
+          </div>
+        </xed:bind>
+      </xed:bind>
+    </xed:form>
+
+</section>
+<meta>
+  <log date="2014-05-06" time="16:02" labelPath=" » Admin" lastEditor="Kathleen Neumann" />
+</meta>
+</MyCoReWebPage>
