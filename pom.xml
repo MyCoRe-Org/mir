@@ -3,7 +3,7 @@
   <parent>
     <groupId>org.mycore</groupId>
     <artifactId>mycore-parent</artifactId>
-    <version>27</version>
+    <version>28-SNAPSHOT</version>
   </parent>
   <groupId>org.mycore.mir</groupId>
   <artifactId>mir-parent</artifactId>
@@ -14,7 +14,7 @@
   <inceptionYear>2013</inceptionYear>
   <properties>
     <java.target.version>1.8</java.target.version>
-    <mycore.version>2015.11</mycore.version>
+    <mycore.version>2015.12-SNAPSHOT</mycore.version>
     <jetty.version>9.3.5.v20151012</jetty.version>
     <tomcat8.version>8.0.28</tomcat8.version>
     <cargo.version>1.4.16</cargo.version>
@@ -27,7 +27,7 @@
     <cargo.tomcat.ajp.port>8292</cargo.tomcat.ajp.port>
     <cargo.debug.address>8295</cargo.debug.address>
     <cargo.debug.suspend>n</cargo.debug.suspend>
-    <changelog.since>2014-12-05</changelog.since>
+    <changelog.since>2015-11-09</changelog.since>
     <site.suffix />
   </properties>
   <url>http://www.mycore.de/generated/mir${site.suffix}</url>
