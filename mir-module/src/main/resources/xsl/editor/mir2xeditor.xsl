@@ -103,6 +103,50 @@
     </xed:repeat>
   </xsl:template>
 
+  <xsl:template match="mir:dateRange">
+    <div class="form-group center-vertical {@class}">
+      <label class="col-md-3 control-label ">
+        <xed:output i18n="{@label}" />
+      </label>
+      <xsl:call-template name="mir-dateRange"/>
+      <div class="col-md-3">
+        <xsl:if test="string-length(@help-text) &gt; 0">
+          <xsl:call-template name="mir-helpbutton" />
+        </xsl:if>
+      </div>
+    </div>
+  </xsl:template>
+
+  <xsl:template match="mir:dateRangeInput">
+    <xsl:call-template name="mir-dateRange"/>
+  </xsl:template>
+
+  <xsl:template name="mir-dateRange">
+    <xsl:variable name="apos">'</xsl:variable>
+    <xsl:variable name="xpathEnd" >
+      <xsl:value-of select="concat(@xpath,'[@point=', $apos, 'end', $apos, ']')"/>
+    </xsl:variable>
+    <div class="col-md-6 center-vertical {@class}" data-type="{@type}">
+      <div class="col-md-5">
+        <xed:bind xpath="{@xpath}">
+          <input type="text" class="form-control" data-point="start">
+            <xsl:copy-of select="@placeholder" />
+          </input>
+        </xed:bind>
+      </div>
+      <div class="col-md-2 text-center">
+        <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+      </div>
+      <div class="col-md-5">
+        <xed:bind xpath="{$xpathEnd}">
+          <input type="text" class="form-control" data-point="end">
+            <xsl:copy-of select="@placeholder" />
+          </input>
+        </xed:bind>
+      </div>
+    </div>
+  </xsl:template>
+
   <xsl:template match="mir:textarea">
     <xsl:variable name="xed-val-marker" > {$xed-validation-marker} </xsl:variable>
     <xsl:choose>
