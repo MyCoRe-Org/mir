@@ -74,7 +74,7 @@
                   <xsl:variable name="verinfo" select="document(concat('versioninfo:',mycoreobject/@ID))" />
                   <xsl:value-of select="count($verinfo/versions/version)" />
                   <br/>
-                  <a id="historyStarter" class="label label-info">
+                  <a id="historyStarter" style="cursor: pointer">
                     <xsl:value-of select="i18n:translate('metadata.versionInfo.startLabel')" />
                   </a>
                 </td>

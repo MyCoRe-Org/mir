@@ -1,18 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
   exclude-result-prefixes="i18n">
-    
-  <xsl:template name="history">
-    <xsl:param name="ID" />
-    <xsl:variable name="verinfo" select="document(concat('versioninfo:',$ID))" />
-    <div class="table-responsive col-sm-12">
+
+  <xsl:import href="xslImport:modsmeta:metadata/mir-history.xsl" />  
+  
+  <xsl:template match="/">
+    <xsl:variable name="verinfo" select="document(concat('versioninfo:',/mycoreobject/@ID))" />
+    <div id="mir-historydata" class="table-responsive col-sm-12">
       <table class="table table-hover table-condensed">
         <tr class="info">
-          <th><xsl:value-of select="i18n:translate('metadata.versionInfo.version')"/></th>
-          <th><xsl:value-of select="i18n:translate('metadata.versionInfo.revision')"/></th>
-          <th><xsl:value-of select="i18n:translate('metadata.versionInfo.action')"/></th>
-          <th><xsl:value-of select="i18n:translate('metadata.versionInfo.date')"/></th>
-          <th><xsl:value-of select="i18n:translate('metadata.versionInfo.user')"/></th>
+          <th>
+            <xsl:value-of select="i18n:translate('metadata.versionInfo.version')" />
+          </th>
+          <th>
+            <xsl:value-of select="i18n:translate('metadata.versionInfo.revision')" />
+          </th>
+          <th>
+            <xsl:value-of select="i18n:translate('metadata.versionInfo.action')" />
+          </th>
+          <th>
+            <xsl:value-of select="i18n:translate('metadata.versionInfo.date')" />
+          </th>
+          <th>
+            <xsl:value-of select="i18n:translate('metadata.versionInfo.user')" />
+          </th>
         </tr>
         <xsl:for-each select="$verinfo/versions/version">
           <xsl:sort order="descending" select="position()" data-type="number" />
@@ -61,6 +72,7 @@
         </xsl:for-each>
       </table>
     </div>
+    <xsl:apply-imports />
   </xsl:template>
 
 </xsl:stylesheet>
