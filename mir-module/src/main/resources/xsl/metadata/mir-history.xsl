@@ -5,7 +5,8 @@
   <xsl:import href="xslImport:modsmeta:metadata/mir-history.xsl" />  
   
   <xsl:template match="/">
-    <xsl:variable name="verinfo" select="document(concat('versioninfo:',/mycoreobject/@ID))" />
+    <xsl:variable name="ID" select="/mycoreobject/@ID" />
+    <xsl:variable name="verinfo" select="document(concat('versioninfo:',$ID))" />
     <div id="mir-historydata" class="table-responsive col-sm-12">
       <table class="table table-hover table-condensed">
         <tr class="info">
@@ -35,7 +36,7 @@
               <xsl:if test="@r">
                 <xsl:variable name="href">
                   <xsl:call-template name="UrlSetParam">
-                    <xsl:with-param name="url" select="$RequestURL" />
+                    <xsl:with-param name="url" select="concat($WebApplicationBaseURL,'receive/',$ID)" />
                     <xsl:with-param name="par" select="'r'" />
                     <xsl:with-param name="value" select="@r" />
                   </xsl:call-template>
