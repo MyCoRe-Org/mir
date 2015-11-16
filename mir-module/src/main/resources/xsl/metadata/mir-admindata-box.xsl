@@ -73,52 +73,24 @@
                 <td class="metavalue">
                   <xsl:variable name="verinfo" select="document(concat('versioninfo:',mycoreobject/@ID))" />
                   <xsl:variable name="revision">
-                    <xsl:choose>
-                      <xsl:when test="contains($RequestURL, concat('receive/',/mycoreobject/@ID))">
-                        <xsl:choose>
-                          <xsl:when test="contains($RequestURL, '?r=')">
-                            <xsl:variable name="helper">
-                              <xsl:value-of select="substring-after($RequestURL, '?r=')" />
-                            </xsl:variable>
-                            <xsl:if test="contains($helper, '&amp;')">
-                              <xsl:value-of select="substring-before($helper, '&amp;')" />
-                            </xsl:if>
-                            <xsl:if test="not(contains($helper, '&amp;'))">
-                              <xsl:value-of select="$helper" />
-                            </xsl:if>
-                          </xsl:when>
-                          <xsl:when test="contains($RequestURL, '&amp;r=')">
-                            <xsl:variable name="helper">
-                              <xsl:value-of select="substring-after($RequestURL, '&amp;r=')" />
-                            </xsl:variable>
-                            <xsl:if test="contains($helper, '&amp;')">
-                              <xsl:value-of select="substring-before($helper, '&amp;')" />
-                            </xsl:if>
-                            <xsl:if test="not(contains($helper, '&amp;'))">
-                              <xsl:value-of select="$helper" />
-                            </xsl:if>
-                          </xsl:when>
-                          <xsl:otherwise>
-                            <xsl:value-of select="0" />
-                          </xsl:otherwise>
-                        </xsl:choose>
-                      </xsl:when>
-                      <xsl:otherwise>
-                        <xsl:value-of select="0" />
-                      </xsl:otherwise>
-                    </xsl:choose>
+                    <xsl:call-template name="UrlGetParam">
+                      <xsl:with-param name="url" select="$RequestURL" />
+                      <xsl:with-param name="par" select="'r'" />
+                    </xsl:call-template>
                   </xsl:variable>
-                  <xsl:if test="$revision = 0" >
-                    <xsl:value-of select="count($verinfo/versions/version)" />
-                  </xsl:if>
-                  <xsl:if test="not($revision = 0)">
-                    <xsl:for-each select="$verinfo/versions/version">
-                      <xsl:sort order="descending" select="position()" data-type="number" />
-                      <xsl:if test="$revision = @r">
-                        <xsl:number />
-                      </xsl:if>
-                    </xsl:for-each>
-                  </xsl:if>
+                  <xsl:choose>
+                    <xsl:when test="not($revision = '')">
+                      <xsl:for-each select="$verinfo/versions/version">
+                        <xsl:sort order="descending" select="position()" data-type="number" />
+                        <xsl:if test="$revision = @r">
+                          <xsl:number />
+                        </xsl:if>
+                      </xsl:for-each>
+                    </xsl:when>
+                    <xsl:otherwise>
+                      <xsl:value-of select="count($verinfo/versions/version)" />
+                    </xsl:otherwise>
+                  </xsl:choose>
                   <br/>
                   <a id="historyStarter" style="cursor: pointer">
                     <xsl:value-of select="i18n:translate('metadata.versionInfo.startLabel')" />
