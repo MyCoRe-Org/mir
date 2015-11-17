@@ -302,7 +302,7 @@
             </div>
          </xed:bind>
         </legend>
-        <div class="mir-fieldset-content personExtended-container hiddenDetail">
+        <div class="mir-fieldset-content personExtended-container hidden">
           <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="person.affiliation" />
           <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="nameIdentifier.repeated" />
         </div>

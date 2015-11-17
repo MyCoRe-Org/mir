@@ -1,7 +1,7 @@
 $(document).ready(function() {
 
     $("body").on("click", ".personExtended_box .glyphicon-menu-hamburger", function () {
-        $(this).closest("legend").toggleClass("hiddenDetail").next().toggleClass("hiddenDetail");
+        $(this).closest("legend").toggleClass("hiddenDetail").next().toggleClass("hidden");
     });
 
     $("body").on("change", ".date-select", function () {
@@ -32,7 +32,7 @@ $(document).ready(function() {
     }
 
     if ($(".personExtended-container input:text[value='']").length > 0) {
-        $(".personExtended-container input:not(:text[value=''])").closest(".personExtended-container").removeClass("hiddenDetail").prev().removeClass("hiddenDetail");
+        $(".personExtended-container input:not(:text[value=''])").closest(".personExtended-container").removeClass("hidden").prev().removeClass("hiddenDetail");
     }
 
     if ($(".date-select").length > 0) {
