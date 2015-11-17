@@ -437,11 +437,13 @@
                       </a>
                     </li>
                   </xsl:if>
-                  <li>
-                    <a href="{$copyURL}?copyofid={$id}">
-                      <xsl:value-of select="i18n:translate('object.copyObject')" />
-                    </a>
-                  </li>
+                  <xsl:if test="string-length($copyURL) &gt; 0">
+                    <li>
+                      <a href="{$copyURL}?copyofid={$id}">
+                        <xsl:value-of select="i18n:translate('object.copyObject')" />
+                      </a>
+                    </li>
+                  </xsl:if>
                 </xsl:when>
                 <xsl:otherwise>
                   <li>
