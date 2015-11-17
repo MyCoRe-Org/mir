@@ -212,9 +212,9 @@
   </xsl:template>
 
   <xsl:template match="mir:role.extended.repeated">
-    <fieldset class="personExtended_box">
-      <xsl:variable name="xed-val-marker" > {$xed-validation-marker} </xsl:variable>
-      <xed:repeat xpath="mods:name[@type='personal'][mods:role/mods:roleTerm[@type='code'][@authority='marcrelator']='{@role}']" min="1" max="100">
+    <xsl:variable name="xed-val-marker" > {$xed-validation-marker} </xsl:variable>
+    <xed:repeat xpath="mods:name[@type='personal'][mods:role/mods:roleTerm[@type='code'][@authority='marcrelator']='{@role}']" min="1" max="100">
+      <fieldset class="personExtended_box">
         <legend class="mir-fieldset-legend hiddenDetail">
           <xed:bind xpath="mods:displayForm"> <!-- Move down to get the "required" validation right -->
             <div class="form-group {@class} {$xed-val-marker}">
@@ -242,8 +242,8 @@
           <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="person.affiliation" />
           <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="nameIdentifier.repeated" />
         </div>
+      </fieldset>
     </xed:repeat>
-    </fieldset>
   </xsl:template>
 
   <xsl:template match="mir:role.repeated">
@@ -274,9 +274,9 @@
   </xsl:template>
 
   <xsl:template match="mir:person.extended.repeated">
-    <fieldset class="personExtended_box">
-      <xsl:variable name="xed-val-marker" > {$xed-validation-marker} </xsl:variable>
-      <xed:repeat xpath="mods:name[@type='personal']" min="1" max="100">
+    <xsl:variable name="xed-val-marker" > {$xed-validation-marker} </xsl:variable>
+    <xed:repeat xpath="mods:name[@type='personal']" min="1" max="100">
+      <fieldset class="personExtended_box">
         <legend class="mir-fieldset-legend hiddenDetail">
           <xed:bind xpath="mods:displayForm"> <!-- Move down to get the "required" validation right -->
             <div class="form-group {@class} {$xed-val-marker}">
@@ -306,8 +306,8 @@
           <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="person.affiliation" />
           <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="nameIdentifier.repeated" />
         </div>
-      </xed:repeat>
-    </fieldset>
+      </fieldset>
+    </xed:repeat>
   </xsl:template>
 
   <xsl:template match="mir:person.repeated">
