@@ -379,6 +379,9 @@
         <xsl:with-param name="layout" select="'all'" />
       </xsl:call-template>
     </xsl:variable>
+    <xsl:variable name="copyURL">
+      <xsl:value-of select="actionmapping:getURLforID('create-copy',$id,true())" xmlns:actionmapping="xalan://org.mycore.wfc.actionmapping.MCRURLRetriever" />
+    </xsl:variable>
     <xsl:variable name="basketType" select="'objects'" />
     <div class="btn-group">
       <xsl:choose>
@@ -431,6 +434,13 @@
                     <li>
                       <a href="{$WebApplicationBaseURL}receive/{/mycoreobject/@ID}?XSL.Transformer=datacite">
                         <xsl:value-of select="i18n:translate('mir.registerDOI')" />
+                      </a>
+                    </li>
+                  </xsl:if>
+                  <xsl:if test="string-length($copyURL) &gt; 0">
+                    <li>
+                      <a href="{$copyURL}?copyofid={$id}">
+                        <xsl:value-of select="i18n:translate('object.copyObject')" />
                       </a>
                     </li>
                   </xsl:if>
