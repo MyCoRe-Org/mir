@@ -7,6 +7,7 @@
     <xed:source uri="xslStyle:RDF-mods-journal,editor/mods2xeditor:http://ld.zdb-services.de/data/{$zdbid}.rdf" />
     <xed:source uri="xslStyle:editor/mods2xeditor:{$sourceUri}" />
     <xed:source uri="xslStyle:mycoreobject-editor,editor/mods2xeditor:mcrobject:{$id}" />
+    <xed:source uri="xslStyle:mycoreobject-copyof,editor/mods2xeditor:mcrobject:{$copyofid}" />
     <xed:choose>
       <xed:when test="$relatedItemType='series'"> <!-- $seriesId -->
         <xed:source uri="xslStyle:asSeries,editor/mods2xeditor:mcrobject:{$relatedItemId}" />
