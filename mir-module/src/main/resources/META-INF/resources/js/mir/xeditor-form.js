@@ -1,4 +1,20 @@
 $(document).ready(function() {
+	
+	  $(document).popover({
+	    selector : "[data-toggle=popover]",
+	    container : "body",
+	    html : "true",
+	    trigger: "focus"
+	  });
+	  
+    // Enables the datetimepicker
+    if (jQuery.fn.datetimepicker) {
+      $('.datetimepicker').find('input').datetimepicker({
+        locale: 'de',
+        format: 'YYYY-MM-DD',
+        extraFormats: [ 'YYYY','YYYY-MM', 'YYYY-MM-DD' ]
+      });
+    };
 
     $("body").on("click", ".personExtended_box .glyphicon-menu-hamburger", function () {
         $(this).closest("legend").toggleClass("hiddenDetail").next().toggleClass("hidden");

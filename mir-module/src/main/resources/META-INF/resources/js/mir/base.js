@@ -137,17 +137,6 @@
       $(this).next().collapse('toggle');
     });
 
-    // Enables the datetimepicker
-    if (jQuery.fn.datetimepicker) {
-      $(function () {
-        $('.datetimepicker').find('input').datetimepicker({
-          locale: 'de',
-          format: 'YYYY-MM-DD',
-          extraFormats: [ 'YYYY','YYYY-MM', 'YYYY-MM-DD' ]
-        });
-      });
-    };
-
     // for configuration look here: http://dotdotdot.frebsite.nl/
     if (jQuery.fn.dotdotdot) {
       $(".ellipsis").dotdotdot({
@@ -166,13 +155,6 @@
   $(document).tooltip({
     selector : "[data-toggle=tooltip]",
     container : "body"
-  });
-
-  $(document).popover({
-    selector : "[data-toggle=popover]",
-    container : "body",
-    html : "true",
-    trigger: "focus"
   });
 
 })(jQuery);
