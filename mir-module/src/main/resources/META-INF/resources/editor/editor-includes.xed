@@ -895,7 +895,7 @@
         </div>
         <mir:help-pmud help-text="{i18n:mir.help.link.title}" pmud="true" />
       </div>
-      <mir:textfield xpath="mods:location/mods:url[@access='raw object']" label="mir.link.raw_object" help-text="{i18n:mir.help.link.raw_object}"
+      <mir:textfield xpath="mods:location/mods:url[@access='raw object']" help-text="{i18n:mir.help.link.raw_object}"
         placeholder="{i18n:mir.placeholder.abstract.link}" />
     </xed:repeat>
   </xed:template>

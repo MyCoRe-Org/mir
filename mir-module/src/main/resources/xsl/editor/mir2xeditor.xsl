@@ -41,7 +41,9 @@
 
   <xsl:template name="mir-textfield">
     <label class="col-md-3 control-label ">
-      <xed:output i18n="{@label}" />
+      <xsl:if test="@label">
+        <xed:output i18n="{@label}" />
+      </xsl:if>
     </label>
     <div class="col-md-6">
       <input id="{@id}" type="text" class="form-control">
