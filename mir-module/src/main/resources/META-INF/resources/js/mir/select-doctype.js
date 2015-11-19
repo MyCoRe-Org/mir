@@ -3,16 +3,25 @@ var GenreXML;
 
 function changeHostOptions(){
 	var id = $( '#genre option:selected' )[0].value;
-	var hosts = $($(GenreXML).find('[ID="'+id+'"]')[0]).children('label[xml\\:lang="x-hosts"]').attr('text');
-	$( '#host').empty();
-	$.each(hosts.split(' '),function (ind,val) {
-		if (val=='standalone') {
-			$('#host').prepend('<option value="standalone" selected="selected" >(bitte ggf. auswählen)</option>');
-		} else {
-			text = $($(GenreXML).find('[ID="'+val+'"]')[0]).children('label[xml\\:lang="de"]').attr('text');
-			$('#host').append('<option value="'+val+'">'+text+'</option>');
+	var host = $($(GenreXML).find('[ID="'+id+'"]')[0]).children('label[xml\\:lang="x-hosts"]').attr('text');
+	$('#host').empty();
+	$('#host').parent().parent().show();
+	if(!(typeof host === 'undefined')) {
+		var hosts = host.split(' ');
+		$.each(hosts,function (ind,val) {
+			if (val=='standalone') {
+				$('#host').prepend('<option value="standalone" selected="selected" >(bitte ggf. auswählen)</option>');
+			} else {
+				text = $($(GenreXML).find('[ID="'+val+'"]')[0]).children('label[xml\\:lang="de"]').attr('text');
+				$('#host').append('<option value="'+val+'">'+text+'</option>');
+			}
+		});
+		if(hosts.length == '1' && hosts[0] == 'standalone') {
+			$('#host').parent().parent().hide();
 		}
-	})
+	} else {
+		$('#host').parent().parent().hide();
+	}
 }
 
 
