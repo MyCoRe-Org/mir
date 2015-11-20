@@ -16,7 +16,7 @@ $(document).ready(function() {
       });
     };
 
-    $("body").on("click", ".personExtended_box .glyphicon-menu-hamburger", function () {
+    $("body").on("click", "fieldset .glyphicon-menu-hamburger", function () {
         $(this).closest("legend").toggleClass("hiddenDetail").next().toggleClass("hidden");
     });
 
@@ -49,6 +49,10 @@ $(document).ready(function() {
 
     if ($(".personExtended-container input:text[value='']").length > 0) {
         $(".personExtended-container input:not(:text[value=''])").closest(".personExtended-container").removeClass("hidden").prev().removeClass("hiddenDetail");
+    }
+
+    if ($(".dateExtended-container input:not(:text[value=''])").length > 0) {
+        $(".dateExtended-container").closest(".dateExtended-container").removeClass("hidden").prev().removeClass("hiddenDetail");
     }
 
     if ($(".date-select").length > 0) {

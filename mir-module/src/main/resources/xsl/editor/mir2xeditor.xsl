@@ -106,11 +106,13 @@
   </xsl:template>
 
   <xsl:template match="mir:dateRange">
-    <div class="form-group center-vertical {@class}">
+    <div class="form-group">
       <label class="col-md-3 control-label ">
         <xed:output i18n="{@label}" />
       </label>
-      <xsl:call-template name="mir-dateRange"/>
+      <div class="col-md-6 center-vertical {@class}" data-type="{@type}">
+        <xsl:call-template name="mir-dateRange"/>
+      </div>
       <div class="col-md-3">
         <xsl:if test="string-length(@help-text) &gt; 0">
           <xsl:call-template name="mir-helpbutton" />
@@ -120,7 +122,9 @@
   </xsl:template>
 
   <xsl:template match="mir:dateRangeInput">
-    <xsl:call-template name="mir-dateRange"/>
+    <div class="center-vertical {@class}" data-type="{@type}">
+      <xsl:call-template name="mir-dateRange"/>
+    </div>
   </xsl:template>
 
   <xsl:template name="mir-dateRange">
@@ -128,7 +132,6 @@
     <xsl:variable name="xpathEnd" >
       <xsl:value-of select="concat(@xpath,'[@point=', $apos, 'end', $apos, ']')"/>
     </xsl:variable>
-    <div class="col-md-6 center-vertical {@class}" data-type="{@type}">
       <div class="col-md-5">
         <xed:bind xpath="{@xpath}">
           <input type="text" class="form-control" data-point="start">
@@ -146,7 +149,6 @@
           </input>
         </xed:bind>
       </div>
-    </div>
   </xsl:template>
 
   <xsl:template match="mir:textarea">
@@ -240,7 +242,7 @@
             </div>
           </xed:bind>
         </legend>
-        <div class="mir-fieldset-content personExtended-container hiddenDetail">
+        <div class="mir-fieldset-content personExtended-container hidden">
           <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="person.affiliation" />
           <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="nameIdentifier.repeated" />
         </div>

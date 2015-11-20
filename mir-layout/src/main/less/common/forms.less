@@ -119,13 +119,25 @@
     border: 0;
 }
 
-.personExtended_box .mir-fieldset-legend {
+.personExtended_box .mir-fieldset-legend, .dateExtended_box .mir-fieldset-legend{
     padding-left: 0;
 }
 
-.personExtended_box .search-person {
+.dateExtended_box .mir-fieldset-legend label {
+    font-size: 14px;
+}
+
+.personExtended_box .search-person, .dateExtended_box .mainDate {
     width: 93%;
     margin-right: 2px;
+}
+
+.mainDate.center-vertical>div {
+    float: left;
+}
+
+.dateExtended_box span.glyphicon{
+  margin-top: 8px;
 }
 
 div.mir-fieldset-content {
