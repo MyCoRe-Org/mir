@@ -11,4 +11,5 @@
   <classification url="http://www.mycore.org/classifications/sdnb.xml" />
   <classification url="http://www.mycore.org/classifications/state.xml" />
   <classification url="http://www.mycore.org/classifications/typeOfResource.xml" />
+  <classification url="http://www.mycore.org/classifications/nameIdentifier.xml" />
 </classification>

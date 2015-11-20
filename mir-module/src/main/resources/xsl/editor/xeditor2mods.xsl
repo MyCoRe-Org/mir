@@ -29,14 +29,9 @@
   </xsl:template>
 
   <xsl:template match="mods:nameIdentifier">
-    <xsl:choose>
-      <xsl:when test="@type='gnd'">
-        <mods:nameIdentifier type="gnd" typeURI="http://d-nb.info/gnd/"><xsl:value-of select="." /></mods:nameIdentifier>
-      </xsl:when>
-      <xsl:when test="@type='viaf'">
-        <mods:nameIdentifier type="viaf" typeURI="http://www.viaf.org/"><xsl:value-of select="." /></mods:nameIdentifier>
-      </xsl:when>
-    </xsl:choose>
+    <xsl:variable name="type" select="@type"></xsl:variable>
+    <xsl:variable name="uri" select="document(concat('classification:metadata:all:children:','nameIdentifier',':',$type))/mycoreclass/categories/category[@ID=$type]/label[@xml:lang='x-uri']/@text"/>
+    <mods:nameIdentifier type="{$type}" typeURI="{$uri}"><xsl:value-of select="." /></mods:nameIdentifier>
   </xsl:template>
 
   <!-- A single page (entered as start=end) must be represented as mods:detail/@type='page' -->

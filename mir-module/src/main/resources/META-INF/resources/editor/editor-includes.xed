@@ -517,12 +517,7 @@
         <xed:bind xpath="@type">
           <div class="col-md-3">
             <select class="form-control" style="text-align:right; font-weight:bold;">
-              <option value="gnd">
-                GND
-              </option>
-              <option value="viaf">
-                VIAF
-              </option>
+              <xed:include uri="xslStyle:items2options:classification:editor:-1:children:nameIdentifier" />
             </select>
           </div>
         </xed:bind>
