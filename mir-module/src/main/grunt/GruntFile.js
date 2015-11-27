@@ -34,10 +34,9 @@ module.exports = function(grunt) {
           'jquery/plugins/shariff' : 'shariff/build',
           'jquery/plugins/dotdotdot' : 'jQuery.dotdotdot/src/js',
 
-          'bootstrap3-datetimepicker/js':'bootstrap3-datetimepicker/build/js',
-          'bootstrap3-datetimepicker/css':'bootstrap3-datetimepicker/build/css',
-
-          'moment' : 'moment/min'
+          'bootstrap-datepicker/js':'bootstrap-datepicker/dist/js/',
+          'bootstrap-datepicker/css':'bootstrap-datepicker/dist/css/',
+          'bootstrap-datepicker/locales':'bootstrap-datepicker/dist/locales/'
         },
       }
     }

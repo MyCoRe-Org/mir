@@ -8,11 +8,14 @@ $(document).ready(function() {
 	  });
 	  
     // Enables the datetimepicker
-    if (jQuery.fn.datetimepicker) {
-      $('.datetimepicker').find('input').datetimepicker({
-        locale: 'de',
-        format: 'YYYY-MM-DD',
-        extraFormats: [ 'YYYY','YYYY-MM', 'YYYY-MM-DD' ]
+    if (jQuery.fn.datepicker) {
+      $('.datetimepicker').find('input').datepicker({
+          format: "yyyy-mm-dd",
+          clearBtn: true,
+          language: $("html").attr("lang"),
+          forceParse: false,
+          autoclose: true,
+          todayHighlight: true
       });
     };
 
@@ -66,11 +69,12 @@ $(document).ready(function() {
 
     function setDate(parent, point, date) {
         if (point == "simple") {
-            $(parent).find(".date-changeable:not('.hidden') .date-simple input").val(date);
+            $(parent).find(".date-changeable:not('.hidden') .date-simple input").val(date).datepicker('update');
         }
         $(parent).find(".date-changeable:not('.hidden') .date-range input").filter(function () {
             return $(this).attr("data-point") == point;
-        }).val(date);
+        }).val(date).datepicker('update');
+
     }
 
     function setDateToRange(elm){
@@ -80,12 +84,12 @@ $(document).ready(function() {
         var input = $(elm).find("div.date-simple > input");
         var simpleVal = $(input).val();
         if (simpleVal != "") {
-            $(elm).find("div.date-range > input.startDate").val(simpleVal);
-            $(input).val("");
+            $(elm).find("div.date-range > input.startDate").val(simpleVal).datepicker('update');
+            $(input).val("").datepicker('update');
         }
         var endDate = $(input).attr("data-end");
         if(endDate != "" && endDate != undefined){
-            $(elm).find("div.date-range > input.endDate").val(endDate);
+            $(elm).find("div.date-range > input.endDate").val(endDate).datepicker('update');
         }
     }
 
@@ -98,12 +102,12 @@ $(document).ready(function() {
         var startVal = $(inputStart).val();
         var endVal = $(inputEnd).val();
         if (startVal != "") {
-            $(elm).find("div.date-simple > input").val(startVal);
-            $(inputStart).val("");
+            $(elm).find("div.date-simple > input").val(startVal).datepicker('update');
+            $(inputStart).val("").datepicker('update');
         }
         if(endVal != ""){
             $(elm).find("div.date-simple > input").attr("data-end", endVal);
-            $(inputEnd).val("");
+            $(inputEnd).val("").datepicker('update');
         }
     }
 

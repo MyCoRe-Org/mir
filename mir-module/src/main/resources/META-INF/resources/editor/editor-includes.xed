@@ -1689,9 +1689,9 @@
     <script src="{$WebApplicationBaseURL}assets/jquery/plugins/bootstrap3-typeahead/bootstrap3-typeahead.js" type="text/javascript"></script>
     <script src="{$WebApplicationBaseURL}js/mir/relatedItem-autocomplete.js" type="text/javascript"></script>
     <script src="{$WebApplicationBaseURL}js/mir/item-autocomplete.js" type="text/javascript"></script>
-    <link href="{$WebApplicationBaseURL}assets/bootstrap3-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
-    <script type="text/javascript" src="{$WebApplicationBaseURL}assets/moment/moment-with-locales.min.js"></script>
-    <script type="text/javascript" src="{$WebApplicationBaseURL}assets/bootstrap3-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+    <link href="{$WebApplicationBaseURL}assets/bootstrap-datepicker/css/bootstrap-datepicker.css" rel="stylesheet" />
+    <script type="text/javascript" src="{$WebApplicationBaseURL}assets/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+    <script type="text/javascript" src="{$WebApplicationBaseURL}assets/bootstrap-datepicker/locales/bootstrap-datepicker.de.min.js"></script>
     <script type="text/javascript" src="{$WebApplicationBaseURL}js/mir/xeditor-form.js"></script>
   </xed:template>
 

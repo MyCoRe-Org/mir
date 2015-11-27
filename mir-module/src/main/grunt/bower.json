@@ -22,7 +22,7 @@
     "jquery.placeholder" : "0.2.4",
     "typeahead.js": "0.11.1",
     "shariff": "1.16.0",
-    "bootstrap3-datetimepicker" : "4.15.35",
+    "bootstrap-datepicker" : "1.5.0",
     "jQuery.dotdotdot" : "1.7.4"
   }
 }

@@ -157,7 +157,7 @@
           </div>
         </xed:bind>
       </div>
-      <div class="date-range input-group hidden">
+      <div class="date-range input-group hidden input-daterange">
           <xed:bind xpath="{$xpathStart}">
             <input type="text" class="form-control startDate" data-point="start">
               <xsl:copy-of select="@placeholder" />
