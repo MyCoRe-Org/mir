@@ -79,44 +79,4 @@
     <mods:displayForm>et.al.</mods:displayForm>
   </xsl:template>
 
-  <xsl:template match="mods:originInfo/*[not(self::mods:dateOther)]">
-    <xsl:choose>
-      <xsl:when test="following-sibling::*[name(current())=name()][@point='end'] or preceding-sibling::*[name(current())=name()][@point='end']">
-        <xsl:choose>
-          <xsl:when test="@point='start'">
-            <xsl:copy>
-              <xsl:apply-templates select="@*[not(name() = 'point')]|node()"/>
-            </xsl:copy>
-          </xsl:when>
-          <xsl:otherwise>
-            <xsl:copy-of select="."/>
-          </xsl:otherwise>
-        </xsl:choose>
-      </xsl:when>
-      <xsl:otherwise>
-        <xsl:copy-of select="."/>
-      </xsl:otherwise>
-    </xsl:choose>
-  </xsl:template>
-
-  <xsl:template match="mods:originInfo/mods:dateOther">
-    <xsl:choose>
-      <xsl:when test="following-sibling::mods:dateOther[@type=current()/@type][@point='end'] or preceding-sibling::mods:dateOther[@type=current()/@type][@point='end']">
-        <xsl:choose>
-          <xsl:when test="@point='start'">
-            <xsl:copy>
-              <xsl:apply-templates select="@*[not(name() = 'point')]|node()"/>
-            </xsl:copy>
-          </xsl:when>
-          <xsl:otherwise>
-            <xsl:copy-of select="."/>
-          </xsl:otherwise>
-        </xsl:choose>
-      </xsl:when>
-      <xsl:otherwise>
-        <xsl:copy-of select="."/>
-      </xsl:otherwise>
-    </xsl:choose>
-  </xsl:template>
-
 </xsl:stylesheet>

@@ -78,42 +78,4 @@
     </xsl:choose>
   </xsl:template>
 
-  <xsl:template match="mods:originInfo/*[not(self::mods:dateOther)]">
-    <xsl:choose>
-      <xsl:when test="following-sibling::*[name(current())=name()][@point='end']">
-        <xsl:copy>
-          <xsl:attribute name="point">start</xsl:attribute>
-          <xsl:copy-of select="@*|node()"/>
-        </xsl:copy>
-      </xsl:when>
-      <xsl:when test="not(following-sibling::*[name(current())=name()]) and not(preceding-sibling::*[name(current())=name()])">
-        <xsl:copy>
-          <xsl:apply-templates select="@*[not(name() = 'point')]|node()"/>
-        </xsl:copy>
-      </xsl:when>
-      <xsl:otherwise>
-        <xsl:copy-of select="."/>
-      </xsl:otherwise>
-    </xsl:choose>
-  </xsl:template>
-
-  <xsl:template match="mods:originInfo/mods:dateOther">
-    <xsl:choose>
-      <xsl:when test="following-sibling::mods:dateOther[@type=current()/@type][@point='end']">
-        <xsl:copy>
-          <xsl:attribute name="point">start</xsl:attribute>
-          <xsl:copy-of select="@*|node()"/>
-        </xsl:copy>
-      </xsl:when>
-      <xsl:when test="not(following-sibling::mods:dateOther[@type=current()/@type]) and not(preceding-sibling::mods:dateOther[@type=current()/@type])">
-        <xsl:copy>
-          <xsl:apply-templates select="@*[not(name() = 'point')]|node()"/>
-        </xsl:copy>
-      </xsl:when>
-      <xsl:otherwise>
-        <xsl:copy-of select="."/>
-      </xsl:otherwise>
-    </xsl:choose>
-  </xsl:template>
-
 </xsl:stylesheet>

@@ -662,29 +662,29 @@
       <legend class="mir-fieldset-legend hiddenDetail">
           <div class="form-group datetimepicker">
               <label class="col-md-3 control-label">
-                <xed:output i18n="mir.date.issued.10" />
+                <xed:output i18n="mir.date.issued.range" />
               </label>
-              <div class="col-md-6">
+              <div class="col-md-6 center-vertical">
                 <mir:dateRangeInput xpath="mods:originInfo[@eventType='publication']/mods:dateIssued[@encoding='w3cdtf']"
                                     class="datetimepicker mainDate" placeholder="{i18n:mir.placeholder.date}" type="publication" />
-                <span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span>
+                <span class="glyphicon glyphicon-menu-hamburger expand-item" aria-hidden="true"></span>
               </div>
               <mir:help-pmud help-text="{i18n:mir.help.date.issued.10}" pmud="false" />
           </div>
       </legend>
       <div class="mir-fieldset-content dateExtended-container hidden">
         <mir:dateRange xpath="mods:originInfo[@eventType='creation']/mods:dateCreated[@encoding='w3cdtf']" help-text="{i18n:mir.help.date.created.range}"
-                            class="datetimepicker" placeholder="{i18n:mir.placeholder.date}" label="mir.date.created" />
+                            class="datetimepicker" placeholder="{i18n:mir.placeholder.date}" label="mir.date.created.range" />
         <mir:dateRange xpath="mods:originInfo[@eventType='collection']/mods:dateCaptured[@encoding='w3cdtf']" help-text="{i18n:mir.help.date.collected.range}"
-                            class="datetimepicker" placeholder="{i18n:mir.placeholder.date}" label="mir.date.collected" />
+                            class="datetimepicker" placeholder="{i18n:mir.placeholder.date}" label="mir.date.collected.range" />
         <mir:dateRange xpath="mods:originInfo[@eventType='review']/mods:dateOther[@type='reviewed'][@encoding='w3cdtf']" help-text="{i18n:mir.help.date.reviewed.range}"
-                            class="datetimepicker" placeholder="{i18n:mir.placeholder.date}" label="mir.date.reviewed" />
-        <mir:dateRange xpath="mods:originInfo[@eventType='update']/mods:dateModified[@encoding='w3cdtf']" help-text="{i18n:mir.help.date.updated}"
-                            class="datetimepicker" placeholder="{i18n:mir.placeholder.date}" label="mir.date.updated" />
-        <mir:dateRange xpath="mods:originInfo[@eventType='creation']/mods:dateOther[@type='accepted'][@encoding='w3cdtf']" help-text="{i18n:mir.help.date.accepted}"
-                       class="datetimepicker" placeholder="{i18n:mir.placeholder.date}" label="mir.date.accepted" />
-        <mir:dateRange xpath="mods:originInfo[@eventType='creation']/mods:dateOther[@type='submitted'][@encoding='w3cdtf']" help-text="{i18n:mir.help.date.submitted}"
-                       class="datetimepicker" placeholder="{i18n:mir.placeholder.date}" label="mir.date.submitted" />
+                            class="datetimepicker" placeholder="{i18n:mir.placeholder.date}" label="mir.date.reviewed.range" />
+        <mir:dateRange xpath="mods:originInfo[@eventType='update']/mods:dateModified[@encoding='w3cdtf']" help-text="{i18n:mir.help.date.updated.range}"
+                            class="datetimepicker" placeholder="{i18n:mir.placeholder.date}" label="mir.date.updated.range" />
+        <mir:dateRange xpath="mods:originInfo[@eventType='creation']/mods:dateOther[@type='accepted'][@encoding='w3cdtf']" help-text="{i18n:mir.help.date.accepted.range}"
+                       class="datetimepicker" placeholder="{i18n:mir.placeholder.date}" label="mir.date.accepted.range" />
+        <mir:dateRange xpath="mods:originInfo[@eventType='creation']/mods:dateOther[@type='submitted'][@encoding='w3cdtf']" help-text="{i18n:mir.help.date.submitted.range}"
+                       class="datetimepicker" placeholder="{i18n:mir.placeholder.date}" label="mir.date.submitted.range" />
       </div>
     </fieldset>
   </xed:template>

@@ -110,7 +110,7 @@
       <label class="col-md-3 control-label ">
         <xed:output i18n="{@label}" />
       </label>
-      <div class="col-md-6 center-vertical {@class}" data-type="{@type}">
+      <div class="col-md-6 {@class}" data-type="{@type}">
         <xsl:call-template name="mir-dateRange"/>
       </div>
       <div class="col-md-3">
@@ -122,33 +122,66 @@
   </xsl:template>
 
   <xsl:template match="mir:dateRangeInput">
-    <div class="center-vertical {@class}" data-type="{@type}">
+    <div class="{@class}" data-type="{@type}">
       <xsl:call-template name="mir-dateRange"/>
     </div>
   </xsl:template>
 
   <xsl:template name="mir-dateRange">
     <xsl:variable name="apos">'</xsl:variable>
+    <xsl:variable name="xpathSimple" >
+      <xsl:value-of select="concat(@xpath,'[not(@point)]')"/>
+    </xsl:variable>
+    <xsl:variable name="xpathStart" >
+      <xsl:value-of select="concat(@xpath,'[@point=', $apos, 'start', $apos, ']')"/>
+    </xsl:variable>
     <xsl:variable name="xpathEnd" >
       <xsl:value-of select="concat(@xpath,'[@point=', $apos, 'end', $apos, ']')"/>
     </xsl:variable>
-      <div class="col-md-5">
-        <xed:bind xpath="{@xpath}">
-          <input type="text" class="form-control" data-point="start">
+    <div class="date-format" data-format="simple">
+      <div class="date-simple input-group">
+        <xed:bind xpath="{$xpathSimple}">
+          <input type="text" class="form-control">
             <xsl:copy-of select="@placeholder" />
           </input>
+          <div class="input-group-btn date-selectFormat">
+            <button class="btn btn-default dropdown-toggle" data-toggle="dropdown"><span class="caret"></span><span class="sr-only">Toggle Dropdown</span></button>
+            <ul class="dropdown-menu dropdown-menu-right" role="menu">
+              <li class="active">
+                <a href="#" class="date-simpleOption">Datumsangabe</a>
+              </li>
+              <li>
+                <a href="#" class="date-rangeOption">Zeitraum</a>
+              </li>
+            </ul>
+          </div>
         </xed:bind>
       </div>
-      <div class="col-md-2 text-center">
-        <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+      <div class="date-range input-group hidden">
+          <xed:bind xpath="{$xpathStart}">
+            <input type="text" class="form-control startDate" data-point="start">
+              <xsl:copy-of select="@placeholder" />
+            </input>
+          </xed:bind>
+          <span class="glyphicon glyphicon-minus input-group-addon" aria-hidden="true"></span>
+          <xed:bind xpath="{$xpathEnd}">
+            <input type="text" class="form-control endDate" data-point="end">
+              <xsl:copy-of select="@placeholder" />
+            </input>
+          </xed:bind>
+          <div class="input-group-btn date-selectFormat">
+            <button class="btn btn-default dropdown-toggle" data-toggle="dropdown"><span class="caret"></span><span class="sr-only">Toggle Dropdown</span></button>
+            <ul class="dropdown-menu dropdown-menu-right" role="menu">
+              <li>
+                <a href="#" class="date-simpleOption">Datumsangabe</a>
+              </li>
+              <li class="active">
+                <a href="#" class="date-rangeOption">Zeitraum</a>
+              </li>
+            </ul>
+          </div>
       </div>
-      <div class="col-md-5">
-        <xed:bind xpath="{$xpathEnd}">
-          <input type="text" class="form-control" data-point="end">
-            <xsl:copy-of select="@placeholder" />
-          </input>
-        </xed:bind>
-      </div>
+    </div>
   </xsl:template>
 
   <xsl:template match="mir:textarea">
@@ -230,7 +263,7 @@
                   <div class="controls">
                     <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="person.fields" />
                   </div>
-                  <span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span>
+                  <span class="glyphicon glyphicon-menu-hamburger expand-item" aria-hidden="true"></span>
                 </div>
                 <div class="col-md-3">
                   <xsl:if test="string-length(@help-text) &gt; 0">
