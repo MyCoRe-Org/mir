@@ -162,7 +162,7 @@ $(document).ready(function() {
 				relatedItemBody = fieldset.children('div.mir-relatedItem-body');
 				relatedItemBody.find("input[id^='relItem']").val(current.id);
 				disableFieldset(fieldset);
-				fillFieldset(fieldset, current.id);
+				getMods(fieldset, current.id);
 				createbadge($(document.activeElement).closest("div"), current.id);
 
 			}
