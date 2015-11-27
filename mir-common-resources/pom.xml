@@ -3,7 +3,7 @@
   <parent>
     <groupId>org.mycore.mir</groupId>
     <artifactId>mir-parent</artifactId>
-    <version>0.3</version>
+    <version>0.3.1-SNAPSHOT</version>
   </parent>
   <artifactId>mir-common-resources</artifactId>
   <name>MIR: Common Resources</name>

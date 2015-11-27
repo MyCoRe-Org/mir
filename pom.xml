@@ -7,7 +7,7 @@
   </parent>
   <groupId>org.mycore.mir</groupId>
   <artifactId>mir-parent</artifactId>
-  <version>0.3</version>
+  <version>0.3.1-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>MIR</name>
   <description>MyCoRe/MODS Institutional Repository</description>
@@ -27,8 +27,8 @@
     <cargo.tomcat.ajp.port>8292</cargo.tomcat.ajp.port>
     <cargo.debug.address>8295</cargo.debug.address>
     <cargo.debug.suspend>n</cargo.debug.suspend>
-    <changelog.since>2014-12-05</changelog.since>
-    <site.suffix />
+    <changelog.since>2015-11-09</changelog.since>
+    <site.suffix>-0.3.x</site.suffix>
   </properties>
   <url>http://www.mycore.de/generated/mir${site.suffix}</url>
   <issueManagement>
@@ -48,9 +48,9 @@
     </notifiers>
   </ciManagement>
   <scm>
-    <connection>scm:svn:http://server.mycore.de/svn/maven/mir/tags/mir-0.3</connection>
-    <developerConnection>scm:svn:https://server.mycore.de/svn/maven/mir/tags/mir-0.3</developerConnection>
-    <url>http://www.mycore.de/viewvc/viewvc.cgi/maven/mir/tags/mir-0.3</url>
+    <connection>scm:svn:http://server.mycore.de/svn/maven/mir/branches/mir-0.3.x</connection>
+    <developerConnection>scm:svn:https://server.mycore.de/svn/maven/mir/branches/mir-0.3.x</developerConnection>
+    <url>http://www.mycore.de/viewvc/viewvc.cgi/maven/mir/branches/mir-0.3.x</url>
   </scm>
   <distributionManagement>
     <site>
