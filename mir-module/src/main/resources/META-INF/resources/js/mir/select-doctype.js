@@ -24,7 +24,9 @@ function createGenreOptions() {
 		var xEditor = $(this).children('label[xml\\:lang="x-editor"]').attr('text');
 		var id = $(this).attr('ID');
 		if (xEditor == "false") {
-			Options+='<option value="'+id+'" disabled>' + Title + '</option>';
+			if ($(this).find('category').length > 0) {
+				Options+='<optgroup label="'+Title+'"></optgroup>';
+			}
 		}
 		else {
 			Options+='<option value="'+id+'">' + Title + '</option>';
@@ -33,10 +35,7 @@ function createGenreOptions() {
 	  		var Title = $(this).children('label[xml\\:lang="de"]').attr('text');
 			var xEditor = $(this).children('label[xml\\:lang="x-editor"]').attr('text');
 	  		var id = $(this).attr('ID');
-			if (xEditor == "false") {
-				Options+='<option value="'+id+'" disabled>&nbsp;&nbsp;&nbsp;' + Title + '</option>';
-			}
-			else {
+			if (xEditor != "false") {
 				Options+='<option value="'+id+'">&nbsp;&nbsp;&nbsp;' + Title + '</option>';
 			}
 	  	});
