@@ -30,29 +30,53 @@
           </archive>
         </configuration>
       </plugin>
+      
       <plugin>
-        <groupId>pl.allegro</groupId>
-        <artifactId>grunt-maven-plugin</artifactId>
+        <groupId>com.github.eirslett</groupId>
+        <artifactId>frontend-maven-plugin</artifactId>
+
         <configuration>
-          <gruntBuildDirectory>${grunt.projectBase}</gruntBuildDirectory>
-          <ignoreTasksErrors>false</ignoreTasksErrors>
-          <ignoreAllErrors>false</ignoreAllErrors>
-          <gruntOptions>
-            <gruntOption>--verbose</gruntOption>
-            <gruntOption>--assetsDirectory ${template.assetsdir}</gruntOption>
-          </gruntOptions>
+          <installDirectory>../target</installDirectory>
         </configuration>
+
         <executions>
           <execution>
+            <id>install node and npm</id>
+            <goals>
+              <goal>install-node-and-npm</goal>
+            </goals>
+            <configuration>
+              <nodeVersion>${node.version}</nodeVersion>
+              <npmVersion>${npm.version}</npmVersion>
+            </configuration>
+          </execution>
+
+          <execution>
+            <id>webapp-deps</id>
             <phase>process-resources</phase>
             <goals>
               <goal>npm</goal>
               <goal>bower</goal>
+            </goals>
+            <configuration>
+              <workingDirectory>${grunt.projectBase}</workingDirectory>
+              <arguments>install</arguments>
+            </configuration>
+          </execution>
+          <execution>
+            <id>webapp-build</id>
+            <phase>process-resources</phase>
+            <goals>
               <goal>grunt</goal>
             </goals>
+            <configuration>
+              <workingDirectory>${grunt.projectBase}</workingDirectory>
+              <arguments>--verbose --assetsDirectory ${template.assetsdir}</arguments>
+            </configuration>
           </execution>
         </executions>
       </plugin>
+      
       <plugin>
         <artifactId>maven-resources-plugin</artifactId>
         <executions>

@@ -15,7 +15,9 @@
     },
     "engineStrict": true,
     "devDependencies": {
+        "bower": "^1.6.5",
         "grunt": "^0.4.5",
+        "grunt-cli": "^0.1.13",
         "grunt-bowercopy": "^1.2.3"
     }
 }

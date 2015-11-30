@@ -17,6 +17,8 @@
     <mycore.version>2015.12-SNAPSHOT</mycore.version>
     <jetty.version>9.3.5.v20151012</jetty.version>
     <tomcat8.version>8.0.28</tomcat8.version>
+    <node.version>v4.2.2</node.version>
+    <npm.version>3.5.0</npm.version>
     <cargo.version>1.4.16</cargo.version>
     <cargo.servlet.uriencoding>UTF-8</cargo.servlet.uriencoding>
     <cargo.container.zipUrlInstaller.downloadDir>${settings.localRepository}/../cargo/containers</cargo.container.zipUrlInstaller.downloadDir>
@@ -169,14 +171,9 @@
           <version>${cargo.version}</version>
         </plugin>
         <plugin>
-          <groupId>org.lesscss</groupId>
-          <artifactId>lesscss-maven-plugin</artifactId>
-          <version>1.7.0.1.1</version>
-        </plugin>
-        <plugin>
-          <groupId>pl.allegro</groupId>
-          <artifactId>grunt-maven-plugin</artifactId>
-          <version>1.5.0</version>
+          <groupId>com.github.eirslett</groupId>
+          <artifactId>frontend-maven-plugin</artifactId>
+          <version>0.0.26</version>
         </plugin>
         <!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself. -->
         <plugin>
