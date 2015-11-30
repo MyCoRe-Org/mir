@@ -280,7 +280,7 @@
                   </xsl:when>
 
                   <!-- show PDF thumbnail as preview -->
-                  <xsl:when test="str:tokenize($derivates/str[@name='maindoc'][1],'.')[position()=last()] = 'pdf'">
+                  <xsl:when test="translate(str:tokenize($derivates/str[@name='maindoc'][1],'.')[position()=last()],'PDF','pdf') = 'pdf'">
                     <xsl:variable name="filePath"
                                   select="concat($derivates/str[@name='id'][1],'/',mcr:encodeURIPath($derivates/str[@name='maindoc'][1]),$HttpSession)" />
                     <xsl:variable name="viewerLink">

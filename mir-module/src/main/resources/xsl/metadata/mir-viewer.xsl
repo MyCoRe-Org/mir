@@ -17,7 +17,7 @@
       <xsl:variable name="derId" select="mycoreobject/structure/derobjects/derobject/@xlink:href"/>
       <xsl:variable name="derivateXML" select="document(concat('mcrobject:',$derId))"/>
       <xsl:variable name="mainFile" select="$derivateXML/mycorederivate/derivate/internals/internal/@maindoc"/>
-      <xsl:variable name="fileNameExtension" select="FilenameUtils:getExtension($mainFile)"/>
+      <xsl:variable name="fileNameExtension" select="translate(FilenameUtils:getExtension($mainFile),'PDF','pdf')"/>
 
       <xsl:if test="key('rights', $derId)/@read and (iview2:getSupportedMainFile($derId) or $fileNameExtension = 'pdf' and not(mcrxsl:isMobileDevice($UserAgent)))">
         <div id="mir-viewer">
@@ -52,7 +52,7 @@
     <xsl:variable name="viewerId" select="concat('viewer_',$derId)"/>
 
     <xsl:variable name="mainFile" select="$derivateXML/mycorederivate/derivate/internals/internal/@maindoc"/>
-    <xsl:variable name="fileNameExtension" select="FilenameUtils:getExtension($mainFile)"/>
+    <xsl:variable name="fileNameExtension" select="translate(FilenameUtils:getExtension($mainFile),'PDF','pdf')"/>
 
     <xsl:choose>
       <xsl:when test="iview2:getSupportedMainFile($derId)">
