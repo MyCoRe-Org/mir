@@ -189,28 +189,30 @@
       </xsl:variable>
       <xsl:variable name="hits"
                     xmlns:encoder="xalan://java.net.URLEncoder"
-                    select="document(concat('solr:q=',encoder:encode(concat('mods.relatedItem:', mycoreobject/@ID, ' AND (', $state, ')')), '&amp;rows=1000'))/response/result" />
-
-      <xsl:if test="count($hits/doc) &gt; 0">
+                    select="document(concat('solr:q=',encoder:encode(concat('mods.relatedItem:', mycoreobject/@ID, ' AND (', $state, ')')), '&amp;rows=1000&amp;sort=mods.dateIssued desc,mods.relatedItem.part desc&amp;group=true&amp;group.limit=100&amp;group.field=mods.dateIssued'))/response/lst[@name='grouped']/lst[@name='mods.dateIssued']" />
+      <xsl:if test="$hits/int[@name='matches'] &gt; 0">
         <h3><xsl:value-of select="i18n:translate('mir.metadata.content')" /></h3>
-        <table class="children">
-          <tr>
-            <td valign="top" class="metaname">
-              <xsl:value-of select="concat(i18n:translate('component.mods.metaData.dictionary.contains'),':')" />
-            </td>
-            <td class="metavalue">
-              <xsl:for-each select="$hits/doc">
-                <ul>
+        <ul id="mir_relatedItem">
+          <xsl:for-each select="$hits/arr[@name='groups']/lst">
+            <li>
+              <span class="glyphicon glyphicon-chevron-right"></span>
+              <span><xsl:value-of select="str[@name='groupValue']" /></span>
+              <ul>
+                <xsl:for-each select="result/doc">
                   <li>
+                    <xsl:if test="str[@name='mods.relatedItem.part']">
+                      <xsl:value-of select="str[@name='mods.relatedItem.part']" />
+                      <xsl:text> - </xsl:text>
+                    </xsl:if>
                     <xsl:call-template name="objectLink">
                       <xsl:with-param name="obj_id" select="str[@name='returnId']" />
                     </xsl:call-template>
                   </li>
-                </ul>
-              </xsl:for-each>
-            </td>
-          </tr>
-        </table>
+                </xsl:for-each>
+              </ul>
+            </li>
+          </xsl:for-each>
+        </ul>
       </xsl:if>
 
     </div><!-- end: authors, description, children -->

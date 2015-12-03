@@ -102,43 +102,20 @@ a.readmore {
 @grayLight: #f6f6f6;
 @grayDark: #ECF0F1;
 
-table.children {
-  margin-bottom: 20px;
-  width: 100%;
-  tr {
-    td {
+#mir_relatedItem {
+  list-style: none;
+  li {
+    margin-bottom: 0.3em;
+    ul {
+      list-style: none;
+      margin-bottom: 0.5em;
     }
-    td.metaname {
-     padding: 10px;
-     border-right: 1px solid #ccc;
-     border-radius: 5px 0 0 5px;
-     background-color: @grayDark;
+    span {
+      cursor: pointer;
     }
-    td.metavalue {
-      ul.document_children {
-        width: 100%;
-        list-style: none;
-        margin: 0;
-        padding: 0;
-        li {
-          border: 1px solid @grayLight;
-          margin: 0;
-          padding: 4px 20px;
-          &:nth-child(odd) {
-            background-color: @grayLight;
-          }
-          &:first-child {
-            border-radius: 0px 5px 0 0px;
-          }
-          &:last-child {
-            border-radius: 0px 0px 5px 0px;
-          }
-          a {
-            text-decoration: none;
-          }
-        }
-      }
+    span.glyphicon {
+      color: #ccc;
+      margin-right: 0.5em;
     }
   }
 }
-

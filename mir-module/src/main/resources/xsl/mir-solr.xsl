@@ -151,6 +151,11 @@
       <field name="mods.relatedItem">
         <xsl:value-of select="@xlink:href" />|<xsl:value-of select="@type" />
       </field>
+      <xsl:if test="@type='host'">
+        <field name="mods.relatedItem.part">
+          <xsl:value-of select="concat(mods:part/mods:detail[@type='volume'], ', ', mods:part/mods:detail[@type='issue'])" />
+        </field>
+      </xsl:if>
     </xsl:for-each>
   </xsl:template>
 </xsl:stylesheet>
