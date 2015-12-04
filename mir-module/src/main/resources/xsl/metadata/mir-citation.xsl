@@ -189,13 +189,6 @@
             </xsl:choose>
           </p>
         </xsl:when>
-        <xsl:otherwise>
-          <p>
-            <strong><xsl:value-of select="i18n:translate('mir.useAndReproduction')" /></strong>
-            <xsl:text> </xsl:text>
-            <xsl:value-of select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:accessCondition[@type='use and reproduction']" />
-          </p>
-        </xsl:otherwise>
       </xsl:choose>
     </div>
   </xsl:if>
