@@ -57,19 +57,21 @@
   </xed:template>
 
   <xed:template id="genre.simple">
-    <xed:bind xpath="mods:genre[@type='intern'][@authorityURI='http://www.mycore.org/classifications/mir_genres']/@valueURIxEditor" initially="{$genre}">
+    <xed:bind xpath="mods:genre[@type='intern'][@authorityURI='http://www.mycore.org/classifications/mir_genres']">
       <div class="form-group {$xed-validation-marker}">
         <label class="col-md-3 control-label required">
           <xed:output i18n="component.mods.genre" />
         </label>
         <div class="col-md-6">
           <div class="controls">
-            <select class="form-control form-control-inline">
-              <option value="">
-                <xed:output i18n="mir.select" />
-              </option>
-              <xed:include uri="xslStyle:items2options:classification:editor:-1:children:mir_genres" />
-            </select>
+            <xed:bind xpath="@valueURIxEditor" initially="{$genre}">
+              <select class="form-control form-control-inline">
+                <option value="">
+                  <xed:output i18n="mir.select" />
+                </option>
+                <xed:include uri="xslStyle:items2options:classification:editor:-1:children:mir_genres" />
+              </select>
+            </xed:bind>
           </div>
         </div>
         <mir:help-pmud help-text="{i18n:mir.help.genre}" />
