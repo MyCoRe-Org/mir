@@ -35,14 +35,17 @@
 
   <xed:template id="genre">
     <xed:repeat xpath="mods:genre[@type='intern'][@authorityURI='http://www.mycore.org/classifications/mir_genres']" min="1" max="10">
-      <div class="form-group">
-        <label class="col-md-3 control-label">
+      <div class="form-group {$xed-validation-marker}">
+        <label class="col-md-3 control-label required">
           <xed:output i18n="component.mods.genre" />
         </label>
         <div class="col-md-6">
           <div class="controls">
             <xed:bind xpath="@valueURIxEditor" initially="{$genre}">
               <select class="form-control form-control-inline">
+                <option value="">
+                  <xed:output i18n="mir.select" />
+                </option>
                 <xed:include uri="xslStyle:items2options:classification:editor:-1:children:mir_genres" />
               </select>
             </xed:bind>
@@ -54,21 +57,24 @@
   </xed:template>
 
   <xed:template id="genre.simple">
-    <div class="form-group">
-      <label class="col-md-3 control-label">
-        <xed:output i18n="component.mods.genre" />
-      </label>
-      <div class="col-md-6">
-        <div class="controls">
-          <xed:bind xpath="mods:genre[@type='intern'][@authorityURI='http://www.mycore.org/classifications/mir_genres']/@valueURIxEditor" initially="{$genre}">
+    <xed:bind xpath="mods:genre[@type='intern'][@authorityURI='http://www.mycore.org/classifications/mir_genres']/@valueURIxEditor" initially="{$genre}">
+      <div class="form-group {$xed-validation-marker}">
+        <label class="col-md-3 control-label required">
+          <xed:output i18n="component.mods.genre" />
+        </label>
+        <div class="col-md-6">
+          <div class="controls">
             <select class="form-control form-control-inline">
+              <option value="">
+                <xed:output i18n="mir.select" />
+              </option>
               <xed:include uri="xslStyle:items2options:classification:editor:-1:children:mir_genres" />
             </select>
-          </xed:bind>
+          </div>
         </div>
+        <mir:help-pmud help-text="{i18n:mir.help.genre}" />
       </div>
-      <mir:help-pmud help-text="{i18n:mir.help.genre}" />
-    </div>
+    </xed:bind>
   </xed:template>
 
   <xed:template id="status">
@@ -1178,7 +1184,7 @@
         <div class="col-md-6">
           <select class="form-control form-control-inline">
             <option value="">
-              <xed:output i18n="mir.select" />
+              <xed:output i18n="mir.select.optional" />
             </option>
             <xed:include uri="xslStyle:items2options:classification:editor:-1:children:mir_access" />
           </select>
@@ -1218,7 +1224,7 @@
           <xed:bind xpath="@valueURIxEditor">
             <select class="form-control form-control-inline">
               <option value="">
-                <xed:output i18n="mir.select" />
+                <xed:output i18n="mir.select.optional" />
               </option>
               <xed:include uri="xslStyle:items2options:classification:editor:-1:children:mir_institutes" />
             </select>
@@ -1313,12 +1319,15 @@
   <xed:template id="sdnb">
     <xed:bind xpath="mods:classification[@authority='sdnb'][@displayLabel='sdnb']">
       <div class="form-group {$xed-validation-marker}">
-        <label class="col-md-3 control-label">
+        <label class="col-md-3 control-label required">
           <xed:output i18n="editor.search.mir.sdnb" />
           :
         </label>
         <div class="col-md-6">
           <select class="form-control form-control-inline">
+            <option value="">
+              <xed:output i18n="mir.select" />
+            </option>
             <xed:include uri="xslStyle:items2options:classification:editor:-1:children:SDNB" />
           </select>
         </div>
@@ -1640,6 +1649,8 @@
 
   <xed:template id="validation-rules">
     <xed:validate xpath="//mods:mods/mods:titleInfo/mods:title" required="true" i18n="mir.validation.title" display="global" />
+    <xed:validate xpath="//mods:mods/mods:genre[@authorityURI='http://www.mycore.org/classifications/mir_genres']" required="true" i18n="mir.validation.genre" display="global" />
+    <xed:validate xpath="//mods:mods/mods:classification[@authority='sdnb'][@displayLabel='sdnb']" required="true" i18n="mir.validation.sdnb" display="global" />
     <!-- don't validate author, date issued and rights for journal etc.  -->
     <xed:if test="//mods:mods/mods:genre[@valueURIxEditor!='journal'][@valueURIxEditor!='newspaper'][@valueURIxEditor!='series'][@valueURIxEditor!='lecture']">
       <xed:choose>
@@ -1679,7 +1690,7 @@
     <xed:cleanup-rule xpath="//mods:name/mods:namePart" relevant-if="not(../mods:displayForm) and string-length(text()) &gt; 0" />
     <xed:cleanup-rule xpath="//mods:*/@xlink:type" relevant-if="text()!='simple'" />
     <xed:cleanup-rule xpath="//mods:detail" relevant-if="mods:number|mods:caption|mods:title" />
-    <xed:cleanup-rule xpath="//mods:accessCondition[@type='copyrightMD']/cmd:copyright" relevant-if="cmd:rights.holder/cmd:name" />
+    <xed:cleanup-rule xpath="//mods:accessCondition[@type='copyrightMD']" relevant-if="string-length(cmd:copyright/cmd:rights.holder/cmd:name/text()) &gt; 0" />
     <xed:cleanup-rule xpath="//mods:accessCondition[@type='restriction on access']" relevant-if="string-length(text()) &gt; 0" />
   </xed:template>
 
