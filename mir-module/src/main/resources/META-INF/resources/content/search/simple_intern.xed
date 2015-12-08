@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <MyCoReWebPage>
-  
+
   <section xml:lang="all" xmlns:xed="http://www.mycore.de/xeditor" xmlns:mir="http://www.mycore.de/mir"
       i18n="component.mods.editor.search.simple.pagetitle">
     <xed:form class="form-horizontal" role="form">
@@ -40,7 +40,7 @@
             <!--Fulltext -->
               <div class="form-group">
                 <div class="col-md-offset-3 col-md-9">
-                  <xed:bind xpath="condition[@field='derCount'][@value='0']/@operator" default="=">
+                  <xed:bind xpath="condition[@field='derCount'][@value='0']/@operator" default="&gt;=">
                     <label class="checkbox-inline">
                       <input type="checkbox" value="&gt;" />
                       <xed:output i18n="editor.search.mir.hasFiles" />
