@@ -327,7 +327,7 @@
                 </div>
                 <div class="col-md-6 center-vertical">
                   <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="person.fields" />
-                  <span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span>
+                  <span class="glyphicon glyphicon-menu-hamburger expand-item" aria-hidden="true"></span>
                 </div>
                 <div class="col-md-3">
                   <xsl:if test="string-length(@help-text) &gt; 0">
