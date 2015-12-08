@@ -24,6 +24,11 @@
         <xsl:with-param name="transformer" select="'isi'"/>
         <xsl:with-param name="linkText" select="'ISI'"/>
       </xsl:call-template>
+      <xsl:call-template name="printSeperator" />
+      <xsl:call-template name="exportLink">
+        <xsl:with-param name="transformer" select="'pica3'"/>
+        <xsl:with-param name="linkText" select="'PICA'"/>
+      </xsl:call-template>
       <!-- xsl:call-template name="printSeperator" />
       <xsl:call-template name="exportLink">
         <xsl:with-param name="transformer" select="'wordbib'"/>
