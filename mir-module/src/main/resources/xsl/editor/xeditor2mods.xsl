@@ -54,10 +54,10 @@
 
   <xsl:template match="@mcr:categId" />
   <xsl:template match="*[@mcr:categId]">
-    <xsl:copy>
+    <xsl:element name="{name()}">
       <xsl:variable name="classNodes" select="mcrmods:getClassNodes(.)" />
       <xsl:apply-templates select='$classNodes/@*|@*|node()|$classNodes/node()' />
-    </xsl:copy>
+    </xsl:element>
   </xsl:template>
 
   <xsl:template match="mods:openAireID">

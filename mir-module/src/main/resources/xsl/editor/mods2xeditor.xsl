@@ -69,6 +69,13 @@
     </xsl:copy>
   </xsl:template>
 
+  <xsl:template match="mods:typeOfResource">
+    <xsl:copy>
+      <xsl:variable name="classNodes" select="mcrmods:getMCRClassNodes(.)" />
+      <xsl:apply-templates select="$classNodes/@*|@*" />
+    </xsl:copy>
+  </xsl:template>
+
   <xsl:template match="mods:accessCondition[@type='restriction on access']">
     <mods:accessCondition type="restriction on access" xlink:href='http://www.mycore.org/classifications/mir_access'>
       <xsl:value-of select="substring-after(@xlink:href, '#')" />

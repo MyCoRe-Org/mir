@@ -1121,7 +1121,7 @@
   </xed:template>
 
   <xed:template id="type.of.resource">
-    <xed:bind xpath="mods:typeOfResource" initially="text">
+    <xed:bind xpath="mods:typeOfResource/@mcr:categId" initially="typeOfResource:text">
       <div class="form-group">
         <label class="col-md-3 control-label">
           <xed:output i18n="mir.typeOfResource" />
@@ -1129,7 +1129,7 @@
         <div class="col-md-6">
           <div class="controls">
             <select class="form-control form-control-inline">
-              <xed:include uri="xslStyle:items2options:classification:editor:1:children:typeOfResource" />
+              <xed:include uri="xslStyle:items2options:classification:editorComplete:1:children:typeOfResource" />
             </select>
           </div>
         </div>
@@ -1146,9 +1146,11 @@
         </label>
         <div class="col-md-6">
           <div class="controls">
-            <select class="form-control form-control-inline">
-              <xed:include uri="xslStyle:items2options:classification:editor:1:children:typeOfResource" />
-            </select>
+            <xed:bind xpath="@mcr:categId">
+              <select class="form-control form-control-inline">
+                <xed:include uri="xslStyle:items2options:classification:editorComplete:1:children:typeOfResource" />
+              </select>
+            </xed:bind>
           </div>
         </div>
         <mir:help-pmud help-text="{i18n:mir.help.typeOfResource}" pmud="true" />
@@ -1686,7 +1688,7 @@
 
   <xed:template id="cleanup-rules">
     <xed:cleanup-rule xpath="//mods:*"
-      relevant-if="(string-length(text()) &gt; 0) or mods:* or cmd:* or (string-length(@xlink:href) &gt; 0) or (string-length(@valueURIxEditor) &gt; 0) or (string-length(@mcr:categId) &gt; 0)" />
+      relevant-if="(string-length(normalize-space(text())) &gt; 0) or mods:* or cmd:* or (string-length(@xlink:href) &gt; 0) or (string-length(@valueURIxEditor) &gt; 0) or (string-length(@mcr:categId) &gt; 0)" />
     <xed:cleanup-rule xpath="//mods:name" relevant-if="(mods:namePart|mods:displayForm) or (string-length(@valueURI) &gt; 0) or (string-length(@valueURIxEditor) &gt; 0)" />
     <xed:cleanup-rule xpath="//mods:name/@authorityURI" relevant-if="(string-length(../@valueURI) &gt; 0) or (string-length(../@valueURIxEditor) &gt; 0)" />
     <xed:cleanup-rule xpath="//mods:name/mods:namePart" relevant-if="not(../mods:displayForm) and string-length(text()) &gt; 0" />
