@@ -189,30 +189,49 @@
       </xsl:variable>
       <xsl:variable name="hits"
                     xmlns:encoder="xalan://java.net.URLEncoder"
-                    select="document(concat('solr:q=',encoder:encode(concat('mods.relatedItem:', mycoreobject/@ID, ' AND (', $state, ')')), '&amp;rows=1000&amp;sort=mods.dateIssued desc,mods.relatedItem.part desc&amp;group=true&amp;group.limit=100&amp;group.field=mods.dateIssued'))/response/lst[@name='grouped']/lst[@name='mods.dateIssued']" />
+                    select="document(concat('solr:q=',encoder:encode(concat('mods.relatedItem:', mycoreobject/@ID, ' AND (', $state, ')')), '&amp;rows=1000&amp;sort=mods.dateIssued desc,mods.part desc&amp;group=true&amp;group.limit=100&amp;group.field=mods.dateIssued'))/response/lst[@name='grouped']/lst[@name='mods.dateIssued']" />
       <xsl:if test="$hits/int[@name='matches'] &gt; 0">
         <h3><xsl:value-of select="i18n:translate('mir.metadata.content')" /></h3>
-        <ul id="mir_relatedItem">
-          <xsl:for-each select="$hits/arr[@name='groups']/lst">
-            <li>
-              <span class="glyphicon glyphicon-chevron-right"></span>
-              <span><xsl:value-of select="str[@name='groupValue']" /></span>
-              <ul>
-                <xsl:for-each select="result/doc">
-                  <li>
-                    <xsl:if test="str[@name='mods.relatedItem.part']">
-                      <xsl:value-of select="str[@name='mods.relatedItem.part']" />
+        <xsl:choose>
+          <xsl:when test="$hits/arr[@name='groups']/lst/result/@numFound &gt; 1">
+            <ul id="mir_relatedItem">
+              <xsl:for-each select="$hits/arr[@name='groups']/lst">
+                <li>
+                  <span class="glyphicon glyphicon-chevron-right"></span>
+                  <span><xsl:value-of select="str[@name='groupValue']" /></span>
+                  <ul>
+                    <xsl:for-each select="result/doc">
+                      <li>
+                        <a href="{$WebApplicationBaseURL}/receive/{str[@name='returnId']}">
+                          <xsl:if test="str[@name='mods.part'] and not(str[@name='mods.part'] = str[@name='search_result_link_text'])">
+                            <xsl:value-of select="str[@name='mods.part']" />
+                            <xsl:text> - </xsl:text>
+                          </xsl:if>
+                          <xsl:value-of select="str[@name='search_result_link_text']" />
+                        </a>
+                      </li>
+                    </xsl:for-each>
+                  </ul>
+                </li>
+              </xsl:for-each>
+            </ul>
+          </xsl:when>
+          <xsl:otherwise>
+            <ul>
+              <xsl:for-each select="$hits/arr[@name='groups']/lst/result/doc">
+                <li>
+                  <a href="{$WebApplicationBaseURL}/receive/{str[@name='returnId']}">
+                    <xsl:if test="str[@name='mods.part'] and not(str[@name='mods.part'] = str[@name='search_result_link_text'])">
+                      <xsl:value-of select="str[@name='mods.part']" />
                       <xsl:text> - </xsl:text>
                     </xsl:if>
-                    <xsl:call-template name="objectLink">
-                      <xsl:with-param name="obj_id" select="str[@name='returnId']" />
-                    </xsl:call-template>
-                  </li>
-                </xsl:for-each>
-              </ul>
-            </li>
-          </xsl:for-each>
-        </ul>
+                    <xsl:value-of select="str[@name='search_result_link_text']" />
+                  </a>
+                </li>
+              </xsl:for-each>
+            </ul>
+          </xsl:otherwise>
+        </xsl:choose>
       </xsl:if>
 
     </div><!-- end: authors, description, children -->

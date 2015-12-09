@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:mods="http://www.loc.gov/mods/v3"
-  xmlns:mcrxml="xalan://org.mycore.common.xml.MCRXMLFunctions"
+  xmlns:mcrxml="xalan://org.mycore.common.xml.MCRXMLFunctions" xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
   xmlns:xlink="http://www.w3.org/1999/xlink" exclude-result-prefixes="mods xlink">
   <xsl:import href="xslImport:solr-document:mir-solr.xsl" />
 
@@ -151,10 +151,21 @@
       <field name="mods.relatedItem">
         <xsl:value-of select="@xlink:href" />|<xsl:value-of select="@type" />
       </field>
-      <xsl:if test="@type='host'">
-        <field name="mods.relatedItem.part">
-          <xsl:value-of select="concat(mods:part/mods:detail[@type='volume'], ', ', mods:part/mods:detail[@type='issue'])" />
-        </field>
+      <xsl:if test="mods:part/mods:detail[@type='volume']">
+        <field name="mods.part">
+          <xsl:choose>
+            <xsl:when test="mods:part/mods:detail[@type='issue']">
+              <xsl:value-of select="concat(normalize-space(mods:part/mods:detail[@type='volume']),
+                                          ', ',
+                                          i18n:translate('component.mods.metaData.dictionary.issue'),
+                                          ' ',
+                                          normalize-space(mods:part/mods:detail[@type='issue']))" />
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:value-of select="normalize-space(mods:part/mods:detail[@type='volume'])" />
+              </xsl:otherwise>
+            </xsl:choose>
+          </field>
       </xsl:if>
     </xsl:for-each>
   </xsl:template>
