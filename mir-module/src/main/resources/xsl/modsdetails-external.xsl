@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xalan="http://xml.apache.org/xalan" xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
-  xmlns:mcrmods="xalan://org.mycore.mods.classification.MCRMODSClassificationSupport" xmlns:basket="xalan://org.mycore.frontend.basket.MCRBasketManager" xmlns:mcr="http://www.mycore.org/"
-  xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:mods="http://www.loc.gov/mods/v3" xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions" xmlns:mcrurn="xalan://org.mycore.urn.MCRXMLFunctions"
-  xmlns:str="http://exslt.org/strings" xmlns:encoder="xalan://java.net.URLEncoder" exclude-result-prefixes="basket xalan xlink mcr i18n mods mcrmods mcrxsl mcrurn str encoder"
-  version="1.0" xmlns:ex="http://exslt.org/dates-and-times" xmlns:exslt="http://exslt.org/common" extension-element-prefixes="ex exslt"
+  xmlns:mcrmods="xalan://org.mycore.mods.classification.MCRMODSClassificationSupport" xmlns:basket="xalan://org.mycore.frontend.basket.MCRBasketManager"
+  xmlns:mcr="http://www.mycore.org/" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:mods="http://www.loc.gov/mods/v3" xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions"
+  xmlns:mcrurn="xalan://org.mycore.urn.MCRXMLFunctions" xmlns:str="http://exslt.org/strings" xmlns:encoder="xalan://java.net.URLEncoder"
+  exclude-result-prefixes="basket xalan xlink mcr i18n mods mcrmods mcrxsl mcrurn str encoder" version="1.0" xmlns:ex="http://exslt.org/dates-and-times"
+  xmlns:exslt="http://exslt.org/common" extension-element-prefixes="ex exslt"
 >
 
   <xsl:param name="MIR.registerDOI" select="''" />
@@ -54,7 +55,9 @@
               <div class="hit_links">
                 <a href="{$derivifs}">
                   <xsl:choose>
-                    <xsl:when test="$fileType='pdf' or $fileType='msexcel' or $fileType='xlsx' or $fileType='msword97' or $fileType='docx' or $fileType='html' or $fileType='rtf' or $fileType='txt' or $fileType='xml'">
+                    <xsl:when
+                      test="$fileType='pdf' or $fileType='msexcel' or $fileType='xlsx' or $fileType='msword97' or $fileType='docx' or $fileType='html' or $fileType='rtf' or $fileType='txt' or $fileType='xml'"
+                    >
                       <img src="{$WebApplicationBaseURL}templates/master/{$template}/IMAGES/icons_liste/download_{$fileType}.png" alt="{$derivmain}" title="{$derivmain}" />
                     </xsl:when>
                     <xsl:otherwise>
@@ -386,9 +389,7 @@
     <div class="btn-group">
       <xsl:choose>
         <xsl:when test="basket:contains($basketType, /mycoreobject/@ID)">
-          <a class="btn btn-primary btn-sm"
-            href="{$ServletsBaseURL}MCRBasketServlet{$HttpSession}?type={$basketType}&amp;action=remove&amp;redirect=referer&amp;id={/mycoreobject/@ID}"
-          >
+          <a class="btn btn-primary btn-sm" href="{$ServletsBaseURL}MCRBasketServlet{$HttpSession}?type={$basketType}&amp;action=remove&amp;redirect=referer&amp;id={/mycoreobject/@ID}">
             <i class="fa fa-minus">
               <xsl:value-of select="' '" />
             </i>
@@ -521,7 +522,7 @@
                   <xsl:for-each select="str:tokenize($child-layout,'|')">
                     <li>
                       <a href="{$url}{$HttpSession}?relatedItemId={$id}&amp;relatedItemType=host&amp;genre={.}">
-                        <xsl:value-of select="i18n:translate(concat('component.mods.genre.',.))" />
+                        <xsl:value-of select="mcrxsl:getDisplayName('mir_genres',.)" />
                       </a>
                     </li>
                   </xsl:for-each>
@@ -530,7 +531,7 @@
                   <xsl:for-each select="str:tokenize($child-layout,'|')">
                     <li>
                       <a href="{$url}{$HttpSession}?relatedItemId={$id}&amp;relatedItemType=series&amp;genre={.}">
-                        <xsl:value-of select="i18n:translate(concat('component.mods.genre.',.))" />
+                        <xsl:value-of select="mcrxsl:getDisplayName('mir_genres',.)" />
                       </a>
                     </li>
                   </xsl:for-each>
@@ -539,7 +540,7 @@
                   <xsl:for-each select="str:tokenize($child-layout,'|')">
                     <li>
                       <a href="{$url}{$HttpSession}?relatedItemId={$id}&amp;relatedItemType=host&amp;genre={.}">
-                        <xsl:value-of select="i18n:translate(concat('component.mods.genre.',.))" />
+                        <xsl:value-of select="mcrxsl:getDisplayName('mir_genres',.)" />
                       </a>
                     </li>
                   </xsl:for-each>
@@ -731,7 +732,7 @@
         <div class="hit_tnd_content">
           <div class="hit_type">
             <span class="label label-info">
-              <xsl:value-of select="i18n:translate(concat('component.mods.genre.',$mods-type))" />
+              <xsl:value-of select="mcrxsl:getDisplayName('mir_genres',$mods-type)" />
             </span>
           </div>
           <xsl:if test="mods:originInfo[not(@eventType) or @eventType='publication']/mods:dateIssued">
@@ -833,7 +834,7 @@
   <xsl:template match="mods:identifier[@type='open-aire']" mode="openaire">
     <xsl:variable name="project-details">
       <xsl:call-template name="Tokenizer"><!-- use split function from mycore-base/coreFunctions.xsl -->
-        <xsl:with-param name="string" select="."/>
+        <xsl:with-param name="string" select="." />
         <xsl:with-param name="delimiter" select="'/'" />
       </xsl:call-template>
     </xsl:variable>
