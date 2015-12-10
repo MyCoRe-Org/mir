@@ -147,7 +147,11 @@
       </xsl:choose>
     </xsl:variable>
 
-    <div class="col-{$colsize}-{$colwidth} $xed-validation-marker">
+    <div>
+      <xsl:attribute name="class">
+        <xsl:value-of select="concat('col-', $colsize, '-', $colwidth, ' ')" />
+        <xsl:value-of select="'{$xed-validation-marker}'" />
+      </xsl:attribute>
       <xsl:choose>
         <xsl:when test="count(action) &gt; 0">
           <div class="input-group">
