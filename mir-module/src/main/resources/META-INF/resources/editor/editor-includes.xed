@@ -258,19 +258,15 @@
   </xed:template>
 
   <xed:template id="author.repeated">
-    <mir:role.repeated role="aut" label="mir.role.author" help-text="{i18n:mir.help.role.author}" class="required" />
+    <mir:role.repeated role="aut" label="mir.role.author" help-text="{i18n:mir.help.role.author}" />
   </xed:template>
 
   <xed:template id="editor.repeated">
     <mir:role.repeated role="edt" label="mir.role.editor" help-text="{i18n:mir.help.role.editor}" />
   </xed:template>
 
-  <xed:template id="editor.repeated.required">
-    <mir:role.repeated role="edt" label="mir.role.editor" help-text="{i18n:mir.help.role.editor}" class="required" required="true" required-i18n="mir.validation.editor"/>
-  </xed:template>
-
   <xed:template id="inventor.repeated">
-    <mir:role.repeated role="inv" label="mir.role.inventor" help-text="{i18n:mir.help.role.inventor}" class="required" />
+    <mir:role.repeated role="inv" label="mir.role.inventor" help-text="{i18n:mir.help.role.inventor}" />
   </xed:template>
 
   <xed:template id="advisor.repeated">
@@ -545,22 +541,22 @@
 
   <xed:template id="year.issued">
     <mir:textfield xpath="mods:originInfo[@eventType='publication']/mods:dateIssued[@encoding='w3cdtf']" label="mir.date.issued.4" help-text="{i18n:mir.help.date.issued.4}"
-      class="required" placeholder="{i18n:mir.placeholder.year}" required="true" required-i18n="mir.validation.dateIssued"/>
+      placeholder="{i18n:mir.placeholder.year}"/>
   </xed:template>
 
   <xed:template id="year.issued.relItem">
     <mir:textfield xpath="mods:originInfo[@eventType='publication']/mods:dateIssued[@encoding='w3cdtf']" label="mir.date.issued.4" help-text="{i18n:mir.help.date.issued.4}"
-      class="required mir-modspart" placeholder="{i18n:mir.placeholder.year}" required="true" required-i18n="mir.validation.dateIssued"/>
+      class="mir-modspart" placeholder="{i18n:mir.placeholder.year}"/>
   </xed:template>
 
   <xed:template id="date.issued">
     <mir:textfield xpath="mods:originInfo[@eventType='publication']/mods:dateIssued[@encoding='w3cdtf']" label="mir.date.issued.10" help-text="{i18n:mir.help.date.issued.10}"
-      class="required" placeholder="{i18n:mir.placeholder.date}" required="true" required-i18n="mir.validation.dateIssued"/>
+     placeholder="{i18n:mir.placeholder.date}"/>
   </xed:template>
 
   <xed:template id="date.issued.datetimepicker">
     <mir:textfield xpath="mods:originInfo[@eventType='publication']/mods:dateIssued[@encoding='w3cdtf']" label="mir.date.issued.10" help-text="{i18n:mir.help.date.issued.10}"
-      class="required datetimepicker" placeholder="{i18n:mir.placeholder.date}" />
+      class="datetimepicker" placeholder="{i18n:mir.placeholder.date}" />
   </xed:template>
 
   <xed:template id="date.broadcasted">
@@ -575,7 +571,7 @@
 
   <xed:template id="date.recorded.datetimepicker">
     <mir:textfield xpath="mods:originInfo[@eventType='publication']/mods:dateIssued[@encoding='w3cdtf']" label="mir.date.recorded" help-text="{i18n:mir.help.date.recorded}"
-                   class="datetimepicker required" placeholder="{i18n:mir.placeholder.date}" />
+                   class="datetimepicker" placeholder="{i18n:mir.placeholder.date}" />
   </xed:template>
 
   <xed:template id="date.accepted">
@@ -625,12 +621,12 @@
 
   <xed:template id="date.created">
     <mir:textfield xpath="mods:originInfo[@eventType='creation']/mods:dateCreated[@encoding='w3cdtf']" label="mir.date.created" help-text="{i18n:mir.help.date.created}"
-      class="required" placeholder="{i18n:mir.placeholder.date}" />
+      placeholder="{i18n:mir.placeholder.date}" />
   </xed:template>
 
   <xed:template id="date.created.datetimepicker">
     <mir:textfield xpath="mods:originInfo[@eventType='creation']/mods:dateCreated[@encoding='w3cdtf']" label="mir.date.created" help-text="{i18n:mir.help.date.created}"
-      class="required datetimepicker" placeholder="{i18n:mir.placeholder.date}" />
+      class="datetimepicker" placeholder="{i18n:mir.placeholder.date}" />
   </xed:template>
 
   <xed:template id="date.updated.datetimepicker">
@@ -1655,22 +1651,6 @@
     <xed:validate xpath="//mods:mods/mods:classification[@authority='sdnb'][@displayLabel='sdnb']" required="true" i18n="mir.validation.sdnb" display="global" />
     <!-- don't validate author, date issued and rights for journal etc.  -->
     <xed:if test="//mods:mods/mods:genre[@valueURIxEditor!='journal'][@valueURIxEditor!='newspaper'][@valueURIxEditor!='series'][@valueURIxEditor!='lecture']">
-      <xed:choose>
-        <xed:when test="//mods:mods/mods:genre[@valueURIxEditor='collection' or @valueURIxEditor='proceedings' or @valueURIxEditor='lexicon' or @valueURIxEditor='festschrift']">
-          <!-- "required" checks if there is such an element which has text content, so we must validate mods:displayForm for the moment-->
-          <xed:validate xpath="//mods:mods/mods:name[mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']='edt']/mods:displayForm"
-            required="true" i18n="mir.validation.editor" display="global" />
-        </xed:when>
-        <xed:when test="//mods:mods/mods:genre[@valueURIxEditor='patent']">
-          <xed:validate xpath="//mods:mods/mods:name[mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']='inv']/mods:displayForm"
-                        required="true" i18n="mir.validation.editor" display="global" />
-        </xed:when>
-        <xed:otherwise>
-          <xed:validate xpath="//mods:mods/mods:name[mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']='aut']/mods:displayForm"
-            required="true" i18n="mir.validation.author" display="global" />
-        </xed:otherwise>
-      </xed:choose>
-      <xed:validate xpath="//mods:originInfo/*" required="true" i18n="mir.validation.date" display="global" />
       <xed:validate xpath="//mods:mods/mods:accessCondition[@type='use and reproduction']" required="true" i18n="mir.validation.rights" display="global" />
     </xed:if>
 
