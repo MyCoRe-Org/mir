@@ -23,6 +23,7 @@
     "typeahead.js": "0.11.1",
     "shariff": "1.16.0",
     "bootstrap-datepicker" : "1.5.0",
-    "jQuery.dotdotdot" : "1.7.4"
+    "jQuery.dotdotdot" : "1.7.4",
+    "moment" : "2.10.6"
   }
 }

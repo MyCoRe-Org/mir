@@ -9,15 +9,10 @@ $(document).ready(function() {
 	  
     // Enables the datetimepicker
     if (jQuery.fn.datepicker) {
-      $('.datetimepicker').find('input').datepicker({
-          format: "yyyy-mm-dd",
-          clearBtn: true,
-          language: $("html").attr("lang"),
-          forceParse: false,
-          autoclose: true,
-          todayHighlight: true
+      $('.datetimepicker').find('input').each( function(index, elm){
+          pickDatePickerFormatAndAdd(elm);
       });
-    };
+    }
 
     $("body").on("click", "fieldset .expand-item", function () {
         $(this).closest("legend").toggleClass("hiddenDetail").next().toggleClass("hidden");
@@ -58,6 +53,55 @@ $(document).ready(function() {
         }
     });
 
+    function pickDatePickerFormatAndAdd(elm) {
+        if (moment($(elm).val(), "YYYY-MM-DD", true).isValid()){
+            addDatePicker(elm, 0);
+        }
+        else {
+            if (moment($(elm).val(), "YYYY-MM", true).isValid()){
+                addDatePicker(elm, 1);
+            }
+            else {
+                addDatePicker(elm, 2);
+            }
+        }
+    }
+
+    function addDatePicker(elm, startView, format) {
+        $(elm).datepicker({
+            format: {
+                toDisplay: function (date, format, language) {
+                    var d = moment(date);
+                    return d.format("YYYY-MM-DD");
+                },
+                toValue: function (date, format, language) {
+                    var d = moment.utc(date, ["YYYY-MM-DD", "YYYY-MM", "YYYY"]);
+                    return d.startOf('day').toDate();
+                }
+            },
+            startView: startView,
+            clearBtn: true,
+            todayBtn: true,
+            language: $("html").attr("lang"),
+            forceParse: false,
+            autoclose: true,
+            todayHighlight: true,
+            daysOfWeekHighlighted: "0"
+        }).on("changeYear", function(e) {
+            $(this).val(moment(e.date).format("YYYY"))
+        }).on("changeMonth", function(e) {
+            $(this).val(moment(e.date).format("YYYY-MM"));
+        }).on("hide", function(e) {
+            updateDatePicker($(this));
+        });
+    }
+
+    function updateDatePicker(elm) {
+        $(elm).datepicker("remove");
+        $(elm).off("hide");
+        pickDatePickerFormatAndAdd($(elm));
+    }
+
     function getDate(parent, point) {
         if (point == "simple") {
             return $(parent).find(".date-changeable:not('.hidden') .date-simple input").val();
@@ -69,11 +113,14 @@ $(document).ready(function() {
 
     function setDate(parent, point, date) {
         if (point == "simple") {
-            $(parent).find(".date-changeable:not('.hidden') .date-simple input").val(date).datepicker('update');
+            $(parent).find(".date-changeable:not('.hidden') .date-simple input").val(date);
+            updateDatePicker($(parent).find(".date-changeable:not('.hidden') .date-simple input"));
         }
-        $(parent).find(".date-changeable:not('.hidden') .date-range input").filter(function () {
+        var elm = $(parent).find(".date-changeable:not('.hidden') .date-range input").filter(function () {
             return $(this).attr("data-point") == point;
-        }).val(date).datepicker('update');
+        });
+        $(elm).val(date);
+        updateDatePicker(elm);
 
     }
 
@@ -84,12 +131,15 @@ $(document).ready(function() {
         var input = $(elm).find("div.date-simple > input");
         var simpleVal = $(input).val();
         if (simpleVal != "") {
-            $(elm).find("div.date-range > input.startDate").val(simpleVal).datepicker('update');
-            $(input).val("").datepicker('update');
+            $(elm).find("div.date-range > input.startDate").val(simpleVal);
+            $(input).val("");
+            updateDatePicker($(elm).find("div.date-range > input.startDate"));
+            updateDatePicker($(input));
         }
         var endDate = $(input).attr("data-end");
         if(endDate != "" && endDate != undefined){
-            $(elm).find("div.date-range > input.endDate").val(endDate).datepicker('update');
+            $(elm).find("div.date-range > input.endDate").val(endDate);
+            updateDatePicker($(elm).find("div.date-range > input.endDate"));
         }
     }
 
@@ -102,12 +152,15 @@ $(document).ready(function() {
         var startVal = $(inputStart).val();
         var endVal = $(inputEnd).val();
         if (startVal != "") {
-            $(elm).find("div.date-simple > input").val(startVal).datepicker('update');
-            $(inputStart).val("").datepicker('update');
+            $(elm).find("div.date-simple > input").val(startVal);
+            $(inputStart).val("");
+            updateDatePicker($(elm).find("div.date-simple > input"));
+            updateDatePicker($(inputStart));
         }
         if(endVal != ""){
             $(elm).find("div.date-simple > input").attr("data-end", endVal);
-            $(inputEnd).val("").datepicker('update');
+            $(inputEnd).val("");
+            updateDatePicker($(inputEnd));
         }
     }
 
