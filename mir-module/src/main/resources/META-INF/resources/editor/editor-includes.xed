@@ -1334,6 +1334,26 @@
     </xed:bind>
   </xed:template>
 
+  <xed:template id="sdnb.repeat">
+    <xed:repeat xpath="mods:classification[@authority='sdnb'][@displayLabel='sdnb']" min="1" max="10" method="build">
+      <div class="form-group {$xed-validation-marker}">
+        <label class="col-md-3 control-label required">
+          <xed:output i18n="editor.search.mir.sdnb" />
+          :
+        </label>
+        <div class="col-md-6">
+          <select class="form-control form-control-inline">
+            <option value="">
+              <xed:output i18n="mir.select" />
+            </option>
+            <xed:include uri="xslStyle:items2options:classification:editor:-1:children:SDNB" />
+          </select>
+        </div>
+        <mir:help-pmud help-text="{i18n:mir.help.sdnb}" pmud="true" />
+      </div>
+    </xed:repeat>
+  </xed:template>
+
   <xed:template id="abstract.simple">
     <mir:textarea xpath="mods:abstract[not(@xml:lang) or @xml:lang=../mods:language/mods:languageTerm[@authority='rfc4646' and @type='code']]" label="mir.abstract.text"
       help-text="{i18n:mir.help.abstract}" rows="5" />
