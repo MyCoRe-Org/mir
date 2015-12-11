@@ -157,11 +157,16 @@ $﻿(document).ready(function() {
 		});
 		
 		$("#modal-searchInput .glyphicon-search").unbind().click(function() {
-			$("#main_right_content").empty();
-			sortType = "";
-			loadPublikation(leftContent, "", $("#modal-searchInput > input").val(), "0", "xml");
+			searchPublikation();
 		});
-		
+
+		$("#modal-searchInput > input").keydown(function(event) {
+			if (event.which == 13) {
+				event.preventDefault();
+				searchPublikation();
+			}
+		});
+
 		$("#modalFrame li.next a, #modalFrame #previous a, #modalFrame #first a").click(function() {
 			if(!$(this).parent().hasClass("disabled")) {
 				loadPublikation(leftContent, "", $("#modal-searchInput > input").val(), $(this).attr("data"), "xml");
@@ -174,6 +179,12 @@ $﻿(document).ready(function() {
 			loadPublikation(leftContent, "", "", "0", "xml");
 			$("#main_right_content").empty();
 		});
+
+		function searchPublikation() {
+			$("#main_right_content").empty();
+			sortType = "";
+			loadPublikation(leftContent, "", $("#modal-searchInput > input").val(), "0", "xml");
+		}
 		
 		function loadPublikation(callback, href, qry, start, dataType){
 			var url = href;
