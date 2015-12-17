@@ -20,7 +20,7 @@
 
       <xsl:if test="div[@id='search_browsing']">
         <div class="row detail_row">
-          <div class="col-md-12">
+          <div class="col-md-8">
             <div class="detail_block text-center">
               <span id="pagination_label">gefundende Dokumente</span>
               <br />
@@ -46,14 +46,14 @@
 
         <div id="head_col" class="col-xs-12">
           <div class="row">
-            <div class="col-md-4 col-md-push-8">
+            <div id="aux_col_actions" class="col-xs-12 col-sm-4 col-sm-push-8 col-md-4 col-md-push-8">
               <div class="pull-right">
                 <!-- Start: EDIT -->
                 <xsl:apply-templates select="div[@id='mir-edit']" mode="copyContent" />
                 <!-- End: EDIT -->
               </div>
             </div>
-            <div class="col-md-8 col-md-pull-4">
+            <div class="col-xs-12 col-sm-8 col-sm-pull-4 col-md-8 col-md-pull-4">
               <xsl:apply-templates select="div[@id='mir-abstract-badges']" mode="copyContent" />
             </div>
           </div>
