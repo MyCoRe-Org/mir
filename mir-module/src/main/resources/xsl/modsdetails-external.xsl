@@ -412,7 +412,7 @@
           <i class="fa fa-cog">
             <xsl:value-of select="' '" />
           </i>
-          <xsl:value-of select="' Aktionen'" />
+          <xsl:value-of select="concat(' ',i18n:translate('mir.actions'))" />
           <span class="caret"></span>
         </a>
         <ul class="dropdown-menu dropdown-menu-right">
@@ -420,7 +420,7 @@
           <xsl:if test="not($accessedit or $accessdelete)">
             <li> 
               <a href="{$ServletsBaseURL}MCRLoginServlet?action=login">
-                <xsl:value-of select=" 'Um das Dokument zu bearbeiten melden sie sich bitte an.' "/>
+                <xsl:value-of select="i18n:translate('mir.actions.noaccess')"/>
               </a>
             </li>
           </xsl:if>
