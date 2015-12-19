@@ -32,8 +32,15 @@
 #html5Container #input_field #dropbox #fileSize {
   position:absolute;
   bottom:10px;
-  right:10px
+  right:25px
 }
+
+#html5Container #input_field #dropbox #trash {
+  position:absolute;
+  bottom:10px;
+  right:10px
+} 
+
 #html5Container #input_field #dropbox.highlight {
   border:2px dashed #6eba6b
 }

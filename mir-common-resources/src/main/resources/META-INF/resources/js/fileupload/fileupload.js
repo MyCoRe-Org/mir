@@ -48,11 +48,11 @@ function noop(evt) {
 }
 
 function fileSelected() {
-
     currentUploadState = UPLOAD_STATES.filesSelected;
-    var file = document.getElementById('fileToUpload').files[0];
-    appendFile(file);
-
+    //var file = document.getElementById('fileToUpload').files[0];
+    $.each( $('#fileToUpload')[0].files , function( index, file ) {
+      appendFile(file);
+    });
 }
 
 function appendFile(file) {
@@ -94,7 +94,7 @@ function uploadFile() {
     var params = getUrlVars(url);
 
     var fd = new FormData();
-    for (i in chosenFiles) {
+    for (i = 0; i < chosenFiles.length; i++) {
         var key = "/upload/path/" + chosenFiles[i].name;
         var value = chosenFiles[i];
         fd.append(key, value);
@@ -256,6 +256,9 @@ function toggleActions() {
 }
 
 function showButton(object) {
+
+    if (! object) return;
+    
     var parent = object.parent;
     var toggable = object.button;
 
@@ -266,9 +269,12 @@ function showButton(object) {
 }
 
 function hideButton(object) {
+
+    if (! object) return;
+
     var parent = object.parent;
     var toggable = object.button;
-
+    
     if (object.isAttached) {
       toggable.detach();
       object.isAttached = false;
