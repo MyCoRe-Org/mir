@@ -1062,7 +1062,7 @@
         <xed:output i18n="mir.language" />
       </label>
       <div class="col-md-6">
-        <xed:bind xpath="mods:language/mods:languageTerm[@authority='rfc4646'][@type='code']" initially="de">
+        <xed:bind xpath="(mods:language/mods:languageTerm[@authority='rfc4646'][@type='code'])[1]" initially="de">
           <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="lang.list" />
         </xed:bind>
       </div>
@@ -1076,7 +1076,7 @@
         <xed:output i18n="mir.language.noText" />
       </label>
       <div class="col-md-6">
-        <xed:bind xpath="mods:language/mods:languageTerm[@authority='rfc4646'][@type='code']" initially="de">
+        <xed:bind xpath="(mods:language/mods:languageTerm[@authority='rfc4646'][@type='code'])[1]" initially="de">
           <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="lang.list" />
         </xed:bind>
       </div>

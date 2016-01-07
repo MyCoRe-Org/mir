@@ -76,6 +76,15 @@
     </xsl:copy>
   </xsl:template>
 
+  <xsl:template match="mods:languageTerm[@authority='iso639-2b']">
+    <xsl:variable name="classNodes" select="mcrmods:convertIsoToRfc(.)" />
+    <xsl:if test="not(preceding-sibling::mods:languageTerm[@authority='rfc4646']/text() = $classNodes/text())">
+      <xsl:if test="not(following-sibling::mods:languageTerm[@authority='rfc4646']/text() = $classNodes/text())">
+        <xsl:apply-templates select="$classNodes" />
+      </xsl:if>
+    </xsl:if>
+  </xsl:template>
+
   <xsl:template match="mods:accessCondition[@type='restriction on access']">
     <mods:accessCondition type="restriction on access" xlink:href='http://www.mycore.org/classifications/mir_access'>
       <xsl:value-of select="substring-after(@xlink:href, '#')" />
