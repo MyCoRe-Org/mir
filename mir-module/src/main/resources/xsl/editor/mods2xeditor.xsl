@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:mods="http://www.loc.gov/mods/v3"
-  xmlns:mcrmods="xalan://org.mycore.mods.classification.MCRMODSClassificationSupport" exclude-result-prefixes="mcrmods" version="1.0"
+  xmlns:mcrmods="xalan://org.mycore.mods.classification.MCRMODSClassificationSupport" exclude-result-prefixes="mcrmods xlink" version="1.0"
 >
 
   <xsl:include href="copynodes.xsl" />
@@ -77,10 +77,12 @@
   </xsl:template>
 
   <xsl:template match="mods:languageTerm[@authority='iso639-2b']">
-    <xsl:variable name="classNodes" select="mcrmods:convertIsoToRfc(.)" />
-    <xsl:if test="not(preceding-sibling::mods:languageTerm[@authority='rfc4646']/text() = $classNodes/text())">
-      <xsl:if test="not(following-sibling::mods:languageTerm[@authority='rfc4646']/text() = $classNodes/text())">
-        <xsl:apply-templates select="$classNodes" />
+    <xsl:variable name="classNodes" select="document(concat('language:',text()))/language/@xmlCode" />
+    <xsl:if test="not(preceding-sibling::mods:languageTerm[@authority='rfc4646']/text() = $classNodes)">
+      <xsl:if test="not(following-sibling::mods:languageTerm[@authority='rfc4646']/text() = $classNodes)">
+        <mods:languageTerm authority="rfc4646" type="code">
+          <xsl:value-of select="$classNodes"/>
+        </mods:languageTerm>
       </xsl:if>
     </xsl:if>
   </xsl:template>
