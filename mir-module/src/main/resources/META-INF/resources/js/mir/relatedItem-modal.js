@@ -1,4 +1,4 @@
-$﻿(document).ready(function() {
+$(document).ready(function() {
 	$(".mir-relatedItem-select").each(function() {
 		var button = $(this);
 		button.next("span").text(button.next().next("input").val());
@@ -40,7 +40,7 @@ $﻿(document).ready(function() {
 			$("#modalFrame-body").append("<div id='main_left_content' class='list-group col-md-4' />");
 			$("#modalFrame-body").append("<div id='main_right_content' class='list-group col-md-8' />");
 			$("#main_left_content, #main_right_content").css({"max-height": "560px", "overflow": "auto"});
-			$("#main_right_content").css("padding-left", "10px")
+			$("#main_right_content").css("padding-left", "10px");
 			//create pager
 			$("#modalFrame-body").after("<nav class='col-md-4' style='clear: both'><ul class='pager'><li id='first' class='previous disabled'><a data='0'>First</a></li><li id='previous' class='previous disabled'><a>Previous</a></li><li class='next disabled'><a>Next</a></li></ul></nav>");
 			$("#modalFrame-cancel").before("<div class='col-md-4'><select class='form-control'><option value=''>Sortieren nach Typ:</option></select></div>");
@@ -52,7 +52,7 @@ $﻿(document).ready(function() {
 		
 		function leftContent(data) {
 			$("#main_left_content").empty();
-			var mainBody = $(data).find("arr[name='groups']");
+			var mainBody = $(data).find("result[name='response']");
 			mainBody.children().each(function() {
 				var autorContainer = "";
 				var autor = "";
@@ -73,7 +73,7 @@ $﻿(document).ready(function() {
 		
 		function rightContent(data) {
 			$("#main_right_content").empty().append($(data).find("h1[itemprop='name']").css("margin-top", "0"));
-			$("h1[itemprop='name'").after($(data).find(".mods_genre").removeAttr("href"));
+			$("h1[itemprop='name']").after($(data).find(".mods_genre").removeAttr("href"));
 			$("#main_right_content").append($(data).find("#main_col > .detail_block:first-child")).append($(data).find(".mir_metadata"));
 			$("a[itemprop='creator']").removeAttr("href");
 		}
@@ -91,7 +91,7 @@ $﻿(document).ready(function() {
 		function updatePager(data) {
 			var start = $(data).find("str[name='start']").text();
 			var rows = $(data).find("str[name='rows']").text();
-			var matches = $(data).find("int[name='ngroups']").text();
+			var matches = $(data).find("result[name='response']").attr("numFound");
 			
 			$("#previous, li.next, #first").show();
 			$("ul.pager li").removeClass("disabled");
@@ -188,8 +188,11 @@ $﻿(document).ready(function() {
 		
 		function loadPublikation(callback, href, qry, start, dataType){
 			var url = href;
+			if(qry == "") {
+				qry = "*";
+			}
 			if(url == "") {
-				url = "servlets/solr/find?qry=" + qry + sortType + "&start=" + start + "&rows=10&XSL.Style=xml";
+				url = "servlets/solr/select?q=" + qry + sortType + "&start=" + start + "&rows=10&XSL.Style=xml";
 			}
 			$.ajax({
 				url: webApplicationBaseURL + url,
