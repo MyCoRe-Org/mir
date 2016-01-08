@@ -1,14 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xalan="http://xml.apache.org/xalan" xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
-  xmlns:mcrmods="xalan://org.mycore.mods.classification.MCRMODSClassificationSupport" xmlns:basket="xalan://org.mycore.frontend.basket.MCRBasketManager"
-  xmlns:mcr="http://www.mycore.org/" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:mods="http://www.loc.gov/mods/v3" xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions"
-  xmlns:mcrurn="xalan://org.mycore.urn.MCRXMLFunctions" xmlns:str="http://exslt.org/strings" xmlns:encoder="xalan://java.net.URLEncoder"
-  exclude-result-prefixes="basket xalan xlink mcr i18n mods mcrmods mcrxsl mcrurn str encoder" version="1.0" xmlns:ex="http://exslt.org/dates-and-times"
-  xmlns:exslt="http://exslt.org/common" extension-element-prefixes="ex exslt"
+                xmlns:mcrmods="xalan://org.mycore.mods.classification.MCRMODSClassificationSupport"
+                xmlns:basket="xalan://org.mycore.frontend.basket.MCRBasketManager"
+                xmlns:mcr="http://www.mycore.org/" xmlns:xlink="http://www.w3.org/1999/xlink"
+                xmlns:mods="http://www.loc.gov/mods/v3" xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions"
+                xmlns:mcrurn="xalan://org.mycore.urn.MCRXMLFunctions" xmlns:str="http://exslt.org/strings"
+                xmlns:encoder="xalan://java.net.URLEncoder" xmlns:acl="xalan://org.mycore.access.MCRAccessManager"
+                exclude-result-prefixes="basket xalan xlink mcr i18n mods mcrmods mcrxsl mcrurn str encoder acl"
+                version="1.0" xmlns:ex="http://exslt.org/dates-and-times"
+                xmlns:exslt="http://exslt.org/common" extension-element-prefixes="ex exslt"
 >
 
   <xsl:param name="MIR.registerDOI" select="''" />
   <xsl:param name="template" select="'fixme'" />
+
+  <xsl:param name="MCR.Packaging.Packer.ImageWare.flagType" />
+  <xsl:param name="MIR.ImageWare.enabled" />
+  <xsl:param name="MIR.ImageWare.requiredIdentifier" />
 
   <!-- do nothing for display parent -->
   <xsl:template match="/mycoreobject" mode="parent" priority="1">
@@ -473,6 +481,19 @@
             </a>
             </xsl:if -->
 
+          </xsl:if>
+          <!-- Packing with ImageWare Packer -->
+          <xsl:variable name="packageEnabled" select="$MIR.ImageWare.enabled" />
+          <xsl:variable name="packageFlagType" select="$MCR.Packaging.Packer.ImageWare.flagType" />
+          <xsl:if test="$packageEnabled and $packageFlagType and acl:checkPermission(/mycoreobject/@ID,'writedb') and acl:checkPermission('packer-ImageWare')">
+            <xsl:variable name="packageRequiredIdentifier" select="$MIR.ImageWare.requiredIdentifier" />
+            <xsl:if test="/mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:identifier[@type=$packageRequiredIdentifier]">
+              <li>
+                <a href="{$ServletsBaseURL}MCRPackerServlet?packer=ImageWare&amp;objectId={/mycoreobject/@ID}&amp;redirect={encoder:encode(concat($WebApplicationBaseURL,'receive/',/mycoreobject/@ID))}">
+                  <xsl:value-of select="i18n:translate('object.createImagewareZipPackage')" />
+                </a>
+              </li>
+            </xsl:if>
           </xsl:if>
           <xsl:if test="$accessdelete and (not(mcrurn:hasURNDefined($id)) or (mcrurn:hasURNDefined($id) and $CurrentUser=$MCR.Users.Superuser.UserName))">
             <li>
