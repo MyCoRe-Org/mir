@@ -63,12 +63,15 @@ $(document).ready(function() {
 				if(autor != "") {
 					autorContainer = "<br/><i><small>Autor: " + autor + "</small></i>"
 				}
-				var type = "<br/><i><small>Type: " + i18n["component.mods.genre." + $(this).find("str[name='mods.type']").text()] + "</small></i>"
-				$("#main_left_content").append("<a class='list-group-item' value='" + $(this).find("str[name='groupValue']").text() + "'>" + $(this).find("str[name='mods.title.main']").text() + autorContainer + type + "</a>").css("cursor", "pointer");
+				var type = "<br/><i><small>Type: " + i18n["component.mods.genre." + $(this).find("str[name='mods.type']").text()] + "</small></i>";
+				var elm = $("<a class='list-group-item' value='" + $(this).find("str[name='id']").text() + "'>" + $(this).find("str[name='mods.title.main']").text() + autorContainer + type + "</a>");
+				$("#main_left_content").append(elm);
+				$(elm).css("cursor", "pointer");
+				$(elm).attr("data-type", $(this).find("str[name='mods.type']").text());
 			});
 			
 			updatePager(data);
-			updateType(data);
+			loadPublikation(updateType,"servlets/solr/select?q=" + $(data).find("str[name='q']").text() + "&XSL.Style=xml","","","xml");
 		}
 		
 		function rightContent(data) {
@@ -169,30 +172,27 @@ $(document).ready(function() {
 
 		$("#modalFrame li.next a, #modalFrame #previous a, #modalFrame #first a").click(function() {
 			if(!$(this).parent().hasClass("disabled")) {
-				loadPublikation(leftContent, "", $("#modal-searchInput > input").val(), $(this).attr("data"), "xml");
+				loadPublikation(leftContent, "", getInputAsQuery(), $(this).attr("data"), "xml");
 				$("#main_right_content").empty();
 			}
 		});
 		
 		$(".modal-footer select").change(function() {
 			sortType = decodeURIComponent($(this).val());
-			loadPublikation(leftContent, "", "", "0", "xml");
+			loadPublikation(leftContent, "",  getInputAsQuery(), "0", "xml");
 			$("#main_right_content").empty();
 		});
 
 		function searchPublikation() {
 			$("#main_right_content").empty();
 			sortType = "";
-			loadPublikation(leftContent, "", $("#modal-searchInput > input").val(), "0", "xml");
+			loadPublikation(leftContent, "", getInputAsQuery(), "0", "xml");
 		}
 		
 		function loadPublikation(callback, href, qry, start, dataType){
 			var url = href;
-			if(qry == "") {
-				qry = "*";
-			}
 			if(url == "") {
-				url = "servlets/solr/select?q=" + qry + sortType + "&start=" + start + "&rows=10&XSL.Style=xml";
+				url = "servlets/solr/select?q=" + qry + "&fq=" + sortType + "&start=" + start + "&rows=10&XSL.Style=xml";
 			}
 			$.ajax({
 				url: webApplicationBaseURL + url,
@@ -206,6 +206,14 @@ $(document).ready(function() {
 					console.log(error);
 				}
 			});
-		};
+		}
+
+		function getInputAsQuery() {
+			var query = $("#modal-searchInput > input").val();
+			if (query == "") {
+				query = "*";
+			}
+			return query;
+		}
 	}
 });
