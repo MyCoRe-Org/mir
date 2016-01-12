@@ -147,6 +147,18 @@
       });
     };
 
+    $("#mir_relatedItem > li > span").click(function(){
+      if( $(this).parent().children("ul").is(":visible") ){
+        $(this).parent().children("ul").hide();
+        $(this).parent().children("span.glyphicon").removeClass('glyphicon-chevron-down');
+        $(this).parent().children("span.glyphicon").addClass('glyphicon-chevron-right');
+      } else {
+        $(this).parent().children("ul").show();
+        $(this).parent().children("span.glyphicon").removeClass('glyphicon-chevron-right');
+        $(this).parent().children("span.glyphicon").addClass('glyphicon-chevron-down');
+      }
+    });
+
   }); // END $﻿(document).ready()
 
   window.fireMirSSQuery = function base_fireMirSSQuery(form) {
@@ -157,18 +169,6 @@
   $(document).tooltip({
     selector : "[data-toggle=tooltip]",
     container : "body"
-  });
-
-  $("#mir_relatedItem > li > span").click(function(){
-    if( $(this).parent().children("ul").is(":visible") ){
-      $(this).parent().children("ul").hide();
-      $(this).parent().children("span.glyphicon").removeClass('glyphicon-chevron-down');
-      $(this).parent().children("span.glyphicon").addClass('glyphicon-chevron-right');
-    } else {
-      $(this).parent().children("ul").show();
-      $(this).parent().children("span.glyphicon").removeClass('glyphicon-chevron-right');
-      $(this).parent().children("span.glyphicon").addClass('glyphicon-chevron-down');
-    }
   });
 
 })(jQuery);
