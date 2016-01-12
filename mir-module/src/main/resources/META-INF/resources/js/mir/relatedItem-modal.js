@@ -1,4 +1,6 @@
 $(document).ready(function() {
+	var GenreXML;
+
 	$(".mir-relatedItem-select").each(function() {
 		var button = $(this);
 		button.next("span").text(button.next().next("input").val());
@@ -12,12 +14,9 @@ $(document).ready(function() {
 		
 		var input = button.next().next("input");
 		var sortType = "";
-		var i18n = [];
 		
-		//load i18nkeys
-		loadPublikation(function(data){i18n = data},
-				"servlets/MCRLocaleServlet/" + $("html.no-js").attr("lang") + "/component.mods.genre.*", 
-				"", "", "JSON");
+		//load genre classification
+		loadGenres();
 		
 		if(input.val().length > 0) {
 			loadPublikation(leftContent, "", input.val(), "0", "xml");
@@ -63,7 +62,7 @@ $(document).ready(function() {
 				if(autor != "") {
 					autorContainer = "<br/><i><small>Autor: " + autor + "</small></i>"
 				}
-				var type = "<br/><i><small>Type: " + i18n["component.mods.genre." + $(this).find("str[name='mods.type']").text()] + "</small></i>";
+				var type = "<br/><i><small>Type: " + getGenre($(this).find("str[name='mods.type']").text()) + "</small></i>";
 				var elm = $("<a class='list-group-item' value='" + $(this).find("str[name='id']").text() + "'>" + $(this).find("str[name='mods.title.main']").text() + autorContainer + type + "</a>");
 				$("#main_left_content").append(elm);
 				$(elm).css("cursor", "pointer");
@@ -85,7 +84,7 @@ $(document).ready(function() {
 			$(".modal-footer select > option[value != '']").remove();
 			$(data).find("lst[name='facet_counts'] lst[name='mods.type'] > int").each(function() {
 				var type_val = encodeURIComponent('+mods.type:"' + $(this).attr('name') + '"');
-				var text = i18n["component.mods.genre." + $(this).attr('name')];
+				var text = getGenre($(this).attr('name'));
 				$(".modal-footer select").append("<option value='" + type_val + "'>" + text + " (" + $(this).text() + ")</option>");
 			});
 			$(".modal-footer select").val(encodeURIComponent(sortType));
@@ -214,6 +213,30 @@ $(document).ready(function() {
 				query = "*";
 			}
 			return query;
+		}
+
+		function loadGenres() {
+			if (!webApplicationBaseURL) console.log("Error: webApplicationBaseURL not set");
+			$.ajax({
+				method: "GET",
+				url: webApplicationBaseURL + "api/v1/classifications/mir_genres",
+				dataType: "xml"
+			}) .done(function( xml ) {
+				GenreXML=xml;
+			});
+		}
+
+		function getGenre(genreID) {
+			var cat = $(GenreXML).find('category[ID="' + genreID + '"]');
+			var lang = $(cat).find("label").filter(function() {
+				return $(this).attr('xml:lang') == $("html.no-js").attr("lang");
+			});
+			if (lang == undefined || lang == "") {
+				lang = $(cat).find("label").filter(function() {
+					return $(this).attr('xml:lang') == "de";
+				});
+			}
+			return $(lang).attr("text");
 		}
 	}
 });
