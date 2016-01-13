@@ -193,43 +193,43 @@
       <xsl:if test="$hits/int[@name='matches'] &gt; 0">
         <h3><xsl:value-of select="i18n:translate('mir.metadata.content')" /></h3>
         <xsl:choose>
-          <xsl:when test="$hits/arr[@name='groups']/lst/result/@numFound &gt; 1">
-        <ul id="mir_relatedItem">
-          <xsl:for-each select="$hits/arr[@name='groups']/lst">
-            <li>
-              <span class="glyphicon glyphicon-chevron-right"></span>
-              <span><xsl:value-of select="str[@name='groupValue']" /></span>
-              <ul>
-                <xsl:for-each select="result/doc">
-                  <li>
-                    <a href="{$WebApplicationBaseURL}/receive/{str[@name='returnId']}">
-                      <xsl:if test="str[@name='mods.part'] and not(str[@name='mods.part'] = str[@name='search_result_link_text'])">
-                        <xsl:value-of select="str[@name='mods.part']" />
-                        <xsl:text> - </xsl:text>
-                      </xsl:if>
-                      <xsl:value-of select="str[@name='search_result_link_text']" />
-                    </a>
-                  </li>
-                </xsl:for-each>
-              </ul>
-            </li>
-          </xsl:for-each>
-        </ul>
-      </xsl:when>
-      <xsl:otherwise>
-        <ul>
-          <xsl:for-each select="$hits/arr[@name='groups']/lst/result/doc">
-            <li>
-              <a href="{$WebApplicationBaseURL}/receive/{str[@name='returnId']}">
-                <xsl:if test="str[@name='mods.part'] and not(str[@name='mods.part'] = str[@name='search_result_link_text'])">
-                  <xsl:value-of select="str[@name='mods.part']" />
-                  <xsl:text> - </xsl:text>
-                </xsl:if>
-                <xsl:value-of select="str[@name='search_result_link_text']" />
-              </a>
-            </li>
-          </xsl:for-each>
-        </ul>
+          <xsl:when test="$hits/arr[@name='groups']/lst/result/@numFound &gt; 1 and not($hits/arr[@name='groups']/lst/null/@name='groupValue')">
+            <ul id="mir_relatedItem">
+              <xsl:for-each select="$hits/arr[@name='groups']/lst">
+                <li>
+                  <span class="glyphicon glyphicon-chevron-right"></span>
+                  <span><xsl:value-of select="str[@name='groupValue']" /></span>
+                  <ul>
+                    <xsl:for-each select="result/doc">
+                      <li>
+                        <a href="{$WebApplicationBaseURL}/receive/{str[@name='returnId']}">
+                          <xsl:if test="str[@name='mods.part'] and not(str[@name='mods.part'] = str[@name='search_result_link_text'])">
+                            <xsl:value-of select="str[@name='mods.part']" />
+                            <xsl:text> - </xsl:text>
+                          </xsl:if>
+                          <xsl:value-of select="str[@name='search_result_link_text']" />
+                        </a>
+                      </li>
+                    </xsl:for-each>
+                  </ul>
+                </li>
+              </xsl:for-each>
+            </ul>
+          </xsl:when>
+          <xsl:otherwise>
+            <ul>
+              <xsl:for-each select="$hits/arr[@name='groups']/lst/result/doc">
+                <li>
+                  <a href="{$WebApplicationBaseURL}/receive/{str[@name='returnId']}">
+                    <xsl:if test="str[@name='mods.part'] and not(str[@name='mods.part'] = str[@name='search_result_link_text'])">
+                      <xsl:value-of select="str[@name='mods.part']" />
+                      <xsl:text> - </xsl:text>
+                    </xsl:if>
+                    <xsl:value-of select="str[@name='search_result_link_text']" />
+                  </a>
+                </li>
+              </xsl:for-each>
+            </ul>
           </xsl:otherwise>
         </xsl:choose>
       </xsl:if>
