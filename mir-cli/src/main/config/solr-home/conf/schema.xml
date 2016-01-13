@@ -175,7 +175,7 @@
     <field name="text_wc" type="text_wc" />
 
     <!-- default search fields -->
-    <field name="allMeta" type="text_de" multiValued="true" stored="false" />
+    <field name="allMeta" type="text_general" multiValued="true" stored="false" />
     <field name="search_result_link_text" type="text_de" indexed="false"/>
 
     <!-- mycore-mods -->
