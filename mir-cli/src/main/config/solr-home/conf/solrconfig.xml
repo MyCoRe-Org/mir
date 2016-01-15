@@ -1916,8 +1916,9 @@
     <lst name="defaults">
       <str name="echoParams">all</str>
       <int name="rows">20</int>
+      <str name="mm">100%</str>
       <str name="fl">*,score</str>
-      <str name="qf">id^100 mods.gnd^100 mods.identifier^100 isbn^100 mods.title^50 mods.author^40 mods.publisher^40 mods.name^30 mods.abstract^10 mods.place^5 allMeta^2 content^1</str>
+      <str name="qf">mods.identifier^100 isbn^100 mods.title^80 mods.name.top^80 mods.gnd.top^80 mods.abstract^70 allMeta^5 content^0.1</str>
       <str name="q.alt">*:*</str>
       <!-- sort by score, if user submits empty form, we show the last changed docs first (as the score will be fixed to 1.0) -->
       <str name="sort">score desc, mods.dateIssued desc</str>
@@ -1958,7 +1959,7 @@
       <str name="q.alt">*:* -objectType:data_file -objectType:derivate</str>
 
       <!-- sort by score, if user submits empty form, we show the last changed docs first (as the score will be fixed to 1.0) -->
-      <str name="sort">score desc, mods.dateIssued desc</str>
+      <str name="sort">mods.dateIssued desc, score desc</str>
 
       <!-- set as recommended by http://wiki.apache.org/solr/DisMaxQParserPlugin -->
       <str name="tie">0.1</str>
@@ -1996,7 +1997,7 @@
       <str name="q.alt">*:* -objectType:data_file -objectType:derivate</str>
 
       <!-- sort by score, if user submits empty form, we show the last changed docs first (as the score will be fixed to 1.0) -->
-      <str name="sort">score desc, mods.dateIssued desc</str>
+      <str name="sort">mods.dateIssued desc, score desc</str>
 
       <!-- set as recommended by http://wiki.apache.org/solr/DisMaxQParserPlugin -->
       <str name="tie">0.1</str>
@@ -2034,7 +2035,7 @@
       <str name="q.alt">*:* -objectType:data_file -objectType:derivate</str>
 
       <!-- sort by score, if user submits empty form, we show the last changed docs first (as the score will be fixed to 1.0) -->
-      <str name="sort">score desc, mods.dateIssued desc</str>
+      <str name="sort">mods.dateIssued desc</str>
 
       <!-- set as recommended by http://wiki.apache.org/solr/DisMaxQParserPlugin -->
       <str name="tie">0.1</str>
@@ -2092,7 +2093,7 @@
       <str name="fl">*,score</str>
       <str name="q.alt">*:* -objectType:data_file -objectType:derivate</str>
       <!-- sort by score, if user submits empty form, we show the last changed docs first (as the score will be fixed to 1.0) -->
-      <str name="sort">score desc, mods.dateIssued desc</str>
+      <str name="sort">mods.dateIssued desc</str>
       <!-- set as recommended by http://wiki.apache.org/solr/DisMaxQParserPlugin -->
       <str name="tie">0.1</str>
     </lst>
