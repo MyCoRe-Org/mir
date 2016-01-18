@@ -4,7 +4,7 @@
 
   <xsl:output
     encoding="UTF-8"
-    media-type="application/x-pica3"
+    media-type="string"
     method="text"
     standalone="yes"
     indent="no" />
@@ -57,12 +57,12 @@
  <xsl:template match="mods:identifier[@type='zdbid']" mode="relatedItem">
     <xsl:text>2110  </xsl:text> <xsl:value-of select="." /> <xsl:text>&#10;</xsl:text>
  </xsl:template>
- <xsl:template match="mods:identifier[@type='intern_old']" mode="pica3">
+ <!-- xsl:template match="mods:identifier[@type='intern_old']" mode="pica3">
     <xsl:text>OldInternID  </xsl:text> <xsl:value-of select="." /> <xsl:text>&#10;</xsl:text>
- </xsl:template>
- <xsl:template match="mods:identifier[@type='citekey']" mode="pica3">
+ </xsl:template -->
+ <!-- xsl:template match="mods:identifier[@type='citekey']" mode="pica3">
     <xsl:text>Citekey  </xsl:text> <xsl:value-of select="." /> <xsl:text>&#10;</xsl:text>
- </xsl:template>
+ </xsl:template -->
 
  <xsl:template match="mods:relatedItem[@type='host']" mode="pica3">
    <xsl:apply-templates mode="relatedItem" />
