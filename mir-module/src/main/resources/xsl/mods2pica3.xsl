@@ -4,7 +4,7 @@
 
   <xsl:output
     encoding="UTF-8"
-    media-type="string"
+    media-type="text/plain"
     method="text"
     standalone="yes"
     indent="no" />
