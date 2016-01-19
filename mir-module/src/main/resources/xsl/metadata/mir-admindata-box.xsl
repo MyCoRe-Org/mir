@@ -31,10 +31,31 @@
                 <xsl:with-param select="mycoreobject/service/servflags/servflag[@type='createdby']" name="nodes" />
                 <xsl:with-param select="i18n:translate('metaData.createdby')" name="label" />
               </xsl:call-template>
-              <xsl:call-template name="printMetaDate">
-                <xsl:with-param select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:note" name="nodes" />
-                <xsl:with-param select="i18n:translate('mir.comment')" name="label" />
-              </xsl:call-template>
+              <xsl:for-each select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:note">
+                <xsl:variable name="noteType">
+                  <xsl:choose>
+                    <xsl:when test="@type">
+                      <xsl:value-of select="@type" />
+                    </xsl:when>
+                    <xsl:otherwise>
+                      <xsl:value-of select="'mcr_intern'" />
+                    </xsl:otherwise>
+                  </xsl:choose>
+                </xsl:variable>
+                <xsl:variable name="myURI" select="concat('classification:metadata:0:children:noteTypes:',$noteType)" />
+                <xsl:variable name="x-access">
+                  <xsl:value-of select="document($myURI)//label[@xml:lang='x-access']/@text"/>
+                </xsl:variable>
+                <xsl:variable name="noteLabel">
+                  <xsl:value-of select="document($myURI)//category/label[@xml:lang=$CurrentLang]/@text"/>
+                </xsl:variable>
+                <xsl:if test="contains($x-access, 'editor') or contains($x-access, 'admin')">
+                  <xsl:call-template name="printMetaDate">
+                    <xsl:with-param select="." name="nodes" />
+                    <xsl:with-param select="$noteLabel" name="label"/>
+                  </xsl:call-template>
+                </xsl:if>
+              </xsl:for-each>
               <!--*** Last Modified ************************************* -->
               <xsl:call-template name="printMetaDate">
                 <xsl:with-param select="mycoreobject/service/servdates/servdate[@type='modifydate']" name="nodes" />

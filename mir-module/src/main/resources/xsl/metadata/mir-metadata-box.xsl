@@ -200,6 +200,21 @@
               <xsl:with-param name="label" select="i18n:translate('mir.shelfmark')" />
             </xsl:call-template>
             <xsl:apply-templates mode="present" select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:name[@type='corporate']" />
+            <xsl:for-each select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:note">
+              <xsl:variable name="myURI" select="concat('classification:metadata:0:children:noteTypes:',@type)" />
+              <xsl:variable name="x-access">
+                <xsl:value-of select="document($myURI)//label[@xml:lang='x-access']/@text"/>
+              </xsl:variable>
+              <xsl:variable name="noteLabel">
+                <xsl:value-of select="document($myURI)//category/label[@xml:lang=$CurrentLang]/@text"/>
+              </xsl:variable>
+              <xsl:if test="contains($x-access, 'guest')">
+                <xsl:call-template name="printMetaDate.mods">
+                  <xsl:with-param select="." name="nodes" />
+                  <xsl:with-param select="$noteLabel" name="label"/>
+                </xsl:call-template>
+              </xsl:if>
+            </xsl:for-each>
           </table>
 
     </div>

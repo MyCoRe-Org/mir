@@ -1535,7 +1535,33 @@
   </xed:template>
 
   <xed:template id="comment">
-    <mir:textarea xpath="mods:note" label="mir.comment" help-text="{i18n:mir.help.comment}" rows="2" />
+    <mir:textarea xpath="mods:note[@type='mcr_intern']" label="mir.comment" help-text="{i18n:mir.help.comment}" rows="2" />
+  </xed:template>
+  
+  <xed:template id="comment.complex">
+    <fieldset>
+      <legend class="mir-fieldset-legend">
+        <xed:output i18n="mir.comment" />
+      </legend>
+      <xed:repeat xpath="mods:note" min="1" max="5">
+        <div class="mir-fieldset-content">
+          <div class="form-group">
+            <label class="col-md-3 control-label">
+              <xed:output i18n="mir.comment.type" />
+            </label>
+            <div class="col-md-6">
+              <xed:bind xpath="@type">
+                <select class="form-control" style="font-weight:bold;">
+                  <xed:include uri="xslStyle:items2options:classification:editor:-1:children:noteTypes" />
+                </select>
+              </xed:bind>
+            </div>
+            <mir:help-pmud help-text="{i18n:mir.help.comment.type}" pmud="true" />
+          </div>
+          <mir:textarea xpath="." label="mir.comment" help-text="{i18n:mir.help.comment}" rows="3" />
+        </div>
+      </xed:repeat>
+    </fieldset>
   </xed:template>
 
   //finds all documents, even if they are not published yet
