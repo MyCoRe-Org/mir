@@ -1,8 +1,6 @@
 package org.mycore.mir.sword2;
 
 import java.io.IOException;
-import java.net.URISyntaxException;
-import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Map;
 
@@ -27,6 +25,7 @@ import org.mycore.mods.MCRMODSWrapper;
 import org.mycore.sword.MCRSwordUtil;
 import org.mycore.sword.application.MCRSwordIngester;
 import org.mycore.sword.application.MCRSwordLifecycleConfiguration;
+import org.mycore.sword.application.MCRSwordMediaHandler;
 import org.swordapp.server.Deposit;
 import org.swordapp.server.SwordError;
 import org.swordapp.server.SwordServerException;
@@ -38,6 +37,7 @@ public class MIRSwordIngester implements MCRSwordIngester {
     private static final Namespace DC_NAMESPACE = Namespace.getNamespace("dc", "http://purl.org/dc/elements/1.1/");
     private static final MCRXSL2XMLTransformer XSL_DC_MODS_TRANSFORMER = new MCRXSL2XMLTransformer("xsl/DC_MODS3-5_XSLT1-0.xsl");
     private MCRSwordLifecycleConfiguration lifecycleConfiguration;
+    private MCRSwordMediaHandler mcrSwordMediaHandler = new MCRSwordMediaHandler();
 
     @Override
     public MCRObjectID ingestMetadata(Deposit entry) throws SwordError, SwordServerException {
@@ -88,20 +88,7 @@ public class MIRSwordIngester implements MCRSwordIngester {
     @Override
     public MCRObjectID ingestMetadataResources(Deposit entry) throws SwordError, SwordServerException {
         final MCRObjectID objectID = this.ingestMetadata(entry);
-        try {
-            final MCRDerivate derivate = MCRSwordUtil.createDerivate(objectID.toString());
-            final MCRPath path = MCRPath.getPath(derivate.getId().toString(), "/");
-            if (entry.getPackaging() != null && entry.getPackaging().equals(UriRegistry.PACKAGE_SIMPLE_ZIP)) {
-                try {
-                    MCRSwordUtil.extractZipToPath(entry.getInputStream(), path);
-                } catch (NoSuchAlgorithmException | URISyntaxException e) {
-                    throw new SwordServerException("Error while extracting ZIP!", e);
-                }
-            }
-        } catch (IOException e) {
-            throw new SwordServerException("Error while creating new derivate for object " + objectID.toString(), e);
-        }
-
+        this.ingestResource(MCRMetadataManager.retrieveMCRObject(objectID), entry);
         return objectID;
     }
 
@@ -111,10 +98,8 @@ public class MIRSwordIngester implements MCRSwordIngester {
         try {
             final MCRDerivate derivate = MCRSwordUtil.createDerivate(objectID.toString());
             final MCRPath path = MCRPath.getPath(derivate.getId().toString(), "/");
-            if (entry.getPackaging() != null && entry.getPackaging().equals(UriRegistry.PACKAGE_SIMPLE_ZIP)) {
-                MCRSwordUtil.extractZipToPath(entry.getInputStream(), path);
-            }
-        } catch (IOException | URISyntaxException | NoSuchAlgorithmException e) {
+            mcrSwordMediaHandler.addResource(derivate.getId().toString(), "/", entry);
+        } catch (IOException e) {
             throw new SwordServerException("Error while creating new derivate for object " + objectID.toString(), e);
         }
     }
