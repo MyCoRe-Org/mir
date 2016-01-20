@@ -432,7 +432,7 @@
                         </a>
                       </xsl:when>
                       <xsl:otherwise>
-                        <a href="{$ServletsBaseURL}solr/select?q=mods.name:'{$author_name}' AND ({$filter_query})" title="Suche nach allen Publikationen">
+                        <a href="{$ServletsBaseURL}solr/select?q=mods.name:%22{$author_name}%22 AND ({$filter_query})" title="Suche nach allen Publikationen">
                           <xsl:value-of select="$author_name" />
                         </a>
                       </xsl:otherwise>
