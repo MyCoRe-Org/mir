@@ -1,7 +1,17 @@
 (function($) {
   $﻿(document).ready(function() {
-  	function drawMap() {
-	  	var map;
+    $('.show_openstreetmap').click(function() {
+      $(this).parent().next(".openstreetmap-container").collapse('toggle');
+    });
+  	
+  	$(".show_openstreetmap").each(function(){
+  		drawMap($(this));
+  	});
+  	
+  	function drawMap(btn) {
+  		var map;
+  		var input = $(btn).parent().parent().prev().find("input[name*='coordinates']"); 
+  		var mapElement = $(btn).parent().next().find(".map");
 	  	var layer_markers;
 	  	var projection = new OpenLayers.Projection("EPSG:900913");
 	  	var display_projection = new OpenLayers.Projection("EPSG:4326");
@@ -12,15 +22,19 @@
 	  		var layer_mapnik;
 	      OpenLayers.Lang.setCode('de');
 	      
-	      if($("#mir_coordinates").val() != "") {
-	      	loadLonLat();
+	      if($(input).length && $(input).val() != "") {
+	      	loadLonLat($(input).val());
 	      } else {
-	      	lat = 50.930453;
-	      	lon = 11.587786;
+	      	if($(btn).attr("data")) {
+	      		loadLonLat($(btn).attr("data"));
+	      	} else {
+	      		lat = 50.930453;
+	      		lon = 11.587786;
+	      	}
 	      }
 	      var zoom = 10;
 	
-	      map = new OpenLayers.Map('map', {
+	      map = new OpenLayers.Map($(mapElement)[0], {
 	          projection: projection,
 	          displayProjection: display_projection,
 	          controls: [
@@ -34,7 +48,7 @@
 	          maxResolution: 156543,
 	          units: 'meters'
 	      });
-	
+	      
 	      layer_mapnik = new OpenLayers.Layer.OSM.Mapnik("Mapnik");
 	      layer_markers = new OpenLayers.Layer.Markers("Markers");
 	      
@@ -45,9 +59,11 @@
 	      		projection
 	      		);
 		  	
-		  	var clickControl = new OpenLayers.Control.Click();
-	
-		  	map.addControl(clickControl);
+	      if(!$(btn).attr("data")) {
+			  	var clickControl = new OpenLayers.Control.Click();
+			  	map.addControl(clickControl);
+	      }
+		  	
 		    map.setCenter(lonLat, zoom);
 		    addMarker(lon, lat);
 	  	}
@@ -74,7 +90,7 @@
 	        		);
 	        var lat_sign = lonlat.lat >= 0 ? "+" : "";
 	        var lon_sign = lonlat.lon >= 0 ? "+" : "";
-	        $("#mir_coordinates").val(lat_sign + lonlat.lat + "°, " + lon_sign + lonlat.lon + "°");
+	        $(input).val(lat_sign + lonlat.lat + "°, " + lon_sign + lonlat.lon + "°");
 	        addMarker(lonlat.lon, lonlat.lat);
 	  		}
 	  	});
@@ -91,15 +107,15 @@
 	  		layer_markers.addMarker(marker);
 	  	}
 	  	
-	  	function loadLonLat() {
-      	var lonlat = $("#mir_coordinates").val();
+	  	function loadLonLat(lonLatData) {
+      	var lonlat = lonLatData.replace("°", "");
       	lat = lonlat.split(",")[0];
         lon = lonlat.split(",")[1];
 	  	}
 	  	
-	  	$("#mir_coordinates").keyup(function(e) {
+	  	$(input).keyup(function(e) {
 	  		if(e.keyCode == 13) { 
-	  			loadLonLat();
+	  			loadLonLat($(this).val());
 	        
 	        addMarker(lon, lat);
 	        
@@ -112,6 +128,5 @@
 	  	});
 	  	init();
   	}
-  	drawMap();
   });
 })(jQuery);

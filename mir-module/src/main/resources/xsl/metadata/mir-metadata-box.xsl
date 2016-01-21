@@ -184,11 +184,42 @@
               <xsl:with-param name="nodes" select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:originInfo[@eventType='creation']/mods:publisher" />
               <xsl:with-param name="label" select="i18n:translate('component.mods.metaData.dictionary.publisher.creation')" />
             </xsl:call-template>
-            <xsl:call-template name="printMetaDate.mods">
-              <xsl:with-param name="nodes" select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:subject" />
-              <xsl:with-param name="sep" select="'; '" />
-              <xsl:with-param name="property" select="'keyword'" />
-            </xsl:call-template>
+            <xsl:for-each select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:subject">
+              <xsl:call-template name="printMetaDate.mods">
+                <xsl:with-param name="nodes" select="mods:topic" />
+                <xsl:with-param name="label" select="i18n:translate('component.mods.metaData.dictionary.subject')" />
+                <xsl:with-param name="sep" select="'; '" />
+                <xsl:with-param name="property" select="'keyword'" />
+              </xsl:call-template>
+            </xsl:for-each>
+            <xsl:for-each select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:subject/mods:cartographics/mods:coordinates">
+              <tr>
+                <td class="metaname" valign="top">
+                  <xsl:value-of select="i18n:translate('mir.cartographics.coordinates')" />
+                </td>
+                <td class="metavalue">
+                	<xsl:value-of select="." /><br />
+                  <div>
+                    <button type="button" class="show_openstreetmap btn btn-default" data="{.}" >
+                      OpenStreetMap
+                    </button>
+                  </div>
+                  <div class="openstreetmap-container collapse" style="width:555px;">
+                    <div id="header">
+                      <div id="osm">
+                        (c)
+                        <a href="//www.openstreetmap.org">OpenStreetMap</a>
+                        und
+                        <a href="//www.openstreetmap.org/copyright">Mitwirkende</a>
+                        ,
+                        <a href="//creativecommons.org/licenses/by-sa/2.0/deed.de">CC-BY-SA</a>
+                      </div>
+                    </div>
+                    <div class="map" style="width:555px;height:380px;"></div>
+                  </div>
+                </td>
+              </tr>
+            </xsl:for-each>
             <xsl:apply-templates mode="present" select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:classification[@displayLabel!='status' or not(attribute::displayLabel)]" />
             <xsl:apply-templates mode="present" select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:part/mods:extent" />
             <xsl:apply-templates mode="present" select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:location/mods:url" />
