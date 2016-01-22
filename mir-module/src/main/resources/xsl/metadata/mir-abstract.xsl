@@ -203,11 +203,16 @@
                     <xsl:for-each select="result/doc">
                       <li>
                         <a href="{$WebApplicationBaseURL}/receive/{str[@name='returnId']}">
-                          <xsl:if test="str[@name='mods.part'] and not(str[@name='mods.part'] = str[@name='search_result_link_text'])">
+                          <xsl:if test="str[@name='mods.part']">
                             <xsl:value-of select="str[@name='mods.part']" />
-                            <xsl:text> - </xsl:text>
                           </xsl:if>
-                          <xsl:value-of select="str[@name='search_result_link_text']" />
+                          <xsl:if test="str[@name='mods.part'] and not(contains(str[@name='mods.title.main'], str[@name='mods.part']))">
+                            <xsl:text> - </xsl:text>
+                            <xsl:value-of select="str[@name='search_result_link_text']" />
+                          </xsl:if>
+                          <xsl:if test="not(str[@name='mods.part'])">
+                            <xsl:value-of select="str[@name='search_result_link_text']" />
+                          </xsl:if>
                         </a>
                       </li>
                     </xsl:for-each>
@@ -221,11 +226,16 @@
               <xsl:for-each select="$hits/arr[@name='groups']/lst/result/doc">
                 <li>
                   <a href="{$WebApplicationBaseURL}/receive/{str[@name='returnId']}">
-                    <xsl:if test="str[@name='mods.part'] and not(str[@name='mods.part'] = str[@name='search_result_link_text'])">
+                    <xsl:if test="str[@name='mods.part']">
                       <xsl:value-of select="str[@name='mods.part']" />
-                      <xsl:text> - </xsl:text>
                     </xsl:if>
-                    <xsl:value-of select="str[@name='search_result_link_text']" />
+                    <xsl:if test="str[@name='mods.part'] and not(contains(str[@name='mods.title.main'], str[@name='mods.part']))">
+                      <xsl:text> - </xsl:text>
+                      <xsl:value-of select="str[@name='search_result_link_text']" />
+                    </xsl:if>
+                    <xsl:if test="not(str[@name='mods.part'])">
+                      <xsl:value-of select="str[@name='search_result_link_text']" />
+                    </xsl:if>
                   </a>
                 </li>
               </xsl:for-each>
