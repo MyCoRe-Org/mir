@@ -12,6 +12,9 @@
      xmlns:mcrurn="xalan://org.mycore.urn.MCRXMLFunctions"
      xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
 
+     xmlns:gndo="http://d-nb.info/standards/elementset/gnd#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+
      xmlns:xMetaDiss="http://www.d-nb.de/standards/xmetadissplus/"
      xmlns:cc="http://www.d-nb.de/standards/cc/"
      xmlns:dc="http://purl.org/dc/elements/1.1/"
@@ -24,7 +27,7 @@
      xmlns:dini="http://www.d-nb.de/standards/xmetadissplus/type/"
      xmlns="http://www.d-nb.de/standards/subject/"
 
-     exclude-result-prefixes="cc dc dcmitype dcterms pc urn thesis ddb dini xlink exslt mods mcrurn i18n xsl"
+     exclude-result-prefixes="cc dc dcmitype dcterms pc urn thesis ddb dini xlink exslt mods mcrurn i18n xsl gndo rdf"
      xsi:schemaLocation="http://www.d-nb.de/standards/xmetadissplus/  http://files.dnb.de/standards/xmetadissplus/xmetadissplus.xsd">
 
   <xsl:output method="xml" encoding="UTF-8" />
@@ -37,10 +40,9 @@
   <xsl:param name="MCR.URN.SubNamespace.Default.Prefix" select="''" />
 
   <xsl:variable name="language">
-    <xsl:for-each select="//metadata/def.modsContainer/modsContainer/mods:mods/mods:language[mods:languageTerm/@authority='rfc4646']">
-      <xsl:variable name="myURI" select="concat('classification:metadata:0:children:rfc4646:',child::*)" />
-      <xsl:value-of select="document($myURI)//label[@xml:lang='x-bibl']/@text"/>
-    </xsl:for-each>
+    <xsl:call-template name="translate_Lang">
+      <xsl:with-param name="lang_code" select="//metadata/def.modsContainer/modsContainer/mods:mods/mods:language/mods:languageTerm[@authority='rfc4646']/text()" />
+    </xsl:call-template>
   </xsl:variable>
 
   <xsl:template match="mycoreobject" mode="metadata">
@@ -91,22 +93,14 @@
     </xsl:template>
 
     <xsl:template name="lang">
-        <xsl:choose>
-            <xsl:when test="./@xml:lang='de'">ger</xsl:when>
-            <xsl:when test="./@xml:lang='en'">eng</xsl:when>
-            <xsl:when test="./@xml:lang='fr'">fre</xsl:when>
-            <xsl:when test="./@xml:lang='es'">spa</xsl:when>
-        </xsl:choose>
+      <xsl:variable name="myURI" select="concat('classification:metadata:0:children:rfc4646:',./@xml:lang)" />
+      <xsl:value-of select="document($myURI)//label[@xml:lang='x-bibl']/@text"/>
     </xsl:template>
 
     <xsl:template name="translate_Lang">
       <xsl:param name="lang_code" />
-        <xsl:choose>
-            <xsl:when test="$lang_code='de'">ger</xsl:when>
-            <xsl:when test="$lang_code='en'">eng</xsl:when>
-            <xsl:when test="$lang_code='fr'">fre</xsl:when>
-            <xsl:when test="$lang_code='es'">spa</xsl:when>
-        </xsl:choose>
+      <xsl:variable name="myURI" select="concat('classification:metadata:0:children:rfc4646:',$lang_code)" />
+      <xsl:value-of select="document($myURI)//label[@xml:lang='x-bibl']/@text"/>
     </xsl:template>
 
     <xsl:template name="replaceSubSupTags">
@@ -216,9 +210,31 @@
             </xsl:if>
             <xsl:element name="pc:name">
               <xsl:attribute name="type">nameUsedByThePerson</xsl:attribute>
-              <xsl:element name="pc:personEnteredUnderGivenName">
-                <xsl:value-of select="mods:displayForm" />
-              </xsl:element>
+              <xsl:choose>
+                <xsl:when test="mods:nameIdentifier[@type='gnd']">
+                  <xsl:variable name="gndURL" select="concat('http://d-nb.info/gnd/',normalize-space(mods:nameIdentifier[@type='gnd']),'/about/lds')" />
+                  <xsl:variable name="gndEntry" select="document($gndURL)" />
+                  <xsl:element name="pc:foreName">
+                    <xsl:value-of select="$gndEntry//gndo:preferredNameEntityForThePerson/rdf:Description/gndo:forename" />
+                  </xsl:element>
+                  <xsl:element name="pc:surName">
+                    <xsl:value-of select="$gndEntry//gndo:preferredNameEntityForThePerson/rdf:Description/gndo:surname" />
+                  </xsl:element>
+                </xsl:when>
+                <xsl:when test="contains(mods:displayForm, ',')">
+                  <xsl:element name="pc:foreName">
+                    <xsl:value-of select="normalize-space(substring-after(mods:displayForm,','))" />
+                  </xsl:element>
+                  <xsl:element name="pc:surName">
+                    <xsl:value-of select="normalize-space(substring-before(mods:displayForm,','))" />
+                  </xsl:element>
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:element name="pc:personEnteredUnderGivenName">
+                    <xsl:value-of select="mods:displayForm" />
+                  </xsl:element>
+                </xsl:otherwise>
+              </xsl:choose>
             </xsl:element>
           </xsl:element>
         </xsl:element>
@@ -415,12 +431,10 @@
     </xsl:template>
 
     <xsl:template name="language">
-      <xsl:for-each select="./metadata/def.modsContainer/modsContainer/mods:mods/mods:language[mods:languageTerm/@authority='rfc4646']">
-        <xsl:element name="dc:language">
-          <xsl:attribute name="xsi:type">dcterms:ISO639-2</xsl:attribute>
-          <xsl:value-of select="$language" />
-        </xsl:element>
-      </xsl:for-each>
+      <xsl:element name="dc:language">
+        <xsl:attribute name="xsi:type">dcterms:ISO639-2</xsl:attribute>
+        <xsl:value-of select="$language" />
+      </xsl:element>
     </xsl:template>
 
 <!-- dcterms:isPartOf xsi:type="ddb:Erstkat-ID" >2049984-X</dcterms:isPartOf>
