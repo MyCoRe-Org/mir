@@ -107,7 +107,6 @@
     <script>
       window.addEventListener("load", function(){
       new mycore.viewer.MyCoReViewer(jQuery('<xsl:value-of select="concat('#',$viewerId)"/>'), {
-      /* http://archive.thulb.uni-jena.de/hisbest is the path to the MyCoRe instance */
       "derivateURL": "<xsl:value-of select="$derivateURL"/>",
       "metsURL": "<xsl:value-of select="$metsServletURL"/>",
       "i18nURL": "<xsl:value-of select="$i18nURL"/>",
@@ -118,6 +117,8 @@
       "imageXmlPath": "<xsl:value-of select="$tileURL"/>",
       "doctype": "<xsl:value-of select="$doctype"/>",
       "webApplicationBaseURL": "<xsl:value-of select="$WebApplicationBaseURL"/>",
+      "canvas.startup.fitWidth": true,
+      "canvas.overview.enabled": false,
       "lang": "de",
       chapter: {
       enabled: true,
@@ -149,7 +150,6 @@
       window.addEventListener("load", function(){
 
       new mycore.viewer.MyCoReViewer(jQuery('<xsl:value-of select="concat('#',$viewerId)"/>'), {
-      /* http://archive.thulb.uni-jena.de/hisbest is the path to the MyCoRe instance */
       "derivateURL": "<xsl:value-of select="$derivateURL"/>",
       "i18nURL": "<xsl:value-of select="$i18nURL"/>",
       "derivate": "<xsl:value-of select="$derId"/>",
@@ -159,6 +159,8 @@
       "doctype": "<xsl:value-of select="$doctype"/>",
       "webApplicationBaseURL": "<xsl:value-of select="$WebApplicationBaseURL"/>",
       "pdfWorkerURL": "<xsl:value-of select="$pdfWorkerURL"/>",
+      "canvas.startup.fitWidth": true,
+      "canvas.overview.enabled": false,
       "lang": "de",
       chapter: {
       enabled: true,
