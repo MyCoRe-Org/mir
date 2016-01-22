@@ -141,9 +141,51 @@
 
     // for configuration look here: http://dotdotdot.frebsite.nl/
     if (jQuery.fn.dotdotdot) {
-      $(".ellipsis").dotdotdot({
-        ellipsis	: '... ',
-        after: "a.readmore"
+    
+      $(".ellipsis-text").find("a.readmore").click(function() {
+        
+        var div = $(this).closest('.ellipsis-text');
+        //$("a.readmore", div).hide();
+        div.trigger('destroy');
+        div.removeClass('ellipsis');
+        $("a.readless", div).removeClass('hidden');
+        
+        $("a.readless", div).click(function(div) {
+          var div = $(this).closest('.ellipsis-text');
+          $("a.readmore", div).show();
+          div.addClass('ellipsis');
+          var readmore=$("a.readmore",div);
+          readmore.clone(true,true).insertAfter( readmore );
+          readmore.addClass('readmore-active');
+          readmore.removeClass('hidden');
+          div.dotdotdot({ 
+            ellipsis	: '... ',
+            after: "a.readmore-active",
+            callback: dotdotdotCallback
+          });
+          $(this).addClass('hidden');
+          return false;
+        });
+        
+        return false;
+        
+      });
+    
+      $(".ellipsis").each(function( i ) {
+        
+        if (i > 0) $(this).addClass("active");
+        
+        var readmore=$("a.readmore",this);
+        readmore.clone(true,true).insertAfter( readmore );
+        readmore.addClass('readmore-active');
+        readmore.removeClass('hidden');
+        $(this).dotdotdot({
+          ellipsis	: '... ',
+          after: "a.readmore-active",
+          callback: dotdotdotCallback
+        });
+        
+        if (i > 0) $(this).removeClass("active");
       });
     };
 
@@ -160,6 +202,14 @@
     });
 
   }); // END $﻿(document).ready()
+
+  function dotdotdotCallback(isTruncated, originalContent) {
+    if (!isTruncated) {
+      $("a.readmore", this).remove();
+      $("a.readless", this).remove();   
+    }
+  };
+
 
   window.fireMirSSQuery = function base_fireMirSSQuery(form) {
     $(form).find(':input[value=""]').attr('disabled', true);

@@ -147,15 +147,18 @@
               </ul>
               <div class="tab-content">
                 <xsl:for-each select="$mods/mods:abstract">
-                  <div class="tab-pane ellipsis" role="tabpanel" id="tab{position()}">
+                  <div class="tab-pane ellipsis ellipsis-text" role="tabpanel" id="tab{position()}">
                     <xsl:if test="position()=1">
-                      <xsl:attribute name="class">tab-pane ellipsis active</xsl:attribute>
+                      <xsl:attribute name="class">tab-pane ellipsis ellipsis-text active</xsl:attribute>
                     </xsl:if>
                     <p>
                       <span itemprop="description">
                         <xsl:value-of select="." />
                       </span>
-                      <a href="#" onclick="javascript: $('.ellipsis').trigger('destroy.dot'); $('.ellipsis').css('height', 'auto'); return false;" title="read more" class="readmore">
+                      <a href="#" class="readless hidden" title="read less" >
+                        <xsl:value-of select="i18n:translate('mir.abstract.readless')" />
+                      </a>
+                      <a href="#" class="readmore hidden" title="read more" >
                         <xsl:value-of select="i18n:translate('mir.abstract.readmore')" />
                       </a>
                     </p>
@@ -166,12 +169,15 @@
 
           </xsl:when>
           <xsl:otherwise>
-            <div class="ellipsis">
+            <div class="ellipsis ellipsis-text">
               <p>
                 <span itemprop="description">
                   <xsl:value-of select="$mods/mods:abstract" />
                 </span>
-                <a href="#" onclick="javascript: $('.ellipsis').trigger('destroy.dot'); $('.ellipsis').css('height', 'auto'); return false;" title="read more" class="readmore">
+                <a href="#" class="readless hidden" title="read less" >
+                  <xsl:value-of select="i18n:translate('mir.abstract.readless')" />
+                </a>
+                <a href="#" class="readmore hidden" title="read more" >
                   <xsl:value-of select="i18n:translate('mir.abstract.readmore')" />
                 </a>
               </p>
