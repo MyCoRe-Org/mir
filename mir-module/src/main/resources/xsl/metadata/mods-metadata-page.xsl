@@ -4,6 +4,19 @@
 >
   <xsl:include href="layout-utils.xsl" />
 
+  <xsl:variable name="XSL.Status.Message">
+    <xsl:call-template name="UrlGetParam">
+      <xsl:with-param name="url" select="$RequestURL" />
+      <xsl:with-param name="par" select="'XSL.Status.Message'" />
+    </xsl:call-template>
+  </xsl:variable>
+  <xsl:variable name="XSL.Status.Style">
+    <xsl:call-template name="UrlGetParam">
+      <xsl:with-param name="url" select="$RequestURL" />
+      <xsl:with-param name="par" select="'XSL.Status.Style'" />
+    </xsl:call-template>
+  </xsl:variable>
+
   <xsl:template match="/site">
     <xsl:copy>
       <head>
@@ -11,6 +24,25 @@
         <link href="{$WebApplicationBaseURL}assets/jquery/plugins/shariff/shariff.min.css" rel="stylesheet" />
         <script type="text/javascript" src="{$WebApplicationBaseURL}assets/jquery/plugins/dotdotdot/jquery.dotdotdot.min.js" />
       </head>
+
+      <xsl:if test="string-length($XSL.Status.Message) &gt; 0">
+        <div class="row">
+          <div class="col-md-12">
+            <div role="alert">
+              <xsl:attribute name="class">
+                <xsl:choose>
+                  <xsl:when test="string-length($XSL.Status.Style) &gt; 0"><xsl:value-of select="concat('alert-', $XSL.Status.Style)" /></xsl:when>
+                  <xsl:otherwise>alert-info</xsl:otherwise>
+                </xsl:choose>
+                alert alert-dismissible fade in
+              </xsl:attribute>
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">×</span></button>
+              <span aria-hidden="true"><xsl:value-of select="i18n:translate($XSL.Status.Message)" /></span>
+            </div>
+        </div>
+        </div>
+      </xsl:if>
 
       <xsl:if test="div[@id='mir-breadcrumb']">
         <breadcrumb>

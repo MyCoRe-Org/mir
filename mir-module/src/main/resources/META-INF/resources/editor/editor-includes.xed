@@ -16,9 +16,9 @@
         <xed:source uri="xslStyle:asHost,editor/mods2xeditor:mcrobject:{$relatedItemId}" />
       </xed:otherwise>
     </xed:choose>
-    <xed:cancel url="../servlets/MCRLockServlet?action=unlock&amp;id={$id}&amp;url=/receive/{$id}" />
-    <xed:cancel url="{$cancelUrl}" />
-    <xed:cancel url="../index.html" />
+    <xed:cancel url="../servlets/MCRLockServlet?action=unlock&amp;id={$id}&amp;url=/receive/{$id}?XSL.Status.Message=mir.editstatus.canceled&amp;XSL.Status.Style=danger" />
+    <xed:cancel url="{$cancelUrl}?XSL.Status.Message=mir.editstatus.canceled&amp;XSL.Status.Style=danger" />
+    <xed:cancel url="../index.html?XSL.Status.Message=mir.editstatus.canceled&amp;XSL.Status.Style=danger" />
     <xed:post-processor xsl="editor/xeditor2mods.xsl" />
   </xed:template>
 
@@ -31,6 +31,8 @@
         <xed:bind xpath="@ID" initially="{$MIR.projectid.default}_mods_00000000" />
       </xed:otherwise>
     </xed:choose>
+    <input type="hidden" name="XSL.Status.Message" value="mir.editstatus.success" />
+    <input type="hidden" name="XSL.Status.Style" value="success" />
   </xed:template>
 
   <xed:template id="genre">
@@ -1549,7 +1551,7 @@
   <xed:template id="comment">
     <mir:textarea xpath="mods:note[@type='mcr_intern']" label="mir.comment" help-text="{i18n:mir.help.comment}" rows="2" />
   </xed:template>
-  
+
   <xed:template id="comment.complex">
     <fieldset>
       <legend class="mir-fieldset-legend">
