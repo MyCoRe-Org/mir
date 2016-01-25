@@ -10,19 +10,35 @@
   <xsl:template match="/">
     <div id="mir-player" class="player">
       <xsl:variable name="playerNodesTmp">
-        <xsl:for-each select="mycoreobject/structure/derobjects/derobject">
-          <!-- show one player for each derivate -->
-          <xsl:variable name="derId" select="@xlink:href" />
-          <xsl:variable name="derivateXML" select="document(concat('mcrobject:',$derId))" />
-          <xsl:variable name="mainFile" select="$derivateXML/mycorederivate/derivate/internals/internal/@maindoc" />
-          <xsl:variable name="fileNameExtension" select="FilenameUtils:getExtension($mainFile)" />
+        <xsl:variable name="playerSources">
+          <xsl:apply-templates select="." mode="options" />
+          <xsl:apply-templates select="." mode="sources" />
+        </xsl:variable>
 
-          <xsl:if test="key('rights', $derId)/@read and $fileNameExtension = 'mp4'">
-            <div class="embed-responsive embed-responsive-16by9 player">
-              <xsl:call-template name="createPlayer" />
-            </div>
+        <xsl:variable name="playerSourceNode" select="xalan:nodeset($playerSources)" />
+
+        <xsl:if test="$playerSourceNode//source">
+          <xsl:if test="count($playerSourceNode//div[@class='source-container']) > 1">
+            <select id="videoChooser" class="form-control">
+              <xsl:copy-of select="$playerSourceNode//optgroup" />
+            </select>
+            <xsl:copy-of select="$playerSourceNode//div[@class='source-container']" />
           </xsl:if>
-        </xsl:for-each>
+          <div class="embed-responsive embed-responsive-16by9 player">
+            <video id="player_" class="video-js embed-responsive-item" controls="" preload="auto" poster=""
+              data-setup="">
+              <xsl:if test="count($playerSourceNode//div[@class='source-container']) = 1">
+                <xsl:copy-of select="$playerSourceNode//div[@class='source-container']/source" />
+              </xsl:if>
+              <p class="vjs-no-js">
+                To view this video please enable JavaScript, and consider upgrading
+                to a web browser that
+                <a href="http://videojs.com/html5-video-support/" target="_blank">supports
+                  HTML5 video</a>
+              </p>
+            </video>
+          </div>
+        </xsl:if>
       </xsl:variable>
 
       <xsl:variable name="playerNodes" select="xalan:nodeset($playerNodesTmp)" />
@@ -36,33 +52,36 @@
     <xsl:apply-imports />
   </xsl:template>
 
-  <xsl:template name="createPlayer">
-    <xsl:variable name="derId" select="@xlink:href" />
-    <xsl:variable name="derivateXML" select="document(concat('mcrobject:',$derId))" />
-    <xsl:variable name="playerId" select="concat('player_',$derId)" />
-    <xsl:variable name="mainFile" select="$derivateXML/mycorederivate/derivate/internals/internal/@maindoc" />
-    <xsl:variable name="fileNameExtension" select="FilenameUtils:getExtension($mainFile)" />
-    <xsl:variable name="sourcelinkURL" select="concat($WebApplicationBaseURL, 'servlets/MCRFileNodeServlet/', $derId, '/', $mainFile)" />
-    <xsl:call-template name="createPlayerContainer">
-      <xsl:with-param name="playerId" select="$playerId" />
-      <xsl:with-param name="derId" select="$derId" />
-      <xsl:with-param name="path" select="$mainFile" />
-    </xsl:call-template>
+  <xsl:template match="derobjects/derobject" mode="options">
+    <xsl:variable name="href" select="@xlink:href" />
+    <xsl:if test="key('rights', $href)/@read">
+      <optgroup label="{$href}">
+        <xsl:variable name="ifsDirectory" select="document(concat('ifs:',$href,'/'))" />
+        <xsl:for-each select="$ifsDirectory/mcr_directory/children/child">
+          <xsl:variable name="fileNameExtension" select="FilenameUtils:getExtension(./name)" />
+          <xsl:if test="@type='file' and $fileNameExtension = 'mp4'">
+            <option value="{$href}-{position()}">
+              <xsl:value-of select="./name" />
+            </option>
+          </xsl:if>
+        </xsl:for-each>
+      </optgroup>
+    </xsl:if>
   </xsl:template>
 
-  <xsl:template name="createPlayerContainer">
-    <xsl:param name="playerId" />
-    <xsl:param name="derId" />
-    <xsl:param name="path" />
-    <video id="{$playerId}" class="video-js embed-responsive-item" controls="" preload="auto" poster="" data-setup="">
-      <xsl:copy-of select="media:getSources($derId, $path, $UserAgent)" />
-      <p class="vjs-no-js">
-        To view this video please enable JavaScript, and consider upgrading
-        to a web browser that
-        <a href="http://videojs.com/html5-video-support/" target="_blank">supports
-          HTML5 video</a>
-      </p>
-    </video>
+  <xsl:template match="derobjects/derobject" mode="sources">
+    <xsl:variable name="href" select="@xlink:href" />
+    <xsl:if test="key('rights', $href)/@read">
+      <xsl:variable name="ifsDirectory" select="document(concat('ifs:',$href,'/'))" />
+      <xsl:for-each select="$ifsDirectory/mcr_directory/children/child">
+        <xsl:variable name="fileNameExtension" select="FilenameUtils:getExtension(./name)" />
+        <xsl:if test="@type='file' and $fileNameExtension = 'mp4'">
+          <div id="{$href}-{position()}" class="source-container">
+            <xsl:copy-of select="media:getSources($href, ./name, $UserAgent)" />
+          </div>
+        </xsl:if>
+      </xsl:for-each>
+    </xsl:if>
   </xsl:template>
 
   <xsl:template name="addPlayerScripts">
@@ -85,7 +104,8 @@
         margin: -0.75em 0 0 -1.5em;
         top: 50%;
         }
-        div.video-js video{
+        div.video-js
+        video{
         margin-bottom: -2px;
         }
       </style>
