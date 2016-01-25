@@ -11,6 +11,7 @@
      xmlns:mods="http://www.loc.gov/mods/v3"
      xmlns:mcrurn="xalan://org.mycore.urn.MCRXMLFunctions"
      xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
+     xmlns:cmd="http://www.cdlib.org/inside/diglib/copyrightMD"
 
      xmlns:gndo="http://d-nb.info/standards/elementset/gnd#"
      xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
@@ -27,7 +28,7 @@
      xmlns:dini="http://www.d-nb.de/standards/xmetadissplus/type/"
      xmlns="http://www.d-nb.de/standards/subject/"
 
-     exclude-result-prefixes="cc dc dcmitype dcterms pc urn thesis ddb dini xlink exslt mods mcrurn i18n xsl gndo rdf"
+     exclude-result-prefixes="cc dc dcmitype dcterms pc urn thesis ddb dini xlink exslt mods mcrurn i18n xsl gndo rdf cmd"
      xsi:schemaLocation="http://www.d-nb.de/standards/xmetadissplus/  http://files.dnb.de/standards/xmetadissplus/xmetadissplus.xsd">
 
   <xsl:output method="xml" encoding="UTF-8" />
@@ -278,7 +279,9 @@
     </xsl:template>
 
     <xsl:template name="publisher">
-      <xsl:if test="//mods:originInfo[not(@eventType) or @eventType='publication']/mods:publisher or //mods:name[mods:role/mods:roleTerm/text()='pbl']">
+      <xsl:if test="//mods:originInfo[not(@eventType) or @eventType='publication']/mods:publisher or
+                    //mods:name[mods:role/mods:roleTerm/text()='pbl'] or
+                    //mods:accessCondition[@type='copyrightMD']/cmd:copyright/cmd:rights.holder/cmd:name">
         <xsl:element name="dc:publisher">
           <xsl:attribute name="xsi:type">cc:Publisher</xsl:attribute>
           <xsl:attribute name="type">dcterms:ISO3166</xsl:attribute>
@@ -289,11 +292,14 @@
                 <xsl:when test="./metadata/def.modsContainer/modsContainer/mods:mods/mods:originInfo[not(@eventType) or @eventType='publication']/mods:publisher">
                   <xsl:value-of select="./metadata/def.modsContainer/modsContainer/mods:mods/mods:originInfo[not(@eventType) or @eventType='publication']/mods:publisher" />
                 </xsl:when>
-                <xsl:when test="./metadata/def.modsContainer/modsContainer/mods:mods/mods:relatedItem[@type='host']/mods:originInfo[not(@eventType) or @eventType='publication']/mods:publisher">
-                  <xsl:value-of select="./metadata/def.modsContainer/modsContainer/mods:mods/mods:relatedItem[@type='host']/mods:originInfo[not(@eventType) or @eventType='publication']/mods:publisher" />
-                </xsl:when>
                 <xsl:when test="./metadata/def.modsContainer/modsContainer/mods:mods/mods:name[mods:role/mods:roleTerm/text()='pbl']">
                   <xsl:value-of select="./metadata/def.modsContainer/modsContainer/mods:mods/mods:name[mods:role/mods:roleTerm/text()='pbl']/mods:displayForm" />
+                </xsl:when>
+                <xsl:when test="./metadata/def.modsContainer/modsContainer/mods:mods/mods:accessCondition[@type='copyrightMD']/cmd:copyright/cmd:rights.holder/cmd:name">
+                  <xsl:value-of select="./metadata/def.modsContainer/modsContainer/mods:mods/mods:accessCondition[@type='copyrightMD']/cmd:copyright/cmd:rights.holder/cmd:name" />
+                </xsl:when>
+                <xsl:when test="./metadata/def.modsContainer/modsContainer/mods:mods/mods:relatedItem[@type='host']/mods:originInfo[not(@eventType) or @eventType='publication']/mods:publisher">
+                  <xsl:value-of select="./metadata/def.modsContainer/modsContainer/mods:mods/mods:relatedItem[@type='host']/mods:originInfo[not(@eventType) or @eventType='publication']/mods:publisher" />
                 </xsl:when>
                 <xsl:when test="./metadata/def.modsContainer/modsContainer/mods:mods/mods:relatedItem[@type='host']/mods:name[mods:role/mods:roleTerm/text()='pbl']">
                   <xsl:value-of select="./metadata/def.modsContainer/modsContainer/mods:mods/mods:relatedItem[@type='host']/mods:name[mods:role/mods:roleTerm/text()='pbl']/mods:displayForm" />
