@@ -1503,6 +1503,18 @@
     </div>
   </xed:template>
 
+  <xed:template id="modal.name">
+    <div class="modal fade name-modal" tabindex="-1" role="dialog" aria-labelledby="modal frame" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-body">
+            <textarea name="" rows="10" cols="76"></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+  </xed:template>
+
   <xed:template id="openAIRE">
     <fieldset id="open-aire_box">
       <legend class="mir-fieldset-legend">

@@ -18,6 +18,25 @@
 		});
 //--------
 
+    $("body").on("focus", ".search-organization input[name*='mods:displayForm']", function() {
+      $(".name-modal textarea").val($(this).val());
+      $(this).addClass("inModal");
+      $(".name-modal").modal("show");
+    });
+
+    $("body").on("keydown", ".name-modal textarea", function(event) {
+      if (event.which == 27) {
+        $(this).modal("hide");
+      }
+    });
+
+    $("body").on("hide.bs.modal", ".name-modal", function() {
+      var input = $(this).find("textarea").val().replace(/\n/g, " ");
+      $(".inModal").val(input);
+      $(".inModal").attr("title", input);
+      $(".inModal").removeClass("inModal");
+    });
+
     $("#mir_relatedItem > li > ul").hide();
 
     //show full version history in metadata view
