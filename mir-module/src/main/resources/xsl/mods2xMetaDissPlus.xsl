@@ -309,11 +309,11 @@
             <xsl:if test="//mods:place">
               <xsl:element name="cc:place">
                 <xsl:choose>
-                  <xsl:when test="./metadata/def.modsContainer/modsContainer/mods:mods/mods:originInfo[not(@eventType) or @eventType='publication']/mods:place/mods:placeTerm">
-                    <xsl:value-of select="./metadata/def.modsContainer/modsContainer/mods:mods/mods:originInfo[not(@eventType) or @eventType='publication']/mods:place/mods:placeTerm" />
+                  <xsl:when test="./metadata/def.modsContainer/modsContainer/mods:mods/mods:originInfo[not(@eventType) or @eventType='publication']/mods:place/mods:placeTerm[@type='text']">
+                    <xsl:value-of select="./metadata/def.modsContainer/modsContainer/mods:mods/mods:originInfo[not(@eventType) or @eventType='publication']/mods:place/mods:placeTerm[@type='text']" />
                   </xsl:when>
-                  <xsl:when test="./metadata/def.modsContainer/modsContainer/mods:mods/mods:relatedItem[@type='host']/mods:originInfo[not(@eventType) or @eventType='publication']/mods:place/mods:placeTerm">
-                    <xsl:value-of select="./metadata/def.modsContainer/modsContainer/mods:mods/mods:relatedItem[@type='host']/mods:originInfo[not(@eventType) or @eventType='publication']/mods:place/mods:placeTerm" />
+                  <xsl:when test="./metadata/def.modsContainer/modsContainer/mods:mods/mods:relatedItem[@type='host']/mods:originInfo[not(@eventType) or @eventType='publication']/mods:place/mods:placeTerm[@type='text']">
+                    <xsl:value-of select="./metadata/def.modsContainer/modsContainer/mods:mods/mods:relatedItem[@type='host']/mods:originInfo[not(@eventType) or @eventType='publication']/mods:place/mods:placeTerm[@type='text']" />
                   </xsl:when>
                 </xsl:choose>
               </xsl:element>
