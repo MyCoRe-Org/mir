@@ -491,11 +491,14 @@
     <div class="search-person">
       <xed:bind xpath="mods:displayForm">
         <input type="text" size="26" class="form-control form-control-inline" data-search="searchEntity" data-search-type="select"
-          data-search-entity-type="person" data-search-output="#valueURIxEditor" data-search-button="{i18n:button.search}" data-search-button-loading="{i18n:button.loading}"
+          data-search-entity-type="person" data-search-output=".nameIdentifier" data-search-output-type=".nameIdentifierType" data-search-button="{i18n:button.search}" data-search-button-loading="{i18n:button.loading}"
           data-search-result-empty="{i18n:mir.searchIdentifier.noResult}" data-target=".search-person" placeholder="{i18n:mir.placeholder.name.family}, {i18n:mir.placeholder.name.given}" />
       </xed:bind>
-      <xed:bind xpath="@valueURIxEditor">
-        <input type="hidden" id="valueURIxEditor" />
+      <xed:bind xpath="mods:nameIdentifier">
+        <input type="hidden" class="nameIdentifier" />
+      </xed:bind>
+      <xed:bind xpath="mods:nameIdentifier/@type">
+        <input type="hidden" class="nameIdentifierType" />
       </xed:bind>
     </div>
     <!-- ========== LSF subselect ==========
@@ -517,6 +520,16 @@
     -->
   </xed:template>
 
+  <xed:template id="person.fields.noHidden">
+    <div class="search-person">
+      <xed:bind xpath="mods:displayForm">
+        <input type="text" size="26" class="form-control form-control-inline" data-search="searchEntity" data-search-type="select"
+               data-search-entity-type="person" data-search-output=".nameIdentifier" data-search-output-type=".nameIdentifierType" data-search-button="{i18n:button.search}" data-search-button-loading="{i18n:button.loading}"
+               data-search-result-empty="{i18n:mir.searchIdentifier.noResult}" data-target=".personExtended_box" placeholder="{i18n:mir.placeholder.name.family}, {i18n:mir.placeholder.name.given}" />
+      </xed:bind>
+    </div>
+  </xed:template>
+
   <xed:template id="person.affiliation">
     <mir:textfield xpath="mods:affiliation" help-text="{i18n:mir.help.title}" label="mir.affiliation"/>
   </xed:template>
@@ -526,13 +539,13 @@
       <div class="form-group">
         <xed:bind xpath="@type">
           <div class="col-md-3">
-            <select class="form-control" style="text-align:right; font-weight:bold;">
+            <select class="form-control nameIdentifierType" style="text-align:right; font-weight:bold;">
               <xed:include uri="xslStyle:items2options:classification:editor:-1:children:nameIdentifier" />
             </select>
           </div>
         </xed:bind>
         <div class="col-md-6">
-          <input type="text" size="20" class="form-control form-control-inline {$xed-validation-marker}" />
+          <input type="text" size="20" class="form-control form-control-inline {$xed-validation-marker} nameIdentifier" />
         </div>
         <mir:help-pmud help-text="{i18n:mir.help.doi.handle.urn}" pmud="true" />
       </div>
@@ -1255,12 +1268,15 @@
           <div class="search-organization">
             <xed:bind xpath="mods:displayForm">
               <input type="text" size="26" class="form-control form-control-inline" data-search="searchEntity" data-search-type="select"
-                data-search-entity-type="organisation" data-search-output="#valueURIxEditor" data-search-button="{i18n:button.search}"
+                data-search-entity-type="organisation" data-search-output=".nameIdentifier" data-search-output-type=".nameIdentifierType" data-search-button="{i18n:button.search}"
                 data-search-button-loading="{i18n:button.loading}" data-search-result-empty="{i18n:mir.searchIdentifier.noResult}" data-target=".search-organization"
                 placeholder="{i18n:mir.placeholder.name.organization}" />
             </xed:bind>
             <xed:bind xpath="mods:nameIdentifier">
-              <input type="hidden" id="valueURIxEditor" />
+              <input type="hidden" class="nameIdentifier" />
+            </xed:bind>
+            <xed:bind xpath="mods:nameIdentifier/@type">
+              <input type="hidden" class="nameIdentifierType" />
             </xed:bind>
           </div>
         </xed:bind>
@@ -1280,12 +1296,15 @@
           <div class="search-organization">
             <xed:bind xpath="mods:displayForm">
               <input type="text" size="26" class="form-control form-control-inline" data-search="searchEntity" data-search-type="select"
-                data-search-entity-type="organisation" data-search-output="#valueURIxEditor" data-search-button="{i18n:button.search}"
+                data-search-entity-type="organisation" data-search-output=".nameIdentifier" data-search-output-type=".nameIdentifierType" data-search-button="{i18n:button.search}"
                 data-search-button-loading="{i18n:button.loading}" data-search-result-empty="{i18n:mir.searchIdentifier.noResult}" data-target=".search-organization"
                 placeholder="{i18n:mir.placeholder.name.organization}" />
             </xed:bind>
             <xed:bind xpath="mods:nameIdentifier">
-              <input type="hidden" id="valueURIxEditor" />
+              <input type="hidden" class="nameIdentifier" />
+            </xed:bind>
+            <xed:bind xpath="mods:nameIdentifier/@type">
+              <input type="hidden" class="nameIdentifierType" />
             </xed:bind>
           </div>
         </div>

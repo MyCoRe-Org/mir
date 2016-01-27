@@ -53,6 +53,12 @@ $(document).ready(function() {
         }
     });
 
+    $("body").on("focusout", ".personExtended-container input[name*='mods:nameIdentifier']:first", function() {
+        if($(this).val() == "") {
+            $(this).parents(".personExtended_box").find(".search-person .input-group > a").remove();
+        }
+    });
+
     function pickDatePickerFormatAndAdd(elm) {
         if (moment($(elm).val(), "YYYY-MM-DD", true).isValid()){
             addDatePicker(elm, 0);

@@ -17,7 +17,9 @@
  * 			- SELECT			: add searchType selection menu
  * 			- GND 				: search through http://lobid.org
  * 			- VIAF				: search through http://www.viaf.org
- * 		- searchOutput			: the output field for person id (URI),
+ * 		- searchOutput			: the output field for person the nameIdentifer ID,
+ * 								  if nothing specified the input field is used
+ * 		- searchOutputType		: the output field for person the nameIdentifer type,
  * 								  if nothing specified the input field is used
  *
  * 		- searchButton			: the search button text
@@ -64,7 +66,7 @@
             format : "ids"
           }
         },
-        dataType : "jsonp",
+        dataType : "jsonp"
       },
       organisation : {
         enabled : true,
@@ -100,7 +102,7 @@
         url : "//www.viaf.org/viaf/AutoSuggest",
         data : function(input) {
           return {
-            query : input,
+            query : input
           }
         },
         dataType : "jsonp",
@@ -126,7 +128,7 @@
         url : "http://www.viaf.org/viaf/AutoSuggest",
         data : function(input) {
           return {
-            query : input,
+            query : input
           }
         },
         dataType : "jsonp",
@@ -218,8 +220,9 @@
     if (options.searchType.toUpperCase() == "SELECT") {
       // preselect searchType by given output value
       var outputVal = $(options.searchOutput, getParent($element))[0] !== undefined ? $(options.searchOutput, getParent($element)).val() : "";
+      var outputValType = $(options.searchOutputType, getParent($element))[0] !== undefined ? $(options.searchOutputType, getParent($element)).val() : "";
       if (outputVal.length > 0) {
-        this.selectedType = getTypeFromURL(outputVal);
+        this.selectedType = outputValType.toUpperCase();
       }
 
       var $typeBtn = this.$typeBtn = $(document.createElement("button"));
@@ -264,7 +267,7 @@
     }
 
     this.updateOutput();
-  }
+  };
 
   SearchEntity.prototype.search = function(e) {
     var that = this;
@@ -311,7 +314,7 @@
     }
 
     return false;
-  }
+  };
 
   SearchEntity.prototype.showResult = function(data) {
     var that = this;
@@ -357,16 +360,21 @@
     this.$element.data($.extend({}, {
       searchResultContainer : $resultBox
     }, options));
-  }
+  };
 
   SearchEntity.prototype.updateOutput = function(item) {
     var that = this;
     var options = this.options;
-    var $output = $(options.searchOutput, getParent(this.$element))[0] !== undefined ? $(options.searchOutput, getParent(this.$element)) : this.$element;
+    var $output = $(options.searchOutput, getParent(this.$element))[0] !== undefined ? $(options.searchOutput, getParent(this.$element)).first() : this.$element;
+    var $outputType = $(options.searchOutputType, getParent(this.$element))[0] !== undefined ? $(options.searchOutputType, getParent(this.$element)).first() : this.$element;
 
     if (item) {
       this.$element != $output && item.label && this.$element.val(item.label.replace(SearchEntity.LABEL_CLEANUP, ""));
-      $output.val(item.value);
+      $output.val(getIDFromURL(item.value));
+      var outputType = getTypeFromURL(item.value);
+      if (outputType != "") {
+        $outputType.val(outputType.toLowerCase());
+      }
     }
 
     if ($output != this.$element && $output.val().length > 0) {
@@ -379,7 +387,7 @@
 
       var $label = $(document.createElement("span"));
       $label.addClass(options.feedbackClass);
-      var type = getTypeFromURL($output.val());
+      var type = $outputType.val().toUpperCase();
       $label.html(type != null ? type : "N/A");
 
       var $remover = $(document.createElement("a"));
@@ -414,7 +422,7 @@
       if (this.$feedback)
         this.$feedback.remove();
     }
-  }
+  };
 
   SearchEntity.prototype.clearAll = function(e) {
     if (e && e.which === 3)
@@ -437,7 +445,7 @@
         $this.removeData("searchResultContainer");
       }
     });
-  }
+  };
 
   SearchEntity.loadData = function(url, dataType, data, successCB, errorCB) {
     $.ajax({
@@ -452,7 +460,7 @@
         errorCB();
       }
     });
-  }
+  };
 
   SearchEntity.sortData = function(input, data) {
     // TheSpanishInquisition - http://jsperf.com/levenshtein-distance/5
@@ -503,7 +511,7 @@
       return levenshteinDistance(input, a.label.replace(SearchEntity.LABEL_CLEANUP, ""))
           - levenshteinDistance(input, b.label.replace(SearchEntity.LABEL_CLEANUP, ""));
     });
-  }
+  };
 
   function getTypeFromURL(url) {
     for ( var type in SearchEntity.TYPES) {
@@ -511,14 +519,23 @@
         return type;
     }
 
-    return null;
+    return "";
+  }
+
+  function getIDFromURL(url) {
+    for ( var type in SearchEntity.TYPES) {
+      var pos = url.indexOf(SearchEntity.TYPES[type].baseURI);
+      if (pos != -1)
+        return url.substr(pos + SearchEntity.TYPES[type].baseURI.length);
+    }
+    return "";
   }
 
   function getParent($this) {
-    var selector = $this.attr('data-target')
+    var selector = $this.attr('data-target');
 
     if (!selector) {
-      selector = $this.attr('href')
+      selector = $this.attr('href');
       selector = selector && /#[A-Za-z]/.test(selector) && selector.replace(/.*(?=#[^\s]*$)/, '')
     }
 
@@ -558,8 +575,8 @@
 
   $(window).on('load', function() {
     $(toggle).each(function() {
-      var $this = $(this)
-      var data = $this.data()
+      var $this = $(this);
+      var data = $this.data();
 
       Plugin.call($this, data);
     });

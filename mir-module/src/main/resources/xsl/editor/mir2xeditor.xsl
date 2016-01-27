@@ -261,7 +261,7 @@
                 </label>
                 <div class="col-md-6 center-vertical">
                   <div class="controls">
-                    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="person.fields" />
+                    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="person.fields.noHidden" />
                   </div>
                   <span class="glyphicon glyphicon-menu-hamburger expand-item" aria-hidden="true"></span>
                 </div>
@@ -326,7 +326,7 @@
                   </xed:bind>
                 </div>
                 <div class="col-md-6 center-vertical">
-                  <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="person.fields" />
+                  <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="person.fields.noHidden" />
                   <span class="glyphicon glyphicon-menu-hamburger expand-item" aria-hidden="true"></span>
                 </div>
                 <div class="col-md-3">
