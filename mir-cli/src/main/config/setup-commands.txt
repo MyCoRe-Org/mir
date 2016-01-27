@@ -11,6 +11,7 @@ load classification from url http://www.mycore.org/classifications/sdnb.xml
 load classification from url http://www.mycore.org/classifications/state.xml
 load classification from url http://www.mycore.org/classifications/typeOfResource.xml
 load classification from url http://www.mycore.org/classifications/nameIdentifier.xml
+load classification from url http://www.mycore.org/classifications/noteTypes.xml
 init superuser
 process ${app.home}/config/acl/defaultrules-commands.txt
 process ${app.home}/config/acl/webacl-commands.txt
