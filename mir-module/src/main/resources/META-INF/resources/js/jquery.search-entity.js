@@ -335,6 +335,7 @@
         $person.on("click", function(e) {
           that.updateOutput(item);
           that.clearAll();
+          return false;
         });
 
         $li.append($person);
