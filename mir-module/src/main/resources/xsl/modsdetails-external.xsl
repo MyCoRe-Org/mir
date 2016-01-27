@@ -426,7 +426,7 @@
         <ul class="dropdown-menu dropdown-menu-right">
           <xsl:variable name="type" select="substring-before(substring-after($id,'_'),'_')" />
           <xsl:if test="not($accessedit or $accessdelete)">
-            <li> 
+            <li>
               <a href="{$ServletsBaseURL}MCRLoginServlet?action=login">
                 <xsl:value-of select="i18n:translate('mir.actions.noaccess')"/>
               </a>
@@ -481,18 +481,18 @@
             </a>
             </xsl:if -->
 
-          </xsl:if>
-          <!-- Packing with ImageWare Packer -->
-          <xsl:variable name="packageEnabled" select="$MIR.ImageWare.enabled" />
-          <xsl:variable name="packageFlagType" select="$MCR.Packaging.Packer.ImageWare.flagType" />
-          <xsl:if test="$packageEnabled and $packageFlagType and acl:checkPermission(/mycoreobject/@ID,'writedb') and acl:checkPermission('packer-ImageWare')">
-            <xsl:variable name="packageRequiredIdentifier" select="$MIR.ImageWare.requiredIdentifier" />
-            <xsl:if test="/mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:identifier[@type=$packageRequiredIdentifier]">
-              <li>
-                <a href="{$ServletsBaseURL}MCRPackerServlet?packer=ImageWare&amp;objectId={/mycoreobject/@ID}&amp;redirect={encoder:encode(concat($WebApplicationBaseURL,'receive/',/mycoreobject/@ID))}">
-                  <xsl:value-of select="i18n:translate('object.createImagewareZipPackage')" />
-                </a>
-              </li>
+            <!-- Packing with ImageWare Packer -->
+            <xsl:variable name="packageEnabled" select="$MIR.ImageWare.enabled" />
+            <xsl:variable name="packageFlagType" select="$MCR.Packaging.Packer.ImageWare.flagType" />
+            <xsl:if test="$packageEnabled and $packageFlagType and acl:checkPermission('packer-ImageWare')">
+              <xsl:variable name="packageRequiredIdentifier" select="$MIR.ImageWare.requiredIdentifier" />
+              <xsl:if test="/mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:identifier[@type=$packageRequiredIdentifier]">
+                <li>
+                  <a href="{$ServletsBaseURL}MCRPackerServlet?packer=ImageWare&amp;objectId={/mycoreobject/@ID}&amp;redirect={encoder:encode(concat($WebApplicationBaseURL,'receive/',/mycoreobject/@ID,'?XSL.Status.Message=mir.iwstatus.success&amp;XSL.Status.Style=success'))}">
+                     <xsl:value-of select="i18n:translate('object.createImagewareZipPackage')" />
+                   </a>
+                </li>
+              </xsl:if>
             </xsl:if>
           </xsl:if>
           <xsl:if test="$accessdelete and (not(mcrurn:hasURNDefined($id)) or (mcrurn:hasURNDefined($id) and $CurrentUser=$MCR.Users.Superuser.UserName))">
