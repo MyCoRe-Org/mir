@@ -94,8 +94,15 @@
     </xsl:template>
 
     <xsl:template name="lang">
-      <xsl:variable name="myURI" select="concat('classification:metadata:0:children:rfc4646:',./@xml:lang)" />
-      <xsl:value-of select="document($myURI)//label[@xml:lang='x-bibl']/@text"/>
+      <xsl:choose>
+        <xsl:when test="./@xml:lang or string-length(./@xml:lang) &gt; 0">
+          <xsl:variable name="myURI" select="concat('classification:metadata:0:children:rfc4646:',./@xml:lang)" />
+          <xsl:value-of select="document($myURI)//label[@xml:lang='x-bibl']/@text" />
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="$language" />
+        </xsl:otherwise>
+      </xsl:choose>
     </xsl:template>
 
     <xsl:template name="translate_Lang">
@@ -387,9 +394,8 @@
     </xsl:template>
 
     <xsl:template name="identifier">
-      <xsl:if test="./structure/derobjects/derobject or contains(./metadata/def.modsContainer/modsContainer/mods:mods/mods:identifier[@type='urn'], $MCR.URN.SubNamespace.Default.Prefix)">
-        <xsl:variable name="deriv" select="./structure/derobjects/derobject/@xlink:href" />
-
+      <xsl:variable name="deriv" select="./structure/derobjects/derobject/@xlink:href" />
+      <xsl:if test="mcrurn:hasURNDefined($deriv) or contains(./metadata/def.modsContainer/modsContainer/mods:mods/mods:identifier[@type='urn'], $MCR.URN.SubNamespace.Default.Prefix)">
         <xsl:element name="dc:identifier">
            <xsl:attribute name="xsi:type">urn:nbn</xsl:attribute>
            <xsl:choose>
@@ -398,9 +404,9 @@
                <xsl:variable name="derivate" select="document($derivlink)" />
                <xsl:value-of select="$derivate/mycorederivate/derivate/fileset/@urn" />
              </xsl:when>
-             <xsl:when test="./metadata/def.modsContainer/modsContainer/mods:mods/mods:identifier[@type='urn'] and contains(./metadata/def.modsContainer/modsContainer/mods:mods/mods:identifier[@type='urn'], $MCR.URN.SubNamespace.Default.Prefix)">
+             <xsl:otherwise>
                <xsl:value-of select="./metadata/def.modsContainer/modsContainer/mods:mods/mods:identifier[@type='urn']" />
-             </xsl:when>
+             </xsl:otherwise>
            </xsl:choose>
         </xsl:element>
       </xsl:if>
