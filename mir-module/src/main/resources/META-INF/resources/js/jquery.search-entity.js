@@ -240,7 +240,7 @@
         if (SearchEntity.TYPES[type][options.searchEntityType].enabled == false)
           continue;
 
-        if (SearchEntity.TYPES[this.selectedType][options.searchEntityType].enabled == false) {
+        if (SearchEntity.TYPES[this.selectedType] != undefined && SearchEntity.TYPES[this.selectedType][options.searchEntityType].enabled == false) {
           this.selectedType = type;
         }
 
@@ -380,17 +380,23 @@
     }
 
     if ($output != this.$element && $output.val().length > 0) {
+      var type = $outputType.val();
       var $feedback = $(document.createElement("a"));
       $feedback.attr("href", getURLFromTypeAndID($outputType.val(), $output.val()));
       $feedback.attr("target", "_blank");
       $feedback.css({
         textDecoration : "none"
       });
+      if(type == null || SearchEntity.TYPES[type] ==  undefined) {
+        $feedback.attr("onclick", "return false;");
+        $feedback.css({
+          cursor : "default"
+        });
+      }
 
       var $label = $(document.createElement("span"));
       $label.addClass(options.feedbackClass);
-      var type = $outputType.val().toUpperCase();
-      $label.html(type != null ? type : "N/A");
+      $label.html(type != null ? type.toUpperCase() : "N/A");
 
       var $remover = $(document.createElement("a"));
       $remover.css({
