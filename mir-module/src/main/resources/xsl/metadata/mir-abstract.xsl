@@ -203,7 +203,7 @@
       <xsl:if test="$hits/int[@name='matches'] &gt; 0">
         <h3><xsl:value-of select="i18n:translate('mir.metadata.content')" /></h3>
         <xsl:choose>
-          <xsl:when test="$hits/arr[@name='groups']/lst/result/@numFound &gt; 1 and not($hits/arr[@name='groups']/lst/null/@name='groupValue')">
+          <xsl:when test="$hits/arr[@name='groups']/lst/result/@numFound &gt; 1 and (not($hits/arr[@name='groups']/lst/null/@name='groupValue') or count($hits/arr[@name='groups']/lst) &gt; 1)">
             <ul id="mir_relatedItem">
               <xsl:for-each select="$hits/arr[@name='groups']/lst">
                 <li>
