@@ -387,7 +387,7 @@
       $feedback.css({
         textDecoration : "none"
       });
-      if(type == null || SearchEntity.TYPES[type] ==  undefined) {
+      if(type == null || SearchEntity.TYPES[type.toUpperCase()] ==  undefined) {
         $feedback.attr("onclick", "return false;");
         $feedback.css({
           cursor : "default"
