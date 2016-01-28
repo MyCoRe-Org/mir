@@ -381,7 +381,7 @@
 
     if ($output != this.$element && $output.val().length > 0) {
       var $feedback = $(document.createElement("a"));
-      $feedback.attr("href", $output.val());
+      $feedback.attr("href", getURLFromTypeAndID($outputType.val(), $output.val()));
       $feedback.attr("target", "_blank");
       $feedback.css({
         textDecoration : "none"
@@ -529,6 +529,14 @@
       var pos = url.indexOf(SearchEntity.TYPES[type].baseURI);
       if (pos != -1)
         return url.substr(pos + SearchEntity.TYPES[type].baseURI.length);
+    }
+    return "";
+  }
+
+  function getURLFromTypeAndID(type, id) {
+    var typeObj = SearchEntity.TYPES[type.toUpperCase()];
+    if (typeObj != undefined) {
+      return typeObj.baseURI + id;
     }
     return "";
   }
