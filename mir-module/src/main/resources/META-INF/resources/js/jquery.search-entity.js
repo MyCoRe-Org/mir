@@ -253,6 +253,7 @@
         $ea.text(type);
 
         $ea.on("click", function(e) {
+          e.preventDefault();
           that.selectedType = $(this).data("search-type");
           $(".active", $(this).parents("ul")).toggleClass("active");
           $(this).parent().toggleClass("active");
@@ -333,9 +334,9 @@
         $person.attr("href", "#");
         $person.html(item.label);
         $person.on("click", function(e) {
+          e.preventDefault();
           that.updateOutput(item);
           that.clearAll();
-          return false;
         });
 
         $li.append($person);
