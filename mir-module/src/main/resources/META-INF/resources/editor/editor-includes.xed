@@ -808,39 +808,7 @@
         <div class="col-md-3" style="text-align:right; font-weight:bold;">
           <xed:bind xpath="@type">
             <select class="form-control">
-              <option value="isbn">
-                <xed:output i18n="mir.identifier.isbn" />
-              </option>
-              <option value="issn">
-                <xed:output i18n="mir.identifier.issn" />
-              </option>
-              <option value="zdbid">
-                <xed:output i18n="mir.identifier.zdbid" />
-              </option>
-              <option value="doi">
-                <xed:output i18n="mir.identifier.doi" />
-              </option>
-              <option value="hdl">
-                <xed:output i18n="mir.identifier.hdl" />
-              </option>
-              <option value="urn">
-                <xed:output i18n="mir.identifier.urn" />
-              </option>
-              <option value="uri">
-                <xed:output i18n="mir.identifier.uri" />
-              </option>
-              <option value="intern">
-                <xed:output i18n="mir.identifier.intern" />
-              </option>
-              <option value="project">
-                <xed:output i18n="mir.identifier.project" />
-              </option>
-              <option value="patent">
-                <xed:output i18n="mir.identifier.patent" />
-              </option>
-              <option value="ppn">
-                <xed:output i18n="mir.identifier.ppn" />
-              </option>
+                <xed:include uri="xslStyle:items2options:classification:editor:-1:children:identifier" />
             </select>
           </xed:bind>
         </div>
