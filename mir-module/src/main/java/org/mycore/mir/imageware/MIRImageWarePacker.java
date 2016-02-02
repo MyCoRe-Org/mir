@@ -79,6 +79,26 @@ public class MIRImageWarePacker extends MCRPacker {
 
 
     @Override
+    public boolean checkSetup() throws MCRConfigurationException {
+        if (!this.getParameters().containsKey("objectId")) {
+            LOGGER.warn("No ObjectID in parameters!");
+            return false;
+        }
+
+
+        MCRObjectID objectID = getObjectID();
+        MCRObject mcrObject = MCRMetadataManager.retrieveMCRObject(objectID);
+        Optional<String> ppn = detectPPN(mcrObject);
+
+        if (!ppn.isPresent()) {
+            LOGGER.warn("No PPN detected in object: " + objectID.toString());
+            return false;
+        }
+
+        return true;
+    }
+
+    @Override
     public void pack() throws ExecutionException {
         MCRObjectID objectID = getObjectID();
         if(!getConfiguration().containsKey(FLAG_TYPE_PARAMETER_NAME)){
@@ -172,17 +192,22 @@ public class MIRImageWarePacker extends MCRPacker {
 
     @Override
     public void rollback() {
-        /*
-        Path filePath = getTargetZipPath();
-        LOGGER.info("Rollback: Check for existing ImageWarePackage: " + filePath.toString());
-        if (Files.exists(filePath)) {
-            LOGGER.info("Rollback: File found, try to delete: " + filePath.toString());
-            try {
-                Files.delete(filePath);
-            } catch (IOException e) {
-                LOGGER.error("Could not delete file " + filePath.toString(), e);
+        MCRObjectID objectID = getObjectID();
+        MCRObject mcrObject = MCRMetadataManager.retrieveMCRObject(objectID);
+        Optional<String> ppn = detectPPN(mcrObject);
+
+        if (ppn.isPresent()) {
+            Path filePath = getTargetZipPath(ppn.get() + ".zip");
+            LOGGER.info("Rollback: Check for existing ImageWarePackage: " + filePath.toString());
+            if (Files.exists(filePath)) {
+                LOGGER.info("Rollback: File found, try to delete: " + filePath.toString());
+                try {
+                    Files.delete(filePath);
+                } catch (IOException e) {
+                    LOGGER.error("Could not delete file " + filePath.toString(), e);
+                }
             }
-        }*/
+        }
     }
 
     private Path getTargetZipPath(String fileName) {
