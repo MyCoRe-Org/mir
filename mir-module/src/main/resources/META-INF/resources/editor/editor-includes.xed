@@ -537,10 +537,16 @@
   <xed:template id="nameIdentifier.repeated">
     <xed:repeat xpath="mods:nameIdentifier" min="1" max="100">
       <div class="form-group">
-        <xed:bind xpath="@type">
+        <xed:bind xpath="@type" name="type">
           <div class="col-md-3">
             <select class="form-control nameIdentifierType" style="text-align:right; font-weight:bold;">
               <xed:include uri="xslStyle:items2options:classification:editor:-1:children:nameIdentifier" />
+              <xed:load-resource name="identifier" uri="classification:metadata:-1:children:nameIdentifier" />
+              <xed:if test="not($identifier//category[@ID=$type]) and not($type='')">
+                <option value="{$type}" selected="">
+                  <xed:output value="$type" i18n="mir.identifier.other" />
+                </option>
+              </xed:if>
             </select>
           </div>
         </xed:bind>
@@ -806,9 +812,15 @@
     <xed:repeat xpath="mods:identifier" min="1" max="10">
       <div class="form-group">
         <div class="col-md-3" style="text-align:right; font-weight:bold;">
-          <xed:bind xpath="@type">
+          <xed:bind xpath="@type" name="type">
             <select class="form-control">
                 <xed:include uri="xslStyle:items2options:classification:editor:-1:children:identifier" />
+                <xed:load-resource name="identifier" uri="classification:metadata:-1:children:identifier" />
+                <xed:if test="not($identifier//category[@ID=$type]) and not($type='')">
+                  <option value="{$type}" selected="">
+                    <xed:output value="$type" i18n="mir.identifier.other" />
+                  </option>
+                </xed:if>
             </select>
           </xed:bind>
         </div>
