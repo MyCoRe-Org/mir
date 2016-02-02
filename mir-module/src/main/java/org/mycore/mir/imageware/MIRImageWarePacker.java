@@ -2,6 +2,7 @@ package org.mycore.mir.imageware;
 
 import java.io.IOException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
@@ -10,13 +11,17 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.jdom2.Element;
 import org.mycore.access.MCRAccessManager;
+import org.mycore.common.MCRException;
 import org.mycore.common.config.MCRConfigurationException;
 import org.mycore.common.content.MCRContent;
 import org.mycore.common.content.transformer.MCRContentTransformer;
@@ -29,6 +34,9 @@ import org.mycore.datamodel.metadata.MCRObject;
 import org.mycore.datamodel.metadata.MCRObjectID;
 import org.mycore.datamodel.niofs.MCRPath;
 import org.mycore.datamodel.niofs.utils.MCRTreeCopier;
+import org.mycore.mods.MCRMODSWrapper;
+import org.mycore.mods.identifier.MCRGBVURLDetector;
+import org.mycore.mods.identifier.MCRURLIdentifierDetector;
 import org.mycore.services.packaging.MCRPacker;
 
 /**
@@ -82,6 +90,9 @@ public class MIRImageWarePacker extends MCRPacker {
             LOGGER.error("No Rights to update metadata of " + objectID);
             throw new MCRConfigurationException("No Rights to update metadata of " + objectID);
         }
+        MCRObject mcrObject = MCRMetadataManager.retrieveMCRObject(objectID);
+
+        String ppn = detectPPN(mcrObject).orElseThrow(() -> new MCRException("Could not detect ppn of mycore object " + mcrObject.getId()));
 
         LOGGER.info("Start packing of : " + objectID);
         List<MCRObjectID> derivateIds = MCRMetadataManager.getDerivateIds(objectID, 10, TimeUnit.SECONDS);
@@ -90,19 +101,19 @@ public class MIRImageWarePacker extends MCRPacker {
                 // transform & write metadata
                 MCRContent modsContent = MCRXMLMetadataManager.instance().retrieveContent(objectID);
                 MCRContentInputStream resultStream = getTransformer().transform(modsContent).getContentInputStream();
-                Files.copy(resultStream, zipFileSystem.getPath("/", modsContent.getName()));
+                Files.copy(resultStream, zipFileSystem.getPath("/", ppn + ".xml"));
 
                 // write derivate files
-                Consumer<MCRPath> copyDerivates = getCopyDerivateConsumer(zipFileSystem);
+                Consumer<MCRPath> copyDerivates = getCopyDerivateConsumer(zipFileSystem, ppn);
                 derivateIds.stream()
                         .map(id -> MCRPath.getPath(id.toString(), "/"))
                         .forEach(copyDerivates);
             } catch (IOException e) {
                 LOGGER.error("Could get MCRContent for object with id: " + objectID.toString(), e);
             }
-        });
+        }, ppn + ".zip");
 
-        MCRObject mcrObject = MCRMetadataManager.retrieveMCRObject(objectID);
+
         String flagType = getConfiguration().get(FLAG_TYPE_PARAMETER_NAME);
         mcrObject.getService().setDate(flagType, new Date());
         try {
@@ -113,21 +124,55 @@ public class MIRImageWarePacker extends MCRPacker {
         }
     }
 
-    private Consumer<MCRPath> getCopyDerivateConsumer(FileSystem zipFileSystem) {
+    private Optional<String> detectPPN(MCRObject mcrObject) {
+        MCRMODSWrapper modsWrapper = new MCRMODSWrapper(mcrObject);
+        List<Element> elements = modsWrapper.getElements(".//mods:identifier[@type='uri']");
+        MCRURLIdentifierDetector identifierDetector = new MCRURLIdentifierDetector();
+        identifierDetector.addDetector(new MCRGBVURLDetector());
+        List<URI> possiblePPNURIs = elements.stream()
+                .map(Element::getText)
+                .map(s -> {
+                    try {
+                        return new URI(s);
+                    } catch (URISyntaxException e) {
+                        return null;
+                    }
+                })
+                .filter(o -> o != null)
+                .collect(Collectors.toList());
+
+
+        for (URI possiblePPNURI : possiblePPNURIs) {
+            Optional<Map.Entry<String, String>> detectedIdentifiers = identifierDetector.detect(possiblePPNURI);
+
+            if (!detectedIdentifiers.isPresent()) {
+                continue;
+            }
+
+            Map.Entry<String, String> identifierValueEntry = detectedIdentifiers.get();
+            if (identifierValueEntry.getKey().equals("ppn")) {
+                return Optional.of(identifierValueEntry.getValue().replace(":", "_"));
+            }
+        }
+        return Optional.empty();
+    }
+
+    private Consumer<MCRPath> getCopyDerivateConsumer(FileSystem zipFileSystem, String ppn) {
         return path -> {
-            Path destinationFolder = zipFileSystem.getPath("/", path.getOwner());
+            Path destinationFolder = zipFileSystem.getPath("/", ppn + "_" + path.getOwner());
             try {
                 Files.createDirectory(destinationFolder);
                 MCRTreeCopier derivateToZipCopier = new MCRTreeCopier(path, destinationFolder);
                 Files.walkFileTree(path, derivateToZipCopier);
             } catch (IOException e) {
-                LOGGER.error("Error while writing to ZIP: " + getTargetZipPath().toString(), e);
+                LOGGER.error("Error while writing to ZIP: " + getTargetZipPath(ppn + ".zip").toString(), e);
             }
         };
     }
 
     @Override
     public void rollback() {
+        /*
         Path filePath = getTargetZipPath();
         LOGGER.info("Rollback: Check for existing ImageWarePackage: " + filePath.toString());
         if (Files.exists(filePath)) {
@@ -137,17 +182,16 @@ public class MIRImageWarePacker extends MCRPacker {
             } catch (IOException e) {
                 LOGGER.error("Could not delete file " + filePath.toString(), e);
             }
-        }
+        }*/
     }
 
-    private Path getTargetZipPath() {
+    private Path getTargetZipPath(String fileName) {
         String targetFolderPath = this.getConfiguration().get("Destination");
-        String fileName = getObjectID().toString() + ".zip";
         return FileSystems.getDefault().getPath(targetFolderPath, fileName);
     }
 
-    private URI openZip(Consumer<FileSystem> fileSystemConsumer) {
-        URI destination = getTargetZipPath().toUri();
+    private URI openZip(Consumer<FileSystem> fileSystemConsumer, String fileName) {
+        URI destination = getTargetZipPath(fileName).toUri();
         Map<String, String> env = new HashMap<>();
         env.put("create", "true");
         URI uri = URI.create("jar:" + destination.toString());
