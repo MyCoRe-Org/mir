@@ -16,7 +16,6 @@
 
   <xsl:param name="MCR.Packaging.Packer.ImageWare.flagType" />
   <xsl:param name="MIR.ImageWare.enabled" />
-  <xsl:param name="MIR.ImageWare.requiredIdentifier" />
 
   <!-- do nothing for display parent -->
   <xsl:template match="/mycoreobject" mode="parent" priority="1">
@@ -484,9 +483,10 @@
             <!-- Packing with ImageWare Packer -->
             <xsl:variable name="packageEnabled" select="$MIR.ImageWare.enabled" />
             <xsl:variable name="packageFlagType" select="$MCR.Packaging.Packer.ImageWare.flagType" />
+
             <xsl:if test="$packageEnabled and $packageFlagType and acl:checkPermission('packer-ImageWare')">
-              <xsl:variable name="packageRequiredIdentifier" select="$MIR.ImageWare.requiredIdentifier" />
-              <xsl:if test="/mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:identifier[@type=$packageRequiredIdentifier]">
+
+              <xsl:if test="/mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:identifier[@type='uri' or @type='ppn']">
                 <li>
                   <a href="{$ServletsBaseURL}MCRPackerServlet?packer=ImageWare&amp;objectId={/mycoreobject/@ID}&amp;redirect={encoder:encode(concat($WebApplicationBaseURL,'receive/',/mycoreobject/@ID,'?XSL.Status.Message=mir.iwstatus.success&amp;XSL.Status.Style=success'))}">
                      <xsl:value-of select="i18n:translate('object.createImagewareZipPackage')" />
