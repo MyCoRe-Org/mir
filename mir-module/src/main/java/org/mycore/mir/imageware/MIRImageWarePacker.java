@@ -98,7 +98,7 @@ public class MIRImageWarePacker extends MCRPacker {
         }
 
         if (!MCRAccessManager.checkPermission(objectID, MCRAccessManager.PERMISSION_WRITE)) {
-            throw new MCRAccessException("No Rights to update metadata of " + objectID);
+            throw MCRAccessException.missingPermission("Add packer flag to " + objectID.toString(), objectID.toString(), MCRAccessManager.PERMISSION_WRITE);
         }
 
 
@@ -107,8 +107,9 @@ public class MIRImageWarePacker extends MCRPacker {
         }
 
         String packer = parameters.get("packer");
-        if (!MCRAccessManager.checkPermission(objectID, "packer-" + packer)) {
-            throw new MCRAccessException("No rights to pack: " + objectID);
+        String permission = "packer-" + packer;
+        if (!MCRAccessManager.checkPermission(objectID, permission)) {
+            throw MCRAccessException.missingPermission("Packing ImageWare packet", objectID.toString(), permission);
         }
     }
 
@@ -149,9 +150,8 @@ public class MIRImageWarePacker extends MCRPacker {
         mcrObject.getService().setDate(flagType, new Date());
         try {
             MCRMetadataManager.update(mcrObject);
-        } catch (MCRActiveLinkException e) {
-            LOGGER.error("Could not set " + flagType + " flag!");
-            throw new ExecutionException(e);
+        } catch (MCRActiveLinkException | MCRAccessException e) {
+            throw new ExecutionException("Could not set " + flagType + " flag!", e);
         }
     }
 

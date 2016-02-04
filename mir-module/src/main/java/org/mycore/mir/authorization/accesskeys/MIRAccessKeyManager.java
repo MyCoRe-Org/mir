@@ -23,10 +23,10 @@
 package org.mycore.mir.authorization.accesskeys;
 
 import org.hibernate.Session;
-import org.mycore.access.MCRAccessException;
 import org.mycore.access.MCRAccessManager;
 import org.mycore.backend.hibernate.MCRHIBConnection;
 import org.mycore.common.MCRSystemUserInformation;
+import org.mycore.common.MCRUsageException;
 import org.mycore.datamodel.metadata.MCRObject;
 import org.mycore.datamodel.metadata.MCRObjectID;
 import org.mycore.user2.MCRUser;
@@ -123,10 +123,10 @@ public final class MIRAccessKeyManager {
      *
      * @param mcrObjectId the {@link MCRObjectID}
      * @param accessKey the access key
-     * @throws MCRAccessException
+     * @throws MCRUsageException
      *             if an error was occured
      */
-    public static void addAccessKey(final MCRObjectID mcrObjectId, final String accessKey) throws MCRAccessException {
+    public static void addAccessKey(final MCRObjectID mcrObjectId, final String accessKey) throws MCRUsageException {
         addAccessKey(MCRUserManager.getCurrentUser(), mcrObjectId, accessKey);
 
         switch (getAccessKeyType(mcrObjectId, accessKey)) {
@@ -145,16 +145,16 @@ public final class MIRAccessKeyManager {
      * @param user the {@link MCRUser}
      * @param mcrObjectId the {@link MCRObjectID}
      * @param accessKey the access key
-     * @throws MCRAccessException
+     * @throws MCRUsageException
      *             if an error was occured
      */
     public static void addAccessKey(final MCRUser user, final MCRObjectID mcrObjectId, final String accessKey)
-            throws MCRAccessException {
+            throws MCRUsageException {
         if (user.equals(MCRSystemUserInformation.getSuperUserInstance()))
             return;
 
         if (getAccessKeyType(mcrObjectId, accessKey) == null)
-            throw new MCRAccessException("Invalid access key \"" + accessKey + "\"");
+            throw new MCRUsageException("Invalid access key \"" + accessKey + "\"");
 
         user.getAttributes().put(ACCESS_KEY_PREFIX + mcrObjectId.toString(), accessKey);
         MCRUserManager.updateUser(user);

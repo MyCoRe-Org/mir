@@ -11,6 +11,7 @@ import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
 import org.jdom2.Namespace;
+import org.mycore.access.MCRAccessException;
 import org.mycore.common.config.MCRConfiguration;
 import org.mycore.common.content.MCRContent;
 import org.mycore.common.content.MCRJDOMContent;
@@ -49,7 +50,11 @@ public class MIRSwordIngester implements MCRSwordIngester {
 
         final MCRObject mcrObject = MCRMODSWrapper.wrapMODSDocument(convertedDocument.detachRootElement(), newObjectId.getProjectId());
         mcrObject.setId(newObjectId);
-        MCRMetadataManager.create(mcrObject);
+        try {
+            MCRMetadataManager.create(mcrObject);
+        } catch (MCRAccessException e) {
+            throw new SwordError(UriRegistry.ERROR_BAD_REQUEST, HttpServletResponse.SC_UNAUTHORIZED, e.getMessage());
+        }
 
         return newObjectId;
     }
@@ -101,6 +106,8 @@ public class MIRSwordIngester implements MCRSwordIngester {
             mcrSwordMediaHandler.addResource(derivate.getId().toString(), "/", entry);
         } catch (IOException e) {
             throw new SwordServerException("Error while creating new derivate for object " + objectID.toString(), e);
+        } catch (MCRAccessException e) {
+            throw new SwordError(UriRegistry.ERROR_BAD_REQUEST, HttpServletResponse.SC_UNAUTHORIZED, e.getMessage());
         }
     }
 
@@ -116,6 +123,8 @@ public class MIRSwordIngester implements MCRSwordIngester {
             MCRMetadataManager.update(object);
         } catch (MCRActiveLinkException e) {
             throw new SwordServerException("Error while updating object!", e);
+        } catch (MCRAccessException e) {
+            throw new SwordError(UriRegistry.ERROR_BAD_REQUEST, HttpServletResponse.SC_UNAUTHORIZED, e.getMessage());
         }
     }
 
