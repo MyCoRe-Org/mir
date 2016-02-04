@@ -104,9 +104,11 @@
         <xsl:for-each select="mods:displayForm | mods:namePart[@type!='date'] | text()">
           <xsl:value-of select="concat(' ',.)" />
         </xsl:for-each>
-        <xsl:if test="mods:nameIdentifier/@type = 'gnd'">
+        <xsl:if test="mods:nameIdentifier/@type">
           <xsl:text>:</xsl:text>
-          <xsl:value-of select="mods:nameIdentifier[@type='gnd']" />
+          <xsl:value-of select="mods:nameIdentifier/@type" />
+          <xsl:text>:</xsl:text>
+          <xsl:value-of select="mods:nameIdentifier/text()" />
         </xsl:if>
       </xsl:variable>
       <field name="mods.pindexname">
@@ -136,9 +138,11 @@
       </xsl:variable>
       <field name="mods.nameByRole.{@type}.{mods:role/mods:roleTerm[@type='code']}">
         <xsl:value-of select="normalize-space($name)" />
-        <xsl:if test="contains(@valueURI,'http://d-nb.info/gnd/')">
+        <xsl:if test="./mods:nameIdentifier/@type">
           <xsl:text>:</xsl:text>
-          <xsl:value-of select="substring-after(@valueURI,'http://d-nb.info/gnd/')" />
+          <xsl:value-of select="./mods:nameIdentifier/@type" />
+          <xsl:text>:</xsl:text>
+          <xsl:value-of select="./mods:nameIdentifier/text()" />
         </xsl:if>
       </field>
     </xsl:for-each>

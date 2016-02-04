@@ -57,7 +57,7 @@
   </xsl:variable>
 
   <xsl:template match="int">
-    <xsl:variable name="gnd" select="substring-after(@name, ':')" />
+    <xsl:variable name="nameIdentifierAndType" select="substring-after(@name, ':')" />
 
     <xsl:variable name="linkText">
       <xsl:choose>
@@ -71,47 +71,43 @@
     </xsl:variable>
 
     <!-- if user is in role editor or admin, show all; other users only gets their own and published publications -->
-    <xsl:variable name="filter_query">
+    <xsl:variable name="owner">
       <xsl:choose>
-        <xsl:when test="mcrxsl:isCurrentUserInRole('admin') or mcrxsl:isCurrentUserInRole('editor')">state:*</xsl:when>
-        <xsl:otherwise>state:published OR createdby:<xsl:value-of select="$CurrentUser" /></xsl:otherwise>
-      </xsl:choose>
-    </xsl:variable>
-
-    <xsl:variable name="linkTo">
-      <xsl:choose>
-        <xsl:when test="string-length($gnd)>0">
-          <xsl:value-of select="concat($ServletsBaseURL,'solr/select?q=mods.gnd:', $gnd, ' AND (', $filter_query, ')')" />
-        </xsl:when>
+        <xsl:when test="mcrxsl:isCurrentUserInRole('admin') or mcrxsl:isCurrentUserInRole('editor')"><!--
+          -->*<!--
+        --></xsl:when>
         <xsl:otherwise>
-          <xsl:value-of select="concat($ServletsBaseURL,'solr/select?q=')" />
-          <xsl:value-of select="concat('+mods.author:&quot;',$linkText,'&quot;')" />
-          <xsl:value-of select="concat(' AND (', $filter_query, ')')" />
+          <xsl:value-of select="$CurrentUser" />
         </xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
-
-    <xsl:variable name="toolTip">
-      <xsl:choose>
-        <xsl:when test="$gnd">
-          <xsl:value-of select="$gnd" />
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:value-of select="$linkText" />
-        </xsl:otherwise>
-      </xsl:choose>
-    </xsl:variable>
-
-    <li>
-      <a href="{$linkTo}" title="{$toolTip}">
-        <xsl:value-of select="$linkText" />
-      </a>
-      <xsl:if test="string-length($gnd)>0">
-        <a title="http://d-nb.info/gnd/{$gnd}" href="http://d-nb.info/gnd/{$gnd}">
-          <sup>GND</sup>
-        </a>
-      </xsl:if>
-    </li>
+    <xsl:choose>
+      <xsl:when test="string-length($nameIdentifierAndType) &gt; 0">
+        <xsl:variable name="nameIdentifier" select="substring-after($nameIdentifierAndType, ':')" />
+        <xsl:variable name="nameIdentifierType" select="substring-before($nameIdentifierAndType, ':')" />
+        <xsl:variable name="classi" select="document(concat('classification:metadata:all:children:','nameIdentifier',':',$nameIdentifierType))/mycoreclass/categories/category[@ID=$nameIdentifierType]" />
+        <xsl:variable name="uri" select="$classi/label[@xml:lang='x-uri']/@text" />
+        <xsl:variable name="idType" select="$classi/label[@xml:lang='de']/@text" />
+        <li>
+          <a href="{$ServletsBaseURL}solr/mods_nameIdentifier?q=mods.nameIdentifier:{$nameIdentifierType}\:{$nameIdentifier}&amp;owner=createdby:{$owner}" title="Suche nach allen Publikationen">
+            <xsl:value-of select="$linkText" />
+          </a>
+          <xsl:text>&#160;</xsl:text><!-- add whitespace here -->
+          <a href="{$uri}{$nameIdentifier}" title="Link zu {$idType}">
+            <sup>
+              <xsl:value-of select="$idType" />
+            </sup>
+          </a>
+        </li>
+      </xsl:when>
+      <xsl:otherwise>
+        <li>
+          <a href="{$ServletsBaseURL}solr/mods_nameIdentifier?q=mods.name:&quot;{$linkText}&quot;&amp;owner=createdby:{$owner}" title="Suche nach allen Publikationen">
+            <xsl:value-of select="$linkText" />
+          </a>
+        </li>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
 
   <xsl:template match="/response">

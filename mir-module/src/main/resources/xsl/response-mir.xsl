@@ -70,7 +70,7 @@
                     <a href="#" value="mods.name.top">Name</a>
                   </li>
                   <li>
-                    <a href="#" value="mods.gnd">GND</a>
+                    <a href="#" value="mods.nameIdentifier">Namens Identifikator</a>
                   </li>
                   <li>
                     <a href="#" value="allMeta">Alle Metadaten</a>
@@ -462,31 +462,40 @@
                     </xsl:otherwise>
                   </xsl:choose>
                 </xsl:variable>
-                <xsl:variable name="gnd" select="substring-after(., ':')" />
-                    <!-- if user is in role editor or admin, show all; other users only gets their own and published publications -->
-                <xsl:variable name="filter_query">
+                <xsl:variable name="nameIdentifierAndType" select="substring-after(., ':')" />
+                <!-- if user is in role editor or admin, show all; other users only gets their own and published publications -->
+                <xsl:variable name="owner">
                   <xsl:choose>
-                    <xsl:when test="mcrxsl:isCurrentUserInRole('admin') or mcrxsl:isCurrentUserInRole('editor')">
-                      state:*
-                    </xsl:when>
-                    <xsl:otherwise>
-                      state:published OR createdby:
-                      <xsl:value-of select="$CurrentUser" />
-                    </xsl:otherwise>
+                    <xsl:when test="mcrxsl:isCurrentUserInRole('admin') or mcrxsl:isCurrentUserInRole('editor')"><!--
+                      -->*<!--
+                    --></xsl:when>
+                    <xsl:otherwise><!--
+                      --><xsl:value-of select="$CurrentUser" /><!--
+                    --></xsl:otherwise>
                   </xsl:choose>
                 </xsl:variable>
                 <xsl:choose>
-                  <xsl:when test="string-length($gnd) &gt; 0">
-                    <a href="{$ServletsBaseURL}solr/select?q=mods.gnd:{$gnd} AND ({$filter_query})" title="Suche nach allen Publikationen">
+                  <xsl:when test="string-length($nameIdentifierAndType) &gt; 0">
+                    <xsl:variable name="nameIdentifier" select="substring-after($nameIdentifierAndType, ':')" />
+                    <xsl:variable name="nameIdentifierType" select="substring-before($nameIdentifierAndType, ':')" />
+                    <xsl:variable name="classi"
+                                  select="document(concat('classification:metadata:all:children:','nameIdentifier',':',$nameIdentifierType))/mycoreclass/categories/category[@ID=$nameIdentifierType]" />
+                    <xsl:variable name="uri"
+                                  select="$classi/label[@xml:lang='x-uri']/@text" />
+                    <xsl:variable name="idType"
+                                  select="$classi/label[@xml:lang='de']/@text" />
+                    <a href="{$ServletsBaseURL}solr/mods_nameIdentifier?q=mods.nameIdentifier:{$nameIdentifierType}\:{$nameIdentifier}&amp;owner=createdby:{$owner}" title="Suche nach allen Publikationen">
                       <xsl:value-of select="$author_name" />
                     </a>
                     <xsl:text>&#160;</xsl:text><!-- add whitespace here -->
-                    <a href="http://d-nb.info/gnd/{$gnd}" title="Link zur GND">
-                      <sup>GND</sup>
+                    <a href="{$uri}{$nameIdentifier}" title="Link zu {$idType}">
+                      <sup>
+                        <xsl:value-of select="$idType" />
+                      </sup>
                     </a>
                   </xsl:when>
                   <xsl:otherwise>
-                    <a href="{$ServletsBaseURL}solr/select?q=mods.name:%22{$author_name}%22 AND ({$filter_query})" title="Suche nach allen Publikationen">
+                    <a href="{$ServletsBaseURL}solr/mods_nameIdentifier?q=mods.name:&quot;{$author_name}&quot;&amp;owner=createdby:{$owner}" title="Suche nach allen Publikationen">
                       <xsl:value-of select="$author_name" />
                     </a>
                   </xsl:otherwise>
