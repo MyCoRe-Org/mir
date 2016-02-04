@@ -484,7 +484,7 @@
             <xsl:variable name="packageEnabled" select="$MIR.ImageWare.enabled" />
             <xsl:variable name="packageFlagType" select="$MCR.Packaging.Packer.ImageWare.flagType" />
 
-            <xsl:if test="$packageEnabled and $packageFlagType and acl:checkPermission('packer-ImageWare')">
+            <xsl:if test="$packageEnabled and $packageFlagType and acl:checkPermission($id, 'packer-ImageWare')">
 
               <xsl:if test="/mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:identifier[@type='uri' or @type='ppn']">
                 <li>

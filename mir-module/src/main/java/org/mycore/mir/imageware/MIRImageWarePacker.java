@@ -21,8 +21,10 @@ import java.util.stream.Collectors;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jdom2.Element;
+import org.mycore.access.MCRAccessException;
 import org.mycore.access.MCRAccessManager;
 import org.mycore.common.MCRException;
+import org.mycore.common.MCRUsageException;
 import org.mycore.common.config.MCRConfigurationException;
 import org.mycore.common.content.MCRContent;
 import org.mycore.common.content.transformer.MCRContentTransformer;
@@ -80,10 +82,10 @@ public class MIRImageWarePacker extends MCRPacker {
 
 
     @Override
-    public boolean checkSetup() throws MCRConfigurationException {
-        if (!this.getParameters().containsKey("objectId")) {
-            LOGGER.warn("No ObjectID in parameters!");
-            return false;
+    public void checkSetup() throws MCRConfigurationException, MCRAccessException {
+        Map<String, String> parameters = this.getParameters();
+        if (!parameters.containsKey("objectId")) {
+            throw new MCRUsageException("No ObjectID in parameters!");
         }
 
 
@@ -92,11 +94,22 @@ public class MIRImageWarePacker extends MCRPacker {
         Optional<String> ppn = detectPPN(mcrObject);
 
         if (!ppn.isPresent()) {
-            LOGGER.warn("No PPN detected in object: " + objectID.toString());
-            return false;
+            throw new MCRUsageException("No PPN detected in object: " + objectID.toString());
         }
 
-        return true;
+        if (!MCRAccessManager.checkPermission(objectID, MCRAccessManager.PERMISSION_WRITE)) {
+            throw new MCRAccessException("No Rights to update metadata of " + objectID);
+        }
+
+
+        if (!parameters.containsKey("packer")) {
+            throw new MCRException("Packer is undefined! This should be impossible!");
+        }
+
+        String packer = parameters.get("packer");
+        if (!MCRAccessManager.checkPermission(objectID, "packer-" + packer)) {
+            throw new MCRAccessException("No rights to pack: " + objectID);
+        }
     }
 
     @Override
@@ -107,10 +120,7 @@ public class MIRImageWarePacker extends MCRPacker {
             throw new MCRConfigurationException("No flag type specified in configuration!");
         }
 
-        if (!MCRAccessManager.checkPermission(objectID, MCRAccessManager.PERMISSION_WRITE)) {
-            LOGGER.error("No Rights to update metadata of " + objectID);
-            throw new MCRConfigurationException("No Rights to update metadata of " + objectID);
-        }
+
         MCRObject mcrObject = MCRMetadataManager.retrieveMCRObject(objectID);
 
         String ppn = detectPPN(mcrObject).orElseThrow(() -> new MCRException("Could not detect ppn of mycore object " + mcrObject.getId()));
