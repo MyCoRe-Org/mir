@@ -17,19 +17,26 @@
       </div>
     </div>
     <script>
-      // <![CDATA[
-      $(document).ready( function() {
+    
+      function getEntry() {
+        uploadId = $( "input[name='parentObjectID']" ).val();
         $.ajax({
           method: "GET",
-          url: webApplicationBaseURL+"servlets/solr/find?qry=objectType:mods&rows=1&sort=created+desc&XSL.Transformer=response-resultlist",
+          url: webApplicationBaseURL+"servlets/solr/select?q=id%3A"+uploadId+"&amp;wt=xml&amp;XSL.Transformer=response-resultlist&amp;facet.field=mods.type&amp;group.limit=10&amp;facet.mincount=1&amp;group.ngroups=true&amp;facet=true&amp;group.field=returnId&amp;group=true",
           dataType: "html"
         }) .done(function( html ) {
-          $('#hit_list').html(html);
-          $('.hit_counter').html("&nbsp");
-          $('.hit_options').html("&nbsp");
+          if (html.trim() != ""){
+            $('#hit_list').html(html);
+          } else {
+            setTimeout(getEntry() , 2000);
+          }
         });
+      }
+      
+      $(document).ready( function() {
+        getEntry()
       });
-      // ]]>
+      
     </script>
     
     <div id="fileUpload" role="tabpanel">

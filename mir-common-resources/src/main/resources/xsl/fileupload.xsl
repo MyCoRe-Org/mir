@@ -218,14 +218,20 @@
       <div class="formgroup row" id="button_row">
         <div class="col-md-offset-2 col-md-6">
         
-          <a      class="btn btn-default"
-                  href="{$cancelUrl2}">
-            <xsl:value-of select="i18n:translate('fileUpload.back')"/>
-          </a>
+          <button id="btn_back" type="button" class="btn btn-default"
+                  onclick="window.location.href='{$cancelUrl2}'" >
+            <xsl:value-of select="i18n:translate('fileUpload.abort')"/>
+          </button>
           <button type="button" class="btn btn-primary"
                   onclick="uploadFile();" >
             <xsl:value-of select="i18n:translate('fileUpload.submit')"/>
           </button>
+          <button id="btn_done" type="button" class="btn btn-primary"
+                  onclick="window.location.href='{$cancelUrl2}'" disabled="true">
+            <xsl:value-of select="i18n:translate('fileUpload.done')"/>
+          </button>
+          
+          
           
         </div>
       </div>

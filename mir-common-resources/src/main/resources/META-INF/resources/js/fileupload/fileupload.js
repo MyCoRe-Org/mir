@@ -83,13 +83,16 @@ function cancelUpload() {
 function uploadFile() {
     currentUploadState = UPLOAD_STATES.uploading;
     toggleActions();
-
+    $('#btn_back').prop('disabled', 'true');
+    $('#btn_done').prop('disabled', 'true');
+        
     previousBytesLoaded = 0;
     jQuery('#progressNumber').text('');
     var progressBar = jQuery('#progressBar');
     progressBar.parent('.progress').css('display', 'block');
     progressBar.css('display', 'block');
     progressBar.css('width', '0px');
+    progressBar.addClass('progress-bar-warning');
     var url = formUploadUrl;
     var params = getUrlVars(url);
 
@@ -167,9 +170,13 @@ function uploadProgress(evt) {
 function uploadComplete(evt) {
     currentUploadState = UPLOAD_STATES.finished;
     toggleActions();
+    $('#btn_back').prop('disabled', 'true');
+    $('#btn_done').prop('disabled', '');
 
     clearInterval(intervalTimer);
-    jQuery('#progressNumber').text('100%');
+    jQuery('#progressNumber').text('Fertig');
+    jQuery('#progressBar').removeClass('progress-bar-warning');
+    jQuery('#progressBar').addClass('progress-bar-success');
     jQuery('#progressBar').css('width', '100%');
     showUploadResponse();
     jQuery('#uploadDone p').text(msgUploadSuccessful);
@@ -179,7 +186,11 @@ function uploadComplete(evt) {
 function uploadFailed(evt) {
     currentUploadState = UPLOAD_STATES.failed;
     toggleActions();
-
+    $('#btn_back').prop('disabled', '');
+    $('#btn_done').prop('disabled', 'true');
+    jQuery('#progressBar').addClass('progress-bar-alert');
+    jQuery('#progressBar').css('width', '100%');
+    
     clearInterval(intervalTimer);
     showUploadResponse();
     jQuery('#uploadDone p').text(msgUploadFailed);
@@ -229,7 +240,8 @@ function toggleActions() {
       object.button.detach();
       object.isAttached = false;
     }
-
+    
+    
     switch (currentUploadState) {
         case UPLOAD_STATES.start:
         case UPLOAD_STATES.finished:
