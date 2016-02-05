@@ -7,6 +7,7 @@ import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.attribute.PosixFilePermissions;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -64,14 +65,19 @@ import org.mycore.services.packaging.MCRPacker;
 public class MIRImageWarePacker extends MCRPacker {
 
     private static final Logger LOGGER = LogManager.getLogger();
-    private static final String FLAG_TYPE_PARAMETER_NAME = "flagType";
+
+    private static final String FILE_RIGHTS_CONFIGURATION_KEY = "FileRights";
+    private static final String DEFAULT_PPN_DB_CONFIGURATION_KEY = "DefaultPPNDB";
+    private static final String DESTINATION_CONFIGURATION_KEY = "Destination";
+    private static final String TRANSFORMER_ID_CONFIGURATION_KEY = "TransformerID";
+    private static final String FLAG_TYPE_CONFIGURATION_KEY = "FlagType";
 
     protected MCRObjectID getObjectID() {
         return MCRObjectID.getInstance(this.getParameters().get("objectId"));
     }
 
     protected MCRContentTransformer getTransformer() {
-        String transformerID = this.getConfiguration().get("TransformerID");
+        String transformerID = this.getConfiguration().get(TRANSFORMER_ID_CONFIGURATION_KEY);
         MCRContentTransformer transformer = MCRContentTransformerFactory.getTransformer(transformerID);
         if (transformer == null) {
             throw new MCRConfigurationException("Could not resolve transformer with id : " + transformerID);
@@ -116,7 +122,8 @@ public class MIRImageWarePacker extends MCRPacker {
     @Override
     public void pack() throws ExecutionException {
         MCRObjectID objectID = getObjectID();
-        if(!getConfiguration().containsKey(FLAG_TYPE_PARAMETER_NAME)){
+        Map<String, String> configuration = getConfiguration();
+        if (!configuration.containsKey(FLAG_TYPE_CONFIGURATION_KEY)) {
             LOGGER.error("No flag type specified in configuration!");
             throw new MCRConfigurationException("No flag type specified in configuration!");
         }
@@ -128,6 +135,7 @@ public class MIRImageWarePacker extends MCRPacker {
 
         LOGGER.info("Start packing of : " + objectID);
         List<MCRObjectID> derivateIds = MCRMetadataManager.getDerivateIds(objectID, 10, TimeUnit.SECONDS);
+        final String zipFileName = ppn + ".zip";
         openZip(zipFileSystem -> {
             try {
                 // transform & write metadata
@@ -143,10 +151,21 @@ public class MIRImageWarePacker extends MCRPacker {
             } catch (IOException e) {
                 LOGGER.error("Could get MCRContent for object with id: " + objectID.toString(), e);
             }
-        }, ppn + ".zip");
+        }, zipFileName);
 
+        if (!configuration.containsKey(FILE_RIGHTS_CONFIGURATION_KEY)) {
+            LOGGER.info("No fileRights configuration found!");
+        } else {
+            Path targetZipPath = getTargetZipPath(zipFileName);
+            String fileRights = configuration.get(FILE_RIGHTS_CONFIGURATION_KEY);
+            try {
+                Files.setPosixFilePermissions(targetZipPath, PosixFilePermissions.fromString(fileRights));
+            } catch (IOException e) {
+                throw new ExecutionException("Could not set right file rights!", e);
+            }
+        }
 
-        String flagType = getConfiguration().get(FLAG_TYPE_PARAMETER_NAME);
+        String flagType = configuration.get(FLAG_TYPE_CONFIGURATION_KEY);
         mcrObject.getService().setDate(flagType, new Date());
         try {
             MCRMetadataManager.update(mcrObject);
@@ -165,7 +184,7 @@ public class MIRImageWarePacker extends MCRPacker {
             switch (ppnParts.length) {
                 case 1:
                     // User inserted 812684613, then defaultPPNDB will be used to build $defaultPPNDB_ppn_812684613
-                    return Optional.of(String.format(Locale.ROOT, "%s_ppn_%s", getConfiguration().get("defaultPPNDB"), ppnElementContent));
+                    return Optional.of(String.format(Locale.ROOT, "%s_ppn_%s", getConfiguration().get(DEFAULT_PPN_DB_CONFIGURATION_KEY), ppnElementContent));
                 case 2:
                     // User inserted  gvk:812684613, then gvk_ppn_812684613 will be build
                     return Optional.of(String.format(Locale.ROOT, "%s_ppn_%s", ppnParts[0], ppnParts[1]));
@@ -243,7 +262,7 @@ public class MIRImageWarePacker extends MCRPacker {
     }
 
     private Path getTargetZipPath(String fileName) {
-        String targetFolderPath = this.getConfiguration().get("Destination");
+        String targetFolderPath = this.getConfiguration().get(DESTINATION_CONFIGURATION_KEY);
         return FileSystems.getDefault().getPath(targetFolderPath, fileName);
     }
 
