@@ -20,7 +20,7 @@
       </xsl:call-template>
     </xsl:variable>
     <xsl:variable name="params">
-      <xsl:for-each select="/response/lst[@name='responseHeader']/lst[@name='params']/str">
+      <xsl:for-each select="lst[@name='responseHeader']/lst[@name='params']/str">
         <xsl:choose>
           <xsl:when test="@name='rows' or @name='XSL.Style' or @name='fl' or @name='start'">
         <!-- skip them -->
@@ -45,21 +45,20 @@
 
     <div id="search_browsing">
       <div id="search_options">
-        <!-- TODO: add functionality to these two bottons, before display them again -->
-        <!-- button type="button" class="btn btn-default btn-sm">Suche verfeinern</button -->
+        <!-- TODO: add functionality to refine search bottons, before display them again -->
+        <!-- a href="#" type="button" class="btn btn-default btn-sm">Suche verfeinern</a -->
         <xsl:copy-of select="$ResultPages" />
-        <!-- button type="button" class="btn btn-default btn-sm">Trefferliste anzeigen</button -->
+
+        <!-- xsl:variable name="origRows" select="lst[@name='responseHeader']/lst[@name='params']/str[@name='origrows']" />
+        <xsl:variable name="newStart" select="$start - ($start mod $origRows)" />
+        <xsl:variable name="href" select="concat($proxyBaseURL,'?', $HttpSession, $params, '&amp;start=', $newStart)" />
+
+        <a href="{$href}" class="btn btn-default btn-sm" role="button">
+          <xsl:value-of select="i18n:translate('component.solr.searchresult.back')" />
+        </a -->
       </div>
 
-         <!--
-            <xsl:variable name="origRows" select="/response/lst[@name='responseHeader']/lst[@name='params']/str[@name='origrows']" />
-            <xsl:variable name="newStart" select="$start - $start mod $origRows" />
-            <xsl:variable name="href" select="concat($proxyBaseURL,'?', $HttpSession, $params, '&amp;start=', $newStart)" />
 
-            <a href="{$href}">
-              <xsl:value-of select="i18n:translate('component.solr.searchresult.back')" />
-            </a>
-          -->
       <xsl:variable name="objId" select="/mycoreobject/@ID" />
       <xsl:variable name="staticUrl" select="concat($WebApplicationBaseURL, 'receive/', $objId)" />
       <div id="permalink">
