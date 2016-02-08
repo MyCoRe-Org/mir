@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:mods="http://www.loc.gov/mods/v3"
   xmlns:mcrxml="xalan://org.mycore.common.xml.MCRXMLFunctions" xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
-  xmlns:xlink="http://www.w3.org/1999/xlink" exclude-result-prefixes="mods xlink">
+  xmlns:xalan="http://xml.apache.org/xalan" xmlns:xlink="http://www.w3.org/1999/xlink" exclude-result-prefixes="mods xlink">
   <xsl:import href="xslImport:solr-document:mir-solr.xsl" />
 
   <xsl:template match="mycoreobject[contains(@ID,'_mods_')]">
@@ -104,11 +104,17 @@
         <xsl:for-each select="mods:displayForm | mods:namePart[@type!='date'] | text()">
           <xsl:value-of select="concat(' ',.)" />
         </xsl:for-each>
-        <xsl:if test="mods:nameIdentifier/@type">
+        <xsl:variable name="nameIds">
+          <xsl:call-template name="getNameIdentifiers">
+            <xsl:with-param name="entity" select="." />
+          </xsl:call-template>
+        </xsl:variable>
+        <xsl:variable name="nameIdentifier" select="xalan:nodeset($nameIds)/nameIdentifier[1]" />
+        <xsl:if test="count($nameIdentifier) &gt; 0">
           <xsl:text>:</xsl:text>
-          <xsl:value-of select="mods:nameIdentifier/@type" />
+          <xsl:value-of select="$nameIdentifier/@type" />
           <xsl:text>:</xsl:text>
-          <xsl:value-of select="mods:nameIdentifier/text()" />
+          <xsl:value-of select="$nameIdentifier/@id" />
         </xsl:if>
       </xsl:variable>
       <field name="mods.pindexname">
@@ -138,11 +144,17 @@
       </xsl:variable>
       <field name="mods.nameByRole.{@type}.{mods:role/mods:roleTerm[@type='code']}">
         <xsl:value-of select="normalize-space($name)" />
-        <xsl:if test="./mods:nameIdentifier/@type">
+        <xsl:variable name="nameIds">
+          <xsl:call-template name="getNameIdentifiers">
+            <xsl:with-param name="entity" select="." />
+          </xsl:call-template>
+        </xsl:variable>
+        <xsl:variable name="nameIdentifier" select="xalan:nodeset($nameIds)/nameIdentifier[1]" />
+        <xsl:if test="count($nameIdentifier) &gt; 0">
           <xsl:text>:</xsl:text>
-          <xsl:value-of select="./mods:nameIdentifier/@type" />
+          <xsl:value-of select="$nameIdentifier/@type" />
           <xsl:text>:</xsl:text>
-          <xsl:value-of select="./mods:nameIdentifier/text()" />
+          <xsl:value-of select="$nameIdentifier/@id" />
         </xsl:if>
       </field>
     </xsl:for-each>
@@ -170,6 +182,27 @@
               </xsl:otherwise>
             </xsl:choose>
         </field>
+      </xsl:if>
+    </xsl:for-each>
+  </xsl:template>
+  
+  <xsl:variable name="nameIdentifiers" select="document(concat('classification:metadata:all:children:','nameIdentifier'))/mycoreclass/categories" />
+
+  <xsl:template name="getNameIdentifiers">
+    <xsl:param name="entity" />
+
+    <xsl:for-each select="$nameIdentifiers/category">
+      <xsl:sort select="x-order" data-type="number" />
+      <xsl:variable name="categId" select="@ID" />
+      <xsl:if test="(string-length(label[@xml:lang='x-uri']/@text) &gt; 0) and count($entity/mods:nameIdentifier[@type = $categId]) &gt; 0">
+        <nameIdentifier>
+          <xsl:attribute name="type">
+            <xsl:value-of select="$categId" />
+          </xsl:attribute>
+          <xsl:attribute name="id">
+            <xsl:value-of select="$entity/mods:nameIdentifier[@type = $categId]/text()" />
+          </xsl:attribute>
+        </nameIdentifier>
       </xsl:if>
     </xsl:for-each>
   </xsl:template>
