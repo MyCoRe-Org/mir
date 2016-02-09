@@ -42,6 +42,7 @@ import org.mycore.mods.MCRMODSWrapper;
 import org.mycore.mods.identifier.MCRGBVURLDetector;
 import org.mycore.mods.identifier.MCRURLIdentifierDetector;
 import org.mycore.services.packaging.MCRPacker;
+import org.mycore.services.packaging.MCRPackerJobAction;
 
 /**
  * <p>Creates the ZIP-Files for the image ware electronic reading room.</p>
@@ -58,6 +59,10 @@ import org.mycore.services.packaging.MCRPacker;
  * <dd>The transformer which should be used to transform the metadata</dd>
  * <dt>Destination</dt>
  * <dd>The destination where the packets should be created</dd>
+ * <dt>FlagType</dt>
+ * <dd>The packer sets a date with $FlagType as name in the MyCoRe-Service part</dd>
+ * <dt>DefaultPPNDB</dt>
+ * <dd>If the PPN doesn't contain a database part then a default value will be set.</dd>
  * </dl>
  * <p>
  * <p><b>WARNING:</b> The system user needs write permission to the object id </p>
@@ -87,94 +92,7 @@ public class MIRImageWarePacker extends MCRPacker {
     }
 
 
-    @Override
-    public void checkSetup() throws MCRConfigurationException, MCRAccessException {
-        Map<String, String> parameters = this.getParameters();
-        if (!parameters.containsKey("objectId")) {
-            throw new MCRUsageException("No ObjectID in parameters!");
-        }
-
-
-        MCRObjectID objectID = getObjectID();
-        MCRObject mcrObject = MCRMetadataManager.retrieveMCRObject(objectID);
-        Optional<String> ppn = detectPPN(mcrObject);
-
-        if (!ppn.isPresent()) {
-            throw new MCRUsageException("No PPN detected in object: " + objectID.toString());
-        }
-
-        if (!MCRAccessManager.checkPermission(objectID, MCRAccessManager.PERMISSION_WRITE)) {
-            throw MCRAccessException.missingPermission("Add packer flag to " + objectID.toString(), objectID.toString(), MCRAccessManager.PERMISSION_WRITE);
-        }
-
-
-        if (!parameters.containsKey("packer")) {
-            throw new MCRException("Packer is undefined! This should be impossible!");
-        }
-
-        String packer = parameters.get("packer");
-        String permission = "packer-" + packer;
-        if (!MCRAccessManager.checkPermission(objectID, permission)) {
-            throw MCRAccessException.missingPermission("Packing ImageWare packet", objectID.toString(), permission);
-        }
-    }
-
-    @Override
-    public void pack() throws ExecutionException {
-        MCRObjectID objectID = getObjectID();
-        Map<String, String> configuration = getConfiguration();
-        if (!configuration.containsKey(FLAG_TYPE_CONFIGURATION_KEY)) {
-            LOGGER.error("No flag type specified in configuration!");
-            throw new MCRConfigurationException("No flag type specified in configuration!");
-        }
-
-
-        MCRObject mcrObject = MCRMetadataManager.retrieveMCRObject(objectID);
-
-        String ppn = detectPPN(mcrObject).orElseThrow(() -> new MCRException("Could not detect ppn of mycore object " + mcrObject.getId()));
-
-        LOGGER.info("Start packing of : " + objectID);
-        List<MCRObjectID> derivateIds = MCRMetadataManager.getDerivateIds(objectID, 10, TimeUnit.SECONDS);
-        final String zipFileName = ppn + ".zip";
-        openZip(zipFileSystem -> {
-            try {
-                // transform & write metadata
-                MCRContent modsContent = MCRXMLMetadataManager.instance().retrieveContent(objectID);
-                MCRContentInputStream resultStream = getTransformer().transform(modsContent).getContentInputStream();
-                Files.copy(resultStream, zipFileSystem.getPath("/", ppn + ".xml"));
-
-                // write derivate files
-                Consumer<MCRPath> copyDerivates = getCopyDerivateConsumer(zipFileSystem, ppn);
-                derivateIds.stream()
-                        .map(id -> MCRPath.getPath(id.toString(), "/"))
-                        .forEach(copyDerivates);
-            } catch (IOException e) {
-                LOGGER.error("Could get MCRContent for object with id: " + objectID.toString(), e);
-            }
-        }, zipFileName);
-
-        if (!configuration.containsKey(FILE_RIGHTS_CONFIGURATION_KEY)) {
-            LOGGER.info("No fileRights configuration found!");
-        } else {
-            Path targetZipPath = getTargetZipPath(zipFileName);
-            String fileRights = configuration.get(FILE_RIGHTS_CONFIGURATION_KEY);
-            try {
-                Files.setPosixFilePermissions(targetZipPath, PosixFilePermissions.fromString(fileRights));
-            } catch (IOException e) {
-                throw new ExecutionException("Could not set right file rights!", e);
-            }
-        }
-
-        String flagType = configuration.get(FLAG_TYPE_CONFIGURATION_KEY);
-        mcrObject.getService().setDate(flagType, new Date());
-        try {
-            MCRMetadataManager.update(mcrObject);
-        } catch (MCRActiveLinkException | MCRAccessException e) {
-            throw new ExecutionException("Could not set " + flagType + " flag!", e);
-        }
-    }
-
-    private Optional<String> detectPPN(MCRObject mcrObject) {
+    private static Optional<String> detectPPN(MCRObject mcrObject, String defaultPPNDB) {
         MCRMODSWrapper modsWrapper = new MCRMODSWrapper(mcrObject);
         List<Element> ppnElements = modsWrapper.getElements(".//mods:identifier[@type='ppn']");
         if (ppnElements.size() > 0) {
@@ -184,7 +102,7 @@ public class MIRImageWarePacker extends MCRPacker {
             switch (ppnParts.length) {
                 case 1:
                     // User inserted 812684613, then defaultPPNDB will be used to build $defaultPPNDB_ppn_812684613
-                    return Optional.of(String.format(Locale.ROOT, "%s_ppn_%s", getConfiguration().get(DEFAULT_PPN_DB_CONFIGURATION_KEY), ppnElementContent));
+                    return Optional.of(String.format(Locale.ROOT, "%s_ppn_%s", defaultPPNDB, ppnElementContent));
                 case 2:
                     // User inserted  gvk:812684613, then gvk_ppn_812684613 will be build
                     return Optional.of(String.format(Locale.ROOT, "%s_ppn_%s", ppnParts[0], ppnParts[1]));
@@ -228,6 +146,126 @@ public class MIRImageWarePacker extends MCRPacker {
         return Optional.empty();
     }
 
+    // used in modsdetails-external.xsl
+    public static final boolean displayPackerButton(String objectIDString, String packerId) {
+        MCRObjectID objectID = MCRObjectID.getInstance(objectIDString);
+        MCRObject mcrObject = MCRMetadataManager.retrieveMCRObject(objectID);
+
+        Map<String, String> configuration = MCRPackerJobAction.getConfiguration(packerId);
+
+        if(configuration.size()==0){
+            return false;
+        }
+
+        try {
+            checkACL(objectID, packerId);
+        } catch (MCRAccessException e) {
+            return false;
+        }
+
+
+        Date date = mcrObject.getService().getDate(configuration.get(FLAG_TYPE_CONFIGURATION_KEY));
+        if(date!=null){
+            return false;
+        }
+
+        if (!detectPPN(mcrObject, configuration.get(DEFAULT_PPN_DB_CONFIGURATION_KEY)).isPresent()) {
+            return false;
+        }
+
+        return true;
+    }
+
+    @Override
+    public void checkSetup() throws MCRConfigurationException, MCRAccessException {
+        Map<String, String> parameters = this.getParameters();
+        if (!parameters.containsKey("objectId")) {
+            throw new MCRUsageException("No ObjectID in parameters!");
+        }
+
+
+        MCRObjectID objectID = getObjectID();
+        MCRObject mcrObject = MCRMetadataManager.retrieveMCRObject(objectID);
+        Optional<String> ppn = detectPPN(mcrObject, "");
+
+        if (!ppn.isPresent()) {
+            throw new MCRUsageException("No PPN detected in object: " + objectID.toString());
+        }
+
+        if (!parameters.containsKey("packer")) {
+            throw new MCRException("Packer is undefined! This should be impossible!");
+        }
+
+        String packer = parameters.get("packer");
+        checkACL(objectID, packer);
+    }
+
+    private static void checkACL(MCRObjectID objectID, String packer) throws MCRAccessException {
+        String permission = "packer-" + packer;
+        if (!MCRAccessManager.checkPermission(objectID, permission)) {
+            throw MCRAccessException.missingPermission("Packing ImageWare packet", objectID.toString(), permission);
+        }
+        if (!MCRAccessManager.checkPermission(objectID, MCRAccessManager.PERMISSION_WRITE)) {
+            throw MCRAccessException.missingPermission("Add packer flag to " + objectID.toString(), objectID.toString(), MCRAccessManager.PERMISSION_WRITE);
+        }
+    }
+
+    @Override
+    public void pack() throws ExecutionException {
+        MCRObjectID objectID = getObjectID();
+        Map<String, String> configuration = getConfiguration();
+        if (!configuration.containsKey(FLAG_TYPE_CONFIGURATION_KEY)) {
+            LOGGER.error("No flag type specified in configuration!");
+            throw new MCRConfigurationException("No flag type specified in configuration!");
+        }
+
+
+        MCRObject mcrObject = MCRMetadataManager.retrieveMCRObject(objectID);
+
+        String defaultPPNDB = getConfiguration().get(DEFAULT_PPN_DB_CONFIGURATION_KEY);
+        String ppn = detectPPN(mcrObject, defaultPPNDB).orElseThrow(() -> new MCRException("Could not detect ppn of mycore object " + mcrObject.getId()));
+
+        LOGGER.info("Start packing of : " + objectID);
+        List<MCRObjectID> derivateIds = MCRMetadataManager.getDerivateIds(objectID, 10, TimeUnit.SECONDS);
+        final String zipFileName = ppn + ".zip";
+        openZip(zipFileSystem -> {
+            try {
+                // transform & write metadata
+                MCRContent modsContent = MCRXMLMetadataManager.instance().retrieveContent(objectID);
+                MCRContentInputStream resultStream = getTransformer().transform(modsContent).getContentInputStream();
+                Files.copy(resultStream, zipFileSystem.getPath("/", ppn + ".xml"));
+
+                // write derivate files
+                Consumer<MCRPath> copyDerivates = getCopyDerivateConsumer(zipFileSystem, ppn);
+                derivateIds.stream()
+                        .map(id -> MCRPath.getPath(id.toString(), "/"))
+                        .forEach(copyDerivates);
+            } catch (IOException e) {
+                LOGGER.error("Could get MCRContent for object with id: " + objectID.toString(), e);
+            }
+        }, zipFileName);
+
+        if (!configuration.containsKey(FILE_RIGHTS_CONFIGURATION_KEY)) {
+            LOGGER.info("No fileRights configuration found!");
+        } else {
+            Path targetZipPath = getTargetZipPath(zipFileName);
+            String fileRights = configuration.get(FILE_RIGHTS_CONFIGURATION_KEY);
+            try {
+                Files.setPosixFilePermissions(targetZipPath, PosixFilePermissions.fromString(fileRights));
+            } catch (IOException e) {
+                throw new ExecutionException("Could not set right file rights!", e);
+            }
+        }
+
+        String flagType = configuration.get(FLAG_TYPE_CONFIGURATION_KEY);
+        mcrObject.getService().setDate(flagType, new Date());
+        try {
+            MCRMetadataManager.update(mcrObject);
+        } catch (MCRActiveLinkException | MCRAccessException e) {
+            throw new ExecutionException("Could not set " + flagType + " flag!", e);
+        }
+    }
+
     private Consumer<MCRPath> getCopyDerivateConsumer(FileSystem zipFileSystem, String ppn) {
         return path -> {
             Path destinationFolder = zipFileSystem.getPath("/", ppn + "_" + path.getOwner());
@@ -239,26 +277,6 @@ public class MIRImageWarePacker extends MCRPacker {
                 LOGGER.error("Error while writing to ZIP: " + getTargetZipPath(ppn + ".zip").toString(), e);
             }
         };
-    }
-
-    @Override
-    public void rollback() {
-        MCRObjectID objectID = getObjectID();
-        MCRObject mcrObject = MCRMetadataManager.retrieveMCRObject(objectID);
-        Optional<String> ppn = detectPPN(mcrObject);
-
-        if (ppn.isPresent()) {
-            Path filePath = getTargetZipPath(ppn.get() + ".zip");
-            LOGGER.info("Rollback: Check for existing ImageWarePackage: " + filePath.toString());
-            if (Files.exists(filePath)) {
-                LOGGER.info("Rollback: File found, try to delete: " + filePath.toString());
-                try {
-                    Files.delete(filePath);
-                } catch (IOException e) {
-                    LOGGER.error("Could not delete file " + filePath.toString(), e);
-                }
-            }
-        }
     }
 
     private Path getTargetZipPath(String fileName) {
@@ -277,5 +295,25 @@ public class MIRImageWarePacker extends MCRPacker {
             LOGGER.error("Could not create/write to zip file: " + destination.toString(), e);
         }
         return uri;
+    }
+
+    @Override
+    public void rollback() {
+        MCRObjectID objectID = getObjectID();
+        MCRObject mcrObject = MCRMetadataManager.retrieveMCRObject(objectID);
+        Optional<String> ppn = detectPPN(mcrObject, getConfiguration().get(DEFAULT_PPN_DB_CONFIGURATION_KEY));
+
+        if (ppn.isPresent()) {
+            Path filePath = getTargetZipPath(ppn.get() + ".zip");
+            LOGGER.info("Rollback: Check for existing ImageWarePackage: " + filePath.toString());
+            if (Files.exists(filePath)) {
+                LOGGER.info("Rollback: File found, try to delete: " + filePath.toString());
+                try {
+                    Files.delete(filePath);
+                } catch (IOException e) {
+                    LOGGER.error("Could not delete file " + filePath.toString(), e);
+                }
+            }
+        }
     }
 }
