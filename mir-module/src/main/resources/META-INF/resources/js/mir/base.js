@@ -1,21 +1,21 @@
 (function($) {
   $(document).ready(function() {
-  	
+
 //--- in metadata view the select/video controller
-  	// on start load the first source
-  	$(".player video").ready(function(){
-  		$("#videoChooser").change();
-  	});
-  	
-  	//get all sources of selected item in a var and give it to player
-		$("#videoChooser").change(function() {
-			var myPlayer = videojs($(".player video").attr("id"));
-			var src = [];
-			$("#" + $(this).val()).children('source').each(function() {
-				src.push({type: $(this).attr("type"), src: $(this).attr("src")});
-			});
-			myPlayer.src(src);
-		});
+    // on start load the first source
+    $(".player video").ready(function(){
+      $("#videoChooser").change();
+    });
+
+    //get all sources of selected item in a var and give it to player
+    $("#videoChooser").change(function() {
+      var myPlayer = videojs($(".player video").attr("id"));
+      var src = [];
+      $("#" + $(this).val()).children('source').each(function() {
+        src.push({type: $(this).attr("type"), src: $(this).attr("src")});
+      });
+      myPlayer.src(src);
+    });
 //--------
 
     $("body").on("focus", ".search-organization input[name*='mods:displayForm']", function() {
@@ -62,11 +62,24 @@
 
     //change search string on result page
     $( ".search_box form" ).submit(function( event ) {
-      if ($('#search_type_button').attr('value') == 'all') {
-        var newAction = $(this).attr('action') + "?qry=" + $('.search_box input').val();
-      } else {
-        var newAction = $(this).attr('action') + "?qry=" + $('.search_box input').val() + "&amp;df=" + $('#search_type_button').attr('value');
+      var origSearchAction = $(this).attr('action');
+      if (origSearchAction.includes('servlets/solr/find')) {
+        var replAction = origSearchAction.replace(/(.*[&|\?])(qry=.*?)&(.*)/,'$1$3&$2');
+        if ($('#search_type_button').attr('value') == 'all') {
+            var newAction = replAction + " AND " + $('.search_box input').val();
+          } else {
+            var newAction = replAction + " AND " + $('.search_box input').val() + "&df=" + $('#search_type_button').attr('value');
+          }
       }
+      else {
+        var replAction = origSearchAction.replace(/(.*[&|\?])(q=.*?)&(.*)/,'$1$3&$2');
+        if ($('#search_type_button').attr('value') == 'all') {
+            var newAction = replAction + " AND *:" + $('.search_box input').val();
+          } else {
+            var newAction = replAction + " AND " + $('#search_type_button').attr('value') + ":" + $('.search_box input').val();
+          }
+      }
+
       $(this).attr('action', newAction);
     });
 
@@ -177,15 +190,15 @@
 
     // for configuration look here: http://dotdotdot.frebsite.nl/
     if (jQuery.fn.dotdotdot) {
-    
+
       $(".ellipsis-text").find("a.readmore").click(function() {
-        
+
         var div = $(this).closest('.ellipsis-text');
         //$("a.readmore", div).hide();
         div.trigger('destroy');
         div.removeClass('ellipsis');
         $("a.readless", div).removeClass('hidden');
-        
+
         $("a.readless", div).click(function(div) {
           var div = $(this).closest('.ellipsis-text');
           $("a.readmore", div).show();
@@ -194,7 +207,7 @@
           readmore.clone(true,true).insertAfter( readmore );
           readmore.addClass('readmore-active');
           readmore.removeClass('hidden');
-          div.dotdotdot({ 
+          div.dotdotdot({
             ellipsis	: '... ',
             after: "a.readmore-active",
             callback: dotdotdotCallback
@@ -202,15 +215,15 @@
           $(this).addClass('hidden');
           return false;
         });
-        
+
         return false;
-        
+
       });
-    
+
       $(".ellipsis").each(function( i ) {
-        
+
         if (i > 0) $(this).addClass("active");
-        
+
         var readmore=$("a.readmore",this);
         readmore.clone(true,true).insertAfter( readmore );
         readmore.addClass('readmore-active');
@@ -220,7 +233,7 @@
           after: "a.readmore-active",
           callback: dotdotdotCallback
         });
-        
+
         if (i > 0) $(this).removeClass("active");
       });
     };
@@ -242,7 +255,7 @@
   function dotdotdotCallback(isTruncated, originalContent) {
     if (!isTruncated) {
       $("a.readmore", this).remove();
-      $("a.readless", this).remove();   
+      $("a.readless", this).remove();
     }
   };
 

@@ -8,13 +8,6 @@
   <xsl:param name="UserAgent" />
   <xsl:param name="MIR.testEnvironment" />
 
-  <!-- retain the original query and parameters, for attaching them to a url -->
-  <xsl:variable name="query">
-    <xsl:if test="/response/lst[@name='responseHeader']/lst[@name='params']/str[@name='qry'] != '*'">
-      <xsl:value-of select="/response/lst[@name='responseHeader']/lst[@name='params']/str[@name='qry']" />
-    </xsl:if>
-  </xsl:variable>
-
   <xsl:template match="/response/result|lst[@name='grouped']/lst[@name='returnId']" priority="10">
     <xsl:variable name="ResultPages">
       <xsl:if test="$hits &gt; 0">
@@ -49,7 +42,8 @@
     <div class="row result_searchline">
       <div class="col-xs-12 col-sm-8 text-center result_search">
         <div class="search_box">
-          <form action="{$WebApplicationBaseURL}servlets/solr/find" class="search_form" method="post">
+          <xsl:variable name="searchlink" select="concat($proxyBaseURL, $HttpSession, $solrParams)" />
+          <form action="{$searchlink}" class="search_form" method="post">
             <div class="input-group input-group-sm">
               <div class="input-group-btn">
                 <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" value="all" id="search_type_button">
