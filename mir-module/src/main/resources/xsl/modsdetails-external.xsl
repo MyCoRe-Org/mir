@@ -818,8 +818,8 @@
 
 <!-- hit abstract -->
       <div class="hit_abstract">
-        <xsl:if test="mods:abstract">
-          <xsl:value-of select="mcrxsl:shortenText(mods:abstract,300)" />
+        <xsl:if test="mods:abstract[not(@altFormat)]">
+          <xsl:value-of select="mcrxsl:shortenText(mods:abstract[not(@altFormat)],300)" />
         </xsl:if>
       </div>
 

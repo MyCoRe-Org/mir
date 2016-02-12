@@ -274,7 +274,7 @@
 
 
     <xsl:template name="abstract">
-      <xsl:for-each select="./metadata/def.modsContainer/modsContainer/mods:mods/mods:abstract">
+      <xsl:for-each select="./metadata/def.modsContainer/modsContainer/mods:mods/mods:abstract[not(@altFormat)]">
           <xsl:element name="dcterms:abstract">
               <xsl:attribute name="lang"><xsl:call-template name="lang" /></xsl:attribute>
               <xsl:attribute name="xsi:type">ddb:contentISO639-2</xsl:attribute>

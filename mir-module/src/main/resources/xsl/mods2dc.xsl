@@ -220,7 +220,7 @@
     </xsl:if>
   </xsl:template>
 
-  <xsl:template match="mods:abstract | mods:tableOfContents | mods:note">
+  <xsl:template match="mods:abstract[not(@altFormat)] | mods:tableOfContents[not(@altFormat)] | mods:note">
     <!--  <xsl:if test="@xlink:href!=''"> -->
         <dc:description>
           <xsl:value-of select="."/>

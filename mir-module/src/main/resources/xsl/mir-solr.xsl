@@ -158,7 +158,7 @@
         </xsl:if>
       </field>
     </xsl:for-each>
-    <xsl:for-each select="mods:abstract[1]">
+    <xsl:for-each select="mods:abstract[not(@altFormat)][1]">
       <field name="mods.abstract.result">
         <xsl:value-of select="mcrxml:shortenText(text(),300)" />
       </field>
