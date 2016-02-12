@@ -171,7 +171,7 @@ public class MirSelfRegistrationServlet extends MCRServlet {
     public static boolean userExists(final List<Element> nodes) {
         final Element user = nodes.get(0);
         final String userName = user.getAttributeValue("name");
-        final String realmId = user.getChild("realm").getAttributeValue("id");
+        final String realmId = user.getAttribute("realm").getValue();
 
         LOGGER.debug("check user exists " + userName + " " + realmId);
         return MCRUserManager.exists(userName, realmId);
