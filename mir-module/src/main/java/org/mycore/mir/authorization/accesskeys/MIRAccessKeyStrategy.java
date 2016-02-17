@@ -92,8 +92,6 @@ public class MIRAccessKeyStrategy implements MCRAccessCheckStrategy {
                             MIRAccessKeyManager.deleteAccessKey(mcrObjectId);
                         }
                     }
-                    
-                    return false;
                 }
             } catch (RuntimeException e) {
                 if (mcrObjectId == null) {
