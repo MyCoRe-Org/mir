@@ -195,14 +195,14 @@
               <xsl:with-param name="nodes" select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:originInfo[@eventType='creation']/mods:publisher" />
               <xsl:with-param name="label" select="i18n:translate('component.mods.metaData.dictionary.publisher.creation')" />
             </xsl:call-template>
-            <xsl:for-each select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:subject">
+            <!-- <xsl:for-each select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:subject">  -->
               <xsl:call-template name="printMetaDate.mods">
-                <xsl:with-param name="nodes" select="mods:topic" />
+                <xsl:with-param name="nodes" select="//mods:mods/mods:subject/mods:topic" />
                 <xsl:with-param name="label" select="i18n:translate('component.mods.metaData.dictionary.subject')" />
                 <xsl:with-param name="sep" select="'; '" />
                 <xsl:with-param name="property" select="'keyword'" />
               </xsl:call-template>
-            </xsl:for-each>
+            <!-- </xsl:for-each>  -->
             <xsl:call-template name="printMetaDate.mods">
               <xsl:with-param name="nodes" select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:subject/mods:geographic" />
             </xsl:call-template>
