@@ -81,7 +81,6 @@ public class ReCaptcha {
     	final String secretKey = MCRConfiguration.instance().getString("MIR.ReCaptcha.secret.key");
         if (secretKey != null && secretKey.length() > 0) {
             if (response.trim().length() == 0 ) return Boolean.FALSE;
-        	LOGGER.info("bin hiiiiiiiiiiiieerrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr");
         	final ReCaptcha rc = new ReCaptcha(secretKey);
             return rc.verifyResponse(response, ip);
             
