@@ -26,20 +26,21 @@
             </h3>
           </div>
           <div class="panel-body">
-            <xed:include uri="xslStyle:user-xeditor-templates:webapp:authorization/user-editor.xed" ref="failed-validation-messages" />
+            <xed:include uri="xslStyle:user-xeditor-templates:webapp:authorization/new-author-includes.xed" ref="failed-validation-messages" />
             <xed:include uri="xslStyle:user-xeditor-templates:webapp:authorization/new-author-includes.xed" ref="userAccount" />
             <xed:include uri="xslStyle:user-xeditor-templates:webapp:authorization/new-author-includes.xed" ref="realName" />
             <xed:include uri="xslStyle:user-xeditor-templates:webapp:authorization/new-author-includes.xed" ref="email" />
             <xed:include uri="xslStyle:user-xeditor-templates:webapp:authorization/user-editor.xed" ref="passwords" />
             <xed:include uri="xslStyle:user-xeditor-templates:webapp:authorization/new-author-includes.xed" ref="captcha" />
 
-            <xed:validate display="global" xpath="/user"
+            <xed:validate display="global" xpath="/user/@name"
               test="not(xed:call-java('org.mycore.mir.authorization.MirSelfRegistrationServlet', 'userExists', /user))"
             >
               <xed:output i18n="selfRegistration.error.userExists" />
             </xed:validate>
           </div>
           <div class="panel-footer clearfix">
+            <button type="submit" class="btn btn-default" xed:target="debug">Debug</button>
             <div class="pull-right">
               <xed:include uri="xslStyle:user-xeditor-templates:webapp:authorization/new-author-includes.xed" ref="buttons" />
             </div>

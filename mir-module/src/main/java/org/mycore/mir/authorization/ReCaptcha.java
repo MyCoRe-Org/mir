@@ -23,16 +23,24 @@
 package org.mycore.mir.authorization;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.log4j.Logger;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
 
+import org.jdom2.Attribute;
+
 import com.google.gson.Gson;
+
+import org.mycore.common.config.MCRConfiguration;
+import org.mycore.common.MCRSession;
+import org.mycore.common.MCRSessionMgr;
 
 /**
  * @author Ren\u00E9 Adler (eagle)
@@ -41,6 +49,8 @@ public class ReCaptcha {
     private static final String RECAPTCHA_RESPONSE_FIELD = "g-recaptcha-response";
 
     private final String secretKey;
+    
+    private static final Logger LOGGER = Logger.getLogger(ReCaptcha.class);
 
     /**
      * The Google ReCaptcha response checker.
@@ -62,6 +72,23 @@ public class ReCaptcha {
 
         final Boolean ignoreCaptcha = Boolean.getBoolean("ignoreCaptcha");
         return ignoreCaptcha || verifyResponse(response, request.getRemoteAddr());
+    }
+    
+    public static Boolean isSubmittedCaptchaCorrect (List<Attribute> attributes) {
+    	String ip = MCRSessionMgr.getCurrentSession().getCurrentIP();
+    	String response = attributes.get(0).getValue();
+    	LOGGER.info("Verify ReCaptcha: ip-"+ip+" response-"+response+".");
+    	final String secretKey = MCRConfiguration.instance().getString("MIR.ReCaptcha.secret.key");
+        if (secretKey != null && secretKey.length() > 0) {
+            if (response.trim().length() == 0 ) return Boolean.FALSE;
+        	LOGGER.info("bin hiiiiiiiiiiiieerrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr");
+        	final ReCaptcha rc = new ReCaptcha(secretKey);
+            return rc.verifyResponse(response, ip);
+            
+        } else {
+            LOGGER.warn("ReCaptcha secret key wasn't set, disable captcha check!");
+        }
+        return Boolean.FALSE;
     }
 
     private Boolean verifyResponse(final String response, final String ip) {

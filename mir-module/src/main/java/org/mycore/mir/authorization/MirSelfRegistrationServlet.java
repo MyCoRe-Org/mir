@@ -69,7 +69,7 @@ public class MirSelfRegistrationServlet extends MCRServlet {
     }
 
     private void register(final HttpServletRequest req, final HttpServletResponse res) throws Exception {
-        final String secretKey = MCRConfiguration.instance().getString("MIR.ReCaptcha.secret.key");
+        /*final String secretKey = MCRConfiguration.instance().getString("MIR.ReCaptcha.secret.key");
         if (secretKey != null && secretKey.length() > 0) {
             final ReCaptcha rc = new ReCaptcha(secretKey);
 
@@ -79,7 +79,7 @@ public class MirSelfRegistrationServlet extends MCRServlet {
             }
         } else {
             LOGGER.warn("ReCaptcha secret key wasn't set, disable captcha check!");
-        }
+        }*/
 
         final Document doc = (Document) (req.getAttribute("MCRXEditorSubmission"));
 
