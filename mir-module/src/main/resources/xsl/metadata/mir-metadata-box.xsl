@@ -150,18 +150,17 @@
               mode="present" />
             <xsl:apply-templates select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:originInfo[@eventType='update']/mods:dateModified"
               mode="present" />
-            <xsl:apply-templates mode="present" select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:identifier[@type!='open-aire' and @type!='intern']" />
+            <xsl:apply-templates mode="present" select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:identifier[@type!='open-aire' and @type!='intern' and @type!='issn']" />
             <xsl:for-each select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:identifier[@type='issn']">
-              <xsl:variable name="sherpa_issn" select="." />
-              <!-- TODO: MIR-339 querying foreign host should not hold layout process -&gt; AJAX -->
-              <xsl:for-each select="document(concat('http://www.sherpa.ac.uk/romeo/api29.php?ak=', $MCR.Mods.SherpaRomeo.ApiKey, '&amp;issn=', $sherpa_issn))//publishers/publisher">
                 <tr>
-                  <td class="metaname" valign="top">SHERPA/RoMEO:</td>
-                  <td class="metavalue">
-                    <a href="http://www.sherpa.ac.uk/romeo/search.php?issn={$sherpa_issn}">RoMEO <xsl:value-of select="romeocolour" /> Journal</a>
-                  </td>
+                    <td class="metaname" valign="top">
+                        <xsl:value-of select="i18n:translate('mir.identifier.issn')" />
+                    </td>
+                    <td class="metavalue">
+                        <xsl:value-of select="."/>
+                        <div class="sherpa-issn hidden"><xsl:value-of select="."/></div>
+                    </td>
                 </tr>
-              </xsl:for-each>
             </xsl:for-each>
             <xsl:apply-templates mode="present" select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:language" />
             <xsl:for-each select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:typeOfResource">
