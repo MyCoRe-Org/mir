@@ -129,7 +129,7 @@
                         </ul>
                     </div>
                     <div class="col-xs-6">
-                        <div id="copyright">© <xsl:value-of select="$MCR.NameOfProject" /> 2015</div>
+                        <div id="copyright">© <xsl:value-of select="$MCR.NameOfProject" /> 2016</div>
                     </div>
                 </div>
                 <div id="credits" class="row">
