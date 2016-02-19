@@ -15,11 +15,8 @@
     <xsl:if test="mycoreobject/structure/derobjects/derobject">
       <!-- TODO: only checks first derivate, fix this -->
       <xsl:variable name="derId" select="mycoreobject/structure/derobjects/derobject/@xlink:href"/>
-      <xsl:variable name="derivateXML" select="document(concat('mcrobject:',$derId))"/>
-      <xsl:variable name="mainFile" select="$derivateXML/mycorederivate/derivate/internals/internal/@maindoc"/>
-      <xsl:variable name="fileNameExtension" select="translate(FilenameUtils:getExtension($mainFile),'PDF','pdf')"/>
 
-      <xsl:if test="key('rights', $derId)/@read and (iview2:getSupportedMainFile($derId) or $fileNameExtension = 'pdf' and not(mcrxsl:isMobileDevice($UserAgent)))">
+      <xsl:if test="key('rights', $derId)/@read and (iview2:getSupportedMainFile($derId) or mcrxsl:getMimeType(mcrxsl:getMainDocName($derId)) = 'application/pdf' and not(mcrxsl:isMobileDevice($UserAgent)))">
         <div id="mir-viewer">
           <xsl:variable name="viewerNodesTmp">
             <div class="row">
@@ -48,11 +45,9 @@
 
   <xsl:template name="createViewer">
     <xsl:variable name="derId" select="@xlink:href"/>
-    <xsl:variable name="derivateXML" select="document(concat('mcrobject:',$derId))"/>
     <xsl:variable name="viewerId" select="concat('viewer_',$derId)"/>
 
-    <xsl:variable name="mainFile" select="$derivateXML/mycorederivate/derivate/internals/internal/@maindoc"/>
-    <xsl:variable name="fileNameExtension" select="translate(FilenameUtils:getExtension($mainFile),'PDF','pdf')"/>
+    <xsl:variable name="mainFile" select="mcrxsl:getMainDocName($derId)"/>
 
     <xsl:choose>
       <xsl:when test="iview2:getSupportedMainFile($derId)">
@@ -68,7 +63,7 @@
           <xsl:with-param name="viewerType" select="'mets'"/>
         </xsl:call-template>
       </xsl:when>
-      <xsl:when test="$fileNameExtension = 'pdf' and not(mcrxsl:isMobileDevice($UserAgent))">
+      <xsl:when test="mcrxsl:getMimeType($mainFile) = 'application/pdf' and not(mcrxsl:isMobileDevice($UserAgent))">
         <!-- The file will be displayed with pdf.js -->
         <xsl:call-template name="createPDFViewer">
           <xsl:with-param name="WebApplicationBaseURL" select="$WebApplicationBaseURL"/>

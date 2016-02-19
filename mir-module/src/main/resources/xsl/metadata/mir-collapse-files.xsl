@@ -13,6 +13,7 @@
         <xsl:variable name="objID" select="mycoreobject/@ID" />
         <div id="mir-collapse-files">
           <xsl:for-each select="mycoreobject/structure/derobjects/derobject[key('rights', @xlink:href)/@read or key('rights', @xlink:href)/@readKey or key('rights', @xlink:href)/@writeKey]">
+            <!-- TODO: MIR-339 potentially slow: we should use ajax here -->
             <xsl:variable name="derId" select="@xlink:href" />
             <xsl:variable name="derivateXML" select="document(concat('mcrobject:',$derId))" />
             <xsl:variable name="derivateWithURN" select="mcrurn:hasURNDefined($derId)" />

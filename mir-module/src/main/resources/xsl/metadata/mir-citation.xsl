@@ -66,9 +66,10 @@
         <xsl:variable name="derivateURN">
           <xsl:for-each select="mycoreobject/structure/derobjects/derobject">
             <xsl:variable name="derId" select="@xlink:href" />
-            <xsl:variable name="derivateXML" select="document(concat('mcrobject:',$derId))" />
             <xsl:variable name="derivateWithURN" select="mcrurn:hasURNDefined($derId)" />
             <xsl:if test="$derivateWithURN=true()">
+              <!-- TODO: we should have a xalan extension that returns a URN directly -->
+              <xsl:variable name="derivateXML" select="document(concat('mcrobject:',$derId))" />
               <xsl:value-of select="$derivateXML/mycorederivate/derivate/fileset/@urn" />
               <xsl:text>|</xsl:text>
             </xsl:if>

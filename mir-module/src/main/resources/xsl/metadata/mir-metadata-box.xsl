@@ -153,6 +153,7 @@
             <xsl:apply-templates mode="present" select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:identifier[@type!='open-aire' and @type!='intern']" />
             <xsl:for-each select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:identifier[@type='issn']">
               <xsl:variable name="sherpa_issn" select="." />
+              <!-- TODO: MIR-339 querying foreign host should not hold layout process -&gt; AJAX -->
               <xsl:for-each select="document(concat('http://www.sherpa.ac.uk/romeo/api29.php?ak=', $MCR.Mods.SherpaRomeo.ApiKey, '&amp;issn=', $sherpa_issn))//publishers/publisher">
                 <tr>
                   <td class="metaname" valign="top">SHERPA/RoMEO:</td>
