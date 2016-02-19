@@ -625,6 +625,11 @@
     <mir:textfield xpath="mods:originInfo[@eventType='creation']/mods:dateOther[@type='accepted'][@encoding='w3cdtf']" label="mir.date.acceptedOthertheis" help-text="{i18n:mir.help.date.accepted}"
       class="datetimepicker" placeholder="{i18n:mir.placeholder.date}" />
   </xed:template>
+  
+  <xed:template id="date.acceptedOtherThesis.datetimepicker">
+    <mir:textfield xpath="mods:originInfo[@eventType='creation']/mods:dateOther[@type='accepted'][@encoding='w3cdtf']" label="mir.date.acceptedOtherThesis" help-text="{i18n:mir.help.date.accepted}"
+      class="datetimepicker" placeholder="{i18n:mir.placeholder.date}" />
+  </xed:template>
 
   <xed:template id="date.submitted">
     <mir:textfield xpath="mods:originInfo[@eventType='creation']/mods:dateOther[@type='submitted'][@encoding='w3cdtf']" label="mir.date.submitted" help-text="{i18n:mir.help.date.submitted}"
@@ -1441,18 +1446,19 @@
   </xed:template>
 
   <xed:template id="subject.complex">
-    <mir:textfield repeat="true" xpath="mods:subject/mods:topic" min="1" max="10" label="mir.subject.topic" help-text="{i18n:mir.help.subject.topic}" />
-  </xed:template>
-
-  <xed:template id="subjectgroup">
-    <fieldset>
-      <legend class="mir-fieldset-legend">
-        <xed:output i18n="mir.subject.topic.multiple" />
-      </legend>
-      <div class="mir-fieldset-content">
-        <mir:textfield repeat="true" xpath="mods:subject" bind="mods:topic" min="1" max="20" label="mir.subject.topic" help-text="{i18n:mir.help.subject.topic}" />
-      </div>
-    </fieldset>
+    <xed:repeat xpath="mods:subject" min="1" max="10">
+      <fieldset>
+        <div class="row mir-fieldset-legend">
+          <legend class="col-md-9" style="margin-bottom:0px;padding-top:10px;">
+            <xed:output i18n="mir.subject.topic.complex" />
+          </legend>
+          <mir:help-pmud pmud="true" help-text="{i18n:mir.help.subject.topic.complex}"/>
+        </div>  
+        <div class="mir-fieldset-content">
+          <mir:textfield repeat="true" xpath="mods:topic" min="1" max="10" label="mir.subject.topic" help-text="{i18n:mir.help.subject.topic}" />
+        </div>
+      </fieldset>
+    </xed:repeat>
   </xed:template>
 
   <xed:template id="classification">
