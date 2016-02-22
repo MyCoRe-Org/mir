@@ -1,0 +1,79 @@
+{{#each children}}
+    <div class="col-xs-12">
+        {{#is ../mainDoc name}}
+            <div class="file_set active_file">
+        {{else}}
+            <div class="file_set file">
+        {{/is}}
+        {{#isOr ../permWrite ../permDelete}}
+            {{#unless ../urn}}
+                <div class="options pull-right">
+                    <div class="btn-group">
+                        <a href="#" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                            <i class="fa fa-cog"></i>
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-right">
+                            {{#if ../permWrite}}
+                                {{#isNot type "directory"}}
+                                    <li>
+                                        <a title="{i18n:translate('IFS.mainFile')}"
+                                           href="{{../serverBaseURL}}servlets/MCRDerivateServlet?derivateid={{../mycorederivate}}&amp;objectid={{../mycoreobject}}&amp;todo=ssetfile&amp;file={{name}}"
+                                           class="option" >
+                                            <span class="glyphicon glyphicon-star"></span>
+                                            Hauptdatei
+                                        </a>
+                                    </li>
+                                {{/isNot}}
+                            {{/if}}
+                            {{#if ../permDelete}}
+                                <li>
+                                    <a href="{{../serverBaseURL}}servlets/MCRDerivateServlet?derivateid={{../mycorederivate}}&amp;objectid={{../mycoreobject}}&amp;todo=sdelfile&amp;file={{name}}"
+                                       class="option confirm_deletion" data-text="Wollen Sie diese Datei wirklich löschen?" title="Datei löschen">
+                                        <span class="glyphicon glyphicon-trash"></span>
+                                        Datei löschen
+                                    </a>
+                                </li>
+                            {{/if}}
+                        </ul>
+                    </div>
+                </div>
+            {{/unless}}
+        {{/isOr}}
+        <span class="file_size">
+            [{{formatFileSize size}}]
+        </span>
+        {{#is ../mainDoc name}}
+            <span class="active_file glyphicon glyphicon-star" />
+        {{else}}
+            <span class="file glyphicon glyphicon-star" />
+        {{/is}}
+        <span class="file_date">
+         {{formatDate time.modified}}
+        </span>
+        <span class="file_preview">
+            {{#contains name ".pdf"}}
+                <img src="{{../serverBaseURL}}images/icons/icon_common_disabled.png" alt="" data-toggle="tooltip"
+                        data-placement="top" data-html="true" data-title='&lt;img src="{{../serverBaseURL}}img/pdfthumb/{{../mycorederivate}}{{path}}?centerThumb=no"&gt;' />
+            {{else}}
+                {{#is type "directory"}}
+                    <span class="glyphicon glyphicon-folder-close derivate_folder_icon"></span>
+                {{else}}
+                    <img src="{{../serverBaseURL}}images/icons/icon_common_disabled.png" alt="" />
+                {{/is}}
+            {{/contains}}
+        </span>
+            {{#isNot type "directory"}}
+                <span class="file_name">
+                    <a href="{{../serverBaseURL}}servlets/MCRFileNodeServlet/{{../mycorederivate}}{{path}}">
+                        {{name}}
+                    </a>
+                </span>
+            {{else}}
+                <span class="file_name derivate_folder" data-path="{{path}}">
+                    {{name}}
+                </span>
+            {{/isNot}}
+        </div>
+    </div>
+{{/each}}

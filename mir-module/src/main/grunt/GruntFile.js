@@ -38,7 +38,9 @@ module.exports = function(grunt) {
           'bootstrap-datepicker/css':'bootstrap-datepicker/dist/css/',
           'bootstrap-datepicker/locales':'bootstrap-datepicker/dist/locales/',
 
-          'moment' : 'moment/'
+          'moment' : 'moment/',
+
+          'handlebars': 'handlebars/'
         },
       }
     }
