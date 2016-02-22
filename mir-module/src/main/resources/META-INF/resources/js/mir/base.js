@@ -94,17 +94,17 @@
       if (origSearchAction.includes('servlets/solr/find')) {
         var replAction = origSearchAction.replace(/(.*[&|\?])(qry=.*?)&(.*)/,'$1$3&$2');
         if ($('#search_type_button').attr('value') == 'all') {
-            var newAction = replAction + " AND " + $('.search_box input').val();
+            var newAction = replAction + "+%2B" + $('.search_box input').val();
           } else {
-            var newAction = replAction + " AND " + $('.search_box input').val() + "&df=" + $('#search_type_button').attr('value');
+            var newAction = replAction + "+%2B" + $('.search_box input').val() + "&df=" + $('#search_type_button').attr('value');
           }
       }
       else {
         var replAction = origSearchAction.replace(/(.*[&|\?])(q=.*?)&(.*)/,'$1$3&$2');
         if ($('#search_type_button').attr('value') == 'all') {
-            var newAction = replAction + " AND *:" + $('.search_box input').val();
+            var newAction = replAction + "+%2BallMeta:" + $('.search_box input').val();
           } else {
-            var newAction = replAction + " AND " + $('#search_type_button').attr('value') + ":" + $('.search_box input').val();
+            var newAction = replAction + "+%2B" + $('#search_type_button').attr('value') + ":" + $('.search_box input').val();
           }
       }
 
