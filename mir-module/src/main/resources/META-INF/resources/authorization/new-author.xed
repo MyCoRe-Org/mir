@@ -2,14 +2,14 @@
 <!DOCTYPE MyCoReWebPage>
 <MyCoReWebPage>
   <section xml:lang="all" i18n="component.user2.admin.create.title">
-    <script src='https://www.google.com/recaptcha/api.js'></script>
-
     <h2>Dokument einreichen</h2>
     <h3>Schritt 1: Selbstregistrierung</h3>
     <p>
       Bevor Sie eine Publikation einreichen können, benötigen Sie eine Nutzerkennung mit Autoren-Rechten. Sie können sich über das unten stehende
-      Formular selbst registrieren. Um die Registrierung abzuschließen, müssen Sie einmal den Link aufrufen, der Ihnen per Mail zugesandt wird, nachdem
-      Sie das Formular abgesandt haben. Vielen Dank!
+      Formular
+      selbst registrieren. Um die Registrierung abzuschließen, müssen Sie einmal den Link aufrufen, der Ihnen per Mail zugesandt wird, nachdem
+      Sie das Formular
+      abgesandt haben. Vielen Dank!
     </p>
 
     <xed:form class="userEditor form-horizontal" role="form" xmlns:xed="http://www.mycore.de/xeditor" xmlns:mcruser="http://www.mycore.de/components/mcruser">
@@ -26,14 +26,14 @@
             </h3>
           </div>
           <div class="panel-body">
-            <xed:include uri="xslStyle:user-xeditor-templates:webapp:authorization/new-author-includes.xed" ref="failed-validation-messages" />
+            <xed:include uri="xslStyle:user-xeditor-templates:webapp:authorization/user-editor.xed" ref="failed-validation-messages" />
             <xed:include uri="xslStyle:user-xeditor-templates:webapp:authorization/new-author-includes.xed" ref="userAccount" />
             <xed:include uri="xslStyle:user-xeditor-templates:webapp:authorization/new-author-includes.xed" ref="realName" />
             <xed:include uri="xslStyle:user-xeditor-templates:webapp:authorization/new-author-includes.xed" ref="email" />
             <xed:include uri="xslStyle:user-xeditor-templates:webapp:authorization/user-editor.xed" ref="passwords" />
             <xed:include uri="xslStyle:user-xeditor-templates:webapp:authorization/new-author-includes.xed" ref="captcha" />
 
-            <xed:validate display="global" xpath="/user/@name"
+            <xed:validate display="global" xpath="/user"
               test="not(xed:call-java('org.mycore.mir.authorization.MirSelfRegistrationServlet', 'userExists', /user))"
             >
               <xed:output i18n="selfRegistration.error.userExists" />

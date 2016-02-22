@@ -27,30 +27,51 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.log4j.Logger;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
-
+import org.apache.log4j.Logger;
 import org.jdom2.Attribute;
+import org.mycore.common.MCRSessionMgr;
+import org.mycore.common.config.MCRConfiguration;
 
 import com.google.gson.Gson;
-
-import org.mycore.common.config.MCRConfiguration;
-import org.mycore.common.MCRSession;
-import org.mycore.common.MCRSessionMgr;
 
 /**
  * @author Ren\u00E9 Adler (eagle)
  */
 public class ReCaptcha {
+    private static final Logger LOGGER = Logger.getLogger(ReCaptcha.class);
+
     private static final String RECAPTCHA_RESPONSE_FIELD = "g-recaptcha-response";
 
     private final String secretKey;
-    
-    private static final Logger LOGGER = Logger.getLogger(ReCaptcha.class);
+
+    /**
+     * Checks if capcha was correct submitted.
+     * 
+     * @param attributes a list of attributes
+     * @return <code>true</code> if captcha was solved and <code>false</code> if not
+     */
+    public static Boolean isSubmittedCaptchaCorrect(List<Attribute> attributes) {
+        String ip = MCRSessionMgr.getCurrentSession().getCurrentIP();
+        String response = attributes.get(0).getValue();
+
+        LOGGER.info("Verify ReCaptcha: ip-" + ip + " response-" + response + ".");
+
+        final String secretKey = MCRConfiguration.instance().getString("MIR.ReCaptcha.secret.key");
+        if (secretKey != null && secretKey.length() > 0) {
+            if (response.trim().length() == 0)
+                return Boolean.FALSE;
+            final ReCaptcha rc = new ReCaptcha(secretKey);
+            return rc.verifyResponse(response, ip);
+        } else {
+            LOGGER.warn("ReCaptcha secret key wasn't set, disable captcha check!");
+        }
+        return Boolean.FALSE;
+    }
 
     /**
      * The Google ReCaptcha response checker.
@@ -65,29 +86,13 @@ public class ReCaptcha {
      * Checks if capcha was correct submitted.
      * 
      * @param request the HTTP request
-     * @return true on correct submitted captcha or false ifn't
+     * @return @return <code>true</code> if captcha was solved and <code>false</code> if not
      */
     public Boolean isSubmittedCaptchaCorrect(final HttpServletRequest request) {
         final String response = request.getParameter(RECAPTCHA_RESPONSE_FIELD);
 
         final Boolean ignoreCaptcha = Boolean.getBoolean("ignoreCaptcha");
         return ignoreCaptcha || verifyResponse(response, request.getRemoteAddr());
-    }
-    
-    public static Boolean isSubmittedCaptchaCorrect (List<Attribute> attributes) {
-    	String ip = MCRSessionMgr.getCurrentSession().getCurrentIP();
-    	String response = attributes.get(0).getValue();
-    	LOGGER.info("Verify ReCaptcha: ip-"+ip+" response-"+response+".");
-    	final String secretKey = MCRConfiguration.instance().getString("MIR.ReCaptcha.secret.key");
-        if (secretKey != null && secretKey.length() > 0) {
-            if (response.trim().length() == 0 ) return Boolean.FALSE;
-        	final ReCaptcha rc = new ReCaptcha(secretKey);
-            return rc.verifyResponse(response, ip);
-            
-        } else {
-            LOGGER.warn("ReCaptcha secret key wasn't set, disable captcha check!");
-        }
-        return Boolean.FALSE;
     }
 
     private Boolean verifyResponse(final String response, final String ip) {

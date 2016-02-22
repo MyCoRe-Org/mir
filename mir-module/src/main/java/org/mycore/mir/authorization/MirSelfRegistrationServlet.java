@@ -33,7 +33,6 @@ import org.jdom2.Document;
 import org.jdom2.Element;
 import org.mycore.common.MCRMailer;
 import org.mycore.common.MCRUtils;
-import org.mycore.common.config.MCRConfiguration;
 import org.mycore.common.content.MCRJDOMContent;
 import org.mycore.frontend.MCRFrontendUtil;
 import org.mycore.frontend.servlets.MCRServlet;
@@ -69,18 +68,6 @@ public class MirSelfRegistrationServlet extends MCRServlet {
     }
 
     private void register(final HttpServletRequest req, final HttpServletResponse res) throws Exception {
-        /*final String secretKey = MCRConfiguration.instance().getString("MIR.ReCaptcha.secret.key");
-        if (secretKey != null && secretKey.length() > 0) {
-            final ReCaptcha rc = new ReCaptcha(secretKey);
-
-            if (!rc.isSubmittedCaptchaCorrect(req)) {
-                res.sendRedirect(MCRFrontendUtil.getBaseURL() + "authorization/new-author.xed");
-                return;
-            }
-        } else {
-            LOGGER.warn("ReCaptcha secret key wasn't set, disable captcha check!");
-        }*/
-
         final Document doc = (Document) (req.getAttribute("MCRXEditorSubmission"));
 
         if (doc == null) {
