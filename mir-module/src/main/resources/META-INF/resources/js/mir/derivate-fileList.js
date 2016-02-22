@@ -185,14 +185,13 @@
                     openFolder($(this).attr("data-path"));
                 });
 
-                if (objID != undefined && objID != "" && deriID != undefined && deriID != "" && mainDoc != undefined && mainDoc != "") {
+                if (objID != undefined && objID != "" && deriID != undefined && deriID != "") {
                     getDerivate();
                 }
                 else{
-                    console.log("Wrong objID, deriID or mainDoc, cant get Derivate");
+                    console.log("Wrong objID or deriID, cant get Derivate");
                     console.log(objID);
                     console.log(deriID);
-                    console.log(mainDoc);
                 }
             }
         };
