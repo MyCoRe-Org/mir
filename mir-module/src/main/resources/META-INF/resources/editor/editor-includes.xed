@@ -1760,6 +1760,7 @@
     <link href="{$WebApplicationBaseURL}assets/bootstrap-datepicker/css/bootstrap-datepicker.css" rel="stylesheet" />
     <script type="text/javascript" src="{$WebApplicationBaseURL}assets/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
     <script type="text/javascript" src="{$WebApplicationBaseURL}assets/bootstrap-datepicker/locales/bootstrap-datepicker.de.min.js"></script>
+    <script type="text/javascript" src="{$WebApplicationBaseURL}assets/moment/moment.js"></script>
     <script type="text/javascript" src="{$WebApplicationBaseURL}js/mir/xeditor-form.js"></script>
   </xed:template>
 

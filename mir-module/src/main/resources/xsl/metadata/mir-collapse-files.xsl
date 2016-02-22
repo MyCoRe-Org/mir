@@ -66,6 +66,11 @@
                     <div class="file_box_files" data-objID="{$objID}" data-deriID="{$derId}" data-mainDoc="{$maindoc}"
                          data-writedb="{acl:checkPermission($derId,'writedb')}"
                          data-deletedb="{acl:checkPermission($derId,'deletedb')}" data-urn="{$derivateWithURN}">
+                      <div class="filelist-loading">
+                        <div class="bounce1"></div>
+                        <div class="bounce2"></div>
+                        <div class="bounce3"></div>
+                      </div>
                     </div>
                   </xsl:when>
                   <xsl:otherwise>

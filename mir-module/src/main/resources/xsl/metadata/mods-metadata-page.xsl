@@ -222,6 +222,7 @@
 <!--  end: detail row -->
       </div>
       <script src="{$WebApplicationBaseURL}assets/jquery/plugins/shariff/shariff.min.js"></script>
+      <script src="{$WebApplicationBaseURL}assets/moment/moment.js"></script>
       <script src="{$WebApplicationBaseURL}assets/handlebars/handlebars.min.js"></script>
       <script src="{$WebApplicationBaseURL}js/mir/derivate-fileList.js"></script>
     </xsl:copy>
