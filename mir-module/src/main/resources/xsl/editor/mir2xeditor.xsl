@@ -148,10 +148,14 @@
             <button class="btn btn-default dropdown-toggle" data-toggle="dropdown"><span class="caret"></span><span class="sr-only">Toggle Dropdown</span></button>
             <ul class="dropdown-menu dropdown-menu-right" role="menu">
               <li class="active">
-                <a href="#" class="date-simpleOption">Datumsangabe</a>
+                <a href="#" class="date-simpleOption">
+                  <xsl:value-of select="i18n:translate('mir.date.specification')" /> 
+                </a>
               </li>
               <li>
-                <a href="#" class="date-rangeOption">Zeitraum</a>
+                <a href="#" class="date-rangeOption">
+                  <xsl:value-of select="i18n:translate('mir.date.period')" /> 
+                </a>
               </li>
             </ul>
           </div>
@@ -173,10 +177,14 @@
             <button class="btn btn-default dropdown-toggle" data-toggle="dropdown"><span class="caret"></span><span class="sr-only">Toggle Dropdown</span></button>
             <ul class="dropdown-menu dropdown-menu-right" role="menu">
               <li>
-                <a href="#" class="date-simpleOption">Datumsangabe</a>
+                <a href="#" class="date-simpleOption">
+                  <xsl:value-of select="i18n:translate('mir.date.specification')" />
+                </a>
               </li>
               <li class="active">
-                <a href="#" class="date-rangeOption">Zeitraum</a>
+                <a href="#" class="date-rangeOption">
+                  <xsl:value-of select="i18n:translate('mir.date.period')" />
+                </a>
               </li>
             </ul>
           </div>

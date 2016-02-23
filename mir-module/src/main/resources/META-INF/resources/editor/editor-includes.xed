@@ -531,7 +531,7 @@
   </xed:template>
 
   <xed:template id="person.affiliation">
-    <mir:textfield xpath="mods:affiliation" help-text="{i18n:mir.help.title}" label="mir.affiliation"/>
+    <mir:textfield xpath="mods:affiliation" help-text="{i18n:mir.help.affiliation}" label="mir.affiliation"/>
   </xed:template>
 
   <xed:template id="nameIdentifier.repeated">
