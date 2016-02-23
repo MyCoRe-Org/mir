@@ -140,10 +140,27 @@
             var fileList = template(newJson);
             $(fileBox).html("");
             if (json.path != "/") {
-                $(fileBox).append('<div class="col-xs-12"><div class="file_set file"><span class="file_name derivate_folder go_back" data-path="' + getParentPath(json.path) + '">...</span></div>');
+                buildBreadcrumbs(json.path);
             }
             $(fileBox).append(fileList);
             $('.confirm_deletion').confirm();
+        }
+
+        function buildBreadcrumbs(path) {
+            $(fileBox).append('<div class="col-xs-12"><div class="file_set file"><div class="file_box_breadcrumbs"></div></div>');
+            var currentPath = path;
+            while(currentPath != "/") {
+                var currentElm = getCurrentElm(currentPath);
+                $(fileBox).find(".file_box_breadcrumbs").prepend('<span class="file_name derivate_folder" data-path="' + currentPath + '">' + currentElm + '</span>');
+                var newPath = getParentPath(currentPath);
+                if (newPath !== currentPath){
+                    currentPath = newPath;
+                }
+                else {
+                    break;
+                }
+            }
+            $(fileBox).find(".file_box_breadcrumbs").prepend('<span class="file_name derivate_folder" data-path="/"> </span>');
         }
 
         function clone(obj) {
@@ -164,6 +181,13 @@
                 }
                 return path.substring(0, path.lastIndexOf("/") + 1);
             }
+        }
+
+        function getCurrentElm(path) {
+            if (path.lastIndexOf("/") == path.length - 1) {
+                path = path.substring(0, path.length - 1);
+            }
+            return path.substr(path.lastIndexOf("/") + 1);
         }
 
         //init
