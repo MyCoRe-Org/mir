@@ -3,7 +3,7 @@
   <parent>
     <groupId>org.mycore</groupId>
     <artifactId>mycore-parent</artifactId>
-    <version>28-SNAPSHOT</version>
+    <version>28</version>
   </parent>
   <groupId>org.mycore.mir</groupId>
   <artifactId>mir-parent</artifactId>
@@ -14,12 +14,12 @@
   <inceptionYear>2013</inceptionYear>
   <properties>
     <java.target.version>1.8</java.target.version>
-    <mycore.version>2015.12-SNAPSHOT</mycore.version>
-    <jetty.version>9.3.5.v20151012</jetty.version>
-    <tomcat8.version>8.0.28</tomcat8.version>
+    <mycore.version>2016.02</mycore.version>
+    <jetty.version>9.3.7.v20160115</jetty.version>
+    <tomcat8.version>8.0.32</tomcat8.version>
     <node.version>v4.2.2</node.version>
     <npm.version>3.5.0</npm.version>
-    <cargo.version>1.4.16</cargo.version>
+    <cargo.version>1.4.18</cargo.version>
     <cargo.servlet.uriencoding>UTF-8</cargo.servlet.uriencoding>
     <cargo.container.zipUrlInstaller.downloadDir>${settings.localRepository}/../cargo/containers</cargo.container.zipUrlInstaller.downloadDir>
     <cargo.deployable.default.groupId>${project.groupId}</cargo.deployable.default.groupId>
