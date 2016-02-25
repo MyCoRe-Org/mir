@@ -17,11 +17,11 @@
                             {{#if ../permWrite}}
                                 {{#isNot type "directory"}}
                                     <li>
-                                        <a title="{i18n:translate('IFS.mainFile')}"
+                                        <a title="{{getI18n "IFS.mainFile"}}"
                                            href="{{../serverBaseURL}}servlets/MCRDerivateServlet?derivateid={{../mycorederivate}}&amp;objectid={{../mycoreobject}}&amp;todo=ssetfile&amp;file={{name}}"
                                            class="option" >
                                             <span class="glyphicon glyphicon-star"></span>
-                                            Hauptdatei
+                                            {{getI18n "IFS.mainFile"}}
                                         </a>
                                     </li>
                                 {{/isNot}}
@@ -29,9 +29,9 @@
                             {{#if ../permDelete}}
                                 <li>
                                     <a href="{{../serverBaseURL}}servlets/MCRDerivateServlet?derivateid={{../mycorederivate}}&amp;objectid={{../mycoreobject}}&amp;todo=sdelfile&amp;file={{name}}"
-                                       class="option confirm_deletion" data-text="Wollen Sie diese Datei wirklich löschen?" title="Datei löschen">
+                                       class="option confirm_deletion" data-text="{{getI18n (concat "mir.confirm." type ".text")}}" title="{{getI18n (concat "IFS." type "Delete")}}">
                                         <span class="glyphicon glyphicon-trash"></span>
-                                        Datei löschen
+                                        {{getI18n (concat "IFS." type "Delete")}}
                                     </a>
                                 </li>
                             {{/if}}

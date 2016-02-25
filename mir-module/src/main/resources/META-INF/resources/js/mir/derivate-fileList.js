@@ -29,6 +29,10 @@
                 return toReadableSize(input, 0);
             });
             Handlebars.registerHelper("formatDate", function(input) {
+                var lang = $("html").attr("lang");
+                if (lang == "en"){
+                    return moment(input).format("YYYY-MM-DD");
+                }
                 return moment(input).format('DD.MM.YYYY');
             });
             $(".file_box_files").each(function() {
@@ -72,7 +76,8 @@
     });
 
     var DerivateFileList = function () {
-        var objID, deriID, mainDoc, fileBox, aclWriteDB, aclDeleteDB, derivateJson, template, urn;
+        var objID, deriID, mainDoc, fileBox, aclWriteDB, aclDeleteDB, derivateJson, template, urn, hbs;
+        var i18nKeys = {};
 
         //functions
         function getDerivate() {
@@ -96,16 +101,22 @@
         }
 
         function getTemplate(json) {
-            $.ajax({
-                url: webApplicationBaseURL + "hbs/derivate-fileList.hbs",
-                type: "GET",
-                success: function(data) {
-                    useTemplate(json, data);
-                },
-                error: function() {
-                    console.log("Template request failed");
-                }
-            });
+            if (hbs == undefined) {
+                $.ajax({
+                    url: webApplicationBaseURL + "hbs/derivate-fileList.hbs",
+                    type: "GET",
+                    success: function(data) {
+                        hbs = data;
+                        useTemplate(json, hbs);
+                    },
+                    error: function() {
+                        console.log("Template request failed");
+                    }
+                });
+            }
+            else {
+                useTemplate(json, hbs);
+            }
         }
 
         function openFolder(path) {
@@ -190,6 +201,36 @@
             return path.substr(path.lastIndexOf("/") + 1);
         }
 
+        function loadI18nKeys(lang, callback) {
+            var ifsKeyURL = webApplicationBaseURL + "servlets/MCRLocaleServlet/" + lang + "/IFS*";
+            var mirKeyURL = webApplicationBaseURL + "servlets/MCRLocaleServlet/" + lang + "/mir.confirm.*";
+            $.when($.ajax(ifsKeyURL), $.ajax(mirKeyURL)).done(function(d1, d2) {
+                if (d1[0] != {} && d1[0] != "???IFS*???") {
+                    i18nKeys = $.extend(d1[0], i18nKeys);
+                }
+                else {
+                    i18nKeys["IFS.fileDelete"] = "Datei l\u00F6schen";
+                    i18nKeys["IFS.mainFile"] = "Hauptdatei";
+                    i18nKeys["IFS.directoryDelete"] = "Verzeichnis l\u00F6schen";
+                }
+                if (d2[0] != {} && d2[0] != "???mir.confirm.*???") {
+                    i18nKeys = $.extend(d2[0], i18nKeys);
+                }
+                else {
+                    i18nKeys["mir.confirm.directory.text"] = "Wollen Sie dieses Verzeichnis inkl. aller enthaltenen Dateien und ggf. Unterverzeichnissen l\u00F6schen?";
+                    i18nKeys["mir.confirm.file.text"] = "Wollen Sie diese Datei wirklich l\u00F6schen?";
+                }
+                callback();
+            }).fail(function () {
+                i18nKeys["IFS.fileDelete"] = "Datei l\u00F6schen";
+                i18nKeys["IFS.mainFile"] = "Hauptdatei";
+                i18nKeys["IFS.directoryDelete"] = "Verzeichnis l\u00F6schen";
+                i18nKeys["mir.confirm.directory.text"] = "Wollen Sie dieses Verzeichnis inkl. aller enthaltenen Dateien und ggf. Unterverzeichnissen l\u00F6schen?";
+                i18nKeys["mir.confirm.file.text"] = "Wollen Sie diese Datei wirklich l\u00F6schen?";
+                callback();
+            });
+        }
+
         //init
         return {
             init: function (list) {
@@ -205,12 +246,24 @@
                     openFolder($(this).attr("data-path"));
                 });
 
-                $(fileBox).on("click", ".go_back", function() {
-                    openFolder($(this).attr("data-path"));
+                Handlebars.registerHelper("getI18n", function(input) {
+                    var text = i18nKeys[input];
+                    if (text != undefined) {
+                        return text;
+                    }
+                    return "";
+                });
+
+                Handlebars.registerHelper("concat", function() {
+                    var args = Array.prototype.slice.call(arguments);
+                    args.pop();
+                    return args.join('');
                 });
 
                 if (objID != undefined && objID != "" && deriID != undefined && deriID != "") {
-                    getDerivate();
+                    loadI18nKeys($("html").attr("lang"), function() {
+                        getDerivate("/");
+                    });
                 }
                 else{
                     console.log("Wrong objID or deriID, cant get Derivate");
