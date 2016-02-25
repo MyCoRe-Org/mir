@@ -33,8 +33,8 @@
 
   <xsl:template name="mir-required">
     <xsl:if test="@required='true'">
-      <xed:validate required="true" display="global"> 
-        <xsl:value-of select="i18n:translate(@required-i18n)" /> 
+      <xed:validate required="true" display="global">
+        <xsl:value-of select="i18n:translate(@required-i18n)" />
       </xed:validate>
     </xsl:if>
   </xsl:template>
@@ -149,12 +149,12 @@
             <ul class="dropdown-menu dropdown-menu-right" role="menu">
               <li class="active">
                 <a href="#" class="date-simpleOption">
-                  <xsl:value-of select="i18n:translate('mir.date.specification')" /> 
+                  <xsl:value-of select="i18n:translate('mir.date.specification')" />
                 </a>
               </li>
               <li>
                 <a href="#" class="date-rangeOption">
-                  <xsl:value-of select="i18n:translate('mir.date.period')" /> 
+                  <xsl:value-of select="i18n:translate('mir.date.period')" />
                 </a>
               </li>
             </ul>
@@ -418,7 +418,8 @@
 
   <xsl:template match="mir:relItemsearch">
     <xed:bind xpath="{@xpath}">
-      <div class="form-group">
+      <xsl:variable name="xed-val-marker" > {$xed-validation-marker} </xsl:variable>
+      <div class="form-group {@class} {$xed-val-marker}">
         <label class="col-md-3 control-label">
           <xed:output i18n="{@label}" />
         </label>
@@ -437,6 +438,7 @@
             <xsl:call-template name="mir-pmud" />
           </xsl:if>
         </div>
+        <xsl:call-template name="mir-required" />
       </div>
     </xed:bind>
   </xsl:template>
