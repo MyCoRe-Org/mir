@@ -15,7 +15,7 @@
             </h3>
           </div>
           <div class="panel-body">
-            <xed:include uri="xslStyle:xeditor-mir-templates:webapp:authorization/accesskey-includes.xed" ref="failed-validation-messages" />
+            <xed:include uri="webapp:editor/editor-includes.xed" ref="failed-validation-messages" />
 
             <xed:include uri="xslStyle:xeditor-mir-templates:webapp:authorization/accesskey-includes.xed" ref="editor" />
           </div>

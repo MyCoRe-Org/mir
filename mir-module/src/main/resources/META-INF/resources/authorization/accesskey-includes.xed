@@ -21,19 +21,6 @@
     </xed:choose>
   </xed:template>
 
-  <xed:template id="failed-validation-messages">
-    <xed:if test="$xed-validation-failed">
-      <div class="alert alert-danger">
-        <h3>
-          <xed:output i18n="mir.validation.failed" />
-        </h3>
-        <ul class="mir-validation-messages">
-          <xed:display-validation-messages />
-        </ul>
-      </div>
-    </xed:if>
-  </xed:template>
-
   <xed:template id="editor">
     <xed:choose>
       <xed:when test="string-length($action) &gt; 0 and ($action = 'create' or $action = 'edit')">
