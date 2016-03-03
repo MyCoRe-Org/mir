@@ -25,6 +25,12 @@
                 }
                 return options.inverse(this);
             });
+            Handlebars.registerHelper('endsWith', function(a, b, options) {
+                if (a.substr(-b.length) === b) {
+                    return options.fn(this);
+                }
+                return options.inverse(this);
+            });
             Handlebars.registerHelper("formatFileSize", function(input) {
                 return toReadableSize(input, 0);
             });
@@ -231,6 +237,23 @@
             });
         }
 
+        function changeVideo(elm) {
+            var vID = getVideoID($(elm).attr("data-deriid"), $(elm).attr("data-name"));
+            if (vID != undefined && vID != "") {
+                $("#videoChooser").val(vID);
+                $("#videoChooser").change();
+            }
+        }
+
+        function getVideoID(vDeriID, name) {
+            if ($("#videoChooser").length > 0) {
+                return $("#videoChooser optgroup[label='" + vDeriID + "'] > option").filter(function () {
+                    return $(this).html() == name;
+                }).val();
+            }
+            return "";
+        }
+
         //init
         return {
             init: function (list) {
@@ -244,6 +267,13 @@
 
                 $(fileBox).on("click", ".derivate_folder", function() {
                     openFolder($(this).attr("data-path"));
+                });
+
+                $(fileBox).on("click", ".file_name_video > a", function(evt) {
+                    if ($("#player_").length > 0) {
+                        evt.preventDefault();
+                        changeVideo($(this));
+                    }
                 });
 
                 Handlebars.registerHelper("getI18n", function(input) {

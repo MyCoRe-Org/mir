@@ -64,11 +64,19 @@
             {{/contains}}
         </span>
             {{#isNot type "directory"}}
-                <span class="file_name">
-                    <a href="{{../serverBaseURL}}servlets/MCRFileNodeServlet/{{../mycorederivate}}{{path}}">
-                        {{name}}
-                    </a>
-                </span>
+                {{#endsWith name "mp4"}}
+                    <span class="file_name_video">
+                        <a data-deriid="{{../mycorederivate}}" data-name="{{name}}" href="{{href}}">
+                            {{name}}
+                        </a>
+                    </span>
+                {{else}}
+                    <span class="file_name">
+                        <a href="{{href}}">
+                            {{name}}
+                        </a>
+                    </span>
+                {{/endsWith}}
             {{else}}
                 <span class="file_name derivate_folder" data-path="{{path}}">
                     {{name}}
