@@ -245,7 +245,7 @@
                   <ul>
                     <xsl:for-each select="result/doc">
                       <li>
-                        <a href="{$WebApplicationBaseURL}/receive/{str[@name='returnId']}">
+                        <a href="{$WebApplicationBaseURL}receive/{str[@name='returnId']}">
                           <xsl:if test="str[@name='mods.part']">
                             <xsl:value-of select="str[@name='mods.part']" />
                           </xsl:if>
@@ -268,7 +268,7 @@
             <ul>
               <xsl:for-each select="$hits/arr[@name='groups']/lst/result/doc">
                 <li>
-                  <a href="{$WebApplicationBaseURL}/receive/{str[@name='returnId']}">
+                  <a href="{$WebApplicationBaseURL}receive/{str[@name='returnId']}">
                     <xsl:if test="str[@name='mods.part']">
                       <xsl:value-of select="str[@name='mods.part']" />
                     </xsl:if>
