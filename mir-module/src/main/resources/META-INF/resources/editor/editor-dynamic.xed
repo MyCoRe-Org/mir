@@ -79,17 +79,5 @@
       </xed:bind>
     </xed:bind>
   </xed:form>
-  
-  <script type="text/javascript">
-    $(function () {
-      $('.datetimepicker').find('input').datetimepicker({
-        locale: 'de',
-        format: 'YYYY-MM-DD',
-        extraFormats: [ 'YYYY','YYYY-MM', 'YYYY-MM-DD' ]
-      });
-    });
-  </script>
-
-
   </section>
 </MyCoReWebPage>
