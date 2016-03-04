@@ -1364,6 +1364,8 @@
         <mir:help-pmud help-text="{i18n:mir.help.sdnb}" />
       </div>
     </xed:bind>
+    <xed:validate xpath="//mods:mods/mods:classification[@authority='sdnb'][@displayLabel='sdnb']" required="true" i18n="mir.validation.sdnb"
+      display="global" />
   </xed:template>
 
   <xed:template id="sdnb.repeat">
@@ -1384,6 +1386,8 @@
         <mir:help-pmud help-text="{i18n:mir.help.sdnb}" pmud="true" />
       </div>
     </xed:repeat>
+    <xed:validate xpath="//mods:mods/mods:classification[@authority='sdnb'][@displayLabel='sdnb']" required="true" i18n="mir.validation.sdnb"
+      display="global" />
   </xed:template>
 
   <xed:template id="abstract.simple">
@@ -1741,8 +1745,6 @@
     <xed:validate xpath="//mods:mods/mods:titleInfo/mods:title" required="true" i18n="mir.validation.title" display="global" />
     <xed:validate xpath="//mods:mods/mods:genre[@authorityURI='http://www.mycore.org/classifications/mir_genres']/@valueURIxEditor" required="true"
       i18n="mir.validation.genre" display="global" />
-    <xed:validate xpath="//mods:mods/mods:classification[@authority='sdnb'][@displayLabel='sdnb']" required="true" i18n="mir.validation.sdnb"
-      display="global" />
     <!-- don't validate author, date issued and rights for journal etc.  -->
     <xed:if test="//mods:mods/mods:genre[@valueURIxEditor!='journal'][@valueURIxEditor!='newspaper'][@valueURIxEditor!='series'][@valueURIxEditor!='lecture']">
       <xed:validate xpath="//mods:mods/mods:accessCondition[@type='use and reproduction']" required="true" i18n="mir.validation.rights" display="global" />
