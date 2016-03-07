@@ -168,16 +168,18 @@
             </div>
           </xsl:if>
 <!-- export -->
-          <div id="mir_export_panel" class="panel panel-default">
-            <div class="panel-heading">
-              <h3 class="panel-title">Export</h3>
+          <xsl:if test="div[@id='mir-export']">
+            <div id="mir_export_panel" class="panel panel-default">
+              <div class="panel-heading">
+                <h3 class="panel-title">Export</h3>
+              </div>
+              <div class="panel-body">
+                  <!-- Start: EXPORT -->
+                <xsl:apply-templates select="div[@id='mir-export']" mode="copyContent" />
+                  <!-- End: EXPORT -->
+              </div>
             </div>
-            <div class="panel-body">
-                <!-- Start: EXPORT -->
-              <xsl:apply-templates select="div[@id='mir-export']" mode="copyContent" />
-                <!-- End: EXPORT -->
-            </div>
-          </div>
+          </xsl:if>
 <!-- system -->
           <xsl:if test="not(mcrxsl:isCurrentUserGuestUser())">
             <div id="mir_admindata_panel" class="panel panel-default system">

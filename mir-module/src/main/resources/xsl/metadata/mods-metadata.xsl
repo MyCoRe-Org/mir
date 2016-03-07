@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:mods="http://www.loc.gov/mods/v3"
-  xmlns:mcrmods="xalan://org.mycore.mods.classification.MCRMODSClassificationSupport" exclude-result-prefixes="mods mcrmods">
+  xmlns:mcrmods="xalan://org.mycore.mods.classification.MCRMODSClassificationSupport"
+                xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation" exclude-result-prefixes=" i18n mods mcrmods">
   <xsl:import href="xslImport:modsmeta" />
   <xsl:include href="layout-utils.xsl" />
   <xsl:include href="mods-utils.xsl" />
@@ -13,7 +14,16 @@
       <xsl:call-template name="debug-rights" />
       <xsl:choose>
         <xsl:when test="key('rights', mycoreobject/@ID)/@read">
-          <xsl:apply-imports />
+          <xsl:choose>
+            <xsl:when test="(not(//servstates/servstate/@categid='blocked') and not(//servstates/servstate/@categid='deleted')) or key('rights', mycoreobject/@ID)/@write">
+              <xsl:apply-imports />
+            </xsl:when>
+            <xsl:otherwise>
+              <div id="mir-message">
+                <xsl:call-template name="printBlocked" />
+              </div>
+            </xsl:otherwise>
+          </xsl:choose>
         </xsl:when>
         <xsl:otherwise>
           <div id="mir-message">
@@ -23,6 +33,15 @@
       </xsl:choose>
     </site>
   </xsl:template>
+
+  <xsl:template name="printBlocked">
+    <div class="jumbotron text-center">
+      <h1>
+        <xsl:value-of select="i18n:translate('mir.error.blocked')" />
+      </h1>
+    </div>
+  </xsl:template>
+
   <xsl:template name="debug-rights">
     <xsl:variable name="lbr" select="'&#x0a;'" />
     <xsl:comment>
