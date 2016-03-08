@@ -33,8 +33,6 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.util.Locale;
 
-import junit.framework.TestCase;
-
 import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -46,16 +44,16 @@ import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
+import org.mycore.mir.it.helper.MCRSeleniumHelper;
 import org.mycore.mir.it.selenium.MIRBy;
 import org.openqa.selenium.By;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxProfile;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
+
+import junit.framework.TestCase;
 
 /**
  * @author Thomas Scheffler (yagee) Before doing integration test <a
@@ -68,6 +66,8 @@ public class MIRBaseITCase {
     protected static final String ADMIN_LOGIN = "administrator";
 
     private static final Logger LOGGER = Logger.getLogger(MIRBaseITCase.class);
+
+    protected final int DEFAULT_PAGE_TIMEOUT = 30;
 
     @ClassRule
     public static TemporaryFolder alternateDirectory = new TemporaryFolder();
@@ -188,7 +188,7 @@ public class MIRBaseITCase {
     }
 
     public void logOff() {
-        driver.findElement(By.xpath("//a[@id='currentUser']")).click();
+        MCRSeleniumHelper.waitForClickAfterPageLoad(driver, By.xpath("//a[@id='currentUser']"), DEFAULT_PAGE_TIMEOUT);
         driver.findElement(MIRBy.partialLinkText("Abmelden")).click();
         assertEqualsIgnoreCase("Anmelden", driver.findElement(By.id("loginURL")).getText());
     }
@@ -196,9 +196,7 @@ public class MIRBaseITCase {
     public void loginAs(String user, String password) {
 
         // waits up to 30 seconds before throwing a TimeoutException or goes on if login is displayed and enabled
-        WebDriverWait wait = new WebDriverWait(driver, 30);
-        WebElement loginLink = wait.until(ExpectedConditions.elementToBeClickable(By.id("loginURL")));
-        loginLink.click();
+        MCRSeleniumHelper.waitForClickAfterPageLoad(driver, By.id("loginURL"), DEFAULT_PAGE_TIMEOUT);
 
         assertEquals("Anmelden mit lokaler Nutzerkennung", driver.getTitle());
         driver.findElement(By.name("uid")).clear();
