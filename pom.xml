@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.mycore</groupId>
@@ -25,6 +26,7 @@
     <cargo.deployable.default.groupId>${project.groupId}</cargo.deployable.default.groupId>
     <cargo.deployable.default.artifactId>${project.artifactId}</cargo.deployable.default.artifactId>
     <cargo.deployable.default.context>/</cargo.deployable.default.context>
+    <cargo.rmi.port>8290</cargo.rmi.port>
     <cargo.servlet.port>8291</cargo.servlet.port>
     <cargo.tomcat.ajp.port>8292</cargo.tomcat.ajp.port>
     <cargo.debug.address>8295</cargo.debug.address>
@@ -404,6 +406,7 @@
                 <home>${project.build.directory}/catalina-base</home>
                 <configuration>
                   <properties>
+                    <cargo.rmi.port>${cargo.rmi.port}</cargo.rmi.port>
                     <cargo.servlet.port>${cargo.servlet.port}</cargo.servlet.port>
                     <cargo.tomcat.ajp.port>${cargo.tomcat.ajp.port}</cargo.tomcat.ajp.port>
                     <cargo.servlet.uriencoding>${cargo.servlet.uriencoding}</cargo.servlet.uriencoding>
