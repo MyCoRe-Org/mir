@@ -28,7 +28,7 @@ public class MIRUserHelper {
             driver.waitAndFindElement(By.linkText("Systemnutzerrollen")).click();
             driver.waitAndFindElement(By.id("rmcr-roles_" + roles[i])).click();
         }
-        driver.findElement(By.id("userName")).clear();
+        driver.waitAndFindElement(By.id("userName")).clear();
         driver.findElement(By.id("userName")).sendKeys(user);
         driver.findElement(By.id("password")).clear();
         driver.findElement(By.id("password")).sendKeys(password);
@@ -47,10 +47,10 @@ public class MIRUserHelper {
         driver.waitAndFindElement(nameSearchField).clear();
         driver.findElement(nameSearchField).sendKeys(user);
         driver.findElement(By.linkText(user)).click();
-        driver.findElement(By.linkText("Nutzer löschen")).click();
+        driver.waitAndFindElement(By.linkText("Nutzer löschen")).click();
         driver.findElement(By.cssSelector("input.btn.btn-danger")).click();
         assertEquals("Die Nutzerkennung wurde mitsamt allen Rollenzugehörigkeiten gelöscht.",
-            driver.findElement(By.cssSelector("div.section.alert p")).getText());
+            driver.waitAndFindElement(By.cssSelector("div.section.alert p")).getText());
         driver.get(currentUrl);
     }
 }
