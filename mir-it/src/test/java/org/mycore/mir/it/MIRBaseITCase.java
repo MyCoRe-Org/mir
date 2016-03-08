@@ -52,6 +52,7 @@ import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxProfile;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import junit.framework.TestCase;
 
@@ -190,7 +191,9 @@ public class MIRBaseITCase {
     public void logOff() {
         MCRSeleniumHelper.waitForClickAfterPageLoad(driver, By.xpath("//a[@id='currentUser']"), DEFAULT_PAGE_TIMEOUT);
         driver.findElement(MIRBy.partialLinkText("Abmelden")).click();
-        assertEqualsIgnoreCase("Anmelden", driver.findElement(By.id("loginURL")).getText());
+        MCRSeleniumHelper.waitForActionAfterPageLoad(driver, By.id("loginURL"), ExpectedConditions::elementToBeClickable, e -> {
+            assertEqualsIgnoreCase("Anmelden", e.getText());
+        }, DEFAULT_PAGE_TIMEOUT);
     }
 
     public void loginAs(String user, String password) {
