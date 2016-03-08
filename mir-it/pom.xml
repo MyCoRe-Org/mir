@@ -3,7 +3,8 @@
   <parent>
     <groupId>org.mycore.mir</groupId>
     <artifactId>mir-parent</artifactId>
-    <version>0.3-SNAPSHOT</version>
+    <version>0.4-SNAPSHOT</version>
+    <relativePath>../pom.xml</relativePath>
   </parent>
   <artifactId>mir-it</artifactId>
   <name>MIR: Integration Tests</name>
@@ -14,7 +15,7 @@
     <MCR.Home.Integration>${project.build.directory}/mycore-home</MCR.Home.Integration>
     <selenium.version>2.52.0</selenium.version>
     <cargo.servlet.port>9102</cargo.servlet.port>
-    <solr.version>4.10.4-SNAPSHOT</solr.version>
+    <solr.version>4.10.4</solr.version>
     <solr.home>${MCR.Home.Integration}/solr-home</solr.home>
     <cargo.jvmargs>
       -DMCR.Home=${MCR.Home.Integration}
