@@ -14,7 +14,7 @@
   <inceptionYear>2013</inceptionYear>
   <properties>
     <java.target.version>1.8</java.target.version>
-    <mycore.version>2016.02</mycore.version>
+    <mycore.version>2016.03-SNAPSHOT</mycore.version>
     <jetty.version>9.3.7.v20160115</jetty.version>
     <tomcat8.version>8.0.32</tomcat8.version>
     <node.version>v4.2.2</node.version>
@@ -30,7 +30,7 @@
     <cargo.tomcat.ajp.port>8292</cargo.tomcat.ajp.port>
     <cargo.debug.address>8295</cargo.debug.address>
     <cargo.debug.suspend>n</cargo.debug.suspend>
-    <changelog.since>2015-11-09</changelog.since>
+    <changelog.since>2016-03-08</changelog.since>
     <site.suffix />
   </properties>
   <url>http://www.mycore.de/generated/mir${site.suffix}</url>
