@@ -19,11 +19,13 @@ public class MIRUserHelper {
         for (int i = 0; i < roles.length; i++) {
             if (i > 0) {
                 //append a role
-                driver.waitAndFindElement(By.name("_xed_submit_insert:/user/roles|" + i + "|build|role|rep-" + (i + 1))).click();
-                driver.waitAndFindElement(By.xpath("//button[starts-with(@name,'_xed_submit_subselect:/user/roles/role[" + (i + 1) + "]:')]")).click();
+                By addRole = By.name("_xed_submit_insert:/user/roles|" + i + "|build|role|rep-" + (i + 1));
+                By startRoleSelect = By.xpath("//button[starts-with(@name,'_xed_submit_subselect:/user/roles/role[" + (i + 1) + "]:')]");
+                driver.waitAndFindElement(addRole).click();
+                driver.waitAndFindElement(startRoleSelect).click();
             } else {
-                // waits up to 30 seconds before throwing a TimeoutException or goes on if role button is displayed and enabled
-                driver.waitAndFindElement(By.xpath("//button[starts-with(@name,'_xed_submit_subselect:/user/roles/role:')]")).click();
+                By startRoleSelect = By.xpath("//button[starts-with(@name,'_xed_submit_subselect:/user/roles/role:')]");
+                driver.waitAndFindElement(startRoleSelect).click();
             }
             driver.waitAndFindElement(By.linkText("Systemnutzerrollen")).click();
             driver.waitAndFindElement(By.id("rmcr-roles_" + roles[i])).click();
@@ -48,7 +50,7 @@ public class MIRUserHelper {
         driver.findElement(nameSearchField).sendKeys(user);
         driver.findElement(By.linkText(user)).click();
         driver.waitAndFindElement(By.linkText("Nutzer löschen")).click();
-        driver.findElement(By.cssSelector("input.btn.btn-danger")).click();
+        driver.waitAndFindElement(By.cssSelector("input.btn.btn-danger")).click();
         assertEquals("Die Nutzerkennung wurde mitsamt allen Rollenzugehörigkeiten gelöscht.",
             driver.waitAndFindElement(By.cssSelector("div.section.alert p")).getText());
         driver.get(currentUrl);
