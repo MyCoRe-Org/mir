@@ -31,6 +31,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.util.Locale;
 
 import junit.framework.TestCase;
 
@@ -52,6 +53,7 @@ import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -141,7 +143,16 @@ public class MIRBaseITCase {
         testApp = System.getProperty("it.context", "");
         startURL = "http://localhost:" + localPort + "/" + testApp;
         LOGGER.info("Server running on '" + startURL + "'");
-        driver = new FirefoxDriver();
+        driver = getFireFoxDriver(Locale.GERMANY); //run integration tests in German language
+    }
+
+    protected static FirefoxDriver getFireFoxDriver(Locale locale) {
+        FirefoxProfile profile = new FirefoxProfile();
+        String formattedLocale = locale.getCountry().isEmpty() ? locale.getLanguage()
+            : locale.getLanguage() + "-" + locale.getCountry().toLowerCase(Locale.ROOT);
+        profile.setPreference("intl.accept_languages", formattedLocale);
+        FirefoxDriver firefoxDriver = new FirefoxDriver(profile);
+        return firefoxDriver;
     }
 
     protected static WebDriver getDriver() {
