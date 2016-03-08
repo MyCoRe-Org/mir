@@ -258,7 +258,7 @@
     <module>mir-common-resources</module>
     <module>mir-cli</module>
     <module>mir-wizard</module>
-    <!-- module>mir-it</module -->
+    <module>mir-it</module>
   </modules>
   <developers>
     <developer>
