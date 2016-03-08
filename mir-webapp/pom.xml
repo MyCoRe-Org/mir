@@ -26,6 +26,7 @@
       <properties>
         <MCR.DataPrefix>dev</MCR.DataPrefix>
         <cargo.jvmargs>
+          -Djava.awt.headless=true
           -DMCR.AppName=${MCR.AppName}
           -DMCR.DataPrefix=${MCR.DataPrefix}
           -Dsolr.solr.home=${solr.home}
