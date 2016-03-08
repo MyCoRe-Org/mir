@@ -6,35 +6,27 @@ package org.mycore.mir.it.helper;
 import static org.junit.Assert.assertEquals;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 
 /**
  * @author Thomas Scheffler (yagee)
  */
 public class MIRUserHelper {
 
-    public static void createUser(WebDriver driver, int timeout, String user, String password, String... roles) {
+    public static void createUser(MCRRemoteWebDriverFacade driver, String user, String password, String... roles) {
         String currentUrl = driver.getCurrentUrl();
         driver.findElement(By.id("currentUser")).click();
         driver.findElement(By.linkText("Nutzer anlegen")).click();
         for (int i = 0; i < roles.length; i++) {
             if (i > 0) {
                 //append a role
-                MCRSeleniumHelper.waitForClickAfterPageLoad(driver,
-                    By.name("_xed_submit_insert:/user/roles|" + i + "|build|role|rep-" + (i + 1)),
-                    timeout);
-                MCRSeleniumHelper.waitForClickAfterPageLoad(driver,
-                    By.xpath("//button[starts-with(@name,'_xed_submit_subselect:/user/roles/role[" + (i + 1) + "]:')]"),
-                    timeout);
+                driver.waitAndFindElement(By.name("_xed_submit_insert:/user/roles|" + i + "|build|role|rep-" + (i + 1))).click();
+                driver.waitAndFindElement(By.xpath("//button[starts-with(@name,'_xed_submit_subselect:/user/roles/role[" + (i + 1) + "]:')]")).click();
             } else {
                 // waits up to 30 seconds before throwing a TimeoutException or goes on if role button is displayed and enabled
-                MCRSeleniumHelper.waitForClickAfterPageLoad(driver,
-                    By.xpath("//button[starts-with(@name,'_xed_submit_subselect:/user/roles/role:')]"), timeout);
+                driver.waitAndFindElement(By.xpath("//button[starts-with(@name,'_xed_submit_subselect:/user/roles/role:')]")).click();
             }
-            driver.findElement(By.linkText("Systemnutzerrollen")).click();
-            driver.findElement(By.id("rmcr-roles_" + roles[i])).click();
+            driver.waitAndFindElement(By.linkText("Systemnutzerrollen")).click();
+            driver.waitAndFindElement(By.id("rmcr-roles_" + roles[i])).click();
         }
         driver.findElement(By.id("userName")).clear();
         driver.findElement(By.id("userName")).sendKeys(user);
@@ -47,13 +39,12 @@ public class MIRUserHelper {
         driver.get(currentUrl);
     }
 
-    public static void deleteUser(WebDriver driver, int timeout, String user) {
+    public static void deleteUser(MCRRemoteWebDriverFacade driver, String user) {
         String currentUrl = driver.getCurrentUrl();
         driver.findElement(By.id("currentUser")).click();
         driver.findElement(By.linkText("Nutzerverwaltung")).click();
         By nameSearchField = By.name("search");
-        MCRSeleniumHelper.waitForActionAfterPageLoad(driver, nameSearchField,
-            ExpectedConditions::presenceOfElementLocated, WebElement::clear, timeout);
+        driver.waitAndFindElement(nameSearchField).clear();
         driver.findElement(nameSearchField).sendKeys(user);
         driver.findElement(By.linkText(user)).click();
         driver.findElement(By.linkText("Nutzer löschen")).click();

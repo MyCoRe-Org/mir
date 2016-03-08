@@ -44,15 +44,13 @@ import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
-import org.mycore.mir.it.helper.MCRSeleniumHelper;
+import org.mycore.mir.it.helper.MCRRemoteWebDriverFacade;
 import org.mycore.mir.it.selenium.MIRBy;
 import org.openqa.selenium.By;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxProfile;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import junit.framework.TestCase;
 
@@ -68,7 +66,7 @@ public class MIRBaseITCase {
 
     private static final Logger LOGGER = Logger.getLogger(MIRBaseITCase.class);
 
-    protected final int DEFAULT_PAGE_TIMEOUT = 30;
+    protected static final int DEFAULT_PAGE_TIMEOUT = 30;
 
     @ClassRule
     public static TemporaryFolder alternateDirectory = new TemporaryFolder();
@@ -125,7 +123,7 @@ public class MIRBaseITCase {
 
     private byte[] screenShot;
 
-    private static WebDriver driver;
+    private static MCRRemoteWebDriverFacade driver;
 
     @BeforeClass
     public static void setupClass() {
@@ -144,7 +142,7 @@ public class MIRBaseITCase {
         testApp = System.getProperty("it.context", "");
         startURL = "http://localhost:" + localPort + "/" + testApp;
         LOGGER.info("Server running on '" + startURL + "'");
-        driver = getFireFoxDriver(Locale.GERMANY); //run integration tests in German language
+        driver = new MCRRemoteWebDriverFacade(getFireFoxDriver(Locale.GERMANY), DEFAULT_PAGE_TIMEOUT); //run integration tests in German language
     }
 
     protected static FirefoxDriver getFireFoxDriver(Locale locale) {
@@ -156,7 +154,7 @@ public class MIRBaseITCase {
         return firefoxDriver;
     }
 
-    protected static WebDriver getDriver() {
+    protected static MCRRemoteWebDriverFacade getDriver() {
         return driver;
     }
 
@@ -189,17 +187,15 @@ public class MIRBaseITCase {
     }
 
     public void logOff() {
-        MCRSeleniumHelper.waitForClickAfterPageLoad(driver, By.xpath("//a[@id='currentUser']"), DEFAULT_PAGE_TIMEOUT);
+        driver.waitAndFindElement(By.xpath("//a[@id='currentUser']")).click();
         driver.findElement(MIRBy.partialLinkText("Abmelden")).click();
-        MCRSeleniumHelper.waitForActionAfterPageLoad(driver, By.id("loginURL"), ExpectedConditions::elementToBeClickable, e -> {
-            assertEqualsIgnoreCase("Anmelden", e.getText());
-        }, DEFAULT_PAGE_TIMEOUT);
+        assertEqualsIgnoreCase("Anmelden", driver.waitAndFindElement(By.id("loginURL")).getText());
     }
 
     public void loginAs(String user, String password) {
 
         // waits up to 30 seconds before throwing a TimeoutException or goes on if login is displayed and enabled
-        MCRSeleniumHelper.waitForClickAfterPageLoad(driver, By.id("loginURL"), DEFAULT_PAGE_TIMEOUT);
+        driver.waitAndFindElement(By.id("loginURL")).click();
 
         assertEquals("Anmelden mit lokaler Nutzerkennung", driver.getTitle());
         driver.findElement(By.name("uid")).clear();
