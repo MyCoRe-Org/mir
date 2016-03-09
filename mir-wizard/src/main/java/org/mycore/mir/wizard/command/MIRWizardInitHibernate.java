@@ -24,10 +24,13 @@ package org.mycore.mir.wizard.command;
 
 import java.io.File;
 import java.nio.charset.Charset;
+import java.util.EnumSet;
+import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
-import org.hibernate.boot.spi.MetadataImplementor;
 import org.hibernate.tool.hbm2ddl.SchemaUpdate;
+import org.hibernate.tool.schema.TargetType;
 import org.mycore.backend.hibernate.MCRHibernateBootstrapper;
 import org.mycore.mir.wizard.MIRWizardCommand;
 
@@ -45,20 +48,29 @@ public class MIRWizardInitHibernate extends MIRWizardCommand {
     public void doExecute() {
         try {
             File temp = File.createTempFile("hib", ".log");
+            result.setSuccess(true);
             MCRHibernateBootstrapper.setup(metadata -> {
-                SchemaUpdate su = new SchemaUpdate((MetadataImplementor) metadata);
-                su.setOutputFile(temp.getAbsolutePath());
-                su.execute(true, true);
+                SchemaUpdate schemaUpdate = new SchemaUpdate();
+                schemaUpdate.setOutputFile(temp.getAbsolutePath());
+                schemaUpdate.execute(EnumSet.of(TargetType.DATABASE, TargetType.SCRIPT), metadata);
+                @SuppressWarnings("unchecked")
+                List<Exception> exceptions = (List<Exception>) schemaUpdate.getExceptions();
+                if (!exceptions.isEmpty()) {
+                    result.setSuccess(false);
+                    result.setResult(
+                        exceptions
+                            .stream()
+                            .map(Exception::getMessage)
+                            .collect(Collectors.joining("\n", "Error while updating database schema:\n", "")));
+                }
             });
 
-            Scanner scanner = new Scanner(temp, Charset.defaultCharset().name());
-            this.result.setResult(scanner.useDelimiter("\\Z").next());
-
-            scanner.close();
-
+            if (result.isSuccess()) {
+                Scanner scanner = new Scanner(temp, Charset.defaultCharset().name());
+                this.result.setResult(scanner.useDelimiter("\\Z").next());
+                scanner.close();
+            }
             temp.delete();
-
-            this.result.setSuccess(true);
         } catch (Exception ex) {
             this.result.setSuccess(false);
             this.result.setResult(ex.getMessage());
