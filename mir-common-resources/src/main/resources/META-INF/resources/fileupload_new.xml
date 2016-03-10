@@ -29,7 +29,7 @@
 
         <div role="tabpanel" class="tab-pane" id="classic">
           <editor id="author-addfile">
-            <target type="servlet" name="MCRUploadServlet" method="post" format="xml" />
+            <target type="servlet" name="MCRUploadViaFormServlet" method="post" format="xml" />
             <cancel url="{cancelUrl}" />
 
             <components root="fileupload" var="/upload">

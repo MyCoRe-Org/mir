@@ -30,7 +30,7 @@
     <param name="progressbar" value="true" />
     <param name="progresscolor" value="blue" />
     <param name="background-color" value="{$MCR.UploadApplet.BackgroundColor}" />
-    <param name="url" value="{$WebApplicationBaseURL}servlets/MCRUploadServlet{$HttpSession}?method=redirecturl&amp;uploadId={$UploadID}" />
+    <param name="url" value="{$WebApplicationBaseURL}servlets/MCRUploadViaAppletServlet{$HttpSession}?method=redirecturl&amp;uploadId={$UploadID}" />
     <param name="ServletsBase" value="{$ServletsBaseURL}" />
     <param name="selectMultiple" value="{$selectMultiple}" />
     <param name="acceptFileTypes" value="{$acceptFileTypes}" />
@@ -84,7 +84,7 @@
 </xsl:template>
 
 <xsl:template match="fileupload">
-  <xsl:variable name="formUploadUrl" select="concat($WebApplicationBaseURL,'servlets/MCRUploadServlet',$HttpSession,'?method=formBasedUpload&amp;uploadId=',$UploadID)" />
+  <xsl:variable name="formUploadUrl" select="concat($WebApplicationBaseURL,'servlets/MCRUploadViaFormServlet',$HttpSession,'?method=formBasedUpload&amp;uploadId=',$UploadID)" />
 
   <div id="html5Container">
     <form id="uploadForm" action="{$formUploadUrl}" enctype="multipart/form-data" method="post">
@@ -172,7 +172,7 @@
 
 <xsl:template match="fileupload2">
   <xsl:variable name="parameter" select="concat('&amp;parentObjectID=',$parentObjectID,'&amp;derivateID=',$derivateID)" />
-  <xsl:variable name="formUploadUrl" select="concat($WebApplicationBaseURL,'servlets/MCRUploadServlet',$HttpSession,'?method=formBasedUpload&amp;uploadId=',$UploadID,$parameter)" />
+  <xsl:variable name="formUploadUrl" select="concat($WebApplicationBaseURL,'servlets/MCRUploadViaFormServlet',$HttpSession,'?method=formBasedUpload&amp;uploadId=',$UploadID,$parameter)" />
   <xsl:variable name="cancelUrl2">
     <xsl:call-template name="buildCancelUrl" />  
   </xsl:variable>

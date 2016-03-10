@@ -58,7 +58,7 @@
         </div>
         
         <div role="tabpanel" class="tab-pane fade" id="classic">
-          <form class="form-horizontal" action="servlets/MCRUploadServlet" method="post" enctype="multipart/form-data">
+          <form class="form-horizontal" action="servlets/MCRUploadViaFormServlet" method="post" enctype="multipart/form-data">
     
             <filetarget/>
             <fieldset>
