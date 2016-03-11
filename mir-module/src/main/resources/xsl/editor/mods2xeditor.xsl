@@ -4,12 +4,31 @@
 >
 
   <xsl:include href="copynodes.xsl" />
+  <xsl:include href="editor/mods-node-utils.xsl" />
 
   <!-- put value string (after authority URI) in attribute valueURIxEditor -->
   <xsl:template match="@valueURI">
-        <xsl:attribute name="valueURIxEditor">
+    <xsl:attribute name="valueURIxEditor">
           <xsl:value-of select="substring-after(.,'#')" />
         </xsl:attribute>
+  </xsl:template>
+
+  <xsl:template match="mods:titleInfo[string-length(@altRepGroup) &gt; 0]|mods:abstract[string-length(@altRepGroup) &gt; 0]">
+    <xsl:if test="string-length(@altFormat) &gt; 0">
+      <xsl:variable name="content" select="document(@altFormat)" />
+      <xsl:apply-templates select="$content/node()" mode="asXmlNode">
+        <xsl:with-param name="levels">
+          <xsl:choose>
+            <xsl:when test="name() = 'mods:titleInfo'">
+              <xsl:value-of select="2" />
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:value-of select="1" />
+            </xsl:otherwise>
+          </xsl:choose>
+        </xsl:with-param>
+      </xsl:apply-templates>
+    </xsl:if>
   </xsl:template>
 
   <!-- A single page (edited as start=end) is represented as mods:detail/@type='page' -->
@@ -81,7 +100,7 @@
     <xsl:if test="not(preceding-sibling::mods:languageTerm[@authority='rfc4646']/text() = $classNodes)">
       <xsl:if test="not(following-sibling::mods:languageTerm[@authority='rfc4646']/text() = $classNodes)">
         <mods:languageTerm authority="rfc4646" type="code">
-          <xsl:value-of select="$classNodes"/>
+          <xsl:value-of select="$classNodes" />
         </mods:languageTerm>
       </xsl:if>
     </xsl:if>

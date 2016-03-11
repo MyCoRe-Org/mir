@@ -1,10 +1,60 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:mcr="http://www.mycore.org/" xmlns:xlink="http://www.w3.org/1999/xlink"
-  xmlns:mods="http://www.loc.gov/mods/v3" xmlns:mcrmods="xalan://org.mycore.mods.classification.MCRMODSClassificationSupport" exclude-result-prefixes="mcrmods xlink mcr"
-  version="1.0"
+  xmlns:mods="http://www.loc.gov/mods/v3" xmlns:mcrmods="xalan://org.mycore.mods.classification.MCRMODSClassificationSupport" xmlns:mcrxml="xalan://org.mycore.common.xml.MCRXMLFunctions"
+  xmlns:mcrdataurl="xalan://org.mycore.datamodel.common.MCRDataURL" exclude-result-prefixes="mcrmods xlink mcr mcrxml mcrdataurl" version="1.0"
 >
 
   <xsl:include href="copynodes.xsl" />
+  <xsl:include href="editor/mods-node-utils.xsl" />
+
+  <xsl:template match="mods:titleInfo|mods:abstract">
+    <xsl:choose>
+      <xsl:when test="mcrxml:isHtml(mods:nonSort/text()) or mcrxml:isHtml(mods:title/text()) or mcrxml:isHtml(mods:subTitle/text()) or mcrxml:isHtml(text())">
+        <xsl:variable name="altRepGroup" select="generate-id(.)" />
+        <xsl:copy>
+          <xsl:attribute name="altRepGroup">
+            <xsl:value-of select="$altRepGroup" />
+          </xsl:attribute>
+          <xsl:apply-templates select="@*" />
+          <xsl:apply-templates mode="asPlainTextNode" />
+        </xsl:copy>
+        <xsl:element name="{name(.)}">
+          <xsl:variable name="content">
+            <xsl:apply-templates select="." mode="asXmlNode">
+              <xsl:with-param name="ns" select="''" />
+              <xsl:with-param name="serialize" select="false()" />
+              <xsl:with-param name="levels">
+                <xsl:choose>
+                  <xsl:when test="name() = 'mods:titleInfo'">
+                    <xsl:value-of select="2" />
+                  </xsl:when>
+                  <xsl:otherwise>
+                    <xsl:value-of select="1" />
+                  </xsl:otherwise>
+                </xsl:choose>
+              </xsl:with-param>
+            </xsl:apply-templates>
+          </xsl:variable>
+          <xsl:attribute name="altRepGroup">
+            <xsl:value-of select="$altRepGroup" />
+          </xsl:attribute>
+          <xsl:attribute name="altFormat">
+            <xsl:value-of select="mcrdataurl:build($content, 'base64', 'text/xml', 'utf-8')" />
+          </xsl:attribute>
+          <xsl:attribute name="contentType">
+            <xsl:value-of select="'text/xml'" />
+          </xsl:attribute>
+          <xsl:apply-templates select="@*" />
+        </xsl:element>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:copy>
+          <xsl:apply-templates select="@*" />
+          <xsl:apply-templates />
+        </xsl:copy>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
 
   <!-- create value URI using valueURIxEditor and authorityURI -->
   <xsl:template match="@valueURIxEditor">
