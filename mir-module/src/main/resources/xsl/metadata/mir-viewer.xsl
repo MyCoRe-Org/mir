@@ -15,7 +15,7 @@
     <xsl:if test="mycoreobject/structure/derobjects/derobject">
       <div id="mir-viewer">
         <xsl:variable name="viewerNodesTmp">
-          <div class="row">
+          <div class="row mir-preview">
             <div class="col-md-12">
               <h3 class="mir-viewer">Vorschau</h3>
               <!-- show one viewer for each derivate -->

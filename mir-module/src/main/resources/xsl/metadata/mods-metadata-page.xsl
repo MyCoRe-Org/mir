@@ -41,7 +41,7 @@
       </xsl:if>
 
       <xsl:if test="div[@id='search_browsing']">
-        <div class="row detail_row">
+        <div class="row detail_row" id="mir-search_browsing">
           <div class="col-md-8">
             <div class="detail_block text-center">
               <span id="pagination_label">gefundende Dokumente</span>

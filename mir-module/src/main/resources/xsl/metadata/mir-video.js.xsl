@@ -11,14 +11,14 @@
     <!-- MIR-339 solr query if there is any "mp4" file in this object? -->
     <xsl:variable name="solrQuery" select="concat('+stream_content_type:video/mp4 +returnId:',mcrsolru:escapeSearchValue(mycoreobject/@ID))" />
     <xsl:if test="mcrsolr:getNumFound($solrQuery) &gt; 0" >
-      <div id="mir-player" class="player">
+      <div id="mir-player">
         <xsl:variable name="playerNodesTmp">
           <xsl:variable name="playerSources">
             <xsl:apply-templates select="mycoreobject/structure/derobjects/derobject" mode="optionSources" />
           </xsl:variable>
-  
+
           <xsl:variable name="playerSourceNode" select="xalan:nodeset($playerSources)" />
-  
+
           <xsl:if test="$playerSourceNode//source">
             <xsl:if test="count($playerSourceNode//div[@class='source-container']) > 1">
               <select id="videoChooser" class="form-control">
@@ -26,7 +26,7 @@
               </select>
               <xsl:copy-of select="$playerSourceNode//div[@class='source-container']" />
             </xsl:if>
-            <div class="embed-responsive embed-responsive-16by9 player">
+            <div class="embed-responsive embed-responsive-16by9 mir-player mir-preview">
               <video id="player_" class="video-js embed-responsive-item" controls="" preload="auto" poster=""
                 data-setup="">
                 <xsl:if test="count($playerSourceNode//div[@class='source-container']) = 1">
@@ -35,20 +35,19 @@
                 <p class="vjs-no-js">
                   To view this video please enable JavaScript, and consider upgrading
                   to a web browser that
-                  <a href="http://videojs.com/html5-video-support/" target="_blank">supports
-                    HTML5 video</a>
+                  <a href="http://videojs.com/html5-video-support/">supports HTML5 video</a>
                 </p>
               </video>
             </div>
           </xsl:if>
         </xsl:variable>
-  
+
         <xsl:variable name="playerNodes" select="xalan:nodeset($playerNodesTmp)" />
-  
+
         <xsl:call-template name="addPlayerScripts">
           <xsl:with-param name="generatedNodes" select="$playerNodes" />
         </xsl:call-template>
-  
+
         <xsl:copy-of select="$playerNodes" />
       </div>
     </xsl:if>
@@ -96,7 +95,7 @@
 
   <xsl:template name="addPlayerScripts">
     <xsl:param name="generatedNodes" />
-    <xsl:if test="$generatedNodes//div[contains(@class, 'player')]">
+    <xsl:if test="$generatedNodes//div[contains(@class, 'mir-player')]">
       <link href="//vjs.zencdn.net/5.0.0/video-js.css" rel="stylesheet" />
       <script src="//vjs.zencdn.net/ie8/1.1.0/videojs-ie8.min.js"></script>
       <style>
@@ -105,7 +104,7 @@
         position: absolute;
         bottom: 0px;
         }
-        div.player div.panel-body{
+        div.mir-player div.panel-body{
         padding: 0;
         }
         div.video-js
