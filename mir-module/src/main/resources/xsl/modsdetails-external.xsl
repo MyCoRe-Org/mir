@@ -446,13 +446,6 @@
                     <xsl:value-of select="i18n:translate('object.editGenre')" />
                   </a>
                 </li -->
-                <xsl:if test="not(//mods:mods/mods:identifier[@type='doi']) and $MIR.registerDOI='true'">
-                  <li>
-                    <a href="{$WebApplicationBaseURL}receive/{/mycoreobject/@ID}?XSL.Transformer=datacite">
-                      <xsl:value-of select="i18n:translate('mir.registerDOI')" />
-                    </a>
-                  </li>
-                </xsl:if>
                 <xsl:if test="string-length($copyURL) &gt; 0">
                   <li>
                     <a href="{$copyURL}?copyofid={$id}">
@@ -482,7 +475,7 @@
             </a>
             </xsl:if -->
             <!-- Register DOI -->
-            <xsl:if test="$accessedit and not(pi:hasIdentifierRegistered('Datacite', /mycoreobject/@ID, '')) and not(.//mods:identifier[@type='doi'])">
+            <xsl:if test="$MIR.registerDOI='true' and $accessedit and not(pi:hasIdentifierRegistered('Datacite', /mycoreobject/@ID, '')) and not(.//mods:identifier[@type='doi'])">
               <li>
                 <a href="#" id="registerDOI" data-mycoreID="{/mycoreobject/@ID}" data-baseURL="{$WebApplicationBaseURL}">
                   <xsl:value-of select="i18n:translate('component.pi.register.doi')" />
