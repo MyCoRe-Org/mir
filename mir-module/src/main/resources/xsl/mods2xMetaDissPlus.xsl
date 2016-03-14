@@ -475,6 +475,13 @@
           </xsl:element>
         </xsl:if>
       </xsl:if>
+      <!-- Ausgabe der Schriftenreihe ala: <dcterms:isPartOf xsi:type=“ddb:noScheme“>Bulletin ; 34</dcterms:isPartOf>  -->
+      <xsl:if test="./metadata/def.modsContainer/modsContainer/mods:mods/mods:relatedItem/@type='series'">
+        <xsl:element name="dcterms:isPartOf">
+          <xsl:attribute name="xsi:type">ddb:noScheme</xsl:attribute>
+          <xsl:value-of select="./metadata/def.modsContainer/modsContainer/mods:mods/mods:relatedItem[@type='series']/mods:titleInfo/mods:title" />
+        </xsl:element>
+      </xsl:if>
     </xsl:template>
 
 
