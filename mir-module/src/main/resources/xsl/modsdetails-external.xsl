@@ -7,7 +7,8 @@
                 xmlns:mcrurn="xalan://org.mycore.urn.MCRXMLFunctions" xmlns:str="http://exslt.org/strings"
                 xmlns:encoder="xalan://java.net.URLEncoder" xmlns:acl="xalan://org.mycore.access.MCRAccessManager"
                 xmlns:imageware="org.mycore.mir.imageware.MIRImageWarePacker"
-                exclude-result-prefixes="basket xalan xlink mcr i18n mods mcrmods mcrxsl mcrurn str encoder acl imageware"
+                xmlns:pi="xalan://org.mycore.pi.frontend.MCRIdentifierXSLUtils"
+                exclude-result-prefixes="basket xalan xlink mcr i18n mods mcrmods mcrxsl mcrurn str encoder acl imageware pi"
                 version="1.0" xmlns:ex="http://exslt.org/dates-and-times"
                 xmlns:exslt="http://exslt.org/common" extension-element-prefixes="ex exslt"
 >
@@ -480,7 +481,14 @@
               <img src="{$WebApplicationBaseURL}images/workflow_addnbn.gif" title="{i18n:translate('derivate.urn.addURN')}" />
             </a>
             </xsl:if -->
-
+            <!-- Register DOI -->
+            <xsl:if test="$accessedit and not(pi:hasIdentifierRegistered('Datacite', /mycoreobject/@ID, '')) and not(.//mods:identifier[@type='doi'])">
+              <li>
+                <a href="#" id="registerDOI" data-mycoreID="{/mycoreobject/@ID}" data-baseURL="{$WebApplicationBaseURL}">
+                  <xsl:value-of select="i18n:translate('component.pi.register.doi')" />
+                </a>
+              </li>
+            </xsl:if>
             <!-- Packing with ImageWare Packer -->
             <xsl:if test="imageware:displayPackerButton($id, 'ImageWare')">
                 <li>

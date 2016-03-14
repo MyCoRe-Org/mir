@@ -278,6 +278,36 @@
       }
     });
 
+
+    $("#registerDOI").click(function (event) {
+      var doiButton = jQuery(this);
+      var mcrId = doiButton.attr("data-mycoreID");
+      var baseURL = doiButton.attr("data-baseURL");
+      var doiResource = baseURL + "rsc/pi/registration/service/Datacite/" + mcrId;
+      var modal = "<div class='modal fade'>" +
+          "<div class='modal-dialog'>" +
+          "<div class='modal-content'>" +
+          "<div class='modal-header'>" +
+          "<button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>&times;</span></button>" +
+          "</div>" +
+          "<div class='modal-body'>" +
+          "%content%" +
+          "</div>" +
+          "</div>" +
+          "</div>" +
+          "</div>";
+
+      $.ajax({
+        type: 'POST',
+        url: doiResource,
+        data: {}
+      }).done(function (result) {
+        window.location.search="XSL.Status.Message=component.pi.register.doi.success&XSL.Status.Style=success";
+      }).fail(function (result) {
+        window.location.search="XSL.Status.Message=component.pi.register.doi.error&XSL.Status.Style=danger";
+      });
+    });
+
   }); // END $﻿(document).ready()
 
   function dotdotdotCallback(isTruncated, originalContent) {
