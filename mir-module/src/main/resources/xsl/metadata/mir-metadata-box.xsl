@@ -40,6 +40,7 @@
                     </xsl:if>
                     <xsl:apply-templates select="//mods:mods" mode="mods.title">
                       <xsl:with-param name="type" select="@type" />
+                      <xsl:with-param name="asHTML" select="true()" />
                       <xsl:with-param name="withSubtitle" select="true()" />
                       <xsl:with-param name="position" select="position()" />
                     </xsl:apply-templates>
