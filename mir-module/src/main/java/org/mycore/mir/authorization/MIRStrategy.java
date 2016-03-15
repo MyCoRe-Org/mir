@@ -22,7 +22,7 @@ import org.mycore.access.strategies.MCRAccessCheckStrategy;
 import org.mycore.access.strategies.MCRCreatorRuleStrategy;
 import org.mycore.access.strategies.MCRObjectTypeStrategy;
 import org.mycore.backend.hibernate.MCRHIBConnection;
-import org.mycore.backend.hibernate.tables.MCRACCESS;
+import org.mycore.backend.jpa.access.MCRACCESS;
 import org.mycore.common.MCRCache;
 import org.mycore.datamodel.classifications2.MCRCategLinkReference;
 import org.mycore.datamodel.classifications2.MCRCategLinkService;
