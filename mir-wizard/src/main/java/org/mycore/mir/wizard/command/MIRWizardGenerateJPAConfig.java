@@ -1,5 +1,5 @@
 /*
- * $Id: MIRWizardGenerateHibernateCfg.java 33295 2015-08-20 07:54:44Z mcrtchef $
+ * $Id$
  * $Revision$ $Date$
  *
  * This file is part of ***  M y C o R e  ***
