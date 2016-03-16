@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <install>
   <command class="org.mycore.mir.wizard.command.MIRWizardGenerateProperties" />
-  <command class="org.mycore.mir.wizard.command.MIRWizardGenerateHibernateCfg" />
+  <command class="org.mycore.mir.wizard.command.MIRWizardGenerateJPAConfig" />
   <command class="org.mycore.mir.wizard.command.MIRWizardDownloadDBLib" />
+  <command class="org.mycore.mir.wizard.command.MIRWizardInitDatabase" />
   <command class="org.mycore.mir.wizard.command.MIRWizardSolr" />
-  <command class="org.mycore.mir.wizard.command.MIRWizardInitHibernate" />
   <command class="org.mycore.mir.wizard.command.MIRWizardLoadClassifications" />
   <command class="org.mycore.mir.wizard.command.MIRWizardInitSuperuser" />
   <command class="org.mycore.mir.wizard.command.MIRWizardMCRCommand" name="import.acls" src="resource:setup/defaultrules-wizard-commands.xml" />

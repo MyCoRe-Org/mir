@@ -1,5 +1,5 @@
 /*
- * $Id$
+ * $Id: MIRWizardGenerateHibernateCfg.java 33295 2015-08-20 07:54:44Z mcrtchef $
  * $Revision$ $Date$
  *
  * This file is part of ***  M y C o R e  ***
@@ -24,36 +24,55 @@ package org.mycore.mir.wizard.command;
 
 import java.io.File;
 
+import org.jdom2.Element;
+import org.jdom2.JDOMException;
+import org.jdom2.filter.Filters;
+import org.jdom2.xpath.XPathExpression;
+import org.jdom2.xpath.XPathFactory;
 import org.mycore.common.config.MCRConfigurationDir;
+import org.mycore.common.config.MCRConfigurationDirSetup;
 import org.mycore.common.content.MCRContent;
 import org.mycore.common.content.MCRJDOMContent;
 import org.mycore.common.content.transformer.MCRXSLTransformer;
 import org.mycore.mir.wizard.MIRWizardCommand;
 
-public class MIRWizardGenerateHibernateCfg extends MIRWizardCommand {
+public class MIRWizardGenerateJPAConfig extends MIRWizardCommand {
 
-    public MIRWizardGenerateHibernateCfg() {
-        this("hibernate.cfg.xml");
+    public MIRWizardGenerateJPAConfig() {
+        this("persistence.xml");
     }
 
-    private MIRWizardGenerateHibernateCfg(String name) {
+    private MIRWizardGenerateJPAConfig(String name) {
         super(name);
     }
 
     @Override
     public void doExecute() {
-        File file = MCRConfigurationDir.getConfigFile("hibernate.cfg.xml");
-
+        File resDir = new File(MCRConfigurationDir.getConfigurationDirectory(), "resources/META-INF");
         try {
+            resDir.mkdirs();
+
+            File file = new File(resDir, "persistence.xml");
             this.result.setAttribute("file", file.getAbsolutePath());
 
             MCRContent source = new MCRJDOMContent(getInputXML().clone());
-            MCRXSLTransformer transformer = new MCRXSLTransformer("xsl/" + source.getDocType() + "-hibernate.xsl");
-            MCRContent hibCfg = transformer.transform(source);
+            MCRXSLTransformer transformer = new MCRXSLTransformer("xsl/" + source.getDocType() + "-persistence.xsl");
+            MCRContent pXML = transformer.transform(source);
 
-            hibCfg.sendTo(file);
+            pXML.sendTo(file);
 
-            this.result.setResult(hibCfg.asXML().getRootElement().clone());
+            if (!buildXPath("//database/extra_properties//property[contains('schema|catalog', @name)]")
+                    .evaluate(getInputXML()).isEmpty()) {
+                file = new File(resDir, "mycore-jpa-defaults.xml");
+                transformer = new MCRXSLTransformer("xsl/" + source.getDocType() + "-orm.xsl");
+                MCRContent ormXML = transformer.transform(source);
+
+                ormXML.sendTo(file);
+            }
+
+            MCRConfigurationDirSetup.loadExternalLibs();
+
+            this.result.setResult(pXML.asXML().getRootElement().clone());
             this.result.setSuccess(true);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -62,4 +81,7 @@ public class MIRWizardGenerateHibernateCfg extends MIRWizardCommand {
         }
     }
 
+    private XPathExpression<Element> buildXPath(String xPath) throws JDOMException {
+        return XPathFactory.instance().compile(xPath, Filters.element());
+    }
 }

@@ -41,8 +41,8 @@
               <xsl:when test="name() = 'download'">
                 <xsl:value-of select="i18n:translate('component.mir.wizard.downloaded.lib', @lib)" />
               </xsl:when>
-              <xsl:when test="name() = 'init.hibernate'">
-                <xsl:value-of select="i18n:translate('component.mir.wizard.initHibernate')" />
+              <xsl:when test="name() = 'init.database'">
+                <xsl:value-of select="i18n:translate('component.mir.wizard.initDatabase')" />
               </xsl:when>
               <xsl:when test="name() = 'init.superuser'">
                 <xsl:value-of select="i18n:translate('component.mir.wizard.initSuperuser')" />

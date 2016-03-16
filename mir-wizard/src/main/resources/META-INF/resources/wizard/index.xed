@@ -78,9 +78,9 @@
                   <div class="col-md-9 row">
                     <xed:bind xpath="extra_properties">
                       <xed:repeat xpath="property">
-                        <mir:template name="selectInput" xpath="@name" id="hibPropName" inline="true" colwidth="5"
-                          uri="resource:setup/hibernate-extra-properties.xml" />
-                        <mir:template name="textInput" xpath="." id="hibPropValue" inline="true" colwidth="5" />
+                        <mir:template name="selectInput" xpath="@name" id="dbXtraPropName" inline="true" colwidth="5"
+                          uri="resource:setup/database-extra-properties.xml" />
+                        <mir:template name="textInput" xpath="." id="dbXtraPropValue" inline="true" colwidth="5" />
                         <div class="col-md-2">
                           <xed:controls>append remove</xed:controls>
                         </div>

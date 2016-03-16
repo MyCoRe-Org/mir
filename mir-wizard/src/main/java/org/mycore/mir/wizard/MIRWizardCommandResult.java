@@ -111,7 +111,7 @@ public class MIRWizardCommandResult {
 
         if (result != null)
             res.addContent(result);
-        else {
+        else if (logAppender != null) {
             res.addContent(new Element("result").addContent(logAppender.getLogs()));
         }
 
@@ -121,13 +121,13 @@ public class MIRWizardCommandResult {
     protected void startLogging() {
         logAppender = new CommandLogAppender(name, getAppenderLogFilter(), getAppenderLogLayout());
         logAppender.start();
-        
+
         ROOT_LOGGER.addAppender(logAppender);
     }
 
     protected void stopLogging() {
         logAppender.stop();
-        
+
         ROOT_LOGGER.removeAppender(logAppender);
     }
 
