@@ -4,8 +4,8 @@
 >
   <persistence-unit-metadata>
     <persistence-unit-defaults>
-      <!-- <schema>myschema</schema> -->
-      <!-- <catalog>mycatalg</catalog> -->
+<!--       <schema>myschema</schema> -->
+<!--       <catalog>mycatalg</catalog> -->
     </persistence-unit-defaults>
   </persistence-unit-metadata>
 </entity-mappings>

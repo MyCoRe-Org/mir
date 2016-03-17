@@ -2,7 +2,7 @@
 <!-- ============================================== -->
 <!-- $Revision$ $Date$ -->
 <!-- ============================================== -->
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xalan="http://xml.apache.org/xalan">
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xalan="http://xml.apache.org/xalan" exclude-result-prefixes="xsl xalan">
 
   <xsl:output method="xml" media-type="text/xml" encoding="UTF-8" indent="yes" omit-xml-declaration="no" />
 
@@ -26,7 +26,7 @@
         <xsl:when test="name() = 'persistence-unit-defaults'">
           <xsl:if test="xalan:nodeset($cfg)//extra_properties//property[contains('schema|catalog', @name)]">
             <xsl:for-each select="xalan:nodeset($cfg)//extra_properties//property[contains('schema|catalog', @name)]">
-              <xsl:element name="{@name}">
+              <xsl:element name="{@name}" xmlns="http://java.sun.com/xml/ns/persistence/orm">
                 <xsl:value-of select="." />
               </xsl:element>
             </xsl:for-each>
@@ -38,6 +38,12 @@
         </xsl:otherwise>
       </xsl:choose>
     </xsl:copy>
+  </xsl:template>
+
+  <xsl:template match="comment()" mode="template">
+    <xsl:comment>
+      <xsl:value-of select="." />
+    </xsl:comment>
   </xsl:template>
 
 </xsl:stylesheet>

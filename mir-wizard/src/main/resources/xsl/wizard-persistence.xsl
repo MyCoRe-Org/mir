@@ -2,7 +2,7 @@
 <!-- ============================================== -->
 <!-- $Revision$ $Date$ -->
 <!-- ============================================== -->
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xalan="http://xml.apache.org/xalan">
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xalan="http://xml.apache.org/xalan" exclude-result-prefixes="xsl xalan">
 
   <xsl:output method="xml" media-type="text/xml" encoding="UTF-8" indent="yes" omit-xml-declaration="no" />
 
@@ -28,7 +28,9 @@
         <xsl:when test="name() = 'persistence-unit'">
           <xsl:copy-of select="@*" />
           <xsl:if test="xalan:nodeset($cfg)//extra_properties//property[contains('schema|catalog', @name)]">
-            <mapping-file>META-INF/mycore-jpa-defaults.xml</mapping-file>
+            <xsl:element name="mapping-file" xmlns="http://java.sun.com/xml/ns/persistence">
+              <xsl:text>META-INF/mycore-jpa-defaults.xml</xsl:text>
+            </xsl:element>
           </xsl:if>
           <xsl:apply-templates mode="template" />
         </xsl:when>
@@ -60,6 +62,12 @@
         </xsl:otherwise>
       </xsl:choose>
     </xsl:copy>
+  </xsl:template>
+
+  <xsl:template match="comment()" mode="template">
+    <xsl:comment>
+      <xsl:value-of select="." />
+    </xsl:comment>
   </xsl:template>
 
 </xsl:stylesheet>
