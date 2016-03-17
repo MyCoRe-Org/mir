@@ -16,7 +16,7 @@
   <xsl:param name="MIR.Layout.Theme" select="'flatmir'" />
 
   <xsl:variable name="PageTitle" select="/*/@title" />
-
+  
   <xsl:template match="/site">
     <html lang="{$CurrentLang}" class="no-js">
       <head>
@@ -61,6 +61,8 @@
         <div class="container" id="page">
           <div id="main_content">
             <xsl:call-template name="print.writeProtectionMessage" />
+            <xsl:call-template name="print.statusMessage" />
+            
             <xsl:choose>
               <xsl:when test="$readAccess='true'">
                 <xsl:if test="breadcrumb/ul[@class='breadcrumb']">
