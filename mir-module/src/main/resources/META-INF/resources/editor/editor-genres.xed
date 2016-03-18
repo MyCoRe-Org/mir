@@ -365,6 +365,7 @@
 
   <xed:template id="video">
     <xed:include uri="webapp:editor/editor-genres.xed" ref="av.common" />
+    <xed:include uri="webapp:editor/editor-genres.xed" ref="type.of.resource.moving_image" />
   </xed:template>
 
   <xed:template id="broadcasting">
