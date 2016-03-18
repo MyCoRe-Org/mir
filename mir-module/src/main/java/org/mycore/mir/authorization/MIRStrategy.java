@@ -54,6 +54,19 @@ import org.mycore.mir.authorization.accesskeys.MIRAccessKeyPair;
  * @since 0.3
  */
 public class MIRStrategy implements MCRAccessCheckStrategy {
+
+    private static enum PermissionIDType {
+        MCRObject, MCRDerivate, Other;
+        public static PermissionIDType fromID(String id) {
+            Matcher m = TYPE_PATTERN.matcher(id);
+            if (m.find() && (m.groupCount() == 1)) {
+                return "derivate".equals(m.group(1)) ? MCRDerivate : MCRObject;
+            }
+            return Other;
+
+        }
+    }
+
     private static final Pattern TYPE_PATTERN = Pattern.compile("[^_]+_([^_]+)_[0-9]+");
 
     private static final Logger LOGGER = LogManager.getLogger();
@@ -74,18 +87,6 @@ public class MIRStrategy implements MCRAccessCheckStrategy {
     private final MCRCategLinkService LINK_SERVICE;
 
     private MCRAccessInterface ACCESS_IMPL;
-
-    private enum PermissionIDType {
-        MCRObject, MCRDerivate, Other;
-        public static PermissionIDType fromID(String id) {
-            Matcher m = TYPE_PATTERN.matcher(id);
-            if (m.find() && (m.groupCount() == 1)) {
-                return "derivate".equals(m.group(1)) ? MCRDerivate : MCRObject;
-            }
-            return Other;
-
-        }
-    }
 
     public MIRStrategy() {
         ACCESS_CLASSES = MCRConfiguration.instance().getStrings("MIR.Access.Strategy.Classifications",
@@ -133,10 +134,12 @@ public class MIRStrategy implements MCRAccessCheckStrategy {
         // 2. check if access mapping for object id exists
         String permissionId = objectId.toString();
         if (ID_STRATEGY.hasRuleMapping(permissionId, permission)) {
+            LOGGER.debug("Found match in ID strategy for {} on {}.", permission, objectId);
             return ID_STRATEGY.checkPermission(permissionId, permission);
         }
         // 3. check if creator rule applies
-        if (CREATOR_STRATEGY.hasRuleMapping(permissionId, permission)) {
+        if (CREATOR_STRATEGY.isCreatorRuleAvailable(permissionId, permission)) {
+            LOGGER.debug("Found match in CREATOR strategy for {} on {}.", permission, objectId);
             return CREATOR_STRATEGY.checkPermission(permissionId, permission);
         }
         return getAccessCategory(objectId, permission)
@@ -146,24 +149,10 @@ public class MIRStrategy implements MCRAccessCheckStrategy {
                 return ACCESS_IMPL.checkPermission(objectId.getTypeId() + ":" + c.toString(), permission);
             })
             //5. fallback to MCRObjectBaseStrategy
-            .orElseGet(() -> OBJECT_BASE_STRATEGY.checkPermission(permissionId, permission));
-    }
-
-    private static String getUserKey(MCRObjectID objectId) {
-        return MCRSessionMgr.getCurrentSession().getUserInformation()
-            .getUserAttribute(MIRAccessKeyManager.ACCESS_KEY_PREFIX + objectId.toString());
-    }
-
-    private Optional<MCRCategoryID> getAccessCategory(MCRObjectID objectId, String permission) {
-        List<MCRCategoryID> accessMappedCategories = getAccessMappedCategories(objectId.getTypeId(), permission,
-            ACCESS_CLASSES);
-        MCRCategLinkReference categLinkReference = new MCRCategLinkReference(objectId);
-        Optional<MCRCategoryID> accessCategory = accessMappedCategories
-            .stream()
-            .peek(c -> LOGGER.info("Checking if {} is in category {}.", objectId, c))
-            .filter(c -> LINK_SERVICE.isInCategory(categLinkReference, c))
-            .findFirst();
-        return accessCategory;
+            .orElseGet(() -> {
+                LOGGER.debug("Using BASE strategy as fallback for {} on {}.", permission, objectId);
+                return OBJECT_BASE_STRATEGY.checkPermission(permissionId, permission);
+            });
     }
 
     private boolean checkDerivatePermission(MCRObjectID derivateId, String permission) {
@@ -185,6 +174,23 @@ public class MIRStrategy implements MCRAccessCheckStrategy {
 
     private boolean checkOtherPermission(String id, String permission) {
         return ID_STRATEGY.checkPermission(id, permission);
+    }
+
+    private static String getUserKey(MCRObjectID objectId) {
+        return MCRSessionMgr.getCurrentSession().getUserInformation()
+            .getUserAttribute(MIRAccessKeyManager.ACCESS_KEY_PREFIX + objectId.toString());
+    }
+
+    private Optional<MCRCategoryID> getAccessCategory(MCRObjectID objectId, String permission) {
+        List<MCRCategoryID> accessMappedCategories = getAccessMappedCategories(objectId.getTypeId(), permission,
+            ACCESS_CLASSES);
+        MCRCategLinkReference categLinkReference = new MCRCategLinkReference(objectId);
+        Optional<MCRCategoryID> accessCategory = accessMappedCategories
+            .stream()
+            .peek(c -> LOGGER.info("Checking if {} is in category {}.", objectId, c))
+            .filter(c -> LINK_SERVICE.isInCategory(categLinkReference, c))
+            .findFirst();
+        return accessCategory;
     }
 
     @SuppressWarnings("unchecked")
