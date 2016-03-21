@@ -31,5 +31,10 @@
       <when condition="(status != published) and (status != review)" url="/servlets/MCRLockServlet?url=/editor/editor-xml.xed" />
     </action>
   </collection>
-
+  <collection name="lecture">
+    <action action="create-child">
+      <when condition="(group = admin) or (group = editor) or (group = submitter)" url="/editor/editor-dynamic.xed" />
+      <when condition="true" url="/authorization/new-author.xed" />
+    </action>
+  </collection>
 </actionmappings>
