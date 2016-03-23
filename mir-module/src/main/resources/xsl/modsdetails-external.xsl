@@ -558,6 +558,15 @@
                   </li>
                 </xsl:for-each>
               </xsl:when>
+              <xsl:when test="contains($url, 'editor-dynamic.xed') and $mods-type = 'lecture'">
+                <xsl:for-each select="str:tokenize($child-layout,'|')">
+                  <li>
+                    <a href="{$url}{$HttpSession}?relatedItemId={$id}&amp;relatedItemType=series&amp;genre={.}&amp;host={$mods-type}">
+                      <xsl:value-of select="mcrxsl:getDisplayName('mir_genres',.)" />
+                    </a>
+                  </li>
+                </xsl:for-each>
+              </xsl:when>
               <xsl:otherwise>
                 <xsl:for-each select="str:tokenize($child-layout,'|')">
                   <li>
