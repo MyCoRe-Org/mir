@@ -9,13 +9,13 @@
 
 //--- in metadata view the select/video controller
     // on start load the first source
-    $(".player video").ready(function(){
+    $(".mir-player video").ready(function(){
       $("#videoChooser").change();
     });
 
     //get all sources of selected item in a var and give it to player
     $("#videoChooser").change(function() {
-      var myPlayer = videojs($(".player video").attr("id"));
+      var myPlayer = videojs($(".mir-player video").attr("id"));
       var src = [];
       $("#" + $(this).val()).children('source').each(function() {
         src.push({type: $(this).attr("type"), src: $(this).attr("src")});
