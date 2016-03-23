@@ -1186,7 +1186,9 @@
   </xed:template>
 
   <xed:template id="type.of.resource.moving_image">
-    <xed:bind xpath="mods:typeOfResource/@mcr:categId" initially="typeOfResource:moving_image"/>
+    <xed:bind xpath="mods:typeOfResource/@mcr:categId">
+      <input type="hidden" value="typeOfResource:moving_image" />
+    </xed:bind>
   </xed:template>
 
   <xed:template id="rights">

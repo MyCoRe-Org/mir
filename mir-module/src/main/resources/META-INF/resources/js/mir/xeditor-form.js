@@ -87,7 +87,7 @@ $(document).ready(function() {
             },
             startView: startView,
             clearBtn: true,
-            todayBtn: true,
+            todayBtn: "linked",
             language: $("html").attr("lang"),
             forceParse: false,
             autoclose: true,
