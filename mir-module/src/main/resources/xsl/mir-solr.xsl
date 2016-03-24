@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:mods="http://www.loc.gov/mods/v3"
-  xmlns:mcrxml="xalan://org.mycore.common.xml.MCRXMLFunctions" xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
-  xmlns:xalan="http://xml.apache.org/xalan" xmlns:xlink="http://www.w3.org/1999/xlink" exclude-result-prefixes="mods xlink">
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:mods="http://www.loc.gov/mods/v3" xmlns:mcrxml="xalan://org.mycore.common.xml.MCRXMLFunctions"
+  xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation" xmlns:xalan="http://xml.apache.org/xalan" xmlns:xlink="http://www.w3.org/1999/xlink"
+  exclude-result-prefixes="mods xlink"
+>
   <xsl:import href="xslImport:solr-document:mir-solr.xsl" />
 
   <xsl:template match="mycoreobject[contains(@ID,'_mods_')]">
@@ -101,9 +102,18 @@
     <xsl:for-each select=".//mods:name[@type='personal']">
       <!-- person index name entry -->
       <xsl:variable name="pindexname">
-        <xsl:for-each select="mods:displayForm | mods:namePart[@type!='date'] | text()">
-          <xsl:value-of select="concat(' ',.)" />
-        </xsl:for-each>
+        <xsl:choose>
+          <xsl:when test="mods:displayForm">
+            <xsl:for-each select="mods:displayForm">
+              <xsl:value-of select="concat(' ',.)" />
+            </xsl:for-each>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:for-each select="mods:namePart[@type!='date'] | text()">
+              <xsl:value-of select="concat(' ',.)" />
+            </xsl:for-each>
+          </xsl:otherwise>
+        </xsl:choose>
         <xsl:variable name="nameIds">
           <xsl:call-template name="getNameIdentifiers">
             <xsl:with-param name="entity" select="." />
@@ -165,27 +175,30 @@
     </xsl:for-each>
     <xsl:for-each select=".//mods:relatedItem">
       <field name="mods.relatedItem">
-        <xsl:value-of select="@xlink:href" />|<xsl:value-of select="@type" />
+        <xsl:value-of select="@xlink:href" />
+        |
+        <xsl:value-of select="@type" />
       </field>
       <xsl:if test="mods:part/mods:detail[@type='volume']">
         <field name="mods.part">
           <xsl:choose>
             <xsl:when test="mods:part/mods:detail[@type='issue']">
-              <xsl:value-of select="concat(normalize-space(mods:part/mods:detail[@type='volume']),
+              <xsl:value-of
+                select="concat(normalize-space(mods:part/mods:detail[@type='volume']),
                                           ', ',
                                           i18n:translate('component.mods.metaData.dictionary.issue'),
                                           ' ',
                                           normalize-space(mods:part/mods:detail[@type='issue']))" />
-              </xsl:when>
-              <xsl:otherwise>
-                <xsl:value-of select="normalize-space(mods:part/mods:detail[@type='volume'])" />
-              </xsl:otherwise>
-            </xsl:choose>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:value-of select="normalize-space(mods:part/mods:detail[@type='volume'])" />
+            </xsl:otherwise>
+          </xsl:choose>
         </field>
       </xsl:if>
     </xsl:for-each>
   </xsl:template>
-  
+
   <xsl:variable name="nameIdentifiers" select="document(concat('classification:metadata:all:children:','nameIdentifier'))/mycoreclass/categories" />
 
   <xsl:template name="getNameIdentifiers">
