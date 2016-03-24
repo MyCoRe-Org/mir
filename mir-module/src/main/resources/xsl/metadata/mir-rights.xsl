@@ -8,10 +8,8 @@
   <xsl:variable name="addurn" select="'addurn'" />
 
   <!-- checks for MIRAccessKeyStrategy -->
-  <xsl:param name="MCR.Access.Strategy.Class" />
-  <xsl:param name="MIR.AccessKeyStrategy.ObjectTypes" />
-  <xsl:variable name="derivateAccKeyEnabled" select="contains($MCR.Access.Strategy.Class, 'MIRAccessKeyStrategy') and contains($MIR.AccessKeyStrategy.ObjectTypes, 'derivate')" />
-  <xsl:variable name="modsAccKeyEnabled" select="contains($MCR.Access.Strategy.Class, 'MIRAccessKeyStrategy') and contains($MIR.AccessKeyStrategy.ObjectTypes, 'mods')" />
+  <xsl:variable name="derivateAccKeyEnabled" select="true()" />
+  <xsl:variable name="modsAccKeyEnabled" select="true()" />
 
   <xsl:template match="/mycoreobject">
     <xsl:copy>
