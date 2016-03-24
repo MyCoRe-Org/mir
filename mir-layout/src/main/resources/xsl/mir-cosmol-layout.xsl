@@ -56,6 +56,15 @@
                     <span id="project_name">mods institutional repository</span>
                 </a>
               </div>
+              <noscript>
+                <div class="mir-no-script alert alert-warning text-center" style="border-radius: 0;">
+                  <xsl:value-of select="i18n:translate('mir.noScript.text')" />&#160;
+                  <a href="http://www.enable-javascript.com/de/" target="_blank">
+                    <xsl:value-of select="i18n:translate('mir.noScript.link')" />
+                  </a>
+                  .
+                </div>
+              </noscript>
             </div>
           </div>
         </header>

@@ -46,6 +46,15 @@
 
         <header>
             <xsl:call-template name="mir.navigation" />
+          <noscript>
+            <div class="mir-no-script alert alert-warning text-center" style="border-radius: 0;">
+              <xsl:value-of select="i18n:translate('mir.noScript.text')" />&#160;
+              <a href="http://www.enable-javascript.com/de/" target="_blank">
+                <xsl:value-of select="i18n:translate('mir.noScript.link')" />
+              </a>
+              .
+            </div>
+          </noscript>
         </header>
 
         <!-- show only on startpage -->
@@ -125,7 +134,6 @@
             </div>
           </div>
         </footer>
-
 
         <xsl:variable name="mcr_version" select="concat('MyCoRe ',mcrver:getCompleteVersion())" />
         <div id="powered_by">
