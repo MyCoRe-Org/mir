@@ -1,14 +1,32 @@
 $(document).ready(function() {
 	var GenreXML;
 
+	$("input[name*='mods:relatedItem/mods:titleInfo/mods:title']").attr("disabled", "true");
+
+	checkHost();
+
 	$(".mir-relatedItem-select").each(function() {
 		var button = $(this);
 		button.next("span").text(button.next().next("input").val());
-		button.click(function() {
-			workRelatedItem(button);
-		})
 	});
-	
+
+	$("body").on("change", "input[name*='mods:relatedItem/@type']", function() {
+		checkHost();
+	});
+
+	$("body").on("click", ".mir-relatedItem-select", function() {
+		workRelatedItem($(this));
+	});
+
+	function checkHost() {
+		if($("input[name*='mods:relatedItem/@xlink:href']").val() != "" && $("select[name*='mods:relatedItem/@type']").val() == "host") {
+			$(".mir-relatedItem-select").prop('disabled', true);
+		}
+		else {
+			$(".mir-relatedItem-select").prop('disabled', false);
+		}
+	}
+
 	function workRelatedItem(button){
 		initBody();
 		
@@ -16,20 +34,22 @@ $(document).ready(function() {
 		var sortType = "";
 		
 		//load genre classification
-		loadGenres();
+		loadGenres(initContent);
 		
-		if(input.val().length > 0) {
-			loadPublikation(leftContent, "", input.val(), "0", "xml");
-			setTimeout(function() {
-				$("#modalFrame").find(".list-group-item").addClass("active");
-			}, 300);
-			loadPublikation(rightContent, "receive/" + input.val(), "", "", "html");
-			$("#modalFrame-send").removeAttr("disabled");
-		}
-		
-    
-		if(!input.val()) {
-			loadPublikation(leftContent, "", "", "0", "xml");
+		function initContent() {
+			if(input.val().length > 0) {
+				loadPublikation(leftContent, "", "id:" + input.val(), "0", "xml");
+				setTimeout(function() {
+					$("#modalFrame").find(".list-group-item").addClass("active");
+				}, 300);
+				loadPublikation(rightContent, "receive/" + input.val(), "", "", "html");
+				$("#modalFrame-send").removeAttr("disabled");
+			}
+
+
+			if(!input.val()) {
+				loadPublikation(leftContent, "", "", "0", "xml");
+			}
 		}
 		
 		function initBody() {
@@ -67,6 +87,7 @@ $(document).ready(function() {
 				$("#main_left_content").append(elm);
 				$(elm).css("cursor", "pointer");
 				$(elm).attr("data-type", $(this).find("str[name='mods.type']").text());
+				$(elm).attr("data-title", $(this).find("str[name='mods.title.main']").text());
 			});
 			
 			updatePager(data);
@@ -129,6 +150,8 @@ $(document).ready(function() {
 		$("#modalFrame-send").unbind().click(function() {
 			input.val($(".list-group-item.active").attr("value"));
 			$(button).next("span").text($(".list-group-item.active").attr("value"));
+			var titleInput = $(button).parents("fieldset").find("input[name*='mods:title']");
+			$(titleInput).val($(".list-group-item.active").attr("data-title"));
 			$("#modalFrame").modal("hide");
 		});
 		
@@ -215,14 +238,18 @@ $(document).ready(function() {
 			return query;
 		}
 
-		function loadGenres() {
+		function loadGenres(callback) {
 			if (!webApplicationBaseURL) console.log("Error: webApplicationBaseURL not set");
 			$.ajax({
 				method: "GET",
 				url: webApplicationBaseURL + "api/v1/classifications/mir_genres",
 				dataType: "xml"
-			}) .done(function( xml ) {
+			}).done(function( xml ) {
 				GenreXML=xml;
+				callback();
+			}).fail(function () {
+				console.log("Warning: could not load genres, genres will be displayed as undefined");
+				callback();
 			});
 		}
 
