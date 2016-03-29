@@ -219,8 +219,8 @@ function getMods(fieldset, relItemid) {
 
 function fillFieldset(fieldset, xml) {
 	fieldset.find('input, select').each(function(index, input) {
-		path = input.name.substr(input.name.indexOf("relatedItem/") + 12);
-		path = "/mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/" + path;
+		path = $(input).data('valuexpath');
+		//path = "/mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/" + path;
 		function nsResolver(prefix) {
 			var ns = {
 				'mods' : 'http://www.loc.gov/mods/v3',
