@@ -36,7 +36,8 @@
     <url>jdbc:postgresql://127.0.0.1/mir</url>
     <dialect>org.hibernate.dialect.PostgreSQLDialect</dialect>
     <library>
-      <url>http://artifactory.mycore.de/mycore-releases/postgresql/postgresql/9.1/postgresql-9.1-901.jdbc4.jar</url>
+      <url>http://central.maven.org/maven2/org/postgresql/postgresql/9.4.1208/postgresql-9.4.1208.jar</url>
+<!--       <url>http://artifactory.mycore.de/mycore-releases/postgresql/postgresql/9.1/postgresql-9.1-901.jdbc4.jar</url> -->
     </library>
   </db>
 </dbtypes>
