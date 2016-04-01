@@ -2,10 +2,12 @@
   <!-- ============================================== -->
   <!-- $Revision$ $Date$ -->
   <!-- ============================================== -->
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xlink="http://www.w3.org/1999/xlink"
-  xmlns:basket="xalan://org.mycore.frontend.basket.MCRBasketManager" xmlns:mcr="http://www.mycore.org/" xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
-  xmlns:actionmapping="xalan://org.mycore.wfc.actionmapping.MCRURLRetriever" xmlns:mcrver="xalan://org.mycore.common.MCRCoreVersion"
-  xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions" exclude-result-prefixes="xlink basket actionmapping mcr mcrver mcrxsl i18n">
+<xsl:stylesheet version="1.0"
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+    xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
+    exclude-result-prefixes="xlink i18n">
+
   <xsl:output method="html" doctype-system="about:legacy-compat" indent="yes" omit-xml-declaration="yes" media-type="text/html"
     version="5" />
   <xsl:strip-space elements="*" />
@@ -91,12 +93,7 @@
           <xsl:call-template name="mir.footer" />
         </footer>
 
-        <xsl:variable name="mcr_version" select="concat('MyCoRe ',mcrver:getCompleteVersion())" />
-        <div id="powered_by">
-          <a href="http://www.mycore.de">
-            <img src="{$WebApplicationBaseURL}mir-layout/images/mycore_logo_small_invert.png" title="{$mcr_version}" alt="powered by MyCoRe" />
-          </a>
-        </div>
+        <xsl:call-template name="mir.powered_by" />
 
         <script type="text/javascript">
           <!-- Bootstrap & Query-Ui button conflict workaround  -->

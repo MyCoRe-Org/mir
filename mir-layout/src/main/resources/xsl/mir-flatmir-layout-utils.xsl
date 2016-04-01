@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0" xmlns:actionmapping="xalan://org.mycore.wfc.actionmapping.MCRURLRetriever" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" exclude-result-prefixes="actionmapping">
+<xsl:stylesheet version="1.0"
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+    xmlns:mcrver="xalan://org.mycore.common.MCRCoreVersion"
+    exclude-result-prefixes="mcrver">
+
   <xsl:import href="resource:xsl/layout/mir-common-layout.xsl" />
   <xsl:template name="mir.navigation">
 
@@ -110,4 +114,14 @@
       </div>
     </div>
   </xsl:template>
+
+  <xsl:template name="mir.powered_by">
+    <xsl:variable name="mcr_version" select="concat('MyCoRe ',mcrver:getCompleteVersion())" />
+    <div id="powered_by">
+      <a href="http://www.mycore.de">
+        <img src="{$WebApplicationBaseURL}mir-layout/images/mycore_logo_small_invert.png" title="{$mcr_version}" alt="powered by MyCoRe" />
+      </a>
+    </div>
+  </xsl:template>
+
 </xsl:stylesheet>
