@@ -6,7 +6,6 @@
 >
 
 <xsl:include href="mods2oaiheader.xsl" />
-<xsl:include href="mods2oaiabout.xsl" />
 
 <xsl:template match="/">
   <record>
@@ -16,9 +15,6 @@
     <metadata>
       <xsl:apply-templates select="mycoreobject" mode="metadata" />
     </metadata>
-    <about>
-      <xsl:apply-templates select="mycoreobject" mode="about" />
-    </about>
   </record>
 </xsl:template>
 
