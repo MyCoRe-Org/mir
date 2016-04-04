@@ -56,58 +56,63 @@
     </xsl:for-each>
   </xsl:variable>
 
-  <xsl:template match="int">
-    <xsl:variable name="nameIdentifierAndType" select="substring-after(@name, ':')" />
-
-    <xsl:variable name="linkText">
-      <xsl:choose>
-        <xsl:when test="contains(@name, ':')">
-          <xsl:value-of select="substring-before(@name, ':')" />
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:value-of select="@name" />
-        </xsl:otherwise>
-      </xsl:choose>
-    </xsl:variable>
-
+  <xsl:template match="lst[@name='mods.pindexname'] | lst[@name='mods.pindexname.published']">
     <!-- if user is in role editor or admin, show all; other users only gets their own and published publications -->
     <xsl:variable name="owner">
       <xsl:choose>
         <xsl:when test="mcrxsl:isCurrentUserInRole('admin') or mcrxsl:isCurrentUserInRole('editor')"><!--
-          -->*<!--
-        --></xsl:when>
+            -->*<!--
+          --></xsl:when>
         <xsl:otherwise>
           <xsl:value-of select="$CurrentUser" />
         </xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
-    <xsl:choose>
-      <xsl:when test="string-length($nameIdentifierAndType) &gt; 0">
-        <xsl:variable name="nameIdentifier" select="substring-after($nameIdentifierAndType, ':')" />
-        <xsl:variable name="nameIdentifierType" select="substring-before($nameIdentifierAndType, ':')" />
-        <xsl:variable name="classi" select="document(concat('classification:metadata:all:children:','nameIdentifier',':',$nameIdentifierType))/mycoreclass/categories/category[@ID=$nameIdentifierType]" />
-        <xsl:variable name="uri" select="$classi/label[@xml:lang='x-uri']/@text" />
-        <xsl:variable name="idType" select="$classi/label[@xml:lang='de']/@text" />
-        <li>
-          <a href="{$ServletsBaseURL}solr/mods_nameIdentifier?q=mods.nameIdentifier:{$nameIdentifierType}\:{$nameIdentifier}&amp;owner=createdby:{$owner}" title="Suche nach allen Publikationen">
-            <xsl:value-of select="$linkText" />
-          </a>
-          <xsl:text>&#160;</xsl:text><!-- add whitespace here -->
-          <a href="{$uri}{$nameIdentifier}" title="Link zu {$idType}">
-            <sup>
-              <xsl:value-of select="$idType" />
-            </sup>
-          </a>
-        </li>
-      </xsl:when>
-      <xsl:otherwise>
-        <li>
-          <a href="{$ServletsBaseURL}solr/mods_nameIdentifier?q=mods.name:&quot;{$linkText}&quot;&amp;owner=createdby:{$owner}" title="Suche nach allen Publikationen">
-            <xsl:value-of select="$linkText" />
-          </a>
-        </li>
-      </xsl:otherwise>
-    </xsl:choose>
+
+    <xsl:for-each select="int">
+      <xsl:sort select="@name" />
+
+      <xsl:variable name="nameIdentifierAndType" select="substring-after(@name, ':')" />
+
+      <xsl:variable name="linkText">
+        <xsl:choose>
+          <xsl:when test="contains(@name, ':')">
+            <xsl:value-of select="substring-before(@name, ':')" />
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:value-of select="@name" />
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:variable>
+
+      <xsl:choose>
+        <xsl:when test="string-length($nameIdentifierAndType) &gt; 0">
+          <xsl:variable name="nameIdentifier" select="substring-after($nameIdentifierAndType, ':')" />
+          <xsl:variable name="nameIdentifierType" select="substring-before($nameIdentifierAndType, ':')" />
+          <xsl:variable name="classi" select="document(concat('classification:metadata:all:children:','nameIdentifier',':',$nameIdentifierType))/mycoreclass/categories/category[@ID=$nameIdentifierType]" />
+          <xsl:variable name="uri" select="$classi/label[@xml:lang='x-uri']/@text" />
+          <xsl:variable name="idType" select="$classi/label[@xml:lang='de']/@text" />
+          <li>
+            <a href="{$ServletsBaseURL}solr/mods_nameIdentifier?q=mods.nameIdentifier:{$nameIdentifierType}\:{$nameIdentifier}&amp;owner=createdby:{$owner}" title="Suche nach allen Publikationen">
+              <xsl:value-of select="$linkText" />
+            </a>
+            <xsl:text>&#160;</xsl:text><!-- add whitespace here -->
+            <a href="{$uri}{$nameIdentifier}" title="Link zu {$idType}">
+              <sup>
+                <xsl:value-of select="$idType" />
+              </sup>
+            </a>
+          </li>
+        </xsl:when>
+        <xsl:otherwise>
+          <li>
+            <a href="{$ServletsBaseURL}solr/mods_nameIdentifier?q=mods.name:&quot;{$linkText}&quot;&amp;owner=createdby:{$owner}" title="Suche nach allen Publikationen">
+              <xsl:value-of select="$linkText" />
+            </a>
+          </li>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:for-each>
   </xsl:template>
 
   <xsl:template match="/response">
@@ -155,10 +160,10 @@
                 <ul id="resultList">
                   <xsl:choose>
                     <xsl:when test="mcrxsl:isCurrentUserInRole('editor') or mcrxsl:isCurrentUserInRole('admin')">
-                      <xsl:apply-templates select="lst[@name='terms']/lst[@name='mods.pindexname']/int" />
+                      <xsl:apply-templates select="lst[@name='terms']/lst[@name='mods.pindexname']" />
                     </xsl:when>
                     <xsl:otherwise>
-                      <xsl:apply-templates select="lst[@name='terms']/lst[@name='mods.pindexname.published']/int" />
+                      <xsl:apply-templates select="lst[@name='terms']/lst[@name='mods.pindexname.published']" />
                     </xsl:otherwise>
                   </xsl:choose>
                 </ul>
@@ -211,7 +216,7 @@
                   </xsl:otherwise>
                 </xsl:choose>
               </xsl:variable>
-              
+
               <xsl:variable name="placeholder">
                 <xsl:value-of select="i18n:translate('browse.person.searchplaceholder')" />
               </xsl:variable>
