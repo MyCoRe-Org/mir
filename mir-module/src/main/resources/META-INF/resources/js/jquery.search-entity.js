@@ -93,6 +93,41 @@
           }
           return result;
         }
+      },
+      both : {
+        enabled : true,
+        url : "//ws.gbv.de/suggest/gnd/",
+        data : function(input) {
+          return {
+            searchterm : input,
+            count: "30"
+          }
+        },
+        dataType : "jsonp",
+        dataConvert : function(data) {
+          var result = [];
+          if (data.length == 4) {
+            $(data[1]).each(function(index, item) {
+              if (data[2][index] === "DifferentiatedPerson") {
+                var person = {
+                  label : item,
+                  value : data[3][index],
+                  type: "personal"
+                };
+                result.push(person);
+              }
+              if (data[2][index] === "CorporateBody") {
+                var organisation = {
+                  label : item,
+                  value : data[3][index],
+                  type: "corporate"
+                };
+                result.push(organisation);
+              }
+            });
+          }
+          return result;
+        }
       }
     },
     VIAF : {
@@ -140,6 +175,40 @@
                 var organisation = {
                   label : item.term,
                   value : "http://www.viaf.org/viaf/" + item.viafid
+                };
+                result.push(organisation);
+              }
+            });
+          }
+          return result;
+        }
+      },
+      both : {
+        enabled: true,
+        url: "//www.viaf.org/viaf/AutoSuggest",
+        data: function (input) {
+          return {
+            query: input
+          }
+        },
+        dataType: "jsonp",
+        dataConvert: function (data) {
+          var result = [];
+          if (data.result !== undefined) {
+            $(data.result).each(function (index, item) {
+              if (item.nametype.toLowerCase() === "personal") {
+                var person = {
+                  label: item.term,
+                  value: "http://www.viaf.org/viaf/" + item.viafid,
+                  type: "personal"
+                };
+                result.push(person);
+              }
+              if (item.nametype.toLowerCase() === "corporate") {
+                var organisation = {
+                  label: item.term,
+                  value: "http://www.viaf.org/viaf/" + item.viafid,
+                  type: "corporate"
                 };
                 result.push(organisation);
               }
@@ -332,6 +401,7 @@
 
         var $person = $(document.createElement("a"));
         $person.attr("href", "#");
+        $person.attr("data-type", item.type);
         $person.html(item.label);
         $person.on("click", function(e) {
           e.preventDefault();
@@ -369,6 +439,7 @@
     var options = this.options;
     var $output = $(options.searchOutput, getParent(this.$element))[0] !== undefined ? $(options.searchOutput, getParent(this.$element)).first() : this.$element;
     var $outputType = $(options.searchOutputType, getParent(this.$element))[0] !== undefined ? $(options.searchOutputType, getParent(this.$element)).first() : this.$element;
+    var $outputNameType = $(options.searchOutputNameType, getParent(this.$element))[0] !== undefined ? $(options.searchOutputNameType, getParent(this.$element)).first() : this.$element;
 
     if (item) {
       this.$element != $output && item.label && this.$element.val(item.label.replace(SearchEntity.LABEL_CLEANUP, ""));
@@ -376,6 +447,9 @@
       var outputType = getTypeFromURL(item.value);
       if (outputType != "") {
         $outputType.val(outputType.toLowerCase());
+      }
+      if (item.type != undefined && item.type != "") {
+        $outputNameType.val(item.type.toLowerCase());
       }
     }
 
