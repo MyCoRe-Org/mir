@@ -500,18 +500,14 @@
 
   <xed:template id="person.fields">
     <div class="search-person">
-      <!--<xed:bind xpath="@type">-->
-        <!--<input type="hidden" class="nameType" value="personal"/>-->
-      <!--</xed:bind>-->
+      <xed:bind xpath="@type">
+        <input type="hidden" class="nameType" value="personal"/>
+      </xed:bind>
       <xed:bind xpath="mods:displayForm">
         <input type="text" size="26" class="form-control form-control-inline" data-search="searchEntity" data-search-type="select"
-          data-search-entity-type="person" data-search-output=".nameIdentifier" data-search-output-type=".nameIdentifierType" data-search-button="{i18n:button.search}"
-          data-search-button-loading="{i18n:button.loading}" data-search-result-empty="{i18n:mir.searchIdentifier.noResult}" data-target=".search-person"
-          placeholder="{i18n:mir.placeholder.name.family}, {i18n:mir.placeholder.name.given}" />
-        <!--<input type="text" size="26" class="form-control form-control-inline" data-search="searchEntity" data-search-type="select"-->
-               <!--data-search-entity-type="both" data-search-output=".nameIdentifier" data-search-output-type=".nameIdentifierType" data-search-output-name-type=".nameType" data-search-button="{i18n:button.search}"-->
-               <!--data-search-button-loading="{i18n:button.loading}" data-search-result-empty="{i18n:mir.searchIdentifier.noResult}" data-target=".search-person"-->
-               <!--placeholder="{i18n:mir.placeholder.name.family}, {i18n:mir.placeholder.name.given}" />-->
+               data-search-entity-type="both" data-search-output=".nameIdentifier" data-search-output-type=".nameIdentifierType" data-search-output-name-type=".nameType" data-search-button="{i18n:button.search}"
+               data-search-button-loading="{i18n:button.loading}" data-search-result-empty="{i18n:mir.searchIdentifier.noResult}" data-target=".search-person"
+               placeholder="{i18n:mir.placeholder.name.family}, {i18n:mir.placeholder.name.given}" />
       </xed:bind>
       <xed:bind xpath="mods:nameIdentifier">
         <input type="hidden" class="nameIdentifier" />
@@ -543,13 +539,9 @@
     <div class="search-person">
       <xed:bind xpath="mods:displayForm">
         <input type="text" size="26" class="form-control form-control-inline" data-search="searchEntity" data-search-type="select"
-          data-search-entity-type="person" data-search-output=".nameIdentifier" data-search-output-type=".nameIdentifierType" data-search-button="{i18n:button.search}"
-          data-search-button-loading="{i18n:button.loading}" data-search-result-empty="{i18n:mir.searchIdentifier.noResult}" data-target=".personExtended_box"
-          placeholder="{i18n:mir.placeholder.name.family}, {i18n:mir.placeholder.name.given}" />
-        <!--<input type="text" size="26" class="form-control form-control-inline" data-search="searchEntity" data-search-type="select"-->
-               <!--data-search-entity-type="both" data-search-output=".nameIdentifier" data-search-output-type=".nameIdentifierType" data-search-output-name-type=".nameType" data-search-button="{i18n:button.search}"-->
-               <!--data-search-button-loading="{i18n:button.loading}" data-search-result-empty="{i18n:mir.searchIdentifier.noResult}" data-target=".personExtended_box"-->
-               <!--placeholder="{i18n:mir.placeholder.name.family}, {i18n:mir.placeholder.name.given}" />-->
+               data-search-entity-type="both" data-search-output=".nameIdentifier" data-search-output-type=".nameIdentifierType" data-search-output-name-type=".nameType" data-search-button="{i18n:button.search}"
+               data-search-button-loading="{i18n:button.loading}" data-search-result-empty="{i18n:mir.searchIdentifier.noResult}" data-target=".personExtended_box"
+               placeholder="{i18n:mir.placeholder.name.family}, {i18n:mir.placeholder.name.given}" />
       </xed:bind>
     </div>
   </xed:template>
@@ -1291,7 +1283,7 @@
         :
       </label>
       <div class="col-md-6">
-        <xed:bind xpath="mods:name[@type='corporate'][@authorityURI='http://www.mycore.org/classifications/mir_institutes']">
+        <xed:bind xpath="mods:name[@type='corporate'][@usage='institute'][@authorityURI='http://www.mycore.org/classifications/mir_institutes']">
           <xed:bind xpath="mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']" initially="his" /><!--  Host institution [his] -->
           <xed:bind xpath="@valueURIxEditor">
             <select class="form-control form-control-inline">
