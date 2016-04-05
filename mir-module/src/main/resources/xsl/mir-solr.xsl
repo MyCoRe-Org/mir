@@ -4,6 +4,7 @@
   exclude-result-prefixes="mods xlink"
 >
   <xsl:import href="xslImport:solr-document:mir-solr.xsl" />
+  <xsl:include href="mods-utils.xsl"/>
 
   <xsl:template match="mycoreobject[contains(@ID,'_mods_')]">
     <xsl:variable name="status" select="mcrxml:isInCategory(@ID,'state:published')" />
@@ -102,18 +103,7 @@
     <xsl:for-each select=".//mods:name[@type='personal']">
       <!-- person index name entry -->
       <xsl:variable name="pindexname">
-        <xsl:choose>
-          <xsl:when test="mods:displayForm">
-            <xsl:for-each select="mods:displayForm">
-              <xsl:value-of select="concat(' ',.)" />
-            </xsl:for-each>
-          </xsl:when>
-          <xsl:otherwise>
-            <xsl:for-each select="mods:namePart[@type!='date'] | text()">
-              <xsl:value-of select="concat(' ',.)" />
-            </xsl:for-each>
-          </xsl:otherwise>
-        </xsl:choose>
+        <xsl:apply-templates select="." mode="nameString"/>
         <xsl:variable name="nameIds">
           <xsl:call-template name="getNameIdentifiers">
             <xsl:with-param name="entity" select="." />
@@ -147,13 +137,8 @@
       </field>
     </xsl:for-each>
     <xsl:for-each select="mods:name[@type='personal' or 'corporate']">
-      <xsl:variable name="name">
-        <xsl:for-each select="mods:displayForm | mods:namePart[@type!='date'] | text()">
-          <xsl:value-of select="concat(' ',.)" />
-        </xsl:for-each>
-      </xsl:variable>
       <field name="mods.nameByRole.{@type}.{mods:role/mods:roleTerm[@type='code']}">
-        <xsl:value-of select="normalize-space($name)" />
+        <xsl:apply-templates select="." mode="nameString"/>
         <xsl:variable name="nameIds">
           <xsl:call-template name="getNameIdentifiers">
             <xsl:with-param name="entity" select="." />
@@ -199,24 +184,4 @@
     </xsl:for-each>
   </xsl:template>
 
-  <xsl:variable name="nameIdentifiers" select="document(concat('classification:metadata:all:children:','nameIdentifier'))/mycoreclass/categories" />
-
-  <xsl:template name="getNameIdentifiers">
-    <xsl:param name="entity" />
-
-    <xsl:for-each select="$nameIdentifiers/category">
-      <xsl:sort select="x-order" data-type="number" />
-      <xsl:variable name="categId" select="@ID" />
-      <xsl:if test="(string-length(label[@xml:lang='x-uri']/@text) &gt; 0) and count($entity/mods:nameIdentifier[@type = $categId]) &gt; 0">
-        <nameIdentifier>
-          <xsl:attribute name="type">
-            <xsl:value-of select="$categId" />
-          </xsl:attribute>
-          <xsl:attribute name="id">
-            <xsl:value-of select="$entity/mods:nameIdentifier[@type = $categId]/text()" />
-          </xsl:attribute>
-        </nameIdentifier>
-      </xsl:if>
-    </xsl:for-each>
-  </xsl:template>
 </xsl:stylesheet>
