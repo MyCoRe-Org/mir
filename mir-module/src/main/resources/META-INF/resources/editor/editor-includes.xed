@@ -1283,7 +1283,7 @@
         :
       </label>
       <div class="col-md-6">
-        <xed:bind xpath="mods:name[@type='corporate'][@usage='institute'][@authorityURI='http://www.mycore.org/classifications/mir_institutes']">
+        <xed:bind xpath="mods:name[@type='corporate'][@authorityURI='http://www.mycore.org/classifications/mir_institutes']">
           <xed:bind xpath="mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']" initially="his" /><!--  Host institution [his] -->
           <xed:bind xpath="@valueURIxEditor">
             <select class="form-control form-control-inline">
