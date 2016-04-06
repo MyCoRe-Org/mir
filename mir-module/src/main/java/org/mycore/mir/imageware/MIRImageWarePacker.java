@@ -46,14 +46,11 @@ import org.mycore.services.packaging.MCRPackerJobAction;
 
 /**
  * <p>Creates the ZIP-Files for the image ware electronic reading room.</p>
- * <p>
  * <b>Parameters:</b>
  * <dl>
  * <dt>objectId</dt>
  * <dd>The objectID which should be packed (Linked derivates are automatic included)</dd>
  * </dl>
- * </p>
- * <p>
  * <b>Configuration:</b>
  * <dl>
  * <dt>TransformerID</dt>
@@ -65,7 +62,6 @@ import org.mycore.services.packaging.MCRPackerJobAction;
  * <dt>DefaultPPNDB</dt>
  * <dd>If the PPN doesn't contain a database part then a default value will be set.</dd>
  * </dl>
- * </p>
  * <p><b>WARNING:</b> The system user needs write permission to the object id </p>
  */
 public class MIRImageWarePacker extends MCRPacker {
