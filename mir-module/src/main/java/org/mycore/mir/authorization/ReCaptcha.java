@@ -86,7 +86,7 @@ public class ReCaptcha {
      * Checks if capcha was correct submitted.
      * 
      * @param request the HTTP request
-     * @return @return <code>true</code> if captcha was solved and <code>false</code> if not
+     * @return <code>true</code> if captcha was solved and <code>false</code> if not
      */
     public Boolean isSubmittedCaptchaCorrect(final HttpServletRequest request) {
         final String response = request.getParameter(RECAPTCHA_RESPONSE_FIELD);

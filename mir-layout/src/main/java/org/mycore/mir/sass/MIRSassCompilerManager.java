@@ -49,7 +49,7 @@ public class MIRSassCompilerManager {
     }
 
     /**
-     * Gets the compiled(&compressed) CSS
+     * Gets the compiled(&amp;compressed) CSS
      *
      * @param file     the path to a .scss file. File should end with .css or .min.css (The compiler will look for the .scss file, then compiles and decides to minify or not).
      * @param importer a additional list of importers
