@@ -21,10 +21,8 @@ import javax.ws.rs.core.Request;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.StreamingOutput;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.mycore.mir.sass.MIRServletContextResourceImporter;
 import org.mycore.mir.sass.MIRSassCompilerManager;
+import org.mycore.mir.sass.MIRServletContextResourceImporter;
 
 import com.sun.jersey.spi.resource.Singleton;
 
@@ -32,13 +30,8 @@ import com.sun.jersey.spi.resource.Singleton;
 @Singleton
 public class MIRSassResource {
 
-    private static final Logger LOGGER = LogManager.getLogger();
     @javax.ws.rs.core.Context
     ServletContext context;
-
-    public MIRSassResource() {
-        LOGGER.info(() -> "Created: " + toString());
-    }
 
     @GET
     @Path("{fileName:.+}")
