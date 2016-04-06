@@ -58,9 +58,8 @@
             <!-- mods:name grouped by mods:role/mods:roleTerm excluding author-->
             <xsl:for-each
               select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:name[not(@ID) and
-                      @type='personal' or @type='corporate' and not(mods:role/mods:roleTerm='aut') and
-                      count(. | key('name-by-role',mods:role/mods:roleTerm)[1])=1 and
-                      not(@type='corporate' and @authorityURI='http://www.mycore.org/classifications/mir_institutes')]">
+                      (@type='personal' or (@type='corporate' and not(@authorityURI='http://www.mycore.org/classifications/mir_institutes')))
+                      and not(mods:role/mods:roleTerm='aut') and count(. | key('name-by-role',mods:role/mods:roleTerm)[1])=1]">
               <!-- for every role -->
               <xsl:choose>
                 <!-- check if 'aut' and 'edt' show 'edt', otherwise 'edt' is already shown in abstract-box -->
