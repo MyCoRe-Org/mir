@@ -354,12 +354,6 @@
     </dependency>
     <dependency>
       <groupId>org.seleniumhq.selenium</groupId>
-      <artifactId>selenium-support</artifactId>
-      <version>${selenium.version}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.seleniumhq.selenium</groupId>
       <artifactId>selenium-firefox-driver</artifactId>
       <version>${selenium.version}</version>
       <scope>test</scope>
@@ -377,6 +371,12 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.mycore</groupId>
+      <artifactId>selenium-utils</artifactId>
+      <version>0.3-SNAPSHOT</version>
       <scope>test</scope>
     </dependency>
   </dependencies>

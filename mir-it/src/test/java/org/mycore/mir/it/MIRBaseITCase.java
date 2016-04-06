@@ -23,42 +23,22 @@
 
 package org.mycore.mir.it;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-import java.util.Locale;
+import junit.framework.TestCase;
 
 import org.apache.log4j.Logger;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.ClassRule;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
-import org.junit.rules.TestWatcher;
-import org.junit.runner.Description;
-import org.mycore.mir.it.helper.MCRRemoteWebDriverFacade;
-import org.mycore.mir.it.selenium.MIRBy;
+import org.mycore.common.selenium.MCRSeleniumTestBase;
+import org.mycore.common.selenium.util.MCRBy;
 import org.openqa.selenium.By;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.firefox.FirefoxProfile;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 /**
  * @author Thomas Scheffler (yagee) Before doing integration test <a
  *         href="https://code.google.com/p/selenium/issues/detail?id=6950">selenium issue #6950</a> has to be fixed.
  */
-public class MIRBaseITCase {
+public class MIRBaseITCase extends MCRSeleniumTestBase {
 
     protected static final String ADMIN_PASSWD = "alleswirdgut";
 
@@ -68,112 +48,11 @@ public class MIRBaseITCase {
 
     protected static final int DEFAULT_PAGE_TIMEOUT = 30;
 
-    @ClassRule
-    public static TemporaryFolder alternateDirectory = new TemporaryFolder();
 
-    @Rule
-    public TestWatcher errorLogger = new TestWatcher() {
-
-        @Override
-        protected void failed(Throwable e, Description description) {
-            if (description.isTest()) {
-                String className = description.getClassName();
-                String method = description.getMethodName();
-                File failedTestClassDirectory = new File(mavenOutputDirectory, className);
-                File failedTestDirectory = new File(failedTestClassDirectory, method);
-                failedTestDirectory.mkdirs();
-                if (e != null) {
-                    File error = new File(failedTestDirectory, "error.txt");
-                    try (FileOutputStream fout = new FileOutputStream(error);
-                        OutputStreamWriter osw = new OutputStreamWriter(fout, "UTF-8");
-                        PrintWriter pw = new PrintWriter(osw)) {
-                        pw.println(testURL);
-                        e.printStackTrace(pw);
-                    } catch (IOException e1) {
-                        throw new RuntimeException(e1);
-                    }
-                }
-                File screenshot = new File(failedTestDirectory, "screenshot.png");
-                try (FileOutputStream fout = new FileOutputStream(screenshot);) {
-                    System.out.println("Saving screenshot to " + screenshot.getAbsolutePath());
-                    fout.write(screenShot);
-                } catch (IOException e1) {
-                    throw new RuntimeException(e1);
-                }
-                File html = new File(failedTestDirectory, "dom.html");
-                try (FileOutputStream fout = new FileOutputStream(html);
-                    OutputStreamWriter osw = new OutputStreamWriter(fout, "UTF-8")) {
-                    System.out.println("Saving DOM to " + html.getAbsolutePath());
-                    osw.write(sourceHTML);
-                } catch (IOException e1) {
-                    throw new RuntimeException(e1);
-                }
-            }
-            super.failed(e, description);
-        }
-    };
-
-    private static File mavenOutputDirectory;
-
-    private static int localPort;
-
-    private static String testApp;
-
-    private static String startURL, sourceHTML, testURL;
-
-    private byte[] screenShot;
-
-    private static MCRRemoteWebDriverFacade driver;
-
-    @BeforeClass
-    public static void setupClass() {
-        String buildDirectory = System.getProperty("project.build.directory");
-        if (buildDirectory == null) {
-            LOGGER.warn("Did not get System property 'project.build.directory'");
-            File targetDirectory = new File("target");
-            mavenOutputDirectory = targetDirectory.isDirectory() ? targetDirectory : alternateDirectory.getRoot();
-        } else {
-            mavenOutputDirectory = new File(buildDirectory);
-        }
-        mavenOutputDirectory = new File(mavenOutputDirectory, "failed-it");
-        LOGGER.info("Using " + mavenOutputDirectory.getAbsolutePath() + " as replacement.");
-        String port = System.getProperty("it.port", "8080");
-        localPort = Integer.parseInt(port);
-        testApp = System.getProperty("it.context", "");
-        startURL = "http://localhost:" + localPort + "/" + testApp;
-        LOGGER.info("Server running on '" + startURL + "'");
-        driver = new MCRRemoteWebDriverFacade(getFireFoxDriver(Locale.GERMANY), DEFAULT_PAGE_TIMEOUT); //run integration tests in German language
-    }
-
-    protected static FirefoxDriver getFireFoxDriver(Locale locale) {
-        FirefoxProfile profile = new FirefoxProfile();
-        String formattedLocale = locale.getCountry().isEmpty() ? locale.getLanguage()
-            : locale.getLanguage() + "-" + locale.getCountry().toLowerCase(Locale.ROOT);
-        profile.setPreference("intl.accept_languages", formattedLocale);
-        FirefoxDriver firefoxDriver = new FirefoxDriver(profile);
-        return firefoxDriver;
-    }
-
-    protected static MCRRemoteWebDriverFacade getDriver() {
-        return driver;
-    }
-
-    @Before
-    public void setup() {
-    }
-
-    @After
-    public void tearDown() {
-        sourceHTML = driver.getPageSource();
-        if (driver instanceof TakesScreenshot) {
-            screenShot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
-        }
-        testURL = driver.getCurrentUrl();
-    }
 
     @Test
     public void goToStart() {
-        driver.get(startURL + "/content/index.xml");
+        driver.get(getBaseUrl(System.getProperty("it.port", "8080")) + "/" + System.getProperty("it.context") + "/content/index.xml");
         TestCase.assertEquals("Title does not match", "Willkommen bei MIR!", driver.getTitle());
         assertFalse("Access to start page should not be restricted", driver.findElement(By.tagName("body")).getText()
             .matches("^[\\s\\S]*Zugriff verweigert[\\s\\S]*$"));
@@ -188,7 +67,7 @@ public class MIRBaseITCase {
 
     public void logOff() {
         driver.waitAndFindElement(By.xpath("//a[@id='currentUser']")).click();
-        driver.findElement(MIRBy.partialLinkText("Abmelden")).click();
+        driver.findElement(MCRBy.partialLinkText("Abmelden")).click();
         assertEqualsIgnoreCase("Anmelden", driver.waitAndFindElement(By.id("loginURL")).getText());
     }
 
@@ -214,12 +93,6 @@ public class MIRBaseITCase {
         assertEquals(message, expected.toLowerCase(), actual.toLowerCase());
     }
 
-    @AfterClass
-    public static void tearDownClass() {
-        if (driver != null) {
-            driver.quit();
-        }
-    }
 
     protected boolean isElementPresent(By by) {
         return !driver.findElements(by).isEmpty();

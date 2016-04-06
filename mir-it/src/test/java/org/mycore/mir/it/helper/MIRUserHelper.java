@@ -3,16 +3,17 @@
  */
 package org.mycore.mir.it.helper;
 
-import static org.junit.Assert.assertEquals;
-
+import org.mycore.common.selenium.drivers.MCRWebdriverWrapper;
 import org.openqa.selenium.By;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * @author Thomas Scheffler (yagee)
  */
 public class MIRUserHelper {
 
-    public static void createUser(MCRRemoteWebDriverFacade driver, String user, String password, String... roles) {
+    public static void createUser(MCRWebdriverWrapper driver, String user, String password, String... roles) {
         String currentUrl = driver.getCurrentUrl();
         driver.findElement(By.id("currentUser")).click();
         driver.findElement(By.linkText("Nutzer anlegen")).click();
@@ -41,7 +42,7 @@ public class MIRUserHelper {
         driver.get(currentUrl);
     }
 
-    public static void deleteUser(MCRRemoteWebDriverFacade driver, String user) {
+    public static void deleteUser(MCRWebdriverWrapper driver, String user) {
         String currentUrl = driver.getCurrentUrl();
         driver.findElement(By.id("currentUser")).click();
         driver.findElement(By.linkText("Nutzerverwaltung")).click();
