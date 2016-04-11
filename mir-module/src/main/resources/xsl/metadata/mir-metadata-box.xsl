@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xlink="http://www.w3.org/1999/xlink"
-  xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation" xmlns:mods="http://www.loc.gov/mods/v3" xmlns:xalan="http://xml.apache.org/xalan" exclude-result-prefixes="i18n mods xlink xalan">
+  xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation" xmlns:mods="http://www.loc.gov/mods/v3" xmlns:xalan="http://xml.apache.org/xalan"
+  exclude-result-prefixes="i18n mods xlink xalan">
   <xsl:import href="xslImport:modsmeta:metadata/mir-metadata-box.xsl" />
   <xsl:include href="modsmetadata.xsl" />
   <!-- copied from http://www.loc.gov/standards/mods/v3/MODS3-4_HTML_XSLT1-0.xsl -->
@@ -66,6 +67,10 @@
                 <xsl:when test="mods:role/mods:roleTerm='edt' and not(../mods:role/mods:roleTerm='aut')">
                   <!-- do nothing -->
                 </xsl:when>
+                <!-- check if role term is given -->
+                <xsl:when test="not(mods:role/mods:roleTerm)">
+                  <!-- do nothing -->
+                </xsl:when>
                 <xsl:otherwise>
                   <tr>
                     <td valign="top" class="metaname">
@@ -79,9 +84,6 @@
                           <xsl:value-of
                             select="concat(i18n:translate(concat('component.mods.metaData.dictionary.',mods:role/mods:roleTerm[@authority='marcrelator'])),':')" />
                         </xsl:when>
-                        <xsl:otherwise>
-                          <xsl:value-of select="concat(i18n:translate('component.mods.metaData.dictionary.name'),':')" />
-                        </xsl:otherwise>
                       </xsl:choose>
                     </td>
                     <td class="metavalue">
@@ -213,7 +215,7 @@
                   <xsl:value-of select="i18n:translate('mir.cartographics.coordinates')" />
                 </td>
                 <td class="metavalue">
-                	<xsl:value-of select="." /><br />
+                  <xsl:value-of select="." /><br />
                   <div>
                     <button type="button" class="show_openstreetmap btn btn-default" data="{.}" >
                       OpenStreetMap
