@@ -142,7 +142,7 @@ public class MIRStrategy implements MCRAccessCheckStrategy {
             LOGGER.debug("Found match in CREATOR strategy for {} on {}.", permission, objectId);
             return CREATOR_STRATEGY.checkPermission(permissionId, permission);
         }
-        return getAccessCategory(objectId, permission)
+        return getAccessCategory(objectId, objectId.getTypeId(), permission)
             // 4. check if classification rule applies
             .map(c -> {
                 LOGGER.debug("using access rule defined for category: " + c);
@@ -158,18 +158,32 @@ public class MIRStrategy implements MCRAccessCheckStrategy {
     private boolean checkDerivatePermission(MCRObjectID derivateId, String permission) {
         LOGGER.debug("checkDerivatePermission({}, {})", derivateId, permission);
         String permissionId = derivateId.toString();
-        // 1. check if base strategy applies for derivate
-        if (OBJECT_BASE_STRATEGY.hasRuleMapping(permissionId, permission)) {
-            return OBJECT_BASE_STRATEGY.checkPermission(permissionId, permission);
-        }
-        // 2. go for object permission, if object link exists.
-        MCRObjectID objectId = MCRMetadataManager.getObjectId(derivateId, 10, TimeUnit.MINUTES);
-        if (objectId == null) {
-            LOGGER.debug("Derivate {} is an orphan. Cannot apply rules for MCRObject.", derivateId);
+        // 1. check if access mapping for derivate id exists
+        if (ID_STRATEGY.hasRuleMapping(permissionId, permission)) {
+            LOGGER.debug("Found match in ID strategy for {} on {}.", permission, derivateId);
             return ID_STRATEGY.checkPermission(permissionId, permission);
         }
-        LOGGER.debug("No rule for base strategy found, check against object {}.", objectId);
-        return checkObjectPermission(objectId, permission);
+        MCRObjectID objectId = MCRMetadataManager.getObjectId(derivateId, 10, TimeUnit.MINUTES);
+        if (objectId == null) {
+            //2.1. fallback to MCRObjectBaseStrategy
+            LOGGER.debug("Derivate {} is an orphan. Cannot apply rules for MCRObject.", derivateId);
+            return OBJECT_BASE_STRATEGY.checkPermission(permissionId, permission);
+        }
+        return getAccessCategory(objectId, derivateId.getTypeId(), permission)
+            // 2.2. use rule defined for all derivates of object in category
+            .map(c -> {
+                LOGGER.debug("using access rule defined for category: " + c);
+                return ACCESS_IMPL.checkPermission(derivateId.getTypeId() + ":" + c.toString(), permission);
+            })
+            .orElseGet(() -> {
+                // 3. check if base strategy applies for derivate
+                if (OBJECT_BASE_STRATEGY.hasRuleMapping(permissionId, permission)) {
+                    return OBJECT_BASE_STRATEGY.checkPermission(permissionId, permission);
+                }
+                // 4. go for object permission, if object link exists.
+                LOGGER.debug("No rule for base strategy found, check against object {}.", objectId);
+                return checkObjectPermission(objectId, permission);
+            });
     }
 
     private boolean checkOtherPermission(String id, String permission) {
@@ -181,8 +195,8 @@ public class MIRStrategy implements MCRAccessCheckStrategy {
             .getUserAttribute(MIRAccessKeyManager.ACCESS_KEY_PREFIX + objectId.toString());
     }
 
-    private Optional<MCRCategoryID> getAccessCategory(MCRObjectID objectId, String permission) {
-        List<MCRCategoryID> accessMappedCategories = getAccessMappedCategories(objectId.getTypeId(), permission,
+    private Optional<MCRCategoryID> getAccessCategory(MCRObjectID objectId, String prefix, String permission) {
+        List<MCRCategoryID> accessMappedCategories = getAccessMappedCategories(prefix, permission,
             ACCESS_CLASSES);
         MCRCategLinkReference categLinkReference = new MCRCategLinkReference(objectId);
         Optional<MCRCategoryID> accessCategory = accessMappedCategories
@@ -218,7 +232,7 @@ public class MIRStrategy implements MCRAccessCheckStrategy {
             .map(MCRCategoryID::fromString)
             .filter(c -> accessClasses.contains(c.getRootID()))
             .sorted((c1, c2) -> {
-                return accessClasses.indexOf(c1.getRootID()) - accessClasses.indexOf(c1.getRootID());
+                return accessClasses.indexOf(c1.getRootID()) - accessClasses.indexOf(c2.getRootID());
             })
             .collect(Collectors.toList());
     }
