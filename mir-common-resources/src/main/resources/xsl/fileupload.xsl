@@ -219,7 +219,7 @@
         <div class="col-md-offset-2 col-md-6">
         
           <button id="btn_back" type="button" class="btn btn-default"
-                  onclick="window.location.href='{$cancelUrl2}'" >
+                  onclick="window.location.href='{$cancelUrl2}?XSL.Status.Message=mir.derivate.editstatus.abort&amp;XSL.Status.Style=warning'" >
             <xsl:value-of select="i18n:translate('fileUpload.abort')"/>
           </button>
           <button type="button" class="btn btn-primary"
@@ -227,7 +227,7 @@
             <xsl:value-of select="i18n:translate('fileUpload.submit')"/>
           </button>
           <button id="btn_done" type="button" class="btn btn-primary"
-                  onclick="window.location.href='{$cancelUrl2}'" disabled="true">
+                  onclick="window.location.href='{$cancelUrl2}?XSL.Status.Message=mir.derivate.editstatus.success&amp;XSL.Status.Style=success'" disabled="true">
             <xsl:value-of select="i18n:translate('fileUpload.done')"/>
           </button>
           
