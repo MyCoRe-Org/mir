@@ -7,6 +7,8 @@
   <xsl:include href="copynodes.xsl" />
   <xsl:include href="editor/mods-node-utils.xsl" />
 
+  <xsl:param name="MIR.PPN.DatabaseList" select="'gvk'" />
+
   <xsl:template match="mods:titleInfo|mods:abstract">
     <xsl:choose>
       <xsl:when test="mcrxml:isHtml(mods:nonSort/text()) or mcrxml:isHtml(mods:title/text()) or mcrxml:isHtml(mods:subTitle/text()) or mcrxml:isHtml(text())">
@@ -87,7 +89,7 @@
     <xsl:variable name="type" select="@type"></xsl:variable>
     <xsl:variable name="curi"
       select="document(concat('classification:metadata:all:children:','nameIdentifier',':',$type))/mycoreclass/categories/category[@ID=$type]/label[@xml:lang='x-uri']/@text" />
-      
+
     <!-- if no typeURI defined in classification, we used the default -->
     <xsl:variable name="uri">
       <xsl:choose>
@@ -148,6 +150,22 @@
         <xsl:copy-of select="." />
       </xsl:otherwise>
     </xsl:choose>
+  </xsl:template>
+
+  <xsl:template match="mods:identifier[@type='ppn']">
+    <xsl:variable name="database">
+      <xsl:choose>
+        <xsl:when test="@transliteration and string-length(@transliteration) &gt; 0">
+          <xsl:value-of select="@transliteration"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="$MIR.PPN.DatabaseList"/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+    <mods:identifier type="uri">
+      <xsl:value-of select="concat('http://uri.gbv.de/document/', @transliteration, ':ppn:', text())" />
+    </mods:identifier>
   </xsl:template>
 
 </xsl:stylesheet>
