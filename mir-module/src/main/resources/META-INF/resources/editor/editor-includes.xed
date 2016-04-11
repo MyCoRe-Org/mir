@@ -1649,7 +1649,7 @@
     <fieldset>
       <legend class="mir-fieldset-legend">Related Item</legend><!-- TODO: i18n -->
       <xed:repeat xpath="mods:relatedItem[@xlink:href]" min="1" max="10">
-        <div class="mir-fieldset-content">
+        <div class="mir-fieldset-content" id="mir-related-item-search">
           <div class="form-group">
             <div class="col-md-3">
               <xed:bind xpath="@type" initially="{$relatedItemType}">
