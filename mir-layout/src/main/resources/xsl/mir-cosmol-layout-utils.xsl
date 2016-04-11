@@ -18,9 +18,9 @@
       <nav class="mir-main-nav-entries">
         <form action="{$WebApplicationBaseURL}servlets/solr/find?qry={0}" class="navbar-form form-inline" role="search">
           <div class="form-group">
-            <input name="qry" placeholder="Suche" class="form-control search-query" id="searchInput" type="text" />
+            <input name="qry" placeholder="{i18n:translate('mir.cosmol.navsearch.placeholder')}" title="{i18n:translate('mir.cosmol.navsearch.title')}" class="form-control search-query" id="searchInput" type="text" />
           </div>
-          <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-search"></span></button>
+          <button type="submit" title="{i18n:translate('mir.cosmol.navsearch.title')}" class="btn btn-primary"><span class="glyphicon glyphicon-search"></span></button>
         </form>
         <ul class="nav navbar-nav">
           <xsl:apply-templates select="$loaded_navigation_xml/menu[@id='main']" />
