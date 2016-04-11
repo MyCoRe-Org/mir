@@ -274,7 +274,7 @@
                   <div class="controls">
                     <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="person.fields.noHidden" />
                   </div>
-                  <span class="glyphicon glyphicon-menu-hamburger expand-item" aria-hidden="true"></span>
+                  <span class="glyphicon glyphicon-chevron-down expand-item" title="{i18n:translate('mir.help.expand')}" aria-hidden="true"></span>
                 </div>
                 <div class="col-md-3">
                   <xsl:if test="string-length(@help-text) &gt; 0">
@@ -345,7 +345,7 @@
                 </div>
                 <div class="col-md-6 center-vertical">
                   <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="person.fields.noHidden" />
-                  <span class="glyphicon glyphicon-menu-hamburger expand-item" aria-hidden="true"></span>
+                  <span class="glyphicon glyphicon-chevron-down expand-item" title="{i18n:translate('mir.help.expand')}" aria-hidden="true"></span>
                 </div>
                 <div class="col-md-3">
                   <xsl:if test="string-length(@help-text) &gt; 0">
