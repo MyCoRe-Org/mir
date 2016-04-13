@@ -46,4 +46,11 @@
       </boolean>
     </condition>
   </mcrpermission>
+  <mcrpermission name="use-aclEditor" description="Zugriff auf den ACL-Editor" ruledescription="administrators only">
+    <condition format="xml">
+      <boolean operator="or">
+        <condition value="admin" operator="=" field="group" />
+      </boolean>
+    </condition>
+  </mcrpermission>
 </mcrpermissions>

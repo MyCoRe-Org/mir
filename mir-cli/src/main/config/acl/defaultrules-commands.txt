@@ -10,3 +10,11 @@ update permission deletedb for id default_mods with rulefile ${app.home}/config/
 update permission view-derivate for id default_mods with rulefile ${app.home}/config/acl/grant-all.xml described by ${acl-description.all}
 update permission addurn for id default_derivate with rulefile ${app.home}/config/acl/grant-editors.xml described by ${acl-description.editors}
 update permission read for id derivate:mir_access:intern with rulefile ${app.home}/config/acl/require-login.xml described by ${acl-description.require-login}
+
+update permission writedb for id mir_genres with rulefile ${app.home}/config/acl/grant-admin.xml described by ${acl-description.admins}
+update permission writedb for id mir_institutes with rulefile ${app.home}/config/acl/grant-admin.xml described by ${acl-description.admins}
+update permission writedb for id mir_rights with rulefile ${app.home}/config/acl/grant-admin.xml described by ${acl-description.admins}
+update permission writedb for id rfc4646 with rulefile ${app.home}/config/acl/grant-admin.xml described by ${acl-description.admins}
+update permission writedb for id marcrelator with rulefile ${app.home}/config/acl/grant-admin.xml described by ${acl-description.admins}
+update permission writedb for id noteTypes with rulefile ${app.home}/config/acl/grant-admin.xml described by ${acl-description.admins}
+update permission writedb for id SDNB with rulefile ${app.home}/config/acl/grant-admin.xml described by ${acl-description.admins}
