@@ -168,19 +168,34 @@ function uploadProgress(evt) {
 }
 
 function uploadComplete(evt) {
-    currentUploadState = UPLOAD_STATES.finished;
-    toggleActions();
-    $('#btn_back').prop('disabled', 'true');
-    $('#btn_done').prop('disabled', '');
-
-    clearInterval(intervalTimer);
-    jQuery('#progressNumber').text('Fertig');
-    jQuery('#progressBar').removeClass('progress-bar-warning');
-    jQuery('#progressBar').addClass('progress-bar-success');
-    jQuery('#progressBar').css('width', '100%');
-    showUploadResponse();
-    jQuery('#uploadDone p').text(msgUploadSuccessful);
-    clearFiles();
+    if (this.responseText == '') {
+	    currentUploadState = UPLOAD_STATES.finished;
+	    toggleActions();
+	    $('#btn_back').prop('disabled', 'true');
+	    $('#btn_done').prop('disabled', '');
+	
+	    clearInterval(intervalTimer);
+	    jQuery('#progressNumber').text('Fertig');
+	    jQuery('#progressBar').removeClass('progress-bar-warning progress-bar-danger');
+	    jQuery('#progressBar').addClass('progress-bar-success');
+	    jQuery('#progressBar').css('width', '100%');
+	    showUploadResponse();
+	    jQuery('#uploadDone p').text(msgUploadSuccessful);
+	    jQuery('#uploadDone').removeClass('alert-warning alert-danger');
+	    jQuery('#uploadDone').addClass('alert-success');
+	    clearFiles();
+	} else {
+	    Error = ($("<html/>").html(this.responseText).find('title').html());
+	    Stack = ($("<html/>").html(this.responseText).find('.panel-body pre').html());
+	    Detailmessage = Stack.match(/[:](.*)/)[1];
+	    uploadFailed(evt);
+	    Message  = '<h4>'+Error+'</h4> <p>'+Detailmessage+'</p>';
+	    Message += '<p><a data-toggle="collapse" href="#ErrorStack"> Details </a></p>';
+	    Message += '<pre id="ErrorStack" class="collapse">'+Stack+'</pre>';
+	    jQuery('#uploadDone p').html(Message);
+	    jQuery('#uploadDone').removeClass('alert-warning alert-success');
+	    jQuery('#uploadDone').addClass('alert-danger');
+	}    
 }
 
 function uploadFailed(evt) {
@@ -188,9 +203,11 @@ function uploadFailed(evt) {
     toggleActions();
     $('#btn_back').prop('disabled', '');
     $('#btn_done').prop('disabled', 'true');
-    jQuery('#progressBar').addClass('progress-bar-alert');
+    jQuery('#progressBar').removeClass('progress-bar-warning progress-bar-success');
+    jQuery('#progressBar').addClass('progress-bar-danger');
     jQuery('#progressBar').css('width', '100%');
-    
+    jQuery('#progressNumber').text('Error');
+	    
     clearInterval(intervalTimer);
     showUploadResponse();
     jQuery('#uploadDone p').text(msgUploadFailed);
