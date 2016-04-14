@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<MyCoReWebPage>
+  <section title="Publizieren (PPN Import)" xml:lang="de"/>
+  <section title="Publication (PPN Import)" xml:lang="en"/>
+  <section xml:lang="all">
+    <form id="submit_publication_ppn"
+          class="form-horizontal"
+          role="form"
+          method="get"
+          action="../../editor/editor-admins.xed">
+
+
+      <section xml:lang="de">
+        <h2>Publizieren (PPN Import)</h2>
+        <div class="row">
+          <div class="col-sm-9 col-sm-offset-3 col-md-7 col-md-offset-3 col-lg-5 col-lg-offset-2">
+            <p>
+              Bitte geben Sie eine PPN zum Import an.
+            </p>
+          </div>
+        </div>
+      </section>
+
+<!-- ppn -->
+      <div class="row form-group">
+        <label for="genre" class="col-sm-3 col-lg-2 control-label">PPN:</label>
+        <div class="col-sm-7 col-md-5  col-lg-4">
+          <input type="text" name="ppn" id="ppn" class="form-control" size="20" placeholder="z.B. 198562268" />
+        </div>
+        <div class="hidden-xs col-sm-3 hidden-lg"></div>
+        <div class="col-sm-7 col-md-4 col-lg-5">
+          <p>
+            Sollten die Daten bereits im GVK des GBV erfasst sein, können Sie diese über Angabe der PPN in die Erfassungsmaske
+            übernehmen.
+          </p>
+        </div>
+      </div>
+
+      <div class="row form-group">
+        <div class="col-sm-3 col-md-2"></div>
+        <div class="col-sm-5 col-md-4">
+          <button type="submit" class="btn btn-default">Weiter</button>
+        </div>
+      </div>
+
+    </form>
+  </section>
+</MyCoReWebPage>
