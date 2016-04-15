@@ -4,7 +4,7 @@
 >
   <xsl:include href="layout-utils.xsl" />
 
-  
+  <xsl:key use="@id" name="rights" match="/mycoreobject/rights/right" />
 
   <xsl:template match="/site">
     <xsl:copy>
@@ -151,7 +151,7 @@
             </div>
           </xsl:if>
 <!-- system -->
-          <xsl:if test="not(mcrxsl:isCurrentUserGuestUser())">
+          <xsl:if test="not(mcrxsl:isCurrentUserGuestUser()) and key('rights', mycoreobject/@ID)/@read">
             <div id="mir_admindata_panel" class="panel panel-default system">
               <div class="panel-heading">
                 <h3 class="panel-title">

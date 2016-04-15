@@ -30,6 +30,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
+import java.util.Map;
 
 import org.jdom2.Document;
 import org.jdom2.Element;
@@ -39,6 +40,8 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
+import org.mycore.access.MCRAccessException;
+import org.mycore.common.MCRException;
 import org.mycore.common.MCRHibTestCase;
 import org.mycore.datamodel.metadata.MCRObjectID;
 
@@ -48,7 +51,7 @@ import org.mycore.datamodel.metadata.MCRObjectID;
  */
 public class TestAccessKeys extends MCRHibTestCase {
 
-    private static final String MCR_OBJECT_ID = "mir_mods_00000001";
+    private static final String MCR_OBJECT_ID = "mir_test_00000001";
 
     private static final String READ_KEY = "blah";
 
@@ -63,11 +66,19 @@ public class TestAccessKeys extends MCRHibTestCase {
         config.set("MCR.datadir", folder.newFolder("data").getAbsolutePath());
     }
 
+    @Override
+    protected Map<String, String> getTestProperties() {
+        Map<String, String> testProperties = super.getTestProperties();
+        testProperties.put("MCR.Metadata.Type.test", Boolean.TRUE.toString());
+        return testProperties;
+    }
+
     @Test
     public void testKeyPairFull() {
-        final MIRAccessKeyPair accKP = new MIRAccessKeyPair(MCRObjectID.getInstance(MCR_OBJECT_ID), READ_KEY, WRITE_KEY);
+        final MIRAccessKeyPair accKP = new MIRAccessKeyPair(MCRObjectID.getInstance(MCR_OBJECT_ID), READ_KEY,
+                WRITE_KEY);
 
-        assertNotNull(accKP.getMCRObjectId());
+        assertEquals(MCR_OBJECT_ID, accKP.getMCRObjectId().toString());
         assertEquals(READ_KEY, accKP.getReadKey());
         assertEquals(WRITE_KEY, accKP.getWriteKey());
     }
@@ -76,7 +87,7 @@ public class TestAccessKeys extends MCRHibTestCase {
     public void testKeyPairWithoutWriteKey() {
         final MIRAccessKeyPair accKP = new MIRAccessKeyPair(MCRObjectID.getInstance(MCR_OBJECT_ID), READ_KEY, null);
 
-        assertNotNull(accKP.getMCRObjectId());
+        assertEquals(MCR_OBJECT_ID, accKP.getMCRObjectId().toString());
         assertEquals(READ_KEY, accKP.getReadKey());
         assertNull(accKP.getWriteKey());
     }
@@ -97,13 +108,14 @@ public class TestAccessKeys extends MCRHibTestCase {
     }
 
     @Test
-    public void testCreateKeyPair() {
-        final MIRAccessKeyPair accKP = new MIRAccessKeyPair(MCRObjectID.getInstance(MCR_OBJECT_ID), READ_KEY, WRITE_KEY);
+    public void testCreateKeyPair() throws MCRException, IOException {
+        final MIRAccessKeyPair accKP = new MIRAccessKeyPair(MCRObjectID.getInstance(MCR_OBJECT_ID), READ_KEY,
+                WRITE_KEY);
         MIRAccessKeyManager.createKeyPair(accKP);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testCreateSameKeyPair() {
+    public void testCreateSameKeyPair() throws MCRAccessException {
         final MIRAccessKeyPair accKP = new MIRAccessKeyPair(MCRObjectID.getInstance(MCR_OBJECT_ID), WRITE_KEY,
                 WRITE_KEY);
         MIRAccessKeyManager.createKeyPair(accKP);
@@ -114,8 +126,9 @@ public class TestAccessKeys extends MCRHibTestCase {
     }
 
     @Test
-    public void testExistsKeyPair() {
-        final MIRAccessKeyPair accKP = new MIRAccessKeyPair(MCRObjectID.getInstance(MCR_OBJECT_ID), READ_KEY, WRITE_KEY);
+    public void testExistsKeyPair() throws MCRAccessException {
+        final MIRAccessKeyPair accKP = new MIRAccessKeyPair(MCRObjectID.getInstance(MCR_OBJECT_ID), READ_KEY,
+                WRITE_KEY);
         MIRAccessKeyManager.createKeyPair(accKP);
 
         endTransaction();
@@ -125,8 +138,9 @@ public class TestAccessKeys extends MCRHibTestCase {
     }
 
     @Test
-    public void testUpdateKeyPair() {
-        final MIRAccessKeyPair accKP = new MIRAccessKeyPair(MCRObjectID.getInstance(MCR_OBJECT_ID), READ_KEY, WRITE_KEY);
+    public void testUpdateKeyPair() throws MCRAccessException {
+        final MIRAccessKeyPair accKP = new MIRAccessKeyPair(MCRObjectID.getInstance(MCR_OBJECT_ID), READ_KEY,
+                WRITE_KEY);
         MIRAccessKeyManager.createKeyPair(accKP);
 
         endTransaction();
@@ -146,8 +160,9 @@ public class TestAccessKeys extends MCRHibTestCase {
     }
 
     @Test
-    public void testDeleteKeyPair() {
-        final MIRAccessKeyPair accKP = new MIRAccessKeyPair(MCRObjectID.getInstance(MCR_OBJECT_ID), READ_KEY, WRITE_KEY);
+    public void testDeleteKeyPair() throws MCRAccessException {
+        final MIRAccessKeyPair accKP = new MIRAccessKeyPair(MCRObjectID.getInstance(MCR_OBJECT_ID), READ_KEY,
+                WRITE_KEY);
         MIRAccessKeyManager.createKeyPair(accKP);
 
         endTransaction();
@@ -163,7 +178,8 @@ public class TestAccessKeys extends MCRHibTestCase {
 
     @Test
     public void testKeyPairTransform() throws IOException {
-        final MIRAccessKeyPair accKP = new MIRAccessKeyPair(MCRObjectID.getInstance(MCR_OBJECT_ID), READ_KEY, WRITE_KEY);
+        final MIRAccessKeyPair accKP = new MIRAccessKeyPair(MCRObjectID.getInstance(MCR_OBJECT_ID), READ_KEY,
+                WRITE_KEY);
 
         new XMLOutputter(Format.getPrettyFormat()).output(MIRAccessKeyPairTransformer.buildExportableXML(accKP),
                 System.out);
@@ -171,7 +187,8 @@ public class TestAccessKeys extends MCRHibTestCase {
 
     @Test
     public void testAccessKeysTransform() throws IOException {
-        final MIRAccessKeyPair accKP = new MIRAccessKeyPair(MCRObjectID.getInstance(MCR_OBJECT_ID), READ_KEY, WRITE_KEY);
+        final MIRAccessKeyPair accKP = new MIRAccessKeyPair(MCRObjectID.getInstance(MCR_OBJECT_ID), READ_KEY,
+                WRITE_KEY);
 
         final Document xml = MIRAccessKeyPairTransformer.buildExportableXML(accKP);
 
@@ -186,7 +203,8 @@ public class TestAccessKeys extends MCRHibTestCase {
 
     @Test
     public void testServFlagsTransform() throws IOException {
-        final MIRAccessKeyPair accKP = new MIRAccessKeyPair(MCRObjectID.getInstance(MCR_OBJECT_ID), READ_KEY, WRITE_KEY);
+        final MIRAccessKeyPair accKP = new MIRAccessKeyPair(MCRObjectID.getInstance(MCR_OBJECT_ID), READ_KEY,
+                WRITE_KEY);
 
         final Document xml = MIRAccessKeyPairTransformer.buildServFlagsXML(accKP);
 
@@ -202,7 +220,8 @@ public class TestAccessKeys extends MCRHibTestCase {
 
     @Test
     public void testServFlagsTransformWithOtherTypes() throws IOException {
-        final MIRAccessKeyPair accKP = new MIRAccessKeyPair(MCRObjectID.getInstance(MCR_OBJECT_ID), READ_KEY, WRITE_KEY);
+        final MIRAccessKeyPair accKP = new MIRAccessKeyPair(MCRObjectID.getInstance(MCR_OBJECT_ID), READ_KEY,
+                WRITE_KEY);
 
         final Document xml = MIRAccessKeyPairTransformer.buildServFlagsXML(accKP);
         final Element root = xml.getRootElement();

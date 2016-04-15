@@ -22,11 +22,15 @@
  */
 package org.mycore.mir.authorization.accesskeys;
 
+import static org.mycore.access.MCRAccessManager.PERMISSION_WRITE;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.jdom2.Document;
 import org.jdom2.Element;
+import org.mycore.access.MCRAccessException;
+import org.mycore.access.MCRAccessManager;
 import org.mycore.common.MCRSessionMgr;
 import org.mycore.common.MCRSystemUserInformation;
 import org.mycore.common.MCRUserInformation;
@@ -88,13 +92,30 @@ public class MIRAccessKeyServlet extends MCRServlet {
             else if (accessKey.equals(accKP.getWriteKey()))
                 MIRAccessKeyManager.addAccessKey(mcrObjId, accessKey);
         } else if ("create".equals(action)) {
+            if (!MCRAccessManager.checkPermission(mcrObjId, PERMISSION_WRITE)) {
+                throw MCRAccessException.missingPermission("Add access key to object.", mcrObjId.toString(),
+                        PERMISSION_WRITE);
+            }
+
             final MIRAccessKeyPair accKP = MIRAccessKeyPairTransformer.buildAccessKeyPair(xml);
 
             MIRAccessKeyManager.createKeyPair(accKP);
         } else if ("edit".equals(action)) {
+            if (!MCRAccessManager.checkPermission(mcrObjId, PERMISSION_WRITE)) {
+                throw MCRAccessException.missingPermission("Update access key on object.", mcrObjId.toString(),
+                        PERMISSION_WRITE);
+            }
+
             final MIRAccessKeyPair accKP = MIRAccessKeyPairTransformer.buildAccessKeyPair(xml);
 
             MIRAccessKeyManager.updateKeyPair(accKP);
+        } else if ("delete".equals(action)) {
+            if (!MCRAccessManager.checkPermission(mcrObjId, PERMISSION_WRITE)) {
+                throw MCRAccessException.missingPermission("Delete access key on object.", mcrObjId.toString(),
+                        PERMISSION_WRITE);
+            }
+
+            MIRAccessKeyManager.deleteKeyPair(mcrObjId);
         } else {
             res.sendError(HttpServletResponse.SC_BAD_REQUEST);
             return;

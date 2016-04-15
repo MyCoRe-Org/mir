@@ -1,16 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xalan="http://xml.apache.org/xalan" xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
-                xmlns:mcrmods="xalan://org.mycore.mods.classification.MCRMODSClassificationSupport"
-                xmlns:basket="xalan://org.mycore.frontend.basket.MCRBasketManager"
-                xmlns:mcr="http://www.mycore.org/" xmlns:xlink="http://www.w3.org/1999/xlink"
-                xmlns:mods="http://www.loc.gov/mods/v3" xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions"
-                xmlns:mcrurn="xalan://org.mycore.urn.MCRXMLFunctions" xmlns:str="http://exslt.org/strings"
-                xmlns:encoder="xalan://java.net.URLEncoder" xmlns:acl="xalan://org.mycore.access.MCRAccessManager"
-                xmlns:imageware="org.mycore.mir.imageware.MIRImageWarePacker"
-                xmlns:pi="xalan://org.mycore.pi.frontend.MCRIdentifierXSLUtils"
-                exclude-result-prefixes="basket xalan xlink mcr i18n mods mcrmods mcrxsl mcrurn str encoder acl imageware pi"
-                version="1.0" xmlns:ex="http://exslt.org/dates-and-times"
-                xmlns:exslt="http://exslt.org/common" extension-element-prefixes="ex exslt"
+  xmlns:mcrmods="xalan://org.mycore.mods.classification.MCRMODSClassificationSupport" xmlns:basket="xalan://org.mycore.frontend.basket.MCRBasketManager"
+  xmlns:mcr="http://www.mycore.org/" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:mods="http://www.loc.gov/mods/v3" xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions"
+  xmlns:mcrurn="xalan://org.mycore.urn.MCRXMLFunctions" xmlns:str="http://exslt.org/strings" xmlns:encoder="xalan://java.net.URLEncoder" xmlns:acl="xalan://org.mycore.access.MCRAccessManager"
+  xmlns:imageware="org.mycore.mir.imageware.MIRImageWarePacker" xmlns:pi="xalan://org.mycore.pi.frontend.MCRIdentifierXSLUtils" exclude-result-prefixes="basket xalan xlink mcr i18n mods mcrmods mcrxsl mcrurn str encoder acl imageware pi"
+  version="1.0" xmlns:ex="http://exslt.org/dates-and-times" xmlns:exslt="http://exslt.org/common" extension-element-prefixes="ex exslt"
 >
 
   <xsl:param name="MIR.registerDOI" select="''" />
@@ -429,7 +423,7 @@
           <xsl:if test="not($accessedit or $accessdelete)">
             <li>
               <a href="{$ServletsBaseURL}MCRLoginServlet?action=login">
-                <xsl:value-of select="i18n:translate('mir.actions.noaccess')"/>
+                <xsl:value-of select="i18n:translate('mir.actions.noaccess')" />
               </a>
             </li>
           </xsl:if>
@@ -475,7 +469,9 @@
             </a>
             </xsl:if -->
             <!-- Register DOI -->
-            <xsl:if test="$MIR.registerDOI='true' and $accessedit and not(pi:hasIdentifierRegistered('Datacite', /mycoreobject/@ID, '')) and not(.//mods:identifier[@type='doi'])">
+            <xsl:if
+              test="$MIR.registerDOI='true' and $accessedit and not(pi:hasIdentifierRegistered('Datacite', /mycoreobject/@ID, '')) and not(.//mods:identifier[@type='doi'])"
+            >
               <li>
                 <a href="#" id="registerDOI" data-mycoreID="{/mycoreobject/@ID}" data-baseURL="{$WebApplicationBaseURL}">
                   <xsl:value-of select="i18n:translate('component.pi.register.doi')" />
@@ -484,11 +480,13 @@
             </xsl:if>
             <!-- Packing with ImageWare Packer -->
             <xsl:if test="imageware:displayPackerButton($id, 'ImageWare')">
-                <li>
-                  <a href="{$ServletsBaseURL}MCRPackerServlet?packer=ImageWare&amp;objectId={/mycoreobject/@ID}&amp;redirect={encoder:encode(concat($WebApplicationBaseURL,'receive/',/mycoreobject/@ID,'?XSL.Status.Message=mir.iwstatus.success&amp;XSL.Status.Style=success'))}">
-                     <xsl:value-of select="i18n:translate('object.createImagewareZipPackage')" />
-                   </a>
-                </li>
+              <li>
+                <a
+                  href="{$ServletsBaseURL}MCRPackerServlet?packer=ImageWare&amp;objectId={/mycoreobject/@ID}&amp;redirect={encoder:encode(concat($WebApplicationBaseURL,'receive/',/mycoreobject/@ID,'?XSL.Status.Message=mir.iwstatus.success&amp;XSL.Status.Style=success'))}"
+                >
+                  <xsl:value-of select="i18n:translate('object.createImagewareZipPackage')" />
+                </a>
+              </li>
             </xsl:if>
           </xsl:if>
           <xsl:if test="$accessdelete and (not(mcrurn:hasURNDefined($id)) or (mcrurn:hasURNDefined($id) and $CurrentUser=$MCR.Users.Superuser.UserName))">
@@ -579,7 +577,7 @@
             </xsl:choose>
           </xsl:if>
 
-          <xsl:if test="key('rights', @ID)/@accKeyEnabled">
+          <xsl:if test="(key('rights', @ID)/@accKeyEnabled) and (key('rights', @ID)/@write)">
             <xsl:variable name="action">
               <xsl:choose>
                 <xsl:when test="key('rights', @ID)/@readKey">
@@ -605,27 +603,16 @@
               </a>
             </li>
           </xsl:if>
+          <xsl:if test="key('rights', @ID)/@accKeyEnabled and key('rights', @ID)/@readKey and not(mcrxsl:isCurrentUserGuestUser() or $accessedit or $accessdelete)">
+            <li>
+              <a role="menuitem" tabindex="-1" href="{$WebApplicationBaseURL}authorization/accesskey.xed?objId={@ID}&amp;url={encoder:encode(string($RequestURL))}">
+                <xsl:value-of select="i18n:translate('mir.accesskey.setOnUser')" />
+              </a>
+            </li>
+          </xsl:if>
         </ul>
       </div>
     </div>
-    <xsl:if test="key('rights', @ID)/@accKeyEnabled and key('rights', @ID)/@readKey and not(mcrxsl:isCurrentUserGuestUser() or $accessedit or $accessdelete)">
-      <div class="btn-group pull-right">
-        <a href="#" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
-          <i class="fa fa-cog">
-            <xsl:value-of select="' '" />
-          </i>
-          <xsl:value-of select="' Aktionen'" />
-          <span class="caret"></span>
-        </a>
-        <ul class="dropdown-menu">
-          <li>
-            <a role="menuitem" tabindex="-1" href="{$WebApplicationBaseURL}authorization/accesskey.xed?objId={@ID}&amp;url={encoder:encode(string($RequestURL))}">
-              <xsl:value-of select="i18n:translate('mir.accesskey.setOnUser')" />
-            </a>
-          </li>
-        </ul>
-      </div>
-    </xsl:if>
   </xsl:template>
 
   <xsl:template match="derobject" mode="derivateActions">

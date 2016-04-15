@@ -15,7 +15,7 @@
   <xsl:param name="resultListEditorID" />
   <xsl:param name="page" />
   <xsl:param name="breadCrumb" />
-  <xsl:include href="layout-utils.xsl" />
+  <xsl:include href="layout/mir-layout-utils.xsl" />
   <xsl:include href="resource:xsl/layout/mir-navigation.xsl" />
   <xsl:variable name="loaded_navigation_xml" select="layoutUtils:getPersonalNavigation()/navigation" />
   <xsl:variable name="browserAddress">
@@ -191,7 +191,7 @@
         <xsl:apply-templates />
       </xsl:when>
       <xsl:otherwise>
-        <xsl:call-template name="printNotLoggedIn" />
+        <xsl:call-template name="mir.printNotLoggedIn" />
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>

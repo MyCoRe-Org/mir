@@ -22,10 +22,12 @@
  */
 package org.mycore.mir.authorization.accesskeys;
 
-import org.hibernate.Session;
+import java.util.Optional;
+
+import javax.persistence.EntityManager;
+
 import org.mycore.access.MCRAccessManager;
-import org.mycore.backend.hibernate.MCRHIBConnection;
-import org.mycore.common.MCRSystemUserInformation;
+import org.mycore.backend.jpa.MCREntityManagerProvider;
 import org.mycore.common.MCRUsageException;
 import org.mycore.datamodel.metadata.MCRObject;
 import org.mycore.datamodel.metadata.MCRObjectID;
@@ -43,8 +45,6 @@ public final class MIRAccessKeyManager {
 
     public static final String ACCESS_KEY_PREFIX = "acckey_";
 
-    private static final MCRHIBConnection MCRHIB_CONNECTION = MCRHIBConnection.instance();
-
     /**
      * Returns the {@link MIRAccessKeyPair} for given {@link MCRObjectID}.
      *
@@ -52,9 +52,8 @@ public final class MIRAccessKeyManager {
      * @return the {@link MIRAccessKeyPair}
      */
     public static MIRAccessKeyPair getKeyPair(final MCRObjectID mcrObjectId) {
-        final Session session = MCRHIB_CONNECTION.getSession();
-
-        return (MIRAccessKeyPair) session.get(MIRAccessKeyPair.class, mcrObjectId.toString());
+        final EntityManager em = MCREntityManagerProvider.getCurrentEntityManager();
+        return em.find(MIRAccessKeyPair.class, mcrObjectId.toString());
     }
 
     /**
@@ -64,16 +63,7 @@ public final class MIRAccessKeyManager {
      * @return <code>true</code> if exists or <code>false</code> if not
      */
     public static boolean existsKeyPair(final MCRObjectID mcrObjectId) {
-        final Session session = MCRHIB_CONNECTION.getSession();
-
-        final MIRAccessKeyPair accKP = getKeyPair(mcrObjectId);
-        boolean exists = accKP != null;
-
-        if (exists) {
-            session.evict(accKP);
-        }
-
-        return exists;
+        return Optional.ofNullable(getKeyPair(mcrObjectId)).isPresent();
     }
 
     /**
@@ -83,11 +73,11 @@ public final class MIRAccessKeyManager {
      */
     public static void createKeyPair(final MIRAccessKeyPair accKP) {
         if (existsKeyPair(accKP.getMCRObjectId()))
-            throw new IllegalArgumentException("Access key pair for MCRObject " + accKP.getObjectId()
-                    + " already exists");
+            throw new IllegalArgumentException(
+                    "Access key pair for MCRObject " + accKP.getObjectId() + " already exists");
 
-        final Session session = MCRHIB_CONNECTION.getSession();
-        session.save(accKP);
+        final EntityManager em = MCREntityManagerProvider.getCurrentEntityManager();
+        em.persist(accKP);
     }
 
     /**
@@ -101,8 +91,8 @@ public final class MIRAccessKeyManager {
             return;
         }
 
-        final Session session = MCRHIB_CONNECTION.getSession();
-        session.update(accKP);
+        final EntityManager em = MCREntityManagerProvider.getCurrentEntityManager();
+        em.merge(accKP);
     }
 
     /**
@@ -114,8 +104,8 @@ public final class MIRAccessKeyManager {
         if (!existsKeyPair(mcrObjectId))
             throw new IllegalArgumentException("Couldn't delete non exists key pair for MCRObject " + mcrObjectId);
 
-        final Session session = MCRHIB_CONNECTION.getSession();
-        session.delete(getKeyPair(mcrObjectId));
+        final EntityManager em = MCREntityManagerProvider.getCurrentEntityManager();
+        em.remove(getKeyPair(mcrObjectId));
     }
 
     /**
@@ -150,9 +140,6 @@ public final class MIRAccessKeyManager {
      */
     public static void addAccessKey(final MCRUser user, final MCRObjectID mcrObjectId, final String accessKey)
             throws MCRUsageException {
-        if (user.equals(MCRSystemUserInformation.getSuperUserInstance()))
-            return;
-
         if (getAccessKeyType(mcrObjectId, accessKey) == null)
             throw new MCRUsageException("Invalid access key \"" + accessKey + "\"");
 
@@ -176,9 +163,6 @@ public final class MIRAccessKeyManager {
      * @param mcrObjectId the {@link MCRObjectID}
      */
     public static void deleteAccessKey(final MCRUser user, final MCRObjectID mcrObjectId) {
-        if (user.equals(MCRSystemUserInformation.getSuperUserInstance()))
-            return;
-
         user.getAttributes().remove(ACCESS_KEY_PREFIX + mcrObjectId.toString());
         MCRUserManager.updateUser(user);
     }

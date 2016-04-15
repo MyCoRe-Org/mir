@@ -38,10 +38,17 @@
   </xed:template>
 
   <xed:template id="edit">
+    <script type="text/javascript" src="{$WebApplicationBaseURL}js/mir/password-generator.js" />
+
     <xed:bind xpath="@objId" default="{$objId}" />
     <mir:template name="textInput" xpath="@readkey" id="readKey" i18n="mir.accesskey.read" i18n.error="mir.accesskey.read.required" required="true"
-      maxlength="64" />
-    <mir:template name="textInput" xpath="@writekey" id="writeKey" i18n="mir.accesskey.write" maxlength="64" />
+      maxlength="64"
+    >
+      <action id="readKeyGenerator" i18n="mir.accesskey.generate" icon="fa fa-cogs" iconOnly="true" />
+    </mir:template>
+    <mir:template name="textInput" xpath="@writekey" id="writeKey" i18n="mir.accesskey.write" maxlength="64">
+      <action id="writeKeyGenerator" i18n="mir.accesskey.generate" icon="fa fa-cogs" iconOnly="true" />
+    </mir:template>
 
     <xed:validate xpath="accesskeys" display="global"
       test="(string-length(@writekey) = 0) or ((string-length(@readkey) &gt; 0) and (string-length(@writekey) &gt; 0) and (@readkey != @writekey))" i18n="mir.accesskey.matches" />
