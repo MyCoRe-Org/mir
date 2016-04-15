@@ -9,8 +9,8 @@
 
   <xsl:template match="/">
     <!-- MIR-339 solr query if there is any "mp4" file in this object? -->
-    <!--<xsl:variable name="solrQuery" select="concat('+stream_content_type:video/mp4 +returnId:',mcrsolru:escapeSearchValue(mycoreobject/@ID))" />-->
-    <!--<xsl:if test="mcrsolr:getNumFound($solrQuery) &gt; 0" >-->
+    <xsl:variable name="solrQuery" select="concat('+stream_content_type:video/mp4 +returnId:',mcrsolru:escapeSearchValue(mycoreobject/@ID))" />
+    <xsl:if test="mcrsolr:getNumFound($solrQuery) &gt; 0" >
       <div id="mir-player">
         <xsl:variable name="playerNodesTmp">
           <xsl:variable name="playerSources">
@@ -50,14 +50,13 @@
 
         <xsl:copy-of select="$playerNodes" />
       </div>
-    <!--</xsl:if>-->
+    </xsl:if>
     <xsl:apply-imports />
   </xsl:template>
 
   <xsl:template match="derobject" mode="optionSources">
     <!-- MIR-339 solr query if there is any "mp4" file in a derivate? -->
-    <!--<xsl:if test="key('rights', @xlink:href)/@read and mcrsolr:getNumFound(concat('+stream_content_type:video/mp4 +derivateID:',mcrsolru:escapeSearchValue(@xlink:href))) &gt; 0" >-->
-    <xsl:if test="key('rights', @xlink:href)/@read" >
+    <xsl:if test="key('rights', @xlink:href)/@read and mcrsolr:getNumFound(concat('+stream_content_type:video/mp4 +derivateID:',mcrsolru:escapeSearchValue(@xlink:href))) &gt; 0" >
       <xsl:variable name="ifsDirectory" select="document(concat('ifs:',@xlink:href,'/'))" />
       <xsl:apply-templates select="." mode="options">
         <xsl:with-param name="ifsDirectory" select="$ifsDirectory" />
