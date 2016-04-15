@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:mods="http://www.loc.gov/mods/v3"
-  xmlns:mcrmods="xalan://org.mycore.mods.classification.MCRMODSClassificationSupport" exclude-result-prefixes="mcrmods xlink" version="1.0"
+  xmlns:mcrmods="xalan://org.mycore.mods.classification.MCRMODSClassificationSupport"
+  xmlns:mirddctosndbmapper="xalan://org.mycore.mir.impexp.MIRDDCtoSNDBMapper" exclude-result-prefixes="mcrmods xlink mirddctosndbmapper" version="1.0"
 >
 
   <xsl:include href="copynodes.xsl" />
@@ -135,6 +136,16 @@
         <xsl:otherwise><xsl:value-of select="substring-after(., ':ppn:')"/></xsl:otherwise>
       </xsl:choose>
     </mods:identifier>
+  </xsl:template>
+
+  <xsl:template match="mods:classification[@authority='ddc']">
+    <xsl:if test="not(preceding-sibling::mods:classification[@authority='sdnb']) and not(following-sibling::mods:classification[@authority='sdnb'])">
+      <xsl:if test="not(preceding-sibling::mods:classification[@authority='ddc'])">
+        <mods:classification authority="sdnb" displayLabel="sdnb">
+          <xsl:value-of select="mirddctosndbmapper:getSNDBfromDDC(.)" />
+        </mods:classification>
+      </xsl:if>
+    </xsl:if>
   </xsl:template>
 
 </xsl:stylesheet>
