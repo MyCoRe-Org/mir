@@ -24,10 +24,14 @@ package org.mycore.mir.wizard;
 
 import static org.junit.Assert.assertTrue;
 
+import java.util.stream.Collectors;
+
+import org.jdom2.Element;
 import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
 import org.junit.Test;
 import org.mycore.common.MCRHibTestCase;
+import org.mycore.common.MCRStreamUtils;
 import org.mycore.common.xml.MCRURIResolver;
 import org.mycore.mir.wizard.command.MIRWizardLoadClassifications;
 import org.mycore.mir.wizard.command.MIRWizardMCRCommand;
@@ -49,8 +53,8 @@ public class TestCommands extends MCRHibTestCase {
         MIRWizardCommandResult result = chain.getCommands().get(0).getResult();
 
         new XMLOutputter(Format.getPrettyFormat()).output(result.getResult(), System.out);
-
-        assertTrue(result.isSuccess());
+        
+        assertTrue(toMessage(result.getResult()), result.isSuccess());
     }
 
     @Test
@@ -72,6 +76,11 @@ public class TestCommands extends MCRHibTestCase {
 
         new XMLOutputter(Format.getPrettyFormat()).output(result.getResult(), System.out);
 
-        assertTrue(result.isSuccess());
+        assertTrue(toMessage(result.getResult()), result.isSuccess());
+    }
+    
+    private static String toMessage(Element result) {
+        return MCRStreamUtils.flatten(result, Element::getChildren, false).map(Element::getTextNormalize)
+            .collect(Collectors.joining());
     }
 }
