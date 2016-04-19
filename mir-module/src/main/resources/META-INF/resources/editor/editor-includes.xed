@@ -597,6 +597,38 @@
     </xed:repeat>
   </xed:template>
 
+  <xed:template id="namePart.repeated">
+    <xed:repeat xpath="mods:namePart" min="1" max="100">
+      <div class="form-group">
+        <xed:bind xpath="@type" name="type">
+          <div class="col-md-3">
+            <select class="form-control" style="text-align:right; font-weight:bold;">
+              <option value="family">
+                <xed:output i18n="mir.namePart.family" />
+              </option>
+              <option value="given">
+                <xed:output i18n="mir.namePart.given" />
+              </option>
+              <option value="date">
+                <xed:output i18n="mir.namePart.date" />
+              </option>
+              <option value="termsOfAddress">
+                <xed:output i18n="mir.namePart.termsOfAddress" />
+              </option>
+              <option value="other">
+                <xed:output i18n="mir.namePart.other" />
+              </option>
+            </select>
+          </div>
+        </xed:bind>
+        <div class="col-md-6">
+          <input type="text" size="20" class="form-control form-control-inline" />
+        </div>
+        <mir:help-pmud help-text="{i18n:mir.help.namePart}" pmud="true" />
+      </div>
+    </xed:repeat>
+  </xed:template>
+
   <xed:template id="conference">
     <mir:textfield xpath="mods:name[@type='conference']/mods:namePart" label="mir.conference" help-text="{i18n:mir.help.conference}" placeholder="{i18n:mir.placeholder.conference}" />
   </xed:template>
@@ -1806,7 +1838,8 @@
       relevant-if="(string-length(normalize-space(text())) &gt; 0) or mods:* or cmd:* or (string-length(@xlink:href) &gt; 0) or (string-length(@valueURIxEditor) &gt; 0) or (string-length(@mcr:categId) &gt; 0)" />
     <xed:cleanup-rule xpath="//mods:name" relevant-if="(mods:namePart|mods:displayForm) or (string-length(@valueURI) &gt; 0) or (string-length(@valueURIxEditor) &gt; 0)" />
     <xed:cleanup-rule xpath="//mods:name/@authorityURI" relevant-if="(string-length(../@valueURI) &gt; 0) or (string-length(../@valueURIxEditor) &gt; 0)" />
-    <xed:cleanup-rule xpath="//mods:name/mods:namePart" relevant-if="not(../mods:displayForm) and string-length(text()) &gt; 0" />
+    <xed:cleanup-rule xpath="//mods:name/mods:namePart" relevant-if="string-length(text()) &gt; 0" />
+    <xed:cleanup-rule xpath="//mods:name/mods:namePart/@type" relevant-if="../@type!='other'" />
     <xed:cleanup-rule xpath="//mods:*/@xlink:type" relevant-if="text()!='simple'" />
     <xed:cleanup-rule xpath="//mods:detail" relevant-if="mods:number|mods:caption|mods:title" />
     <xed:cleanup-rule xpath="//mods:accessCondition[@type='copyrightMD']" relevant-if="string-length(cmd:copyright/cmd:rights.holder/cmd:name/text()) &gt; 0" />

@@ -6,6 +6,7 @@
 
   <xsl:include href="copynodes.xsl" />
   <xsl:include href="editor/mods-node-utils.xsl" />
+  <xsl:include href="mods-utils.xsl"/>
 
   <xsl:param name="MIR.PPN.DatabaseList" select="'gvk'" />
 
@@ -150,6 +151,18 @@
         <xsl:copy-of select="." />
       </xsl:otherwise>
     </xsl:choose>
+  </xsl:template>
+
+  <xsl:template match="mods:name[@type='personal']">
+    <xsl:copy>
+      <xsl:copy-of select="@*" />
+      <xsl:apply-templates />
+      <xsl:if test="not(mods:namePart[@type='family']) and mods:displayForm">
+        <xsl:call-template name="mods.seperateName">
+          <xsl:with-param name="displayForm" select="mods:displayForm" />
+        </xsl:call-template>
+      </xsl:if>
+    </xsl:copy>
   </xsl:template>
 
   <xsl:template match="mods:identifier[@type='ppn']">
