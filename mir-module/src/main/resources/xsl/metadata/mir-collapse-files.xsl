@@ -90,10 +90,22 @@
             <div id="mir-access-restricted">
               <h3><xsl:value-of select="i18n:translate('metadata.files.file')" /></h3>
               <div class="alert alert-warning" role="alert">
-                <strong><xsl:value-of select="i18n:translate('mir.access')" /></strong>
-                &#160;
-                <xsl:apply-templates select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:accessCondition[@type='restriction on access']"
-                                       mode="printModsClassInfo" />
+                <xsl:choose>
+                  <xsl:when test="mycoreobject/structure/derobjects/derobject[key('rights', @xlink:href)/@embargo]">
+                    <!-- embargo is active for guest user -->
+                    <xsl:variable name="embargoDate">
+                      <xsl:value-of select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:accessCondition[@type='embargo']"/>
+                      <!-- TODO: format date-->
+                    </xsl:variable>
+                    <xsl:value-of select="i18n:translate('component.mods.metaData.dictionary.accessCondition.embargo.available',$embargoDate)" />
+                  </xsl:when>
+                  <xsl:otherwise>
+                    <strong><xsl:value-of select="i18n:translate('mir.access')" /></strong>
+                    &#160;
+                    <xsl:apply-templates select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:accessCondition[@type='restriction on access']"
+                      mode="printModsClassInfo" />
+                  </xsl:otherwise>
+                </xsl:choose>
               </div>
             </div>
           </xsl:if>
