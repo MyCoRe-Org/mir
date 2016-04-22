@@ -11,6 +11,12 @@
   </xsl:variable>
   <xsl:template match="/">
     <site>
+      <xsl:attribute name="title">
+        <xsl:apply-templates mode="mods.title" select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods">
+          <xsl:with-param name="asHTML" select="false()" />
+          <xsl:with-param name="withSubtitle" select="false()" />
+        </xsl:apply-templates>
+      </xsl:attribute>
       <xsl:call-template name="debug-rights" />
       <xsl:choose>
         <xsl:when test="key('rights', mycoreobject/@ID)/@read">
