@@ -2,7 +2,7 @@
 <xed:template xmlns:xed="http://www.mycore.de/xeditor" xmlns:mir="http://www.mycore.de/mir">
 
   <xed:template id="source">
-    <xed:if test="string-length($action) &gt; 0 and $action = 'edit'">
+    <xed:if test="string-length($action) &gt; 0 and ($action = 'edit' or $action = 'delete')">
       <xed:source uri="accesskeys:{$objId}" />
     </xed:if>
   </xed:template>
@@ -15,6 +15,9 @@
       <xed:when test="string-length($action) &gt; 0 and $action = 'edit'">
         <xed:output i18n="mir.accesskey.edit" />
       </xed:when>
+      <xed:when test="string-length($action) &gt; 0 and $action = 'delete'">
+        <xed:output i18n="mir.accesskey.delete" />
+      </xed:when>
       <xed:otherwise>
         <xed:output i18n="mir.accesskey.setOnUser" />
       </xed:otherwise>
@@ -26,6 +29,9 @@
       <xed:when test="string-length($action) &gt; 0 and ($action = 'create' or $action = 'edit')">
         <xed:include uri="xslStyle:xeditor-mir-templates:webapp:authorization/accesskey-includes.xed" ref="edit" />
       </xed:when>
+      <xed:when test="string-length($action) &gt; 0 and ($action = 'delete')">
+        <xed:include uri="xslStyle:xeditor-mir-templates:webapp:authorization/accesskey-includes.xed" ref="delete" />
+      </xed:when>
       <xed:otherwise>
         <xed:include uri="xslStyle:xeditor-mir-templates:webapp:authorization/accesskey-includes.xed" ref="set" />
       </xed:otherwise>
@@ -33,7 +39,14 @@
   </xed:template>
 
   <xed:template id="buttons">
-    <mir:template name="submitButton" i18n="button.save" target="servlet" href="MIRAccessKeyServlet" />
+    <xed:choose>
+      <xed:when test="string-length($action) &gt; 0 and ($action = 'delete')">
+        <mir:template name="submitButton" class="btn-danger" i18n="button.delete" target="servlet" href="MIRAccessKeyServlet" />
+      </xed:when>
+      <xed:otherwise>
+        <mir:template name="submitButton" i18n="button.save" target="servlet" href="MIRAccessKeyServlet" />
+      </xed:otherwise>
+    </xed:choose>
     <mir:template name="cancelButton" i18n="button.cancel" />
   </xed:template>
 
@@ -52,6 +65,12 @@
 
     <xed:validate xpath="accesskeys" display="global"
       test="(string-length(@writekey) = 0) or ((string-length(@readkey) &gt; 0) and (string-length(@writekey) &gt; 0) and (@readkey != @writekey))" i18n="mir.accesskey.matches" />
+  </xed:template>
+
+  <xed:template id="delete">
+    <xed:bind xpath="@objId" default="{$objId}" />
+    <mir:template name="static" xpath="@readkey" id="readKey" i18n="mir.accesskey.read" />
+    <mir:template name="static" xpath="@writekey" id="writeKey" i18n="mir.accesskey.write" />
   </xed:template>
 
   <xed:template id="set">
