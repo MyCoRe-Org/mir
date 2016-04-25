@@ -125,6 +125,14 @@
     </mods:accessCondition>
   </xsl:template>
 
+  <xsl:template match="mods:accessCondition[@type='use and reproduction'][@xlink:href='http://www.mycore.org/classifications/mir_licenses']">
+    <mods:accessCondition type="use and reproduction">
+      <xsl:attribute name="xlink:href">
+        <xsl:value-of select="concat(@xlink:href, '#', .)" />
+      </xsl:attribute>
+    </mods:accessCondition>
+  </xsl:template>
+
   <xsl:template match="@mcr:categId" />
   <xsl:template match="*[@mcr:categId]">
     <xsl:element name="{name()}">

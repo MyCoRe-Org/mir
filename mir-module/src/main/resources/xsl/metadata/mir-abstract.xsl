@@ -50,13 +50,10 @@
           </time>
         </xsl:if>
 
-        <xsl:variable name="accessCondition" select="normalize-space($mods/mods:accessCondition[@type='use and reproduction'])" />
+        <xsl:variable name="accessCondition" select="substring-after(normalize-space($mods/mods:accessCondition[@type='use and reproduction']/@xlink:href),'#')" />
         <xsl:if test="$accessCondition">
           <xsl:variable name="linkText">
             <xsl:choose>
-              <xsl:when test="contains($accessCondition, 'cc_by')">
-                <xsl:apply-templates select="$mods/mods:accessCondition[@type='use and reproduction']/text()" mode="cc-text" />
-              </xsl:when>
               <xsl:when test="contains($accessCondition, 'rights_reserved')">
                 <xsl:value-of select="i18n:translate('component.mods.metaData.dictionary.rightsReserved')" />
               </xsl:when>
@@ -64,7 +61,7 @@
                 <xsl:value-of select="i18n:translate('component.mods.metaData.dictionary.oa_nlz.short')" />
               </xsl:when>
               <xsl:otherwise>
-                <xsl:value-of select="$mods/mods:accessCondition[@type='use and reproduction']/text()" />
+                <xsl:value-of select="mcrxsl:getDisplayName('mir_licenses',$accessCondition)" />
               </xsl:otherwise>
             </xsl:choose>
           </xsl:variable>

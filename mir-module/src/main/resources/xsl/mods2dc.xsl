@@ -8,7 +8,8 @@
   xmlns:xlink="http://www.w3.org/1999/xlink"
   xmlns:mcrurn="xalan://org.mycore.urn.MCRXMLFunctions"
   xmlns:mcrmods="xalan://org.mycore.mods.classification.MCRMODSClassificationSupport"
-  exclude-result-prefixes="xsl mods mcrurn mcrmods xlink srw_dc">
+  xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions"
+  exclude-result-prefixes="xsl mods mcrurn mcrmods mcrxsl xlink srw_dc">
 
   <xsl:param name="MCR.URN.Resolver.MasterURL" select="''" />
   <!--
@@ -466,12 +467,9 @@
   </xsl:template>
 
   <xsl:template match="mods:accessCondition[@type='use and reproduction']">
-    <xsl:variable name="trimmed" select="normalize-space(.)" />
+    <xsl:variable name="trimmed" select="substring-after(normalize-space(@xlink:href),'#')" />
     <dc:rights>
       <xsl:choose>
-        <xsl:when test="contains($trimmed, 'cc_by')">
-          <xsl:apply-templates select="." mode="cc-text" />
-        </xsl:when>
         <xsl:when test="contains($trimmed, 'rights_reserved')">
           <xsl:apply-templates select="." mode="rights_reserved" />
         </xsl:when>
@@ -479,7 +477,7 @@
           <xsl:apply-templates select="." mode="oa_nlz" />
         </xsl:when>
         <xsl:otherwise>
-          <xsl:value-of select="." />
+          <xsl:value-of select="mcrxsl:getDisplayName('mir_licenses',$trimmed)" />
         </xsl:otherwise>
       </xsl:choose>
     </dc:rights>

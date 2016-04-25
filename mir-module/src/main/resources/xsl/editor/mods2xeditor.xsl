@@ -122,6 +122,12 @@
     </mods:accessCondition>
   </xsl:template>
 
+  <xsl:template match="mods:accessCondition[@type='use and reproduction']">
+    <mods:accessCondition type="use and reproduction" xlink:href='http://www.mycore.org/classifications/mir_licenses'>
+      <xsl:value-of select="substring-after(@xlink:href, '#')" />
+    </mods:accessCondition>
+  </xsl:template>
+
   <xsl:template match="mods:name/mods:etal">
     <mods:displayForm>et.al.</mods:displayForm>
   </xsl:template>

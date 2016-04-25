@@ -5,7 +5,7 @@ load classification from url http://www.mycore.org/classifications/mir_access.xm
 load classification from url http://www.mycore.org/classifications/mir_filetype.xml
 load classification from url http://www.mycore.org/classifications/mir_genres.xml
 load classification from url http://www.mycore.org/classifications/mir_institutes.xml
-load classification from url http://www.mycore.org/classifications/mir_rights.xml
+load classification from url http://www.mycore.org/classifications/mir_licenses.xml
 load classification from url http://www.mycore.org/classifications/rfc4646.xml
 load classification from url http://www.mycore.org/classifications/sdnb.xml
 load classification from url http://www.mycore.org/classifications/state.xml

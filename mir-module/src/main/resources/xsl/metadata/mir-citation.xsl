@@ -168,29 +168,27 @@
           <xsl:value-of select="//mods:accessCondition[@type='copyrightMD']/cmd:copyright/cmd:rights.holder/cmd:name" />
         </p>
       </xsl:if>
-      <xsl:choose>
-        <xsl:when test="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:accessCondition/@type='use and reproduction'">
-          <p>
-            <strong><xsl:value-of select="i18n:translate('mir.useAndReproduction')" /></strong>
-            <br />
-            <xsl:variable name="trimmed" select="normalize-space(.)" />
-            <xsl:choose>
-              <xsl:when test="contains($trimmed, 'cc_by')">
-                <xsl:apply-templates select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:accessCondition[@type='use and reproduction']" mode="cc-logo" />
-              </xsl:when>
-              <xsl:when test="contains($trimmed, 'rights_reserved')">
-                <xsl:apply-templates select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:accessCondition[@type='use and reproduction']" mode="rights_reserved" />
-              </xsl:when>
-              <xsl:when test="contains($trimmed, 'oa_nlz')">
-                <xsl:apply-templates select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:accessCondition[@type='use and reproduction']" mode="oa_nlz" />
-              </xsl:when>
-              <xsl:otherwise>
-                <xsl:value-of select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:accessCondition[@type='use and reproduction']" />
-              </xsl:otherwise>
-            </xsl:choose>
-          </p>
-        </xsl:when>
-      </xsl:choose>
+      <xsl:if test="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:accessCondition[@type='use and reproduction']">
+        <p>
+          <strong><xsl:value-of select="i18n:translate('mir.useAndReproduction')" /></strong>
+          <br />
+          <xsl:variable name="trimmed" select="substring-after(normalize-space(mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:accessCondition[@type='use and reproduction']/@xlink:href),'#')" />
+          <xsl:choose>
+            <xsl:when test="contains($trimmed, 'cc_')">
+              <xsl:apply-templates select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:accessCondition[@type='use and reproduction']" mode="cc-logo" />
+            </xsl:when>
+            <xsl:when test="contains($trimmed, 'rights_reserved')">
+              <xsl:apply-templates select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:accessCondition[@type='use and reproduction']" mode="rights_reserved" />
+            </xsl:when>
+            <xsl:when test="contains($trimmed, 'oa_nlz')">
+              <xsl:apply-templates select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:accessCondition[@type='use and reproduction']" mode="oa_nlz" />
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:value-of select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:accessCondition[@type='use and reproduction']" />
+            </xsl:otherwise>
+          </xsl:choose>
+        </p>
+      </xsl:if>
     </div>
   </xsl:if>
 
