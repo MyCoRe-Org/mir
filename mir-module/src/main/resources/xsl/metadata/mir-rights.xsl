@@ -9,7 +9,7 @@
   <xsl:variable name="addurn" select="'addurn'" />
 
   <!-- checks for MIRAccessKeyStrategy -->
-  <xsl:variable name="derivateAccKeyEnabled" select="true()" />
+  <xsl:variable name="derivateAccKeyEnabled" select="false()" />
   <xsl:variable name="modsAccKeyEnabled" select="true()" />
 
   <xsl:template match="/mycoreobject">
