@@ -168,7 +168,7 @@ function uploadProgress(evt) {
 }
 
 function uploadComplete(evt) {
-    if (this.responseText == '') {
+    if (this.status == 200) {
 	    currentUploadState = UPLOAD_STATES.finished;
 	    toggleActions();
 	    $('#btn_back').prop('disabled', 'true');
