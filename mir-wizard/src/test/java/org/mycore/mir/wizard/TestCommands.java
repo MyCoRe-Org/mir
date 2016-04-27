@@ -24,6 +24,7 @@ package org.mycore.mir.wizard;
 
 import static org.junit.Assert.assertTrue;
 
+import java.util.Collection;
 import java.util.stream.Collectors;
 
 import org.jdom2.Element;
@@ -80,7 +81,7 @@ public class TestCommands extends MCRHibTestCase {
     }
     
     private static String toMessage(Element result) {
-        return MCRStreamUtils.flatten(result, Element::getChildren, false).map(Element::getTextNormalize)
+        return MCRStreamUtils.flatten(result, Element::getChildren, Collection::stream).map(Element::getTextNormalize)
             .collect(Collectors.joining());
     }
 }
