@@ -6,6 +6,7 @@
                 xmlns:FilenameUtils="xalan://org.apache.commons.io.FilenameUtils"
                 xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions"
                 xmlns:iview2="xalan://org.mycore.iview2.frontend.MCRIView2XSLFunctions"
+                xmlns:embargo="xalan://org.mycore.mods.MCRMODSEmbargoUtils"
                 xmlns:xalan="http://xml.apache.org/xalan"
                 exclude-result-prefixes="xalan i18n mcr mods xlink FilenameUtils iview2 mcrxsl">
   <xsl:import href="xslImport:modsmeta:metadata/mir-viewer.xsl"/>
@@ -15,15 +16,17 @@
     <xsl:if test="mycoreobject/structure/derobjects/derobject">
       <div id="mir-viewer">
         <xsl:variable name="viewerNodesTmp">
-          <div class="row mir-preview">
-            <div class="col-md-12">
-              <h3 class="mir-viewer">Vorschau</h3>
-              <!-- show one viewer for each derivate -->
-              <xsl:for-each select="mycoreobject/structure/derobjects/derobject[key('rights', @xlink:href)/@read]">
-                <xsl:call-template name="createViewer"/>
-              </xsl:for-each>
+          <xsl:if test="string-length(embargo:getEmbargo(mycoreobject/@ID)) = 0">
+            <div class="row mir-preview">
+              <div class="col-md-12">
+                <h3 class="mir-viewer">Vorschau</h3>
+                <!-- show one viewer for each derivate -->
+                <xsl:for-each select="mycoreobject/structure/derobjects/derobject[key('rights', @xlink:href)/@read]">
+                  <xsl:call-template name="createViewer"/>
+                </xsl:for-each>
+              </div>
             </div>
-          </div>
+          </xsl:if>
         </xsl:variable>
 
         <xsl:variable name="viewerNodes" select="xalan:nodeset($viewerNodesTmp)"/>
