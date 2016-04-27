@@ -24,6 +24,7 @@ package org.mycore.mir.authorization;
 
 import java.text.MessageFormat;
 import java.util.List;
+import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -33,6 +34,7 @@ import org.jdom2.Document;
 import org.jdom2.Element;
 import org.mycore.common.MCRMailer;
 import org.mycore.common.MCRUtils;
+import org.mycore.common.config.MCRConfiguration;
 import org.mycore.common.content.MCRJDOMContent;
 import org.mycore.frontend.MCRFrontendUtil;
 import org.mycore.frontend.servlets.MCRServlet;
@@ -54,6 +56,9 @@ public class MirSelfRegistrationServlet extends MCRServlet {
     private static final Logger LOGGER = Logger.getLogger(MirSelfRegistrationServlet.class);
 
     private static final String I18N_ERROR_PREFIX = "selfRegistration.error";
+
+    private static final String DEFAULT_ROLE = MCRConfiguration.instance().getString("MIR.SelfRegistration.DefaultRole",
+            null);
 
     public void doGetPost(final MCRServletJob job) throws Exception {
         final HttpServletRequest req = job.getRequest();
@@ -121,6 +126,10 @@ public class MirSelfRegistrationServlet extends MCRServlet {
                 if (umt != null) {
                     if (umt.equals(mailToken)) {
                         user.setDisabled(false);
+
+                        if (DEFAULT_ROLE != null && !DEFAULT_ROLE.isEmpty())
+                            user.assignRole(DEFAULT_ROLE);
+
                         user.getAttributes().remove("mailtoken");
                         MCRUserManager.updateUser(user);
 
