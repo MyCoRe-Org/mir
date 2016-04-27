@@ -53,4 +53,12 @@
       </boolean>
     </condition>
   </mcrpermission>
+  <mcrpermission name="embargo" description="Right to get access on files under embargo." ruledescription="editor and administrator">
+    <condition format="xml">
+      <boolean operator="or">
+        <condition value="admin" operator="=" field="group" />
+        <condition value="editor" operator="=" field="group" />
+      </boolean>
+    </condition>
+  </mcrpermission>
 </mcrpermissions>
