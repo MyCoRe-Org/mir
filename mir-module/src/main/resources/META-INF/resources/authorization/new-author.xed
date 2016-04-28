@@ -2,14 +2,11 @@
 <!DOCTYPE MyCoReWebPage>
 <MyCoReWebPage>
   <section xml:lang="all" i18n="component.user2.admin.create.title">
-    <h2>Dokument einreichen</h2>
-    <h3>Schritt 1: Selbstregistrierung</h3>
+    <h3>
+      <i18n key="selfRegistration.step.create.title" />
+    </h3>
     <p>
-      Bevor Sie eine Publikation einreichen können, benötigen Sie eine Nutzerkennung mit Autoren-Rechten. Sie können sich über das unten stehende
-      Formular
-      selbst registrieren. Um die Registrierung abzuschließen, müssen Sie einmal den Link aufrufen, der Ihnen per Mail zugesandt wird, nachdem
-      Sie das Formular
-      abgesandt haben. Vielen Dank!
+      <i18n key="selfRegistration.step.create.info" />
     </p>
 
     <xed:form class="userEditor form-horizontal" role="form" xmlns:xed="http://www.mycore.de/xeditor" xmlns:mcruser="http://www.mycore.de/components/mcruser">
