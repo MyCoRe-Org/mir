@@ -99,6 +99,10 @@ public class MirSelfRegistrationServlet extends MCRServlet {
             final String password = doc.getRootElement().getChildText("password");
 
             user.setDisabled(true);
+
+            // remove all roles set by editor
+            Optional.ofNullable(user.getSystemRoleIDs()).ifPresent(r -> r.forEach(user::unassignRole));
+
             user.setHashType(MCRPasswordHashType.md5);
             user.setPassword(MCRUtils.asMD5String(1, null, password));
 
