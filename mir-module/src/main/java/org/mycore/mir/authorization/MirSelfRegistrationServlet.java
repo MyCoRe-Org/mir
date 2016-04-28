@@ -24,7 +24,6 @@ package org.mycore.mir.authorization;
 
 import java.text.MessageFormat;
 import java.util.List;
-import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -101,7 +100,7 @@ public class MirSelfRegistrationServlet extends MCRServlet {
             user.setDisabled(true);
 
             // remove all roles set by editor
-            Optional.ofNullable(user.getSystemRoleIDs()).ifPresent(r -> r.forEach(user::unassignRole));
+            user.getSystemRoleIDs().clear();
 
             user.setHashType(MCRPasswordHashType.md5);
             user.setPassword(MCRUtils.asMD5String(1, null, password));
