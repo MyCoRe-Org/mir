@@ -22,6 +22,7 @@
             <manifestEntries>
               <MCR-Artifact-Id>${project.artifactId}</MCR-Artifact-Id>
               <MCR-Application-Module>${project.name}</MCR-Application-Module>
+              <Priority>50</Priority>
             </manifestEntries>
           </archive>
         </configuration>
