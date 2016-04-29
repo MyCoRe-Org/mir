@@ -14,7 +14,7 @@ import org.mycore.mir.it.model.MIRGenre;
 import org.mycore.mir.it.model.MIRIdentifier;
 import org.mycore.mir.it.model.MIRInstitutes;
 import org.mycore.mir.it.model.MIRLanguage;
-import org.mycore.mir.it.model.MIRRights;
+import org.mycore.mir.it.model.MIRLicense;
 import org.mycore.mir.it.model.MIRTitleInfo;
 import org.mycore.mir.it.model.MIRTypeOfResource;
 import org.mycore.mir.it.tests.MIRTestData;
@@ -279,7 +279,7 @@ public class MIRModsEditorController extends MIREditorController {
         driver.waitAndFindElement(By.xpath(".//a[@data-type='personal' and contains(text(),'" + name + "')]")).click();
     }
 
-    public void setAccessConditions(MIRRights ac) {
+    public void setAccessConditions(MIRLicense ac) {
         new Select(driver.waitAndFindElement(By.xpath(".//select[contains(@name, 'mods:accessCondition') and option/@value='" + ac.getValue() + "']")))
                 .selectByValue(ac.getValue());
     }

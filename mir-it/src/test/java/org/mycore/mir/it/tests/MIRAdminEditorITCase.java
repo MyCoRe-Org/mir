@@ -19,7 +19,7 @@ import org.mycore.mir.it.model.MIRDNBClassification;
 import org.mycore.mir.it.model.MIRGenre;
 import org.mycore.mir.it.model.MIRIdentifier;
 import org.mycore.mir.it.model.MIRLanguage;
-import org.mycore.mir.it.model.MIRRights;
+import org.mycore.mir.it.model.MIRLicense;
 import org.mycore.mir.it.model.MIRTitleInfo;
 import org.mycore.mir.it.model.MIRTitleType;
 import org.mycore.mir.it.model.MIRTypeOfResource;
@@ -65,7 +65,7 @@ public class MIRAdminEditorITCase extends MIREditorITBase {
         editorController.setShelfLocator(MIRTestData.SIGNATURE);
         editorController.setLinks(Stream.of(MIRTestData.URL1, MIRTestData.URL2).collect(Collectors.toList()));
         editorController.setAccessConditions(MIRAccess.public_);
-        editorController.setAccessConditions(MIRRights.cc_by);
+        editorController.setAccessConditions(MIRLicense.cc_30);
         editorController.setTopics(Stream.of(MIRTestData.TOPIC1, MIRTestData.TOPIC2).collect(Collectors.toList()));
         editorController.setAbstracts(Stream.of(new MIRAbstract(true, MIRTestData.TEXT, MIRLanguage.german), new MIRAbstract(false, MIRTestData.URL3, MIRLanguage.english)).collect(Collectors.toList()));
 
