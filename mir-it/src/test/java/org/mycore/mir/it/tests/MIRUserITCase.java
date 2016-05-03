@@ -3,7 +3,6 @@
  */
 package org.mycore.mir.it.tests;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.mycore.common.selenium.MCRSeleniumTestBase;
@@ -49,11 +48,5 @@ public class MIRUserITCase extends MCRSeleniumTestBase {
     public final void testCreateUserMailValidation() {
         controller.createUser("submitter", "submitter123", null, "wrongmail", () -> controller.assertValidationErrorVisible(), "submitter");
     }
-
-    @After
-    public void tearDown() throws Exception {
-        this.takeScreenshot();
-    }
-
 
 }

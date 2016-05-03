@@ -327,8 +327,9 @@ public class MIRAuthorEditorITCase extends MIREditorITBase {
     }
 
     @After
-    public void tearDown() throws Exception {
-        this.takeScreenshot();
+    @Override
+    public void tearDown() {
+        super.tearDown();
 
         userController.logoutIfLoggedIn();
         userController.loginAs(MIRUserController.ADMIN_LOGIN, MIRUserController.ADMIN_PASSWD);

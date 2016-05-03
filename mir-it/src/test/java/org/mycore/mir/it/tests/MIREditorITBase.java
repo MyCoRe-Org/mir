@@ -1,6 +1,7 @@
 package org.mycore.mir.it.tests;
 
 
+import org.junit.After;
 import org.junit.Assert;
 import org.mycore.common.selenium.MCRSeleniumTestBase;
 import org.mycore.mir.it.controller.MIRModsEditorController;
@@ -20,5 +21,10 @@ public class MIREditorITBase extends MCRSeleniumTestBase {
 
     protected String getAPPUrlString() {
         return getBaseUrl(System.getProperty("it.port", "8080")) + "/" + System.getProperty("it.context");
+    }
+    
+    @After
+    public void tearDown(){
+        takeScreenshot();
     }
 }
