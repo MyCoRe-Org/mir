@@ -90,11 +90,11 @@ public class MIRAdminEditorITCase extends MIREditorITBase {
         driver.waitAndFindElement(MCRBy.partialText(MIRTestData.AUTHOR_2));
         driver.waitAndFindElement(MCRBy.partialText(MIRTestData.CONFERENCE));
 
-        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.AIRE_PROJECT_NAME));
-        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.AIRE_ACRONYM));
-        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.AIRE_GRANT_ID));
-        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.AIRE_PROGRAMM_ID));
-        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.AIRE_ORGANISATION_ID));
+        //driver.waitAndFindElement(MCRBy.partialText(MIRTestData.AIRE_PROJECT_NAME));
+        //driver.waitAndFindElement(MCRBy.partialText(MIRTestData.AIRE_ACRONYM));
+        //driver.waitAndFindElement(MCRBy.partialText(MIRTestData.AIRE_GRANT_ID));
+        //driver.waitAndFindElement(MCRBy.partialText(MIRTestData.AIRE_PROGRAMM_ID));
+        //driver.waitAndFindElement(MCRBy.partialText(MIRTestData.AIRE_ORGANISATION_ID));
 
         driver.waitAndFindElement(MCRBy.partialText(MIRTestData.SIGNATURE));
         driver.waitAndFindElement(MCRBy.partialText(MIRTestData.URL1));
