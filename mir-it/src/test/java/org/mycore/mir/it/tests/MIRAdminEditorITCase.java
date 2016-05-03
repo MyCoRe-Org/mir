@@ -59,7 +59,7 @@ public class MIRAdminEditorITCase extends MIREditorITBase {
 
         editorController.setAuthors(Stream.of(MIRTestData.AUTHOR, MIRTestData.AUTHOR_2).collect(Collectors.toList()));
         editorController.setConference(MIRTestData.CONFERENCE);
-        editorController.setOpenAIRE(MIRTestData.AIRE_AUTOCOMPLE, MIRTestData.AIRE_PROJECT_NAME);
+        // editorController.setOpenAIRE(MIRTestData.AIRE_AUTOCOMPLE, MIRTestData.AIRE_PROJECT_NAME);
         List identifierList = Stream.of(new AbstractMap.SimpleEntry(MIRIdentifier.doi, MIRTestData.DOI), new AbstractMap.SimpleEntry(MIRIdentifier.urn, MIRTestData.URN)).collect(Collectors.toList());
         editorController.setIdentifier(identifierList);
         editorController.setShelfLocator(MIRTestData.SIGNATURE);
