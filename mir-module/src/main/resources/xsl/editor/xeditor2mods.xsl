@@ -185,7 +185,7 @@
       </xsl:choose>
     </xsl:variable>
     <mods:identifier type="uri">
-      <xsl:value-of select="concat('http://uri.gbv.de/document/', @transliteration, ':ppn:', text())" />
+      <xsl:value-of select="concat('http://uri.gbv.de/document/', $database, ':ppn:', text())" />
     </mods:identifier>
   </xsl:template>
 
