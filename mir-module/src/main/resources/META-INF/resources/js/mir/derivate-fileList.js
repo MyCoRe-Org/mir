@@ -137,7 +137,7 @@
                 return json;
             }
             if (json.children != undefined) {
-                for (i = 0; i < json.children.length; i += 1) {
+                for (var i = 0; i < json.children.length; i++) {
                     var child = json.children[i];
                     var returnJson = getFolder(child, path);
                     if (returnJson != undefined) {
@@ -153,7 +153,7 @@
                 template = Handlebars.compile(temp);
             }
             var newJson = clone(derivateJson);
-            newJson.children = json.children;
+            newJson.children = sortChildren(json.children, newJson.mainDoc);
             var fileList = template(newJson);
             $(fileBox).html("");
             if (json.path != "/") {
@@ -178,6 +178,24 @@
                 }
             }
             $(fileBox).find(".file_box_breadcrumbs").prepend('<span class="file_name derivate_folder" data-path="/"> </span>');
+        }
+
+        function sortChildren(children, mainDoc) {
+            return children.sort(function(a, b) {
+                if (a.name == mainDoc) {
+                    return -1;
+                }
+                if (b.name == mainDoc) {
+                    return 1;
+                }
+                if (a.type == "directory" && b.type != "directory") {
+                    return -1;
+                }
+                if (b.type == "directory" && a.type != "directory") {
+                    return 1;
+                }
+                return a.name.localeCompare(b.name);
+            });
         }
 
         function clone(obj) {
