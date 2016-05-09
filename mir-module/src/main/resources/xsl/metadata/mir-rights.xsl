@@ -24,10 +24,10 @@
         <xsl:variable name="isEmbargo">
           <xsl:choose>
             <xsl:when test="mcrxsl:isCurrentUserGuestUser() and count($embargo) &gt; 0 and mcrxsl:compare(string($embargo),ex:date-time()) &gt; 0">
-              <xsl:value-of select="'true'"/>
+              <xsl:value-of select="'true'" />
             </xsl:when>
             <xsl:otherwise>
-              <xsl:value-of select="'false'"/>
+              <xsl:value-of select="'false'" />
             </xsl:otherwise>
           </xsl:choose>
         </xsl:variable>
@@ -51,6 +51,14 @@
       <xsl:choose>
         <xsl:when test="contains($id, '_derivate_') and $embargo='false'">
           <xsl:if test="mcrxsl:isDisplayedEnabledDerivate($id)">
+            <xsl:if test="$parentReadable">
+              <xsl:attribute name="view" />
+              <xsl:call-template name="check-default-rights">
+                <xsl:with-param name="id" select="$id" />
+              </xsl:call-template>
+            </xsl:if>
+          </xsl:if>
+          <xsl:if test="not(mcrxsl:isDisplayedEnabledDerivate($id)) and acl:checkPermission($id,$write)">
             <xsl:if test="$parentReadable">
               <xsl:attribute name="view" />
               <xsl:call-template name="check-default-rights">
