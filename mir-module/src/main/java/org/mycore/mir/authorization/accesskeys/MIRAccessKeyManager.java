@@ -144,7 +144,11 @@ public final class MIRAccessKeyManager {
             throw new MCRUsageException("Invalid access key \"" + accessKey + "\"");
 
         user.getAttributes().put(ACCESS_KEY_PREFIX + mcrObjectId.toString(), accessKey);
-        MCRUserManager.updateUser(user);
+        
+        if (!MCRUserManager.exists(user.getUserName(), user.getRealmID()))
+            MCRUserManager.createUser(user);
+        else
+            MCRUserManager.updateUser(user);
     }
 
     /**
