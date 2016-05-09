@@ -99,6 +99,11 @@
                     </xsl:variable>
                     <xsl:value-of select="i18n:translate('component.mods.metaData.dictionary.accessCondition.embargo.available',$embargoDate)" />
                   </xsl:when>
+                  <xsl:when test="not(mcr:isDisplayedEnabledDerivate(mycoreobject/structure/derobjects/derobject/@xlink:href))">
+                    <strong><xsl:value-of select="i18n:translate('mir.access')" /></strong>
+                    &#160;
+                    <xsl:value-of select="i18n:translate('mir.derivate.display.hidden')" />
+                  </xsl:when>
                   <xsl:otherwise>
                     <strong><xsl:value-of select="i18n:translate('mir.access')" /></strong>
                     &#160;
