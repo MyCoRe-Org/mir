@@ -102,7 +102,7 @@
                   <xsl:when test="not(mcr:isDisplayedEnabledDerivate(mycoreobject/structure/derobjects/derobject/@xlink:href))">
                     <strong><xsl:value-of select="i18n:translate('mir.access')" /></strong>
                     &#160;
-                    <xsl:value-of select="i18n:translate('mir.derivate.display.hidden')" />
+                    <xsl:value-of select="i18n:translate('mir.derivate.no_access')" />
                   </xsl:when>
                   <xsl:otherwise>
                     <strong><xsl:value-of select="i18n:translate('mir.access')" /></strong>
