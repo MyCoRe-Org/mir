@@ -193,9 +193,19 @@
       <legend class="mir-fieldset-legend">
         <xed:output i18n="mir.title.type.translated" />
       </legend>
-      <xed:bind xpath="mods:titleInfo[2][@type='translated']">
+      <xed:repeat xpath="mods:titleInfo[@type='translated']" min="1" max="6">
         <div class="mir-fieldset-content">
-          <mir:textfield xpath="mods:title" label="mir.title" placeholder="{i18n:mir.placeholder.title.translated}" />
+          <div class="form-group">
+            <label class="col-md-3 control-label mir-formgroup-label">
+              <xed:output i18n="mir.title" />
+            </label>
+            <div class="col-md-6">
+              <xed:bind xpath="mods:title">
+                <input type="text" class="form-control" placeholder="{i18n:mir.placeholder.title.translated}" />
+              </xed:bind>
+            </div>
+            <mir:help-pmud pmud="true" />
+          </div>
           <mir:textfield xpath="mods:subTitle" label="mir.title.subTitle" />
           <div class="form-group">
             <label class="col-md-3 control-label mir-formgroup-label">
@@ -208,7 +218,7 @@
             </div>
           </div>
         </div>
-      </xed:bind>
+      </xed:repeat>
     </fieldset>
   </xed:template>
 

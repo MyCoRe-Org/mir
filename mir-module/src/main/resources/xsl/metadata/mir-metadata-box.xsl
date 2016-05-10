@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xlink="http://www.w3.org/1999/xlink"
   xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation" xmlns:mods="http://www.loc.gov/mods/v3" xmlns:xalan="http://xml.apache.org/xalan"
-  exclude-result-prefixes="i18n mods xlink xalan">
+  xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions"
+  exclude-result-prefixes="i18n mods xlink xalan mcrxsl">
   <xsl:import href="xslImport:modsmeta:metadata/mir-metadata-box.xsl" />
   <xsl:include href="modsmetadata.xsl" />
   <!-- copied from http://www.loc.gov/standards/mods/v3/MODS3-4_HTML_XSLT1-0.xsl -->
@@ -25,14 +26,8 @@
                                   count(. | key('title-by-type',@type)[1])=1]">
               <tr>
                 <td valign="top" class="metaname">
-                  <xsl:value-of select="i18n:translate('component.mods.metaData.dictionary.title')" />
-                  <xsl:text> (</xsl:text>
                   <xsl:value-of select="i18n:translate(concat('mir.title.type.', @type))" />
-                  <xsl:if test="@type='translated'">
-                    <xsl:text>, </xsl:text>
-                    <xsl:value-of select="@xml:lang" />
-                  </xsl:if>
-                  <xsl:text>):</xsl:text>
+                  <xsl:text>:</xsl:text>
                 </td>
                 <td class="metavalue">
                   <xsl:for-each select="key('title-by-type',@type)">
@@ -45,6 +40,11 @@
                       <xsl:with-param name="withSubtitle" select="true()" />
                       <xsl:with-param name="position" select="position()" />
                     </xsl:apply-templates>
+                    <xsl:if test="@type='translated'">
+                      <xsl:text> (</xsl:text>
+                      <xsl:value-of select="mcrxsl:getDisplayName('rfc4646',@xml:lang)" />
+                      <xsl:text>)</xsl:text>
+                    </xsl:if>
                   </xsl:for-each>
                 </td>
               </tr>
