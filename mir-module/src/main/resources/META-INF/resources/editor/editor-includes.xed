@@ -766,6 +766,11 @@
     <mir:dateRange xpath="mods:originInfo[@eventType='publication']/mods:dateIssued[@encoding='w3cdtf']" label="mir.date.issued.10" help-text="{i18n:mir.help.date.issued.10}"
       class="datetimepicker" placeholder="{i18n:mir.placeholder.date}" />
   </xed:template>
+  
+  <xed:template id="date.onlyrange.issued.datetimepicker">
+    <mir:dateRange xpath="mods:originInfo[@eventType='publication']/mods:dateIssued[@encoding='w3cdtf']" label="mir.date.issued.10" help-text="{i18n:mir.help.date.issued.10}"
+      class="datetimepicker" placeholder="{i18n:mir.placeholder.date}" onlyRange="true"/>
+  </xed:template>
 
   <xed:template id="date.range.updated.datetimepicker">
     <mir:dateRange xpath="mods:originInfo[@eventType='update']/mods:dateModified[@encoding='w3cdtf']" label="mir.date.updated" help-text="{i18n:mir.help.date.updated}"
@@ -1049,6 +1054,16 @@
         <mir:help-pmud help-text="{i18n:mir.help.link}" pmud="true" />
       </div>
     </xed:repeat>
+  </xed:template>
+
+  <xed:template id="college">
+    <mir:textfield xpath="mods:originInfo[@eventType='creation']/mods:publisher" label="mir.college" help-text="{i18n:mir.help.college}" 
+      class="required" required="true" required-i18n="mir.validation.college" placeholder="{i18n:mir.placeholder.college}"/>
+  </xed:template>
+
+  <xed:template id="collegeplace">
+    <mir:textfield xpath="mods:originInfo[@eventType='creation']/mods:place/mods:placeTerm[@type='text']" label="mir.collegeplace" help-text="{i18n:mir.help.collegeplace}" 
+      class="required" required="true" required-i18n="mir.validation.collegeplace" placeholder="{i18n:mir.placeholder.collegeplace}"/>
   </xed:template>
 
   <xed:template id="place">

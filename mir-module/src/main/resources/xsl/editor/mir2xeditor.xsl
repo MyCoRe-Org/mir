@@ -138,57 +138,55 @@
     <xsl:variable name="xpathEnd" >
       <xsl:value-of select="concat(@xpath,'[@point=', $apos, 'end', $apos, ']')"/>
     </xsl:variable>
+    <xsl:variable name="hiddenclasssimple" >
+      <xsl:if test="@onlyRange = 'true' ">hidden</xsl:if>
+    </xsl:variable>
+    <xsl:variable name="hiddenclassrange" >
+      <xsl:if test="not(@onlyRange = 'true')">hidden</xsl:if>
+    </xsl:variable>
     <div class="date-format" data-format="simple">
-      <div class="date-simple input-group">
+      <div class="date-simple {$hiddenclasssimple} input-group">
         <xed:bind xpath="{$xpathSimple}">
           <input type="text" class="form-control">
             <xsl:copy-of select="@placeholder" />
           </input>
-          <div class="input-group-btn date-selectFormat">
-            <button class="btn btn-default dropdown-toggle" data-toggle="dropdown"><span class="caret"></span><span class="sr-only">Toggle Dropdown</span></button>
-            <ul class="dropdown-menu dropdown-menu-right" role="menu">
-              <li class="active">
-                <a href="#" class="date-simpleOption">
-                  <xsl:value-of select="i18n:translate('mir.date.specification')" />
-                </a>
-              </li>
-              <li>
-                <a href="#" class="date-rangeOption">
-                  <xsl:value-of select="i18n:translate('mir.date.period')" />
-                </a>
-              </li>
-            </ul>
-          </div>
         </xed:bind>
+        <xsl:call-template name="date-selectFormat"/>
       </div>
-      <div class="date-range input-group hidden input-daterange">
-          <xed:bind xpath="{$xpathStart}">
-            <input type="text" class="form-control startDate" data-point="start">
-              <xsl:copy-of select="@placeholder" />
-            </input>
-          </xed:bind>
-          <span class="glyphicon glyphicon-minus input-group-addon" aria-hidden="true"></span>
-          <xed:bind xpath="{$xpathEnd}">
-            <input type="text" class="form-control endDate" data-point="end">
-              <xsl:copy-of select="@placeholder" />
-            </input>
-          </xed:bind>
-          <div class="input-group-btn date-selectFormat">
-            <button class="btn btn-default dropdown-toggle" data-toggle="dropdown"><span class="caret"></span><span class="sr-only">Toggle Dropdown</span></button>
-            <ul class="dropdown-menu dropdown-menu-right" role="menu">
-              <li>
-                <a href="#" class="date-simpleOption">
-                  <xsl:value-of select="i18n:translate('mir.date.specification')" />
-                </a>
-              </li>
-              <li class="active">
-                <a href="#" class="date-rangeOption">
-                  <xsl:value-of select="i18n:translate('mir.date.period')" />
-                </a>
-              </li>
-            </ul>
-          </div>
+      <div class="date-range input-group {$hiddenclassrange} input-daterange">
+        <xed:bind xpath="{$xpathStart}">
+          <input type="text" class="form-control startDate" data-point="start">
+            <xsl:copy-of select="@placeholder" />
+          </input>
+        </xed:bind>
+        <span class="glyphicon glyphicon-minus input-group-addon" aria-hidden="true"></span>
+        <xed:bind xpath="{$xpathEnd}">
+          <input type="text" class="form-control endDate" data-point="end">
+            <xsl:copy-of select="@placeholder" />
+          </input>
+        </xed:bind>
+        <xsl:if test="not(@onlyRange = 'true') ">
+          <xsl:call-template name="date-selectFormat"/>
+        </xsl:if>  
       </div>
+    </div>
+  </xsl:template>
+  
+  <xsl:template name="date-selectFormat">
+    <div class="input-group-btn date-selectFormat">
+      <button class="btn btn-default dropdown-toggle" data-toggle="dropdown"><span class="caret"></span><span class="sr-only">Toggle Dropdown</span></button>
+      <ul class="dropdown-menu dropdown-menu-right" role="menu">
+        <li>
+          <a href="#" class="date-simpleOption">
+            <xsl:value-of select="i18n:translate('mir.date.specification')" />
+          </a>
+        </li>
+        <li>
+          <a href="#" class="date-rangeOption">
+            <xsl:value-of select="i18n:translate('mir.date.period')" />
+          </a>
+        </li>
+      </ul>
     </div>
   </xsl:template>
 
