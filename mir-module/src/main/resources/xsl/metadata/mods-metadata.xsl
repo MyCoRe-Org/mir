@@ -10,7 +10,7 @@
     <xsl:apply-templates mode="mods-type" select="." />
   </xsl:variable>
   <xsl:template match="/">
-    <site>
+    <site read="{key('rights', mycoreobject/@ID)/@read}" write="key('rights', mycoreobject/@ID)/@write">
       <xsl:attribute name="title">
         <xsl:apply-templates mode="mods.title" select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods">
           <xsl:with-param name="asHTML" select="false()" />
