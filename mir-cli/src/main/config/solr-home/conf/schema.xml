@@ -178,6 +178,9 @@
 
     <!-- default search fields -->
     <field name="allMeta" type="text_general" multiValued="true" stored="false" />
+    <field name="allMeta.notf" type="text_general" multiValued="true" stored="false" omitTermFreqAndPositions="true" />
+    <copyField source="allMeta" dest="allMeta.notf"/>
+  
     <field name="search_result_link_text" type="text_de" indexed="false"/>
 
     <!-- mycore-mods -->
