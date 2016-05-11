@@ -444,6 +444,7 @@
 				numPerPage = $(list).attr("data-numperpage") || 10;
 
 				$(fileBox).on("click", ".derivate_folder > a", function() {
+					evt.preventDefault();
 					openFolder($(this).attr("data-path"));
 				});
 
