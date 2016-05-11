@@ -768,7 +768,7 @@
   </xed:template>
   
   <xed:template id="date.onlyrange.issued.datetimepicker">
-    <mir:dateRange xpath="mods:originInfo[@eventType='publication']/mods:dateIssued[@encoding='w3cdtf']" label="mir.date.issued.10" help-text="{i18n:mir.help.date.issued.10}"
+    <mir:dateRange xpath="mods:originInfo[@eventType='publication']/mods:dateIssued[@encoding='w3cdtf']" label="mir.date.issued.onlyRange" help-text="{i18n:mir.help.date.issued.onlyRange}"
       class="datetimepicker" placeholder="{i18n:mir.placeholder.date}" onlyRange="true"/>
   </xed:template>
 
