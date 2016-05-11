@@ -298,7 +298,7 @@
 			while (currentPath != "/") {
 				var currentElm = getCurrentElm(currentPath);
 				$(fileBox).find(".file_box_breadcrumbs").prepend(
-						'<span class="file_name derivate_folder" data-path="' + currentPath + '">' + currentElm + '</span>');
+						'<span class="file_name derivate_folder"><a href="#" data-path="' + currentPath + '">' + currentElm + '</a></span>');
 				var newPath = getParentPath(currentPath);
 				if (newPath !== currentPath) {
 					currentPath = newPath;
@@ -306,7 +306,7 @@
 					break;
 				}
 			}
-			$(fileBox).find(".file_box_breadcrumbs").prepend('<span class="file_name derivate_folder" data-path="/"> </span>');
+			$(fileBox).find(".file_box_breadcrumbs").prepend('<span class="file_name derivate_folder"><a href="#" data-path="/"> </a></span>');
 		}
 
 		function buildPagination(children) {
@@ -443,7 +443,7 @@
 				urn = $(list).attr("data-urn");
 				numPerPage = $(list).attr("data-numperpage") || 10;
 
-				$(fileBox).on("click", ".derivate_folder", function() {
+				$(fileBox).on("click", ".derivate_folder > a", function() {
 					openFolder($(this).attr("data-path"));
 				});
 

@@ -78,8 +78,10 @@
                     </span>
                 {{/endsWith}}
             {{else}}
-                <span class="file_name derivate_folder" data-path="{{path}}">
+                <span class="file_name derivate_folder">
+                  <a data-path="{{path}}" href="#">
                     {{name}}
+                  </a>
                 </span>
             {{/isNot}}
         </div>
