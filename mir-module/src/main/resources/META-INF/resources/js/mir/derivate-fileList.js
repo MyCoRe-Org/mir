@@ -443,7 +443,7 @@
 				urn = $(list).attr("data-urn");
 				numPerPage = $(list).attr("data-numperpage") || 10;
 
-				$(fileBox).on("click", ".derivate_folder > a", function() {
+				$(fileBox).on("click", ".derivate_folder > a", function(evt) {
 					evt.preventDefault();
 					openFolder($(this).attr("data-path"));
 				});
