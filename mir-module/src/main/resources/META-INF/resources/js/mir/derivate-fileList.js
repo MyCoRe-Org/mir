@@ -264,7 +264,8 @@
 		}
 
 		function setPath(path) {
-			page = 1;
+			if (fileBox.data("path") != path)
+				page = 1;
 			fileBox.data("path", path);
 		}
 
