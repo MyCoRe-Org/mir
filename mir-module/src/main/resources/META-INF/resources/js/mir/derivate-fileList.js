@@ -31,12 +31,6 @@
 				}
 				return options.inverse(this);
 			});
-			Handlebars.registerHelper('endsWith', function(a, b, options) {
-				if (a.substr(-b.length) === b) {
-					return options.fn(this);
-				}
-				return options.inverse(this);
-			});
 			Handlebars.registerHelper("formatFileSize", function(input) {
 				return toReadableSize(input, 0);
 			});

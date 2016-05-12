@@ -47,20 +47,19 @@
               {{/is}}
           </td>
           {{#isNot type "directory"}}
-              {{#endsWith name "mp4"}}
-                  <td class="file_name_video col-xs-5 col-md-6">
-                    <a data-deriid="{{../mycorederivate}}" data-name="{{name}}" href="{{href}}">
-                        {{name}}
-                    </a>
-                  </td>
-              {{else}}
-                  <td class="file_name col-xs-6 col-md-6">
-                    <a href="{{href}}">
-                      </span>
-                        {{name}}
-                    </a>
-                  </td>
-              {{/endsWith}}
+            {{#contains "mp4" extension}}
+              <td class="file_name_video col-xs-5 col-md-6">
+                <a data-deriid="{{../mycorederivate}}" data-name="{{name}}" href="{{href}}">
+                  {{name}}
+                </a>
+              </td>
+            {{else}}
+              <td class="file_name col-xs-6 col-md-6">
+                <a href="{{href}}">
+                  {{name}}
+                </a>
+              </td>
+            {{/contains}}
           {{else}}
             <td class="file_name derivate_folder col-xs-6 col-md-6">
               <a data-path="{{path}}" href="#">
@@ -69,7 +68,9 @@
             </td>
           {{/isNot}}
           <td class="file_date hidden-xs col-md-2 text-right">
-           {{formatDate time.modified}}
+            {{#is type "file"}}
+              {{formatDate time.modified}}
+            {{/is}}
           </td>
           <td class="file_size hidden-xs col-md-2 text-right">
             {{formatFileSize size}}
