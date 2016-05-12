@@ -76,7 +76,9 @@
             {{formatFileSize size}}
           </td>
           <td class="visible-xs col-xs-4 text-right">
-            {{formatDate time.modified}}<br>
+            {{#is type "file"}}
+              {{formatDate time.modified}}<br>
+            {{/is}}
             {{formatFileSize size}}
           </td>
           {{#isOr ../permWrite ../permDelete}}
