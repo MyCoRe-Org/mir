@@ -95,9 +95,9 @@ public class MIRWizardStartupHandler implements MCRStartupHandler.AutoExecutable
                 config.set("MCR.basedir", convertToNixPath(baseDir));
             } else {
                 File mcrProps = MCRConfigurationDir.getConfigFile("mycore.properties");
-                File hibCfg = MCRConfigurationDir.getConfigFile("hibernate.cfg.xml");
+                File jpaCfg = MCRConfigurationDir.getConfigFile("resources/META-INF/persistence.xml");
 
-                if ((mcrProps != null && mcrProps.canRead()) || (hibCfg != null && hibCfg.canRead())) {
+                if ((mcrProps != null && mcrProps.canRead()) || (jpaCfg != null && jpaCfg.canRead())) {
                     return;
                 }
             }
