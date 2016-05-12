@@ -12,7 +12,9 @@
 
         <xsl:variable name="objID" select="mycoreobject/@ID" />
         <div id="mir-collapse-files">
-          <xsl:for-each select="mycoreobject/structure/derobjects/derobject[key('rights', @xlink:href)/@read or key('rights', @xlink:href)/@readKey or key('rights', @xlink:href)/@writeKey]">
+          <xsl:for-each
+            select="mycoreobject/structure/derobjects/derobject[key('rights', @xlink:href)/@read or key('rights', @xlink:href)/@readKey or key('rights', @xlink:href)/@writeKey]"
+          >
             <xsl:variable name="derId" select="@xlink:href" />
             <xsl:variable name="derivateXML" select="document(concat('mcrobject:',$derId))" />
             <xsl:variable name="derivateWithURN" select="mcrurn:hasURNDefined($derId)" />
@@ -58,43 +60,47 @@
                   </div>
                 </div>
               </div>
-              <div id="collapse{@xlink:href}" class="row body collapse in">
 
-                <xsl:choose>
-                  <xsl:when test="key('rights', @xlink:href)/@read">
-                    <xsl:variable name="maindoc" select="$derivateXML/mycorederivate/derivate/internals/internal/@maindoc" />
-                    <div class="file_box_files" data-objID="{$objID}" data-deriID="{$derId}" data-mainDoc="{$maindoc}"
-                         data-writedb="{acl:checkPermission($derId,'writedb')}"
-                         data-deletedb="{acl:checkPermission($derId,'deletedb')}" data-urn="{$derivateWithURN}">
-                      <div class="filelist-loading">
-                        <div class="bounce1"></div>
-                        <div class="bounce2"></div>
-                        <div class="bounce3"></div>
-                      </div>
+              <xsl:choose>
+                <xsl:when test="key('rights', @xlink:href)/@read">
+                  <xsl:variable name="maindoc" select="$derivateXML/mycorederivate/derivate/internals/internal/@maindoc" />
+                  <div class="file_box_files" data-objID="{$objID}" data-deriID="{$derId}" data-mainDoc="{$maindoc}" data-writedb="{acl:checkPermission($derId,'writedb')}"
+                    data-deletedb="{acl:checkPermission($derId,'deletedb')}" data-urn="{$derivateWithURN}"
+                  >
+                    <div class="filelist-loading">
+                      <div class="bounce1"></div>
+                      <div class="bounce2"></div>
+                      <div class="bounce3"></div>
                     </div>
-                  </xsl:when>
-                  <xsl:otherwise>
+                  </div>
+                </xsl:when>
+                <xsl:otherwise>
+                  <div id="collapse{@xlink:href}" class="row body collapse in">
                     <div class="col-xs-12">
                       <xsl:value-of select="i18n:translate('mir.derivate.no_access')" />
                     </div>
-                  </xsl:otherwise>
-                </xsl:choose>
+                  </div>
+                </xsl:otherwise>
+              </xsl:choose>
 
-              </div>
             </div>
           </xsl:for-each>
-          <xsl:if test="mycoreobject/structure/derobjects/derobject and
+          <xsl:if
+            test="mycoreobject/structure/derobjects/derobject and
                         not(mycoreobject/structure/derobjects/derobject[key('rights', @xlink:href)/@read or
                             key('rights', @xlink:href)/@readKey or
-                            key('rights', @xlink:href)/@writeKey])" >
+                            key('rights', @xlink:href)/@writeKey])"
+          >
             <div id="mir-access-restricted">
-              <h3><xsl:value-of select="i18n:translate('metadata.files.file')" /></h3>
+              <h3>
+                <xsl:value-of select="i18n:translate('metadata.files.file')" />
+              </h3>
               <div class="alert alert-warning" role="alert">
                 <xsl:choose>
                   <xsl:when test="mycoreobject/structure/derobjects/derobject[key('rights', @xlink:href)/@embargo]">
                     <!-- embargo is active for guest user -->
                     <xsl:variable name="embargoDate">
-                      <xsl:value-of select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:accessCondition[@type='embargo']"/>
+                      <xsl:value-of select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:accessCondition[@type='embargo']" />
                       <!-- TODO: format date-->
                     </xsl:variable>
                     <xsl:value-of select="i18n:translate('component.mods.metaData.dictionary.accessCondition.embargo.available',$embargoDate)" />
@@ -103,7 +109,9 @@
                     <xsl:value-of select="i18n:translate('mir.derivate.no_access')" />
                   </xsl:when>
                   <xsl:otherwise>
-                    <strong><xsl:value-of select="i18n:translate('mir.access')" /></strong>
+                    <strong>
+                      <xsl:value-of select="i18n:translate('mir.access')" />
+                    </strong>
                     &#160;
                     <xsl:apply-templates select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:accessCondition[@type='restriction on access']"
                       mode="printModsClassInfo" />
