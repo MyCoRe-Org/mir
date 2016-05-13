@@ -189,7 +189,7 @@
 
 <!-- hit number -->
           <div class="hit_counter">
-            <xsl:value-of select="$hitNumberOnPage" />
+            <xsl:value-of select="$hitNumberOnPage + (($currentPage) -1) * $rows" />
           </div>
 
 <!-- relevance -->
@@ -461,11 +461,15 @@
                 <xsl:variable name="owner">
                   <xsl:choose>
                     <xsl:when test="mcrxsl:isCurrentUserInRole('admin') or mcrxsl:isCurrentUserInRole('editor')"><!--
-                      -->*<!--
-                    --></xsl:when>
+                      -->
+                      *<!--
+                    -->
+                    </xsl:when>
                     <xsl:otherwise><!--
-                      --><xsl:value-of select="$CurrentUser" /><!--
-                    --></xsl:otherwise>
+                      -->
+                      <xsl:value-of select="$CurrentUser" /><!--
+                    -->
+                    </xsl:otherwise>
                   </xsl:choose>
                 </xsl:variable>
                 <xsl:choose>
@@ -473,12 +477,12 @@
                     <xsl:variable name="nameIdentifier" select="substring-after($nameIdentifierAndType, ':')" />
                     <xsl:variable name="nameIdentifierType" select="substring-before($nameIdentifierAndType, ':')" />
                     <xsl:variable name="classi"
-                                  select="document(concat('classification:metadata:all:children:','nameIdentifier',':',$nameIdentifierType))/mycoreclass/categories/category[@ID=$nameIdentifierType]" />
-                    <xsl:variable name="uri"
-                                  select="$classi/label[@xml:lang='x-uri']/@text" />
-                    <xsl:variable name="idType"
-                                  select="$classi/label[@xml:lang='de']/@text" />
-                    <a href="{$ServletsBaseURL}solr/mods_nameIdentifier?q=mods.nameIdentifier:{$nameIdentifierType}\:{$nameIdentifier}&amp;owner=createdby:{$owner}" title="Suche nach allen Publikationen">
+                      select="document(concat('classification:metadata:all:children:','nameIdentifier',':',$nameIdentifierType))/mycoreclass/categories/category[@ID=$nameIdentifierType]" />
+                    <xsl:variable name="uri" select="$classi/label[@xml:lang='x-uri']/@text" />
+                    <xsl:variable name="idType" select="$classi/label[@xml:lang='de']/@text" />
+                    <a href="{$ServletsBaseURL}solr/mods_nameIdentifier?q=mods.nameIdentifier:{$nameIdentifierType}\:{$nameIdentifier}&amp;owner=createdby:{$owner}"
+                      title="Suche nach allen Publikationen"
+                    >
                       <xsl:value-of select="$author_name" />
                     </a>
                     <xsl:text>&#160;</xsl:text><!-- add whitespace here -->
