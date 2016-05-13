@@ -107,15 +107,6 @@
     </mods:nameIdentifier>
   </xsl:template>
 
-  <!-- A single page (entered as start=end) must be represented as mods:detail/@type='page' -->
-  <xsl:template match="mods:extent[(@unit='pages') and (mods:start=mods:end)]">
-    <mods:detail type="page">
-      <mods:number>
-        <xsl:value-of select="mods:start" />
-      </mods:number>
-    </mods:detail>
-  </xsl:template>
-
   <!-- Copy content of mods:accessCondtition to mods:classification to enable classification support (see MIR-161) -->
   <xsl:template match="mods:accessCondition[@type='restriction on access'][@xlink:href='http://www.mycore.org/classifications/mir_access']">
     <mods:accessCondition type="restriction on access">
@@ -187,6 +178,11 @@
     <mods:identifier type="uri">
       <xsl:value-of select="concat('http://uri.gbv.de/document/', $database, ':ppn:', text())" />
     </mods:identifier>
+  </xsl:template>
+
+  <!-- In editor, all variants of page numbers are edited in a single text field -->
+  <xsl:template match="mods:part/mods:extent[@unit='pages']" xmlns:pages="xalan://org.mycore.mods.MCRMODSPagesHelper">
+    <xsl:copy-of select="pages:buildExtentPagesNodeSet(mods:list/text())" />
   </xsl:template>
 
 </xsl:stylesheet>

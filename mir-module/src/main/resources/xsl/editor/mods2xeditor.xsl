@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:mods="http://www.loc.gov/mods/v3"
-  xmlns:mcrmods="xalan://org.mycore.mods.classification.MCRMODSClassificationSupport"
-  xmlns:mirddctosndbmapper="xalan://org.mycore.mir.impexp.MIRDDCtoSNDBMapper" exclude-result-prefixes="mcrmods xlink mirddctosndbmapper" version="1.0"
+  xmlns:mcrmods="xalan://org.mycore.mods.classification.MCRMODSClassificationSupport" xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
+  xmlns:mirddctosndbmapper="xalan://org.mycore.mir.impexp.MIRDDCtoSNDBMapper" exclude-result-prefixes="mcrmods xlink mirddctosndbmapper i18n" version="1.0"
 >
 
   <xsl:include href="copynodes.xsl" />
@@ -32,18 +32,6 @@
         </xsl:with-param>
       </xsl:apply-templates>
     </xsl:if>
-  </xsl:template>
-
-  <!-- A single page (edited as start=end) is represented as mods:detail/@type='page' -->
-  <xsl:template match="mods:detail[@type='page']">
-    <mods:extent unit="pages">
-      <mods:start>
-        <xsl:value-of select="mods:number" />
-      </mods:start>
-      <mods:end>
-        <xsl:value-of select="mods:number" />
-      </mods:end>
-    </mods:extent>
   </xsl:template>
 
   <!-- Derive dateIssued from dateOther if not present -->
@@ -159,6 +147,45 @@
         </mods:classification>
       </xsl:if>
     </xsl:if>
+  </xsl:template>
+
+  <!-- In editor, all variants of page numbers are edited in a single text field -->
+  <xsl:template match="mods:extent[@unit='pages']">
+    <xsl:copy>
+      <xsl:apply-templates select="@*" />
+      <mods:list>
+        <xsl:apply-templates select="mods:*" />
+      </mods:list>
+    </xsl:copy>
+  </xsl:template>
+
+  <xsl:template match="mods:start">
+    <xsl:value-of select="i18n:translate('mir.pages.abbreviated.multiple')" />
+    <xsl:text> </xsl:text>
+    <xsl:value-of select="text()" />
+  </xsl:template>
+
+  <xsl:template match="mods:end">
+    <xsl:text> - </xsl:text>
+    <xsl:value-of select="text()" />
+  </xsl:template>
+
+  <xsl:template match="mods:total[../mods:start]">
+    <xsl:text> (</xsl:text>
+    <xsl:value-of select="text()" />
+    <xsl:text> </xsl:text>
+    <xsl:value-of select="i18n:translate('mir.pages')" />
+    <xsl:text>)</xsl:text>
+  </xsl:template>
+
+  <xsl:template match="mods:total">
+    <xsl:value-of select="text()" />
+    <xsl:text> </xsl:text>
+    <xsl:value-of select="i18n:translate('mir.pages')" />
+  </xsl:template>
+
+  <xsl:template match="mods:list">
+    <xsl:value-of select="text()" />
   </xsl:template>
 
 </xsl:stylesheet>
