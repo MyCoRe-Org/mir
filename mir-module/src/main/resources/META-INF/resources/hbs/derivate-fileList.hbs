@@ -10,7 +10,7 @@
               {{#is type "file"}}
                 {{#contains "pdf|ps" extension}}
                   <span class="fa fa-file-pdf-o" alt="PDF" data-toggle="tooltip"
-                            data-placement="top" data-html="true" data-title='&lt;img src="{{../serverBaseURL}}img/pdfthumb/{{../mycorederivate}}{{path}}?centerThumb=no"&gt;'></span>
+                            data-placement="right" data-html="true" data-title='&lt;img src="{{../serverBaseURL}}img/pdfthumb/{{../mycorederivate}}{{path}}?centerThumb=no"&gt;'></span>
                 {{/contains}}
                 {{#contains "zip|tar|rar|bz|xs" extension}}
                   <span class="fa fa-file-archive-o" title="Archive" aria-hidden="true"></span>
@@ -123,20 +123,20 @@
   {{#if pagination}}
     <div class="file_box_pagination row">
       <div class="col-md-6 hidden-xs pagination-info">
-          {{pagination/start}} {{getI18n "mir.files.to"}} {{pagination/end}} {{getI18n "mir.files.of"}} {{pagination/total}} {{getI18n "mir.files.text"}}
+        {{getI18n "mir.pagination.entriesInfo" pagination.start pagination.end pagination.total}}
       </div>
       <div class="col-xs-12 col-md-6">
         <ul class="pagination pagination-sm pull-right">
           {{#paginate pagination type="first"}}
             <li {{#if disabled}}class="disabled"{{/if}}>
-              <a href="#" data-page="{{n}}" aria-label="First">
+              <a href="#" data-page="{{n}}" aria-label="First" {{#unless disabled}}title="{{getI18n "mir.pagination.first" n}}{{/unless}}">
                 <span aria-hidden="true">&laquo;</span>
               </a>
             </li>
           {{/paginate}}
           {{#paginate pagination type="previous"}}
             <li {{#if disabled}}class="disabled"{{/if}}>
-              <a href="#" data-page="{{n}}" aria-label="Previous">
+              <a href="#" data-page="{{n}}" aria-label="Previous" {{#unless disabled}}title="{{getI18n "mir.pagination.previous" n}}{{/unless}}">
                 <span aria-hidden="true">&lsaquo;</span>
               </a>
             </li>
@@ -146,14 +146,14 @@
           {{/paginate}}
           {{#paginate pagination type="next"}}
             <li {{#if disabled}}class="disabled"{{/if}}>
-              <a href="#" data-page="{{n}}" aria-label="Next">
+              <a href="#" data-page="{{n}}" aria-label="Next" {{#unless disabled}}title="{{getI18n "mir.pagination.next" n}}{{/unless}}">
                 <span aria-hidden="true">&rsaquo;</span>
               </a>
             </li>
           {{/paginate}}
           {{#paginate pagination type="last"}}
             <li {{#if disabled}}class="disabled"{{/if}}>
-              <a href="#" data-page="{{n}}" aria-label="Last">
+              <a href="#" data-page="{{n}}" aria-label="Last" {{#unless disabled}}title="{{getI18n "mir.pagination.last" n}}{{/unless}}">
                 <span aria-hidden="true">&raquo;</span>
               </a>
             </li>

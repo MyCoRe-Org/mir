@@ -31,6 +31,11 @@
 				}
 				return options.inverse(this);
 			});
+			Handlebars.registerHelper("concat", function() {
+				var args = Array.prototype.slice.call(arguments);
+				args.pop();
+				return args.join('');
+			});
 			Handlebars.registerHelper("formatFileSize", function(input) {
 				return toReadableSize(input, 0);
 			});
@@ -373,9 +378,9 @@
 		function loadI18nKeys(lang, callback) {
 			var ifsKeyURL = webApplicationBaseURL + "servlets/MCRLocaleServlet/" + lang + "/IFS*";
 			var mirKeyURL = webApplicationBaseURL + "servlets/MCRLocaleServlet/" + lang + "/mir.confirm.*";
-			var filesKeyURL = webApplicationBaseURL + "servlets/MCRLocaleServlet/" + lang + "/mir.files.*";
+			var pagiKeyURL = webApplicationBaseURL + "servlets/MCRLocaleServlet/" + lang + "/mir.pagination.*";
 			$
-					.when($.ajax(ifsKeyURL), $.ajax(mirKeyURL), $.ajax(filesKeyURL))
+					.when($.ajax(ifsKeyURL), $.ajax(mirKeyURL), $.ajax(pagiKeyURL))
 					.done(
 							function(d1, d2, d3) {
 								if (d1[0] != {} && d1[0] != "???IFS*???" && d1[0]["IFS"]) {
@@ -391,12 +396,14 @@
 									i18nKeys["mir.confirm.directory.text"] = "Wollen Sie dieses Verzeichnis inkl. aller enthaltenen Dateien und ggf. Unterverzeichnissen l\u00F6schen?";
 									i18nKeys["mir.confirm.file.text"] = "Wollen Sie diese Datei wirklich l\u00F6schen?";
 								}
-								if (d3[0] != {} && d3[0] != "???mir.files.*???" && d3[0]["mir.files"]) {
+								if (d3[0] != {} && d3[0] != "???mir.pagination.*???" && d3[0]["mir.pagination"]) {
 									i18nKeys = $.extend(d3[0], i18nKeys);
 								} else {
-									i18nKeys["mir.files.text"] = "Dateien";
-									i18nKeys["mir.files.to"] = "bis";
-									i18nKeys["mir.files.of"] = "von";
+									i18nKeys["mir.pagination.entriesInfo"] = "{0} bis {1} von {2} Eintr\u00E4gen";
+									i18nKeys["mir.pagination.first"] = "erste Seite";
+									i18nKeys["mir.pagination.last"] = "letzte Seite ({0})";
+									i18nKeys["mir.pagination.previous"] = "vorherige Seite";
+									i18nKeys["mir.pagination.next"] = "n\u00E4chste Seite";
 								}
 								callback();
 							})
@@ -407,9 +414,11 @@
 								i18nKeys["IFS.directoryDelete"] = "Verzeichnis l\u00F6schen";
 								i18nKeys["mir.confirm.directory.text"] = "Wollen Sie dieses Verzeichnis inkl. aller enthaltenen Dateien und ggf. Unterverzeichnissen l\u00F6schen?";
 								i18nKeys["mir.confirm.file.text"] = "Wollen Sie diese Datei wirklich l\u00F6schen?";
-								i18nKeys["mir.files.text"] = "Dateien";
-								i18nKeys["mir.files.to"] = "bis";
-								i18nKeys["mir.files.of"] = "von";
+								i18nKeys["mir.pagination.entriesInfo"] = "{0} bis {1} von {2} Eintr\u00E4gen";
+								i18nKeys["mir.pagination.first"] = "erste Seite";
+								i18nKeys["mir.pagination.last"] = "letzte Seite ({0})";
+								i18nKeys["mir.pagination.previous"] = "vorherige Seite";
+								i18nKeys["mir.pagination.next"] = "n\u00E4chste Seite";
 								callback();
 							});
 		}
@@ -471,18 +480,18 @@
 					}
 				});
 
-				Handlebars.registerHelper("getI18n", function(input) {
+				Handlebars.registerHelper("getI18n", function(input, params) {
 					var text = i18nKeys[input];
+					var args = Array.prototype.slice.call(arguments, 1);
 					if (text != undefined) {
+						if (args != undefined) {
+							for (var i = 0; i < args.length; i++) {
+								text = text.replace(RegExp("\\{" + i + "\\}", 'g'), args[i]);
+							}
+						}
 						return text;
 					}
 					return "";
-				});
-
-				Handlebars.registerHelper("concat", function() {
-					var args = Array.prototype.slice.call(arguments);
-					args.pop();
-					return args.join('');
 				});
 
 				if (objID != undefined && objID != "" && deriID != undefined && deriID != "") {
