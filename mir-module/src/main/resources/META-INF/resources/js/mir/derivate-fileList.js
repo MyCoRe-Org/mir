@@ -200,6 +200,52 @@
 		var objID, deriID, mainDoc, fileBox, aclWriteDB, aclDeleteDB, derivateJson, template, urn, hbs, numPerPage, page;
 		var i18nKeys = {};
 
+		var fileIcons = {
+			"PDF" : {
+				icon : "fa-file-pdf-o",
+				extensions : "pdf|ps"
+			},
+			"Archive" : {
+				icon : "fa-file-archive-o",
+				extensions : "zip|tar|rar|bz|xs"
+			},
+			"Image" : {
+				icon : "fa-file-image-o",
+				extensions : "tif|tiff|gif|jpeg|jpg|jif|jfif|jp2|jpx|j2k|j2c|fpx|pcd|png"
+			},
+			"Text" : {
+				icon : "fa-file-text-o",
+				extensions : "txt|rtf"
+			},
+			"Audio" : {
+				icon : "fa-file-audio-o",
+				extensions : "wav|wma|mp3"
+			},
+			"Video" : {
+				icon : "fa-file-video-o",
+				extensions : "mp4|f4v|flv|rm|avi|wmv"
+			},
+			"Code" : {
+				icon : "fa-file-code-o",
+				extensions : "css|htm|html|php|c|cpp|bat|cmd|pas"
+			},
+			"Word" : {
+				icon : "fa-file-word-o",
+				extensions : "doc|docx|dot"
+			},
+			"Excel" : {
+				icon : "fa-file-excel-o",
+				extensions : "xls|xlt|xlsx|xltx"
+			},
+			"Powerpoint" : {
+				icon : "fa-file-powerpoint-o",
+				extensions : "ppt|potx|ppsx|sldx"
+			},
+			_default : {
+				icon : "fa-file-o"
+			}
+		}
+
 		// functions
 		function getDerivate() {
 			$.ajax({
@@ -469,6 +515,8 @@
 					var $this = $(this);
 
 					if (!$this.parent().hasClass("disabled")) {
+						var offset = $(".pagination", fileBox).offset();
+
 						var path = fileBox.data("path")
 						page = $this.data("page");
 
@@ -476,6 +524,11 @@
 							openFolder(path);
 						} else {
 							useTemplate(derivateJson);
+						}
+
+						var offsetDif = offset.top - $(".pagination", fileBox).offset().top;
+						if (offsetDif > 0) {
+							$(document).scrollTop($(document).scrollTop() - offsetDif);
 						}
 					}
 				});
@@ -491,6 +544,23 @@
 						}
 						return text;
 					}
+					return "";
+				});
+
+				Handlebars.registerHelper("getFileIcon", function(ext) {
+					for ( var label in fileIcons) {
+						if (label != "_default" && fileIcons[label].extensions.indexOf(ext) != -1)
+							return fileIcons[label].icon;
+					}
+
+					return fileIcons[_default].icon;
+				});
+				Handlebars.registerHelper("getFileLabel", function(ext) {
+					for ( var label in fileIcons) {
+						if (label != "_default" && fileIcons[label].extensions.indexOf(ext) != -1)
+							return label;
+					}
+
 					return "";
 				});
 

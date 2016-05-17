@@ -9,39 +9,11 @@
           <td class="file_preview col-xs-1 col-md-1 text-center">
               {{#is type "file"}}
                 {{#contains "pdf|ps" extension}}
-                  <span class="fa fa-file-pdf-o" alt="PDF" data-toggle="tooltip"
-                            data-placement="right" data-html="true" data-title='&lt;img src="{{../serverBaseURL}}img/pdfthumb/{{../mycorederivate}}{{path}}?centerThumb=no"&gt;'></span>
+                  <span class="fa {{getFileIcon extension}}" data-toggle="tooltip"
+                              data-placement="right" data-html="true" data-title='&lt;img src="{{../serverBaseURL}}img/pdfthumb/{{../mycorederivate}}{{path}}?centerThumb=no"&gt;'></span>
+                {{else}}
+                  <span class="fa {{getFileIcon extension}}" title="{{getFileLabel extension}}" aria-hidden="true"></span>  
                 {{/contains}}
-                {{#contains "zip|tar|rar|bz|xs" extension}}
-                  <span class="fa fa-file-archive-o" title="Archive" aria-hidden="true"></span>
-                {{/contains}}
-                {{#contains "tif|tiff|gif|jpeg|jpg|jif|jfif|jp2|jpx|j2k|j2c|fpx|pcd|png" extension}}
-                  <span class="fa fa-file-image-o" title="Image" aria-hidden="true"></span>
-                {{/contains}}
-                {{#contains "txt" extension}}
-                  <span class="fa fa-file-text-o" title="Text" aria-hidden="true"></span>
-                {{/contains}}
-                {{#contains "wav|wma|mp3" extension}}
-                  <span class="fa fa-file-audio-o" title="Audio" aria-hidden="true"></span>
-                {{/contains}}
-                {{#contains "mp4|f4v|flv|rm|avi|wmv" extension}}
-                  <span class="fa fa-file-video-o" title="Video" aria-hidden="true"></span>
-                {{/contains}}
-                {{#contains "css|htm|html|php|c|cpp|bat|cmd|pas" extension}}
-                  <span class="fa fa-file-code-o" title="Code" aria-hidden="true"></span>
-                {{/contains}}
-                {{#contains "doc|docx|dot" extension}}
-                  <span class="fa fa-file-word-o" title="MS Word" aria-hidden="true"></span>
-                {{/contains}}
-                {{#contains "xls|xlt|xlsx|xltx" extension}}
-                  <span class="fa fa-file-excel-o" title="MS Excel" aria-hidden="true"></span>
-                {{/contains}}
-                {{#contains "ppt|potx|ppsx|sldx" extension}}
-                  <span class="fa fa-file-powerpoint-o" title="MS Powerpoint" aria-hidden="true"></span>
-                {{/contains}}
-                {{#notContains "pdf|ps|zip|tar|rar|bz|xs|tif|tiff|gif|jpeg|jpg|jif|jfif|jp2|jpx|j2k|j2c|fpx|pcd|png|txt|wav|wma|mp3|mp4|f4v|flv|rm|avi|wmv|css|htm|html|php|c|cpp|bat|cmd|pas|doc|docx|dot|xls|xlt|xlsx|xltx|ppt|potx|ppsx|sldx" extension}}
-                    <span class="fa fa-file-o" aria-hidden="true"></span>
-                {{/notContains}}
               {{else}}
                 <span class="fa fa-folder" aria-hidden="true"></span>
               {{/is}}
