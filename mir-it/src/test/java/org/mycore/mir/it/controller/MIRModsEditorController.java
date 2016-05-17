@@ -359,8 +359,7 @@ public class MIRModsEditorController extends MIREditorController {
     }
 
     public void setExtend(String start, String end) {
-        setInputText("mods:relatedItem/mods:part/mods:extent/mods:start", start);
-        setInputText("mods:relatedItem/mods:part/mods:extent/mods:end", end);
+        setInputText("mods:relatedItem/mods:part/mods:extent/mods:list", start + " - " + end);
     }
 
     public void setLinks(List<String> links) {
