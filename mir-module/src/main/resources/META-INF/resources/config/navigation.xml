@@ -136,7 +136,7 @@
         <label xml:lang="de">WebCLI</label>
         <label xml:lang="en">WebCLI</label>
       </item>
-      <item href="/servlets/MCRSessionListingServlet" type="extern">
+      <item href="/modules/session-listing/sessionListing.xml" type="extern">
         <label xml:lang="de">Aktive Sitzungen</label>
         <label xml:lang="en">Session Management</label>
       </item>
