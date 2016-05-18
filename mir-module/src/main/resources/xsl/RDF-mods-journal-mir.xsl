@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
   xmlns:mods="http://www.loc.gov/mods/v3" exclude-result-prefixes="rdf">
-  <xsl:variable name="baseURI" select="'http://www.mycore.org/classifications/mir_genres'" />
+  <xsl:variable name="baseURI" select="document('classification:metadata:-1:children:mir_genres')/mycoreclass/label[@xml:lang='x-uri']/@text" />
   <xsl:template match="@rdf:type" priority="2">
     <xsl:choose>
       <xsl:when test=".='http://purl.org/ontology/bibo/Periodical'">

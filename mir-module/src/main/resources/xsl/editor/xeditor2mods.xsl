@@ -108,7 +108,7 @@
   </xsl:template>
 
   <!-- Copy content of mods:accessCondtition to mods:classification to enable classification support (see MIR-161) -->
-  <xsl:template match="mods:accessCondition[@type='restriction on access'][@xlink:href='http://www.mycore.org/classifications/mir_access']">
+  <xsl:template match="mods:accessCondition[@type='restriction on access'][contains(@xlink:href,'mir_access')]">
     <mods:accessCondition type="restriction on access">
       <xsl:attribute name="xlink:href">
         <xsl:value-of select="concat(@xlink:href, '#', .)" />
@@ -116,10 +116,18 @@
     </mods:accessCondition>
   </xsl:template>
 
-  <xsl:template match="mods:accessCondition[@type='use and reproduction'][@xlink:href='http://www.mycore.org/classifications/mir_licenses' or not(@xlink:href)]">
+  <xsl:template match="mods:accessCondition[@type='use and reproduction'][contains(@xlink:href,'mir_licenses') or not(@xlink:href)]">
     <mods:accessCondition type="use and reproduction">
       <xsl:attribute name="xlink:href">
-        <xsl:value-of select="concat('http://www.mycore.org/classifications/mir_licenses#', .)" />
+        <xsl:choose>
+          <xsl:when test="@xlink:href">
+            <xsl:value-of select="concat(@xlink:href, '#', .)" />
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:variable name="mir_licenses_uri" select="document('classification:metadata:-1:children:mir_licenses')/mycoreclass/label[@xml:lang='x-uri']/@text" />
+            <xsl:value-of select="concat($mir_licenses_uri,'#', .)" />
+          </xsl:otherwise>
+        </xsl:choose>
       </xsl:attribute>
     </mods:accessCondition>
   </xsl:template>

@@ -105,13 +105,15 @@
   </xsl:template>
 
   <xsl:template match="mods:accessCondition[@type='restriction on access']">
-    <mods:accessCondition type="restriction on access" xlink:href='http://www.mycore.org/classifications/mir_access'>
+    <xsl:variable name="mir_access_uri" select="document('classification:metadata:-1:children:mir_access')/mycoreclass/label[@xml:lang='x-uri']/@text" />
+    <mods:accessCondition type="restriction on access" xlink:href="{$mir_access_uri}">
       <xsl:value-of select="substring-after(@xlink:href, '#')" />
     </mods:accessCondition>
   </xsl:template>
 
   <xsl:template match="mods:accessCondition[@type='use and reproduction']">
-    <mods:accessCondition type="use and reproduction" xlink:href='http://www.mycore.org/classifications/mir_licenses'>
+    <xsl:variable name="mir_licenses_uri" select="document('classification:metadata:-1:children:mir_licenses')/mycoreclass/label[@xml:lang='x-uri']/@text" />
+    <mods:accessCondition type="use and reproduction" xlink:href="{$mir_licenses_uri}">
       <xsl:value-of select="substring-after(@xlink:href, '#')" />
     </mods:accessCondition>
   </xsl:template>

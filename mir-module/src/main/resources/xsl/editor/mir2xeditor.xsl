@@ -167,11 +167,11 @@
         </xed:bind>
         <xsl:if test="not(@onlyRange = 'true') ">
           <xsl:call-template name="date-selectFormat"/>
-        </xsl:if>  
+        </xsl:if>
       </div>
     </div>
   </xsl:template>
-  
+
   <xsl:template name="date-selectFormat">
     <div class="input-group-btn date-selectFormat">
       <button class="btn btn-default dropdown-toggle" data-toggle="dropdown"><span class="caret"></span><span class="sr-only">Toggle Dropdown</span></button>
@@ -259,7 +259,7 @@
       <xed:bind xpath="mods:name[not(@type)]/@type" initially="personal"/>
     </xed:if>
     <xsl:variable name="xed-val-marker" > {$xed-validation-marker} </xsl:variable>
-    <xed:repeat xpath="mods:name[@type='personal' or (@type='corporate' and not(@authorityURI='http://www.mycore.org/classifications/mir_institutes'))][mods:role/mods:roleTerm[@type='code'][@authority='marcrelator']='{@role}']" min="1" max="100">
+    <xed:repeat xpath="mods:name[@type='personal' or (@type='corporate' and not(contains(@authorityURI,'mir_institutes')))][mods:role/mods:roleTerm[@type='code'][@authority='marcrelator']='{@role}']" min="1" max="100">
       <fieldset class="personExtended_box">
         <legend class="mir-fieldset-legend hiddenDetail">
           <xed:bind xpath="mods:displayForm"> <!-- Move down to get the "required" validation right -->
@@ -299,7 +299,7 @@
       <xed:bind xpath="mods:name[not(@type)]/@type" initially="personal"/>
     </xed:if>
     <xsl:variable name="xed-val-marker" > {$xed-validation-marker} </xsl:variable>
-    <xed:repeat xpath="mods:name[@type='personal' or (@type='corporate' and not(@authorityURI='http://www.mycore.org/classifications/mir_institutes'))][mods:role/mods:roleTerm[@type='code'][@authority='marcrelator']='{@role}']" min="1" max="100">
+    <xed:repeat xpath="mods:name[@type='personal' or (@type='corporate' and not(contains(@authorityURI,'mir_institutes')))][mods:role/mods:roleTerm[@type='code'][@authority='marcrelator']='{@role}']" min="1" max="100">
       <xed:bind xpath="mods:displayForm"> <!-- Move down to get the "required" validation right -->
         <div class="form-group {@class} {$xed-val-marker}">
           <xed:bind xpath=".."> <!-- Move up again after validation marker is set -->
@@ -329,7 +329,7 @@
       <xed:bind xpath="mods:name[not(@type)]/@type" initially="personal"/>
     </xed:if>
     <xsl:variable name="xed-val-marker" > {$xed-validation-marker} </xsl:variable>
-    <xed:repeat xpath="mods:name[@type='personal' or (@type='corporate' and not(@authorityURI='http://www.mycore.org/classifications/mir_institutes'))]" min="1" max="100">
+    <xed:repeat xpath="mods:name[@type='personal' or (@type='corporate' and not(contains(@authorityURI,'mir_institutes')))]" min="1" max="100">
       <fieldset class="personExtended_box">
         <legend class="mir-fieldset-legend hiddenDetail">
           <xed:bind xpath="mods:displayForm"> <!-- Move down to get the "required" validation right -->
@@ -371,7 +371,7 @@
       <xed:bind xpath="mods:name[not(@type)]/@type" initially="personal"/>
     </xed:if>
     <xsl:variable name="xed-val-marker" > {$xed-validation-marker} </xsl:variable>
-    <xed:repeat xpath="mods:name[@type='personal' or (@type='corporate' and not(@authorityURI='http://www.mycore.org/classifications/mir_institutes'))]" min="1" max="100">
+    <xed:repeat xpath="mods:name[@type='personal' or (@type='corporate' and not(contains(@authorityURI,'mir_institutes')))]" min="1" max="100">
       <xed:bind xpath="mods:displayForm"> <!-- Move down to get the "required" validation right -->
         <div class="form-group {@class} {$xed-val-marker}">
           <xed:bind xpath=".."> <!-- Move up again after validation marker is set -->

@@ -37,7 +37,13 @@
   </xed:template>
 
   <xed:template id="genre">
-    <xed:repeat xpath="mods:genre[@type='intern'][@authorityURI='http://www.mycore.org/classifications/mir_genres']" min="1" max="10">
+    <xed:load-resource name="mir_genres" uri="classification:metadata:-1:children:mir_genres" />
+    <xed:if test="mods:genre[@type='intern'][not(@authorityURI)]">
+      <xed:bind xpath="mods:genre[@type='intern'][not(@authorityURI)]">
+        <xed:bind xpath="@authorityURI" set="{$mir_genres/label[@xml:lang='x-uri']/@text}" />
+      </xed:bind>
+    </xed:if>
+    <xed:repeat xpath="mods:genre[@type='intern'][@authorityURI=$mir_genres/label[@xml:lang='x-uri']/@text]" min="1" max="10">
       <xed:bind xpath="@valueURIxEditor" initially="{$genre}">
         <div class="form-group {$xed-validation-marker}">
           <label class="col-md-3 control-label required">
@@ -60,7 +66,8 @@
   </xed:template>
 
   <xed:template id="genre.simple">
-    <xed:bind xpath="mods:genre[@type='intern'][@authorityURI='http://www.mycore.org/classifications/mir_genres']/@valueURIxEditor" initially="{$genre}">
+    <xed:load-resource name="mir_genres" uri="classification:metadata:-1:children:mir_genres" />
+    <xed:bind xpath="mods:genre[@type='intern'][@authorityURI=$mir_genres/label[@xml:lang='x-uri']/@text]/@valueURIxEditor" initially="{$genre}">
       <div class="form-group {$xed-validation-marker}">
         <label class="col-md-3 control-label required">
           <xed:output i18n="component.mods.genre" />
@@ -1102,7 +1109,8 @@
   </xed:template>
 
   <xed:template id="physical.description.form">
-    <xed:bind xpath="mods:physicalDescription/mods:form[@type='file'][@authorityURI='http://www.mycore.org/classifications/mir_filetype']/@valueURIxEditor">
+    <xed:load-resource name="mir_filetype" uri="classification:metadata:-1:children:mir_filetype" />
+    <xed:bind xpath="mods:physicalDescription/mods:form[@type='file'][@authorityURI=$mir_filetype/label[@xml:lang='x-uri']/@text]/@valueURIxEditor">
       <div class="form-group">
         <label class="col-md-3 control-label">
           <xed:output i18n="mir.physical.description.form" />
@@ -1288,8 +1296,8 @@
 
   <xed:template id="access">
     <xed:bind xpath="mods:accessCondition[@type='restriction on access'][contains(@xlink:href,'mir_access')]" initially="">
-      <!--<xed:bind xpath="@xlink:href" set="" /> TODO: loadresource -->
-      <xed:bind xpath="@xlink:href" set="http://www.mycore.org/classifications/mir_access" />
+      <xed:load-resource name="mir_access" uri="classification:metadata:-1:children:mir_access" />
+      <xed:bind xpath="@xlink:href" initially="{$mir_access/label[@xml:lang='x-uri']/@text}" />
       <div class="form-group {$xed-validation-marker}">
         <label class="col-md-3 control-label">
           <xed:output i18n="mir.access" />
@@ -1334,7 +1342,9 @@
         :
       </label>
       <div class="col-md-6">
-        <xed:bind xpath="mods:name[@type='corporate'][@authorityURI='http://www.mycore.org/classifications/mir_institutes']">
+
+        <xed:load-resource name="mir_institutes" uri="classification:metadata:-1:children:mir_institutes" />
+        <xed:bind xpath="mods:name[@type='corporate'][@authorityURI=$mir_institutes/label[@xml:lang='x-uri']/@text]">
           <xed:bind xpath="mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']" initially="his" /><!--  Host institution [his] -->
           <xed:bind xpath="@valueURIxEditor">
             <select class="form-control form-control-inline">
@@ -1834,8 +1844,9 @@
   </xed:template>
 
   <xed:template id="validation-rules">
+    <xed:load-resource name="mir_genres" uri="classification:metadata:-1:children:mir_genres" />
     <xed:validate xpath="//mods:mods/mods:titleInfo/mods:title" required="true" i18n="mir.validation.title" display="global" />
-    <xed:validate xpath="//mods:mods/mods:genre[@authorityURI='http://www.mycore.org/classifications/mir_genres']/@valueURIxEditor" required="true"
+    <xed:validate xpath="//mods:mods/mods:genre[@authorityURI=$mir_genres/label[@xml:lang='x-uri']/@text]/@valueURIxEditor" required="true"
       i18n="mir.validation.genre" display="global" />
     <!-- don't validate author, date issued and rights for journal etc.  -->
     <xed:if test="//mods:mods/mods:genre[@valueURIxEditor!='journal'][@valueURIxEditor!='newspaper'][@valueURIxEditor!='series'][@valueURIxEditor!='lecture']">

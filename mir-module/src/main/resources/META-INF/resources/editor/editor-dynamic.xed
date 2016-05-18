@@ -8,7 +8,7 @@
   <xed:form xmlns:xed="http://www.mycore.de/xeditor" xmlns:cmd="http://www.cdlib.org/inside/diglib/copyrightMD" method="post" role="form" class="form-horizontal" id="dynamic_editor">
     <xed:include uri="webapp:editor/editor-includes.xed" ref="in.out" />
     <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="sessionpolling" />
-    
+
 
     <xed:bind xpath="/mycoreobject">
       <xed:include uri="webapp:editor/editor-includes.xed" ref="mycore.common" />
@@ -16,7 +16,8 @@
 
         <!-- If genre is not set in edited XML, it comes from request parameter and must be created -->
         <!-- Refer genre via variable genre_intern to simplify following code for dynamic headline and includes -->
-        <xed:bind xpath="mods:genre[@type='intern'][@authorityURI='http://www.mycore.org/classifications/mir_genres']/@valueURIxEditor" initially="{$genre}" name="genre_intern" />
+        <xed:load-resource name="mir_genres" uri="classification:metadata:-1:children:mir_genres" />
+        <xed:bind xpath="mods:genre[@type='intern'][@authorityURI=$mir_genres/label[@xml:lang='x-uri']/@text]/@valueURIxEditor" initially="{$genre}" name="genre_intern" />
         <xed:bind xpath="mods:typeOfResource/@mcr:categId" initially="typeOfResource:text"/>
 
         <xed:load-resource name="genres" uri="classification:metadata:-1:children:mir_genres" />
@@ -47,7 +48,7 @@
             <div class="mir-relatedItem-body">
               <xed:include uri="webapp:editor/editor-hosts.xed" ref="{$host}" />
               <xed:bind xpath="mods:relatedItem[(@type='host') or (@type='series')][1]">
-                <xed:bind xpath="mods:genre[@type='intern'][@authorityURI='http://www.mycore.org/classifications/mir_genres']/@valueURIxEditor" initially="{$host}" />
+                <xed:bind xpath="mods:genre[@type='intern'][@authorityURI=$mir_genres/label[@xml:lang='x-uri']/@text]/@valueURIxEditor" initially="{$host}" />
               </xed:bind>
             </div>
             <xed:if test="$series='yes'">
@@ -60,7 +61,7 @@
                     <div class="mir-relatedItem-body">
                       <xed:include uri="webapp:editor/editor-hosts.xed" ref="series" />
                       <xed:bind xpath="mods:relatedItem[@type='series'][1]">
-                        <xed:bind xpath="mods:genre[@type='intern'][@authorityURI='http://www.mycore.org/classifications/mir_genres']/@valueURIxEditor" initially="series" />
+                        <xed:bind xpath="mods:genre[@type='intern'][@authorityURI=$mir_genres/label[@xml:lang='x-uri']/@text]/@valueURIxEditor" initially="series" />
                       </xed:bind>
                     </div>
                   </fieldset>
