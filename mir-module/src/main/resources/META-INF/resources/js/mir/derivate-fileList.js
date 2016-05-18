@@ -207,7 +207,7 @@
 			},
 			"Archive" : {
 				icon : "fa-file-archive-o",
-				extensions : "zip|tar|rar|bz|xs"
+				extensions : "zip|tar|rar|bz|xs|gz|bz2|xz"
 			},
 			"Image" : {
 				icon : "fa-file-image-o",
@@ -227,7 +227,7 @@
 			},
 			"Code" : {
 				icon : "fa-file-code-o",
-				extensions : "css|htm|html|php|c|cpp|bat|cmd|pas"
+				extensions : "css|htm|html|php|c|cpp|bat|cmd|pas|java"
 			},
 			"Word" : {
 				icon : "fa-file-word-o",
@@ -241,7 +241,7 @@
 				icon : "fa-file-powerpoint-o",
 				extensions : "ppt|potx|ppsx|sldx"
 			},
-			_default : {
+			"_default" : {
 				icon : "fa-file-o"
 			}
 		}
@@ -553,7 +553,7 @@
 							return fileIcons[label].icon;
 					}
 
-					return fileIcons[_default].icon;
+					return fileIcons["_default"].icon;
 				});
 				Handlebars.registerHelper("getFileLabel", function(ext) {
 					for ( var label in fileIcons) {
