@@ -489,7 +489,7 @@
               </li>
             </xsl:if>
           </xsl:if>
-          <xsl:if test="$accessdelete and (not(mcrurn:hasURNDefined($id)) or (mcrurn:hasURNDefined($id) and $CurrentUser=$MCR.Users.Superuser.UserName))">
+          <xsl:if test="($accessdelete and not(mcrurn:hasURNDefined($id)) and ($MIR.registerDOI='true' and not(pi:hasIdentifierRegistered('Datacite', /mycoreobject/@ID, '')))) or $CurrentUser=$MCR.Users.Superuser.UserName">
             <li>
               <xsl:choose>
                 <xsl:when test="/mycoreobject/structure/children/child">
