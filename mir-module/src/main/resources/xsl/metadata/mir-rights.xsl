@@ -8,9 +8,12 @@
   <xsl:variable name="delete" select="'deletedb'" />
   <xsl:variable name="addurn" select="'addurn'" />
 
-  <!-- checks for MIRAccessKeyStrategy -->
-  <xsl:variable name="derivateAccKeyEnabled" select="false()" />
-  <xsl:variable name="modsAccKeyEnabled" select="true()" />
+  <!-- checks for AccessKey enabled (default is enabled for 'mods')    -->
+  <!-- to enable set # MIR.Strategy.AccessKey.ObjectTypes=mods,derivate-->
+  <xsl:param name="MCR.Access.Strategy.Class" />
+  <xsl:param name="MIR.Strategy.AccessKey.ObjectTypes" />
+  <xsl:variable name="derivateAccKeyEnabled" select="contains($MCR.Access.Strategy.Class, 'MIRStrategy') and contains($MIR.Strategy.AccessKey.ObjectTypes, 'derivate')" />
+  <xsl:variable name="modsAccKeyEnabled" select="contains($MCR.Access.Strategy.Class, 'MIRStrategy') and contains($MIR.Strategy.AccessKey.ObjectTypes, 'mods')" />
 
   <xsl:template match="/mycoreobject">
     <xsl:copy>
