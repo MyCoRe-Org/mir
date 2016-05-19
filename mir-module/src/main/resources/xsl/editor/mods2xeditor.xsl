@@ -7,6 +7,7 @@
   <xsl:include href="copynodes.xsl" />
   <xsl:include href="editor/mods-node-utils.xsl" />
 
+  <xsl:param name="WebApplicationBaseURL" />
   <xsl:param name="MIR.PPN.DatabaseList" select="'gvk'" />
 
   <!-- put value string (after authority URI) in attribute valueURIxEditor -->
@@ -142,13 +143,22 @@
   </xsl:template>
 
   <xsl:template match="mods:classification[@authority='ddc']">
-    <xsl:if test="not(preceding-sibling::mods:classification[@authority='sdnb']) and not(following-sibling::mods:classification[@authority='sdnb'])">
-      <xsl:if test="not(preceding-sibling::mods:classification[@authority='ddc'])">
-        <mods:classification authority="sdnb" displayLabel="sdnb">
-          <xsl:value-of select="mirddctosndbmapper:getSNDBfromDDC(.)" />
-        </mods:classification>
-      </xsl:if>
-    </xsl:if>
+    <xsl:choose>
+      <xsl:when test="document(concat($WebApplicationBaseURL,'api/v1/classifications/DDC'))/mycoreclass">
+        <xsl:copy>
+          <xsl:apply-templates select="@*|node()" />
+        </xsl:copy>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:if test="not(preceding-sibling::mods:classification[@authority='sdnb']) and not(following-sibling::mods:classification[@authority='sdnb'])">
+          <xsl:if test="not(preceding-sibling::mods:classification[@authority='ddc'])">
+            <mods:classification authority="sdnb" displayLabel="sdnb">
+              <xsl:value-of select="mirddctosndbmapper:getSNDBfromDDC(.)" />
+            </mods:classification>
+          </xsl:if>
+        </xsl:if>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
 
   <!-- In editor, all variants of page numbers are edited in a single text field -->
