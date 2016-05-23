@@ -47,26 +47,7 @@
       <body>
 
         <header>
-          <div id="head" class="container">
-            <div class="row">
-              <div id="header_back">
-                <img id="header_ratio" src="{$WebApplicationBaseURL}mir-layout/images/cosmol/header_ratio_117x18.png" />
-                <a id="header_top" href="{$WebApplicationBaseURL}">
-                    <img id="logo_ratio" src="{$WebApplicationBaseURL}mir-layout/images/cosmol/logo_ratio_267x117.png" />
-                    <span id="project_name">mods institutional repository</span>
-                </a>
-              </div>
-              <noscript>
-                <div class="mir-no-script alert alert-warning text-center" style="border-radius: 0;">
-                  <xsl:value-of select="i18n:translate('mir.noScript.text')" />&#160;
-                  <a href="http://www.enable-javascript.com/de/" target="_blank">
-                    <xsl:value-of select="i18n:translate('mir.noScript.link')" />
-                  </a>
-                  .
-                </div>
-              </noscript>
-            </div>
-          </div>
+          <xsl:call-template name="mir.header" />
         </header>
 
         <div class="container" id="page">
@@ -116,7 +97,7 @@
 
               <xsl:call-template name="print.writeProtectionMessage" />
               <xsl:call-template name="print.statusMessage" />
-              
+
               <xsl:choose>
                 <xsl:when test="$readAccess='true'">
                   <xsl:copy-of select="*[not(name()='head')][not(name()='breadcrumb')] " />

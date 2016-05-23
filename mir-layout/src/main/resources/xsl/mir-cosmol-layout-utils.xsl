@@ -6,6 +6,29 @@
 
   <xsl:import href="resource:xsl/layout/mir-common-layout.xsl" />
 
+  <xsl:template  name="mir.header">
+    <div id="head" class="container">
+      <div class="row">
+        <div id="header_back">
+          <img id="header_ratio" src="{$WebApplicationBaseURL}mir-layout/images/cosmol/header_ratio_117x18.png" />
+          <a id="header_top" href="{$WebApplicationBaseURL}">
+            <img id="logo_ratio" src="{$WebApplicationBaseURL}mir-layout/images/cosmol/logo_ratio_267x117.png" />
+            <span id="project_name">mods institutional repository</span>
+          </a>
+        </div>
+        <noscript>
+          <div class="mir-no-script alert alert-warning text-center" style="border-radius: 0;">
+            <xsl:value-of select="i18n:translate('mir.noScript.text')" />&#160;
+            <a href="http://www.enable-javascript.com/de/" target="_blank">
+              <xsl:value-of select="i18n:translate('mir.noScript.link')" />
+            </a>
+            .
+          </div>
+        </noscript>
+      </div>
+    </div>
+  </xsl:template>
+
   <xsl:template name="mir.top-navigation">
   <div class="navbar navbar-default mir-prop-nav">
     <nav class="mir-prop-nav-entries">
