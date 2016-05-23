@@ -5,18 +5,24 @@
   exclude-result-prefixes="i18n mods str exslt mcr acl mcrxsl basket encoder"
 >
 
+  <xsl:include href="response-mir-utils.xsl" />
+  
   <xsl:param name="UserAgent" />
   <xsl:param name="MIR.testEnvironment" />
 
   <xsl:template match="/response/result|lst[@name='grouped']/lst[@name='returnId']" priority="10">
     <xsl:variable name="ResultPages">
-      <xsl:if test="$hits &gt; 0">
-        <xsl:call-template name="solr.Pagination">
-          <xsl:with-param name="size" select="$rows" />
-          <xsl:with-param name="currentpage" select="$currentPage" />
-          <xsl:with-param name="totalpage" select="$totalPages" />
-          <xsl:with-param name="class" select="'pagination-sm'" />
-        </xsl:call-template>
+      <xsl:if test="($hits &gt; 0) and ($hits &gt; $rows)">
+        <div class="pagination_box text-center">
+          <xsl:call-template name="resultList.Pagination">
+            <xsl:with-param name="id" select="'solr-result'" />
+            <xsl:with-param name="i18nprefix" select="'mir.pagination'" />
+            <xsl:with-param name="numPerPage" select="$rows" />
+            <xsl:with-param name="page" select="$currentPage" />
+            <xsl:with-param name="pages" select="$totalPages" />
+            <xsl:with-param name="class" select="'pagination-sm'" />
+          </xsl:call-template>
+        </div>
       </xsl:if>
     </xsl:variable>
 

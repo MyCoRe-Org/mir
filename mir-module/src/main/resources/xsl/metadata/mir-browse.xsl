@@ -4,6 +4,7 @@
   exclude-result-prefixes="xlink mcr i18n xsl">
   <xsl:import href="xslImport:modsmeta:metadata/mir-browse.xsl" />
   <xsl:include href="response-utils.xsl" />
+  <xsl:include href="response-mir-utils.xsl" />
   <xsl:template match="/">
     <xsl:apply-templates select="/mycoreobject/response" />
     <xsl:apply-imports />
@@ -11,13 +12,18 @@
 
   <xsl:template match="/mycoreobject/response">
     <xsl:variable name="ResultPages">
-      <xsl:call-template name="solr.Pagination">
-        <xsl:with-param name="href" select="concat($proxyBaseURL,$HttpSession,$solrParams)" />
-        <xsl:with-param name="size" select="$rows" />
-        <xsl:with-param name="currentpage" select="$currentPage" />
-        <xsl:with-param name="totalpage" select="$totalPages" />
-        <xsl:with-param name="class" select="'pagination-sm'" />
-      </xsl:call-template>
+      <xsl:if test="($hits &gt; 0) and ($hits &gt; $rows)">
+        <div class="pagination_box text-center">
+          <xsl:call-template name="resultList.Pagination">
+            <xsl:with-param name="id" select="'solr-result'" />
+            <xsl:with-param name="i18nprefix" select="'mir.pagination'" />
+            <xsl:with-param name="numPerPage" select="$rows" />
+            <xsl:with-param name="page" select="$currentPage" />
+            <xsl:with-param name="pages" select="$totalPages" />
+            <xsl:with-param name="class" select="'pagination-sm'" />
+          </xsl:call-template>
+        </div>
+      </xsl:if>
     </xsl:variable>
     <xsl:variable name="params">
       <xsl:for-each select="lst[@name='responseHeader']/lst[@name='params']/str">

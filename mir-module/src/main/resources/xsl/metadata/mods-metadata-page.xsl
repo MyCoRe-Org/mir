@@ -23,7 +23,7 @@
         <div class="row detail_row" id="mir-search_browsing">
           <div class="col-md-8">
             <div class="detail_block text-center">
-              <span id="pagination_label">gefundende Dokumente</span>
+              <!-- span id="pagination_label">gefundende Dokumente</span -->
               <br />
               <!-- Start: PAGINATION -->
               <xsl:apply-templates select="div[@id='search_browsing']" mode="copyContent" />
