@@ -430,16 +430,19 @@
             margin-bottom: 0;
           }
           .file_set {
-            .file_name > .glyphicon-star {
-                color: #fafafa;
-            }
             &.active_file {
               background-color: fade(@brand-primary, 5%);
               .file_name {
               	font-weight: bold;
-              	> .glyphicon-star {
-                  color: @brand-success;
-                }
+              	> a::after {
+              	  .glyphicon();
+                  content: "\e006";
+                  position: absolute;
+                  right: 0;
+                  top: 0;
+                  margin-top: 5px; 
+                  color: @text-color;
+              	}
               }
             }
             border-top: 0px solid @file_box_color;

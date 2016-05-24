@@ -6,10 +6,7 @@
       {{else}}
         <tr class="file_set file">
       {{/is}}
-          <td class="file_preview col-xs-1 text-right text-nowrap">
-              {{#is ../mainDoc name}}
-                <span class="glyphicon glyphicon-star"></span>
-              {{/is}}
+          <td class="file_preview col-xs-1 text-center text-nowrap">
               {{#is type "file"}}
                 {{#contains "pdf|ps" extension}}
                   <span class="fa {{getFileIcon extension}}" data-toggle="tooltip"
