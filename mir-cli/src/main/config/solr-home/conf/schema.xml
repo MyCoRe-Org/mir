@@ -184,7 +184,7 @@
     <field name="mods.type" type="string" />
     <field name="mods.title" type="text_general" multiValued="true" />
     <field name="mods.title.host" type="text_general" multiValued="true" />
-    <field name="mods.title.main" type="text_de" />
+    <field name="mods.title.main" type="collatedGERMAN" />
     <field name="mods.title.subtitle" type="text_de" />
     <field name="mods.nameIdentifier" type="string" multiValued="true" />
     <field name="mods.nameIdentifier.top" type="string" multiValued="true" />
