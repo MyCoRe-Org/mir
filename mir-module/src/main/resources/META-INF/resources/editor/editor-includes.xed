@@ -517,7 +517,9 @@
 
   <xed:template id="person.fields">
     <div class="search-person">
-      <xed:bind xpath="@type" initially="personal" />
+      <xed:bind xpath="@type">
+        <input type="hidden" class="nameType" initially="personal"/>
+      </xed:bind>
       <xed:bind xpath="mods:displayForm">
         <input type="text" size="26" class="form-control form-control-inline" data-search="searchEntity" data-search-type="select"
                data-search-entity-type="both" data-search-output=".nameIdentifier" data-search-output-type=".nameIdentifierType" data-search-output-name-type=".nameType" data-search-button="{i18n:button.search}"
