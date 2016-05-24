@@ -6,13 +6,16 @@
       {{else}}
         <tr class="file_set file">
       {{/is}}
-          <td class="file_preview col-xs-1 col-md-1 text-center">
+          <td class="file_preview col-xs-1 text-right text-nowrap">
+              {{#is ../mainDoc name}}
+                <span class="glyphicon glyphicon-star"></span>
+              {{/is}}
               {{#is type "file"}}
                 {{#contains "pdf|ps" extension}}
                   <span class="fa {{getFileIcon extension}}" data-toggle="tooltip"
                               data-placement="right" data-html="true" data-title='&lt;img src="{{../serverBaseURL}}img/pdfthumb/{{../mycorederivate}}{{path}}?centerThumb=no"&gt;'></span>
                 {{else}}
-                  <span class="fa {{getFileIcon extension}}" title="{{getFileLabel extension}}" aria-hidden="true"></span>  
+                  <span class="fa {{getFileIcon extension}}" title="{{getFileLabel extension}}" aria-hidden="true"></span>
                 {{/contains}}
               {{else}}
                 <span class="fa fa-folder" aria-hidden="true"></span>
@@ -20,20 +23,20 @@
           </td>
           {{#isNot type "directory"}}
             {{#contains "mp4" extension}}
-              <td class="file_name_video col-xs-5 col-md-6">
+              <td class="file_name_video col-xs-6">
                 <a data-deriid="{{../mycorederivate}}" data-name="{{name}}" href="{{href}}">
                   {{name}}
                 </a>
               </td>
             {{else}}
-              <td class="file_name col-xs-6 col-md-6">
+              <td class="file_name col-xs-6">
                 <a href="{{href}}">
                   {{name}}
                 </a>
               </td>
             {{/contains}}
           {{else}}
-            <td class="file_name derivate_folder col-xs-6 col-md-6">
+            <td class="file_name derivate_folder col-xs-6">
               <a data-path="{{path}}" href="#">
                 {{name}}
               </a>
@@ -44,7 +47,7 @@
               {{formatDate time.modified}}
             {{/is}}
           </td>
-          <td class="file_size hidden-xs col-md-2 text-right">
+          <td class="file_size hidden-xs col-md-2 text-right text-nowrap">
             {{formatFileSize size}}
           </td>
           <td class="visible-xs col-xs-4 text-right">
@@ -55,7 +58,7 @@
           </td>
           {{#isOr ../permWrite ../permDelete}}
             {{#unless ../urn}}
-              <td class="options col-xs-2 col-md-1 text-right">
+              <td class="options col-xs-1 text-right">
                 <div class="btn-group">
                     <a href="#" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
                         <i class="fa fa-cog"></i>
@@ -87,7 +90,7 @@
                 </div>
               </td>
             {{/unless}}
-          {{/isOr}}        
+          {{/isOr}}
         </tr>
     {{/each}}
   </table>
