@@ -61,6 +61,27 @@
     </xsl:copy>
   </xsl:template>
 
+  <xsl:template match="mods:name">
+    <xsl:copy>
+      <xsl:apply-templates select="@*" />
+      <xsl:if test="mods:namePart and not(mods:namePart[@type='family']) and not(mods:namePart[@type='given']) and not(mods:displayForm)">
+        <mods:displayForm>
+          <xsl:for-each select="mods:namePart">
+            <xsl:choose>
+              <xsl:when test="position() = 1">
+                <xsl:value-of select="text()"/>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:value-of select="concat('; ', text())"/>
+              </xsl:otherwise>
+            </xsl:choose>
+          </xsl:for-each>
+        </mods:displayForm>
+      </xsl:if>
+      <xsl:apply-templates select="*" />
+    </xsl:copy>
+  </xsl:template>
+
   <xsl:template match="mods:namePart[not(@type)]">
     <xsl:copy>
       <xsl:attribute name="type">other</xsl:attribute>
