@@ -25,9 +25,9 @@
           </xsl:call-template>
         </xsl:variable>
         <div class="col-xs-12 col-md-5 text-left">
-          <a tabindex="0" id="{$id}-previous" href="{$link}" data-pagination="#label:str[name='mods.title.main']">
-            <span id="icon" class="glyphicon glyphicon-chevron-left" />
-            <span id="label">
+          <a tabindex="0" class="previous" href="{$link}" data-pagination=".caption:str[name='mods.title.main']">
+            <span class="glyphicon glyphicon-chevron-left icon" />
+            <span class="caption">
               <xsl:value-of select="$label.previousHit" />
             </span>
           </a>
@@ -45,9 +45,9 @@
           </xsl:call-template>
         </xsl:variable>
         <div class="col-xs-12 col-md-5 text-right">
-          <a tabindex="0" id="{$id}-next" href="{$link}" data-pagination="#label:str[name='mods.title.main']">
-            <span id="icon" class="glyphicon glyphicon-chevron-right" />
-            <span id="label">
+          <a tabindex="0" class="next" href="{$link}" data-pagination=".caption:str[name='mods.title.main']">
+            <span class="glyphicon glyphicon-chevron-right icon" />
+            <span class="caption">
               <xsl:value-of select="$label.nextHit" />
             </span>
           </a>
