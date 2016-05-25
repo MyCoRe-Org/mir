@@ -1913,7 +1913,7 @@
   <!-- MIR module additional request handler -->
   <requestHandler name="/find" class="solr.SearchHandler">
     <lst name="defaults">
-      <str name="echoParams">all</str>
+      <str name="echoParams">explicit</str>
       <int name="rows">20</int>
       <str name="mm">100%</str>
       <str name="fl">*,score</str>
