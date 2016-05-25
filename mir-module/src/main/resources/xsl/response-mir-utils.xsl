@@ -2,9 +2,94 @@
   exclude-result-prefixes="xsl i18n"
 >
 
+  <xsl:template name="browse.Pagination">
+    <xsl:param name="id" select="'pagination'" />
+    <xsl:param name="i18nprefix" select="'mir.pagination.hits'" />
+    <xsl:param name="class" select="''" />
+
+    <xsl:param name="href" select="concat($proxyBaseURL,$HttpSession,$solrParams)" />
+
+    <xsl:param name="page" />
+    <xsl:param name="pages" />
+
+    <xsl:variable name="label.previousHit" select="i18n:translate(concat($i18nprefix, '.previous'), $page - 1)" />
+    <xsl:variable name="label.nextHit" select="i18n:translate(concat($i18nprefix, '.next'), $page + 1)" />
+
+    <div id="{$id}" class="row {$class}">
+      <xsl:if test="$page &gt; 1">
+        <xsl:variable name="link">
+          <xsl:call-template name="paginateLink">
+            <xsl:with-param name="href" select="$href" />
+            <xsl:with-param name="page" select="$page - 1" />
+            <xsl:with-param name="numPerPage" select="1" />
+          </xsl:call-template>
+        </xsl:variable>
+        <div class="col-xs-12 col-md-5 text-left">
+          <a tabindex="0" id="{$id}-previous" href="{$link}" data-pagination="#label:str[name='mods.title.main']">
+            <span id="icon" class="glyphicon glyphicon-chevron-left" />
+            <span id="label">
+              <xsl:value-of select="$label.previousHit" />
+            </span>
+          </a>
+        </div>
+      </xsl:if>
+      <div class="col-xs-12 col-md-2 text-center">
+        <xsl:value-of select="i18n:translate(concat($i18nprefix, '.entriesInfo'), concat($page, ';', $pages))" />
+      </div>
+      <xsl:if test="($page + 1) &lt; $pages">
+        <xsl:variable name="link">
+          <xsl:call-template name="paginateLink">
+            <xsl:with-param name="href" select="$href" />
+            <xsl:with-param name="page" select="$page + 1" />
+            <xsl:with-param name="numPerPage" select="1" />
+          </xsl:call-template>
+        </xsl:variable>
+        <div class="col-xs-12 col-md-5 text-right">
+          <a tabindex="0" id="{$id}-next" href="{$link}" data-pagination="#label:str[name='mods.title.main']">
+            <span id="icon" class="glyphicon glyphicon-chevron-right" />
+            <span id="label">
+              <xsl:value-of select="$label.nextHit" />
+            </span>
+          </a>
+        </div>
+      </xsl:if>
+    </div>
+
+    <script type="text/javascript">
+      <![CDATA[
+        $(document).ready(function() {
+          var replaceUrlParam = function(url, paramName, paramValue) {
+            var pattern = new RegExp('\\b(' + paramName + '=).*?(&|$)')
+            if (url.search(pattern) >= 0) {
+              return url.replace(pattern, '$1' + paramValue + '$2');
+            }
+            return url + (url.indexOf('?') > 0 ? '&' : '?') + paramName + '=' + paramValue
+          }
+        
+          $("*[data-pagination]").each(function() {
+            var $this = $(this);
+            var url = replaceUrlParam($(this).attr("href"), "XSL.Style", "xml");
+            var sel = /([^\:]*)\:(.*)/.exec($(this).data("pagination")).slice(1);
+        
+            if (sel && sel.length > 1) {
+              $.ajax(url).done(function(data) {
+                var $xml = $(data);
+                var title = $xml.find(sel[1]).text();
+                if (title) {
+                  $this.attr("title", title);
+                  $(sel[0], $this).text(title);
+                }
+              });
+            }
+          });
+        });
+      ]]>
+    </script>
+  </xsl:template>
+
   <xsl:template name="resultList.Pagination">
     <xsl:param name="id" select="'pagination'" />
-    <xsl:param name="i18nprefix" select="'pagination'" />
+    <xsl:param name="i18nprefix" select="'mir.pagination'" />
     <xsl:param name="class" select="''" />
 
     <xsl:param name="href" select="concat($proxyBaseURL,$HttpSession,$solrParams)" />
@@ -22,11 +107,11 @@
     <xsl:variable name="label.previousPage" select="i18n:translate(concat($i18nprefix, '.previous'), $page - 1)" />
     <xsl:variable name="label.nextPage" select="i18n:translate(concat($i18nprefix, '.next'), $page + 1)" />
 
-    <ul id="{$id}_paginate" class="pagination {$class}">
+    <ul id="{$id}-paginate" class="pagination {$class}">
       <li>
         <xsl:choose>
           <xsl:when test="number($page) &gt; 1">
-            <a tabindex="0" id="{$id}_first" title="{$label.firstPage}">
+            <a tabindex="0" id="{$id}-first" title="{$label.firstPage}">
               <xsl:attribute name="href">
                 <xsl:call-template name="paginateLink">
                   <xsl:with-param name="href" select="$href" />
@@ -54,7 +139,7 @@
       <li>
         <xsl:choose>
           <xsl:when test="number($page) &gt; 1">
-            <a tabindex="0" id="{$id}_previous" title="{$label.previousPage}">
+            <a tabindex="0" id="{$id}-previous" title="{$label.previousPage}">
               <xsl:attribute name="href">
                   <xsl:call-template name="paginateLink">
                     <xsl:with-param name="href" select="$href" />
@@ -126,7 +211,7 @@
       <li>
         <xsl:choose>
           <xsl:when test="number($page) &lt; $pages">
-            <a tabindex="0" id="{$id}_next" title="{$label.nextPage}">
+            <a tabindex="0" id="{$id}-next" title="{$label.nextPage}">
               <xsl:attribute name="href">
                 <xsl:call-template name="paginateLink">
                   <xsl:with-param name="href" select="$href" />
@@ -154,7 +239,7 @@
       <li>
         <xsl:choose>
           <xsl:when test="number($page) &lt; $pages">
-            <a tabindex="0" id="{$id}_last" title="{$label.lastPage}">
+            <a tabindex="0" id="{$id}-last" title="{$label.lastPage}">
               <xsl:attribute name="href">
                 <xsl:call-template name="paginateLink">
                   <xsl:with-param name="href" select="$href" />

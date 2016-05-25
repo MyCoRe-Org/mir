@@ -16,7 +16,6 @@
         <div class="pagination_box text-center">
           <xsl:call-template name="resultList.Pagination">
             <xsl:with-param name="id" select="'solr-result'" />
-            <xsl:with-param name="i18nprefix" select="'mir.pagination'" />
             <xsl:with-param name="numPerPage" select="$rows" />
             <xsl:with-param name="page" select="$currentPage" />
             <xsl:with-param name="pages" select="$totalPages" />

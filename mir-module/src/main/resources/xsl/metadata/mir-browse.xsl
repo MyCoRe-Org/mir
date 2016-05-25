@@ -13,16 +13,11 @@
   <xsl:template match="/mycoreobject/response">
     <xsl:variable name="ResultPages">
       <xsl:if test="($hits &gt; 0) and ($hits &gt; $rows)">
-        <div class="pagination_box text-center">
-          <xsl:call-template name="resultList.Pagination">
-            <xsl:with-param name="id" select="'solr-result'" />
-            <xsl:with-param name="i18nprefix" select="'mir.pagination'" />
-            <xsl:with-param name="numPerPage" select="$rows" />
-            <xsl:with-param name="page" select="$currentPage" />
-            <xsl:with-param name="pages" select="$totalPages" />
-            <xsl:with-param name="class" select="'pagination-sm'" />
-          </xsl:call-template>
-        </div>
+        <xsl:call-template name="browse.Pagination">
+          <xsl:with-param name="id" select="'solr-browse'" />
+          <xsl:with-param name="page" select="$currentPage" />
+          <xsl:with-param name="pages" select="$totalPages" />
+        </xsl:call-template>
       </xsl:if>
     </xsl:variable>
     <xsl:variable name="params">
