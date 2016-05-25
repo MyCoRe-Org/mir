@@ -92,7 +92,7 @@
     $( ".search_box form" ).submit(function( event ) {
       var origSearchAction = $(this).attr('action');
       if (origSearchAction.includes('servlets/solr/find')) {
-        var replAction = origSearchAction.replace(/(.*[&|\?])(qry=.*?)&(.*)/,'$1$3&$2');
+        var replAction = origSearchAction.replace(/(.*[&|\?])(q=.*?)&(.*)/,'$1$3&$2');
         if ($('#search_type_button').attr('value') == 'all') {
             var newAction = replAction + "+%2B" + $('.search_box input').val();
           } else {

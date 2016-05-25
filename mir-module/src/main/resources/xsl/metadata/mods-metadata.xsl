@@ -130,7 +130,7 @@
     <xsl:param name="title" />
     <xsl:param name="linkText" />
     <xsl:param name="query" />
-    <a href="{$ServletsBaseURL}solr/find?qry={$query}">
+    <a href="{$ServletsBaseURL}solr/find?q={$query}">
       <xsl:if test="$title">
         <xsl:attribute name="title">
           <xsl:value-of select="$title" />
