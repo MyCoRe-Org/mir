@@ -34,6 +34,12 @@
         </div>
       </xsl:if>
       <div class="col-xs-12 col-md-2 text-center">
+        <xsl:attribute name="class">
+          <xsl:text>col-xs-12 col-md-2 text-center</xsl:text>
+          <xsl:if test="$page = 1">
+            <xsl:text> col-md-offset-5</xsl:text>
+          </xsl:if>
+        </xsl:attribute>
         <xsl:value-of select="i18n:translate(concat($i18nprefix, '.entriesInfo'), concat($page, ';', $pages))" />
       </div>
       <xsl:if test="($page + 1) &lt; $pages">
