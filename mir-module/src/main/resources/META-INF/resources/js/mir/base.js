@@ -15,12 +15,11 @@
 
     //get all sources of selected item in a var and give it to player
     $("#videoChooser").change(function() {
-      var myPlayer = videojs($(".mir-player video").attr("id"));
-      var src = [];
-      $("#" + $(this).val() + " source").each(function() {
-        src.push({type: $(this).attr("type"), src: $(this).attr("src")});
-      });
-      myPlayer.src(src);
+      // reuse player
+      var myPlayer = $(this).data("player");
+      (!myPlayer) && (myPlayer = videojs($(".mir-player video").attr("id"))) && ($(this).data("player", myPlayer));
+        
+      myPlayer.src($.parseJSON($("#" + $(this).val() + " script").text()));
     });
 //--------
 

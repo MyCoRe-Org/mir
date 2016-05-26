@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:mcr="xalan://org.mycore.common.xml.MCRXMLFunctions"
   xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation" xmlns:mods="http://www.loc.gov/mods/v3" xmlns:xlink="http://www.w3.org/1999/xlink"
-  xmlns:FilenameUtils="xalan://org.apache.commons.io.FilenameUtils" xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions"
-  xmlns:iview2="xalan://org.mycore.iview2.frontend.MCRIView2XSLFunctions" xmlns:media="xalan://org.mycore.media.frontend.MCRXMLFunctions" xmlns:mcrsolr="xalan://org.mycore.solr.MCRXMLFunctions" xmlns:mcrsolru="xalan://org.mycore.solr.MCRSolrUtils"
-  xmlns:xalan="http://xml.apache.org/xalan" exclude-result-prefixes="xalan i18n mcr media mods xlink FilenameUtils iview2 mcrxsl mcrsolr mcrsolru">
+  xmlns:FilenameUtils="xalan://org.apache.commons.io.FilenameUtils" xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions" xmlns:iview2="xalan://org.mycore.iview2.frontend.MCRIView2XSLFunctions"
+  xmlns:media="xalan://org.mycore.media.frontend.MCRXMLFunctions" xmlns:mcrsolr="xalan://org.mycore.solr.MCRXMLFunctions" xmlns:mcrsolru="xalan://org.mycore.solr.MCRSolrUtils"
+  xmlns:xalan="http://xml.apache.org/xalan" exclude-result-prefixes="xalan i18n mcr media mods xlink FilenameUtils iview2 mcrxsl mcrsolr mcrsolru"
+>
   <xsl:import href="xslImport:modsmeta:metadata/mir-video.js.xsl" />
   <xsl:param name="UserAgent" />
 
   <xsl:template match="/">
     <!-- MIR-339 solr query if there is any "mp4" file in this object? -->
     <xsl:variable name="solrQuery" select="concat('+stream_content_type:video/mp4 +returnId:',mcrsolru:escapeSearchValue(mycoreobject/@ID))" />
-    <xsl:if test="mcrsolr:getNumFound($solrQuery) &gt; 0" >
+    <xsl:if test="mcrsolr:getNumFound($solrQuery) &gt; 0">
       <div id="mir-player">
         <xsl:variable name="playerNodesTmp">
           <xsl:variable name="playerSources">
@@ -24,13 +25,27 @@
               <select id="videoChooser" class="form-control">
                 <xsl:copy-of select="$playerSourceNode//optgroup" />
               </select>
-              <xsl:copy-of select="$playerSourceNode//div[@class='source-container']" />
+              <xsl:for-each select="$playerSourceNode//div[@class='source-container']">
+                <xsl:copy>
+                  <xsl:copy-of select="@*" />
+                  <script>
+                    <xsl:text>[</xsl:text>
+                    <xsl:for-each select="source">
+                      <xsl:value-of select="concat('{ &quot;type&quot;: &quot;', @type, '&quot;, &quot;src&quot;: &quot;', @src, '&quot;}')" />
+                      <xsl:if test="position() != last()">
+                        <xsl:text>,</xsl:text>
+                      </xsl:if>
+                    </xsl:for-each>
+                    <xsl:text>]</xsl:text>
+                  </script>
+                </xsl:copy>
+              </xsl:for-each>
             </xsl:if>
             <div class="embed-responsive embed-responsive-16by9 mir-player mir-preview">
-              <video id="player_" class="video-js embed-responsive-item" controls="" preload="auto" poster=""
-                data-setup="">
+              <video id="player_" class="video-js embed-responsive-item" controls="" preload="auto" poster="">
+                <xsl:attribute name="data-setup">{}</xsl:attribute>
                 <xsl:if test="count($playerSourceNode//div[@class='source-container']) = 1">
-                  <xsl:copy-of select="$playerSourceNode//div[@class='source-container']/video/source" />
+                  <xsl:copy-of select="$playerSourceNode//div[@class='source-container']/source" />
                 </xsl:if>
                 <p class="vjs-no-js">
                   To view this video please enable JavaScript, and consider upgrading
@@ -56,7 +71,9 @@
 
   <xsl:template match="derobject" mode="optionSources">
     <!-- MIR-339 solr query if there is any "mp4" file in a derivate? -->
-    <xsl:if test="key('rights', @xlink:href)/@read and mcrsolr:getNumFound(concat('+stream_content_type:video/mp4 +derivateID:',mcrsolru:escapeSearchValue(@xlink:href))) &gt; 0" >
+    <xsl:if
+      test="key('rights', @xlink:href)/@read and mcrsolr:getNumFound(concat('+stream_content_type:video/mp4 +derivateID:',mcrsolru:escapeSearchValue(@xlink:href))) &gt; 0"
+    >
       <xsl:variable name="ifsDirectory" select="document(concat('ifs:',@xlink:href,'/'))" />
       <xsl:apply-templates select="." mode="options">
         <xsl:with-param name="ifsDirectory" select="$ifsDirectory" />
@@ -87,9 +104,7 @@
     <xsl:for-each select="$ifsDirectory/mcr_directory/children/child">
       <xsl:if test="@type='file' and FilenameUtils:getExtension(./name) = 'mp4'">
         <div id="{$href}-{position()}" class="source-container">
-          <video style="display: none;">
-            <xsl:copy-of select="media:getSources($href, ./name, $UserAgent)" />
-          </video>
+          <xsl:copy-of select="media:getSources($href, ./name, $UserAgent)" />
         </div>
       </xsl:if>
     </xsl:for-each>
