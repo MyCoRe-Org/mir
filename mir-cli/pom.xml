@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.mycore.mir</groupId>
@@ -10,6 +11,7 @@
   <name>MIR: Command Line Interface</name>
   <description>ZIP package ready to run MyCoRe commands from shell</description>
   <properties>
+    <MCR.AppName>mir</MCR.AppName>
     <acl-description.never>never allowed</acl-description.never>
     <acl-description.all>always allowed</acl-description.all>
     <acl-description.require-login>require login</acl-description.require-login>
@@ -20,6 +22,33 @@
     <acl-description.submitters>submitters, editors and administrators</acl-description.submitters>
     <acl-description.guests-and-submitters>guests and submitters</acl-description.guests-and-submitters>
   </properties>
+  <profiles>
+    <profile>
+      <id>dev</id>
+      <properties>
+        <MCR.DataPrefix>dev</MCR.DataPrefix>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <configuration>
+              <executable>java</executable>
+              <arguments>
+                <argument>-Djava.awt.headless=true</argument>
+                <argument>-DMCR.AppName=${MCR.AppName}</argument>
+                <argument>-DMCR.DataPrefix=${MCR.DataPrefix}</argument>
+                <argument>-classpath</argument>
+                <classpath />
+                <argument>org.mycore.frontend.cli.MCRCommandLineInterface</argument>
+              </arguments>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
   <build>
     <plugins>
       <plugin>
@@ -35,7 +64,7 @@
         </executions>
         <configuration>
           <!-- Extra JVM arguments that will be included in the bin scripts -->
-          <extraJvmArguments>-DMCR.AppName=mir</extraJvmArguments>
+          <extraJvmArguments>-DMCR.AppName=${MCR.AppName}</extraJvmArguments>
           <repositoryLayout>flat</repositoryLayout>
           <repositoryName>lib</repositoryName>
           <useWildcardClassPath>true</useWildcardClassPath>
@@ -46,7 +75,7 @@
           <programs>
             <program>
               <mainClass>org.mycore.frontend.cli.MCRCommandLineInterface</mainClass>
-              <id>mir</id>
+              <id>${MCR.AppName}</id>
             </program>
           </programs>
         </configuration>
