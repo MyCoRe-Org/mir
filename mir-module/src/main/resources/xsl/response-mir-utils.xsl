@@ -42,7 +42,7 @@
         </xsl:attribute>
         <xsl:value-of select="i18n:translate(concat($i18nprefix, '.entriesInfo'), concat($page, ';', $pages))" />
       </div>
-      <xsl:if test="($page + 1) &lt; $pages">
+      <xsl:if test="$page &lt; $pages">
         <xsl:variable name="link">
           <xsl:call-template name="paginateLink">
             <xsl:with-param name="href" select="$href" />
