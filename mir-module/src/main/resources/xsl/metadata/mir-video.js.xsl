@@ -30,7 +30,7 @@
               <video id="player_" class="video-js embed-responsive-item" controls="" preload="auto" poster=""
                 data-setup="">
                 <xsl:if test="count($playerSourceNode//div[@class='source-container']) = 1">
-                  <xsl:copy-of select="$playerSourceNode//div[@class='source-container']/source" />
+                  <xsl:copy-of select="$playerSourceNode//div[@class='source-container']/video/source" />
                 </xsl:if>
                 <p class="vjs-no-js">
                   To view this video please enable JavaScript, and consider upgrading
