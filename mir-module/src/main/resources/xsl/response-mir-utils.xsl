@@ -25,7 +25,7 @@
           </xsl:call-template>
         </xsl:variable>
         <div class="col-xs-12 col-md-5 text-left">
-          <a tabindex="0" class="previous" href="{$link}" data-pagination=".caption:str[name='mods.title.main']">
+          <a tabindex="0" class="previous" href="{$link}" data-pagination=".caption:mods.title.main">
             <span class="glyphicon glyphicon-chevron-left icon" />
             <span class="caption">
               <xsl:value-of select="$label.previousHit" />
@@ -51,7 +51,7 @@
           </xsl:call-template>
         </xsl:variable>
         <div class="col-xs-12 col-md-5 text-right">
-          <a tabindex="0" class="next" href="{$link}" data-pagination=".caption:str[name='mods.title.main']">
+          <a tabindex="0" class="next" href="{$link}" data-pagination=".caption:mods.title.main">
             <span class="glyphicon glyphicon-chevron-right icon" />
             <span class="caption">
               <xsl:value-of select="$label.nextHit" />
@@ -74,13 +74,13 @@
         
           $("*[data-pagination]").each(function() {
             var $this = $(this);
-            var url = replaceUrlParam($(this).attr("href"), "XSL.Style", "xml");
             var sel = /([^\:]*)\:(.*)/.exec($(this).data("pagination")).slice(1);
         
             if (sel && sel.length > 1) {
+              var url = replaceUrlParam(replaceUrlParam($(this).attr("href"), "XSL.Style", "xml"), "fl", sel[1]);
               $.ajax(url).done(function(data) {
                 var $xml = $(data);
-                var title = $xml.find(sel[1]).text();
+                var title = $xml.find("*[name='" + sel[1] + "']").text();
                 if (title) {
                   $this.attr("title", title);
                   $(sel[0], $this).text(title);
