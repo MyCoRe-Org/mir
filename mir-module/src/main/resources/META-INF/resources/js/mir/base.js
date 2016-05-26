@@ -17,7 +17,7 @@
     $("#videoChooser").change(function() {
       var myPlayer = videojs($(".mir-player video").attr("id"));
       var src = [];
-      $("#" + $(this).val()).children('source').each(function() {
+      $("#" + $(this).val() + " source").each(function() {
         src.push({type: $(this).attr("type"), src: $(this).attr("src")});
       });
       myPlayer.src(src);

@@ -87,7 +87,9 @@
     <xsl:for-each select="$ifsDirectory/mcr_directory/children/child">
       <xsl:if test="@type='file' and FilenameUtils:getExtension(./name) = 'mp4'">
         <div id="{$href}-{position()}" class="source-container">
-          <xsl:copy-of select="media:getSources($href, ./name, $UserAgent)" />
+          <video style="display: none;">
+            <xsl:copy-of select="media:getSources($href, ./name, $UserAgent)" />
+          </video>
         </div>
       </xsl:if>
     </xsl:for-each>
