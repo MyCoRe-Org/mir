@@ -157,7 +157,7 @@ public class MIRModsEditorController extends MIREditorController {
     }
 
     public void setConference(String conference) {
-        String xpath = ".//input[contains(@data-searchengine, 'conference') and contains(@name,'mods:namePart')]";
+        String xpath = ".//input[contains(@placeholder, 'Titel der Konferenz ggf. mit Ort und Jahr oder Datum') and contains(@name,'mods:namePart')]";
         WebElement inputElement = driver.waitAndFindElement(By.xpath(xpath));
         inputElement.clear();
         inputElement.sendKeys(conference);

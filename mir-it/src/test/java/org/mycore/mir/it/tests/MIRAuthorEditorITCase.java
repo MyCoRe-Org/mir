@@ -26,8 +26,8 @@ import org.mycore.mir.it.model.MIRTypeOfResource;
 
 public class MIRAuthorEditorITCase extends MIREditorITBase {
 
-    public static final String SUBMITTER_USER_NAME = "submitter";
-    public static final String SUBMITTER_USER_PASSWORD = "tugdriwsella";
+    private static final String SUBMITTER_USER_NAME = "submitter";
+    private static final String SUBMITTER_USER_PASSWORD = "tugdriwsella";
 
     @Before
     public final void init() {
@@ -39,7 +39,7 @@ public class MIRAuthorEditorITCase extends MIREditorITBase {
         userController.loginAs(MIRUserController.ADMIN_LOGIN, MIRUserController.ADMIN_PASSWD);
         userController.createUser(SUBMITTER_USER_NAME, SUBMITTER_USER_PASSWORD, null, null, "submitter");
         userController.logoutIfLoggedIn();
-        userController.loginAs(SUBMITTER_USER_NAME, "tugdriwsella");
+        userController.loginAs(SUBMITTER_USER_NAME, SUBMITTER_USER_PASSWORD);
     }
 
     @Test
@@ -58,44 +58,27 @@ public class MIRAuthorEditorITCase extends MIREditorITBase {
         publishEditorController.selectType(MIRGenre.article, null);
         publishEditorController.submit();
 
-        editorController.setTitle(MIRTestData.TITLE);
-        editorController.setSubTitle(MIRTestData.SUB_TITLE);
-        editorController.setAuthor(MIRTestData.AUTHOR);
-        editorController.setIssueDate(MIRTestData.ISSUE_DATE);
-        editorController.setExtend(MIRTestData.EXTEND_SOLO);
-        editorController.setLanguages(Stream.of(MIRLanguage.german).collect(Collectors.toList()));
-
-        List<AbstractMap.Entry<MIRIdentifier, String>> identifierList = new ArrayList<>();
-
-        identifierList.add(new AbstractMap.SimpleEntry<>(MIRIdentifier.doi, MIRTestData.DOI));
-        identifierList.add(new AbstractMap.SimpleEntry<>(MIRIdentifier.urn, MIRTestData.URN));
-
-        editorController.setIdentifier(identifierList);
-        editorController.setClassifications(Stream.of(MIRDNBClassification._000, MIRDNBClassification._010, MIRDNBClassification._020).collect(Collectors.toList()));
-        editorController.setTopics(Stream.of(MIRTestData.TOPIC1, MIRTestData.TOPIC2).collect(Collectors.toList()));
-        editorController.setAccessConditions(MIRLicense.cc_30);
-        editorController.setAbstract(MIRTestData.ABSTRACT);
-        editorController.setNote(MIRTestData.NOTE);
+        refPublicationCommon(true);
 
         editorController.save();
-        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.SAVE_SUCCESS));
-
+        saveSuccessValidation();
 
         // look for entered metadata
-        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.TITLE));
-        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.SUB_TITLE));
-        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.AUTHOR));
-        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.ISSUE_DATE));
-        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.EXTEND_SOLO));
-        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.NUMBER));
+        refPublicationCommonValidation(true);
+    }
 
-        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.URN));
-        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.DOI));
+    @Test
+    public void testReport() {
+        publishEditorController.open(() -> Assert.assertTrue(publishEditorController.isPublishOpened()));
+        publishEditorController.selectType(MIRGenre.report, null);
+        publishEditorController.submit();
 
+        refReportCommon();
 
-        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.TOPIC1));
-        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.TOPIC2));
-        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.ABSTRACT));
+        editorController.save();
+        saveSuccessValidation();
+
+        refReportCommonValidation();
     }
 
     @Test
@@ -112,7 +95,7 @@ public class MIRAuthorEditorITCase extends MIREditorITBase {
         editorController.setClassifications(Stream.of(MIRDNBClassification._004, MIRDNBClassification._010).collect(Collectors.toList()));
         editorController.setTopics(Stream.of(MIRTestData.TOPIC1, MIRTestData.TOPIC2).collect(Collectors.toList()));
         editorController.setAccessConditions(MIRLicense.cc_30);
-        editorController.setAbstract(MIRTestData.ABSTRACT);
+        refAbstractSimple();
         editorController.setNote(MIRTestData.NOTE);
 
         editorController.setRelatedTitle(MIRTestData.RELATED_TITLE);
@@ -151,7 +134,7 @@ public class MIRAuthorEditorITCase extends MIREditorITBase {
         editorController.setIdentifier(identifierList, 2, 0);
 
         editorController.save();
-        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.SAVE_SUCCESS));
+        saveSuccessValidation();
 
 
         // look for entered metadata
@@ -182,6 +165,7 @@ public class MIRAuthorEditorITCase extends MIREditorITBase {
 
 
     @Test
+    // same as book, festschrift, lexicon
     public void testCollection() throws InterruptedException {
         publishEditorController.open(() -> Assert.assertTrue(publishEditorController.isPublishOpened()));
         publishEditorController.selectType(MIRGenre.collection, null);
@@ -189,38 +173,158 @@ public class MIRAuthorEditorITCase extends MIREditorITBase {
 
         editorController.setTitle(MIRTestData.TITLE);
         editorController.setSubTitle(MIRTestData.SUB_TITLE);
-        editorController.setAuthor(MIRTestData.AUTHOR);
+        refAuthorRepeated();
+        refBookCommon();
 
-        editorController.setIssueDate(MIRTestData.ISSUE_DATE);
-        editorController.setPlaceTerm(MIRTestData.PLACE);
-        editorController.setPublisher(MIRTestData.PUBLISHER);
-        editorController.setEdition(MIRTestData.EDITION);
-        editorController.setExtend(MIRTestData.EXTEND_SOLO);
-        editorController.setLanguages(Stream.of(MIRLanguage.german).collect(Collectors.toList()));
+        editorController.save();
+        saveSuccessValidation();
 
+        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.TITLE));
+        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.SUB_TITLE));
+        refAuthorRepeatedValidation();
+        refBookCommonValidation();
+    }
+
+    @Test
+    public void testProceedings() {
+        publishEditorController.open(() -> Assert.assertTrue(publishEditorController.isPublishOpened()));
+        publishEditorController.selectType(MIRGenre.proceedings, null);
+        publishEditorController.submit();
+
+        editorController.setTitle(MIRTestData.TITLE);
+        editorController.setSubTitle(MIRTestData.SUB_TITLE);
+        refConference();
+        refAuthorRepeated();
+        refBookCommon();
+
+        editorController.save();
+        saveSuccessValidation();
+
+        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.TITLE));
+        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.SUB_TITLE));
+        refAuthorRepeatedValidation();
+        refBookCommonValidation();
+    }
+
+    @Test
+    public void testTeachingMaterial() throws InterruptedException {
+        publishEditorController.open(() -> Assert.assertTrue(publishEditorController.isPublishOpened()));
+        publishEditorController.selectType(MIRGenre.teaching_material, null);
+        publishEditorController.submit();
+
+        editorController.setTitleAndTranslation(MIRTestData.TITLE, MIRTestData.SUB_TITLE, MIRTestData.EN_TITLE, MIRTestData.EN_SUB_TITLE, MIRLanguage.english);
+        refAuthorRepeated();
+        editorController.setDateCreated(MIRTestData.CREATION_DATE);
+        editorController.setTypeOfResources(Stream.of(MIRTypeOfResource.text, MIRTypeOfResource.moving_image).collect(Collectors.toList()));
+        editorController.setInstitution(MIRInstitutes.Universität_in_Deutschland);
+        editorController.setLanguages(Stream.of(MIRLanguage.german, MIRLanguage.english).collect(Collectors.toList()));
         editorController.setClassifications(Stream.of(MIRDNBClassification._004, MIRDNBClassification._010).collect(Collectors.toList()));
-        editorController.setISBN(MIRTestData.ISBN);
+        editorController.setTopics(Stream.of(MIRTestData.TOPIC1, MIRTestData.TOPIC2).collect(Collectors.toList()));
+        editorController.setAbstracts(Stream.of(new MIRAbstract(true, MIRTestData.TEXT, MIRLanguage.german), new MIRAbstract(false, MIRTestData.URL3, MIRLanguage.english)).collect(Collectors.toList()));
+        editorController.setAccessConditions(MIRLicense.cc_30);
 
+
+        editorController.save();
+        saveSuccessValidation();
+
+        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.TITLE));
+        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.SUB_TITLE));
+        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.EN_TITLE));
+        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.EN_SUB_TITLE));
+        refAuthorRepeatedValidation();
+        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.VALIDATION_CREATION_DATE));
+
+        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.VALIDATION_UNI_GER));
+        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.VALIDATION_INFORMATIK));
+        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.VALIDATION_BIBLIOGRAPHIEN));
+        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.TOPIC1));
+        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.TOPIC2));
+        // TODO: enable validation for license
+        //driver.waitAndFindElement(MCRBy.partialText(MIRLicense.cc_30.getValue()));
+        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.VALIDATION_RESOURCE_TEXT));
+        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.VALIDATION_RESOURCE_MOVING_IMAGE));
+        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.VALIDATION_LANGUAGE_GERMAN));
+        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.VALIDATION_LANGUAGE_ENGLISH));
+        // abstract
+    }
+
+    private void refReportCommonValidation() {
+        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.TITLE));
+        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.SUB_TITLE));
+        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.AUTHOR));
+        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.ISSUE_DATE));
+
+        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.VALIDATION_UNI_GER));
+        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.URN));
+        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.DOI));
+        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.ABSTRACT));
+        // TODO: enable validation for license
+        // driver.waitAndFindElement(MCRBy.partialText(MIRLicense.cc_30.getValue()));
+        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.VALIDATION_INFORMATIK));
+        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.VALIDATION_BIBLIOGRAPHIEN));
+    }
+
+    private void refPublicationCommonValidation(boolean standAlone) {
+        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.TITLE));
+        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.SUB_TITLE));
+        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.AUTHOR));
+        if (standAlone) {
+            driver.waitAndFindElement(MCRBy.partialText(MIRTestData.ISSUE_DATE));
+            driver.waitAndFindElement(MCRBy.partialText(MIRTestData.EXTEND_SOLO));
+        }
+        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.NUMBER));
+
+        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.URN));
+        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.DOI));
+
+
+        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.TOPIC1));
+        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.TOPIC2));
+        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.ABSTRACT));
+    }
+
+    private void refPublicationCommon(boolean standAlone) {
+        editorController.setTitle(MIRTestData.TITLE);
+        editorController.setSubTitle(MIRTestData.SUB_TITLE);
+        refAuthorRepeated();
+
+        if (standAlone) {
+            editorController.setIssueDate(MIRTestData.ISSUE_DATE);
+            editorController.setExtend(MIRTestData.EXTEND_SOLO);
+        }
+
+
+        editorController.setLanguages(Stream.of(MIRLanguage.german).collect(Collectors.toList()));
         List<AbstractMap.Entry<MIRIdentifier, String>> identifierList = new ArrayList<>();
 
         identifierList.add(new AbstractMap.SimpleEntry<>(MIRIdentifier.doi, MIRTestData.DOI));
         identifierList.add(new AbstractMap.SimpleEntry<>(MIRIdentifier.urn, MIRTestData.URN));
 
-        editorController.setIdentifier(identifierList, 1, 1);
-        editorController.setShelfLocator(MIRTestData.SIGNATURE);
-        editorController.setAbstract(MIRTestData.ABSTRACT);
+        editorController.setIdentifier(identifierList);
+        editorController.setClassifications(Stream.of(MIRDNBClassification._000, MIRDNBClassification._010, MIRDNBClassification._020).collect(Collectors.toList()));
+        editorController.setTopics(Stream.of(MIRTestData.TOPIC1, MIRTestData.TOPIC2).collect(Collectors.toList()));
+        refAbstractSimple();
         editorController.setAccessConditions(MIRLicense.cc_30);
-        editorController.setInstitution(MIRInstitutes.Universität_in_Deutschland);
         editorController.setNote(MIRTestData.NOTE);
+    }
 
 
-        editorController.save();
+
+
+
+    private void refAuthorRepeated() {
+        editorController.setAuthors(Stream.of(MIRTestData.AUTHOR, MIRTestData.AUTHOR_2).collect(Collectors.toList()));
+    }
+
+    private void saveSuccessValidation() {
         driver.waitAndFindElement(MCRBy.partialText(MIRTestData.SAVE_SUCCESS));
+    }
 
+    private void refConference() {
+        editorController.setConference(MIRTestData.CONFERENCE);
+    }
 
-        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.TITLE));
-        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.SUB_TITLE));
-        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.AUTHOR));
+    private void refBookCommonValidation() {
         driver.waitAndFindElement(MCRBy.partialText(MIRTestData.ISSUE_DATE));
         driver.waitAndFindElement(MCRBy.partialText(MIRTestData.PLACE));
         driver.waitAndFindElement(MCRBy.partialText(MIRTestData.PUBLISHER));
@@ -240,15 +344,40 @@ public class MIRAuthorEditorITCase extends MIREditorITBase {
         //driver.waitAndFindElement(MCRBy.partialText(MIRTestData.NOTE));
     }
 
-    @Test
-    public void testReport() {
-        publishEditorController.open(() -> Assert.assertTrue(publishEditorController.isPublishOpened()));
-        publishEditorController.selectType(MIRGenre.report, null);
-        publishEditorController.submit();
+    private void refBookCommon() {
+        editorController.setIssueDate(MIRTestData.ISSUE_DATE);
+        editorController.setPlaceTerm(MIRTestData.PLACE);
+        editorController.setPublisher(MIRTestData.PUBLISHER);
+        editorController.setEdition(MIRTestData.EDITION);
+        editorController.setExtend(MIRTestData.EXTEND_SOLO);
+        editorController.setLanguages(Stream.of(MIRLanguage.german).collect(Collectors.toList()));
 
+        editorController.setClassifications(Stream.of(MIRDNBClassification._004, MIRDNBClassification._010).collect(Collectors.toList()));
+        editorController.setISBN(MIRTestData.ISBN);
+
+        List<AbstractMap.Entry<MIRIdentifier, String>> identifierList = new ArrayList<>();
+
+        identifierList.add(new AbstractMap.SimpleEntry<>(MIRIdentifier.doi, MIRTestData.DOI));
+        identifierList.add(new AbstractMap.SimpleEntry<>(MIRIdentifier.urn, MIRTestData.URN));
+
+        editorController.setIdentifier(identifierList, 1, 1);
+        editorController.setShelfLocator(MIRTestData.SIGNATURE);
+        refAbstractSimple();
+        editorController.setAccessConditions(MIRLicense.cc_30);
+        editorController.setInstitution(MIRInstitutes.Universität_in_Deutschland);
+        editorController.setNote(MIRTestData.NOTE);
+    }
+
+    private void refAbstractSimple() {
+        editorController.setAbstract(MIRTestData.ABSTRACT);
+    }
+
+
+
+    private void refReportCommon() {
         editorController.setTitle(MIRTestData.TITLE);
         editorController.setSubTitle(MIRTestData.SUB_TITLE);
-        editorController.setAuthors(Stream.of(MIRTestData.AUTHOR, MIRTestData.AUTHOR_2).collect(Collectors.toList()));
+        refAuthorRepeated();
         editorController.setIssueDate(MIRTestData.ISSUE_DATE);
 
         editorController.setLanguages(Stream.of(MIRLanguage.german).collect(Collectors.toList()));
@@ -260,70 +389,16 @@ public class MIRAuthorEditorITCase extends MIREditorITBase {
 
         editorController.setIdentifier(identifierList);
         editorController.setClassifications(Stream.of(MIRDNBClassification._004, MIRDNBClassification._010).collect(Collectors.toList()));
-        editorController.setAbstract(MIRTestData.ABSTRACT);
+        refAbstractSimple();
         editorController.setAccessConditions(MIRLicense.cc_30);
         editorController.setInstitution(MIRInstitutes.Universität_in_Deutschland);
         editorController.setNote(MIRTestData.NOTE);
-
-        editorController.save();
-        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.SAVE_SUCCESS));
-
-        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.TITLE));
-        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.SUB_TITLE));
-        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.AUTHOR));
-        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.ISSUE_DATE));
-
-        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.VALIDATION_UNI_GER));
-        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.URN));
-        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.DOI));
-        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.ABSTRACT));
-        // TODO: enable validation for license
-        // driver.waitAndFindElement(MCRBy.partialText(MIRLicense.cc_30.getValue()));
-        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.VALIDATION_INFORMATIK));
-        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.VALIDATION_BIBLIOGRAPHIEN));
     }
 
-    @Test
-    public void testTeachingMaterial() throws InterruptedException {
-        publishEditorController.open(() -> Assert.assertTrue(publishEditorController.isPublishOpened()));
-        publishEditorController.selectType(MIRGenre.teaching_material, null);
-        publishEditorController.submit();
 
-        editorController.setTitleAndTranslation(MIRTestData.TITLE, MIRTestData.SUB_TITLE, MIRTestData.EN_TITLE, MIRTestData.EN_SUB_TITLE, MIRLanguage.english);
-        editorController.setAuthors(Stream.of(MIRTestData.AUTHOR, MIRTestData.AUTHOR_2).collect(Collectors.toList()));
-        editorController.setDateCreated(MIRTestData.CREATION_DATE);
-        editorController.setTypeOfResources(Stream.of(MIRTypeOfResource.text, MIRTypeOfResource.moving_image).collect(Collectors.toList()));
-        editorController.setInstitution(MIRInstitutes.Universität_in_Deutschland);
-        editorController.setLanguages(Stream.of(MIRLanguage.german,MIRLanguage.english).collect(Collectors.toList()));
-        editorController.setClassifications(Stream.of(MIRDNBClassification._004,MIRDNBClassification._010).collect(Collectors.toList()));
-        editorController.setTopics(Stream.of(MIRTestData.TOPIC1,MIRTestData.TOPIC2).collect(Collectors.toList()));
-        editorController.setAbstracts(Stream.of(new MIRAbstract(true, MIRTestData.TEXT, MIRLanguage.german), new MIRAbstract(false, MIRTestData.URL3, MIRLanguage.english)).collect(Collectors.toList()));
-        editorController.setAccessConditions(MIRLicense.cc_30);
-
-
-        editorController.save();
-        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.SAVE_SUCCESS));
-
-        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.TITLE));
-        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.SUB_TITLE));
-        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.EN_TITLE));
-        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.EN_SUB_TITLE));
+    private void refAuthorRepeatedValidation() {
         driver.waitAndFindElement(MCRBy.partialText(MIRTestData.AUTHOR));
         driver.waitAndFindElement(MCRBy.partialText(MIRTestData.AUTHOR_2));
-        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.VALIDATION_CREATION_DATE));
-
-        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.VALIDATION_UNI_GER));
-        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.VALIDATION_INFORMATIK));
-        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.VALIDATION_BIBLIOGRAPHIEN));
-        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.TOPIC1));
-        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.TOPIC2));
-        // TODO: enable validation for license
-        //driver.waitAndFindElement(MCRBy.partialText(MIRLicense.cc_30.getValue()));
-        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.VALIDATION_RESOURCE_TEXT));
-        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.VALIDATION_RESOURCE_MOVING_IMAGE));
-        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.VALIDATION_LANGUAGE_GERMAN));
-        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.VALIDATION_LANGUAGE_ENGLISH));
-        // abstract
     }
 
     @After
