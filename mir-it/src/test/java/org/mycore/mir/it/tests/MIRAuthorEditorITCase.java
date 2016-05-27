@@ -194,7 +194,7 @@ public class MIRAuthorEditorITCase extends MIREditorITBase {
         editorController.setTitle(MIRTestData.TITLE);
         editorController.setSubTitle(MIRTestData.SUB_TITLE);
         refConference();
-        refAuthorRepeated();
+        editorController.setAuthors(Stream.of(MIRTestData.AUTHOR, MIRTestData.AUTHOR_2).collect(Collectors.toList()), 1);
         refBookCommon();
 
         editorController.save();

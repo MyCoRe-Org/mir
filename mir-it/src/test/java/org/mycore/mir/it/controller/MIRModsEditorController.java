@@ -256,13 +256,17 @@ public class MIRModsEditorController extends MIREditorController {
     }
 
     public void setAuthors(List<String> names) {
+        setAuthors(names, 0);
+    }
+    
+    public void setAuthors(List<String> names, int fieldOffset) {
         if (names.size() > 0) {
             if (names.size() > 1) {
                 IntStream.range(1, names.size()).forEach((n) -> clickRepeater("mods:name"));
             }
 
             IntStream.range(0, names.size()).forEach(i -> {
-                String xp = i == 0 ? "mods:name/mods:displayForm" : "mods:name[" + (i + 1) + "]/mods:displayForm";
+                String xp = i + fieldOffset == 0 ? "mods:name/mods:displayForm" : "mods:name[" + (i + 1 + fieldOffset) + "]/mods:displayForm";
                 String name = names.get(i);
                 setInputText(xp, name);
                 String inputPath = ".//input[contains(@name,'" + xp + "')]";
@@ -270,7 +274,6 @@ public class MIRModsEditorController extends MIREditorController {
                 driver.waitAndFindElement(By.xpath(".//a[@data-type='personal' and contains(text(),'" + name + "')]")).click();
             });
         }
-
     }
 
     public void setAuthor(String name) {
