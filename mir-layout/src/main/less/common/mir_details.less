@@ -9,6 +9,7 @@
     padding-bottom: 5px;
     border-bottom: 1px solid #ddd;
   }
+
   .ellipsis {
     max-height: 150px;
     margin-bottom: 20px;
@@ -20,7 +21,7 @@
   margin: 0 0 20px 0;
   .btn {
     margin-right: 0px;
-    vertical-align: top !important;
+    vertical-align: top ! important;
   }
 }
 
@@ -33,20 +34,23 @@
 }
 
 .children {
-  margin-bottom:20px;
+  margin-bottom: 20px;
   .metaname {
     display: none;
   }
+
   .metavalue {
     ul {
       li {
         border: none;
         border-radius: 0;
       }
-      &:nth-child(odd){
+
+      &:nth-child(odd) {
         background-color: #F9F9F9;
       }
-      &:nth-child(even){
+
+      &:nth-child(even) {
         background-color: #F5F5F5;
       }
     }
@@ -63,15 +67,17 @@
     padding-bottom: 5px;
     border-bottom: 1px solid #ddd;
   }
+
   dt {
     width: 30%;
-    text-align:right;
+    text-align: right;
     float: left;
     color: #999;
     font-weight: normal;
     clear: both;
     margin-bottom: 10px;
   }
+
   dd {
     float: left;
     margin-left: 10px;
@@ -83,12 +89,13 @@
 .system {
   dt {
     width: 40%;
-    text-align:right;
+    text-align: right;
     float: left;
     color: #999;
     font-weight: normal;
     clear: both;
   }
+
   dd {
     float: right;
     width: 55%;
@@ -96,6 +103,13 @@
 }
 
 #solr-browse {
+  div:nth-child(2) {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
   .caption {
     display: block;
     overflow: hidden;
@@ -119,5 +133,4 @@
     }
   }
 }
-
 
