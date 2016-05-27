@@ -44,41 +44,36 @@
     <xsl:copy-of select="." />
   </xsl:template>
 
-  <xsl:template match="mods:name[@type='personal']">
-    <xsl:copy>
-      <xsl:apply-templates select="@*" />
-      <xsl:if test="mods:namePart[@type='family'] and mods:namePart[@type='given'] and not(mods:displayForm)">
-        <mods:displayForm>
-          <xsl:value-of select="concat(mods:namePart[@type='family'],', ',mods:namePart[@type='given'])" />
-        </mods:displayForm>
-      </xsl:if>
-      <xsl:apply-templates select="*" />
-      <xsl:if test="not(mods:role/mods:roleTerm)">
-        <mods:role>
-          <mods:roleTerm authority="marcrelator" type="code">aut</mods:roleTerm>
-        </mods:role>
-      </xsl:if>
-    </xsl:copy>
-  </xsl:template>
-
   <xsl:template match="mods:name">
     <xsl:copy>
       <xsl:apply-templates select="@*" />
-      <xsl:if test="mods:namePart and not(mods:namePart[@type='family']) and not(mods:namePart[@type='given']) and not(mods:displayForm)">
-        <mods:displayForm>
-          <xsl:for-each select="mods:namePart">
-            <xsl:choose>
-              <xsl:when test="position() = 1">
-                <xsl:value-of select="text()"/>
-              </xsl:when>
-              <xsl:otherwise>
-                <xsl:value-of select="concat('; ', text())"/>
-              </xsl:otherwise>
-            </xsl:choose>
-          </xsl:for-each>
-        </mods:displayForm>
-      </xsl:if>
+      <xsl:choose>
+        <xsl:when test="mods:namePart and not(mods:namePart[@type='family']) and not(mods:namePart[@type='given']) and not(mods:displayForm)">
+          <mods:displayForm>
+            <xsl:for-each select="mods:namePart">
+              <xsl:choose>
+                <xsl:when test="position() = 1">
+                  <xsl:value-of select="text()"/>
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:value-of select="concat(' ', text())"/>
+                </xsl:otherwise>
+              </xsl:choose>
+            </xsl:for-each>
+          </mods:displayForm>
+        </xsl:when>
+        <xsl:when test="@type='personal' and mods:namePart[@type='family'] and mods:namePart[@type='given'] and not(mods:displayForm)">
+          <mods:displayForm>
+            <xsl:value-of select="concat(mods:namePart[@type='family'],', ',mods:namePart[@type='given'])" />
+          </mods:displayForm>
+        </xsl:when>
+      </xsl:choose>
       <xsl:apply-templates select="*" />
+        <xsl:if test="@type='personal' and not(mods:role/mods:roleTerm)">
+          <mods:role>
+            <mods:roleTerm authority="marcrelator" type="code">aut</mods:roleTerm>
+          </mods:role>
+        </xsl:if>
     </xsl:copy>
   </xsl:template>
 
