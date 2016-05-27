@@ -40,6 +40,15 @@
             <xsl:text> col-md-offset-5</xsl:text>
           </xsl:if>
         </xsl:attribute>
+        <a title="{i18n:translate(concat($i18nprefix, '.back'))}">
+          <xsl:variable name="origRows" select="lst[@name='responseHeader']/lst[@name='params']/str[@name='origrows']" />
+          <xsl:variable name="newStart" select="$start - ($start mod $origRows)" />
+          <xsl:attribute name="href">
+            <xsl:value-of select="concat($proxyBaseURL,'?', $HttpSession, $params, '&amp;start=', $newStart)" />
+          </xsl:attribute>
+          <span class="glyphicon glyphicon-chevron-up" />
+          <xsl:text>&#160;</xsl:text>
+        </a>
         <xsl:value-of select="i18n:translate(concat($i18nprefix, '.entriesInfo'), concat($page, ';', $pages))" />
       </div>
       <xsl:if test="$page &lt; $pages">
