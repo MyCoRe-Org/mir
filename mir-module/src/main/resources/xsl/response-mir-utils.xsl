@@ -47,8 +47,8 @@
             <xsl:value-of select="concat($proxyBaseURL,'?', $HttpSession, $params, '&amp;start=', $newStart)" />
           </xsl:attribute>
           <span class="glyphicon glyphicon-chevron-up" />
-          <xsl:text>&#160;</xsl:text>
         </a>
+        <xsl:text>&#160;</xsl:text>
         <xsl:value-of select="i18n:translate(concat($i18nprefix, '.entriesInfo'), concat($page, ';', $pages))" />
       </div>
       <xsl:if test="$page &lt; $pages">
