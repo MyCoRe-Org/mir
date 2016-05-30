@@ -184,9 +184,10 @@
     <xsl:variable name="derivbase" select="concat($ServletsBaseURL,'MCRFileNodeServlet/',$derivid,'/')" />
     <xsl:variable name="derivifs" select="concat($derivbase,$maindoc,$HttpSession)" />
 
+    <xsl:variable name="$hitCount" select="$hitNumberOnPage + (($currentPage) -1) * $rows" />
 
 <!-- hit entry -->
-    <div id="hit_{$hitNumberOnPage + (($currentPage) -1) * $rows}" class="hit_item {$hitItemClass}">
+    <div id="hit_{$hitCount}" class="hit_item {$hitItemClass}">
 
 <!-- hit head -->
       <div class="row hit_item_head">
@@ -194,7 +195,7 @@
 
 <!-- hit number -->
           <div class="hit_counter">
-            <xsl:value-of select="$hitNumberOnPage + (($currentPage) -1) * $rows" />
+            <xsl:value-of select="$hitCount" />
           </div>
 
 <!-- relevance -->
