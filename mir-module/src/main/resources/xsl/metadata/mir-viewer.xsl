@@ -93,7 +93,7 @@
     <xsl:variable name="metsServletURL"
                   select="concat($WebApplicationBaseURL,'servlets/MCRMETSServlet/', $derId)"/>
     <xsl:variable name="i18nURL"
-                  select="concat($WebApplicationBaseURL,'servlets/MCRLocaleServlet/{lang}/component.iview2.*')"/>
+                  select="concat($WebApplicationBaseURL,'rsc/locale/translate/{lang}/component.mets.*,component.iview2.*')"/>
     <xsl:variable name="tileURL" select="concat($WebApplicationBaseURL,'servlets/MCRTileServlet/')"/>
     <xsl:variable name="derivateURL"
                   select="concat($WebApplicationBaseURL, 'servlets/MCRFileNodeServlet/', $derId)"/>
@@ -134,7 +134,7 @@
     <xsl:param name="viewerId"/>
 
     <xsl:variable name="i18nURL"
-                  select="concat($WebApplicationBaseURL,'servlets/MCRLocaleServlet/{lang}/component.iview2.*')"/>
+                  select="concat($WebApplicationBaseURL,'rsc/locale/translate/{lang}/component.mets.*,component.iview2.*')"/>
     <xsl:variable name="derivateURL"
                   select="concat($WebApplicationBaseURL, 'servlets/MCRFileNodeServlet/', $derId)"/>
     <xsl:variable name="pdfWorkerURL" select="concat($WebApplicationBaseURL, 'modules/iview2/js/lib/pdf.worker.js')"/>
