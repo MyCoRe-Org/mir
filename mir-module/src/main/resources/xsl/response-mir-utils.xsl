@@ -44,7 +44,7 @@
           <xsl:variable name="origRows" select="lst[@name='responseHeader']/lst[@name='params']/str[@name='origrows']" />
           <xsl:variable name="newStart" select="$start - ($start mod $origRows)" />
           <xsl:attribute name="href">
-            <xsl:value-of select="concat($proxyBaseURL,'?', $HttpSession, $params, '&amp;start=', $newStart)" />
+            <xsl:value-of select="concat($proxyBaseURL,'?', $HttpSession, $params, '&amp;start=', $newStart, '#hit_', $page)" />
           </xsl:attribute>
           <span class="glyphicon glyphicon-chevron-up" />
         </a>

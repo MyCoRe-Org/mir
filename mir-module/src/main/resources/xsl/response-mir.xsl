@@ -186,7 +186,7 @@
 
 
 <!-- hit entry -->
-    <div class="hit_item {$hitItemClass}">
+    <div id="hit_{$hitNumberOnPage + (($currentPage) -1) * $rows}" class="hit_item {$hitItemClass}">
 
 <!-- hit head -->
       <div class="row hit_item_head">
