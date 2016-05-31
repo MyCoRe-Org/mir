@@ -12,7 +12,7 @@
 
   <xsl:template match="/mycoreobject/response">
     <xsl:variable name="ResultPages">
-      <xsl:if test="($hits &gt; 0) and ($hits &gt; $rows)">
+      <xsl:if test="($hits &gt; 0)">
         <xsl:call-template name="browse.Pagination">
           <xsl:with-param name="id" select="'solr-browse'" />
           <xsl:with-param name="page" select="$currentPage" />
