@@ -44,7 +44,17 @@
           <xsl:variable name="origRows" select="lst[@name='responseHeader']/lst[@name='params']/str[@name='origrows']" />
           <xsl:variable name="newStart" select="$start - ($start mod $origRows)" />
           <xsl:attribute name="href">
-            <xsl:value-of select="concat($proxyBaseURL,'?', $HttpSession, $params, '&amp;start=', $newStart, '#hit_', $page)" />
+            <xsl:variable name="params">
+              <xsl:variable name="tmp">
+                <xsl:for-each select="lst[@name='responseHeader']/lst[@name='params']/str">
+                  <xsl:if test="not(contains('fl|start|origrows|rows|XSL.Style', @name))">
+                    <xsl:value-of select="concat('&amp;', @name, '=', text())" />
+                  </xsl:if>
+                </xsl:for-each>
+              </xsl:variable>
+              <xsl:value-of select="concat('?', substring-after($tmp, '&amp;'))" />
+            </xsl:variable>
+            <xsl:value-of select="concat($proxyBaseURL, $HttpSession, $params, '&amp;start=', $newStart, '#hit_', $page)" />
           </xsl:attribute>
           <span class="glyphicon glyphicon-chevron-up" />
         </a>
