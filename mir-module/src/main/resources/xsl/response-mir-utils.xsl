@@ -1,5 +1,5 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
-  exclude-result-prefixes="xsl i18n"
+  xmlns:encoder="xalan://java.net.URLEncoder" exclude-result-prefixes="xsl i18n encoder"
 >
 
   <xsl:template name="browse.Pagination">
@@ -48,7 +48,7 @@
               <xsl:variable name="tmp">
                 <xsl:for-each select="lst[@name='responseHeader']/lst[@name='params']/str">
                   <xsl:if test="not(contains('fl|start|origrows|rows|XSL.Style', @name))">
-                    <xsl:value-of select="concat('&amp;', @name, '=', text())" />
+                    <xsl:value-of select="concat('&amp;', @name, '=', encoder:encode(., 'UTF-8'))" />
                   </xsl:if>
                 </xsl:for-each>
               </xsl:variable>
