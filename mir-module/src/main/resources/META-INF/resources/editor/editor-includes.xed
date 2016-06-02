@@ -1525,7 +1525,7 @@
   </xed:template>
 
   <xed:template id="geographic">
-    <mir:textfield xpath="mods:subject/mods:geographic" label="mir.geographic" help-text="{i18n:mir.help.volume}" class="mir-modspart" />
+    <mir:textfield xpath="mods:subject/mods:geographic" label="mir.geographic" help-text="{i18n:mir.help.cartographics.place}" class="mir-modspart" />
   </xed:template>
 
   <xed:template id="cartographics">
