@@ -1784,7 +1784,7 @@
   </xed:template>
 
   <xed:template id="comment">
-    <mir:textarea xpath="mods:note[@type='mcr_intern']" label="mir.comment" help-text="{i18n:mir.help.comment}" rows="2" />
+    <mir:textarea xpath="mods:note[@type='admin']" label="mir.comment" help-text="{i18n:mir.help.comment}" rows="2" />
   </xed:template>
 
   <xed:template id="comment.complex">
