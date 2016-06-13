@@ -1801,7 +1801,7 @@
             <div class="col-md-6">
               <xed:bind xpath="@type">
                 <select class="form-control" style="font-weight:bold;">
-                  <xed:include uri="xslStyle:items2options:classification:editor:-1:children:noteTypes" />
+                  <xed:include uri="xslStyle:items2options,convertClassificationOptions:classification:editor:-1:children:noteTypes" />
                 </select>
               </xed:bind>
             </div>

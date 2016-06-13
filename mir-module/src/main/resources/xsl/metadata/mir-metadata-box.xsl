@@ -249,7 +249,7 @@
             </xsl:call-template>
             <xsl:apply-templates mode="present" select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:name[@type='corporate'][@ID or contains(@authorityURI,'mir_institutes')]" />
             <xsl:for-each select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:note">
-              <xsl:variable name="myURI" select="concat('classification:metadata:0:children:noteTypes:',@type)" />
+              <xsl:variable name="myURI" select="concat('classification:metadata:0:children:noteTypes:',mcrxsl:regexp(@type,' ', '_'))" />
               <xsl:variable name="x-access">
                 <xsl:value-of select="document($myURI)//label[@xml:lang='x-access']/@text"/>
               </xsl:variable>

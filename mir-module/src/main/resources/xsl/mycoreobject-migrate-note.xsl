@@ -5,8 +5,16 @@
   
   <xsl:template match="//mods:note[not(@type)]">
     <mods:note>
-      <xsl:attribute name="type">mcr_intern</xsl:attribute>
+      <xsl:attribute name="type">admin</xsl:attribute>
       <xsl:copy-of select="@*" />
+      <xsl:apply-templates />
+    </mods:note>
+  </xsl:template>
+
+  <xsl:template match="//mods:note[@type='mcr_intern' or @type='mcr intern']">
+    <mods:note>
+      <xsl:attribute name="type">admin</xsl:attribute>
+      <xsl:copy-of select="@*[name()!='type']" />
       <xsl:apply-templates />
     </mods:note>
   </xsl:template>

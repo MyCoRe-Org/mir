@@ -25,7 +25,7 @@ public class MIRMigration0_4 {
 
     @MCRCommand(
         syntax = "migrate note type",
-        help = "set the type of mods:note to \"mcr_intern\" .")
+        help = "set the type of mods:note to \"admin\" and converts \"mcr_intern\"  to \"admin\".")
     public static List<String> updateStateClassification() {
         URL styleFile = MIRMigration0_4.class.getResource("/xsl/mycoreobject-migrate-note.xsl");
         if (styleFile == null) {
