@@ -3,7 +3,7 @@
   <xsl:param name="DefaultLang" />
   <xsl:param name="WebApplicationBaseURL" />
   <xsl:param name="ServletsBaseURL" />
-  <xsl:param name="MCR.mir-module.EditorMail" />
+  <xsl:param name="MCR.mir-module.NewUserMail" />
   <xsl:param name="MCR.mir-module.MailSender" />
   <xsl:variable name="newline" select="'&#xA;'" />
 
@@ -16,7 +16,7 @@
 
   <xsl:template match="user" mode="email">
     <to>
-      <xsl:value-of select="$MCR.mir-module.EditorMail" />
+      <xsl:value-of select="$MCR.mir-module.NewUserMail" />
     </to>
     <subject>
       Eine neue Benutzerkennung wurde angelegt!
