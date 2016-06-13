@@ -30,21 +30,30 @@ function createGenreOptions() {
 	var Options="";
   	$(GenreXML).find('categories > category').each(function(){
 		var Title = $(this).children('label[xml\\:lang="de"]').attr('text');
-		var xEditor = $(this).children('label[xml\\:lang="x-editor"]').attr('text');
+		var xEditorGroup = $(this).children('label[xml\\:lang="x-group"]').attr('text');
+		var xEditorDisable = $(this).children('label[xml\\:lang="x-disable"]').attr('text');
 		var id = $(this).attr('ID');
-		if (xEditor == "false") {
+		if (xEditorGroup == "true") {
 			if ($(this).find('category').length > 0) {
 				Options+='<optgroup label="'+Title+'"></optgroup>';
 			}
 		}
 		else {
-			Options+='<option value="'+id+'">' + Title + '</option>';
+			if (xEditorDisable == "true") {
+				Options+='<option value="'+id+'" disabled>' + Title + '</option>';
+			}
+			else {
+				Options+='<option value="'+id+'">' + Title + '</option>';
+			}
 		}
 		$(this).find('category').each(function(){
 	  		var Title = $(this).children('label[xml\\:lang="de"]').attr('text');
-			var xEditor = $(this).children('label[xml\\:lang="x-editor"]').attr('text');
+			var disable = $(this).children('label[xml\\:lang="x-disable"]').attr('text');
 	  		var id = $(this).attr('ID');
-			if (xEditor != "false") {
+			if (disable == "true") {
+				Options+='<option value="'+id+'" disabled>&nbsp;&nbsp;&nbsp;' + Title + '</option>';
+			}
+			else {
 				Options+='<option value="'+id+'">&nbsp;&nbsp;&nbsp;' + Title + '</option>';
 			}
 	  	});
