@@ -131,10 +131,8 @@
       </xsl:element>
       <xsl:for-each select="./structure/derobjects/derobject">
         <xsl:variable name="derID" select="./@xlink:href" />
-        <xsl:variable name="filelink"
-          select="concat($WebApplicationBaseURL,'servlets/MCRFileNodeServlet/',
-                     $derID,'/?hosts=local&amp;XSL.Style=xml')" />
-        <xsl:variable name="details" select="document($filelink)" />
+        <xsl:variable name="ifslink" select="concat('ifs:',$derID, '/')" />
+        <xsl:variable name="details" select="document($ifslink)" />
         <xsl:variable name="filenumber"
           select="$details/mcr_directory/numChildren/here/files" />
 
