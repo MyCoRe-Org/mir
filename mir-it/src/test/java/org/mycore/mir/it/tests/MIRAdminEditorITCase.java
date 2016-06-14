@@ -65,7 +65,7 @@ public class MIRAdminEditorITCase extends MIREditorITBase {
         editorController.setShelfLocator(MIRTestData.SIGNATURE);
         editorController.setLinks(Stream.of(MIRTestData.URL1, MIRTestData.URL2).collect(Collectors.toList()));
         editorController.setAccessConditions(MIRAccess.public_);
-        editorController.setAccessConditions(MIRLicense.cc_30);
+        editorController.setAccessConditions(MIRLicense.cc_by_40);
         editorController.setTopics(Stream.of(MIRTestData.TOPIC1, MIRTestData.TOPIC2).collect(Collectors.toList()));
         editorController.setAbstracts(Stream.of(new MIRAbstract(true, MIRTestData.TEXT, MIRLanguage.german), new MIRAbstract(false, MIRTestData.URL3, MIRLanguage.english)).collect(Collectors.toList()));
 

@@ -94,7 +94,7 @@ public class MIRAuthorEditorITCase extends MIREditorITBase {
 
         editorController.setClassifications(Stream.of(MIRDNBClassification._004, MIRDNBClassification._010).collect(Collectors.toList()));
         editorController.setTopics(Stream.of(MIRTestData.TOPIC1, MIRTestData.TOPIC2).collect(Collectors.toList()));
-        editorController.setAccessConditions(MIRLicense.cc_30);
+        editorController.setAccessConditions(MIRLicense.cc_by_40);
         refAbstractSimple();
         editorController.setNote(MIRTestData.NOTE);
 
@@ -147,7 +147,7 @@ public class MIRAuthorEditorITCase extends MIREditorITBase {
         driver.waitAndFindElement(MCRBy.partialText(MIRTestData.VOLUME));
         driver.waitAndFindElement(MCRBy.partialText(MIRTestData.NUMBER));
         // TODO: enable validation for license
-        //driver.waitAndFindElement(MCRBy.partialText(MIRLicense.cc_30.getValue()));
+        //driver.waitAndFindElement(MCRBy.partialText(MIRLicense.cc_by_40.getValue()));
 
 
         driver.waitAndFindElement(MCRBy.partialText(MIRTestData.URN));
@@ -221,7 +221,7 @@ public class MIRAuthorEditorITCase extends MIREditorITBase {
         editorController.setClassifications(Stream.of(MIRDNBClassification._004, MIRDNBClassification._010).collect(Collectors.toList()));
         editorController.setTopics(Stream.of(MIRTestData.TOPIC1, MIRTestData.TOPIC2).collect(Collectors.toList()));
         editorController.setAbstracts(Stream.of(new MIRAbstract(true, MIRTestData.TEXT, MIRLanguage.german), new MIRAbstract(false, MIRTestData.URL3, MIRLanguage.english)).collect(Collectors.toList()));
-        editorController.setAccessConditions(MIRLicense.cc_30);
+        editorController.setAccessConditions(MIRLicense.cc_by_40);
 
 
         editorController.save();
@@ -240,7 +240,7 @@ public class MIRAuthorEditorITCase extends MIREditorITBase {
         driver.waitAndFindElement(MCRBy.partialText(MIRTestData.TOPIC1));
         driver.waitAndFindElement(MCRBy.partialText(MIRTestData.TOPIC2));
         // TODO: enable validation for license
-        //driver.waitAndFindElement(MCRBy.partialText(MIRLicense.cc_30.getValue()));
+        //driver.waitAndFindElement(MCRBy.partialText(MIRLicense.cc_by_40.getValue()));
         driver.waitAndFindElement(MCRBy.partialText(MIRTestData.VALIDATION_RESOURCE_TEXT));
         driver.waitAndFindElement(MCRBy.partialText(MIRTestData.VALIDATION_RESOURCE_MOVING_IMAGE));
         driver.waitAndFindElement(MCRBy.partialText(MIRTestData.VALIDATION_LANGUAGE_GERMAN));
@@ -259,7 +259,7 @@ public class MIRAuthorEditorITCase extends MIREditorITBase {
         driver.waitAndFindElement(MCRBy.partialText(MIRTestData.DOI));
         driver.waitAndFindElement(MCRBy.partialText(MIRTestData.ABSTRACT));
         // TODO: enable validation for license
-        // driver.waitAndFindElement(MCRBy.partialText(MIRLicense.cc_30.getValue()));
+        // driver.waitAndFindElement(MCRBy.partialText(MIRLicense.cc_by_40.getValue()));
         driver.waitAndFindElement(MCRBy.partialText(MIRTestData.VALIDATION_INFORMATIK));
         driver.waitAndFindElement(MCRBy.partialText(MIRTestData.VALIDATION_BIBLIOGRAPHIEN));
     }
@@ -304,7 +304,7 @@ public class MIRAuthorEditorITCase extends MIREditorITBase {
         editorController.setClassifications(Stream.of(MIRDNBClassification._000, MIRDNBClassification._010, MIRDNBClassification._020).collect(Collectors.toList()));
         editorController.setTopics(Stream.of(MIRTestData.TOPIC1, MIRTestData.TOPIC2).collect(Collectors.toList()));
         refAbstractSimple();
-        editorController.setAccessConditions(MIRLicense.cc_30);
+        editorController.setAccessConditions(MIRLicense.cc_by_40);
         editorController.setNote(MIRTestData.NOTE);
     }
 
@@ -339,7 +339,7 @@ public class MIRAuthorEditorITCase extends MIREditorITBase {
         driver.waitAndFindElement(MCRBy.partialText(MIRTestData.VALIDATION_BIBLIOGRAPHIEN));
 
         // TODO: enable validation for license
-        //driver.waitAndFindElement(MCRBy.partialText(MIRLicense.cc_30.getValue()));
+        //driver.waitAndFindElement(MCRBy.partialText(MIRLicense.cc_by_40.getValue()));
 
         //driver.waitAndFindElement(MCRBy.partialText(MIRTestData.NOTE));
     }
@@ -363,7 +363,7 @@ public class MIRAuthorEditorITCase extends MIREditorITBase {
         editorController.setIdentifier(identifierList, 1, 1);
         editorController.setShelfLocator(MIRTestData.SIGNATURE);
         refAbstractSimple();
-        editorController.setAccessConditions(MIRLicense.cc_30);
+        editorController.setAccessConditions(MIRLicense.cc_by_40);
         editorController.setInstitution(MIRInstitutes.Universität_in_Deutschland);
         editorController.setNote(MIRTestData.NOTE);
     }
@@ -390,7 +390,7 @@ public class MIRAuthorEditorITCase extends MIREditorITBase {
         editorController.setIdentifier(identifierList);
         editorController.setClassifications(Stream.of(MIRDNBClassification._004, MIRDNBClassification._010).collect(Collectors.toList()));
         refAbstractSimple();
-        editorController.setAccessConditions(MIRLicense.cc_30);
+        editorController.setAccessConditions(MIRLicense.cc_by_40);
         editorController.setInstitution(MIRInstitutes.Universität_in_Deutschland);
         editorController.setNote(MIRTestData.NOTE);
     }
