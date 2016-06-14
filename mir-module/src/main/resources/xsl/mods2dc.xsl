@@ -506,25 +506,32 @@
 
   <xsl:template name="name">
     <xsl:variable name="name">
-      <xsl:for-each select="mods:namePart[not(@type)]">
-        <xsl:value-of select="."/>
-        <xsl:text> </xsl:text>
-      </xsl:for-each>
-      <xsl:value-of select="mods:namePart[@type='family']"/>
-      <xsl:if test="mods:namePart[@type='given']">
-        <xsl:text>, </xsl:text>
-        <xsl:value-of select="mods:namePart[@type='given']"/>
-      </xsl:if>
-      <xsl:if test="mods:namePart[@type='date']">
-        <xsl:text>, </xsl:text>
-        <xsl:value-of select="mods:namePart[@type='date']"/>
-        <xsl:text/>
-      </xsl:if>
-      <xsl:if test="mods:displayForm">
-        <!--  <xsl:text> (</xsl:text> removed by Paul Borchert-->
-        <xsl:value-of select="mods:displayForm"/>
-        <!-- <xsl:text>) </xsl:text> -->
-      </xsl:if>
+      <xsl:choose>
+        <xsl:when test="mods:displayForm">
+          <xsl:value-of select="mods:displayForm" />
+        </xsl:when>
+        <xsl:when test="mods:namePart[not(@type)]">
+          <xsl:for-each select="mods:namePart[not(@type)]">
+            <xsl:choose>
+              <xsl:when test="position() = 1">
+                <xsl:value-of select="text()"/>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:value-of select="concat(' ', text())"/>
+              </xsl:otherwise>
+            </xsl:choose>
+          </xsl:for-each>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="mods:namePart[@type='family']" />
+          <xsl:if test="mods:namePart[@type='given']">
+            <xsl:value-of select="concat(', ',mods:namePart[@type='given'])" />
+          </xsl:if>
+          <xsl:if test="mods:namePart[@type='date']">
+            <xsl:value-of select="concat(' (',mods:namePart[@type='date'],')')" />
+          </xsl:if>
+        </xsl:otherwise>
+      </xsl:choose>
       <xsl:for-each select="mods:role[mods:roleTerm[@type='text']!='creator']">
         <xsl:text> (</xsl:text>
         <xsl:value-of select="normalize-space(child::*)"/>
