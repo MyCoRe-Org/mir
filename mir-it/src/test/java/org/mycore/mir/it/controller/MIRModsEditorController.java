@@ -283,12 +283,12 @@ public class MIRModsEditorController extends MIREditorController {
     }
 
     public void setAccessConditions(MIRLicense ac) {
-        new Select(driver.waitAndFindElement(By.xpath(".//select[contains(@name, 'mods:accessCondition') and option/@value='" + ac.getValue() + "']")))
+        new Select(driver.waitAndFindElement(By.xpath(".//select[contains(@name, 'mods:accessCondition') and (option/@value='" + ac.getValue() + "' or optgroup/option/@value='" + ac.getValue() + "')]")))
                 .selectByValue(ac.getValue());
     }
 
     public void setAccessConditions(MIRAccess ac) {
-        new Select(driver.waitAndFindElement(By.xpath(".//select[contains(@name, 'mods:accessCondition') and option/@value='" + ac.getValue() + "']")))
+        new Select(driver.waitAndFindElement(By.xpath(".//select[contains(@name, 'mods:accessCondition') and (option/@value='" + ac.getValue() + "' or optgroup/option/@value='" + ac.getValue() + "')]")))
                 .selectByValue(ac.getValue());
     }
 
