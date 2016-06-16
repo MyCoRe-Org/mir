@@ -76,4 +76,5 @@ public class MIRTestData {
     public static final String VALIDATION_LANGUAGE_GERMAN = "Deutsch";
     public static final String VALIDATION_LANGUAGE_ENGLISH = "Englisch";
     public static final String VALIDATION_UNI_GER = "Universität in Deutschland";
+    public static final String TEST_COMMAND = "show command statistics";
 }

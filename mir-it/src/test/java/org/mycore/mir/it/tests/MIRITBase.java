@@ -8,7 +8,7 @@ import org.mycore.mir.it.controller.MIRModsEditorController;
 import org.mycore.mir.it.controller.MIRPublishEditorController;
 import org.mycore.mir.it.controller.MIRUserController;
 
-public class MIREditorITBase extends MCRSeleniumTestBase {
+public class MIRITBase extends MCRSeleniumTestBase {
     MIRUserController userController;
     MIRPublishEditorController publishEditorController;
     MIRModsEditorController editorController;

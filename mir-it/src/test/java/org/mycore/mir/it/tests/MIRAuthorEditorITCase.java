@@ -24,7 +24,7 @@ import org.mycore.mir.it.model.MIRLanguage;
 import org.mycore.mir.it.model.MIRLicense;
 import org.mycore.mir.it.model.MIRTypeOfResource;
 
-public class MIRAuthorEditorITCase extends MIREditorITBase {
+public class MIRAuthorEditorITCase extends MIRITBase {
 
     private static final String SUBMITTER_USER_NAME = "submitter";
     private static final String SUBMITTER_USER_PASSWORD = "tugdriwsella";

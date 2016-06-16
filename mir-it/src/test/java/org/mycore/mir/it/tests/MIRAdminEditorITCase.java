@@ -25,7 +25,7 @@ import org.mycore.mir.it.model.MIRTitleType;
 import org.mycore.mir.it.model.MIRTypeOfResource;
 import org.openqa.selenium.NoSuchElementException;
 
-public class MIRAdminEditorITCase extends MIREditorITBase {
+public class MIRAdminEditorITCase extends MIRITBase {
 
     private MIRSimpleSearchController simpleSearchController;
 
