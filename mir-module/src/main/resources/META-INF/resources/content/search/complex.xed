@@ -5,7 +5,7 @@
     xmlns:mir="http://www.mycore.de/mir"
     i18n="component.mods.editor.search.complex.pagetitle">
     <xed:form class="form-horizontal" role="form">
-      <xed:cleanup-rule xpath="//condition" relevant-if="string-length(@value)&gt;0" />
+      <xed:cleanup-rule xpath="//condition" relevant-if="(string-length(@value) &gt; 0) or value[string-length(text()) &gt; 0 ]" />
       <xed:cleanup-rule xpath="//boolean" relevant-if="boolean|condition" />
       <xed:source uri="searchInput:{id}" />
       <xed:source uri="webapp:editor/search/template/complex.xml" />

@@ -58,7 +58,7 @@
   </xed:template>
   
   <xed:template id="cleanup-rules">
-    <xed:cleanup-rule xpath="//condition" relevant-if="string-length(@value) &gt; 0" />
+    <xed:cleanup-rule xpath="//condition" relevant-if="(string-length(@value) &gt; 0) or value[string-length(text()) &gt; 0 ]" />
   </xed:template>
   
 </xed:template>
