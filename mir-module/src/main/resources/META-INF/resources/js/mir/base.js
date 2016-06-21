@@ -283,18 +283,6 @@
       var mcrId = doiButton.attr("data-mycoreID");
       var baseURL = doiButton.attr("data-baseURL");
       var doiResource = baseURL + "rsc/pi/registration/service/Datacite/" + mcrId;
-      var modal = "<div class='modal fade'>" +
-          "<div class='modal-dialog'>" +
-          "<div class='modal-content'>" +
-          "<div class='modal-header'>" +
-          "<button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>&times;</span></button>" +
-          "</div>" +
-          "<div class='modal-body'>" +
-          "%content%" +
-          "</div>" +
-          "</div>" +
-          "</div>" +
-          "</div>";
 
       $.ajax({
         type: 'POST',
