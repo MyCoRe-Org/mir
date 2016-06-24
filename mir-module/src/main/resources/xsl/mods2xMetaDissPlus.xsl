@@ -220,7 +220,7 @@
               <xsl:attribute name="type">nameUsedByThePerson</xsl:attribute>
               <xsl:choose>
                 <xsl:when test="mods:nameIdentifier[@type='gnd']">
-                  <xsl:variable name="gndURL" select="concat('http://d-nb.info/gnd/',normalize-space(mods:nameIdentifier[@type='gnd']),'/about/lds')" />
+                  <xsl:variable name="gndURL" select="concat('http://d-nb.info/gnd/',normalize-space(mods:nameIdentifier[@type='gnd']),'/about/lds.rdf')" />
                   <xsl:variable name="gndEntry" select="document($gndURL)" />
                   <xsl:element name="pc:foreName">
                     <xsl:value-of select="$gndEntry//gndo:preferredNameEntityForThePerson/rdf:Description/gndo:forename" />
@@ -378,6 +378,10 @@
           </xsl:when>
           <xsl:when test="contains(./metadata/def.modsContainer/modsContainer/mods:mods/mods:genre/@valueURI, 'book')">
             <xsl:text>book</xsl:text>
+          </xsl:when>
+          <xsl:when test="contains(./metadata/def.modsContainer/modsContainer/mods:mods/mods:genre/@valueURI, 'dissertation') or
+                          contains(./metadata/def.modsContainer/modsContainer/mods:mods/mods:genre/@valueURI, 'habilitation')">
+            <xsl:text>doctoralThesis</xsl:text>
           </xsl:when>
           <xsl:otherwise>
             <xsl:text>Other</xsl:text>
