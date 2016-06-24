@@ -7,8 +7,9 @@
   xmlns:xlink="http://www.w3.org/1999/xlink"
   xmlns:urn="http://www.ddb.de/standards/urn"
   xmlns:mods="http://www.loc.gov/mods/v3"
+  xmlns:mcr="xalan://org.mycore.common.xml.MCRXMLFunctions"
   xmlns:mcrurn="xalan://org.mycore.urn.MCRXMLFunctions"
-  exclude-result-prefixes="xsl mods mcrurn"
+  exclude-result-prefixes="xsl mods mcr mcrurn"
 >
 
   <xsl:output method="xml" encoding="UTF-8" />
@@ -144,7 +145,7 @@
               <xsl:element name="identifier" namespace="urn:nbn:de:1111-2004033116">
                 <xsl:attribute name="scheme">url</xsl:attribute>
                 <xsl:value-of
-                  select="concat($WebApplicationBaseURL,'servlets/MCRFileNodeServlet/',$derID,'/',./name)" />
+                  select="concat($WebApplicationBaseURL,'servlets/MCRFileNodeServlet/',$derID,'/',mcr:encodeURIPath(./name))" />
               </xsl:element>
               <xsl:element name="format" namespace="urn:nbn:de:1111-2004033116">
                 <xsl:attribute name="scheme">imt</xsl:attribute>
