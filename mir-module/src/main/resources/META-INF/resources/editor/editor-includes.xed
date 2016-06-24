@@ -612,7 +612,7 @@
         <div class="col-md-6">
           <input type="text" size="20" class="form-control form-control-inline {$xed-validation-marker} nameIdentifier" />
         </div>
-        <mir:help-pmud help-text="{i18n:mir.help.doi.handle.urn}" pmud="true" />
+        <mir:help-pmud help-text="{i18n:mir.help.nameIdentifier}" pmud="true" />
       </div>
     </xed:repeat>
   </xed:template>
@@ -620,7 +620,7 @@
   <xed:template id="namePart.repeated">
     <xed:repeat xpath="mods:namePart" min="1" max="100">
       <div class="form-group">
-        <xed:bind xpath="@type" name="type">
+        <xed:bind xpath="@type" name="type" initially="termsOfAddress">
           <div class="col-md-3">
             <select class="form-control" style="text-align:right; font-weight:bold;">
               <option value="family">
