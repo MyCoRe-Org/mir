@@ -124,6 +124,7 @@
    <field name="id" type="string" indexed="true" stored="true" required="true" multiValued="false" />
 
     <!-- Start: MyCoRe specific schema definition -->
+    <field name="objectKind" type="string" />
     <field name="objectType" type="string" />
     <field name="objectProject" type="string" />
     <field name="returnId" type="string" />
