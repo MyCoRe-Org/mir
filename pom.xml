@@ -4,18 +4,18 @@
   <parent>
     <groupId>org.mycore</groupId>
     <artifactId>mycore-parent</artifactId>
-    <version>29-SNAPSHOT</version>
+    <version>29</version>
   </parent>
   <groupId>org.mycore.mir</groupId>
   <artifactId>mir-parent</artifactId>
-  <version>2016.03-SNAPSHOT</version>
+  <version>2016.06.0</version>
   <packaging>pom</packaging>
   <name>MIR</name>
   <description>MyCoRe/MODS Institutional Repository</description>
   <inceptionYear>2013</inceptionYear>
   <properties>
     <java.target.version>1.8</java.target.version>
-    <mycore.version>2016.03-SNAPSHOT</mycore.version>
+    <mycore.version>2016.06.0</mycore.version>
     <hibernate.version>5.1.0.Final</hibernate.version>
     <jetty.version>9.3.9.v20160517</jetty.version>
     <tomcat8.version>8.0.35</tomcat8.version>
