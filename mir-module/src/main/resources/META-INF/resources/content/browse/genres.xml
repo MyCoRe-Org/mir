@@ -3,9 +3,9 @@
 
 <MyCoReWebPage>
 
-  <section i18n="component.mods.browse.genre" xml:lang="all">
+  <section i18n="browse.genre" xml:lang="all">
 
-    <h3><i18n key="component.mods.browse.genre" /></h3>
+    <h3><i18n key="browse.genre" /></h3>
     <classificationbrowser classification="mir_genres"
                                objecttype="mods"
                               restriction="+category.top:&quot;state:published&quot;"
