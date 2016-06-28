@@ -54,19 +54,19 @@
     <label xml:lang="de">Blättern</label>
     <label xml:lang="en">Browse</label>
     <item href="/content/browse/institutes.xml" type="intern">
-      <label xml:lang="de">nach Einrichtung</label>
+      <label xml:lang="de">Einrichtungen</label>
       <label xml:lang="en">Institutions</label>
     </item>
     <item href="/content/browse/genres.xml" type="intern">
-      <label xml:lang="de">nach Dokumenttyp</label>
-      <label xml:lang="en">Genre</label>
+      <label xml:lang="de">Dokumenttypen</label>
+      <label xml:lang="en">Genres</label>
     </item>
     <item href="/content/browse/sdnb.xml" type="intern">
-      <label xml:lang="de">nach Sachgruppe</label>
+      <label xml:lang="de">Sachgruppen</label>
       <label xml:lang="en">SNDB</label>
     </item>
     <item href="/servlets/MCRActionMappingServlet/personindex/browse" type="extern">
-      <label xml:lang="de">nach Personen</label>
+      <label xml:lang="de">Personen</label>
       <label xml:lang="en">Persons</label>
     </item>
   </menu>
