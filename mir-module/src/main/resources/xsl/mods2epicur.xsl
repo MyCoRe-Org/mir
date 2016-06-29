@@ -145,7 +145,7 @@
               <xsl:element name="identifier" namespace="urn:nbn:de:1111-2004033116">
                 <xsl:attribute name="scheme">url</xsl:attribute>
                 <xsl:value-of
-                  select="concat($WebApplicationBaseURL,'servlets/MCRFileNodeServlet/',$derID,'/',mcr:encodeURIPath(./name))" />
+                  select="concat($WebApplicationBaseURL,'servlets/MCRFileNodeServlet/',$derID,'/',mcr:encodeURIPath(./name, true()))" />
               </xsl:element>
               <xsl:element name="format" namespace="urn:nbn:de:1111-2004033116">
                 <xsl:attribute name="scheme">imt</xsl:attribute>
