@@ -15,7 +15,7 @@
   <inceptionYear>2013</inceptionYear>
   <properties>
     <java.target.version>1.8</java.target.version>
-    <mycore.version>2016.06.0</mycore.version>
+    <mycore.version>2016.06.0.1-SNAPSHOT</mycore.version>
     <hibernate.version>5.1.0.Final</hibernate.version>
     <jetty.version>9.3.9.v20160517</jetty.version>
     <tomcat8.version>8.0.35</tomcat8.version>
@@ -96,6 +96,16 @@
       <url>http://artifactory.mycore.de/mycore-snapshots</url>
       <releases>
         <enabled>false</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </repository>
+    <repository>
+      <id>provided</id>
+      <url>http://nexus.anotheria.net/nexus/content/groups/public</url>
+      <releases>
+        <enabled>true</enabled>
       </releases>
       <snapshots>
         <enabled>true</enabled>
@@ -547,6 +557,37 @@
         <artifactId>HikariCP</artifactId>
         <version>2.4.5</version>
         <scope>runtime</scope>
+      </dependency>
+      <dependency>
+        <groupId>net.anotheria</groupId>
+        <artifactId>moskito-core</artifactId>
+        <version>2.7.2</version>
+      </dependency>
+      <dependency>
+        <groupId>net.anotheria</groupId>
+        <artifactId>moskito-web</artifactId>
+        <version>2.7.2</version>
+      </dependency>
+      <dependency>
+        <groupId>net.anotheria</groupId>
+        <artifactId>moskito-webui</artifactId>
+        <version>2.7.2</version>
+        <exclusions>
+          <exclusion>
+            <groupId>javassist</groupId>
+            <artifactId>javassist</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+      <dependency>
+        <groupId>net.anotheria</groupId>
+        <artifactId>moskito-aop</artifactId>
+        <version>2.7.2</version>
+      </dependency>
+      <dependency>
+        <groupId>de.erichseifert.vectorgraphics2d</groupId>
+        <artifactId>VectorGraphics2D</artifactId>
+        <version>0.10</version>
       </dependency>
       <dependency>
         <groupId>org.hibernate</groupId>
