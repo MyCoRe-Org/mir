@@ -456,7 +456,7 @@
             </xsl:choose>
             <xsl:if test="$displayAddDerivate='true'">
               <li>
-                <a href="{$WebApplicationBaseURL}fileupload.xml{$HttpSession}?XSL.parentObjectID={$id}">
+                <a href="{$ServletsBaseURL}derivate/create{$HttpSession}?id={$id}">
                   <xsl:value-of select="i18n:translate('derivate.addDerivate')" />
                 </a>
               </li>
@@ -618,7 +618,6 @@
   <xsl:template match="derobject" mode="derivateActions">
     <xsl:param name="deriv" />
     <xsl:param name="parentObjID" />
-    <xsl:param name="suffix" select="''" />
 
     <xsl:if
       test="(key('rights', $deriv)/@accKeyEnabled and key('rights', $deriv)/@readKey) and not(mcrxsl:isCurrentUserGuestUser() or key('rights', $deriv)/@read or key('rights', $deriv)/@write)"
@@ -669,7 +668,7 @@
             <xsl:choose>
               <xsl:when test="$derivateWithURN=false()">
                 <li>
-                  <a href="{$WebApplicationBaseURL}fileupload.xml{$HttpSession}?XSL.parentObjectID={../../../@ID}&amp;XSL.derivateID={$deriv}{$suffix}" class="option">
+                  <a href="{$ServletsBaseURL}derivate/update{$HttpSession}?objectid={../../../@ID}&amp;id={$deriv}" class="option">
                     <xsl:value-of select="i18n:translate('component.swf.derivate.addFile')" />
                   </a>
                 </li>

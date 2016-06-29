@@ -5,25 +5,47 @@
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:xalan="http://xml.apache.org/xalan"
   xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
-  exclude-result-prefixes="xsl xalan i18n"
+  xmlns:decoder="xalan://java.net.URLDecoder"
+  exclude-result-prefixes="xsl xalan i18n decoder"
 >
 
-<xsl:param name="UploadID" />
+<xsl:variable name="uploadId">
+  <xsl:call-template name="UrlGetParam">
+    <xsl:with-param name="url" select="$RequestURL" />
+    <xsl:with-param name="par" select="'uploadId'" />
+  </xsl:call-template>
+</xsl:variable>
+<xsl:variable name="parentObjectID">
+  <xsl:call-template name="UrlGetParam">
+    <xsl:with-param name="url" select="$RequestURL" />
+    <xsl:with-param name="par" select="'parentObjectID'" />
+  </xsl:call-template>
+</xsl:variable>
+<xsl:variable name="derivateID">
+  <xsl:call-template name="UrlGetParam">
+    <xsl:with-param name="url" select="$RequestURL" />
+    <xsl:with-param name="par" select="'derivateID'" />
+  </xsl:call-template>
+</xsl:variable>
+<xsl:variable name="cancelUrl">
+  <xsl:variable name="paramValue">
+    <xsl:call-template name="UrlGetParam">
+      <xsl:with-param name="url" select="$RequestURL" />
+      <xsl:with-param name="par" select="'cancelUrl'" />
+    </xsl:call-template>
+  </xsl:variable>
+  <xsl:value-of select="decoder:decode(string($paramValue),'UTF-8')" />
+</xsl:variable>
+
 <xsl:param name="selectMultiple" select="'true'" />
 <xsl:param name="acceptFileTypes" select="'*'" />
-<xsl:param name="ObjectID" />
 <xsl:param name="MCR.UploadApplet.BackgroundColor" select="'#CAD9E0'"/>
 <xsl:param name="MIR.Html5Upload.Disabled" select="'false'"/>
-
-<xsl:param name="parentObjectID" />
-<xsl:param name="derivateID" />
-<xsl:param name="cancelUrl" />
-<xsl:param name="mcrid" />
 
 <!-- tag to embed applet in Internet Explorer -->
 <xsl:variable name="applet.object.tag">
   <object class="appletUpload" classid="clsid:8AD9C840-044E-11D1-B3E9-00805F499D93" width="380" height="130">
-    <param name="uploadId" value="{$UploadID}" />
+    <param name="uploadId" value="{$uploadId}" />
     <param name="codebase" value="{$WebApplicationBaseURL}applet" />
     <param name="code" value="org.mycore.fileupload.MCRUploadApplet.class" />
     <param name="cache_option" value="Plugin" />
@@ -31,7 +53,7 @@
     <param name="progressbar" value="true" />
     <param name="progresscolor" value="blue" />
     <param name="background-color" value="{$MCR.UploadApplet.BackgroundColor}" />
-    <param name="url" value="{$WebApplicationBaseURL}servlets/MCRUploadViaAppletServlet{$HttpSession}?method=redirecturl&amp;uploadId={$UploadID}" />
+    <param name="url" value="{$WebApplicationBaseURL}servlets/MCRUploadViaAppletServlet{$HttpSession}?method=redirecturl&amp;uploadId={$uploadId}" />
     <param name="ServletsBase" value="{$ServletsBaseURL}" />
     <param name="selectMultiple" value="{$selectMultiple}" />
     <param name="acceptFileTypes" value="{$acceptFileTypes}" />
@@ -74,7 +96,7 @@
 
 <xsl:template match="filetarget">
   
-  <input name="uploadId" value="{$UploadID}" type="hidden"/>
+  <input name="uploadId" value="{$uploadId}" type="hidden"/>
   <input name="method" value="formBasedUpload" type="hidden"/>
   <xsl:variable name="cancelUrl2">
     <xsl:call-template name="buildCancelUrl" />  
@@ -85,7 +107,7 @@
 </xsl:template>
 
 <xsl:template match="fileupload">
-  <xsl:variable name="formUploadUrl" select="concat($WebApplicationBaseURL,'servlets/MCRUploadViaFormServlet',$HttpSession,'?method=formBasedUpload&amp;uploadId=',$UploadID)" />
+  <xsl:variable name="formUploadUrl" select="concat($WebApplicationBaseURL,'servlets/MCRUploadViaFormServlet',$HttpSession,'?method=formBasedUpload&amp;uploadId=',$uploadId)" />
 
   <xsl:choose>
     <xsl:when test="$MIR.Html5Upload.Disabled != 'true'">
@@ -112,7 +134,7 @@
             <div class="col-xs-12">
               <a id="backBtn"
                       class="btn btn-primary action toggable"
-                      href="{$WebApplicationBaseURL}receive/{$ObjectID}">
+                      href="{$WebApplicationBaseURL}receive/{$parentObjectID}">
                 <xsl:value-of select="i18n:translate('fileUpload.back')"/>
               </a>
               <button id="clearBtn"
@@ -185,7 +207,7 @@
 
 <xsl:template match="fileupload2">
   <xsl:variable name="parameter" select="concat('&amp;parentObjectID=',$parentObjectID,'&amp;derivateID=',$derivateID)" />
-  <xsl:variable name="formUploadUrl" select="concat($WebApplicationBaseURL,'servlets/MCRUploadViaFormServlet',$HttpSession,'?method=formBasedUpload&amp;uploadId=',$UploadID,$parameter)" />
+  <xsl:variable name="formUploadUrl" select="concat($WebApplicationBaseURL,'servlets/MCRUploadViaFormServlet',$HttpSession,'?method=formBasedUpload&amp;uploadId=',$uploadId,$parameter)" />
   <xsl:variable name="cancelUrl2">
     <xsl:call-template name="buildCancelUrl" />  
   </xsl:variable>
@@ -245,8 +267,6 @@
                       onclick="window.location.href='{$cancelUrl2}?XSL.Status.Message=mir.derivate.editstatus.success&amp;XSL.Status.Style=success'" disabled="true">
                 <xsl:value-of select="i18n:translate('fileUpload.done')"/>
               </button>
-              
-              
               
             </div>
           </div>

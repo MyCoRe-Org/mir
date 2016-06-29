@@ -80,7 +80,7 @@
                     </div>
                   </div>
                   <div class="col-md-3">
-                    <a class="btn btn-default info-button" data-content="Bitte wÃ¤hlen sie die Ã¼ber den Durchsuchen Button die hochzuladenen Dateien aus. Es kÃ¶nnen auch mehre Dateien mir einmal ausgewÃ¤hlt werden." data-placement="right" data-toggle="popover" role="button" tabindex="0">
+                    <a class="btn btn-default info-button" data-content="Bitte wählen sie die über den Durchsuchen Button die hochzuladenen Dateien aus. Es können auch mehre Dateien mir einmal ausgewählt werden." data-placement="right" data-toggle="popover" role="button" tabindex="0">
                       <i class="fa fa-info"></i>
                     </a>
                   </div>
