@@ -1,6 +1,6 @@
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
-  xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions" xmlns:encoder="xalan://java.net.URLEncoder" exclude-result-prefixes="i18n xlink mcrxsl encoder"
->
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xlink="http://www.w3.org/1999/xlink"
+  xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation" xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions" xmlns:encoder="xalan://java.net.URLEncoder"
+  exclude-result-prefixes="i18n xlink mcrxsl encoder">
   <xsl:variable name="Type" select="'document'" />
 
   <xsl:variable name="PageTitle" select="i18n:translate('titles.pageTitle.error',concat(' ',/mcr_error/@HttpError))" />
@@ -14,31 +14,35 @@
         <xsl:value-of select="i18n:translate('mir.error.subheadline')" />
       </h2>
       <p class="lead">
-        <xsl:choose>
-          <xsl:when test="@errorServlet and string-length(text()) &gt; 1">
-            <xsl:call-template name="lf2br">
-              <xsl:with-param name="string" select="text()" />
-            </xsl:call-template>
-          </xsl:when>
-          <xsl:otherwise>
-            <xsl:value-of disable-output-escaping="yes" select="i18n:translate(concat('mir.error.codes.',/mcr_error/@HttpError),/mcr_error/@requestURI)" />
-          </xsl:otherwise>
-        </xsl:choose>
+        <xsl:value-of disable-output-escaping="yes"
+          select="i18n:translate(concat('mir.error.codes.',/mcr_error/@HttpError),/mcr_error/@requestURI)" />
       </p>
       <xsl:choose>
-        <xsl:when test="exception">
-          <div class="panel panel-warning">
-            <div class="panel-heading">
-              <xsl:value-of select="concat(i18n:translate('error.stackTrace'),' :')" />
+        <xsl:when test="@errorServlet and string-length(text()) &gt; 1 or exception">
+          <xsl:if test="@errorServlet and string-length(text()) &gt; 1">
+            <div class="alert alert-info" role="alert">
+              <xsl:attribute name="title">
+                <xsl:value-of select="i18n:translate('mir.error.message')" />
+              </xsl:attribute>
+              <xsl:call-template name="lf2br">
+                <xsl:with-param name="string" select="text()" />
+              </xsl:call-template>
             </div>
-            <div class="panel-body">
-              <xsl:for-each select="exception/trace">
-                <pre style="font-size:0.8em;">
-                  <xsl:value-of select="." />
-                </pre>
-              </xsl:for-each>
+          </xsl:if>
+          <xsl:if test="exception">
+            <div class="panel panel-warning">
+              <div class="panel-heading">
+                <xsl:value-of select="concat(i18n:translate('error.stackTrace'),' :')" />
+              </div>
+              <div class="panel-body">
+                <xsl:for-each select="exception/trace">
+                  <pre style="font-size:0.8em;">
+                    <xsl:value-of select="." />
+                  </pre>
+                </xsl:for-each>
+              </div>
             </div>
-          </div>
+          </xsl:if>
         </xsl:when>
         <xsl:otherwise>
           <p>
@@ -79,7 +83,8 @@
               <xsl:when test="$hasAccKP">
                 <xsl:value-of disable-output-escaping="yes" select="i18n:translate('mir.error.accessKeyRequired', $objectId)" />
                 <xsl:text>&#160;</xsl:text>
-                <a href="{concat($WebApplicationBaseURL, 'authorization/accesskey.xed', '?objId=', $objectId, '&amp;url=', encoder:encode(string($RequestURL)))}">
+                <a
+                  href="{concat($WebApplicationBaseURL, 'authorization/accesskey.xed', '?objId=', $objectId, '&amp;url=', encoder:encode(string($RequestURL)))}">
                   <xsl:value-of select="i18n:translate('mir.accesskey.setOnUser')" />
                 </a>
               </xsl:when>
