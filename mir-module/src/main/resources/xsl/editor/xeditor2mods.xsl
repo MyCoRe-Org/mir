@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:mcr="http://www.mycore.org/" xmlns:xlink="http://www.w3.org/1999/xlink"
   xmlns:mods="http://www.loc.gov/mods/v3" xmlns:mcrmods="xalan://org.mycore.mods.classification.MCRMODSClassificationSupport" xmlns:mcrxml="xalan://org.mycore.common.xml.MCRXMLFunctions"
-  xmlns:mcrdataurl="xalan://org.mycore.datamodel.common.MCRDataURL" exclude-result-prefixes="mcrmods xlink mcr mcrxml mcrdataurl" version="1.0"
+  xmlns:mcrdataurl="xalan://org.mycore.datamodel.common.MCRDataURL" xmlns:exslt="http://exslt.org/common" exclude-result-prefixes="mcrmods xlink mcr mcrxml mcrdataurl exslt" version="1.0"
 >
 
   <xsl:include href="copynodes.xsl" />
   <xsl:include href="editor/mods-node-utils.xsl" />
   <xsl:include href="mods-utils.xsl"/>
+  <xsl:include href="coreFunctions.xsl"/>
 
   <xsl:param name="MIR.PPN.DatabaseList" select="'gvk'" />
 
@@ -191,6 +192,22 @@
   <!-- In editor, all variants of page numbers are edited in a single text field -->
   <xsl:template match="mods:part/mods:extent[@unit='pages']" xmlns:pages="xalan://org.mycore.mods.MCRMODSPagesHelper">
     <xsl:copy-of select="pages:buildExtentPagesNodeSet(mods:list/text())" />
+  </xsl:template>
+
+  <xsl:template match="mods:subject/mods:topic">
+    <xsl:variable name="topic">
+      <xsl:call-template name="Tokenizer"><!-- use split function from mycore-base/coreFunctions.xsl -->
+        <xsl:with-param name="string" select="." />
+        <xsl:with-param name="delimiter" select="';'" />
+      </xsl:call-template>
+    </xsl:variable>
+    <xsl:for-each select="exslt:node-set($topic)/token">
+      <xsl:if test="mcrxml:trim(.) != ''">
+        <mods:topic>
+          <xsl:value-of select="."/>
+        </mods:topic>
+      </xsl:if>
+    </xsl:for-each>
   </xsl:template>
 
 </xsl:stylesheet>
