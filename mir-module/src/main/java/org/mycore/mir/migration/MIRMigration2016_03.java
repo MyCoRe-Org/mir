@@ -72,5 +72,21 @@ public class MIRMigration2016_03 {
         return cmds;
     }
 
+    @MCRCommand(
+            syntax = "migrate namePart",
+            help = "splits mods:displayForm in to mods:namePart")
+    public static List<String> updateNamePart() {
+        URL styleFile = MIRMigration2016_03.class.getResource("/xsl/mycoreobject-migrate-namePart.xsl");
+        if (styleFile == null) {
+            LOGGER.error("Could not find migration stylesheet. File a bug!");
+            return null;
+        }
+        TreeSet<String> ids = new TreeSet<>(MCRXMLMetadataManager.instance().listIDsOfType("mods"));
+        ArrayList<String> cmds = new ArrayList<>(ids.size());
+        for (String id : ids) {
+            cmds.add("xslt " + id + " with file " + styleFile.toString());
+        }
+        return cmds;
+    }
 
 }
