@@ -223,10 +223,16 @@
         </xsl:choose>
       </xsl:variable>
       <xsl:variable name="hits" xmlns:encoder="xalan://java.net.URLEncoder"
-        select="document(concat('solr:q=',encoder:encode(concat('mods.relatedItem:', mycoreobject/@ID, ' AND (', $state, ')')), '&amp;rows=1000&amp;sort=mods.dateIssued desc,mods.part desc&amp;group=true&amp;group.limit=100&amp;group.field=mods.dateIssued'))/response/lst[@name='grouped']/lst[@name='mods.dateIssued']" />
+        select="document(concat('solr:q=',encoder:encode(concat('mods.relatedItem:', mycoreobject/@ID, ' AND (', $state, ')')), '&amp;rows=1000&amp;sort=mods.dateIssued desc,mods.part desc,mods.title.main desc&amp;group=true&amp;group.limit=100&amp;group.field=mods.dateIssued'))/response/lst[@name='grouped']/lst[@name='mods.dateIssued']" />
       <xsl:if test="$hits/int[@name='matches'] &gt; 0">
         <h3>
           <xsl:value-of select="i18n:translate('mir.metadata.content')" />
+          <xsl:if
+            test="$hits/arr[@name='groups']/lst/result/@numFound &gt; 1 and not($hits/arr[@name='groups']/lst/null/@name='groupValue') and count($hits/arr[@name='groups']/lst) &gt; 1"
+            >
+            <span id="mir_relatedItem_showAll">(alles ausklappen)</span>
+            <span id="mir_relatedItem_hideAll">(alles einklappen)</span>
+          </xsl:if>
         </h3>
         <xsl:choose>
           <xsl:when
@@ -246,7 +252,7 @@
                           <xsl:if test="str[@name='mods.part']">
                             <xsl:value-of select="str[@name='mods.part']" />
                           </xsl:if>
-                          <xsl:if test="str[@name='mods.part'] and not(contains(str[@name='mods.title.main'], str[@name='mods.part']))">
+                          <xsl:if test="str[@name='mods.part'] and not(str[@name='mods.title.main'] = str[@name='mods.part'])">
                             <xsl:text> - </xsl:text>
                             <xsl:value-of select="str[@name='search_result_link_text']" />
                           </xsl:if>

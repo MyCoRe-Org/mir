@@ -18,7 +18,7 @@
       // reuse player
       var myPlayer = $(this).data("player");
       (!myPlayer) && (myPlayer = videojs($(".mir-player video").attr("id"))) && ($(this).data("player", myPlayer));
-        
+
       myPlayer.src($.parseJSON($("#" + $(this).val() + " script").text()));
     });
 //--------
@@ -43,6 +43,7 @@
     });
 
     $("#mir_relatedItem > li > ul").hide();
+    $("#mir_relatedItem_hideAll").hide();
 
     //show full version history in metadata view
     $("#historyStarter").click(function() {
@@ -275,6 +276,22 @@
         $(this).parent().children("span.glyphicon").removeClass('glyphicon-chevron-right');
         $(this).parent().children("span.glyphicon").addClass('glyphicon-chevron-down');
       }
+    });
+
+    $("#mir_relatedItem_showAll").click(function(){
+      $("#mir_relatedItem > li > ul").show();
+      $("#mir_relatedItem > li > span.glyphicon").removeClass('glyphicon-chevron-right');
+      $("#mir_relatedItem > li > span.glyphicon").addClass('glyphicon-chevron-down');
+      $("#mir_relatedItem_showAll").hide();
+      $("#mir_relatedItem_hideAll").show();
+    });
+
+    $("#mir_relatedItem_hideAll").click(function(){
+      $("#mir_relatedItem > li > ul").hide();
+      $("#mir_relatedItem > li > span.glyphicon").removeClass('glyphicon-chevron-down');
+      $("#mir_relatedItem > li > span.glyphicon").addClass('glyphicon-chevron-right');
+      $("#mir_relatedItem_showAll").show();
+      $("#mir_relatedItem_hideAll").hide();
     });
 
 
