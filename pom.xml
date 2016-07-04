@@ -13,15 +13,18 @@
   <name>MIR</name>
   <description>MyCoRe/MODS Institutional Repository</description>
   <inceptionYear>2013</inceptionYear>
+  <prerequisites>
+    <maven>3.1.0</maven>
+  </prerequisites>
   <properties>
     <java.target.version>1.8</java.target.version>
     <mycore.version>2016.06.0.1-SNAPSHOT</mycore.version>
-    <hibernate.version>5.1.0.Final</hibernate.version>
-    <jetty.version>9.3.9.v20160517</jetty.version>
-    <tomcat8.version>8.0.35</tomcat8.version>
+    <hibernate.version>5.2.0.Final</hibernate.version>
+    <jetty.version>9.3.10.v20160621</jetty.version>
+    <tomcat8.version>8.5.3</tomcat8.version>
     <node.version>v4.2.2</node.version>
     <npm.version>3.5.0</npm.version>
-    <cargo.version>1.4.18</cargo.version>
+    <cargo.version>1.5.0</cargo.version>
     <cargo.servlet.uriencoding>UTF-8</cargo.servlet.uriencoding>
     <cargo.container.zipUrlInstaller.downloadDir>${settings.localRepository}/../cargo/containers</cargo.container.zipUrlInstaller.downloadDir>
     <cargo.deployable.default.groupId>${project.groupId}</cargo.deployable.default.groupId>
@@ -161,7 +164,7 @@
         <plugin>
           <groupId>org.codehaus.mojo</groupId>
           <artifactId>license-maven-plugin</artifactId>
-          <version>1.8</version>
+          <version>1.9</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
@@ -171,12 +174,12 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-assembly-plugin</artifactId>
-          <version>2.5.5</version>
+          <version>2.6</version>
         </plugin>
         <plugin>
           <groupId>org.codehaus.mojo</groupId>
           <artifactId>exec-maven-plugin</artifactId>
-          <version>1.4.0</version>
+          <version>1.5.0</version>
         </plugin>
         <plugin>
           <groupId>org.codehaus.cargo</groupId>
@@ -186,7 +189,7 @@
         <plugin>
           <groupId>com.github.eirslett</groupId>
           <artifactId>frontend-maven-plugin</artifactId>
-          <version>0.0.26</version>
+          <version>1.0</version>
         </plugin>
         <!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself. -->
         <plugin>
