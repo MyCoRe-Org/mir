@@ -59,6 +59,7 @@ var mainCol  = $('#main_content_column');                  // parent
 var leftCol  = $('#main_content_column #main_col');        // left child
 var rightCol = $('#main_content_column #aux_col');         // right child
 var headline = $('#head_col #headline');                   // title
+var browsing = $('#mir-search_browsing > div');            // browse through the hits
 
 // scale or enlarge elements
   if ( $('#side_nav_column').is(":visible") ) {
@@ -67,12 +68,14 @@ var headline = $('#head_col #headline');                   // title
     leftCol.removeClass('col-sm-8').addClass('col-xs-12');   // left
     rightCol.removeClass('col-sm-4').addClass('col-xs-12');  // right
     headline.removeClass('col-md-8').addClass('col-xs-12');  // title
+    browsing.removeClass('col-md-8').addClass('col-xs-12');  // browse through the hits
   } else {
     // side nav is hidden, make two columns
     mainCol.removeClass( 'col-sm-9').addClass( 'col-sm-12'); // parent
     leftCol.removeClass( 'col-xs-12').addClass('col-sm-8');  // left
     rightCol.removeClass('col-xs-12').addClass('col-sm-4');  // right
     headline.removeClass('col-xs-12').addClass('col-md-8');  // title
+    browsing.removeClass('col-xs-12').addClass('col-md-8');  // browse through the hits
   }
 }
 
