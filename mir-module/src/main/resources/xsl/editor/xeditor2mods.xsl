@@ -117,7 +117,7 @@
     </mods:accessCondition>
   </xsl:template>
 
-  <xsl:template match="mods:accessCondition[@type='use and reproduction'][contains(@xlink:href,'mir_licenses') or not(@xlink:href)]">
+  <xsl:template match="mods:accessCondition[@type='use and reproduction']">
     <mods:accessCondition type="use and reproduction">
       <xsl:attribute name="xlink:href">
         <xsl:choose>

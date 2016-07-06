@@ -56,10 +56,12 @@
             </xsl:call-template>
 
 
+            <xsl:variable name="institutesURI" select="document('classification:metadata:-1:children:mir_institutes')/mycoreclass/label[@xml:lang='x-uri']/@text" />
+
             <!-- mods:name grouped by mods:role/mods:roleTerm excluding author-->
             <xsl:for-each
               select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:name[not(@ID) and
-                      (@type='personal' or (@type='corporate' and not(contains(@authorityURI,'mir_institutes'))))
+                      (@type='personal' or (@type='corporate' and not(@authorityURI = $institutesURI)))
                       and not(mods:role/mods:roleTerm='aut') and count(. | key('name-by-role',mods:role/mods:roleTerm)[1])=1]">
               <!-- for every role -->
               <xsl:choose>
@@ -123,11 +125,11 @@
               </xsl:if>
             </xsl:for-each>
             <xsl:call-template name="printMetaDate.mods">
-              <xsl:with-param name="nodes" select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:relatedItem[@type='host']/mods:part/mods:detail[@type='volume']" />
+              <xsl:with-param name="nodes" select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:relatedItem[@type='host']/mods:part/mods:detail[@type='volume']/mods:number" />
               <xsl:with-param name="label" select="i18n:translate('component.mods.metaData.dictionary.volume.article')" />
             </xsl:call-template>
             <xsl:call-template name="printMetaDate.mods">
-              <xsl:with-param name="nodes" select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:relatedItem[@type='host']/mods:part/mods:detail[@type='issue']" />
+              <xsl:with-param name="nodes" select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:relatedItem[@type='host']/mods:part/mods:detail[@type='issue']/mods:number" />
               <xsl:with-param name="label" select="i18n:translate('mir.details.issue')" />
             </xsl:call-template>
             <xsl:call-template name="printMetaDate.mods">
@@ -237,7 +239,7 @@
                 </td>
               </tr>
             </xsl:for-each>
-            <xsl:apply-templates mode="present" select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:classification[@displayLabel!='status' or not(attribute::displayLabel)]" />
+            <xsl:apply-templates mode="present" select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:classification" />
             <xsl:apply-templates mode="present" select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:part/mods:extent" />
             <xsl:apply-templates mode="present" select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:location/mods:url" />
             <xsl:call-template name="printMetaDate.mods">
@@ -247,7 +249,7 @@
               <xsl:with-param name="nodes" select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:location/mods:shelfLocator" />
               <xsl:with-param name="label" select="i18n:translate('mir.shelfmark')" />
             </xsl:call-template>
-            <xsl:apply-templates mode="present" select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:name[@type='corporate'][@ID or contains(@authorityURI,'mir_institutes')]" />
+            <xsl:apply-templates mode="present" select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:name[@type='corporate'][@ID or @authorityURI=$institutesURI]" />
             <xsl:for-each select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:note">
               <xsl:variable name="myURI" select="concat('classification:metadata:0:children:noteTypes:',mcrxsl:regexp(@type,' ', '_'))" />
               <xsl:variable name="x-access">
