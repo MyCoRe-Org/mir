@@ -159,8 +159,7 @@
             <xsl:element name="identifier" namespace="urn:nbn:de:1111-2004033116">
               <xsl:attribute name="scheme">url</xsl:attribute>
               <xsl:attribute name="target">transfer</xsl:attribute>
-              <xsl:value-of
-                select="concat($WebApplicationBaseURL,'zip?id=',$derID)" />
+              <xsl:value-of select="concat($ServletsBaseURL,'MCRZipServlet/',$derID)" />
             </xsl:element>
             <xsl:element name="format" namespace="urn:nbn:de:1111-2004033116">
               <xsl:attribute name="scheme">imt</xsl:attribute>
