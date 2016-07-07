@@ -230,8 +230,8 @@
           <xsl:if
             test="$hits/arr[@name='groups']/lst/result/@numFound &gt; 1 and not($hits/arr[@name='groups']/lst/null/@name='groupValue') and count($hits/arr[@name='groups']/lst) &gt; 1"
             >
-            <span id="mir_relatedItem_showAll">(alles ausklappen)</span>
-            <span id="mir_relatedItem_hideAll">(alles einklappen)</span>
+            <a id="mir_relatedItem_showAll" class="pull-right" href="#">alles ausklappen</a>
+            <a id="mir_relatedItem_hideAll" class="pull-right" href="#">alles einklappen</a>
           </xsl:if>
         </h3>
         <xsl:choose>

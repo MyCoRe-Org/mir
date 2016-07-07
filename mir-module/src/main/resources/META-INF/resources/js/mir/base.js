@@ -278,7 +278,8 @@
       }
     });
 
-    $("#mir_relatedItem_showAll").click(function(){
+    $("#mir_relatedItem_showAll").click(function(event){
+      event.preventDefault();
       $("#mir_relatedItem > li > ul").show();
       $("#mir_relatedItem > li > span.glyphicon").removeClass('glyphicon-chevron-right');
       $("#mir_relatedItem > li > span.glyphicon").addClass('glyphicon-chevron-down');
@@ -286,7 +287,8 @@
       $("#mir_relatedItem_hideAll").show();
     });
 
-    $("#mir_relatedItem_hideAll").click(function(){
+    $("#mir_relatedItem_hideAll").click(function(event){
+      event.preventDefault();
       $("#mir_relatedItem > li > ul").hide();
       $("#mir_relatedItem > li > span.glyphicon").removeClass('glyphicon-chevron-down');
       $("#mir_relatedItem > li > span.glyphicon").addClass('glyphicon-chevron-right');
