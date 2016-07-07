@@ -5,6 +5,14 @@
   exclude-result-prefixes="xsl mir i18n">
 
   <xsl:include href="copynodes.xsl" />
+  <xsl:variable name="institutesURI" select="document('classification:metadata:0:children:mir_institutes')/mycoreclass/label[lang('x-uri')]/@text" />
+  <xsl:template name="checkPreconditions">
+    <xsl:if test="string-length($institutesURI) = 0">
+      <xsl:message terminate="yes">
+        <xsl:value-of select="'Missing label x-uri in classification mir_institutes!'" />
+      </xsl:message>
+    </xsl:if>
+  </xsl:template>
 
   <xsl:template name="mir-helpbutton">
     <a tabindex="0" class="btn btn-default info-button" role="button" data-toggle="popover" data-placement="right" data-content="{@help-text}">
@@ -255,12 +263,12 @@
   </xsl:template>
 
   <xsl:template match="mir:role.extended.repeated">
+    <xsl:call-template name="checkPreconditions" />
     <xed:if test="mods:name[not(@type)]">
       <xed:bind xpath="mods:name[not(@type)]/@type" initially="personal"/>
     </xed:if>
-    <xsl:variable name="institutesURI" select="document('classification:metadata:-1:children:mir_institutes')/mycoreclass/label[@xml:lang='x-uri']/@text" />
     <xsl:variable name="xed-val-marker" > {$xed-validation-marker} </xsl:variable>
-    <xed:repeat xpath="mods:name[@type='personal' or (@type='corporate' and not(@authorityURI=$institutesURI))][mods:role/mods:roleTerm[@type='code'][@authority='marcrelator']='{@role}']" min="1" max="100">
+    <xed:repeat xpath="mods:name[@type='personal' or (@type='corporate' and not(@authorityURI='{$institutesURI}'))][mods:role/mods:roleTerm[@type='code'][@authority='marcrelator']='{@role}']" min="1" max="100">
       <fieldset class="personExtended_box">
         <legend class="mir-fieldset-legend hiddenDetail">
           <xed:bind xpath="mods:displayForm"> <!-- Move down to get the "required" validation right -->
@@ -296,12 +304,12 @@
   </xsl:template>
 
   <xsl:template match="mir:role.repeated">
+    <xsl:call-template name="checkPreconditions" />
     <xed:if test="mods:name[not(@type)]">
       <xed:bind xpath="mods:name[not(@type)]/@type" initially="personal"/>
     </xed:if>
-    <xsl:variable name="institutesURI" select="document('classification:metadata:-1:children:mir_institutes')/mycoreclass/label[@xml:lang='x-uri']/@text" />
     <xsl:variable name="xed-val-marker" > {$xed-validation-marker} </xsl:variable>
-    <xed:repeat xpath="mods:name[@type='personal' or (@type='corporate' and not(@authorityURI=$institutesURI))][mods:role/mods:roleTerm[@type='code'][@authority='marcrelator']='{@role}']" min="1" max="100">
+    <xed:repeat xpath="mods:name[@type='personal' or (@type='corporate' and not(@authorityURI='{$institutesURI}'))][mods:role/mods:roleTerm[@type='code'][@authority='marcrelator']='{@role}']" min="1" max="100">
       <xed:bind xpath="mods:displayForm"> <!-- Move down to get the "required" validation right -->
         <div class="form-group {@class} {$xed-val-marker}">
           <xed:bind xpath=".."> <!-- Move up again after validation marker is set -->
@@ -327,12 +335,12 @@
   </xsl:template>
 
   <xsl:template match="mir:person.extended.repeated">
+    <xsl:call-template name="checkPreconditions" />
     <xed:if test="mods:name[not(@type)]">
       <xed:bind xpath="mods:name[not(@type)]/@type" initially="personal"/>
     </xed:if>
-    <xsl:variable name="institutesURI" select="document('classification:metadata:-1:children:mir_institutes')/mycoreclass/label[@xml:lang='x-uri']/@text" />
     <xsl:variable name="xed-val-marker" > {$xed-validation-marker} </xsl:variable>
-    <xed:repeat xpath="mods:name[@type='personal' or (@type='corporate' and not(@authorityURI=$institutesURI))]" min="1" max="100">
+    <xed:repeat xpath="mods:name[@type='personal' or (@type='corporate' and not(@authorityURI='{$institutesURI}'))]" min="1" max="100">
       <fieldset class="personExtended_box">
         <legend class="mir-fieldset-legend hiddenDetail">
           <xed:bind xpath="mods:displayForm"> <!-- Move down to get the "required" validation right -->
@@ -370,12 +378,12 @@
   </xsl:template>
 
   <xsl:template match="mir:person.repeated">
+    <xsl:call-template name="checkPreconditions" />
     <xed:if test="mods:name[not(@type)]">
       <xed:bind xpath="mods:name[not(@type)]/@type" initially="personal"/>
     </xed:if>
-    <xsl:variable name="institutesURI" select="document('classification:metadata:-1:children:mir_institutes')/mycoreclass/label[@xml:lang='x-uri']/@text" />
     <xsl:variable name="xed-val-marker" > {$xed-validation-marker} </xsl:variable>
-    <xed:repeat xpath="mods:name[@type='personal' or (@type='corporate' and not(@authorityURI=$institutesURI))]" min="1" max="100">
+    <xed:repeat xpath="mods:name[@type='personal' or (@type='corporate' and not(@authorityURI='{$institutesURI}'))]" min="1" max="100">
       <xed:bind xpath="mods:displayForm"> <!-- Move down to get the "required" validation right -->
         <div class="form-group {@class} {$xed-val-marker}">
           <xed:bind xpath=".."> <!-- Move up again after validation marker is set -->
