@@ -4,7 +4,7 @@
 
   <xsl:import href="xslImport:modsmeta:metadata/mir-oastatistics.xsl" />  
   
-  <xsl:param name="MIR.OAS.GraphProviderURL" select=""/>
+  <xsl:param name="MIR.OAS.GraphProviderURL" select="''"/>
   
   <xsl:template match="/">
     <xsl:variable name="ID" select="/mycoreobject/@ID" />
