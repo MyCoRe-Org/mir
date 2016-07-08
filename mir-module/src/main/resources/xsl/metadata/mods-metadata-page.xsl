@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:mods="http://www.loc.gov/mods/v3" xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions"
-  xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation" exclude-result-prefixes="mods mcrxsl i18n"
+  xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation" xmlns:ex="http://exslt.org/dates-and-times" exclude-result-prefixes="mods mcrxsl i18n ex"
 >
   <xsl:include href="layout-utils.xsl" />
-
+  
+  <xsl:param name="MIR.oas" select="'hide'" />
+  
   <xsl:template match="/site">
     <xsl:copy>
       <xsl:copy-of select="@*" />
@@ -123,6 +125,21 @@
               </div>
             </div>
           </xsl:if>
+<!-- OAS statistics -->
+          <xsl:if test="$MIR.oas = 'show'">  
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h3 class="panel-title">
+                  <xsl:value-of select="i18n:translate('mir.oas.panelheading')" />
+                </h3>
+              </div>
+              <div class="panel-body" style="background-image:url({$WebApplicationBaseURL}content/images/oaslogobg.png);
+                background-repeat: no-repeat; background-position: center center;
+              ">
+                <xsl:apply-templates select="div[@id='mir-oastatistics']" mode="copyContent" />
+              </div>
+            </div>
+          </xsl:if>
 <!-- rights -->
           <xsl:if test="div[@id='mir-access-rights']">
             <div id="mir_access_rights_panel" class="panel panel-default">
@@ -167,7 +184,7 @@
                   <div class="modal-content">
                     <div class="modal-header">
                       <button type="button" class="close modalFrame-cancel" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">x</span>
+                        <i class="fa fa-times" aria-hidden="true"></i>
                       </button>
                       <h4 class="modal-title" id="modalFrame-title">
                         <xsl:value-of select="i18n:translate('metadata.versionInfo.label')" />
