@@ -4,7 +4,7 @@
 
   <xsl:import href="xslImport:modsmeta:metadata/mir-oastatistics.xsl" />  
   
-  <xsl:param name="MIR.OAS.GraphProviderURL" />
+  <xsl:param name="MIR.OAS.GraphProviderURL" select=""/>
   
   <xsl:template match="/">
     <xsl:variable name="ID" select="/mycoreobject/@ID" />
@@ -40,7 +40,7 @@
       <div class="row">
         <div class="col-md-7 col-sm-9 col-xs-6 text-right"><xsl:value-of select="i18n:translate('mir.oas.counter.abstract')" /></div>
         <div  data-oaselementtype="OASInline" 
-            data-oasproviderurl="{$MIR.oas.GraphProviderURL}" 
+            data-oasproviderurl="{$MIR.OAS.GraphProviderURL}" 
             data-oasidentifier="oai:ub-deposit.fernuni-hagen.de:{$objID}" 
             data-oascounttype="counter_abstract" 
         />
