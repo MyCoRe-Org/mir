@@ -5,6 +5,8 @@
   <xsl:import href="xslImport:modsmeta:metadata/mir-oastatistics.xsl" />
 
   <xsl:param name="MIR.OAS" select="'hide'" />
+  <xsl:param name="MIR.OAS.Prefix" />
+  <xsl:param name="MIR.OAS.GraphProviderURL" />
 
   <xsl:template match="/">
     <xsl:if test="$MIR.OAS = 'show'">
