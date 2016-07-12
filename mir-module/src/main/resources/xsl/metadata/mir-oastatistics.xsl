@@ -29,9 +29,7 @@
       <xsl:variable name="until" select="ex:format-date($now,'yyyy-MM')" />
       <xsl:variable name="objID" select="mycoreobject/@ID" />
       <div id="mir-oastatistics">
-        <div class="row">
-          <h3 class="col-md-12">Gesamt</h3>
-        </div>
+        <span><strong>Gesamt:</strong></span>
         <div class="row">
           <div class="col-md-7 col-sm-9 col-xs-6 text-right"><xsl:value-of select="i18n:translate('mir.oas.counter.fulltext')" /></div>
           <div  data-oaselementtype="OASInline"
@@ -48,9 +46,7 @@
               data-oascounttype="counter_abstract"
           />
         </div>
-        <div class="row">
-          <h3 class="col-md-12">12 Monate</h3>
-        </div>
+        <span><strong>12 Monate:</strong></span>
         <div class="row">
           <div class="col-md-7 col-sm-9 col-xs-6 text-right"><xsl:value-of select="i18n:translate('mir.oas.counter.fulltext')" /></div>
           <div  data-oaselementtype="OASInline"
@@ -69,11 +65,9 @@
               data-oasfrom="{$from}" data-oasuntil="{$until}"
           />
         </div>
-        <div class="row">
-          <div class="col-md-12">
+        <p>
             <a href="#" data-toggle="modal" data-target="#oasGraphModal">Grafik öffnen</a>
-          </div>
-        </div>
+        </p>
         <div class="modal fade" id="oasGraphModal" tabindex="-1" role="dialog" aria-labelledby="oasGraphTitel" aria-hidden="true">
           <div class="modal-dialog" role="document">
             <div class="modal-content">

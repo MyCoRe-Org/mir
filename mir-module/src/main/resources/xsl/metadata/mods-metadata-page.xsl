@@ -133,9 +133,7 @@
                   <xsl:value-of select="i18n:translate('mir.oas.panelheading')" />
                 </h3>
               </div>
-              <div class="panel-body" style="background-image:url({$WebApplicationBaseURL}images/open_access_statistic/oaslogobg.png);
-                background-repeat: no-repeat; background-position: center center;
-              ">
+              <div class="panel-body" id="mir_oas">
                 <xsl:apply-templates select="div[@id='mir-oastatistics']" mode="copyContent" />
               </div>
             </div>
