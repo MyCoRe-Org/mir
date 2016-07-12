@@ -3,9 +3,9 @@
   xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation" xmlns:ex="http://exslt.org/dates-and-times" exclude-result-prefixes="mods mcrxsl i18n ex"
 >
   <xsl:include href="layout-utils.xsl" />
-  
-  <xsl:param name="MIR.oas" select="'hide'" />
-  
+
+  <xsl:param name="MIR.OAS" select="'hide'" />
+
   <xsl:template match="/site">
     <xsl:copy>
       <xsl:copy-of select="@*" />
@@ -126,14 +126,14 @@
             </div>
           </xsl:if>
 <!-- OAS statistics -->
-          <xsl:if test="$MIR.oas = 'show'">  
+          <xsl:if test="$MIR.OAS = 'show'">
             <div class="panel panel-default">
               <div class="panel-heading">
                 <h3 class="panel-title">
                   <xsl:value-of select="i18n:translate('mir.oas.panelheading')" />
                 </h3>
               </div>
-              <div class="panel-body" style="background-image:url({$WebApplicationBaseURL}content/images/oaslogobg.png);
+              <div class="panel-body" style="background-image:url({$WebApplicationBaseURL}images/open_access_statistic/oaslogobg.png);
                 background-repeat: no-repeat; background-position: center center;
               ">
                 <xsl:apply-templates select="div[@id='mir-oastatistics']" mode="copyContent" />
