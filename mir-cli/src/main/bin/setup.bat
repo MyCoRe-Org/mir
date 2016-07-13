@@ -1,0 +1,1 @@
+bin\mir.bat process config\setup-commands.txt
