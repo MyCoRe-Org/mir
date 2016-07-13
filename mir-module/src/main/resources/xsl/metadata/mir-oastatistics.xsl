@@ -65,7 +65,7 @@
               data-oasfrom="{$from}" data-oasuntil="{$until}"
           />
         </div>
-        <p>
+        <p class="text-right">
           <a href="#" data-toggle="modal" data-target="#oasGraphModal"><xsl:value-of select="i18n:translate('mir.oas.open')" /></a>
         </p>
         <div class="modal fade" id="oasGraphModal" tabindex="-1" role="dialog" aria-labelledby="oasGraphTitel" aria-hidden="true">
