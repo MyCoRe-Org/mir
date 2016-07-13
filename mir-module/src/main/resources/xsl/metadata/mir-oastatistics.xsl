@@ -29,7 +29,7 @@
       <xsl:variable name="until" select="ex:format-date($now,'yyyy-MM')" />
       <xsl:variable name="objID" select="mycoreobject/@ID" />
       <div id="mir-oastatistics">
-        <span><strong>Gesamt:</strong></span>
+        <span><strong><xsl:value-of select="concat(i18n:translate('mir.oas.total'),':')" /></strong></span>
         <div class="row">
           <div class="col-md-7 col-sm-9 col-xs-6 text-right"><xsl:value-of select="i18n:translate('mir.oas.counter.fulltext')" /></div>
           <div  data-oaselementtype="OASInline"
@@ -46,7 +46,7 @@
               data-oascounttype="counter_abstract"
           />
         </div>
-        <span><strong>12 Monate:</strong></span>
+        <span><strong><xsl:value-of select="concat(i18n:translate('mir.oas.last12Month'),':')" /></strong></span>
         <div class="row">
           <div class="col-md-7 col-sm-9 col-xs-6 text-right"><xsl:value-of select="i18n:translate('mir.oas.counter.fulltext')" /></div>
           <div  data-oaselementtype="OASInline"
@@ -66,7 +66,7 @@
           />
         </div>
         <p>
-            <a href="#" data-toggle="modal" data-target="#oasGraphModal">Grafik öffnen</a>
+          <a href="#" data-toggle="modal" data-target="#oasGraphModal"><xsl:value-of select="i18n:translate('mir.oas.open')" /></a>
         </p>
         <div class="modal fade" id="oasGraphModal" tabindex="-1" role="dialog" aria-labelledby="oasGraphTitel" aria-hidden="true">
           <div class="modal-dialog" role="document">
@@ -75,7 +75,7 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <i class="fa fa-times" aria-hidden="true"></i>
                 </button>
-                <h4 class="modal-title" id="oasGraphTitel">Zugriffstatistik</h4>
+                <h4 class="modal-title" id="oasGraphTitel"><xsl:value-of select="i18n:translate('mir.oas.panelheading')" /></h4>
               </div>
               <div class="modal-body">
                 <div id="oasGraph" style="width:100%;height:200px;"
@@ -86,8 +86,8 @@
                 />
               </div>
               <div class="modal-footer">
-                <a href="https://www.gbv.de/Verbundzentrale/04Projekte/open-access-statistik-oa-s">
-                  <img src="{$WebApplicationBaseURL}content/images/open_access_statistic/oaslogo.png" />
+                <a href="https://www.gbv.de/Verbundzentrale/serviceangebote/oas-service/open-access-statistik-service">
+                  <img src="{$WebApplicationBaseURL}images/open_access_statistic/oaslogo.png" />
                 </a>
               </div>
             </div>
