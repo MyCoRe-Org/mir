@@ -183,6 +183,9 @@
             <xsl:when test="contains($trimmed, 'oa_nlz')">
               <xsl:apply-templates select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:accessCondition[@type='use and reproduction']" mode="oa_nlz" />
             </xsl:when>
+            <xsl:when test="contains($trimmed, 'oa')">
+              <xsl:apply-templates select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:accessCondition[@type='use and reproduction']" mode="oa-logo" />
+            </xsl:when>
             <xsl:otherwise>
               <xsl:value-of select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:accessCondition[@type='use and reproduction']" />
             </xsl:otherwise>
