@@ -4,8 +4,8 @@
   <!-- ============================================== -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xlink="http://www.w3.org/1999/xlink"
   xmlns:basket="xalan://org.mycore.frontend.basket.MCRBasketManager" xmlns:mcr="http://www.mycore.org/" xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
-  xmlns:actionmapping="xalan://org.mycore.wfc.actionmapping.MCRURLRetriever" xmlns:mcrver="xalan://org.mycore.common.MCRCoreVersion"
-  xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions" exclude-result-prefixes="xlink basket actionmapping mcr mcrver mcrxsl i18n">
+  xmlns:actionmapping="xalan://org.mycore.wfc.actionmapping.MCRURLRetriever"
+  xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions" exclude-result-prefixes="xlink basket actionmapping mcr mcrxsl i18n">
   <xsl:output method="html" doctype-system="about:legacy-compat" indent="yes" omit-xml-declaration="yes" media-type="text/html"
     version="5" />
   <xsl:strip-space elements="*" />
@@ -112,29 +112,7 @@
         </div>
 
         <footer>
-            <div class="container">
-                <div id="menu" class="row">
-                    <div class="col-xs-6">
-                        <ul id="sub_menu">
-                            <xsl:apply-templates select="$loaded_navigation_xml/menu[@id='brand']/item[@href='/content/brand/impressum.xml']" />
-                            <xsl:apply-templates select="$loaded_navigation_xml/menu[@id='brand']/item[@href='/content/brand/contact.xml']" />
-                        </ul>
-                    </div>
-                    <div class="col-xs-6">
-                        <div id="copyright">© <xsl:value-of select="$MCR.NameOfProject" /> 2016</div>
-                    </div>
-                </div>
-                <div id="credits" class="row">
-                    <div class="col-xs-12">
-                        <div id="powered_by">
-                            <a href="http://www.mycore.de">
-                                <xsl:variable name="mcr_version" select="concat('MyCoRe ',mcrver:getCompleteVersion())" />
-                                <img src="{$WebApplicationBaseURL}mir-layout/images/mycore_logo_powered_120x30_blaue_schrift_frei.png" title="{$mcr_version}" alt="powered by MyCoRe"/>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
+          <xsl:call-template name="mir.footer" />
         </footer>
 
         <script type="text/javascript">

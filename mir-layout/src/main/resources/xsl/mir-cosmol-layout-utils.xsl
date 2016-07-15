@@ -2,7 +2,8 @@
 <xsl:stylesheet version="1.0"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
-  exclude-result-prefixes="i18n">
+  xmlns:mcrver="xalan://org.mycore.common.MCRCoreVersion"
+  exclude-result-prefixes="i18n mcrver">
 
   <xsl:import href="resource:xsl/layout/mir-common-layout.xsl" />
 
@@ -57,6 +58,32 @@
           <xsl:apply-templates select="$loaded_navigation_xml/menu[@id='misc']" />
         </ul>
       </nav>
+    </div>
+  </xsl:template>
+
+  <xsl:template name="mir.footer">
+    <div class="container">
+        <div id="menu" class="row">
+            <div class="col-xs-6">
+                <ul id="sub_menu">
+                    <xsl:apply-templates select="$loaded_navigation_xml/menu[@id='below']/item[@href='/content/brand/impressum.xml']" />
+                    <xsl:apply-templates select="$loaded_navigation_xml/menu[@id='brand']/item[@href='/content/brand/contact.xml']" />
+                </ul>
+            </div>
+            <div class="col-xs-6">
+                <div id="copyright">© <xsl:value-of select="$MCR.NameOfProject" /> 2016</div>
+            </div>
+        </div>
+        <div id="credits" class="row">
+            <div class="col-xs-12">
+                <div id="powered_by">
+                    <a href="http://www.mycore.de">
+                        <xsl:variable name="mcr_version" select="concat('MyCoRe ',mcrver:getCompleteVersion())" />
+                        <img src="{$WebApplicationBaseURL}mir-layout/images/mycore_logo_powered_120x30_blaue_schrift_frei.png" title="{$mcr_version}" alt="powered by MyCoRe"/>
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
   </xsl:template>
 
