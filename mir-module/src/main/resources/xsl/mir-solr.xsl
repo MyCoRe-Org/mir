@@ -167,13 +167,23 @@
       <xsl:if test="mods:part/mods:detail[@type='volume']">
         <field name="mods.part">
           <xsl:choose>
-            <xsl:when test="mods:part/mods:detail[@type='issue']">
+            <xsl:when test="mods:part/mods:detail[@type='issue']/mods:number">
+              <xsl:variable name="issue">
+                <xsl:choose>
+                  <xsl:when test="mods:part/mods:detail[@type='issue']/mods:caption">
+                    <xsl:value-of select="mods:part/mods:detail[@type='issue']/mods:caption" />
+                  </xsl:when>
+                  <xsl:otherwise>
+                    <xsl:value-of select="i18n:translate('component.mods.metaData.dictionary.issue')" />
+                  </xsl:otherwise>
+                </xsl:choose>
+              </xsl:variable>
               <xsl:value-of
                 select="concat(normalize-space(mods:part/mods:detail[@type='volume']),
                                           ', ',
-                                          i18n:translate('component.mods.metaData.dictionary.issue'),
+                                          $issue,
                                           ' ',
-                                          normalize-space(mods:part/mods:detail[@type='issue']))" />
+                                          normalize-space(mods:part/mods:detail[@type='issue']/mods:number))" />
             </xsl:when>
             <xsl:otherwise>
               <xsl:value-of select="normalize-space(mods:part/mods:detail[@type='volume'])" />
