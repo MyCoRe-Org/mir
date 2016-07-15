@@ -5,18 +5,22 @@
 
   <section i18n="browse.genre" xml:lang="all">
 
-    <h3><i18n key="browse.genre" /></h3>
-    <classificationbrowser classification="mir_genres"
-                               objecttype="mods"
-                              restriction="+category.top:&quot;state:published&quot;"
-                                    field="category.top"
-                             countresults="true"
-                               addclassid="true"
-                              emptyleaves="true"
-                                    style="bootstrap"
-                               parameters="sort=mods.dateIssued+desc"
-                             addParameter="XSL.template=template_mir"
-    />
+    <div class="row">
+      <div class="col-md-8" lang="de">
+        <h3><i18n key="browse.genre" /></h3>
+        <classificationbrowser classification="mir_genres"
+                                   objecttype="mods"
+                                  restriction="+category.top:&quot;state:published&quot;"
+                                        field="category.top"
+                                 countresults="true"
+                                   addclassid="true"
+                                  emptyleaves="true"
+                                        style="bootstrap"
+                                   parameters="sort=mods.dateIssued+desc"
+                                 addParameter="XSL.template=template_mir"
+        />
+      </div>
+    </div>
 
   </section>
 
