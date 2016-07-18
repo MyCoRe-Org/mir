@@ -210,4 +210,15 @@
     </xsl:for-each>
   </xsl:template>
 
+  <xsl:template match="mods:location">
+    <xsl:copy>
+      <xsl:copy-of select="@*" />
+      <xsl:apply-templates select="mods:physicalLocation" />
+      <xsl:apply-templates select="mods:shelfLocator" />
+      <xsl:apply-templates select="mods:url" />
+      <xsl:apply-templates select="mods:holdingSimple" />
+      <xsl:apply-templates select="mods:holdingExternal" />
+    </xsl:copy>
+  </xsl:template>
+
 </xsl:stylesheet>
