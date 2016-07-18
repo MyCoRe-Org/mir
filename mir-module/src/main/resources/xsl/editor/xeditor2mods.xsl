@@ -161,11 +161,11 @@
     </xsl:choose>
   </xsl:template>
 
-  <xsl:template match="mods:name[@type='personal']">
+  <xsl:template match="mods:name">
     <xsl:copy>
       <xsl:copy-of select="@*" />
       <xsl:apply-templates />
-      <xsl:if test="not(mods:namePart[@type='family']) and mods:displayForm">
+      <xsl:if test="not(mods:namePart[@type='family']) and mods:displayForm and @type='personal'">
         <xsl:call-template name="mods.seperateName">
           <xsl:with-param name="displayForm" select="mods:displayForm" />
         </xsl:call-template>
