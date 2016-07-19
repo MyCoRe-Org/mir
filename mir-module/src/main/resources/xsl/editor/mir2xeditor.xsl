@@ -310,6 +310,7 @@
     </xed:if>
     <xsl:variable name="xed-val-marker" > {$xed-validation-marker} </xsl:variable>
     <xed:repeat xpath="mods:name[@type='personal' or (@type='corporate' and not(@authorityURI='{$institutesURI}'))][mods:role/mods:roleTerm[@type='code'][@authority='marcrelator']='{@role}']" min="1" max="100">
+      <xed:bind xpath="@simpleEditor" default="true"/>
       <xed:bind xpath="mods:displayForm"> <!-- Move down to get the "required" validation right -->
         <div class="form-group {@class} {$xed-val-marker}">
           <xed:bind xpath=".."> <!-- Move up again after validation marker is set -->
@@ -384,6 +385,7 @@
     </xed:if>
     <xsl:variable name="xed-val-marker" > {$xed-validation-marker} </xsl:variable>
     <xed:repeat xpath="mods:name[@type='personal' or (@type='corporate' and not(@authorityURI='{$institutesURI}'))]" min="1" max="100">
+      <xed:bind xpath="@simpleEditor" default="true"/>
       <xed:bind xpath="mods:displayForm"> <!-- Move down to get the "required" validation right -->
         <div class="form-group {@class} {$xed-val-marker}">
           <xed:bind xpath=".."> <!-- Move up again after validation marker is set -->

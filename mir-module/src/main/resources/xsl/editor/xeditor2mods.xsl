@@ -163,9 +163,16 @@
 
   <xsl:template match="mods:name">
     <xsl:copy>
-      <xsl:copy-of select="@*" />
-      <xsl:apply-templates />
-      <xsl:if test="not(mods:namePart[@type='family']) and mods:displayForm and @type='personal'">
+      <xsl:copy-of select="@*[name()!='simpleEditor']" />
+      <xsl:choose>
+        <xsl:when test="@simpleEditor">
+          <xsl:copy-of select="node()[name()!='mods:namePart']" />
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:copy-of select="node()" />
+        </xsl:otherwise>
+      </xsl:choose>
+      <xsl:if test="(not(mods:namePart[@type='family']) or @simpleEditor)  and mods:displayForm and @type='personal'">
         <xsl:call-template name="mods.seperateName">
           <xsl:with-param name="displayForm" select="mods:displayForm" />
         </xsl:call-template>
