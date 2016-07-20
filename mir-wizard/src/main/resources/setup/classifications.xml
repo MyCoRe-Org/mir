@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classification>
   <classification url="http://www.mycore.org/classifications/marcrelator.xml" />
+  <classification url="http://www.mycore.org/classifications/marcgt.xml" />
   <classification url="http://www.mycore.org/classifications/mcr-roles.xml" />
   <classification url="http://www.mycore.org/classifications/mir_access.xml" />
   <classification url="http://www.mycore.org/classifications/mir_filetype.xml" />
