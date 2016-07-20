@@ -355,12 +355,18 @@
                 <xsl:value-of select="./metadata/def.modsContainer/modsContainer/mods:mods/mods:originInfo[@eventType='publication']/mods:dateIssued[@encoding='w3cdtf']" />
             </xsl:element>
         </xsl:if>
-         <xsl:for-each select="./service/servdates/servdate[@type='modifydate']">
+        <xsl:for-each select="./service/servdates/servdate[@type='modifydate']">
             <xsl:element name="dcterms:modified">
                 <xsl:attribute name="xsi:type">dcterms:W3CDTF</xsl:attribute>
                 <xsl:value-of select="." />
             </xsl:element>
         </xsl:for-each>
+        <xsl:if test="./metadata/def.modsContainer/modsContainer/mods:mods/mods:originInfo[@eventType='creation']/mods:dateOther[@type='accepted'][@encoding='w3cdtf']">
+            <xsl:element name="dcterms:dateAccepted">
+                <xsl:attribute name="xsi:type">dcterms:W3CDTF</xsl:attribute>
+                <xsl:value-of select="./metadata/def.modsContainer/modsContainer/mods:mods/mods:originInfo[@eventType='creation']/mods:dateOther[@type='accepted'][@encoding='w3cdtf']" />
+            </xsl:element>
+        </xsl:if> 
     </xsl:template>
 
     <xsl:template name="type">
@@ -414,6 +420,10 @@
            </xsl:choose>
         </xsl:element>
       </xsl:if>
+      <xsl:element name="ddb:identifier">
+          <xsl:attribute name="ddb:type">URL</xsl:attribute>
+          <xsl:value-of select="concat($WebApplicationBaseURL,'receive/',/mycoreobject/@ID)"/>
+      </xsl:element>
     </xsl:template>
 
     <xsl:template name="format">
