@@ -211,6 +211,7 @@
       <script src="{$WebApplicationBaseURL}assets/moment/moment.js"></script>
       <script src="{$WebApplicationBaseURL}assets/handlebars/handlebars.min.js"></script>
       <script src="{$WebApplicationBaseURL}js/mir/derivate-fileList.js"></script>
+      <link rel="stylesheet" href="{$WebApplicationBaseURL}rsc/stat/{@ID}.css"/>
     </xsl:copy>
   </xsl:template>
 
