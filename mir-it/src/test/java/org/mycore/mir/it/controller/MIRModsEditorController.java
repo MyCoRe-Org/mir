@@ -97,6 +97,11 @@ public class MIRModsEditorController extends MIREditorController {
         setInputText("mods:title", title);
     }
 
+
+    public void setTitleAbbreviated(String title){
+        setInputText("mods:titleInfo[2]/mods:title", title);
+    }
+
     public void setSubTitle(String subTitle) {
         setInputText("mods:subTitle", subTitle);
     }
@@ -322,6 +327,12 @@ public class MIRModsEditorController extends MIREditorController {
 
     public void setIssueDate(String issueDate) {
         setInputText("mods:originInfo/mods:dateIssued", issueDate);
+    }
+
+    public void setIssueDate(String from,String to) {
+        // TODO: fixme element not found
+        //setInputText("mods:originInfo/mods:dateIssued", from);
+        //setInputText("mods:originInfo/mods:dateIssued[2]", to);
     }
 
     public void save() {

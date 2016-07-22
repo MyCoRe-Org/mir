@@ -42,14 +42,14 @@ public class MIRAdminEditorITCase extends MIRITBase {
         simpleSearchController = new MIRSimpleSearchController(driver, appURL);
     }
 
-    @Test
+   @Test
     public void testBaseValidation() {
         editorController.save();
         assertBaseValidation();
         Assert.assertTrue("Genre validation should be visible!", editorController.isGenreValidationMessageVisible());
     }
 
-    @Test
+   @Test
     public void testFullDocument() throws InterruptedException {
         editorController.setGenres(Stream.of(MIRGenre.article, MIRGenre.collection).collect(Collectors.toList()));
         editorController.setTitleInfo(Stream.of(
@@ -91,6 +91,7 @@ public class MIRAdminEditorITCase extends MIRITBase {
         driver.waitAndFindElement(MCRBy.partialText(MIRTestData.CONFERENCE));
 
         //driver.waitAndFindElement(MCRBy.partialText(MIRTestData.AIRE_PROJECT_NAME));
+        //driver.waitAndFindElement(MCRBy.partialText(MIRTestData.AIRE_ACRONYM));
         //driver.waitAndFindElement(MCRBy.partialText(MIRTestData.AIRE_ACRONYM));
         //driver.waitAndFindElement(MCRBy.partialText(MIRTestData.AIRE_GRANT_ID));
         //driver.waitAndFindElement(MCRBy.partialText(MIRTestData.AIRE_PROGRAMM_ID));

@@ -3,6 +3,7 @@ package org.mycore.mir.it.tests;
 
 public class MIRTestData {
     public static final String TITLE = "Test_Title";
+    public static final String TITLE_ABBR = "ABBR_Title";
     public static final String SUB_TITLE = "Test_Sub_Title";
     public static final String AUTHOR = "Neumann, Kathleen";
     public static final String EXTEND_SOLO = "50 Seiten";
@@ -19,6 +20,9 @@ public class MIRTestData {
     public static final String ISSN = "1050-124X";
     public static final String SIGNATURE = "Test_Signature";
     public static final String ISSUE_DATE = "1993";
+    public static final String ISSUE_DATE_FROM = "1993-06-01";
+    public static final String ISSUE_DATE_TO = "2016-06-01";
+
     public static final String VOLUME = "Test_Volume";
     public static final String NUMBER = "10";
     public static final String ISBN = "978-3-86680-192-9";
