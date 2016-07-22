@@ -163,7 +163,12 @@
 
   <xsl:template match="mods:name">
     <xsl:copy>
-      <xsl:copy-of select="@*[name()!='simpleEditor']" />
+      <xsl:copy-of select="@*[name()!='simpleEditor' and name()!='valueURIxEditor']" />
+      <xsl:if test="@valueURIxEditor">
+        <xsl:attribute name="valueURI">
+          <xsl:value-of select="concat(@authorityURI,'#',@valueURIxEditor)" />
+        </xsl:attribute>
+      </xsl:if>
       <xsl:choose>
         <xsl:when test="@simpleEditor">
           <xsl:copy-of select="node()[name()!='mods:namePart']" />
