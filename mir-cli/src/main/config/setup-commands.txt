@@ -1,4 +1,5 @@
 load all classifications from directory ${app.home}/config/classifications
+load classification from url http://mycore.de/classifications/XMetaDissPlusThesisLevel.xml
 load classification from url http://mycore.de/classifications/diniPublType.xml
 load classification from url http://www.mycore.org/classifications/marcrelator.xml
 load classification from url http://www.mycore.org/classifications/marcgt.xml
