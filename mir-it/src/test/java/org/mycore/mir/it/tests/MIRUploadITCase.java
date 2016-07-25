@@ -99,6 +99,7 @@ public class MIRUploadITCase extends MIRITBase {
                 }).collect(Collectors.toList()).forEach(colorList::remove);
             }
         }
-        Assert.assertTrue("RGBList should be empty (every pixel should be found in screenshot)", colorList.isEmpty());
+        String colorsInList = colorList.stream().map(c -> c.toString()).collect(Collectors.joining(";"));
+        Assert.assertTrue("RGBList should be empty (every pixel should be found in screenshot) but list is: " + colorsInList, colorList.isEmpty());
     }
 }
