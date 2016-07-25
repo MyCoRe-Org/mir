@@ -500,57 +500,35 @@
 
 
     <xsl:template name="degree">
-      <xsl:for-each select="./metadata/types/type">
-           <xsl:if test="contains(./@categid,'TYPE0003')">
-               <xsl:element name="thesis:degree">
-                   <xsl:element name="thesis:level">
-                       <xsl:choose>
-                           <xsl:when test="./@categid = 'TYPE0003.006'">
-                               <xsl:text>thesis.doctoral</xsl:text>
-                           </xsl:when>
-                           <xsl:when test="./@categid = 'TYPE0003.003'">
-                               <xsl:text>master</xsl:text>
-                           </xsl:when>
-                           <xsl:when test="./@categid = 'TYPE0003.007'">
-                               <xsl:text>thesis.habilitation</xsl:text>
-                           </xsl:when>
-                           <xsl:when test="./@categid = 'TYPE0003.002'">
-                               <xsl:text>bachelor</xsl:text>
-                           </xsl:when>
-                           <xsl:otherwise>
-                               <xsl:text>other</xsl:text>
-                           </xsl:otherwise>
-                       </xsl:choose>
-                   </xsl:element>
-
-            <xsl:for-each select="./../../grantorlinks/grantorlink">
-      <xsl:variable name="grantorlinkURL">
-        <xsl:call-template name="linkQueryURL">
-           <xsl:with-param name="id" select="@xlink:href" />
-           <xsl:with-param name="type" select="'institution'" />
-         </xsl:call-template>
-           </xsl:variable>
-            <xsl:for-each select="document($grantorlinkURL)/mycoreobject/metadata">
-                <xsl:element name="thesis:grantor">
-                    <xsl:attribute name="xsi:type">cc:Corporate</xsl:attribute>
-                    <xsl:attribute name="type">dcterms:ISO3166</xsl:attribute>
-                  <xsl:element name="cc:universityOrInstitution">
-                      <xsl:element name="cc:name">
-                          <xsl:value-of select="./names/name[@xml:lang='de']/fullname" />
-                      </xsl:element>
-                      <xsl:for-each select="./addresses/address[@xml:lang='de' and @inherited='0']/city">
-                          <xsl:element name="cc:place">
-                                  <xsl:value-of select="." />
-                          </xsl:element>
-                      </xsl:for-each>
-                  </xsl:element>
-              </xsl:element>
-           </xsl:for-each>
-        </xsl:for-each>
-
-               </xsl:element>
-           </xsl:if>
-       </xsl:for-each>
+        <xsl:variable name="thesis_level">
+            <xsl:for-each select="./metadata/def.modsContainer/modsContainer/mods:mods/mods:classification">
+                <xsl:if test="contains(./@authorityURI,'XMetaDissPlusThesisLevel')">
+                    <xsl:element name="thesis:level">
+                        <xsl:value-of select="substring-after(./@valueURI,'#')"/>
+                    </xsl:element>
+                </xsl:if>
+            </xsl:for-each>
+        </xsl:variable>
+        <xsl:if test="$thesis_level">
+            <xsl:element name="thesis:degree">
+                <xsl:copy-of select="$thesis_level"/>
+                <xsl:if test="./metadata/def.modsContainer/modsContainer/mods:mods/mods:originInfo[@eventType='creation']/mods:publisher">
+                    <xsl:element name="thesis:grantor">
+                        <xsl:attribute name="xsi:type">cc:Corporate</xsl:attribute>
+                        <xsl:attribute name="type">dcterms:ISO3166</xsl:attribute>
+                        <xsl:attribute name="countryCode">DE</xsl:attribute>
+                        <xsl:element name="cc:universityOrInstitution">
+                           <xsl:element name="cc:name">
+                               <xsl:value-of select="./metadata/def.modsContainer/modsContainer/mods:mods/mods:originInfo[@eventType='creation']/mods:publisher" />
+                           </xsl:element>
+                           <xsl:element name="cc:place">
+                               <xsl:value-of select="./metadata/def.modsContainer/modsContainer/mods:mods/mods:originInfo[@eventType='creation']/mods:place/mods:placeTerm" />
+                           </xsl:element>
+                       </xsl:element>
+                    </xsl:element>
+                </xsl:if>
+            </xsl:element>
+        </xsl:if>
     </xsl:template>
 
     <xsl:template name="contact">
