@@ -83,7 +83,10 @@ public class MIRUploadITCase extends MIRITBase {
         getDriver().waitAndFindElement(By.xpath(".//input[@id='fileToUpload']")).sendKeys(path);
         getDriver().waitAndFindElement(MCRBy.partialText("Abschicken")).click();
         getDriver().waitAndFindElement(By.xpath(".//button[contains(text(),'Fertig') and not(@disabled)]")).click();
+        getDriver().waitAndFindElement(MCRBy.partialText(MIRTestData.TITLE));
 
+        // TODO: find workarround is viewer loaded instead of wait 3 seconds
+        Thread.sleep(5000);
 
         byte[] screenshotAsBytes = getDriver().getScreenshotAs(OutputType.BYTES);
 
