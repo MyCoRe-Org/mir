@@ -102,6 +102,19 @@
               <xsl:value-of select="concat($MCR.URN.Resolver.MasterURL, $urn)" />
             </textarea>
           </xsl:when>
+          <xsl:when test="//mods:mods/mods:identifier[@type='urn'] and contains(//mods:mods/mods:identifier[@type='urn'], $MCR.URN.SubNamespace.Default.Prefix)">
+            <xsl:variable name="urn" select="//mods:mods/mods:identifier[@type='urn']" />
+            <a id="url_site_link" href="{$MCR.URN.Resolver.MasterURL}{$urn}">
+              <xsl:value-of select="$urn" />
+            </a>
+            <br />
+            <a id="copy_cite_link" class="label label-info" href="{$MCR.URN.Resolver.MasterURL}{$urn}">
+              <xsl:value-of select="i18n:translate('mir.citationLink')" />
+            </a>
+            <textarea id="cite_link_code_box" class="code">
+              <xsl:value-of select="concat($MCR.URN.Resolver.MasterURL, $urn)" />
+            </textarea>
+          </xsl:when>
           <xsl:otherwise>
             <a id="copy_cite_link"
                href="{$WebApplicationBaseURL}receive/{mycoreobject/@ID}"
