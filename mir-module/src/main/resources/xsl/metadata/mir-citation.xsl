@@ -6,7 +6,8 @@
   <xsl:import href="xslImport:modsmeta:metadata/mir-citation.xsl" />
   <xsl:include href="mods-highwire.xsl" />
   <xsl:param name="MCR.URN.Resolver.MasterURL" select="''" />
-  <xsl:param name="MCR.DOI.Prefix" select="'10.5072'" />
+  <xsl:param name="MCR.DOI.Prefix" select="''" />
+  <xsl:param name="MCR.URN.SubNamespace.Default.Prefix" select="''" />
   <xsl:param name="MIR.citationStyles" select="''" />
   <xsl:param name="MIR.altmetrics" select="'show'" />
   <xsl:param name="MIR.altmetrics.hide" select="'true'" />
