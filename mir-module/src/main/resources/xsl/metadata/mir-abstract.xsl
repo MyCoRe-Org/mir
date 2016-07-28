@@ -275,7 +275,7 @@
                     <xsl:if test="str[@name='mods.part']">
                       <xsl:value-of select="str[@name='mods.part']" />
                     </xsl:if>
-                    <xsl:if test="str[@name='mods.part'] and not(contains(str[@name='mods.title.main'], str[@name='mods.part']))">
+                    <xsl:if test="str[@name='mods.part'] and not(str[@name='mods.title.main'] = str[@name='mods.part'])">
                       <xsl:text> - </xsl:text>
                       <xsl:value-of select="str[@name='search_result_link_text']" />
                     </xsl:if>
