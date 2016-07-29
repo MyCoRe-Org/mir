@@ -24,12 +24,28 @@
   </properties>
   <profiles>
     <profile>
-      <id>dev</id>
+      <id>dev-cli</id>
       <properties>
         <MCR.DataPrefix>dev</MCR.DataPrefix>
       </properties>
       <build>
+        <defaultGoal>resources:copy-resources exec:exec</defaultGoal>
         <plugins>
+          <plugin>
+            <artifactId>maven-resources-plugin</artifactId>
+            <configuration>
+              <outputDirectory>${project.build.directory}/appassembler</outputDirectory>
+              <resources>
+                <resource>
+                  <filtering>true</filtering>
+                  <directory>${basedir}/src/main</directory>
+                  <includes>
+                    <include>config/**</include>
+                  </includes>
+                </resource>
+              </resources>
+            </configuration>
+          </plugin>
           <plugin>
             <groupId>org.codehaus.mojo</groupId>
             <artifactId>exec-maven-plugin</artifactId>
@@ -39,7 +55,7 @@
                 <argument>-Djava.awt.headless=true</argument>
                 <argument>-DMCR.AppName=${MCR.AppName}</argument>
                 <argument>-DMCR.DataPrefix=${MCR.DataPrefix}</argument>
-                <argument>-Dapp.home=${basedir}${file.separator}src${file.separator}main</argument>
+                <argument>-Dapp.home=${project.build.directory}${file.separator}appassembler</argument>
                 <argument>-classpath</argument>
                 <classpath />
                 <argument>org.mycore.frontend.cli.MCRCommandLineInterface</argument>
