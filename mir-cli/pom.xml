@@ -39,6 +39,7 @@
                 <argument>-Djava.awt.headless=true</argument>
                 <argument>-DMCR.AppName=${MCR.AppName}</argument>
                 <argument>-DMCR.DataPrefix=${MCR.DataPrefix}</argument>
+                <argument>-Dapp.home=${basedir}${file.separator}src${file.separator}main</argument>
                 <argument>-classpath</argument>
                 <classpath />
                 <argument>org.mycore.frontend.cli.MCRCommandLineInterface</argument>
