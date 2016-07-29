@@ -1142,13 +1142,23 @@
       </div>
     </xed:repeat>
   </xed:template>
+  
+  <xed:template id="creator">
+    <mir:textfield xpath="mods:originInfo[@eventType='creation']/mods:publisher" label="mir.creator" help-text="{i18n:mir.help.creator}"
+      class="required" required="true" required-i18n="mir.validation.creator" />
+  </xed:template>
 
-  <xed:template id="college">
+  <xed:template id="creator.place">
+    <mir:textfield xpath="mods:originInfo[@eventType='creation']/mods:place/mods:placeTerm[@type='text']" label="mir.creatorplace" help-text="{i18n:mir.help.creatorplace}"
+      class="required" required="true" required-i18n="mir.validation.creatorplace"/>
+  </xed:template>
+
+  <xed:template id="creator.college">
     <mir:textfield xpath="mods:originInfo[@eventType='creation']/mods:publisher" label="mir.college" help-text="{i18n:mir.help.college}"
       class="required" required="true" required-i18n="mir.validation.college" placeholder="{i18n:mir.placeholder.college}"/>
   </xed:template>
 
-  <xed:template id="collegeplace">
+  <xed:template id="creator.place.college">
     <mir:textfield xpath="mods:originInfo[@eventType='creation']/mods:place/mods:placeTerm[@type='text']" label="mir.collegeplace" help-text="{i18n:mir.help.collegeplace}"
       class="required" required="true" required-i18n="mir.validation.collegeplace" placeholder="{i18n:mir.placeholder.collegeplace}"/>
   </xed:template>
