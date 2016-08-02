@@ -1144,13 +1144,11 @@
   </xed:template>
   
   <xed:template id="creator">
-    <mir:textfield xpath="mods:originInfo[@eventType='creation']/mods:publisher" label="mir.creator" help-text="{i18n:mir.help.creator}"
-      class="required" required="true" required-i18n="mir.validation.creator" />
+    <mir:textfield xpath="mods:originInfo[@eventType='creation']/mods:publisher" label="mir.creator" help-text="{i18n:mir.help.creator}"/>
   </xed:template>
 
   <xed:template id="creator.place">
-    <mir:textfield xpath="mods:originInfo[@eventType='creation']/mods:place/mods:placeTerm[@type='text']" label="mir.creatorplace" help-text="{i18n:mir.help.creatorplace}"
-      class="required" required="true" required-i18n="mir.validation.creatorplace"/>
+    <mir:textfield xpath="mods:originInfo[@eventType='creation']/mods:place/mods:placeTerm[@type='text']" label="mir.creatorplace" help-text="{i18n:mir.help.creatorplace}"/>
   </xed:template>
 
   <xed:template id="creator.college">
