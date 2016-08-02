@@ -9,6 +9,7 @@
   xmlns:mcrurn="xalan://org.mycore.urn.MCRXMLFunctions"
   xmlns:mcrmods="xalan://org.mycore.mods.classification.MCRMODSClassificationSupport"
   xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions"
+  xmlns:opf="http://www.idpf.org/2007/opf"
   exclude-result-prefixes="xsl mods mcrurn mcrmods mcrxsl xlink srw_dc">
 
   <xsl:param name="MCR.URN.Resolver.MasterURL" select="''" />
@@ -52,6 +53,8 @@
 -->
 
   <xsl:output method="xml" indent="yes"/>
+  
+  <xsl:variable name="marcrelator" select="document('classification:metadata:-1:children:marcrelator')" />
 
   <xsl:template match="/">
 
@@ -114,31 +117,38 @@
   </xsl:template>
 
   <!-- tmee mods 3.5 -->
+  
   <xsl:template match="mods:name">
     <xsl:choose>
-      <xsl:when
-        test="mods:role/mods:roleTerm[@type='text']='creator' or mods:role/mods:roleTerm[@type='code']='cre' ">
+      <xsl:when test="mods:role/mods:roleTerm[@type='code']">
+        <xsl:variable name="role" select="mods:role/mods:roleTerm[@type='code']" />
+        <xsl:choose>
+          <xsl:when test="$marcrelator//category[@ID=$role]/ancestor-or-self::category[@ID='cre']">
+            <dc:creator>
+              <xsl:call-template name="name"/>
+            </dc:creator>
+          </xsl:when>
+          <xsl:when test="$marcrelator//category[@ID=$role]/ancestor-or-self::category[@ID='ctb']">
+            <dc:contributor>
+              <xsl:call-template name="name"/>
+            </dc:contributor>
+          </xsl:when>
+          <!-- we are sure that we have matched all creators or contributors -->
+        </xsl:choose>
+      </xsl:when>
+      <xsl:when test="mods:role/mods:roleTerm[@type='text']='creator' or mods:role/mods:roleTerm[@type='text']='author'">
         <dc:creator>
           <xsl:call-template name="name"/>
-          <xsl:choose>
-            <xsl:when test="mods:etal">
-              <xsl:value-of select="."/>
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:text>et al</xsl:text>
-            </xsl:otherwise>
-          </xsl:choose>
         </dc:creator>
       </xsl:when>
       <xsl:otherwise>
-        <dc:creator>
+        <dc:contributor>
+          <xsl:comment>fallback no marcrelator role found</xsl:comment>
           <xsl:call-template name="name"/>
-            <xsl:if test="mods:etal">et al.</xsl:if>
-        </dc:creator>
+        </dc:contributor>
       </xsl:otherwise>
     </xsl:choose>
-
-    </xsl:template>
+  </xsl:template>
 
   <xsl:template match="mods:classification[@authority='sdnb']">
     <dc:subject>
@@ -510,8 +520,16 @@
   </xsl:template>
 
   <xsl:template name="name">
+    <xsl:if test="mods:role[mods:roleTerm[@authority='marcrelator' and @type='code']]">
+      <xsl:attribute name="opf:role">
+        <xsl:value-of select="mods:role/mods:roleTerm[@authority='marcrelator' and @type='code'][1]" />
+      </xsl:attribute>
+    </xsl:if>
     <xsl:variable name="name">
       <xsl:choose>
+        <xsl:when test="mods:etal">
+          <xsl:value-of select="et.al." />
+        </xsl:when>
         <xsl:when test="mods:displayForm">
           <xsl:value-of select="mods:displayForm" />
         </xsl:when>
@@ -537,11 +555,6 @@
           </xsl:if>
         </xsl:otherwise>
       </xsl:choose>
-      <xsl:for-each select="mods:role[mods:roleTerm[@type='text']!='creator']">
-        <xsl:text> (</xsl:text>
-        <xsl:value-of select="normalize-space(child::*)"/>
-        <xsl:text>) </xsl:text>
-      </xsl:for-each>
     </xsl:variable>
     <xsl:value-of select="normalize-space($name)"/>
   </xsl:template>
