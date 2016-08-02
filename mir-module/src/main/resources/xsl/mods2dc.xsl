@@ -146,6 +146,12 @@
     </dc:subject>
   </xsl:template>
 
+  <xsl:template match="mods:classification[@authorityURI='http://www.mycore.org/classifications/diniPublType']">
+    <dc:type>
+      <xsl:value-of select="concat('doc-type:',substring-after(@valueURI,'#'))" />
+    </dc:type>
+  </xsl:template>
+
   <xsl:template match="mods:classification">
 
     <xsl:variable name="classlink" select="mcrmods:getClassCategLink(.)" />
