@@ -140,10 +140,9 @@
 
     </xsl:template>
 
-    <xsl:template match="mods:classification[@authority='sdnb']">
+  <xsl:template match="mods:classification[@authority='sdnb']">
     <dc:subject>
-      <xsl:variable name="myURI" > <xsl:value-of select="concat('classification:metadata:0:children:SDNB:',.)" /> </xsl:variable>
-            <xsl:value-of select="document($myURI)//label[@xml:lang='en']/@text"/>
+      <xsl:value-of select="concat('ddc:',.)" />
     </dc:subject>
   </xsl:template>
 
