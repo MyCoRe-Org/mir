@@ -49,7 +49,7 @@
     <servlet-name>MIRAccessKeyServlet</servlet-name>
     <url-pattern>/servlets/MIRAccessKeyServlet</url-pattern>
   </servlet-mapping>
-  
+
   <servlet>
     <servlet-name>MIRClassificationServlet</servlet-name>
     <servlet-class>org.mycore.mir.MIRClassificationServlet</servlet-class>
@@ -58,7 +58,7 @@
     <servlet-name>MIRClassificationServlet</servlet-name>
     <url-pattern>/servlets/MIRClassificationServlet</url-pattern>
   </servlet-mapping>
-  
+
   <servlet>
     <servlet-name>MIRGetOpenAIREProjectsServlet</servlet-name>
     <servlet-class>org.mycore.mir.MIRGetOpenAIREProjectsServlet</servlet-class>
@@ -76,4 +76,27 @@
     <servlet-name>OAI2</servlet-name>
     <url-pattern>/servlets/OAIDataProvider</url-pattern>
   </servlet-mapping>
+
+
+  <servlet>
+    <servlet-name>MCRDFGServlet</servlet-name>
+    <servlet-class>org.mycore.iview2.frontend.MCRTileCombineServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>MCRDFGThumbServlet</servlet-name>
+    <servlet-class>org.mycore.iview2.frontend.MCRThumbnailServlet</servlet-class>
+    <init-param>
+      <param-name>thumbnailSize</param-name>
+      <param-value>150</param-value>
+    </init-param>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>MCRDFGServlet</servlet-name>
+    <url-pattern>/servlets/MCRDFGServlet/*</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>MCRDFGThumbServlet</servlet-name>
+    <url-pattern>/servlets/MCRDFGThumbnail/*</url-pattern>
+  </servlet-mapping>
+
 </web-fragment>

@@ -11,6 +11,7 @@
                 exclude-result-prefixes="xalan i18n mcr mods xlink FilenameUtils iview2 mcrxsl">
   <xsl:import href="xslImport:modsmeta:metadata/mir-viewer.xsl"/>
   <xsl:param name="UserAgent" />
+  <xsl:param name="MIR.DFGViewer.enable" select="'false'"/>
 
   <xsl:template match="/">
     <xsl:if test="mycoreobject/structure/derobjects/derobject">
@@ -61,6 +62,7 @@
         <xsl:call-template name="createViewerContainer">
           <xsl:with-param name="viewerId" select="$viewerId"/>
           <xsl:with-param name="viewerType" select="'mets'"/>
+          <xsl:with-param name="derId" select="$derId"/>
         </xsl:call-template>
       </xsl:when>
       <xsl:when test="mcrxsl:getMimeType($mainFile) = 'application/pdf' and not(mcrxsl:isMobileDevice($UserAgent))">
@@ -74,6 +76,7 @@
         <xsl:call-template name="createViewerContainer">
           <xsl:with-param name="viewerId" select="$viewerId"/>
           <xsl:with-param name="viewerType" select="'pdf'"/>
+          <xsl:with-param name="derId" select="$derId"/>
         </xsl:call-template>
       </xsl:when>
       <xsl:otherwise>
@@ -173,9 +176,22 @@
   <xsl:template name="createViewerContainer">
     <xsl:param name="viewerId"/>
     <xsl:param name="viewerType"/>
+    <xsl:param name="derId" />
 
     <div id="{$viewerId}" class="viewer {$viewerType}">
     </div>
+
+    <xsl:variable name="hits"
+                  select="document(concat('solr:q=stream_source_info%3A%22', $derId, ':/mets.xml%22'))/response/result[@name='response']/@numFound" />
+
+    <xsl:if test="$MIR.DFGViewer.enable='true' and $hits=1">
+      <div id="mir-dfgViewer" class="pull-right">
+        <a title="im DFG-Viewer anzeigen"
+           href="{$WebApplicationBaseURL}servlets/MCRDFGLinkServlet?deriv={$derId}"
+           >alternativ im <img src="{$WebApplicationBaseURL}images/logo-dfg.png" />-Viewer anzeigen</a>
+      </div>
+    </xsl:if>
+
   </xsl:template>
 
   <xsl:template name="addScripts">
