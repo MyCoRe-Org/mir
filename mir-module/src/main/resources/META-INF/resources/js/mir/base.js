@@ -23,6 +23,22 @@
     });
 //--------
 
+    $("body").on("click", ".mir_mainfile", function (event) {
+      event.preventDefault();
+      var that = $(this);
+      $.ajax({
+        type: 'GET',
+        url: webApplicationBaseURL + "servlets/MCRDerivateServlet?derivateid=" + $(this).data("derivateid") + "&objectid=" + $(this).data("objectid") + "&todo=ssetfile&file=" + $(this).data("file"),
+      }).done(function (result) {
+        $(".file_set.active_file").addClass("file");
+        $(".file_set.active_file").removeClass("active_file");
+        $(that).closest(".file_set").addClass("active_file");
+        $(that).closest(".file_set").removeClass("file");
+      }).fail(function (result) {
+        console.log("Error while changing mainfile!");
+      });
+    });
+
     $('#copy_cite_link').click(function(event){
       event.preventDefault();
       $("#identifierModal").modal("show");

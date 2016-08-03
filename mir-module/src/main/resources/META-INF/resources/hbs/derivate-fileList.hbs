@@ -66,8 +66,11 @@
                             {{#isNot type "directory"}}
                                 <li>
                                     <a title="{{getI18n "IFS.mainFile"}}"
-                                       href="{{../serverBaseURL}}servlets/MCRDerivateServlet?derivateid={{../mycorederivate}}&amp;objectid={{../mycoreobject}}&amp;todo=ssetfile&amp;file={{name}}"
-                                       class="option" >
+                                       href="#"
+                                       data-derivateid="{{../mycorederivate}}"
+                                       data-objectid="{{../mycoreobject}}"
+                                       data-file="{{name}}"
+                                       class="option mir_mainfile" >
                                         <span class="glyphicon glyphicon-star"></span>
                                         {{getI18n "IFS.mainFile"}}
                                     </a>
