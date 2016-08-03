@@ -215,9 +215,9 @@
             </h4>
           </div>
           <div id="modalFrame-body" class="modal-body" style="max-height: 560px; overflow: auto">
-            <xsl:apply-templates select="mods:identifier" mode="identifierList" />
+            <xsl:apply-templates select="mods:identifier[@type='urn' or @type='doi']" mode="identifierList" />
             <xsl:apply-templates select="//structure/derobjects/derobject" mode="urnList"/>
-            <xsl:if test="not(mods:identifier) and not(//structure/derobjects/derobject)">
+            <xsl:if test="not(mods:identifier[@type='urn' or @type='doi']) and not(//structure/derobjects/derobject)">
               <xsl:call-template name="identifierEntry">
                 <xsl:with-param name="title" select="'Document-Link'"/>
                 <xsl:with-param name="id" select="concat($WebApplicationBaseURL, 'receive/', //mycoreobject/@ID)"/>
@@ -229,7 +229,7 @@
     </div>
   </xsl:template>
 
-  <xsl:template match="mods:identifier" mode="identifierList">
+  <xsl:template match="mods:identifier[@type='urn' or @type='doi']" mode="identifierList">
     <xsl:variable name="identifier">
       <xsl:if test="contains(@type,'urn')">
         <xsl:text>URN</xsl:text>
