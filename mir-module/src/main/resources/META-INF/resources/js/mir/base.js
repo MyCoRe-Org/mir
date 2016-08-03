@@ -23,6 +23,33 @@
     });
 //--------
 
+    $('#copy_cite_link').click(function(event){
+      event.preventDefault();
+      $("#identifierModal").modal("show");
+    });
+
+    $("body").on("click", ".mir_copy_identifier", function () {
+      var input = $(this).parents(".mir_identifier").find(".mir_identifier_hidden_input");
+      $(input).removeClass("hidden");
+      $(input).first().select();
+      try {
+        var successful = document.execCommand('copy');
+        if (successful){
+          $(this).attr('data-original-title', 'Copied!').tooltip('show');
+        }
+        else {
+          $(this).attr('data-original-title', 'Oops, unable to copy').tooltip('show');
+        }
+      } catch (err) {
+        $(this).attr('data-original-title', 'Oops, unable to copy').tooltip('show');
+      }
+      $(input).addClass("hidden");
+    });
+
+    $('.mir_copy_identifier').on('hidden.bs.tooltip', function () {
+      $(this).attr('data-original-title', $(this).attr("data-org-title"));
+    });
+
     $("body").on("focus", ".search-organization input[name*='mods:displayForm']", function() {
       $(".name-modal textarea").val($(this).val());
       $(this).addClass("inModal");
