@@ -45,6 +45,11 @@
       </head>
 
       <body>
+        <xsl:if test="//div/@class='jumbotwo'">
+          <xsl:attribute name="class">
+            <xsl:text>mir-start_page</xsl:text>
+          </xsl:attribute>
+        </xsl:if>
 
         <header>
           <xsl:call-template name="mir.navigation" />
@@ -61,39 +66,40 @@
 
         <xsl:call-template name="mir.jumbotwo" />
 
-        <div class="container" id="page">
-          <div id="main_content">
-            <xsl:call-template name="print.writeProtectionMessage" />
-            <xsl:call-template name="print.statusMessage" />
+        <section>
+          <div class="container" id="page">
+            <div id="main_content">
+              <xsl:call-template name="print.writeProtectionMessage" />
+              <xsl:call-template name="print.statusMessage" />
 
-            <xsl:choose>
-              <xsl:when test="$readAccess='true'">
-                <xsl:if test="breadcrumb/ul[@class='breadcrumb']">
-                  <div class="row detail_row bread_plus">
-                    <div class="col-xs-12">
-                      <ul itemprop="breadcrumb" class="breadcrumb">
-                        <li>
-                          <a class="navtrail" href="{$WebApplicationBaseURL}"><xsl:value-of select="i18n:translate('mir.breadcrumb.home')" /></a>
-                        </li>
-                        <xsl:copy-of select="breadcrumb/ul[@class='breadcrumb']/*" />
-                      </ul>
+              <xsl:choose>
+                <xsl:when test="$readAccess='true'">
+                  <xsl:if test="breadcrumb/ul[@class='breadcrumb']">
+                    <div class="row detail_row bread_plus">
+                      <div class="col-xs-12">
+                        <ul itemprop="breadcrumb" class="breadcrumb">
+                          <li>
+                            <a class="navtrail" href="{$WebApplicationBaseURL}"><xsl:value-of select="i18n:translate('mir.breadcrumb.home')" /></a>
+                          </li>
+                          <xsl:copy-of select="breadcrumb/ul[@class='breadcrumb']/*" />
+                        </ul>
+                      </div>
                     </div>
-                  </div>
-                </xsl:if>
-                <xsl:copy-of select="*[not(name()='head')][not(name()='breadcrumb')] " />
-              </xsl:when>
-              <xsl:otherwise>
-                <xsl:call-template name="printNotLoggedIn" />
-              </xsl:otherwise>
-            </xsl:choose>
+                  </xsl:if>
+                  <xsl:copy-of select="*[not(name()='head')][not(name()='breadcrumb')] " />
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:call-template name="printNotLoggedIn" />
+                </xsl:otherwise>
+              </xsl:choose>
+            </div>
           </div>
-        </div>
+        </section>
 
         <footer class="panel-footer flatmir-footer" role="contentinfo">
           <xsl:call-template name="mir.footer" />
+          <xsl:call-template name="mir.powered_by" />
         </footer>
-
-        <xsl:call-template name="mir.powered_by" />
 
         <script type="text/javascript">
           <!-- Bootstrap & Query-Ui button conflict workaround  -->
