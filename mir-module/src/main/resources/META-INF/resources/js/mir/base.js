@@ -26,15 +26,18 @@
     $("body").on("click", ".mir_mainfile", function (event) {
       event.preventDefault();
       var that = $(this);
+      var oldMainFile = $(".file_set.active_file");
+      $(".file_set.active_file").removeClass("active_file");
+      $(that).closest(".file_set").addClass("waiting_file");
       $.ajax({
         type: 'GET',
         url: webApplicationBaseURL + "servlets/MCRDerivateServlet?derivateid=" + $(this).data("derivateid") + "&objectid=" + $(this).data("objectid") + "&todo=ssetfile&file=" + $(this).data("file"),
       }).done(function (result) {
-        $(".file_set.active_file").addClass("file");
-        $(".file_set.active_file").removeClass("active_file");
+        $(that).closest(".file_set").removeClass("waiting_file");
         $(that).closest(".file_set").addClass("active_file");
-        $(that).closest(".file_set").removeClass("file");
       }).fail(function (result) {
+        $(that).closest(".file_set").removeClass("waiting_file");
+        $(oldMainFile).addClass("active_file");
         console.log("Error while changing mainfile!");
       });
     });
