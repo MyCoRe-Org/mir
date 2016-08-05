@@ -264,11 +264,9 @@
 
   <xsl:template match="mir:role.extended.repeated">
     <xsl:call-template name="checkPreconditions" />
-    <xed:if test="mods:name[not(@type)]">
-      <xed:bind xpath="mods:name[not(@type)]/@type" initially="personal"/>
-    </xed:if>
     <xsl:variable name="xed-val-marker" > {$xed-validation-marker} </xsl:variable>
-    <xed:repeat xpath="mods:name[@type='personal' or (@type='corporate' and not(@authorityURI='{$institutesURI}'))][mods:role/mods:roleTerm[@type='code'][@authority='marcrelator']='{@role}']" min="1" max="100">
+    <xed:repeat xpath="mods:name[@type='personal' or not(@type) or (@type='corporate' and not(@authorityURI='{$institutesURI}'))][mods:role/mods:roleTerm[@type='code'][@authority='marcrelator']='{@role}']" min="1" max="100">
+      <xed:bind xpath="@type" initially="personal"/>
       <fieldset class="personExtended_box">
         <legend class="mir-fieldset-legend hiddenDetail">
           <xed:bind xpath="mods:displayForm"> <!-- Move down to get the "required" validation right -->
@@ -305,11 +303,9 @@
 
   <xsl:template match="mir:role.repeated">
     <xsl:call-template name="checkPreconditions" />
-    <xed:if test="mods:name[not(@type)]">
-      <xed:bind xpath="mods:name[not(@type)]/@type" initially="personal"/>
-    </xed:if>
     <xsl:variable name="xed-val-marker" > {$xed-validation-marker} </xsl:variable>
-    <xed:repeat xpath="mods:name[@type='personal' or (@type='corporate' and not(@authorityURI='{$institutesURI}'))][mods:role/mods:roleTerm[@type='code'][@authority='marcrelator']='{@role}']" min="1" max="100">
+    <xed:repeat xpath="mods:name[@type='personal' or not(@type) or (@type='corporate' and not(@authorityURI='{$institutesURI}'))][mods:role/mods:roleTerm[@type='code'][@authority='marcrelator']='{@role}']" min="1" max="100">
+      <xed:bind xpath="@type" initially="personal"/>
       <xed:bind xpath="@simpleEditor" default="true"/>
       <xed:bind xpath="mods:displayForm"> <!-- Move down to get the "required" validation right -->
         <div class="form-group {@class} {$xed-val-marker}">
@@ -337,11 +333,9 @@
 
   <xsl:template match="mir:person.extended.repeated">
     <xsl:call-template name="checkPreconditions" />
-    <xed:if test="mods:name[not(@type)]">
-      <xed:bind xpath="mods:name[not(@type)]/@type" initially="personal"/>
-    </xed:if>
     <xsl:variable name="xed-val-marker" > {$xed-validation-marker} </xsl:variable>
-    <xed:repeat xpath="mods:name[@type='personal' or (@type='corporate' and not(@authorityURI='{$institutesURI}'))]" min="1" max="100">
+    <xed:repeat xpath="mods:name[@type='personal'  or not(@type) or (@type='corporate' and not(@authorityURI='{$institutesURI}'))]" min="1" max="100">
+      <xed:bind xpath="@type" initially="personal"/>
       <fieldset class="personExtended_box">
         <legend class="mir-fieldset-legend hiddenDetail">
           <xed:bind xpath="mods:displayForm"> <!-- Move down to get the "required" validation right -->
@@ -380,11 +374,9 @@
 
   <xsl:template match="mir:person.repeated">
     <xsl:call-template name="checkPreconditions" />
-    <xed:if test="mods:name[not(@type)]">
-      <xed:bind xpath="mods:name[not(@type)]/@type" initially="personal"/>
-    </xed:if>
     <xsl:variable name="xed-val-marker" > {$xed-validation-marker} </xsl:variable>
-    <xed:repeat xpath="mods:name[@type='personal' or (@type='corporate' and not(@authorityURI='{$institutesURI}'))]" min="1" max="100">
+    <xed:repeat xpath="mods:name[@type='personal' or not(@type) or (@type='corporate' and not(@authorityURI='{$institutesURI}'))]" min="1" max="100">
+      <xed:bind xpath="@type" initially="personal"/>
       <xed:bind xpath="@simpleEditor" default="true"/>
       <xed:bind xpath="mods:displayForm"> <!-- Move down to get the "required" validation right -->
         <div class="form-group {@class} {$xed-val-marker}">
