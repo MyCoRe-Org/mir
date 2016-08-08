@@ -22,14 +22,11 @@
   <xsl:template match="/site">
     <html lang="{$CurrentLang}" class="no-js">
       <head>
-        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
         <title>
           <xsl:value-of select="$PageTitle" />
         </title>
-        <xsl:comment>
-          Mobile viewport optimisation
-        </xsl:comment>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link href="{$WebApplicationBaseURL}assets/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
         <script type="text/javascript" src="{$WebApplicationBaseURL}mir-layout/assets/jquery/jquery.min.js"></script>
         <script type="text/javascript" src="{$WebApplicationBaseURL}mir-layout/assets/jquery/plugins/jquery-migrate/jquery-migrate.min.js"></script>
@@ -96,7 +93,7 @@
           </div>
         </section>
 
-        <footer class="panel-footer flatmir-footer" role="contentinfo">
+        <footer class="panel-footer flatmir-footer">
           <xsl:call-template name="mir.footer" />
           <xsl:call-template name="mir.powered_by" />
         </footer>
