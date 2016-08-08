@@ -74,7 +74,7 @@
         <img alt="{$CurrentLang}" src="{$WebApplicationBaseURL}images/mir/lang-{$CurrentLang}.png" />
         <span class="caret" />
       </a>
-      <ul class="dropdown-menu language-menu" role="menu" aria-labelledby="languageMenu">
+      <ul class="dropdown-menu language-menu" role="menu">
         <xsl:if test="$CurrentLang!='de'">
           <li>
             <xsl:variable name="langURL">
@@ -221,7 +221,7 @@
           <xsl:value-of select="$entryCount" />
         </sup>
       </a>
-      <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+      <ul class="dropdown-menu" role="menu">
         <li>
           <a href="{$ServletsBaseURL}MCRBasketServlet{$HttpSession}?type={$basket/@type}&amp;action=show">
             <xsl:value-of select="i18n:translate('basket.open')" />
