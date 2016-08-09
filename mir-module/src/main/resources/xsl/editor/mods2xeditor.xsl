@@ -160,7 +160,7 @@
 
   <xsl:template match="mods:classification[@authority='ddc']">
     <xsl:choose>
-      <xsl:when test="document(concat($WebApplicationBaseURL,'api/v1/classifications/DDC'))/mycoreclass">
+      <xsl:when test="document('classification:metadata:0:children:DDC')/mycoreclass">
         <xsl:copy>
           <xsl:apply-templates select="@*|node()" />
         </xsl:copy>
