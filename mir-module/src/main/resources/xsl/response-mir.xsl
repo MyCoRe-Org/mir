@@ -208,80 +208,62 @@
           </div>
 
 <!-- hit options -->
-          <div class="hit_options pull-right">
-            <div class="btn-group">
-              <a data-toggle="dropdown" class="btn btn-default dropdown-toggle" href="#">
-                <i class="fa fa-cog"></i>
-                Aktionen
-                <span class="caret"></span>
-              </a>
-              <ul class="dropdown-menu dropdown-menu-right">
-                <xsl:choose>
-                  <xsl:when test="basket:contains('objects',$identifier)">
+          <xsl:choose>
+            <xsl:when test="acl:checkPermission($identifier,'writedb')">
+              <div class="hit_options pull-right">
+                <div class="btn-group">
+                  <a data-toggle="dropdown" class="btn btn-default dropdown-toggle" href="#">
+                    <i class="fa fa-cog"></i>
+                    Aktionen
+                    <span class="caret"></span>
+                  </a>
+                  <ul class="dropdown-menu dropdown-menu-right">
                     <li class="">
-                          <!-- remove from basket -->
-                      <a class="hit_option remove_from_basket" href="{$ServletsBaseURL}MCRBasketServlet{$HttpSession}?type=objects&amp;action=remove&amp;id={$identifier}&amp;redirect=referer"
-                        title=""
-                      >
-                        <span class="glyphicon glyphicon-bookmark"></span>
-                        <xsl:value-of select="i18n:translate('basket.remove')" />
-                      </a>
-                    </li>
-                  </xsl:when>
-                  <xsl:otherwise>
-                    <li class="">
-                          <!-- add to basket -->
-                      <a class="hit_option hit_to_basket"
-                        href="{$ServletsBaseURL}MCRBasketServlet{$HttpSession}?type=objects&amp;action=add&amp;id={$identifier}&amp;uri=mcrobject:{$identifier}&amp;redirect=referer"
-                        title=""
-                      >
-                        <span class="glyphicon glyphicon-bookmark"></span>
-                        <xsl:value-of select="i18n:translate('basket.add')" />
-                      </a>
-                    </li>
-                  </xsl:otherwise>
-                </xsl:choose>
-                    <!-- download main document of first derivate -->
-                <xsl:if test="not($derivates/str[@name='iviewFile']) and $derivates/str[@name='maindoc']">
-                  <li class="">
-                    <a class="hit_option hit_download" href="{$derivifs}" title="">
-                      <span class="glyphicon glyphicon-download-alt"></span>
-                      <xsl:value-of select="$maindoc" />
-                    </a>
-                  </li>
-                </xsl:if>
-                    <!-- direct link to editor -->
-                <xsl:if test="acl:checkPermission($identifier,'writedb')">
-                  <li class="">
-                    <xsl:variable name="editURL">
-                      <xsl:call-template name="mods.getObjectEditURL">
-                        <xsl:with-param name="id" select="$identifier" />
-                        <xsl:with-param name="layout" select="'$'" />
+                      <xsl:call-template name="basketLink">
+                        <xsl:with-param name="identifier" select="$identifier"/>
                       </xsl:call-template>
-                    </xsl:variable>
-                    <a class="hit_option hit_edit">
-                      <xsl:choose>
-                        <xsl:when test="string-length($editURL) &gt; 0">
-                          <xsl:attribute name="href">
-                                <xsl:value-of select="$editURL" />
-                              </xsl:attribute>
-                          <span class="glyphicon glyphicon-pencil"></span>
-                          <xsl:value-of select="i18n:translate('object.editObject')" />
-                        </xsl:when>
-                        <xsl:otherwise>
-                          <xsl:attribute name="href">
-                                <xsl:value-of select="'#'" />
-                              </xsl:attribute>
-                          <span class="glyphicon glyphicon-pencil"></span>
-                          <xsl:value-of select="i18n:translate('object.locked')" />
-                        </xsl:otherwise>
-                      </xsl:choose>
-                    </a>
-                  </li>
-                </xsl:if>
-              </ul>
-            </div>
-          </div>
+                    </li>
+                        <!-- direct link to editor -->
+                    <xsl:if test="acl:checkPermission($identifier,'writedb')">
+                      <li class="">
+                        <xsl:variable name="editURL">
+                          <xsl:call-template name="mods.getObjectEditURL">
+                            <xsl:with-param name="id" select="$identifier" />
+                            <xsl:with-param name="layout" select="'$'" />
+                          </xsl:call-template>
+                        </xsl:variable>
+                        <a class="hit_option hit_edit">
+                          <xsl:choose>
+                            <xsl:when test="string-length($editURL) &gt; 0">
+                              <xsl:attribute name="href">
+                                    <xsl:value-of select="$editURL" />
+                                  </xsl:attribute>
+                              <span class="glyphicon glyphicon-pencil"></span>
+                              <xsl:value-of select="i18n:translate('object.editObject')" />
+                            </xsl:when>
+                            <xsl:otherwise>
+                              <xsl:attribute name="href">
+                                    <xsl:value-of select="'#'" />
+                                  </xsl:attribute>
+                              <span class="glyphicon glyphicon-pencil"></span>
+                              <xsl:value-of select="i18n:translate('object.locked')" />
+                            </xsl:otherwise>
+                          </xsl:choose>
+                        </a>
+                      </li>
+                    </xsl:if>
+                  </ul>
+                </div>
+              </div>
+            </xsl:when>
+            <xsl:otherwise>
+              <div class="single_hit_option pull-right">
+                <xsl:call-template name="basketLink">
+                  <xsl:with-param name="identifier" select="$identifier"/>
+                </xsl:call-template>
+              </div>
+            </xsl:otherwise>
+          </xsl:choose>
 
 
         </div><!-- end col -->
@@ -339,7 +321,7 @@
 
                   <!-- show default icon with mime-type download icon -->
                   <xsl:otherwise>
-                    <a class="hit_option hit_download" href="{$derivifs}" title="">
+                    <a class="hit_option hit_download" href="{$hitHref}" title="">
                       <xsl:variable name="contentType" select="document(concat('ifs:/',$derivid))/mcr_directory/children/child[name=$maindoc]/contentType" />
                       <xsl:variable name="fileType" select="document('webapp:FileContentTypes.xml')/FileContentTypes/type[mime=$contentType]/@ID" />
                       <div class="hit_icon" style="background-image: url('{$WebApplicationBaseURL}images/icons/icon_common.png');" />
@@ -820,5 +802,30 @@
         </div>
       </div>
     </div>
+  </xsl:template>
+
+  <xsl:template name="basketLink">
+    <xsl:param name="identifier"/>
+    <xsl:choose>
+      <xsl:when test="basket:contains('objects',$identifier)">
+        <!-- remove from basket -->
+        <a class="hit_option remove_from_basket" href="{$ServletsBaseURL}MCRBasketServlet{$HttpSession}?type=objects&amp;action=remove&amp;id={$identifier}&amp;redirect=referer"
+           title=""
+        >
+          <span class="glyphicon glyphicon-bookmark"></span>
+          <xsl:value-of select="i18n:translate('basket.remove')" />
+        </a>
+      </xsl:when>
+      <xsl:otherwise>
+        <!-- add to basket -->
+        <a class="hit_option hit_to_basket"
+           href="{$ServletsBaseURL}MCRBasketServlet{$HttpSession}?type=objects&amp;action=add&amp;id={$identifier}&amp;uri=mcrobject:{$identifier}&amp;redirect=referer"
+           title=""
+        >
+          <span class="glyphicon glyphicon-bookmark"></span>
+          <xsl:value-of select="i18n:translate('basket.add')" />
+        </a>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
 </xsl:stylesheet>
