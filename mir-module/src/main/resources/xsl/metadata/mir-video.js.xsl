@@ -136,6 +136,7 @@
         }
       </style>
       <script src="//vjs.zencdn.net/5.10.4/video.js"></script>
+      <script src="//cdnjs.cloudflare.com/ajax/libs/videojs-contrib-hls/3.4.0/videojs-contrib-hls.min.js"></script>
     </xsl:if>
   </xsl:template>
 </xsl:stylesheet>
