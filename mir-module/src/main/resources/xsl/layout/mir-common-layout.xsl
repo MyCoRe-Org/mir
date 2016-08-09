@@ -3,7 +3,8 @@
   xmlns:basket="xalan://org.mycore.frontend.basket.MCRBasketManager" xmlns:mcr="http://www.mycore.org/" xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
   xmlns:actionmapping="xalan://org.mycore.wfc.actionmapping.MCRURLRetriever" xmlns:mcrver="xalan://org.mycore.common.MCRCoreVersion"
   xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions" xmlns:layoutUtils="xalan:///org.mycore.frontend.MCRLayoutUtilities"
-  exclude-result-prefixes="layoutUtils xlink basket actionmapping mcr mcrver mcrxsl i18n">
+  xmlns:exslt="http://exslt.org/common"
+  exclude-result-prefixes="layoutUtils xlink basket actionmapping mcr mcrver mcrxsl i18n exslt">
   <xsl:strip-space elements="*" />
   <xsl:param name="CurrentLang" select="'de'" />
   <xsl:param name="CurrentUser" />
@@ -15,6 +16,7 @@
   <xsl:param name="resultListEditorID" />
   <xsl:param name="page" />
   <xsl:param name="breadCrumb" />
+  <xsl:param name="MCR.Metadata.Languages" select="'de'" />
   <xsl:include href="layout/mir-layout-utils.xsl" />
   <xsl:include href="resource:xsl/layout/mir-navigation.xsl" />
   <xsl:variable name="loaded_navigation_xml" select="layoutUtils:getPersonalNavigation()/navigation" />
@@ -71,34 +73,31 @@
   <xsl:template name="mir.languageMenu">
     <li class="dropdown">
       <a data-toggle="dropdown" title="{i18n:translate('mir.language.change')}">
-        <img alt="{$CurrentLang}" src="{$WebApplicationBaseURL}images/mir/lang-{$CurrentLang}.png" />
+        <xsl:value-of select="i18n:translate(concat('mir.language.change.', $CurrentLang))" />
         <span class="caret" />
       </a>
       <ul class="dropdown-menu language-menu" role="menu">
-        <xsl:if test="$CurrentLang!='de'">
-          <li>
-            <xsl:variable name="langURL">
-              <xsl:call-template name="mir.languageLink">
-                <xsl:with-param name="lang" select="'de'" />
-              </xsl:call-template>
-            </xsl:variable>
-            <a href="{$langURL}" title="{i18n:translate('mir.language.de')}">
-              <img alt="{i18n:translate('mir.language.de')}" src="{$WebApplicationBaseURL}images/mir/lang-de.png" />
-            </a>
-          </li>
-        </xsl:if>
-        <xsl:if test="$CurrentLang!='en'">
-          <li>
-            <xsl:variable name="langURL">
-              <xsl:call-template name="mir.languageLink">
-                <xsl:with-param name="lang" select="'en'" />
-              </xsl:call-template>
-            </xsl:variable>
-            <a href="{$langURL}" title="{i18n:translate('mir.language.en')}">
-              <img alt="{i18n:translate('mir.language.en')}" src="{$WebApplicationBaseURL}images/mir/lang-en.png" />
-            </a>
-          </li>
-        </xsl:if>
+        <xsl:variable name="availableLanguages">
+          <xsl:call-template name="Tokenizer"><!-- use split function from mycore-base/coreFunctions.xsl -->
+            <xsl:with-param name="string" select="$MCR.Metadata.Languages" />
+            <xsl:with-param name="delimiter" select="','" />
+          </xsl:call-template>
+        </xsl:variable>
+        <xsl:for-each select="exslt:node-set($availableLanguages)/token">
+          <xsl:variable name="lang"><xsl:value-of select="mcrxsl:trim(.)" /></xsl:variable>
+          <xsl:if test="$lang!='' and $CurrentLang!=$lang">
+            <li>
+              <xsl:variable name="langURL">
+                <xsl:call-template name="mir.languageLink">
+                  <xsl:with-param name="lang" select="$lang" />
+                </xsl:call-template>
+              </xsl:variable>
+              <a href="{$langURL}" title="{i18n:translate(concat('mir.language.', $lang))}">
+                <xsl:value-of select="i18n:translate(concat('mir.language.change.', $lang))" />
+              </a>
+            </li>
+          </xsl:if>
+        </xsl:for-each>
       </ul>
     </li>
   </xsl:template>
