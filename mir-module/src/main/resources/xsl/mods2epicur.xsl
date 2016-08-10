@@ -27,10 +27,10 @@
     <xsl:variable name="derivateURN">
       <xsl:choose>
         <xsl:when test="./structure/derobjects/derobject or contains(./metadata/def.modsContainer/modsContainer/mods:mods/mods:identifier[@type='urn'], $MCR.URN.SubNamespace.Default.Prefix)">
-          <xsl:variable name="deriv" select="./structure/derobjects/derobject/@xlink:href" />
+          <xsl:variable name="deriv" select="./structure/derobjects/derobject[mcrurn:hasURNDefined(@xlink:href)]" />
           <xsl:choose>
-            <xsl:when test="mcrurn:hasURNDefined($deriv)">
-              <xsl:variable name="derivlink" select="concat('mcrobject:',$deriv)" />
+            <xsl:when test="$deriv">
+              <xsl:variable name="derivlink" select="concat('mcrobject:',$deriv[1]/@xlink:href)" />
               <xsl:variable name="derivate" select="document($derivlink)" />
               <xsl:value-of select="$derivate/mycorederivate/derivate/fileset/@urn" />
             </xsl:when>
