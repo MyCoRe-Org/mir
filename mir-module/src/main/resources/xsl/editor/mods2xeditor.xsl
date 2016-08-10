@@ -17,6 +17,12 @@
         </xsl:attribute>
   </xsl:template>
 
+  <xsl:template match="mods:subject/mods:topic/@valueURI">
+    <xsl:attribute name="valueURIxEditor">
+      <xsl:value-of select="substring-after(.,../@authorityURI)" />
+    </xsl:attribute>
+  </xsl:template>
+
   <xsl:template match="mods:titleInfo[string-length(@altRepGroup) &gt; 0]|mods:abstract[string-length(@altRepGroup) &gt; 0]">
     <xsl:if test="string-length(@altFormat) &gt; 0">
       <xsl:variable name="content" select="document(@altFormat)" />
@@ -214,6 +220,12 @@
 
   <xsl:template match="mods:list">
     <xsl:value-of select="text()" />
+  </xsl:template>
+
+  <xsl:template match="mods:subject/mods:topic[not(@authority)]">
+    <mods:topicSimple>
+      <xsl:value-of select="."/>
+    </mods:topicSimple>
   </xsl:template>
 
 </xsl:stylesheet>

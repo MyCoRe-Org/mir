@@ -1680,7 +1680,10 @@
   </xed:template>
 
   <xed:template id="subject.simple">
-    <mir:textfield repeat="true" xpath="mods:subject" bind="mods:topic" min="1" max="10" label="mir.subject.topic" help-text="{i18n:mir.help.subject.topic}" />
+    <xed:bind xpath="mods:subject">
+      <mir:textfield repeat="true" xpath="mods:topicSimple" min="1" max="10" label="mir.subject.topic" help-text="{i18n:mir.help.subject.topic}" />
+      <mir:topic.repeated min="1" max="10" label="mir.subject.topic.gnd" help-text="{i18n:mir.help.subject.topic.gnd}" />
+    </xed:bind>
   </xed:template>
 
   <xed:template id="subject.complex">
@@ -1693,10 +1696,23 @@
           <mir:help-pmud pmud="true" help-text="{i18n:mir.help.subject.topic.complex}" />
         </div>
         <div class="mir-fieldset-content">
-          <mir:textfield repeat="true" xpath="mods:topic" min="1" max="10" label="mir.subject.topic" help-text="{i18n:mir.help.subject.topic}" />
+          <mir:textfield repeat="true" xpath="mods:topicSimple" min="1" max="10" label="mir.subject.topic" help-text="{i18n:mir.help.subject.topic}" />
+          <mir:topic.repeated min="1" max="10" label="mir.subject.topic.gnd" help-text="{i18n:mir.help.subject.topic.gnd}" />
         </div>
       </fieldset>
     </xed:repeat>
+  </xed:template>
+
+  <xed:template id="topic.input">
+    <input type="text" size="26" class="form-control form-control-inline" data-search="searchEntity" data-search-type="GND"
+           data-search-entity-type="topic" data-search-output=".topic_gnd" data-search-output-type=".topic_gndType" data-search-button="{i18n:button.search}"
+           data-search-button-loading="{i18n:button.loading}" data-search-result-empty="{i18n:mir.searchIdentifier.noResult}" data-target=".search-topic"/>
+    <xed:bind xpath="@valueURIxEditor">
+      <input type="hidden" class="topic_gnd" />
+    </xed:bind>
+    <xed:bind xpath="@authority">
+      <input type="hidden" class="topic_gndType" />
+    </xed:bind>
   </xed:template>
 
   <xed:template id="classification">
@@ -1984,6 +2000,8 @@
       relevant-if="(string-length(normalize-space(text())) &gt; 0) or mods:* or cmd:* or (string-length(@xlink:href) &gt; 0) or (string-length(@valueURIxEditor) &gt; 0) or (string-length(@mcr:categId) &gt; 0)" />
     <xed:cleanup-rule xpath="//mods:name" relevant-if="(mods:namePart|mods:displayForm) or (string-length(@valueURI) &gt; 0) or (string-length(@valueURIxEditor) &gt; 0)" />
     <xed:cleanup-rule xpath="//mods:name/@authorityURI" relevant-if="(string-length(../@valueURI) &gt; 0) or (string-length(../@valueURIxEditor) &gt; 0)" />
+    <xed:cleanup-rule xpath="//mods:topic/@authorityURI" relevant-if="(string-length(../@valueURI) &gt; 0) or (string-length(../@valueURIxEditor) &gt; 0)" />
+    <xed:cleanup-rule xpath="//mods:topic/@authority" relevant-if="(string-length(../@valueURI) &gt; 0) or (string-length(../@valueURIxEditor) &gt; 0)" />
     <xed:cleanup-rule xpath="//mods:name/mods:namePart" relevant-if="string-length(text()) &gt; 0" />
     <xed:cleanup-rule xpath="//mods:name/mods:namePart/@type" relevant-if="../@type!='other'" />
     <xed:cleanup-rule xpath="//mods:*/@xlink:type" relevant-if="text()!='simple'" />

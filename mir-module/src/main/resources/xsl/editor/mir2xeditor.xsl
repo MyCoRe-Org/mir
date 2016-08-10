@@ -404,6 +404,27 @@
     </xed:repeat>
   </xsl:template>
 
+  <xsl:template match="mir:topic.repeated">
+    <xed:repeat xpath="mods:topic[@authorityURI='http://d-nb.info/gnd/']" min="{@min}" max="{@max}">
+      <div class="form-group {@class}">
+        <label class="col-md-3 control-label">
+          <xed:output i18n="{@label}" />
+        </label>
+        <div class="col-md-6">
+          <div class="search-topic">
+            <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="topic.input" />
+          </div>
+        </div>
+        <div class="col-md-3">
+          <xsl:if test="string-length(@help-text) &gt; 0">
+          <xsl:call-template name="mir-helpbutton" />
+          </xsl:if>
+          <xsl:call-template name="mir-pmud" />
+        </div>
+      </div>
+    </xed:repeat>
+  </xsl:template>
+
   <xsl:template match="mir:pmud">
     <div class="col-md-3 {@class}">
       <xsl:call-template name="mir-pmud" />

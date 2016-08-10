@@ -128,6 +128,17 @@
           }
           return result;
         }
+      },
+      topic : {
+        enabled : true,
+        url : "//lobid.org/subject",
+        data : function(input) {
+          return {
+            name : input,
+            format : "ids"
+          }
+        },
+        dataType : "jsonp"
       }
     },
     VIAF : {
@@ -216,6 +227,9 @@
           }
           return result;
         }
+      },
+      topic : {
+        enabled : false
       }
     }
   };
