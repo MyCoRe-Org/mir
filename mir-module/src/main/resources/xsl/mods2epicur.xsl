@@ -21,8 +21,8 @@
   <xsl:param name="MCR.URN.SubNamespace.Default.Prefix" select="''" />
 
   <xsl:template match="mycoreobject" mode="metadata">
-    <xsl:text disable-output-escaping="yes">&lt;epicur xsi:schemaLocation="urn:nbn:de:1111-2004033116 http://www.persistent-identifier.de/xepicur/version1.0/xepicur.xsd"
-                xmlns="urn:nbn:de:1111-2004033116" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;</xsl:text>
+    <epicur xsi:schemaLocation="urn:nbn:de:1111-2004033116 http://www.persistent-identifier.de/xepicur/version1.0/xepicur.xsd"
+                xmlns="urn:nbn:de:1111-2004033116" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 
     <xsl:variable name="derivateURN">
       <xsl:choose>
@@ -48,9 +48,8 @@
       </xsl:choose>
     </xsl:variable>
 
-    <!-- ToDo: define epicurType in derivate xml -->
     <!-- xsl:variable name="epicurType" select="./metadata/urns/urn/@type" / -->
-    <xsl:variable name="epicurType" select="'urn_new'" />
+    <xsl:variable name="epicurType" select="'url_update_general'" />
     <xsl:call-template name="administrative_data">
       <xsl:with-param name="epicurType" select="$epicurType" />
     </xsl:call-template>
@@ -58,7 +57,7 @@
       <xsl:with-param name="epicurType" select="$epicurType" />
       <xsl:with-param name="derivateURN" select="$derivateURN" />
     </xsl:call-template>
-    <xsl:text disable-output-escaping="yes">&lt;/epicur&gt;</xsl:text>
+    </epicur>
   </xsl:template>
 
   <xsl:template name="linkQueryURL">
@@ -93,9 +92,6 @@
         </xsl:attribute></xsl:element>
       </xsl:element>
     </xsl:element>
-  </xsl:template>
-
-  <xsl:template name="url_update_general">
   </xsl:template>
 
   <xsl:template name="record">
