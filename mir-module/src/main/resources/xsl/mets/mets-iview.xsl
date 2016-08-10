@@ -9,6 +9,8 @@
   <xsl:param name="derivateID" select="substring-after(/mets:mets/mets:dmdSec/@ID,'_')" />
   <xsl:param name="MCR.Module-iview2.PDFCreatorURI" />
 
+  <xsl:key name="logDiv" match="mets:div" use="@ID" />
+
   <xsl:param name="objectID" />
   <!-- this is where the master file group is located (files that are referenced by a relative URL) -->
   <xsl:variable name="masterFileGrp"
@@ -37,15 +39,7 @@
         <xsl:with-param name="use" select="'THUMBS'" />
       </xsl:call-template>
       <xsl:call-template name="generateIViewURLS">
-        <xsl:with-param name="use" select="'MIN'" />
-        <xsl:with-param name="zoom" select="'MIN'" />
-      </xsl:call-template>
-      <xsl:call-template name="generateIViewURLS">
         <xsl:with-param name="use" select="'DEFAULT'" />
-        <xsl:with-param name="zoom" select="'MID'" />
-      </xsl:call-template>
-      <xsl:call-template name="generateIViewURLS">
-        <xsl:with-param name="use" select="'MAX'" />
         <xsl:with-param name="zoom" select="'MAX'" />
       </xsl:call-template>
       <xsl:call-template name="generateIViewURLS">
@@ -54,24 +48,13 @@
       <xsl:call-template name="generateIViewURLS">
         <xsl:with-param name="use" select="'IDENTIFIERS'" />
       </xsl:call-template>
-      <xsl:call-template name="generateIViewURLS">
-        <xsl:with-param name="use" select="'DOWNLOAD'" />
-      </xsl:call-template>
-      <xsl:call-template name="generateIViewURLS">
-        <xsl:with-param name="use" select="'MID_NO_DFG'" />
-        <xsl:with-param name="zoom" select="'MID'" />
-      </xsl:call-template>
-      <xsl:call-template name="generateIViewURLS">
-        <xsl:with-param name="use" select="'MAX_NO_DFG'" />
-        <xsl:with-param name="zoom" select="'MAX'" />
-      </xsl:call-template>
-      <xsl:call-template name="generateIViewURLS">
-        <xsl:with-param name="use" select="'MIN_NO_DFG'" />
-        <xsl:with-param name="zoom" select="'MIN'" />
-      </xsl:call-template>
-
+      <!-- only use download when pdf creator is set -->
+      <xsl:if test="$MCR.Module-iview2.PDFCreatorURI">
+        <xsl:call-template name="generateIViewURLS">
+          <xsl:with-param name="use" select="'DOWNLOAD'" />
+        </xsl:call-template>
+      </xsl:if>
       <xsl:apply-templates mode="replaceURL" select="$copyFileGrp" />
-
     </xsl:copy>
 
   </xsl:template>
@@ -89,6 +72,30 @@
     </xsl:variable>
     <mets:FLocat LOCTYPE="URL" xlink:href="{$absoluteLocation}" />
   </xsl:template>
+
+  <xsl:template match="mets:smLink">
+    <xsl:copy>
+      <xsl:apply-templates select="@*|node()" />
+    </xsl:copy>
+    <xsl:call-template name="traverseSmLink">
+      <xsl:with-param name="from" select="@xlink:from" />
+      <xsl:with-param name="to" select="@xlink:to" />
+    </xsl:call-template>
+  </xsl:template>
+
+  <xsl:template name="traverseSmLink">
+    <xsl:param name="from" />
+    <xsl:param name="to" />
+    <xsl:variable name="logDiv" select="key('logDiv', $from)/parent::mets:div/@ID" />
+    <xsl:if test="$logDiv">
+      <mets:smLink xlink:from="{$logDiv}" xlink:to="{$to}" />
+      <xsl:call-template name="traverseSmLink">
+        <xsl:with-param name="from" select="$logDiv" />
+        <xsl:with-param name="to" select="$to" />
+      </xsl:call-template>
+    </xsl:if>
+  </xsl:template>
+
 
   <xsl:template name="generateIViewURLS">
     <xsl:param name="use" />
@@ -124,32 +131,12 @@
               <mets:FLocat LOCTYPE="OTHER" xlink:href="{concat($derivateID, '/', mets:FLocat/@xlink:href)}" />
             </mets:file>
           </xsl:when>
-          <xsl:when test="$use='MIN_NO_DFG'">
-            <mets:file ID="{concat($use,'_',$ncName)}" MIMETYPE="image/jpg">
-              <mets:FLocat LOCTYPE="URL"
-                xlink:href="{concat($WebApplicationServletsURL, 'MCRTileCombineServlet/', $zoom,'/', $derivateID, '/', mets:FLocat/@xlink:href)}" />
-            </mets:file>
-          </xsl:when>
-          <xsl:when test="$use='MAX_NO_DFG'">
-            <mets:file ID="{concat($use,'_',$ncName)}" MIMETYPE="image/jpg">
-              <mets:FLocat LOCTYPE="URL"
-                xlink:href="{concat($WebApplicationServletsURL, 'MCRTileCombineServlet/', $zoom,'/', $derivateID, '/', mets:FLocat/@xlink:href)}" />
-            </mets:file>
-          </xsl:when>
-          <xsl:when test="$use='MID_NO_DFG'">
-            <mets:file ID="{concat($use,'_',$ncName)}" MIMETYPE="image/jpg">
-              <mets:FLocat LOCTYPE="URL"
-                xlink:href="{concat($WebApplicationServletsURL, 'MCRTileCombineServlet/', $zoom,'/', $derivateID, '/', mets:FLocat/@xlink:href)}" />
-            </mets:file>
-          </xsl:when>
-
-          <xsl:when test="$use='DOWNLOAD'">
+          <xsl:when test="$use='DOWNLOAD' and $MCR.Module-iview2.PDFCreatorURI">
             <mets:file ID="{concat($use,'_',$ncName)}" MIMETYPE="application/pdf">
               <mets:FLocat LOCTYPE="URL"
                 xlink:href="{concat($MCR.Module-iview2.PDFCreatorURI, '?mets=', encoder:encode(concat($WebApplicationServletsURL, 'MCRMETSServlet', '/',$derivateID, '/mets.xml?XSL.Style=pdf'), 'UTF-8'), '&amp;pages=', position())}" />
             </mets:file>
           </xsl:when>
-
           <xsl:otherwise>
             <mets:file ID="{concat($use,'_',$ncName)}" MIMETYPE="image/jpeg">
               <mets:FLocat LOCTYPE="URL" xlink:href="{concat($ImageBaseURL,$zoom,'/',$derivateID,'/',mets:FLocat/@xlink:href)}" />
@@ -196,18 +183,15 @@
           </xsl:otherwise>
         </xsl:choose>
       </xsl:variable>
-      <mets:fptr FILEID="{concat('MIN_',$ncName)}" />
       <mets:fptr FILEID="{concat('DEFAULT_',$ncName)}" />
-      <mets:fptr FILEID="{concat('MAX_',$ncName)}" />
+      <mets:fptr FILEID="{concat('THUMBS_',$ncName)}" />
 
       <mets:fptr FILEID="{concat('VIEWER_',$ncName)}" />
       <mets:fptr FILEID="{concat('IDENTIFIERS_',$ncName)}" />
 
-      <mets:fptr FILEID="{concat('DOWNLOAD_',$ncName)}" />
-
-      <mets:fptr FILEID="{concat('MIN_NO_DFG_',$ncName)}" />
-      <mets:fptr FILEID="{concat('MID_NO_DFG_',$ncName)}" />
-      <mets:fptr FILEID="{concat('MAX_NO_DFG_',$ncName)}" />
+      <xsl:if test="$MCR.Module-iview2.PDFCreatorURI">
+        <mets:fptr FILEID="{concat('DOWNLOAD_',$ncName)}" />
+      </xsl:if>
 
       <xsl:if test="mets:fptr[$copyFileGrp/mets:file/@ID=@FILEID]">
         <!-- Copy fptr that have match in copyFileGrp -->
