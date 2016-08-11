@@ -227,11 +227,11 @@ public class MIRModsEditorController extends MIREditorController {
     public void setTopics(List<String> topics) {
         if (topics.size() > 0) {
             if (topics.size() > 1) {
-                IntStream.range(1, topics.size()).forEach((n) -> clickRepeater("mods:subject"));
+                IntStream.range(1, topics.size()).forEach((n) -> clickRepeater("mods:topicSimple"));
             }
 
             IntStream.range(0, topics.size()).forEach(i -> {
-                String xp = i == 0 ? "mods:subject/mods:topicSimple" : "mods:subject[" + (i + 1) + "]/mods:topicSimple";
+                String xp = i == 0 ? "mods:subject/mods:topicSimple" : "mods:subject/mods:topicSimple[" + (i + 1) + "]";
                 String topic = topics.get(i);
                 setInputText(xp, topic);
             });
