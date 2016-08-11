@@ -7,6 +7,8 @@ import java.util.Map;
 import javax.naming.OperationNotSupportedException;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
@@ -21,7 +23,6 @@ import org.mycore.datamodel.metadata.MCRDerivate;
 import org.mycore.datamodel.metadata.MCRMetadataManager;
 import org.mycore.datamodel.metadata.MCRObject;
 import org.mycore.datamodel.metadata.MCRObjectID;
-import org.mycore.datamodel.niofs.MCRPath;
 import org.mycore.mods.MCRMODSWrapper;
 import org.mycore.sword.MCRSwordUtil;
 import org.mycore.sword.application.MCRSwordIngester;
@@ -37,6 +38,7 @@ public class MIRSwordIngester implements MCRSwordIngester {
 
     private static final Namespace DC_NAMESPACE = Namespace.getNamespace("dc", "http://purl.org/dc/elements/1.1/");
     private static final MCRXSL2XMLTransformer XSL_DC_MODS_TRANSFORMER = new MCRXSL2XMLTransformer("xsl/DC_MODS3-5_XSLT1-0.xsl");
+    public static final Logger LOGGER = LogManager.getLogger();
     private MCRSwordLifecycleConfiguration lifecycleConfiguration;
     private MCRSwordMediaHandler mcrSwordMediaHandler = new MCRSwordMediaHandler();
 
@@ -100,14 +102,27 @@ public class MIRSwordIngester implements MCRSwordIngester {
     @Override
     public void ingestResource(MCRObject object, Deposit entry) throws SwordServerException, SwordError {
         final MCRObjectID objectID = object.getId();
+
+        MCRObjectID createdDerivateID = null;
+        boolean complete = false;
         try {
             final MCRDerivate derivate = MCRSwordUtil.createDerivate(objectID.toString());
-            final MCRPath path = MCRPath.getPath(derivate.getId().toString(), "/");
-            mcrSwordMediaHandler.addResource(derivate.getId().toString(), "/", entry);
+            createdDerivateID = derivate.getId();
+            mcrSwordMediaHandler.addResource(createdDerivateID.toString(), "/", entry);
+            complete = true;
         } catch (IOException e) {
             throw new SwordServerException("Error while creating new derivate for object " + objectID.toString(), e);
         } catch (MCRAccessException e) {
             throw new SwordError(UriRegistry.ERROR_BAD_REQUEST, HttpServletResponse.SC_UNAUTHORIZED, e.getMessage());
+        } finally {
+            if (createdDerivateID != null && !complete) {
+                try {
+                    MCRMetadataManager.deleteMCRDerivate(createdDerivateID);
+                } catch (MCRAccessException e1) {
+                    // derivate can be created but not deleted ?!
+                    LOGGER.error("Derivate could not be deleted(deposit was invalid)", e1);
+                }
+            }
         }
     }
 
