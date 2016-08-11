@@ -1,13 +1,12 @@
 (function($) {
   $﻿(document).ready(function() {
     $('.show_openstreetmap').click(function() {
-      $(this).parent().next(".openstreetmap-container").collapse('toggle');
+		if (!$(this).hasClass("map_drawn")) {
+			drawMap($(this));
+		}
+		$(this).parent().next(".openstreetmap-container").collapse('toggle');
     });
-  	
-  	$(".show_openstreetmap").each(function(){
-  		drawMap($(this));
-  	});
-  	
+
   	function drawMap(btn) {
   		var map;
   		var input = $(btn).parent().parent().prev().find("input[name*='coordinates']"); 
@@ -127,6 +126,7 @@
 	  		}
 	  	});
 	  	init();
+		$(btn).addClass("map_drawn");
   	}
   });
 })(jQuery);
