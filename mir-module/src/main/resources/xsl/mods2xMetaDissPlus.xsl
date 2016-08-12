@@ -82,6 +82,7 @@
              <xsl:call-template name="degree" />
              <xsl:call-template name="contact" />
              <xsl:call-template name="file" />
+             <xsl:call-template name="frontpage" />
              <xsl:call-template name="rights" />
     <xsl:text disable-output-escaping="yes">
       &#60;/xMetaDiss:xMetaDiss&#62;
@@ -420,10 +421,6 @@
            </xsl:choose>
         </xsl:element>
       </xsl:if>
-      <xsl:element name="ddb:identifier">
-          <xsl:attribute name="ddb:type">URL</xsl:attribute>
-          <xsl:value-of select="concat($WebApplicationBaseURL,'receive/',/mycoreobject/@ID)"/>
-      </xsl:element>
     </xsl:template>
 
     <xsl:template name="format">
@@ -598,6 +595,13 @@
                </xsl:if>
             </xsl:if>
         </xsl:for-each>
+    </xsl:template>
+    
+    <xsl:template name="frontpage">
+        <xsl:element name="ddb:identifier">
+            <xsl:attribute name="ddb:type">URL</xsl:attribute>
+            <xsl:value-of select="concat($WebApplicationBaseURL,'receive/',/mycoreobject/@ID)"/>
+        </xsl:element>
     </xsl:template>
 
     <xsl:template name="rights">
