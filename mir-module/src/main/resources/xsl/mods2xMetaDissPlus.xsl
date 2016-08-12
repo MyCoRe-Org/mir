@@ -39,6 +39,8 @@
   <xsl:param name="ServletsBaseURL" select="''" />
   <xsl:param name="WebApplicationBaseURL" select="''" />
   <xsl:param name="MCR.URN.SubNamespace.Default.Prefix" select="''" />
+  <xsl:param name="MCR.OAIDataProvider.FallbackPublisher" />
+  <xsl:param name="MCR.OAIDataProvider.FallbackPublisherPlace" />
 
   <xsl:variable name="language">
     <xsl:call-template name="translate_Lang">
@@ -287,47 +289,56 @@
     </xsl:template>
 
     <xsl:template name="publisher">
-      <xsl:if test="//mods:originInfo[not(@eventType) or @eventType='publication']/mods:publisher or
-                    //mods:name[mods:role/mods:roleTerm/text()='pbl'] or
-                    //mods:accessCondition[@type='copyrightMD']/cmd:copyright/cmd:rights.holder/cmd:name">
+      <xsl:variable name="publisher_name">
+        <xsl:choose>
+          <xsl:when test="./metadata/def.modsContainer/modsContainer/mods:mods/mods:originInfo[not(@eventType) or @eventType='publication']/mods:publisher">
+            <xsl:value-of select="./metadata/def.modsContainer/modsContainer/mods:mods/mods:originInfo[not(@eventType) or @eventType='publication']/mods:publisher" />
+          </xsl:when>
+          <xsl:when test="./metadata/def.modsContainer/modsContainer/mods:mods/mods:name[mods:role/mods:roleTerm/text()='pbl']">
+            <xsl:value-of select="./metadata/def.modsContainer/modsContainer/mods:mods/mods:name[mods:role/mods:roleTerm/text()='pbl']/mods:displayForm" />
+          </xsl:when>
+          <xsl:when test="./metadata/def.modsContainer/modsContainer/mods:mods/mods:accessCondition[@type='copyrightMD']/cmd:copyright/cmd:rights.holder/cmd:name">
+            <xsl:value-of select="./metadata/def.modsContainer/modsContainer/mods:mods/mods:accessCondition[@type='copyrightMD']/cmd:copyright/cmd:rights.holder/cmd:name" />
+          </xsl:when>
+          <xsl:when test="./metadata/def.modsContainer/modsContainer/mods:mods/mods:relatedItem[@type='host']/mods:originInfo[not(@eventType) or @eventType='publication']/mods:publisher">
+            <xsl:value-of select="./metadata/def.modsContainer/modsContainer/mods:mods/mods:relatedItem[@type='host']/mods:originInfo[not(@eventType) or @eventType='publication']/mods:publisher" />
+          </xsl:when>
+          <xsl:when test="./metadata/def.modsContainer/modsContainer/mods:mods/mods:relatedItem[@type='host']/mods:name[mods:role/mods:roleTerm/text()='pbl']">
+            <xsl:value-of select="./metadata/def.modsContainer/modsContainer/mods:mods/mods:relatedItem[@type='host']/mods:name[mods:role/mods:roleTerm/text()='pbl']/mods:displayForm" />
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:value-of select="$MCR.OAIDataProvider.FallbackPublisher"/>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:variable>
+      <xsl:variable name="publisher_place">
+        <xsl:choose>
+          <xsl:when test="./metadata/def.modsContainer/modsContainer/mods:mods/mods:originInfo[not(@eventType) or @eventType='publication']/mods:place/mods:placeTerm[@type='text']">
+            <xsl:value-of select="./metadata/def.modsContainer/modsContainer/mods:mods/mods:originInfo[not(@eventType) or @eventType='publication']/mods:place/mods:placeTerm[@type='text']" />
+          </xsl:when>
+          <xsl:when test="./metadata/def.modsContainer/modsContainer/mods:mods/mods:relatedItem[@type='host']/mods:originInfo[not(@eventType) or @eventType='publication']/mods:place/mods:placeTerm[@type='text']">
+            <xsl:value-of select="./metadata/def.modsContainer/modsContainer/mods:mods/mods:relatedItem[@type='host']/mods:originInfo[not(@eventType) or @eventType='publication']/mods:place/mods:placeTerm[@type='text']" />
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:value-of select="$MCR.OAIDataProvider.FallbackPublisherPlace"/>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:variable>
+      <xsl:if test="string-length($publisher_name) &gt; 0">
         <xsl:element name="dc:publisher">
           <xsl:attribute name="xsi:type">cc:Publisher</xsl:attribute>
           <xsl:attribute name="type">dcterms:ISO3166</xsl:attribute>
           <xsl:attribute name="countryCode">DE</xsl:attribute>
           <xsl:element name="cc:universityOrInstitution">
             <xsl:element name="cc:name">
-              <xsl:choose>
-                <xsl:when test="./metadata/def.modsContainer/modsContainer/mods:mods/mods:originInfo[not(@eventType) or @eventType='publication']/mods:publisher">
-                  <xsl:value-of select="./metadata/def.modsContainer/modsContainer/mods:mods/mods:originInfo[not(@eventType) or @eventType='publication']/mods:publisher" />
-                </xsl:when>
-                <xsl:when test="./metadata/def.modsContainer/modsContainer/mods:mods/mods:name[mods:role/mods:roleTerm/text()='pbl']">
-                  <xsl:value-of select="./metadata/def.modsContainer/modsContainer/mods:mods/mods:name[mods:role/mods:roleTerm/text()='pbl']/mods:displayForm" />
-                </xsl:when>
-                <xsl:when test="./metadata/def.modsContainer/modsContainer/mods:mods/mods:accessCondition[@type='copyrightMD']/cmd:copyright/cmd:rights.holder/cmd:name">
-                  <xsl:value-of select="./metadata/def.modsContainer/modsContainer/mods:mods/mods:accessCondition[@type='copyrightMD']/cmd:copyright/cmd:rights.holder/cmd:name" />
-                </xsl:when>
-                <xsl:when test="./metadata/def.modsContainer/modsContainer/mods:mods/mods:relatedItem[@type='host']/mods:originInfo[not(@eventType) or @eventType='publication']/mods:publisher">
-                  <xsl:value-of select="./metadata/def.modsContainer/modsContainer/mods:mods/mods:relatedItem[@type='host']/mods:originInfo[not(@eventType) or @eventType='publication']/mods:publisher" />
-                </xsl:when>
-                <xsl:when test="./metadata/def.modsContainer/modsContainer/mods:mods/mods:relatedItem[@type='host']/mods:name[mods:role/mods:roleTerm/text()='pbl']">
-                  <xsl:value-of select="./metadata/def.modsContainer/modsContainer/mods:mods/mods:relatedItem[@type='host']/mods:name[mods:role/mods:roleTerm/text()='pbl']/mods:displayForm" />
-                </xsl:when>
-              </xsl:choose>
+              <xsl:value-of select="$publisher_name"/>  
             </xsl:element>
-            <xsl:if test="//mods:place">
+            <xsl:if test="string-length($publisher_place) &gt; 0">
               <xsl:element name="cc:place">
-                <xsl:choose>
-                  <xsl:when test="./metadata/def.modsContainer/modsContainer/mods:mods/mods:originInfo[not(@eventType) or @eventType='publication']/mods:place/mods:placeTerm[@type='text']">
-                    <xsl:value-of select="./metadata/def.modsContainer/modsContainer/mods:mods/mods:originInfo[not(@eventType) or @eventType='publication']/mods:place/mods:placeTerm[@type='text']" />
-                  </xsl:when>
-                  <xsl:when test="./metadata/def.modsContainer/modsContainer/mods:mods/mods:relatedItem[@type='host']/mods:originInfo[not(@eventType) or @eventType='publication']/mods:place/mods:placeTerm[@type='text']">
-                    <xsl:value-of select="./metadata/def.modsContainer/modsContainer/mods:mods/mods:relatedItem[@type='host']/mods:originInfo[not(@eventType) or @eventType='publication']/mods:place/mods:placeTerm[@type='text']" />
-                  </xsl:when>
-                </xsl:choose>
+                <xsl:value-of select="$publisher_place"/>
               </xsl:element>
             </xsl:if>
           </xsl:element>
-          <cc:address cc:Scheme="DIN5008"/>
         </xsl:element>
       </xsl:if>
     </xsl:template>
