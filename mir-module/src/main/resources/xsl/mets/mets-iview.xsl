@@ -31,6 +31,7 @@
     </xsl:copy>
   </xsl:template>
 
+
   <xsl:template match="mets:fileSec">
     <!-- <xsl:copy-of select="mcr:getURNsForMCRID($derivateID)"/> -->
     <xsl:copy>
@@ -153,6 +154,10 @@
   <xsl:template match="mets:div[$masterFileGrp/mets:file/@ID=mets:fptr/@FILEID]">
     <xsl:copy>
       <xsl:copy-of select="@*" />
+      <xsl:attribute name="ORDER">
+        <xsl:value-of select="count(preceding-sibling::mets:div)+1" />
+      </xsl:attribute>
+
       <xsl:variable name="fileID" select="mets:fptr[$masterFileGrp/mets:file/@ID=@FILEID]/@FILEID" />
       <xsl:variable name="file" select="$masterFileGrp/mets:file[@ID=$fileID]/mets:FLocat/@xlink:href" />
       <xsl:variable name="filePath">
