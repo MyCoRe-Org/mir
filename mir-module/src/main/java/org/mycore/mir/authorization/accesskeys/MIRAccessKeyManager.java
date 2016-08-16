@@ -124,6 +124,7 @@ public final class MIRAccessKeyManager {
             MCRAccessManager.invalidPermissionCache(mcrObjectId.toString(), MCRAccessManager.PERMISSION_READ);
             break;
         case MIRAccessKeyPair.PERMISSION_WRITE:
+            MCRAccessManager.invalidPermissionCache(mcrObjectId.toString(), MCRAccessManager.PERMISSION_READ);
             MCRAccessManager.invalidPermissionCache(mcrObjectId.toString(), MCRAccessManager.PERMISSION_WRITE);
             break;
         }
