@@ -122,29 +122,25 @@
       <xsl:if test="//mods:mods/mods:identifier[@type='doi']">
         <script>
           $.ajax({
-          type: 'POST',
-          url: 'http://dx.doi.org/
-          <xsl:value-of select="//mods:mods/mods:identifier[@type='doi']" />
-          ',
-          headers: {
-          'Accept': 'text/bibliography; style=din-1505-2; locale=de-DE'
-          }
+            type: 'POST',
+            url: 'http://dx.doi.org/<xsl:value-of select="//mods:mods/mods:identifier[@type='doi']" />',
+            headers: {
+              'Accept': 'text/bibliography; style=din-1505-2; locale=de-DE'
+            }
           }).done(function(data) {
-          $('#citation-text').html(data);
+            $('#citation-text').html(data);
           });
 
           $('#crossref-cite').on('change', function() {
-          $.ajax({
-          type: 'POST',
-          url: 'http://dx.doi.org/
-          <xsl:value-of select="//mods:mods/mods:identifier[@type='doi']" />
-          ',
-          headers: {
-          'Accept': 'text/bibliography; style=' + $(this).val() + '; locale=de-DE'
-          }
-          }).done(function(data) {
-          $('#citation-text').html(data);
-          });
+            $.ajax({
+              type: 'POST',
+              url: 'http://dx.doi.org/<xsl:value-of select="//mods:mods/mods:identifier[@type='doi']" />',
+              headers: {
+                'Accept': 'text/bibliography; style=' + $(this).val() + '; locale=de-DE'
+              }
+            }).done(function(data) {
+              $('#citation-text').html(data);
+            });
           });
         </script>
       </xsl:if>
