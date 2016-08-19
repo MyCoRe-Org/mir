@@ -3,7 +3,7 @@
 <xed:template xmlns:xed="http://www.mycore.de/xeditor" xmlns:mir="http://www.mycore.de/mir">
 
   <xed:template id="in.out">
-    <xed:source uri="xslStyle:PPN-mods-simple,mycoreobject-migrate-nameIdentifier,editor/mods2xeditor:http://unapi.gbv.de/?id=gvk:ppn:{$ppn}&amp;format=mods" />
+    <xed:source uri="xslStyle:PPN-mods-simple,mir-PPN-import,mycoreobject-migrate-nameIdentifier,editor/mods2xeditor:http://unapi.gbv.de/?id=gvk:ppn:{$ppn}&amp;format=mods" />
     <xed:source uri="xslStyle:RDF-mods-journal,editor/mods2xeditor:http://ld.zdb-services.de/data/{$zdbid}.rdf" />
     <xed:source uri="xslStyle:editor/mods2xeditor:{$sourceUri}" />
     <xed:source uri="xslStyle:mycoreobject-editor,editor/mods2xeditor:mcrobject:{$id}" />
@@ -1842,7 +1842,7 @@
     <fieldset>
       <legend class="mir-fieldset-legend">Related Item</legend><!-- TODO: i18n -->
       <xed:repeat xpath="mods:relatedItem[@xlink:href]" min="1" max="10">
-        <div class="mir-fieldset-content" id="mir-related-item-search">
+        <div class="mir-fieldset-content mir-related-item-search">
           <div class="form-group">
             <div class="col-md-3">
               <xed:bind xpath="@type" initially="{$relatedItemType}">

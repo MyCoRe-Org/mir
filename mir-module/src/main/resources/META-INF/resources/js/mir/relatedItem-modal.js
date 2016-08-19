@@ -1,16 +1,29 @@
 $(document).ready(function() {
   var GenreXML;
 
-  $("#mir-related-item-search input[name*='mods:relatedItem/mods:titleInfo/mods:title']").attr("disabled", "true");
+  $(".mir-related-item-search input[name*='mods:titleInfo/mods:title']").each(function() {
+    var id = $(this).closest(".mir-related-item-search").find("input[name*='mods:relatedItem/@xlink:href']").val();
+    if ($(this).val() == "" && id != "") {
+      loadTitle(id, $(this));
+    } else {
+      $(this).attr("disabled", "true");
+    }
+  });
 
   checkHost();
 
   $(".mir-relatedItem-select").each(function() {
     var button = $(this);
-    button.next("span").text(button.next().next("input").val());
+    var id = button.next().next("input").val();
+    if (parseInt(id.substr(id.lastIndexOf("_") + 1)) < 1){
+      button.next("span").text("Wird angelegt");
+    }
+    else {
+      button.next("span").text(id);
+    }
   });
 
-  $("body").on("change", "input[name*='mods:relatedItem/@type']", function() {
+  $("body").on("change", "select[name*='mods:relatedItem/@type']", function() {
     checkHost();
   });
 
@@ -19,12 +32,30 @@ $(document).ready(function() {
   });
 
   function checkHost() {
-    if($("input[name*='mods:relatedItem/@xlink:href']").val() != "" && $("select[name*='mods:relatedItem/@type']").val() == "host") {
-      $(".mir-relatedItem-select").prop('disabled', true);
-    }
-    else {
-      $(".mir-relatedItem-select").prop('disabled', false);
-    }
+    $(".mir-related-item-search").each(function( index ) {
+      if($(this).find("input[name*='mods:relatedItem/@xlink:href']").val() != "" && $(this).find("select[name*='mods:relatedItem/@type']").val() == "host") {
+        $(this).find(".mir-relatedItem-select").prop('disabled', true);
+      }
+      else {
+        $(this).find(".mir-relatedItem-select").prop('disabled', false);
+      }
+    });
+  }
+
+  function loadTitle(id, element){
+    $.ajax({
+      url: webApplicationBaseURL + "servlets/solr/select?q=id:" + id + "&XSL.Style=xml",
+      type: "GET",
+      success: function(data) {
+        var title = $(data).find("str[name='mods.title.main']").text();
+        $(element).val(title);
+        $(element).attr("disabled", "true");
+      },
+      error: function(error) {
+        console.log("Failed to load title for " + id );
+        console.log(error);
+      }
+    });
   }
 
   function workRelatedItem(button){
@@ -37,7 +68,7 @@ $(document).ready(function() {
     loadGenres(initContent);
 
     function initContent() {
-      if(input.val().length > 0) {
+      if(input.val().length > 0 && parseInt(input.val().substr(input.val().lastIndexOf("_") + 1)) > 1) {
         loadPublikation(leftContent, "", "id:" + input.val(), "0", "xml");
         setTimeout(function() {
           $("#modalFrame").find(".list-group-item").addClass("active");
@@ -47,7 +78,7 @@ $(document).ready(function() {
       }
 
 
-      if(!input.val()) {
+      if(!input.val() || parseInt(input.val().substr(input.val().lastIndexOf("_") + 1)) < 1) {
         loadPublikation(leftContent, "", "", "0", "xml");
       }
     }
@@ -91,7 +122,7 @@ $(document).ready(function() {
       });
 
       updatePager(data);
-      loadPublikation(updateType,"servlets/solr/select?q=" + $(data).find("str[name='q']").text() + "&XSL.Style=xml","","","xml");
+      loadPublikation(updateType,"servlets/solr/select?q=" + $(data).find("str[name='q']").text() + "&fq=objectType%3A\"mods\"&XSL.Style=xml","","","xml");
     }
 
     function rightContent(data) {
@@ -150,7 +181,7 @@ $(document).ready(function() {
     $("#modalFrame-send").unbind().click(function() {
       input.val($(".list-group-item.active").attr("value"));
       $(button).next("span").text($(".list-group-item.active").attr("value"));
-      var titleInput = $(button).parents("fieldset").find("input[name*='mods:title']");
+      var titleInput = $(button).parents(".mir-related-item-search").find("input[name*='mods:title']");
       $(titleInput).val($(".list-group-item.active").attr("data-title"));
       $("#modalFrame").modal("hide");
     });
@@ -214,7 +245,7 @@ $(document).ready(function() {
     function loadPublikation(callback, href, qry, start, dataType){
       var url = href;
       if(url == "") {
-        url = "servlets/solr/select?q=" + qry + "&fq=" + sortType + "&start=" + start + "&rows=10&XSL.Style=xml";
+        url = "servlets/solr/select?q=" + qry + "&fq=objectType%3A\"mods\"&fq=" + sortType + "&start=" + start + "&rows=10&XSL.Style=xml";
       }
       $.ajax({
         url: webApplicationBaseURL + url,
