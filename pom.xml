@@ -424,6 +424,8 @@
                     <cargo.servlet.port>${cargo.servlet.port}</cargo.servlet.port>
                     <cargo.tomcat.ajp.port>${cargo.tomcat.ajp.port}</cargo.tomcat.ajp.port>
                     <cargo.servlet.uriencoding>${cargo.servlet.uriencoding}</cargo.servlet.uriencoding>
+                    <!-- fixes IIIF identifier encoding issues -->
+                    <cargo.start.jvmargs>-Dorg.apache.tomcat.util.buf.UDecoder.ALLOW_ENCODED_SLASH=true</cargo.start.jvmargs>
                   </properties>
                 </configuration>
               </configuration>
