@@ -224,7 +224,7 @@
       </xsl:variable>
 
       <xsl:variable name="hits" xmlns:encoder="xalan://java.net.URLEncoder"
-        select="document(concat('solr:q=',encoder:encode(concat('mods.relatedItem.host:', mycoreobject/@ID, ' +mods.relatedItem.series:', mycoreobject/@ID, ' AND (', $state, ')')), '&amp;rows=1000&amp;sort=mods.dateIssued desc,mods.part desc,mods.title.main desc&amp;group=true&amp;group.limit=100&amp;group.field=mods.dateIssued'))/response/lst[@name='grouped']/lst[@name='mods.dateIssued']" />
+        select="document(concat('solr:q=',encoder:encode(concat('(mods.relatedItem.host:', mycoreobject/@ID, ' OR mods.relatedItem.series:', mycoreobject/@ID, ') AND (', $state, ')')), '&amp;rows=1000&amp;sort=mods.dateIssued desc,mods.part desc,mods.title.main desc&amp;group=true&amp;group.limit=100&amp;group.field=mods.dateIssued'))/response/lst[@name='grouped']/lst[@name='mods.dateIssued']" />
       <xsl:if test="$hits/int[@name='matches'] &gt; 0">
         <xsl:call-template name="listRelatedItems">
           <xsl:with-param name="hits" select="$hits"/>
