@@ -28,6 +28,7 @@ import javax.persistence.EntityManager;
 
 import org.mycore.access.MCRAccessManager;
 import org.mycore.backend.jpa.MCREntityManagerProvider;
+import org.mycore.common.MCRSessionMgr;
 import org.mycore.common.MCRUsageException;
 import org.mycore.datamodel.metadata.MCRObject;
 import org.mycore.datamodel.metadata.MCRObjectID;
@@ -117,7 +118,8 @@ public final class MIRAccessKeyManager {
      *             if an error was occured
      */
     public static void addAccessKey(final MCRObjectID mcrObjectId, final String accessKey) throws MCRUsageException {
-        addAccessKey(MCRUserManager.getCurrentUser(), mcrObjectId, accessKey);
+        final MCRUser user = MCRUserManager.getCurrentUser();
+        addAccessKey(user, mcrObjectId, accessKey);
 
         switch (getAccessKeyType(mcrObjectId, accessKey)) {
         case MIRAccessKeyPair.PERMISSION_READ:
@@ -128,6 +130,8 @@ public final class MIRAccessKeyManager {
             MCRAccessManager.invalidPermissionCache(mcrObjectId.toString(), MCRAccessManager.PERMISSION_WRITE);
             break;
         }
+        
+        MCRSessionMgr.getCurrentSession().setUserInformation(user);
     }
 
     /**
