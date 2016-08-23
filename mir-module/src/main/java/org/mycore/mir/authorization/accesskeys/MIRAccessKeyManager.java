@@ -119,6 +119,7 @@ public final class MIRAccessKeyManager {
      */
     public static void addAccessKey(final MCRObjectID mcrObjectId, final String accessKey) throws MCRUsageException {
         final MCRUser user = MCRUserManager.getCurrentUser();
+        
         addAccessKey(user, mcrObjectId, accessKey);
 
         switch (getAccessKeyType(mcrObjectId, accessKey)) {
@@ -130,8 +131,8 @@ public final class MIRAccessKeyManager {
             MCRAccessManager.invalidPermissionCache(mcrObjectId.toString(), MCRAccessManager.PERMISSION_WRITE);
             break;
         }
-        
-        MCRSessionMgr.getCurrentSession().setUserInformation(user);
+
+        MCRSessionMgr.getCurrentSession().setUserInformation(user.clone());
     }
 
     /**

@@ -30,6 +30,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.Map;
 
 import org.jdom2.Document;
@@ -41,9 +42,14 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import org.mycore.access.MCRAccessException;
+import org.mycore.access.MCRAccessManager;
 import org.mycore.common.MCRException;
 import org.mycore.common.MCRHibTestCase;
+import org.mycore.common.MCRSessionMgr;
 import org.mycore.datamodel.metadata.MCRObjectID;
+import org.mycore.user2.MCRTransientUser;
+import org.mycore.user2.MCRUser;
+import org.xml.sax.SAXParseException;
 
 /**
  * @author Ren\u00E9 Adler (eagle)
@@ -242,5 +248,25 @@ public class TestAccessKeys extends MCRHibTestCase {
         assertEquals(accKP.getMCRObjectId(), transAccKP.getMCRObjectId());
         assertEquals(accKP.getReadKey(), transAccKP.getReadKey());
         assertEquals(accKP.getWriteKey(), transAccKP.getWriteKey());
+    }
+
+    @Test
+    public void testTransientUser() throws SAXParseException, IOException, URISyntaxException {
+        final MCRObjectID mcrObjectId = MCRObjectID.getInstance(MCR_OBJECT_ID);
+
+        final MIRAccessKeyPair accKP = new MIRAccessKeyPair(mcrObjectId, READ_KEY,
+                WRITE_KEY);
+        MIRAccessKeyManager.createKeyPair(accKP);
+
+        MCRUser user = new MCRUser("junit");
+        user.setRealName("Test Case");
+        user.setPassword("test");
+
+        MCRTransientUser tu = new MCRTransientUser(user);
+        MCRSessionMgr.getCurrentSession().setUserInformation(tu);
+        MIRAccessKeyManager.addAccessKey(mcrObjectId, WRITE_KEY);
+
+        assertTrue("user should have write permission",
+                MCRAccessManager.checkPermission(mcrObjectId, MCRAccessManager.PERMISSION_WRITE));
     }
 }
