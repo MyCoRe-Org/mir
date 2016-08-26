@@ -9,17 +9,40 @@
 
 //--- in metadata view the select/video controller
     // on start load the first source
-    $(".mir-player video").ready(function(){
+    $(".mir-player video, .mir-player audio").ready(function(){
       $("#videoChooser").change();
     });
 
     //get all sources of selected item in a var and give it to player
     $("#videoChooser").change(function() {
       // reuse player
-      var myPlayer = $(this).data("player");
-      (!myPlayer) && (myPlayer = videojs($(".mir-player video").attr("id"))) && ($(this).data("player", myPlayer));
+      var myPlayerVideo, myPlayerAudio;
+      if($(".mir-player video").length > 0) {
+        myPlayerVideo = $(this).data("playerVideo");
+        (!myPlayerVideo) && (myPlayerVideo = videojs($(".mir-player video").attr("id"))) && ($(this).data("playerVideo", myPlayerVideo));
+      }
+      if($(".mir-player audio").length > 0) {
+        myPlayerAudio = $(this).data("playerAudio");
+        (!myPlayerAudio) && (myPlayerAudio = videojs($(".mir-player audio").attr("id"))) && ($(this).data("playerAudio", myPlayerAudio));
+      }
 
-      myPlayer.src($.parseJSON($("#" + $(this).val() + " script").text()));
+      if($(this).find(":selected").attr("data-type") == "mp3") {
+        if (myPlayerVideo != undefined) {
+          myPlayerVideo.hide();
+          myPlayerVideo.pause();
+        }
+        myPlayerAudio.show();
+        myPlayerAudio.src($.parseJSON($("#" + $(this).val() + " script").text()));
+      }
+      else {
+        if (myPlayerAudio != undefined) {
+          myPlayerAudio.hide();
+          myPlayerAudio.pause();
+        }
+        myPlayerVideo.show();
+        myPlayerVideo.src($.parseJSON($("#" + $(this).val() + " script").text()));
+      }
+
     });
 //--------
 
