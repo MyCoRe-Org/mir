@@ -185,10 +185,12 @@
                   select="document(concat('solr:q=stream_source_info%3A%22', $derId, ':/mets.xml%22'))/response/result[@name='response']/@numFound" />
 
     <xsl:if test="$MIR.DFGViewer.enable='true' and $hits=1">
-      <div id="mir-dfgViewer" class="pull-right">
-        <a title="im DFG-Viewer anzeigen"
-           href="{$WebApplicationBaseURL}servlets/MCRDFGLinkServlet?deriv={$derId}"
-           >alternativ im <img src="{$WebApplicationBaseURL}images/logo-dfg.png" />-Viewer anzeigen</a>
+      <div class="row">
+        <div id="mir-dfgViewer" class="pull-right">
+          <a title="im DFG-Viewer anzeigen"
+             href="{$WebApplicationBaseURL}servlets/MCRDFGLinkServlet?deriv={$derId}"
+             >alternativ im <img src="{$WebApplicationBaseURL}images/logo-dfg.png" />-Viewer anzeigen</a>
+        </div>
       </div>
     </xsl:if>
 
