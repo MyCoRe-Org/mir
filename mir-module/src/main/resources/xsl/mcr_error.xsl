@@ -61,7 +61,7 @@
   </xsl:template>
 
   <xsl:template match="/mcr_error[contains('401|403', @HttpError)]">
-    <div class="alert alert-danger">
+    <div class="alert alert-warning">
       <h1>
         <xsl:value-of select="i18n:translate(concat('mir.error.headline.', @HttpError))" />
       </h1>
