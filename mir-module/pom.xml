@@ -228,7 +228,7 @@
     </dependency>
     <dependency>
       <groupId>org.mycore</groupId>
-      <artifactId>mycore-viewer</artifactId>
+      <artifactId>mycore-iview2</artifactId>
     </dependency>
   </dependencies>
 </project>

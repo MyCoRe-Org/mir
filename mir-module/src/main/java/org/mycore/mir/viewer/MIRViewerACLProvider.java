@@ -8,7 +8,7 @@ import javax.servlet.http.HttpSession;
 import org.mycore.datamodel.metadata.MCRMetadataManager;
 import org.mycore.datamodel.metadata.MCRObjectID;
 import org.mycore.mods.MCRMODSEmbargoUtils;
-import org.mycore.viewer.configuration.MCRIviewDefaultACLProvider;
+import org.mycore.iview2.frontend.MCRIviewDefaultACLProvider;
 
 public class MIRViewerACLProvider extends MCRIviewDefaultACLProvider {
 
