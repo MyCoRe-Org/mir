@@ -20,7 +20,7 @@
           <div class="panel-body">
             <div class="col-md-10">
               <xed:bind xpath="conditions/boolean/boolean">
-                <xed:repeat xpath="condition[contains(',mods.title,mods.author,mods.name,allMeta,', concat(',',@field,','))]" method='clone'>
+                <xed:repeat xpath="condition[contains(',mods.title,mods.author,mods.name,allMeta,', concat(',',@field,','))]" method="clone">
                   <!-- Title -->
                   <div class="form-group">
                     <div class="col-md-3">
