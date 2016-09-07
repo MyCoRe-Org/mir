@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <MyCoReWebPage>
-  
+
   <section xml:lang="all" xmlns:xed="http://www.mycore.de/xeditor"
     xmlns:mir="http://www.mycore.de/mir"
     i18n="component.mods.editor.search.complex.pagetitle">
@@ -20,7 +20,7 @@
           <div class="panel-body">
             <div class="col-md-10">
               <xed:bind xpath="conditions/boolean/boolean">
-                <xed:repeat xpath="condition[contains(',mods.title,mods.author,mods.name,allMeta,', concat(',',@field,','))]">
+                <xed:repeat xpath="condition[contains(',mods.title,mods.author,mods.name,allMeta,', concat(',',@field,','))]" method='clone'>
                   <!-- Title -->
                   <div class="form-group">
                     <div class="col-md-3">
