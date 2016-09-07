@@ -224,7 +224,7 @@
       </xsl:variable>
 
       <xsl:variable name="hits" xmlns:encoder="xalan://java.net.URLEncoder"
-        select="document(concat('solr:q=',encoder:encode(concat('(mods.relatedItem.host:', mycoreobject/@ID, ' OR mods.relatedItem.series:', mycoreobject/@ID, ') AND (', $state, ')')), '&amp;rows=1000&amp;sort=mods.dateIssued desc,mods.part desc,mods.title.main desc&amp;group=true&amp;group.limit=100&amp;group.field=mods.dateIssued'))/response/lst[@name='grouped']/lst[@name='mods.dateIssued']" />
+        select="document(concat('solr:q=',encoder:encode(concat('(mods.relatedItem.host:', mycoreobject/@ID, ' OR mods.relatedItem.series:', mycoreobject/@ID, ') AND (', $state, ')')), '&amp;rows=1000&amp;sort=mods.dateIssued desc,mods.part desc,mods.title.main desc&amp;group=true&amp;group.limit=100&amp;group.field=mods.yearIssued'))/response/lst[@name='grouped']/lst[@name='mods.yearIssued']" />
       <xsl:if test="$hits/int[@name='matches'] &gt; 0">
         <xsl:call-template name="listRelatedItems">
           <xsl:with-param name="hits" select="$hits"/>
@@ -233,7 +233,7 @@
       </xsl:if>
 
       <xsl:variable name="hitsReferences" xmlns:encoder="xalan://java.net.URLEncoder"
-                    select="document(concat('solr:q=',encoder:encode(concat('mods.relatedItem.references:', mycoreobject/@ID, ' AND (', $state, ')')), '&amp;rows=1000&amp;sort=mods.dateIssued desc,mods.part desc,mods.title.main desc&amp;group=true&amp;group.limit=100&amp;group.field=mods.dateIssued'))/response/lst[@name='grouped']/lst[@name='mods.dateIssued']" />
+                    select="document(concat('solr:q=',encoder:encode(concat('mods.relatedItem.references:', mycoreobject/@ID, ' AND (', $state, ')')), '&amp;rows=1000&amp;sort=mods.dateIssued desc,mods.part desc,mods.title.main desc&amp;group=true&amp;group.limit=100&amp;group.field=mods.yearIssued'))/response/lst[@name='grouped']/lst[@name='mods.yearIssued']" />
       <xsl:if test="$hitsReferences/int[@name='matches'] &gt; 0">
         <xsl:call-template name="listRelatedItems">
           <xsl:with-param name="hits" select="$hitsReferences"/>
@@ -242,7 +242,7 @@
       </xsl:if>
 
       <xsl:variable name="hitsPreceding" xmlns:encoder="xalan://java.net.URLEncoder"
-                    select="document(concat('solr:q=',encoder:encode(concat('mods.relatedItem.preceding:', mycoreobject/@ID, ' AND (', $state, ')')), '&amp;rows=1000&amp;sort=mods.dateIssued desc,mods.part desc,mods.title.main desc&amp;group=true&amp;group.limit=100&amp;group.field=mods.dateIssued'))/response/lst[@name='grouped']/lst[@name='mods.dateIssued']" />
+                    select="document(concat('solr:q=',encoder:encode(concat('mods.relatedItem.preceding:', mycoreobject/@ID, ' AND (', $state, ')')), '&amp;rows=1000&amp;sort=mods.dateIssued desc,mods.part desc,mods.title.main desc&amp;group=true&amp;group.limit=100&amp;group.field=mods.yearIssued'))/response/lst[@name='grouped']/lst[@name='mods.yearIssued']" />
       <xsl:if test="$hitsPreceding/int[@name='matches'] &gt; 0">
         <xsl:call-template name="listRelatedItems">
           <xsl:with-param name="hits" select="$hitsPreceding"/>
@@ -251,7 +251,7 @@
       </xsl:if>
 
       <xsl:variable name="hitsOriginal" xmlns:encoder="xalan://java.net.URLEncoder"
-                    select="document(concat('solr:q=',encoder:encode(concat('mods.relatedItem.original:', mycoreobject/@ID, ' AND (', $state, ')')), '&amp;rows=1000&amp;sort=mods.dateIssued desc,mods.part desc,mods.title.main desc&amp;group=true&amp;group.limit=100&amp;group.field=mods.dateIssued'))/response/lst[@name='grouped']/lst[@name='mods.dateIssued']" />
+                    select="document(concat('solr:q=',encoder:encode(concat('mods.relatedItem.original:', mycoreobject/@ID, ' AND (', $state, ')')), '&amp;rows=1000&amp;sort=mods.dateIssued desc,mods.part desc,mods.title.main desc&amp;group=true&amp;group.limit=100&amp;group.field=mods.yearIssued'))/response/lst[@name='grouped']/lst[@name='mods.yearIssued']" />
       <xsl:if test="$hitsOriginal/int[@name='matches'] &gt; 0">
         <xsl:call-template name="listRelatedItems">
           <xsl:with-param name="hits" select="$hitsOriginal"/>
@@ -260,7 +260,7 @@
       </xsl:if>
 
       <xsl:variable name="hitsReviewOf" xmlns:encoder="xalan://java.net.URLEncoder"
-                    select="document(concat('solr:q=',encoder:encode(concat('mods.relatedItem.reviewOf:', mycoreobject/@ID, ' AND (', $state, ')')), '&amp;rows=1000&amp;sort=mods.dateIssued desc,mods.part desc,mods.title.main desc&amp;group=true&amp;group.limit=100&amp;group.field=mods.dateIssued'))/response/lst[@name='grouped']/lst[@name='mods.dateIssued']" />
+                    select="document(concat('solr:q=',encoder:encode(concat('mods.relatedItem.reviewOf:', mycoreobject/@ID, ' AND (', $state, ')')), '&amp;rows=1000&amp;sort=mods.dateIssued desc,mods.part desc,mods.title.main desc&amp;group=true&amp;group.limit=100&amp;group.field=mods.yearIssued'))/response/lst[@name='grouped']/lst[@name='mods.yearIssued']" />
       <xsl:if test="$hitsReviewOf/int[@name='matches'] &gt; 0">
         <xsl:call-template name="listRelatedItems">
           <xsl:with-param name="hits" select="$hitsReviewOf"/>
