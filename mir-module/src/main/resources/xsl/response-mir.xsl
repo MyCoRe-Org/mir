@@ -6,7 +6,7 @@
 >
 
   <xsl:include href="response-mir-utils.xsl" />
-  
+
   <xsl:param name="UserAgent" />
   <xsl:param name="MIR.testEnvironment" />
 
@@ -91,6 +91,15 @@
         </div>
       </div>
     </div> <!-- ENDE: Suchschlitz mit Suchbegriff -->
+
+    <!-- xsl:if test="string-length(/response/lst[@name='responseHeader']/lst[@name='params']/str[@name='q']) &gt; 0">
+      <div class="row">
+        <div class="col-xs-12 col-sm-8">
+          <span class="glyphicon glyphicon-remove-circle"></span>
+          <xsl:value-of select="/response/lst[@name='responseHeader']/lst[@name='params']/str[@name='q']" />
+        </div>
+      </div>
+    </xsl:if -->
 
 <!-- Filter, Pagination & Trefferliste -->
     <div class="row result_body">
@@ -291,12 +300,23 @@
                     </xsl:call-template -->
 
                     <xsl:variable name="viewerLink" select="concat($WebApplicationBaseURL, 'rsc/viewer/', $derivid,'/', $derivates/str[@name='iviewFile'][1])" />
-                    <a class="hit_option hit_download" href="{$viewerLink}" title="{$mods-type-i18n}">
-                      <div class="hit_icon"
-                        style="background-image: url('{$WebApplicationBaseURL}servlets/MCRTileCombineServlet/THUMBNAIL/{$derivid}/{$derivates/str[@name='iviewFile'][1]}');"
-                      >
-                      </div>
-                    </a>
+                    <xsl:choose>
+                      <xsl:when test="acl:checkPermissionForReadingDerivate($derivid)">
+                        <a class="hit_option hit_download" href="{$viewerLink}" title="{$mods-type-i18n}">
+                          <div class="hit_icon"
+                            style="background-image: url('{$WebApplicationBaseURL}servlets/MCRTileCombineServlet/THUMBNAIL/{$derivid}/{$derivates/str[@name='iviewFile'][1]}');"
+                          >
+                          </div>
+                        </a>
+                      </xsl:when>
+                      <xsl:otherwise>
+                        <div class="hit_icon"
+                          style="background-image: url('{$WebApplicationBaseURL}servlets/MCRTileCombineServlet/THUMBNAIL/{$derivid}/{$derivates/str[@name='iviewFile'][1]}');"
+                        >
+                        </div>
+                      </xsl:otherwise>
+                    </xsl:choose>
+
                   </xsl:when>
 
                   <!-- show PDF thumbnail as preview -->
@@ -313,29 +333,56 @@
                         </xsl:otherwise>
                       </xsl:choose>
                     </xsl:variable>
-                    <a class="hit_option hit_download" href="{$viewerLink}" title="{$mods-type-i18n}">
-                      <div class="hit_icon" style="background-image: url('{$WebApplicationBaseURL}img/pdfthumb/{$filePath}?centerThumb=no');">
-                      </div>
-                    </a>
+                    <xsl:choose>
+                      <xsl:when test="acl:checkPermissionForReadingDerivate($derivid)">
+                        <a class="hit_option hit_download" href="{$viewerLink}" title="{$mods-type-i18n}">
+                          <div class="hit_icon" style="background-image: url('{$WebApplicationBaseURL}img/pdfthumb/{$filePath}?centerThumb=no');">
+                          </div>
+                        </a>
+                      </xsl:when>
+                      <xsl:otherwise>
+                        <div class="hit_icon" style="background-image: url('{$WebApplicationBaseURL}img/pdfthumb/{$filePath}?centerThumb=no');">
+                        </div>
+                      </xsl:otherwise>
+                    </xsl:choose>
                   </xsl:when>
 
                   <!-- show default icon with mime-type download icon -->
                   <xsl:otherwise>
-                    <a class="hit_option hit_download" href="{$hitHref}" title="">
-                      <xsl:variable name="contentType" select="document(concat('ifs:/',$derivid))/mcr_directory/children/child[name=$maindoc]/contentType" />
-                      <xsl:variable name="fileType" select="document('webapp:FileContentTypes.xml')/FileContentTypes/type[mime=$contentType]/@ID" />
-                      <div class="hit_icon" style="background-image: url('{$WebApplicationBaseURL}images/icons/icon_common.png');" />
-                      <xsl:choose>
-                        <xsl:when
-                          test="$fileType='pdf' or $fileType='msexcel' or $fileType='xlsx' or $fileType='msword97' or $fileType='docx' or $fileType='pptx' or $fileType='msppt' or $fileType='zip'"
-                        >
-                          <img class="hit_icon_overlay" src="{$WebApplicationBaseURL}images/icons/download_{$fileType}.png" />
-                        </xsl:when>
-                        <xsl:otherwise>
-                          <img class="hit_icon_overlay" src="{$WebApplicationBaseURL}images/icons/download_default.png" />
-                        </xsl:otherwise>
-                      </xsl:choose>
-                    </a>
+
+                    <xsl:variable name="contentType" select="document(concat('ifs:/',$derivid))/mcr_directory/children/child[name=$maindoc]/contentType" />
+                    <xsl:variable name="fileType" select="document('webapp:FileContentTypes.xml')/FileContentTypes/type[mime=$contentType]/@ID" />
+
+                    <xsl:choose>
+                      <xsl:when test="acl:checkPermissionForReadingDerivate($derivid)">
+                        <a class="hit_option hit_download" href="{$hitHref}" title="">
+                          <div class="hit_icon" style="background-image: url('{$WebApplicationBaseURL}images/icons/icon_common.png');" />
+                          <xsl:choose>
+                            <xsl:when
+                              test="$fileType='pdf' or $fileType='msexcel' or $fileType='xlsx' or $fileType='msword97' or $fileType='docx' or $fileType='pptx' or $fileType='msppt' or $fileType='zip'"
+                            >
+                              <img class="hit_icon_overlay" src="{$WebApplicationBaseURL}images/icons/download_{$fileType}.png" />
+                            </xsl:when>
+                            <xsl:otherwise>
+                              <img class="hit_icon_overlay" src="{$WebApplicationBaseURL}images/icons/download_default.png" />
+                            </xsl:otherwise>
+                          </xsl:choose>
+                        </a>
+                      </xsl:when>
+                      <xsl:otherwise>
+                        <div class="hit_icon" style="background-image: url('{$WebApplicationBaseURL}images/icons/icon_common.png');" />
+                          <xsl:choose>
+                            <xsl:when
+                              test="$fileType='pdf' or $fileType='msexcel' or $fileType='xlsx' or $fileType='msword97' or $fileType='docx' or $fileType='pptx' or $fileType='msppt' or $fileType='zip'"
+                            >
+                              <img class="hit_icon_overlay" src="{$WebApplicationBaseURL}images/icons/download_{$fileType}.png" />
+                            </xsl:when>
+                            <xsl:otherwise>
+                              <img class="hit_icon_overlay" src="{$WebApplicationBaseURL}images/icons/download_default.png" />
+                            </xsl:otherwise>
+                          </xsl:choose>
+                      </xsl:otherwise>
+                    </xsl:choose>
                   </xsl:otherwise>
                 </xsl:choose>
 
