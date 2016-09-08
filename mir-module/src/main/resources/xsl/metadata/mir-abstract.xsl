@@ -294,7 +294,7 @@
             <li>
               <span class="glyphicon glyphicon-chevron-right"></span>
               <span>
-                <xsl:value-of select="str[@name='groupValue']" />
+                <xsl:value-of select="int[@name='groupValue']" />
               </span>
               <ul>
                 <xsl:for-each select="result/doc">
