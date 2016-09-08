@@ -23,23 +23,10 @@
         <xsl:message>
           Adding rights section
         </xsl:message>
-        <xsl:variable name="embargo" select="metadata/def.modsContainer/modsContainer/mods:mods/mods:accessCondition[@type='embargo']" />
-        <xsl:variable name="isEmbargo">
-          <xsl:choose>
-            <xsl:when test="mcrxsl:isCurrentUserGuestUser() and count($embargo) &gt; 0 and mcrxsl:compare(string($embargo),ex:date-time()) &gt; 0">
-              <xsl:value-of select="'true'" />
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:value-of select="'false'" />
-            </xsl:otherwise>
-          </xsl:choose>
-        </xsl:variable>
-
         <xsl:for-each select="@ID|structure/*/*/@xlink:href">
           <xsl:call-template name="check-rights">
             <xsl:with-param name="id" select="." />
             <xsl:with-param name="parentReadable" select="$parentReadable" />
-            <xsl:with-param name="embargo" select="$isEmbargo" />
           </xsl:call-template>
         </xsl:for-each>
       </rights>
@@ -49,36 +36,7 @@
   <xsl:template name="check-rights">
     <xsl:param name="id" />
     <xsl:param name="parentReadable" select="false()" />
-    <xsl:param name="embargo" select="'false'" />
     <right id="{$id}">
-      <xsl:choose>
-        <xsl:when test="contains($id, '_derivate_') and $embargo='false'">
-          <xsl:if test="mcrxsl:isDisplayedEnabledDerivate($id)">
-            <xsl:if test="$parentReadable">
-              <xsl:attribute name="view" />
-              <xsl:call-template name="check-default-rights">
-                <xsl:with-param name="id" select="$id" />
-              </xsl:call-template>
-            </xsl:if>
-          </xsl:if>
-          <xsl:if test="not(mcrxsl:isDisplayedEnabledDerivate($id)) and acl:checkPermission($id,$write)">
-            <xsl:if test="$parentReadable">
-              <xsl:attribute name="view" />
-              <xsl:call-template name="check-default-rights">
-                <xsl:with-param name="id" select="$id" />
-              </xsl:call-template>
-            </xsl:if>
-          </xsl:if>
-          <xsl:if test="$derivateAccKeyEnabled">
-            <xsl:call-template name="check-access-keys">
-              <xsl:with-param name="id" select="$id" />
-            </xsl:call-template>
-          </xsl:if>
-        </xsl:when>
-        <xsl:when test="contains($id, '_derivate_') and $embargo='true'">
-          <xsl:attribute name="embargo" />
-        </xsl:when>
-        <xsl:otherwise>
         <!-- any mycoreobject here -->
           <xsl:if test="$parentReadable and $id=/mycoreobject/@ID">
             <xsl:attribute name="view" />
@@ -91,8 +49,6 @@
               <xsl:with-param name="id" select="$id" />
             </xsl:call-template>
           </xsl:if>
-        </xsl:otherwise>
-      </xsl:choose>
     </right>
   </xsl:template>
 

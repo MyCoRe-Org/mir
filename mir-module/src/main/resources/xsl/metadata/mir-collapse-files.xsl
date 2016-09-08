@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:mcr="xalan://org.mycore.common.xml.MCRXMLFunctions"
-  xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation" xmlns:mods="http://www.loc.gov/mods/v3" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:acl="xalan://org.mycore.access.MCRAccessManager"
-  xmlns:mcrurn="xalan://org.mycore.urn.MCRXMLFunctions" exclude-result-prefixes="i18n mcr mods acl xlink mcrurn"
+                xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation" xmlns:mods="http://www.loc.gov/mods/v3" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:acl="xalan://org.mycore.access.MCRAccessManager"
+                xmlns:mcrurn="xalan://org.mycore.urn.MCRXMLFunctions"
+                xmlns:embargo="xalan://org.mycore.mods.MCRMODSEmbargoUtils"
+                exclude-result-prefixes="i18n mcr mods acl xlink mcrurn embargo"
 >
   <xsl:import href="xslImport:modsmeta:metadata/mir-collapse-files.xsl" />
   <xsl:param name="MCR.URN.Resolver.MasterURL" select="''" />
   <xsl:template match="/">
-
     <xsl:choose>
       <xsl:when test="key('rights', mycoreobject/@ID)/@read or key('rights', mycoreobject/structure/derobjects/derobject/@xlink:href)/@accKeyEnabled">
 
@@ -97,7 +98,7 @@
               </h3>
               <div class="alert alert-warning" role="alert">
                 <xsl:choose>
-                  <xsl:when test="mycoreobject/structure/derobjects/derobject[key('rights', @xlink:href)/@embargo]">
+                  <xsl:when test="string-length(embargo:getEmbargo(mycoreobject/@ID))>0">
                     <!-- embargo is active for guest user -->
                     <xsl:variable name="embargoDate">
                       <xsl:value-of select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:accessCondition[@type='embargo']" />
