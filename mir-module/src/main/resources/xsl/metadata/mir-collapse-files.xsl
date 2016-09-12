@@ -14,7 +14,7 @@
         <xsl:variable name="objID" select="mycoreobject/@ID" />
         <div id="mir-collapse-files">
           <xsl:for-each
-            select="mycoreobject/structure/derobjects/derobject[key('rights', @xlink:href)/@read or key('rights', @xlink:href)/@readKey or key('rights', @xlink:href)/@writeKey]"
+            select="mycoreobject/structure/derobjects/derobject[key('rights', @xlink:href)/@read]"
           >
             <xsl:variable name="derId" select="@xlink:href" />
             <xsl:variable name="derivateXML" select="document(concat('mcrobject:',$derId))" />
@@ -86,28 +86,24 @@
 
             </div>
           </xsl:for-each>
+
+
           <xsl:if
             test="mycoreobject/structure/derobjects/derobject and
-                        not(mycoreobject/structure/derobjects/derobject[key('rights', @xlink:href)/@read or
-                            key('rights', @xlink:href)/@readKey or
-                            key('rights', @xlink:href)/@writeKey])"
-          >
+                        not(mycoreobject/structure/derobjects/derobject[key('rights', @xlink:href)/@read])">
             <div id="mir-access-restricted">
               <h3>
                 <xsl:value-of select="i18n:translate('metadata.files.file')" />
               </h3>
               <div class="alert alert-warning" role="alert">
+                <xsl:variable name="embargoDate" select="embargo:getEmbargo(mycoreobject/@ID)" />
                 <xsl:choose>
-                  <xsl:when test="string-length(embargo:getEmbargo(mycoreobject/@ID))>0">
-                    <!-- embargo is active for guest user -->
-                    <xsl:variable name="embargoDate">
-                      <xsl:value-of select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:accessCondition[@type='embargo']" />
-                      <!-- TODO: format date-->
-                    </xsl:variable>
-                    <xsl:value-of select="i18n:translate('component.mods.metaData.dictionary.accessCondition.embargo.available',$embargoDate)" />
-                  </xsl:when>
                   <xsl:when test="not(mcr:isDisplayedEnabledDerivate(mycoreobject/structure/derobjects/derobject/@xlink:href))">
                     <xsl:value-of select="i18n:translate('mir.derivate.no_access')" />
+                  </xsl:when>
+                  <xsl:when test="string-length($embargoDate)&gt;0">
+                    <!-- embargo is active for guest user -->
+                    <xsl:value-of select="i18n:translate('component.mods.metaData.dictionary.accessCondition.embargo.available',$embargoDate)" />
                   </xsl:when>
                   <xsl:otherwise>
                     <strong>

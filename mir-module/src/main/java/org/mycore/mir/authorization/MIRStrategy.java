@@ -161,14 +161,20 @@ public class MIRStrategy implements MCRAccessCheckStrategy {
             return false;
         }
 
-
         // 2.check if derivate has embargo
         MCRObjectID objectId = MCRMetadataManager.getObjectId(derivateId, 10, TimeUnit.MINUTES);
+        if (objectId == null) {
+            //2.1. fallback to MCRObjectBaseStrategy
+            LOGGER.debug("Derivate {} is an orphan. Cannot apply rules for MCRObject.", derivateId);
+            return OBJECT_BASE_STRATEGY.checkPermission(permissionId, permission);
+        }
+
         String embargo = MCRMODSEmbargoUtils.getCachedEmbargo(objectId);
         if (MCRAccessManager.PERMISSION_READ.equals(permission)
                 && embargo != null
                 && (!MCRMODSEmbargoUtils.isCurrentUserCreator(objectId) &&
-                !MCRAccessManager.checkPermission(MCRMODSEmbargoUtils.POOLPRIVILEGE_EMBARGO))) {
+                !MCRAccessManager.checkPermission(MCRMODSEmbargoUtils.POOLPRIVILEGE_EMBARGO) &&
+                !KEY_STRATEGY_HELPER.checkObjectPermission(objectId, "read"))) {
             LOGGER.debug("Derivate {} has embargo {} and current user is not creator and doesn't has {} POOLPRIVILEGE",
                     derivateId, embargo, MCRMODSEmbargoUtils.POOLPRIVILEGE_EMBARGO);
             return false;
@@ -179,13 +185,9 @@ public class MIRStrategy implements MCRAccessCheckStrategy {
             LOGGER.debug("Found match in ID strategy for {} on {}.", permission, derivateId);
             return ID_STRATEGY.checkPermission(permissionId, permission);
         }
-        if (objectId == null) {
-            //4.1. fallback to MCRObjectBaseStrategy
-            LOGGER.debug("Derivate {} is an orphan. Cannot apply rules for MCRObject.", derivateId);
-            return OBJECT_BASE_STRATEGY.checkPermission(permissionId, permission);
-        }
+
         return getAccessCategory(objectId, derivateId.getTypeId(), permission)
-                // 4.2. use rule defined for all derivates of object in category
+                // 4. use rule defined for all derivates of object in category
                 .map(c -> {
                     LOGGER.debug("using access rule defined for category: " + c);
                     return ACCESS_IMPL.checkPermission(derivateId.getTypeId() + ":" + c.toString(), permission);
