@@ -9,7 +9,9 @@
 
   <xsl:template match="/">
     <email>
-      <from><xsl:value-of select="$MCR.mir-module.MailSender" /></from>
+      <from>
+        <xsl:value-of select="$MCR.mir-module.MailSender" />
+      </from>
       <xsl:apply-templates select="/*" mode="email" />
     </email>
   </xsl:template>
@@ -22,7 +24,13 @@
       Eine neue Benutzerkennung wurde angelegt!
     </subject>
     <body>
-      Die Benutzerkennung <xsl:value-of select="@name" /> mit der E-Mail-Adresse <xsl:value-of select="eMail/text()" /> wurde soeben angelegt.
+      Es wurde soeben eine neue Benutzerkennung angelegt.
+      <xsl:value-of select="$newline" />
+      <xsl:value-of select="$newline" />
+      <xsl:value-of select="concat('Benutzerkennung : ',@name,' (',@realm,')',$newline)" />
+      <xsl:value-of select="concat('Name            : ',realName,$newline)" />
+      <xsl:value-of select="concat('E-Mail          : ',eMail,$newline)" />
+      <xsl:value-of select="concat('Link            : ',$ServletsBaseURL,'MCRUserServlet?action=show&amp;id=',@name,'@',@realm,$newline)" />
     </body>
   </xsl:template>
 </xsl:stylesheet>
