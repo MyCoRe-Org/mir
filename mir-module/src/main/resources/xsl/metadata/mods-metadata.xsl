@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:mods="http://www.loc.gov/mods/v3"
-  xmlns:mcrmods="xalan://org.mycore.mods.classification.MCRMODSClassificationSupport" xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
-  exclude-result-prefixes=" i18n mods mcrmods">
+                xmlns:mcrmods="xalan://org.mycore.mods.classification.MCRMODSClassificationSupport"
+                xmlns:xlink="http://www.w3.org/1999/xlink"
+                xmlns:encoder="xalan://java.net.URLEncoder"
+                xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
+                exclude-result-prefixes=" i18n mods mcrmods xlink encoder">
   <xsl:import href="xslImport:modsmeta" />
   <xsl:include href="layout/mir-layout-utils.xsl" />
   <xsl:include href="mods-utils.xsl" />
@@ -26,12 +29,27 @@
             </xsl:when>
             <xsl:when test="//servstates/servstate/@categid='blocked'">
               <xsl:call-template name="printMirMessage">
-                <xsl:with-param name="msg" select="i18n:translate('mir.error.blocked')" />
+                <xsl:with-param name="title" select="i18n:translate('mir.error.blocked')" />
               </xsl:call-template>
             </xsl:when>
             <xsl:when test="//servstates/servstate/@categid='deleted'">
               <xsl:call-template name="printMirMessage">
-                <xsl:with-param name="msg" select="i18n:translate('mir.error.deleted')" />
+                <xsl:with-param name="title" select="i18n:translate('mir.error.deleted')" />
+                <xsl:with-param name="msg">
+                  <xsl:if test="//mods:note[@type='admin']">
+                    <xsl:for-each select="//mods:note[@type='admin']">
+                      <xsl:value-of select="." />
+                    </xsl:for-each>
+                  </xsl:if>
+                  <xsl:variable name="hitsPrecending"
+                                select="document(concat('solr:q=',encoder:encode(concat('mods.relatedItem.preceding:', mycoreobject/@ID)), '&amp;rows=1000&amp;sort=mods.dateIssued desc,mods.part desc,mods.title.main desc&amp;group=true&amp;group.limit=100&amp;group.field=mods.yearIssued'))/response/lst[@name='grouped']/lst[@name='mods.yearIssued']" />
+                  <xsl:if test="$hitsPrecending/int[@name='matches'] &gt; 0">
+                    <xsl:call-template name="listRelatedItems">
+                      <xsl:with-param name="hits" select="$hitsPrecending" />
+                      <xsl:with-param name="label" select="i18n:translate('mir.metadata.succeedingVersion')" />
+                    </xsl:call-template>
+                  </xsl:if>
+                </xsl:with-param>
               </xsl:call-template>
             </xsl:when>
             <xsl:otherwise>
@@ -53,12 +71,18 @@
   </xsl:template>
 
   <xsl:template name="printMirMessage">
+    <xsl:param name="title" />
     <xsl:param name="msg" />
     <div id="mir-message">
-      <div class="jumbotron text-center">
+      <div class="jumbotron">
         <h1>
-          <xsl:value-of select="$msg" />
+          <xsl:value-of select="$title" />
         </h1>
+        <xsl:if test="$msg">
+          <p>
+            <xsl:copy-of select="$msg" />
+          </p>
+        </xsl:if>
       </div>
     </div>
   </xsl:template>
