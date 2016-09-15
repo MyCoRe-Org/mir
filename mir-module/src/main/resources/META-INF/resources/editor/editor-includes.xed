@@ -8,6 +8,8 @@
     <xed:source uri="xslStyle:editor/mods2xeditor:{$sourceUri}" />
     <xed:source uri="xslStyle:mycoreobject-editor,editor/mods2xeditor:mcrobject:{$id}" />
     <xed:source uri="xslStyle:mycoreobject-copyof,editor/mods2xeditor:mcrobject:{$copyofid}" />
+    <xed:source uri="xslStyle:mods-addPreceding,mycoreobject-copyof,editor/mods2xeditor:mcrobject:{$oldVersion}" />
+
     <xed:choose>
       <xed:when test="$relatedItemType='series'"> <!-- $seriesId -->
         <xed:source uri="xslStyle:asSeries,editor/mods2xeditor:mcrobject:{$relatedItemId}" />

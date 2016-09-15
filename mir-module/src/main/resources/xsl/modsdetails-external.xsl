@@ -447,6 +447,13 @@
                     </a>
                   </li>
                 </xsl:if>
+                <xsl:if test="string-length($copyURL) &gt; 0">
+                  <li>
+                    <a href="{$copyURL}?oldVersion={$id}">
+                      <xsl:value-of select="i18n:translate('object.newVersion')" />
+                    </a>
+                  </li>
+                </xsl:if>
               </xsl:when>
               <xsl:otherwise>
                 <li>
