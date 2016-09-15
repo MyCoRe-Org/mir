@@ -24,7 +24,7 @@
       Eine neue Benutzerkennung wurde angelegt!
     </subject>
     <body>
-      Es wurde soeben eine neue Benutzerkennung angelegt.
+      <xsl:text>Es wurde soeben eine neue Benutzerkennung angelegt.</xsl:text>
       <xsl:value-of select="$newline" />
       <xsl:value-of select="$newline" />
       <xsl:value-of select="concat('Benutzerkennung : ',@name,' (',@realm,')',$newline)" />
