@@ -148,11 +148,11 @@
                   <div class="col-md-3">
                     <xed:bind xpath="@order">
                       <select class="form-control">
-                        <option value="ascending">
-                          <xed:output i18n="editor.search.ascending" />
-                        </option>
                         <option value="descending">
                           <xed:output i18n="editor.search.descending" />
+                        </option>
+                        <option value="ascending">
+                          <xed:output i18n="editor.search.ascending" />
                         </option>
                       </select>
                     </xed:bind>

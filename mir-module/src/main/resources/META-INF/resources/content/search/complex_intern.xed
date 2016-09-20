@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <MyCoReWebPage>
- 
+
  <section xml:lang="all" xmlns:xed="http://www.mycore.de/xeditor"
     xmlns:mir="http://www.mycore.de/mir"
     i18n="component.mods.editor.search.complex.pagetitle">
@@ -185,11 +185,11 @@
                   <div class="col-md-3">
                     <xed:bind xpath="@order">
                       <select class="form-control">
-                        <option value="ascending">
-                          <xed:output i18n="editor.search.ascending" />
-                        </option>
                         <option value="descending">
                           <xed:output i18n="editor.search.descending" />
+                        </option>
+                        <option value="ascending">
+                          <xed:output i18n="editor.search.ascending" />
                         </option>
                       </select>
                     </xed:bind>
