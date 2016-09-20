@@ -21,7 +21,7 @@
     <mycore.version>2016.06.0.1-SNAPSHOT</mycore.version>
     <hibernate.version>5.2.0.Final</hibernate.version>
     <jetty.version>9.3.10.v20160621</jetty.version>
-    <tomcat8.version>8.5.3</tomcat8.version>
+    <tomcat8.version>8.5.5</tomcat8.version>
     <node.version>v4.2.2</node.version>
     <npm.version>3.5.0</npm.version>
     <cargo.version>1.5.0</cargo.version>
