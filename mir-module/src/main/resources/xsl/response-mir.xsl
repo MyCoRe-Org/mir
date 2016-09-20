@@ -92,25 +92,31 @@
       </div>
 
       <!-- START: alle zu basket -->
-      <div class="col-sm-4">
+      <div class="col-xs-12 col-sm-4">
         <form class="basket_form" action="{$ServletsBaseURL}MCRBasketServlet{$HttpSession}" method="post">
           <input type="hidden" name="action" value="add" />
           <input type="hidden" name="redirect" value="referer" />
           <input type="hidden" name="type" value="objects" />
-          <xsl:for-each select="/response/result/doc">
-            <xsl:choose>
-              <xsl:when test="@id!=''">
-                <input type="hidden" name="id" value="{@id}" />
-                <input type="hidden" name="uri" value="{concat('mcrobject:',@id)}" />
-              </xsl:when>
-              <xsl:otherwise>
-                <xsl:variable name="id" select="str[@name='id']" />
-                <input type="hidden" name="id" value="{$id}" />
-                <input type="hidden" name="uri" value="{concat('mcrobject:',$id)}" />
-              </xsl:otherwise>
-            </xsl:choose>
+          <xsl:for-each select="/response/result/doc|/response/lst[@name='grouped']/lst[@name='returnId']/arr[@name='groups']/lst/str[@name='groupValue']">
+            <xsl:variable name="docID">
+              <xsl:choose>
+                <xsl:when test="@id!=''">
+                  <xsl:value-of select="@id" />
+                </xsl:when>
+                <xsl:when test="str[@name='id']">
+                  <xsl:value-of select="str[@name='id']" />
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:value-of select="." />
+                </xsl:otherwise>
+              </xsl:choose>
+            </xsl:variable>
+            <input type="hidden" name="id" value="{$docID}" />
+            <input type="hidden" name="uri" value="{concat('mcrobject:',$docID)}" />
           </xsl:for-each>
-          <button type="submit" tabindex="1" class="basket_button form-control" value="add">
+          <button type="submit" tabindex="1" class="basket_button btn-primary form-control" value="add">
+            <i class="fa fa-plus"></i>
+            <xsl:text> </xsl:text>
             <xsl:value-of select="i18n:translate('basket.add.searchpage')" />
           </button>
         </form>
