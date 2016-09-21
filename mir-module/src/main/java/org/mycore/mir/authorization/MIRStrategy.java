@@ -169,7 +169,7 @@ public class MIRStrategy implements MCRAccessCheckStrategy {
             return OBJECT_BASE_STRATEGY.checkPermission(permissionId, permission);
         }
 
-        String embargo = MCRMODSEmbargoUtils.getCachedEmbargo(objectId);
+        String embargo = MCRMODSEmbargoUtils.getEmbargo(objectId);
         if (MCRAccessManager.PERMISSION_READ.equals(permission)
                 && embargo != null
                 && (!MCRMODSEmbargoUtils.isCurrentUserCreator(objectId) &&
