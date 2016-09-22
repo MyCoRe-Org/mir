@@ -7,7 +7,6 @@
   <xsl:include href="modsmetadata.xsl" />
   <!-- copied from http://www.loc.gov/standards/mods/v3/MODS3-4_HTML_XSLT1-0.xsl -->
 
-  <xsl:param name="MCR.Mods.SherpaRomeo.ApiKey" select="''" />
   <xsl:key use="@type" name="title-by-type" match="//mods:mods/mods:titleInfo" />
 
   <xsl:template match="/">
@@ -168,7 +167,7 @@
                     </td>
                     <td class="metavalue">
                         <xsl:value-of select="."/>
-                        <div class="sherpa-issn hidden" data-ak="{$MCR.Mods.SherpaRomeo.ApiKey}"><xsl:value-of select="."/></div>
+                        <div class="sherpa-issn hidden"><xsl:value-of select="."/></div>
                     </td>
                 </tr>
             </xsl:for-each>

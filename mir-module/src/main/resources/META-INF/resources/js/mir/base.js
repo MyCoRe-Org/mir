@@ -3,7 +3,7 @@
 
     if($(".sherpa-issn").length > 0) {
       $(".sherpa-issn").each(function() {
-        getSherpaIssn($(this), $(this).attr("data-ak"));
+        getSherpaIssn($(this));
       });
     }
 
@@ -129,19 +129,14 @@
       });
     });
 
-    function getSherpaIssn(elm, ak) {
+    function getSherpaIssn(elm) {
       $.ajax({
-        url: "http://www.sherpa.ac.uk/romeo/api29.php?ak=" + ak + "&issn=" + $(elm).html(),
+        url: webApplicationBaseURL + "servlets/MIRSherpaServlet?issn=" + $(elm).html(),
         type: "GET",
         success: function(data) {
-          if($(data).find("outcome").html() != "failed") {
-            $(data).find("publisher").each(function() {
-              var color = $(this).find("romeocolour");
-              if (color != undefined && $(color).html() != "") {
-                $(elm).parent().after("<dt>SHERPA/RoMEO:</dt><dd><a href='http://www.sherpa.ac.uk/romeo/search.php?issn=" + $(elm).html() + "'>RoMEO " + $(color).html() + " Journal</a>");
-                $(elm).remove();
-              }
-            });
+          if(data != undefined && data != "") {
+            $(elm).parent().after("<dt>SHERPA/RoMEO:</dt><dd><a href='http://www.sherpa.ac.uk/romeo/search.php?issn=" + $(elm).html() + "'>RoMEO " + data + " Journal</a>");
+            $(elm).remove();
           }
           else {
             console.log("sherpa request failed for ISSN: " +  $(elm).html());
