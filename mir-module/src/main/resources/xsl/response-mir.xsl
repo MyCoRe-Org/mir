@@ -394,10 +394,19 @@
                             <xsl:when
                               test="$fileType='pdf' or $fileType='msexcel' or $fileType='xlsx' or $fileType='msword97' or $fileType='docx' or $fileType='pptx' or $fileType='msppt' or $fileType='zip'"
                             >
-                              <img class="hit_icon_overlay" src="{$WebApplicationBaseURL}images/icons/download_{$fileType}.png" />
+                              <img class="hit_icon_overlay" src="{$WebApplicationBaseURL}images/svg_icons/download_{$fileType}.svg" />
+                            </xsl:when>
+                            <xsl:when test="$fileType='png' or $fileType='jpeg' or $fileType='tiff' or $fileType='gif' or $fileType='bmp'">
+                              <img class="hit_icon_overlay" src="{$WebApplicationBaseURL}images/svg_icons/download_image.svg" />
+                            </xsl:when>
+                            <xsl:when test="$fileType='mp3' or $fileType='wav' or $fileType='m4a' or $fileType='m4b' or $fileType='wma'">
+                              <img class="hit_icon_overlay" src="{$WebApplicationBaseURL}images/svg_icons/download_audio.svg" />
+                            </xsl:when>
+                            <xsl:when test="$fileType='mpeg4' or $fileType='m4v' or $fileType='avi' or $fileType='wmv' or $fileType='asf'">
+                              <img class="hit_icon_overlay" src="{$WebApplicationBaseURL}images/svg_icons/download_video.svg" />
                             </xsl:when>
                             <xsl:otherwise>
-                              <img class="hit_icon_overlay" src="{$WebApplicationBaseURL}images/icons/download_default.png" />
+                              <img class="hit_icon_overlay" src="{$WebApplicationBaseURL}images/svg_icons/download_default.svg" />
                             </xsl:otherwise>
                           </xsl:choose>
                         </a>
@@ -408,10 +417,19 @@
                             <xsl:when
                               test="$fileType='pdf' or $fileType='msexcel' or $fileType='xlsx' or $fileType='msword97' or $fileType='docx' or $fileType='pptx' or $fileType='msppt' or $fileType='zip'"
                             >
-                              <img class="hit_icon_overlay" src="{$WebApplicationBaseURL}images/icons/download_{$fileType}.png" />
+                              <img class="hit_icon_overlay" src="{$WebApplicationBaseURL}images/svg_icons/download_{$fileType}.svg" />
+                            </xsl:when>
+                            <xsl:when test="$fileType='png'">
+                              <img class="hit_icon_overlay" src="{$WebApplicationBaseURL}images/svg_icons/download_image.svg" />
+                            </xsl:when>
+                            <xsl:when test="$fileType='mp3'">
+                              <img class="hit_icon_overlay" src="{$WebApplicationBaseURL}images/svg_icons/download_audio.svg" />
+                            </xsl:when>
+                            <xsl:when test="$fileType='mpg4'">
+                              <img class="hit_icon_overlay" src="{$WebApplicationBaseURL}images/svg_icons/download_video.svg" />
                             </xsl:when>
                             <xsl:otherwise>
-                              <img class="hit_icon_overlay" src="{$WebApplicationBaseURL}images/icons/download_default.png" />
+                              <img class="hit_icon_overlay" src="{$WebApplicationBaseURL}images/svg_icons/download_default.svg" />
                             </xsl:otherwise>
                           </xsl:choose>
                       </xsl:otherwise>
