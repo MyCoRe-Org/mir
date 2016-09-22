@@ -10,11 +10,6 @@
     und Wissenschaftlern die organisatorischen und technischen
     Rahmenbedingungen zur elektronischen Publikation wissenschaftlicher Dokumente.
   </p>
-  <p>
-    Die elektronischen Dokumente erhalten dauerhafte Adressen und werden über nationale und internationale
-    Bibliothekskataloge, Suchmaschinen sowie andere Nachweisinstrumente erschlossen. Darüber hinaus wird
-    eine langfristige Archivierung der elektronischen Dokumente gewährleistet.
-  </p>
 
   <h3>2. Der Sammelauftrag des Betreibers</h3>
   <p>
@@ -80,7 +75,8 @@
     <li>
       Die elektronischen Dokumente werden mit individuellen und dauerhaften Adressen versehen, welche einen
       unmittelbaren Zugriff auf die Dokumente erlauben. Die Adressen werden als URNs (Uniform Resource Name)
-      registriert. Die Administration und Pflege der URNs wird vom Betreiber garantiert.
+      registriert. Die Administration und Pflege der URNs wird vom Betreiber garantiert. Ergänzend ist es
+      möglich DataCite Digital Object Identifiers (DOIs) zu vergeben.
     </li>
     <li>
       Das Auffinden der elektronischen Dokumente ist über Bibliothekskataloge, Recherchen in bibliografischen
@@ -88,8 +84,17 @@
       möglich.
     </li>
     <li>
+      Die formalen und inhaltsbezogenen Metadaten zu den veröffentlichten Beiträgen können über
+      eine standardisierte Schnittstelle (OAI-PMH 2.0), an etablierte wissenschaftliche
+      Suchmaschinen (z.B. BASE und OAIster) weitergegeben werden. Daneben werden Suchbots
+      über spezielle Tags in den Webseiten und eine Sitemap speziell unterstützt, um
+      beispielsweise auch die Sichtbarkeit bei Google Scholar zu erhöhen. Dies gewährt eine
+      globale Sichtbarbeit der hier eingestellten Daten.
+    </li>
+    <li>
       Die Archivierungsdauer der Formate hängt von der Verfügbarkeit des Formates, der Betrachtungssoftware sowie
-      den Konvertierungsmöglichkeiten ab. Die Archivierungsdauer beträgt mindestens 5 Jahre.
+      den Konvertierungsmöglichkeiten ab. Die Archivierungsdauer beträgt mindestens 5 Jahre. An einer OAIS-konformen
+      Anbindung an LZA-Dienste wird derzeit gearbeitet. Ziel ist es, dass die Daten als SIP-Pakete ausgeliefert werden.
     </li>
   </ol>
 
@@ -97,8 +102,8 @@
   <ol>
     <li>
       Der Publikationsserver wird vom Betreiber XY betrieben. Die technische Betreuung des
-      Katalogsystems (Rechercheinstrument für den Publikationsserver) erfolgt durch die Verbundzentrale des
-      Gemeinsamen Bibliotheksverbundes (VZG).
+      Katalogsystems (Rechercheinstrument für den Publikationsserver) erfolgt durch den Hosting-Dienst oder das
+      Rechenzentrum ZZ.
     </li>
     <li>
       Die elektronische Veröffentlichung von Publikationen ist für die mit der betreibenden Einrichtung
