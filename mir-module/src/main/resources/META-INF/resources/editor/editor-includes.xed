@@ -1144,7 +1144,7 @@
       </div>
     </xed:repeat>
   </xed:template>
-  
+
   <xed:template id="creator">
     <mir:textfield xpath="mods:originInfo[@eventType='creation']/mods:publisher" label="mir.creator" help-text="{i18n:mir.help.creator}"/>
   </xed:template>
@@ -1891,6 +1891,56 @@
     </fieldset>
   </xed:template>
 
+  <xed:template id="extension.characteristics">
+    <fieldset>
+      <legend class="mir-fieldset-legend">
+        <xed:output i18n="component.mods.metaData.dictionary.characteristics" />
+      </legend>
+      <div class="mir-fieldset-content">
+        <div class="form-group">
+          <label class="col-md-2 col-md-offset-3 control-label">
+            <xed:output i18n="component.mods.metaData.dictionary.year" />
+          </label>
+          <label class="col-md-2 control-label">
+            <xed:output i18n="component.mods.metaData.dictionary.impact" />
+          </label>
+          <label class="col-md-2 control-label">
+            <xed:output i18n="component.mods.metaData.dictionary.refereed" />
+          </label>
+          <xed:repeat xpath="mods:extension[@displayLabel='characteristics']/chars">
+            <div class="col-md-2 col-md-offset-3">
+              <xed:bind xpath="@year">
+                <input type="text" class="form-control" placeholder="{i18n:mir.placeholder.characteristics.year}" />
+              </xed:bind>
+            </div>
+            <div class="col-md-2">
+              <xed:bind xpath="@factor">
+                <input type="text" class="form-control" placeholder="{i18n:mir.placeholder.characteristics.factor}" />
+              </xed:bind>
+            </div>
+            <div class="col-md-2">
+              <xed:bind xpath="@refereed">
+                <select class="form-control" style="font-weight:bold;">
+                  <option value="">
+                    <xed:output i18n="mir.select.optional" />
+                  </option>
+                  <option value="yes">
+                    <xed:output i18n="mir.characteristics.yes" />
+                  </option>
+                  <option value="no">
+                    <xed:output i18n="mir.characteristics.no" />
+                  </option>
+                </select>
+              </xed:bind>
+            </div>
+            <mir:help-pmud help-text="{i18n:mir.help.extension.characteristics}" pmud="true" />
+          </xed:repeat>
+        </div>
+      </div>
+    </fieldset>
+
+  </xed:template>
+
   <xed:template id="cancel.submit">
     <div class="form-group" id="editor-buttons">
       <div class="col-md-offset-2 col-md-6">
@@ -2010,6 +2060,7 @@
     <xed:cleanup-rule xpath="//mods:detail" relevant-if="mods:number|mods:caption|mods:title" />
     <xed:cleanup-rule xpath="//mods:accessCondition[@type='copyrightMD']" relevant-if="string-length(cmd:copyright/cmd:rights.holder/cmd:name/text()) &gt; 0" />
     <xed:cleanup-rule xpath="//mods:accessCondition[@type='restriction on access']" relevant-if="string-length(text()) &gt; 0" />
+    <xed:cleanup-rule xpath="//mods:extension[@displayLabel='characteristics']" relevant-if="string-length(chars/@year) &gt; 0" />
     <xed:cleanup-rule xpath="//structure/parents" relevant-if="false()" />
   </xed:template>
 
