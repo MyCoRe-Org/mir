@@ -59,14 +59,30 @@
       baseURI : "http://d-nb.info/gnd/",
       person : {
         enabled : true,
-        url : "//lobid.org/person",
+        url : "//ws.gbv.de/suggest/gnd/",
         data : function(input) {
           return {
-            name : input,
-            format : "ids"
+            searchterm : input,
+            type : "DifferentiatedPerson"
           }
         },
-        dataType : "jsonp"
+        dataType : "jsonp",
+        dataConvert : function(data) {
+          var result = [];
+          if (data.length == 4) {
+            $(data[1]).each(function(index, item) {
+              if (parseType(data[2][index]) === "DifferentiatedPerson") {
+                var person = {
+                  label : item,
+                  value : data[3][index],
+                  type: "personal"
+                };
+                result.push(person);
+              }
+            });
+          }
+          return result;
+        }
       },
       organisation : {
         enabled : true,
@@ -82,10 +98,11 @@
           var result = [];
           if (data.length == 4) {
             $(data[1]).each(function(index, item) {
-              if (data[2][index] === "CorporateBody") {
+              if (parseType(data[2][index]) === "CorporateBody") {
                 var organisation = {
                   label : item,
-                  value : data[3][index]
+                  value : data[3][index],
+                  type: "corporate"
                 };
                 result.push(organisation);
               }
@@ -100,6 +117,7 @@
         data : function(input) {
           return {
             searchterm : input,
+            type : "DifferentiatedPerson,CorporateBody",
             count: "30"
           }
         },
@@ -108,7 +126,7 @@
           var result = [];
           if (data.length == 4) {
             $(data[1]).each(function(index, item) {
-              if (data[2][index] === "DifferentiatedPerson") {
+              if (parseType(data[2][index]) === "DifferentiatedPerson") {
                 var person = {
                   label : item,
                   value : data[3][index],
@@ -116,7 +134,7 @@
                 };
                 result.push(person);
               }
-              if (data[2][index] === "CorporateBody") {
+              if (parseType(data[2][index]) === "CorporateBody") {
                 var organisation = {
                   label : item,
                   value : data[3][index],
@@ -131,14 +149,29 @@
       },
       topic : {
         enabled : true,
-        url : "//lobid.org/subject",
+        url : "//ws.gbv.de/suggest/gnd/",
         data : function(input) {
           return {
-            name : input,
-            format : "ids"
+            searchterm : input,
+            type: "SubjectHeading"
           }
         },
-        dataType : "jsonp"
+        dataType : "jsonp",
+        dataConvert : function(data) {
+          var result = [];
+          if (data.length == 4) {
+            $(data[1]).each(function(index, item) {
+              if (parseType(data[2][index]) === "SubjectHeading") {
+                var topic = {
+                  label : item,
+                  value : data[3][index]
+                };
+                result.push(topic);
+              }
+            });
+          }
+          return result;
+        }
       }
     },
     VIAF : {
@@ -633,6 +666,14 @@
       return typeObj.baseURI + id;
     }
     return "";
+  }
+
+  function parseType(type) {
+    var index = type.indexOf("/");
+    if (index != -1) {
+      return type.substring(0, index).trim();
+    }
+    return type;
   }
 
   function getParent($this) {
