@@ -49,7 +49,7 @@ public class MIRTestData {
     public static final String VALIDATION_GENRE = "Bitte wählen Sie den Publikationstyp (Genre)";
     public static final String EN_SUB_TITLE = "Test_SUB_TITLE_EN";
     public static final String EN_TITLE = "Test_Title_EN";
-    public static final String AUTHOR_2 = "Friedrich-Schiller-Universität Jena";
+    public static final String AUTHOR_2 = "Dürer, Albrecht";
     public static final String CONFERENCE = "Test-Konferenz, Jena, 01-01-2016";
 
     // Synthesis
