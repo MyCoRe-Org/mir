@@ -1988,6 +1988,8 @@
       <str name="echoParams">explicit</str>
       <str name="rows">20</str>
       <str name="fl">*,score</str>
+      <str name="qf">id^100 mods.gnd^100 mods.identifier^100 isbn^100 mods.name^100 mods.mods.nameIdentifier^100 mods.title^80 mods.author^40 mods.publisher^30 mods.abstract^10 mods.place^5 allMeta^2 content</str>
+      <str name="bq">created:[NOW/DAY-6MONTH TO NOW/DAY]</str>
       <str name="mask">modules/mods/search-simplemods.xml</str>
 
       <str name="qs">5</str>
