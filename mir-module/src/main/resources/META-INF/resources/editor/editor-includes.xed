@@ -1716,7 +1716,7 @@
         </div>
         <div class="mir-fieldset-content">
           <mir:textfield repeat="true" xpath="mods:topicSimple" min="1" max="10" label="mir.subject.topic" help-text="{i18n:mir.help.subject.topic}" />
-          <mir:topic.repeated min="1" max="10" label="mir.subject.topic.gnd" help-text="{i18n:mir.help.subject.topic.gnd}" />
+          <mir:topic.repeated min="1" max="10" label="mir.subject.topic.gnd" help-text="{i18n:mir.help.subject.topic.gnd}" extended="true" />
         </div>
       </fieldset>
     </xed:repeat>
