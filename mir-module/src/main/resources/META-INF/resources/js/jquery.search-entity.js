@@ -680,8 +680,13 @@
     var selector = $this.attr('data-target');
 
     if (!selector) {
-      selector = $this.attr('href');
-      selector = selector && /#[A-Za-z]/.test(selector) && selector.replace(/.*(?=#[^\s]*$)/, '')
+      if ($this.attr('data-next')) {
+        selector = $this.closest(".form-group").next($this.attr('data-next'));
+      }
+      else {
+        selector = $this.attr('href');
+        selector = selector && /#[A-Za-z]/.test(selector) && selector.replace(/.*(?=#[^\s]*$)/, '')
+      }
     }
 
     var $parent = selector && $(selector)

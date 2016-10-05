@@ -619,6 +619,23 @@
     </xed:repeat>
   </xed:template>
 
+  <xed:template id="topicIdentifier">
+      <div class="form-group">
+        <label class="col-md-3 control-label">
+          <xed:output i18n="mir.subject.topic.gnd.type" />
+        </label>
+        <div class="col-md-6">
+          <xed:bind xpath="@valueURIxEditor">
+            <input type="text" size="20" class="form-control form-control-inline topic_gnd" />
+          </xed:bind>
+          <xed:bind xpath="@authority" initially="gnd">
+            <input type="hidden" class="topic_gndType" />
+          </xed:bind>
+        </div>
+        <mir:help-pmud help-text="{i18n:mir.help.topicIdentifier}" pmud="false" />
+      </div>
+  </xed:template>
+
   <xed:template id="namePart.repeated">
     <xed:repeat xpath="mods:namePart" min="1" max="100">
       <div class="form-group">
@@ -1706,15 +1723,11 @@
   </xed:template>
 
   <xed:template id="topic.input">
-    <input type="text" size="26" class="form-control form-control-inline" data-search="searchEntity" data-search-type="GND"
+    <div class="topic-search">
+      <input type="text" size="26" class="form-control form-control-inline" data-search="searchEntity" data-search-type="GND"
            data-search-entity-type="topic" data-search-output=".topic_gnd" data-search-output-type=".topic_gndType" data-search-button="{i18n:button.search}"
-           data-search-button-loading="{i18n:button.loading}" data-search-result-empty="{i18n:mir.searchIdentifier.noResult}" data-target=".search-topic"/>
-    <xed:bind xpath="@valueURIxEditor">
-      <input type="hidden" class="topic_gnd" />
-    </xed:bind>
-    <xed:bind xpath="@authority">
-      <input type="hidden" class="topic_gndType" />
-    </xed:bind>
+           data-search-button-loading="{i18n:button.loading}" data-search-result-empty="{i18n:mir.searchIdentifier.noResult}" data-next=".topicExtended-container"/>
+    </div>
   </xed:template>
 
   <xed:template id="classification">

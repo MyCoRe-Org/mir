@@ -15,7 +15,12 @@ $(document).ready(function() {
     }
 
     $("body").on("click", "fieldset .expand-item", function () {
-        $(this).closest("legend").toggleClass("hiddenDetail").next().toggleClass("hidden");
+        if($(this).attr("data-target")){
+            $(this).closest(".form-group").next($(this).attr("data-target")).toggleClass("hidden");
+        }
+        else {
+            $(this).closest("legend").toggleClass("hiddenDetail").next().toggleClass("hidden");
+        }
         if($(this).hasClass("glyphicon-chevron-down")) {
             $(this).removeClass("glyphicon-chevron-down");
             $(this).addClass("glyphicon-chevron-up");

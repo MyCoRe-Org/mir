@@ -406,22 +406,26 @@
 
   <xsl:template match="mir:topic.repeated">
     <xed:repeat xpath="mods:topic[@authorityURI='http://d-nb.info/gnd/']" min="{@min}" max="{@max}">
-      <div class="form-group {@class}">
-        <label class="col-md-3 control-label">
-          <xed:output i18n="{@label}" />
-        </label>
-        <div class="col-md-6">
-          <div class="search-topic">
-            <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="topic.input" />
+        <div class="form-group {@class}">
+          <label class="col-md-3 control-label">
+            <xed:output i18n="{@label}" />
+          </label>
+          <div class="col-md-6 center-vertical">
+            <div class="search-topic-extended">
+              <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="topic.input" />
+            </div>
+            <span class="glyphicon glyphicon-chevron-down expand-item" data-target=".topicExtended-container" title="{i18n:translate('mir.help.expand')}" aria-hidden="true"></span>
+          </div>
+          <div class="col-md-3">
+            <xsl:if test="string-length(@help-text) &gt; 0">
+            <xsl:call-template name="mir-helpbutton" />
+            </xsl:if>
+            <xsl:call-template name="mir-pmud" />
           </div>
         </div>
-        <div class="col-md-3">
-          <xsl:if test="string-length(@help-text) &gt; 0">
-          <xsl:call-template name="mir-helpbutton" />
-          </xsl:if>
-          <xsl:call-template name="mir-pmud" />
-        </div>
-      </div>
+        <span class="mir-fieldset-content topicExtended-container hidden">
+          <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="topicIdentifier" />
+        </span>
     </xed:repeat>
   </xsl:template>
 
