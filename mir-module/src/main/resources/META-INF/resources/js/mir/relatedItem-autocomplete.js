@@ -171,7 +171,7 @@ $(document).ready(function() {
 	});
 
 	$("input[id^='relItem']").each(function(index, input) {
-		if (input.value != "mir_mods_00000000") {
+		if (input.value.indexOf("mods_00000000") < 0) {
 			fieldset = $(input).closest("fieldset.mir-relatedItem");
 			disableFieldset(fieldset);
 			getModsAfterTrans(fieldset, input.value);
