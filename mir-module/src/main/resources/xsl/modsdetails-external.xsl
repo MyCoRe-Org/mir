@@ -420,203 +420,214 @@
         </a>
         <ul class="dropdown-menu dropdown-menu-right">
           <xsl:variable name="type" select="substring-before(substring-after($id,'_'),'_')" />
-          <xsl:if test="not($accessedit or $accessdelete)">
-            <li>
-              <a href="{$ServletsBaseURL}MCRLoginServlet?action=login">
-                <xsl:value-of select="i18n:translate('mir.actions.noaccess')" />
-              </a>
-            </li>
-          </xsl:if>
-          <xsl:if test="$accessedit">
-            <xsl:choose>
-              <xsl:when test="string-length($editURL) &gt; 0">
+          <xsl:choose>
+            <xsl:when test="mcrxsl:isCurrentUserGuestUser()">
+              <li>
+                <a href="{$ServletsBaseURL}MCRLoginServlet?action=login">
+                  <xsl:value-of select="i18n:translate('mir.actions.noaccess')" />
+                </a>
+              </li>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:if test="not($accessedit or $accessdelete)">
                 <li>
-                  <a href="{$editURL}">
-                    <xsl:value-of select="i18n:translate('object.editObject')" />
+                  <a href="{$ServletsBaseURL}MCRLoginServlet?action=login">
+                    <xsl:value-of select="i18n:translate('mir.actions.norights')" />
                   </a>
                 </li>
-                <!-- li> does not work atm
-                  <a href="{$WebApplicationBaseURL}editor/change_genre.xed?id={$id}">
-                    <xsl:value-of select="i18n:translate('object.editGenre')" />
-                  </a>
-                </li -->
-                <xsl:if test="string-length($copyURL) &gt; 0">
-                  <li>
-                    <a href="{$copyURL}?copyofid={$id}">
-                      <xsl:value-of select="i18n:translate('object.copyObject')" />
-                    </a>
-                  </li>
-                </xsl:if>
-                <xsl:if test="string-length($copyURL) &gt; 0">
-                  <li>
-                    <a href="{$copyURL}?oldVersion={$id}">
-                      <xsl:value-of select="i18n:translate('object.newVersion')" />
-                    </a>
-                  </li>
-                </xsl:if>
-              </xsl:when>
-              <xsl:otherwise>
-                <li>
-                  <xsl:value-of select="i18n:translate('object.locked')" />
-                </li>
-              </xsl:otherwise>
-            </xsl:choose>
-            <xsl:if test="$displayAddDerivate='true'">
-              <li>
-                <a href="{$ServletsBaseURL}derivate/create{$HttpSession}?id={$id}">
-                  <xsl:value-of select="i18n:translate('derivate.addDerivate')" />
-                </a>
-              </li>
-            </xsl:if>
-            <!-- ToDo: Fix URN/Handle Generator, xpath is not mods valid -->
-            <!-- xsl:if test="mcrxsl:isAllowedObjectForURNAssignment($id) and not(mcrurn:hasURNDefined($id))">
-            <a
-              href="{$ServletsBaseURL}MCRAddURNToObjectServlet{$HttpSession}?object={$id}&amp;xpath=.mycoreobject/metadata/def.modsContainer[@class='MCRMetaXML' and @heritable='false' and @notinherit='true']/modsContainer/mods:mods/mods:identifier[@type='hdl']">
-              <img src="{$WebApplicationBaseURL}images/workflow_addnbn.gif" title="{i18n:translate('derivate.urn.addURN')}" />
-            </a>
-            </xsl:if -->
-            <!-- Register DOI -->
-            <xsl:if
-              test="$MIR.registerDOI='true' and $accessedit and not(pi:hasIdentifierRegistered('Datacite', /mycoreobject/@ID, '')) and not(.//mods:identifier[@type='doi'])"
-            >
-              <li>
-                <a href="#" id="registerDOI" data-mycoreID="{/mycoreobject/@ID}" data-baseURL="{$WebApplicationBaseURL}">
-                  <xsl:value-of select="i18n:translate('component.pi.register.doi')" />
-                </a>
-              </li>
-            </xsl:if>
-            <!-- Packing with ImageWare Packer -->
-            <xsl:if test="imageware:displayPackerButton($id, 'ImageWare')">
-              <li>
-                <a
-                  href="{$ServletsBaseURL}MCRPackerServlet?packer=ImageWare&amp;objectId={/mycoreobject/@ID}&amp;redirect={encoder:encode(concat($WebApplicationBaseURL,'receive/',/mycoreobject/@ID,'?XSL.Status.Message=mir.iwstatus.success&amp;XSL.Status.Style=success'))}"
-                >
-                  <xsl:value-of select="i18n:translate('object.createImagewareZipPackage')" />
-                </a>
-              </li>
-            </xsl:if>
-          </xsl:if>
-          <xsl:if test="$CurrentUser=$MCR.Users.Superuser.UserName or $accessdelete and not(mcrurn:hasURNDefined($id) or $MIR.registerDOI='true' and pi:hasIdentifierRegistered('Datacite', /mycoreobject/@ID, ''))" >
-            <li>
-              <xsl:choose>
-                <xsl:when test="/mycoreobject/structure/children/child">
-                  <xsl:attribute name="class">
-                  <xsl:value-of select="'disabled'" />
-                </xsl:attribute>
-                  <a href="#" title="{i18n:translate('object.hasChildren')}">
-                    <xsl:value-of select="i18n:translate('object.delObject')" />
-                  </a>
-                </xsl:when>
-                <xsl:otherwise>
-                  <a href="{$ServletsBaseURL}object/delete{$HttpSession}?id={$id}" class="confirm_deletion" data-text="{i18n:translate('mir.confirm.text')}">
-                    <xsl:value-of select="i18n:translate('object.delObject')" />
-                  </a>
-                </xsl:otherwise>
-              </xsl:choose>
-            </li>
-          </xsl:if>
-          <xsl:if test="$CurrentUser=$MCR.Users.Superuser.UserName">
-            <li>
-              <a href="{$editURL_allMods}">
-                <xsl:value-of select="i18n:translate('component.mods.object.editAllModsXML')" />
-              </a>
-            </li>
-          </xsl:if>
-          <xsl:variable name="genreHosts" select="document('classification:metadata:-1:children:mir_genres')" />
-          <xsl:variable name="child-layout">
-            <xsl:for-each select="$genreHosts//category[contains(label[@xml:lang='x-hosts']/@text, $mods-type)]">
-              <xsl:value-of select="@ID" />
-              <xsl:text>|</xsl:text>
-            </xsl:for-each>
-          </xsl:variable>
-          <xsl:message>
-            mods-type:
-            <xsl:value-of select="$mods-type" />
-            child-layout:
-            <xsl:value-of select="$child-layout" />
-            accessedit:
-            <xsl:value-of select="$accessedit" />
-          </xsl:message>
-          <!-- actionmapping.xml must be available for this functionality -->
-          <xsl:if test="string-length($child-layout) &gt; 0 and $accessedit and mcrxsl:resourceAvailable('actionmappings.xml')">
-
-            <xsl:variable name="url">
-              <xsl:value-of select="actionmapping:getURLforID('create-child',$id,true())" xmlns:actionmapping="xalan://org.mycore.wfc.actionmapping.MCRURLRetriever" />
-            </xsl:variable>
-
-            <xsl:choose>
-              <xsl:when test="not(contains($url, 'editor-dynamic.xed')) and $mods-type != 'series'">
-                <xsl:for-each select="str:tokenize($child-layout,'|')">
-                  <li>
-                    <a href="{$url}{$HttpSession}?relatedItemId={$id}&amp;relatedItemType=host&amp;genre={.}">
-                      <xsl:value-of select="mcrxsl:getDisplayName('mir_genres',.)" />
-                    </a>
-                  </li>
-                </xsl:for-each>
-              </xsl:when>
-              <xsl:when test="not(contains($url, 'editor-dynamic.xed')) and $mods-type = 'series'">
-                <xsl:for-each select="str:tokenize($child-layout,'|')">
-                  <li>
-                    <a href="{$url}{$HttpSession}?relatedItemId={$id}&amp;relatedItemType=series&amp;genre={.}">
-                      <xsl:value-of select="mcrxsl:getDisplayName('mir_genres',.)" />
-                    </a>
-                  </li>
-                </xsl:for-each>
-              </xsl:when>
-              <xsl:when test="contains($url, 'editor-dynamic.xed') and $mods-type = 'lecture'">
-                <xsl:for-each select="str:tokenize($child-layout,'|')">
-                  <li>
-                    <a href="{$url}{$HttpSession}?relatedItemId={$id}&amp;relatedItemType=series&amp;genre={.}&amp;host={$mods-type}">
-                      <xsl:value-of select="mcrxsl:getDisplayName('mir_genres',.)" />
-                    </a>
-                  </li>
-                </xsl:for-each>
-              </xsl:when>
-              <xsl:otherwise>
-                <xsl:for-each select="str:tokenize($child-layout,'|')">
-                  <li>
-                    <a href="{$url}{$HttpSession}?relatedItemId={$id}&amp;relatedItemType=host&amp;genre={.}">
-                      <xsl:value-of select="mcrxsl:getDisplayName('mir_genres',.)" />
-                    </a>
-                  </li>
-                </xsl:for-each>
-              </xsl:otherwise>
-            </xsl:choose>
-          </xsl:if>
-
-          <xsl:if test="(key('rights', @ID)/@accKeyEnabled) and (key('rights', @ID)/@write)">
-            <xsl:variable name="action">
-              <xsl:choose>
-                <xsl:when test="key('rights', @ID)/@readKey">
-                  <xsl:text>edit</xsl:text>
-                </xsl:when>
-                <xsl:otherwise>
-                  <xsl:text>create</xsl:text>
-                </xsl:otherwise>
-              </xsl:choose>
-            </xsl:variable>
-            <li>
-              <a role="menuitem" tabindex="-1"
-                href="{$WebApplicationBaseURL}authorization/accesskey.xed?action={$action}&amp;objId={@ID}&amp;url={encoder:encode(string($RequestURL))}"
-              >
+              </xsl:if>
+              <xsl:if test="$accessedit">
                 <xsl:choose>
-                  <xsl:when test="key('rights', @ID)/@readKey">
-                    <xsl:value-of select="i18n:translate('mir.accesskey.edit')" />
+                  <xsl:when test="string-length($editURL) &gt; 0">
+                    <li>
+                      <a href="{$editURL}">
+                        <xsl:value-of select="i18n:translate('object.editObject')" />
+                      </a>
+                    </li>
+                    <!-- li> does not work atm
+                      <a href="{$WebApplicationBaseURL}editor/change_genre.xed?id={$id}">
+                        <xsl:value-of select="i18n:translate('object.editGenre')" />
+                      </a>
+                    </li -->
+                    <xsl:if test="string-length($copyURL) &gt; 0">
+                      <li>
+                        <a href="{$copyURL}?copyofid={$id}">
+                          <xsl:value-of select="i18n:translate('object.copyObject')" />
+                        </a>
+                      </li>
+                    </xsl:if>
+                    <xsl:if test="string-length($copyURL) &gt; 0">
+                      <li>
+                        <a href="{$copyURL}?oldVersion={$id}">
+                          <xsl:value-of select="i18n:translate('object.newVersion')" />
+                        </a>
+                      </li>
+                    </xsl:if>
                   </xsl:when>
                   <xsl:otherwise>
-                    <xsl:value-of select="i18n:translate('mir.accesskey.add')" />
+                    <li>
+                      <xsl:value-of select="i18n:translate('object.locked')" />
+                    </li>
                   </xsl:otherwise>
                 </xsl:choose>
-              </a>
-            </li>
-          </xsl:if>
-          <xsl:if test="key('rights', @ID)/@accKeyEnabled and key('rights', @ID)/@readKey and not(mcrxsl:isCurrentUserGuestUser() or $accessedit or $accessdelete)">
-            <li>
-              <a role="menuitem" tabindex="-1" href="{$WebApplicationBaseURL}authorization/accesskey.xed?objId={@ID}&amp;url={encoder:encode(string($RequestURL))}">
-                <xsl:value-of select="i18n:translate('mir.accesskey.setOnUser')" />
-              </a>
-            </li>
-          </xsl:if>
+                <xsl:if test="$displayAddDerivate='true'">
+                  <li>
+                    <a href="{$ServletsBaseURL}derivate/create{$HttpSession}?id={$id}">
+                      <xsl:value-of select="i18n:translate('derivate.addDerivate')" />
+                    </a>
+                  </li>
+                </xsl:if>
+                <!-- ToDo: Fix URN/Handle Generator, xpath is not mods valid -->
+                <!-- xsl:if test="mcrxsl:isAllowedObjectForURNAssignment($id) and not(mcrurn:hasURNDefined($id))">
+                <a
+                  href="{$ServletsBaseURL}MCRAddURNToObjectServlet{$HttpSession}?object={$id}&amp;xpath=.mycoreobject/metadata/def.modsContainer[@class='MCRMetaXML' and @heritable='false' and @notinherit='true']/modsContainer/mods:mods/mods:identifier[@type='hdl']">
+                  <img src="{$WebApplicationBaseURL}images/workflow_addnbn.gif" title="{i18n:translate('derivate.urn.addURN')}" />
+                </a>
+                </xsl:if -->
+                <!-- Register DOI -->
+                <xsl:if
+                        test="$MIR.registerDOI='true' and $accessedit and not(pi:hasIdentifierRegistered('Datacite', /mycoreobject/@ID, '')) and not(.//mods:identifier[@type='doi'])"
+                >
+                  <li>
+                    <a href="#" id="registerDOI" data-mycoreID="{/mycoreobject/@ID}" data-baseURL="{$WebApplicationBaseURL}">
+                      <xsl:value-of select="i18n:translate('component.pi.register.doi')" />
+                    </a>
+                  </li>
+                </xsl:if>
+                <!-- Packing with ImageWare Packer -->
+                <xsl:if test="imageware:displayPackerButton($id, 'ImageWare')">
+                  <li>
+                    <a
+                            href="{$ServletsBaseURL}MCRPackerServlet?packer=ImageWare&amp;objectId={/mycoreobject/@ID}&amp;redirect={encoder:encode(concat($WebApplicationBaseURL,'receive/',/mycoreobject/@ID,'?XSL.Status.Message=mir.iwstatus.success&amp;XSL.Status.Style=success'))}"
+                    >
+                      <xsl:value-of select="i18n:translate('object.createImagewareZipPackage')" />
+                    </a>
+                  </li>
+                </xsl:if>
+              </xsl:if>
+              <xsl:if test="$CurrentUser=$MCR.Users.Superuser.UserName or $accessdelete and not(mcrurn:hasURNDefined($id) or $MIR.registerDOI='true' and pi:hasIdentifierRegistered('Datacite', /mycoreobject/@ID, ''))" >
+                <li>
+                  <xsl:choose>
+                    <xsl:when test="/mycoreobject/structure/children/child">
+                      <xsl:attribute name="class">
+                        <xsl:value-of select="'disabled'" />
+                      </xsl:attribute>
+                      <a href="#" title="{i18n:translate('object.hasChildren')}">
+                        <xsl:value-of select="i18n:translate('object.delObject')" />
+                      </a>
+                    </xsl:when>
+                    <xsl:otherwise>
+                      <a href="{$ServletsBaseURL}object/delete{$HttpSession}?id={$id}" class="confirm_deletion" data-text="{i18n:translate('mir.confirm.text')}">
+                        <xsl:value-of select="i18n:translate('object.delObject')" />
+                      </a>
+                    </xsl:otherwise>
+                  </xsl:choose>
+                </li>
+              </xsl:if>
+              <xsl:if test="$CurrentUser=$MCR.Users.Superuser.UserName">
+                <li>
+                  <a href="{$editURL_allMods}">
+                    <xsl:value-of select="i18n:translate('component.mods.object.editAllModsXML')" />
+                  </a>
+                </li>
+              </xsl:if>
+              <xsl:variable name="genreHosts" select="document('classification:metadata:-1:children:mir_genres')" />
+              <xsl:variable name="child-layout">
+                <xsl:for-each select="$genreHosts//category[contains(label[@xml:lang='x-hosts']/@text, $mods-type)]">
+                  <xsl:value-of select="@ID" />
+                  <xsl:text>|</xsl:text>
+                </xsl:for-each>
+              </xsl:variable>
+              <xsl:message>
+                mods-type:
+                <xsl:value-of select="$mods-type" />
+                child-layout:
+                <xsl:value-of select="$child-layout" />
+                accessedit:
+                <xsl:value-of select="$accessedit" />
+              </xsl:message>
+              <!-- actionmapping.xml must be available for this functionality -->
+              <xsl:if test="string-length($child-layout) &gt; 0 and $accessedit and mcrxsl:resourceAvailable('actionmappings.xml')">
+
+                <xsl:variable name="url">
+                  <xsl:value-of select="actionmapping:getURLforID('create-child',$id,true())" xmlns:actionmapping="xalan://org.mycore.wfc.actionmapping.MCRURLRetriever" />
+                </xsl:variable>
+
+                <xsl:choose>
+                  <xsl:when test="not(contains($url, 'editor-dynamic.xed')) and $mods-type != 'series'">
+                    <xsl:for-each select="str:tokenize($child-layout,'|')">
+                      <li>
+                        <a href="{$url}{$HttpSession}?relatedItemId={$id}&amp;relatedItemType=host&amp;genre={.}">
+                          <xsl:value-of select="mcrxsl:getDisplayName('mir_genres',.)" />
+                        </a>
+                      </li>
+                    </xsl:for-each>
+                  </xsl:when>
+                  <xsl:when test="not(contains($url, 'editor-dynamic.xed')) and $mods-type = 'series'">
+                    <xsl:for-each select="str:tokenize($child-layout,'|')">
+                      <li>
+                        <a href="{$url}{$HttpSession}?relatedItemId={$id}&amp;relatedItemType=series&amp;genre={.}">
+                          <xsl:value-of select="mcrxsl:getDisplayName('mir_genres',.)" />
+                        </a>
+                      </li>
+                    </xsl:for-each>
+                  </xsl:when>
+                  <xsl:when test="contains($url, 'editor-dynamic.xed') and $mods-type = 'lecture'">
+                    <xsl:for-each select="str:tokenize($child-layout,'|')">
+                      <li>
+                        <a href="{$url}{$HttpSession}?relatedItemId={$id}&amp;relatedItemType=series&amp;genre={.}&amp;host={$mods-type}">
+                          <xsl:value-of select="mcrxsl:getDisplayName('mir_genres',.)" />
+                        </a>
+                      </li>
+                    </xsl:for-each>
+                  </xsl:when>
+                  <xsl:otherwise>
+                    <xsl:for-each select="str:tokenize($child-layout,'|')">
+                      <li>
+                        <a href="{$url}{$HttpSession}?relatedItemId={$id}&amp;relatedItemType=host&amp;genre={.}">
+                          <xsl:value-of select="mcrxsl:getDisplayName('mir_genres',.)" />
+                        </a>
+                      </li>
+                    </xsl:for-each>
+                  </xsl:otherwise>
+                </xsl:choose>
+              </xsl:if>
+
+              <xsl:if test="(key('rights', @ID)/@accKeyEnabled) and (key('rights', @ID)/@write)">
+                <xsl:variable name="action">
+                  <xsl:choose>
+                    <xsl:when test="key('rights', @ID)/@readKey">
+                      <xsl:text>edit</xsl:text>
+                    </xsl:when>
+                    <xsl:otherwise>
+                      <xsl:text>create</xsl:text>
+                    </xsl:otherwise>
+                  </xsl:choose>
+                </xsl:variable>
+                <li>
+                  <a role="menuitem" tabindex="-1"
+                     href="{$WebApplicationBaseURL}authorization/accesskey.xed?action={$action}&amp;objId={@ID}&amp;url={encoder:encode(string($RequestURL))}"
+                  >
+                    <xsl:choose>
+                      <xsl:when test="key('rights', @ID)/@readKey">
+                        <xsl:value-of select="i18n:translate('mir.accesskey.edit')" />
+                      </xsl:when>
+                      <xsl:otherwise>
+                        <xsl:value-of select="i18n:translate('mir.accesskey.add')" />
+                      </xsl:otherwise>
+                    </xsl:choose>
+                  </a>
+                </li>
+              </xsl:if>
+              <xsl:if test="key('rights', @ID)/@accKeyEnabled and key('rights', @ID)/@readKey and not(mcrxsl:isCurrentUserGuestUser() or $accessedit or $accessdelete)">
+                <li>
+                  <a role="menuitem" tabindex="-1" href="{$WebApplicationBaseURL}authorization/accesskey.xed?objId={@ID}&amp;url={encoder:encode(string($RequestURL))}">
+                    <xsl:value-of select="i18n:translate('mir.accesskey.setOnUser')" />
+                  </a>
+                </li>
+              </xsl:if>
+            </xsl:otherwise>
+          </xsl:choose>
         </ul>
       </div>
     </div>
