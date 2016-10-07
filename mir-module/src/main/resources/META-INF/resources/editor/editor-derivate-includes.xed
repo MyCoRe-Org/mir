@@ -10,11 +10,7 @@
     <xed:cancel url="{$cancelUrl}" />
     <xed:cancel url="../index.html" />
   </xed:template>
-  
-  <xed:template id="label">
-    <mir:textfield xpath="@label" help-text="{i18n:mir.help.derivate.label}" label="mir.label" class="required" />
-  </xed:template>
-  
+
   <xed:template id="title.repeated">
     <fieldset>
       <legend class="mir-fieldset-legend">
@@ -47,6 +43,19 @@
     <div class="form-group" id="editor-buttons">
       <div class="col-md-offset-2 col-md-6">
         <button type="submit" class="btn btn-default" xed:target="debug">Debug</button>
+        <button type="submit" class="btn btn-default" xed:target="cancel">
+          <xed:output i18n="button.cancel" />
+        </button>
+        <button type="submit" class="btn btn-primary" xed:target="servlet" xed:href="UpdateDerivateServlet">
+          <xed:output i18n="button.save" />
+        </button>
+      </div>
+    </div>
+  </xed:template>
+
+  <xed:template id="cancel.submit">
+    <div class="form-group" id="editor-buttons">
+      <div class="col-md-offset-2 col-md-6">
         <button type="submit" class="btn btn-default" xed:target="cancel">
           <xed:output i18n="button.cancel" />
         </button>
