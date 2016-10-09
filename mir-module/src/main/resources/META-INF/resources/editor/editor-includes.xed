@@ -2073,7 +2073,7 @@
     <xed:cleanup-rule xpath="//mods:detail" relevant-if="mods:number|mods:caption|mods:title" />
     <xed:cleanup-rule xpath="//mods:accessCondition[@type='copyrightMD']" relevant-if="string-length(cmd:copyright/cmd:rights.holder/cmd:name/text()) &gt; 0" />
     <xed:cleanup-rule xpath="//mods:accessCondition[@type='restriction on access']" relevant-if="string-length(text()) &gt; 0" />
-    <xed:cleanup-rule xpath="//mods:extension[@displayLabel='characteristics']" relevant-if="string-length(chars/@year) &gt; 0" />
+    <xed:cleanup-rule xpath="//mods:extension[@displayLabel='characteristics']" relevant-if="(string-length(chars/@year) &gt; 0) or (string-length(chars/@refereed) &gt; 0)" />
     <xed:cleanup-rule xpath="//structure/parents" relevant-if="false()" />
   </xed:template>
 
