@@ -9,6 +9,16 @@
   <xsl:template match="/">
 
     <xsl:variable name="mods" select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods" />
+    <xsl:variable name="owner">
+      <xsl:choose>
+        <xsl:when test="mcrxsl:isCurrentUserInRole('admin') or mcrxsl:isCurrentUserInRole('editor')">
+          <xsl:text>*</xsl:text>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="$CurrentUser" />
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
 
     <!-- badges -->
     <div id="mir-abstract-badges">
@@ -21,6 +31,7 @@
         <xsl:call-template name="categorySearchLink">
           <xsl:with-param name="class" select="'mods_genre label label-info'" />
           <xsl:with-param name="node" select="($mods/mods:genre[@type='kindof']|$mods/mods:genre[@type='intern'])[1]" />
+          <xsl:with-param name="owner"  select="$owner" />
         </xsl:call-template>
 
         <xsl:if test="string-length($dateIssued) > 0">
@@ -68,7 +79,7 @@
           <xsl:call-template name="searchLink">
             <xsl:with-param name="class" select="'access_condition label label-success'" />
             <xsl:with-param name="linkText" select="$linkText" />
-            <xsl:with-param name="query" select="concat('%2BallMeta%3A&quot;',$accessCondition,'&quot;')" />
+            <xsl:with-param name="query" select="concat('&amp;fq=link:*',$accessCondition, '&amp;owner=createdby:', $owner)" />
           </xsl:call-template>
         </xsl:if>
       </div><!-- end: badges -->

@@ -106,6 +106,7 @@
     <xsl:param name="title" />
     <xsl:param name="node" select="." />
     <xsl:param name="parent" select="false()" />
+    <xsl:param name="owner" />
 
     <xsl:variable name="classlink">
       <xsl:choose>
@@ -137,7 +138,7 @@
             <xsl:with-param name="class" select="$class" />
             <xsl:with-param name="title" select="$title" />
             <xsl:with-param name="linkText" select="$classText" />
-            <xsl:with-param name="query" select="concat('%2Bcategory.top%3A&quot;',/mycoreclass/@ID,'%3A',@ID,'&quot;')" />
+            <xsl:with-param name="query" select="concat('&amp;fq=mods.type:', @ID, '&amp;owner=createdby:', $owner)" />
           </xsl:call-template>
         </xsl:for-each>
       </xsl:when>
