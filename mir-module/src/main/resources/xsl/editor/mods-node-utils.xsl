@@ -46,8 +46,11 @@
     </xsl:choose>
   </xsl:template>
 
-  <xsl:template match="text()" mode="asXmlNode">
-    <xsl:value-of select="." disable-output-escaping="yes" />
+  <xsl:template match="text()" mode="asXmlNode" xmlns:strutils="xalan://org.apache.commons.lang.StringEscapeUtils">
+    <xsl:variable name="htmlString">
+      <xsl:value-of select="." disable-output-escaping="yes" />
+    </xsl:variable>
+    <xsl:value-of select="strutils:unescapeHtml($htmlString)" disable-output-escaping="yes" />
   </xsl:template>
 
   <!--
