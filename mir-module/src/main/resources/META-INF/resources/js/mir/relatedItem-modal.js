@@ -69,17 +69,17 @@ $(document).ready(function() {
 
     function initContent() {
       if(input.val().length > 0 && parseInt(input.val().substr(input.val().lastIndexOf("_") + 1)) > 1) {
-        loadPublikation(leftContent, "", "id:" + input.val(), "0", "xml");
+        loadPublikation(leftContent, "select", "id:" + input.val(), "0");
         setTimeout(function() {
           $("#modalFrame").find(".list-group-item").addClass("active");
         }, 300);
-        loadPublikation(rightContent, "receive/" + input.val(), "", "", "html");
+        loadPublikation(rightContent, "receive", input.val(), "");
         $("#modalFrame-send").removeAttr("disabled");
       }
 
 
       if(!input.val() || parseInt(input.val().substr(input.val().lastIndexOf("_") + 1)) < 1) {
-        loadPublikation(leftContent, "", "", "0", "xml");
+        loadPublikation(leftContent, "find", "", "0");
       }
     }
 
@@ -102,27 +102,31 @@ $(document).ready(function() {
 
     function leftContent(data) {
       $("#main_left_content").empty();
-      var mainBody = $(data).find("result[name='response']");
-      mainBody.children().each(function() {
-        var autorContainer = "";
-        var autor = "";
-        $(this).find("arr[name='mods.author'] > str").each(function() {
-          autor = autor + "; " + $(this).text();
+      var mainBody = $(data).find("result[name='doclist']");
+      if (mainBody.length < 1) {
+        mainBody = $(data).find("result[name='response']");
+      }
+      mainBody.each(function() {
+        $(this).children().each(function() {
+          var autorContainer = "";
+          var autor = "";
+          $(this).find("arr[name='mods.author'] > str").each(function() {
+            autor = autor + "; " + $(this).text();
+          });
+          autor = $.trim(autor.substring(1, autor.length));
+          if(autor != "") {
+            autorContainer = "<br/><i><small>Autor: " + autor + "</small></i>"
+          }
+          var type = "<br/><i><small>Type: " + getGenre($(this).find("str[name='mods.type']").text()) + "</small></i>";
+          var elm = $("<a class='list-group-item' value='" + $(this).find("str[name='id']").text() + "'>" + $(this).find("str[name='mods.title.main']").text() + autorContainer + type + "</a>");
+          $("#main_left_content").append(elm);
+          $(elm).css("cursor", "pointer");
+          $(elm).attr("data-type", $(this).find("str[name='mods.type']").text());
+          $(elm).attr("data-title", $(this).find("str[name='mods.title.main']").text());
         });
-        autor = $.trim(autor.substring(1, autor.length));
-        if(autor != "") {
-          autorContainer = "<br/><i><small>Autor: " + autor + "</small></i>"
-        }
-        var type = "<br/><i><small>Type: " + getGenre($(this).find("str[name='mods.type']").text()) + "</small></i>";
-        var elm = $("<a class='list-group-item' value='" + $(this).find("str[name='id']").text() + "'>" + $(this).find("str[name='mods.title.main']").text() + autorContainer + type + "</a>");
-        $("#main_left_content").append(elm);
-        $(elm).css("cursor", "pointer");
-        $(elm).attr("data-type", $(this).find("str[name='mods.type']").text());
-        $(elm).attr("data-title", $(this).find("str[name='mods.title.main']").text());
       });
-
       updatePager(data);
-      loadPublikation(updateType,"servlets/solr/select?q=" + $(data).find("str[name='q']").text() + "&fq=objectType%3A\"mods\"&XSL.Style=xml","","","xml");
+      loadPublikation(updateType,"find", $(data).find("str[name='q']").text(), "0");
     }
 
     function rightContent(data) {
@@ -145,7 +149,10 @@ $(document).ready(function() {
     function updatePager(data) {
       var start = $(data).find("str[name='start']").text();
       var rows = $(data).find("str[name='rows']").text();
-      var matches = $(data).find("result[name='response']").attr("numFound");
+      var matches = $(data).find("int[name='matches']").text();
+      if (matches == undefined || matches == "") {
+        matches = $(data).find("result[name='response']").attr("numFound");
+      }
 
       $("#previous, li.next, #first").show();
       $("ul.pager li").removeClass("disabled");
@@ -172,7 +179,7 @@ $(document).ready(function() {
     $("#modalFrame").on("click", "#main_left_content > .list-group-item", function() {
       if(!$(this).is($(".list-group-item.active"))) {
         $(".list-group-item").removeClass("active");
-        loadPublikation(rightContent, "receive/" + $(this).attr("value"), "", "", "html");
+        loadPublikation(rightContent, "receive", $(this).attr("value"), "");
         $(this).addClass("active");
         $("#modalFrame-send").removeAttr("disabled");
       }
@@ -197,19 +204,25 @@ $(document).ready(function() {
       source: function(query, process) {
         return loadPublikation(function(data){
           var list = [];
-          $(data).find("arr[name='mods.title']").each(function() {
-            list.push($(this).find("str:first-child").text());
+          $(data).find("result[name='response']").children().each(function () {
+            list.push({name: $(this).find("arr[name='mods.title']").find("str:first-child").text(), id: $(this).find("str[name='id']").text()});
           });
           return process(list);
-        }, "" ,query , "0", "xml");
+        }, "select", "mods.title:*" + query + "*", "0");
       },
       updater: function(item) {
         $("#main_right_content").empty();
         sortType = "";
-        loadPublikation(leftContent, "", item, "0", "xml");
+        loadPublikation(leftContent, "select", "id:" + item.id, "0");
+        setTimeout(function() {
+          $("#modalFrame").find(".list-group-item").addClass("active");
+        }, 300);
+        loadPublikation(rightContent, "receive", item.id, "");
+        $("#modalFrame-send").removeAttr("disabled");
         return item;
       },
-      items: 10
+      items: 10,
+      autoSelect: false
     });
 
     $("#modal-searchInput .glyphicon-search").unbind().click(function() {
@@ -225,27 +238,44 @@ $(document).ready(function() {
 
     $("#modalFrame li.next a, #modalFrame #previous a, #modalFrame #first a").click(function() {
       if(!$(this).parent().hasClass("disabled")) {
-        loadPublikation(leftContent, "", getInputAsQuery(), $(this).attr("data"), "xml");
+        loadPublikation(leftContent, "find", $("#modal-searchInput > input").val(), $(this).attr("data"), "xml");
         $("#main_right_content").empty();
+        $("#modalFrame-send").attr("disabled", "");
       }
     });
 
     $(".modal-footer select").change(function() {
       sortType = decodeURIComponent($(this).val());
-      loadPublikation(leftContent, "",  getInputAsQuery(), "0", "xml");
+      loadPublikation(leftContent, "find",  $("#modal-searchInput > input").val(), "0", "xml");
       $("#main_right_content").empty();
+      $("#modalFrame-send").attr("disabled", "");
     });
 
     function searchPublikation() {
       $("#main_right_content").empty();
+      $("#modalFrame-send").attr("disabled", "");
       sortType = "";
-      loadPublikation(leftContent, "", getInputAsQuery(), "0", "xml");
+      loadPublikation(leftContent, "find", $("#modal-searchInput > input").val(), "0", "xml");
     }
 
-    function loadPublikation(callback, href, qry, start, dataType){
-      var url = href;
-      if(url == "") {
-        url = "servlets/solr/select?q=" + qry + "&fq=objectType%3A\"mods\"&fq=" + sortType + "&start=" + start + "&rows=10&XSL.Style=xml";
+    function loadPublikation(callback, type, qry, start){
+      var url = "";
+      var dataType = "";
+      switch (type) {
+        case "find":
+              url = "servlets/solr/find?q=" + qry + "&fq=objectType%3A\"mods\"&fq=" + sortType + "&start=" + start + "&rows=10&owner=createdby:*&XSL.Style=xml";
+              dataType = "xml";
+              break;
+        case "select":
+              url = "servlets/solr/select?q=" + qry + "&fq=objectType%3A\"mods\"&start=0&rows=10&XSL.Style=xml";
+              dataType = "xml";
+              break;
+        case "receive":
+              url = "receive/" + qry;
+              dataType = "html";
+              break;
+        default:
+              break;
       }
       $.ajax({
         url: webApplicationBaseURL + url,
@@ -259,14 +289,6 @@ $(document).ready(function() {
           console.log(error);
         }
       });
-    }
-
-    function getInputAsQuery() {
-      var query = $("#modal-searchInput > input").val();
-      if (query == "") {
-        query = "*";
-      }
-      return query;
     }
 
     function loadGenres(callback) {
