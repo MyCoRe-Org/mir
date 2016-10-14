@@ -28,7 +28,6 @@ import javax.xml.transform.URIResolver;
 
 import org.jdom2.Element;
 import org.jdom2.transform.JDOMSource;
-import org.mycore.access.MCRAccessManager;
 import org.mycore.datamodel.metadata.MCRObjectID;
 
 /**
@@ -55,17 +54,6 @@ public class MIRAccessKeyResolver implements URIResolver {
         MIRAccessKeyPair accKP = MIRAccessKeyManager.getKeyPair(MCRObjectID.getInstance(objId));
 
         if (accKP != null) {
-            if (!MCRAccessManager.checkPermission(objId, MCRAccessManager.PERMISSION_WRITE)) {
-                final Element root = new Element("accesskeys");
-                root.setAttribute("objId", objId);
-                if (accKP.getReadKey() != null)
-                    root.setAttribute("readkey", "");
-                if (accKP.getWriteKey() != null)
-                    root.setAttribute("writekey", "");
-
-                return new JDOMSource(root);
-            }
-
             return new JDOMSource(MIRAccessKeyPairTransformer.buildExportableXML(accKP));
         }
 

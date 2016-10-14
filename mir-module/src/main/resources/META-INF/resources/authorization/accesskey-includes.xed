@@ -3,7 +3,7 @@
 
   <xed:template id="source">
     <xed:if test="string-length($action) &gt; 0 and ($action = 'edit' or $action = 'delete')">
-      <xed:source uri="accesskeys:{$objId}" />
+      <xed:source uri="xslStyle:accesskeys-filter:accesskeys:{$objId}" />
     </xed:if>
   </xed:template>
 
