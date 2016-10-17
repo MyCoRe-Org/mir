@@ -239,6 +239,7 @@
       <xsl:value-of select="$CurrentLang" />
       <xsl:text>';</xsl:text>
     </script>
+    <script src="{$WebApplicationBaseURL}js/mir/session-polling.js" type="text/javascript"></script>
   </xsl:template>
 
   <xsl:template name="print.statusMessage" >
