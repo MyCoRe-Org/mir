@@ -23,8 +23,11 @@
       <when condition="true" url="/servlets/MCRLoginServlet?url=MCRActionMappingServlet/mods/create-copy" />
     </action>
     <action action="update">
-      <when condition="(group = admin) or (group = editor)" url="/servlets/MCRLockServlet?url=/editor/editor-admins.xed" />
+      <when condition="(group = admin) or (group = editor)" url="/servlets/MCRLockServlet?url=/editor/editor-dynamic.xed" />
       <when condition="(status != published) and (status != review)" url="/servlets/MCRLockServlet?url=/editor/editor-dynamic.xed" />
+    </action>
+    <action action="update-admin">
+      <when condition="(group = admin) or (group = editor)" url="/servlets/MCRLockServlet?url=/editor/editor-admins.xed" />
     </action>
     <action action="update-xml">
       <when condition="(group = admin)" url="/servlets/MCRLockServlet?url=/editor/editor-xml.xed" />

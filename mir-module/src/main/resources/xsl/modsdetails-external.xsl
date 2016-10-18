@@ -379,6 +379,9 @@
         <xsl:with-param name="layout" select="$layout" />
       </xsl:call-template>
     </xsl:variable>
+    <xsl:variable name="adminEditURL">
+      <xsl:value-of select="actionmapping:getURLforID('update-admin',$id,true())" xmlns:actionmapping="xalan://org.mycore.wfc.actionmapping.MCRURLRetriever" />
+    </xsl:variable>
     <xsl:variable name="editURL_allMods">
       <xsl:call-template name="mods.getObjectEditURL">
         <xsl:with-param name="id" select="$id" />
@@ -444,6 +447,13 @@
                         <xsl:value-of select="i18n:translate('object.editObject')" />
                       </a>
                     </li>
+                    <xsl:if test="string-length($adminEditURL) &gt; 0">
+                      <li>
+                        <a href="{$adminEditURL}&amp;id={$id}">
+                          <xsl:value-of select="i18n:translate('mir.admineditor')" />
+                        </a>
+                      </li>
+                    </xsl:if>
                     <!-- li> does not work atm
                       <a href="{$WebApplicationBaseURL}editor/change_genre.xed?id={$id}">
                         <xsl:value-of select="i18n:translate('object.editGenre')" />
