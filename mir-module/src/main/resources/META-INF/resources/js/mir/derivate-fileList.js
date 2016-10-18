@@ -197,7 +197,7 @@
 	});
 
 	var DerivateFileList = function() {
-		var objID, deriID, mainDoc, fileBox, aclWriteDB, aclDeleteDB, derivateJson, template, urn, hbs, numPerPage, page;
+		var objID, deriID, mainDoc, fileBox, aclWriteDB, aclDeleteDB, derivateJson, defaultTemplate, templates = new Array(), urn, hbs = new Array(), numPerPage, page;
 		var i18nKeys = {};
 
 		var fileIcons = {
@@ -263,29 +263,42 @@
 					data.pagination = buildPagination(data.children);
 
 					derivateJson = data;
-					getTemplate(derivateJson);
+					getTemplate(derivateJson, "derivate-fileList.hbs", useTemplate);
 				},
-				error : function() {
+				error: function (resp, title, message) {
+					var respObj = resp.responseJSON;
+					getTemplate(respObj, "error.hbs", function (respObj, template) {
+						let filesTable = jQuery("#files" + deriID);
+						respObj["mycorederivate"] = deriID;
+						filesTable.html(template(respObj));
+					});
 					console.log("Derivate request failed for Derivate: " + deriID);
 				}
 			});
 		}
 
-		function getTemplate(json) {
-			if (hbs == undefined) {
+		function getTemplate(json, templateName, cb) {
+			if (hbs[templateName] == undefined) {
 				$.ajax({
-					url : webApplicationBaseURL + "hbs/derivate-fileList.hbs",
+					url: webApplicationBaseURL + "hbs/" + templateName,
 					type : "GET",
 					success : function(data) {
-						hbs = data;
-						useTemplate(json, hbs);
+						hbs[templateName] = data;
+						if (templates[templateName] === undefined) {
+							templates[templateName] = Handlebars.compile(hbs[templateName]);
+						}
+						if (templateName == "derivate-fileList.hbs") {
+							defaultTemplate = templates[templateName];
+						}
+
+						cb(json, templates[templateName]);
 					},
 					error : function() {
 						console.log("Template request failed");
 					}
 				});
 			} else {
-				useTemplate(json, hbs);
+				cb(json, templates[templateName]);
 			}
 		}
 
@@ -320,9 +333,9 @@
 			fileBox.data("path", path);
 		}
 
-		function useTemplate(json, temp) {
-			if (template === undefined) {
-				template = Handlebars.compile(temp);
+		function useTemplate(json, template) {
+			if (typeof template == "undefined") {
+				template = defaultTemplate;
 			}
 			var newJson = clone(derivateJson);
 			newJson.children = sortChildren(json.children, newJson.mainDoc);
