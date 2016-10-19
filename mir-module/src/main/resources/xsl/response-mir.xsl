@@ -11,6 +11,8 @@
   <xsl:param name="UserAgent" />
   <xsl:param name="MIR.testEnvironment" />
 
+  <xsl:variable name="maxScore" select="//result[@name='response'][1]/@maxScore" />
+
   <xsl:template match="/response/result|lst[@name='grouped']/lst[@name='returnId']" priority="10">
     <xsl:variable name="ResultPages">
       <xsl:if test="($hits &gt; 0) and ($hits &gt; $rows)">
@@ -100,7 +102,7 @@
                   <input class="form-control" name="qry" placeholder="{i18n:translate('mir.placeholder.response.search')}" type="text" value="{$qry}"/>
                 </xsl:when>
                 <xsl:otherwise>
-                  <input class="form-control" name="qry" placeholder="{i18n:translate('mir.placeholder.response.search')}" type="text" />
+              <input class="form-control" name="qry" placeholder="{i18n:translate('mir.placeholder.response.search')}" type="text" />
                 </xsl:otherwise>
               </xsl:choose>
               <span class="input-group-btn">
@@ -264,13 +266,17 @@
           </div>
 
 <!-- relevance -->
-          <div class="hit_stars_5 hit_stars" title="ToDo: SolrScore"> <!-- ToDo: hit_stars_3 für nur 3 Sterne ... -->
-            <div class="hit_star_1 hit_star"></div>
-            <div class="hit_star_2 hit_star"></div>
-            <div class="hit_star_3 hit_star"></div>
-            <div class="hit_star_4 hit_star"></div>
-            <div class="hit_star_5 hit_star"></div>
-          </div>
+          <xsl:variable name="score" select="float[@name='score']" />
+          <xsl:if test="$score &gt; 0 and $maxScore &gt; 0">
+            <xsl:variable name="relevance" select="($score div $maxScore) * 100" />
+            <div class="hit_stars_5 hit_stars" title="{i18n:translate('mir.response.relevance')}: {$relevance}%">
+              <xsl:if test="$relevance &gt; 0"><div class="hit_star_1 hit_star"></div></xsl:if>
+              <xsl:if test="$relevance &gt; 20"><div class="hit_star_2 hit_star"></div></xsl:if>
+              <xsl:if test="$relevance &gt; 40"><div class="hit_star_3 hit_star"></div></xsl:if>
+              <xsl:if test="$relevance &gt; 60"><div class="hit_star_4 hit_star"></div></xsl:if>
+              <xsl:if test="$relevance &gt; 80"><div class="hit_star_5 hit_star"></div></xsl:if>
+            </div>
+          </xsl:if>
 
 <!-- hit options -->
           <xsl:choose>
