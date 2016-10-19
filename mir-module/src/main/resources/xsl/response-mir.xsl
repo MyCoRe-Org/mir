@@ -2,7 +2,8 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:mods="http://www.loc.gov/mods/v3" xmlns:encoder="xalan://java.net.URLEncoder"
   xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation" xmlns:str="http://exslt.org/strings" xmlns:exslt="http://exslt.org/common" xmlns:mcr="xalan://org.mycore.common.xml.MCRXMLFunctions"
   xmlns:acl="xalan://org.mycore.access.MCRAccessManager" xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions" xmlns:basket="xalan://org.mycore.frontend.basket.MCRBasketManager"
-  exclude-result-prefixes="i18n mods str exslt mcr acl mcrxsl basket encoder"
+  xmlns:decoder="xalan://java.net.URLDecoder"
+  exclude-result-prefixes="i18n mods str exslt mcr acl mcrxsl basket encoder decoder"
 >
 
   <xsl:include href="response-mir-utils.xsl" />
@@ -79,7 +80,29 @@
                   </li>
                 </ul>
               </div>
-              <input class="form-control" name="qry" placeholder="{i18n:translate('mir.placeholder.response.search')}" type="text" />
+              <xsl:variable name="qry">
+                <xsl:variable name="encodedQry">
+                  <xsl:call-template name="UrlGetParam">
+                    <xsl:with-param name="url" select="$RequestURL" />
+                    <xsl:with-param name="par" select="'q'" />
+                  </xsl:call-template>
+                </xsl:variable>
+                <xsl:value-of select="decoder:decode($encodedQry, 'UTF-8')" />
+              </xsl:variable>
+              <xsl:variable name="resolver">
+                <xsl:call-template name="substring-after-last">
+                  <xsl:with-param name="string" select="$proxyBaseURL" />
+                  <xsl:with-param name="delimiter" select="'/'" />
+                </xsl:call-template>
+              </xsl:variable>
+              <xsl:choose>
+                <xsl:when test="$resolver = 'find'">
+                  <input class="form-control" name="qry" placeholder="{i18n:translate('mir.placeholder.response.search')}" type="text" value="{$qry}"/>
+                </xsl:when>
+                <xsl:otherwise>
+                  <input class="form-control" name="qry" placeholder="{i18n:translate('mir.placeholder.response.search')}" type="text" />
+                </xsl:otherwise>
+              </xsl:choose>
               <span class="input-group-btn">
                 <button class="btn btn-primary" type="submit">
                   <span class="glyphicon glyphicon-search"></span>
@@ -717,13 +740,14 @@
       <xsl:variable name="typeComplete">
         <xsl:value-of select="concat('&amp;fq=',$facet_name,':',@name)"></xsl:value-of>
       </xsl:variable>
+      <xsl:variable name="typHref" select="decoder:decode(mcrxsl:regexp($RequestURL, '(&amp;|%26)(start=)[0-9]*', ''))" />
       <xsl:variable name="queryURL">
         <xsl:choose>
-          <xsl:when test="contains($RequestURL, $typeComplete)">
-            <xsl:value-of select="concat(substring-before($RequestURL, $typeComplete), substring-after($RequestURL, $typeComplete))" />
+          <xsl:when test="contains($typHref, $typeComplete)">
+            <xsl:value-of select="concat(substring-before($typHref, $typeComplete), substring-after($typHref, $typeComplete))" />
           </xsl:when>
           <xsl:otherwise>
-            <xsl:value-of select="concat($RequestURL, $typeComplete)" />
+            <xsl:value-of select="concat($typHref, $typeComplete)" />
           </xsl:otherwise>
         </xsl:choose>
       </xsl:variable>
@@ -732,7 +756,7 @@
         <div class="checkbox">
           <label>
             <input type="checkbox" onclick="location.href='{$queryURL}';">
-              <xsl:if test="contains($RequestURL, $typeComplete)">
+              <xsl:if test="contains($typHref, $typeComplete)">
                 <xsl:attribute name="checked">true</xsl:attribute>
               </xsl:if>
             </input>
@@ -784,7 +808,7 @@
   <xsl:template match="select/option" mode="calculate_option_notselected">
     <xsl:param name="classId" />
     <xsl:variable name="complete">
-      <xsl:value-of select="concat('%2Bcategory.top%3A%22',$classId,'%3A',@value,'%22%2B')" />
+      <xsl:value-of select="concat('%2Bcategory.top%3A%22',$classId,'%5C%3A',@value,'%22')" />
     </xsl:variable>
     <xsl:if test="not(contains($RequestURL, $complete))">
       <xsl:variable name="filterHref">
@@ -799,7 +823,7 @@
       </xsl:variable>
       <li>
         <xsl:call-template name="print.hyperLink">
-          <xsl:with-param name="href" select="$filterHref" />
+          <xsl:with-param name="href" select="mcrxsl:regexp($filterHref,'(&amp;|%26)(start=)[0-9]*', '')" />
           <xsl:with-param name="text" select="@title" />
         </xsl:call-template>
       </li>
@@ -809,11 +833,11 @@
   <xsl:template match="select/option" mode="calculate_option_selected">
     <xsl:param name="classId" />
     <xsl:variable name="complete">
-      <xsl:value-of select="concat('%2Bcategory.top%3A%22',$classId,'%3A',@value,'%22%2B')" />
+      <xsl:value-of select="concat('%2Bcategory.top%3A%22',$classId,'%5C%3A',@value,'%22')" />
     </xsl:variable>
     <xsl:if test="contains($RequestURL, $complete)">
       <xsl:variable name="filterHref">
-        <xsl:value-of select="concat(substring-before($RequestURL, $complete), substring-after($RequestURL, $complete))" />
+        <xsl:value-of select="mcrxsl:regexp(concat(substring-before($RequestURL, $complete), substring-after($RequestURL, $complete)), '(&amp;|%26)(start=)[0-9]*', '')" />
       </xsl:variable>
       <xsl:call-template name="print.hyperLink">
         <xsl:with-param name="href" select="$filterHref" />
@@ -923,6 +947,22 @@
           <span class="glyphicon glyphicon-bookmark"></span>
           <xsl:value-of select="i18n:translate('basket.add')" />
         </a>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
+  <xsl:template name="substring-after-last">
+    <xsl:param name="string" />
+    <xsl:param name="delimiter" />
+    <xsl:choose>
+      <xsl:when test="contains($string, $delimiter)">
+        <xsl:call-template name="substring-after-last">
+          <xsl:with-param name="string" select="substring-after($string, $delimiter)" />
+          <xsl:with-param name="delimiter" select="$delimiter" />
+        </xsl:call-template>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="$string" />
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
