@@ -395,7 +395,7 @@
     <div class="btn-group btn-group-justified">
       <xsl:choose>
         <xsl:when test="basket:contains($basketType, /mycoreobject/@ID)">
-          <a class="btn btn-primary btn-sm" href="{$ServletsBaseURL}MCRBasketServlet{$HttpSession}?type={$basketType}&amp;action=remove&amp;redirect=referer&amp;id={/mycoreobject/@ID}">
+          <a class="btn btn-primary btn-sm" href="{$ServletsBaseURL}MCRBasketServlet{$HttpSession}?type={$basketType}&amp;action=remove&amp;redirect={encoder:encode($RequestURL)}&amp;id={/mycoreobject/@ID}">
             <i class="fa fa-minus">
               <xsl:value-of select="' '" />
             </i>
@@ -404,7 +404,7 @@
         </xsl:when>
         <xsl:otherwise>
           <a class="btn btn-primary btn-sm"
-            href="{$ServletsBaseURL}MCRBasketServlet{$HttpSession}?type={$basketType}&amp;action=add&amp;redirect=referer&amp;id={/mycoreobject/@ID}&amp;uri=mcrobject:{/mycoreobject/@ID}"
+            href="{$ServletsBaseURL}MCRBasketServlet{$HttpSession}?type={$basketType}&amp;action=add&amp;redirect={encoder:encode($RequestURL)}&amp;id={/mycoreobject/@ID}&amp;uri=mcrobject:{/mycoreobject/@ID}"
           >
             <i class="fa fa-plus">
               <xsl:value-of select="' '" />
