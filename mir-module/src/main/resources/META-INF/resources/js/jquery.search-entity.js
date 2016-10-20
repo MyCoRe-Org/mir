@@ -449,7 +449,7 @@
         var $person = $(document.createElement("a"));
         $person.attr("href", "#");
         $person.attr("data-type", item.type);
-        $person.html(item.label);
+        $person.text(item.label);
         $person.on("click", function(e) {
           e.preventDefault();
           that.updateOutput(item);
