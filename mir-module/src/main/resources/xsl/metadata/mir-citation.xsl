@@ -59,7 +59,7 @@
             </xsl:call-template>
           </xsl:variable>
           <select class="form-control input-sm" id="crossref-cite">
-            <option>din-1505-2</option>
+            <option>deutsche-sprache</option>
             <xsl:for-each select="exslt:node-set($cite-styles)/token">
               <option>
                 <xsl:value-of select="." />
@@ -125,7 +125,7 @@
             type: 'POST',
             url: 'http://dx.doi.org/<xsl:value-of select="//mods:mods/mods:identifier[@type='doi']" />',
             headers: {
-              'Accept': 'text/bibliography; style=din-1505-2; locale=de-DE'
+              'Accept': 'text/x-bibliography; style=deutsche-sprache; locale=de-DE'
             }
           }).done(function(data) {
             $('#citation-text').html(data);
@@ -136,7 +136,7 @@
               type: 'POST',
               url: 'http://dx.doi.org/<xsl:value-of select="//mods:mods/mods:identifier[@type='doi']" />',
               headers: {
-                'Accept': 'text/bibliography; style=' + $(this).val() + '; locale=de-DE'
+                'Accept': 'text/x-bibliography; style=' + $(this).val() + '; locale=de-DE'
               }
             }).done(function(data) {
               $('#citation-text').html(data);
