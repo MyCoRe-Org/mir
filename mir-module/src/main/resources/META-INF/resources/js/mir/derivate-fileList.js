@@ -391,10 +391,10 @@
 
 		function sortChildren(children, mainDoc) {
 			return children.sort(function(a, b) {
-				if (a.name == mainDoc) {
+				if (a.path == "/" + mainDoc) {
 					return -1;
 				}
-				if (b.name == mainDoc) {
+				if (b.path == "/" + mainDoc) {
 					return 1;
 				}
 				if (a.type == "directory" && b.type != "directory") {

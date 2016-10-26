@@ -1,7 +1,7 @@
 <div id="collapse{{mycorederivate}}" class="body collapse in">
   <table class="table table-condensed table-striped">
     {{#each children}}
-      {{#is ../mainDoc name}}
+      {{#is (concat '/' ../mainDoc) path}}
         <tr class="file_set active_file">
       {{else}}
         <tr class="file_set">
@@ -70,6 +70,7 @@
                                        data-derivateid="{{../mycorederivate}}"
                                        data-objectid="{{../mycoreobject}}"
                                        data-file="{{name}}"
+                                       data-path="{{path}}"
                                        class="option mir_mainfile" >
                                         <span class="glyphicon glyphicon-star"></span>
                                         {{getI18n "IFS.mainFile"}}

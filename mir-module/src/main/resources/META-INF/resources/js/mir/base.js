@@ -52,9 +52,11 @@
       var oldMainFile = $(".file_set.active_file");
       $(".file_set.active_file").removeClass("active_file");
       $(that).closest(".file_set").addClass("waiting_file");
+      var path = $(this).data("path");
+      path = (path.charAt(0) == "/" ? path.substr(1) : path);
       $.ajax({
         type: 'GET',
-        url: webApplicationBaseURL + "servlets/MCRDerivateServlet?derivateid=" + $(this).data("derivateid") + "&objectid=" + $(this).data("objectid") + "&todo=ssetfile&file=" + $(this).data("file"),
+        url: webApplicationBaseURL + "servlets/MCRDerivateServlet?derivateid=" + $(this).data("derivateid") + "&objectid=" + $(this).data("objectid") + "&todo=ssetfile&file=" + path,
       }).done(function (result) {
         $(that).closest(".file_set").removeClass("waiting_file");
         $(that).closest(".file_set").addClass("active_file");
