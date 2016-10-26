@@ -21,20 +21,16 @@
         </xsl:apply-templates>
       </xsl:attribute>
       <xsl:call-template name="debug-rights" />
+      <xsl:variable name="docState" select="//servstates/servstate/@categid" />
       <xsl:choose>
         <xsl:when test="key('rights', mycoreobject/@ID)/@read">
           <xsl:choose>
             <xsl:when test="key('rights', mycoreobject/@ID)/@write">
               <xsl:apply-imports />
             </xsl:when>
-            <xsl:when test="//servstates/servstate/@categid='blocked'">
+            <xsl:when test="$docState='blocked' or $docState='deleted'">
               <xsl:call-template name="printMirMessage">
-                <xsl:with-param name="title" select="i18n:translate('mir.error.blocked')" />
-              </xsl:call-template>
-            </xsl:when>
-            <xsl:when test="//servstates/servstate/@categid='deleted'">
-              <xsl:call-template name="printMirMessage">
-                <xsl:with-param name="title" select="i18n:translate('mir.error.deleted')" />
+                <xsl:with-param name="title" select="i18n:translate(concat('mir.error.', $docState))" />
                 <xsl:with-param name="msg">
                   <xsl:if test="//mods:note[@type='admin']">
                     <xsl:for-each select="//mods:note[@type='admin']">
