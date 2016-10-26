@@ -164,7 +164,7 @@
         |
         <xsl:value-of select="@type" />
       </field>
-      <xsl:if test="mods:part/mods:detail[@type='volume']">
+      <xsl:if test="@type='host' and mods:part/mods:detail[@type='volume']">
         <field name="mods.part">
           <xsl:choose>
             <xsl:when test="mods:part/mods:detail[@type='issue']/mods:number">
