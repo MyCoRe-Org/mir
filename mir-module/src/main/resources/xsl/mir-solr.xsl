@@ -164,6 +164,11 @@
         |
         <xsl:value-of select="@type" />
       </field>
+      <xsl:if test="mods:part/@order">
+        <field name="mods.part.order.{@xlink:href}">
+          <xsl:value-of select="mods:part/@order" />
+        </field>
+      </xsl:if>
       <xsl:if test="@type='host' and mods:part/mods:detail[@type='volume']">
         <field name="mods.part">
           <xsl:choose>
