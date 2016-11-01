@@ -155,7 +155,7 @@
     <div class="date-format" data-format="simple">
       <div class="date-simple {$hiddenclasssimple} input-group">
         <xed:bind xpath="{$xpathSimple}">
-          <input type="text" class="form-control">
+          <input type="text" class="form-control" autocomplete="off">
             <xsl:copy-of select="@placeholder" />
           </input>
         </xed:bind>
