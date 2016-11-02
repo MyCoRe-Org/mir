@@ -69,9 +69,9 @@
         </xsl:if>
         <p id="citation-text">
           <xsl:apply-templates select="$mods" mode="authorList" />
-          <xsl:apply-templates select="$mods" mode="year" />
-          <xsl:apply-templates mode="mods.title" select="$mods" />
-          <xsl:value-of select="'.'" />
+          <xsl:apply-templates select="$mods" mode="title" />
+          <xsl:apply-templates select="$mods" mode="originInfo" />
+          <xsl:apply-templates select="$mods" mode="issn" />
         </p>
       </div>
 
@@ -200,24 +200,31 @@
         <xsl:for-each select="mods:name[mods:role/mods:roleTerm/text()='aut']">
           <xsl:choose>
             <xsl:when test="position() &lt; 4">
-              <xsl:value-of select="mods:displayForm" />
+              <xsl:choose>
+                <xsl:when test="mods:namePart[@type='family'] and mods:namePart[@type='given']">
+                  <xsl:value-of select="mods:namePart[@type='family']" />
+                  <tex>, </tex>
+                  <xsl:value-of select="mods:namePart[@type='given']" />
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:value-of select="mods:displayForm" />
+                </xsl:otherwise>
+              </xsl:choose>
             </xsl:when>
             <xsl:when test="position() = 4 and not(mods:etal)">
-              <xsl:text>&#160;</xsl:text><!-- add whitespace -->
               <em>et al</em>
             </xsl:when>
           </xsl:choose>
           <xsl:if test="not(position()=last()) and position() &lt; 4 and not(mods:etal)">
-            <xsl:text>, </xsl:text>
+            <xsl:text> / </xsl:text>
           </xsl:if>
           <xsl:if test="mods:etal">
-            <xsl:text>&#160;</xsl:text><!-- add whitespace -->
             <em>et al</em>
           </xsl:if>
         </xsl:for-each>
+        <xsl:text>: </xsl:text>
       </xsl:when>
     </xsl:choose>
-    <xsl:text>&#160;</xsl:text><!-- add whitespace -->
   </xsl:template>
 
   <xsl:template match="mods:mods" mode="identifierListModal">
@@ -275,12 +282,65 @@
       <xsl:apply-templates mode="mods.datePublished" select="." />
     </xsl:variable>
     <xsl:if test="string-length($dateIssued) &gt; 0">
-      <xsl:value-of select="'('" />
       <xsl:call-template name="formatISODate">
         <xsl:with-param name="date" select="$dateIssued" />
         <xsl:with-param name="format" select="i18n:translate('metaData.dateYear')" />
       </xsl:call-template>
-      <xsl:value-of select="'). '" />
+    </xsl:if>
+  </xsl:template>
+
+  <xsl:template match="mods:mods" mode="originInfo">
+    <xsl:variable name="place" select="mods:originInfo/mods:place/mods:placeTerm" />
+    <xsl:variable name="edition" select="mods:originInfo/mods:edition" />
+    <xsl:variable name="year">
+      <xsl:apply-templates select="." mode="year" />
+    </xsl:variable>
+    <xsl:variable name="publisher" select="mods:originInfo/mods:publisher" />
+    <xsl:if test="string-length($place) &gt; 0">
+      <xsl:value-of select="$place" />
+      <xsl:text>&#160;</xsl:text><!-- add whitespace -->
+    </xsl:if>
+    <xsl:if test="string-length($edition) &gt; 0">
+      <sup>
+        <xsl:value-of select="$edition" />
+      </sup>
+      <xsl:text>&#160;</xsl:text><!-- add whitespace -->
+    </xsl:if>
+    <xsl:if test="string-length($year) &gt; 0">
+      <xsl:value-of select="$year" />
+    </xsl:if>
+    <xsl:if test="string-length($place) &gt; 0 or string-length($edition) &gt; 0 or string-length($year) &gt; 0">
+      <xsl:text>. </xsl:text>
+    </xsl:if>
+    <xsl:if test="string-length($publisher) &gt; 0">
+      <xsl:value-of select="$publisher" />
+      <xsl:text>. </xsl:text>
+    </xsl:if>
+  </xsl:template>
+
+  <xsl:template match="mods:mods" mode="issn">
+    <xsl:variable name="issn" select="mods:identifier[@type='issn']" />
+    <xsl:if test="string-length($issn) &gt; 0">
+      <xsl:text>ISSN: </xsl:text>
+      <xsl:value-of select="$issn"/>
+      <xsl:value-of select="'.'" />
+    </xsl:if>
+  </xsl:template>
+
+  <xsl:template match="mods:mods" mode="title">
+    <xsl:variable name="title">
+      <xsl:apply-templates select="." mode="mods.title" />
+    </xsl:variable>
+    <xsl:variable name="subtitle">
+      <xsl:apply-templates select="." mode="mods.subtitle" />
+    </xsl:variable>
+    <xsl:if test="string-length($title) &gt; 0">
+      <xsl:value-of select="$title"/>
+      <xsl:text>. </xsl:text>
+    </xsl:if>
+    <xsl:if test="string-length($subtitle) &gt; 0">
+      <xsl:value-of select="$subtitle"/>
+      <xsl:text>. </xsl:text>
     </xsl:if>
   </xsl:template>
 
