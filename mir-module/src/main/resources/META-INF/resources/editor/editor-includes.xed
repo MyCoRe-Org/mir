@@ -1279,7 +1279,7 @@
       <div class="col-md-6">
         <div class="form-inline">
           <xed:bind xpath="mods:part/@order">
-            <input type="text" size="20" class="form-control form-control-inline" />
+            <input type="text" size="20" class="form-control form-control-inline {$xed-validation-marker}" />
           </xed:bind>
         </div>
       </div>
@@ -2075,6 +2075,7 @@
     <xed:validate xpath="//mods:url|//mods:abstract/@xlink:href" matches="(ftp|http|https)://[\w\d.]+\S*" i18n="mir.validation.url" display="global" />
     <xed:validate xpath="//mods:*[@encoding='w3cdtf']" matches="\d{4}(\-\d{2}(\-\d{2})?)?" type="datetime" format="yyyy;yyyy-MM;yyyy-MM-dd" i18n="mir.validation.date"
       display="global" />
+    <xed:validate xpath="//mods:part/@order" type="integer" display="global" i18n="mir.validation.order" />
   </xed:template>
 
   <xed:template id="cleanup-rules">
