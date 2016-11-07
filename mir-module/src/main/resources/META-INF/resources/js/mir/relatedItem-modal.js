@@ -23,7 +23,7 @@ $(document).ready(function() {
     }
   });
 
-  $("body").on("change", "select[name*='mods:relatedItem/@type']", function() {
+  $("body").on("change", "select[name*='/@type']", function() {
     checkHost();
   });
 
@@ -32,12 +32,23 @@ $(document).ready(function() {
   });
 
   function checkHost() {
+    var hostSelect = $("select[name*='/@type'] option[value='host']:selected").closest(".mir-related-item-search");
     $(".mir-related-item-search").each(function( index ) {
       if($(this).find("input[name*='mods:relatedItem/@xlink:href']").val() != "" && $(this).find("select[name*='mods:relatedItem/@type']").val() == "host") {
         $(this).find(".mir-relatedItem-select").prop('disabled', true);
       }
       else {
         $(this).find(".mir-relatedItem-select").prop('disabled', false);
+      }
+      if (hostSelect.length > 0 && $(this)[0] === hostSelect[0]) {
+        $(this).find("select[name*='/@type'] option[value='host']").prop('disabled', false);
+      }
+      else {
+        $(this).find("select[name*='/@type'] option[value='host']").prop('disabled', true);
+        $(this).find("select[name*='/@type'] option[value='host']:selected").next().attr('selected', 'selected');
+      }
+      if (hostSelect.length == 0) {
+        $(this).find("select[name*='/@type'] option[value='host']").prop('disabled', false);
       }
     });
   }
@@ -74,7 +85,7 @@ $(document).ready(function() {
           $("#modalFrame").find(".list-group-item").addClass("active");
         }, 300);
         loadPublikation(rightContent, "receive", input.val(), "");
-        $("#modalFrame-send").removeAttr("disabled");
+        activateSendButton(input.val());
       }
 
 
@@ -93,7 +104,7 @@ $(document).ready(function() {
       $("#main_right_content").css("padding-left", "10px");
       //create pager
       $("#modalFrame-body").after("<nav class='col-md-4' style='clear: both'><ul class='pager'><li id='first' class='previous disabled'><a data='0'>First</a></li><li id='previous' class='previous disabled'><a>Previous</a></li><li class='next disabled'><a>Next</a></li></ul></nav>");
-      $("#modalFrame-cancel").before("<div class='col-md-4'><select class='form-control'><option value=''>Sortieren nach Typ:</option></select></div>");
+      $(".already-linked").before("<div class='col-md-4 type-select'><select class='form-control'><option value=''>Sortieren nach Typ:</option></select></div>");
       $("li a").css("cursor", "pointer");
       $("#modal-searchInput").removeAttr("hidden");
       $("#modal-searchInput > input").attr("autocomplete", "off");
@@ -181,7 +192,7 @@ $(document).ready(function() {
         $(".list-group-item").removeClass("active");
         loadPublikation(rightContent, "receive", $(this).attr("value"), "");
         $(this).addClass("active");
-        $("#modalFrame-send").removeAttr("disabled");
+        activateSendButton($(this).attr("value"));
       }
     });
 
@@ -197,7 +208,7 @@ $(document).ready(function() {
       $("#modalFrame-body").empty();
       $("nav.col-md-4").remove();
       $("#modal-searchInput > input").val("");
-      $(".modal-footer div.col-md-4").remove();
+      $(".modal-footer div.type-select").remove();
     });
 
     $("#modal-searchInput > input").typeahead({
@@ -218,7 +229,7 @@ $(document).ready(function() {
           $("#modalFrame").find(".list-group-item").addClass("active");
         }, 300);
         loadPublikation(rightContent, "receive", item.id, "");
-        $("#modalFrame-send").removeAttr("disabled");
+        activateSendButton(item.id);
         return item;
       },
       items: 10,
@@ -317,6 +328,17 @@ $(document).ready(function() {
         });
       }
       return $(lang).attr("text");
+    }
+
+    function activateSendButton(id) {
+      if(input.val() != id && $("input[name*='/@xlink:href'][value='" + id + "']").length > 0) {
+        $("#modalFrame-send").attr("disabled", "");
+        $(".already-linked").removeClass("hidden");
+      }
+      else {
+        $("#modalFrame-send").removeAttr("disabled");
+        $(".already-linked").addClass("hidden");
+      }
     }
   }
 });

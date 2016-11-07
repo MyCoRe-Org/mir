@@ -1787,6 +1787,7 @@
           </div>
           <div id="modalFrame-body" class="modal-body" style="padding-bottom: 0px" />
           <div class="modal-footer" style="clear: both">
+            <div class="col-md-4 alert alert-warning already-linked hidden"><xed:output i18n="mir.relatedItem.alreadyLinked" /></div>
             <button id="modalFrame-cancel" type="button" class="btn btn-danger" data-dismiss="modal"></button>
             <button id="modalFrame-send" type="button" class="btn btn-primary"></button>
           </div>
