@@ -4,7 +4,7 @@
   exclude-result-prefixes="mods xlink"
 >
   <xsl:import href="xslImport:solr-document:mir-solr.xsl" />
-  <xsl:include href="mods-utils.xsl"/>
+  <xsl:include href="mods-utils.xsl" />
 
   <xsl:template match="mycoreobject[contains(@ID,'_mods_')]">
     <xsl:variable name="status" select="mcrxml:isInCategory(@ID,'state:published')" />
@@ -103,7 +103,7 @@
     <xsl:for-each select=".//mods:name[@type='personal']">
       <!-- person index name entry -->
       <xsl:variable name="pindexname">
-        <xsl:apply-templates select="." mode="nameString"/>
+        <xsl:apply-templates select="." mode="nameString" />
         <xsl:variable name="nameIds">
           <xsl:call-template name="getNameIdentifiers">
             <xsl:with-param name="entity" select="." />
@@ -138,7 +138,7 @@
     </xsl:for-each>
     <xsl:for-each select="mods:name[@type='personal' or 'corporate']">
       <field name="mods.nameByRole.{@type}.{mods:role/mods:roleTerm[@type='code']}">
-        <xsl:apply-templates select="." mode="nameString"/>
+        <xsl:apply-templates select="." mode="nameString" />
         <xsl:variable name="nameIds">
           <xsl:call-template name="getNameIdentifiers">
             <xsl:with-param name="entity" select="." />
@@ -194,6 +194,11 @@
               <xsl:value-of select="normalize-space(mods:part/mods:detail[@type='volume'])" />
             </xsl:otherwise>
           </xsl:choose>
+        </field>
+      </xsl:if>
+      <xsl:if test="@type='series' and mods:part/mods:detail[@type='volume']">
+        <field name="mods.part">
+          <xsl:value-of select="normalize-space(mods:part/mods:detail[@type='volume']/mods:number)" />
         </field>
       </xsl:if>
     </xsl:for-each>
