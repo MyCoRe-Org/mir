@@ -199,11 +199,11 @@
             <xsl:value-of select="i18n:translate('basket.export','ISI')" />
           </a>
         </li>
-        <!-- li>
-          <a href="{$ServletsBaseURL}MCRExportServlet{$HttpSession}?basket={@type}&amp;transformer=wordbib">
-            <xsl:value-of select="i18n:translate('basket.export','Word 2007 bibliography')" />
+        <li>
+          <a href="{$ServletsBaseURL}MCRExportServlet{$HttpSession}?basket={@type}&amp;transformer=mods2csv">
+            <xsl:value-of select="i18n:translate('basket.export','CSV')" />
           </a>
-        </li -->
+        </li>
       </ul>
     </div>
     <a href="{$ServletsBaseURL}MCRBasketServlet{$HttpSession}?type={@type}&amp;action=clear&amp;redirect=referer" class="btn btn-danger btn-sm">

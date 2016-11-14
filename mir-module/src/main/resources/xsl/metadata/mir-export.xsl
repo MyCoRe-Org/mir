@@ -29,11 +29,11 @@
         <xsl:with-param name="transformer" select="'pica3'"/>
         <xsl:with-param name="linkText" select="'PICA'"/>
       </xsl:call-template>
-      <!-- xsl:call-template name="printSeperator" />
+      <xsl:call-template name="printSeperator" />
       <xsl:call-template name="exportLink">
-        <xsl:with-param name="transformer" select="'wordbib'"/>
-        <xsl:with-param name="linkText" select="'MS Word bibliography'"/>
-      </xsl:call-template -->
+        <xsl:with-param name="transformer" select="'mods2csv'"/>
+        <xsl:with-param name="linkText" select="'CSV'"/>
+      </xsl:call-template>
       <xsl:call-template name="printSeperator" />
       <xsl:call-template name="exportLink">
         <xsl:with-param name="transformer" select="'mods2dc'"/>
