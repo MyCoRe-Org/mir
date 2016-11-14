@@ -484,10 +484,13 @@
                   <xsl:value-of select="$mods-type-i18n" />
                 </span>
               </div>
-              <xsl:if test="str[@name='mods.dateIssued']">
+              <xsl:if test="str[@name='mods.dateIssued'] or str[@name='mods.dateIssued.host']">
                 <div class="hit_date">
                   <xsl:variable name="date">
-                    <xsl:value-of select="str[@name='mods.dateIssued']" />
+                    <xsl:choose>
+                      <xsl:when test="str[@name='mods.dateIssued']"><xsl:value-of select="str[@name='mods.dateIssued']" /></xsl:when>
+                      <xsl:otherwise><xsl:value-of select="str[@name='mods.dateIssued.host']" /></xsl:otherwise>
+                    </xsl:choose>
                   </xsl:variable>
                   <span class="label label-primary">
                     <xsl:value-of select="$date" />
@@ -648,7 +651,12 @@
 <!-- hit publisher -->
           <xsl:if test="arr[@name='mods.publisher']">
             <div class="hit_pub_name">
-              <xsl:variable name="date" select="str[@name='mods.dateIssued']" />
+              <xsl:variable name="date">
+                <xsl:choose>
+                  <xsl:when test="str[@name='mods.dateIssued']"><xsl:value-of select="str[@name='mods.dateIssued']" /></xsl:when>
+                  <xsl:otherwise><xsl:value-of select="str[@name='mods.dateIssued.host']" /></xsl:otherwise>
+                </xsl:choose>
+              </xsl:variable>
               <xsl:variable name="place" select="arr[@name='mods.place']/str" />
               <span class="label_publisher">
                 <xsl:choose>

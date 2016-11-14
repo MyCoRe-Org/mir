@@ -23,7 +23,10 @@
     <!-- badges -->
     <div id="mir-abstract-badges">
       <xsl:variable name="dateIssued">
-        <xsl:apply-templates mode="mods.datePublished" select="$mods" />
+        <xsl:choose>
+          <xsl:when test="$mods/mods:originInfo[not(@eventType) or @eventType='publication']/mods:dateIssued"><xsl:apply-templates mode="mods.datePublished" select="$mods/mods:originInfo[not(@eventType) or @eventType='publication']/mods:dateIssued" /></xsl:when>
+          <xsl:when test="$mods/mods:relatedItem/mods:originInfo[not(@eventType) or @eventType='publication']/mods:dateIssued"><xsl:apply-templates mode="mods.datePublished" select="$mods/mods:relatedItem/mods:originInfo[not(@eventType) or @eventType='publication']/mods:dateIssued" /></xsl:when>
+        </xsl:choose>
       </xsl:variable>
 
         <!-- TODO: Update badges -->
@@ -269,11 +272,11 @@
     <xsl:param name="label"/>
 
     <xsl:variable name="hitsSort" xmlns:encoder="xalan://java.net.URLEncoder"
-                  select="document(concat('solr:q=',encoder:encode(concat($query, ' +mods.part.order.',  mycoreobject/@ID, ':[* TO *]')), '&amp;rows=1000&amp;sort=mods.dateIssued desc,mods.part desc,mods.title.main desc'))" />
+                  select="document(concat('solr:q=',encoder:encode(concat($query, ' +mods.part.order.',  mycoreobject/@ID, ':[* TO *]')), '&amp;rows=1000&amp;sort=mods.dateIssued desc, mods.dateIssued.host desc, mods.part desc, mods.title.main desc'))" />
     <xsl:variable name="hitsSortList" xmlns:encoder="xalan://java.net.URLEncoder"
-                  select="document(concat('solr:q=',encoder:encode($query), '&amp;rows=1000&amp;sort=mods.part.order.', mycoreobject/@ID, ' desc,mods.dateIssued desc,mods.part desc,mods.title.main desc'))" />
+                  select="document(concat('solr:q=',encoder:encode($query), '&amp;rows=1000&amp;sort=mods.part.order.', mycoreobject/@ID, ' desc,mods.dateIssued desc, mods.dateIssued.host desc, mods.part desc, mods.title.main desc'))" />
     <xsl:variable name="hits" xmlns:encoder="xalan://java.net.URLEncoder"
-                  select="document(concat('solr:q=',encoder:encode($query), '&amp;rows=1000&amp;sort=mods.dateIssued desc,mods.part desc,mods.title.main desc&amp;group=true&amp;group.limit=100&amp;group.field=mods.yearIssued'))/response/lst[@name='grouped']/lst[@name='mods.yearIssued']" />
+                  select="document(concat('solr:q=',encoder:encode($query), '&amp;rows=1000&amp;sort=mods.dateIssued desc, mods.dateIssued.host desc, mods.part desc, mods.title.main desc&amp;group=true&amp;group.limit=100&amp;group.field=mods.yearIssued'))/response/lst[@name='grouped']/lst[@name='mods.yearIssued']" />
     <xsl:choose>
       <xsl:when test="$hitsSort/response/result/@numFound &gt; 0">
         <xsl:call-template name="listSortedRelatedItems">

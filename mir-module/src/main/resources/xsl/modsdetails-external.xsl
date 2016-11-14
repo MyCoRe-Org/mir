@@ -791,11 +791,14 @@
               <xsl:value-of select="mcrxsl:getDisplayName('mir_genres',$mods-type)" />
             </span>
           </div>
-          <xsl:if test="mods:originInfo[not(@eventType) or @eventType='publication']/mods:dateIssued">
+          <xsl:if test="mods:originInfo[not(@eventType) or @eventType='publication']/mods:dateIssued or mods:relatedItem/mods:originInfo[not(@eventType) or @eventType='publication']/mods:dateIssued">
             <div class="hit_date">
               <span class="label label-primary">
                 <xsl:variable name="dateIssued">
-                  <xsl:apply-templates mode="mods.datePublished" select="mods:originInfo[not(@eventType) or @eventType='publication']/mods:dateIssued" />
+                  <xsl:choose>
+                    <xsl:when test="mods:originInfo[not(@eventType) or @eventType='publication']/mods:dateIssued"><xsl:apply-templates mode="mods.datePublished" select="mods:originInfo[not(@eventType) or @eventType='publication']/mods:dateIssued" /></xsl:when>
+                    <xsl:otherwise><xsl:apply-templates mode="mods.datePublished" select="mods:relatedItem/mods:originInfo[not(@eventType) or @eventType='publication']/mods:dateIssued" /></xsl:otherwise>
+                  </xsl:choose>
                 </xsl:variable>
                 <xsl:variable name="format">
                   <xsl:choose>

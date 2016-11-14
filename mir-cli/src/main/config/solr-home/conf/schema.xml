@@ -199,6 +199,7 @@
     <field name="mods.abstract" type="text_de" multiValued="true" />
     <field name="mods.abstract.result" type="text_de" indexed="false" />
     <field name="mods.dateIssued" type="string"/>
+    <field name="mods.dateIssued.host" type="string"/>
     <field name="mods.yearIssued" type="int"/>
     <field name="mods.publisher" type="text_de" multiValued="true"/>
     <field name="mods.place" type="text_de" multiValued="true"/>
