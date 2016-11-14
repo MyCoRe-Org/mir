@@ -26,7 +26,7 @@
           <xsl:value-of select="$PageTitle" />
         </title>
         <xsl:comment>
-          Mobile viewport optimisation
+          Mobile viewport optimization
         </xsl:comment>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link href="{$WebApplicationBaseURL}assets/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
