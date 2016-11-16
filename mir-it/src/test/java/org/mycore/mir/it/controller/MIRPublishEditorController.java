@@ -6,6 +6,7 @@ import org.mycore.common.selenium.util.MCRBy;
 import org.mycore.mir.it.model.MIRGenre;
 import org.mycore.mir.it.model.MIRHost;
 import org.openqa.selenium.By;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 
@@ -43,7 +44,13 @@ public class MIRPublishEditorController {
     }
 
     public boolean isPublishOpened() {
-        return driver.getTitle().equalsIgnoreCase("Publizieren");
+        try {
+            driver.waitAndFindElement(By.xpath("//title[contains(text(),'Publizieren')]"));
+        }
+        catch (TimeoutException e) {
+            return false;
+        }
+        return true;
     }
 
 }

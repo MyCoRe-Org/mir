@@ -26,6 +26,8 @@ import org.mycore.mir.it.model.MIRTitleInfo;
 import org.mycore.mir.it.model.MIRTitleType;
 import org.openqa.selenium.By;
 import org.openqa.selenium.OutputType;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class MIRUploadITCase extends MIRITBase {
 
@@ -51,6 +53,7 @@ public class MIRUploadITCase extends MIRITBase {
 
     @Test
     public final void testUpload() throws IOException, InterruptedException {
+        driver.waitAndFindElement(By.xpath("//button[contains(@name,'_xed_submit_servlet')]"));
         editorController.setGenres(Stream.of(MIRGenre.article, MIRGenre.collection).collect(Collectors.toList()));
         editorController.setTitleInfo(Stream.of(
                 new MIRTitleInfo("Der", MIRLanguage.german, MIRTitleType.mainTitle, MIRTestData.TITLE, MIRTestData.SUB_TITLE),
@@ -61,8 +64,13 @@ public class MIRUploadITCase extends MIRITBase {
         editorController.save();
         driver.waitAndFindElement(MCRBy.partialText(MIRTestData.SAVE_SUCCESS));
 
-        getDriver().waitAndFindElement(MCRBy.partialLinkText("Aktionen")).click();
-        getDriver().waitAndFindElement(MCRBy.partialLinkText("Hinzufügen eines Datenobjektes")).click();
+        WebDriverWait wait = new WebDriverWait(driver, 5);
+        wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(MCRBy.partialLinkText("Aktionen")));
+        wait.until(ExpectedConditions.elementToBeClickable(MCRBy.partialLinkText("Aktionen")));
+        driver.waitAndFindElement(MCRBy.partialLinkText("Aktionen")).click();
+        wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(MCRBy.partialLinkText("Hinzufügen eines Datenobjektes")));
+        wait.until(ExpectedConditions.elementToBeClickable(MCRBy.partialLinkText("Hinzufügen eines Datenobjektes")));
+        driver.waitAndFindElement(MCRBy.partialLinkText("Hinzufügen eines Datenobjektes")).click();
 
         File upload = File.createTempFile("upload", "mir_test.tiff");
 

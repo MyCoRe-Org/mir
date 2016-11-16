@@ -87,7 +87,7 @@ public class MIRUserController {
         driver.waitAndFindElement(By.linkText("Nutzer löschen")).click();
         driver.waitAndFindElement(By.cssSelector("input.btn.btn-danger")).click();
         assertEquals("Die Nutzerkennung wurde mitsamt allen Rollenzugehörigkeiten gelöscht.",
-            driver.waitAndFindElement(By.cssSelector("div.section.alert p")).getText());
+            driver.waitAndFindElement(By.cssSelector("div.section.alert-success p")).getText());
         driver.get(currentUrl);
     }
 
@@ -95,7 +95,7 @@ public class MIRUserController {
         // waits up to 30 seconds before throwing a TimeoutException or goes on if login is displayed and enabled
         driver.waitAndFindElement(By.id("loginURL")).click();
 
-        assertEquals("Anmelden mit lokaler Nutzerkennung", driver.getTitle());
+        driver.waitAndFindElement(By.xpath("//title[contains(text(),'Anmelden mit lokaler Nutzerkennung')]"));
         driver.findElement(By.name("uid")).clear();
         driver.findElement(By.name("uid")).sendKeys(user);
         driver.findElement(By.name("pwd")).clear();
@@ -114,7 +114,7 @@ public class MIRUserController {
     @Test
     public void goToStart() {
         driver.get(baseURL + "/content/index.xml");
-        TestCase.assertEquals("Title does not match", "Willkommen bei MIR!", driver.getTitle());
+        driver.waitAndFindElement(By.xpath("//title[contains(text(),'Willkommen bei MIR!')]"));
         assertFalse("Access to start page should not be restricted", driver.findElement(By.tagName("body")).getText()
                 .matches("^[\\s\\S]*Zugriff verweigert[\\s\\S]*$"));
     }
@@ -128,7 +128,7 @@ public class MIRUserController {
     }
 
     public void assertUserCreated(String user) {
-        assertEquals("Nutzerdaten anzeigen:" + user, driver.getTitle());
+        driver.waitAndFindElement(By.xpath("//title[contains(text(),'Nutzerdaten anzeigen:" + user + "')]"));
     }
 
     public void assertValidationErrorVisible() {

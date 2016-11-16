@@ -8,7 +8,6 @@ import org.mycore.common.selenium.util.MCRBy;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.TimeoutException;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -21,10 +20,8 @@ public abstract class MIREditorController extends MIRTestController {
     }
 
     protected void setInputText(String childElementName, String text) {
-        WebElement webElement = driver.waitAndFindElement(By.xpath(".//input[contains(@name,'" + childElementName + "')]"));
-        webElement.clear();
-        webElement.sendKeys(text);
-
+        driver.waitAndFindElement(By.xpath(".//input[contains(@name,'" + childElementName + "')]")).clear();
+        driver.waitAndFindElement(By.xpath(".//input[contains(@name,'" + childElementName + "')]")).sendKeys(text);
     }
 
     protected void setTextAreaText(String childElementName, String text) {
@@ -33,6 +30,11 @@ public abstract class MIREditorController extends MIRTestController {
 
     protected void clickRepeater(String field) {
         driver.waitAndFindElement(By.xpath(".//button[contains(@name, '" + field + "') and contains(@name, '_xed_submit_insert')]")).click();
+    }
+
+    protected void clickRepeaterAndWait(String field, String fieldToWaitFor) {
+        clickRepeater(field);
+        driver.waitAndFindElement(By.xpath(fieldToWaitFor));
     }
 
     protected boolean hasInputTextError(String childElementName) {

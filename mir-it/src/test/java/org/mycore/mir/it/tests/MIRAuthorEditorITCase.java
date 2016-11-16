@@ -23,6 +23,7 @@ import org.mycore.mir.it.model.MIRInstitutes;
 import org.mycore.mir.it.model.MIRLanguage;
 import org.mycore.mir.it.model.MIRLicense;
 import org.mycore.mir.it.model.MIRTypeOfResource;
+import org.openqa.selenium.By;
 
 import static org.mycore.mir.it.tests.MIRTestData.TITLE_ABBR;
 
@@ -49,6 +50,7 @@ public class MIRAuthorEditorITCase extends MIRITBase {
         publishEditorController.open(() -> Assert.assertTrue(publishEditorController.isPublishOpened()));
         publishEditorController.selectType(MIRGenre.article, null);
         publishEditorController.submit();
+        driver.waitAndFindElement(By.xpath("//button[contains(@name,'_xed_submit_servlet')]"));
         editorController.save();
 
         assertBaseValidation();

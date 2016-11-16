@@ -23,6 +23,7 @@ import org.mycore.mir.it.model.MIRLicense;
 import org.mycore.mir.it.model.MIRTitleInfo;
 import org.mycore.mir.it.model.MIRTitleType;
 import org.mycore.mir.it.model.MIRTypeOfResource;
+import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 
 public class MIRAdminEditorITCase extends MIRITBase {
@@ -44,6 +45,7 @@ public class MIRAdminEditorITCase extends MIRITBase {
 
    @Test
     public void testBaseValidation() {
+        driver.waitAndFindElement(By.xpath("//button[contains(@name,'_xed_submit_servlet')]"));
         editorController.save();
         assertBaseValidation();
         Assert.assertTrue("Genre validation should be visible!", editorController.isGenreValidationMessageVisible());
@@ -51,6 +53,7 @@ public class MIRAdminEditorITCase extends MIRITBase {
 
    @Test
     public void testFullDocument() throws InterruptedException {
+        driver.waitAndFindElement(By.xpath("//button[contains(@name,'_xed_submit_servlet')]"));
         editorController.setGenres(Stream.of(MIRGenre.article, MIRGenre.collection).collect(Collectors.toList()));
         editorController.setTitleInfo(Stream.of(
                 new MIRTitleInfo("Der", MIRLanguage.german, MIRTitleType.mainTitle, MIRTestData.TITLE, MIRTestData.SUB_TITLE),
@@ -123,7 +126,7 @@ public class MIRAdminEditorITCase extends MIRITBase {
      */
     public void searchByTitle() {
         simpleSearchController.searchBy(MIRTestData.TITLE, null, null, null, null);
-        Assert.assertEquals("Suchergebnisse", driver.getTitle());
+        driver.waitAndFindElement(By.xpath("//title[contains(text(),'Suchergebnisse')]"));
 
         try {
             String noDocumentsFoundText = "Keine Dokumente gefunden";
