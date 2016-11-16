@@ -361,7 +361,7 @@
         <xsl:apply-templates select="." mode="urn" />
       </xsl:variable>
       <xsl:if test="string-length($urn) &gt; 0">
-        <urn id="@xlink:href">
+        <urn id="{@xlink:href}">
           <xsl:value-of select="$urn" />
         </urn>
       </xsl:if>
