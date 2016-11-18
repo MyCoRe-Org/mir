@@ -18,9 +18,7 @@ import org.mycore.mir.it.model.MIRLicense;
 import org.mycore.mir.it.model.MIRTitleInfo;
 import org.mycore.mir.it.model.MIRTypeOfResource;
 import org.mycore.mir.it.tests.MIRTestData;
-import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.Select;
 
 public class MIRModsEditorController extends MIREditorController {
@@ -34,8 +32,9 @@ public class MIRModsEditorController extends MIREditorController {
     public void setTitleInfo(List<MIRTitleInfo> titleInfos) {
         if (titleInfos.size() > 0) {
             if (titleInfos.size() > 1) {
-                IntStream.range(1, titleInfos.size()).forEach((n) -> clickRepeater("mods:titleInfo"));
-                driver.waitAndFindElement(By.xpath(".//textarea[contains(@name, '" + "mods:titleInfo[" + titleInfos.size() + "]/mods:title" + "')]"));
+                IntStream.range(1, titleInfos.size()).forEach((n) ->
+                        clickRepeaterAndWait("mods:titleInfo",
+                                ".//textarea[contains(@name, 'mods:titleInfo[" + (n+1) + "]/mods:title')]"));
             }
 
             IntStream.range(0, titleInfos.size()).forEach(i -> {
@@ -126,8 +125,8 @@ public class MIRModsEditorController extends MIREditorController {
     public void setAbstracts(List<MIRAbstract> abstracts) {
         if (abstracts.size() > 0) {
             if (abstracts.size() > 1) {
-                IntStream.range(1, abstracts.size()).forEach((n) -> clickRepeater("mods:abstract"));
-                driver.waitAndFindElement(By.xpath(".//input[contains(@name, '" + "mods:abstract[" + abstracts.size() + "]" + "')]"));
+                IntStream.range(1, abstracts.size()).forEach((n) ->
+                        clickRepeaterAndWait("mods:abstract",".//input[contains(@name, 'mods:abstract[" + (n+1) + "]')]"));
             }
 
             IntStream.range(0, abstracts.size()).forEach(i -> {
@@ -151,7 +150,9 @@ public class MIRModsEditorController extends MIREditorController {
     public void setTypeOfResources(List<MIRTypeOfResource> typeOfResources){
         if (typeOfResources.size() > 0) {
             if (typeOfResources.size() > 1) {
-                IntStream.range(1, typeOfResources.size()).forEach((n) -> clickRepeater("mods:typeOfResource"));
+                IntStream.range(1, typeOfResources.size()).forEach((n) ->
+                        clickRepeaterAndWait("mods:typeOfResource",
+                                ".//select[contains(@name, 'mods:typeOfResource[" + (n+1) + "]/@mcr:categId')]"));
             }
 
             IntStream.range(0, typeOfResources.size()).forEach(i -> {
@@ -173,7 +174,9 @@ public class MIRModsEditorController extends MIREditorController {
     public void setGenres(List<MIRGenre> genres) {
         if (genres.size() > 0) {
             if (genres.size() > 1) {
-                IntStream.range(1, genres.size()).forEach((n) -> clickRepeaterAndWait("mods:genre", ".//select[contains(@name, 'mods:genre[" + (n+1) + "]/@valueURIxEditor')]"));
+                IntStream.range(1, genres.size()).forEach((n) ->
+                        clickRepeaterAndWait("mods:genre",
+                                ".//select[contains(@name, 'mods:genre[" + (n+1) + "]/@valueURIxEditor')]"));
             }
 
             IntStream.range(0, genres.size()).forEach(i -> {
@@ -188,8 +191,9 @@ public class MIRModsEditorController extends MIREditorController {
     public void setLanguages(List<MIRLanguage> langs) {
         if (langs.size() > 0) {
             if (langs.size() > 1) {
-                IntStream.range(1, langs.size()).forEach((n) -> clickRepeater("mods:language"));
-                driver.waitAndFindElement(By.xpath(".//select[contains(@name, '" + "mods:language[" + langs.size() + "]/mods:languageTerm" + "')]"));
+                IntStream.range(1, langs.size()).forEach((n) ->
+                        clickRepeaterAndWait("mods:language",
+                                ".//select[contains(@name, 'mods:language[" + (n+1) + "]/mods:languageTerm')]"));
             }
 
             IntStream.range(0, langs.size()).forEach(i -> {
@@ -212,7 +216,8 @@ public class MIRModsEditorController extends MIREditorController {
         if (typeIdentifierList.size() > 0) {
             if (typeIdentifierList.size() > (existing)) {
                 IntStream.range(1, typeIdentifierList.size()).forEach(n ->
-                        clickRepeaterAndWait("mods:identifier", ".//input[contains(@name, 'mods:identifier[" + (n+existing+nonRepeaterExisting) + "]')]"));
+                        clickRepeaterAndWait("mods:identifier",
+                                ".//input[contains(@name, 'mods:identifier[" + (n+existing+nonRepeaterExisting) + "]')]"));
             }
 
 
@@ -230,8 +235,9 @@ public class MIRModsEditorController extends MIREditorController {
     public void setTopics(List<String> topics) {
         if (topics.size() > 0) {
             if (topics.size() > 1) {
-                IntStream.range(1, topics.size()).forEach((n) -> clickRepeater("mods:topicSimple"));
-                driver.waitAndFindElement(By.xpath(".//input[contains(@name, '" + "mods:subject/mods:topicSimple[" + topics.size() + "]" + "')]"));
+                IntStream.range(1, topics.size()).forEach((n) ->
+                        clickRepeaterAndWait("mods:topicSimple",
+                                ".//input[contains(@name, 'mods:subject/mods:topicSimple[" + (n+1) + "]')]"));
             }
 
             IntStream.range(0, topics.size()).forEach(i -> {
@@ -273,7 +279,9 @@ public class MIRModsEditorController extends MIREditorController {
     public void setAuthors(List<String> names, int fieldOffset) {
         if (names.size() > 0) {
             if (names.size() > 1) {
-                IntStream.range(1, names.size()).forEach((n) -> clickRepeaterAndWait("mods:name", ".//input[contains(@name, 'mods:name[" + (n+1+fieldOffset) + "]/mods:displayForm')]"));
+                IntStream.range(1, names.size()).forEach((n) ->
+                        clickRepeaterAndWait("mods:name",
+                                ".//input[contains(@name, 'mods:name[" + (n+1+fieldOffset) + "]/mods:displayForm')]"));
             }
 
             IntStream.range(0, names.size()).forEach(i -> {
@@ -317,8 +325,7 @@ public class MIRModsEditorController extends MIREditorController {
         if (notes.size() > 0) {
             if (notes.size() > 1) {
                 IntStream.range(1, notes.size()).forEach(n ->
-                        clickRepeater("mods:note"));
-                driver.waitAndFindElement(By.xpath(".//textarea[contains(@name, '" + "mods:note[" + notes.size() + "]" + "')]"));
+                        clickRepeaterAndWait("mods:note", ".//textarea[contains(@name, 'mods:note[" + (n+1) + "]')]"));
             }
 
             IntStream.range(0, notes.size()).forEach(i -> {
@@ -387,8 +394,8 @@ public class MIRModsEditorController extends MIREditorController {
     public void setLinks(List<String> links) {
         if (links.size() > 0) {
             if (links.size() > 1) {
-                IntStream.range(1, links.size()).forEach((n) -> clickRepeater("mods:url"));
-                driver.waitAndFindElement(By.xpath(".//input[contains(@name, '" + "mods:location/mods:url[" + links.size() + "]" + "')]"));
+                IntStream.range(1, links.size()).forEach((n) -> clickRepeaterAndWait("mods:url",
+                        ".//input[contains(@name, 'mods:location/mods:url[" + (n+1) + "]')]"));
             }
 
             IntStream.range(0, links.size()).forEach(i -> {

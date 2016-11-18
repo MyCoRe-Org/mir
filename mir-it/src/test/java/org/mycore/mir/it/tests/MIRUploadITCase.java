@@ -27,7 +27,6 @@ import org.mycore.mir.it.model.MIRTitleType;
 import org.openqa.selenium.By;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class MIRUploadITCase extends MIRITBase {
 
@@ -53,7 +52,7 @@ public class MIRUploadITCase extends MIRITBase {
 
     @Test
     public final void testUpload() throws IOException, InterruptedException {
-        driver.waitAndFindElement(By.xpath("//button[contains(@name,'_xed_submit_servlet')]"));
+        driver.waitUntilPageIsLoaded("MODS-Dokument erstellen");
         editorController.setGenres(Stream.of(MIRGenre.article, MIRGenre.collection).collect(Collectors.toList()));
         editorController.setTitleInfo(Stream.of(
                 new MIRTitleInfo("Der", MIRLanguage.german, MIRTitleType.mainTitle, MIRTestData.TITLE, MIRTestData.SUB_TITLE),
@@ -62,15 +61,15 @@ public class MIRUploadITCase extends MIRITBase {
         editorController.setClassifications(Stream.of(MIRDNBClassification._004, MIRDNBClassification._010).collect(Collectors.toList()));
         editorController.setAccessConditions(MIRLicense.cc_by_40);
         editorController.save();
-        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.SAVE_SUCCESS));
 
-        WebDriverWait wait = new WebDriverWait(driver, 5);
-        wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(MCRBy.partialLinkText("Aktionen")));
-        wait.until(ExpectedConditions.elementToBeClickable(MCRBy.partialLinkText("Aktionen")));
-        driver.waitAndFindElement(MCRBy.partialLinkText("Aktionen")).click();
-        wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(MCRBy.partialLinkText("Hinzufügen eines Datenobjektes")));
-        wait.until(ExpectedConditions.elementToBeClickable(MCRBy.partialLinkText("Hinzufügen eines Datenobjektes")));
-        driver.waitAndFindElement(MCRBy.partialLinkText("Hinzufügen eines Datenobjektes")).click();
+        driver.waitUntilPageIsLoaded(MIRTitleType.mainTitle.getValue());
+        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.SAVE_SUCCESS));
+        driver.waitAndFindElement(MCRBy.partialLinkText("Aktionen"),
+                ExpectedConditions::visibilityOfElementLocated,
+                ExpectedConditions::elementToBeClickable).click();
+        driver.waitAndFindElement(MCRBy.partialLinkText("Hinzufügen eines Datenobjektes"),
+                ExpectedConditions::visibilityOfElementLocated,
+                ExpectedConditions::elementToBeClickable).click();
 
         File upload = File.createTempFile("upload", "mir_test.tiff");
 
@@ -85,7 +84,6 @@ public class MIRUploadITCase extends MIRITBase {
             graphics.fillRect((i + 1) * 124, 124, 124, 124);
         }
         ImageIO.write(testImage, "tiff", upload);
-
 
         String path = upload.getAbsolutePath();
         getDriver().waitAndFindElement(By.xpath(".//input[@id='fileToUpload']")).sendKeys(path);

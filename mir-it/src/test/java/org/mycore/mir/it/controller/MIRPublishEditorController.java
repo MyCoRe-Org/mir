@@ -8,6 +8,7 @@ import org.mycore.mir.it.model.MIRHost;
 import org.openqa.selenium.By;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 
 public class MIRPublishEditorController {
@@ -45,7 +46,7 @@ public class MIRPublishEditorController {
 
     public boolean isPublishOpened() {
         try {
-            driver.waitAndFindElement(By.xpath("//title[contains(text(),'Publizieren')]"));
+            driver.waitFor(ExpectedConditions.titleContains("Publizieren"));
         }
         catch (TimeoutException e) {
             return false;

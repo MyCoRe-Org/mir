@@ -39,9 +39,8 @@ public abstract class MIREditorController extends MIRTestController {
 
     protected boolean hasInputTextError(String childElementName) {
         try {
-            WebDriverWait wait = new WebDriverWait(driver, 2);
             By selector = By.xpath(".//div[contains(@class, 'has-error')  and contains(@class, 'form-group')]//*[contains(@name,'" + childElementName + "')]");
-            wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(selector));
+            driver.waitAndFindElement(selector, ExpectedConditions::presenceOfAllElementsLocatedBy);
         } catch (NoSuchElementException|TimeoutException e) {
             LOGGER.error("Could not find red validation border !", e);
             return false;
@@ -51,8 +50,7 @@ public abstract class MIREditorController extends MIRTestController {
 
     protected boolean hasValidationText(String text) {
         try{
-            WebDriverWait driverWait = new WebDriverWait(driver, 2);
-            driverWait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(MCRBy.partialText(text)));
+            driver.waitAndFindElement(MCRBy.partialText(text), ExpectedConditions::presenceOfAllElementsLocatedBy);
         } catch (NoSuchElementException |TimeoutException e){
             LOGGER.error("Could not find validation text !", e);
             return false;

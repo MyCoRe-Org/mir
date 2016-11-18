@@ -9,10 +9,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mycore.common.selenium.util.MCRBy;
-import org.mycore.mir.it.controller.MIRModsEditorController;
-import org.mycore.mir.it.controller.MIRPublishEditorController;
-import org.mycore.mir.it.controller.MIRSimpleSearchController;
-import org.mycore.mir.it.controller.MIRUserController;
+import org.mycore.mir.it.controller.*;
 import org.mycore.mir.it.model.MIRAbstract;
 import org.mycore.mir.it.model.MIRAccess;
 import org.mycore.mir.it.model.MIRDNBClassification;
@@ -23,8 +20,8 @@ import org.mycore.mir.it.model.MIRLicense;
 import org.mycore.mir.it.model.MIRTitleInfo;
 import org.mycore.mir.it.model.MIRTitleType;
 import org.mycore.mir.it.model.MIRTypeOfResource;
-import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
 public class MIRAdminEditorITCase extends MIRITBase {
 
@@ -45,7 +42,7 @@ public class MIRAdminEditorITCase extends MIRITBase {
 
    @Test
     public void testBaseValidation() {
-        driver.waitAndFindElement(By.xpath("//button[contains(@name,'_xed_submit_servlet')]"));
+        driver.waitUntilPageIsLoaded("MODS-Dokument erstellen");
         editorController.save();
         assertBaseValidation();
         Assert.assertTrue("Genre validation should be visible!", editorController.isGenreValidationMessageVisible());
@@ -53,7 +50,7 @@ public class MIRAdminEditorITCase extends MIRITBase {
 
    @Test
     public void testFullDocument() throws InterruptedException {
-        driver.waitAndFindElement(By.xpath("//button[contains(@name,'_xed_submit_servlet')]"));
+        driver.waitUntilPageIsLoaded("MODS-Dokument erstellen");
         editorController.setGenres(Stream.of(MIRGenre.article, MIRGenre.collection).collect(Collectors.toList()));
         editorController.setTitleInfo(Stream.of(
                 new MIRTitleInfo("Der", MIRLanguage.german, MIRTitleType.mainTitle, MIRTestData.TITLE, MIRTestData.SUB_TITLE),
@@ -126,7 +123,7 @@ public class MIRAdminEditorITCase extends MIRITBase {
      */
     public void searchByTitle() {
         simpleSearchController.searchBy(MIRTestData.TITLE, null, null, null, null);
-        driver.waitAndFindElement(By.xpath("//title[contains(text(),'Suchergebnisse')]"));
+        driver.waitFor(ExpectedConditions.titleContains("Suchergebnisse"));
 
         try {
             String noDocumentsFoundText = "Keine Dokumente gefunden";

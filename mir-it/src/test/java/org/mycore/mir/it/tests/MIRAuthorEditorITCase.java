@@ -23,7 +23,6 @@ import org.mycore.mir.it.model.MIRInstitutes;
 import org.mycore.mir.it.model.MIRLanguage;
 import org.mycore.mir.it.model.MIRLicense;
 import org.mycore.mir.it.model.MIRTypeOfResource;
-import org.openqa.selenium.By;
 
 import static org.mycore.mir.it.tests.MIRTestData.TITLE_ABBR;
 
@@ -50,7 +49,7 @@ public class MIRAuthorEditorITCase extends MIRITBase {
         publishEditorController.open(() -> Assert.assertTrue(publishEditorController.isPublishOpened()));
         publishEditorController.selectType(MIRGenre.article, null);
         publishEditorController.submit();
-        driver.waitAndFindElement(By.xpath("//button[contains(@name,'_xed_submit_servlet')]"));
+        driver.waitUntilPageIsLoaded("MODS-Dokument erstellen");
         editorController.save();
 
         assertBaseValidation();
@@ -62,6 +61,7 @@ public class MIRAuthorEditorITCase extends MIRITBase {
         publishEditorController.selectType(MIRGenre.article, null);
         publishEditorController.submit();
 
+        driver.waitUntilPageIsLoaded("MODS-Dokument erstellen");
         refPublicationCommon(true);
 
         editorController.save();
@@ -77,6 +77,7 @@ public class MIRAuthorEditorITCase extends MIRITBase {
         publishEditorController.selectType(MIRGenre.report, null);
         publishEditorController.submit();
 
+        driver.waitUntilPageIsLoaded("MODS-Dokument erstellen");
         refReportCommon();
 
         editorController.save();
@@ -91,13 +92,14 @@ public class MIRAuthorEditorITCase extends MIRITBase {
         publishEditorController.selectType(MIRGenre.article, MIRHost.journal);
         publishEditorController.submit();
 
+        driver.waitUntilPageIsLoaded("MODS-Dokument erstellen");
         editorController.setTitle(MIRTestData.TITLE);
         editorController.setSubTitle(MIRTestData.SUB_TITLE);
         editorController.setAuthor(MIRTestData.AUTHOR);
         editorController.setLanguages(Stream.of(MIRLanguage.german).collect(Collectors.toList()));
+        editorController.setTopics(Stream.of(MIRTestData.TOPIC1, MIRTestData.TOPIC2).collect(Collectors.toList()));
 
         refSNDBRepeat();
-        editorController.setTopics(Stream.of(MIRTestData.TOPIC1, MIRTestData.TOPIC2).collect(Collectors.toList()));
         editorController.setAccessConditions(MIRLicense.cc_by_40);
         refAbstractSimple();
         refComment();
@@ -174,6 +176,7 @@ public class MIRAuthorEditorITCase extends MIRITBase {
         publishEditorController.selectType(MIRGenre.collection, null);
         publishEditorController.submit();
 
+        driver.waitUntilPageIsLoaded("MODS-Dokument erstellen");
         editorController.setTitle(MIRTestData.TITLE);
         editorController.setSubTitle(MIRTestData.SUB_TITLE);
         refAuthorRepeated();
@@ -194,6 +197,7 @@ public class MIRAuthorEditorITCase extends MIRITBase {
         publishEditorController.selectType(MIRGenre.proceedings, null);
         publishEditorController.submit();
 
+        driver.waitUntilPageIsLoaded("MODS-Dokument erstellen");
         editorController.setTitle(MIRTestData.TITLE);
         editorController.setSubTitle(MIRTestData.SUB_TITLE);
         refConference();
@@ -215,6 +219,7 @@ public class MIRAuthorEditorITCase extends MIRITBase {
         publishEditorController.selectType(MIRGenre.teaching_material, null);
         publishEditorController.submit();
 
+        driver.waitUntilPageIsLoaded("MODS-Dokument erstellen");
         editorController.setTitleAndTranslation(MIRTestData.TITLE, MIRTestData.SUB_TITLE, MIRTestData.EN_TITLE, MIRTestData.EN_SUB_TITLE, MIRLanguage.english);
         refAuthorRepeated();
         editorController.setDateCreated(MIRTestData.CREATION_DATE);
@@ -257,6 +262,7 @@ public class MIRAuthorEditorITCase extends MIRITBase {
         publishEditorController.selectType(MIRGenre.journal, null);
         publishEditorController.submit();
 
+        driver.waitUntilPageIsLoaded("MODS-Dokument erstellen");
         editorController.setTitle(MIRTestData.TITLE);
         refJournalCommon();
         editorController.save();

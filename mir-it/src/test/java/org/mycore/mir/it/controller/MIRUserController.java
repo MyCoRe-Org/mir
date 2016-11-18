@@ -3,8 +3,6 @@
  */
 package org.mycore.mir.it.controller;
 
-import junit.framework.TestCase;
-
 import org.junit.Test;
 import org.mycore.common.selenium.drivers.MCRWebdriverWrapper;
 import org.mycore.common.selenium.util.MCRBy;
@@ -12,6 +10,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 
 import com.ibm.icu.impl.Assert;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -95,7 +94,7 @@ public class MIRUserController {
         // waits up to 30 seconds before throwing a TimeoutException or goes on if login is displayed and enabled
         driver.waitAndFindElement(By.id("loginURL")).click();
 
-        driver.waitAndFindElement(By.xpath("//title[contains(text(),'Anmelden mit lokaler Nutzerkennung')]"));
+        driver.waitFor(ExpectedConditions.titleContains("Anmelden mit lokaler Nutzerkennung"));
         driver.findElement(By.name("uid")).clear();
         driver.findElement(By.name("uid")).sendKeys(user);
         driver.findElement(By.name("pwd")).clear();
@@ -114,7 +113,7 @@ public class MIRUserController {
     @Test
     public void goToStart() {
         driver.get(baseURL + "/content/index.xml");
-        driver.waitAndFindElement(By.xpath("//title[contains(text(),'Willkommen bei MIR!')]"));
+        driver.waitFor(ExpectedConditions.titleContains("Willkommen bei MIR!"));
         assertFalse("Access to start page should not be restricted", driver.findElement(By.tagName("body")).getText()
                 .matches("^[\\s\\S]*Zugriff verweigert[\\s\\S]*$"));
     }
@@ -128,7 +127,7 @@ public class MIRUserController {
     }
 
     public void assertUserCreated(String user) {
-        driver.waitAndFindElement(By.xpath("//title[contains(text(),'Nutzerdaten anzeigen:" + user + "')]"));
+        driver.waitFor(ExpectedConditions.titleContains("Nutzerdaten anzeigen:" + user));
     }
 
     public void assertValidationErrorVisible() {
