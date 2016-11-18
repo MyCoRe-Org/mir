@@ -331,7 +331,7 @@
           <xsl:attribute name="countryCode">DE</xsl:attribute>
           <xsl:element name="cc:universityOrInstitution">
             <xsl:element name="cc:name">
-              <xsl:value-of select="$publisher_name"/>  
+              <xsl:value-of select="$publisher_name"/>
             </xsl:element>
             <xsl:if test="string-length($publisher_place) &gt; 0">
               <xsl:element name="cc:place">
@@ -366,7 +366,7 @@
                 <xsl:attribute name="xsi:type">dcterms:W3CDTF</xsl:attribute>
                 <xsl:value-of select="./metadata/def.modsContainer/modsContainer/mods:mods/mods:originInfo[@eventType='creation']/mods:dateOther[@type='accepted'][@encoding='w3cdtf']" />
             </xsl:element>
-        </xsl:if> 
+        </xsl:if>
         <xsl:if test="./metadata/def.modsContainer/modsContainer/mods:mods/mods:originInfo[@eventType='publication']/mods:dateIssued[@encoding='w3cdtf']">
             <xsl:element name="dcterms:issued">
                 <xsl:attribute name="xsi:type">dcterms:W3CDTF</xsl:attribute>
@@ -517,7 +517,7 @@
                 </xsl:if>
             </xsl:for-each>
         </xsl:variable>
-        <xsl:if test="$thesis_level">
+        <xsl:if test="string-length($thesis_level) &gt; 0">
             <xsl:element name="thesis:degree">
                 <xsl:copy-of select="$thesis_level"/>
                 <xsl:if test="./metadata/def.modsContainer/modsContainer/mods:mods/mods:originInfo[@eventType='creation']/mods:publisher">
@@ -607,7 +607,7 @@
             </xsl:if>
         </xsl:for-each>
     </xsl:template>
-    
+
     <xsl:template name="frontpage">
         <xsl:element name="ddb:identifier">
             <xsl:attribute name="ddb:type">URL</xsl:attribute>
