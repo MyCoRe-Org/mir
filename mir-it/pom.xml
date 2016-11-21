@@ -3,7 +3,7 @@
   <parent>
     <groupId>org.mycore.mir</groupId>
     <artifactId>mir-parent</artifactId>
-    <version>2016.03-SNAPSHOT</version>
+    <version>2016.06.0.1</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
   <artifactId>mir-it</artifactId>
@@ -371,13 +371,13 @@
     <dependency>
       <groupId>org.mycore</groupId>
       <artifactId>selenium-utils</artifactId>
-      <version>0.4-SNAPSHOT</version>
+      <version>0.4</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.mycore</groupId>
       <artifactId>mycore-viewer</artifactId>
-      <version>0.10-SNAPSHOT</version>
+      <version>0.10</version>
       <scope>runtime</scope>
     </dependency>
   </dependencies>
