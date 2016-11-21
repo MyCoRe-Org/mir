@@ -65,10 +65,8 @@ public class MIRUploadITCase extends MIRITBase {
         driver.waitUntilPageIsLoaded(MIRTitleType.mainTitle.getValue());
         driver.waitAndFindElement(MCRBy.partialText(MIRTestData.SAVE_SUCCESS));
         driver.waitAndFindElement(MCRBy.partialLinkText("Aktionen"),
-                ExpectedConditions::visibilityOfElementLocated,
                 ExpectedConditions::elementToBeClickable).click();
         driver.waitAndFindElement(MCRBy.partialLinkText("Hinzufügen eines Datenobjektes"),
-                ExpectedConditions::visibilityOfElementLocated,
                 ExpectedConditions::elementToBeClickable).click();
 
         File upload = File.createTempFile("upload", "mir_test.tiff");

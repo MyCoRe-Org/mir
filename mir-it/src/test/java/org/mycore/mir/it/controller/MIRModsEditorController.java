@@ -351,7 +351,7 @@ public class MIRModsEditorController extends MIREditorController {
     }
 
     public void save() {
-        driver.waitAndFindElement(By.xpath(".//button[@type='submit' and contains(text(), 'Speichern')]")).click();
+        clickAndWaitForPageLoad(By.xpath(".//button[@type='submit' and contains(text(), 'Speichern')]"));
     }
 
 

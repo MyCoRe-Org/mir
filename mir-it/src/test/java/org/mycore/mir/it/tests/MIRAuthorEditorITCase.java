@@ -1,5 +1,7 @@
 package org.mycore.mir.it.tests;
 
+import static org.mycore.mir.it.tests.MIRTestData.TITLE_ABBR;
+
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,8 +25,6 @@ import org.mycore.mir.it.model.MIRInstitutes;
 import org.mycore.mir.it.model.MIRLanguage;
 import org.mycore.mir.it.model.MIRLicense;
 import org.mycore.mir.it.model.MIRTypeOfResource;
-
-import static org.mycore.mir.it.tests.MIRTestData.TITLE_ABBR;
 
 public class MIRAuthorEditorITCase extends MIRITBase {
 
@@ -142,31 +142,29 @@ public class MIRAuthorEditorITCase extends MIRITBase {
         editorController.save();
         saveSuccessValidation();
 
-
         // look for entered metadata
-        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.TITLE));
-        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.SUB_TITLE));
-        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.AUTHOR));
-        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.ABSTRACT));
+        driver.findElement(MCRBy.partialText(MIRTestData.TITLE));
+        driver.findElement(MCRBy.partialText(MIRTestData.SUB_TITLE));
+        driver.findElement(MCRBy.partialText(MIRTestData.AUTHOR));
+        driver.findElement(MCRBy.partialText(MIRTestData.ABSTRACT));
         //driver.waitAndFindElement(MCRBy.partialText(MIRTestData.NOTE));
-        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.ISSUE_DATE));
-        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.VOLUME));
-        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.NUMBER));
+        driver.findElement(MCRBy.partialText(MIRTestData.ISSUE_DATE));
+        driver.findElement(MCRBy.partialText(MIRTestData.VOLUME));
+        driver.findElement(MCRBy.partialText(MIRTestData.NUMBER));
         // TODO: enable validation for license
         //driver.waitAndFindElement(MCRBy.partialText(MIRLicense.cc_by_40.getValue()));
 
 
-        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.URN));
-        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.DOI));
+        driver.findElement(MCRBy.partialText(MIRTestData.URN));
+        driver.findElement(MCRBy.partialText(MIRTestData.DOI));
 
-
-        driver.waitAndFindElement(MCRBy.partialLinkText(MIRTestData.RELATED_TITLE)).click();
+        editorController.clickAndWaitForPageLoad(MCRBy.partialLinkText(MIRTestData.RELATED_TITLE));
 
         // look for parent article
-        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.RELATED_TITLE));
-        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.SIGNATURE));
-        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.ISBN));
-        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.ISSN));
+        driver.findElement(MCRBy.partialText(MIRTestData.RELATED_TITLE));
+        driver.findElement(MCRBy.partialText(MIRTestData.SIGNATURE));
+        driver.findElement(MCRBy.partialText(MIRTestData.ISBN));
+        driver.findElement(MCRBy.partialText(MIRTestData.ISSN));
     }
 
 
