@@ -7,7 +7,7 @@
   </parent>
   <groupId>org.mycore.mir</groupId>
   <artifactId>mir-parent</artifactId>
-  <version>2016.06.0.1</version>
+  <version>2016.06.0.2-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>MIR</name>
   <description>MyCoRe/MODS Institutional Repository</description>
@@ -17,7 +17,7 @@
   </prerequisites>
   <properties>
     <java.target.version>1.8</java.target.version>
-    <mycore.version>2016.06.0.1</mycore.version>
+    <mycore.version>2016.06.0.2-SNAPSHOT</mycore.version>
     <hibernate.version>5.2.0.Final</hibernate.version>
     <jetty.version>9.3.10.v20160621</jetty.version>
     <tomcat8.version>8.5.5</tomcat8.version>
@@ -35,8 +35,8 @@
     <cargo.debug.address>8295</cargo.debug.address>
     <cargo.debug.suspend>n</cargo.debug.suspend>
     <!-- until snapshot matches released version (required for 'mvn changes:changes-check') -->
-    <changes.version>2016.06.0.1</changes.version>
-    <changelog.since>2016-03-08</changelog.since>
+    <changes.version>2016.06.0.2</changes.version>
+    <changelog.since>2016-11-21</changelog.since>
     <site.suffix />
   </properties>
   <url>http://www.mycore.de/generated/mir${site.suffix}</url>
@@ -57,9 +57,9 @@
     </notifiers>
   </ciManagement>
   <scm>
-    <connection>scm:svn:http://server.mycore.de/svn/maven/mir/tags/mir-2016.06.0.1</connection>
-    <developerConnection>scm:svn:https://server.mycore.de/svn/maven/mir/tags/mir-2016.06.0.1</developerConnection>
-    <url>http://www.mycore.de/viewvc/viewvc.cgi/maven/mir/tags/mir-2016.06.0.1</url>
+    <connection>scm:svn:http://server.mycore.de/svn/maven/mir/branches/mir-2016.06.0.x</connection>
+    <developerConnection>scm:svn:https://server.mycore.de/svn/maven/mir/branches/mir-2016.06.0.x</developerConnection>
+    <url>http://www.mycore.de/viewvc/viewvc.cgi/maven/mir/branches/mir-2016.06.0.x</url>
   </scm>
   <distributionManagement>
     <site>
