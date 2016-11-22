@@ -24,13 +24,10 @@ package org.mycore.mir.common;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UncheckedIOException;
 import java.net.URL;
 import java.util.Locale;
 import java.util.Properties;
-
-import org.apache.log4j.Logger;
-import org.mycore.common.MCRException;
-import org.mycore.common.config.MCRConfigurationDir;
 
 /**
  * @author Ren\u00E9 Adler (eagle)
@@ -41,10 +38,12 @@ public class MIRCoreVersion {
     private static Properties prop = loadVersionProperties();
 
     public static final String VERSION = prop.getProperty("mir.version");
+    public static final String BRANCH = prop.getProperty("git.branch");
 
-    public static final int REVISION = getRevisionFromProperty();
 
-    public static final String COMPLETE = VERSION + " r" + REVISION;
+    public static final String REVISION = getRevisionFromProperty();
+
+    public static final String COMPLETE = VERSION + " " + BRANCH + ":" + REVISION;
 
     public static String getVersion() {
         return VERSION;
@@ -61,12 +60,12 @@ public class MIRCoreVersion {
                 propStream.close();
             }
         } catch (IOException e) {
-            throw new MCRException("Error while initializing MIRCoreVersion.", e);
+            throw new UncheckedIOException("Error while initializing MIRCoreVersion.", e);
         }
         return props;
     }
 
-    public static int getRevision() {
+    public static String getRevision() {
         return REVISION;
     }
 
@@ -75,17 +74,10 @@ public class MIRCoreVersion {
     }
 
     public static void main(String arg[]) {
-        System.out.printf(Locale.ROOT, "MIR\tver: %s\trev: %d\n", VERSION, REVISION);
-        System.out.printf(Locale.ROOT, "Config directory: %s\n", MCRConfigurationDir.getConfigurationDirectory());
+        System.out.printf(Locale.ROOT, "MIR\tver: %s\tbranch: %s\tcommit: %s%n", VERSION, BRANCH, REVISION);
     }
 
-    private static int getRevisionFromProperty() {
-        try {
-            return Integer.parseInt(prop.getProperty("revision.number"));
-        } catch (NumberFormatException e) {
-            Logger.getLogger(MIRCoreVersion.class).error(
-                    "Error parsing revisionnumber: " + prop.getProperty("revision.number"));
-            return -1;
-        }
+    private static String getRevisionFromProperty() {
+        return prop.getProperty("revision.number");
     }
 }
