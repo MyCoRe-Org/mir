@@ -62,7 +62,7 @@
         </executions>
         <configuration>
           <doCheck>false</doCheck>
-          <doUpdate>true</doUpdate>
+          <doUpdate>false</doUpdate>
           <revisionOnScmFailure>0</revisionOnScmFailure>
         </configuration>
       </plugin>

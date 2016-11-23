@@ -57,9 +57,9 @@
     </notifiers>
   </ciManagement>
   <scm>
-    <connection>scm:svn:http://server.mycore.de/svn/maven/mir/trunk</connection>
-    <developerConnection>scm:svn:https://server.mycore.de/svn/maven/mir/trunk</developerConnection>
-    <url>http://www.mycore.de/viewvc/viewvc.cgi/maven/mir/trunk</url>
+    <connection>scm:git:https://github.com/MyCoRe-Org/mycore.git</connection>
+    <developerConnection>scm:git:https://github.com/MyCoRe-Org/mycore.git</developerConnection>
+    <url>https://github.com/MyCoRe-Org/mycore/tree/master</url>
   </scm>
   <distributionManagement>
     <site>
@@ -269,10 +269,10 @@
   <modules>
     <module>mir-module</module>
     <module>mir-layout</module>
-    <module>mir-webapp</module>
     <module>mir-common-resources</module>
     <module>mir-cli</module>
     <module>mir-wizard</module>
+    <module>mir-webapp</module>
     <module>mir-it</module>
   </modules>
   <developers>

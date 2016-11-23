@@ -149,6 +149,22 @@
         </executions>
       </plugin>
       <plugin>
+        <artifactId>maven-scm-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>get-solr-config</id>
+            <goals>
+              <goal>checkout</goal>
+            </goals>
+            <phase>generate-test-resources</phase>
+            <configuration>
+              <connectionUrl>scm:svn:https://svn.apache.org/repos/asf/lucene/dev/branches/lucene_solr_4_10/solr/example/solr</connectionUrl>
+              <checkoutDirectory>${project.build.directory}/solr</checkoutDirectory>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
         <artifactId>maven-resources-plugin</artifactId>
         <executions>
           <execution>
@@ -177,7 +193,7 @@
               <outputDirectory>${solr.home}</outputDirectory>
               <resources>
                 <resource>
-                  <directory>src/test/solr</directory>
+                  <directory>${project.build.directory}/solr</directory>
                   <filtering>false</filtering>
                   <excludes>
                     <exclude>collection1/conf/solrconfig.xml</exclude>
