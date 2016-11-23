@@ -484,6 +484,26 @@
                   <xsl:value-of select="$mods-type-i18n" />
                 </span>
               </div>
+              <xsl:if test="arr[@name='category.top']/str[contains(text(), 'mir_licenses:')]">
+                <div class="hit_license">
+                  <span class="label label-primary">
+                    <xsl:variable name="accessCondition">
+                      <xsl:value-of select="substring-after(arr[@name='category.top']/str[contains(text(), 'mir_licenses:')][last()],':')" />
+                    </xsl:variable>
+                    <xsl:choose>
+                      <xsl:when test="contains($accessCondition, 'rights_reserved')">
+                        <xsl:value-of select="i18n:translate('component.mods.metaData.dictionary.rightsReserved')" />
+                      </xsl:when>
+                      <xsl:when test="contains($accessCondition, 'oa_nlz')">
+                        <xsl:value-of select="i18n:translate('component.mods.metaData.dictionary.oa_nlz.short')" />
+                      </xsl:when>
+                      <xsl:otherwise>
+                        <xsl:value-of select="mcrxsl:getDisplayName('mir_licenses',$accessCondition)" />
+                      </xsl:otherwise>
+                    </xsl:choose>
+                  </span>
+                </div>
+              </xsl:if>
               <xsl:if test="str[@name='mods.dateIssued'] or str[@name='mods.dateIssued.host']">
                 <div class="hit_date">
                   <xsl:variable name="date">
