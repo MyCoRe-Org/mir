@@ -339,6 +339,7 @@
               </xsl:element>
             </xsl:if>
           </xsl:element>
+          <cc:address cc:Scheme="DIN5008" />
         </xsl:element>
       </xsl:if>
     </xsl:template>
