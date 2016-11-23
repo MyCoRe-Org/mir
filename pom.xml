@@ -269,10 +269,10 @@
   <modules>
     <module>mir-module</module>
     <module>mir-layout</module>
-    <module>mir-webapp</module>
     <module>mir-common-resources</module>
     <module>mir-cli</module>
     <module>mir-wizard</module>
+    <module>mir-webapp</module>
     <module>mir-it</module>
   </modules>
   <developers>
