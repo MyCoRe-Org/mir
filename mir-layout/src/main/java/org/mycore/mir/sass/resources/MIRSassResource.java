@@ -9,6 +9,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import javax.inject.Singleton;
 import javax.servlet.ServletContext;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -23,8 +24,6 @@ import javax.ws.rs.core.StreamingOutput;
 
 import org.mycore.mir.sass.MIRSassCompilerManager;
 import org.mycore.mir.sass.MIRServletContextResourceImporter;
-
-import com.sun.jersey.spi.resource.Singleton;
 
 @Path("sass/")
 @Singleton
