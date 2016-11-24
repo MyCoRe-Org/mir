@@ -51,7 +51,6 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-dependency-plugin</artifactId>
-        <version>2.5.1</version>
         <executions>
           <execution>
             <phase>generate-resources</phase>
@@ -75,11 +74,9 @@
       <plugin>
         <groupId>com.github.eirslett</groupId>
         <artifactId>frontend-maven-plugin</artifactId>
-
         <configuration>
           <installDirectory>../target</installDirectory>
         </configuration>
-
         <executions>
           <execution>
             <id>install node and npm</id>
@@ -91,7 +88,6 @@
               <npmVersion>${npm.version}</npmVersion>
             </configuration>
           </execution>
-
           <execution>
             <id>webapp-deps</id>
             <phase>process-resources</phase>
@@ -117,7 +113,6 @@
           </execution>
         </executions>
       </plugin>
-
       <plugin>
         <artifactId>maven-resources-plugin</artifactId>
         <executions>
