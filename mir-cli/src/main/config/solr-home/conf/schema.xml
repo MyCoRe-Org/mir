@@ -206,7 +206,8 @@
     <field name="mods.pindexname" type="string" multiValued="true" />
     <field name="mods.pindexname.published" type="string" multiValued="true" />
     <field name="mods.embargo" type="string" />
-    <field name="mods.part" type="string" />
+    <field name="mods.part" type="string" multiValued="true" />
+    <dynamicField name="mods.part.*" type="string" />
     <dynamicField name="mods.part.order*" type="int" />
     <dynamicField name="mods.relatedItem*" type="string" multiValued="true" />
 
