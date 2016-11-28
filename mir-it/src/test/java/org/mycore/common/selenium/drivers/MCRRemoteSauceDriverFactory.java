@@ -35,6 +35,7 @@ public class MCRRemoteSauceDriverFactory extends MCRRemoteDriverFactory {
         }
         caps.setCapability("browserName", readPropertyOrEnv("SELENIUM_BROWSER", ""));
         caps.setCapability("platform", readPropertyOrEnv("SELENIUM_PLATFORM", ""));
+        caps.setCapability("build", readPropertyOrEnv("SAUCE_BAMBOO_BUILDNUMBER", ""));
         return caps;
     }
 
