@@ -41,7 +41,7 @@ public class MCRRemoteSauceDriverFactory extends MCRRemoteDriverFactory {
     @Override
     public WebDriver getDriver() {
         String username = readPropertyOrEnv("SAUCE_USER_NAME", "");
-        String accessKey = readPropertyOrEnv("SAUCE_API_KEY", "");
+        String accessKey = readPropertyOrEnv("SAUCE_ACCESS_KEY", "");
         String host = readPropertyOrEnv("SELENIUM_HOST", "");
         String port = readPropertyOrEnv("SELENIUM_PORT", "");
         WebDriver remoteDriver = null;
