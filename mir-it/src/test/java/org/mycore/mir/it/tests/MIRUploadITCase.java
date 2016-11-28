@@ -40,6 +40,9 @@ public class MIRUploadITCase extends MIRITBase {
 
     @Before
     public final void init() {
+        String message = String.format("SauceOnDemandSessionID=%1$s job-name=%2$s",
+                ((driver.getDelegate()).getSessionId()).toString(), getClass().getName());
+        System.out.println(message);
         String appURL = getAPPUrlString();
         userController = new MIRUserController(getDriver(), appURL);
         publishEditorController = new MIRPublishEditorController(getDriver(), appURL);
