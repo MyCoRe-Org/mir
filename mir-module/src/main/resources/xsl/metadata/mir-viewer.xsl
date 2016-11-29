@@ -142,7 +142,7 @@
                   select="concat($WebApplicationBaseURL, 'servlets/MCRFileNodeServlet/', $derId)"/>
     <xsl:variable name="pdfWorkerURL" select="concat($WebApplicationBaseURL, 'modules/iview2/js/lib/pdf.worker.js')"/>
     <xsl:variable name="pdfProviderURL"
-                  select="concat($WebApplicationBaseURL,'servlets/MCRFileNodeServlet/{derivate}/{filePath}')"/>
+                  select="concat($WebApplicationBaseURL,'servlets/MCRFileNodeServlet/{derivate}/{filePath}?view')"/>
     <xsl:variable name="doctype" select="'pdf'"/>
     <script>
       window.addEventListener("load", function(){
