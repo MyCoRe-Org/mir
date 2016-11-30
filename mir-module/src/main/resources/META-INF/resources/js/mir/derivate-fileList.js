@@ -516,7 +516,7 @@
 					openFolder($(this).attr("data-path"));
 				});
 
-				$(fileBox).on("click", ".file_name_video > a", function(evt) {
+				$(fileBox).on("click", ".file_video > a", function(evt) {
 					if ($("#player_").length > 0) {
 						evt.preventDefault();
 						changeVideo($(this));
