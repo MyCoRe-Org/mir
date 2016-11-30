@@ -4,6 +4,16 @@
   <xsl:import href="xslImport:modsmeta:metadata/mir-breadcrumbs.xsl" />
   <xsl:template match="/">
     <xsl:variable name="mods" select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods" />
+    <xsl:variable name="owner">
+      <xsl:choose>
+        <xsl:when test="mcrxml:isCurrentUserInRole('admin') or mcrxml:isCurrentUserInRole('editor')">
+          <xsl:text>*</xsl:text>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="$CurrentUser" />
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
     <div id="mir-breadcrumb">
       <ul class="breadcrumb" itemprop="breadcrumb">
         <li>
@@ -11,6 +21,7 @@
             <xsl:with-param name="class" select="'navtrail'" />
             <xsl:with-param name="node" select="$mods/mods:genre[@type='intern']"/>
             <xsl:with-param name="parent" select="true()" />
+            <xsl:with-param name="owner"  select="$owner" />
           </xsl:call-template>
         </li>
         <li class="active">
