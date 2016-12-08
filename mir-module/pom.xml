@@ -50,23 +50,29 @@
         </configuration>
       </plugin>
       <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>buildnumber-maven-plugin</artifactId>
+        <groupId>pl.project13.maven</groupId>
+        <artifactId>git-commit-id-plugin</artifactId>
+        <version>2.2.1</version>
         <executions>
           <execution>
-            <phase>validate</phase>
+            <id>get-the-git-infos</id>
             <goals>
-              <goal>create</goal>
+              <goal>revision</goal>
             </goals>
           </execution>
         </executions>
         <configuration>
-          <doCheck>false</doCheck>
-          <doUpdate>false</doUpdate>
-          <revisionOnScmFailure>0</revisionOnScmFailure>
+          <generateGitPropertiesFile>true</generateGitPropertiesFile>
+          <generateGitPropertiesFilename>${project.build.outputDirectory}/org/mycore/mir/git.properties</generateGitPropertiesFilename>
+          <dateFormat>yyyy-MM-dd'T'HH:mm:ssXXX</dateFormat>
+          <dateFormatTimeZone>UTC</dateFormatTimeZone>
+          <commitIdGenerationMode>full</commitIdGenerationMode>
+          <excludeProperties>
+            <excludeProperty>.*\.email</excludeProperty>
+            <excludeProperty>.*\.host</excludeProperty>
+          </excludeProperties>
         </configuration>
       </plugin>
-
       <plugin>
         <groupId>com.github.eirslett</groupId>
         <artifactId>frontend-maven-plugin</artifactId>
