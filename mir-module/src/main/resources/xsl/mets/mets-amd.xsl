@@ -2,10 +2,15 @@
 <!-- ============================================== -->
 <!-- $Revision$ $Date$ -->
 <!-- ============================================== -->
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xlink="http://www.w3.org/1999/xlink"
-  xmlns:mcr="http://www.mycore.org/" xmlns:acl="xalan://org.mycore.access.MCRAccessManager" xmlns:mets="http://www.loc.gov/METS/"
-  xmlns:mods="http://www.loc.gov/mods/v3" xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation" xmlns:xalan="http://xml.apache.org/xalan"
-  xmlns:mcrxml="xalan://org.mycore.common.xml.MCRXMLFunctions" exclude-result-prefixes="mcr xalan i18n acl mcrxml">
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+                xmlns:xlink="http://www.w3.org/1999/xlink"
+                xmlns:mcr="http://www.mycore.org/" xmlns:acl="xalan://org.mycore.access.MCRAccessManager"
+                xmlns:mets="http://www.loc.gov/METS/"
+                xmlns:mods="http://www.loc.gov/mods/v3" xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
+                xmlns:xalan="http://xml.apache.org/xalan"
+                xmlns:mcrxml="xalan://org.mycore.common.xml.MCRXMLFunctions"
+                xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+                exclude-result-prefixes="mcr xalan i18n acl mcrxml">
 
   <xsl:param name="WebApplicationBaseURL" />
   <xsl:param name="objectID" />
@@ -13,10 +18,7 @@
   <xsl:param name="MIR.DFGViewer.DV.Owner" select="''" />
   <xsl:param name="MIR.DFGViewer.DV.OwnerLogo" select="''" />
   <xsl:param name="MIR.DFGViewer.DV.OwnerSiteURL" select="''" />
-
-  <xsl:variable name="ACTUAL.OPAC.CATALOG">
-    <xsl:value-of select="'http://gso.gbv.de/DB=2.1/'" />
-  </xsl:variable>
+  <xsl:param name="MIR.DFGViewer.DV.OPAC.CATALOG.URL" select="''" />
 
   <xsl:template name="amdSec">
     <xsl:param name="mcrobject" />
@@ -49,12 +51,12 @@
     <xsl:comment>
       Start amdSec - mets-amd.xsl
     </xsl:comment>
+    <xsl:variable name="entity" select="document(concat('mcrobject:', $derivateOwnerId))" />
     <mets:amdSec ID="amd_{$sectionID}">
       <mets:rightsMD ID="rightsMD_263566811">
         <mets:mdWrap MIMETYPE="text/xml" MDTYPE="OTHER" OTHERMDTYPE="DVRIGHTS">
           <mets:xmlData>
             <dv:rights xmlns:dv="http://dfg-viewer.de/">
-              <xsl:variable name="entity" select="document(concat('mcrobject:', $derivateOwnerId))" />
               <!-- owner name -->
               <dv:owner><xsl:value-of select="$MIR.DFGViewer.DV.Owner" /></dv:owner>
               <dv:ownerLogo><xsl:value-of select="$MIR.DFGViewer.DV.OwnerLogo" /></dv:ownerLogo>
@@ -83,10 +85,15 @@
         <mets:mdWrap MIMETYPE="text/xml" MDTYPE="OTHER" OTHERMDTYPE="DVLINKS">
           <mets:xmlData>
             <dv:links xmlns:dv="http://dfg-viewer.de/">
-              <xsl:variable name="ppn" select="substring-after(metadata/def.modsContainer/modsContainer/mods:mods/mods:identifier[@type='uri'], ':ppn:')" />
+              <xsl:variable name="ppn"
+                            select="substring-after($entity/mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:identifier[@type='uri'], ':ppn:')" />
               <xsl:if test="$ppn">
                 <dv:reference>
-                  <xsl:value-of select="concat($ACTUAL.OPAC.CATALOG,'PPN?PPN=',$ppn)" />
+                  <xsl:variable name="catalogURL"
+                                select="concat(substring-before($MIR.DFGViewer.DV.OPAC.CATALOG.URL, '{PPN}'), $ppn , substring-after($MIR.DFGViewer.DV.OPAC.CATALOG.URL, '{PPN}'))" />
+                  <xsl:variable name="uriResolved"
+                                select="document(concat($catalogURL,'?format=xml'))//rdf:Description[@rdf:about=normalize-space($catalogURL)]/*[local-name() = 'page']/@rdf:resource" />
+                  <xsl:value-of select="$uriResolved" />
                 </dv:reference>
               </xsl:if>
               <dv:presentation>
