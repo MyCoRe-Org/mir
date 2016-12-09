@@ -26,10 +26,16 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
+import java.util.function.Function;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import javax.persistence.PersistenceException;
+import javax.persistence.Query;
 
+import org.mycore.backend.jpa.MCREntityManagerProvider;
 import org.mycore.backend.jpa.MCRJPABootstrapper;
 import org.mycore.mir.wizard.MIRWizardCommand;
 
@@ -54,6 +60,8 @@ public class MIRWizardInitDatabase extends MIRWizardCommand {
             initProps.put("hibernate.hbm2ddl.auto", "create");
             MCRJPABootstrapper.initializeJPA(initProps);
 
+            doSchemaOperation(schema -> "create schema " + schema);
+
             Map<String, Object> schemaProperties = new HashMap<>();
             schemaProperties.put("javax.persistence.schema-generation.database.action", ACTION);
             try (StringWriter output = new StringWriter()) {
@@ -70,5 +78,33 @@ public class MIRWizardInitDatabase extends MIRWizardCommand {
             this.result.setSuccess(false);
             this.result.setResult(ex.getMessage());
         }
+    }
+
+    private void doSchemaOperation(Function<String, String> schemaFunction) {
+        EntityManager currentEntityManager = MCREntityManagerProvider.getCurrentEntityManager();
+        EntityTransaction transaction = currentEntityManager.getTransaction();
+        try {
+            transaction.begin();
+            getDefaultSchema().ifPresent(
+                schemaFunction
+                    .andThen(currentEntityManager::createNativeQuery)
+                    .andThen(Query::executeUpdate)::apply);
+        } finally {
+            if (transaction.isActive()) {
+                if (transaction.getRollbackOnly()) {
+                    transaction.rollback();
+                } else {
+                    transaction.commit();
+                }
+            }
+        }
+    }
+
+    private Optional<String> getDefaultSchema() {
+        return Optional.ofNullable(MCREntityManagerProvider
+            .getEntityManagerFactory()
+            .getProperties()
+            .get("hibernate.default_schema"))
+            .map(Object::toString);
     }
 }
