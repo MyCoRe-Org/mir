@@ -1,6 +1,4 @@
 {
-    "name": "${project.artifactId}",
-    "description": "${project.description}",
     "version": "1.0.0",
     "author": "Thomas Scheffler",
     "homepage": "${project.url}",
@@ -9,7 +7,6 @@
       "url": "${project.scm.url}"
     },
     "license": "GPLv3",
-    "description": "${project.description}",
     "engines": {
       "node": ">= 0.12.0"
     },

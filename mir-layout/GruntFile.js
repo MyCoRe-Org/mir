@@ -11,7 +11,7 @@ module.exports = function(grunt) {
 		return path.isAbsolute(dir) ? dir : path.resolve(process.cwd(), dir);
 	}
 	var globalConfig = {
-		lessDirectory : getAbsoluteDir(path.join('..', '..', 'src', 'main', 'less')),
+		lessDirectory : getAbsoluteDir(path.join('src', 'main', 'less')),
 		targetDirectory : getAbsoluteDir(grunt.option('targetDirectory')),
 		assetsDirectory : getAbsoluteDir(grunt.option('assetsDirectory')),
 		assetsDirectoryRelative : path.basename(grunt.option('assetsDirectory')),
@@ -66,7 +66,7 @@ module.exports = function(grunt) {
 			var lessDest;
 			var files = {};
 			var dist = {};
-			lessDest = 'build.css';
+			lessDest = 'target/grunt/build.css';
 			concatSrc = lessDest;
 			concatDest = themePrefix + '.css';
 			dist = {
