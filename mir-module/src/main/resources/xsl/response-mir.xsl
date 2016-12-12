@@ -774,7 +774,7 @@
       <xsl:variable name="typeComplete">
         <xsl:value-of select="concat('&amp;fq=',$facet_name,':',@name)"></xsl:value-of>
       </xsl:variable>
-      <xsl:variable name="typHref" select="decoder:decode(mcrxsl:regexp($RequestURL, '(&amp;|%26)(start=)[0-9]*', ''))" />
+      <xsl:variable name="typHref" select="mcrxsl:regexp($RequestURL, '(&amp;|%26)(start=)[0-9]*', '')" />
       <xsl:variable name="queryURL">
         <xsl:choose>
           <xsl:when test="contains($typHref, $typeComplete)">
