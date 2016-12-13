@@ -170,7 +170,7 @@
         </field>
       </xsl:if>
       <xsl:if test="@type='host' and mods:part/mods:detail[@type='volume']">
-        <field name="mods.part.{@xlink:href}">
+        <field name="mods.part">
           <xsl:choose>
             <xsl:when test="mods:part/mods:detail[@type='issue']/mods:number">
               <xsl:variable name="issue">
@@ -197,7 +197,7 @@
         </field>
       </xsl:if>
       <xsl:if test="@type='series' and mods:part/mods:detail[@type='volume']">
-        <field name="mods.part.{@xlink:href}">
+        <field name="mods.part">
           <xsl:value-of select="normalize-space(mods:part/mods:detail[@type='volume']/mods:number)" />
         </field>
       </xsl:if>

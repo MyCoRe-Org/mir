@@ -6,9 +6,6 @@
 
   <xsl:import href="xslImport:modsmeta:metadata/mir-abstract.xsl" />
 
-  <xsl:variable name="objectID" select="/mycoreobject/@ID" />
-  <xsl:variable name="modsPart" select="concat('mods.part.', $objectID)" />
-
   <xsl:template match="/">
 
     <xsl:variable name="mods" select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods" />
@@ -241,27 +238,27 @@
       </xsl:variable>
 
       <xsl:call-template name="findRelatedItems">
-        <xsl:with-param name="query" select="concat('(mods.relatedItem.host:', $objectID, ' OR mods.relatedItem.series:', $objectID, ') AND (', $state, ')')"/>
+        <xsl:with-param name="query" select="concat('(mods.relatedItem.host:', mycoreobject/@ID, ' OR mods.relatedItem.series:', mycoreobject/@ID, ') AND (', $state, ')')"/>
         <xsl:with-param name="label" select="i18n:translate('mir.metadata.content')"/>
       </xsl:call-template>
 
       <xsl:call-template name="findRelatedItems">
-        <xsl:with-param name="query" select="concat('mods.relatedItem.references:', $objectID, ' AND (', $state, ')')"/>
+        <xsl:with-param name="query" select="concat('mods.relatedItem.references:', mycoreobject/@ID, ' AND (', $state, ')')"/>
         <xsl:with-param name="label" select="i18n:translate('mir.isReferencedBy')"/>
       </xsl:call-template>
 
       <xsl:call-template name="findRelatedItems">
-        <xsl:with-param name="query" select="concat('mods.relatedItem.preceding:', $objectID, ' AND (', $state, ')')"/>
+        <xsl:with-param name="query" select="concat('mods.relatedItem.preceding:', mycoreobject/@ID, ' AND (', $state, ')')"/>
         <xsl:with-param name="label" select="i18n:translate('mir.metadata.succeeding')"/>
       </xsl:call-template>
 
       <xsl:call-template name="findRelatedItems">
-        <xsl:with-param name="query" select="concat('mods.relatedItem.original:', $objectID, ' AND (', $state, ')')"/>
+        <xsl:with-param name="query" select="concat('mods.relatedItem.original:', mycoreobject/@ID, ' AND (', $state, ')')"/>
         <xsl:with-param name="label" select="i18n:translate('mir.metadata.otherVersion')"/>
       </xsl:call-template>
 
       <xsl:call-template name="findRelatedItems">
-        <xsl:with-param name="query" select="concat('mods.relatedItem.reviewOf:', $objectID, ' AND (', $state, ')')"/>
+        <xsl:with-param name="query" select="concat('mods.relatedItem.reviewOf:', mycoreobject/@ID, ' AND (', $state, ')')"/>
         <xsl:with-param name="label" select="i18n:translate('mir.metadata.review')"/>
       </xsl:call-template>
 
@@ -275,11 +272,11 @@
     <xsl:param name="label"/>
 
     <xsl:variable name="hitsSort" xmlns:encoder="xalan://java.net.URLEncoder"
-                  select="document(concat('solr:q=',encoder:encode(concat($query, ' +mods.part.order.',  $objectID, ':[* TO *]')), '&amp;rows=1000&amp;sort=mods.dateIssued desc, mods.dateIssued.host desc,',  $modsPart, ' desc, mods.title.main desc'))" />
+                  select="document(concat('solr:q=',encoder:encode(concat($query, ' +mods.part.order.',  mycoreobject/@ID, ':[* TO *]')), '&amp;rows=1000&amp;sort=mods.dateIssued desc, mods.dateIssued.host desc, mods.part desc, mods.title.main desc'))" />
     <xsl:variable name="hitsSortList" xmlns:encoder="xalan://java.net.URLEncoder"
-                  select="document(concat('solr:q=',encoder:encode($query), '&amp;rows=1000&amp;sort=mods.part.order.', $objectID, ' desc,mods.dateIssued desc, mods.dateIssued.host desc,',  $modsPart, ' desc, mods.title.main desc'))" />
+                  select="document(concat('solr:q=',encoder:encode($query), '&amp;rows=1000&amp;sort=mods.part.order.', mycoreobject/@ID, ' desc,mods.dateIssued desc, mods.dateIssued.host desc, mods.part desc, mods.title.main desc'))" />
     <xsl:variable name="hits" xmlns:encoder="xalan://java.net.URLEncoder"
-                  select="document(concat('solr:q=',encoder:encode($query), '&amp;rows=1000&amp;sort=mods.dateIssued desc, mods.dateIssued.host desc,',  $modsPart, ' desc, mods.title.main desc&amp;group=true&amp;group.limit=100&amp;group.field=mods.yearIssued'))/response/lst[@name='grouped']/lst[@name='mods.yearIssued']" />
+                  select="document(concat('solr:q=',encoder:encode($query), '&amp;rows=1000&amp;sort=mods.dateIssued desc, mods.dateIssued.host desc, mods.part desc, mods.title.main desc&amp;group=true&amp;group.limit=100&amp;group.field=mods.yearIssued'))/response/lst[@name='grouped']/lst[@name='mods.yearIssued']" />
     <xsl:choose>
       <xsl:when test="$hitsSort/response/result/@numFound &gt; 0">
         <xsl:call-template name="listSortedRelatedItems">
@@ -322,11 +319,18 @@
               <ul>
                 <xsl:for-each select="result/doc">
                   <li>
-                    <xsl:call-template name="printRelatedItem">
-                      <xsl:with-param  name="responseFieldModsPart" select="str[contains(@name,'mods.part.')][contains(@name,$objectID)]" />
-                      <xsl:with-param  name="title"                 select="str[@name='mods.title.main']" />
-                      <xsl:with-param  name="linkText"              select="str[@name='search_result_link_text']" />
-                    </xsl:call-template>
+                    <a href="{$WebApplicationBaseURL}receive/{str[@name='returnId']}">
+                      <xsl:if test="str[@name='mods.part']">
+                        <xsl:value-of select="str[@name='mods.part']" />
+                      </xsl:if>
+                      <xsl:if test="str[@name='mods.part'] and not(str[@name='mods.title.main'] = str[@name='mods.part'])">
+                        <xsl:text> - </xsl:text>
+                        <xsl:value-of select="str[@name='search_result_link_text']" />
+                      </xsl:if>
+                      <xsl:if test="not(str[@name='mods.part'])">
+                        <xsl:value-of select="str[@name='search_result_link_text']" />
+                      </xsl:if>
+                    </a>
                   </li>
                 </xsl:for-each>
               </ul>
@@ -338,11 +342,18 @@
         <ul>
           <xsl:for-each select="$hits/arr[@name='groups']/lst/result/doc">
             <li>
-              <xsl:call-template name="printRelatedItem">
-                <xsl:with-param  name="responseFieldModsPart" select="str[contains(@name,'mods.part.')][contains(@name,$objectID)]" />
-                <xsl:with-param  name="title"                 select="str[@name='mods.title.main']" />
-                <xsl:with-param  name="linkText"              select="str[@name='search_result_link_text']" />
-              </xsl:call-template>
+              <a href="{$WebApplicationBaseURL}receive/{str[@name='returnId']}">
+                <xsl:if test="str[@name='mods.part']">
+                  <xsl:value-of select="str[@name='mods.part']" />
+                </xsl:if>
+                <xsl:if test="str[@name='mods.part'] and not(str[@name='mods.title.main'] = str[@name='mods.part'])">
+                  <xsl:text> - </xsl:text>
+                  <xsl:value-of select="str[@name='search_result_link_text']" />
+                </xsl:if>
+                <xsl:if test="not(str[@name='mods.part'])">
+                  <xsl:value-of select="str[@name='search_result_link_text']" />
+                </xsl:if>
+              </a>
             </li>
           </xsl:for-each>
         </ul>
@@ -359,31 +370,21 @@
     <ul>
       <xsl:for-each select="$hits/response/result/doc">
         <li>
-          <xsl:call-template name="printRelatedItem">
-            <xsl:with-param  name="responseFieldModsPart" select="str[contains(@name,'mods.part.')][contains(@name,$objectID)]" />
-            <xsl:with-param  name="title"                 select="str[@name='mods.title.main']" />
-            <xsl:with-param  name="linkText"              select="str[@name='search_result_link_text']" />
-          </xsl:call-template>
+          <a href="{$WebApplicationBaseURL}receive/{str[@name='returnId']}">
+            <xsl:if test="str[@name='mods.part']">
+              <xsl:value-of select="str[@name='mods.part']" />
+            </xsl:if>
+            <xsl:if test="str[@name='mods.part'] and not(str[@name='mods.title.main'] = str[@name='mods.part'])">
+              <xsl:text> - </xsl:text>
+              <xsl:value-of select="str[@name='search_result_link_text']" />
+            </xsl:if>
+            <xsl:if test="not(str[@name='mods.part'])">
+              <xsl:value-of select="str[@name='search_result_link_text']" />
+            </xsl:if>
+          </a>
         </li>
       </xsl:for-each>
     </ul>
   </xsl:template>
 
-  <xsl:template name="printRelatedItem">
-    <xsl:param name="responseFieldModsPart" />
-    <xsl:param name="title" />
-    <xsl:param name="linkText" />
-    <a href="{$WebApplicationBaseURL}receive/{str[@name='returnId']}">
-      <xsl:if test="string-length($responseFieldModsPart) &gt; 0">
-        <xsl:value-of select="$responseFieldModsPart" />
-      </xsl:if>
-      <xsl:if test="string-length($responseFieldModsPart) &gt; 0 and not($title = $responseFieldModsPart)">
-        <xsl:text> - </xsl:text>
-        <xsl:value-of select="$linkText" />
-      </xsl:if>
-      <xsl:if test="string-length($responseFieldModsPart) = 0">
-        <xsl:value-of select="$linkText" />
-      </xsl:if>
-    </a>
-  </xsl:template>
 </xsl:stylesheet>
