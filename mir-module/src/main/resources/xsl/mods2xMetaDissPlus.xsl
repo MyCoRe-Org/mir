@@ -39,9 +39,10 @@
   <xsl:param name="ServletsBaseURL" select="''" />
   <xsl:param name="WebApplicationBaseURL" select="''" />
   <xsl:param name="MCR.URN.SubNamespace.Default.Prefix" select="''" />
-  <xsl:param name="MCR.OAIDataProvider.FallbackPublisher" />
-  <xsl:param name="MCR.OAIDataProvider.FallbackPublisherPlace" />
-
+  <xsl:param name="MCR.OAIDataProvider.RepositoryPublisherName" />
+  <xsl:param name="MCR.OAIDataProvider.RepositoryPublisherPlace" />
+  <xsl:param name="MCR.OAIDataProvider.RepositoryPublisherAddress" />
+  
   <xsl:variable name="language">
     <xsl:call-template name="translate_Lang">
       <xsl:with-param name="lang_code" select="//metadata/def.modsContainer/modsContainer/mods:mods/mods:language/mods:languageTerm[@authority='rfc4646']/text()" />
@@ -73,12 +74,13 @@
              <xsl:call-template name="creator" />
              <xsl:call-template name="subject" />
              <xsl:call-template name="abstract" />
-             <xsl:call-template name="publisher" />
+             <xsl:call-template name="repositoryPublisher" />
              <xsl:call-template name="contributor" />
              <xsl:call-template name="date" />
              <xsl:call-template name="type" />
              <xsl:call-template name="identifier" />
              <xsl:call-template name="format" />
+             <xsl:call-template name="publisher" />
              <xsl:call-template name="language" />
              <xsl:call-template name="ispartof" />
              <xsl:call-template name="degree" />
@@ -306,9 +308,6 @@
           <xsl:when test="./metadata/def.modsContainer/modsContainer/mods:mods/mods:relatedItem[@type='host']/mods:name[mods:role/mods:roleTerm/text()='pbl']">
             <xsl:value-of select="./metadata/def.modsContainer/modsContainer/mods:mods/mods:relatedItem[@type='host']/mods:name[mods:role/mods:roleTerm/text()='pbl']/mods:displayForm" />
           </xsl:when>
-          <xsl:otherwise>
-            <xsl:value-of select="$MCR.OAIDataProvider.FallbackPublisher"/>
-          </xsl:otherwise>
         </xsl:choose>
       </xsl:variable>
       <xsl:variable name="publisher_place">
@@ -319,29 +318,38 @@
           <xsl:when test="./metadata/def.modsContainer/modsContainer/mods:mods/mods:relatedItem[@type='host']/mods:originInfo[not(@eventType) or @eventType='publication']/mods:place/mods:placeTerm[@type='text']">
             <xsl:value-of select="./metadata/def.modsContainer/modsContainer/mods:mods/mods:relatedItem[@type='host']/mods:originInfo[not(@eventType) or @eventType='publication']/mods:place/mods:placeTerm[@type='text']" />
           </xsl:when>
-          <xsl:otherwise>
-            <xsl:value-of select="$MCR.OAIDataProvider.FallbackPublisherPlace"/>
-          </xsl:otherwise>
         </xsl:choose>
       </xsl:variable>
       <xsl:if test="string-length($publisher_name) &gt; 0">
-        <xsl:element name="dc:publisher">
-          <xsl:attribute name="xsi:type">cc:Publisher</xsl:attribute>
-          <xsl:attribute name="type">dcterms:ISO3166</xsl:attribute>
-          <xsl:attribute name="countryCode">DE</xsl:attribute>
-          <xsl:element name="cc:universityOrInstitution">
-            <xsl:element name="cc:name">
-              <xsl:value-of select="$publisher_name"/>
-            </xsl:element>
-            <xsl:if test="string-length($publisher_place) &gt; 0">
-              <xsl:element name="cc:place">
-                <xsl:value-of select="$publisher_place"/>
-              </xsl:element>
-            </xsl:if>
-          </xsl:element>
-          <cc:address cc:Scheme="DIN5008" />
-        </xsl:element>
+        <xsl:choose>
+          <xsl:when test="string-length($publisher_place) &gt; 0">
+            <dc:source xsi:type="ddb:noScheme"><xsl:value-of select="concat($publisher_place,' : ',$publisher_name)" /></dc:source>
+          </xsl:when>
+          <xsl:otherwise>
+            <dc:source xsi:type="ddb:noScheme"><xsl:value-of select="$publisher_name" /></dc:source>
+          </xsl:otherwise>
+        </xsl:choose>
       </xsl:if>
+    </xsl:template>
+
+    <xsl:template name="repositoryPublisher">
+      <xsl:element name="dc:publisher">
+        <xsl:attribute name="xsi:type">cc:Publisher</xsl:attribute>
+        <xsl:attribute name="type">dcterms:ISO3166</xsl:attribute>
+        <xsl:attribute name="countryCode">DE</xsl:attribute>
+        <xsl:element name="cc:universityOrInstitution">
+          <xsl:element name="cc:name">
+            <xsl:value-of select="$MCR.OAIDataProvider.RepositoryPublisherName"/>  
+          </xsl:element>
+          <xsl:element name="cc:place">
+            <xsl:value-of select="$MCR.OAIDataProvider.RepositoryPublisherPlace"/>
+          </xsl:element>
+        </xsl:element>
+        <xsl:element name="cc:address">
+          <xsl:attribute name="cc:Scheme">DIN5008</xsl:attribute>
+          <xsl:value-of select="$MCR.OAIDataProvider.RepositoryPublisherAddress"/>
+        </xsl:element>
+      </xsl:element>
     </xsl:template>
 
     <xsl:template name="contributor">
@@ -503,6 +511,9 @@
         <xsl:element name="dcterms:isPartOf">
           <xsl:attribute name="xsi:type">ddb:noScheme</xsl:attribute>
           <xsl:value-of select="./metadata/def.modsContainer/modsContainer/mods:mods/mods:relatedItem[@type='series']/mods:titleInfo/mods:title" />
+          <xsl:if test="./metadata/def.modsContainer/modsContainer/mods:mods/mods:relatedItem[@type='series']/mods:part/mods:detail[@type='volume']/mods:number">
+            <xsl:value-of select="concat(' : ',./metadata/def.modsContainer/modsContainer/mods:mods/mods:relatedItem[@type='series']/mods:part/mods:detail[@type='volume']/mods:number)"/>
+          </xsl:if>
         </xsl:element>
       </xsl:if>
     </xsl:template>
