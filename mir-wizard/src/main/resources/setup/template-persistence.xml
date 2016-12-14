@@ -17,6 +17,8 @@
       <property name="javax.persistence.jdbc.password" />
       <property name="hibernate.cache.use_second_level_cache" value="false" />
       <property name="hibernate.hbm2ddl.auto" value="validate" />
+      <property name="hibernate.default_schema" />
+      <property name="hibernate.default_catalog" />
       <!-- Connection-Pool -->
       <!-- JDBC Properties (see above) are automatically configured by hibernate -->
       <!-- Other properties see: https://github.com/brettwooldridge/HikariCP#configuration-knobs-baby -->

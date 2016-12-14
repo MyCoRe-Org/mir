@@ -1,6 +1,6 @@
 {
     "name": "${project.artifactId}",
-  "description": "${project.description}",
+    "description": "${project.description}",
     "version": "1.0.0",
     "author": "Thomas Scheffler",
     "homepage": "${project.url}",
@@ -15,14 +15,14 @@
     },
     "engineStrict": true,
     "devDependencies": {
-        "bower": "^1.6.5",
-        "grunt": "^0.4.5",
-        "grunt-cli": "^0.1.13",
-        "grunt-contrib-concat": "^0.5.1",
-        "grunt-contrib-less": "^1.0.0",
-        "grunt-replace": "^0.8.0",
-        "grunt-contrib-watch": "^0.6.1",
-        "grunt-bowercopy": "^1.2.3",
-        "request": "^2.53.0"
+        "bower": "^1.8.0",
+        "grunt": "^1.0.0",
+        "grunt-cli": "^1.2.0",
+        "grunt-contrib-concat": "^1.0.1",
+        "grunt-contrib-less": "^1.4.0",
+        "grunt-replace": "^1.0.1",
+        "grunt-contrib-watch": "^1.0.0",
+        "grunt-bowercopy": "^1.2.4",
+        "request": "^2.79.0"
     }
 }

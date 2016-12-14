@@ -92,12 +92,12 @@
             </goals>
             <configuration>
               <workingDirectory>${grunt.projectBase}</workingDirectory>
-              <arguments>--verbose --lessFile ${basedir}/src/main/less/build.less --targetDirectory ${template.cssdir} --assetsDirectory ${template.assetsdir}</arguments>
+              <arguments>--verbose --lessFile=${basedir}/src/main/less/build.less --targetDirectory=${template.cssdir} --assetsDirectory=${template.assetsdir}</arguments>
             </configuration>
           </execution>
         </executions>
       </plugin>
-      
+
       <plugin>
         <artifactId>maven-resources-plugin</artifactId>
         <executions>
