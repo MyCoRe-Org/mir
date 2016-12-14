@@ -70,6 +70,17 @@
   </distributionManagement>
   <pluginRepositories>
     <pluginRepository>
+      <id>central</id>
+      <name>Central Repository</name>
+      <url>https://repo.maven.apache.org/maven2</url>
+      <releases>
+        <updatePolicy>never</updatePolicy>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </pluginRepository>
+    <pluginRepository>
       <id>MyCoRe HQ</id>
       <url>http://artifactory.mycore.de/mycore-releases</url>
       <snapshots>
@@ -89,6 +100,14 @@
   </pluginRepositories>
   <repositories>
     <repository>
+      <id>central</id>
+      <name>Central Repository</name>
+      <url>https://repo.maven.apache.org/maven2</url>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
+    <repository>
       <id>MyCoRe HQ</id>
       <url>http://artifactory.mycore.de/mycore-releases</url>
       <snapshots>
@@ -100,16 +119,6 @@
       <url>http://artifactory.mycore.de/mycore-snapshots</url>
       <releases>
         <enabled>false</enabled>
-      </releases>
-      <snapshots>
-        <enabled>true</enabled>
-      </snapshots>
-    </repository>
-    <repository>
-      <id>provided</id>
-      <url>http://nexus.anotheria.net/nexus/content/groups/public</url>
-      <releases>
-        <enabled>true</enabled>
       </releases>
       <snapshots>
         <enabled>true</enabled>
