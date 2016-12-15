@@ -123,23 +123,33 @@
         <script>
           $.ajax({
             type: 'POST',
-            url: 'http://dx.doi.org/<xsl:value-of select="//mods:mods/mods:identifier[@type='doi']" />',
+            url: 'https://doi.org/<xsl:value-of select="//mods:mods/mods:identifier[@type='doi']" />',
+            // fixed MIR-550: overrides wrong charset=iso-8859-1
+            beforeSend: function(jqXHR) {
+              jqXHR.overrideMimeType('text/html;charset=UTF-8');
+            },
             headers: {
               'Accept': 'text/x-bibliography; style=deutsche-sprache; locale=de-DE'
+            },
+            success: function(data){
+              $('#citation-text').text(data);
             }
-          }).done(function(data) {
-            $('#citation-text').html(data);
           });
 
           $('#crossref-cite').on('change', function() {
             $.ajax({
               type: 'POST',
-              url: 'http://dx.doi.org/<xsl:value-of select="//mods:mods/mods:identifier[@type='doi']" />',
+              url: 'https://doi.org/<xsl:value-of select="//mods:mods/mods:identifier[@type='doi']" />',
+              // fixed MIR-550: overrides wrong charset=iso-8859-1
+              beforeSend: function(jqXHR) {
+                jqXHR.overrideMimeType('text/html;charset=UTF-8');
+              },
               headers: {
-                'Accept': 'text/x-bibliography; style=' + $(this).val() + '; locale=de-DE'
+                'Accept': 'text/x-bibliography; style=deutsche-sprache; locale=de-DE'
+              },
+              success: function(data){
+                $('#citation-text').text(data);
               }
-            }).done(function(data) {
-              $('#citation-text').html(data);
             });
           });
         </script>
