@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:mcr="http://www.mycore.org/" xmlns:xlink="http://www.w3.org/1999/xlink"
-  xmlns:mods="http://www.loc.gov/mods/v3" xmlns:mcrmods="xalan://org.mycore.mods.classification.MCRMODSClassificationSupport" xmlns:mcrxml="xalan://org.mycore.common.xml.MCRXMLFunctions"
-  xmlns:mcrdataurl="xalan://org.mycore.datamodel.common.MCRDataURL" xmlns:exslt="http://exslt.org/common" exclude-result-prefixes="mcrmods xlink mcr mcrxml mcrdataurl exslt" version="1.0"
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:mcr="http://www.mycore.org/"
+                xmlns:xlink="http://www.w3.org/1999/xlink"
+                xmlns:mods="http://www.loc.gov/mods/v3"
+                xmlns:mcrmods="xalan://org.mycore.mods.classification.MCRMODSClassificationSupport"
+                xmlns:mcrxml="xalan://org.mycore.common.xml.MCRXMLFunctions"
+                xmlns:mcrdataurl="xalan://org.mycore.datamodel.common.MCRDataURL"
+                xmlns:mcrid="xalan://org.mycore.datamodel.metadata.MCRObjectID" xmlns:exslt="http://exslt.org/common"
+                exclude-result-prefixes="mcrmods mcrid xlink mcr mcrxml mcrdataurl exslt" version="1.0"
 >
 
   <xsl:include href="copynodes.xsl" />
@@ -10,6 +15,35 @@
   <xsl:include href="coreFunctions.xsl"/>
 
   <xsl:param name="MIR.PPN.DatabaseList" select="'gvk'" />
+
+  <xsl:template match="mycoreobject/structure">
+    <xsl:copy>
+      <xsl:variable name="hostItem"
+                    select="../metadata/def.modsContainer/modsContainer/mods:mods/mods:relatedItem[@type='host' and @xlink:href and mcrid:isValid(@xlink:href)]/@xlink:href"/>
+      <xsl:if test="$hostItem">
+        <parents class="MCRMetaLinkID">
+          <parent xlink:href="{$hostItem}" xlink:type="locator" inherited="0"/>
+        </parents>
+      </xsl:if>
+      <xsl:apply-templates />
+    </xsl:copy>
+  </xsl:template>
+
+  <xsl:template match="mycoreobject[not(structure)]">
+    <xsl:copy>
+      <xsl:apply-templates select="@*" />
+      <xsl:variable name="hostItem"
+                    select="metadata/def.modsContainer/modsContainer/mods:mods/mods:relatedItem[@type='host' and @xlink:href and mcrid:isValid(@xlink:href)]/@xlink:href"/>
+      <xsl:if test="$hostItem">
+        <structure>
+          <parents class="MCRMetaLinkID">
+            <parent xlink:href="{$hostItem}" xlink:type="locator" inherited="0"/>
+          </parents>
+        </structure>
+      </xsl:if>
+      <xsl:apply-templates select="node()"/>
+    </xsl:copy>
+  </xsl:template>
 
   <xsl:template match="mods:titleInfo|mods:abstract">
     <xsl:choose>
