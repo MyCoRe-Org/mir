@@ -181,10 +181,7 @@
     <div id="{$viewerId}" class="viewer {$viewerType}">
     </div>
 
-    <xsl:variable name="hits"
-                  select="document(concat('solr:q=stream_source_info%3A%22', $derId, ':/mets.xml%22'))/response/result[@name='response']/@numFound" />
-
-    <xsl:if test="$MIR.DFGViewer.enable='true' and $hits=1">
+    <xsl:if test="$MIR.DFGViewer.enable='true' and  iview2:hasMETSFile($derId)">
       <div class="row">
         <div id="mir-dfgViewer" class="pull-right">
           <a title="im DFG-Viewer anzeigen"
