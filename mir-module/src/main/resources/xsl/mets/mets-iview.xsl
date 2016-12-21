@@ -210,7 +210,7 @@
       <xsl:attribute name="DMDID">
         <xsl:value-of select="concat('dmd_', $derivateID)"/>
       </xsl:attribute>
-      <xsl:attribute name="ADNID">
+      <xsl:attribute name="ADMID">
         <xsl:value-of select="concat('amd_', $derivateID)"/>
       </xsl:attribute>
       <xsl:apply-templates select="@*|node()" />
