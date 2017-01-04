@@ -7,7 +7,7 @@
   <xsl:param name="WebApplicationBaseURL" />
   <xsl:param name="WebApplicationServletsURL" select="concat($WebApplicationBaseURL, 'servlets/')" />
   <xsl:param name="derivateID" select="substring-after(/mets:mets/mets:dmdSec/@ID,'_')" />
-  <xsl:param name="MCR.Module-iview2.PDFCreatorURI" />
+  <xsl:param name="MCR.Viewer.PDFCreatorURI" />
 
   <xsl:key name="logDiv" match="mets:div" use="@ID" />
 
@@ -50,7 +50,7 @@
         <xsl:with-param name="use" select="'IDENTIFIERS'" />
       </xsl:call-template>
       <!-- only use download when pdf creator is set -->
-      <xsl:if test="$MCR.Module-iview2.PDFCreatorURI">
+      <xsl:if test="$MCR.Viewer.PDFCreatorURI">
         <xsl:call-template name="generateIViewURLS">
           <xsl:with-param name="use" select="'DOWNLOAD'" />
         </xsl:call-template>
@@ -132,10 +132,10 @@
               <mets:FLocat LOCTYPE="OTHER" xlink:href="{concat($derivateID, '/', mets:FLocat/@xlink:href)}" />
             </mets:file>
           </xsl:when>
-          <xsl:when test="$use='DOWNLOAD' and $MCR.Module-iview2.PDFCreatorURI">
+          <xsl:when test="$use='DOWNLOAD' and $MCR.Viewer.PDFCreatorURI">
             <mets:file ID="{concat($use,'_',$ncName)}" MIMETYPE="application/pdf">
               <mets:FLocat LOCTYPE="URL"
-                xlink:href="{concat($MCR.Module-iview2.PDFCreatorURI, '?mets=', encoder:encode(concat($WebApplicationServletsURL, 'MCRMETSServlet', '/',$derivateID, '/mets.xml?XSL.Style=pdf'), 'UTF-8'), '&amp;pages=', position())}" />
+                xlink:href="{concat($MCR.Viewer.PDFCreatorURI, '?mets=', encoder:encode(concat($WebApplicationServletsURL, 'MCRMETSServlet', '/',$derivateID, '/mets.xml?XSL.Style=pdf'), 'UTF-8'), '&amp;pages=', position())}" />
             </mets:file>
           </xsl:when>
           <xsl:otherwise>
@@ -194,7 +194,7 @@
       <mets:fptr FILEID="{concat('VIEWER_',$ncName)}" />
       <mets:fptr FILEID="{concat('IDENTIFIERS_',$ncName)}" />
 
-      <xsl:if test="$MCR.Module-iview2.PDFCreatorURI">
+      <xsl:if test="$MCR.Viewer.PDFCreatorURI">
         <mets:fptr FILEID="{concat('DOWNLOAD_',$ncName)}" />
       </xsl:if>
 
