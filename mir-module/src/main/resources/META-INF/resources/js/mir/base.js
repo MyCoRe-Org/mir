@@ -378,7 +378,11 @@
       }).done(function (result) {
         window.location.search="XSL.Status.Message=component.pi.register.doi.success&XSL.Status.Style=success";
       }).fail(function (result) {
-        window.location.search="XSL.Status.Message=component.pi.register.doi.error&XSL.Status.Style=danger";
+        if("responseJSON" in result && "code" in result.responseJSON){
+            window.location.search="XSL.Status.Message=component.pi.register.error." + result.responseJSON.code +"&XSL.Status.Style=danger";
+        } else {
+            window.location.search="XSL.Status.Message=component.pi.register.doi.error&XSL.Status.Style=danger";
+        }
       });
     });
 
