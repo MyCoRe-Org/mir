@@ -65,6 +65,9 @@
             </xsl:if>
             <xsl:value-of select="concat($WebApplicationBaseURL,'receive/', @ID)" />
           </identifier>
+          <format scheme="imt">
+            <xsl:value-of select="'text/html'" />
+          </format>
         </resource>
         <xsl:apply-templates select="structure/derobjects/derobject" mode="epicurResource" />
       </record>
