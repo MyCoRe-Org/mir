@@ -193,11 +193,13 @@
 
     // Search
     $("#index_search_form").submit(function () {
-      if ($('#index_search').val().match('[^\\.]\\*' + '$')) {
-        $('#index_search').val($('#index_search').val().replace('*','.*'));
-      }
-      else {
-        $('#index_search').val($('#index_search').val()+".*");
+      if ($('#index_search').val().match('^((?!\\.\\*).)*' + '$')) {
+        if ($('#index_search').val().match('[^\\.]\\*' + '$') || $('#index_search').val() === "*"){
+          $('#index_search').val($('#index_search').val().replace('*','.*'));
+        }
+        else {
+          $('#index_search').val($('#index_search').val()+".*");
+        }
       }
     });
 
