@@ -940,7 +940,7 @@
           </div>
         </div>
         <xed:repeat xpath="mods:identifier[not(@type='doi')]" min="1" max="10">
-          <div class="form-group">
+          <div class="form-group {$xed-validation-marker}">
             <div class="col-md-3" style="text-align:right; font-weight:bold;">
               <xed:bind xpath="@type" name="type">
                 <select class="form-control mir_idselect" >
@@ -955,7 +955,7 @@
               </xed:bind>
             </div>
             <div class="col-md-6">
-              <input type="text" size="30" class="form-control form-control-inline {$xed-validation-marker}" />
+              <input type="text" size="30" class="form-control form-control-inline" />
             </div>
             <mir:help-pmud help-text="{i18n:mir.help.identifier}" pmud="true" />
           </div>
@@ -968,7 +968,7 @@
       </xed:when>
       <xed:otherwise>
         <xed:repeat xpath="mods:identifier" min="1" max="10">
-          <div class="form-group">
+          <div class="form-group {$xed-validation-marker}">
             <div class="col-md-3" style="text-align:right; font-weight:bold;">
               <xed:bind xpath="@type" name="type">
                 <select class="form-control">
@@ -983,7 +983,7 @@
               </xed:bind>
             </div>
             <div class="col-md-6">
-              <input type="text" size="30" class="form-control form-control-inline {$xed-validation-marker}" />
+              <input type="text" size="30" class="form-control form-control-inline" />
             </div>
             <mir:help-pmud help-text="{i18n:mir.help.identifier}" pmud="true" />
           </div>
@@ -2073,6 +2073,7 @@
     <xed:validate xpath="//mods:mods/mods:identifier[@type='doi']" matches="10\.\d+.*" i18n="mir.validation.doi" display="global" />
     <xed:validate xpath="//mods:mods/mods:identifier[@type='hdl']" matches="\S+/\S+" i18n="mir.validation.handle" display="global" />
     <xed:validate xpath="//mods:mods/mods:identifier[@type='urn']" matches="urn:nbn:[a-z]{2}:\S*" i18n="mir.validation.urn" display="global" />
+    <xed:validate xpath="//mods:mods/mods:identifier[@type='ppn']" class="org.mycore.mir.validation.MIRValidationHelper" method="validatePPN" display="global" i18n="mir.validation.ppn" />
     <xed:validate xpath="//mods:url|//mods:abstract/@xlink:href" matches="(ftp|http|https)://[\w\d.]+\S*" i18n="mir.validation.url" display="global" />
     <xed:validate xpath="//mods:*[@encoding='w3cdtf']" matches="\d{4}(\-\d{2}(\-\d{2})?)?" type="datetime" format="yyyy;yyyy-MM;yyyy-MM-dd" i18n="mir.validation.date"
       display="global" />
