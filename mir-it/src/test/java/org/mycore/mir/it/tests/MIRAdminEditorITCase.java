@@ -60,7 +60,7 @@ public class MIRAdminEditorITCase extends MIRITBase {
         editorController.setAuthors(Stream.of(MIRTestData.AUTHOR, MIRTestData.AUTHOR_2).collect(Collectors.toList()));
         editorController.setConference(MIRTestData.CONFERENCE);
         // editorController.setOpenAIRE(MIRTestData.AIRE_AUTOCOMPLE, MIRTestData.AIRE_PROJECT_NAME);
-        List identifierList = Stream.of(new AbstractMap.SimpleEntry(MIRIdentifier.doi, MIRTestData.DOI), new AbstractMap.SimpleEntry(MIRIdentifier.urn, MIRTestData.URN)).collect(Collectors.toList());
+        List identifierList = Stream.of(new AbstractMap.SimpleEntry(MIRIdentifier.doi, MIRTestData.DOI), new AbstractMap.SimpleEntry(MIRIdentifier.urn, MIRTestData.URN), new AbstractMap.SimpleEntry(MIRIdentifier.ppn, MIRTestData.PPN)).collect(Collectors.toList());
         editorController.setIdentifier(identifierList);
         editorController.setShelfLocator(MIRTestData.SIGNATURE);
         editorController.setLinks(Stream.of(MIRTestData.URL1, MIRTestData.URL2).collect(Collectors.toList()));
