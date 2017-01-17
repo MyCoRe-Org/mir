@@ -1595,7 +1595,7 @@
     </div>
     <script type="text/javascript" src="//www.openstreetmap.org/openlayers/OpenLayers.js"></script>
     <script type="text/javascript" src="//www.openstreetmap.org/openlayers/OpenStreetMap.js"></script>
-    <script type="text/javascript" src="{$WebApplicationBaseURL}js/mir/geo-coords.js"></script>
+    <script type="text/javascript" src="{$WebApplicationBaseURL}js/mir/geo-coords.min.js"></script>
   </xed:template>
 
   <xed:template id="sdnb">
@@ -1767,7 +1767,7 @@
         <mir:help-pmud help-text="{i18n:mir.help.classification}" pmud="true" />
       </div>
     </xed:repeat>
-    <script type="text/javascript" src="{$WebApplicationBaseURL}js/mir/classification-modal-select.js"></script>
+    <script type="text/javascript" src="{$WebApplicationBaseURL}js/mir/classification-modal-select.min.js"></script>
   </xed:template>
 
   <xed:template id="modal.body">
@@ -1836,7 +1836,7 @@
         </xed:bind>
       </div>
     </fieldset>
-    <script type="text/javascript" src="{$WebApplicationBaseURL}js/mir/openaire.js" />
+    <script type="text/javascript" src="{$WebApplicationBaseURL}js/mir/openaire.min.js" />
   </xed:template>
 
   <xed:template id="comment">
@@ -1918,7 +1918,7 @@
           <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="host.order" />
         </div>
       </xed:repeat>
-      <script src="{$WebApplicationBaseURL}js/mir/relatedItem-modal.js" type="text/javascript"></script>
+      <script src="{$WebApplicationBaseURL}js/mir/relatedItem-modal.min.js" type="text/javascript"></script>
     </fieldset>
   </xed:template>
 
@@ -2097,16 +2097,16 @@
   </xed:template>
 
   <xed:template id="javascript">
-    <script type="text/javascript" src="{$WebApplicationBaseURL}js/jquery.search-entity.js"></script>
-    <script src="{$WebApplicationBaseURL}assets/jquery/plugins/typeahead/bloodhound.js" type="text/javascript"></script>
-    <script src="{$WebApplicationBaseURL}assets/jquery/plugins/bootstrap3-typeahead/bootstrap3-typeahead.js" type="text/javascript"></script>
-    <script src="{$WebApplicationBaseURL}js/mir/relatedItem-autocomplete.js" type="text/javascript"></script>
+    <script type="text/javascript" src="{$WebApplicationBaseURL}js/jquery.search-entity.min.js"></script>
+    <script src="{$WebApplicationBaseURL}assets/jquery/plugins/typeahead/bloodhound.min.js" type="text/javascript"></script>
+    <script src="{$WebApplicationBaseURL}assets/jquery/plugins/bootstrap3-typeahead/bootstrap3-typeahead.min.js" type="text/javascript"></script>
+    <script src="{$WebApplicationBaseURL}js/mir/relatedItem-autocomplete.min.js" type="text/javascript"></script>
     <script src="{$WebApplicationBaseURL}js/mir/item-autocomplete.js" type="text/javascript"></script>
     <link href="{$WebApplicationBaseURL}assets/bootstrap-datepicker/css/bootstrap-datepicker.css" rel="stylesheet" />
-    <script type="text/javascript" src="{$WebApplicationBaseURL}assets/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+    <script type="text/javascript" src="{$WebApplicationBaseURL}assets/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
     <script type="text/javascript" src="{$WebApplicationBaseURL}assets/bootstrap-datepicker/locales/bootstrap-datepicker.de.min.js"></script>
-    <script type="text/javascript" src="{$WebApplicationBaseURL}assets/moment/moment.js"></script>
-    <script type="text/javascript" src="{$WebApplicationBaseURL}js/mir/xeditor-form.js"></script>
+    <script type="text/javascript" src="{$WebApplicationBaseURL}assets/moment/min/moment.min.js"></script>
+    <script type="text/javascript" src="{$WebApplicationBaseURL}js/mir/xeditor-form.min.js"></script>
   </xed:template>
 
 </xed:template>

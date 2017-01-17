@@ -4,7 +4,7 @@
   <section title="Publizieren" xml:lang="de"/>
   <section title="Publication" xml:lang="en"/>
   <section xml:lang="all">
-    <script src='../../js/mir/select-doctype.js'> </script>
+    <script src='../../js/mir/select-doctype.min.js'> </script>
 
     <form id="submit_publication"
           class="form-horizontal"
