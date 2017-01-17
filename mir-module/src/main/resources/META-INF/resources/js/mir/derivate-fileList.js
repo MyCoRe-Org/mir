@@ -276,7 +276,7 @@
 				error: function (resp, title, message) {
 					var respObj = resp.responseJSON;
 					getTemplate(respObj, "error.hbs", function (respObj, template) {
-						let filesTable = jQuery("#files" + deriID);
+						var filesTable = jQuery("#files" + deriID);
 						respObj["mycorederivate"] = deriID;
 						filesTable.html(template(respObj));
 					});
