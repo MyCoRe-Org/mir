@@ -1,3 +1,7 @@
+#Node.js and bower
+bower_components/
+node_modules/
+
 .class
 
 # Mobile Tools for Java (J2ME)
