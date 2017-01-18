@@ -5,10 +5,11 @@
                 xmlns:xlink="http://www.w3.org/1999/xlink"
                 xmlns:FilenameUtils="xalan://org.apache.commons.io.FilenameUtils"
                 xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions"
-                xmlns:iview2="xalan://org.mycore.iview2.frontend.MCRIView2XSLFunctions"
+                xmlns:iview2="xalan://org.mycore.iview2.services.MCRIView2Tools"
+                xmlns:iview2xsl="xalan://org.mycore.iview2.frontend.MCRIView2XSLFunctionsAdapter"
                 xmlns:embargo="xalan://org.mycore.mods.MCRMODSEmbargoUtils"
                 xmlns:xalan="http://xml.apache.org/xalan"
-                exclude-result-prefixes="xalan i18n mcr mods xlink FilenameUtils iview2 mcrxsl">
+                exclude-result-prefixes="xalan i18n mcr mods xlink FilenameUtils iview2 iview2xsl mcrxsl">
   <xsl:import href="xslImport:modsmeta:metadata/mir-viewer.xsl"/>
   <xsl:param name="UserAgent" />
   <xsl:param name="MIR.DFGViewer.enable" select="'false'"/>
@@ -52,18 +53,28 @@
 
     <xsl:choose>
       <xsl:when test="iview2:getSupportedMainFile($derId)">
-        <!-- The file will be displayed with mets -->
-        <xsl:call-template name="createMetsViewer">
-          <xsl:with-param name="WebApplicationBaseURL" select="$WebApplicationBaseURL"/>
-          <xsl:with-param name="derId" select="$derId"/>
-          <xsl:with-param name="mainFile" select="$mainFile"/>
-          <xsl:with-param name="viewerId" select="$viewerId"/>
-        </xsl:call-template>
-        <xsl:call-template name="createViewerContainer">
-          <xsl:with-param name="viewerId" select="$viewerId"/>
-          <xsl:with-param name="viewerType" select="'mets'"/>
-          <xsl:with-param name="derId" select="$derId"/>
-        </xsl:call-template>
+        <xsl:choose>
+          <xsl:when test="iview2:isCompletelyTiled($derId)">
+            <!-- The file will be displayed with mets -->
+            <xsl:call-template name="createMetsViewer">
+              <xsl:with-param name="WebApplicationBaseURL" select="$WebApplicationBaseURL" />
+              <xsl:with-param name="derId" select="$derId" />
+              <xsl:with-param name="mainFile" select="$mainFile" />
+              <xsl:with-param name="viewerId" select="$viewerId" />
+            </xsl:call-template>
+            <xsl:call-template name="createViewerContainer">
+              <xsl:with-param name="viewerId" select="$viewerId" />
+              <xsl:with-param name="viewerType" select="'mets'" />
+              <xsl:with-param name="derId" select="$derId" />
+            </xsl:call-template>
+          </xsl:when>
+          <xsl:otherwise>
+            <div class="well">
+              <xsl:value-of select="i18n:translate('metaData.previewInProcessing', $derId)" />
+            </div>
+          </xsl:otherwise>
+        </xsl:choose>
+
       </xsl:when>
       <xsl:when test="mcrxsl:getMimeType($mainFile) = 'application/pdf' and not(mcrxsl:isMobileDevice($UserAgent))">
         <!-- The file will be displayed with pdf.js -->
@@ -181,10 +192,7 @@
     <div id="{$viewerId}" class="viewer {$viewerType}">
     </div>
 
-    <xsl:variable name="hits"
-                  select="document(concat('solr:q=stream_source_info%3A%22', $derId, ':/mets.xml%22'))/response/result[@name='response']/@numFound" />
-
-    <xsl:if test="$MIR.DFGViewer.enable='true' and $hits=1">
+    <xsl:if test="$MIR.DFGViewer.enable='true' and  iview2xsl:hasMETSFile($derId)">
       <div class="row">
         <div id="mir-dfgViewer" class="pull-right">
           <a title="im DFG-Viewer anzeigen"

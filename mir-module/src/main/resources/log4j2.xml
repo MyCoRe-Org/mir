@@ -11,5 +11,6 @@
     </root>
     <logger name="org.hibernate" level="error" />
     <logger name="org.mycore.frontend.editor.validation" level="info" />
+    <logger name="org.mycore.common.xsl.MCRTraceListener" level="info" />
   </loggers>
 </configuration>

@@ -9,6 +9,7 @@ public class MIRTestData {
     public static final String EXTEND_SOLO = "50 Seiten";
     public static final String DOI = "10.10.1038/testDOI";
     public static final String URN = "urn:nbn:de:1111-20091210269";
+    public static final String PPN = "222793902";
     public static final String TOPIC1 = "Schlagwort1";
     public static final String TOPIC2 = "Schlagwort2";
 

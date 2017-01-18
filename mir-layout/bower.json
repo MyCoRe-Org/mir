@@ -1,13 +1,7 @@
 {
-  "name": "${project.artifactId}",
-  "description": "${project.description}",
+  "name": "mir-layout",
   "version": "1.0.0",
   "author": "Thomas Scheffler",
-  "homepage": "${project.url}",
-  "repository": {
-    "type": "svn",
-    "url": "${project.scm.url}"
-  },
   "license": "GPLv3",
   "ignore": [
     "bower_components"
