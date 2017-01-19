@@ -21,53 +21,61 @@
           <xsl:variable name="playerSourceNode" select="xalan:nodeset($playerSources)" />
 
           <xsl:if test="$playerSourceNode//source">
-            <xsl:if test="count($playerSourceNode//div[@class='source-container']) > 1">
-              <select id="videoChooser" class="form-control">
-                <xsl:copy-of select="$playerSourceNode//optgroup" />
-              </select>
-              <xsl:for-each select="$playerSourceNode//div[@class='source-container']">
-                <xsl:copy>
-                  <xsl:copy-of select="@*" />
-                  <script>
-                    <xsl:text>[</xsl:text>
-                    <xsl:for-each select="source">
-                      <xsl:value-of select="concat('{ &quot;type&quot;: &quot;', @type, '&quot;, &quot;src&quot;: &quot;', @src, '&quot;}')" />
-                      <xsl:if test="position() != last()">
-                        <xsl:text>,</xsl:text>
-                      </xsl:if>
-                    </xsl:for-each>
-                    <xsl:text>]</xsl:text>
-                  </script>
-                </xsl:copy>
-              </xsl:for-each>
-            </xsl:if>
-            <div class="embed-responsive embed-responsive-16by9 mir-player mir-preview">
-              <xsl:if test="$playerSourceNode//optgroup/option[@data-type='mp4']">
-                <video id="player_" class="video-js embed-responsive-item" controls="" preload="auto" poster="">
-                  <xsl:attribute name="data-setup">{}</xsl:attribute>
-                  <xsl:if test="count($playerSourceNode//div[@class='source-container']) = 1">
-                    <xsl:copy-of select="$playerSourceNode//div[@class='source-container' and @data-type='mp4']/source" />
-                  </xsl:if>
-                  <p class="vjs-no-js">
-                    To view this video please enable JavaScript, and consider upgrading
-                    to a web browser that
-                    <a href="http://videojs.com/html5-video-support/">supports HTML5 video</a>
-                  </p>
-                </video>
+            <div class="panel panel-default">
+              <xsl:if test="count($playerSourceNode//div[@class='source-container']) > 1">
+                <div class="panel-heading">
+                  <select id="videoChooser" class="form-control">
+                    <xsl:copy-of select="$playerSourceNode//optgroup" />
+                  </select>
+                </div>
+                <xsl:for-each select="$playerSourceNode//div[@class='source-container']">
+                  <xsl:copy>
+                    <xsl:copy-of select="@*" />
+                    <script>
+                      <xsl:text>[</xsl:text>
+                      <xsl:for-each select="source">
+                        <xsl:value-of select="concat('{ &quot;type&quot;: &quot;', @type, '&quot;, &quot;src&quot;: &quot;', @src, '&quot;}')" />
+                        <xsl:if test="position() != last()">
+                          <xsl:text>,</xsl:text>
+                        </xsl:if>
+                      </xsl:for-each>
+                      <xsl:text>]</xsl:text>
+                    </script>
+                  </xsl:copy>
+                </xsl:for-each>
               </xsl:if>
-              <xsl:if test="$playerSourceNode//optgroup/option[@data-type='mp3']">
-                <audio id="player_audio" class="video-js embed-responsive-item" controls="" preload="auto" poster="">
-                  <xsl:attribute name="data-setup">{}</xsl:attribute>
-                  <xsl:if test="count($playerSourceNode//div[@class='source-container']) = 1">
-                    <xsl:copy-of select="$playerSourceNode//div[@class='source-container' and @data-type='mp3']/source" />
-                  </xsl:if>
-                  <p class="vjs-no-js">
-                    To listen to this audio file please enable JavaScript, and consider upgrading
-                    to a web browser that
-                    <a href="http://caniuse.com/audio">supports HTML5 audio</a>
-                  </p>
-                </audio>
-              </xsl:if>
+              <div class="embed-responsive embed-responsive-16by9 mir-player mir-preview">
+                <xsl:if test="$playerSourceNode//optgroup/option[@data-type='mp4']">
+                  <div class="panel-body">
+                  <video id="player_" class="video-js embed-responsive-item" controls="" preload="auto" poster="">
+                    <xsl:attribute name="data-setup">{}</xsl:attribute>
+                    <xsl:if test="count($playerSourceNode//div[@class='source-container']) = 1">
+                      <xsl:copy-of select="$playerSourceNode//div[@class='source-container' and @data-type='mp4']/source" />
+                    </xsl:if>
+                    <p class="vjs-no-js">
+                      To view this video please enable JavaScript, and consider upgrading
+                      to a web browser that
+                      <a href="http://videojs.com/html5-video-support/">supports HTML5 video</a>
+                    </p>
+                  </video>
+                  </div>
+                </xsl:if>
+                <xsl:if test="$playerSourceNode//optgroup/option[@data-type='mp3']">
+                  <div class="panel-body">
+                  <audio id="player_audio" class="video-js embed-responsive-item" controls="" preload="auto" poster="">
+                    <xsl:attribute name="data-setup">{}</xsl:attribute>
+                    <xsl:if test="count($playerSourceNode//div[@class='source-container']) = 1">
+                      <xsl:copy-of select="$playerSourceNode//div[@class='source-container' and @data-type='mp3']/source" />
+                    </xsl:if>
+                    <p class="vjs-no-js">
+                      To listen to this audio file please enable JavaScript, and consider upgrading
+                      to a web browser that
+                      <a href="http://caniuse.com/audio">supports HTML5 audio</a>
+                    </p>
+                  </audio>
+                  </div>
+                </xsl:if>
+              </div>
             </div>
           </xsl:if>
         </xsl:variable>
