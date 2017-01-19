@@ -3,7 +3,7 @@
   <parent>
     <groupId>org.mycore</groupId>
     <artifactId>mycore-parent</artifactId>
-    <version>30</version>
+    <version>31-SNAPSHOT</version>
   </parent>
   <groupId>org.mycore.mir</groupId>
   <artifactId>mir-parent</artifactId>
@@ -21,8 +21,6 @@
     <hibernate.version>5.2.2.Final</hibernate.version>
     <jetty.version>9.3.14.v20161028</jetty.version>
     <tomcat8.version>8.5.8</tomcat8.version>
-    <node.version>v4.2.2</node.version>
-    <npm.version>3.5.0</npm.version>
     <cargo.version>1.6.1</cargo.version>
     <cargo.servlet.uriencoding>UTF-8</cargo.servlet.uriencoding>
     <cargo.container.zipUrlInstaller.downloadDir>${settings.localRepository}/../cargo/containers</cargo.container.zipUrlInstaller.downloadDir>
@@ -38,8 +36,6 @@
     <changes.version>2017.01</changes.version>
     <changelog.since>2017-01-19</changelog.since>
     <site.suffix />
-    <yarn.version>v0.16.1</yarn.version>
-    <frontend.maven.plugin.version>1.3</frontend.maven.plugin.version>
   </properties>
   <url>http://www.mycore.de/generated/mir${site.suffix}</url>
   <issueManagement>
@@ -217,17 +213,6 @@
           <groupId>org.codehaus.cargo</groupId>
           <artifactId>cargo-maven2-plugin</artifactId>
           <version>${cargo.version}</version>
-        </plugin>
-        <plugin>
-          <groupId>com.github.eirslett</groupId>
-          <artifactId>frontend-maven-plugin</artifactId>
-          <version>${frontend.maven.plugin.version}</version>
-          <configuration>
-            <workingDirectory>${basedir}</workingDirectory>
-            <nodeVersion>${node.version}</nodeVersion>
-            <yarnVersion>${yarn.version}</yarnVersion>
-            <installDirectory>${settings.localRepository}/node-yarn-${node.version}-${yarn.version}</installDirectory>
-          </configuration>
         </plugin>
         <!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself. -->
         <plugin>
