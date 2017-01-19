@@ -57,14 +57,7 @@
         <artifactId>frontend-maven-plugin</artifactId>
         <executions>
           <execution>
-            <id>install node and yarn</id>
-            <goals>
-              <goal>install-node-and-yarn</goal>
-            </goals>
-          </execution>
-
-          <execution>
-            <id>webapp-deps</id>
+            <id>yarn-install</id>
             <phase>process-resources</phase>
             <goals>
               <goal>yarn</goal>
@@ -75,7 +68,7 @@
             </configuration>
           </execution>
           <execution>
-            <id>webapp-build</id>
+            <id>grunt-build</id>
             <phase>process-resources</phase>
             <goals>
               <goal>grunt</goal>
