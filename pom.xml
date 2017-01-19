@@ -3,7 +3,7 @@
   <parent>
     <groupId>org.mycore</groupId>
     <artifactId>mycore-parent</artifactId>
-    <version>29</version>
+    <version>30</version>
   </parent>
   <groupId>org.mycore.mir</groupId>
   <artifactId>mir-parent</artifactId>
@@ -17,7 +17,7 @@
   </prerequisites>
   <properties>
     <java.target.version>1.8</java.target.version>
-    <mycore.version>2016.07-SNAPSHOT</mycore.version>
+    <mycore.version>2016.12</mycore.version>
     <hibernate.version>5.2.2.Final</hibernate.version>
     <jetty.version>9.3.14.v20161028</jetty.version>
     <tomcat8.version>8.5.8</tomcat8.version>
@@ -35,7 +35,7 @@
     <cargo.debug.address>8295</cargo.debug.address>
     <cargo.debug.suspend>n</cargo.debug.suspend>
     <!-- until snapshot matches released version (required for 'mvn changes:changes-check') -->
-    <changes.version>2016.07</changes.version>
+    <changes.version>2016.12</changes.version>
     <changelog.since>2016-11-21</changelog.since>
     <site.suffix />
     <yarn.version>v0.16.1</yarn.version>
@@ -59,9 +59,9 @@
     </notifiers>
   </ciManagement>
   <scm>
-    <connection>scm:git:https://github.com/MyCoRe-Org/mycore.git</connection>
-    <developerConnection>scm:git:https://github.com/MyCoRe-Org/mycore.git</developerConnection>
-    <url>https://github.com/MyCoRe-Org/mycore/tree/master</url>
+    <connection>scm:git:https://github.com/MyCoRe-Org/mir.git</connection>
+    <developerConnection>scm:git:https://github.com/MyCoRe-Org/mir.git</developerConnection>
+    <url>https://github.com/MyCoRe-Org/mir/tree/master</url>
   </scm>
   <distributionManagement>
     <site>
