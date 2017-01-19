@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
@@ -11,184 +12,125 @@
   <packaging>pom</packaging>
   <name>MIR</name>
   <description>MyCoRe/MODS Institutional Repository</description>
-  <inceptionYear>2013</inceptionYear>
-  <prerequisites>
-    <maven>3.2.2</maven>
-  </prerequisites>
-  <properties>
-    <java.target.version>1.8</java.target.version>
-    <mycore.version>2017.01-SNAPSHOT</mycore.version>
-    <hibernate.version>5.2.2.Final</hibernate.version>
-    <jetty.version>9.3.14.v20161028</jetty.version>
-    <tomcat8.version>8.5.8</tomcat8.version>
-    <cargo.version>1.6.1</cargo.version>
-    <cargo.servlet.uriencoding>UTF-8</cargo.servlet.uriencoding>
-    <cargo.container.zipUrlInstaller.downloadDir>${settings.localRepository}/../cargo/containers</cargo.container.zipUrlInstaller.downloadDir>
-    <cargo.deployable.default.groupId>${project.groupId}</cargo.deployable.default.groupId>
-    <cargo.deployable.default.artifactId>${project.artifactId}</cargo.deployable.default.artifactId>
-    <cargo.deployable.default.context>/</cargo.deployable.default.context>
-    <cargo.rmi.port>8290</cargo.rmi.port>
-    <cargo.servlet.port>8291</cargo.servlet.port>
-    <cargo.tomcat.ajp.port>8292</cargo.tomcat.ajp.port>
-    <cargo.debug.address>8295</cargo.debug.address>
-    <cargo.debug.suspend>n</cargo.debug.suspend>
-    <!-- until snapshot matches released version (required for 'mvn changes:changes-check') -->
-    <changes.version>2017.01</changes.version>
-    <changelog.since>2017-01-19</changelog.since>
-    <site.suffix />
-  </properties>
   <url>http://www.mycore.de/generated/mir${site.suffix}</url>
+  <inceptionYear>2013</inceptionYear>
   <issueManagement>
     <system>JIRA</system>
     <url>https://mycore.atlassian.net/browse/MIR</url>
   </issueManagement>
-  <ciManagement>
-    <system>Bamboo</system>
-    <url>https://bamboo.mycore.de/browse/MIR-BUILD</url>
-    <notifiers>
-      <notifier>
-        <type>mail</type>
-        <sendOnError>true</sendOnError>
-        <sendOnFailure>true</sendOnFailure>
-        <sendOnSuccess>true</sendOnSuccess>
-      </notifier>
-    </notifiers>
-  </ciManagement>
   <scm>
     <connection>scm:git:https://github.com/MyCoRe-Org/mir.git</connection>
     <developerConnection>scm:git:https://github.com/MyCoRe-Org/mir.git</developerConnection>
     <url>https://github.com/MyCoRe-Org/mir/tree/master</url>
     <tag>HEAD</tag>
   </scm>
-  <distributionManagement>
-    <site>
-      <id>MyCoRe HQ</id>
-      <name>MyCoRe HQ-sites</name>
-      <url>scp://server.mycore.de/mcr/mycore.de/generated/mir${site.suffix}</url>
-    </site>
-  </distributionManagement>
-  <pluginRepositories>
-    <pluginRepository>
-      <id>central</id>
-      <name>Central Repository</name>
-      <url>https://repo.maven.apache.org/maven2</url>
-      <releases>
-        <updatePolicy>never</updatePolicy>
-      </releases>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-    </pluginRepository>
-    <pluginRepository>
-      <id>MyCoRe HQ</id>
-      <url>http://artifactory.mycore.de/mycore-releases</url>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-    </pluginRepository>
-    <pluginRepository>
-      <id>MyCoRe HQ Snapshots</id>
-      <url>http://artifactory.mycore.de/mycore-snapshots</url>
-      <releases>
-        <enabled>false</enabled>
-      </releases>
-      <snapshots>
-        <enabled>true</enabled>
-      </snapshots>
-    </pluginRepository>
-  </pluginRepositories>
-  <repositories>
-    <repository>
-      <id>central</id>
-      <name>Central Repository</name>
-      <url>https://repo.maven.apache.org/maven2</url>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-    </repository>
-    <repository>
-      <id>MyCoRe HQ</id>
-      <url>http://artifactory.mycore.de/mycore-releases</url>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-    </repository>
-    <repository>
-      <id>MyCoRe HQ Snapshots</id>
-      <url>http://artifactory.mycore.de/mycore-snapshots</url>
-      <releases>
-        <enabled>false</enabled>
-      </releases>
-      <snapshots>
-        <enabled>true</enabled>
-      </snapshots>
-    </repository>
-  </repositories>
+  <prerequisites>
+    <maven>3.2.2</maven>
+  </prerequisites>
+  <properties>
+    <cargo.container.zipUrlInstaller.downloadDir>${settings.localRepository}/../cargo/containers</cargo.container.zipUrlInstaller.downloadDir>
+    <cargo.debug.address>8295</cargo.debug.address>
+    <cargo.debug.suspend>n</cargo.debug.suspend>
+    <cargo.deployable.default.artifactId>${project.artifactId}</cargo.deployable.default.artifactId>
+    <cargo.deployable.default.context>/</cargo.deployable.default.context>
+    <cargo.deployable.default.groupId>${project.groupId}</cargo.deployable.default.groupId>
+    <cargo.rmi.port>8290</cargo.rmi.port>
+    <cargo.servlet.port>8291</cargo.servlet.port>
+    <cargo.servlet.uriencoding>UTF-8</cargo.servlet.uriencoding>
+    <cargo.tomcat.ajp.port>8292</cargo.tomcat.ajp.port>
+    <cargo.version>1.6.1</cargo.version>
+    <changelog.since>2017-01-19</changelog.since>
+    <!-- until snapshot matches released version (required for 'mvn changes:changes-check') -->
+    <changes.version>2017.01</changes.version>
+    <hibernate.version>5.2.2.Final</hibernate.version>
+    <java.target.version>1.8</java.target.version>
+    <jetty.version>9.3.14.v20161028</jetty.version>
+    <mycore.version>2017.01-SNAPSHOT</mycore.version>
+    <site.suffix />
+    <sortpom.sortDeps>scope,groupId,artifactId</sortpom.sortDeps>
+    <sortpom.sortFile>https://gist.githubusercontent.com/yagee-de/dfd3698c1b49173dbf251f74eb6a9297/raw/406460c088ff3cb6354e4ae6b40535e6f841607d/mycore_sort.xml</sortpom.sortFile>
+    <sortpom.sortProps>true</sortpom.sortProps>
+    <tomcat8.version>8.5.8</tomcat8.version>
+  </properties>
   <build>
-    <plugins>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>license-maven-plugin</artifactId>
-        <configuration>
-          <verbose>false</verbose>
-          <addSvnKeyWords>true</addSvnKeyWords>
-          <licenseName>gpl_v3</licenseName>
-        </configuration>
-        <executions>
-          <execution>
-            <id>download-licenses</id>
-            <goals>
-              <goal>update-project-license</goal>
-            </goals>
-            <phase>process-sources</phase>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <artifactId>maven-changes-plugin</artifactId>
-        <configuration>
-          <issueManagementSystems>
-            <issueManagementSystem>JIRA</issueManagementSystem>
-          </issueManagementSystems>
-          <runOnlyAtExecutionRoot>true</runOnlyAtExecutionRoot>
-          <smtpPort implementation="java.lang.Integer">25</smtpPort>
-          <toAddresses>
-            <toAddress implementation="java.lang.String">mycore-user@lists.sourceforge.net</toAddress>
-          </toAddresses>
-          <mailSender>
-            <name>${changes.mailSender.name}</name>
-            <email>${changes.mailSender.email}</email>
-          </mailSender>
-          <template>announcement.vm</template>
-          <useJql>true</useJql>
-          <templateDirectory>src/changes</templateDirectory>
-          <!-- due to: http://jira.codehaus.org/browse/MCHANGES-333 -->
-          <maxEntries>1000</maxEntries>
-          <urlDownload>${project.url}/download.html</urlDownload>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.jacoco</groupId>
-        <artifactId>jacoco-maven-plugin</artifactId>
-        <version>0.7.7.201606060606</version>
-        <executions>
-          <execution>
-            <goals>
-              <goal>prepare-agent</goal>
-            </goals>
-          </execution>
-          <execution>
-            <id>report</id>
-            <phase>test</phase>
-            <goals>
-              <goal>report</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-    </plugins>
     <pluginManagement>
       <plugins>
+        <plugin>
+          <artifactId>maven-enforcer-plugin</artifactId>
+          <dependencies>
+            <dependency>
+              <groupId>org.commonjava.maven.enforcer</groupId>
+              <artifactId>enforce-managed-deps-rule</artifactId>
+              <version>1.0</version>
+            </dependency>
+          </dependencies>
+          <executions>
+            <execution>
+              <id>enforce</id>
+              <goals>
+                <goal>enforce</goal>
+              </goals>
+              <configuration>
+                <rules>
+                  <requireManagedDeps implementation="org.commonjava.maven.enforcer.rule.EnforceManagedDepsRule">
+                    <checkProfiles>true</checkProfiles>
+                    <failOnViolation>true</failOnViolation>
+                  </requireManagedDeps>
+                  <!-- Disabled, https://issues.apache.org/jira/browse/MENFORCER-189 -->
+                  <!--
+                  <reactorModuleConvergence />
+                  -->
+                  <bannedDependencies>
+                    <excludes>
+                      <exclude>log4j</exclude>
+                      <exclude>org.slf4j</exclude>
+                      <exclude>javax.servlet:servlet-api</exclude>
+                    </excludes>
+                    <includes>
+                      <include>org.slf4j:slf4j-api</include>
+                      <include>org.slf4j:slf4j-ext</include>
+                      <include>org.slf4j:jcl-over-slf4j</include>
+                    </includes>
+                  </bannedDependencies>
+                </rules>
+                <fail>true</fail>
+              </configuration>
+            </execution>
+          </executions>
+        </plugin>
+        <plugin>
+          <artifactId>maven-dependency-plugin</artifactId>
+          <executions>
+            <execution>
+              <id>analyze</id>
+              <goals>
+                <goal>analyze-only</goal>
+              </goals>
+              <inherited>true</inherited>
+              <configuration>
+                <failOnWarning>true</failOnWarning>
+                <ignoreNonCompile>true</ignoreNonCompile>
+                <outputXML>true</outputXML>
+              </configuration>
+            </execution>
+          </executions>
+        </plugin>
+        <plugin>
+          <groupId>de.thetaphi</groupId>
+          <artifactId>forbiddenapis</artifactId>
+          <version>1.7</version>
+          <configuration>
+            <failOnUnsupportedJava>false</failOnUnsupportedJava>
+            <!-- compile would fail anyway and this is required for MCR-873 -->
+            <failOnMissingClasses>false</failOnMissingClasses>
+            <failOnUnresolvableSignatures>false</failOnUnresolvableSignatures>
+            <bundledSignatures>
+              <bundledSignature>jdk-unsafe</bundledSignature>
+              <bundledSignature>jdk-deprecated</bundledSignature>
+              <bundledSignature>commons-io-unsafe-2.4</bundledSignature>
+            </bundledSignatures>
+          </configuration>
+        </plugin>
         <plugin>
           <groupId>org.codehaus.mojo</groupId>
           <artifactId>license-maven-plugin</artifactId>
@@ -254,6 +196,88 @@
         </plugin>
       </plugins>
     </pluginManagement>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>license-maven-plugin</artifactId>
+        <configuration>
+          <verbose>false</verbose>
+          <addSvnKeyWords>true</addSvnKeyWords>
+          <licenseName>gpl_v3</licenseName>
+        </configuration>
+        <executions>
+          <execution>
+            <id>download-licenses</id>
+            <goals>
+              <goal>update-project-license</goal>
+            </goals>
+            <phase>process-sources</phase>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>com.github.ekryd.sortpom</groupId>
+        <artifactId>sortpom-maven-plugin</artifactId>
+        <version>2.4.0</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>sort</goal>
+            </goals>
+            <phase>verify</phase>
+            <configuration>
+              <expandEmptyElements>false</expandEmptyElements>
+              <keepBlankLines>true</keepBlankLines>
+              <sortDependencies>${sortpom.sortDeps}</sortDependencies>
+              <sortOrderFile>${sortpom.sortFile}</sortOrderFile>
+              <sortProperties>${sortpom.sortProps}</sortProperties>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <artifactId>maven-changes-plugin</artifactId>
+        <configuration>
+          <issueManagementSystems>
+            <issueManagementSystem>JIRA</issueManagementSystem>
+          </issueManagementSystems>
+          <runOnlyAtExecutionRoot>true</runOnlyAtExecutionRoot>
+          <smtpPort implementation="java.lang.Integer">25</smtpPort>
+          <toAddresses>
+            <toAddress implementation="java.lang.String">mycore-user@lists.sourceforge.net</toAddress>
+          </toAddresses>
+          <mailSender>
+            <name>${changes.mailSender.name}</name>
+            <email>${changes.mailSender.email}</email>
+          </mailSender>
+          <template>announcement.vm</template>
+          <useJql>true</useJql>
+          <templateDirectory>src/changes</templateDirectory>
+          <!-- due to: http://jira.codehaus.org/browse/MCHANGES-333 -->
+          <maxEntries>1000</maxEntries>
+          <urlDownload>${project.url}/download.html</urlDownload>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
+        <version>0.7.7.201606060606</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>prepare-agent</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>report</id>
+            <goals>
+              <goal>report</goal>
+            </goals>
+            <phase>test</phase>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
   </build>
   <reporting>
     <plugins>
@@ -272,6 +296,12 @@
         <artifactId>maven-changes-plugin</artifactId>
         <version>2.12.1</version>
         <inherited>false</inherited>
+        <configuration>
+          <onlyCurrentVersion>true</onlyCurrentVersion>
+          <useJql>true</useJql>
+          <columnNames>Type,Key,Summary,Assignee,Status,Resolution,Component</columnNames>
+          <sortColumnNames>Type,Component,Key DESC</sortColumnNames>
+        </configuration>
         <reportSets>
           <reportSet>
             <reports>
@@ -279,93 +309,85 @@
             </reports>
           </reportSet>
         </reportSets>
-        <configuration>
-          <onlyCurrentVersion>true</onlyCurrentVersion>
-          <useJql>true</useJql>
-          <columnNames>Type,Key,Summary,Assignee,Status,Resolution,Component</columnNames>
-          <sortColumnNames>Type,Component,Key DESC</sortColumnNames>
-        </configuration>
       </plugin>
     </plugins>
   </reporting>
-  <modules>
-    <module>mir-module</module>
-    <module>mir-layout</module>
-    <module>mir-common-resources</module>
-    <module>mir-cli</module>
-    <module>mir-wizard</module>
-    <module>mir-webapp</module>
-    <module>mir-it</module>
-  </modules>
-  <developers>
-    <developer>
-      <id>mcrtchef</id>
-      <name>Thomas Scheffler</name>
-      <organization>Friedrich-Schiller-Universität Jena, Thüringer Universitäts- und Landesbibliothek</organization>
-      <email>thomas.scheffler (at) uni-jena.de</email>
-      <organizationUrl>http://www.thulb.uni-jena.de/</organizationUrl>
-      <timezone>+1</timezone>
-      <roles>
-        <role>architect</role>
-        <role>developer</role>
-      </roles>
-    </developer>
-    <developer>
-      <id>mcrshofm</id>
-      <name>Sebastian Hofmann</name>
-      <organization>Friedrich-Schiller-Universität Jena, Thüringer Universitäts- und Landesbibliothek</organization>
-      <email>hofmann.s (at) uni-jena.de</email>
-      <organizationUrl>http://www.thulb.uni-jena.de/</organizationUrl>
-      <timezone>+1</timezone>
-      <roles>
-        <role>programmer</role>
-      </roles>
-    </developer>
-    <developer>
-      <id>mcramill</id>
-      <name>Alexander Miller</name>
-      <organization>Friedrich-Schiller-Universität Jena, Thüringer Universitäts- und Landesbibliothek</organization>
-      <email>alexander.miller (at) uni-jena.de</email>
-      <organizationUrl>http://www.thulb.uni-jena.de/</organizationUrl>
-      <timezone>+1</timezone>
-      <roles>
-        <role>programmer</role>
-      </roles>
-    </developer>
-    <developer>
-      <id>mcrkrebs</id>
-      <name>Kathleen Neumann</name>
-      <organization>Verbundzentrale des GBV (VZG), Document Management System</organization>
-      <email>Kathleen.Neumann (at) gbv.de</email>
-      <organizationUrl>http://www.gbv.de</organizationUrl>
-      <timezone>+1</timezone>
-      <roles>
-        <role>coordination</role>
-        <role>developer</role>
-      </roles>
-    </developer>
-    <developer>
-      <id>mcradler</id>
-      <name>René Adler</name>
-      <organization>TU Ilmenau, Universitätsbibliothek</organization>
-      <email>Rene.Adler (at) tu-ilmenau.de</email>
-      <organizationUrl>http://www.tu-ilmenau.de/ub/</organizationUrl>
-      <timezone>+1</timezone>
-      <roles>
-        <role>developer</role>
-      </roles>
-    </developer>
-    <developer>
-      <id>mcrtineu</id>
-      <name>Tilo Neumann</name>
-      <organization>Medieninformatiker</organization>
-      <email>Tilo.Neumann (at) butterlake.de</email>
-      <timezone>+1</timezone>
-      <roles>
-        <role>designer</role>
-      </roles>
-    </developer>
-  </developers>
+  <ciManagement>
+    <system>Bamboo</system>
+    <url>https://bamboo.mycore.de/browse/MIR-BUILD</url>
+    <notifiers>
+      <notifier>
+        <type>mail</type>
+        <sendOnError>true</sendOnError>
+        <sendOnFailure>true</sendOnFailure>
+        <sendOnSuccess>true</sendOnSuccess>
+      </notifier>
+    </notifiers>
+  </ciManagement>
+  <repositories>
+    <repository>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <id>central</id>
+      <name>Central Repository</name>
+      <url>https://repo.maven.apache.org/maven2</url>
+    </repository>
+    <repository>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <id>MyCoRe HQ</id>
+      <url>http://artifactory.mycore.de/mycore-releases</url>
+    </repository>
+    <repository>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+      <id>MyCoRe HQ Snapshots</id>
+      <url>http://artifactory.mycore.de/mycore-snapshots</url>
+    </repository>
+  </repositories>
+  <pluginRepositories>
+    <pluginRepository>
+      <releases>
+        <updatePolicy>never</updatePolicy>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <id>central</id>
+      <name>Central Repository</name>
+      <url>https://repo.maven.apache.org/maven2</url>
+    </pluginRepository>
+    <pluginRepository>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <id>MyCoRe HQ</id>
+      <url>http://artifactory.mycore.de/mycore-releases</url>
+    </pluginRepository>
+    <pluginRepository>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+      <id>MyCoRe HQ Snapshots</id>
+      <url>http://artifactory.mycore.de/mycore-snapshots</url>
+    </pluginRepository>
+  </pluginRepositories>
+  <distributionManagement>
+    <site>
+      <id>MyCoRe HQ</id>
+      <name>MyCoRe HQ-sites</name>
+      <url>scp://server.mycore.de/mcr/mycore.de/generated/mir${site.suffix}</url>
+    </site>
+  </distributionManagement>
   <profiles>
     <profile>
       <id>release-profile</id>
@@ -473,11 +495,29 @@
   <dependencyManagement>
     <dependencies>
       <dependency>
+        <groupId>com.yahoo.platform.yui</groupId>
+        <artifactId>yuicompressor</artifactId>
+        <version>2.4.8</version>
+      </dependency>
+      <dependency>
+        <groupId>de.erichseifert.vectorgraphics2d</groupId>
+        <artifactId>VectorGraphics2D</artifactId>
+        <version>0.11</version>
+      </dependency>
+      <dependency>
+        <groupId>io.bit3</groupId>
+        <artifactId>jsass</artifactId>
+        <version>4.1.0</version>
+      </dependency>
+      <dependency>
         <groupId>org.mycore</groupId>
-        <artifactId>mycore</artifactId>
+        <artifactId>mycore-base</artifactId>
         <version>${mycore.version}</version>
-        <type>pom</type>
-        <scope>import</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.mycore</groupId>
+        <artifactId>mycore-iview2</artifactId>
+        <version>${mycore.version}</version>
       </dependency>
       <dependency>
         <groupId>org.mycore</groupId>
@@ -501,29 +541,6 @@
       </dependency>
       <dependency>
         <groupId>org.mycore</groupId>
-        <artifactId>mycore-base</artifactId>
-        <version>${mycore.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.mycore</groupId>
-        <artifactId>mycore-base</artifactId>
-        <version>${mycore.version}</version>
-        <type>test-jar</type>
-        <scope>test</scope>
-      </dependency>
-      <dependency>
-        <groupId>org.mycore</groupId>
-        <artifactId>mycore-ifs</artifactId>
-        <version>${mycore.version}</version>
-        <scope>runtime</scope>
-      </dependency>
-      <dependency>
-        <groupId>org.mycore</groupId>
-        <artifactId>mycore-iview2</artifactId>
-        <version>${mycore.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.mycore</groupId>
         <artifactId>mycore-mods</artifactId>
         <version>${mycore.version}</version>
       </dependency>
@@ -536,21 +553,6 @@
         <groupId>org.mycore</groupId>
         <artifactId>mycore-solr</artifactId>
         <version>${mycore.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.mycore</groupId>
-        <artifactId>mycore-viewer</artifactId>
-        <version>${mycore.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>io.bit3</groupId>
-        <artifactId>jsass</artifactId>
-        <version>4.1.0</version>
-      </dependency>
-      <dependency>
-        <groupId>com.yahoo.platform.yui</groupId>
-        <artifactId>yuicompressor</artifactId>
-        <version>2.4.8</version>
       </dependency>
       <dependency>
         <groupId>org.mycore</groupId>
@@ -576,25 +578,19 @@
       </dependency>
       <dependency>
         <groupId>org.mycore</groupId>
-        <artifactId>mycore-wfc</artifactId>
+        <artifactId>mycore-viewer</artifactId>
         <version>${mycore.version}</version>
       </dependency>
       <dependency>
-        <groupId>com.h2database</groupId>
-        <artifactId>h2</artifactId>
-        <version>1.4.193</version>
-        <scope>test</scope>
+        <groupId>org.mycore</groupId>
+        <artifactId>mycore-wfc</artifactId>
+        <version>${mycore.version}</version>
       </dependency>
       <dependency>
         <groupId>com.zaxxer</groupId>
         <artifactId>HikariCP</artifactId>
         <version>2.5.1</version>
         <scope>runtime</scope>
-      </dependency>
-      <dependency>
-        <groupId>de.erichseifert.vectorgraphics2d</groupId>
-        <artifactId>VectorGraphics2D</artifactId>
-        <version>0.11</version>
       </dependency>
       <dependency>
         <groupId>org.hibernate</groupId>
@@ -608,6 +604,110 @@
           </exclusion>
         </exclusions>
       </dependency>
+      <dependency>
+        <groupId>org.mycore</groupId>
+        <artifactId>mycore-ifs</artifactId>
+        <version>${mycore.version}</version>
+        <scope>runtime</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.mycore</groupId>
+        <artifactId>mycore</artifactId>
+        <version>${mycore.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+      <dependency>
+        <groupId>com.h2database</groupId>
+        <artifactId>h2</artifactId>
+        <version>1.4.193</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.mycore</groupId>
+        <artifactId>mycore-base</artifactId>
+        <version>${mycore.version}</version>
+        <type>test-jar</type>
+        <scope>test</scope>
+      </dependency>
     </dependencies>
   </dependencyManagement>
+  <developers>
+    <developer>
+      <id>mcrtchef</id>
+      <name>Thomas Scheffler</name>
+      <email>thomas.scheffler (at) uni-jena.de</email>
+      <organization>Friedrich-Schiller-Universität Jena, Thüringer Universitäts- und Landesbibliothek</organization>
+      <organizationUrl>http://www.thulb.uni-jena.de/</organizationUrl>
+      <roles>
+        <role>architect</role>
+        <role>developer</role>
+      </roles>
+      <timezone>+1</timezone>
+    </developer>
+    <developer>
+      <id>mcrshofm</id>
+      <name>Sebastian Hofmann</name>
+      <email>hofmann.s (at) uni-jena.de</email>
+      <organization>Friedrich-Schiller-Universität Jena, Thüringer Universitäts- und Landesbibliothek</organization>
+      <organizationUrl>http://www.thulb.uni-jena.de/</organizationUrl>
+      <roles>
+        <role>programmer</role>
+      </roles>
+      <timezone>+1</timezone>
+    </developer>
+    <developer>
+      <id>mcramill</id>
+      <name>Alexander Miller</name>
+      <email>alexander.miller (at) uni-jena.de</email>
+      <organization>Friedrich-Schiller-Universität Jena, Thüringer Universitäts- und Landesbibliothek</organization>
+      <organizationUrl>http://www.thulb.uni-jena.de/</organizationUrl>
+      <roles>
+        <role>programmer</role>
+      </roles>
+      <timezone>+1</timezone>
+    </developer>
+    <developer>
+      <id>mcrkrebs</id>
+      <name>Kathleen Neumann</name>
+      <email>Kathleen.Neumann (at) gbv.de</email>
+      <organization>Verbundzentrale des GBV (VZG), Document Management System</organization>
+      <organizationUrl>http://www.gbv.de</organizationUrl>
+      <roles>
+        <role>coordination</role>
+        <role>developer</role>
+      </roles>
+      <timezone>+1</timezone>
+    </developer>
+    <developer>
+      <id>mcradler</id>
+      <name>René Adler</name>
+      <email>Rene.Adler (at) tu-ilmenau.de</email>
+      <organization>TU Ilmenau, Universitätsbibliothek</organization>
+      <organizationUrl>http://www.tu-ilmenau.de/ub/</organizationUrl>
+      <roles>
+        <role>developer</role>
+      </roles>
+      <timezone>+1</timezone>
+    </developer>
+    <developer>
+      <id>mcrtineu</id>
+      <name>Tilo Neumann</name>
+      <email>Tilo.Neumann (at) butterlake.de</email>
+      <organization>Medieninformatiker</organization>
+      <roles>
+        <role>designer</role>
+      </roles>
+      <timezone>+1</timezone>
+    </developer>
+  </developers>
+  <modules>
+    <module>mir-module</module>
+    <module>mir-layout</module>
+    <module>mir-common-resources</module>
+    <module>mir-cli</module>
+    <module>mir-wizard</module>
+    <module>mir-webapp</module>
+    <module>mir-it</module>
+  </modules>
 </project>
