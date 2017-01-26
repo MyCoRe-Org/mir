@@ -18,9 +18,9 @@ git add .
 git commit -m "adding test results"
 git push -f --set-upstream origin $1
 
-SAVE=2
+#SAVE=2
 
-FIRST=$(( TRAVIS_BUILD_NUMBER - SAVE ))
-PROTECT=$(seq $FIRST $TRAVIS_BUILD_NUMBER)
+#FIRST=$(( TRAVIS_BUILD_NUMBER - SAVE ))
+#PROTECT=$(seq $FIRST $TRAVIS_BUILD_NUMBER)
 
-eval "$(git for-each-ref --shell --format='git push origin --delete %(refname)' refs/remotes/origin|grep -v $(echo "$PROTECT" |sed -e 's|\(.*\)|refs/remotes/origin/\1|g'|xargs -I repl echo -n repl"\\|" && echo -n 'refs/remotes/origin/HEAD\|refs/remotes/origin/master')|sed -e 's|refs/remotes/origin/||')"
+#eval "$(git for-each-ref --shell --format='git push origin --delete %(refname)' refs/remotes/origin|grep -v $(echo "$PROTECT" |sed -e 's|\(.*\)|refs/remotes/origin/\1|g'|xargs -I repl echo -n repl"\\|" && echo -n 'refs/remotes/origin/HEAD\|refs/remotes/origin/master')|sed -e 's|refs/remotes/origin/||')"
