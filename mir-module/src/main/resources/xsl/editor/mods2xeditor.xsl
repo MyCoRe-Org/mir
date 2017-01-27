@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:mods="http://www.loc.gov/mods/v3"
   xmlns:mcrmods="xalan://org.mycore.mods.classification.MCRMODSClassificationSupport" xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
-  xmlns:mirddctosndbmapper="xalan://org.mycore.mir.impexp.MIRDDCtoSNDBMapper" exclude-result-prefixes="mcrmods xlink mirddctosndbmapper i18n" version="1.0"
+  xmlns:mirmapper="xalan://org.mycore.mir.impexp.MIRClassificationMapper" xmlns:mirvalidationhelper="xalan://org.mycore.mir.validation.MIRValidationHelper"
+  exclude-result-prefixes="mcrmods xlink mirmapper i18n mirvalidationhelper" version="1.0"
 >
 
   <xsl:include href="copynodes.xsl" />
@@ -164,6 +165,12 @@
     </mods:identifier>
   </xsl:template>
 
+  <xsl:template match="mods:classification[@authority='sdnb']">
+    <mods:classification authority="sdnb" displayLabel="sdnb">
+      <xsl:value-of select="mirvalidationhelper:validateSDNB(.)"/>
+    </mods:classification>
+  </xsl:template>
+
   <xsl:template match="mods:classification[@authority='ddc']">
     <xsl:choose>
       <xsl:when test="document('classification:metadata:0:children:DDC')/mycoreclass">
@@ -175,7 +182,7 @@
         <xsl:if test="not(preceding-sibling::mods:classification[@authority='sdnb']) and not(following-sibling::mods:classification[@authority='sdnb'])">
           <xsl:if test="not(preceding-sibling::mods:classification[@authority='ddc'])">
             <mods:classification authority="sdnb" displayLabel="sdnb">
-              <xsl:value-of select="mirddctosndbmapper:getSNDBfromDDC(.)" />
+              <xsl:value-of select="mirmapper:getSDNBfromDDC(.)" />
             </mods:classification>
           </xsl:if>
         </xsl:if>
