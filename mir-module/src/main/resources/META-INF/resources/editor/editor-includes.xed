@@ -809,7 +809,7 @@
   <xed:template id="date.range.extended.datetimepicker">
     <fieldset class="dateExtended_box">
       <legend class="mir-fieldset-legend hiddenDetail">
-        <div class="form-group datetimepicker">
+        <div class="form-group datetimepicker {$xed-validation-marker}">
           <label class="col-md-3 control-label">
             <xed:output i18n="mir.date.issued.range" />
           </label>
