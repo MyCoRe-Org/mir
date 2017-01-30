@@ -83,7 +83,7 @@
         <xsl:choose>
           <xsl:when test="//mods:mods/mods:identifier[@type='doi'] and contains(//mods:mods/mods:identifier[@type='doi'], $MCR.DOI.Prefix)">
             <xsl:variable name="doi" select="//mods:mods/mods:identifier[@type='doi']" />
-            <a id="url_site_link" href="http://dx.doi.org/{$doi}">
+            <a id="url_site_link" href="https://dx.doi.org/{$doi}">
               <xsl:value-of select="$doi" />
             </a>
             <br />
@@ -278,7 +278,7 @@
         <xsl:value-of select="$MCR.URN.Resolver.MasterURL" />
       </xsl:if>
       <xsl:if test="contains(@type,'doi')">
-        <xsl:text>http://dx.doi.org/</xsl:text>
+        <xsl:text>https://dx.doi.org/</xsl:text>
       </xsl:if>
     </xsl:variable>
     <xsl:call-template name="identifierEntry">
