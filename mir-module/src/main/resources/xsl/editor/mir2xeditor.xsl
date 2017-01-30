@@ -405,7 +405,10 @@
   </xsl:template>
 
   <xsl:template match="mir:topic.repeated">
-    <xed:repeat xpath="mods:topic[@authorityURI='http://d-nb.info/gnd/']" min="{@min}" max="{@max}">
+    <xed:repeat xpath="mods:topic" min="{@min}" max="{@max}">
+        <xed:bind xpath="@authorityURI" initially="http://d-nb.info/gnd/">
+          <input type="hidden" />
+        </xed:bind>
         <div class="form-group {@class}">
           <label class="col-md-3 control-label">
             <xed:output i18n="{@label}" />

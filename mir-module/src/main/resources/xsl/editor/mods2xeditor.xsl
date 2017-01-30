@@ -229,10 +229,4 @@
     <xsl:value-of select="text()" />
   </xsl:template>
 
-  <xsl:template match="mods:subject/mods:topic[not(@authority)]">
-    <mods:topicSimple>
-      <xsl:value-of select="."/>
-    </mods:topicSimple>
-  </xsl:template>
-
 </xsl:stylesheet>

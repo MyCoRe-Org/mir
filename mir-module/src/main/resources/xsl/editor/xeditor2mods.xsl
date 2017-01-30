@@ -212,7 +212,7 @@
     <xsl:copy-of select="pages:buildExtentPagesNodeSet(mods:list/text())" />
   </xsl:template>
 
-  <xsl:template match="mods:subject/mods:topicSimple">
+  <xsl:template match="mods:subject/mods:topic[contains(text(), ';')]">
     <xsl:variable name="topic">
       <xsl:call-template name="Tokenizer"><!-- use split function from mycore-base/coreFunctions.xsl -->
         <xsl:with-param name="string" select="." />
