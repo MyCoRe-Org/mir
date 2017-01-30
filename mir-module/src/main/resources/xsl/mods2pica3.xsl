@@ -47,12 +47,12 @@
   </xsl:template>
 
   <xsl:template match="mods:identifier[@type='doi']" mode="pica3">
-    <xsl:text>4083  http://dx.doi.org/</xsl:text>
+    <xsl:text>4083  https://dx.doi.org/</xsl:text>
     <xsl:value-of select="." />
     <xsl:text>&#10;</xsl:text>
   </xsl:template>
   <xsl:template match="mods:identifier[@type='doi']" mode="relatedItem">
-    <xsl:text>4083  http://dx.doi.org/</xsl:text>
+    <xsl:text>4083  https://dx.doi.org/</xsl:text>
     <xsl:value-of select="." />
     <xsl:text>&#10;</xsl:text>
   </xsl:template>
