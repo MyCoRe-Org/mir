@@ -404,6 +404,43 @@
     </xed:repeat>
   </xsl:template>
 
+  <xsl:template match="mir:geographic.repeated">
+    <xed:repeat xpath="mods:subject/mods:geographic" min="{@min}" max="{@max}">
+        <xed:bind xpath="@authorityURI" initially="http://d-nb.info/gnd/">
+          <input type="hidden" />
+        </xed:bind>
+        <div class="form-group {@class}">
+          <label class="col-md-3 control-label">
+            <xed:output i18n="{@label}" />
+          </label>
+          <xsl:choose>
+            <xsl:when test="@extended='true'">
+              <div class="col-md-6 center-vertical">
+                <div class="search-geographic-extended">
+                  <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="geographic.input" />
+                </div>
+                <span class="glyphicon glyphicon-chevron-down expand-item" data-target=".geographicExtended-container" title="{i18n:translate('mir.help.expand')}" aria-hidden="true"></span>
+              </div>
+            </xsl:when>
+            <xsl:otherwise>
+              <div class="col-md-6">
+                <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="geographic.input" />
+              </div>
+            </xsl:otherwise>
+          </xsl:choose>
+          <div class="col-md-3">
+            <xsl:if test="string-length(@help-text) &gt; 0">
+              <xsl:call-template name="mir-helpbutton" />
+            </xsl:if>
+            <xsl:call-template name="mir-pmud" />
+          </div>
+        </div>
+        <span class="geographicExtended-container hidden">
+          <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="geographicIdentifier" />
+        </span>
+    </xed:repeat>
+  </xsl:template>
+
   <xsl:template match="mir:topic.repeated">
     <xed:repeat xpath="mods:topic" min="{@min}" max="{@max}">
         <xed:bind xpath="@authorityURI" initially="http://d-nb.info/gnd/">

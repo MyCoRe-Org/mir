@@ -1568,7 +1568,36 @@
   </xed:template>
 
   <xed:template id="geographic">
-    <mir:textfield xpath="mods:subject/mods:geographic" label="mir.geographic" help-text="{i18n:mir.help.cartographics.place}" class="mir-modspart" />
+    <mir:geographic.repeated min="1" max="10" label="mir.geographic" help-text="{i18n:mir.help.cartographics.place}" />
+  </xed:template>
+
+  <xed:template id="geographic.complex">
+    <mir:geographic.repeated min="1" max="10" label="mir.geographic" help-text="{i18n:mir.help.cartographics.place}" extended="true" />
+  </xed:template>
+
+  <xed:template id="geographic.input">
+    <div class="geographic-search">
+      <input type="text" size="26" class="form-control form-control-inline" data-search="searchEntity" data-search-type="GND"
+             data-search-entity-type="geographic" data-search-output=".geographic_gnd" data-search-output-type=".geographic_gndType" data-search-button="{i18n:button.search}"
+             data-search-button-loading="{i18n:button.loading}" data-search-result-empty="{i18n:mir.searchIdentifier.noResult}" data-next=".geographicExtended-container"/>
+    </div>
+  </xed:template>
+
+  <xed:template id="geographicIdentifier">
+    <div class="form-group">
+      <label class="col-md-3 control-label">
+        <xed:output i18n="mir.geographic.gnd.type" />
+      </label>
+      <div class="col-md-6">
+        <xed:bind xpath="@valueURIxEditor">
+          <input type="text" size="20" class="form-control form-control-inline geographic_gnd" />
+        </xed:bind>
+        <xed:bind xpath="@authority" initially="gnd">
+          <input type="hidden" class="geographic_gndType" />
+        </xed:bind>
+      </div>
+      <mir:help-pmud help-text="{i18n:mir.help.geographicIdentifier}" pmud="false" />
+    </div>
   </xed:template>
 
   <xed:template id="cartographics">
@@ -2085,6 +2114,8 @@
     <xed:cleanup-rule xpath="//mods:name/@authorityURI" relevant-if="(string-length(../@valueURI) &gt; 0) or (string-length(../@valueURIxEditor) &gt; 0)" />
     <xed:cleanup-rule xpath="//mods:topic/@authorityURI" relevant-if="(string-length(../@valueURI) &gt; 0) or (string-length(../@valueURIxEditor) &gt; 0)" />
     <xed:cleanup-rule xpath="//mods:topic/@authority" relevant-if="(string-length(../@valueURI) &gt; 0) or (string-length(../@valueURIxEditor) &gt; 0)" />
+    <xed:cleanup-rule xpath="//mods:geographic/@authorityURI" relevant-if="(string-length(../@valueURI) &gt; 0) or (string-length(../@valueURIxEditor) &gt; 0)" />
+    <xed:cleanup-rule xpath="//mods:geographic/@authority" relevant-if="(string-length(../@valueURI) &gt; 0) or (string-length(../@valueURIxEditor) &gt; 0)" />
     <xed:cleanup-rule xpath="//mods:name/mods:namePart" relevant-if="string-length(text()) &gt; 0" />
     <xed:cleanup-rule xpath="//mods:name/mods:namePart/@type" relevant-if="../@type!='other'" />
     <xed:cleanup-rule xpath="//mods:*/@xlink:type" relevant-if="text()!='simple'" />

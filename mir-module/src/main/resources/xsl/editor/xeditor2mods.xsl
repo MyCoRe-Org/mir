@@ -87,6 +87,12 @@
       </xsl:attribute>
   </xsl:template>
 
+  <xsl:template match="mods:subject/mods:geographic/@valueURIxEditor">
+    <xsl:attribute name="valueURI">
+      <xsl:value-of select="concat(../@authorityURI,.)" />
+    </xsl:attribute>
+  </xsl:template>
+
   <xsl:template match="mods:nameIdentifier[@type=preceding-sibling::mods:nameIdentifier/@type or contains(../@valueURIxEditor, @type)]">
     <xsl:message>
       <xsl:value-of select="concat('Skipping ',@type,' identifier: ',.,' due to previous declaration.')" />
