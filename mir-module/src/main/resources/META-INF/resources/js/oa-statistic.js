@@ -93,6 +93,7 @@ function OASGraph (element,providerurl,oasid,from,until,granularity) {
   this.from = (isNaN(Date.parse(from)) === false) ? from : "auto";
   this.until = (isNaN(Date.parse(until)) === false) ? until : new Date().toJSON().substring(0,10);
   this.data = [];
+  this.barchart = "";
 };
 
 OASGraph.prototype= {
@@ -110,7 +111,7 @@ OASGraph.prototype= {
       dataType : "json",
       context: this
       }).done(function(data) {
-        OASGraph.receiveData(this, data)
+        OASGraph.receiveData(this, data);
       }).error(function(e) {
         this.state="error";
         this.errortext="Fehler beim Holen der Daten vom Graphprovider";
@@ -151,7 +152,7 @@ OASGraph.prototype= {
           oasElement.from="auto";
           oasElement.requestData();
         });
-        new Morris.Bar({
+        this.barchart = new Morris.Bar({
           element: "oasGraphic",
           data: this.data,
           xkey: 'date',
@@ -204,18 +205,19 @@ OASGraph.receiveData = function(oasgraph,json) {
 
 $(document).ready(function() {
   $('[data-oaselementtype]').each(function(index, element) {
-    oasElementtype=$(element).data('oaselementtype');
-    oasProviderurl=$(element).data('oasproviderurl');
-    oasIdentifier=$(element).data('oasidentifier');
-    oasCounttype=$(element).data('oascounttype');
-    oasFrom=$(element).data('oasfrom');
-    oasUntil=$(element).data('oasuntil');
+    var oasElementtype=$(element).data('oaselementtype');
+    var oasProviderurl=$(element).data('oasproviderurl');
+    var oasIdentifier=$(element).data('oasidentifier');
+    var oasCounttype=$(element).data('oascounttype');
+    var oasFrom=$(element).data('oasfrom');
+    var oasUntil=$(element).data('oasuntil');
+    var oasElement;
     if (oasElementtype == "OASInline" ) {
-      var oasElement = new OASInline(element,oasProviderurl,oasIdentifier,oasFrom,oasUntil,oasCounttype);
+      oasElement = new OASInline(element,oasProviderurl,oasIdentifier,oasFrom,oasUntil,oasCounttype);
       oasElement.requestData();
     }
     if (oasElementtype == "OASGraph" ) {
-      var oasElement = new OASGraph(element,oasProviderurl,oasIdentifier,oasFrom,oasUntil);
+      oasElement = new OASGraph(element,oasProviderurl,oasIdentifier,oasFrom,oasUntil);
       $('#oasGraphModal').on('shown.bs.modal', function () {
         oasElement.requestData();
       });
