@@ -1,3 +1,7 @@
+/*global
+    Morris
+*/
+
 //Class OASInline
 
 function OASInline (element,providerurl,oasid,from,until,counttype) {
@@ -65,11 +69,11 @@ OASInline.prototype= {
 OASInline.receiveData = function(oasinline,xml) {
   
   if (xml) {
-    nodes = $(xml).find("access");
+    var nodes = $(xml).find("access");
     nodes.each (function () {
-      type=$($(this).children( "type" )[0]).text();
+      var type=$($(this).children( "type" )[0]).text();
       if (type==oasinline.getCounttype()) {
-        count=$($(this).children( "count" )[0]).text();
+        var count=$($(this).children( "count" )[0]).text();
         oasinline.setCount(count);
       }
     });
@@ -168,8 +172,8 @@ OASGraph.prototype= {
   
   ,calculateFrom: function () {
     if (this.from == "auto") {
-      today=new Date();
-      from=new Date();
+      var today=new Date();
+      var from=new Date();
       switch (this.granularity) {
         case "day":
           from.setDate(today.getDate() - 14);
