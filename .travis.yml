@@ -37,7 +37,6 @@ script:
   - mkdir ${HOME}/tmp
   - export TMPDIR="${HOME}/tmp"
   - mvn -B -P!standard-with-extra-repos -Djetty -Dwebdriver.firefox.marionette=false -Dwebdriver.firefox.bin=${FIREFOX_BIN} clean install && mvn -P!standard-with-extra-repos -B javadoc:javadoc
-after_failure:
-  - sh autodeploy.sh "$TRAVIS_BUILD_NUMBER-$TRAVIS_EVENT_TYPE-$TRAVIS_PULL_REQUEST" "https://MyCoRe-Travis:$GITHUB_TOKEN@github.com/MyCoRe-Travis/MIR_test_artifacts.git"
 after_script:
   - mvn com.gavinmogan:codacy-maven-plugin:coverage -DcoverageReportFile=target/site/jacoco/jacoco.xml -DfailOnMissingReportFile=false
+  - sh autodeploy.sh "$TRAVIS_BUILD_NUMBER-$TRAVIS_EVENT_TYPE-$TRAVIS_PULL_REQUEST" "https://MyCoRe-Travis:$GITHUB_TOKEN@github.com/MyCoRe-Travis/MIR_test_artifacts.git" 

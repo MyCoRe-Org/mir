@@ -24,3 +24,6 @@ FIRST=$(( TRAVIS_BUILD_NUMBER - SAVE ))
 PROTECT=$(seq $FIRST $TRAVIS_BUILD_NUMBER)
 
 eval "$(git for-each-ref --shell --format='git push origin --delete %(refname)' refs/remotes/origin|grep -v $(echo "$PROTECT" |sed -e 's|\(.*\)|refs/remotes/origin/\1|g'|xargs -I repl echo -n repl"\\|" && echo -n 'refs/remotes/origin/HEAD\|refs/remotes/origin/master')|sed -e 's|refs/remotes/origin/||')"
+
+if [ "$TRAVIS_PULL_REQUEST" != "false" ]
+then curl -H "Authorization: token $GITHUB_TOKEN" -X POST -d '{"body":"Something gone wrong on $TRAVIS_COMMIT! \n Plese Check https://github.com/MyCoRe-Travis/test_artifacts/tree/$1"}' https://api.github.com/repos/MyCoRe-Org/mir/issues/$TRAVIS_PULL_REQUEST/comments
