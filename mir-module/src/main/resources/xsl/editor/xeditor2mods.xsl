@@ -15,11 +15,14 @@
   <xsl:include href="coreFunctions.xsl"/>
 
   <xsl:param name="MIR.PPN.DatabaseList" select="'gvk'" />
+  <xsl:param name="MCR.Metadata.ObjectID.NumberPattern" select="00000000"/>
 
   <xsl:template match="mycoreobject/structure">
     <xsl:copy>
       <xsl:variable name="hostItem"
-                    select="../metadata/def.modsContainer/modsContainer/mods:mods/mods:relatedItem[@type='host' and @xlink:href and mcrid:isValid(@xlink:href)]/@xlink:href"/>
+                    select="../metadata/def.modsContainer/modsContainer/mods:mods/mods:relatedItem[@type='host'
+                    and @xlink:href and mcrid:isValid(@xlink:href)
+                    and not($MCR.Metadata.ObjectID.NumberPattern=substring(@xlink:href, string-length(@xlink:href) - string-length($MCR.Metadata.ObjectID.NumberPattern) + 1))]/@xlink:href"/>
       <xsl:if test="$hostItem">
         <parents class="MCRMetaLinkID">
           <parent xlink:href="{$hostItem}" xlink:type="locator" inherited="0"/>
@@ -33,7 +36,9 @@
     <xsl:copy>
       <xsl:apply-templates select="@*" />
       <xsl:variable name="hostItem"
-                    select="metadata/def.modsContainer/modsContainer/mods:mods/mods:relatedItem[@type='host' and @xlink:href and mcrid:isValid(@xlink:href)]/@xlink:href"/>
+                    select="metadata/def.modsContainer/modsContainer/mods:mods/mods:relatedItem[@type='host'
+                    and @xlink:href and mcrid:isValid(@xlink:href)
+                    and not($MCR.Metadata.ObjectID.NumberPattern=substring(@xlink:href, string-length(@xlink:href) - string-length($MCR.Metadata.ObjectID.NumberPattern) + 1))]/@xlink:href"/>
       <xsl:if test="$hostItem">
         <structure>
           <parents class="MCRMetaLinkID">
