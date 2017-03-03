@@ -13,6 +13,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import org.mycore.common.MCRCoreVersion;
+import org.mycore.frontend.jersey.MCRStaticContent;
 import org.mycore.mir.common.MIRCoreVersion;
 
 /**
@@ -20,6 +21,7 @@ import org.mycore.mir.common.MIRCoreVersion;
  *
  */
 @Path("/v1/mir")
+@MCRStaticContent
 public class MIRInfo {
 
     @GET

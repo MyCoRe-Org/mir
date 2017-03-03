@@ -22,11 +22,13 @@ import javax.ws.rs.core.Request;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.StreamingOutput;
 
+import org.mycore.frontend.jersey.MCRStaticContent;
 import org.mycore.mir.sass.MIRSassCompilerManager;
 import org.mycore.mir.sass.MIRServletContextResourceImporter;
 
 @Path("sass/")
 @Singleton
+@MCRStaticContent
 public class MIRSassResource {
 
     @javax.ws.rs.core.Context
