@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+﻿﻿<?xml version="1.0" encoding="UTF-8"?>
 <!-- ============================================== -->
 <!-- $Revision: 1.8 $ $Date: 2007-04-20 15:18:23 $ -->
 <!-- ============================================== -->
@@ -81,8 +81,9 @@
              <xsl:call-template name="identifier" />
              <xsl:call-template name="format" />
              <xsl:call-template name="publisher" />
+             <xsl:call-template name="relatedItem2source" />
              <xsl:call-template name="language" />
-             <xsl:call-template name="ispartof" />
+             <xsl:call-template name="relatedItem2ispartof" />
              <xsl:call-template name="degree" />
              <xsl:call-template name="contact" />
              <xsl:call-template name="file" />
@@ -480,9 +481,47 @@
       </xsl:element>
     </xsl:template>
 
-<!-- dcterms:isPartOf xsi:type="ddb:Erstkat-ID" >2049984-X</dcterms:isPartOf>
-<dcterms:isPartOf xsi:type="ddb:ZS-Ausgabe" >2004</dcterms:isPartOf -->
-    <xsl:template name="ispartof">
+
+    <xsl:template name="relatedItem2source">
+      <!--  If not use isPartOf use dc:source -->
+      <xsl:if test="./metadata/def.modsContainer/modsContainer/mods:mods/mods:relatedItem/@type='host'">
+        <xsl:variable name="hosttitel" select="./metadata/def.modsContainer/modsContainer/mods:mods/mods:relatedItem[@type='host']/mods:titleInfo/mods:title" />
+        <xsl:variable name="issue" select="./metadata/def.modsContainer/modsContainer/mods:mods/mods:relatedItem[@type='host']/mods:part/mods:detail[@type='issue']/mods:number"/>
+        <xsl:variable name="volume" select="./metadata/def.modsContainer/modsContainer/mods:mods/mods:relatedItem[@type='host']/mods:part/mods:detail[@type='volume']/mods:number"/>
+        <xsl:variable name="startPage" select="./metadata/def.modsContainer/modsContainer/mods:mods/mods:relatedItem[@type='host']/mods:part/mods:extent[@unit='pages']/mods:start"/>
+        <xsl:variable name="endPage" select="./metadata/def.modsContainer/modsContainer/mods:mods/mods:relatedItem[@type='host']/mods:part/mods:extent[@unit='pages']/mods:end"/>
+        <xsl:variable name="volume2">
+          <xsl:if test="string-length($volume) &gt; 0">
+            <xsl:value-of select="concat('(',$volume,')')"/>
+          </xsl:if>
+        </xsl:variable>
+        <xsl:variable name="issue2">
+          <xsl:if test="string-length($issue) &gt; 0">
+            <xsl:value-of select="concat(', H. ',$issue)"/>
+          </xsl:if>
+        </xsl:variable>
+        <xsl:variable name="pages">
+          <xsl:if test="string-length($startPage) &gt; 0">
+            <xsl:value-of select="concat(', S.',$startPage,'-',$endPage)"/>
+          </xsl:if>
+        </xsl:variable>
+        <dc:source xsi:type="ddb:noScheme">
+          <xsl:value-of select="concat($hosttitel,$volume2,$issue2,$pages)" />
+        </dc:source>
+      </xsl:if>
+    </xsl:template>
+    
+<!-- dcterms:isPartOf xsi:type="ddb:noScheme">Bulletin ; 34</dcterms:isPartOf -->
+    <xsl:template name="relatedItem2ispartof">
+      <xsl:if test="./metadata/def.modsContainer/modsContainer/mods:mods/mods:relatedItem/@type='series'">
+        <xsl:element name="dcterms:isPartOf">
+          <xsl:attribute name="xsi:type">ddb:noScheme</xsl:attribute>
+          <xsl:value-of select="./metadata/def.modsContainer/modsContainer/mods:mods/mods:relatedItem[@type='series']/mods:titleInfo/mods:title" />
+          <xsl:if test="./metadata/def.modsContainer/modsContainer/mods:mods/mods:relatedItem[@type='series']/mods:part/mods:detail[@type='volume']/mods:number">
+            <xsl:value-of select="concat(' ; ',./metadata/def.modsContainer/modsContainer/mods:mods/mods:relatedItem[@type='series']/mods:part/mods:detail[@type='volume']/mods:number)"/>
+          </xsl:if>
+        </xsl:element>
+      </xsl:if>
       <xsl:if test="contains(./metadata/def.modsContainer/modsContainer/mods:mods/mods:genre/@valueURI, 'issue')">
         <xsl:element name="dcterms:isPartOf">
           <xsl:attribute name="xsi:type">ddb:ZSTitelID</xsl:attribute>
@@ -506,18 +545,8 @@
           </xsl:element>
         </xsl:if>
       </xsl:if>
-      <!-- Ausgabe der Schriftenreihe ala: <dcterms:isPartOf xsi:type=“ddb:noScheme“>Bulletin ; 34</dcterms:isPartOf>  -->
-      <xsl:if test="./metadata/def.modsContainer/modsContainer/mods:mods/mods:relatedItem/@type='series'">
-        <xsl:element name="dcterms:isPartOf">
-          <xsl:attribute name="xsi:type">ddb:noScheme</xsl:attribute>
-          <xsl:value-of select="./metadata/def.modsContainer/modsContainer/mods:mods/mods:relatedItem[@type='series']/mods:titleInfo/mods:title" />
-          <xsl:if test="./metadata/def.modsContainer/modsContainer/mods:mods/mods:relatedItem[@type='series']/mods:part/mods:detail[@type='volume']/mods:number">
-            <xsl:value-of select="concat(' : ',./metadata/def.modsContainer/modsContainer/mods:mods/mods:relatedItem[@type='series']/mods:part/mods:detail[@type='volume']/mods:number)"/>
-          </xsl:if>
-        </xsl:element>
-      </xsl:if>
-    </xsl:template>
 
+    </xsl:template>
 
     <xsl:template name="degree">
         <xsl:variable name="thesis_level">
