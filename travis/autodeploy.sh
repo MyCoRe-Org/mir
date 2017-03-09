@@ -10,8 +10,7 @@ git checkout $1
 printf "Travis: https://travis-ci.org/MyCoRe-Org/mir/builds/$TRAVIS_BUILD_ID \n\nMycore-Pull: https://github.com/MyCoRe-Org/mir/pull/$TRAVIS_PULL_REQUEST \n\nCommit: https://github.com/MyCoRe-Org/mir/commit/$TRAVIS_COMMIT" > README.md
 cd ../
 
-mkdir -p autodeploy/mir-it/failsafe-reports/
-cp -r mir-it/target/failsafe-reports/ autodeploy/mir-it/failsafe-reports/
+find . \( -path "*/surefire-reports/*" -o -path "*/failsafe-reports/*" -o -path "*/screenshots/*" -o -name "*error*.log" \) -print0 | rsync -av --files-from=- --from0 ./ autodeploy
 
 cd ./autodeploy
 git add .
