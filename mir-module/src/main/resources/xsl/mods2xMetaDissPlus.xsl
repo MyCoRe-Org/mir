@@ -1,4 +1,4 @@
-﻿﻿<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <!-- ============================================== -->
 <!-- $Revision: 1.8 $ $Date: 2007-04-20 15:18:23 $ -->
 <!-- ============================================== -->
@@ -42,7 +42,7 @@
   <xsl:param name="MCR.OAIDataProvider.RepositoryPublisherName" />
   <xsl:param name="MCR.OAIDataProvider.RepositoryPublisherPlace" />
   <xsl:param name="MCR.OAIDataProvider.RepositoryPublisherAddress" />
-  
+
   <xsl:variable name="language">
     <xsl:call-template name="translate_Lang">
       <xsl:with-param name="lang_code" select="//metadata/def.modsContainer/modsContainer/mods:mods/mods:language/mods:languageTerm[@authority='rfc4646']/text()" />
@@ -340,7 +340,7 @@
         <xsl:attribute name="countryCode">DE</xsl:attribute>
         <xsl:element name="cc:universityOrInstitution">
           <xsl:element name="cc:name">
-            <xsl:value-of select="$MCR.OAIDataProvider.RepositoryPublisherName"/>  
+            <xsl:value-of select="$MCR.OAIDataProvider.RepositoryPublisherName"/>
           </xsl:element>
           <xsl:element name="cc:place">
             <xsl:value-of select="$MCR.OAIDataProvider.RepositoryPublisherPlace"/>
@@ -510,9 +510,11 @@
         </dc:source>
       </xsl:if>
     </xsl:template>
-    
-<!-- dcterms:isPartOf xsi:type="ddb:noScheme">Bulletin ; 34</dcterms:isPartOf -->
+
+<!-- dcterms:isPartOf xsi:type="ddb:Erstkat-ID" >2049984-X</dcterms:isPartOf>
+<dcterms:isPartOf xsi:type="ddb:ZS-Ausgabe" >2004</dcterms:isPartOf -->
     <xsl:template name="relatedItem2ispartof">
+      <!-- Ausgabe der Schriftenreihe ala: <dcterms:isPartOf xsi:type=“ddb:noScheme“>Bulletin ; 34</dcterms:isPartOf>  -->
       <xsl:if test="./metadata/def.modsContainer/modsContainer/mods:mods/mods:relatedItem/@type='series'">
         <xsl:element name="dcterms:isPartOf">
           <xsl:attribute name="xsi:type">ddb:noScheme</xsl:attribute>
