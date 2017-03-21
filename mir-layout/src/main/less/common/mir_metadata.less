@@ -53,6 +53,28 @@
   a.access_condition {
     margin-right: 3px;
   }
+  .doc_state {
+    display: inline;
+    color: @dark_neutral;
+    .mir-published {
+      background-color: @label-success-bg;
+    }
+    .mir-submitted, .mir-new, .mir-imported {
+      background-color: @label-warning-bg;
+    }
+    .mir-review {
+      background-color: @label-primary-bg;
+    }
+    .mir-blocked {
+      background-color: @label-danger-bg;
+    }
+    .mir-deleted {
+      background-color: @label-default-bg;
+    }
+    span {
+      background-color: @label-default-bg;
+    }
+  }
 }
 
 #mir_access_rights_panel {
