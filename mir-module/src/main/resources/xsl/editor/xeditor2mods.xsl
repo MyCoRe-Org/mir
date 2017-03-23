@@ -126,6 +126,12 @@
       </xsl:attribute>
   </xsl:template>
 
+  <xsl:template match="mods:subject/mods:geographic/@valueURIxEditor">
+    <xsl:attribute name="valueURI">
+      <xsl:value-of select="concat(../@authorityURI,.)" />
+    </xsl:attribute>
+  </xsl:template>
+
   <xsl:template match="mods:nameIdentifier[@type=preceding-sibling::mods:nameIdentifier/@type or contains(../@valueURIxEditor, @type)]">
     <xsl:message>
       <xsl:value-of select="concat('Skipping ',@type,' identifier: ',.,' due to previous declaration.')" />
@@ -251,7 +257,7 @@
     <xsl:copy-of select="pages:buildExtentPagesNodeSet(mods:list/text())" />
   </xsl:template>
 
-  <xsl:template match="mods:subject/mods:topicSimple">
+  <xsl:template match="mods:subject/mods:topic[contains(text(), ';')]">
     <xsl:variable name="topic">
       <xsl:call-template name="Tokenizer"><!-- use split function from mycore-base/coreFunctions.xsl -->
         <xsl:with-param name="string" select="." />

@@ -14,7 +14,7 @@ $(document).ready(function() {
       });
     }
 
-    $("body").on("click", "fieldset .expand-item", function () {
+    $("body").on("click", ".expand-item", function () {
         if($(this).attr("data-target")){
             $(this).closest(".form-group").next($(this).attr("data-target")).toggleClass("hidden");
         }

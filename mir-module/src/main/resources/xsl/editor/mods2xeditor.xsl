@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:mods="http://www.loc.gov/mods/v3"
   xmlns:mcrmods="xalan://org.mycore.mods.classification.MCRMODSClassificationSupport" xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
-  xmlns:mirddctosndbmapper="xalan://org.mycore.mir.impexp.MIRDDCtoSNDBMapper" exclude-result-prefixes="mcrmods xlink mirddctosndbmapper i18n" version="1.0"
+  xmlns:mirmapper="xalan://org.mycore.mir.impexp.MIRClassificationMapper" xmlns:mirdateconverter="xalan://org.mycore.mir.date.MIRDateConverter"
+  xmlns:mirvalidationhelper="xalan://org.mycore.mir.validation.MIRValidationHelper"
+  exclude-result-prefixes="mcrmods xlink mirmapper i18n mirdateconverter mirvalidationhelper" version="1.0"
 >
 
   <xsl:include href="copynodes.xsl" />
@@ -18,6 +20,12 @@
   </xsl:template>
 
   <xsl:template match="mods:subject/mods:topic/@valueURI">
+    <xsl:attribute name="valueURIxEditor">
+      <xsl:value-of select="substring-after(.,../@authorityURI)" />
+    </xsl:attribute>
+  </xsl:template>
+
+  <xsl:template match="mods:subject/mods:geographic/@valueURI">
     <xsl:attribute name="valueURIxEditor">
       <xsl:value-of select="substring-after(.,../@authorityURI)" />
     </xsl:attribute>
@@ -48,6 +56,16 @@
       <xsl:value-of select="substring(.,1,4)" />
     </mods:dateIssued>
     <xsl:copy-of select="." />
+  </xsl:template>
+
+  <xsl:template match="mods:dateIssued[@encoding and not(@encoding='w3cdtf')]">
+    <xsl:copy>
+      <xsl:copy-of select="@*[name()!='encoding']" />
+      <xsl:attribute name="encoding">
+        <xsl:text>w3cdtf</xsl:text>
+      </xsl:attribute>
+      <xsl:value-of select="mirdateconverter:convertDate(.,@encoding)"/>
+    </xsl:copy>
   </xsl:template>
 
   <xsl:template match="mods:name">
@@ -146,22 +164,30 @@
   </xsl:template>
 
   <xsl:template match="mods:identifier[@type='uri' and (contains(text(),'PPN') or contains(text(),'ppn'))]">
-    <mods:identifier type="ppn">
-      <xsl:attribute name="transliteration">
+    <xsl:if test="not(../mods:identifier[@type='ppn'])">
+      <mods:identifier type="ppn">
+        <xsl:attribute name="transliteration">
+          <xsl:choose>
+            <xsl:when test="contains(., ':ppn:')">
+              <xsl:value-of select="substring-after(substring-before(., ':ppn:'),'http://uri.gbv.de/document/')"/>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:value-of select="$MIR.PPN.DatabaseList"/>
+            </xsl:otherwise>
+          </xsl:choose>
+        </xsl:attribute>
         <xsl:choose>
-          <xsl:when test="contains(., ':ppn:')">
-            <xsl:value-of select="substring-after(substring-before(., ':ppn:'),'http://uri.gbv.de/document/')"/>
-          </xsl:when>
-          <xsl:otherwise>
-            <xsl:value-of select="$MIR.PPN.DatabaseList"/>
-          </xsl:otherwise>
+          <xsl:when test="contains(., 'PPN=')"><xsl:value-of select="substring-after(., 'PPN=')" /></xsl:when>
+          <xsl:otherwise><xsl:value-of select="substring-after(., ':ppn:')"/></xsl:otherwise>
         </xsl:choose>
-      </xsl:attribute>
-      <xsl:choose>
-        <xsl:when test="contains(., 'PPN=')"><xsl:value-of select="substring-after(., 'PPN=')" /></xsl:when>
-        <xsl:otherwise><xsl:value-of select="substring-after(., ':ppn:')"/></xsl:otherwise>
-      </xsl:choose>
-    </mods:identifier>
+      </mods:identifier>
+    </xsl:if>
+  </xsl:template>
+
+  <xsl:template match="mods:classification[@authority='sdnb']">
+    <mods:classification authority="sdnb" displayLabel="sdnb">
+      <xsl:value-of select="mirvalidationhelper:validateSDNB(.)"/>
+    </mods:classification>
   </xsl:template>
 
   <xsl:template match="mods:classification[@authority='ddc']">
@@ -175,7 +201,7 @@
         <xsl:if test="not(preceding-sibling::mods:classification[@authority='sdnb']) and not(following-sibling::mods:classification[@authority='sdnb'])">
           <xsl:if test="not(preceding-sibling::mods:classification[@authority='ddc'])">
             <mods:classification authority="sdnb" displayLabel="sdnb">
-              <xsl:value-of select="mirddctosndbmapper:getSNDBfromDDC(.)" />
+              <xsl:value-of select="mirmapper:getSDNBfromDDC(.)" />
             </mods:classification>
           </xsl:if>
         </xsl:if>
@@ -220,12 +246,6 @@
 
   <xsl:template match="mods:list">
     <xsl:value-of select="text()" />
-  </xsl:template>
-
-  <xsl:template match="mods:subject/mods:topic[not(@authority)]">
-    <mods:topicSimple>
-      <xsl:value-of select="."/>
-    </mods:topicSimple>
   </xsl:template>
 
 </xsl:stylesheet>
