@@ -203,6 +203,12 @@
       }
     });
 
+    $(".search_form").submit(function (evt) {
+      if($(this).find("input[name='qry']").val().trim() == '') {
+          evt.preventDefault();
+      }
+    });
+
     //date filter option
     $('.mir-search-options-date input').ready(function() {
       var currentURL = window.location.href;

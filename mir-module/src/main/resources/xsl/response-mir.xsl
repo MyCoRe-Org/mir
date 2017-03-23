@@ -50,7 +50,7 @@
     <div class="row result_searchline">
       <div class="col-xs-12 col-sm-8 text-center result_search">
         <div class="search_box">
-          <xsl:variable name="searchlink" select="concat($proxyBaseURL, $HttpSession, $solrParams)" />
+          <xsl:variable name="searchlink" select="decoder:decode(concat($proxyBaseURL, $HttpSession, $solrParams), 'UTF-8')" />
           <form action="{$searchlink}" class="search_form" method="post">
             <div class="input-group input-group-sm">
               <div class="input-group-btn">
