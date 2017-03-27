@@ -565,7 +565,7 @@
           </h3>
 
 <!-- hit author -->
-          <xsl:if test="arr[@name='mods.nameByRole.personal.aut'] or arr[@name='mods.nameByRole.personal.edt'] or arr[@name='mods.nameByRole.corporate.pbl']">
+          <xsl:if test="arr[@name='mods.nameByRole.personal.aut'] or arr[@name='mods.nameByRole.personal.edt'] or arr[@name='mods.nameByRole.corporate.pbl'] or arr[@name='mods.nameByRole.corporate.edt']">
             <div class="hit_author">
               <xsl:variable name="nameList">
                 <xsl:choose>
@@ -577,6 +577,9 @@
                   </xsl:when>
                   <xsl:when test="arr[@name='mods.nameByRole.corporate.pbl']">
                     <xsl:copy-of select="arr[@name='mods.nameByRole.corporate.pbl']/." />
+                  </xsl:when>
+                  <xsl:when test="arr[@name='mods.nameByRole.corporate.edt']">
+                    <xsl:copy-of select="arr[@name='mods.nameByRole.corporate.edt']/." />
                   </xsl:when>
                 </xsl:choose>
               </xsl:variable>
