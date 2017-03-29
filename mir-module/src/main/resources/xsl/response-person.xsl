@@ -93,7 +93,7 @@
           <xsl:variable name="uri" select="$classi/label[@xml:lang='x-uri']/@text" />
           <xsl:variable name="idType" select="$classi/label[@xml:lang='de']/@text" />
           <li>
-            <a href="{$ServletsBaseURL}solr/mods_nameIdentifier?q=mods.nameIdentifier:{$nameIdentifierType}\:{$nameIdentifier}&amp;owner=createdby:{$owner}" title="Suche nach allen Publikationen">
+            <a href="{$ServletsBaseURL}solr/mods_nameIdentifier?q=mods.nameIdentifier:{$nameIdentifierType}%5C:{$nameIdentifier}&amp;owner=createdby:{$owner}" title="Suche nach allen Publikationen">
               <xsl:value-of select="$linkText" />
             </a>
             <xsl:text>&#160;</xsl:text><!-- add whitespace here -->
@@ -118,7 +118,7 @@
   <xsl:template match="/response">
 
     <xsl:variable name="a2z">
-      <A search="[a|ä|Ä].*" />
+      <A search="[a%7Cä%7CÄ].*" />
       <B search="b.*" />
       <C search="c.*" />
       <D search="d.*" />
@@ -132,13 +132,13 @@
       <L search="l.*" />
       <M search="m.*" />
       <N search="n.*" />
-      <O search="[o|ö|Ö].*" />
+      <O search="[o%7Cö%7CÖ].*" />
       <P search="p.*" />
       <Q search="q.*" />
       <R search="r.*" />
       <S search="s.*" />
       <T search="t.*" />
-      <U search="[u|ü|Ü].*" />
+      <U search="[u%7Cü%7CÜ].*" />
       <V search="v.*" />
       <W search="w.*" />
       <X search="x.*" />
