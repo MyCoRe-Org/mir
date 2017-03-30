@@ -534,7 +534,7 @@
                   </xsl:choose>
                 </li>
               </xsl:if>
-              <xsl:if test="$CurrentUser=$MCR.Users.Superuser.UserName">
+              <xsl:if test="string-length($editURL_allMods) &gt; 0">
                 <li>
                   <a href="{$editURL_allMods}">
                     <xsl:value-of select="i18n:translate('component.mods.object.editAllModsXML')" />

@@ -31,7 +31,6 @@
     </action>
     <action action="update-xml">
       <when condition="(group = admin)" url="/servlets/MCRLockServlet?url=/editor/editor-xml.xed" />
-      <when condition="(status != published) and (status != review)" url="/servlets/MCRLockServlet?url=/editor/editor-xml.xed" />
     </action>
   </collection>
   <collection name="lecture">
