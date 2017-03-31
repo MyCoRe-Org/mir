@@ -50,7 +50,7 @@
     <div class="row result_searchline">
       <div class="col-xs-12 col-sm-8 text-center result_search">
         <div class="search_box">
-          <xsl:variable name="searchlink" select="decoder:decode(concat($proxyBaseURL, $HttpSession, $solrParams), 'UTF-8')" />
+          <xsl:variable name="searchlink" select="concat($proxyBaseURL, $HttpSession, $solrParams)" />
           <form action="{$searchlink}" class="search_form" method="post">
             <div class="input-group input-group-sm">
               <div class="input-group-btn">
@@ -82,15 +82,6 @@
                   </li>
                 </ul>
               </div>
-              <xsl:variable name="qry">
-                <xsl:variable name="encodedQry">
-                  <xsl:call-template name="UrlGetParam">
-                    <xsl:with-param name="url" select="$RequestURL" />
-                    <xsl:with-param name="par" select="'q'" />
-                  </xsl:call-template>
-                </xsl:variable>
-                <xsl:value-of select="decoder:decode($encodedQry, 'UTF-8')" />
-              </xsl:variable>
               <xsl:variable name="resolver">
                 <xsl:call-template name="substring-after-last">
                   <xsl:with-param name="string" select="$proxyBaseURL" />
@@ -99,10 +90,19 @@
               </xsl:variable>
               <xsl:choose>
                 <xsl:when test="$resolver = 'find'">
+                  <xsl:variable name="qry">
+                    <xsl:variable name="encodedQry">
+                      <xsl:call-template name="UrlGetParam">
+                        <xsl:with-param name="url" select="$RequestURL" />
+                        <xsl:with-param name="par" select="'q'" />
+                      </xsl:call-template>
+                    </xsl:variable>
+                    <xsl:value-of select="decoder:decode($encodedQry, 'UTF-8')" />
+                  </xsl:variable>
                   <input class="form-control" name="qry" placeholder="{i18n:translate('mir.placeholder.response.search')}" type="text" value="{$qry}"/>
                 </xsl:when>
                 <xsl:otherwise>
-              <input class="form-control" name="qry" placeholder="{i18n:translate('mir.placeholder.response.search')}" type="text" />
+                  <input class="form-control" name="qry" placeholder="{i18n:translate('mir.placeholder.response.search')}" type="text" />
                 </xsl:otherwise>
               </xsl:choose>
               <span class="input-group-btn">
