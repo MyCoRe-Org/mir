@@ -53,7 +53,7 @@
 -->
 
   <xsl:output method="xml" indent="yes"/>
-  
+
   <xsl:variable name="marcrelator" select="document('classification:metadata:-1:children:marcrelator')" />
 
   <xsl:template match="/">
@@ -117,7 +117,7 @@
   </xsl:template>
 
   <!-- tmee mods 3.5 -->
-  
+
   <xsl:template match="mods:name">
     <xsl:choose>
       <xsl:when test="mods:role/mods:roleTerm[@type='code']">
@@ -397,7 +397,7 @@
             <xsl:value-of select="concat($MCR.URN.Resolver.MasterURL, .)" />
         </xsl:when>
         <xsl:when test="@type='doi'">
-            <xsl:text>http://dx.doi.org/</xsl:text>
+            <xsl:text>https://dx.doi.org/</xsl:text>
             <xsl:value-of select="." />
         </xsl:when>
         <xsl:when test="@type='hdl'">

@@ -20,8 +20,8 @@ public abstract class MIREditorController extends MIRTestController {
     }
 
     protected void setInputText(String childElementName, String text) {
-        driver.waitAndFindElement(By.xpath(".//input[contains(@name,'" + childElementName + "')]")).clear();
-        driver.waitAndFindElement(By.xpath(".//input[contains(@name,'" + childElementName + "')]")).sendKeys(text);
+        driver.waitAndFindElement(By.xpath(".//input[contains(@name,'" + childElementName + "') and contains(@type, 'text')]")).clear();
+        driver.waitAndFindElement(By.xpath(".//input[contains(@name,'" + childElementName + "') and contains(@type, 'text')]")).sendKeys(text);
     }
 
     protected void setTextAreaText(String childElementName, String text) {

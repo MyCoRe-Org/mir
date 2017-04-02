@@ -172,6 +172,32 @@
           }
           return result;
         }
+      },
+      geographic : {
+        enabled : true,
+        url : "//ws.gbv.de/suggest/gnd/",
+        data : function(input) {
+            return {
+                searchterm : input,
+                type: "PlaceOrGeographicName"
+            }
+        },
+        dataType : "jsonp",
+        dataConvert : function(data) {
+            var result = [];
+            if (data.length == 4) {
+                $(data[1]).each(function(index, item) {
+                    if (parseType(data[2][index]) === "PlaceOrGeographicName") {
+                        var geographic = {
+                            label : item,
+                            value : data[3][index]
+                        };
+                        result.push(geographic);
+                    }
+                });
+            }
+            return result;
+        }
       }
     },
     VIAF : {
@@ -262,6 +288,9 @@
         }
       },
       topic : {
+        enabled : false
+      },
+      geographic : {
         enabled : false
       }
     }

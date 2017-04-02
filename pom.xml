@@ -59,9 +59,9 @@
     </notifiers>
   </ciManagement>
   <scm>
-    <connection>scm:git:https://github.com/MyCoRe-Org/mycore.git</connection>
-    <developerConnection>scm:git:https://github.com/MyCoRe-Org/mycore.git</developerConnection>
-    <url>https://github.com/MyCoRe-Org/mycore/tree/mir-2016.06.0.x</url>
+    <connection>scm:git:https://github.com/MyCoRe-Org/mir.git</connection>
+    <developerConnection>scm:git:https://github.com/MyCoRe-Org/mir.git</developerConnection>
+    <url>https://github.com/MyCoRe-Org/mir/tree/mir-2016.06.0.x</url>
   </scm>
   <distributionManagement>
     <site>
