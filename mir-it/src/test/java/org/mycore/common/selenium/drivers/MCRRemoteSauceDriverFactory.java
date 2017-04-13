@@ -31,11 +31,12 @@ public class MCRRemoteSauceDriverFactory extends MCRRemoteDriverFactory {
         }
         String version = readPropertyOrEnv("SELENIUM_VERSION", "");
         if (!version.equals("")) {
-            caps.setCapability("version", version);
+            caps.setCapability("seleniumVersion", version);
         }
         caps.setCapability("browserName", readPropertyOrEnv("SELENIUM_BROWSER", ""));
+        caps.setCapability("version", readPropertyOrEnv("SELENIUM_BROWSERVERSION", ""));
         caps.setCapability("platform", readPropertyOrEnv("SELENIUM_PLATFORM", ""));
-        caps.setCapability("build", readPropertyOrEnv("SAUCE_BAMBOO_BUILDNUMBER", ""));
+        caps.setCapability("build", readPropertyOrEnv("SAUCE_TRAVIS_BUILDNUMBER", ""));
         return caps;
     }
 
