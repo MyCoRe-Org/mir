@@ -17,11 +17,7 @@
   <xsl:variable name="sourcedoc" select="document(concat('mcrobject:',$objectID))" />
 
   <xsl:template match="/mycoreobject" priority="0" mode="metsmeta" xmlns:mods="http://www.loc.gov/mods/v3">
-    <mets:mdWrap MDTYPE="MODS">
-      <mets:xmlData>
         <xsl:apply-templates mode="mods2mods" />
-      </mets:xmlData>
-    </mets:mdWrap>
   </xsl:template>
 
   <xsl:template match="mycoreobject" priority="0" mode="fallBackEntity"
@@ -58,17 +54,17 @@
 
   <xsl:template match="mets:mets">
     <mets:mets>
-      <xsl:if test="not(mets:amdSec)">
-        <xsl:variable name="emptryAMDSec">
-          <mets:amdSec />
-        </xsl:variable>
-        <xsl:apply-templates select="xalan:nodeset($emptryAMDSec)" />
-      </xsl:if>
       <xsl:if test="not(mets:dmdSec)">
         <xsl:variable name="emptyDMDSec">
           <mets:dmdSec ID="dmd_{$derivateID}"/>
         </xsl:variable>
         <xsl:apply-templates select="xalan:nodeset($emptyDMDSec)" />
+      </xsl:if>
+      <xsl:if test="not(mets:amdSec)">
+        <xsl:variable name="emptryAMDSec">
+          <mets:amdSec />
+        </xsl:variable>
+        <xsl:apply-templates select="xalan:nodeset($emptryAMDSec)" />
       </xsl:if>
       <xsl:apply-templates />
     </mets:mets>
@@ -78,7 +74,6 @@
     <mets:dmdSec ID="dmd_{$derivateID}">
       <mets:mdWrap MDTYPE="MODS">
         <mets:xmlData>
-          <mods:mods>
             <xsl:apply-templates mode="metsmeta" select="$sourcedoc/mycoreobject" />
             <!-- TODO: add configurable template
             <mods:extension>
@@ -93,7 +88,6 @@
               </mir:entities>
             </mods:extension>
             -->
-          </mods:mods>
         </mets:xmlData>
       </mets:mdWrap>
     </mets:dmdSec>

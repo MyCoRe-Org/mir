@@ -30,4 +30,7 @@
     </xsl:choose>
   </xsl:template>
 
+  <xsl:template match="mods:originInfo[position()>1]">
+  </xsl:template>
+
 </xsl:stylesheet>

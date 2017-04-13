@@ -205,4 +205,16 @@
     </xsl:copy>
   </xsl:template>
 
+  <xsl:template match="mets:structMap[@TYPE='LOGICAL']/mets:div">
+    <xsl:copy>
+      <xsl:attribute name="DMDID">
+        <xsl:value-of select="concat('dmd_', $derivateID)"/>
+      </xsl:attribute>
+      <xsl:attribute name="ADMID">
+        <xsl:value-of select="concat('amd_', $derivateID)"/>
+      </xsl:attribute>
+      <xsl:apply-templates select="@*|node()" />
+    </xsl:copy>
+  </xsl:template>
+
 </xsl:stylesheet>

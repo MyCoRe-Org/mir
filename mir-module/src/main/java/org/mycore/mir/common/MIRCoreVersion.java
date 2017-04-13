@@ -1,6 +1,6 @@
 /*
- * $Id$ 
- * $Revision$ $Date$
+ * $RCSfile$
+ * $Revision: 1 $ $Date: 17.07.2009 $
  *
  * This file is part of ***  M y C o R e  ***
  * See http://www.mycore.de/ for details.
@@ -20,6 +20,7 @@
  * If not, write to the Free Software Foundation Inc.,
  * 59 Temple Place - Suite 330, Boston, MA  02111-1307 USA
  */
+
 package org.mycore.mir.common;
 
 import java.io.IOException;
@@ -27,23 +28,26 @@ import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.net.URL;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Properties;
+import java.util.stream.Collectors;
 
 /**
- * @author Ren\u00E9 Adler (eagle)
+ * @author Thomas Scheffler (yagee)
  *
  */
 public class MIRCoreVersion {
-
     private static Properties prop = loadVersionProperties();
 
-    public static final String VERSION = prop.getProperty("mir.version");
+    public static final String VERSION = prop.getProperty("git.build.version");
+
     public static final String BRANCH = prop.getProperty("git.branch");
 
+    public static final String REVISION = prop.getProperty("git.commit.id.full");
+    
+    public static final String DESCRIBE = prop.getProperty("git.commit.id.describe");
 
-    public static final String REVISION = getRevisionFromProperty();
-
-    public static final String COMPLETE = VERSION + " " + BRANCH + ":" + REVISION;
+    public static final String COMPLETE = VERSION + " " + BRANCH + ":" + DESCRIBE;
 
     public static String getVersion() {
         return VERSION;
@@ -51,33 +55,51 @@ public class MIRCoreVersion {
 
     private static Properties loadVersionProperties() {
         Properties props = new Properties();
-        URL propURL = MIRCoreVersion.class.getResource("/org/mycore/mir/version.properties");
-        try {
-            InputStream propStream = propURL.openStream();
-            try {
-                props.load(propStream);
-            } finally {
-                propStream.close();
-            }
+        URL gitPropURL = MIRCoreVersion.class.getResource("/org/mycore/mir/git.properties");
+        try (InputStream gitPropStream = getInputStream(gitPropURL);) {
+            props.load(gitPropStream);
         } catch (IOException e) {
             throw new UncheckedIOException("Error while initializing MIRCoreVersion.", e);
         }
         return props;
     }
 
+    private static InputStream getInputStream(URL gitPropURL) throws IOException {
+        if (gitPropURL == null) {
+            return new InputStream() {
+                @Override
+                public int read() throws IOException {
+                    return -1;
+                }
+            };
+        }
+        return gitPropURL.openStream();
+    }
+
+    public static String getBranch() {
+        return BRANCH;
+    }
+
     public static String getRevision() {
         return REVISION;
+    }
+
+    public static String getGitDescribe() {
+        return DESCRIBE;
     }
 
     public static String getCompleteVersion() {
         return COMPLETE;
     }
-
-    public static void main(String arg[]) {
-        System.out.printf(Locale.ROOT, "MIR\tver: %s\tbranch: %s\tcommit: %s%n", VERSION, BRANCH, REVISION);
+    
+    public static Map<String,String> getVersionProperties(){
+        return prop.entrySet()
+            .stream()
+            .collect(Collectors.toMap(e -> e.getKey().toString(), e -> e.getValue().toString()));
     }
 
-    private static String getRevisionFromProperty() {
-        return prop.getProperty("revision.number");
+    public static void main(String arg[]) throws IOException {
+        System.out.printf(Locale.ROOT, "MIR\tver: %s\tbranch: %s\tcommit: %s%n", VERSION, BRANCH, DESCRIBE);
+        prop.store(System.out, "Values of '/org/mycore/mir/git.properties' resource");
     }
 }

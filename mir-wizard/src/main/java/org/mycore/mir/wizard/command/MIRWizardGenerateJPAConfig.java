@@ -24,11 +24,6 @@ package org.mycore.mir.wizard.command;
 
 import java.io.File;
 
-import org.jdom2.Element;
-import org.jdom2.JDOMException;
-import org.jdom2.filter.Filters;
-import org.jdom2.xpath.XPathExpression;
-import org.jdom2.xpath.XPathFactory;
 import org.mycore.common.config.MCRConfigurationDir;
 import org.mycore.common.config.MCRConfigurationDirSetup;
 import org.mycore.common.content.MCRContent;
@@ -61,15 +56,6 @@ public class MIRWizardGenerateJPAConfig extends MIRWizardCommand {
 
             pXML.sendTo(file);
 
-            if (!buildXPath("//database/extra_properties//property[contains('schema|catalog', @name)]")
-                    .evaluate(getInputXML()).isEmpty()) {
-                file = new File(resDir, "mycore-jpa-defaults.xml");
-                transformer = new MCRXSLTransformer("xsl/" + source.getDocType() + "-orm.xsl");
-                MCRContent ormXML = transformer.transform(source);
-
-                ormXML.sendTo(file);
-            }
-
             MCRConfigurationDirSetup.loadExternalLibs();
 
             this.result.setResult(pXML.asXML().getRootElement().clone());
@@ -79,9 +65,5 @@ public class MIRWizardGenerateJPAConfig extends MIRWizardCommand {
             this.result.setResult(ex.toString());
             this.result.setSuccess(false);
         }
-    }
-
-    private XPathExpression<Element> buildXPath(String xPath) throws JDOMException {
-        return XPathFactory.instance().compile(xPath, Filters.element());
     }
 }

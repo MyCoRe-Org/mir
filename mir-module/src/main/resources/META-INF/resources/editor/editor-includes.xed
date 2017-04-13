@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 
-<xed:template xmlns:xed="http://www.mycore.de/xeditor" xmlns:mir="http://www.mycore.de/mir">
+<xed:template xmlns:xed="http://www.mycore.de/xeditor" xmlns:mir="http://www.mycore.de/mir"
+              xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+
+  <xsl:param name="MIR.PPN.DatabaseList" select="gvk"/>
 
   <xed:template id="in.out">
-    <xed:source uri="xslStyle:PPN-mods-simple,mir-PPN-import,mycoreobject-migrate-nameIdentifier,editor/mods2xeditor:http://unapi.gbv.de/?id=gvk:ppn:{$ppn}&amp;format=mods36" />
+    <xed:source uri="xslStyle:PPN-mods-simple,mir-PPN-import,mycoreobject-migrate-nameIdentifier,editor/mods2xeditor:http://unapi.gbv.de/?id={$MIR.PPN.DatabaseList}:ppn:{$ppn}&amp;format=mods36" />
     <xed:source uri="xslStyle:RDF-mods-journal,editor/mods2xeditor:http://ld.zdb-services.de/data/{$zdbid}.rdf" />
     <xed:source uri="xslStyle:editor/mods2xeditor:{$sourceUri}" />
     <xed:source uri="xslStyle:mycoreobject-editor,editor/mods2xeditor:mcrobject:{$id}" />
@@ -809,7 +812,7 @@
   <xed:template id="date.range.extended.datetimepicker">
     <fieldset class="dateExtended_box">
       <legend class="mir-fieldset-legend hiddenDetail">
-        <div class="form-group datetimepicker">
+        <div class="form-group datetimepicker {$xed-validation-marker}">
           <label class="col-md-3 control-label">
             <xed:output i18n="mir.date.issued.range" />
           </label>
@@ -940,7 +943,7 @@
           </div>
         </div>
         <xed:repeat xpath="mods:identifier[not(@type='doi')]" min="1" max="10">
-          <div class="form-group">
+          <div class="form-group {$xed-validation-marker}">
             <div class="col-md-3" style="text-align:right; font-weight:bold;">
               <xed:bind xpath="@type" name="type">
                 <select class="form-control mir_idselect" >
@@ -955,7 +958,7 @@
               </xed:bind>
             </div>
             <div class="col-md-6">
-              <input type="text" size="30" class="form-control form-control-inline {$xed-validation-marker}" />
+              <input type="text" size="30" class="form-control form-control-inline" />
             </div>
             <mir:help-pmud help-text="{i18n:mir.help.identifier}" pmud="true" />
           </div>
@@ -968,7 +971,7 @@
       </xed:when>
       <xed:otherwise>
         <xed:repeat xpath="mods:identifier" min="1" max="10">
-          <div class="form-group">
+          <div class="form-group {$xed-validation-marker}">
             <div class="col-md-3" style="text-align:right; font-weight:bold;">
               <xed:bind xpath="@type" name="type">
                 <select class="form-control">
@@ -983,7 +986,7 @@
               </xed:bind>
             </div>
             <div class="col-md-6">
-              <input type="text" size="30" class="form-control form-control-inline {$xed-validation-marker}" />
+              <input type="text" size="30" class="form-control form-control-inline" />
             </div>
             <mir:help-pmud help-text="{i18n:mir.help.identifier}" pmud="true" />
           </div>
@@ -1568,7 +1571,36 @@
   </xed:template>
 
   <xed:template id="geographic">
-    <mir:textfield xpath="mods:subject/mods:geographic" label="mir.geographic" help-text="{i18n:mir.help.cartographics.place}" class="mir-modspart" />
+    <mir:geographic.repeated min="1" max="10" label="mir.geographic" help-text="{i18n:mir.help.cartographics.place}" />
+  </xed:template>
+
+  <xed:template id="geographic.complex">
+    <mir:geographic.repeated min="1" max="10" label="mir.geographic" help-text="{i18n:mir.help.cartographics.place}" extended="true" />
+  </xed:template>
+
+  <xed:template id="geographic.input">
+    <div class="geographic-search">
+      <input type="text" size="26" class="form-control form-control-inline" data-search="searchEntity" data-search-type="GND"
+             data-search-entity-type="geographic" data-search-output=".geographic_gnd" data-search-output-type=".geographic_gndType" data-search-button="{i18n:button.search}"
+             data-search-button-loading="{i18n:button.loading}" data-search-result-empty="{i18n:mir.searchIdentifier.noResult}" data-next=".geographicExtended-container"/>
+    </div>
+  </xed:template>
+
+  <xed:template id="geographicIdentifier">
+    <div class="form-group">
+      <label class="col-md-3 control-label">
+        <xed:output i18n="mir.geographic.gnd.type" />
+      </label>
+      <div class="col-md-6">
+        <xed:bind xpath="@valueURIxEditor">
+          <input type="text" size="20" class="form-control form-control-inline geographic_gnd" />
+        </xed:bind>
+        <xed:bind xpath="@authority" initially="gnd">
+          <input type="hidden" class="geographic_gndType" />
+        </xed:bind>
+      </div>
+      <mir:help-pmud help-text="{i18n:mir.help.geographicIdentifier}" pmud="false" />
+    </div>
   </xed:template>
 
   <xed:template id="cartographics">
@@ -1716,13 +1748,12 @@
 
   <xed:template id="subject.simple">
     <xed:bind xpath="mods:subject">
-      <mir:textfield repeat="true" xpath="mods:topicSimple" min="1" max="10" label="mir.subject.topic" help-text="{i18n:mir.help.subject.topic}" />
-      <mir:topic.repeated min="1" max="10" label="mir.subject.topic.gnd" help-text="{i18n:mir.help.subject.topic.gnd}" />
+      <mir:topic.repeated min="1" max="10" label="mir.subject.topic" help-text="{i18n:mir.help.subject.topic.gnd}" />
     </xed:bind>
   </xed:template>
 
   <xed:template id="subject.complex">
-    <xed:repeat xpath="mods:subject" min="1" max="10">
+    <xed:repeat xpath="mods:subject[not(mods:geographic)]" min="1" max="10">
       <fieldset>
         <div class="row mir-fieldset-legend">
           <legend class="col-md-9" style="margin-bottom:0px;padding-top:10px;">
@@ -1731,8 +1762,7 @@
           <mir:help-pmud pmud="true" help-text="{i18n:mir.help.subject.topic.complex}" />
         </div>
         <div class="mir-fieldset-content">
-          <mir:textfield repeat="true" xpath="mods:topicSimple" min="1" max="10" label="mir.subject.topic" help-text="{i18n:mir.help.subject.topic}" />
-          <mir:topic.repeated min="1" max="10" label="mir.subject.topic.gnd" help-text="{i18n:mir.help.subject.topic.gnd}" extended="true" />
+          <mir:topic.repeated min="1" max="10" label="mir.subject.topic" help-text="{i18n:mir.help.subject.topic.gnd}" extended="true" />
         </div>
       </fieldset>
     </xed:repeat>
@@ -2073,6 +2103,7 @@
     <xed:validate xpath="//mods:mods/mods:identifier[@type='doi']" matches="10\.\d+.*" i18n="mir.validation.doi" display="global" />
     <xed:validate xpath="//mods:mods/mods:identifier[@type='hdl']" matches="\S+/\S+" i18n="mir.validation.handle" display="global" />
     <xed:validate xpath="//mods:mods/mods:identifier[@type='urn']" matches="urn:nbn:[a-z]{2}:\S*" i18n="mir.validation.urn" display="global" />
+    <xed:validate xpath="//mods:mods/mods:identifier[@type='ppn']" class="org.mycore.mir.validation.MIRValidationHelper" method="validatePPN" display="global" i18n="mir.validation.ppn" />
     <xed:validate xpath="//mods:url|//mods:abstract/@xlink:href" matches="(ftp|http|https)://[\w\d.]+\S*" i18n="mir.validation.url" display="global" />
     <xed:validate xpath="//mods:*[@encoding='w3cdtf']" matches="\d{4}(\-\d{2}(\-\d{2})?)?" type="datetime" format="yyyy;yyyy-MM;yyyy-MM-dd" i18n="mir.validation.date"
       display="global" />
@@ -2086,12 +2117,15 @@
     <xed:cleanup-rule xpath="//mods:name/@authorityURI" relevant-if="(string-length(../@valueURI) &gt; 0) or (string-length(../@valueURIxEditor) &gt; 0)" />
     <xed:cleanup-rule xpath="//mods:topic/@authorityURI" relevant-if="(string-length(../@valueURI) &gt; 0) or (string-length(../@valueURIxEditor) &gt; 0)" />
     <xed:cleanup-rule xpath="//mods:topic/@authority" relevant-if="(string-length(../@valueURI) &gt; 0) or (string-length(../@valueURIxEditor) &gt; 0)" />
+    <xed:cleanup-rule xpath="//mods:geographic/@authorityURI" relevant-if="(string-length(../@valueURI) &gt; 0) or (string-length(../@valueURIxEditor) &gt; 0)" />
+    <xed:cleanup-rule xpath="//mods:geographic/@authority" relevant-if="(string-length(../@valueURI) &gt; 0) or (string-length(../@valueURIxEditor) &gt; 0)" />
     <xed:cleanup-rule xpath="//mods:name/mods:namePart" relevant-if="string-length(text()) &gt; 0" />
     <xed:cleanup-rule xpath="//mods:name/mods:namePart/@type" relevant-if="../@type!='other'" />
     <xed:cleanup-rule xpath="//mods:*/@xlink:type" relevant-if="text()!='simple'" />
     <xed:cleanup-rule xpath="//mods:detail" relevant-if="mods:number|mods:caption|mods:title" />
     <xed:cleanup-rule xpath="//mods:accessCondition[@type='copyrightMD']" relevant-if="string-length(cmd:copyright/cmd:rights.holder/cmd:name/text()) &gt; 0" />
     <xed:cleanup-rule xpath="//mods:accessCondition[@type='restriction on access']" relevant-if="string-length(text()) &gt; 0" />
+    <xed:cleanup-rule xpath="//mods:accessCondition[@type='use and reproduction']" relevant-if="string-length(text()) &gt; 0" />
     <xed:cleanup-rule xpath="//mods:extension[@displayLabel='characteristics']" relevant-if="(string-length(chars/@year) &gt; 0) or (string-length(chars/@refereed) &gt; 0)" />
     <xed:cleanup-rule xpath="//structure/parents" relevant-if="false()" />
   </xed:template>

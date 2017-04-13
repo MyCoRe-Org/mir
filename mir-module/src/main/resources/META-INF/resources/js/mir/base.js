@@ -159,20 +159,21 @@
     //change search string on result page
     $( ".search_box form" ).submit(function( event ) {
       var origSearchAction = $(this).attr('action');
+      var addValue = encodeURIComponent(solrEscapeSearchValue($('.search_box input').val().trim()));
       if (origSearchAction.includes('servlets/solr/find')) {
         var replAction = origSearchAction.replace(/(.*[&|\?])(q=.*?)&(.*)/,'$1$3&');
         if ($('#search_type_button').attr('value') == 'all') {
-            var newAction = replAction + "q=" + $('.search_box input').val();
+            var newAction = replAction + "q=" + addValue;
           } else {
-            var newAction = replAction + "q=" + $('.search_box input').val() + "&df=" + $('#search_type_button').attr('value');
+            var newAction = replAction + "q=" + addValue + "&df=" + $('#search_type_button').attr('value');
           }
       }
       else {
         var replAction = origSearchAction.replace(/(.*[&|\?])(q=.*?)&(.*)/,'$1$3&$2');
         if ($('#search_type_button').attr('value') == 'all') {
-            var newAction = replAction + "+%2BallMeta:" + $('.search_box input').val();
+            var newAction = replAction + "+%2BallMeta:" + addValue;
           } else {
-            var newAction = replAction + "+%2B" + $('#search_type_button').attr('value') + ":" + $('.search_box input').val();
+            var newAction = replAction + "+%2B" + $('#search_type_button').attr('value') + ":" + addValue;
           }
       }
 
@@ -193,11 +194,19 @@
 
     // Search
     $("#index_search_form").submit(function () {
-      if ($('#index_search').val().match('[^\\.]\\*' + '$')) {
-        $('#index_search').val($('#index_search').val().replace('*','.*'));
+      if ($('#index_search').val().match('^((?!\\.\\*).)*' + '$')) {
+        if ($('#index_search').val().match('[^\\.]\\*' + '$') || $('#index_search').val() === "*"){
+          $('#index_search').val($('#index_search').val().replace('*','.*'));
+        }
+        else {
+          $('#index_search').val($('#index_search').val()+".*");
+        }
       }
-      else {
-        $('#index_search').val($('#index_search').val()+".*");
+    });
+
+    $(".search_form").submit(function (evt) {
+      if($(this).find("input[name='qry']").val().trim() == '') {
+          evt.preventDefault();
       }
     });
 
@@ -378,7 +387,11 @@
       }).done(function (result) {
         window.location.search="XSL.Status.Message=component.pi.register.doi.success&XSL.Status.Style=success";
       }).fail(function (result) {
-        window.location.search="XSL.Status.Message=component.pi.register.doi.error&XSL.Status.Style=danger";
+        if("responseJSON" in result && "code" in result.responseJSON){
+            window.location.search="XSL.Status.Message=component.pi.register.error." + result.responseJSON.code +"&XSL.Status.Style=danger";
+        } else {
+            window.location.search="XSL.Status.Message=component.pi.register.doi.error&XSL.Status.Style=danger";
+        }
       });
     });
 
@@ -390,6 +403,10 @@
       $("a.readless", this).remove();
     }
   };
+  
+  window.solrEscapeSearchValue = function base_solrEscapeSearchValue(text){
+	  return text.replace(/([\\!&|+\\-\\(\\)\\{\\}\\\[\\\]~:\\\\/^])/g, "\\$1"); // special chars: "!&|+-(){}[]~:\\/^"
+  }
 
 
   window.fireMirSSQuery = function base_fireMirSSQuery(form) {

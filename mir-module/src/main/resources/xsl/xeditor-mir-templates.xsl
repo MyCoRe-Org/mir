@@ -208,10 +208,7 @@
       <xsl:apply-templates select="." mode="inputOptions" />
       <xsl:if test="not(@inlcudeOnly = 'true')">
         <option value="">
-          <xed:multi-lang>
-            <xed:lang xml:lang="de">(bitte wählen)</xed:lang>
-            <xed:lang xml:lang="en">(please select)</xed:lang>
-          </xed:multi-lang>
+          <xed:output i18n="mir.select" />
         </option>
       </xsl:if>
       <xed:include uri="{@uri}" />

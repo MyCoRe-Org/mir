@@ -26,7 +26,7 @@
         </xsl:choose>
       </xsl:variable>
       <xsl:variable name="from" select="$now-1year" />
-      <xsl:variable name="until" select="ex:format-date($now,'yyyy-MM')" />
+      <xsl:variable name="until" select="ex:format-date($now,'yyyy-MM-dd')" />
       <xsl:variable name="objID" select="mycoreobject/@ID" />
       <div id="mir-oastatistics">
         <span><strong><xsl:value-of select="concat(i18n:translate('mir.oas.total'),':')" /></strong></span>
@@ -59,7 +59,7 @@
         <div class="row">
           <div class="col-md-7 col-sm-9 col-xs-6 text-right"><xsl:value-of select="i18n:translate('mir.oas.counter.abstract')" /></div>
           <div data-oaselementtype="OASInline"
-              data-oasproviderurl="{$WebApplicationBaseURL}graphprovider/"
+            data-oasproviderurl="{$MIR.OAS.GraphProviderURL}" 
               data-oasidentifier="{$MIR.OAS.Prefix}:{$objID}"
               data-oascounttype="counter_abstract"
               data-oasfrom="{$from}" data-oasuntil="{$until}"

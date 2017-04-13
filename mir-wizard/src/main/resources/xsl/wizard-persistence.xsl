@@ -23,45 +23,75 @@
   </xsl:template>
 
   <xsl:template match="*" mode="template">
-    <xsl:copy>
-      <xsl:choose>
-        <xsl:when test="name() = 'persistence-unit'">
-          <xsl:copy-of select="@*" />
-          <xsl:if test="xalan:nodeset($cfg)//extra_properties//property[contains('schema|catalog', @name)]">
-            <xsl:element name="mapping-file" xmlns="http://java.sun.com/xml/ns/persistence">
-              <xsl:text>META-INF/mycore-jpa-defaults.xml</xsl:text>
-            </xsl:element>
-          </xsl:if>
-          <xsl:apply-templates mode="template" />
-        </xsl:when>
-        <xsl:when test="name() = 'property'">
-          <xsl:copy-of select="@*[name() != 'value']" />
-          <xsl:attribute name="value">
-            <xsl:choose>
-              <xsl:when test="@name = 'javax.persistence.jdbc.driver'">
-                <xsl:value-of select="xalan:nodeset($cfg)//driver" />
-              </xsl:when>
-              <xsl:when test="@name = 'javax.persistence.jdbc.url'">
-                <xsl:value-of select="xalan:nodeset($cfg)//url" />
-              </xsl:when>
-              <xsl:when test="@name = 'javax.persistence.jdbc.user'">
-                <xsl:value-of select="xalan:nodeset($cfg)//username" />
-              </xsl:when>
-              <xsl:when test="@name = 'javax.persistence.jdbc.password'">
-                <xsl:value-of select="xalan:nodeset($cfg)//password" />
-              </xsl:when>
-              <xsl:otherwise>
-                <xsl:value-of select="@value" />
-              </xsl:otherwise>
-            </xsl:choose>
-          </xsl:attribute>
-        </xsl:when>
-        <xsl:otherwise>
+
+    <xsl:choose>
+      <xsl:when test="name() = 'persistence-unit'">
+        <xsl:copy>
           <xsl:copy-of select="@*" />
           <xsl:apply-templates mode="template" />
-        </xsl:otherwise>
-      </xsl:choose>
-    </xsl:copy>
+        </xsl:copy>
+      </xsl:when>
+      <xsl:when test="name() = 'property'">
+        <xsl:choose>
+          <xsl:when test="@name = 'hibernate.default_schema'">
+            <xsl:if test="string-length(xalan:nodeset($cfg)//extra_properties//property[@name='schema']) &gt; 0">
+              <xsl:copy>
+                <xsl:copy-of select="@*[name() != 'value']" />
+                <xsl:attribute name="value">
+                  <xsl:value-of select="xalan:nodeset($cfg)//extra_properties//property[@name='schema']" />
+                </xsl:attribute>
+              </xsl:copy>
+            </xsl:if>
+          </xsl:when>
+          <xsl:when test="@name = 'hibernate.default_catalog'">
+            <xsl:if test="string-length(xalan:nodeset($cfg)//extra_properties//property[@name='catalog']) &gt; 0">
+              <xsl:copy>
+                <xsl:copy-of select="@*[name() != 'value']" />
+                <xsl:attribute name="value">
+                  <xsl:value-of select="xalan:nodeset($cfg)//extra_properties//property[@name='catalog']" />
+                </xsl:attribute>
+              </xsl:copy>
+            </xsl:if>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:copy>
+              <xsl:copy-of select="@*[name() != 'value']" />
+              <xsl:attribute name="value">
+                <xsl:choose>
+                  <xsl:when test="@name = 'javax.persistence.jdbc.driver'">
+                    <xsl:value-of select="xalan:nodeset($cfg)//driver" />
+                  </xsl:when>
+                  <xsl:when test="@name = 'javax.persistence.jdbc.url'">
+                    <xsl:value-of select="xalan:nodeset($cfg)//url" />
+                  </xsl:when>
+                  <xsl:when test="@name = 'javax.persistence.jdbc.user'">
+                    <xsl:value-of select="xalan:nodeset($cfg)//username" />
+                  </xsl:when>
+                  <xsl:when test="@name = 'javax.persistence.jdbc.password'">
+                    <xsl:value-of select="xalan:nodeset($cfg)//password" />
+                  </xsl:when>
+                  <xsl:when test="@name = 'hibernate.default_schema'">
+                    <xsl:value-of select="xalan:nodeset($cfg)//extra_properties//property[@name='schema']" />
+                  </xsl:when>
+                  <xsl:when test="@name = 'hibernate.default_catalog'">
+                    <xsl:value-of select="xalan:nodeset($cfg)//extra_properties//property[@name='catalog']" />
+                  </xsl:when>
+                  <xsl:otherwise>
+                    <xsl:value-of select="@value" />
+                  </xsl:otherwise>
+                </xsl:choose>
+              </xsl:attribute>
+            </xsl:copy>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:copy>
+          <xsl:copy-of select="@*" />
+          <xsl:apply-templates mode="template" />
+        </xsl:copy>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
 
   <xsl:template match="comment()" mode="template">
