@@ -421,7 +421,6 @@
           <xsl:element name="cc:place">
             <xsl:value-of select="$place"/>
           </xsl:element>
-          <cc:address cc:Scheme="DIN5008" />
         </xsl:element>
         <xsl:element name="cc:address">
           <xsl:attribute name="cc:Scheme">DIN5008</xsl:attribute>
