@@ -47,10 +47,10 @@ public class MCRRemoteSauceDriverFactory extends MCRRemoteDriverFactory {
         String host = readPropertyOrEnv("SELENIUM_HOST", "");
         String port = readPropertyOrEnv("SELENIUM_PORT", "");
         WebDriver remoteDriver = null;
-        System.out.println("https://" + username + ":" + accessKey + "@" + host + ":" + port + "/wd/hub");
+        System.out.println("http://" + username + ":" + accessKey + "@" + host + ":" + port + "/wd/hub");
         try {
             remoteDriver = new RemoteWebDriver(
-                    new URL("https://" + username + ":" + accessKey + "@" + host + ":" + port + "/wd/hub"), getCapabilities());
+                    new URL("http://" + username + ":" + accessKey + "@" + host + ":" + port + "/wd/hub"), getCapabilities());
         } catch (MalformedURLException e) {
             e.printStackTrace();
             return remoteDriver;
