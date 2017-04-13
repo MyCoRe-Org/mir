@@ -20,6 +20,8 @@ env:
     - FIREFOX_BIN=$(which firefox)
     - SELENIUM_BROWSER="chrome"
     - SELENIUM_VERSION="3.3.1"
+    - SELENIUM_HOST="ondemand.saucelabs.com"
+    - SELENIUM_PORT="443"
 before_install:
   - "/sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- $XVFBARGS"
 
