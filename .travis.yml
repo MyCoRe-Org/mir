@@ -8,6 +8,9 @@ addons:
   apt:
     packages:
     - google-chrome-stable
+  sauce_connect:
+    username: "MIR_SauceLab"
+    access_key: "a7f4c30a-ad90-4d68-82ba-f4fb5e31a8f8"
 cache:
   directories:
     - $HOME/.m2/repository
@@ -18,6 +21,8 @@ env:
     - GECKODRIVER_VERSION="0.12.0"
     - XVFBARGS=":99 -ac -screen 0 1280x1024x24 -ac +extension GLX +extension RANDR +render -noreset"
     - FIREFOX_BIN=$(which firefox)
+    - SELENIUM_BROWSER="chrome"
+    - SELENIUM_VERSION="3.3.1"
 before_install:
   - "/sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- $XVFBARGS"
 
@@ -42,7 +47,7 @@ before_script:
 script:
   - mkdir ${HOME}/tmp
   - export TMPDIR="${HOME}/tmp"
-  - mvn -B -P!standard-with-extra-repos -Djetty -DDriverProvider=org.mycore.common.selenium.drivers.MCRChromeDriverFactory clean install && mvn -P!standard-with-extra-repos -B javadoc:javadoc && mvn com.gavinmogan:codacy-maven-plugin:coverage -DcoverageReportFile=target/site/jacoco/jacoco.xml -DfailOnMissingReportFile=false
+  - mvn -B -P!standard-with-extra-repos -Djetty -DDriverProvider=org.mycore.common.selenium.drivers.MCRRemoteSauceDriverFactory clean install && mvn -P!standard-with-extra-repos -B javadoc:javadoc && mvn com.gavinmogan:codacy-maven-plugin:coverage -DcoverageReportFile=target/site/jacoco/jacoco.xml -DfailOnMissingReportFile=false
 after_failure:
   - sh travis/autodeploy.sh "$TRAVIS_BUILD_NUMBER-$TRAVIS_EVENT_TYPE-$TRAVIS_PULL_REQUEST" "https://MyCoRe-Travis:$GITHUB_TOKEN@github.com/MyCoRe-Travis/MIR_test_artifacts.git"
 
