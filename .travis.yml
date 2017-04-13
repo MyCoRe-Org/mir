@@ -25,7 +25,7 @@ env:
     - SELENIUM_BROWSERVERSION="57.0"
     - SELENIUM_PLATFORM="Windows 10"
     - SELENIUM_VERSION="3.3.1"
-    - SELENIUM_HOST="localhost"
+    - SELENIUM_HOST="ondemand.saucelabs.com"
     - SELENIUM_PORT="4445"
     - SAUCE_TRAVIS_BUILDNUMBER=$TRAVIS_BUILD_NUMBER
 before_install:
