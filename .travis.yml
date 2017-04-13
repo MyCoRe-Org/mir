@@ -11,7 +11,6 @@ addons:
   sauce_connect:
     username: "MIR_SauceLab"
     access_key: "a7f4c30a-ad90-4d68-82ba-f4fb5e31a8f8"
-    se-port: "9102"
 cache:
   directories:
     - $HOME/.m2/repository
@@ -26,8 +25,8 @@ env:
     - SELENIUM_BROWSERVERSION="57.0"
     - SELENIUM_PLATFORM="Windows 10"
     - SELENIUM_VERSION="3.3.1"
-    - SELENIUM_HOST="ondemand.saucelabs.com"
-    - SELENIUM_PORT="443"
+    - SELENIUM_HOST="localhost"
+    - SELENIUM_PORT="4445"
     - SAUCE_TRAVIS_BUILDNUMBER=$TRAVIS_BUILD_NUMBER
 before_install:
   - "/sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- $XVFBARGS"
