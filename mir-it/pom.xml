@@ -14,7 +14,7 @@
     <MCR.AppName>mir</MCR.AppName>
     <MCR.Home.Integration>${project.build.directory}/mycore-home</MCR.Home.Integration>
     <selenium.version>3.3.1</selenium.version>
-    <cargo.servlet.port>4445</cargo.servlet.port>
+    <cargo.servlet.port>9102</cargo.servlet.port>
     <solr.version>4.10.4</solr.version>
     <solr.home>${MCR.Home.Integration}/solr-home</solr.home>
     <cargo.jvmargs>
