@@ -495,19 +495,9 @@
   <dependencyManagement>
     <dependencies>
       <dependency>
-        <groupId>com.yahoo.platform.yui</groupId>
-        <artifactId>yuicompressor</artifactId>
-        <version>2.4.8</version>
-      </dependency>
-      <dependency>
         <groupId>de.erichseifert.vectorgraphics2d</groupId>
         <artifactId>VectorGraphics2D</artifactId>
         <version>0.11</version>
-      </dependency>
-      <dependency>
-        <groupId>io.bit3</groupId>
-        <artifactId>jsass</artifactId>
-        <version>4.1.0</version>
       </dependency>
       <dependency>
         <groupId>org.mycore</groupId>
