@@ -10,7 +10,7 @@
 
   <xsl:template match="/">
     <!-- MIR-339 solr query if there is any "mp4" file in this object? -->
-    <xsl:variable name="solrQuery" select="concat('+(stream_content_type:video/mp4 OR stream_content_type:audio/mpeg) +returnId:',mcrsolru:escapeSearchValue(mycoreobject/@ID))" />
+    <xsl:variable name="solrQuery" select="concat('+(stream_content_type:video/mp4 OR stream_content_type:audio/mpeg OR stream_content_type:audio/x-wav) +returnId:',mcrsolru:escapeSearchValue(mycoreobject/@ID))" />
     <xsl:if test="mcrsolr:getNumFound($solrQuery) &gt; 0">
       <div id="mir-player">
         <xsl:variable name="playerNodesTmp">
@@ -68,6 +68,19 @@
                   </p>
                 </audio>
               </xsl:if>
+              <xsl:if test="$playerSourceNode//optgroup/option[@data-type='wav']">
+                <audio id="player_audio" class="video-js embed-responsive-item" controls="" preload="auto" poster="">
+                  <xsl:attribute name="data-setup">{}</xsl:attribute>
+                  <xsl:if test="count($playerSourceNode//div[@class='source-container']) = 1">
+                    <xsl:copy-of select="$playerSourceNode//div[@class='source-container' and @data-type='wav']/source" />
+                  </xsl:if>
+                  <p class="vjs-no-js">
+                    To listen to this audio file please enable JavaScript, and consider upgrading
+                    to a web browser that
+                    <a href="http://caniuse.com/audio">supports HTML5 audio</a>
+                  </p>
+                </audio>
+              </xsl:if>
             </div>
           </xsl:if>
         </xsl:variable>
@@ -87,7 +100,7 @@
   <xsl:template match="derobject" mode="optionSources">
     <!-- MIR-339 solr query if there is any "mp4" file in a derivate? -->
     <xsl:if
-      test="key('rights', @xlink:href)/@read and mcrsolr:getNumFound(concat('+(stream_content_type:video/mp4 OR stream_content_type:audio/mpeg) +derivateID:',mcrsolru:escapeSearchValue(@xlink:href))) &gt; 0"
+      test="key('rights', @xlink:href)/@read and mcrsolr:getNumFound(concat('+(stream_content_type:video/mp4 OR stream_content_type:audio/mpeg OR stream_content_type:audio/x-wav) +derivateID:',mcrsolru:escapeSearchValue(@xlink:href))) &gt; 0"
     >
       <xsl:variable name="ifsDirectory" select="document(concat('ifs:',@xlink:href,'/'))" />
       <xsl:apply-templates select="." mode="options">
@@ -104,7 +117,7 @@
     <xsl:variable name="href" select="@xlink:href" />
     <optgroup label="{$href}">
       <xsl:for-each select="$ifsDirectory/mcr_directory/children/child">
-        <xsl:if test="@type='file' and (FilenameUtils:getExtension(./name) = 'mp4' or FilenameUtils:getExtension(./name) = 'mp3')">
+        <xsl:if test="@type='file' and (FilenameUtils:getExtension(./name) = 'mp4' or FilenameUtils:getExtension(./name) = 'mp3' or FilenameUtils:getExtension(./name) = 'wav')">
           <option value="{$href}-{position()}" data-type="{FilenameUtils:getExtension(./name)}">
             <xsl:value-of select="./name" />
           </option>
@@ -117,7 +130,7 @@
     <xsl:param name="ifsDirectory" />
     <xsl:variable name="href" select="@xlink:href" />
     <xsl:for-each select="$ifsDirectory/mcr_directory/children/child">
-      <xsl:if test="@type='file' and (FilenameUtils:getExtension(./name) = 'mp4' or FilenameUtils:getExtension(./name) = 'mp3')">
+      <xsl:if test="@type='file' and (FilenameUtils:getExtension(./name) = 'mp4' or FilenameUtils:getExtension(./name) = 'mp3' or FilenameUtils:getExtension(./name) = 'wav')">
         <div id="{$href}-{position()}" class="source-container" data-type="{FilenameUtils:getExtension(./name)}">
           <xsl:copy-of select="media:getSources($href, ./name, $UserAgent)" />
         </div>
