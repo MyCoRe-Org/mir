@@ -223,8 +223,21 @@
               </xsl:attribute>
             </xsl:if>
             <xsl:element name="pc:name">
-              <xsl:attribute name="type">nameUsedByThePerson</xsl:attribute>
               <xsl:choose>
+                <xsl:when test="@type='corporate'">
+                  <xsl:attribute name="type">otherName</xsl:attribute>
+                  <xsl:attribute name="otherNameType">organisation</xsl:attribute>
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:attribute name="type">nameUsedByThePerson</xsl:attribute>
+                </xsl:otherwise>
+              </xsl:choose>
+              <xsl:choose>
+                <xsl:when test="@type='corporate'">
+                  <xsl:element name="pc:organisationName">
+                    <xsl:value-of select="mods:displayForm" />
+                  </xsl:element>
+                </xsl:when>
                 <xsl:when test="mods:nameIdentifier[@type='gnd']">
                   <xsl:variable name="gndURL" select="concat('http://d-nb.info/gnd/',normalize-space(mods:nameIdentifier[@type='gnd']),'/about/lds.rdf')" />
                   <xsl:variable name="gndEntry" select="document($gndURL)" />
@@ -395,6 +408,9 @@
       <xsl:element name="dc:type">
         <xsl:attribute name="xsi:type">dini:PublType</xsl:attribute>
         <xsl:choose>
+          <xsl:when test="contains(./metadata/def.modsContainer/modsContainer/mods:mods/mods:classification/@authorityURI,'diniPublType')">
+            <xsl:value-of select="substring-after(./metadata/def.modsContainer/modsContainer/mods:mods/mods:classification[contains(@authorityURI,'diniPublType')]/@valueURI,'diniPublType#')" />
+          </xsl:when>
           <xsl:when test="contains(./metadata/def.modsContainer/modsContainer/mods:mods/mods:genre/@valueURI, 'article')">
             <xsl:text>contributionToPeriodical</xsl:text>
           </xsl:when>
@@ -445,33 +461,42 @@
     </xsl:template>
 
     <xsl:template name="format">
-        <xsl:for-each select="./structure/derobjects/derobject[1]">
-
-           <xsl:for-each select="document(concat('ifs:',./@xlink:href,'/'))/mcr_directory/children/child">
-<!--        <xsl:for-each select="document($detailsURL)/mcr_results/mcr_result/mycorederivate/derivate"> -->
-                    <xsl:choose>
-                       <xsl:when test="contains(./contentType,'ps')">
-<!--          <xsl:when test="contains(./internals/internal/@maindoc, '.ps')"> -->
-                       <xsl:element name="dcterms:medium">
-                            <xsl:attribute name="xsi:type">dcterms:IMT</xsl:attribute>
-                              <xsl:text>application/postscript</xsl:text>
-                       </xsl:element>
-                        </xsl:when>
-                       <xsl:when test="contains(./contentType,'pdf')">
-                       <xsl:element name="dcterms:medium">
-                            <xsl:attribute name="xsi:type">dcterms:IMT</xsl:attribute>
-                            <xsl:text>application/pdf</xsl:text>
-                       </xsl:element>
-                        </xsl:when>
+      <xsl:for-each select="./structure/derobjects/derobject[1]">
+        <xsl:for-each select="document(concat('ifs:',./@xlink:href,'/'))/mcr_directory/children/child">
+          <xsl:choose>
+            <xsl:when test="contains(./contentType,'ps')">
+              <xsl:element name="dcterms:medium">
+                <xsl:attribute name="xsi:type">dcterms:IMT</xsl:attribute>
+                <xsl:text>application/postscript</xsl:text>
+              </xsl:element>
+            </xsl:when>
+            <xsl:when test="contains(./contentType,'pdf')">
+              <xsl:element name="dcterms:medium">
+                <xsl:attribute name="xsi:type">dcterms:IMT</xsl:attribute>
+                <xsl:text>application/pdf</xsl:text>
+              </xsl:element>
+            </xsl:when>
+            <xsl:when test="contains(./contentType,'audio/mpeg')">
+              <xsl:element name="dcterms:medium">
+                <xsl:attribute name="xsi:type">dcterms:IMT</xsl:attribute>
+                <xsl:text>audio/mpeg</xsl:text>
+              </xsl:element>
+            </xsl:when>
+            <xsl:when test="contains(./contentType,'audio/x-wav')">
+              <xsl:element name="dcterms:medium">
+                <xsl:attribute name="xsi:type">dcterms:IMT</xsl:attribute>
+                <xsl:text>audio/x-wav</xsl:text>
+              </xsl:element>
+            </xsl:when>
             <xsl:when test="contains(./contentType,'zip')">
-             <xsl:element name="dcterms:medium">
-                            <xsl:attribute name="xsi:type">dcterms:IMT</xsl:attribute>
-                            <xsl:text>application/zip</xsl:text>
-                       </xsl:element>
-                        </xsl:when>
-                    </xsl:choose>
-            </xsl:for-each>
+              <xsl:element name="dcterms:medium">
+                <xsl:attribute name="xsi:type">dcterms:IMT</xsl:attribute>
+                <xsl:text>application/zip</xsl:text>
+              </xsl:element>
+            </xsl:when>
+          </xsl:choose>
         </xsl:for-each>
+      </xsl:for-each>
     </xsl:template>
 
     <xsl:template name="language">
@@ -625,14 +650,18 @@
         <xsl:for-each select="./structure/derobjects/derobject[1]">
             <xsl:variable name="derId" select="@xlink:href" />
             <xsl:variable name="ifsDirectory" select="document(concat('ifs:',$derId,'/'))" />
-            <xsl:variable name="isPdfDerivate">
+            <xsl:variable name="isRelevantDerivate">
               <xsl:for-each select="$ifsDirectory/mcr_directory/children/child[@type='file']">
-                <xsl:if test="contains(./contentType,'pdf')">
+                <xsl:if test="contains(./contentType,'pdf') or
+                              contains(./contentType,'ps')  or
+                              contains(./contentType,'audio/mpeg') or
+                              contains(./contentType,'audio/x-wav') or
+                              contains(./contentType,'zip')">
                   <xsl:value-of select="'true'" />
                 </xsl:if>
               </xsl:for-each>
             </xsl:variable>
-            <xsl:if test="contains($isPdfDerivate,'true')">
+            <xsl:if test="contains($isRelevantDerivate,'true')">
               <xsl:variable name="ddbfilenumber" select="$ifsDirectory/mcr_directory/numChildren/here/files" />
               <xsl:element name="ddb:fileNumber">
                   <xsl:value-of select="$ddbfilenumber" />
