@@ -9,8 +9,9 @@
   xmlns:mcrurn="xalan://org.mycore.urn.MCRXMLFunctions"
   xmlns:mcrmods="xalan://org.mycore.mods.classification.MCRMODSClassificationSupport"
   xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions"
-  xmlns:opf="http://www.idpf.org/2007/opf"
   exclude-result-prefixes="xsl mods mcrurn mcrmods mcrxsl xlink srw_dc">
+
+  <!-- xmlns:opf="http://www.idpf.org/2007/opf" -->
 
   <xsl:param name="MCR.URN.Resolver.MasterURL" select="''" />
   <!--
@@ -150,7 +151,7 @@
     </xsl:choose>
   </xsl:template>
 
-  <xsl:template match="mods:classification[@authority='sdnb']">
+  <xsl:template match="mods:classification[@authority='sdnb'] | mods:classification[@authority='ddc']">
     <dc:subject>
       <xsl:value-of select="concat('ddc:',.)" />
     </dc:subject>
@@ -520,11 +521,11 @@
   </xsl:template>
 
   <xsl:template name="name">
-    <xsl:if test="mods:role[mods:roleTerm[@authority='marcrelator' and @type='code']]">
+    <!-- xsl:if test="mods:role[mods:roleTerm[@authority='marcrelator' and @type='code']]">
       <xsl:attribute name="opf:role">
         <xsl:value-of select="mods:role/mods:roleTerm[@authority='marcrelator' and @type='code'][1]" />
       </xsl:attribute>
-    </xsl:if>
+    </xsl:if -->
     <xsl:variable name="name">
       <xsl:choose>
         <xsl:when test="mods:etal">
