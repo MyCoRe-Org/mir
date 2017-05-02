@@ -13,7 +13,7 @@ public class MIRClassificationMapper {
      *
      */
     public static String getSDNBfromOldSDNB(String sdnbString) {
-        BigDecimal sdnb = new BigDecimal(sdnbString);
+        BigDecimal sdnb = new BigDecimal(sdnbString.replaceAll("[^0-9.]+",""));
 
         switch (sdnbString.charAt(0)){
             case '0':
@@ -268,7 +268,7 @@ public class MIRClassificationMapper {
      *
      */
     public static String getSDNBfromDDC(String ddcString) {
-        BigDecimal ddc = new BigDecimal(ddcString);
+        BigDecimal ddc = new BigDecimal(ddcString.replaceAll("[^0-9.]+",""));
 
         switch (ddcString.charAt(0)){
             case '0':
