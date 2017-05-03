@@ -1,49 +1,117 @@
-(function($) {
-  $(document).ready(function() {
+(function ($) {
+    $(document).ready(function () {
 
-    if($(".sherpa-issn").length > 0) {
-      $(".sherpa-issn").each(function() {
-        getSherpaIssn($(this));
-      });
-    }
+        if ($(".sherpa-issn").length > 0) {
+            $(".sherpa-issn").each(function () {
+                getSherpaIssn($(this));
+            });
+        }
 
 //--- in metadata view the select/video controller
-    // on start load the first source
-    $(".mir-player video, .mir-player audio").ready(function(){
-      $("#videoChooser").change();
-    });
+        // on start load the first source
 
-    //get all sources of selected item in a var and give it to player
-    $("#videoChooser").change(function() {
-      // reuse player
-      var myPlayerVideo, myPlayerAudio;
-      if($(".mir-player video").length > 0) {
-        myPlayerVideo = $(this).data("playerVideo");
-        (!myPlayerVideo) && (myPlayerVideo = videojs($(".mir-player video").attr("id"))) && ($(this).data("playerVideo", myPlayerVideo));
-      }
-      if($(".mir-player audio").length > 0) {
-        myPlayerAudio = $(this).data("playerAudio");
-        (!myPlayerAudio) && (myPlayerAudio = videojs($(".mir-player audio").attr("id"))) && ($(this).data("playerAudio", myPlayerAudio));
-      }
 
-      if($(this).find(":selected").attr("data-type") == "mp3") {
-        if (myPlayerVideo != undefined) {
-          myPlayerVideo.hide();
-          myPlayerVideo.pause();
-        }
-        myPlayerAudio.show();
-        myPlayerAudio.src($.parseJSON($("#" + $(this).val() + " script").text()));
-      }
-      else {
-        if (myPlayerAudio != undefined) {
-          myPlayerAudio.hide();
-          myPlayerAudio.pause();
-        }
-        myPlayerVideo.show();
-        myPlayerVideo.src($.parseJSON($("#" + $(this).val() + " script").text()));
-      }
+        var videoChooserElement = $("#videoChooser");
 
-    });
+
+        $(".mir-player video, .mir-player audio").ready(function () {
+            $("#videoChooser").change();
+        });
+
+        //get all sources of selected item in a var and give it to player
+        var hidePlayer = function (player) {
+            if (typeof player !== "undefined") {
+                player.hide();
+                player.pause();
+            }
+        };
+
+        let sourceCache = {};
+
+        let getVideo = function (currentOption) {
+            let src = currentOption.attr("data-src");
+            let mimeType = currentOption.attr("data-mime-type");
+            let sourceArr = [];
+            let lookupKey = currentOption.parent().index() + "_" + currentOption.index();
+
+            if (lookupKey in sourceCache) {
+                return sourceCache[lookupKey];
+            }
+
+            if (typeof src === "undefined" || typeof mimeType === "undefined") {
+                let sources = currentOption.attr("data-sources");
+                if (typeof sources === "undefined") {
+                    console.warn("No video sources found!");
+                    return [];
+                }
+
+                let pairs = sources.split(";");
+                for (let i in pairs) {
+                    let pair = pairs[i];
+                    if (pair.indexOf(",") === -1) {
+                        continue;
+                    }
+                    let typeSrcArr = pair.split(",");
+                    let type = typeSrcArr[0];
+                    let src = typeSrcArr[1];
+
+                    sourceArr.push({type: type, src: src})
+                }
+            } else {
+                sourceArr.push({type: mimeType, src: src});
+            }
+            sourceCache[lookupKey] = sourceArr;
+            return sourceArr;
+        };
+
+        videoChooserElement.change(function () {
+            // reuse player
+            var myPlayerVideo, myPlayerAudio;
+            var selectElement = $(this);
+            var currentOption = selectElement.find(":selected");
+
+            if ($(".mir-player video").length > 0) {
+                myPlayerVideo = selectElement.data("playerVideo");
+                if (!myPlayerVideo) {
+                    myPlayerVideo = videojs($(".mir-player video").attr("id"));
+                    selectElement.data("playerVideo", myPlayerVideo);
+                }
+            }
+
+            if ($(".mir-player audio").length > 0) {
+                myPlayerAudio = selectElement.data("playerAudio");
+                if(!myPlayerAudio){
+                    myPlayerAudio = videojs($(".mir-player audio").attr("id"));
+                    selectElement.data("playerAudio", myPlayerAudio);
+                }
+            }
+
+            let playerToHide, playerToShow;
+            let sourceArr = getVideo(currentOption);
+            let isAudio = currentOption.attr("data-audio") == "true";
+            let htmlEmbed = jQuery(".mir-player");
+
+            if (isAudio) {
+                playerToHide = myPlayerVideo;
+                playerToShow = myPlayerAudio;
+                htmlEmbed.addClass("embed-50pxh");
+                htmlEmbed.removeClass("embed-responsive-16by9");
+            } else {
+                playerToShow = myPlayerVideo;
+                playerToHide = myPlayerAudio;
+                htmlEmbed.removeClass("embed-50pxh");
+                htmlEmbed.addClass("embed-responsive-16by9");
+            }
+
+
+            hidePlayer(playerToHide);
+            playerToShow.show();
+
+
+            playerToShow.src(sourceArr);
+
+        });
+
 //--------
 
     $("body").on("click", ".mir_mainfile", function (event) {
