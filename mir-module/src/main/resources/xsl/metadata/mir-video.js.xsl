@@ -15,9 +15,6 @@
   <xsl:import href="xslImport:modsmeta:metadata/mir-video.js.xsl" />
   <xsl:param name="UserAgent" />
 
-  <xsl:key name="derivateIDs" match="/response/result/doc/str[@name='derivateID']" use="text()" />
-
-
   <xsl:template match="/">
     <!-- MIR-339 solr query if there is any "mp4" file in this object? -->
     <xsl:variable name="solrQuery"
