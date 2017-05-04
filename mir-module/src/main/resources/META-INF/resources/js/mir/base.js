@@ -16,6 +16,10 @@
 
         $(".mir-player video, .mir-player audio").ready(function () {
             $("#videoChooser").change();
+
+            if(videoChooserElement.find("option").length==1){
+                videoChooserElement.hide();
+            }
         });
 
         //get all sources of selected item in a var and give it to player
