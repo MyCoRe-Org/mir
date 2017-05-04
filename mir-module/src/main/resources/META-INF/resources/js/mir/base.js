@@ -98,13 +98,9 @@
             if (isAudio) {
                 playerToHide = myPlayerVideo;
                 playerToShow = myPlayerAudio;
-                htmlEmbed.addClass("embed-50pxh");
-                htmlEmbed.removeClass("embed-responsive-16by9");
             } else {
                 playerToShow = myPlayerVideo;
                 playerToHide = myPlayerAudio;
-                htmlEmbed.removeClass("embed-50pxh");
-                htmlEmbed.addClass("embed-responsive-16by9");
             }
 
 
