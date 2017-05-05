@@ -4,7 +4,7 @@ dist: trusty
 group: beta
 install: true
 addons:
-  firefox: "latest-esr"
+  firefox: "52.0.2"
   sauce_connect:
     username: "MIR_SauceLab"
     access_key: "a7f4c30a-ad90-4d68-82ba-f4fb5e31a8f8"
@@ -15,13 +15,13 @@ cache:
 env:
   global:
     - MAVEN_OPTS="-Xmx1024M -Xss128M -XX:+CMSClassUnloadingEnabled -XX:+UseConcMarkSweepGC"
-    - GECKODRIVER_VERSION="0.15.0"
+    - GECKODRIVER_VERSION="0.12.0"
     - XVFBARGS=":99 -ac -screen 0 1280x1024x24 -ac +extension GLX +extension RANDR +render -noreset"
     - FIREFOX_BIN=$(which firefox)
     - SELENIUM_BROWSER="chrome"
-    - SELENIUM_BROWSERVERSION="57.0"
+    - SELENIUM_BROWSERVERSION="52.0.2"
     - SELENIUM_PLATFORM="Windows 10"
-    - SELENIUM_VERSION="3.3.1"
+    - SELENIUM_VERSION="3.0.1"
     - SELENIUM_HOST="localhost"
     - SELENIUM_PORT="4445"
     - SAUCE_TRAVIS_BUILDNUMBER=$TRAVIS_BUILD_NUMBER
@@ -39,7 +39,7 @@ before_install:
             rm geckodriver/geckodriver.tar.gz; \
         fi; \
         geckodriver --version
- 
+
 before_script:
   - export DISPLAY=:99.0
   - sleep 3
@@ -49,4 +49,3 @@ script:
   - mvn -B -P!standard-with-extra-repos -Djetty -DDriverProvider=org.mycore.common.selenium.drivers.MCRRemoteSauceDriverFactory clean install && mvn -P!standard-with-extra-repos -B javadoc:javadoc && mvn com.gavinmogan:codacy-maven-plugin:coverage -DcoverageReportFile=target/site/jacoco/jacoco.xml -DfailOnMissingReportFile=false
 after_failure:
   - sh travis/autodeploy.sh "$TRAVIS_BUILD_NUMBER-$TRAVIS_EVENT_TYPE-$TRAVIS_PULL_REQUEST" "https://MyCoRe-Travis:$GITHUB_TOKEN@github.com/MyCoRe-Travis/MIR_test_artifacts.git"
-
