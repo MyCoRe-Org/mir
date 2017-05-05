@@ -1,12 +1,30 @@
 package org.mycore.mir.validation;
 
 import org.mycore.common.config.MCRConfiguration;
+import org.mycore.datamodel.classifications2.MCRCategoryDAO;
+import org.mycore.datamodel.classifications2.MCRCategoryDAOFactory;
+import org.mycore.datamodel.classifications2.MCRCategoryID;
+import org.mycore.mir.impexp.MIRClassificationMapper;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class MIRValidationHelper {
+
+    public static String validateSDNB(String sdnb) {
+        MCRCategoryDAO dao = MCRCategoryDAOFactory.getInstance();
+        if (dao.exist(new MCRCategoryID("SDNB", sdnb))){
+            return sdnb;
+        }
+        if (sdnb.length() == 2) {
+            String newdSDNB = MIRClassificationMapper.getSDNBfromOldSDNB(sdnb);
+            if (dao.exist(new MCRCategoryID("SDNB", newdSDNB))){
+                return newdSDNB;
+            }
+        }
+        return "";
+    }
 
     public static boolean validatePPN(String ppn) {
         MCRConfiguration config = MCRConfiguration.instance();

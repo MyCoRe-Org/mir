@@ -55,42 +55,33 @@
             <div class="input-group input-group-sm">
               <div class="input-group-btn">
                 <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" value="all" id="search_type_button">
-                  <span id="search_type_label">Alles</span>
+                  <span id="search_type_label"><xsl:value-of select="i18n:translate('mir.dropdown.all')"/></span>
                   <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu search_type">
                   <li>
-                    <a href="#" value="all">Alles</a>
+                    <a href="#" value="all"><xsl:value-of select="i18n:translate('mir.dropdown.all')"/></a>
                   </li>
                   <li>
-                    <a href="#" value="mods.title">Titel</a>
+                    <a href="#" value="mods.title"><xsl:value-of select="i18n:translate('mir.dropdown.title')"/></a>
                   </li>
                   <li>
-                    <a href="#" value="mods.author">Autor</a>
+                    <a href="#" value="mods.author"><xsl:value-of select="i18n:translate('mir.dropdown.author')"/></a>
                   </li>
                   <li>
-                    <a href="#" value="mods.name.top">Name</a>
+                    <a href="#" value="mods.name.top"><xsl:value-of select="i18n:translate('mir.dropdown.name')"/></a>
                   </li>
                   <li>
-                    <a href="#" value="mods.nameIdentifier">Namens Identifikator</a>
+                    <a href="#" value="mods.nameIdentifier"><xsl:value-of select="i18n:translate('mir.dropdown.nameIdentifier')"/></a>
                   </li>
                   <li>
-                    <a href="#" value="allMeta">Alle Metadaten</a>
+                    <a href="#" value="allMeta"><xsl:value-of select="i18n:translate('mir.dropdown.allMeta')"/></a>
                   </li>
                   <li>
-                    <a href="#" value="content">Volltext</a>
+                    <a href="#" value="content"><xsl:value-of select="i18n:translate('mir.dropdown.content')"/></a>
                   </li>
                 </ul>
               </div>
-              <xsl:variable name="qry">
-                <xsl:variable name="encodedQry">
-                  <xsl:call-template name="UrlGetParam">
-                    <xsl:with-param name="url" select="$RequestURL" />
-                    <xsl:with-param name="par" select="'q'" />
-                  </xsl:call-template>
-                </xsl:variable>
-                <xsl:value-of select="decoder:decode($encodedQry, 'UTF-8')" />
-              </xsl:variable>
               <xsl:variable name="resolver">
                 <xsl:call-template name="substring-after-last">
                   <xsl:with-param name="string" select="$proxyBaseURL" />
@@ -99,16 +90,25 @@
               </xsl:variable>
               <xsl:choose>
                 <xsl:when test="$resolver = 'find'">
+                  <xsl:variable name="qry">
+                    <xsl:variable name="encodedQry">
+                      <xsl:call-template name="UrlGetParam">
+                        <xsl:with-param name="url" select="$RequestURL" />
+                        <xsl:with-param name="par" select="'q'" />
+                      </xsl:call-template>
+                    </xsl:variable>
+                    <xsl:value-of select="decoder:decode($encodedQry, 'UTF-8')" />
+                  </xsl:variable>
                   <input class="form-control" name="qry" placeholder="{i18n:translate('mir.placeholder.response.search')}" type="text" value="{$qry}"/>
                 </xsl:when>
                 <xsl:otherwise>
-              <input class="form-control" name="qry" placeholder="{i18n:translate('mir.placeholder.response.search')}" type="text" />
+                  <input class="form-control" name="qry" placeholder="{i18n:translate('mir.placeholder.response.search')}" type="text" />
                 </xsl:otherwise>
               </xsl:choose>
               <span class="input-group-btn">
                 <button class="btn btn-primary" type="submit">
                   <span class="glyphicon glyphicon-search"></span>
-                  Suchen
+                   <xsl:value-of select="i18n:translate('editor.search.search')"/>
                 </button>
               </span>
             </div>
@@ -565,7 +565,7 @@
           </h3>
 
 <!-- hit author -->
-          <xsl:if test="arr[@name='mods.nameByRole.personal.aut'] or arr[@name='mods.nameByRole.personal.edt'] or arr[@name='mods.nameByRole.corporate.pbl']">
+          <xsl:if test="arr[@name='mods.nameByRole.personal.aut'] or arr[@name='mods.nameByRole.personal.edt'] or arr[@name='mods.nameByRole.corporate.pbl'] or arr[@name='mods.nameByRole.corporate.edt']">
             <div class="hit_author">
               <xsl:variable name="nameList">
                 <xsl:choose>
@@ -577,6 +577,9 @@
                   </xsl:when>
                   <xsl:when test="arr[@name='mods.nameByRole.corporate.pbl']">
                     <xsl:copy-of select="arr[@name='mods.nameByRole.corporate.pbl']/." />
+                  </xsl:when>
+                  <xsl:when test="arr[@name='mods.nameByRole.corporate.edt']">
+                    <xsl:copy-of select="arr[@name='mods.nameByRole.corporate.edt']/." />
                   </xsl:when>
                 </xsl:choose>
               </xsl:variable>
@@ -618,7 +621,7 @@
                       select="document(concat('classification:metadata:all:children:','nameIdentifier',':',$nameIdentifierType))/mycoreclass/categories/category[@ID=$nameIdentifierType]" />
                     <xsl:variable name="uri" select="$classi/label[@xml:lang='x-uri']/@text" />
                     <xsl:variable name="idType" select="$classi/label[@xml:lang='de']/@text" />
-                    <a href="{$ServletsBaseURL}solr/mods_nameIdentifier?q=mods.nameIdentifier:{$nameIdentifierType}\:{$nameIdentifier}&amp;owner=createdby:{$owner}"
+                    <a href="{$ServletsBaseURL}solr/mods_nameIdentifier?q=mods.nameIdentifier:{$nameIdentifierType}%5C:{$nameIdentifier}&amp;owner=createdby:{$owner}"
                       title="Suche nach allen Publikationen"
                     >
                       <xsl:value-of select="$author_name" />
@@ -826,7 +829,8 @@
         </xsl:if>
         <div class="dropdown container-fluid row">
           <button class="btn btn-default dropdown-toggle col-md-12 col-xs-12" type="button" data-toggle="dropdown">
-            Filter
+            <!--Filter-->
+            <xsl:value-of select="i18n:translate('mir.response.button.filter')" />
             <span class="caret" />
           </button>
           <ul class="dropdown-menu dropdown-menu-right" role="menu" style="max-height: 500px; overflow-y: scroll;">
@@ -925,7 +929,8 @@
         </xsl:if>
         <div class="dropdown container-fluid row">
           <button class="btn btn-default dropdown-toggle col-md-12 col-xs-12" type="button" data-toggle="dropdown">
-            Filter
+            <!--Filter-->
+            <xsl:value-of select="i18n:translate('mir.response.button.filter')" />
             <span class="caret" />
           </button>
           <div class="dropdown-menu dropdown-menu-right stopAutoclose col-md-12 mir-date-arrowTop" role="menu">

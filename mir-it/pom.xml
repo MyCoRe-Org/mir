@@ -328,6 +328,10 @@
       <artifactId>log4j-1.2-api</artifactId>
     </dependency>
     <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-1.2-api</artifactId>
+    </dependency>
+    <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>mir-cli</artifactId>
       <version>${project.version}</version>
@@ -347,9 +351,20 @@
       <scope>test</scope>
     </dependency>
     <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
       <groupId>org.mycore</groupId>
       <artifactId>selenium-utils</artifactId>
       <version>0.4</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.mycore</groupId>
+      <artifactId>selenium-utils</artifactId>
+      <version>0.5</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -390,4 +405,14 @@
       </properties>
     </profile>
   </profiles>
+  <dependencyManagement>
+    <!-- override from mycore dependencies, required for selenium 3.3 -->
+    <dependencies>
+      <dependency>
+        <groupId>com.google.guava</groupId>
+        <artifactId>guava</artifactId>
+        <version>21.0</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
 </project>

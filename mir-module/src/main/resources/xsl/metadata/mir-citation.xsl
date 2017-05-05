@@ -83,7 +83,7 @@
         <xsl:choose>
           <xsl:when test="//mods:mods/mods:identifier[@type='doi'] and contains(//mods:mods/mods:identifier[@type='doi'], $MCR.DOI.Prefix)">
             <xsl:variable name="doi" select="//mods:mods/mods:identifier[@type='doi']" />
-            <a id="url_site_link" href="http://dx.doi.org/{$doi}">
+            <a id="url_site_link" href="https://dx.doi.org/{$doi}">
               <xsl:value-of select="$doi" />
             </a>
             <br />
@@ -122,8 +122,8 @@
       <xsl:if test="//mods:mods/mods:identifier[@type='doi']">
         <script>
           $.ajax({
-            type: 'POST',
-            url: 'https://doi.org/<xsl:value-of select="//mods:mods/mods:identifier[@type='doi']" />',
+            type: 'GET',
+            url: 'https://data.datacite.org/text/x-bibliography/<xsl:value-of select="//mods:mods/mods:identifier[@type='doi']" />',
             // fixed MIR-550: overrides wrong charset=iso-8859-1
             beforeSend: function(jqXHR) {
               jqXHR.overrideMimeType('text/html;charset=UTF-8');
@@ -138,14 +138,14 @@
 
           $('#crossref-cite').on('change', function() {
             $.ajax({
-              type: 'POST',
-              url: 'https://doi.org/<xsl:value-of select="//mods:mods/mods:identifier[@type='doi']" />',
+              type: 'GET',
+              url: 'https://data.datacite.org/text/x-bibliography/<xsl:value-of select="//mods:mods/mods:identifier[@type='doi']" />',
               // fixed MIR-550: overrides wrong charset=iso-8859-1
               beforeSend: function(jqXHR) {
                 jqXHR.overrideMimeType('text/html;charset=UTF-8');
               },
               headers: {
-                'Accept': 'text/x-bibliography; style=deutsche-sprache; locale=de-DE'
+                'Accept': 'text/x-bibliography; style=' + $(this).val() + '; locale=de-DE'
               },
               success: function(data){
                 $('#citation-text').text(data);
@@ -278,7 +278,7 @@
         <xsl:value-of select="$MCR.URN.Resolver.MasterURL" />
       </xsl:if>
       <xsl:if test="contains(@type,'doi')">
-        <xsl:text>http://dx.doi.org/</xsl:text>
+        <xsl:text>https://dx.doi.org/</xsl:text>
       </xsl:if>
     </xsl:variable>
     <xsl:call-template name="identifierEntry">

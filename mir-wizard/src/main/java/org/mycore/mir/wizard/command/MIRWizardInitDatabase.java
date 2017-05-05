@@ -58,7 +58,7 @@ public class MIRWizardInitDatabase extends MIRWizardCommand {
 
             HashMap<String, String> initProps = new HashMap<String, String>();
             initProps.put("hibernate.hbm2ddl.auto", "create");
-            MCRJPABootstrapper.initializeJPA(initProps);
+            MCRJPABootstrapper.initializeJPA(MCRJPABootstrapper.PERSISTENCE_UNIT_NAME, initProps);
 
             doSchemaOperation(schema -> "create schema " + schema);
 

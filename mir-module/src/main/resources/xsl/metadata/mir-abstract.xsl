@@ -88,6 +88,17 @@
             <xsl:with-param name="query" select="concat('&amp;fq=link:*',$accessCondition, '&amp;owner=createdby:', $owner)" />
           </xsl:call-template>
         </xsl:if>
+        <xsl:variable name="doc-state" select="/mycoreobject/service/servstates/servstate/@categid" />
+        <xsl:if test="$doc-state">
+          <div class="doc_state">
+            <xsl:variable name="status-i18n">
+              <xsl:value-of select="i18n:translate(concat('mir.state.',$doc-state))" />
+            </xsl:variable>
+            <span class="label mir-{$doc-state}" title="{i18n:translate('component.mods.metaData.dictionary.status')}">
+              <xsl:value-of select="$status-i18n" />
+            </span>
+          </div>
+        </xsl:if>
       </div><!-- end: badges -->
     </div><!-- end: badgets structure -->
 
@@ -247,7 +258,7 @@
 
       <xsl:call-template name="findRelatedItems">
         <xsl:with-param name="query" select="concat('mods.relatedItem.references:', $objectID, ' AND (', $state, ')')"/>
-        <xsl:with-param name="label" select="i18n:translate('mir.isReferencedBy')"/>
+        <xsl:with-param name="label" select="i18n:translate('mir.metadata.isReferencedBy')"/>
       </xsl:call-template>
 
       <xsl:call-template name="findRelatedItems">
@@ -302,15 +313,15 @@
     <h3>
       <xsl:value-of select="$label" />
       <xsl:if
-              test="$hits/arr[@name='groups']/lst/result/@numFound &gt; 1 and not($hits/arr[@name='groups']/lst/null/@name='groupValue') and count($hits/arr[@name='groups']/lst) &gt; 1"
+              test="$hits/arr[@name='groups']/lst/result/@numFound &gt; 0 and not($hits/arr[@name='groups']/lst/null/@name='groupValue') and count($hits/arr[@name='groups']/lst) &gt; 1"
       >
-        <a id="mir_relatedItem_showAll" class="pull-right" href="#">alles ausklappen</a>
-        <a id="mir_relatedItem_hideAll" class="pull-right" href="#">alles einklappen</a>
+        <a id="mir_relatedItem_showAll" class="pull-right" href="#"><xsl:value-of select="i18n:translate('mir.abstract.showGroups')" /></a>
+        <a id="mir_relatedItem_hideAll" class="pull-right" href="#"><xsl:value-of select="i18n:translate('mir.abstract.hideGroups')" /></a>
       </xsl:if>
     </h3>
     <xsl:choose>
       <xsl:when
-              test="$hits/arr[@name='groups']/lst/result/@numFound &gt; 1 and not($hits/arr[@name='groups']/lst/null/@name='groupValue') and count($hits/arr[@name='groups']/lst) &gt; 1"
+              test="$hits/arr[@name='groups']/lst/result/@numFound &gt; 0 and not($hits/arr[@name='groups']/lst/null/@name='groupValue') and count($hits/arr[@name='groups']/lst) &gt; 1"
       >
         <ul id="mir_relatedItem">
           <xsl:for-each select="$hits/arr[@name='groups']/lst">

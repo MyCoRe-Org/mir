@@ -263,6 +263,14 @@
 					data.pagination = buildPagination(data.children);
 
 					derivateJson = data;
+					if (derivateJson.children.length > 1) {
+						$(fileBox).parent(".file_box").find("ul.dropdown-menu a.downloadzip").removeClass("hidden");
+					}
+					else {
+						if ($(fileBox).parent(".file_box").find("ul.dropdown-menu").children().length < 2) {
+                            $(fileBox).parent(".file_box").find("a.dropdown-toggle").addClass("hidden");
+						}
+					}
 					getTemplate(derivateJson, "derivate-fileList.hbs", useTemplate);
 				},
 				error: function (resp, title, message) {
