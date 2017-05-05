@@ -88,6 +88,17 @@
             <xsl:with-param name="query" select="concat('&amp;fq=link:*',$accessCondition, '&amp;owner=createdby:', $owner)" />
           </xsl:call-template>
         </xsl:if>
+        <xsl:variable name="doc-state" select="/mycoreobject/service/servstates/servstate/@categid" />
+        <xsl:if test="$doc-state">
+          <div class="doc_state">
+            <xsl:variable name="status-i18n">
+              <xsl:value-of select="i18n:translate(concat('mir.state.',$doc-state))" />
+            </xsl:variable>
+            <span class="label mir-{$doc-state}" title="{i18n:translate('component.mods.metaData.dictionary.status')}">
+              <xsl:value-of select="$status-i18n" />
+            </span>
+          </div>
+        </xsl:if>
       </div><!-- end: badges -->
     </div><!-- end: badgets structure -->
 

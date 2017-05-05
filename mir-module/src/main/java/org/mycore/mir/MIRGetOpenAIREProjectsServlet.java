@@ -1,26 +1,25 @@
 package org.mycore.mir;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URLEncoder;
+
 import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import java.io.IOException;
-import java.net.URLEncoder;
-
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.log4j.Logger;
-import org.mycore.frontend.servlets.MCRServlet;
-import org.mycore.frontend.servlets.MCRServletJob;
+import org.mycore.frontend.MCRFrontendUtil;
 
-public class MIRGetOpenAIREProjectsServlet extends MCRServlet {
+public class MIRGetOpenAIREProjectsServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
 
@@ -31,34 +30,28 @@ public class MIRGetOpenAIREProjectsServlet extends MCRServlet {
     @Override
     public void init() throws ServletException {
         PoolingHttpClientConnectionManager connectManager = new PoolingHttpClientConnectionManager();
+        connectManager.setDefaultMaxPerRoute(20);
         client = HttpClients.custom().setConnectionManager(connectManager).build();
     }
 
-    @Override
-    protected void think(MCRServletJob job) throws Exception {
-        HttpServletResponse response = job.getResponse();
-        HttpServletRequest request = job.getRequest();
-
-        String name = getProperty(request, "name");
-        String acronym = getProperty(request, "acronym");
+    @Override protected void doGet(HttpServletRequest request, HttpServletResponse response)
+        throws ServletException, IOException {
+        String name = MCRFrontendUtil.getProperty(request, "name").orElse(null);
+        String acronym = MCRFrontendUtil.getProperty(request, "acronym").orElse(null);
         String suffix = name != null && !name.isEmpty() ? "name=" + URLEncoder.encode(name, "UTF-8") : "acronym="
-                + URLEncoder.encode(acronym, "UTF-8");
+            + URLEncoder.encode(acronym, "UTF-8");
         String urlString = "http://api.openaire.eu/search/projects?" + suffix;
 
-        try {
-            HttpGet method = new HttpGet(urlString);
-            HttpResponse httpRes = client.execute(method);
+        HttpGet method = new HttpGet(urlString);
+        try (CloseableHttpResponse httpRes = client.execute(method)) {
             response.setStatus(httpRes.getStatusLine().getStatusCode());
-
             HttpEntity entity = httpRes.getEntity();
-            IOUtils.copy(entity.getContent(), response.getOutputStream());
+            try (InputStream contentStream = entity.getContent()) {
+                IOUtils.copy(contentStream, response.getOutputStream());
+            }
         } catch (IOException e) {
             LOGGER.error("Failed to load " + urlString, e);
         }
-    }
-
-    @Override
-    protected void render(MCRServletJob job, Exception ex) throws Exception {
     }
 
     @Override
