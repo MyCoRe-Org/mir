@@ -63,10 +63,10 @@
                     let type = typeSrcArr[0];
                     let src = typeSrcArr[1];
 
-                    sourceArr.push({type: type, src: src})
+                    sourceArr.push({type: type.trim(), src: src.trim()})
                 }
             } else {
-                sourceArr.push({type: mimeType, src: src});
+                sourceArr.push({type: mimeType.trim(), src: src.trim()});
             }
             sourceCache[lookupKey] = sourceArr;
             return sourceArr;
