@@ -135,7 +135,7 @@
         <option data-file-extension="{$lowercaseExtension}" data-audio="false" data-is-main-doc="{mcr:getMainDocName($derivateID)=substring($filePath,2)}">
           <xsl:attribute name="data-sources">
             <xsl:for-each select="$sources">
-              <xsl:value-of select="@type" />,<xsl:value-of select="@src" />;
+              <xsl:value-of select="concat(@type, ',', @src, ';')" />
             </xsl:for-each>
           </xsl:attribute>
           <xsl:value-of select="$fileName" />
