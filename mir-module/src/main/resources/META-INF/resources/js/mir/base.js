@@ -15,11 +15,15 @@
 
 
         $(".mir-player video, .mir-player audio").ready(function () {
-            $("#videoChooser").change();
 
-            if(videoChooserElement.find("option").length==1){
+            let options = videoChooserElement.find("option");
+            if(options.length==1){
                 videoChooserElement.hide();
+            } else {
+                options.filter("[data-is-main-doc=true]").first().prop("selected",true)
             }
+
+            videoChooserElement.change();
         });
 
         //get all sources of selected item in a var and give it to player
