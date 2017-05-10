@@ -17,10 +17,10 @@
         $(".mir-player video, .mir-player audio").ready(function () {
 
             let options = videoChooserElement.find("option");
-            if(options.length==1){
+            if(options.length===1){
                 videoChooserElement.hide();
             } else {
-                options.filter("[data-is-main-doc=true]").first().prop("selected",true)
+                options.filter("[data-is-main-doc=true]").first().prop("selected",true);
             }
 
             videoChooserElement.change();
@@ -63,7 +63,7 @@
                     let type = typeSrcArr[0];
                     let src = typeSrcArr[1];
 
-                    sourceArr.push({type: type.trim(), src: src.trim()})
+                    sourceArr.push({type: type.trim(), src: src.trim()});
                 }
             } else {
                 sourceArr.push({type: mimeType.trim(), src: src.trim()});
