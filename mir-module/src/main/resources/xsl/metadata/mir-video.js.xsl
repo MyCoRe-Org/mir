@@ -29,22 +29,22 @@
         <!-- I want to make just one request, not for every derivate. So group by derivate id. -->
         <xsl:variable name="optionsFragment">
           <select id="videoChooser" class="form-control">
+            <xsl:variable name="docContext" select="mycoreobject" />
             <xsl:for-each
               select="$solrResult/response/lst[@name='grouped']/lst[@name='derivateID']/arr[@name='groups']/lst">
               <xsl:variable name="currentDerivateID" select="str[@name='groupValue']/text()" />
-              <!-- TODO: maybe display derivate label instead of id -->
-              <optgroup label="{$currentDerivateID}">
-                <xsl:apply-templates select="result/doc" mode="resultsByDerivate" />
-              </optgroup>
-            </xsl:for-each>
 
+              <xsl:variable name="read" select="count($docContext[key('rights', $currentDerivateID)/@read])&gt; 0" />
+              <!-- TODO: maybe display derivate label instead of id -->
+              <xsl:if test="$read">
+                <optgroup label="{$currentDerivateID}">
+                  <xsl:apply-templates select="result/doc" mode="resultsByDerivate" />
+                </optgroup>
+              </xsl:if>
+            </xsl:for-each>
           </select>
         </xsl:variable>
         <xsl:variable name="options" select="xalan:nodeset($optionsFragment)" />
-
-        <xsl:if test="count($options//optgroup/option) &gt; 0">
-          <xsl:copy-of select="$optionsFragment" />
-        </xsl:if>
 
         <xsl:variable name="playerNode">
           <div class="embed-responsive embed-responsive-16by9 mir-player mir-preview">
@@ -72,13 +72,17 @@
           </div>
         </xsl:variable>
 
-        <xsl:variable name="playerNodes" select="xalan:nodeset($playerNode)" />
+        <xsl:if test="count($options//optgroup/option) &gt; 0">
+          <xsl:copy-of select="$optionsFragment" />
+          <xsl:variable name="playerNodes" select="xalan:nodeset($playerNode)" />
 
-        <xsl:call-template name="addPlayerScripts">
-          <xsl:with-param name="generatedNodes" select="$playerNodes" />
-        </xsl:call-template>
+          <xsl:call-template name="addPlayerScripts">
+            <xsl:with-param name="generatedNodes" select="$playerNodes" />
+          </xsl:call-template>
 
-        <xsl:copy-of select="$playerNodes" />
+          <xsl:copy-of select="$playerNodes" />
+        </xsl:if>
+
       </div>
     </xsl:if>
 
