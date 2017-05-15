@@ -11,6 +11,11 @@ addons:
   sauce_connect:
     username: "MIR_SauceLab"
     access_key: "a7f4c30a-ad90-4d68-82ba-f4fb5e31a8f8"
+  apt:
+    sources:
+    - google-chrome
+    packages:
+    - google-chrome-stable
 cache:
   directories:
     - $HOME/.m2/repository
@@ -52,7 +57,7 @@ before_script:
 script:
   - mkdir ${HOME}/tmp
   - export TMPDIR="${HOME}/tmp"
-  - mvn -B -P!standard-with-extra-repos -Djetty -DDriverProvider=org.mycore.common.selenium.drivers.MCRRemoteSauceDriverFactory clean install && mvn -P!standard-with-extra-repos -B javadoc:javadoc && mvn com.gavinmogan:codacy-maven-plugin:coverage -DcoverageReportFile=target/site/jacoco/jacoco.xml -DfailOnMissingReportFile=false
+  - mvn -B -P!standard-with-extra-repos -Djetty -DDriverProvider=org.mycore.common.selenium.drivers.MCRChromeDriverFactory clean install && mvn -P!standard-with-extra-repos -B javadoc:javadoc && mvn com.gavinmogan:codacy-maven-plugin:coverage -DcoverageReportFile=target/site/jacoco/jacoco.xml -DfailOnMissingReportFile=false
 after_failure:
   - sh travis/autodeploy.sh "$TRAVIS_BUILD_NUMBER-$TRAVIS_EVENT_TYPE-$TRAVIS_PULL_REQUEST" "https://MyCoRe-Travis:$GITHUB_TOKEN@github.com/MyCoRe-Travis/MIR_test_artifacts.git"
 
