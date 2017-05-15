@@ -18,7 +18,7 @@
     <xsl:if test="mycoreobject/structure/derobjects/derobject">
       <div id="mir-viewer">
         <xsl:variable name="viewerNodesTmp">
-          <xsl:if test="string-length(embargo:getEmbargo(mycoreobject/@ID)) = 0">
+          <xsl:if test="count(mycoreobject/structure/derobjects/derobject[key('rights', @xlink:href)/@read]) > 0">
             <div class="row mir-preview">
               <div class="col-md-12">
                 <h3 class="mir-viewer">Vorschau</h3>
