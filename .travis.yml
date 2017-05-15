@@ -12,8 +12,6 @@ addons:
     username: "MIR_SauceLab"
     access_key: "a7f4c30a-ad90-4d68-82ba-f4fb5e31a8f8"
   apt:
-    sources:
-    - google-chrome
     packages:
     - google-chrome-stable
 cache:
@@ -47,7 +45,7 @@ before_install:
             rm geckodriver/geckodriver.tar.gz; \
         fi; \
         geckodriver --version
- 
+
 before_script:
   - wget http://chromedriver.storage.googleapis.com/2.29/chromedriver_linux64.zip
   - unzip chromedriver_linux64.zip -d chromedriver
