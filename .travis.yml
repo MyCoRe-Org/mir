@@ -22,8 +22,8 @@ env:
     - GECKODRIVER_VERSION="0.12.0"
     - XVFBARGS=":99 -ac -screen 0 1280x1024x24 -ac +extension GLX +extension RANDR +render -noreset"
     - FIREFOX_BIN=$(which firefox)
-    - SELENIUM_BROWSER="chrome"
-    - SELENIUM_BROWSERVERSION="58.0"
+    - SELENIUM_BROWSER="firefox"
+    - SELENIUM_BROWSERVERSION="53.0"
     - SELENIUM_PLATFORM="Windows 10"
     - SELENIUM_VERSION="3.3.1"
     - SELENIUM_HOST="localhost"
