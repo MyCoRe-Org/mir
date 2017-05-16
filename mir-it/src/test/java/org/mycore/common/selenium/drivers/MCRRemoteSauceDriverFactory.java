@@ -11,6 +11,7 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
 public class MCRRemoteSauceDriverFactory extends MCRRemoteDriverFactory {
@@ -21,7 +22,9 @@ public class MCRRemoteSauceDriverFactory extends MCRRemoteDriverFactory {
         String browser = readPropertyOrEnv("SELENIUM_BROWSER", "");
         if ("chrome".equals(browser)) {
             ChromeOptions options = new ChromeOptions();
-            options.addArguments("--lang=de");
+            HashMap<String, String> prefs = new HashMap<String, String>();
+            prefs.put("intl.accept_languages", "de-DE,de");
+            options.setExperimentalOption("prefs", prefs);
             caps.setCapability(ChromeOptions.CAPABILITY, options);
         }
         if ("firefox".equals(browser)) {
