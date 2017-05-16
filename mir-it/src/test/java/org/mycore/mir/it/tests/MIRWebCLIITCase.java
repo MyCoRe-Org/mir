@@ -39,7 +39,7 @@ public class MIRWebCLIITCase extends MIRITBase {
 
         cliDriver.waitAndFindElement(By.xpath(".//input[contains(@placeholder,'Command')]")).sendKeys(MIRTestData.TEST_COMMAND);
         cliDriver.waitAndFindElement(By.xpath(".//button[contains(text(), 'Execute')]")).click();
-//        cliDriver.waitAndFindElement(By.xpath(".//*[contains(text(), '" + MIRTestData.TEST_COMMAND + "')]"));
+        cliDriver.waitAndFindElement(By.xpath(".//*[contains(text(), '" + MIRTestData.TEST_COMMAND + "')]"));
         cliDriver.close();
         driver.switchTo().window(mainWindowHandle);
 
