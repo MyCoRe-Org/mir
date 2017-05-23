@@ -15,11 +15,15 @@
 
 
         $(".mir-player video, .mir-player audio").ready(function () {
-            $("#videoChooser").change();
 
-            if(videoChooserElement.find("option").length==1){
+            let options = videoChooserElement.find("option");
+            if(options.length===1){
                 videoChooserElement.hide();
+            } else {
+                options.filter("[data-is-main-doc=true]").first().prop("selected",true);
             }
+
+            videoChooserElement.change();
         });
 
         //get all sources of selected item in a var and give it to player
@@ -59,10 +63,10 @@
                     let type = typeSrcArr[0];
                     let src = typeSrcArr[1];
 
-                    sourceArr.push({type: type, src: src})
+                    sourceArr.push({type: type.trim(), src: src.trim()});
                 }
             } else {
-                sourceArr.push({type: mimeType, src: src});
+                sourceArr.push({type: mimeType.trim(), src: src.trim()});
             }
             sourceCache[lookupKey] = sourceArr;
             return sourceArr;
