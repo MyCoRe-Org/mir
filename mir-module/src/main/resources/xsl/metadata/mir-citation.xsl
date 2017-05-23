@@ -4,6 +4,7 @@
   xmlns:cmd="http://www.cdlib.org/inside/diglib/copyrightMD" xmlns:exslt="http://exslt.org/common" exclude-result-prefixes="i18n mcr mods xlink mcrurn cmd exslt"
 >
   <xsl:import href="xslImport:modsmeta:metadata/mir-citation.xsl" />
+  <xsl:include href="mods-dc-meta.xsl"/>
   <xsl:include href="mods-highwire.xsl" />
   <xsl:param name="MCR.URN.Resolver.MasterURL" select="''" />
   <xsl:param name="MCR.DOI.Prefix" select="''" />
@@ -14,8 +15,9 @@
   <xsl:param name="MIR.shariff" select="'show'" />
   <xsl:template match="/">
 
-    <!-- ==================== Highwire Press tags ==================== -->
+    <!-- ==================== Highwire Press Tags and Dublin Core as Meta Tags ==================== -->
     <citation_meta>
+      <xsl:apply-templates select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods" mode="dc-meta"/>
       <xsl:apply-templates select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods" mode="highwire" />
     </citation_meta>
 

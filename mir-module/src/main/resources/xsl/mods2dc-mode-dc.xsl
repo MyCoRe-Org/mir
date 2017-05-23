@@ -57,7 +57,7 @@
 
   <xsl:variable name="marcrelator" select="document('classification:metadata:-1:children:marcrelator')" />
 
-  <xsl:template match="/">
+  <xsl:template match="/" mode="dc">
 
     <xsl:choose>
       <!-- WS: updated schema location -->
@@ -85,17 +85,17 @@
   </xsl:template>
 
   <!-- Paul Borchert remove interna-->
-    <xsl:template match="*[@xlink:href!='']">
+    <xsl:template match="*[@xlink:href!='']" mode="dc">
     </xsl:template>
-    <xsl:template match="mods:name[@ID!='']">
+    <xsl:template match="mods:name[@ID!='']" mode="dc">
     </xsl:template>
-    <xsl:template match="mods:classification[contains (@authorityURI,'classifications/status')]">
+    <xsl:template match="mods:classification[contains (@authorityURI,'classifications/status')]" mode="dc">
     </xsl:template>
-    <xsl:template match="mods:classification[contains (@authorityURI,'classifications/annual_review')]">
+    <xsl:template match="mods:classification[contains (@authorityURI,'classifications/annual_review')]" mode="dc">
     </xsl:template>
 
 
-  <xsl:template match="mods:titleInfo">
+  <xsl:template match="mods:titleInfo" mode="dc">
     <dc:title>
       <xsl:value-of select="mods:nonSort"/>
       <xsl:if test="mods:nonSort">
@@ -119,7 +119,7 @@
 
   <!-- tmee mods 3.5 -->
 
-  <xsl:template match="mods:name">
+  <xsl:template match="mods:name" mode="dc">
     <xsl:choose>
       <xsl:when test="mods:role/mods:roleTerm[@type='code']">
         <xsl:variable name="role" select="mods:role/mods:roleTerm[@type='code']" />
@@ -151,19 +151,19 @@
     </xsl:choose>
   </xsl:template>
 
-  <xsl:template match="mods:classification[@authority='sdnb'] | mods:classification[@authority='ddc']">
+  <xsl:template match="mods:classification[@authority='sdnb'] | mods:classification[@authority='ddc']" mode="dc">
     <dc:subject>
       <xsl:value-of select="concat('ddc:',.)" />
     </dc:subject>
   </xsl:template>
 
-  <xsl:template match="mods:classification[@authorityURI='http://www.mycore.org/classifications/diniPublType']">
+  <xsl:template match="mods:classification[@authorityURI='http://www.mycore.org/classifications/diniPublType']" mode="dc">
     <dc:type>
       <xsl:value-of select="concat('doc-type:',substring-after(@valueURI,'#'))" />
     </dc:type>
   </xsl:template>
 
-  <xsl:template match="mods:classification">
+  <xsl:template match="mods:classification" mode="dc">
 
     <xsl:variable name="classlink" select="mcrmods:getClassCategLink(.)" />
 
@@ -178,7 +178,7 @@
   </xsl:template>
 
   <xsl:template
-    match="mods:subject[mods:topic | mods:name | mods:occupation | mods:geographic | mods:hierarchicalGeographic | mods:cartographics | mods:temporal] ">
+    match="mods:subject[mods:topic | mods:name | mods:occupation | mods:geographic | mods:hierarchicalGeographic | mods:cartographics | mods:temporal]" mode="dc">
     <dc:subject>
       <xsl:for-each select="mods:topic | mods:occupation">
         <xsl:value-of select="."/>
@@ -237,7 +237,7 @@
     </xsl:if>
   </xsl:template>
 
-  <xsl:template match="mods:abstract[not(@altFormat)] | mods:tableOfContents[not(@altFormat)] | mods:note">
+  <xsl:template match="mods:abstract[not(@altFormat)] | mods:tableOfContents[not(@altFormat)] | mods:note" mode="dc">
     <!--  <xsl:if test="@xlink:href!=''"> -->
         <dc:description>
           <xsl:value-of select="."/>
@@ -245,7 +245,7 @@
     <!-- </xsl:if> -->
   </xsl:template>
 
-  <xsl:template match="mods:originInfo">
+  <xsl:template match="mods:originInfo" mode="dc">
     <xsl:apply-templates select="*[@point='start']"/>
     <xsl:for-each
       select="mods:dateIssued[@point!='start' and @point!='end'] |mods:dateCreated[@point!='start' and @point!='end'] | mods:dateCaptured[@point!='start' and @point!='end'] | mods:dateOther[@point!='start' and @point!='end']">
@@ -263,7 +263,7 @@
 
   </xsl:template>
 
-  <xsl:template match="mods:dateIssued | mods:dateCreated | mods:dateCaptured">
+  <xsl:template match="mods:dateIssued | mods:dateCreated | mods:dateCaptured" mode="dc">
     <dc:date>
       <xsl:choose>
         <xsl:when test="@point='start'">
@@ -281,7 +281,7 @@
   </xsl:template>
 
   <xsl:template
-    match="mods:dateIssued[@point='start'] | mods:dateCreated[@point='start'] | mods:dateCaptured[@point='start'] | mods:dateOther[@point='start'] ">
+    match="mods:dateIssued[@point='start'] | mods:dateCreated[@point='start'] | mods:dateCaptured[@point='start'] | mods:dateOther[@point='start'] " mode="dc">
     <xsl:variable name="dateName" select="local-name()"/>
     <dc:date>
       <xsl:value-of select="."/>-<xsl:value-of
@@ -289,14 +289,14 @@
     </dc:date>
   </xsl:template>
 
-  <xsl:template match="mods:temporal[@point='start']  ">
+  <xsl:template match="mods:temporal[@point='start']" mode="dc">
     <xsl:value-of select="."/>-<xsl:value-of select="../mods:temporal[@point='end']"/>
   </xsl:template>
 
-  <xsl:template match="mods:temporal[@point!='start' and @point!='end']  ">
+  <xsl:template match="mods:temporal[@point!='start' and @point!='end']" mode="dc">
     <xsl:value-of select="."/>
   </xsl:template>
-  <xsl:template match="mods:genre">
+  <xsl:template match="mods:genre" mode="dc">
     <xsl:choose>
       <xsl:when test="@authority='dct'">
         <dc:type>
@@ -312,7 +312,7 @@
     </xsl:choose>
   </xsl:template>
 
-  <xsl:template match="mods:typeOfResource">
+  <xsl:template match="mods:typeOfResource" mode="dc">
     <xsl:if test="@collection='yes'">
       <dc:type>Collection</dc:type>
     </xsl:if>
@@ -351,7 +351,7 @@
     </xsl:if>
   </xsl:template>
 
-  <xsl:template match="mods:physicalDescription">
+  <xsl:template match="mods:physicalDescription" mode="dc">
     <xsl:for-each select="mods:extent | mods:form | mods:internetMediaType">
       <dc:format>
 
@@ -373,7 +373,7 @@
   </xsl:template>
 -->
 
-  <xsl:template match="mods:identifier">
+  <xsl:template match="mods:identifier" mode="dc">
       <xsl:variable name="type"
         select="translate(@type,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')"/>
 
@@ -423,7 +423,7 @@
       </xsl:if>
   </xsl:template>
 
-  <xsl:template match="mods:location">
+  <xsl:template match="mods:location" mode="dc">
     <xsl:for-each select="mods:url">
       <dc:identifier>
         <xsl:value-of select="."/>
@@ -431,7 +431,7 @@
     </xsl:for-each>
   </xsl:template>
 
-  <xsl:template match="mods:language">
+  <xsl:template match="mods:language" mode="dc">
     <!-- Best Practice: use ISO 639-3 (since DRIVER Guidelines v2) -->
     <dc:language>
       <xsl:variable name="myURI" select="concat('classification:metadata:0:children:rfc4646:',child::*)" />
@@ -440,7 +440,7 @@
   </xsl:template>
 
   <xsl:template
-    match="mods:relatedItem[mods:titleInfo | mods:name | mods:identifier | mods:location]">
+    match="mods:relatedItem[mods:titleInfo | mods:name | mods:identifier | mods:location]" mode="dc">
     <xsl:choose>
       <xsl:when test="@type='original'">
         <dc:source>
@@ -468,24 +468,25 @@
     </xsl:choose>
   </xsl:template>
 
-  <xsl:template match="mods:identifier[@type='open-aire']">
+  <xsl:template match="mods:identifier[@type='open-aire']" mode="dc">
     <dc:relation>
       <xsl:value-of select="."/>
     </dc:relation>
   </xsl:template>
 
   <!-- von Paul Borchert -->
-  <xsl:template match="mods:accessCondition[@type='embargo']">
+  <xsl:template match="mods:accessCondition[@type='embargo']" mode="dc">
     <dc:rights>
       <xsl:text>Fulltext available at </xsl:text> <xsl:value-of select="."/>
     </dc:rights>
     <dc:rights>info:eu-repo/semantics/embargoedAccess</dc:rights>
   </xsl:template>
 
-  <xsl:template match="mods:accessCondition[@type='use and reproduction']">
+  <xsl:template match="mods:accessCondition[@type='use and reproduction']" mode="dc">
     <xsl:variable name="trimmed" select="substring-after(normalize-space(@xlink:href),'#')" />
     <xsl:variable name="licenseURI" select="concat('classification:metadata:0:children:mir_licenses:',$trimmed)" />
     <xsl:variable name="licenseLink" select="document($licenseURI)//url/@xlink:href" />
+
     <dc:rights>
       <xsl:choose>
         <xsl:when test="string-length($licenseLink) &gt; 0">
@@ -509,7 +510,7 @@
     </xsl:if>
   </xsl:template>
 
-  <xsl:template match="mods:accessCondition[@type='restriction on access']">
+  <xsl:template match="mods:accessCondition[@type='restriction on access']" mode="dc">
     <dc:rights>
       <xsl:choose>
         <xsl:when test="contains(substring-after(@xlink:href, '#'), 'intern')">
@@ -525,7 +526,7 @@
     </dc:rights>
   </xsl:template>
 
-  <xsl:template name="name">
+  <xsl:template name="name" mode="dc">
     <!-- xsl:if test="mods:role[mods:roleTerm[@authority='marcrelator' and @type='code']]">
       <xsl:attribute name="opf:role">
         <xsl:value-of select="mods:role/mods:roleTerm[@authority='marcrelator' and @type='code'][1]" />
@@ -566,7 +567,7 @@
   </xsl:template>
 
   <!-- suppress all else:-->
-  <xsl:template match="*"/>
+  <xsl:template match="*" mode="dc" />
 
 
 </xsl:stylesheet>
