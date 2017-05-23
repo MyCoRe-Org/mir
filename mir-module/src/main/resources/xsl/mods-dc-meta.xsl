@@ -11,35 +11,35 @@
 >
 
   <xsl:include href="mods-utils.xsl" />
-  <xsl:include href="mods2dc.xsl" />
+  <xsl:include href="mods2dc-mode-dc.xsl" />
 
   <xsl:template match="mods:mods" mode="dc-meta">
     <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/" />
     <link rel="schema.DCTERMS" href="http://purl.org/dc/terms/" />
 
     <xsl:variable name="dc.xml">
-      <xsl:apply-templates select="mods:titleInfo[1]" />
+      <xsl:apply-templates select="mods:titleInfo[1]" mode="dc" />
 
-      <xsl:apply-templates select="mods:name[@type='personal']" />
+      <xsl:apply-templates select="mods:name[@type='personal']" mode="dc" />
 
-      <xsl:apply-templates select="mods:genre[@type='intern']" />
+      <xsl:apply-templates select="mods:genre[@type='intern']" mode="dc" />
 
-      <xsl:apply-templates select="descendant-or-self::mods:dateIssued[not(ancestor::mods:relatedItem[not(@type='host')])][1]" />
-      <xsl:apply-templates select="mods:originInfo/mods:dateOther" />
+      <xsl:apply-templates select="descendant-or-self::mods:dateIssued[not(ancestor::mods:relatedItem[not(@type='host')])][1]" mode="dc" />
+      <xsl:apply-templates select="mods:originInfo/mods:dateOther" mode="dc" />
 
-      <xsl:apply-templates select="mods:relatedItem[(@type='host') or (@type='series')]" />
+      <xsl:apply-templates select="mods:relatedItem[(@type='host') or (@type='series')]" mode="dc" />
 
       <xsl:apply-templates select="mods:originInfo[mods:edition|mods:place|mods:publisher]"  />
-      <xsl:apply-templates select="descendant-or-self::mods:publisher[not(ancestor::mods:relatedItem[not(@type='host')])][1]"  />
+      <xsl:apply-templates select="descendant-or-self::mods:publisher[not(ancestor::mods:relatedItem[not(@type='host')])][1]" mode="dc" />
 
-      <xsl:apply-templates select="mods:identifier|mods:location/mods:url|mods:location/mods:shelfLocator" />
-      <xsl:apply-templates select="mods:note|mods:abstract" />
-      <xsl:apply-templates select="mods:abstract|mods:abstract/@xlink:href" />
+      <xsl:apply-templates select="mods:identifier|mods:location/mods:url|mods:location/mods:shelfLocator" mode="dc" />
+      <xsl:apply-templates select="mods:note|mods:abstract" mode="dc" />
+      <xsl:apply-templates select="mods:abstract|mods:abstract/@xlink:href" mode="dc" />
 
-      <xsl:apply-templates select="mods:physicalDescription/mods:extent" />
+      <xsl:apply-templates select="mods:physicalDescription/mods:extent" mode="dc" />
 
-      <xsl:apply-templates select="mods:language/mods:languageTerm" />
-      <xsl:apply-templates select="mods:accessCondition[@type='use and reproduction']" />
+      <xsl:apply-templates select="mods:language/mods:languageTerm" mode="dc" />
+      <xsl:apply-templates select="mods:accessCondition[@type='use and reproduction']" mode="dc" />
 
     </xsl:variable>
     <xsl:apply-templates select="xalan:nodeset($dc.xml)/*" mode="dc-meta" />
