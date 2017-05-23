@@ -484,8 +484,13 @@
 
   <xsl:template match="mods:accessCondition[@type='use and reproduction']">
     <xsl:variable name="trimmed" select="substring-after(normalize-space(@xlink:href),'#')" />
+    <xsl:variable name="licenseURI" select="concat('classification:metadata:0:children:mir_licenses:',$trimmed)" />
+    <xsl:variable name="licenseLink" select="document($licenseURI)//url/@xlink:href" />
     <dc:rights>
       <xsl:choose>
+        <xsl:when test="string-length($licenseLink) &gt; 0">
+          <xsl:value-of select="$licenseLink" />
+        </xsl:when>
         <xsl:when test="contains($trimmed, 'rights_reserved')">
           <xsl:apply-templates select="." mode="rights_reserved" />
         </xsl:when>
