@@ -65,19 +65,19 @@
   <xsl:variable name="isOpenAire" xmlns:encoder="xalan://java.net.URLEncoder"
                 select="document(concat('solr:q=',encoder:encode(concat($MCR.OAIDataProvider.OAI2.MapSetToQuery.openaire, ' AND id:', @ID)), '&amp;rows=0'))/response/result/@numFound" />
   <xsl:if test="$isOpenAire &gt; 0">
-    <setSpec>driver</setSpec>
+    <setSpec>openaire</setSpec>
   </xsl:if>
 
   <xsl:variable name="isEC_FundedResources" xmlns:encoder="xalan://java.net.URLEncoder"
                 select="document(concat('solr:q=',encoder:encode(concat($MCR.OAIDataProvider.OAI2.MapSetToQuery.ec_fundedresources, ' AND id:', @ID)), '&amp;rows=0'))/response/result/@numFound" />
   <xsl:if test="$isEC_FundedResources &gt; 0">
-    <setSpec>driver</setSpec>
+    <setSpec>ec_fundedresources</setSpec>
   </xsl:if>
 
   <xsl:variable name="isXMetaDissPlus" xmlns:encoder="xalan://java.net.URLEncoder"
                 select="document(concat('solr:q=',encoder:encode(concat($MCR.OAIDataProvider.OAI2.MapSetToQuery.xmetadissplus, ' AND id:', @ID)), '&amp;rows=0'))/response/result/@numFound" />
   <xsl:if test="$isXMetaDissPlus &gt; 0">
-    <setSpec><xsl:value-of select="concat('doc-type:', substring-after(metadata/def.modsContainer/modsContainer/mods:mods/mods:classification[contains(@authorityURI,'XMetaDissPlusThesisLevel')]/@valueURI,'#'))" /></setSpec>
+    <setSpec>xmetadissplus</setSpec>
   </xsl:if>
 
 </xsl:template>
