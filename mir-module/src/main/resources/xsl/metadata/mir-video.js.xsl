@@ -22,23 +22,20 @@
         <!-- I want to make just one request, not for every derivate. So group by derivate id. -->
           <xsl:variable name="optionsFragment">
             <select id="videoChooser" class="form-control">
+              <xsl:variable name="docContext" select="mycoreobject" />
               <xsl:for-each select="$solrResult/response/lst[@name='grouped']/lst[@name='derivateID']/arr[@name='groups']/lst">
                 <xsl:variable name="currentDerivateID" select="str[@name='groupValue']/text()" />
-              <!-- TODO: maybe display derivate label instead of id -->
-                <optgroup label="{$currentDerivateID}">
-                  <xsl:apply-templates select="result/doc" mode="resultsByDerivate" />
-                </optgroup>
+                <xsl:variable name="read" select="count($docContext[key('rights', $currentDerivateID)/@read])&gt; 0" />
+                <!-- TODO: maybe display derivate label instead of id -->
+                <xsl:if test="$read">
+                  <optgroup label="{$currentDerivateID}">
+                    <xsl:apply-templates select="result/doc" mode="resultsByDerivate" />
+                  </optgroup>
+                </xsl:if>
               </xsl:for-each>
-
             </select>
           </xsl:variable>
           <xsl:variable name="options" select="xalan:nodeset($optionsFragment)" />
-
-          <xsl:if test="count($options//optgroup/option) &gt; 0">
-            <div class="panel-heading">
-              <xsl:copy-of select="$optionsFragment" />
-            </div>
-          </xsl:if>
 
           <xsl:variable name="playerNode">
             <div class="embed-responsive embed-responsive-16by9 mir-player mir-preview">
@@ -68,13 +65,17 @@
             </div>
           </xsl:variable>
 
-          <xsl:variable name="playerNodes" select="xalan:nodeset($playerNode)" />
+          <xsl:if test="count($options//optgroup/option) &gt; 0">
+            <div class="panel-heading">
+              <xsl:copy-of select="$optionsFragment" />
+            </div>
+            <xsl:variable name="playerNodes" select="xalan:nodeset($playerNode)" />
+            <xsl:call-template name="addPlayerScripts">
+              <xsl:with-param name="generatedNodes" select="$playerNodes" />
+            </xsl:call-template>
+            <xsl:copy-of select="$playerNodes" />
+          </xsl:if>
 
-          <xsl:call-template name="addPlayerScripts">
-            <xsl:with-param name="generatedNodes" select="$playerNodes" />
-          </xsl:call-template>
-
-          <xsl:copy-of select="$playerNodes" />
         </div>
       </div>
     </xsl:if>
@@ -117,7 +118,7 @@
   <xsl:template match="doc" mode="resultsByDerivate">
     <xsl:variable name="fileIFSID" select="str[@name='id']" />
     <xsl:variable name="fileMimeType" select="str[@name='stream_content_type']" />
-    <xsl:variable name="filePath" select="str[@name='filePath']" />
+    <xsl:variable name="filePath" select="str[@name='filePath']/text()" />
     <xsl:variable name="fileIFSPath" select="str[@name='stream_source_info']" />
     <xsl:variable name="derivateID" select="str[@name='derivateID']" />
     <xsl:variable name="fileName" select="str[@name='fileName']" />
@@ -128,13 +129,14 @@
     <xsl:comment>
       call sources
     </xsl:comment>
-    <xsl:variable name="sources" select="media:getSources($derivateID, substring($filePath, 1), $UserAgent)" />
+    <xsl:variable name="sources" select="media:getSources($derivateID, $filePath, $UserAgent)" />
     <xsl:choose>
       <xsl:when test="$fileMimeType = 'video/mp4'">
-        <option data-file-extension="{$lowercaseExtension}" data-audio="false">
+        <option data-file-extension="{$lowercaseExtension}" data-audio="false"
+                data-is-main-doc="{mcr:getMainDocName($derivateID)=substring($filePath,2)}">
           <xsl:attribute name="data-sources">
             <xsl:for-each select="$sources">
-              <xsl:value-of select="@type" />,<xsl:value-of select="@src" />;
+              <xsl:value-of select="concat(@type, ',', @src, ';')" />
             </xsl:for-each>
           </xsl:attribute>
           <xsl:value-of select="$fileName" />
@@ -142,7 +144,8 @@
       </xsl:when>
       <xsl:otherwise>
         <option data-file-extension="{$lowercaseExtension}" data-mime-type="{$fileMimeType}"
-          data-src="{concat($ServletsBaseURL, 'MCRFileNodeServlet/', $derivateID, '/',$filePath)}" data-audio="true">
+          data-src="{concat($ServletsBaseURL, 'MCRFileNodeServlet/', $derivateID, $filePath)}" data-audio="true"
+          data-is-main-doc="{mcr:getMainDocName($derivateID)=substring($filePath,2)}">
           <xsl:value-of select="$fileName" />
         </option>
       </xsl:otherwise>

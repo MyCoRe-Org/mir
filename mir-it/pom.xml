@@ -18,7 +18,7 @@
       -DMCR.AppName=${MCR.AppName}
       -Dsolr.solr.home=${solr.home}</cargo.jvmargs>
     <cargo.servlet.port>9102</cargo.servlet.port>
-    <selenium.version>3.0.1</selenium.version>
+    <selenium.version>3.4.0</selenium.version>
     <solr.home>${MCR.Home.Integration}/solr-home</solr.home>
     <solr.version>4.10.4</solr.version>
   </properties>
@@ -364,7 +364,7 @@
     <dependency>
       <groupId>org.mycore</groupId>
       <artifactId>selenium-utils</artifactId>
-      <version>0.5</version>
+      <version>0.6-SNAPSHOT</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -405,14 +405,4 @@
       </properties>
     </profile>
   </profiles>
-  <dependencyManagement>
-    <!-- override from mycore dependencies, required for selenium 3.3 -->
-    <dependencies>
-      <dependency>
-        <groupId>com.google.guava</groupId>
-        <artifactId>guava</artifactId>
-        <version>21.0</version>
-      </dependency>
-    </dependencies>
-  </dependencyManagement>
 </project>
