@@ -4,7 +4,7 @@
   <parent>
     <groupId>org.mycore</groupId>
     <artifactId>mycore-parent</artifactId>
-    <version>31-SNAPSHOT</version>
+    <version>31</version>
   </parent>
   <groupId>org.mycore.mir</groupId>
   <artifactId>mir-parent</artifactId>
@@ -41,16 +41,16 @@
     <cargo.version>1.6.1</cargo.version>
     <changelog.since>2017-01-19</changelog.since>
     <!-- until snapshot matches released version (required for 'mvn changes:changes-check') -->
-    <changes.version>2017.01</changes.version>
-    <hibernate.version>5.2.2.Final</hibernate.version>
+    <changes.version>2017.05</changes.version>
+    <hibernate.version>5.2.10.Final</hibernate.version>
     <java.target.version>1.8</java.target.version>
     <jetty.version>9.3.14.v20161028</jetty.version>
-    <mycore.version>2017.01-SNAPSHOT</mycore.version>
+    <mycore.version>2017.05</mycore.version>
     <site.suffix />
     <sortpom.sortDeps>scope,groupId,artifactId</sortpom.sortDeps>
     <sortpom.sortFile>https://gist.githubusercontent.com/yagee-de/dfd3698c1b49173dbf251f74eb6a9297/raw/406460c088ff3cb6354e4ae6b40535e6f841607d/mycore_sort.xml</sortpom.sortFile>
     <sortpom.sortProps>true</sortpom.sortProps>
-    <tomcat8.version>8.5.8</tomcat8.version>
+    <tomcat8.version>8.5.15</tomcat8.version>
   </properties>
   <build>
     <pluginManagement>
