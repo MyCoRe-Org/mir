@@ -92,7 +92,7 @@
                   <mir:template name="selectInput"
                     xpath="condition[@field='category.top'][3]/@value" id="inputGenre1"
                     i18n="editor.search.mir.genre" tooltip="editor.search.genre.tooltip"
-                    uri="xslStyle:items2options:classification:editorComplete:-1:children:mir_genres" />
+                    uri="xslStyle:items2optionsComplete:classification:editorComplete:-1:children:mir_genres" />
                   <!-- Licenses -->
                   <mir:template name="selectInput"
                     xpath="condition[@field='category.top'][4]/@value" id="inputLicense1"
