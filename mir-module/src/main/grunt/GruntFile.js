@@ -1,5 +1,5 @@
 module.exports = function(grunt) {
-  grunt.loadNpmTasks('grunt-bowercopy');
+  grunt.loadNpmTasks('grunt-npmcopy');
   var fs = require('fs');
   var path = require('path');
   var util = require('util');
@@ -12,7 +12,7 @@ module.exports = function(grunt) {
   };
   grunt.initConfig({
     globalConfig : globalConfig,
-    bowercopy : {
+    npmcopy : {
       deps : {
         options : {
           destPrefix : '<%=globalConfig.assetsDirectory%>/'
@@ -27,12 +27,12 @@ module.exports = function(grunt) {
 
           'jquery' : 'jquery/dist',
 
-          'jquery/plugins/jquery-confirm' : 'jquery-confirm/*.js',
-          'jquery/plugins/jquery-placeholder' : 'jquery.placeholder/*.js',
-          'jquery/plugins/typeahead' : 'typeahead.js/dist/*.js',
-          'jquery/plugins/bootstrap3-typeahead' : 'bootstrap3-typeahead/bootstrap*.js',
+          'jquery/plugins/jquery-confirm' : 'myclabs.jquery.confirm/jquery.confirm.min.js',
+          'jquery/plugins/jquery-placeholder' : 'jquery.placeholder/jquery.placeholder.min.js',
+          'jquery/plugins/typeahead' : 'typeahead.js/dist/bloodhound.js',
+          'jquery/plugins/bootstrap3-typeahead' : 'bootstrap-3-typeahead/bootstrap3-typeahead.js',
           'jquery/plugins/shariff' : 'shariff/build',
-          'jquery/plugins/dotdotdot' : 'jQuery.dotdotdot/src/js',
+          'jquery/plugins/dotdotdot' : 'jquery.dotdotdot/src/js',
 
           'bootstrap-datepicker/js':'bootstrap-datepicker/dist/js/',
           'bootstrap-datepicker/css':'bootstrap-datepicker/dist/css/',
@@ -40,7 +40,7 @@ module.exports = function(grunt) {
 
           'moment' : 'moment/',
 
-          'handlebars': 'handlebars/'
+          'handlebars': 'handlebars/dist/handlebars.min.js'
         },
       }
     }
@@ -48,6 +48,6 @@ module.exports = function(grunt) {
   grunt.registerTask('none', function() {
   });
   grunt.registerTask('default', 'build assets directory', function() {
-    grunt.task.run('bowercopy');
+    grunt.task.run('npmcopy');
   });
 }

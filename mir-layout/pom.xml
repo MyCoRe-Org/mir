@@ -43,7 +43,6 @@
             <id>yarn-install</id>
             <goals>
               <goal>yarn</goal>
-              <goal>bower</goal>
             </goals>
             <phase>process-resources</phase>
             <configuration>

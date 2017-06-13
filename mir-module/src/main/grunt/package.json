@@ -15,9 +15,19 @@
     },
     "engineStrict": true,
     "devDependencies": {
-        "bower": "^1.8.0",
         "grunt": "^1.0.0",
         "grunt-cli": "^1.2.0",
-        "grunt-bowercopy": "^1.2.4"
+        "grunt-npmcopy": "^0.1.0",
+        "bootstrap": "3.3.5",
+        "bootstrap-3-typeahead": "4.0.2",
+        "font-awesome": "4.4.0",
+        "myclabs.jquery.confirm": "2.7.0",
+        "jquery.placeholder" : "https://github.com/matoilic/jquery.placeholder.git",
+        "typeahead.js": "0.11.1",
+        "shariff": "1.16.0",
+        "bootstrap-datepicker" : "1.5.0",
+        "jquery.dotdotdot" : "1.7.4",
+        "moment" : "2.10.6",
+        "handlebars": "4.0.5"
     }
 }
