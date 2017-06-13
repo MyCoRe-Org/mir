@@ -80,7 +80,7 @@
                         {{/if}}
                         {{#if ../permDelete}}
                             <li>
-                                <a href="{{../serverBaseURL}}servlets/MCRDerivateServlet?derivateid={{../mycorederivate}}&amp;objectid={{../mycoreobject}}&amp;todo=sdelfile&amp;file={{name}}"
+                                <a href="{{../serverBaseURL}}servlets/MCRDerivateServlet?derivateid={{../mycorederivate}}&amp;objectid={{../mycoreobject}}&amp;todo=sdelfile&amp;file={{path}}"
                                    class="option confirm_deletion" data-text="{{getI18n (concat "mir.confirm." type ".text")}}" title="{{getI18n (concat "IFS." type "Delete")}}">
                                     <span class="glyphicon glyphicon-trash"></span>
                                     {{getI18n (concat "IFS." type "Delete")}}
