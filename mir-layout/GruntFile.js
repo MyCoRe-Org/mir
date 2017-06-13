@@ -3,7 +3,7 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-less');
 	grunt.loadNpmTasks('grunt-replace');
 	grunt.loadNpmTasks('grunt-contrib-watch');
-	grunt.loadNpmTasks('grunt-bowercopy');
+	grunt.loadNpmTasks('grunt-npmcopy');
 	var fs = require('fs');
 	var path = require('path');
 	var util = require('util');
@@ -48,7 +48,7 @@ module.exports = function(grunt) {
 		var layoutDir = path.resolve(grunt.config('globalConfig.lessDirectory'), layout);
 		var layoutInfo = {
 			"srcDir" : layoutDir,
-			lastModified : dirLastModified(layoutDir, dirLastModified('bower_components'))
+			lastModified : dirLastModified(layoutDir, dirLastModified('node_modules'))
 		}
 		globalConfig.layouts[layout] = layoutInfo;
 	};
@@ -97,7 +97,7 @@ module.exports = function(grunt) {
 	grunt.initConfig({
 		globalConfig : globalConfig,
 		pkg : grunt.file.readJSON('package.json'),
-		bootstrap : grunt.file.readJSON('bower_components/bootstrap/package.json'),
+		bootstrap : grunt.file.readJSON('node_modules/bootstrap/package.json'),
 		banner : '/*!\n' + ' * <%= pkg.name %> v${project.version}\n' + ' * Homepage: <%= pkg.homepage %>\n'
 				+ ' * Copyright 2013-<%= grunt.template.today("yyyy") %> <%= pkg.author %> and others\n' + ' * Licensed under <%= pkg.license %>\n'
 				+ ' * Based on Bootstrap and Bootswatch\n' + '*/\n',
@@ -133,7 +133,7 @@ module.exports = function(grunt) {
 				files : [ {
 					expand : true,
 					// flatten: true,
-					src : [ 'bower_components/bootswatch/*/bootswatch.less' ],
+					src : [ 'node_modules/bootswatch/*/bootswatch.less' ],
 				// dest: 'build/'
 				} ]
 			}
@@ -172,14 +172,14 @@ module.exports = function(grunt) {
 			// which files to watch
 			}
 		},
-		bowercopy : {
+        npmcopy : {
 			deps : {
 				options : {
 					destPrefix : '<%=globalConfig.assetsDirectory%>/'
 				},
 				files : {
 					'jquery' : 'jquery/dist',
-					'jquery/plugins/jquery-migrate' : 'jquery-migrate/*.js',
+					'jquery/plugins/jquery-migrate' : 'jquery-migrate/dist/',
 				},
 			}
 		}
@@ -215,19 +215,19 @@ module.exports = function(grunt) {
 	grunt.registerTask('default', 'build a theme', function() {
 		grunt.log.writeln('less directory: ' + grunt.config('globalConfig').lessDirectory);
 		grunt.task.run('replace');
-		createFileIfNotExist('bower_components/bootswatch/default/variables.less');
-		createFileIfNotExist('bower_components/bootswatch/default/bootswatch.less');
+		createFileIfNotExist('node_modules/bootswatch/default/variables.less');
+		createFileIfNotExist('node_modules/bootswatch/default/bootswatch.less');
 		updateLayout();
 		grunt.task.run('mir');
-		grunt.task.run('bowercopy');
+		grunt.task.run('npmcopy');
 	});
 
 	grunt.registerTask('reBuild', 'rebuild files if necessary', function() {
 		updateLayout();
-		createFileIfNotExist('bower_components/bootswatch/default/variables.less');
-		createFileIfNotExist('bower_components/bootswatch/default/bootswatch.less');
+		createFileIfNotExist('node_modules/bootswatch/default/variables.less');
+		createFileIfNotExist('node_modules/bootswatch/default/bootswatch.less');
 		grunt.task.run('mir');
-		grunt.task.run('bowercopy');
+		grunt.task.run('npmcopy');
 	});
 
 	grunt.registerTask('watch-forAll', function() {

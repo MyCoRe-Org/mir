@@ -96,7 +96,6 @@
             <id>webapp-deps</id>
             <goals>
               <goal>npm</goal>
-              <goal>bower</goal>
             </goals>
             <phase>process-resources</phase>
             <configuration>

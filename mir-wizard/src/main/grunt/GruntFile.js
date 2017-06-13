@@ -1,5 +1,5 @@
 module.exports = function(grunt) {
-	grunt.loadNpmTasks('grunt-bowercopy');
+	grunt.loadNpmTasks('grunt-npmcopy');
 	var fs = require('fs');
 	var path = require('path');
 	var util = require('util');
@@ -12,14 +12,14 @@ module.exports = function(grunt) {
 	};
 	grunt.initConfig({
 		globalConfig : globalConfig,
-		bowercopy : {
+		npmcopy : {
 			deps : {
 				options : {
 					destPrefix : '<%=globalConfig.assetsDirectory%>/'
 				},
 				files : {
-					'highlightjs/css' : 'highlightjs/styles',
-					'highlightjs/js' : 'highlightjs/*.js'
+					'highlightjs/css' : 'highlight.js/styles',
+					'highlightjs/js' : 'highlight.js/lib/highlight.js'
 				},
 			}
 		}
@@ -27,6 +27,6 @@ module.exports = function(grunt) {
 	grunt.registerTask('none', function() {
 	});
 	grunt.registerTask('default', 'build assets directory', function() {
-		grunt.task.run('bowercopy');
+		grunt.task.run('npmcopy');
 	});
 }
