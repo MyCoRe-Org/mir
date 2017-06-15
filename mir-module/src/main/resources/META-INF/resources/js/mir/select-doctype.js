@@ -25,24 +25,21 @@ function changeHostOptions(){
 }
 
 function createGenreOption(category,level) {
-    if (level > 8) {return ("")};
-	var Option="";
-	var Title = category.children('label[xml\\:lang="de"]').attr('text');
-	var xEditorGroup = category.children('label[xml\\:lang="x-group"]').attr('text');
-	var xEditorDisable = category.children('label[xml\\:lang="x-disable"]').attr('text');
-	var id = category.attr('ID');
-	var space = "";
-	var space2 = "";
+    if (level > 8) {return ("");}
+    var Option="";
+    var Title = category.children('label[xml\\:lang="de"]').attr('text');
+    var xEditorGroup = category.children('label[xml\\:lang="x-group"]').attr('text');
+    var xEditorDisable = category.children('label[xml\\:lang="x-disable"]').attr('text');
+    var id = category.attr('ID');
+    var space = "";
+    var space2 = "";
 	for (var i = 0; i < level; i++) {
-	    space+="&nbsp;&nbsp;&nbsp;";
-	    space2+="   ";
+        space+="&nbsp;&nbsp;&nbsp;";
+        space2+="   ";
 	}
-	if (xEditorGroup == "true") {
-		if (category.find('category').length > 0) {
-			Option+='<optgroup label="'+ space2 +Title+'"></optgroup>';
-			//Option+='<option disabled><b> ' + space + Title + '</b></option>';
-		}
-	} else {
+	if (xEditorGroup == "true" && category.find('category').length > 0) {
+        Option+='<optgroup label="'+ space2 +Title+'"></optgroup>';
+    } else {
 		if (xEditorDisable == "true") {
 			Option+='<option value="'+id+'" disabled>' + space + Title + '</option>';
 		} else {
@@ -58,7 +55,7 @@ function createGenreOption(category,level) {
 function createGenreOptions() {
     var Options="";
   	$(GenreXML).find('categories > category').each(function(){
-  	    Options+=createGenreOption($(this),1);
+        Options+=createGenreOption($(this),1);
 	});
 	$('#genre').append(Options);
 }
