@@ -26,7 +26,14 @@
                                   count(. | key('title-by-type',@type)[1])=1]">
               <tr>
                 <td valign="top" class="metaname">
-                  <xsl:value-of select="i18n:translate(concat('mir.title.type.', @type))" />
+                  <xsl:choose>
+                    <xsl:when test="@displayLabel">
+                      <xsl:value-of select="@displayLabel" />
+                    </xsl:when>
+                    <xsl:otherwise>
+                      <xsl:value-of select="i18n:translate(concat('mir.title.type.', @type))" />
+                    </xsl:otherwise>
+                  </xsl:choose>
                   <xsl:text>:</xsl:text>
                 </td>
                 <td class="metavalue">
