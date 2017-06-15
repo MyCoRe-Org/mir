@@ -34,7 +34,7 @@
                     <xsl:if test="position()!=1">
                       <br />
                     </xsl:if>
-                    <xsl:apply-templates select="//mods:mods" mode="mods.title">
+                    <xsl:apply-templates select="//modsContainer/mods:mods" mode="mods.title">
                       <xsl:with-param name="type" select="@type" />
                       <xsl:with-param name="asHTML" select="true()" />
                       <xsl:with-param name="withSubtitle" select="true()" />
