@@ -40,9 +40,9 @@
   <xsl:param name="ServletsBaseURL" select="''" />
   <xsl:param name="WebApplicationBaseURL" select="''" />
   <xsl:param name="MCR.URN.SubNamespace.Default.Prefix" select="''" />
-  <xsl:param name="MCR.OAIDataProvider.RepositoryPublisherName" />
-  <xsl:param name="MCR.OAIDataProvider.RepositoryPublisherPlace" />
-  <xsl:param name="MCR.OAIDataProvider.RepositoryPublisherAddress" />
+  <xsl:param name="MCR.OAIDataProvider.RepositoryPublisherName" select="''" />
+  <xsl:param name="MCR.OAIDataProvider.RepositoryPublisherPlace" select="''" />
+  <xsl:param name="MCR.OAIDataProvider.RepositoryPublisherAddress" select="''" />
 
   <xsl:variable name="language">
     <xsl:call-template name="translate_Lang">
@@ -350,115 +350,122 @@
 
     <xsl:template name="repositoryPublisher">
       <xsl:choose>
-          <xsl:when test="./metadata/def.modsContainer/modsContainer/mods:mods/mods:name[mods:role/mods:roleTerm/text()='his' and @valueURI]">
-              <xsl:variable name="insti" select="substring-after(./metadata/def.modsContainer/modsContainer/mods:mods/mods:name[mods:role/mods:roleTerm/text()='his' and @valueURI]/@valueURI, '#')"/>
-              <xsl:variable name="myURI" select="concat('classification:metadata:0:parents:mir_institutes:',$insti)" />
-              <xsl:variable name="cat" select="document($myURI)//category[@ID=$insti]/ancestor-or-self::category[label[lang('x-place')]][1]" />
-              <xsl:variable name="place" select="$cat/label[@xml:lang='x-place']/@text" />
-              <xsl:choose>
-                  <xsl:when test="$place">
-                      <xsl:variable name="placeArray">
-                          <xsl:call-template name="Tokenizer"><!-- use split function from mycore-base/coreFunctions.xsl -->
-                              <xsl:with-param name="string" select="$place" />
-                              <xsl:with-param name="delimiter" select="'|'" />
-                          </xsl:call-template>
-                      </xsl:variable>
-                      <xsl:variable name="placeSet" select="exslt:node-set($placeArray)/token" />
-                      <xsl:variable name="address">
-                          <xsl:choose>
-                              <xsl:when test="$placeSet[3]">
-                                  <xsl:value-of select="$placeSet[3]" />
-                              </xsl:when>
-                              <xsl:otherwise>
-                                  <xsl:value-of select="$placeSet[2]" />
-                              </xsl:otherwise>
-                          </xsl:choose>
-                      </xsl:variable>
-                      <xsl:call-template name="repositoryPublisherElement">
-                          <xsl:with-param name="name" select="$placeSet[1]" />
-                          <xsl:with-param name="place" select="$placeSet[2]" />
-                          <xsl:with-param name="address" select="$address" />
-                      </xsl:call-template>
+        <xsl:when test="//mods:mods/mods:originInfo[@eventType='publication']/mods:publisher and //mods:mods/mods:originInfo[@eventType='publication']/mods:place/mods:placeTerm[@type='text']">
+          <xsl:call-template name="repositoryPublisherElement">
+            <xsl:with-param name="name" select="//mods:mods/mods:originInfo[@eventType='publication']/mods:publisher" />
+            <xsl:with-param name="place" select="//mods:mods/mods:originInfo[@eventType='publication']/mods:place/mods:placeTerm[@type='text']" />
+            <xsl:with-param name="address" select="''" />
+          </xsl:call-template>
+        </xsl:when>
+        <xsl:when test="./metadata/def.modsContainer/modsContainer/mods:mods/mods:name[mods:role/mods:roleTerm/text()='his' and @valueURI]">
+          <xsl:variable name="insti" select="substring-after(./metadata/def.modsContainer/modsContainer/mods:mods/mods:name[mods:role/mods:roleTerm/text()='his' and @valueURI]/@valueURI, '#')"/>
+          <xsl:variable name="myURI" select="concat('classification:metadata:0:parents:mir_institutes:',$insti)" />
+          <xsl:variable name="cat" select="document($myURI)//category[@ID=$insti]/ancestor-or-self::category[label[lang('x-place')]][1]" />
+          <xsl:variable name="place" select="$cat/label[@xml:lang='x-place']/@text" />
+          <xsl:choose>
+            <xsl:when test="$place">
+              <xsl:variable name="placeArray">
+                <xsl:call-template name="Tokenizer"><!-- use split function from mycore-base/coreFunctions.xsl -->
+                  <xsl:with-param name="string" select="$place" />
+                  <xsl:with-param name="delimiter" select="'|'" />
+                </xsl:call-template>
+              </xsl:variable>
+              <xsl:variable name="placeSet" select="exslt:node-set($placeArray)/token" />
+              <xsl:variable name="address">
+                <xsl:choose>
+                  <xsl:when test="$placeSet[3]">
+                    <xsl:value-of select="$placeSet[3]" />
                   </xsl:when>
                   <xsl:otherwise>
-                      <xsl:call-template name="repositoryPublisherElement">
-                          <xsl:with-param name="name" select="$MCR.OAIDataProvider.RepositoryPublisherName" />
-                          <xsl:with-param name="place" select="$MCR.OAIDataProvider.RepositoryPublisherPlace" />
-                          <xsl:with-param name="address" select="$MCR.OAIDataProvider.RepositoryPublisherAddress" />
-                      </xsl:call-template>
+                    <xsl:value-of select="''" />
                   </xsl:otherwise>
-              </xsl:choose>
-          </xsl:when>
-          <xsl:otherwise>
+                </xsl:choose>
+              </xsl:variable>
               <xsl:call-template name="repositoryPublisherElement">
-                  <xsl:with-param name="name" select="$MCR.OAIDataProvider.RepositoryPublisherName" />
-                  <xsl:with-param name="place" select="$MCR.OAIDataProvider.RepositoryPublisherPlace" />
-                  <xsl:with-param name="address" select="$MCR.OAIDataProvider.RepositoryPublisherAddress" />
+                <xsl:with-param name="name" select="$placeSet[1]" />
+                <xsl:with-param name="place" select="$placeSet[2]" />
+                <xsl:with-param name="address" select="$address" />
               </xsl:call-template>
-          </xsl:otherwise>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:call-template name="repositoryPublisherElement">
+                <xsl:with-param name="name" select="$MCR.OAIDataProvider.RepositoryPublisherName" />
+                <xsl:with-param name="place" select="$MCR.OAIDataProvider.RepositoryPublisherPlace" />
+                <xsl:with-param name="address" select="$MCR.OAIDataProvider.RepositoryPublisherAddress" />
+              </xsl:call-template>
+            </xsl:otherwise>
+          </xsl:choose>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:call-template name="repositoryPublisherElement">
+            <xsl:with-param name="name" select="$MCR.OAIDataProvider.RepositoryPublisherName" />
+            <xsl:with-param name="place" select="$MCR.OAIDataProvider.RepositoryPublisherPlace" />
+            <xsl:with-param name="address" select="$MCR.OAIDataProvider.RepositoryPublisherAddress" />
+          </xsl:call-template>
+        </xsl:otherwise>
       </xsl:choose>
     </xsl:template>
 
     <xsl:template name="repositoryPublisherElement">
-        <xsl:param name="name" />
-        <xsl:param name="place" />
-        <xsl:param name="address" />
-        <xsl:element name="dc:publisher">
-            <xsl:attribute name="xsi:type">cc:Publisher</xsl:attribute>
-            <xsl:attribute name="type">dcterms:ISO3166</xsl:attribute>
-            <xsl:attribute name="countryCode">DE</xsl:attribute>
-            <xsl:element name="cc:universityOrInstitution">
-                <xsl:element name="cc:name">
-                    <xsl:value-of select="$name"/>
-                </xsl:element>
-                <xsl:element name="cc:place">
-                    <xsl:value-of select="$place"/>
-                </xsl:element>
-                <cc:address cc:Scheme="DIN5008" />
-            </xsl:element>
-            <xsl:element name="cc:address">
-                <xsl:attribute name="cc:Scheme">DIN5008</xsl:attribute>
-                <xsl:value-of select="$address"/>
-            </xsl:element>
+      <xsl:param name="name" />
+      <xsl:param name="place" />
+      <xsl:param name="address" />
+      <xsl:element name="dc:publisher">
+        <xsl:attribute name="xsi:type">cc:Publisher</xsl:attribute>
+        <xsl:attribute name="type">dcterms:ISO3166</xsl:attribute>
+        <xsl:attribute name="countryCode">DE</xsl:attribute>
+        <xsl:element name="cc:universityOrInstitution">
+          <xsl:element name="cc:name">
+            <xsl:value-of select="$name"/>
+          </xsl:element>
+          <xsl:element name="cc:place">
+            <xsl:value-of select="$place"/>
+          </xsl:element>
+          <cc:address cc:Scheme="DIN5008" />
         </xsl:element>
+        <xsl:element name="cc:address">
+          <xsl:attribute name="cc:Scheme">DIN5008</xsl:attribute>
+          <xsl:value-of select="$address"/>
+        </xsl:element>
+      </xsl:element>
     </xsl:template>
 
     <xsl:template name="contributor">
-        <xsl:for-each select="./metadata/def.modsContainer/modsContainer/mods:mods/mods:name[mods:role/mods:roleTerm/text()='ctb']"><!-- check subroles -->
-            <xsl:element name="dc:contributor">
-                <xsl:attribute name="xsi:type">pc:Contributor</xsl:attribute>
-                <!-- xsl:attribute name="thesis:role"><xsl:value-of select="./@type" /></xsl:attribute -->
-                <xsl:element name="pc:person">
-                  <xsl:element name="pc:name">
-                    <xsl:attribute name="type">nameUsedByThePerson</xsl:attribute>
-                    <xsl:element name="pc:personEnteredUnderGivenName">
-                      <xsl:value-of select="mods:displayForm" />
-                    </xsl:element>
-                  </xsl:element>
-                </xsl:element>
+      <xsl:for-each select="./metadata/def.modsContainer/modsContainer/mods:mods/mods:name[mods:role/mods:roleTerm/text()='ctb']"><!-- check subroles -->
+        <xsl:element name="dc:contributor">
+          <xsl:attribute name="xsi:type">pc:Contributor</xsl:attribute>
+          <!-- xsl:attribute name="thesis:role"><xsl:value-of select="./@type" /></xsl:attribute -->
+          <xsl:element name="pc:person">
+            <xsl:element name="pc:name">
+              <xsl:attribute name="type">nameUsedByThePerson</xsl:attribute>
+              <xsl:element name="pc:personEnteredUnderGivenName">
+                <xsl:value-of select="mods:displayForm" />
+              </xsl:element>
             </xsl:element>
-        </xsl:for-each>
+          </xsl:element>
+        </xsl:element>
+      </xsl:for-each>
     </xsl:template>
 
     <xsl:template name="date">
-        <xsl:if test="./metadata/def.modsContainer/modsContainer/mods:mods/mods:originInfo[@eventType='creation']/mods:dateOther[@type='accepted'][@encoding='w3cdtf']">
-            <xsl:element name="dcterms:dateAccepted">
-                <xsl:attribute name="xsi:type">dcterms:W3CDTF</xsl:attribute>
-                <xsl:value-of select="./metadata/def.modsContainer/modsContainer/mods:mods/mods:originInfo[@eventType='creation']/mods:dateOther[@type='accepted'][@encoding='w3cdtf']" />
-            </xsl:element>
-        </xsl:if>
-        <xsl:if test="./metadata/def.modsContainer/modsContainer/mods:mods/mods:originInfo[@eventType='publication']/mods:dateIssued[@encoding='w3cdtf']">
-            <xsl:element name="dcterms:issued">
-                <xsl:attribute name="xsi:type">dcterms:W3CDTF</xsl:attribute>
-                <xsl:value-of select="./metadata/def.modsContainer/modsContainer/mods:mods/mods:originInfo[@eventType='publication']/mods:dateIssued[@encoding='w3cdtf']" />
-            </xsl:element>
-        </xsl:if>
-        <xsl:for-each select="./service/servdates/servdate[@type='modifydate']">
-            <xsl:element name="dcterms:modified">
-                <xsl:attribute name="xsi:type">dcterms:W3CDTF</xsl:attribute>
-                <xsl:value-of select="." />
-            </xsl:element>
-        </xsl:for-each>
+      <xsl:if test="./metadata/def.modsContainer/modsContainer/mods:mods/mods:originInfo[@eventType='creation']/mods:dateOther[@type='accepted'][@encoding='w3cdtf']">
+        <xsl:element name="dcterms:dateAccepted">
+          <xsl:attribute name="xsi:type">dcterms:W3CDTF</xsl:attribute>
+          <xsl:value-of select="./metadata/def.modsContainer/modsContainer/mods:mods/mods:originInfo[@eventType='creation']/mods:dateOther[@type='accepted'][@encoding='w3cdtf']" />
+        </xsl:element>
+      </xsl:if>
+      <xsl:if test="./metadata/def.modsContainer/modsContainer/mods:mods/mods:originInfo[@eventType='publication']/mods:dateIssued[@encoding='w3cdtf']">
+        <xsl:element name="dcterms:issued">
+          <xsl:attribute name="xsi:type">dcterms:W3CDTF</xsl:attribute>
+          <xsl:value-of select="./metadata/def.modsContainer/modsContainer/mods:mods/mods:originInfo[@eventType='publication']/mods:dateIssued[@encoding='w3cdtf']" />
+        </xsl:element>
+      </xsl:if>
+      <xsl:for-each select="./service/servdates/servdate[@type='modifydate']">
+        <xsl:element name="dcterms:modified">
+          <xsl:attribute name="xsi:type">dcterms:W3CDTF</xsl:attribute>
+          <xsl:value-of select="." />
+        </xsl:element>
+      </xsl:for-each>
     </xsl:template>
 
     <xsl:template name="type">
