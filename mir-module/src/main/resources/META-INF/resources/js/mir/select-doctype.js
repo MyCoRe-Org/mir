@@ -25,7 +25,7 @@ function changeHostOptions(){
 }
 
 function createGenreOption(category,level) {
-    if (level > 8) return ("");
+    if (level > 8) {return ("")};
 	var Option="";
 	var Title = category.children('label[xml\\:lang="de"]').attr('text');
 	var xEditorGroup = category.children('label[xml\\:lang="x-group"]').attr('text');
@@ -33,8 +33,10 @@ function createGenreOption(category,level) {
 	var id = category.attr('ID');
 	var space = "";
 	var space2 = "";
-	for (i = 0; i < level; i++) space+="&nbsp;&nbsp;&nbsp;";
-	for (i = 0; i < level; i++) space2+="   ";
+	for (var i = 0; i < level; i++) {
+	    space+="&nbsp;&nbsp;&nbsp;";
+	    space2+="   ";
+	}
 	if (xEditorGroup == "true") {
 		if (category.find('category').length > 0) {
 			Option+='<optgroup label="'+ space2 +Title+'"></optgroup>';
@@ -51,11 +53,10 @@ function createGenreOption(category,level) {
 		Option+=createGenreOption($(this),level+1);
 	});
 	return Option;
-	
 }
         
 function createGenreOptions() {
-	var Options="";
+    var Options="";
   	$(GenreXML).find('categories > category').each(function(){
   	    Options+=createGenreOption($(this),1);
 	});
