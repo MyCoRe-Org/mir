@@ -43,7 +43,7 @@
   <xsl:param name="MCR.OAIDataProvider.RepositoryPublisherName" />
   <xsl:param name="MCR.OAIDataProvider.RepositoryPublisherPlace" />
   <xsl:param name="MCR.OAIDataProvider.RepositoryPublisherAddress" />
-  
+
   <xsl:variable name="language">
     <xsl:call-template name="translate_Lang">
       <xsl:with-param name="lang_code" select="//metadata/def.modsContainer/modsContainer/mods:mods/mods:language/mods:languageTerm[@authority='rfc4646']/text()" />
@@ -335,13 +335,6 @@
 
     <xsl:template name="repositoryPublisher">
       <xsl:choose>
-          <xsl:when test="//mods:mods/mods:originInfo[@eventType='creation']/mods:publisher and //mods:mods/mods:originInfo[@eventType='creation']/mods:place/mods:placeTerm[@type='text']">
-              <xsl:call-template name="repositoryPublisherElement">
-                  <xsl:with-param name="name" select="//mods:mods/mods:originInfo[@eventType='creation']/mods:publisher" />
-                  <xsl:with-param name="place" select="//mods:mods/mods:originInfo[@eventType='creation']/mods:place/mods:placeTerm[@type='text']" />
-                  <xsl:with-param name="address" select="//mods:mods/mods:originInfo[@eventType='creation']/mods:place/mods:placeTerm[@type='text']" />
-              </xsl:call-template>
-          </xsl:when>
           <xsl:when test="./metadata/def.modsContainer/modsContainer/mods:mods/mods:name[mods:role/mods:roleTerm/text()='his' and @valueURI]">
               <xsl:variable name="insti" select="substring-after(./metadata/def.modsContainer/modsContainer/mods:mods/mods:name[mods:role/mods:roleTerm/text()='his' and @valueURI]/@valueURI, '#')"/>
               <xsl:variable name="myURI" select="concat('classification:metadata:0:parents:mir_institutes:',$insti)" />
