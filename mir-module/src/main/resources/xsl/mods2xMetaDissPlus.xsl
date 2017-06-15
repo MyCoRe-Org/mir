@@ -35,6 +35,7 @@
 
   <xsl:include href="mods2record.xsl" />
   <xsl:include href="mods-utils.xsl" />
+  <xsl:include href="coreFunctions.xsl"/>
 
   <xsl:param name="ServletsBaseURL" select="''" />
   <xsl:param name="WebApplicationBaseURL" select="''" />
@@ -42,7 +43,7 @@
   <xsl:param name="MCR.OAIDataProvider.RepositoryPublisherName" />
   <xsl:param name="MCR.OAIDataProvider.RepositoryPublisherPlace" />
   <xsl:param name="MCR.OAIDataProvider.RepositoryPublisherAddress" />
-  
+
   <xsl:variable name="language">
     <xsl:call-template name="translate_Lang">
       <xsl:with-param name="lang_code" select="//metadata/def.modsContainer/modsContainer/mods:mods/mods:language/mods:languageTerm[@authority='rfc4646']/text()" />
@@ -333,24 +334,78 @@
     </xsl:template>
 
     <xsl:template name="repositoryPublisher">
-      <xsl:element name="dc:publisher">
-        <xsl:attribute name="xsi:type">cc:Publisher</xsl:attribute>
-        <xsl:attribute name="type">dcterms:ISO3166</xsl:attribute>
-        <xsl:attribute name="countryCode">DE</xsl:attribute>
-        <xsl:element name="cc:universityOrInstitution">
-          <xsl:element name="cc:name">
-            <xsl:value-of select="$MCR.OAIDataProvider.RepositoryPublisherName"/>  
-          </xsl:element>
-          <xsl:element name="cc:place">
-            <xsl:value-of select="$MCR.OAIDataProvider.RepositoryPublisherPlace"/>
-          </xsl:element>
-          <cc:address cc:Scheme="DIN5008" />
+      <xsl:choose>
+          <xsl:when test="./metadata/def.modsContainer/modsContainer/mods:mods/mods:name[mods:role/mods:roleTerm/text()='his' and @valueURI]">
+              <xsl:variable name="insti" select="substring-after(./metadata/def.modsContainer/modsContainer/mods:mods/mods:name[mods:role/mods:roleTerm/text()='his' and @valueURI]/@valueURI, '#')"/>
+              <xsl:variable name="myURI" select="concat('classification:metadata:0:parents:mir_institutes:',$insti)" />
+              <xsl:variable name="cat" select="document($myURI)//category[@ID=$insti]/ancestor-or-self::category[label[lang('x-place')]][1]" />
+              <xsl:variable name="place" select="$cat/label[@xml:lang='x-place']/@text" />
+              <xsl:choose>
+                  <xsl:when test="$place">
+                      <xsl:variable name="placeArray">
+                          <xsl:call-template name="Tokenizer"><!-- use split function from mycore-base/coreFunctions.xsl -->
+                              <xsl:with-param name="string" select="$place" />
+                              <xsl:with-param name="delimiter" select="'|'" />
+                          </xsl:call-template>
+                      </xsl:variable>
+                      <xsl:variable name="placeSet" select="exslt:node-set($placeArray)/token" />
+                      <xsl:variable name="address">
+                          <xsl:choose>
+                              <xsl:when test="$placeSet[3]">
+                                  <xsl:value-of select="$placeSet[3]" />
+                              </xsl:when>
+                              <xsl:otherwise>
+                                  <xsl:value-of select="$placeSet[2]" />
+                              </xsl:otherwise>
+                          </xsl:choose>
+                      </xsl:variable>
+                      <xsl:call-template name="repositoryPublisherElement">
+                          <xsl:with-param name="name" select="$placeSet[1]" />
+                          <xsl:with-param name="place" select="$placeSet[2]" />
+                          <xsl:with-param name="address" select="$address" />
+                      </xsl:call-template>
+                  </xsl:when>
+                  <xsl:otherwise>
+                      <xsl:call-template name="repositoryPublisherElement">
+                          <xsl:with-param name="name" select="$MCR.OAIDataProvider.RepositoryPublisherName" />
+                          <xsl:with-param name="place" select="$MCR.OAIDataProvider.RepositoryPublisherPlace" />
+                          <xsl:with-param name="address" select="$MCR.OAIDataProvider.RepositoryPublisherAddress" />
+                      </xsl:call-template>
+                  </xsl:otherwise>
+              </xsl:choose>
+          </xsl:when>
+          <xsl:otherwise>
+              <xsl:call-template name="repositoryPublisherElement">
+                  <xsl:with-param name="name" select="$MCR.OAIDataProvider.RepositoryPublisherName" />
+                  <xsl:with-param name="place" select="$MCR.OAIDataProvider.RepositoryPublisherPlace" />
+                  <xsl:with-param name="address" select="$MCR.OAIDataProvider.RepositoryPublisherAddress" />
+              </xsl:call-template>
+          </xsl:otherwise>
+      </xsl:choose>
+    </xsl:template>
+
+    <xsl:template name="repositoryPublisherElement">
+        <xsl:param name="name" />
+        <xsl:param name="place" />
+        <xsl:param name="address" />
+        <xsl:element name="dc:publisher">
+            <xsl:attribute name="xsi:type">cc:Publisher</xsl:attribute>
+            <xsl:attribute name="type">dcterms:ISO3166</xsl:attribute>
+            <xsl:attribute name="countryCode">DE</xsl:attribute>
+            <xsl:element name="cc:universityOrInstitution">
+                <xsl:element name="cc:name">
+                    <xsl:value-of select="$name"/>
+                </xsl:element>
+                <xsl:element name="cc:place">
+                    <xsl:value-of select="$place"/>
+                </xsl:element>
+                <cc:address cc:Scheme="DIN5008" />
+            </xsl:element>
+            <xsl:element name="cc:address">
+                <xsl:attribute name="cc:Scheme">DIN5008</xsl:attribute>
+                <xsl:value-of select="$address"/>
+            </xsl:element>
         </xsl:element>
-        <xsl:element name="cc:address">
-          <xsl:attribute name="cc:Scheme">DIN5008</xsl:attribute>
-          <xsl:value-of select="$MCR.OAIDataProvider.RepositoryPublisherAddress"/>
-        </xsl:element>
-      </xsl:element>
     </xsl:template>
 
     <xsl:template name="contributor">
