@@ -5,7 +5,7 @@
                 exclude-result-prefixes="mcr" version="1.0">
   <xsl:include href="mets-iview.xsl" />
   <xsl:include href="mets-amd.xsl" />
-  <xsl:include href="mods2mods.xsl" />
+  <xsl:include href="mods-enhancer.xsl" />
 
   <xsl:output method="xml" encoding="utf-8" />
   <xsl:param name="MCR.Module-iview2.SupportedContentTypes" />
