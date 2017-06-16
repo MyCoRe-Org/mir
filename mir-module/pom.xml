@@ -112,7 +112,7 @@
             </goals>
             <configuration>
               <workingDirectory>${grunt.projectBase}</workingDirectory>
-              <arguments>--verbose --assetsDirectory=${template.assetsdir}</arguments>
+              <arguments>--verbose --assetsDirectory=${template.assetsdir} --moduleDirectory=${basedir}</arguments>
             </configuration>
           </execution>
         </executions>
