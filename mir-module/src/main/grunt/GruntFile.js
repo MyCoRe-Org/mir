@@ -1,5 +1,6 @@
 module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-npmcopy');
+  grunt.loadNpmTasks('grunt-contrib-uglify');
   var fs = require('fs');
   var path = require('path');
   var util = require('util');
@@ -9,6 +10,8 @@ module.exports = function(grunt) {
   var globalConfig = {
     assetsDirectory : getAbsoluteDir(grunt.option('assetsDirectory')),
     assetsDirectoryRelative : path.basename(grunt.option('assetsDirectory')),
+    moduleDirectory: grunt.option('moduleDirectory'),
+    projectBase: grunt.option('projectBase') || ''
   };
   grunt.initConfig({
     globalConfig : globalConfig,
@@ -43,11 +46,35 @@ module.exports = function(grunt) {
           'handlebars': 'handlebars/dist/handlebars.min.js'
         },
       }
-    }
+    },
+    uglify: {
+      mir: {
+        mangle: false,
+        options: {
+          sourceMap: true,
+          sourceMapIncludeSources : true
+        },
+        files: {
+          '<%= globalConfig.projectBase %>../classes/META-INF/resources/js/mir/base.min.js': '<%= globalConfig.moduleDirectory %>/src/main/resources/META-INF/resources/js/mir/base.js',
+          '<%= globalConfig.projectBase %>../classes/META-INF/resources/js/mir/derivate-fileList.min.js': '<%= globalConfig.moduleDirectory %>/src/main/resources/META-INF/resources/js/mir/derivate-fileList.js',
+          '<%= globalConfig.projectBase %>../classes/META-INF/resources/js/mir/relatedItem-modal.min.js': '<%= globalConfig.moduleDirectory %>/src/main/resources/META-INF/resources/js/mir/relatedItem-modal.js',
+          '<%= globalConfig.projectBase %>../classes/META-INF/resources/js/mir/relatedItem-autocomplete.min.js': '<%= globalConfig.moduleDirectory %>/src/main/resources/META-INF/resources/js/mir/relatedItem-autocomplete.js',
+          '<%= globalConfig.projectBase %>../classes/META-INF/resources/js/mir/xeditor-form.min.js': '<%= globalConfig.moduleDirectory %>/src/main/resources/META-INF/resources/js/mir/xeditor-form.js',
+          '<%= globalConfig.projectBase %>../classes/META-INF/resources/js/mir/openaire.min.js': '<%= globalConfig.moduleDirectory %>/src/main/resources/META-INF/resources/js/mir/openaire.js',
+          '<%= globalConfig.projectBase %>../classes/META-INF/resources/js/mir/classification-modal-select.min.js': '<%= globalConfig.moduleDirectory %>/src/main/resources/META-INF/resources/js/mir/classification-modal-select.js',
+          '<%= globalConfig.projectBase %>../classes/META-INF/resources/js/mir/geo-coords.min.js': '<%= globalConfig.moduleDirectory %>/src/main/resources/META-INF/resources/js/mir/geo-coords.js',
+          '<%= globalConfig.projectBase %>../classes/META-INF/resources/js/mir/select-doctype.min.js': '<%= globalConfig.moduleDirectory %>/src/main/resources/META-INF/resources/js/mir/select-doctype.js',
+
+          '<%= globalConfig.projectBase %>../classes/META-INF/resources/js/jquery.search-entity.min.js': '<%= globalConfig.moduleDirectory %>/src/main/resources/META-INF/resources/js/jquery.search-entity.js',
+          '<%= globalConfig.projectBase %>../classes/META-INF/resources/js/oa-statistic.min.js': '<%= globalConfig.moduleDirectory %>/src/main/resources/META-INF/resources/js/oa-statistic.js'
+        }
+      }
+    },
   });
   grunt.registerTask('none', function() {
   });
   grunt.registerTask('default', 'build assets directory', function() {
     grunt.task.run('npmcopy');
+    grunt.task.run('uglify');
   });
 }

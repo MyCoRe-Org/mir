@@ -28,6 +28,7 @@
         "bootstrap-datepicker" : "1.5.0",
         "jquery.dotdotdot" : "1.7.4",
         "moment" : "2.10.6",
-        "handlebars": "4.0.5"
+        "handlebars": "4.0.5",
+        "grunt-contrib-uglify": "^2.0.0"
     }
 }

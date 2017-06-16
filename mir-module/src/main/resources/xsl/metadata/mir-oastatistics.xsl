@@ -95,7 +95,7 @@
         </div>
         <script src="{$MIR.OAS.GraphProviderURL}includes/raphael-2.1.2/raphael-min.js"></script>
         <script src="{$MIR.OAS.GraphProviderURL}includes/morris.js-0.5.1/morris.js"></script>
-        <script src="{$WebApplicationBaseURL}js/oa-statistic.js" ></script>
+        <script src="{$WebApplicationBaseURL}js/oa-statistic.min.js" ></script>
         <style type="text/css"> @import url("<xsl:value-of select="$MIR.OAS.GraphProviderURL" />includes/morris.js-0.5.1/morris.css"); </style>
       </div>
     </xsl:if>
