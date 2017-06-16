@@ -126,7 +126,7 @@
             </div>
           </xsl:if>
 <!-- OAS statistics -->
-          <xsl:if test="$MIR.OAS = 'show'">
+          <xsl:if test="$MIR.OAS = 'show' and div[@id='mir-oastatistics']">
             <div class="panel panel-default">
               <div class="panel-heading">
                 <h3 class="panel-title">
