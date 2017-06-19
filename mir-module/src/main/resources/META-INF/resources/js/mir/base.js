@@ -467,6 +467,27 @@
       });
     });
 
+    $("#registerURN").click(function (event) {
+        var urnButton = jQuery(this);
+        var mcrId = urnButton.attr("data-mycoreID");
+        var baseURL = urnButton.attr("data-baseURL");
+        var urnResource = baseURL + "rsc/pi/registration/service/DNBURN/" + mcrId;
+
+        $.ajax({
+          type: 'POST',
+          url: urnResource,
+          data: {}
+        }).done(function (result) {
+          window.location.search="XSL.Status.Message=component.pi.register.urn.success&XSL.Status.Style=success";
+        }).fail(function (result) {
+          if("responseJSON" in result && "code" in result.responseJSON){
+              window.location.search="XSL.Status.Message=component.pi.register.error." + result.responseJSON.code +"&XSL.Status.Style=danger";
+          } else {
+              window.location.search="XSL.Status.Message=component.pi.register.urn.error&XSL.Status.Style=danger";
+          }
+        });
+      });
+
   }); // END $﻿(document).ready()
 
   function dotdotdotCallback(isTruncated, originalContent) {
@@ -475,9 +496,9 @@
       $("a.readless", this).remove();
     }
   };
-  
+
   window.solrEscapeSearchValue = function base_solrEscapeSearchValue(text){
-	  return text.replace(/([\\!&|+\\-\\(\\)\\{\\}\\\[\\\]~:\\\\/^])/g, "\\$1"); // special chars: "!&|+-(){}[]~:\\/^"
+    return text.replace(/([\\!&|+\\-\\(\\)\\{\\}\\\[\\\]~:\\\\/^])/g, "\\$1"); // special chars: "!&|+-(){}[]~:\\/^"
   }
 
 
