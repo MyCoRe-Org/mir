@@ -1,6 +1,12 @@
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:mets="http://www.loc.gov/METS/"
-  xmlns:mods="http://www.loc.gov/mods/v3" xmlns:xalan="http://xml.apache.org/xalan" xmlns:mcr="xalan://org.mycore.common.xml.MCRXMLFunctions"
-  xmlns:mcrurn="xalan://org.mycore.urn.MCRXMLFunctions" xmlns:encoder="xalan://java.net.URLEncoder" exclude-result-prefixes="mcr mcrurn encoder"
+<xsl:stylesheet
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  xmlns:mets="http://www.loc.gov/METS/"
+  xmlns:mods="http://www.loc.gov/mods/v3"
+  xmlns:xalan="http://xml.apache.org/xalan"
+  xmlns:mcr="xalan://org.mycore.common.xml.MCRXMLFunctions"
+  xmlns:encoder="xalan://java.net.URLEncoder"
+  exclude-result-prefixes="mcr encoder"
   version="1.0">
   <xsl:output method="xml" encoding="utf-8" />
   <xsl:param name="MCR.Module-iview2.SupportedContentTypes" />
@@ -22,8 +28,6 @@
       )
     ]" />
 
-  <xsl:variable name="urns" select="mcrurn:getURNsForMCRID($derivateID)" />
-
   <!-- - - - - - - - - Identity Transformation - - - - - - - - - -->
   <xsl:template match='@*|node()'>
     <xsl:copy>
@@ -33,7 +37,6 @@
 
 
   <xsl:template match="mets:fileSec">
-    <!-- <xsl:copy-of select="mcr:getURNsForMCRID($derivateID)"/> -->
     <xsl:copy>
       <xsl:copy-of select="@*" />
       <xsl:call-template name="generateIViewURLS">
@@ -171,13 +174,6 @@
           </xsl:otherwise>
         </xsl:choose>
       </xsl:variable>
-      <xsl:variable name="urn" select="$urns/file[@name=$filePath]" />
-      <xsl:if test="$urn">
-        <!-- merge urn in PHYSICAL structMap -->
-        <xsl:attribute name="CONTENTIDS">
-          <xsl:value-of select="$urn/@urn" />
-        </xsl:attribute>
-      </xsl:if>
       <xsl:variable name="ncName">
         <xsl:choose>
           <xsl:when test="contains($fileID,'_')">

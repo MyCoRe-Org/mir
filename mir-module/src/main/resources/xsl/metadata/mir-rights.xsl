@@ -1,12 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:mods="http://www.loc.gov/mods/v3" xmlns:acl="xalan://org.mycore.access.MCRAccessManager"
-  xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions" xmlns:xlink="http://www.w3.org/1999/xlink" exclude-result-prefixes="acl mcrxsl mods"
-  xmlns:ex="http://exslt.org/dates-and-times" extension-element-prefixes="ex"
+<xsl:stylesheet version="1.0" 
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
+  xmlns:mods="http://www.loc.gov/mods/v3" 
+  xmlns:acl="xalan://org.mycore.access.MCRAccessManager"
+  xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions" 
+  xmlns:xlink="http://www.w3.org/1999/xlink" 
+  exclude-result-prefixes="acl mcrxsl mods"
+  xmlns:ex="http://exslt.org/dates-and-times" 
+  xmlns:exslt="http://exslt.org/common"
+  extension-element-prefixes="ex exslt"
 >
   <xsl:variable name="read" select="'read'" />
   <xsl:variable name="write" select="'writedb'" />
   <xsl:variable name="delete" select="'deletedb'" />
-  <xsl:variable name="addurn" select="'addurn'" />
 
   <!-- checks for AccessKey enabled (default is enabled for 'mods')    -->
   <!-- to enable set # MIR.Strategy.AccessKey.ObjectTypes=mods,derivate-->
@@ -15,6 +21,10 @@
   <xsl:variable name="derivateAccKeyEnabled" select="contains($MCR.Access.Strategy.Class, 'MIRStrategy') and contains($MIR.Strategy.AccessKey.ObjectTypes, 'derivate')" />
   <xsl:variable name="modsAccKeyEnabled" select="contains($MCR.Access.Strategy.Class, 'MIRStrategy') and contains($MIR.Strategy.AccessKey.ObjectTypes, 'mods')" />
 
+  <xsl:param name="MCR.PI.Registration.Services"  select="''" />
+  
+  <xsl:include href="coreFunctions.xsl"/>
+  
   <xsl:template match="/mycoreobject">
     <xsl:copy>
       <xsl:copy-of select="@*|node()" />
@@ -64,9 +74,6 @@
       </xsl:message>
       <xsl:if test="acl:checkPermission($id,$write)">
         <xsl:attribute name="write" />
-        <xsl:if test="acl:checkPermission($id,$addurn)">
-          <xsl:attribute name="addurn" />
-        </xsl:if>
         <xsl:if test="acl:checkPermission($id,$delete)">
           <xsl:attribute name="delete" />
         </xsl:if>

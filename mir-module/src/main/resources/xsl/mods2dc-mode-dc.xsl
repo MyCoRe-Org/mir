@@ -6,10 +6,9 @@
   xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:xlink="http://www.w3.org/1999/xlink"
-  xmlns:mcrurn="xalan://org.mycore.urn.MCRXMLFunctions"
   xmlns:mcrmods="xalan://org.mycore.mods.classification.MCRMODSClassificationSupport"
   xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions"
-  exclude-result-prefixes="xsl mods mcrurn mcrmods mcrxsl xlink srw_dc">
+  exclude-result-prefixes="xsl mods mcrmods mcrxsl xlink srw_dc">
 
   <!-- xmlns:opf="http://www.idpf.org/2007/opf" -->
 
@@ -183,7 +182,7 @@
     <dc:subject>
       <xsl:for-each select="mods:topic | mods:occupation">
         <xsl:value-of select="."/>
-        <xsl:if test="position()!=last()">--</xsl:if>
+        <xsl:if test="position()!=last()"><xsl:text> -- </xsl:text></xsl:if>
       </xsl:for-each>
       <xsl:for-each select="mods:name">
         <xsl:call-template name="name"/>
@@ -207,7 +206,7 @@
         <xsl:for-each
           select="mods:continent|mods:country|mods:provence|mods:region|mods:state|mods:territory|mods:county|mods:city|mods:island|mods:area">
           <xsl:value-of select="."/>
-          <xsl:if test="position()!=last()">--</xsl:if>
+          <xsl:if test="position()!=last()"><xsl:text> -- </xsl:text></xsl:if>
         </xsl:for-each>
       </dc:coverage>
     </xsl:for-each>
@@ -232,7 +231,7 @@
         <xsl:for-each
           select="*[local-name()!='cartographics' and local-name()!='geographicCode' and local-name()!='hierarchicalGeographic'] ">
           <xsl:value-of select="."/>
-          <xsl:if test="position()!=last()">--</xsl:if>
+          <xsl:if test="position()!=last()"><xsl:text> -- </xsl:text></xsl:if>
         </xsl:for-each>
       </dc:subject>
     </xsl:if>
@@ -378,23 +377,10 @@
       <xsl:variable name="type"
         select="translate(@type,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')"/>
 
-        <xsl:variable name="hasURN">
-          <xsl:choose>
-            <xsl:when test="//structure/derobjects/derobject/@xlink:href">
-              <xsl:value-of select="mcrurn:hasURNDefined(//structure/derobjects/derobject/@xlink:href)" />
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:value-of select="boolean('false')" />
-            </xsl:otherwise>
-          </xsl:choose>
-        </xsl:variable>
-
-        <xsl:if test="not($hasURN) and contains ('isbn issn uri doi lccn uri urn', $type)">
+        <xsl:if test="contains ('isbn issn uri doi lccn uri urn', $type)">
     <dc:identifier>
 
       <xsl:choose>
-        <!-- 2.0: added identifier type attribute to output, if it is present-->
-        <!-- add by Paul Borchert -->
         <xsl:when test="@type='urn'">
             <xsl:value-of select="concat($MCR.URN.Resolver.MasterURL, .)" />
         </xsl:when>
@@ -414,9 +400,6 @@
         <xsl:when test="contains ('isbn issn uri doi lccn uri', $type)">
           <xsl:value-of select="$type"/>: <xsl:value-of select="."/>
         </xsl:when>
-        <!-- removed by Paul Borchert <xsl:otherwise>
-          <xsl:value-of select="."/>
-        </xsl:otherwise> -->
       </xsl:choose>
     </dc:identifier>
 
@@ -448,7 +431,7 @@
             select="mods:titleInfo/mods:title | mods:identifier | mods:location/mods:url">
             <xsl:if test="normalize-space(.)!= ''">
               <xsl:value-of select="."/>
-              <xsl:if test="position()!=last()">--</xsl:if>
+              <xsl:if test="position()!=last()"><xsl:text> -- </xsl:text></xsl:if>
             </xsl:if>
           </xsl:for-each>
         </dc:source>
@@ -460,7 +443,7 @@
             select="mods:titleInfo/mods:title | mods:identifier | mods:location/mods:url">
             <xsl:if test="normalize-space(.)!= ''">
               <xsl:value-of select="."/>
-              <xsl:if test="position()!=last()">--</xsl:if>
+              <xsl:if test="position()!=last()"><xsl:text> -- </xsl:text></xsl:if>
             </xsl:if>
           </xsl:for-each>
         </dc:relation>

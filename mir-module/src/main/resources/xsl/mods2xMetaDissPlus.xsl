@@ -9,8 +9,8 @@
      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
      xmlns:exslt="http://exslt.org/common"
      xmlns:mods="http://www.loc.gov/mods/v3"
-     xmlns:mcrurn="xalan://org.mycore.urn.MCRXMLFunctions"
      xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
+     xmlns:piUtil="xalan://org.mycore.mir.pi.MCRPIUtil"
      xmlns:cmd="http://www.cdlib.org/inside/diglib/copyrightMD"
 
      xmlns:gndo="http://d-nb.info/standards/elementset/gnd#"
@@ -28,7 +28,7 @@
      xmlns:dini="http://www.d-nb.de/standards/xmetadissplus/type/"
      xmlns="http://www.d-nb.de/standards/subject/"
 
-     exclude-result-prefixes="cc dc dcmitype dcterms pc urn thesis ddb dini xlink exslt mods mcrurn i18n xsl gndo rdf cmd"
+     exclude-result-prefixes="cc dc dcmitype dcterms pc urn thesis ddb dini xlink exslt mods i18n xsl gndo rdf cmd piUtil"
      xsi:schemaLocation="http://www.d-nb.de/standards/xmetadissplus/  http://files.dnb.de/standards/xmetadissplus/xmetadissplus.xsd">
 
   <xsl:output method="xml" encoding="UTF-8" />
@@ -39,7 +39,6 @@
 
   <xsl:param name="ServletsBaseURL" select="''" />
   <xsl:param name="WebApplicationBaseURL" select="''" />
-  <xsl:param name="MCR.URN.SubNamespace.Default.Prefix" select="''" />
   <xsl:param name="MCR.OAIDataProvider.RepositoryPublisherName" select="''" />
   <xsl:param name="MCR.OAIDataProvider.RepositoryPublisherPlace" select="''" />
   <xsl:param name="MCR.OAIDataProvider.RepositoryPublisherAddress" select="''" />
@@ -427,6 +426,7 @@
           <xsl:attribute name="cc:Scheme">DIN5008</xsl:attribute>
           <xsl:value-of select="$address"/>
         </xsl:element>
+      </xsl:element>
     </xsl:template>
 
     <xsl:template name="contributor">
@@ -505,20 +505,11 @@
     </xsl:template>
 
     <xsl:template name="identifier">
-      <xsl:variable name="deriv" select="./structure/derobjects/derobject/@xlink:href" />
-      <xsl:if test="mcrurn:hasURNDefined($deriv) or contains(./metadata/def.modsContainer/modsContainer/mods:mods/mods:identifier[@type='urn'], $MCR.URN.SubNamespace.Default.Prefix)">
+      <xsl:variable name="piServiceInformation" select="piUtil:getPIServiceInformation(/mycoreobject/@ID)" />
+      <xsl:if test="$piServiceInformation[@type='dnbUrn'][@inscribed='true']">
         <xsl:element name="dc:identifier">
            <xsl:attribute name="xsi:type">urn:nbn</xsl:attribute>
-           <xsl:choose>
-             <xsl:when test="mcrurn:hasURNDefined($deriv)">
-               <xsl:variable name="derivlink" select="concat('mcrobject:',$deriv)" />
-               <xsl:variable name="derivate" select="document($derivlink)" />
-               <xsl:value-of select="$derivate/mycorederivate/derivate/fileset/@urn" />
-             </xsl:when>
-             <xsl:otherwise>
-               <xsl:value-of select="./metadata/def.modsContainer/modsContainer/mods:mods/mods:identifier[@type='urn']" />
-             </xsl:otherwise>
-           </xsl:choose>
+           <xsl:value-of select="./metadata/def.modsContainer/modsContainer/mods:mods/mods:identifier[@type='urn']" />
         </xsl:element>
       </xsl:if>
     </xsl:template>

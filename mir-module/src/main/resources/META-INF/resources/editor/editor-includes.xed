@@ -932,46 +932,37 @@
   </xed:template>
 
   <xed:template id="identifier.repeated">
-    <xed:choose>
-      <xed:when test="$MIR.registerDOI='true' and xed:call-java('org.mycore.pi.frontend.MCRIdentifierXSLUtils','hasIdentifierRegistered','Datacite',string(/mycoreobject/@ID),'')">
-        <div class="form-group">
+    <xed:repeat xpath="mods:identifier" min="1" max="10">
+      <div class="form-group {$xed-validation-marker}">
+        <xed:choose>
+          <xed:when
+            test="xed:call-java('org.mycore.mir.pi.MCRPIUtil','isManagedPI', string(text()), string(/mycoreobject/@ID))">
           <label class="col-md-3 control-label">
-            <xed:output i18n="mir.identifier.doi" />
+            <xed:choose>
+              <xed:when test="@type='doi'">
+                <xed:output i18n="mir.identifier.doi" />
+              </xed:when>
+              <xed:when test="@type='hdl'">
+                <xed:output i18n="mir.identifier.hdl" />
+              </xed:when>
+              <xed:when test="@type='urn'">
+                <xed:output i18n="mir.identifier.urn" />
+              </xed:when>
+              <xed:when test="@type='uri'">
+                <xed:output i18n="mir.identifier.uri" />
+              </xed:when>
+              <xed:otherwise>
+                <xed:output value="$type" i18n="mir.identifier.other" />
+              </xed:otherwise>
+            </xed:choose>
           </label>
           <div class="col-md-6">
-            <input type="text" size="20" class="form-control form-control-inline" disabled="true" value="{mods:identifier[@type='doi']}" />
+            <input type="text" size="20" class="form-control form-control-inline" disabled="true"
+                   value="{text()}" />
           </div>
-        </div>
-        <xed:repeat xpath="mods:identifier[not(@type='doi')]" min="1" max="10">
-          <div class="form-group {$xed-validation-marker}">
-            <div class="col-md-3" style="text-align:right; font-weight:bold;">
-              <xed:bind xpath="@type" name="type">
-                <select class="form-control mir_idselect" >
-                  <xed:include uri="xslStyle:items2options:classification:editor:-1:children:identifier" />
-                  <xed:load-resource name="identifier" uri="classification:metadata:-1:children:identifier" />
-                  <xed:if test="not($identifier//category[@ID=$type]) and not($type='')">
-                    <option value="{$type}" selected="">
-                      <xed:output value="$type" i18n="mir.identifier.other" />
-                    </option>
-                  </xed:if>
-                </select>
-              </xed:bind>
-            </div>
-            <div class="col-md-6">
-              <input type="text" size="30" class="form-control form-control-inline" />
-            </div>
-            <mir:help-pmud help-text="{i18n:mir.help.identifier}" pmud="true" />
-          </div>
-        </xed:repeat>
-        <script>
-          $( document ).ready(function() {
-            $(".mir_idselect option[value='doi']").remove();
-          });
-        </script>
-      </xed:when>
-      <xed:otherwise>
-        <xed:repeat xpath="mods:identifier" min="1" max="10">
-          <div class="form-group {$xed-validation-marker}">
+            <div class="col-md-3"></div>
+          </xed:when>
+          <xed:otherwise>
             <div class="col-md-3" style="text-align:right; font-weight:bold;">
               <xed:bind xpath="@type" name="type">
                 <select class="form-control">
@@ -989,55 +980,46 @@
               <input type="text" size="30" class="form-control form-control-inline" />
             </div>
             <mir:help-pmud help-text="{i18n:mir.help.identifier}" pmud="true" />
-          </div>
-        </xed:repeat>
-      </xed:otherwise>
-    </xed:choose>
+          </xed:otherwise>
+        </xed:choose>
+      </div>
+    </xed:repeat>
   </xed:template>
 
   <xed:template id="doi.handle.urn.repeated">
-    <xed:choose>
-      <xed:when test="$MIR.registerDOI='true' and xed:call-java('org.mycore.pi.frontend.MCRIdentifierXSLUtils','hasIdentifierRegistered','Datacite',string(/mycoreobject/@ID),'')">
-        <div class="form-group">
-          <label class="col-md-3 control-label">
-            <xed:output i18n="mir.identifier.doi" />
-          </label>
-          <div class="col-md-6">
-            <input type="text" size="20" class="form-control form-control-inline" disabled="true" value="{mods:identifier[@type='doi']}" />
-          </div>
-        </div>
-        <xed:repeat xpath="mods:identifier[contains(' hdl urn ',concat(' ',@type,' '))]" min="1" max="10" method="clone">
-          <div class="form-group">
-            <xed:bind xpath="@type">
-              <div class="col-md-3">
-                <select class="form-control" style="text-align:right; font-weight:bold;">
-                  <option value="hdl">
-                    <xed:output i18n="mir.identifier.hdl" />
-                  </option>
-                  <option value="urn">
-                    <xed:output i18n="mir.identifier.urn" />
-                  </option>
-                  <option value="uri">
-                    <xed:output i18n="mir.identifier.uri" />
-                  </option>
-                </select>
-              </div>
-            </xed:bind>
+    <!-- isManagedPI -->
+    <xed:repeat xpath="mods:identifier[contains(' doi hdl urn ',concat(' ',@type,' '))]" min="1" max="10"
+                method="clone">
+      <div class="form-group">
+        <xed:choose>
+          <xed:when
+            test="xed:call-java('org.mycore.mir.pi.MCRPIUtil','isManagedPI', string(text()), string(/mycoreobject/@ID))">
+            <label class="col-md-3 control-label">
+              <xed:choose>
+                <xed:when test="@type='doi'">
+                  <xed:output i18n="mir.identifier.doi" />
+                </xed:when>
+                <xed:when test="@type='hdl'">
+                  <xed:output i18n="mir.identifier.hdl" />
+                </xed:when>
+                <xed:when test="@type='urn'">
+                  <xed:output i18n="mir.identifier.urn" />
+                </xed:when>
+                <xed:when test="@type='uri'">
+                  <xed:output i18n="mir.identifier.uri" />
+                </xed:when>
+              </xed:choose>
+            </label>
             <div class="col-md-6">
-              <input type="text" size="20" class="form-control form-control-inline {$xed-validation-marker}" />
+              <input type="text" size="20" class="form-control form-control-inline" disabled="true"
+                     value="{text()}" />
             </div>
-            <mir:help-pmud help-text="{i18n:mir.help.doi.handle.urn}" pmud="true" />
-          </div>
-        </xed:repeat>
-      </xed:when>
-      <xed:otherwise>
-        <xed:repeat xpath="mods:identifier[contains(' doi hdl urn ',concat(' ',@type,' '))]" min="1" max="10" method="clone">
-          <div class="form-group">
+          </xed:when>
+          <xed:otherwise>
             <xed:bind xpath="@type">
               <div class="col-md-3">
                 <select class="form-control" style="text-align:right; font-weight:bold;">
                   <option value="doi">
-                    <xed:output i18n="mir.identifier.doi" />
                   </option>
                   <option value="hdl">
                     <xed:output i18n="mir.identifier.hdl" />
@@ -1055,10 +1037,10 @@
               <input type="text" size="20" class="form-control form-control-inline {$xed-validation-marker}" />
             </div>
             <mir:help-pmud help-text="{i18n:mir.help.doi.handle.urn}" pmud="true" />
-          </div>
-        </xed:repeat>
-      </xed:otherwise>
-    </xed:choose>
+          </xed:otherwise>
+        </xed:choose>
+      </div>
+    </xed:repeat>
   </xed:template>
 
   <xed:template id="shelfmark">
