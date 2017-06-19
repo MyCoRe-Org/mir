@@ -493,17 +493,21 @@
                         test="$MIR.registerDOI='true' and $accessedit and not(pi:hasIdentifierRegistered('Datacite', /mycoreobject/@ID, '')) and not(.//mods:mods/mods:identifier[@type='doi'])"
                 >
                   <li>
-                    <a href="#" id="registerDOI" data-mycoreID="{/mycoreobject/@ID}" data-baseURL="{$WebApplicationBaseURL}">
+                    <!-- data-type is just used for translation -->
+                    <a href="#" data-register-pi="Datacite" data-type="doi" data-mycoreID="{/mycoreobject/@ID}"
+                       data-baseURL="{$WebApplicationBaseURL}">
                       <xsl:value-of select="i18n:translate('component.pi.register.doi')" />
                     </a>
                   </li>
                 </xsl:if>
                 <!-- Register URN -->
                 <xsl:if
-                        test="$MIR.registerURN='true' and $accessedit and not(pi:hasIdentifierCreated('DNBURN', /mycoreobject/@ID, '')) and not(.//mods:mods/mods:identifier[@type='urn'])"
+                        test="$MIR.registerURN='true' and $accessedit and not(pi:hasIdentifierRegistered('DNBURN', /mycoreobject/@ID, '')) and not(.//mods:mods/mods:identifier[@type='urn'])"
                 >
                   <li>
-                    <a href="#" id="registerURN" data-mycoreID="{/mycoreobject/@ID}" data-baseURL="{$WebApplicationBaseURL}">
+                    <!-- data-type is just used for translation -->
+                    <a href="#" data-register-pi="DNBURN" data-type="dnbUrn" data-mycoreID="{/mycoreobject/@ID}"
+                       data-baseURL="{$WebApplicationBaseURL}">
                       <xsl:value-of select="i18n:translate('component.pi.register.urn')" />
                     </a>
                   </li>
