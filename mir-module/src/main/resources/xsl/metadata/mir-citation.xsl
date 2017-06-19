@@ -7,6 +7,7 @@
   <xsl:include href="mods-dc-meta.xsl"/>
   <xsl:include href="mods-highwire.xsl" />
   <xsl:param name="MCR.URN.Resolver.MasterURL" select="''" />
+  <xsl:param name="MCR.DOI.Resolver.MasterURL" select="''" />
   <xsl:param name="MCR.DOI.Prefix" select="''" />
   <xsl:param name="MCR.URN.SubNamespace.Default.Prefix" select="''" />
   <xsl:param name="MIR.citationStyles" select="''" />
@@ -85,7 +86,7 @@
         <xsl:choose>
           <xsl:when test="//mods:mods/mods:identifier[@type='doi'] and contains(//mods:mods/mods:identifier[@type='doi'], $MCR.DOI.Prefix)">
             <xsl:variable name="doi" select="//mods:mods/mods:identifier[@type='doi']" />
-            <a id="url_site_link" href="https://dx.doi.org/{$doi}">
+            <a id="url_site_link" href="{$MCR.DOI.Resolver.MasterURL}{$doi}">
               <xsl:value-of select="$doi" />
             </a>
             <br />
@@ -280,7 +281,7 @@
         <xsl:value-of select="$MCR.URN.Resolver.MasterURL" />
       </xsl:if>
       <xsl:if test="contains(@type,'doi')">
-        <xsl:text>https://dx.doi.org/</xsl:text>
+        <xsl:value-of select="$MCR.DOI.Resolver.MasterURL" />
       </xsl:if>
     </xsl:variable>
     <xsl:call-template name="identifierEntry">

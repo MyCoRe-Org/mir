@@ -2,6 +2,7 @@
 <xsl:stylesheet version="1.0" xmlns:mods="http://www.loc.gov/mods/v3" xmlns:xalan="http://xml.apache.org/xalan" xmlns:xlink="http://www.w3.org/1999/xlink"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform" exclude-result-prefixes="xalan"
 >
+  <xsl:param name="MCR.DOI.Resolver.MasterURL" select="''" />
 
   <xsl:output encoding="UTF-8" media-type="text/plain" method="text" standalone="yes" indent="no" />
 
@@ -47,12 +48,12 @@
   </xsl:template>
 
   <xsl:template match="mods:identifier[@type='doi']" mode="pica3">
-    <xsl:text>4083  https://dx.doi.org/</xsl:text>
+    <xsl:text>4083  {$MCR.DOI.Resolver.MasterURL}</xsl:text>
     <xsl:value-of select="." />
     <xsl:text>&#10;</xsl:text>
   </xsl:template>
   <xsl:template match="mods:identifier[@type='doi']" mode="relatedItem">
-    <xsl:text>4083  https://dx.doi.org/</xsl:text>
+    <xsl:text>4083  {$MCR.DOI.Resolver.MasterURL}</xsl:text>
     <xsl:value-of select="." />
     <xsl:text>&#10;</xsl:text>
   </xsl:template>
