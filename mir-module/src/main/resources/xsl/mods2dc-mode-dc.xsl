@@ -14,6 +14,7 @@
   <!-- xmlns:opf="http://www.idpf.org/2007/opf" -->
 
   <xsl:param name="MCR.URN.Resolver.MasterURL" select="''" />
+  <xsl:param name="MCR.DOI.Resolver.MasterURL" select="''" />
   <!--
   Version 1.4		2013-12-13 tmee@loc.gov
   Upgraded to MODS 3.5
@@ -398,8 +399,7 @@
             <xsl:value-of select="concat($MCR.URN.Resolver.MasterURL, .)" />
         </xsl:when>
         <xsl:when test="@type='doi'">
-            <xsl:text>https://dx.doi.org/</xsl:text>
-            <xsl:value-of select="." />
+          <xsl:value-of select="concat($MCR.DOI.Resolver.MasterURL, .)" />
         </xsl:when>
         <xsl:when test="@type='hdl'">
             <xsl:text>http://hdl.handle.net/</xsl:text>
