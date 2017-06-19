@@ -6,13 +6,13 @@
   xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:xlink="http://www.w3.org/1999/xlink"
-  xmlns:mcrurn="xalan://org.mycore.urn.MCRXMLFunctions"
   xmlns:mcrmods="xalan://org.mycore.mods.classification.MCRMODSClassificationSupport"
   xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions"
-  exclude-result-prefixes="xsl mods mcrurn mcrmods mcrxsl xlink srw_dc">
+  exclude-result-prefixes="xsl mods mcrmods mcrxsl xlink srw_dc">
 
   <!-- xmlns:opf="http://www.idpf.org/2007/opf" -->
 
+  <xsl:param name="WebApplicationBaseURL" select="''" />
   <xsl:param name="MCR.URN.Resolver.MasterURL" select="''" />
   <xsl:param name="MCR.DOI.Resolver.MasterURL" select="''" />
   <!--
@@ -60,6 +60,8 @@
 
   <xsl:template match="/">
 
+    <xsl:variable name="objId" select="@ID" />
+
     <xsl:choose>
       <!-- WS: updated schema location -->
       <xsl:when test="//mods:modsCollection">
@@ -78,7 +80,29 @@
         <xsl:for-each select="mods:mods">
             <oai_dc:dc
             xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/oai_dc/ http://www.openarchives.org/OAI/2.0/oai_dc.xsd">
-            <xsl:apply-templates/>
+            <xsl:apply-templates select="mods:titleInfo" />
+            <xsl:apply-templates select="mods:name" />
+            <xsl:apply-templates select="mods:genre" />
+            <xsl:apply-templates select="mods:typeOfResource" />
+            <xsl:apply-templates select="mods:identifier[@type='doi']" />
+            <xsl:apply-templates select="mods:identifier[@type='urn']" />
+            <dc:identifier>
+              <xsl:value-of select="concat($WebApplicationBaseURL, 'receive/', $objId)"></xsl:value-of>
+            </dc:identifier>
+            <xsl:apply-templates select="mods:identifier[not(@type='doi')][not(@type='urn')]" />
+            <xsl:apply-templates select="mods:location" />
+            <xsl:apply-templates select="mods:classification" />
+            <xsl:apply-templates select="mods:subject" />
+            <xsl:apply-templates select="mods:abstract" />
+            <xsl:apply-templates select="mods:originInfo" />
+            <xsl:apply-templates select="mods:dateIssued" />
+            <xsl:apply-templates select="mods:dateCreated" />
+            <xsl:apply-templates select="mods:dateCaptured" />
+            <xsl:apply-templates select="mods:temporal" />
+            <xsl:apply-templates select="mods:physicalDescription" />
+            <xsl:apply-templates select="mods:language" />
+            <xsl:apply-templates select="mods:relatedItem" />
+            <xsl:apply-templates select="mods:accessCondition" />
           </oai_dc:dc>
         </xsl:for-each>
       </xsl:otherwise>
@@ -183,7 +207,7 @@
     <dc:subject>
       <xsl:for-each select="mods:topic | mods:occupation">
         <xsl:value-of select="."/>
-        <xsl:if test="position()!=last()">--</xsl:if>
+        <xsl:if test="position()!=last()"><xsl:text> -- </xsl:text></xsl:if>
       </xsl:for-each>
       <xsl:for-each select="mods:name">
         <xsl:call-template name="name"/>
@@ -207,7 +231,7 @@
         <xsl:for-each
           select="mods:continent|mods:country|mods:provence|mods:region|mods:state|mods:territory|mods:county|mods:city|mods:island|mods:area">
           <xsl:value-of select="."/>
-          <xsl:if test="position()!=last()">--</xsl:if>
+          <xsl:if test="position()!=last()"><xsl:text> -- </xsl:text></xsl:if>
         </xsl:for-each>
       </dc:coverage>
     </xsl:for-each>
@@ -232,7 +256,7 @@
         <xsl:for-each
           select="*[local-name()!='cartographics' and local-name()!='geographicCode' and local-name()!='hierarchicalGeographic'] ">
           <xsl:value-of select="."/>
-          <xsl:if test="position()!=last()">--</xsl:if>
+          <xsl:if test="position()!=last()"><xsl:text> -- </xsl:text></xsl:if>
         </xsl:for-each>
       </dc:subject>
     </xsl:if>
@@ -301,15 +325,19 @@
     <xsl:choose>
       <xsl:when test="@authority='dct'">
         <dc:type>
-            <xsl:value-of select="substring-after(@valueURI,'#')"/>
+          <xsl:value-of select="."/>
         </dc:type>
       </xsl:when>
-      <xsl:otherwise>
+      <xsl:when test="@authority='marcgt'">
+        <dc:type>
+          <xsl:value-of select="."/>
+        </dc:type>
+      </xsl:when>
+      <xsl:when test="contains(@valueURI,'#')">
         <dc:type>
           <xsl:value-of select="substring-after(@valueURI,'#')"/>
         </dc:type>
-        <xsl:apply-templates select="mods:typeOfResource"/>
-      </xsl:otherwise>
+      </xsl:when>
     </xsl:choose>
   </xsl:template>
 
@@ -378,23 +406,10 @@
       <xsl:variable name="type"
         select="translate(@type,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')"/>
 
-        <xsl:variable name="hasURN">
-          <xsl:choose>
-            <xsl:when test="//structure/derobjects/derobject/@xlink:href">
-              <xsl:value-of select="mcrurn:hasURNDefined(//structure/derobjects/derobject/@xlink:href)" />
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:value-of select="boolean('false')" />
-            </xsl:otherwise>
-          </xsl:choose>
-        </xsl:variable>
-
-        <xsl:if test="not($hasURN) and contains ('isbn issn uri doi lccn uri urn', $type)">
+        <xsl:if test="contains ('isbn issn uri doi lccn uri urn', $type)">
     <dc:identifier>
 
       <xsl:choose>
-        <!-- 2.0: added identifier type attribute to output, if it is present-->
-        <!-- add by Paul Borchert -->
         <xsl:when test="@type='urn'">
             <xsl:value-of select="concat($MCR.URN.Resolver.MasterURL, .)" />
         </xsl:when>
@@ -414,17 +429,15 @@
         <xsl:when test="contains ('isbn issn uri doi lccn uri', $type)">
           <xsl:value-of select="$type"/>: <xsl:value-of select="."/>
         </xsl:when>
-        <!-- removed by Paul Borchert <xsl:otherwise>
-          <xsl:value-of select="."/>
-        </xsl:otherwise> -->
       </xsl:choose>
     </dc:identifier>
 
       </xsl:if>
   </xsl:template>
 
+
   <xsl:template match="mods:location">
-    <xsl:for-each select="mods:url">
+    <xsl:for-each select="mods:url[not(contains(text(), $WebApplicationBaseURL))]">
       <dc:identifier>
         <xsl:value-of select="."/>
       </dc:identifier>
@@ -448,7 +461,7 @@
             select="mods:titleInfo/mods:title | mods:identifier | mods:location/mods:url">
             <xsl:if test="normalize-space(.)!= ''">
               <xsl:value-of select="."/>
-              <xsl:if test="position()!=last()">--</xsl:if>
+              <xsl:if test="position()!=last()"><xsl:text> -- </xsl:text></xsl:if>
             </xsl:if>
           </xsl:for-each>
         </dc:source>
@@ -460,7 +473,7 @@
             select="mods:titleInfo/mods:title | mods:identifier | mods:location/mods:url">
             <xsl:if test="normalize-space(.)!= ''">
               <xsl:value-of select="."/>
-              <xsl:if test="position()!=last()">--</xsl:if>
+              <xsl:if test="position()!=last()"><xsl:text> -- </xsl:text></xsl:if>
             </xsl:if>
           </xsl:for-each>
         </dc:relation>

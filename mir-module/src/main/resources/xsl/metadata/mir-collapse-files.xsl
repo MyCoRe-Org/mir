@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:mcr="xalan://org.mycore.common.xml.MCRXMLFunctions"
-                xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation" xmlns:mods="http://www.loc.gov/mods/v3" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:acl="xalan://org.mycore.access.MCRAccessManager"
-                xmlns:mcrurn="xalan://org.mycore.urn.MCRXMLFunctions"
-                xmlns:embargo="xalan://org.mycore.mods.MCRMODSEmbargoUtils"
-                exclude-result-prefixes="i18n mcr mods acl xlink mcrurn embargo"
+<xsl:stylesheet version="1.0"
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  xmlns:mcr="xalan://org.mycore.common.xml.MCRXMLFunctions"
+  xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
+  xmlns:mods="http://www.loc.gov/mods/v3"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  xmlns:acl="xalan://org.mycore.access.MCRAccessManager"
+  xmlns:embargo="xalan://org.mycore.mods.MCRMODSEmbargoUtils"
+  exclude-result-prefixes="i18n mcr mods acl xlink embargo"
 >
   <xsl:import href="xslImport:modsmeta:metadata/mir-collapse-files.xsl" />
-  <xsl:param name="MCR.URN.Resolver.MasterURL" select="''" />
   <xsl:template match="/">
     <xsl:choose>
       <xsl:when test="key('rights', mycoreobject/@ID)/@read or key('rights', mycoreobject/structure/derobjects/derobject/@xlink:href)/@accKeyEnabled">
@@ -18,7 +21,6 @@
           >
             <xsl:variable name="derId" select="@xlink:href" />
             <xsl:variable name="derivateXML" select="document(concat('mcrobject:',$derId))" />
-            <xsl:variable name="derivateWithURN" select="mcrurn:hasURNDefined($derId)" />
 
             <div id="files{@xlink:href}" class="file_box">
               <div class="row header">
@@ -44,14 +46,6 @@
                         <span class="caret"></span>
                       </a>
 
-                      <xsl:if test="$derivateWithURN=true()">
-                        <xsl:variable name="derivateURN" select="$derivateXML/mycorederivate/derivate/fileset/@urn" />
-                        <sup class="file_urn">
-                          <a href="{$MCR.URN.Resolver.MasterURL}{$derivateURN}" title="{$derivateURN}">
-                            URN
-                          </a>
-                        </sup>
-                      </xsl:if>
                     </div>
                     <xsl:apply-templates select="." mode="derivateActions">
                       <xsl:with-param name="deriv" select="@xlink:href" />
@@ -66,7 +60,7 @@
                 <xsl:when test="key('rights', @xlink:href)/@read">
                   <xsl:variable name="maindoc" select="$derivateXML/mycorederivate/derivate/internals/internal/@maindoc" />
                   <div class="file_box_files" data-objID="{$objID}" data-deriID="{$derId}" data-mainDoc="{$maindoc}" data-writedb="{acl:checkPermission($derId,'writedb')}"
-                    data-deletedb="{acl:checkPermission($derId,'deletedb')}" data-urn="{$derivateWithURN}"
+                    data-deletedb="{acl:checkPermission($derId,'deletedb')}"
                   >
                     <div class="filelist-loading">
                       <div class="bounce1"></div>
