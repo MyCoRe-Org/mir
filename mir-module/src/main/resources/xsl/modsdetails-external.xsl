@@ -508,7 +508,7 @@
                     <!-- data-type is just used for translation -->
                     <a href="#" data-register-pi="DNBURN" data-type="dnbUrn" data-mycoreID="{/mycoreobject/@ID}"
                        data-baseURL="{$WebApplicationBaseURL}">
-                      <xsl:value-of select="i18n:translate('component.pi.register.urn')" />
+                      <xsl:value-of select="i18n:translate('component.pi.register.dnbUrn')" />
                     </a>
                   </li>
                 </xsl:if>
