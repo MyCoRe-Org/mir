@@ -5,13 +5,12 @@ module.exports = function(grunt) {
 	var util = require('util');
 	var getAbsoluteDir = function(dir) {
 		return path.isAbsolute(dir) ? dir : path.resolve(process.cwd(), dir);
-	}
-	var globalConfig = {
-		assetsDirectory : getAbsoluteDir(grunt.option('assetsDirectory')),
-		assetsDirectoryRelative : path.basename(grunt.option('assetsDirectory')),
 	};
 	grunt.initConfig({
-		globalConfig : globalConfig,
+		globalConfig : {
+            assetsDirectory : getAbsoluteDir(grunt.option('assetsDirectory')),
+            assetsDirectoryRelative : path.basename(grunt.option('assetsDirectory')),
+        },
 		npmcopy : {
 			deps : {
 				options : {
@@ -29,4 +28,4 @@ module.exports = function(grunt) {
 	grunt.registerTask('default', 'build assets directory', function() {
 		grunt.task.run('npmcopy');
 	});
-}
+};
