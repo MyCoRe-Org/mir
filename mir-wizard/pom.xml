@@ -10,7 +10,6 @@
   <artifactId>mir-wizard</artifactId>
   <name>MIR: The MIR Wizard</name>
   <properties>
-    <grunt.projectBase>${project.build.directory}/grunt</grunt.projectBase>
     <template.assetsdir>${project.build.directory}/classes/META-INF/resources/mir-wizard/assets</template.assetsdir>
   </properties>
   <build>
@@ -74,61 +73,25 @@
       <plugin>
         <groupId>com.github.eirslett</groupId>
         <artifactId>frontend-maven-plugin</artifactId>
-        <configuration>
-          <installDirectory>../target</installDirectory>
-        </configuration>
         <executions>
           <execution>
-            <id>install node and npm</id>
+            <id>yarn-install</id>
             <goals>
-              <goal>install-node-and-npm</goal>
-            </goals>
-            <configuration>
-              <nodeVersion>${node.version}</nodeVersion>
-              <npmVersion>${npm.version}</npmVersion>
-            </configuration>
-          </execution>
-          <execution>
-            <id>webapp-deps</id>
-            <goals>
-              <goal>npm</goal>
+              <goal>yarn</goal>
             </goals>
             <phase>process-resources</phase>
             <configuration>
-              <workingDirectory>${grunt.projectBase}</workingDirectory>
               <arguments>install</arguments>
             </configuration>
           </execution>
           <execution>
-            <id>webapp-build</id>
+            <id>grunt-build</id>
             <goals>
               <goal>grunt</goal>
             </goals>
             <phase>process-resources</phase>
             <configuration>
-              <workingDirectory>${grunt.projectBase}</workingDirectory>
               <arguments>--verbose --assetsDirectory=${template.assetsdir}</arguments>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <artifactId>maven-resources-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>create-resources</id>
-            <goals>
-              <goal>copy-resources</goal>
-            </goals>
-            <phase>generate-resources</phase>
-            <configuration>
-              <outputDirectory>${grunt.projectBase}</outputDirectory>
-              <resources>
-                <resource>
-                  <filtering>true</filtering>
-                  <directory>${basedir}/src/main/grunt</directory>
-                </resource>
-              </resources>
             </configuration>
           </execution>
         </executions>
