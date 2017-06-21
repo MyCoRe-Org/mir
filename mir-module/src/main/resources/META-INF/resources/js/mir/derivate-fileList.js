@@ -443,9 +443,9 @@
 		}
 
 		function loadI18nKeys(lang, callback) {
-			var ifsKeyURL = webApplicationBaseURL + "servlets/MCRLocaleServlet/" + lang + "/IFS*";
-			var mirKeyURL = webApplicationBaseURL + "servlets/MCRLocaleServlet/" + lang + "/mir.confirm.*";
-			var pagiKeyURL = webApplicationBaseURL + "servlets/MCRLocaleServlet/" + lang + "/mir.pagination.*";
+			var ifsKeyURL = webApplicationBaseURL + "rsc/locale/translate/" + lang + "/IFS*";
+			var mirKeyURL = webApplicationBaseURL + "rsc/locale/translate/" + lang + "/mir.confirm.*";
+			var pagiKeyURL = webApplicationBaseURL + "rsc/locale/translate/" + lang + "/mir.pagination.*";
 			$
 					.when($.ajax(ifsKeyURL), $.ajax(mirKeyURL), $.ajax(pagiKeyURL))
 					.done(

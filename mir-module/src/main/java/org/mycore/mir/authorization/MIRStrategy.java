@@ -13,19 +13,16 @@ import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.Criteria;
-import org.hibernate.Session;
-import org.hibernate.criterion.MatchMode;
-import org.hibernate.criterion.Projections;
-import org.hibernate.criterion.Restrictions;
 import org.mycore.access.MCRAccessInterface;
 import org.mycore.access.MCRAccessManager;
 import org.mycore.access.strategies.MCRAccessCheckStrategy;
 import org.mycore.access.strategies.MCRCreatorRuleStrategy;
 import org.mycore.access.strategies.MCRObjectBaseStrategy;
 import org.mycore.access.strategies.MCRObjectIDStrategy;
-import org.mycore.backend.hibernate.MCRHIBConnection;
+import org.mycore.backend.jpa.MCREntityManagerProvider;
 import org.mycore.backend.jpa.access.MCRACCESS;
+import org.mycore.backend.jpa.access.MCRACCESSPK_;
+import org.mycore.backend.jpa.access.MCRACCESS_;
 import org.mycore.common.MCRCache;
 import org.mycore.common.MCRException;
 import org.mycore.common.config.MCRConfiguration;
@@ -37,6 +34,12 @@ import org.mycore.datamodel.classifications2.MCRCategoryID;
 import org.mycore.datamodel.metadata.MCRMetadataManager;
 import org.mycore.datamodel.metadata.MCRObjectID;
 import org.mycore.mods.MCRMODSEmbargoUtils;
+
+import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
 /**
  * This is the standard access strategy used in the archive application. This is the queue of rule ID that is checked
@@ -228,12 +231,16 @@ public class MIRStrategy implements MCRAccessCheckStrategy {
         if (result != null) {
             return result;
         }
-        Session session = MCRHIBConnection.instance().getSession();
-        Criteria criteria = session.createCriteria(MCRACCESS.class);
-        criteria.add(Restrictions.like("key.objid", objectType + ":", MatchMode.START));
-        criteria.add(Restrictions.eq("key.acpool", permission));
-        criteria.setProjection(Projections.property("key.objid"));
-        result = generateMCRCategoryIDList(objectType, criteria.list(), accessClasses);
+        EntityManager em = MCREntityManagerProvider.getCurrentEntityManager();
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<String> criteria = cb.createQuery(String.class);
+        Root<MCRACCESS> nodes = criteria.from(MCRACCESS.class);
+        criteria.select(nodes.get(MCRACCESS_.key).get(MCRACCESSPK_.objid))
+                .where(
+                        cb.like(nodes.get(MCRACCESS_.key).get(MCRACCESSPK_.objid), objectType + ":%"),
+                        cb.equal(nodes.get(MCRACCESS_.key).get(MCRACCESSPK_.acpool), permission));
+        TypedQuery<String> query = em.createQuery(criteria);
+        result = generateMCRCategoryIDList(objectType, query.getResultList(), accessClasses);
         PERMISSION_CATEGORY_MAPPING_CACHE.put(objectType + "_" + permission, result);
         return result;
     }
