@@ -31,7 +31,7 @@ import org.jdom2.Element;
 import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
 import org.junit.Test;
-import org.mycore.common.MCRHibTestCase;
+import org.mycore.common.MCRJPATestCase;
 import org.mycore.common.MCRStreamUtils;
 import org.mycore.common.xml.MCRURIResolver;
 import org.mycore.mir.wizard.command.MIRWizardLoadClassifications;
@@ -41,7 +41,7 @@ import org.mycore.mir.wizard.command.MIRWizardMCRCommand;
  * @author René Adler (eagle)
  *
  */
-public class TestCommands extends MCRHibTestCase {
+public class TestCommands extends MCRJPATestCase {
 
     @Test
     public void testLoadClassifications() throws Exception {

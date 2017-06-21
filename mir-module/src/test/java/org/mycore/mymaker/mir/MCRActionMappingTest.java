@@ -27,14 +27,14 @@ import javax.xml.bind.JAXBException;
 import javax.xml.transform.TransformerException;
 
 import org.junit.Test;
-import org.mycore.common.MCRHibTestCase;
+import org.mycore.common.MCRJPATestCase;
 import org.mycore.wfc.actionmapping.MCRActionMappingsManager;
 
 /**
  * @author Thomas Scheffler (yagee)
  *
  */
-public class MCRActionMappingTest extends MCRHibTestCase {
+public class MCRActionMappingTest extends MCRJPATestCase {
 
     @Test
     public final void test() throws TransformerException, JAXBException {

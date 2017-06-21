@@ -44,7 +44,7 @@ import org.junit.rules.TemporaryFolder;
 import org.mycore.access.MCRAccessException;
 import org.mycore.access.MCRAccessManager;
 import org.mycore.common.MCRException;
-import org.mycore.common.MCRHibTestCase;
+import org.mycore.common.MCRJPATestCase;
 import org.mycore.common.MCRSessionMgr;
 import org.mycore.datamodel.metadata.MCRObjectID;
 import org.mycore.user2.MCRTransientUser;
@@ -55,7 +55,7 @@ import org.xml.sax.SAXParseException;
  * @author Ren\u00E9 Adler (eagle)
  *
  */
-public class TestAccessKeys extends MCRHibTestCase {
+public class TestAccessKeys extends MCRJPATestCase {
 
     private static final String MCR_OBJECT_ID = "mir_test_00000001";
 
