@@ -28,7 +28,6 @@ env:
     - SELENIUM_VERSION="3.4.0"
     - SELENIUM_HOST="localhost"
     - SELENIUM_PORT="4445"
-    - SAUCE_TRAVIS_BUILDNUMBER=$TRAVIS_BUILD_NUMBER
 before_install:
   - "/sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- $XVFBARGS"
 
