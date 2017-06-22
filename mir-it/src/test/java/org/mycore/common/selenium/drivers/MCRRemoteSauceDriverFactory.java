@@ -40,8 +40,9 @@ public class MCRRemoteSauceDriverFactory extends MCRRemoteDriverFactory {
         caps.setCapability("version", readPropertyOrEnv("SELENIUM_BROWSERVERSION", ""));
         caps.setCapability("platform", readPropertyOrEnv("SELENIUM_PLATFORM", ""));
         caps.setCapability("tunnelIdentifier", readPropertyOrEnv("TRAVIS_JOB_NUMBER", ""));
-        caps.setCapability("build", readPropertyOrEnv("SAUCE_TRAVIS_BUILDNUMBER", ""));
-        caps.setCapability("name", readPropertyOrEnv("SAUCE_TRAVIS_BUILDNUMBER", "")
+        caps.setCapability("build", readPropertyOrEnv("TRAVIS_BUILD_NUMBER", ""));
+        caps.setCapability("name", readPropertyOrEnv("TRAVIS_BRANCH", "")
+                + "-" + readPropertyOrEnv("TRAVIS_BUILD_NUMBER", "")
                 + "-" + readPropertyOrEnv("TRAVIS_EVENT_TYPE", "")
                 + "-" + readPropertyOrEnv("TRAVIS_PULL_REQUEST", ""));
         return caps;
