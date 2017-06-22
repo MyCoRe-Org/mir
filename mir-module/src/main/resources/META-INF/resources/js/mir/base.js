@@ -15,11 +15,15 @@
 
 
         $(".mir-player video, .mir-player audio").ready(function () {
-            $("#videoChooser").change();
 
-            if(videoChooserElement.find("option").length==1){
+            var videoOptions = videoChooserElement.find("option");
+            if(videoOptions.length===1){
                 videoChooserElement.hide();
+            } else {
+              videoOptions.filter("[data-is-main-doc=true]").first().prop("selected",true);
             }
+
+            videoChooserElement.change();
         });
 
         //get all sources of selected item in a var and give it to player
@@ -30,39 +34,39 @@
             }
         };
 
-        let sourceCache = {};
+        var sourceCache = {};
 
-        let getVideo = function (currentOption) {
-            let src = currentOption.attr("data-src");
-            let mimeType = currentOption.attr("data-mime-type");
-            let sourceArr = [];
-            let lookupKey = currentOption.parent().index() + "_" + currentOption.index();
+        var getVideo = function (currentOption) {
+            var src = currentOption.attr("data-src");
+            var mimeType = currentOption.attr("data-mime-type");
+            var sourceArr = [];
+            var lookupKey = currentOption.parent().index() + "_" + currentOption.index();
 
             if (lookupKey in sourceCache) {
                 return sourceCache[lookupKey];
             }
 
             if (typeof src === "undefined" || typeof mimeType === "undefined") {
-                let sources = currentOption.attr("data-sources");
+                var sources = currentOption.attr("data-sources");
                 if (typeof sources === "undefined") {
                     console.warn("No video sources found!");
                     return [];
                 }
 
-                let pairs = sources.split(";");
-                for (let i in pairs) {
-                    let pair = pairs[i];
+                var pairs = sources.split(";");
+                for (var i in pairs) {
+                    var pair = pairs[i];
                     if (pair.indexOf(",") === -1) {
                         continue;
                     }
-                    let typeSrcArr = pair.split(",");
-                    let type = typeSrcArr[0];
-                    let src = typeSrcArr[1];
+                    var typeSrcArr = pair.split(",");
+                    var type = typeSrcArr[0];
+                    var src = typeSrcArr[1];
 
-                    sourceArr.push({type: type, src: src})
+                    sourceArr.push({type: type.trim(), src: src.trim()});
                 }
             } else {
-                sourceArr.push({type: mimeType, src: src});
+                sourceArr.push({type: mimeType.trim(), src: src.trim()});
             }
             sourceCache[lookupKey] = sourceArr;
             return sourceArr;
@@ -90,10 +94,10 @@
                 }
             }
 
-            let playerToHide, playerToShow;
-            let sourceArr = getVideo(currentOption);
-            let isAudio = currentOption.attr("data-audio") == "true";
-            let htmlEmbed = jQuery(".mir-player");
+            var playerToHide, playerToShow;
+            var sourceArr = getVideo(currentOption);
+            var isAudio = currentOption.attr("data-audio") == "true";
+            var htmlEmbed = jQuery(".mir-player");
 
             if (isAudio) {
                 playerToHide = myPlayerVideo;
@@ -471,9 +475,9 @@
       $("a.readless", this).remove();
     }
   };
-  
+
   window.solrEscapeSearchValue = function base_solrEscapeSearchValue(text){
-	  return text.replace(/([\\!&|+\\-\\(\\)\\{\\}\\\[\\\]~:\\\\/^])/g, "\\$1"); // special chars: "!&|+-(){}[]~:\\/^"
+    return text.replace(/([\\!&|+\\-\\(\\)\\{\\}\\\[\\\]~:\\\\/^])/g, "\\$1"); // special chars: "!&|+-(){}[]~:\\/^"
   }
 
 

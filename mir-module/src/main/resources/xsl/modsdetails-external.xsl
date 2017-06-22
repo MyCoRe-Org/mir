@@ -496,7 +496,7 @@
                 </xsl:if -->
                 <!-- Register DOI -->
                 <xsl:if
-                        test="$MIR.registerDOI='true' and $accessedit and not(pi:hasIdentifierRegistered('Datacite', /mycoreobject/@ID, '')) and not(.//mods:identifier[@type='doi'])"
+                        test="$MIR.registerDOI='true' and $accessedit and not(pi:hasIdentifierRegistered('Datacite', /mycoreobject/@ID, '')) and not(.//mods:mods/mods:identifier[@type='doi'])"
                 >
                   <li>
                     <a href="#" id="registerDOI" data-mycoreID="{/mycoreobject/@ID}" data-baseURL="{$WebApplicationBaseURL}">

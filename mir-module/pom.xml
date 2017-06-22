@@ -1,17 +1,17 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <parent>
-    <artifactId>mir-parent</artifactId>
-    <groupId>org.mycore.mir</groupId>
-    <version>2016.06.0.2-SNAPSHOT</version>
-  </parent>
   <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.mycore.mir</groupId>
+    <artifactId>mir-parent</artifactId>
+    <version>2017.06.0-SNAPSHOT</version>
+  </parent>
   <artifactId>mir-module</artifactId>
   <name>MIR: Application Module</name>
   <description>Contains all files and classes for a Institutional Repository</description>
   <properties>
+    <grunt.projectBase>${basedir}</grunt.projectBase>
     <template.assetsdir>${project.build.directory}/classes/META-INF/resources/assets</template.assetsdir>
-    <grunt.projectBase>${project.build.directory}/grunt</grunt.projectBase>
   </properties>
   <build>
     <resources>
@@ -53,14 +53,6 @@
         <groupId>pl.project13.maven</groupId>
         <artifactId>git-commit-id-plugin</artifactId>
         <version>2.2.1</version>
-        <executions>
-          <execution>
-            <id>get-the-git-infos</id>
-            <goals>
-              <goal>revision</goal>
-            </goals>
-          </execution>
-        </executions>
         <configuration>
           <generateGitPropertiesFile>true</generateGitPropertiesFile>
           <generateGitPropertiesFilename>${project.build.outputDirectory}/org/mycore/mir/git.properties</generateGitPropertiesFilename>
@@ -72,69 +64,37 @@
             <excludeProperty>.*\.host</excludeProperty>
           </excludeProperties>
         </configuration>
+        <executions>
+          <execution>
+            <id>get-the-git-infos</id>
+            <goals>
+              <goal>revision</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
       <plugin>
         <groupId>com.github.eirslett</groupId>
         <artifactId>frontend-maven-plugin</artifactId>
-
-        <configuration>
-          <installDirectory>../target</installDirectory>
-        </configuration>
-
         <executions>
           <execution>
-            <id>install node and npm</id>
+            <id>yarn-install</id>
             <goals>
-              <goal>install-node-and-npm</goal>
+              <goal>yarn</goal>
             </goals>
-            <configuration>
-              <nodeVersion>${node.version}</nodeVersion>
-              <npmVersion>${npm.version}</npmVersion>
-            </configuration>
-          </execution>
-          <execution>
-            <id>webapp-deps</id>
             <phase>process-resources</phase>
-            <goals>
-              <goal>npm</goal>
-              <goal>bower</goal>
-            </goals>
             <configuration>
-              <workingDirectory>${grunt.projectBase}</workingDirectory>
               <arguments>install</arguments>
             </configuration>
           </execution>
           <execution>
-            <id>webapp-build</id>
-            <phase>process-resources</phase>
+            <id>grunt-build</id>
             <goals>
               <goal>grunt</goal>
             </goals>
+            <phase>process-resources</phase>
             <configuration>
-              <workingDirectory>${grunt.projectBase}</workingDirectory>
-              <arguments>--verbose --assetsDirectory=${template.assetsdir}</arguments>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-
-      <plugin>
-        <artifactId>maven-resources-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>create-resources</id>
-            <phase>generate-resources</phase>
-            <goals>
-              <goal>copy-resources</goal>
-            </goals>
-            <configuration>
-              <outputDirectory>${grunt.projectBase}</outputDirectory>
-              <resources>
-                <resource>
-                  <filtering>true</filtering>
-                  <directory>${basedir}/src/main/grunt</directory>
-                </resource>
-              </resources>
+              <arguments>--verbose --assetsDirectory=${template.assetsdir} --moduleDirectory=${basedir}</arguments>
             </configuration>
           </execution>
         </executions>
@@ -143,16 +103,24 @@
   </build>
   <dependencies>
     <dependency>
-      <groupId>org.apache.logging.log4j</groupId>
-      <artifactId>log4j-1.2-api</artifactId>
+      <groupId>com.google.code.gson</groupId>
+      <artifactId>gson</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.zaxxer</groupId>
+      <artifactId>HikariCP</artifactId>
     </dependency>
     <dependency>
       <groupId>javax.servlet</groupId>
       <artifactId>javax.servlet-api</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.jdom</groupId>
-      <artifactId>jdom2</artifactId>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
     </dependency>
     <dependency>
       <groupId>org.apache.httpcomponents</groupId>
@@ -163,8 +131,8 @@
       <artifactId>httpcore</artifactId>
     </dependency>
     <dependency>
-      <groupId>com.google.code.gson</groupId>
-      <artifactId>gson</artifactId>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-1.2-api</artifactId>
     </dependency>
     <dependency>
       <groupId>org.apache.solr</groupId>
@@ -175,12 +143,33 @@
       <artifactId>hibernate-core</artifactId>
     </dependency>
     <dependency>
-      <groupId>com.google.guava</groupId>
-      <artifactId>guava</artifactId>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-hikaricp</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.hsqldb</groupId>
+      <artifactId>hsqldb</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.jdom</groupId>
+      <artifactId>jdom2</artifactId>
     </dependency>
     <dependency>
       <groupId>org.mycore</groupId>
       <artifactId>mycore-base</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.mycore</groupId>
+      <artifactId>mycore-base</artifactId>
+      <type>test-jar</type>
+    </dependency>
+    <dependency>
+      <groupId>org.mycore</groupId>
+      <artifactId>mycore-ifs</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.mycore</groupId>
+      <artifactId>mycore-iview2</artifactId>
     </dependency>
     <dependency>
       <groupId>org.mycore</groupId>
@@ -204,36 +193,11 @@
     </dependency>
     <dependency>
       <groupId>org.mycore</groupId>
+      <artifactId>mycore-viewer</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.mycore</groupId>
       <artifactId>mycore-wfc</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.mycore</groupId>
-      <artifactId>mycore-ifs</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.hsqldb</groupId>
-      <artifactId>hsqldb</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.mycore</groupId>
-      <artifactId>mycore-base</artifactId>
-      <type>test-jar</type>
-    </dependency>
-    <dependency>
-      <groupId>com.zaxxer</groupId>
-      <artifactId>HikariCP</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.hibernate</groupId>
-      <artifactId>hibernate-hikaricp</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.mycore</groupId>
-      <artifactId>mycore-iview2</artifactId>
     </dependency>
   </dependencies>
 </project>

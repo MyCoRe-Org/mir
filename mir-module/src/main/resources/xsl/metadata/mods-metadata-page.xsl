@@ -101,7 +101,7 @@
               <xsl:if test="contains(div[@id='mir-metadata'], '°, ')">
                 <script type="text/javascript" src="//www.openstreetmap.org/openlayers/OpenLayers.js"></script>
                 <script type="text/javascript" src="//www.openstreetmap.org/openlayers/OpenStreetMap.js"></script>
-                <script type="text/javascript" src="{$WebApplicationBaseURL}js/mir/geo-coords.js"></script>
+                <script type="text/javascript" src="{$WebApplicationBaseURL}js/mir/geo-coords.min.js"></script>
               </xsl:if>
             </div>
           </xsl:if>
@@ -126,7 +126,7 @@
             </div>
           </xsl:if>
 <!-- OAS statistics -->
-          <xsl:if test="$MIR.OAS = 'show'">
+          <xsl:if test="$MIR.OAS = 'show' and div[@id='mir-oastatistics']">
             <div class="panel panel-default">
               <div class="panel-heading">
                 <h3 class="panel-title">
@@ -208,9 +208,9 @@
 <!--  end: detail row -->
       </div>
       <script src="{$WebApplicationBaseURL}assets/jquery/plugins/shariff/shariff.min.js"></script>
-      <script src="{$WebApplicationBaseURL}assets/moment/moment.js"></script>
+      <script src="{$WebApplicationBaseURL}assets/moment/min/moment.min.js"></script>
       <script src="{$WebApplicationBaseURL}assets/handlebars/handlebars.min.js"></script>
-      <script src="{$WebApplicationBaseURL}js/mir/derivate-fileList.js"></script>
+      <script src="{$WebApplicationBaseURL}js/mir/derivate-fileList.min.js"></script>
       <link rel="stylesheet" href="{$WebApplicationBaseURL}rsc/stat/{@ID}.css"/>
     </xsl:copy>
   </xsl:template>

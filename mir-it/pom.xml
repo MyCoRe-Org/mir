@@ -1,53 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.mycore.mir</groupId>
     <artifactId>mir-parent</artifactId>
-    <version>2016.06.0.2-SNAPSHOT</version>
+    <version>2017.06.0-SNAPSHOT</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
   <artifactId>mir-it</artifactId>
+  <packaging>jar</packaging>
   <name>MIR: Integration Tests</name>
   <description>combines all modules and runs integration tests</description>
-  <packaging>jar</packaging>
   <properties>
     <MCR.AppName>mir</MCR.AppName>
     <MCR.Home.Integration>${project.build.directory}/mycore-home</MCR.Home.Integration>
-    <selenium.version>3.4.0</selenium.version>
-    <cargo.servlet.port>9102</cargo.servlet.port>
-    <solr.version>4.10.4</solr.version>
-    <solr.home>${MCR.Home.Integration}/solr-home</solr.home>
-    <cargo.jvmargs>
-      -DMCR.Home=${MCR.Home.Integration}
+    <cargo.jvmargs>-DMCR.Home=${MCR.Home.Integration}
       -DMCR.AppName=${MCR.AppName}
-      -Dsolr.solr.home=${solr.home}
-    </cargo.jvmargs>
+      -Dsolr.solr.home=${solr.home}</cargo.jvmargs>
+    <cargo.servlet.port>9102</cargo.servlet.port>
+    <selenium.version>3.4.0</selenium.version>
+    <solr.home>${MCR.Home.Integration}/solr-home</solr.home>
+    <solr.version>4.10.4</solr.version>
   </properties>
-  <profiles>
-    <profile>
-      <id>windows</id>
-      <activation>
-        <os>
-          <family>windows</family>
-        </os>
-      </activation>
-      <properties>
-        <script.suffix>bat</script.suffix>
-      </properties>
-    </profile>
-    <profile>
-      <id>unix</id>
-      <activation>
-        <os>
-          <family>unix</family>
-        </os>
-      </activation>
-      <properties>
-        <script.suffix>sh</script.suffix>
-      </properties>
-    </profile>
-  </profiles>
   <build>
+    <pluginManagement>
+      <plugins>
+        <!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
+        <plugin>
+          <groupId>org.eclipse.m2e</groupId>
+          <artifactId>lifecycle-mapping</artifactId>
+          <version>1.0.0</version>
+          <configuration>
+            <lifecycleMappingMetadata>
+              <pluginExecutions>
+                <pluginExecution>
+                  <pluginExecutionFilter>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-dependency-plugin</artifactId>
+                    <versionRange>[2.8,)</versionRange>
+                    <goals>
+                      <goal>unpack</goal>
+                    </goals>
+                  </pluginExecutionFilter>
+                  <action>
+                    <ignore />
+                  </action>
+                </pluginExecution>
+              </pluginExecutions>
+            </lifecycleMappingMetadata>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
     <plugins>
       <plugin>
         <artifactId>maven-install-plugin</artifactId>
@@ -87,10 +91,10 @@
         <executions>
           <execution>
             <id>unpack-cli</id>
-            <phase>pre-integration-test</phase>
             <goals>
               <goal>unpack</goal>
             </goals>
+            <phase>pre-integration-test</phase>
             <configuration>
               <artifactItems>
                 <artifactItem>
@@ -104,10 +108,10 @@
           </execution>
           <execution>
             <id>copy-test-libs</id>
-            <phase>pre-integration-test</phase>
             <goals>
               <goal>copy</goal>
             </goals>
+            <phase>pre-integration-test</phase>
             <configuration>
               <outputDirectory>${MCR.Home.Integration}/${MCR.AppName}/lib</outputDirectory>
               <artifactItems>
@@ -121,10 +125,10 @@
           </execution>
           <execution>
             <id>copy-war</id>
-            <phase>pre-integration-test</phase>
             <goals>
               <goal>copy</goal>
             </goals>
+            <phase>pre-integration-test</phase>
             <configuration>
               <artifactItems>
                 <artifactItem>
@@ -224,24 +228,24 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>exec-maven-plugin</artifactId>
+        <configuration>
+          <environmentVariables>
+            <JAVA_OPTS>-DMCR.Home=${MCR.Home.Integration}</JAVA_OPTS>
+          </environmentVariables>
+        </configuration>
         <executions>
           <execution>
             <id>setup-cli</id>
-            <phase>pre-integration-test</phase>
             <goals>
               <goal>exec</goal>
             </goals>
+            <phase>pre-integration-test</phase>
             <configuration>
               <workingDirectory>${project.build.directory}/dependency/mir-cli-${project.version}</workingDirectory>
               <executable>bin${file.separator}setup.${script.suffix}</executable>
             </configuration>
           </execution>
         </executions>
-        <configuration>
-          <environmentVariables>
-            <JAVA_OPTS>-DMCR.Home=${MCR.Home.Integration}</JAVA_OPTS>
-          </environmentVariables>
-        </configuration>
       </plugin>
       <plugin>
         <groupId>org.codehaus.cargo</groupId>
@@ -249,10 +253,10 @@
         <executions>
           <execution>
             <id>start-container</id>
-            <phase>pre-integration-test</phase>
             <goals>
               <goal>start</goal>
             </goals>
+            <phase>pre-integration-test</phase>
             <configuration>
               <deployables>
                 <deployable>
@@ -281,10 +285,10 @@
           </execution>
           <execution>
             <id>stop-container</id>
-            <phase>post-integration-test</phase>
             <goals>
               <goal>stop</goal>
             </goals>
+            <phase>post-integration-test</phase>
           </execution>
         </executions>
       </plugin>
@@ -317,37 +321,16 @@
         </executions>
       </plugin>
     </plugins>
-    <pluginManagement>
-      <plugins>
-        <!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
-        <plugin>
-          <groupId>org.eclipse.m2e</groupId>
-          <artifactId>lifecycle-mapping</artifactId>
-          <version>1.0.0</version>
-          <configuration>
-            <lifecycleMappingMetadata>
-              <pluginExecutions>
-                <pluginExecution>
-                  <pluginExecutionFilter>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-dependency-plugin</artifactId>
-                    <versionRange>[2.8,)</versionRange>
-                    <goals>
-                      <goal>unpack</goal>
-                    </goals>
-                  </pluginExecutionFilter>
-                  <action>
-                    <ignore />
-                  </action>
-                </pluginExecution>
-              </pluginExecutions>
-            </lifecycleMappingMetadata>
-          </configuration>
-        </plugin>
-      </plugins>
-    </pluginManagement>
   </build>
   <dependencies>
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-1.2-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-1.2-api</artifactId>
+    </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>mir-cli</artifactId>
@@ -363,6 +346,28 @@
       <scope>test</scope>
     </dependency>
     <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.mycore</groupId>
+      <artifactId>selenium-utils</artifactId>
+      <version>0.6</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.mycore</groupId>
+      <artifactId>selenium-utils</artifactId>
+      <version>0.6</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
       <groupId>org.mycore.solr</groupId>
       <artifactId>solr</artifactId>
       <version>${solr.version}</version>
@@ -375,30 +380,29 @@
       <version>${selenium.version}</version>
       <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>org.apache.logging.log4j</groupId>
-      <artifactId>log4j-1.2-api</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.mycore</groupId>
-      <artifactId>selenium-utils</artifactId>
-      <version>0.6-SNAPSHOT</version>
-      <scope>test</scope>
-    </dependency>
   </dependencies>
-  <dependencyManagement>
-    <!-- override from mycore dependencies, required for selenium 3.3 -->
-    <dependencies>
-      <dependency>
-        <groupId>com.google.guava</groupId>
-        <artifactId>guava</artifactId>
-        <version>21.0</version>
-      </dependency>
-    </dependencies>
-  </dependencyManagement>
+  <profiles>
+    <profile>
+      <id>windows</id>
+      <activation>
+        <os>
+          <family>windows</family>
+        </os>
+      </activation>
+      <properties>
+        <script.suffix>bat</script.suffix>
+      </properties>
+    </profile>
+    <profile>
+      <id>unix</id>
+      <activation>
+        <os>
+          <family>unix</family>
+        </os>
+      </activation>
+      <properties>
+        <script.suffix>sh</script.suffix>
+      </properties>
+    </profile>
+  </profiles>
 </project>

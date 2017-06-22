@@ -12,14 +12,17 @@
     },
     "engineStrict": true,
     "devDependencies": {
-        "bower": "^1.8.0",
         "grunt": "^1.0.0",
         "grunt-cli": "^1.2.0",
         "grunt-contrib-concat": "^1.0.1",
         "grunt-contrib-less": "^1.4.0",
         "grunt-replace": "^1.0.1",
         "grunt-contrib-watch": "^1.0.0",
-        "grunt-bowercopy": "^1.2.4",
-        "request": "^2.79.0"
+        "grunt-npmcopy": "^0.1.0",
+        "request": "^2.79.0",
+        "bootstrap": "3.3.5",
+        "bootswatch": "3.3.5",
+        "jquery": "1.11.3",
+        "jquery-migrate": "1.2.1"
     }
 }

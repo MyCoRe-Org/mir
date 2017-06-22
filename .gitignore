@@ -1,8 +1,6 @@
-#Switching from master to LTS?
 #Node.js and bower
 bower_components/
 node_modules/
-
 
 .class
 

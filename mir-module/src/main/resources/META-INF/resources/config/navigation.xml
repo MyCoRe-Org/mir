@@ -136,16 +136,20 @@
         <label xml:lang="de">WebCLI</label>
         <label xml:lang="en">WebCLI</label>
       </item>
-      <item href="/modules/session-listing/sessionListing.xml" type="extern">
+      <item href="/modules/webtools/session/sessionListing.xml" type="intern">
         <label xml:lang="de">Aktive Sitzungen</label>
         <label xml:lang="en">Session Management</label>
       </item>
-      <item href="/modules/wcms2/wcms2.xml?XSL.useMT=false" type="extern">
+      <item href="/modules/webtools/processing/processing.xml" type="intern">
+        <label xml:lang="de">Aktive Prozesse</label>
+        <label xml:lang="en">Processing</label>
+      </item>
+      <item href="/modules/wcms2/wcms2.xml?XSL.useMT=false" type="intern">
         <label xml:lang="de">WCMS</label>
         <label xml:lang="en">WCMS</label>
       </item>
     </group>
-    <item href="/servlets/logout?url=../content/index.xml" type="extern">
+    <item href="/servlets/logout?url=../content/index.xml" type="intern">
       <label xml:lang="de">Abmelden</label>
       <label xml:lang="en">Logout</label>
     </item>

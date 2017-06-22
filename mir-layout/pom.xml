@@ -1,37 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.mycore.mir</groupId>
     <artifactId>mir-parent</artifactId>
-    <version>2016.06.0.2-SNAPSHOT</version>
+    <version>2017.06.0-SNAPSHOT</version>
   </parent>
   <artifactId>mir-layout</artifactId>
   <name>MIR: Layout</name>
   <description>mir layout template based on bootswatch</description>
   <properties>
-    <lesscss.compress>true</lesscss.compress>
-    <template.cssdir>${project.build.directory}/classes/META-INF/resources/mir-layout/css</template.cssdir>
-    <template.assetsdir>${project.build.directory}/classes/META-INF/resources/mir-layout/assets</template.assetsdir>
     <grunt.projectBase>${project.build.directory}/grunt</grunt.projectBase>
+    <lesscss.compress>true</lesscss.compress>
+    <template.assetsdir>${project.build.directory}/classes/META-INF/resources/mir-layout/assets</template.assetsdir>
+    <template.cssdir>${project.build.directory}/classes/META-INF/resources/mir-layout/css</template.cssdir>
   </properties>
-  <dependencies>
-    <dependency>
-      <groupId>org.mycore</groupId>
-      <artifactId>mycore-iview2</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>javax.servlet</groupId>
-      <artifactId>javax.servlet-api</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>io.bit3</groupId>
-      <artifactId>jsass</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.yahoo.platform.yui</groupId>
-      <artifactId>yuicompressor</artifactId>
-    </dependency>
-  </dependencies>
   <build>
     <plugins>
       <plugin>
@@ -57,29 +40,21 @@
         <artifactId>frontend-maven-plugin</artifactId>
         <executions>
           <execution>
-            <id>install node and yarn</id>
-            <goals>
-              <goal>install-node-and-yarn</goal>
-            </goals>
-          </execution>
-
-          <execution>
-            <id>webapp-deps</id>
-            <phase>process-resources</phase>
+            <id>yarn-install</id>
             <goals>
               <goal>yarn</goal>
-              <goal>bower</goal>
             </goals>
+            <phase>process-resources</phase>
             <configuration>
               <arguments>install</arguments>
             </configuration>
           </execution>
           <execution>
-            <id>webapp-build</id>
-            <phase>process-resources</phase>
+            <id>grunt-build</id>
             <goals>
               <goal>grunt</goal>
             </goals>
+            <phase>process-resources</phase>
             <configuration>
               <arguments>--verbose --lessFile=${basedir}/src/main/less/build.less --targetDirectory=${template.cssdir} --assetsDirectory=${template.assetsdir}</arguments>
             </configuration>
@@ -92,10 +67,10 @@
         <executions>
           <execution>
             <id>create-resources</id>
-            <phase>generate-resources</phase>
             <goals>
               <goal>copy-resources</goal>
             </goals>
+            <phase>generate-resources</phase>
             <configuration>
               <outputDirectory>${grunt.projectBase}</outputDirectory>
               <resources>
@@ -110,4 +85,14 @@
       </plugin>
     </plugins>
   </build>
+  <dependencies>
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>javax.servlet-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.mycore</groupId>
+      <artifactId>mycore-viewer</artifactId>
+    </dependency>
+  </dependencies>
 </project>

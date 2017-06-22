@@ -13,12 +13,14 @@
   <xsl:import href="xslImport:modsmeta:metadata/mir-viewer.xsl"/>
   <xsl:param name="UserAgent" />
   <xsl:param name="MIR.DFGViewer.enable" select="'false'"/>
+  <xsl:param name="MCR.Viewer.PDFCreatorURI" />
+  <xsl:param name="MCR.Viewer.PDFCreatorStyle" />
 
   <xsl:template match="/">
     <xsl:if test="mycoreobject/structure/derobjects/derobject">
       <div id="mir-viewer">
         <xsl:variable name="viewerNodesTmp">
-          <xsl:if test="string-length(embargo:getEmbargo(mycoreobject/@ID)) = 0">
+          <xsl:if test="count(mycoreobject/structure/derobjects/derobject[key('rights', @xlink:href)/@read]) > 0">
             <div class="row mir-preview">
               <div class="col-md-12">
                 <h3 class="mir-viewer">Vorschau</h3>
@@ -107,7 +109,7 @@
     <xsl:variable name="metsServletURL"
                   select="concat($WebApplicationBaseURL,'servlets/MCRMETSServlet/', $derId)"/>
     <xsl:variable name="i18nURL"
-                  select="concat($WebApplicationBaseURL,'rsc/locale/translate/{lang}/component.mets.*,component.iview2.*')"/>
+                  select="concat($WebApplicationBaseURL,'rsc/locale/translate/{lang}/component.mets.*,component.viewer.*')"/>
     <xsl:variable name="tileURL" select="concat($WebApplicationBaseURL,'servlets/MCRTileServlet/')"/>
     <xsl:variable name="derivateURL"
                   select="concat($WebApplicationBaseURL, 'servlets/MCRFileNodeServlet/', $derId)"/>
@@ -129,6 +131,12 @@
       "canvas.startup.fitWidth": true,
       "canvas.overview.enabled": false,
       "lang": "de",
+      <xsl:if test="string-length($MCR.Viewer.PDFCreatorURI) &gt; 0">
+        <xsl:value-of select="concat('&quot;pdfCreatorURI&quot;: &quot;', $MCR.Viewer.PDFCreatorURI, '&quot;,')" />
+      </xsl:if>
+      <xsl:if test="string-length($MCR.Viewer.PDFCreatorStyle) &gt; 0">
+        <xsl:value-of select="concat('&quot;pdfCreatorStyle&quot;: &quot;', $MCR.Viewer.PDFCreatorStyle, '&quot;,')" />
+      </xsl:if>
       chapter: {
       enabled: true,
       showOnStart: false
@@ -148,7 +156,7 @@
     <xsl:param name="viewerId"/>
 
     <xsl:variable name="i18nURL"
-                  select="concat($WebApplicationBaseURL,'rsc/locale/translate/{lang}/component.mets.*,component.iview2.*')"/>
+                  select="concat($WebApplicationBaseURL,'rsc/locale/translate/{lang}/component.mets.*,component.viewer.*')"/>
     <xsl:variable name="derivateURL"
                   select="concat($WebApplicationBaseURL, 'servlets/MCRFileNodeServlet/', $derId)"/>
     <xsl:variable name="pdfWorkerURL" select="concat($WebApplicationBaseURL, 'modules/iview2/js/lib/pdf.worker.js')"/>

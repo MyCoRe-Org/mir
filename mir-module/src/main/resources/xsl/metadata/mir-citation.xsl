@@ -4,8 +4,10 @@
   xmlns:cmd="http://www.cdlib.org/inside/diglib/copyrightMD" xmlns:exslt="http://exslt.org/common" exclude-result-prefixes="i18n mcr mods xlink mcrurn cmd exslt"
 >
   <xsl:import href="xslImport:modsmeta:metadata/mir-citation.xsl" />
+  <xsl:include href="mods-dc-meta.xsl"/>
   <xsl:include href="mods-highwire.xsl" />
   <xsl:param name="MCR.URN.Resolver.MasterURL" select="''" />
+  <xsl:param name="MCR.DOI.Resolver.MasterURL" select="''" />
   <xsl:param name="MCR.DOI.Prefix" select="''" />
   <xsl:param name="MCR.URN.SubNamespace.Default.Prefix" select="''" />
   <xsl:param name="MIR.citationStyles" select="''" />
@@ -14,8 +16,9 @@
   <xsl:param name="MIR.shariff" select="'show'" />
   <xsl:template match="/">
 
-    <!-- ==================== Highwire Press tags ==================== -->
+    <!-- ==================== Highwire Press Tags and Dublin Core as Meta Tags ==================== -->
     <citation_meta>
+      <xsl:apply-templates select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods" mode="dc-meta"/>
       <xsl:apply-templates select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods" mode="highwire" />
     </citation_meta>
 
@@ -83,7 +86,7 @@
         <xsl:choose>
           <xsl:when test="//mods:mods/mods:identifier[@type='doi'] and contains(//mods:mods/mods:identifier[@type='doi'], $MCR.DOI.Prefix)">
             <xsl:variable name="doi" select="//mods:mods/mods:identifier[@type='doi']" />
-            <a id="url_site_link" href="https://dx.doi.org/{$doi}">
+            <a id="url_site_link" href="{$MCR.DOI.Resolver.MasterURL}{$doi}">
               <xsl:value-of select="$doi" />
             </a>
             <br />
@@ -278,7 +281,7 @@
         <xsl:value-of select="$MCR.URN.Resolver.MasterURL" />
       </xsl:if>
       <xsl:if test="contains(@type,'doi')">
-        <xsl:text>https://dx.doi.org/</xsl:text>
+        <xsl:value-of select="$MCR.DOI.Resolver.MasterURL" />
       </xsl:if>
     </xsl:variable>
     <xsl:call-template name="identifierEntry">

@@ -13,7 +13,7 @@
   <xsl:template match="wizard">
     <head>
       <link rel="stylesheet" href="{$WebApplicationBaseURL}mir-wizard/assets/highlightjs/css/default.css" />
-      <script src="{$WebApplicationBaseURL}mir-wizard/assets/highlightjs/js/highlight.pack.min.js"></script>
+      <script src="{$WebApplicationBaseURL}mir-wizard/assets/highlightjs/js/highlight.js"></script>
     </head>
     <xsl:apply-templates />
     <script type="text/javascript">
