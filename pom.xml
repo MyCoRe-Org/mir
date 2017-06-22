@@ -20,7 +20,7 @@
     <mycore.version>2016.06.0.2-SNAPSHOT</mycore.version>
     <hibernate.version>5.2.2.Final</hibernate.version>
     <jetty.version>9.3.14.v20161028</jetty.version>
-    <tomcat8.version>8.5.8</tomcat8.version>
+    <tomcat8.version>8.5.15</tomcat8.version>
     <node.version>v4.2.2</node.version>
     <npm.version>3.5.0</npm.version>
     <cargo.version>1.6.1</cargo.version>
