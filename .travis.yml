@@ -5,6 +5,10 @@ group: beta
 install: true
 addons:
   firefox: "52.0.2"
+  sauce_connect:
+    username: "MIR_SauceLab"
+    access_key: "a7f4c30a-ad90-4d68-82ba-f4fb5e31a8f8"
+    no_ssl_bump_domains: "127.0.0.1,localhost"
   apt:
     packages:
     - google-chrome-stable
@@ -59,4 +63,3 @@ script:
   - mvn -B -P!standard-with-extra-repos -Djetty -DDriverProvider=org.mycore.common.selenium.drivers.MCRRemoteSauceDriverFactory clean install && mvn -P!standard-with-extra-repos -B javadoc:javadoc && mvn com.gavinmogan:codacy-maven-plugin:coverage -DcoverageReportFile=target/site/jacoco/jacoco.xml -DfailOnMissingReportFile=false
 after_failure:
   - sh travis/autodeploy.sh "$TRAVIS_BUILD_NUMBER-$TRAVIS_EVENT_TYPE-$TRAVIS_PULL_REQUEST" "https://MyCoRe-Travis:$GITHUB_TOKEN@github.com/MyCoRe-Travis/MIR_test_artifacts.git"
-
