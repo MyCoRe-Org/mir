@@ -8,6 +8,7 @@ addons:
   apt:
     packages:
     - google-chrome-stable
+    - dbus-x11
 cache:
   directories:
     - $HOME/.m2/repository
@@ -43,6 +44,7 @@ before_script:
 script:
   - mkdir ${HOME}/tmp
   - export TMPDIR="${HOME}/tmp"
+  - export $(dbus-launch)
   - mvn -B -P!standard-with-extra-repos -Djetty clean install && mvn -P!standard-with-extra-repos -B javadoc:javadoc && mvn com.gavinmogan:codacy-maven-plugin:coverage -DcoverageReportFile=target/site/jacoco/jacoco.xml -DfailOnMissingReportFile=false
 after_failure:
   - sh travis/autodeploy.sh "$TRAVIS_BUILD_NUMBER-$TRAVIS_EVENT_TYPE-$TRAVIS_PULL_REQUEST" "https://MyCoRe-Travis:$GITHUB_TOKEN@github.com/MyCoRe-Travis/MIR_test_artifacts.git"
