@@ -4,7 +4,7 @@ dist: trusty
 group: beta
 install: true
 addons:
-  firefox: "53.0.3"
+  firefox: "latest-esr"
   apt:
     packages:
     - google-chrome-stable
