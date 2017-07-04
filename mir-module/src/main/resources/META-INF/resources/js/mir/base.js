@@ -445,27 +445,28 @@
       $("#mir_relatedItem_hideAll").hide();
     });
 
+        $("[data-register-pi]").click(function (event) {
+            let button = jQuery(this);
+            let mcrId = button.attr("data-mycoreID");
+            let baseURL = button.attr("data-baseURL");
+            let service = button.attr("data-register-pi");
+            let resource = baseURL + "rsc/pi/registration/service/" + service + "/" + mcrId;
+            let type = button.attr("data-type");
 
-    $("#registerDOI").click(function (event) {
-      var doiButton = jQuery(this);
-      var mcrId = doiButton.attr("data-mycoreID");
-      var baseURL = doiButton.attr("data-baseURL");
-      var doiResource = baseURL + "rsc/pi/registration/service/Datacite/" + mcrId;
-
-      $.ajax({
-        type: 'POST',
-        url: doiResource,
-        data: {}
-      }).done(function (result) {
-        window.location.search="XSL.Status.Message=component.pi.register.doi.success&XSL.Status.Style=success";
-      }).fail(function (result) {
-        if("responseJSON" in result && "code" in result.responseJSON){
-            window.location.search="XSL.Status.Message=component.pi.register.error." + result.responseJSON.code +"&XSL.Status.Style=danger";
-        } else {
-            window.location.search="XSL.Status.Message=component.pi.register.doi.error&XSL.Status.Style=danger";
-        }
-      });
-    });
+            $.ajax({
+                type: 'POST',
+                url: resource,
+                data: {}
+        }).done(function (result) {
+                window.location.search = "XSL.Status.Message=component.pi.register." + type + ".success&XSL.Status.Style=success";
+        }).fail(function (result) {
+                if ("responseJSON" in result && "code" in result.responseJSON) {
+                    window.location.search = "XSL.Status.Message=component.pi.register.error." + result.responseJSON.code + "&XSL.Status.Style=danger";
+                } else {
+                    window.location.search = "XSL.Status.Message=component.pi.register." + type + ".error&XSL.Status.Style=danger";
+                }
+        });
+        });
 
   }); // END $﻿(document).ready()
 
