@@ -3,41 +3,39 @@
   <db name="H2">
     <driver>org.h2.Driver</driver>
     <url>jdbc:h2:file:{PATH}/h2/mir</url>
-    <dialect>org.hibernate.dialect.H2Dialect</dialect>
     <username>sa</username>
     <library>
-      <url>http://artifactory.mycore.de/mycore-releases/com/h2database/h2/1.3.176/h2-1.3.176.jar</url>
+      <url>http://central.maven.org/maven2/com/h2database/h2/1.4.196/h2-1.4.196.jar</url>
+    </library>
+  </db>
+  <db name="PostgreSQL">
+    <driver>org.postgresql.Driver</driver>
+    <url>jdbc:postgresql://127.0.0.1/mir</url>
+    <library>
+      <url>https://jdbc.postgresql.org/download/postgresql-42.1.1.jar</url>
+      <url>http://central.maven.org/maven2/org/postgresql/postgresql/42.1.1/postgresql-42.1.1.jar</url>
     </library>
   </db>
   <db name="HSQLDB">
     <driver>org.hsqldb.jdbcDriver</driver>
     <url>jdbc:hsqldb:hsql://localhost:8298/mir</url>
-    <dialect>org.hibernate.dialect.HSQLDialect</dialect>
     <username>sa</username>
     <library>
-      <url>http://artifactory.mycore.de/mycore-releases/org/hsqldb/hsqldb/2.3.2/hsqldb-2.3.2.jar</url>
+      <url>http://central.maven.org/maven2/org/hsqldb/hsqldb/2.4.0/hsqldb-2.4.0.jar</url>
+    </library>
+  </db>
+  <db name="MariaDB">
+    <driver>org.mariadb.jdbc.Driver</driver>
+    <url>jdbc:mariadb://127.0.0.1/mir</url>
+    <library>
+      <url>http://central.maven.org/maven2/org/mariadb/jdbc/mariadb-java-client/2.0.3/mariadb-java-client-2.0.3.jar</url>
     </library>
   </db>
   <db name="MySQL">
     <driver>com.mysql.jdbc.Driver</driver>
     <url>jdbc:mysql://127.0.0.1/mir</url>
-    <dialect>org.hibernate.dialect.MySQLDialect</dialect>
     <library>
-      <url>http://artifactory.mycore.de/mycore-releases/mysql/mysql-connector-java/5.1.29/mysql-connector-java-5.1.29.jar</url>
-    </library>
-  </db>
-  <db name="DB2">
-    <driver>com.ibm.db2.jcc.DB2Driver</driver>
-    <url>jdbc:db2://localhost:50000/mir</url>
-    <dialect>org.hibernate.dialect.DB2Dialect</dialect>
-  </db>
-  <db name="PostgreSQL">
-    <driver>org.postgresql.Driver</driver>
-    <url>jdbc:postgresql://127.0.0.1/mir</url>
-    <dialect>org.hibernate.dialect.PostgreSQLDialect</dialect>
-    <library>
-      <url>http://central.maven.org/maven2/org/postgresql/postgresql/9.4.1208/postgresql-9.4.1208.jar</url>
-<!--       <url>http://artifactory.mycore.de/mycore-releases/postgresql/postgresql/9.1/postgresql-9.1-901.jdbc4.jar</url> -->
+      <url>http://central.maven.org/maven2/mysql/mysql-connector-java/5.1.42/mysql-connector-java-5.1.42.jar</url>
     </library>
   </db>
 </dbtypes>
