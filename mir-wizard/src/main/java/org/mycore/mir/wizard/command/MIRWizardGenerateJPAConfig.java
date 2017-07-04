@@ -23,6 +23,7 @@
 package org.mycore.mir.wizard.command;
 
 import java.io.File;
+import java.util.Optional;
 
 import org.mycore.common.config.MCRConfigurationDir;
 import org.mycore.common.config.MCRConfigurationDirSetup;
@@ -49,6 +50,11 @@ public class MIRWizardGenerateJPAConfig extends MIRWizardCommand {
 
             File file = new File(resDir, "persistence.xml");
             this.result.setAttribute("file", file.getAbsolutePath());
+
+            // set extra engine property for MariaDB and MySQL
+            Optional.ofNullable(getInputXML().getChild("database"))
+                .map(c -> c.getChildText("driver")).filter(d -> d.contains("mariadb") || d.contains("mysql"))
+                .ifPresent(s -> System.setProperty("hibernate.dialect.storage_engine", "innodb"));
 
             MCRContent source = new MCRJDOMContent(getInputXML().clone());
             MCRXSLTransformer transformer = new MCRXSLTransformer("xsl/" + source.getDocType() + "-persistence.xsl");
