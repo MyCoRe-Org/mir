@@ -49,7 +49,7 @@ $﻿(document).ready(function() {
 
     function loadMIRProject(callback, append) {
       $.ajax({
-        url: webApplicationBaseURL + 'servlets/solr/find?q=' + append + '&XSL.Style=xml',
+        url: webApplicationBaseURL + 'servlets/solr/find?condQuery=' + append + '&XSL.Style=xml',
         type: "GET",
         success: function(data) {
           callback(data);
