@@ -45,7 +45,7 @@
           <form action="{$WebApplicationBaseURL}servlets/solr/find?condQuery={0}" class="navbar-form navbar-left pull-right" role="search">
             <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
             <div class="form-group">
-              <input name="q" placeholder="Suche" class="form-control search-query" id="searchInput" type="text" />
+              <input name="condQuery" placeholder="Suche" class="form-control search-query" id="searchInput" type="text" />
             </div>
           </form>
         </div>
