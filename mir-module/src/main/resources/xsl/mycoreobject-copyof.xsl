@@ -13,6 +13,11 @@
     <!-- do nothing -->
   </xsl:template>
 
+  <xsl:template match="mods:mods/mods:identifier">
+    <!-- do nothing -->
+  </xsl:template>
+
+
   <xsl:template match="structure">
     <!-- do nothing -->
   </xsl:template>
