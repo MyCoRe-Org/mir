@@ -1083,6 +1083,10 @@
          <str name="update.chain">dedupe</str>
        </lst>
        -->
+       <!-- MIR addition to merge allMeta into a single field -->
+       <lst name="defaults">
+         <str name="update.chain">merge-allMeta</str>
+       </lst>
   </requestHandler>
 
   <!-- The following are implicitly added
@@ -1911,6 +1915,14 @@
   </admin>
 
   <!-- MIR module additional request handler -->
+  <updateRequestProcessorChain name="merge-allMeta">
+    <processor class="solr.ConcatFieldUpdateProcessorFactory">
+      <str name="fieldName">allMeta</str>
+      <str name="delimiter">&#10;</str>
+    </processor>
+    <processor class="solr.LogUpdateProcessorFactory" />
+    <processor class="solr.RunUpdateProcessorFactory" />
+  </updateRequestProcessorChain>
   <requestHandler name="/find" class="solr.SearchHandler">
     <lst name="defaults">
       <str name="echoParams">explicit</str>
@@ -1918,7 +1930,7 @@
       <str name="mm">100%</str>
       <str name="fl">*,score</str>
       <str name="bq">created:[NOW/DAY-6MONTH TO NOW/DAY]</str>
-    <str name="condQuery">*</str>
+      <str name="condQuery">*</str>
       <!-- sort by score, if user submits empty form, we show the last changed docs first (as the score will be fixed to 1.0) -->
       <str name="sort">score desc, mods.dateIssued desc, mods.dateIssued.host desc</str>
     </lst>
