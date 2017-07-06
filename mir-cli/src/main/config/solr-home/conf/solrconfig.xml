@@ -1925,7 +1925,7 @@
   </updateRequestProcessorChain>
   <requestHandler name="/find" class="solr.SearchHandler">
     <lst name="defaults">
-      <str name="echoParams">explicit</str>
+      <str name="echoParams">all</str>
       <int name="rows">20</int>
       <str name="mm">100%</str>
       <str name="fl">*,score</str>
@@ -1937,8 +1937,8 @@
     <lst name="appends">
       <!-- filter query: search only in published mods objects-->
       <str name="fq1">state:published OR {!v=$owner}</str>
-    <str name="qf1">id^100 mods.gnd^100 mods.identifier^100 isbn^100 mods.title^80 mods.author^40 mods.publisher^30 mods.name^30 mods.abstract^10 mods.place^5 allMeta^0.002</str>
-    <str name="fq2">{!join from=returnId to=id}*:*</str>
+      <str name="qf1">id^100 mods.gnd^100 mods.identifier^100 isbn^100 mods.title^80 mods.author^40 mods.publisher^30 mods.name^30 mods.abstract^10 mods.place^5 allMeta^0.002</str>
+      <str name="fq2">{!join from=returnId to=id}*:*</str>
       <str name="qf2">content</str>
       <str name="facet">true</str>
       <str name="facet.field">mods.type</str>
