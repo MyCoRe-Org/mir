@@ -467,10 +467,8 @@
       });
     });
 
-
     $(".searchfield_box form").submit(function() {
-      $(this).children(':input[value=""]').attr("disabled", "true");
-      return true; // ensure form still submits
+      $("input").each(function(i,elem){ if($(elem).prop("value").length==0){ $(elem).prop("disabled", "disabled"); } });
     });
 
   }); // END $﻿(document).ready()
