@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:mods="http://www.loc.gov/mods/v3"
-                xmlns:mcrmods="xalan://org.mycore.mods.classification.MCRMODSClassificationSupport"
-                xmlns:xlink="http://www.w3.org/1999/xlink"
-                xmlns:encoder="xalan://java.net.URLEncoder"
-                xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
-                exclude-result-prefixes=" i18n mods mcrmods xlink encoder">
+<xsl:stylesheet version="1.0"
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+    xmlns:mods="http://www.loc.gov/mods/v3"
+    xmlns:mcrmods="xalan://org.mycore.mods.classification.MCRMODSClassificationSupport"
+    xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions"
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+    xmlns:encoder="xalan://java.net.URLEncoder"
+    xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
+    exclude-result-prefixes=" i18n mods mcrmods mcrxsl xlink encoder">
   <xsl:import href="xslImport:modsmeta" />
   <xsl:include href="layout/mir-layout-utils.xsl" />
   <xsl:include href="mods-utils.xsl" />
@@ -130,11 +133,22 @@
               <xsl:value-of select="@text" />
             </xsl:for-each>
           </xsl:variable>
+          <!-- check for relatedItem containing mycoreobject ID dependent on current user using solr query on field mods.relatedItem -->
+          <xsl:variable name="state">
+            <xsl:choose>
+              <xsl:when test="mcrxsl:isCurrentUserInRole('admin') or mcrxsl:isCurrentUserInRole('editor')">
+                <xsl:text>state:*</xsl:text>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:value-of select="concat('state:published OR createdby:', $CurrentUser)" />
+              </xsl:otherwise>
+            </xsl:choose>
+          </xsl:variable>
           <xsl:call-template name="searchLink">
             <xsl:with-param name="class" select="$class" />
             <xsl:with-param name="title" select="$title" />
             <xsl:with-param name="linkText" select="$classText" />
-            <xsl:with-param name="query" select="concat('&amp;fq=mods.type:', @ID, '&amp;owner=createdby:', $owner)" />
+            <xsl:with-param name="query" select="concat('&amp;fq=category.top:mir_genres\:', @ID, ' AND (', $state, ' )')" />
           </xsl:call-template>
         </xsl:for-each>
       </xsl:when>
