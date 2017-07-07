@@ -126,13 +126,10 @@
         <script>
           $.ajax({
             type: 'GET',
-            url: 'https://data.datacite.org/text/x-bibliography/<xsl:value-of select="//mods:mods/mods:identifier[@type='doi']" />',
+            url: 'https://data.datacite.org/text/x-bibliography;style=deutsche-sprache;locale=de-DE/<xsl:value-of select="//mods:mods/mods:identifier[@type='doi']" />',
             // fixed MIR-550: overrides wrong charset=iso-8859-1
             beforeSend: function(jqXHR) {
               jqXHR.overrideMimeType('text/html;charset=UTF-8');
-            },
-            headers: {
-              'Accept': 'text/x-bibliography; style=deutsche-sprache; locale=de-DE'
             },
             success: function(data){
               $('#citation-text').text(data);
@@ -142,13 +139,10 @@
           $('#crossref-cite').on('change', function() {
             $.ajax({
               type: 'GET',
-              url: 'https://data.datacite.org/text/x-bibliography/<xsl:value-of select="//mods:mods/mods:identifier[@type='doi']" />',
+              url: 'https://data.datacite.org/text/x-bibliography;style=' + $(this).val() + ';locale=de-DE/<xsl:value-of select="//mods:mods/mods:identifier[@type='doi']" />',
               // fixed MIR-550: overrides wrong charset=iso-8859-1
               beforeSend: function(jqXHR) {
                 jqXHR.overrideMimeType('text/html;charset=UTF-8');
-              },
-              headers: {
-                'Accept': 'text/x-bibliography; style=' + $(this).val() + '; locale=de-DE'
               },
               success: function(data){
                 $('#citation-text').text(data);
