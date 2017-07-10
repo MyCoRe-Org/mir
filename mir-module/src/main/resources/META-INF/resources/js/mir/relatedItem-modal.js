@@ -274,7 +274,7 @@ $(document).ready(function() {
       var dataType = "";
       switch (type) {
         case "find":
-              url = "servlets/solr/find?q=" + qry + "&fq=objectType%3A\"mods\"&fq=" + sortType + "&start=" + start + "&rows=10&owner=createdby:*&XSL.Style=xml";
+              url = "servlets/solr/find?condQuery=" + qry + "&fq1=" + sortType + "&start=" + start + "&rows=10&owner=createdby:*&XSL.Style=xml";
               dataType = "xml";
               break;
         case "select":

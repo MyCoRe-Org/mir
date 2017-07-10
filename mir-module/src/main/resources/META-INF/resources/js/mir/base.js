@@ -233,15 +233,15 @@
       var origSearchAction = $(this).attr('action');
       var addValue = encodeURIComponent(solrEscapeSearchValue($('.search_box input').val().trim()));
       if (origSearchAction.includes('servlets/solr/find')) {
-        var replAction = origSearchAction.replace(/(.*[&|\?])(q=.*?)&(.*)/,'$1$3&');
+        var replAction = origSearchAction.replace(/(.*[&|\?])(condQuery=.*?)&(.*)/,'$1$3&');
         if ($('#search_type_button').attr('value') == 'all') {
-            var newAction = replAction + "q=" + addValue;
+            var newAction = replAction + "condQuery=" + addValue;
           } else {
-            var newAction = replAction + "q=" + addValue + "&df=" + $('#search_type_button').attr('value');
+            var newAction = replAction + "condQuery=" + addValue + "&df=" + $('#search_type_button').attr('value');
           }
       }
       else {
-        var replAction = origSearchAction.replace(/(.*[&|\?])(q=.*?)&(.*)/,'$1$3&$2');
+        var replAction = origSearchAction.replace(/(.*[&|\?])(condQuery=.*?)&(.*)/,'$1$3&$2');
         if ($('#search_type_button').attr('value') == 'all') {
             var newAction = replAction + "+%2BallMeta:" + addValue;
           } else {
@@ -467,7 +467,12 @@
       });
     });
 
+    $(".searchfield_box form").submit(function() {
+      $("input").each(function(i,elem){ if($(elem).prop("value").length==0){ $(elem).prop("disabled", "disabled"); } });
+    });
+
   }); // END $﻿(document).ready()
+
 
   function dotdotdotCallback(isTruncated, originalContent) {
     if (!isTruncated) {
