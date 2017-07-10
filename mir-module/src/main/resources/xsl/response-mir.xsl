@@ -640,6 +640,9 @@
                   </xsl:otherwise>
                 </xsl:choose>
               </xsl:for-each>
+              <xsl:if test="count(exslt:node-set($nameList)/arr/str) &gt; 3">
+                <xsl:value-of select="' / et.al.'" />
+              </xsl:if>
             </div>
           </xsl:if>
 
