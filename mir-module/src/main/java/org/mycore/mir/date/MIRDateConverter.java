@@ -1,8 +1,13 @@
 package org.mycore.mir.date;
 
-import java.time.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.Year;
+import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAccessor;
+
+import org.apache.logging.log4j.LogManager;
 
 public class MIRDateConverter {
 
@@ -12,14 +17,14 @@ public class MIRDateConverter {
             MIRDateFormatterInterface formatter = (MIRDateFormatterInterface) Class.forName(formatterClassName).newInstance();
             return getFormatedDateString(date, formatter.getFormatter(date));
         } catch (Exception e) {
-            e.printStackTrace();
+            LogManager.getLogger().warn("Error while converting " + date + " from format " + format, e);
             return date;
         }
     }
 
     private static String getFormatedDateString(String date, DateTimeFormatter formatter) {
         TemporalAccessor ta = formatter.parseBest(date,
-        LocalDateTime::from, LocalDate::from, YearMonth::from, Year::from);
+            LocalDateTime::from, LocalDate::from, YearMonth::from, Year::from);
         if (ta instanceof LocalDateTime) {
             LocalDateTime ld = LocalDateTime.from(ta);
             return ld.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"));
