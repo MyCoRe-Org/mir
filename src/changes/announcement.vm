@@ -5,7 +5,7 @@ The ${developmentTeam} is pleased to announce the ${project.name}-${version}#if(
 ${introduction}
 
 http://www.mycore.de/mir
-http://www.mycore.de/generated/mir
+${project.url}
 #if ($urlDownload)
 
 You can download this version of ${project.name} here:
