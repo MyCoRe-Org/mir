@@ -2,7 +2,7 @@ package org.mycore.mir.date;
 
 import java.time.format.DateTimeFormatter;
 
-public class MIRMARCFormatter implements MIRDateFormatterInterface{
+public class MIRMARCFormatter implements MIRDateFormatterInterface {
 
     @Override
     public DateTimeFormatter getFormatter(String date) {

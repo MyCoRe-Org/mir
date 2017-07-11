@@ -57,7 +57,7 @@ public class MirSelfRegistrationServlet extends MCRServlet {
     private static final String I18N_ERROR_PREFIX = "selfRegistration.error";
 
     private static final String DEFAULT_ROLE = MCRConfiguration.instance().getString("MIR.SelfRegistration.DefaultRole",
-            null);
+        null);
 
     public void doGetPost(final MCRServletJob job) throws Exception {
         final HttpServletRequest req = job.getRequest();

@@ -1,7 +1,6 @@
 package org.mycore.mir.it.model;
 
-
-public enum  MIRDNBClassification {
+public enum MIRDNBClassification {
     _000("000"),
     _004("004"),
     _010("010"),
@@ -115,7 +114,7 @@ public enum  MIRDNBClassification {
 
     private String value;
 
-    MIRDNBClassification(String value){
+    MIRDNBClassification(String value) {
         this.value = value;
     }
 
@@ -123,4 +122,3 @@ public enum  MIRDNBClassification {
         return value;
     }
 }
-

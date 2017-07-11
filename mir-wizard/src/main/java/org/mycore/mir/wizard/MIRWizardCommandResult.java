@@ -137,7 +137,7 @@ public class MIRWizardCommandResult {
 
     protected Layout<String> getAppenderLogLayout() {
         return PatternLayout.newBuilder().withNoConsoleNoAnsi(true).withPattern("%d{ISO8601} %p - %m%n%throwable")
-                .build();
+            .build();
     }
 
     @SuppressWarnings("serial")
@@ -148,7 +148,7 @@ public class MIRWizardCommandResult {
         private String logs;
 
         protected CommandLogAppender(final String name, final Filter filter,
-                final Layout<? extends Serializable> layout) {
+            final Layout<? extends Serializable> layout) {
             super(name, filter, layout);
         }
 

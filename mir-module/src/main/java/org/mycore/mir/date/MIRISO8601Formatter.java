@@ -33,8 +33,7 @@ public class MIRISO8601Formatter implements MIRDateFormatterInterface {
             case 13:
                 if (date.contains("-")) {
                     formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH");
-                }
-                else {
+                } else {
                     formatter = DateTimeFormatter.ofPattern("yyyyMMdd'T'HHmm");
                 }
                 break;
@@ -44,8 +43,7 @@ public class MIRISO8601Formatter implements MIRDateFormatterInterface {
             case 15:
                 if (date.contains("-")) {
                     formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HHmm");
-                }
-                else {
+                } else {
                     formatter = DateTimeFormatter.ofPattern("yyyyMMdd'T'HHmmss");
                 }
                 break;
@@ -55,8 +53,7 @@ public class MIRISO8601Formatter implements MIRDateFormatterInterface {
             case 17:
                 if (date.contains("-")) {
                     formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HHmmss");
-                }
-                else {
+                } else {
                     formatter = DateTimeFormatter.ofPattern("yyyyMMdd'T'HH:mm:ss");
                 }
                 break;

@@ -1,6 +1,5 @@
 package org.mycore.mir.it.model;
 
-
 public enum MIRTypeOfResource {
     still_image("typeOfResource:still_image"),
     three_dimensional_object("typeOfResource:three_dimensional_object"),

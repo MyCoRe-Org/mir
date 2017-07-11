@@ -68,7 +68,7 @@ public class MIRWizardServlet extends MCRServlet {
             } else {
                 LOGGER.info("Request file \"" + request + "\"...");
                 getLayoutService().doLayout(job.getRequest(), job.getResponse(),
-                        new MCRJDOMContent(MCRURIResolver.instance().resolve("resource:setup/" + request)));
+                    new MCRJDOMContent(MCRURIResolver.instance().resolve("resource:setup/" + request)));
             }
         } else {
             final Document doc = (Document) (job.getRequest().getAttribute("MCRXEditorSubmission"));
@@ -86,11 +86,11 @@ public class MIRWizardServlet extends MCRServlet {
                     LOGGER.info("Authenticate with token \"" + loginToken + "\"...");
                     MCRSessionMgr.getCurrentSession().put(MIRWizardStartupHandler.LOGIN_TOKEN, loginToken);
                     MCRSessionMgr.getCurrentSession().put("ServerBaseURL",
-                            req.getScheme() + "://" + req.getServerName() + ":" + req.getServerPort());
+                        req.getScheme() + "://" + req.getServerName() + ":" + req.getServerPort());
                 } else {
                     LOGGER.info("Redirect to login...");
                     url += "/?action=login"
-                            + (!MIRWizardRequestFilter.getLoginToken(req).equals(loginToken) ? "&token=invalid" : "");
+                        + (!MIRWizardRequestFilter.getLoginToken(req).equals(loginToken) ? "&token=invalid" : "");
 
                     // output login token again
                     MIRWizardStartupHandler.outputLoginToken(req.getServletContext());
@@ -130,8 +130,8 @@ public class MIRWizardServlet extends MCRServlet {
                         chain.addCommand(cmd);
                     }
                 } catch (final ClassNotFoundException | NoSuchMethodException | SecurityException
-                        | InstantiationException | IllegalAccessException | IllegalArgumentException
-                        | InvocationTargetException e) {
+                    | InstantiationException | IllegalAccessException | IllegalArgumentException
+                    | InvocationTargetException e) {
                     LOGGER.error(e);
                 }
             }

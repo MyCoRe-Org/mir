@@ -77,7 +77,7 @@ public class MIRClassificationServlet extends MCRServlet {
             } else {
                 String rootID = getProperty(request, "classID");
                 categoryID = (rootID == null) ? MCRCategoryID.rootID(MCRUser2Constants.getRoleRootId())
-                        : MCRCategoryID.rootID(rootID);
+                    : MCRCategoryID.rootID(rootID);
             }
             Element rootElement = getRootElement(request);
             rootElement.setAttribute("classID", categoryID.getRootID());
@@ -95,7 +95,7 @@ public class MIRClassificationServlet extends MCRServlet {
             throw ex;
         }
         getLayoutService().doLayout(job.getRequest(), job.getResponse(),
-                new MCRJDOMContent((Document) job.getRequest().getAttribute(LAYOUT_ELEMENT_KEY)));
+            new MCRJDOMContent((Document) job.getRequest().getAttribute(LAYOUT_ELEMENT_KEY)));
     }
 
 }

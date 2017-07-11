@@ -6,11 +6,11 @@ import java.util.List;
 import java.util.TreeSet;
 
 import org.apache.log4j.Logger;
-import org.mycore.datamodel.common.MCRXMLMetadataManager;
 import org.mycore.datamodel.classifications2.MCRCategLinkServiceFactory;
 import org.mycore.datamodel.classifications2.MCRCategory;
 import org.mycore.datamodel.classifications2.MCRCategoryDAOFactory;
 import org.mycore.datamodel.classifications2.MCRCategoryID;
+import org.mycore.datamodel.common.MCRXMLMetadataManager;
 import org.mycore.frontend.cli.annotation.MCRCommand;
 import org.mycore.frontend.cli.annotation.MCRCommandGroup;
 
@@ -44,7 +44,7 @@ public class MIRMigration0_3 {
             ids.addAll(MCRCategLinkServiceFactory.getInstance().getLinksFromCategoryForType(state.getId(), "mods"));
         }
         ArrayList<String> cmds = new ArrayList<>(ids.size() + (stateClassPresent ? 1 : 2));
-        if (!stateClassPresent){
+        if (!stateClassPresent) {
             LOGGER.info("state classification is not present, loading from MyCoRe server.");
             cmds.add("load classification from url http://www.mycore.org/classifications/state.xml");
         }
@@ -54,10 +54,10 @@ public class MIRMigration0_3 {
         cmds.add("delete classification mir_status");
         return cmds;
     }
-    
+
     @MCRCommand(
-            syntax = "migrate mods originInfo eventType",
-            help = "migrates all objects with originInfo without enventType to eventType \"publish\".")
+        syntax = "migrate mods originInfo eventType",
+        help = "migrates all objects with originInfo without enventType to eventType \"publish\".")
     public static List<String> updateOriginInfo() {
         URL styleFile = MIRMigration0_3.class.getResource("/xsl/mycoreobject-migrate-origininfo.xsl");
         if (styleFile == null) {
@@ -67,14 +67,14 @@ public class MIRMigration0_3 {
         TreeSet<String> ids = new TreeSet<>(MCRXMLMetadataManager.instance().listIDsOfType("mods"));
         ArrayList<String> cmds = new ArrayList<>(ids.size());
         for (String id : ids) {
-        	cmds.add("xslt " + id + " with file " + styleFile.toString());
+            cmds.add("xslt " + id + " with file " + styleFile.toString());
         }
         return cmds;
     }
 
     @MCRCommand(
-            syntax = "migrate mods name nameIdentifier",
-            help = "migrates all objects with name property valueURI to nameIdentifier elements.")
+        syntax = "migrate mods name nameIdentifier",
+        help = "migrates all objects with name property valueURI to nameIdentifier elements.")
     public static List<String> updateNameIdentifier() {
         URL styleFile = MIRMigration0_3.class.getResource("/xsl/mycoreobject-migrate-nameIdentifier.xsl");
         if (styleFile == null) {

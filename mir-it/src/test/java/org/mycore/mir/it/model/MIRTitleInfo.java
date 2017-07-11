@@ -1,6 +1,5 @@
 package org.mycore.mir.it.model;
 
-
 public class MIRTitleInfo {
     public MIRTitleInfo(String nonSort, MIRLanguage lang, MIRTitleType titleType, String title, String subTitle) {
         this.nonSort = nonSort;
@@ -11,9 +10,13 @@ public class MIRTitleInfo {
     }
 
     private String nonSort;
+
     private MIRLanguage lang;
+
     private MIRTitleType titleType;
+
     private String title;
+
     private String subTitle;
 
     public String getNonSort() {

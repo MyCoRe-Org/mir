@@ -69,9 +69,13 @@ public class MIRImageWarePacker extends MCRPacker {
     private static final Logger LOGGER = LogManager.getLogger();
 
     private static final String FILE_RIGHTS_CONFIGURATION_KEY = "FileRights";
+
     private static final String DEFAULT_PPN_DB_CONFIGURATION_KEY = "DefaultPPNDB";
+
     private static final String DESTINATION_CONFIGURATION_KEY = "Destination";
+
     private static final String TRANSFORMER_ID_CONFIGURATION_KEY = "TransformerID";
+
     private static final String FLAG_TYPE_CONFIGURATION_KEY = "FlagType";
 
     protected MCRObjectID getObjectID() {
@@ -87,7 +91,6 @@ public class MIRImageWarePacker extends MCRPacker {
 
         return transformer;
     }
-
 
     private static Optional<String> detectPPN(MCRObject mcrObject, String defaultPPNDB) {
         MCRMODSWrapper modsWrapper = new MCRMODSWrapper(mcrObject);
@@ -107,26 +110,25 @@ public class MIRImageWarePacker extends MCRPacker {
                     // user inserted gvk:ppn:812684613, then gvk_ppn_812684613 will be build
                     return Optional.of(ppnElementContent.replace(":", "_"));
                 default:
-                    throw new RuntimeException("ppn in mods:identifier[@type='ppn'] cannot be parsed (" + ppnElementContent + ")");
+                    throw new RuntimeException(
+                        "ppn in mods:identifier[@type='ppn'] cannot be parsed (" + ppnElementContent + ")");
             }
         }
-
 
         List<Element> elements = modsWrapper.getElements(".//mods:identifier[@type='uri']");
         MCRURLIdentifierDetector identifierDetector = new MCRURLIdentifierDetector();
         identifierDetector.addDetector(new MCRGBVURLDetector());
         List<URI> possiblePPNURIs = elements.stream()
-                .map(Element::getText)
-                .map(s -> {
-                    try {
-                        return new URI(s);
-                    } catch (URISyntaxException e) {
-                        return null;
-                    }
-                })
-                .filter(o -> o != null)
-                .collect(Collectors.toList());
-
+            .map(Element::getText)
+            .map(s -> {
+                try {
+                    return new URI(s);
+                } catch (URISyntaxException e) {
+                    return null;
+                }
+            })
+            .filter(o -> o != null)
+            .collect(Collectors.toList());
 
         for (URI possiblePPNURI : possiblePPNURIs) {
             Optional<Map.Entry<String, String>> detectedIdentifiers = identifierDetector.detect(possiblePPNURI);
@@ -159,7 +161,7 @@ public class MIRImageWarePacker extends MCRPacker {
 
         Map<String, String> configuration = MCRPackerJobAction.getConfiguration(packerId);
 
-        if(configuration.size()==0){
+        if (configuration.size() == 0) {
             return false;
         }
 
@@ -169,9 +171,8 @@ public class MIRImageWarePacker extends MCRPacker {
             return false;
         }
 
-
         Date date = mcrObject.getService().getDate(configuration.get(FLAG_TYPE_CONFIGURATION_KEY));
-        if(date!=null){
+        if (date != null) {
             return false;
         }
 
@@ -188,7 +189,6 @@ public class MIRImageWarePacker extends MCRPacker {
         if (!parameters.containsKey("objectId")) {
             throw new MCRUsageException("No ObjectID in parameters!");
         }
-
 
         MCRObjectID objectID = getObjectID();
         MCRObject mcrObject = MCRMetadataManager.retrieveMCRObject(objectID);
@@ -212,7 +212,8 @@ public class MIRImageWarePacker extends MCRPacker {
             throw MCRAccessException.missingPermission("Packing ImageWare packet", objectID.toString(), permission);
         }
         if (!MCRAccessManager.checkPermission(objectID, MCRAccessManager.PERMISSION_WRITE)) {
-            throw MCRAccessException.missingPermission("Add packer flag to " + objectID.toString(), objectID.toString(), MCRAccessManager.PERMISSION_WRITE);
+            throw MCRAccessException.missingPermission("Add packer flag to " + objectID.toString(), objectID.toString(),
+                MCRAccessManager.PERMISSION_WRITE);
         }
     }
 
@@ -225,11 +226,11 @@ public class MIRImageWarePacker extends MCRPacker {
             throw new MCRConfigurationException("No flag type specified in configuration!");
         }
 
-
         MCRObject mcrObject = MCRMetadataManager.retrieveMCRObject(objectID);
 
         String defaultPPNDB = getConfiguration().get(DEFAULT_PPN_DB_CONFIGURATION_KEY);
-        String ppn = detectPPN(mcrObject, defaultPPNDB).orElseThrow(() -> new MCRException("Could not detect ppn of mycore object " + mcrObject.getId()));
+        String ppn = detectPPN(mcrObject, defaultPPNDB)
+            .orElseThrow(() -> new MCRException("Could not detect ppn of mycore object " + mcrObject.getId()));
 
         LOGGER.info("Start packing of : " + objectID);
         List<MCRObjectID> derivateIds = MCRMetadataManager.getDerivateIds(objectID, 10, TimeUnit.SECONDS);
@@ -244,8 +245,8 @@ public class MIRImageWarePacker extends MCRPacker {
                 // write derivate files
                 Consumer<MCRPath> copyDerivates = getCopyDerivateConsumer(zipFileSystem, ppn);
                 derivateIds.stream()
-                        .map(id -> MCRPath.getPath(id.toString(), "/"))
-                        .forEach(copyDerivates);
+                    .map(id -> MCRPath.getPath(id.toString(), "/"))
+                    .forEach(copyDerivates);
             } catch (IOException e) {
                 LOGGER.error("Could get MCRContent for object with id: " + objectID.toString(), e);
             }

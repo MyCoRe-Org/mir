@@ -94,7 +94,7 @@ public class MIRAccessKeyServlet extends MCRServlet {
         } else if ("create".equals(action)) {
             if (!MCRAccessManager.checkPermission(mcrObjId, PERMISSION_WRITE)) {
                 throw MCRAccessException.missingPermission("Add access key to object.", mcrObjId.toString(),
-                        PERMISSION_WRITE);
+                    PERMISSION_WRITE);
             }
 
             final MIRAccessKeyPair accKP = MIRAccessKeyPairTransformer.buildAccessKeyPair(xml);
@@ -103,7 +103,7 @@ public class MIRAccessKeyServlet extends MCRServlet {
         } else if ("edit".equals(action)) {
             if (!MCRAccessManager.checkPermission(mcrObjId, PERMISSION_WRITE)) {
                 throw MCRAccessException.missingPermission("Update access key on object.", mcrObjId.toString(),
-                        PERMISSION_WRITE);
+                    PERMISSION_WRITE);
             }
 
             final MIRAccessKeyPair accKP = MIRAccessKeyPairTransformer.buildAccessKeyPair(xml);
@@ -112,7 +112,7 @@ public class MIRAccessKeyServlet extends MCRServlet {
         } else if ("delete".equals(action)) {
             if (!MCRAccessManager.checkPermission(mcrObjId, PERMISSION_WRITE)) {
                 throw MCRAccessException.missingPermission("Delete access key on object.", mcrObjId.toString(),
-                        PERMISSION_WRITE);
+                    PERMISSION_WRITE);
             }
 
             MIRAccessKeyManager.deleteKeyPair(mcrObjId);

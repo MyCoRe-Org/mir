@@ -13,12 +13,12 @@ import org.mycore.mir.it.controller.MIRUserController;
  */
 public class MIRUserITCase extends MCRSeleniumTestBase {
 
-
     MIRUserController controller;
 
     @Before
     public final void init() {
-        controller = new MIRUserController(getDriver(), getBaseUrl(System.getProperty("it.port", "8080")) + "/" + System.getProperty("it.context"));
+        controller = new MIRUserController(getDriver(),
+            getBaseUrl(System.getProperty("it.port", "8080")) + "/" + System.getProperty("it.context"));
 
         controller.goToStart();
         if (controller.isLoggedIn()) {
@@ -41,12 +41,14 @@ public class MIRUserITCase extends MCRSeleniumTestBase {
 
     @Test
     public final void testCreateUserNameValidation() {
-        controller.createUser("Submitter", "submitter123", null, null, () -> controller.assertValidationErrorVisible(), "submitter");
+        controller.createUser("Submitter", "submitter123", null, null, () -> controller.assertValidationErrorVisible(),
+            "submitter");
     }
 
     @Test
     public final void testCreateUserMailValidation() {
-        controller.createUser("submitter", "submitter123", null, "wrongmail", () -> controller.assertValidationErrorVisible(), "submitter");
+        controller.createUser("submitter", "submitter123", null, "wrongmail",
+            () -> controller.assertValidationErrorVisible(), "submitter");
     }
 
 }

@@ -6,11 +6,10 @@ import java.util.List;
 import java.util.TreeSet;
 
 import org.apache.log4j.Logger;
-import org.mycore.datamodel.common.MCRXMLMetadataManager;
-import org.mycore.datamodel.classifications2.MCRCategLinkServiceFactory;
 import org.mycore.datamodel.classifications2.MCRCategory;
 import org.mycore.datamodel.classifications2.MCRCategoryDAOFactory;
 import org.mycore.datamodel.classifications2.MCRCategoryID;
+import org.mycore.datamodel.common.MCRXMLMetadataManager;
 import org.mycore.frontend.cli.annotation.MCRCommand;
 import org.mycore.frontend.cli.annotation.MCRCommandGroup;
 
@@ -43,7 +42,7 @@ public class MIRMigration2016_03 {
     @MCRCommand(
         syntax = "migrate mir rights classification",
         help = "migrates all mods:accessCondition entries of type 'use and reproduction'. CC licenses now contains version"
-             + "information, entries are now under mycore classification support and renamed classification to licenses instead of rights.")
+            + "information, entries are now under mycore classification support and renamed classification to licenses instead of rights.")
     public static List<String> updateStateClassification() {
         URL styleFile = MIRMigration2016_03.class.getResource("/xsl/mycoreobject-migrate-rights.xsl");
         if (styleFile == null) {
@@ -59,7 +58,8 @@ public class MIRMigration2016_03 {
 
         TreeSet<String> ids = new TreeSet<>(MCRXMLMetadataManager.instance().listIDsOfType("mods"));
         ArrayList<String> cmds = new ArrayList<>(ids.size());
-        MCRCategory mirLicenses = MCRCategoryDAOFactory.getInstance().getCategory(MCRCategoryID.rootID("mir_licenses"), -1);
+        MCRCategory mirLicenses = MCRCategoryDAOFactory.getInstance().getCategory(MCRCategoryID.rootID("mir_licenses"),
+            -1);
         if (mirLicenses == null) {
             LOGGER.info("licenses classification is not present, loading from MyCoRe server.");
             cmds.add("load classification from url http://www.mycore.org/classifications/mir_licenses.xml");
@@ -73,8 +73,8 @@ public class MIRMigration2016_03 {
     }
 
     @MCRCommand(
-            syntax = "migrate namePart",
-            help = "splits mods:displayForm in to mods:namePart")
+        syntax = "migrate namePart",
+        help = "splits mods:displayForm in to mods:namePart")
     public static List<String> updateNamePart() {
         URL styleFile = MIRMigration2016_03.class.getResource("/xsl/mycoreobject-migrate-namePart.xsl");
         if (styleFile == null) {

@@ -22,8 +22,8 @@ public class MCRPIUtil {
     private static final Logger LOGGER = LogManager.getLogger();
 
     public static boolean hasManagedPI(String objectID) {
-        return MCRPersistentIdentifierManager.getInstance().getRegistered(MCRMetadataManager.retrieveMCRObject
-            (MCRObjectID.getInstance(objectID))).size() > 0;
+        return MCRPersistentIdentifierManager.getInstance()
+            .getRegistered(MCRMetadataManager.retrieveMCRObject(MCRObjectID.getInstance(objectID))).size() > 0;
     }
 
     public static boolean isManagedPI(String pi, String id) {

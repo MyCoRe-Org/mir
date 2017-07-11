@@ -13,11 +13,10 @@ public class MIRClassificationMapper {
      *
      */
     public static String getSDNBfromOldSDNB(String sdnbString) {
-        BigDecimal sdnb = new BigDecimal(sdnbString.replaceAll("[^0-9.]+",""));
+        BigDecimal sdnb = new BigDecimal(sdnbString.replaceAll("[^0-9.]+", ""));
 
-        switch (sdnbString.charAt(0)){
-            case '0':
-            {
+        switch (sdnbString.charAt(0)) {
+            case '0': {
                 if (betweenInc(sdnb, toBigDecimal("01"), toBigDecimal("03"))) {
                     return "000";
                 }
@@ -40,8 +39,7 @@ public class MIRClassificationMapper {
                 break;
             }
 
-            case '1':
-            {
+            case '1': {
                 if (sdnb.equals(toBigDecimal("10"))) {
                     return "100";
                 }
@@ -68,8 +66,7 @@ public class MIRClassificationMapper {
                 break;
             }
 
-            case '2':
-            {
+            case '2': {
                 if (sdnb.equals(toBigDecimal("20"))) {
                     return "350";
                 }
@@ -108,8 +105,7 @@ public class MIRClassificationMapper {
                 break;
             }
 
-            case '3':
-            {
+            case '3': {
                 if (sdnb.equals(toBigDecimal("30"))) {
                     return "540";
                 }
@@ -144,8 +140,7 @@ public class MIRClassificationMapper {
                 break;
             }
 
-            case '4':
-            {
+            case '4': {
                 if (sdnb.equals(toBigDecimal("40"))) {
                     return "640";
                 }
@@ -188,8 +183,7 @@ public class MIRClassificationMapper {
                 break;
             }
 
-            case '5':
-            {
+            case '5': {
                 if (sdnb.equals(toBigDecimal("50"))) {
                     return "790";
                 }
@@ -220,8 +214,7 @@ public class MIRClassificationMapper {
                 break;
             }
 
-            case '6':
-            {
+            case '6': {
                 if (sdnb.equals(toBigDecimal("60"))) {
                     return "900";
                 }
@@ -240,8 +233,7 @@ public class MIRClassificationMapper {
                 break;
             }
 
-            case '7':
-            {
+            case '7': {
                 if (sdnb.equals(toBigDecimal("78"))) {
                     return "Y";
                 }
@@ -252,7 +244,8 @@ public class MIRClassificationMapper {
                 break;
             }
 
-            default: break;
+            default:
+                break;
         }
 
         return sdnbString;
@@ -268,11 +261,10 @@ public class MIRClassificationMapper {
      *
      */
     public static String getSDNBfromDDC(String ddcString) {
-        BigDecimal ddc = new BigDecimal(ddcString.replaceAll("[^0-9.]+",""));
+        BigDecimal ddc = new BigDecimal(ddcString.replaceAll("[^0-9.]+", ""));
 
-        switch (ddcString.charAt(0)){
-            case '0':
-            {
+        switch (ddcString.charAt(0)) {
+            case '0': {
                 if (between(ddc, toBigDecimal("000"), toBigDecimal("004"))) {
                     return "000";
                 }
@@ -283,8 +275,7 @@ public class MIRClassificationMapper {
                 break;
             }
 
-            case '1':
-            {
+            case '1': {
                 if (between(ddc, toBigDecimal("100"), toBigDecimal("130"))) {
                     return "100";
                 }
@@ -299,8 +290,7 @@ public class MIRClassificationMapper {
                 break;
             }
 
-            case '2':
-            {
+            case '2': {
                 if (between(ddc, toBigDecimal("210"), toBigDecimal("220"))) {
                     return "200";
                 }
@@ -311,8 +301,7 @@ public class MIRClassificationMapper {
                 break;
             }
 
-            case '3':
-            {
+            case '3': {
                 if (between(ddc, toBigDecimal("333.7"), toBigDecimal("334"))) {
                     return "333.7";
                 }
@@ -327,8 +316,7 @@ public class MIRClassificationMapper {
                 break;
             }
 
-            case '4':
-            {
+            case '4': {
                 if (between(ddc, toBigDecimal("410"), toBigDecimal("420"))) {
                     return "400";
                 }
@@ -343,9 +331,9 @@ public class MIRClassificationMapper {
                 break;
             }
 
-            case '6':
-            {
-                if (between(ddc, toBigDecimal("621"), toBigDecimal("622")) && !equal(ddc, toBigDecimal("621.3")) && !equal(ddc, toBigDecimal("621.46"))) {
+            case '6': {
+                if (between(ddc, toBigDecimal("621"), toBigDecimal("622")) && !equal(ddc, toBigDecimal("621.3"))
+                    && !equal(ddc, toBigDecimal("621.46"))) {
                     return "620";
                 }
 
@@ -361,7 +349,8 @@ public class MIRClassificationMapper {
                     return "620";
                 }
 
-                if (equal(ddc, toBigDecimal("621.3")) || equal(ddc, toBigDecimal("621.46")) || equal(ddc, toBigDecimal("629.8"))) {
+                if (equal(ddc, toBigDecimal("621.3")) || equal(ddc, toBigDecimal("621.46"))
+                    || equal(ddc, toBigDecimal("629.8"))) {
                     return "621.3";
                 }
 
@@ -369,7 +358,8 @@ public class MIRClassificationMapper {
                     return "624";
                 }
 
-                if (between(ddc, toBigDecimal("624"), toBigDecimal("629")) && !equal(ddc, toBigDecimal("625.19")) && !equal(ddc, toBigDecimal("625.2"))) {
+                if (between(ddc, toBigDecimal("624"), toBigDecimal("629")) && !equal(ddc, toBigDecimal("625.19"))
+                    && !equal(ddc, toBigDecimal("625.2"))) {
                     return "624";
                 }
 
@@ -379,8 +369,7 @@ public class MIRClassificationMapper {
                 break;
             }
 
-            case '7':
-            {
+            case '7': {
                 if (equal(ddc, toBigDecimal("741.5"))) {
                     return "741.5";
                 }
@@ -403,8 +392,7 @@ public class MIRClassificationMapper {
                 break;
             }
 
-            case '8':
-            {
+            case '8': {
                 if (between(ddc, toBigDecimal("839"), toBigDecimal("840"))) {
                     return "839";
                 }
@@ -415,8 +403,7 @@ public class MIRClassificationMapper {
                 break;
             }
 
-            case '9':
-            {
+            case '9': {
                 if (between(ddc, toBigDecimal("914.3"), toBigDecimal("914.36"))) {
                     return "914.3";
                 }
@@ -426,7 +413,8 @@ public class MIRClassificationMapper {
                 }
                 break;
             }
-            default: break;
+            default:
+                break;
         }
 
         ddc = ddc.setScale(-1, BigDecimal.ROUND_DOWN);

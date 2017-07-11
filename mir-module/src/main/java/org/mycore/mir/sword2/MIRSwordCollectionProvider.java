@@ -1,6 +1,5 @@
 package org.mycore.mir.sword2;
 
-
 import java.util.Arrays;
 import java.util.List;
 
@@ -21,8 +20,11 @@ import org.swordapp.server.UriRegistry;
 public class MIRSwordCollectionProvider extends MCRSwordCollectionProvider {
 
     private MCRSwordDefaultAuthHandler mcrSwordDefaultAuthHandler;
+
     private MIRSwordMetadataProvider mirSwordMetadataProvider;
+
     private MIRSwordIngester mirSwordIngester;
+
     private MCRSwordSolrObjectIDSupplier mcrSwordSolrObjectIDSupplier;
 
     public MIRSwordCollectionProvider() {
@@ -72,6 +74,5 @@ public class MIRSwordCollectionProvider extends MCRSwordCollectionProvider {
     public void destroy() {
 
     }
-
 
 }

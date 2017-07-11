@@ -14,7 +14,8 @@ public class MIRDateConverter {
     public static String convertDate(String date, String format) {
         try {
             String formatterClassName = "org.mycore.mir.date.MIR" + format.toUpperCase() + "Formatter";
-            MIRDateFormatterInterface formatter = (MIRDateFormatterInterface) Class.forName(formatterClassName).newInstance();
+            MIRDateFormatterInterface formatter = (MIRDateFormatterInterface) Class.forName(formatterClassName)
+                .newInstance();
             return getFormatedDateString(date, formatter.getFormatter(date));
         } catch (Exception e) {
             LogManager.getLogger().warn("Error while converting " + date + " from format " + format, e);

@@ -1,6 +1,5 @@
 package org.mycore.mir.it.model;
 
-
 public enum MIRInstitutes {
     Universität_in_Deutschland("Unis"),
     Universität_Jena("Unis.Jena"),

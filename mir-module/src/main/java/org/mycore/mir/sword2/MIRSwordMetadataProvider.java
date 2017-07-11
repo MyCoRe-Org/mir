@@ -1,6 +1,5 @@
 package org.mycore.mir.sword2;
 
-
 import java.io.IOException;
 import java.util.List;
 
@@ -26,20 +25,23 @@ import org.xml.sax.SAXException;
 
 public class MIRSwordMetadataProvider extends MCRSwordMetadataProvider {
 
-    private static final MCRXSL2XMLTransformer XSL_MODS_DC_TRANSFORMER = new MCRXSL2XMLTransformer("xsl/mycoreobject-mods.xsl", "xsl/mods2dc.xsl");
+    private static final MCRXSL2XMLTransformer XSL_MODS_DC_TRANSFORMER = new MCRXSL2XMLTransformer(
+        "xsl/mycoreobject-mods.xsl", "xsl/mods2dc.xsl");
+
     private MCRSwordLifecycleConfiguration lifecycleConfiguration;
 
     @Override
     public DepositReceipt provideMetadata(MCRObject object) throws SwordError {
-        final IRI iri = new IRI(MCRSwordUtil.BuildLinkUtil.getEditHref(this.lifecycleConfiguration.getCollection(), object.getId().toString()));
+        final IRI iri = new IRI(MCRSwordUtil.BuildLinkUtil.getEditHref(this.lifecycleConfiguration.getCollection(),
+            object.getId().toString()));
         final DepositReceipt depositReceipt = MCRSwordUtil.buildDepositReceipt(iri);
         addMetadata(object, depositReceipt);
         final Entry we = depositReceipt.getWrappedEntry();
-        MCRSwordUtil.BuildLinkUtil.getEditMediaIRIStream(this.lifecycleConfiguration.getCollection(), object.getId().toString())
-                .forEach(we::addLink);
+        MCRSwordUtil.BuildLinkUtil
+            .getEditMediaIRIStream(this.lifecycleConfiguration.getCollection(), object.getId().toString())
+            .forEach(we::addLink);
         return depositReceipt;
     }
-
 
     @Override
     public Entry provideListMetadata(MCRObjectID id) throws SwordError {
@@ -56,25 +58,26 @@ public class MIRSwordMetadataProvider extends MCRSwordMetadataProvider {
         try {
             mcrContent = XSL_MODS_DC_TRANSFORMER.transform(mcrBaseContent);
         } catch (IOException e) {
-            throw new SwordError(UriRegistry.ERROR_BAD_REQUEST, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error while transforming mods2dc!", e);
+            throw new SwordError(UriRegistry.ERROR_BAD_REQUEST, HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+                "Error while transforming mods2dc!", e);
         }
 
         final List<Element> elementList;
         try {
             elementList = mcrContent.asXML().getRootElement().getChildren();
         } catch (JDOMException | IOException | SAXException e) {
-            throw new SwordError(UriRegistry.ERROR_BAD_REQUEST, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error getting transform result of mods to dc transformation!", e);
+            throw new SwordError(UriRegistry.ERROR_BAD_REQUEST, HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+                "Error getting transform result of mods to dc transformation!", e);
         }
 
         elementList.stream()
-                .filter(dcElement -> dcElement.getText().trim().length() > 0)
-                .forEach(dcElement -> {
-                    receipt.addDublinCore(dcElement.getName(), dcElement.getText().trim());
-                });
+            .filter(dcElement -> dcElement.getText().trim().length() > 0)
+            .forEach(dcElement -> {
+                receipt.addDublinCore(dcElement.getName(), dcElement.getText().trim());
+            });
 
         MCRSwordUtil.addDatesToEntry(receipt.getWrappedEntry(), object);
     }
-
 
     @Override
     public void init(MCRSwordLifecycleConfiguration lifecycleConfiguration) {

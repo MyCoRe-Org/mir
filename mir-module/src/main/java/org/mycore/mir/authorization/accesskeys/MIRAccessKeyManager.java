@@ -75,7 +75,7 @@ public final class MIRAccessKeyManager {
     public static void createKeyPair(final MIRAccessKeyPair accKP) {
         if (existsKeyPair(accKP.getMCRObjectId()))
             throw new IllegalArgumentException(
-                    "Access key pair for MCRObject " + accKP.getObjectId() + " already exists");
+                "Access key pair for MCRObject " + accKP.getObjectId() + " already exists");
 
         final EntityManager em = MCREntityManagerProvider.getCurrentEntityManager();
         em.persist(accKP);
@@ -119,17 +119,17 @@ public final class MIRAccessKeyManager {
      */
     public static void addAccessKey(final MCRObjectID mcrObjectId, final String accessKey) throws MCRUsageException {
         final MCRUser user = MCRUserManager.getCurrentUser();
-        
+
         addAccessKey(user, mcrObjectId, accessKey);
 
         switch (getAccessKeyType(mcrObjectId, accessKey)) {
-        case MIRAccessKeyPair.PERMISSION_READ:
-            MCRAccessManager.invalidPermissionCache(mcrObjectId.toString(), MCRAccessManager.PERMISSION_READ);
-            break;
-        case MIRAccessKeyPair.PERMISSION_WRITE:
-            MCRAccessManager.invalidPermissionCache(mcrObjectId.toString(), MCRAccessManager.PERMISSION_READ);
-            MCRAccessManager.invalidPermissionCache(mcrObjectId.toString(), MCRAccessManager.PERMISSION_WRITE);
-            break;
+            case MIRAccessKeyPair.PERMISSION_READ:
+                MCRAccessManager.invalidPermissionCache(mcrObjectId.toString(), MCRAccessManager.PERMISSION_READ);
+                break;
+            case MIRAccessKeyPair.PERMISSION_WRITE:
+                MCRAccessManager.invalidPermissionCache(mcrObjectId.toString(), MCRAccessManager.PERMISSION_READ);
+                MCRAccessManager.invalidPermissionCache(mcrObjectId.toString(), MCRAccessManager.PERMISSION_WRITE);
+                break;
         }
 
         MCRSessionMgr.getCurrentSession().setUserInformation(user.clone());
@@ -145,7 +145,7 @@ public final class MIRAccessKeyManager {
      *             if an error was occured
      */
     public static void addAccessKey(final MCRUser user, final MCRObjectID mcrObjectId, final String accessKey)
-            throws MCRUsageException {
+        throws MCRUsageException {
         if (getAccessKeyType(mcrObjectId, accessKey) == null)
             throw new MCRUsageException("Invalid access key \"" + accessKey + "\"");
 
