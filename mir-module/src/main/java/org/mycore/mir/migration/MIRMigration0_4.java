@@ -7,10 +7,6 @@ import java.util.TreeSet;
 
 import org.apache.log4j.Logger;
 import org.mycore.datamodel.common.MCRXMLMetadataManager;
-import org.mycore.datamodel.classifications2.MCRCategLinkServiceFactory;
-import org.mycore.datamodel.classifications2.MCRCategory;
-import org.mycore.datamodel.classifications2.MCRCategoryDAOFactory;
-import org.mycore.datamodel.classifications2.MCRCategoryID;
 import org.mycore.frontend.cli.annotation.MCRCommand;
 import org.mycore.frontend.cli.annotation.MCRCommandGroup;
 
@@ -36,10 +32,9 @@ public class MIRMigration0_4 {
         TreeSet<String> ids = new TreeSet<>(MCRXMLMetadataManager.instance().listIDsOfType("mods"));
         ArrayList<String> cmds = new ArrayList<>(ids.size());
         for (String id : ids) {
-        	cmds.add("xslt " + id + " with file " + styleFile.toString());
+            cmds.add("xslt " + id + " with file " + styleFile.toString());
         }
         return cmds;
     }
-    
 
 }

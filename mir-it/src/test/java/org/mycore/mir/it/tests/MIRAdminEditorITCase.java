@@ -40,7 +40,7 @@ public class MIRAdminEditorITCase extends MIRITBase {
         simpleSearchController = new MIRSimpleSearchController(driver, appURL);
     }
 
-   @Test
+    @Test
     public void testBaseValidation() {
         driver.waitUntilPageIsLoaded("MODS-Dokument erstellen");
         editorController.save();
@@ -48,26 +48,31 @@ public class MIRAdminEditorITCase extends MIRITBase {
         Assert.assertTrue("Genre validation should be visible!", editorController.isGenreValidationMessageVisible());
     }
 
-   @Test
+    @Test
     public void testFullDocument() throws InterruptedException {
         driver.waitUntilPageIsLoaded("MODS-Dokument erstellen");
         editorController.setGenres(Stream.of(MIRGenre.article, MIRGenre.collection).collect(Collectors.toList()));
         editorController.setTitleInfo(Stream.of(
-                new MIRTitleInfo("Der", MIRLanguage.german, MIRTitleType.mainTitle, MIRTestData.TITLE, MIRTestData.SUB_TITLE),
-                new MIRTitleInfo("The", MIRLanguage.english, MIRTitleType.alternative, MIRTestData.EN_TITLE, MIRTestData.EN_SUB_TITLE)
-        ).collect(Collectors.toList()));
+            new MIRTitleInfo("Der", MIRLanguage.german, MIRTitleType.mainTitle, MIRTestData.TITLE,
+                MIRTestData.SUB_TITLE),
+            new MIRTitleInfo("The", MIRLanguage.english, MIRTitleType.alternative, MIRTestData.EN_TITLE,
+                MIRTestData.EN_SUB_TITLE))
+            .collect(Collectors.toList()));
 
         editorController.setAuthors(Stream.of(MIRTestData.AUTHOR, MIRTestData.AUTHOR_2).collect(Collectors.toList()));
         editorController.setConference(MIRTestData.CONFERENCE);
         // editorController.setOpenAIRE(MIRTestData.AIRE_AUTOCOMPLE, MIRTestData.AIRE_PROJECT_NAME);
-        List identifierList = Stream.of(new AbstractMap.SimpleEntry(MIRIdentifier.doi, MIRTestData.DOI), new AbstractMap.SimpleEntry(MIRIdentifier.urn, MIRTestData.URN), new AbstractMap.SimpleEntry(MIRIdentifier.ppn, MIRTestData.PPN)).collect(Collectors.toList());
+        List identifierList = Stream.of(new AbstractMap.SimpleEntry(MIRIdentifier.doi, MIRTestData.DOI),
+            new AbstractMap.SimpleEntry(MIRIdentifier.urn, MIRTestData.URN),
+            new AbstractMap.SimpleEntry(MIRIdentifier.ppn, MIRTestData.PPN)).collect(Collectors.toList());
         editorController.setIdentifier(identifierList);
         editorController.setShelfLocator(MIRTestData.SIGNATURE);
         editorController.setLinks(Stream.of(MIRTestData.URL1, MIRTestData.URL2).collect(Collectors.toList()));
         editorController.setAccessConditions(MIRAccess.public_);
         editorController.setAccessConditions(MIRLicense.cc_by_40);
         editorController.setTopics(Stream.of(MIRTestData.TOPIC1, MIRTestData.TOPIC2).collect(Collectors.toList()));
-        editorController.setAbstracts(Stream.of(new MIRAbstract(true, MIRTestData.TEXT, MIRLanguage.german), new MIRAbstract(false, MIRTestData.URL3, MIRLanguage.english)).collect(Collectors.toList()));
+        editorController.setAbstracts(Stream.of(new MIRAbstract(true, MIRTestData.TEXT, MIRLanguage.german),
+            new MIRAbstract(false, MIRTestData.URL3, MIRLanguage.english)).collect(Collectors.toList()));
 
         editorController.setNotes(Stream.of(MIRTestData.NOTE, MIRTestData.NOTE2).collect(Collectors.toList()));
         editorController.setPlaceTerm(MIRTestData.PLACE);
@@ -77,7 +82,8 @@ public class MIRAdminEditorITCase extends MIRITBase {
         editorController.setTypeOfResource(MIRTypeOfResource.still_image);
         editorController.setCoordinates(MIRTestData.COORDINATES);
         editorController.setGeograhicPlace(MIRTestData.GEOGRAPHIC_PLACE);
-        editorController.setClassifications(Stream.of(MIRDNBClassification._004, MIRDNBClassification._010).collect(Collectors.toList()));
+        editorController.setClassifications(
+            Stream.of(MIRDNBClassification._004, MIRDNBClassification._010).collect(Collectors.toList()));
 
         editorController.save();
         driver.waitAndFindElement(MCRBy.partialText(MIRTestData.SAVE_SUCCESS));
@@ -115,7 +121,6 @@ public class MIRAdminEditorITCase extends MIRITBase {
         driver.waitAndFindElement(MCRBy.partialText(MIRTestData.VALIDATION_INFORMATIK));
         driver.waitAndFindElement(MCRBy.partialText(MIRTestData.VALIDATION_BIBLIOGRAPHIEN));
     }
-
 
     @Test
     /**

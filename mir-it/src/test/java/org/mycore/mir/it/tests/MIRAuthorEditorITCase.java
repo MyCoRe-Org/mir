@@ -29,6 +29,7 @@ import org.mycore.mir.it.model.MIRTypeOfResource;
 public class MIRAuthorEditorITCase extends MIRITBase {
 
     private static final String SUBMITTER_USER_NAME = "submitter";
+
     private static final String SUBMITTER_USER_PASSWORD = "tugdriwsella";
 
     @Before
@@ -55,7 +56,7 @@ public class MIRAuthorEditorITCase extends MIRITBase {
         assertBaseValidation();
     }
 
-   @Test
+    @Test
     public void testArticle() throws InterruptedException {
         publishEditorController.open(() -> Assert.assertTrue(publishEditorController.isPublishOpened()));
         publishEditorController.selectType(MIRGenre.article, null);
@@ -154,7 +155,6 @@ public class MIRAuthorEditorITCase extends MIRITBase {
         // TODO: enable validation for license
         //driver.waitAndFindElement(MCRBy.partialText(MIRLicense.cc_by_40.getValue()));
 
-
         driver.findElement(MCRBy.partialText(MIRTestData.URN));
         driver.findElement(MCRBy.partialText(MIRTestData.DOI));
 
@@ -167,8 +167,7 @@ public class MIRAuthorEditorITCase extends MIRITBase {
         driver.findElement(MCRBy.partialText(MIRTestData.ISSN));
     }
 
-
-   @Test
+    @Test
     public void testCollection() throws InterruptedException {
         publishEditorController.open(() -> Assert.assertTrue(publishEditorController.isPublishOpened()));
         publishEditorController.selectType(MIRGenre.collection, null);
@@ -189,7 +188,7 @@ public class MIRAuthorEditorITCase extends MIRITBase {
         refBookCommonValidation();
     }
 
-   @Test
+    @Test
     public void testProceedings() {
         publishEditorController.open(() -> Assert.assertTrue(publishEditorController.isPublishOpened()));
         publishEditorController.selectType(MIRGenre.proceedings, null);
@@ -199,7 +198,8 @@ public class MIRAuthorEditorITCase extends MIRITBase {
         editorController.setTitle(MIRTestData.TITLE);
         editorController.setSubTitle(MIRTestData.SUB_TITLE);
         refConference();
-        editorController.setAuthors(Stream.of(MIRTestData.AUTHOR, MIRTestData.AUTHOR_2).collect(Collectors.toList()), 1);
+        editorController.setAuthors(Stream.of(MIRTestData.AUTHOR, MIRTestData.AUTHOR_2).collect(Collectors.toList()),
+            1);
         refBookCommon();
 
         editorController.save();
@@ -218,17 +218,19 @@ public class MIRAuthorEditorITCase extends MIRITBase {
         publishEditorController.submit();
 
         driver.waitUntilPageIsLoaded("MODS-Dokument erstellen");
-        editorController.setTitleAndTranslation(MIRTestData.TITLE, MIRTestData.SUB_TITLE, MIRTestData.EN_TITLE, MIRTestData.EN_SUB_TITLE, MIRLanguage.english);
+        editorController.setTitleAndTranslation(MIRTestData.TITLE, MIRTestData.SUB_TITLE, MIRTestData.EN_TITLE,
+            MIRTestData.EN_SUB_TITLE, MIRLanguage.english);
         refAuthorRepeated();
         editorController.setDateCreated(MIRTestData.CREATION_DATE);
-        editorController.setTypeOfResources(Stream.of(MIRTypeOfResource.text, MIRTypeOfResource.moving_image).collect(Collectors.toList()));
+        editorController.setTypeOfResources(
+            Stream.of(MIRTypeOfResource.text, MIRTypeOfResource.moving_image).collect(Collectors.toList()));
         editorController.setInstitution(MIRInstitutes.Universität_in_Deutschland);
         editorController.setLanguages(Stream.of(MIRLanguage.german, MIRLanguage.english).collect(Collectors.toList()));
         refSNDBRepeat();
         editorController.setTopics(Stream.of(MIRTestData.TOPIC1, MIRTestData.TOPIC2).collect(Collectors.toList()));
-        editorController.setAbstracts(Stream.of(new MIRAbstract(true, MIRTestData.TEXT, MIRLanguage.german), new MIRAbstract(false, MIRTestData.URL3, MIRLanguage.english)).collect(Collectors.toList()));
+        editorController.setAbstracts(Stream.of(new MIRAbstract(true, MIRTestData.TEXT, MIRLanguage.german),
+            new MIRAbstract(false, MIRTestData.URL3, MIRLanguage.english)).collect(Collectors.toList()));
         editorController.setAccessConditions(MIRLicense.cc_by_40);
-
 
         editorController.save();
         saveSuccessValidation();
@@ -297,7 +299,7 @@ public class MIRAuthorEditorITCase extends MIRITBase {
     }
 
     protected void refDateOnlyrangeIssuedDatetimepicker() {
-        editorController.setIssueDate(MIRTestData.ISSUE_DATE_FROM,MIRTestData.ISSUE_DATE_TO);
+        editorController.setIssueDate(MIRTestData.ISSUE_DATE_FROM, MIRTestData.ISSUE_DATE_TO);
     }
 
     private void refReportCommonValidation() {
@@ -329,7 +331,6 @@ public class MIRAuthorEditorITCase extends MIRITBase {
         driver.waitAndFindElement(MCRBy.partialText(MIRTestData.URN));
         driver.waitAndFindElement(MCRBy.partialText(MIRTestData.DOI));
 
-
         driver.waitAndFindElement(MCRBy.partialText(MIRTestData.TOPIC1));
         driver.waitAndFindElement(MCRBy.partialText(MIRTestData.TOPIC2));
         driver.waitAndFindElement(MCRBy.partialText(MIRTestData.ABSTRACT));
@@ -345,7 +346,6 @@ public class MIRAuthorEditorITCase extends MIRITBase {
             editorController.setExtend(MIRTestData.EXTEND_SOLO);
         }
 
-
         editorController.setLanguages(Stream.of(MIRLanguage.german).collect(Collectors.toList()));
         List<AbstractMap.Entry<MIRIdentifier, String>> identifierList = new ArrayList<>();
 
@@ -353,16 +353,14 @@ public class MIRAuthorEditorITCase extends MIRITBase {
         identifierList.add(new AbstractMap.SimpleEntry<>(MIRIdentifier.urn, MIRTestData.URN));
 
         editorController.setIdentifier(identifierList);
-        editorController.setClassifications(Stream.of(MIRDNBClassification._000, MIRDNBClassification._010, MIRDNBClassification._020).collect(Collectors.toList()));
+        editorController.setClassifications(
+            Stream.of(MIRDNBClassification._000, MIRDNBClassification._010, MIRDNBClassification._020)
+                .collect(Collectors.toList()));
         editorController.setTopics(Stream.of(MIRTestData.TOPIC1, MIRTestData.TOPIC2).collect(Collectors.toList()));
         refAbstractSimple();
         editorController.setAccessConditions(MIRLicense.cc_by_40);
         refComment();
     }
-
-
-
-
 
     private void refAuthorRepeated() {
         editorController.setAuthors(Stream.of(MIRTestData.AUTHOR, MIRTestData.AUTHOR_2).collect(Collectors.toList()));
@@ -433,14 +431,13 @@ public class MIRAuthorEditorITCase extends MIRITBase {
     }
 
     private void refSNDBRepeat() {
-        editorController.setClassifications(Stream.of(MIRDNBClassification._004, MIRDNBClassification._010).collect(Collectors.toList()));
+        editorController.setClassifications(
+            Stream.of(MIRDNBClassification._004, MIRDNBClassification._010).collect(Collectors.toList()));
     }
 
     private void refAbstractSimple() {
         editorController.setAbstract(MIRTestData.ABSTRACT);
     }
-
-
 
     private void refReportCommon() {
         editorController.setTitle(MIRTestData.TITLE);
@@ -462,7 +459,6 @@ public class MIRAuthorEditorITCase extends MIRITBase {
         editorController.setInstitution(MIRInstitutes.Universität_in_Deutschland);
         refComment();
     }
-
 
     private void refAuthorRepeatedValidation() {
         driver.waitAndFindElement(MCRBy.partialText(MIRTestData.AUTHOR));

@@ -3,10 +3,9 @@ package org.mycore.mir.impexp;
 import org.apache.log4j.Logger;
 import org.jdom2.Element;
 import org.jdom2.filter.Filters;
-
 import org.jdom2.input.DOMBuilder;
-import org.jdom2.xpath.XPathFactory;
 import org.jdom2.xpath.XPathExpression;
+import org.jdom2.xpath.XPathFactory;
 import org.mycore.common.MCRConstants;
 import org.mycore.solr.MCRXMLFunctions;
 import org.w3c.dom.NodeList;
@@ -27,16 +26,16 @@ public class MIRRelatedItemFinder {
         DOMBuilder domBuilder = new DOMBuilder();
         Element relatedItem = domBuilder.build(relatedItemW3C);
         XPathExpression<Element> xpathIdentifier = XPathFactory.instance().compile("mods:identifier",
-                Filters.element(), null, MCRConstants.MODS_NAMESPACE, MCRConstants.XLINK_NAMESPACE);
+            Filters.element(), null, MCRConstants.MODS_NAMESPACE, MCRConstants.XLINK_NAMESPACE);
         Element identifierElement = xpathIdentifier.evaluateFirst(relatedItem);
         String mcrID = "";
         try {
-            if (identifierElement != null){
+            if (identifierElement != null) {
                 mcrID = MCRXMLFunctions.getIdentifierOfFirst("mods.identifier:\"" + identifierElement.getText() + "\"");
             }
-            if (identifierElement == null || mcrID == null){
+            if (identifierElement == null || mcrID == null) {
                 XPathExpression<Element> xpathTitle = XPathFactory.instance().compile("mods:titleInfo/mods:title",
-                        Filters.element(), null, MCRConstants.MODS_NAMESPACE, MCRConstants.XLINK_NAMESPACE);
+                    Filters.element(), null, MCRConstants.MODS_NAMESPACE, MCRConstants.XLINK_NAMESPACE);
                 Element titleElement = xpathTitle.evaluateFirst(relatedItem);
                 if (titleElement != null) {
                     mcrID = MCRXMLFunctions.getIdentifierOfFirst("mods.title.main:\"" + titleElement.getText() + "\"");

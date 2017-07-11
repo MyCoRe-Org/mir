@@ -59,7 +59,7 @@ public abstract class MIRAccessKeyPairTransformer {
     private static JAXBContext initContext() {
         try {
             return JAXBContext.newInstance(MIRAccessKeyPair.class.getPackage().getName(),
-                    MIRAccessKeyPair.class.getClassLoader());
+                MIRAccessKeyPair.class.getClassLoader());
         } catch (final JAXBException e) {
             throw new MCRException("Could not instantiate JAXBContext.", e);
         }
@@ -77,7 +77,7 @@ public abstract class MIRAccessKeyPairTransformer {
 
     private static Document getServFlagsXML(final MIRAccessKeyPair.ServiceFlags servFlags) {
         final MCRJAXBContent<MIRAccessKeyPair.ServiceFlags> content = new MCRJAXBContent<MIRAccessKeyPair.ServiceFlags>(
-                JAXB_CONTEXT, servFlags);
+            JAXB_CONTEXT, servFlags);
         try {
             final Document xml = content.asXML();
             return xml;
@@ -98,20 +98,20 @@ public abstract class MIRAccessKeyPairTransformer {
         try {
             final Unmarshaller unmarshaller = JAXB_CONTEXT.createUnmarshaller();
             switch (element.getName()) {
-            case ROOT_ACCESS_KEY_PAIR:
-                return (MIRAccessKeyPair) unmarshaller.unmarshal(new JDOMSource(element));
-            case ROOT_MCR_OBJECT:
-            case ROOT_MCR_DERIVATE:
-                final MCRObjectID mcrObjectId = MCRObjectID.getInstance(element.getAttributeValue("ID"));
-                final Element service = element.getChild("service");
-                if (service != null) {
-                    final Element accKeys = service.getChild(ROOT_SERV_FLAGS);
-                    if (accKeys != null)
-                        return buildAccessKeyPair(mcrObjectId, accKeys);
-                }
-                return null;
-            default:
-                throw new IllegalArgumentException("Element is not a MIRAccessKeyPair element.");
+                case ROOT_ACCESS_KEY_PAIR:
+                    return (MIRAccessKeyPair) unmarshaller.unmarshal(new JDOMSource(element));
+                case ROOT_MCR_OBJECT:
+                case ROOT_MCR_DERIVATE:
+                    final MCRObjectID mcrObjectId = MCRObjectID.getInstance(element.getAttributeValue("ID"));
+                    final Element service = element.getChild("service");
+                    if (service != null) {
+                        final Element accKeys = service.getChild(ROOT_SERV_FLAGS);
+                        if (accKeys != null)
+                            return buildAccessKeyPair(mcrObjectId, accKeys);
+                    }
+                    return null;
+                default:
+                    throw new IllegalArgumentException("Element is not a MIRAccessKeyPair element.");
             }
         } catch (final JAXBException e) {
             throw new MCRException("Exception while transforming Element to MIRAccessKeyPair.", e);
@@ -125,7 +125,7 @@ public abstract class MIRAccessKeyPairTransformer {
         try {
             final Unmarshaller unmarshaller = JAXB_CONTEXT.createUnmarshaller();
             return MIRAccessKeyPair.fromServiceFlags(mcrObjectId,
-                    (MIRAccessKeyPair.ServiceFlags) unmarshaller.unmarshal(new JDOMSource(element)));
+                (MIRAccessKeyPair.ServiceFlags) unmarshaller.unmarshal(new JDOMSource(element)));
         } catch (final JAXBException e) {
             throw new MCRException("Exception while transforming Element to MIRAccessKeyPair.", e);
         }

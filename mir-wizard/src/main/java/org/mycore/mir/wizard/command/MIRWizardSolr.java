@@ -91,18 +91,18 @@ public class MIRWizardSolr extends MIRWizardCommand {
 
                 if (success && file != null) {
                     final String dataDir = MCRConfigurationDir.getConfigurationDirectory().getAbsolutePath()
-                            + File.separator + "data";
+                        + File.separator + "data";
 
                     MIRWizardUnzip.unzip(file.getAbsolutePath(), dataDir);
 
                     final String confDir = dataDir + File.separator + "solr" + File.separator + "collection1"
-                            + File.separator + "conf";
+                        + File.separator + "conf";
                     final String[] confs = { "schema.xml", "solrconfig.xml", "mapping.txt" };
                     for (String name : confs) {
                         LOGGER.info("copy file \"" + name + "\" to \"" + confDir + "\"...");
                         file = new File(confDir + File.separator + name);
                         FileUtils.copyInputStreamToFile(
-                                this.getClass().getClassLoader().getResourceAsStream("setup/solr/" + name), file);
+                            this.getClass().getClassLoader().getResourceAsStream("setup/solr/" + name), file);
                     }
                 }
 

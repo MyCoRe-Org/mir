@@ -1,6 +1,5 @@
 package org.mycore.mir.it.tests;
 
-
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
@@ -31,12 +30,11 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 public class MIRUploadITCase extends MIRITBase {
 
     private static final java.util.List<Color> UNIQUE_COLOR_LIST = Stream.of(
-            new Color(116, 207, 248),
-            new Color(203, 112, 83),
-            new Color(231, 115, 159),
-            new Color(191, 231, 1),
-            new Color(231, 0, 217)
-    ).collect(Collectors.toList());
+        new Color(116, 207, 248),
+        new Color(203, 112, 83),
+        new Color(231, 115, 159),
+        new Color(191, 231, 1),
+        new Color(231, 0, 217)).collect(Collectors.toList());
 
     @Before
     public final void init() {
@@ -55,19 +53,22 @@ public class MIRUploadITCase extends MIRITBase {
         driver.waitUntilPageIsLoaded("MODS-Dokument erstellen");
         editorController.setGenres(Stream.of(MIRGenre.article, MIRGenre.collection).collect(Collectors.toList()));
         editorController.setTitleInfo(Stream.of(
-                new MIRTitleInfo("Der", MIRLanguage.german, MIRTitleType.mainTitle, MIRTestData.TITLE, MIRTestData.SUB_TITLE),
-                new MIRTitleInfo("The", MIRLanguage.english, MIRTitleType.alternative, MIRTestData.EN_TITLE, MIRTestData.EN_SUB_TITLE)
-        ).collect(Collectors.toList()));
-        editorController.setClassifications(Stream.of(MIRDNBClassification._004, MIRDNBClassification._010).collect(Collectors.toList()));
+            new MIRTitleInfo("Der", MIRLanguage.german, MIRTitleType.mainTitle, MIRTestData.TITLE,
+                MIRTestData.SUB_TITLE),
+            new MIRTitleInfo("The", MIRLanguage.english, MIRTitleType.alternative, MIRTestData.EN_TITLE,
+                MIRTestData.EN_SUB_TITLE))
+            .collect(Collectors.toList()));
+        editorController.setClassifications(
+            Stream.of(MIRDNBClassification._004, MIRDNBClassification._010).collect(Collectors.toList()));
         editorController.setAccessConditions(MIRLicense.cc_by_40);
         editorController.save();
 
         driver.waitUntilPageIsLoaded(MIRTitleType.mainTitle.getValue());
         driver.waitAndFindElement(MCRBy.partialText(MIRTestData.SAVE_SUCCESS));
         driver.waitAndFindElement(MCRBy.partialLinkText("Aktionen"),
-                ExpectedConditions::elementToBeClickable).click();
+            ExpectedConditions::elementToBeClickable).click();
         driver.waitAndFindElement(MCRBy.partialLinkText("Hinzufügen eines Datenobjektes"),
-                ExpectedConditions::elementToBeClickable).click();
+            ExpectedConditions::elementToBeClickable).click();
 
         File upload = File.createTempFile("upload", "mir_test.tiff");
 
@@ -102,11 +103,14 @@ public class MIRUploadITCase extends MIRITBase {
                 Color rgb = new Color(read.getRGB(x, y));
                 colorList.stream().filter(c -> {
                     // compression kills exact colors :(
-                    return Math.abs(rgb.getRed()-c.getRed())<10 && Math.abs(rgb.getBlue()-c.getBlue())<10 && Math.abs(rgb.getGreen()-c.getGreen())<10 ;
+                    return Math.abs(rgb.getRed() - c.getRed()) < 10 && Math.abs(rgb.getBlue() - c.getBlue()) < 10
+                        && Math.abs(rgb.getGreen() - c.getGreen()) < 10;
                 }).collect(Collectors.toList()).forEach(colorList::remove);
             }
         }
         String colorsInList = colorList.stream().map(c -> c.toString()).collect(Collectors.joining(";"));
-        Assert.assertTrue("RGBList should be empty (every pixel should be found in screenshot) but list is: " + colorsInList, colorList.isEmpty());
+        Assert.assertTrue(
+            "RGBList should be empty (every pixel should be found in screenshot) but list is: " + colorsInList,
+            colorList.isEmpty());
     }
 }

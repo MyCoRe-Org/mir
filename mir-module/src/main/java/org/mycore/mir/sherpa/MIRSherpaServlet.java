@@ -1,21 +1,9 @@
 package org.mycore.mir.sherpa;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpHost;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
-import org.apache.http.protocol.HTTP;
-import org.apache.log4j.Logger;
-import org.mycore.common.config.MCRConfiguration;
-import org.mycore.frontend.servlets.MCRServlet;
-import org.mycore.frontend.servlets.MCRServletJob;
-import org.mycore.services.http.MCRIdleConnectionMonitorThread;
-import org.mycore.services.http.MCRHttpUtils;
-import org.w3c.dom.Document;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
+import static org.mycore.solr.MCRSolrConstants.CONFIG_PREFIX;
+
+import java.io.IOException;
+import java.io.InputStream;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -27,11 +15,23 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathFactory;
-import java.io.IOException;
-import java.io.InputStream;
 
-import static org.mycore.solr.MCRSolrConstants.CONFIG_PREFIX;
-
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpHost;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
+import org.apache.http.protocol.HTTP;
+import org.apache.log4j.Logger;
+import org.mycore.common.config.MCRConfiguration;
+import org.mycore.frontend.servlets.MCRServlet;
+import org.mycore.frontend.servlets.MCRServletJob;
+import org.mycore.services.http.MCRHttpUtils;
+import org.mycore.services.http.MCRIdleConnectionMonitorThread;
+import org.w3c.dom.Document;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 public class MIRSherpaServlet extends MCRServlet {
 
@@ -40,10 +40,15 @@ public class MIRSherpaServlet extends MCRServlet {
     private static final long serialVersionUID = 1L;
 
     private String SERVER_URL = "http://www.sherpa.ac.uk/romeo/api29.php";
+
     private HttpHost sherpaHost;
+
     private int MAX_CONNECTIONS = MCRConfiguration.instance().getInt(CONFIG_PREFIX + "SelectProxy.MaxConnections");
+
     private PoolingHttpClientConnectionManager httpClientConnectionManager;
+
     private CloseableHttpClient httpClient;
+
     private MCRIdleConnectionMonitorThread idleConnectionMonitorThread;
 
     @Override
@@ -54,14 +59,13 @@ public class MIRSherpaServlet extends MCRServlet {
         String issn = req.getParameter("issn");
         String apiKey = MCRConfiguration.instance().getString("MCR.Mods.SherpaRomeo.ApiKey", "");
         HttpGet httpGet;
-        if (apiKey.equals("")){
+        if (apiKey.equals("")) {
             httpGet = new HttpGet(SERVER_URL + "?issn=" + issn);
-        }
-        else {
+        } else {
             httpGet = new HttpGet(SERVER_URL + "?issn=" + issn + "&ak=" + apiKey);
         }
         try {
-            CloseableHttpResponse response = httpClient.execute(sherpaHost,httpGet);
+            CloseableHttpResponse response = httpClient.execute(sherpaHost, httpGet);
             int statusCode = response.getStatusLine().getStatusCode();
             if (statusCode == Response.Status.OK.getStatusCode()) {
                 boolean isXML = response.getFirstHeader(HTTP.CONTENT_TYPE).getValue().contains("/xml");
@@ -92,7 +96,8 @@ public class MIRSherpaServlet extends MCRServlet {
         }
     }
 
-    private Document getDocumentFromInputStream(InputStream in) throws ParserConfigurationException, IOException, SAXException {
+    private Document getDocumentFromInputStream(InputStream in)
+        throws ParserConfigurationException, IOException, SAXException {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = factory.newDocumentBuilder();
         return builder.parse(new InputSource(in));

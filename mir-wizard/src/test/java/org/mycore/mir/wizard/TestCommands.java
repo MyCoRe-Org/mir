@@ -54,7 +54,7 @@ public class TestCommands extends MCRJPATestCase {
         MIRWizardCommandResult result = chain.getCommands().get(0).getResult();
 
         new XMLOutputter(Format.getPrettyFormat()).output(result.getResult(), System.out);
-        
+
         assertTrue(toMessage(result.getResult()), result.isSuccess());
     }
 
@@ -79,7 +79,7 @@ public class TestCommands extends MCRJPATestCase {
 
         assertTrue(toMessage(result.getResult()), result.isSuccess());
     }
-    
+
     private static String toMessage(Element result) {
         return MCRStreamUtils.flatten(result, Element::getChildren, Collection::stream).map(Element::getTextNormalize)
             .collect(Collectors.joining());

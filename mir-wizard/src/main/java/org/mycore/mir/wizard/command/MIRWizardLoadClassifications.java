@@ -88,13 +88,13 @@ public class MIRWizardLoadClassifications extends MIRWizardCommand {
                         } catch (HibernateException e) {
                             tx.rollback();
                             result += MCRTranslation.translate("component.mir.wizard.error", e.toString())
-                                    .concat(".\n");
+                                .concat(".\n");
                             e.printStackTrace();
                         }
                     }
                 } catch (MCRException ex) {
                     result += MCRTranslation.translate("component.mir.wizard.loadClassification.error", classifURL)
-                            .concat("\n");
+                        .concat("\n");
 
                     this.result.setResult(result);
                     this.result.setSuccess(false);

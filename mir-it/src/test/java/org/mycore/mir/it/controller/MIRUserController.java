@@ -23,7 +23,9 @@ public class MIRUserController {
     public static final String ADMIN_PASSWD = "alleswirdgut";
 
     public static final String ADMIN_LOGIN = "administrator";
+
     String baseURL;
+
     MCRWebdriverWrapper driver;
 
     public MIRUserController(MCRWebdriverWrapper driver, String baseURL) {
@@ -35,7 +37,8 @@ public class MIRUserController {
         this.createUser(user, password, name, mail, () -> assertUserCreated(user), roles);
     }
 
-    public void createUser(String user, String password, String name, String mail, Runnable assertion, String... roles) {
+    public void createUser(String user, String password, String name, String mail, Runnable assertion,
+        String... roles) {
         String currentUrl = driver.getCurrentUrl();
         driver.findElement(By.id("currentUser")).click();
         driver.findElement(By.linkText("Nutzer anlegen")).click();
@@ -43,7 +46,8 @@ public class MIRUserController {
             if (i > 0) {
                 //append a role
                 By addRole = By.name("_xed_submit_insert:/user/roles|" + i + "|build|role|rep-" + (i + 1));
-                By startRoleSelect = By.xpath("//button[starts-with(@name,'_xed_submit_subselect:/user/roles/role[" + (i + 1) + "]:')]");
+                By startRoleSelect = By
+                    .xpath("//button[starts-with(@name,'_xed_submit_subselect:/user/roles/role[" + (i + 1) + "]:')]");
                 driver.waitAndFindElement(addRole).click();
                 driver.waitAndFindElement(startRoleSelect).click();
             } else {
@@ -71,7 +75,6 @@ public class MIRUserController {
         driver.findElement(By.name("_xed_submit_servlet:MCRUserServlet")).click();
         assertion.run();
         driver.get(currentUrl);
-
 
     }
 
@@ -115,7 +118,7 @@ public class MIRUserController {
         driver.get(baseURL + "/content/index.xml");
         driver.waitFor(ExpectedConditions.titleContains("Willkommen bei MIR!"));
         assertFalse("Access to start page should not be restricted", driver.findElement(By.tagName("body")).getText()
-                .matches("^[\\s\\S]*Zugriff verweigert[\\s\\S]*$"));
+            .matches("^[\\s\\S]*Zugriff verweigert[\\s\\S]*$"));
     }
 
     protected void assertEqualsIgnoreCase(String expected, String actual) {
@@ -145,11 +148,11 @@ public class MIRUserController {
         assertEqualsIgnoreCase("Anmelden", driver.waitAndFindElement(By.id("loginURL")).getText());
     }
 
-    public boolean isLoggedIn(){
+    public boolean isLoggedIn() {
         driver.waitAndFindElement(By.id("logo_modul"));
         try {
             driver.findElement(By.id("currentUser"));
-        } catch (NoSuchElementException e){
+        } catch (NoSuchElementException e) {
             return false;
         }
         return true;

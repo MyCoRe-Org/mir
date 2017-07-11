@@ -37,20 +37,27 @@ import org.xml.sax.SAXException;
 public class MIRSwordIngester implements MCRSwordIngester {
 
     private static final Namespace DC_NAMESPACE = Namespace.getNamespace("dc", "http://purl.org/dc/elements/1.1/");
-    private static final MCRXSL2XMLTransformer XSL_DC_MODS_TRANSFORMER = new MCRXSL2XMLTransformer("xsl/DC_MODS3-5_XSLT1-0.xsl");
+
+    private static final MCRXSL2XMLTransformer XSL_DC_MODS_TRANSFORMER = new MCRXSL2XMLTransformer(
+        "xsl/DC_MODS3-5_XSLT1-0.xsl");
+
     public static final Logger LOGGER = LogManager.getLogger();
+
     private MCRSwordLifecycleConfiguration lifecycleConfiguration;
+
     private MCRSwordMediaHandler mcrSwordMediaHandler = new MCRSwordMediaHandler();
 
     @Override
     public MCRObjectID ingestMetadata(Deposit entry) throws SwordError, SwordServerException {
-        final MCRObjectID newObjectId = MCRObjectID.getNextFreeId(MCRConfiguration.instance().getString("MIR.projectid.default") + "_mods");
+        final MCRObjectID newObjectId = MCRObjectID
+            .getNextFreeId(MCRConfiguration.instance().getString("MIR.projectid.default") + "_mods");
         final Map<String, List<String>> dublinCoreMetadata = entry.getSwordEntry().getDublinCore();
 
         Document dcDocument = buildDCDocument(dublinCoreMetadata);
         Document convertedDocument = convertDCToMods(dcDocument);
 
-        final MCRObject mcrObject = MCRMODSWrapper.wrapMODSDocument(convertedDocument.detachRootElement(), newObjectId.getProjectId());
+        final MCRObject mcrObject = MCRMODSWrapper.wrapMODSDocument(convertedDocument.detachRootElement(),
+            newObjectId.getProjectId());
         mcrObject.setId(newObjectId);
         try {
             MCRMetadataManager.create(mcrObject);
@@ -66,7 +73,8 @@ public class MIRSwordIngester implements MCRSwordIngester {
         try {
             mcrContent = XSL_DC_MODS_TRANSFORMER.transform(new MCRJDOMContent(dcDocument));
         } catch (IOException e) {
-            throw new SwordError(UriRegistry.ERROR_BAD_REQUEST, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error while transforming mods2dc!", e);
+            throw new SwordError(UriRegistry.ERROR_BAD_REQUEST, HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+                "Error while transforming mods2dc!", e);
         }
 
         Document convertedDocument;
@@ -127,7 +135,8 @@ public class MIRSwordIngester implements MCRSwordIngester {
     }
 
     @Override
-    public void updateMetadata(MCRObject object, Deposit entry, boolean replace) throws SwordServerException, SwordError {
+    public void updateMetadata(MCRObject object, Deposit entry, boolean replace)
+        throws SwordServerException, SwordError {
         if (!replace) {
             throw new SwordServerException("Operation is not supported!", new OperationNotSupportedException());
         }

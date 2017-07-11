@@ -34,7 +34,8 @@ public class MIRGetOpenAIREProjectsServlet extends HttpServlet {
         client = HttpClients.custom().setConnectionManager(connectManager).build();
     }
 
-    @Override protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
         String name = MCRFrontendUtil.getProperty(request, "name").orElse(null);
         String acronym = MCRFrontendUtil.getProperty(request, "acronym").orElse(null);

@@ -1,6 +1,5 @@
 package org.mycore.mir.it.tests;
 
-
 import org.junit.Before;
 import org.junit.Test;
 import org.mycore.common.selenium.drivers.MCRWebdriverWrapper;
@@ -23,21 +22,22 @@ public class MIRWebCLIITCase extends MIRITBase {
     public void testWebCLIStartup() {
         MCRWebdriverWrapper driver = getDriver();
 
-
         driver.waitAndFindElement(By.xpath(".//strong[contains(text(), 'administrator')]")).click();
         driver.waitAndFindElement(By.xpath(".//a[contains(text(), 'WebCLI')]")).click();
         String mainWindowHandle = driver.getWindowHandle();
         driver.waitAndFindElement(By.xpath(".//input[contains(@onclick, 'WebCLI')]")).click();
 
         String webcliWindowHandle = driver.getWindowHandles()
-                .stream()
-                .filter(h -> !h.equals(mainWindowHandle))
-                .findFirst()
-                .orElseThrow(() -> new RuntimeException("Could not find webcli window!"));
+            .stream()
+            .filter(h -> !h.equals(mainWindowHandle))
+            .findFirst()
+            .orElseThrow(() -> new RuntimeException("Could not find webcli window!"));
 
-        MCRWebdriverWrapper cliDriver = new MCRWebdriverWrapper((RemoteWebDriver) driver.switchTo().window(webcliWindowHandle), 3000);
+        MCRWebdriverWrapper cliDriver = new MCRWebdriverWrapper(
+            (RemoteWebDriver) driver.switchTo().window(webcliWindowHandle), 3000);
 
-        cliDriver.waitAndFindElement(By.xpath(".//input[contains(@placeholder,'Command')]")).sendKeys(MIRTestData.TEST_COMMAND);
+        cliDriver.waitAndFindElement(By.xpath(".//input[contains(@placeholder,'Command')]"))
+            .sendKeys(MIRTestData.TEST_COMMAND);
         cliDriver.waitAndFindElement(By.xpath(".//button[contains(text(), 'Execute')]")).click();
         cliDriver.waitAndFindElement(By.xpath(".//*[contains(text(), '" + MIRTestData.TEST_COMMAND + "')]"));
         cliDriver.close();

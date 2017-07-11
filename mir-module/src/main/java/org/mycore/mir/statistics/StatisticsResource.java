@@ -1,7 +1,5 @@
 package org.mycore.mir.statistics;
 
-import org.mycore.frontend.jersey.MCRStaticContent;
-
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -9,6 +7,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.CacheControl;
 import javax.ws.rs.core.Response;
 
+import org.mycore.frontend.jersey.MCRStaticContent;
 
 @Path("stat")
 @MCRStaticContent

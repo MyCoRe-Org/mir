@@ -1,6 +1,5 @@
 package org.mycore.mir.it.controller;
 
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.mycore.common.selenium.drivers.MCRWebdriverWrapper;
@@ -20,8 +19,12 @@ public abstract class MIREditorController extends MIRTestController {
     }
 
     protected void setInputText(String childElementName, String text) {
-        driver.waitAndFindElement(By.xpath(".//input[contains(@name,'" + childElementName + "') and contains(@type, 'text')]")).clear();
-        driver.waitAndFindElement(By.xpath(".//input[contains(@name,'" + childElementName + "') and contains(@type, 'text')]")).sendKeys(text);
+        driver.waitAndFindElement(
+            By.xpath(".//input[contains(@name,'" + childElementName + "') and contains(@type, 'text')]")).clear();
+        driver
+            .waitAndFindElement(
+                By.xpath(".//input[contains(@name,'" + childElementName + "') and contains(@type, 'text')]"))
+            .sendKeys(text);
     }
 
     protected void setTextAreaText(String childElementName, String text) {
@@ -29,7 +32,10 @@ public abstract class MIREditorController extends MIRTestController {
     }
 
     protected void clickRepeater(String field) {
-        driver.waitAndFindElement(By.xpath(".//button[contains(@name, '" + field + "') and contains(@name, '_xed_submit_insert')]")).click();
+        driver
+            .waitAndFindElement(
+                By.xpath(".//button[contains(@name, '" + field + "') and contains(@name, '_xed_submit_insert')]"))
+            .click();
     }
 
     protected void clickRepeaterAndWait(String field, String fieldToWaitFor) {
@@ -39,8 +45,10 @@ public abstract class MIREditorController extends MIRTestController {
 
     protected boolean hasInputTextError(String childElementName) {
         try {
-            driver.waitAndFindElement(By.xpath(".//div[contains(@class, 'has-error')  and contains(@class, 'form-group')]//*[contains(@name,'" + childElementName + "')]"));
-        } catch (NoSuchElementException|TimeoutException e) {
+            driver.waitAndFindElement(
+                By.xpath(".//div[contains(@class, 'has-error')  and contains(@class, 'form-group')]//*[contains(@name,'"
+                    + childElementName + "')]"));
+        } catch (NoSuchElementException | TimeoutException e) {
             LOGGER.error("Could not find red validation border !", e);
             return false;
         }
@@ -48,9 +56,9 @@ public abstract class MIREditorController extends MIRTestController {
     }
 
     protected boolean hasValidationText(String text) {
-        try{
+        try {
             driver.waitAndFindElement(MCRBy.partialText(text));
-        } catch (NoSuchElementException |TimeoutException e){
+        } catch (NoSuchElementException | TimeoutException e) {
             LOGGER.error("Could not find validation text !", e);
             return false;
         }

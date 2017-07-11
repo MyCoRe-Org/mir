@@ -55,38 +55,38 @@ public class MIROwnerStrategy implements MCRAccessCheckStrategy {
     private static final String CONFIG_PREFIX = "MIR.OwnerStrategy.";
 
     private static final MCRAccessCheckStrategy BASE_STRATEGY = MCRConfiguration.instance()
-            .getInstanceOf(CONFIG_PREFIX + "FallbackClass", MCRObjectTypeStrategy.class.getName());
+        .getInstanceOf(CONFIG_PREFIX + "FallbackClass", MCRObjectTypeStrategy.class.getName());
 
     private static final List<String> OBJECT_TYPES = MCRConfiguration.instance()
-            .getStrings(CONFIG_PREFIX + "ObjectTypes", new ArrayList<String>());
+        .getStrings(CONFIG_PREFIX + "ObjectTypes", new ArrayList<String>());
 
     private static final List<String> PERMISSIONS = MCRConfiguration.instance()
-            .getStrings(CONFIG_PREFIX + "AllowedPermissions", new ArrayList<String>());
+        .getStrings(CONFIG_PREFIX + "AllowedPermissions", new ArrayList<String>());
 
     private static final Pattern TYPE_PATTERN = Pattern.compile("[^_]*_([^_]*)_*");
 
     private static LoadingCache<MCRObjectID, String> CREATOR_CACHE = CacheBuilder.newBuilder().weakKeys()
-            .maximumSize(5000).build(new CacheLoader<MCRObjectID, String>() {
+        .maximumSize(5000).build(new CacheLoader<MCRObjectID, String>() {
 
-                @Override
-                public String load(MCRObjectID mcrObjectID) throws Exception {
-                    MCRXMLMetadataManager metadataManager = MCRXMLMetadataManager.instance();
-                    List<MCRMetadataVersion> versions = metadataManager.listRevisions(mcrObjectID);
-                    if (versions != null && !versions.isEmpty()) {
-                        Collections.reverse(versions); //newest revision first
-                        for (MCRMetadataVersion version : versions) {
-                            //time machine: go back in history
-                            if (version.getType() == MCRMetadataVersion.CREATED) {
-                                LOGGER.info("Found creator " + version.getUser() + " in revision "
-                                        + version.getRevision() + " of " + mcrObjectID);
-                                return version.getUser();
-                            }
+            @Override
+            public String load(MCRObjectID mcrObjectID) throws Exception {
+                MCRXMLMetadataManager metadataManager = MCRXMLMetadataManager.instance();
+                List<MCRMetadataVersion> versions = metadataManager.listRevisions(mcrObjectID);
+                if (versions != null && !versions.isEmpty()) {
+                    Collections.reverse(versions); //newest revision first
+                    for (MCRMetadataVersion version : versions) {
+                        //time machine: go back in history
+                        if (version.getType() == MCRMetadataVersion.CREATED) {
+                            LOGGER.info("Found creator " + version.getUser() + " in revision "
+                                + version.getRevision() + " of " + mcrObjectID);
+                            return version.getUser();
                         }
                     }
-                    LOGGER.info("Could not get creator information.");
-                    return null;
                 }
-            });
+                LOGGER.info("Could not get creator information.");
+                return null;
+            }
+        });
 
     /* (non-Javadoc)
      * @see org.mycore.access.strategies.MCRAccessCheckStrategy#checkPermission(java.lang.String, java.lang.String)
@@ -107,7 +107,7 @@ public class MIROwnerStrategy implements MCRAccessCheckStrategy {
                 mcrObjectId = MCRObjectID.getInstance(id);
                 MCRUserInformation currentUser = MCRSessionMgr.getCurrentSession().getUserInformation();
                 if (!currentUser.equals(MCRSystemUserInformation.getGuestInstance())
-                        && isCurrentUserCreator(mcrObjectId, currentUser)) {
+                    && isCurrentUserCreator(mcrObjectId, currentUser)) {
                     return true;
                 }
             } catch (RuntimeException e) {

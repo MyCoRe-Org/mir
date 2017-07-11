@@ -99,7 +99,7 @@ public class ReCaptcha {
         final CloseableHttpClient client = HttpClientBuilder.create().build();
 
         final String url = "https://www.google.com/recaptcha/api/siteverify?secret=" + secretKey + "&response="
-                + response + "&remoteip=" + ip;
+            + response + "&remoteip=" + ip;
 
         final HttpGet get = new HttpGet(url);
 
