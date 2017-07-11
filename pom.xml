@@ -36,13 +36,13 @@
     <cargo.servlet.uriencoding>UTF-8</cargo.servlet.uriencoding>
     <cargo.tomcat.ajp.port>8292</cargo.tomcat.ajp.port>
     <cargo.version>1.6.1</cargo.version>
-    <changelog.since>2017-06-20</changelog.since>
+    <changelog.since>2017-07-11</changelog.since>
     <!-- until snapshot matches released version (required for 'mvn changes:changes-check') -->
-    <changes.version>2017.06.0</changes.version>
+    <changes.version>2017.06.0.1</changes.version>
     <hibernate.version>5.2.10.Final</hibernate.version>
     <java.target.version>1.8</java.target.version>
     <jetty.version>9.3.14.v20161028</jetty.version>
-    <mycore.version>2017.06.0</mycore.version>
+    <mycore.version>2017.06.0.1-SNAPSHOT</mycore.version>
     <site.suffix />
     <sortpom.sortDeps>scope,groupId,artifactId</sortpom.sortDeps>
     <sortpom.sortFile>https://gist.githubusercontent.com/yagee-de/dfd3698c1b49173dbf251f74eb6a9297/raw/406460c088ff3cb6354e4ae6b40535e6f841607d/mycore_sort.xml</sortpom.sortFile>
