@@ -17,7 +17,7 @@
     <cargo.jvmargs>-DMCR.Home=${MCR.Home.Integration}
       -DMCR.AppName=${MCR.AppName}
       -Dsolr.solr.home=${solr.home}</cargo.jvmargs>
-    <cargo.servlet.port>9102</cargo.servlet.port>
+    <cargo.servlet.port>9107</cargo.servlet.port>
     <selenium.version>3.4.0</selenium.version>
     <solr.home>${MCR.Home.Integration}/solr-home</solr.home>
     <solr.version>4.10.4</solr.version>
