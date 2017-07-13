@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
   xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:mods="http://www.loc.gov/mods/v3" xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions" xmlns:xalan="http://xml.apache.org/xalan"
-  exclude-result-prefixes="i18n mods xlink mcrxsl xalan"
+  xmlns:exslt="http://exslt.org/common"
+  exclude-result-prefixes="i18n mods xlink mcrxsl xalan exslt"
 >
 
   <xsl:import href="xslImport:modsmeta:metadata/mir-abstract.xsl" />
@@ -27,8 +28,20 @@
     <div id="mir-abstract-badges">
       <xsl:variable name="dateIssued">
         <xsl:choose>
-          <xsl:when test="$mods/mods:originInfo[not(@eventType) or @eventType='publication']/mods:dateIssued[@encoding='w3cdtf']"><xsl:apply-templates mode="mods.datePublished" select="$mods/mods:originInfo[not(@eventType) or @eventType='publication']/mods:dateIssued[@encoding='w3cdtf']" /></xsl:when>
-          <xsl:when test="$mods/mods:relatedItem/mods:originInfo[not(@eventType) or @eventType='publication']/mods:dateIssued[@encoding='w3cdtf']"><xsl:apply-templates mode="mods.datePublished" select="$mods/mods:relatedItem/mods:originInfo[not(@eventType) or @eventType='publication']/mods:dateIssued[@encoding='w3cdtf']" /></xsl:when>
+          <xsl:when test="$mods/mods:originInfo[not(@eventType) or @eventType='publication']/mods:dateIssued[@encoding='w3cdtf']">
+            <xsl:choose>
+              <xsl:when test="$mods/mods:originInfo[not(@eventType) or @eventType='publication']/mods:dateIssued[@encoding='w3cdtf' and @point]">
+                <xsl:apply-templates mode="mods.datePublished" select="$mods/mods:originInfo[not(@eventType) or @eventType='publication']/mods:dateIssued[@encoding='w3cdtf' and @point='start']" />
+                <xsl:text>|</xsl:text>
+                <xsl:apply-templates mode="mods.datePublished" select="$mods/mods:originInfo[not(@eventType) or @eventType='publication']/mods:dateIssued[@encoding='w3cdtf' and @point='end']" />
+              </xsl:when>
+              <xsl:when test="$mods/mods:originInfo[not(@eventType) or @eventType='publication']/mods:dateIssued[@encoding='w3cdtf' and not(@point)]">
+                <xsl:apply-templates mode="mods.datePublished" select="$mods/mods:originInfo[not(@eventType) or @eventType='publication']/mods:dateIssued[@encoding='w3cdtf']" />
+              </xsl:when>
+            </xsl:choose>
+          </xsl:when>
+          <xsl:when test="$mods/mods:relatedItem/mods:originInfo[not(@eventType) or @eventType='publication']/mods:dateIssued[@encoding='w3cdtf']"><xsl:apply-templates mode="mods.datePublished" select="$mods/mods:relatedItem/mods:originInfo[not(@eventType) or @eventType='publication']/mods:dateIssued[@encoding='w3cdtf']" />
+          </xsl:when>
         </xsl:choose>
       </xsl:variable>
 
@@ -43,26 +56,39 @@
         <xsl:if test="string-length($dateIssued) > 0">
           <time itemprop="datePublished" datetime="{$dateIssued}" data-toggle="tooltip" title="Publication date">
             <span class="date_published label label-primary">
-              <xsl:variable name="format">
-                <xsl:choose>
-                  <xsl:when test="string-length(normalize-space($dateIssued))=4">
-                    <xsl:value-of select="i18n:translate('metaData.dateYear')" />
-                  </xsl:when>
-                  <xsl:when test="string-length(normalize-space($dateIssued))=7">
-                    <xsl:value-of select="i18n:translate('metaData.dateYearMonth')" />
-                  </xsl:when>
-                  <xsl:when test="string-length(normalize-space($dateIssued))=10">
-                    <xsl:value-of select="i18n:translate('metaData.dateYearMonthDay')" />
-                  </xsl:when>
-                  <xsl:otherwise>
-                    <xsl:value-of select="i18n:translate('metaData.dateTime')" />
-                  </xsl:otherwise>
-                </xsl:choose>
+              <xsl:variable name="date">
+                <xsl:call-template name="Tokenizer"><!-- use split function from mycore-base/coreFunctions.xsl -->
+                  <xsl:with-param name="string" select="$dateIssued" />
+                  <xsl:with-param name="delimiter" select="'|'" />
+                </xsl:call-template>
               </xsl:variable>
-              <xsl:call-template name="formatISODate">
-                <xsl:with-param name="date" select="$dateIssued" />
-                <xsl:with-param name="format" select="$format" />
-              </xsl:call-template>
+              <xsl:for-each select="exslt:node-set($date)/token">
+                <xsl:if test="position()=2">
+                  <xsl:text> - </xsl:text>
+                </xsl:if>
+                <xsl:if test="mcrxsl:trim(.) != ''">
+                  <xsl:variable name="format">
+                    <xsl:choose>
+                      <xsl:when test="string-length(normalize-space(.))=4">
+                        <xsl:value-of select="i18n:translate('metaData.dateYear')" />
+                      </xsl:when>
+                      <xsl:when test="string-length(normalize-space(.))=7">
+                        <xsl:value-of select="i18n:translate('metaData.dateYearMonth')" />
+                      </xsl:when>
+                      <xsl:when test="string-length(normalize-space(.))=10">
+                        <xsl:value-of select="i18n:translate('metaData.dateYearMonthDay')" />
+                      </xsl:when>
+                      <xsl:otherwise>
+                        <xsl:value-of select="i18n:translate('metaData.dateTime')" />
+                      </xsl:otherwise>
+                    </xsl:choose>
+                  </xsl:variable>
+                  <xsl:call-template name="formatISODate">
+                    <xsl:with-param name="date" select="." />
+                    <xsl:with-param name="format" select="$format" />
+                  </xsl:call-template>
+                </xsl:if>
+              </xsl:for-each>
             </span>
           </time>
         </xsl:if>
