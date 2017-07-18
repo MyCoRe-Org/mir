@@ -139,10 +139,10 @@
       <xsl:if test="string-length($MCR.Viewer.PDFCreatorStyle) &gt; 0">
         <xsl:value-of select="concat('&quot;pdfCreatorStyle&quot;: &quot;', $MCR.Viewer.PDFCreatorStyle, '&quot;,')" />
       </xsl:if>
-      <xsl:if test="string-length($MCR.Viewer.PDFCreatorURI) &gt; 0">
+      <xsl:if test="string-length($MCR.Viewer.PDFCreatorFormatString) &gt; 0">
         <xsl:value-of select="concat('&quot;pdfCreatorFormatString&quot;: &quot;', $MCR.Viewer.PDFCreatorFormatString, '&quot;,')" />
       </xsl:if>
-      <xsl:if test="string-length($MCR.Viewer.PDFCreatorStyle) &gt; 0">
+      <xsl:if test="string-length($MCR.Viewer.PDFCreatorRestrictionFormatString) &gt; 0">
         <xsl:value-of select="concat('&quot;pdfCreatorRestrictionFormatString&quot;: &quot;', $MCR.Viewer.PDFCreatorRestrictionFormatString, '&quot;,')" />
       </xsl:if>
       chapter: {
