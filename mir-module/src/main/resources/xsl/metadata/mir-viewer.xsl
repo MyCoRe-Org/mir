@@ -15,6 +15,8 @@
   <xsl:param name="MIR.DFGViewer.enable" select="'false'"/>
   <xsl:param name="MCR.Viewer.PDFCreatorURI" />
   <xsl:param name="MCR.Viewer.PDFCreatorStyle" />
+  <xsl:param name="MCR.Viewer.PDFCreatorFormatString" />
+  <xsl:param name="MCR.Viewer.PDFCreatorRestrictionFormatString" />
 
   <xsl:template match="/">
     <xsl:if test="mycoreobject/structure/derobjects/derobject">
@@ -136,6 +138,12 @@
       </xsl:if>
       <xsl:if test="string-length($MCR.Viewer.PDFCreatorStyle) &gt; 0">
         <xsl:value-of select="concat('&quot;pdfCreatorStyle&quot;: &quot;', $MCR.Viewer.PDFCreatorStyle, '&quot;,')" />
+      </xsl:if>
+      <xsl:if test="string-length($MCR.Viewer.PDFCreatorURI) &gt; 0">
+        <xsl:value-of select="concat('&quot;pdfCreatorFormatString&quot;: &quot;', $MCR.Viewer.PDFCreatorFormatString, '&quot;,')" />
+      </xsl:if>
+      <xsl:if test="string-length($MCR.Viewer.PDFCreatorStyle) &gt; 0">
+        <xsl:value-of select="concat('&quot;pdfCreatorRestrictionFormatString&quot;: &quot;', $MCR.Viewer.PDFCreatorRestrictionFormatString, '&quot;,')" />
       </xsl:if>
       chapter: {
       enabled: true,
