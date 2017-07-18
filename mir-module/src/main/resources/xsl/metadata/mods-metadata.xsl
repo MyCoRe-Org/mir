@@ -148,7 +148,7 @@
             <xsl:with-param name="class" select="$class" />
             <xsl:with-param name="title" select="$title" />
             <xsl:with-param name="linkText" select="$classText" />
-            <xsl:with-param name="query" select="concat('&amp;fq=category.top:mir_genres\:', @ID, ' AND (', $state, ' )')" />
+            <xsl:with-param name="query" select="concat('*&amp;fq=category.top:mir_genres\:', @ID, ' AND (', $state, ' )')" />
           </xsl:call-template>
         </xsl:for-each>
       </xsl:when>

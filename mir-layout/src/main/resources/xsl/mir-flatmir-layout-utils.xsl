@@ -46,6 +46,7 @@
             <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
             <div class="form-group">
               <input name="condQuery" placeholder="Suche" class="form-control search-query" id="searchInput" type="text" />
+              <input name="fq" type="hidden" value="objectType:mods AND (state:published OR createdby:{$CurrentUser})" />
             </div>
           </form>
         </div>
