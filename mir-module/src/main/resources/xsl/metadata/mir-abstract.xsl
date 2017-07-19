@@ -111,7 +111,7 @@
           <xsl:call-template name="searchLink">
             <xsl:with-param name="class" select="'access_condition label label-success'" />
             <xsl:with-param name="linkText" select="$linkText" />
-            <xsl:with-param name="query" select="concat('&amp;fq=link:*',$accessCondition, '&amp;owner=createdby:', $owner)" />
+            <xsl:with-param name="query" select="concat('*&amp;fq=link:*',$accessCondition, '&amp;owner=createdby:', $owner)" />
           </xsl:call-template>
         </xsl:if>
         <xsl:variable name="doc-state" select="/mycoreobject/service/servstates/servstate/@categid" />

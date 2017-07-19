@@ -94,15 +94,22 @@
                     <xsl:variable name="encodedQry">
                       <xsl:call-template name="UrlGetParam">
                         <xsl:with-param name="url" select="$RequestURL" />
-                        <xsl:with-param name="par" select="'q'" />
+                        <xsl:with-param name="par" select="'condQuery'" />
                       </xsl:call-template>
                     </xsl:variable>
                     <xsl:value-of select="decoder:decode($encodedQry, 'UTF-8')" />
                   </xsl:variable>
-                  <input class="form-control" name="qry" placeholder="{i18n:translate('mir.placeholder.response.search')}" type="text" value="{$qry}"/>
+                  <xsl:choose>
+                    <xsl:when test="$qry = '*'">
+                      <input class="form-control" name="qry" placeholder="{i18n:translate('mir.placeholder.response.search')}" type="text" />
+                    </xsl:when>
+                    <xsl:otherwise>
+                      <input class="form-control" name="qry" placeholder="{i18n:translate('mir.placeholder.response.search')}" type="text" value="{$qry}"/>
+                    </xsl:otherwise>
+                  </xsl:choose>
                 </xsl:when>
                 <xsl:otherwise>
-                  <input class="form-control" name="qry" placeholder="{i18n:translate('mir.placeholder.response.search')}" type="text" />
+                  <input class="form-control" name="condQuery" placeholder="{i18n:translate('mir.placeholder.response.search')}" type="text" />
                 </xsl:otherwise>
               </xsl:choose>
               <span class="input-group-btn">
