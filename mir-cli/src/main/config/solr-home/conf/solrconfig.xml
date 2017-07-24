@@ -1936,6 +1936,7 @@
     </lst>
     <lst name="appends">
       <!-- filter query: search only in published mods objects-->
+      <str name="fq">objectType:mods</str>
       <str name="fq1">state:published OR {!v=$owner}</str>
       <str name="qf1">id^100 mods.gnd^100 mods.identifier^100 isbn^100 mods.title^80 mods.author^40 mods.publisher^30 mods.name^30 mods.abstract^10 mods.place^5 allMeta^0.002</str>
       <str name="fq2">{!join from=returnId to=id}*:*</str>
