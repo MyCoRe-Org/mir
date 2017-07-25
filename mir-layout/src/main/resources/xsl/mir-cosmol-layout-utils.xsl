@@ -41,11 +41,12 @@
   </xsl:template>
 
   <xsl:template name="mir.navigation">
-    <div class="navbar navbar-default mir-side-nav">
+    <div class="navbar navbar-default mir-side-nav searchfield_box">
       <nav class="mir-main-nav-entries">
         <form action="{$WebApplicationBaseURL}servlets/solr/find" class="navbar-form form-inline" role="search">
           <div class="form-group">
             <input name="condQuery" placeholder="{i18n:translate('mir.cosmol.navsearch.placeholder')}" title="{i18n:translate('mir.cosmol.navsearch.title')}" class="form-control search-query" id="searchInput" type="text" />
+            <input name="owner" type="hidden" value="createdby:{$CurrentUser}" />
           </div>
           <button type="submit" title="{i18n:translate('mir.cosmol.navsearch.title')}" class="btn btn-primary"><span class="glyphicon glyphicon-search"></span></button>
         </form>
