@@ -114,7 +114,7 @@
               </xsl:choose>
               <span class="input-group-btn">
                 <button class="btn btn-primary" type="submit">
-                  <span class="glyphicon glyphicon-search"></span>
+                  <span class="fa fa-search"></span>
                    <xsl:value-of select="i18n:translate('editor.search.search')"/>
                 </button>
               </span>
@@ -160,7 +160,7 @@
     <!-- xsl:if test="string-length(/response/lst[@name='responseHeader']/lst[@name='params']/str[@name='q']) &gt; 0">
       <div class="row">
         <div class="col-xs-12 col-sm-8">
-          <span class="glyphicon glyphicon-remove-circle"></span>
+          <span class="fa fa-remove-circle"></span>
           <xsl:value-of select="/response/lst[@name='responseHeader']/lst[@name='params']/str[@name='q']" />
         </div>
       </div>
@@ -316,14 +316,14 @@
                               <xsl:attribute name="href">
                                     <xsl:value-of select="$editURL" />
                                   </xsl:attribute>
-                              <span class="glyphicon glyphicon-pencil"></span>
+                              <span class="fa fa-pencil"></span>
                               <xsl:value-of select="i18n:translate('object.editObject')" />
                             </xsl:when>
                             <xsl:otherwise>
                               <xsl:attribute name="href">
                                     <xsl:value-of select="'#'" />
                                   </xsl:attribute>
-                              <span class="glyphicon glyphicon-pencil"></span>
+                              <span class="fa fa-pencil"></span>
                               <xsl:value-of select="i18n:translate('object.locked')" />
                             </xsl:otherwise>
                           </xsl:choose>
@@ -903,7 +903,7 @@
     <xsl:param name="icon" select="''" />
     <a class="{$class}" href="{$href}" title="{$text}">
       <xsl:if test="$icon != ''">
-        <span aria-hidden="true" class="glyphicon glyphicon-{$icon}"></span>
+        <span aria-hidden="true" class="fa fa-{$icon}"></span>
       </xsl:if>
       <xsl:value-of select="$text" />
     </a>
@@ -933,7 +933,7 @@
           </xsl:variable>
           <div class="list-group">
             <a class="list-group-item active" href="{$dateFilter}">
-              <span aria-hidden="true" class="glyphicon glyphicon-remove" />
+              <span aria-hidden="true" class="fa fa-remove" />
             </a>
           </div>
         </xsl:if>
@@ -983,7 +983,7 @@
         <a class="hit_option remove_from_basket" href="{$ServletsBaseURL}MCRBasketServlet{$HttpSession}?type=objects&amp;action=remove&amp;id={$identifier}&amp;redirect=referer"
            title=""
         >
-          <span class="glyphicon glyphicon-bookmark"></span>
+          <span class="fa fa-bookmark"></span>
           <xsl:value-of select="i18n:translate('basket.remove')" />
         </a>
       </xsl:when>
@@ -993,7 +993,7 @@
            href="{$ServletsBaseURL}MCRBasketServlet{$HttpSession}?type=objects&amp;action=add&amp;id={$identifier}&amp;uri=mcrobject:{$identifier}&amp;redirect=referer"
            title=""
         >
-          <span class="glyphicon glyphicon-bookmark"></span>
+          <span class="fa fa-bookmark"></span>
           <xsl:value-of select="i18n:translate('basket.add')" />
         </a>
       </xsl:otherwise>
