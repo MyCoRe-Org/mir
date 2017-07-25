@@ -36,7 +36,7 @@
     </xsl:variable>
 
     <button type="submit" class="btn btn-default" name="{$name}">
-      <i class="glyphicon glyphicon-{$symbol}">
+      <i class="fa fa-{$symbol}">
       </i>
     </button>
   </xsl:template>

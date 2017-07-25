@@ -352,7 +352,7 @@
           <xsl:value-of select="$title" />
         </p>
         <div class="mir_copy_wrapper">
-          <span class="glyphicon glyphicon-copy mir_copy_identifier" data-toggle="tooltip" data-placement="left" aria-hidden="true" title="Copy Identifier"
+          <span class="fa fa-copy mir_copy_identifier" data-toggle="tooltip" data-placement="left" aria-hidden="true" title="Copy Identifier"
             data-org-title="Copy Identifier"
           ></span>
         </div>

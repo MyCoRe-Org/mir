@@ -241,7 +241,7 @@
               <h2 id="dropAdvice"><xsl:value-of select="i18n:translate('fileUpload.dropHint')"/></h2>
               <span id="fileSize" class="label label-info"></span>
               <span id="trash" class="label label-warning" onclick="clearFiles();">
-                <span class="glyphicon glyphicon-trash" />
+                <span class="fa fa-trash" />
               </span>
             </div>
             <div class="col-md-3">
