@@ -71,35 +71,64 @@
   </xsl:template>
 
   <xsl:template name="mir.languageMenu">
-    <li class="dropdown">
-      <a data-toggle="dropdown" title="{i18n:translate('mir.language.change')}">
-        <xsl:value-of select="i18n:translate(concat('mir.language.change.', $CurrentLang))" />
-        <span class="caret" />
-      </a>
-      <ul class="dropdown-menu language-menu" role="menu">
-        <xsl:variable name="availableLanguages">
-          <xsl:call-template name="Tokenizer"><!-- use split function from mycore-base/coreFunctions.xsl -->
-            <xsl:with-param name="string" select="$MCR.Metadata.Languages" />
-            <xsl:with-param name="delimiter" select="','" />
-          </xsl:call-template>
-        </xsl:variable>
-        <xsl:for-each select="exslt:node-set($availableLanguages)/token">
-          <xsl:variable name="lang"><xsl:value-of select="mcrxsl:trim(.)" /></xsl:variable>
-          <xsl:if test="$lang!='' and $CurrentLang!=$lang">
-            <li>
-              <xsl:variable name="langURL">
-                <xsl:call-template name="mir.languageLink">
-                  <xsl:with-param name="lang" select="$lang" />
-                </xsl:call-template>
-              </xsl:variable>
-              <a href="{$langURL}" title="{i18n:translate(concat('mir.language.', $lang))}">
-                <xsl:value-of select="i18n:translate(concat('mir.language.change.', $lang))" />
-              </a>
-            </li>
-          </xsl:if>
-        </xsl:for-each>
-      </ul>
-    </li>
+    <xsl:variable name="availableLanguages">
+      <xsl:call-template name="Tokenizer"><!-- use split function from mycore-base/coreFunctions.xsl -->
+        <xsl:with-param name="string" select="$MCR.Metadata.Languages" />
+        <xsl:with-param name="delimiter" select="','" />
+      </xsl:call-template>
+    </xsl:variable>
+    <xsl:variable name="langToken" select="exslt:node-set($availableLanguages)/token" />
+    <xsl:if test="count($langToken) &gt; 1">
+      <xsl:variable name="curLang" select="document(concat('language:',$CurrentLang))" />
+<!--       <language termCode="deu" biblCode="ger" xmlCode="de"> -->
+<!--         <label xml:lang="de">Deutsch</label> -->
+<!--         <label xml:lang="en">German</label> -->
+<!--       </language> -->
+      <li class="dropdown mir-lang">
+        <a data-toggle="dropdown" title="{i18n:translate('mir.language.change')}">
+          <xsl:value-of select="$curLang/language/@xmlCode" />
+          <span class="caret" />
+        </a>
+        <ul class="dropdown-menu language-menu" role="menu">
+          <xsl:for-each select="$langToken">
+            <xsl:variable name="lang"><xsl:value-of select="mcrxsl:trim(.)" /></xsl:variable>
+            <xsl:if test="$lang!='' and $CurrentLang!=$lang">
+              <xsl:variable name="langDef" select="document(concat('language:',$lang))" />
+              <li>
+                <xsl:variable name="langURL">
+                  <xsl:call-template name="mir.languageLink">
+                    <xsl:with-param name="lang" select="$langDef/language/@xmlCode" />
+                  </xsl:call-template>
+                </xsl:variable>
+                <xsl:variable name="langTitle">
+                  <xsl:apply-templates select="$langDef/language" mode="mir.langTitle" />
+                </xsl:variable>
+                <a href="{$langURL}" title="{$langTitle}">
+                  <xsl:value-of select="$langDef/language/@xmlCode" />
+                </a>
+              </li>
+            </xsl:if>
+          </xsl:for-each>
+        </ul>
+      </li>
+    </xsl:if>
+  </xsl:template>
+  <xsl:template match="language" mode="mir.langTitle">
+    <xsl:variable name="code" select="@xmlCode" />
+    <xsl:choose>
+      <xsl:when test="label[lang($code)]">
+        <xsl:value-of select="label[lang($code)]" />
+      </xsl:when>
+      <xsl:when test="label[lang($CurrentLang)]">
+        <xsl:value-of select="label[lang($CurrentLang)]" />
+      </xsl:when>
+      <xsl:when test="label[lang($DefaultLang)]">
+        <xsl:value-of select="label[lang($DefaultLang)]" />
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="@xmlCode" />
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
   <xsl:template name="mir.languageLink">
     <xsl:param name="lang" />
