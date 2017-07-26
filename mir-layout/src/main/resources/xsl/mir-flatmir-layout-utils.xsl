@@ -2,7 +2,8 @@
 <xsl:stylesheet version="1.0"
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns:mcrver="xalan://org.mycore.common.MCRCoreVersion"
-    exclude-result-prefixes="mcrver">
+    xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions"
+    exclude-result-prefixes="mcrver mcrxsl">
 
   <xsl:import href="resource:xsl/layout/mir-common-layout.xsl" />
   <xsl:template name="mir.navigation">
@@ -46,7 +47,9 @@
             <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
             <div class="form-group">
               <input name="condQuery" placeholder="Suche" class="form-control search-query" id="searchInput" type="text" />
-              <input name="owner" type="hidden" value="createdby:{$CurrentUser}" />
+              <xsl:if test="not(mcrxsl:isCurrentUserGuestUser())">
+                <input name="owner" type="hidden" value="createdby:{$CurrentUser}" />
+              </xsl:if>
             </div>
           </form>
         </div>
