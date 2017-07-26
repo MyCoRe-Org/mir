@@ -523,10 +523,6 @@
             <groupId>org.mycore</groupId>
             <artifactId>mycore-coma</artifactId>
           </exclusion>
-          <!-- exclusion>
-            <groupId>org.mycore</groupId>
-            <artifactId>mycore-urn</artifactId>
-          </exclusion -->
           <exclusion>
             <groupId>org.apache.maven.scm</groupId>
             <artifactId>maven-scm-provider-svnexe</artifactId>
