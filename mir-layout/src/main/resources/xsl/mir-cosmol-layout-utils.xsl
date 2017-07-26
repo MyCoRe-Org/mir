@@ -3,7 +3,8 @@
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
   xmlns:mcrver="xalan://org.mycore.common.MCRCoreVersion"
-  exclude-result-prefixes="i18n mcrver">
+  xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions"
+  exclude-result-prefixes="i18n mcrver mcrxsl">
 
   <xsl:import href="resource:xsl/layout/mir-common-layout.xsl" />
 
@@ -47,7 +48,9 @@
         <form action="{$WebApplicationBaseURL}servlets/solr/find" class="navbar-form form-inline" role="search">
           <div class="form-group">
             <input name="condQuery" placeholder="{i18n:translate('mir.cosmol.navsearch.placeholder')}" title="{i18n:translate('mir.cosmol.navsearch.title')}" class="form-control search-query" id="searchInput" type="text" />
-            <input name="owner" type="hidden" value="createdby:{$CurrentUser}" />
+            <xsl:if test="not(mcrxsl:isCurrentUserGuestUser())">
+              <input name="owner" type="hidden" value="createdby:{$CurrentUser}" />
+            </xsl:if>
           </div>
           <button type="submit" title="{i18n:translate('mir.cosmol.navsearch.title')}" class="btn btn-primary"><span class="glyphicon glyphicon-search"></span></button>
         </form>
