@@ -91,6 +91,11 @@
           <xsl:with-param name="viewerType" select="'pdf'"/>
           <xsl:with-param name="derId" select="$derId"/>
         </xsl:call-template>
+        <noscript>
+          <a href="{$ServletsBaseURL}MCRFileNodeServlet/{$derId}/{$mainFile}">
+            <xsl:value-of select="$mainFile" />
+          </a>
+        </noscript>
       </xsl:when>
       <xsl:otherwise>
         <!-- The file cannot be displayed -->
