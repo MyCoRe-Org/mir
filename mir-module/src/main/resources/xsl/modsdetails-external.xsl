@@ -891,9 +891,9 @@
       <xsl:if test="//mods:originInfo[@eventType='creation']/mods:publisher">
         <div class="hit_pub_name">
           <span class="label_publisher">
-            <xsl:value-of select="concat(i18n:translate('component.mods.metaData.dictionary.created'),': ')" />
+            <xsl:value-of select="concat(i18n:translate('component.mods.metaData.dictionary.publisher.creation'),': ')" />
           </span>
-          <xsl:value-of select="//mods:originInfo/mods:publisher" />
+          <xsl:value-of select="//mods:originInfo[@eventType='creation']/mods:publisher" />
         </div>
       </xsl:if>
     </xsl:for-each>

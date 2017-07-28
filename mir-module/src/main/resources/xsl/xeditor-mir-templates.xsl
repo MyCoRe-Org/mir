@@ -180,7 +180,7 @@
   <xsl:template match="mir:template[contains('textInput|passwordInput|selectInput|checkboxList|radioList|textArea', @name)]" mode="validation">
     <xsl:if test="@required = 'true' or @validate = 'true'">
       <xed:if test="contains($xed-validation-marker, 'has-error')">
-        <span class="glyphicon glyphicon-warning-sign form-control-feedback" data-toggle="tooltip" data-placement="top" title="{concat('{i18n:', @i18n.error, '}')}"></span>
+        <span class="fa fa-exclamation-triangle form-control-feedback" data-toggle="tooltip" data-placement="top" title="{concat('{i18n:', @i18n.error, '}')}"></span>
       </xed:if>
       <xed:validate display="local" required="{@required}">
         <xsl:copy-of select="@*[contains('matches|test|format|type', name())]" />
@@ -359,7 +359,7 @@
         <xsl:attribute name="title">
           <xsl:value-of select="concat('{i18n:',@tooltip,'}')" />
         </xsl:attribute>
-        <i class="glyphicon glyphicon-info-sign" />
+        <i class="fa fa-info-circle" />
       </span>
     </xsl:if>
   </xsl:template>
