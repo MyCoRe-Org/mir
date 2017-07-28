@@ -1,13 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0"
-  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  xmlns:mcr="xalan://org.mycore.common.xml.MCRXMLFunctions"
-  xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
-  xmlns:mods="http://www.loc.gov/mods/v3"
-  xmlns:xlink="http://www.w3.org/1999/xlink"
-  xmlns:acl="xalan://org.mycore.access.MCRAccessManager"
-  xmlns:embargo="xalan://org.mycore.mods.MCRMODSEmbargoUtils"
-  exclude-result-prefixes="i18n mcr mods acl xlink embargo"
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:mcr="xalan://org.mycore.common.xml.MCRXMLFunctions"
+  xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation" xmlns:mods="http://www.loc.gov/mods/v3" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:acl="xalan://org.mycore.access.MCRAccessManager"
+  xmlns:embargo="xalan://org.mycore.mods.MCRMODSEmbargoUtils" exclude-result-prefixes="i18n mcr mods acl xlink embargo"
 >
   <xsl:import href="xslImport:modsmeta:metadata/mir-collapse-files.xsl" />
   <xsl:template match="/">
@@ -16,9 +10,7 @@
 
         <xsl:variable name="objID" select="mycoreobject/@ID" />
         <div id="mir-collapse-files">
-          <xsl:for-each
-            select="mycoreobject/structure/derobjects/derobject[key('rights', @xlink:href)/@read]"
-          >
+          <xsl:for-each select="mycoreobject/structure/derobjects/derobject[key('rights', @xlink:href)/@read]">
             <xsl:variable name="derId" select="@xlink:href" />
             <xsl:variable name="derivateXML" select="document(concat('mcrobject:',$derId))" />
 
@@ -68,6 +60,12 @@
                       <div class="bounce3"></div>
                     </div>
                   </div>
+                  <noscript>
+                    <br />
+                    <a href="{$ServletsBaseURL}MCRFileNodeServlet/{$derId}">
+                      <xsl:value-of select="i18n:translate('metadata.files.toDerivate')" />
+                    </a>
+                  </noscript>
                 </xsl:when>
                 <xsl:otherwise>
                   <div id="collapse{@xlink:href}" class="row body collapse in">
@@ -84,7 +82,8 @@
 
           <xsl:if
             test="mycoreobject/structure/derobjects/derobject and
-                        not(mycoreobject/structure/derobjects/derobject[key('rights', @xlink:href)/@read])">
+                        not(mycoreobject/structure/derobjects/derobject[key('rights', @xlink:href)/@read])"
+          >
             <div id="mir-access-restricted">
               <h3>
                 <xsl:value-of select="i18n:translate('metadata.files.file')" />
