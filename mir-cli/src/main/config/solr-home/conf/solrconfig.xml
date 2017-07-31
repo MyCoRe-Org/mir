@@ -1119,6 +1119,8 @@
       <str name="fmap.a">links</str>
       <str name="fmap.div">ignored_</str>
     </lst>
+    <!-- tika config -->
+    <str name="tika.config">tikaconfig.xml</str>
   </requestHandler>
   <!-- MyCoRe modification END -->
 
