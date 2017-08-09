@@ -194,7 +194,7 @@
             <div class="panel-body collapse in">
               <ul class="filter">
                 <xsl:apply-templates select="/response/lst[@name='facet_counts']/lst[@name='facet_fields']">
-                  <xsl:with-param name="facet_name" select="'mods.type'" />
+                  <xsl:with-param name="facet_name" select="'mods.genre'" />
                 </xsl:apply-templates>
               </ul>
             </div>
@@ -239,8 +239,8 @@
     <xsl:variable name="mcrobj" select="." />
     <xsl:variable name="mods-type">
       <xsl:choose>
-        <xsl:when test="str[@name='mods.type']">
-          <xsl:value-of select="str[@name='mods.type']" />
+        <xsl:when test="str[@name='mods.genre']">
+          <xsl:value-of select="str[@name='mods.genre']" />
         </xsl:when>
         <xsl:otherwise>
           <xsl:value-of select="'article'" />

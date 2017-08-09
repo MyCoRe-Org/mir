@@ -864,7 +864,7 @@
       -->
        <lst name="appends">
          <str name="facet">true</str>
-         <str name="facet.field">mods.type</str>
+         <str name="facet.field">mods.genre</str>
          <str name="facet.mincount">1</str>
        </lst>
     <!-- "invariants" are a way of letting the Solr maintainer lock down
@@ -1944,7 +1944,7 @@
       <str name="fq2">{!join from=returnId to=id}*:*</str>
       <str name="qf2">content</str>
       <str name="facet">true</str>
-      <str name="facet.field">mods.type</str>
+      <str name="facet.field">mods.genre</str>
       <str name="facet.mincount">1</str>
     </lst>
     <lst name="invariants">
