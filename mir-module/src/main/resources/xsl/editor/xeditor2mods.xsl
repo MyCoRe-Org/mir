@@ -112,24 +112,17 @@
           <xsl:value-of select="substring-after(., 'http://www.viaf.org/')" />
         </mods:nameIdentifier>
       </xsl:when>
+      <xsl:when test="starts-with(../@authorityURI, 'http://d-nb.info/gnd/')">
+        <xsl:attribute name="valueURI">
+          <xsl:value-of select="concat(../@authorityURI,.)" />
+        </xsl:attribute>
+      </xsl:when>
       <xsl:otherwise>
         <xsl:attribute name="valueURI">
           <xsl:value-of select="concat(../@authorityURI,'#',.)" />
         </xsl:attribute>
       </xsl:otherwise>
     </xsl:choose>
-  </xsl:template>
-
-  <xsl:template match="mods:subject/mods:topic/@valueURIxEditor">
-      <xsl:attribute name="valueURI">
-        <xsl:value-of select="concat(../@authorityURI,.)" />
-      </xsl:attribute>
-  </xsl:template>
-
-  <xsl:template match="mods:subject/mods:geographic/@valueURIxEditor">
-    <xsl:attribute name="valueURI">
-      <xsl:value-of select="concat(../@authorityURI,.)" />
-    </xsl:attribute>
   </xsl:template>
 
   <xsl:template match="mods:nameIdentifier[@type=preceding-sibling::mods:nameIdentifier/@type or contains(../@valueURIxEditor, @type)]">
