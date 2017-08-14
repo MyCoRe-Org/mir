@@ -7,6 +7,8 @@
     <xed:form class="form-horizontal" role="form">
       <xed:cleanup-rule xpath="//condition" relevant-if="(string-length(@value) &gt; 0) or value[string-length(text()) &gt; 0 ]" />
       <xed:cleanup-rule xpath="//boolean" relevant-if="boolean|condition" />
+      <xed:cleanup-rule xpath="//condition[@selectable='true']" relevant-if="@id = ../selectCondition/@keep" />
+      <xed:cleanup-rule xpath="//*/@selectable|//selectCondition" relevant-if="false()" />
       <xed:source uri="searchInput:{id}" />
       <xed:source uri="webapp:editor/search/template/complex.xml" />
       <xed:bind xpath="query">
@@ -122,13 +124,21 @@
               <!-- Volltext -->
                 <div class="form-group">
                   <div class="col-md-offset-3 col-md-9">
-                    <xed:bind xpath="condition[@field='derCount'][@value='0']/@operator"
-                      default="&gt;=">
-                      <label class="checkbox-inline">
-                        <input type="checkbox" value="&gt;" />
-                        <xed:output i18n="editor.search.mir.hasFiles" />
-                      </label>
+                    <xed:bind xpath="selectCondition[@delete='true']/@keep">
+                      <select class="form-control">
+                        <option value="">
+                          <xed:output i18n="mir.select" />
+                        </option>
+                        <option value="condFullText">
+                          <xed:output i18n="editor.search.mir.hasFiles" />
+                        </option>
+                        <option value="condOpenAccess">
+                          <xed:output i18n="editor.search.mir.openAccess" />
+                        </option>
+                      </select>
                     </xed:bind>
+                    <xed:bind xpath="condition[@field='derCount'][@value='0'][@operator='&gt;'][@selectable='true'][@id='condFullText']" />
+                    <xed:bind xpath="condition[@field='worldReadableComplete'][@value='true'][@operator='='][@selectable='true'][@id='condOpenAccess']" />
                   </div>
                 </div>
               </xed:bind>
@@ -141,12 +151,6 @@
                   <div class="col-md-4">
                     <xed:bind xpath="@name">
                       <select class="form-control">
-                        <option value="mods.dateIssued">
-                          <xed:output i18n="component.mods.metaData.dictionary.dateIssued" />
-                        </option>
-                        <option value="score">
-                          <xed:output i18n="editor.search.score" />
-                        </option>
                       </select>
                     </xed:bind>
                   </div>
