@@ -151,6 +151,12 @@
                   <div class="col-md-4">
                     <xed:bind xpath="@name">
                       <select class="form-control">
+                        <option value="mods.dateIssued">
+                          <xed:output i18n="component.mods.metaData.dictionary.dateIssued" />
+                        </option>
+                        <option value="score">
+                          <xed:output i18n="editor.search.score" />
+                        </option>
                       </select>
                     </xed:bind>
                   </div>
