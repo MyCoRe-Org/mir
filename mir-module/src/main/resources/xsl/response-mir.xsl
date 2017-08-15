@@ -237,7 +237,7 @@
     -->
     <xsl:variable name="identifier" select="@id" />
     <xsl:variable name="mcrobj" select="." />
-    <xsl:variable name="mods-type">
+    <xsl:variable name="mods-genre">
       <xsl:choose>
         <xsl:when test="str[@name='mods.genre']">
           <xsl:value-of select="str[@name='mods.genre']" />
@@ -247,7 +247,7 @@
         </xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
-    <xsl:variable name="mods-type-i18n" select="mcrxsl:getDisplayName('mir_genres',$mods-type)" />
+    <xsl:variable name="mods-genre-i18n" select="mcrxsl:getDisplayName('mir_genres',$mods-genre)" />
     <xsl:variable name="hitItemClass">
       <xsl:choose>
         <xsl:when test="$hitNumberOnPage mod 2 = 1">
@@ -396,7 +396,7 @@
                     <xsl:variable name="viewerLink" select="concat($WebApplicationBaseURL, 'rsc/viewer/', $derivid,'/', $derivates/str[@name='iviewFile'][1])" />
                     <xsl:choose>
                       <xsl:when test="acl:checkPermissionForReadingDerivate($derivid)">
-                        <a class="hit_option hit_download" href="{$viewerLink}" title="{$mods-type-i18n}">
+                        <a class="hit_option hit_download" href="{$viewerLink}" title="{$mods-genre-i18n}">
                           <div class="hit_icon"
                             style="background-image: url('{$WebApplicationBaseURL}servlets/MCRTileCombineServlet/THUMBNAIL/{$derivid}/{$derivates/str[@name='iviewFile'][1]}');"
                           >
@@ -429,7 +429,7 @@
                     </xsl:variable>
                     <xsl:choose>
                       <xsl:when test="acl:checkPermissionForReadingDerivate($derivid)">
-                        <a class="hit_option hit_download" href="{$viewerLink}" title="{$mods-type-i18n}">
+                        <a class="hit_option hit_download" href="{$viewerLink}" title="{$mods-genre-i18n}">
                           <div class="hit_icon" style="background-image: url('{$WebApplicationBaseURL}img/pdfthumb/{$filePath}?centerThumb=no');">
                           </div>
                         </a>
@@ -513,7 +513,7 @@
             <div class="hit_tnd_content">
               <div class="hit_type">
                 <span class="label label-info">
-                  <xsl:value-of select="$mods-type-i18n" />
+                  <xsl:value-of select="$mods-genre-i18n" />
                 </span>
               </div>
               <xsl:if test="arr[@name='category.top']/str[contains(text(), 'mir_licenses:')]">
