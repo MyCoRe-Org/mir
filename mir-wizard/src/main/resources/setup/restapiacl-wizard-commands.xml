@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<commands>
+  <command file="resource:setup/acl/grant-all.xml" describeBy="always allowed">update permission read for id
+    restapi:/ with rulefile {file} described by {describeBy}
+  </command>
+</commands>

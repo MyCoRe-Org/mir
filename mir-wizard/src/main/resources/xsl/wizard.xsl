@@ -56,6 +56,9 @@
               <xsl:when test="name() = 'import.webacls'">
                 <xsl:value-of select="i18n:translate('component.mir.wizard.importWebACLs')" />
               </xsl:when>
+              <xsl:when test="name() = 'import.restapiacls'">
+                <xsl:value-of select="i18n:translate('component.mir.wizard.importRestApiACLs')" />
+              </xsl:when>
               <xsl:when test="name() = 'solr'">
                 <xsl:value-of select="i18n:translate('component.mir.wizard.installSolrHome')" />
               </xsl:when>
