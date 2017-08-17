@@ -696,8 +696,7 @@
     <xsl:if test="key('rights', $deriv)/@read">
       <xsl:variable select="concat('mcrobject:',$deriv)" name="derivlink" />
       <xsl:variable select="document($derivlink)" name="derivate" />
-      <xsl:variable name="objectWithURN" select="pi:hasIdentifierCreated('DNBURN', /mycoreobject/@ID, '')" />
-
+      <xsl:variable name="hasManagedPI" select="piUtil:hasManagedPI($parentObjID)" />
 
       <div class="options pull-right">
         <div class="btn-group">
@@ -734,7 +733,7 @@
                   <xsl:attribute name="class">last</xsl:attribute>
                 </xsl:if>
                 <xsl:choose>
-                  <xsl:when test="$objectWithURN=false()">
+                  <xsl:when test="not($hasManagedPI)">
                     <a href="{$ServletsBaseURL}derivate/update{$HttpSession}?objectid={../../../@ID}&amp;id={$deriv}" class="option">
                       <xsl:value-of select="i18n:translate('component.mods.metaData.options.addFile')" />
                     </a>
@@ -745,7 +744,7 @@
                 </xsl:choose>
               </li>
             </xsl:if>
-            <xsl:if test="key('rights', $deriv)/@delete and $objectWithURN=false()">
+            <xsl:if test="key('rights', $deriv)/@delete and not($hasManagedPI)">
               <li class="last">
                 <a href="{$ServletsBaseURL}derivate/delete{$HttpSession}?id={$deriv}" class="confirm_deletion option" data-text="{i18n:translate('mir.confirm.derivate.text')}">
                   <xsl:value-of select="i18n:translate('component.mods.metaData.options.delDerivate')" />
