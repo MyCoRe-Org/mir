@@ -123,22 +123,31 @@
                 </div>
               <!-- Volltext -->
                 <div class="form-group">
-                  <div class="col-md-offset-3 col-md-9">
-                    <xed:bind xpath="selectCondition[@delete='true']/@keep">
-                      <select class="form-control">
-                        <option value="">
-                          <xed:output i18n="mir.select" />
-                        </option>
-                        <option value="condFullText">
-                          <xed:output i18n="editor.search.mir.hasFiles" />
-                        </option>
-                        <option value="condOpenAccess">
-                          <xed:output i18n="editor.search.mir.openAccess" />
-                        </option>
-                      </select>
-                    </xed:bind>
-                    <xed:bind xpath="condition[@field='derCount'][@value='0'][@operator='&gt;'][@selectable='true'][@id='condFullText']" />
-                    <xed:bind xpath="condition[@field='worldReadableComplete'][@value='true'][@operator='='][@selectable='true'][@id='condOpenAccess']" />
+                  <label for="inputFulltext1" class="col-md-3 control-label">
+                    <xed:output i18n="mir.dropdown.content" />
+                  </label>
+                  <div class="col-md-9">
+                    <div class="input-group">
+                      <xed:bind xpath="condition[@field='derCount'][@value='0'][@operator='&gt;'][@selectable='true'][@id='condFullText']" />
+                      <xed:bind xpath="condition[@field='worldReadableComplete'][@value='true'][@operator='='][@selectable='true'][@id='condOpenAccess']" />
+                      <!-- selectCondition must always be after @selectable conditions for xed:cleanup-rule to work -->
+                      <xed:bind xpath="selectCondition[@delete='true']/@keep">
+                        <select class="form-control input-md" id="inputFulltext1">
+                          <option value="">
+                            <xed:output i18n="mir.select" />
+                          </option>
+                          <option value="condFullText">
+                            <xed:output i18n="editor.search.mir.hasFiles" />
+                          </option>
+                          <option value="condOpenAccess">
+                            <xed:output i18n="editor.search.mir.openAccess" />
+                          </option>
+                        </select>
+                        <span class="input-group-addon" data-toggle="tooltip" data-html="true" title="{i18n:editor.search.fulltext.tooltip}">
+                          <i class="glyphicon glyphicon-info-sign" />
+                        </span>
+                      </xed:bind>
+                    </div>
                   </div>
                 </div>
               </xed:bind>
@@ -174,13 +183,13 @@
                   </div>
                 </div>
               </xed:bind>
-            </div>
-          </div>
         <!-- submit -->
-          <div class="panel-footer clearfix">
-            <div class="pull-right">
-              <mir:template name="submitButton" i18n="editor.search.search"
-                target="servlet_MCRQLSearchServlet" order="primary-button"/>
+              <div class="panel-footer clearfix">
+                <div class="pull-right">
+                  <mir:template name="submitButton" i18n="editor.search.search"
+                    target="servlet_MCRQLSearchServlet" order="primary-button"/>
+                </div>
+              </div>
             </div>
           </div>
         </div>
