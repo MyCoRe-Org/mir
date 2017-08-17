@@ -132,6 +132,8 @@
     <field name="derivateLink" type="string" multiValued="true" />
     <field name="category" type="string" multiValued="true"/>
     <field name="category.top" type="string" multiValued="true"/>
+    <field name="worldReadable" type="boolean" />
+    <field name="worldReadableComplete" type="boolean" />
 
     <field name="created" type="date" />
     <field name="modified" type="date" />
