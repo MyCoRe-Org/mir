@@ -245,6 +245,12 @@
     </mods:identifier>
   </xsl:template>
 
+  <xsl:template match="mods:identifierManaged">
+    <mods:identifier>
+      <xsl:apply-templates select="@*|node()" />
+    </mods:identifier>
+  </xsl:template>
+
   <!-- In editor, all variants of page numbers are edited in a single text field -->
   <xsl:template match="mods:part/mods:extent[@unit='pages']" xmlns:pages="xalan://org.mycore.mods.MCRMODSPagesHelper">
     <xsl:copy-of select="pages:buildExtentPagesNodeSet(mods:list/text())" />

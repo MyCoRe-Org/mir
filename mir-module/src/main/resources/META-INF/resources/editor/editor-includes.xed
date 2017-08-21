@@ -931,25 +931,17 @@
     <mir:textfield xpath="mods:identifier[@type='project']" label="mir.identifier.project" help-text="{i18n:mir.help.identifier.project}" />
   </xed:template>
 
-  <xed:template id="identifier.repeated">
-    <xed:repeat xpath="mods:identifier" min="1" max="10">
-      <div class="form-group {$xed-validation-marker}">
-        <xed:choose>
-          <xed:when
-            test="xed:call-java('org.mycore.mir.pi.MCRPIUtil','isManagedPI', string(text()), string(/mycoreobject/@ID))">
+  <xed:template id="identifier.managed">
+    <xed:if test="mods:identifierManaged">
+      <xed:repeat xpath="mods:identifierManaged" min="0" max="10">
+        <div class="form-group {$xed-validation-marker}">
           <label class="col-md-3 control-label">
             <xed:choose>
               <xed:when test="@type='doi'">
                 <xed:output i18n="mir.identifier.doi" />
               </xed:when>
-              <xed:when test="@type='hdl'">
-                <xed:output i18n="mir.identifier.hdl" />
-              </xed:when>
               <xed:when test="@type='urn'">
                 <xed:output i18n="mir.identifier.urn" />
-              </xed:when>
-              <xed:when test="@type='uri'">
-                <xed:output i18n="mir.identifier.uri" />
               </xed:when>
               <xed:otherwise>
                 <xed:output value="$type" i18n="mir.identifier.other" />
@@ -957,32 +949,37 @@
             </xed:choose>
           </label>
           <div class="col-md-6">
-            <input type="text" size="20" class="form-control form-control-inline" disabled="true"
-                   value="{text()}" />
+            <input type="text" size="20" class="form-control form-control-inline managedIdentifier" disabled="true"
+                   value="{text()}" data-type="{@type}"/>
           </div>
-            <div class="col-md-3"></div>
-          </xed:when>
-          <xed:otherwise>
-            <div class="col-md-3" style="text-align:right; font-weight:bold;">
-              <xed:bind xpath="@type" name="type">
-                <select class="form-control">
-                  <xed:include uri="xslStyle:items2options:classification:editor:-1:children:identifier" />
-                  <xed:load-resource name="identifier" uri="classification:metadata:-1:children:identifier" />
-                  <xed:if test="not($identifier//category[@ID=$type]) and not($type='')">
-                    <option value="{$type}" selected="">
-                      <xed:output value="$type" i18n="mir.identifier.other" />
-                    </option>
-                  </xed:if>
-                </select>
-              </xed:bind>
-            </div>
-            <div class="col-md-6">
-              <input type="text" size="30" class="form-control form-control-inline" />
-            </div>
-            <mir:help-pmud help-text="{i18n:mir.help.identifier}" pmud="true" />
-          </xed:otherwise>
-        </xed:choose>
+          <div class="col-md-3"></div>
+        </div>
+      </xed:repeat>
+    </xed:if>
+  </xed:template>
+
+  <xed:template id="identifier.repeated">
+    <xed:repeat xpath="mods:identifier" min="1" max="10">
+      <div class="form-group {$xed-validation-marker}">
+        <div class="col-md-3" style="text-align:right; font-weight:bold;">
+          <xed:bind xpath="@type" name="type">
+            <select class="form-control identifierSelect">
+              <xed:include uri="xslStyle:items2options:classification:editor:-1:children:identifier" />
+              <xed:load-resource name="identifier" uri="classification:metadata:-1:children:identifier" />
+              <xed:if test="not($identifier//category[@ID=$type]) and not($type='')">
+                <option value="{$type}" selected="">
+                  <xed:output value="$type" i18n="mir.identifier.other" />
+                </option>
+              </xed:if>
+            </select>
+          </xed:bind>
+        </div>
+        <div class="col-md-6">
+          <input type="text" size="30" class="form-control form-control-inline" />
+        </div>
+        <mir:help-pmud help-text="{i18n:mir.help.identifier}" pmud="true" />
       </div>
+      <!--</div>-->
     </xed:repeat>
   </xed:template>
 
