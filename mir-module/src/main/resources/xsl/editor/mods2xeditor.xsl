@@ -3,7 +3,8 @@
   xmlns:mcrmods="xalan://org.mycore.mods.classification.MCRMODSClassificationSupport" xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
   xmlns:mirmapper="xalan://org.mycore.mir.impexp.MIRClassificationMapper" xmlns:mirdateconverter="xalan://org.mycore.mir.date.MIRDateConverter"
   xmlns:mirvalidationhelper="xalan://org.mycore.mir.validation.MIRValidationHelper"
-  exclude-result-prefixes="mcrmods xlink mirmapper i18n mirdateconverter mirvalidationhelper" version="1.0"
+  xmlns:piUtil="org.mycore.mir.pi.MCRPIUtil"
+  exclude-result-prefixes="mcrmods xlink mirmapper i18n mirdateconverter mirvalidationhelper piUtil" version="1.0"
 >
 
   <xsl:include href="copynodes.xsl" />
@@ -117,6 +118,21 @@
     <mods:openAireID>
       <xsl:value-of select="." />
     </mods:openAireID>
+  </xsl:template>
+
+  <xsl:template match="mods:identifier[@type='urn']">
+    <xsl:choose>
+      <xsl:when test="piUtil:isManagedPI(text(), /mycoreobject/@ID)">
+        <mods:identifierManaged type="{@type}" >
+          <xsl:value-of select="text()"/>
+        </mods:identifierManaged>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:copy>
+          <xsl:apply-templates select="@*|node()" />
+        </xsl:copy>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
 
   <!-- to @categId -->
