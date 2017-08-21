@@ -262,8 +262,11 @@
     <!-- generate browsing url -->
     <xsl:variable name="href" select="concat($proxyBaseURL,$HttpSession,$solrParams)" />
     <xsl:variable name="startPosition" select="$hitNumberOnPage - 1 + (($currentPage) -1) * $rows" />
-    <xsl:variable name="hitHref">
+    <xsl:variable name="completeHref">
       <xsl:value-of select="concat($href, '&amp;start=',$startPosition, '&amp;fl=id&amp;rows=1&amp;origrows=', $rows, '&amp;XSL.Style=browse')" />
+    </xsl:variable>
+    <xsl:variable name="hitHref">
+      <xsl:value-of select="mcrxsl:regexp($completeHref, '&amp;XSL.Transformer=response-resultlist', '')" />
     </xsl:variable>
 
     <!-- derivate variables -->
