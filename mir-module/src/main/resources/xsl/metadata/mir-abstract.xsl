@@ -45,6 +45,15 @@
         </xsl:choose>
       </xsl:variable>
 
+      <xsl:variable name="firstDate">
+        <xsl:for-each select="$mods/mods:originInfo[not(@eventType) or @eventType='publication']/mods:dateIssued[@encoding='w3cdtf']">
+          <xsl:sort data-type="number" select="count(ancestor::mods:originInfo[not(@eventType) or @eventType='publication'])" />
+          <xsl:if test="position()=1">
+            <xsl:value-of select="." />
+          </xsl:if>
+        </xsl:for-each>
+      </xsl:variable>
+
         <!-- TODO: Update badges -->
       <div id="badges">
         <xsl:call-template name="categorySearchLink">
@@ -55,41 +64,55 @@
 
         <xsl:if test="string-length($dateIssued) > 0">
           <time itemprop="datePublished" datetime="{$dateIssued}" data-toggle="tooltip" title="Publication date">
-            <span class="date_published label label-primary">
-              <xsl:variable name="date">
-                <xsl:call-template name="Tokenizer"><!-- use split function from mycore-base/coreFunctions.xsl -->
-                  <xsl:with-param name="string" select="$dateIssued" />
-                  <xsl:with-param name="delimiter" select="'|'" />
-                </xsl:call-template>
-              </xsl:variable>
-              <xsl:for-each select="exslt:node-set($date)/token">
-                <xsl:if test="position()=2">
-                  <xsl:text> - </xsl:text>
-                </xsl:if>
-                <xsl:if test="mcrxsl:trim(.) != ''">
-                  <xsl:variable name="format">
-                    <xsl:choose>
-                      <xsl:when test="string-length(normalize-space(.))=4">
-                        <xsl:value-of select="i18n:translate('metaData.dateYear')" />
-                      </xsl:when>
-                      <xsl:when test="string-length(normalize-space(.))=7">
-                        <xsl:value-of select="i18n:translate('metaData.dateYearMonth')" />
-                      </xsl:when>
-                      <xsl:when test="string-length(normalize-space(.))=10">
-                        <xsl:value-of select="i18n:translate('metaData.dateYearMonthDay')" />
-                      </xsl:when>
-                      <xsl:otherwise>
-                        <xsl:value-of select="i18n:translate('metaData.dateTime')" />
-                      </xsl:otherwise>
-                    </xsl:choose>
-                  </xsl:variable>
-                  <xsl:call-template name="formatISODate">
-                    <xsl:with-param name="date" select="." />
-                    <xsl:with-param name="format" select="$format" />
+              <xsl:variable name="dateText">
+                <xsl:variable name="date">
+                  <xsl:call-template name="Tokenizer"><!-- use split function from mycore-base/coreFunctions.xsl -->
+                    <xsl:with-param name="string" select="$dateIssued" />
+                    <xsl:with-param name="delimiter" select="'|'" />
                   </xsl:call-template>
-                </xsl:if>
-              </xsl:for-each>
-            </span>
+                </xsl:variable>
+                <xsl:for-each select="exslt:node-set($date)/token">
+                  <xsl:if test="position()=2">
+                    <xsl:text> - </xsl:text>
+                  </xsl:if>
+                  <xsl:if test="mcrxsl:trim(.) != ''">
+                    <xsl:variable name="format">
+                      <xsl:choose>
+                        <xsl:when test="string-length(normalize-space(.))=4">
+                          <xsl:value-of select="i18n:translate('metaData.dateYear')" />
+                        </xsl:when>
+                        <xsl:when test="string-length(normalize-space(.))=7">
+                          <xsl:value-of select="i18n:translate('metaData.dateYearMonth')" />
+                        </xsl:when>
+                        <xsl:when test="string-length(normalize-space(.))=10">
+                          <xsl:value-of select="i18n:translate('metaData.dateYearMonthDay')" />
+                        </xsl:when>
+                        <xsl:otherwise>
+                          <xsl:value-of select="i18n:translate('metaData.dateTime')" />
+                        </xsl:otherwise>
+                      </xsl:choose>
+                    </xsl:variable>
+                    <xsl:call-template name="formatISODate">
+                      <xsl:with-param name="date" select="." />
+                      <xsl:with-param name="format" select="$format" />
+                    </xsl:call-template>
+                  </xsl:if>
+                </xsl:for-each>
+              </xsl:variable>
+            <xsl:choose>
+              <xsl:when test="$firstDate and $firstDate != ''">
+                <xsl:call-template name="searchLink">
+                  <xsl:with-param name="class" select="'date_published label label-primary'" />
+                  <xsl:with-param name="linkText" select="$dateText" />
+                  <xsl:with-param name="query" select="concat('*&amp;fq=mods.dateIssued:',$firstDate, '&amp;owner=createdby:', $owner)" />
+                </xsl:call-template>
+              </xsl:when>
+              <xsl:otherwise>
+                <span class="date_published label label-primary">
+                  <xsl:value-of select="$dateText"/>
+                </span>
+              </xsl:otherwise>
+            </xsl:choose>
           </time>
         </xsl:if>
 
