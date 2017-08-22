@@ -239,8 +239,8 @@
     <xsl:variable name="mcrobj" select="." />
     <xsl:variable name="mods-genre">
       <xsl:choose>
-        <xsl:when test="str[@name='mods.genre']">
-          <xsl:value-of select="str[@name='mods.genre']" />
+        <xsl:when test="arr[@name='mods.genre']">
+          <xsl:value-of select="arr[@name='mods.genre']/str" />
         </xsl:when>
         <xsl:otherwise>
           <xsl:value-of select="'article'" />
