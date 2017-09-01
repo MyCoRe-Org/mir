@@ -616,6 +616,7 @@
   <xsl:template name="file">
     <xsl:if test="$ifs/der">
       <xsl:variable name="ddbfilenumber" select="count($ifs/der/mcr_directory/children//child[@type='file'])" />
+      <xsl:variable name="dernumber" select="count($ifs/der)" />
       <ddb:fileNumber>
         <xsl:value-of select="$ddbfilenumber" />
       </ddb:fileNumber>
@@ -631,7 +632,14 @@
             <xsl:value-of select="concat($ServletsBaseURL,'MCRFileNodeServlet/',$derId,$filePath)" />
           </xsl:when>
           <xsl:otherwise>
-            <xsl:value-of select="concat($ServletsBaseURL,'MCRZipServlet/',/mycoreobject/@ID)" />
+            <xsl:choose>
+              <xsl:when test="$dernumber = 1">
+                <xsl:value-of select="concat($ServletsBaseURL,'MCRZipServlet/',$ifs/der/@id)" />
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:value-of select="concat($ServletsBaseURL,'MCRZipServlet/',/mycoreobject/@ID)" />
+              </xsl:otherwise>
+            </xsl:choose>
           </xsl:otherwise>
         </xsl:choose>
       </ddb:transfer>
