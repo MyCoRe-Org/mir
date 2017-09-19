@@ -268,6 +268,14 @@
               <xsl:value-of select="mods:displayForm" />
             </pc:organisationName>
           </xsl:when>
+          <xsl:when test="mods:namePart[@type='family'] and mods:namePart[@type='given']">
+            <pc:foreName>
+              <xsl:value-of select="normalize-space(mods:namePart[@type='given'])" />
+            </pc:foreName>
+            <pc:surName>
+              <xsl:value-of select="normalize-space(mods:namePart[@type='family'])" />
+            </pc:surName>
+          </xsl:when>
           <xsl:when test="contains(mods:displayForm, ',')">
             <pc:foreName>
               <xsl:value-of select="normalize-space(substring-after(mods:displayForm,','))" />
