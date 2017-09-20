@@ -315,6 +315,7 @@
     match="mods:dateIssued[@point='start'] | mods:dateCreated[@point='start'] | mods:dateCaptured[@point='start'] | mods:dateOther[@point='start'] ">
     <xsl:variable name="dateName" select="local-name()"/>
     <dc:date>
+      <!-- for ranges see: http://dublincore.org/documents/date-element/ -->
       <xsl:value-of select="concat(., '/', ../*[local-name()=$dateName and @point='end'])" />
     </dc:date>
   </xsl:template>
