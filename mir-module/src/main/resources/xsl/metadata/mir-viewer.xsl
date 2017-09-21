@@ -73,7 +73,7 @@
             </xsl:call-template>
           </xsl:when>
           <xsl:otherwise>
-            <div class="well">
+            <div class="well viewer">
               <xsl:value-of select="i18n:translate('metaData.previewInProcessing', $derId)" />
             </div>
           </xsl:otherwise>
