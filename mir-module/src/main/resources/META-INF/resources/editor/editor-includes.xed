@@ -1593,23 +1593,30 @@
           OpenStreetMap
         </button>
       </div>
-      <div class="col-md-6 col-md-offset-3 collapse openstreetmap-container" style="width:570px">
-        <div id="header">
-          <div id="osm">
-            (c)
-            <a href="//www.openstreetmap.org">OpenStreetMap</a>
-            und
-            <a href="//www.openstreetmap.org/copyright">Mitwirkende</a>
-            ,
-            <a href="//creativecommons.org/licenses/by-sa/2.0/deed.de">CC-BY-SA</a>
-          </div>
-        </div>
-        <div class="map" style="width:555px;height:380px;"></div>
+      <div class="col-md-6 col-md-offset-3 collapse openstreetmap-container">
+        <label>
+          <xed:output i18n="mir.cartographics.coordinates.geoType" /> 
+        </label>
+        <select id="type" class="form-control" name="">
+          <option value="Point">
+            <xed:output i18n="mir.cartographics.coordinates.point" />
+          </option>
+          <option value="Box">
+            <xed:output i18n="mir.cartographics.coordinates.box" />
+          </option>
+          <option value="Polygon">
+            <xed:output i18n="mir.cartographics.coordinates.polygon" />
+          </option>
+          <option value="None">
+            <xed:output i18n="mir.cartographics.coordinates.none" />
+          </option>
+        </select>
+        <div class="map"></div>
       </div>
     </div>
-    <script type="text/javascript" src="//www.openstreetmap.org/openlayers/OpenLayers.js"></script>
-    <script type="text/javascript" src="//www.openstreetmap.org/openlayers/OpenStreetMap.js"></script>
-    <script type="text/javascript" src="{$WebApplicationBaseURL}js/mir/geo-coords.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://openlayers.org/en/v4.3.3/css/ol.css" />
+    <script type="text/javascript" src="https://openlayers.org/en/v4.3.3/build/ol.js" />
+    <script type="text/javascript" src="{$WebApplicationBaseURL}js/mir/geo-coords.min.js" />
   </xed:template>
 
   <xed:template id="sdnb">

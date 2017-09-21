@@ -230,22 +230,12 @@
                 <td class="metavalue">
                   <xsl:value-of select="." /><br />
                   <div>
-                    <button type="button" class="show_openstreetmap btn btn-default" data="{.}" >
+                    <button type="button" class="show_openstreetmap btn btn-default" data-coords="{.}" >
                       OpenStreetMap
                     </button>
                   </div>
-                  <div class="openstreetmap-container collapse" style="width:555px;">
-                    <div id="header">
-                      <div id="osm">
-                        (c)
-                        <a href="//www.openstreetmap.org">OpenStreetMap</a>
-                        und
-                        <a href="//www.openstreetmap.org/copyright">Mitwirkende</a>
-                        ,
-                        <a href="//creativecommons.org/licenses/by-sa/2.0/deed.de">CC-BY-SA</a>
-                      </div>
-                    </div>
-                    <div class="map" style="width:555px;height:380px;"></div>
+                  <div class="openstreetmap-container collapse">
+                    <div class="map"></div>
                   </div>
                 </td>
               </tr>
