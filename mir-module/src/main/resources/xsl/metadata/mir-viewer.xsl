@@ -8,9 +8,9 @@
                 xmlns:iview2="xalan://org.mycore.iview2.services.MCRIView2Tools"
                 xmlns:iview2xsl="xalan://org.mycore.iview2.frontend.MCRIView2XSLFunctionsAdapter"
                 xmlns:embargo="xalan://org.mycore.mods.MCRMODSEmbargoUtils"
-                xmlns:debugg="xalan://org.mycore.mir.MIRDebug"
+                xmlns:debug="xalan://org.mycore.mir.MIRDebug"
                 xmlns:xalan="http://xml.apache.org/xalan"
-                exclude-result-prefixes="xalan i18n mcr mods xlink FilenameUtils iview2 iview2xsl mcrxsl debugg">
+                exclude-result-prefixes="xalan i18n mcr mods xlink FilenameUtils iview2 iview2xsl mcrxsl debug">
   <xsl:import href="xslImport:modsmeta:metadata/mir-viewer.xsl" />
   <xsl:param name="UserAgent" />
   <xsl:param name="MIR.DFGViewer.enable" select="'false'" />
@@ -75,7 +75,9 @@
           </xsl:when>
           <xsl:otherwise>
             <div class="well no-viewer">
-              <xsl:value-of select="debugg:printTable('MCRTileJob')" />
+              <xsl:if test="not(debug:printTable('MCRTileJob'))">
+                <xsl:message>failed DEBUG code</xsl:message>
+              </xsl:if>
               <xsl:value-of select="i18n:translate('metaData.previewInProcessing', $derId)" />
             </div>
           </xsl:otherwise>
