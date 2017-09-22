@@ -104,7 +104,7 @@ public class MIRUploadITCase extends MIRITBase {
                 LogManager.getLogger().warn("Mycore-viewer is not loaded. Reload!");
                 reloadRequired = true;
                 if (--maxTries == 0) {
-                    throw new RuntimeException("Image tiler was not ready in time.");
+                    Assert.fail("Image tiler was not ready in time.");
                 }
                 Thread.sleep(1000);
                 getDriver().navigate().refresh();
