@@ -269,12 +269,8 @@
             </pc:organisationName>
           </xsl:when>
           <xsl:when test="mods:namePart[@type='family'] and mods:namePart[@type='given']">
-            <pc:foreName>
-              <xsl:value-of select="normalize-space(mods:namePart[@type='given'])" />
-            </pc:foreName>
-            <pc:surName>
-              <xsl:value-of select="normalize-space(mods:namePart[@type='family'])" />
-            </pc:surName>
+            <xsl:apply-templates select="mods:namePart[@type='given']" mode="pc-person" />
+            <xsl:apply-templates select="mods:namePart[@type='family']" mode="pc-person" />
           </xsl:when>
           <xsl:when test="contains(mods:displayForm, ',')">
             <pc:foreName>
@@ -292,6 +288,18 @@
         </xsl:choose>
       </pc:name>
     </pc:person>
+  </xsl:template>
+  
+  <xsl:template mode="pc-person" match="mods:namePart[@type='family']">
+    <pc:surName>
+      <xsl:value-of select="normalize-space(.)" />
+    </pc:surName>
+  </xsl:template>
+
+  <xsl:template mode="pc-person" match="mods:namePart[@type='given']">
+    <pc:foreName>
+      <xsl:value-of select="." />
+    </pc:foreName>
   </xsl:template>
 
   <xsl:template mode="subject" match="mods:mods">
