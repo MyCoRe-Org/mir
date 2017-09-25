@@ -31,6 +31,7 @@ import org.mycore.mir.it.model.MIRTitleType;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.OutputType;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 public class MIRUploadITCase extends MIRITBase {
@@ -93,26 +94,19 @@ public class MIRUploadITCase extends MIRITBase {
         String path = upload.getAbsolutePath();
         getDriver().waitAndFindElement(By.xpath(".//input[@id='fileToUpload']")).sendKeys(path);
         getDriver().waitAndFindElement(MCRBy.partialText("Abschicken")).click();
-        getDriver().waitAndFindElement(By.xpath(".//button[contains(text(),'Fertig') and not(@disabled)]")).click();
-        boolean reloadRequired=false;
-        int maxTries = 100;
-        do {
-            getDriver().waitAndFindElement(MCRBy.partialText(MIRTestData.TITLE));
-            getDriver().waitFor(MCRExpectedConditions.documentReadyState(DocumentReadyState.complete));
-            try {
-                getDriver().findElement(MCRBy.partialText("Die Vorschau für ")/*{derivate} ist in Bearbeitung*/);
-                LogManager.getLogger().warn("Mycore-viewer is not loaded. Reload!");
-                reloadRequired = true;
-                if (--maxTries == 0) {
-                    Assert.fail("Image tiler was not ready in time.");
-                }
-                Thread.sleep(1000);
-                getDriver().navigate().refresh();
-            } catch (NoSuchElementException e) {
-                //mycore-viewer is present
-                reloadRequired = false;
-            }
-        } while (reloadRequired);
+        WebElement goToMetadata = getDriver()
+            .waitAndFindElement(By.xpath(".//button[contains(text(),'Fertig') and not(@disabled)]"));
+        Thread.sleep(2000); // should tile the image in 2s
+        goToMetadata.click();
+        getDriver().waitAndFindElement(MCRBy.partialText(MIRTestData.TITLE));
+        getDriver().waitFor(MCRExpectedConditions.documentReadyState(DocumentReadyState.complete));
+        try {
+            getDriver().findElement(MCRBy.partialText("Die Vorschau für ")/*{derivate} ist in Bearbeitung*/);
+            LogManager.getLogger().warn("Mycore-viewer is not loaded. Reload!");
+            Assert.fail("Image tiler was not ready in time.");
+        } catch (NoSuchElementException e) {
+            //mycore-viewer is present and we are fine
+        }
         // TODO: find workaround is viewer loaded instead of wait 3 seconds
         Thread.sleep(5000);
 
