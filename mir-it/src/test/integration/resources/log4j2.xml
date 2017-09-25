@@ -10,9 +10,5 @@
       <appender-ref ref="Console" />
     </root>
     <logger name="org.hibernate" level="error" />
-    <logger name="org.mycore.frontend.editor.validation" level="info" />
-    <logger name="org.mycore.frontend.servlets.MCRServlet" level="debug" />
-    <logger name="org.mycore.common.content.util.MCRServletContentHelper" level="debug" />
-    <logger name="org.mycore.saxon" level="debug" />
   </loggers>
 </configuration>
