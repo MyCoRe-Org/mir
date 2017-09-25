@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<xsl:stylesheet version="1.0"
+<xsl:stylesheet 
+  version="1.0"
   xmlns="http://www.openarchives.org/OAI/2.0/"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -9,13 +10,23 @@
   xmlns:mods="http://www.loc.gov/mods/v3"
   xmlns:mcr="xalan://org.mycore.common.xml.MCRXMLFunctions"
   xmlns:piUtil="xalan://org.mycore.mir.pi.MCRPIUtil"
-  exclude-result-prefixes="xsl mods mcr piUtil">
+  xmlns:xalan="http://xml.apache.org/xalan"
+  exclude-result-prefixes="xalan xsl mods mcr piUtil">
 
   <xsl:output method="xml" encoding="UTF-8" />
   <xsl:include href="mods2record.xsl" />
 
   <xsl:param name="ServletsBaseURL" select="''" />
   <xsl:param name="WebApplicationBaseURL" select="''" />
+
+  <xsl:variable name="ifsTemp" xmlns="">
+    <xsl:for-each select="mycoreobject/structure/derobjects/derobject[mcr:isDisplayedEnabledDerivate(@xlink:href)]">
+      <der id="{@xlink:href}">
+        <xsl:copy-of select="document(concat('xslStyle:mcr_directory-recursive:ifs:',@xlink:href,'/'))" />
+      </der>
+    </xsl:for-each>
+  </xsl:variable>
+  <xsl:variable name="ifs" select="xalan:nodeset($ifsTemp)" />
 
   <xsl:template match="mycoreobject" mode="metadata">
     <epicur xsi:schemaLocation="urn:nbn:de:1111-2004033116 http://www.persistent-identifier.de/xepicur/version1.0/xepicur.xsd" xmlns="urn:nbn:de:1111-2004033116"
@@ -66,38 +77,39 @@
             <xsl:value-of select="'text/html'" />
           </format>
         </resource>
-        <xsl:apply-templates select="structure/derobjects/derobject" mode="epicurResource" />
+        <xsl:apply-templates select="$ifs/der" xmlns="" mode="epicurResource" />
       </record>
     </epicur>
   </xsl:template>
 
-  <xsl:template match="derobject" mode="epicurResource">
-    <xsl:variable name="derID" select="./@xlink:href" />
-    <xsl:variable name="ifslink" select="concat('ifs:',$derID, '/')" />
-    <xsl:variable name="details" select="document($ifslink)" />
-    <xsl:variable name="filenumber" select="$details/mcr_directory/numChildren/here/files" />
-    <xsl:if test="number($filenumber) &gt; 0">
-      <resource xmlns="urn:nbn:de:1111-2004033116">
-        <xsl:if test="number($filenumber) = 1">
-          <xsl:for-each select="$details/mcr_directory/children/child[@type='file']">
-            <identifier scheme="url">
-              <xsl:value-of select="concat($WebApplicationBaseURL,'servlets/MCRFileNodeServlet/',$derID,'/',mcr:encodeURIPath(./name, true()))" />
-            </identifier>
-            <format scheme="imt">
-              <xsl:value-of select="contentType" />
-            </format>
-          </xsl:for-each>
-        </xsl:if>
-        <xsl:if test="number($filenumber) &gt; 1">
+  <xsl:template mode="epicurResource" match="der">
+    <xsl:variable name="filenumber" select="count(mcr_directory/children//child[@type='file'])" />
+    <xsl:choose>
+      <xsl:when test="$filenumber = 0" />
+      <xsl:when test="$filenumber = 1">
+        <resource xmlns="urn:nbn:de:1111-2004033116">
+          <xsl:variable name="uri" select="mcr_directory/children//child[@type='file']/uri" />
+          <xsl:variable name="derId" select="substring-before(substring-after($uri,':/'), ':')" />
+          <xsl:variable name="filePath" select="substring-after(substring-after($uri, ':'), ':')" />
+          <identifier scheme="url">
+            <xsl:value-of select="concat($ServletsBaseURL,'MCRFileNodeServlet/',$derId,$filePath)" />
+          </identifier>
+          <format scheme="imt">
+            <xsl:value-of select="$uri/../contentType" />
+          </format>
+        </resource>
+      </xsl:when>
+      <xsl:otherwise>
+        <resource xmlns="urn:nbn:de:1111-2004033116">
           <identifier scheme="url" target="transfer">
-            <xsl:value-of select="concat($ServletsBaseURL,'MCRZipServlet/',$derID)" />
+            <xsl:value-of select="concat($ServletsBaseURL,'MCRZipServlet/',@id)" />
           </identifier>
           <format scheme="imt">
             <xsl:value-of select="'application/zip'" />
           </format>
-        </xsl:if>
-      </resource>
-    </xsl:if>
+        </resource>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
 
 </xsl:stylesheet>
