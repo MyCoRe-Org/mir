@@ -1,6 +1,8 @@
 package org.mycore.mir.it.tests;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -10,10 +12,13 @@ import java.util.stream.Stream;
 
 import javax.imageio.ImageIO;
 
+import org.apache.logging.log4j.LogManager;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mycore.common.selenium.util.MCRBy;
+import org.mycore.common.selenium.util.MCRExpectedConditions;
+import org.mycore.common.selenium.util.MCRExpectedConditions.DocumentReadyState;
 import org.mycore.mir.it.controller.MIRModsEditorController;
 import org.mycore.mir.it.controller.MIRPublishEditorController;
 import org.mycore.mir.it.controller.MIRUserController;
@@ -24,7 +29,9 @@ import org.mycore.mir.it.model.MIRLicense;
 import org.mycore.mir.it.model.MIRTitleInfo;
 import org.mycore.mir.it.model.MIRTitleType;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.OutputType;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 public class MIRUploadITCase extends MIRITBase {
@@ -87,10 +94,20 @@ public class MIRUploadITCase extends MIRITBase {
         String path = upload.getAbsolutePath();
         getDriver().waitAndFindElement(By.xpath(".//input[@id='fileToUpload']")).sendKeys(path);
         getDriver().waitAndFindElement(MCRBy.partialText("Abschicken")).click();
-        getDriver().waitAndFindElement(By.xpath(".//button[contains(text(),'Fertig') and not(@disabled)]")).click();
+        WebElement goToMetadata = getDriver()
+            .waitAndFindElement(By.xpath(".//button[contains(text(),'Fertig') and not(@disabled)]"));
+        Thread.sleep(2000); // should tile the image in 2s
+        goToMetadata.click();
         getDriver().waitAndFindElement(MCRBy.partialText(MIRTestData.TITLE));
-
-        // TODO: find workarround is viewer loaded instead of wait 3 seconds
+        getDriver().waitFor(MCRExpectedConditions.documentReadyState(DocumentReadyState.complete));
+        try {
+            getDriver().findElement(MCRBy.partialText("Die Vorschau für ")/*{derivate} ist in Bearbeitung*/);
+            LogManager.getLogger().warn("Mycore-viewer is not loaded. Reload!");
+            Assert.fail("Image tiler was not ready in time.");
+        } catch (NoSuchElementException e) {
+            //mycore-viewer is present and we are fine
+        }
+        // TODO: find workaround is viewer loaded instead of wait 3 seconds
         Thread.sleep(5000);
 
         byte[] screenshotAsBytes = getDriver().getScreenshotAs(OutputType.BYTES);

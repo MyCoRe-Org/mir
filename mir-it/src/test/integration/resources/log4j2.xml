@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration status="OFF">
+  <appenders>
+    <Console name="Console" target="SYSTEM_OUT">
+      <PatternLayout pattern="%highlight{%d{ISO8601} [%t] %-5p %X{loginId} %c{1}: %m%ex}{STYLE=Logback}%style{%n}{Normal}" />
+    </Console>
+  </appenders>
+  <loggers>
+    <root level="info">
+      <appender-ref ref="Console" />
+    </root>
+    <logger name="org.hibernate" level="error" />
+  </loggers>
+</configuration>
