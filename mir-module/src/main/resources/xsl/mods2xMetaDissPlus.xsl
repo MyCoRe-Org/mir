@@ -203,7 +203,7 @@
         </xsl:choose>
       </xsl:attribute>
       <xsl:apply-templates mode="mods.title" select="." />
-    </dc:title>>
+    </dc:title>
 
     <xsl:if test="mods:titleInfo[@type='translated']">
       <dc:title xsi:type="ddb:titleISO639-2" ddb:type="translated">
