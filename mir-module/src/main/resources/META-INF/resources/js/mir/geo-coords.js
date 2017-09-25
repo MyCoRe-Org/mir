@@ -11,9 +11,9 @@
             var input = $(btn).parent().parent().prev().find("input[name*='coordinates']")[0];
             var typeSelect = $(btn).parent().next().find("#type")[0];
             var mapElement = $(btn).parent().next().find(".map")[0];
-            // latitude, longitude
-            var lat = 50.930453, lon = 11.587786;
-
+            var lat = $(btn).data("lat") === "" ? 50.930453 : $(btn).data("lat");
+            var lon = $(btn).data("lon") === "" ? 11.587786 : $(btn).data("lon");
+            
             function init() {
                 var raster = new ol.layer.Tile({
                     source: new ol.source.OSM()
@@ -58,8 +58,6 @@
                         source: source
                     });
 
-                    var drawnType, nextType;
-
                     // after modify write new coords to input
                     modify.on("modifyend", function(event) {
                         if(source.getState() === "ready") {
@@ -76,11 +74,9 @@
                         var selectValue = typeSelect.value;
 
                         if(selectValue !== "None") {
-                            nextType = selectValue;
                             var geometryFunction;
                             if(selectValue === "Box") {
                                 selectValue = "Circle";
-                                nextType = "Polygon";
                                 geometryFunction = ol.interaction.Draw.createBox();
                             }
 
@@ -105,7 +101,6 @@
 
                             // after draw write new coords to input
                             draw.on("drawend", function(event) {
-                                drawnType = nextType;
                                 writeToInput(event.feature);
                             });
                         }
@@ -120,24 +115,22 @@
 
                     addInteractions();
 
-                    // writes coords to input like in WKT (Well-known Text) --> 'Type ( lon lat )'
+                    // writes coords to input like 'lon lat, lon lat, lon lat, lon lat' for polygon or 'lon lat' for point
                     function writeToInput(feature) {
                         var geometry = feature.getGeometry();
                         var coordinates = geometry.getCoordinates();
                         var lonLat = [];
-                        var inputText = drawnType + " (";
+                        var inputText = "";
 
                         if(coordinates.length === 1) {
-                            inputText += "("
                             $.each(coordinates[0], function(i, val) {
                                 lonLat = ol.proj.toLonLat(val);
                                 inputText += " " + lonLat[0] + " " + lonLat[1] + ",";
                             });
-                            inputText = inputText.slice(0, -1);
-                            inputText += " ))";
+                            inputText = inputText.trim().slice(0, -1);
                         } else {
                             lonLat = ol.proj.toLonLat(coordinates);
-                            inputText += " " + lonLat[0] + " " + lonLat[1] + " )";
+                            inputText = lonLat[0] + " " + lonLat[1];
                         }
 
                         input.value = inputText;
@@ -150,33 +143,36 @@
                 } else {
                     if($(btn).data("coords")) {
                         loadLonLat($(btn).data("coords"));
+                    } else {
+                        if (navigator.geolocation) {
+                            navigator.geolocation.getCurrentPosition(function(position) {
+                                map.setView(new ol.View({
+                                    center: ol.proj.fromLonLat([position.coords.longitude, position.coords.latitude]),
+                                    zoom: 10
+                                }));
+                            });
+                        }
                     }
                 }
 
-                // use the given coords (in WKT Style) to draw on map
+                // use the given coords to draw on map
                 function loadLonLat(lonLatData) {
-                    var data = lonLatData.slice(0, -1);
-                    data = data.split(" (");
+                    var data = lonLatData.trim().split(", ");
                     var obj, geometry;
-
-                    if(data[0] === "Polygon") {
-                        if(typeSelect) {
-                            typeSelect.value = data[0];
-                        }
-
+                    
+                    if(data.length >= 2) {
                         var newArray = [];
-                        var dataArray = data[1].slice(1, -1).trim().split(", ");
-                        $.each(dataArray, function(i, val) {
+                        $.each(data, function(i, val) {
                             var lonLat = val.split(" ");
                             newArray.push(ol.proj.fromLonLat([parseFloat(lonLat[0]), parseFloat(lonLat[1])]));
                         });
                         geometry = new ol.geom.Polygon([newArray]);
-                    } else if(data[0] === "Point") {
-                        var lonLat = data[1].trim().split(" ");
+                    } else {
+                        var lonLat = data[0].split(" ");
                         var pointCoords = ol.proj.fromLonLat([parseFloat(lonLat[0]), parseFloat(lonLat[1])]);
                         geometry = new ol.geom.Point(pointCoords);
                     }
-
+                    
                     if(geometry) {
                         obj = new ol.Feature({
                             geometry: geometry
@@ -184,7 +180,7 @@
 
                         map.getView().fit(geometry, map.getSize());
 
-                        if(data[0] === "Point") {
+                        if(data.length === 1) {
                             map.getView().setZoom(10);
                         }
 

@@ -4,7 +4,7 @@
               xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
   <xsl:param name="MIR.PPN.DatabaseList" select="gvk"/>
-
+  
   <xed:template id="in.out">
     <xed:source uri="xslStyle:PPN-mods-simple,mir-PPN-import,mycoreobject-migrate-nameIdentifier,editor/mods2xeditor:http://unapi.gbv.de/?id={$MIR.PPN.DatabaseList}:ppn:{$ppn}&amp;format=mods36" />
     <xed:source uri="xslStyle:RDF-mods-journal,editor/mods2xeditor:http://ld.zdb-services.de/data/{$zdbid}.rdf" />
@@ -27,7 +27,7 @@
     <xed:cancel url="../index.html?XSL.Status.Message=mir.editstatus.canceled&amp;XSL.Status.Style=danger" />
     <xed:post-processor xsl="editor/xeditor2mods.xsl" />
   </xed:template>
-
+  
   <xed:template id="mycore.common">
     <xed:choose>
       <xed:when test="string-length($origin) &gt; 0">
@@ -1589,7 +1589,7 @@
     <mir:textfield xpath="mods:subject/mods:cartographics/mods:coordinates" label="mir.cartographics.coordinates" help-text="{i18n:mir.help.cartographics.coordinates}" />
     <div class="form-group openstreetmap">
       <div class="col-md-2 col-md-offset-3">
-        <button type="button" class="show_openstreetmap btn btn-default">
+        <button type="button" class="show_openstreetmap btn btn-default" data-lat="{$MIR.editor.start.coordinates.lat}" data-lon="{$MIR.editor.start.coordinates.lon}">
           OpenStreetMap
         </button>
       </div>
