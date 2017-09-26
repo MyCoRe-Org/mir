@@ -1,6 +1,7 @@
 package org.mycore.mir.migration;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeSet;
@@ -68,6 +69,23 @@ public class MIRMigration2017_06 {
         derivate.getDerivate().setURN(null);
         LOGGER.info("Updating derivate {} ...", derivateID);
         MCRMetadataManager.update(derivate);
+    }
+    
+    @MCRCommand(
+        syntax = "migrate old coordinates to new",
+        help = "migrates all objects with coordinates(point) to new coordinates(point and polygon).")
+    public static List<String> updateNameIdentifier() {
+        URL styleFile = MIRMigration2017_06.class.getResource("/xsl/mycoreobject-migrate-coordinates.xsl");
+        if (styleFile == null) {
+            LOGGER.error("Could not find migration stylesheet. File a bug!");
+            return null;
+        }
+        TreeSet<String> ids = new TreeSet<>(MCRXMLMetadataManager.instance().listIDsOfType("mods"));
+        ArrayList<String> cmds = new ArrayList<>(ids.size());
+        for (String id : ids) {
+            cmds.add("xslt " + id + " with file " + styleFile.toString());
+        }
+        return cmds;
     }
 
     private static boolean setURN(MCRObject object, String urn) {
