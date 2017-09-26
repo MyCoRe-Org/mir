@@ -228,7 +228,17 @@
                   <xsl:value-of select="i18n:translate('mir.cartographics.coordinates')" />
                 </td>
                 <td class="metavalue">
-                  <xsl:value-of select="." /><br />
+                  <xsl:choose>
+                    <xsl:when test="contains(., ', ')">
+                      <div id="displayCoords" data-fullcoords="{.}">
+                        <xsl:value-of select="substring-before(., ', ')" />
+                        <a id="flipCoords" role="button">...</a>
+                      </div>
+                    </xsl:when>
+                    <xsl:otherwise>
+                      <xsl:value-of select="." />
+                    </xsl:otherwise>
+                  </xsl:choose>
                   <div>
                     <button type="button" class="show_openstreetmap btn btn-default" data-coords="{.}" >
                       OpenStreetMap

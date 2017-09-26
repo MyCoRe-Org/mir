@@ -1,5 +1,10 @@
 (function($) {
     $﻿(document).ready(function() {
+        $("#flipCoords").click(function() {
+            var parent = $(this).parent();
+            $(parent).html($(parent).data("fullcoords"));
+        }); 
+        
         $('.show_openstreetmap').click(function() {
             $(this).parent().next(".openstreetmap-container").collapse('toggle');
             if(!$(this).hasClass("map_drawn")) {
