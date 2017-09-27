@@ -1,7 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:mcr="xalan://org.mycore.common.xml.MCRXMLFunctions"
-  xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation" xmlns:mods="http://www.loc.gov/mods/v3" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:acl="xalan://org.mycore.access.MCRAccessManager"
-  xmlns:embargo="xalan://org.mycore.mods.MCRMODSEmbargoUtils" exclude-result-prefixes="i18n mcr mods acl xlink embargo"
+<xsl:stylesheet version="1.0"
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  xmlns:mcr="xalan://org.mycore.common.xml.MCRXMLFunctions"
+  xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
+  xmlns:mods="http://www.loc.gov/mods/v3"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  xmlns:acl="xalan://org.mycore.access.MCRAccessManager"
+  xmlns:embargo="xalan://org.mycore.mods.MCRMODSEmbargoUtils"
+  xmlns:piUtil="xalan://org.mycore.mir.pi.MCRPIUtil"
+  exclude-result-prefixes="i18n mcr mods acl xlink embargo"
 >
   <xsl:import href="xslImport:modsmeta:metadata/mir-collapse-files.xsl" />
   <xsl:template match="/">
@@ -9,6 +16,8 @@
       <xsl:when test="key('rights', mycoreobject/@ID)/@read or key('rights', mycoreobject/structure/derobjects/derobject/@xlink:href)/@accKeyEnabled">
 
         <xsl:variable name="objID" select="mycoreobject/@ID" />
+        <xsl:variable name="hasManagedPI" select="piUtil:hasManagedPI($objID)" />
+
         <div id="mir-collapse-files">
           <xsl:for-each select="mycoreobject/structure/derobjects/derobject[key('rights', @xlink:href)/@read]">
             <xsl:variable name="derId" select="@xlink:href" />
@@ -52,7 +61,7 @@
                 <xsl:when test="key('rights', @xlink:href)/@read">
                   <xsl:variable name="maindoc" select="$derivateXML/mycorederivate/derivate/internals/internal/@maindoc" />
                   <div class="file_box_files" data-objID="{$objID}" data-deriID="{$derId}" data-mainDoc="{$maindoc}" data-writedb="{acl:checkPermission($derId,'writedb')}"
-                    data-deletedb="{acl:checkPermission($derId,'deletedb')}"
+                    data-deletedb="{acl:checkPermission($derId,'deletedb')}" data-urn="{$hasManagedPI}"
                   >
                     <div class="filelist-loading">
                       <div class="bounce1"></div>

@@ -405,7 +405,7 @@
   </xsl:template>
 
   <xsl:template match="mir:geographic.repeated">
-    <xed:repeat xpath="mods:subject/mods:geographic" min="{@min}" max="{@max}">
+    <xed:repeat xpath="{@path}" min="{@min}" max="{@max}">
         <xed:bind xpath="@authorityURI" initially="http://d-nb.info/gnd/">
           <input type="hidden" />
         </xed:bind>

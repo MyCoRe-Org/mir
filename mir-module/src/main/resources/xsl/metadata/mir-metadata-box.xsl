@@ -228,24 +228,24 @@
                   <xsl:value-of select="i18n:translate('mir.cartographics.coordinates')" />
                 </td>
                 <td class="metavalue">
-                  <xsl:value-of select="." /><br />
+                  <xsl:choose>
+                    <xsl:when test="contains(., ', ')">
+                      <div id="displayCoords" data-fullcoords="{.}">
+                        <xsl:value-of select="substring-before(., ', ')" />
+                        <a id="flipCoords" role="button">...</a>
+                      </div>
+                    </xsl:when>
+                    <xsl:otherwise>
+                      <xsl:value-of select="." />
+                    </xsl:otherwise>
+                  </xsl:choose>
                   <div>
-                    <button type="button" class="show_openstreetmap btn btn-default" data="{.}" >
+                    <button type="button" class="show_openstreetmap btn btn-default" data-coords="{.}" >
                       OpenStreetMap
                     </button>
                   </div>
-                  <div class="openstreetmap-container collapse" style="width:555px;">
-                    <div id="header">
-                      <div id="osm">
-                        (c)
-                        <a href="//www.openstreetmap.org">OpenStreetMap</a>
-                        und
-                        <a href="//www.openstreetmap.org/copyright">Mitwirkende</a>
-                        ,
-                        <a href="//creativecommons.org/licenses/by-sa/2.0/deed.de">CC-BY-SA</a>
-                      </div>
-                    </div>
-                    <div class="map" style="width:555px;height:380px;"></div>
+                  <div class="openstreetmap-container collapse">
+                    <div class="map"></div>
                   </div>
                 </td>
               </tr>

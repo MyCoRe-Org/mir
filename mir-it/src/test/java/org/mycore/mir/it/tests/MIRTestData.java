@@ -114,7 +114,7 @@ public class MIRTestData {
 
     public static final String EDITION = "Edition";
 
-    public static final String COORDINATES = "+50.936511349367855°, +11.591905873046787°";
+    public static final String COORDINATES = "11.591905873046787 50.936511349367855";
 
     public static final String VALIDATION_BIBLIOGRAPHIEN = "010 Bibliographien";
 

@@ -49,8 +49,9 @@ module.exports = function(grunt) {
       mir: {
         mangle: false,
         options: {
-          sourceMap: true,
-          sourceMapIncludeSources : true
+          sourceMap: {
+              includeSources : true
+          }
         },
         files: {
           '<%= globalConfig.moduleDirectory %>/target/classes/META-INF/resources/js/mir/base.min.js': '<%= globalConfig.moduleDirectory %>/src/main/resources/META-INF/resources/js/mir/base.js',

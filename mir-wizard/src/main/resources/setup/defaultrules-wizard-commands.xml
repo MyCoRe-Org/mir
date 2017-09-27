@@ -12,8 +12,6 @@
   <command file="resource:setup/acl/grant-editors.xml" describedBy="administrators and editors">update permission addurn for id default_derivate with rulefile {file} described by {describedBy}</command>
   <command file="resource:setup/acl/require-login.xml" describedBy="require login">update permission read for id derivate:mir_access:intern with rulefile {file} described by {describedBy}</command>
 
-  <command file="resource:setup/acl/grant-all.xml" describedBy="always allowed">update permission read for id restapi:/ with rulefile {file} described by {describedBy}</command>
-
   <command file="resource:setup/acl/grant-admin.xml" describedBy="administrators only"> update permission writedb for id mir_genres with rulefile {file} described by {describedBy} </command>
   <command file="resource:setup/acl/grant-admin.xml" describedBy="administrators only"> update permission writedb for id mir_institutes with rulefile {file} described by {describedBy} </command>
   <command file="resource:setup/acl/grant-admin.xml" describedBy="administrators only"> update permission writedb for id mir_licenses with rulefile {file} described by {describedBy} </command>

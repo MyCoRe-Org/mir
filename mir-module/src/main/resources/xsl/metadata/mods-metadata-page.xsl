@@ -98,11 +98,9 @@
             <!-- Start: METADATA -->
               <xsl:apply-templates select="div[@id='mir-metadata']" mode="newMetadata" />
             <!-- End: METADATA -->
-              <xsl:if test="contains(div[@id='mir-metadata'], '°, ')">
-                <script type="text/javascript" src="//www.openstreetmap.org/openlayers/OpenLayers.js"></script>
-                <script type="text/javascript" src="//www.openstreetmap.org/openlayers/OpenStreetMap.js"></script>
-                <script type="text/javascript" src="{$WebApplicationBaseURL}js/mir/geo-coords.min.js"></script>
-              </xsl:if>
+              <link rel="stylesheet" type="text/css" href="https://openlayers.org/en/v4.3.3/css/ol.css" />
+              <script type="text/javascript" src="https://openlayers.org/en/v4.3.3/build/ol.js" />
+              <script type="text/javascript" src="{$WebApplicationBaseURL}js/mir/geo-coords.min.js"></script>
             </div>
           </xsl:if>
 

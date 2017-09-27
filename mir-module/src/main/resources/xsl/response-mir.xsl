@@ -194,7 +194,7 @@
             <div class="panel-body collapse in">
               <ul class="filter">
                 <xsl:apply-templates select="/response/lst[@name='facet_counts']/lst[@name='facet_fields']">
-                  <xsl:with-param name="facet_name" select="'mods.type'" />
+                  <xsl:with-param name="facet_name" select="'mods.genre'" />
                 </xsl:apply-templates>
               </ul>
             </div>
@@ -237,17 +237,17 @@
     -->
     <xsl:variable name="identifier" select="@id" />
     <xsl:variable name="mcrobj" select="." />
-    <xsl:variable name="mods-type">
+    <xsl:variable name="mods-genre">
       <xsl:choose>
-        <xsl:when test="str[@name='mods.type']">
-          <xsl:value-of select="str[@name='mods.type']" />
+        <xsl:when test="arr[@name='mods.genre']">
+          <xsl:value-of select="arr[@name='mods.genre']/str" />
         </xsl:when>
         <xsl:otherwise>
           <xsl:value-of select="'article'" />
         </xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
-    <xsl:variable name="mods-type-i18n" select="mcrxsl:getDisplayName('mir_genres',$mods-type)" />
+    <xsl:variable name="mods-genre-i18n" select="mcrxsl:getDisplayName('mir_genres',$mods-genre)" />
     <xsl:variable name="hitItemClass">
       <xsl:choose>
         <xsl:when test="$hitNumberOnPage mod 2 = 1">
@@ -262,8 +262,11 @@
     <!-- generate browsing url -->
     <xsl:variable name="href" select="concat($proxyBaseURL,$HttpSession,$solrParams)" />
     <xsl:variable name="startPosition" select="$hitNumberOnPage - 1 + (($currentPage) -1) * $rows" />
-    <xsl:variable name="hitHref">
+    <xsl:variable name="completeHref">
       <xsl:value-of select="concat($href, '&amp;start=',$startPosition, '&amp;fl=id&amp;rows=1&amp;origrows=', $rows, '&amp;XSL.Style=browse')" />
+    </xsl:variable>
+    <xsl:variable name="hitHref">
+      <xsl:value-of select="mcrxsl:regexp($completeHref, '&amp;XSL.Transformer=response-resultlist', '')" />
     </xsl:variable>
 
     <!-- derivate variables -->
@@ -396,7 +399,7 @@
                     <xsl:variable name="viewerLink" select="concat($WebApplicationBaseURL, 'rsc/viewer/', $derivid,'/', $derivates/str[@name='iviewFile'][1])" />
                     <xsl:choose>
                       <xsl:when test="acl:checkPermissionForReadingDerivate($derivid)">
-                        <a class="hit_option hit_download" href="{$viewerLink}" title="{$mods-type-i18n}">
+                        <a class="hit_option hit_download" href="{$viewerLink}" title="{$mods-genre-i18n}">
                           <div class="hit_icon"
                             style="background-image: url('{$WebApplicationBaseURL}servlets/MCRTileCombineServlet/THUMBNAIL/{$derivid}/{$derivates/str[@name='iviewFile'][1]}');"
                           >
@@ -429,7 +432,7 @@
                     </xsl:variable>
                     <xsl:choose>
                       <xsl:when test="acl:checkPermissionForReadingDerivate($derivid)">
-                        <a class="hit_option hit_download" href="{$viewerLink}" title="{$mods-type-i18n}">
+                        <a class="hit_option hit_download" href="{$viewerLink}" title="{$mods-genre-i18n}">
                           <div class="hit_icon" style="background-image: url('{$WebApplicationBaseURL}img/pdfthumb/{$filePath}?centerThumb=no');">
                           </div>
                         </a>
@@ -513,7 +516,7 @@
             <div class="hit_tnd_content">
               <div class="hit_type">
                 <span class="label label-info">
-                  <xsl:value-of select="$mods-type-i18n" />
+                  <xsl:value-of select="$mods-genre-i18n" />
                 </span>
               </div>
               <xsl:if test="arr[@name='category.top']/str[contains(text(), 'mir_licenses:')]">

@@ -19,3 +19,4 @@ load classification from url http://www.mycore.org/classifications/identifier.xm
 init superuser
 process ${app.home}/config/acl/defaultrules-commands.txt
 process ${app.home}/config/acl/webacl-commands.txt
+process ${app.home}/config/acl/restapiacl-commands.txt

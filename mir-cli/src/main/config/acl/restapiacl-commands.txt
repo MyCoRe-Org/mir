@@ -1,0 +1,1 @@
+update permission read for id restapi:/ with rulefile ${app.home}/config/acl/grant-all.xml described by ${acl-description.all}
