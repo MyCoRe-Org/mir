@@ -15,11 +15,10 @@
   xmlns="http://datacite.org/schema/kernel-3"
   exclude-result-prefixes="xsl xlink mods xalan mcrmods">
 
-  <xsl:include href="coreFunctions.xsl" />
-
   <xsl:output method="xml" encoding="UTF-8" indent="yes" xalan:indent-amount="2" />
 
   <xsl:param name="MCR.DOI.HostingInstitution" select="''" />
+  <xsl:param name="MCR.Metadata.DefaultLang" />
   <xsl:variable name="marcrelator" select="document('classification:metadata:-1:children:marcrelator')" />
 
   <xsl:template match="mycoreobject">
@@ -145,7 +144,7 @@
                   <xsl:if test="position() > 1">
                     <xsl:value-of select="', '" />
                   </xsl:if>
-                  <xsl:value-of select="./label[lang($CurrentLang)]/@text" />
+                  <xsl:value-of select="./label[lang($MCR.Metadata.DefaultLang)]/@text" />
                 </xsl:for-each>
               </xsl:if>
             </xsl:otherwise>
@@ -277,7 +276,7 @@
                 <xsl:if test="position() > 1">
                   <xsl:value-of select="', '" />
                 </xsl:if>
-                <xsl:value-of select="./label[lang($CurrentLang)]/@text" />
+                <xsl:value-of select="./label[lang($MCR.Metadata.DefaultLang)]/@text" />
               </xsl:for-each>
             </xsl:if>
           </xsl:otherwise>
