@@ -30,9 +30,6 @@
       <xsl:copy-of select="@*|node()" />
       <xsl:variable name="parentReadable" select="acl:checkPermission(@ID, $read)" />
       <rights>
-        <xsl:message>
-          Adding rights section
-        </xsl:message>
         <xsl:for-each select="@ID|structure/*/*/@xlink:href">
           <xsl:call-template name="check-rights">
             <xsl:with-param name="id" select="." />
@@ -64,14 +61,8 @@
 
   <xsl:template name="check-default-rights">
     <xsl:param name="id" />
-    <xsl:message>
-      checking read permission
-    </xsl:message>
     <xsl:if test="acl:checkPermission($id,$read)">
       <xsl:attribute name="read" />
-      <xsl:message>
-        checking write permission
-      </xsl:message>
       <xsl:if test="acl:checkPermission($id,$write)">
         <xsl:attribute name="write" />
         <xsl:if test="acl:checkPermission($id,$delete)">
@@ -84,9 +75,6 @@
   <xsl:template name="check-access-keys">
     <xsl:param name="id" />
     <xsl:variable name="accKey" select="document(concat('accesskeys:', $id))/accesskeys" />
-    <xsl:message>
-      checking for access keys
-    </xsl:message>
     <xsl:attribute name="accKeyEnabled" /> <!-- need this to show menu -->
     <xsl:if test="$accKey/@readkey">
       <xsl:attribute name="readKey" />

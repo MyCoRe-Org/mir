@@ -120,9 +120,6 @@
     <xsl:choose>
       <xsl:when test="string-length($classlink) &gt; 0">
         <xsl:for-each select="document($classlink)/mycoreclass/categories/category">
-          <xsl:message>
-            <xsl:value-of select="@ID" />
-          </xsl:message>
           <xsl:variable name="classText">
             <xsl:variable name="selectLang">
               <xsl:call-template name="selectLang">

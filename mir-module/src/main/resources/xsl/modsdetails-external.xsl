@@ -573,14 +573,14 @@
                   <xsl:text>|</xsl:text>
                 </xsl:for-each>
               </xsl:variable>
-              <xsl:message>
+              <!-- xsl:message>
                 mods-type:
                 <xsl:value-of select="$mods-type" />
                 child-layout:
                 <xsl:value-of select="$child-layout" />
                 accessedit:
                 <xsl:value-of select="$accessedit" />
-              </xsl:message>
+              </xsl:message -->
               <!-- actionmapping.xml must be available for this functionality -->
               <xsl:if test="string-length($child-layout) &gt; 0 and $accessedit and mcrxsl:resourceAvailable('actionmappings.xml')">
 
