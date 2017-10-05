@@ -214,16 +214,10 @@
   </xsl:template>
 
   <xsl:template match="citation_meta" mode="copyContent">
-    <xsl:message>
-      <xsl:value-of select="'Handling citation meta tags'" />
-    </xsl:message>
     <xsl:copy-of select="./*" />
   </xsl:template>
 
   <xsl:template match="div" mode="copyContent">
-    <xsl:message>
-      <xsl:value-of select="concat('Handling div: ',@id)" />
-    </xsl:message>
     <xsl:copy-of select="./*" />
   </xsl:template>
 
