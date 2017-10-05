@@ -452,6 +452,18 @@
     <xsl:variable name="contributorRoles" select="$marcrelator/mycoreclass/categories/category[@ID='ctb']/descendant-or-self::category" />
     <xsl:for-each select="mods:name[$contributorRoles/@ID=mods:role/mods:roleTerm/text()]">
       <dc:contributor xsi:type="pc:Contributor">
+        <xsl:choose>
+          <xsl:when test="mods:role/mods:roleTerm='ths'">
+            <xsl:attribute name="thesis:role">
+              <xsl:value-of select="'advisor'" />
+            </xsl:attribute>
+          </xsl:when>
+          <xsl:when test="mods:role/mods:roleTerm='rev'">
+            <xsl:attribute name="thesis:role">
+              <xsl:value-of select="'referee'" />
+            </xsl:attribute>
+          </xsl:when>
+        </xsl:choose>
         <xsl:apply-templates select="." mode="pc-person" />
       </dc:contributor>
     </xsl:for-each>
@@ -613,18 +625,27 @@
     <xsl:if test="string-length($thesis_level) &gt; 0">
       <thesis:degree>
         <xsl:copy-of select="$thesis_level" />
-        <xsl:if test="mods:originInfo[@eventType='creation']/mods:publisher">
-          <thesis:grantor xsi:type="cc:Corporate" type="dcterms:ISO3166" countryCode="DE">
-            <cc:universityOrInstitution>
-              <cc:name>
-                <xsl:value-of select="mods:originInfo[@eventType='creation']/mods:publisher" />
-              </cc:name>
-              <cc:place>
-                <xsl:value-of select="mods:originInfo[@eventType='creation']/mods:place/mods:placeTerm" />
-              </cc:place>
-            </cc:universityOrInstitution>
-          </thesis:grantor>
-        </xsl:if>
+        <thesis:grantor xsi:type="cc:Corporate" type="dcterms:ISO3166" countryCode="DE">
+          <cc:universityOrInstitution>
+            <xsl:choose>
+              <xsl:when test="mods:originInfo[@eventType='creation']/mods:publisher">
+                <cc:name>
+                  <xsl:value-of select="mods:originInfo[@eventType='creation']/mods:publisher" />
+                </cc:name>
+                <cc:place>
+                  <xsl:value-of select="mods:originInfo[@eventType='creation']/mods:place/mods:placeTerm" />
+                </cc:place>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:variable name="repositoryPublisher">
+                  <xsl:apply-templates select="." mode="repositoryPublisher" />
+                </xsl:variable>
+                <xsl:comment>value of dc:publisher</xsl:comment>
+                <xsl:copy-of select="xalan:nodeset($repositoryPublisher)/dc:publisher/cc:universityOrInstitution/*" />
+              </xsl:otherwise>
+            </xsl:choose>
+          </cc:universityOrInstitution>
+        </thesis:grantor>
       </thesis:degree>
     </xsl:if>
   </xsl:template>
