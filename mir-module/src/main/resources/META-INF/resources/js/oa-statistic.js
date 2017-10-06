@@ -33,7 +33,7 @@ OASInline.prototype= {
       context: this
       }).done(function(data) {
         OASInline.receiveData(this, data)
-      }).error(function(e) {
+      }).fail(function(e) {
         this.state="error";
         this.errortext="Fehler beim Holen der Daten vom Graphprovider";
         this.render();
@@ -116,7 +116,7 @@ OASGraph.prototype= {
       context: this
       }).done(function(data) {
         OASGraph.receiveData(this, data);
-      }).error(function(e) {
+      }).fail(function(e) {
         this.state="error";
         this.errortext="Fehler beim Holen der Daten vom Graphprovider";
         this.render();
