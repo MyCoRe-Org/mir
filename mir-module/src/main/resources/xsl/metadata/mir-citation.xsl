@@ -58,6 +58,7 @@
           <strong>
             <xsl:value-of select="i18n:translate('mir.citationStyle')" />
           </strong>
+          <i id="crossref-citation-error" class="glyphicon glyphicon-info-sign hidden"></i>
         </span>
         <xsl:if test="//mods:mods/mods:identifier[@type='doi'] and string-length($MIR.citationStyles) &gt; 0">
           <xsl:variable name="cite-styles">
@@ -66,21 +67,24 @@
               <xsl:with-param name="delimiter" select="','" />
             </xsl:call-template>
           </xsl:variable>
-          <select class="form-control input-sm" id="crossref-cite">
-            <option>deutsche-sprache</option>
+          <select class="form-control input-sm" id="crossref-cite" data-doi="{//mods:mods/mods:identifier[@type='doi']}">
+            <option value="deutsche-sprache">deutsche-sprache</option>
             <xsl:for-each select="exslt:node-set($cite-styles)/token">
-              <option>
+              <option value="{.}">
                 <xsl:value-of select="." />
               </option>
             </xsl:for-each>
           </select>
         </xsl:if>
-        <p id="citation-text">
+        <p id="default-citation-text">
           <xsl:apply-templates select="$mods" mode="authorList" />
           <xsl:apply-templates select="$mods" mode="title" />
           <xsl:apply-templates select="$mods" mode="originInfo" />
           <xsl:apply-templates select="$mods" mode="issn" />
         </p>
+        <p id="crossref-citation-text" class="hidden">
+        </p>
+        <p id="crossref-citation-alert" class="alert alert-danger hidden"><xsl:value-of select="i18n:translate('mir.citationAlert')" /></p>
       </div>
 
       <p id="cite_link_box">
@@ -116,33 +120,7 @@
       </p>
       <xsl:apply-templates select="//mods:mods" mode="identifierListModal" />
       <xsl:if test="//mods:mods/mods:identifier[@type='doi']">
-        <script>
-          $.ajax({
-            type: 'GET',
-            url: 'https://data.datacite.org/text/x-bibliography;style=deutsche-sprache;locale=de-DE/<xsl:value-of select="//mods:mods/mods:identifier[@type='doi']" />',
-            // fixed MIR-550: overrides wrong charset=iso-8859-1
-            beforeSend: function(jqXHR) {
-              jqXHR.overrideMimeType('text/html;charset=UTF-8');
-            },
-            success: function(data){
-              $('#citation-text').text(data);
-            }
-          });
-
-          $('#crossref-cite').on('change', function() {
-            $.ajax({
-              type: 'GET',
-              url: 'https://data.datacite.org/text/x-bibliography;style=' + $(this).val() + ';locale=de-DE/<xsl:value-of select="//mods:mods/mods:identifier[@type='doi']" />',
-              // fixed MIR-550: overrides wrong charset=iso-8859-1
-              beforeSend: function(jqXHR) {
-                jqXHR.overrideMimeType('text/html;charset=UTF-8');
-              },
-              success: function(data){
-                $('#citation-text').text(data);
-              }
-            });
-          });
-        </script>
+        <script src="{$WebApplicationBaseURL}js/mir/citation.min.js"></script>
       </xsl:if>
     </div>
 
