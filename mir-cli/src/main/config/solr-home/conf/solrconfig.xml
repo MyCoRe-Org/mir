@@ -2104,6 +2104,9 @@
 
   <!-- OAI search handler, filtes journals and series etc. -->
   <requestHandler name="/oai_search" class="solr.StandardRequestHandler">
+    <lst name="invariants">
+      <str name="sort">id desc</str>
+    </lst>
     <!-- default values for query parameters -->
     <lst name="defaults">
       <str name="echoParams">explicit</str>
@@ -2112,7 +2115,6 @@
       <str name="fl">*,score</str>
       <str name="q.alt">*:* -objectType:data_file -objectType:derivate</str>
       <!-- sort by score, if user submits empty form, we show the last changed docs first (as the score will be fixed to 1.0) -->
-      <str name="sort">mods.dateIssued desc, mods.dateIssued.host desc</str>
       <!-- set as recommended by http://wiki.apache.org/solr/DisMaxQParserPlugin -->
       <str name="tie">0.1</str>
     </lst>
