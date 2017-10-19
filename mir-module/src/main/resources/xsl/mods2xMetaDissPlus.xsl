@@ -85,6 +85,8 @@
                                xmlns:dcterms=&quot;http://purl.org/dc/terms/&quot;
                                xmlns:pc=&quot;http://www.d-nb.de/standards/pc/&quot;
                                xmlns:urn=&quot;http://www.d-nb.de/standards/urn/&quot;
+                               xmlns:doi=&quot;http://www.d-nb.de/standards/doi/&quot;
+                               xmlns:hdl=&quot;http://www.d-nb.de/standards/hdl/&quot;
                                xmlns:thesis=&quot;http://www.ndltd.org/standards/metadata/etdms/1.0/&quot;
                                xmlns:ddb=&quot;http://www.d-nb.de/standards/ddb/&quot;
                                xmlns:dini=&quot;http://www.d-nb.de/standards/xmetadissplus/type/&quot;
@@ -449,21 +451,18 @@
   </xsl:template>
 
   <xsl:template mode="contributor" match="mods:mods">
-    <xsl:variable name="contributorRoles" select="$marcrelator/mycoreclass/categories/category[@ID='ctb']/descendant-or-self::category" />
-    <xsl:for-each select="mods:name[$contributorRoles/@ID=mods:role/mods:roleTerm/text()]">
-      <dc:contributor xsi:type="pc:Contributor">
-        <xsl:choose>
-          <xsl:when test="mods:role/mods:roleTerm='ths'">
-            <xsl:attribute name="thesis:role">
-              <xsl:value-of select="'advisor'" />
-            </xsl:attribute>
-          </xsl:when>
-          <xsl:when test="mods:role/mods:roleTerm='rev'">
-            <xsl:attribute name="thesis:role">
-              <xsl:value-of select="'referee'" />
-            </xsl:attribute>
-          </xsl:when>
-        </xsl:choose>
+    <xsl:for-each select="mods:name[mods:role/mods:roleTerm='ths']">
+      <dc:contributor xsi:type="pc:Contributor" thesis:role="advisor">
+        <xsl:apply-templates select="." mode="pc-person" />
+      </dc:contributor>
+    </xsl:for-each>
+    <xsl:for-each select="mods:name[mods:role/mods:roleTerm='rev']">
+      <dc:contributor xsi:type="pc:Contributor" thesis:role="referee">
+        <xsl:apply-templates select="." mode="pc-person" />
+      </dc:contributor>
+    </xsl:for-each>
+    <xsl:for-each select="mods:name[mods:role/mods:roleTerm='edt']">
+      <dc:contributor xsi:type="pc:Contributor" thesis:role="editor">
         <xsl:apply-templates select="." mode="pc-person" />
       </dc:contributor>
     </xsl:for-each>
@@ -523,11 +522,23 @@
   </xsl:template>
 
   <xsl:template mode="identifier" match="mods:mods">
-    <xsl:for-each select="mods:identifier[@type='urn']">
-      <dc:identifier xsi:type="urn:nbn">
-        <xsl:value-of select="." />
-      </dc:identifier>
-    </xsl:for-each>
+    <xsl:choose>
+      <xsl:when test="mods:identifier[@type='doi']">
+        <dc:identifier xsi:type="doi:doi">
+          <xsl:value-of select="mods:identifier[@type='doi'][1]" />
+        </dc:identifier>
+      </xsl:when>
+      <xsl:when test="mods:identifier[@type='urn' and starts-with(text(), 'urn:nbn')]">
+        <dc:identifier xsi:type="urn:nbn">
+          <xsl:value-of select="mods:identifier[@type='urn' and starts-with(text(), 'urn:nbn')][1]" />
+        </dc:identifier>
+      </xsl:when>
+      <xsl:when test="mods:identifier[@type='hdl' or @type='handle']">
+        <dc:identifier xsi:type="hdl:hdl">
+          <xsl:value-of select="mods:identifier[@type='hdl' or @type='handle'][1]" />
+        </dc:identifier>
+      </xsl:when>
+    </xsl:choose>
   </xsl:template>
 
   <xsl:template mode="format" match="mods:mods">
