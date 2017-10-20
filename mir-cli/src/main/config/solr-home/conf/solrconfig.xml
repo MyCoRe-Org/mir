@@ -1945,6 +1945,7 @@
       <str name="qf2">content</str>
       <str name="facet">true</str>
       <str name="facet.field">mods.genre</str>
+      <str name="facet.field">worldReadableComplete</str>
       <str name="facet.mincount">1</str>
     </lst>
     <lst name="invariants">
