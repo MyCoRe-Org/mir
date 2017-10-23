@@ -106,6 +106,37 @@
           }
         }
       }
+	  &.oa {
+	   li[data-fq^='worldReadableComplete']{
+	     .title:before{
+           display: inline-block;
+           font: normal normal normal 14px/1 FontAwesome;
+           text-rendering: auto;
+           -webkit-font-smoothing: antialiased;
+           -moz-osx-font-smoothing: grayscale;
+           font-size: 1.33333333em;
+           line-height: 0.75em;
+           vertical-align: -15%;
+           margin-right: 5px;
+         }
+       }
+       li[data-fq='worldReadableComplete:true'] {
+         .title {
+           .text-success();
+           &:before{
+             content: "\f13e"; //fa-unlock-alt
+           }
+         }
+       }
+       li[data-fq='worldReadableComplete:false'] {
+         .title {
+           .text-warning();
+           &:before{
+             content: "\f023"; //fa-lock
+           }
+         }
+       }
+     }
 
     }
   }
@@ -177,30 +208,27 @@
       .hit_icon_overlay {
         position: absolute;
         top: 20px;
-        left: -8px;
+        left: 25%;
         width: 50%;
       }
       .hit_tnd_container {
       }
       .hit_tnd_content {
           overflow:hidden;
+          > div {
+            float:left;
+	        &:nth-child(n+1) {
+		      margin-left: 5px;
+	        }
+          }
       }
       .hit_date {
         color: @dark_neutral;
-        float: left;
-        margin-left: 5px;
-      }
-      .hit_license {
-        float: left;
-        margin-left: 5px;
       }
       .hit_type {
-        float: left;
         color: @dark_neutral;
       }
       .hit_state {
-        float: left;
-        margin-left: 5px;
         color: @dark_neutral;
         .mir-published {
           background-color: @label-success-bg;

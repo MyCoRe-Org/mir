@@ -890,11 +890,11 @@
         </xsl:choose>
       </xsl:variable>
 
-      <li>
+      <xsl:variable name="fqValue" select="concat($facet_name,':',@name)" />
+      <li data-fq="{$fqValue}">
         <div class="checkbox">
           <label>
             <input type="checkbox" onclick="location.href='{$queryURL}';">
-              <xsl:variable name="fqValue" select="concat($facet_name,':',@name)" />
               <xsl:if test="
               /response/lst[@name='responseHeader']/lst[@name='params']/str[@name='fq' and text() = $fqValue] |
               /response/lst[@name='responseHeader']/lst[@name='params']/arr[@name='fq']/str[text() = $fqValue]">
