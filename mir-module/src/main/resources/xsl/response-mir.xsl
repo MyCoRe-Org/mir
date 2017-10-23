@@ -184,8 +184,25 @@
 <!-- Filter, Pagination & Trefferliste -->
     <div class="row result_body">
       <div class="col-xs-12 col-sm-4 result_filter">
-        <xsl:if test="/response/lst[@name='facet_counts']/lst[@name='facet_fields'] and $hits &gt; 0">
-          <div class="panel panel-default">
+        <xsl:if test="/response/lst[@name='facet_counts']/lst[@name='facet_fields']/lst[@name='worldReadableComplete']/int">
+          <div class="panel panel-default oa">
+            <div class="panel-heading" data-toggle="collapse-next">
+              <h3 class="panel-title">
+                <xsl:value-of select="i18n:translate('mir.response.openAccess.facet.title')" />
+              </h3>
+            </div>
+            <div class="panel-body collapse in">
+              <ul class="filter">
+                <xsl:apply-templates select="/response/lst[@name='facet_counts']/lst[@name='facet_fields']">
+                  <xsl:with-param name="facet_name" select="'worldReadableComplete'" />
+                  <xsl:with-param name="i18nPrefix" select="'mir.response.openAccess.facet.'" />
+                </xsl:apply-templates>
+              </ul>
+            </div>
+          </div>
+        </xsl:if>
+        <xsl:if test="/response/lst[@name='facet_counts']/lst[@name='facet_fields']/lst[@name='mods.genre']/int">
+          <div class="panel panel-default genre">
             <div class="panel-heading" data-toggle="collapse-next">
               <h3 class="panel-title">
                 <xsl:value-of select="i18n:translate('editor.search.mir.genre')" />
@@ -195,6 +212,7 @@
               <ul class="filter">
                 <xsl:apply-templates select="/response/lst[@name='facet_counts']/lst[@name='facet_fields']">
                   <xsl:with-param name="facet_name" select="'mods.genre'" />
+                  <xsl:with-param name="classId" select="'mir_genres'" />
                 </xsl:apply-templates>
               </ul>
             </div>
@@ -514,6 +532,27 @@
 <!-- hit type -->
           <div class="hit_tnd_container">
             <div class="hit_tnd_content">
+              <div class="hit_oa" data-toggle="tooltip">
+                <xsl:variable name="isOpenAccess" select="bool[@name='worldReadableComplete']='true'" />
+                <xsl:choose>
+                  <xsl:when test="$isOpenAccess">
+                    <xsl:attribute name="title">
+                      <xsl:value-of select="i18n:translate('mir.response.openAccess.true')" />
+                    </xsl:attribute>
+                    <span class="label label-success">
+                      <i class="fa fa-unlock-alt" aria-hidden="true"></i>
+                    </span>
+                  </xsl:when>
+                  <xsl:otherwise>
+                    <xsl:attribute name="title">
+                      <xsl:value-of select="i18n:translate('mir.response.openAccess.false')" />
+                    </xsl:attribute>
+                    <span class="label label-warning">
+                      <i class="fa fa-lock" aria-hidden="true"></i>
+                    </span>
+                  </xsl:otherwise>
+                </xsl:choose>
+              </div>
               <div class="hit_type">
                 <span class="label label-info">
                   <xsl:value-of select="$mods-genre-i18n" />
@@ -822,36 +861,59 @@
 
   <xsl:template match="/response/lst[@name='facet_counts']/lst[@name='facet_fields']">
     <xsl:param name="facet_name" />
+    <xsl:param name="classId" />
+    <xsl:param name="i18nPrefix" />
     <xsl:for-each select="lst[@name=$facet_name]/int">
-      <xsl:variable name="typeComplete">
-        <xsl:value-of select="concat('&amp;fq=',$facet_name,':',@name)"></xsl:value-of>
+      <xsl:variable name="fqFragment">
+        <xsl:value-of select="concat('fq=',$facet_name,':',@name)" />
       </xsl:variable>
-      <xsl:variable name="typHref" select="mcrxsl:regexp($RequestURL, '(&amp;|%26)(start=)[0-9]*', '')" />
+      <xsl:variable name="queryWithoutStart" select="mcrxsl:regexp($RequestURL, '(&amp;|%26)(start=)[0-9]*', '')" />
       <xsl:variable name="queryURL">
         <xsl:choose>
-          <xsl:when test="contains($typHref, $typeComplete)">
-            <xsl:value-of select="concat(substring-before($typHref, $typeComplete), substring-after($typHref, $typeComplete))" />
+          <xsl:when test="contains($queryWithoutStart, $fqFragment)">
+            <xsl:choose>
+              <xsl:when test="not(substring-after($queryWithoutStart, $fqFragment))">
+                <!-- last parameter -->
+                <xsl:value-of select="substring($queryWithoutStart, 1, string-length($queryWithoutStart) - string-length($fqFragment) - 1)" />
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:value-of select="concat(substring-before($queryWithoutStart, $fqFragment), substring-after($queryWithoutStart, concat($fqFragment,'&amp;')))" />
+              </xsl:otherwise>
+            </xsl:choose>
           </xsl:when>
-          <xsl:when test="not(contains($typHref, '?'))">
-            <xsl:value-of select="concat($typHref, '?', substring-after($typeComplete, '&amp;'))" />
+          <xsl:when test="not(contains($queryWithoutStart, '?'))">
+            <xsl:value-of select="concat($queryWithoutStart, '?', $fqFragment)" />
           </xsl:when>
           <xsl:otherwise>
-            <xsl:value-of select="concat($typHref, $typeComplete)" />
+            <xsl:value-of select="concat($queryWithoutStart, '&amp;', $fqFragment)" />
           </xsl:otherwise>
         </xsl:choose>
       </xsl:variable>
 
-      <li>
+      <xsl:variable name="fqValue" select="concat($facet_name,':',@name)" />
+      <li data-fq="{$fqValue}">
         <div class="checkbox">
           <label>
             <input type="checkbox" onclick="location.href='{$queryURL}';">
-              <xsl:if test="contains($typHref, $typeComplete)">
+              <xsl:if test="
+              /response/lst[@name='responseHeader']/lst[@name='params']/str[@name='fq' and text() = $fqValue] |
+              /response/lst[@name='responseHeader']/lst[@name='params']/arr[@name='fq']/str[text() = $fqValue]">
                 <xsl:attribute name="checked">true</xsl:attribute>
               </xsl:if>
             </input>
           </label>
           <span class="title">
-            <xsl:value-of select="mcrxsl:getDisplayName('mir_genres', @name)" />
+            <xsl:choose>
+              <xsl:when test="string-length($classId) &gt; 0">
+                <xsl:value-of select="mcrxsl:getDisplayName($classId, @name)" />
+              </xsl:when>
+              <xsl:when test="string-length($i18nPrefix) &gt; 0">
+                <xsl:value-of select="i18n:translate(concat($i18nPrefix,@name))" disable-output-escaping="yes" />
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:value-of select="@name" />
+              </xsl:otherwise>
+            </xsl:choose>
           </span>
           <span class="hits">
             <xsl:value-of select="." />
