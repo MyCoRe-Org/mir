@@ -990,7 +990,7 @@
       <div class="form-group">
         <xed:choose>
           <xed:when
-            test="xed:call-java('org.mycore.mir.pi.MCRPIUtil','isManagedPI', string(text()), string(/mycoreobject/@ID))">
+            test="xed:call-java('org.mycore.pi.frontend.MCRIdentifierXSLUtils','isManagedPI', string(text()), string(/mycoreobject/@ID))">
             <label class="col-md-3 control-label">
               <xed:choose>
                 <xed:when test="@type='doi'">

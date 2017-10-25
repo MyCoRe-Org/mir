@@ -9,7 +9,7 @@
   xmlns:urn="http://www.ddb.de/standards/urn"
   xmlns:mods="http://www.loc.gov/mods/v3"
   xmlns:mcr="xalan://org.mycore.common.xml.MCRXMLFunctions"
-  xmlns:piUtil="xalan://org.mycore.mir.pi.MCRPIUtil"
+  xmlns:piUtil="xalan://org.mycore.pi.frontend.MCRIdentifierXSLUtils"
   xmlns:xalan="http://xml.apache.org/xalan"
   exclude-result-prefixes="xalan xsl mods mcr piUtil">
 

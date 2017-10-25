@@ -7,7 +7,7 @@
   xmlns:xlink="http://www.w3.org/1999/xlink"
   xmlns:acl="xalan://org.mycore.access.MCRAccessManager"
   xmlns:embargo="xalan://org.mycore.mods.MCRMODSEmbargoUtils"
-  xmlns:piUtil="xalan://org.mycore.mir.pi.MCRPIUtil"
+  xmlns:piUtil="xalan://org.mycore.pi.frontend.MCRIdentifierXSLUtils"
   exclude-result-prefixes="i18n mcr mods acl xlink embargo"
 >
   <xsl:import href="xslImport:modsmeta:metadata/mir-collapse-files.xsl" />
