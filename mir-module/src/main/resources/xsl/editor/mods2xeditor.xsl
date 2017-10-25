@@ -3,7 +3,7 @@
   xmlns:mcrmods="xalan://org.mycore.mods.classification.MCRMODSClassificationSupport" xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
   xmlns:mirmapper="xalan://org.mycore.mir.impexp.MIRClassificationMapper" xmlns:mirdateconverter="xalan://org.mycore.mir.date.MIRDateConverter"
   xmlns:mirvalidationhelper="xalan://org.mycore.mir.validation.MIRValidationHelper"
-  xmlns:piUtil="org.mycore.mir.pi.MCRPIUtil"
+  xmlns:piUtil="xalan://org.mycore.pi.frontend.MCRIdentifierXSLUtils"
   exclude-result-prefixes="mcrmods xlink mirmapper i18n mirdateconverter mirvalidationhelper piUtil" version="1.0"
 >
 

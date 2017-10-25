@@ -7,7 +7,7 @@
   xmlns:xlink="http://www.w3.org/1999/xlink"
   xmlns:cmd="http://www.cdlib.org/inside/diglib/copyrightMD"
   xmlns:exslt="http://exslt.org/common"
-  xmlns:piUtil="xalan://org.mycore.mir.pi.MCRPIUtil"
+  xmlns:piUtil="xalan://org.mycore.pi.frontend.MCRIdentifierXSLUtils"
   exclude-result-prefixes="i18n mcr mods xlink cmd exslt piUtil"
 >
   <xsl:import href="xslImport:modsmeta:metadata/mir-citation.xsl" />
