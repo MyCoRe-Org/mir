@@ -4,7 +4,7 @@ dist: trusty
 group: beta
 install: true
 addons:
-  firefox: "54.0"
+  firefox: "56.0"
   apt:
     packages:
     - google-chrome-stable
@@ -16,13 +16,11 @@ cache:
 env:
   global:
     - MAVEN_OPTS="-Xmx1024M -Xss128M -XX:+CMSClassUnloadingEnabled -XX:+UseConcMarkSweepGC"
-    - GECKODRIVER_VERSION="0.17.0"
+    - GECKODRIVER_VERSION="0.19.0"
     - CHROMEDRIVER_VERSION=$(curl http://chromedriver.storage.googleapis.com/LATEST_RELEASE)
-    - XVFBARGS=":99 -ac -screen 0 1280x1024x24 -ac +extension GLX +extension RANDR +render -noreset"
     - FIREFOX_BIN=$(which firefox)
-    - SELENIUM_BROWSER=chrome
+    - SELENIUM_BROWSER=firefox
 before_install:
-  - "/sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- $XVFBARGS"
 
   # geckodriver
   - |
@@ -40,8 +38,6 @@ before_script:
   - wget http://chromedriver.storage.googleapis.com/${CHROMEDRIVER_VERSION}/chromedriver_linux64.zip
   - unzip chromedriver_linux64.zip -d chromedriver
   - export PATH=$PATH:$PWD/chromedriver
-  - export DISPLAY=:99.0
-  - sleep 3
 script:
   - mkdir ${HOME}/tmp
   - export TMPDIR="${HOME}/tmp"
