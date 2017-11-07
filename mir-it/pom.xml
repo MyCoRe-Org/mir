@@ -19,9 +19,11 @@
       -Dsolr.solr.home=${solr.home}
       -Djava.awt.headless=true</cargo.jvmargs>
     <cargo.servlet.port>9107</cargo.servlet.port>
+    <node.version>v6.9.1</node.version>
     <selenium.version>3.6.0</selenium.version>
     <solr.home>${MCR.Home.Integration}/solr-home</solr.home>
     <solr.version>4.10.4</solr.version>
+    <yarn.version>v0.24.6</yarn.version>
   </properties>
   <build>
     <pluginManagement>
@@ -294,32 +296,71 @@
           </execution>
         </executions>
       </plugin>
+      <!--<plugin>-->
+      <!--<groupId>org.apache.maven.plugins</groupId>-->
+      <!--<artifactId>maven-failsafe-plugin</artifactId>-->
+      <!--<version>2.19.1</version>-->
+      <!--<configuration>-->
+      <!--<systemPropertyVariables>-->
+      <!--<project.build.directory>${project.build.directory}</project.build.directory>-->
+      <!--<it.port>${cargo.servlet.port}</it.port>-->
+      <!--<it.context>${MCR.AppName}</it.context>-->
+      <!--<ResultFolder>${project.build.directory}/failsafe-reports/</ResultFolder>-->
+      <!--<java.awt.headless>true</java.awt.headless>-->
+      <!--</systemPropertyVariables>-->
+      <!--<trimStackTrace>false</trimStackTrace>-->
+      <!--</configuration>-->
+      <!--<executions>-->
+      <!--<execution>-->
+      <!--<id>integration-tests</id>-->
+      <!--<goals>-->
+      <!--<goal>integration-test</goal>-->
+      <!--</goals>-->
+      <!--</execution>-->
+      <!--<execution>-->
+      <!--<id>verify-results</id>-->
+      <!--<goals>-->
+      <!--<goal>verify</goal>-->
+      <!--</goals>-->
+      <!--</execution>-->
+      <!--</executions>-->
+      <!--</plugin>-->
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-failsafe-plugin</artifactId>
-        <version>2.19.1</version>
+        <groupId>com.github.eirslett</groupId>
+        <artifactId>frontend-maven-plugin</artifactId>
         <configuration>
-          <systemPropertyVariables>
-            <project.build.directory>${project.build.directory}</project.build.directory>
-            <it.port>${cargo.servlet.port}</it.port>
-            <it.context>${MCR.AppName}</it.context>
-            <ResultFolder>${project.build.directory}/failsafe-reports/</ResultFolder>
-            <java.awt.headless>true</java.awt.headless>
-          </systemPropertyVariables>
-          <trimStackTrace>false</trimStackTrace>
+          <workingDirectory>${basedir}</workingDirectory>
+          <nodeVersion>${node.version}</nodeVersion>
+          <yarnVersion>${yarn.version}</yarnVersion>
+          <installDirectory>${settings.localRepository}/node-yarn-${node.version}-${yarn.version}</installDirectory>
         </configuration>
         <executions>
           <execution>
-            <id>integration-tests</id>
+            <id>install-node-and-yarn</id>
             <goals>
-              <goal>integration-test</goal>
+              <goal>install-node-and-yarn</goal>
             </goals>
+            <phase>generate-resources</phase>
           </execution>
           <execution>
-            <id>verify-results</id>
+            <id>yarn-install</id>
             <goals>
-              <goal>verify</goal>
+              <goal>yarn</goal>
             </goals>
+            <phase>pre-integration-test</phase>
+            <configuration>
+              <arguments>install</arguments>
+            </configuration>
+          </execution>
+          <execution>
+            <id>cypress-run</id>
+            <goals>
+              <goal>yarn</goal>
+            </goals>
+            <phase>integration-test</phase>
+            <configuration>
+              <arguments>run cypress:run</arguments>
+            </configuration>
           </execution>
         </executions>
       </plugin>

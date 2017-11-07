@@ -1,0 +1,20 @@
+{
+  "version": "1.0.0",
+  "author": "Thomas Scheffler",
+  "homepage": "${project.url}",
+  "repository": {
+    "type": "svn",
+    "url": "${project.scm.url}"
+  },
+  "license": "GPL-3.0",
+  "engines": {
+    "node": ">= 0.12.0"
+  },
+  "engineStrict": true,
+  "devDependencies": {
+    "cypress": "^1.0.3"
+  },
+  "scripts": {
+    "cypress:run": "cypress run --browser chrome --record --key 8b024e4f-b189-4fa5-b39b-2bfca2447b0a"
+  }
+}
