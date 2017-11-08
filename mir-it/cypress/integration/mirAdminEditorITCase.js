@@ -1,6 +1,6 @@
 describe('MIR Admin Editor IT Case', function() {
     beforeEach(function() {
-        cy.visit('http://localhost:8291/mir')
+        cy.visit('http://localhost:9107/mir')
         cy.url().should('include', 'content')
         cy.title().should('eq', 'Willkommen bei MIR!')
         cy.contains('Zugriff verweigert').should('not.be.visible')
