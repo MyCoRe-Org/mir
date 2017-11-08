@@ -17,6 +17,7 @@
  * 			- SELECT			: add searchType selection menu
  * 			- GND 				: search through http://lobid.org
  * 			- VIAF				: search through http://www.viaf.org
+ * 		    - ORCID             : search through https://pub.orcid.org/
  * 		- searchOutput			: the output field for person the nameIdentifer ID,
  * 								  if nothing specified the input field is used
  * 		- searchOutputType		: the output field for person the nameIdentifer type,
@@ -293,6 +294,44 @@
       geographic : {
         enabled : false
       }
+    },
+    ORCID : {
+        baseURI: "https://orcid.org/",
+        person: {
+            enabled:true,
+            /* does not work with http only */
+            url: window["webApplicationBaseURL"]+"servlets/MIROrcidServlet",
+            data: function (input) {
+                return {
+                    q: input
+                }
+            },
+            dataConvert: function (data) {
+                return data;
+            }
+        },
+        organisation: {
+            enabled: false
+        },
+        both:{
+            enabled: true,
+            /* does not work with http only */
+            url: window["webApplicationBaseURL"]+"servlets/MIROrcidServlet",
+            data: function (input) {
+                return {
+                    q: input
+                }
+            },
+            dataConvert: function (data) {
+                return data;
+            }
+        },
+        topic:{
+            enabled: false
+        },
+        geographic:{
+            enabled : false
+        }
     }
   };
 
