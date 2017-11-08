@@ -15,6 +15,6 @@
     "cypress": "^1.0.3"
   },
   "scripts": {
-    "cypress:run": "cypress run --browser chrome --record --key 8b024e4f-b189-4fa5-b39b-2bfca2447b0a"
+    "cypress:run": "cypress run --record --key 8b024e4f-b189-4fa5-b39b-2bfca2447b0a"
   }
 }
