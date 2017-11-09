@@ -40,6 +40,10 @@ public class MIRViewerConfigurationStrategy extends MCRViewerDefaultConfiguratio
                 mcrViewerConfiguration.addScript(String.format(Locale.ROOT, "%sjs/%s", baseURL, customJS));
             }
 
+            if(request.getParameter("embedded")!=null){
+                mcrViewerConfiguration.setProperty("permalink.updateHistory", false);
+                mcrViewerConfiguration.setProperty("chapter.showOnStart", false);
+            }
         }
 
         return mcrViewerConfiguration;
