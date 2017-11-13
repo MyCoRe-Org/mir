@@ -69,14 +69,6 @@
         <configuration>
           <deployables>
             <deployable>
-              <groupId>org.mycore.solr</groupId>
-              <artifactId>solr</artifactId>
-              <type>war</type>
-              <properties>
-                <context>/solr</context>
-              </properties>
-            </deployable>
-            <deployable>
               <groupId>${project.groupId}</groupId>
               <artifactId>${project.artifactId}</artifactId>
               <properties>
@@ -90,6 +82,17 @@
               <cargo.servlet.users>submitter:submitter123:submitter|editor:editor123:editor</cargo.servlet.users>
             </properties>
           </configuration>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.mycore</groupId>
+        <artifactId>solr-runner-maven-plugin</artifactId>
+        <version>1.0-SNAPSHOT</version>
+        <configuration>
+          <solrHomeTemplate>${parent.folder}/mir-webapp/src/main/resources/solr-home</solrHomeTemplate>
+          <solrHome>${mir.solr.home}</solrHome>
+          <solrMirrorURL>${solr-runner.solrMirrorURL}</solrMirrorURL>
+          <solrVersionString>${solr-runner.solrVersionString}</solrVersionString>
         </configuration>
       </plugin>
     </plugins>
@@ -115,12 +118,6 @@
       <groupId>org.mycore</groupId>
       <artifactId>mycore-meta</artifactId>
       <type>pom</type>
-    </dependency>
-    <dependency>
-      <groupId>org.mycore.solr</groupId>
-      <artifactId>solr</artifactId>
-      <type>war</type>
-      <scope>provided</scope>
     </dependency>
   </dependencies>
   <profiles>
