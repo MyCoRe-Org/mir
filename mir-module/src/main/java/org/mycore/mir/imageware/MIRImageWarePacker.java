@@ -30,7 +30,6 @@ import org.mycore.common.config.MCRConfigurationException;
 import org.mycore.common.content.MCRContent;
 import org.mycore.common.content.transformer.MCRContentTransformer;
 import org.mycore.common.content.transformer.MCRContentTransformerFactory;
-import org.mycore.datamodel.common.MCRActiveLinkException;
 import org.mycore.datamodel.common.MCRXMLMetadataManager;
 import org.mycore.datamodel.ifs.MCRContentInputStream;
 import org.mycore.datamodel.metadata.MCRMetadataManager;
@@ -268,7 +267,7 @@ public class MIRImageWarePacker extends MCRPacker {
         mcrObject.getService().setDate(flagType, new Date());
         try {
             MCRMetadataManager.update(mcrObject);
-        } catch (MCRActiveLinkException | MCRAccessException e) {
+        } catch (MCRAccessException e) {
             throw new ExecutionException("Could not set " + flagType + " flag!", e);
         }
     }
