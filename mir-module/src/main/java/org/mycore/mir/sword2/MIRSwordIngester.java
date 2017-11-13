@@ -18,7 +18,6 @@ import org.mycore.common.config.MCRConfiguration;
 import org.mycore.common.content.MCRContent;
 import org.mycore.common.content.MCRJDOMContent;
 import org.mycore.common.content.transformer.MCRXSL2XMLTransformer;
-import org.mycore.datamodel.common.MCRActiveLinkException;
 import org.mycore.datamodel.metadata.MCRDerivate;
 import org.mycore.datamodel.metadata.MCRMetadataManager;
 import org.mycore.datamodel.metadata.MCRObject;
@@ -145,8 +144,6 @@ public class MIRSwordIngester implements MCRSwordIngester {
         object.getMetadata().setFromDOM(newMetadata.detachRootElement());
         try {
             MCRMetadataManager.update(object);
-        } catch (MCRActiveLinkException e) {
-            throw new SwordServerException("Error while updating object!", e);
         } catch (MCRAccessException e) {
             throw new SwordError(UriRegistry.ERROR_BAD_REQUEST, HttpServletResponse.SC_UNAUTHORIZED, e.getMessage());
         }
