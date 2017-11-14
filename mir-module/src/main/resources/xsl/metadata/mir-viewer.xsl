@@ -40,9 +40,9 @@
 
   <xsl:template name="createViewer">
     <xsl:variable name="derId" select="@xlink:href" />
-    <xsl:variable name="viewerId" select="concat('viewer_',$derId)" />
-
     <xsl:variable name="mainFile" select="mcrxsl:getMainDocName($derId)" />
+    <xsl:variable name="viewerId" select="concat($derId, ':', $mainFile)" />
+
 
     <xsl:choose>
       <xsl:when test="iview2:getSupportedMainFile($derId)">
@@ -56,7 +56,6 @@
               <xsl:with-param name="derId" select="$derId" />
             </xsl:call-template>
             <xsl:call-template name="loadViewer">
-              <xsl:with-param name="viewerID" select="$viewerId" />
               <xsl:with-param name="derivate" select="$derId" />
               <xsl:with-param name="file" select="$mainFile" />
             </xsl:call-template>
@@ -75,7 +74,6 @@
           <xsl:with-param name="derId" select="$derId" />
         </xsl:call-template>
         <xsl:call-template name="loadViewer">
-          <xsl:with-param name="viewerID" select="$viewerId" />
           <xsl:with-param name="derivate" select="$derId" />
           <xsl:with-param name="file" select="$mainFile" />
         </xsl:call-template>
@@ -95,18 +93,9 @@
   </xsl:template>
 
   <xsl:template name="loadViewer">
-    <xsl:param name="viewerID" />
     <xsl:param name="derivate" />
     <xsl:param name="file" />
-    <script>
-      var baseURL = '<xsl:value-of select="$WebApplicationBaseURL" />';
-      var derivate = '<xsl:value-of select="$derivate" />';
-      var file = '<xsl:value-of select="$file" />';
-      var viewerID = '<xsl:value-of select="$viewerID" />';
-
-      $.get( baseURL + "rsc/viewer/" + derivate + "/" + file + "?embedded=%23" + viewerID, function( data ) {
-        $(window.document.body).append(data);
-      });
+    <script src="{$WebApplicationBaseURL}rsc/viewer/{$derivate}/{$file}?embedded=true&amp;XSL.Style=js">
     </script>
   </xsl:template>
 
@@ -116,7 +105,7 @@
     <xsl:param name="viewerType" />
     <xsl:param name="derId" />
 
-    <div id="{$viewerId}" class="viewer {$viewerType}">
+    <div data-viewer="{$viewerId}" class="viewer {$viewerType}">
     </div>
 
     <xsl:if test="$MIR.DFGViewer.enable='true' and  iview2xsl:hasMETSFile($derId)">
