@@ -101,6 +101,9 @@
             <xsl:apply-templates select="mods:language" />
             <xsl:apply-templates select="mods:relatedItem" />
             <xsl:apply-templates select="mods:accessCondition" />
+            <xsl:apply-templates select="." mode="eu-repo-accessRights">
+              <xsl:with-param name="objId" select="$objId" />
+            </xsl:apply-templates>
           </oai_dc:dc>
         </xsl:for-each>
       </xsl:otherwise>
@@ -409,38 +412,32 @@
 -->
 
   <xsl:template match="mods:identifier">
-      <xsl:variable name="type"
-        select="translate(@type,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')"/>
+    <xsl:variable name="type"
+      select="translate(@type,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')"/>
 
-        <xsl:if test="contains ('isbn issn uri doi lccn uri urn', $type)">
-    <dc:identifier>
-
-      <xsl:choose>
-        <xsl:when test="@type='urn'">
-            <xsl:value-of select="concat($MCR.URN.Resolver.MasterURL, .)" />
-        </xsl:when>
-        <xsl:when test="@type='doi'">
-          <xsl:value-of select="concat($MCR.DOI.Resolver.MasterURL, .)" />
-        </xsl:when>
-        <xsl:when test="@type='hdl'">
-            <xsl:text>http://hdl.handle.net/</xsl:text>
-            <xsl:value-of select="." />
-        </xsl:when>
-        <xsl:when test="contains(.,':')">
-          <xsl:value-of select="."/>
-        </xsl:when>
-        <xsl:when test="@type">
-          <xsl:value-of select="$type"/>: <xsl:value-of select="."/>
-        </xsl:when>
-        <xsl:when test="contains ('isbn issn uri doi lccn uri', $type)">
-          <xsl:value-of select="$type"/>: <xsl:value-of select="."/>
-        </xsl:when>
-      </xsl:choose>
-    </dc:identifier>
-
-      </xsl:if>
+    <xsl:if test="@type and contains('isbn issn uri doi lccn uri urn', $type)">
+      <dc:identifier>
+        <xsl:choose>
+          <xsl:when test="@type='urn'">
+              <xsl:value-of select="concat($MCR.URN.Resolver.MasterURL, .)" />
+          </xsl:when>
+          <xsl:when test="@type='doi'">
+            <xsl:value-of select="concat($MCR.DOI.Resolver.MasterURL, .)" />
+          </xsl:when>
+          <xsl:when test="@type='hdl'">
+              <xsl:text>http://hdl.handle.net/</xsl:text>
+              <xsl:value-of select="." />
+          </xsl:when>
+          <xsl:when test="contains(.,':')">
+            <xsl:value-of select="."/>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:value-of select="$type"/>: <xsl:value-of select="."/>
+          </xsl:otherwise>
+        </xsl:choose>
+      </dc:identifier>
+    </xsl:if>
   </xsl:template>
-
 
   <xsl:template match="mods:location">
     <xsl:for-each select="mods:url[not(contains(text(), $WebApplicationBaseURL))]">
@@ -493,55 +490,55 @@
     </dc:relation>
   </xsl:template>
 
-  <!-- von Paul Borchert -->
-  <xsl:template match="mods:accessCondition[@type='embargo']">
-    <dc:rights>
-      <xsl:text>Fulltext available at </xsl:text> <xsl:value-of select="."/>
-    </dc:rights>
-    <dc:rights>info:eu-repo/semantics/embargoedAccess</dc:rights>
+  <xsl:template match="mods:accessCondition[@type='use and reproduction' or @type='restriction on access']">
+    <xsl:variable name="licenseURI" select="mcrmods:getClassCategLink(.)" />
+    <xsl:choose>
+      <xsl:when test="string-length($licenseURI) &gt; 0">
+        <xsl:variable name="license" select="document($licenseURI)" />
+        <xsl:variable name="licenseLink" select="$license//category/url/@xlink:href" />
+        <dc:rights>
+          <xsl:choose>
+            <xsl:when test="string-length($licenseLink) &gt; 0">
+              <xsl:value-of select="$licenseLink" />
+            </xsl:when>
+            <xsl:when test="$license//category/label[lang('en')]/@text">
+              <xsl:value-of select="$license//category/label[lang('en')]/@text" />
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:value-of select="mcrxsl:getDisplayName($license/mycoreclass/@ID, $license//category/@ID)" />
+            </xsl:otherwise>
+          </xsl:choose>
+        </dc:rights>
+      </xsl:when>
+      <xsl:otherwise>
+        <dc:rights>
+          <xsl:value-of select="." />
+        </dc:rights>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
 
-  <xsl:template match="mods:accessCondition[@type='use and reproduction']">
-    <xsl:variable name="trimmed" select="substring-after(normalize-space(@xlink:href),'#')" />
-    <xsl:variable name="licenseURI" select="concat('classification:metadata:0:children:mir_licenses:',$trimmed)" />
-    <xsl:variable name="licenseLink" select="document($licenseURI)//url/@xlink:href" />
-    <dc:rights>
-      <xsl:choose>
-        <xsl:when test="string-length($licenseLink) &gt; 0">
-          <xsl:value-of select="$licenseLink" />
-        </xsl:when>
-        <xsl:when test="contains($trimmed, 'rights_reserved')">
-          <xsl:apply-templates select="." mode="rights_reserved" />
-        </xsl:when>
-        <xsl:when test="contains($trimmed, 'oa_nlz')">
-          <xsl:apply-templates select="." mode="oa_nlz" />
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:value-of select="mcrxsl:getDisplayName('mir_licenses',$trimmed)" />
-        </xsl:otherwise>
-      </xsl:choose>
-    </dc:rights>
-    <xsl:if test="(contains($trimmed, 'cc_') or contains($trimmed, 'oa_')) and not(../mods:accessCondition[@type='restriction on access']) and not(../mods:accessCondition[@type='embargo'])">
-      <dc:rights>
-        <xsl:text>info:eu-repo/semantics/openAccess</xsl:text>
-      </dc:rights>
-    </xsl:if>
-  </xsl:template>
-
-  <xsl:template match="mods:accessCondition[@type='restriction on access']">
-    <dc:rights>
-      <xsl:choose>
-        <xsl:when test="contains(substring-after(@xlink:href, '#'), 'intern')">
-          <xsl:text>info:eu-repo/semantics/closedAccess</xsl:text>
-        </xsl:when>
-        <xsl:when test="contains(substring-after(@xlink:href, '#'), 'ipAddressRange')">
-          <xsl:text>info:eu-repo/semantics/restrictedAccess</xsl:text>
-        </xsl:when>
-        <xsl:when test="contains(substring-after(@xlink:href, '#'), 'unlimited')">
+  <xsl:template match="mods:mods" mode="eu-repo-accessRights">
+    <xsl:param name="objId" />
+    <xsl:choose>
+      <xsl:when test="mcrxsl:isWorldReadableComplete($objId)">
+        <dc:rights>
           <xsl:text>info:eu-repo/semantics/openAccess</xsl:text>
-        </xsl:when>
-      </xsl:choose>
-    </dc:rights>
+        </dc:rights>
+      </xsl:when>
+      <xsl:when test="mods:accessCondition[@type='embargo']">
+        <dc:rights>
+          <xsl:text>Fulltext available at </xsl:text> <xsl:value-of select="."/>
+        </dc:rights>
+        <dc:rights>info:eu-repo/semantics/embargoedAccess</dc:rights>
+      </xsl:when>
+      <xsl:otherwise>
+        <dc:rights>
+          <!-- no 'info:eu-repo/semantics/closedAccess' as we have no paywall -->
+          <xsl:text>info:eu-repo/semantics/restrictedAccess</xsl:text>
+        </dc:rights>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
 
   <xsl:template name="name">
@@ -586,6 +583,5 @@
 
   <!-- suppress all else:-->
   <xsl:template match="*"/>
-
 
 </xsl:stylesheet>

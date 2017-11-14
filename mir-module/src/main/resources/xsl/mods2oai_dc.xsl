@@ -83,6 +83,9 @@
             <xsl:apply-templates select="mods:language" />
             <xsl:apply-templates select="mods:relatedItem" />
             <xsl:apply-templates select="mods:accessCondition" />
+            <xsl:apply-templates select="." mode="eu-repo-accessRights">
+              <xsl:with-param name="objId" select="$objId" />
+            </xsl:apply-templates>
 
     </oai_dc:dc>
   </xsl:for-each>
