@@ -60,7 +60,7 @@
     </xsl:if>
     <!-- MIR addition -->
     <xsl:if test="dc">
-      <mods xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-5.xsd">>
+      <mods xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-5.xsd">
         <xsl:apply-templates />
       </mods>
     </xsl:if>

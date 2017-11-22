@@ -1,6 +1,8 @@
 package org.mycore.mir.sword2;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 
@@ -22,7 +24,9 @@ import org.mycore.datamodel.metadata.MCRDerivate;
 import org.mycore.datamodel.metadata.MCRMetadataManager;
 import org.mycore.datamodel.metadata.MCRObject;
 import org.mycore.datamodel.metadata.MCRObjectID;
+import org.mycore.datamodel.niofs.MCRPath;
 import org.mycore.mods.MCRMODSWrapper;
+import org.mycore.pi.MCRFileCollectingFileVisitor;
 import org.mycore.sword.MCRSwordUtil;
 import org.mycore.sword.application.MCRSwordIngester;
 import org.mycore.sword.application.MCRSwordLifecycleConfiguration;
@@ -129,6 +133,8 @@ public class MIRSwordIngester implements MCRSwordIngester {
                     // derivate can be created but not deleted ?!
                     LOGGER.error("Derivate could not be deleted(deposit was invalid)", e1);
                 }
+            } else if(complete) {
+                setDefaultMainFile(createdDerivateID.toString());
             }
         }
     }
@@ -162,5 +168,32 @@ public class MIRSwordIngester implements MCRSwordIngester {
     @Override
     public void destroy() {
 
+    }
+
+    /**
+     * Sets a main file if not present.
+     * @param derivateID the id of the derivate
+     */
+    private static void setDefaultMainFile(String derivateID) {
+        MCRPath path = MCRPath.getPath(derivateID, "/");
+        try {
+            MCRFileCollectingFileVisitor<Path> visitor = new MCRFileCollectingFileVisitor<>();
+            Files.walkFileTree(path, visitor);
+            MCRDerivate derivate = MCRMetadataManager.retrieveMCRDerivate(MCRObjectID.getInstance(derivateID));
+            visitor.getPaths().stream()
+                .map(MCRPath.class::cast)
+                .filter(p -> !p.getOwnerRelativePath().endsWith(".xml"))
+                .findFirst()
+                .ifPresent(file -> {
+                    derivate.getDerivate().getInternals().setMainDoc(file.getOwnerRelativePath());
+                    try {
+                        MCRMetadataManager.update(derivate);
+                    } catch (IOException|MCRAccessException e) {
+                        LOGGER.error("Could not set main file!", e);
+                    }
+                });
+        } catch (IOException e) {
+            LOGGER.error("Could not set main file!", e);
+        }
     }
 }
