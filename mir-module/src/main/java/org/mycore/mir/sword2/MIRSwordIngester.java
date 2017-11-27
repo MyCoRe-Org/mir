@@ -16,6 +16,7 @@ import org.jdom2.Element;
 import org.jdom2.JDOMException;
 import org.jdom2.Namespace;
 import org.mycore.access.MCRAccessException;
+import org.mycore.common.MCRPersistenceException;
 import org.mycore.common.config.MCRConfiguration;
 import org.mycore.common.content.MCRContent;
 import org.mycore.common.content.MCRJDOMContent;
@@ -188,7 +189,7 @@ public class MIRSwordIngester implements MCRSwordIngester {
                     derivate.getDerivate().getInternals().setMainDoc(file.getOwnerRelativePath());
                     try {
                         MCRMetadataManager.update(derivate);
-                    } catch (IOException|MCRAccessException e) {
+                    } catch (MCRPersistenceException | MCRAccessException e) {
                         LOGGER.error("Could not set main file!", e);
                     }
                 });
