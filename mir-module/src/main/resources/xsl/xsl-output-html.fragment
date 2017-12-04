@@ -1,2 +1,0 @@
-<xsl:output method="html" doctype-system="about:legacy-compat" indent="yes" omit-xml-declaration="yes" media-type="text/html"
-    version="5" encoding="UTF-8" xmlns:xalan="http://xml.apache.org/xalan" xalan:indent-amount="2"/>
