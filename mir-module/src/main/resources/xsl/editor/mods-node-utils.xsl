@@ -2,6 +2,9 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:mods="http://www.loc.gov/mods/v3" xmlns:mcrxml="xalan://org.mycore.common.xml.MCRXMLFunctions"
   exclude-result-prefixes="mcrxml" version="1.0"
 >
+
+  <xsl:import href="coreFunctions.xsl" />
+
   <!-- 
    - Applys a nodeset with given namespace (default: 'mods') to given maximal depth.
    - If maximal depth is reached and $serialize is true() sub-tags encode as string.
@@ -50,7 +53,14 @@
     <xsl:variable name="htmlString">
       <xsl:value-of select="." disable-output-escaping="yes" />
     </xsl:variable>
-    <xsl:value-of select="strutils:unescapeHtml($htmlString)" disable-output-escaping="yes" />
+    <xsl:variable name="fixedAmpString">
+      <xsl:call-template name="ersetzen">
+        <xsl:with-param name="vorlage" select="$htmlString" />
+        <xsl:with-param name="raus" select="'&amp;'" />
+        <xsl:with-param name="rein" select="'&amp;amp;'" />
+      </xsl:call-template>
+    </xsl:variable>
+    <xsl:value-of select="strutils:unescapeHtml($fixedAmpString)" disable-output-escaping="yes" />
   </xsl:template>
 
   <!--
@@ -97,6 +107,20 @@
   </xsl:template>
 
   <xsl:template match="text()" mode="serialize">
-    <xsl:value-of select="." />
+    <xsl:variable name="fixedAmpString">
+      <xsl:variable name="str">
+        <xsl:call-template name="ersetzen">
+          <xsl:with-param name="vorlage" select="." />
+          <xsl:with-param name="raus" select="'&lt;'" />
+          <xsl:with-param name="rein" select="'&amp;lt;'" />
+        </xsl:call-template>
+      </xsl:variable>
+      <xsl:call-template name="ersetzen">
+        <xsl:with-param name="vorlage" select="$str" />
+        <xsl:with-param name="raus" select="'&gt;'" />
+        <xsl:with-param name="rein" select="'&amp;gt;'" />
+      </xsl:call-template>
+    </xsl:variable>
+    <xsl:value-of select="$fixedAmpString" />
   </xsl:template>
 </xsl:stylesheet>
