@@ -36,6 +36,7 @@
     <cargo.servlet.uriencoding>UTF-8</cargo.servlet.uriencoding>
     <cargo.tomcat.ajp.port>8292</cargo.tomcat.ajp.port>
     <cargo.version>1.6.1</cargo.version>
+    <checkstyle.failOnViolation>false</checkstyle.failOnViolation>
     <changelog.since>2017-07-11</changelog.since>
     <!-- until snapshot matches released version (required for 'mvn changes:changes-check') -->
     <changes.version>2017.07</changes.version>
@@ -43,6 +44,7 @@
     <java.target.version>1.8</java.target.version>
     <jetty.version>9.3.14.v20161028</jetty.version>
     <mycore.version>2017.07-SNAPSHOT</mycore.version>
+    <pmd.failOnViolation>false</pmd.failOnViolation>
     <site.suffix />
     <sortpom.sortDeps>scope,groupId,artifactId</sortpom.sortDeps>
     <sortpom.sortFile>https://gist.githubusercontent.com/yagee-de/dfd3698c1b49173dbf251f74eb6a9297/raw/406460c088ff3cb6354e4ae6b40535e6f841607d/mycore_sort.xml</sortpom.sortFile>
