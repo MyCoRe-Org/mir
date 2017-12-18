@@ -114,7 +114,6 @@
     <dependency>
       <groupId>${project.parent.groupId}</groupId>
       <artifactId>mir-module</artifactId>
-      <version>${project.parent.version}</version>
       <scope>runtime</scope>
     </dependency>
     <dependency>

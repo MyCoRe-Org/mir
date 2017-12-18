@@ -24,6 +24,7 @@ package org.mycore.mir.wizard;
 
 import java.io.File;
 import java.util.EnumSet;
+import java.util.Locale;
 import java.util.UUID;
 
 import javax.servlet.DispatcherType;
@@ -154,16 +155,21 @@ public class MIRWizardStartupHandler implements MCRStartupHandler.AutoExecutable
     static void outputLoginToken(ServletContext servletContext) {
         final StringBuffer sb = new StringBuffer();
 
-        sb.append("\n\n" + String.format(String.format("%%0%dd", 80), 0).replace("0", "=") + "\n");
+        sb.append(
+            "\n\n" + String.format(Locale.ROOT, String.format(Locale.ROOT, "%%0%dd", 80), 0)
+                .replace("0", "=") + "\n");
         sb.append(" MIR Wizard");
-        sb.append("\n" + String.format(String.format("%%0%dd", 80), 0).replace("0", "=") + "\n\n");
+        sb.append(
+            "\n" + String.format(Locale.ROOT, String.format(Locale.ROOT, "%%0%dd", 80), 0)
+                .replace("0", "=") + "\n\n");
 
-        if (System.getProperty("os.name").toLowerCase().contains("win"))
+        if (System.getProperty("os.name").toLowerCase(Locale.ROOT).contains("win"))
             sb.append(" Login token: " + servletContext.getAttribute(LOGIN_TOKEN));
         else
             sb.append(" \u001b[41m\u001b[1;37mLogin token: " + servletContext.getAttribute(LOGIN_TOKEN) + "\u001b[m");
 
-        sb.append("\n\n" + String.format(String.format("%%0%dd", 80), 0).replace("0", "="));
+        sb.append("\n\n" + String.format(Locale.ROOT, String.format(Locale.ROOT, "%%0%dd", 80), 0)
+            .replace("0", "="));
 
         LOGGER.info(sb.toString());
     }
