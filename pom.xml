@@ -55,110 +55,6 @@
     <pluginManagement>
       <plugins>
         <plugin>
-          <artifactId>maven-enforcer-plugin</artifactId>
-          <dependencies>
-            <dependency>
-              <groupId>org.commonjava.maven.enforcer</groupId>
-              <artifactId>enforce-managed-deps-rule</artifactId>
-              <version>1.0</version>
-            </dependency>
-          </dependencies>
-          <executions>
-            <execution>
-              <id>enforce</id>
-              <goals>
-                <goal>enforce</goal>
-              </goals>
-              <configuration>
-                <rules>
-                  <requireManagedDeps implementation="org.commonjava.maven.enforcer.rule.EnforceManagedDepsRule">
-                    <checkProfiles>true</checkProfiles>
-                    <failOnViolation>true</failOnViolation>
-                  </requireManagedDeps>
-                  <!-- Disabled, https://issues.apache.org/jira/browse/MENFORCER-189 -->
-                  <!--
-                  <reactorModuleConvergence />
-                  -->
-                  <bannedDependencies>
-                    <excludes>
-                      <exclude>log4j</exclude>
-                      <exclude>org.slf4j</exclude>
-                      <exclude>javax.servlet:servlet-api</exclude>
-                    </excludes>
-                    <includes>
-                      <include>org.slf4j:slf4j-api</include>
-                      <include>org.slf4j:slf4j-ext</include>
-                      <include>org.slf4j:jcl-over-slf4j</include>
-                    </includes>
-                  </bannedDependencies>
-                </rules>
-                <fail>true</fail>
-              </configuration>
-            </execution>
-            <execution>
-              <id>enforce-maven</id>
-              <goals>
-                <goal>enforce</goal>
-              </goals>
-              <configuration>
-                <rules>
-                  <requireMavenVersion>
-                    <version>3.2.2</version>
-                  </requireMavenVersion>
-                </rules>
-              </configuration>
-            </execution>
-          </executions>
-        </plugin>
-        <plugin>
-          <artifactId>maven-dependency-plugin</artifactId>
-          <executions>
-            <execution>
-              <id>analyze</id>
-              <goals>
-                <goal>analyze-only</goal>
-              </goals>
-              <inherited>true</inherited>
-              <configuration>
-                <failOnWarning>true</failOnWarning>
-                <ignoreNonCompile>true</ignoreNonCompile>
-                <outputXML>true</outputXML>
-              </configuration>
-            </execution>
-          </executions>
-        </plugin>
-        <plugin>
-          <groupId>de.thetaphi</groupId>
-          <artifactId>forbiddenapis</artifactId>
-          <version>1.7</version>
-          <configuration>
-            <failOnUnsupportedJava>false</failOnUnsupportedJava>
-            <!-- compile would fail anyway and this is required for MCR-873 -->
-            <failOnMissingClasses>false</failOnMissingClasses>
-            <failOnUnresolvableSignatures>false</failOnUnresolvableSignatures>
-            <bundledSignatures>
-              <bundledSignature>jdk-unsafe</bundledSignature>
-              <bundledSignature>jdk-deprecated</bundledSignature>
-              <bundledSignature>commons-io-unsafe-2.4</bundledSignature>
-            </bundledSignatures>
-          </configuration>
-        </plugin>
-        <plugin>
-          <groupId>org.codehaus.mojo</groupId>
-          <artifactId>license-maven-plugin</artifactId>
-          <version>1.10</version>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-assembly-plugin</artifactId>
-          <version>3.0.0</version>
-        </plugin>
-        <plugin>
-          <groupId>org.codehaus.mojo</groupId>
-          <artifactId>exec-maven-plugin</artifactId>
-          <version>1.5.0</version>
-        </plugin>
-        <plugin>
           <groupId>org.codehaus.cargo</groupId>
           <artifactId>cargo-maven2-plugin</artifactId>
           <version>${cargo.version}</version>
@@ -205,44 +101,6 @@
     </pluginManagement>
     <plugins>
       <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>license-maven-plugin</artifactId>
-        <configuration>
-          <verbose>false</verbose>
-          <addSvnKeyWords>true</addSvnKeyWords>
-          <licenseName>gpl_v3</licenseName>
-        </configuration>
-        <executions>
-          <execution>
-            <id>download-licenses</id>
-            <goals>
-              <goal>update-project-license</goal>
-            </goals>
-            <phase>process-sources</phase>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>com.github.ekryd.sortpom</groupId>
-        <artifactId>sortpom-maven-plugin</artifactId>
-        <version>2.4.0</version>
-        <executions>
-          <execution>
-            <goals>
-              <goal>sort</goal>
-            </goals>
-            <phase>verify</phase>
-            <configuration>
-              <expandEmptyElements>false</expandEmptyElements>
-              <keepBlankLines>true</keepBlankLines>
-              <sortDependencies>${sortpom.sortDeps}</sortDependencies>
-              <sortOrderFile>${sortpom.sortFile}</sortOrderFile>
-              <sortProperties>${sortpom.sortProps}</sortProperties>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
         <artifactId>maven-changes-plugin</artifactId>
         <configuration>
           <issueManagementSystems>
@@ -264,24 +122,6 @@
           <maxEntries>1000</maxEntries>
           <urlDownload>${project.url}/download.html</urlDownload>
         </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.jacoco</groupId>
-        <artifactId>jacoco-maven-plugin</artifactId>
-        <executions>
-          <execution>
-            <goals>
-              <goal>prepare-agent</goal>
-            </goals>
-          </execution>
-          <execution>
-            <id>report</id>
-            <goals>
-              <goal>report</goal>
-            </goals>
-            <phase>test</phase>
-          </execution>
-        </executions>
       </plugin>
     </plugins>
   </build>
