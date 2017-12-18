@@ -98,34 +98,23 @@
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>mir-common-resources</artifactId>
-      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>mir-layout</artifactId>
-      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>mir-module</artifactId>
-      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>mir-wizard</artifactId>
-      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.mycore</groupId>
       <artifactId>mycore-meta</artifactId>
       <type>pom</type>
-    </dependency>
-    <dependency>
-      <groupId>org.mycore.solr</groupId>
-      <artifactId>solr</artifactId>
-      <version>4.10.4</version>
-      <type>war</type>
-      <scope>provided</scope>
     </dependency>
   </dependencies>
   <profiles>
@@ -142,4 +131,15 @@
       </properties>
     </profile>
   </profiles>
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.mycore.solr</groupId>
+        <artifactId>solr</artifactId>
+        <version>4.10.4</version>
+        <type>war</type>
+        <scope>provided</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
 </project>

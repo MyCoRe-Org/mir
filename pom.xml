@@ -36,15 +36,16 @@
     <cargo.servlet.uriencoding>UTF-8</cargo.servlet.uriencoding>
     <cargo.tomcat.ajp.port>8292</cargo.tomcat.ajp.port>
     <cargo.version>1.6.1</cargo.version>
-    <checkstyle.failOnViolation>false</checkstyle.failOnViolation>
     <changelog.since>2017-07-11</changelog.since>
     <!-- until snapshot matches released version (required for 'mvn changes:changes-check') -->
     <changes.version>2017.07</changes.version>
+    <checkstyle.failOnViolation>false</checkstyle.failOnViolation>
     <hibernate.version>5.2.10.Final</hibernate.version>
     <java.target.version>1.8</java.target.version>
     <jetty.version>9.3.14.v20161028</jetty.version>
     <mycore.version>2017.07-SNAPSHOT</mycore.version>
     <pmd.failOnViolation>false</pmd.failOnViolation>
+    <selenium.version>3.6.0</selenium.version>
     <site.suffix />
     <sortpom.sortDeps>scope,groupId,artifactId</sortpom.sortDeps>
     <sortpom.sortFile>https://gist.githubusercontent.com/yagee-de/dfd3698c1b49173dbf251f74eb6a9297/raw/406460c088ff3cb6354e4ae6b40535e6f841607d/mycore_sort.xml</sortpom.sortFile>
@@ -341,6 +342,38 @@
   <dependencyManagement>
     <dependencies>
       <dependency>
+        <groupId>${project.groupId}</groupId>
+        <artifactId>mir-cli</artifactId>
+        <version>${project.version}</version>
+        <type>tar.gz</type>
+      </dependency>
+      <dependency>
+        <groupId>${project.groupId}</groupId>
+        <artifactId>mir-common-resources</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>${project.groupId}</groupId>
+        <artifactId>mir-layout</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>${project.groupId}</groupId>
+        <artifactId>mir-module</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>${project.groupId}</groupId>
+        <artifactId>mir-webapp</artifactId>
+        <version>${project.version}</version>
+        <type>war</type>
+      </dependency>
+      <dependency>
+        <groupId>${project.groupId}</groupId>
+        <artifactId>mir-wizard</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
         <groupId>de.erichseifert.vectorgraphics2d</groupId>
         <artifactId>VectorGraphics2D</artifactId>
         <version>0.11</version>
@@ -419,6 +452,12 @@
         <version>${mycore.version}</version>
       </dependency>
       <dependency>
+        <groupId>org.mycore.solr</groupId>
+        <artifactId>solr</artifactId>
+        <version>4.10.4</version>
+        <type>war</type>
+      </dependency>
+      <dependency>
         <groupId>com.levigo.jbig2</groupId>
         <artifactId>levigo-jbig2-imageio</artifactId>
         <version>2.0</version>
@@ -466,6 +505,36 @@
         <artifactId>mycore-base</artifactId>
         <version>${mycore.version}</version>
         <type>test-jar</type>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.mycore</groupId>
+        <artifactId>selenium-utils</artifactId>
+        <version>0.8-SNAPSHOT</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.seleniumhq.selenium</groupId>
+        <artifactId>selenium-api</artifactId>
+        <version>${selenium.version}</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.seleniumhq.selenium</groupId>
+        <artifactId>selenium-remote-driver</artifactId>
+        <version>${selenium.version}</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.seleniumhq.selenium</groupId>
+        <artifactId>selenium-server</artifactId>
+        <version>${selenium.version}</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.seleniumhq.selenium</groupId>
+        <artifactId>selenium-support</artifactId>
+        <version>${selenium.version}</version>
         <scope>test</scope>
       </dependency>
     </dependencies>

@@ -6,6 +6,7 @@ import java.time.Year;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAccessor;
+import java.util.Locale;
 
 import org.apache.logging.log4j.LogManager;
 
@@ -13,7 +14,7 @@ public class MIRDateConverter {
 
     public static String convertDate(String date, String format) {
         try {
-            String formatterClassName = "org.mycore.mir.date.MIR" + format.toUpperCase() + "Formatter";
+            String formatterClassName = "org.mycore.mir.date.MIR" + format.toUpperCase(Locale.ROOT) + "Formatter";
             MIRDateFormatterInterface formatter = (MIRDateFormatterInterface) Class.forName(formatterClassName)
                 .newInstance();
             return getFormatedDateString(date, formatter.getFormatter(date));

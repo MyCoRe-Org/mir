@@ -119,12 +119,28 @@
       <artifactId>HikariCP</artifactId>
     </dependency>
     <dependency>
+      <groupId>commons-io</groupId>
+      <artifactId>commons-io</artifactId>
+    </dependency>
+    <dependency>
       <groupId>javax.servlet</groupId>
       <artifactId>javax.servlet-api</artifactId>
     </dependency>
     <dependency>
+      <groupId>javax.ws.rs</groupId>
+      <artifactId>javax.ws.rs-api</artifactId>
+    </dependency>
+    <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.abdera</groupId>
+      <artifactId>abdera-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.abdera</groupId>
+      <artifactId>abdera-i18n</artifactId>
     </dependency>
     <dependency>
       <groupId>org.apache.httpcomponents</groupId>
@@ -139,16 +155,20 @@
       <artifactId>log4j-1.2-api</artifactId>
     </dependency>
     <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-api</artifactId>
+    </dependency>
+    <dependency>
       <groupId>org.apache.solr</groupId>
       <artifactId>solr-solrj</artifactId>
     </dependency>
     <dependency>
       <groupId>org.hibernate</groupId>
-      <artifactId>hibernate-core</artifactId>
+      <artifactId>hibernate-hikaricp</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.hibernate</groupId>
-      <artifactId>hibernate-hikaricp</artifactId>
+      <groupId>org.hibernate.javax.persistence</groupId>
+      <artifactId>hibernate-jpa-2.1-api</artifactId>
     </dependency>
     <dependency>
       <groupId>org.hsqldb</groupId>
@@ -173,10 +193,6 @@
     </dependency>
     <dependency>
       <groupId>org.mycore</groupId>
-      <artifactId>mycore-iview2</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.mycore</groupId>
       <artifactId>mycore-mods</artifactId>
     </dependency>
     <dependency>
@@ -197,11 +213,17 @@
     </dependency>
     <dependency>
       <groupId>org.mycore</groupId>
-      <artifactId>mycore-viewer</artifactId>
+      <artifactId>mycore-wfc</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.mycore</groupId>
-      <artifactId>mycore-wfc</artifactId>
+      <groupId>org.mycore.sword</groupId>
+      <artifactId>easy-sword2-lib</artifactId>
+      <exclusions>
+        <exclusion>
+          <groupId>xml-apis</groupId>
+          <artifactId>xml-apis</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
   </dependencies>
 </project>
