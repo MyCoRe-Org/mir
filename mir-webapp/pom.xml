@@ -116,6 +116,12 @@
       <artifactId>mycore-meta</artifactId>
       <type>pom</type>
     </dependency>
+    <dependency>
+      <groupId>org.mycore.solr</groupId>
+      <artifactId>solr</artifactId>
+      <type>war</type>
+      <scope>provided</scope>
+    </dependency>
   </dependencies>
   <profiles>
     <profile>
@@ -131,15 +137,4 @@
       </properties>
     </profile>
   </profiles>
-  <dependencyManagement>
-    <dependencies>
-      <dependency>
-        <groupId>org.mycore.solr</groupId>
-        <artifactId>solr</artifactId>
-        <version>4.10.4</version>
-        <type>war</type>
-        <scope>provided</scope>
-      </dependency>
-    </dependencies>
-  </dependencyManagement>
 </project>
