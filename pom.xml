@@ -45,7 +45,7 @@
     <jetty.version>9.3.14.v20161028</jetty.version>
     <mycore.version>2017.07-SNAPSHOT</mycore.version>
     <pmd.failOnViolation>false</pmd.failOnViolation>
-    <selenium.version>3.6.0</selenium.version>
+    <selenium.version>3.8.1</selenium.version>
     <site.suffix />
     <sortpom.sortDeps>scope,groupId,artifactId</sortpom.sortDeps>
     <sortpom.sortFile>https://gist.githubusercontent.com/yagee-de/dfd3698c1b49173dbf251f74eb6a9297/raw/406460c088ff3cb6354e4ae6b40535e6f841607d/mycore_sort.xml</sortpom.sortFile>
@@ -172,6 +172,7 @@
     </notifiers>
   </ciManagement>
   <repositories>
+    <!-- artifactory is still required for mycore's solr -->
     <repository>
       <snapshots>
         <enabled>false</enabled>
@@ -196,32 +197,11 @@
       </snapshots>
       <id>MyCoRe HQ</id>
       <url>http://artifactory.mycore.de/mycore-releases</url>
-    </repository>
-    <repository>
-      <releases>
-        <enabled>false</enabled>
-      </releases>
-      <snapshots>
-        <enabled>true</enabled>
-      </snapshots>
-      <id>MyCoRe HQ Snapshots</id>
-      <url>http://artifactory.mycore.de/mycore-snapshots</url>
     </repository>
   </repositories>
   <pluginRepositories>
     <pluginRepository>
       <releases>
-        <updatePolicy>never</updatePolicy>
-      </releases>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-      <id>central</id>
-      <name>Central Repository</name>
-      <url>https://repo.maven.apache.org/maven2</url>
-    </pluginRepository>
-    <pluginRepository>
-      <releases>
         <enabled>false</enabled>
       </releases>
       <snapshots>
@@ -229,23 +209,6 @@
       </snapshots>
       <id>ossrh</id>
       <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-    </pluginRepository>
-    <pluginRepository>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-      <id>MyCoRe HQ</id>
-      <url>http://artifactory.mycore.de/mycore-releases</url>
-    </pluginRepository>
-    <pluginRepository>
-      <releases>
-        <enabled>false</enabled>
-      </releases>
-      <snapshots>
-        <enabled>true</enabled>
-      </snapshots>
-      <id>MyCoRe HQ Snapshots</id>
-      <url>http://artifactory.mycore.de/mycore-snapshots</url>
     </pluginRepository>
   </pluginRepositories>
   <distributionManagement>
