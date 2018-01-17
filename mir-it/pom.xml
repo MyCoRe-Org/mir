@@ -382,12 +382,6 @@
       <artifactId>junit</artifactId>
       <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>org.mycore.solr</groupId>
-      <artifactId>solr</artifactId>
-      <type>war</type>
-      <scope>test</scope>
-    </dependency>
   </dependencies>
   <profiles>
     <profile>
