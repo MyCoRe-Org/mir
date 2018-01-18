@@ -85,7 +85,7 @@
         </configuration>
       </plugin>
       <plugin>
-        <groupId>org.mycore</groupId>
+        <groupId>org.mycore.plugins</groupId>
         <artifactId>solr-runner-maven-plugin</artifactId>
         <version>1.0-SNAPSHOT</version>
         <configuration>
