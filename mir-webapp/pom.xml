@@ -89,7 +89,7 @@
         <artifactId>solr-runner-maven-plugin</artifactId>
         <version>1.0-SNAPSHOT</version>
         <configuration>
-          <solrHomeTemplate>${parent.folder}/mir-webapp/src/main/resources/solr-home</solrHomeTemplate>
+          <solrHomeTemplate>${project.basedir}/src/main/resources/solr-home</solrHomeTemplate>
           <solrHome>${mir.solr.home}</solrHome>
           <solrMirrorURL>${solr-runner.solrMirrorURL}</solrMirrorURL>
           <solrVersionString>${solr-runner.solrVersionString}</solrVersionString>
