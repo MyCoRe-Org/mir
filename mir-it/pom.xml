@@ -279,7 +279,7 @@
         </executions>
       </plugin>
       <plugin>
-        <groupId>org.mycore</groupId>
+        <groupId>org.mycore.plugins</groupId>
         <artifactId>solr-runner-maven-plugin</artifactId>
         <configuration>
           <solrHomeTemplate>${parent.folder}/mir-webapp/src/main/resources/solr-home</solrHomeTemplate>
