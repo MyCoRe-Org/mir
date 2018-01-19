@@ -35,7 +35,7 @@
        that you fully re-index after changing this setting as it can
        affect both how text is indexed and queried.
   -->
-  <luceneMatchVersion>6.5.0</luceneMatchVersion>
+  <luceneMatchVersion>7.2.1</luceneMatchVersion>
 
   <!-- <lib/> directives can be used to instruct Solr to load any Jars
        identified and use them to resolve any "plugins" specified in
@@ -1478,19 +1478,13 @@
       <str name="fq">objectType:mods</str>
       <str name="fq">state:published OR {!v=$owner}</str>
       <str name="qf1">id^100 mods.gnd^100 mods.identifier^100 isbn^100 mods.title^80 mods.author^40 mods.publisher^30 mods.name^30 mods.abstract^10 mods.place^5 allMeta^0.002</str>
-      <str name="fq2">{!join from=returnId to=id}*:*</str>
-      <str name="qf2">content</str>
       <str name="facet">true</str>
       <str name="facet.field">mods.genre</str>
       <str name="facet.field">worldReadableComplete</str>
       <str name="facet.mincount">1</str>
     </lst>
     <lst name="invariants">
-    <str name="q">_query_:"{!edismax fq=$fq1 qf=$qf1 v=$condQuery}" OR _query_:"{!edismax fq=$fq2 qf=$qf2 v=$condQuery}"</str>
-      <str name="group">true</str>
-      <str name="group.limit">10</str>
-      <str name="group.field">returnId</str>
-      <str name="group.ngroups">true</str>
+      <str name="q">_query_:"{!edismax qf=$qf1 v=$condQuery}" OR _query_:"{!join from=returnId to=id}{!edismax qf=content v=$condQuery}"</str>
     </lst>
 
   </requestHandler>
