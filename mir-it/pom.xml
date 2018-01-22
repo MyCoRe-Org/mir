@@ -146,23 +146,6 @@
         </executions>
       </plugin>
       <plugin>
-        <artifactId>maven-scm-plugin</artifactId>
-        <version>1.9.5</version>
-        <executions>
-          <execution>
-            <id>get-solr-config</id>
-            <goals>
-              <goal>checkout</goal>
-            </goals>
-            <phase>generate-test-resources</phase>
-            <configuration>
-              <connectionUrl>scm:svn:https://svn.apache.org/repos/asf/lucene/dev/branches/lucene_solr_4_10/solr/example/solr</connectionUrl>
-              <checkoutDirectory>${project.build.directory}/solr</checkoutDirectory>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
         <artifactId>maven-resources-plugin</artifactId>
         <executions>
           <execution>
@@ -177,42 +160,6 @@
                 <resource>
                   <directory>src/test/integration</directory>
                   <filtering>true</filtering>
-                </resource>
-              </resources>
-            </configuration>
-          </execution>
-          <execution>
-            <id>copy-solr-config</id>
-            <goals>
-              <goal>copy-resources</goal>
-            </goals>
-            <phase>pre-integration-test</phase>
-            <configuration>
-              <outputDirectory>${solr.home}</outputDirectory>
-              <resources>
-                <resource>
-                  <directory>${project.build.directory}/solr</directory>
-                  <filtering>false</filtering>
-                  <excludes>
-                    <exclude>collection1/conf/solrconfig.xml</exclude>
-                    <exclude>collection1/conf/schema.xml</exclude>
-                  </excludes>
-                </resource>
-              </resources>
-            </configuration>
-          </execution>
-          <execution>
-            <id>copy-solr-cli-config</id>
-            <goals>
-              <goal>copy-resources</goal>
-            </goals>
-            <phase>pre-integration-test</phase>
-            <configuration>
-              <outputDirectory>${solr.home}/collection1/</outputDirectory>
-              <resources>
-                <resource>
-                  <directory>${project.build.directory}/dependency/mir-cli-${project.version}/config/solr-home</directory>
-                  <filtering>false</filtering>
                 </resource>
               </resources>
             </configuration>
