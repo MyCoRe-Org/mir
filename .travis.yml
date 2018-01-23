@@ -20,7 +20,7 @@ env:
     - CHROMEDRIVER_VERSION=$(curl http://chromedriver.storage.googleapis.com/LATEST_RELEASE)
     - XVFBARGS=":99 -ac -screen 0 1280x1024x24 -ac +extension GLX +extension RANDR +render -noreset"
     - FIREFOX_BIN=$(which firefox)
-    - SELENIUM_BROWSER=chrome
+    - SELENIUM_BROWSER=firefox
 before_install:
   - "/sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- $XVFBARGS"
 
