@@ -22,18 +22,12 @@
  */
 package org.mycore.mir.wizard.command;
 
-import java.io.File;
 import java.io.IOException;
-import java.net.URL;
-import java.nio.file.Files;
+import java.nio.file.Paths;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.jdom2.Element;
 import org.mycore.common.config.MCRConfigurationDir;
-import org.mycore.common.xml.MCRURIResolver;
 import org.mycore.mir.wizard.MIRWizardCommand;
 import org.mycore.mir.wizard.utils.MIRWizardUnzip;
 
@@ -60,56 +54,19 @@ public class MIRWizardSolr extends MIRWizardCommand {
      */
     @Override
     public void doExecute() {
-        final Element xml = MCRURIResolver.instance().resolve("resource:setup/solr.xml");
-        // TODO make SOLR version selectable
-        final Element config = xml.getChildren("instance").get(0).getChild("config");
+        try {
+            final String confDir = Paths
+                .get(MCRConfigurationDir.getConfigurationDirectory().getAbsolutePath(), "data", "solr", "mir")
+                .toString();
 
-        if (config != null && config.getChildren().size() > 0) {
-            try {
-                final File tmpDir = Files.createTempDirectory("solr").toFile();
-                File file = null;
+            LOGGER.info("extract SOLR config to {}...", confDir);
 
-                boolean success = true;
-                for (Element c : config.getChildren()) {
-                    final String url = c.getTextTrim();
-                    final String fname = FilenameUtils.getName(url);
-                    try {
-                        file = new File(tmpDir.getAbsolutePath() + File.separator + fname);
+            MIRWizardUnzip.unzip(
+                Thread.currentThread().getContextClassLoader().getResourceAsStream("solr-home.zip"), confDir);
 
-                        FileUtils.copyURLToFile(new URL(url), file);
-
-                        success = true;
-                    } catch (final Exception ex) {
-                        success = false;
-                    }
-
-                    if (success) {
-                        this.result.setAttribute("url", url);
-                        break;
-                    }
-                }
-
-                if (success && file != null) {
-                    final String dataDir = MCRConfigurationDir.getConfigurationDirectory().getAbsolutePath()
-                        + File.separator + "data";
-
-                    MIRWizardUnzip.unzip(file.getAbsolutePath(), dataDir);
-
-                    final String confDir = dataDir + File.separator + "solr" + File.separator + "collection1"
-                        + File.separator + "conf";
-                    final String[] confs = { "schema.xml", "solrconfig.xml", "mapping.txt" };
-                    for (String name : confs) {
-                        LOGGER.info("copy file \"" + name + "\" to \"" + confDir + "\"...");
-                        file = new File(confDir + File.separator + name);
-                        FileUtils.copyInputStreamToFile(
-                            this.getClass().getClassLoader().getResourceAsStream("setup/solr/" + name), file);
-                    }
-                }
-
-                this.result.setSuccess(success);
-            } catch (final IOException ex) {
-                this.result.setResult(ex.getMessage());
-            }
+            this.result.setSuccess(true);
+        } catch (final IOException ex) {
+            this.result.setResult(ex.getMessage());
         }
     }
 }
