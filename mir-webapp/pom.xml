@@ -89,11 +89,32 @@
         <artifactId>solr-runner-maven-plugin</artifactId>
         <version>1.0-SNAPSHOT</version>
         <configuration>
-          <solrHomeTemplate>${project.basedir}/src/main/resources/solr-home</solrHomeTemplate>
+          <solrHomeTemplate>src/main/solr</solrHomeTemplate>
           <solrHome>${mir.solr.home}</solrHome>
           <solrMirrorURL>${solr-runner.solrMirrorURL}</solrMirrorURL>
           <solrVersionString>${solr-runner.solrVersionString}</solrVersionString>
         </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <configuration>
+          <finalName>solr-home</finalName>
+          <descriptors>
+            <descriptor>src/main/assembly/solr-home.xml</descriptor>
+          </descriptors>
+          <outputDirectory>${project.build.outputDirectory}</outputDirectory>
+          <appendAssemblyId>false</appendAssemblyId>
+          <attach>false</attach>
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>single</goal>
+            </goals>
+            <phase>process-resources</phase>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>

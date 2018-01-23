@@ -229,7 +229,7 @@
         <groupId>org.mycore.plugins</groupId>
         <artifactId>solr-runner-maven-plugin</artifactId>
         <configuration>
-          <solrHomeTemplate>${project.basedir}/../mir-webapp/src/main/resources/solr-home</solrHomeTemplate>
+          <solrHomeTemplate>../mir-webapp/src/main/solr</solrHomeTemplate>
           <solrHome>${solr.home}</solrHome>
           <solrMirrorURL>${solr-runner.solrMirrorURL}</solrMirrorURL>
           <solrPort>${solr.port}</solrPort>
