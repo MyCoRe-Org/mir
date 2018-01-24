@@ -27,6 +27,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -58,15 +59,23 @@ public class MIRWizardUnzip {
      * @throws IOException occurs on failed I/O operations 
      */
     public static void unzip(final String zipFilePath, final String destDirectory) throws IOException {
+        final InputStream is = new FileInputStream(zipFilePath);
+
+        final String fname = FilenameUtils.getName(zipFilePath);
+        LOGGER.info("Extract " + fname + " to " + destDirectory + "...");
+
+        unzip(is, destDirectory);
+
+        LOGGER.info("done.");
+    }
+
+    public static void unzip(final InputStream is, final String destDirectory) throws IOException {
         final File destDir = new File(destDirectory);
         if (!destDir.exists()) {
             destDir.mkdir();
         }
-        final ZipInputStream zipIn = new ZipInputStream(new FileInputStream(zipFilePath));
+        final ZipInputStream zipIn = new ZipInputStream(is);
         ZipEntry entry = zipIn.getNextEntry();
-
-        final String fname = FilenameUtils.getName(zipFilePath);
-        LOGGER.info("Extract " + fname + " to " + destDirectory + "...");
 
         while (entry != null) {
             final String filePath = destDirectory + File.separator + entry.getName();
@@ -84,8 +93,6 @@ public class MIRWizardUnzip {
         }
 
         zipIn.close();
-
-        LOGGER.info("done.");
     }
 
     /**

@@ -20,7 +20,7 @@
       -Djava.awt.headless=true</cargo.jvmargs>
     <cargo.servlet.port>9107</cargo.servlet.port>
     <solr.home>${MCR.Home.Integration}/solr-home</solr.home>
-    <solr.version>4.10.4</solr.version>
+    <solr.port>9108</solr.port>
   </properties>
   <build>
     <pluginManagement>
@@ -138,33 +138,9 @@
                   <type>war</type>
                   <destFileName>mir.war</destFileName>
                 </artifactItem>
-                <artifactItem>
-                  <groupId>org.mycore.solr</groupId>
-                  <artifactId>solr</artifactId>
-                  <version>${solr.version}</version>
-                  <type>war</type>
-                  <destFileName>solr.war</destFileName>
-                </artifactItem>
               </artifactItems>
               <outputDirectory>${project.build.directory}/war</outputDirectory>
               <overWriteSnapshots>true</overWriteSnapshots>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <artifactId>maven-scm-plugin</artifactId>
-        <version>1.9.5</version>
-        <executions>
-          <execution>
-            <id>get-solr-config</id>
-            <goals>
-              <goal>checkout</goal>
-            </goals>
-            <phase>generate-test-resources</phase>
-            <configuration>
-              <connectionUrl>scm:svn:https://svn.apache.org/repos/asf/lucene/dev/branches/lucene_solr_4_10/solr/example/solr</connectionUrl>
-              <checkoutDirectory>${project.build.directory}/solr</checkoutDirectory>
             </configuration>
           </execution>
         </executions>
@@ -184,42 +160,6 @@
                 <resource>
                   <directory>src/test/integration</directory>
                   <filtering>true</filtering>
-                </resource>
-              </resources>
-            </configuration>
-          </execution>
-          <execution>
-            <id>copy-solr-config</id>
-            <goals>
-              <goal>copy-resources</goal>
-            </goals>
-            <phase>pre-integration-test</phase>
-            <configuration>
-              <outputDirectory>${solr.home}</outputDirectory>
-              <resources>
-                <resource>
-                  <directory>${project.build.directory}/solr</directory>
-                  <filtering>false</filtering>
-                  <excludes>
-                    <exclude>collection1/conf/solrconfig.xml</exclude>
-                    <exclude>collection1/conf/schema.xml</exclude>
-                  </excludes>
-                </resource>
-              </resources>
-            </configuration>
-          </execution>
-          <execution>
-            <id>copy-solr-cli-config</id>
-            <goals>
-              <goal>copy-resources</goal>
-            </goals>
-            <phase>pre-integration-test</phase>
-            <configuration>
-              <outputDirectory>${solr.home}/collection1/</outputDirectory>
-              <resources>
-                <resource>
-                  <directory>${project.build.directory}/dependency/mir-cli-${project.version}/config/solr-home</directory>
-                  <filtering>false</filtering>
                 </resource>
               </resources>
             </configuration>
@@ -261,14 +201,6 @@
             <configuration>
               <deployables>
                 <deployable>
-                  <groupId>org.mycore.solr</groupId>
-                  <artifactId>solr</artifactId>
-                  <type>war</type>
-                  <properties>
-                    <context>/solr</context>
-                  </properties>
-                </deployable>
-                <deployable>
                   <groupId>${project.groupId}</groupId>
                   <artifactId>mir-webapp</artifactId>
                   <type>war</type>
@@ -286,6 +218,32 @@
           </execution>
           <execution>
             <id>stop-container</id>
+            <goals>
+              <goal>stop</goal>
+            </goals>
+            <phase>post-integration-test</phase>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.mycore.plugins</groupId>
+        <artifactId>solr-runner-maven-plugin</artifactId>
+        <configuration>
+          <solrHomeTemplate>../mir-webapp/src/main/solr</solrHomeTemplate>
+          <solrHome>${solr.home}</solrHome>
+          <solrMirrorURL>${solr-runner.solrMirrorURL}</solrMirrorURL>
+          <solrPort>${solr.port}</solrPort>
+        </configuration>
+        <executions>
+          <execution>
+            <id>start-solr</id>
+            <goals>
+              <goal>copyHome</goal>
+              <goal>start</goal>
+            </goals>
+            <phase>pre-integration-test</phase>
+          </execution>
+          <execution>
             <goals>
               <goal>stop</goal>
             </goals>
@@ -369,12 +327,6 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.mycore.solr</groupId>
-      <artifactId>solr</artifactId>
-      <type>war</type>
       <scope>test</scope>
     </dependency>
   </dependencies>

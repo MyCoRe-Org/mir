@@ -69,14 +69,6 @@
         <configuration>
           <deployables>
             <deployable>
-              <groupId>org.mycore.solr</groupId>
-              <artifactId>solr</artifactId>
-              <type>war</type>
-              <properties>
-                <context>/solr</context>
-              </properties>
-            </deployable>
-            <deployable>
               <groupId>${project.groupId}</groupId>
               <artifactId>${project.artifactId}</artifactId>
               <properties>
@@ -91,6 +83,38 @@
             </properties>
           </configuration>
         </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.mycore.plugins</groupId>
+        <artifactId>solr-runner-maven-plugin</artifactId>
+        <version>1.0-SNAPSHOT</version>
+        <configuration>
+          <solrHomeTemplate>src/main/solr</solrHomeTemplate>
+          <solrHome>${mir.solr.home}</solrHome>
+          <solrMirrorURL>${solr-runner.solrMirrorURL}</solrMirrorURL>
+          <solrVersionString>${solr-runner.solrVersionString}</solrVersionString>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <configuration>
+          <finalName>solr-home</finalName>
+          <descriptors>
+            <descriptor>src/main/assembly/solr-home.xml</descriptor>
+          </descriptors>
+          <outputDirectory>${project.build.outputDirectory}</outputDirectory>
+          <appendAssemblyId>false</appendAssemblyId>
+          <attach>false</attach>
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>single</goal>
+            </goals>
+            <phase>process-resources</phase>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>
@@ -115,12 +139,6 @@
       <groupId>org.mycore</groupId>
       <artifactId>mycore-meta</artifactId>
       <type>pom</type>
-    </dependency>
-    <dependency>
-      <groupId>org.mycore.solr</groupId>
-      <artifactId>solr</artifactId>
-      <type>war</type>
-      <scope>provided</scope>
     </dependency>
   </dependencies>
   <profiles>
