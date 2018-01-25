@@ -115,7 +115,7 @@
 
   <xed:template id="title">
     <mir:textfield xpath="mods:titleInfo/mods:title" label="mir.title" help-text="{i18n:mir.help.title}" class="required" required="true"
-      required-text="{i18n:mir.validation.title}" />
+      required-i18n="mir.validation.title" />
   </xed:template>
 
   <xed:template id="title.nonrequired">
