@@ -48,9 +48,14 @@
             <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
             <div class="form-group">
               <input name="condQuery" placeholder="Suche" class="form-control search-query" id="searchInput" type="text" />
-              <xsl:if test="not(mcrxsl:isCurrentUserGuestUser())">
-                <input name="owner" type="hidden" value="createdby:{$CurrentUser}" />
-              </xsl:if>
+              <xsl:choose>
+                <xsl:when test="mcrxsl:isCurrentUserInRole('admin') or mcrxsl:isCurrentUserInRole('editor')">
+                  <input name="owner" type="hidden" value="createdby:*" />
+                </xsl:when>
+                <xsl:when test="not(mcrxsl:isCurrentUserGuestUser())">
+                  <input name="owner" type="hidden" value="createdby:{$CurrentUser}" />
+                </xsl:when>
+              </xsl:choose>
             </div>
           </form>
         </div>
