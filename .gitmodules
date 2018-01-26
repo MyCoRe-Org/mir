@@ -1,0 +1,4 @@
+[submodule "mir-solr"]
+	path = mir-webapp/src/main/solr
+	url = ../mir-solr.git
+	branch = .
