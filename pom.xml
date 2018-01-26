@@ -34,15 +34,16 @@
     <cargo.rmi.port>8290</cargo.rmi.port>
     <cargo.servlet.port>8291</cargo.servlet.port>
     <cargo.servlet.uriencoding>UTF-8</cargo.servlet.uriencoding>
+    <cargo.start.jvmargs />
     <cargo.tomcat.ajp.port>8292</cargo.tomcat.ajp.port>
-    <cargo.version>1.6.1</cargo.version>
+    <cargo.version>1.6.6</cargo.version>
     <changelog.since>2017-07-11</changelog.since>
     <!-- until snapshot matches released version (required for 'mvn changes:changes-check') -->
     <changes.version>2017.07</changes.version>
     <checkstyle.failOnViolation>false</checkstyle.failOnViolation>
     <hibernate.version>5.2.10.Final</hibernate.version>
     <java.target.version>1.8</java.target.version>
-    <jetty.version>9.3.14.v20161028</jetty.version>
+    <jetty.version>9.3.21.v20170918</jetty.version>
     <mycore.version>2017.07-SNAPSHOT</mycore.version>
     <pmd.failOnViolation>false</pmd.failOnViolation>
     <selenium.version>3.8.1</selenium.version>
@@ -52,7 +53,8 @@
     <sortpom.sortDeps>scope,groupId,artifactId</sortpom.sortDeps>
     <sortpom.sortFile>https://gist.githubusercontent.com/yagee-de/dfd3698c1b49173dbf251f74eb6a9297/raw/406460c088ff3cb6354e4ae6b40535e6f841607d/mycore_sort.xml</sortpom.sortFile>
     <sortpom.sortProps>true</sortpom.sortProps>
-    <tomcat8.version>8.5.15</tomcat8.version>
+    <tomcat8.version>8.5.27</tomcat8.version>
+    <tomcat9.version>9.0.4</tomcat9.version>
   </properties>
   <build>
     <pluginManagement>
@@ -365,7 +367,7 @@
                     <cargo.tomcat.ajp.port>${cargo.tomcat.ajp.port}</cargo.tomcat.ajp.port>
                     <cargo.servlet.uriencoding>${cargo.servlet.uriencoding}</cargo.servlet.uriencoding>
                     <!-- fixes IIIF identifier encoding issues -->
-                    <cargo.start.jvmargs>-Dorg.apache.tomcat.util.buf.UDecoder.ALLOW_ENCODED_SLASH=true</cargo.start.jvmargs>
+                    <cargo.start.jvmargs>-Dorg.apache.tomcat.util.buf.UDecoder.ALLOW_ENCODED_SLASH=true ${cargo.start.jvmargs}</cargo.start.jvmargs>
                   </properties>
                 </configuration>
               </configuration>
@@ -380,6 +382,18 @@
         <property>
           <name>tomcat</name>
           <value>8</value>
+        </property>
+      </activation>
+      <properties>
+        <tomcat.version>${tomcat8.version}</tomcat.version>
+      </properties>
+    </profile>
+    <profile>
+      <id>tomcat9</id>
+      <activation>
+        <property>
+          <name>tomcat</name>
+          <value>9</value>
         </property>
       </activation>
       <properties>
