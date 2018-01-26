@@ -1728,10 +1728,12 @@
     </fieldset>
   </xed:template>
 
+  <!-- TODO: check template for usage!
   <xed:template id="subject.genre">
     <mir:textfield repeat="true" xpath="mods:subject/mods:genre" min="1" max="10" label="mir.subject.genre" help-text="{i18n:mir.help.subject.genre}" />
   </xed:template>
-
+  -->
+  
   <xed:template id="subject.simple">
     <xed:bind xpath="mods:subject">
       <mir:topic.repeated min="1" max="10" label="mir.subject.topic" help-text="{i18n:mir.help.subject.topic.gnd}" />
