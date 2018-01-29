@@ -17,11 +17,11 @@
   <xsl:param name="MCR.Viewer.PDFCreatorStyle" />
   <xsl:param name="MCR.Viewer.PDFCreatorFormatString" />
   <xsl:param name="MCR.Viewer.PDFCreatorRestrictionFormatString" />
+  <xsl:param name="WebApplicationBaseURL" />
 
   <xsl:template match="/">
     <xsl:if test="mycoreobject/structure/derobjects/derobject">
       <div id="mir-viewer">
-        <xsl:variable name="viewerNodesTmp">
           <xsl:if test="count(mycoreobject/structure/derobjects/derobject[key('rights', @xlink:href)/@read]) > 0">
             <div class="row mir-preview">
               <div class="col-md-12">
@@ -33,17 +33,6 @@
               </div>
             </div>
           </xsl:if>
-        </xsl:variable>
-
-        <xsl:variable name="viewerNodes" select="xalan:nodeset($viewerNodesTmp)" />
-
-        <xsl:call-template name="addScripts">
-          <xsl:with-param name="generatedNodes" select="$viewerNodes" />
-        </xsl:call-template>
-
-        <xsl:if test="$viewerNodes//div[contains(@class, 'viewer')]">
-          <xsl:copy-of select="$viewerNodes" />
-        </xsl:if>
       </div>
     </xsl:if>
     <xsl:apply-imports />
@@ -51,25 +40,34 @@
 
   <xsl:template name="createViewer">
     <xsl:variable name="derId" select="@xlink:href" />
-    <xsl:variable name="viewerId" select="concat('viewer_',$derId)" />
+    <xsl:variable name="mainFile">
+        <xsl:variable name="mainDocName" select="mcrxsl:getMainDocName($derId)" />
+      <xsl:choose>
+        <xsl:when test="starts-with($mainDocName, '/')">
+          <xsl:value-of select="$mainDocName" />
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="concat('/', $mainDocName)" />
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+    <xsl:variable name="viewerId" select="concat($derId, ':', $mainFile)" />
 
-    <xsl:variable name="mainFile" select="mcrxsl:getMainDocName($derId)" />
 
     <xsl:choose>
       <xsl:when test="iview2:getSupportedMainFile($derId)">
         <xsl:choose>
           <xsl:when test="iview2:isCompletelyTiled($derId)">
             <!-- The file will be displayed with mets -->
-            <xsl:call-template name="createMetsViewer">
-              <xsl:with-param name="WebApplicationBaseURL" select="$WebApplicationBaseURL" />
-              <xsl:with-param name="derId" select="$derId" />
-              <xsl:with-param name="mainFile" select="$mainFile" />
-              <xsl:with-param name="viewerId" select="$viewerId" />
-            </xsl:call-template>
+
             <xsl:call-template name="createViewerContainer">
               <xsl:with-param name="viewerId" select="$viewerId" />
               <xsl:with-param name="viewerType" select="'mets'" />
               <xsl:with-param name="derId" select="$derId" />
+            </xsl:call-template>
+            <xsl:call-template name="loadViewer">
+              <xsl:with-param name="derivate" select="$derId" />
+              <xsl:with-param name="file" select="$mainFile" />
             </xsl:call-template>
           </xsl:when>
           <xsl:otherwise>
@@ -78,23 +76,19 @@
             </div>
           </xsl:otherwise>
         </xsl:choose>
-
       </xsl:when>
       <xsl:when test="mcrxsl:getMimeType($mainFile) = 'application/pdf' and not(mcrxsl:isMobileDevice($UserAgent))">
-        <!-- The file will be displayed with pdf.js -->
-        <xsl:call-template name="createPDFViewer">
-          <xsl:with-param name="WebApplicationBaseURL" select="$WebApplicationBaseURL" />
-          <xsl:with-param name="derId" select="$derId" />
-          <xsl:with-param name="mainFile" select="$mainFile" />
-          <xsl:with-param name="viewerId" select="$viewerId" />
-        </xsl:call-template>
         <xsl:call-template name="createViewerContainer">
           <xsl:with-param name="viewerId" select="$viewerId" />
           <xsl:with-param name="viewerType" select="'pdf'" />
           <xsl:with-param name="derId" select="$derId" />
         </xsl:call-template>
+        <xsl:call-template name="loadViewer">
+          <xsl:with-param name="derivate" select="$derId" />
+          <xsl:with-param name="file" select="$mainFile" />
+        </xsl:call-template>
         <noscript>
-          <a href="{$ServletsBaseURL}MCRFileNodeServlet/{$derId}/{$mainFile}">
+          <a href="{$ServletsBaseURL}MCRFileNodeServlet/{$derId}{$mainFile}">
             <xsl:value-of select="$mainFile" />
           </a>
         </noscript>
@@ -108,101 +102,10 @@
     </xsl:choose>
   </xsl:template>
 
-  <xsl:template name="createMetsViewer">
-    <xsl:param name="WebApplicationBaseURL" />
-    <xsl:param name="derId" />
-    <xsl:param name="mainFile" />
-    <xsl:param name="viewerId" />
-    <xsl:variable name="metsServletURL"
-                  select="concat($WebApplicationBaseURL,'servlets/MCRMETSServlet/', $derId)" />
-    <xsl:variable name="i18nURL"
-                  select="concat($WebApplicationBaseURL,'rsc/locale/translate/{lang}/component.mets.*,component.viewer.*')" />
-    <xsl:variable name="tileURL" select="concat($WebApplicationBaseURL,'servlets/MCRTileServlet/')" />
-    <xsl:variable name="derivateURL"
-                  select="concat($WebApplicationBaseURL, 'servlets/MCRFileNodeServlet/', $derId)" />
-    <xsl:variable name="doctype" select="'mets'" />
-
-    <script>
-      window.addEventListener("load", function(){
-      new mycore.viewer.MyCoReViewer(jQuery('<xsl:value-of select="concat('#',$viewerId)" />'), {
-      "derivateURL": "<xsl:value-of select="$derivateURL" />",
-      "metsURL": "<xsl:value-of select="$metsServletURL" />",
-      "i18nURL": "<xsl:value-of select="$i18nURL" />",
-      "derivate": "<xsl:value-of select="$derId" />",
-      "filePath": "<xsl:value-of select="$mainFile" />",
-      "mobile": false,
-      "tileProviderPath": "<xsl:value-of select="$tileURL" />",
-      "imageXmlPath": "<xsl:value-of select="$tileURL" />",
-      "doctype": "<xsl:value-of select="$doctype" />",
-      "webApplicationBaseURL": "<xsl:value-of select="$WebApplicationBaseURL" />",
-      "canvas.startup.fitWidth": true,
-      "canvas.overview.enabled": false,
-      "lang": "de",
-      <xsl:if test="string-length($MCR.Viewer.PDFCreatorURI) &gt; 0">
-        <xsl:value-of select="concat('&quot;pdfCreatorURI&quot;: &quot;', $MCR.Viewer.PDFCreatorURI, '&quot;,')" />
-      </xsl:if>
-      <xsl:if test="string-length($MCR.Viewer.PDFCreatorStyle) &gt; 0">
-        <xsl:value-of select="concat('&quot;pdfCreatorStyle&quot;: &quot;', $MCR.Viewer.PDFCreatorStyle, '&quot;,')" />
-      </xsl:if>
-      <xsl:if test="string-length($MCR.Viewer.PDFCreatorFormatString) &gt; 0">
-        <xsl:value-of
-          select="concat('&quot;pdfCreatorFormatString&quot;: &quot;', $MCR.Viewer.PDFCreatorFormatString, '&quot;,')" />
-      </xsl:if>
-      <xsl:if test="string-length($MCR.Viewer.PDFCreatorRestrictionFormatString) &gt; 0">
-        <xsl:value-of
-          select="concat('&quot;pdfCreatorRestrictionFormatString&quot;: &quot;', $MCR.Viewer.PDFCreatorRestrictionFormatString, '&quot;,')" />
-      </xsl:if>
-      chapter: {
-      enabled: true,
-      showOnStart: false
-      },
-      permalink: {
-      enabled: true,
-      updateHistory: false
-      }});
-      });
-    </script>
-  </xsl:template>
-
-  <xsl:template name="createPDFViewer">
-    <xsl:param name="WebApplicationBaseURL" />
-    <xsl:param name="derId" />
-    <xsl:param name="mainFile" />
-    <xsl:param name="viewerId" />
-
-    <xsl:variable name="i18nURL"
-                  select="concat($WebApplicationBaseURL,'rsc/locale/translate/{lang}/component.mets.*,component.viewer.*')" />
-    <xsl:variable name="derivateURL"
-                  select="concat($WebApplicationBaseURL, 'servlets/MCRFileNodeServlet/', $derId)" />
-    <xsl:variable name="pdfWorkerURL" select="concat($WebApplicationBaseURL, 'modules/iview2/js/lib/pdf.worker.js')" />
-    <xsl:variable name="pdfProviderURL"
-                  select="concat($WebApplicationBaseURL,'servlets/MCRFileNodeServlet/{derivate}/{filePath}?view')" />
-    <xsl:variable name="doctype" select="'pdf'" />
-    <script>
-      window.addEventListener("load", function(){
-
-      new mycore.viewer.MyCoReViewer(jQuery('<xsl:value-of select="concat('#',$viewerId)" />'), {
-      "derivateURL": "<xsl:value-of select="$derivateURL" />",
-      "i18nURL": "<xsl:value-of select="$i18nURL" />",
-      "derivate": "<xsl:value-of select="$derId" />",
-      "filePath": "<xsl:value-of select="$mainFile" />",
-      "mobile": false,
-      "pdfProviderURL": "<xsl:value-of select="$pdfProviderURL" />",
-      "doctype": "<xsl:value-of select="$doctype" />",
-      "webApplicationBaseURL": "<xsl:value-of select="$WebApplicationBaseURL" />",
-      "pdfWorkerURL": "<xsl:value-of select="$pdfWorkerURL" />",
-      "canvas.startup.fitWidth": true,
-      "canvas.overview.enabled": false,
-      "lang": "de",
-      chapter: {
-      enabled: true,
-      showOnStart: false
-      },
-      permalink: {
-      enabled: true,
-      updateHistory: false
-      }});
-      });
+  <xsl:template name="loadViewer">
+    <xsl:param name="derivate" />
+    <xsl:param name="file" />
+    <script src="{$WebApplicationBaseURL}rsc/viewer/{$derivate}{$file}?embedded=true&amp;XSL.Style=js">
     </script>
   </xsl:template>
 
@@ -212,7 +115,7 @@
     <xsl:param name="viewerType" />
     <xsl:param name="derId" />
 
-    <div id="{$viewerId}" class="viewer {$viewerType}">
+    <div data-viewer="{$viewerId}" class="viewer {$viewerType}">
     </div>
 
     <xsl:if test="$MIR.DFGViewer.enable='true' and  iview2xsl:hasMETSFile($derId)">
@@ -228,37 +131,5 @@
 
   </xsl:template>
 
-  <xsl:template name="addScripts">
-    <xsl:param name="generatedNodes" />
 
-    <xsl:if test="$generatedNodes//div[contains(@class, 'viewer')]">
-      <!--There are different modules-->
-      <!-- Base contains the basic code of the viewer -->
-      <script type="text/javascript"
-              src="{concat($WebApplicationBaseURL, 'modules/iview2/js/iview-client-base.js')}"></script>
-
-      <!-- there is also a iview-client-desktop (more functions) -->
-      <script type="text/javascript"
-              src="{concat($WebApplicationBaseURL, 'modules/iview2/js/iview-client-frame.js')}"></script>
-
-      <link rel="stylesheet" type="text/css"
-            href="{concat($WebApplicationBaseURL, 'modules/iview2/css/default.css')}"></link>
-
-      <xsl:if test="$generatedNodes//div[@class= 'viewer mets']">
-        <!-- module for loading mets files and iview files.  -->
-        <script type="text/javascript"
-                src="{concat($WebApplicationBaseURL, 'modules/iview2/js/iview-client-mets.js')}"></script>
-      </xsl:if>
-
-      <xsl:if test="$generatedNodes//div[@class= 'viewer pdf']">
-        <!-- module for loading pdf files. -->
-        <script type="text/javascript"
-                src="{concat($WebApplicationBaseURL, 'modules/iview2/js/iview-client-pdf.js')}"></script>
-
-        <!-- pdf.js dependency for mycore-viewer-->
-        <script type="text/javascript"
-                src="{concat($WebApplicationBaseURL, 'modules/iview2/js/lib/pdf.js')}"></script>
-      </xsl:if>
-    </xsl:if>
-  </xsl:template>
 </xsl:stylesheet>
