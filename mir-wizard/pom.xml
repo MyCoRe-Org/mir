@@ -18,10 +18,6 @@
         <directory>${basedir}/src/main/resources</directory>
       </resource>
       <resource>
-        <targetPath>${project.build.outputDirectory}/setup/solr</targetPath>
-        <directory>${project.build.directory}/dependency/mir-cli-${project.version}/config/solr-home/conf</directory>
-      </resource>
-      <resource>
         <targetPath>${project.build.outputDirectory}/setup/</targetPath>
         <directory>${project.build.directory}/dependency/mir-cli-${project.version}/config</directory>
         <includes>
