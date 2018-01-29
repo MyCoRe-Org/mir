@@ -40,7 +40,17 @@
 
   <xsl:template name="createViewer">
     <xsl:variable name="derId" select="@xlink:href" />
-    <xsl:variable name="mainFile" select="mcrxsl:getMainDocName($derId)" />
+    <xsl:variable name="mainFile">
+        <xsl:variable name="mainDocName" select="mcrxsl:getMainDocName($derId)" />
+      <xsl:choose>
+        <xsl:when test="starts-with($mainDocName, '/')">
+          <xsl:value-of select="$mainDocName" />
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="concat('/', $mainDocName)" />
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
     <xsl:variable name="viewerId" select="concat($derId, ':', $mainFile)" />
 
 
@@ -78,7 +88,7 @@
           <xsl:with-param name="file" select="$mainFile" />
         </xsl:call-template>
         <noscript>
-          <a href="{$ServletsBaseURL}MCRFileNodeServlet/{$derId}/{$mainFile}">
+          <a href="{$ServletsBaseURL}MCRFileNodeServlet/{$derId}{$mainFile}">
             <xsl:value-of select="$mainFile" />
           </a>
         </noscript>
@@ -95,7 +105,7 @@
   <xsl:template name="loadViewer">
     <xsl:param name="derivate" />
     <xsl:param name="file" />
-    <script src="{$WebApplicationBaseURL}rsc/viewer/{$derivate}/{$file}?embedded=true&amp;XSL.Style=js">
+    <script src="{$WebApplicationBaseURL}rsc/viewer/{$derivate}{$file}?embedded=true&amp;XSL.Style=js">
     </script>
   </xsl:template>
 
