@@ -43,6 +43,8 @@ module.exports = function(grunt) {
 
           'handlebars': 'handlebars/dist/handlebars.min.js',
 
+          'openlayers' : 'openlayers/dist',
+
           'videojs/js': 'video.js/dist/video.min.js',
           'videojs/css': 'video.js/dist/video-js.min.css',
           'videojs-contrib-hls': 'videojs-contrib-hls/dist/videojs-contrib-hls.min.js'
