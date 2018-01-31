@@ -88,7 +88,7 @@
   <xsl:template name="addPlayerScripts">
     <xsl:param name="generatedNodes" />
     <xsl:if test="$generatedNodes//div[contains(@class, 'mir-player')]">
-      <link href="//vjs.zencdn.net/5.10.4/video-js.css" rel="stylesheet" />
+      <link href="{$WebApplicationBaseURL}assets/videojs/css/video-js.min.css" rel="stylesheet" />
       <style>
         /*Player Anpassungen*/
         div.vjs-control-bar{
@@ -109,8 +109,8 @@
         margin-bottom: -2px;
         }
       </style>
-      <script src="//vjs.zencdn.net/5.10.4/video.js"></script>
-      <script src="//cdnjs.cloudflare.com/ajax/libs/videojs-contrib-hls/3.4.0/videojs-contrib-hls.min.js"></script>
+      <script src="{$WebApplicationBaseURL}assets/videojs/js/video.min.js"></script>
+      <script src="{$WebApplicationBaseURL}assets/videojs-contrib-hls/videojs-contrib-hls.min.js"></script>
     </xsl:if>
   </xsl:template>
 

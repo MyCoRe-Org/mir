@@ -27,6 +27,8 @@
         "jquery.dotdotdot" : "1.7.4",
         "moment" : "2.10.6",
         "handlebars": "4.0.5",
-        "grunt-contrib-uglify": "https://github.com/gruntjs/grunt-contrib-uglify.git#harmony"
+        "grunt-contrib-uglify": "https://github.com/gruntjs/grunt-contrib-uglify.git#harmony",
+        "video.js": "6.4.0",
+        "videojs-contrib-hls" : "5.12.2"
     }
 }
