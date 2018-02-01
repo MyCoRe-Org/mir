@@ -101,9 +101,9 @@ boom@2.x.x:
   dependencies:
     hoek "2.x.x"
 
-bootstrap@3.3.5:
-  version "3.3.5"
-  resolved "https://registry.yarnpkg.com/bootstrap/-/bootstrap-3.3.5.tgz#1777ab79299b128d87dce7cbd86fdc46ac69c0b1"
+bootstrap@3.3.7:
+  version "3.3.7"
+  resolved "https://registry.yarnpkg.com/bootstrap/-/bootstrap-3.3.7.tgz#5a389394549f23330875a3b150656574f8a9eb71"
 
 bootswatch@3.3.5:
   version "3.3.5"
@@ -641,13 +641,13 @@ jodid25519@^1.0.0:
   dependencies:
     jsbn "~0.1.0"
 
-jquery-migrate@1.2.1:
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/jquery-migrate/-/jquery-migrate-1.2.1.tgz#e1056ad970fb22d5009e2d4d77cf709b78f04768"
+jquery-migrate@1.4.1:
+  version "1.4.1"
+  resolved "https://registry.yarnpkg.com/jquery-migrate/-/jquery-migrate-1.4.1.tgz#85152f3ec99a95625f4f7d0bcf62e9b8638f5a76"
 
-jquery@1.11.3:
-  version "1.11.3"
-  resolved "https://registry.yarnpkg.com/jquery/-/jquery-1.11.3.tgz#dd8b74278b27102d29df63eae28308a8cfa1b583"
+jquery@3.3.1:
+  version "3.3.1"
+  resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.3.1.tgz#958ce29e81c9790f31be7792df5d4d95fc57fbca"
 
 js-yaml@^3.3.0, js-yaml@~3.5.2:
   version "3.5.5"

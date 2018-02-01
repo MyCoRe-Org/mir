@@ -73,7 +73,7 @@
               <!-- for every role -->
               <xsl:choose>
                 <!-- check if 'aut' and 'edt' show 'edt', otherwise 'edt' is already shown in abstract-box -->
-                <xsl:when test="mods:role/mods:roleTerm='edt' and not(../mods:role/mods:roleTerm='aut')">
+                <xsl:when test="mods:role/mods:roleTerm='edt' and not(../mods:name/mods:role/mods:roleTerm='aut')">
                   <!-- do nothing -->
                 </xsl:when>
                 <!-- check if role term is given -->

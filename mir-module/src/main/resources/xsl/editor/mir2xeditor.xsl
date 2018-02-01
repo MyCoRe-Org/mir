@@ -288,8 +288,8 @@
                   </xsl:if>
                   <xsl:call-template name="mir-pmud" />
                 </div>
-                <xsl:call-template name="mir-required" />
               </xed:bind>
+              <xsl:call-template name="mir-required" />
             </div>
           </xed:bind>
         </legend>

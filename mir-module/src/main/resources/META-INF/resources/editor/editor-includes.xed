@@ -115,7 +115,7 @@
 
   <xed:template id="title">
     <mir:textfield xpath="mods:titleInfo/mods:title" label="mir.title" help-text="{i18n:mir.help.title}" class="required" required="true"
-      required-text="{i18n:mir.validation.title}" />
+      required-i18n="mir.validation.title" />
   </xed:template>
 
   <xed:template id="title.nonrequired">
@@ -1611,8 +1611,8 @@
         <div class="map"></div>
       </div>
     </div>
-    <link rel="stylesheet" type="text/css" href="https://openlayers.org/en/v4.3.3/css/ol.css" />
-    <script type="text/javascript" src="https://openlayers.org/en/v4.3.3/build/ol.js" />
+    <link rel="stylesheet" type="text/css" href="{$WebApplicationBaseURL}assets/openlayers/ol.css" />
+    <script type="text/javascript" src="{$WebApplicationBaseURL}assets/openlayers/ol.js" />
     <script type="text/javascript" src="{$WebApplicationBaseURL}js/mir/geo-coords.min.js" />
   </xed:template>
 
@@ -1728,10 +1728,12 @@
     </fieldset>
   </xed:template>
 
+  <!-- TODO: check template for usage!
   <xed:template id="subject.genre">
     <mir:textfield repeat="true" xpath="mods:subject/mods:genre" min="1" max="10" label="mir.subject.genre" help-text="{i18n:mir.help.subject.genre}" />
   </xed:template>
-
+  -->
+  
   <xed:template id="subject.simple">
     <xed:bind xpath="mods:subject">
       <mir:topic.repeated min="1" max="10" label="mir.subject.topic" help-text="{i18n:mir.help.subject.topic.gnd}" />
