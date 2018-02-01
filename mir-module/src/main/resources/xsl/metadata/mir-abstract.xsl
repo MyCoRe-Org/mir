@@ -56,11 +56,13 @@
 
         <!-- TODO: Update badges -->
       <div id="badges">
-        <xsl:call-template name="categorySearchLink">
-          <xsl:with-param name="class" select="'mods_genre label label-info'" />
-          <xsl:with-param name="node" select="($mods/mods:genre[@type='kindof']|$mods/mods:genre[@type='intern'])[1]" />
-          <xsl:with-param name="owner"  select="$owner" />
-        </xsl:call-template>
+        <xsl:for-each select="$mods/mods:genre[@type='kindof']|$mods/mods:genre[@type='intern']">
+          <xsl:call-template name="categorySearchLink">
+            <xsl:with-param name="class" select="'mods_genre label label-info'" />
+            <xsl:with-param name="node" select="." />
+            <xsl:with-param name="owner"  select="$owner" />
+          </xsl:call-template>
+        </xsl:for-each>
 
         <xsl:if test="string-length($dateIssued) > 0">
           <time itemprop="datePublished" datetime="{$dateIssued}" data-toggle="tooltip" title="Publication date">
