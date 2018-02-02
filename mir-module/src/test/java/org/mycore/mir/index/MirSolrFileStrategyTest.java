@@ -46,6 +46,7 @@ public class MirSolrFileStrategyTest extends MCRTestCase {
     public void check() throws IOException {
         MirSolrFileStrategy strategy=new MirSolrFileStrategy();
         assertFalse("Should not transmit video files!", strategy.check(Paths.get("test.mp4"), null));
+        assertFalse("Should not transmit video files!", strategy.check(Paths.get("test.rmvb"), null));
         assertFalse("Should not transmit image files!", strategy.check(Paths.get("test.jpg"), null));
         assertFalse("Should not transmit image files!", strategy.check(Paths.get("test.tiff"), null));
         assertFalse("Should not transmit audio files!", strategy.check(Paths.get("test.wav"), null));
