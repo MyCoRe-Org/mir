@@ -254,7 +254,7 @@
                     </xsl:if>
                     <p>
                       <span itemprop="description">
-                        <xsl:copy-of select="node()" />
+                        <xsl:apply-templates select="node()" mode="unescapeHtml" />
                       </span>
                       <a href="#" class="readless hidden" title="read less">
                         <xsl:value-of select="i18n:translate('mir.abstract.readless')" />
@@ -273,7 +273,7 @@
             <div class="ellipsis ellipsis-text">
               <p>
                 <span itemprop="description">
-                  <xsl:apply-templates select="$abstracts/mods:abstract" mode="copyNode" />
+                  <xsl:apply-templates select="$abstracts/mods:abstract/node()" mode="unescapeHtml" />
                 </span>
                 <a href="#" class="readless hidden" title="read less">
                   <xsl:value-of select="i18n:translate('mir.abstract.readless')" />
