@@ -177,7 +177,7 @@
     <field name="content" type="text_general" stored="false" />
 
     <field name="payload" type="payloads" />
-    <field name="text_wc" type="text_wc" />
+  <field name="text_wc" type="text_wc" stored="true" />
 
     <!-- default search fields -->
     <field name="allMeta" type="text_general" multiValued="true" stored="false" />

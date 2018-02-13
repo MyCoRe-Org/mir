@@ -2102,6 +2102,16 @@
     </arr>
   </requestHandler>
 
+  <!-- Request Handler to do payload queries -->
+  <requestHandler name="/wordcoordinates" class="org.mycore.solr.ext.WordCoordinateSearchHandler">
+    <lst name="defaults">
+      <int name="rows">10</int>
+      <str name="df">text_wc</str>
+    </lst>
+  </requestHandler>
+  <searchComponent name="wordcoordinates" class="org.mycore.solr.ext.WordCoordinateComponent">
+  </searchComponent>
+
   <!-- OAI search handler, filtes journals and series etc. -->
   <requestHandler name="/oai_search" class="solr.StandardRequestHandler">
     <!-- default values for query parameters -->
