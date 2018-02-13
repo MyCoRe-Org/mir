@@ -22,10 +22,13 @@
   <xsl:template match="/">
     <xsl:if test="mycoreobject/structure/derobjects/derobject">
       <div id="mir-viewer">
+        <xsl:variable name="viewerNodesTmp">
           <xsl:if test="count(mycoreobject/structure/derobjects/derobject[key('rights', @xlink:href)/@read]) > 0">
             <div class="row mir-preview">
               <div class="col-md-12">
-                <h3 class="mir-viewer">Vorschau</h3>
+                <h3 class="mir-viewer">
+                  <xsl:value-of select="i18n:translate('metaData.preview')" />
+                </h3>
                 <!-- show one viewer for each derivate -->
                 <xsl:for-each select="mycoreobject/structure/derobjects/derobject[key('rights', @xlink:href)/@read]">
                   <xsl:call-template name="createViewer" />
@@ -33,6 +36,13 @@
               </div>
             </div>
           </xsl:if>
+        </xsl:variable>
+
+        <xsl:variable name="viewerNodes" select="xalan:nodeset($viewerNodesTmp)"/>
+
+        <xsl:if test="$viewerNodes//div[contains(@class, 'viewer')]">
+          <xsl:copy-of select="$viewerNodes"/>
+        </xsl:if>
       </div>
     </xsl:if>
     <xsl:apply-imports />
