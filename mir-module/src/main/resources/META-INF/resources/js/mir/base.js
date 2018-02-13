@@ -406,6 +406,7 @@
         var readmore=$("a.readmore",this);
         readmore.clone(true,true).insertAfter( readmore );
         readmore.addClass('readmore-active');
+        readmore.removeClass('readmore');
         readmore.removeClass('hidden');
         $(this).dotdotdot({
           ellipsis	: '... ',
