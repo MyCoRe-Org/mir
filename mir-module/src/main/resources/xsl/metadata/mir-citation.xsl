@@ -5,7 +5,7 @@
   xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
   xmlns:mods="http://www.loc.gov/mods/v3"
   xmlns:xlink="http://www.w3.org/1999/xlink"
-  xmlns:cmd="https://www.cdlib.org/inside/diglib/copyrightMD"
+  xmlns:cmd="http://www.cdlib.org/inside/diglib/copyrightMD"
   xmlns:exslt="http://exslt.org/common"
   xmlns:piUtil="xalan://org.mycore.mir.pi.MCRPIUtil"
   exclude-result-prefixes="i18n mcr mods xlink cmd exslt piUtil"

@@ -1,4 +1,4 @@
-﻿﻿<?xml version="1.0" encoding="UTF-8"?>
+﻿﻿﻿<?xml version="1.0" encoding="UTF-8"?>
 <!-- ============================================== -->
 <!-- $Revision: 1.8 $ $Date: 2007-04-20 15:18:23 $ -->
 <!-- ============================================== -->
@@ -11,7 +11,7 @@
      xmlns:mods="http://www.loc.gov/mods/v3"
      xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
      xmlns:piUtil="xalan://org.mycore.mir.pi.MCRPIUtil"
-     xmlns:cmd="https://www.cdlib.org/inside/diglib/copyrightMD"
+     xmlns:cmd="http://www.cdlib.org/inside/diglib/copyrightMD"
 
      xmlns:gndo="http://d-nb.info/standards/elementset/gnd#"
      xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
