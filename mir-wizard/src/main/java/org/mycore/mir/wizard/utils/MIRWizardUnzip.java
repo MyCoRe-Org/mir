@@ -72,7 +72,8 @@ public class MIRWizardUnzip {
     public static void unzip(final InputStream is, final String destDirectory) throws IOException {
         final File destDir = new File(destDirectory);
         if (!destDir.exists()) {
-            destDir.mkdir();
+            LOGGER.info("Creating directory '{}'.", destDir);
+            destDir.mkdirs();
         }
         final ZipInputStream zipIn = new ZipInputStream(is);
         ZipEntry entry = zipIn.getNextEntry();
