@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:mcr="xalan://org.mycore.common.xml.MCRXMLFunctions"
   xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation" xmlns:mods="http://www.loc.gov/mods/v3" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:mcrurn="xalan://org.mycore.urn.MCRXMLFunctions"
-  xmlns:cmd="http://www.cdlib.org/inside/diglib/copyrightMD" xmlns:exslt="http://exslt.org/common" exclude-result-prefixes="i18n mcr mods xlink mcrurn cmd exslt"
+  xmlns:cmd="https://www.cdlib.org/inside/diglib/copyrightMD" xmlns:exslt="http://exslt.org/common" exclude-result-prefixes="i18n mcr mods xlink mcrurn cmd exslt"
 >
   <xsl:import href="xslImport:modsmeta:metadata/mir-citation.xsl" />
   <xsl:include href="mods-dc-meta.xsl"/>
