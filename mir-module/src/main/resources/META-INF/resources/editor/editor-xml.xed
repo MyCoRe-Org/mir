@@ -5,7 +5,7 @@
   <section title="Create MODS document" xml:lang="en"/>
   <section xml:lang="all">
 
-  <xed:form xmlns:xed="http://www.mycore.de/xeditor" xmlns:cmd="https://www.cdlib.org/inside/diglib/copyrightMD" method="post" role="form" class="form-horizontal">
+  <xed:form xmlns:xed="http://www.mycore.de/xeditor" xmlns:cmd="http://www.cdlib.org/inside/diglib/copyrightMD" method="post" role="form" class="form-horizontal">
     <xed:source uri="xslStyle:mods2editor-viatxt:mcrobject:{$id}" />
     <xed:cancel url="../servlets/MCRLockServlet?action=unlock&amp;id={$id}&amp;url=/receive/{$id}" />
     <xed:cancel url="{$cancelUrl}" />
