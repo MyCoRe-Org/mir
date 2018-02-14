@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:mods="http://www.loc.gov/mods/v3" xmlns:mcrxml="xalan://org.mycore.common.xml.MCRXMLFunctions"
-  exclude-result-prefixes="mcrxml" version="1.0"
+  xmlns:strutils="xalan://org.apache.commons.lang.StringEscapeUtils" exclude-result-prefixes="mcrxml strutils" version="1.0"
 >
-
-  <xsl:import href="coreFunctions.xsl" />
-
+  
   <!-- 
    - Applys a nodeset with given namespace (default: 'mods') to given maximal depth.
    - If maximal depth is reached and $serialize is true() sub-tags encode as string.
@@ -32,8 +30,8 @@
           <xsl:apply-templates mode="asXmlNode">
             <xsl:with-param name="ns" select="$ns" />
             <xsl:with-param name="serialize" select="$serialize" />
-            <xsl:with-param name="levels" select="$levels" />
-            <xsl:with-param name="curLevel" select="$curLevel + 1" />
+            <xsl:with-param name="levels" select="number($levels)" />
+            <xsl:with-param name="curLevel" select="number($curLevel + 1)" />
           </xsl:apply-templates>
         </xsl:element>
       </xsl:when>
@@ -49,18 +47,17 @@
     </xsl:choose>
   </xsl:template>
 
-  <xsl:template match="text()" mode="asXmlNode" xmlns:strutils="xalan://org.apache.commons.lang.StringEscapeUtils">
-    <xsl:variable name="htmlString">
-      <xsl:value-of select="." disable-output-escaping="yes" />
-    </xsl:variable>
-    <xsl:variable name="fixedAmpString">
-      <xsl:call-template name="ersetzen">
-        <xsl:with-param name="vorlage" select="$htmlString" />
-        <xsl:with-param name="raus" select="'&amp;'" />
-        <xsl:with-param name="rein" select="'&amp;amp;'" />
-      </xsl:call-template>
-    </xsl:variable>
-    <xsl:value-of select="strutils:unescapeHtml($fixedAmpString)" disable-output-escaping="yes" />
+  <xsl:template match="text()" mode="asXmlNode">
+    <xsl:param name="serialize" select="true()" />
+
+    <xsl:choose>
+      <xsl:when test="$serialize">
+        <xsl:value-of select="strutils:unescapeXml(strutils:unescapeHtml(.))" disable-output-escaping="no" />
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="strutils:escapeXml(.)" disable-output-escaping="yes" />
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
 
   <!--
@@ -107,20 +104,6 @@
   </xsl:template>
 
   <xsl:template match="text()" mode="serialize">
-    <xsl:variable name="fixedAmpString">
-      <xsl:variable name="str">
-        <xsl:call-template name="ersetzen">
-          <xsl:with-param name="vorlage" select="." />
-          <xsl:with-param name="raus" select="'&lt;'" />
-          <xsl:with-param name="rein" select="'&amp;lt;'" />
-        </xsl:call-template>
-      </xsl:variable>
-      <xsl:call-template name="ersetzen">
-        <xsl:with-param name="vorlage" select="$str" />
-        <xsl:with-param name="raus" select="'&gt;'" />
-        <xsl:with-param name="rein" select="'&amp;gt;'" />
-      </xsl:call-template>
-    </xsl:variable>
-    <xsl:value-of select="$fixedAmpString" />
+    <xsl:value-of select="strutils:unescapeXml(.)" disable-output-escaping="yes" />
   </xsl:template>
 </xsl:stylesheet>

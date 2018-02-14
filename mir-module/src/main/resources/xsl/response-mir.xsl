@@ -553,11 +553,24 @@
                   </xsl:otherwise>
                 </xsl:choose>
               </div>
-              <div class="hit_type">
-                <span class="label label-info">
-                  <xsl:value-of select="$mods-genre-i18n" />
-                </span>
-              </div>
+              <xsl:choose>
+                <xsl:when test="arr[@name='mods.genre']">
+                  <xsl:for-each select="arr[@name='mods.genre']/str">
+                    <div class="hit_type">
+                      <span class="label label-info">
+                        <xsl:value-of select="mcrxsl:getDisplayName('mir_genres',.)" ></xsl:value-of>
+                      </span>
+                    </div>
+                  </xsl:for-each>
+                </xsl:when>
+                <xsl:otherwise>
+                  <div class="hit_type">
+                    <span class="label label-info">
+                      <xsl:value-of select="mcrxsl:getDisplayName('mir_genres','article')" />
+                    </span>
+                  </div>
+                </xsl:otherwise>
+              </xsl:choose>
               <xsl:if test="arr[@name='category.top']/str[contains(text(), 'mir_licenses:')]">
                 <div class="hit_license">
                   <span class="label label-primary">

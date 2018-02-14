@@ -234,11 +234,11 @@
           var origSearchAction = $(this).attr('action');
           var addValue = encodeURIComponent(solrEscapeSearchValue($('.search_box input').val().trim()));
           if (origSearchAction.includes('servlets/solr/find')) {
-            var replAction = origSearchAction.replace(/(.*[&|\?])(condQuery=.*?)&(.*)/,'$1$3&');
+            var replAction = origSearchAction.replace(/(.*[&|\?])(condQuery=.*?)&(.*)/,'$1$3');
             if ($('#search_type_button').attr('value') == 'all') {
-                var newAction = replAction + "condQuery=" + addValue;
+                var newAction = replAction + "&condQuery=" + addValue;
               } else {
-                var newAction = replAction + "condQuery=" + addValue + "&df=" + $('#search_type_button').attr('value');
+                var newAction = replAction + "&condQuery=" + addValue + "&df=" + $('#search_type_button').attr('value');
               }
           }
           else {
@@ -406,6 +406,7 @@
         var readmore=$("a.readmore",this);
         readmore.clone(true,true).insertAfter( readmore );
         readmore.addClass('readmore-active');
+        readmore.removeClass('readmore');
         readmore.removeClass('hidden');
         $(this).dotdotdot({
           ellipsis	: '... ',

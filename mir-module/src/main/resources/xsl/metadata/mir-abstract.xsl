@@ -56,11 +56,13 @@
 
         <!-- TODO: Update badges -->
       <div id="badges">
-        <xsl:call-template name="categorySearchLink">
-          <xsl:with-param name="class" select="'mods_genre label label-info'" />
-          <xsl:with-param name="node" select="($mods/mods:genre[@type='kindof']|$mods/mods:genre[@type='intern'])[1]" />
-          <xsl:with-param name="owner"  select="$owner" />
-        </xsl:call-template>
+        <xsl:for-each select="$mods/mods:genre[@type='kindof']|$mods/mods:genre[@type='intern']">
+          <xsl:call-template name="categorySearchLink">
+            <xsl:with-param name="class" select="'mods_genre label label-info'" />
+            <xsl:with-param name="node" select="." />
+            <xsl:with-param name="owner"  select="$owner" />
+          </xsl:call-template>
+        </xsl:for-each>
 
         <xsl:if test="string-length($dateIssued) > 0">
           <time itemprop="datePublished" datetime="{$dateIssued}" data-toggle="tooltip" title="Publication date">
@@ -254,7 +256,7 @@
                     </xsl:if>
                     <p>
                       <span itemprop="description">
-                        <xsl:copy-of select="node()" />
+                        <xsl:apply-templates select="node()" mode="unescapeHtml" />
                       </span>
                       <a href="#" class="readless hidden" title="read less">
                         <xsl:value-of select="i18n:translate('mir.abstract.readless')" />
@@ -273,7 +275,7 @@
             <div class="ellipsis ellipsis-text">
               <p>
                 <span itemprop="description">
-                  <xsl:apply-templates select="$abstracts/mods:abstract" mode="copyNode" />
+                  <xsl:apply-templates select="$abstracts/mods:abstract/node()" mode="unescapeHtml" />
                 </span>
                 <a href="#" class="readless hidden" title="read less">
                   <xsl:value-of select="i18n:translate('mir.abstract.readless')" />
