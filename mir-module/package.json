@@ -23,7 +23,7 @@
         "jquery.placeholder" : "https://github.com/matoilic/jquery.placeholder.git",
         "typeahead.js": "0.11.1",
         "shariff": "1.16.0",
-        "bootstrap-datepicker" : "1.5.0",
+        "bootstrap-datepicker" : "1.7.1",
         "jquery.dotdotdot" : "1.7.4",
         "moment" : "2.10.6",
         "handlebars": "4.0.5",

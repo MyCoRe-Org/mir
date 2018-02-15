@@ -203,17 +203,13 @@ bootstrap-3-typeahead@4.0.2:
   version "4.0.2"
   resolved "https://registry.yarnpkg.com/bootstrap-3-typeahead/-/bootstrap-3-typeahead-4.0.2.tgz#cb1c969044856862096fc8c71cc21b3acbb50412"
 
-bootstrap-datepicker@1.5.0:
-  version "1.5.0"
-  resolved "https://registry.yarnpkg.com/bootstrap-datepicker/-/bootstrap-datepicker-1.5.0.tgz#0cd584192d263f36202b868346dbbe027697e536"
+bootstrap-datepicker@1.7.1:
+  version "1.7.1"
+  resolved "https://registry.yarnpkg.com/bootstrap-datepicker/-/bootstrap-datepicker-1.7.1.tgz#4ee7faf34888dbec7834fbf9dbe7c4277e01ddaf"
   dependencies:
-    jquery ">=1.7.1"
+    jquery ">=1.7.1 <4.0.0"
 
-bootstrap@3.*:
-  version "3.3.5"
-  resolved "https://registry.yarnpkg.com/bootstrap/-/bootstrap-3.3.5.tgz#1777ab79299b128d87dce7cbd86fdc46ac69c0b1"
-
-bootstrap@3.3.7:
+bootstrap@3.*, bootstrap@3.3.7:
   version "3.3.7"
   resolved "https://registry.yarnpkg.com/bootstrap/-/bootstrap-3.3.7.tgz#5a389394549f23330875a3b150656574f8a9eb71"
 
@@ -1150,7 +1146,7 @@ jquery.dotdotdot@1.7.4:
   dependencies:
     jquery ">=1.7"
 
-jquery@>=1.6, jquery@>=1.7, jquery@>=1.7.1:
+jquery@>=1.6, jquery@>=1.7, "jquery@>=1.7.1 <4.0.0":
   version "3.2.1"
   resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.2.1.tgz#5c4d9de652af6cd0a770154a631bba12b015c787"
 
@@ -1814,15 +1810,15 @@ resolve-protobuf-schema@^2.0.0:
   dependencies:
     protocol-buffers-schema "^2.0.2"
 
-resolve@^1.1.6, resolve@~1.1.0:
-  version "1.1.7"
-  resolved "https://registry.yarnpkg.com/resolve/-/resolve-1.1.7.tgz#203114d82ad2c5ed9e8e0411b3932875e889e97b"
-
-resolve@^1.4.0:
+resolve@^1.1.6, resolve@^1.4.0:
   version "1.5.0"
   resolved "https://registry.yarnpkg.com/resolve/-/resolve-1.5.0.tgz#1f09acce796c9a762579f31b2c1cc4c3cddf9f36"
   dependencies:
     path-parse "^1.0.5"
+
+resolve@~1.1.0:
+  version "1.1.7"
+  resolved "https://registry.yarnpkg.com/resolve/-/resolve-1.1.7.tgz#203114d82ad2c5ed9e8e0411b3932875e889e97b"
 
 retry@0.10.1:
   version "0.10.1"
