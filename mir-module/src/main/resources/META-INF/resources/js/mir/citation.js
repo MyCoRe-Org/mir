@@ -24,7 +24,7 @@
                 $('#crossref-citation-error').addClass("hidden");
             },
             error: function (error) {
-                $('#crossref-citation-error').attr("title", error.status + " " + error.statusText + ": " + error.responseText);
+                console.warn("Citation not available: " + error.status + " " + error.statusText + ": " + error.responseText);
                 if (first) {
                     $('#crossref-cite').addClass("hidden");
                     $('#crossref-citation-alert').addClass("hidden");
@@ -42,7 +42,7 @@
 
     function loadStyle(doi) {
         let style = localStorage.getItem('style');
-        if (style !== undefined && style !== '') {
+        if (style !== undefined && style !== null && style !== '') {
             getCitation(doi, style, true);
             $('#crossref-cite').val(style);
         }
