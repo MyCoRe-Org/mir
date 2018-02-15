@@ -58,7 +58,7 @@
           <strong>
             <xsl:value-of select="i18n:translate('mir.citationStyle')" />
           </strong>
-          <i id="crossref-citation-error" class="glyphicon glyphicon-info-sign hidden"></i>
+          <i id="crossref-citation-error" class="glyphicon glyphicon-info-sign hidden" title="{i18n:translate('mir.citationAlertService')}"></i>
         </span>
         <xsl:if test="//mods:mods/mods:identifier[@type='doi'] and string-length($MIR.citationStyles) &gt; 0">
           <xsl:variable name="cite-styles">
