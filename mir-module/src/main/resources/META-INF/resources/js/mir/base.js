@@ -1,6 +1,16 @@
 (function ($) {
     $(document).ready(function () {
 
+        var ppnLink = $('.mir_metadata a.ppn');
+
+        if (ppnLink.length > 0) {
+            $(ppnLink).each(function () {
+                if ($(this).attr('href').indexOf(":ppn:") > -1) {
+                    resolvePPN($(this));
+                }
+            });
+        }
+
         if ($(".sherpa-issn").length > 0) {
             $(".sherpa-issn").each(function () {
                 getSherpaIssn($(this));
@@ -511,6 +521,25 @@
         }).fail(function () {
             console.log("Can not get i18nKey: " + i18nKey);
             $(currentElm).html(i18nKey);
+        });
+    }
+
+    function resolvePPN(element) {
+        $.ajax({
+            url: "http://daia.gbv.de/?id=" + $(element).attr('href') + "&format=json",
+            type: "GET",
+            dataType: "json",
+            success: function(data) {
+                if (data.document !== undefined && data.document.length > 0 && data.document[0].href !== undefined) {
+                    $(element).attr("href", data.document[0].href)
+                }
+                else {
+                    console.warn("Can not resolve PPN: " +  $(element).text());
+                }
+            },
+            error: function(error) {
+                console.warn("Can not resolve PPN: " +  $(element).text());
+            }
         });
     }
 
