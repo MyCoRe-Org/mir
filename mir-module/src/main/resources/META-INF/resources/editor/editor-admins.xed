@@ -30,7 +30,7 @@
         <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="edition" />
         <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="extent" />
         <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="type.of.resource" />
-        <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="language.repeated" />
+        <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="language" />
         <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="geographic.complex" />
         <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="cartographics" />
         <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="sdnb.repeat" />
