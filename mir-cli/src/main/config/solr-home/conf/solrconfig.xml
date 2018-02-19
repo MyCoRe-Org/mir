@@ -72,17 +72,6 @@
        The examples below can be used to load some solr-contribs along
        with their external dependencies.
     -->
-  <lib dir="${solr.install.dir:../../..}/contrib/extraction/lib" regex=".*\.jar" />
-  <lib dir="${solr.install.dir:../../..}/dist/" regex="solr-cell-\d.*\.jar" />
-
-  <lib dir="${solr.install.dir:../../..}/contrib/clustering/lib/" regex=".*\.jar" />
-  <lib dir="${solr.install.dir:../../..}/dist/" regex="solr-clustering-\d.*\.jar" />
-
-  <lib dir="${solr.install.dir:../../..}/contrib/langid/lib/" regex=".*\.jar" />
-  <lib dir="${solr.install.dir:../../..}/dist/" regex="solr-langid-\d.*\.jar" />
-
-  <lib dir="${solr.install.dir:../../..}/contrib/velocity/lib" regex=".*\.jar" />
-  <lib dir="${solr.install.dir:../../..}/dist/" regex="solr-velocity-\d.*\.jar" />
 
   <!-- an exact 'path' can be used instead of a 'dir' to specify a
        specific jar file.  This will cause a serious error to be logged
@@ -2101,6 +2090,16 @@
       <str>terms</str>
     </arr>
   </requestHandler>
+
+  <!-- Request Handler to do payload queries -->
+  <requestHandler name="/wordcoordinates" class="org.mycore.solr.ext.WordCoordinateSearchHandler">
+    <lst name="defaults">
+      <int name="rows">10</int>
+      <str name="df">text_wc</str>
+    </lst>
+  </requestHandler>
+  <searchComponent name="wordcoordinates" class="org.mycore.solr.ext.WordCoordinateComponent">
+  </searchComponent>
 
   <!-- OAI search handler, filtes journals and series etc. -->
   <requestHandler name="/oai_search" class="solr.StandardRequestHandler">
