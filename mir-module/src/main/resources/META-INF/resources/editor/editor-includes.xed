@@ -1015,8 +1015,9 @@
           <xed:otherwise>
             <xed:bind xpath="@type">
               <div class="col-md-3">
-                <select class="form-control" style="text-align:right; font-weight:bold;">
+                <select class="form-control identifierSelect" style="text-align:right; font-weight:bold;">
                   <option value="doi">
+                    <xed:output i18n="mir.identifier.doi" />
                   </option>
                   <option value="hdl">
                     <xed:output i18n="mir.identifier.hdl" />
