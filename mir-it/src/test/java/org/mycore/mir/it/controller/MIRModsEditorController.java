@@ -11,12 +11,14 @@ import org.mycore.mir.it.model.MIRIdentifier;
 import org.mycore.mir.it.model.MIRInstitutes;
 import org.mycore.mir.it.model.MIRLanguage;
 import org.mycore.mir.it.model.MIRLicense;
+import org.mycore.mir.it.model.MIRStatus;
 import org.mycore.mir.it.model.MIRTitleInfo;
 import org.mycore.mir.it.model.MIRTypeOfResource;
 import org.mycore.mir.it.tests.MIRTestData;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.StaleElementReferenceException;
+
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 
@@ -226,6 +228,12 @@ public class MIRModsEditorController extends MIREditorController {
         new Select(driver.waitAndFindElement(
             By.xpath(".//select[contains(@name, 'mods:name') and option/@value='" + institution.getValue() + "']")))
                 .selectByValue(institution.getValue());
+    }
+
+    public void setStatus(MIRStatus status) {
+        new Select(driver.waitAndFindElement(
+            By.xpath(".//select[contains(@name, 'servstates/servstate') and option/@value='" + status.getValue() + "']")))
+            .selectByValue(status.getValue());
     }
 
     public void setIdentifier(List<AbstractMap.Entry<MIRIdentifier, String>> typeIdentifierList) {
@@ -452,4 +460,5 @@ public class MIRModsEditorController extends MIREditorController {
     public void setDateCreated(String dateCreated) {
         setInputText("mods:dateCreated", dateCreated);
     }
+
 }

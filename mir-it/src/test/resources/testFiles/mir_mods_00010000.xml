@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?><mycoreobject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xlink="http://www.w3.org/1999/xlink" ID="mir_mods_00010000" label="mir_mods_00010000" version="2017.07-SNAPSHOT" xsi:noNamespaceSchemaLocation="datamodel-mods.xsd"><structure/><metadata xml:lang="de"><def.modsContainer class="MCRMetaXML" heritable="false" notinherit="true"><modsContainer inherited="0">
+        <mods:mods xmlns:mods="http://www.loc.gov/mods/v3">
+          <mods:typeOfResource>text</mods:typeOfResource>
+          <mods:genre type="intern" authorityURI="https://www.openagrar.de/classifications/genres" valueURI="https://www.openagrar.de/classifications/genres#article"/>
+          <mods:titleInfo xml:lang="de" xlink:type="simple">
+            <mods:nonSort>Der</mods:nonSort>
+            <mods:title>Test_Title</mods:title>
+            <mods:subTitle>Test_Sub_Title</mods:subTitle>
+          </mods:titleInfo>
+          <mods:name type="personal" xlink:type="simple">
+            <mods:displayForm>Mustermann, Hans</mods:displayForm>
+            <mods:role>
+              <mods:roleTerm authority="marcrelator" type="code">aut</mods:roleTerm>
+            </mods:role>
+            <mods:namePart type="family">Mustermann</mods:namePart>
+            <mods:namePart type="given">Hans</mods:namePart>
+          </mods:name>
+          <mods:originInfo eventType="publication">
+            <mods:place>
+              <mods:placeTerm type="text">Unis</mods:placeTerm>
+            </mods:place>
+            <mods:publisher>Test_Signature</mods:publisher>
+          </mods:originInfo>
+          <mods:language>
+            <mods:languageTerm authority="rfc4646" type="code">de</mods:languageTerm>
+          </mods:language>
+          <mods:classification authority="sdnb" displayLabel="sdnb">000</mods:classification>
+          <mods:accessCondition type="use and reproduction" xlink:href="http://www.mycore.org/classifications/mir_licenses#cc_by_4.0" xlink:type="simple"/>
+        </mods:mods>
+      </modsContainer>
+</def.modsContainer>
+</metadata><service><servdates class="MCRMetaISO8601Date">
+      <servdate type="modifydate" inherited="0">2018-04-25T08:04:29.720Z</servdate>
+      <servdate type="createdate" inherited="0">2018-04-25T08:04:29.720Z</servdate>
+    </servdates><servflags class="MCRMetaLangText">
+      <servflag type="createdby" inherited="0" form="plain">administrator</servflag>
+      <servflag type="modifiedby" inherited="0" form="plain">administrator</servflag>
+    </servflags><servstates class="MCRMetaClassification">
+      <servstate inherited="0" classid="state" categid="blocked"/>
+    </servstates></service></mycoreobject>
