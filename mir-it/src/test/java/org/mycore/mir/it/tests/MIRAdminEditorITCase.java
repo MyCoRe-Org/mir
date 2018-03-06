@@ -9,7 +9,10 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mycore.common.selenium.util.MCRBy;
-import org.mycore.mir.it.controller.*;
+import org.mycore.mir.it.controller.MIRModsEditorController;
+import org.mycore.mir.it.controller.MIRPublishEditorController;
+import org.mycore.mir.it.controller.MIRSearchController;
+import org.mycore.mir.it.controller.MIRUserController;
 import org.mycore.mir.it.model.MIRAbstract;
 import org.mycore.mir.it.model.MIRAccess;
 import org.mycore.mir.it.model.MIRDNBClassification;
@@ -25,7 +28,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 
 public class MIRAdminEditorITCase extends MIRITBase {
 
-    private MIRSimpleSearchController simpleSearchController;
+    private MIRSearchController simpleSearchController;
 
     @Before
     public final void init() {
@@ -37,7 +40,7 @@ public class MIRAdminEditorITCase extends MIRITBase {
         userController.loginAs(MIRUserController.ADMIN_LOGIN, MIRUserController.ADMIN_PASSWD);
         publishEditorController.open(() -> {
         });
-        simpleSearchController = new MIRSimpleSearchController(driver, appURL);
+        simpleSearchController = new MIRSearchController(driver, appURL);
     }
 
     @Test
@@ -127,7 +130,7 @@ public class MIRAdminEditorITCase extends MIRITBase {
      * FIXME: put all search methods in extra test cases and find a ways to run methods in a defined order
      */
     public void searchByTitle() {
-        simpleSearchController.searchBy(MIRTestData.TITLE, null, null, null, null);
+        simpleSearchController.simpleSearchBy(MIRTestData.TITLE, null, null, null, null);
         driver.waitFor(ExpectedConditions.titleContains("Suchergebnisse"));
 
         try {
