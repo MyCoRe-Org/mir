@@ -45,7 +45,9 @@
             {{/is}}
           </td>
           <td class="file_size hidden-xs col-md-2 text-right text-nowrap">
-            {{formatFileSize size}}
+            {{#isNot type "directory"}}
+                {{formatFileSize size}}
+            {{/isNot}}
           </td>
           <td class="visible-xs col-xs-4 text-right">
             {{#is type "file"}}

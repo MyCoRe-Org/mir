@@ -1015,8 +1015,9 @@
           <xed:otherwise>
             <xed:bind xpath="@type">
               <div class="col-md-3">
-                <select class="form-control" style="text-align:right; font-weight:bold;">
+                <select class="form-control identifierSelect" style="text-align:right; font-weight:bold;">
                   <option value="doi">
+                    <xed:output i18n="mir.identifier.doi" />
                   </option>
                   <option value="hdl">
                     <xed:output i18n="mir.identifier.hdl" />
@@ -1863,7 +1864,7 @@
   <xed:template id="related.item.search.of.all.items">
     <fieldset>
       <legend class="mir-fieldset-legend">Related Item</legend><!-- TODO: i18n -->
-      <xed:repeat xpath="mods:relatedItem[@xlink:href]" min="1" max="10">
+      <xed:repeat xpath="mods:relatedItem" min="1" max="10">
         <div class="mir-fieldset-content mir-related-item-search">
           <div class="form-group">
             <div class="col-md-3">

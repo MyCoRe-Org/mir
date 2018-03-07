@@ -1,14 +1,26 @@
 (function ($) {
     $(document).ready(function () {
 
-        var ppnLink = $('.mir_metadata a.ppn');
+        $(".mir_metadata a.ppn").each(function () {
+            if ($(this).attr('href').indexOf(":ppn:") > -1) {
+                resolvePPN($(this));
+            }
+        });
 
-        if (ppnLink.length > 0) {
-            $(ppnLink).each(function () {
-                if ($(this).attr('href').indexOf(":ppn:") > -1) {
-                    resolvePPN($(this));
+        if(window.location.search.indexOf("XSL.Status") > -1) {
+            let paramString = window.location.search.substring(1);
+            let newParamString = "";
+            $.each(paramString.split("&"), function (index, param) {
+                if (param.indexOf("XSL.Status.Message") === -1 && param.indexOf("XSL.Status.Style") === -1) {
+                    if(newParamString === "") {
+                        newParamString += "?" + param;
+                    }
+                    else {
+                        newParamString += "&" + param;
+                    }
                 }
             });
+            window.history.replaceState({}, document.title, window.location.origin + window.location.pathname + newParamString);
         }
 
         if ($(".sherpa-issn").length > 0) {
