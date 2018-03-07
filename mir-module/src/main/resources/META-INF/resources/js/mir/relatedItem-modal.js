@@ -2,11 +2,13 @@ $(document).ready(function() {
   var GenreXML;
 
   $(".mir-related-item-search input[name*='mods:titleInfo/mods:title']").each(function() {
-    var id = $(this).closest(".mir-related-item-search").find("input[name*='mods:relatedItem/@xlink:href']").val();
-    if ($(this).val() == "" && id != "") {
-      loadTitle(id, $(this));
-    } else {
-      $(this).attr("disabled", "true");
+    var id = $(this).closest(".mir-related-item-search").find("input[name$='@xlink:href']").val();
+    if (typeof id === "string" && id.split("_").length === 3) {
+      if ($(this).val() === "") {
+        loadTitle(id, $(this));
+      } else {
+        $(this).attr("disabled", "true");
+      }
     }
   });
 
