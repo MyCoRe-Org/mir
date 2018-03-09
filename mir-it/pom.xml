@@ -18,6 +18,7 @@
       -DMCR.AppName=${MCR.AppName}
       -Dsolr.solr.home=${solr.home}
       -Djava.awt.headless=true</cargo.jvmargs>
+    <cargo.rmi.port>9100</cargo.rmi.port>
     <cargo.servlet.port>9107</cargo.servlet.port>
     <solr.home>${MCR.Home.Integration}/solr-home</solr.home>
     <solr.port>9108</solr.port>
