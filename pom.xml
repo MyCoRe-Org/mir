@@ -432,26 +432,6 @@
         <version>${project.version}</version>
       </dependency>
       <dependency>
-        <groupId>de.erichseifert.vectorgraphics2d</groupId>
-        <artifactId>VectorGraphics2D</artifactId>
-        <version>0.11</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.logging.log4j</groupId>
-        <artifactId>log4j-api</artifactId>
-        <version>2.8.2</version>
-      </dependency>
-      <dependency>
-        <groupId>org.mycore</groupId>
-        <artifactId>mycore-base</artifactId>
-        <version>${mycore.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.mycore</groupId>
-        <artifactId>mycore-iview2</artifactId>
-        <version>${mycore.version}</version>
-      </dependency>
-      <dependency>
         <groupId>org.mycore</groupId>
         <artifactId>mycore-meta</artifactId>
         <version>${mycore.version}</version>
@@ -468,88 +448,9 @@
         </exclusions>
       </dependency>
       <dependency>
-        <groupId>org.mycore</groupId>
-        <artifactId>mycore-mods</artifactId>
-        <version>${mycore.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.mycore</groupId>
-        <artifactId>mycore-pi</artifactId>
-        <version>${mycore.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.mycore</groupId>
-        <artifactId>mycore-solr</artifactId>
-        <version>${mycore.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.mycore</groupId>
-        <artifactId>mycore-sword</artifactId>
-        <version>${mycore.version}</version>
-        <exclusions>
-          <!-- MCR-1100 -->
-          <exclusion>
-            <groupId>log4j</groupId>
-            <artifactId>log4j</artifactId>
-          </exclusion>
-          <!-- MCR-1101 -->
-          <exclusion>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
-          </exclusion>
-        </exclusions>
-      </dependency>
-      <dependency>
-        <groupId>org.mycore</groupId>
-        <artifactId>mycore-user2</artifactId>
-        <version>${mycore.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.mycore</groupId>
-        <artifactId>mycore-viewer</artifactId>
-        <version>${mycore.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.mycore</groupId>
-        <artifactId>mycore-wfc</artifactId>
-        <version>${mycore.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.mycore.mir</groupId>
-        <artifactId>mir-common-resources</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
         <groupId>org.mycore.mir</groupId>
         <artifactId>mir-it</artifactId>
         <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.mycore.mir</groupId>
-        <artifactId>mir-layout</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.mycore.mir</groupId>
-        <artifactId>mir-module</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.mycore.mir</groupId>
-        <artifactId>mir-webapp</artifactId>
-        <version>${project.version}</version>
-        <type>war</type>
-      </dependency>
-      <dependency>
-        <groupId>org.mycore.mir</groupId>
-        <artifactId>mir-wizard</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.levigo.jbig2</groupId>
-        <artifactId>levigo-jbig2-imageio</artifactId>
-        <version>2.0</version>
-        <scope>runtime</scope>
       </dependency>
       <dependency>
         <groupId>com.zaxxer</groupId>
@@ -571,59 +472,10 @@
       </dependency>
       <dependency>
         <groupId>org.mycore</groupId>
-        <artifactId>mycore-ifs</artifactId>
-        <version>${mycore.version}</version>
-        <scope>runtime</scope>
-      </dependency>
-      <dependency>
-        <groupId>org.mycore</groupId>
         <artifactId>mycore</artifactId>
         <version>${mycore.version}</version>
         <type>pom</type>
         <scope>import</scope>
-      </dependency>
-      <dependency>
-        <groupId>com.h2database</groupId>
-        <artifactId>h2</artifactId>
-        <version>1.4.193</version>
-        <scope>test</scope>
-      </dependency>
-      <dependency>
-        <groupId>org.mycore</groupId>
-        <artifactId>mycore-base</artifactId>
-        <version>${mycore.version}</version>
-        <type>test-jar</type>
-        <scope>test</scope>
-      </dependency>
-      <dependency>
-        <groupId>org.mycore</groupId>
-        <artifactId>selenium-utils</artifactId>
-        <version>0.8-SNAPSHOT</version>
-        <scope>test</scope>
-      </dependency>
-      <dependency>
-        <groupId>org.seleniumhq.selenium</groupId>
-        <artifactId>selenium-api</artifactId>
-        <version>${selenium.version}</version>
-        <scope>test</scope>
-      </dependency>
-      <dependency>
-        <groupId>org.seleniumhq.selenium</groupId>
-        <artifactId>selenium-remote-driver</artifactId>
-        <version>${selenium.version}</version>
-        <scope>test</scope>
-      </dependency>
-      <dependency>
-        <groupId>org.seleniumhq.selenium</groupId>
-        <artifactId>selenium-server</artifactId>
-        <version>${selenium.version}</version>
-        <scope>test</scope>
-      </dependency>
-      <dependency>
-        <groupId>org.seleniumhq.selenium</groupId>
-        <artifactId>selenium-support</artifactId>
-        <version>${selenium.version}</version>
-        <scope>test</scope>
       </dependency>
     </dependencies>
   </dependencyManagement>
