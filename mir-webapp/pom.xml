@@ -62,28 +62,6 @@
               </usedDependencies>
             </configuration>
           </execution>
-          <execution>
-            <id>copy</id>
-            <goals>
-              <goal>copy</goal>
-            </goals>
-            <phase>compile</phase>
-            <configuration>
-              <artifactItems>
-                <artifactItem>
-                  <groupId>org.mycore.fileupload</groupId>
-                  <artifactId>fileupload-applet</artifactId>
-                  <version>1.2</version>
-                  <type>jar</type>
-                  <overWrite>false</overWrite>
-                  <destFileName>upload.jar</destFileName>
-                </artifactItem>
-              </artifactItems>
-              <outputDirectory>${project.build.directory}/${project.build.finalName}/applet/</outputDirectory>
-              <overWriteReleases>false</overWriteReleases>
-              <overWriteSnapshots>true</overWriteSnapshots>
-            </configuration>
-          </execution>
         </executions>
       </plugin>
       <plugin>
