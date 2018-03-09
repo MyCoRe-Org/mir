@@ -313,7 +313,6 @@ function hideButton(object) {
 jQuery(document).ready(function() {
 
     if (!!window.FileReader && Modernizr.draganddrop) {
-        jQuery('#appletContainer').remove();
         jQuery('#html5Container').css('display', 'block');
 
         jQuery('#files').delegate('button', 'click', function(evt) {
