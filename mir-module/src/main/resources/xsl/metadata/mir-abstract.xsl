@@ -255,7 +255,7 @@
                       <xsl:attribute name="class">tab-pane ellipsis ellipsis-text active</xsl:attribute>
                     </xsl:if>
                     <p>
-                      <span itemprop="description">
+                      <span class="ellipsis-description" itemprop="description">
                         <xsl:apply-templates select="node()" mode="unescapeHtml" />
                       </span>
                       <a href="#" class="readless hidden" title="read less">
@@ -274,7 +274,7 @@
           <xsl:otherwise>
             <div class="ellipsis ellipsis-text">
               <p>
-                <span itemprop="description">
+                <span class="ellipsis-description" itemprop="description">
                   <xsl:apply-templates select="$abstracts/mods:abstract/node()" mode="unescapeHtml" />
                 </span>
                 <a href="#" class="readless hidden" title="read less">

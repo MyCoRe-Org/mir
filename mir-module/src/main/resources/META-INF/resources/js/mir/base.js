@@ -383,56 +383,43 @@
       $(this).next().collapse('toggle');
     });
 
-    // for configuration look here: http://dotdotdot.frebsite.nl/
-    if (jQuery.fn.dotdotdot) {
-
-      $(".ellipsis-text").find("a.readmore").click(function() {
-
-        var div = $(this).closest('.ellipsis-text');
-        //$("a.readmore", div).hide();
-        div.trigger('destroy');
-        div.removeClass('ellipsis');
-        $("a.readless", div).removeClass('hidden');
-
-        $("a.readless", div).click(function(div) {
-          var div = $(this).closest('.ellipsis-text');
-          $("a.readmore", div).show();
-          div.addClass('ellipsis');
-          var readmore=$("a.readmore",div);
-          readmore.clone(true,true).insertAfter( readmore );
-          readmore.addClass('readmore-active');
-          readmore.removeClass('hidden');
-          div.dotdotdot({
-            ellipsis	: '... ',
-            after: "a.readmore-active",
-            callback: dotdotdotCallback
-          });
-          $(this).addClass('hidden');
-          return false;
-        });
-
-        return false;
-
-      });
-
+    if (jQuery.fn.shave) {
       $(".ellipsis").each(function( i ) {
 
         if (i > 0) $(this).addClass("active");
 
-        var readmore=$("a.readmore",this);
-        readmore.clone(true,true).insertAfter( readmore );
-        readmore.addClass('readmore-active');
-        readmore.removeClass('readmore');
-        readmore.removeClass('hidden');
-        $(this).dotdotdot({
-          ellipsis	: '... ',
-          after: "a.readmore-active",
-          callback: dotdotdotCallback
+        $(this).find(".ellipsis-description").shave(120, {
+            classname: "ellipsis-description-unshaved"
         });
+
+        if($(".ellipsis-description-unshaved").length > 0) {
+            $(this).find("a.readmore").removeClass("hidden");
+        }
 
         if (i > 0) $(this).removeClass("active");
       });
-    };
+
+      $("body").on("click", ".ellipsis-text a.readmore" , function(evt) {
+          evt.preventDefault();
+          let parent = $(this).parents(".ellipsis-text");
+          $(parent).addClass("expand");
+          $(parent).find(".js-shave-char").hide();
+          $(parent).find(".ellipsis-description-unshaved").show();
+          $(parent).find(".readless").removeClass("hidden");
+          $(this).addClass("hidden");
+      });
+
+      $("body").on("click", ".ellipsis-text a.readless" , function(evt) {
+          evt.preventDefault();
+          let parent = $(this).parents(".ellipsis-text");
+          $(parent).removeClass("expand");
+          $(parent).find(".ellipsis-description-unshaved").hide();
+          $(parent).find(".js-shave-char").show();
+          $(parent).find(".readmore").removeClass("hidden");
+          $(this).addClass("hidden");
+      });
+
+    }
 
     $("#mir_relatedItem > li > span").click(function(){
       if( $(this).parent().children("ul").is(":visible") ){
@@ -529,13 +516,6 @@
             $(currentElm).html(i18nKey);
         });
     }
-
-  function dotdotdotCallback(isTruncated, originalContent) {
-    if (!isTruncated) {
-      $("a.readmore", this).remove();
-      $("a.readless", this).remove();
-    }
-  };
 
   window.solrEscapeSearchValue = function base_solrEscapeSearchValue(text){
     return text.replace(/([\\!&|+\\-\\(\\)\\{\\}\\\[\\\]~:\\\\/^])/g, "\\$1"); // special chars: "!&|+-(){}[]~:\\/^"
