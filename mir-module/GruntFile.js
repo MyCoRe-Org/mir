@@ -33,7 +33,7 @@ module.exports = function(grunt) {
           'jquery/plugins/typeahead' : 'typeahead.js/dist/bloodhound.min.js',
           'jquery/plugins/bootstrap3-typeahead' : 'bootstrap-3-typeahead/bootstrap3-typeahead.min.js',
           'jquery/plugins/shariff' : 'shariff/build',
-          'jquery/plugins/dotdotdot' : 'jquery.dotdotdot/src/js',
+          'jquery/plugins/shave' : 'shave/dist',
 
           'bootstrap-datepicker/js':'bootstrap-datepicker/dist/js/',
           'bootstrap-datepicker/css':'bootstrap-datepicker/dist/css/',
