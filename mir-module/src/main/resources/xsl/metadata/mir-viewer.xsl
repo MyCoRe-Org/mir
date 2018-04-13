@@ -25,7 +25,9 @@
           <xsl:if test="count(mycoreobject/structure/derobjects/derobject[key('rights', @xlink:href)/@read]) > 0">
             <div class="row mir-preview">
               <div class="col-md-12">
-                <h3 class="mir-viewer">Vorschau</h3>
+                <h3 class="mir-viewer">
+                  <xsl:value-of select="i18n:translate('metaData.preview')" />
+                </h3>
                 <!-- show one viewer for each derivate -->
                 <xsl:for-each select="mycoreobject/structure/derobjects/derobject[key('rights', @xlink:href)/@read]">
                   <xsl:call-template name="createViewer"/>
