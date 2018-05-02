@@ -1896,7 +1896,7 @@
         <div class="mir-fieldset-content mir-related-item-search">
           <div class="form-group">
             <div class="col-md-3">
-              <xed:bind xpath="@type" initially="{$relatedItemType}">
+              <xed:bind xpath="@type">
                 <select class="form-control">
                   <option value="host">
                     <xed:output i18n="mir.relatedItem.host" />
@@ -1923,7 +1923,7 @@
               <div class="controls form-inline">
                 <input type="button" class="form-control mir-relatedItem-select" value="{i18n:mir.editing.related.select}" />
                 <span />
-                <xed:bind xpath="@xlink:href" initially="{$relatedItemId}">
+                <xed:bind xpath="@xlink:href">
                   <input type="hidden" />
                 </xed:bind>
               </div>
