@@ -16,6 +16,11 @@
       </xsl:call-template>
       <xsl:call-template name="printSeperator" />
       <xsl:call-template name="exportLink">
+        <xsl:with-param name="transformer" select="'marcxml'"/>
+        <xsl:with-param name="linkText" select="'MARCXML'"/>
+      </xsl:call-template>
+      <xsl:call-template name="printSeperator" />
+      <xsl:call-template name="exportLink">
         <xsl:with-param name="transformer" select="'ris'"/>
         <xsl:with-param name="linkText" select="'RIS'"/>
       </xsl:call-template>
