@@ -160,6 +160,10 @@
                 <xsl:apply-templates select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:accessCondition[@type='use and reproduction']"
                   mode="oa-logo" />
               </xsl:when>
+              <xsl:when test="contains($trimmed, 'ogl')">
+                <xsl:apply-templates select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:accessCondition[@type='use and reproduction']"
+                  mode="ogl-logo" />
+              </xsl:when>
               <xsl:otherwise>
                 <xsl:value-of select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:accessCondition[@type='use and reproduction']" />
               </xsl:otherwise>
