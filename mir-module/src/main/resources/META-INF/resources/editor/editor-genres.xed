@@ -379,6 +379,7 @@
   </xed:template>
 
   <xed:template id="audio">
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="type.of.resource.sound_recording" />
     <xed:include uri="webapp:editor/editor-genres.xed" ref="av.common" />
   </xed:template>
 
@@ -388,6 +389,7 @@
   </xed:template>
 
   <xed:template id="broadcasting">
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="type.of.resource.sound_recording" />
     <xed:include uri="webapp:editor/editor-genres.xed" ref="av.common" />
   </xed:template>
 
@@ -444,6 +446,7 @@
 
 
   <xed:template id="picture">
+    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="type.of.resource.still_image" />
     <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="title.nonrequired" />
     <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="artist.photographer.repeated" />
     <xed:if test="not(mods:relatedItem)">
