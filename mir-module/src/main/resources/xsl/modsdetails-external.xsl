@@ -498,8 +498,8 @@
                 </xsl:choose>
                 <xsl:if test="$displayAddDerivate='true'">
                   <li>
-                    <a href="{$ServletsBaseURL}derivate/create{$HttpSession}?id={$id}">
-                      <xsl:value-of select="i18n:translate('derivate.addDerivate')" />
+                    <a onclick="javascript: $('.drop-to-object-optional').toggle();">
+                      <xsl:value-of select="i18n:translate('mir.upload.addDerivate')" />
                     </a>
                   </li>
                 </xsl:if>
@@ -752,7 +752,7 @@
                 </a>
               </li>
             </xsl:if>
-            <xsl:if test="key('rights', $deriv)/@write">
+            <!--<xsl:if test="key('rights', $deriv)/@write">
               <li>
                 <xsl:if test="not(key('rights', $deriv)/@delete)">
                   <xsl:attribute name="class">last</xsl:attribute>
@@ -768,7 +768,7 @@
                   </xsl:otherwise>
                 </xsl:choose>
               </li>
-            </xsl:if>
+            </xsl:if>-->
             <xsl:if test="key('rights', $deriv)/@delete and not($hasManagedPI)">
               <li class="last">
                 <a href="{$ServletsBaseURL}derivate/delete{$HttpSession}?id={$deriv}" class="confirm_deletion option" data-text="{i18n:translate('mir.confirm.derivate.text')}">

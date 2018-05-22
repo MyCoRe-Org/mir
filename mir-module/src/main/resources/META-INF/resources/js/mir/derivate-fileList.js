@@ -367,6 +367,7 @@
 				buildBreadcrumbs(json.path);
 			}
 			$(fileBox).append(fileList);
+            mycore.upload.enable($(fileBox)[0]);
 			$('.confirm_deletion').confirm();
 		}
 
@@ -452,10 +453,11 @@
 			var ifsKeyURL = webApplicationBaseURL + "rsc/locale/translate/" + lang + "/IFS*";
 			var mirKeyURL = webApplicationBaseURL + "rsc/locale/translate/" + lang + "/mir.confirm.*";
 			var pagiKeyURL = webApplicationBaseURL + "rsc/locale/translate/" + lang + "/mir.pagination.*";
+			var uploadKeyURL = webApplicationBaseURL + "rsc/locale/translate/" + lang + "/mir.upload.drop.derivate";
 			$
-					.when($.ajax(ifsKeyURL), $.ajax(mirKeyURL), $.ajax(pagiKeyURL))
+					.when($.ajax(ifsKeyURL), $.ajax(mirKeyURL), $.ajax(pagiKeyURL), $.ajax(uploadKeyURL))
 					.done(
-							function(d1, d2, d3) {
+							function(d1, d2, d3, d4) {
 								if (d1[0] != {} && d1[0] != "???IFS*???" && d1[0]["IFS"]) {
 									i18nKeys = $.extend(d1[0], i18nKeys);
 								} else {
@@ -478,6 +480,13 @@
 									i18nKeys["mir.pagination.previous"] = "vorherige Seite";
 									i18nKeys["mir.pagination.next"] = "n\u00E4chste Seite";
 								}
+
+								if(typeof d4[0]==="string") {
+								    i18nKeys["mir.upload.drop.derivate"] = d4[0];
+                                } else {
+                                    i18nKeys["mir.upload.drop.derivate"] = "Dateien zum Anh\u00E4ngen ablegen.";
+                                }
+
 								callback();
 							})
 					.fail(
@@ -492,6 +501,7 @@
 								i18nKeys["mir.pagination.last"] = "letzte Seite ({0})";
 								i18nKeys["mir.pagination.previous"] = "vorherige Seite";
 								i18nKeys["mir.pagination.next"] = "n\u00E4chste Seite";
+                                i18nKeys["mir.upload.drop.derivate"] = "Datei zum Anh\u00E4ngen ablegen.";
 								callback();
 							});
 		}

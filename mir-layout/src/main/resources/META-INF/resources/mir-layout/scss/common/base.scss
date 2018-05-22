@@ -10,6 +10,11 @@ html {
     background-repeat:no-repeat;
     min-width: 320px;
 
+    .uploadDragging{
+      color: #2d9700;
+      background-color: #4B8FBC;
+    }
+
     header {
       #searchInput {
         padding: 4px 15px;
