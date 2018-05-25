@@ -139,7 +139,7 @@ $(document).ready(function() {
         });
       });
       updatePager(data);
-      loadPublikation(updateType,"find", $(data).find("str[name='q']").text(), "0");
+      updateType(data);
     }
 
     function rightContent(data) {
@@ -151,7 +151,7 @@ $(document).ready(function() {
 
     function updateType(data) {
       $(".modal-footer select > option[value != '']").remove();
-      $(data).find("lst[name='facet_counts'] lst[name='mods.type'] > int").each(function() {
+      $(data).find("lst[name='facet_counts'] lst[name='mods.genre'] > int").each(function() {
         var type_val = encodeURIComponent('+mods.type:"' + $(this).attr('name') + '"');
         var text = getGenre($(this).attr('name'));
         $(".modal-footer select").append("<option value='" + type_val + "'>" + text + " (" + $(this).text() + ")</option>");
@@ -276,7 +276,7 @@ $(document).ready(function() {
       var dataType = "";
       switch (type) {
         case "find":
-              url = "servlets/solr/find?condQuery=" + qry + "&fq1=" + sortType + "&start=" + start + "&rows=10&owner=createdby:*&XSL.Style=xml";
+              url = "servlets/solr/find?condQuery=*" + qry + "*&fq=" + sortType + "&start=" + start + "&rows=10&owner=createdby:*&XSL.Style=xml";
               dataType = "xml";
               break;
         case "select":
