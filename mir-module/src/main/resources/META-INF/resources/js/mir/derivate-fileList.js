@@ -25,6 +25,12 @@
 				}
 				return options.inverse(this);
 			});
+            Handlebars.registerHelper('noDirOrURN', function(a, b, options) {
+                if (a !== 'directory' || !b) {
+                    return options.fn(this);
+                }
+                return options.inverse(this);
+            });
 			Handlebars.registerHelper('notContains', function(a, b, options) {
 				if (a.indexOf(b) == -1) {
 					return options.fn(this);

@@ -56,43 +56,47 @@
             {{formatFileSize size}}
           </td>
           {{#isOr ../permWrite ../permDelete}}
-            {{#unless ../urn}}
+            {{#noDirOrURN type ../urn}}
               <td class="options col-xs-1 text-right">
                 <div class="btn-group">
-                    <a href="#" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                        <i class="fa fa-cog"></i>
-                        <span class="caret"></span>
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-right">
-                        {{#if ../permWrite}}
-                            {{#isNot type "directory"}}
-                                <li>
-                                    <a title="{{getI18n "IFS.mainFile"}}"
-                                       href="#"
-                                       data-derivateid="{{../mycorederivate}}"
-                                       data-objectid="{{../mycoreobject}}"
-                                       data-file="{{name}}"
-                                       data-path="{{path}}"
-                                       class="option mir_mainfile" >
-                                        <span class="glyphicon glyphicon-star"></span>
-                                        {{getI18n "IFS.mainFile"}}
-                                    </a>
-                                </li>
-                            {{/isNot}}
-                        {{/if}}
-                        {{#if ../permDelete}}
-                            <li>
-                                <a href="{{../serverBaseURL}}servlets/MCRDerivateServlet?derivateid={{../mycorederivate}}&amp;objectid={{../mycoreobject}}&amp;todo=sdelfile&amp;file={{path}}"
-                                   class="option confirm_deletion" data-text="{{getI18n (concat "mir.confirm." type ".text")}}" title="{{getI18n (concat "IFS." type "Delete")}}">
-                                    <span class="glyphicon glyphicon-trash"></span>
-                                    {{getI18n (concat "IFS." type "Delete")}}
-                                </a>
-                            </li>
-                        {{/if}}
-                    </ul>
+                  <a href="#" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                    <i class="fa fa-cog"></i>
+                    <span class="caret"></span>
+                  </a>
+                  <ul class="dropdown-menu dropdown-menu-right">
+                    {{#if ../permWrite}}
+                      {{#isNot type "directory"}}
+                        <li>
+                          <a title="{{getI18n "IFS.mainFile"}}"
+                             href="#"
+                             data-derivateid="{{../mycorederivate}}"
+                             data-objectid="{{../mycoreobject}}"
+                             data-file="{{name}}"
+                             data-path="{{path}}"
+                             class="option mir_mainfile">
+                            <span class="glyphicon glyphicon-star"></span>
+                            {{getI18n "IFS.mainFile"}}
+                          </a>
+                        </li>
+                      {{/isNot}}
+                    {{/if}}
+                    {{#if ../permDelete}}
+                      {{#unless ../urn}}
+                        <li>
+                          <a href="{{../serverBaseURL}}servlets/MCRDerivateServlet?derivateid={{../mycorederivate}}&amp;objectid={{../mycoreobject}}&amp;todo=sdelfile&amp;file={{path}}"
+                             class="option confirm_deletion"
+                             data-text="{{getI18n (concat "mir.confirm." type ".text")}}"
+                             title="{{getI18n (concat "IFS." type "Delete")}}">
+                            <span class="glyphicon glyphicon-trash"></span>
+                            {{getI18n (concat "IFS." type "Delete")}}
+                          </a>
+                        </li>
+                      {{/unless}}
+                    {{/if}}
+                  </ul>
                 </div>
               </td>
-            {{/unless}}
+            {{/noDirOrURN}}
           {{/isOr}}
         </tr>
     {{/each}}
