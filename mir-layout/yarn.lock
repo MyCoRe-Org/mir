@@ -101,9 +101,9 @@ boom@2.x.x:
   dependencies:
     hoek "2.x.x"
 
-bootstrap@3.3.7:
+bootstrap-sass@3.3.7:
   version "3.3.7"
-  resolved "https://registry.yarnpkg.com/bootstrap/-/bootstrap-3.3.7.tgz#5a389394549f23330875a3b150656574f8a9eb71"
+  resolved "https://registry.yarnpkg.com/bootstrap-sass/-/bootstrap-sass-3.3.7.tgz#6596c7ab40f6637393323ab0bc80d064fc630498"
 
 bootswatch@3.3.5:
   version "3.3.5"

@@ -1,0 +1,20 @@
+// Do not define your own variables here! They are unknown for all themes,
+// like flatmir or cosmol and leading to errors.
+
+// Just use bootstrap variables in this common section and only adjust them
+// to define a default layout, applied in all themes.
+
+$icon-font-path:          "../../../../mir-layout/assets/bootstrap/fonts/bootstrap/";
+$font-size-base:          14px;
+
+//$alert-success-bg: lighten($brand-success, 35%);
+//$alert-success-text: $brand-success;
+
+//$alert-info-bg: lighten($brand-info, 35%);
+//$alert-info-text: $brand-info;
+
+$alert-warning-bg: lighten($brand-warning, 35%);
+$alert-warning-text: $brand-warning;
+
+//$alert-danger-bg: lighten($brand-danger, 35%);
+//$alert-danger-text: $brand-danger;

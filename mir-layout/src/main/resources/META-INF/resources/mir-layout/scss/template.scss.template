@@ -1,0 +1,6 @@
+@import "%layout%/lib/variables";
+@import "common/variables";
+@import  "../assets/bootswatch/%template%/variables";
+@import  "../assets/bootstrap/stylesheets/bootstrap";
+@import  "../assets/bootswatch/%template%/bootswatch";
+@import "%layout%/layout";

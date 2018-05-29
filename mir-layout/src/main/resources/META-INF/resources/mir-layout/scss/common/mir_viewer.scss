@@ -1,0 +1,57 @@
+.viewer {
+  // .viewer is only the embedded viewer
+  height: 550px;
+  position: relative;
+  margin-bottom: 30px;
+
+  .navbar.navbar-default {
+    background-color: $panel-default-heading-bg;
+    border-color: $panel-default-border;
+
+    .dropdown {
+      height: 36px;
+    }
+  }
+
+  .btn {
+    padding: 6px 10px;
+  }
+
+}
+
+h3.mir-viewer {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid #DDD;
+  font-size: 16px;
+}
+
+
+.mycoreViewer {
+
+  &:not(.viewer) .navbar.navbar-default {
+    select {
+      height: 44px;
+    }
+
+    button {
+      padding: 10px 15px;
+    }
+  }
+
+  .navbar.navbar-default .btn {
+      margin-top: 4px;
+    }
+
+
+  .altoLine {
+    text-align: left;
+    line-height: initial;
+    font-family: sans-serif;
+  }
+}
+
+#mir-dfgViewer {
+  margin-bottom: 20px;
+}

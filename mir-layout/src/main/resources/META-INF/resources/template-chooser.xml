@@ -76,11 +76,12 @@
           });
           var curCssLinkElements=$('link[rel="stylesheet"][href*="mir-layout"]').attr("href").split("/");
           var curCss=curCssLinkElements.pop();
-          curCss=curCss.substr(0,curCss.indexOf('.'));
-          var curLayout=curCssLinkElements.pop();
+          curCss=curCss.split('-');
+          var curLayout = curCss[0];
+          curCss = curCss[1];
           $('form[name="templateChooser"] option[value="'+curLayout+'"]').attr("selected","selected");
           $('form[name="templateChooser"] option[value="'+curCss+'"]').attr("selected","selected");
-          $('#mycoreProperties').text('#add to mycore.properties\nMIR.DefaultLayout.CSS='+curCss+'.min\nMIR.Layout.Theme='+curLayout);
+          $('#mycoreProperties').text('#add to mycore.properties\nMIR.DefaultLayout.CSS='+curCss+'\nMIR.Layout.Theme='+curLayout);
         });
       })(jQuery);
     ]]>

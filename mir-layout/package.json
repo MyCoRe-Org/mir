@@ -3,12 +3,12 @@
     "author": "Thomas Scheffler",
     "homepage": "${project.url}",
     "repository": {
-      "type": "svn",
-      "url": "${project.scm.url}"
+        "type": "svn",
+        "url": "${project.scm.url}"
     },
     "license": "GPL-3.0",
     "engines": {
-      "node": ">= 0.12.0"
+        "node": ">= 0.12.0"
     },
     "engineStrict": true,
     "devDependencies": {
@@ -20,7 +20,7 @@
         "grunt-contrib-watch": "^1.0.0",
         "grunt-npmcopy": "^0.1.0",
         "request": "^2.79.0",
-        "bootstrap": "3.3.7",
+        "bootstrap-sass": "3.3.7",
         "bootswatch": "3.3.5",
         "font-awesome": "4.7.0",
         "jquery": "3.3.1",
