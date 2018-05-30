@@ -3,25 +3,24 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-replace');
 	grunt.loadNpmTasks('grunt-npmcopy');
 
-    var fs = require('fs');
-    var path = require('path');
-    var util = require('util');
+    const fs = require('fs');
+    const path = require('path');
+    const util = require('util');
 
-    var getAbsoluteDir = function(dir) {
+    const getAbsoluteDir = function(dir) {
         return path.isAbsolute(dir) ? dir : path.resolve(process.cwd(), dir);
     };
 
-    var globalConfig = {
+    const globalConfig = {
         projectBase: getAbsoluteDir(grunt.option('projectBase')),
         targetDirectory : getAbsoluteDir(grunt.option('targetDirectory')),
         assetsDirectory : getAbsoluteDir(grunt.option('assetsDirectory')),
         assetsDirectoryRelative : path.basename(grunt.option('assetsDirectory'))
     };
 
-    var layouts = ["flatmir", "cosmol"];
-    var templates = ["cerulean", "cosmo", "cyborg", "darkly", "flatly", "journal", "lumen", "paper", "readable",
+    const layouts = ["flatmir", "cosmol"];
+    const templates = ["cerulean", "cosmo", "cyborg", "darkly", "flatly", "journal", "lumen", "paper", "readable",
         "sandstone", "simplex", "slate", "spacelab", "superhero", "united", "yeti"];
-    var existing = ["flatmir-flatly", "cosmol-cosmo", "cosmol-journal"];
 
 
     grunt.initConfig({
@@ -65,7 +64,7 @@ module.exports = function(grunt) {
     grunt.registerTask('buildTemplates', function () {
         const sassFolder = "META-INF/resources/mir-layout/scss/";
 
-        var done = this.async();
+        const done = this.async();
 
         fs.readFile(globalConfig.projectBase + "/src/main/resources/" + sassFolder + "/template.scss.template", 'utf8', function (err, data) {
             if (err) {
@@ -99,10 +98,5 @@ module.exports = function(grunt) {
             }, done);
         });
     });
-
-    grunt.registerTask('none', function () {
-	});
-
-
 
 };
