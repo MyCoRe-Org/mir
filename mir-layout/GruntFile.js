@@ -69,8 +69,8 @@ module.exports = function(grunt) {
 
         fs.readFile(globalConfig.projectBase + "/src/main/resources/" + sassFolder + "/template.scss.template", 'utf8', function (err, data) {
             if (err) {
-                return console.error(err);
                 done();
+                return console.error(err);
             }
 
             let layoutTemplate = [];
