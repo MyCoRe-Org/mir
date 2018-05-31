@@ -49,7 +49,7 @@
                     </xsl:apply-templates>
                     <xsl:if test="@type='translated'">
                       <xsl:text> (</xsl:text>
-                      <xsl:value-of select="mcrxsl:getDisplayName('rfc4646',@xml:lang)" />
+                      <xsl:value-of select="mcrxsl:getDisplayName('rfc5646',@xml:lang)" />
                       <xsl:text>)</xsl:text>
                     </xsl:if>
                   </xsl:for-each>

@@ -11,7 +11,7 @@ load classification from url http://www.mycore.org/classifications/mir_filetype.
 load classification from url http://www.mycore.org/classifications/mir_genres.xml
 load classification from url http://www.mycore.org/classifications/mir_institutes.xml
 load classification from url http://www.mycore.org/classifications/mir_licenses.xml
-load classification from url http://www.mycore.org/classifications/rfc4646.xml
+load classification from url http://www.mycore.org/classifications/rfc5646.xml
 load classification from url http://www.mycore.org/classifications/sdnb.xml
 load classification from url http://www.mycore.org/classifications/state.xml
 load classification from url http://www.mycore.org/classifications/typeOfResource.xml
@@ -22,3 +22,4 @@ init superuser
 process ${app.home}/config/acl/defaultrules-commands.txt
 process ${app.home}/config/acl/webacl-commands.txt
 process ${app.home}/config/acl/restapiacl-commands.txt
+rebuild solr classification index in core classification

@@ -4,10 +4,10 @@ package org.mycore.mir.it.model;
  * Created by sebastian on 13.04.16.
  */
 public enum MIRLanguage {
-    arabic("ar"),
-    bosnian("bs"),
-    english("en"),
-    german("de");
+    arabic("Arabisch"),
+    bosnian("Bosnisch"),
+    english("Englisch"),
+    german("Deutsch");
 
     private String value;
 

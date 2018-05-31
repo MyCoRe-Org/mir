@@ -15,7 +15,7 @@
   <command file="resource:setup/acl/grant-admin.xml" describedBy="administrators only"> update permission writedb for id mir_genres with rulefile {file} described by {describedBy} </command>
   <command file="resource:setup/acl/grant-admin.xml" describedBy="administrators only"> update permission writedb for id mir_institutes with rulefile {file} described by {describedBy} </command>
   <command file="resource:setup/acl/grant-admin.xml" describedBy="administrators only"> update permission writedb for id mir_licenses with rulefile {file} described by {describedBy} </command>
-  <command file="resource:setup/acl/grant-admin.xml" describedBy="administrators only"> update permission writedb for id rfc4646 with rulefile {file} described by {describedBy} </command>
+  <command file="resource:setup/acl/grant-admin.xml" describedBy="administrators only"> update permission writedb for id rfc5646 with rulefile {file} described by {describedBy} </command>
   <command file="resource:setup/acl/grant-admin.xml" describedBy="administrators only"> update permission writedb for id marcrelator with rulefile {file} described by {describedBy} </command>
   <command file="resource:setup/acl/grant-admin.xml" describedBy="administrators only"> update permission writedb for id noteTypes with rulefile {file} described by {describedBy} </command>
   <command file="resource:setup/acl/grant-admin.xml" describedBy="administrators only"> update permission writedb for id SDNB with rulefile {file} described by {describedBy} </command>

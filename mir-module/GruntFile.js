@@ -46,7 +46,10 @@ module.exports = function(grunt) {
 
           'videojs/js': 'video.js/dist/video.min.js',
           'videojs/css': 'video.js/dist/video-js.min.css',
-          'videojs-contrib-hls': 'videojs-contrib-hls/dist/videojs-contrib-hls.min.js'
+          'videojs-contrib-hls': 'videojs-contrib-hls/dist/videojs-contrib-hls.min.js',
+
+          'select2/js': 'select2/dist/js',
+          'select2/css': 'select2/dist/css/select2.min.css'
         },
       }
     },

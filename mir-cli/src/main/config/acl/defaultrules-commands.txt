@@ -14,7 +14,7 @@ update permission read for id derivate:mir_access:intern with rulefile ${app.hom
 update permission writedb for id mir_genres with rulefile ${app.home}/config/acl/grant-admin.xml described by ${acl-description.admins}
 update permission writedb for id mir_institutes with rulefile ${app.home}/config/acl/grant-admin.xml described by ${acl-description.admins}
 update permission writedb for id mir_licenses with rulefile ${app.home}/config/acl/grant-admin.xml described by ${acl-description.admins}
-update permission writedb for id rfc4646 with rulefile ${app.home}/config/acl/grant-admin.xml described by ${acl-description.admins}
+update permission writedb for id rfc5646 with rulefile ${app.home}/config/acl/grant-admin.xml described by ${acl-description.admins}
 update permission writedb for id marcrelator with rulefile ${app.home}/config/acl/grant-admin.xml described by ${acl-description.admins}
 update permission writedb for id noteTypes with rulefile ${app.home}/config/acl/grant-admin.xml described by ${acl-description.admins}
 update permission writedb for id SDNB with rulefile ${app.home}/config/acl/grant-admin.xml described by ${acl-description.admins}
