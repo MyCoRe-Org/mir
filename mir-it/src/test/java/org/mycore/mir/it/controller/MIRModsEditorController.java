@@ -1,9 +1,5 @@
 package org.mycore.mir.it.controller;
 
-import java.util.AbstractMap;
-import java.util.List;
-import java.util.stream.IntStream;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.mycore.common.selenium.drivers.MCRWebdriverWrapper;
@@ -18,8 +14,15 @@ import org.mycore.mir.it.model.MIRLicense;
 import org.mycore.mir.it.model.MIRTitleInfo;
 import org.mycore.mir.it.model.MIRTypeOfResource;
 import org.mycore.mir.it.tests.MIRTestData;
-import org.openqa.selenium.*;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.StaleElementReferenceException;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
+
+import java.util.AbstractMap;
+import java.util.List;
+import java.util.stream.IntStream;
 
 public class MIRModsEditorController extends MIREditorController {
 
@@ -45,9 +48,7 @@ public class MIRModsEditorController extends MIREditorController {
                     setInputText(baseXP + "mods:nonSort", nonSort);
                 }
 
-                WebElement langSelectElement = driver
-                    .waitAndFindElement(By.xpath(".//select[contains(@name, '" + baseXP + "@xml:lang" + "')]"));
-                new Select(langSelectElement).selectByValue(titleInfo.getLang().getValue());
+                setLang(baseXP, titleInfo.getLang().getValue());
 
                 WebElement selectTypeElement = driver
                     .waitAndFindElement(By.xpath(".//select[contains(@name, '" + baseXP + "@type" + "')]"));
@@ -72,8 +73,7 @@ public class MIRModsEditorController extends MIREditorController {
         setInputText("mods:titleInfo/mods:subTitle", subTitle);
         setInputText("mods:titleInfo[2]/mods:title", translatedTitle);
         setInputText("mods:titleInfo[2]/mods:subTitle", translatedSubTitle);
-        new Select(driver.waitAndFindElement(By.xpath(".//select[contains(@name, 'mods:titleInfo[2]/@xml:lang')]")))
-            .selectByValue(language.getValue());
+        setLang("mods:titleInfo[2]/", language.getValue());
 
     }
 
@@ -135,8 +135,7 @@ public class MIRModsEditorController extends MIREditorController {
             IntStream.range(0, abstracts.size()).forEach(i -> {
                 String xp = i == 0 ? "mods:abstract" : "mods:abstract[" + (i + 1) + "]";
                 MIRAbstract anAbstract = abstracts.get(i);
-                new Select(driver.waitAndFindElement(By.xpath(".//select[contains(@name, '" + xp + "/@xml:lang')]")))
-                    .selectByValue(anAbstract.getLanguage().getValue());
+                setLang(xp + "/", anAbstract.getLanguage().getValue());
                 if (anAbstract.isText()) {
                     setTextAreaText(xp, anAbstract.getTextOrLink());
                 } else {
@@ -198,15 +197,27 @@ public class MIRModsEditorController extends MIREditorController {
         if (langs.size() > 0) {
             if (langs.size() > 1) {
                 IntStream.range(1, langs.size()).forEach((n) -> clickRepeaterAndWait("mods:language",
-                    ".//select[contains(@name, 'mods:language[" + (n + 1) + "]/mods:languageTerm')]"));
+                    ".//span[contains(@id, 'modslanguage" + (n + 1) + "/modslanguageTerm')]"));
             }
 
             IntStream.range(0, langs.size()).forEach(i -> {
-                String xp = i == 0 ? "mods:language/mods:languageTerm"
-                    : "mods:language[" + (i + 1) + "]/mods:languageTerm";
+                String xp = i == 0 ? "modslanguage/modslanguageTerm"
+                    : "modslanguage" + (i + 1) + "/modslanguageTerm";
                 MIRLanguage currentLang = langs.get(i);
-                new Select(driver.waitAndFindElement(By.xpath(".//select[contains(@name, '" + xp + "')]")))
-                    .selectByValue(currentLang.getValue());
+                driver.waitAndFindElement(By.xpath(".//span[contains(@id, '" + xp + "')]")).click();
+                driver.waitAndFindElement(By.className("select2-search__field")).clear();
+                driver.waitAndFindElement(By.className("select2-search__field")).sendKeys(currentLang.getValue());
+                StaleElementReferenceException e;
+                do {
+                    try {
+                        e = null;
+                        driver.waitAndFindElement(By.xpath(
+                            ".//li[contains(@class, 'select2-results__option') and contains(normalize-space(text()),'"
+                                + currentLang.getValue() + "')]")).click();
+                    } catch (StaleElementReferenceException e2) {
+                        e = e2;
+                    }
+                } while (e != null);
             });
         }
     }

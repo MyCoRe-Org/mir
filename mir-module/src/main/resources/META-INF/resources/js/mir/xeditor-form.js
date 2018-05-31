@@ -215,4 +215,127 @@ $(document).ready(function() {
             }
         });
     }
+
+    if ($("input.managedIdentifier").length > 0 && $("select.identifierSelect").length > 0) {
+        $("input.managedIdentifier").each(function() {
+            $("select.identifierSelect").find("option[value='" + $(this).attr("data-type") + "']").remove();
+        });
+    }
+
+    function setLabelForClassification(parent) {
+        $.ajax({
+            url: '../servlets/solr/select',
+            data: {
+                    q: optionsToQuery(parent),
+                    fq: 'classification:rfc5646',
+                    wt: 'json',
+                    core: 'classification'
+            },
+            dataType: 'json'
+        }).done(function(data) {
+            $.each(data.response.docs, function (i, cat) {
+                let text = cat['label.' + $("html").attr("lang")][0];
+                if (text === undefined) {
+                    text = cat['label.en'][0]
+                }
+                getOptionWithVal(parent, cat.category).html(text);
+            });
+            setSelect2(parent);
+        });
+    }
+
+    function setSelect2(elm) {
+        $(elm).select2({
+            ajax: {
+                url: '../servlets/solr/select',
+                data: function (params) {
+                    let term = (params.term !== "") ? params.term : undefined;
+                    return {
+                        q: 'label.en:' + term + "* OR " + 'label.de:' + term + "* OR " + 'category:' + term + "* OR " + 'label.x-bibl:' + term + "* OR " + 'label.x-term:'  + term,
+                        fq: 'classification:rfc5646',
+                        wt: 'json',
+                        core: 'classification'
+                    };
+                },
+                dataType: 'json',
+                processResults: function (data) {
+                    let res = {
+                        results: $.map(data.response.docs, function(obj) {
+                            let text = obj['label.' + $("html").attr("lang")];
+                            if (text === undefined) {
+                                text = obj['label.en'][0]
+                            }
+                            else {
+                                text = text[0];
+                            }
+                            return { id: obj.category, text: text };
+                        })
+                    };
+                    addDefautlLang(elm, res);
+                    return res;
+                },
+            },
+            minimumInputLength: 0,
+            language: $("html").attr("lang")
+        });
+    }
+
+    function addDefautlLang(elm, res) {
+        $(elm).children().each(function (i, option) {
+            let found = false;
+            $.each(res.results, function (i, solrOption) {
+                if (solrOption.id === $(option).val()) {
+                    found = true;
+                    return false;
+                }
+            });
+            if (!found) {
+                if ($(option).val() !== "") {
+                    res.results.push({id: $(option).val(), text: $(option).html()})
+                }
+            }
+        })
+    }
+
+    function setDefaultLang(elm) {
+        let langs = $(elm).attr("data-langs").split(",");
+        let dlang = $(elm).attr("data-dlang");
+        if (!optionPresent(elm, dlang)) {
+            $(elm).append(new Option(dlang, dlang, false, false));
+        }
+        $.each(langs, function (i, lang) {
+            if (!optionPresent(elm, lang)) {
+                $(elm).append(new Option(lang, lang, false, false));
+            }
+        });
+    }
+
+    function optionPresent(elm, val) {
+        return getOptionWithVal(elm, val).length !== 0;
+    }
+
+    function getOptionWithVal(elm, val) {
+        return $(elm).find("option[value='" + val + "']");
+    }
+
+    function optionsToQuery(elm) {
+        let query = [];
+        $(elm).children().each(function (i, option) {
+            if ($(option).val() !== "") {
+                query.push('category:' + $(option).val());
+            }
+        });
+        return query.join(" OR ");
+    }
+
+   $(".lang-select").each(function () {
+       setDefaultLang($(this));
+        if ($(this).children("option").length > 0) {
+            setLabelForClassification($(this));
+        }
+        else {
+            setSelect2($(this));
+        }
+    });
+
 });

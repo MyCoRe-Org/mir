@@ -144,9 +144,9 @@
 
   <xsl:template match="mods:languageTerm[@authority='iso639-2b']">
     <xsl:variable name="classNodes" select="document(concat('language:',text()))/language/@xmlCode" />
-    <xsl:if test="not(preceding-sibling::mods:languageTerm[@authority='rfc4646']/text() = $classNodes)">
-      <xsl:if test="not(following-sibling::mods:languageTerm[@authority='rfc4646']/text() = $classNodes)">
-        <mods:languageTerm authority="rfc4646" type="code">
+    <xsl:if test="not(preceding-sibling::mods:languageTerm[@authority='rfc5646']/text() = $classNodes)">
+      <xsl:if test="not(following-sibling::mods:languageTerm[@authority='rfc5646']/text() = $classNodes)">
+        <mods:languageTerm authority="rfc5646" type="code">
           <xsl:value-of select="$classNodes" />
         </mods:languageTerm>
       </xsl:if>

@@ -417,7 +417,7 @@
   <xsl:template match="mods:language" mode="dc">
     <!-- Best Practice: use ISO 639-3 (since DRIVER Guidelines v2) -->
     <dc:language>
-      <xsl:variable name="myURI" select="concat('classification:metadata:0:children:rfc4646:',child::*)" />
+      <xsl:variable name="myURI" select="concat('classification:metadata:0:children:rfc5646:',child::*)" />
       <xsl:value-of select="document($myURI)//label[@xml:lang='x-term']/@text"/>
     </dc:language>
   </xsl:template>

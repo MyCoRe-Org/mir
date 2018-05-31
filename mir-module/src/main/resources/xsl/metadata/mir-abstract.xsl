@@ -230,11 +230,11 @@
                     <xsl:choose>
                       <xsl:when test="@xml:lang">
                         <xsl:value-of
-                          select="document(concat('classification:metadata:0:children:rfc4646:',./@xml:lang))//category/label[@xml:lang=$CurrentLang]/@text" />
+                          select="document(concat('classification:metadata:0:children:rfc5646:',./@xml:lang))//category/label[@xml:lang=$CurrentLang]/@text" />
                       </xsl:when>
                       <xsl:otherwise>
                         <xsl:value-of
-                          select="document(concat('classification:metadata:0:children:rfc4646:',$mods/mods:language/mods:languageTerm[@authority='rfc4646'][@type='code']))//category/label[@xml:lang=$CurrentLang]/@text" />
+                          select="document(concat('classification:metadata:0:children:rfc5646:',$mods/mods:language/mods:languageTerm[@authority='rfc5646'][@type='code']))//category/label[@xml:lang=$CurrentLang]/@text" />
                       </xsl:otherwise>
                     </xsl:choose>
                   </xsl:variable>

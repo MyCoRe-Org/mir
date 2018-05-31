@@ -6,6 +6,7 @@ import org.mycore.common.selenium.drivers.MCRWebdriverWrapper;
 import org.mycore.common.selenium.util.MCRBy;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -64,6 +65,28 @@ public abstract class MIREditorController extends MIRTestController {
         }
 
         return true;
+    }
+
+    protected void setLang(String baseXP, String lang) {
+        driver.waitAndFindElement(By.xpath(".//span[contains(@id, '"
+            + baseXP.replace(":", "")
+            .replace("[", "")
+            .replace("]", "")
+            + "@xmllang" + "')]"))
+            .click();
+        driver.waitAndFindElement(By.className("select2-search__field")).clear();
+        driver.waitAndFindElement(By.className("select2-search__field")).sendKeys(lang);
+        StaleElementReferenceException e;
+        do {
+            try {
+                e = null;
+                driver.waitAndFindElement(By.xpath(
+                    ".//li[contains(@class, 'select2-results__option') and contains(normalize-space(text()),'"
+                        + lang + "')]")).click();
+            } catch (StaleElementReferenceException e2) {
+                e = e2;
+            }
+        } while (e != null);
     }
 
 }
