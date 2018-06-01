@@ -258,32 +258,40 @@
                       <span class="ellipsis-description" itemprop="description">
                         <xsl:apply-templates select="node()" mode="unescapeHtml" />
                       </span>
-                      <a href="#" class="readless hidden" title="read less">
-                        <xsl:value-of select="i18n:translate('mir.abstract.readless')" />
-                      </a>
-                      <a href="#" class="readmore hidden" title="read more">
-                        <xsl:value-of select="i18n:translate('mir.abstract.readmore')" />
-                      </a>
                     </p>
                   </div>
                 </xsl:for-each>
+                <div id="mir-abstract-overlay">
+                  <a href="#" class="readless hidden" title="read less">
+                    <xsl:value-of select="i18n:translate('mir.abstract.readless')" />
+                  </a>
+                  <div class="mir-abstract-overlay-tran readmore hidden"></div>
+                  <a href="#" class="readmore hidden" title="read more">
+                    <xsl:value-of select="i18n:translate('mir.abstract.readmore')" />
+                  </a>
+                </div>
               </div>
             </div>
 
           </xsl:when>
           <xsl:otherwise>
-            <div class="ellipsis ellipsis-text">
-              <p>
-                <span class="ellipsis-description" itemprop="description">
-                  <xsl:apply-templates select="$abstracts/mods:abstract/node()" mode="unescapeHtml" />
-                </span>
+            <div id="mir-abstract">
+              <div class="ellipsis ellipsis-text">
+                <p>
+                  <span class="ellipsis-description" itemprop="description">
+                    <xsl:apply-templates select="$abstracts/mods:abstract/node()" mode="unescapeHtml" />
+                  </span>
+                </p>
+              </div>
+              <div id="mir-abstract-overlay">
                 <a href="#" class="readless hidden" title="read less">
                   <xsl:value-of select="i18n:translate('mir.abstract.readless')" />
                 </a>
+                <div class="mir-abstract-overlay-tran readmore hidden"></div>
                 <a href="#" class="readmore hidden" title="read more">
                   <xsl:value-of select="i18n:translate('mir.abstract.readmore')" />
                 </a>
-              </p>
+              </div>
             </div>
           </xsl:otherwise>
         </xsl:choose>
