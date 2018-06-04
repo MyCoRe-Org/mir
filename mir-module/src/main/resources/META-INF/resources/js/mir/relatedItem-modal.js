@@ -36,12 +36,6 @@ $(document).ready(function() {
   function checkHost() {
     var hostSelect = $("select[name*='/@type'] option[value='host']:selected").closest(".mir-related-item-search");
     $(".mir-related-item-search").each(function( index ) {
-      if($(this).find("input[name*='mods:relatedItem/@xlink:href']").val() != "" && $(this).find("select[name*='mods:relatedItem/@type']").val() == "host") {
-        $(this).find(".mir-relatedItem-select").prop('disabled', true);
-      }
-      else {
-        $(this).find(".mir-relatedItem-select").prop('disabled', false);
-      }
       if (hostSelect.length > 0 && $(this)[0] === hostSelect[0]) {
         $(this).find("select[name*='/@type'] option[value='host']").prop('disabled', false);
       }
@@ -203,6 +197,7 @@ $(document).ready(function() {
       $(button).next("span").text($(".list-group-item.active").attr("value"));
       var titleInput = $(button).parents(".mir-related-item-search").find("input[name*='mods:title']");
       $(titleInput).val($(".list-group-item.active").attr("data-title"));
+      $(titleInput).attr("disabled", "true");
       $("#modalFrame").modal("hide");
     });
 
