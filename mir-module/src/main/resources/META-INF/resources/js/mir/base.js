@@ -383,40 +383,52 @@
       $(this).next().collapse('toggle');
     });
 
-    if (jQuery.fn.shave) {
+    if ($("#mir-abstract-tabs, #mir-abstract").length > 0) {
       $(".ellipsis").each(function( i ) {
+          $(this).addClass("hidden-calc");
+          if($(this)[0].scrollHeight > $(this).innerHeight()) {
+              $(this).addClass("overflown");
+              $(this).css("overflow-y", "hidden");
+              $("#mir-abstract-overlay").find(".readmore").removeClass("hidden");
+          }
+          $(this).removeClass("hidden-calc");
+      });
 
-        if (i > 0) $(this).addClass("active");
+      $("body").on("click", "#mir-abstract-overlay a.readmore" , function(evt) {
+          evt.preventDefault();
+          let abstract = $("#mir-abstract-tabs .tab-content .active, #mir-abstract .ellipsis");
+          $(abstract).data("oldHeight", $(abstract).height());
+          $(abstract).css("max-height",$(abstract)[0].scrollHeight);
+          $(abstract).addClass("expanded");
+          $(this).parent().find(".readless").removeClass("hidden");
+          $(this).parent().find(".readmore").addClass("hidden");
+      });
 
-        $(this).find(".ellipsis-description").shave(120, {
-            classname: "ellipsis-description-unshaved"
-        });
+      $("body").on("click", "#mir-abstract-overlay a.readless" , function(evt) {
+          evt.preventDefault();
+          let abstract = $("#mir-abstract-tabs .tab-content .active, #mir-abstract .ellipsis");
+          $(abstract).css("max-height",$(abstract).data("oldHeight"));
+          $(this).parent().find(".readmore").removeClass("hidden");
+          $(abstract).removeClass("expanded");
+          $(this).parent().find(".readless").addClass("hidden");
+      });
 
-        if($(".ellipsis-description-unshaved").length > 0) {
-            $(this).find("a.readmore").removeClass("hidden");
+      $("body").on("click", "#mir-abstract-tabs .nav-tabs a" , function(evt) {
+        let abstract = $($(this).attr("href"));
+        if ($(abstract).hasClass("overflown")){
+            if ($(abstract).hasClass("expanded")){
+                $("#mir-abstract-overlay .readless").removeClass("hidden");
+                $("#mir-abstract-overlay .readmore").addClass("hidden");
+            }
+            else {
+                $("#mir-abstract-overlay .readmore").removeClass("hidden");
+                $("#mir-abstract-overlay .readless").addClass("hidden");
+            }
         }
-
-        if (i > 0) $(this).removeClass("active");
-      });
-
-      $("body").on("click", ".ellipsis-text a.readmore" , function(evt) {
-          evt.preventDefault();
-          let parent = $(this).parents(".ellipsis-text");
-          $(parent).addClass("expand");
-          $(parent).find(".js-shave-char").hide();
-          $(parent).find(".ellipsis-description-unshaved").show();
-          $(parent).find(".readless").removeClass("hidden");
-          $(this).addClass("hidden");
-      });
-
-      $("body").on("click", ".ellipsis-text a.readless" , function(evt) {
-          evt.preventDefault();
-          let parent = $(this).parents(".ellipsis-text");
-          $(parent).removeClass("expand");
-          $(parent).find(".ellipsis-description-unshaved").hide();
-          $(parent).find(".js-shave-char").show();
-          $(parent).find(".readmore").removeClass("hidden");
-          $(this).addClass("hidden");
+        else {
+            $("#mir-abstract-overlay .readmore").addClass("hidden");
+            $("#mir-abstract-overlay .readless").addClass("hidden");
+        }
       });
 
     }
