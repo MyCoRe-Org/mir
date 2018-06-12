@@ -71,7 +71,7 @@ public class MIROrcidServlet extends MCRServlet {
                 .collect(Collectors.toList());
         } catch (IOException | JDOMException e) {
 
-            throw new RuntimeException(e);
+            throw new MCRException(e);
         }
     }
 
