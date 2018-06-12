@@ -69,7 +69,7 @@ module.exports = function(grunt) {
         fs.readFile(globalConfig.projectBase + "/src/main/resources/" + sassFolder + "/template.scss.template", 'utf8', function (err, data) {
             if (err) {
                 done();
-                return console.error(err);
+                return grunt.log.errorlns(err);
             }
 
             let layoutTemplate = [];
@@ -90,9 +90,9 @@ module.exports = function(grunt) {
                 const templResultPath = globalConfig.projectBase + "/target/classes/" + sassFolder + "/" + fileName;
                 fs.writeFile(templResultPath, result, function (err) {
                     if (err) {
-                        return console.error(err);
+                        return grunt.log.errorlns(err);
                     }
-                    console.log("Wrote: " + fileName);
+                    grunt.log.writeln("Wrote: " + fileName);
                     next();
                 });
             }, done);
