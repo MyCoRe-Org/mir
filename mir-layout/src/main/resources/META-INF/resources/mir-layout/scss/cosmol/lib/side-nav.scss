@@ -1,0 +1,239 @@
+/*****************************************************************************
+ *
+ * styles for left sided navigation and its components
+ *
+ ****************************************************************************/
+
+/* xs default */
+/* left column with side menu ***********************************************/
+#side_nav_column {
+  padding-left: 0;  // ignore col padding
+  text-align: center;
+
+  .mir-side-nav {
+    border: none;
+    border-radius: 0;
+    padding: 0;
+    background-color: transparent;
+    margin: 10px 10px;
+
+    nav {
+      padding-left: 0px;
+
+      .navbar-form {
+        margin: 0px 0px 70px 15px;
+        padding: 0px;
+        border: none;
+
+        .form-group {
+          display: inline;
+        }
+
+        #searchInput {
+          width: 60%;
+          height: 32px;
+          margin-top: 4px;
+          &.form-control {
+            display: inline;
+          }
+        }
+
+        .btn {
+          vertical-align: bottom;
+          padding: 4px 10px;
+          display: inline;
+          &:hover {
+              border-color: $brand-warning;
+              background-color: $brand-warning;
+          }
+        }
+      }
+
+      .navbar-nav {
+        float: none;
+        display: block;
+        background-color: transparent;
+        padding: 0;
+        margin: 0;
+        border: none;
+        border-radius: 0px;
+        text-align: left;
+
+// menu: all entries
+        li {
+          float: none;
+          margin: 0;
+          padding: 0;
+          border-radius: 0px;
+          background-color: transparent;
+
+          a {
+            margin: 0;
+            padding: 0;
+            .caret {
+              display: none;
+            }
+          }
+        }
+
+// menu: first level
+        & > li,
+        & > li.active {
+
+          & > a {
+            color: white;
+            background-color: $brand-primary;
+            font-size: 18px;
+            border: 1px solid $brand-primary;
+            border-width: 1px 1px 1px 0px;
+            border-color: $brand-primary;
+            border-radius: 5px;
+            padding: 6px 20px;
+
+            &:hover,
+            &:focus {
+              color: white;
+              background-color: $brand-primary;
+              cursor: default;
+            }
+          }
+
+          .dropdown-menu {
+            display: block;
+            float: none;
+            position: static;
+            background-color: transparent;
+            min-width: auto;
+            padding: 4px 0 8px 0;
+            margin: 0px 5px -5px 5px !important;
+            list-style: outside none none;
+            font-size: 14px;
+            text-align: left;
+            border: 0px solid #ccc;
+            border-width: 0px 1px 1px 1px;
+            border-radius: 0px 0px 5px 5px !important;
+            box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.176);
+            background-clip: padding-box;
+
+            & > li {
+              & > a {
+                color: $brand-primary;
+                background-color: transparent;
+                padding: 3px 20px 3px 30px;
+                white-space: normal;
+                border-left: 2px solid transparent;
+
+                &:hover,
+                &:focus {
+                  color: white;
+                  background-color: $brand-warning;
+                }
+              }
+
+              &.active {
+                & > a {
+                  border-left: 2px solid $brand-warning;
+                  &:hover,
+                  &:focus {
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+
+/* close button above main content ******************************************/
+.button_box {
+  border-bottom: 1px solid #ccc;
+  cursor: hand;
+  margin: 4px 0 10px 0;
+  #hide_side_button {
+    &.navbar-toggle {
+      float: none;
+      display: inline;
+      margin: 0;
+      color: white;
+      background-color: $brand-primary;
+      border-color: $brand-primary;
+      border-width: 1px;
+      border-bottom: 1px solid transparent;
+      border-top-left-radius: 5px;
+      border-top-right-radius: 5px;
+      padding: 4px 10px;
+      &:hover {
+        color: white;
+        background-color: $brand-warning;
+        border-color: $brand-warning;
+      }
+      #menu-icon {
+        display: none;
+        padding: 3px 0 3px 0;
+        .icon-bar {
+          background-color: white;
+          width: 14px;
+        }
+      }
+    }
+  }
+}
+
+
+/* sm */
+@media (min-width: $screen-tablet) {
+    #side_nav_column {
+      text-align: left;
+      .mir-side-nav {
+        margin: 0 20px 0 0;
+        nav {
+          .navbar-nav {
+            & > li {
+              .dropdown-menu,
+              &.active .dropdown-menu {
+                border-width: 0 1px 1px 0;
+                margin: 0 5px -5px 0 !important;
+                border-radius: 0 !important;
+                border-bottom-right-radius: 5px !important;
+                & > li {
+                  & > a {
+                    padding: 3px 5px 3px 10px;
+                  }
+                }
+              }
+              & > a {
+                border-radius: 0;
+                border-top-right-radius: 5px;
+                border-bottom-right-radius: 5px;
+              }
+            }
+          }
+        }
+      }
+    }
+  #side_nav_column .mir-side-nav nav .navbar-form #searchInput {
+    width: 65%;
+  }
+}
+
+
+/* md */
+@media (min-width: $screen-desktop) {
+  #side_nav_column .mir-side-nav nav .navbar-form #searchInput {
+    width: 70%;
+  }
+  #side_nav_column .mir-side-nav nav .navbar-nav > li .dropdown-menu > li > a {
+    padding: 3px 20px 3px 30px;
+  }
+}
+
+
+/* lg */
+@media (min-width: $screen-lg-desktop) {
+  #side_nav_column .mir-side-nav nav .navbar-form #searchInput {
+    width: 80%;
+  }
+}

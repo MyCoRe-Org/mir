@@ -1,0 +1,34 @@
+// default layout
+@import "../common/base";
+@import "../common/datatable";
+@import "../common/fileupload";
+@import "../common/forms";
+@import "../common/navbar";
+@import "../common/pager";
+@import "../common/pagination";
+@import "../common/mir_basket";
+@import "../common/mir_browse";
+@import "../common/mir_main_nav";
+@import "../common/mir_results";
+@import "../common/mir_metadata";
+@import "../common/mir_top_nav";
+@import "../common/mir_details";
+@import "../common/mir_viewer";
+@import "../common/helper";
+@import "../common/panels";
+@import "../common/print";
+@import "../common/user-login";
+@import "../common/responsive";
+
+// cosmol overrides
+
+@import "lib/base";
+@import "lib/helper";
+@import "lib/header";
+@import "lib/footer";
+@import "lib/top-nav";
+@import "lib/side-nav";
+@import "lib/forms";
+@import "lib/basket";
+@import "lib/pagination";
+@import "lib/panels";

@@ -1,0 +1,120 @@
+//
+// Top Menu
+// --------------------------------------------------
+
+// main nav
+.mir-prop-nav {
+    z-index: 2030;
+    background-color: transparent;
+    border-radius: 0;
+    border: none;
+    margin: 0;
+    padding: 0;
+    float: right;
+
+    // navigation container
+    nav
+    {
+        padding-left: 0px;                          // align to left
+        padding-right: 0px;                          // align to right
+
+        // right menu
+        ul.pull-right > li {
+          margin-left: 15px;
+        }
+    }
+
+    // Dropdown menu items and carets
+    .navbar-nav {
+        margin: 0;
+        // menu entry
+        > li > a
+        {
+            color: $gray;
+            font-size: 85%;
+            padding: 0px;
+            // caret
+            .caret {
+                border-top-color: $gray;
+            }
+            // menu entry - hover and focus
+            &:hover,
+            &:focus
+            {
+                color: $link-color;
+                background-color: transparent;
+            }
+            strong {
+              font-weight: normal;
+            }
+        }
+        // active entry
+        > li.active > a {
+            color: $link-color;
+            background-color: transparent;
+            // current menu entry - hover and focus
+            &:hover,
+            &:focus
+            {
+                color: $link-color;
+                background-color: transparent;
+            }
+            .caret {
+              border-top-color: $link-color;
+            }
+        }
+        // Remove background color from open dropdown
+        > .open > a {
+            &,
+            &:hover,
+            &:focus {
+                color: $link-color;
+                background-color: transparent;
+                .caret {
+                    border-top-color: $link-color;
+                }
+            }
+        }
+    }
+
+    // The dropdown menu (ul)
+    .dropdown-menu {
+        background-color: white;
+        border-radius: 4px !important;
+        margin-top: 4px !important;
+        // Links within the dropdown menu
+        > li > a {
+            color: #aaa;
+            // Hover/Focus state
+            &:hover,
+            &:focus {
+                color: $link-color;
+                background-color: white;
+            }
+        }
+        // Active state
+        > .active > a {
+            &,
+            &:hover,
+            &:focus {
+                color: $link-color;
+                background-color: white;
+            }
+        }
+    }
+}
+
+.mir-lang {
+  text-transform: uppercase;
+}
+
+@media (max-width: 767px) {
+  .navbar-nav .open .dropdown-menu {
+    margin-top: 0px;
+    background-color: white;
+    position:absolute;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.176);
+  }
+}
+

@@ -1,0 +1,15 @@
+//
+// Navbar
+// --------------------------------------------------
+
+.navbar-inverse .dropdown-menu > li > a {
+  &:hover,
+  &:focus {
+    text-decoration: none;
+    color: $dropdown-link-hover-color;
+    background-color: darken($brand-warning, 6.5%);
+  }
+}
+.navbar-form {
+    padding: 0px 0px;
+}

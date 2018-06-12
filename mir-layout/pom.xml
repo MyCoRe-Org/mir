@@ -56,7 +56,7 @@
             </goals>
             <phase>process-resources</phase>
             <configuration>
-              <arguments>--verbose --lessFile=${basedir}/src/main/less/build.less --targetDirectory=${template.cssdir} --assetsDirectory=${template.assetsdir}</arguments>
+              <arguments>--verbose --targetDirectory=${template.cssdir} --assetsDirectory=${template.assetsdir} --projectBase=${project.basedir}</arguments>
             </configuration>
           </execution>
         </executions>

@@ -22,7 +22,7 @@ public class MIRViewerConfigurationStrategy extends MCRViewerDefaultConfiguratio
             // Default Stylesheet
             String theme = params.getParameter("MIR.Layout.Theme", "flatmir");
             String file = params.getParameter("MIR.DefaultLayout.CSS", "flatly.min");
-            String mirBootstrapCSSURL = String.format(Locale.ROOT, "%smir-layout/css/%s/%s.css", baseURL, theme, file);
+            String mirBootstrapCSSURL = String.format(Locale.ROOT, "%srsc/sass/mir-layout/scss/%s-%s.css", baseURL, theme, file);
             mcrViewerConfiguration.addCSS(mirBootstrapCSSURL);
 
             // customLayout Stylesheet

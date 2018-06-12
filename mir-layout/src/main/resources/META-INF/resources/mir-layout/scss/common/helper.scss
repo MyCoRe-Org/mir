@@ -1,0 +1,37 @@
+/* helper classes
+ * - defines elemental properties
+ * - combine them as you like
+ */
+
+.hand { /* element acts like an link */
+    cursor:hand;
+    cursor:pointer;
+}
+.shorten {
+    white-space: nowrap;
+    overflow: hidden;
+}
+.center {
+    text-align: center;
+}
+
+.center-vertical > div {
+    float:none;
+    display:inline-block;
+    vertical-align:middle;
+    margin-right:-4px;
+}
+
+@mixin clearfix {
+    &:after {
+      content: ".";
+      clear: both;
+      display: block;
+      visibility: hidden;
+      height: 0px;
+    }
+}
+
+.line-through {
+  text-decoration:line-through;
+}
