@@ -4,7 +4,7 @@
   <parent>
     <groupId>org.mycore</groupId>
     <artifactId>mycore-parent</artifactId>
-    <version>37-SNAPSHOT</version>
+    <version>33-SNAPSHOT</version>
   </parent>
   <groupId>org.mycore.mir</groupId>
   <artifactId>mir-parent</artifactId>
@@ -45,7 +45,7 @@
     <hibernate.version>5.2.10.Final</hibernate.version>
     <java.target.version>1.8</java.target.version>
     <jetty.version>9.4.8.v20171121</jetty.version>
-    <mycore.version>2018.06.0-SNAPSHOT</mycore.version>
+    <mycore.version>2017.07-SNAPSHOT</mycore.version>
     <pmd.failOnViolation>false</pmd.failOnViolation>
     <selenium.version>3.8.1</selenium.version>
     <site.suffix />
