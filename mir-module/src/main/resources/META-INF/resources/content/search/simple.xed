@@ -4,7 +4,10 @@
   <section xml:lang="all" xmlns:xed="http://www.mycore.de/xeditor" xmlns:mir="http://www.mycore.de/mir"
       i18n="component.mods.editor.search.simple.pagetitle">
     <xed:form class="form-horizontal" role="form">
-      <xed:post-processor xsl="query-postprocessor.xsl" />
+      <xed:cleanup-rule xpath="//condition" relevant-if="(string-length(@value) &gt; 0) or value[string-length(text()) &gt; 0 ]" />
+      <xed:cleanup-rule xpath="//boolean" relevant-if="boolean|condition" />
+      <xed:cleanup-rule xpath="//condition[@selectable='true']" relevant-if="@id = ../selectCondition/@keep" />
+      <xed:cleanup-rule xpath="//*/@selectable|//selectCondition" relevant-if="false()" />
       <xed:source uri="searchInput:{$id}" />
       <xed:source uri="webapp:editor/search/template/simple.xml" />
       <xed:bind xpath="query">
@@ -29,6 +32,35 @@
             <!-- Institution -->
               <mir:template name="selectInput" xpath="condition[@field='category'][1]/@value" id="inputInst1" i18n="editor.search.mir.institute"
                 tooltip="editor.search.mir.institute.tooltip" uri="xslStyle:items2options:classification:editorComplete:-1:children:mir_institutes" />
+            <!--Fulltext -->
+              <div class="form-group">
+                <label for="inputFulltext1" class="col-md-3 control-label">
+                  <xed:output i18n="mir.dropdown.content" />
+                </label>
+                <div class="col-md-9">
+                  <div class="input-group">
+                    <xed:bind xpath="condition[@field='derCount'][@value='0'][@operator='&gt;'][@selectable='true'][@id='condFullText']" />
+                    <xed:bind xpath="condition[@field='worldReadableComplete'][@value='true'][@operator='='][@selectable='true'][@id='condOpenAccess']" />
+                    <!-- selectCondition must always be after @selectable conditions for xed:cleanup-rule to work -->
+                    <xed:bind xpath="selectCondition[@delete='true']/@keep">
+                      <select class="form-control input-md" id="inputFulltext1">
+                        <option value="">
+                          <xed:output i18n="mir.select" />
+                        </option>
+                        <option value="condFullText">
+                          <xed:output i18n="editor.search.mir.hasFiles" />
+                        </option>
+                        <option value="condOpenAccess">
+                          <xed:output i18n="editor.search.mir.openAccess" />
+                        </option>
+                      </select>
+                      <span class="input-group-addon" data-toggle="tooltip" data-html="true" title="{i18n:editor.search.fulltext.tooltip}">
+                        <i class="glyphicon glyphicon-info-sign" />
+                      </span>
+                    </xed:bind>
+                  </div>
+                </div>
+              </div>
             </div>
             <!-- submit -->
             <div class="panel-footer clearfix">

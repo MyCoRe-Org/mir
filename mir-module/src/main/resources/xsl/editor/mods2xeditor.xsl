@@ -120,19 +120,11 @@
     </mods:openAireID>
   </xsl:template>
 
-  <xsl:template match="mods:identifier[@type='urn']">
-    <xsl:choose>
-      <xsl:when test="piUtil:isManagedPI(text(), /mycoreobject/@ID)">
-        <mods:identifierManaged type="{@type}" >
-          <xsl:value-of select="text()"/>
-        </mods:identifierManaged>
-      </xsl:when>
-      <xsl:otherwise>
-        <xsl:copy>
-          <xsl:apply-templates select="@*|node()" />
-        </xsl:copy>
-      </xsl:otherwise>
-    </xsl:choose>
+  <xsl:template match="mods:identifier[piUtil:isManagedPI(text(), /mycoreobject/@ID)]">
+    <mods:identifierManaged>
+      <xsl:apply-templates select="@*" />
+      <xsl:value-of select="text()" />
+    </mods:identifierManaged>
   </xsl:template>
 
   <!-- to @categId -->

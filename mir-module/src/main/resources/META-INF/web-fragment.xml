@@ -68,6 +68,14 @@
     <url-pattern>/servlets/OAIDataProvider</url-pattern>
   </servlet-mapping>
 
+  <servlet>
+    <servlet-name>MIROrcidServlet</servlet-name>
+    <servlet-class>org.mycore.mir.orcid.MIROrcidServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>MIROrcidServlet</servlet-name>
+    <url-pattern>/servlets/MIROrcidServlet</url-pattern>
+  </servlet-mapping>
 
   <servlet>
     <servlet-name>MCRDFGServlet</servlet-name>

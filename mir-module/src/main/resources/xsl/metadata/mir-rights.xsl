@@ -20,8 +20,6 @@
   <xsl:param name="MIR.Strategy.AccessKey.ObjectTypes" />
   <xsl:variable name="derivateAccKeyEnabled" select="contains($MCR.Access.Strategy.Class, 'MIRStrategy') and contains($MIR.Strategy.AccessKey.ObjectTypes, 'derivate')" />
   <xsl:variable name="modsAccKeyEnabled" select="contains($MCR.Access.Strategy.Class, 'MIRStrategy') and contains($MIR.Strategy.AccessKey.ObjectTypes, 'mods')" />
-
-  <xsl:param name="MCR.PI.Registration.Services"  select="''" />
   
   <xsl:include href="coreFunctions.xsl"/>
   

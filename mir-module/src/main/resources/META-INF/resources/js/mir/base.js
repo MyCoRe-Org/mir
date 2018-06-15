@@ -389,56 +389,55 @@
       $(this).next().collapse('toggle');
     });
 
-    // for configuration look here: http://dotdotdot.frebsite.nl/
-    if (jQuery.fn.dotdotdot) {
-
-      $(".ellipsis-text").find("a.readmore").click(function() {
-
-        var div = $(this).closest('.ellipsis-text');
-        //$("a.readmore", div).hide();
-        div.trigger('destroy');
-        div.removeClass('ellipsis');
-        $("a.readless", div).removeClass('hidden');
-
-        $("a.readless", div).click(function(div) {
-          var div = $(this).closest('.ellipsis-text');
-          $("a.readmore", div).show();
-          div.addClass('ellipsis');
-          var readmore=$("a.readmore",div);
-          readmore.clone(true,true).insertAfter( readmore );
-          readmore.addClass('readmore-active');
-          readmore.removeClass('hidden');
-          div.dotdotdot({
-            ellipsis	: '... ',
-            after: "a.readmore-active",
-            callback: dotdotdotCallback
-          });
-          $(this).addClass('hidden');
-          return false;
-        });
-
-        return false;
-
-      });
-
+    if ($("#mir-abstract-tabs, #mir-abstract").length > 0) {
       $(".ellipsis").each(function( i ) {
-
-        if (i > 0) $(this).addClass("active");
-
-        var readmore=$("a.readmore",this);
-        readmore.clone(true,true).insertAfter( readmore );
-        readmore.addClass('readmore-active');
-        readmore.removeClass('readmore');
-        readmore.removeClass('hidden');
-        $(this).dotdotdot({
-          ellipsis	: '... ',
-          after: "a.readmore-active",
-          callback: dotdotdotCallback
-        });
-
-        if (i > 0) $(this).removeClass("active");
+          $(this).addClass("hidden-calc");
+          if($(this)[0].scrollHeight > $(this).innerHeight()) {
+              $(this).addClass("overflown");
+              $(this).css("overflow-y", "hidden");
+              $("#mir-abstract-overlay").find(".readmore").removeClass("hidden");
+          }
+          $(this).removeClass("hidden-calc");
       });
-    };
+
+      $("body").on("click", "#mir-abstract-overlay a.readmore" , function(evt) {
+          evt.preventDefault();
+          let abstract = $("#mir-abstract-tabs .tab-content .active, #mir-abstract .ellipsis");
+          $(abstract).data("oldHeight", $(abstract).height());
+          $(abstract).css("max-height",$(abstract)[0].scrollHeight);
+          $(abstract).addClass("expanded");
+          $(this).parent().find(".readless").removeClass("hidden");
+          $(this).parent().find(".readmore").addClass("hidden");
+      });
+
+      $("body").on("click", "#mir-abstract-overlay a.readless" , function(evt) {
+          evt.preventDefault();
+          let abstract = $("#mir-abstract-tabs .tab-content .active, #mir-abstract .ellipsis");
+          $(abstract).css("max-height",$(abstract).data("oldHeight"));
+          $(this).parent().find(".readmore").removeClass("hidden");
+          $(abstract).removeClass("expanded");
+          $(this).parent().find(".readless").addClass("hidden");
+      });
+
+      $("body").on("click", "#mir-abstract-tabs .nav-tabs a" , function(evt) {
+        let abstract = $($(this).attr("href"));
+        if ($(abstract).hasClass("overflown")){
+            if ($(abstract).hasClass("expanded")){
+                $("#mir-abstract-overlay .readless").removeClass("hidden");
+                $("#mir-abstract-overlay .readmore").addClass("hidden");
+            }
+            else {
+                $("#mir-abstract-overlay .readmore").removeClass("hidden");
+                $("#mir-abstract-overlay .readless").addClass("hidden");
+            }
+        }
+        else {
+            $("#mir-abstract-overlay .readmore").addClass("hidden");
+            $("#mir-abstract-overlay .readless").addClass("hidden");
+        }
+      });
+
+    }
 
     $("#mir_relatedItem > li > span").click(function(){
       if( $(this).parent().children("ul").is(":visible") ){

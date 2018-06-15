@@ -12,15 +12,8 @@
     <xed:source uri="xslStyle:mycoreobject-editor,editor/mods2xeditor:mcrobject:{$id}" />
     <xed:source uri="xslStyle:mycoreobject-copyof,editor/mods2xeditor:mcrobject:{$copyofid}" />
     <xed:source uri="xslStyle:mods-addPreceding,mycoreobject-copyof,editor/mods2xeditor:mcrobject:{$oldVersion}" />
+    <xed:source uri="xslStyle:as{$relatedItemType},editor/mods2xeditor:mcrobject:{$relatedItemId}" />
 
-    <xed:choose>
-      <xed:when test="$relatedItemType='series'"> <!-- $seriesId -->
-        <xed:source uri="xslStyle:asSeries,editor/mods2xeditor:mcrobject:{$relatedItemId}" />
-      </xed:when>
-      <xed:otherwise> <!-- $hostId -->
-        <xed:source uri="xslStyle:asHost,editor/mods2xeditor:mcrobject:{$relatedItemId}" />
-      </xed:otherwise>
-    </xed:choose>
     <xed:cancel
       url="../servlets/MCRLockServlet?action=unlock&amp;id={$id}&amp;url=/receive/{$id}?XSL.Status.Message=mir.editstatus.canceled&amp;XSL.Status.Style=danger" />
     <xed:cancel url="{$cancelUrl}?XSL.Status.Message=mir.editstatus.canceled&amp;XSL.Status.Style=danger" />
@@ -1351,6 +1344,18 @@
       <input type="hidden" value="typeOfResource:moving_image" />
     </xed:bind>
   </xed:template>
+  
+  <xed:template id="type.of.resource.still_image">
+    <xed:bind xpath="mods:typeOfResource/@mcr:categId">
+      <input type="hidden" value="typeOfResource:still_image" />
+    </xed:bind>
+  </xed:template>
+  
+  <xed:template id="type.of.resource.sound_recording">
+    <xed:bind xpath="mods:typeOfResource/@mcr:categId">
+      <input type="hidden" value="typeOfResource:sound_recording" />
+    </xed:bind>
+  </xed:template>
 
   <xed:template id="rights">
     <xed:bind xpath="mods:accessCondition[@type='use and reproduction']" initially="">
@@ -1523,11 +1528,11 @@
   </xed:template>
 
   <xed:template id="geographic">
-    <mir:geographic.repeated path="mods:subject/mods:geographic" min="1" max="10" label="mir.geographic" help-text="{i18n:mir.help.cartographics.place}" />
+    <mir:geographic.repeated path="mods:subject[not(mods:topic)]/mods:geographic" min="1" max="10" label="mir.geographic" help-text="{i18n:mir.help.cartographics.place}" />
   </xed:template>
 
   <xed:template id="geographic.complex">
-    <mir:geographic.repeated path="mods:subject/mods:geographic" min="1" max="10" label="mir.geographic" help-text="{i18n:mir.help.cartographics.place}" extended="true" />
+    <mir:geographic.repeated path="mods:subject[not(mods:topic)]/mods:geographic" min="1" max="10" label="mir.geographic" help-text="{i18n:mir.help.cartographics.place}" extended="true" />
   </xed:template>
 
   <xed:template id="geographic.input">
@@ -1864,11 +1869,11 @@
   <xed:template id="related.item.search.of.all.items">
     <fieldset>
       <legend class="mir-fieldset-legend">Related Item</legend><!-- TODO: i18n -->
-      <xed:repeat xpath="mods:relatedItem" min="1" max="10">
+      <xed:repeat xpath="mods:relatedItem[not(@type='isReferencedBy')]" min="1" max="10">
         <div class="mir-fieldset-content mir-related-item-search">
           <div class="form-group">
             <div class="col-md-3">
-              <xed:bind xpath="@type" initially="{$relatedItemType}">
+              <xed:bind xpath="@type">
                 <select class="form-control">
                   <option value="host">
                     <xed:output i18n="mir.relatedItem.host" />
@@ -1895,7 +1900,7 @@
               <div class="controls form-inline">
                 <input type="button" class="form-control mir-relatedItem-select" value="{i18n:mir.editing.related.select}" />
                 <span />
-                <xed:bind xpath="@xlink:href" initially="{$relatedItemId}">
+                <xed:bind xpath="@xlink:href">
                   <input type="hidden" />
                 </xed:bind>
               </div>

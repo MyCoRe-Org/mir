@@ -47,7 +47,7 @@
       <nav class="mir-main-nav-entries">
         <form action="{$WebApplicationBaseURL}servlets/solr/find" class="navbar-form form-inline" role="search">
           <div class="form-group">
-            <input name="condQuery" placeholder="{i18n:translate('mir.cosmol.navsearch.placeholder')}" title="{i18n:translate('mir.cosmol.navsearch.title')}" class="form-control search-query" id="searchInput" type="text" />
+            <input name="condQuery" placeholder="{i18n:translate('mir.navsearch.placeholder')}" title="{i18n:translate('mir.cosmol.navsearch.title')}" class="form-control search-query" id="searchInput" type="text" />
             <xsl:choose>
                 <xsl:when test="mcrxsl:isCurrentUserInRole('admin') or mcrxsl:isCurrentUserInRole('editor')">
                   <input name="owner" type="hidden" value="createdby:*" />

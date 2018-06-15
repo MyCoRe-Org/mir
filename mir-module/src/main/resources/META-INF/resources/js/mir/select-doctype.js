@@ -61,17 +61,18 @@ function createGenreOptions() {
 }
 
 function toggleMoreOptions( duration ) {
-	if ( $('#more_options_box').is(':visible') ) {
-		$('#more_options_box').fadeOut( duration );
-		$('#more_options_label').html('weitere Optionen einblenden');
-		$('#more_options_button').removeClass('glyphicon-chevron-down').addClass('glyphicon-chevron-up');
-		localStorage.setItem("moreOptions", "closed");
-	} else {
-		$('#more_options_box').fadeIn( duration );
-		$('#more_options_label').html('weitere Optionen ausblenden');
-		$('#more_options_button').removeClass('glyphicon-chevron-up').addClass('glyphicon-chevron-down');
-		localStorage.setItem("moreOptions", "opened");
-	}
+    if ( $('#more_options_box').is(':visible') ) {
+        $('#more_options_box').fadeOut( duration );
+        $('#more_options_label, #more_options_label_hide').toggleClass("hidden");
+        $('#more_options_button').removeClass('fa fa-chevron-down').addClass('fa fa-chevron-up');
+        localStorage.setItem("moreOptions", "closed");
+    } else {
+        $('#more_options_box').fadeIn( duration );
+        $('#more_options_label, #more_options_label_hide').toggleClass("hidden");
+
+        $('#more_options_button').removeClass('fa fa-chevron-up').addClass('fa fa-chevron-down');
+        localStorage.setItem("moreOptions", "opened");
+    }
 }
   
 $(document).ready( function() {

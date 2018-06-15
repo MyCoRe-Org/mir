@@ -12,7 +12,6 @@
       <head>
         <xsl:apply-templates select="citation_meta" mode="copyContent" />
         <link href="{$WebApplicationBaseURL}assets/jquery/plugins/shariff/shariff.min.css" rel="stylesheet" />
-        <script type="text/javascript" src="{$WebApplicationBaseURL}assets/jquery/plugins/dotdotdot/jquery.dotdotdot.min.js" />
       </head>
 
       <xsl:if test="div[@id='mir-breadcrumb']">
@@ -116,7 +115,8 @@
           <xsl:if test="div[@id='mir-citation']">
             <div class="panel panel-default">
               <div class="panel-heading">
-                <h3 class="panel-title">Zitieren</h3>
+                <h3 class="panel-title">
+                  <xsl:value-of select="i18n:translate('metaData.quote')" /></h3>
               </div>
               <div class="panel-body">
                 <!-- Start: CITATION -->
@@ -142,7 +142,7 @@
           <xsl:if test="div[@id='mir-access-rights']">
             <div id="mir_access_rights_panel" class="panel panel-default">
               <div class="panel-heading">
-                <h3 class="panel-title">Rechte</h3>
+                <h3 class="panel-title"><xsl:value-of select="i18n:translate('metaData.rights')" /></h3>
               </div>
               <div class="panel-body">
                 <!-- Start: CITATION -->
@@ -155,7 +155,7 @@
           <xsl:if test="div[@id='mir-export']">
             <div id="mir_export_panel" class="panel panel-default">
               <div class="panel-heading">
-                <h3 class="panel-title">Export</h3>
+                <h3 class="panel-title"><xsl:value-of select="i18n:translate('metaData.export')" /></h3>
               </div>
               <div class="panel-body">
                   <!-- Start: EXPORT -->

@@ -36,12 +36,6 @@ $(document).ready(function() {
   function checkHost() {
     var hostSelect = $("select[name*='/@type'] option[value='host']:selected").closest(".mir-related-item-search");
     $(".mir-related-item-search").each(function( index ) {
-      if($(this).find("input[name*='mods:relatedItem/@xlink:href']").val() != "" && $(this).find("select[name*='mods:relatedItem/@type']").val() == "host") {
-        $(this).find(".mir-relatedItem-select").prop('disabled', true);
-      }
-      else {
-        $(this).find(".mir-relatedItem-select").prop('disabled', false);
-      }
       if (hostSelect.length > 0 && $(this)[0] === hostSelect[0]) {
         $(this).find("select[name*='/@type'] option[value='host']").prop('disabled', false);
       }
@@ -139,7 +133,7 @@ $(document).ready(function() {
         });
       });
       updatePager(data);
-      loadPublikation(updateType,"find", $(data).find("str[name='q']").text(), "0");
+      updateType(data);
     }
 
     function rightContent(data) {
@@ -151,7 +145,7 @@ $(document).ready(function() {
 
     function updateType(data) {
       $(".modal-footer select > option[value != '']").remove();
-      $(data).find("lst[name='facet_counts'] lst[name='mods.type'] > int").each(function() {
+      $(data).find("lst[name='facet_counts'] lst[name='mods.genre'] > int").each(function() {
         var type_val = encodeURIComponent('+mods.type:"' + $(this).attr('name') + '"');
         var text = getGenre($(this).attr('name'));
         $(".modal-footer select").append("<option value='" + type_val + "'>" + text + " (" + $(this).text() + ")</option>");
@@ -203,6 +197,7 @@ $(document).ready(function() {
       $(button).next("span").text($(".list-group-item.active").attr("value"));
       var titleInput = $(button).parents(".mir-related-item-search").find("input[name*='mods:title']");
       $(titleInput).val($(".list-group-item.active").attr("data-title"));
+      $(titleInput).attr("disabled", "true");
       $("#modalFrame").modal("hide");
     });
 
@@ -276,7 +271,7 @@ $(document).ready(function() {
       var dataType = "";
       switch (type) {
         case "find":
-              url = "servlets/solr/find?condQuery=" + qry + "&fq1=" + sortType + "&start=" + start + "&rows=10&owner=createdby:*&XSL.Style=xml";
+              url = "servlets/solr/find?condQuery=*" + qry + "*&fq=" + sortType + "&start=" + start + "&rows=10&owner=createdby:*&XSL.Style=xml";
               dataType = "xml";
               break;
         case "select":
