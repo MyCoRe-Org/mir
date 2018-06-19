@@ -4,7 +4,8 @@
       {{#is (concat '/' ../mainDoc) path}}
         <tr class="file_set active_file">
       {{else}}
-        <tr class="file_set">
+             <tr class="file_set" {{#if ../permWrite}} {{#is type "directory"}}
+                 data-upload-object="{{../mycorederivate}}" data-upload-target="{{path}}" {{/is}}{{/if}} >
       {{/is}}
           <td class="file_preview col-xs-1 text-center text-nowrap">
               {{#is type "file"}}
@@ -101,6 +102,12 @@
         </tr>
     {{/each}}
   </table>
+  {{#if permWrite}}
+      <div class="well mir-file-upload-box" data-upload-object="{{mycorederivate}}" data-upload-target="/">
+          <i class="fa fa-upload"></i>
+          {{{getI18n "mir.upload.drop.derivate"}}}
+      </div>
+  {{/if}}
 
   {{#if pagination}}
     <div class="file_box_pagination row">

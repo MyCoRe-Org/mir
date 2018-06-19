@@ -70,7 +70,10 @@
             <xsl:apply-templates select="div[@id='mir-abstract-plus']" mode="copyContent" />
           <!-- End: ABSTRACT -->
           </div>
-
+          <!-- fileupload -->
+          <xsl:if test="div[contains(@id,'mir-file-upload')]">
+            <xsl:apply-templates select="div[@id='mir-file-upload']" mode="copyContent" />
+          </xsl:if>
           <!-- player -->
           <xsl:if test="div[@id = 'mir-player']">
             <xsl:apply-templates select="div[@id='mir-player']" mode="copyContent" />

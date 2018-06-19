@@ -15,6 +15,7 @@ import javax.imageio.ImageIO;
 import org.apache.logging.log4j.LogManager;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.mycore.common.selenium.util.MCRBy;
 import org.mycore.common.selenium.util.MCRExpectedConditions;
@@ -56,6 +57,7 @@ public class MIRUploadITCase extends MIRITBase {
     }
 
     @Test
+    @Ignore
     public final void testUpload() throws IOException, InterruptedException {
         driver.waitUntilPageIsLoaded("MODS-Dokument erstellen");
         editorController.setGenres(Stream.of(MIRGenre.article, MIRGenre.collection).collect(Collectors.toList()));
