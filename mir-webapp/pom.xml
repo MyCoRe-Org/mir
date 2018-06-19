@@ -17,6 +17,7 @@
     <cargo.start.jvmargs>${cargo.jvmargs}</cargo.start.jvmargs>
     <solr.data.dir>${mir.solr.data.dir}</solr.data.dir>
     <solr.home>${mir.solr.home}</solr.home>
+    <solr.coreName>mir</solr.coreName>
   </properties>
   <build>
     <finalName>mir-${project.version}</finalName>
@@ -89,12 +90,15 @@
       <plugin>
         <groupId>org.mycore.plugins</groupId>
         <artifactId>solr-runner-maven-plugin</artifactId>
-        <version>1.0</version>
+        <version>1.1-SNAPSHOT</version>
         <configuration>
           <solrHomeTemplate>src/main/solr</solrHomeTemplate>
           <solrHome>${mir.solr.home}</solrHome>
           <solrMirrorURL>${solr-runner.solrMirrorURL}</solrMirrorURL>
           <solrVersionString>${solr-runner.solrVersionString}</solrVersionString>
+          <gitRepository>https://github.com/MyCoRe-Org/mycore_solr_configset_main.git</gitRepository>
+          <configSetName>mycore_solr_configset_main</configSetName>
+          <coreName>${solr.coreName}</coreName>
         </configuration>
       </plugin>
       <plugin>

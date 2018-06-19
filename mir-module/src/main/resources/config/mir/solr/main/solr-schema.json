@@ -1,0 +1,92 @@
+[
+  {
+    "add-field-type": {
+      "name": "mir.text_de",
+      "class": "solr.TextField",
+      "positionIncrementGap": "100",
+      "analyzer": {
+        "tokenizer": {
+          "class": "solr.StandardTokenizerFactory"
+        },
+        "filters": [
+          {
+            "class": "solr.LowerCaseFilterFactory"
+          },
+          {
+            "class": "solr.StopFilterFactory",
+            "format": "snowball",
+            "words": "lang/stopwords_de.txt",
+            "ignoreCase": "true"
+          },
+          {
+            "class": "solr.GermanNormalizationFilterFactory"
+          },
+          {
+            "class": "solr.GermanLightStemFilterFactory"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "add-field": {
+      "name": "isbn",
+      "type": "string",
+      "multiValued": true
+    }
+  },
+  {
+    "add-field": {
+      "name": "mods.pindexname",
+      "type": "string",
+      "multiValued": true
+    }
+  },
+  {
+    "add-field": {
+      "name": "mods.pindexname.published",
+      "type": "string",
+      "multiValued": true
+    }
+  },
+  {
+    "add-field": {
+      "name": "mods.name.conference",
+      "type": "string",
+      "multiValued": true
+    }
+  },
+  {
+    "add-field": {
+      "name": "mods.abstract.result",
+      "type": "mir.text_de",
+      "indexed": false
+    }
+  },
+  {
+    "add-dynamic-field": {
+      "name": "mods.nameByRole.*",
+      "type": "string",
+      "multiValued": true
+    }
+  },
+  {
+    "add-dynamic-field": {
+      "name": "mods.relatedItem*",
+      "type": "string",
+      "multiValued": true
+    }
+  },
+  {
+    "add-dynamic-field": {
+      "name": "mods.part.order*",
+      "type": "int"
+    }
+  },
+  {
+    "add-dynamic-field": {
+      "name": "mods.part.*",
+      "type": "string"
+    }
+  }
+]

@@ -1,0 +1,198 @@
+[
+  {
+    "add-requestHandler": {
+      "name": "/find",
+      "class": "solr.SearchHandler",
+      "defaults": {
+        "echoParams": "explicit",
+        "rows": 20,
+        "mm": "100%",
+        "fl": "*,score",
+        "wt": "xml",
+        "bq": "created:[NOW/DAY-6MONTH TO NOW/DAY]",
+        "condQuery": "*",
+        "sort": "score desc, mods.dateIssued desc, mods.dateIssued.host desc"
+      },
+      "appends": {
+        "fq": [
+          "objectType:mods",
+          "state:published OR {!v=$owner}"
+        ],
+        "qf1": "id^100 mods.gnd^100 mods.identifier^100 isbn^100 mods.title^80 mods.author^40 mods.publisher^30 mods.name^30 mods.abstract^10 mods.place^5 allMeta^0.002",
+        "facet": "true",
+        "facet.field": [
+          "mods.genre",
+          "worldReadableComplete"
+        ],
+        "facet.mincount": "1"
+      },
+      "invariants": {
+        "q": "_query_:\"{!edismax qf=$qf1 v=$condQuery}\" OR _query_:\"{!join from=returnId to=id}{!edismax qf=content v=$condQuery}\""
+      }
+    }
+  },
+  {
+    "add-requestHandler": {
+      "name": "/mods_name",
+      "class": "solr.StandardRequestHandler",
+      "defaults": {
+        "defType": "edismax",
+        "echoParams": "explicit",
+        "rows": "20",
+        "fl": "*,score",
+        "mask": "modules/mods/search-simplemods.xml",
+        "wt": "xml",
+        "qs": "5",
+        "start": "0",
+        "q.alt": "*:* -objectType:data_file -objectType:derivate",
+        "sort": "mods.dateIssued desc, mods.dateIssued.host desc, score desc",
+        "tie": "0.1",
+        "hl": "true",
+        "fq": "state:published"
+      },
+      "appends": {
+        "qf": "mods.name",
+        "pf": "mods.name",
+        "fq": "objectType:\"mods\""
+      }
+    }
+  },
+  {
+    "add-requestHandler": {
+      "name": "/mods_nameIdentifier",
+      "class": "solr.StandardRequestHandler",
+      "defaults": {
+        "defType": "edismax",
+        "echoParams": "explicit",
+        "rows": "20",
+        "fl": "*,score",
+        "qf": "id^100 mods.gnd^100 mods.identifier^100 isbn^100 mods.name^100 mods.mods.nameIdentifier^100 mods.title^80 mods.author^40 mods.publisher^30 mods.abstract^10 mods.place^5 allMeta^2",
+        "bq": "created:[NOW/DAY-6MONTH TO NOW/DAY]",
+        "mask": "modules/mods/search-simplemods.xml",
+        "wt": "xml",
+        "qs": "5",
+        "start": "0",
+        "q.alt": "*:* -objectType:data_file -objectType:derivate",
+        "sort": "mods.dateIssued desc, mods.dateIssued.host desc, score desc",
+        "tie": "0.1",
+        "hl": "true",
+        "owner": "createdby:guest"
+      },
+      "appends": {
+        "qf": "mods.nameIdentifier",
+        "pf": "mods.nameIdentifier",
+        "fq": "objectType:\"mods\" AND (state:published OR {!v=$owner})"
+      }
+    }
+  },
+  {
+    "add-requestHandler": {
+      "name": "/parent",
+      "class": "solr.StandardRequestHandler",
+      "defaults": {
+        "defType": "edismax",
+        "echoParams": "explicit",
+        "rows": "20",
+        "fl": "*,score",
+        "mask": "modules/mods/search-simplemods.xml",
+        "wt": "xml",
+        "qs": "5",
+        "start": "0",
+        "q.alt": "*:* -objectType:data_file -objectType:derivate",
+        "sort": "mods.dateIssued desc, mods.dateIssued.host desc",
+        "tie": "0.1",
+        "fq": "state:published"
+      },
+      "appends": {
+        "qf": "parent",
+        "pf": "parent",
+        "fq": "objectType:\"mods\""
+      }
+    }
+  },
+  {
+    "add-requestHandler": {
+      "name": "/oai_search",
+      "class": "solr.StandardRequestHandler",
+      "invariants": {
+        "sort": "id desc"
+      },
+      "defaults": {
+        "echoParams": "explicit",
+        "rows": 20,
+        "df": "allMeta",
+        "fl": "*,score",
+        "q.alt": "*:* -objectType:data_file -objectType:derivate",
+        "tie": "0.1",
+        "wt": "xml"
+      },
+      "appends": {
+        "fq": [
+          "objectType:\"mods\"",
+          "state:published",
+          "NOT category.top:\"mir_genres\\:journal\"",
+          "NOT category.top:\"mir_genres\\:series\""
+        ]
+      }
+    }
+  },
+  {
+    "add-requestHandler": {
+      "name": "/personindexp",
+      "class": "solr.StandardRequestHandler",
+      "defaults": {
+        "echoParams": "explicit",
+        "wt": "xml"
+      },
+      "invariants": {
+        "terms": "true",
+        "terms.fl": "mods.pindexname.published",
+        "terms.sort": "index",
+        "terms.regex.flag": "case_insensitive",
+        "terms.limit": "-1"
+      },
+      "components": [
+        "terms"
+      ]
+    }
+  },
+  {
+    "add-requestHandler": {
+      "name": "/personindex",
+      "class": "solr.StandardRequestHandler",
+      "defaults": {
+        "echoParams": "explicit",
+        "wt": "xml"
+      },
+      "invariants": {
+        "terms": "true",
+        "terms.fl": "mods.pindexname",
+        "terms.sort": "index",
+        "terms.regex.flag": "case_insensitive",
+        "terms.limit": "-1"
+      },
+      "components": [
+        "terms"
+      ]
+    }
+  },
+  {
+    "add-requestHandler": {
+      "name": "/select",
+      "class": "solr.SearchHandler",
+      "defaults": {
+        "echoParams": "explicit",
+        "rows": 20,
+        "df": "allMeta",
+        "fl": "*,score",
+        "wt": "xml",
+        "sort": "score desc, mods.dateIssued desc, mods.dateIssued.host desc"
+      },
+      "appends": {
+        "facet": "true",
+        "facet.field": "mods.genre",
+        "facet.mincount": "1"
+      }
+    }
+  }
+]
