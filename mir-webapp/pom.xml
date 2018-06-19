@@ -4,7 +4,7 @@
   <parent>
     <groupId>org.mycore.mir</groupId>
     <artifactId>mir-parent</artifactId>
-    <version>2017.07-SNAPSHOT</version>
+    <version>2018.05</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
   <artifactId>mir-webapp</artifactId>
@@ -89,7 +89,7 @@
       <plugin>
         <groupId>org.mycore.plugins</groupId>
         <artifactId>solr-runner-maven-plugin</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <version>1.0</version>
         <configuration>
           <solrHomeTemplate>src/main/solr</solrHomeTemplate>
           <solrHome>${mir.solr.home}</solrHome>
