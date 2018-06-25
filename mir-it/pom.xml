@@ -170,6 +170,34 @@
         </executions>
       </plugin>
       <plugin>
+        <groupId>org.mycore.plugins</groupId>
+        <artifactId>solr-runner-maven-plugin</artifactId>
+        <configuration>
+          <solrHome>${solr.home}</solrHome>
+          <solrMirrorURL>${solr-runner.solrMirrorURL}</solrMirrorURL>
+          <solrVersionString>${solr-runner.solrVersionString}</solrVersionString>
+          <solrPort>${solr.port}</solrPort>
+          <configSetName>mycore_solr_configset_main</configSetName>
+          <gitRepository>https://github.com/MyCoRe-Org/mycore_solr_configset_main.git</gitRepository>
+        </configuration>
+        <executions>
+          <execution>
+            <id>start-solr</id>
+            <goals>
+              <goal>installConfigSet</goal>
+              <goal>start</goal>
+            </goals>
+            <phase>pre-integration-test</phase>
+          </execution>
+          <execution>
+            <goals>
+              <goal>stop</goal>
+            </goals>
+            <phase>post-integration-test</phase>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>exec-maven-plugin</artifactId>
         <configuration>
@@ -187,30 +215,6 @@
             <configuration>
               <workingDirectory>${project.build.directory}/dependency/mir-cli-${project.version}</workingDirectory>
               <executable>bin${file.separator}setup.${script.suffix}</executable>
-            </configuration>
-          </execution>
-          <execution>
-            <id>setup-solr-core-main</id>
-            <goals>
-              <goal>exec</goal>
-            </goals>
-            <phase>integration-test</phase>
-            <configuration>
-              <workingDirectory>${project.build.directory}/dependency/mir-cli-${project.version}</workingDirectory>
-              <executable>bin${file.separator}mir.${script.suffix}</executable>
-              <arguments>reload solr configuration for type main</arguments>
-            </configuration>
-          </execution>
-          <execution>
-            <id>setup-solr-core-classification</id>
-            <goals>
-              <goal>exec</goal>
-            </goals>
-            <phase>integration-test</phase>
-            <configuration>
-              <workingDirectory>${project.build.directory}/dependency/mir-cli-${project.version}</workingDirectory>
-              <executable>bin${file.separator}mir.${script.suffix}</executable>
-              <arguments>reload solr configuration for type classification</arguments>
             </configuration>
           </execution>
         </executions>
@@ -249,56 +253,6 @@
               <goal>stop</goal>
             </goals>
             <phase>post-integration-test</phase>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.mycore.plugins</groupId>
-        <artifactId>solr-runner-maven-plugin</artifactId>
-        <configuration>
-          <solrHomeTemplate>../mir-webapp/src/main/solr</solrHomeTemplate>
-          <solrHome>${solr.home}</solrHome>
-          <solrMirrorURL>${solr-runner.solrMirrorURL}</solrMirrorURL>
-          <solrVersionString>${solr-runner.solrVersionString}</solrVersionString>
-          <solrPort>${solr.port}</solrPort>
-        </configuration>
-        <executions>
-          <execution>
-            <id>start-solr</id>
-            <goals>
-              <goal>start</goal>
-            </goals>
-            <phase>pre-integration-test</phase>
-          </execution>
-          <execution>
-            <goals>
-              <goal>stop</goal>
-            </goals>
-            <phase>post-integration-test</phase>
-          </execution>
-          <execution>
-            <id>install-core-main</id>
-            <goals>
-              <goal>installCoreTemplate</goal>
-            </goals>
-            <configuration>
-              <gitRepository>https://github.com/MyCoRe-Org/mycore_solr_configset_main.git</gitRepository>
-              <configSetName>mycore_solr_configset_main</configSetName>
-              <coreName>mir</coreName>
-            </configuration>
-            <phase>pre-integration-test</phase>
-          </execution>
-          <execution>
-            <id>install-core-classification</id>
-            <goals>
-              <goal>installCoreTemplate</goal>
-            </goals>
-            <configuration>
-              <gitRepository>https://github.com/MyCoRe-Org/mycore_solr_configset_main.git</gitRepository>
-              <configSetName>mycore_solr_configset_main</configSetName>
-              <coreName>classification</coreName>
-            </configuration>
-            <phase>pre-integration-test</phase>
           </execution>
         </executions>
       </plugin>

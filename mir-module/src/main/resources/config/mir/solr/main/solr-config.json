@@ -177,7 +177,7 @@
     }
   },
   {
-    "add-requestHandler": {
+    "update-requestHandler": {
       "name": "/select",
       "class": "solr.SearchHandler",
       "defaults": {

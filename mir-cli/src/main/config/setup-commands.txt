@@ -1,3 +1,9 @@
+create solr core with name mir using configset mycore_solr_configset_main
+create solr core with name classification using configset mycore_solr_configset_main
+reload solr configuration main in core main
+reload solr configuration classification in core classification
+reload solr configuration for type
+reload solr configuration for type classification
 load all classifications from directory ${app.home}/config/classifications
 load classification from url http://mycore.de/classifications/XMetaDissPlusThesisLevel.xml
 load classification from url http://mycore.de/classifications/diniPublType.xml

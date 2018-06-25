@@ -98,7 +98,6 @@
           <solrVersionString>${solr-runner.solrVersionString}</solrVersionString>
           <gitRepository>https://github.com/MyCoRe-Org/mycore_solr_configset_main.git</gitRepository>
           <configSetName>mycore_solr_configset_main</configSetName>
-          <coreName>${solr.coreName}</coreName>
         </configuration>
       </plugin>
       <plugin>
