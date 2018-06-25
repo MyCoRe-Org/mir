@@ -57,9 +57,27 @@
               <xsl:value-of select="'active'" />
             </xsl:attribute>
           </xsl:if>
+          <xsl:if test="item">
+            <xsl:attribute name="class">
+              <xsl:value-of select="'dropdown-submenu'" />
+            </xsl:attribute>
+          </xsl:if>
           <a href="{$url}">
+            <xsl:if test="item">
+              <xsl:attribute name="class">
+                <xsl:value-of select="'submenu'" />
+              </xsl:attribute>
+            </xsl:if>
             <xsl:apply-templates select="." mode="linkText" />
+            <xsl:if test="item">
+              <span class="caret"></span>
+            </xsl:if>
           </a>
+          <xsl:if test="item">
+            <ul class="dropdown-menu" role="menu">
+              <xsl:apply-templates select="item" />
+            </ul>
+          </xsl:if>
         </li>
       </xsl:when>
       <xsl:otherwise>

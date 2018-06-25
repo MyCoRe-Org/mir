@@ -1,6 +1,12 @@
 (function ($) {
     $(document).ready(function () {
 
+        $('.dropdown-submenu a.submenu').on("click", function(e){
+            $(this).next('ul').toggle();
+            e.stopPropagation();
+            e.preventDefault();
+          });
+
         $(".mir_metadata a.ppn").each(function () {
             if ($(this).attr('href').indexOf(":ppn:") > -1) {
                 resolvePPN($(this));
