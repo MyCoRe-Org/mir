@@ -63,9 +63,17 @@
 
         <nav class="collapse navbar-collapse mir-main-nav-entries">
           <ul class="nav navbar-nav pull-left">
-            <xsl:apply-templates select="$loaded_navigation_xml/menu[@id='search']" />
-            <xsl:apply-templates select="$loaded_navigation_xml/menu[@id='browse']" />
-            <xsl:apply-templates select="$loaded_navigation_xml/menu[@id='publish']" />
+            <xsl:for-each select="$loaded_navigation_xml/menu">
+              <xsl:choose>
+                <xsl:when test="@id='main'"/> <!-- Ignore some menus, they are shown elsewhere in the layout -->
+                <xsl:when test="@id='brand'"/>
+                <xsl:when test="@id='below'"/>
+                <xsl:when test="@id='user'"/>
+                <xsl:otherwise>
+                  <xsl:apply-templates select="."/>
+                </xsl:otherwise>
+              </xsl:choose>
+            </xsl:for-each>
             <xsl:call-template name="mir.basketMenu" />
           </ul>
         </nav>
