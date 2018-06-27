@@ -1,6 +1,6 @@
 package org.mycore.mir.sherpa;
 
-import static org.mycore.solr.MCRSolrConstants.CONFIG_PREFIX;
+import static org.mycore.solr.MCRSolrConstants.SOLR_CONFIG_PREFIX;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -43,7 +43,7 @@ public class MIRSherpaServlet extends MCRServlet {
 
     private HttpHost sherpaHost;
 
-    private int MAX_CONNECTIONS = MCRConfiguration.instance().getInt(CONFIG_PREFIX + "SelectProxy.MaxConnections");
+    private int MAX_CONNECTIONS = MCRConfiguration.instance().getInt(SOLR_CONFIG_PREFIX + "SelectProxy.MaxConnections");
 
     private PoolingHttpClientConnectionManager httpClientConnectionManager;
 
