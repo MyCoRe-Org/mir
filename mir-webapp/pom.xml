@@ -96,8 +96,6 @@
           <solrHome>${mir.solr.home}</solrHome>
           <solrMirrorURL>${solr-runner.solrMirrorURL}</solrMirrorURL>
           <solrVersionString>${solr-runner.solrVersionString}</solrVersionString>
-          <gitRepository>https://github.com/MyCoRe-Org/mycore_solr_configset_main.git</gitRepository>
-          <configSetName>mycore_solr_configset_main</configSetName>
         </configuration>
       </plugin>
       <plugin>

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.mycore.mir</groupId>
@@ -18,8 +17,7 @@
     <cargo.jvmargs>-DMCR.Home=${MCR.Home.Integration}
       -DMCR.AppName=${MCR.AppName}
       -Dsolr.solr.home=${solr.home}
-      -Djava.awt.headless=true
-    </cargo.jvmargs>
+      -Djava.awt.headless=true</cargo.jvmargs>
     <cargo.rmi.port>9100</cargo.rmi.port>
     <cargo.servlet.port>9107</cargo.servlet.port>
     <solr.home>${MCR.Home.Integration}/mir/solr-home</solr.home>
@@ -46,7 +44,7 @@
                     </goals>
                   </pluginExecutionFilter>
                   <action>
-                    <ignore/>
+                    <ignore />
                   </action>
                 </pluginExecution>
               </pluginExecutions>
@@ -174,17 +172,16 @@
         <artifactId>solr-runner-maven-plugin</artifactId>
         <configuration>
           <solrHome>${solr.home}</solrHome>
+          <solrHomeTemplate>../mir-webapp/src/main/solr</solrHomeTemplate>
           <solrMirrorURL>${solr-runner.solrMirrorURL}</solrMirrorURL>
           <solrVersionString>${solr-runner.solrVersionString}</solrVersionString>
           <solrPort>${solr.port}</solrPort>
-          <configSetName>mycore_solr_configset_main</configSetName>
-          <gitRepository>https://github.com/MyCoRe-Org/mycore_solr_configset_main.git</gitRepository>
         </configuration>
         <executions>
           <execution>
             <id>start-solr</id>
             <goals>
-              <goal>installConfigSet</goal>
+              <goal>copyHome</goal>
               <goal>start</goal>
             </goals>
             <phase>pre-integration-test</phase>
