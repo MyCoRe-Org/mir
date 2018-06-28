@@ -444,6 +444,12 @@
         <scope>runtime</scope>
       </dependency>
       <dependency>
+        <groupId>net.sf.saxon</groupId>
+        <artifactId>Saxon-HE</artifactId>
+        <version>9.8.0-11</version>
+        <scope>runtime</scope>
+      </dependency>
+      <dependency>
         <groupId>org.hibernate</groupId>
         <artifactId>hibernate-hikaricp</artifactId>
         <version>${hibernate.version}</version>
