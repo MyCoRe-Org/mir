@@ -3,33 +3,33 @@
     "author": "René Adler",
     "homepage": "${project.url}",
     "repository": {
-      "type": "svn",
-      "url": "${project.scm.url}"
+        "type": "svn",
+        "url": "${project.scm.url}"
     },
     "license": "GPL-3.0",
     "description": "${project.description}",
     "engines": {
-      "node": ">= 0.12.0"
+        "node": ">= 0.12.0"
     },
     "engineStrict": true,
     "devDependencies": {
-        "grunt": "^1.0.0",
-        "grunt-cli": "^1.2.0",
-        "grunt-npmcopy": "^0.1.0",
         "bootstrap": "3.3.7",
         "bootstrap-3-typeahead": "4.0.2",
+        "bootstrap-datepicker": "1.7.1",
         "font-awesome": "4.7.0",
-        "myclabs.jquery.confirm": "2.7.0",
-        "jquery.placeholder" : "https://github.com/matoilic/jquery.placeholder.git",
-        "typeahead.js": "0.11.1",
-        "shariff": "1.16.0",
-        "bootstrap-datepicker" : "1.7.1",
-        "jquery.dotdotdot" : "1.7.4",
-        "moment" : "2.19.3",
-        "handlebars": "4.0.5",
+        "grunt": "^1.0.0",
+        "grunt-cli": "^1.2.0",
         "grunt-contrib-uglify": "https://github.com/gruntjs/grunt-contrib-uglify.git#harmony",
+        "grunt-npmcopy": "^0.1.0",
+        "handlebars": "4.0.5",
+        "jquery.dotdotdot": "1.7.4",
+        "jquery.placeholder": "https://github.com/matoilic/jquery.placeholder.git",
+        "moment": "2.19.3",
+        "myclabs.jquery.confirm": "2.7.0",
         "openlayers": "4.6.4",
+        "shariff": "1.16.0",
+        "typeahead.js": "0.11.1",
         "video.js": "6.4.0",
-        "videojs-contrib-hls" : "5.12.2"
+        "videojs-contrib-hls": "5.12.2"
     }
 }

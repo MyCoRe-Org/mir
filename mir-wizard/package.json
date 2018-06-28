@@ -3,13 +3,13 @@
     "author": "René Adler",
     "homepage": "${project.url}",
     "repository": {
-      "type": "svn",
-      "url": "${project.scm.url}"
+        "type": "svn",
+        "url": "${project.scm.url}"
     },
     "license": "GPL-3.0",
     "description": "${project.description}",
     "engines": {
-      "node": ">= 0.12.0"
+        "node": ">= 0.12.0"
     },
     "engineStrict": true,
     "devDependencies": {
