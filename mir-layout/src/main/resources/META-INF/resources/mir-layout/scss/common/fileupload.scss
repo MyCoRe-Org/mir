@@ -115,7 +115,7 @@
 
           button {
             &.removeFile {
-              background-image: url('../../images/fileupload/remove.png');
+              background-image: url('../../../../images/fileupload/remove.png');
               margin: 0 0 0 4px;
               height: 16px;
               width: 16px;
@@ -124,7 +124,7 @@
               vertical-align: middle;
               &:hover,
               &:focus {
-                background-image: url('../../images/fileupload/remove_highlight.png');
+                background-image: url('../../../../images/fileupload/remove_highlight.png');
               }
             }
           }
