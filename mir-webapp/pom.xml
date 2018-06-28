@@ -15,6 +15,7 @@
     <MCR.AppName>mir</MCR.AppName>
     <cargo.jvmargs>-DMCR.AppName=${MCR.AppName}</cargo.jvmargs>
     <cargo.start.jvmargs>${cargo.jvmargs}</cargo.start.jvmargs>
+    <solr.coreName>mir</solr.coreName>
     <solr.data.dir>${mir.solr.data.dir}</solr.data.dir>
     <solr.home>${mir.solr.home}</solr.home>
   </properties>
@@ -89,7 +90,6 @@
       <plugin>
         <groupId>org.mycore.plugins</groupId>
         <artifactId>solr-runner-maven-plugin</artifactId>
-        <version>1.0</version>
         <configuration>
           <solrHomeTemplate>src/main/solr</solrHomeTemplate>
           <solrHome>${mir.solr.home}</solrHome>
