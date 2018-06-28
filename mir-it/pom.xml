@@ -16,7 +16,6 @@
     <MCR.Home.Integration>${project.build.directory}/mycore-home</MCR.Home.Integration>
     <cargo.jvmargs>-DMCR.Home=${MCR.Home.Integration}
       -DMCR.AppName=${MCR.AppName}
-      -Dsolr.solr.home=${solr.home}
       -Djava.awt.headless=true</cargo.jvmargs>
     <cargo.rmi.port>9100</cargo.rmi.port>
     <cargo.servlet.port>9107</cargo.servlet.port>
