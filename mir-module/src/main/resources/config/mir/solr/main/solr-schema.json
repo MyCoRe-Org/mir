@@ -80,7 +80,7 @@
   {
     "add-dynamic-field": {
       "name": "mods.part.order*",
-      "type": "int"
+      "type": "pint"
     }
   },
   {

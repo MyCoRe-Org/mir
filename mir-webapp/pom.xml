@@ -93,8 +93,6 @@
         <configuration>
           <solrHomeTemplate>src/main/solr</solrHomeTemplate>
           <solrHome>${mir.solr.home}</solrHome>
-          <solrMirrorURL>${solr-runner.solrMirrorURL}</solrMirrorURL>
-          <solrVersionString>${solr-runner.solrVersionString}</solrVersionString>
         </configuration>
       </plugin>
       <plugin>
