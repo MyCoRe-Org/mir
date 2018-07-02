@@ -21,7 +21,9 @@ import org.mycore.mir.it.model.MIRTitleInfo;
 import org.mycore.mir.it.model.MIRTitleType;
 import org.mycore.mir.it.model.MIRTypeOfResource;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class MIRAdminEditorITCase extends MIRITBase {
 
@@ -128,14 +130,18 @@ public class MIRAdminEditorITCase extends MIRITBase {
      */
     public void searchByTitle() {
         simpleSearchController.searchBy(MIRTestData.TITLE, null, null, null, null);
-        driver.waitFor(ExpectedConditions.titleContains("Suchergebnisse"));
+        final ExpectedCondition<Boolean> condition = ExpectedConditions.titleContains("Suchergebnisse");
+        driver.waitFor(condition);
 
-        try {
-            String noDocumentsFoundText = "Keine Dokumente gefunden";
-            driver.findElement(MCRBy.partialText(noDocumentsFoundText));
-            Assert.fail(noDocumentsFoundText + " is present!");
-        } catch (NoSuchElementException e) {
-            // this is good
-        }
+        String noDocumentsFoundText = "Keine Dokumente gefunden";
+       WebDriverWait wait =  new WebDriverWait(driver, 30);
+        wait.until((driver)->{
+            try {
+                driver.findElement(MCRBy.partialText(noDocumentsFoundText));
+                return false;
+            } catch (NoSuchElementException e) {
+                return true;
+            }
+        });
     }
 }

@@ -172,8 +172,6 @@
         <configuration>
           <solrHome>${solr.home}</solrHome>
           <solrHomeTemplate>../mir-webapp/src/main/solr</solrHomeTemplate>
-          <solrMirrorURL>${solr-runner.solrMirrorURL}</solrMirrorURL>
-          <solrVersionString>${solr-runner.solrVersionString}</solrVersionString>
           <solrPort>${solr.port}</solrPort>
         </configuration>
         <executions>
