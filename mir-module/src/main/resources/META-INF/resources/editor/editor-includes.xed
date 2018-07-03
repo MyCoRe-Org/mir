@@ -1921,6 +1921,15 @@
                   <option value="reviewOf">
                     <xed:output i18n="mir.relatedItem.reviewOf" />
                   </option>
+                  <option value="original">
+                    <xed:output i18n="mir.relatedItem.original" />
+                  </option>
+                  <option value="otherVersion">
+                    <xed:output i18n="mir.relatedItem.otherVersion" />
+                  </option>
+                  <option value="otherFormat">
+                    <xed:output i18n="mir.relatedItem.otherFormat" />
+                  </option>
                 </select>
               </xed:bind>
             </div>
