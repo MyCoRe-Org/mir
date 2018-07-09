@@ -46,6 +46,7 @@ import org.mycore.access.MCRAccessManager;
 import org.mycore.common.MCRException;
 import org.mycore.common.MCRJPATestCase;
 import org.mycore.common.MCRSessionMgr;
+import org.mycore.datamodel.classifications2.impl.MCRCategLinkServiceImpl;
 import org.mycore.datamodel.metadata.MCRObjectID;
 import org.mycore.user2.MCRTransientUser;
 import org.mycore.user2.MCRUser;
@@ -76,9 +77,7 @@ public class TestAccessKeys extends MCRJPATestCase {
     protected Map<String, String> getTestProperties() {
         Map<String, String> testProperties = super.getTestProperties();
         testProperties.put("MCR.Metadata.Type.test", Boolean.TRUE.toString());
-        testProperties.put("MCR.Solr.ServerURL", "localhost:8389");
-        testProperties.put("MCR.Solr.Core.main.Name", "main");
-        testProperties.put("MCR.Solr.Core.classification.Name", "classifications");
+        testProperties.put("MCR.Category.LinkService", MCRCategLinkServiceImpl.class.getName());
         return testProperties;
     }
 
