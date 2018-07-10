@@ -88,5 +88,12 @@
       "name": "mods.part.*",
       "type": "string"
     }
+  },
+  {
+    "replace-field": {
+      "name": "modifiedby",
+      "type": "string",
+      "stored": true
+    }
   }
 ]
