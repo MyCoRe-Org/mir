@@ -46,7 +46,6 @@ import org.mycore.access.MCRAccessManager;
 import org.mycore.common.MCRException;
 import org.mycore.common.MCRJPATestCase;
 import org.mycore.common.MCRSessionMgr;
-import org.mycore.datamodel.classifications2.impl.MCRCategLinkServiceImpl;
 import org.mycore.datamodel.metadata.MCRObjectID;
 import org.mycore.user2.MCRTransientUser;
 import org.mycore.user2.MCRUser;
