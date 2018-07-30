@@ -45,9 +45,13 @@
                 <legend>
                   <xed:output i18n="component.mir.wizard.solr.title" />
                 </legend>
-                <mir:template name="textInput" xpath="property[@name='MCR.Module-solr.ServerURL']" id="solrURL"
-                  default="http://localhost:8983/solr" i18n="component.mir.wizard.solr.url" i18n.error="component.mir.wizard.solr.url.required"
+                <mir:template name="textInput" xpath="property[@name='MCR.Solr.ServerURL']" id="solrURL"
+                  default="http://localhost:8983" i18n="component.mir.wizard.solr.url" i18n.error="component.mir.wizard.solr.url.required"
                   required="true" />
+                <mir:template name="textInput" xpath="property[@name='MCR.Solr.Core.main.Name']" id="solrMainCore" 
+                  i18n="component.mir.wizard.solr.mainCore" />
+                <mir:template name="textInput" xpath="property[@name='MCR.Solr.Core.classification.Name']" id="solrClassificationCore"
+                  i18n="component.mir.wizard.solr.classificationCore" />
               </fieldset>
               <fieldset>
                 <legend>
