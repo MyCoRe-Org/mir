@@ -22,21 +22,18 @@
  */
 package org.mycore.mir.wizard.command;
 
-import java.io.IOException;
-import java.nio.file.Paths;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.mycore.common.config.MCRConfigurationDir;
 import org.mycore.mir.wizard.MIRWizardCommand;
-import org.mycore.mir.wizard.utils.MIRWizardUnzip;
+import org.mycore.solr.commands.MCRSolrCommands;
 
 /**
  * @author René Adler (eagle)
  *
  */
 public class MIRWizardSolr extends MIRWizardCommand {
-    private static final Logger LOGGER = LogManager.getLogger(MIRWizardSolr.class);
+
+    private static String DEFAULT_CORE = "main";
+    
+    private static String DEFAULT_CLASSIFICATION = "classification";
 
     public MIRWizardSolr() {
         this("solr");
@@ -55,17 +52,11 @@ public class MIRWizardSolr extends MIRWizardCommand {
     @Override
     public void doExecute() {
         try {
-            final String confDir = Paths
-                .get(MCRConfigurationDir.getConfigurationDirectory().getAbsolutePath(), "data", "solr", "mir")
-                .toString();
-
-            LOGGER.info("extract SOLR config to {}...", confDir);
-
-            MIRWizardUnzip.unzip(
-                Thread.currentThread().getContextClassLoader().getResourceAsStream("solr-home.zip"), confDir);
+            MCRSolrCommands.reloadSolrConfiguration(DEFAULT_CORE, DEFAULT_CORE);
+            MCRSolrCommands.reloadSolrConfiguration(DEFAULT_CLASSIFICATION, DEFAULT_CLASSIFICATION);
 
             this.result.setSuccess(true);
-        } catch (final IOException ex) {
+        } catch (final Exception ex) {
             this.result.setResult(ex.getMessage());
         }
     }
