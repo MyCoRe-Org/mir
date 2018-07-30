@@ -64,6 +64,24 @@
     }
   },
   {
+    "add-field": {
+      "name": "state",
+      "type": "string"
+    }
+  },
+  {
+    "add-field": {
+      "name": "worldReadable",
+      "type": "boolean"
+    }
+  },
+  {
+    "add-field": {
+      "name": "worldReadableComplete",
+      "type": "boolean"
+    }
+  },
+  {
     "add-dynamic-field": {
       "name": "mods.nameByRole.*",
       "type": "string",
@@ -93,7 +111,32 @@
     "replace-field": {
       "name": "modifiedby",
       "type": "string",
-      "stored": true
+      "stored": true,
+      "multiValued": false
+    }
+  },
+  {
+    "replace-field": {
+      "name": "mods.dateIssued.host",
+      "type": "string",
+      "stored": true,
+      "multiValued": false
+    }
+  },
+  {
+    "replace-field": {
+      "name": "content",
+      "type": "text_general",
+      "stored": false,
+      "multiValued":false
+    }
+  },
+  {
+    "replace-field": {
+      "name": "search_result_link_text",
+      "type": "text_general",
+      "indexed": false,
+      "multiValued":false
     }
   }
 ]
