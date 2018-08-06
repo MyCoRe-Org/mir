@@ -118,7 +118,7 @@
   <xsl:template match="/response">
 
     <xsl:variable name="a2z">
-      <A search="[a%7Cä%7CÄ].*" />
+      <A search="%5Ba%7Cä%7CÄ%5D.*" />
       <B search="b.*" />
       <C search="c.*" />
       <D search="d.*" />
@@ -132,13 +132,13 @@
       <L search="l.*" />
       <M search="m.*" />
       <N search="n.*" />
-      <O search="[o%7Cö%7CÖ].*" />
+      <O search="%5Bo%7Cö%7CÖ%5D.*" />
       <P search="p.*" />
       <Q search="q.*" />
       <R search="r.*" />
       <S search="s.*" />
       <T search="t.*" />
-      <U search="[u%7Cü%7CÜ].*" />
+      <U search="%5Bu%7Cü%7CÜ%5D.*" />
       <V search="v.*" />
       <W search="w.*" />
       <X search="x.*" />
