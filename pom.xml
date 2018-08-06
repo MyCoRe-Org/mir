@@ -33,7 +33,6 @@
     <cargo.deployable.default.groupId>${project.groupId}</cargo.deployable.default.groupId>
     <cargo.rmi.port>8290</cargo.rmi.port>
     <cargo.servlet.port>8291</cargo.servlet.port>
-    <cargo.servlet.uriencoding>UTF-8</cargo.servlet.uriencoding>
     <cargo.start.jvmargs />
     <cargo.tomcat.ajp.port>8292</cargo.tomcat.ajp.port>
     <cargo.version>1.6.7</cargo.version>
@@ -350,7 +349,7 @@
                     <cargo.rmi.port>${cargo.rmi.port}</cargo.rmi.port>
                     <cargo.servlet.port>${cargo.servlet.port}</cargo.servlet.port>
                     <cargo.tomcat.ajp.port>${cargo.tomcat.ajp.port}</cargo.tomcat.ajp.port>
-                    <cargo.servlet.uriencoding>${cargo.servlet.uriencoding}</cargo.servlet.uriencoding>
+                    <cargo.tomcat.uriencoding>UTF-8</cargo.tomcat.uriencoding>
                     <!-- fixes IIIF identifier encoding issues -->
                     <cargo.start.jvmargs>-Dorg.apache.tomcat.util.buf.UDecoder.ALLOW_ENCODED_SLASH=true ${cargo.start.jvmargs}</cargo.start.jvmargs>
                   </properties>
