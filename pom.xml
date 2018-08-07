@@ -8,7 +8,7 @@
   </parent>
   <groupId>org.mycore.mir</groupId>
   <artifactId>mir-parent</artifactId>
-  <version>2018.06.0-SNAPSHOT</version>
+  <version>2018.08-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>MIR</name>
   <description>MyCoRe/MODS Institutional Repository</description>
@@ -22,7 +22,7 @@
     <connection>scm:git:https://github.com/MyCoRe-Org/mir.git</connection>
     <developerConnection>scm:git:https://github.com/MyCoRe-Org/mir.git</developerConnection>
     <url>https://github.com/MyCoRe-Org/mir/tree/master</url>
-    <tag>2018.06.0.x</tag>
+    <tag>2017.06.0.x</tag>
   </scm>
   <properties>
     <cargo.container.zipUrlInstaller.downloadDir>${settings.localRepository}/../cargo/containers</cargo.container.zipUrlInstaller.downloadDir>
@@ -38,7 +38,7 @@
     <cargo.version>1.6.7</cargo.version>
     <changelog.since>2018-06-19</changelog.since>
     <!-- until snapshot matches released version (required for 'mvn changes:changes-check') -->
-    <changes.version>2018.06.0</changes.version>
+    <changes.version>2018.08</changes.version>
     <checkstyle.failOnViolation>false</checkstyle.failOnViolation>
     <forbiddenapis.version>1.7</forbiddenapis.version>
     <hibernate.version>5.2.14.Final</hibernate.version>
