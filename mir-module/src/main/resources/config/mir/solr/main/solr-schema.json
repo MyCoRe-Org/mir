@@ -65,12 +65,6 @@
   },
   {
     "add-field": {
-      "name": "state",
-      "type": "string"
-    }
-  },
-  {
-    "add-field": {
       "name": "worldReadable",
       "type": "boolean"
     }
