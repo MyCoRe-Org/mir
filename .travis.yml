@@ -9,6 +9,9 @@ addons:
     packages:
     - google-chrome-stable
     - dbus-x11
+    - openjdk-8-jdk
+jdk:
+  - openjdk8
 cache:
   directories:
     - $HOME/.m2/repository
