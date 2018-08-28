@@ -13,7 +13,7 @@
     "engineStrict": true,
     "devDependencies": {
         "bootstrap-sass": "3.3.7",
-        "bootswatch": "3.3.5",
+        "bootswatch": "3.3.7",
         "font-awesome": "4.7.0",
         "grunt": "^1.0.0",
         "grunt-cli": "^1.2.0",
