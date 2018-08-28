@@ -728,7 +728,7 @@
   </xsl:template>
 
   <xsl:template mode="frontpage" match="mycoreobject">
-    <ddb:identifier ddb:type="URL_Frontdoor">
+    <ddb:identifier ddb:type="URL">
       <xsl:value-of select="concat($WebApplicationBaseURL,'receive/',@ID)" />
     </ddb:identifier>
   </xsl:template>
