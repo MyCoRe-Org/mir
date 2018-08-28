@@ -10,6 +10,7 @@
   xmlns:exslt="http://exslt.org/common"
   xmlns:mods="http://www.loc.gov/mods/v3"
   xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions"
+  xmlns:acl="xalan://org.mycore.access.MCRAccessManager"
   xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
   xmlns:xalan="http://xml.apache.org/xalan"
 
@@ -106,7 +107,8 @@
     <xsl:apply-templates select="$mods" mode="contributor" />
     <xsl:apply-templates select="$mods" mode="date" />
     <xsl:apply-templates select="$mods" mode="type" />
-    <xsl:apply-templates select="$mods" mode="identifier" />
+    <xsl:apply-templates select="$mods" mode="urn" />
+    <xsl:apply-templates select="$mods" mode="doi" />
     <xsl:apply-templates select="$mods" mode="format" />
     <xsl:apply-templates select="$mods" mode="publisher" />
     <xsl:apply-templates select="$mods" mode="relatedItem2source" />
@@ -115,7 +117,9 @@
     <xsl:apply-templates select="$mods" mode="degree" />
     <xsl:call-template name="file" />
     <xsl:apply-templates select="." mode="frontpage" />
-    <xsl:call-template name="rights" />
+    <xsl:call-template name="rights">
+      <xsl:with-param name="derivateID" select="structure/derobjects/derobject/@xlink:href" />
+    </xsl:call-template>
     <xsl:text disable-output-escaping="yes">
       &#60;/xMetaDiss:xMetaDiss&#62;
     </xsl:text>
@@ -521,24 +525,20 @@
     </dini:version_driver>
   </xsl:template>
 
-  <xsl:template mode="identifier" match="mods:mods">
-    <xsl:choose>
-      <xsl:when test="mods:identifier[@type='doi']">
-        <dc:identifier xsi:type="doi:doi">
-          <xsl:value-of select="mods:identifier[@type='doi'][1]" />
-        </dc:identifier>
-      </xsl:when>
-      <xsl:when test="mods:identifier[@type='urn' and starts-with(text(), 'urn:nbn')]">
-        <dc:identifier xsi:type="urn:nbn">
-          <xsl:value-of select="mods:identifier[@type='urn' and starts-with(text(), 'urn:nbn')][1]" />
-        </dc:identifier>
-      </xsl:when>
-      <xsl:when test="mods:identifier[@type='hdl' or @type='handle']">
-        <dc:identifier xsi:type="hdl:hdl">
-          <xsl:value-of select="mods:identifier[@type='hdl' or @type='handle'][1]" />
-        </dc:identifier>
-      </xsl:when>
-    </xsl:choose>
+  <xsl:template mode="urn" match="mods:mods">
+    <xsl:if test="mods:identifier[@type='urn' and starts-with(text(), 'urn:nbn')]">
+      <dc:identifier xsi:type="urn:nbn">
+        <xsl:value-of select="mods:identifier[@type='urn' and starts-with(text(), 'urn:nbn')][1]" />
+      </dc:identifier>
+    </xsl:if>
+  </xsl:template>
+
+  <xsl:template mode="doi" match="mods:mods">
+    <xsl:if test="mods:identifier[@type='doi']">
+      <ddb:identifier ddb:type="DOI">
+        <xsl:value-of select="mods:identifier[@type='doi'][1]" />
+      </ddb:identifier>
+    </xsl:if>
   </xsl:template>
 
   <xsl:template mode="format" match="mods:mods">
@@ -691,6 +691,11 @@
           </xsl:otherwise>
         </xsl:choose>
       </ddb:transfer>
+      <xsl:if test="$ddbfilenumber = 1">
+        <ddb:checksum ddbType="MD5">
+          <xsl:value-of select="$ifs/der/mcr_directory/children//child[@type='file']/md5" />
+        </ddb:checksum>
+      </xsl:if>
     </xsl:if>
   </xsl:template>
 
@@ -712,17 +717,21 @@
   </xsl:template>
 
   <xsl:template mode="frontpage" match="mycoreobject">
-    <ddb:identifier ddb:type="URL">
+    <ddb:identifier ddb:type="URL_Frontdoor">
       <xsl:value-of select="concat($WebApplicationBaseURL,'receive/',@ID)" />
     </ddb:identifier>
   </xsl:template>
 
   <xsl:template name="rights">
-      <!-- TODO: check access permission -->
-      <!-- xsl:element name="ddb:rights">
-       <xsl:attribute name="ddb:kind">free</xsl:attribute>
-      </xsl:element -->
-    <ddb:rights ddb:kind="free" />
+    <xsl:param name="derivateID" />
+    <xsl:choose>
+      <xsl:when test="acl:checkPermission($derivateID,'read')">
+        <ddb:rights ddb:kind="free" />
+      </xsl:when>
+      <xsl:otherwise>
+        <ddb:rights ddb:kind="domain" />
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
 
 </xsl:stylesheet>
