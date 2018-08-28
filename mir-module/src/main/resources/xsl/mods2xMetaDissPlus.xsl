@@ -209,6 +209,10 @@
         </xsl:choose>
       </xsl:attribute>
       <xsl:apply-templates mode="mods.title" select="." />
+      <xsl:if test="mods:titleInfo[not(@type='uniform' or @type='abbreviated' or @type='alternative' or @type='translated')]/mods:subTitle">
+        <xsl:text> : </xsl:text>
+        <xsl:apply-templates mode="mods.subtitle" select="." />
+      </xsl:if>
     </dc:title>
 
     <xsl:if test="mods:titleInfo[@type='translated']">
@@ -218,9 +222,16 @@
           <xsl:with-param name="lang_code" select="mods:titleInfo[@type='translated']/@xml:lang" />
         </xsl:call-template>
         </xsl:attribute>
-        <xsl:apply-templates mode="mods.title" select="mods:mods">
+        <xsl:apply-templates mode="mods.title" select=".">
           <xsl:with-param name="type" select="'translated'" />
         </xsl:apply-templates>
+        <xsl:if test="mods:titleInfo[@type='translated']/mods:subTitle">
+          <xsl:text> : </xsl:text>
+          <xsl:apply-templates mode="mods.subtitle" select="." >
+            <xsl:with-param name="type" select="'translated'" />
+            <xsl:with-param name="withSubtitle" select="true()" />
+          </xsl:apply-templates>
+        </xsl:if>
       </dc:title>
     </xsl:if>
   </xsl:template>
