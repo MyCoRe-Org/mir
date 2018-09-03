@@ -344,52 +344,54 @@
   </xsl:template>
 
   <xsl:template mode="publisher" match="mods:mods">
-    <xsl:variable name="publisherRoles" select="$marcrelator/mycoreclass/categories/category[@ID='pbl']/descendant-or-self::category" />
-    <xsl:variable name="publisher_name">
-      <xsl:choose>
-        <xsl:when test="mods:originInfo[not(@eventType) or @eventType='publication']/mods:publisher">
-          <xsl:value-of select="mods:originInfo[not(@eventType) or @eventType='publication']/mods:publisher" />
-        </xsl:when>
-        <xsl:when test="mods:name[$publisherRoles/@ID=mods:role/mods:roleTerm/text()]">
-          <xsl:value-of select="mods:name[mods:role/mods:roleTerm/text()='pbl']/mods:displayForm" />
-        </xsl:when>
-        <xsl:when test="mods:accessCondition[@type='copyrightMD']/cmd:copyright/cmd:rights.holder/cmd:name">
-          <xsl:value-of select="mods:accessCondition[@type='copyrightMD']/cmd:copyright/cmd:rights.holder/cmd:name" />
-        </xsl:when>
-        <xsl:when test="mods:relatedItem[@type='host']/mods:originInfo[not(@eventType) or @eventType='publication']/mods:publisher">
-          <xsl:value-of
-            select="mods:mods/mods:relatedItem[@type='host']/mods:originInfo[not(@eventType) or @eventType='publication']/mods:publisher" />
-        </xsl:when>
-        <xsl:when test="mods:relatedItem[@type='host']/mods:name[mods:role/mods:roleTerm/text()='pbl']">
-          <xsl:value-of select="mods:relatedItem[@type='host']/mods:name[mods:role/mods:roleTerm/text()='pbl']/mods:displayForm" />
-        </xsl:when>
-      </xsl:choose>
-    </xsl:variable>
-    <xsl:variable name="publisher_place">
-      <xsl:choose>
-        <xsl:when test="mods:originInfo[not(@eventType) or @eventType='publication']/mods:place/mods:placeTerm[@type='text']">
-          <xsl:value-of select="mods:originInfo[not(@eventType) or @eventType='publication']/mods:place/mods:placeTerm[@type='text']" />
-        </xsl:when>
-        <xsl:when
-          test="mods:relatedItem[@type='host']/mods:originInfo[not(@eventType) or @eventType='publication']/mods:place/mods:placeTerm[@type='text']">
-          <xsl:value-of
-            select="mods:relatedItem[@type='host']/mods:originInfo[not(@eventType) or @eventType='publication']/mods:place/mods:placeTerm[@type='text']" />
-        </xsl:when>
-      </xsl:choose>
-    </xsl:variable>
-    <xsl:if test="string-length($publisher_name) &gt; 0">
-      <xsl:choose>
-        <xsl:when test="string-length($publisher_place) &gt; 0">
-          <dc:source xsi:type="ddb:noScheme">
-            <xsl:value-of select="concat($publisher_place,' : ',$publisher_name)" />
-          </dc:source>
-        </xsl:when>
-        <xsl:otherwise>
-          <dc:source xsi:type="ddb:noScheme">
-            <xsl:value-of select="$publisher_name" />
-          </dc:source>
-        </xsl:otherwise>
-      </xsl:choose>
+    <xsl:if test="not(contains(mods:genre/@valueURI, 'issue'))">
+      <xsl:variable name="publisherRoles" select="$marcrelator/mycoreclass/categories/category[@ID='pbl']/descendant-or-self::category" />
+      <xsl:variable name="publisher_name">
+        <xsl:choose>
+          <xsl:when test="mods:originInfo[not(@eventType) or @eventType='publication']/mods:publisher">
+            <xsl:value-of select="mods:originInfo[not(@eventType) or @eventType='publication']/mods:publisher" />
+          </xsl:when>
+          <xsl:when test="mods:name[$publisherRoles/@ID=mods:role/mods:roleTerm/text()]">
+            <xsl:value-of select="mods:name[mods:role/mods:roleTerm/text()='pbl']/mods:displayForm" />
+          </xsl:when>
+          <xsl:when test="mods:accessCondition[@type='copyrightMD']/cmd:copyright/cmd:rights.holder/cmd:name">
+            <xsl:value-of select="mods:accessCondition[@type='copyrightMD']/cmd:copyright/cmd:rights.holder/cmd:name" />
+          </xsl:when>
+          <xsl:when test="mods:relatedItem[@type='host']/mods:originInfo[not(@eventType) or @eventType='publication']/mods:publisher">
+            <xsl:value-of
+              select="mods:mods/mods:relatedItem[@type='host']/mods:originInfo[not(@eventType) or @eventType='publication']/mods:publisher" />
+          </xsl:when>
+          <xsl:when test="mods:relatedItem[@type='host']/mods:name[mods:role/mods:roleTerm/text()='pbl']">
+            <xsl:value-of select="mods:relatedItem[@type='host']/mods:name[mods:role/mods:roleTerm/text()='pbl']/mods:displayForm" />
+          </xsl:when>
+        </xsl:choose>
+      </xsl:variable>
+      <xsl:variable name="publisher_place">
+        <xsl:choose>
+          <xsl:when test="mods:originInfo[not(@eventType) or @eventType='publication']/mods:place/mods:placeTerm[@type='text']">
+            <xsl:value-of select="mods:originInfo[not(@eventType) or @eventType='publication']/mods:place/mods:placeTerm[@type='text']" />
+          </xsl:when>
+          <xsl:when
+            test="mods:relatedItem[@type='host']/mods:originInfo[not(@eventType) or @eventType='publication']/mods:place/mods:placeTerm[@type='text']">
+            <xsl:value-of
+              select="mods:relatedItem[@type='host']/mods:originInfo[not(@eventType) or @eventType='publication']/mods:place/mods:placeTerm[@type='text']" />
+          </xsl:when>
+        </xsl:choose>
+      </xsl:variable>
+      <xsl:if test="string-length($publisher_name) &gt; 0">
+        <xsl:choose>
+          <xsl:when test="string-length($publisher_place) &gt; 0">
+            <dc:source xsi:type="ddb:noScheme">
+              <xsl:value-of select="concat($publisher_place,' : ',$publisher_name)" />
+            </dc:source>
+          </xsl:when>
+          <xsl:otherwise>
+            <dc:source xsi:type="ddb:noScheme">
+              <xsl:value-of select="$publisher_name" />
+            </dc:source>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:if>
     </xsl:if>
   </xsl:template>
 
@@ -565,31 +567,33 @@
 
   <xsl:template mode="relatedItem2source" match="mods:mods">
       <!--  If not use isPartOf use dc:source -->
-    <xsl:for-each select="mods:relatedItem[@type='host']">
-      <xsl:variable name="hosttitel" select="mods:titleInfo/mods:title" />
-      <xsl:variable name="issue" select="mods:part/mods:detail[@type='issue']/mods:number" />
-      <xsl:variable name="volume" select="mods:part/mods:detail[@type='volume']/mods:number" />
-      <xsl:variable name="startPage" select="mods:part/mods:extent[@unit='pages']/mods:start" />
-      <xsl:variable name="endPage" select="mods:part/mods:extent[@unit='pages']/mods:end" />
-      <xsl:variable name="volume2">
-        <xsl:if test="string-length($volume) &gt; 0">
-          <xsl:value-of select="concat('(',$volume,')')" />
-        </xsl:if>
-      </xsl:variable>
-      <xsl:variable name="issue2">
-        <xsl:if test="string-length($issue) &gt; 0">
-          <xsl:value-of select="concat(', H. ',$issue)" />
-        </xsl:if>
-      </xsl:variable>
-      <xsl:variable name="pages">
-        <xsl:if test="string-length($startPage) &gt; 0">
-          <xsl:value-of select="concat(', S.',$startPage,'-',$endPage)" />
-        </xsl:if>
-      </xsl:variable>
-      <dc:source xsi:type="ddb:noScheme">
-        <xsl:value-of select="concat($hosttitel,$volume2,$issue2,$pages)" />
-      </dc:source>
-    </xsl:for-each>
+    <xsl:if test="not(contains(mods:genre/@valueURI, 'issue'))">
+      <xsl:for-each select="mods:relatedItem[@type='host']">
+        <xsl:variable name="hosttitel" select="mods:titleInfo/mods:title" />
+        <xsl:variable name="issue" select="mods:part/mods:detail[@type='issue']/mods:number" />
+        <xsl:variable name="volume" select="mods:part/mods:detail[@type='volume']/mods:number" />
+        <xsl:variable name="startPage" select="mods:part/mods:extent[@unit='pages']/mods:start" />
+        <xsl:variable name="endPage" select="mods:part/mods:extent[@unit='pages']/mods:end" />
+        <xsl:variable name="volume2">
+          <xsl:if test="string-length($volume) &gt; 0">
+            <xsl:value-of select="concat('(',$volume,')')" />
+          </xsl:if>
+        </xsl:variable>
+        <xsl:variable name="issue2">
+          <xsl:if test="string-length($issue) &gt; 0">
+            <xsl:value-of select="concat(', H. ',$issue)" />
+          </xsl:if>
+        </xsl:variable>
+        <xsl:variable name="pages">
+          <xsl:if test="string-length($startPage) &gt; 0">
+            <xsl:value-of select="concat(', S.',$startPage,'-',$endPage)" />
+          </xsl:if>
+        </xsl:variable>
+        <dc:source xsi:type="ddb:noScheme">
+          <xsl:value-of select="concat($hosttitel,$volume2,$issue2,$pages)" />
+        </dc:source>
+      </xsl:for-each>
+    </xsl:if>
   </xsl:template>
 
   <xsl:template name="language">
