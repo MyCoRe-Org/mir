@@ -80,8 +80,14 @@
       <script type="text/javascript">
         <xsl:value-of select="concat('var pageurl = &quot;', $staticUrl, '&quot;;')" />
         if(typeof window.history.replaceState == &quot;function&quot;){
+          var passthrough = "passthrough.";
+          var search = "?" + document.location.search.split("&amp;")
+          .filter(function(param){ return param.startsWith(passthrough); })
+          .map(function(pt){ return pt.substr(passthrough.length); })
+          .join("&amp;")
           var originalPage = {title: document.title, url: document.location.toString()};
-          window.history.replaceState({path:pageurl},&quot; <xsl:value-of select="i18n:translate('component.solr.searchresult.resultList')" /> &quot;,pageurl);
+          var url = search.length>1?pageurl+search:pageurl;
+          window.history.replaceState({path: url},&quot; <xsl:value-of select="i18n:translate('component.solr.searchresult.resultList')" /> &quot;,url);
           document.getElementById(&quot;permalink&quot;).style.display = &quot;none&quot;;
           window.onbeforeunload = function(){
             window.history.replaceState({path:originalPage.url}, originalPage.title, originalPage.url);
