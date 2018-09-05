@@ -281,7 +281,12 @@
     <xsl:variable name="href" select="concat($proxyBaseURL,$HttpSession,$solrParams)" />
     <xsl:variable name="startPosition" select="$hitNumberOnPage - 1 + (($currentPage) -1) * $rows" />
     <xsl:variable name="completeHref">
-      <xsl:value-of select="concat($href, '&amp;start=',$startPosition, '&amp;fl=id&amp;rows=1&amp;origrows=', $rows, '&amp;XSL.Style=browse')" />
+      <xsl:variable name="q">
+        <xsl:call-template name="detectSearchParam">
+          <xsl:with-param name="join" select="'&amp;passthrough.'" />
+        </xsl:call-template>
+      </xsl:variable>
+      <xsl:value-of select="concat($href, '&amp;start=',$startPosition, '&amp;fl=id&amp;rows=1&amp;origrows=', $rows, '&amp;XSL.Style=browse', $q)" />
     </xsl:variable>
     <xsl:variable name="hitHref">
       <xsl:value-of select="mcrxsl:regexp($completeHref, '&amp;XSL.Transformer=response-resultlist', '')" />
@@ -444,7 +449,10 @@
                           <xsl:value-of select="$derivifs" />
                         </xsl:when>
                         <xsl:otherwise>
-                          <xsl:value-of select="concat($WebApplicationBaseURL, 'rsc/viewer/', $filePath)" />
+                          <xsl:variable name="q">
+                            <xsl:call-template name="detectSearchParam" />
+                          </xsl:variable>
+                          <xsl:value-of select="concat($WebApplicationBaseURL, 'rsc/viewer/', $filePath, $q)" />
                         </xsl:otherwise>
                       </xsl:choose>
                     </xsl:variable>
@@ -808,6 +816,29 @@
         </div><!-- end hit col -->
       </div><!-- end hit body -->
     </div><!-- end hit item -->
+  </xsl:template>
+
+  <xsl:template name="detectSearchParam">
+    <xsl:param name="join" select="'?'" />
+    <xsl:variable name="searchString">
+      <xsl:variable name="queryPrefix" select="'{!join from=returnId to=id}+content:'" />
+      <xsl:variable name="fullTextQuery"
+                    select="/response/lst[@name='responseHeader']/lst[@name='params']/str[@name='fq' and contains(., $queryPrefix)]" />
+      <xsl:choose>
+        <xsl:when test="$fullTextQuery">
+          <xsl:value-of select="substring-after($fullTextQuery, $queryPrefix)" />
+        </xsl:when>
+        <xsl:when test="/response/lst[@name='responseHeader']/lst[@name='params']/str[@name='condQuery']">
+          <xsl:value-of select="/response/lst[@name='responseHeader']/lst[@name='params']/str[@name='condQuery']" />
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="''" />
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+    <xsl:if test="$searchString">
+      <xsl:value-of select="concat($join, 'q=', $searchString)" />
+    </xsl:if>
   </xsl:template>
 
   <!-- copied from mods.xsl -> ToDo: refacture! -->
