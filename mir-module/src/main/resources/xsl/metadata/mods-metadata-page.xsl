@@ -11,7 +11,7 @@
       <xsl:copy-of select="@*" />
       <head>
         <xsl:apply-templates select="citation_meta" mode="copyContent" />
-        <link href="{$WebApplicationBaseURL}assets/jquery/plugins/shariff/shariff.complete.css" rel="stylesheet" />
+        <link href="{$WebApplicationBaseURL}mir-layout/assets/jquery/plugins/shariff/shariff.complete.css" rel="stylesheet" />
       </head>
 
       <xsl:if test="div[@id='mir-breadcrumb']">
@@ -210,7 +210,7 @@
 
 <!--  end: detail row -->
       </div>
-      <script src="{$WebApplicationBaseURL}assets/jquery/plugins/shariff/shariff.min.js"></script>
+      <script src="{$WebApplicationBaseURL}mir-layout/assets/jquery/plugins/shariff/shariff.min.js"></script>
       <script src="{$WebApplicationBaseURL}assets/moment/min/moment.min.js"></script>
       <script src="{$WebApplicationBaseURL}assets/handlebars/handlebars.min.js"></script>
       <script src="{$WebApplicationBaseURL}js/mir/derivate-fileList.min.js"></script>
