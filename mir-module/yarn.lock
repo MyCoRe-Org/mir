@@ -2,6 +2,10 @@
 # yarn lockfile v1
 
 
+"@fortawesome/fontawesome-free-webfonts@^1.0.3":
+  version "1.0.9"
+  resolved "https://registry.yarnpkg.com/@fortawesome/fontawesome-free-webfonts/-/fontawesome-free-webfonts-1.0.9.tgz#72f2c10453422aba0d338fa6a9cb761b50ba24d5"
+
 abbrev@1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/abbrev/-/abbrev-1.1.1.tgz#f8f2c887ad10bf67f634f005b6987fed3179aac8"
@@ -659,7 +663,7 @@ findup-sync@~0.3.0:
   dependencies:
     glob "~5.0.0"
 
-font-awesome@4.7.0, font-awesome@^4.3.0:
+font-awesome@4.7.0:
   version "4.7.0"
   resolved "https://registry.yarnpkg.com/font-awesome/-/font-awesome-4.7.0.tgz#8fa8cf0411a1a31afd07b06d2902bb9fc815a133"
 
@@ -1195,9 +1199,9 @@ jquery@>=1.6, jquery@>=1.7, "jquery@>=1.7.1 <4.0.0":
   version "3.2.1"
   resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.2.1.tgz#5c4d9de652af6cd0a770154a631bba12b015c787"
 
-jquery@^1.11.2:
-  version "1.12.4"
-  resolved "https://registry.yarnpkg.com/jquery/-/jquery-1.12.4.tgz#01e1dfba290fe73deba77ceeacb0f9ba2fec9e0c"
+jquery@^3.2.1:
+  version "3.3.1"
+  resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.3.1.tgz#958ce29e81c9790f31be7792df5d4d95fc57fbca"
 
 js-yaml@~3.5.2:
   version "3.5.5"
@@ -1975,12 +1979,12 @@ setprototypeof@1.0.3:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/setprototypeof/-/setprototypeof-1.0.3.tgz#66567e37043eeb4f04d91bd658c0cbefb55b8e04"
 
-shariff@1.16.0:
-  version "1.16.0"
-  resolved "https://registry.yarnpkg.com/shariff/-/shariff-1.16.0.tgz#d0bb0852c98e44e90e2ac48f1e2bfb637cb9b551"
+shariff@3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/shariff/-/shariff-3.0.1.tgz#288340d500e108b21f380168b7d6109c6c256936"
   dependencies:
-    font-awesome "^4.3.0"
-    jquery "^1.11.2"
+    "@fortawesome/fontawesome-free-webfonts" "^1.0.3"
+    jquery "^3.2.1"
 
 signal-exit@^3.0.0:
   version "3.0.2"

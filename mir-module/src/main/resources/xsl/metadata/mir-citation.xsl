@@ -18,6 +18,8 @@
   <xsl:param name="MIR.citationStyles" select="''" />
   <xsl:param name="MIR.altmetrics" select="'show'" />
   <xsl:param name="MIR.altmetrics.hide" select="'true'" />
+  <xsl:param name="MIR.plumx" select="'hide'" />
+  <xsl:param name="MIR.plumx.hide" select="'true'" />
   <xsl:param name="MIR.shariff" select="'show'" />
   <xsl:template match="/">
 
@@ -29,28 +31,47 @@
 
     <xsl:variable name="mods" select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods" />
     <div id="mir-citation">
-      <xsl:if test="$MIR.altmetrics = 'show'">
-        <script type='text/javascript' src='https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js'></script>
-        <xsl:choose>
-          <xsl:when test="//mods:mods/mods:identifier[@type='doi']">
-            <div data-badge-details="right" data-badge-type="donut" data-doi="{//mods:mods/mods:identifier[@type='doi']}" data-hide-no-mentions="{$MIR.altmetrics.hide}"
-              class="altmetric-embed"
-            ></div>
-          </xsl:when>
-          <xsl:when test="//mods:mods/mods:identifier[@type='uri']">
-            <div data-badge-details="right" data-badge-type="donut" data-uri="{//mods:mods/mods:identifier[@type='uri']}" data-hide-no-mentions="{$MIR.altmetrics.hide}"
-              class="altmetric-embed"
-            ></div>
-          </xsl:when>
-          <xsl:otherwise>
-            <div data-badge-details="right" data-badge-type="donut" data-uri="{$WebApplicationBaseURL}receive/{mycoreobject/@ID}" data-hide-no-mentions="{$MIR.altmetrics.hide}"
-              class="altmetric-embed"
-            ></div>
-          </xsl:otherwise>
-        </xsl:choose>
-      </xsl:if>
       <xsl:if test="$MIR.shariff = 'show'">
         <div class="shariff" data-theme="white"></div><!-- for more params see http://heiseonline.github.io/shariff/ -->
+      </xsl:if>
+      <xsl:if test="//mods:mods/mods:identifier[@type='doi'] and ($MIR.altmetrics = 'show' or $MIR.plumx = 'show')">
+        <div id="mir-metric-badges" class="row">
+          <xsl:if test="$MIR.altmetrics = 'show'">
+            <script type='text/javascript' src='https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js'></script>
+            <xsl:choose>
+              <xsl:when test="$MIR.plumx = 'show'">
+                <!-- use altmeltrics badge -->
+                <div class="col-xs-6">
+                  <div data-badge-type="1" data-badge-popover="right" data-doi="{//mods:mods/mods:identifier[@type='doi']}" data-hide-no-mentions="{$MIR.altmetrics.hide}" class="altmetric-embed"></div>
+                </div>
+              </xsl:when>
+              <xsl:otherwise>
+                <!-- show altmetrics donut -->
+                <div class="col-xs-12">
+                  <div data-badge-details="right" data-badge-type="donut" data-doi="{//mods:mods/mods:identifier[@type='doi']}" data-hide-no-mentions="{$MIR.altmetrics.hide}"
+                    class="altmetric-embed"></div>
+                </div>
+              </xsl:otherwise>
+            </xsl:choose>
+          </xsl:if>
+          <xsl:if test="$MIR.plumx = 'show'">
+            <script type='text/javascript' src='//d39af2mgp1pqhg.cloudfront.net/widget-popup.js'></script>
+            <xsl:choose>
+              <xsl:when test="$MIR.altmetrics = 'show'">
+                <!-- use PlumX badge-->
+                <div class="col-xs-6">
+                  <a href="https://plu.mx/plum/a/?doi={//mods:mods/mods:identifier[@type='doi']}" data-popup="right" data-badge="true" class="plumx-plum-print-popup plum-bigben-theme" data-site="plum" data-hide-when-empty="{$MIR.plumx.hide}">PlumX Metrics</a>
+                </div>
+              </xsl:when>
+              <xsl:otherwise>
+                <!-- use Plum Print-->
+                <div class="col-xs-12">
+                  <a href="https://plu.mx/plum/a/?doi={//mods:mods/mods:identifier[@type='doi']}" data-popup="right" data-size="large" class="plumx-plum-print-popup plum-bigben-theme" data-site="plum" data-hide-when-empty="{$MIR.plumx.hide}">PlumX Metrics</a>
+                </div>
+              </xsl:otherwise>
+            </xsl:choose>
+          </xsl:if>
+        </div>
       </xsl:if>
 
       <div id="citation-style">
@@ -58,7 +79,7 @@
           <strong>
             <xsl:value-of select="i18n:translate('mir.citationStyle')" />
           </strong>
-          <i id="crossref-citation-error" class="glyphicon glyphicon-info-sign hidden" title="{i18n:translate('mir.citationAlertService')}"></i>
+          <i id="crossref-citation-error" class="fa fa-exclamation-circle hidden" title="{i18n:translate('mir.citationAlertService')}"></i>
         </span>
         <xsl:if test="//mods:mods/mods:identifier[@type='doi'] and string-length($MIR.citationStyles) &gt; 0">
           <xsl:variable name="cite-styles">

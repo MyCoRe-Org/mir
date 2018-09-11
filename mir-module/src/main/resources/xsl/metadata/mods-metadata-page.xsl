@@ -11,7 +11,7 @@
       <xsl:copy-of select="@*" />
       <head>
         <xsl:apply-templates select="citation_meta" mode="copyContent" />
-        <link href="{$WebApplicationBaseURL}assets/jquery/plugins/shariff/shariff.min.css" rel="stylesheet" />
+        <link href="{$WebApplicationBaseURL}assets/jquery/plugins/shariff/shariff.complete.css" rel="stylesheet" />
       </head>
 
       <xsl:if test="div[@id='mir-breadcrumb']">
