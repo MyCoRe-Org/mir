@@ -18,7 +18,6 @@
   <xsl:template match="mods:name/@usage" />
   <xsl:template match="mods:role[mods:roleTerm/@type='text']" />
   <xsl:template match="mods:typeOfResource" />
-  <xsl:template match="mods:genre" />
   <xsl:template match="mods:place[mods:placeTerm[@type='code']]" />
   <xsl:template match="mods:physicalDescription" />
   <xsl:template match="mods:relatedItem/@displayLabel" />

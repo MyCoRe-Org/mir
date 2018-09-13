@@ -31,6 +31,7 @@
         <xsl:choose>
             <xsl:when test="$genre='trade journal'">journal</xsl:when>
             <xsl:when test="$genre='journal'">journal</xsl:when>
+            <xsl:when test="$genre='periodical'">journal</xsl:when>
             <xsl:when test="$genre='journals'">article</xsl:when>
             <xsl:when test="$genre='journal article'">article</xsl:when>
             <xsl:when test="$genre='article'">article</xsl:when>
