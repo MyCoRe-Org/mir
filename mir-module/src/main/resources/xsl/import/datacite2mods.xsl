@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<!-- https://data.datacite.org/application/vnd.datacite.datacite+xml/10.5524/100005 -->
+
 <xsl:stylesheet version="1.0"
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns:mods="http://www.loc.gov/mods/v3"
@@ -13,7 +15,7 @@
         <mods:mods>
             <xsl:apply-templates select="titles/title" />
             <xsl:apply-templates select="creators/creator" />
-            <mods:originInfo>
+            <mods:originInfo eventType="publication">
                 <xsl:apply-templates select="publisher" />
                 <xsl:apply-templates select="publicationYear" />
             </mods:originInfo>
@@ -78,7 +80,7 @@
     <xsl:template match="language">
         <xsl:for-each select="document(concat('notnull:language:',.))/language/@xmlCode">
             <mods:language>
-                <mods:languageTerm authority="rfc4646" type="code">
+                <mods:languageTerm authority="rfc5646" type="code">
                     <xsl:value-of select="." />
                 </mods:languageTerm>
             </mods:language>

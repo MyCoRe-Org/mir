@@ -7,10 +7,6 @@
 
   <xsl:output method="xml" encoding="UTF-8" indent="yes" xalan:indent-amount="2" />
 
-  <xsl:template match="/">
-    <xsl:apply-templates select="scopus:abstracts-retrieval-response" />
-  </xsl:template>
-
   <xsl:template match="scopus:abstracts-retrieval-response">
     <mods:mods>
       <xsl:apply-templates select="item/bibrecord/head/citation-info/citation-type/@code" />
@@ -21,13 +17,14 @@
       <xsl:apply-templates select="item/bibrecord/head/source[not((@type='b') and (../citation-info/citation-type/@code='bk'))]" />
       <xsl:apply-templates select="item/bibrecord/item-info/itemidlist" />
       <xsl:apply-templates select="item/bibrecord/head[citation-info/citation-type/@code='bk']/source[@type='b']/isbn" />
-      <mods:originInfo>
+      <mods:originInfo eventType="publication">
         <xsl:apply-templates select="item/bibrecord/head[citation-info/citation-type/@code='bk']/source[@type='b']/publisher/publishername" />
         <xsl:apply-templates select="item/bibrecord/head/source/publicationdate/year" />
       </mods:originInfo>
       <xsl:apply-templates select="item/bibrecord/head/citation-info/author-keywords/author-keyword" />
-      <xsl:apply-templates select="scopus:language" />
+      <xsl:apply-templates select="scopus:language[@xml:lang]" />
       <xsl:apply-templates select="item/bibrecord/head/abstracts/abstract" />
+      <!-- xsl:apply-templates select="scopus:coredata/scopus:openaccess" / -->
     </mods:mods>
   </xsl:template>
 
@@ -35,9 +32,21 @@
     <mods:titleInfo>
       <xsl:apply-templates select="@xml:lang" />
       <mods:title>
-        <xsl:value-of select="text()" />
+        <xsl:apply-templates select="*|text()" />
       </mods:title>
     </mods:titleInfo>
+  </xsl:template>
+  
+  <xsl:template match="inf"> <!-- subscript / inferior -->
+    <xsl:value-of select="translate(text(),'-+=()aeox0123456789','₋₊₌₍₎ₐₑₒₓ₀₁₂₃₄₅₆₇₈₉')" />
+  </xsl:template>
+  
+  <xsl:template match="sup"> <!-- superscript / superior -->
+    <xsl:value-of select="translate(text(),'-+=()ni0123456789','⁻⁺⁼⁽⁾ⁿⁱ⁰¹²³⁴⁵⁶⁷⁸⁹')" />
+  </xsl:template>
+
+  <xsl:template match="titletext/text()|ce:para/text()" priority="1">
+    <xsl:copy-of select="." />
   </xsl:template>
 
   <xsl:template match="scopus:authors/scopus:author">
@@ -103,7 +112,7 @@
   <xsl:template match="abstracts/abstract">
     <mods:abstract>
       <xsl:apply-templates select="@xml:lang" />
-      <xsl:value-of select="ce:para" />
+      <xsl:apply-templates select="*|text()" />
     </mods:abstract>
   </xsl:template>
 
@@ -115,7 +124,7 @@
 
   <xsl:template match="scopus:language">
     <mods:language>
-      <mods:languageTerm authority="rfc4646" type="code">
+      <mods:languageTerm authority="rfc5646" type="code">
         <xsl:value-of select="document(concat('language:',@xml:lang))/language/@xmlCode" />
       </mods:languageTerm>
     </mods:language>
@@ -127,7 +136,7 @@
       <xsl:apply-templates select="sourcetitle|sourcetitle-abbrev" />
       <xsl:apply-templates select="volisspag" />
       <xsl:apply-templates select="issn|isbn" />
-      <mods:originInfo>
+      <mods:originInfo eventType="publication">
         <xsl:apply-templates select="publisher/publishername" />
       </mods:originInfo>
     </mods:relatedItem>
@@ -274,6 +283,14 @@
       </mods:topic>
     </mods:subject>
   </xsl:template>
+
+  <!-- xsl:variable name="authorityOA">https://bibliographie.ub.uni-due.de/classifications/oa</xsl:variable>
+
+  <xsl:template match="scopus:coredata/scopus:openaccess">
+    <xsl:if test=".='1'">
+      <mods:classification authorityURI="{$authorityOA}" valueURI="{$authorityOA}#oa" />
+    </xsl:if>
+  </xsl:template -->
 
   <xsl:template match="text()" />
 

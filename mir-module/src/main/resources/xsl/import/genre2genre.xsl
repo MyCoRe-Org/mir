@@ -22,9 +22,7 @@
         </xsl:variable>
         <xsl:variable name="firstGenre" select="normalize-space(substring-before($mappedGenreIDs,' '))" />
         <xsl:if test="string-length($firstGenre) &gt; 0">
-            <mods:genre type="intern">
-                <xsl:value-of select="$firstGenre" />
-            </mods:genre>
+            <mods:genre type="intern" authorityURI="http://www.mycore.org/classifications/mir_genres" valueURI="http://www.mycore.org/classifications/mir_genres#{$firstGenre}" />
         </xsl:if>
     </xsl:template>
     

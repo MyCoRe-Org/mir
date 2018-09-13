@@ -11,25 +11,28 @@
 
   <xsl:output method="xml" encoding="UTF-8" indent="yes" xalan:indent-amount="2" />
 
-  <xsl:template match="/">
-    <xsl:apply-templates select="/responseWrapper|resultList[result]" />
+  <xsl:template match="/responseWrapper">
+    <mods:mods>
+      <xsl:apply-templates />
+    </mods:mods>
   </xsl:template>
-
-  <xsl:template match="/responseWrapper|resultList[result]">
-    <xsl:apply-templates/>
+  
+  <xsl:template match="resultList[result]">
+    <xsl:apply-templates />
   </xsl:template>
 
   <xsl:template match="resultList">
-    <xsl:message>Warning: no data returned for <xsl:value-of select="../request/query"/></xsl:message>
+    <xsl:message>Warning: no data returned for <xsl:value-of select="../request/query" /></xsl:message>
     <mods:genre>ignore</mods:genre>
   </xsl:template>
   
-  <xsl:template match="version|hitCount|request|result/id|result/source|result/authorString"/>
+  <xsl:template match="version|hitCount|request|result/id|result/source|result/authorString" />
   
   <xsl:template match="resultList/result">
-    <xsl:apply-templates/>
-    <xsl:apply-templates select="journalInfo/yearOfPublication" mode="dateIssued"/>
+    <xsl:apply-templates />
+    <xsl:apply-templates select="journalInfo/yearOfPublication" mode="dateIssued" />
   </xsl:template>
+  
   <xsl:template match="result/pmid">
     <mods:identifier type="pubmed"><xsl:value-of select="." /></mods:identifier>
   </xsl:template>
@@ -157,13 +160,20 @@
 
   <xsl:template match="result/affiliation" />
 
+  <!-- xsl:variable name="authorityOA">https://bibliographie.ub.uni-due.de/classifications/oa</xsl:variable>
+
+  <xsl:template match="result/isOpenAccess">
+    <xsl:if test=".='Y'">
+      <mods:classification authorityURI="{$authorityOA}" valueURI="{$authorityOA}#oa" />
+    </xsl:if>
+  </xsl:template -->
   <xsl:template match="language">
     <xsl:apply-templates select="document(concat('language:',.))/language/@xmlCode" />
   </xsl:template>
 
   <xsl:template match="language/@xmlCode">
     <mods:language>
-      <mods:languageTerm authority="rfc4646" type="code">
+      <mods:languageTerm authority="rfc5646" type="code">
         <xsl:value-of select="." />
       </mods:languageTerm>
     </mods:language>
@@ -206,7 +216,7 @@
   </xsl:template>
 
   <xsl:template match="fullTextUrlList">
-    <xsl:apply-templates select="fullTextUrl/url[not(contains(text(),'doi.org'))]"/>
+    <xsl:apply-templates select="fullTextUrl/url[not(contains(text(),'doi.org'))]" />
   </xsl:template>
 
   <xsl:template match="fullTextUrl/url">
