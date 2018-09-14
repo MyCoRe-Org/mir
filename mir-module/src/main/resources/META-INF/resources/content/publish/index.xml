@@ -56,17 +56,18 @@
         </div>
       </div>
 
-      <!-- ppn -->
+      <!-- doi -->
       <div id="more_options_box" class="row form-group">
-        <label for="genre" class="col-sm-3 col-lg-2 control-label">mit der PPN:</label>
+        <label for="genre" class="col-sm-3 col-lg-2 control-label">DOI:</label>
+        <input type="hidden" id="type" name="type" value="doi" />
         <div class="col-sm-7 col-md-5  col-lg-4">
-          <input type="text" name="ppn" id="ppn" class="form-control" size="20" placeholder="z.B. 198562268" />
+          <input type="text" name="modsId" id="modsId" class="form-control" size="20" placeholder="z.B. 10.1093/pq/pqu057" />
         </div>
         <div class="hidden-xs col-sm-3 hidden-lg"></div>
         <div class="col-sm-7 col-md-4 col-lg-5">
           <p>
-            Sollten die Daten bereits im GVK des GBV erfasst sein, können Sie diese über Angabe der PPN in die Erfassungsmaske
-            übernehmen.
+            Sollte die Publikation bereits eine DOI besitzen, können Sie diese hier angeben. Wir prüfen dann, ob bereits in anderen
+            Datenbanken Metadaten erfasst wurden und übernehmen diese.
           </p>
         </div>
       </div>
@@ -133,16 +134,17 @@
         </div>
       </div>
 
-      <!-- ppn -->
+      <!-- doi -->
       <div id="more_options_box" class="row form-group">
-        <label for="genre" class="col-sm-3 col-lg-2 control-label">With PPN:</label>
+        <label for="genre" class="col-sm-3 col-lg-2 control-label">Using DOI:</label>
+        <input type="hidden" id="type" name="type" value="doi" />
         <div class="col-sm-7 col-md-5  col-lg-4">
-          <input type="text" name="ppn" id="ppn" class="form-control" size="20" placeholder="e.g. 198562268" />
+          <input type="text" name="modsId" id="modsId" class="form-control" size="20" placeholder="e.g. 10.1093/pq/pqu057" />
         </div>
         <div class="hidden-xs col-sm-3 hidden-lg"></div>
         <div class="col-sm-7 col-md-4 col-lg-5">
           <p>
-            If the data is already recorded in the GVK or the GBV, you can enter the PPN into the entry mask
+            Enter DOI if record already have one. We will look in other databases if there is already metadata available which we can use here.
           </p>
         </div>
       </div>
