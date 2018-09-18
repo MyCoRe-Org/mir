@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+﻿﻿<?xml version="1.0" encoding="UTF-8"?>
 <!-- ============================================== -->
 <!-- $Revision: 1.8 $ $Date: 2007-04-20 15:18:23 $ -->
 <!-- ============================================== -->
@@ -108,7 +108,6 @@
     <xsl:apply-templates select="$mods" mode="date" />
     <xsl:apply-templates select="$mods" mode="type" />
     <xsl:apply-templates select="$mods" mode="urn" />
-    <xsl:apply-templates select="$mods" mode="doi" />
     <xsl:apply-templates select="$mods" mode="format" />
     <xsl:apply-templates select="$mods" mode="publisher" />
     <xsl:apply-templates select="$mods" mode="relatedItem2source" />
@@ -117,6 +116,7 @@
     <xsl:apply-templates select="$mods" mode="degree" />
     <xsl:call-template name="file" />
     <xsl:apply-templates select="." mode="frontpage" />
+    <xsl:apply-templates select="$mods" mode="doi" />
     <xsl:call-template name="rights">
       <xsl:with-param name="derivateID" select="structure/derobjects/derobject/@xlink:href" />
     </xsl:call-template>
@@ -286,7 +286,14 @@
             </pc:organisationName>
           </xsl:when>
           <xsl:when test="mods:namePart[@type='family'] and mods:namePart[@type='given']">
-            <xsl:apply-templates select="mods:namePart[@type='given']" mode="pc-person" />
+            <xsl:variable name="forname">
+              <xsl:for-each select="mods:namePart[@type='given']">
+                <xsl:value-of select="concat(.,' ')"/>
+              </xsl:for-each>
+            </xsl:variable>
+            <pc:foreName>
+              <xsl:value-of select="normalize-space($forname)" />
+            </pc:foreName>
             <xsl:apply-templates select="mods:namePart[@type='family']" mode="pc-person" />
           </xsl:when>
           <xsl:when test="contains(mods:displayForm, ',')">
@@ -311,12 +318,6 @@
     <pc:surName>
       <xsl:value-of select="normalize-space(.)" />
     </pc:surName>
-  </xsl:template>
-
-  <xsl:template mode="pc-person" match="mods:namePart[@type='given']">
-    <pc:foreName>
-      <xsl:value-of select="." />
-    </pc:foreName>
   </xsl:template>
 
   <xsl:template mode="subject" match="mods:mods">
@@ -686,6 +687,11 @@
       <xsl:apply-templates mode="fileproperties" select="$ifs/der">
         <xsl:with-param name="totalFiles" select="$ddbfilenumber" />
       </xsl:apply-templates>
+      <xsl:if test="$ddbfilenumber = 1">
+        <ddb:checksum ddb:type="MD5">
+          <xsl:value-of select="$ifs/der/mcr_directory/children//child[@type='file']/md5" />
+        </ddb:checksum>
+      </xsl:if>
       <ddb:transfer ddb:type="dcterms:URI">
         <xsl:choose>
           <xsl:when test="$ddbfilenumber = 1">
@@ -706,11 +712,6 @@
           </xsl:otherwise>
         </xsl:choose>
       </ddb:transfer>
-      <xsl:if test="$ddbfilenumber = 1">
-        <ddb:checksum ddbType="MD5">
-          <xsl:value-of select="$ifs/der/mcr_directory/children//child[@type='file']/md5" />
-        </ddb:checksum>
-      </xsl:if>
     </xsl:if>
   </xsl:template>
 
