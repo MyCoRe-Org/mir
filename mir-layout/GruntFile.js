@@ -48,6 +48,7 @@ module.exports = function(grunt) {
 				files : {
 					'jquery' : 'jquery/dist',
 					'jquery/plugins/jquery-migrate' : 'jquery-migrate/dist/',
+                    'jquery/plugins/shariff' : 'shariff/dist',
                 'bootswatch': 'bootswatch',
                 'bootstrap':'bootstrap-sass/assets'
 				}

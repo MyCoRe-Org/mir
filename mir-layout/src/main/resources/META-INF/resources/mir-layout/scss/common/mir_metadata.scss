@@ -100,17 +100,24 @@
   }
 }
 
-.shariff .orientation-horizontal li {
+.shariff {
+  margin-bottom: 10px;
+}
+
+.shariff .orientation-horizontal.button-style-standard li {
   min-width: 85px;
   max-width: 160px;
 }
 
+#mir-metric-badges {
+  margin-top: 10px;
+}
 .altmetric-embed {
   margin-bottom: 20px;
 }
 
 #citation-style {
-  margin: 20px 0px;
+  margin: 0px 0px;
 }
 
 #crossref-cite {
@@ -185,6 +192,7 @@ $grayDark: #ECF0F1;
 
 #crossref-citation-error {
   padding-left: 5px;
+  cursor: pointer;
 }
 
 #modal-pi .fa {
