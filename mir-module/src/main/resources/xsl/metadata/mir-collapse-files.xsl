@@ -61,8 +61,12 @@
                 <xsl:when test="key('rights', @xlink:href)/@read">
                   <xsl:variable name="maindoc" select="$derivateXML/mycorederivate/derivate/internals/internal/@maindoc" />
                   <div class="file_box_files" data-objID="{$objID}" data-deriID="{$derId}" data-mainDoc="{$maindoc}" data-writedb="{acl:checkPermission($derId,'writedb')}"
-                    data-deletedb="{acl:checkPermission($derId,'deletedb')}" data-urn="{$hasManagedPI}"
-                  >
+                    data-deletedb="{acl:checkPermission($derId,'deletedb')}" data-urn="{$hasManagedPI}">
+                    <xsl:if test="not(mcr:isCurrentUserGuestUser())">
+                      <xsl:attribute name="data-jwt">
+                        <xsl:value-of select="'required'" />
+                      </xsl:attribute>
+                    </xsl:if>
                     <div class="filelist-loading">
                       <div class="bounce1"></div>
                       <div class="bounce2"></div>

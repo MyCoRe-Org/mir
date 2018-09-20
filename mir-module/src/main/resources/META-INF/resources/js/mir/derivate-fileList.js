@@ -253,11 +253,16 @@
 		}
 
 		// functions
-		function getDerivate() {
+		function getDerivate(token) {
 			$.ajax({
 				url : webApplicationBaseURL + "api/v1/objects/" + objID + "/derivates/" + deriID + "/contents?format=json",
 				type : "GET",
 				dataType : "json",
+				beforeSend: function (xhr) {
+					if (token != undefined) {
+						xhr.setRequestHeader("Authorization", token.token_type + " " + token.access_token);
+					}
+				},
 				success : function(data) {
 					data.mainDoc = mainDoc;
 					data.serverBaseURL = webApplicationBaseURL;
@@ -280,15 +285,49 @@
 					getTemplate(derivateJson, "derivate-fileList.hbs", useTemplate);
 				},
 				error: function (resp, title, message) {
-					var respObj = resp.responseJSON;
+					var respObj = {
+						mycorederivate: deriID,
+						message: resp.status + " " + resp.statusText
+					};
 					getTemplate(respObj, "error.hbs", function (respObj, template) {
 						var filesTable = jQuery("#files" + deriID);
-						respObj["mycorederivate"] = deriID;
 						filesTable.html(template(respObj));
 					});
 					console.log("Derivate request failed for Derivate: " + deriID);
 				}
 			});
+		}
+
+		function getToken(callback) {
+			if ($(fileBox).attr('data-jwt') === 'required') {
+				$.ajax({
+					url: webApplicationBaseURL + "rsc/jwt",
+					type: "GET",
+					dataType: "json",
+					success: function (data) {
+						if (data.login_success) {
+							callback(data);
+						}
+						else {
+							var respObj = {
+								mycorederivate: deriID,
+								message: "401 UNAUTHORIZED"
+							};
+							getTemplate(respObj, "error.hbs", function (respObj, template) {
+								var filesTable = jQuery("#files" + deriID);
+								filesTable.html(template(respObj));
+							});
+						}
+					},
+					error: function (resp, title, message) {
+						console.log(resp);
+						console.log("Token request failed.");
+					}
+				});
+			}
+			else {
+				callback();
+			}
 		}
 
 		function getTemplate(json, templateName, cb) {
@@ -602,8 +641,10 @@
 				});
 
 				if (objID != undefined && objID != "" && deriID != undefined && deriID != "") {
-					loadI18nKeys($("html").attr("lang"), function() {
-						getDerivate("/");
+					loadI18nKeys($("html").attr("lang"), function () {
+						getToken(function (data) {
+							getDerivate(data);
+						});
 					});
 				} else {
 					console.log("Wrong objID or deriID, cant get Derivate");
