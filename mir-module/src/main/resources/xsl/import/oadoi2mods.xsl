@@ -4,9 +4,10 @@
 
 <xsl:stylesheet version="1.0" 
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  xmlns:xalan="http://xml.apache.org/xalan" 
-  xmlns:mods="http://www.loc.gov/mods/v3" 
-  exclude-result-prefixes="xsl xalan">
+  xmlns:xalan="http://xml.apache.org/xalan"
+  xmlns:mods="http://www.loc.gov/mods/v3"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  exclude-result-prefixes="xsl xalan xlink">
 
   <xsl:output method="xml" />
 
