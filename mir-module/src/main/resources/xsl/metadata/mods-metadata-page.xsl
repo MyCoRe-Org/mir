@@ -44,7 +44,7 @@
       </xsl:if>
       <!-- End: MESSAGE -->
 
-      <div class="row detail_row" itemscope="itemscope" itemtype="http://schema.org/ScholarlyArticle">
+      <div class="row detail_row">
 
         <div id="head_col" class="col-xs-12">
           <div class="row">
@@ -208,6 +208,7 @@
 <!-- end: right column -->
         </div>
 
+        <xsl:copy-of select="document(concat('xslTransform:schemaOrg:mcrobject:', @ID))" />
 <!--  end: detail row -->
       </div>
       <script src="{$WebApplicationBaseURL}mir-layout/assets/jquery/plugins/shariff/shariff.min.js"></script>

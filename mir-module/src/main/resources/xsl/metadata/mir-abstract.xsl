@@ -65,7 +65,7 @@
         </xsl:for-each>
 
         <xsl:if test="string-length($dateIssued) > 0">
-          <time itemprop="datePublished" datetime="{$dateIssued}" data-toggle="tooltip" title="Publication date">
+          <time datetime="{$dateIssued}" data-toggle="tooltip" title="Publication date">
               <xsl:variable name="dateText">
                 <xsl:variable name="date">
                   <xsl:call-template name="Tokenizer"><!-- use split function from mycore-base/coreFunctions.xsl -->
@@ -155,7 +155,7 @@
 
     <!-- headline -->
     <div id="mir-abstract-title">
-      <h1 itemprop="name">
+      <h1>
         <xsl:apply-templates mode="mods.title" select="$mods">
           <xsl:with-param name="asHTML" select="true()" />
           <xsl:with-param name="withSubtitle" select="true()" />
@@ -255,7 +255,7 @@
                       <xsl:attribute name="class">tab-pane ellipsis ellipsis-text active</xsl:attribute>
                     </xsl:if>
                     <p>
-                      <span class="ellipsis-description" itemprop="description">
+                      <span class="ellipsis-description">
                         <xsl:apply-templates select="node()" mode="unescapeHtml" />
                       </span>
                     </p>
@@ -278,7 +278,7 @@
             <div id="mir-abstract">
               <div class="ellipsis ellipsis-text">
                 <p>
-                  <span class="ellipsis-description" itemprop="description">
+                  <span class="ellipsis-description">
                     <xsl:apply-templates select="$abstracts/mods:abstract/node()" mode="unescapeHtml" />
                   </span>
                 </p>
