@@ -124,8 +124,8 @@
   margin: 5px 0px;
 }
 
-$grayLight: #f6f6f6;
-$grayDark: #ECF0F1;
+$grayLight: #f6f6f6 !default;
+$grayDark: #ECF0F1 !default;
 
 #mir_relatedItem {
   list-style: none;
