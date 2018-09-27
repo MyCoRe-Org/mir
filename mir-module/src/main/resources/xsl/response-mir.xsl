@@ -620,7 +620,6 @@
                 </div>
               </xsl:if>
               <xsl:if test="string-length($MCR.ORCID.OAuth.ClientSecret) &gt; 0">
-                <script type="text/javascript">var webApplicationBaseURL = '<xsl:value-of select="$WebApplicationBaseURL" />';</script>
                 <script src="{$WebApplicationBaseURL}js/mir/mycore2orcid.js" />
                 <div class="orcid-status" data-id="{$identifier}" />
               </xsl:if>
