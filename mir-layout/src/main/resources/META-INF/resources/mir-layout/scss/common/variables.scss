@@ -4,8 +4,8 @@
 // Just use bootstrap variables in this common section and only adjust them
 // to define a default layout, applied in all themes.
 
-$icon-font-path:          "../../../../mir-layout/assets/bootstrap/fonts/bootstrap/";
-$font-size-base:          14px;
+$icon-font-path:          "../../../../mir-layout/assets/bootstrap/fonts/bootstrap/" !default;
+$font-size-base:          14px !default;
 
 //$alert-success-bg: lighten($brand-success, 35%);
 //$alert-success-text: $brand-success;
@@ -13,8 +13,8 @@ $font-size-base:          14px;
 //$alert-info-bg: lighten($brand-info, 35%);
 //$alert-info-text: $brand-info;
 
-$alert-warning-bg: lighten($brand-warning, 35%);
-$alert-warning-text: $brand-warning;
+$alert-warning-bg: lighten($brand-warning, 35%) !default;
+$alert-warning-text: $brand-warning !default;
 
 //$alert-danger-bg: lighten($brand-danger, 35%);
 //$alert-danger-text: $brand-danger;
