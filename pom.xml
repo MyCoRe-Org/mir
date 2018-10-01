@@ -44,7 +44,7 @@
     <hibernate.version>5.2.14.Final</hibernate.version>
     <java.target.version>1.8</java.target.version>
     <jetty.version>9.4.11.v20180605</jetty.version>
-    <mycore.version>2018.06.0.1</mycore.version>
+    <mycore.version>2018.06.0.2-SNAPSHOT</mycore.version>
     <pmd.failOnViolation>false</pmd.failOnViolation>
     <selenium.version>3.14.0</selenium.version>
     <site.suffix />
