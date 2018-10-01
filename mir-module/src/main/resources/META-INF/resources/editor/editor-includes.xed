@@ -1543,11 +1543,11 @@
   </xed:template>
 
   <xed:template id="geographic">
-    <mir:geographic.repeated path="mods:subject[not(mods:topic)]/mods:geographic" min="1" max="10" label="mir.geographic" help-text="{i18n:mir.help.cartographics.place}" />
+    <mir:geographic.repeated path="mods:subject[not(mods:topic)]/mods:geographic" min="1" max="20" label="mir.geographic" help-text="{i18n:mir.help.cartographics.place}" />
   </xed:template>
 
   <xed:template id="geographic.complex">
-    <mir:geographic.repeated path="mods:subject[not(mods:topic)]/mods:geographic" min="1" max="10" label="mir.geographic" help-text="{i18n:mir.help.cartographics.place}" extended="true" />
+    <mir:geographic.repeated path="mods:subject[not(mods:topic)]/mods:geographic" min="1" max="20" label="mir.geographic" help-text="{i18n:mir.help.cartographics.place}" extended="true" />
   </xed:template>
 
   <xed:template id="geographic.input">
@@ -1729,12 +1729,12 @@
   
   <xed:template id="subject.simple">
     <xed:bind xpath="mods:subject">
-      <mir:topic.repeated min="1" max="10" label="mir.subject.topic" help-text="{i18n:mir.help.subject.topic.gnd}" />
+      <mir:topic.repeated min="1" max="20" label="mir.subject.topic" help-text="{i18n:mir.help.subject.topic.gnd}" />
     </xed:bind>
   </xed:template>
 
   <xed:template id="subject.complex">
-    <xed:repeat xpath="mods:subject[not(mods:geographic)]" min="1" max="10">
+    <xed:repeat xpath="mods:subject[not(mods:geographic)]" min="1" max="20">
       <fieldset>
         <div class="row mir-fieldset-legend">
           <legend class="col-md-9" style="margin-bottom:0px;padding-top:10px;">
@@ -1743,7 +1743,7 @@
           <mir:help-pmud pmud="true" help-text="{i18n:mir.help.subject.topic.complex}" />
         </div>
         <div class="mir-fieldset-content">
-          <mir:topic.repeated min="1" max="10" label="mir.subject.topic" help-text="{i18n:mir.help.subject.topic.gnd}" extended="true" />
+          <mir:topic.repeated min="1" max="20" label="mir.subject.topic" help-text="{i18n:mir.help.subject.topic.gnd}" extended="true" />
         </div>
       </fieldset>
     </xed:repeat>
