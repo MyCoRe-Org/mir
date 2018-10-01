@@ -68,9 +68,9 @@
 
   <xsl:template match="marc:datafield[@tag='041']">
     <mods:language>
-      <mods:languageTerm type="code" authority="rfc4646">
+      <mods:languageTerm type="code" authority="rfc5646">
         <xsl:variable name="given" select="translate(marc:subfield[@code='a'],'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')" />
-        <xsl:value-of select="document('classification:metadata:-1:children:rfc4646')/mycoreclass/categories/category[@ID=$given or label[translate(@text,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')=$given]][1]/@ID" />
+        <xsl:value-of select="document('classification:metadata:-1:children:rfc5646')/mycoreclass/categories/category[@ID=$given or label[translate(@text,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')=$given]][1]/@ID" />
       </mods:languageTerm>
     </mods:language>
   </xsl:template>

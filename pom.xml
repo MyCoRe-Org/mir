@@ -35,7 +35,7 @@
     <cargo.servlet.port>8291</cargo.servlet.port>
     <cargo.start.jvmargs />
     <cargo.tomcat.ajp.port>8292</cargo.tomcat.ajp.port>
-    <cargo.version>1.6.7</cargo.version>
+    <cargo.version>1.6.10</cargo.version>
     <changelog.since>2018-08-07</changelog.since>
     <!-- until snapshot matches released version (required for 'mvn changes:changes-check') -->
     <changes.version>2018.08</changes.version>
