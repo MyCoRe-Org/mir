@@ -344,26 +344,14 @@
     <xsl:param name="query"/>
     <xsl:param name="label"/>
 
-    <xsl:variable name="hitsSort" xmlns:encoder="xalan://java.net.URLEncoder"
-                  select="document(concat('solr:q=',encoder:encode(concat($query, ' +mods.part.order.',  $objectID, ':[* TO *]')), '&amp;rows=1000&amp;sort=mods.dateIssued desc, mods.dateIssued.host desc,',  $modsPart, ' desc, mods.title.main desc'))" />
     <xsl:variable name="hitsSortList" xmlns:encoder="xalan://java.net.URLEncoder"
-                  select="document(concat('solr:q=',encoder:encode($query), '&amp;rows=1000&amp;sort=mods.part.order.', $objectID, ' desc,mods.dateIssued desc, mods.dateIssued.host desc,',  $modsPart, ' desc, mods.title.main desc'))" />
-    <xsl:variable name="hits" xmlns:encoder="xalan://java.net.URLEncoder"
-                  select="document(concat('solr:q=',encoder:encode($query), '&amp;rows=1000&amp;sort=mods.dateIssued desc, mods.dateIssued.host desc,',  $modsPart, ' desc, mods.title.main desc&amp;group=true&amp;group.limit=100&amp;group.field=mods.yearIssued'))/response/lst[@name='grouped']/lst[@name='mods.yearIssued']" />
-    <xsl:choose>
-      <xsl:when test="$hitsSort/response/result/@numFound &gt; 0">
-        <xsl:call-template name="listSortedRelatedItems">
+                  select="document(concat('solr:q=',encoder:encode($query), '&amp;rows=1000&amp;sort=mods.part.order.', $objectID, ' desc,mods.dateIssued desc, mods.dateIssued.host desc,',  $modsPart, ' desc, mods.title.main desc&amp;group=true&amp;group.limit=100&amp;group.field=mods.yearIssued'))/response/lst[@name='grouped']/lst[@name='mods.yearIssued']" />
+    <xsl:if test="$hitsSortList/int[@name='matches'] &gt; 0">
+        <xsl:call-template name="listRelatedItems">
           <xsl:with-param name="hits" select="$hitsSortList"/>
           <xsl:with-param name="label" select="$label"/>
         </xsl:call-template>
-      </xsl:when>
-      <xsl:when test="$hits/int[@name='matches'] &gt; 0">
-          <xsl:call-template name="listRelatedItems">
-            <xsl:with-param name="hits" select="$hits"/>
-            <xsl:with-param name="label" select="$label"/>
-          </xsl:call-template>
-      </xsl:when>
-    </xsl:choose>
+    </xsl:if>
   </xsl:template>
 
   <xsl:template name="listRelatedItems">
