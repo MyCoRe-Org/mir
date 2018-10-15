@@ -408,25 +408,6 @@
     </xsl:choose>
   </xsl:template>
 
-  <xsl:template name="listSortedRelatedItems">
-    <xsl:param name="hits"/>
-    <xsl:param name="label"/>
-    <h3>
-      <xsl:value-of select="$label" />
-    </h3>
-    <ul>
-      <xsl:for-each select="$hits/response/result/doc">
-        <li>
-          <xsl:call-template name="printRelatedItem">
-            <xsl:with-param  name="responseFieldModsPart" select="str[contains(@name,'mods.part.')][contains(@name,$objectID)]" />
-            <xsl:with-param  name="title"                 select="str[@name='mods.title.main']" />
-            <xsl:with-param  name="linkText"              select="str[@name='search_result_link_text']" />
-          </xsl:call-template>
-        </li>
-      </xsl:for-each>
-    </ul>
-  </xsl:template>
-
   <xsl:template name="printRelatedItem">
     <xsl:param name="responseFieldModsPart" />
     <xsl:param name="title" />
