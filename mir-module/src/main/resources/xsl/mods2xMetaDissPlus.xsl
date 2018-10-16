@@ -549,9 +549,20 @@
 
   <xsl:template mode="doi" match="mods:mods">
     <xsl:if test="mods:identifier[@type='doi']">
-      <ddb:identifier ddb:type="DOI">
-        <xsl:value-of select="mods:identifier[@type='doi'][1]" />
-      </ddb:identifier>
+      <xsl:choose>
+        <xsl:when test="mods:identifier[@type='urn' and starts-with(text(), 'urn:nbn')]">
+          <!-- URN is given and favourite identifier for DNB -->
+          <ddb:identifier ddb:type="DOI">
+            <xsl:value-of select="mods:identifier[@type='doi'][1]" />
+          </ddb:identifier>
+        </xsl:when>
+        <xsl:otherwise>
+          <!-- No URN is given, DOI is main identifier to DNB -->
+          <dc:identifier xsi:type="doi:doi">
+            <xsl:value-of select="mods:identifier[@type='doi'][1]" />
+          </dc:identifier>
+        </xsl:otherwise>
+      </xsl:choose>
     </xsl:if>
   </xsl:template>
 
