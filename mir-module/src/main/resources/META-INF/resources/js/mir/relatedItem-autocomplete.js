@@ -244,7 +244,7 @@ function fillFieldset(fieldset, xml) {
 function createbadge(inputgroup, relItemid) {
 	badge = '<a href="../receive/' + relItemid + '" target="_blank" class="badge"> ';
 	badge += 'intern ';
-	badge += '<span class="glyphicon glyphicon-remove-circle relItem-reset"> </span>';
+	badge += '<span class="fa fa-times-circle-o relItem-reset"> </span>';
 	badge += '</a>';
 
 	inputgroup.find(".searchbadge").html(badge);
