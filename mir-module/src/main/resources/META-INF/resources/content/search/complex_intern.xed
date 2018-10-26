@@ -153,7 +153,7 @@
                             </option>
                           </select>
                           <span class="input-group-addon" data-toggle="tooltip" data-html="true" title="{i18n:editor.search.fulltext.tooltip}">
-                            <i class="glyphicon glyphicon-info-sign" />
+                            <i class="fa fa-info-circle" />
                           </span>
                         </xed:bind>
                       </div>

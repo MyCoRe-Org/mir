@@ -341,7 +341,7 @@
     // Feedback style (optical feedback for current selection)
     feedbackClass : "feedback label btn-primary",
     // Feedback cleaner icon style
-    feedbackCleanIconClass : "feedback-clean btn-primary glyphicon glyphicon-remove-circle",
+    feedbackCleanIconClass : "feedback-clean btn-primary fa fa-times-circle-o",
 
     // min length of search term
     inputMinLength : 3,

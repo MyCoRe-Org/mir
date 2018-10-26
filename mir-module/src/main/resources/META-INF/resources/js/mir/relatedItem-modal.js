@@ -233,7 +233,7 @@ $(document).ready(function() {
       autoSelect: false
     });
 
-    $("#modal-searchInput .glyphicon-search").unbind().click(function() {
+    $("#modal-searchInput .fa-search").unbind().click(function() {
       searchPublikation();
     });
 
