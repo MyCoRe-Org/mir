@@ -21,13 +21,13 @@ $(document).ready(function() {
         else {
             $(this).closest("legend").toggleClass("hiddenDetail").next().toggleClass("hidden");
         }
-        if($(this).hasClass("glyphicon-chevron-down")) {
-            $(this).removeClass("glyphicon-chevron-down");
-            $(this).addClass("glyphicon-chevron-up");
+        if($(this).hasClass("fa-chevron-down")) {
+            $(this).removeClass("fa-chevron-down");
+            $(this).addClass("fa-chevron-up");
         }
         else {
-            $(this).removeClass("glyphicon-chevron-up");
-            $(this).addClass("glyphicon-chevron-down");
+            $(this).removeClass("fa-chevron-up");
+            $(this).addClass("fa-chevron-down");
         }
     });
 

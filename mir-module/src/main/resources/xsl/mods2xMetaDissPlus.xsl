@@ -12,6 +12,7 @@
   xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions"
   xmlns:acl="xalan://org.mycore.access.MCRAccessManager"
   xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
+  xmlns:piUtil="xalan://org.mycore.pi.frontend.MCRIdentifierXSLUtils"
   xmlns:xalan="http://xml.apache.org/xalan"
 
   xmlns:cmd="http://www.cdlib.org/inside/diglib/copyrightMD"
@@ -29,7 +30,7 @@
   xmlns:dini="http://www.d-nb.de/standards/xmetadissplus/type/"
   xmlns:sub="http://www.d-nb.de/standards/subject/"
 
-  exclude-result-prefixes="xalan mcrxsl cc dc dcmitype dcterms pc urn thesis ddb dini xlink exslt mods i18n xsl gndo rdf cmd"
+  exclude-result-prefixes="xalan mcrxsl piUtil cc dc dcmitype dcterms pc urn thesis ddb dini xlink exslt mods i18n xsl gndo rdf cmd"
   xsi:schemaLocation="http://www.d-nb.de/standards/xmetadissplus/  http://files.dnb.de/standards/xmetadissplus/xmetadissplus.xsd">
 
   <xsl:output method="xml" encoding="UTF-8" />
@@ -107,7 +108,7 @@
     <xsl:apply-templates select="$mods" mode="contributor" />
     <xsl:apply-templates select="$mods" mode="date" />
     <xsl:apply-templates select="$mods" mode="type" />
-    <xsl:apply-templates select="$mods" mode="urn" />
+    <xsl:apply-templates select="$mods" mode="dc_identifier" />
     <xsl:apply-templates select="$mods" mode="format" />
     <xsl:apply-templates select="$mods" mode="publisher" />
     <xsl:apply-templates select="$mods" mode="relatedItem2source" />
@@ -116,7 +117,7 @@
     <xsl:apply-templates select="$mods" mode="degree" />
     <xsl:call-template name="file" />
     <xsl:apply-templates select="." mode="frontpage" />
-    <xsl:apply-templates select="$mods" mode="doi" />
+    <xsl:apply-templates select="$mods" mode="ddb_identifier" />
     <xsl:call-template name="rights">
       <xsl:with-param name="derivateID" select="structure/derobjects/derobject/@xlink:href" />
     </xsl:call-template>
@@ -539,31 +540,55 @@
     </dini:version_driver>
   </xsl:template>
 
-  <xsl:template mode="urn" match="mods:mods">
-    <xsl:if test="mods:identifier[@type='urn' and starts-with(text(), 'urn:nbn')]">
-      <dc:identifier xsi:type="urn:nbn">
-        <xsl:value-of select="mods:identifier[@type='urn' and starts-with(text(), 'urn:nbn')][1]" />
-      </dc:identifier>
+  <xsl:template mode="dc_identifier" match="mods:mods">
+    <xsl:choose>
+      <xsl:when test="mods:identifier[@type='urn' and starts-with(text(), 'urn:nbn')]">
+        <dc:identifier xsi:type="urn:nbn">
+          <xsl:apply-templates select="." mode="preferredURN" />
+        </dc:identifier>
+      </xsl:when>
+      <xsl:when test="mods:identifier[@type='doi']">
+        <!-- No URN is given, DOI is main identifier to DNB -->
+        <dc:identifier xsi:type="doi:doi">
+          <xsl:apply-templates select="." mode="preferredDOI" />
+        </dc:identifier>
+      </xsl:when>
+    </xsl:choose>
+  </xsl:template>
+
+  <xsl:template mode="ddb_identifier" match="mods:mods">
+    <xsl:if test="mods:identifier[@type='doi'] and mods:identifier[@type='urn' and starts-with(text(), 'urn:nbn')]">
+      <!-- URN is given and favourite identifier for DNB -->
+      <ddb:identifier ddb:type="DOI">
+        <xsl:apply-templates select="." mode="preferredDOI" />
+      </ddb:identifier>
     </xsl:if>
   </xsl:template>
 
-  <xsl:template mode="doi" match="mods:mods">
-    <xsl:if test="mods:identifier[@type='doi']">
-      <xsl:choose>
-        <xsl:when test="mods:identifier[@type='urn' and starts-with(text(), 'urn:nbn')]">
-          <!-- URN is given and favourite identifier for DNB -->
-          <ddb:identifier ddb:type="DOI">
-            <xsl:value-of select="mods:identifier[@type='doi'][1]" />
-          </ddb:identifier>
-        </xsl:when>
-        <xsl:otherwise>
-          <!-- No URN is given, DOI is main identifier to DNB -->
-          <dc:identifier xsi:type="doi:doi">
-            <xsl:value-of select="mods:identifier[@type='doi'][1]" />
-          </dc:identifier>
-        </xsl:otherwise>
-      </xsl:choose>
-    </xsl:if>
+  <xsl:template mode="preferredURN" match="mods:mods">
+    <xsl:variable name="unmanagedURN"
+                  select="mods:identifier[@type='urn' and starts-with(text(), 'urn:nbn') and not(piUtil:isManagedPI(text(), /mycoreobject/@ID))]" />
+    <xsl:choose>
+      <xsl:when test="$unmanagedURN">
+        <xsl:value-of select="$unmanagedURN[1]" />
+      </xsl:when>
+      <xsl:when test="mods:identifier[@type='urn' and starts-with(text(), 'urn:nbn')]">
+        <xsl:value-of select="mods:identifier[@type='urn' and starts-with(text(), 'urn:nbn')][1]" />
+      </xsl:when>
+    </xsl:choose>
+  </xsl:template>
+
+  <xsl:template mode="preferredDOI" match="mods:mods">
+    <xsl:variable name="unmanagedDOI"
+                  select="mods:identifier[@type='doi' and not(piUtil:isManagedPI(text(), /mycoreobject/@ID))]" />
+    <xsl:choose>
+      <xsl:when test="$unmanagedDOI">
+        <xsl:value-of select="$unmanagedDOI[1]" />
+      </xsl:when>
+      <xsl:when test="mods:identifier[@type='doi']">
+        <xsl:value-of select="mods:identifier[@type='doi'][1]" />
+      </xsl:when>
+    </xsl:choose>
   </xsl:template>
 
   <xsl:template mode="format" match="mods:mods">

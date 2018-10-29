@@ -448,20 +448,20 @@
     $("#mir_relatedItem > li > span").click(function(){
       if( $(this).parent().children("ul").is(":visible") ){
         $(this).parent().children("ul").hide();
-        $(this).parent().children("span.glyphicon").removeClass('glyphicon-chevron-down');
-        $(this).parent().children("span.glyphicon").addClass('glyphicon-chevron-right');
+        $(this).parent().children("span.fa").removeClass('fa-chevron-down');
+        $(this).parent().children("span.fa").addClass('fa-chevron-right');
       } else {
         $(this).parent().children("ul").show();
-        $(this).parent().children("span.glyphicon").removeClass('glyphicon-chevron-right');
-        $(this).parent().children("span.glyphicon").addClass('glyphicon-chevron-down');
+        $(this).parent().children("span.fa").removeClass('fa-chevron-right');
+        $(this).parent().children("span.fa").addClass('fa-chevron-down');
       }
     });
 
     $("#mir_relatedItem_showAll").click(function(event){
       event.preventDefault();
       $("#mir_relatedItem > li > ul").show();
-      $("#mir_relatedItem > li > span.glyphicon").removeClass('glyphicon-chevron-right');
-      $("#mir_relatedItem > li > span.glyphicon").addClass('glyphicon-chevron-down');
+      $("#mir_relatedItem > li > span.fa").removeClass('fa-chevron-right');
+      $("#mir_relatedItem > li > span.fa").addClass('fa-chevron-down');
       $("#mir_relatedItem_showAll").hide();
       $("#mir_relatedItem_hideAll").show();
     });
@@ -469,8 +469,8 @@
     $("#mir_relatedItem_hideAll").click(function(event){
       event.preventDefault();
       $("#mir_relatedItem > li > ul").hide();
-      $("#mir_relatedItem > li > span.glyphicon").removeClass('glyphicon-chevron-down');
-      $("#mir_relatedItem > li > span.glyphicon").addClass('glyphicon-chevron-right');
+      $("#mir_relatedItem > li > span.fa").removeClass('fa-chevron-down');
+      $("#mir_relatedItem > li > span.fa").addClass('fa-chevron-right');
       $("#mir_relatedItem_showAll").show();
       $("#mir_relatedItem_hideAll").hide();
     });

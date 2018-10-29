@@ -94,10 +94,10 @@ function adjustMenuButton() {
       // adjust icon to viewport
       if ( $( document ).width() <= 750 ) {
         // hide top
-        $('#hide_side_button #close-icon').removeClass('glyphicon-chevron-left').addClass('glyphicon-chevron-up');
+        $('#hide_side_button #close-icon').removeClass('fa-chevron-left').addClass('fa-chevron-up');
       } else {
         // hide side
-        $('#hide_side_button #close-icon').removeClass('glyphicon-chevron-up').addClass('glyphicon-chevron-left');
+        $('#hide_side_button #close-icon').removeClass('fa-chevron-up').addClass('fa-chevron-left');
       }
     } else {
       // site nav is hidden now
