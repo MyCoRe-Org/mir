@@ -15,7 +15,7 @@
       </xsl:choose>
     </xsl:variable>
     <div id="mir-breadcrumb">
-      <ul class="breadcrumb" itemprop="breadcrumb">
+      <ul class="breadcrumb">
         <li>
           <xsl:call-template name="categorySearchLink">
             <xsl:with-param name="class" select="'navtrail'" />
