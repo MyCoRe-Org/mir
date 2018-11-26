@@ -72,7 +72,7 @@ public class MIRUserController {
             driver.findElement(By.id("email")).sendKeys(mail);
         }
 
-        driver.findElement(By.name("_xed_submit_servlet:MCRUserServlet")).click();
+        driver.waitAndFindElement(By.name("_xed_submit_servlet:MCRUserServlet")).click();
         assertion.run();
         driver.get(currentUrl);
 

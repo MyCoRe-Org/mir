@@ -23,7 +23,7 @@ public class MIRITBase extends MCRSeleniumTestBase {
             this.editorController.isClassificationValidationMessageVisible());
     }
 
-    protected String getAPPUrlString() {
+    public static String getAPPUrlString() {
         return getBaseUrl(System.getProperty("it.port", "8080")) + "/" + System.getProperty("it.context");
     }
 
