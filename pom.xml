@@ -38,13 +38,13 @@
     <cargo.version>1.6.10</cargo.version>
     <changelog.since>2018-08-07</changelog.since>
     <!-- until snapshot matches released version (required for 'mvn changes:changes-check') -->
-    <changes.version>2018.08</changes.version>
+    <changes.version>2018.11</changes.version>
     <checkstyle.failOnViolation>false</checkstyle.failOnViolation>
     <forbiddenapis.version>1.7</forbiddenapis.version>
     <hibernate.version>5.2.14.Final</hibernate.version>
     <java.target.version>1.8</java.target.version>
     <jetty.version>9.4.11.v20180605</jetty.version>
-    <mycore.version>2018.11-SNAPSHOT</mycore.version>
+    <mycore.version>2018.11</mycore.version>
     <pmd.failOnViolation>false</pmd.failOnViolation>
     <selenium.version>3.14.0</selenium.version>
     <site.suffix />
