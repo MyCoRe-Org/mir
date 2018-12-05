@@ -189,18 +189,24 @@ public class MIRStrategy implements MCRAccessCheckStrategy {
             return ID_STRATEGY.checkPermission(permissionId, permission);
         }
 
+        // 4. check if creator rule applies
+        if (CREATOR_STRATEGY.isCreatorRuleAvailable(objectId.toString(), permission)) {
+            LOGGER.debug("Found match in CREATOR strategy for {} on {}.", permission, derivateId);
+            return CREATOR_STRATEGY.checkPermission(objectId.toString(), permission);
+        }
+
         return getAccessCategory(objectId, derivateId.getTypeId(), permission)
-            // 4. use rule defined for all derivates of object in category
+            // 5. use rule defined for all derivates of object in category
             .map(c -> {
                 LOGGER.debug("using access rule defined for category: " + c);
                 return ACCESS_IMPL.checkPermission(derivateId.getTypeId() + ":" + c.toString(), permission);
             })
             .orElseGet(() -> {
-                // 5. check if base strategy applies for derivate
+                // 6. check if base strategy applies for derivate
                 if (OBJECT_BASE_STRATEGY.hasRuleMapping(permissionId, permission)) {
                     return OBJECT_BASE_STRATEGY.checkPermission(permissionId, permission);
                 }
-                // 6. go for object permission, if object link exists.
+                // 7. go for object permission, if object link exists.
                 LOGGER.debug("No rule for base strategy found, check against object {}.", objectId);
                 return checkObjectPermission(objectId, permission);
             });
