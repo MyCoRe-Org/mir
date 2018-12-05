@@ -82,8 +82,25 @@
             <properties>
               <cargo.jvmargs>${cargo.jvmargs}</cargo.jvmargs>
               <cargo.start.jvmargs>${cargo.start.jvmargs}</cargo.start.jvmargs>
-              <cargo.servlet.users>submitter:submitter123:submitter|editor:editor123:editor</cargo.servlet.users>
             </properties>
+            <users>
+              <user>
+                <name>submitter</name>
+                <password>submitter123</password>
+                <roles>
+                  <role>submitter</role>
+                  <role>users</role>
+                </roles>
+              </user>
+              <user>
+                <name>editor</name>
+                <password>editor123</password>
+                <roles>
+                  <role>editor</role>
+                  <role>users</role>
+                </roles>
+              </user>
+            </users>
           </configuration>
         </configuration>
       </plugin>

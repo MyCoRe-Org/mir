@@ -35,6 +35,7 @@
     <cargo.servlet.port>8291</cargo.servlet.port>
     <cargo.start.jvmargs />
     <cargo.tomcat.ajp.port>8292</cargo.tomcat.ajp.port>
+    <cargo.version>1.7.0</cargo.version>
     <cargo.version>1.6.10</cargo.version>
     <changelog.since>2018-11-30</changelog.since>
     <!-- until snapshot matches released version (required for 'mvn changes:changes-check') -->
@@ -43,7 +44,7 @@
     <forbiddenapis.version>1.7</forbiddenapis.version>
     <hibernate.version>5.2.14.Final</hibernate.version>
     <java.target.version>1.8</java.target.version>
-    <jetty.version>9.4.11.v20180605</jetty.version>
+    <jetty.version>9.4.14.v20181114</jetty.version>
     <mycore.version>2019.02-SNAPSHOT</mycore.version>
     <pmd.failOnViolation>false</pmd.failOnViolation>
     <selenium.version>3.14.0</selenium.version>
@@ -53,8 +54,8 @@
     <sortpom.sortDeps>scope,groupId,artifactId</sortpom.sortDeps>
     <sortpom.sortFile>https://gist.githubusercontent.com/yagee-de/dfd3698c1b49173dbf251f74eb6a9297/raw/406460c088ff3cb6354e4ae6b40535e6f841607d/mycore_sort.xml</sortpom.sortFile>
     <sortpom.sortProps>true</sortpom.sortProps>
-    <tomcat8.version>8.5.32</tomcat8.version>
-    <tomcat9.version>9.0.10</tomcat9.version>
+    <tomcat8.version>8.5.35</tomcat8.version>
+    <tomcat9.version>9.0.13</tomcat9.version>
   </properties>
   <build>
     <pluginManagement>
@@ -326,6 +327,7 @@
                   <properties>
                     <cargo.servlet.port>${cargo.servlet.port}</cargo.servlet.port>
                     <cargo.runtime.args>-Dorg.eclipse.jetty.util.log.class=org.eclipse.jetty.util.log.JavaUtilLog</cargo.runtime.args>
+                    <cargo.jetty.realm.name>Restricted</cargo.jetty.realm.name>
                   </properties>
                 </configuration>
               </configuration>

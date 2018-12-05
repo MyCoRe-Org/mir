@@ -238,6 +238,15 @@
                 <properties>
                   <cargo.jvmargs>${cargo.jvmargs}</cargo.jvmargs>
                 </properties>
+                <users>
+                  <user>
+                    <name>mir</name>
+                    <password>mirgehtsgut</password>
+                    <roles>
+                      <role>usera</role>
+                    </roles>
+                  </user>
+                </users>
               </configuration>
             </configuration>
           </execution>
