@@ -292,7 +292,9 @@
             </tr>
           </table>
         </div>
-        <xsl:call-template name="orcid" />
+        <xsl:if test="string-length($MCR.ORCID.LinkURL) &gt; 0">
+          <xsl:call-template name="orcid" />
+        </xsl:if>
       </div>
     </div>
   </xsl:template>
