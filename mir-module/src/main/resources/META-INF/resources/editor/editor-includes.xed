@@ -376,8 +376,8 @@
   </xed:template>
 
   <xed:template id="thesis.advisor.repeated">
-    <mir:role.repeated role="ths" label="mir.role.thesis" help-text="{i18n:mir.help.role.thesis}" />
-    <mir:role.repeated role="aut" label="mir.role.advisor" help-text="{i18n:mir.help.role.advisor}" />
+    <mir:role.repeated role="aut" label="mir.role.thesis" help-text="{i18n:mir.help.role.thesis}" />
+    <mir:role.repeated role="ths" label="mir.role.advisor" help-text="{i18n:mir.help.role.advisor}" />
   </xed:template>
 
   <xed:template id="thesis.advisor.reviewer.repeated">
