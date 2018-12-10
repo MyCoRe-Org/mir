@@ -199,6 +199,20 @@
     </fieldset>
   </xed:template>
 
+  <xed:template id="title.original.nonrequired">
+    <fieldset>
+      <legend class="mir-fieldset-legend">
+        <xed:output i18n="mir.title.type.original" />
+      </legend>
+      <xed:bind xpath="mods:titleInfo">
+        <div class="mir-fieldset-content">
+          <mir:textfield xpath="mods:title" label="mir.title" placeholder="{i18n:mir.placeholder.title.main}" help-text="{i18n:mir.help.title}" />
+          <mir:textfield xpath="mods:subTitle" label="mir.title.subTitle" help-text="{i18n:mir.help.title.subTitle}" />
+        </div>
+      </xed:bind>
+    </fieldset>
+  </xed:template>
+
   <xed:template id="title.translated">
     <fieldset>
       <legend class="mir-fieldset-legend">
@@ -284,7 +298,7 @@
             </div>
             <mir:help-pmud help-text="{i18n:mir.help.title.complex}" pmud="true" />
           </div>
-          <mir:textarea xpath="mods:title" rows="2" label="mir.title" help-text="{i18n:mir.help.title}" class="required" />
+          <mir:textarea xpath="mods:title" rows="2" label="mir.title" help-text="{i18n:mir.help.title}" />
           <mir:textarea xpath="mods:subTitle" rows="2" label="mir.title.subTitle" help-text="{i18n:mir.help.title.subTitle}" />
         </div>
       </xed:repeat>
@@ -2077,7 +2091,6 @@
 
   <xed:template id="validation-rules">
     <xed:load-resource name="mir_genres" uri="classification:metadata:-1:children:mir_genres" />
-    <xed:validate xpath="//mods:mods/mods:titleInfo/mods:title" required="true" i18n="mir.validation.title" display="global" />
     <xed:validate xpath="//mods:mods/mods:genre[@authorityURI=$mir_genres/label[@xml:lang='x-uri']/@text]/@valueURIxEditor" required="true"
       i18n="mir.validation.genre" display="global" />
     <!-- don't validate author, date issued and rights for journal etc.  -->
