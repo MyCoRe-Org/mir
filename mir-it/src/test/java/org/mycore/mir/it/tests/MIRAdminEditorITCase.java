@@ -46,7 +46,7 @@ public class MIRAdminEditorITCase extends MIRITBase {
     public void testBaseValidation() {
         driver.waitUntilPageIsLoaded("MODS-Dokument erstellen");
         editorController.save();
-        assertBaseValidation();
+        assertAdminValidation();
         Assert.assertTrue("Genre validation should be visible!", editorController.isGenreValidationMessageVisible());
     }
 
