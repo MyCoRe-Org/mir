@@ -6,6 +6,7 @@ import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import javax.xml.parsers.SAXParser;
@@ -20,18 +21,21 @@ import org.xml.sax.helpers.DefaultHandler;
 public class MirSolrFileStrategy extends MCRSolrMimeTypeStrategy {
     private final static List<String> XML_MIME_TYPES = Arrays.asList("application/xml", "text/xml");
 
-    private final static List<String> IGNORE_XML_ROOT_LOCAL_NAMES = Arrays.asList("alto", "mets");
+    public static final String ALTO_ROOT = "alto";
+
 
     @Override
     public boolean check(Path file, BasicFileAttributes attrs) {
-        return super.check(file, attrs) && notAltoOrMets(file);
+        String mimeType = MCRXMLFunctions.getMimeType(file.getFileName().toString());
+
+        if(XML_MIME_TYPES.contains(mimeType)){
+            final String localRootName = getLocalRootName(file).orElse(null);
+            return !Objects.equals(localRootName, ALTO_ROOT);
+        }
+
+        return super.check(file, attrs);
     }
 
-    private static boolean notAltoOrMets(Path file) {
-        String mimeType = MCRXMLFunctions.getMimeType(file.getFileName().toString());
-        return !XML_MIME_TYPES.contains(mimeType)
-            || !getLocalRootName(file).map(IGNORE_XML_ROOT_LOCAL_NAMES::contains).orElse(false);
-    }
 
     private static Optional<String> getLocalRootName(Path path) {
         SAXParserFactory factory = SAXParserFactory.newInstance();
