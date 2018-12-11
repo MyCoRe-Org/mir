@@ -9,9 +9,8 @@
   xmlns:urn="http://www.ddb.de/standards/urn"
   xmlns:mods="http://www.loc.gov/mods/v3"
   xmlns:mcr="xalan://org.mycore.common.xml.MCRXMLFunctions"
-  xmlns:piUtil="xalan://org.mycore.pi.frontend.MCRIdentifierXSLUtils"
   xmlns:xalan="http://xml.apache.org/xalan"
-  exclude-result-prefixes="xalan xsl mods mcr piUtil">
+  exclude-result-prefixes="xalan xsl mods mcr">
 
   <xsl:output method="xml" encoding="UTF-8" />
   <xsl:include href="mods2record.xsl" />
@@ -32,20 +31,10 @@
     <epicur xsi:schemaLocation="urn:nbn:de:1111-2004033116 http://www.persistent-identifier.de/xepicur/version1.0/xepicur.xsd" xmlns="urn:nbn:de:1111-2004033116"
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 
-      <xsl:variable name="piServiceInformation" select="piUtil:getPIServiceInformation(@ID)" />
       <xsl:variable name="urn">
         <xsl:choose>
-          <xsl:when test="$piServiceInformation[@type='dnbUrn'][@inscribed='true']">
-            <xsl:choose>
-              <xsl:when test="./metadata/def.modsContainer/modsContainer/mods:mods/mods:identifier[@type='urn']">
-                <xsl:value-of select="./metadata/def.modsContainer/modsContainer/mods:mods/mods:identifier[@type='urn']" />
-              </xsl:when>
-              <xsl:otherwise>
-                <xsl:message terminate="yes">
-                  Could not find URN in metadata.
-                </xsl:message>
-              </xsl:otherwise>
-            </xsl:choose>
+          <xsl:when test="./metadata/def.modsContainer/modsContainer/mods:mods/mods:identifier[@type='urn']">
+            <xsl:value-of select="./metadata/def.modsContainer/modsContainer/mods:mods/mods:identifier[@type='urn']" />
           </xsl:when>
           <xsl:otherwise>
             <xsl:message terminate="yes">
