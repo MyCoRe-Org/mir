@@ -818,9 +818,42 @@
 
 <!-- document preview -->
       <div class="hit_download_box">
-            <!-- TODO: replace placeholder -->
-        <img class="hit_icon" src="{$WebApplicationBaseURL}images/icons/icon_common_disabled.png" />
-            <!-- end: placeholder -->
+        <xsl:choose>
+        <!-- we got a derivate -->
+        <xsl:when test="../../../../structure/derobjects">
+          <xsl:variable name="identifier" select="../../../../@ID" />
+          <xsl:variable name="derivid" select="../../../../structure/derobjects/derobject[1]/@xlink:href" />
+          <xsl:variable name="derivate" select="document(concat('mcrobject:',$derivid))" />
+          <xsl:variable name="maindoc" select="$derivate/mycorederivate/derivate/internals/internal/@maindoc" />
+          <xsl:variable name="contentType" select="document(concat('ifs:/',$derivid))/mcr_directory/children/child[name=$maindoc]/contentType" />
+          <xsl:variable name="fileType" select="document('webapp:FileContentTypes.xml')/FileContentTypes/type[mime=$contentType]/@ID" />
+          <xsl:choose>
+            <xsl:when
+                    test="$fileType='msexcel' or $fileType='xlsx' or $fileType='msword97' or $fileType='docx' or $fileType='pptx' or $fileType='msppt' or $fileType='zip'"
+            >
+              <div class="hit_icon" style="background-image: url('{$WebApplicationBaseURL}images/icons/icon_common.png');" />
+              <img class="hit_icon_overlay" src="{$WebApplicationBaseURL}images/svg_icons/download_{$fileType}.svg" />
+            </xsl:when>
+            <xsl:when test="$fileType='mp3'">
+              <div class="hit_icon" style="background-image: url('{$WebApplicationBaseURL}images/icons/icon_common.png');" />
+              <img class="hit_icon_overlay" src="{$WebApplicationBaseURL}images/svg_icons/download_audio.svg" />
+            </xsl:when>
+            <xsl:when test="$fileType='mpg4'">
+              <div class="hit_icon" style="background-image: url('{$WebApplicationBaseURL}images/icons/icon_common.png');" />
+              <img class="hit_icon_overlay" src="{$WebApplicationBaseURL}images/svg_icons/download_video.svg" />
+            </xsl:when>
+            <xsl:otherwise>
+              <div class="hit_icon {$contentType}"
+                   style="background-image:url('{$WebApplicationBaseURL}rsc/thumbnail/{$identifier}/100.jpg')" />
+            </xsl:otherwise>
+          </xsl:choose>
+        </xsl:when>
+          <!-- no derivate -->
+          <xsl:otherwise>
+            <!-- show default icon -->
+            <img class="hit_icon" src="{$WebApplicationBaseURL}images/icons/icon_common_disabled.png" />
+          </xsl:otherwise>
+        </xsl:choose>
       </div>
 
 <!-- hit type -->
