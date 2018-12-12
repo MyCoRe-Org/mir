@@ -42,6 +42,8 @@ public class MirSolrFileStrategyTest extends MCRTestCase {
 
     private static String simpleXML="<foo><bar /></foo>";
 
+    private static final String ALTO_XML = "<alto></alto>";
+
     @Test
     public void check() throws IOException {
         MirSolrFileStrategy strategy=new MirSolrFileStrategy();
@@ -62,11 +64,17 @@ public class MirSolrFileStrategyTest extends MCRTestCase {
         try(OutputStream os=Files.newOutputStream(xmlTest);){
             os.write(testMets.getBytes(StandardCharsets.UTF_8));
         }
-        assertFalse("Should not transmit METS files!", strategy.check(xmlTest, null));
+        assertTrue("Should transmit METS files!", strategy.check(xmlTest, null));
+
         try(OutputStream os=Files.newOutputStream(xmlTest);){
             os.write(simpleXML.getBytes(StandardCharsets.UTF_8));
         }
         assertTrue("Should transmit XML files!", strategy.check(xmlTest, null));
+
+        try(OutputStream os=Files.newOutputStream(xmlTest);){
+            os.write(ALTO_XML.getBytes(StandardCharsets.UTF_8));
+        }
+        assertFalse("Should not transmit ALTO files!", strategy.check(xmlTest, null));
         Files.deleteIfExists(xmlTest);
     }
 }
