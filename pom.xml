@@ -321,6 +321,12 @@
                     <artifactId>jetty-distribution</artifactId>
                     <version>${jetty.version}</version>
                   </artifactInstaller>
+                  <dependencies>
+                    <dependency>
+                      <groupId>com.sun.activation</groupId>
+                      <artifactId>javax.activation</artifactId>
+                    </dependency>
+                  </dependencies>
                 </container>
                 <configuration>
                   <properties>
@@ -360,6 +366,12 @@
                     <version>${tomcat.version}</version>
                     <type>tar.gz</type>
                   </artifactInstaller>
+                  <dependencies>
+                    <dependency>
+                      <groupId>com.sun.activation</groupId>
+                      <artifactId>javax.activation</artifactId>
+                    </dependency>
+                  </dependencies>
                 </container>
                 <home>${project.build.directory}/catalina-base</home>
                 <configuration>
