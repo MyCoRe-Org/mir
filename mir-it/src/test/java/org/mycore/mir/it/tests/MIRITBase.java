@@ -22,6 +22,13 @@ public class MIRITBase extends MCRSeleniumTestBase {
         Assert.assertTrue("Classification validation message should be visible!",
             this.editorController.isClassificationValidationMessageVisible());
     }
+    
+    protected void assertAdminValidation() {
+        Assert.assertTrue("Rights validation message should be visible!",
+            this.editorController.isRightsValidationMessageVisible());
+        Assert.assertTrue("Classification validation message should be visible!",
+            this.editorController.isClassificationValidationMessageVisible());
+    }
 
     public static String getAPPUrlString() {
         return getBaseUrl(System.getProperty("it.port", "8080")) + "/" + System.getProperty("it.context");

@@ -17,7 +17,7 @@
             // fixed MIR-550: overrides wrong charset=iso-8859-1
             mimeType: 'text/html;charset=UTF-8',
             success: function(data){
-                $('#crossref-citation-text').text(data);
+                $('#crossref-citation-text').html(data);
                 $('#crossref-citation-text').removeClass("hidden");
                 $('#default-citation-text').addClass("hidden");
                 $('#crossref-citation-alert').addClass("hidden");
