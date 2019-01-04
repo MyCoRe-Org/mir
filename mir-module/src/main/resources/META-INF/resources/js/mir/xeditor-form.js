@@ -224,7 +224,7 @@ $(document).ready(function() {
 
     function setLabelForClassification(parent) {
         $.ajax({
-            url: '../servlets/solr/select',
+            url: webApplicationBaseURL + 'servlets/solr/select',
             data: {
                     q: optionsToQuery(parent),
                     fq: 'classification:rfc5646',
@@ -247,7 +247,7 @@ $(document).ready(function() {
     function setSelect2(elm) {
         $(elm).select2({
             ajax: {
-                url: '../servlets/solr/select',
+                url: webApplicationBaseURL + 'servlets/solr/select',
                 data: function (params) {
                     let term = (params.term !== "") ? params.term : undefined;
                     return {
