@@ -1,17 +1,14 @@
 language: java
-sudo: false
-dist: trusty
-group: beta
+dist: xenial
+jdk:
+    - openjdk11
 install: true
 addons:
-  firefox: "56.0"
+  firefox: "latest-esr"
   apt:
     packages:
     - google-chrome-stable
     - dbus-x11
-    - openjdk-8-jdk
-jdk:
-  - openjdk8
 cache:
   directories:
     - $HOME/.m2/repository
