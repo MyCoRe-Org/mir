@@ -42,7 +42,7 @@
     <checkstyle.failOnViolation>false</checkstyle.failOnViolation>
     <forbiddenapis.version>1.7</forbiddenapis.version>
     <hibernate.version>5.2.14.Final</hibernate.version>
-    <java.target.version>1.8</java.target.version>
+    <java.target.version>11</java.target.version>
     <jetty.version>9.4.14.v20181114</jetty.version>
     <mycore.version>2019.02-SNAPSHOT</mycore.version>
     <pmd.failOnViolation>false</pmd.failOnViolation>
