@@ -16,7 +16,6 @@
       <xsl:when test="key('rights', mycoreobject/@ID)/@read or key('rights', mycoreobject/structure/derobjects/derobject/@xlink:href)/@accKeyEnabled">
 
         <xsl:variable name="objID" select="mycoreobject/@ID" />
-        <xsl:variable name="hasManagedPI" select="piUtil:hasManagedPI($objID)" />
 
         <div id="mir-collapse-files">
           <xsl:for-each select="mycoreobject/structure/derobjects/derobject[key('rights', @xlink:href)/@read]">
@@ -61,7 +60,7 @@
                 <xsl:when test="key('rights', @xlink:href)/@read">
                   <xsl:variable name="maindoc" select="$derivateXML/mycorederivate/derivate/internals/internal/@maindoc" />
                   <div class="file_box_files" data-objID="{$objID}" data-deriID="{$derId}" data-mainDoc="{$maindoc}" data-writedb="{acl:checkPermission($derId,'writedb')}"
-                    data-deletedb="{acl:checkPermission($derId,'deletedb')}" data-urn="{$hasManagedPI}">
+                    data-deletedb="{acl:checkPermission($derId,'deletedb')}">
                     <xsl:if test="not(mcr:isCurrentUserGuestUser())">
                       <xsl:attribute name="data-jwt">
                         <xsl:value-of select="'required'" />
