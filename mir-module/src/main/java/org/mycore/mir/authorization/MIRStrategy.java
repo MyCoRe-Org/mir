@@ -4,9 +4,7 @@
 package org.mycore.mir.authorization;
 
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
@@ -43,9 +41,9 @@ import org.mycore.datamodel.classifications2.MCRCategoryID;
 import org.mycore.datamodel.metadata.MCRMetadataManager;
 import org.mycore.datamodel.metadata.MCRObjectID;
 import org.mycore.mods.MCRMODSEmbargoUtils;
+import org.mycore.pi.MCRPIManager;
 import org.mycore.pi.MCRPIRegistrationInfo;
-import org.mycore.pi.backend.MCRPI;
-import org.mycore.pi.backend.MCRPI_;
+import org.mycore.pi.MCRPIServiceManager;
 import org.mycore.user2.MCRUserManager;
 
 /**
@@ -249,29 +247,11 @@ public class MIRStrategy implements MCRAccessCheckStrategy {
     }
 
     private boolean hasRegisteredPI(MCRObjectID objectId) {
-        final List<MCRPIRegistrationInfo> infos = getRegistered(objectId);
-        return infos.stream().anyMatch(i -> {
-            final Date now = new Date();
-            return Objects.nonNull(i) && now.after(i.getRegistered());
+        return MCRPIServiceManager.getInstance().getServiceList().stream().anyMatch(service -> {
+            final List<MCRPIRegistrationInfo> createdIdentifiers = MCRPIManager.getInstance()
+                .getCreatedIdentifiers(objectId, service.getType(), service.getServiceID());
+            return createdIdentifiers.stream().anyMatch(id -> service.isRegistered(objectId, id.getAdditional()));
         });
-    }
-
-    /**
-     * //TODO: move to mycore-pi in master
-     * @param object the id of the objects
-     * @return all pi assignet to the object
-     */
-    public List<MCRPIRegistrationInfo> getRegistered(MCRObjectID object) {
-        EntityManager em = MCREntityManagerProvider.getCurrentEntityManager();
-        CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<MCRPIRegistrationInfo> getQuery = cb.createQuery(MCRPIRegistrationInfo.class);
-        Root<MCRPI> pi = getQuery.from(MCRPI.class);
-        return em.createQuery(
-            getQuery
-                .select(pi)
-                .where(
-                    cb.equal(pi.get(MCRPI_.mycoreID), object.toString())))
-            .getResultList();
     }
 
     private boolean checkOtherPermission(String id, String permission) {
