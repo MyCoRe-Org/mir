@@ -126,19 +126,12 @@ public class MIRStrategy implements MCRAccessCheckStrategy {
     }
 
     private boolean checkObjectPermission(MCRObjectID objectId, String permission) {
-        return checkObjectPermission(objectId, permission, false);
-    }
-
-    private boolean checkObjectPermission(MCRObjectID objectId, String permission, boolean ignorePI) {
         LOGGER.debug("checkObjectPermission({}, {})", objectId, permission);
 
         // 1. check if the object has a assigned identifier
         final boolean hasRegisteredPI = hasRegisteredPI(objectId);
-        if (MCRAccessManager.PERMISSION_WRITE.equalsIgnoreCase(permission) ||
-            MCRAccessManager.PERMISSION_DELETE.equalsIgnoreCase(permission)) {
-            if (!ignorePI && hasRegisteredPI && !canEditPI()) {
-                return false;
-            }
+        if (MCRAccessManager.PERMISSION_DELETE.equalsIgnoreCase(permission) && hasRegisteredPI && !canEditPI()) {
+            return false;
         }
 
         // 2. check read or write key of current user
@@ -193,7 +186,7 @@ public class MIRStrategy implements MCRAccessCheckStrategy {
         // 2. check if derivate is hidden
         if (MCRAccessManager.PERMISSION_READ.equals(permission)
             && !MCRXMLFunctions.isDisplayedEnabledDerivate(derivateId.toString())
-            && !checkObjectPermission(derivateId, MCRAccessManager.PERMISSION_WRITE, true)) {
+            && !checkObjectPermission(derivateId, MCRAccessManager.PERMISSION_WRITE)) {
             // Derivate is hidden and user cannot write
             LOGGER.debug("Derivate {} is hidden and User has no write permission!", derivateId);
             return false;

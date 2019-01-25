@@ -496,7 +496,7 @@
                     </li>
                   </xsl:otherwise>
                 </xsl:choose>
-                <xsl:if test="$displayAddDerivate='true'">
+                <xsl:if test="$displayAddDerivate='true' and not(piUtil:hasManagedPI($id))">
                   <li>
                     <a onclick="javascript: $('.drop-to-object-optional').toggle();">
                       <xsl:value-of select="i18n:translate('mir.upload.addDerivate')" />
