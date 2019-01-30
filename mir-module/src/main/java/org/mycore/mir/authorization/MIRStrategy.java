@@ -32,6 +32,7 @@ import org.mycore.backend.jpa.access.MCRACCESS_;
 import org.mycore.common.MCRCache;
 import org.mycore.common.MCRException;
 import org.mycore.common.config.MCRConfiguration;
+import org.mycore.common.config.MCRConfiguration2;
 import org.mycore.common.xml.MCRXMLFunctions;
 import org.mycore.datamodel.classifications2.MCRCategLinkReference;
 import org.mycore.datamodel.classifications2.MCRCategLinkService;
@@ -40,6 +41,10 @@ import org.mycore.datamodel.classifications2.MCRCategoryID;
 import org.mycore.datamodel.metadata.MCRMetadataManager;
 import org.mycore.datamodel.metadata.MCRObjectID;
 import org.mycore.mods.MCRMODSEmbargoUtils;
+import org.mycore.pi.MCRPIManager;
+import org.mycore.pi.MCRPIRegistrationInfo;
+import org.mycore.pi.MCRPIServiceManager;
+import org.mycore.user2.MCRUserManager;
 
 /**
  * This is the standard access strategy used in the archive application. This is the queue of rule ID that is checked
@@ -57,6 +62,8 @@ import org.mycore.mods.MCRMODSEmbargoUtils;
  * @since 0.3
  */
 public class MIRStrategy implements MCRAccessCheckStrategy {
+
+    public static final String EDIT_PI_ROLES = "MIR.Strategy.EditPIRoles";
 
     private static enum PermissionIDType {
         MCRObject, MCRDerivate, Other;
@@ -121,41 +128,62 @@ public class MIRStrategy implements MCRAccessCheckStrategy {
     private boolean checkObjectPermission(MCRObjectID objectId, String permission) {
         LOGGER.debug("checkObjectPermission({}, {})", objectId, permission);
 
-        // 1. check read or write key of current user
+        // 1. check if the object has a assigned identifier
+        final boolean hasRegisteredPI = hasRegisteredPI(objectId);
+        if (MCRAccessManager.PERMISSION_DELETE.equalsIgnoreCase(permission) && hasRegisteredPI && !canEditPI()) {
+            return false;
+        }
+
+        // 2. check read or write key of current user
         if (KEY_STRATEGY_HELPER.checkObjectPermission(objectId, permission)) {
             return true;
         }
 
-        // 2. check if access mapping for object id exists
+        // 3. check if access mapping for object id exists
         String permissionId = objectId.toString();
         if (ID_STRATEGY.hasRuleMapping(permissionId, permission)) {
             LOGGER.debug("Found match in ID strategy for {} on {}.", permission, objectId);
             return ID_STRATEGY.checkPermission(permissionId, permission);
         }
 
-        // 3. check if creator rule applies
+        // 4. check if creator rule applies
         if (CREATOR_STRATEGY.isCreatorRuleAvailable(permissionId, permission)) {
             LOGGER.debug("Found match in CREATOR strategy for {} on {}.", permission, objectId);
             return CREATOR_STRATEGY.checkPermission(permissionId, permission);
         }
         return getAccessCategory(objectId, objectId.getTypeId(), permission)
-            // 4. check if classification rule applies
+            // 5. check if classification rule applies
             .map(c -> {
                 LOGGER.debug("using access rule defined for category: " + c);
                 return ACCESS_IMPL.checkPermission(objectId.getTypeId() + ":" + c.toString(), permission);
             })
-            //5. fallback to MCRObjectBaseStrategy
+            //6. fallback to MCRObjectBaseStrategy
             .orElseGet(() -> {
                 LOGGER.debug("Using BASE strategy as fallback for {} on {}.", permission, objectId);
                 return OBJECT_BASE_STRATEGY.checkPermission(permissionId, permission);
             });
     }
 
+    private boolean canEditPI() {
+        return MCRConfiguration2.getOrThrow(EDIT_PI_ROLES, MCRConfiguration2::splitValue)
+            .anyMatch(MCRUserManager.getCurrentUser()::isUserInRole);
+    }
+
     private boolean checkDerivatePermission(MCRObjectID derivateId, String permission) {
         LOGGER.debug("checkDerivatePermission({}, {})", derivateId, permission);
         String permissionId = derivateId.toString();
 
-        // 1. check if derivate is hidden
+        // 1. check if the object has a assigned identifier
+        MCRObjectID objectId = MCRMetadataManager.getObjectId(derivateId, 10, TimeUnit.MINUTES);
+        if (MCRAccessManager.PERMISSION_WRITE.equalsIgnoreCase(permission) ||
+            MCRAccessManager.PERMISSION_DELETE.equalsIgnoreCase(permission)) {
+            final boolean hasRegisteredPI = hasRegisteredPI(objectId);
+            if (hasRegisteredPI && !canEditPI()) {
+                return false;
+            }
+        }
+
+        // 2. check if derivate is hidden
         if (MCRAccessManager.PERMISSION_READ.equals(permission)
             && !MCRXMLFunctions.isDisplayedEnabledDerivate(derivateId.toString())
             && !checkObjectPermission(derivateId, MCRAccessManager.PERMISSION_WRITE)) {
@@ -164,8 +192,7 @@ public class MIRStrategy implements MCRAccessCheckStrategy {
             return false;
         }
 
-        // 2.check if derivate has embargo
-        MCRObjectID objectId = MCRMetadataManager.getObjectId(derivateId, 10, TimeUnit.MINUTES);
+        // 3.check if derivate has embargo
         if (objectId == null) {
             //2.1. fallback to MCRObjectBaseStrategy
             LOGGER.debug("Derivate {} is an orphan. Cannot apply rules for MCRObject.", derivateId);
@@ -183,33 +210,41 @@ public class MIRStrategy implements MCRAccessCheckStrategy {
             return false;
         }
 
-        // 3. check if access mapping for derivate id exists
+        // 4. check if access mapping for derivate id exists
         if (ID_STRATEGY.hasRuleMapping(permissionId, permission)) {
             LOGGER.debug("Found match in ID strategy for {} on {}.", permission, derivateId);
             return ID_STRATEGY.checkPermission(permissionId, permission);
         }
 
-        // 4. check if creator rule applies
+        // 5. check if creator rule applies
         if (CREATOR_STRATEGY.isCreatorRuleAvailable(objectId.toString(), permission)) {
             LOGGER.debug("Found match in CREATOR strategy for {} on {}.", permission, derivateId);
             return CREATOR_STRATEGY.checkPermission(objectId.toString(), permission);
         }
 
         return getAccessCategory(objectId, derivateId.getTypeId(), permission)
-            // 5. use rule defined for all derivates of object in category
+            // 6. use rule defined for all derivates of object in category
             .map(c -> {
                 LOGGER.debug("using access rule defined for category: " + c);
                 return ACCESS_IMPL.checkPermission(derivateId.getTypeId() + ":" + c.toString(), permission);
             })
             .orElseGet(() -> {
-                // 6. check if base strategy applies for derivate
+                // 7. check if base strategy applies for derivate
                 if (OBJECT_BASE_STRATEGY.hasRuleMapping(permissionId, permission)) {
                     return OBJECT_BASE_STRATEGY.checkPermission(permissionId, permission);
                 }
-                // 7. go for object permission, if object link exists.
+                // 8. go for object permission, if object link exists.
                 LOGGER.debug("No rule for base strategy found, check against object {}.", objectId);
                 return checkObjectPermission(objectId, permission);
             });
+    }
+
+    private boolean hasRegisteredPI(MCRObjectID objectId) {
+        return MCRPIServiceManager.getInstance().getServiceList().stream().anyMatch(service -> {
+            final List<MCRPIRegistrationInfo> createdIdentifiers = MCRPIManager.getInstance()
+                .getCreatedIdentifiers(objectId, service.getType(), service.getServiceID());
+            return createdIdentifiers.stream().anyMatch(id -> service.isRegistered(objectId, id.getAdditional()));
+        });
     }
 
     private boolean checkOtherPermission(String id, String permission) {
