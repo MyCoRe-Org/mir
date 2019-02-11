@@ -24,15 +24,11 @@
   <xsl:param name="nextObjectHost" />
 
   <xsl:template match="/mycoreobject" priority="0">
-    <xsl:variable name="obj_host">
-      <xsl:value-of select="$objectHost" />
-    </xsl:variable>
-
     <!-- Here put in dynamic resultlist -->
     <xsl:apply-templates select="." mode="parent" />
     <xsl:call-template name="resultsub" />
     <xsl:choose>
-      <xsl:when test="($obj_host != 'local') or acl:checkPermission(/mycoreobject/@ID,'read')">
+      <xsl:when test="acl:checkPermission(/mycoreobject/@ID,'read')">
         <!-- if access granted: print metadata -->
         <xsl:apply-templates select="." mode="present" />
         <!-- IE Fix for padding and border -->
@@ -49,24 +45,18 @@
   </xsl:template>
 
   <xsl:template match="/mycoreobject" mode="parent" priority="0">
-    <xsl:variable name="obj_host">
-      <xsl:value-of select="$objectHost" />
-    </xsl:variable>
     <xsl:if test="./structure/parents">
       <div id="parent">
         <!-- Pay a little attention to this !!! -->
         <xsl:apply-templates select="./structure/parents">
-          <xsl:with-param name="obj_host" select="$obj_host" />
           <xsl:with-param name="obj_type" select="'this'" />
         </xsl:apply-templates>
         &#160;&#160;
         <xsl:apply-templates select="./structure/parents">
-          <xsl:with-param name="obj_host" select="$obj_host" />
           <xsl:with-param name="obj_type" select="'before'" />
         </xsl:apply-templates>
         &#160;&#160;
         <xsl:apply-templates select="./structure/parents">
-          <xsl:with-param name="obj_host" select="$obj_host" />
           <xsl:with-param name="obj_type" select="'after'" />
         </xsl:apply-templates>
       </div>
@@ -130,12 +120,7 @@
       <input type="submit" value="erstellen" />
     </form>
     <xsl:variable name="objectBaseURL">
-      <xsl:if test="$objectHost != 'local'">
-        <xsl:value-of select="document('webapp:hosts.xml')/mcr:hosts/mcr:host[@alias=$objectHost]/mcr:url[@type='object']/@href" />
-      </xsl:if>
-      <xsl:if test="$objectHost = 'local'">
-        <xsl:value-of select="concat($WebApplicationBaseURL,'receive/')" />
-      </xsl:if>
+      <xsl:value-of select="concat($WebApplicationBaseURL,'receive/')" />
     </xsl:variable>
     <xsl:variable name="staticURL">
       <xsl:value-of select="concat($objectBaseURL,@ID)" />
@@ -160,12 +145,7 @@
 
   <xsl:template name="browseCtrl">
     <xsl:if test="string-length($previousObject)>0">
-      <xsl:variable name="hostParam">
-        <xsl:if test="$previousObjectHost != 'local'">
-          <xsl:value-of select="concat('?host=',$previousObjectHost)" />
-        </xsl:if>
-      </xsl:variable>
-      <a href="{$WebApplicationBaseURL}receive/{$previousObject}{$HttpSession}{$hostParam}">&lt;&lt;</a>
+      <a href="{$WebApplicationBaseURL}receive/{$previousObject}{$HttpSession}">&lt;&lt;</a>
       &#160;&#160;
     </xsl:if>
     <xsl:if test="string-length($numPerPage)>0">
@@ -175,13 +155,8 @@
     </a>
     </xsl:if>
     <xsl:if test="string-length($nextObject)>0">
-      <xsl:variable name="hostParam">
-        <xsl:if test="$nextObjectHost != 'local'">
-          <xsl:value-of select="concat('?host=',$nextObjectHost)" />
-        </xsl:if>
-      </xsl:variable>
       &#160;&#160;
-      <a href="{$WebApplicationBaseURL}receive/{$nextObject}{$HttpSession}{$hostParam}">&gt;&gt;</a>
+      <a href="{$WebApplicationBaseURL}receive/{$nextObject}{$HttpSession}">&gt;&gt;</a>
     </xsl:if>
   </xsl:template>
 
@@ -195,49 +170,46 @@
 
   <!-- Internal link from Derivate ********************************* -->
   <xsl:template match="internals">
-    <xsl:if test="$objectHost = 'local'">
-      <xsl:variable name="obj_host" select="../../../@host" />
-      <xsl:variable name="derivid" select="../../@ID" />
-      <xsl:variable name="derivlabel" select="../../@label" />
-      <xsl:variable name="derivmain" select="internal/@maindoc" />
-      <xsl:variable name="derivbase" select="concat($ServletsBaseURL,'MCRFileNodeServlet/',$derivid,'/')" />
-      <xsl:variable name="derivifs" select="concat($derivbase,$derivmain,$HttpSession)" />
-      <xsl:variable name="derivdir" select="concat($derivbase,$HttpSession)" />
-      <xsl:variable name="derivxml" select="concat('ifs:/',$derivid)" />
-      <xsl:variable name="details" select="document($derivxml)" />
-      <xsl:variable name="ctype" select="$details/mcr_directory/children/child[name=$derivmain]/contentType" />
-      <xsl:variable name="ftype" select="document('webapp:FileContentTypes.xml')/FileContentTypes/type[@ID=$ctype]/label" />
-      <xsl:variable name="size" select="$details/mcr_directory/size" />
-      <div class="derivateHeading">
-        <xsl:choose>
-          <xsl:when test="../titles">
-            <xsl:call-template name="printI18N">
-              <xsl:with-param name="nodes" select="../titles/title" />
-              <xsl:with-param name="next" select="'&lt;br /&gt;'" />
-            </xsl:call-template>
-          </xsl:when>
-          <xsl:otherwise>
-            <xsl:value-of select="$derivlabel" />
-          </xsl:otherwise>
-        </xsl:choose>
-      </div>
-      <div class="derivate">
-        <a href="{$derivifs}" target="_blank">
-          <xsl:value-of select="$derivmain" />
-        </a>
-        (
-        <xsl:value-of select="ceiling(number($size) div 1024)" />
-        &#160;kB) &#160;&#160;
-        <xsl:variable name="ziplink" select="concat($ServletsBaseURL,'MCRZipServlet',$JSessionID,'?id=',$derivid)" />
-        <a class="linkButton" href="{$ziplink}">
-          <xsl:value-of select="i18n:translate('buttons.zipGen')" />
-        </a>
-        &#160;
-        <a href="{$derivdir}">
-          <xsl:value-of select="i18n:translate('buttons.details')" />
-        </a>
-      </div>
-    </xsl:if>
+    <xsl:variable name="derivid" select="../../@ID" />
+    <xsl:variable name="derivlabel" select="../../@label" />
+    <xsl:variable name="derivmain" select="internal/@maindoc" />
+    <xsl:variable name="derivbase" select="concat($ServletsBaseURL,'MCRFileNodeServlet/',$derivid,'/')" />
+    <xsl:variable name="derivifs" select="concat($derivbase,$derivmain,$HttpSession)" />
+    <xsl:variable name="derivdir" select="concat($derivbase,$HttpSession)" />
+    <xsl:variable name="derivxml" select="concat('ifs:/',$derivid)" />
+    <xsl:variable name="details" select="document($derivxml)" />
+    <xsl:variable name="ctype" select="$details/mcr_directory/children/child[name=$derivmain]/contentType" />
+    <xsl:variable name="ftype" select="document('webapp:FileContentTypes.xml')/FileContentTypes/type[@ID=$ctype]/label" />
+    <xsl:variable name="size" select="$details/mcr_directory/size" />
+    <div class="derivateHeading">
+      <xsl:choose>
+        <xsl:when test="../titles">
+          <xsl:call-template name="printI18N">
+            <xsl:with-param name="nodes" select="../titles/title" />
+            <xsl:with-param name="next" select="'&lt;br /&gt;'" />
+          </xsl:call-template>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="$derivlabel" />
+        </xsl:otherwise>
+      </xsl:choose>
+    </div>
+    <div class="derivate">
+      <a href="{$derivifs}" target="_blank">
+        <xsl:value-of select="$derivmain" />
+      </a>
+      (
+      <xsl:value-of select="ceiling(number($size) div 1024)" />
+      &#160;kB) &#160;&#160;
+      <xsl:variable name="ziplink" select="concat($ServletsBaseURL,'MCRZipServlet',$JSessionID,'?id=',$derivid)" />
+      <a class="linkButton" href="{$ziplink}">
+        <xsl:value-of select="i18n:translate('buttons.zipGen')" />
+      </a>
+      &#160;
+      <a href="{$derivdir}">
+        <xsl:value-of select="i18n:translate('buttons.details')" />
+      </a>
+    </div>
   </xsl:template>
 
   <!-- External link from Derivate ********************************* -->
@@ -254,24 +226,12 @@
 
   <!-- Link to the parent ****************************************** -->
   <xsl:template match="parents">
-    <xsl:param name="obj_host" select="$objectHost" />
     <xsl:param name="obj_type" />
-    <xsl:variable name="hostParam">
-      <xsl:if test="$obj_host != 'local'">
-        <xsl:value-of select="concat('?host=',$obj_host)" />
-      </xsl:if>
-    </xsl:variable>
     <xsl:variable name="thisid">
       <xsl:value-of select="../../@ID" />
     </xsl:variable>
     <xsl:variable name="parent">
-      <xsl:if test="$obj_host = 'local'">
-        <xsl:copy-of select="document(concat('mcrobject:',parent/@xlink:href))/mycoreobject" />
-      </xsl:if>
-      <xsl:if test="$obj_host != 'local'">
-        <xsl:copy-of
-          select="document(concat('mcrws:operation=MCRDoRetrieveObject&amp;host=',$obj_host,'&amp;ID=',parent/@xlink:href))/mycoreobject" />
-      </xsl:if>
+      <xsl:copy-of select="document(concat('mcrobject:',parent/@xlink:href))/mycoreobject" />
     </xsl:variable>
     <xsl:variable name="parent" select="xalan:nodeset($parent)" />
     <xsl:choose>
@@ -298,7 +258,7 @@
             <xsl:value-of select="@xlink:href" />
           </xsl:variable>
           <xsl:if test="position() = $pos - 1">
-            <a href="{$WebApplicationBaseURL}receive/{$child}{$HttpSession}{$hostParam}">
+            <a href="{$WebApplicationBaseURL}receive/{$child}{$HttpSession}">
               &#60;--
             </a>
           </xsl:if>
@@ -322,7 +282,7 @@
             <xsl:value-of select="@xlink:href" />
           </xsl:variable>
           <xsl:if test="position() = $pos + 1">
-            <a href="{$WebApplicationBaseURL}receive/{$child}{$HttpSession}{$hostParam}">
+            <a href="{$WebApplicationBaseURL}receive/{$child}{$HttpSession}">
               --&#62; </a>
           </xsl:if>
         </xsl:for-each>

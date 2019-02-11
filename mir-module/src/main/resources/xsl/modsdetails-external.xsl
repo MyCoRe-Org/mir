@@ -53,9 +53,6 @@
             <!-- embargo is active for guest user -->
             <xsl:value-of select="i18n:translate('component.mods.metaData.dictionary.accessCondition.embargo.available',$embargo)" />
           </xsl:when>
-          <xsl:when test="$objectHost != 'local'">
-            <a href="{$staticURL}">nur auf original Server</a>
-          </xsl:when>
           <xsl:otherwise>
             <xsl:for-each select="./structure/derobjects/derobject">
               <xsl:variable name="deriv" select="@xlink:href" />
@@ -172,9 +169,6 @@
           <xsl:value-of select="i18n:translate('editor.search.mir.genre')" />
         </a>
       </li>
-      <xsl:variable name="obj_host">
-        <xsl:value-of select="$objectHost" />
-      </xsl:variable>
       <xsl:if test="./structure/parents">
         <xsl:variable name="parent_genre">
           <xsl:apply-templates mode="mods-type" select="document(concat('mcrobject:',./structure/parents/parent/@xlink:href))/mycoreobject" />
@@ -183,15 +177,12 @@
           <xsl:value-of select="i18n:translate(concat('component.mods.metaData.dictionary.', $parent_genre))" />
           <xsl:text>: </xsl:text>
           <xsl:apply-templates select="./structure/parents">
-            <xsl:with-param name="obj_host" select="$obj_host" />
             <xsl:with-param name="obj_type" select="'this'" />
           </xsl:apply-templates>
           <xsl:apply-templates select="./structure/parents">
-            <xsl:with-param name="obj_host" select="$obj_host" />
             <xsl:with-param name="obj_type" select="'before'" />
           </xsl:apply-templates>
           <xsl:apply-templates select="./structure/parents">
-            <xsl:with-param name="obj_host" select="$obj_host" />
             <xsl:with-param name="obj_type" select="'after'" />
           </xsl:apply-templates>
         </li>
@@ -214,12 +205,7 @@
 
   <xsl:template priority="2" mode="present" match="/mycoreobject[contains(@ID,'_mods_')]">
     <xsl:variable name="objectBaseURL">
-      <xsl:if test="$objectHost != 'local'">
-        <xsl:value-of select="document('webapp:hosts.xml')/mcr:hosts/mcr:host[@alias=$objectHost]/mcr:url[@type='object']/@href" />
-      </xsl:if>
-      <xsl:if test="$objectHost = 'local'">
-        <xsl:value-of select="concat($WebApplicationBaseURL,'receive/')" />
-      </xsl:if>
+      <xsl:value-of select="concat($WebApplicationBaseURL,'receive/')" />
     </xsl:variable>
     <xsl:variable name="staticURL">
       <xsl:value-of select="concat($objectBaseURL,@ID)" />
