@@ -66,7 +66,6 @@
           <xsl:call-template name="ClassCategLink">
             <xsl:with-param name="classid" select="@classid" />
             <xsl:with-param name="categid" select="@categid" />
-            <xsl:with-param name="host" select="'local'" />
           </xsl:call-template>
         </xsl:variable>
         <xsl:for-each select="document($classlink)/mycoreclass/categories/category">
