@@ -14,6 +14,7 @@ import org.mycore.common.selenium.drivers.MCRWebdriverWrapper;
 import org.mycore.mir.it.controller.MIRUserController;
 import org.mycore.mir.it.tests.MIRITBase;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 public class MIRSearchTestDataLoader {
@@ -51,16 +52,18 @@ public class MIRSearchTestDataLoader {
             MCRWebdriverWrapper cliDriver = new MCRWebdriverWrapper(
                 (RemoteWebDriver) webDriverWrapper.switchTo().window(webcliWindowHandle), 3000);
 
-
-            cliDriver.waitAndFindElement(By.xpath(".//input[contains(@placeholder,'Command')]"))
+            WebElement commandInput = cliDriver
+                .waitAndFindElement(By.xpath(".//input[contains(@placeholder,'Command')]"));
+            commandInput
                 .sendKeys("load all objects from directory " + extractTestData());
-            Thread.sleep(2000);
+            Thread.sleep(500);
             cliDriver.waitAndFindElement(By.xpath(".//button[contains(text(), 'Execute')]")).click();
             Thread.sleep(5000);
-            /*cliDriver.waitAndFindElement(By.xpath(".//input[contains(@placeholder,'Command)]"))
-                .sendKeys("optimize solr index");
+            commandInput
+                .sendKeys("optimize solr index in core main");
+            Thread.sleep(500);
+            cliDriver.waitAndFindElement(By.xpath(".//button[contains(text(), 'Execute')]")).click();
             Thread.sleep(1000);
-            cliDriver.waitAndFindElement(By.xpath(".//button[contains(text(), 'Execute')]")).click();*/
             /*cliDriver.waitAndFindElement(
                 By.xpath(".//*[contains(text(), '" + "load all objects from directory " + extractTestData() + "')]"));*/
             cliDriver.close();
