@@ -268,7 +268,6 @@
 					data.serverBaseURL = webApplicationBaseURL;
 					data.permWrite = aclWriteDB == "true";
 					data.permDelete = aclDeleteDB == "true";
-					data.urn = urn == "true";
 
 					setPath("/");
 					data.pagination = buildPagination(data.children);

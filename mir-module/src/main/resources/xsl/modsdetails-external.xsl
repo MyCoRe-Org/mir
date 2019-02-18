@@ -482,7 +482,7 @@
                     </li>
                   </xsl:otherwise>
                 </xsl:choose>
-                <xsl:if test="$displayAddDerivate='true'">
+                <xsl:if test="$displayAddDerivate='true' and not(piUtil:hasManagedPI($id))">
                   <li>
                     <a onclick="javascript: $('.drop-to-object-optional').toggle();">
                       <xsl:value-of select="i18n:translate('mir.upload.addDerivate')" />
@@ -526,7 +526,7 @@
                 </xsl:if>
               </xsl:if>
               <xsl:if
-                test="$CurrentUser=$MCR.Users.Superuser.UserName or ($accessdelete and not(piUtil:hasManagedPI(/mycoreobject/@ID)))">
+                test="$CurrentUser=$MCR.Users.Superuser.UserName or $accessdelete">
                 <li>
                   <xsl:choose>
                     <xsl:when test="/mycoreobject/structure/children/child">
@@ -707,7 +707,6 @@
     <xsl:if test="key('rights', $deriv)/@read">
       <xsl:variable select="concat('mcrobject:',$deriv)" name="derivlink" />
       <xsl:variable select="document($derivlink)" name="derivate" />
-      <xsl:variable name="hasManagedPI" select="piUtil:hasManagedPI($parentObjID)" />
 
       <div class="options pull-right">
         <div class="btn-group">
@@ -744,18 +743,16 @@
                   <xsl:attribute name="class">last</xsl:attribute>
                 </xsl:if>
                 <xsl:choose>
-                  <xsl:when test="not($hasManagedPI)">
                     <a href="{$ServletsBaseURL}derivate/update{$HttpSession}?objectid={../../../@ID}&amp;id={$deriv}" class="option">
                       <xsl:value-of select="i18n:translate('component.mods.metaData.options.addFile')" />
                     </a>
-                  </xsl:when>
                   <xsl:otherwise>
                     <xsl:value-of select="i18n:translate('component.mods.metaData.options.derivateLocked')" />
                   </xsl:otherwise>
                 </xsl:choose>
               </li>
             </xsl:if>-->
-            <xsl:if test="key('rights', $deriv)/@delete and not($hasManagedPI)">
+            <xsl:if test="key('rights', $deriv)/@delete">
               <li class="last">
                 <a href="{$ServletsBaseURL}derivate/delete{$HttpSession}?id={$deriv}" class="confirm_deletion option" data-text="{i18n:translate('mir.confirm.derivate.text')}">
                   <xsl:value-of select="i18n:translate('component.mods.metaData.options.delDerivate')" />
@@ -804,9 +801,42 @@
 
 <!-- document preview -->
       <div class="hit_download_box">
-            <!-- TODO: replace placeholder -->
-        <img class="hit_icon" src="{$WebApplicationBaseURL}images/icons/icon_common_disabled.png" />
-            <!-- end: placeholder -->
+        <xsl:choose>
+        <!-- we got a derivate -->
+        <xsl:when test="../../../../structure/derobjects">
+          <xsl:variable name="identifier" select="../../../../@ID" />
+          <xsl:variable name="derivid" select="../../../../structure/derobjects/derobject[1]/@xlink:href" />
+          <xsl:variable name="derivate" select="document(concat('mcrobject:',$derivid))" />
+          <xsl:variable name="maindoc" select="$derivate/mycorederivate/derivate/internals/internal/@maindoc" />
+          <xsl:variable name="contentType" select="document(concat('ifs:/',$derivid))/mcr_directory/children/child[name=$maindoc]/contentType" />
+          <xsl:variable name="fileType" select="document('webapp:FileContentTypes.xml')/FileContentTypes/type[mime=$contentType]/@ID" />
+          <xsl:choose>
+            <xsl:when
+                    test="$fileType='msexcel' or $fileType='xlsx' or $fileType='msword97' or $fileType='docx' or $fileType='pptx' or $fileType='msppt' or $fileType='zip'"
+            >
+              <div class="hit_icon" style="background-image: url('{$WebApplicationBaseURL}images/icons/icon_common.png');" />
+              <img class="hit_icon_overlay" src="{$WebApplicationBaseURL}images/svg_icons/download_{$fileType}.svg" />
+            </xsl:when>
+            <xsl:when test="$fileType='mp3'">
+              <div class="hit_icon" style="background-image: url('{$WebApplicationBaseURL}images/icons/icon_common.png');" />
+              <img class="hit_icon_overlay" src="{$WebApplicationBaseURL}images/svg_icons/download_audio.svg" />
+            </xsl:when>
+            <xsl:when test="$fileType='mpg4'">
+              <div class="hit_icon" style="background-image: url('{$WebApplicationBaseURL}images/icons/icon_common.png');" />
+              <img class="hit_icon_overlay" src="{$WebApplicationBaseURL}images/svg_icons/download_video.svg" />
+            </xsl:when>
+            <xsl:otherwise>
+              <div class="hit_icon {$contentType}"
+                   style="background-image:url('{$WebApplicationBaseURL}rsc/thumbnail/{$identifier}/100.jpg')" />
+            </xsl:otherwise>
+          </xsl:choose>
+        </xsl:when>
+          <!-- no derivate -->
+          <xsl:otherwise>
+            <!-- show default icon -->
+            <img class="hit_icon" src="{$WebApplicationBaseURL}images/icons/icon_common_disabled.png" />
+          </xsl:otherwise>
+        </xsl:choose>
       </div>
 
 <!-- hit type -->
