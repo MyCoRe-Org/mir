@@ -104,6 +104,9 @@ public class MIRWizardRequestFilter implements Filter {
     }
 
     static boolean isAuthenticated(HttpServletRequest req) {
+        if (!MCRSessionMgr.hasCurrentSession()){
+            return false;
+        }
         final String genToken = getLoginToken(req);
         final String loginToken = (String) MCRSessionMgr.getCurrentSession().get(MIRWizardStartupHandler.LOGIN_TOKEN);
 
