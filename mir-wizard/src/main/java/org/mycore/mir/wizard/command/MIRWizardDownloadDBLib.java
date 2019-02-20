@@ -30,6 +30,7 @@ import java.net.URLClassLoader;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.jdom2.Element;
+import org.mycore.common.MCRClassTools;
 import org.mycore.common.config.MCRConfigurationDir;
 import org.mycore.mir.wizard.MIRWizardCommand;
 
@@ -62,6 +63,7 @@ public class MIRWizardDownloadDBLib extends MIRWizardCommand {
 
                     success = true;
                 } catch (Exception ex) {
+                    ex.printStackTrace();
                     success = false;
                 }
 
@@ -78,7 +80,7 @@ public class MIRWizardDownloadDBLib extends MIRWizardCommand {
     }
 
     private void loadLib(URL jarFile) throws Exception {
-        URLClassLoader sysloader = (URLClassLoader) ClassLoader.getSystemClassLoader();
+        URLClassLoader sysloader = (URLClassLoader) MCRClassTools.getClassLoader();
         Class<URLClassLoader> sysclass = URLClassLoader.class;
 
         try {
