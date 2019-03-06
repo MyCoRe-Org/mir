@@ -30,7 +30,7 @@
     </xsl:variable>
     <xsl:choose>
       <xsl:when test="count(exslt:node-set($nodes)/derobject) &gt; 0">
-        <derobjects>
+        <derobjects class="{@class}">
           <xsl:copy-of select="$nodes" />
         </derobjects>  
       </xsl:when>
