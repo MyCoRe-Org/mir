@@ -845,7 +845,7 @@
         </xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
-    <xsl:if test="$searchString">
+    <xsl:if test="string-length(normalize-space($searchString))&gt;0">
       <xsl:value-of select="concat($join, 'q=', $searchString)" />
     </xsl:if>
   </xsl:template>
