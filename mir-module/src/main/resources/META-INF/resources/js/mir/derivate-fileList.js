@@ -293,7 +293,8 @@
 						filesTable.html(template(respObj));
 					});
 					console.log("Derivate request failed for Derivate: " + deriID);
-				}
+				},
+				cache: false
 			});
 		}
 
