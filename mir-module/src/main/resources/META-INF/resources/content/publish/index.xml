@@ -56,19 +56,25 @@
         </div>
       </div>
 
-      <!-- doi -->
+      <!-- more options -->
       <div id="more_options_box" class="row form-group">
-        <label for="genre" class="col-sm-3 col-lg-2 control-label">DOI:</label>
-        <input type="hidden" id="type" name="type" value="doi" />
-        <div class="col-sm-7 col-md-5  col-lg-4">
-          <input type="text" name="modsId" id="modsId" class="form-control" size="20" placeholder="z.B. 10.1093/pq/pqu057" />
-        </div>
-        <div class="hidden-xs col-sm-3 hidden-lg"></div>
-        <div class="col-sm-7 col-md-4 col-lg-5">
-          <p>
-            Sollte die Publikation bereits eine DOI besitzen, können Sie diese hier angeben. Wir prüfen dann, ob bereits in anderen
-            Datenbanken Metadaten erfasst wurden und übernehmen diese.
-          </p>
+        <h2>Publikation aus Scopus, PubMed, CrossRef oder GVK importieren</h2>
+        <div class="row form-group">
+          <label class="col-sm-3 col-lg-2 control-label">
+            <select name="type">
+              <option value="doi">DOI</option>
+              <option value="scopus">Scopus-ID</option>
+              <option value="pubmed">PubMed-ID</option>
+              <option value="isbn">ISBN</option>
+              <option value="issn">ISSN</option>
+              <option value="ieee">IEEE</option>
+              <option value="ppn">GVK-PPN</option>
+              <option value="zdbid">ZDB-ID</option>
+            </select>
+          </label>
+          <div class="col-sm-7 col-md-5 col-lg-4">
+            <input class="form-control" type="text" name="modsId" />
+          </div>
         </div>
       </div>
 
