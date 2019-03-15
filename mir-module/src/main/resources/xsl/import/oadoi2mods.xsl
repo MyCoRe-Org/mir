@@ -25,7 +25,7 @@
         <xsl:apply-templates select="genre" mode="host" />
         <xsl:apply-templates select="journal_issns" />
         <!-- xsl:call-template name="oa_journal" / -->
-        <mods:originInfo>
+        <mods:originInfo eventType="publication">
           <xsl:apply-templates select="year" />
           <xsl:apply-templates select="publisher" />
         </mods:originInfo>
