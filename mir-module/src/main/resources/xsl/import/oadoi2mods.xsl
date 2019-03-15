@@ -15,7 +15,7 @@
     <mods:mods>
       <xsl:apply-templates select="title" />
       <xsl:apply-templates select="genre" />
-      <xsl:apply-templates select="z_authors/entry" />
+      <xsl:apply-templates select="z_authors/entry[family][given]" />
       <xsl:apply-templates select="doi" />
       <xsl:apply-templates select="best_oa_location[host_type='publisher']" />
       <xsl:call-template name="oa_license" />
@@ -145,7 +145,7 @@
     </mods:titleInfo>
   </xsl:template>
   
-  <xsl:template match="z_authors/entry">
+  <xsl:template match="z_authors/entry[family][given]">
     <mods:name type="personal">
       <xsl:apply-templates select="family" />
       <xsl:apply-templates select="given" />
