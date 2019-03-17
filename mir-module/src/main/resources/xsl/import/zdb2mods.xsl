@@ -41,7 +41,7 @@
   </xsl:template>
 
   <xsl:template match="marc:datafield[@tag='264']">
-    <mods:originInfo>
+    <mods:originInfo eventType="publication">
       <xsl:apply-templates select="marc:subfield" />
     </mods:originInfo>
   </xsl:template>
