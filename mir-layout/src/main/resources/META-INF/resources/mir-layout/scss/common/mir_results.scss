@@ -2,10 +2,10 @@
  * hit list
  *****************************************************************************/
 
-$dark_neutral: $gray !default; // dark gray #999
-$light_neutral: $gray-light !default; // light gray #ccc
+$dark_neutral: $gray-600 !default; // dark gray #999
+$light_neutral: $gray-200 !default; // light gray #ccc
 $link_color: $link-color !default; // blue  #4b8fbc
-$highlight: $brand-warning !default; // orange #f39c12
+$highlight: $warning !default; // orange #f39c12
 
 $filter_back: #ECF0F1 !default;
 $filter_border: #ccc !default;
@@ -86,7 +86,6 @@ $filter: #666 !default;
       float: left;
       width: 100%;
       .panel-heading {
-        background-color: $panel-default-heading-bg;
         .panel-title {
           color: $filter_headline;
         }
@@ -248,22 +247,22 @@ $filter: #666 !default;
       .hit_state {
         color: $dark_neutral;
         .mir-published {
-          background-color: $label-success-bg;
+          //TODO: background-color: $label-success-bg;
         }
         .mir-submitted, .mir-new, .mir-imported {
-          background-color: $label-warning-bg;
+          //TODO: background-color: $label-warning-bg;
         }
         .mir-review {
-          background-color: $label-primary-bg;
+          //TODO: background-color: $label-primary-bg;
         }
         .mir-blocked {
-          background-color: $label-danger-bg;
+          //TODO: background-color: $label-danger-bg;
         }
         .mir-deleted {
-          background-color: $label-default-bg;
+          //TODO: background-color: $label-default-bg;
         }
         span {
-          background-color: $label-default-bg;
+          //TODO: background-color: $label-default-bg;
         }
       }
       .hit_title {
@@ -408,7 +407,7 @@ $filter: #666 !default;
 
 
 /* file box *****************************************************************/
-$file_box_color: $panel-default-heading-bg !default;
+$file_box_color: $card-bg !default;
 
       .file_box {
         border: 0px solid $file_box_color;
@@ -481,7 +480,7 @@ $file_box_color: $panel-default-heading-bg !default;
                   border: 0px solid transparent;
                   margin-right: 0px;
                   background-color: transparent;
-                  color: $brand-primary;
+                  color: $primary;
                   padding: 5px 10px;
                   font-size: 12px;
                   line-height: 1.5;
@@ -528,7 +527,7 @@ $file_box_color: $panel-default-heading-bg !default;
               text-decoration: none;
             }
             &.active_file {
-              background-color: fade($brand-primary, 5%);
+              background-color: fade($primary, 5%);
               .file_name {
                 position: relative;
                 font-weight: bold;
@@ -539,12 +538,12 @@ $file_box_color: $panel-default-heading-bg !default;
                   right: 0;
                   top: 0;
                   margin-top: 5px;
-                  color: $text-color;
+                  // color: $text-color; TODO: whats the bootstrap 4 default color?
                 }
               }
             }
             &.waiting_file {
-              background-color: fade($brand-primary, 5%);
+              background-color: fade($primary, 5%);
               .file_name {
                 position: relative;
                 font-weight: bold;
@@ -557,8 +556,8 @@ $file_box_color: $panel-default-heading-bg !default;
                   top: 0;
                   border-radius: 100%;
                   margin-top: 5px;
-                  color: $text-color;
-                  background-color: $text-color;
+                  // color: $text-color;TODO: whats the bootstrap 4 default color?
+                  //background-color: $text-color; TODO: whats the bootstrap 4 default color?
                   animation: sk-scaleout 0.8s infinite ease-in-out;
                   -webkit-animation: sk-scaleout 0.8s infinite ease-in-out;
                 }
@@ -630,7 +629,7 @@ $file_box_color: $panel-default-heading-bg !default;
           }
 
           .pagination-info {
-            line-height: $line-height-small;
+            // line-height: $line-height-small; // TODO find small text height
           }
         }
       }
@@ -778,6 +777,8 @@ button.orcid-button:hover, button.orcid-button:active  {
 
 
 /* sm: up to 970 px **********************************************************/
+/*
+TODO: migrate see https://getbootstrap.com/docs/4.0/migration/ strg+f Grid breakpoints
 @media (min-width: $screen-tablet) {
   .result_body .result_filter .panel, .basket_button {
     float: right;
@@ -787,16 +788,5 @@ button.orcid-button:hover, button.orcid-button:active  {
       text-align: right;
   }
 }
-
-
-/* md: up to 1170 px *********************************************************/
-@media (min-width: $screen-desktop) {
-
-}
-
-
-/* lg: larger than 1170 px ***************************************************/
-@media (min-width: $screen-lg-desktop) {
-
-}
+*/
 

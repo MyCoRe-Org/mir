@@ -6,29 +6,29 @@
         <div class="jumbotwo" >
             <div class="row">
 
-                <div class="col-xs-12">
+                <div class="col-12">
                     <h2>Mods Institutional Repository (MIR)</h2>
                 </div>
 
-                <div class="col-md-4">
+                <div class="col-4">
                     <h3><span class="fa fa-check"></span> fertig</h3>
                     <p>MIR ist eine MyCoRe-Software, die mit nur wenigen Anpassungen
                     - so wie sie ist - als Repositorium eingesetzt werden kann.</p>
-                    <p><a class="btn btn-default" href="http://mycore.de/documentation/getting_started/mir.html" role="button">weitere Informationen »</a></p>
+                    <p><a class="btn btn-secondary" href="http://mycore.de/documentation/getting_started/mir.html" role="button">weitere Informationen »</a></p>
                 </div>
-                <div class="col-md-4">
+                <div class="col-4">
                     <h3><span class="fa fa-flash"></span> mächtig</h3>
                     <p>MIR verwendet das mächtige und bewährte MODS-Datenmodell. Den
                     Kern der Webanwendung bildet MyCoRe mit einer Vielzahl von Funktionen.</p>
-                    <p><a class="btn btn-default" href="http://mycore.de/features/index.html" role="button">weitere Informationen »</a></p>
+                    <p><a class="btn btn-secondary" href="http://mycore.de/features/index.html" role="button">weitere Informationen »</a></p>
                 </div>
-                <div class="col-md-4">
+                <div class="col-4">
 
                     <h3><span class="fa fa-heart"></span> lebendig</h3>
                     <p>MIR basiert auf dem Software-Kern MyCoRe, der kontinuierlich
                     weiter entwickelt wird. Eine lebendige Community setzt MIR in
                     ihren Anwendungen ein.</p>
-                    <p><a class="btn btn-default" href="http://mycore.de/support/index.html" role="button">weitere Informationen »</a></p>
+                    <p><a class="btn btn-secondary" href="http://mycore.de/support/index.html" role="button">weitere Informationen »</a></p>
                 </div>
             </div>
         </div>

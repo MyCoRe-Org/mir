@@ -30,12 +30,12 @@
         // menu entry
         > li > a
         {
-            color: $gray;
+            color: $gray-400;
             font-size: 85%;
             padding: 0px;
             // caret
             .caret {
-                border-top-color: $gray;
+                border-top-color: $gray-400;
             }
             // menu entry - hover and focus
             &:hover,
