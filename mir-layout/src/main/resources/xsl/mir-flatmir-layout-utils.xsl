@@ -12,7 +12,7 @@
     <div id="header_box" class="clearfix container">
       <div id="options_nav_box" class="mir-prop-nav">
         <nav>
-          <ul class="nav navbar-nav pull-right">
+          <ul class="navbar-nav ml-auto flex-row">
             <xsl:call-template name="mir.loginMenu" />
             <xsl:call-template name="mir.languageMenu" />
           </ul>

@@ -29,7 +29,7 @@
     </xsl:variable>
 
     <div class="row result_head">
-      <div class="col-xs-12 result_headline">
+      <div class="col-12 result_headline">
         <h1>
           <xsl:choose>
             <xsl:when test="$hits=0">
@@ -48,7 +48,7 @@
 
 <!-- Suchschlitz mit Suchbegriff, Treffer - Nummer, Vorschau, Autor, Änderungsdatum, Link zu den Details, Filter  -->
     <div class="row result_searchline">
-      <div class="col-xs-12 col-sm-8 text-center result_search">
+      <div class="col-12 col-sm-8 text-center result_search">
         <div class="search_box">
           <xsl:variable name="searchlink" select="concat($proxyBaseURL, $HttpSession, $solrParams)" />
           <form action="{$searchlink}" class="search_form" method="post">
@@ -140,7 +140,7 @@
       </div>
 
       <!-- START: alle zu basket -->
-      <div class="col-xs-12 col-sm-4">
+      <div class="col-12 col-sm-4">
         <form class="basket_form" action="{$ServletsBaseURL}MCRBasketServlet{$HttpSession}" method="post">
           <input type="hidden" name="action" value="add" />
           <input type="hidden" name="redirect" value="referer" />
@@ -175,7 +175,7 @@
 
     <!-- xsl:if test="string-length(/response/lst[@name='responseHeader']/lst[@name='params']/str[@name='q']) &gt; 0">
       <div class="row">
-        <div class="col-xs-12 col-sm-8">
+        <div class="col-12 col-sm-8">
           <span class="fa fa-remove-circle"></span>
           <xsl:value-of select="/response/lst[@name='responseHeader']/lst[@name='params']/str[@name='q']" />
         </div>
@@ -184,7 +184,7 @@
 
 <!-- Filter, Pagination & Trefferliste -->
     <div class="row result_body">
-      <div class="col-xs-12 col-sm-4 result_filter">
+      <div class="col-12 col-sm-4 result_filter">
         <xsl:if test="/response/lst[@name='facet_counts']/lst[@name='facet_fields']/lst[@name='worldReadableComplete']/int">
           <div class="panel panel-default oa">
             <div class="panel-heading" data-toggle="collapse-next">
@@ -232,7 +232,7 @@
         </xsl:if>
       </div>
 
-      <div class="col-xs-12 col-sm-8 result_list">
+      <div class="col-12 col-sm-8 result_list">
         <xsl:comment>
           RESULT LIST START
         </xsl:comment>
@@ -307,7 +307,7 @@
 
 <!-- hit head -->
       <div class="row hit_item_head">
-        <div class="col-xs-12">
+        <div class="col-12">
 
 <!-- hit number -->
           <div class="hit_counter">
@@ -402,7 +402,7 @@
 
 <!-- hit body -->
       <div class="row hit_item_body">
-        <div class="col-xs-12">
+        <div class="col-12">
 
 <!-- document preview -->
           <div class="hit_download_box">
@@ -995,7 +995,7 @@
           </div>
         </xsl:if>
         <div class="dropdown container-fluid row">
-          <button class="btn btn-default dropdown-toggle col-md-12 col-xs-12" type="button" data-toggle="dropdown">
+          <button class="btn btn-default dropdown-toggle col-12" type="button" data-toggle="dropdown">
             <!--Filter-->
             <xsl:value-of select="i18n:translate('mir.response.button.filter')" />
             <span class="caret" />
@@ -1096,7 +1096,7 @@
           </div>
         </xsl:if>
         <div class="dropdown container-fluid row">
-          <button class="btn btn-default dropdown-toggle col-md-12 col-xs-12" type="button" data-toggle="dropdown">
+          <button class="btn btn-default dropdown-toggle col-12" type="button" data-toggle="dropdown">
             <!--Filter-->
             <xsl:value-of select="i18n:translate('mir.response.button.filter')" />
             <span class="caret" />
