@@ -77,16 +77,17 @@ $filter: #666 !default;
       text-align: center;
       margin: 0 10px 23px 0;
     }
+    /* todo: panel-default replacement */
     .panel-default {
       border: 1px solid $filter_border;
     }
-    .panel {
+     .card {
       color: $filter;
       margin: 0px 0 20px 0;
       float: left;
       width: 100%;
-      .panel-heading {
-        .panel-title {
+      .card-heading {
+        .card-title {
           color: $filter_headline;
         }
       }
@@ -765,7 +766,7 @@ button.orcid-button:hover, button.orcid-button:active  {
   .hit_pub_name {
     padding-left: 88px;
   }
-  .result_body .result_filter .panel {
+  .result_body .result_filter .card {
     width: 45%;
     margin-right: 5%;
   }

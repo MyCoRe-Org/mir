@@ -170,7 +170,7 @@
             Startseite existiert bereits s.o.
           -->
           <xsl:if test="$browserAddress != $hrefStartingPage ">
-            <li>
+            <li class="breadcrumb-item">
               <xsl:choose>
                 <xsl:when test="@href = $browserAddress">
                   <xsl:attribute name="class">active </xsl:attribute>

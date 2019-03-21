@@ -75,7 +75,7 @@
                     <div class="row detail_row bread_plus">
                       <div class="col-12">
                         <ul itemprop="breadcrumb" class="breadcrumb">
-                          <li>
+                          <li class="breadcrumb-item">
                             <a class="navtrail" href="{$WebApplicationBaseURL}"><xsl:value-of select="i18n:translate('mir.breadcrumb.home')" /></a>
                           </li>
                           <xsl:copy-of select="breadcrumb/ul[@class='breadcrumb']/*" />
