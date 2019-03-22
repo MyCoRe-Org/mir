@@ -26,10 +26,10 @@
       <xsl:variable name="statusClass">
         <xsl:choose>
           <xsl:when test="@success = 'true'">
-            <xsl:text>label-success</xsl:text>
+            <xsl:text>badge-success</xsl:text>
           </xsl:when>
           <xsl:otherwise>
-            <xsl:text>label-danger</xsl:text>
+            <xsl:text>badge-danger</xsl:text>
           </xsl:otherwise>
         </xsl:choose>
       </xsl:variable>
@@ -68,7 +68,7 @@
                 </xsl:if>
               </xsl:otherwise>
             </xsl:choose>
-            <span class="pull-right label {$statusClass}">
+            <span class="pull-right badge {$statusClass}">
               <xsl:value-of select="i18n:translate(concat('component.mir.wizard.status.', @success))" />
             </span>
           </legend>

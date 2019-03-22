@@ -30,11 +30,11 @@
             </div>
           </xsl:if>
           <xsl:if test="exception">
-            <div class="panel panel-warning">
-              <div class="panel-heading">
+            <div class="card">
+              <div class="card-header bg-danger">
                 <xsl:value-of select="concat(i18n:translate('error.stackTrace'),' :')" />
               </div>
-              <div class="panel-body">
+              <div class="card-body">
                 <xsl:for-each select="exception/trace">
                   <pre style="font-size:0.8em;">
                     <xsl:value-of select="." />

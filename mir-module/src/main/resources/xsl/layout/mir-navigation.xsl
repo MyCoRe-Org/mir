@@ -54,7 +54,7 @@
         <li class="dropdown-item">
           <xsl:if test="$active">
             <xsl:attribute name="class">
-              <xsl:value-of select="'active'" />
+              <xsl:value-of select="'dropdown-item active'" />
             </xsl:attribute>
           </xsl:if>
           <xsl:if test="item">
@@ -63,6 +63,9 @@
             </xsl:attribute>
           </xsl:if>
           <a href="{$url}">
+            <xsl:if test="@target">
+              <xsl:copy-of select="@target" />
+            </xsl:if>
             <xsl:if test="item">
               <xsl:attribute name="class">
                 <xsl:value-of select="'submenu'" />

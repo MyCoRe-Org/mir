@@ -114,7 +114,7 @@
               cancelButton: "<xsl:value-of select="i18n:translate('mir.confirm.cancelButton')" />",
               post: false,
               confirmButtonClass: "btn-danger",
-              cancelButtonClass: "btn-default",
+              cancelButtonClass: "btn-secondary",
               dialogClass: "modal-dialog modal-lg" // Bootstrap classes for large modal
             }
           });
