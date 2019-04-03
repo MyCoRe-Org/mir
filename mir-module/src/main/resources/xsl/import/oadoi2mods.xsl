@@ -14,7 +14,7 @@
   <xsl:template match="/entry">
     <mods:mods>
       <xsl:apply-templates select="title" />
-      <xsl:apply-templates select="genre" />
+      <!-- xsl:apply-templates select="genre" / -->
       <xsl:apply-templates select="z_authors/entry[family][given]" />
       <xsl:apply-templates select="doi" />
       <xsl:apply-templates select="best_oa_location[host_type='publisher']" />
@@ -22,7 +22,7 @@
       <!-- xsl:call-template name="oa_publication" / -->
       <mods:relatedItem type="host">
         <xsl:apply-templates select="journal_name" />
-        <xsl:apply-templates select="genre" mode="host" />
+        <!-- xsl:apply-templates select="genre" mode="host" / -->
         <xsl:apply-templates select="journal_issns" />
         <!-- xsl:call-template name="oa_journal" / -->
         <mods:originInfo eventType="publication">
