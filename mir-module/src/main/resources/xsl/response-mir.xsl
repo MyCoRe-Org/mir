@@ -53,7 +53,7 @@
           <xsl:variable name="searchlink" select="concat($proxyBaseURL, $HttpSession, $solrParams)" />
           <form action="{$searchlink}" class="search_form" method="post">
             <div class="input-group input-group-sm">
-              <div class="input-group-btn">
+              <div class="input-group-btn input-group-prepend">
                 <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" value="all" id="search_type_button">
                   <span id="search_type_label">
                     <xsl:value-of select="i18n:translate('mir.dropdown.all')" />
@@ -128,7 +128,7 @@
                   <input class="form-control" name="condQuery" placeholder="{i18n:translate('mir.placeholder.response.search')}" type="text" />
                 </xsl:otherwise>
               </xsl:choose>
-              <span class="input-group-btn">
+              <span class="input-group-btn input-group-append">
                 <button class="btn btn-primary" type="submit">
                   <span class="fa fa-search"></span>
                    <xsl:value-of select="i18n:translate('editor.search.search')"/>
@@ -946,32 +946,32 @@
 
       <xsl:variable name="fqValue" select="concat($facet_name,':',@name)" />
       <li data-fq="{$fqValue}">
-        <div class="checkbox">
-          <label>
-            <input type="checkbox" onclick="location.href='{$queryURL}';">
+        <div class="custom-control custom-checkbox" onclick="location.href='{$queryURL}';">
+            <input type="checkbox" class="custom-control-input">
               <xsl:if test="
               /response/lst[@name='responseHeader']/lst[@name='params']/str[@name='fq' and text() = $fqValue] |
               /response/lst[@name='responseHeader']/lst[@name='params']/arr[@name='fq']/str[text() = $fqValue]">
                 <xsl:attribute name="checked">true</xsl:attribute>
               </xsl:if>
             </input>
+          <label class="custom-control-label">
+            <span class="title">
+              <xsl:choose>
+                <xsl:when test="string-length($classId) &gt; 0">
+                  <xsl:value-of select="mcrxsl:getDisplayName($classId, @name)" />
+                </xsl:when>
+                <xsl:when test="string-length($i18nPrefix) &gt; 0">
+                  <xsl:value-of select="i18n:translate(concat($i18nPrefix,@name))" disable-output-escaping="yes" />
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:value-of select="@name" />
+                </xsl:otherwise>
+              </xsl:choose>
+            </span>
+            <span class="hits">
+              <xsl:value-of select="." />
+            </span>
           </label>
-          <span class="title">
-            <xsl:choose>
-              <xsl:when test="string-length($classId) &gt; 0">
-                <xsl:value-of select="mcrxsl:getDisplayName($classId, @name)" />
-              </xsl:when>
-              <xsl:when test="string-length($i18nPrefix) &gt; 0">
-                <xsl:value-of select="i18n:translate(concat($i18nPrefix,@name))" disable-output-escaping="yes" />
-              </xsl:when>
-              <xsl:otherwise>
-                <xsl:value-of select="@name" />
-              </xsl:otherwise>
-            </xsl:choose>
-          </span>
-          <span class="hits">
-            <xsl:value-of select="." />
-          </span>
         </div>
       </li>
     </xsl:for-each>
@@ -995,7 +995,7 @@
             </xsl:apply-templates>
           </div>
         </xsl:if>
-        <div class="dropdown container-fluid row">
+        <div class="dropdown">
           <button class="btn btn-secondary dropdown-toggle col-12" type="button" data-toggle="dropdown">
             <!--Filter-->
             <xsl:value-of select="i18n:translate('mir.response.button.filter')" />
@@ -1096,7 +1096,7 @@
             </a>
           </div>
         </xsl:if>
-        <div class="dropdown container-fluid row">
+        <div class="dropdown">
           <button class="btn btn-secondary dropdown-toggle col-12" type="button" data-toggle="dropdown">
             <!--Filter-->
             <xsl:value-of select="i18n:translate('mir.response.button.filter')" />
