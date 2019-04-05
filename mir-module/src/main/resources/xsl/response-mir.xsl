@@ -61,37 +61,37 @@
                   <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu search_type">
-                  <li>
+                  <li class="dropdown-item">
                     <a href="#" value="all">
                       <xsl:value-of select="i18n:translate('mir.dropdown.all')" />
                     </a>
                   </li>
-                  <li>
+                  <li class="dropdown-item">
                     <a href="#" value="mods.title">
                       <xsl:value-of select="i18n:translate('mir.dropdown.title')" />
                     </a>
                   </li>
-                  <li>
+                  <li class="dropdown-item">
                     <a href="#" value="mods.author">
                       <xsl:value-of select="i18n:translate('mir.dropdown.author')" />
                     </a>
                   </li>
-                  <li>
+                  <li class="dropdown-item">
                     <a href="#" value="mods.name.top">
                       <xsl:value-of select="i18n:translate('mir.dropdown.name')" />
                     </a>
                   </li>
-                  <li>
+                  <li class="dropdown-item">
                     <a href="#" value="mods.nameIdentifier">
                       <xsl:value-of select="i18n:translate('mir.dropdown.nameIdentifier')" />
                     </a>
                   </li>
-                  <li>
+                  <li class="dropdown-item">
                     <a href="#" value="allMeta">
                       <xsl:value-of select="i18n:translate('mir.dropdown.allMeta')" />
                     </a>
                   </li>
-                  <li>
+                  <li class="dropdown-item">
                     <a href="#" value="content">
                       <xsl:value-of select="i18n:translate('mir.dropdown.content')" />
                     </a>
@@ -349,14 +349,14 @@
                     <span class="caret"></span>
                   </a>
                   <ul class="dropdown-menu dropdown-menu-right">
-                    <li class="">
+                    <li class="dropdown-item">
                       <xsl:call-template name="basketLink">
                         <xsl:with-param name="identifier" select="$identifier" />
                       </xsl:call-template>
                     </li>
                         <!-- direct link to editor -->
                     <xsl:if test="acl:checkPermission($identifier,'writedb')">
-                      <li class="">
+                      <li class="dropdown-item">
                         <xsl:variable name="editURL">
                           <xsl:call-template name="mods.getObjectEditURL">
                             <xsl:with-param name="id" select="$identifier" />
@@ -1027,7 +1027,7 @@
           </xsl:otherwise>
         </xsl:choose>
       </xsl:variable>
-      <li>
+      <li class="dropdown-item">
         <xsl:call-template name="print.hyperLink">
           <xsl:with-param name="href" select="mcrxsl:regexp($filterHref,'(&amp;|%26)(start=)[0-9]*', '')" />
           <xsl:with-param name="text" select="@title" />
