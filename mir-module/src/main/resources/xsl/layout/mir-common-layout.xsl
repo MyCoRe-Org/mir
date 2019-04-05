@@ -250,7 +250,7 @@
         </sup>
       </a>
       <ul class="dropdown-menu" role="menu">
-        <li>
+        <li class="dropdown-item">
           <a href="{$ServletsBaseURL}MCRBasketServlet{$HttpSession}?type={$basket/@type}&amp;action=show">
             <xsl:value-of select="i18n:translate('basket.open')" />
           </a>
