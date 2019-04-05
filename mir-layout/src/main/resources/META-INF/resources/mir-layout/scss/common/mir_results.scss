@@ -77,18 +77,18 @@ $filter: #666 !default;
       text-align: center;
       margin: 0 10px 23px 0;
     }
-    /* todo: panel-default replacement */
-    .panel-default {
-      border: 1px solid $filter_border;
-    }
+
      .card {
-      color: $filter;
+       border: 1px solid $filter_border;
+       color: $filter;
       margin: 0px 0 20px 0;
       float: left;
       width: 100%;
-      .card-heading {
+      .card-header {
         .card-title {
+          font-size: 1rem;
           color: $filter_headline;
+          margin-bottom: 0px;
         }
       }
       .filter {
@@ -766,10 +766,7 @@ button.orcid-button:hover, button.orcid-button:active  {
   .hit_pub_name {
     padding-left: 88px;
   }
-  .result_body .result_filter .card {
-    width: 45%;
-    margin-right: 5%;
-  }
+
   .basket_button {
     width: 95%;
     margin-right: 5%;

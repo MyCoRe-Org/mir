@@ -184,15 +184,30 @@
 
 <!-- Filter, Pagination & Trefferliste -->
     <div class="row result_body">
+
+      <div class="col-12 col-sm-8 result_list">
+        <xsl:comment>
+          RESULT LIST START
+        </xsl:comment>
+        <div id="hit_list">
+          <xsl:apply-templates select="doc|arr[@name='groups']/lst/str[@name='groupValue']" />
+        </div>
+        <xsl:comment>
+          RESULT LIST END
+        </xsl:comment>
+        <div class="result_list_end" />
+        <xsl:copy-of select="$ResultPages" />
+      </div>
+
       <div class="col-12 col-sm-4 result_filter">
         <xsl:if test="/response/lst[@name='facet_counts']/lst[@name='facet_fields']/lst[@name='worldReadableComplete']/int">
-          <div class="panel panel-default oa">
-            <div class="panel-heading" data-toggle="collapse-next">
-              <h3 class="panel-title">
+          <div class="card oa">
+            <div class="card-header" data-toggle="collapse-next">
+              <h3 class="card-title">
                 <xsl:value-of select="i18n:translate('mir.response.openAccess.facet.title')" />
               </h3>
             </div>
-            <div class="panel-body collapse in">
+            <div class="card-body collapse show">
               <ul class="filter">
                 <xsl:apply-templates select="/response/lst[@name='facet_counts']/lst[@name='facet_fields']">
                   <xsl:with-param name="facet_name" select="'worldReadableComplete'" />
@@ -203,13 +218,13 @@
           </div>
         </xsl:if>
         <xsl:if test="/response/lst[@name='facet_counts']/lst[@name='facet_fields']/lst[@name='mods.genre']/int">
-          <div class="panel panel-default genre">
-            <div class="panel-heading" data-toggle="collapse-next">
-              <h3 class="panel-title">
+          <div class="card genre">
+            <div class="card-header" data-toggle="collapse-next">
+              <h3 class="card-title">
                 <xsl:value-of select="i18n:translate('editor.search.mir.genre')" />
               </h3>
             </div>
-            <div class="panel-body collapse in">
+            <div class="card-body collapse show">
               <ul class="filter">
                 <xsl:apply-templates select="/response/lst[@name='facet_counts']/lst[@name='facet_fields']">
                   <xsl:with-param name="facet_name" select="'mods.genre'" />
@@ -230,20 +245,6 @@
           </xsl:call-template>
           <xsl:call-template name="print.dateFilter" />
         </xsl:if>
-      </div>
-
-      <div class="col-12 col-sm-8 result_list">
-        <xsl:comment>
-          RESULT LIST START
-        </xsl:comment>
-        <div id="hit_list">
-          <xsl:apply-templates select="doc|arr[@name='groups']/lst/str[@name='groupValue']" />
-        </div>
-        <xsl:comment>
-          RESULT LIST END
-        </xsl:comment>
-        <div class="result_list_end" />
-        <xsl:copy-of select="$ResultPages" />
       </div>
 
     </div>
@@ -342,7 +343,7 @@
             <xsl:when test="acl:checkPermission($identifier,'writedb')">
               <div class="hit_options pull-right">
                 <div class="btn-group">
-                  <a data-toggle="dropdown" class="btn btn-default dropdown-toggle" href="#">
+                  <a data-toggle="dropdown" class="btn btn-secondary dropdown-toggle" href="#">
                     <i class="fa fa-cog"></i>
                     Aktionen
                     <span class="caret"></span>
@@ -979,14 +980,14 @@
   <xsl:template name="print.classiFilter">
     <xsl:param name="classId" />
     <xsl:param name="i18nKey" />
-    <div class="panel panel-default">
+    <div class="card">
       <xsl:variable name="classiDocument" select="document(concat('xslStyle:items2options:classification:editor:-1:children:',$classId))" />
-      <div class="panel-heading" data-toggle="collapse-next">
-        <h3 class="panel-title">
+      <div class="card-header" data-toggle="collapse-next">
+        <h3 class="card-title">
           <xsl:value-of select="i18n:translate($i18nKey)" />
         </h3>
       </div>
-      <div class="panel-body collapse in">
+      <div class="card-body collapse show">
         <xsl:if test="contains($RequestURL, concat('category.top%3A%22',$classId))">
           <div class="list-group">
             <xsl:apply-templates select="$classiDocument/select/option" mode="calculate_option_selected">
@@ -995,7 +996,7 @@
           </div>
         </xsl:if>
         <div class="dropdown container-fluid row">
-          <button class="btn btn-default dropdown-toggle col-12" type="button" data-toggle="dropdown">
+          <button class="btn btn-secondary dropdown-toggle col-12" type="button" data-toggle="dropdown">
             <!--Filter-->
             <xsl:value-of select="i18n:translate('mir.response.button.filter')" />
             <span class="caret" />
@@ -1068,13 +1069,13 @@
   </xsl:template>
 
   <xsl:template name="print.dateFilter">
-    <div class="panel panel-default mir-search-options-date">
-      <div class="panel-heading" data-toggle="collapse-next">
-        <h3 class="panel-title">
+    <div class="card mir-search-options-date">
+      <div class="card-header" data-toggle="collapse-next">
+        <h3 class="card-title">
           <xsl:value-of select="i18n:translate('component.mods.metaData.dictionary.dateIssued')" />
         </h3>
       </div>
-      <div class="panel-body collapse in">
+      <div class="card-body collapse show">
         <xsl:if test="contains($RequestURL, 'fq=mods.dateIssued')">
           <xsl:variable name="dateFilterHelper">
             <xsl:value-of select="substring-before($RequestURL, '&amp;fq=mods.dateIssued')" />
@@ -1096,7 +1097,7 @@
           </div>
         </xsl:if>
         <div class="dropdown container-fluid row">
-          <button class="btn btn-default dropdown-toggle col-12" type="button" data-toggle="dropdown">
+          <button class="btn btn-secondary dropdown-toggle col-12" type="button" data-toggle="dropdown">
             <!--Filter-->
             <xsl:value-of select="i18n:translate('mir.response.button.filter')" />
             <span class="caret" />
@@ -1124,7 +1125,7 @@
                 </div>
               </div>
               <div class="col-md-12 form-group">
-                <input id="dateSearch" type="button" class="btn btn-default form-control" value="Go!" />
+                <input id="dateSearch" type="button" class="btn btn-secondary form-control" value="Go!" />
               </div>
             </div>
           </div>
