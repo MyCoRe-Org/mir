@@ -6,7 +6,7 @@ MIR (acronym for MyCoRe/MODS Institutional Repository) is an open source reposit
 Detailed instructions you can find on [MIR Documentation site](http://mycore.de/generated/mir)
  - initialize solr configuration using `git submodule update --init --recursive`
  - to start solr, go to mir-webapp
-  - install solr with the command: `mvn solr-runner:copyHome solr-runner:installSolrPlugins`
+  - install solr with the command: `mvn solr-runner:copyHome`
   - run solr with the command: `mvn solr-runner:start`
   - stop solr with the command: `mvn solr-runner:stop`
   - update solr with the command: `mvn solr-runner:stop solr-runner:copyHome solr-runner:start`
