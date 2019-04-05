@@ -10,7 +10,8 @@ Detailed instructions you can find on [MIR Documentation site](http://mycore.de/
   - run solr with the command: `mvn solr-runner:start`
   - stop solr with the command: `mvn solr-runner:stop`
   - update solr with the command: `mvn solr-runner:stop solr-runner:copyHome solr-runner:start`
- - starting up a servlet container in development environment is quite simple: `mvn install -am -pl mir-webapp && mvn -Pdev -Djetty org.codehaus.cargo:cargo-maven2-plugin:run -pl mir-webapp` If you want to test the application with Tomcat instead replace `-Djetty` by `-Dtomcat=9`
+ - to starting up a servlet container in development environment go back to mir folder
+  - run `mvn install -am -pl mir-webapp && mvn -Pdev -Djetty org.codehaus.cargo:cargo-maven2-plugin:run -pl mir-webapp` If you want to test the application with Tomcat instead replace `-Djetty` by `-Dtomcat=9`
 
 
 ## Git-Style-Guide
