@@ -15,6 +15,7 @@
 
   <xsl:param name="step" />
   <xsl:param name="MCR.ORCID.LinkURL" />
+  <xsl:param name="MIR.ORCID.InfoURL" />
 
   <xsl:variable name="uid">
     <xsl:value-of select="/user/@name" />
@@ -330,7 +331,7 @@
         </xsl:otherwise>
       </xsl:choose>
       <p>
-        <a href="https://www.uni-due.de/ub/publikationsdienste/orcid.php">
+        <a href="{$MIR.ORCID.InfoURL}">
           <xsl:value-of select="i18n:translate('orcid.integration.more')" />
           <xsl:text>...</xsl:text>
         </a>

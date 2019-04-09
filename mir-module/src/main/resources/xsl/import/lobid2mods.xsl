@@ -23,7 +23,7 @@
       <xsl:apply-templates select="mab:datafield[@tag='100']" />
       <xsl:apply-templates select="mab:datafield[@tag='104']" />
       <xsl:apply-templates select="mab:datafield[@tag='108']" />
-      <mods:originInfo>
+      <mods:originInfo eventType="publication">
         <xsl:apply-templates select="mab:datafield[@tag='410']/mab:subfield[@code='a']|mab:datafield[@tag='419']/mab:subfield[@code='a']" />
         <xsl:apply-templates select="mab:datafield[@tag='412']/mab:subfield[@code='a']|mab:datafield[@tag='419']/mab:subfield[@code='b']" />
         <xsl:apply-templates select="mab:datafield[@tag='425']" />
