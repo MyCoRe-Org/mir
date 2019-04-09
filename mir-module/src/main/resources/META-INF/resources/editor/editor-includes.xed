@@ -552,7 +552,7 @@
       </xed:bind>
     </div>
     <!-- ========== LSF subselect ==========
-    <button type="submit" class="btn btn-default" xed:target="subselect" xed:href="../lsfSearch.html?lastName={mods:namePart[@type='family']}">
+    <button type="submit" class="btn btn-secondary" xed:target="subselect" xed:href="../lsfSearch.html?lastName={mods:namePart[@type='family']}">
       <xed:output i18n="button.selectPerson" />
     </button>
     <xed:if test="mods:namePart">
@@ -1574,7 +1574,7 @@
     <mir:textfield xpath="mods:subject/mods:cartographics/mods:coordinates" label="mir.cartographics.coordinates" help-text="{i18n:mir.help.cartographics.coordinates}" />
     <div class="form-group openstreetmap">
       <div class="col-md-2 col-md-offset-3">
-        <button type="button" class="show_openstreetmap btn btn-default" data-lat="{$MIR.editor.start.coordinates.lat}" data-lon="{$MIR.editor.start.coordinates.lon}">
+        <button type="button" class="show_openstreetmap btn btn-secondary" data-lat="{$MIR.editor.start.coordinates.lat}" data-lon="{$MIR.editor.start.coordinates.lon}">
           OpenStreetMap
         </button>
       </div>
@@ -1987,7 +1987,7 @@
   <xed:template id="cancel.submit">
     <div class="form-group" id="editor-buttons">
       <div class="col-md-offset-2 col-md-6">
-        <button type="submit" class="btn btn-default" xed:target="cancel">
+        <button type="submit" class="btn btn-secondary" xed:target="cancel">
           <xed:output i18n="button.cancel" />
         </button>
         <xed:choose>
@@ -2010,8 +2010,8 @@
   <xed:template id="debug.cancel.submit">
     <div class="form-group" id="editor-buttons">
       <div class="col-md-offset-2 col-md-6">
-        <button type="submit" class="btn btn-default" xed:target="debug">Debug</button>
-        <button type="submit" class="btn btn-default" xed:target="cancel">
+        <button type="submit" class="btn btn-secondary" xed:target="debug">Debug</button>
+        <button type="submit" class="btn btn-secondary" xed:target="cancel">
           <xed:output i18n="button.cancel" />
         </button>
         <xed:choose>
@@ -2034,7 +2034,7 @@
   <xed:template id="cancel.redirect.submit">
     <div class="form-group" id="editor-buttons">
       <div class="col-md-offset-2 col-md-6">
-        <button type="submit" class="btn btn-default" xed:target="cancel">
+        <button type="submit" class="btn btn-secondary" xed:target="cancel">
           <xed:output i18n="button.cancel" />
         </button>
         <xed:choose>

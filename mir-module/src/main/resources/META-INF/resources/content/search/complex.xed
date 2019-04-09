@@ -13,13 +13,13 @@
       <xed:source uri="webapp:editor/search/template/complex.xml" />
       <xed:bind xpath="query">
         <xed:bind xpath="@mask" default="content/search/complex.xed" />
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <h3 class="panel-title">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">
               <xed:output i18n="component.mods.editor.search.complex.label" />
             </h3>
           </div>
-          <div class="panel-body">
+          <div class="card-body">
             <div class="col-md-10">
               <xed:bind xpath="conditions/boolean/boolean">
                 <xed:repeat xpath="condition[contains(',mods.title,mods.author,mods.name,allMeta,', concat(',',@field,','))]" method="clone">
@@ -183,13 +183,13 @@
                   </div>
                 </div>
               </xed:bind>
-        <!-- submit -->
-              <div class="panel-footer clearfix">
-                <div class="pull-right">
-                  <mir:template name="submitButton" i18n="editor.search.search"
-                    target="servlet_MCRQLSearchServlet" order="primary-button"/>
-                </div>
-              </div>
+            </div>
+          </div>
+          <!-- submit -->
+          <div class="card-footer clearfix">
+            <div class="pull-right">
+              <mir:template name="submitButton" i18n="editor.search.search"
+                            target="servlet_MCRQLSearchServlet" order="primary-button"/>
             </div>
           </div>
         </div>

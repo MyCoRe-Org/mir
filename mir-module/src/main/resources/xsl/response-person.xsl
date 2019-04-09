@@ -231,7 +231,7 @@
                        placeholder="{$placeholder}" />
               </div>
               <button type="submit"
-                     class="btn btn-default search_button"
+                     class="btn btn-secondary search_button"
                      value="Suchen"
                      tabindex="1">
                 <xsl:value-of select="i18n:translate('button.search')" />

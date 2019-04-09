@@ -80,7 +80,7 @@
   </xsl:template>
 
   <xsl:template match="mir:template[@name='cancelButton']">
-    <button type="submit" xed:target="cancel" class="btn btn-default btn-{$input-size}">
+    <button type="submit" xed:target="cancel" class="btn btn-secondary btn-{$input-size}">
       <xed:output i18n="{@i18n}" />
     </button>
   </xsl:template>
@@ -378,7 +378,7 @@
               </xsl:otherwise>
             </xsl:choose>
           </xsl:variable>
-          <button id="{$id}" class="btn btn-default" type="button" aria-label="{concat('{i18n:', @i18n,'}')}">
+          <button id="{$id}" class="btn btn-secondary" type="button" aria-label="{concat('{i18n:', @i18n,'}')}">
             <xsl:if test="string-length(@i18n) &gt; 0 and (string-length(@icon) &gt; 0 and @iconOnly = 'true')">
               <xsl:attribute name="title">
               <xsl:value-of select="concat('{i18n:',@i18n,'}')" />

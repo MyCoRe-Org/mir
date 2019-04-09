@@ -95,7 +95,7 @@
           <form method="get" action="MCRUserServlet">
             <input name="action" value="show" type="hidden" />
             <input name="id" value="{$uid}" type="hidden" />
-            <input value="{i18n:translate('component.user2.button.cancelNo')}" class="btn btn-default" type="submit" />
+            <input value="{i18n:translate('component.user2.button.cancelNo')}" class="btn btn-secondary" type="submit" />
           </form>
         </div>
       </xsl:if>

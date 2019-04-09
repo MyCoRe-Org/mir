@@ -17,7 +17,7 @@
   </xsl:variable>
 
   <xsl:template name="mir-helpbutton">
-    <a tabindex="0" class="btn btn-default info-button" role="button" data-toggle="popover" data-placement="right" data-content="{@help-text}">
+    <a tabindex="0" class="btn btn-secondary info-button" role="button" data-toggle="popover" data-placement="right" data-content="{@help-text}">
       <i class="fa fa-info"></i>
     </a>
   </xsl:template>
@@ -184,7 +184,7 @@
 
   <xsl:template name="date-selectFormat">
     <div class="input-group-btn date-selectFormat">
-      <button class="btn btn-default dropdown-toggle" data-toggle="dropdown"><span class="caret"></span><span class="sr-only">Toggle Dropdown</span></button>
+      <button class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"><span class="caret"></span><span class="sr-only">Toggle Dropdown</span></button>
       <ul class="dropdown-menu dropdown-menu-right" role="menu">
         <li>
           <a href="#" class="date-simpleOption">

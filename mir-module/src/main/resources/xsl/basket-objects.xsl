@@ -149,7 +149,7 @@
   <xsl:template match="entry" mode="button">
     <xsl:param name="action" />
     <xsl:param name="icon" select="'question-sign'" />
-    <xsl:param name="class" select="'btn-default'" />
+    <xsl:param name="class" select="'btn-secondary'" />
     <xsl:param name="condition" select="true()" />
     <xsl:choose>
       <xsl:when test="$condition">
@@ -159,7 +159,7 @@
         </a>
       </xsl:when>
       <xsl:otherwise>
-        <a href="#" class="btn btn-small btn-default disabled" title="{i18n:translate(concat('basket.button.',$action))}">
+        <a href="#" class="btn btn-small btn-secondary disabled" title="{i18n:translate(concat('basket.button.',$action))}">
           <i class="fa fa-{$icon}"></i>
         </a>
       </xsl:otherwise>

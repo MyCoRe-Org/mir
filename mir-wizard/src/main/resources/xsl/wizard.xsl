@@ -108,7 +108,7 @@
             </div>
 
             <div class="modal-footer">
-              <button type="button" class="btn btn-default" data-dismiss="modal">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">
                 <xsl:value-of select="i18n:translate('component.mir.wizard.cancel')" />
               </button>
               <a href="{$ServletsBaseURL}MIRWizardServlet/shutdown" class="btn btn-danger danger">

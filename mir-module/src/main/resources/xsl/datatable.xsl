@@ -163,8 +163,8 @@
       </xsl:choose>
     </xsl:variable>
 
-    <div id="{$id}_wrapper" class="datatable panel panel-default">
-      <div class="panel-heading clearfix">
+    <div id="{$id}_wrapper" class="datatable card">
+      <div class="card-head clearfix">
         <form id="{$id}_form" class="row form-inline" role="form">
           <!-- build hidden values -->
           <xsl:call-template name="dataTableFormValues" />
@@ -262,7 +262,7 @@
           </xsl:choose>
         </table>
       </div>
-      <div class="panel-footer clearfix">
+      <div class="card-footer clearfix">
         <span id="{$id}_info">
           <xsl:if test="$pages &gt; 1">
             <xsl:attribute name="class">hidden-xs</xsl:attribute>

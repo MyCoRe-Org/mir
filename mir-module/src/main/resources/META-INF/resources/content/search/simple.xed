@@ -14,13 +14,13 @@
         <xed:bind xpath="@mask" default="content/main/search/simple.xed" />
         <xed:bind xpath="conditions/boolean">
           <xed:bind xpath="boolean[@operator='or']/condition[@field='createdby']/@value" default="{$CurrentUser}" />
-          <div class="panel panel-default">
-            <div class="panel-heading">
-              <h3 class="panel-title">
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">
                 <xed:output i18n="component.mods.editor.search.label" />
               </h3>
             </div>
-            <div class="panel-body">
+            <div class="card-body">
             <!-- Title -->
               <mir:template name="textInput" xpath="condition[@field='mods.title']/@value" id="inputTitle1" i18n="editor.search.mir.title" tooltip="editor.search.mir.title.tooltip" />
             <!-- Name -->
@@ -63,7 +63,7 @@
               </div>
             </div>
             <!-- submit -->
-            <div class="panel-footer clearfix">
+            <div class="card-footer clearfix">
               <div class="pull-right">
                 <mir:template name="submitButton" i18n="editor.search.search" target="servlet_MCRQLSearchServlet" />
               </div>

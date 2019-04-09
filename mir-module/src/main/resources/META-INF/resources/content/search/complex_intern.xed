@@ -13,13 +13,13 @@
       <xed:source uri="webapp:editor/search/template/complex_intern.xml" />
       <xed:bind xpath="query">
         <xed:bind xpath="@mask" default="content/search/complex_intern.xed" />
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <h3 class="panel-title">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">
               <xed:output i18n="component.mods.editor.search.label" />
             </h3>
           </div>
-          <div class="panel-body">
+          <div class="card-body">
 
             <xed:bind xpath="conditions/boolean/boolean">
               <xed:repeat xpath="boolean[@operator='and']">
@@ -223,7 +223,7 @@
           </div>
 
           <!-- submit -->
-          <div class="panel-footer clearfix">
+          <div class="card-footer clearfix">
             <div class="pull-right">
               <mir:template name="submitButton" i18n="editor.search.search"
                 target="servlet_MCRQLSearchServlet" order="primary-button"/>

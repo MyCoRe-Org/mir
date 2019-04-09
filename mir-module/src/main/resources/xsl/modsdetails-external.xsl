@@ -417,7 +417,7 @@
         </xsl:otherwise>
       </xsl:choose>
       <div class="btn-group w-100">
-        <a href="#" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
+        <a href="#" class="btn btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown">
           <i class="fa fa-cog">
             <xsl:value-of select="' '" />
           </i>
@@ -668,7 +668,7 @@
             </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-default modal-pi-cancel" data-dismiss="modal">
+            <button type="button" class="btn btn-secondary modal-pi-cancel" data-dismiss="modal">
               <xsl:value-of select="i18n:translate('component.pi.register.modal.abort')" />
             </button>
             <button type="button" class="btn btn-danger" id="modal-pi-add"
@@ -689,7 +689,7 @@
     >
       <div class="options pull-right">
         <div class="btn-group">
-          <a href="#" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+          <a href="#" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">
             <i class="fa fa-cog"></i>
             <xsl:value-of select="' Aktionen'" />
             <span class="caret"></span>
@@ -711,7 +711,7 @@
 
       <div class="options pull-right">
         <div class="btn-group">
-          <a href="#" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+          <a href="#" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">
             <i class="fa fa-cog"></i>
             <xsl:value-of select="' Aktionen'" />
             <span class="caret"></span>

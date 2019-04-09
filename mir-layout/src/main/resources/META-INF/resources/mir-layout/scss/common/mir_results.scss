@@ -312,7 +312,7 @@ $filter: #666 !default;
         }
         .open > .dropdown-toggle {
           color: $highlight;
-          .btn-default {
+          .btn-secondary {
             background-color: transparent;
           }
           &:hover {
@@ -496,7 +496,7 @@ $file_box_color: $card-bg !default;
                 .open > .dropdown-toggle {
                   color: $highlight;
                   background-color: transparent;
-                  .btn-default {
+                  .btn-secondary {
                     background-color: transparent;
                   }
                   &:hover {
@@ -590,7 +590,7 @@ $file_box_color: $card-bg !default;
                 .open > .dropdown-toggle {
                   color: $highlight;
                   background-color: transparent;
-                  .btn-default {
+                  .btn-secondary {
                     background-color: transparent;
                   }
                   &:hover {

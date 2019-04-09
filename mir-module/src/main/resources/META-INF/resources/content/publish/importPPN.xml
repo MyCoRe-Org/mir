@@ -38,7 +38,7 @@
       <div class="row form-group">
         <div class="col-sm-3 col-md-2"></div>
         <div class="col-sm-5 col-md-4">
-          <button type="submit" class="btn btn-default">Weiter</button>
+          <button type="submit" class="btn btn-secondary">Weiter</button>
         </div>
       </div>
 
@@ -79,7 +79,7 @@
       <div class="row form-group">
         <div class="col-sm-3 col-md-2"></div>
         <div class="col-sm-5 col-md-4">
-          <button type="submit" class="btn btn-default">Next</button>
+          <button type="submit" class="btn btn-secondary">Next</button>
         </div>
       </div>
 
