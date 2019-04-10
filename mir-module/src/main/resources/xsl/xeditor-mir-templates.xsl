@@ -49,7 +49,7 @@
         </xsl:when>
         <xsl:otherwise>
           <div>
-            <xsl:attribute name="class">form-group {$xed-validation-marker}</xsl:attribute>
+            <xsl:attribute name="class">form-group row {$xed-validation-marker}</xsl:attribute>
             <xsl:apply-templates select="." mode="formline" />
           </div>
         </xsl:otherwise>
@@ -348,18 +348,18 @@
   </xsl:template>
 
   <xsl:template match="mir:template" mode="label">
-    <label for="{@id}" class="col-md-{$label-width} control-label">
+    <label for="{@id}" class="col-md-{$label-width} col-form-label text-md-right">
       <xed:output i18n="{@i18n}" />
     </label>
   </xsl:template>
 
   <xsl:template match="mir:template" mode="inputTooltip">
     <xsl:if test="@tooltip">
-      <span class="input-group-addon" data-toggle="tooltip" data-html="true">
+      <span class="input-group-append" data-toggle="tooltip" data-html="true">
         <xsl:attribute name="title">
           <xsl:value-of select="concat('{i18n:',@tooltip,'}')" />
         </xsl:attribute>
-        <i class="fa fa-info-circle" />
+        <i class="fa fa-info-circle input-group-text" />
       </span>
     </xsl:if>
   </xsl:template>

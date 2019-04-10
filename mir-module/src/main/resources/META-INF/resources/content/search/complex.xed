@@ -24,7 +24,7 @@
               <xed:bind xpath="conditions/boolean/boolean">
                 <xed:repeat xpath="condition[contains(',mods.title,mods.author,mods.name,allMeta,', concat(',',@field,','))]" method="clone">
                   <!-- Title -->
-                  <div class="form-group">
+                  <div class="form-group row">
                     <div class="col-md-3">
                       <xed:bind xpath="@field">
                         <select class="form-control">
@@ -58,7 +58,7 @@
                         </select>
                       </xed:bind>
                     </div>
-                    <div class="col-md-7">
+                    <div class="col-md-7 row">
                       <div class="col-md-8">
                         <xed:bind xpath="@value">
                           <input type="text" class="form-control" />
@@ -97,9 +97,9 @@
                   i18n="editor.search.mir.license" tooltip="editor.search.license.tooltip"
                   uri="xslStyle:items2options:classification:editorComplete:-1:children:mir_licenses" />
               <!-- Datum -->
-                <div class="form-group">
+                <div class="form-group row">
                   <xed:bind xpath="condition[@field='mods.dateIssued']">
-                    <label for="inputDate1" class="col-md-3 control-label">
+                    <label for="inputDate1" class="col-md-3 col-form-label text-md-right">
                       <xed:output i18n="component.mods.metaData.dictionary.dateIssued" />
                     </label>
                     <div class="col-md-2">
@@ -122,8 +122,8 @@
                   </xed:bind>
                 </div>
               <!-- Volltext -->
-                <div class="form-group">
-                  <label for="inputFulltext1" class="col-md-3 control-label">
+                <div class="form-group row">
+                  <label for="inputFulltext1" class="col-md-3 col-form-label text-md-right">
                     <xed:output i18n="mir.dropdown.content" />
                   </label>
                   <div class="col-md-9">
@@ -143,8 +143,8 @@
                             <xed:output i18n="editor.search.mir.openAccess" />
                           </option>
                         </select>
-                        <span class="input-group-addon" data-toggle="tooltip" data-html="true" title="{i18n:editor.search.fulltext.tooltip}">
-                          <i class="fa fa-info-circle" />
+                        <span class="input-group-append" data-toggle="tooltip" data-html="true" title="{i18n:editor.search.fulltext.tooltip}">
+                          <i class="fa fa-info-circle input-group-text" />
                         </span>
                       </xed:bind>
                     </div>
@@ -153,8 +153,8 @@
               </xed:bind>
             <!-- sort -->
               <xed:bind xpath="sortBy/field">
-                <div class="form-group">
-                  <label for="inputSortBy" class="col-md-3 control-label">
+                <div class="form-group row">
+                  <label for="inputSortBy" class="col-md-3 col-form-label text-md-right">
                     <xed:output i18n="editor.search.sortby" />
                   </label>
                   <div class="col-md-4">

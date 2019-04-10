@@ -17,7 +17,7 @@
   top: 0;
 }
 
-*:not(.input-group-btn) > .btn {
+*:not(.input-group-btn)/*:not(.btn-group)*/ > .btn {
   margin-right: 5px;
 }
 

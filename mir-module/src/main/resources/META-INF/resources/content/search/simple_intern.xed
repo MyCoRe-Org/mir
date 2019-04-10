@@ -41,8 +41,8 @@
         <!-- /xed:bind>
         <xed:bind xpath="conditions/boolean[@operator='and']" -->
             <!--Fulltext -->
-              <div class="form-group">
-                <label for="inputFulltext1" class="col-md-3 control-label">
+              <div class="form-group row">
+                <label for="inputFulltext1" class="col-md-3  col-form-label text-right">
                   <xed:output i18n="mir.dropdown.content" />
                 </label>
                 <div class="col-md-9">
@@ -62,8 +62,8 @@
                           <xed:output i18n="editor.search.mir.openAccess" />
                         </option>
                       </select>
-                      <span class="input-group-addon" data-toggle="tooltip" data-html="true" title="{i18n:editor.search.fulltext.tooltip}">
-                        <i class="fa fa-info-circle" />
+                      <span class="input-group-append" data-toggle="tooltip" data-html="true" title="{i18n:editor.search.fulltext.tooltip}">
+                        <i class="fa fa-info-circle  input-group-text" />
                       </span>
                     </xed:bind>
                   </div>
