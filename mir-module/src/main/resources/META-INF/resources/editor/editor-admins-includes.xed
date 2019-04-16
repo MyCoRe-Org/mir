@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<xed:template xmlns:xed="http://www.mycore.de/xeditor" xmlns:mir="http://www.mycore.de/mir">
+
+  <xed:template id="admin.fields">
+    <xed:include ref="failed-validation-messages" />
+
+    <xed:bind xpath="../../../../service">
+      <xed:include ref="status" />
+    </xed:bind>
+
+    <xed:include ref="genre" />
+    <xed:include ref="title.complex.repeated" />
+    <xed:include ref="name.extended.repeated" />
+    <xed:include ref="conference.itemsearch" />
+    <xed:include ref="date.range.extended.datetimepicker" />
+    <xed:include ref="place" />
+    <xed:include ref="publisher" />
+    <xed:include ref="creator.place" />
+    <xed:include ref="creator" />
+    <xed:include ref="edition" />
+    <xed:include ref="extent" />
+    <xed:include ref="type.of.resource" />
+    <xed:include ref="language" />
+    <xed:include ref="geographic.complex" />
+    <xed:include ref="cartographics" />
+    <xed:include ref="sdnb.repeat" />
+    <xed:include ref="openAIRE" />
+    <xed:include ref="identifier.managed" />
+    <xed:include ref="identifier.repeated" />
+    <xed:include ref="shelfmark" />
+    <xed:include ref="link.repeated" />
+    <xed:include ref="embargo" />
+    <xed:include ref="access" />
+    <xed:include ref="rights" />
+    <xed:include ref="copyrightMD" />
+    <xed:include ref="institutes" />
+    <xed:include ref="subject.complex" />
+    <xed:include ref="abstract.repeated" />
+    <xed:include ref="comment.complex" />
+    <xed:include ref="related.item.search.of.all.items" />
+
+    <xed:include ref="cancel.submit" />
+    <xed:include ref="cleanup-rules" />
+    <xed:include ref="validation-rules" />
+
+    <xed:include ref="javascript" />
+    <!-- frame for modal window -->
+    <xed:include ref="modal.name" />
+    <xed:include ref="modal.body" />
+  </xed:template>
+
+</xed:template>

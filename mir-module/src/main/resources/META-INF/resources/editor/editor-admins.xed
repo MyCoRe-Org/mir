@@ -8,6 +8,8 @@
   <xed:form xmlns:xed="http://www.mycore.de/xeditor" xmlns:cmd="http://www.cdlib.org/inside/diglib/copyrightMD" method="post" role="form" class="form-horizontal">
 
     <xed:preload uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" />
+    <xed:preload uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-admins-includes.xed" />
+    <xed:preload uri="{$MIR.EditorForms.CustomIncludes}" />
 
     <xed:include ref="in.out" />
 
@@ -15,54 +17,12 @@
       <xed:include ref="mycore.common" />
 
       <xed:bind xpath="metadata/def.modsContainer[@class='MCRMetaXML'][@notinherit='true']/modsContainer/mods:mods">
-        <xed:include ref="failed-validation-messages" />
-        <xed:bind xpath="mods:typeOfResource/@mcr:categId" initially="typeOfResource:text"/>
-        <xed:bind xpath="../../../../service">
-          <xed:include ref="status" />
-        </xed:bind>
-
-        <xed:include ref="genre" />
-        <xed:include ref="title.complex.repeated" />
-        <xed:include ref="name.extended.repeated" />
-        <xed:include ref="conference.itemsearch" />
-        <xed:include ref="date.range.extended.datetimepicker" />
-        <xed:include ref="place" />
-        <xed:include ref="publisher" />
-        <xed:include ref="creator.place" />
-        <xed:include ref="creator" />
-        <xed:include ref="edition" />
-        <xed:include ref="extent" />
-        <xed:include ref="type.of.resource" />
-        <xed:include ref="language" />
-        <xed:include ref="geographic.complex" />
-        <xed:include ref="cartographics" />
-        <xed:include ref="sdnb.repeat" />
-        <xed:include ref="openAIRE" />
-        <xed:include ref="identifier.managed" />
-        <xed:include ref="identifier.repeated" />
-        <xed:include ref="shelfmark" />
-        <xed:include ref="link.repeated" />
-        <xed:include ref="embargo" />
-        <xed:include ref="access" />
-        <xed:include ref="rights" />
-        <xed:include ref="copyrightMD" />
-        <xed:include ref="institutes" />
-        <xed:include ref="subject.complex" />
-        <xed:include ref="abstract.repeated" />
-        <xed:include ref="comment.complex" />
-        <xed:include ref="related.item.search.of.all.items" />
-
-        <xed:include ref="cancel.submit" />
-        <xed:include ref="cleanup-rules" />
-        <xed:include ref="validation-rules" />
-
-        <xed:include ref="javascript" />
-        <!-- frame for modal window -->
-        <xed:include ref="modal.name" />
-        <xed:include ref="modal.body" />
-
+        <xed:bind xpath="mods:typeOfResource/@mcr:categId" initially="typeOfResource:text" />
+        <xed:include ref="admin.fields" />
       </xed:bind>
+      
     </xed:bind>
+    
   </xed:form>
 
   </section>

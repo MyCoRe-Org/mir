@@ -10,6 +10,7 @@
     <xed:preload uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" />
     <xed:preload uri="webapp:editor/editor-genres.xed" />
     <xed:preload uri="webapp:editor/editor-hosts.xed" />
+    <xed:preload uri="{$MIR.EditorForms.CustomIncludes}" />
 
     <xed:include ref="in.out" />
 

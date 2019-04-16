@@ -8,6 +8,7 @@
   <xed:form xmlns:xed="http://www.mycore.de/xeditor" xmlns:cmd="http://www.cdlib.org/inside/diglib/copyrightMD" method="post" role="form" class="form-horizontal">
 
     <xed:preload uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" />
+    <xed:preload uri="{$MIR.EditorForms.CustomIncludes}" />
 
     <xed:source uri="xslStyle:mods2editor-viatxt:mcrobject:{$id}" />
     <xed:cancel url="../servlets/MCRLockServlet?action=unlock&amp;id={$id}&amp;url=/receive/{$id}" />
