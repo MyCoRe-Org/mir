@@ -75,7 +75,7 @@
           </fieldset>
         </xed:if>
 
-        <xed:include ref="submit" />
+        <xed:include ref="genres.submit" />
 
         <xed:include ref="javascript" />
         <!-- frame for modal window -->
