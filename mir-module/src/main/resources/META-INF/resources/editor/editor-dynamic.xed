@@ -6,11 +6,15 @@
   <section xml:lang="all">
 
   <xed:form xmlns:xed="http://www.mycore.de/xeditor" xmlns:cmd="http://www.cdlib.org/inside/diglib/copyrightMD" method="post" role="form" class="form-horizontal" id="dynamic_editor">
-    <xed:include uri="webapp:editor/editor-includes.xed" ref="in.out" />
 
+    <xed:preload uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" />
+    <xed:preload uri="webapp:editor/editor-genres.xed" />
+    <xed:preload uri="webapp:editor/editor-hosts.xed" />
+
+    <xed:include ref="in.out" />
 
     <xed:bind xpath="/mycoreobject">
-      <xed:include uri="webapp:editor/editor-includes.xed" ref="mycore.common" />
+      <xed:include ref="mycore.common" />
       <xed:bind xpath="metadata/def.modsContainer[@class='MCRMetaXML'][@notinherit='true']/modsContainer/mods:mods">
 
         <!-- If genre is not set in edited XML, it comes from request parameter and must be created -->
@@ -33,10 +37,10 @@
           </xed:if>
         </h1>
 
-        <xed:include uri="webapp:editor/editor-includes.xed" ref="failed-validation-messages" />
+        <xed:include ref="failed-validation-messages" />
 
         <fieldset>
-          <xed:include uri="webapp:editor/editor-genres.xed" ref="{$genre_intern}" />
+          <xed:include ref="genres.{$genre_intern}" />
         </fieldset>
 
         <xed:if test="not($host='standalone')">
@@ -45,7 +49,7 @@
               <xed:output value="concat('erschienen in ',$genres//category[@ID=$host]/label[lang($CurrentLang)]/@text,':')" />
             </div>
             <div class="mir-relatedItem-body">
-              <xed:include uri="webapp:editor/editor-hosts.xed" ref="{$host}" />
+              <xed:include ref="hosts.{$host}" />
               <xed:bind xpath="mods:relatedItem[(@type='host') or (@type='series')][1]">
                 <xed:bind xpath="mods:genre[@type='intern'][@authorityURI=$mir_genres/label[@xml:lang='x-uri']/@text]/@valueURIxEditor" initially="{$host}" />
               </xed:bind>
@@ -58,7 +62,7 @@
                       <xed:output value="concat($genres//category[@ID=$host]/label[lang($CurrentLang)]/@text,' erschienen in Serie:')" />
                     </div>
                     <div class="mir-relatedItem-body">
-                      <xed:include uri="webapp:editor/editor-hosts.xed" ref="series" />
+                      <xed:include ref="hosts.series" />
                       <xed:bind xpath="mods:relatedItem[@type='series'][1]">
                         <xed:bind xpath="mods:genre[@type='intern'][@authorityURI=$mir_genres/label[@xml:lang='x-uri']/@text]/@valueURIxEditor" initially="series" />
                       </xed:bind>
@@ -70,11 +74,11 @@
           </fieldset>
         </xed:if>
 
-        <xed:include uri="webapp:editor/editor-genres.xed" ref="submit" />
+        <xed:include ref="submit" />
 
-        <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="javascript" />
+        <xed:include ref="javascript" />
         <!-- frame for modal window -->
-        <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="modal.body" />
+        <xed:include ref="modal.body" />
 
       </xed:bind>
     </xed:bind>

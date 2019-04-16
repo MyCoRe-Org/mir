@@ -6,6 +6,9 @@
   <section xml:lang="all">
 
   <xed:form xmlns:xed="http://www.mycore.de/xeditor" xmlns:cmd="http://www.cdlib.org/inside/diglib/copyrightMD" method="post" role="form" class="form-horizontal">
+
+    <xed:preload uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" />
+
     <xed:source uri="xslStyle:mods2editor-viatxt:mcrobject:{$id}" />
     <xed:cancel url="../servlets/MCRLockServlet?action=unlock&amp;id={$id}&amp;url=/receive/{$id}" />
     <xed:cancel url="{$cancelUrl}" />
@@ -13,18 +16,18 @@
     <xed:post-processor xsl="editor2mods-viatxt.xsl" />
     <xed:bind xpath="/mycoreobject">
 
-    <!-- Textarea -->
-    <div class="form-group">
-      <label class="col-md-10 control-label" for="mycoreobject">
-        <xed:output value="$id" />
-      </label>
-      <div class="col-md-10">
-        <textarea class="form-control" rows="30" />
+      <!-- Textarea -->
+      <div class="form-group">
+        <label class="col-md-10 control-label" for="mycoreobject">
+          <xed:output value="$id" />
+        </label>
+        <div class="col-md-10">
+          <textarea class="form-control" rows="30" />
+        </div>
       </div>
-    </div>
-
-    <xed:include uri="webapp:editor/editor-includes.xed" ref="cancel.submit" />
-    <xed:include uri="webapp:editor/editor-includes.xed" ref="cleanup-rules" />
+  
+      <xed:include ref="cancel.submit" />
+      <xed:include ref="cleanup-rules" />
 
     </xed:bind>
   </xed:form>

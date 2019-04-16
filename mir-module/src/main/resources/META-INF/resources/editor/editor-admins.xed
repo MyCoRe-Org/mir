@@ -6,57 +6,60 @@
   <section xml:lang="all">
 
   <xed:form xmlns:xed="http://www.mycore.de/xeditor" xmlns:cmd="http://www.cdlib.org/inside/diglib/copyrightMD" method="post" role="form" class="form-horizontal">
-    <xed:include uri="webapp:editor/editor-includes.xed" ref="in.out" />
+
+    <xed:preload uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" />
+
+    <xed:include ref="in.out" />
 
     <xed:bind xpath="/mycoreobject">
-      <xed:include uri="webapp:editor/editor-includes.xed" ref="mycore.common" />
+      <xed:include ref="mycore.common" />
 
       <xed:bind xpath="metadata/def.modsContainer[@class='MCRMetaXML'][@notinherit='true']/modsContainer/mods:mods">
-        <xed:include uri="webapp:editor/editor-includes.xed" ref="failed-validation-messages" />
+        <xed:include ref="failed-validation-messages" />
         <xed:bind xpath="mods:typeOfResource/@mcr:categId" initially="typeOfResource:text"/>
         <xed:bind xpath="../../../../service">
-          <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="status" />
+          <xed:include ref="status" />
         </xed:bind>
 
-        <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="genre" />
-        <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="title.complex.repeated" />
-        <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="name.extended.repeated" />
-        <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="conference.itemsearch" />
-        <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="date.range.extended.datetimepicker" />
-        <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="place" />
-        <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="publisher" />
-        <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="creator.place" />
-        <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="creator" />
-        <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="edition" />
-        <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="extent" />
-        <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="type.of.resource" />
-        <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="language" />
-        <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="geographic.complex" />
-        <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="cartographics" />
-        <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="sdnb.repeat" />
-        <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="openAIRE" />
-        <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="identifier.managed" />
-        <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="identifier.repeated" />
-        <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="shelfmark" />
-        <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="link.repeated" />
-        <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="embargo" />
-        <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="access" />
-        <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="rights" />
-        <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="copyrightMD" />
-        <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="institutes" />
-        <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="subject.complex" />
-        <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="abstract.repeated" />
-        <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="comment.complex" />
-        <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="related.item.search.of.all.items" />
+        <xed:include ref="genre" />
+        <xed:include ref="title.complex.repeated" />
+        <xed:include ref="name.extended.repeated" />
+        <xed:include ref="conference.itemsearch" />
+        <xed:include ref="date.range.extended.datetimepicker" />
+        <xed:include ref="place" />
+        <xed:include ref="publisher" />
+        <xed:include ref="creator.place" />
+        <xed:include ref="creator" />
+        <xed:include ref="edition" />
+        <xed:include ref="extent" />
+        <xed:include ref="type.of.resource" />
+        <xed:include ref="language" />
+        <xed:include ref="geographic.complex" />
+        <xed:include ref="cartographics" />
+        <xed:include ref="sdnb.repeat" />
+        <xed:include ref="openAIRE" />
+        <xed:include ref="identifier.managed" />
+        <xed:include ref="identifier.repeated" />
+        <xed:include ref="shelfmark" />
+        <xed:include ref="link.repeated" />
+        <xed:include ref="embargo" />
+        <xed:include ref="access" />
+        <xed:include ref="rights" />
+        <xed:include ref="copyrightMD" />
+        <xed:include ref="institutes" />
+        <xed:include ref="subject.complex" />
+        <xed:include ref="abstract.repeated" />
+        <xed:include ref="comment.complex" />
+        <xed:include ref="related.item.search.of.all.items" />
 
-        <xed:include uri="webapp:editor/editor-includes.xed" ref="cancel.submit" />
-        <xed:include uri="webapp:editor/editor-includes.xed" ref="cleanup-rules" />
-        <xed:include uri="webapp:editor/editor-includes.xed" ref="validation-rules" />
+        <xed:include ref="cancel.submit" />
+        <xed:include ref="cleanup-rules" />
+        <xed:include ref="validation-rules" />
 
-        <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="javascript" />
+        <xed:include ref="javascript" />
         <!-- frame for modal window -->
-        <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="modal.name" />
-        <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="modal.body" />
+        <xed:include ref="modal.name" />
+        <xed:include ref="modal.body" />
 
       </xed:bind>
     </xed:bind>
