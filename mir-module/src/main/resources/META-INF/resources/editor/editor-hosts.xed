@@ -3,18 +3,15 @@
 <xed:template xmlns:xed="http://www.mycore.de/xeditor">
 
   <xed:template id="hosts.series">
-    <div class="mir-form-group-body">
       <xed:bind xpath="mods:relatedItem[@type='series']">
         <xed:bind xpath="@xlink:href" initially="{$MIR.projectid.default}_mods_00000000"> <input id="relItem-series" type="hidden" /> </xed:bind>
         <xed:include ref="title.series.relItemsearch" />
         <xed:include ref="identifier.issn.series.relItemsearch" />
         <xed:include ref="series.volume" />
       </xed:bind>
-    </div>
   </xed:template>
 
   <xed:template id="hosts.lecture">
-    <div class="mir-form-group-body">
       <xed:bind xpath="mods:relatedItem[@type='series']">
         <xed:bind xpath="@xlink:href" initially="{$MIR.projectid.default}_mods_00000000"> <input id="relItem-series" type="hidden" /> </xed:bind>
         <xed:include ref="title.lecture.relItemsearch" />
@@ -23,11 +20,9 @@
         <xed:include ref="host.lecture.semester" />
         <xed:include ref="host.lecture.number" />
       </xed:bind>
-    </div>
   </xed:template>
 
   <xed:template id="hosts.book">
-    <div class="mir-form-group-body">
       <xed:bind xpath="mods:relatedItem[@type='host']">
         <xed:bind xpath="@xlink:href" initially="{$MIR.projectid.default}_mods_00000000"> <input id="relItem-collection" type="hidden" /> </xed:bind>
         <xed:include ref="title.book.relItemsearch" />
@@ -39,11 +34,9 @@
         <xed:include ref="shelfmark.book.relItemsearch" />
         <xed:include ref="host.pages" />
       </xed:bind>
-    </div>
   </xed:template>
 
   <xed:template id="hosts.collection">
-    <div class="mir-form-group-body">
       <xed:bind xpath="mods:relatedItem[@type='host']">
         <xed:bind xpath="@xlink:href" initially="{$MIR.projectid.default}_mods_00000000"> <input id="relItem-collection" type="hidden" /> </xed:bind>
         <xed:include ref="title.collection.relItemsearch" />
@@ -53,11 +46,9 @@
         <xed:include ref="identifier.isbn.collection.relItemsearch" />
         <xed:include ref="host.pages" />
       </xed:bind>
-    </div>
   </xed:template>
 
   <xed:template id="hosts.festschrift">
-    <div class="mir-form-group-body">
       <xed:bind xpath="mods:relatedItem[@type='host']">
         <xed:bind xpath="@xlink:href" initially="{$MIR.projectid.default}_mods_00000000"> <input id="relItem-festschrift" type="hidden" /> </xed:bind>
         <xed:include ref="title.festschrift.relItemsearch" />
@@ -67,11 +58,9 @@
         <xed:include ref="identifier.isbn.festschrift.relItemsearch" />
         <xed:include ref="host.pages" />
       </xed:bind>
-    </div>
   </xed:template>
 
   <xed:template id="hosts.lexicon">
-    <div class="mir-form-group-body">
       <xed:bind xpath="mods:relatedItem[@type='host']">
         <xed:bind xpath="@xlink:href" initially="{$MIR.projectid.default}_mods_00000000"> <input id="relItem-lexicon" type="hidden" /> </xed:bind>
         <xed:include ref="title.lexicon.relItemsearch" />
@@ -81,11 +70,9 @@
         <xed:include ref="identifier.isbn.lexicon.relItemsearch" />
         <xed:include ref="host.pages" />
       </xed:bind>
-    </div>
   </xed:template>
 
   <xed:template id="hosts.proceedings">
-    <div class="mir-form-group-body">
       <xed:bind xpath="mods:relatedItem[@type='host']">
         <xed:bind xpath="@xlink:href" initially="{$MIR.projectid.default}_mods_00000000"> <input id="relItem-proceedings" type="hidden" /> </xed:bind>
         <xed:include ref="title.proceedings.relItemsearch" />
@@ -96,7 +83,6 @@
         <xed:include ref="identifier.isbn.proceedings.relItemsearch" />
         <xed:include ref="host.pages" />
       </xed:bind>
-    </div>
   </xed:template>
 
   <xed:template id="hosts.collection.common.publisher">
@@ -107,7 +93,6 @@
   </xed:template>
 
   <xed:template id="hosts.journal">
-    <div class="mir-form-group-body">
       <xed:bind xpath="mods:relatedItem[@type='host']">
         <xed:bind xpath="@xlink:href" initially="{$MIR.projectid.default}_mods_00000000"> <input id="relItem-journal" type="hidden" /> </xed:bind>
         <xed:include ref="title.journal.relItemsearch" />
@@ -121,11 +106,9 @@
         <xed:include ref="identifier.isbn.journal.relItemsearch" />
         <xed:include ref="host.pages" />
       </xed:bind>
-    </div>
   </xed:template>
 
   <xed:template id="hosts.newspaper">
-    <div class="mir-form-group-body">
       <xed:bind xpath="mods:relatedItem[@type='host']">
         <xed:bind xpath="@xlink:href" initially="{$MIR.projectid.default}_mods_00000000"> <input id="relItem-newspaper" type="hidden" /> </xed:bind>
         <xed:include ref="title.newspaper.relItemsearch" />
@@ -137,7 +120,6 @@
       <xed:bind xpath="mods:relatedItem[@type='host']">
         <xed:include ref="host.pages" />
       </xed:bind>
-    </div>
   </xed:template>
 
 </xed:template>

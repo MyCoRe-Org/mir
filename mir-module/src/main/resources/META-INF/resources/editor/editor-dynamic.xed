@@ -24,17 +24,15 @@
         <xed:bind xpath="mods:genre[@type='intern'][@authorityURI=$mir_genres/label[@xml:lang='x-uri']/@text]/@valueURIxEditor" initially="{$genre}" name="genre_intern" />
         <xed:bind xpath="mods:typeOfResource/@mcr:categId" initially="typeOfResource:text"/>
 
-        <xed:load-resource name="genres" uri="classification:metadata:-1:children:mir_genres" />
-
         <!-- If parameter host is missing, "standalone" is default, meaning this publication has no host -->
         <xed:param name="host" default="standalone" />
         <xed:param name="series" default="no" />
 
         <h1>
           Eingabeformular für
-          <xed:output value="$genres//category[@ID=$genre_intern]/label[lang($CurrentLang)]/@text" />
+          <xed:output value="$mir_genres//category[@ID=$genre_intern]/label[lang($CurrentLang)]/@text" />
           <xed:if test="not($host='standalone')">
-            <xed:output value="concat(' in ',$genres//category[@ID=$host]/label[lang($CurrentLang)]/@text)" />
+            <xed:output value="concat(' in ',$mir_genres//category[@ID=$host]/label[lang($CurrentLang)]/@text)" />
           </xed:if>
         </h1>
 
@@ -47,23 +45,27 @@
         <xed:if test="not($host='standalone')">
           <fieldset class="mir-relatedItem">
             <div class="col-md-11 mir-relatedItem-head">
-              <xed:output value="concat('erschienen in ',$genres//category[@ID=$host]/label[lang($CurrentLang)]/@text,':')" />
+              <xed:output value="concat('erschienen in ',$mir_genres//category[@ID=$host]/label[lang($CurrentLang)]/@text,':')" />
             </div>
             <div class="mir-relatedItem-body">
-              <xed:include ref="hosts.{$host}" />
+              <div class="mir-form-group-body">
+                <xed:include ref="hosts.{$host}" />
+              </div>
               <xed:bind xpath="mods:relatedItem[(@type='host') or (@type='series')][1]">
                 <xed:bind xpath="mods:genre[@type='intern'][@authorityURI=$mir_genres/label[@xml:lang='x-uri']/@text]/@valueURIxEditor" initially="{$host}" />
               </xed:bind>
             </div>
             <xed:if test="$series='yes'">
-              <xed:if test="contains($genres//category[@ID=$host]/label[lang('x-hosts')]/@text,'series')">
+              <xed:if test="contains($mir_genres//category[@ID=$host]/label[lang('x-hosts')]/@text,'series')">
                 <xed:bind xpath="mods:relatedItem[(@type='host')][1]">
                   <fieldset class="mir-relatedItem">
                     <div class="col-md-11 mir-relatedItem-head">
-                      <xed:output value="concat($genres//category[@ID=$host]/label[lang($CurrentLang)]/@text,' erschienen in Serie:')" />
+                      <xed:output value="concat($mir_genres//category[@ID=$host]/label[lang($CurrentLang)]/@text,' erschienen in Serie:')" />
                     </div>
                     <div class="mir-relatedItem-body">
-                      <xed:include ref="hosts.series" />
+                      <div class="mir-form-group-body">
+                        <xed:include ref="hosts.series" />
+                      </div>
                       <xed:bind xpath="mods:relatedItem[@type='series'][1]">
                         <xed:bind xpath="mods:genre[@type='intern'][@authorityURI=$mir_genres/label[@xml:lang='x-uri']/@text]/@valueURIxEditor" initially="series" />
                       </xed:bind>
