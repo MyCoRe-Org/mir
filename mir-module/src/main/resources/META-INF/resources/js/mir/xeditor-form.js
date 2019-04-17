@@ -3,7 +3,7 @@ $(document).ready(function() {
 	  $(document).popover({
 	    selector : "[data-toggle=popover]",
 	    container : "body",
-	    html : "true",
+	    html : true,
 	    trigger: "focus"
 	  });
 	  
@@ -16,10 +16,10 @@ $(document).ready(function() {
 
     $("body").on("click", ".expand-item", function () {
         if($(this).attr("data-target")){
-            $(this).closest(".form-group").next($(this).attr("data-target")).toggleClass("hidden");
+            $(this).closest(".form-group").next($(this).attr("data-target")).toggleClass("d-none");
         }
         else {
-            $(this).closest("legend").toggleClass("hiddenDetail").next().toggleClass("hidden");
+            $(this).closest("legend").toggleClass("hiddenDetail").next().toggleClass("d-none");
         }
         if($(this).hasClass("fa-chevron-down")) {
             $(this).removeClass("fa-chevron-down");
@@ -47,22 +47,22 @@ $(document).ready(function() {
         var start = getDate(parent, "start");
         var end = getDate(parent, "end");
         var simple = getDate(parent, "simple");
-        var format = $(parent).find(".date-changeable:not('.hidden') div.date-format").attr("data-format");
+        var format = $(parent).find(".date-changeable:not('.d-none') div.date-format").attr("data-format");
         setDate(parent, "start", "");
         setDate(parent, "end", "");
         setDate(parent, "simple", "");
-        $(parent).find(".date-changeable").addClass("hidden");
+        $(parent).find(".date-changeable").addClass("d-none");
         $(parent).find(".date-changeable").filter(function () {
             return $(this).attr("data-type") == type;
-        }).removeClass("hidden");
+        }).removeClass("d-none");
         setDate(parent, "start", start);
         setDate(parent, "end", end);
         setDate(parent, "simple", simple);
         if (format == "simple") {
-            setDateToSimple($(parent).find(".date-changeable:not('.hidden') div.date-format"));
+            setDateToSimple($(parent).find(".date-changeable:not('.d-none') div.date-format"));
         }
         if (format == "range") {
-            setDateToRange($(parent).find(".date-changeable:not('.hidden') div.date-format"));
+            setDateToRange($(parent).find(".date-changeable:not('.d-none') div.date-format"));
         }
     });
 
@@ -123,19 +123,19 @@ $(document).ready(function() {
 
     function getDate(parent, point) {
         if (point == "simple") {
-            return $(parent).find(".date-changeable:not('.hidden') .date-simple input").val();
+            return $(parent).find(".date-changeable:not('.d-none') .date-simple input").val();
         }
-        return $(parent).find(".date-changeable:not('.hidden') .date-range input").filter(function () {
+        return $(parent).find(".date-changeable:not('.d-none') .date-range input").filter(function () {
             return $(this).attr("data-point") == point;
         }).val();
     }
 
     function setDate(parent, point, date) {
         if (point == "simple") {
-            $(parent).find(".date-changeable:not('.hidden') .date-simple input").val(date);
-            updateDatePicker($(parent).find(".date-changeable:not('.hidden') .date-simple input"));
+            $(parent).find(".date-changeable:not('.d-none') .date-simple input").val(date);
+            updateDatePicker($(parent).find(".date-changeable:not('.d-none') .date-simple input"));
         }
-        var elm = $(parent).find(".date-changeable:not('.hidden') .date-range input").filter(function () {
+        var elm = $(parent).find(".date-changeable:not('.d-none') .date-range input").filter(function () {
             return $(this).attr("data-point") == point;
         });
         $(elm).val(date);
@@ -144,8 +144,8 @@ $(document).ready(function() {
     }
 
     function setDateToRange(elm){
-        $(elm).find("div.date-range").removeClass("hidden");
-        $(elm).find("div.date-simple").addClass("hidden");
+        $(elm).find("div.date-range").removeClass("d-none");
+        $(elm).find("div.date-simple").addClass("d-none");
         $(elm).attr("data-format", "range");
         var input = $(elm).find("div.date-simple > input");
         var simpleVal = $(input).val();
@@ -163,8 +163,8 @@ $(document).ready(function() {
     }
 
     function setDateToSimple(elm){
-        $(elm).find("div.date-simple").removeClass("hidden");
-        $(elm).find("div.date-range").addClass("hidden");
+        $(elm).find("div.date-simple").removeClass("d-none");
+        $(elm).find("div.date-range").addClass("d-none");
         $(elm).attr("data-format", "simple");
         var inputStart = $(elm).find("div.date-range > input.startDate");
         var inputEnd = $(elm).find("div.date-range > input.endDate");
@@ -184,21 +184,21 @@ $(document).ready(function() {
     }
 
     if ($(".personExtended-container input:text[value='']").length > 0) {
-        $(".personExtended-container input:not(:text[value=''])").closest(".personExtended-container").removeClass("hidden").prev().removeClass("hiddenDetail");
+        $(".personExtended-container input:not(:text[value=''])").closest(".personExtended-container").removeClass("d-none").prev().removeClass("hiddenDetail");
     }
 
     if ($(".dateExtended-container input:not(:text[value=''])").length > 0) {
-        $(".dateExtended-container").closest(".dateExtended-container").removeClass("hidden").prev().removeClass("hiddenDetail");
+        $(".dateExtended-container").closest(".dateExtended-container").removeClass("d-none").prev().removeClass("d-none");
     }
 
     if ($(".date-select").length > 0) {
         $(".date-select").each(function() {
             var type = $(this).val();
             var parent = $(this).closest(".form-group");
-            $(parent).find(".date-changeable").addClass("hidden");
+            $(parent).find(".date-changeable").addClass("d-none");
             $(parent).find(".date-changeable").filter(function () {
                 return $(this).attr("data-type") == type;
-            }).removeClass("hidden");
+            }).removeClass("d-none");
         });
     }
 

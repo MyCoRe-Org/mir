@@ -72,9 +72,8 @@ $﻿(document).ready(function() {
           console.log(error);
         }
       });
-    };
-
-    function saveMIRData(data) {
+    }
+      function saveMIRData(data) {
       var identifier;
       $(data).find("doc").each(function() {
         identifier = $(this).find("arr[name='mods.identifier']");
@@ -112,7 +111,7 @@ $﻿(document).ready(function() {
           + tmpfundingProgramm + "/"
           + replaceSlash(tmpProjectID) + "/"
           + tmpJurisdiction + "/"
-          + tmpProjectName + "/"
+          + tmpProjectName + "/";
 
         if(tmpProjectAcr != "") {
           tmpComplet = tmpComplet + replaceSlash(tmpProjectAcr);
@@ -152,7 +151,7 @@ $﻿(document).ready(function() {
           + $(funder).val() + "/"
           + $(fundingProgramm).val() + "/"
           + replaceSlash($(projectId).val()) + "/EU/"
-          + $(projectName).val() + "/"
+          + $(projectName).val() + "/";
 
         if($(projectAcronym).val() != "") {
           identifier = identifier + replaceSlash($(projectAcronym).val());

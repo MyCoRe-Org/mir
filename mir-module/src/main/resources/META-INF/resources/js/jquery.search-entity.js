@@ -33,7 +33,7 @@
 +function($) {
   'use strict';
 
-  var toggle = '[data-search="searchEntity"]'
+  var toggle = '[data-search="searchEntity"]';
 
   var SearchEntity = function(element, options) {
     this.options = $.extend({}, SearchEntity.DEFAULTS, options);
@@ -337,7 +337,7 @@
 
   SearchEntity.DEFAULTS = {
     // Button style
-    buttonClass : "btn btn-default",
+    buttonClass : "btn btn-secondary",
     // Feedback style (optical feedback for current selection)
     feedbackClass : "feedback label btn-primary",
     // Feedback cleaner icon style
@@ -385,7 +385,7 @@
     this.$element = $element;
 
     var $actions = $(document.createElement("div"));
-    $actions.addClass("input-group-btn");
+    $actions.addClass("input-group-btn input-group-append");
 
     var $searchBtn = this.$searchBtn = $(document.createElement("button"));
     $searchBtn.addClass(options.buttonClass);
@@ -429,7 +429,10 @@
         }
 
         var $entry = $(document.createElement("li"));
-        (type.toUpperCase() == this.selectedType.toUpperCase()) && $entry.addClass("active");
+        entry.addClass("dropdown-item");
+        if(type.toUpperCase() === this.selectedType.toUpperCase()) {
+          $entry.addClass("active");
+        }
 
         var $ea = $(document.createElement("a"));
         $ea.attr("href", "#");
@@ -757,7 +760,7 @@
       }
     }
 
-    var $parent = selector && $(selector)
+    var $parent = selector && $(selector);
 
     return $parent && $parent.length ? ($parent.length > 1) ? ($parent = $parent.has($this)) : $parent : $this.parent()
   }
@@ -769,7 +772,7 @@
     return this.each(function() {
       var $this = $(this);
       var data = $this.data('mcr.searchentity');
-      var options = typeof option == 'object' && option
+      var options = typeof option == 'object' && option;
 
       if (!data)
         $this.data('mcr.searchentity', (data = new SearchEntity(this, option)));
