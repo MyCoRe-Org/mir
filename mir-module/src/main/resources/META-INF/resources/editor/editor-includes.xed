@@ -1473,11 +1473,6 @@
 
   <xed:template id="institutes.repeat">
     <xed:load-resource name="mir_institutes" uri="classification:metadata:-1:children:mir_institutes" />
-    <xed:if test="mods:name[@type='corporate'][not(@authorityURI)]">
-      <xed:bind xpath="mods:name[@type='corporate'][not(@authorityURI)]">
-        <xed:bind xpath="@authorityURI" set="{$mir_institutes/label[@xml:lang='x-uri']/@text}" />
-      </xed:bind>
-    </xed:if>
     <xed:repeat xpath="mods:name[@type='corporate'][@authorityURI=$mir_institutes/label[@xml:lang='x-uri']/@text]" min="1" max="10">
       <div class="form-group">
         <label class="col-md-3 control-label">
