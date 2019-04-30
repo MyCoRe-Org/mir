@@ -3,21 +3,79 @@
 <xed:template xmlns:xed="http://www.mycore.de/xeditor" xmlns:mir="http://www.mycore.de/mir">
 
   <xed:template id="in.out">
-    <xed:source uri="mcrobject:{$derivateid}" />
+    <xed:source uri="xslStyle:editor/derivate2xeditor:mcrobject:{$derivateid}" />
     <xed:cancel url="/receive/{$objectid}" />
     <xed:cancel url="{$cancelUrl}" />
     <xed:cancel url="../index.html" />
+    <xed:post-processor xsl="editor/xeditor2derivate.xsl" />
   </xed:template>
 
-  <xed:template id="label">
-    <xed:bind xpath="@label">
+  <xed:template id="order">
+    <xed:bind xpath="@order">
+        <mir:textfield xpath="." label="mir.order" placeholder="{i18n:mir.placeholder.derivate.order}"/>
+    </xed:bind>
+  </xed:template>
+
+  <xed:template id="derivate_types">
+    <xed:bind xpath="derivate/classifications[@class='MCRMetaClassification'][@heritable='false']/classification">
       <div class="form-group">
-        <mir:textfield xpath="." label="mir.title" placeholder="{i18n:mir.placeholder.derivate.title}" />
+        <label class="col-md-3 control-label">
+          <xed:output i18n="mir.derivate.type"/>
+        </label>
+        <div class="col-md-6">
+          <select class="form-control form-control-inline">
+            <option value="">
+              <xed:output i18n="mir.select" />
+            </option>
+            <xed:include uri="xslStyle:items2options:classification:editorComplete:1:children:derivate_types"/>
+          </select>
+        </div>
       </div>
     </xed:bind>
   </xed:template>
+
+  <xed:template id="title_repeat">
+    <xed:repeat xpath="derivate/titles[@class='MCRMetaLangText'][@heritable='false'][1]/title">
+      <div class="form-group">
+        <label class="col-md-3 control-label">
+          <xed:output i18n="mir.title"/>
+        </label>
+        <div class="col-md-3">
+          <xed:bind xpath="@xml:lang">
+            <div class="controls">
+              <xed:include ref="lang.list" />
+            </div>
+          </xed:bind>
+        </div>
+        <div class="col-md-3">
+          <xed:bind xpath=".">
+            <input class="form-control" type="text" />
+          </xed:bind>
+        </div>
+        <mir:help-pmud help-text="{i18n:mir.help.derivate.title}" pmud="true"  />
+      </div>
+    </xed:repeat>
+  </xed:template>
+
+  <xed:template id="lang.list">
+    <select class="form-control form-control-inline lang-select" data-dlang="{$MCR.Metadata.DefaultLang}" data-langs="{$MCR.Metadata.Languages}">
+      <xed:choose>
+        <xed:when test="string-length(.) &gt; 0">
+          <option value="{.}" selected="">
+            <xed:output value="." />
+          </option>
+        </xed:when>
+        <xed:otherwise>
+          <option value="{$MCR.Metadata.DefaultLang}" selected="">
+            <xed:output value="{$MCR.Metadata.DefaultLang}" />
+          </option>
+        </xed:otherwise>
+      </xed:choose>
+    </select>
+  </xed:template>
   
   <xed:template id="validation-rules">
+    <xed:validate xpath="/derivate/@order" type="integer" display="global" i18n="mir.validation.order" />
   </xed:template>
   
   <xed:template id="debug.cancel.submit">
@@ -35,6 +93,9 @@
   </xed:template>
 
   <xed:template id="cancel.submit">
+    <xed:include ref="validation-rules" />
+    <xed:include ref="cleanup-rules" />
+
     <div class="form-group" id="editor-buttons">
       <div class="col-md-offset-2 col-md-6">
         <button type="submit" class="btn btn-default" xed:target="cancel">
@@ -48,7 +109,26 @@
   </xed:template>
   
   <xed:template id="cleanup-rules">
-    <xed:cleanup-rule xpath="//condition" relevant-if="(string-length(@value) &gt; 0) or value[string-length(text()) &gt; 0 ]" />
+    <xed:cleanup-rule xpath="//classifications" relevant-if="count(classification)&gt;0" />
+    <xed:cleanup-rule xpath="//classification" relevant-if="string-length(text())&gt;0" />
+    <xed:cleanup-rule xpath="//titles" relevant-if="string-length(title/text())&gt;0" />
+  </xed:template>
+
+
+  <xed:template id="javascript">
+    <script type="text/javascript" src="{$WebApplicationBaseURL}js/jquery.search-entity.min.js"></script>
+    <script src="{$WebApplicationBaseURL}assets/jquery/plugins/typeahead/bloodhound.min.js" type="text/javascript"></script>
+    <script src="{$WebApplicationBaseURL}assets/jquery/plugins/bootstrap3-typeahead/bootstrap3-typeahead.min.js" type="text/javascript"></script>
+    <script src="{$WebApplicationBaseURL}js/mir/relatedItem-autocomplete.min.js" type="text/javascript"></script>
+    <script src="{$WebApplicationBaseURL}js/mir/item-autocomplete.js" type="text/javascript"></script>
+    <link href="{$WebApplicationBaseURL}assets/bootstrap-datepicker/css/bootstrap-datepicker.css" rel="stylesheet" />
+    <script type="text/javascript" src="{$WebApplicationBaseURL}assets/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
+    <script type="text/javascript" src="{$WebApplicationBaseURL}assets/bootstrap-datepicker/locales/bootstrap-datepicker.de.min.js"></script>
+    <script type="text/javascript" src="{$WebApplicationBaseURL}assets/moment/min/moment.min.js"></script>
+    <script type="text/javascript" src="{$WebApplicationBaseURL}js/mir/xeditor-form.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="{$WebApplicationBaseURL}assets/select2/css/select2.min.css" />
+    <script type="text/javascript" src="{$WebApplicationBaseURL}assets/select2/js/select2.min.js" />
+    <script type="text/javascript" src="{$WebApplicationBaseURL}assets/select2/js/i18n/{$MCR.Metadata.DefaultLang}.js" />
   </xed:template>
   
 </xed:template>

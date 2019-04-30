@@ -9,11 +9,24 @@
   <section xml:lang="all">
     <xed:form xmlns:xed="http://www.mycore.de/xeditor" method="post" role="form" class="form-horizontal" id="derivate_editor">
       <xed:include uri="webapp:editor/editor-derivate-includes.xed" ref="in.out" />
-      <xed:bind xpath="/mycorederivate"> 
-        <h1> Bearbeiten des Derivates </h1>
-        <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-derivate-includes.xed" ref="label" />
+      <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-derivate-includes.xed" ref="javascript" />
+      <div class="panel panel-default">
+        <xed:bind xpath="/mycorederivate">
+          <div class="panel-heading">
+            <h1 class="panel-title">
+              <xed:output i18n="component.mods.metaData.options.updateDerivateName"/>
+            </h1>
+          </div>
+          <div class="panel-body">
+            <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-derivate-includes.xed"
+                         ref="title_repeat"/>
+            <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-derivate-includes.xed" ref="order"/>
+            <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-derivate-includes.xed"
+                         ref="derivate_types"/>
+            <xed:include uri="webapp:editor/editor-derivate-includes.xed" ref="cancel.submit"/>
+          </div>
       </xed:bind>
-      <xed:include uri="webapp:editor/editor-derivate-includes.xed" ref="cancel.submit" />
+      </div>
     </xed:form>
   </section>
   
