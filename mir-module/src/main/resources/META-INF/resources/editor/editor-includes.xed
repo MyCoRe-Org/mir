@@ -1472,27 +1472,7 @@
   </xed:template>
 
   <xed:template id="institutes.repeat">
-    <xed:load-resource name="mir_institutes" uri="classification:metadata:-1:children:mir_institutes" />
-    <xed:repeat xpath="mods:name[@type='corporate'][@authorityURI=$mir_institutes/label[@xml:lang='x-uri']/@text]" min="1" max="10">
-      <div class="form-group">
-        <label class="col-md-3 control-label">
-          <xed:output i18n="mir.institution" />
-          :
-        </label>
-        <div class="col-md-6">
-          <xed:bind xpath="mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']" initially="his" /><!--  Host institution [his] -->
-          <xed:bind xpath="@valueURIxEditor">
-            <select class="form-control form-control-inline">
-              <option value="">
-                <xed:output i18n="mir.select.optional" />
-              </option>
-              <xed:include uri="xslStyle:items2options:classification:editor:-1:children:mir_institutes" />
-            </select>
-          </xed:bind>
-        </div>
-        <mir:help-pmud help-text="{i18n:mir.help.institutes}" pmud="true" />
-      </div>
-    </xed:repeat>
+    <mir:insitut.repeated min="1" max="10" label="mir.institution" help-text="{i18n:mir.help.institutes}" />
   </xed:template>
 
   <xed:template id="publisher.organization">
