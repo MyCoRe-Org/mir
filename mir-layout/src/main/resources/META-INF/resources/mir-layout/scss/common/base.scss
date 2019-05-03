@@ -5,16 +5,19 @@
 // Extra large devices (large desktops) and below
 // no (xl) media query necessary (desktop first)
 // set the defaults for all responsive levels here
-    html {
 
+    html {
         body {
-            overflow-y: scroll;           /* show right scrollbar, allways */
+            overflow-y: scroll;             // show right scrollbar, allways
             background-position:0px 0px;
             background-attachment:fixed;
             background-repeat:no-repeat;
             min-width: 320px;
+            min-height: 100vh;
+            position: relative;
+            padding-bottom: 530px;
 
-            .uploadDragging{
+            .uploadDragging {
                 color: #2d9700;
                 background-color: #4B8FBC;
             }
@@ -33,6 +36,7 @@
 
                 #main_content {
                     min-height: 300px;
+
                     .jumbotwo {
                         h2 {
                             font-size: 40px;
@@ -45,6 +49,12 @@
                         }
                     }
                 }
+            }
+
+            footer {
+                position: absolute;
+                bottom: 0;
+                width: 100%;
             }
 
             p {
@@ -70,6 +80,7 @@
             .mir-player {
                 margin-bottom: 30px;
             }
+
         }
     }
 
