@@ -69,3 +69,20 @@ html {
     }
   }
 }
+
+// styles example page
+.bs-docs-section {
+    .bs-component + .bs-component {
+        margin-top: 1rem;
+    }
+    .page-header h1 {
+      padding: 2rem 0;
+      font-size: 3rem;
+    }
+    .progress {
+        margin-bottom: 10px;
+    }
+    .pagination {
+        margin-bottom: 1rem;
+    }
+}
