@@ -61,7 +61,7 @@
              data-button-style="{$MIR.shariff.buttonstyle}"
              data-orientation="horizontal"
              data-mail-body="{$shariffURL}"
-             data-mail-subject="{$modsTitle}"
+             data-mail-subject="{i18n:translate('mir.shariff.subject')}: {$modsTitle}"
              data-mail-url="mailto:"
              data-services="{$MIR.shariff.services}"
              data-url="{$shariffURL}" 
