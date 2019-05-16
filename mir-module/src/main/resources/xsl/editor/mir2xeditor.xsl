@@ -403,6 +403,34 @@
      </xed:bind>
     </xed:repeat>
   </xsl:template>
+  
+  <xsl:template match="mir:insitut.repeated">
+    <xed:repeat xpath="mods:name[@type='corporate'][@authorityURI='{$institutesURI}']" min="{@min}" max="{@max}">
+      <div class="form-group">
+        <label class="col-md-3 control-label">
+          <xed:output i18n="{@label}" />
+          :
+        </label>
+        <div class="col-md-6">
+          <xed:bind xpath="mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']" initially="his" /><!--  Host institution [his] -->
+          <xed:bind xpath="@valueURIxEditor">
+            <select class="form-control form-control-inline">
+              <option value="">
+                <xed:output i18n="mir.select.optional" />
+              </option>
+              <xed:include uri="xslStyle:items2options:classification:editor:-1:children:mir_institutes" />
+            </select>
+          </xed:bind>
+        </div>
+        <div class="col-md-3">
+          <xsl:if test="string-length(@help-text) &gt; 0">
+            <xsl:call-template name="mir-helpbutton" />
+          </xsl:if>
+          <xsl:call-template name="mir-pmud" />
+        </div>
+      </div>
+    </xed:repeat>
+  </xsl:template>
 
   <xsl:template match="mir:geographic.repeated">
     <xed:repeat xpath="{@path}" min="{@min}" max="{@max}">

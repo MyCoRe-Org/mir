@@ -63,17 +63,18 @@
   </xsl:template>
   
   <xsl:template match="marc:datafield[@tag='264']/marc:subfield[@code='c']">
+    <xsl:variable name="normalizedDate" select="translate(.,'()[]','')"/>
     <xsl:choose>
-      <xsl:when test="contains(., '-') and string-length(.)=5">
-        <mods:dateIssued encoding="w3cdtf" point="start"><xsl:value-of select="substring-before(., '-')"/></mods:dateIssued>
+      <xsl:when test="translate($normalizedDate, '123456789', '000000000') = '0000-00-00'">
+        <mods:dateIssued encoding="w3cdtf"><xsl:value-of select="$normalizedDate"/></mods:dateIssued>
       </xsl:when>
-      <xsl:when test="contains(., '-')">
-        <mods:dateIssued encoding="w3cdtf" point="start"><xsl:value-of select="substring-before(., '-')"/></mods:dateIssued>
-        <mods:dateIssued encoding="w3cdtf" point="end"><xsl:value-of select="substring-after(., '-')"/></mods:dateIssued>
+      <xsl:when test="translate($normalizedDate, '123456789', '000000000') = '0000-'">
+        <mods:dateIssued encoding="w3cdtf" point="start"><xsl:value-of select="substring-before($normalizedDate, '-')"/></mods:dateIssued>
       </xsl:when>
-      <xsl:otherwise>
-        <mods:dateIssued encoding="w3cdtf"><xsl:value-of select="."/></mods:dateIssued>
-      </xsl:otherwise>
+      <xsl:when test="translate($normalizedDate, '123456789', '000000000') = '0000-0000'">
+        <mods:dateIssued encoding="w3cdtf" point="start"><xsl:value-of select="substring-before($normalizedDate, '-')"/></mods:dateIssued>
+        <mods:dateIssued encoding="w3cdtf" point="end"><xsl:value-of select="substring-after($normalizedDate, '-')"/></mods:dateIssued>
+      </xsl:when>
     </xsl:choose>
   </xsl:template>
 

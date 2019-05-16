@@ -21,6 +21,9 @@
   <xsl:param name="MIR.plumx" select="'hide'" />
   <xsl:param name="MIR.plumx.hide" select="'true'" />
   <xsl:param name="MIR.shariff" select="'show'" />
+  <xsl:param name="MIR.shariff.theme" select="'white'" />
+  <xsl:param name="MIR.shariff.buttonstyle" select="'icon'" />
+  <xsl:param name="MIR.shariff.services" select="''" /> <!-- default: ['mail', 'twitter', 'facebook', 'whatsapp', 'linkedin', 'xing', 'pinterest', 'info'] -->
   <xsl:template match="/">
 
     <!-- ==================== Highwire Press Tags and Dublin Core as Meta Tags ==================== -->
@@ -29,10 +32,40 @@
       <xsl:apply-templates select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods" mode="highwire" />
     </citation_meta>
 
+    <xsl:variable name="piServiceInformation" select="piUtil:getPIServiceInformation(mycoreobject/@ID)" />
     <xsl:variable name="mods" select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods" />
+
     <div id="mir-citation">
       <xsl:if test="$MIR.shariff = 'show'">
-        <div class="shariff" data-theme="white"></div><!-- for more params see http://heiseonline.github.io/shariff/ -->
+        
+        <xsl:variable name="modsTitle">
+          <xsl:apply-templates select="$mods" mode="title" />
+        </xsl:variable>
+        <xsl:variable name="shariffURL">
+          <xsl:choose>
+            <xsl:when test="$piServiceInformation[@type='doi'][@inscribed='true']">
+              <xsl:value-of select="concat($MCR.DOI.Resolver.MasterURL, //mods:mods/mods:identifier[@type='doi'])" />
+            </xsl:when>
+            <xsl:when test="$piServiceInformation[@type='dnbUrn'][@inscribed='true']">
+              <xsl:value-of select="concat($MCR.URN.Resolver.MasterURL, //mods:mods/mods:identifier[@type='urn'])"/>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:value-of select="concat($WebApplicationBaseURL, 'receive/', //mycoreobject/@ID)" />
+            </xsl:otherwise>
+          </xsl:choose>
+        </xsl:variable>
+
+        <!-- for more params see http://heiseonline.github.io/shariff/ -->
+        <div class="shariff"
+             data-theme="white"
+             data-button-style="{$MIR.shariff.buttonstyle}"
+             data-orientation="horizontal"
+             data-mail-body="{$shariffURL}"
+             data-mail-subject="{i18n:translate('mir.shariff.subject')}: {$modsTitle}"
+             data-mail-url="mailto:"
+             data-services="{$MIR.shariff.services}"
+             data-url="{$shariffURL}" 
+             ></div>
       </xsl:if>
       <xsl:if test="//mods:mods/mods:identifier[@type='doi'] and ($MIR.altmetrics = 'show' or $MIR.plumx = 'show')">
         <div id="mir-metric-badges" class="row">
@@ -109,8 +142,6 @@
       </div>
 
       <p id="cite_link_box">
-        <xsl:variable name="piServiceInformation" select="piUtil:getPIServiceInformation(mycoreobject/@ID)" />
-
         <xsl:choose>
           <xsl:when test="$piServiceInformation[@type='doi'][@inscribed='true']">
             <xsl:variable name="doi" select="//mods:mods/mods:identifier[@type='doi']" />
@@ -118,7 +149,7 @@
               <xsl:value-of select="$doi" />
             </a>
             <br />
-            <a id="copy_cite_link" class="label label-info" href="#">
+            <a id="copy_cite_link" class="label label-info" href="#" title="{i18n:translate('mir.citationLink.title')}">
               <xsl:value-of select="i18n:translate('mir.citationLink')" />
             </a>
           </xsl:when>
@@ -128,7 +159,7 @@
               <xsl:value-of select="$urn" />
             </a>
             <br />
-            <a id="copy_cite_link" class="label label-info" href="#">
+            <a id="copy_cite_link" class="label label-info" href="#" title="{i18n:translate('mir.citationLink.title')}">
               <xsl:value-of select="i18n:translate('mir.citationLink')" />
             </a>
           </xsl:when>
