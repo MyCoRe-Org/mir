@@ -90,6 +90,32 @@
       </div>
     </xed:bind>
   </xed:template>
+  
+  <!-- ========== table of contents ========== -->
+  <xed:template id="toc-layout">
+    <div class="form-group">
+      <label class="col-md-3 control-label">
+        <xed:output i18n="component.mods.metaData.dictionary.tocLayout" />:
+      </label>
+      <xed:bind xpath="../../../../service">
+        <xed:bind xpath="servflags[@class='MCRMetaLangText']/servflag[@type='tocLayout']">
+          <div class="col-md-6">
+            <div class="controls">
+              <select class="form-control form-control-inline">
+                <option value="">
+                  <xed:output i18n="mir.select.optional" />
+                </option>
+                <xed:include uri="xslStyle:toc/toc-layouts2options:resource:toc-layouts.xml" />
+              </select>
+            </div>
+          </div>
+        </xed:bind>
+      </xed:bind>
+      <mir:help-pmud help-text="{i18n:mir.help.tocLayout}" />
+    </div>
+    <xed:cleanup-rule xpath="//service/servflags/servflag" relevant-if="string-length(text()) &gt; 0" />
+    <xed:cleanup-rule xpath="//service/servflags" relevant-if="servflag" />
+  </xed:template>
 
   <xed:template id="status">
     <div class="form-group">
