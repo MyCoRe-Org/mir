@@ -10,6 +10,7 @@
     </xed:bind>
 
     <xed:include ref="genre" />
+    <xed:include ref="toc-layout" />
     <xed:include ref="title.complex.repeated" />
     <xed:include ref="name.extended.repeated" />
     <xed:include ref="conference.itemsearch" />
