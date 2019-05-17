@@ -88,5 +88,77 @@
       "name": "mods.part.*",
       "type": "string"
     }
+  },
+  {
+    "add-field": {
+      "name": "ancestor",
+      "type": "string",
+      "indexed": true,
+      "stored": true,
+      "multiValued": true
+    }
+  },
+  {
+    "add-field": {
+      "name": "series.volume",
+      "type": "string",
+      "indexed": true,
+      "stored": true,
+      "multiValued": false
+    }
+  },
+  {
+    "add-field": {
+      "name": "host.volume",
+      "type": "string",
+      "indexed": true,
+      "stored": true,
+      "multiValued": false
+    }
+  },
+  {
+    "add-field": {
+      "name": "host.issue",
+      "type": "string",
+      "indexed": true,
+      "stored": true,
+      "multiValued": false
+    }
+  },
+  {
+    "add-field": {
+      "name": "host.page.str",
+      "type": "string",
+      "indexed": true,
+      "stored": true,
+      "multiValued": false
+    }
+  },
+  {
+    "add-field": {
+      "name": "host.page.int",
+      "type": "pint",
+      "indexed": true,
+      "stored": true,
+      "multiValued": false
+    }
+  },
+  {
+    "add-field": {
+      "name": "host.order",
+      "type": "pint",
+      "indexed": true,
+      "stored": true,
+      "multiValued": false
+    }
+  },
+  {
+    "add-field": {
+      "name": "series.order",
+      "type": "pint",
+      "indexed": true,
+      "stored": true,
+      "multiValued": false
+    }
   }
 ]

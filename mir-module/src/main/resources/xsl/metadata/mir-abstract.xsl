@@ -311,11 +311,6 @@
       </xsl:variable>
 
       <xsl:call-template name="findRelatedItems">
-        <xsl:with-param name="query" select="concat('(mods.relatedItem.host:', $objectID, ' OR mods.relatedItem.series:', $objectID, ') AND (', $state, ')')"/>
-        <xsl:with-param name="label" select="i18n:translate('mir.metadata.content')"/>
-      </xsl:call-template>
-
-      <xsl:call-template name="findRelatedItems">
         <xsl:with-param name="query" select="concat('mods.relatedItem.references:', $objectID, ' AND (', $state, ')')"/>
         <xsl:with-param name="label" select="i18n:translate('mir.metadata.isReferencedBy')"/>
       </xsl:call-template>
