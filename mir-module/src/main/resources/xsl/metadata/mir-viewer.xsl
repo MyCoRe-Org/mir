@@ -103,6 +103,22 @@
           </a>
         </noscript>
       </xsl:when>
+      <xsl:when test="contains($mainFile, '.epub') and normalize-space(substring-after($mainFile, '.epub')) = ''">
+        <xsl:call-template name="createViewerContainer">
+          <xsl:with-param name="viewerId" select="$viewerId" />
+          <xsl:with-param name="viewerType" select="'epub'" />
+          <xsl:with-param name="derId" select="$derId" />
+        </xsl:call-template>
+        <xsl:call-template name="loadViewer">
+          <xsl:with-param name="derivate" select="$derId" />
+          <xsl:with-param name="file" select="$mainFile" />
+        </xsl:call-template>
+        <noscript>
+          <a href="{$ServletsBaseURL}MCRFileNodeServlet/{$derId}{$mainFile}">
+            <xsl:value-of select="$mainFile" />
+          </a>
+        </noscript>
+      </xsl:when>
       <xsl:otherwise>
         <!-- The file cannot be displayed -->
         <xsl:comment>The Viewer doesnt support the file
