@@ -4,9 +4,9 @@
   Transforms solr response from the solr facet query to a simpler xml to display a table of contents.
   
   <toc layout="journal">
-    <level field="host.volume" expanded="true">
+    <level field="mir.toc.host.volume" expanded="true">
       <item value="2019">
-        <level field="host.issue" expanded="false">
+        <level field="mir.toc.host.issue" expanded="false">
           <item value="24">
             <publications>
               <doc id="mir_mods_1234">

@@ -91,7 +91,7 @@
   },
   {
     "add-field": {
-      "name": "ancestor",
+      "name": "mir.toc.ancestor",
       "type": "string",
       "indexed": true,
       "stored": true,
@@ -100,7 +100,7 @@
   },
   {
     "add-field": {
-      "name": "series.volume",
+      "name": "mir.toc.series.volume",
       "type": "string",
       "indexed": true,
       "stored": true,
@@ -109,7 +109,7 @@
   },
   {
     "add-field": {
-      "name": "host.volume",
+      "name": "mir.toc.host.volume",
       "type": "string",
       "indexed": true,
       "stored": true,
@@ -118,7 +118,7 @@
   },
   {
     "add-field": {
-      "name": "host.issue",
+      "name": "mir.toc.host.issue",
       "type": "string",
       "indexed": true,
       "stored": true,
@@ -127,7 +127,7 @@
   },
   {
     "add-field": {
-      "name": "host.page.str",
+      "name": "mir.toc.host.page.str",
       "type": "string",
       "indexed": true,
       "stored": true,
@@ -136,7 +136,7 @@
   },
   {
     "add-field": {
-      "name": "host.page.int",
+      "name": "mir.toc.host.page.int",
       "type": "pint",
       "indexed": true,
       "stored": true,
@@ -145,7 +145,7 @@
   },
   {
     "add-field": {
-      "name": "host.order",
+      "name": "mir.toc.host.order",
       "type": "pint",
       "indexed": true,
       "stored": true,
@@ -154,7 +154,7 @@
   },
   {
     "add-field": {
-      "name": "series.order",
+      "name": "mir.toc.series.order",
       "type": "pint",
       "indexed": true,
       "stored": true,

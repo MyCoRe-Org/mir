@@ -11,14 +11,14 @@
   <xsl:param name="CurrentLang" select="'de'" />
 
   <!-- "Vol. 67" -->
-  <xsl:template match="toc[@layout='journal']//level[@field='host.volume']/item" priority="1">
+  <xsl:template match="toc[@layout='journal']//level[@field='mir.toc.host.volume']/item" priority="1">
     <xsl:value-of select="i18n:translate('mir.details.volume.journal')" />
     <xsl:text> </xsl:text> 
     <xsl:value-of select="@value" />
   </xsl:template>
   
   <!-- "No. 24" with link to object representing the complete issue -->
-  <xsl:template match="toc[@layout='journal']//level[@field='host.issue']/item[doc]" priority="2">
+  <xsl:template match="toc[@layout='journal']//level[@field='mir.toc.host.issue']/item[doc]" priority="2">
     <a href="{$WebApplicationBaseURL}receive/{doc/@id}">
       <xsl:value-of select="i18n:translate('mir.details.issue')" />
       <xsl:text> </xsl:text>
@@ -27,7 +27,7 @@
   </xsl:template>
 
   <!-- "No. 24" without link -->
-  <xsl:template match="toc[@layout='journal']//level[@field='host.issue']/item" priority="1">
+  <xsl:template match="toc[@layout='journal']//level[@field='mir.toc.host.issue']/item" priority="1">
     <xsl:value-of select="i18n:translate('mir.details.issue')" />
     <xsl:text> </xsl:text>
     <xsl:value-of select="@value" />
@@ -46,7 +46,7 @@
           <xsl:value-of select="field[@name='mods.title.main']" />
         </a>
       </div>
-      <xsl:for-each select="field[starts-with(@name,'host.page')]">
+      <xsl:for-each select="field[starts-with(@name,'mir.toc.host.page')]">
         <div style="display:table-cell; width:10%;" class="text-right">
           <xsl:value-of select="i18n:translate('mir.pages.abbreviated.single')" />
           <xsl:text> </xsl:text>
