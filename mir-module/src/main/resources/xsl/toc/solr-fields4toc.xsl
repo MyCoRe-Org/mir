@@ -20,38 +20,38 @@
     <xsl:apply-templates select="mods:relatedItem[contains('host series',@type)]" mode="toc" />
  
     <xsl:for-each select="@xlink:href">
-      <field name="ancestor">
+      <field name="mir.toc.ancestor">
         <xsl:value-of select="." />
       </field>
     </xsl:for-each>
     
     <xsl:for-each select="mods:part">
     
-      <!-- host.order, series.order -->
+      <!-- mir.toc.host.order, mir.toc.series.order -->
       <xsl:for-each select="@order">
-        <field name="{../../@type}.order">
+        <field name="mir.toc.{../../@type}.order">
           <xsl:value-of select="number(.)" />
         </field>
       </xsl:for-each>
       
-      <!-- host.volume, host.issue, series.volume etc. -->
+      <!-- mir.toc.host.volume, mir.toc.host.issue, mir.toc.series.volume etc. -->
       <xsl:for-each select="mods:detail[@type]">
-        <field name="{../../@type}.{@type}">
+        <field name="mir.toc.{../../@type}.{@type}">
           <xsl:value-of select="mods:number" />
         </field>
       </xsl:for-each>
       
-      <!-- host.page.str, host.page.int -->
+      <!-- mir.toc.host.page.str, mir.toc.host.page.int -->
       <xsl:for-each select="mods:extent[@unit='pages']">
         <xsl:variable name="number" select="string(number(normalize-space(mods:start)))" />
         <xsl:choose>
           <xsl:when test="$number = 'NaN'">
-            <field name="{../../@type}.page.str">
+            <field name="mir.toc.{../../@type}.page.str">
               <xsl:value-of select="mods:start" />
             </field>
           </xsl:when>
           <xsl:otherwise>
-            <field name="{../../@type}.page.int">
+            <field name="mir.toc.{../../@type}.page.int">
               <xsl:value-of select="$number" />
             </field>
           </xsl:otherwise>

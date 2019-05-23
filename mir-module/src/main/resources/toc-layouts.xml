@@ -20,11 +20,11 @@
 
   <toc-layout id="journal">
     <label>Zeitschrift (Band, Heft), Artikel mit Autor:Titel, Seitenzahl</label>
-    <level field="host.volume" order="desc" expanded="first">
-      <level field="host.issue" order="desc" expanded="first">
+    <level field="mir.toc.host.volume" order="desc" expanded="first">
+      <level field="mir.toc.host.issue" order="desc" expanded="first">
         <publications>
-          <sortBy field="host.page.int" order="asc" />
-          <sortBy field="host.page.str" order="asc" />
+          <sortBy field="mir.toc.host.page.int" order="asc" />
+          <sortBy field="mir.toc.host.page.str" order="asc" />
         </publications>
       </level>
     </level>
@@ -44,10 +44,10 @@
     <label>Standard (gruppiert nach Erscheinungsjahr)</label>
     <level field="mods.yearIssued" order="desc" expanded="first">
       <publications>
-        <sortBy field="host.order" order="asc" />
-        <sortBy field="series.order" order="asc" />
-        <sortBy field="host.page.int" order="asc" />
-        <sortBy field="host.page.str" order="asc" />
+        <sortBy field="mir.toc.host.order" order="asc" />
+        <sortBy field="mir.toc.series.order" order="asc" />
+        <sortBy field="mir.toc.host.page.int" order="asc" />
+        <sortBy field="mir.toc.host.page.str" order="asc" />
         <sortBy field="mods.dateIssued" order="desc" />
         <sortBy field="mods.dateIssued.host" order="desc" />
         <sortBy field="mods.title.main" order="asc" />
