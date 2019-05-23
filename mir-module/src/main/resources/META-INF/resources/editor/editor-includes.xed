@@ -1458,7 +1458,7 @@
         <xed:bind xpath="mods:name[@type='corporate'][@authorityURI=$mir_institutes/label[@xml:lang='x-uri']/@text]">
           <xed:bind xpath="mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']" initially="his" /><!--  Host institution [his] -->
           <xed:bind xpath="@valueURIxEditor">
-            <select class="form-control form-control-inline">
+            <select class="form-control form-control-inline mir-form__js-select--large">
               <option value="">
                 <xed:output i18n="mir.select.optional" />
               </option>
@@ -1612,7 +1612,7 @@
           :
         </label>
         <div class="col-md-6">
-          <select class="form-control form-control-inline">
+          <select class="form-control form-control-inline mir-form__js-select--large">
             <option value="">
               <xed:output i18n="mir.select" />
             </option>
@@ -1634,7 +1634,7 @@
           :
         </label>
         <div class="col-md-6">
-          <select class="form-control form-control-inline">
+          <select class="form-control form-control-inline mir-form__js-select--large">
             <option value="">
               <xed:output i18n="mir.select" />
             </option>
