@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classification>
   <classification url="http://mycore.de/classifications/XMetaDissPlusThesisLevel.xml" />
+  <classification url="http://mycore.de/classifications/derivate_types.xml" />
   <classification url="http://mycore.de/classifications/diniPublType.xml" />
   <classification url="http://www.mycore.org/classifications/marcrelator.xml" />
   <classification url="http://www.mycore.org/classifications/marcgt.xml" />
