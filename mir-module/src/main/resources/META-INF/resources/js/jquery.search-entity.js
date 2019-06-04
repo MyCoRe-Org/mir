@@ -429,7 +429,7 @@
         }
 
         var $entry = $(document.createElement("li"));
-        entry.addClass("dropdown-item");
+        $entry.addClass("dropdown-item");
         if(type.toUpperCase() === this.selectedType.toUpperCase()) {
           $entry.addClass("active");
         }
