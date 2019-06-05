@@ -6,6 +6,16 @@
       <when condition="true" url="/servlets/solr/personindexp?XSL.Style=person&amp;terms.regex=%5Ba%7C%C3%A4%7C%C3%84%5D.*" />
     </action>
   </collection>
+  <collection name="search">
+    <action action="simple">
+      <when condition="not (user = guest )" url="/content/search/simple_intern.xed" />
+      <when condition="true" url="/content/search/simple.xed" />
+    </action>
+    <action action="complex">
+      <when condition="not (user = guest )" url="/content/search/complex_intern.xed" />
+      <when condition="true" url="/content/search/complex.xed" />
+    </action>
+  </collection>
   <collection name="mods">
     <action action="create">
       <when condition="(group = admin) or (group = editor)" url="/editor/editor-admins.xed" />
