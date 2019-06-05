@@ -8,11 +8,11 @@
   </collection>
   <collection name="search">
     <action action="simple">
-      <when condition="(group = admin) or (group = editor) or (group = submitter)" url="/content/search/simple_intern.xed" />
+      <when condition="not (user = guest )" url="/content/search/simple_intern.xed" />
       <when condition="true" url="/content/search/simple.xed" />
     </action>
     <action action="complex">
-      <when condition="(group = admin) or (group = editor) or (group = submitter)" url="/content/search/complex_intern.xed" />
+      <when condition="not (user = guest )" url="/content/search/complex_intern.xed" />
       <when condition="true" url="/content/search/complex.xed" />
     </action>
   </collection>
