@@ -16,22 +16,16 @@ Detailed instructions you can find on [MIR Documentation site](http://mycore.de/
   - run `mvn install -am -pl mir-webapp && mvn -Pdev -Djetty org.codehaus.cargo:cargo-maven2-plugin:run -pl mir-webapp` If you want to test the application with Tomcat instead replace `-Djetty` by `-Dtomcat=9`
 
 ## FAQ
- 1. Installation hangs while generating secret
-
-  `apt-get install rng-tools`
-  `rngd -r /dev/urandom`
- 1. Can't export using bibtex button on metadata page
- 
-   install bibutils
- 1. How can I use MyCoRe command line interface (not WebCLI)?
- 
-  `mir-cli/target/appassembler/bin/mir.sh`
-  Set `JAVA_OPTS` environment variable to `-DMCR.DataPrefix=dev` before running.
-
- 1. How can I get more than one connection to h2?
- 
-  add `;AUTO_SERVER=TRUE` in jdbc url (configured in persistence.xml)
-
+ 1. Installation hangs while generating secret  
+    `apt-get install rng-tools`  
+    `rngd -r /dev/urandom`
+ 1. Can't export using bibtex button on metadata page  
+    install bibutils
+ 1. How can I use MyCoRe command line interface (not WebCLI)?  
+    `mir-cli/target/appassembler/bin/mir.sh`  
+    Set `JAVA_OPTS` environment variable to `-DMCR.DataPrefix=dev` before running.
+ 1. How can I get more than one connection to h2?  
+    add `;AUTO_SERVER=TRUE` in jdbc url (configured in persistence.xml)
 
 ## Git-Style-Guide
 For the moment see [agis-:Git-Style-Guide](https://github.com/agis-/git-style-guide) and use it with the following exceptions:
