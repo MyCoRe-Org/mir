@@ -4,14 +4,33 @@ MIR (acronym for MyCoRe/MODS Institutional Repository) is an open source reposit
 
 ## Installation instructions
 Detailed instructions you can find on [MIR Documentation site](http://mycore.de/generated/mir)
+  - run `mvn clean install -am -pl mir-webapp` in mir folder
+ - add profile `dev` to your `.m2/settings.xml` including path to solr home and solr data
  - initialize solr configuration using `git submodule update --init --recursive`
  - to start solr, go to mir-webapp
-  - install solr with the command: `mvn solr-runner:copyHome`
-  - run solr with the command: `mvn solr-runner:start`
-  - stop solr with the command: `mvn solr-runner:stop`
-  - update solr with the command: `mvn solr-runner:stop solr-runner:copyHome solr-runner:start`
+  - install solr with the command: `mvn -Pdev solr-runner:copyHome`
+  - run solr with the command: `mvn -Pdev solr-runner:start`
+  - stop solr with the command: `mvn -Pdev solr-runner:stop`
+  - update solr with the command: `mvn -Pdev solr-runner:stop solr-runner:copyHome solr-runner:start`
  - to starting up a servlet container in development environment go back to mir folder
   - run `mvn install -am -pl mir-webapp && mvn -Pdev -Djetty org.codehaus.cargo:cargo-maven2-plugin:run -pl mir-webapp` If you want to test the application with Tomcat instead replace `-Djetty` by `-Dtomcat=9`
+
+## FAQ
+ 1. Installation hangs while generating secret
+
+  `apt-get install rng-tools`
+  `rngd -r /dev/urandom`
+ 1. Can't export using bibtex button on metadata page
+ 
+   install bibutils
+ 1. How can I use MyCoRe command line interface (not WebCLI)?
+ 
+  `mir-cli/target/appassembler/bin/mir.sh`
+  Set `JAVA_OPTS` environment variable to `-DMCR.DataPrefix=dev` before running.
+
+ 1. How can I get more than one connection to h2?
+ 
+  add `;AUTO_SERVER=TRUE` in jdbc url (configured in persistence.xml)
 
 
 ## Git-Style-Guide
