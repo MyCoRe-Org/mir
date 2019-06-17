@@ -7,7 +7,19 @@ Detailed instructions for application usage you can find on [MIR Documentation s
 
 This guide addresses developers. Thats why you run it in 'dev' profile!
  - run `mvn clean install -am -pl mir-webapp` in mir folder
- - add profile `dev` to your `.m2/settings.xml` including path to solr home and solr data
+ - add profile `dev` to your `.m2/settings.xml` including path to solr home and solr data  
+```
+    <profile>
+      <id>dev</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <properties>
+        <mir.solr.home>${user.home}/.mycore/dev-mir/data/solr</mir.solr.home>
+        <mir.solr.data.dir>${user.home}/.mycore/dev-mir/data/solr/data</mir.solr.data.dir>
+      </properties>
+    </profile>
+```
  - initialize solr configuration using `git submodule update --init --recursive`
  - to start solr, go to mir-webapp
   - install solr with the command: `mvn -Pdev solr-runner:copyHome`
@@ -19,6 +31,7 @@ This guide addresses developers. Thats why you run it in 'dev' profile!
 
 ## FAQ
  1. Installation hangs while generating secret  
+    There is entropy missing for GPG key generation. For ubuntu eg. you can use rng-tools:  
     `apt-get install rng-tools`  
     `rngd -r /dev/urandom`
  1. Can't export using bibtex button on metadata page  
