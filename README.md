@@ -2,9 +2,11 @@
 MIR (acronym for MyCoRe/MODS Institutional Repository) is an open source repository software that is build upon [MyCoRe](https://github.com/MyCoRe-Org/mycore) and [MODS](http://www.loc.gov/standards/mods/).
 
 
-## Installation instructions
-Detailed instructions you can find on [MIR Documentation site](http://mycore.de/generated/mir)
-  - run `mvn clean install -am -pl mir-webapp` in mir folder
+## Installation instructions for developer
+Detailed instructions for application usage you can find on [MIR Documentation site](https://www.mycore.de/documentation/getting_started/gs_mir_install/).
+
+This guide addresses developers. Thats why you run it in 'dev' profile!
+ - run `mvn clean install -am -pl mir-webapp` in mir folder
  - add profile `dev` to your `.m2/settings.xml` including path to solr home and solr data
  - initialize solr configuration using `git submodule update --init --recursive`
  - to start solr, go to mir-webapp
@@ -20,7 +22,7 @@ Detailed instructions you can find on [MIR Documentation site](http://mycore.de/
     `apt-get install rng-tools`  
     `rngd -r /dev/urandom`
  1. Can't export using bibtex button on metadata page  
-    install bibutils
+    install [bibutils](https://sourceforge.net/projects/bibutils/)
  1. How can I use MyCoRe command line interface (not WebCLI)?  
     `mir-cli/target/appassembler/bin/mir.sh`  
     Set `JAVA_OPTS` environment variable to `-DMCR.DataPrefix=dev` before running.
