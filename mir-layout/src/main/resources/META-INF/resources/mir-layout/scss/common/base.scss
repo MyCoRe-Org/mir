@@ -8,115 +8,117 @@
 // set the defaults for all responsive levels here
 
 
-    body {
-        // TODO do we still need those background settings?
-        background-position:0px 0px;
-        background-attachment:fixed;
-        background-repeat:no-repeat;
+body {
+  // TODO do we still need those background settings?
+  background-position: 0px 0px;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
 
-        // do not reduce page width below this value
-        min-width: 320px;
-    }
+  // do not reduce page width below this value
+  min-width: 320px;
+}
 
-    header {
-        #searchInput {
-            padding: 4px 15px;
-            height: auto;
-            margin-top: 4px;
-        }
-    }
+header {
+  #searchInput {
+    padding: 4px 15px;
+    height: auto;
+    margin-top: 4px;
+  }
+}
 
-    #page {
-        padding-top:40px;
-        background-color: $body-bg;
-        #main_content {
-            min-height: 300px;
-        }
-    }
+#page {
+  padding-top: 40px;
+  background-color: $body-bg;
 
-    // align the footer to the bottom
-    body {
-        min-height: 100vh;
-        position: relative;
-        padding-bottom: 530px;
-    }
-    footer {
-        position: absolute;
-        bottom: 0;
-        width: 100%;
-    }
-    // end footer alignment
+  #main_content {
+    min-height: 300px;
+  }
+}
 
-    // TODO move this to the typo styles
-    p {
-        -webkit-hyphens: auto;
-        -moz-hyphens: auto;
-        -ms-hyphens: auto;
-        hyphens: auto;
-        text-rendering: optimizeLegibility;
-        line-height: 180%;
-    }
+// align the footer to the bottom
+body {
+  min-height: 100vh;
+  position: relative;
+  padding-bottom: 530px;
+}
 
-    // TODO move this to the typo styles
-    .jumbotwo {
-        h2 {
-            font-size: 40px;
-            margin: 0px 0 30px 0;
-        }
-        h3 {
-            span {
-                padding-right:20px;
-            }
-        }
-    }
+footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+}
 
-    #powered_by {
-        text-align: center;
-        background-color: #080F1F;
-        border-top: 1px solid #000;
-        padding: 2em 0px;
-    }
+// end footer alignment
 
-    // TODO move this to the upload styles
-    .uploadDragging {
-        color: #2d9700;
-        background-color: #4B8FBC;
-    }
+// TODO move this to the typo styles
+p {
+  -webkit-hyphens: auto;
+  -moz-hyphens: auto;
+  -ms-hyphens: auto;
+  hyphens: auto;
+  text-rendering: optimizeLegibility;
+  line-height: 180%;
+}
 
-    // TODO move this to the menu styles
-    .dropdown-menu {
-        z-index: 2000;
-    }
+// TODO move this to the typo styles
+.jumbotwo {
+  h2 {
+    font-size: 40px;
+    margin: 0px 0 30px 0;
+  }
 
-    // TODO move this to the player styles
-    .mir-player {
-        margin-bottom: 30px;
-    }
-
-    p {
-      -webkit-hyphens: auto;
-      -moz-hyphens: auto;
-      -ms-hyphens: auto;
-      hyphens: auto;
-      text-rendering: optimizeLegibility;
-      line-height: 180%;
-    }
-
-    #powered_by {
-        text-align: center;
-        background-color: #080F1F;
-        border-top: 1px solid #000;
-        padding: 2em 0px;
-    }
-
-    .dropdown-menu {
-        z-index: 2000;
-    }
-
-    .mir-player {
-      margin-bottom: 30px;
+  h3 {
+    span {
+      padding-right: 20px;
     }
   }
+}
+
+#powered_by {
+  text-align: center;
+  background-color: #080F1F;
+  border-top: 1px solid #000;
+  padding: 2em 0px;
+}
+
+// TODO move this to the upload styles
+.uploadDragging {
+  color: #2d9700;
+  background-color: #4B8FBC;
+}
+
+// TODO move this to the menu styles
+.dropdown-menu {
+  z-index: 2000;
+}
+
+// TODO move this to the player styles
+.mir-player {
+  margin-bottom: 30px;
+}
+
+p {
+  -webkit-hyphens: auto;
+  -moz-hyphens: auto;
+  -ms-hyphens: auto;
+  hyphens: auto;
+  text-rendering: optimizeLegibility;
+  line-height: 180%;
+}
+
+#powered_by {
+  text-align: center;
+  background-color: #080F1F;
+  border-top: 1px solid #000;
+  padding: 2em 0px;
+}
+
+.dropdown-menu {
+  z-index: 2000;
+}
+
+.mir-player {
+  margin-bottom: 30px;
 }
 
 // styles example page
