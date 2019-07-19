@@ -243,7 +243,7 @@
     </xsl:variable>
 
     <li class="dropdown" id="basket-list-item">
-      <a class="dropdown-toggle" data-toggle="dropdown" href="#" title="{$basketTitle}">
+      <a class="dropdown-toggle nav-link" data-toggle="dropdown" href="#" title="{$basketTitle}">
         <i class="fa fa-bookmark"></i>
         <sup>
           <xsl:value-of select="$entryCount" />
