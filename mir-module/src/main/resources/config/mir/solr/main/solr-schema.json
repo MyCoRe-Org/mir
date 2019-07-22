@@ -160,5 +160,23 @@
       "stored": true,
       "multiValued": false
     }
-  }
+  },
+{
+    "add-field": {
+        "name": "mir.toc.title",
+        "type": "string",
+        "indexed": true,
+        "stored": true,
+        "multiValued": false
+    }
+},
+{
+    "add-field": {
+        "name": "mir.toc.authors",
+        "type": "string",
+        "indexed": true,
+        "stored": true,
+        "multiValued": false
+    }
+}
 ]

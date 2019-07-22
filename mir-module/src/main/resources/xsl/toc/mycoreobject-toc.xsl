@@ -21,6 +21,7 @@
   <xsl:import href="xslImport:modsmeta:toc/mycoreobject-toc.xsl" />
 
   <xsl:param name="WebApplicationBaseURL" />
+  <xsl:param name="toc.debug" />
   
   <!-- custom layouts of level items and publications -->
   <xsl:include href="toc/custom-toc-layouts.xsl" />
@@ -63,18 +64,36 @@
     </xsl:variable>
 
     <!-- build uri to get response from solr -->
-    <xsl:variable name="uri">
-      <!-- transform response to simpler xml, to further simplify transformation to html -->
-      <xsl:text>xslStyle:toc/solr-facets2toc:solr:</xsl:text> 
-      
+    <xsl:variable name="uri1">
+      <xsl:text>solr:</xsl:text> 
       <xsl:text>q=</xsl:text><xsl:value-of select="encoder:encode($q)" />
       <xsl:text>&amp;fl=*</xsl:text> <!-- would be better to only specify fields used here -->
       <xsl:text>&amp;rows=1000</xsl:text> <!-- table of contents with more than 1.000 publications will fail -->
       <xsl:text>&amp;</xsl:text><xsl:value-of select="$solr.params" />
     </xsl:variable>
+ 
+    <!-- transform response to simpler xml, to further simplify transformation to html -->
+    <xsl:variable name="uri2">
+      <xsl:text>xslStyle:toc/solr-facets2toc:</xsl:text> 
+      <xsl:value-of select="$uri1" />
+    </xsl:variable>
+
+    <xsl:if test="$toc.debug='true'">
+      <div id="toc" class="detail_block">
+        <textarea style="width:100%;" rows="5">
+          <xsl:value-of select="$solr.params" />
+        </textarea>
+        <textarea style="width:100%;" rows="10">
+          <xsl:copy-of select="document($uri1)" />
+        </textarea>
+        <textarea style="width:100%;" rows="10">
+          <xsl:copy-of select="document($uri2)" />
+        </textarea>
+      </div>
+    </xsl:if>
 
     <!-- if the response returned any documents, show a table of contents now -->
-    <xsl:for-each select="document($uri)/toc[//doc]">
+    <xsl:for-each select="document($uri2)/toc[//doc]">
       <div id="toc" class="detail_block">
         <h3>
           <xsl:value-of select="i18n:translate('mir.metadata.content')"/>
