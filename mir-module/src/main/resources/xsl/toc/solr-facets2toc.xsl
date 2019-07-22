@@ -24,7 +24,13 @@
   </toc> 
 -->
 
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+<xsl:stylesheet version="1.0" 
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  xmlns:xalan="http://xml.apache.org/xalan"
+  exclude-result-prefixes="xalan"
+>
+
+  <xsl:output method="xml" encoding="UTF-8" indent="yes" xalan:indent-amount="2" />
   
   <xsl:template match="/response">
     <!-- the ID of the toc layout was transported from solr back to here as custom request param: -->
