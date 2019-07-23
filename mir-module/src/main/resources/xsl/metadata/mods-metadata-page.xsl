@@ -71,8 +71,8 @@
           <!-- End: ABSTRACT -->
           </div>
 
-          <!-- Table of Contents -->
-          <xsl:copy-of select="div[@id='toc']" />
+          <!-- Table of Contents (BETA activate for testing) -->
+          <!-- xsl:copy-of select="div[@id='toc']" / -->
           
           <!-- fileupload -->
           <xsl:if test="div[contains(@id,'mir-file-upload')]">
