@@ -33,7 +33,7 @@
 
     <!-- query to find all objects below this one (children, grand-children) -->
     <xsl:variable name="q">
-      <xsl:text>ancestor:</xsl:text><xsl:value-of select="mycoreobject/@ID" />
+      <xsl:text>mir.toc.ancestor:</xsl:text><xsl:value-of select="mycoreobject/@ID" />
       <xsl:text> AND (</xsl:text>
       <xsl:text>state:</xsl:text>
       <xsl:choose>
