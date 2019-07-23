@@ -42,16 +42,19 @@
   <xsl:template match="dc:creator">
     <xsl:apply-templates select="foaf:Person" />
   </xsl:template>
-  
+
   <xsl:template match="dc:creator/foaf:Person">
-    <mods:name type="personal">
-      <xsl:apply-templates select="foaf:familyName" />
-      <xsl:apply-templates select="foaf:givenName" />
-      <xsl:apply-templates select="owl:sameAs/@rdf:resource[contains(.,'orcid.org')]" />
-      <mods:role>
-        <mods:roleTerm type="code" authority="marcrelator">aut</mods:roleTerm>
-      </mods:role>
-    </mods:name>
+    <!-- skip empty person -->
+    <xsl:if test="count(*[string-length(normalize-space(text()))&gt;0])&gt;0">
+      <mods:name type="personal">
+        <xsl:apply-templates select="foaf:familyName" />
+        <xsl:apply-templates select="foaf:givenName" />
+        <xsl:apply-templates select="owl:sameAs/@rdf:resource[contains(.,'orcid.org')]" />
+        <mods:role>
+          <mods:roleTerm type="code" authority="marcrelator">aut</mods:roleTerm>
+        </mods:role>
+      </mods:name>
+    </xsl:if>
   </xsl:template>
   
   <xsl:template match="foaf:familyName">
