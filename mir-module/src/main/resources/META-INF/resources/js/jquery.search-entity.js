@@ -509,14 +509,18 @@
     var $parent = this.$parent;
     var options = this.options;
 
-    var $resultBox = $(document.createElement("ul"));
-    $resultBox.attr("role", "menu");
-    $resultBox.addClass("dropdown-menu");
+    var $resultBox = $(document.createElement("div"));
+    $resultBox.addClass("dropdown");
+
+    var $resultList = $(document.createElement("ul"));
+    $resultList.attr("role", "menu");
+    $resultList.addClass("dropdown-menu");
+    $resultBox.append($resultList);
 
     if (data && data.length > 0) {
       $(data).each(function(index, item) {
         var $li = $(document.createElement("li"));
-
+        $li.addClass("dropdown-item");
         var $person = $(document.createElement("a"));
         $person.attr("href", "#");
         $person.attr("data-type", item.type);
@@ -529,23 +533,23 @@
 
         $li.append($person);
 
-        $resultBox.append($li);
+        $resultList.append($li);
       });
     } else {
       var $li = $(document.createElement("li"));
       $li.html(options.searchResultEmpty);
-      $resultBox.append($li);
+      $resultList.append($li);
     }
 
     $parent.append($resultBox);
-    $resultBox.css({
+    $resultList.css({
       height : "auto",
       maxHeight : options.searchResultMaxHeight,
       width : "100%",
       overflow : "auto",
       overflowX : "hidden"
     });
-    $resultBox.dropdown("toggle");
+    $resultList.addClass("show");
 
     this.$element.data($.extend({}, {
       searchResultContainer : $resultBox
@@ -613,7 +617,6 @@
       this.$element.after($feedback);
 
       $feedback.css({
-        position : "absolute",
         marginLeft : -($feedback.width() + 10),
         marginTop : Math.floor((this.$element.innerHeight() - $feedback.height()) / 2),
         zIndex : 100
