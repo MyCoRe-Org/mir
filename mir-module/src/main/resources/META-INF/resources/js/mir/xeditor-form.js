@@ -320,21 +320,21 @@ $(document).ready(function() {
          setDate(parent, "simple", "");
          $(parent).find(".date-changeable").addClass("d-none");
          $(parent).find(".date-changeable").filter(function () {
-             return $(this).attr("data-type") == type;
+             return $(this).attr("data-type") === type;
          }).removeClass("d-none");
          setDate(parent, "start", start);
          setDate(parent, "end", end);
          setDate(parent, "simple", simple);
-         if (format == "simple") {
+         if (format === "simple") {
              setDateToSimple($(parent).find(".date-changeable:not('.d-none') div.date-format"));
          }
-         if (format == "range") {
+         if (format === "range") {
              setDateToRange($(parent).find(".date-changeable:not('.d-none') div.date-format"));
          }
      });
 
      $("body").on("focusout", ".personExtended-container input[name*='mods:nameIdentifier']:first", function() {
-         if($(this).val() == "") {
+         if($(this).val() === "") {
              $(this).parents(".personExtended_box").find(".search-person .input-group > a").remove();
          }
      });
