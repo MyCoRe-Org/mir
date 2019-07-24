@@ -1,78 +1,4 @@
-$(document).ready(function() {
-	
-	  $(document).popover({
-	    selector : "[data-toggle=popover]",
-	    container : "body",
-	    html : true,
-	    trigger: "focus"
-	  });
-	  
-    // Enables the datetimepicker
-    if (jQuery.fn.datepicker) {
-      $('.datetimepicker').find('input').each( function(index, elm){
-          pickDatePickerFormatAndAdd(elm);
-      });
-    }
-
-    $("body").on("click", ".expand-item", function () {
-        if($(this).attr("data-target")){
-            $(this).closest(".form-group").next($(this).attr("data-target")).toggleClass("d-none");
-        }
-        else {
-            $(this).closest("legend").toggleClass("hiddenDetail").next().toggleClass("d-none");
-        }
-        if($(this).hasClass("fa-chevron-down")) {
-            $(this).removeClass("fa-chevron-down");
-            $(this).addClass("fa-chevron-up");
-        }
-        else {
-            $(this).removeClass("fa-chevron-up");
-            $(this).addClass("fa-chevron-down");
-        }
-    });
-
-    $("body").on("click", "div.date-selectFormat a.date-rangeOption", function (event) {
-        event.preventDefault();
-        setDateToRange($(this).closest("div.date-format"));
-    });
-
-    $("body").on("click", "div.date-selectFormat a.date-simpleOption", function (event) {
-        event.preventDefault();
-        setDateToSimple($(this).closest("div.date-format"));
-    });
-
-    $("body").on("change", ".date-select", function () {
-        var type = $(this).val();
-        var parent = $(this).closest(".form-group");
-        var start = getDate(parent, "start");
-        var end = getDate(parent, "end");
-        var simple = getDate(parent, "simple");
-        var format = $(parent).find(".date-changeable:not('.d-none') div.date-format").attr("data-format");
-        setDate(parent, "start", "");
-        setDate(parent, "end", "");
-        setDate(parent, "simple", "");
-        $(parent).find(".date-changeable").addClass("d-none");
-        $(parent).find(".date-changeable").filter(function () {
-            return $(this).attr("data-type") == type;
-        }).removeClass("d-none");
-        setDate(parent, "start", start);
-        setDate(parent, "end", end);
-        setDate(parent, "simple", simple);
-        if (format == "simple") {
-            setDateToSimple($(parent).find(".date-changeable:not('.d-none') div.date-format"));
-        }
-        if (format == "range") {
-            setDateToRange($(parent).find(".date-changeable:not('.d-none') div.date-format"));
-        }
-    });
-
-    $("body").on("focusout", ".personExtended-container input[name*='mods:nameIdentifier']:first", function() {
-        if($(this).val() == "") {
-            $(this).parents(".personExtended_box").find(".search-person .input-group > a").remove();
-        }
-    });
-
-    function pickDatePickerFormatAndAdd(elm) {
+ function pickDatePickerFormatAndAdd(elm) {
         if (moment($(elm).val(), "YYYY-MM-DD", true).isValid()){
             addDatePicker(elm, 0);
         }
@@ -338,4 +264,78 @@ $(document).ready(function() {
         }
     });
 
-});
+
+$(document).ready(function() {
+
+    $(document).popover({
+        selector: "[data-toggle=popover]",
+        container: "body",
+        html: true,
+        trigger: "focus"
+    });
+
+     // Enables the datetimepicker
+     if (jQuery.fn.datepicker) {
+         $('.datetimepicker').find('input').each( function(index, elm){
+             pickDatePickerFormatAndAdd(elm);
+         });
+     }
+
+     $("body").on("click", ".expand-item", function () {
+         if($(this).attr("data-target")){
+             $(this).closest(".form-group").next($(this).attr("data-target")).toggleClass("d-none");
+         }
+         else {
+             $(this).closest("legend").toggleClass("hiddenDetail").next().toggleClass("d-none");
+         }
+         if($(this).hasClass("fa-chevron-down")) {
+             $(this).removeClass("fa-chevron-down");
+             $(this).addClass("fa-chevron-up");
+         }
+         else {
+             $(this).removeClass("fa-chevron-up");
+             $(this).addClass("fa-chevron-down");
+         }
+     });
+
+     $("body").on("click", "div.date-selectFormat a.date-rangeOption", function (event) {
+         event.preventDefault();
+         setDateToRange($(this).closest("div.date-format"));
+     });
+
+     $("body").on("click", "div.date-selectFormat a.date-simpleOption", function (event) {
+         event.preventDefault();
+         setDateToSimple($(this).closest("div.date-format"));
+     });
+
+     $("body").on("change", ".date-select", function () {
+         var type = $(this).val();
+         var parent = $(this).closest(".form-group");
+         var start = getDate(parent, "start");
+         var end = getDate(parent, "end");
+         var simple = getDate(parent, "simple");
+         var format = $(parent).find(".date-changeable:not('.d-none') div.date-format").attr("data-format");
+         setDate(parent, "start", "");
+         setDate(parent, "end", "");
+         setDate(parent, "simple", "");
+         $(parent).find(".date-changeable").addClass("d-none");
+         $(parent).find(".date-changeable").filter(function () {
+             return $(this).attr("data-type") == type;
+         }).removeClass("d-none");
+         setDate(parent, "start", start);
+         setDate(parent, "end", end);
+         setDate(parent, "simple", simple);
+         if (format == "simple") {
+             setDateToSimple($(parent).find(".date-changeable:not('.d-none') div.date-format"));
+         }
+         if (format == "range") {
+             setDateToRange($(parent).find(".date-changeable:not('.d-none') div.date-format"));
+         }
+     });
+
+     $("body").on("focusout", ".personExtended-container input[name*='mods:nameIdentifier']:first", function() {
+         if($(this).val() == "") {
+             $(this).parents(".personExtended_box").find(".search-person .input-group > a").remove();
+         }
+     });
+ });
