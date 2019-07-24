@@ -12,13 +12,13 @@
       <xed:source uri="webapp:editor/search/template/simple_intern.xml" />
       <xed:bind xpath="query">
         <xed:bind xpath="@mask" default="search/simple_intern.xed" />
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <h3 class="panel-title">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">
               <xed:output i18n="component.mods.editor.search.label" />
             </h3>
           </div>
-          <div class="panel-body">
+          <div class="card-body">
 
             <xed:bind xpath="conditions/boolean[@operator='and']">
             <!-- Title -->
@@ -41,8 +41,8 @@
         <!-- /xed:bind>
         <xed:bind xpath="conditions/boolean[@operator='and']" -->
             <!--Fulltext -->
-              <div class="form-group">
-                <label for="inputFulltext1" class="col-md-3 control-label">
+              <div class="form-group row">
+                <label for="inputFulltext1" class="col-md-3  col-form-label text-right">
                   <xed:output i18n="mir.dropdown.content" />
                 </label>
                 <div class="col-md-9">
@@ -62,8 +62,8 @@
                           <xed:output i18n="editor.search.mir.openAccess" />
                         </option>
                       </select>
-                      <span class="input-group-addon" data-toggle="tooltip" data-html="true" title="{i18n:editor.search.fulltext.tooltip}">
-                        <i class="fa fa-info-circle" />
+                      <span class="input-group-append" data-toggle="tooltip" data-html="true" title="{i18n:editor.search.fulltext.tooltip}">
+                        <i class="fa fa-info-circle  input-group-text" />
                       </span>
                     </xed:bind>
                   </div>
@@ -72,7 +72,7 @@
             </xed:bind>
           </div>
          <!-- submit -->
-          <div class="panel-footer clearfix">
+          <div class="card-footer clearfix">
             <div class="pull-right">
               <mir:template name="submitButton" i18n="editor.search.search" target="servlet_MCRQLSearchServlet" />
             </div>

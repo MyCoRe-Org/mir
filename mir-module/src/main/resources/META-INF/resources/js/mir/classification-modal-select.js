@@ -45,9 +45,8 @@ $﻿(document).ready(function() {
 					loadClassifications(rightContent, $("a.active").attr("data-href"));
 				}
 			}, 300);
-		};
-		
-		function rightContent(data) {
+        }
+        function rightContent(data) {
 			$("#modalFrame-body > #main_right_content").remove();
 			var mainBody = $(data).find("#main_content");
 			mainBody.filter("#main_content").attr("id", "main_right_content").addClass("col-md-6 form-group").attr("style" , "max-height: 560px; overflow: auto");
@@ -60,9 +59,8 @@ $﻿(document).ready(function() {
 			setTimeout(function() {
 				removeHrefCbList();
 			}, 300);
-		};
-		
-		function removeHrefCbList() {
+        }
+        function removeHrefCbList() {
 			$("#main_right_content .cbList > li > a").each(function() {
 				if($(this).attr("href") != "#" && !!$(this).attr("href")) {
 					var href = decodeURIComponent($(this).attr("href"));
@@ -95,9 +93,8 @@ $﻿(document).ready(function() {
 					});
 				}
 			});
-		};
-		
-		function displayComplett() {
+        }
+        function displayComplett() {
 			var label = button.next().val();
 			var classi = button.next().next().val();
 			if(classi != "" && label != "") {
@@ -115,9 +112,8 @@ $﻿(document).ready(function() {
 			$("#modalFrame-cancel").text($("button[name='_xed_submit_cancel']").text());
 			$("#modalFrame-send").hide();
 			$("#modalFrame").modal("show");
-		};
-		
-		function loadClassifications(callback, href){
+        }
+        function loadClassifications(callback, href){
 			var url = href;
 			if(url == "") {
 				var session = $("input[name='_xed_session']").val();
@@ -134,7 +130,7 @@ $﻿(document).ready(function() {
 					alert(error);
 				}
 			});
-		};
-	}
+        }
+    }
 });
 

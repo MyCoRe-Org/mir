@@ -15,7 +15,7 @@
         &>a:hover,
         &>a:focus,
         &>span {
-            background-color: lighten($gray, 25%);
+            background-color: $gray-200;
         }
     }
 }

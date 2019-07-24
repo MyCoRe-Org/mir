@@ -565,11 +565,10 @@
       $("a.readmore", this).remove();
       $("a.readless", this).remove();
     }
-  };
-
-  window.solrEscapeSearchValue = function base_solrEscapeSearchValue(text){
-    return text.replace(/([\\!&|+\\-\\(\\)\\{\\}\\\[\\\]~:\\\\/^])/g, "\\$1"); // special chars: "!&|+-(){}[]~:\\/^"
   }
+    window.solrEscapeSearchValue = function base_solrEscapeSearchValue(text){
+    return text.replace(/([\\!&|+\\-\\(\\)\\{\\}\\\[\\\]~:\\\\/^])/g, "\\$1"); // special chars: "!&|+-(){}[]~:\\/^"
+  };
 
 
   window.fireMirSSQuery = function base_fireMirSSQuery(form) {

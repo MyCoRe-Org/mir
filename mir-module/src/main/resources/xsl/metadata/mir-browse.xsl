@@ -47,14 +47,14 @@
     <div id="search_browsing">
       <div id="search_options">
         <!-- TODO: add functionality to refine search bottons, before display them again -->
-        <!-- a href="#" type="button" class="btn btn-default btn-sm">Suche verfeinern</a -->
+        <!-- a href="#" type="button" class="btn btn-secondary btn-sm">Suche verfeinern</a -->
         <xsl:copy-of select="$ResultPages" />
 
         <!-- xsl:variable name="origRows" select="lst[@name='responseHeader']/lst[@name='params']/str[@name='origrows']" />
         <xsl:variable name="newStart" select="$start - ($start mod $origRows)" />
         <xsl:variable name="href" select="concat($proxyBaseURL,'?', $HttpSession, $params, '&amp;start=', $newStart)" />
 
-        <a href="{$href}" class="btn btn-default btn-sm" role="button">
+        <a href="{$href}" class="btn btn-secondary btn-sm" role="button">
           <xsl:value-of select="i18n:translate('component.solr.searchresult.back')" />
         </a -->
       </div>

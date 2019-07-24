@@ -15,6 +15,8 @@
 
 
 /* sm: up to 970 px **********************************************************/
+/*
+TODO: migrate see https://getbootstrap.com/docs/4.0/migration/ strg+f Grid breakpoints
 @media (min-width: $screen-tablet) {
 
   #aux_col_actions {
@@ -22,9 +24,11 @@
   }
 
 }
-
+*/
 
 /* md: up to 1170 px *********************************************************/
+/*
+TODO: migrate see https://getbootstrap.com/docs/4.0/migration/ strg+f Grid breakpoints
 @media (min-width: $screen-desktop) {
 
   #aux_col {
@@ -38,9 +42,11 @@
   }
   
 }
-
+*/
 
 /* lg: larger than 1170 px ***************************************************/
+/*
+TODO: migrate see https://getbootstrap.com/docs/4.0/migration/ strg+f Grid breakpoints
 @media (min-width: $screen-lg-desktop) {
   
   #aux_col {
@@ -54,3 +60,4 @@
   }
 
 }
+*/

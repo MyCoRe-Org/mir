@@ -5,8 +5,8 @@
   margin-bottom: 30px;
 
   .navbar.navbar-default {
-    background-color: $panel-default-heading-bg;
-    border-color: $panel-default-border;
+    background-color: $card-bg;
+    border-color: $card-border-color;
 
     .dropdown {
       height: 36px;
@@ -30,7 +30,7 @@ h3.mir-viewer {
 
 .mycoreViewer {
 
-  &:not(.viewer) .navbar.navbar-default {
+  /*&:not(.viewer) .navbar.navbar-default {
     select {
       height: 44px;
     }
@@ -43,7 +43,7 @@ h3.mir-viewer {
   .navbar.navbar-default .btn {
       margin-top: 4px;
     }
-
+*/
 
   .altoLine {
     text-align: left;

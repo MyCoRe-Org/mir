@@ -18,7 +18,7 @@
       <xsl:variable name="solrResult" select="document($completeQuery)" /> <!-- [string-length(str[@name='groupValue']/text()) &gt; 0] -->
       <div id="mir-player">
 
-        <div class="panel panel-default">
+        <div class="card"><!-- todo: panel-default replacement -->
         <!-- I want to make just one request, not for every derivate. So group by derivate id. -->
           <xsl:variable name="optionsFragment">
             <select id="videoChooser" class="form-control">
@@ -39,7 +39,7 @@
 
           <xsl:variable name="playerNode">
             <div class="embed-responsive embed-responsive-16by9 mir-player mir-preview">
-              <div class="panel-body">
+              <div class="card-body">
                 <xsl:if test="count($options//optgroup/option[@data-file-extension ='mp4']) &gt; 0">
                   <video id="player_video" class="video-js embed-responsive-item" controls="" preload="auto" poster="">
                     <xsl:attribute name="data-setup">{}</xsl:attribute>
@@ -66,7 +66,7 @@
           </xsl:variable>
 
           <xsl:if test="count($options//optgroup/option) &gt; 0">
-            <div class="panel-heading">
+            <div class="card-heading">
               <xsl:copy-of select="$optionsFragment" />
             </div>
             <xsl:variable name="playerNodes" select="xalan:nodeset($playerNode)" />
@@ -95,7 +95,7 @@
         position: absolute;
         bottom: 0px;
         }
-        div.mir-player div.panel-body{
+        div.mir-player div.card-body{
         padding: 0;
         }
         div.video-js

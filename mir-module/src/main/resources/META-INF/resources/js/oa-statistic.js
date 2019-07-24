@@ -15,8 +15,7 @@ function OASInline (element,providerurl,oasid,from,until,counttype) {
   this.from = (isNaN(Date.parse(from)) === false) ? from : "2010-01-01";
   this.until = (isNaN(Date.parse(until)) === false) ? until : new Date().toJSON().substring(0,10); 
   this.granularity = "total";
-};
-
+}
 OASInline.prototype= {
   constructor: OASInline
   
@@ -98,8 +97,7 @@ function OASGraph (element,providerurl,oasid,from,until,granularity) {
   this.until = (isNaN(Date.parse(until)) === false) ? until : new Date().toJSON().substring(0,10);
   this.data = [];
   this.barchart = "";
-};
-
+}
 OASGraph.prototype= {
   constructor: OASGraph
   

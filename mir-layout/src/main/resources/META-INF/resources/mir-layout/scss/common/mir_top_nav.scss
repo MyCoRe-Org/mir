@@ -30,12 +30,12 @@
         // menu entry
         > li > a
         {
-            color: $gray;
+            color: $gray-400;
             font-size: 85%;
-            padding: 0px;
+            padding: 3px;
             // caret
             .caret {
-                border-top-color: $gray;
+                border-top-color: $gray-400;
             }
             // menu entry - hover and focus
             &:hover,
@@ -52,7 +52,7 @@
         > li.active > a {
             color: $link-color;
             background-color: transparent;
-            // current menu entry - hover and focus
+            // current menu entry - hover and focus^
             &:hover,
             &:focus
             {

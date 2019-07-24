@@ -240,7 +240,7 @@
                     </xsl:otherwise>
                   </xsl:choose>
                   <div>
-                    <button type="button" class="show_openstreetmap btn btn-default" data-coords="{.}" >
+                    <button type="button" class="show_openstreetmap btn btn-secondary" data-coords="{.}" >
                       OpenStreetMap
                     </button>
                   </div>
