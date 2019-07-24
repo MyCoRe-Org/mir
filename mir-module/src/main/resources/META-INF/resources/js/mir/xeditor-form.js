@@ -1,4 +1,6 @@
- function pickDatePickerFormatAndAdd(elm) {
+$(document).ready(function() {
+
+    function pickDatePickerFormatAndAdd(elm) {
         if (moment($(elm).val(), "YYYY-MM-DD", true).isValid()){
             addDatePicker(elm, 0);
         }
@@ -263,9 +265,6 @@
             setSelect2($(this));
         }
     });
-
-
-$(document).ready(function() {
 
     $(document).popover({
         selector: "[data-toggle=popover]",
