@@ -4,7 +4,7 @@
   <parent>
     <groupId>org.mycore.mir</groupId>
     <artifactId>mir-parent</artifactId>
-    <version>2019.06.0-SNAPSHOT</version>
+    <version>2019.06.1-SNAPSHOT</version>
   </parent>
   <artifactId>mir-layout</artifactId>
   <name>MIR: Layout</name>
@@ -99,4 +99,8 @@
       <artifactId>mycore-viewer</artifactId>
     </dependency>
   </dependencies>
+
+  <scm>
+    <tag>2019.06.x</tag>
+  </scm>
 </project>

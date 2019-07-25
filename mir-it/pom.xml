@@ -4,7 +4,7 @@
   <parent>
     <groupId>org.mycore.mir</groupId>
     <artifactId>mir-parent</artifactId>
-    <version>2019.06.0-SNAPSHOT</version>
+    <version>2019.06.1-SNAPSHOT</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
   <artifactId>mir-it</artifactId>
@@ -382,4 +382,8 @@
       </properties>
     </profile>
   </profiles>
+
+  <scm>
+    <tag>2019.06.x</tag>
+  </scm>
 </project>
