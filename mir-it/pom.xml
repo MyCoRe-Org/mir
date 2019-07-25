@@ -11,6 +11,9 @@
   <packaging>jar</packaging>
   <name>MIR: Integration Tests</name>
   <description>combines all modules and runs integration tests</description>
+  <scm>
+    <tag>2019.06.x</tag>
+  </scm>
   <properties>
     <MCR.AppName>mir</MCR.AppName>
     <MCR.Home.Integration>${project.build.directory}/mycore-home</MCR.Home.Integration>
@@ -382,8 +385,4 @@
       </properties>
     </profile>
   </profiles>
-
-  <scm>
-    <tag>2019.06.x</tag>
-  </scm>
 </project>
