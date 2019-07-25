@@ -9,7 +9,6 @@
   </parent>
   <artifactId>mir-wizard</artifactId>
   <name>MIR: The MIR Wizard</name>
-
   <scm>
     <tag>2019.06.x</tag>
   </scm>
