@@ -26,7 +26,7 @@
         </xsl:variable>
         <div class="col-xs-12 col-md-5 text-left">
           <a tabindex="0" class="previous" href="{$link}" data-pagination=".caption:mods.title.main">
-            <span class="fa fa-chevron-left icon" />
+            <span class="fas fa-chevron-left icon" />
             <span class="caption">
               <xsl:value-of select="$label.previousHit" />
             </span>
@@ -56,7 +56,7 @@
             </xsl:variable>
             <xsl:value-of select="concat($proxyBaseURL, $HttpSession, $params, '&amp;start=', $newStart, '#hit_', $page)" />
           </xsl:attribute>
-          <span class="fa fa-chevron-up" />
+          <span class="fas fa-chevron-up" />
         </a>
         <xsl:text>&#160;</xsl:text>
         <xsl:value-of select="i18n:translate(concat($i18nprefix, '.entriesInfo'), concat($page, ';', $pages))" />
@@ -71,7 +71,7 @@
         </xsl:variable>
         <div class="col-xs-12 col-md-5 text-right">
           <a tabindex="0" class="next" href="{$link}" data-pagination=".caption:mods.title.main">
-            <span class="fa fa-chevron-right icon" />
+            <span class="fas fa-chevron-right icon" />
             <span class="caption">
               <xsl:value-of select="$label.nextHit" />
             </span>

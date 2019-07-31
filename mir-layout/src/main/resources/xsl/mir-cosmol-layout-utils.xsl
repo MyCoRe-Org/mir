@@ -57,7 +57,7 @@
                 </xsl:when>
               </xsl:choose>
           </div>
-          <button type="submit" title="{i18n:translate('mir.cosmol.navsearch.title')}" class="btn btn-primary"><span class="fa fa-search"></span></button>
+          <button type="submit" title="{i18n:translate('mir.cosmol.navsearch.title')}" class="btn btn-primary"><span class="fas fa-search"></span></button>
         </form>
         <ul class="nav navbar-nav">
           <xsl:apply-templates select="$loaded_navigation_xml/menu[@id='main']" />

@@ -399,7 +399,7 @@
         <xsl:when test="basket:contains($basketType, /mycoreobject/@ID)">
           <a class="btn btn-primary btn-sm w-100"
              href="{$ServletsBaseURL}MCRBasketServlet{$HttpSession}?type={$basketType}&amp;action=remove&amp;redirect={encoder:encode($RequestURL)}&amp;id={/mycoreobject/@ID}">
-            <i class="fa fa-minus">
+            <i class="fas fa-minus">
               <xsl:value-of select="' '" />
             </i>
             <xsl:value-of select="concat(' ',i18n:translate('basket.remove'))" />
@@ -409,7 +409,7 @@
           <a class="btn btn-primary btn-sm w-100"
              href="{$ServletsBaseURL}MCRBasketServlet{$HttpSession}?type={$basketType}&amp;action=add&amp;redirect={encoder:encode($RequestURL)}&amp;id={/mycoreobject/@ID}&amp;uri=mcrobject:{/mycoreobject/@ID}"
           >
-            <i class="fa fa-plus">
+            <i class="fas fa-plus">
               <xsl:value-of select="' '" />
             </i>
             <xsl:value-of select="concat(' ',i18n:translate('basket.add'))" />
@@ -418,7 +418,7 @@
       </xsl:choose>
       <div class="btn-group w-100">
         <a href="#" class="btn btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown">
-          <i class="fa fa-cog">
+          <i class="fas fa-cog">
             <xsl:value-of select="' '" />
           </i>
           <xsl:value-of select="concat(' ',i18n:translate('mir.actions'))" />
@@ -662,7 +662,7 @@
           <div class="modal-body">
             <div class="row">
               <div class="col-md-2">
-                <i class="fa fa-question-circle"></i>
+                <i class="fas fa-question-circle"></i>
               </div>
               <div class="col-md-10" data-i18n="component.pi.register.modal.text."></div>
             </div>
@@ -690,7 +690,7 @@
       <div class="options pull-right">
         <div class="btn-group">
           <a href="#" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">
-            <i class="fa fa-cog"></i>
+            <i class="fas fa-cog"></i>
             <xsl:value-of select="' Aktionen'" />
             <span class="caret"></span>
           </a>
@@ -712,7 +712,7 @@
       <div class="options pull-right">
         <div class="btn-group">
           <a href="#" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">
-            <i class="fa fa-cog"></i>
+            <i class="fas fa-cog"></i>
             <xsl:value-of select="' Aktionen'" />
             <span class="caret"></span>
           </a>

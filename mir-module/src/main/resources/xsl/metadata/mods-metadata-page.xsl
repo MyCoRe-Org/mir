@@ -187,7 +187,7 @@
                   <div class="modal-content">
                     <div class="modal-header">
                       <button type="button" class="close modalFrame-cancel" data-dismiss="modal" aria-label="Close">
-                        <i class="fa fa-times" aria-hidden="true"></i>
+                        <i class="fas fa-times" aria-hidden="true"></i>
                       </button>
                       <h4 class="modal-title" id="modalFrame-title">
                         <xsl:value-of select="i18n:translate('metadata.versionInfo.label')" />

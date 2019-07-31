@@ -374,7 +374,7 @@
         <ul id="mir_relatedItem">
           <xsl:for-each select="$hits/arr[@name='groups']/lst">
             <li>
-              <span class="fa fa-chevron-right"></span>
+              <span class="fas fa-chevron-right"></span>
               <span>
                 <xsl:value-of select="int[@name='groupValue']" />
               </span>

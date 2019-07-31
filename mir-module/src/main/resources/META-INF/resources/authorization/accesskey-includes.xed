@@ -57,10 +57,10 @@
     <mir:template name="textInput" xpath="@readkey" id="readKey" i18n="mir.accesskey.read" i18n.error="mir.accesskey.read.required" required="true"
       maxlength="64"
     >
-      <action id="readKeyGenerator" i18n="mir.accesskey.generate" icon="fa fa-cogs" iconOnly="true" />
+      <action id="readKeyGenerator" i18n="mir.accesskey.generate" icon="fas fa-cogs" iconOnly="true" />
     </mir:template>
     <mir:template name="textInput" xpath="@writekey" id="writeKey" i18n="mir.accesskey.write" maxlength="64">
-      <action id="writeKeyGenerator" i18n="mir.accesskey.generate" icon="fa fa-cogs" iconOnly="true" />
+      <action id="writeKeyGenerator" i18n="mir.accesskey.generate" icon="fas fa-cogs" iconOnly="true" />
     </mir:template>
 
     <xed:validate xpath="accesskeys" display="global"

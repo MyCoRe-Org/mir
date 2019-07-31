@@ -11,20 +11,20 @@
                 </div>
 
                 <div class="col-md-4">
-                    <h3><span class="fa fa-check"></span> fertig</h3>
+                    <h3><span class="fas fa-check"></span> fertig</h3>
                     <p>MIR ist eine MyCoRe-Software, die mit nur wenigen Anpassungen
                     - so wie sie ist - als Repositorium eingesetzt werden kann.</p>
                     <p><a class="btn btn-secondary" href="http://mycore.de/documentation/getting_started/mir.html" role="button">weitere Informationen »</a></p>
                 </div>
                 <div class="col-md-4">
-                    <h3><span class="fa fa-flash"></span> mächtig</h3>
+                    <h3><span class="fas fa-bolt"></span> mächtig</h3>
                     <p>MIR verwendet das mächtige und bewährte MODS-Datenmodell. Den
                     Kern der Webanwendung bildet MyCoRe mit einer Vielzahl von Funktionen.</p>
                     <p><a class="btn btn-secondary" href="http://mycore.de/features/index.html" role="button">weitere Informationen »</a></p>
                 </div>
                 <div class="col-md-4">
 
-                    <h3><span class="fa fa-heart"></span> lebendig</h3>
+                    <h3><span class="fas fa-heart"></span> lebendig</h3>
                     <p>MIR basiert auf dem Software-Kern MyCoRe, der kontinuierlich
                     weiter entwickelt wird. Eine lebendige Community setzt MIR in
                     ihren Anwendungen ein.</p>

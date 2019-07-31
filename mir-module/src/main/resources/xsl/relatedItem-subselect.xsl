@@ -31,7 +31,7 @@
           <xsl:value-of select="concat('&amp;_xed_session=',encoder:encode($xedSession,'UTF-8'))" />
           <xsl:value-of select="concat('&amp;@xlink:href=',encoder:encode($objectID,'UTF-8'))" />
         </xsl:attribute>
-        <span class="fa fa-share-alt"/>übernehmen
+        <span class="fas fa-share-alt"/>übernehmen
       </a>
     </li>
   </xsl:template>

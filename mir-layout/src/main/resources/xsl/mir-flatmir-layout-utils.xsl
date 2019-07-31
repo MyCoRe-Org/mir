@@ -67,7 +67,7 @@
               </xsl:when>
             </xsl:choose>
           </div>
-          <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
+          <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i></button>
         </form>
 
       </div><!-- /container -->

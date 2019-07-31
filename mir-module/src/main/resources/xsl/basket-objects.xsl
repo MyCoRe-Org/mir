@@ -148,19 +148,19 @@
 
   <xsl:template match="entry" mode="button">
     <xsl:param name="action" />
-    <xsl:param name="icon" select="'question-sign'" />
+    <xsl:param name="icon" select="'question-circle'" />
     <xsl:param name="class" select="'btn-secondary'" />
     <xsl:param name="condition" select="true()" />
     <xsl:choose>
       <xsl:when test="$condition">
         <a href="MCRBasketServlet?action={$action}&amp;type={/basket/@type}&amp;id={@id}" class="btn btn-small {$class}"
           title="{i18n:translate(concat('basket.button.',$action))}">
-          <i class="fa fa-{$icon}"></i>
+          <i class="fas fa-{$icon}"></i>
         </a>
       </xsl:when>
       <xsl:otherwise>
         <a href="#" class="btn btn-small btn-secondary disabled" title="{i18n:translate(concat('basket.button.',$action))}">
-          <i class="fa fa-{$icon}"></i>
+          <i class="fas fa-{$icon}"></i>
         </a>
       </xsl:otherwise>
     </xsl:choose>
@@ -169,7 +169,7 @@
   <xsl:template name="options">
     <div class="btn-group">
       <a href="#" class="btn btn-primary dropdown-toggle btn-sm" data-toggle="dropdown">
-        <span class="fa fa-export"></span>
+        <span class="fas fa-file-export"></span>
         Exportieren
         <span class="caret"></span>
       </a>
@@ -207,7 +207,7 @@
       </ul>
     </div>
     <a href="{$ServletsBaseURL}MCRBasketServlet{$HttpSession}?type={@type}&amp;action=clear&amp;redirect=referer" class="btn btn-danger btn-sm">
-      <span class="fa fa-trash"></span>
+      <span class="fas fa-trash-alt"></span>
       <xsl:value-of select="i18n:translate('basket.clear')" />
     </a>
   </xsl:template>

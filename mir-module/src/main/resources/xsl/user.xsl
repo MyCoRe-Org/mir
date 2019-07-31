@@ -341,7 +341,7 @@
 
   <xsl:template name="orcidIntegrationConfirmed">
     <h3 style="margin-bottom: 0.5em;">
-      <span class="glyphicon glyphicon-check" aria-hidden="true" />
+      <span class="fas fa-check" aria-hidden="true" />
       <xsl:text> </xsl:text>
       <xsl:value-of select="i18n:translate('orcid.integration.confirmed.headline')" />
     </h3>
@@ -360,7 +360,7 @@
   
   <xsl:template name="orcidIntegrationPending">
     <h3 style="margin-bottom: 0.5em;">
-      <span class="glyphicon glyphicon-hand-right" aria-hidden="true" style="margin-right:1ex;" />
+      <span class="far fa-hand-point-right" aria-hidden="true" style="margin-right:1ex;" />
       <xsl:text> </xsl:text>
       <xsl:value-of select="i18n:translate('orcid.integration.pending.headline')" />
     </h3>
