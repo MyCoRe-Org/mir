@@ -559,10 +559,16 @@
     if (item) {
         this.$element != $output && item.label && this.$element.val(item.label.replace(SearchEntity.LABEL_CLEANUP, ""));
 
+        var outputType = getTypeFromURL(item.value);
+
+        if (item.type != undefined && item.type != "") {
+            $outputNameType.val(item.type.toLowerCase());
+        }
+
         /* if there is already a value on output */
         if ($output.val()) {
 
-            /* get the next free output field */
+          /* get the next free output field */
             var nameIdFields = $('input[name^="/mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:name/mods:nameIdentifier"]');
 
             var currentIdFieldIndex = 0;
@@ -573,61 +579,55 @@
                     currentIdFieldIndex++;
                 } else {
 
-                    /* add value to the next free Input field */
+                  /* add value to the next free Input field */
                     nameIdFields[currentIdFieldIndex].val(getIDFromURL(item.value));
                     break;
                 }
             }
 
-            var outputType = getTypeFromURL(item.value);
-            if (outputType != "") {
-                $outputType.val(outputType.toLowerCase());
-            }
-            if (item.type != undefined && item.type != "") {
-                $outputNameType.val(item.type.toLowerCase());
-            }
-
-            /* if there is not a free identifier output field add template */
+          /* if there is not a free identifier output field add template */
             if (currentIdFieldIndex === nameIdFields.length) {
 
                 let addNameIdGroupTemplate = `
-                <div class="form-group">
-                  <div class="col-md-3">
-                    <select name="/mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:name/mods:nameIdentifier[`
-                    + currentIdFieldIndex + 1 + `]/@type"
-                            class="form-control nameIdentifierType" style="text-align:right; font-weight:bold;">
-                      <option` + (outputType === 'GND' ? ' selected' : '') + ` title="GND" value="gnd">GND</option>
-                      <option` + (outputType === 'VIAF' ? ' selected' : '') +  ` title="VIAF" value="viaf">VIAF</option>
-                      <option` + (outputType === 'ORCID' ? ' selected' : '') + ` title="ORCID" value="orcid">ORCID</option>
-                    </select>
-                  </div>
-                  <div class="col-md-6">
-                    <input name="/mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:name/mods:nameIdentifier[`
-                    + currentIdFieldIndex + 1 + `]"
-                           value="" class="form-control form-control-inline  nameIdentifier" size="20" type="text">
-                  </div>
-                  <div class="col-md-3 ">
-                    <a class="btn btn-default info-button"
-                       data-content="Falls die Person oder Organisation bereits mit einer GND oder VIAF verknüpft ist, kann diese hier angegeben werden."
-                       data-placement="right" data-toggle="popover" role="button" tabindex="0"><i class="fa fa-info"></i></a><span
-                          class="pmud-button"><button
-                          name="_xed_submit_insert:/mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:name|`
-                    + currentIdFieldIndex + 1 + `|build|mods:nameIdentifier|rep-6"
-                          class="btn btn-default" type="submit"><i class="fa fa-plus"></i></button></span><span class="pmud-button"><button
-                          name="_xed_submit_remove:/mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:name/mods:nameIdentifier[`
-                    + currentIdFieldIndex + 1 + `]|rep-5"
-                          class="btn btn-default" type="submit"><i class="fa fa-minus"></i></button></span><span class="pmud-button"><button
-                          name="_xed_submit_up:/mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:name|1|build|mods:nameIdentifier|rep-6"
-                          class="btn btn-default" type="submit"><i class="fa fa-arrow-up"></i></button></span><span
-                          class="pmud-button"></span>
-                  </div>
-                </div>`;
+                    <div class="form-group">
+                      <div class="col-md-3">
+                        <select name="/mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:name/mods:nameIdentifier[`
+                            + currentIdFieldIndex + 1 + `]/@type"
+                                class="form-control nameIdentifierType" style="text-align:right; font-weight:bold;">
+                          <option` + (outputType === 'GND' ? ' selected' : '') + ` title="GND" value="gnd">GND</option>
+                          <option` + (outputType === 'VIAF' ? ' selected' : '') +  ` title="VIAF" value="viaf">VIAF</option>
+                          <option` + (outputType === 'ORCID' ? ' selected' : '') + ` title="ORCID" value="orcid">ORCID</option>
+                        </select>
+                      </div>
+                      <div class="col-md-6">
+                        <input name="/mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:name/mods:nameIdentifier[`
+                            + currentIdFieldIndex + 1 + `]"
+                               value="` + getIDFromURL(item.value) + `" class="form-control form-control-inline  nameIdentifier" size="20" type="text">
+                      </div>
+                      <div class="col-md-3 ">
+                        <a class="btn btn-default info-button"
+                           data-content="Falls die Person oder Organisation bereits mit einer GND oder VIAF verknüpft ist, kann diese hier angegeben werden."
+                           data-placement="right" data-toggle="popover" role="button" tabindex="0"><i class="fa fa-info"></i></a><span
+                              class="pmud-button"><button
+                              name="_xed_submit_insert:/mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:name|`
+                            + currentIdFieldIndex + 1 + `|build|mods:nameIdentifier|rep-6"
+                              class="btn btn-default" type="submit"><i class="fa fa-plus"></i></button></span><span class="pmud-button"><button
+                              name="_xed_submit_remove:/mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:name/mods:nameIdentifier[`
+                            + currentIdFieldIndex + 1 + `]|rep-5"
+                              class="btn btn-default" type="submit"><i class="fa fa-minus"></i></button></span><span class="pmud-button"><button
+                              name="_xed_submit_up:/mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:name|1|build|mods:nameIdentifier|rep-6"
+                              class="btn btn-default" type="submit"><i class="fa fa-arrow-up"></i></button></span><span
+                              class="pmud-button"></span>
+                      </div>
+                    </div>`;
 
                 var parentNameIdGroup = $(nameIdFields[nameIdFields.length - 1]).closest('div[class="form-group"]').parent();
                 parentNameIdGroup.append(addNameIdGroupTemplate);
             }
         } else {
+
             $output.val(getIDFromURL(item.value));
+            $outputType.val(outputType.toLowerCase());
         }
     }
     
