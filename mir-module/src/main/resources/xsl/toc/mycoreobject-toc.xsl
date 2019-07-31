@@ -213,7 +213,7 @@
               <a href="#{$id}" data-toggle="collapse" aria-expanded="{$expanded}" aria-controls="{$id}" style="margin-right:1ex;">
                 <span>
                   <xsl:attribute name="class">
-                    <xsl:text>toggle-collapse fa fa-fw </xsl:text>
+                    <xsl:text>toggle-collapse fas fa-fw </xsl:text>
                     <xsl:choose>
                       <xsl:when test="$expanded='true'">fa-chevron-down</xsl:when>
                       <xsl:otherwise>fa-chevron-right</xsl:otherwise>
@@ -223,12 +223,12 @@
               </a>
             </xsl:when>
             <xsl:otherwise>
-              <span class="fa fa-fw fa-chevron-right" style="margin-right:1ex;" />
+              <span class="fas fa-fw fa-chevron-right" style="margin-right:1ex;" />
             </xsl:otherwise>
           </xsl:choose>
           
-          <!-- show this level item -->    
-          <xsl:apply-templates select="." />                
+          <!-- show this level item -->
+          <xsl:apply-templates select="." />
 
           <!-- show level/publications below the current one -->
           <xsl:if test="level|publications">

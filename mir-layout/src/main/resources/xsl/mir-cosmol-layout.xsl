@@ -29,7 +29,7 @@
           Mobile viewport optimization
         </xsl:comment>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <link href="{$WebApplicationBaseURL}assets/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+        <link href="{$WebApplicationBaseURL}assets/font-awesome/css/all.min.css" rel="stylesheet" />
         <script type="text/javascript" src="{$WebApplicationBaseURL}mir-layout/assets/jquery/jquery.min.js"></script>
         <script type="text/javascript" src="{$WebApplicationBaseURL}mir-layout/assets/jquery/plugins/jquery-migrate/jquery-migrate.min.js"></script>
         <xsl:copy-of select="head/*" />
@@ -64,7 +64,7 @@
                         class="navbar-toggle"
                         type="button">
                   <span class="sr-only"> Hide side nav </span>
-                  <span id="close-icon" class="fa fa-chevron-left"> </span>
+                  <span id="close-icon" class="fas fa-chevron-left"> </span>
                   <div id="menu-icon" class="">
                     <span class="icon-bar"> </span>
                     <span class="icon-bar"> </span>

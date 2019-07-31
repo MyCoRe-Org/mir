@@ -185,7 +185,7 @@
             <div class="col-xs-{$colWidth}">
               <div class="form-group no-margin" id="{$id}_filter">
                 <label>
-                  <span class="fa fa-filter" aria-hidden="true" />
+                  <span class="fas fa-filter" aria-hidden="true" />
                   <xsl:value-of select="i18n:translate(concat($i18nprefix, '.filter'))" />
                   <xsl:text disable-output-escaping="yes">&amp;nbsp;</xsl:text>
                   <input class="form-control input-sm" type="search" name="Filter">
@@ -298,13 +298,13 @@
           <xsl:variable name="iconClass">
             <xsl:choose>
               <xsl:when test="($SortBy = @sortBy) and ($SortOrder = 'asc')">
-                <xsl:text>fa fa-sort-amount-asc</xsl:text>
+                <xsl:text>fas fa-sort-amount-up-alt</xsl:text>
               </xsl:when>
               <xsl:when test="($SortBy = @sortBy) and ($SortOrder = 'desc')">
-                <xsl:text>fa fa-sort-amount-desc</xsl:text>
+                <xsl:text>fas fa-sort-amount-down-alt</xsl:text>
               </xsl:when>
               <xsl:otherwise>
-                <xsl:text>fa fa-sort</xsl:text>
+                <xsl:text>fas fa-sort</xsl:text>
               </xsl:otherwise>
             </xsl:choose>
           </xsl:variable>

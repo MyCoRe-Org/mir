@@ -18,7 +18,7 @@
               <xsl:attribute name="style">display:none;</xsl:attribute>
             </xsl:otherwise>
           </xsl:choose>
-          <i class="fa fa-upload"></i>
+          <i class="fas fa-upload"></i>
           <xsl:value-of disable-output-escaping="yes" select="concat(' ', i18n:translate('mir.upload.drop.derivate'))"/>
         </div>
         <script>

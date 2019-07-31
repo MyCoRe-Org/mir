@@ -130,7 +130,7 @@
               </xsl:choose>
               <span class="input-group-btn input-group-append">
                 <button class="btn btn-primary" type="submit">
-                  <span class="fa fa-search"></span>
+                  <span class="fas fa-search"></span>
                    <xsl:value-of select="i18n:translate('editor.search.search')"/>
                 </button>
               </span>
@@ -163,7 +163,7 @@
             <input type="hidden" name="uri" value="{concat('mcrobject:',$docID)}" />
           </xsl:for-each>
           <button type="submit" tabindex="1" class="basket_button btn-primary form-control" value="add">
-            <i class="fa fa-plus"></i>
+            <i class="fas fa-plus"></i>
             <xsl:text> </xsl:text>
             <xsl:value-of select="i18n:translate('basket.add.searchpage')" />
           </button>
@@ -176,7 +176,7 @@
     <!-- xsl:if test="string-length(/response/lst[@name='responseHeader']/lst[@name='params']/str[@name='q']) &gt; 0">
       <div class="row">
         <div class="col-12 col-sm-8">
-          <span class="fa fa-remove-circle"></span>
+          <span class="fas fa-remove-circle"></span>
           <xsl:value-of select="/response/lst[@name='responseHeader']/lst[@name='params']/str[@name='q']" />
         </div>
       </div>
@@ -344,7 +344,7 @@
               <div class="hit_options pull-right">
                 <div class="btn-group">
                   <a data-toggle="dropdown" class="btn btn-secondary dropdown-toggle" href="#">
-                    <i class="fa fa-cog"></i>
+                    <i class="fas fa-cog"></i>
                     Aktionen
                     <span class="caret"></span>
                   </a>
@@ -369,14 +369,14 @@
                               <xsl:attribute name="href">
                                     <xsl:value-of select="$editURL" />
                                   </xsl:attribute>
-                              <span class="fa fa-pencil"></span>
+                              <span class="fas fa-pencil-alt"></span>
                               <xsl:value-of select="i18n:translate('object.editObject')" />
                             </xsl:when>
                             <xsl:otherwise>
                               <xsl:attribute name="href">
                                     <xsl:value-of select="'#'" />
                                   </xsl:attribute>
-                              <span class="fa fa-pencil"></span>
+                              <span class="fas fa-pencil-alt"></span>
                               <xsl:value-of select="i18n:translate('object.locked')" />
                             </xsl:otherwise>
                           </xsl:choose>
@@ -550,7 +550,7 @@
                       <xsl:value-of select="i18n:translate('mir.response.openAccess.true')" />
                     </xsl:attribute>
                     <span class="label label-success">
-                      <i class="fa fa-unlock-alt" aria-hidden="true"></i>
+                      <i class="fas fa-unlock-alt" aria-hidden="true"></i>
                     </span>
                   </xsl:when>
                   <xsl:otherwise>
@@ -558,7 +558,7 @@
                       <xsl:value-of select="i18n:translate('mir.response.openAccess.false')" />
                     </xsl:attribute>
                     <span class="label label-warning">
-                      <i class="fa fa-lock" aria-hidden="true"></i>
+                      <i class="fas fa-lock" aria-hidden="true"></i>
                     </span>
                   </xsl:otherwise>
                 </xsl:choose>
@@ -1050,7 +1050,7 @@
         <xsl:with-param name="href" select="$filterHref" />
         <xsl:with-param name="text" select="@title" />
         <xsl:with-param name="class" select="'list-group-item active'" />
-        <xsl:with-param name="icon" select="'remove'" />
+        <xsl:with-param name="icon" select="'times'" />
       </xsl:call-template>
     </xsl:if>
   </xsl:template>
@@ -1062,7 +1062,7 @@
     <xsl:param name="icon" select="''" />
     <a class="{$class}" href="{$href}" title="{$text}">
       <xsl:if test="$icon != ''">
-        <span aria-hidden="true" class="fa fa-{$icon}"></span>
+        <span aria-hidden="true" class="fas fa-{$icon}"></span>
       </xsl:if>
       <xsl:value-of select="$text" />
     </a>
@@ -1092,7 +1092,7 @@
           </xsl:variable>
           <div class="list-group">
             <a class="list-group-item active" href="{$dateFilter}">
-              <span aria-hidden="true" class="fa fa-remove" />
+              <span aria-hidden="true" class="fas fa-times" />
             </a>
           </div>
         </xsl:if>
@@ -1142,7 +1142,7 @@
         <a class="hit_option remove_from_basket" href="{$ServletsBaseURL}MCRBasketServlet{$HttpSession}?type=objects&amp;action=remove&amp;id={$identifier}&amp;redirect=referer"
           title=""
         >
-          <span class="fa fa-bookmark"></span>
+          <span class="fas fa-bookmark"></span>
           <xsl:value-of select="i18n:translate('basket.remove')" />
         </a>
       </xsl:when>
@@ -1152,7 +1152,7 @@
           href="{$ServletsBaseURL}MCRBasketServlet{$HttpSession}?type=objects&amp;action=add&amp;id={$identifier}&amp;uri=mcrobject:{$identifier}&amp;redirect=referer"
           title=""
         >
-          <span class="fa fa-bookmark"></span>
+          <span class="fas fa-bookmark"></span>
           <xsl:value-of select="i18n:translate('basket.add')" />
         </a>
       </xsl:otherwise>

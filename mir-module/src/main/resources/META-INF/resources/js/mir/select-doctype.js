@@ -64,13 +64,13 @@ function toggleMoreOptions( duration ) {
     if ( $('#more_options_box').is(':visible') ) {
         $('#more_options_box').fadeOut( duration );
         $('#more_options_label, #more_options_label_hide').toggleClass("hidden");
-        $('#more_options_button').removeClass('fa fa-chevron-down').addClass('fa fa-chevron-up');
+        $('#more_options_button').removeClass('fas fa-chevron-down').addClass('fas fa-chevron-up');
         localStorage.setItem("moreOptions", "closed");
     } else {
         $('#more_options_box').fadeIn( duration );
         $('#more_options_label, #more_options_label_hide').toggleClass("hidden");
 
-        $('#more_options_button').removeClass('fa fa-chevron-up').addClass('fa fa-chevron-down');
+        $('#more_options_button').removeClass('fas fa-chevron-up').addClass('fas fa-chevron-down');
         localStorage.setItem("moreOptions", "opened");
     }
 }

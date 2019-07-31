@@ -21,8 +21,8 @@ module.exports = function(grunt) {
         files : {
           'bootstrap/js' : 'bootstrap/dist/js',
 
-          'font-awesome/css' : 'font-awesome/css',
-          'font-awesome/fonts' : 'font-awesome/fonts',
+          'font-awesome/css' : '@fortawesome/fontawesome-free/css',
+          'font-awesome/webfonts' : '@fortawesome/fontawesome-free/webfonts',
 
           'jquery' : 'jquery/dist',
 

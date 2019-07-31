@@ -112,7 +112,7 @@
           <strong>
             <xsl:value-of select="i18n:translate('mir.citationStyle')" />
           </strong>
-          <i id="crossref-citation-error" class="fa fa-exclamation-circle hidden" title="{i18n:translate('mir.citationAlertService')}"></i>
+          <i id="crossref-citation-error" class="fas fa-exclamation-circle hidden" title="{i18n:translate('mir.citationAlertService')}"></i>
         </span>
         <xsl:if test="//mods:mods/mods:identifier[@type='doi'] and string-length($MIR.citationStyles) &gt; 0">
           <xsl:variable name="cite-styles">
@@ -267,7 +267,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close modalFrame-cancel" data-dismiss="modal" aria-label="Close">
-              <i class="fa fa-times" aria-hidden="true"></i>
+              <i class="fas fa-times" aria-hidden="true"></i>
             </button>
             <h4 class="modal-title" id="modalFrame-title">
               <xsl:value-of select="i18n:translate('mir.citationLink')" />
@@ -386,7 +386,7 @@
           <xsl:value-of select="$title" />
         </p>
         <div class="mir_copy_wrapper">
-          <span class="fa fa-copy mir_copy_identifier" data-toggle="tooltip" data-placement="left" aria-hidden="true" title="Copy Identifier"
+          <span class="fas fa-copy mir_copy_identifier" data-toggle="tooltip" data-placement="left" aria-hidden="true" title="Copy Identifier"
             data-org-title="Copy Identifier"
           ></span>
         </div>

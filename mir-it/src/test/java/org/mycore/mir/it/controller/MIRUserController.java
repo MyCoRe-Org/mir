@@ -136,7 +136,7 @@ public class MIRUserController {
     public void assertValidationErrorVisible() {
         driver.waitAndFindElement(By.xpath("//input[@name='/user/@name']"));
         try {
-            driver.findElement(By.xpath(".//span[contains(@class,'glyphicon-warning-sign')]"));
+            driver.findElement(By.xpath(".//span[contains(@class,'fa-exclamation-triangle')]"));
         } catch (NoSuchElementException e) {
             Assert.fail(e);
         }

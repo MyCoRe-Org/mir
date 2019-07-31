@@ -51,7 +51,7 @@
           <span id="more_options_trigger">
             <span id="more_options_label">weitere Optionen anzeigen</span>
             <span id="more_options_label_hide" class="hidden">weitere Optionen ausblenden</span>
-            <span id="more_options_button" class="fa fa-chevron-up"></span>
+            <span id="more_options_button" class="fas fa-chevron-up"></span>
           </span>
         </div>
       </div>
@@ -135,7 +135,7 @@
           <span id="more_options_trigger">
             <span id="more_options_label">Show more options</span>
             <span id="more_options_label_hide" class="hidden">Hide more options</span>
-            <span id="more_options_button" class="fa fa-chevron-up"></span>
+            <span id="more_options_button" class="fas fa-chevron-up"></span>
           </span>
         </div>
       </div>

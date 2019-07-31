@@ -141,6 +141,15 @@ p {
   }
 }
 
+// TODO: workaround for fontawesome weights
+// see https://fontawesome.com/how-to-use/on-the-web/referencing-icons/basic-use
+.fas {
+  font-weight: 900;
+}
+.far {
+  font-weight: 400;
+}
+
 
 // Large devices (desktops) and below
 @include media-breakpoint-down(lg) {

@@ -18,7 +18,7 @@
 
   <xsl:template name="mir-helpbutton">
     <a tabindex="0" class="btn btn-secondary info-button" role="button" data-toggle="popover" data-placement="right" data-content="{@help-text}">
-      <i class="fa fa-info"></i>
+      <i class="fas fa-info"></i>
     </a>
   </xsl:template>
 
@@ -169,7 +169,7 @@
             <xsl:copy-of select="@placeholder" />
           </input>
         </xed:bind>
-        <span class="fa fa-minus input-group-text" aria-hidden="true"></span>
+        <span class="fas fa-minus input-group-text" aria-hidden="true"></span>
         <xed:bind xpath="{$xpathEnd}">
           <input type="text" class="form-control endDate" data-point="end">
             <xsl:copy-of select="@placeholder" />
@@ -280,7 +280,7 @@
                   <div class="controls">
                     <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="person.fields.noHidden" />
                   </div>
-                  <span class="fa fa-chevron-down expand-item" title="{i18n:translate('mir.help.expand')}" aria-hidden="true"></span>
+                  <span class="fas fa-chevron-down expand-item" title="{i18n:translate('mir.help.expand')}" aria-hidden="true"></span>
                 </div>
                 <div class="col-md-3">
                   <xsl:if test="string-length(@help-text) &gt; 0">
@@ -350,7 +350,7 @@
                 </div>
                 <div class="col-md-6 center-vertical">
                   <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="person.fields.noHidden" />
-                  <span class="fa fa-chevron-down expand-item" title="{i18n:translate('mir.help.expand')}" aria-hidden="true"></span>
+                  <span class="fas fa-chevron-down expand-item" title="{i18n:translate('mir.help.expand')}" aria-hidden="true"></span>
                 </div>
                 <div class="col-md-3">
                   <xsl:if test="string-length(@help-text) &gt; 0">
@@ -447,7 +447,7 @@
                 <div class="search-geographic-extended">
                   <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="geographic.input" />
                 </div>
-                <span class="fa fa-chevron-down expand-item" data-target=".geographicExtended-container" title="{i18n:translate('mir.help.expand')}" aria-hidden="true"></span>
+                <span class="fas fa-chevron-down expand-item" data-target=".geographicExtended-container" title="{i18n:translate('mir.help.expand')}" aria-hidden="true"></span>
               </div>
             </xsl:when>
             <xsl:otherwise>
@@ -484,7 +484,7 @@
                 <div class="search-topic-extended">
                   <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="topic.input" />
                 </div>
-                <span class="fa fa-chevron-down expand-item" data-target=".topicExtended-container" title="{i18n:translate('mir.help.expand')}" aria-hidden="true"></span>
+                <span class="fas fa-chevron-down expand-item" data-target=".topicExtended-container" title="{i18n:translate('mir.help.expand')}" aria-hidden="true"></span>
               </div>
             </xsl:when>
             <xsl:otherwise>

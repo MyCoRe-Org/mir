@@ -855,7 +855,7 @@
           <div class="col-md-6 center-vertical">
             <mir:dateRangeInput xpath="mods:originInfo[@eventType='publication']/mods:dateIssued[@encoding='w3cdtf']" class="datetimepicker mainDate"
               placeholder="{i18n:mir.placeholder.date}" type="publication" />
-            <span class="fa fa-chevron-down expand-item" title="{i18n:mir.help.expand}" aria-hidden="true"></span>
+            <span class="fas fa-chevron-down expand-item" title="{i18n:mir.help.expand}" aria-hidden="true"></span>
           </div>
           <mir:help-pmud help-text="{i18n:mir.help.date.issued.10}" pmud="false" />
         </div>
@@ -1814,7 +1814,7 @@
             <h4 class="modal-title" id="modalFrame-title"></h4>
             <div id="modal-searchInput" class="has-feedback input-group-sm" style="margin-top: 1em" hidden="">
               <input type="text" placeholder="Suche in den Publikationen" class="form-control" />
-              <span class="fa fa-search form-control-feedback" style="right: 0; height: 33px; line-height: 36px; cursor: pointer" />
+              <span class="fas fa-search form-control-feedback" style="right: 0; height: 33px; line-height: 36px; cursor: pointer" />
             </div>
           </div>
           <div id="modalFrame-body" class="modal-body" style="padding-bottom: 0px" />

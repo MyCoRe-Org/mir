@@ -43,10 +43,10 @@ OASInline.prototype= {
   ,render: function () {
     switch(this.state) {
       case "error":
-        this.$element.html("<i class='fa fa-exclamation-triangle' data-toggle='tooltip' title='"+this.errortext+"'></i>");
+        this.$element.html("<i class='fas fa-exclamation-triangle' data-toggle='tooltip' title='"+this.errortext+"'></i>");
         break;
       case "waiting":
-        this.$element.html("<i class='fa fa-spinner fa-pulse'></i>");
+        this.$element.html("<i class='fas fa-spinner fa-pulse'></i>");
         break;
       case "success":
         this.$element.text(this.count);
@@ -126,13 +126,13 @@ OASGraph.prototype= {
     switch(this.state) {
       case "error":
         var html='<div style="with:100%;text-align:center;">';
-        html+="<i class='fa fa-exclamation-triangle' data-toggle='tooltip' title='"+this.errortext+"'/>";
+        html+="<i class='fas fa-exclamation-triangle' data-toggle='tooltip' title='"+this.errortext+"'/>";
         html+=this.errortext;
         html+="</div>";
         this.$element.html(html);
         break;
       case "waiting":
-        this.$element.html("<div style='font-size: 5em;text-align:center;'> <i class='fa fa-spinner fa-pulse'></i> </div>");
+        this.$element.html("<div style='font-size: 5em;text-align:center;'> <i class='fas fa-spinner fa-pulse'></i> </div>");
         break;
       case "success":
         console.log("Render barchart");
