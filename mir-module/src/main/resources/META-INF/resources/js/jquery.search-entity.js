@@ -552,9 +552,13 @@
   SearchEntity.prototype.updateOutput = function(item) {
     var that = this;
     var options = this.options;
-    var $output = $(options.searchOutput, getParent(this.$element))[0] !== undefined ? $(options.searchOutput, getParent(this.$element)).first() : this.$element;
-    var $outputType = $(options.searchOutputType, getParent(this.$element))[0] !== undefined ? $(options.searchOutputType, getParent(this.$element)).first() : this.$element;
-    var $outputNameType = $(options.searchOutputNameType, getParent(this.$element))[0] !== undefined ? $(options.searchOutputNameType, getParent(this.$element)).first() : this.$element;
+    var $output = $(options.searchOutput, getParent(this.$element))[0] !== undefined ? $(options.searchOutput, getParent(this.$element)).first()
+        : this.$element;
+    var $outputType = $(options.searchOutputType, getParent(this.$element))[0] !== undefined ? $(options.searchOutputType, getParent(this.$element)).first()
+        : this.$element;
+    var $outputNameType = $(options.searchOutputNameType, getParent(this.$element))[0] !== undefined ? $(options.searchOutputNameType, getParent(this.$element))
+        .first()
+        : this.$element;
 
     if (item) {
       this.$element != $output && item.label && this.$element.val(item.label.replace(SearchEntity.LABEL_CLEANUP, ""));
@@ -569,27 +573,34 @@
 
           var currentIdFieldIndex = 0;
 
-          while (currentIdFieldIndex < nameIdFields.length) {
-
-            if (nameIdFields[currentIdFieldIndex].value) {
-              currentIdFieldIndex++;
-            } else {
-
-              /* $output will be the next free Input field */
-              $output[0] = nameIdFields[currentIdFieldIndex];
-
-              /* get dependent outputType selection */
-              let dependentOutputType = $('select[name="' + nameIdFields[currentIdFieldIndex].name + '/@type"]');
-              $outputType[0] = dependentOutputType[0];
-              break;
-            }
+          while (currentIdFieldIndex < nameIdFields.length && nameIdFields[currentIdFieldIndex].value) {
+            currentIdFieldIndex++;
           }
 
           /*
            * if there is not a free identifier output field add template
            */
           if (currentIdFieldIndex === nameIdFields.length) {
+
+            /* get last output field as template */
+            let addNameIdGroupTemplate = $(nameIdFields[0]).closest('div[class="form-group"]').prop('outerHTML');
+
+            /* set nameIdentifier count correct */
+            addNameIdGroupTemplate = addNameIdGroupTemplate.split('mods:nameIdentifier').join('mods:nameIdentifier[' + nameIdFields.length + ']');
+
+            let parentNameIdGroup = $(nameIdFields[nameIdFields.length - 1]).closest('div[class="form-group"]').parent();
+            parentNameIdGroup.append($(addNameIdGroupTemplate));
+
+            /* update nameIdFields */
+            nameIdFields = $('input[name^="/mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:name/mods:nameIdentifier"]');
           }
+
+          /* $output will be the next free Input field */
+          $output[0] = nameIdFields[currentIdFieldIndex];
+
+          /* get dependent outputType selection */
+          let dependentOutputType = $('select[name="' + nameIdFields[currentIdFieldIndex].name + '/@type"]');
+          $outputType[0] = dependentOutputType[0];
         }
       }
 
@@ -608,7 +619,7 @@
       $feedback.css({
         textDecoration : "none"
       });
-      if(type == null || SearchEntity.TYPES[type.toUpperCase()] ==  undefined) {
+      if (type == null || SearchEntity.TYPES[type.toUpperCase()] == undefined) {
         $feedback.attr("onclick", "return false;");
         $feedback.css({
           cursor : "default"
