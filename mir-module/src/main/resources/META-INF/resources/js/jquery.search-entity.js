@@ -562,7 +562,7 @@
       if (item.type != undefined && item.type != "") {
 
         $outputNameType.val(item.type.toLowerCase());
-        if (item.type.startsWith()) {
+        if (item.type.startsWith('person')) {
 
           /* get the next free output field */
           var nameIdFields = $('input[name^="/mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:name/mods:nameIdentifier"]');
@@ -577,9 +577,6 @@
 
               /* $output will be the next free Input field */
               $output[0] = nameIdFields[currentIdFieldIndex];
-
-              // /* add value to the next free Input field */
-              // $output[0].value = getIDFromURL(item.value);
 
               /* get dependent outputType selection */
               let dependentOutputType = $('select[name="' + nameIdFields[currentIdFieldIndex].name + '/@type"]');
