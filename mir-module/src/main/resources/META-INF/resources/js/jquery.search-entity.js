@@ -7,25 +7,25 @@
  * <pre>
  * Usage:
  *
- * 	Parameters:
- * 		- target 				: the target container
- * 		- search 				: always &quot;searchEntity&quot;
+ *  Parameters:
+ *      - target                : the target container
+ *      - search                : always &quot;searchEntity&quot;
  *
- * 		- searchEntityType		: can be person or organisation
+ *      - searchEntityType      : can be person or organisation
  *
- * 		- searchType
- * 			- SELECT			: add searchType selection menu
- * 			- GND 				: search through http://lobid.org
- * 			- VIAF				: search through http://www.viaf.org
- * 		    - ORCID             : search through https://pub.orcid.org/
- * 		- searchOutput			: the output field for person the nameIdentifer ID,
- * 								  if nothing specified the input field is used
- * 		- searchOutputType		: the output field for person the nameIdentifer type,
- * 								  if nothing specified the input field is used
+ *      - searchType
+ *          - SELECT            : add searchType selection menu
+ *          - GND               : search through http://lobid.org
+ *          - VIAF              : search through http://www.viaf.org
+ *          - ORCID             : search through https://pub.orcid.org/
+ *      - searchOutput          : the output field for person the nameIdentifer ID,
+ *                                if nothing specified the input field is used
+ *      - searchOutputType      : the output field for person the nameIdentifer type,
+ *                                if nothing specified the input field is used
  *
- * 		- searchButton			: the search button text
- * 		- searchResultEmpty		: the label if search result was empty
- * 		- searchButtonLoading	: the button text on search
+ *      - searchButton          : the search button text
+ *      - searchResultEmpty     : the label if search result was empty
+ *      - searchButtonLoading   : the button text on search
  * </pre>
  *
  * All parameters can be also set with jQuery <code>data-</code> attributes.
@@ -552,81 +552,22 @@
   SearchEntity.prototype.updateOutput = function(item) {
     var that = this;
     var options = this.options;
-
+    var $output = $(options.searchOutput, getParent(this.$element))[0] !== undefined ? $(options.searchOutput, getParent(this.$element)).first() : this.$element;
+    var $outputType = $(options.searchOutputType, getParent(this.$element))[0] !== undefined ? $(options.searchOutputType, getParent(this.$element)).first() : this.$element;
     var $outputNameType = $(options.searchOutputNameType, getParent(this.$element))[0] !== undefined ? $(options.searchOutputNameType, getParent(this.$element)).first() : this.$element;
 
     if (item) {
-        this.$element != $output && item.label && this.$element.val(item.label.replace(SearchEntity.LABEL_CLEANUP, ""));
-
-        var outputType = getTypeFromURL(item.value);
-
-        if (item.type != undefined && item.type != "") {
-            $outputNameType.val(item.type.toLowerCase());
-        }
-
-        /* get the next free output field */
-        var nameIdFields = $('input[name^="/mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:name/mods:nameIdentifier"]');
-
-        var currentIdFieldIndex = 0;
-
-        while (currentIdFieldIndex < nameIdFields.length) {
-
-            if (nameIdFields[currentIdFieldIndex].value) {
-                currentIdFieldIndex++;
-            } else {
-
-                /* add value to the next free Input field */
-                nameIdFields[currentIdFieldIndex].value = getIDFromURL(item.value);
-
-                /* get dependent outputType selection*/
-                let dependentOutputType = $('select[name="' + nameIdFields[currentIdFieldIndex].name + '/@type"]');
-                dependentOutputType[0].value = getTypeFromURL(item.value);
-                break;
-             
-            }
-        }
-
-        /* if there is not a free identifier output field add template */
-        if (currentIdFieldIndex === nameIdFields.length) {
-
-            let addNameIdGroupTemplate = `
-                <div class="form-group">
-                  <div class="col-md-3">
-                    <select name="/mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:name/mods:nameIdentifier[`
-                + currentIdFieldIndex + 1 + `]/@type"
-                            class="form-control nameIdentifierType" style="text-align:right; font-weight:bold;">
-                      <option` + (outputType === 'GND' ? ' selected' : '') + ` title="GND" value="gnd">GND</option>
-                      <option` + (outputType === 'VIAF' ? ' selected' : '') + ` title="VIAF" value="viaf">VIAF</option>
-                      <option` + (outputType === 'ORCID' ? ' selected' : '') + ` title="ORCID" value="orcid">ORCID</option>
-                    </select>
-                  </div>
-                  <div class="col-md-6">
-                    <input name="/mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:name/mods:nameIdentifier[`
-                + currentIdFieldIndex + 1 + `]"
-                           value="` + getIDFromURL(item.value) + `" class="form-control form-control-inline  nameIdentifier" size="20" type="text">
-                  </div>
-                  <div class="col-md-3 ">
-                    <a class="btn btn-default info-button"
-                       data-content="Falls die Person oder Organisation bereits mit einer GND oder VIAF verknüpft ist, kann diese hier angegeben werden."
-                       data-placement="right" data-toggle="popover" role="button" tabindex="0"><i class="fa fa-info"></i></a><span
-                          class="pmud-button"><button
-                          name="_xed_submit_insert:/mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:name|`
-                + currentIdFieldIndex + 1 + `|build|mods:nameIdentifier|rep-6"
-                          class="btn btn-default" type="submit"><i class="fa fa-plus"></i></button></span><span class="pmud-button"><button
-                          name="_xed_submit_remove:/mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:name/mods:nameIdentifier[`
-                + currentIdFieldIndex + 1 + `]|rep-5"
-                          class="btn btn-default" type="submit"><i class="fa fa-minus"></i></button></span><span class="pmud-button"><button
-                          name="_xed_submit_up:/mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:name|1|build|mods:nameIdentifier|rep-6"
-                          class="btn btn-default" type="submit"><i class="fa fa-arrow-up"></i></button></span><span
-                          class="pmud-button"></span>
-                  </div>
-                </div>`;
-
-            var parentNameIdGroup = $(nameIdFields[nameIdFields.length - 1]).closest('div[class="form-group"]').parent();
-            parentNameIdGroup.append(addNameIdGroupTemplate);
-        }
+      this.$element != $output && item.label && this.$element.val(item.label.replace(SearchEntity.LABEL_CLEANUP, ""));
+      $output.val(getIDFromURL(item.value));
+      var outputType = getTypeFromURL(item.value);
+      if (outputType != "") {
+        $outputType.val(outputType.toLowerCase());
+      }
+      if (item.type != undefined && item.type != "") {
+        $outputNameType.val(item.type.toLowerCase());
+      }
     }
-    
+
     if ($output != this.$element && $output.val().length > 0) {
       var type = $outputType.val();
       var $feedback = $(document.createElement("a"));
