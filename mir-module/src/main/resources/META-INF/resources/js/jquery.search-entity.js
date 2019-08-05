@@ -548,7 +548,7 @@
       searchResultContainer : $resultBox
     }, options));
   };
-
+  
   SearchEntity.prototype.updateOutput = function(item) {
     var that = this;
     var options = this.options;
@@ -568,8 +568,11 @@
         $outputNameType.val(item.type.toLowerCase());
         if (item.type.startsWith('person')) {
 
+          /* Get dependent personExtended_box */
+          let itemPersonExtendedBox = $($output).closest('fieldset[class="personExtended_box"]');
+
           /* get the next free output field */
-          var nameIdFields = $('input[name^="/mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:name/mods:nameIdentifier"]');
+          var nameIdFields = $(itemPersonExtendedBox).find('input[name$="/mods:nameIdentifier"]');
 
           var currentIdFieldIndex = 0;
 
@@ -580,7 +583,7 @@
           /*
            * if there is not a free identifier output field add template
            */
-          if (currentIdFieldIndex === nameIdFields.length) {
+          if (nameIdFields.length > 0 && currentIdFieldIndex === nameIdFields.length) {
 
             /* get last output field as template */
             let addNameIdGroupTemplate = $(nameIdFields[0]).closest('div[class="form-group"]').prop('outerHTML');
