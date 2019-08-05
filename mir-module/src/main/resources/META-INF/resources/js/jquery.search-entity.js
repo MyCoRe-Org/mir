@@ -548,7 +548,7 @@
       searchResultContainer : $resultBox
     }, options));
   };
-  
+
   SearchEntity.prototype.updateOutput = function(item) {
     var that = this;
     var options = this.options;
@@ -566,51 +566,58 @@
       if (item.type != undefined && item.type != "") {
 
         $outputNameType.val(item.type.toLowerCase());
-        if (item.type.startsWith('person')) {
 
-          /* Get dependent personExtended_box */
-          let itemPersonExtendedBox = $($output).closest('fieldset[class="personExtended_box"]');
+        /* Get dependent personExtended_box */
+        var itemPersonExtendedBox = $($output).closest('fieldset[class="personExtended_box"]');
 
-          /* get the next free output field */
-          var nameIdFields = $(itemPersonExtendedBox).find('input[name$="/mods:nameIdentifier"]');
+        /* get the next free output field */
+        var nameIdFields = $(itemPersonExtendedBox).find('input[name*="/mods:nameIdentifier"]');
 
-          var currentIdFieldIndex = 0;
+        var currentIdFieldIndex = 0;
 
-          while (currentIdFieldIndex < nameIdFields.length && nameIdFields[currentIdFieldIndex].value) {
-            currentIdFieldIndex++;
-          }
-
-          /*
-           * if there is not a free identifier output field add template
-           */
-          if (nameIdFields.length > 0 && currentIdFieldIndex === nameIdFields.length) {
-
-            /* get last output field as template */
-            let addNameIdGroupTemplate = $(nameIdFields[0]).closest('div[class="form-group"]').prop('outerHTML');
-
-            /* set nameIdentifier count correct */
-            addNameIdGroupTemplate = addNameIdGroupTemplate.split('mods:nameIdentifier').join('mods:nameIdentifier[' + nameIdFields.length + ']');
-
-            let parentNameIdGroup = $(nameIdFields[nameIdFields.length - 1]).closest('div[class="form-group"]').parent();
-            parentNameIdGroup.append($(addNameIdGroupTemplate));
-
-            /* update nameIdFields */
-            nameIdFields = $('input[name^="/mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:name/mods:nameIdentifier"]');
-          }
-
-          /* $output will be the next free Input field */
-          $output[0] = nameIdFields[currentIdFieldIndex];
-
-          /* get dependent outputType selection */
-          let dependentOutputType = $('select[name="' + nameIdFields[currentIdFieldIndex].name + '/@type"]');
-          $outputType[0] = dependentOutputType[0];
+        while (currentIdFieldIndex < nameIdFields.length && nameIdFields[currentIdFieldIndex].value) {
+          currentIdFieldIndex++;
         }
+
+        /*
+         * if there is not a free identifier output field trigger button and
+         * insert output parameter into generated nameIdGroup
+         */
+        if (nameIdFields.length > 0 && currentIdFieldIndex === nameIdFields.length) {
+
+          nameIdFields[currentIdFieldIndex - 1].value = nameIdFields[currentIdFieldIndex - 1].value + 'addOutputParam{ "outputRow":"' + currentIdFieldIndex
+              + '", "outputType":"' + getTypeFromURL(item.value) + '", "output":"' + getIDFromURL(item.value) + '"}';
+
+          /* Toggle Add Button to generate new nameField */
+          let addIdentifierButton = $(nameIdFields[currentIdFieldIndex - 1]).closest('div[class="form-group"]').find('button[name^="_xed_submit_insert"]');
+          addIdentifierButton.click();
+        }
+
+        /* $output will be the next free Input field */
+        $output[0] = nameIdFields[currentIdFieldIndex];
+
+        /* get dependent outputType selection */
+        let dependentOutputType = $('select[name="' + nameIdFields[currentIdFieldIndex].name + '/@type"]');
+        $outputType[0] = dependentOutputType[0];
       }
 
       $output.val(getIDFromURL(item.value));
       var outputType = getTypeFromURL(item.value);
       if (outputType != "") {
         $outputType.val(outputType.toLowerCase());
+      }
+    }
+
+    var inputFieldWithAddOutputParam = $('input[value*="addOutputParam{"]');
+    if (inputFieldWithAddOutputParam.length === 1) {
+
+      let inputValueParam = inputFieldWithAddOutputParam.val().split("addOutputParam");
+
+      if (inputValueParam.length == 2) {
+        inputFieldWithAddOutputParam.val(inputValueParam[0]);
+        var addOutputParamObj = JSON.parse(inputValueParam[1]);
+
+        console.log(addOutputParamObj);
       }
     }
 
