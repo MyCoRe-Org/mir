@@ -49,8 +49,8 @@ module.exports = function(grunt) {
 					'jquery' : 'jquery/dist',
 					'jquery/plugins/jquery-migrate' : 'jquery-migrate/dist/',
                     'jquery/plugins/shariff' : 'shariff/dist',
-                'bootswatch': 'bootswatch',
-                'bootstrap':'bootstrap-sass/assets'
+                'bootswatch': 'bootswatch/dist',
+                'bootstrap':'bootstrap/scss'
 				}
 			}
 		}

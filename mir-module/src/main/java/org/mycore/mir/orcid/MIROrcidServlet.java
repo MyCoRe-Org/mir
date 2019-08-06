@@ -147,7 +147,7 @@ public class MIROrcidServlet extends MCRServlet {
             this.term = familyName + ", " + givenName;
             this.value = value;
             this.label = this.term;
-            this.type = "person";
+            this.type = "personal";
         }
     }
 }

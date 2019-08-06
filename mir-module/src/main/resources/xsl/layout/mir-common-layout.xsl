@@ -43,8 +43,8 @@
     <xsl:choose>
       <xsl:when test="contains($RequestURL, 'MCRLoginServlet') and mcrxsl:isCurrentUserGuestUser()"></xsl:when>
       <xsl:when test="mcrxsl:isCurrentUserGuestUser()">
-        <li>
-          <a id="loginURL" href="{$loginURL}">
+        <li class="nav-item">
+          <a id="loginURL" class="nav-link" href="{$loginURL}">
             <xsl:value-of select="i18n:translate('component.userlogin.button.login')" />
           </a>
         </li>
@@ -56,7 +56,7 @@
               <xsl:value-of select="'active'" />
             </xsl:attribute>
           </xsl:if>
-          <a id="currentUser" class="dropdown-toggle" data-toggle="dropdown" href="#">
+          <a id="currentUser" class="nav-item dropdown-toggle" data-toggle="dropdown" href="#">
             <strong>
               <xsl:value-of select="$CurrentUser" />
             </strong>
@@ -84,8 +84,8 @@
 <!--         <label xml:lang="de">Deutsch</label> -->
 <!--         <label xml:lang="en">German</label> -->
 <!--       </language> -->
-      <li class="dropdown mir-lang">
-        <a data-toggle="dropdown" title="{i18n:translate('mir.language.change')}">
+      <li class="nav-item dropdown mir-lang">
+        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" title="{i18n:translate('mir.language.change')}">
           <xsl:value-of select="$curLang/language/@xmlCode" />
           <span class="caret" />
         </a>
@@ -103,7 +103,7 @@
                 <xsl:variable name="langTitle">
                   <xsl:apply-templates select="$langDef/language" mode="mir.langTitle" />
                 </xsl:variable>
-                <a href="{$langURL}" title="{$langTitle}">
+                <a href="{$langURL}" class="dropdown-item" title="{$langTitle}">
                   <xsl:value-of select="$langDef/language/@xmlCode" />
                 </a>
               </li>
@@ -170,7 +170,7 @@
             Startseite existiert bereits s.o.
           -->
           <xsl:if test="$browserAddress != $hrefStartingPage ">
-            <li>
+            <li class="breadcrumb-item">
               <xsl:choose>
                 <xsl:when test="@href = $browserAddress">
                   <xsl:attribute name="class">active </xsl:attribute>
@@ -243,14 +243,14 @@
     </xsl:variable>
 
     <li class="dropdown" id="basket-list-item">
-      <a class="dropdown-toggle" data-toggle="dropdown" href="#" title="{$basketTitle}">
+      <a class="dropdown-toggle nav-link" data-toggle="dropdown" href="#" title="{$basketTitle}">
         <i class="fa fa-bookmark"></i>
         <sup>
           <xsl:value-of select="$entryCount" />
         </sup>
       </a>
       <ul class="dropdown-menu" role="menu">
-        <li>
+        <li class="dropdown-item">
           <a href="{$ServletsBaseURL}MCRBasketServlet{$HttpSession}?type={$basket/@type}&amp;action=show">
             <xsl:value-of select="i18n:translate('basket.open')" />
           </a>

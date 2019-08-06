@@ -30,41 +30,170 @@
  *
  * All parameters can be also set with jQuery <code>data-</code> attributes.
  */
-+function ($) {
-    'use strict';
++function($) {
+  'use strict';
 
-    var toggle = '[data-search="searchEntity"]'
+  var toggle = '[data-search="searchEntity"]';
 
-    var SearchEntity = function (element, options) {
-        this.options = $.extend({}, SearchEntity.DEFAULTS, options);
+  var SearchEntity = function(element, options) {
+    this.options = $.extend({}, SearchEntity.DEFAULTS, options);
 
-        this.$parent = null;
-        this.$element = $(element);
-        this.$inputGroup = null;
-        this.$searchBtn = null;
-        this.$typeBtn = null;
-        this.$typeMenu = null;
-        this.$feedback = null;
+    this.$parent = null;
+    this.$element = $(element);
+    this.$inputGroup = null;
+    this.$searchBtn = null;
+    this.$typeBtn = null;
+    this.$typeMenu = null;
+    this.$feedback = null;
 
-        this.selectedType = options.searchType.toUpperCase() == "SELECT" ? SearchEntity.DEFAULTS.searchType : options.searchType;
+    this.selectedType = options.searchType.toUpperCase() == "SELECT" ? SearchEntity.DEFAULTS.searchType : options.searchType;
 
-        this.init();
-    };
+    this.init();
+  };
 
-    SearchEntity.VERSION = '1.1.0';
+  SearchEntity.VERSION = '1.1.0';
 
-    SearchEntity.LABEL_CLEANUP = /\s[\(]?[0-9-]+[\)]?/g;
+  SearchEntity.LABEL_CLEANUP = /\s[\(]?[0-9-]+[\)]?/g;
 
-    SearchEntity.TYPES = {
-        GND: {
-            baseURI: "http://d-nb.info/gnd/",
-            person: {
-                enabled: true,
-                url: "//ws.gbv.de/suggest/gnd/",
-                data: function (input) {
-                    return {
-                        searchterm: input,
-                        type: "DifferentiatedPerson"
+  SearchEntity.TYPES = {
+    GND : {
+      baseURI : "http://d-nb.info/gnd/",
+      person : {
+        enabled : true,
+        url : "//ws.gbv.de/suggest/gnd/",
+        data : function(input) {
+          return {
+            searchterm : input,
+            type : "DifferentiatedPerson"
+          }
+        },
+        dataType : "jsonp",
+        dataConvert : function(data) {
+          var result = [];
+          if (data.length == 4) {
+            $(data[1]).each(function(index, item) {
+              if (parseType(data[2][index]) === "DifferentiatedPerson") {
+                var person = {
+                  label : item,
+                  value : data[3][index],
+                  type: "personal"
+                };
+                result.push(person);
+              }
+            });
+          }
+          return result;
+        }
+      },
+      organisation : {
+        enabled : true,
+        url : "//ws.gbv.de/suggest/gnd/",
+        data : function(input) {
+          return {
+            searchterm : input,
+            type : "CorporateBody"
+          }
+        },
+        dataType : "jsonp",
+        dataConvert : function(data) {
+          var result = [];
+          if (data.length == 4) {
+            $(data[1]).each(function(index, item) {
+              if (parseType(data[2][index]) === "CorporateBody") {
+                var organisation = {
+                  label : item,
+                  value : data[3][index],
+                  type: "corporate"
+                };
+                result.push(organisation);
+              }
+            });
+          }
+          return result;
+        }
+      },
+      both : {
+        enabled : true,
+        url : "//ws.gbv.de/suggest/gnd/",
+        data : function(input) {
+          return {
+            searchterm : input,
+            type : "DifferentiatedPerson,CorporateBody",
+            count: "30"
+          }
+        },
+        dataType : "jsonp",
+        dataConvert : function(data) {
+          var result = [];
+          if (data.length == 4) {
+            $(data[1]).each(function(index, item) {
+              if (parseType(data[2][index]) === "DifferentiatedPerson") {
+                var person = {
+                  label : item,
+                  value : data[3][index],
+                  type: "personal"
+                };
+                result.push(person);
+              }
+              if (parseType(data[2][index]) === "CorporateBody") {
+                var organisation = {
+                  label : item,
+                  value : data[3][index],
+                  type: "corporate"
+                };
+                result.push(organisation);
+              }
+            });
+          }
+          return result;
+        }
+      },
+      topic : {
+        enabled : true,
+        url : "//ws.gbv.de/suggest/gnd/",
+        data : function(input) {
+          return {
+            searchterm : input,
+            type: "SubjectHeading"
+          }
+        },
+        dataType : "jsonp",
+        dataConvert : function(data) {
+          var result = [];
+          if (data.length == 4) {
+            $(data[1]).each(function(index, item) {
+              if (parseType(data[2][index]) === "SubjectHeading") {
+                var topic = {
+                  label : item,
+                  value : data[3][index]
+                };
+                result.push(topic);
+              }
+            });
+          }
+          return result;
+        }
+      },
+      geographic : {
+        enabled : true,
+        url : "//ws.gbv.de/suggest/gnd/",
+        data : function(input) {
+            return {
+                searchterm : input,
+                type: "PlaceOrGeographicName"
+            }
+        },
+        dataType : "jsonp",
+        dataConvert : function(data) {
+            var result = [];
+            if (data.length == 4) {
+                $(data[1]).each(function(index, item) {
+                    if (parseType(data[2][index]) === "PlaceOrGeographicName") {
+                        var geographic = {
+                            label : item,
+                            value : data[3][index]
+                        };
+                        result.push(geographic);
                     }
                 },
                 dataType: "jsonp",
@@ -369,8 +498,13 @@
             return;
         }
 
-        var that = this;
-        var options = this.options;
+  SearchEntity.DEFAULTS = {
+    // Button style
+    buttonClass : "btn btn-secondary",
+    // Feedback style (optical feedback for current selection)
+    feedbackClass : "feedback label btn-primary",
+    // Feedback cleaner icon style
+    feedbackCleanIconClass : "feedback-clean btn-primary fa fa-times-circle-o",
 
         var $parent = this.$parent = $(document.createElement("div"));
 
@@ -414,7 +548,8 @@
             $typeBtn.attr("data-toggle", "dropdown");
             $typeBtn.html("<span class=\"caret\"></span><span class=\"sr-only\">Toggle Dropdown</span>");
 
-            $actions.append($typeBtn);
+    var $actions = $(document.createElement("div"));
+    $actions.addClass("input-group-btn input-group-append");
 
             var $typeMenu = this.$typeMenu = $(document.createElement("ul"));
             $typeMenu.addClass("dropdown-menu dropdown-menu-right");
@@ -498,31 +633,11 @@
             }
         }
 
-        return false;
-    };
-
-    SearchEntity.prototype.showResult = function (data) {
-        var that = this;
-        var $parent = this.$parent;
-        var options = this.options;
-
-        var $resultBox = $(document.createElement("ul"));
-        $resultBox.attr("role", "menu");
-        $resultBox.addClass("dropdown-menu");
-
-        if (data && data.length > 0) {
-            $(data).each(function (index, item) {
-                var $li = $(document.createElement("li"));
-
-                var $person = $(document.createElement("a"));
-                $person.attr("href", "#");
-                $person.attr("data-type", item.type);
-                $person.text(item.label);
-                $person.on("click", function (e) {
-                    e.preventDefault();
-                    that.updateOutput(item);
-                    that.clearAll();
-                });
+        var $entry = $(document.createElement("li"));
+        $entry.addClass("dropdown-item");
+        if(type.toUpperCase() === this.selectedType.toUpperCase()) {
+          $entry.addClass("active");
+        }
 
                 $li.append($person);
 
@@ -601,33 +716,131 @@
             }
         }
 
-        var inputFieldWithAddOutputParam = $('input[value*="addOutputParam{"]');
-        if (inputFieldWithAddOutputParam.length === 1) {
+    return false;
+  };
+
+  SearchEntity.prototype.showResult = function(data) {
+    var that = this;
+    var $parent = this.$parent;
+    var options = this.options;
+
+    var $resultBox = $(document.createElement("div"));
+    $resultBox.addClass("dropdown");
+
+    var $resultList = $(document.createElement("ul"));
+    $resultList.attr("role", "menu");
+    $resultList.addClass("dropdown-menu");
+    $resultBox.append($resultList);
+
+    if (data && data.length > 0) {
+      $(data).each(function(index, item) {
+        var $li = $(document.createElement("li"));
+        $li.addClass("dropdown-item");
+        var $person = $(document.createElement("a"));
+        $person.attr("href", "#");
+        $person.attr("data-type", item.type);
+        $person.text(item.label);
+        $person.on("click", function(e) {
+          e.preventDefault();
+          that.updateOutput(item);
+          that.clearAll();
+        });
 
             let inputValueParam = inputFieldWithAddOutputParam.val().split("addOutputParam");
 
-            if (inputValueParam.length == 2) {
-                inputFieldWithAddOutputParam.val(inputValueParam[0]);
-                var addOutputParamObj = JSON.parse(inputValueParam[1]);
+        $resultList.append($li);
+      });
+    } else {
+      var $li = $(document.createElement("li"));
+      $li.html(options.searchResultEmpty);
+      $resultList.append($li);
+    }
 
-                console.log(addOutputParamObj);
-            }
-        }
+    $parent.append($resultBox);
+    $resultList.css({
+      height : "auto",
+      maxHeight : options.searchResultMaxHeight,
+      width : "100%",
+      overflow : "auto",
+      overflowX : "hidden"
+    });
+    $resultList.addClass("show");
 
-        if ($output != this.$element && $output.val().length > 0) {
-            var type = $outputType.val();
-            var $feedback = $(document.createElement("a"));
-            $feedback.attr("href", getURLFromTypeAndID($outputType.val(), $output.val()));
-            $feedback.attr("target", "_blank");
-            $feedback.css({
-                textDecoration: "none"
-            });
-            if (type == null || SearchEntity.TYPES[type.toUpperCase()] == undefined) {
-                $feedback.attr("onclick", "return false;");
-                $feedback.css({
-                    cursor: "default"
-                });
-            }
+    this.$element.data($.extend({}, {
+      searchResultContainer : $resultBox
+    }, options));
+  };
+
+  SearchEntity.prototype.updateOutput = function(item) {
+    var that = this;
+    var options = this.options;
+    var $output = $(options.searchOutput, getParent(this.$element))[0] !== undefined ? $(options.searchOutput, getParent(this.$element)).first() : this.$element;
+    var $outputType = $(options.searchOutputType, getParent(this.$element))[0] !== undefined ? $(options.searchOutputType, getParent(this.$element)).first() : this.$element;
+    var $outputNameType = $(options.searchOutputNameType, getParent(this.$element))[0] !== undefined ? $(options.searchOutputNameType, getParent(this.$element)).first() : this.$element;
+
+    if (item) {
+      this.$element != $output && item.label && this.$element.val(item.label.replace(SearchEntity.LABEL_CLEANUP, ""));
+      $output.val(getIDFromURL(item.value));
+      var outputType = getTypeFromURL(item.value);
+      if (outputType != "") {
+        $outputType.val(outputType.toLowerCase());
+      }
+      if (item.type != undefined && item.type != "") {
+        $outputNameType.val(item.type.toLowerCase());
+      }
+    }
+
+    if ($output != this.$element && $output.val().length > 0) {
+      var type = $outputType.val();
+      var $feedback = $(document.createElement("a"));
+      $feedback.attr("href", getURLFromTypeAndID($outputType.val(), $output.val()));
+      $feedback.attr("target", "_blank");
+      $feedback.css({
+        textDecoration : "none"
+      });
+      if(type == null || SearchEntity.TYPES[type.toUpperCase()] ==  undefined) {
+        $feedback.attr("onclick", "return false;");
+        $feedback.css({
+          cursor : "default"
+        });
+      }
+
+      var $label = $(document.createElement("span"));
+      $label.addClass(options.feedbackClass);
+      $label.html(type != null ? type.toUpperCase() : "N/A");
+
+      var $remover = $(document.createElement("a"));
+      $remover.css({
+        marginLeft : 5,
+      });
+      $remover.attr("href", "#");
+      $remover.html("<i class=\"" + options.feedbackCleanIconClass + "\"></i>");
+      $remover.on("click", function(e) {
+        e.preventDefault();
+        that.updateOutput({
+          value : ""
+        })
+      });
+      $label.append($remover);
+
+      $feedback.append($label);
+
+      if (this.$feedback)
+        this.$feedback.remove();
+
+      this.$feedback = $feedback;
+      this.$element.after($feedback);
+
+      $feedback.css({
+        marginLeft : -($feedback.width() + 10),
+        marginTop : Math.floor((this.$element.innerHeight() - $feedback.height()) / 2),
+        zIndex : 100
+      });
+    } else {
+      if (this.$feedback)
+        this.$feedback.remove();
+    }
+  };
 
             var $label = $(document.createElement("span"));
             $label.addClass(options.feedbackClass);
@@ -796,18 +1009,7 @@
         return type;
     }
 
-    function getParent($this) {
-        var selector = $this.attr('data-target');
-
-        if (!selector) {
-            if ($this.attr('data-next')) {
-                selector = $this.closest(".form-group").next($this.attr('data-next'));
-            }
-            else {
-                selector = $this.attr('href');
-                selector = selector && /#[A-Za-z]/.test(selector) && selector.replace(/.*(?=#[^\s]*$)/, '')
-            }
-        }
+    var $parent = selector && $(selector);
 
         var $parent = selector && $(selector)
 
@@ -817,11 +1019,11 @@
     // SEARCH ENTITY PLUGIN DEFINITION
     // ===============================
 
-    function Plugin(option) {
-        return this.each(function () {
-            var $this = $(this);
-            var data = $this.data('mcr.searchentity');
-            var options = typeof option == 'object' && option
+  function Plugin(option) {
+    return this.each(function() {
+      var $this = $(this);
+      var data = $this.data('mcr.searchentity');
+      var options = typeof option == 'object' && option;
 
             if (!data)
                 $this.data('mcr.searchentity', (data = new SearchEntity(this, option)));

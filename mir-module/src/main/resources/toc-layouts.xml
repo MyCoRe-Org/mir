@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- 
+  Table of contents layouts. Each layout has its own ID.
+  Use custom-toc-layouts.xsl to customize HTML output of level labels and publications.  
+
+  level  : a grouping level for table of contents 
+    @field    : a SOLR index field to build this level as facet
+    @order    : display order for TOC level items
+    @expanded : by default, should level be show expanded or collapsed?
+                options are true|false|first (only fist item at level expanded)
+    
+  publications : may occur at any level, but specify at lowest please!
+    sortBy  : sort publications by @field and @order, 
+              may be repeated  
+-->
+
+
+<toc-layouts default="legacy"> 
+
+  <toc-layout id="journal_by_volume">
+    <label>Band > Heft > Artikel mit Autor:Titel, Seitenzahl</label>
+    <level field="mir.toc.host.volume" order="desc" expanded="true">
+      <level field="mir.toc.host.issue" order="desc" expanded="false">
+        <publications>
+          <sortBy field="mir.toc.host.page.int" order="asc" />
+          <sortBy field="mir.toc.host.page.str" order="asc" />
+        </publications>
+      </level>
+    </level>
+  </toc-layout>
+
+  <toc-layout id="volume_only">
+    <label>Band > Artikel mit Autor:Titel, Seitenzahl</label>
+    <level field="mir.toc.host.volume" order="desc" expanded="false">
+      <publications>
+        <sortBy field="mir.toc.host.page.int" order="asc" />
+        <sortBy field="mir.toc.host.page.str" order="asc" />
+      </publications>
+    </level>
+  </toc-layout>
+
+  <toc-layout id="journal_by_year">
+    <label>Jahr > Heft > Artikel mit Autor:Titel, Seitenzahl</label>
+    <level field="mods.yearIssued" order="desc" expanded="true">
+      <level field="mir.toc.host.issue" order="desc" expanded="false">
+        <publications>
+          <sortBy field="mir.toc.host.page.int" order="asc" />
+          <sortBy field="mir.toc.host.page.str" order="asc" />
+        </publications>
+      </level>
+    </level>
+  </toc-layout>
+
+  <toc-layout id="blog">
+    <label>Blog (gruppiert nach Erscheinungsjahr), Artikel mit Datum</label>
+    <level field="mods.yearIssued" order="desc" expanded="first">
+      <publications>
+        <sortBy field="mods.dateIssued" order="desc" />
+      </publications>
+    </level>
+  </toc-layout>
+  
+  <!-- This is, more or less, the legacy layout that was hard-coded -->
+  <toc-layout id="legacy">
+    <label>Standard (gruppiert nach Erscheinungsjahr)</label>
+    <level field="mods.yearIssued" order="desc" expanded="first">
+      <publications>
+        <sortBy field="mir.toc.host.order" order="asc" />
+        <sortBy field="mir.toc.series.order" order="asc" />
+        <sortBy field="mir.toc.host.page.int" order="asc" />
+        <sortBy field="mir.toc.host.page.str" order="asc" />
+        <sortBy field="mods.dateIssued" order="desc" />
+        <sortBy field="mods.dateIssued.host" order="desc" />
+        <sortBy field="mods.title.main" order="asc" />
+      </publications>
+    </level>
+  </toc-layout>
+  
+</toc-layouts>

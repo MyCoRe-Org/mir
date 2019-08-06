@@ -8,6 +8,8 @@
     border: none;
     border-radius: 0px;
     margin: 0;
+    padding-top: 0;
+    padding-bottom: 0;
 
     .navbar-header {
       float: left;
@@ -18,7 +20,6 @@
     }
 
     .searchfield_box {
-      float: right;
       margin: 10px 0 0 0;
       .navbar-form {
         width: 100%;
@@ -62,7 +63,6 @@
 
       // Dropdown menu items and carets
       .navbar-nav {
-        width: 100%;
         margin: 0;
         // menu entry
         > li > a {
@@ -72,7 +72,7 @@
           &:focus {
             color: white;
             background-color: transparent;
-            border-bottom: 0px solid lighten($brand-primary, 50%);
+            border-bottom: 0px solid lighten($primary, 50%);
             // caret
             .caret {
               border-top-color: white !important; // allways white
@@ -80,8 +80,8 @@
           }
           &:hover {
             color: white;
-            background-color: lighten($brand-primary, 25%);
-            border-bottom: 0px solid lighten($brand-primary, 50%);
+            background-color: lighten($primary, 25%);
+            border-bottom: 0px solid lighten($primary, 50%);
             // caret
             .caret {
               border-top-color: white !important; // allways white
@@ -114,7 +114,7 @@
 
         // The dropdown menu (ul)
         .dropdown-menu {
-            background-color: lighten($brand-primary, 15%);
+            background-color: lighten($primary, 15%);
             border-radius: 4px !important;
             margin-top: 4px !important;
             &:before {
@@ -125,7 +125,7 @@
                 left: 20px;
                 top: -10px;
                 border: 5px solid;
-                border-color: transparent transparent lighten($brand-primary, 15%) transparent;
+                border-color: transparent transparent lighten($primary, 15%) transparent;
             }
             &:after {
                 /*content: ' ';
@@ -144,7 +144,7 @@
                 &:hover,
                 &:focus {
                     color: white;
-                    background-color: lighten($brand-primary, 30%);
+                    background-color: lighten($primary, 30%);
                 }
             }
             // Active state
@@ -153,7 +153,7 @@
                 &:hover,
                 &:focus {
                     color: white;
-                    background-color: lighten($brand-primary, 30%);
+                    background-color: lighten($primary, 30%);
                 }
             }
         }
@@ -161,6 +161,9 @@
       }
     }
   }
+
+/*
+TODO: migrate see https://getbootstrap.com/docs/4.0/migration/ strg+f Grid breakpoints
 @media (min-width: 420px) {
   .mir-main-nav .searchfield_box .navbar-form .form-group #searchInput {
     width: 250px;
@@ -183,4 +186,4 @@
   .mir-main-nav .searchfield_box .navbar-form .form-group #searchInput {
     width: 300px;
   }
-}
+}*/

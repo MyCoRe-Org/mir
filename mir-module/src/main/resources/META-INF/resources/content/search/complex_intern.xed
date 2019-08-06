@@ -13,22 +13,22 @@
       <xed:source uri="webapp:editor/search/template/complex_intern.xml" />
       <xed:bind xpath="query">
         <xed:bind xpath="@mask" default="content/search/complex_intern.xed" />
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <h3 class="panel-title">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">
               <xed:output i18n="component.mods.editor.search.label" />
             </h3>
           </div>
-          <div class="panel-body">
+          <div class="card-body row">
 
             <xed:bind xpath="conditions/boolean/boolean">
               <xed:repeat xpath="boolean[@operator='and']">
-                <div class="well col-md-10">
+                <div class="jumbotron col-md-10">
                   <xed:repeat
                     xpath="condition[contains(',mods.title,mods.author,mods.name,allMeta,', concat(',',@field,','))]"
                     method="clone">
                     <!-- Title -->
-                    <div class="form-group">
+                    <div class="form-group row">
                       <div class="col-md-3">
                         <xed:bind xpath="@field">
                           <select class="form-control">
@@ -62,7 +62,7 @@
                           </select>
                         </xed:bind>
                       </div>
-                      <div class="col-md-7">
+                      <div class="col-md-7 row">
                         <div class="col-md-8">
                           <xed:bind xpath="@value">
                             <input type="text" class="form-control" />
@@ -106,9 +106,9 @@
                     i18n="editor.search.status" tooltip="editor.search.status.tooltip"
                     uri="xslStyle:items2options:classification:editor:-1:children:state" />
                   <!-- Datum -->
-                  <div class="form-group">
+                  <div class="form-group row">
                     <xed:bind xpath="condition[@field='mods.dateIssued']">
-                      <label for="inputDate1" class="col-md-3 control-label">
+                      <label for="inputDate1" class="col-md-3 col-form-label text-md-right">
                         <xed:output i18n="component.mods.metaData.dictionary.dateIssued" />
                       </label>
                       <div class="col-md-2">
@@ -131,8 +131,8 @@
                     </xed:bind>
                   </div>
                   <!-- Volltext -->
-                  <div class="form-group">
-                    <label for="inputFulltext1" class="col-md-3 control-label">
+                  <div class="form-group row">
+                    <label for="inputFulltext1" class="col-md-3 col-form-label text-md-right">
                       <xed:output i18n="mir.dropdown.content" />
                     </label>
                     <div class="col-md-9">
@@ -152,20 +152,23 @@
                               <xed:output i18n="editor.search.mir.openAccess" />
                             </option>
                           </select>
-                          <span class="input-group-addon" data-toggle="tooltip" data-html="true" title="{i18n:editor.search.fulltext.tooltip}">
-                            <i class="fa fa-info-circle" />
+                          <span class="input-group-append" data-toggle="tooltip" data-html="true"
+                                title="{i18n:editor.search.fulltext.tooltip}">
+                            <i class="fa fa-info-circle input-group-text"/>
                           </span>
                         </xed:bind>
                       </div>
                     </div>
                   </div>
                 </div>
-                <div class="btn-group col-md-2">
-                  <xed:controls>insert remove</xed:controls>
+                <div class="col-md-2">
+                  <div class="btn-group">
+                    <xed:controls>insert remove</xed:controls>
+                  </div>
                 </div>
               </xed:repeat>
-              <div class="form-group">
-                <div class="col-md-offset-3 col-md-9">
+              <div class="form-group row col-12">
+                <div class="offset-md-3 col-md-9 row">
                   <label for="Connect1" class="col-md-6" style="padding-left:0">
                     <xed:output i18n="editor.search.connect" />
                   </label>
@@ -188,8 +191,8 @@
 
             <!-- sort -->
             <xed:bind xpath="sortBy/field">
-              <div class="form-group">
-                <div class="col-md-offset-3 col-md-9">
+              <div class="form-group row col-12">
+                <div class="offset-md-3 col-md-9 row">
                   <label for="Connect1" class="col-md-2" style="padding-left:0">
                     <xed:output i18n="editor.search.sortby" />
                   </label>
@@ -223,7 +226,7 @@
           </div>
 
           <!-- submit -->
-          <div class="panel-footer clearfix">
+          <div class="card-footer clearfix">
             <div class="pull-right">
               <mir:template name="submitButton" i18n="editor.search.search"
                 target="servlet_MCRQLSearchServlet" order="primary-button"/>

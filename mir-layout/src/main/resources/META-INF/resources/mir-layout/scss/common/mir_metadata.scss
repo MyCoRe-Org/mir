@@ -57,22 +57,22 @@
     display: inline;
     color: $dark_neutral;
     .mir-published {
-      background-color: $label-success-bg;
+      background-color: darken($success, 10%)!important;
     }
     .mir-submitted, .mir-new, .mir-imported {
-      background-color: $label-warning-bg;
+      background-color: darken($warning, 10%)!important;
     }
     .mir-review {
-      background-color: $label-primary-bg;
+      background-color: darken($primary, 10%)!important;
     }
     .mir-blocked {
-      background-color: $label-danger-bg;
+      background-color: darken($danger, 10%)!important;
     }
     .mir-deleted {
-      background-color: $label-default-bg;
+      //background-color: $label-default-bg;//TODO: not sure if this variable has a equivalent in bs4
     }
     span {
-      background-color: $label-default-bg;
+      //background-color: $label-default-bg;//TODO: not sure if this variable has a equivalent in bs4
     }
   }
 }
@@ -177,7 +177,7 @@ $grayDark: #ECF0F1 !default;
   top: 12px;
 }
 
-.panel .mir-player:not(:only-child) {
+.card .mir-player:not(:only-child) {
   border: 15px solid #ecf0f1;
   border-top: 0;
 }

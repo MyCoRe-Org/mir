@@ -46,7 +46,7 @@ PasswordGenerator.genPassword = function(plength) {
 	}).join('');
 
 	return temp;
-}
+};
 
 jQuery(document).ready(function() {
 	jQuery("#readKeyGenerator").click(function() {

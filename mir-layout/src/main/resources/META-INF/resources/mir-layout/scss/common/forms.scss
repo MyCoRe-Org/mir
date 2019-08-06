@@ -17,7 +17,7 @@
   top: 0;
 }
 
-*:not(.input-group-btn) > .btn {
+*:not(.input-group-btn)/*:not(.btn-group)*/ > .btn {
   margin-right: 5px;
 }
 
@@ -40,9 +40,9 @@
   top: 50px;
 }
 
-.required:before {
+/*.required:before {
   content:"* ";
-}
+}*/
 
 .required > label:before {
   content:"* ";
@@ -73,7 +73,7 @@
 //    submit puplication
 // --------------------------------------------------
 #more_options_toggle {
-  color: $gray;
+  color: $gray-400;
   margin: 0 0 20px 0;
   #more_options_trigger {
     cursor: pointer;
@@ -88,10 +88,10 @@
     }
     &:hover {
       #more_options_button {
-        color: $brand-warning;
+        color: $warning;
       }
       #more_options_label {
-        color: $brand-primary;
+        color: $primary;
       }
     }
   }
@@ -247,7 +247,7 @@ span.topicExtended-container input.topic_gnd, span.geographicExtended-container 
 }
 
 .has-error iframe {
-  border: solid thin $alert-danger-text;
+  border: solid thin $danger;
 }
 
 /* xs: default up to 750px ***************************************************/
@@ -261,6 +261,8 @@ span.topicExtended-container input.topic_gnd, span.geographicExtended-container 
 }
 
 /* xs hd */
+/*
+TODO: migrate see https://getbootstrap.com/docs/4.0/migration/ strg+f Grid breakpoints
 @media (min-width: 350px) {
   #submit_publication {
     input,
@@ -270,9 +272,11 @@ span.topicExtended-container input.topic_gnd, span.geographicExtended-container 
     }
   }
 }
-
+*/
 
 /* sm: up to 970 px **********************************************************/
+/*
+TODO: migrate see https://getbootstrap.com/docs/4.0/migration/ strg+f Grid breakpoints
 @media (min-width: $screen-tablet) {
   #submit_publication {
     input,
@@ -281,7 +285,7 @@ span.topicExtended-container input.topic_gnd, span.geographicExtended-container 
       width: 100%;
     }
   }
-}
+}*/
 /***************************************************/
 /* mir openstreetmap                               */
 /***************************************************/

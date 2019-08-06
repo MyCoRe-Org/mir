@@ -3,9 +3,9 @@
 // --------------------------------------------------
 
 .flatmir-footer {
-    color:                      $gray;
-    background-color:           $brand-primary;
-    border-top:                 1px solid darken($brand-primary, 50%);
+    color:                      $gray-400;
+    background-color:           $primary;
+    border-top:                 1px solid darken($primary, 50%);
      @include border-bottom-radius(0); // overwrite default
     margin-top:                 50px;
     padding:                    0px;
@@ -16,8 +16,8 @@
     }
 }
 .flatmir-footer h4 {
-    color:                      $gray-lighter;
+    color:                      $gray-100;
 }
 .flatmir-footer a {
-    color:                      $gray-lighter;
+    color:                      $gray-100;
 }

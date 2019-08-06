@@ -250,7 +250,7 @@
 			"_default" : {
 				icon : "fa-file-o"
 			}
-		}
+		};
 
 		// functions
 		function getDerivate(token) {
@@ -593,7 +593,7 @@
 					if (!$this.parent().hasClass("disabled")) {
 						var offset = $(".pagination", fileBox).offset();
 
-						var path = fileBox.data("path")
+						var path = fileBox.data("path");
 						page = $this.data("page");
 
 						if (path != "/") {

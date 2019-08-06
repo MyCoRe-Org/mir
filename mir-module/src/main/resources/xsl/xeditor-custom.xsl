@@ -35,7 +35,7 @@
       </xsl:choose>
     </xsl:variable>
 
-    <button type="submit" class="btn btn-default" name="{$name}">
+    <button type="submit" class="btn btn-secondary" name="{$name}">
       <i class="fa fa-{$symbol}">
       </i>
     </button>

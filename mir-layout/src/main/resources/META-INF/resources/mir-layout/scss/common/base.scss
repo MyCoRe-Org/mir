@@ -1,71 +1,164 @@
 /* base
- * - basic (means nothing special) settings of the webpage
+ * - basic settings for the webpage
+ * TODO: what does it mean: basic settings?
  */
-html {
 
-  body {
-    overflow-y: scroll;           /* show right scrollbar, allways */
-    background-position:0px 0px;
-    background-attachment:fixed;
-    background-repeat:no-repeat;
-    min-width: 320px;
+// Extra large devices (large desktops) and below
+// no (xl) media query necessary (desktop first)
+// set the defaults for all responsive levels here
 
-    .uploadDragging{
-      color: #2d9700;
-      background-color: #4B8FBC;
-    }
 
-    header {
-      #searchInput {
-        padding: 4px 15px;
-        height: auto;
-        margin-top: 4px;
-      }
-    }
+body {
+  // TODO do we still need those background settings?
+  background-position: 0px 0px;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
 
-    #page {
-      padding-top:40px;
-      background-color: $body-bg;
+  // do not reduce page width below this value
+  min-width: 320px;
+}
 
-      #main_content {
-        min-height: 300px;
+header {
+  #searchInput {
+    padding: 4px 15px;
+    height: auto;
+    margin-top: 4px;
+  }
+}
 
-        .jumbotwo {
-          h2 {
-            font-size: 40px;
-            margin: 0px 0 30px 0;
-          }
-          h3 {
-            span {padding-right:20px;
-            }
-          }
-        }
+#page {
+  padding-top: 40px;
+  background-color: $body-bg;
 
-      }
-    }
+  #main_content {
+    min-height: 300px;
+  }
+}
 
-    p {
-      -webkit-hyphens: auto;
-      -moz-hyphens: auto;
-      -ms-hyphens: auto;
-      hyphens: auto;
-      text-rendering: optimizeLegibility;
-      line-height: 180%;
-    }
+// align the footer to the bottom
+body {
+  min-height: 100vh;
+  position: relative;
+  padding-bottom: 530px;
+}
 
-    #powered_by {
-        text-align: center;
-        background-color: #080F1F;
-        border-top: 1px solid #000;
-        padding: 2em 0px;
-    }
+footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+}
 
-    .dropdown-menu {
-        z-index: 2000;
-    }
+// end footer alignment
 
-    .mir-player {
-      margin-bottom: 30px;
+// TODO move this to the typo styles
+p {
+  -webkit-hyphens: auto;
+  -moz-hyphens: auto;
+  -ms-hyphens: auto;
+  hyphens: auto;
+  text-rendering: optimizeLegibility;
+  line-height: 180%;
+}
+
+// TODO move this to the typo styles
+.jumbotwo {
+  h2 {
+    font-size: 40px;
+    margin: 0px 0 30px 0;
+  }
+
+  h3 {
+    span {
+      padding-right: 20px;
     }
   }
+}
+
+#powered_by {
+  text-align: center;
+  background-color: #080F1F;
+  border-top: 1px solid #000;
+  padding: 2em 0px;
+}
+
+// TODO move this to the upload styles
+.uploadDragging {
+  color: #2d9700;
+  background-color: #4B8FBC;
+}
+
+// TODO move this to the menu styles
+.dropdown-menu {
+  z-index: 2000;
+}
+
+// TODO move this to the player styles
+.mir-player {
+  margin-bottom: 30px;
+}
+
+p {
+  -webkit-hyphens: auto;
+  -moz-hyphens: auto;
+  -ms-hyphens: auto;
+  hyphens: auto;
+  text-rendering: optimizeLegibility;
+  line-height: 180%;
+}
+
+#powered_by {
+  text-align: center;
+  background-color: #080F1F;
+  border-top: 1px solid #000;
+  padding: 2em 0px;
+}
+
+.dropdown-menu {
+  z-index: 2000;
+}
+
+.mir-player {
+  margin-bottom: 30px;
+}
+
+// styles example page
+.bs-docs-section {
+  .bs-component + .bs-component {
+    margin-top: 1rem;
+  }
+
+  .page-header h1 {
+    padding: 2rem 0;
+    font-size: 3rem;
+  }
+
+  .progress {
+    margin-bottom: 10px;
+  }
+
+  .pagination {
+    margin-bottom: 1rem;
+  }
+}
+
+
+// Large devices (desktops) and below
+@include media-breakpoint-down(lg) {
+    // add/overwrite styles for responsive level lg and lower
+}
+
+// Medium devices (tablets) and below
+@include media-breakpoint-down(md) {
+    // add/overwrite styles for responsive level md and lower
+}
+
+// Small devices (landscape phones) and below
+@include media-breakpoint-down(sm) {
+    // add/overwrite styles for responsive level sm and lower
+}
+
+// Extra small devices (portrait phones)
+@include media-breakpoint-down(xs) {
+    // add/overwrite styles for responsive level xs
+
 }

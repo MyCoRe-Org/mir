@@ -58,7 +58,7 @@
       <div id="badges">
         <xsl:for-each select="$mods/mods:genre[@type='kindof']|$mods/mods:genre[@type='intern']">
           <xsl:call-template name="categorySearchLink">
-            <xsl:with-param name="class" select="'mods_genre label label-info'" />
+            <xsl:with-param name="class" select="'mods_genre badge badge-pill badge-info'" />
             <xsl:with-param name="node" select="." />
             <xsl:with-param name="owner"  select="$owner" />
           </xsl:call-template>
@@ -104,13 +104,13 @@
             <xsl:choose>
               <xsl:when test="$firstDate and $firstDate != ''">
                 <xsl:call-template name="searchLink">
-                  <xsl:with-param name="class" select="'date_published label label-primary'" />
+                  <xsl:with-param name="class" select="'date_published badge badge-pill badge-primary'" />
                   <xsl:with-param name="linkText" select="$dateText" />
                   <xsl:with-param name="query" select="concat('*&amp;fq=mods.dateIssued:',$firstDate, '&amp;owner=createdby:', $owner)" />
                 </xsl:call-template>
               </xsl:when>
               <xsl:otherwise>
-                <span class="date_published label label-primary">
+                <span class="date_published badge badge-pill badge-primary">
                   <xsl:value-of select="$dateText"/>
                 </span>
               </xsl:otherwise>
@@ -134,7 +134,7 @@
             </xsl:choose>
           </xsl:variable>
           <xsl:call-template name="searchLink">
-            <xsl:with-param name="class" select="'access_condition label label-success'" />
+            <xsl:with-param name="class" select="'access_condition badge badge-pill badge-success'" />
             <xsl:with-param name="linkText" select="$linkText" />
             <xsl:with-param name="query" select="concat('*&amp;fq=link:*',$accessCondition, '&amp;owner=createdby:', $owner)" />
           </xsl:call-template>
@@ -145,7 +145,7 @@
             <xsl:variable name="status-i18n">
               <xsl:value-of select="i18n:translate(concat('mir.state.',$doc-state))" />
             </xsl:variable>
-            <span class="label mir-{$doc-state}" title="{i18n:translate('component.mods.metaData.dictionary.status')}">
+            <span class="badge badge-pill mir-{$doc-state}" title="{i18n:translate('component.mods.metaData.dictionary.status')}">
               <xsl:value-of select="$status-i18n" />
             </span>
           </div>
@@ -310,6 +310,7 @@
         </xsl:choose>
       </xsl:variable>
 
+      <!-- deprecated - will be obsolete with new toc (see mod-metadata-page.xsl line 75) -->
       <xsl:call-template name="findRelatedItems">
         <xsl:with-param name="query" select="concat('(mods.relatedItem.host:', $objectID, ' OR mods.relatedItem.series:', $objectID, ') AND (', $state, ')')"/>
         <xsl:with-param name="label" select="i18n:translate('mir.metadata.content')"/>

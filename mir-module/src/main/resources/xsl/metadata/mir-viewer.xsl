@@ -81,7 +81,7 @@
             </xsl:call-template>
           </xsl:when>
           <xsl:otherwise>
-            <div class="well no-viewer">
+            <div class="card card-body bg-light no-viewer">
               <xsl:value-of select="i18n:translate('metaData.previewInProcessing', $derId)" />
             </div>
           </xsl:otherwise>

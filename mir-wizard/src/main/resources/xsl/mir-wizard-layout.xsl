@@ -12,6 +12,8 @@
   <xsl:include href="layout-utils.xsl" />
 
   <xsl:param name="CurrentLang" select="'de'" />
+  <xsl:param name="MIR.DefaultLayout.CSS" select="'flatly'" />
+  <xsl:param name="MIR.Layout.Theme" select="'flatmir'" />
 
   <xsl:variable name="PageTitle" select="/*/@title" />
 
@@ -27,11 +29,10 @@
         </xsl:comment>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link href="{$WebApplicationBaseURL}assets/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
-        <link href="{$WebApplicationBaseURL}assets/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
-        <link href="{$WebApplicationBaseURL}wizard/css/layout.css" rel="stylesheet" />
-        
+        <link href="{$WebApplicationBaseURL}rsc/sass/mir-layout/scss/{$MIR.Layout.Theme}-{$MIR.DefaultLayout.CSS}.css" rel="stylesheet" />
+
         <script type="text/javascript" src="{$WebApplicationBaseURL}assets/jquery/jquery.min.js"></script>
-        <script type="text/javascript" src="{$WebApplicationBaseURL}assets/bootstrap/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="{$WebApplicationBaseURL}assets/bootstrap/js/bootstrap.bundle.min.js"></script>
         <xsl:copy-of select="head/*" />
       </head>
 

@@ -19,8 +19,6 @@ module.exports = function(grunt) {
           destPrefix : '<%=globalConfig.assetsDirectory%>/'
         },
         files : {
-          'bootstrap/css' : 'bootstrap/dist/css',
-          'bootstrap/fonts' : 'bootstrap/dist/fonts',
           'bootstrap/js' : 'bootstrap/dist/js',
 
           'font-awesome/css' : 'font-awesome/css',

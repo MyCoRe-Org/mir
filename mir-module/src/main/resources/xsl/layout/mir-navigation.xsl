@@ -5,13 +5,13 @@
   <xsl:template match="/navigation//menu[@id and (group[item] or item)]">
     <xsl:param name="active" select="descendant-or-self::item[@href = $browserAddress ]" />
     <xsl:variable name="menuId" select="generate-id(.)" />
-    <li class="dropdown">
+    <li class="nav-item dropdown">
       <xsl:if test="$active">
         <xsl:attribute name="class">
           <xsl:value-of select="'active'" />
         </xsl:attribute>
       </xsl:if>
-      <a id="{$menuId}" class="dropdown-toggle" data-toggle="dropdown" href="#">
+      <a id="{$menuId}" class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">
         <xsl:apply-templates select="." mode="linkText" />
         <span class="caret"></span>
       </a>
@@ -23,7 +23,7 @@
   <xsl:template match="/navigation//group[@id and item]">
     <xsl:param name="rootNode" select="." />
     <xsl:if test="name(preceding-sibling::*[1])='item'">
-      <li role="presentation" class="divider" />
+      <li role="presentation" class="dropdown-divider" />
     </xsl:if>
     <xsl:if test="label">
       <li role="presentation" class="dropdown-header">
@@ -51,10 +51,10 @@
     </xsl:param>
     <xsl:choose>
       <xsl:when test="string-length($url ) &gt; 0">
-        <li>
+        <li class="dropdown-item">
           <xsl:if test="$active">
             <xsl:attribute name="class">
-              <xsl:value-of select="'active'" />
+              <xsl:value-of select="'dropdown-item active'" />
             </xsl:attribute>
           </xsl:if>
           <xsl:if test="item">
@@ -63,13 +63,16 @@
             </xsl:attribute>
           </xsl:if>
           <a href="{$url}">
+            <xsl:if test="@target">
+              <xsl:copy-of select="@target" />
+            </xsl:if>
             <xsl:if test="item">
               <xsl:attribute name="class">
                 <xsl:value-of select="'submenu'" />
               </xsl:attribute>
             </xsl:if>
             <xsl:apply-templates select="." mode="linkText" />
-            <xsl:if test="item">
+            <xsl:if test="dropdown-item">
               <span class="caret"></span>
             </xsl:if>
           </a>

@@ -24,7 +24,7 @@
 
             <div id="files{@xlink:href}" class="file_box">
               <div class="row header">
-                <div class="col-xs-12">
+                <div class="col-12">
                   <div class="headline">
                     <div class="title">
                       <a class="btn btn-primary btn-sm file_toggle" data-toggle="collapse" href="#collapse{@xlink:href}" aria-expanded="false" aria-controls="collapse{@xlink:href}">

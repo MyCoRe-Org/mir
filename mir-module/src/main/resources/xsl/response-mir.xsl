@@ -29,7 +29,7 @@
     </xsl:variable>
 
     <div class="row result_head">
-      <div class="col-xs-12 result_headline">
+      <div class="col-12 result_headline">
         <h1>
           <xsl:choose>
             <xsl:when test="$hits=0">
@@ -48,12 +48,12 @@
 
 <!-- Suchschlitz mit Suchbegriff, Treffer - Nummer, Vorschau, Autor, Änderungsdatum, Link zu den Details, Filter  -->
     <div class="row result_searchline">
-      <div class="col-xs-12 col-sm-8 text-center result_search">
+      <div class="col-12 col-sm-8 text-center result_search">
         <div class="search_box">
           <xsl:variable name="searchlink" select="concat($proxyBaseURL, $HttpSession, $solrParams)" />
           <form action="{$searchlink}" class="search_form" method="post">
             <div class="input-group input-group-sm">
-              <div class="input-group-btn">
+              <div class="input-group-btn input-group-prepend">
                 <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" value="all" id="search_type_button">
                   <span id="search_type_label">
                     <xsl:value-of select="i18n:translate('mir.dropdown.all')" />
@@ -61,37 +61,37 @@
                   <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu search_type">
-                  <li>
+                  <li class="dropdown-item">
                     <a href="#" value="all">
                       <xsl:value-of select="i18n:translate('mir.dropdown.all')" />
                     </a>
                   </li>
-                  <li>
+                  <li class="dropdown-item">
                     <a href="#" value="mods.title">
                       <xsl:value-of select="i18n:translate('mir.dropdown.title')" />
                     </a>
                   </li>
-                  <li>
+                  <li class="dropdown-item">
                     <a href="#" value="mods.author">
                       <xsl:value-of select="i18n:translate('mir.dropdown.author')" />
                     </a>
                   </li>
-                  <li>
+                  <li class="dropdown-item">
                     <a href="#" value="mods.name.top">
                       <xsl:value-of select="i18n:translate('mir.dropdown.name')" />
                     </a>
                   </li>
-                  <li>
+                  <li class="dropdown-item">
                     <a href="#" value="mods.nameIdentifier">
                       <xsl:value-of select="i18n:translate('mir.dropdown.nameIdentifier')" />
                     </a>
                   </li>
-                  <li>
+                  <li class="dropdown-item">
                     <a href="#" value="allMeta">
                       <xsl:value-of select="i18n:translate('mir.dropdown.allMeta')" />
                     </a>
                   </li>
-                  <li>
+                  <li class="dropdown-item">
                     <a href="#" value="content">
                       <xsl:value-of select="i18n:translate('mir.dropdown.content')" />
                     </a>
@@ -128,7 +128,7 @@
                   <input class="form-control" name="condQuery" placeholder="{i18n:translate('mir.placeholder.response.search')}" type="text" />
                 </xsl:otherwise>
               </xsl:choose>
-              <span class="input-group-btn">
+              <span class="input-group-btn input-group-append">
                 <button class="btn btn-primary" type="submit">
                   <span class="fa fa-search"></span>
                    <xsl:value-of select="i18n:translate('editor.search.search')"/>
@@ -140,7 +140,7 @@
       </div>
 
       <!-- START: alle zu basket -->
-      <div class="col-xs-12 col-sm-4">
+      <div class="col-12 col-sm-4">
         <form class="basket_form" action="{$ServletsBaseURL}MCRBasketServlet{$HttpSession}" method="post">
           <input type="hidden" name="action" value="add" />
           <input type="hidden" name="redirect" value="referer" />
@@ -175,7 +175,7 @@
 
     <!-- xsl:if test="string-length(/response/lst[@name='responseHeader']/lst[@name='params']/str[@name='q']) &gt; 0">
       <div class="row">
-        <div class="col-xs-12 col-sm-8">
+        <div class="col-12 col-sm-8">
           <span class="fa fa-remove-circle"></span>
           <xsl:value-of select="/response/lst[@name='responseHeader']/lst[@name='params']/str[@name='q']" />
         </div>
@@ -184,15 +184,30 @@
 
 <!-- Filter, Pagination & Trefferliste -->
     <div class="row result_body">
-      <div class="col-xs-12 col-sm-4 result_filter">
+
+      <div class="col-12 col-sm-8 result_list">
+        <xsl:comment>
+          RESULT LIST START
+        </xsl:comment>
+        <div id="hit_list">
+          <xsl:apply-templates select="doc|arr[@name='groups']/lst/str[@name='groupValue']" />
+        </div>
+        <xsl:comment>
+          RESULT LIST END
+        </xsl:comment>
+        <div class="result_list_end" />
+        <xsl:copy-of select="$ResultPages" />
+      </div>
+
+      <div class="col-12 col-sm-4 result_filter">
         <xsl:if test="/response/lst[@name='facet_counts']/lst[@name='facet_fields']/lst[@name='worldReadableComplete']/int">
-          <div class="panel panel-default oa">
-            <div class="panel-heading" data-toggle="collapse-next">
-              <h3 class="panel-title">
+          <div class="card oa">
+            <div class="card-header" data-toggle="collapse-next">
+              <h3 class="card-title">
                 <xsl:value-of select="i18n:translate('mir.response.openAccess.facet.title')" />
               </h3>
             </div>
-            <div class="panel-body collapse in">
+            <div class="card-body collapse show">
               <ul class="filter">
                 <xsl:apply-templates select="/response/lst[@name='facet_counts']/lst[@name='facet_fields']">
                   <xsl:with-param name="facet_name" select="'worldReadableComplete'" />
@@ -203,13 +218,13 @@
           </div>
         </xsl:if>
         <xsl:if test="/response/lst[@name='facet_counts']/lst[@name='facet_fields']/lst[@name='mods.genre']/int">
-          <div class="panel panel-default genre">
-            <div class="panel-heading" data-toggle="collapse-next">
-              <h3 class="panel-title">
+          <div class="card genre">
+            <div class="card-header" data-toggle="collapse-next">
+              <h3 class="card-title">
                 <xsl:value-of select="i18n:translate('editor.search.mir.genre')" />
               </h3>
             </div>
-            <div class="panel-body collapse in">
+            <div class="card-body collapse show">
               <ul class="filter">
                 <xsl:apply-templates select="/response/lst[@name='facet_counts']/lst[@name='facet_fields']">
                   <xsl:with-param name="facet_name" select="'mods.genre'" />
@@ -230,20 +245,6 @@
           </xsl:call-template>
           <xsl:call-template name="print.dateFilter" />
         </xsl:if>
-      </div>
-
-      <div class="col-xs-12 col-sm-8 result_list">
-        <xsl:comment>
-          RESULT LIST START
-        </xsl:comment>
-        <div id="hit_list">
-          <xsl:apply-templates select="doc|arr[@name='groups']/lst/str[@name='groupValue']" />
-        </div>
-        <xsl:comment>
-          RESULT LIST END
-        </xsl:comment>
-        <div class="result_list_end" />
-        <xsl:copy-of select="$ResultPages" />
       </div>
 
     </div>
@@ -307,7 +308,7 @@
 
 <!-- hit head -->
       <div class="row hit_item_head">
-        <div class="col-xs-12">
+        <div class="col-12">
 
 <!-- hit number -->
           <div class="hit_counter">
@@ -342,20 +343,20 @@
             <xsl:when test="acl:checkPermission($identifier,'writedb')">
               <div class="hit_options pull-right">
                 <div class="btn-group">
-                  <a data-toggle="dropdown" class="btn btn-default dropdown-toggle" href="#">
+                  <a data-toggle="dropdown" class="btn btn-secondary dropdown-toggle" href="#">
                     <i class="fa fa-cog"></i>
                     Aktionen
                     <span class="caret"></span>
                   </a>
                   <ul class="dropdown-menu dropdown-menu-right">
-                    <li class="">
+                    <li class="dropdown-item">
                       <xsl:call-template name="basketLink">
                         <xsl:with-param name="identifier" select="$identifier" />
                       </xsl:call-template>
                     </li>
                         <!-- direct link to editor -->
                     <xsl:if test="acl:checkPermission($identifier,'writedb')">
-                      <li class="">
+                      <li class="dropdown-item">
                         <xsl:variable name="editURL">
                           <xsl:call-template name="mods.getObjectEditURL">
                             <xsl:with-param name="id" select="$identifier" />
@@ -402,7 +403,7 @@
 
 <!-- hit body -->
       <div class="row hit_item_body">
-        <div class="col-xs-12">
+        <div class="col-12">
 
 <!-- document preview -->
           <div class="hit_download_box">
@@ -945,32 +946,32 @@
 
       <xsl:variable name="fqValue" select="concat($facet_name,':',@name)" />
       <li data-fq="{$fqValue}">
-        <div class="checkbox">
-          <label>
-            <input type="checkbox" onclick="location.href='{$queryURL}';">
+        <div class="custom-control custom-checkbox" onclick="location.href='{$queryURL}';">
+            <input type="checkbox" class="custom-control-input">
               <xsl:if test="
               /response/lst[@name='responseHeader']/lst[@name='params']/str[@name='fq' and text() = $fqValue] |
               /response/lst[@name='responseHeader']/lst[@name='params']/arr[@name='fq']/str[text() = $fqValue]">
                 <xsl:attribute name="checked">true</xsl:attribute>
               </xsl:if>
             </input>
+          <label class="custom-control-label">
+            <span class="title">
+              <xsl:choose>
+                <xsl:when test="string-length($classId) &gt; 0">
+                  <xsl:value-of select="mcrxsl:getDisplayName($classId, @name)" />
+                </xsl:when>
+                <xsl:when test="string-length($i18nPrefix) &gt; 0">
+                  <xsl:value-of select="i18n:translate(concat($i18nPrefix,@name))" disable-output-escaping="yes" />
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:value-of select="@name" />
+                </xsl:otherwise>
+              </xsl:choose>
+            </span>
+            <span class="hits">
+              <xsl:value-of select="." />
+            </span>
           </label>
-          <span class="title">
-            <xsl:choose>
-              <xsl:when test="string-length($classId) &gt; 0">
-                <xsl:value-of select="mcrxsl:getDisplayName($classId, @name)" />
-              </xsl:when>
-              <xsl:when test="string-length($i18nPrefix) &gt; 0">
-                <xsl:value-of select="i18n:translate(concat($i18nPrefix,@name))" disable-output-escaping="yes" />
-              </xsl:when>
-              <xsl:otherwise>
-                <xsl:value-of select="@name" />
-              </xsl:otherwise>
-            </xsl:choose>
-          </span>
-          <span class="hits">
-            <xsl:value-of select="." />
-          </span>
         </div>
       </li>
     </xsl:for-each>
@@ -979,14 +980,14 @@
   <xsl:template name="print.classiFilter">
     <xsl:param name="classId" />
     <xsl:param name="i18nKey" />
-    <div class="panel panel-default">
+    <div class="card">
       <xsl:variable name="classiDocument" select="document(concat('xslStyle:items2options:classification:editor:-1:children:',$classId))" />
-      <div class="panel-heading" data-toggle="collapse-next">
-        <h3 class="panel-title">
+      <div class="card-header" data-toggle="collapse-next">
+        <h3 class="card-title">
           <xsl:value-of select="i18n:translate($i18nKey)" />
         </h3>
       </div>
-      <div class="panel-body collapse in">
+      <div class="card-body collapse show">
         <xsl:if test="contains($RequestURL, concat('category.top%3A%22',$classId))">
           <div class="list-group">
             <xsl:apply-templates select="$classiDocument/select/option" mode="calculate_option_selected">
@@ -994,8 +995,8 @@
             </xsl:apply-templates>
           </div>
         </xsl:if>
-        <div class="dropdown container-fluid row">
-          <button class="btn btn-default dropdown-toggle col-md-12 col-xs-12" type="button" data-toggle="dropdown">
+        <div class="dropdown">
+          <button class="btn btn-secondary dropdown-toggle col-12" type="button" data-toggle="dropdown">
             <!--Filter-->
             <xsl:value-of select="i18n:translate('mir.response.button.filter')" />
             <span class="caret" />
@@ -1026,7 +1027,7 @@
           </xsl:otherwise>
         </xsl:choose>
       </xsl:variable>
-      <li>
+      <li class="dropdown-item">
         <xsl:call-template name="print.hyperLink">
           <xsl:with-param name="href" select="mcrxsl:regexp($filterHref,'(&amp;|%26)(start=)[0-9]*', '')" />
           <xsl:with-param name="text" select="@title" />
@@ -1068,13 +1069,13 @@
   </xsl:template>
 
   <xsl:template name="print.dateFilter">
-    <div class="panel panel-default mir-search-options-date">
-      <div class="panel-heading" data-toggle="collapse-next">
-        <h3 class="panel-title">
+    <div class="card mir-search-options-date">
+      <div class="card-header" data-toggle="collapse-next">
+        <h3 class="card-title">
           <xsl:value-of select="i18n:translate('component.mods.metaData.dictionary.dateIssued')" />
         </h3>
       </div>
-      <div class="panel-body collapse in">
+      <div class="card-body collapse show">
         <xsl:if test="contains($RequestURL, 'fq=mods.dateIssued')">
           <xsl:variable name="dateFilterHelper">
             <xsl:value-of select="substring-before($RequestURL, '&amp;fq=mods.dateIssued')" />
@@ -1095,8 +1096,8 @@
             </a>
           </div>
         </xsl:if>
-        <div class="dropdown container-fluid row">
-          <button class="btn btn-default dropdown-toggle col-md-12 col-xs-12" type="button" data-toggle="dropdown">
+        <div class="dropdown">
+          <button class="btn btn-secondary dropdown-toggle col-12" type="button" data-toggle="dropdown">
             <!--Filter-->
             <xsl:value-of select="i18n:translate('mir.response.button.filter')" />
             <span class="caret" />
@@ -1124,7 +1125,7 @@
                 </div>
               </div>
               <div class="col-md-12 form-group">
-                <input id="dateSearch" type="button" class="btn btn-default form-control" value="Go!" />
+                <input id="dateSearch" type="button" class="btn btn-secondary form-control" value="Go!" />
               </div>
             </div>
           </div>

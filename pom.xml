@@ -8,7 +8,7 @@
   </parent>
   <groupId>org.mycore.mir</groupId>
   <artifactId>mir-parent</artifactId>
-  <version>2019.06.0-SNAPSHOT</version>
+  <version>2019.08-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>MIR</name>
   <description>MyCoRe/MODS Institutional Repository</description>
@@ -44,7 +44,7 @@
     <hibernate.version>5.2.14.Final</hibernate.version>
     <java.target.version>11</java.target.version>
     <jetty.version>9.4.14.v20181114</jetty.version>
-    <mycore.version>2019.06.0-SNAPSHOT</mycore.version>
+    <mycore.version>2019.08-SNAPSHOT</mycore.version>
     <pmd.failOnViolation>false</pmd.failOnViolation>
     <selenium.version>3.14.0</selenium.version>
     <site.suffix />

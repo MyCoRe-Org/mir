@@ -88,5 +88,95 @@
       "name": "mods.part.*",
       "type": "string"
     }
-  }
+  },
+  {
+    "add-field": {
+      "name": "mir.toc.ancestor",
+      "type": "string",
+      "indexed": true,
+      "stored": true,
+      "multiValued": true
+    }
+  },
+  {
+    "add-field": {
+      "name": "mir.toc.series.volume",
+      "type": "string",
+      "indexed": true,
+      "stored": true,
+      "multiValued": false
+    }
+  },
+  {
+    "add-field": {
+      "name": "mir.toc.host.volume",
+      "type": "string",
+      "indexed": true,
+      "stored": true,
+      "multiValued": false
+    }
+  },
+  {
+    "add-field": {
+      "name": "mir.toc.host.issue",
+      "type": "string",
+      "indexed": true,
+      "stored": true,
+      "multiValued": false
+    }
+  },
+  {
+    "add-field": {
+      "name": "mir.toc.host.page.str",
+      "type": "string",
+      "indexed": true,
+      "stored": true,
+      "multiValued": false
+    }
+  },
+  {
+    "add-field": {
+      "name": "mir.toc.host.page.int",
+      "type": "pint",
+      "indexed": true,
+      "stored": true,
+      "multiValued": false
+    }
+  },
+  {
+    "add-field": {
+      "name": "mir.toc.host.order",
+      "type": "pint",
+      "indexed": true,
+      "stored": true,
+      "multiValued": false
+    }
+  },
+  {
+    "add-field": {
+      "name": "mir.toc.series.order",
+      "type": "pint",
+      "indexed": true,
+      "stored": true,
+      "multiValued": false
+    }
+  },
+{
+    "add-field": {
+        "name": "mir.toc.title",
+        "type": "string",
+        "indexed": true,
+        "stored": true,
+        "multiValued": false
+    }
+},
+{
+    "add-field": {
+        "name": "mir.toc.authors",
+        "type": "string",
+        "indexed": true,
+        "stored": true,
+        "multiValued": false
+    }
+}
 ]
