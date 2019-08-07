@@ -73,7 +73,7 @@
           </div>
          <!-- submit -->
           <div class="card-footer clearfix">
-            <div class="pull-right">
+            <div class="float-right">
               <mir:template name="submitButton" i18n="editor.search.search" target="servlet_MCRQLSearchServlet" />
             </div>
           </div>

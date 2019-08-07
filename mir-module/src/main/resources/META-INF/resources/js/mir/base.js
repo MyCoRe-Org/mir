@@ -174,7 +174,7 @@
 
     $("body").on("click", ".mir_copy_identifier", function () {
       var input = $(this).parents(".mir_identifier").find(".mir_identifier_hidden_input");
-      $(input).removeClass("hidden");
+      $(input).removeClass("d-none");
       $(input).first().select();
       try {
         var successful = document.execCommand('copy');
@@ -187,7 +187,7 @@
       } catch (err) {
         $(this).attr('data-original-title', 'Oops, unable to copy').tooltip('show');
       }
-      $(input).addClass("hidden");
+      $(input).addClass("d-none");
     });
 
     $('.mir_copy_identifier').on('hidden.bs.tooltip', function () {
@@ -401,7 +401,7 @@
           if($(this)[0].scrollHeight > $(this).innerHeight()) {
               $(this).addClass("overflown");
               $(this).css("overflow-y", "hidden");
-              $("#mir-abstract-overlay").find(".readmore").removeClass("hidden");
+              $("#mir-abstract-overlay").find(".readmore").removeClass("d-none");
           }
           $(this).removeClass("hidden-calc");
       });
@@ -412,34 +412,34 @@
           $(abstract).data("oldHeight", $(abstract).height());
           $(abstract).css("max-height",$(abstract)[0].scrollHeight);
           $(abstract).addClass("expanded");
-          $(this).parent().find(".readless").removeClass("hidden");
-          $(this).parent().find(".readmore").addClass("hidden");
+          $(this).parent().find(".readless").removeClass("d-none");
+          $(this).parent().find(".readmore").addClass("d-none");
       });
 
       $("body").on("click", "#mir-abstract-overlay a.readless" , function(evt) {
           evt.preventDefault();
           let abstract = $("#mir-abstract-tabs .tab-content .active, #mir-abstract .ellipsis");
           $(abstract).css("max-height",$(abstract).data("oldHeight"));
-          $(this).parent().find(".readmore").removeClass("hidden");
+          $(this).parent().find(".readmore").removeClass("d-none");
           $(abstract).removeClass("expanded");
-          $(this).parent().find(".readless").addClass("hidden");
+          $(this).parent().find(".readless").addClass("d-none");
       });
 
       $("body").on("click", "#mir-abstract-tabs .nav-tabs a" , function(evt) {
         let abstract = $($(this).attr("href"));
         if ($(abstract).hasClass("overflown")){
             if ($(abstract).hasClass("expanded")){
-                $("#mir-abstract-overlay .readless").removeClass("hidden");
-                $("#mir-abstract-overlay .readmore").addClass("hidden");
+                $("#mir-abstract-overlay .readless").removeClass("d-none");
+                $("#mir-abstract-overlay .readmore").addClass("d-none");
             }
             else {
-                $("#mir-abstract-overlay .readmore").removeClass("hidden");
-                $("#mir-abstract-overlay .readless").addClass("hidden");
+                $("#mir-abstract-overlay .readmore").removeClass("d-none");
+                $("#mir-abstract-overlay .readless").addClass("d-none");
             }
         }
         else {
-            $("#mir-abstract-overlay .readmore").addClass("hidden");
-            $("#mir-abstract-overlay .readless").addClass("hidden");
+            $("#mir-abstract-overlay .readmore").addClass("d-none");
+            $("#mir-abstract-overlay .readless").addClass("d-none");
         }
       });
 

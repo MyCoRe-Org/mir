@@ -35,7 +35,7 @@
             </xed:validate>
           </div>
           <div class="card-footer clearfix">
-            <div class="pull-right">
+            <div class="float-right">
               <xed:include uri="xslStyle:user-xeditor-templates:webapp:authorization/new-author-includes.xed" ref="buttons" />
             </div>
           </div>

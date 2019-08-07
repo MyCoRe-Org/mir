@@ -146,7 +146,7 @@
 
     <xsl:if test="$MIR.DFGViewer.enable='true' and  iview2xsl:hasMETSFile($derId)">
       <div class="row">
-        <div id="mir-dfgViewer" class="pull-right">
+        <div id="mir-dfgViewer" class="float-right">
           <a title="im DFG-Viewer anzeigen"
              href="{$WebApplicationBaseURL}servlets/MCRDFGLinkServlet?deriv={$derId}"
           >alternativ im<img src="{$WebApplicationBaseURL}images/logo-dfg.png" />-Viewer anzeigen

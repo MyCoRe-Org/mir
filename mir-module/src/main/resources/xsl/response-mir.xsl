@@ -341,7 +341,7 @@
 <!-- hit options -->
           <xsl:choose>
             <xsl:when test="acl:checkPermission($identifier,'writedb')">
-              <div class="hit_options pull-right">
+              <div class="hit_options float-right">
                 <div class="btn-group">
                   <a data-toggle="dropdown" class="btn btn-secondary dropdown-toggle" href="#">
                     <i class="fas fa-cog"></i>
@@ -388,7 +388,7 @@
               </div>
             </xsl:when>
             <xsl:otherwise>
-              <div class="single_hit_option pull-right">
+              <div class="single_hit_option float-right">
                 <xsl:call-template name="basketLink">
                   <xsl:with-param name="identifier" select="$identifier" />
                 </xsl:call-template>
@@ -549,7 +549,7 @@
                     <xsl:attribute name="title">
                       <xsl:value-of select="i18n:translate('mir.response.openAccess.true')" />
                     </xsl:attribute>
-                    <span class="label label-success">
+                    <span class="badge badge-success">
                       <i class="fas fa-unlock-alt" aria-hidden="true"></i>
                     </span>
                   </xsl:when>
@@ -557,7 +557,7 @@
                     <xsl:attribute name="title">
                       <xsl:value-of select="i18n:translate('mir.response.openAccess.false')" />
                     </xsl:attribute>
-                    <span class="label label-warning">
+                    <span class="badge badge-warning">
                       <i class="fas fa-lock" aria-hidden="true"></i>
                     </span>
                   </xsl:otherwise>
@@ -567,7 +567,7 @@
                 <xsl:when test="arr[@name='mods.genre']">
                   <xsl:for-each select="arr[@name='mods.genre']/str">
                     <div class="hit_type">
-                      <span class="label label-info">
+                      <span class="badge badge-info">
                         <xsl:value-of select="mcrxsl:getDisplayName('mir_genres',.)" ></xsl:value-of>
                       </span>
                     </div>
@@ -575,7 +575,7 @@
                 </xsl:when>
                 <xsl:otherwise>
                   <div class="hit_type">
-                    <span class="label label-info">
+                    <span class="badge badge-info">
                       <xsl:value-of select="mcrxsl:getDisplayName('mir_genres','article')" />
                     </span>
                   </div>
@@ -583,7 +583,7 @@
               </xsl:choose>
               <xsl:if test="arr[@name='category.top']/str[contains(text(), 'mir_licenses:')]">
                 <div class="hit_license">
-                  <span class="label label-primary">
+                  <span class="badge badge-primary">
                     <xsl:variable name="accessCondition">
                       <xsl:value-of select="substring-after(arr[@name='category.top']/str[contains(text(), 'mir_licenses:')][last()],':')" />
                     </xsl:variable>
@@ -613,7 +613,7 @@
                       </xsl:otherwise>
                     </xsl:choose>
                   </xsl:variable>
-                  <span class="label label-primary">
+                  <span class="badge badge-primary">
                     <xsl:value-of select="$date" />
                   </span>
                 </div>
@@ -623,7 +623,7 @@
                   <xsl:variable name="status-i18n">
                     <xsl:value-of select="i18n:translate(concat('mir.state.',str[@name='state']))" />
                   </xsl:variable>
-                  <span class="label mir-{str[@name='state']}" title="{i18n:translate('component.mods.metaData.dictionary.status')}">
+                  <span class="badge mir-{str[@name='state']}" title="{i18n:translate('component.mods.metaData.dictionary.status')}">
                     <xsl:value-of select="$status-i18n" />
                   </span>
                 </div>

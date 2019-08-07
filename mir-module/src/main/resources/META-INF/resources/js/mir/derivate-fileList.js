@@ -274,11 +274,11 @@
 
 					derivateJson = data;
 					if (derivateJson.children.length > 1) {
-						$(fileBox).parent(".file_box").find("ul.dropdown-menu a.downloadzip").removeClass("hidden");
+						$(fileBox).parent(".file_box").find("ul.dropdown-menu a.downloadzip").removeClass("d-none");
 					}
 					else {
 						if ($(fileBox).parent(".file_box").find("ul.dropdown-menu").children().length < 2) {
-                            $(fileBox).parent(".file_box").find("a.dropdown-toggle").addClass("hidden");
+                            $(fileBox).parent(".file_box").find("a.dropdown-toggle").addClass("d-none");
 						}
 					}
 					getTemplate(derivateJson, "derivate-fileList.hbs", useTemplate);
@@ -411,7 +411,7 @@
 		}
 
 		function buildBreadcrumbs(path) {
-			$(fileBox).append('<div class="col-xs-12"><div class="file_set file"><div class="file_box_breadcrumbs"></div></div>');
+			$(fileBox).append('<div class="col-12"><div class="file_set file"><div class="file_box_breadcrumbs"></div></div>');
 			var currentPath = path;
 			while (currentPath != "/") {
 				var currentElm = getCurrentElm(currentPath);

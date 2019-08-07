@@ -25,7 +25,7 @@
 
   <xsl:template match="/basket">
     <div id="basket">
-      <div id="options" class="btn-group pull-right">
+      <div id="options" class="btn-group float-right">
         <xsl:call-template name="options" />
       </div>
       <h2>
@@ -86,7 +86,7 @@
 
 <!-- hit head -->
       <div class="row hit_item_head">
-        <div class="col-xs-12">
+        <div class="col-12">
 
 <!-- hit number -->
           <div class="hit_counter">
@@ -94,7 +94,7 @@
           </div>
 
 <!-- hit options -->
-          <div class="hit_options pull-right">
+          <div class="hit_options float-right">
               <div class="btn-group">
                 <xsl:apply-templates select="." mode="basketButtonsUpDownDelete" />
             </div>
@@ -106,7 +106,7 @@
 
 <!-- hit body -->
       <div class="row hit_item_body">
-        <div class="col-xs-12">
+        <div class="col-12">
 
           <xsl:choose>
             <xsl:when test="*[not(name()='comment')]">

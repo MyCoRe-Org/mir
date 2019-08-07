@@ -65,17 +65,17 @@ var browsing = $('#mir-search_browsing > div');            // browse through the
   if ( $('#side_nav_column').is(":visible") ) {
     // side nav is visible, make one column
     mainCol.removeClass('col-sm-12').addClass('col-sm-9');   // parent
-    leftCol.removeClass('col-sm-8').addClass('col-xs-12');   // left
-    rightCol.removeClass('col-sm-4').addClass('col-xs-12');  // right
-    headline.removeClass('col-md-8').addClass('col-xs-12');  // title
-    browsing.removeClass('col-md-8').addClass('col-xs-12');  // browse through the hits
+    leftCol.removeClass('col-sm-8').addClass('col-12');   // left
+    rightCol.removeClass('col-sm-4').addClass('col-12');  // right
+    headline.removeClass('col-md-8').addClass('col-12');  // title
+    browsing.removeClass('col-md-8').addClass('col-12');  // browse through the hits
   } else {
     // side nav is hidden, make two columns
     mainCol.removeClass( 'col-sm-9').addClass( 'col-sm-12'); // parent
-    leftCol.removeClass( 'col-xs-12').addClass('col-sm-8');  // left
-    rightCol.removeClass('col-xs-12').addClass('col-sm-4');  // right
-    headline.removeClass('col-xs-12').addClass('col-md-8');  // title
-    browsing.removeClass('col-xs-12').addClass('col-md-8');  // browse through the hits
+    leftCol.removeClass( 'col-12').addClass('col-sm-8');  // left
+    rightCol.removeClass('col-12').addClass('col-sm-4');  // right
+    headline.removeClass('col-12').addClass('col-md-8');  // title
+    browsing.removeClass('col-12').addClass('col-md-8');  // browse through the hits
   }
 }
 
@@ -129,8 +129,8 @@ function toggleSideNav(speed) {
     // site nav is hidden
     // make it visible
     $('#side_nav_column').show('slow');
-    $('#side_nav_column').removeClass('hidden-xs');
-    $('#side_nav_column').addClass('col-xs-12');
+    $('#side_nav_column').removeClass('d-xs-none');
+    $('#side_nav_column').addClass('col-12');
     adjustColumns();
     adjustMenuButton();
     if ( typeof(Storage) !== "undefined" ) {

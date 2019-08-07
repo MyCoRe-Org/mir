@@ -50,7 +50,7 @@
         <div class="col-sm-9 col-lg-10">
           <span id="more_options_trigger">
             <span id="more_options_label">weitere Optionen anzeigen</span>
-            <span id="more_options_label_hide" class="hidden">weitere Optionen ausblenden</span>
+            <span id="more_options_label_hide" class="d-none">weitere Optionen ausblenden</span>
             <span id="more_options_button" class="fas fa-chevron-up"></span>
           </span>
         </div>
@@ -134,7 +134,7 @@
         <div class="col-sm-9 col-lg-10">
           <span id="more_options_trigger">
             <span id="more_options_label">Show more options</span>
-            <span id="more_options_label_hide" class="hidden">Hide more options</span>
+            <span id="more_options_label_hide" class="d-none">Hide more options</span>
             <span id="more_options_button" class="fas fa-chevron-up"></span>
           </span>
         </div>
@@ -147,7 +147,7 @@
         <div class="col-sm-7 col-md-5  col-lg-4">
           <input type="text" name="modsId" id="modsId" class="form-control" size="20" placeholder="e.g. 10.1093/pq/pqu057" />
         </div>
-        <div class="hidden-xs col-sm-3 hidden-lg"></div>
+        <div class="d-xs-none col-sm-3 d-lg-none"></div>
         <div class="col-sm-7 col-md-4 col-lg-5">
           <p>
             Enter DOI if record already have one. We will look in other databases if there is already metadata available which we can use here.

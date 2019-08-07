@@ -48,7 +48,7 @@
 
         <div id="head_col" class="col-12">
           <div class="row">
-            <div class="col-12 col-sm-8 col-sm-pull-4 col-md-8 col-md-pull-4">
+            <div class="col-12 col-sm-8 col-sm-float-4 col-md-8 col-md-float-4">
               <xsl:apply-templates select="div[@id='mir-abstract-badges']" mode="copyContent" />
             </div>
             <div id="aux_col_actions" class="col-12 col-sm-4 col-sm-push-8 col-md-4 col-md-push-8">
@@ -71,7 +71,7 @@
 
           <!-- Table of Contents (BETA activate for testing) -->
           <!-- xsl:copy-of select="div[@id='toc']" / -->
-          
+
           <!-- fileupload -->
           <xsl:if test="div[contains(@id,'mir-file-upload')]">
             <xsl:apply-templates select="div[@id='mir-file-upload']" mode="copyContent" />
@@ -114,7 +114,7 @@
         </div>
 
 <!-- right column -->
-        <div id="aux_col" class="col-xs-12 col-sm-4">
+        <div id="aux_col" class="col-12 col-sm-4">
 
 <!-- cites -->
           <xsl:if test="div[@id='mir-citation']">

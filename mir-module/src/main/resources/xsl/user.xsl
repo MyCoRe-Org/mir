@@ -62,7 +62,7 @@
 
   <xsl:template match="user">
     <div class="user-details">
-      <div id="buttons" class="btn-group pull-right">
+      <div id="buttons" class="btn-group float-right">
         <xsl:apply-templates select="." mode="actions" />
       </div>
       <div class="clearfix" />
@@ -86,7 +86,7 @@
               </strong>
             </xsl:if>
           </p>
-          <form class="pull-left" method="post" action="MCRUserServlet">
+          <form class="float-left" method="post" action="MCRUserServlet">
             <input name="action" value="delete" type="hidden" />
             <input name="id" value="{$uid}" type="hidden" />
             <input name="XSL.step" value="deleted" type="hidden" />
@@ -357,7 +357,7 @@
       </li>
     </ul>
   </xsl:template>
-  
+
   <xsl:template name="orcidIntegrationPending">
     <h3 style="margin-bottom: 0.5em;">
       <span class="far fa-hand-point-right" aria-hidden="true" style="margin-right:1ex;" />
@@ -370,11 +370,11 @@
     <script type="text/javascript">
       function orcidOAuth() {
       <!-- Force logout before login -->
-      jQuery.ajax({ 
-      url: '<xsl:value-of select='$MCR.ORCID.LinkURL' />userStatus.json?logUserOut=true', 
+      jQuery.ajax({
+      url: '<xsl:value-of select='$MCR.ORCID.LinkURL' />userStatus.json?logUserOut=true',
       dataType: 'jsonp',
       success: function(result,status,xhr) {
-      <!-- Login in popup window --> 
+      <!-- Login in popup window -->
       window.open("<xsl:value-of select='$WebApplicationBaseURL' />orcid",
       "_blank", "toolbar=no, scrollbars=yes, width=500, height=600, top=500, left=500");
       },

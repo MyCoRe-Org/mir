@@ -122,7 +122,7 @@
       </xsl:choose>
     </div>
   </xsl:template>
-  
+
   <!-- MODE=inline -->
 
   <xsl:template match="mir:template[contains('textInput|passwordInput|selectInput|static', @name)]" mode="inline">
@@ -393,7 +393,7 @@
               >
                 <xsl:choose>
                   <xsl:when test="string-length(@icon) &gt; 0">
-                    <span class="hidden-xs hidden-sm">
+                    <span class="d-xs-none d-sm-none">
                       <xed:output i18n="{@i18n}" />
                     </span>
                   </xsl:when>

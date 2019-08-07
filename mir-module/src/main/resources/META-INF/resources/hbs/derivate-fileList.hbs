@@ -109,11 +109,11 @@
 
   {{#if pagination}}
     <div class="file_box_pagination row">
-      <div class="col-md-6 hidden-xs pagination-info">
+      <div class="col-md-6 d-xs-none pagination-info">
         {{getI18n "mir.pagination.entriesInfo" pagination.start pagination.end pagination.total}}
       </div>
-      <div class="col-xs-12 col-md-6">
-        <ul class="pagination pagination-sm pull-right">
+      <div class="col-12 col-md-6">
+        <ul class="pagination pagination-sm float-right">
           {{#paginate pagination type="first"}}
             <li {{#if disabled}}class="disabled"{{/if}}>
               <a href="#" data-page="{{n}}" aria-label="First" {{#unless disabled}}title="{{getI18n "mir.pagination.first" n}}{{/unless}}">

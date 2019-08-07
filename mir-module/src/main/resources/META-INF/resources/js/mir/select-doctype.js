@@ -1,4 +1,4 @@
-  
+
 var GenreXML;
 
 function changeHostOptions(){
@@ -51,7 +51,7 @@ function createGenreOption(category,level) {
 	});
 	return Option;
 }
-        
+
 function createGenreOptions() {
     var Options="";
   	$(GenreXML).find('categories > category').each(function(){
@@ -63,18 +63,18 @@ function createGenreOptions() {
 function toggleMoreOptions( duration ) {
     if ( $('#more_options_box').is(':visible') ) {
         $('#more_options_box').fadeOut( duration );
-        $('#more_options_label, #more_options_label_hide').toggleClass("hidden");
+        $('#more_options_label, #more_options_label_hide').toggleClass("d-none");
         $('#more_options_button').removeClass('fas fa-chevron-down').addClass('fas fa-chevron-up');
         localStorage.setItem("moreOptions", "closed");
     } else {
         $('#more_options_box').fadeIn( duration );
-        $('#more_options_label, #more_options_label_hide').toggleClass("hidden");
+        $('#more_options_label, #more_options_label_hide').toggleClass("d-none");
 
         $('#more_options_button').removeClass('fas fa-chevron-up').addClass('fas fa-chevron-down');
         localStorage.setItem("moreOptions", "opened");
     }
 }
-  
+
 $(document).ready( function() {
     if (!webApplicationBaseURL) console.log("Error: webApplicationBaseURL not set");
     $('#genre').change(function (){changeHostOptions();});

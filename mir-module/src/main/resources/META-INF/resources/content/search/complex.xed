@@ -65,7 +65,7 @@
                         </xed:bind>
                       </div>
                       <div class="btn-group col-md-4">
-                        <span class="pull-right">
+                        <span class="float-right">
                           <xed:controls>insert remove</xed:controls>
                         </span>
                       </div>
@@ -187,7 +187,7 @@
           </div>
           <!-- submit -->
           <div class="card-footer clearfix">
-            <div class="pull-right">
+            <div class="float-right">
               <mir:template name="submitButton" i18n="editor.search.search"
                             target="servlet_MCRQLSearchServlet" order="primary-button"/>
             </div>

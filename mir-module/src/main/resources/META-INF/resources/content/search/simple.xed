@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <MyCoReWebPage>
-  
+
   <section xml:lang="all" xmlns:xed="http://www.mycore.de/xeditor" xmlns:mir="http://www.mycore.de/mir"
       i18n="component.mods.editor.search.simple.pagetitle">
     <xed:form class="form-horizontal" role="form">
@@ -64,7 +64,7 @@
             </div>
             <!-- submit -->
             <div class="card-footer clearfix">
-              <div class="pull-right">
+              <div class="float-right">
                 <mir:template name="submitButton" i18n="editor.search.search" target="servlet_MCRQLSearchServlet" />
               </div>
             </div>

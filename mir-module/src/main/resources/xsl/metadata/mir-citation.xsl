@@ -37,7 +37,7 @@
 
     <div id="mir-citation">
       <xsl:if test="$MIR.shariff = 'show'">
-        
+
         <xsl:variable name="modsTitle">
           <xsl:apply-templates select="$mods" mode="title" />
         </xsl:variable>
@@ -64,7 +64,7 @@
              data-mail-subject="{i18n:translate('mir.shariff.subject')}: {$modsTitle}"
              data-mail-url="mailto:"
              data-services="{$MIR.shariff.services}"
-             data-url="{$shariffURL}" 
+             data-url="{$shariffURL}"
              ></div>
       </xsl:if>
       <xsl:if test="//mods:mods/mods:identifier[@type='doi'] and ($MIR.altmetrics = 'show' or $MIR.plumx = 'show')">
@@ -80,7 +80,7 @@
               </xsl:when>
               <xsl:otherwise>
                 <!-- show altmetrics donut -->
-                <div class="col-xs-12">
+                <div class="col-12">
                   <div data-badge-details="right" data-badge-type="donut" data-doi="{//mods:mods/mods:identifier[@type='doi']}" data-hide-no-mentions="{$MIR.altmetrics.hide}"
                     class="altmetric-embed"></div>
                 </div>
@@ -98,7 +98,7 @@
               </xsl:when>
               <xsl:otherwise>
                 <!-- use Plum Print-->
-                <div class="col-xs-12">
+                <div class="col-12">
                   <a href="https://plu.mx/plum/a/?doi={//mods:mods/mods:identifier[@type='doi']}" data-popup="right" data-size="large" class="plumx-plum-print-popup plum-bigben-theme" data-site="plum" data-hide-when-empty="{$MIR.plumx.hide}">PlumX Metrics</a>
                 </div>
               </xsl:otherwise>
@@ -136,9 +136,9 @@
           <xsl:apply-templates select="$mods" mode="originInfo" />
           <xsl:apply-templates select="$mods" mode="issn" />
         </p>
-        <p id="crossref-citation-text" class="hidden">
+        <p id="crossref-citation-text" class="d-none">
         </p>
-        <p id="crossref-citation-alert" class="alert alert-danger hidden"><xsl:value-of select="i18n:translate('mir.citationAlert')" /></p>
+        <p id="crossref-citation-alert" class="alert alert-danger d-none"><xsl:value-of select="i18n:translate('mir.citationAlert')" /></p>
       </div>
 
       <p id="cite_link_box">
@@ -395,7 +395,7 @@
             <xsl:value-of select="$id" />
           </a>
         </pre>
-        <input type="text" class="hidden mir_identifier_hidden_input" value="{$id}"></input>
+        <input type="text" class="d-none mir_identifier_hidden_input" value="{$id}"></input>
       </div>
     </xsl:if>
   </xsl:template>

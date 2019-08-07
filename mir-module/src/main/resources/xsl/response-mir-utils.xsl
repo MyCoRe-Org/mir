@@ -24,7 +24,7 @@
             <xsl:with-param name="numPerPage" select="1" />
           </xsl:call-template>
         </xsl:variable>
-        <div class="col-xs-12 col-md-5 text-left">
+        <div class="col-12 col-md-5 text-left">
           <a tabindex="0" class="previous" href="{$link}" data-pagination=".caption:mods.title.main">
             <span class="fas fa-chevron-left icon" />
             <span class="caption">
@@ -33,9 +33,9 @@
           </a>
         </div>
       </xsl:if>
-      <div class="col-xs-12 col-md-2 text-center">
+      <div class="col-12 col-md-2 text-center">
         <xsl:attribute name="class">
-          <xsl:text>col-xs-12 col-md-2 text-center</xsl:text>
+          <xsl:text>col-12 col-md-2 text-center</xsl:text>
           <xsl:if test="$page = 1">
             <xsl:text> col-md-offset-5</xsl:text>
           </xsl:if>
@@ -69,7 +69,7 @@
             <xsl:with-param name="numPerPage" select="1" />
           </xsl:call-template>
         </xsl:variable>
-        <div class="col-xs-12 col-md-5 text-right">
+        <div class="col-12 col-md-5 text-right">
           <a tabindex="0" class="next" href="{$link}" data-pagination=".caption:mods.title.main">
             <span class="fas fa-chevron-right icon" />
             <span class="caption">
@@ -90,11 +90,11 @@
             }
             return url + (url.indexOf('?') > 0 ? '&' : '?') + paramName + '=' + paramValue
           }
-        
+
           $("*[data-pagination]").each(function() {
             var $this = $(this);
             var sel = /([^\:]*)\:(.*)/.exec($(this).data("pagination")).slice(1);
-        
+
             if (sel && sel.length > 1) {
               var url = replaceUrlParam(replaceUrlParam($(this).attr("href"), "XSL.Style", "xml"), "fl", sel[1]);
               $.ajax(url).done(function(data) {
@@ -354,7 +354,7 @@
     <xsl:if test="$paginateStart != number($page)">
       <li>
         <xsl:if test="($paginateStart &lt; $paginateStart-mobile) or ($paginateStart &gt; $paginateEnd-mobile)">
-          <xsl:attribute name="class">hidden-xs</xsl:attribute>
+          <xsl:attribute name="class">d-xs-none</xsl:attribute>
         </xsl:if>
         <a tabindex="0">
           <xsl:attribute name="href">

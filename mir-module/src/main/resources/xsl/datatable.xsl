@@ -199,7 +199,7 @@
               </div>
             </div>
           </xsl:if>
-          
+
           <!-- numPerPage selector -->
           <div>
             <xsl:attribute name="class">
@@ -212,7 +212,7 @@
                 </xsl:otherwise>
               </xsl:choose>
             </xsl:attribute>
-            <div id="{$id}_length" class="form-group pull-right no-margin">
+            <div id="{$id}_length" class="form-group float-right no-margin">
               <label>
                 <select class="form-control input-sm" name="numPerPage" size="1" onchange="this.form.submit()">
                   <xsl:variable name="tokens">
@@ -265,7 +265,7 @@
       <div class="card-footer clearfix">
         <span id="{$id}_info">
           <xsl:if test="$pages &gt; 1">
-            <xsl:attribute name="class">hidden-xs</xsl:attribute>
+            <xsl:attribute name="class">d-xs-none</xsl:attribute>
           </xsl:if>
           <xsl:value-of select="i18n:translate(concat($i18nprefix, '.filterInfo'), concat($start, ';', $end, ';', $total))" />
         </span>
@@ -331,7 +331,7 @@
                     </xsl:call-template>
                   </xsl:attribute>
                   <xsl:value-of select="text()" />
-                  <span class="pull-left {$iconClass} sort-icon" />
+                  <span class="float-left {$iconClass} sort-icon" />
                 </a>
               </xsl:when>
               <xsl:otherwise>
@@ -432,7 +432,7 @@
     <xsl:param name="i18nprefix" select="'dataTable'" />
     <xsl:param name="pages" />
 
-    <ul id="{$id}_paginate" class="pagination pagination-sm pull-right no-margin">
+    <ul id="{$id}_paginate" class="pagination pagination-sm float-right no-margin">
       <li>
         <xsl:choose>
           <xsl:when test="number($Page) &gt; 1">
