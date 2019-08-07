@@ -60,6 +60,7 @@
       background-color: darken($success, 10%)!important;
     }
     .mir-submitted, .mir-new, .mir-imported {
+      color: white;
       background-color: darken($warning, 10%)!important;
     }
     .mir-review {

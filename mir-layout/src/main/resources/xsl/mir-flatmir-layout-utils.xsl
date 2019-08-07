@@ -29,7 +29,7 @@
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
-    <div class="navbar navbar-expand-lg bg-primary mir-main-nav">
+    <div class="navbar navbar-expand-lg mir-main-nav">
       <div class="container">
 
         <div class="navbar-header">

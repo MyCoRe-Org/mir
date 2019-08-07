@@ -6,7 +6,7 @@
   <xsl:param name="MIR.PPN.DatabaseList" select="gvk"/>
   <xsl:param name="MCR.Metadata.DefaultLang" select="en"/>
   <xsl:param name="MCR.Metadata.Languages" select="en"/>
-  
+
   <xed:template id="in.out">
     <xed:source uri="xslStyle:import/remove-genres,import/mods2mycoreobject,editor/mods2xeditor:enrich:import:buildxml:_rootName_=mods:mods&amp;mods:identifier={$modsId}&amp;mods:identifier/@type={$type}" />
     <xed:source uri="xslStyle:PPN-mods-simple,mir-PPN-import,mycoreobject-migrate-nameIdentifier,editor/mods2xeditor:http://unapi.gbv.de/?id={$MIR.PPN.DatabaseList}:ppn:{$ppn}&amp;format=mods36" />
@@ -23,7 +23,7 @@
     <xed:cancel url="../index.html?XSL.Status.Message=mir.editstatus.canceled&amp;XSL.Status.Style=danger" />
     <xed:post-processor xsl="editor/xeditor2mods.xsl" />
   </xed:template>
-  
+
   <xed:template id="mycore.common">
     <xed:choose>
       <xed:when test="string-length($origin) &gt; 0">
@@ -90,7 +90,7 @@
       </div>
     </xed:bind>
   </xed:template>
-  
+
   <!-- ========== table of contents ========== -->
   <xed:template id="toc-layout">
     <div class="form-group">
@@ -1399,13 +1399,13 @@
       <input type="hidden" value="typeOfResource:moving_image" />
     </xed:bind>
   </xed:template>
-  
+
   <xed:template id="type.of.resource.still_image">
     <xed:bind xpath="mods:typeOfResource/@mcr:categId">
       <input type="hidden" value="typeOfResource:still_image" />
     </xed:bind>
   </xed:template>
-  
+
   <xed:template id="type.of.resource.sound_recording">
     <xed:bind xpath="mods:typeOfResource/@mcr:categId">
       <input type="hidden" value="typeOfResource:sound_recording" />
@@ -1606,7 +1606,7 @@
       </div>
       <div class="col-md-6 offset-md-3 collapse openstreetmap-container">
         <label>
-          <xed:output i18n="mir.cartographics.coordinates.geoType" /> 
+          <xed:output i18n="mir.cartographics.coordinates.geoType" />
         </label>
         <select id="type" class="form-control" name="">
           <option value="Point">
@@ -1747,7 +1747,7 @@
     <mir:textfield repeat="true" xpath="mods:subject/mods:genre" min="1" max="10" label="mir.subject.genre" help-text="{i18n:mir.help.subject.genre}" />
   </xed:template>
   -->
-  
+
   <xed:template id="subject.simple">
     <xed:bind xpath="mods:subject">
       <mir:topic.repeated min="1" max="20" label="mir.subject.topic" help-text="{i18n:mir.help.subject.topic.gnd}" />
@@ -1803,26 +1803,46 @@
   </xed:template>
 
   <xed:template id="modal.body">
-    <!-- frame for modal window -->
-    <div class="modal fade" id="modalFrame" tabindex="-1" role="dialog" aria-labelledby="modal frame" aria-hidden="true">
-      <div class="modal-dialog" style="width: 930px">
+    <div id="modalFrame" class="modal fade" tabindex="-1" role="dialog">
+      <div class="modal-dialog modal-lg modal-xl" role="document">
         <div class="modal-content">
+
           <div class="modal-header">
-            <button type="button" class="close modalFrame-cancel" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">x</span>
+            <h4 id="modalFrame-title" class="modal-title">Modal title</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">x</span>
             </button>
-            <h4 class="modal-title" id="modalFrame-title"></h4>
-            <div id="modal-searchInput" class="has-feedback input-group-sm" style="margin-top: 1em" hidden="">
-              <input type="text" placeholder="Suche in den Publikationen" class="form-control" />
-              <span class="fas fa-search form-control-feedback" style="right: 0; height: 33px; line-height: 36px; cursor: pointer" />
+          </div>
+
+          <div class="modal-body">
+            <div id="modal-searchInput" class="d-flex flex-row-reverse mb-2">
+              <button class="btn btn-primary">
+                <span class="fas fa-search form-control-feedback" />
+              </button>
+              <input type="text" placeholder="Suche in den Publikationen" class="form-control" autocomplete="off"/>
+            </div>
+            <div class="container-fluid">
+              <div id="modalFrame-body" class="row">
+              </div>
             </div>
           </div>
-          <div id="modalFrame-body" class="modal-body" style="padding-bottom: 0px" />
-          <div class="modal-footer" style="clear: both">
-            <div class="col-md-4 alert alert-warning already-linked hidden"><xed:output i18n="mir.relatedItem.alreadyLinked" /></div>
-            <button id="modalFrame-cancel" type="button" class="btn btn-danger" data-dismiss="modal"></button>
-            <button id="modalFrame-send" type="button" class="btn btn-primary"></button>
+
+          <div class="modal-footer">
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col-12 already-linked d-none">
+                  <div class="alert alert-warning">
+                    <xed:output i18n="mir.relatedItem.alreadyLinked" />
+                  </div>
+                </div>
+                <div class="col-md-8 text-right mt-2 mt-md-0">
+                  <button id="modalFrame-cancel" type="button" class="btn btn-danger mr-0 ml-1" data-dismiss="modal"></button>
+                  <button id="modalFrame-send" type="button" class="btn btn-primary mr-0 ml-1"></button>
+                </div>
+              </div>
+            </div>
           </div>
+
         </div>
       </div>
     </div>

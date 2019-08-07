@@ -231,7 +231,7 @@ span.topicExtended-container input.topic_gnd, span.geographicExtended-container 
 }
 
 .searchbadge, .badge {
-    font-size: 13px;
+    font-size: 75%;
 }
 
 .relItemsearch {
@@ -291,8 +291,8 @@ TODO: migrate see https://getbootstrap.com/docs/4.0/migration/ strg+f Grid break
 /***************************************************/
 
 .openstreetmap-container #type {
-	width: auto; 
-	display: inline; 
+	width: auto;
+	display: inline;
 	margin: 5px;
 }
 
@@ -314,5 +314,3 @@ TODO: migrate see https://getbootstrap.com/docs/4.0/migration/ strg+f Grid break
 #main_content .select2-selection__arrow {
   top: 8px;
 }
-
-

@@ -3,7 +3,7 @@
  *****************************************************************************/
 
 $dark_neutral: $gray-600 !default; // dark gray #999
-$light_neutral: $gray-200 !default; // light gray #ccc
+$light_neutral: $gray-500 !default; // light gray #ccc
 $link_color: $link-color !default; // blue  #4b8fbc
 $highlight: $warning !default; // orange #f39c12
 
@@ -78,9 +78,9 @@ $filter: #666 !default;
       margin: 0 10px 23px 0;
     }
 
-     .card {
-       border: 1px solid $filter_border;
-       color: $filter;
+    .card {
+      border: 1px solid $filter_border;
+      color: $filter;
       margin: 0px 0 20px 0;
       float: left;
       width: 100%;
@@ -325,7 +325,7 @@ $filter: #666 !default;
           &:hover {
             color: white;
           }
-          .fa {
+          .fas {
             margin-right: 5px;
           }
         }
@@ -783,4 +783,3 @@ TODO: migrate see https://getbootstrap.com/docs/4.0/migration/ strg+f Grid break
   }
 }
 */
-
