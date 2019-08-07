@@ -37,16 +37,14 @@ header {
 
 // align the footer to the bottom
 body {
-  min-height: 100vh;
-  position: relative;
-  padding-bottom: 530px;
+    display: flex; // use flex box model
+    flex-direction: column; // sort items in a column
+    min-height: 100vh; // use full view port height
 }
-
-footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
+section {
+    flex: 1; // will use all available space left
 }
+// end: align footer
 
 // end footer alignment
 
