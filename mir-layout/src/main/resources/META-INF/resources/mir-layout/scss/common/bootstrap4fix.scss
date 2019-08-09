@@ -49,6 +49,12 @@ li.dropdown-item {
         text-decoration: none;
     }
 }
+.dropdown-menu-right .dropdown-item a {
+  color: #7b8a8b;
+}
+.dropdown-menu-right .dropdown-item:hover a {
+  color: white;
+}
 .card {
     margin-bottom: 20px;
 }
