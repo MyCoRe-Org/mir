@@ -169,7 +169,7 @@
   <xsl:template name="options">
     <div class="btn-group">
       <a href="#" class="btn btn-primary dropdown-toggle btn-sm" data-toggle="dropdown">
-        <span class="fas fa-file-export"></span>
+        <span class="fas fa-file-export mr-1"></span>
         Exportieren
         <span class="caret"></span>
       </a>
@@ -207,7 +207,7 @@
       </ul>
     </div>
     <a href="{$ServletsBaseURL}MCRBasketServlet{$HttpSession}?type={@type}&amp;action=clear&amp;redirect=referer" class="btn btn-danger btn-sm">
-      <span class="fas fa-trash-alt"></span>
+      <span class="fas fa-trash-alt mr-1"></span>
       <xsl:value-of select="i18n:translate('basket.clear')" />
     </a>
   </xsl:template>
