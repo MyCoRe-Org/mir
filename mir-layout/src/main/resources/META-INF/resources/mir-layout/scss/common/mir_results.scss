@@ -109,13 +109,10 @@ $filter: #666 !default;
 	   li[data-fq^='worldReadableComplete']{
 	     .title:before{
            display: inline-block;
-           font: normal normal normal 14px/1 FontAwesome;
+           font: normal normal 900 14px/1 'Font Awesome 5 Free';
            text-rendering: auto;
            -webkit-font-smoothing: antialiased;
            -moz-osx-font-smoothing: grayscale;
-           font-size: 1.33333333em;
-           line-height: 0.75em;
-           vertical-align: -15%;
            margin-right: 5px;
          }
        }
