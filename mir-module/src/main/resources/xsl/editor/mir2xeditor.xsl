@@ -155,7 +155,7 @@
       <xsl:if test="not(@onlyRange = 'true')">hidden</xsl:if>
     </xsl:variable>
     <div class="date-format" data-format="simple">
-      <div class="date-simple {$hiddenclasssimple} input-group">
+      <div class="date-simple {$hiddenclasssimple} input-group mb-1">
         <xed:bind xpath="{$xpathSimple}">
           <input type="text" class="form-control" autocomplete="off">
             <xsl:copy-of select="@placeholder" />
@@ -403,7 +403,7 @@
      </xed:bind>
     </xed:repeat>
   </xsl:template>
-  
+
   <xsl:template match="mir:insitut.repeated">
     <xed:repeat xpath="mods:name[@type='corporate'][@authorityURI='{$institutesURI}']" min="{@min}" max="{@max}">
       <div class="form-group row">
