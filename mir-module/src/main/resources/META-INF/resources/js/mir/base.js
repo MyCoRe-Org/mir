@@ -256,29 +256,33 @@
         $( "#search_type_button" ).attr( 'value', $( this ).attr('value') );
     });
 
-    //change search string on result page
-    $( ".search_box form" ).submit(function( event ) {
+    // filter for result lists
+    // modify search query
+    // TODO: modify? add why and how
+    // do nothing if a query is missing
+    $( ".search_box form" ).submit( function( event ) {
       if($(this).find("input[name='qry']").val().trim() != '') {
-          var origSearchAction = $(this).attr('action');
-          var addValue = encodeURIComponent(solrEscapeSearchValue($('.search_box input').val().trim()));
-          if (origSearchAction.includes('servlets/solr/find')) {
-            var replAction = origSearchAction.replace(/(.*[&|\?])(condQuery=.*?)&(.*)/,'$1$3');
-            if ($('#search_type_button').attr('value') == 'all') {
-                var newAction = replAction + "&condQuery=" + addValue;
-              } else {
-                var newAction = replAction + "&condQuery=" + addValue + "&df=" + $('#search_type_button').attr('value');
-              }
+        var origSearchAction = $(this).attr('action');
+        var addValue = encodeURIComponent(solrEscapeSearchValue($('.search_box input').val().trim()));
+        if (origSearchAction.includes('servlets/solr/find')) {
+          var replAction = origSearchAction.replace(/(.*[&|\?])(condQuery=.*?)&(.*)/,'$1$3');
+          if ($('#search_type_button').attr('value') == 'all') {
+            var newAction = replAction + "&condQuery=" + addValue;
+          } else {
+            var newAction = replAction + "&condQuery=" + addValue + "&df=" + $('#search_type_button').attr('value');
           }
-          else {
-            var replAction = origSearchAction.replace(/(.*[&|\?])(condQuery=.*?)&(.*)/,'$1$3&$2');
-            if ($('#search_type_button').attr('value') == 'all') {
-                var newAction = replAction + "+%2BallMeta:" + addValue;
-              } else {
-                var newAction = replAction + "+%2B" + $('#search_type_button').attr('value') + ":" + addValue;
-              }
+        } else {
+          var replAction = origSearchAction.replace(/(.*[&|\?])(condQuery=.*?)&(.*)/,'$1$3&$2');
+          if ($('#search_type_button').attr('value') == 'all') {
+            var newAction = replAction + "+%2BallMeta:" + addValue;
+          } else {
+            var newAction = replAction + "+%2B" + $('#search_type_button').attr('value') + ":" + addValue;
           }
-
-          $(this).attr('action', newAction);
+        }
+        $(this).attr('action', newAction);
+      } else {
+        // nothing to do if a value is missing
+        event.preventDefault();
       }
     });
 
@@ -291,25 +295,35 @@
 
     $('.confirm_deletion').confirm();
 
-    // activate empty nav-bar search
-    $('.navbar-search').find(':input[value=""]').attr('disabled', false);
-
-    // Search
-    $("#index_search_form").submit(function () {
-      if ($('#index_search').val().match('^((?!\\.\\*).)*' + '$')) {
-        if ($('#index_search').val().match('[^\\.]\\*' + '$') || $('#index_search').val() === "*"){
-          $('#index_search').val($('#index_search').val().replace('*','.*'));
-        }
-        else {
-          $('#index_search').val($('#index_search').val()+".*");
-        }
+    // modify empty search
+    // add * as value for an empty search to get results
+    $(".searchfield_box").submit(function() {
+      if ( $("input.search-query").val() == "" ) {
+        $("input.search-query").val("*");
       }
     });
 
-    $(".search_form").submit(function (evt) {
-      if($(this).find("input[name='qry']").val().trim() == '') {
-          evt.preventDefault();
-      }
+    // search person index
+    // makes sure the query ends with .* on submit
+    $("#index_search_form").submit( function () {
+      // define regEx pattern
+      var endsNotWithDotAsterisk = /^((?!\.\*).)*$/;  // (?!xxx) expression is not allowed to follow prevoius expression
+      var endsWithAsteriskOnly   = /[^\.]\*$/;        // last char is a asterisk, with no dot before
+      // check if query string ends not with .* already
+      if ($('#index_search').val().match(endsNotWithDotAsterisk)) {
+        // check if query string ends with a asterisk or has a asterisk only
+        if (
+            $('#index_search').val().match(endsWithAsteriskOnly) ||
+            $('#index_search').val() === "*"
+          ){
+          // replace the * by .*
+          $('#index_search').val($('#index_search').val().replace('*','.*'));
+        } else {
+          // query string ends not with a asterisk
+          // add a .* to the query string
+          $('#index_search').val($('#index_search').val()+".*");
+        }
+      } // no need for actions, query ends already with .*
     });
 
     //date filter option
