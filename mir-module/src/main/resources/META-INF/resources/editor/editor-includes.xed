@@ -93,8 +93,8 @@
 
   <!-- ========== table of contents ========== -->
   <xed:template id="toc-layout">
-    <div class="form-group">
-      <label class="col-md-3 control-label">
+    <div class="form-group row">
+      <label class="col-md-3 col-form-label text-right">
         <xed:output i18n="component.mods.metaData.dictionary.tocLayout" />:
       </label>
       <xed:bind xpath="../../../../service">

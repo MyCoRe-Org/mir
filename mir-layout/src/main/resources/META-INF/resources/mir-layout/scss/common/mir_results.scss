@@ -109,13 +109,10 @@ $filter: #666 !default;
 	   li[data-fq^='worldReadableComplete']{
 	     .title:before{
            display: inline-block;
-           font: normal normal normal 14px/1 FontAwesome;
+           font: normal normal 900 14px/1 'Font Awesome 5 Free';
            text-rendering: auto;
            -webkit-font-smoothing: antialiased;
            -moz-osx-font-smoothing: grayscale;
-           font-size: 1.33333333em;
-           line-height: 0.75em;
-           vertical-align: -15%;
            margin-right: 5px;
          }
        }
@@ -246,24 +243,26 @@ $filter: #666 !default;
         color: $dark_neutral;
       }
       .hit_state {
-        color: $dark_neutral;
+        color: $white;
         .mir-published {
-          //TODO: background-color: $label-success-bg;
+          background-color: $success;
         }
-        .mir-submitted, .mir-new, .mir-imported {
-          //TODO: background-color: $label-warning-bg;
+        .mir-submitted,
+        .mir-new,
+        .mir-imported {
+          background-color: $warning;
         }
         .mir-review {
-          //TODO: background-color: $label-primary-bg;
+          background-color: $primary;
         }
         .mir-blocked {
-          //TODO: background-color: $label-danger-bg;
+          background-color: $danger;
         }
         .mir-deleted {
-          //TODO: background-color: $label-default-bg;
+          background-color: $secondary;
         }
         span {
-          //TODO: background-color: $label-default-bg;
+          background-color: $secondary;
         }
       }
       .hit_title {
