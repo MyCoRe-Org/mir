@@ -1872,13 +1872,13 @@
           <label class="col-md-3 col-form-label text-right" />
           <div class="col-md-6">
             <div class="row">
-              <div class="col-md-4 has-warning">
+              <div class="col-md-4">
                 <input type="text" class="form-control inputWarning" name="" placeholder="{i18n:mir.project.grantID}" />
               </div>
-              <div class="col-md-4 has-warning">
+              <div class="col-md-4">
                 <input type="text" class="form-control inputWarning" name="" placeholder="{i18n:mir.project.sponsor.programmID}" />
               </div>
-              <div class="col-md-4 has-warning">
+              <div class="col-md-4">
                 <input type="text" class="form-control inputWarning" name="" placeholder="{i18n:mir.project.sponsor.organisationID}" />
               </div>
             </div>

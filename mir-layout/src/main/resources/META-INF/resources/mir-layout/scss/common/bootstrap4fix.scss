@@ -80,6 +80,25 @@ li.dropdown-item {
   }
 }
 
+.mcr-invalid {
+  label {
+    color: red;
+  }
+  input,
+  select {
+    border: 1px solid red;
+    padding-right: calc((1em + .75rem) * 3 / 4 + 1.75rem);
+  }
+}
+.mcr-valid {
+  label {
+    color: green;
+  }
+  input,
+  select {
+    border: 1px solid green;
+  }
+}
 // Large devices (desktops) and below
 @include media-breakpoint-down(lg) {
     // add/overwrite styles for responsive level lg and lower

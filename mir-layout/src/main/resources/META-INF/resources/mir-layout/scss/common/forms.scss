@@ -22,7 +22,7 @@
 }
 
 .form-pmud .btn {
-//depricated
+//deprecated
   margin-right: 2px;
   margin-top: 4px;
   font-size: 12px;
@@ -40,10 +40,7 @@
   top: 50px;
 }
 
-/*.required:before {
-  content:"* ";
-}*/
-
+.required:before,
 .required > label:before {
   content:"* ";
 }
@@ -245,7 +242,7 @@ span.topicExtended-container input.topic_gnd, span.geographicExtended-container 
   margin-bottom: 40px;
 }
 
-.has-error iframe {
+.mcr-invalid iframe {
   border: solid thin $danger;
 }
 

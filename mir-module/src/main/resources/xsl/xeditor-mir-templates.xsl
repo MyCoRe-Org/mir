@@ -182,7 +182,7 @@
 
   <xsl:template match="mir:template[contains('textInput|passwordInput|selectInput|checkboxList|radioList|textArea', @name)]" mode="validation">
     <xsl:if test="@required = 'true' or @validate = 'true'">
-      <xed:if test="contains($xed-validation-marker, 'has-error')">
+      <xed:if test="contains($xed-validation-marker, 'mcr-invalid')">
         <span class="fas fa-exclamation-triangle form-control-feedback" data-toggle="tooltip" data-placement="top" title="{concat('{i18n:', @i18n.error, '}')}"></span>
       </xed:if>
       <xed:validate display="local" required="{@required}">
