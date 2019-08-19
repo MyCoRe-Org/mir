@@ -49,8 +49,8 @@
     </xed:if>
     <xed:repeat xpath="mods:genre[@type='intern'][@authorityURI=$mir_genres/label[@xml:lang='x-uri']/@text]" min="1" max="10">
       <xed:bind xpath="@valueURIxEditor" initially="{$genre}">
-        <div class="form-group row {$xed-validation-marker}">
-          <label class="col-md-3 col-form-label text-right required">
+        <div class="form-group row required {$xed-validation-marker}">
+          <label class="col-md-3 col-form-label text-right">
             <xed:output i18n="component.mods.genre" />
           </label>
           <div class="col-md-6">
@@ -72,8 +72,8 @@
   <xed:template id="genre.simple">
     <xed:load-resource name="mir_genres" uri="classification:metadata:-1:children:mir_genres" />
     <xed:bind xpath="mods:genre[@type='intern'][@authorityURI=$mir_genres/label[@xml:lang='x-uri']/@text]/@valueURIxEditor" initially="{$genre}">
-      <div class="form-group row {$xed-validation-marker}">
-        <label class="col-md-3 col-form-label text-right required">
+      <div class="form-group row required {$xed-validation-marker}">
+        <label class="col-md-3 col-form-label text-right">
           <xed:output i18n="component.mods.genre" />
         </label>
         <div class="col-md-6">
@@ -1414,8 +1414,8 @@
 
   <xed:template id="rights">
     <xed:bind xpath="mods:accessCondition[@type='use and reproduction']" initially="">
-      <div class="form-group row {$xed-validation-marker}">
-        <label class="col-md-3 col-form-label text-right required">
+      <div class="form-group row required {$xed-validation-marker}">
+        <label class="col-md-3 col-form-label text-right">
           <xed:output i18n="mir.rights" />
           :
         </label>
@@ -1632,8 +1632,8 @@
 
   <xed:template id="sdnb">
     <xed:bind xpath="mods:classification[@authority='sdnb'][@displayLabel='sdnb']">
-      <div class="form-group row {$xed-validation-marker}">
-        <label class="col-md-3 col-form-label text-right required">
+      <div class="form-group row required {$xed-validation-marker}">
+        <label class="col-md-3 col-form-label text-right">
           <xed:output i18n="editor.search.mir.sdnb" />
           :
         </label>
@@ -1654,8 +1654,8 @@
 
   <xed:template id="sdnb.repeat">
     <xed:repeat xpath="mods:classification[@authority='sdnb'][@displayLabel='sdnb']" min="1" max="10" method="build">
-      <div class="form-group row {$xed-validation-marker}">
-        <label class="col-md-3 col-form-label text-right required">
+      <div class="form-group row required {$xed-validation-marker}">
+        <label class="col-md-3 col-form-label text-right">
           <xed:output i18n="editor.search.mir.sdnb" />
           :
         </label>
