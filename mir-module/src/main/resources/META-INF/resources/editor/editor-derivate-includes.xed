@@ -73,14 +73,14 @@
       </xed:choose>
     </select>
   </xed:template>
-  
+
   <xed:template id="validation-rules">
     <xed:validate xpath="/derivate/@order" type="integer" display="global" i18n="mir.validation.order" />
   </xed:template>
-  
+
   <xed:template id="debug.cancel.submit">
     <div class="form-group" id="editor-buttons">
-      <div class="col-md-offset-2 col-md-6">
+      <div class="offset-md-2 col-md-6">
         <button type="submit" class="btn btn-secondary" xed:target="debug">Debug</button>
         <button type="submit" class="btn btn-secondary" xed:target="cancel">
           <xed:output i18n="button.cancel" />
@@ -97,7 +97,7 @@
     <xed:include ref="cleanup-rules" />
 
     <div class="form-group" id="editor-buttons">
-      <div class="col-md-offset-2 col-md-6">
+      <div class="offset-md-2 col-md-6">
         <button type="submit" class="btn btn-secondary" xed:target="cancel">
           <xed:output i18n="button.cancel" />
         </button>
@@ -107,7 +107,7 @@
       </div>
     </div>
   </xed:template>
-  
+
   <xed:template id="cleanup-rules">
     <xed:cleanup-rule xpath="//classifications" relevant-if="count(classification)&gt;0" />
     <xed:cleanup-rule xpath="//classification" relevant-if="string-length(text())&gt;0" />
@@ -130,5 +130,5 @@
     <script type="text/javascript" src="{$WebApplicationBaseURL}assets/select2/js/select2.min.js" />
     <script type="text/javascript" src="{$WebApplicationBaseURL}assets/select2/js/i18n/{$MCR.Metadata.DefaultLang}.js" />
   </xed:template>
-  
+
 </xed:template>

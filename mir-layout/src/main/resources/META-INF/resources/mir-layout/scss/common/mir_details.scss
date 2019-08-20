@@ -106,7 +106,7 @@
 }
 
 #solr-browse {
-  div:nth-child(2), div.col-md-offset-5 {
+  div:nth-child(2), div.offset-md-5 {
     display: block;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -137,4 +137,3 @@
     }
   }
 }
-

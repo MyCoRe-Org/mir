@@ -205,7 +205,7 @@
             <xsl:attribute name="class">
               <xsl:choose>
                 <xsl:when test="$disableFilter = true()">
-                  <xsl:value-of select="concat('col-xs-offset-', $colWidth div 2, ' col-xs-', $colWidth div 2)" />
+                  <xsl:value-of select="concat('offset-', $colWidth div 2, ' col-', $colWidth div 2)" />
                 </xsl:when>
                 <xsl:otherwise>
                   <xsl:value-of select="concat(' col-xs-', $colWidth)" />

@@ -37,7 +37,7 @@
         <xsl:attribute name="class">
           <xsl:text>col-12 col-md-2 text-center</xsl:text>
           <xsl:if test="$page = 1">
-            <xsl:text> col-md-offset-5</xsl:text>
+            <xsl:text> offset-md-5</xsl:text>
           </xsl:if>
         </xsl:attribute>
         <a title="{i18n:translate(concat($i18nprefix, '.back'))}">
