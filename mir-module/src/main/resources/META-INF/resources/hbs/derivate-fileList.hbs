@@ -2,9 +2,9 @@
   <table class="table table-condensed table-striped">
     {{#each children}}
       {{#is (concat '/' ../mainDoc) path}}
-        <tr class="file_set active_file">
+        <tr class="file_set active_file d-flex">
       {{else}}
-             <tr class="file_set" {{#if ../permWrite}} {{#is type "directory"}}
+             <tr class="file_set d-flex" {{#if ../permWrite}} {{#is type "directory"}}
                  data-upload-object="{{../mycorederivate}}" data-upload-target="{{path}}" {{/is}}{{/if}} >
       {{/is}}
           <td class="file_preview col-1 text-center text-nowrap">
