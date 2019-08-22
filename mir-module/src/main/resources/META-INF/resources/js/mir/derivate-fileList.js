@@ -277,8 +277,8 @@
 						$(fileBox).parent(".file_box").find("ul.dropdown-menu a.downloadzip").removeClass("d-none");
 					}
 					else {
-						if ($(fileBox).parent(".file_box").find("ul.dropdown-menu").children().length < 2) {
-                            $(fileBox).parent(".file_box").find("a.dropdown-toggle").addClass("d-none");
+						if ($(fileBox).parent(".file_box").find(".options .ul.dropdown-menu").children().length < 2) {
+                            $(fileBox).parent(".file_box").find(".options").addClass("d-none");
 						}
 					}
 					getTemplate(derivateJson, "derivate-fileList.hbs", useTemplate);
