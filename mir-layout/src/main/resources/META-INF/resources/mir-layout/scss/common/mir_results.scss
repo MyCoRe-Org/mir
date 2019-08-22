@@ -560,8 +560,7 @@ $file_box_color: $card-bg !default;
                 }
               }
             }
-            border-top: 0px solid $file_box_color;
-            padding: 5px 0px 5px 0px;
+
             .options {
                 .dropdown-menu > li > a:hover {
                   background-color: $highlight;

@@ -1,5 +1,5 @@
 <div id="collapse{{mycorederivate}}" class="body collapse in show">
-  <table class="table table-condensed table-striped">
+  <table class="table table-sm table-striped">
     {{#each children}}
       {{#is (concat '/' ../mainDoc) path}}
         <tr class="file_set active_file d-flex">
@@ -21,20 +21,20 @@
           </td>
           {{#isNot type "directory"}}
             {{#contains "mp4" extension}}
-              <td class="file_name file_video col-6">
+              <td class="file_name file_video col-7">
                 <a data-deriid="{{../mycorederivate}}" data-name="{{name}}" href="{{href}}">
                   {{name}}
                 </a>
               </td>
             {{else}}
-              <td class="file_name col-6">
+              <td class="file_name col-7">
                 <a href="{{href}}">
                   {{name}}
                 </a>
               </td>
             {{/contains}}
           {{else}}
-            <td class="file_name derivate_folder col-6">
+            <td class="file_name derivate_folder col-7">
               <a data-path="{{path}}" href="#">
                 {{name}}
               </a>
