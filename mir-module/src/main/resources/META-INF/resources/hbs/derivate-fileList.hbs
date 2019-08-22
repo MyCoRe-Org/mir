@@ -21,20 +21,20 @@
           </td>
           {{#isNot type "directory"}}
             {{#contains "mp4" extension}}
-              <td class="file_name file_video col-7">
+              <td class="file_name file_video col-6">
                 <a data-deriid="{{../mycorederivate}}" data-name="{{name}}" href="{{href}}">
                   {{name}}
                 </a>
               </td>
             {{else}}
-              <td class="file_name col-7">
+              <td class="file_name col-6">
                 <a href="{{href}}">
                   {{name}}
                 </a>
               </td>
             {{/contains}}
           {{else}}
-            <td class="file_name derivate_folder col-7">
+            <td class="file_name derivate_folder col-6">
               <a data-path="{{path}}" href="#">
                 {{name}}
               </a>
@@ -97,13 +97,16 @@
               </td>
             {{/noDirOrURN}}
           {{/isOr}}
+          <!-- TODO: fixme - add empty <td class="col-1" /> if no option menu is shown -->
         </tr>
     {{/each}}
   </table>
   {{#if permWrite}}
-      <div class="well mir-file-upload-box" data-upload-object="{{mycorederivate}}" data-upload-target="/">
+      <div class="card bg-light text-center mir-file-upload-box" data-upload-object="{{mycorederivate}}" data-upload-target="/">
+        <div class="card-body">
           <i class="fas fa-upload"></i>
           {{{getI18n "mir.upload.drop.derivate"}}}
+        </div>
       </div>
   {{/if}}
 
