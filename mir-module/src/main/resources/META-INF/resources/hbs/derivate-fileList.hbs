@@ -56,9 +56,9 @@
             {{/is}}
             {{formatFileSize size}}
           </td>
-          {{#isOr ../permWrite ../permDelete}}
-            {{#noDirOrURN type ../urn}}
-              <td class="options col-1 text-right">
+          <td class="options col-1 text-right">
+            {{#isOr ../permWrite ../permDelete}}
+              {{#noDirOrURN type ../urn}}
                 <div class="btn-group">
                   <a href="#" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">
                     <i class="fas fa-cog"></i>
@@ -94,10 +94,9 @@
                     {{/if}}
                   </ul>
                 </div>
-              </td>
-            {{/noDirOrURN}}
-          {{/isOr}}
-          <!-- TODO: fixme - add empty <td class="col-1" /> if no option menu is shown -->
+              {{/noDirOrURN}}
+            {{/isOr}}
+          </td>
         </tr>
     {{/each}}
   </table>
