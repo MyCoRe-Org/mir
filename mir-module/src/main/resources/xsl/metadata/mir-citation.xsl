@@ -262,18 +262,20 @@
   </xsl:template>
 
   <xsl:template match="mods:mods" mode="identifierListModal">
-    <div class="modal fade" id="identifierModal" tabindex="-1" role="dialog" aria-labelledby="modal frame" aria-hidden="true">
-      <div class="modal-dialog" style="width: 930px">
+    <div id="identifierModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modal frame" aria-hidden="true">
+      <div class="modal-dialog modal-lg modal-xl" role="document">
         <div class="modal-content">
+
           <div class="modal-header">
-            <button type="button" class="close modalFrame-cancel" data-dismiss="modal" aria-label="Close">
-              <i class="fas fa-times" aria-hidden="true"></i>
-            </button>
             <h4 class="modal-title" id="modalFrame-title">
               <xsl:value-of select="i18n:translate('mir.citationLink')" />
             </h4>
+            <button type="button" class="close modalFrame-cancel" data-dismiss="modal" aria-label="Close">
+              <i class="fas fa-times" aria-hidden="true"></i>
+            </button>
           </div>
-          <div id="modalFrame-body" class="modal-body" style="max-height: 560px; overflow: auto">
+
+          <div class="modal-body">
             <xsl:apply-templates select="mods:identifier[@type='urn' or @type='doi']" mode="identifierList" />
             <xsl:if test="not(mods:identifier[@type='urn' or @type='doi'])">
               <xsl:call-template name="identifierEntry">
@@ -282,6 +284,7 @@
               </xsl:call-template>
             </xsl:if>
           </div>
+
         </div>
       </div>
     </div>
@@ -386,15 +389,14 @@
           <xsl:value-of select="$title" />
         </p>
         <div class="mir_copy_wrapper">
+          <pre>
+            <a href="{$id}">
+              <xsl:value-of select="$id" />
+            </a>
+          </pre>
           <span class="fas fa-copy mir_copy_identifier" data-toggle="tooltip" data-placement="left" aria-hidden="true" title="Copy Identifier"
-            data-org-title="Copy Identifier"
-          ></span>
+            data-org-title="Copy Identifier"></span>
         </div>
-        <pre>
-          <a href="{$id}">
-            <xsl:value-of select="$id" />
-          </a>
-        </pre>
         <input type="text" class="d-none mir_identifier_hidden_input" value="{$id}"></input>
       </div>
     </xsl:if>

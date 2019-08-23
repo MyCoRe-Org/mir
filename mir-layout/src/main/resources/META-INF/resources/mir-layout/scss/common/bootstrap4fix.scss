@@ -109,6 +109,18 @@ li.dropdown-item {
 .btn:focus {
   box-shadow: none !important;
 }
+.mir_copy_wrapper {
+  padding: 10px;
+  background-color: #eee;
+  border-radius: 5px;
+  pre {
+    margin: 0;
+  }
+}
+.mir_copy_identifier {
+  right: 15px;
+  top: 10px;
+}
 
 // Large devices (desktops) and below
 @include media-breakpoint-down(lg) {
