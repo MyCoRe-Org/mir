@@ -23,14 +23,14 @@ public class MIRSwordCollectionProvider extends MCRSwordCollectionProvider {
 
     private MIRSwordMetadataProvider mirSwordMetadataProvider;
 
-    private MIRSwordIngester mirSwordIngester;
+    private MCRSwordIngester mirGoobiSwordIngester;
 
     private MCRSwordSolrObjectIDSupplier mcrSwordSolrObjectIDSupplier;
 
     public MIRSwordCollectionProvider() {
         mcrSwordDefaultAuthHandler = new MCRSwordDefaultAuthHandler();
         mirSwordMetadataProvider = new MIRSwordMetadataProvider();
-        mirSwordIngester = new MIRSwordIngester();
+        mirGoobiSwordIngester = new MIRGoobiSwordIngester();
         mcrSwordSolrObjectIDSupplier = new MCRSwordSolrObjectIDSupplier(new SolrQuery("objectType:mods"));
     }
 
@@ -52,7 +52,7 @@ public class MIRSwordCollectionProvider extends MCRSwordCollectionProvider {
 
     @Override
     public MCRSwordIngester getIngester() {
-        return mirSwordIngester;
+        return mirGoobiSwordIngester;
     }
 
     @Override

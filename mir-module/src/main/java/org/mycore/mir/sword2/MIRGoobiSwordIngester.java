@@ -38,7 +38,7 @@ import org.swordapp.server.SwordServerException;
 import org.swordapp.server.UriRegistry;
 import org.xml.sax.SAXException;
 
-public class MIRSwordIngester implements MCRSwordIngester {
+public class MIRGoobiSwordIngester implements MCRSwordIngester {
 
     private static final Namespace DC_NAMESPACE = Namespace.getNamespace("dc", "http://purl.org/dc/elements/1.1/");
 
