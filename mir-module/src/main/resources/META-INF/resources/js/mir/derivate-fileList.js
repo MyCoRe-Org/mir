@@ -208,47 +208,47 @@
 
 		var fileIcons = {
 			"PDF" : {
-				icon : "fa-file-pdf-o",
+				icon : "fa-file-pdf",
 				extensions : "pdf|ps"
 			},
 			"Archive" : {
-				icon : "fa-file-archive-o",
+				icon : "fa-file-archive",
 				extensions : "zip|tar|rar|bz|xs|gz|bz2|xz"
 			},
 			"Image" : {
-				icon : "fa-file-image-o",
+				icon : "fa-file-image",
 				extensions : "tif|tiff|gif|jpeg|jpg|jif|jfif|jp2|jpx|j2k|j2c|fpx|pcd|png"
 			},
 			"Text" : {
-				icon : "fa-file-text-o",
+				icon : "fa-file-alt",
 				extensions : "txt|rtf"
 			},
 			"Audio" : {
-				icon : "fa-file-audio-o",
+				icon : "fa-file-audio",
 				extensions : "wav|wma|mp3"
 			},
 			"Video" : {
-				icon : "fa-file-video-o",
+				icon : "fa-file-video",
 				extensions : "mp4|f4v|flv|rm|avi|wmv"
 			},
 			"Code" : {
-				icon : "fa-file-code-o",
+				icon : "fa-file-code",
 				extensions : "css|htm|html|php|c|cpp|bat|cmd|pas|java"
 			},
 			"Word" : {
-				icon : "fa-file-word-o",
+				icon : "fa-file-word",
 				extensions : "doc|docx|dot"
 			},
 			"Excel" : {
-				icon : "fa-file-excel-o",
+				icon : "fa-file-excel",
 				extensions : "xls|xlt|xlsx|xltx"
 			},
 			"Powerpoint" : {
-				icon : "fa-file-powerpoint-o",
+				icon : "fa-file-powerpoint",
 				extensions : "ppt|potx|ppsx|sldx"
 			},
 			"_default" : {
-				icon : "fa-file-o"
+				icon : "fa-file"
 			}
 		};
 
@@ -277,8 +277,8 @@
 						$(fileBox).parent(".file_box").find("ul.dropdown-menu a.downloadzip").removeClass("d-none");
 					}
 					else {
-						if ($(fileBox).parent(".file_box").find("ul.dropdown-menu").children().length < 2) {
-                            $(fileBox).parent(".file_box").find("a.dropdown-toggle").addClass("d-none");
+						if ($(fileBox).parent(".file_box").find(".options .ul.dropdown-menu").children().length < 2) {
+                            $(fileBox).parent(".file_box").find(".options").addClass("d-none");
 						}
 					}
 					getTemplate(derivateJson, "derivate-fileList.hbs", useTemplate);

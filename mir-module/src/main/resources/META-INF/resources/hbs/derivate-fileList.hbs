@@ -1,19 +1,19 @@
-<div id="collapse{{mycorederivate}}" class="body collapse in">
-  <table class="table table-condensed table-striped">
+<div id="collapse{{mycorederivate}}" class="body collapse in show">
+  <table class="table table-sm table-striped">
     {{#each children}}
       {{#is (concat '/' ../mainDoc) path}}
-        <tr class="file_set active_file">
+        <tr class="file_set active_file d-flex">
       {{else}}
-             <tr class="file_set" {{#if ../permWrite}} {{#is type "directory"}}
+             <tr class="file_set d-flex" {{#if ../permWrite}} {{#is type "directory"}}
                  data-upload-object="{{../mycorederivate}}" data-upload-target="{{path}}" {{/is}}{{/if}} >
       {{/is}}
-          <td class="file_preview col-xs-1 text-center text-nowrap">
+          <td class="file_preview col-1 text-center text-nowrap">
               {{#is type "file"}}
                 {{#contains "pdf|ps" extension}}
-                  <span class="fa {{getFileIcon extension}}" data-toggle="tooltip"
+                  <span class="fas {{getFileIcon extension}}" data-toggle="tooltip"
                               data-placement="right" data-html="true" data-title='&lt;img src="{{../serverBaseURL}}img/pdfthumb/{{../mycorederivate}}{{path}}?centerThumb=no"&gt;'></span>
                 {{else}}
-                  <span class="fa {{getFileIcon extension}}" title="{{getFileLabel extension}}" aria-hidden="true"></span>
+                  <span class="fas {{getFileIcon extension}}" title="{{getFileLabel extension}}" aria-hidden="true"></span>
                 {{/contains}}
               {{else}}
                 <span class="fas fa-folder" aria-hidden="true"></span>
@@ -21,53 +21,53 @@
           </td>
           {{#isNot type "directory"}}
             {{#contains "mp4" extension}}
-              <td class="file_name file_video col-xs-6">
+              <td class="file_name file_video col-6">
                 <a data-deriid="{{../mycorederivate}}" data-name="{{name}}" href="{{href}}">
                   {{name}}
                 </a>
               </td>
             {{else}}
-              <td class="file_name col-xs-6">
+              <td class="file_name col-6">
                 <a href="{{href}}">
                   {{name}}
                 </a>
               </td>
             {{/contains}}
           {{else}}
-            <td class="file_name derivate_folder col-xs-6">
+            <td class="file_name derivate_folder col-6">
               <a data-path="{{path}}" href="#">
                 {{name}}
               </a>
             </td>
           {{/isNot}}
-          <td class="file_date hidden-xs col-md-2 text-right">
+          <td class="file_date d-none d-sm-table-cell col-md-2 text-right">
             {{#is type "file"}}
               {{formatDate time.modified}}
             {{/is}}
           </td>
-          <td class="file_size hidden-xs col-md-2 text-right text-nowrap">
+          <td class="file_size d-none d-sm-table-cell col-md-2 text-right text-nowrap">
             {{#isNot type "directory"}}
                 {{formatFileSize size}}
             {{/isNot}}
           </td>
-          <td class="visible-xs col-xs-4 text-right">
+          <td class="d-sm-none col-4 text-right">
             {{#is type "file"}}
               {{formatDate time.modified}}<br>
             {{/is}}
             {{formatFileSize size}}
           </td>
-          {{#isOr ../permWrite ../permDelete}}
-            {{#noDirOrURN type ../urn}}
-              <td class="options col-xs-1 text-right">
+          <td class="options col-1 text-right">
+            {{#isOr ../permWrite ../permDelete}}
+              {{#noDirOrURN type ../urn}}
                 <div class="btn-group">
-                  <a href="#" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                  <a href="#" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">
                     <i class="fas fa-cog"></i>
                     <span class="caret"></span>
                   </a>
                   <ul class="dropdown-menu dropdown-menu-right">
                     {{#if ../permWrite}}
                       {{#isNot type "directory"}}
-                        <li>
+                        <li class="dropdown-item">
                           <a title="{{getI18n "IFS.mainFile"}}"
                              href="#"
                              data-derivateid="{{../mycorederivate}}"
@@ -82,7 +82,7 @@
                       {{/isNot}}
                     {{/if}}
                     {{#if ../permDelete}}
-                        <li>
+                        <li class="dropdown-item">
                           <a href="{{../serverBaseURL}}servlets/MCRDerivateServlet?derivateid={{../mycorederivate}}&amp;objectid={{../mycoreobject}}&amp;todo=sdelfile&amp;file={{path}}"
                              class="option confirm_deletion"
                              data-text="{{getI18n (concat "mir.confirm." type ".text")}}"
@@ -94,16 +94,18 @@
                     {{/if}}
                   </ul>
                 </div>
-              </td>
-            {{/noDirOrURN}}
-          {{/isOr}}
+              {{/noDirOrURN}}
+            {{/isOr}}
+          </td>
         </tr>
     {{/each}}
   </table>
   {{#if permWrite}}
-      <div class="well mir-file-upload-box" data-upload-object="{{mycorederivate}}" data-upload-target="/">
+      <div class="card bg-light text-center mir-file-upload-box" data-upload-object="{{mycorederivate}}" data-upload-target="/">
+        <div class="card-body">
           <i class="fas fa-upload"></i>
           {{{getI18n "mir.upload.drop.derivate"}}}
+        </div>
       </div>
   {{/if}}
 

@@ -186,13 +186,13 @@
     <div class="input-group-btn date-selectFormat input-group-append">
       <button class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"><span class="caret"></span><span class="sr-only">Toggle Dropdown</span></button>
       <ul class="dropdown-menu dropdown-menu-right" role="menu">
-        <li>
-          <a href="#" class="date-simpleOption dropdown-item">
+        <li class="dropdown-item">
+          <a href="#" class="date-simpleOption">
             <xsl:value-of select="i18n:translate('mir.date.specification')" />
           </a>
         </li>
-        <li>
-          <a href="#" class="date-rangeOption dropdown-item">
+        <li class="dropdown-item">
+          <a href="#" class="date-rangeOption">
             <xsl:value-of select="i18n:translate('mir.date.period')" />
           </a>
         </li>
