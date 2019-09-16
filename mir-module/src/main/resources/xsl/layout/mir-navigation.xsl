@@ -57,8 +57,8 @@
             </xsl:when>
             <xsl:otherwise>
               <xsl:value-of select="'dropdown-item'" />
-              <xsl:if test="active">
-                <xsl:value-of select="'active'" />
+              <xsl:if test="$active">
+                <xsl:value-of select="' active'" />
               </xsl:if>
             </xsl:otherwise>
           </xsl:choose>
