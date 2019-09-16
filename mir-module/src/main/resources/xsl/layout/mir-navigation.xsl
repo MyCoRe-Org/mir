@@ -13,7 +13,6 @@
       </xsl:if>
       <a id="{$menuId}" class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">
         <xsl:apply-templates select="." mode="linkText" />
-        <span class="caret"></span>
       </a>
       <ul class="dropdown-menu" role="menu" aria-labelledby="{$menuId}">
         <xsl:apply-templates select="item|group" />
@@ -51,30 +50,33 @@
     </xsl:param>
     <xsl:choose>
       <xsl:when test="string-length($url ) &gt; 0">
-        <li class="dropdown-item">
-          <xsl:if test="$active">
-            <xsl:attribute name="class">
-              <xsl:value-of select="'dropdown-item active'" />
-            </xsl:attribute>
-          </xsl:if>
-          <xsl:if test="item">
-            <xsl:attribute name="class">
+        <xsl:variable name="itemClasses">
+          <xsl:choose>
+            <xsl:when test="item">
               <xsl:value-of select="'dropdown-submenu'" />
-            </xsl:attribute>
-          </xsl:if>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:value-of select="'dropdown-item'" />
+              <xsl:if test="$active">
+                <xsl:value-of select="' active'" />
+              </xsl:if>
+            </xsl:otherwise>
+          </xsl:choose>
+        </xsl:variable>
+        <li>
+          <xsl:attribute name="class">
+            <xsl:copy-of select="$itemClasses" />
+          </xsl:attribute>
           <a href="{$url}">
             <xsl:if test="@target">
               <xsl:copy-of select="@target" />
             </xsl:if>
             <xsl:if test="item">
               <xsl:attribute name="class">
-                <xsl:value-of select="'submenu'" />
+                <xsl:value-of select="'submenu dropdown-toggle dropdown-item'" />
               </xsl:attribute>
             </xsl:if>
             <xsl:apply-templates select="." mode="linkText" />
-            <xsl:if test="dropdown-item">
-              <span class="caret"></span>
-            </xsl:if>
           </a>
           <xsl:if test="item">
             <ul class="dropdown-menu" role="menu">

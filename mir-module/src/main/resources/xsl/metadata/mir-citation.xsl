@@ -149,7 +149,7 @@
               <xsl:value-of select="$doi" />
             </a>
             <br />
-            <a id="copy_cite_link" class="label label-info" href="#" title="{i18n:translate('mir.citationLink.title')}">
+            <a id="copy_cite_link" class="btn btn-info btn-sm" href="#" title="{i18n:translate('mir.citationLink.title')}">
               <xsl:value-of select="i18n:translate('mir.citationLink')" />
             </a>
           </xsl:when>
@@ -159,12 +159,12 @@
               <xsl:value-of select="$urn" />
             </a>
             <br />
-            <a id="copy_cite_link" class="label label-info" href="#" title="{i18n:translate('mir.citationLink.title')}">
+            <a id="copy_cite_link" class="btn btn-info btn-sm" href="#" title="{i18n:translate('mir.citationLink.title')}">
               <xsl:value-of select="i18n:translate('mir.citationLink')" />
             </a>
           </xsl:when>
           <xsl:otherwise>
-            <a id="copy_cite_link" href="#" class="label label-info">
+            <a id="copy_cite_link" href="#" class="btn btn-info btn-sm">
               <xsl:value-of select="i18n:translate('mir.citationLink')" />
             </a>
           </xsl:otherwise>
@@ -274,7 +274,6 @@
               <i class="fas fa-times" aria-hidden="true"></i>
             </button>
           </div>
-
           <div class="modal-body">
             <xsl:apply-templates select="mods:identifier[@type='urn' or @type='doi']" mode="identifierList" />
             <xsl:if test="not(mods:identifier[@type='urn' or @type='doi'])">

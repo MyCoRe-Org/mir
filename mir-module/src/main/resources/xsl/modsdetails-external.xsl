@@ -687,12 +687,11 @@
     <xsl:if
       test="(key('rights', $deriv)/@accKeyEnabled and key('rights', $deriv)/@readKey) and not(mcrxsl:isCurrentUserGuestUser() or key('rights', $deriv)/@read or key('rights', $deriv)/@write)"
     >
-      <div class="options float-right">
+      <div class="options float-right dropdown">
         <div class="btn-group">
           <a href="#" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">
             <i class="fas fa-cog"></i>
             <xsl:value-of select="' Aktionen'" />
-            <span class="caret"></span>
           </a>
           <ul class="dropdown-menu">
             <li class="dropdown-item">
@@ -709,12 +708,11 @@
       <xsl:variable select="concat('mcrobject:',$deriv)" name="derivlink" />
       <xsl:variable select="document($derivlink)" name="derivate" />
 
-      <div class="options float-right">
+      <div class="dropdown float-right options">
         <div class="btn-group">
           <a href="#" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">
             <i class="fas fa-cog"></i>
             <xsl:value-of select="' Aktionen'" />
-            <span class="caret"></span>
           </a>
           <ul class="dropdown-menu dropdown-menu-right">
             <xsl:if test="key('rights', $deriv)/@write">
@@ -733,7 +731,7 @@
             </xsl:if>
             <xsl:if test="key('rights', $deriv)/@read">
               <li class="dropdown-item">
-                <a href="{$ServletsBaseURL}MCRZipServlet/{$deriv}" class="option d-none downloadzip">
+                <a href="{$ServletsBaseURL}MCRZipServlet/{$deriv}" class="option downloadzip">
                   <xsl:value-of select="i18n:translate('component.mods.metaData.options.zip')" />
                 </a>
               </li>
