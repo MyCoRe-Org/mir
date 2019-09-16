@@ -301,9 +301,9 @@ TODO: migrate see https://getbootstrap.com/docs/4.0/migration/ strg+f Grid break
 /***************************************************/
 
 #main_content .select2-selection {
-  border: 2px solid #dce4ec;
-  height: 44px;
-  padding: 6px 10px;
+  border: 1px solid #ced4da;
+  height: calc(1.5em + 0.75rem + 2px);;
+  padding: 0.175rem 0.75rem;
 }
 
 #main_content .select2-selection__arrow {

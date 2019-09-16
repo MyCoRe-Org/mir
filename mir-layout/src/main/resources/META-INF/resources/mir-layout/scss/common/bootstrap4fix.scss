@@ -122,6 +122,20 @@ li.dropdown-item {
   top: 10px;
 }
 
+/*
+ * anchor elements which should be shown as a link,
+ * but can not have a href attribute
+ */
+a:not([href]):not([tabindex]) {
+  color: $link-color;
+  text-decoration: $link-decoration;
+
+  @include hover {
+    color: $link-hover-color;
+    text-decoration: $link-hover-decoration;
+  }
+}
+
 // Large devices (desktops) and below
 @include media-breakpoint-down(lg) {
     // add/overwrite styles for responsive level lg and lower
