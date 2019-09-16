@@ -270,10 +270,11 @@
             <h4 class="modal-title" id="modalFrame-title">
               <xsl:value-of select="i18n:translate('mir.citationLink')" />
             </h4>
+            <button type="button" class="close modalFrame-cancel" data-dismiss="modal" aria-label="Close">
+              <i class="fas fa-times" aria-hidden="true"></i>
+            </button>
           </div>
-          <button type="button" class="close modalFrame-cancel" data-dismiss="modal" aria-label="Close">
-            <i class="fas fa-times" aria-hidden="true"></i>
-
+          <div class="modal-body">
             <xsl:apply-templates select="mods:identifier[@type='urn' or @type='doi']" mode="identifierList" />
             <xsl:if test="not(mods:identifier[@type='urn' or @type='doi'])">
               <xsl:call-template name="identifierEntry">
@@ -281,7 +282,7 @@
                 <xsl:with-param name="id" select="concat($WebApplicationBaseURL, 'receive/', //mycoreobject/@ID)" />
               </xsl:call-template>
             </xsl:if>
-          </button>
+          </div>
 
         </div>
       </div>
