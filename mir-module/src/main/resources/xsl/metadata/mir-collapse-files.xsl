@@ -76,7 +76,7 @@
                   </div>
                   <noscript>
                     <br />
-                    <a href="{$ServletsBaseURL}MCRFileNodeServlet/{$derId}">
+                    <a href="{$ServletsBaseURL}MCRFileNodeServlet/{$derId}/">
                       <xsl:value-of select="i18n:translate('metadata.files.toDerivate')" />
                     </a>
                   </noscript>

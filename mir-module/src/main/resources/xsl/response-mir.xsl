@@ -1142,7 +1142,7 @@
         <a class="hit_option remove_from_basket" href="{$ServletsBaseURL}MCRBasketServlet{$HttpSession}?type=objects&amp;action=remove&amp;id={$identifier}&amp;redirect=referer"
           title=""
         >
-          <span class="fas fa-bookmark"></span>
+          <span class="fas fa-bookmark"></span>&#160;
           <xsl:value-of select="i18n:translate('basket.remove')" />
         </a>
       </xsl:when>
@@ -1152,7 +1152,7 @@
           href="{$ServletsBaseURL}MCRBasketServlet{$HttpSession}?type=objects&amp;action=add&amp;id={$identifier}&amp;uri=mcrobject:{$identifier}&amp;redirect=referer"
           title=""
         >
-          <span class="fas fa-bookmark"></span>
+          <span class="fas fa-bookmark"></span>&#160;
           <xsl:value-of select="i18n:translate('basket.add')" />
         </a>
       </xsl:otherwise>
