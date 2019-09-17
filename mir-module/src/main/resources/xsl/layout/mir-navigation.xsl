@@ -30,7 +30,7 @@
       </li>
     </xsl:if>
     <xsl:apply-templates />
-    <li role="presentation" class="divider" />
+    <li role="presentation" class="dropdown-divider" />
   </xsl:template>
 
   <xsl:template match="/navigation//item[@href]">
