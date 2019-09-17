@@ -238,11 +238,11 @@
                       </xsl:otherwise>
                     </xsl:choose>
                   </xsl:variable>
-                  <li class="float-right">
+                  <li class="float-right nav-item">
                     <xsl:if test="position()=1">
-                      <xsl:attribute name="class">active float-right</xsl:attribute>
+                      <xsl:attribute name="class">active float-right nav-item</xsl:attribute>
                     </xsl:if>
-                    <a href="#tab{position()}" role="tab" data-toggle="tab">
+                    <a class="nav-link" href="#tab{position()}" role="tab" data-toggle="tab">
                       <xsl:value-of select="$tabName" />
                     </a>
                   </li>
