@@ -26,7 +26,7 @@
         </xsl:variable>
         <div class="col-12 col-md-5 text-left">
           <a tabindex="0" class="previous" href="{$link}" data-pagination=".caption:mods.title.main">
-            <span class="fas fa-chevron-left icon" />
+            <span class="fa fa-chevron-left icon" />
             <span class="caption">
               <xsl:value-of select="$label.previousHit" />
             </span>
@@ -56,7 +56,7 @@
             </xsl:variable>
             <xsl:value-of select="concat($proxyBaseURL, $HttpSession, $params, '&amp;start=', $newStart, '#hit_', $page)" />
           </xsl:attribute>
-          <span class="fas fa-chevron-up" />
+          <span class="fa fa-chevron-up" />
         </a>
         <xsl:text>&#160;</xsl:text>
         <xsl:value-of select="i18n:translate(concat($i18nprefix, '.entriesInfo'), concat($page, ';', $pages))" />
@@ -71,7 +71,7 @@
         </xsl:variable>
         <div class="col-12 col-md-5 text-right">
           <a tabindex="0" class="next" href="{$link}" data-pagination=".caption:mods.title.main">
-            <span class="fas fa-chevron-right icon" />
+            <span class="fa fa-chevron-right icon" />
             <span class="caption">
               <xsl:value-of select="$label.nextHit" />
             </span>
@@ -90,11 +90,11 @@
             }
             return url + (url.indexOf('?') > 0 ? '&' : '?') + paramName + '=' + paramValue
           }
-
+        
           $("*[data-pagination]").each(function() {
             var $this = $(this);
             var sel = /([^\:]*)\:(.*)/.exec($(this).data("pagination")).slice(1);
-
+        
             if (sel && sel.length > 1) {
               var url = replaceUrlParam(replaceUrlParam($(this).attr("href"), "XSL.Style", "xml"), "fl", sel[1]);
               $.ajax(url).done(function(data) {
@@ -132,7 +132,7 @@
     <xsl:variable name="label.previousPage" select="i18n:translate(concat($i18nprefix, '.previous'), $page - 1)" />
     <xsl:variable name="label.nextPage" select="i18n:translate(concat($i18nprefix, '.next'), $page + 1)" />
 
-    <ul id="{$id}-paginate" class="pagination {$class} d-inline-flex">
+    <ul id="{$id}-paginate" class="pagination {$class}">
       <li class="page-item">
         <xsl:choose>
           <xsl:when test="number($page) &gt; 1">
@@ -152,12 +152,12 @@
           </xsl:when>
           <xsl:otherwise>
             <xsl:attribute name="class">page-item disabled</xsl:attribute>
-            <a class="page-link"><span>
+            <a class="page-link" tabindex="0" href="#">
               <xsl:text disable-output-escaping="yes">&amp;laquo;</xsl:text>
               <span class="sr-only">
                 <xsl:value-of select="$label.firstPage" />
               </span>
-            </span></a>
+            </a>
           </xsl:otherwise>
         </xsl:choose>
       </li>
@@ -180,12 +180,12 @@
           </xsl:when>
           <xsl:otherwise>
             <xsl:attribute name="class">page-item disabled</xsl:attribute>
-            <a class="page-link"><span>
+            <a class="page-link" tabindex="0" href="#">
               <xsl:text disable-output-escaping="yes">&amp;lsaquo;</xsl:text>
               <span class="sr-only">
                 <xsl:value-of select="$label.previousPage" />
               </span>
-            </span></a>
+            </a>
           </xsl:otherwise>
         </xsl:choose>
       </li>
@@ -252,12 +252,12 @@
           </xsl:when>
           <xsl:otherwise>
             <xsl:attribute name="class">page-item disabled</xsl:attribute>
-            <a class="page-link"><span>
+            <a class="page-link" tabindex="0" href="#">
               <xsl:text disable-output-escaping="yes">&amp;rsaquo;</xsl:text>
               <span class="sr-only">
                 <xsl:value-of select="$label.nextPage" />
               </span>
-            </span></a>
+            </a>
           </xsl:otherwise>
         </xsl:choose>
       </li>
@@ -280,12 +280,12 @@
           </xsl:when>
           <xsl:otherwise>
             <xsl:attribute name="class">page-item disabled</xsl:attribute>
-            <a class="page-link"><span>
+            <a class="page-link" tabindex="0" href="#">
               <xsl:text disable-output-escaping="yes">&amp;raquo;</xsl:text>
               <span class="sr-only">
                 <xsl:value-of select="$label.lastPage" />
               </span>
-            </span></a>
+            </a>
           </xsl:otherwise>
         </xsl:choose>
       </li>
@@ -345,16 +345,16 @@
     <xsl:param name="paginateEnd-mobile" />
 
     <xsl:if test="$paginateStart = number($page)">
-      <li class="active page-item">
-        <a class="page-link"><span>
+      <li class="page-item active">
+        <a class="page-link" tabindex="0" href="#">
           <xsl:value-of select="$paginateStart" />
-        </span></a>
+        </a>
       </li>
     </xsl:if>
     <xsl:if test="$paginateStart != number($page)">
       <li class="page-item">
         <xsl:if test="($paginateStart &lt; $paginateStart-mobile) or ($paginateStart &gt; $paginateEnd-mobile)">
-          <xsl:attribute name="class">d-xs-none</xsl:attribute>
+          <xsl:attribute name="class">page-item d-none d-sm-block</xsl:attribute>
         </xsl:if>
         <a class="page-link" tabindex="0">
           <xsl:attribute name="href">
