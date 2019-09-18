@@ -73,14 +73,14 @@
     <xsl:if test="string-length(@i18n) &gt; 0">
       <xsl:apply-templates select="." mode="label" />
     </xsl:if>
+    <xsl:comment>
+      TODO:
+      The property MIR.Layout.inputSize ($input-size) can be set to the old
+      bs3 responsive level 'xs', but in bs4 'xs' is not used anymore in class
+      names. So a simple concat will cause errors. Check the mir code if
+      this property forces a condition check elsewhere too.
+    </xsl:comment>
     <div>
-      <xsl:comment>
-        TODO:
-        The property MIR.Layout.inputSize ($input-size) can be set to the old
-        bs3 responsive level 'xs', but in bs4 'xs' is not used anymore in class
-        names. So a simple concat will cause errors. Check the mir code if
-        this property forces a condition check elsewhere too.
-      </xsl:comment>
       <xsl:attribute name="class">
         <xsl:choose>
           <xsl:when test="contains($input-size, 'xs')">
@@ -149,10 +149,16 @@
         </xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
-
     <div>
       <xsl:attribute name="class">
-        <xsl:value-of select="concat('col-', $colsize, '-', $colwidth, ' ')" />
+        <xsl:choose>
+          <xsl:when test="contains($colsize, 'xs')">
+            <xsl:value-of select="concat('col-', $colwidth, ' ')" />
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:value-of select="concat('col-', $colsize, '-', $colwidth, ' ')" />
+          </xsl:otherwise>
+        </xsl:choose>
         <xsl:value-of select="'{$xed-validation-marker}'" />
       </xsl:attribute>
       <xsl:choose>
