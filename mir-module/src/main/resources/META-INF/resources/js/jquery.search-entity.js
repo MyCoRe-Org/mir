@@ -567,7 +567,7 @@
     if (item) {
       this.$element != $output && item.label && this.$element.val(item.label.replace(SearchEntity.LABEL_CLEANUP, ""));
  
-      if (item.type != undefined && item.type != "") {
+      if (item.type !== undefined && item.type !== "") {
 
         $outputNameType.val(item.type.toLowerCase());
 
