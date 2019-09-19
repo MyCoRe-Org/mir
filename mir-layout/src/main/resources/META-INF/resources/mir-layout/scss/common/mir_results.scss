@@ -3,7 +3,7 @@
  *****************************************************************************/
 
 $dark_neutral: $gray-600 !default; // dark gray #999
-$light_neutral: $gray-200 !default; // light gray #ccc
+$light_neutral: $gray-500 !default; // light gray #ccc
 $link_color: $link-color !default; // blue  #4b8fbc
 $highlight: $warning !default; // orange #f39c12
 
@@ -78,9 +78,9 @@ $filter: #666 !default;
       margin: 0 10px 23px 0;
     }
 
-     .card {
-       border: 1px solid $filter_border;
-       color: $filter;
+    .card {
+      border: 1px solid $filter_border;
+      color: $filter;
       margin: 0px 0 20px 0;
       float: left;
       width: 100%;
@@ -109,13 +109,10 @@ $filter: #666 !default;
 	   li[data-fq^='worldReadableComplete']{
 	     .title:before{
            display: inline-block;
-           font: normal normal normal 14px/1 FontAwesome;
+           font: normal normal 900 14px/1 'Font Awesome 5 Free';
            text-rendering: auto;
            -webkit-font-smoothing: antialiased;
            -moz-osx-font-smoothing: grayscale;
-           font-size: 1.33333333em;
-           line-height: 0.75em;
-           vertical-align: -15%;
            margin-right: 5px;
          }
        }
@@ -246,24 +243,26 @@ $filter: #666 !default;
         color: $dark_neutral;
       }
       .hit_state {
-        color: $dark_neutral;
+        color: $white;
         .mir-published {
-          //TODO: background-color: $label-success-bg;
+          background-color: $success;
         }
-        .mir-submitted, .mir-new, .mir-imported {
-          //TODO: background-color: $label-warning-bg;
+        .mir-submitted,
+        .mir-new,
+        .mir-imported {
+          background-color: $warning;
         }
         .mir-review {
-          //TODO: background-color: $label-primary-bg;
+          background-color: $primary;
         }
         .mir-blocked {
-          //TODO: background-color: $label-danger-bg;
+          background-color: $danger;
         }
         .mir-deleted {
-          //TODO: background-color: $label-default-bg;
+          background-color: $secondary;
         }
         span {
-          //TODO: background-color: $label-default-bg;
+          background-color: $secondary;
         }
       }
       .hit_title {
@@ -325,7 +324,7 @@ $filter: #666 !default;
           &:hover {
             color: white;
           }
-          .fa {
+          .fas {
             margin-right: 5px;
           }
         }
@@ -468,9 +467,6 @@ $file_box_color: $card-bg !default;
                 .set_number {
                   margin-left: 6px;
                 }
-                .caret {
-                  margin-left: 6px;
-                }
               }
             }
             .options {
@@ -504,7 +500,7 @@ $file_box_color: $card-bg !default;
                   }
                 }
                 .option {
-                  color: $dark_neutral;
+                  color: #7b8a8b;
                   background-color: transparent;
                   &:hover {
                     color: white;
@@ -564,8 +560,7 @@ $file_box_color: $card-bg !default;
                 }
               }
             }
-            border-top: 0px solid $file_box_color;
-            padding: 5px 0px 5px 0px;
+
             .options {
                 .dropdown-menu > li > a:hover {
                   background-color: $highlight;
@@ -783,4 +778,3 @@ TODO: migrate see https://getbootstrap.com/docs/4.0/migration/ strg+f Grid break
   }
 }
 */
-

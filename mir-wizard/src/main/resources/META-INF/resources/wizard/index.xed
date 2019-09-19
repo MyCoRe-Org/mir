@@ -32,7 +32,7 @@
               </div>
               <mir:template name="textInput" xpath="login" id="loginToken" i18n="component.mir.wizard.loginToken" i18n.error="component.mir.wizard.loginToken.required"
                 required="true" />
-              <div class="pull-right">
+              <div class="float-right">
                 <mir:template name="submitButton" i18n="component.mir.wizard.login.button" target="servlet" href="MIRWizardServlet" />
               </div>
             </fieldset>
@@ -48,7 +48,7 @@
                 <mir:template name="textInput" xpath="property[@name='MCR.Solr.ServerURL']" id="solrURL"
                   default="http://localhost:8983" i18n="component.mir.wizard.solr.url" i18n.error="component.mir.wizard.solr.url.required"
                   required="true" />
-                <mir:template name="textInput" xpath="property[@name='MCR.Solr.Core.main.Name']" id="solrMainCore" 
+                <mir:template name="textInput" xpath="property[@name='MCR.Solr.Core.main.Name']" id="solrMainCore"
                   i18n="component.mir.wizard.solr.mainCore" />
                 <mir:template name="textInput" xpath="property[@name='MCR.Solr.Core.classification.Name']" id="solrClassificationCore"
                   i18n="component.mir.wizard.solr.classificationCore" />
@@ -93,7 +93,7 @@
                   </div>
                 </div>
               </xed:bind>
-              <div class="pull-right">
+              <div class="float-right">
                 <mir:template name="submitButton" i18n="component.mir.wizard.save" target="servlet" href="MIRWizardServlet" />
               </div>
             </fieldset>

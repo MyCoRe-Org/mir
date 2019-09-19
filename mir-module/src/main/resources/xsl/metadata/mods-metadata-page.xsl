@@ -11,7 +11,7 @@
       <xsl:copy-of select="@*" />
       <head>
         <xsl:apply-templates select="citation_meta" mode="copyContent" />
-        <link href="{$WebApplicationBaseURL}mir-layout/assets/jquery/plugins/shariff/shariff.complete.css" rel="stylesheet" />
+        <link href="{$WebApplicationBaseURL}mir-layout/assets/jquery/plugins/shariff/shariff.min.css" rel="stylesheet" />
       </head>
 
       <xsl:if test="div[@id='mir-breadcrumb']">
@@ -48,7 +48,7 @@
 
         <div id="head_col" class="col-12">
           <div class="row">
-            <div class="col-12 col-sm-8 col-sm-pull-4 col-md-8 col-md-pull-4">
+            <div class="col-12 col-sm-8 col-sm-float-4 col-md-8 col-md-float-4">
               <xsl:apply-templates select="div[@id='mir-abstract-badges']" mode="copyContent" />
             </div>
             <div id="aux_col_actions" class="col-12 col-sm-4 col-sm-push-8 col-md-4 col-md-push-8">
@@ -71,7 +71,7 @@
 
           <!-- Table of Contents (BETA activate for testing) -->
           <!-- xsl:copy-of select="div[@id='toc']" / -->
-          
+
           <!-- fileupload -->
           <xsl:if test="div[contains(@id,'mir-file-upload')]">
             <xsl:apply-templates select="div[@id='mir-file-upload']" mode="copyContent" />
@@ -114,7 +114,7 @@
         </div>
 
 <!-- right column -->
-        <div id="aux_col" class="col-xs-12 col-sm-4">
+        <div id="aux_col" class="col-12 col-sm-4">
 
 <!-- cites -->
           <xsl:if test="div[@id='mir-citation']">
@@ -182,22 +182,38 @@
                 <xsl:apply-templates select="div[@id='mir-admindata']" mode="newMetadata" />
                 <!-- End: ADMINMETADATA -->
               </div>
-              <div class="modal fade" id="historyModal" tabindex="-1" role="dialog" aria-labelledby="modal frame" aria-hidden="true">
-                <div class="modal-dialog" style="width: 930px">
+              <div
+                  id="historyModal"
+                  class="modal fade"
+                  tabindex="-1"
+                  role="dialog"
+                  aria-labelledby="modal frame"
+                  aria-hidden="true">
+                <div
+                  class="modal-dialog modal-lg modal-xl"
+                  role="document">
                   <div class="modal-content">
                     <div class="modal-header">
-                      <button type="button" class="close modalFrame-cancel" data-dismiss="modal" aria-label="Close">
-                        <i class="fa fa-times" aria-hidden="true"></i>
-                      </button>
                       <h4 class="modal-title" id="modalFrame-title">
                         <xsl:value-of select="i18n:translate('metadata.versionInfo.label')" />
                       </h4>
+                      <button
+                        type="button"
+                        class="close modalFrame-cancel"
+                        data-dismiss="modal"
+                        aria-label="Close">
+                        <i class="fas fa-times" aria-hidden="true"></i>
+                      </button>
                     </div>
-                    <div id="modalFrame-body" class="modal-body" style="max-height: 560px; overflow: auto">
+                    <div id="modalFrame-body" class="modal-body">
                       <xsl:apply-templates select="div[@id='mir-historydata']" mode="copyContent" />
                     </div>
-                    <div class="modal-footer" style="clear: both">
-                      <button id="modalFrame-cancel" type="button" class="btn btn-danger" data-dismiss="modal">
+                    <div class="modal-footer">
+                      <button
+                        id="modalFrame-cancel"
+                        type="button"
+                        class="btn btn-danger"
+                        data-dismiss="modal">
                         <xsl:value-of select="i18n:translate('button.cancel')" />
                       </button>
                     </div>

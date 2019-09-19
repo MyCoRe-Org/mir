@@ -2,9 +2,9 @@
 # yarn lockfile v1
 
 
-"@fortawesome/fontawesome-free-webfonts@^1.0.3":
-  version "1.0.9"
-  resolved "https://registry.yarnpkg.com/@fortawesome/fontawesome-free-webfonts/-/fontawesome-free-webfonts-1.0.9.tgz#72f2c10453422aba0d338fa6a9cb761b50ba24d5"
+"@fortawesome/fontawesome-free@5.10.1", "@fortawesome/fontawesome-free@^5.8.2":
+  version "5.10.1"
+  resolved "https://registry.yarnpkg.com/@fortawesome/fontawesome-free/-/fontawesome-free-5.10.1.tgz#dec28ee02c3fc51da46d53ce4da9d5787312fbd7"
 
 abbrev@1:
   version "1.1.1"
@@ -441,10 +441,6 @@ fined@^1.0.1:
 flagged-respawn@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/flagged-respawn/-/flagged-respawn-1.0.0.tgz#4e79ae9b2eb38bf86b3bb56bf3e0a56aa5fcabd7"
-
-font-awesome@4.7.0:
-  version "4.7.0"
-  resolved "https://registry.yarnpkg.com/font-awesome/-/font-awesome-4.7.0.tgz#8fa8cf0411a1a31afd07b06d2902bb9fc815a133"
 
 for-in@^1.0.1, for-in@^1.0.2:
   version "1.0.2"
@@ -887,9 +883,9 @@ jquery-migrate@1.4.1:
   version "1.4.1"
   resolved "https://registry.yarnpkg.com/jquery-migrate/-/jquery-migrate-1.4.1.tgz#85152f3ec99a95625f4f7d0bcf62e9b8638f5a76"
 
-jquery@3.3.1, jquery@^3.2.1:
-  version "3.3.1"
-  resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.3.1.tgz#958ce29e81c9790f31be7792df5d4d95fc57fbca"
+jquery@3.4.1, jquery@^3.4.1:
+  version "3.4.1"
+  resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.4.1.tgz#714f1f8d9dde4bdfa55764ba37ef214630d80ef2"
 
 js-yaml@^3.3.0:
   version "3.12.0"
@@ -1367,12 +1363,12 @@ set-value@^2.0.0:
     is-plain-object "^2.0.3"
     split-string "^3.0.1"
 
-shariff@3.0.1:
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/shariff/-/shariff-3.0.1.tgz#288340d500e108b21f380168b7d6109c6c256936"
+shariff@3.2.1:
+  version "3.2.1"
+  resolved "https://registry.yarnpkg.com/shariff/-/shariff-3.2.1.tgz#ba517b3dd0af1499756aa844c75bb691a193c722"
   dependencies:
-    "@fortawesome/fontawesome-free-webfonts" "^1.0.3"
-    jquery "^3.2.1"
+    "@fortawesome/fontawesome-free" "^5.8.2"
+    jquery "^3.4.1"
 
 signal-exit@^3.0.0:
   version "3.0.2"

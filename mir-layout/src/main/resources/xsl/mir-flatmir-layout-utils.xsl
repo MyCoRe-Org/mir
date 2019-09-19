@@ -29,7 +29,7 @@
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
-    <div class="navbar navbar-expand-lg bg-primary mir-main-nav">
+    <div class="navbar navbar-expand-lg mir-main-nav">
       <div class="container">
 
         <div class="navbar-header">
@@ -67,7 +67,7 @@
               </xsl:when>
             </xsl:choose>
           </div>
-          <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
+          <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i></button>
         </form>
 
       </div><!-- /container -->

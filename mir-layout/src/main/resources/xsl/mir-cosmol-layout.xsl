@@ -29,7 +29,7 @@
           Mobile viewport optimization
         </xsl:comment>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <link href="{$WebApplicationBaseURL}assets/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+        <link href="{$WebApplicationBaseURL}assets/font-awesome/css/all.min.css" rel="stylesheet" />
         <script type="text/javascript" src="{$WebApplicationBaseURL}mir-layout/assets/jquery/jquery.min.js"></script>
         <script type="text/javascript" src="{$WebApplicationBaseURL}mir-layout/assets/jquery/plugins/jquery-migrate/jquery-migrate.min.js"></script>
         <xsl:copy-of select="head/*" />
@@ -53,18 +53,18 @@
         <div class="container" id="page">
           <div class="row" id="main_content">
 
-            <div id="side_nav_column" class="hidden-xs col-sm-3">
+            <div id="side_nav_column" class="d-xs-none col-sm-3">
               <xsl:call-template name="mir.navigation" />
             </div>
 
-            <div id="main_content_column" class="col-xs-12 col-sm-9">
+            <div id="main_content_column" class="col-12 col-sm-9">
 
               <div class="button_box">
                 <button id="hide_side_button"
                         class="navbar-toggle"
                         type="button">
                   <span class="sr-only"> Hide side nav </span>
-                  <span id="close-icon" class="fa fa-chevron-left"> </span>
+                  <span id="close-icon" class="fas fa-chevron-left"> </span>
                   <div id="menu-icon" class="">
                     <span class="icon-bar"> </span>
                     <span class="icon-bar"> </span>
@@ -75,7 +75,7 @@
               </div>
 
               <div class="row detail_row bread_plus">
-                <div class="col-xs-12">
+                <div class="col-12">
                   <ul itemprop="breadcrumb" class="breadcrumb">
                     <li class="breadcrumb-item">
                       <a class="navtrail" href="{$WebApplicationBaseURL}"><xsl:value-of select="i18n:translate('mir.breadcrumb.home')" /></a>

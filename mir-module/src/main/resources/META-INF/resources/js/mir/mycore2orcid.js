@@ -33,7 +33,7 @@ function setORCIDPublicationStatus(div, status) {
 		var html = "<span class='orcid-info' title='"
 			+ (status.isInORCIDProfile ? orcidTextStatusIsInProfileTrue : orcidTextStatusIsInProfileFalse)	+ "'>";
 		html += orcidIcon;
-		html += "<span class='glyphicon glyphicon-thumbs-" + (status.isInORCIDProfile ? "up" : "down") 
+		html += "<span class='far fa-thumbs-" + (status.isInORCIDProfile ? "up" : "down") 
 		        + " orcid-in-profile-" + status.isInORCIDProfile + "' aria-hidden='true' />";
 		html += "</span>";
 		jQuery(div).html(html);

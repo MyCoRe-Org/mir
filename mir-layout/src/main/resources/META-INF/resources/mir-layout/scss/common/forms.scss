@@ -17,12 +17,8 @@
   top: 0;
 }
 
-*:not(.input-group-btn)/*:not(.btn-group)*/ > .btn {
-  margin-right: 5px;
-}
-
 .form-pmud .btn {
-//depricated
+//deprecated
   margin-right: 2px;
   margin-top: 4px;
   font-size: 12px;
@@ -39,10 +35,6 @@
 .modal-content {
   top: 50px;
 }
-
-/*.required:before {
-  content:"* ";
-}*/
 
 .required > label:before {
   content:"* ";
@@ -126,7 +118,6 @@
 
 .expand-item {
     position: absolute;
-    font-size: 21px;
     padding-top: 9px;
     cursor: pointer;
     padding-left: 5px;
@@ -196,7 +187,7 @@ span.topicExtended-container input.topic_gnd, span.geographicExtended-container 
 /* mir relatedItemsearch                           */
 /***************************************************/
 .mir-relatedItem-body{
-  margin-top:15px;
+  padding-top:15px;
   border-style: solid;
   border-width: 0px 0px 0px 2px;
   border-color: #ccc;
@@ -204,7 +195,7 @@ span.topicExtended-container input.topic_gnd, span.geographicExtended-container 
 }
 
 .mir-relatedItem-head{
-  margin-bottom: 15px;
+  margin-bottom: 0;
   border-style: solid;
   border-width: 2px 2px 2px 2px;
   border-color: #ccc;
@@ -231,7 +222,7 @@ span.topicExtended-container input.topic_gnd, span.geographicExtended-container 
 }
 
 .searchbadge, .badge {
-    font-size: 13px;
+    font-size: 75%;
 }
 
 .relItemsearch {
@@ -246,7 +237,7 @@ span.topicExtended-container input.topic_gnd, span.geographicExtended-container 
   margin-bottom: 40px;
 }
 
-.has-error iframe {
+.mcr-invalid iframe {
   border: solid thin $danger;
 }
 
@@ -291,8 +282,8 @@ TODO: migrate see https://getbootstrap.com/docs/4.0/migration/ strg+f Grid break
 /***************************************************/
 
 .openstreetmap-container #type {
-	width: auto; 
-	display: inline; 
+	width: auto;
+	display: inline;
 	margin: 5px;
 }
 
@@ -306,13 +297,11 @@ TODO: migrate see https://getbootstrap.com/docs/4.0/migration/ strg+f Grid break
 /***************************************************/
 
 #main_content .select2-selection {
-  border: 2px solid #dce4ec;
-  height: 44px;
-  padding: 6px 10px;
+  border: 1px solid #ced4da;
+  height: calc(1.5em + 0.75rem + 2px);;
+  padding: 0.175rem 0.75rem;
 }
 
 #main_content .select2-selection__arrow {
   top: 8px;
 }
-
-

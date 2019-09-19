@@ -578,15 +578,15 @@
                 </fieldset>
                 </div>
 
-                <div class="form-group has-success">
+                <div class="form-group mcr-valid">
                 <label class="form-control-label" for="inputSuccess1">Valid input</label>
-                <input type="text" value="correct value" class="form-control is-valid" id="inputValid" />
+                <input type="text" value="correct value" class="form-control mcr-valid" id="inputValid" />
                 <div class="valid-feedback">Success! You've done it.</div>
                 </div>
 
                 <div class="form-group has-danger">
                 <label class="form-control-label" for="inputDanger1">Invalid input</label>
-                <input type="text" value="wrong value" class="form-control is-invalid" id="inputInvalid" />
+                <input type="text" value="wrong value" class="form-control mcr-invalid" id="inputInvalid" />
                 <div class="invalid-feedback">Sorry, that username's taken. Try another?</div>
                 </div>
 

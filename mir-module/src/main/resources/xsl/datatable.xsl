@@ -185,7 +185,7 @@
             <div class="col-xs-{$colWidth}">
               <div class="form-group no-margin" id="{$id}_filter">
                 <label>
-                  <span class="fa fa-filter" aria-hidden="true" />
+                  <span class="fas fa-filter" aria-hidden="true" />
                   <xsl:value-of select="i18n:translate(concat($i18nprefix, '.filter'))" />
                   <xsl:text disable-output-escaping="yes">&amp;nbsp;</xsl:text>
                   <input class="form-control input-sm" type="search" name="Filter">
@@ -199,20 +199,20 @@
               </div>
             </div>
           </xsl:if>
-          
+
           <!-- numPerPage selector -->
           <div>
             <xsl:attribute name="class">
               <xsl:choose>
                 <xsl:when test="$disableFilter = true()">
-                  <xsl:value-of select="concat('col-xs-offset-', $colWidth div 2, ' col-xs-', $colWidth div 2)" />
+                  <xsl:value-of select="concat('offset-', $colWidth div 2, ' col-', $colWidth div 2)" />
                 </xsl:when>
                 <xsl:otherwise>
                   <xsl:value-of select="concat(' col-xs-', $colWidth)" />
                 </xsl:otherwise>
               </xsl:choose>
             </xsl:attribute>
-            <div id="{$id}_length" class="form-group pull-right no-margin">
+            <div id="{$id}_length" class="form-group float-right no-margin">
               <label>
                 <select class="form-control input-sm" name="numPerPage" size="1" onchange="this.form.submit()">
                   <xsl:variable name="tokens">
@@ -265,7 +265,7 @@
       <div class="card-footer clearfix">
         <span id="{$id}_info">
           <xsl:if test="$pages &gt; 1">
-            <xsl:attribute name="class">hidden-xs</xsl:attribute>
+            <xsl:attribute name="class">d-xs-none</xsl:attribute>
           </xsl:if>
           <xsl:value-of select="i18n:translate(concat($i18nprefix, '.filterInfo'), concat($start, ';', $end, ';', $total))" />
         </span>
@@ -298,13 +298,13 @@
           <xsl:variable name="iconClass">
             <xsl:choose>
               <xsl:when test="($SortBy = @sortBy) and ($SortOrder = 'asc')">
-                <xsl:text>fa fa-sort-amount-asc</xsl:text>
+                <xsl:text>fas fa-sort-amount-up-alt</xsl:text>
               </xsl:when>
               <xsl:when test="($SortBy = @sortBy) and ($SortOrder = 'desc')">
-                <xsl:text>fa fa-sort-amount-desc</xsl:text>
+                <xsl:text>fas fa-sort-amount-down-alt</xsl:text>
               </xsl:when>
               <xsl:otherwise>
-                <xsl:text>fa fa-sort</xsl:text>
+                <xsl:text>fas fa-sort</xsl:text>
               </xsl:otherwise>
             </xsl:choose>
           </xsl:variable>
@@ -331,7 +331,7 @@
                     </xsl:call-template>
                   </xsl:attribute>
                   <xsl:value-of select="text()" />
-                  <span class="pull-left {$iconClass} sort-icon" />
+                  <span class="float-left {$iconClass} sort-icon" />
                 </a>
               </xsl:when>
               <xsl:otherwise>
@@ -432,7 +432,7 @@
     <xsl:param name="i18nprefix" select="'dataTable'" />
     <xsl:param name="pages" />
 
-    <ul id="{$id}_paginate" class="pagination pagination-sm pull-right no-margin">
+    <ul id="{$id}_paginate" class="pagination pagination-sm float-right no-margin">
       <li>
         <xsl:choose>
           <xsl:when test="number($Page) &gt; 1">

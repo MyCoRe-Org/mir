@@ -44,7 +44,7 @@
       <pre id="mycoreProperties" class="col-sm-6"/>
     </div>
     <h2>Preview</h2>
-    <div class="col-xs-12" id="remote">
+    <div class="col-12" id="remote">
     </div>
     <style type="text/css">
     <![CDATA[

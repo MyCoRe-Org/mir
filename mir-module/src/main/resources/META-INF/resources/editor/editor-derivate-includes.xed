@@ -18,8 +18,8 @@
 
   <xed:template id="derivate_types">
     <xed:bind xpath="derivate/classifications[@class='MCRMetaClassification'][@heritable='false']/classification">
-      <div class="form-group">
-        <label class="col-md-3 control-label">
+      <div class="form-group row">
+        <label class="col-md-3 col-form-label text-right d-inline">
           <xed:output i18n="mir.derivate.type"/>
         </label>
         <div class="col-md-6">
@@ -36,18 +36,18 @@
 
   <xed:template id="title_repeat">
     <xed:repeat xpath="derivate/titles[@class='MCRMetaLangText'][@heritable='false'][1]/title">
-      <div class="form-group">
-        <label class="col-md-3 control-label">
+      <div class="form-group row">
+        <label class="col-md-3 col-form-label text-right d-inline">
           <xed:output i18n="mir.title"/>
         </label>
-        <div class="col-md-3">
+        <div class="col-md-2">
           <xed:bind xpath="@xml:lang">
             <div class="controls">
               <xed:include ref="lang.list" />
             </div>
           </xed:bind>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-4">
           <xed:bind xpath=".">
             <input class="form-control" type="text" />
           </xed:bind>
@@ -73,14 +73,14 @@
       </xed:choose>
     </select>
   </xed:template>
-  
+
   <xed:template id="validation-rules">
     <xed:validate xpath="/derivate/@order" type="integer" display="global" i18n="mir.validation.order" />
   </xed:template>
-  
+
   <xed:template id="debug.cancel.submit">
-    <div class="form-group" id="editor-buttons">
-      <div class="col-md-offset-2 col-md-6">
+    <div class="form-group row" id="editor-buttons">
+      <div class="offset-md-2 col-md-6">
         <button type="submit" class="btn btn-secondary" xed:target="debug">Debug</button>
         <button type="submit" class="btn btn-secondary" xed:target="cancel">
           <xed:output i18n="button.cancel" />
@@ -96,8 +96,8 @@
     <xed:include ref="validation-rules" />
     <xed:include ref="cleanup-rules" />
 
-    <div class="form-group" id="editor-buttons">
-      <div class="col-md-offset-2 col-md-6">
+    <div class="form-group row" id="editor-buttons">
+      <div class="offset-md-2 col-md-6">
         <button type="submit" class="btn btn-secondary" xed:target="cancel">
           <xed:output i18n="button.cancel" />
         </button>
@@ -107,7 +107,7 @@
       </div>
     </div>
   </xed:template>
-  
+
   <xed:template id="cleanup-rules">
     <xed:cleanup-rule xpath="//classifications" relevant-if="count(classification)&gt;0" />
     <xed:cleanup-rule xpath="//classification" relevant-if="string-length(text())&gt;0" />
@@ -130,5 +130,5 @@
     <script type="text/javascript" src="{$WebApplicationBaseURL}assets/select2/js/select2.min.js" />
     <script type="text/javascript" src="{$WebApplicationBaseURL}assets/select2/js/i18n/{$MCR.Metadata.DefaultLang}.js" />
   </xed:template>
-  
+
 </xed:template>

@@ -55,24 +55,26 @@
   }
   .doc_state {
     display: inline;
-    color: $dark_neutral;
+    color: $white;
     .mir-published {
-      background-color: darken($success, 10%)!important;
+      background-color: $success;
     }
-    .mir-submitted, .mir-new, .mir-imported {
-      background-color: darken($warning, 10%)!important;
+    .mir-submitted,
+    .mir-new,
+    .mir-imported {
+      background-color: $warning;
     }
     .mir-review {
-      background-color: darken($primary, 10%)!important;
+      background-color: $primary;
     }
     .mir-blocked {
-      background-color: darken($danger, 10%)!important;
+      background-color: $danger;
     }
     .mir-deleted {
-      //background-color: $label-default-bg;//TODO: not sure if this variable has a equivalent in bs4
+      background-color: $secondary;
     }
     span {
-      //background-color: $label-default-bg;//TODO: not sure if this variable has a equivalent in bs4
+      background-color: $secondary;
     }
   }
 }
@@ -139,7 +141,7 @@ $grayDark: #ECF0F1 !default;
     span {
       cursor: pointer;
     }
-    span.fa {
+    span.fas {
       color: #ccc;
       margin-right: 0.5em;
     }

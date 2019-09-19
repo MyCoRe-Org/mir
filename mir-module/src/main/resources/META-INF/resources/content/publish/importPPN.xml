@@ -26,7 +26,7 @@
         <div class="col-sm-7 col-md-5  col-lg-4">
           <input type="text" name="ppn" id="ppn" class="form-control" size="20" placeholder="z.B. 198562268" />
         </div>
-        <div class="hidden-xs col-sm-3 hidden-lg"></div>
+        <div class="d-xs-none col-sm-3 d-lg-none"></div>
         <div class="col-sm-7 col-md-4 col-lg-5">
           <p>
             Sollten die Daten bereits im GVK des GBV erfasst sein, können Sie diese über Angabe der PPN in die Erfassungsmaske
@@ -67,7 +67,7 @@
         <div class="col-sm-7 col-md-5  col-lg-4">
           <input type="text" name="ppn" id="ppn" class="form-control" size="20" placeholder="e.g. 198562268" />
         </div>
-        <div class="hidden-xs col-sm-3 hidden-lg"></div>
+        <div class="d-xs-none col-sm-3 d-lg-none"></div>
         <div class="col-sm-7 col-md-4 col-lg-5">
           <p>
             If the data is already entered in the GVK of the GBV, you can copy these into the entry mask by

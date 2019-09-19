@@ -339,9 +339,9 @@
     // Button style
     buttonClass : "btn btn-secondary",
     // Feedback style (optical feedback for current selection)
-    feedbackClass : "feedback label btn-primary",
+    feedbackClass : "feedback badge badge-primary",
     // Feedback cleaner icon style
-    feedbackCleanIconClass : "feedback-clean btn-primary fa fa-times-circle-o",
+    feedbackCleanIconClass : "feedback-clean far fa-times-circle",
 
     // min length of search term
     inputMinLength : 3,
@@ -580,6 +580,7 @@
       var $feedback = $(document.createElement("a"));
       $feedback.attr("href", getURLFromTypeAndID($outputType.val(), $output.val()));
       $feedback.attr("target", "_blank");
+      $feedback.attr("class", "mcr-badge--origin");
       $feedback.css({
         textDecoration : "none"
       });
@@ -595,9 +596,6 @@
       $label.html(type != null ? type.toUpperCase() : "N/A");
 
       var $remover = $(document.createElement("a"));
-      $remover.css({
-        marginLeft : 5,
-      });
       $remover.attr("href", "#");
       $remover.html("<i class=\"" + options.feedbackCleanIconClass + "\"></i>");
       $remover.on("click", function(e) {
@@ -617,13 +615,20 @@
       this.$element.after($feedback);
 
       $feedback.css({
-        marginLeft : -($feedback.width() + 10),
-        marginTop : Math.floor((this.$element.innerHeight() - $feedback.height()) / 2),
-        zIndex : 100
+        marginLeft : -($feedback.width() + 10)
+      });
+      // prevent badge overlay
+      // add padding to the input field in badge size
+      this.$element.css({
+        paddingRight : ($feedback.width() + 20)
       });
     } else {
       if (this.$feedback)
         this.$feedback.remove();
+      // remove badge overlay padding
+      this.$element.css({
+        paddingRight : 20
+      });
     }
   };
 

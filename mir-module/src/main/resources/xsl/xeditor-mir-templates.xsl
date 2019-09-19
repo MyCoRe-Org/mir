@@ -5,30 +5,12 @@
 
   <xsl:include href="copynodes.xsl" />
 
-  <xsl:param name="MIR.Layout.inputSize" />
-  <xsl:param name="MIR.Layout.inputWidth" />
+  <xsl:param name="MIR.Layout.inputSize" select="'md'" />
+  <xsl:param name="MIR.Layout.inputWidth" select="9" />
 
   <xsl:variable name="grid-width" select="12" />
-  <xsl:variable name="input-size">
-    <xsl:choose>
-      <xsl:when test="string-length($MIR.Layout.inputSize) &gt; 0">
-        <xsl:value-of select="$MIR.Layout.inputSize" />
-      </xsl:when>
-      <xsl:otherwise>
-        <xsl:text>md</xsl:text>
-      </xsl:otherwise>
-    </xsl:choose>
-  </xsl:variable>
-  <xsl:variable name="input-width">
-    <xsl:choose>
-      <xsl:when test="string-length($MIR.Layout.inputWidth) &gt; 0">
-        <xsl:value-of select="$MIR.Layout.inputWidth" />
-      </xsl:when>
-      <xsl:otherwise>
-        <xsl:value-of select="9" />
-      </xsl:otherwise>
-    </xsl:choose>
-  </xsl:variable>
+  <xsl:variable name="input-size" select="$MIR.Layout.inputSize" />
+  <xsl:variable name="input-width" select="$MIR.Layout.inputWidth" />
   <xsl:variable name="label-width" select="$grid-width - $input-width" />
 
   <xsl:template match="mir:template[contains('textInput|passwordInput|selectInput|checkboxList|radioList|textArea|static', @name)]">
@@ -91,11 +73,32 @@
     <xsl:if test="string-length(@i18n) &gt; 0">
       <xsl:apply-templates select="." mode="label" />
     </xsl:if>
+    <xsl:comment>
+      TODO:
+      The property MIR.Layout.inputSize ($input-size) can be set to the old
+      bs3 responsive level 'xs', but in bs4 'xs' is not used anymore in class
+      names. So a simple concat will cause errors. Check the mir code if
+      this property forces a condition check elsewhere too.
+    </xsl:comment>
     <div>
       <xsl:attribute name="class">
-        <xsl:value-of select="concat('col-', $input-size, '-', $input-width, ' ')" />
+        <xsl:choose>
+          <xsl:when test="contains($input-size, 'xs')">
+            <xsl:value-of select="concat('col-', $input-width, ' ')" />
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:value-of select="concat('col-', $input-size, '-', $input-width, ' ')" />
+          </xsl:otherwise>
+        </xsl:choose>
         <xsl:if test="string-length(@i18n) = 0">
-          <xsl:value-of select="concat('col-', $input-size, '-offset-',$label-width, ' ')" />
+          <xsl:choose>
+            <xsl:when test="contains($input-size, 'xs')">
+              <xsl:value-of select="concat('offset-', $label-width, ' ')" />
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:value-of select="concat('offset-', $input-size, '-',$label-width, ' ')" />
+            </xsl:otherwise>
+          </xsl:choose>
         </xsl:if>
         <xsl:value-of select="'{$xed-validation-marker}'" />
       </xsl:attribute>
@@ -122,7 +125,7 @@
       </xsl:choose>
     </div>
   </xsl:template>
-  
+
   <!-- MODE=inline -->
 
   <xsl:template match="mir:template[contains('textInput|passwordInput|selectInput|static', @name)]" mode="inline">
@@ -146,10 +149,16 @@
         </xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
-
     <div>
       <xsl:attribute name="class">
-        <xsl:value-of select="concat('col-', $colsize, '-', $colwidth, ' ')" />
+        <xsl:choose>
+          <xsl:when test="contains($colsize, 'xs')">
+            <xsl:value-of select="concat('col-', $colwidth, ' ')" />
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:value-of select="concat('col-', $colsize, '-', $colwidth, ' ')" />
+          </xsl:otherwise>
+        </xsl:choose>
         <xsl:value-of select="'{$xed-validation-marker}'" />
       </xsl:attribute>
       <xsl:choose>
@@ -179,8 +188,8 @@
 
   <xsl:template match="mir:template[contains('textInput|passwordInput|selectInput|checkboxList|radioList|textArea', @name)]" mode="validation">
     <xsl:if test="@required = 'true' or @validate = 'true'">
-      <xed:if test="contains($xed-validation-marker, 'has-error')">
-        <span class="fa fa-exclamation-triangle form-control-feedback" data-toggle="tooltip" data-placement="top" title="{concat('{i18n:', @i18n.error, '}')}"></span>
+      <xed:if test="contains($xed-validation-marker, 'mcr-invalid')">
+        <span class="fas fa-exclamation-triangle form-control-feedback" data-toggle="tooltip" data-placement="top" title="{concat('{i18n:', @i18n.error, '}')}"></span>
       </xed:if>
       <xed:validate display="local" required="{@required}">
         <xsl:copy-of select="@*[contains('matches|test|format|type', name())]" />
@@ -359,7 +368,7 @@
         <xsl:attribute name="title">
           <xsl:value-of select="concat('{i18n:',@tooltip,'}')" />
         </xsl:attribute>
-        <i class="fa fa-info-circle input-group-text" />
+        <i class="fas fa-info-circle input-group-text" />
       </span>
     </xsl:if>
   </xsl:template>
@@ -393,7 +402,7 @@
               >
                 <xsl:choose>
                   <xsl:when test="string-length(@icon) &gt; 0">
-                    <span class="hidden-xs hidden-sm">
+                    <span class="d-xs-none d-sm-none">
                       <xed:output i18n="{@i18n}" />
                     </span>
                   </xsl:when>

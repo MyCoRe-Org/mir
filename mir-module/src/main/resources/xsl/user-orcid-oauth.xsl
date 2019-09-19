@@ -95,7 +95,7 @@
 
 <xsl:template name="orcidIntegrationConfirmed">
   <h3 style="margin-bottom: 0.5em;">
-    <span class="glyphicon glyphicon-check" aria-hidden="true" />
+    <span class="fas fa-check" aria-hidden="true" />
     <xsl:text> </xsl:text>
     <xsl:value-of select="i18n:translate('orcid.integration.confirmed.thanks')" />
     <xsl:text>, </xsl:text>
