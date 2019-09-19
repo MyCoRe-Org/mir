@@ -94,7 +94,7 @@
             <xsl:variable name="lang"><xsl:value-of select="mcrxsl:trim(.)" /></xsl:variable>
             <xsl:if test="$lang!='' and $CurrentLang!=$lang">
               <xsl:variable name="langDef" select="document(concat('language:',$lang))" />
-              <li>
+              <li class="dropdown-item">
                 <xsl:variable name="langURL">
                   <xsl:call-template name="mir.languageLink">
                     <xsl:with-param name="lang" select="$langDef/language/@xmlCode" />
@@ -103,7 +103,7 @@
                 <xsl:variable name="langTitle">
                   <xsl:apply-templates select="$langDef/language" mode="mir.langTitle" />
                 </xsl:variable>
-                <a href="{$langURL}" class="dropdown-item" title="{$langTitle}">
+                <a href="{$langURL}" class="" title="{$langTitle}">
                   <xsl:value-of select="$langDef/language/@xmlCode" />
                 </a>
               </li>
@@ -244,7 +244,7 @@
 
     <li class="dropdown" id="basket-list-item">
       <a class="dropdown-toggle nav-link" data-toggle="dropdown" href="#" title="{$basketTitle}">
-        <i class="fa fa-bookmark"></i>
+        <i class="fas fa-bookmark"></i>
         <sup>
           <xsl:value-of select="$entryCount" />
         </sup>

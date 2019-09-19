@@ -37,16 +37,14 @@ header {
 
 // align the footer to the bottom
 body {
-  min-height: 100vh;
-  position: relative;
-  padding-bottom: 530px;
+    display: flex; // use flex box model
+    flex-direction: column; // sort items in a column
+    min-height: 100vh; // use full view port height
 }
-
-footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
+section {
+    flex: 1; // will use all available space left
 }
+// end: align footer
 
 // end footer alignment
 
@@ -72,13 +70,6 @@ p {
       padding-right: 20px;
     }
   }
-}
-
-#powered_by {
-  text-align: center;
-  background-color: #080F1F;
-  border-top: 1px solid #000;
-  padding: 2em 0px;
 }
 
 // TODO move this to the upload styles
@@ -139,6 +130,15 @@ p {
   .pagination {
     margin-bottom: 1rem;
   }
+}
+
+// TODO: workaround for fontawesome weights
+// see https://fontawesome.com/how-to-use/on-the-web/referencing-icons/basic-use
+.fas {
+  font-weight: 900;
+}
+.far {
+  font-weight: 400;
 }
 
 

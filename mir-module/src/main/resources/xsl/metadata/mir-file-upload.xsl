@@ -11,15 +11,17 @@
         <div data-upload-object="{$objID}" data-upload-target="/">
           <xsl:choose>
             <xsl:when test="count(mycoreobject/structure/derobjects/derobject)=0">
-              <xsl:attribute name="class">drop-to-object mir-file-upload-box well</xsl:attribute>
+              <xsl:attribute name="class">drop-to-object mir-file-upload-box card bg-light text-center</xsl:attribute>
             </xsl:when>
             <xsl:otherwise>
-              <xsl:attribute name="class">drop-to-object-optional mir-file-upload-box well</xsl:attribute>
+              <xsl:attribute name="class">drop-to-object-optional mir-file-upload-box card bg-light text-center</xsl:attribute>
               <xsl:attribute name="style">display:none;</xsl:attribute>
             </xsl:otherwise>
           </xsl:choose>
-          <i class="fa fa-upload"></i>
-          <xsl:value-of disable-output-escaping="yes" select="concat(' ', i18n:translate('mir.upload.drop.derivate'))"/>
+          <div class="card-body">
+            <i class="fas fa-upload"></i>
+            <xsl:value-of disable-output-escaping="yes" select="concat(' ', i18n:translate('mir.upload.drop.derivate'))"/>
+          </div>  
         </div>
         <script>
           mycore.upload.enable(document.querySelector(".drop-to-object,.drop-to-object-optional").parentElement);

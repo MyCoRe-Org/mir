@@ -34,7 +34,7 @@
   <xsl:template name="mir.top-navigation">
   <div class="navbar navbar-default mir-prop-nav">
     <nav class="mir-prop-nav-entries">
-      <ul class="nav navbar-nav pull-right">
+      <ul class="nav navbar-nav float-right">
         <xsl:call-template name="mir.loginMenu" />
         <xsl:call-template name="mir.languageMenu" />
       </ul>
@@ -57,7 +57,7 @@
                 </xsl:when>
               </xsl:choose>
           </div>
-          <button type="submit" title="{i18n:translate('mir.cosmol.navsearch.title')}" class="btn btn-primary"><span class="fa fa-search"></span></button>
+          <button type="submit" title="{i18n:translate('mir.cosmol.navsearch.title')}" class="btn btn-primary"><span class="fas fa-search"></span></button>
         </form>
         <ul class="nav navbar-nav">
           <xsl:apply-templates select="$loaded_navigation_xml/menu[@id='main']" />
@@ -85,7 +85,7 @@
             </div>
         </div>
         <div id="credits" class="row">
-            <div class="col-xs-12">
+            <div class="col-12">
                 <div id="powered_by">
                     <a href="http://www.mycore.de">
                         <xsl:variable name="mcr_version" select="concat('MyCoRe ',mcrver:getCompleteVersion())" />

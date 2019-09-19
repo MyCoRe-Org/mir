@@ -94,13 +94,15 @@ $(document).ready(function() {
       $("#modalFrame-title").text(button.val());
       $("#modalFrame-cancel").text($("button[name='_xed_submit_cancel']").text());
       $("#modalFrame-send").text("Auswählen").attr("disabled", "").removeAttr("style");
+      // TODO: check if you can remove HTML from js code (e.g. by a js template)
       $("#modalFrame-body").append("<div id='main_left_content' class='list-group col-md-4' />");
       $("#modalFrame-body").append("<div id='main_right_content' class='list-group col-md-8' />");
+      // TODO: remove styles from js code (by moving it to our css files)
       $("#main_left_content, #main_right_content").css({"max-height": "560px", "overflow": "auto"});
       $("#main_right_content").css("padding-left", "10px");
       //create pager
-      $("#modalFrame-body").after("<nav class='col-md-4' style='clear: both'><ul class='pager'><li id='first' class='previous disabled'><a data='0'>First</a></li><li id='previous' class='previous disabled'><a>Previous</a></li><li class='next disabled'><a>Next</a></li></ul></nav>");
-      $(".already-linked").before("<div class='col-md-4 type-select'><select class='form-control'><option value=''>Sortieren nach Typ:</option></select></div>");
+      $("#modalFrame-body").append("<div class='col-12'><nav style='clear: both'><ul class='pager'><li id='first' class='previous disabled'><a href='#' data='0'>First</a></li><li id='previous' class='previous disabled'><a href='#'>Previous</a></li><li class='next disabled'><a href='#'>Next</a></li></ul></nav></div>");
+      $(".already-linked").after("<div class='col-md-4 type-select'><select class='form-control'><option value=''>Ohne Eingrenzung nach Typ:</option></select></div>");
       $("li a").css("cursor", "pointer");
       $("#modal-searchInput").removeAttr("hidden");
       $("#modal-searchInput > input").attr("autocomplete", "off");
@@ -125,7 +127,7 @@ $(document).ready(function() {
             autorContainer = "<br/><i><small>Autor: " + autor + "</small></i>"
           }
           var type = "<br/><i><small>Type: " + getGenre($(this).find("str[name='mods.type']").text()) + "</small></i>";
-          var elm = $("<a class='list-group-item' value='" + $(this).find("str[name='id']").text() + "'>" + $(this).find("str[name='mods.title.main']").text() + autorContainer + type + "</a>");
+          var elm = $("<a href='#' class='list-group-item' value='" + $(this).find("str[name='id']").text() + "'>" + $(this).find("str[name='mods.title.main']").text() + autorContainer + type + "</a>");
           $("#main_left_content").append(elm);
           $(elm).css("cursor", "pointer");
           $(elm).attr("data-type", $(this).find("str[name='mods.type']").text());
@@ -203,7 +205,6 @@ $(document).ready(function() {
 
     $("#modalFrame").on('hidden.bs.modal', function() {
       $("#modalFrame-body").empty();
-      $("nav.col-md-4").remove();
       $("#modal-searchInput > input").val("");
       $(".modal-footer div.type-select").remove();
     });
@@ -328,13 +329,13 @@ $(document).ready(function() {
     }
 
     function activateSendButton(id) {
-      if(input.val() != id && $("input[name*='/@xlink:href'][value='" + id + "']").length > 0) {
-        $("#modalFrame-send").attr("disabled", "");
-        $(".already-linked").removeClass("hidden");
+      if(input.val() == id && $("input[name*='/@xlink:href'][value='" + id + "']").length > 0) {
+        $("#modalFrame-send").attr("disabled", "disabled");
+        $(".already-linked").removeClass("d-none");
       }
       else {
         $("#modalFrame-send").removeAttr("disabled");
-        $(".already-linked").addClass("hidden");
+        $(".already-linked").addClass("d-none");
       }
     }
   }

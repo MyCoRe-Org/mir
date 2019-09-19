@@ -11,6 +11,9 @@
   <packaging>war</packaging>
   <name>MIR: WebApp</name>
   <description>MIR web application that bundles are part in a single artifact</description>
+  <scm>
+    <tag>2019.06.x</tag>
+  </scm>
   <properties>
     <MCR.AppName>mir</MCR.AppName>
     <cargo.jvmargs>-DMCR.AppName=${MCR.AppName}</cargo.jvmargs>

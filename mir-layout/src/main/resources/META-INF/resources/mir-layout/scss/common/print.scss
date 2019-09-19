@@ -1,4 +1,27 @@
+@page {
+  size: A4;
+  margin: 0;
+}
+
+
 @media print {
+
+  html, body {
+    width: 210mm;
+    height: 297mm;
+  }
+
+  .mir_metadata {
+    display:table;
+  }
+
+  #main_content_column,
+  #main_col,
+  .result_list,
+  .mir_metadata {
+    width: 100%;
+  }
+
   #options_nav_box,
   .mir-main-nav,
   .bread_plus,
@@ -9,19 +32,28 @@
   #copy_cite_link,
   #mir_export_panel,
   footer,
-  #powered_by
-  {
+  #powered_by,
+  .result_searchline,
+  .result_filter
+  #head,
+  #menu_toggle,
+  #side_nav_column,
+  #mir-abstract-overlay,
+  .button_box,
+  #record_detail,
+  .nav-tabs {
     display: none;
   }
 
   a[href]:after{
     content:"";
   }
-  .nav-tabs {
-    display: none;
+
+  .hit_item, .panel  {
+    page-break-inside: avoid;
   }
-  .mir_metadata {
-    display:table;
-    width:100%;
+
+  .detail_block .ellipsis {
+    max-height: none;
   }
 }

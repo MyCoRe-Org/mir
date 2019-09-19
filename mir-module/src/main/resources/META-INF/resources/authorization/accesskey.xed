@@ -20,7 +20,7 @@
             <xed:include uri="xslStyle:xeditor-mir-templates:webapp:authorization/accesskey-includes.xed" ref="editor" />
           </div>
           <div class="card-footer clearfix">
-            <div class="pull-right">
+            <div class="float-right">
               <xed:include uri="xslStyle:xeditor-mir-templates:webapp:authorization/accesskey-includes.xed" ref="buttons" />
             </div>
           </div>

@@ -9,6 +9,9 @@
   <artifactId>mir-module</artifactId>
   <name>MIR: Application Module</name>
   <description>Contains all files and classes for a Institutional Repository</description>
+  <scm>
+    <tag>2019.06.x</tag>
+  </scm>
   <properties>
     <grunt.projectBase>${basedir}</grunt.projectBase>
     <template.assetsdir>${project.build.directory}/classes/META-INF/resources/assets</template.assetsdir>

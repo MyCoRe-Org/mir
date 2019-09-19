@@ -9,6 +9,9 @@
   <artifactId>mir-common-resources</artifactId>
   <name>MIR: Common Resources</name>
   <description>Bundles XSL Stylesheets</description>
+  <scm>
+    <tag>2019.06.x</tag>
+  </scm>
   <build>
     <plugins>
       <plugin>

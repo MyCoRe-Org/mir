@@ -25,7 +25,7 @@
 
   <xsl:template match="/basket">
     <div id="basket">
-      <div id="options" class="btn-group pull-right">
+      <div id="options" class="btn-group float-right">
         <xsl:call-template name="options" />
       </div>
       <h2>
@@ -86,7 +86,7 @@
 
 <!-- hit head -->
       <div class="row hit_item_head">
-        <div class="col-xs-12">
+        <div class="col-12">
 
 <!-- hit number -->
           <div class="hit_counter">
@@ -94,7 +94,7 @@
           </div>
 
 <!-- hit options -->
-          <div class="hit_options pull-right">
+          <div class="hit_options float-right">
               <div class="btn-group">
                 <xsl:apply-templates select="." mode="basketButtonsUpDownDelete" />
             </div>
@@ -106,7 +106,7 @@
 
 <!-- hit body -->
       <div class="row hit_item_body">
-        <div class="col-xs-12">
+        <div class="col-12">
 
           <xsl:choose>
             <xsl:when test="*[not(name()='comment')]">
@@ -148,19 +148,19 @@
 
   <xsl:template match="entry" mode="button">
     <xsl:param name="action" />
-    <xsl:param name="icon" select="'question-sign'" />
+    <xsl:param name="icon" select="'question-circle'" />
     <xsl:param name="class" select="'btn-secondary'" />
     <xsl:param name="condition" select="true()" />
     <xsl:choose>
       <xsl:when test="$condition">
         <a href="MCRBasketServlet?action={$action}&amp;type={/basket/@type}&amp;id={@id}" class="btn btn-small {$class}"
           title="{i18n:translate(concat('basket.button.',$action))}">
-          <i class="fa fa-{$icon}"></i>
+          <i class="fas fa-{$icon}"></i>
         </a>
       </xsl:when>
       <xsl:otherwise>
         <a href="#" class="btn btn-small btn-secondary disabled" title="{i18n:translate(concat('basket.button.',$action))}">
-          <i class="fa fa-{$icon}"></i>
+          <i class="fas fa-{$icon}"></i>
         </a>
       </xsl:otherwise>
     </xsl:choose>
@@ -169,7 +169,7 @@
   <xsl:template name="options">
     <div class="btn-group">
       <a href="#" class="btn btn-primary dropdown-toggle btn-sm" data-toggle="dropdown">
-        <span class="fa fa-export"></span>
+        <span class="fas fa-file-export mr-1"></span>
         Exportieren
         <span class="caret"></span>
       </a>
@@ -207,7 +207,7 @@
       </ul>
     </div>
     <a href="{$ServletsBaseURL}MCRBasketServlet{$HttpSession}?type={@type}&amp;action=clear&amp;redirect=referer" class="btn btn-danger btn-sm">
-      <span class="fa fa-trash"></span>
+      <span class="fas fa-trash-alt mr-1"></span>
       <xsl:value-of select="i18n:translate('basket.clear')" />
     </a>
   </xsl:template>

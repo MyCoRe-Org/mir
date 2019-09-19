@@ -9,6 +9,9 @@
   <artifactId>mir-layout</artifactId>
   <name>MIR: Layout</name>
   <description>mir layout template based on bootswatch</description>
+  <scm>
+    <tag>2019.06.x</tag>
+  </scm>
   <properties>
     <grunt.projectBase>${project.build.directory}/grunt</grunt.projectBase>
     <lesscss.compress>true</lesscss.compress>

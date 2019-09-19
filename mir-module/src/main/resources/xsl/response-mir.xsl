@@ -130,7 +130,7 @@
               </xsl:choose>
               <span class="input-group-btn input-group-append">
                 <button class="btn btn-primary" type="submit">
-                  <span class="fa fa-search"></span>
+                  <span class="fas fa-search"></span>
                    <xsl:value-of select="i18n:translate('editor.search.search')"/>
                 </button>
               </span>
@@ -163,7 +163,7 @@
             <input type="hidden" name="uri" value="{concat('mcrobject:',$docID)}" />
           </xsl:for-each>
           <button type="submit" tabindex="1" class="basket_button btn-primary form-control" value="add">
-            <i class="fa fa-plus"></i>
+            <i class="fas fa-plus"></i>
             <xsl:text> </xsl:text>
             <xsl:value-of select="i18n:translate('basket.add.searchpage')" />
           </button>
@@ -176,7 +176,7 @@
     <!-- xsl:if test="string-length(/response/lst[@name='responseHeader']/lst[@name='params']/str[@name='q']) &gt; 0">
       <div class="row">
         <div class="col-12 col-sm-8">
-          <span class="fa fa-remove-circle"></span>
+          <span class="fas fa-remove-circle"></span>
           <xsl:value-of select="/response/lst[@name='responseHeader']/lst[@name='params']/str[@name='q']" />
         </div>
       </div>
@@ -296,8 +296,8 @@
 
     <!-- derivate variables -->
     <xsl:variable name="derivates" select="key('derivate', $identifier)" />
-    <xsl:variable name="derivid" select="$derivates/str[@name='maindoc'][1]/../str[@name='id']" />
-    <xsl:variable name="maindoc" select="$derivates/str[@name='maindoc'][1]" />
+    <xsl:variable name="derivid" select="$derivates/str[@name='derivateMaindoc'][1]/../str[@name='id']" />
+    <xsl:variable name="maindoc" select="$derivates/str[@name='derivateMaindoc'][1]" />
     <xsl:variable name="derivbase" select="concat($ServletsBaseURL,'MCRFileNodeServlet/',$derivid,'/')" />
     <xsl:variable name="derivifs" select="concat($derivbase,$maindoc,$HttpSession)" />
 
@@ -341,10 +341,10 @@
 <!-- hit options -->
           <xsl:choose>
             <xsl:when test="acl:checkPermission($identifier,'writedb')">
-              <div class="hit_options pull-right">
+              <div class="hit_options float-right">
                 <div class="btn-group">
                   <a data-toggle="dropdown" class="btn btn-secondary dropdown-toggle" href="#">
-                    <i class="fa fa-cog"></i>
+                    <i class="fas fa-cog"></i>
                     Aktionen
                     <span class="caret"></span>
                   </a>
@@ -369,14 +369,14 @@
                               <xsl:attribute name="href">
                                     <xsl:value-of select="$editURL" />
                                   </xsl:attribute>
-                              <span class="fa fa-pencil"></span>
+                              <span class="fas fa-pencil-alt"></span>
                               <xsl:value-of select="i18n:translate('object.editObject')" />
                             </xsl:when>
                             <xsl:otherwise>
                               <xsl:attribute name="href">
                                     <xsl:value-of select="'#'" />
                                   </xsl:attribute>
-                              <span class="fa fa-pencil"></span>
+                              <span class="fas fa-pencil-alt"></span>
                               <xsl:value-of select="i18n:translate('object.locked')" />
                             </xsl:otherwise>
                           </xsl:choose>
@@ -388,7 +388,7 @@
               </div>
             </xsl:when>
             <xsl:otherwise>
-              <div class="single_hit_option pull-right">
+              <div class="single_hit_option float-right">
                 <xsl:call-template name="basketLink">
                   <xsl:with-param name="identifier" select="$identifier" />
                 </xsl:call-template>
@@ -442,9 +442,9 @@
                   </xsl:when>
 
                   <!-- show PDF thumbnail as preview -->
-                  <xsl:when test="translate(str:tokenize($derivates/str[@name='maindoc'][1],'.')[position()=last()],'PDF','pdf') = 'pdf'">
+                  <xsl:when test="translate(str:tokenize($derivates/str[@name='derivateMaindoc'][1],'.')[position()=last()],'PDF','pdf') = 'pdf'">
                     <xsl:variable name="filePath"
-                      select="concat($derivates/str[@name='id'][1],'/',mcr:encodeURIPath($derivates/str[@name='maindoc'][1]),$HttpSession)" />
+                      select="concat($derivates/str[@name='id'][1],'/',mcr:encodeURIPath($derivates/str[@name='derivateMaindoc'][1]),$HttpSession)" />
                     <xsl:variable name="viewerLink">
                       <xsl:choose>
                         <xsl:when test="mcrxsl:isMobileDevice($UserAgent)">
@@ -549,16 +549,16 @@
                     <xsl:attribute name="title">
                       <xsl:value-of select="i18n:translate('mir.response.openAccess.true')" />
                     </xsl:attribute>
-                    <span class="label label-success">
-                      <i class="fa fa-unlock-alt" aria-hidden="true"></i>
+                    <span class="badge badge-success">
+                      <i class="fas fa-unlock-alt" aria-hidden="true"></i>
                     </span>
                   </xsl:when>
                   <xsl:otherwise>
                     <xsl:attribute name="title">
                       <xsl:value-of select="i18n:translate('mir.response.openAccess.false')" />
                     </xsl:attribute>
-                    <span class="label label-warning">
-                      <i class="fa fa-lock" aria-hidden="true"></i>
+                    <span class="badge badge-warning">
+                      <i class="fas fa-lock" aria-hidden="true"></i>
                     </span>
                   </xsl:otherwise>
                 </xsl:choose>
@@ -567,7 +567,7 @@
                 <xsl:when test="arr[@name='mods.genre']">
                   <xsl:for-each select="arr[@name='mods.genre']/str">
                     <div class="hit_type">
-                      <span class="label label-info">
+                      <span class="badge badge-info">
                         <xsl:value-of select="mcrxsl:getDisplayName('mir_genres',.)" ></xsl:value-of>
                       </span>
                     </div>
@@ -575,7 +575,7 @@
                 </xsl:when>
                 <xsl:otherwise>
                   <div class="hit_type">
-                    <span class="label label-info">
+                    <span class="badge badge-info">
                       <xsl:value-of select="mcrxsl:getDisplayName('mir_genres','article')" />
                     </span>
                   </div>
@@ -583,7 +583,7 @@
               </xsl:choose>
               <xsl:if test="arr[@name='category.top']/str[contains(text(), 'mir_licenses:')]">
                 <div class="hit_license">
-                  <span class="label label-primary">
+                  <span class="badge badge-primary">
                     <xsl:variable name="accessCondition">
                       <xsl:value-of select="substring-after(arr[@name='category.top']/str[contains(text(), 'mir_licenses:')][last()],':')" />
                     </xsl:variable>
@@ -613,7 +613,7 @@
                       </xsl:otherwise>
                     </xsl:choose>
                   </xsl:variable>
-                  <span class="label label-primary">
+                  <span class="badge badge-primary">
                     <xsl:value-of select="$date" />
                   </span>
                 </div>
@@ -623,7 +623,7 @@
                   <xsl:variable name="status-i18n">
                     <xsl:value-of select="i18n:translate(concat('mir.state.',str[@name='state']))" />
                   </xsl:variable>
-                  <span class="label mir-{str[@name='state']}" title="{i18n:translate('component.mods.metaData.dictionary.status')}">
+                  <span class="badge mir-{str[@name='state']}" title="{i18n:translate('component.mods.metaData.dictionary.status')}">
                     <xsl:value-of select="$status-i18n" />
                   </span>
                 </div>
@@ -846,7 +846,7 @@
         </xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
-    <xsl:if test="string-length(normalize-space($searchString))&gt;0">
+    <xsl:if test="string-length(normalize-space($searchString))&gt;0 and $searchString!='*'">
       <xsl:value-of select="concat($join, 'q=', $searchString)" />
     </xsl:if>
   </xsl:template>
@@ -1050,7 +1050,7 @@
         <xsl:with-param name="href" select="$filterHref" />
         <xsl:with-param name="text" select="@title" />
         <xsl:with-param name="class" select="'list-group-item active'" />
-        <xsl:with-param name="icon" select="'remove'" />
+        <xsl:with-param name="icon" select="'times'" />
       </xsl:call-template>
     </xsl:if>
   </xsl:template>
@@ -1062,7 +1062,7 @@
     <xsl:param name="icon" select="''" />
     <a class="{$class}" href="{$href}" title="{$text}">
       <xsl:if test="$icon != ''">
-        <span aria-hidden="true" class="fa fa-{$icon}"></span>
+        <span aria-hidden="true" class="fas fa-{$icon}"></span>
       </xsl:if>
       <xsl:value-of select="$text" />
     </a>
@@ -1092,7 +1092,7 @@
           </xsl:variable>
           <div class="list-group">
             <a class="list-group-item active" href="{$dateFilter}">
-              <span aria-hidden="true" class="fa fa-remove" />
+              <span aria-hidden="true" class="fas fa-times" />
             </a>
           </div>
         </xsl:if>
@@ -1142,7 +1142,7 @@
         <a class="hit_option remove_from_basket" href="{$ServletsBaseURL}MCRBasketServlet{$HttpSession}?type=objects&amp;action=remove&amp;id={$identifier}&amp;redirect=referer"
           title=""
         >
-          <span class="fa fa-bookmark"></span>
+          <span class="fas fa-bookmark"></span>&#160;
           <xsl:value-of select="i18n:translate('basket.remove')" />
         </a>
       </xsl:when>
@@ -1152,7 +1152,7 @@
           href="{$ServletsBaseURL}MCRBasketServlet{$HttpSession}?type=objects&amp;action=add&amp;id={$identifier}&amp;uri=mcrobject:{$identifier}&amp;redirect=referer"
           title=""
         >
-          <span class="fa fa-bookmark"></span>
+          <span class="fas fa-bookmark"></span>&#160;
           <xsl:value-of select="i18n:translate('basket.add')" />
         </a>
       </xsl:otherwise>

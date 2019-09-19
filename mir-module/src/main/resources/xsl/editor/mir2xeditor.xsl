@@ -18,7 +18,7 @@
 
   <xsl:template name="mir-helpbutton">
     <a tabindex="0" class="btn btn-secondary info-button" role="button" data-toggle="popover" data-placement="right" data-content="{@help-text}">
-      <i class="fa fa-info"></i>
+      <i class="fas fa-info"></i>
     </a>
   </xsl:template>
 
@@ -155,7 +155,7 @@
       <xsl:if test="not(@onlyRange = 'true')">hidden</xsl:if>
     </xsl:variable>
     <div class="date-format" data-format="simple">
-      <div class="date-simple {$hiddenclasssimple} input-group">
+      <div class="date-simple {$hiddenclasssimple} input-group mb-1">
         <xed:bind xpath="{$xpathSimple}">
           <input type="text" class="form-control" autocomplete="off">
             <xsl:copy-of select="@placeholder" />
@@ -169,7 +169,7 @@
             <xsl:copy-of select="@placeholder" />
           </input>
         </xed:bind>
-        <span class="fa fa-minus input-group-text" aria-hidden="true"></span>
+        <span class="fas fa-minus input-group-text" aria-hidden="true"></span>
         <xed:bind xpath="{$xpathEnd}">
           <input type="text" class="form-control endDate" data-point="end">
             <xsl:copy-of select="@placeholder" />
@@ -186,13 +186,13 @@
     <div class="input-group-btn date-selectFormat input-group-append">
       <button class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"><span class="caret"></span><span class="sr-only">Toggle Dropdown</span></button>
       <ul class="dropdown-menu dropdown-menu-right" role="menu">
-        <li>
-          <a href="#" class="date-simpleOption dropdown-item">
+        <li class="dropdown-item">
+          <a href="#" class="date-simpleOption">
             <xsl:value-of select="i18n:translate('mir.date.specification')" />
           </a>
         </li>
-        <li>
-          <a href="#" class="date-rangeOption dropdown-item">
+        <li class="dropdown-item">
+          <a href="#" class="date-rangeOption">
             <xsl:value-of select="i18n:translate('mir.date.period')" />
           </a>
         </li>
@@ -280,7 +280,7 @@
                   <div class="controls">
                     <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="person.fields.noHidden" />
                   </div>
-                  <span class="fa fa-chevron-down expand-item" title="{i18n:translate('mir.help.expand')}" aria-hidden="true"></span>
+                  <span class="fas fa-chevron-down expand-item" title="{i18n:translate('mir.help.expand')}" aria-hidden="true"></span>
                 </div>
                 <div class="col-md-3">
                   <xsl:if test="string-length(@help-text) &gt; 0">
@@ -350,7 +350,7 @@
                 </div>
                 <div class="col-md-6 center-vertical">
                   <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="person.fields.noHidden" />
-                  <span class="fa fa-chevron-down expand-item" title="{i18n:translate('mir.help.expand')}" aria-hidden="true"></span>
+                  <span class="fas fa-chevron-down expand-item" title="{i18n:translate('mir.help.expand')}" aria-hidden="true"></span>
                 </div>
                 <div class="col-md-3">
                   <xsl:if test="string-length(@help-text) &gt; 0">
@@ -403,7 +403,7 @@
      </xed:bind>
     </xed:repeat>
   </xsl:template>
-  
+
   <xsl:template match="mir:insitut.repeated">
     <xed:repeat xpath="mods:name[@type='corporate'][@authorityURI='{$institutesURI}']" min="{@min}" max="{@max}">
       <div class="form-group row">
@@ -447,7 +447,7 @@
                 <div class="search-geographic-extended">
                   <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="geographic.input" />
                 </div>
-                <span class="fa fa-chevron-down expand-item" data-target=".geographicExtended-container" title="{i18n:translate('mir.help.expand')}" aria-hidden="true"></span>
+                <span class="fas fa-chevron-down expand-item" data-target=".geographicExtended-container" title="{i18n:translate('mir.help.expand')}" aria-hidden="true"></span>
               </div>
             </xsl:when>
             <xsl:otherwise>
@@ -484,7 +484,7 @@
                 <div class="search-topic-extended">
                   <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="topic.input" />
                 </div>
-                <span class="fa fa-chevron-down expand-item" data-target=".topicExtended-container" title="{i18n:translate('mir.help.expand')}" aria-hidden="true"></span>
+                <span class="fas fa-chevron-down expand-item" data-target=".topicExtended-container" title="{i18n:translate('mir.help.expand')}" aria-hidden="true"></span>
               </div>
             </xsl:when>
             <xsl:otherwise>

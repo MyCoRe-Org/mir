@@ -10,6 +10,9 @@
   <packaging>pom</packaging>
   <name>MIR: Command Line Interface</name>
   <description>ZIP package ready to run MyCoRe commands from shell</description>
+  <scm>
+    <tag>2019.06.x</tag>
+  </scm>
   <properties>
     <MCR.AppName>mir</MCR.AppName>
     <acl-description.admins>administrators only</acl-description.admins>

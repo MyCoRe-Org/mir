@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <MyCoReWebPage>
-  
+
   <section xml:lang="all" xmlns:xed="http://www.mycore.de/xeditor" xmlns:mir="http://www.mycore.de/mir"
       i18n="component.mods.editor.search.simple.pagetitle">
     <xed:form class="form-horizontal" role="form">
@@ -55,7 +55,7 @@
                         </option>
                       </select>
                       <span class="input-group-append" data-toggle="tooltip" data-html="true" title="{i18n:editor.search.fulltext.tooltip}">
-                        <i class="fa fa-info-circle input-group-text" />
+                        <i class="fas fa-info-circle input-group-text" />
                       </span>
                     </xed:bind>
                   </div>
@@ -64,7 +64,7 @@
             </div>
             <!-- submit -->
             <div class="card-footer clearfix">
-              <div class="pull-right">
+              <div class="float-right">
                 <mir:template name="submitButton" i18n="editor.search.search" target="servlet_MCRQLSearchServlet" />
               </div>
             </div>

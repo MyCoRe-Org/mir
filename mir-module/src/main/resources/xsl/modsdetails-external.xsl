@@ -399,7 +399,7 @@
         <xsl:when test="basket:contains($basketType, /mycoreobject/@ID)">
           <a class="btn btn-primary btn-sm w-100"
              href="{$ServletsBaseURL}MCRBasketServlet{$HttpSession}?type={$basketType}&amp;action=remove&amp;redirect={encoder:encode($RequestURL)}&amp;id={/mycoreobject/@ID}">
-            <i class="fa fa-minus">
+            <i class="fas fa-minus">
               <xsl:value-of select="' '" />
             </i>
             <xsl:value-of select="concat(' ',i18n:translate('basket.remove'))" />
@@ -409,7 +409,7 @@
           <a class="btn btn-primary btn-sm w-100"
              href="{$ServletsBaseURL}MCRBasketServlet{$HttpSession}?type={$basketType}&amp;action=add&amp;redirect={encoder:encode($RequestURL)}&amp;id={/mycoreobject/@ID}&amp;uri=mcrobject:{/mycoreobject/@ID}"
           >
-            <i class="fa fa-plus">
+            <i class="fas fa-plus">
               <xsl:value-of select="' '" />
             </i>
             <xsl:value-of select="concat(' ',i18n:translate('basket.add'))" />
@@ -418,7 +418,7 @@
       </xsl:choose>
       <div class="btn-group w-100">
         <a href="#" class="btn btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown">
-          <i class="fa fa-cog">
+          <i class="fas fa-cog">
             <xsl:value-of select="' '" />
           </i>
           <xsl:value-of select="concat(' ',i18n:translate('mir.actions'))" />
@@ -662,7 +662,7 @@
           <div class="modal-body">
             <div class="row">
               <div class="col-md-2">
-                <i class="fa fa-question-circle"></i>
+                <i class="fas fa-question-circle"></i>
               </div>
               <div class="col-md-10" data-i18n="component.pi.register.modal.text."></div>
             </div>
@@ -687,15 +687,14 @@
     <xsl:if
       test="(key('rights', $deriv)/@accKeyEnabled and key('rights', $deriv)/@readKey) and not(mcrxsl:isCurrentUserGuestUser() or key('rights', $deriv)/@read or key('rights', $deriv)/@write)"
     >
-      <div class="options pull-right">
+      <div class="options float-right dropdown">
         <div class="btn-group">
           <a href="#" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">
-            <i class="fa fa-cog"></i>
+            <i class="fas fa-cog"></i>
             <xsl:value-of select="' Aktionen'" />
-            <span class="caret"></span>
           </a>
           <ul class="dropdown-menu">
-            <li>
+            <li class="dropdown-item">
               <a role="menuitem" tabindex="-1" href="{$WebApplicationBaseURL}authorization/accesskey.xed?objId={$deriv}&amp;url={encoder:encode(string($RequestURL))}">
                 <xsl:value-of select="i18n:translate('mir.accesskey.setOnUser')" />
               </a>
@@ -709,31 +708,30 @@
       <xsl:variable select="concat('mcrobject:',$deriv)" name="derivlink" />
       <xsl:variable select="document($derivlink)" name="derivate" />
 
-      <div class="options pull-right">
+      <div class="dropdown float-right options">
         <div class="btn-group">
           <a href="#" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">
-            <i class="fa fa-cog"></i>
+            <i class="fas fa-cog"></i>
             <xsl:value-of select="' Aktionen'" />
-            <span class="caret"></span>
           </a>
           <ul class="dropdown-menu dropdown-menu-right">
             <xsl:if test="key('rights', $deriv)/@write">
-            <li>
+            <li class="dropdown-item">
               <a href="{$WebApplicationBaseURL}editor/editor-derivate.xed{$HttpSession}?derivateid={$deriv}" class="option">
                 <xsl:value-of select="i18n:translate('component.mods.metaData.options.updateDerivateName')" />
               </a>
             </li>
             </xsl:if>
             <xsl:if test="key('rights', $deriv)/@write">
-            <li>
+            <li class="dropdown-item">
               <a href="{$ServletsBaseURL}MCRDisplayHideDerivateServlet?derivate={$deriv}" class="option">
                 <xsl:value-of select="i18n:translate(concat('mir.derivate.display.', $derivate//derivate/@display))" />
               </a>
             </li>
             </xsl:if>
             <xsl:if test="key('rights', $deriv)/@read">
-              <li>
-                <a href="{$ServletsBaseURL}MCRZipServlet/{$deriv}" class="option hidden downloadzip">
+              <li class="dropdown-item">
+                <a href="{$ServletsBaseURL}MCRZipServlet/{$deriv}" class="option downloadzip">
                   <xsl:value-of select="i18n:translate('component.mods.metaData.options.zip')" />
                 </a>
               </li>
@@ -754,7 +752,7 @@
               </li>
             </xsl:if>-->
             <xsl:if test="key('rights', $deriv)/@delete">
-              <li class="last">
+              <li class="dropdown-item last">
                 <a href="{$ServletsBaseURL}derivate/delete{$HttpSession}?id={$deriv}" class="confirm_deletion option" data-text="{i18n:translate('mir.confirm.derivate.text')}">
                   <xsl:value-of select="i18n:translate('component.mods.metaData.options.delDerivate')" />
                 </a>
@@ -771,7 +769,7 @@
                   </xsl:otherwise>
                 </xsl:choose>
               </xsl:variable>
-              <li>
+              <li class="dropdown-item">
                 <a role="menuitem" tabindex="-1"
                   href="{$WebApplicationBaseURL}authorization/accesskey.xed?action={$action}&amp;objId={$deriv}&amp;url={encoder:encode(string($RequestURL))}"
                 >
@@ -844,13 +842,13 @@
       <div class="hit_tnd_container">
         <div class="hit_tnd_content">
           <div class="hit_type">
-            <span class="label label-info">
+            <span class="badge badge-info">
               <xsl:value-of select="mcrxsl:getDisplayName('mir_genres',$mods-type)" />
             </span>
           </div>
           <xsl:if test="mods:originInfo[not(@eventType) or @eventType='publication']/mods:dateIssued or mods:relatedItem/mods:originInfo[not(@eventType) or @eventType='publication']/mods:dateIssued">
             <div class="hit_date">
-              <span class="label label-primary">
+              <span class="badge badge-primary">
                 <xsl:variable name="dateIssued">
                   <xsl:choose>
                     <xsl:when test="mods:originInfo[not(@eventType) or @eventType='publication']/mods:dateIssued"><xsl:apply-templates mode="mods.datePublished" select="mods:originInfo[not(@eventType) or @eventType='publication']/mods:dateIssued" /></xsl:when>
