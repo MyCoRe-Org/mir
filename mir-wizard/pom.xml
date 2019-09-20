@@ -4,13 +4,13 @@
   <parent>
     <groupId>org.mycore.mir</groupId>
     <artifactId>mir-parent</artifactId>
-    <version>2019.06.1</version>
+    <version>2019.06.2-SNAPSHOT</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
   <artifactId>mir-wizard</artifactId>
   <name>MIR: The MIR Wizard</name>
   <scm>
-    <tag>v2019.06.1</tag>
+    <tag>2019.06.x</tag>
   </scm>
   <properties>
     <template.assetsdir>${project.build.directory}/classes/META-INF/resources/mir-wizard/assets</template.assetsdir>

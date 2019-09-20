@@ -4,13 +4,13 @@
   <parent>
     <groupId>org.mycore.mir</groupId>
     <artifactId>mir-parent</artifactId>
-    <version>2019.06.1</version>
+    <version>2019.06.2-SNAPSHOT</version>
   </parent>
   <artifactId>mir-common-resources</artifactId>
   <name>MIR: Common Resources</name>
   <description>Bundles XSL Stylesheets</description>
   <scm>
-    <tag>v2019.06.1</tag>
+    <tag>2019.06.x</tag>
   </scm>
   <build>
     <plugins>

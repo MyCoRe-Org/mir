@@ -4,7 +4,7 @@
   <parent>
     <groupId>org.mycore.mir</groupId>
     <artifactId>mir-parent</artifactId>
-    <version>2019.06.1</version>
+    <version>2019.06.2-SNAPSHOT</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
   <artifactId>mir-it</artifactId>
@@ -12,7 +12,7 @@
   <name>MIR: Integration Tests</name>
   <description>combines all modules and runs integration tests</description>
   <scm>
-    <tag>v2019.06.1</tag>
+    <tag>2019.06.x</tag>
   </scm>
   <properties>
     <MCR.AppName>mir</MCR.AppName>
