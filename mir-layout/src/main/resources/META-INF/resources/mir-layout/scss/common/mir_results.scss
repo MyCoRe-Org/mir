@@ -529,7 +529,8 @@ $file_box_color: $card-bg !default;
                 position: relative;
                 font-weight: bold;
                 > a::after {
-                  font-family:"FontAwesome"; // TODO: Find fontawesome mixing for sass
+                  font-family:"Font Awesome 5 Free"; // TODO: Find fontawesome mixing for sass
+                  font-weight: 900;
                   content: "\f005";
                   position: absolute;
                   right: 0;
