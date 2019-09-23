@@ -562,12 +562,16 @@
     var $output = $(options.searchOutput, getParent(this.$element))[0] !== undefined ? $(options.searchOutput, getParent(this.$element)).first() : this.$element;
     var $outputType = $(options.searchOutputType, getParent(this.$element))[0] !== undefined ? $(options.searchOutputType, getParent(this.$element)).first() : this.$element;
     var $outputNameType = $(options.searchOutputNameType, getParent(this.$element))[0] !== undefined ? $(options.searchOutputNameType, getParent(this.$element)).first() : this.$element;
-    var isNewNameFormGroup = false;
+    
+    var currentIdFieldIndex = 0;
+    var nameIdFields = null;
+    
+    var isNewNameFormGroup = true;
     
     if (item) {
       this.$element != $output && item.label && this.$element.val(item.label.replace(SearchEntity.LABEL_CLEANUP, ""));
  
-      if (item.type !== undefined && item.type !== "") {
+      if (item.type) {
 
         $outputNameType.val(item.type.toLowerCase());
 
@@ -575,10 +579,9 @@
         var itemPersonExtendedBox = $($output).closest('fieldset[class="personExtended_box"]');
 
         /* get the next free output field */
-        var nameIdFields = $(itemPersonExtendedBox).find('input[name*="/mods:nameIdentifier"]');
-
-        var currentIdFieldIndex = 0;
-
+        nameIdFields = $(itemPersonExtendedBox).find('input[name*="/mods:nameIdentifier"]');
+        nameIdFields = nameIdFields.toArray();
+        
         while (currentIdFieldIndex < nameIdFields.length && nameIdFields[currentIdFieldIndex].value) {
           currentIdFieldIndex++;
         }
@@ -591,9 +594,12 @@
         $outputType[0] = dependentOutputType[0];
 
         /* if there is not a free identifier output field anymore trigger button */
-        if (nameIdFields.length > 0 && currentIdFieldIndex === nameIdFields.length - 1) {
-          isNewNameFormGroup = true;
-        }
+        nameIdFields.forEach((currentNameIdField, index) => {
+          
+          if ((currentIdFieldIndex !== index) && (currentNameIdField.value === "")) {
+            isNewNameFormGroup = false;
+          }
+        });
       }
 
       $output.val(getIDFromURL(item.value));
@@ -660,9 +666,9 @@
       });
     }
     
-    if (isNewNameFormGroup) {
-      /* Toggle Add Button to generate new nameField */
-      let addIdentifierButton = $(nameIdFields[currentIdFieldIndex]).closest('div[class="form-group row"]').find('button[name^="_xed_submit_insert"]');
+    if (item && item.type && isNewNameFormGroup) {
+      /* Toggle last add Button to generate new nameField */
+      let addIdentifierButton = $(nameIdFields[nameIdFields.length - 1]).closest('div[class="form-group row"]').find('button[name^="_xed_submit_insert"]');
       addIdentifierButton.click();
     }
   };
