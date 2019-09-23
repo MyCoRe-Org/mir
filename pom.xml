@@ -4,11 +4,11 @@
   <parent>
     <groupId>org.mycore</groupId>
     <artifactId>mycore-parent</artifactId>
-    <version>41-SNAPSHOT</version>
+    <version>41</version>
   </parent>
   <groupId>org.mycore.mir</groupId>
   <artifactId>mir-parent</artifactId>
-  <version>2019.06.1-SNAPSHOT</version>
+  <version>2019.06.2-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>MIR</name>
   <description>MyCoRe/MODS Institutional Repository</description>
@@ -44,7 +44,7 @@
     <hibernate.version>5.4.4.Final</hibernate.version>
     <java.target.version>11</java.target.version>
     <jetty.version>9.4.20.v20190813</jetty.version>
-    <mycore.version>2019.06.1-SNAPSHOT</mycore.version>
+    <mycore.version>2019.06.2-SNAPSHOT</mycore.version>
     <pmd.failOnViolation>false</pmd.failOnViolation>
     <selenium.version>3.14.0</selenium.version>
     <site.suffix />
