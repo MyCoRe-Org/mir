@@ -37,16 +37,19 @@ header {
 
 // align the footer to the bottom
 body {
-    display: flex; // use flex box model
-    flex-direction: column; // sort items in a column
-    min-height: 100vh; // use full view port height
+  display: flex;          // use flex box model
+  flex-direction: column; // sort items in a column
+  height: 100vh;          // use full view port height
 }
-section {
-    flex: 1; // will use all available space left
+body > section {
+  flex: 1 0 auto; // will use all available space left
+                  // long notation is needed for IE11
+}
+body > header,
+body > footer {
+  flex-shrink: 0; // bypass the fix height from body
 }
 // end: align footer
-
-// end footer alignment
 
 // TODO move this to the typo styles
 p {
