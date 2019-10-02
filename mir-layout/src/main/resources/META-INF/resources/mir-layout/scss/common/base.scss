@@ -40,14 +40,15 @@ body {
   display: flex;          // use flex box model
   flex-direction: column; // sort items in a column
   height: 100vh;          // use full view port height
+                          // min-height is not working in IE11
 }
 body > section {
-  flex: 1 0 auto; // will use all available space left
+  flex: 1 0 auto; // flex: 1, will use all available space
                   // long notation is needed for IE11
 }
 body > header,
 body > footer {
-  flex-shrink: 0; // bypass the fix height from body
+  flex-shrink: 0; // define this explicit for IE11
 }
 // end: align footer
 
