@@ -565,12 +565,16 @@
     
     var currentIdFieldIndex = 0;
     var nameIdFields = null;
+    var nameIdTypes = null;
+    
+    var nameIdTypesElements = null;
     
     var isNewNameFormGroup = true;
     
     if (item) {
       this.$element != $output && item.label && this.$element.val(item.label.replace(SearchEntity.LABEL_CLEANUP, ""));
- 
+      var outputType = getTypeFromURL(item.value);
+      
       if (item.type) {
 
         $outputNameType.val(item.type.toLowerCase());
@@ -586,30 +590,48 @@
           currentIdFieldIndex++;
         }
 
+        /*
+         * Get assigned name identifier types for the dependent
+         * personExtended_box
+         */
+        nameIdTypesElements = $(itemPersonExtendedBox).find('select[name*="/mods:nameIdentifier"]');
+
+        nameIdTypes = nameIdTypesElements.map(function () {return this.value;}).get();
+        
+        /*
+         * Output will replace an old value with same identifier type or will be
+         * the next free input field!
+         */
+        if (nameIdTypes.includes(outputType.toLowerCase())) {
+          var outputWithIdType =  $(nameIdTypesElements[0][nameIdTypes.indexOf(outputType.toLowerCase())]).closest('div.form-group').find('input[name*="/mods:nameIdentifier"]');
+          
+          if (outputWithIdType.val()) {
+            $output[0] = outputWithIdType[0];
+          }
+        } else {
         /* $output will be the next free Input field */
         $output[0] = nameIdFields[currentIdFieldIndex];
-
+        
         /* get dependent outputType selection */
         let dependentOutputType = $('select[name="' + nameIdFields[currentIdFieldIndex].name + '/@type"]');
         $outputType[0] = dependentOutputType[0];
+        }
 
         /* if there is not a free identifier output field anymore trigger button */
         nameIdFields.forEach((currentNameIdField, index) => {
           
-          if ((currentIdFieldIndex !== index) && (currentNameIdField.value === "")) {
+          if ((currentIdFieldIndex !== index) && (!currentNameIdField.value)) {
             isNewNameFormGroup = false;
           }
         });
-      }
-
+        }
+      
       $output.val(getIDFromURL(item.value));
-      var outputType = getTypeFromURL(item.value);
       if (outputType != "") {
         $outputType.val(outputType.toLowerCase());
       }
     }
     
-
     if ($output != this.$element && $output.val().length > 0) {
       var type = $outputType.val();
       var $feedback = $(document.createElement("a"));
