@@ -570,18 +570,18 @@
     var nameIdTypesElements = null;
     
     var isNewNameFormGroup = true;
-    
+
     if (item) {
       this.$element != $output && item.label && this.$element.val(item.label.replace(SearchEntity.LABEL_CLEANUP, ""));
       var outputType = getTypeFromURL(item.value);
       
       if (item.type) {
-
+        
         $outputNameType.val(item.type.toLowerCase());
-
+        
         /* Get dependent personExtended_box */
         var itemPersonExtendedBox = $($output).closest('fieldset[class="personExtended_box"]');
-
+        
         /* get the next free output field */
         nameIdFields = $(itemPersonExtendedBox).find('input[name*="/mods:nameIdentifier"]');
         nameIdFields = nameIdFields.toArray();
@@ -589,13 +589,13 @@
         while (currentIdFieldIndex < nameIdFields.length && nameIdFields[currentIdFieldIndex].value) {
           currentIdFieldIndex++;
         }
-
+        
         /*
          * Get assigned name identifier types for the dependent
          * personExtended_box
          */
         nameIdTypesElements = $(itemPersonExtendedBox).find('select[name*="/mods:nameIdentifier"]');
-
+        
         nameIdTypes = nameIdTypesElements.map(function () {return this.value;}).get();
         
         /*
@@ -603,41 +603,43 @@
          * the next free input field!
          */
         if (nameIdTypes.includes(outputType.toLowerCase())) {
-         
+          
           /* note multiple id types on outputType */
-          let isPointerNotSetted = true;
-          let lastIndexWithIdType = null;
-
-          for (var ind=0; ind < nameIdTypes.length && isPointerNotSetted; ind++) {
-
-              if (nameIdTypes[ind] === outputType.toLowerCase()) {
-
-                  var outputWithIdType = $(nameIdTypesElements[ind]).closest('div.form-group').find('input[name*="/mods:nameIdentifier"]');
-
-                  if (outputWithIdType.val()) {
-                      $output[0] = outputWithIdType[0];
-                      $outputType[0] = nameIdTypesElements[ind];
-                      isPointerNotSetted = false;
-                  }
-                  
-                  lastIndexWithIdType = ind;
+          let depIndexWithIdType = null;
+          let defaultIndexWithIdType = null;
+          
+          for (var ind=0; ind < nameIdTypes.length && depIndexWithIdType === null; ind++) {
+            
+            if (nameIdTypes[ind] === outputType.toLowerCase()) {
+              
+              var outputWithIdType = $(nameIdTypesElements[ind]).closest('div.form-group').find('input[name*="/mods:nameIdentifier"]');
+              
+              if (outputWithIdType.val()) {
+                depIndexWithIdType = ind;
               }
+              
+              defaultIndexWithIdType = ind;
+            }
           }
           
-          /* avoid default pointer for $output and $outputType -> do not remove first */
-          if (isPointerNotSetted && lastIndexWithIdType != null) {
-            $output[0] = outputWithIdType[0];
-            $outputType[0] = nameIdTypesElements[lastIndexWithIdType];
-            isPointerNotSetted = false;
+          /*
+           * avoid default pointer for $output and $outputType -> do not remove
+           * first
+           */
+          if (depIndexWithIdType === null) {
+            depIndexWithIdType = defaultIndexWithIdType;
           }
+          
+          $output[0] = outputWithIdType[0];
+          $outputType[0] = nameIdTypesElements[depIndexWithIdType];
           
         } else {
-        /* $output will be the next free Input field */
-        $output[0] = nameIdFields[currentIdFieldIndex];
-        
-        /* get dependent outputType selection */
-        let dependentOutputType = $('select[name="' + nameIdFields[currentIdFieldIndex].name + '/@type"]');
-        $outputType[0] = dependentOutputType[0];
+          /* $output will be the next free Input field */
+          $output[0] = nameIdFields[currentIdFieldIndex];
+          
+          /* get dependent outputType selection */
+          let dependentOutputType = $('select[name="' + nameIdFields[currentIdFieldIndex].name + '/@type"]');
+          $outputType[0] = dependentOutputType[0];
         }
       }
       
@@ -654,7 +656,6 @@
         }
       });
     }
-    
     if ($output != this.$element && $output.val().length > 0) {
       var type = $outputType.val();
       var $feedback = $(document.createElement("a"));
