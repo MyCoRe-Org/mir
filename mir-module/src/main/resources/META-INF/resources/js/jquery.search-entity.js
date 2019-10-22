@@ -564,7 +564,7 @@
     var $outputNameType = $(options.searchOutputNameType, getParent(this.$element))[0] !== undefined ? $(options.searchOutputNameType, getParent(this.$element)).first() : this.$element;
     
     var currentIdFieldIndex = 0;
-    var nameIdFields = null;
+    var nameIdFields = [];
     var nameIdTypes = null;
     
     var nameIdTypesElements = null;
@@ -603,11 +603,34 @@
          * the next free input field!
          */
         if (nameIdTypes.includes(outputType.toLowerCase())) {
-          var outputWithIdType =  $(nameIdTypesElements[0][nameIdTypes.indexOf(outputType.toLowerCase())]).closest('div.form-group').find('input[name*="/mods:nameIdentifier"]');
-          
-          if (outputWithIdType.val()) {
-            $output[0] = outputWithIdType[0];
+         
+          /* note multiple id types on outputType */
+          let isPointerNotSetted = true;
+          let lastIndexWithIdType = null;
+
+          for (var ind=0; ind < nameIdTypes.length && isPointerNotSetted; ind++) {
+
+              if (nameIdTypes[ind] === outputType.toLowerCase()) {
+
+                  var outputWithIdType = $(nameIdTypesElements[ind]).closest('div.form-group').find('input[name*="/mods:nameIdentifier"]');
+
+                  if (outputWithIdType.val()) {
+                      $output[0] = outputWithIdType[0];
+                      $outputType[0] = nameIdTypesElements[ind];
+                      isPointerNotSetted = false;
+                  }
+                  
+                  lastIndexWithIdType = ind;
+              }
           }
+          
+          /* avoid default pointer for $output and $outputType -> do not remove first */
+          if (isPointerNotSetted && lastIndexWithIdType != null) {
+            $output[0] = outputWithIdType[0];
+            $outputType[0] = nameIdTypesElements[lastIndexWithIdType];
+            isPointerNotSetted = false;
+          }
+          
         } else {
         /* $output will be the next free Input field */
         $output[0] = nameIdFields[currentIdFieldIndex];
@@ -616,20 +639,20 @@
         let dependentOutputType = $('select[name="' + nameIdFields[currentIdFieldIndex].name + '/@type"]');
         $outputType[0] = dependentOutputType[0];
         }
-
-        /* if there is not a free identifier output field anymore trigger button */
-        nameIdFields.forEach((currentNameIdField, index) => {
-          
-          if ((currentIdFieldIndex !== index) && (!currentNameIdField.value)) {
-            isNewNameFormGroup = false;
-          }
-        });
-        }
+      }
       
       $output.val(getIDFromURL(item.value));
       if (outputType != "") {
         $outputType.val(outputType.toLowerCase());
       }
+      
+      /* if there is not a free identifier output field anymore trigger button */
+      nameIdFields.forEach((currentNameIdField, index) => {
+        
+        if (!currentNameIdField.value) {
+          isNewNameFormGroup = false;
+        }
+      });
     }
     
     if ($output != this.$element && $output.val().length > 0) {
