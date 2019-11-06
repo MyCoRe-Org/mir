@@ -564,20 +564,24 @@
     var $outputNameType = $(options.searchOutputNameType, getParent(this.$element))[0] !== undefined ? $(options.searchOutputNameType, getParent(this.$element)).first() : this.$element;
     
     var currentIdFieldIndex = 0;
-    var nameIdFields = null;
+    var nameIdFields = [];
+    var nameIdTypes = null;
+    
+    var nameIdTypesElements = null;
     
     var isNewNameFormGroup = true;
-    
+
     if (item) {
       this.$element != $output && item.label && this.$element.val(item.label.replace(SearchEntity.LABEL_CLEANUP, ""));
- 
+      var outputType = getTypeFromURL(item.value);
+      
       if (item.type) {
-
+        
         $outputNameType.val(item.type.toLowerCase());
-
+        
         /* Get dependent personExtended_box */
         var itemPersonExtendedBox = $($output).closest('fieldset[class="personExtended_box"]');
-
+        
         /* get the next free output field */
         nameIdFields = $(itemPersonExtendedBox).find('input[name*="/mods:nameIdentifier"]');
         nameIdFields = nameIdFields.toArray();
@@ -585,31 +589,73 @@
         while (currentIdFieldIndex < nameIdFields.length && nameIdFields[currentIdFieldIndex].value) {
           currentIdFieldIndex++;
         }
-
-        /* $output will be the next free Input field */
-        $output[0] = nameIdFields[currentIdFieldIndex];
-
-        /* get dependent outputType selection */
-        let dependentOutputType = $('select[name="' + nameIdFields[currentIdFieldIndex].name + '/@type"]');
-        $outputType[0] = dependentOutputType[0];
-
-        /* if there is not a free identifier output field anymore trigger button */
-        nameIdFields.forEach((currentNameIdField, index) => {
+        
+        /*
+         * Get assigned name identifier types for the dependent
+         * personExtended_box
+         */
+        nameIdTypesElements = $(itemPersonExtendedBox).find('select[name*="/mods:nameIdentifier"]');
+        
+        nameIdTypes = nameIdTypesElements.map(function () {return this.value;}).get();
+        
+        /*
+         * Output will replace an old value with same identifier type or will be
+         * the next free input field!
+         */
+        if (nameIdTypes.includes(outputType.toLowerCase())) {
           
-          if ((currentIdFieldIndex !== index) && (currentNameIdField.value === "")) {
-            isNewNameFormGroup = false;
+          /* note multiple id types on outputType */
+          let depIndexWithIdType = null;
+          let defaultIndexWithIdType = null;
+          
+          for (var ind=0; ind < nameIdTypes.length && depIndexWithIdType === null; ind++) {
+            
+            if (nameIdTypes[ind] === outputType.toLowerCase()) {
+              
+              var outputWithIdType = $(nameIdTypesElements[ind]).closest('div.form-group').find('input[name*="/mods:nameIdentifier"]');
+              
+              if (outputWithIdType.val()) {
+                depIndexWithIdType = ind;
+              }
+              
+              defaultIndexWithIdType = ind;
+            }
           }
-        });
+          
+          /*
+           * avoid default pointer for $output and $outputType -> do not remove
+           * first
+           */
+          if (depIndexWithIdType === null) {
+            depIndexWithIdType = defaultIndexWithIdType;
+          }
+          
+          $output[0] = outputWithIdType[0];
+          $outputType[0] = nameIdTypesElements[depIndexWithIdType];
+          
+        } else {
+          /* $output will be the next free Input field */
+          $output[0] = nameIdFields[currentIdFieldIndex];
+          
+          /* get dependent outputType selection */
+          let dependentOutputType = $('select[name="' + nameIdFields[currentIdFieldIndex].name + '/@type"]');
+          $outputType[0] = dependentOutputType[0];
+        }
       }
-
+      
       $output.val(getIDFromURL(item.value));
-      var outputType = getTypeFromURL(item.value);
       if (outputType != "") {
         $outputType.val(outputType.toLowerCase());
       }
+      
+      /* if there is not a free identifier output field anymore trigger button */
+      nameIdFields.forEach((currentNameIdField, index) => {
+        
+        if (!currentNameIdField.value) {
+          isNewNameFormGroup = false;
+        }
+      });
     }
-    
-
     if ($output != this.$element && $output.val().length > 0) {
       var type = $outputType.val();
       var $feedback = $(document.createElement("a"));
