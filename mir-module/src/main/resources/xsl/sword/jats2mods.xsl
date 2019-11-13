@@ -217,8 +217,8 @@
         <xsl:apply-templates select="xref[@ref-type='aff'][string-length(@rid) > 0]" />
       </xsl:when>
       <!-- Affiliation is given at article level -->
-      <xsl:when test="not(xref[@ref-type='aff']) and //article-meta/aff[not(@*)][position()=last()][string-length(.) > 0]">
-        <xsl:apply-templates select="//article-meta/aff[not(@*)][position()=last()][string-length(.) > 0]" />
+      <xsl:when test="not(xref[@ref-type='aff']) and //article-meta/aff[not(@*)][position()=last()][string-length(text()) > 0]">
+        <xsl:apply-templates select="//article-meta/aff[not(@*)][position()=last()][string-length(text()) > 0]" />
       </xsl:when>
       <!-- Affiliation is given in aff ellement -->
       <xsl:otherwise>
