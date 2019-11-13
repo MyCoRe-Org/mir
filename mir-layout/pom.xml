@@ -12,6 +12,7 @@
   <properties>
     <grunt.projectBase>${project.build.directory}/grunt</grunt.projectBase>
     <lesscss.compress>true</lesscss.compress>
+    <node.version>v12.13.0</node.version>
     <template.assetsdir>${project.build.directory}/classes/META-INF/resources/mir-layout/assets</template.assetsdir>
     <template.cssdir>${project.build.directory}/classes/META-INF/resources/mir-layout/css</template.cssdir>
   </properties>

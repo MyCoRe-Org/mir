@@ -10,7 +10,10 @@ module.exports = function(grunt) {
     const getAbsoluteDir = function(dir) {
         return path.isAbsolute(dir) ? dir : path.resolve(process.cwd(), dir);
     };
-
+    const getDirectories = source =>
+        fs.readdirSync(source, { withFileTypes: true })
+            .filter(dirent => dirent.isDirectory())
+            .map(dirent => dirent.name);
     const globalConfig = {
         projectBase: getAbsoluteDir(grunt.option('projectBase')),
         targetDirectory : getAbsoluteDir(grunt.option('targetDirectory')),
@@ -18,9 +21,7 @@ module.exports = function(grunt) {
         assetsDirectoryRelative : path.basename(grunt.option('assetsDirectory'))
     };
 
-    const layouts = ["flatmir", "cosmol"];
-    const templates = ["cerulean", "cosmo", "cyborg", "darkly", "flatly", "journal", "lumen", "paper", "readable",
-        "sandstone", "simplex", "slate", "spacelab", "superhero", "united", "yeti"];
+    const layouts = ["bootstrap", "flatmir", "cosmol"];
 
 
     grunt.initConfig({
@@ -64,6 +65,11 @@ module.exports = function(grunt) {
 
     grunt.registerTask('buildTemplates', function () {
         const sassFolder = "META-INF/resources/mir-layout/scss/";
+        let templates = ["default"];
+
+        getDirectories(globalConfig.assetsDirectory+"/bootswatch")
+            .forEach(template => templates.push(template));
+        grunt.log.writeln("Found these Bootswatch themes: " + templates);
 
         const done = this.async();
 
@@ -72,6 +78,7 @@ module.exports = function(grunt) {
                 done();
                 return grunt.log.errorlns(err);
             }
+
 
             let layoutTemplate = [];
             for (const layout of layouts) {
@@ -83,10 +90,16 @@ module.exports = function(grunt) {
                 const layout = el[0];
                 const template = el[1];
 
-                let result = data
-                    .replace(/%layout%/g, layout)
-                    .replace(/%template%/g, template);
-
+                let result;
+                if (template == "default") {
+                    result = data
+                        .replace(/%layout%/g, layout)
+                        .replace(/.*%template%.*(\r\n|\n|\r)/gm, "")
+                } else {
+                    result = data
+                        .replace(/%layout%/g, layout)
+                        .replace(/%template%/g, template);
+                }
                 const fileName = layout + "-" + template + ".scss";
                 const templResultPath = globalConfig.projectBase + "/target/classes/" + sassFolder + "/" + fileName;
                 fs.writeFile(templResultPath, result, function (err) {

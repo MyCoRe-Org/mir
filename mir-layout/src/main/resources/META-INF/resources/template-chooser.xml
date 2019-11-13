@@ -10,6 +10,7 @@
           <div class="col-sm-6">
             <select id="layout" name="XSL.MIR.Layout.Theme.SESSION" onChange="document.templateChooser.submit()" class="form-control">
               <option value="">Standard</option>
+              <option value="bootstrap">Bootstrap</option>
               <option value="cosmol">CosmoL</option>
               <option value="flatmir">FlatMIR</option>
             </select>
@@ -27,12 +28,17 @@
               <option value="darkly">Darkly</option>
               <option value="flatly">Flatly</option>
               <option value="journal">Journal</option>
+              <option value="litera">Litera</option>
               <option value="lumen">Lumen</option>
-              <option value="paper">Paper</option>
-              <option value="readable">Readable</option>
+              <option value="lux">Lux</option>
+              <option value="materia">Materia</option>
+              <option value="minty">Minty</option>
+              <option value="pulse">Pulse</option>
               <option value="sandstone">Sandstone</option>
               <option value="simplex">Simplex</option>
+              <option value="sketchy">Sketchy</option>
               <option value="slate">Slate</option>
+              <option value="solar">Solar</option>
               <option value="spacelab">Spacelab</option>
               <option value="superhero">Superhero</option>
               <option value="united">United</option>
@@ -80,7 +86,7 @@
           var curLayout = curCss[0];
           curCss = curCss[1];
           $('form[name="templateChooser"] option[value="'+curLayout+'"]').attr("selected","selected");
-          $('form[name="templateChooser"] option[value="'+curCss+'"]').attr("selected","selected");
+          $('form[name="templateChooser"] option[value="'+curCss.split('.')[0]+'"]').attr("selected","selected");
           $('#mycoreProperties').text('#add to mycore.properties\nMIR.DefaultLayout.CSS='+curCss+'\nMIR.Layout.Theme='+curLayout);
         });
       })(jQuery);
