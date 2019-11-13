@@ -91,9 +91,9 @@
   
   <xsl:template match="article/@xml:lang">
     <mods:language>
-      <modsLanguageTerm type="code" authority="rfc5646">
+      <mods:languageTerm type="code" authority="rfc5646">
         <xsl:value-of select="translate(.,$upperABC,$lowerABC)" />
-      </modsLanguageTerm>
+      </mods:languageTerm>
     </mods:language>
   </xsl:template>
   
