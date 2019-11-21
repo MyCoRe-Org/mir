@@ -1,8 +1,6 @@
 package org.mycore.mir.sword2;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 
@@ -12,44 +10,27 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jdom2.Document;
-import org.jdom2.Element;
 import org.jdom2.JDOMException;
-import org.jdom2.Namespace;
 import org.mycore.access.MCRAccessException;
-import org.mycore.common.MCRPersistenceException;
 import org.mycore.common.config.MCRConfiguration;
 import org.mycore.common.content.MCRContent;
 import org.mycore.common.content.MCRJDOMContent;
-import org.mycore.common.content.transformer.MCRXSL2XMLTransformer;
 import org.mycore.datamodel.metadata.MCRDerivate;
 import org.mycore.datamodel.metadata.MCRMetadataManager;
 import org.mycore.datamodel.metadata.MCRObject;
 import org.mycore.datamodel.metadata.MCRObjectID;
-import org.mycore.datamodel.niofs.MCRPath;
-import org.mycore.datamodel.niofs.utils.MCRFileCollectingFileVisitor;
 import org.mycore.mods.MCRMODSWrapper;
 import org.mycore.sword.MCRSwordUtil;
-import org.mycore.sword.application.MCRSwordIngester;
-import org.mycore.sword.application.MCRSwordLifecycleConfiguration;
-import org.mycore.sword.application.MCRSwordMediaHandler;
 import org.swordapp.server.Deposit;
 import org.swordapp.server.SwordError;
 import org.swordapp.server.SwordServerException;
 import org.swordapp.server.UriRegistry;
 import org.xml.sax.SAXException;
 
-public class MIRSwordIngester implements MCRSwordIngester {
 
-    private static final Namespace DC_NAMESPACE = Namespace.getNamespace("dc", "http://purl.org/dc/elements/1.1/");
-
-    private static final MCRXSL2XMLTransformer XSL_DC_MODS_TRANSFORMER = new MCRXSL2XMLTransformer(
-        "xsl/DC_MODS3-5_XSLT1-0.xsl");
+public class MIRGoobiIngester extends MIRSwordIngesterBase {
 
     public static final Logger LOGGER = LogManager.getLogger();
-
-    private MCRSwordLifecycleConfiguration lifecycleConfiguration;
-
-    private MCRSwordMediaHandler mcrSwordMediaHandler = new MCRSwordMediaHandler();
 
     @Override
     public MCRObjectID ingestMetadata(Deposit entry) throws SwordError, SwordServerException {
@@ -63,6 +44,8 @@ public class MIRSwordIngester implements MCRSwordIngester {
         final MCRObject mcrObject = MCRMODSWrapper.wrapMODSDocument(convertedDocument.detachRootElement(),
             newObjectId.getProjectId());
         mcrObject.setId(newObjectId);
+        mcrObject.getService().setState(getState());
+        mcrObject.getService().addFlag("sword", this.getLifecycleConfiguration().getCollection());
         try {
             MCRMetadataManager.create(mcrObject);
         } catch (MCRAccessException e) {
@@ -75,7 +58,7 @@ public class MIRSwordIngester implements MCRSwordIngester {
     private Document convertDCToMods(Document dcDocument) throws SwordError, SwordServerException {
         final MCRContent mcrContent;
         try {
-            mcrContent = XSL_DC_MODS_TRANSFORMER.transform(new MCRJDOMContent(dcDocument));
+            mcrContent = getTransformer().transform(new MCRJDOMContent(dcDocument));
         } catch (IOException e) {
             throw new SwordError(UriRegistry.ERROR_BAD_REQUEST, HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
                 "Error while transforming mods2dc!", e);
@@ -90,19 +73,7 @@ public class MIRSwordIngester implements MCRSwordIngester {
         return convertedDocument;
     }
 
-    public Document buildDCDocument(Map<String, List<String>> dublinCoreMetadata) {
-        final Element dcRootElement = new Element("dc");
-        final Document dc = new Document(dcRootElement);
-        dublinCoreMetadata.entrySet().forEach(dcElementValueEntry -> {
-            final String elemenName = dcElementValueEntry.getKey();
-            dcElementValueEntry.getValue().forEach(value -> {
-                final Element dcElement = new Element(elemenName, DC_NAMESPACE);
-                dcElement.setText(value);
-                dcRootElement.addContent(dcElement);
-            });
-        });
-        return dc;
-    }
+
 
     @Override
     public MCRObjectID ingestMetadataResources(Deposit entry) throws SwordError, SwordServerException {
@@ -120,7 +91,7 @@ public class MIRSwordIngester implements MCRSwordIngester {
         try {
             final MCRDerivate derivate = MCRSwordUtil.createDerivate(objectID.toString());
             createdDerivateID = derivate.getId();
-            mcrSwordMediaHandler.addResource(createdDerivateID.toString(), "/", entry);
+            getMediaHandler().addResource(createdDerivateID.toString(), "/", entry);
             complete = true;
         } catch (IOException e) {
             throw new SwordServerException("Error while creating new derivate for object " + objectID.toString(), e);
@@ -156,45 +127,4 @@ public class MIRSwordIngester implements MCRSwordIngester {
         }
     }
 
-    @Override
-    public void updateMetadataResources(MCRObject object, Deposit entry) throws SwordServerException {
-        throw new SwordServerException("Operation is not supported!", new OperationNotSupportedException());
-    }
-
-    @Override
-    public void init(MCRSwordLifecycleConfiguration lifecycleConfiguration) {
-        this.lifecycleConfiguration = lifecycleConfiguration;
-    }
-
-    @Override
-    public void destroy() {
-
-    }
-
-    /**
-     * Sets a main file if not present.
-     * @param derivateID the id of the derivate
-     */
-    private static void setDefaultMainFile(String derivateID) {
-        MCRPath path = MCRPath.getPath(derivateID, "/");
-        try {
-            MCRFileCollectingFileVisitor<Path> visitor = new MCRFileCollectingFileVisitor<>();
-            Files.walkFileTree(path, visitor);
-            MCRDerivate derivate = MCRMetadataManager.retrieveMCRDerivate(MCRObjectID.getInstance(derivateID));
-            visitor.getPaths().stream()
-                .map(MCRPath.class::cast)
-                .filter(p -> !p.getOwnerRelativePath().endsWith(".xml"))
-                .findFirst()
-                .ifPresent(file -> {
-                    derivate.getDerivate().getInternals().setMainDoc(file.getOwnerRelativePath());
-                    try {
-                        MCRMetadataManager.update(derivate);
-                    } catch (MCRPersistenceException | MCRAccessException e) {
-                        LOGGER.error("Could not set main file!", e);
-                    }
-                });
-        } catch (IOException e) {
-            LOGGER.error("Could not set main file!", e);
-        }
-    }
 }

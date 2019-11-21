@@ -17,21 +17,21 @@ import org.swordapp.server.UriRegistry;
 /**
  * @author Sebastian Hofmann (mcrshofm)
  */
-public class MIRSwordCollectionProvider extends MCRSwordCollectionProvider {
+public abstract class MIRSwordCollectionProvider extends MCRSwordCollectionProvider {
 
     private MCRSwordDefaultAuthHandler mcrSwordDefaultAuthHandler;
 
     private MIRSwordMetadataProvider mirSwordMetadataProvider;
 
-    private MIRSwordIngester mirSwordIngester;
-
     private MCRSwordSolrObjectIDSupplier mcrSwordSolrObjectIDSupplier;
+
+    private MCRSwordIngester ingester;
 
     public MIRSwordCollectionProvider() {
         mcrSwordDefaultAuthHandler = new MCRSwordDefaultAuthHandler();
         mirSwordMetadataProvider = new MIRSwordMetadataProvider();
-        mirSwordIngester = new MIRSwordIngester();
-        mcrSwordSolrObjectIDSupplier = new MCRSwordSolrObjectIDSupplier(new SolrQuery("objectType:mods"));
+        //mcrSwordSolrObjectIDSupplier = new MCRSwordSolrObjectIDSupplier(new SolrQuery("objectType:mods AND "));
+        this.ingester = initIngester();
     }
 
     @Override
@@ -51,11 +51,6 @@ public class MIRSwordCollectionProvider extends MCRSwordCollectionProvider {
     }
 
     @Override
-    public MCRSwordIngester getIngester() {
-        return mirSwordIngester;
-    }
-
-    @Override
     public MCRSwordMetadataProvider getMetadataProvider() {
         return mirSwordMetadataProvider;
     }
@@ -65,9 +60,17 @@ public class MIRSwordCollectionProvider extends MCRSwordCollectionProvider {
         return mcrSwordDefaultAuthHandler;
     }
 
+    @Override public MCRSwordIngester getIngester() {
+        return ingester;
+    }
+
+    public abstract MCRSwordIngester initIngester();
+
     @Override
     public void init(MCRSwordLifecycleConfiguration lifecycleConfiguration) {
         super.init(lifecycleConfiguration);
+        this.mcrSwordSolrObjectIDSupplier = new MCRSwordSolrObjectIDSupplier(
+            new SolrQuery("objectType:mods AND servflag.type.sword:" + lifecycleConfiguration.getCollection()));
     }
 
     @Override
