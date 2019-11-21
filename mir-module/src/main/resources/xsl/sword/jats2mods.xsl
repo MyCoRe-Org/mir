@@ -56,7 +56,7 @@
   
   <xsl:template name="originInfo">
     <xsl:if test="pub-date|publisher">
-      <mods:originInfo>
+      <mods:originInfo eventType="publication">
         <xsl:apply-templates select="pub-date" />
         <xsl:apply-templates select="publisher" />
       </mods:originInfo>
