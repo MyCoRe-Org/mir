@@ -178,5 +178,14 @@
         "stored": true,
         "multiValued": false
     }
-}
+},
+  {
+    "add-field": {
+        "name": "servflag.type.sword",
+        "type": "string",
+        "indexed": true,
+        "stored": true,
+        "multiValued": false
+    }
+  }
 ]

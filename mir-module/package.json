@@ -21,7 +21,7 @@
         "grunt-cli": "^1.2.0",
         "grunt-contrib-uglify": "https://github.com/gruntjs/grunt-contrib-uglify.git#harmony",
         "grunt-npmcopy": "^0.1.0",
-        "handlebars": "4.0.5",
+        "handlebars": "4.1.2",
         "jquery.dotdotdot": "1.7.4",
         "jquery.placeholder": "https://github.com/matoilic/jquery.placeholder.git",
         "moment": "2.19.3",
