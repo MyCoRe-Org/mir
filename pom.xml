@@ -40,7 +40,7 @@
     <!-- until snapshot matches released version (required for 'mvn changes:changes-check') -->
     <changes.version>2019.11</changes.version>
     <checkstyle.failOnViolation>false</checkstyle.failOnViolation>
-    <forbiddenapis.version>2.7</forbiddenapis.version>
+    <forbiddenapis.version>1.7</forbiddenapis.version>
     <hibernate.version>5.4.4.Final</hibernate.version>
     <java.target.version>11</java.target.version>
     <jetty.version>9.4.24.v20191120</jetty.version>
@@ -53,8 +53,7 @@
     <sortpom.sortDeps>scope,groupId,artifactId</sortpom.sortDeps>
     <sortpom.sortFile>https://gist.githubusercontent.com/yagee-de/dfd3698c1b49173dbf251f74eb6a9297/raw/406460c088ff3cb6354e4ae6b40535e6f841607d/mycore_sort.xml</sortpom.sortFile>
     <sortpom.sortProps>true</sortpom.sortProps>
-    <tomcat8.version>8.5.49</tomcat8.version>
-    <tomcat9.version>9.0.29</tomcat9.version>
+    <tomcat.version>9.0.29</tomcat.version>
   </properties>
   <build>
     <pluginManagement>
@@ -349,7 +348,7 @@
         </property>
       </activation>
       <properties>
-        <cargo.container>tomcat${tomcat}x</cargo.container>
+        <cargo.container>tomcat9x</cargo.container>
       </properties>
       <build>
         <pluginManagement>
@@ -389,30 +388,6 @@
           </plugins>
         </pluginManagement>
       </build>
-    </profile>
-    <profile>
-      <id>tomcat8</id>
-      <activation>
-        <property>
-          <name>tomcat</name>
-          <value>8</value>
-        </property>
-      </activation>
-      <properties>
-        <tomcat.version>${tomcat8.version}</tomcat.version>
-      </properties>
-    </profile>
-    <profile>
-      <id>tomcat9</id>
-      <activation>
-        <property>
-          <name>tomcat</name>
-          <value>9</value>
-        </property>
-      </activation>
-      <properties>
-        <tomcat.version>${tomcat9.version}</tomcat.version>
-      </properties>
     </profile>
   </profiles>
   <dependencyManagement>
