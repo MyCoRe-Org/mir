@@ -4,14 +4,14 @@
   <parent>
     <groupId>org.mycore.mir</groupId>
     <artifactId>mir-parent</artifactId>
-    <version>2019.06.2-SNAPSHOT</version>
+    <version>2019.06.2</version>
   </parent>
   <artifactId>mir-cli</artifactId>
   <packaging>pom</packaging>
   <name>MIR: Command Line Interface</name>
   <description>ZIP package ready to run MyCoRe commands from shell</description>
   <scm>
-    <tag>2019.06.x</tag>
+    <tag>v2019.06.2</tag>
   </scm>
   <properties>
     <MCR.AppName>mir</MCR.AppName>
