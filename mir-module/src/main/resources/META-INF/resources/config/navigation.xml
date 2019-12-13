@@ -94,7 +94,7 @@
     <label xml:lang="de">Nutzermenü</label>
     <label xml:lang="en">User menu</label>
     <group id="thisuser">
-      <item href="/authorization/change-password.xed?action=password" type="extern">
+      <item href="/servlets/MCRUserServlet?action=changeMyPassword" type="extern">
         <label xml:lang="de">Passwort ändern</label>
         <label xml:lang="en">Change Password</label>
       </item>

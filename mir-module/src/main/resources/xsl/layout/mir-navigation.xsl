@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+  <xsl:variable name="currentUser" select="document('notnull:user:current')" />
   <xsl:template match="/navigation//label">
   </xsl:template>
   <xsl:template match="/navigation//menu[@id and (group[item] or item)]">
@@ -37,6 +38,9 @@
     <xsl:param name="active" select="descendant-or-self::item[@href = $browserAddress ]" />
     <xsl:param name="url">
       <xsl:choose>
+        <xsl:when test="contains(@href,'change-current-user.xed?action=saveCurrentUser') and $currentUser/user/@locked='true'">
+          <!-- Dont show the edit link if the user is no editable -->
+        </xsl:when>
         <!-- item @type is "intern" -> add the web application path before the link -->
         <xsl:when test=" starts-with(@href,'http:') or starts-with(@href,'https:') or starts-with(@href,'mailto:') or starts-with(@href,'ftp:')">
           <xsl:value-of select="@href" />
