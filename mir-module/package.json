@@ -13,10 +13,10 @@
     },
     "engineStrict": true,
     "devDependencies": {
-        "bootstrap": "4.3.1",
+        "bootstrap": "4.4.1",
         "bootstrap-3-typeahead": "4.0.2",
         "bootstrap-datepicker": "1.9.0",
-        "@fortawesome/fontawesome-free": "5.10.1",
+        "@fortawesome/fontawesome-free": "5.11.2",
         "grunt": "^1.0.0",
         "grunt-cli": "^1.2.0",
         "grunt-contrib-uglify": "https://github.com/gruntjs/grunt-contrib-uglify.git#harmony",
