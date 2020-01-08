@@ -11,7 +11,7 @@
         "wt": "xml",
         "bq": "created:[NOW/DAY-6MONTH TO NOW/DAY]",
         "condQuery": "*",
-        "sort": "score desc, mods.dateIssued desc, mods.dateIssued.host desc"
+        "sort": "score desc, mods.dateIssued desc"
       },
       "appends": {
         "fq": [
@@ -45,7 +45,7 @@
         "qs": "5",
         "start": "0",
         "q.alt": "*:* -objectType:data_file -objectType:derivate",
-        "sort": "mods.dateIssued desc, mods.dateIssued.host desc, score desc",
+        "sort": "mods.dateIssued desc, score desc",
         "tie": "0.1",
         "hl": "true",
         "fq": "state:published"
@@ -73,7 +73,7 @@
         "qs": "5",
         "start": "0",
         "q.alt": "*:* -objectType:data_file -objectType:derivate",
-        "sort": "mods.dateIssued desc, mods.dateIssued.host desc, score desc",
+        "sort": "mods.dateIssued desc, score desc",
         "tie": "0.1",
         "hl": "true",
         "owner": "createdby:guest"
@@ -99,7 +99,7 @@
         "qs": "5",
         "start": "0",
         "q.alt": "*:* -objectType:data_file -objectType:derivate",
-        "sort": "mods.dateIssued desc, mods.dateIssued.host desc",
+        "sort": "mods.dateIssued desc",
         "tie": "0.1",
         "fq": "state:published"
       },
@@ -186,7 +186,7 @@
         "df": "allMeta",
         "fl": "*,score",
         "wt": "xml",
-        "sort": "score desc, mods.dateIssued desc, mods.dateIssued.host desc"
+        "sort": "score desc, mods.dateIssued desc"
       },
       "appends": {
         "facet": "true",
