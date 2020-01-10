@@ -1,8 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 
+<!-- Used to import JATs metadata from DeepGreen via SWORD -->
 <!-- See https://jats.nlm.nih.gov -->
 
+<!-- TODO: <pub-date pub-type="ppub" date-type="actual"> -->
+<!-- TODO: affiliation mit Umbrüchen -->
+<!-- TODO: abbrev title = main title -->
+<!-- TODO: <xref ref-type="aff" rid="A">a oder <sup>1</sup></xref> <aff id="A"><sup>a</sup>Allgemeine<break/>Psychologie </aff>  --> 
 <!-- TODO: funding-group -->
+<!-- TODO: map article-type to mods:genre -->
+<!-- TODO: lookup existing host for xlink:href -->
 
 <xsl:stylesheet version="1.0" 
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -10,9 +17,12 @@
   xmlns:xalan="http://xml.apache.org/xalan"
   xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation" 
   xmlns:mods="http://www.loc.gov/mods/v3"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   exclude-result-prefixes="xalan i18n">
 
   <xsl:output method="xml" encoding="UTF-8" indent="yes" xalan:indent-amount="2" />
+
+  <xsl:param name="MIR.projectid.default" />
 
   <!-- Helpers to convert uppercase to lowercase -->
   <xsl:variable name="upperABC" select="'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'" />
@@ -20,28 +30,71 @@
 
   <xsl:template match="article">
     <mods:mods>
-      <xsl:apply-templates select="@article-type" />
-      <mods:genre type="intern">article</mods:genre>
       <mods:typeOfResource>text</mods:typeOfResource>
+      <xsl:call-template name="genre_article" />
+      
       <xsl:for-each select="front/article-meta">
         <xsl:apply-templates select="title-group" />
         <xsl:apply-templates select="contrib-group/contrib" />
         <xsl:apply-templates select="article-id" />
         <xsl:call-template name="originInfo" />
         <xsl:apply-templates select="../journal-meta" />
-        <xsl:apply-templates select="abstract" />
+        <xsl:apply-templates select="abstract|trans-abstract" />
         <xsl:apply-templates select="kwd-group/kwd" />
+        <xsl:apply-templates select="permissions/copyright-statement" />
         <xsl:apply-templates select="permissions/license" />
         <xsl:call-template name="oa_nlz" />
       </xsl:for-each>
       <xsl:apply-templates select="@xml:lang" />
+      <xsl:apply-templates select="." mode="copy" />
     </mods:mods>
+  </xsl:template>
+  
+  <xsl:template match="article" mode="copy">
+    <mods:extension>
+      <xsl:copy-of select="." />
+    </mods:extension>
+  </xsl:template>
+
+  <xsl:template name="genre_article">
+    <mods:genre type="intern">
+      <xsl:call-template name="setAuthorityValueURIs">
+        <xsl:with-param name="classification">mir_genres</xsl:with-param>
+        <xsl:with-param name="category">article</xsl:with-param>
+      </xsl:call-template>
+    </mods:genre>
+  </xsl:template>
+  
+  <xsl:template name="genre_journal">
+    <mods:genre type="intern">
+      <xsl:call-template name="setAuthorityValueURIs">
+        <xsl:with-param name="classification">mir_genres</xsl:with-param>
+        <xsl:with-param name="category">journal</xsl:with-param>
+      </xsl:call-template>
+    </mods:genre>
+  </xsl:template>
+  
+  <xsl:template name="setAuthorityValueURIs">
+    <xsl:param name="classification" />
+    <xsl:param name="category" />
+
+    <xsl:variable name="uri1"  select="concat('classification:metadata:1:children:',$classification)" />
+    <xsl:variable name="uri2" select="document($uri1)/*/label[@xml:lang='x-uri']/@text" />
+    <xsl:attribute name="authorityURI">
+      <xsl:value-of select="$uri2" />
+    </xsl:attribute>
+    <xsl:attribute name="valueURI">
+      <xsl:value-of select="$uri2" />
+      <xsl:text>#</xsl:text>
+      <xsl:value-of select="$category" />
+    </xsl:attribute>
   </xsl:template>
   
   <xsl:template match="journal-meta">
     <mods:relatedItem type="host">
-      <mods:genre type="intern">journal</mods:genre>
-      <xsl:apply-templates select="journal-title-group" />
+      <xsl:call-template name="href" />
+      <xsl:call-template name="genre_journal" />
+      <xsl:apply-templates select="descendant::journal-title|descendant::abbrev-journal-title" />
       <xsl:for-each select="../article-meta">
         <mods:part>
           <xsl:apply-templates select="volume" />
@@ -54,10 +107,17 @@
     </mods:relatedItem>
   </xsl:template>
   
+  <xsl:template name="href">
+    <xsl:attribute name="href" namespace="http://www.w3.org/1999/xlink">
+      <xsl:value-of select="$MIR.projectid.default" />
+      <xsl:text>_mods_00000000</xsl:text>
+    </xsl:attribute>
+  </xsl:template>
+  
   <xsl:template name="originInfo">
     <xsl:if test="pub-date|publisher">
       <mods:originInfo eventType="publication">
-        <xsl:apply-templates select="pub-date" />
+        <xsl:call-template name="pub-date" />
         <xsl:apply-templates select="publisher" />
       </mods:originInfo>
     </xsl:if>
@@ -83,12 +143,6 @@
     </mods:end>
   </xsl:template>
 
-  <xsl:template match="@article-type">
-    <mods:genre>
-      <xsl:value-of select="." />
-    </mods:genre>
-  </xsl:template>
-  
   <xsl:template match="article/@xml:lang">
     <mods:language>
       <mods:languageTerm type="code" authority="rfc5646">
@@ -97,10 +151,15 @@
     </mods:language>
   </xsl:template>
   
+  <xsl:variable name="idTypes" select="document('classification:metadata:-1:children:identifier')//categories" />
+
   <xsl:template match="article-id">
-    <mods:identifier type="{@pub-id-type}">
-      <xsl:value-of select="." />
-    </mods:identifier>
+    <!-- only import supported identifier types -->
+    <xsl:if test="$idTypes/category[@ID=current()/@pub-id-type]">
+      <mods:identifier type="{@pub-id-type}">
+        <xsl:value-of select="." />
+      </mods:identifier>
+    </xsl:if>
   </xsl:template>
   
   <xsl:template match="title-group">
@@ -111,7 +170,17 @@
     <xsl:apply-templates select="trans-title-group" />
   </xsl:template>
   
-  <xsl:template match="article-title|trans-title">
+  <xsl:template match="article-title">
+    <xsl:copy-of select="@xml:lang" />
+    <xsl:if test="not(@xml:lang)">
+      <xsl:copy-of select="/*/@xml:lang" />
+    </xsl:if>
+    <mods:title>
+      <xsl:value-of select="." />
+    </mods:title>
+  </xsl:template>
+
+  <xsl:template match="trans-title">
     <xsl:copy-of select="@xml:lang" />
     <mods:title>
       <xsl:value-of select="." />
@@ -131,12 +200,7 @@
     </mods:titleInfo>
   </xsl:template>
   
-  <xsl:template match="journal-title-group">
-    <xsl:apply-templates select="journal-title" />
-    <xsl:apply-templates select="abbrev-journal-title" />
-  </xsl:template>
-  
-  <xsl:template match="journal-title">
+  <xsl:template match="journal-title|abbrev-journal-title[@abbrev-type='full'][not(../journal-title)]">
     <mods:titleInfo>
       <xsl:copy-of select="@xml:lang" />
       <mods:title>
@@ -213,11 +277,11 @@
   <xsl:template name="affiliation">
     <xsl:choose>
       <!-- Link to affiliation via xref ID -->
-      <xsl:when test="xref[@ref-type='aff'][string-length(@rid) > 0]">
-        <xsl:apply-templates select="xref[@ref-type='aff'][string-length(@rid) > 0]" />
+      <xsl:when test="xref[(@ref-type='aff') or not(@ref-type)][string-length(@rid) > 0]">
+        <xsl:apply-templates select="xref[(@ref-type='aff') or not(@ref-type)][string-length(@rid) > 0]" />
       </xsl:when>
       <!-- Affiliation is given at article level -->
-      <xsl:when test="not(xref[@ref-type='aff']) and //article-meta/aff[not(@*)][position()=last()][string-length(text()) > 0]">
+      <xsl:when test="not(xref[(@ref-type='aff') or not(@ref-type)]) and //article-meta/aff[not(@*)][position()=last()][string-length(text()) > 0]">
         <xsl:apply-templates select="//article-meta/aff[not(@*)][position()=last()][string-length(text()) > 0]" />
       </xsl:when>
       <!-- Affiliation is given in aff ellement -->
@@ -228,23 +292,25 @@
   </xsl:template>
 
   <!-- Affiliations may be linked via @id/xref -->  
-  <xsl:key name="rid2aff" match="//article-meta/aff[@id]" use="@id" />
+  <xsl:key name="rid2aff" match="//aff[@id]" use="@id" />
   
-  <xsl:template match="xref[@ref-type='aff']">
-    <mods:affiliation>
-      <xsl:value-of select="key('rid2aff',@rid)/text()" />
-    </mods:affiliation>
+  <xsl:template match="xref[(@ref-type='aff') or not(@ref-type)]">
+    <xsl:apply-templates select="key('rid2aff',@rid)" />
   </xsl:template>
   
-  <xsl:template match="article-meta/aff[not(@*)]">
+  <xsl:template match="aff">
     <mods:affiliation>
-      <xsl:apply-templates select="*|text()" />
-    </mods:affiliation>
-  </xsl:template>
-
-  <xsl:template match="contrib/aff">
-    <mods:affiliation>
-      <xsl:apply-templates select="*|text()" />
+      <xsl:choose>
+        <xsl:when test="institution">
+          <xsl:value-of select="institution" />
+        </xsl:when>
+        <xsl:when test="institution-wrap">
+          <xsl:value-of select="institution-wrap/institution" />
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="." />
+        </xsl:otherwise>
+      </xsl:choose>
     </mods:affiliation>
   </xsl:template>
   
@@ -256,6 +322,20 @@
 
   <!-- Ignore empty ORCIDs -->
   <xsl:template match="contrib-id[text()='http://orcid.org/']" />
+  
+  <xsl:template name="pub-date">
+    <xsl:choose>
+      <xsl:when test="pub-date[(@pub-type='ppub') or ((@date-type='pub') and (@publication-format='print'))]">
+        <xsl:apply-templates select="pub-date[(@pub-type='ppub') or ((@date-type='pub') and (@publication-format='print'))][1]" />
+      </xsl:when>
+      <xsl:when test="pub-date[(@pub-type='epub') or ((@date-type='pub') and (@publication-format='electronic'))]">
+        <xsl:apply-templates select="pub-date[(@pub-type='epub') or ((@date-type='pub') and (@publication-format='electronic'))][1]" />
+      </xsl:when>
+      <xsl:when test="pub-date[(@pub-type='ppub') or (@date-type='pub')]">
+        <xsl:apply-templates select="pub-date[(@pub-type='ppub') or (@date-type='pub')][1]" />
+      </xsl:when>
+    </xsl:choose>
+  </xsl:template>
   
   <xsl:template match="pub-date[@iso-8601-date]">
     <mods:dateIssued encoding="iso8601">
@@ -292,7 +372,7 @@
     </mods:tableOfContents>
   </xsl:template>
 
-  <xsl:template match="abstract">
+  <xsl:template match="abstract|trans-abstract">
     <mods:abstract>
       <xsl:copy-of select="@xml:lang" />
       <xsl:apply-templates select="*|text()" />
@@ -330,6 +410,19 @@
         <xsl:value-of select="." />
       </mods:placeTerm>
     </mods:place>
+  </xsl:template>
+
+  <xsl:template match="permissions/copyright-statement">
+    <mods:accessCondition type="copyrightMD" xmlns:cmd="http://www.cdlib.org/inside/diglib/copyrightMD">
+      <cmd:copyright copyright.status="copyrighted" publication.status="published"
+        xsi:schemaLocation="http://www.cdlib.org/inside/diglib/copyrightMD https://www.cdlib.org/groups/rmg/docs/copyrightMD.xsd">
+        <cmd:rights.holder>
+          <cmd:name>
+            <xsl:value-of select="." />
+          </cmd:name>
+        </cmd:rights.holder>
+      </cmd:copyright>
+    </mods:accessCondition>
   </xsl:template>
   
   <!-- Map license URL to category in mir_licenses -->
