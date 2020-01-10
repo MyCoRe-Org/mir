@@ -33,6 +33,7 @@ import org.mycore.common.MCRUsageException;
 import org.mycore.datamodel.metadata.MCRObject;
 import org.mycore.datamodel.metadata.MCRObjectID;
 import org.mycore.user2.MCRUser;
+import org.mycore.user2.MCRUserAttribute;
 import org.mycore.user2.MCRUserManager;
 
 /**
@@ -149,7 +150,7 @@ public final class MIRAccessKeyManager {
         if (getAccessKeyType(mcrObjectId, accessKey) == null)
             throw new MCRUsageException("Invalid access key \"" + accessKey + "\"");
 
-        user.getAttributes().put(ACCESS_KEY_PREFIX + mcrObjectId.toString(), accessKey);
+        user.setUserAttribute(ACCESS_KEY_PREFIX + mcrObjectId.toString(), accessKey);
 
         MCRUserManager.updateUser(user);
     }
