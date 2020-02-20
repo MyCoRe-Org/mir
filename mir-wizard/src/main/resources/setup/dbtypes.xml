@@ -5,15 +5,15 @@
     <url>jdbc:h2:file:{PATH}/h2/mir</url>
     <username>sa</username>
     <library>
-      <url>http://central.maven.org/maven2/com/h2database/h2/1.4.196/h2-1.4.196.jar</url>
+      <url>https://repo.maven.apache.org/maven2/com/h2database/h2/1.4.200/h2-1.4.200.jar</url>
     </library>
   </db>
   <db name="PostgreSQL">
     <driver>org.postgresql.Driver</driver>
     <url>jdbc:postgresql://127.0.0.1/mir</url>
     <library>
-      <url>https://jdbc.postgresql.org/download/postgresql-42.1.1.jar</url>
-      <url>http://central.maven.org/maven2/org/postgresql/postgresql/42.1.1/postgresql-42.1.1.jar</url>
+      <url>https://jdbc.postgresql.org/download/postgresql-42.2.9.jar</url>
+      <url>https://repo.maven.apache.org/maven2/org/postgresql/postgresql/42.2.9/postgresql-42.2.9.jar</url>
     </library>
   </db>
   <db name="HSQLDB">
@@ -21,21 +21,21 @@
     <url>jdbc:hsqldb:hsql://localhost:8298/mir</url>
     <username>sa</username>
     <library>
-      <url>http://central.maven.org/maven2/org/hsqldb/hsqldb/2.4.0/hsqldb-2.4.0.jar</url>
+      <url>https://repo.maven.apache.org/maven2/org/hsqldb/hsqldb/2.5.0/hsqldb-2.5.0.jar</url>
     </library>
   </db>
   <db name="MariaDB">
     <driver>org.mariadb.jdbc.Driver</driver>
     <url>jdbc:mariadb://127.0.0.1/mir</url>
     <library>
-      <url>http://central.maven.org/maven2/org/mariadb/jdbc/mariadb-java-client/2.0.3/mariadb-java-client-2.0.3.jar</url>
+      <url>https://repo.maven.apache.org/maven2/org/mariadb/jdbc/mariadb-java-client/2.5.4/mariadb-java-client-2.5.4.jar</url>
     </library>
   </db>
   <db name="MySQL">
     <driver>com.mysql.jdbc.Driver</driver>
     <url>jdbc:mysql://127.0.0.1/mir</url>
     <library>
-      <url>http://central.maven.org/maven2/mysql/mysql-connector-java/5.1.42/mysql-connector-java-5.1.42.jar</url>
+      <url>https://repo.maven.apache.org/maven2/mysql/mysql-connector-java/8.0.19/mysql-connector-java-8.0.19.jar</url>
     </library>
   </db>
 </dbtypes>
