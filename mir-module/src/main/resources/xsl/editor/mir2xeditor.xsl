@@ -414,7 +414,7 @@
         <div class="col-md-6">
           <xed:bind xpath="mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']" initially="his" /><!--  Host institution [his] -->
           <xed:bind xpath="@valueURIxEditor">
-            <select class="form-control form-control-inline">
+            <select class="form-control form-control-inline mir-form__js-select--large">
               <option value="">
                 <xed:output i18n="mir.select.optional" />
               </option>
