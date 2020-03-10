@@ -8,8 +8,7 @@
     xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
     exclude-result-prefixes="xlink i18n">
 
-  <xsl:output method="html" doctype-system="about:legacy-compat" indent="yes" omit-xml-declaration="yes" media-type="text/html"
-    version="5" />
+  <xsl:output method="xml" />
   <xsl:strip-space elements="*" />
   <xsl:include href="resource:xsl/mir-flatmir-layout-utils.xsl"/>
   <xsl:param name="MIR.DefaultLayout.CSS" select="'flatly'" />

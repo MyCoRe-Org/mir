@@ -6,8 +6,7 @@
   xmlns:basket="xalan://org.mycore.frontend.basket.MCRBasketManager" xmlns:mcr="http://www.mycore.org/" xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
   xmlns:actionmapping="xalan://org.mycore.wfc.actionmapping.MCRURLRetriever"
   xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions" exclude-result-prefixes="xlink basket actionmapping mcr mcrxsl i18n">
-  <xsl:output method="html" doctype-system="about:legacy-compat" indent="yes" omit-xml-declaration="yes" media-type="text/html"
-    version="5" />
+  <xsl:output method="xml" />
   <xsl:strip-space elements="*" />
   <xsl:include href="resource:xsl/mir-cosmol-layout-utils.xsl"/>
   <xsl:param name="MIR.DefaultLayout.CSS" select="'cosmo.min'" />
