@@ -55,8 +55,7 @@
   </xsl:template>
   
   <xsl:template match="mods:relatedItem[contains('host series',@type)]" mode="toc">
-    <xsl:apply-templates select="mods:relatedItem[contains('host series',@type)]" mode="toc" />
- 
+
     <xsl:for-each select="@xlink:href">
       <field name="mir.toc.ancestor">
         <xsl:value-of select="." />
