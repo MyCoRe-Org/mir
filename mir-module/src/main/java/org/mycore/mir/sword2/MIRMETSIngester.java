@@ -42,7 +42,7 @@ import org.swordapp.server.SwordServerException;
 import org.swordapp.server.UriRegistry;
 import org.xml.sax.SAXException;
 
-public class MIROJSIngester extends MIRSwordIngesterBase {
+public class MIRMETSIngester extends MIRSwordIngesterBase {
 
     public static final Logger LOGGER = LogManager.getLogger();
 
@@ -134,14 +134,14 @@ public class MIROJSIngester extends MIRSwordIngesterBase {
             mcrContent = getTransformer().transform(new MCRJDOMContent(metsDocument));
         } catch (IOException e) {
             throw new SwordError(UriRegistry.ERROR_BAD_REQUEST, HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
-                "Error while transforming mods2dc!", e);
+                "Error while transforming!", e);
         }
 
         Document convertedDocument;
         try {
             convertedDocument = mcrContent.asXML();
         } catch (JDOMException | IOException | SAXException e) {
-            throw new SwordServerException("Error getting transform result of dc2mods transformation!", e);
+            throw new SwordServerException("Error getting result of the transformation!", e);
         }
         return convertedDocument;
     }
