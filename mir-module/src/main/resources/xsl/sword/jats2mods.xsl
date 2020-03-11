@@ -108,10 +108,21 @@
   </xsl:template>
   
   <xsl:template name="href">
-    <xsl:attribute name="href" namespace="http://www.w3.org/1999/xlink">
-      <xsl:value-of select="$MIR.projectid.default" />
-      <xsl:text>_mods_00000000</xsl:text>
-    </xsl:attribute>
+    <xsl:variable name="solrQuery"
+                  select="document(concat('solr:main:q=%2Bmods.identifier%3A%22', issn, '%22%20AND%20%2Bmods.genre%3Ajournal'))" />
+    <xsl:choose>
+      <xsl:when test="$solrQuery/response/result/@numFound &gt; 0">
+        <xsl:attribute name="href" namespace="http://www.w3.org/1999/xlink">
+          <xsl:value-of select="$solrQuery/response/result/doc[1]/str[@name='id']" />
+        </xsl:attribute>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:attribute name="href" namespace="http://www.w3.org/1999/xlink">
+          <xsl:value-of select="$MIR.projectid.default" />
+          <xsl:text>_mods_00000000</xsl:text>
+        </xsl:attribute>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
   
   <xsl:template name="originInfo">
