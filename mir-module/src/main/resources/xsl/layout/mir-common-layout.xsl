@@ -50,19 +50,19 @@
         </li>
       </xsl:when>
       <xsl:otherwise>
-        <li class="dropdown">
+        <li class="nav-item dropdown">
           <xsl:if test="$loaded_navigation_xml/menu[@id='user']//item[@href = $browserAddress ]">
             <xsl:attribute name="class">
               <xsl:value-of select="'active'" />
             </xsl:attribute>
           </xsl:if>
-          <a id="currentUser" class="nav-item dropdown-toggle" data-toggle="dropdown" href="#">
+          <a id="currentUser" class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">
             <strong>
               <xsl:value-of select="$CurrentUser" />
             </strong>
             <span class="caret" />
           </a>
-          <ul class="dropdown-menu dropdown-menu-right" role="menu">
+          <ul class="dropdown-menu" role="menu">
             <xsl:apply-templates select="$loaded_navigation_xml/menu[@id='user']/*" />
           </ul>
         </li>

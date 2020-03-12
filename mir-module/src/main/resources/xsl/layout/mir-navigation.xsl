@@ -9,7 +9,7 @@
     <li class="nav-item dropdown">
       <xsl:if test="$active">
         <xsl:attribute name="class">
-          <xsl:value-of select="'active'" />
+          <xsl:value-of select="'nav-item dropdown active'" />
         </xsl:attribute>
       </xsl:if>
       <a id="{$menuId}" class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">
