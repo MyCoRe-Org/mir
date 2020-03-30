@@ -59,7 +59,7 @@
     <xsl:copy-of select="." />
   </xsl:template>
 
-  <xsl:template match="mods:dateIssued[@encoding and not(@encoding='w3cdtf')]">
+  <xsl:template match="mods:dateIssued[@encoding and not(../mods:dateIssued/@encoding='w3cdtf')]">
     <xsl:copy>
       <xsl:copy-of select="@*[name()!='encoding']" />
       <xsl:attribute name="encoding">

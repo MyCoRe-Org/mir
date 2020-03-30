@@ -119,18 +119,28 @@
                 </xsl:call-template>
               </xsl:if>
             </xsl:for-each>
-            <xsl:for-each select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:relatedItem[not(@type='host')]">
+            <xsl:for-each select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:relatedItem[not(@type='host' and @xlink:href)]">
+              <xsl:variable name="relItemLabel">
+                <xsl:choose>
+                  <xsl:when test="@displayLabel">
+                    <xsl:value-of select="@displayLabel"/>
+                  </xsl:when>
+                  <xsl:otherwise>
+                    <xsl:value-of select="i18n:translate(concat('mir.relatedItem.', @type))"/>
+                  </xsl:otherwise>
+                </xsl:choose>
+              </xsl:variable>
               <xsl:choose>
                 <xsl:when test="@xlink:href">
                   <xsl:call-template name="printMetaDate.mods.relatedItems">
                     <xsl:with-param name="parentID" select="./@xlink:href" />
-                    <xsl:with-param name="label" select="i18n:translate(concat('mir.relatedItem.', @type))" />
+                    <xsl:with-param name="label" select="$relItemLabel" />
                   </xsl:call-template>
                 </xsl:when>
                 <xsl:otherwise>
-                  <xsl:call-template name="printMetaDate.mods">
-                    <xsl:with-param name="nodes" select="./mods:titleInfo/mods:title" />
-                    <xsl:with-param name="label" select="i18n:translate(concat('mir.relatedItem.', @type))" />
+                  <xsl:call-template name="printMetaDate.mods.relatedItems">
+                    <xsl:with-param name="parentID" select="''" />
+                    <xsl:with-param name="label" select="$relItemLabel" />
                   </xsl:call-template>
                 </xsl:otherwise>
               </xsl:choose>
