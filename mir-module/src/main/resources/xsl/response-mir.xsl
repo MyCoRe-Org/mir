@@ -61,38 +61,38 @@
                   <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu search_type">
-                  <li class="dropdown-item">
-                    <a href="#" value="all">
+                  <li>
+                    <a href="#" value="all" class="dropdown-item">
                       <xsl:value-of select="i18n:translate('mir.dropdown.all')" />
                     </a>
                   </li>
-                  <li class="dropdown-item">
-                    <a href="#" value="mods.title">
+                  <li>
+                    <a href="#" value="mods.title" class="dropdown-item">
                       <xsl:value-of select="i18n:translate('mir.dropdown.title')" />
                     </a>
                   </li>
-                  <li class="dropdown-item">
-                    <a href="#" value="mods.author">
+                  <li>
+                    <a href="#" value="mods.author" class="dropdown-item">
                       <xsl:value-of select="i18n:translate('mir.dropdown.author')" />
                     </a>
                   </li>
-                  <li class="dropdown-item">
-                    <a href="#" value="mods.name.top">
+                  <li>
+                    <a href="#" value="mods.name.top" class="dropdown-item">
                       <xsl:value-of select="i18n:translate('mir.dropdown.name')" />
                     </a>
                   </li>
-                  <li class="dropdown-item">
-                    <a href="#" value="mods.nameIdentifier">
+                  <li>
+                    <a href="#" value="mods.nameIdentifier" class="dropdown-item">
                       <xsl:value-of select="i18n:translate('mir.dropdown.nameIdentifier')" />
                     </a>
                   </li>
-                  <li class="dropdown-item">
-                    <a href="#" value="allMeta">
+                  <li>
+                    <a href="#" value="allMeta" class="dropdown-item">
                       <xsl:value-of select="i18n:translate('mir.dropdown.allMeta')" />
                     </a>
                   </li>
-                  <li class="dropdown-item">
-                    <a href="#" value="content">
+                  <li>
+                    <a href="#" value="content" class="dropdown-item">
                       <xsl:value-of select="i18n:translate('mir.dropdown.content')" />
                     </a>
                   </li>
@@ -349,21 +349,21 @@
                     <span class="caret"></span>
                   </a>
                   <ul class="dropdown-menu dropdown-menu-right">
-                    <li class="dropdown-item">
+                    <li>
                       <xsl:call-template name="basketLink">
                         <xsl:with-param name="identifier" select="$identifier" />
                       </xsl:call-template>
                     </li>
                         <!-- direct link to editor -->
                     <xsl:if test="acl:checkPermission($identifier,'writedb')">
-                      <li class="dropdown-item">
+                      <li>
                         <xsl:variable name="editURL">
                           <xsl:call-template name="mods.getObjectEditURL">
                             <xsl:with-param name="id" select="$identifier" />
                             <xsl:with-param name="layout" select="'$'" />
                           </xsl:call-template>
                         </xsl:variable>
-                        <a class="hit_option hit_edit">
+                        <a class="hit_option hit_edit dropdown-item">
                           <xsl:choose>
                             <xsl:when test="string-length($editURL) &gt; 0">
                               <xsl:attribute name="href">
@@ -1027,10 +1027,11 @@
           </xsl:otherwise>
         </xsl:choose>
       </xsl:variable>
-      <li class="dropdown-item">
+      <li>
         <xsl:call-template name="print.hyperLink">
           <xsl:with-param name="href" select="mcrxsl:regexp($filterHref,'(&amp;|%26)(start=)[0-9]*', '')" />
           <xsl:with-param name="text" select="@title" />
+          <xsl:with-param name="class" select="'dropdown-item'" />
         </xsl:call-template>
       </li>
     </xsl:if>
@@ -1148,7 +1149,7 @@
       </xsl:when>
       <xsl:otherwise>
         <!-- add to basket -->
-        <a class="hit_option hit_to_basket"
+        <a class="hit_option hit_to_basket dropdown-item"
           href="{$ServletsBaseURL}MCRBasketServlet{$HttpSession}?type=objects&amp;action=add&amp;id={$identifier}&amp;uri=mcrobject:{$identifier}&amp;redirect=referer"
           title=""
         >

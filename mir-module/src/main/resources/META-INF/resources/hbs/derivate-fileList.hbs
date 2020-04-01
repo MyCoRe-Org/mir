@@ -67,14 +67,14 @@
                   <ul class="dropdown-menu dropdown-menu-right">
                     {{#if ../permWrite}}
                       {{#isNot type "directory"}}
-                        <li class="dropdown-item">
+                        <li>
                           <a title="{{getI18n "IFS.mainFile"}}"
                              href="#"
                              data-derivateid="{{../mycorederivate}}"
                              data-objectid="{{../mycoreobject}}"
                              data-file="{{name}}"
                              data-path="{{path}}"
-                             class="option mir_mainfile">
+                             class="option mir_mainfile dropdown-item">
                             <span class="fas fa-star"></span>
                             {{getI18n "IFS.mainFile"}}
                           </a>
@@ -82,9 +82,9 @@
                       {{/isNot}}
                     {{/if}}
                     {{#if ../permDelete}}
-                        <li class="dropdown-item">
+                        <li>
                           <a href="{{../serverBaseURL}}servlets/MCRDerivateServlet?derivateid={{../mycorederivate}}&amp;objectid={{../mycoreobject}}&amp;todo=sdelfile&amp;file={{path}}"
-                             class="option confirm_deletion"
+                             class="option confirm_deletion dropdown-item"
                              data-text="{{getI18n (concat "mir.confirm." type ".text")}}"
                              title="{{getI18n (concat "IFS." type "Delete")}}">
                             <span class="fas fa-trash-alt"></span>

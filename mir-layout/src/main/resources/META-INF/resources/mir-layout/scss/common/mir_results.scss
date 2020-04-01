@@ -289,9 +289,6 @@ $filter: #666 !default;
         }
       }
       .hit_options {
-        .dropdown-menu > li > a:hover {
-          background-color: $highlight;
-        }
         .btn {
           margin-right: 0px;
           padding: 2px 10px;
@@ -309,22 +306,9 @@ $filter: #666 !default;
         .caret {
           margin-left: 6px;
         }
-        .open > .dropdown-toggle {
-          color: $highlight;
-          .btn-secondary {
-            background-color: transparent;
-          }
-          &:hover {
-            color: $link_color;
-          }
-        }
         .hit_option {
-          color: $dark_neutral;
-          background-color: transparent;
-          &:hover {
-            color: white;
-          }
-          .fas {
+          .fas,
+          .far {
             margin-right: 5px;
           }
         }
@@ -343,7 +327,8 @@ $filter: #666 !default;
         }
         a {
           color: $dark_neutral;
-          .fa {
+          .fas,
+          .far {
             margin-right: 5px;
           }
         }
@@ -470,9 +455,6 @@ $file_box_color: $card-bg !default;
               }
             }
             .options {
-                .dropdown-menu > li > a:hover {
-                  background-color: $highlight;
-                }
                 .btn {
                   border: 0px solid transparent;
                   margin-right: 0px;
@@ -489,23 +471,9 @@ $file_box_color: $card-bg !default;
                 .caret {
                   margin-left: 6px;
                 }
-                .open > .dropdown-toggle {
-                  color: $highlight;
-                  background-color: transparent;
-                  .btn-secondary {
-                    background-color: transparent;
-                  }
-                  &:hover {
-                    color: $link_color;
-                  }
-                }
                 .option {
-                  color: #7b8a8b;
-                  background-color: transparent;
-                  &:hover {
-                    color: white;
-                  }
-                  .fa {
+                  .fas,
+                  .far {
                     margin-right: 5px;
                   }
                 }
@@ -563,9 +531,6 @@ $file_box_color: $card-bg !default;
             }
 
             .options {
-                .dropdown-menu > li > a:hover {
-                  background-color: $highlight;
-                }
                 .btn {
                   margin-right: 0px;
                   padding: 2px 10px;
@@ -583,23 +548,9 @@ $file_box_color: $card-bg !default;
                 .caret {
                   margin-left: 6px;
                 }
-                .open > .dropdown-toggle {
-                  color: $highlight;
-                  background-color: transparent;
-                  .btn-secondary {
-                    background-color: transparent;
-                  }
-                  &:hover {
-                    color: $link_color;
-                  }
-                }
                 .option {
-                  color: $dark_neutral;
-                  background-color: transparent;
-                  &:hover {
-                    color: white;
-                  }
-                  .fa {
+                  .fas,
+                  .far {
                     margin-right: 5px;
                   }
                 }
@@ -661,25 +612,6 @@ $file_box_color: $card-bg !default;
 }
 .filter .hits:after {
     content: ")";
-}
-
-.mir-date-arrowTop::before {
-  border-color: transparent transparent rgba(0, 0, 0, 0.15);
-  border-style: solid;
-  border-width: 6px;
-  content: " ";
-  left: 11em;
-  position: absolute;
-  top: -13px;
-}
-.mir-date-arrowTop::after {
-  border-color: transparent transparent white;
-  border-style: solid;
-  border-width: 6px;
-  content: " ";
-  left: 11em;
-  position: absolute;
-  top: -11px;
 }
 
 

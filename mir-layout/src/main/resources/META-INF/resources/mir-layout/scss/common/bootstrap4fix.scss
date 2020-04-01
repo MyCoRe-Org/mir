@@ -7,58 +7,6 @@
 // no (xl) media query necessary (desktop first)
 // set the defaults for all responsive levels here
 
-.navbar {
-    padding: 0;
-}
-.nav-link {
-    padding: 20px 15px;
-}
-.navbar-expand-lg .navbar-nav .nav-link {
-    padding-right: 15px;
-    padding-left: 15px;
-}
-.mir-main-nav {
-  background-color: $primary;
-}
-.mir-main-nav nav .navbar-nav {
-    margin: 0 -15px;
-}
-.mir-main-nav nav .navbar-nav > li.active > a {
-    background-color: #1a252f;
-}
-.mir-main-nav nav .navbar-nav .dropdown-menu::before {
-    border: 6px solid #476481;
-    border-color: transparent transparent #476481 transparent;
-}
-header #searchInput {
-    margin-top: 0px;
-    margin-right: 5px;
-}
-.dropdown-menu {
-    left: auto;
-}
-.mir-prop-nav .navbar-nav > li > a:hover,
-.mir-prop-nav .navbar-nav > li > a:focus {
-    text-decoration: none;
-}
-li.dropdown-item {
-    padding: 0;
-    & a {
-        display: block;
-        padding: $dropdown-item-padding-y $dropdown-item-padding-x;
-        text-decoration: none;
-    }
-}
-
-.dropdown-menu-right .dropdown-item a,
-.search_type .dropdown-item a {
-  color: #7b8a8b;
-}
-.dropdown-menu-right .dropdown-item:hover a,
-.search_type .dropdown-item:hover a {
-  color: white;
-}
-
 .card {
     margin-bottom: 20px;
 }
@@ -71,7 +19,6 @@ li.dropdown-item {
 .modal-dialog {
   min-width: 320px;
 }
-
 .mcr-badge--origin {
   z-index: 100;
   margin-right: 5px;
@@ -83,7 +30,6 @@ li.dropdown-item {
     }
   }
 }
-
 .mcr-invalid {
   label {
     color: red;
@@ -103,7 +49,6 @@ li.dropdown-item {
     border: 1px solid green;
   }
 }
-
 .btn,
 .btn:active,
 .btn:focus {
@@ -123,10 +68,13 @@ li.dropdown-item {
 }
 
 /*
- * anchor elements which should be shown as a link,
- * but can not have a href attribute
+ * overwrite bootstrap settings for anchor elements without a href attribute
+ * anchor elements should be shown as a link even when:
+ * - a href attribute is missing and
+ * - a tabindex attribute is missing and
+ * - it has no dropdown-item class
  */
-a:not([href]):not([tabindex]) {
+a:not([href]):not([tabindex]):not(.dropdown-item) {
   color: $link-color;
   text-decoration: $link-decoration;
 
@@ -135,6 +83,28 @@ a:not([href]):not([tabindex]) {
     text-decoration: $link-hover-decoration;
   }
 }
+
+/*
+ * items with dropdown-item class and no href attribute
+ * should be shown as dropdown-item anyway
+ * overwrite bootstrap settings for no href elements and
+ * reapply settings for dropdown-items
+ */
+ a:not([href]).dropdown-item {
+  color: $dropdown-link-color;
+  @include hover-focus() {
+    color: $dropdown-link-hover-color;
+  }
+  &.active,
+  &:active {
+    color: $dropdown-link-active-color;
+  }
+  &.disabled,
+  &:disabled {
+    color: $dropdown-link-disabled-color;
+  }
+}
+
 
 // Large devices (desktops) and below
 @include media-breakpoint-down(lg) {
