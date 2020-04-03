@@ -24,7 +24,7 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.protocol.HTTP;
 import org.apache.log4j.Logger;
-import org.mycore.common.config.MCRConfiguration;
+import org.mycore.common.config.MCRConfiguration2;
 import org.mycore.frontend.servlets.MCRServlet;
 import org.mycore.frontend.servlets.MCRServletJob;
 import org.mycore.services.http.MCRHttpUtils;
@@ -43,7 +43,8 @@ public class MIRSherpaServlet extends MCRServlet {
 
     private HttpHost sherpaHost;
 
-    private int MAX_CONNECTIONS = MCRConfiguration.instance().getInt(SOLR_CONFIG_PREFIX + "SelectProxy.MaxConnections");
+    private int MAX_CONNECTIONS = MCRConfiguration2.getOrThrow(SOLR_CONFIG_PREFIX + "SelectProxy.MaxConnections",
+        Integer::parseInt);
 
     private PoolingHttpClientConnectionManager httpClientConnectionManager;
 
@@ -57,7 +58,7 @@ public class MIRSherpaServlet extends MCRServlet {
         HttpServletResponse res = job.getResponse();
 
         String issn = req.getParameter("issn");
-        String apiKey = MCRConfiguration.instance().getString("MCR.Mods.SherpaRomeo.ApiKey", "");
+        String apiKey = MCRConfiguration2.getString("MCR.Mods.SherpaRomeo.ApiKey").orElse("");
         HttpGet httpGet;
         if (apiKey.equals("")) {
             httpGet = new HttpGet(SERVER_URL + "?issn=" + issn);

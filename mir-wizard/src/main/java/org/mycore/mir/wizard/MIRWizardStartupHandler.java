@@ -35,7 +35,7 @@ import javax.servlet.ServletRegistration;
 import org.apache.log4j.Logger;
 import org.mycore.access.MCRAccessBaseImpl;
 import org.mycore.access.strategies.MCRObjectIDStrategy;
-import org.mycore.common.config.MCRConfiguration;
+import org.mycore.common.config.MCRConfiguration2;
 import org.mycore.common.config.MCRConfigurationDir;
 import org.mycore.common.events.MCRShutdownHandler;
 import org.mycore.common.events.MCRStartupHandler;
@@ -88,12 +88,10 @@ public class MIRWizardStartupHandler implements MCRStartupHandler.AutoExecutable
         if (servletContext != null) {
             File baseDir = MCRConfigurationDir.getConfigurationDirectory();
 
-            MCRConfiguration config = MCRConfiguration.instance();
-
             if (!baseDir.exists()) {
                 LOGGER.info("Create missing MCR.basedir (" + baseDir.getAbsolutePath() + ")...");
                 baseDir.mkdirs();
-                config.set("MCR.basedir", convertToNixPath(baseDir));
+                MCRConfiguration2.set("MCR.basedir", convertToNixPath(baseDir));
             } else {
                 File mcrProps = MCRConfigurationDir.getConfigFile("mycore.properties");
                 File jpaCfg = MCRConfigurationDir.getConfigFile("resources/META-INF/persistence.xml");
@@ -125,14 +123,16 @@ public class MIRWizardStartupHandler implements MCRStartupHandler.AutoExecutable
                 LOGGER.info("Couldn't map " + WIZARD_SERVLET_NAME + "!");
             }
 
-            String wizStylesheet = config.getString("MIR.Wizard.LayoutStylesheet", "xsl/mir-wizard-layout.xsl");
-            config.set("MCR.LayoutTransformerFactory.Default.Stylesheets", wizStylesheet);
+            String wizStylesheet = MCRConfiguration2.getString("MIR.Wizard.LayoutStylesheet")
+                .orElse("xsl/mir-wizard-layout.xsl");
+            MCRConfiguration2.set("MCR.LayoutTransformerFactory.Default.Stylesheets", wizStylesheet);
             //disable ACL system
             //store for later use...
-            servletContext.setAttribute(ACCESS_CLASS, config.getString(ACCESS_CLASS, null));
-            servletContext.setAttribute(ACCESS_STRATEGY_CLASS, config.getString(ACCESS_STRATEGY_CLASS, null));
-            config.set(ACCESS_CLASS, MCRAccessBaseImpl.class.getName());
-            config.set(ACCESS_STRATEGY_CLASS, MCRObjectIDStrategy.class.getName());
+            servletContext.setAttribute(ACCESS_CLASS, MCRConfiguration2.getString(ACCESS_CLASS).orElse(null));
+            servletContext.setAttribute(ACCESS_STRATEGY_CLASS,
+                MCRConfiguration2.getString(ACCESS_STRATEGY_CLASS).orElse(null));
+            MCRConfiguration2.set(ACCESS_CLASS, MCRAccessBaseImpl.class.getName());
+            MCRConfiguration2.set(ACCESS_STRATEGY_CLASS, MCRObjectIDStrategy.class.getName());
 
             //generate UUID as login token
             final String token = UUID.randomUUID().toString();

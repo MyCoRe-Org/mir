@@ -15,7 +15,7 @@ import org.jdom2.Element;
 import org.jdom2.Namespace;
 import org.mycore.access.MCRAccessException;
 import org.mycore.common.MCRPersistenceException;
-import org.mycore.common.config.MCRConfiguration;
+import org.mycore.common.config.MCRConfiguration2;
 import org.mycore.common.content.transformer.MCRContentTransformer;
 import org.mycore.common.content.transformer.MCRContentTransformerFactory;
 import org.mycore.datamodel.classifications2.MCRCategoryID;
@@ -70,8 +70,8 @@ public abstract class MIRSwordIngesterBase implements MCRSwordIngester {
     }
 
     protected MCRCategoryID getState() {
-        return new MCRCategoryID("state", MCRConfiguration.instance()
-            .getString("MCR.Sword." + this.lifecycleConfiguration.getCollection() + ".State"));
+        return new MCRCategoryID("state", MCRConfiguration2
+            .getStringOrThrow("MCR.Sword." + this.lifecycleConfiguration.getCollection() + ".State"));
     }
 
     @Override
@@ -97,8 +97,8 @@ public abstract class MIRSwordIngesterBase implements MCRSwordIngester {
     }
 
     protected MCRContentTransformer getTransformer() {
-        return MCRContentTransformerFactory.getTransformer(MCRConfiguration.instance()
-            .getString("MCR.Sword." + this.getLifecycleConfiguration().getCollection() + ".Transformer"));
+        return MCRContentTransformerFactory.getTransformer(MCRConfiguration2
+            .getStringOrThrow("MCR.Sword." + this.getLifecycleConfiguration().getCollection() + ".Transformer"));
     }
 
     @Override

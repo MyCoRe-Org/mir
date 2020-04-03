@@ -22,12 +22,12 @@
  */
 package org.mycore.mir.authorization;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
 import org.mycore.access.strategies.MCRAccessCheckStrategy;
@@ -35,7 +35,7 @@ import org.mycore.access.strategies.MCRObjectTypeStrategy;
 import org.mycore.common.MCRSessionMgr;
 import org.mycore.common.MCRSystemUserInformation;
 import org.mycore.common.MCRUserInformation;
-import org.mycore.common.config.MCRConfiguration;
+import org.mycore.common.config.MCRConfiguration2;
 import org.mycore.datamodel.common.MCRXMLMetadataManager;
 import org.mycore.datamodel.ifs2.MCRMetadataVersion;
 import org.mycore.datamodel.metadata.MCRObjectID;
@@ -54,14 +54,19 @@ public class MIROwnerStrategy implements MCRAccessCheckStrategy {
 
     private static final String CONFIG_PREFIX = "MIR.OwnerStrategy.";
 
-    private static final MCRAccessCheckStrategy BASE_STRATEGY = MCRConfiguration.instance()
-        .getInstanceOf(CONFIG_PREFIX + "FallbackClass", MCRObjectTypeStrategy.class.getName());
+    private static final MCRAccessCheckStrategy BASE_STRATEGY = MCRConfiguration2
+        .<MCRAccessCheckStrategy> getInstanceOf(CONFIG_PREFIX + "FallbackClass")
+        .orElseGet(MCRObjectTypeStrategy::new);
 
-    private static final List<String> OBJECT_TYPES = MCRConfiguration.instance()
-        .getStrings(CONFIG_PREFIX + "ObjectTypes", new ArrayList<String>());
+    private static final List<String> OBJECT_TYPES = MCRConfiguration2.getString(CONFIG_PREFIX + "ObjectTypes")
+        .stream()
+        .flatMap(MCRConfiguration2::splitValue)
+        .collect(Collectors.toList());
 
-    private static final List<String> PERMISSIONS = MCRConfiguration.instance()
-        .getStrings(CONFIG_PREFIX + "AllowedPermissions", new ArrayList<String>());
+    private static final List<String> PERMISSIONS = MCRConfiguration2.getString(CONFIG_PREFIX + "AllowedPermissions")
+        .stream()
+        .flatMap(MCRConfiguration2::splitValue)
+        .collect(Collectors.toList());
 
     private static final Pattern TYPE_PATTERN = Pattern.compile("[^_]*_([^_]*)_*");
 

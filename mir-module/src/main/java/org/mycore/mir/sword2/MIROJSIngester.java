@@ -26,7 +26,7 @@ import org.jdom2.xpath.XPathFactory;
 import org.mycore.access.MCRAccessException;
 import org.mycore.common.MCRConstants;
 import org.mycore.common.MCRException;
-import org.mycore.common.config.MCRConfiguration;
+import org.mycore.common.config.MCRConfiguration2;
 import org.mycore.common.content.MCRContent;
 import org.mycore.common.content.MCRJDOMContent;
 import org.mycore.datamodel.metadata.MCRDerivate;
@@ -73,7 +73,7 @@ public class MIROJSIngester extends MIRSwordIngesterBase {
     @Override
     public MCRObjectID ingestMetadata(Deposit entry) throws SwordError, SwordServerException {
         final MCRObjectID newObjectId = MCRObjectID
-            .getNextFreeId(MCRConfiguration.instance().getString("MIR.projectid.default") + "_mods");
+            .getNextFreeId(MCRConfiguration2.getStringOrThrow("MIR.projectid.default") + "_mods");
         Document convertedDocument;
 
         Path tempFile = null;

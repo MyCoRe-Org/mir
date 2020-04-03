@@ -35,7 +35,7 @@ import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
 import org.jdom2.Attribute;
 import org.mycore.common.MCRSessionMgr;
-import org.mycore.common.config.MCRConfiguration;
+import org.mycore.common.config.MCRConfiguration2;
 
 import com.google.gson.Gson;
 
@@ -61,16 +61,13 @@ public class ReCaptcha {
 
         LOGGER.info("Verify ReCaptcha: ip-" + ip + " response-" + response + ".");
 
-        final String secretKey = MCRConfiguration.instance().getString("MIR.ReCaptcha.secret.key");
-        if (secretKey != null && secretKey.length() > 0) {
-            if (response.trim().length() == 0)
-                return Boolean.FALSE;
-            final ReCaptcha rc = new ReCaptcha(secretKey);
-            return rc.verifyResponse(response, ip);
-        } else {
-            LOGGER.warn("ReCaptcha secret key wasn't set, disable captcha check!");
-        }
-        return Boolean.FALSE;
+        return MCRConfiguration2.getString("MIR.ReCaptcha.secret.key")
+            .map(ReCaptcha::new)
+            .map(rc -> response.trim().length() > 0 && rc.verifyResponse(response, ip))
+            .orElseGet(() -> {
+                LOGGER.warn("ReCaptcha secret key wasn't set, disable captcha check!");
+                return false;
+            });
     }
 
     /**
