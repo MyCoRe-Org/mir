@@ -3,13 +3,13 @@
  */
 package org.mycore.mir.authorization;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
@@ -31,7 +31,6 @@ import org.mycore.backend.jpa.access.MCRACCESSPK_;
 import org.mycore.backend.jpa.access.MCRACCESS_;
 import org.mycore.common.MCRCache;
 import org.mycore.common.MCRException;
-import org.mycore.common.config.MCRConfiguration;
 import org.mycore.common.config.MCRConfiguration2;
 import org.mycore.common.xml.MCRXMLFunctions;
 import org.mycore.datamodel.classifications2.MCRCategLinkReference;
@@ -101,8 +100,10 @@ public class MIRStrategy implements MCRAccessCheckStrategy {
     private MCRAccessInterface ACCESS_IMPL;
 
     public MIRStrategy() {
-        ACCESS_CLASSES = MCRConfiguration.instance().getStrings("MIR.Access.Strategy.Classifications",
-            Arrays.asList("mir_access"));
+        ACCESS_CLASSES = MCRConfiguration2.getString("MIR.Access.Strategy.Classifications")
+            .map(MCRConfiguration2::splitValue)
+            .orElseGet(() -> Stream.of("mir_access"))
+            .collect(Collectors.toList());
         LINK_SERVICE = MCRCategLinkServiceFactory.getInstance();
         ACCESS_IMPL = MCRAccessManager.getAccessImpl();
     }

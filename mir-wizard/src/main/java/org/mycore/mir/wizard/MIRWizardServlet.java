@@ -34,7 +34,7 @@ import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.output.XMLOutputter;
 import org.mycore.common.MCRSessionMgr;
-import org.mycore.common.config.MCRConfiguration;
+import org.mycore.common.config.MCRConfiguration2;
 import org.mycore.common.content.MCRJDOMContent;
 import org.mycore.common.xml.MCRURIResolver;
 import org.mycore.frontend.MCRFrontendUtil;
@@ -62,8 +62,8 @@ public class MIRWizardServlet extends MCRServlet {
 
             if ("shutdown".equals(request)) {
                 LOGGER.info("Shutdown System....");
-                MCRConfiguration.instance().set("MCR.LayoutTransformerFactory.Default.Stylesheets", "");
-                MCRConfiguration.instance().set("MCR.Startup.Class", "%MCR.Startup.Class%");
+                MCRConfiguration2.set("MCR.LayoutTransformerFactory.Default.Stylesheets", "");
+                MCRConfiguration2.set("MCR.Startup.Class", "%MCR.Startup.Class%");
                 System.exit(0);
             } else {
                 LOGGER.info("Request file \"" + request + "\"...");
@@ -164,7 +164,7 @@ public class MIRWizardServlet extends MCRServlet {
         String value = (String) job.getRequest().getServletContext().getAttribute(property);
         if (value != null) {
             LOGGER.info("Restoring " + property + "=" + value);
-            MCRConfiguration.instance().set(property, value);
+            MCRConfiguration2.set(property, value);
         }
     }
 }

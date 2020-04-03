@@ -33,7 +33,7 @@ import org.jdom2.Document;
 import org.jdom2.Element;
 import org.mycore.common.MCRMailer;
 import org.mycore.common.MCRUtils;
-import org.mycore.common.config.MCRConfiguration;
+import org.mycore.common.config.MCRConfiguration2;
 import org.mycore.common.content.MCRJDOMContent;
 import org.mycore.frontend.MCRFrontendUtil;
 import org.mycore.frontend.servlets.MCRServlet;
@@ -56,8 +56,8 @@ public class MirSelfRegistrationServlet extends MCRServlet {
 
     private static final String I18N_ERROR_PREFIX = "selfRegistration.error";
 
-    private static final String DEFAULT_ROLE = MCRConfiguration.instance().getString("MIR.SelfRegistration.DefaultRole",
-        null);
+    private static final String DEFAULT_ROLE = MCRConfiguration2.getString("MIR.SelfRegistration.DefaultRole")
+        .orElse(null);
 
     public void doGetPost(final MCRServletJob job) throws Exception {
         final HttpServletRequest req = job.getRequest();

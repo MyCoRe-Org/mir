@@ -46,6 +46,7 @@ import org.mycore.access.MCRAccessManager;
 import org.mycore.common.MCRException;
 import org.mycore.common.MCRJPATestCase;
 import org.mycore.common.MCRSessionMgr;
+import org.mycore.common.config.MCRConfiguration2;
 import org.mycore.datamodel.metadata.MCRObjectID;
 import org.mycore.user2.MCRTransientUser;
 import org.mycore.user2.MCRUser;
@@ -69,7 +70,7 @@ public class TestAccessKeys extends MCRJPATestCase {
     @Before()
     public void setUp() throws Exception {
         super.setUp();
-        config.set("MCR.datadir", folder.newFolder("data").getAbsolutePath());
+        MCRConfiguration2.set("MCR.datadir", folder.newFolder("data").getAbsolutePath());
     }
 
     @Override

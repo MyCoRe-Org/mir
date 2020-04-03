@@ -18,7 +18,7 @@ import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
 import org.jdom2.input.sax.XMLReaders;
 import org.mycore.access.MCRAccessException;
-import org.mycore.common.config.MCRConfiguration;
+import org.mycore.common.config.MCRConfiguration2;
 import org.mycore.common.content.MCRJDOMContent;
 import org.mycore.common.function.MCRThrowFunction;
 import org.mycore.datamodel.metadata.MCRDerivate;
@@ -40,7 +40,7 @@ public class MIRDeepGreepIngester extends MIRSwordIngesterBase {
     @Override
     public MCRObjectID ingestMetadata(Deposit deposit) throws SwordError, SwordServerException {
         final MCRObjectID newObjectId = MCRObjectID
-            .getNextFreeId(MCRConfiguration.instance().getString("MIR.projectid.default") + "_mods");
+            .getNextFreeId(MCRConfiguration2.getStringOrThrow("MIR.projectid.default") + "_mods");
         try {
             final Path dgZip = MCRSwordUtil
                 .createTempFileFromStream("dgZip", deposit.getInputStream(), deposit.getMd5());

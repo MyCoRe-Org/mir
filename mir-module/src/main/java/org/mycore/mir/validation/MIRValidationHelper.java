@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import org.mycore.common.config.MCRConfiguration;
+import org.mycore.common.config.MCRConfiguration2;
 import org.mycore.datamodel.classifications2.MCRCategoryDAO;
 import org.mycore.datamodel.classifications2.MCRCategoryDAOFactory;
 import org.mycore.datamodel.classifications2.MCRCategoryID;
@@ -27,8 +27,7 @@ public class MIRValidationHelper {
     }
 
     public static boolean validatePPN(String ppn) {
-        MCRConfiguration config = MCRConfiguration.instance();
-        String database = config.getString("MIR.PPN.DatabaseList", "gvk");
+        String database = MCRConfiguration2.getString("MIR.PPN.DatabaseList").orElse("gvk");
         try {
             URL url = new URL("http://uri.gbv.de/document/" + database + ":ppn:" + ppn);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();

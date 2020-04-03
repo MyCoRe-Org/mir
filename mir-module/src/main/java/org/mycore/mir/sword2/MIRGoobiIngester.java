@@ -12,7 +12,7 @@ import org.apache.logging.log4j.Logger;
 import org.jdom2.Document;
 import org.jdom2.JDOMException;
 import org.mycore.access.MCRAccessException;
-import org.mycore.common.config.MCRConfiguration;
+import org.mycore.common.config.MCRConfiguration2;
 import org.mycore.common.content.MCRContent;
 import org.mycore.common.content.MCRJDOMContent;
 import org.mycore.datamodel.metadata.MCRDerivate;
@@ -35,7 +35,7 @@ public class MIRGoobiIngester extends MIRSwordIngesterBase {
     @Override
     public MCRObjectID ingestMetadata(Deposit entry) throws SwordError, SwordServerException {
         final MCRObjectID newObjectId = MCRObjectID
-            .getNextFreeId(MCRConfiguration.instance().getString("MIR.projectid.default") + "_mods");
+            .getNextFreeId(MCRConfiguration2.getStringOrThrow("MIR.projectid.default") + "_mods");
         final Map<String, List<String>> dublinCoreMetadata = entry.getSwordEntry().getDublinCore();
 
         Document dcDocument = buildDCDocument(dublinCoreMetadata);
