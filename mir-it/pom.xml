@@ -273,6 +273,7 @@
             <it.context>${MCR.AppName}</it.context>
             <ResultFolder>${project.build.directory}/failsafe-reports/</ResultFolder>
             <java.awt.headless>true</java.awt.headless>
+            <solr.port>${solr.port}</solr.port>
           </systemPropertyVariables>
           <trimStackTrace>false</trimStackTrace>
         </configuration>

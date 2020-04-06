@@ -120,7 +120,6 @@ public class MIRComplexSearchITCase extends MIRITBase {
     public final void searchByNone() {
         searchController.complexSearchBy(Collections.emptyList(), null, null, null, null,
             null, null, null, null);
-        driver.waitFor(ExpectedConditions.titleContains("Suchergebnisse"));
 
         try {
             String noDocumentsFoundText = "Keine Dokumente gefunden";
@@ -135,7 +134,6 @@ public class MIRComplexSearchITCase extends MIRITBase {
     public final void searchByIdentifier() {
         searchController.complexSearchBy(Collections.emptyList(), "10.1000/182", null, null, null,
             null, null, null, null);
-        driver.waitFor(ExpectedConditions.titleContains("Suchergebnisse"));
 
         try {
             String noDocumentsFoundText = "Keine Dokumente gefunden";
@@ -150,7 +148,6 @@ public class MIRComplexSearchITCase extends MIRITBase {
     public final void searchBymirInstitute() {
         searchController.complexSearchBy(Collections.emptyList(), null, MIRInstitutes.Universität_in_Deutschland,
             null, null, null, null, null, null);
-        driver.waitFor(ExpectedConditions.titleContains("Suchergebnisse"));
 
         try {
             String noDocumentsFoundText = "Keine Dokumente gefunden";
@@ -165,7 +162,6 @@ public class MIRComplexSearchITCase extends MIRITBase {
     public final void searchByClassification() {
         searchController.complexSearchBy(Collections.emptyList(), null, null, MIRDNBClassification._000.getValue(),
             null, null, null, null, null);
-        driver.waitFor(ExpectedConditions.titleContains("Suchergebnisse"));
 
         try {
             String noDocumentsFoundText = "Keine Dokumente gefunden";
@@ -180,7 +176,6 @@ public class MIRComplexSearchITCase extends MIRITBase {
     public final void searchByLicense() {
         searchController.complexSearchBy(Collections.emptyList(), null, null,
             null, null, MIRLicense.cc_by_40.getValue(), null, null, null);
-        driver.waitFor(ExpectedConditions.titleContains("Suchergebnisse"));
 
         try {
             String noDocumentsFoundText = "Keine Dokumente gefunden";
@@ -195,7 +190,6 @@ public class MIRComplexSearchITCase extends MIRITBase {
     public final void searchByStatus() {
         searchController.complexSearchBy(Collections.emptyList(), null, null,
             null, null, null, MIRStatus.gesperrt, null, null);
-        driver.waitFor(ExpectedConditions.titleContains("Suchergebnisse"));
 
         try {
             String noDocumentsFoundText = "Keine Dokumente gefunden";
@@ -211,7 +205,6 @@ public class MIRComplexSearchITCase extends MIRITBase {
         String timeStamp = DateTimeFormatter.ofPattern("yyyy-MM-dd").format(LocalDateTime.now());
         searchController.complexSearchBy(Collections.emptyList(), null, null,
             null, null, null, null, timeStamp, null);
-        driver.waitFor(ExpectedConditions.titleContains("Suchergebnisse"));
 
         try {
             String noDocumentsFoundText = "Keine Dokumente gefunden";
@@ -227,7 +220,6 @@ public class MIRComplexSearchITCase extends MIRITBase {
     public final void searchByFullText() {
         searchController.complexSearchBy(Collections.emptyList(), null, null,
             null, null, null, null, null, "condFullText");
-        driver.waitFor(ExpectedConditions.titleContains("Suchergebnisse"));
 
         try {
             String noDocumentsFoundText = "Keine Dokumente gefunden";
@@ -250,7 +242,6 @@ public class MIRComplexSearchITCase extends MIRITBase {
 
         searchController.complexSearchBy(complexSearchQueries, null, null, null,
             null, null, null, null, null);
-        driver.waitFor(ExpectedConditions.titleContains("Suchergebnisse"));
 
         try {
             String noDocumentsFoundText = "Keine Dokumente gefunden";
