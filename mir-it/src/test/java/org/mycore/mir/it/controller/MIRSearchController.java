@@ -69,6 +69,7 @@ public class MIRSearchController extends MIRTestController {
 
     public void search() {
         driver.waitAndFindElement(By.xpath(".//button[contains(text(), 'Suchen')]")).click();
+        driver.waitUntilPageIsLoaded("Suchergebnisse");
     }
 
     public void setTitle(String title) {
