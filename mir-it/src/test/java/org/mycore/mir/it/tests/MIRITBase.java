@@ -2,6 +2,8 @@ package org.mycore.mir.it.tests;
 
 import java.io.Closeable;
 import java.io.IOException;
+import java.time.Clock;
+import java.time.Duration;
 
 import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.SolrServerException;
@@ -12,11 +14,13 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
+import org.mycore.common.MCRException;
 import org.mycore.common.selenium.MCRSeleniumTestBase;
 import org.mycore.mir.it.controller.MIRModsEditorController;
 import org.mycore.mir.it.controller.MIRPublishEditorController;
 import org.mycore.mir.it.controller.MIRUserController;
-import org.openqa.selenium.support.ui.WebDriverWait;
+import org.openqa.selenium.support.ui.FluentWait;
+import org.openqa.selenium.support.ui.Sleeper;
 
 public class MIRITBase extends MCRSeleniumTestBase {
     MIRUserController userController;
@@ -70,17 +74,17 @@ public class MIRITBase extends MCRSeleniumTestBase {
         return lukeResponse;
     }
 
-    protected int getSolrNumDocs(Core core) throws IOException, SolrServerException {
+    protected static long getSolrIndexVersion(Core core) throws IOException, SolrServerException {
         final LukeResponse lukeResponseBefore = getLukeResponse(core);
-        return lukeResponseBefore.getNumDocs();
+        return (Long) lukeResponseBefore.getIndexInfo().get("version");
     }
 
-    protected static void waitForNumDocChange(Core core, int beforeNumDocs) {
-        WebDriverWait wait = new WebDriverWait(driver, 30, 250);
+    protected static void waitForIndexVersionChange(Core core, long beforeVersion) {
+        SolrWait wait = new SolrWait(core, 180, 250);
         final long start = System.currentTimeMillis();
-        wait.until(driver -> {
+        wait.until(solrCore -> {
             try {
-                return getLukeResponse(core).getNumDocs() != beforeNumDocs;
+                return getSolrIndexVersion(solrCore) != beforeVersion;
             } catch (IOException | SolrServerException e) {
                 System.err.println(e.getMessage());
                 return false;
@@ -112,5 +116,27 @@ public class MIRITBase extends MCRSeleniumTestBase {
     @After
     public void tearDown() {
         takeScreenshot();
+    }
+
+    private static class SolrWait extends FluentWait<Core> {
+
+        private final Core core;
+
+        public SolrWait(Core input, Clock clock, Sleeper sleeper) {
+            super(input, clock, sleeper);
+            this.core = input;
+        }
+
+        public SolrWait(Core core, long timeOutInSeconds, long sleepInMillis) {
+            this(core, Clock.systemDefaultZone(), Sleeper.SYSTEM_SLEEPER);
+            withTimeout(Duration.ofSeconds(timeOutInSeconds));
+            pollingEvery(Duration.ofMillis(sleepInMillis));
+        }
+
+        @Override
+        protected RuntimeException timeoutException(String message, Throwable lastException) {
+            return new MCRException("Error while waiting for condition on Solr core: " + core.getCoreName(),
+                lastException);
+        }
     }
 }

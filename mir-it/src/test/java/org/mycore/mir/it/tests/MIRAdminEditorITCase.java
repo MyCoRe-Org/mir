@@ -59,12 +59,12 @@ public class MIRAdminEditorITCase extends MIRITBase {
     @Test
     public void testFullDocument() throws IOException, SolrServerException, InterruptedException {
         fillEditorForm();
-        final int beforeNumDocs = getSolrNumDocs(Core.main);
+        final long beforeVersion = getSolrIndexVersion(Core.main);
         editorController.save();
         driver.waitAndFindElement(MCRBy.partialText(MIRTestData.SAVE_SUCCESS));
 
         checkMetadataPage();
-        waitForNumDocChange(Core.main, beforeNumDocs); //document in index
+        waitForIndexVersionChange(Core.main, beforeVersion); //document in index
         simpleSearchController.simpleSearchBy(MIRTestData.TITLE, null, null, null, null);
         String noDocumentsFoundText = "Keine Dokumente gefunden";
         WebDriverWait wait = new WebDriverWait(driver, 1);
