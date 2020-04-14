@@ -133,8 +133,9 @@ public class MirSelfRegistrationServlet extends MCRServlet {
                         if (DEFAULT_ROLE != null && !DEFAULT_ROLE.isEmpty())
                             user.assignRole(DEFAULT_ROLE);
 
-                        user.getAttributes().remove("mailtoken");
-                        MCRUserManager.updateUser(user);
+                        if (user.getAttributes().removeIf(ua -> ua.getName().equalsIgnoreCase("mailtoken"))) {
+                            MCRUserManager.updateUser(user);
+                        }
 
                         final Element root = new Element("new-author-verified");
                         final Element u = MCRUserTransformer.buildExportableSafeXML(user).getRootElement();
