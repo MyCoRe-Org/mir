@@ -63,9 +63,8 @@
               <xsl:value-of select="'dropdown-submenu'" />
             </xsl:when>
             <xsl:otherwise>
-              <xsl:value-of select="'dropdown-item'" />
               <xsl:if test="$active">
-                <xsl:value-of select="' active'" />
+                <xsl:value-of select="'active'" />
               </xsl:if>
             </xsl:otherwise>
           </xsl:choose>
@@ -74,7 +73,7 @@
           <xsl:attribute name="class">
             <xsl:copy-of select="$itemClasses" />
           </xsl:attribute>
-          <a href="{$url}">
+          <a href="{$url}" class="dropdown-item">
             <xsl:if test="@target">
               <xsl:copy-of select="@target" />
             </xsl:if>

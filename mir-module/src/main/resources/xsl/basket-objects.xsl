@@ -174,33 +174,33 @@
         <span class="caret"></span>
       </a>
       <ul class="dropdown-menu">
-        <li class="dropdown-item">
-          <a href="{$ServletsBaseURL}MCRExportServlet{$HttpSession}?basket={@type}&amp;transformer=mods">
+        <li>
+          <a href="{$ServletsBaseURL}MCRExportServlet{$HttpSession}?basket={@type}&amp;transformer=mods" class="dropdown-item">
             <xsl:value-of select="i18n:translate('basket.export','MODS')" />
           </a>
         </li>
-        <li class="dropdown-item">
-          <a href="{$ServletsBaseURL}MCRExportServlet{$HttpSession}?basket={@type}&amp;transformer=bibtex">
+        <li>
+          <a href="{$ServletsBaseURL}MCRExportServlet{$HttpSession}?basket={@type}&amp;transformer=bibtex" class="dropdown-item">
             <xsl:value-of select="i18n:translate('basket.export','BibTex')" />
           </a>
         </li>
-        <li class="dropdown-item">
-          <a href="{$ServletsBaseURL}MCRExportServlet{$HttpSession}?basket={@type}&amp;transformer=endnote">
+        <li>
+          <a href="{$ServletsBaseURL}MCRExportServlet{$HttpSession}?basket={@type}&amp;transformer=endnote" class="dropdown-item">
             <xsl:value-of select="i18n:translate('basket.export','Endnote')" />
           </a>
         </li>
-        <li class="dropdown-item">
-          <a href="{$ServletsBaseURL}MCRExportServlet{$HttpSession}?basket={@type}&amp;transformer=ris">
+        <li>
+          <a href="{$ServletsBaseURL}MCRExportServlet{$HttpSession}?basket={@type}&amp;transformer=ris" class="dropdown-item">
             <xsl:value-of select="i18n:translate('basket.export','RIS')" />
           </a>
         </li>
-        <li class="dropdown-item">
-          <a href="{$ServletsBaseURL}MCRExportServlet{$HttpSession}?basket={@type}&amp;transformer=isi">
+        <li>
+          <a href="{$ServletsBaseURL}MCRExportServlet{$HttpSession}?basket={@type}&amp;transformer=isi" class="dropdown-item">
             <xsl:value-of select="i18n:translate('basket.export','ISI')" />
           </a>
         </li>
-        <li class="dropdown-item">
-          <a href="{$ServletsBaseURL}MCRExportServlet{$HttpSession}?basket={@type}&amp;transformer=mods2csv">
+        <li>
+          <a href="{$ServletsBaseURL}MCRExportServlet{$HttpSession}?basket={@type}&amp;transformer=mods2csv" class="dropdown-item">
             <xsl:value-of select="i18n:translate('basket.export','CSV')" />
           </a>
         </li>

@@ -18,14 +18,6 @@ body {
   min-width: 320px;
 }
 
-header {
-  #searchInput {
-    padding: 4px 15px;
-    height: auto;
-    margin-top: 4px;
-  }
-}
-
 #page {
   padding-top: 40px;
   background-color: $body-bg;
@@ -145,6 +137,44 @@ p {
   font-weight: 400;
 }
 
+/*
+ * overwrite bootstrap settings for anchor elements without a href attribute
+ * anchor elements should be shown as a link even when:
+ * - a href attribute is missing and
+ * - a tabindex attribute is missing and
+ * - it has no dropdown-item class
+ */
+ a:not([href]):not([tabindex]):not(.dropdown-item) {
+  color: $link-color;
+  text-decoration: $link-decoration;
+  cursor: pointer;
+  @include hover {
+    color: $link-hover-color;
+    text-decoration: $link-hover-decoration;
+  }
+}
+
+/*
+ * items with dropdown-item class and no href attribute
+ * should be shown as dropdown-item anyway
+ * overwrite bootstrap settings for no href elements and
+ * reapply settings for dropdown-items
+ */
+ a:not([href]).dropdown-item {
+  color: $dropdown-link-color;
+  cursor: pointer;
+  @include hover-focus() {
+    color: $dropdown-link-hover-color;
+  }
+  &.active,
+  &:active {
+    color: $dropdown-link-active-color;
+  }
+  &.disabled,
+  &:disabled {
+    color: $dropdown-link-disabled-color;
+  }
+}
 
 // Large devices (desktops) and below
 @include media-breakpoint-down(lg) {
