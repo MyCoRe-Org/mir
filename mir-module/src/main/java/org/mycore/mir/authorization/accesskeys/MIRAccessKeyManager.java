@@ -33,7 +33,6 @@ import org.mycore.common.MCRUsageException;
 import org.mycore.datamodel.metadata.MCRObject;
 import org.mycore.datamodel.metadata.MCRObjectID;
 import org.mycore.user2.MCRUser;
-import org.mycore.user2.MCRUserAttribute;
 import org.mycore.user2.MCRUserManager;
 
 /**
@@ -171,7 +170,7 @@ public final class MIRAccessKeyManager {
      * @param mcrObjectId the {@link MCRObjectID}
      */
     public static void deleteAccessKey(final MCRUser user, final MCRObjectID mcrObjectId) {
-        user.getAttributes().remove(ACCESS_KEY_PREFIX + mcrObjectId.toString());
+        user.getAttributes().removeIf(ua -> ua.getName().equals(ACCESS_KEY_PREFIX + mcrObjectId.toString()));
         MCRUserManager.updateUser(user);
     }
 
