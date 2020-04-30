@@ -21,7 +21,7 @@
         "grunt-contrib-watch": "^1.0.0",
         "grunt-npmcopy": "^0.1.0",
         "grunt-replace": "^1.0.1",
-        "jquery": "3.4.1",
+        "jquery": "3.5.0",
         "jquery-migrate": "1.4.1",
         "shariff": "3.2.1"
     }
