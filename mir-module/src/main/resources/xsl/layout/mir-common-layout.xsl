@@ -260,7 +260,7 @@
   </xsl:template>
 
   <xsl:template name="mir.prop4js">
-    <script type="text/javascript">
+    <script>
       <xsl:text>var webApplicationBaseURL = '</xsl:text>
       <xsl:value-of select="$WebApplicationBaseURL" />
       <xsl:text>';</xsl:text>
@@ -273,7 +273,7 @@
       webAppBaseURL:"<xsl:value-of select='$WebApplicationBaseURL' />"
       }
     </script>
-    <script src="{$WebApplicationBaseURL}js/mir/session-polling.js" type="text/javascript"></script>
+    <script src="{$WebApplicationBaseURL}js/mir/session-polling.js"></script>
     <script src="{$WebApplicationBaseURL}modules/webtools/upload/js/upload-api.js"></script>
     <script src="{$WebApplicationBaseURL}modules/webtools/upload/js/upload-gui.js"></script>
     <link rel="stylesheet" type="text/css" href="{$WebApplicationBaseURL}modules/webtools/upload/css/upload-gui.css" />
