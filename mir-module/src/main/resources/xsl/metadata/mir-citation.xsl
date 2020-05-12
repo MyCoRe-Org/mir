@@ -169,9 +169,7 @@
         </xsl:choose>
       </p>
       <xsl:apply-templates select="//mods:mods" mode="identifierListModal" />
-      <xsl:if test="//mods:mods/mods:identifier[@type='doi']">
-        <script src="{$WebApplicationBaseURL}js/mir/citation.min.js"></script>
-      </xsl:if>
+      <script src="{$WebApplicationBaseURL}js/mir/citation.min.js"></script>
     </div>
 
     <xsl:if test="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:accessCondition[contains('copyrightMD|use and reproduction', @type)]">
