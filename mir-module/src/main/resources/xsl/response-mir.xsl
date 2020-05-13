@@ -352,6 +352,7 @@
                     <li>
                       <xsl:call-template name="basketLink">
                         <xsl:with-param name="identifier" select="$identifier" />
+                        <xsl:with-param name="dropdown" select="'true'" />
                       </xsl:call-template>
                     </li>
                         <!-- direct link to editor -->
@@ -391,6 +392,7 @@
               <div class="single_hit_option float-right">
                 <xsl:call-template name="basketLink">
                   <xsl:with-param name="identifier" select="$identifier" />
+                  <xsl:with-param name="dropdown" select="'false'" />
                 </xsl:call-template>
               </div>
             </xsl:otherwise>
@@ -1137,22 +1139,36 @@
 
   <xsl:template name="basketLink">
     <xsl:param name="identifier" />
+    <xsl:param name="dropdown" />
+
+    <xsl:variable name="dropdownclass">
+      <xsl:choose>
+        <xsl:when test="$dropdown = 'true'">
+          <xsl:value-of select="'dropdown-item'" />
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="''" />
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+
     <xsl:choose>
       <xsl:when test="basket:contains('objects',$identifier)">
         <!-- remove from basket -->
-        <a class="hit_option remove_from_basket" href="{$ServletsBaseURL}MCRBasketServlet{$HttpSession}?type=objects&amp;action=remove&amp;id={$identifier}&amp;redirect=referer"
-          title=""
-        >
+        <a
+          class="hit_option remove_from_basket {$dropdownclass}"
+          href="{$ServletsBaseURL}MCRBasketServlet{$HttpSession}?type=objects&amp;action=remove&amp;id={$identifier}&amp;redirect=referer"
+          title="" >
           <span class="fas fa-bookmark"></span>&#160;
           <xsl:value-of select="i18n:translate('basket.remove')" />
         </a>
       </xsl:when>
       <xsl:otherwise>
         <!-- add to basket -->
-        <a class="hit_option hit_to_basket dropdown-item"
+        <a
+          class="hit_option hit_to_basket {$dropdownclass}"
           href="{$ServletsBaseURL}MCRBasketServlet{$HttpSession}?type=objects&amp;action=add&amp;id={$identifier}&amp;uri=mcrobject:{$identifier}&amp;redirect=referer"
-          title=""
-        >
+          title="" >
           <span class="fas fa-bookmark"></span>&#160;
           <xsl:value-of select="i18n:translate('basket.add')" />
         </a>
