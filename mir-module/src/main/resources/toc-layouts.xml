@@ -1,24 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- 
+<!--
   Table of contents layouts. Each layout has its own ID.
-  Use custom-toc-layouts.xsl to customize HTML output of level labels and publications.  
+  Use custom-toc-layouts.xsl to customize HTML output of level labels and publications.
 
-  level  : a grouping level for table of contents 
+  toc-layout : a layout for table of contents
+    @id      : a unique ID used to select this layout
+    @field   : SOLR field used to find all publications "below", controls depth of TOC
+               parent | mir.toc.ancestor
+
+  level  : a grouping level for table of contents
     @field    : a SOLR index field to build this level as facet
     @order    : display order for TOC level items
     @expanded : by default, should level be show expanded or collapsed?
                 options are true|false|first (only fist item at level expanded)
-    
+
   publications : may occur at any level, but specify at lowest please!
-    sortBy  : sort publications by @field and @order, 
-              may be repeated  
+    sortBy  : sort publications by @field and @order,
+              may be repeated
 -->
 
 
-<toc-layouts default="legacy"> 
+<toc-layouts default="legacy">
 
-  <toc-layout id="journal_by_volume">
+  <toc-layout id="journal_by_volume" field="mir.toc.ancestor">
     <label>Band > Heft > Artikel mit Autor:Titel, Seitenzahl</label>
     <level field="mir.toc.host.volume" order="desc" expanded="true">
       <level field="mir.toc.host.issue" order="desc" expanded="false">
@@ -30,7 +35,7 @@
     </level>
   </toc-layout>
 
-  <toc-layout id="volume_only">
+  <toc-layout id="volume_only" field="mir.toc.ancestor">
     <label>Band > Artikel mit Autor:Titel, Seitenzahl</label>
     <level field="mir.toc.host.volume" order="desc" expanded="false">
       <publications>
@@ -40,7 +45,7 @@
     </level>
   </toc-layout>
 
-  <toc-layout id="journal_by_year">
+  <toc-layout id="journal_by_year" field="mir.toc.ancestor">
     <label>Jahr > Heft > Artikel mit Autor:Titel, Seitenzahl</label>
     <level field="mods.yearIssued" order="desc" expanded="true">
       <level field="mir.toc.host.issue" order="desc" expanded="false">
@@ -52,7 +57,7 @@
     </level>
   </toc-layout>
 
-  <toc-layout id="blog">
+  <toc-layout id="blog" field="parent">
     <label>Blog (gruppiert nach Erscheinungsjahr), Artikel mit Datum</label>
     <level field="mods.yearIssued" order="desc" expanded="first">
       <publications>
@@ -60,9 +65,9 @@
       </publications>
     </level>
   </toc-layout>
-  
-  <!-- This is, more or less, the legacy layout that was hard-coded -->
-  <toc-layout id="legacy">
+
+  <!-- This is, pretty much, the MIR legacy layout that was hard-coded -->
+  <toc-layout id="legacy" field="parent">
     <label>Standard (gruppiert nach Erscheinungsjahr)</label>
     <level field="mods.yearIssued" order="desc" expanded="first">
       <publications>
@@ -76,5 +81,5 @@
       </publications>
     </level>
   </toc-layout>
-  
+
 </toc-layouts>

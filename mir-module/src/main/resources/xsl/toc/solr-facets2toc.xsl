@@ -31,10 +31,12 @@
 >
 
   <xsl:output method="xml" encoding="UTF-8" indent="yes" xalan:indent-amount="2" />
+
+  <xsl:param name="tocLayoutID" />
   
   <xsl:template match="/response">
     <!-- the ID of the toc layout was transported from solr back to here as custom request param: -->
-    <toc layout="{lst[@name='responseHeader']/lst[@name='params']/str[@name='tocLayout']}">
+    <toc layout="{$tocLayoutID}">
       <xsl:apply-templates select="lst[@name='facets']/lst" />
     </toc>
   </xsl:template>
@@ -62,6 +64,16 @@
 
     <!-- represents a single level in toc -->
     <level field="{$field}" expanded="{$expanded}"> <!-- show expanded=true|false when level is displayed -->
+      <xsl:attribute name="expanded">
+        <xsl:choose>
+          <xsl:when test="($expanded='first') and preceding::lst[@name=current()/@name]">
+            <xsl:text>false</xsl:text> 
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:copy-of select="$expanded" />
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:attribute>
       <xsl:for-each select="arr/lst">
         <item value="{*[@name='val']}">
         
