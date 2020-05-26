@@ -10,7 +10,7 @@
 	let orcidTextStatusIsInProfileFalse = "orcid.publication.inProfile.false";
 
 	let orcidTextPublishUpdate = "orcid.publication.action.update";
-	let orcidTextPublishCreate = "orcid.publication.action.create ";
+	let orcidTextPublishCreate = "orcid.publication.action.create";
 	let orcidTextPublishConfirm = "orcid.publication.action.confirmation";
 	const keyPrefix = "orcid.publication*";
 

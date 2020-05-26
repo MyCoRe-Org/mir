@@ -620,7 +620,6 @@ $file_box_color: $card-bg !default;
 div.orcid-status, div.orcid-publish {
   margin: 0;
   padding: 0;
-  display: inline-block;
   vertical-align: top;
 }
 div.orcid-publish {
@@ -636,7 +635,6 @@ span.orcid-info {
   box-sizing: border-box;
   border-radius: 0.25em;
   color: rgb(0,76,147);
-  display: inline-block;
   font-weight: bold;
   line-height: 2.5ex;
   padding: 0em 0.6em 0em 0.6em;
@@ -663,7 +661,6 @@ button.orcid-button {
   -webkit-border-radius: 4px;
   border-radius: 4px;
   color: white;
-  display: inline-block;
   text-decoration: none;
 }
 button.orcid-button:hover, button.orcid-button:active  {
