@@ -248,6 +248,9 @@
       </div>
 
     </div>
+    <xsl:if test="string-length($MCR.ORCID.OAuth.ClientSecret) &gt; 0">
+      <script src="{$WebApplicationBaseURL}js/mir/mycore2orcid.js" />
+    </xsl:if>
   </xsl:template>
 
   <xsl:template match="doc" priority="10" mode="resultList">
@@ -631,7 +634,6 @@
                 </div>
               </xsl:if>
               <xsl:if test="string-length($MCR.ORCID.OAuth.ClientSecret) &gt; 0">
-                <script src="{$WebApplicationBaseURL}js/mir/mycore2orcid.js" />
                 <div class="orcid-status" data-id="{$identifier}" />
               </xsl:if>
             </div>
