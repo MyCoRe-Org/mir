@@ -44,6 +44,7 @@ public class MIRStateServlet extends MCRServlet {
 
         if (!read || !write) {
             job.getResponse().sendError(HttpServletResponse.SC_FORBIDDEN, "No permission to change!");
+            return;
         }
 
         final MCRObject object = MCRMetadataManager.retrieveMCRObject(objectID);
