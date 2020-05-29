@@ -24,8 +24,8 @@
     <xsl:copy>
       <xsl:apply-templates select='@*|node()' />
     </xsl:copy>
-    <li class="">
-      <a title="" class="hit_option hit_to_basket">
+    <li>
+      <a title="" class="hit_option hit_to_basket dropdown-item">
         <xsl:attribute name="href">
           <xsl:value-of select="concat($ServletsBaseURL,'XEditor?_xed_submit_return= ')" />
           <xsl:value-of select="concat('&amp;_xed_session=',encoder:encode($xedSession,'UTF-8'))" />

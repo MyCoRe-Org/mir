@@ -8,7 +8,7 @@
     xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
     exclude-result-prefixes="xlink i18n">
 
-  <xsl:output method="html" doctype-system="about:legacy-compat" indent="yes" omit-xml-declaration="yes" media-type="text/html"
+  <xsl:output method="html" indent="yes" omit-xml-declaration="yes" media-type="text/html"
     version="5" />
   <xsl:strip-space elements="*" />
   <xsl:include href="resource:xsl/mir-flatmir-layout-utils.xsl"/>
@@ -20,6 +20,7 @@
   <xsl:variable name="PageTitle" select="/*/@title" />
 
   <xsl:template match="/site">
+    <xsl:text disable-output-escaping='yes'>&lt;!DOCTYPE html&gt;</xsl:text>
     <html lang="{$CurrentLang}" class="no-js">
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -28,15 +29,15 @@
           <xsl:value-of select="$PageTitle" />
         </title>
         <link href="{$WebApplicationBaseURL}assets/font-awesome/css/all.min.css" rel="stylesheet" />
-        <script type="text/javascript" src="{$WebApplicationBaseURL}mir-layout/assets/jquery/jquery.min.js"></script>
-        <script type="text/javascript" src="{$WebApplicationBaseURL}mir-layout/assets/jquery/plugins/jquery-migrate/jquery-migrate.min.js"></script>
+        <script src="{$WebApplicationBaseURL}mir-layout/assets/jquery/jquery.min.js"></script>
+        <script src="{$WebApplicationBaseURL}mir-layout/assets/jquery/plugins/jquery-migrate/jquery-migrate.min.js"></script>
         <xsl:copy-of select="head/*" />
         <link href="{$WebApplicationBaseURL}rsc/sass/mir-layout/scss/{$MIR.Layout.Theme}-{$MIR.DefaultLayout.CSS}.css" rel="stylesheet" />
         <xsl:if test="string-length($MIR.CustomLayout.CSS) &gt; 0">
           <link href="{$WebApplicationBaseURL}css/{$MIR.CustomLayout.CSS}" rel="stylesheet" />
         </xsl:if>
         <xsl:if test="string-length($MIR.CustomLayout.JS) &gt; 0">
-          <script type="text/javascript" src="{$WebApplicationBaseURL}js/{$MIR.CustomLayout.JS}"></script>
+          <script src="{$WebApplicationBaseURL}js/{$MIR.CustomLayout.JS}"></script>
         </xsl:if>
         <xsl:call-template name="mir.prop4js" />
       </head>
@@ -100,13 +101,13 @@
           <xsl:call-template name="mir.powered_by" />
         </footer>
 
-        <script type="text/javascript">
+        <script>
           <!-- Bootstrap & Query-Ui button conflict workaround  -->
           if (jQuery.fn.button){jQuery.fn.btn = jQuery.fn.button.noConflict();}
         </script>
-        <script type="text/javascript" src="{$WebApplicationBaseURL}assets/bootstrap/js/bootstrap.bundle.min.js"></script>
-        <script type="text/javascript" src="{$WebApplicationBaseURL}assets/jquery/plugins/jquery-confirm/jquery.confirm.min.js"></script>
-        <script type="text/javascript" src="{$WebApplicationBaseURL}js/mir/base.min.js"></script>
+        <script src="{$WebApplicationBaseURL}assets/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <script src="{$WebApplicationBaseURL}assets/jquery/plugins/jquery-confirm/jquery.confirm.min.js"></script>
+        <script src="{$WebApplicationBaseURL}js/mir/base.min.js"></script>
         <script>
           $( document ).ready(function() {
             $('.overtext').tooltip();

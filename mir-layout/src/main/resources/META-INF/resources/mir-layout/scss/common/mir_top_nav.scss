@@ -63,44 +63,6 @@
               border-top-color: $link-color;
             }
         }
-        // Remove background color from open dropdown
-        > .open > a {
-            &,
-            &:hover,
-            &:focus {
-                color: $link-color;
-                background-color: transparent;
-                .caret {
-                    border-top-color: $link-color;
-                }
-            }
-        }
-    }
-
-    // The dropdown menu (ul)
-    .dropdown-menu {
-        background-color: white;
-        border-radius: 4px !important;
-        margin-top: 4px !important;
-        // Links within the dropdown menu
-        > li > a {
-            color: #aaa;
-            // Hover/Focus state
-            &:hover,
-            &:focus {
-                color: $link-color;
-                background-color: white;
-            }
-        }
-        // Active state
-        > .active > a {
-            &,
-            &:hover,
-            &:focus {
-                color: $link-color;
-                background-color: white;
-            }
-        }
     }
 }
 

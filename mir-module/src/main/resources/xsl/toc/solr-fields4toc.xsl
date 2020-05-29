@@ -34,10 +34,7 @@
       </xsl:apply-templates>
 
       <!-- host.order, series.order - only first occurrence -->
-      <xsl:apply-templates select="(descendant::mods:relatedItem[@type='host']/mods:part[@order])[1]/@order" mode="toc.field">
-        <xsl:with-param name="name">order</xsl:with-param>
-      </xsl:apply-templates>
-      <xsl:apply-templates select="(descendant::mods:relatedItem[@type='series']/mods:part[@order])[1]/@order" mode="toc.field">
+      <xsl:apply-templates select="(descendant::mods:relatedItem[contains('host series',@type)]/mods:part[@order])[1]/@order" mode="toc.field">
         <xsl:with-param name="name">order</xsl:with-param>
       </xsl:apply-templates>
 

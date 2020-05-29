@@ -94,7 +94,7 @@
             <xsl:variable name="lang"><xsl:value-of select="mcrxsl:trim(.)" /></xsl:variable>
             <xsl:if test="$lang!='' and $CurrentLang!=$lang">
               <xsl:variable name="langDef" select="document(concat('language:',$lang))" />
-              <li class="dropdown-item">
+              <li>
                 <xsl:variable name="langURL">
                   <xsl:call-template name="mir.languageLink">
                     <xsl:with-param name="lang" select="$langDef/language/@xmlCode" />
@@ -103,7 +103,7 @@
                 <xsl:variable name="langTitle">
                   <xsl:apply-templates select="$langDef/language" mode="mir.langTitle" />
                 </xsl:variable>
-                <a href="{$langURL}" class="" title="{$langTitle}">
+                <a href="{$langURL}" class="dropdown-item" title="{$langTitle}">
                   <xsl:value-of select="$langDef/language/@xmlCode" />
                 </a>
               </li>
@@ -250,8 +250,8 @@
         </sup>
       </a>
       <ul class="dropdown-menu" role="menu">
-        <li class="dropdown-item">
-          <a href="{$ServletsBaseURL}MCRBasketServlet{$HttpSession}?type={$basket/@type}&amp;action=show">
+        <li>
+          <a href="{$ServletsBaseURL}MCRBasketServlet{$HttpSession}?type={$basket/@type}&amp;action=show" class="dropdown-item">
             <xsl:value-of select="i18n:translate('basket.open')" />
           </a>
         </li>
@@ -260,7 +260,7 @@
   </xsl:template>
 
   <xsl:template name="mir.prop4js">
-    <script type="text/javascript">
+    <script>
       <xsl:text>var webApplicationBaseURL = '</xsl:text>
       <xsl:value-of select="$WebApplicationBaseURL" />
       <xsl:text>';</xsl:text>
@@ -273,7 +273,7 @@
       webAppBaseURL:"<xsl:value-of select='$WebApplicationBaseURL' />"
       }
     </script>
-    <script src="{$WebApplicationBaseURL}js/mir/session-polling.js" type="text/javascript"></script>
+    <script src="{$WebApplicationBaseURL}js/mir/session-polling.js"></script>
     <script src="{$WebApplicationBaseURL}modules/webtools/upload/js/upload-api.js"></script>
     <script src="{$WebApplicationBaseURL}modules/webtools/upload/js/upload-gui.js"></script>
     <link rel="stylesheet" type="text/css" href="{$WebApplicationBaseURL}modules/webtools/upload/css/upload-gui.css" />
