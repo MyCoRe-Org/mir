@@ -186,7 +186,7 @@
   <xsl:template name="buildLayout" priority="10">
     <xsl:param name="heading"/>
     <xsl:param name="content"/>
-    <div class="jumbotron workflow-box">
+    <div class="workflow-box">
       <xsl:if test="string-length(normalize-space($heading))&gt;0">
         <h1>
           <xsl:value-of select="$heading"/>
