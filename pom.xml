@@ -12,7 +12,7 @@
   <packaging>pom</packaging>
   <name>MIR</name>
   <description>MyCoRe/MODS Institutional Repository</description>
-  <url>http://www.mycore.de/generated/mir${site.suffix}</url>
+  <url>https://www.mycore.de/generated/mir${site.suffix}</url>
   <inceptionYear>2013</inceptionYear>
   <issueManagement>
     <system>JIRA</system>
@@ -209,7 +209,7 @@
       </snapshots>
       <id>dev.bibsonomy.org</id>
       <name>Official Source Code Releases of selected BibSonomy Modules</name>
-      <url>http://dev.bibsonomy.org/maven2/</url>
+      <url>https://dev.bibsonomy.org/maven2/</url>
     </repository>
   </repositories>
   <pluginRepositories>
