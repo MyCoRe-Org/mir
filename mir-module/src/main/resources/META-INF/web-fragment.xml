@@ -33,6 +33,15 @@
   </servlet-mapping>
 
   <servlet>
+    <servlet-name>MIRStateServlet</servlet-name>
+    <servlet-class>org.mycore.mir.MIRStateServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>MIRStateServlet</servlet-name>
+    <url-pattern>/servlets/MIRStateServlet</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
     <servlet-name>MIRAccessKeyServlet</servlet-name>
     <servlet-class>org.mycore.mir.authorization.accesskeys.MIRAccessKeyServlet</servlet-class>
   </servlet>

@@ -41,6 +41,13 @@
   }
 }
 
+.workflow-box {
+  padding: 0.75rem 1rem;;
+  margin-bottom: 1rem;
+  background-color: $gray-200;
+  border-radius: $border-radius;
+}
+
 #badges {
   a.mods_genre {
     margin-right: 3px;

@@ -28,6 +28,9 @@
 
   <xsl:param name="MCR.Packaging.Packer.ImageWare.FlagType" />
   <xsl:param name="MIR.ImageWare.Enabled" />
+  <xsl:param name="MIR.Workflow.Menu" select="'false'" />
+
+  <xsl:include href="workflow-util.xsl" />
 
   <!-- do nothing for display parent -->
   <xsl:template match="/mycoreobject" mode="parent" priority="1">
@@ -456,6 +459,11 @@
                           <xsl:value-of select="i18n:translate('mir.admineditor')" />
                         </a>
                       </li>
+                    </xsl:if>
+                    <xsl:if test="normalize-space($MIR.Workflow.Menu)='true'">
+                      <xsl:call-template name="listStatusChangeOptions">
+                        <xsl:with-param name="class" select="'dropdown-item'"/>
+                      </xsl:call-template>
                     </xsl:if>
                     <!-- li> does not work atm
                       <a href="{$WebApplicationBaseURL}editor/change_genre.xed?id={$id}">

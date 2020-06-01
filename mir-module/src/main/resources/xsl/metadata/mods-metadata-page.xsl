@@ -60,6 +60,9 @@
         </div>
 
         <div id="main_col" class="col-12 col-sm-8">
+          <xsl:if test="div[@id = 'mir-workflow']">
+            <xsl:apply-templates select="div[@id='mir-workflow']" mode="copyContent" />
+          </xsl:if>
           <div id="headline">
             <xsl:apply-templates select="div[@id='mir-abstract-title']" mode="copyContent" />
           </div>
