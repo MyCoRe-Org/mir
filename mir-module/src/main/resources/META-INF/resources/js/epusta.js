@@ -19,7 +19,7 @@ function EPuStaInline (element,providerurl,epustaid,from,until,counttype) {
 EPuStaInline.prototype= {
   constructor: EPuStaInline
 
-  ,requestData: function () {
+  ,requestData() {
     this.state="waiting";
     this.render();
     $.ajax({
@@ -36,11 +36,10 @@ EPuStaInline.prototype= {
         this.state="error";
         this.errortext="Fehler beim Holen der Daten vom Graphprovider";
         this.render();
-        console.log("Fehler beim Holen der Daten vom Graphprovider");
     });
   }
 
-  ,render: function () {
+  ,render() {
     switch(this.state) {
       case "error":
         this.$element.html("<i class='fas fa-exclamation-triangle' data-toggle='tooltip' title='"+this.errortext+"'></i>");
@@ -56,11 +55,11 @@ EPuStaInline.prototype= {
     }
   }
 
-  ,setCount: function (count) {
+  ,setCount(count) {
     this.count=count;
   }
 
-  ,getCounttype: function (counttype) {
+  ,getCounttype(counttype) {
     return(this.counttype);
   }
 };
@@ -101,7 +100,7 @@ function EPuStaGraph (element,providerurl,epustaid,from,until,granularity) {
 EPuStaGraph.prototype= {
   constructor: EPuStaGraph
 
-  ,requestData: function () {
+  ,requestData() {
     this.state="waiting";
     this.render();
     $.ajax({
@@ -118,11 +117,10 @@ EPuStaGraph.prototype= {
         this.state="error";
         this.errortext="Fehler beim Holen der Daten vom Graphprovider";
         this.render();
-        console.log("Fehler beim Holen der Daten vom Graphprovider");
     });
   }
 
-  ,render: function () {
+  ,render() {
     switch(this.state) {
       case "error":
         var html='<div style="with:100%;text-align:center;">';
@@ -135,7 +133,6 @@ EPuStaGraph.prototype= {
         this.$element.html("<div style='font-size: 5em;text-align:center;'> <i class='fas fa-spinner fa-pulse'></i> </div>");
         break;
       case "success":
-        console.log("Render barchart");
         this.$element.html(" <div id='epustaGraphic' style='height:80%'> </div> " +
             "<div style='text-align:center'> " +
             "  nach " +
@@ -168,8 +165,8 @@ EPuStaGraph.prototype= {
     }
   }
 
-  ,calculateFrom: function () {
-    if (this.from == "auto") {
+  ,calculateFrom() {
+    if (this.from === "auto") {
       var today=new Date();
       var from=new Date();
       switch (this.granularity) {
@@ -214,7 +211,7 @@ $(document).ready(function() {
     var epustaFrom=$(element).data('epustafrom');
     var epustaUntil=$(element).data('epustauntil');
     var epustaElement;
-    if (epustaElementtype == "ePuStaInline" ) {
+    if (epustaElementtype === "ePuStaInline" ) {
       epustaElement = new EPuStaInline(element,epustaProviderurl,epustaIdentifier,epustaFrom,epustaUntil,epustaCounttype);
       epustaElement.requestData();
     }
