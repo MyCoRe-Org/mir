@@ -4,7 +4,7 @@
 >
   <xsl:include href="layout-utils.xsl" />
 
-  <xsl:param name="MIR.OAS" select="'hide'" />
+  <xsl:param name="MIR.ePuSta" select="'hide'" />
 
   <xsl:template match="/site">
     <xsl:copy>
@@ -130,16 +130,17 @@
               </div>
             </div>
           </xsl:if>
-<!-- OAS statistics -->
-          <xsl:if test="$MIR.OAS = 'show' and div[@id='mir-oastatistics']">
-            <div class="card"><!-- todo: panel-default replacement -->
-              <div class="card-header">
+<!-- ePuSta -->
+          <xsl:if test="$MIR.ePuSta = 'show' and div[@id='mir-epusta']">
+            <div class="card">
+              <div class="card-header d-flex justify-content-between align-items-center">
                 <h3 class="card-title">
-                  <xsl:value-of select="i18n:translate('mir.oas.panelheading')" />
+                  <xsl:value-of select="i18n:translate('mir.epusta.panelheading')" />
                 </h3>
+                <img src="{$WebApplicationBaseURL}mir-layout/images/epusta/epustalogo_small.png" class="mir-epusta-logo" />
               </div>
-              <div class="card-body" id="mir_oas">
-                <xsl:apply-templates select="div[@id='mir-oastatistics']" mode="copyContent" />
+              <div class="card-body">
+                <xsl:apply-templates select="div[@id='mir-epusta']" mode="copyContent" />
               </div>
             </div>
           </xsl:if>
