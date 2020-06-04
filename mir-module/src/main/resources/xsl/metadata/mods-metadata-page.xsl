@@ -137,7 +137,7 @@
                 <h3 class="card-title">
                   <xsl:value-of select="i18n:translate('mir.epusta.panelheading')" />
                 </h3>
-                <img src="{$WebApplicationBaseURL}mir-layout/images/epusta/epustalogo_small.png" class="mir-epusta-logo" />
+                <img src="{$WebApplicationBaseURL}images/epusta/epustalogo_small.png" class="mir-epusta-logo" />
               </div>
               <div class="card-body">
                 <xsl:apply-templates select="div[@id='mir-epusta']" mode="copyContent" />
