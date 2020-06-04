@@ -44,7 +44,7 @@
             <xsl:value-of select="i18n:translate('mir.epusta.counter.fulltext')" />
           </div>
           <div
-              data-epustaelementtype="ePuStaInline"
+              data-epustaelementtype="EPuStaInline"
               data-epustaproviderurl="{$MIR.ePuSta.GraphProviderURL}"
               data-epustaidentifier="{$MIR.ePuSta.Prefix}{$objID}"
               data-epustacounttype="counter"
@@ -55,7 +55,7 @@
             <xsl:value-of select="i18n:translate('mir.epusta.counter.abstract')" />
           </div>
           <div
-              data-epustaelementtype="ePuStaInline"
+              data-epustaelementtype="EPuStaInline"
               data-epustaproviderurl="{$MIR.ePuSta.GraphProviderURL}"
               data-epustaidentifier="{$MIR.ePuSta.Prefix}{$objID}"
               data-epustacounttype="counter_abstract"
@@ -71,7 +71,7 @@
             <xsl:value-of select="i18n:translate('mir.epusta.counter.fulltext')" />
           </div>
           <div
-              data-epustaelementtype="ePuStaInline"
+              data-epustaelementtype="EPuStaInline"
               data-epustaproviderurl="{$MIR.ePuSta.GraphProviderURL}"
               data-epustaidentifier="{$MIR.ePuSta.Prefix}{$objID}"
               data-epustacounttype="counter"
@@ -82,7 +82,7 @@
           <div class="col-md-7 col-sm-9 col-xs-6 text-right">
             <xsl:value-of select="i18n:translate('mir.epusta.counter.abstract')" />
           </div>
-          <div data-epustaelementtype="ePuStaInline"
+          <div data-epustaelementtype="EPuStaInline"
             data-epustaproviderurl="{$MIR.ePuSta.GraphProviderURL}"
               data-epustaidentifier="{$MIR.ePuSta.Prefix}{$objID}"
               data-epustacounttype="counter_abstract"
@@ -117,7 +117,7 @@
               </div>
               <div class="modal-body">
                 <div id="epustaGraph" class="mir-epusta-graph"
-                    data-epustaelementtype="ePuStaGraph"
+                    data-epustaelementtype="EPuStaGraph"
                     data-epustaproviderurl="{$MIR.ePuSta.GraphProviderURL}"
                     data-epustaidentifier="{$MIR.ePuSta.Prefix}{$objID}"
                     data-epustafrom="{$from}" data-epustauntil="{$until}">

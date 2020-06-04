@@ -4,7 +4,7 @@
 
 //Class ePuStaInline
 
-function ePuStaInline (element,providerurl,epustaid,from,until,counttype) {
+function EPuStaInline (element,providerurl,epustaid,from,until,counttype) {
   this.providerurl = providerurl;
   this.epustaid = epustaid;
   this.$element = $(element);
@@ -16,8 +16,8 @@ function ePuStaInline (element,providerurl,epustaid,from,until,counttype) {
   this.until = (isNaN(Date.parse(until)) === false) ? until : new Date().toJSON().substring(0,10);
   this.granularity = "total";
 }
-ePuStaInline.prototype= {
-  constructor: ePuStaInline
+EPuStaInline.prototype= {
+  constructor: EPuStaInline
 
   ,requestData: function () {
     this.state="waiting";
@@ -31,7 +31,7 @@ ePuStaInline.prototype= {
       dataType : "xml",
       context: this
       }).done(function(data) {
-        ePuStaInline.receiveData(this, data)
+        EPuStaInline.receiveData(this, data);
       }).fail(function(e) {
         this.state="error";
         this.errortext="Fehler beim Holen der Daten vom Graphprovider";
@@ -65,13 +65,13 @@ ePuStaInline.prototype= {
   }
 };
 
-ePuStaInline.receiveData = function(epustainline,xml) {
+EPuStaInline.receiveData = function(epustainline,xml) {
 
   if (xml) {
     var nodes = $(xml).find("access");
     nodes.each (function () {
       var type=$($(this).children( "type" )[0]).text();
-      if (type==epustainline.getCounttype()) {
+      if (type===epustainline.getCounttype()) {
         var count=$($(this).children( "count" )[0]).text();
         epustainline.setCount(count);
       }
@@ -86,7 +86,7 @@ ePuStaInline.receiveData = function(epustainline,xml) {
 
 //Class ePuStaGraph
 
-function ePuStaGraph (element,providerurl,epustaid,from,until,granularity) {
+function EPuStaGraph (element,providerurl,epustaid,from,until,granularity) {
   this.providerurl = providerurl;
   this.epustaid = epustaid;
   this.$element = $(element);
@@ -98,8 +98,8 @@ function ePuStaGraph (element,providerurl,epustaid,from,until,granularity) {
   this.data = [];
   this.barchart = "";
 }
-ePuStaGraph.prototype= {
-  constructor: ePuStaGraph
+EPuStaGraph.prototype= {
+  constructor: EPuStaGraph
 
   ,requestData: function () {
     this.state="waiting";
@@ -113,7 +113,7 @@ ePuStaGraph.prototype= {
       dataType : "json",
       context: this
       }).done(function(data) {
-        ePuStaGraph.receiveData(this, data);
+        EPuStaGraph.receiveData(this, data);
       }).fail(function(e) {
         this.state="error";
         this.errortext="Fehler beim Holen der Daten vom Graphprovider";
@@ -192,7 +192,7 @@ ePuStaGraph.prototype= {
   }
 };
 
-ePuStaGraph.receiveData = function(epustagraph,json) {
+EPuStaGraph.receiveData = function(epustagraph,json) {
   if (json) {
     epustagraph.data=json.entries;
     epustagraph.state="success";
@@ -215,11 +215,11 @@ $(document).ready(function() {
     var epustaUntil=$(element).data('epustauntil');
     var epustaElement;
     if (epustaElementtype == "ePuStaInline" ) {
-      epustaElement = new ePuStaInline(element,epustaProviderurl,epustaIdentifier,epustaFrom,epustaUntil,epustaCounttype);
+      epustaElement = new EPuStaInline(element,epustaProviderurl,epustaIdentifier,epustaFrom,epustaUntil,epustaCounttype);
       epustaElement.requestData();
     }
-    if (epustaElementtype == "ePuStaGraph" ) {
-      epustaElement = new ePuStaGraph(element,epustaProviderurl,epustaIdentifier,epustaFrom,epustaUntil);
+    if (epustaElementtype === "EPuStaGraph" ) {
+      epustaElement = new EPuStaGraph(element,epustaProviderurl,epustaIdentifier,epustaFrom,epustaUntil);
       $('#epustaGraphModal').on('shown.bs.modal', function () {
         epustaElement.requestData();
       });
