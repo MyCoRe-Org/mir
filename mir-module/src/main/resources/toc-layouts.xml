@@ -67,17 +67,17 @@
   </toc-layout>
 
   <!-- This is, pretty much, the MIR legacy layout that was hard-coded -->
-  <toc-layout id="legacy" field="parent">
+  <toc-layout id="legacy" field="mir.toc.legacyParent">
     <label>Standard (gruppiert nach Erscheinungsjahr)</label>
     <level field="mods.yearIssued" order="desc" expanded="first">
       <publications>
-        <sortBy field="mir.toc.host.order" order="asc" />
-        <sortBy field="mir.toc.series.order" order="asc" />
+        <sortBy field="mir.toc.host.order" order="desc" />
+        <sortBy field="mir.toc.series.order" order="desc" />
         <sortBy field="mir.toc.host.page.int" order="asc" />
         <sortBy field="mir.toc.host.page.str" order="asc" />
         <sortBy field="mods.dateIssued" order="desc" />
         <sortBy field="mods.dateIssued.host" order="desc" />
-        <sortBy field="mods.title.main" order="asc" />
+        <sortBy field="mods.title.main" order="desc" />
       </publications>
     </level>
   </toc-layout>
