@@ -44,7 +44,7 @@
             <xsl:value-of select="i18n:translate('mir.epusta.counter.fulltext')" />
           </div>
           <div
-              data-epustaelementtype="EPuStaInline"
+              data-epustaelementtype="ePuStaInline"
               data-epustaproviderurl="{$MIR.ePuSta.GraphProviderURL}"
               data-epustaidentifier="{$MIR.ePuSta.Prefix}{$objID}"
               data-epustacounttype="counter"
@@ -55,7 +55,7 @@
             <xsl:value-of select="i18n:translate('mir.epusta.counter.abstract')" />
           </div>
           <div
-              data-epustaelementtype="EPuStaInline"
+              data-epustaelementtype="ePuStaInline"
               data-epustaproviderurl="{$MIR.ePuSta.GraphProviderURL}"
               data-epustaidentifier="{$MIR.ePuSta.Prefix}{$objID}"
               data-epustacounttype="counter_abstract"
@@ -71,7 +71,7 @@
             <xsl:value-of select="i18n:translate('mir.epusta.counter.fulltext')" />
           </div>
           <div
-              data-epustaelementtype="EPuStaInline"
+              data-epustaelementtype="ePuStaInline"
               data-epustaproviderurl="{$MIR.ePuSta.GraphProviderURL}"
               data-epustaidentifier="{$MIR.ePuSta.Prefix}{$objID}"
               data-epustacounttype="counter"
@@ -82,11 +82,11 @@
           <div class="col-md-7 col-sm-9 col-xs-6 text-right">
             <xsl:value-of select="i18n:translate('mir.epusta.counter.abstract')" />
           </div>
-          <div data-epustaelementtype="EPuStaInline"
-            data-epustaproviderurl="{$MIR.ePuSta.GraphProviderURL}"
-              data-epustaidentifier="{$MIR.ePuSta.Prefix}{$objID}"
-              data-epustacounttype="counter_abstract"
-              data-epustafrom="{$from}" data-epustauntil="{$until}"
+          <div data-epustaelementtype="ePuStaInline"
+               data-epustaproviderurl="{$MIR.ePuSta.GraphProviderURL}"
+               data-epustaidentifier="{$MIR.ePuSta.Prefix}{$objID}"
+               data-epustacounttype="counter_abstract"
+               data-epustafrom="{$from}" data-epustauntil="{$until}"
           />
         </div>
         <div class="text-right">
