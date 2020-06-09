@@ -71,7 +71,7 @@ module.exports = function(grunt) {
           '<%= globalConfig.moduleDirectory %>/target/classes/META-INF/resources/js/mir/citation.min.js': '<%= globalConfig.moduleDirectory %>/src/main/resources/META-INF/resources/js/mir/citation.js',
 
           '<%= globalConfig.moduleDirectory %>/target/classes/META-INF/resources/js/jquery.search-entity.min.js': '<%= globalConfig.moduleDirectory %>/src/main/resources/META-INF/resources/js/jquery.search-entity.js',
-          '<%= globalConfig.moduleDirectory %>/target/classes/META-INF/resources/js/oa-statistic.min.js': '<%= globalConfig.moduleDirectory %>/src/main/resources/META-INF/resources/js/oa-statistic.js'
+          '<%= globalConfig.moduleDirectory %>/target/classes/META-INF/resources/js/epusta.min.js': '<%= globalConfig.moduleDirectory %>/src/main/resources/META-INF/resources/js/epusta.js'
         }
       }
     },
