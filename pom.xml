@@ -45,6 +45,7 @@
     <java.target.version>11</java.target.version>
     <jetty.version>9.4.24.v20191120</jetty.version>
     <mycore.version>2020.05-SNAPSHOT</mycore.version>
+    <node.version>v12.16.3</node.version>
     <pmd.failOnViolation>false</pmd.failOnViolation>
     <selenium.version>3.141.59</selenium.version>
     <site.suffix />
@@ -54,6 +55,7 @@
     <sortpom.sortFile>https://gist.githubusercontent.com/yagee-de/dfd3698c1b49173dbf251f74eb6a9297/raw/406460c088ff3cb6354e4ae6b40535e6f841607d/mycore_sort.xml</sortpom.sortFile>
     <sortpom.sortProps>true</sortpom.sortProps>
     <tomcat.version>9.0.29</tomcat.version>
+    <yarn.version>v1.22.4</yarn.version>
   </properties>
   <build>
     <pluginManagement>

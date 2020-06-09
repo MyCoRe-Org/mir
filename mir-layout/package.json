@@ -12,16 +12,16 @@
     },
     "engineStrict": true,
     "devDependencies": {
+        "@fortawesome/fontawesome-free": "5.11.2",
         "bootstrap": "4.4.1",
         "bootswatch": "4.4.1",
-        "@fortawesome/fontawesome-free": "5.11.2",
         "grunt": "^1.0.0",
         "grunt-cli": "^1.2.0",
         "grunt-contrib-concat": "^1.0.1",
         "grunt-contrib-watch": "^1.0.0",
         "grunt-npmcopy": "^0.1.0",
         "grunt-replace": "^1.0.1",
-        "jquery": "3.4.1",
+        "jquery": "3.5.0",
         "jquery-migrate": "1.4.1",
         "shariff": "3.2.1"
     }
