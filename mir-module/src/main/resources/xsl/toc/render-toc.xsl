@@ -21,7 +21,7 @@
           <xsl:value-of select="i18n:translate('mir.metadata.content')"/>
 
           <!-- links to expand/collapse all toc levels at once -->
-          <xsl:if test="count(//item) &gt; 1">          
+          <xsl:if test="count(//item) &gt; 1">
             <span class="float-right" style="font-size:smaller;">
               <a id="tocShowAll" href="#">
                 <xsl:value-of select="i18n:translate('mir.abstract.showGroups')" />
@@ -49,7 +49,7 @@
 
   <!-- show a toc level -->
   <xsl:template match="level">
-    <ol style="list-style-type: none;">
+    <ol class="mir-toc-sections">
       <xsl:for-each select="item">
         
         <xsl:variable name="id" select="generate-id()" />
@@ -61,12 +61,12 @@
           </xsl:choose>
         </xsl:variable>
         
-        <li>
+        <li class="mir-toc-section">
           <xsl:choose>
             <!-- if there are deeper levels below, prepare expand/collapse functionality -->
             <xsl:when test="level|publications">
             
-              <a href="#{$id}" data-toggle="collapse" aria-expanded="{$expanded}" aria-controls="{$id}" style="margin-right:1ex;">
+              <a href="#{$id}" class="mir-toc-section-toggle" data-toggle="collapse" aria-expanded="{$expanded}" aria-controls="{$id}">
                 <span>
                   <xsl:attribute name="class">
                     <xsl:text>toggle-collapse fas fa-fw </xsl:text>
@@ -79,12 +79,12 @@
               </a>
             </xsl:when>
             <xsl:otherwise>
-              <span class="fas fa-fw fa-chevron-right" style="margin-right:1ex;" />
+              <span class="fas fa-fw fa-chevron-right" />
             </xsl:otherwise>
           </xsl:choose>
           
-          <!-- show this level item -->    
-          <xsl:apply-templates select="." />                
+          <!-- show this level item -->
+          <xsl:apply-templates select="." />
 
           <!-- show level/publications below the current one -->
           <xsl:if test="level|publications">
@@ -109,17 +109,17 @@
   </xsl:template>
   
   <xsl:template match="item/@value">
-    <span class="level.label" style="margin-right:1ex">
+    <span class="mir-toc-section-label">
       <xsl:value-of select="." />
     </span>
   </xsl:template>
 
   <!-- show list of publications at current level -->  
   <xsl:template match="publications">
-    <ul>
+    <ul class="mir-toc-section-list">
       <xsl:for-each select="doc">
         <xsl:sort select="@pos" data-type="number" order="ascending" />
-        <li>
+        <li class="mir-toc-section-entry">
           <xsl:apply-templates select="." />
         </li>
       </xsl:for-each>
