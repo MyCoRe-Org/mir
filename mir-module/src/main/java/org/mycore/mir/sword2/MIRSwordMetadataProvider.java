@@ -15,6 +15,7 @@ import org.mycore.common.content.transformer.MCRXSL2XMLTransformer;
 import org.mycore.datamodel.metadata.MCRMetadataManager;
 import org.mycore.datamodel.metadata.MCRObject;
 import org.mycore.datamodel.metadata.MCRObjectID;
+import org.mycore.frontend.MCRFrontendUtil;
 import org.mycore.sword.MCRSwordUtil;
 import org.mycore.sword.application.MCRSwordLifecycleConfiguration;
 import org.mycore.sword.application.MCRSwordMetadataProvider;
@@ -34,8 +35,10 @@ public class MIRSwordMetadataProvider extends MCRSwordMetadataProvider {
     public DepositReceipt provideMetadata(MCRObject object) throws SwordError {
         final IRI iri = new IRI(MCRSwordUtil.BuildLinkUtil.getEditHref(this.lifecycleConfiguration.getCollection(),
             object.getId().toString()));
+        final String splashURI = MCRFrontendUtil.getBaseURL() + "receive/" + object.getId();
         final DepositReceipt depositReceipt = MCRSwordUtil.buildDepositReceipt(iri);
         addMetadata(object, depositReceipt);
+        depositReceipt.setSplashUri(splashURI);
         final Entry we = depositReceipt.getWrappedEntry();
         MCRSwordUtil.BuildLinkUtil
             .getEditMediaIRIStream(this.lifecycleConfiguration.getCollection(), object.getId().toString())
