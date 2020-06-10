@@ -21,6 +21,15 @@
       <xsl:apply-templates select="(.)[mods:name[@type='personal'][contains($MIR.TableOfContents.RolesToDisplay,mods:role/mods:roleTerm)]]" mode="toc.authors" />
 
       <xsl:apply-templates select="descendant::mods:relatedItem[contains('host series',@type)]/@xlink:href" mode="toc" />
+      
+      <xsl:choose>
+        <xsl:when test="mods:relatedItem[contains('host',@type)]/@xlink:href">
+          <xsl:apply-templates select="mods:relatedItem[contains('host',@type)]/@xlink:href" mode="toc.legacyParent" />
+        </xsl:when>
+        <xsl:when test="mods:relatedItem[contains('series',@type)]/@xlink:href">
+          <xsl:apply-templates select="mods:relatedItem[contains('series',@type)][1]/@xlink:href" mode="toc.legacyParent" />
+        </xsl:when>
+      </xsl:choose>
 
       <!-- host.volume, host.issue, series.volume, series.issue - only first occurrence -->
       <xsl:apply-templates select="(descendant::mods:relatedItem[@type='host']/mods:part/mods:detail[@type='volume'])[1]/mods:number" mode="toc.field" />
@@ -34,7 +43,10 @@
       </xsl:apply-templates>
 
       <!-- host.order, series.order - only first occurrence -->
-      <xsl:apply-templates select="(descendant::mods:relatedItem[contains('host series',@type)]/mods:part[@order])[1]/@order" mode="toc.field">
+      <xsl:apply-templates select="(mods:relatedItem[@type='host']/mods:part[@order])[1]/@order" mode="toc.field">
+        <xsl:with-param name="name">order</xsl:with-param>
+      </xsl:apply-templates>
+      <xsl:apply-templates select="(mods:relatedItem[@type='series']/mods:part[@order])[1]/@order" mode="toc.field">
         <xsl:with-param name="name">order</xsl:with-param>
       </xsl:apply-templates>
 
@@ -77,6 +89,12 @@
 
   <xsl:template match="mods:relatedItem/@xlink:href" mode="toc">
     <field name="mir.toc.ancestor">
+      <xsl:value-of select="." />
+    </field>
+  </xsl:template>
+
+  <xsl:template match="mods:relatedItem/@xlink:href" mode="toc.legacyParent">
+    <field name="mir.toc.legacyParent">
       <xsl:value-of select="." />
     </field>
   </xsl:template>
