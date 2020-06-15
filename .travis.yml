@@ -18,6 +18,7 @@ env:
     - MAVEN_OPTS="-Xmx1024M -Xss128M -XX:+CMSClassUnloadingEnabled -XX:+UseConcMarkSweepGC"
     - GECKODRIVER_VERSION="0.26.0"
     - CHROMEDRIVER_VERSION=$(curl http://chromedriver.storage.googleapis.com/LATEST_RELEASE)
+    - BIBUTILS_VERSION="6.10"
     - FIREFOX_BIN=$(which firefox)
     - SELENIUM_BROWSER=firefox
 before_install:
@@ -38,6 +39,15 @@ before_script:
   - wget http://chromedriver.storage.googleapis.com/${CHROMEDRIVER_VERSION}/chromedriver_linux64.zip
   - unzip chromedriver_linux64.zip -d chromedriver
   - export PATH=$PATH:$PWD/chromedriver
+  - |
+       if [ ! -d "bibutils_${BIBUTILS_VERSION}" ]; then \
+           wget "https://iweb.dl.sourceforge.net/project/bibutils/bibutils_${BIBUTILS_VERSION}_src.tgz" && \
+           tar -xf "bibutils_${BIBUTILS_VERSION}_src.tgz" && \
+           (cd "bibutils_${BIBUTILS_VERSION}" && sh -C configure) && \
+           make -C "bibutils_${BIBUTILS_VERSION}"; \
+       fi; \
+       export PATH=$PATH:$PWD/bibutils_$BIBUTILS_VERSION/bin; \
+       echo $PATH;
 script:
   - mkdir ${HOME}/tmp
   - export TMPDIR="${HOME}/tmp"

@@ -16,6 +16,7 @@
   <xsl:param name="MCR.URN.Resolver.MasterURL" select="''" />
   <xsl:param name="MCR.DOI.Resolver.MasterURL" select="''" />
   <xsl:param name="MIR.citationStyles" select="''" />
+  <xsl:param name="MIR.defaultCitationStyle" select="''" />
   <xsl:param name="MIR.altmetrics" select="'show'" />
   <xsl:param name="MIR.altmetrics.hide" select="'true'" />
   <xsl:param name="MIR.plumx" select="'hide'" />
@@ -112,16 +113,16 @@
           <strong>
             <xsl:value-of select="i18n:translate('mir.citationStyle')" />
           </strong>
-          <i id="crossref-citation-error" class="fas fa-exclamation-circle hidden" title="{i18n:translate('mir.citationAlertService')}"></i>
+          <i id="citation-error" class="fas fa-exclamation-circle hidden" title="{i18n:translate('mir.citationAlertService')}"></i>
         </span>
-        <xsl:if test="//mods:mods/mods:identifier[@type='doi'] and string-length($MIR.citationStyles) &gt; 0">
+        <xsl:if test="string-length($MIR.citationStyles) &gt; 0">
           <xsl:variable name="cite-styles">
             <xsl:call-template name="Tokenizer"><!-- use split function from mycore-base/coreFunctions.xsl -->
               <xsl:with-param name="string" select="$MIR.citationStyles" />
               <xsl:with-param name="delimiter" select="','" />
             </xsl:call-template>
           </xsl:variable>
-          <select class="form-control input-sm" id="crossref-cite" data-doi="{//mods:mods/mods:identifier[@type='doi']}">
+          <select class="form-control input-sm" id="mir-csl-cite" data-object-id="{/mycoreobject/@ID}">
             <option value="deutsche-sprache">deutsche-sprache</option>
             <xsl:for-each select="exslt:node-set($cite-styles)/token">
               <option value="{.}">
@@ -130,15 +131,12 @@
             </xsl:for-each>
           </select>
         </xsl:if>
-        <p id="default-citation-text">
-          <xsl:apply-templates select="$mods" mode="authorList" />
-          <xsl:apply-templates select="$mods" mode="title" />
-          <xsl:apply-templates select="$mods" mode="originInfo" />
-          <xsl:apply-templates select="$mods" mode="issn" />
-        </p>
-        <p id="crossref-citation-text" class="d-none">
-        </p>
-        <p id="crossref-citation-alert" class="alert alert-danger d-none"><xsl:value-of select="i18n:translate('mir.citationAlert')" /></p>
+        <div id="default-citation-text">
+          <xsl:copy-of select="document(concat('xslTransform:mods2csl?format=html&amp;style=', $MIR.defaultCitationStyle, ':mcrobject:', /mycoreobject/@ID))" />
+        </div>
+        <div id="citation-text" class="d-none">
+        </div>
+        <div id="citation-alert" class="alert alert-danger d-none"><xsl:value-of select="i18n:translate('mir.citationAlert')" /></div>
       </div>
 
       <p id="cite_link_box">
@@ -171,9 +169,7 @@
         </xsl:choose>
       </p>
       <xsl:apply-templates select="//mods:mods" mode="identifierListModal" />
-      <xsl:if test="//mods:mods/mods:identifier[@type='doi']">
-        <script src="{$WebApplicationBaseURL}js/mir/citation.min.js"></script>
-      </xsl:if>
+      <script src="{$WebApplicationBaseURL}js/mir/citation.min.js"></script>
     </div>
 
     <xsl:if test="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:accessCondition[contains('copyrightMD|use and reproduction', @type)]">
