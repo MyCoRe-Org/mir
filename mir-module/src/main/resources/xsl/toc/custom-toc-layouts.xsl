@@ -2,7 +2,7 @@
 
 <!-- Custom table of contents layouts to display levels and publications -->
 
-<xsl:stylesheet version="1.0" 
+<xsl:stylesheet version="1.0"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:xalan="http://xml.apache.org/xalan"
   xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
@@ -22,7 +22,7 @@
   <xsl:template match="level[@field='mir.toc.host.volume']/item" priority="1">
     <xsl:call-template name="toc.volume.title" />
   </xsl:template>
-  
+
   <!-- "No. 24" with link to object representing the complete issue -->
   <xsl:template match="level[@field='mir.toc.host.issue']/item[doc]" priority="2">
     <a href="{$WebApplicationBaseURL}receive/{doc/@id}">
@@ -34,10 +34,10 @@
   <xsl:template match="level[@field='mir.toc.host.issue']/item" priority="1">
     <xsl:call-template name="toc.issue.title" />
   </xsl:template>
-  
+
   <xsl:template name="toc.volume.title">
     <xsl:value-of select="i18n:translate('mir.details.volume.journal')" />
-    <xsl:text> </xsl:text> 
+    <xsl:text> </xsl:text>
     <xsl:value-of select="@value" />
     <xsl:for-each select="doc/field[@name='mods.yearIssued']">
       <xsl:text> (</xsl:text>
@@ -85,37 +85,36 @@
 
   <xsl:template match="toc[@layout='blog']//publications/doc" priority="2">
     <div class="row">
-      <div class="col-12">
+      <div class="col-1">
+        <xsl:for-each select="field[@name='mods.dateIssued'][1]">
+          <xsl:call-template name="formatISODate">
+            <xsl:with-param name="date" select="." />
+            <xsl:with-param name="format">
+              <xsl:choose>
+                <xsl:when test="$CurrentLang='de'">dd.MM.</xsl:when>
+                <xsl:otherwise>MM-dd</xsl:otherwise>
+              </xsl:choose>
+            </xsl:with-param>
+          </xsl:call-template>
+        </xsl:for-each>
+      </div>
+      <div class="col-11 mir-toc-section-title">
         <h4 class="mir-toc-section-title">
-          <xsl:for-each select="field[@name='mods.dateIssued'][1]">
-            <xsl:call-template name="formatISODate">
-              <xsl:with-param name="date" select="." />
-              <xsl:with-param name="format">
-                <xsl:choose>
-                  <xsl:when test="$CurrentLang='de'">dd.MM.</xsl:when>
-                  <xsl:otherwise>MM-dd</xsl:otherwise>
-                </xsl:choose>
-              </xsl:with-param>
-            </xsl:call-template>
-          </xsl:for-each>
-          <xsl:text> - </xsl:text>
+          <xsl:call-template name="toc.title" />
         </h4>
       </div>
-      <div class="col-12 mir-toc-section-title">
-        <xsl:call-template name="toc.title" />
-      </div>
-      <div class="col-12 mir-toc-section-author">
+      <div class="offset-1 col-11 mir-toc-section-author">
         <xsl:call-template name="toc.authors" />
       </div>
     </div>
   </xsl:template>
-  
+
   <xsl:template name="toc.authors">
     <xsl:for-each select="field[@name='mir.toc.authors']">
       <xsl:value-of select="." />
     </xsl:for-each>
   </xsl:template>
-  
+
   <xsl:template name="toc.title">
     <a href="{$WebApplicationBaseURL}receive/{@id}">
       <xsl:value-of select="field[@name='mir.toc.title']" />
@@ -123,4 +122,3 @@
   </xsl:template>
 
  </xsl:stylesheet>
- 
