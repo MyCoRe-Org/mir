@@ -107,20 +107,24 @@
     </mods:relatedItem>
   </xsl:template>
   
+  <xsl:param name="MCR.ContentTransformer.deepgreenjats2mods.HostRelation" select="'link'" />
+
   <xsl:template name="href">
-    <xsl:variable name="solrQuery"
-                  select="document(concat('solr:main:q=%2Bmods.identifier%3A%22', issn, '%22%20AND%20%2Bmods.genre%3Ajournal'))" />
-    <xsl:attribute name="href" namespace="http://www.w3.org/1999/xlink">
-      <xsl:choose>
-        <xsl:when test="$solrQuery/response/result/@numFound &gt; 0">
+    <xsl:if test="$MCR.ContentTransformer.deepgreenjats2mods.HostRelation='link'">
+      <xsl:variable name="solrQuery"
+                    select="document(concat('solr:main:q=%2Bmods.identifier%3A%22', issn, '%22%20AND%20%2Bmods.genre%3Ajournal'))" />
+      <xsl:attribute name="href" namespace="http://www.w3.org/1999/xlink">
+        <xsl:choose>
+          <xsl:when test="$solrQuery/response/result/@numFound &gt; 0">
             <xsl:value-of select="$solrQuery/response/result/doc[1]/str[@name='id']" />
-        </xsl:when>
-        <xsl:otherwise>
+          </xsl:when>
+          <xsl:otherwise>
             <xsl:value-of select="$MIR.projectid.default" />
             <xsl:text>_mods_00000000</xsl:text>
-        </xsl:otherwise>
-      </xsl:choose>
-    </xsl:attribute>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:attribute>
+    </xsl:if>
   </xsl:template>
   
   <xsl:template name="originInfo">
