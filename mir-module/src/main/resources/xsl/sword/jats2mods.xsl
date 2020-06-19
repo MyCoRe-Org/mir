@@ -6,16 +6,16 @@
 <!-- TODO: <pub-date pub-type="ppub" date-type="actual"> -->
 <!-- TODO: affiliation mit Umbrüchen -->
 <!-- TODO: abbrev title = main title -->
-<!-- TODO: <xref ref-type="aff" rid="A">a oder <sup>1</sup></xref> <aff id="A"><sup>a</sup>Allgemeine<break/>Psychologie </aff>  --> 
+<!-- TODO: <xref ref-type="aff" rid="A">a oder <sup>1</sup></xref> <aff id="A"><sup>a</sup>Allgemeine<break/>Psychologie </aff>  -->
 <!-- TODO: funding-group -->
 <!-- TODO: map article-type to mods:genre -->
 <!-- TODO: lookup existing host for xlink:href -->
 
-<xsl:stylesheet version="1.0" 
+<xsl:stylesheet version="1.0"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  xmlns:xlink="http://www.w3.org/1999/xlink" 
+  xmlns:xlink="http://www.w3.org/1999/xlink"
   xmlns:xalan="http://xml.apache.org/xalan"
-  xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation" 
+  xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
   xmlns:mods="http://www.loc.gov/mods/v3"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   exclude-result-prefixes="xalan i18n">
@@ -32,7 +32,7 @@
     <mods:mods>
       <mods:typeOfResource>text</mods:typeOfResource>
       <xsl:call-template name="genre_article" />
-      
+
       <xsl:for-each select="front/article-meta">
         <xsl:apply-templates select="title-group" />
         <xsl:apply-templates select="contrib-group/contrib" />
@@ -45,11 +45,11 @@
         <xsl:apply-templates select="permissions/license" />
         <xsl:call-template name="oa_nlz" />
       </xsl:for-each>
-      <xsl:apply-templates select="@xml:lang" />
+      <xsl:apply-templates select="@xml:lang" mode="lang2mods" />
       <xsl:apply-templates select="." mode="copy" />
     </mods:mods>
   </xsl:template>
-  
+
   <xsl:template match="article" mode="copy">
     <mods:extension>
       <xsl:copy-of select="." />
@@ -64,7 +64,7 @@
       </xsl:call-template>
     </mods:genre>
   </xsl:template>
-  
+
   <xsl:template name="genre_journal">
     <mods:genre type="intern">
       <xsl:call-template name="setAuthorityValueURIs">
@@ -73,7 +73,7 @@
       </xsl:call-template>
     </mods:genre>
   </xsl:template>
-  
+
   <xsl:template name="setAuthorityValueURIs">
     <xsl:param name="classification" />
     <xsl:param name="category" />
@@ -89,7 +89,7 @@
       <xsl:value-of select="$category" />
     </xsl:attribute>
   </xsl:template>
-  
+
   <xsl:template match="journal-meta">
     <mods:relatedItem type="host">
       <xsl:call-template name="href" />
@@ -106,23 +106,27 @@
       <xsl:call-template name="originInfo" />
     </mods:relatedItem>
   </xsl:template>
-  
+
+  <xsl:param name="MCR.ContentTransformer.deepgreenjats2mods.HostRelation" select="'link'" />
+
   <xsl:template name="href">
-    <xsl:variable name="solrQuery"
-                  select="document(concat('solr:main:q=%2Bmods.identifier%3A%22', issn, '%22%20AND%20%2Bmods.genre%3Ajournal'))" />
-    <xsl:attribute name="href" namespace="http://www.w3.org/1999/xlink">
-      <xsl:choose>
-        <xsl:when test="$solrQuery/response/result/@numFound &gt; 0">
+    <xsl:if test="$MCR.ContentTransformer.deepgreenjats2mods.HostRelation='link'">
+      <xsl:variable name="solrQuery"
+                    select="document(concat('solr:main:q=%2Bmods.identifier%3A%22', issn, '%22%20AND%20%2Bmods.genre%3Ajournal'))" />
+      <xsl:attribute name="href" namespace="http://www.w3.org/1999/xlink">
+        <xsl:choose>
+          <xsl:when test="$solrQuery/response/result/@numFound &gt; 0">
             <xsl:value-of select="$solrQuery/response/result/doc[1]/str[@name='id']" />
-        </xsl:when>
-        <xsl:otherwise>
+          </xsl:when>
+          <xsl:otherwise>
             <xsl:value-of select="$MIR.projectid.default" />
             <xsl:text>_mods_00000000</xsl:text>
-        </xsl:otherwise>
-      </xsl:choose>
-    </xsl:attribute>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:attribute>
+    </xsl:if>
   </xsl:template>
-  
+
   <xsl:template name="originInfo">
     <xsl:if test="pub-date|publisher">
       <mods:originInfo eventType="publication">
@@ -131,7 +135,7 @@
       </mods:originInfo>
     </xsl:if>
   </xsl:template>
-  
+
   <xsl:template name="pages">
     <xsl:if test="fpage|lpage">
       <mods:extent unit="pages">
@@ -139,27 +143,33 @@
       </mods:extent>
     </xsl:if>
   </xsl:template>
-  
+
   <xsl:template match="fpage">
     <mods:start>
       <xsl:value-of select="." />
     </mods:start>
   </xsl:template>
-  
+
   <xsl:template match="lpage">
     <mods:end>
       <xsl:value-of select="." />
     </mods:end>
   </xsl:template>
 
-  <xsl:template match="article/@xml:lang">
+  <xsl:template match="article/@xml:lang" mode="lang2mods">
     <mods:language>
       <mods:languageTerm type="code" authority="rfc5646">
         <xsl:value-of select="translate(.,$upperABC,$lowerABC)" />
       </mods:languageTerm>
     </mods:language>
   </xsl:template>
-  
+
+  <xsl:template match="@xml:lang">
+    <xsl:attribute name="xml:lang">
+      <xsl:value-of select="translate(.,$upperABC,$lowerABC)" />
+    </xsl:attribute>
+  </xsl:template>
+
   <xsl:variable name="idTypes" select="document('classification:metadata:-1:children:identifier')//categories" />
 
   <xsl:template match="article-id">
@@ -170,7 +180,7 @@
       </mods:identifier>
     </xsl:if>
   </xsl:template>
-  
+
   <xsl:template match="title-group">
     <mods:titleInfo>
       <xsl:apply-templates select="article-title" />
@@ -178,21 +188,21 @@
     </mods:titleInfo>
     <xsl:apply-templates select="trans-title-group" />
   </xsl:template>
-  
+
   <xsl:template match="article-title">
-    <xsl:copy-of select="@xml:lang" />
+    <xsl:apply-templates select="@xml:lang" />
     <xsl:if test="not(@xml:lang)">
-      <xsl:copy-of select="/*/@xml:lang" />
+      <xsl:apply-templates select="/*/@xml:lang" />
     </xsl:if>
     <mods:title>
-      <xsl:value-of select="." />
+      <xsl:value-of select="normalize-space(.)" />
     </mods:title>
   </xsl:template>
 
   <xsl:template match="trans-title">
-    <xsl:copy-of select="@xml:lang" />
+    <xsl:apply-templates select="@xml:lang" />
     <mods:title>
-      <xsl:value-of select="." />
+      <xsl:value-of select="normalize-space(.)" />
     </mods:title>
   </xsl:template>
 
@@ -201,28 +211,32 @@
       <xsl:value-of select="." />
     </mods:subTitle>
   </xsl:template>
-  
+
   <xsl:template match="trans-title-group">
     <mods:titleInfo type="translated">
       <xsl:apply-templates select="trans-title" />
       <xsl:apply-templates select="trans-subtitle" />
     </mods:titleInfo>
   </xsl:template>
-  
+
+  <!-- If no main title, use abbreviated title of type "full" as main title -->
   <xsl:template match="journal-title|abbrev-journal-title[@abbrev-type='full'][not(../journal-title)]">
     <mods:titleInfo>
-      <xsl:copy-of select="@xml:lang" />
+      <xsl:apply-templates select="@xml:lang" />
       <mods:title>
-        <xsl:value-of select="." />
+        <xsl:value-of select="normalize-space(.)" />
       </mods:title>
     </mods:titleInfo>
   </xsl:template>
 
+  <!-- Ignore abbreviated title if same as main title -->
+  <xsl:template match="abbrev-journal-title[normalize-space(.)=normalize-space(../journal-title)]" priority="1" />
+
   <xsl:template match="abbrev-journal-title">
     <mods:titleInfo type="abbreviated">
-      <xsl:copy-of select="@xml:lang" />
+      <xsl:apply-templates select="@xml:lang" />
       <mods:title>
-        <xsl:value-of select="." />
+        <xsl:value-of select="normalize-space(.)" />
       </mods:title>
     </mods:titleInfo>
   </xsl:template>
@@ -239,7 +253,7 @@
       <xsl:apply-templates select="contrib-id" />
     </mods:name>
   </xsl:template>
-  
+
   <xsl:template match="surname">
     <mods:namePart type="family">
       <xsl:value-of select="." />
@@ -261,11 +275,11 @@
   <!-- Try to map contributor roles by comparing labels in marcrelator classification -->
 
   <xsl:variable name="roles" select="document('classification:metadata:-1:children:marcrelator')/mycoreclass" />
-  
+
   <xsl:template match="@contrib-type">
     <xsl:variable name="role" select="translate(.,$upperABC,$lowerABC)" />
     <xsl:variable name="categoryID" select="$roles//category[label[translate(@text,$upperABC,$lowerABC)=$role]]/@ID" />
-  
+
     <mods:role>
       <mods:roleTerm>
         <xsl:choose>
@@ -282,7 +296,7 @@
       </mods:roleTerm>
     </mods:role>
   </xsl:template>
-  
+
   <xsl:template name="affiliation">
     <xsl:choose>
       <!-- Link to affiliation via xref ID -->
@@ -300,13 +314,13 @@
     </xsl:choose>
   </xsl:template>
 
-  <!-- Affiliations may be linked via @id/xref -->  
+  <!-- Affiliations may be linked via @id/xref -->
   <xsl:key name="rid2aff" match="//aff[@id]" use="@id" />
-  
+
   <xsl:template match="xref[(@ref-type='aff') or not(@ref-type)]">
     <xsl:apply-templates select="key('rid2aff',@rid)" />
   </xsl:template>
-  
+
   <xsl:template match="aff">
     <mods:affiliation>
       <xsl:choose>
@@ -322,16 +336,23 @@
       </xsl:choose>
     </mods:affiliation>
   </xsl:template>
-  
+
   <xsl:template match="contrib-id">
     <mods:nameIdentifier type="{@contrib-id-type}">
       <xsl:value-of select="." />
     </mods:nameIdentifier>
   </xsl:template>
 
+  <!-- Reduce ORCID iDs given as complete URL -->
+  <xsl:template match="contrib-id[contains('orcid.org/')]" priority="1">
+    <mods:nameIdentifier type="orcid">
+      <xsl:value-of select="substring-after(.,'orcid.org/')" />
+    </mods:nameIdentifier>
+  </xsl:template>
+
   <!-- Ignore empty ORCIDs -->
   <xsl:template match="contrib-id[text()='http://orcid.org/']" />
-  
+
   <xsl:template name="pub-date">
     <xsl:choose>
       <xsl:when test="pub-date[(@pub-type='ppub') or ((@date-type='pub') and (@publication-format='print'))]">
@@ -345,13 +366,13 @@
       </xsl:when>
     </xsl:choose>
   </xsl:template>
-  
+
   <xsl:template match="pub-date[@iso-8601-date]">
     <mods:dateIssued encoding="iso8601">
       <xsl:value-of select="@iso-8601-date" />
     </mods:dateIssued>
   </xsl:template>
-  
+
   <xsl:template match="pub-date">
     <mods:dateIssued encoding="iso8601">
       <xsl:value-of select="year" />
@@ -359,7 +380,7 @@
       <xsl:apply-templates select="day" />
     </mods:dateIssued>
   </xsl:template>
-  
+
   <xsl:template match="day|month">
     <xsl:text>-</xsl:text>
     <xsl:if test="string-length(.)=1">0</xsl:if>
@@ -373,21 +394,21 @@
       </mods:number>
     </mods:detail>
   </xsl:template>
-  
+
   <xsl:template match="abstract[@type='toc']">
     <mods:tableOfContents>
-      <xsl:copy-of select="@xml:lang" />
+      <xsl:apply-templates select="@xml:lang" />
       <xsl:apply-templates select="*|text()" />
     </mods:tableOfContents>
   </xsl:template>
 
   <xsl:template match="abstract|trans-abstract">
     <mods:abstract>
-      <xsl:copy-of select="@xml:lang" />
+      <xsl:apply-templates select="@xml:lang" />
       <xsl:apply-templates select="*|text()" />
     </mods:abstract>
   </xsl:template>
-  
+
   <xsl:template match="kwd-group/kwd">
     <mods:subject>
       <mods:topic>
@@ -395,18 +416,18 @@
       </mods:topic>
     </mods:subject>
   </xsl:template>
-  
+
   <xsl:template match="issn">
     <mods:identifier type="issn">
       <xsl:value-of select="." />
     </mods:identifier>
   </xsl:template>
-  
+
   <xsl:template match="publisher">
     <xsl:apply-templates select="publisher-name" />
     <xsl:apply-templates select="publisher-loc" />
   </xsl:template>
-  
+
   <xsl:template match="publisher-name">
     <mods:publisher>
       <xsl:value-of select="." />
@@ -433,33 +454,35 @@
       </cmd:copyright>
     </mods:accessCondition>
   </xsl:template>
-  
+
   <!-- Map license URL to category in mir_licenses -->
 
   <xsl:variable name="mir_licenses" select="document('classification:metadata:-1:children:mir_licenses')/mycoreclass" />
   <xsl:variable name="mir_licenses_uri" select="$mir_licenses/label[@xml:lang='x-uri']/@text" />
 
   <xsl:template match="permissions/license">
-    <xsl:variable name="url" select="@xlink:href" />
-    <xsl:variable name="categoryID" select="$mir_licenses//category[url[@xlink:href=$url]]/@ID" />
-    
-    <mods:accessCondition type="use and reproduction">
+    <xsl:variable name="url" select="substring-after(@xlink:href,'//')" />
+    <xsl:variable name="categoryID" select="$mir_licenses//category[url[contains(@xlink:href,$url)]]/@ID" />
+
       <xsl:choose>
         <xsl:when test="@xlink:href and (string-length($categoryID) &gt; 0)">
+        <mods:accessCondition type="use and reproduction">
           <xsl:attribute name="xlink:href">
             <xsl:value-of select="concat($mir_licenses_uri,'#',$categoryID)" />
           </xsl:attribute>
+        </mods:accessCondition>
         </xsl:when>
         <xsl:otherwise>
+        <mods:accessCondition type="use and reproduction">
           <xsl:value-of select="license-p" />
+        </mods:accessCondition>
         </xsl:otherwise>
       </xsl:choose>
-    </mods:accessCondition>
   </xsl:template>
 
   <!-- OA im Zuge einer National-/Allianz-Lizenz -->
   <xsl:template name="oa_nlz">
     <mods:accessCondition type="use and reproduction" xlink:href="{$mir_licenses_uri}#oa_nlz" />
   </xsl:template>
-  
+
 </xsl:stylesheet>
