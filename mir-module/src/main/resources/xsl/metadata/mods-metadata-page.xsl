@@ -17,7 +17,7 @@
 
 
   <xsl:variable name="translations"
-                select="document('i18n:mir.metaData.panel.heading.,component.mods.metaData.dictionary.categorybox,component.mods.metaData.dictionary.')"/>
+                select="document('i18n:mir.metaData.panel.heading.*,component.mods.metaData.dictionary.categorybox,component.mods.metaData.dictionary.*')"/>
 
   <xsl:template match="/site">
     <xsl:copy>
