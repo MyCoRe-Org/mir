@@ -84,8 +84,7 @@
             </li>
             <xsl:apply-templates select="." mode="creatorSubmittedAdd" />
             <xsl:choose>
-              <xsl:when
-                  test="normalize-space($MIR.Workflow.ReviewDerivateRequired) = 'true' and count(structure/derobject[string-length(@maindoc)&gt;0])=0">
+              <xsl:when test="normalize-space($MIR.Workflow.ReviewDerivateRequired) = 'true' and not(structure/derobjects/derobject/maindoc)">
                 <li>
                   <a href="#">
                     <xsl:attribute name="onclick">document.querySelector('[data-upload-object]').scrollIntoView({behavior: 'smooth', block: 'center', inline: 'nearest'}); return false;</xsl:attribute>
