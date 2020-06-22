@@ -12,12 +12,13 @@
   <xsl:param name="MIR.Layout.East.Col" select="'col-12 col-sm-4'"/>
 
   <xsl:param name="MIR.Layout.Display.Panel"/>
+  <xsl:param name="MIR.Layout.Display.Div"/>
 
   <xsl:param name="WebApplicationBaseURL"/>
 
 
   <xsl:variable name="translations"
-                select="document('i18n:mir.metaData.panel.heading.*,component.mods.metaData.dictionary.categorybox,component.mods.metaData.dictionary.*')"/>
+                select="document('i18n:mir.metaData.panel.heading.*,component.mods.metaData.dictionary.categorybox,component.mods.metaData.dictionary.*,metadata.versionInfo.label,button.cancel')"/>
 
   <xsl:template match="/site">
     <xsl:copy>
@@ -166,6 +167,11 @@
               <div class="card-body">
                 <xsl:copy-of select="$originalContent/div[@id=$boxID]/*"/>
               </div>
+            </div>
+          </xsl:when>
+          <xsl:when test="contains($MIR.Layout.Display.Div, $boxID)">
+            <div id="{concat($boxID, '-div')}">
+              <xsl:copy-of select="$originalContent/div[@id=$boxID]/*"/>
             </div>
           </xsl:when>
           <xsl:otherwise>
