@@ -3,13 +3,13 @@
                 version="3.0">
 
 
-  <xsl:param name="MIR.Layout.North"/>
-  <xsl:param name="MIR.Layout.East"/>
-  <xsl:param name="MIR.Layout.West"/>
-  <xsl:param name="MIR.Layout.South"/>
+  <xsl:param name="MIR.Layout.Top"/>
+  <xsl:param name="MIR.Layout.End"/>
+  <xsl:param name="MIR.Layout.Start"/>
+  <xsl:param name="MIR.Layout.Bottom"/>
 
-  <xsl:param name="MIR.Layout.West.Col" select="'col-12 col-sm-8'"/>
-  <xsl:param name="MIR.Layout.East.Col" select="'col-12 col-sm-4'"/>
+  <xsl:param name="MIR.Layout.Start.Col" select="'col-12 col-sm-8'"/>
+  <xsl:param name="MIR.Layout.End.Col" select="'col-12 col-sm-4'"/>
 
   <xsl:param name="MIR.Layout.Display.Panel"/>
   <xsl:param name="MIR.Layout.Display.Div"/>
@@ -33,26 +33,26 @@
       <div class="row top">
         <div class="col-12 north">
           <xsl:call-template name="displayDirection">
-            <xsl:with-param name="properties" select="$MIR.Layout.North"/>
+            <xsl:with-param name="properties" select="$MIR.Layout.Top"/>
           </xsl:call-template>
         </div>
       </div>
       <div class="row middle detail_row">
-        <div class="{$MIR.Layout.West.Col} main_col west">
+        <div class="{$MIR.Layout.Start.Col} main_col west">
           <xsl:call-template name="displayDirection">
-            <xsl:with-param name="properties" select="$MIR.Layout.West"/>
+            <xsl:with-param name="properties" select="$MIR.Layout.Start"/>
           </xsl:call-template>
         </div>
-        <div class="{$MIR.Layout.East.Col} east">
+        <div class="{$MIR.Layout.End.Col} east">
           <xsl:call-template name="displayDirection">
-            <xsl:with-param name="properties" select="$MIR.Layout.East"/>
+            <xsl:with-param name="properties" select="$MIR.Layout.End"/>
           </xsl:call-template>
         </div>
       </div>
       <div class="row bottom">
         <div class="col-12 south">
           <xsl:call-template name="displayDirection">
-            <xsl:with-param name="properties" select="$MIR.Layout.South"/>
+            <xsl:with-param name="properties" select="$MIR.Layout.Bottom"/>
           </xsl:call-template>
         </div>
       </div>
@@ -154,6 +154,11 @@
                 <script type="text/javascript" src="{$WebApplicationBaseURL}assets/openlayers/ol.js"/>
                 <script type="text/javascript" src="{$WebApplicationBaseURL}js/mir/geo-coords.min.js"></script>
               </xsl:if>
+            </div>
+          </xsl:when>
+          <xsl:when test="$boxID='mir-abstract-plus'">
+            <div class="detail_block">
+              <xsl:copy-of select="$originalContent/div[@id=$boxID]/*"/>
             </div>
           </xsl:when>
           <xsl:when test="contains($MIR.Layout.Display.Panel, $boxID)">
