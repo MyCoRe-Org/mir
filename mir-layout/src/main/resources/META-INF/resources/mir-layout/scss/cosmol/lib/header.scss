@@ -1,57 +1,38 @@
-header {
-    .container {
-        background-color: white;
-        .row {
-            position: relative;
-            #header_back {
-                position: relative;
-                width: 100%;
-                height: auto;
-                background-image: url('../../../../mir-layout/images/cosmol/header.jpg');
-                background-repeat: no-repeat;
-                background-size: cover;
-                background-position: top left;
+/*  base settings
+ *  - for this theme only
+ */
 
-                #header_ratio {
-                  width: 100%;
-                }
-            }
-            #header_top {
-                position: absolute;
-                top: 15%;
-                left: 5%;
-                width: 25%;
-                background-image: url('../../../../mir-layout/images/cosmol/logo.png');
-                background-repeat: no-repeat;
-                background-size: cover;
-                background-position: top left;
-                color: transparent;
-                font-size: 0;
-                line-height: 0;
+// Extra large devices (large desktops)
+// set the defaults for all responsive levels here
+// no (xl) media query necessary (desktop first)
 
-                #logo_ratio {
-                  width: 100%;
-                }
-            }
-        }
-    }
+  header {
+    background-color: $primary;
+  }
+  #logo_modul {
+    color: white;
+  }
+  #logo_mir,
+  #logo_slogan {
+    color: #ccc;
+  }
+
+// Large devices (desktops) and below: <= 1200px
+@include media-breakpoint-down(lg) {
+  // add/overwrite styles for responsive level lg and lower
 }
 
-@media (min-width: $screen-tablet) {
-  header {
-    margin-top: 20px;
-    #head,
-    .container {
-      border-top-left-radius: 10px;
-      border-top-right-radius: 10px;
-      .row {
-        border-top-left-radius: 10px;
-        border-top-right-radius: 10px;
-        #header_back {
-          border-top-left-radius: 10px;
-          border-top-right-radius: 10px;
-        }
-      }
-    }
-  }
+// Medium devices (tablets) and below: <= 992px
+@include media-breakpoint-down(md) {
+  // add/overwrite styles for responsive level md and lower
+}
+
+// Small devices (landscape phones) and below: <= 768px
+@include media-breakpoint-down(sm) {
+  // add/overwrite styles for responsive level sm and lower
+}
+
+// Extra small devices (portrait phones): <= 576px
+@include media-breakpoint-down(xs) {
+  // add/overwrite styles for responsive level xs
 }

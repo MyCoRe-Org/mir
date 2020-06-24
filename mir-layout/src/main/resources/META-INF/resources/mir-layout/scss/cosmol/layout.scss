@@ -1,4 +1,4 @@
-// default layout
+//flatmir layout
 @import "../common/base";
 @import "../common/datatable";
 @import "../common/fileupload";
@@ -20,15 +20,9 @@
 @import "../common/user-login";
 @import "../common/responsive";
 
-// cosmol overrides
+@import "../common/bootstrap4fix";
 
+// cosmol overrides
 @import "lib/base";
-@import "lib/helper";
 @import "lib/header";
-@import "lib/footer";
-@import "lib/top-nav";
-@import "lib/side-nav";
-@import "lib/forms";
-@import "lib/basket";
-@import "lib/pagination";
-@import "lib/panels";
+@import "lib/main_nav";

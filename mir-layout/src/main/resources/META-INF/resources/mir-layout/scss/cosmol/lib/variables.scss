@@ -1,2 +1,16 @@
+//
+// theme variables
+// - overwrite existing bootstarp or bootwatch variables
+//   or create variables used in this theme only
+// --------------------------------------------------
+
 $brand-primary:      #15516e;
 $brand-warning:      #FF9900;
+
+// side nav settings
+$side-nav-back:       #ecf0f1;
+$side-nav-border:     #dcddde;
+$side-nav-link-color: #42526E;
+
+$side-nav-toggle-back: white;
+$side-nav-toggle-color-hover: white;

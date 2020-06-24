@@ -2,36 +2,35 @@
   <!-- ============================================== -->
   <!-- $Revision$ $Date$ -->
   <!-- ============================================== -->
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xlink="http://www.w3.org/1999/xlink"
-  xmlns:basket="xalan://org.mycore.frontend.basket.MCRBasketManager" xmlns:mcr="http://www.mycore.org/" xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
-  xmlns:actionmapping="xalan://org.mycore.wfc.actionmapping.MCRURLRetriever"
-  xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions" exclude-result-prefixes="xlink basket actionmapping mcr mcrxsl i18n">
-  <xsl:output method="html" doctype-system="about:legacy-compat" indent="yes" omit-xml-declaration="yes" media-type="text/html"
+<xsl:stylesheet version="1.0"
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
+  exclude-result-prefixes="xlink i18n">
+
+  <xsl:output method="html" indent="yes" omit-xml-declaration="yes" media-type="text/html"
     version="5" />
   <xsl:strip-space elements="*" />
   <xsl:include href="resource:xsl/mir-cosmol-layout-utils.xsl"/>
-  <xsl:param name="MIR.DefaultLayout.CSS" select="'cosmo.min'" />
+  <xsl:param name="MIR.DefaultLayout.CSS" select="'cosmo'" />
   <xsl:param name="MIR.CustomLayout.CSS" select="''" />
   <xsl:param name="MIR.CustomLayout.JS" select="''" />
   <xsl:param name="MIR.Layout.Theme" select="'cosmol'" />
-  <xsl:param name="MCR.NameOfProject" select="'MIR'" />
 
   <xsl:variable name="PageTitle" select="/*/@title" />
 
   <xsl:template match="/site">
+    <xsl:text disable-output-escaping='yes'>&lt;!DOCTYPE html&gt;</xsl:text>
     <html lang="{$CurrentLang}" class="no-js">
       <head>
-        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
         <title>
           <xsl:value-of select="$PageTitle" />
         </title>
-        <xsl:comment>
-          Mobile viewport optimization
-        </xsl:comment>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link href="{$WebApplicationBaseURL}assets/font-awesome/css/all.min.css" rel="stylesheet" />
-        <script type="text/javascript" src="{$WebApplicationBaseURL}mir-layout/assets/jquery/jquery.min.js"></script>
-        <script type="text/javascript" src="{$WebApplicationBaseURL}mir-layout/assets/jquery/plugins/jquery-migrate/jquery-migrate.min.js"></script>
+        <script src="{$WebApplicationBaseURL}mir-layout/assets/jquery/jquery.min.js"></script>
+        <script src="{$WebApplicationBaseURL}mir-layout/assets/jquery/plugins/jquery-migrate/jquery-migrate.min.js"></script>
         <xsl:copy-of select="head/*" />
         <link href="{$WebApplicationBaseURL}rsc/sass/mir-layout/scss/{$MIR.Layout.Theme}-{$MIR.DefaultLayout.CSS}.css" rel="stylesheet" />
         <script type="text/javascript" src ="{$WebApplicationBaseURL}mir-layout/js/cosmol.js"></script>
@@ -39,89 +38,92 @@
           <link href="{$WebApplicationBaseURL}css/{$MIR.CustomLayout.CSS}" rel="stylesheet" />
         </xsl:if>
         <xsl:if test="string-length($MIR.CustomLayout.JS) &gt; 0">
-          <script type="text/javascript" src="{$WebApplicationBaseURL}js/{$MIR.CustomLayout.JS}"></script>
+          <script src="{$WebApplicationBaseURL}js/{$MIR.CustomLayout.JS}"></script>
         </xsl:if>
         <xsl:call-template name="mir.prop4js" />
       </head>
 
       <body>
+        <xsl:if test="//div/@class='jumbotwo'">
+          <xsl:attribute name="class">
+            <xsl:text>mir-start_page</xsl:text>
+          </xsl:attribute>
+        </xsl:if>
 
         <header>
           <xsl:call-template name="mir.header" />
+          <noscript>
+            <div class="mir-no-script alert alert-warning text-center" style="border-radius: 0;">
+              <xsl:value-of select="i18n:translate('mir.noScript.text')" />&#160;
+              <a href="http://www.enable-javascript.com/de/" target="_blank">
+                <xsl:value-of select="i18n:translate('mir.noScript.link')" />
+              </a>
+              .
+            </div>
+          </noscript>
         </header>
 
-        <div class="container" id="page">
-          <div class="row" id="main_content">
+        <section>
+          <div class="container" id="page">
+            <div id="main_content" class="row">
 
-            <div id="side_nav_column" class="d-xs-none col-sm-3">
-              <xsl:call-template name="mir.navigation" />
-            </div>
-
-            <div id="main_content_column" class="col-12 col-sm-9">
-
-              <div class="button_box">
-                <button id="hide_side_button"
-                        class="navbar-toggle"
-                        type="button">
-                  <span class="sr-only"> Hide side nav </span>
-                  <span id="close-icon" class="fas fa-chevron-left"> </span>
-                  <div id="menu-icon" class="">
-                    <span class="icon-bar"> </span>
-                    <span class="icon-bar"> </span>
-                    <span class="icon-bar"> </span>
-                  </div>
-                </button>
-                <xsl:call-template name="mir.top-navigation" />
+              <div id="side_nav_column" class="d-xs-none col-sm-3">
+                <xsl:call-template name="mir.navigation" />
               </div>
 
-              <div class="row detail_row bread_plus">
-                <div class="col-12">
-                  <ul itemprop="breadcrumb" class="breadcrumb">
-                    <li class="breadcrumb-item">
-                      <a class="navtrail" href="{$WebApplicationBaseURL}"><xsl:value-of select="i18n:translate('mir.breadcrumb.home')" /></a>
-                    </li>
-                    <xsl:choose>
-                      <xsl:when test="string-length($breadCrumb)>0">
-                        <xsl:copy-of select="$breadCrumb" />
-                      </xsl:when>
-                      <xsl:when test="breadcrumb/ul[@class='breadcrumb']">
-                        <xsl:copy-of select="breadcrumb/ul[@class='breadcrumb']/*" />
-                      </xsl:when>
-                      <xsl:otherwise>
-                        <xsl:call-template name="mir.breadcrumb" />
-                      </xsl:otherwise>
-                  </xsl:choose>
-                  </ul>
+              <div id="main_content_column" class="col-12 col-sm-9">
+
+                <div class="button_box">
+                  <button
+                    class="btn btn-sm mir-navbar-toggle"
+                    type="button"
+                    aria-controls="side_nav_column"
+                    aria-expanded="false"
+                    aria-label="Toggle navigation">
+                    <i class="fas fa-bars mir-menu-icon"></i>
+                  </button>
                 </div>
+
+                <xsl:call-template name="print.writeProtectionMessage" />
+                <xsl:call-template name="print.statusMessage" />
+                <xsl:choose>
+                  <xsl:when test="$readAccess='true'">
+                    <xsl:if test="breadcrumb/ul[@class='breadcrumb']">
+                      <div class="row detail_row bread_plus">
+                        <div class="col-12">
+                          <ul itemprop="breadcrumb" class="breadcrumb">
+                            <li class="breadcrumb-item">
+                              <a class="navtrail" href="{$WebApplicationBaseURL}"><xsl:value-of select="i18n:translate('mir.breadcrumb.home')" /></a>
+                            </li>
+                            <xsl:copy-of select="breadcrumb/ul[@class='breadcrumb']/*" />
+                          </ul>
+                        </div>
+                      </div>
+                    </xsl:if>
+                    <xsl:call-template name="mir.jumbotwo" />
+                    <xsl:copy-of select="*[not(name()='head')][not(name()='breadcrumb')] " />
+                  </xsl:when>
+                  <xsl:otherwise>
+                    <xsl:call-template name="printNotLoggedIn" />
+                  </xsl:otherwise>
+                </xsl:choose>
               </div>
-
-              <xsl:call-template name="print.writeProtectionMessage" />
-              <xsl:call-template name="print.statusMessage" />
-
-              <xsl:choose>
-                <xsl:when test="$readAccess='true'">
-                  <xsl:copy-of select="*[not(name()='head')][not(name()='breadcrumb')] " />
-                </xsl:when>
-                <xsl:otherwise>
-                  <xsl:call-template name="printNotLoggedIn" />
-                </xsl:otherwise>
-              </xsl:choose>
-
             </div>
           </div>
-        </div>
+        </section>
 
-        <footer>
+        <footer class="flatmir-footer">
           <xsl:call-template name="mir.footer" />
+          <xsl:call-template name="mir.powered_by" />
         </footer>
 
-        <script type="text/javascript">
+        <script>
           <!-- Bootstrap & Query-Ui button conflict workaround  -->
           if (jQuery.fn.button){jQuery.fn.btn = jQuery.fn.button.noConflict();}
         </script>
-        <script type="text/javascript" src="{$WebApplicationBaseURL}assets/bootstrap/js/bootstrap.min.js"></script>
-        <script type="text/javascript" src="{$WebApplicationBaseURL}assets/jquery/plugins/jquery-confirm/jquery.confirm.min.js"></script>
-        <script type="text/javascript" src="{$WebApplicationBaseURL}js/mir/base.min.js"></script>
+        <script src="{$WebApplicationBaseURL}assets/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <script src="{$WebApplicationBaseURL}assets/jquery/plugins/jquery-confirm/jquery.confirm.min.js"></script>
+        <script src="{$WebApplicationBaseURL}js/mir/base.min.js"></script>
         <script>
           $( document ).ready(function() {
             $('.overtext').tooltip();
