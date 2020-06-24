@@ -3,10 +3,10 @@
   <!-- $Revision$ $Date$ -->
   <!-- ============================================== -->
 <xsl:stylesheet version="1.0"
-    xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-    xmlns:xlink="http://www.w3.org/1999/xlink"
-    xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
-    exclude-result-prefixes="xlink i18n">
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
+  exclude-result-prefixes="xlink i18n">
 
   <xsl:output method="html" indent="yes" omit-xml-declaration="yes" media-type="text/html"
     version="5" />
