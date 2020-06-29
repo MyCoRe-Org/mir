@@ -1,5 +1,7 @@
 //
-// Variables
+// theme variables
+// - overwrite existing bootstarp or bootwatch variables
+//   or create variables used in this theme only
 // --------------------------------------------------
 
 $h1-font-size:                2.25rem !default;
@@ -28,22 +30,3 @@ $navbar-inverse-bg:                         $brand-warning;
 $navbar-inverse-link-hover-bg:              $brand-warning;
 // default
 $navbar-default-link-hover-color:           $brand-warning;
-
-// Pagination
-// -------------------------
-/*
-@pagination-bg:                             @brand-primary;
-@pagination-active-bg:                      darken(@brand-primary, 15%);
-@pagination-hover-bg:                       lighten(@brand-primary, 15%);
-@pagination-disabled-color:                 @gray;
-*/
-
-// Pager
-// -------------------------
-//gray-base:              #000 !default;
-//$gray:                   lighten($gray-base, 33.5%) !default; // #555
-//$pager-disabled-color:                      $gray;
-
-// Forms
-// -------------------------
-//$input-border-focus:                        $brand-primary;

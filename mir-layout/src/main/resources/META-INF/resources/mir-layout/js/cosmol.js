@@ -15,7 +15,7 @@ $( document ).ready(function() {
   });
 
   // side nav toggle button
-  $('#hide_side_button').click(function(){
+  $('.mir-navbar-toggle').click(function(){
     toggleSideNav();
   });
 });
@@ -87,24 +87,19 @@ var browsing = $('#mir-search_browsing > div');            // browse through the
 function adjustMenuButton() {
     if ( $('#side_nav_column').is(":visible") ) {
       // site nav is visible now
-      // hide menu button
-      $('#hide_side_button #menu-icon').hide();
-    // show close button
-      $('#hide_side_button #close-icon').show();
-      // adjust icon to viewport
+      // change icon from right to left / down to up on mobile view
+      $('.mir-navbar-toggle .mir-menu-icon').removeClass('fa-bars');
       if ( $( document ).width() <= 750 ) {
-        // hide top
-        $('#hide_side_button #close-icon').removeClass('fa-chevron-left').addClass('fa-chevron-up');
+        $('.mir-navbar-toggle .mir-menu-icon').addClass('fa-chevron-up');
       } else {
-        // hide side
-        $('#hide_side_button #close-icon').removeClass('fa-chevron-up').addClass('fa-chevron-left');
+        $('.mir-navbar-toggle .mir-menu-icon').addClass('fa-chevron-left');
       }
     } else {
       // site nav is hidden now
-      // show menu button
-      $('#hide_side_button #menu-icon').show();
-      // hide close button
-      $('#hide_side_button #close-icon').hide();
+      // change icon from left to right / up to down on mobile view
+      $('.mir-navbar-toggle .mir-menu-icon').removeClass('fa-chevron-left');
+      $('.mir-navbar-toggle .mir-menu-icon').removeClass('fa-chevron-up');
+      $('.mir-navbar-toggle .mir-menu-icon').addClass('fa-bars');
     }
 }
 

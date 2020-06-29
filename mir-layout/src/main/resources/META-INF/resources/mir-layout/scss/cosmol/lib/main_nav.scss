@@ -1,0 +1,77 @@
+/*  navgation settings
+ *  - navigation elements for this theme only
+ */
+
+// Extra large devices (large desktops)
+// set the defaults for all responsive levels here
+// no (xl) media query necessary (desktop first)
+
+  .mir-side-nav {
+    background-color: $side-nav-back;
+    border-radius: $border-radius;
+  }
+  .button_box {
+    position: absolute;
+    left: -32px;
+    top: 10px;
+    z-index: 2000;
+    &:before {
+      content: "";
+      width: 2px;
+      height: 130px;
+      background-color: $side-nav-border;
+      position: absolute;
+      top: -5px;
+      left: 14px;
+      z-index: 1900;
+    }
+  }
+  .navbar {
+    padding: 3rem 1rem;
+  }
+  .mir-navbar-toggle {
+    background-color: $side-nav-toggle-back;
+    border-radius: 50%;
+    border: 1px solid $side-nav-border;
+    width: 30px;
+    height: 30px;
+    position: relative;
+    z-index: 2100;
+    i {
+      line-height: 100%;
+      margin: auto auto;
+    }
+    &:hover {
+      color: $side-nav-toggle-color-hover;
+      background-color: $primary;
+      border-color: transparent;
+    }
+  }
+  .navbar-nav {
+    .nav-link {
+      color: $side-nav-link-color;
+      font-size: 1rem;
+      padding-left: 15px;
+    }
+  }
+
+
+// Large devices (desktops) and below: <= 1200px
+@include media-breakpoint-down(lg) {
+  // add/overwrite styles for responsive level lg and lower
+}
+
+// Medium devices (tablets) and below: <= 992px
+@include media-breakpoint-down(md) {
+  // add/overwrite styles for responsive level md and lower
+}
+
+// Small devices (landscape phones) and below: <= 768px
+@include media-breakpoint-down(sm) {
+  // add/overwrite styles for responsive level sm and lower
+}
+
+// Extra small devices (portrait phones): <= 576px
+@include media-breakpoint-down(xs) {
+  // add/overwrite styles for responsive level xs
+}

@@ -412,7 +412,8 @@
     if ($("#mir-abstract-tabs, #mir-abstract").length > 0) {
       $(".ellipsis").each(function( i ) {
           $(this).addClass("hidden-calc");
-          if($(this)[0].scrollHeight > $(this).innerHeight()) {
+          console.log( $(this)[0].scrollHeight + '>' + Math.ceil($(this).innerHeight()) );
+          if( $(this)[0].scrollHeight > Math.ceil($(this).innerHeight()) ) {
               $(this).addClass("overflown");
               $(this).css("overflow-y", "hidden");
               $("#mir-abstract-overlay").find(".readmore").removeClass("d-none");

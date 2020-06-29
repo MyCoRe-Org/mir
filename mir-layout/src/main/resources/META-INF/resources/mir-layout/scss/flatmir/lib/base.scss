@@ -1,79 +1,17 @@
-/* base
- * - basic (means nothing special) settings of the webpage
+/*  base settings
+ *  - for this theme only
  */
-html {
-  body {
-    header {
-      #header_box {
-        margin: 20px auto 20px auto;
 
-        #project_logo_box {
-          float: left;
-
-          a {
-            font-size: 18px;
-
-            &:hover,
-            &:focus {
-              text-decoration: none;
-              outline: none;
-            }
-
-            #logo_mir,
-            #logo_slogan {
-              color: $primary;
-            }
-
-            #logo_modul {
-              color: #ccc;
-              letter-spacing: 0.4em;
-              padding-left: 12px
-            }
-          }
-        }
-      }
-    }
-
-    footer {
-      .internal_links {
-        list-style: none;
-        margin: 0;
-        padding: 0;
-      }
-      .social_links {
-        list-style: none;
-        margin: 0;
-        padding: 0;
-
-        li {
-          margin: 0;
-          padding: 0 0 2px 0;
-
-          .social_icons {
-              color: transparent;
-              background-color:transparent;
-              background-image: url(../../../../mir-layout/images/social_icons_flat_372x200.png);
-              background-repeat: no-repeat;
-              width: 22px;
-              height: 22px;
-              vertical-align:top;
-              border:none;
-              margin-right: 2px;
-              &.social_icon_fb {
-                background-position: -64px -120px;
-              }
-              &.social_icon_tw {
-                background-position: -191px -120px;
-              }
-              &.social_icon_gg {
-                background-position: -95px -120px;
-              }
-          }
-        }
-      }
-    }
+// Extra large devices (large desktops)
+// set the defaults for all responsive levels here
+// no (xl) media query necessary (desktop first)
+  #logo_modul {
+    color: #ccc;
   }
-
+  #logo_mir,
+  #logo_slogan {
+    color: $primary;
+  }
   .mir-start_page .jumbotron {
     border-radius: unset;
     color: #eee;
@@ -94,7 +32,23 @@ html {
       font-size: 100%;
     }
   }
+
+// Large devices (desktops) and below: <= 1200px
+@include media-breakpoint-down(lg) {
+  // add/overwrite styles for responsive level lg and lower
 }
 
+// Medium devices (tablets) and below: <= 992px
+@include media-breakpoint-down(md) {
+  // add/overwrite styles for responsive level md and lower
+}
 
+// Small devices (landscape phones) and below: <= 768px
+@include media-breakpoint-down(sm) {
+  // add/overwrite styles for responsive level sm and lower
+}
 
+// Extra small devices (portrait phones): <= 576px
+@include media-breakpoint-down(xs) {
+  // add/overwrite styles for responsive level xs
+}

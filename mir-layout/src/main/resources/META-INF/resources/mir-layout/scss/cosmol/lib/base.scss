@@ -1,51 +1,27 @@
-/*
- * main structure
+/*  base settings
+ *  - for this theme only
  */
 
-body {
+// Extra large devices (large desktops)
+// set the defaults for all responsive levels here
+// no (xl) media query necessary (desktop first)
 
-  $colorOne:     #ffffff;
-  $colorTwo:     #c5d3e0;
-  $widthOne:        0%;
-  $widthTwo:      100%;
-  $angle: 180deg;
-  //background-color: #c5d3e0;
-  background-image: -webkit-linear-gradient( $angle, $colorOne $widthOne, $colorTwo $widthTwo);  /* For Safari 5.1 to 6.0 */
-  background-image:    -moz-linear-gradient( $angle, $colorOne $widthOne, $colorTwo $widthTwo);  /* For Opera 11.1 to 12.0 */
-  background-image:      -o-linear-gradient( $angle, $colorOne $widthOne, $colorTwo $widthTwo);  /* For Firefox 3.6 to 15 */
-  background-image:         linear-gradient( $angle, $colorOne $widthOne, $colorTwo $widthTwo);
-
-  #page {
-    padding-bottom: 60px;
-    padding-top: 0px;
-    background-color: white;
-
-    #main_content {
-      background-color: white;
-    }
-
-  } // end: #page
-} // end: body
-
-
-/*
- * overwrites for cosmol
- */
-
-.nav-tabs > li.active > a,
-.nav-tabs > li.active > a:hover,
-.nav-tabs > li.active > a:focus {
-  border-radius: 5px 5px 0px 0px;
+// Large devices (desktops) and below: <= 1200px
+@include media-breakpoint-down(lg) {
+  // add/overwrite styles for responsive level lg and lower
 }
 
-.label {
-  border-radius: 5px;
+// Medium devices (tablets) and below: <= 992px
+@include media-breakpoint-down(md) {
+  // add/overwrite styles for responsive level md and lower
 }
 
-.breadcrumb {
-    padding: 0px 0px;
-    margin-bottom: 40px;
-    list-style: outside none none;
-    background-color: transparent;
-    border-radius: 0px;
+// Small devices (landscape phones) and below: <= 768px
+@include media-breakpoint-down(sm) {
+  // add/overwrite styles for responsive level sm and lower
+}
+
+// Extra small devices (portrait phones): <= 576px
+@include media-breakpoint-down(xs) {
+  // add/overwrite styles for responsive level xs
 }
