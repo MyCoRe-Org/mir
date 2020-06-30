@@ -23,7 +23,8 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.protocol.HTTP;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.mycore.common.config.MCRConfiguration2;
 import org.mycore.frontend.servlets.MCRServlet;
 import org.mycore.frontend.servlets.MCRServletJob;
@@ -35,7 +36,7 @@ import org.xml.sax.SAXException;
 
 public class MIRSherpaServlet extends MCRServlet {
 
-    static final Logger LOGGER = Logger.getLogger(MIRSherpaServlet.class);
+    static final Logger LOGGER = LogManager.getLogger();
 
     private static final long serialVersionUID = 1L;
 

@@ -30,7 +30,8 @@ import java.util.StringTokenizer;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.output.XMLOutputter;
@@ -49,7 +50,7 @@ public class MIRWizardServlet extends MCRServlet {
 
     private static final long serialVersionUID = 1L;
 
-    private static final Logger LOGGER = Logger.getLogger(MIRWizardServlet.class);
+    private static final Logger LOGGER = LogManager.getLogger();
 
     @SuppressWarnings("PMD.DoNotCallSystemExit")
     public void doGetPost(final MCRServletJob job) throws Exception {

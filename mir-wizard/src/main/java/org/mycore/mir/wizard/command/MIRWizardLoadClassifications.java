@@ -99,7 +99,8 @@ public class MIRWizardLoadClassifications extends MIRWizardCommand {
                 } catch (MCRException ex) {
                     result += MCRTranslation.translate("component.mir.wizard.loadClassification.error", classifURL)
                         .concat("\n");
-
+                    LOGGER.error(MCRTranslation.translate("component.mir.wizard.loadClassification.error", classifURL),
+                        ex);
                     this.result.setResult(result);
                     this.result.setSuccess(false);
                     return;

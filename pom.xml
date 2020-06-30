@@ -39,7 +39,6 @@
     <changelog.since>2020-06-10</changelog.since>
     <!-- until snapshot matches released version (required for 'mvn changes:changes-check') -->
     <changes.version>2020.06.0</changes.version>
-    <forbiddenapis.version>1.7</forbiddenapis.version>
     <hibernate.version>5.4.4.Final</hibernate.version>
     <java.target.version>11</java.target.version>
     <jetty.version>9.4.24.v20191120</jetty.version>

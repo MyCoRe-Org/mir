@@ -28,7 +28,8 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.mycore.common.MCRMailer;
@@ -52,7 +53,7 @@ public class MirSelfRegistrationServlet extends MCRServlet {
 
     private static final long serialVersionUID = -7105234919911900795L;
 
-    private static final Logger LOGGER = Logger.getLogger(MirSelfRegistrationServlet.class);
+    private static final Logger LOGGER = LogManager.getLogger();
 
     private static final String I18N_ERROR_PREFIX = "selfRegistration.error";
 

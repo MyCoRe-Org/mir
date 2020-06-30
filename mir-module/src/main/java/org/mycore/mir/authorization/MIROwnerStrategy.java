@@ -29,7 +29,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.mycore.access.strategies.MCRAccessCheckStrategy;
 import org.mycore.access.strategies.MCRObjectTypeStrategy;
 import org.mycore.common.MCRSessionMgr;
@@ -50,7 +51,7 @@ import com.google.common.cache.LoadingCache;
  */
 public class MIROwnerStrategy implements MCRAccessCheckStrategy {
 
-    private static final Logger LOGGER = Logger.getLogger(MIROwnerStrategy.class);
+    private static final Logger LOGGER = LogManager.getLogger();
 
     private static final String CONFIG_PREFIX = "MIR.OwnerStrategy.";
 

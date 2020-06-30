@@ -16,14 +16,15 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.mycore.frontend.MCRFrontendUtil;
 
 public class MIRGetOpenAIREProjectsServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
 
-    private static Logger LOGGER = Logger.getLogger(MIRGetOpenAIREProjectsServlet.class);
+    private static Logger LOGGER = LogManager.getLogger();
 
     private CloseableHttpClient client;
 
@@ -39,8 +40,8 @@ public class MIRGetOpenAIREProjectsServlet extends HttpServlet {
         throws ServletException, IOException {
         String name = MCRFrontendUtil.getProperty(request, "name").orElse(null);
         String acronym = MCRFrontendUtil.getProperty(request, "acronym").orElse(null);
-        String suffix = name != null && !name.isEmpty() ? "name=" + URLEncoder.encode(name, "UTF-8") : "acronym="
-            + URLEncoder.encode(acronym, "UTF-8");
+        String suffix = name != null && !name.isEmpty() ? "name=" + URLEncoder.encode(name, "UTF-8")
+            : "acronym=" + URLEncoder.encode(acronym, "UTF-8");
         String urlString = "http://api.openaire.eu/search/projects?" + suffix;
 
         HttpGet method = new HttpGet(urlString);
