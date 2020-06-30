@@ -13,7 +13,7 @@
   .button_box {
     position: absolute;
     left: -32px;
-    top: 10px;
+    top: 16px;
     z-index: 2000;
     &:before {
       content: "";
@@ -21,13 +21,13 @@
       height: 130px;
       background-color: $side-nav-border;
       position: absolute;
-      top: -5px;
+      top: -10px;
       left: 14px;
       z-index: 1900;
     }
   }
   .navbar {
-    padding: 3rem 1rem;
+    padding: 4rem 1rem 2rem 1rem;
   }
   .mir-navbar-toggle {
     background-color: $side-nav-toggle-back;
@@ -59,11 +59,40 @@
 // Large devices (desktops) and below: <= 1200px
 @include media-breakpoint-down(lg) {
   // add/overwrite styles for responsive level lg and lower
+  .navbar {
+    padding: 4rem 0.5rem 2rem 0.5rem;
+  }
 }
 
 // Medium devices (tablets) and below: <= 992px
 @include media-breakpoint-down(md) {
   // add/overwrite styles for responsive level md and lower
+  #page {
+    padding-top: 60px;
+  }
+  .navbar {
+    padding: 1rem 1rem 2rem 1rem;
+  }
+  #side_nav_column {
+    display: none;
+    margin-bottom: 1.8rem;
+  }
+  .button_box {
+    left: 32px;
+    top: -42px;
+    &:before {
+      content: "";
+      width: 130px;
+      height: 2px;
+      top: 10px;
+      left: -10px;
+      z-index: 1900;
+    }
+  }
+  .mir-main-nav-entries,
+  .searchfield_box > .input-group {
+    width: 100%;
+  }
 }
 
 // Small devices (landscape phones) and below: <= 768px
@@ -74,4 +103,10 @@
 // Extra small devices (portrait phones): <= 576px
 @include media-breakpoint-down(xs) {
   // add/overwrite styles for responsive level xs
+  .searchfield_box .input-group {
+    width: auto !important;
+  }
+  .searchfield_box > .input-group {
+    width: 100% !important;
+  }
 }
