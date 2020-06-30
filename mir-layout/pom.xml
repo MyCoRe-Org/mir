@@ -4,13 +4,13 @@
   <parent>
     <groupId>org.mycore.mir</groupId>
     <artifactId>mir-parent</artifactId>
-    <version>2019.06.4-SNAPSHOT</version>
+    <version>2019.06.4</version>
   </parent>
   <artifactId>mir-layout</artifactId>
   <name>MIR: Layout</name>
   <description>mir layout template based on bootswatch</description>
   <scm>
-    <tag>2019.06.x</tag>
+    <tag>v2019.06.4</tag>
   </scm>
   <properties>
     <grunt.projectBase>${project.build.directory}/grunt</grunt.projectBase>

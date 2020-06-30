@@ -4,13 +4,13 @@
   <parent>
     <groupId>org.mycore.mir</groupId>
     <artifactId>mir-parent</artifactId>
-    <version>2019.06.4-SNAPSHOT</version>
+    <version>2019.06.4</version>
   </parent>
   <artifactId>mir-module</artifactId>
   <name>MIR: Application Module</name>
   <description>Contains all files and classes for a Institutional Repository</description>
   <scm>
-    <tag>2019.06.x</tag>
+    <tag>v2019.06.4</tag>
   </scm>
   <properties>
     <grunt.projectBase>${basedir}</grunt.projectBase>
