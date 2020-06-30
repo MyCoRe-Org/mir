@@ -44,7 +44,7 @@
     <hibernate.version>5.4.4.Final</hibernate.version>
     <java.target.version>11</java.target.version>
     <jetty.version>9.4.20.v20190813</jetty.version>
-    <mycore.version>2019.06.4-SNAPSHOT</mycore.version>
+    <mycore.version>2019.06.4</mycore.version>
     <pmd.failOnViolation>false</pmd.failOnViolation>
     <selenium.version>3.14.0</selenium.version>
     <site.suffix />
