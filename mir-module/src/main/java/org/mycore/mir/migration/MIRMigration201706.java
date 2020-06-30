@@ -23,7 +23,7 @@ import org.mycore.mods.MCRMODSWrapper;
 
 @MCRCommandGroup(
     name = "MIR migration 2017.06")
-public class MIRMigration2017_06 {
+public class MIRMigration201706 {
 
     private static final Logger LOGGER = LogManager.getLogger();
 
@@ -75,7 +75,7 @@ public class MIRMigration2017_06 {
         syntax = "migrate old coordinates to new",
         help = "migrates all objects with coordinates(point) to new coordinates(point and polygon).")
     public static List<String> updateNameIdentifier() {
-        URL styleFile = MIRMigration2017_06.class.getResource("/xsl/mycoreobject-migrate-coordinates.xsl");
+        URL styleFile = MIRMigration201706.class.getResource("/xsl/mycoreobject-migrate-coordinates.xsl");
         if (styleFile == null) {
             LOGGER.error("Could not find migration stylesheet. File a bug!");
             return null;

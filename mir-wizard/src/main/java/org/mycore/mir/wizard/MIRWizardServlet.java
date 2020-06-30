@@ -143,8 +143,9 @@ public class MIRWizardServlet extends MCRServlet {
             LOGGER.info("done.");
 
             for (MIRWizardCommand cmd : chain.getCommands()) {
-                if (cmd.getResult() != null)
+                if (cmd.getResult() != null) {
                     results.addContent(cmd.getResult().toElement());
+                }
             }
 
             results.setAttribute("success", Boolean.toString(chain.isSuccess()));

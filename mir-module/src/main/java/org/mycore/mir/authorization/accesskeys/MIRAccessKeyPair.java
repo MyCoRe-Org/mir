@@ -76,35 +76,38 @@ public class MIRAccessKeyPair implements Serializable {
 
     private String writeKey;
 
-    protected static MIRAccessKeyPair fromServiceFlags(final MCRObjectID mcrObjectId, final ServiceFlags servFlags) {
-        final MIRAccessKeyPair accKP = new MIRAccessKeyPair();
-        accKP.setMCRObjectId(mcrObjectId);
-
-        for (ServiceFlag flag : servFlags.flags) {
-            if (flag.type == ServiceFlagType.READ)
-                accKP.setReadKey(flag.key);
-            if (flag.type == ServiceFlagType.WRITE)
-                accKP.setWriteKey(flag.key);
-        }
-
-        return accKP.getReadKey() != null && accKP.getWriteKey() != null ? accKP : null;
-    }
-
     private MIRAccessKeyPair() {
 
     }
 
     /**
      * Creates a new access key pair for the given {@link MCRObjectID}.
-     * 
+     *
      * @param mcrObjectId the {@link MCRObjectID} of the {@link MCRObject} the keys belong to.
      * @param readKey the key the user must know to acquire read permission on the {@link MCRObject}.
-     * @param writeKey the key the user must know to acquire write permission on the {@link MCRObject}. This key may be empty.
+     * @param writeKey the key the user must know to acquire write permission on the {@link MCRObject}.
+     *                This key may be empty.
      */
     public MIRAccessKeyPair(final MCRObjectID mcrObjectId, final String readKey, final String writeKey) {
         this.mcrObjectId = mcrObjectId;
         setReadKey(readKey);
         setWriteKey(writeKey);
+    }
+
+    protected static MIRAccessKeyPair fromServiceFlags(final MCRObjectID mcrObjectId, final ServiceFlags servFlags) {
+        final MIRAccessKeyPair accKP = new MIRAccessKeyPair();
+        accKP.setMCRObjectId(mcrObjectId);
+
+        for (ServiceFlag flag : servFlags.flags) {
+            if (flag.type == ServiceFlagType.READ) {
+                accKP.setReadKey(flag.key);
+            }
+            if (flag.type == ServiceFlagType.WRITE) {
+                accKP.setWriteKey(flag.key);
+            }
+        }
+
+        return accKP.getReadKey() != null && accKP.getWriteKey() != null ? accKP : null;
     }
 
     /**
@@ -153,12 +156,13 @@ public class MIRAccessKeyPair implements Serializable {
      * @param readKey the key the user must know to acquire read permission on the {@link MCRObject}.
      */
     public void setReadKey(String readKey) {
-        if ((readKey == null) || readKey.trim().length() == 0)
+        if ((readKey == null) || readKey.trim().length() == 0) {
             throw new IllegalArgumentException("Read key must not be empty: " + readKey);
-        else if ((writeKey != null) && readKey.equalsIgnoreCase(writeKey))
+        } else if ((writeKey != null) && readKey.equalsIgnoreCase(writeKey)) {
             throw new IllegalArgumentException("Read key must not be the same as write key: " + readKey);
-        else
+        } else {
             this.readKey = readKey.trim();
+        }
     }
 
     /**
@@ -176,15 +180,17 @@ public class MIRAccessKeyPair implements Serializable {
      * Sets the key the user must know to acquire write permission on the {@link MCRObject}.
      * This may be set to null. The write key must be different from the read key.
      * 
-     * @param writeKey the key the user must know to acquire write permission on the {@link MCRObject}. This key may be empty.
+     * @param writeKey the key the user must know to acquire write permission on the {@link MCRObject}.
+     *                This key may be empty.
      */
     public void setWriteKey(String writeKey) {
-        if ((writeKey == null) || writeKey.trim().length() == 0)
+        if ((writeKey == null) || writeKey.trim().length() == 0) {
             this.writeKey = null;
-        else if ((readKey != null) && writeKey.equalsIgnoreCase(readKey))
+        } else if ((readKey != null) && writeKey.equalsIgnoreCase(readKey)) {
             throw new IllegalArgumentException("Write key must not be the same as read key: " + writeKey);
-        else
+        } else {
             this.writeKey = writeKey.trim();
+        }
     }
 
     protected ServiceFlags toServiceFlags() {
@@ -243,55 +249,6 @@ public class MIRAccessKeyPair implements Serializable {
         return true;
     }
 
-    @XmlRootElement(name = "servflags")
-    @XmlAccessorType(XmlAccessType.FIELD)
-    protected static class ServiceFlags {
-        @XmlAttribute(name = "class", required = true)
-        private String cls = MCRMetaLangText.class.getSimpleName();
-
-        @XmlElement(name = "servflag")
-        public List<ServiceFlag> flags;
-
-        public static ServiceFlags build(final MIRAccessKeyPair accKP) {
-            ServiceFlags servFlags = new ServiceFlags();
-
-            servFlags.flags = new ArrayList<ServiceFlag>();
-
-            servFlags.flags.add(ServiceFlag.build(ServiceFlagType.READ, accKP.getReadKey()));
-
-            if (accKP.getWriteKey() != null) {
-                servFlags.flags.add(ServiceFlag.build(ServiceFlagType.WRITE, accKP.getWriteKey()));
-            }
-
-            return servFlags;
-        }
-    }
-
-    @XmlRootElement(name = "servflag")
-    @XmlAccessorType(XmlAccessType.FIELD)
-    protected static class ServiceFlag {
-        @XmlAttribute(name = "type", required = true)
-        public ServiceFlagType type;
-
-        @XmlAttribute(name = "inherited")
-        private int inherited = 0;
-
-        @XmlAttribute(name = "form")
-        private String form = "plain";
-
-        @XmlValue
-        public String key;
-
-        public static ServiceFlag build(final ServiceFlagType permission, final String key) {
-            ServiceFlag accKey = new ServiceFlag();
-
-            accKey.type = permission;
-            accKey.key = key;
-
-            return accKey;
-        }
-    }
-
     @XmlType(name = "serviceFlagType")
     @XmlEnum
     protected enum ServiceFlagType {
@@ -314,17 +271,8 @@ public class MIRAccessKeyPair implements Serializable {
         }
 
         /**
-         * Returns the set access key permission type.
-         * 
-         * @return the set access key permission type
-         */
-        public String value() {
-            return value;
-        }
-
-        /**
          * Returns the access key permission type from given value.
-         * 
+         *
          * @param value the access key permission type value
          * @return the access key permission type
          */
@@ -335,6 +283,64 @@ public class MIRAccessKeyPair implements Serializable {
                 }
             }
             throw new IllegalArgumentException(value);
+        }
+
+        /**
+         * Returns the set access key permission type.
+         *
+         * @return the set access key permission type
+         */
+        public String value() {
+            return value;
+        }
+    }
+
+    @XmlRootElement(name = "servflags")
+    @XmlAccessorType(XmlAccessType.FIELD)
+    protected static class ServiceFlags {
+        @XmlElement(name = "servflag")
+        public List<ServiceFlag> flags;
+
+        @XmlAttribute(name = "class", required = true)
+        private String cls = MCRMetaLangText.class.getSimpleName();
+
+        public static ServiceFlags build(final MIRAccessKeyPair accKP) {
+            ServiceFlags servFlags = new ServiceFlags();
+
+            servFlags.flags = new ArrayList<ServiceFlag>();
+
+            servFlags.flags.add(ServiceFlag.build(ServiceFlagType.READ, accKP.getReadKey()));
+
+            if (accKP.getWriteKey() != null) {
+                servFlags.flags.add(ServiceFlag.build(ServiceFlagType.WRITE, accKP.getWriteKey()));
+            }
+
+            return servFlags;
+        }
+    }
+
+    @XmlRootElement(name = "servflag")
+    @XmlAccessorType(XmlAccessType.FIELD)
+    protected static class ServiceFlag {
+        @XmlAttribute(name = "type", required = true)
+        public ServiceFlagType type;
+
+        @XmlValue
+        public String key;
+
+        @XmlAttribute(name = "inherited")
+        private int inherited = 0;
+
+        @XmlAttribute(name = "form")
+        private String form = "plain";
+
+        public static ServiceFlag build(final ServiceFlagType permission, final String key) {
+            ServiceFlag accKey = new ServiceFlag();
+
+            accKey.type = permission;
+            accKey.key = key;
+
+            return accKey;
         }
     }
 }

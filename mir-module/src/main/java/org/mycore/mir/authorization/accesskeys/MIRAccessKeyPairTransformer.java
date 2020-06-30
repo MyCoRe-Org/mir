@@ -106,8 +106,9 @@ public abstract class MIRAccessKeyPairTransformer {
                     final Element service = element.getChild("service");
                     if (service != null) {
                         final Element accKeys = service.getChild(ROOT_SERV_FLAGS);
-                        if (accKeys != null)
+                        if (accKeys != null) {
                             return buildAccessKeyPair(mcrObjectId, accKeys);
+                        }
                     }
                     return null;
                 default:

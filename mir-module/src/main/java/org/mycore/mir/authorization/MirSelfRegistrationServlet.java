@@ -130,8 +130,9 @@ public class MirSelfRegistrationServlet extends MCRServlet {
                     if (umt.equals(mailToken)) {
                         user.setDisabled(false);
 
-                        if (DEFAULT_ROLE != null && !DEFAULT_ROLE.isEmpty())
+                        if (DEFAULT_ROLE != null && !DEFAULT_ROLE.isEmpty()) {
                             user.assignRole(DEFAULT_ROLE);
+                        }
 
                         if (user.getAttributes().removeIf(ua -> ua.getName().equalsIgnoreCase("mailtoken"))) {
                             MCRUserManager.updateUser(user);

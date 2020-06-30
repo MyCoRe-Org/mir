@@ -65,6 +65,30 @@ public class MIRWizardStartupHandler implements MCRStartupHandler.AutoExecutable
 
     private static final String WIZARD_FILTER_CLASS = MIRWizardRequestFilter.class.getName();
 
+    static void outputLoginToken(ServletContext servletContext) {
+        final StringBuffer sb = new StringBuffer();
+
+        final String line = "=".repeat(80);
+        sb.append("\n\n")
+            .append(line)
+            .append('\n')
+            .append(" MIR Wizard")
+            .append('\n')
+            .append(line)
+            .append("\n\n");
+
+        if (System.getProperty("os.name").toLowerCase(Locale.ROOT).contains("win")) {
+            sb.append(" Login token: " + servletContext.getAttribute(LOGIN_TOKEN));
+        } else {
+            sb.append(" \u001b[41m\u001b[1;37mLogin token: " + servletContext.getAttribute(LOGIN_TOKEN) + "\u001b[m");
+        }
+
+        sb.append("\n\n")
+            .append(line);
+
+        LOGGER.info(sb.toString());
+    }
+
     @Override
     public String getName() {
         return HANDLER_NAME;
@@ -150,27 +174,5 @@ public class MIRWizardStartupHandler implements MCRStartupHandler.AutoExecutable
         }
 
         return path;
-    }
-
-    static void outputLoginToken(ServletContext servletContext) {
-        final StringBuffer sb = new StringBuffer();
-
-        sb.append(
-            "\n\n" + String.format(Locale.ROOT, String.format(Locale.ROOT, "%%0%dd", 80), 0)
-                .replace("0", "=") + "\n");
-        sb.append(" MIR Wizard");
-        sb.append(
-            "\n" + String.format(Locale.ROOT, String.format(Locale.ROOT, "%%0%dd", 80), 0)
-                .replace("0", "=") + "\n\n");
-
-        if (System.getProperty("os.name").toLowerCase(Locale.ROOT).contains("win"))
-            sb.append(" Login token: " + servletContext.getAttribute(LOGIN_TOKEN));
-        else
-            sb.append(" \u001b[41m\u001b[1;37mLogin token: " + servletContext.getAttribute(LOGIN_TOKEN) + "\u001b[m");
-
-        sb.append("\n\n" + String.format(Locale.ROOT, String.format(Locale.ROOT, "%%0%dd", 80), 0)
-            .replace("0", "="));
-
-        LOGGER.info(sb.toString());
     }
 }

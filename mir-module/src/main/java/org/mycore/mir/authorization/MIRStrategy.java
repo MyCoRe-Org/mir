@@ -64,17 +64,8 @@ public class MIRStrategy implements MCRAccessCheckStrategy {
 
     public static final String EDIT_PI_ROLES = "MIR.Strategy.EditPIRoles";
 
-    private static enum PermissionIDType {
-        MCRObject, MCRDerivate, Other;
-        public static PermissionIDType fromID(String id) {
-            Matcher m = TYPE_PATTERN.matcher(id);
-            if (m.find() && (m.groupCount() == 1)) {
-                return "derivate".equals(m.group(1)) ? MCRDerivate : MCRObject;
-            }
-            return Other;
-
-        }
-    }
+    private static final MCRCache<String, List<MCRCategoryID>> PERMISSION_CATEGORY_MAPPING_CACHE = new MCRCache<>(
+        20, "MIRStrategy");
 
     private static final Pattern TYPE_PATTERN = Pattern.compile("[^_]+_([^_]+)_[0-9]+");
 
@@ -90,40 +81,19 @@ public class MIRStrategy implements MCRAccessCheckStrategy {
 
     private static final long CACHE_TIME = 1000 * 60 * 60;
 
-    private static final MCRCache<String, List<MCRCategoryID>> PERMISSION_CATEGORY_MAPPING_CACHE = new MCRCache<String, List<MCRCategoryID>>(
-        20, "MIRStrategy");
+    private final List<String> accessClasses;
 
-    private final List<String> ACCESS_CLASSES;
+    private final MCRCategLinkService linkService;
 
-    private final MCRCategLinkService LINK_SERVICE;
-
-    private MCRAccessInterface ACCESS_IMPL;
+    private MCRAccessInterface accessImpl;
 
     public MIRStrategy() {
-        ACCESS_CLASSES = MCRConfiguration2.getString("MIR.Access.Strategy.Classifications")
+        accessClasses = MCRConfiguration2.getString("MIR.Access.Strategy.Classifications")
             .map(MCRConfiguration2::splitValue)
             .orElseGet(() -> Stream.of("mir_access"))
             .collect(Collectors.toList());
-        LINK_SERVICE = MCRCategLinkServiceFactory.getInstance();
-        ACCESS_IMPL = MCRAccessManager.getAccessImpl();
-    }
-
-    /* (non-Javadoc)
-     * @see org.mycore.access.strategies.MCRAccessCheckStrategy#checkPermission(java.lang.String, java.lang.String)
-     */
-    @Override
-    public boolean checkPermission(String id, String permission) {
-        LOGGER.debug("checkPermission({}, {})", id, permission);
-        switch (PermissionIDType.fromID(id)) {
-            case MCRObject:
-                return checkObjectPermission(MCRObjectID.getInstance(id), permission);
-            case MCRDerivate:
-                return checkDerivatePermission(MCRObjectID.getInstance(id), permission);
-            case Other:
-                return checkOtherPermission(id, permission);
-            default:
-                throw new MCRException("Could not handle PermissionIDType: " + PermissionIDType.fromID(id));
-        }
+        linkService = MCRCategLinkServiceFactory.getInstance();
+        accessImpl = MCRAccessManager.getAccessImpl();
     }
 
     private boolean checkObjectPermission(MCRObjectID objectId, String permission) {
@@ -156,7 +126,7 @@ public class MIRStrategy implements MCRAccessCheckStrategy {
             // 5. check if classification rule applies
             .map(c -> {
                 LOGGER.debug("using access rule defined for category: " + c);
-                return ACCESS_IMPL.checkPermission(objectId.getTypeId() + ":" + c.toString(), permission);
+                return accessImpl.checkPermission(objectId.getTypeId() + ":" + c.toString(), permission);
             })
             //6. fallback to MCRObjectBaseStrategy
             .orElseGet(() -> {
@@ -165,9 +135,22 @@ public class MIRStrategy implements MCRAccessCheckStrategy {
             });
     }
 
-    private boolean canEditPI() {
-        return MCRConfiguration2.getOrThrow(EDIT_PI_ROLES, MCRConfiguration2::splitValue)
-            .anyMatch(MCRUserManager.getCurrentUser()::isUserInRole);
+    /* (non-Javadoc)
+     * @see org.mycore.access.strategies.MCRAccessCheckStrategy#checkPermission(java.lang.String, java.lang.String)
+     */
+    @Override
+    public boolean checkPermission(String id, String permission) {
+        LOGGER.debug("checkPermission({}, {})", id, permission);
+        switch (PermissionIDType.fromID(id)) {
+            case MCRObject:
+                return checkObjectPermission(MCRObjectID.getInstance(id), permission);
+            case MCRDerivate:
+                return checkDerivatePermission(MCRObjectID.getInstance(id), permission);
+            case Other:
+                return checkOtherPermission(id, permission);
+            default:
+                throw new MCRException("Could not handle PermissionIDType: " + PermissionIDType.fromID(id));
+        }
     }
 
     private boolean checkDerivatePermission(MCRObjectID derivateId, String permission) {
@@ -227,7 +210,7 @@ public class MIRStrategy implements MCRAccessCheckStrategy {
             // 6. use rule defined for all derivates of object in category
             .map(c -> {
                 LOGGER.debug("using access rule defined for category: " + c);
-                return ACCESS_IMPL.checkPermission(derivateId.getTypeId() + ":" + c.toString(), permission);
+                return accessImpl.checkPermission(derivateId.getTypeId() + ":" + c.toString(), permission);
             })
             .orElseGet(() -> {
                 // 7. check if base strategy applies for derivate
@@ -238,6 +221,23 @@ public class MIRStrategy implements MCRAccessCheckStrategy {
                 LOGGER.debug("No rule for base strategy found, check against object {}.", objectId);
                 return checkObjectPermission(objectId, permission);
             });
+    }
+
+    private boolean canEditPI() {
+        return MCRConfiguration2.getOrThrow(EDIT_PI_ROLES, MCRConfiguration2::splitValue)
+            .anyMatch(MCRUserManager.getCurrentUser()::isUserInRole);
+    }
+
+    private Optional<MCRCategoryID> getAccessCategory(MCRObjectID objectId, String prefix, String permission) {
+        List<MCRCategoryID> accessMappedCategories = getAccessMappedCategories(prefix, permission,
+            accessClasses);
+        MCRCategLinkReference categLinkReference = new MCRCategLinkReference(objectId);
+        Optional<MCRCategoryID> accessCategory = accessMappedCategories
+            .stream()
+            .peek(c -> LOGGER.info("Checking if {} is in category {}.", objectId, c))
+            .filter(c -> linkService.isInCategory(categLinkReference, c))
+            .findFirst();
+        return accessCategory;
     }
 
     private boolean hasRegisteredPI(MCRObjectID objectId) {
@@ -252,16 +252,17 @@ public class MIRStrategy implements MCRAccessCheckStrategy {
         return ID_STRATEGY.checkPermission(id, permission);
     }
 
-    private Optional<MCRCategoryID> getAccessCategory(MCRObjectID objectId, String prefix, String permission) {
-        List<MCRCategoryID> accessMappedCategories = getAccessMappedCategories(prefix, permission,
-            ACCESS_CLASSES);
-        MCRCategLinkReference categLinkReference = new MCRCategLinkReference(objectId);
-        Optional<MCRCategoryID> accessCategory = accessMappedCategories
-            .stream()
-            .peek(c -> LOGGER.info("Checking if {} is in category {}.", objectId, c))
-            .filter(c -> LINK_SERVICE.isInCategory(categLinkReference, c))
-            .findFirst();
-        return accessCategory;
+    private enum PermissionIDType {
+        MCRObject, MCRDerivate, Other;
+
+        public static PermissionIDType fromID(String id) {
+            Matcher m = TYPE_PATTERN.matcher(id);
+            if (m.find() && (m.groupCount() == 1)) {
+                return "derivate".equals(m.group(1)) ? MCRDerivate : MCRObject;
+            }
+            return Other;
+
+        }
     }
 
     @SuppressWarnings("unchecked")

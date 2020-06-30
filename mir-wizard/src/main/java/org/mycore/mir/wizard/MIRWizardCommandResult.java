@@ -109,9 +109,9 @@ public class MIRWizardCommandResult {
             res.setAttribute(key, getAttribute(key));
         }
 
-        if (result != null)
+        if (result != null) {
             res.addContent(result);
-        else if (logAppender != null) {
+        } else if (logAppender != null) {
             res.addContent(new Element("result").addContent(logAppender.getLogs()));
         }
 

@@ -73,9 +73,10 @@ public final class MIRAccessKeyManager {
      * @param accKP the {@link MIRAccessKeyPair}
      */
     public static void createKeyPair(final MIRAccessKeyPair accKP) {
-        if (existsKeyPair(accKP.getMCRObjectId()))
+        if (existsKeyPair(accKP.getMCRObjectId())) {
             throw new IllegalArgumentException(
                 "Access key pair for MCRObject " + accKP.getObjectId() + " already exists");
+        }
 
         final EntityManager em = MCREntityManagerProvider.getCurrentEntityManager();
         em.persist(accKP);
@@ -102,8 +103,9 @@ public final class MIRAccessKeyManager {
      * @param mcrObjectId the {@link MCRObjectID}
      */
     public static void deleteKeyPair(final MCRObjectID mcrObjectId) {
-        if (!existsKeyPair(mcrObjectId))
+        if (!existsKeyPair(mcrObjectId)) {
             throw new IllegalArgumentException("Couldn't delete non exists key pair for MCRObject " + mcrObjectId);
+        }
 
         final EntityManager em = MCREntityManagerProvider.getCurrentEntityManager();
         em.remove(getKeyPair(mcrObjectId));
@@ -146,8 +148,9 @@ public final class MIRAccessKeyManager {
      */
     public static void addAccessKey(final MCRUser user, final MCRObjectID mcrObjectId, final String accessKey)
         throws MCRUsageException {
-        if (getAccessKeyType(mcrObjectId, accessKey) == null)
+        if (getAccessKeyType(mcrObjectId, accessKey) == null) {
             throw new MCRUsageException("Invalid access key \"" + accessKey + "\"");
+        }
 
         user.setUserAttribute(ACCESS_KEY_PREFIX + mcrObjectId.toString(), accessKey);
 
@@ -177,10 +180,12 @@ public final class MIRAccessKeyManager {
     private static String getAccessKeyType(final MCRObjectID mcrObjectId, final String accessKey) {
         final MIRAccessKeyPair accKP = getKeyPair(mcrObjectId);
 
-        if (accessKey.equals(accKP.getReadKey()))
+        if (accessKey.equals(accKP.getReadKey())) {
             return MIRAccessKeyPair.PERMISSION_READ;
-        if (accessKey.equals(accKP.getWriteKey()))
+        }
+        if (accessKey.equals(accKP.getWriteKey())) {
             return MIRAccessKeyPair.PERMISSION_WRITE;
+        }
 
         return null;
     }

@@ -39,12 +39,13 @@ public class MIRSherpaServlet extends MCRServlet {
 
     private static final long serialVersionUID = 1L;
 
-    private String SERVER_URL = "http://www.sherpa.ac.uk/romeo/api29.php";
+    private static final String SERVER_URL = "http://www.sherpa.ac.uk/romeo/api29.php";
+
+    private static final int MAX_CONNECTIONS = MCRConfiguration2.getOrThrow(
+        SOLR_CONFIG_PREFIX + "SelectProxy.MaxConnections",
+        Integer::parseInt);
 
     private HttpHost sherpaHost;
-
-    private int MAX_CONNECTIONS = MCRConfiguration2.getOrThrow(SOLR_CONFIG_PREFIX + "SelectProxy.MaxConnections",
-        Integer::parseInt);
 
     private PoolingHttpClientConnectionManager httpClientConnectionManager;
 

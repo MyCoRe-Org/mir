@@ -18,15 +18,15 @@ import org.mycore.frontend.cli.annotation.MCRCommandGroup;
  */
 @MCRCommandGroup(
     name = "MIR migration 2016.03")
-public class MIRMigration2016_03 {
+public class MIRMigration201603 {
 
-    private static final Logger LOGGER = Logger.getLogger(MIRMigration2016_03.class);
+    private static final Logger LOGGER = Logger.getLogger(MIRMigration201603.class);
 
     @MCRCommand(
         syntax = "migrate ppn",
         help = "change all ppn entries to valid uri e.g. http://uri.gbv.de/document/gvk:ppn:813002605")
     public static List<String> updateIdentifierPPN() {
-        URL styleFile = MIRMigration2016_03.class.getResource("/xsl/mycoreobject-migrate-ppn.xsl");
+        URL styleFile = MIRMigration201603.class.getResource("/xsl/mycoreobject-migrate-ppn.xsl");
         if (styleFile == null) {
             LOGGER.error("Could not find migration stylesheet. File a bug!");
             return null;
@@ -41,10 +41,11 @@ public class MIRMigration2016_03 {
 
     @MCRCommand(
         syntax = "migrate mir rights classification",
-        help = "migrates all mods:accessCondition entries of type 'use and reproduction'. CC licenses now contains version"
-            + "information, entries are now under mycore classification support and renamed classification to licenses instead of rights.")
+        help = "migrates all mods:accessCondition entries of type 'use and reproduction'. "
+            + "CC licenses now contains version information, entries are now under mycore classification support "
+            + "and renamed classification to licenses instead of rights.")
     public static List<String> updateStateClassification() {
-        URL styleFile = MIRMigration2016_03.class.getResource("/xsl/mycoreobject-migrate-rights.xsl");
+        URL styleFile = MIRMigration201603.class.getResource("/xsl/mycoreobject-migrate-rights.xsl");
         if (styleFile == null) {
             LOGGER.error("Could not find migration stylesheet. File a bug!");
             return null;
@@ -76,7 +77,7 @@ public class MIRMigration2016_03 {
         syntax = "migrate namePart",
         help = "splits mods:displayForm in to mods:namePart")
     public static List<String> updateNamePart() {
-        URL styleFile = MIRMigration2016_03.class.getResource("/xsl/mycoreobject-migrate-namePart.xsl");
+        URL styleFile = MIRMigration201603.class.getResource("/xsl/mycoreobject-migrate-namePart.xsl");
         if (styleFile == null) {
             LOGGER.error("Could not find migration stylesheet. File a bug!");
             return null;
