@@ -18,4 +18,5 @@
   <classification url="http://www.mycore.org/classifications/nameIdentifier.xml" />
   <classification url="http://www.mycore.org/classifications/noteTypes.xml" />
   <classification url="http://www.mycore.org/classifications/identifier.xml" />
+  <classification url="http://www.mycore.org/classifications/itunes-podcast.xml" />
 </classification>

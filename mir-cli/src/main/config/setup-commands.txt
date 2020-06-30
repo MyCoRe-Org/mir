@@ -19,6 +19,7 @@ load classification from url http://www.mycore.org/classifications/typeOfResourc
 load classification from url http://www.mycore.org/classifications/nameIdentifier.xml
 load classification from url http://www.mycore.org/classifications/noteTypes.xml
 load classification from url http://www.mycore.org/classifications/identifier.xml
+load classification from url http://www.mycore.org/classifications/itunes-podcast.xml
 init superuser
 process ${app.home}/config/acl/defaultrules-commands.txt
 process ${app.home}/config/acl/webacl-commands.txt
