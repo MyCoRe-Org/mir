@@ -67,11 +67,11 @@
           <div class="container" id="page">
             <div id="main_content" class="row">
 
-              <div id="side_nav_column" class="d-xs-none col-sm-3">
+              <div id="side_nav_column" class="col-12 col-lg-3">
                 <xsl:call-template name="mir.navigation" />
               </div>
 
-              <div id="main_content_column" class="col-12 col-sm-9">
+              <div id="main_content_column" class="col-12 col-lg-9">
 
                 <div class="button_box">
                   <button

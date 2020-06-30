@@ -64,14 +64,14 @@ var browsing = $('#mir-search_browsing > div');            // browse through the
 // scale or enlarge elements
   if ( $('#side_nav_column').is(":visible") ) {
     // side nav is visible, make one column
-    mainCol.removeClass('col-sm-12').addClass('col-sm-9');   // parent
+    mainCol.removeClass('col-12').addClass('col-lg-9');   // parent
     leftCol.removeClass('col-sm-8').addClass('col-12');   // left
     rightCol.removeClass('col-sm-4').addClass('col-12');  // right
     headline.removeClass('col-md-8').addClass('col-12');  // title
     browsing.removeClass('col-md-8').addClass('col-12');  // browse through the hits
   } else {
     // side nav is hidden, make two columns
-    mainCol.removeClass( 'col-sm-9').addClass( 'col-sm-12'); // parent
+    mainCol.removeClass( 'col-lg-9').addClass('col-12'); // parent
     leftCol.removeClass( 'col-12').addClass('col-sm-8');  // left
     rightCol.removeClass('col-12').addClass('col-sm-4');  // right
     headline.removeClass('col-12').addClass('col-md-8');  // title
@@ -89,7 +89,7 @@ function adjustMenuButton() {
       // site nav is visible now
       // change icon from right to left / down to up on mobile view
       $('.mir-navbar-toggle .mir-menu-icon').removeClass('fa-bars');
-      if ( $( document ).width() <= 750 ) {
+      if ( $( document ).width() <= 990 ) {
         $('.mir-navbar-toggle .mir-menu-icon').addClass('fa-chevron-up');
       } else {
         $('.mir-navbar-toggle .mir-menu-icon').addClass('fa-chevron-left');
@@ -124,7 +124,6 @@ function toggleSideNav(speed) {
     // site nav is hidden
     // make it visible
     $('#side_nav_column').show('slow');
-    $('#side_nav_column').removeClass('d-xs-none');
     $('#side_nav_column').addClass('col-12');
     adjustColumns();
     adjustMenuButton();
