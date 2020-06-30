@@ -81,7 +81,7 @@ public abstract class MIRSwordIngesterBase implements MCRSwordIngester {
 
     @Override
     public void destroy() {
-
+        this.mcrSwordMediaHandler.destroy();
     }
 
     protected MCRSwordLifecycleConfiguration getLifecycleConfiguration() {

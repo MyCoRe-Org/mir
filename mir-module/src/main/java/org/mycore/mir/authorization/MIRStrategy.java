@@ -153,6 +153,8 @@ public class MIRStrategy implements MCRAccessCheckStrategy {
         }
     }
 
+    //TODO: remove annotation below and fix code
+    @SuppressWarnings("PMD.NPathComplexity")
     private boolean checkDerivatePermission(MCRObjectID derivateId, String permission) {
         LOGGER.debug("checkDerivatePermission({}, {})", derivateId, permission);
         String permissionId = derivateId.toString();

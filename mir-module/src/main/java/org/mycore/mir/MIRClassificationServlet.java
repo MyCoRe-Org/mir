@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
 import org.jdom2.Document;
@@ -27,7 +26,8 @@ public class MIRClassificationServlet extends MCRServlet {
     private static final String LAYOUT_ELEMENT_KEY = MIRClassificationServlet.class.getName() + ".layoutElement";
 
     @Override
-    public void init() throws ServletException {
+    public void init() {
+        //MIR-220 fixed formatting
     }
 
     @Override

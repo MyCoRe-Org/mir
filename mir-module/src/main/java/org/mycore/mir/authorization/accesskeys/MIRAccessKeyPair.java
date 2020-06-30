@@ -25,6 +25,7 @@ package org.mycore.mir.authorization.accesskeys;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -218,35 +219,13 @@ public class MIRAccessKeyPair implements Serializable {
         if (this == obj) {
             return true;
         }
-        if (obj == null) {
-            return false;
-        }
         if (!(obj instanceof MIRAccessKeyPair)) {
             return false;
         }
-        MIRAccessKeyPair other = (MIRAccessKeyPair) obj;
-        if (mcrObjectId == null) {
-            if (other.mcrObjectId != null) {
-                return false;
-            }
-        } else if (!mcrObjectId.equals(other.mcrObjectId)) {
-            return false;
-        }
-        if (readKey == null) {
-            if (other.readKey != null) {
-                return false;
-            }
-        } else if (!readKey.equals(other.readKey)) {
-            return false;
-        }
-        if (writeKey == null) {
-            if (other.writeKey != null) {
-                return false;
-            }
-        } else if (!writeKey.equals(other.writeKey)) {
-            return false;
-        }
-        return true;
+        MIRAccessKeyPair that = (MIRAccessKeyPair) obj;
+        return Objects.equals(mcrObjectId, that.mcrObjectId) &&
+            Objects.equals(readKey, that.readKey) &&
+            Objects.equals(writeKey, that.writeKey);
     }
 
     @XmlType(name = "serviceFlagType")
@@ -302,6 +281,7 @@ public class MIRAccessKeyPair implements Serializable {
         public List<ServiceFlag> flags;
 
         @XmlAttribute(name = "class", required = true)
+        @SuppressWarnings("PMD.UnusedPrivateField")
         private String cls = MCRMetaLangText.class.getSimpleName();
 
         public static ServiceFlags build(final MIRAccessKeyPair accKP) {
@@ -329,9 +309,11 @@ public class MIRAccessKeyPair implements Serializable {
         public String key;
 
         @XmlAttribute(name = "inherited")
+        @SuppressWarnings("PMD.UnusedPrivateField")
         private int inherited = 0;
 
         @XmlAttribute(name = "form")
+        @SuppressWarnings("PMD.UnusedPrivateField")
         private String form = "plain";
 
         public static ServiceFlag build(final ServiceFlagType permission, final String key) {

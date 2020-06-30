@@ -109,7 +109,7 @@ public class MIRImageWarePacker extends MCRPacker {
                     // user inserted gvk:ppn:812684613, then gvk_ppn_812684613 will be build
                     return Optional.of(ppnElementContent.replace(":", "_"));
                 default:
-                    throw new RuntimeException(
+                    throw new MCRException(
                         "ppn in mods:identifier[@type='ppn'] cannot be parsed (" + ppnElementContent + ")");
             }
         }
@@ -175,11 +175,7 @@ public class MIRImageWarePacker extends MCRPacker {
             return false;
         }
 
-        if (!detectPPN(mcrObject, configuration.get(DEFAULT_PPN_DB_CONFIGURATION_KEY)).isPresent()) {
-            return false;
-        }
-
-        return true;
+        return detectPPN(mcrObject, configuration.get(DEFAULT_PPN_DB_CONFIGURATION_KEY)).isPresent();
     }
 
     @Override

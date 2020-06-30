@@ -61,7 +61,7 @@ public class MIRSherpaServlet extends MCRServlet {
         String issn = req.getParameter("issn");
         String apiKey = MCRConfiguration2.getString("MCR.Mods.SherpaRomeo.ApiKey").orElse("");
         HttpGet httpGet;
-        if (apiKey.equals("")) {
+        if ("".equals(apiKey)) {
             httpGet = new HttpGet(SERVER_URL + "?issn=" + issn);
         } else {
             httpGet = new HttpGet(SERVER_URL + "?issn=" + issn + "&ak=" + apiKey);
@@ -78,7 +78,7 @@ public class MIRSherpaServlet extends MCRServlet {
                         Document doc = getDocumentFromInputStream(responseStream);
                         XPath xpath = XPathFactory.newInstance().newXPath();
                         String outcome = (String) xpath.evaluate("//outcome", doc, XPathConstants.STRING);
-                        if (!outcome.equals("failed")) {
+                        if (!"failed".equals(outcome)) {
                             String romeocolour = (String) xpath.evaluate("//romeocolour", doc, XPathConstants.STRING);
                             res.setStatus(HttpServletResponse.SC_OK);
                             res.getWriter().write(romeocolour);
@@ -93,7 +93,7 @@ public class MIRSherpaServlet extends MCRServlet {
             }
             res.setStatus(statusCode);
         } catch (IOException ex) {
-            ex.printStackTrace();
+            LOGGER.warn("IOException while handling request", ex);
             res.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
     }

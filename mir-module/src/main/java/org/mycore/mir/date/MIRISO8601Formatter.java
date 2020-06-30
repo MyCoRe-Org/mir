@@ -62,6 +62,7 @@ public class MIRISO8601Formatter implements MIRDateFormatterInterface {
                 break;
             default:
                 formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+                break;
         }
         return formatter;
     }

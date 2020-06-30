@@ -45,7 +45,6 @@
     <jetty.version>9.4.24.v20191120</jetty.version>
     <mycore.version>2020.06.0-SNAPSHOT</mycore.version>
     <node.version>v12.16.3</node.version>
-    <pmd.failOnViolation>false</pmd.failOnViolation>
     <selenium.version>3.141.59</selenium.version>
     <site.suffix />
     <solr-runner.solrMirrorURL>http://mirror.23media.de/apache/lucene/solr/</solr-runner.solrMirrorURL>
@@ -268,7 +267,7 @@
                       <message>MCR-1509: Do not use LOG4J 1.2 API anymore</message>
                     </bannedDependencies>
                   </rules>
-                  <fail>false</fail>
+                  <fail>true</fail>
                 </configuration>
               </execution>
               <execution>

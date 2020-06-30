@@ -26,6 +26,7 @@ import java.util.Optional;
 
 import javax.persistence.EntityManager;
 
+import org.apache.logging.log4j.LogManager;
 import org.mycore.access.MCRAccessManager;
 import org.mycore.backend.jpa.MCREntityManagerProvider;
 import org.mycore.common.MCRSessionMgr;
@@ -124,13 +125,17 @@ public final class MIRAccessKeyManager {
 
         addAccessKey(user, mcrObjectId, accessKey);
 
-        switch (getAccessKeyType(mcrObjectId, accessKey)) {
+        final String accessKeyType = getAccessKeyType(mcrObjectId, accessKey);
+        switch (accessKeyType) {
             case MIRAccessKeyPair.PERMISSION_READ:
                 MCRAccessManager.invalidPermissionCache(mcrObjectId.toString(), MCRAccessManager.PERMISSION_READ);
                 break;
             case MIRAccessKeyPair.PERMISSION_WRITE:
                 MCRAccessManager.invalidPermissionCache(mcrObjectId.toString(), MCRAccessManager.PERMISSION_READ);
                 MCRAccessManager.invalidPermissionCache(mcrObjectId.toString(), MCRAccessManager.PERMISSION_WRITE);
+                break;
+            default:
+                LogManager.getLogger().warn("Invalid access key type: " + accessKeyType);
                 break;
         }
 

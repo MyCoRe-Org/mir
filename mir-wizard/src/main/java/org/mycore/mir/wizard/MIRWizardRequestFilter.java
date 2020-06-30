@@ -110,11 +110,7 @@ public class MIRWizardRequestFilter implements Filter {
         final String genToken = getLoginToken(req);
         final String loginToken = (String) MCRSessionMgr.getCurrentSession().get(MIRWizardStartupHandler.LOGIN_TOKEN);
 
-        if (loginToken == null || !genToken.equals(loginToken)) {
-            return false;
-        }
-
-        return true;
+        return loginToken != null && genToken.equals(loginToken);
     }
 
     static String getLoginToken(HttpServletRequest req) {

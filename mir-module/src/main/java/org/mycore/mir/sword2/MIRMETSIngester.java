@@ -19,7 +19,6 @@ import org.apache.logging.log4j.Logger;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
-import org.jdom2.Namespace;
 import org.jdom2.filter.Filters;
 import org.jdom2.input.SAXBuilder;
 import org.jdom2.xpath.XPathFactory;
@@ -45,9 +44,6 @@ import org.xml.sax.SAXException;
 public class MIRMETSIngester extends MIRSwordIngesterBase {
 
     public static final Logger LOGGER = LogManager.getLogger();
-
-    private static final Namespace EPDCX_NAMESPACE = Namespace
-        .getNamespace("epdcx", "http://purl.org/eprint/epdcx/2006-11-16/");
 
     private static Document readXMLFile(Path file) {
         try (InputStream metsIS = Files.newInputStream(file)) {

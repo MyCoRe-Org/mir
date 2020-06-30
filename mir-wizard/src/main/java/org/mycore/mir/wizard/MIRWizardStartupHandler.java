@@ -32,12 +32,12 @@ import javax.servlet.FilterRegistration.Dynamic;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletRegistration;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.mycore.access.MCRAccessBaseImpl;
 import org.mycore.access.strategies.MCRObjectIDStrategy;
 import org.mycore.common.config.MCRConfiguration2;
 import org.mycore.common.config.MCRConfigurationDir;
-import org.mycore.common.events.MCRShutdownHandler;
 import org.mycore.common.events.MCRStartupHandler;
 
 /**
@@ -45,7 +45,7 @@ import org.mycore.common.events.MCRStartupHandler;
  * 
  * @author René Adler (eagle)
  */
-public class MIRWizardStartupHandler implements MCRStartupHandler.AutoExecutable, MCRShutdownHandler.Closeable {
+public class MIRWizardStartupHandler implements MCRStartupHandler.AutoExecutable {
 
     static final String ACCESS_CLASS = "MCR.Access.Class";
 
@@ -53,7 +53,7 @@ public class MIRWizardStartupHandler implements MCRStartupHandler.AutoExecutable
 
     static final String LOGIN_TOKEN = "MCR.Wizard.LoginToken";
 
-    private static final Logger LOGGER = Logger.getLogger(MIRWizardStartupHandler.class);
+    private static final Logger LOGGER = LogManager.getLogger();
 
     private static final String HANDLER_NAME = MIRWizardStartupHandler.class.getName();
 
@@ -92,14 +92,6 @@ public class MIRWizardStartupHandler implements MCRStartupHandler.AutoExecutable
     @Override
     public String getName() {
         return HANDLER_NAME;
-    }
-
-    @Override
-    public void prepareClose() {
-    }
-
-    @Override
-    public void close() {
     }
 
     @Override

@@ -44,6 +44,7 @@ public class MIRMARCFormatter implements MIRDateFormatterInterface {
                 break;
             default:
                 formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+                break;
         }
         return formatter;
     }

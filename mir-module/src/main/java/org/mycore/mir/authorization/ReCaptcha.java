@@ -109,7 +109,7 @@ public class ReCaptcha {
 
             return Boolean.valueOf(rcResult.success);
         } catch (final IOException e) {
-            e.printStackTrace();
+            LOGGER.warn("ReCaptcha response could not be verified!", e);
             return Boolean.FALSE;
         }
     }

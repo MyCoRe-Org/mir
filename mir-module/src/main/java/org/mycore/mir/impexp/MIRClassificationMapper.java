@@ -12,6 +12,7 @@ public class MIRClassificationMapper {
      * state: 01.01.2011
      *
      */
+    @SuppressWarnings({"PMD.ExcessiveMethodLength", "PMD.NPathComplexity"}) //todo: fix this
     public static String getSDNBfromOldSDNB(String sdnbString) {
         BigDecimal sdnb = new BigDecimal(sdnbString.replaceAll("[^0-9.]+", ""));
 
@@ -260,6 +261,7 @@ public class MIRClassificationMapper {
      * state: 01.01.2011
      *
      */
+    @SuppressWarnings({"PMD.ExcessiveMethodLength", "PMD.NPathComplexity"}) //todo: fix this
     public static String getSDNBfromDDC(String ddcString) {
         BigDecimal ddc = new BigDecimal(ddcString.replaceAll("[^0-9.]+", ""));
 

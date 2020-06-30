@@ -25,6 +25,8 @@ package org.mycore.mir.wizard.command;
 import java.io.File;
 import java.util.Optional;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.mycore.common.config.MCRConfigurationDir;
 import org.mycore.common.config.MCRConfigurationDirSetup;
 import org.mycore.common.content.MCRContent;
@@ -33,6 +35,7 @@ import org.mycore.common.content.transformer.MCRXSLTransformer;
 import org.mycore.mir.wizard.MIRWizardCommand;
 
 public class MIRWizardGenerateJPAConfig extends MIRWizardCommand {
+    private static final Logger LOGGER = LogManager.getLogger();
 
     public MIRWizardGenerateJPAConfig() {
         this("persistence.xml");
@@ -67,7 +70,7 @@ public class MIRWizardGenerateJPAConfig extends MIRWizardCommand {
             this.result.setResult(pXML.asXML().getRootElement().clone());
             this.result.setSuccess(true);
         } catch (Exception ex) {
-            ex.printStackTrace();
+            LOGGER.error("Exception while generating JPA config.", ex);
             this.result.setResult(ex.toString());
             this.result.setSuccess(false);
         }
