@@ -42,6 +42,7 @@
     <hibernate.version>5.4.4.Final</hibernate.version>
     <java.target.version>11</java.target.version>
     <jetty.version>9.4.24.v20191120</jetty.version>
+    <maven.compiler.arg>-Werror</maven.compiler.arg>
     <mycore.version>2020.06.0-SNAPSHOT</mycore.version>
     <node.version>v12.16.3</node.version>
     <selenium.version>3.141.59</selenium.version>
@@ -112,6 +113,16 @@
       </plugins>
     </pluginManagement>
     <plugins>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <useIncrementalCompilation>true</useIncrementalCompilation>
+          <compilerArgs>
+            <arg>${maven.compiler.arg}</arg>
+            <arg>-Xpkginfo:always</arg>
+          </compilerArgs>
+        </configuration>
+      </plugin>
       <plugin>
         <artifactId>maven-changes-plugin</artifactId>
         <configuration>

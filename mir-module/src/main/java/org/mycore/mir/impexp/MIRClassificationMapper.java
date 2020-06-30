@@ -1,6 +1,7 @@
 package org.mycore.mir.impexp;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 public class MIRClassificationMapper {
 
@@ -419,7 +420,7 @@ public class MIRClassificationMapper {
                 break;
         }
 
-        ddc = ddc.setScale(-1, BigDecimal.ROUND_DOWN);
+        ddc = ddc.setScale(-1, RoundingMode.DOWN);
 
         if (ddc.compareTo(toBigDecimal("100")) < 0) {
             return ("000" + ddc.toPlainString()).substring(ddc.toPlainString().length());

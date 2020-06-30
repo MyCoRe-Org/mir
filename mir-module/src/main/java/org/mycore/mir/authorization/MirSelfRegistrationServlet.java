@@ -22,7 +22,6 @@
  */
 package org.mycore.mir.authorization;
 
-import java.text.MessageFormat;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -59,6 +58,21 @@ public class MirSelfRegistrationServlet extends MCRServlet {
 
     private static final String DEFAULT_ROLE = MCRConfiguration2.getString("MIR.SelfRegistration.DefaultRole")
         .orElse(null);
+
+    /**
+     * Checks if given user is exists.
+     *
+     * @param nodes the user element
+     * @return true on exists or false if not
+     */
+    public static boolean userExists(final List<Element> nodes) {
+        final Element user = nodes.get(0);
+        final String userName = user.getAttributeValue("name");
+        final String realmId = user.getAttribute("realm").getValue();
+
+        LOGGER.debug("check user exists " + userName + " " + realmId);
+        return MCRUserManager.exists(userName, realmId);
+    }
 
     public void doGetPost(final MCRServletJob job) throws Exception {
         final HttpServletRequest req = job.getRequest();
@@ -160,22 +174,7 @@ public class MirSelfRegistrationServlet extends MCRServlet {
     }
 
     private String errorMsg(final String subIdentifier, final Object... args) {
-        final String key = MessageFormat.format("{0}.{1}", I18N_ERROR_PREFIX, subIdentifier);
+        final String key = I18N_ERROR_PREFIX + "." + subIdentifier;
         return MCRTranslation.translate(key, args);
-    }
-
-    /**
-     * Checks if given user is exists.
-     *
-     * @param nodes the user element
-     * @return true on exists or false if not
-     */
-    public static boolean userExists(final List<Element> nodes) {
-        final Element user = nodes.get(0);
-        final String userName = user.getAttributeValue("name");
-        final String realmId = user.getAttribute("realm").getValue();
-
-        LOGGER.debug("check user exists " + userName + " " + realmId);
-        return MCRUserManager.exists(userName, realmId);
     }
 }

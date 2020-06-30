@@ -36,6 +36,7 @@ import org.apache.logging.log4j.core.Layout;
 import org.apache.logging.log4j.core.LogEvent;
 import org.apache.logging.log4j.core.Logger;
 import org.apache.logging.log4j.core.appender.AbstractAppender;
+import org.apache.logging.log4j.core.config.Property;
 import org.apache.logging.log4j.core.filter.ThresholdFilter;
 import org.apache.logging.log4j.core.layout.PatternLayout;
 import org.jdom2.Element;
@@ -149,7 +150,7 @@ public class MIRWizardCommandResult {
 
         protected CommandLogAppender(final String name, final Filter filter,
             final Layout<? extends Serializable> layout) {
-            super(name, filter, layout);
+            super(name, filter, layout, true, Property.EMPTY_ARRAY);
         }
 
         @Override
