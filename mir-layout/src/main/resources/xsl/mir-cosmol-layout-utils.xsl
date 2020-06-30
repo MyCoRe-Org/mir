@@ -55,7 +55,7 @@
             </xsl:choose>
             <div class="input-group mb-3">
               <div class="input-group-append">
-                <button type="submit" class="btn btn-primary my-2 my-sm-0">
+                <button type="submit" class="btn btn-primary">
                   <i class="fas fa-search"></i>
                 </button>
               </div>
