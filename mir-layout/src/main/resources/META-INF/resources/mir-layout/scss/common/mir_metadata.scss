@@ -48,6 +48,10 @@
   border-radius: $border-radius;
 }
 
+#mir-edit-div, #mir-abstract-badges-div {
+  margin-bottom: 15px;
+}
+
 #badges {
   a.mods_genre {
     margin-right: 3px;
@@ -86,7 +90,7 @@
   }
 }
 
-#mir_access_rights_panel {
+#mir_access_rights_panel, #mir-access-rights-panel {
   p {
     text-align: center;
   }

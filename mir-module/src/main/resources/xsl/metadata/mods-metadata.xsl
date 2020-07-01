@@ -16,7 +16,13 @@
     <xsl:apply-templates mode="mods-type" select="." />
   </xsl:variable>
   <xsl:template match="/">
-    <site read="{key('rights', mycoreobject/@ID)/@read}" write="key('rights', mycoreobject/@ID)/@write" ID="{mycoreobject/@ID}">
+    <site ID="{mycoreobject/@ID}">
+      <xsl:if test="key('rights', mycoreobject/@ID)/@read">
+        <xsl:attribute name="read"/>
+      </xsl:if>
+      <xsl:if test="key('rights', mycoreobject/@ID)/@write">
+        <xsl:attribute name="write"/>
+      </xsl:if>
       <xsl:attribute name="title">
         <xsl:apply-templates mode="mods.title" select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods">
           <xsl:with-param name="asHTML" select="false()" />
