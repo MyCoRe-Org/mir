@@ -46,7 +46,6 @@
   <rule ref="category/java/documentation.xml/UncommentedEmptyMethodBody" />
   <rule ref="category/java/errorprone.xml/EmptyFinallyBlock" />
   <rule ref="category/java/errorprone.xml/EmptyIfStmt" />
-  <rule ref="category/java/errorprone.xml/EmptyInitializer" />
   <rule ref="category/java/errorprone.xml/EmptyStatementBlock" />
   <rule ref="category/java/errorprone.xml/EmptyStatementNotInLoop" />
   <rule ref="category/java/errorprone.xml/EmptyInitializer" />
