@@ -32,7 +32,8 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jdom2.Attribute;
 import org.mycore.common.MCRSessionMgr;
 import org.mycore.common.config.MCRConfiguration2;
@@ -43,7 +44,7 @@ import com.google.gson.Gson;
  * @author Ren\u00E9 Adler (eagle)
  */
 public class ReCaptcha {
-    private static final Logger LOGGER = Logger.getLogger(ReCaptcha.class);
+    private static final Logger LOGGER = LogManager.getLogger();
 
     private static final String RECAPTCHA_RESPONSE_FIELD = "g-recaptcha-response";
 
@@ -109,7 +110,7 @@ public class ReCaptcha {
 
             return Boolean.valueOf(rcResult.success);
         } catch (final IOException e) {
-            e.printStackTrace();
+            LOGGER.warn("ReCaptcha response could not be verified!", e);
             return Boolean.FALSE;
         }
     }

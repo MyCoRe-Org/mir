@@ -22,6 +22,7 @@
  */
 package org.mycore.mir.wizard;
 
+import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.StringTokenizer;
@@ -29,7 +30,8 @@ import java.util.StringTokenizer;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.output.XMLOutputter;
@@ -48,11 +50,11 @@ public class MIRWizardServlet extends MCRServlet {
 
     private static final long serialVersionUID = 1L;
 
-    private static final Logger LOGGER = Logger.getLogger(MIRWizardServlet.class);
+    private static final Logger LOGGER = LogManager.getLogger();
 
+    @SuppressWarnings("PMD.DoNotCallSystemExit")
     public void doGetPost(final MCRServletJob job) throws Exception {
         final HttpServletRequest req = job.getRequest();
-        final HttpServletResponse res = job.getResponse();
 
         final String path = req.getPathInfo();
 
@@ -71,88 +73,100 @@ public class MIRWizardServlet extends MCRServlet {
                     new MCRJDOMContent(MCRURIResolver.instance().resolve("resource:setup/" + request)));
             }
         } else {
-            final Document doc = (Document) (job.getRequest().getAttribute("MCRXEditorSubmission"));
-            final Element wizXML = doc.getRootElement();
-
-            LOGGER.debug(new XMLOutputter().outputString(wizXML));
-
-            final Element resXML = new Element("wizard");
-
-            if (!MIRWizardRequestFilter.isAuthenticated(req)) {
-                final String loginToken = wizXML.getChildTextTrim("login");
-                String url = "wizard";
-
-                if (loginToken != null && MIRWizardRequestFilter.getLoginToken(req).equals(loginToken)) {
-                    LOGGER.info("Authenticate with token \"" + loginToken + "\"...");
-                    MCRSessionMgr.getCurrentSession().put(MIRWizardStartupHandler.LOGIN_TOKEN, loginToken);
-                    MCRSessionMgr.getCurrentSession().put("ServerBaseURL",
-                        req.getScheme() + "://" + req.getServerName() + ":" + req.getServerPort());
-                } else {
-                    LOGGER.info("Redirect to login...");
-                    url += "/?action=login"
-                        + (!MIRWizardRequestFilter.getLoginToken(req).equals(loginToken) ? "&token=invalid" : "");
-
-                    // output login token again
-                    MIRWizardStartupHandler.outputLoginToken(req.getServletContext());
-                }
-                res.sendRedirect(res.encodeRedirectURL(MCRFrontendUtil.getBaseURL() + url));
+            final Element resXML = getResult(job);
+            if (resXML == null) {
+                //response is already send
                 return;
             }
 
-            final Element results = new Element("results");
-
-            final Element commands = MCRURIResolver.instance().resolve("resource:setup/install.xml");
-
-            final MIRWizardCommandChain chain = new MIRWizardCommandChain();
-
-            for (Element command : commands.getChildren("command")) {
-                final String cls = command.getAttributeValue("class");
-                final String name = command.getAttributeValue("name");
-                final String src = command.getAttributeValue("src");
-
-                try {
-                    final Class<?> cmdCls = Class.forName(cls);
-                    MIRWizardCommand cmd = null;
-
-                    if (name != null) {
-                        final Constructor<?> cmdC = cmdCls.getConstructor(String.class);
-                        cmd = (MIRWizardCommand) cmdC.newInstance(name);
-                    } else {
-                        final Constructor<?> cmdC = cmdCls.getConstructor();
-                        cmd = (MIRWizardCommand) cmdC.newInstance();
-                    }
-
-                    if (src != null) {
-                        cmd.setInputXML(MCRURIResolver.instance().resolve(src));
-                    }
-
-                    if (cmd != null) {
-                        chain.addCommand(cmd);
-                    }
-                } catch (final ClassNotFoundException | NoSuchMethodException | SecurityException
-                    | InstantiationException | IllegalAccessException | IllegalArgumentException
-                    | InvocationTargetException e) {
-                    LOGGER.error(e);
-                }
-            }
-
-            initializeApplication(job);
-
-            LOGGER.info("Execute Wizard Commands...");
-            chain.execute(wizXML);
-            LOGGER.info("done.");
-
-            for (MIRWizardCommand cmd : chain.getCommands()) {
-                if (cmd.getResult() != null)
-                    results.addContent(cmd.getResult().toElement());
-            }
-
-            results.setAttribute("success", Boolean.toString(chain.isSuccess()));
-
-            resXML.addContent(results);
-
             getLayoutService().doLayout(job.getRequest(), job.getResponse(), new MCRJDOMContent(resXML));
         }
+    }
+
+    private Element getResult(MCRServletJob job) throws IOException {
+        HttpServletRequest req = job.getRequest();
+        HttpServletResponse res = job.getResponse();
+        final Document doc = (Document) (job.getRequest().getAttribute("MCRXEditorSubmission"));
+        final Element wizXML = doc.getRootElement();
+
+        LOGGER.debug(new XMLOutputter().outputString(wizXML));
+
+        final Element resXML = new Element("wizard");
+
+        if (!MIRWizardRequestFilter.isAuthenticated(req)) {
+            final String loginToken = wizXML.getChildTextTrim("login");
+            String url = "wizard";
+
+            if (loginToken != null && MIRWizardRequestFilter.getLoginToken(req).equals(loginToken)) {
+                LOGGER.info("Authenticate with token \"" + loginToken + "\"...");
+                MCRSessionMgr.getCurrentSession().put(MIRWizardStartupHandler.LOGIN_TOKEN, loginToken);
+                MCRSessionMgr.getCurrentSession().put("ServerBaseURL",
+                    req.getScheme() + "://" + req.getServerName() + ":" + req.getServerPort());
+            } else {
+                LOGGER.info("Redirect to login...");
+                url += "/?action=login"
+                    + (!MIRWizardRequestFilter.getLoginToken(req).equals(loginToken) ? "&token=invalid" : "");
+
+                // output login token again
+                MIRWizardStartupHandler.outputLoginToken(req.getServletContext());
+            }
+            res.sendRedirect(res.encodeRedirectURL(MCRFrontendUtil.getBaseURL() + url));
+            return null;
+        }
+
+        final Element results = new Element("results");
+
+        final Element commands = MCRURIResolver.instance().resolve("resource:setup/install.xml");
+
+        final MIRWizardCommandChain chain = new MIRWizardCommandChain();
+
+        for (Element command : commands.getChildren("command")) {
+            final String cls = command.getAttributeValue("class");
+            final String name = command.getAttributeValue("name");
+            final String src = command.getAttributeValue("src");
+
+            try {
+                final Class<?> cmdCls = Class.forName(cls);
+                MIRWizardCommand cmd = null;
+
+                if (name != null) {
+                    final Constructor<?> cmdC = cmdCls.getConstructor(String.class);
+                    cmd = (MIRWizardCommand) cmdC.newInstance(name);
+                } else {
+                    final Constructor<?> cmdC = cmdCls.getConstructor();
+                    cmd = (MIRWizardCommand) cmdC.newInstance();
+                }
+
+                if (src != null) {
+                    cmd.setInputXML(MCRURIResolver.instance().resolve(src));
+                }
+
+                if (cmd != null) {
+                    chain.addCommand(cmd);
+                }
+            } catch (final ClassNotFoundException | NoSuchMethodException | SecurityException
+                | InstantiationException | IllegalAccessException | IllegalArgumentException
+                | InvocationTargetException e) {
+                LOGGER.error(e);
+            }
+        }
+
+        initializeApplication(job);
+
+        LOGGER.info("Execute Wizard Commands...");
+        chain.execute(wizXML);
+        LOGGER.info("done.");
+
+        for (MIRWizardCommand cmd : chain.getCommands()) {
+            if (cmd.getResult() != null) {
+                results.addContent(cmd.getResult().toElement());
+            }
+        }
+
+        results.setAttribute("success", Boolean.toString(chain.isSuccess()));
+
+        resXML.addContent(results);
+        return resXML;
     }
 
     private void initializeApplication(MCRServletJob job) {

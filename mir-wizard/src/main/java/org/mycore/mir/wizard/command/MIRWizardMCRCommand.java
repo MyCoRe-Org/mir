@@ -25,6 +25,8 @@ package org.mycore.mir.wizard.command;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -41,6 +43,8 @@ import org.mycore.mir.wizard.MIRWizardCommand;
  * @author René Adler (eagle)
  */
 public class MIRWizardMCRCommand extends MIRWizardCommand {
+
+    private static final Logger LOGGER = LogManager.getLogger();
 
     public MIRWizardMCRCommand(String name) {
         super(name);
@@ -84,7 +88,7 @@ public class MIRWizardMCRCommand extends MIRWizardCommand {
                     this.result.setSuccess(false);
                     return;
                 } catch (InvocationTargetException e) {
-                    e.printStackTrace();
+                    LOGGER.error("Exception while executing command: " + cmd, e);
                     this.result.setResult(result + e.toString());
                     this.result.setSuccess(false);
                     return;
@@ -94,7 +98,7 @@ public class MIRWizardMCRCommand extends MIRWizardCommand {
 
             this.result.setSuccess(true);
         } catch (Exception ex) {
-            ex.printStackTrace();
+            LOGGER.error("Exception while executing commands.", ex);
             this.result.setResult(ex.toString());
             this.result.setSuccess(false);
         }

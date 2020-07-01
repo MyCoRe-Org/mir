@@ -75,10 +75,12 @@ public abstract class MIRWizardCommand {
     }
 
     protected void preExecute() {
+        //do nothing
     }
 
     protected abstract void doExecute();
 
     protected void postExecute() {
+        //do nothing
     }
 }

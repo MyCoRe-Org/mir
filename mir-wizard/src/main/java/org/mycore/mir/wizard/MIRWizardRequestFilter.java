@@ -35,7 +35,8 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.mycore.common.MCRSessionMgr;
 import org.mycore.common.config.MCRConfigurationDir;
 
@@ -46,11 +47,25 @@ import org.mycore.common.config.MCRConfigurationDir;
 @WebFilter(displayName = "MIRWizardRequestFilter", urlPatterns = { "/*" })
 public class MIRWizardRequestFilter implements Filter {
 
-    private static final Logger LOGGER = Logger.getLogger(MIRWizardRequestFilter.class);
+    private static final Logger LOGGER = LogManager.getLogger();
 
     private static boolean needWizardRun = false;
 
     private static boolean isWizardRunning = false;
+
+    static boolean isAuthenticated(HttpServletRequest req) {
+        if (!MCRSessionMgr.hasCurrentSession()) {
+            return false;
+        }
+        final String genToken = getLoginToken(req);
+        final String loginToken = (String) MCRSessionMgr.getCurrentSession().get(MIRWizardStartupHandler.LOGIN_TOKEN);
+
+        return loginToken != null && genToken.equals(loginToken);
+    }
+
+    static String getLoginToken(HttpServletRequest req) {
+        return (String) req.getServletContext().getAttribute(MIRWizardStartupHandler.LOGIN_TOKEN);
+    }
 
     /* (non-Javadoc)
      * @see javax.servlet.Filter#init(javax.servlet.FilterConfig)
@@ -101,23 +116,5 @@ public class MIRWizardRequestFilter implements Filter {
     @Override
     public void destroy() {
         // Nothing to do
-    }
-
-    static boolean isAuthenticated(HttpServletRequest req) {
-        if (!MCRSessionMgr.hasCurrentSession()){
-            return false;
-        }
-        final String genToken = getLoginToken(req);
-        final String loginToken = (String) MCRSessionMgr.getCurrentSession().get(MIRWizardStartupHandler.LOGIN_TOKEN);
-
-        if (loginToken == null || !genToken.equals(loginToken)) {
-            return false;
-        }
-
-        return true;
-    }
-
-    static String getLoginToken(HttpServletRequest req) {
-        return (String) req.getServletContext().getAttribute(MIRWizardStartupHandler.LOGIN_TOKEN);
     }
 }

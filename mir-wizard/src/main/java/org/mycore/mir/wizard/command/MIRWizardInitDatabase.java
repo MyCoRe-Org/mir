@@ -35,6 +35,8 @@ import javax.persistence.Persistence;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.mycore.backend.jpa.MCREntityManagerProvider;
 import org.mycore.backend.jpa.MCRJPABootstrapper;
 import org.mycore.mir.wizard.MIRWizardCommand;
@@ -42,6 +44,8 @@ import org.mycore.mir.wizard.MIRWizardCommand;
 public class MIRWizardInitDatabase extends MIRWizardCommand {
 
     private final static String ACTION = "create";
+
+    private static final Logger LOGGER = LogManager.getLogger();
 
     public MIRWizardInitDatabase() {
         this("init.database");
@@ -74,7 +78,7 @@ public class MIRWizardInitDatabase extends MIRWizardCommand {
             this.result.setSuccess(true);
             this.result.setResult(res.toString());
         } catch (IOException | PersistenceException ex) {
-            ex.printStackTrace();
+            LOGGER.error("Exception while initializing database.", ex);
             this.result.setSuccess(false);
             this.result.setResult(ex.getMessage());
         }

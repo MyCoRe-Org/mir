@@ -22,13 +22,13 @@
  */
 package org.mycore.mir.authorization;
 
-import java.text.MessageFormat;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.mycore.common.MCRMailer;
@@ -52,12 +52,27 @@ public class MirSelfRegistrationServlet extends MCRServlet {
 
     private static final long serialVersionUID = -7105234919911900795L;
 
-    private static final Logger LOGGER = Logger.getLogger(MirSelfRegistrationServlet.class);
+    private static final Logger LOGGER = LogManager.getLogger();
 
     private static final String I18N_ERROR_PREFIX = "selfRegistration.error";
 
     private static final String DEFAULT_ROLE = MCRConfiguration2.getString("MIR.SelfRegistration.DefaultRole")
         .orElse(null);
+
+    /**
+     * Checks if given user is exists.
+     *
+     * @param nodes the user element
+     * @return true on exists or false if not
+     */
+    public static boolean userExists(final List<Element> nodes) {
+        final Element user = nodes.get(0);
+        final String userName = user.getAttributeValue("name");
+        final String realmId = user.getAttribute("realm").getValue();
+
+        LOGGER.debug("check user exists " + userName + " " + realmId);
+        return MCRUserManager.exists(userName, realmId);
+    }
 
     public void doGetPost(final MCRServletJob job) throws Exception {
         final HttpServletRequest req = job.getRequest();
@@ -130,8 +145,9 @@ public class MirSelfRegistrationServlet extends MCRServlet {
                     if (umt.equals(mailToken)) {
                         user.setDisabled(false);
 
-                        if (DEFAULT_ROLE != null && !DEFAULT_ROLE.isEmpty())
+                        if (DEFAULT_ROLE != null && !DEFAULT_ROLE.isEmpty()) {
                             user.assignRole(DEFAULT_ROLE);
+                        }
 
                         if (user.getAttributes().removeIf(ua -> ua.getName().equalsIgnoreCase("mailtoken"))) {
                             MCRUserManager.updateUser(user);
@@ -158,22 +174,7 @@ public class MirSelfRegistrationServlet extends MCRServlet {
     }
 
     private String errorMsg(final String subIdentifier, final Object... args) {
-        final String key = MessageFormat.format("{0}.{1}", I18N_ERROR_PREFIX, subIdentifier);
+        final String key = I18N_ERROR_PREFIX + "." + subIdentifier;
         return MCRTranslation.translate(key, args);
-    }
-
-    /**
-     * Checks if given user is exists.
-     *
-     * @param nodes the user element
-     * @return true on exists or false if not
-     */
-    public static boolean userExists(final List<Element> nodes) {
-        final Element user = nodes.get(0);
-        final String userName = user.getAttributeValue("name");
-        final String realmId = user.getAttribute("realm").getValue();
-
-        LOGGER.debug("check user exists " + userName + " " + realmId);
-        return MCRUserManager.exists(userName, realmId);
     }
 }

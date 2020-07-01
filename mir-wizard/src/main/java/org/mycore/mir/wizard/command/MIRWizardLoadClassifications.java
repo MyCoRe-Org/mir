@@ -24,6 +24,8 @@ package org.mycore.mir.wizard.command;
 
 import java.net.URL;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -46,6 +48,8 @@ public class MIRWizardLoadClassifications extends MIRWizardCommand {
     private static final MCRCategoryDAO DAO = new MCRCategoryDAOImpl();
 
     private static final String CLASSIFICATIONS_CFG = "resource:setup/classifications.xml";
+
+    private static final Logger LOGGER = LogManager.getLogger();
 
     public MIRWizardLoadClassifications() {
         this("load.classifications");
@@ -89,13 +93,14 @@ public class MIRWizardLoadClassifications extends MIRWizardCommand {
                             tx.rollback();
                             result += MCRTranslation.translate("component.mir.wizard.error", e.toString())
                                 .concat(".\n");
-                            e.printStackTrace();
+                            LOGGER.error("Exception while loading classification " + category.getId(), e);
                         }
                     }
                 } catch (MCRException ex) {
                     result += MCRTranslation.translate("component.mir.wizard.loadClassification.error", classifURL)
                         .concat("\n");
-
+                    LOGGER.error(MCRTranslation.translate("component.mir.wizard.loadClassification.error", classifURL),
+                        ex);
                     this.result.setResult(result);
                     this.result.setSuccess(false);
                     return;

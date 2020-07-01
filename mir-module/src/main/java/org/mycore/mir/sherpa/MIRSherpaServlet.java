@@ -23,7 +23,8 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.protocol.HTTP;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.mycore.common.config.MCRConfiguration2;
 import org.mycore.frontend.servlets.MCRServlet;
 import org.mycore.frontend.servlets.MCRServletJob;
@@ -35,16 +36,17 @@ import org.xml.sax.SAXException;
 
 public class MIRSherpaServlet extends MCRServlet {
 
-    static final Logger LOGGER = Logger.getLogger(MIRSherpaServlet.class);
+    static final Logger LOGGER = LogManager.getLogger();
 
     private static final long serialVersionUID = 1L;
 
-    private String SERVER_URL = "http://www.sherpa.ac.uk/romeo/api29.php";
+    private static final String SERVER_URL = "http://www.sherpa.ac.uk/romeo/api29.php";
+
+    private static final int MAX_CONNECTIONS = MCRConfiguration2.getOrThrow(
+        SOLR_CONFIG_PREFIX + "SelectProxy.MaxConnections",
+        Integer::parseInt);
 
     private HttpHost sherpaHost;
-
-    private int MAX_CONNECTIONS = MCRConfiguration2.getOrThrow(SOLR_CONFIG_PREFIX + "SelectProxy.MaxConnections",
-        Integer::parseInt);
 
     private PoolingHttpClientConnectionManager httpClientConnectionManager;
 
@@ -60,7 +62,7 @@ public class MIRSherpaServlet extends MCRServlet {
         String issn = req.getParameter("issn");
         String apiKey = MCRConfiguration2.getString("MCR.Mods.SherpaRomeo.ApiKey").orElse("");
         HttpGet httpGet;
-        if (apiKey.equals("")) {
+        if ("".equals(apiKey)) {
             httpGet = new HttpGet(SERVER_URL + "?issn=" + issn);
         } else {
             httpGet = new HttpGet(SERVER_URL + "?issn=" + issn + "&ak=" + apiKey);
@@ -77,7 +79,7 @@ public class MIRSherpaServlet extends MCRServlet {
                         Document doc = getDocumentFromInputStream(responseStream);
                         XPath xpath = XPathFactory.newInstance().newXPath();
                         String outcome = (String) xpath.evaluate("//outcome", doc, XPathConstants.STRING);
-                        if (!outcome.equals("failed")) {
+                        if (!"failed".equals(outcome)) {
                             String romeocolour = (String) xpath.evaluate("//romeocolour", doc, XPathConstants.STRING);
                             res.setStatus(HttpServletResponse.SC_OK);
                             res.getWriter().write(romeocolour);
@@ -92,7 +94,7 @@ public class MIRSherpaServlet extends MCRServlet {
             }
             res.setStatus(statusCode);
         } catch (IOException ex) {
-            ex.printStackTrace();
+            LOGGER.warn("IOException while handling request", ex);
             res.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
     }

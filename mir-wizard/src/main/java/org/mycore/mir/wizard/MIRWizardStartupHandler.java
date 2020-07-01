@@ -32,12 +32,12 @@ import javax.servlet.FilterRegistration.Dynamic;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletRegistration;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.mycore.access.MCRAccessBaseImpl;
 import org.mycore.access.strategies.MCRObjectIDStrategy;
 import org.mycore.common.config.MCRConfiguration2;
 import org.mycore.common.config.MCRConfigurationDir;
-import org.mycore.common.events.MCRShutdownHandler;
 import org.mycore.common.events.MCRStartupHandler;
 
 /**
@@ -45,7 +45,7 @@ import org.mycore.common.events.MCRStartupHandler;
  * 
  * @author René Adler (eagle)
  */
-public class MIRWizardStartupHandler implements MCRStartupHandler.AutoExecutable, MCRShutdownHandler.Closeable {
+public class MIRWizardStartupHandler implements MCRStartupHandler.AutoExecutable {
 
     static final String ACCESS_CLASS = "MCR.Access.Class";
 
@@ -53,7 +53,7 @@ public class MIRWizardStartupHandler implements MCRStartupHandler.AutoExecutable
 
     static final String LOGIN_TOKEN = "MCR.Wizard.LoginToken";
 
-    private static final Logger LOGGER = Logger.getLogger(MIRWizardStartupHandler.class);
+    private static final Logger LOGGER = LogManager.getLogger();
 
     private static final String HANDLER_NAME = MIRWizardStartupHandler.class.getName();
 
@@ -65,17 +65,33 @@ public class MIRWizardStartupHandler implements MCRStartupHandler.AutoExecutable
 
     private static final String WIZARD_FILTER_CLASS = MIRWizardRequestFilter.class.getName();
 
+    static void outputLoginToken(ServletContext servletContext) {
+        final StringBuffer sb = new StringBuffer();
+
+        final String line = "=".repeat(80);
+        sb.append("\n\n")
+            .append(line)
+            .append('\n')
+            .append(" MIR Wizard")
+            .append('\n')
+            .append(line)
+            .append("\n\n");
+
+        if (System.getProperty("os.name").toLowerCase(Locale.ROOT).contains("win")) {
+            sb.append(" Login token: " + servletContext.getAttribute(LOGIN_TOKEN));
+        } else {
+            sb.append(" \u001b[41m\u001b[1;37mLogin token: " + servletContext.getAttribute(LOGIN_TOKEN) + "\u001b[m");
+        }
+
+        sb.append("\n\n")
+            .append(line);
+
+        LOGGER.info(sb.toString());
+    }
+
     @Override
     public String getName() {
         return HANDLER_NAME;
-    }
-
-    @Override
-    public void prepareClose() {
-    }
-
-    @Override
-    public void close() {
     }
 
     @Override
@@ -150,27 +166,5 @@ public class MIRWizardStartupHandler implements MCRStartupHandler.AutoExecutable
         }
 
         return path;
-    }
-
-    static void outputLoginToken(ServletContext servletContext) {
-        final StringBuffer sb = new StringBuffer();
-
-        sb.append(
-            "\n\n" + String.format(Locale.ROOT, String.format(Locale.ROOT, "%%0%dd", 80), 0)
-                .replace("0", "=") + "\n");
-        sb.append(" MIR Wizard");
-        sb.append(
-            "\n" + String.format(Locale.ROOT, String.format(Locale.ROOT, "%%0%dd", 80), 0)
-                .replace("0", "=") + "\n\n");
-
-        if (System.getProperty("os.name").toLowerCase(Locale.ROOT).contains("win"))
-            sb.append(" Login token: " + servletContext.getAttribute(LOGIN_TOKEN));
-        else
-            sb.append(" \u001b[41m\u001b[1;37mLogin token: " + servletContext.getAttribute(LOGIN_TOKEN) + "\u001b[m");
-
-        sb.append("\n\n" + String.format(Locale.ROOT, String.format(Locale.ROOT, "%%0%dd", 80), 0)
-            .replace("0", "="));
-
-        LOGGER.info(sb.toString());
     }
 }

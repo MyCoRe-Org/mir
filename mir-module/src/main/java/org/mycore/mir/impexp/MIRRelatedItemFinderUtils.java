@@ -1,6 +1,7 @@
 package org.mycore.mir.impexp;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jdom2.Element;
 import org.jdom2.filter.Filters;
 import org.jdom2.input.DOMBuilder;
@@ -13,9 +14,9 @@ import org.w3c.dom.NodeList;
 /**
  * @author Michel Buechner (mcrmibue)
  */
-public class MIRRelatedItemFinder {
+public class MIRRelatedItemFinderUtils {
 
-    private static final Logger LOGGER = Logger.getLogger(MIRRelatedItemFinder.class);
+    private static final Logger LOGGER = LogManager.getLogger();
 
     public static String findRelatedItem(final NodeList sources) {
         if (sources.getLength() == 0) {
@@ -42,7 +43,7 @@ public class MIRRelatedItemFinder {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.error("Exception while finding related item.", e);
             return "";
         }
         return mcrID != null ? mcrID : "";

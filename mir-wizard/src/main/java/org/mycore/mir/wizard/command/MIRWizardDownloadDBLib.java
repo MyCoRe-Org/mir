@@ -29,12 +29,16 @@ import java.net.URLClassLoader;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jdom2.Element;
 import org.mycore.common.MCRClassTools;
 import org.mycore.common.config.MCRConfigurationDir;
 import org.mycore.mir.wizard.MIRWizardCommand;
 
 public class MIRWizardDownloadDBLib extends MIRWizardCommand {
+
+    private static Logger LOGGER = LogManager.getLogger();
 
     public MIRWizardDownloadDBLib() {
         this("download");
@@ -55,15 +59,16 @@ public class MIRWizardDownloadDBLib extends MIRWizardCommand {
             for (Element lib : library.getChildren()) {
                 String url = lib.getTextTrim();
                 String fname = FilenameUtils.getName(url);
+                File file = new File(libDir + File.separator + fname);
                 try {
-                    File file = new File(libDir + File.separator + fname);
 
                     FileUtils.copyURLToFile(new URL(url), file);
                     loadLib(file.toURI().toURL());
 
                     success = true;
                 } catch (Exception ex) {
-                    ex.printStackTrace();
+                    LOGGER.error("Exception while downloading or loading database library: " + file.getAbsolutePath(),
+                        ex);
                     success = false;
                 }
 
@@ -79,17 +84,12 @@ public class MIRWizardDownloadDBLib extends MIRWizardCommand {
         }
     }
 
-    private void loadLib(URL jarFile) throws Exception {
+    private void loadLib(URL jarFile) throws ReflectiveOperationException {
         URLClassLoader sysloader = (URLClassLoader) MCRClassTools.getClassLoader();
         Class<URLClassLoader> sysclass = URLClassLoader.class;
 
-        try {
-            Method method = sysclass.getDeclaredMethod("addURL", URL.class);
-            method.setAccessible(true);
-            method.invoke(sysloader, new Object[] { jarFile });
-        } catch (Throwable t) {
-            t.printStackTrace();
-            throw new Exception("Error, could not add \"" + jarFile.toString() + "\" to system classloader");
-        }
+        Method method = sysclass.getDeclaredMethod("addURL", URL.class);
+        method.setAccessible(true);
+        method.invoke(sysloader, new Object[] { jarFile });
     }
 }

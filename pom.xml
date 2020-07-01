@@ -4,7 +4,7 @@
   <parent>
     <groupId>org.mycore</groupId>
     <artifactId>mycore-parent</artifactId>
-    <version>43</version>
+    <version>45-SNAPSHOT</version>
   </parent>
   <groupId>org.mycore.mir</groupId>
   <artifactId>mir-parent</artifactId>
@@ -39,14 +39,12 @@
     <changelog.since>2020-06-10</changelog.since>
     <!-- until snapshot matches released version (required for 'mvn changes:changes-check') -->
     <changes.version>2020.06.0</changes.version>
-    <checkstyle.failOnViolation>false</checkstyle.failOnViolation>
-    <forbiddenapis.version>1.7</forbiddenapis.version>
     <hibernate.version>5.4.4.Final</hibernate.version>
     <java.target.version>11</java.target.version>
     <jetty.version>9.4.24.v20191120</jetty.version>
+    <maven.compiler.arg>-Werror</maven.compiler.arg>
     <mycore.version>2020.06.0-SNAPSHOT</mycore.version>
     <node.version>v12.16.3</node.version>
-    <pmd.failOnViolation>false</pmd.failOnViolation>
     <selenium.version>3.141.59</selenium.version>
     <site.suffix />
     <solr-runner.solrMirrorURL>http://mirror.23media.de/apache/lucene/solr/</solr-runner.solrMirrorURL>
@@ -115,6 +113,16 @@
       </plugins>
     </pluginManagement>
     <plugins>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <useIncrementalCompilation>true</useIncrementalCompilation>
+          <compilerArgs>
+            <arg>${maven.compiler.arg}</arg>
+            <arg>-Xpkginfo:always</arg>
+          </compilerArgs>
+        </configuration>
+      </plugin>
       <plugin>
         <artifactId>maven-changes-plugin</artifactId>
         <configuration>
@@ -269,7 +277,7 @@
                       <message>MCR-1509: Do not use LOG4J 1.2 API anymore</message>
                     </bannedDependencies>
                   </rules>
-                  <fail>false</fail>
+                  <fail>true</fail>
                 </configuration>
               </execution>
               <execution>

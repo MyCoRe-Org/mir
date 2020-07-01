@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
-  xmlns:mods="http://www.loc.gov/mods/v3" xmlns:mirrelateditemfinder="xalan://org.mycore.mir.impexp.MIRRelatedItemFinder"
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+                xmlns:mods="http://www.loc.gov/mods/v3"
+                xmlns:mirrelateditemfinder="xalan://org.mycore.mir.impexp.MIRRelatedItemFinderUtils"
                 xmlns:xlink="http://www.w3.org/1999/xlink" exclude-result-prefixes="xlink mirrelateditemfinder">
   <xsl:param name="MIR.projectid.default"/>
-  <xsl:include href="copynodes.xsl" />
+  <xsl:include href="copynodes.xsl"/>
 
   <xsl:template match="mods:relatedItem[not(@xlink:href)]">
     <xsl:choose>

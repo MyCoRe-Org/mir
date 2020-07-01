@@ -90,6 +90,6 @@ public class MIRSwordMetadataProvider extends MCRSwordMetadataProvider {
 
     @Override
     public void destroy() {
-
+        //nothing to destroy
     }
 }

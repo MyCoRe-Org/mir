@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import org.apache.logging.log4j.LogManager;
 import org.mycore.common.config.MCRConfiguration2;
 import org.mycore.datamodel.classifications2.MCRCategoryDAO;
 import org.mycore.datamodel.classifications2.MCRCategoryDAOFactory;
@@ -38,7 +39,7 @@ public class MIRValidationHelper {
                 return true;
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            LogManager.getLogger().error("IOException while validating PPN.", e);
         }
         return false;
     }

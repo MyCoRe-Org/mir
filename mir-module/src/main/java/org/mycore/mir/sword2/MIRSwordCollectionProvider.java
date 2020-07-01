@@ -73,9 +73,4 @@ public abstract class MIRSwordCollectionProvider extends MCRSwordCollectionProvi
             new SolrQuery("objectType:mods AND servflag.type.sword:" + lifecycleConfiguration.getCollection()));
     }
 
-    @Override
-    public void destroy() {
-
-    }
-
 }

@@ -30,7 +30,8 @@ import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Collection;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.solr.common.SolrInputDocument;
 import org.mycore.common.MCRPersistenceException;
 import org.mycore.datamodel.classifications2.MCRCategLinkReference;
@@ -44,7 +45,7 @@ import org.mycore.solr.index.file.MCRSolrPathDocumentFactory;
  *
  */
 public class MirPathDocumentFactory extends MCRSolrPathDocumentFactory {
-    private static Logger LOGGER = Logger.getLogger(MirPathDocumentFactory.class);
+    private static Logger LOGGER = LogManager.getLogger();
 
     @Override
     public SolrInputDocument getDocument(Path input, BasicFileAttributes attr) throws IOException,
