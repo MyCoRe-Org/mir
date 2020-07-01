@@ -12,8 +12,6 @@
   <name>MIR: Integration Tests</name>
   <description>combines all modules and runs integration tests</description>
   <properties>
-    <maven.deploy.skip>true</maven.deploy.skip>
-    <maven.install.skip>true</maven.install.skip>
     <MCR.AppName>mir</MCR.AppName>
     <MCR.Home.Integration>${project.build.directory}/mycore-home</MCR.Home.Integration>
     <cargo.jvmargs>-DMCR.Home=${MCR.Home.Integration}
@@ -22,6 +20,8 @@
     <cargo.rmi.port>9100</cargo.rmi.port>
     <cargo.servlet.port>9107</cargo.servlet.port>
     <it.host>127.0.0.1</it.host>
+    <maven.deploy.skip>true</maven.deploy.skip>
+    <maven.install.skip>true</maven.install.skip>
     <solr.home>${MCR.Home.Integration}/solr-home</solr.home>
     <solr.port>9108</solr.port>
   </properties>
