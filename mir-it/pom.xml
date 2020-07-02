@@ -19,7 +19,6 @@
       -Djava.awt.headless=true</cargo.jvmargs>
     <cargo.rmi.port>9100</cargo.rmi.port>
     <cargo.servlet.port>9107</cargo.servlet.port>
-    <gpg.skip>true</gpg.skip>
     <it.host>127.0.0.1</it.host>
     <maven.deploy.skip>true</maven.deploy.skip>
     <maven.install.skip>true</maven.install.skip>
@@ -54,24 +53,9 @@
             </lifecycleMappingMetadata>
           </configuration>
         </plugin>
-        <plugin>
-          <groupId>org.sonatype.plugins</groupId>
-          <artifactId>nexus-staging-maven-plugin</artifactId>
-          <inherited>true</inherited>
-          <configuration>
-            <skipNexusStagingDeployMojo>true</skipNexusStagingDeployMojo>
-          </configuration>
-        </plugin>
       </plugins>
     </pluginManagement>
     <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
-        <configuration>
-          <skipIfEmpty>true</skipIfEmpty>
-        </configuration>
-      </plugin>
       <plugin>
         <artifactId>maven-clean-plugin</artifactId>
         <executions>
