@@ -1,8 +1,5 @@
 package org.mycore.mir.it.tests;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -15,8 +12,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.apache.solr.client.solrj.SolrServerException;
-import org.apache.solr.client.solrj.impl.HttpSolrClient;
-import org.apache.solr.common.SolrDocument;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -39,11 +34,7 @@ import org.mycore.mir.it.model.MIRSearchFieldCondition;
 import org.mycore.mir.it.model.MIRStatus;
 import org.mycore.mir.it.model.MIRTitleInfo;
 import org.mycore.mir.it.model.MIRTitleType;
-import org.mycore.solr.search.MCRSolrSearchUtils;
-import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 
 public class MIRComplexSearchITCase extends MIRITBase {
     private MIRSearchController searchController;

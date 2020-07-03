@@ -1,9 +1,9 @@
 package org.mycore.mir.date;
 
+import static org.junit.Assert.assertEquals;
+
 import org.junit.Test;
 import org.mycore.common.MCRJPATestCase;
-
-import static org.junit.Assert.assertEquals;
 
 public class MIRDateConverterTest extends MCRJPATestCase {
 

@@ -1,5 +1,8 @@
 package org.mycore.mir.index;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
@@ -10,9 +13,6 @@ import java.nio.file.Paths;
 import org.junit.Test;
 import org.mycore.common.MCRTestCase;
 import org.mycore.common.config.MCRConfigurationDir;
-
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 
 public class MirSolrFileStrategyTest extends MCRTestCase {
 

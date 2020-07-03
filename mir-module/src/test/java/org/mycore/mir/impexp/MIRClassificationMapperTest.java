@@ -1,10 +1,10 @@
 package org.mycore.mir.impexp;
 
-import org.junit.Test;
-import org.mycore.common.MCRJPATestCase;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
+
+import org.junit.Test;
+import org.mycore.common.MCRJPATestCase;
 
 public class MIRClassificationMapperTest extends MCRJPATestCase {
 
