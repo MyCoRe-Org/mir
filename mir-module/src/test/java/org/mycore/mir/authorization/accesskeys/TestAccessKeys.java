@@ -83,7 +83,7 @@ public class TestAccessKeys extends MCRJPATestCase {
     @Test
     public void testKeyPairFull() {
         final MIRAccessKeyPair accKP = new MIRAccessKeyPair(MCRObjectID.getInstance(MCR_OBJECT_ID), READ_KEY,
-                WRITE_KEY);
+            WRITE_KEY);
 
         assertEquals(MCR_OBJECT_ID, accKP.getMCRObjectId().toString());
         assertEquals(READ_KEY, accKP.getReadKey());
@@ -109,7 +109,7 @@ public class TestAccessKeys extends MCRJPATestCase {
     @Test(expected = IllegalArgumentException.class)
     public void testKeyPairWithMatchingKeys() {
         final MIRAccessKeyPair accKP = new MIRAccessKeyPair(MCRObjectID.getInstance(MCR_OBJECT_ID), WRITE_KEY,
-                WRITE_KEY);
+            WRITE_KEY);
 
         assertNull(accKP);
     }
@@ -117,25 +117,25 @@ public class TestAccessKeys extends MCRJPATestCase {
     @Test
     public void testCreateKeyPair() throws MCRException, IOException {
         final MIRAccessKeyPair accKP = new MIRAccessKeyPair(MCRObjectID.getInstance(MCR_OBJECT_ID), READ_KEY,
-                WRITE_KEY);
+            WRITE_KEY);
         MIRAccessKeyManager.createKeyPair(accKP);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testCreateSameKeyPair() throws MCRAccessException {
         final MIRAccessKeyPair accKP = new MIRAccessKeyPair(MCRObjectID.getInstance(MCR_OBJECT_ID), WRITE_KEY,
-                WRITE_KEY);
+            WRITE_KEY);
         MIRAccessKeyManager.createKeyPair(accKP);
 
         final MIRAccessKeyPair sameAccKP = new MIRAccessKeyPair(MCRObjectID.getInstance(MCR_OBJECT_ID), WRITE_KEY,
-                WRITE_KEY);
+            WRITE_KEY);
         MIRAccessKeyManager.createKeyPair(sameAccKP);
     }
 
     @Test
     public void testExistsKeyPair() throws MCRAccessException {
         final MIRAccessKeyPair accKP = new MIRAccessKeyPair(MCRObjectID.getInstance(MCR_OBJECT_ID), READ_KEY,
-                WRITE_KEY);
+            WRITE_KEY);
         MIRAccessKeyManager.createKeyPair(accKP);
 
         endTransaction();
@@ -147,7 +147,7 @@ public class TestAccessKeys extends MCRJPATestCase {
     @Test
     public void testUpdateKeyPair() throws MCRAccessException {
         final MIRAccessKeyPair accKP = new MIRAccessKeyPair(MCRObjectID.getInstance(MCR_OBJECT_ID), READ_KEY,
-                WRITE_KEY);
+            WRITE_KEY);
         MIRAccessKeyManager.createKeyPair(accKP);
 
         endTransaction();
@@ -169,7 +169,7 @@ public class TestAccessKeys extends MCRJPATestCase {
     @Test
     public void testDeleteKeyPair() throws MCRAccessException {
         final MIRAccessKeyPair accKP = new MIRAccessKeyPair(MCRObjectID.getInstance(MCR_OBJECT_ID), READ_KEY,
-                WRITE_KEY);
+            WRITE_KEY);
         MIRAccessKeyManager.createKeyPair(accKP);
 
         endTransaction();
@@ -186,16 +186,16 @@ public class TestAccessKeys extends MCRJPATestCase {
     @Test
     public void testKeyPairTransform() throws IOException {
         final MIRAccessKeyPair accKP = new MIRAccessKeyPair(MCRObjectID.getInstance(MCR_OBJECT_ID), READ_KEY,
-                WRITE_KEY);
+            WRITE_KEY);
 
         new XMLOutputter(Format.getPrettyFormat()).output(MIRAccessKeyPairTransformer.buildExportableXML(accKP),
-                System.out);
+            System.out);
     }
 
     @Test
     public void testAccessKeysTransform() throws IOException {
         final MIRAccessKeyPair accKP = new MIRAccessKeyPair(MCRObjectID.getInstance(MCR_OBJECT_ID), READ_KEY,
-                WRITE_KEY);
+            WRITE_KEY);
 
         final Document xml = MIRAccessKeyPairTransformer.buildExportableXML(accKP);
 
@@ -211,14 +211,14 @@ public class TestAccessKeys extends MCRJPATestCase {
     @Test
     public void testServFlagsTransform() throws IOException {
         final MIRAccessKeyPair accKP = new MIRAccessKeyPair(MCRObjectID.getInstance(MCR_OBJECT_ID), READ_KEY,
-                WRITE_KEY);
+            WRITE_KEY);
 
         final Document xml = MIRAccessKeyPairTransformer.buildServFlagsXML(accKP);
 
         new XMLOutputter(Format.getPrettyFormat()).output(xml, System.out);
 
         final MIRAccessKeyPair transAccKP = MIRAccessKeyPairTransformer.buildAccessKeyPair(
-                MCRObjectID.getInstance(MCR_OBJECT_ID), xml.getRootElement());
+            MCRObjectID.getInstance(MCR_OBJECT_ID), xml.getRootElement());
 
         assertEquals(accKP.getMCRObjectId(), transAccKP.getMCRObjectId());
         assertEquals(accKP.getReadKey(), transAccKP.getReadKey());
@@ -228,7 +228,7 @@ public class TestAccessKeys extends MCRJPATestCase {
     @Test
     public void testServFlagsTransformWithOtherTypes() throws IOException {
         final MIRAccessKeyPair accKP = new MIRAccessKeyPair(MCRObjectID.getInstance(MCR_OBJECT_ID), READ_KEY,
-                WRITE_KEY);
+            WRITE_KEY);
 
         final Document xml = MIRAccessKeyPairTransformer.buildServFlagsXML(accKP);
         final Element root = xml.getRootElement();
@@ -244,7 +244,7 @@ public class TestAccessKeys extends MCRJPATestCase {
         new XMLOutputter(Format.getPrettyFormat()).output(xml, System.out);
 
         final MIRAccessKeyPair transAccKP = MIRAccessKeyPairTransformer.buildAccessKeyPair(
-                MCRObjectID.getInstance(MCR_OBJECT_ID), xml.getRootElement());
+            MCRObjectID.getInstance(MCR_OBJECT_ID), xml.getRootElement());
 
         assertEquals(accKP.getMCRObjectId(), transAccKP.getMCRObjectId());
         assertEquals(accKP.getReadKey(), transAccKP.getReadKey());
@@ -256,7 +256,7 @@ public class TestAccessKeys extends MCRJPATestCase {
         final MCRObjectID mcrObjectId = MCRObjectID.getInstance(MCR_OBJECT_ID);
 
         final MIRAccessKeyPair accKP = new MIRAccessKeyPair(mcrObjectId, READ_KEY,
-                WRITE_KEY);
+            WRITE_KEY);
         MIRAccessKeyManager.createKeyPair(accKP);
 
         MCRUser user = new MCRUser("junit");
@@ -268,6 +268,6 @@ public class TestAccessKeys extends MCRJPATestCase {
         MIRAccessKeyManager.addAccessKey(mcrObjectId, WRITE_KEY);
 
         assertTrue("user should have write permission",
-                MCRAccessManager.checkPermission(mcrObjectId, MCRAccessManager.PERMISSION_WRITE));
+            MCRAccessManager.checkPermission(mcrObjectId, MCRAccessManager.PERMISSION_WRITE));
     }
 }

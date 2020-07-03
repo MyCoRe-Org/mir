@@ -16,7 +16,7 @@ import static org.junit.Assert.assertTrue;
 
 public class MirSolrFileStrategyTest extends MCRTestCase {
 
-    private static String testMets="<mets:mets xmlns:mets=\"http://www.loc.gov/METS/\" "
+    private static String testMets = "<mets:mets xmlns:mets=\"http://www.loc.gov/METS/\" "
         + "xmlns:xlink=\"http://www.w3.org/1999/xlink\" >\n"
         + "  <mets:metsHdr LASTMODDATE=\"2016-08-09T12:12:51.320141-04:00\"/>\n"
         + "  <mets:dmdSec ID=\"dmd1\">\n"
@@ -40,13 +40,13 @@ public class MirSolrFileStrategyTest extends MCRTestCase {
         + "  </mets:structMap>\n"
         + "</mets:mets>";
 
-    private static String simpleXML="<foo><bar /></foo>";
+    private static String simpleXML = "<foo><bar /></foo>";
 
     private static final String ALTO_XML = "<alto></alto>";
 
     @Test
     public void check() throws IOException {
-        MirSolrFileStrategy strategy=new MirSolrFileStrategy();
+        MirSolrFileStrategy strategy = new MirSolrFileStrategy();
         assertFalse("Should not transmit video files!", strategy.check(Paths.get("test.mp4"), null));
         assertFalse("Should not transmit video files!", strategy.check(Paths.get("test.rmvb"), null));
         assertFalse("Should not transmit image files!", strategy.check(Paths.get("test.jpg"), null));
@@ -60,18 +60,18 @@ public class MirSolrFileStrategyTest extends MCRTestCase {
         assertTrue("Should transmit Word files!", strategy.check(Paths.get("test.doc"), null));
         assertTrue("Should transmit Word files!", strategy.check(Paths.get("test.docx"), null));
         Path baseDir = MCRConfigurationDir.getConfigurationDirectory().toPath();
-        Path xmlTest=baseDir.resolve("test.xml");
-        try(OutputStream os=Files.newOutputStream(xmlTest);){
+        Path xmlTest = baseDir.resolve("test.xml");
+        try (OutputStream os = Files.newOutputStream(xmlTest);) {
             os.write(testMets.getBytes(StandardCharsets.UTF_8));
         }
         assertTrue("Should transmit METS files!", strategy.check(xmlTest, null));
 
-        try(OutputStream os=Files.newOutputStream(xmlTest);){
+        try (OutputStream os = Files.newOutputStream(xmlTest);) {
             os.write(simpleXML.getBytes(StandardCharsets.UTF_8));
         }
         assertTrue("Should transmit XML files!", strategy.check(xmlTest, null));
 
-        try(OutputStream os=Files.newOutputStream(xmlTest);){
+        try (OutputStream os = Files.newOutputStream(xmlTest);) {
             os.write(ALTO_XML.getBytes(StandardCharsets.UTF_8));
         }
         assertFalse("Should not transmit ALTO files!", strategy.check(xmlTest, null));

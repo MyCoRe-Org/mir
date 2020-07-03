@@ -23,19 +23,17 @@ public class MirSolrFileStrategy extends MCRSolrMimeTypeStrategy {
 
     public static final String ALTO_ROOT = "alto";
 
-
     @Override
     public boolean check(Path file, BasicFileAttributes attrs) {
         String mimeType = MCRXMLFunctions.getMimeType(file.getFileName().toString());
 
-        if(XML_MIME_TYPES.contains(mimeType)){
+        if (XML_MIME_TYPES.contains(mimeType)) {
             final String localRootName = getLocalRootName(file).orElse(null);
             return !Objects.equals(localRootName, ALTO_ROOT);
         }
 
         return super.check(file, attrs);
     }
-
 
     private static Optional<String> getLocalRootName(Path path) {
         SAXParserFactory factory = SAXParserFactory.newInstance();

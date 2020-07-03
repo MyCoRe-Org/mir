@@ -60,7 +60,8 @@ public abstract class MIRSwordCollectionProvider extends MCRSwordCollectionProvi
         return mcrSwordDefaultAuthHandler;
     }
 
-    @Override public MCRSwordIngester getIngester() {
+    @Override
+    public MCRSwordIngester getIngester() {
         return ingester;
     }
 

@@ -47,8 +47,9 @@ public abstract class MIREditorController extends MIRTestController {
     protected boolean hasInputTextError(String childElementName) {
         try {
             driver.waitAndFindElement(
-                By.xpath(".//div[contains(@class, 'mcr-invalid')  and contains(@class, 'form-group')]//*[contains(@name,'"
-                    + childElementName + "')]"));
+                By.xpath(
+                    ".//div[contains(@class, 'mcr-invalid')  and contains(@class, 'form-group')]//*[contains(@name,'"
+                        + childElementName + "')]"));
         } catch (NoSuchElementException | TimeoutException e) {
             LOGGER.error("Could not find red validation border !", e);
             return false;
@@ -70,8 +71,8 @@ public abstract class MIREditorController extends MIRTestController {
     protected void setLang(String baseXP, String lang) {
         driver.waitAndFindElement(By.xpath(".//span[contains(@id, '"
             + baseXP.replace(":", "")
-            .replace("[", "")
-            .replace("]", "")
+                .replace("[", "")
+                .replace("]", "")
             + "@xmllang" + "')]"))
             .click();
         driver.waitAndFindElement(By.className("select2-search__field")).clear();
@@ -82,7 +83,8 @@ public abstract class MIREditorController extends MIRTestController {
                 e = null;
                 driver.waitAndFindElement(By.xpath(
                     ".//li[contains(@class, 'select2-results__option') and contains(normalize-space(text()),'"
-                        + lang + "')]")).click();
+                        + lang + "')]"))
+                    .click();
             } catch (StaleElementReferenceException e2) {
                 e = e2;
             }

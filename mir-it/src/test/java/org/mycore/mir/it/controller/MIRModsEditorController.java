@@ -215,7 +215,8 @@ public class MIRModsEditorController extends MIREditorController {
                         e = null;
                         driver.waitAndFindElement(By.xpath(
                             ".//li[contains(@class, 'select2-results__option') and contains(normalize-space(text()),'"
-                                + currentLang.getValue() + "')]")).click();
+                                + currentLang.getValue() + "')]"))
+                            .click();
                     } catch (StaleElementReferenceException e2) {
                         e = e2;
                     }
@@ -232,8 +233,9 @@ public class MIRModsEditorController extends MIREditorController {
 
     public void setStatus(MIRStatus status) {
         new Select(driver.waitAndFindElement(
-            By.xpath(".//select[contains(@name, 'servstates/servstate') and option/@value='" + status.getValue() + "']")))
-            .selectByValue(status.getValue());
+            By.xpath(
+                ".//select[contains(@name, 'servstates/servstate') and option/@value='" + status.getValue() + "']")))
+                    .selectByValue(status.getValue());
     }
 
     public void setIdentifier(List<AbstractMap.Entry<MIRIdentifier, String>> typeIdentifierList) {

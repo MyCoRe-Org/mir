@@ -27,7 +27,6 @@ import org.swordapp.server.SwordServerException;
 import org.swordapp.server.UriRegistry;
 import org.xml.sax.SAXException;
 
-
 public class MIRGoobiIngester extends MIRSwordIngesterBase {
 
     public static final Logger LOGGER = LogManager.getLogger();
@@ -73,8 +72,6 @@ public class MIRGoobiIngester extends MIRSwordIngesterBase {
         return convertedDocument;
     }
 
-
-
     @Override
     public MCRObjectID ingestMetadataResources(Deposit entry) throws SwordError, SwordServerException {
         final MCRObjectID objectID = this.ingestMetadata(entry);
@@ -105,7 +102,7 @@ public class MIRGoobiIngester extends MIRSwordIngesterBase {
                     // derivate can be created but not deleted ?!
                     LOGGER.error("Derivate could not be deleted(deposit was invalid)", e1);
                 }
-            } else if(complete) {
+            } else if (complete) {
                 setDefaultMainFile(createdDerivateID.toString());
             }
         }

@@ -6,6 +6,7 @@ public enum MIRTitleType {
     alternative("alternative"),
     abbreviated("abbreviated"),
     uniform("uniform");
+
     MIRTitleType(String value) {
         this.value = value;
     }

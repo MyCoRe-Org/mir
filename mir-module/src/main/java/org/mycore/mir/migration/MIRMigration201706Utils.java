@@ -70,7 +70,7 @@ public class MIRMigration201706Utils {
         LOGGER.info("Updating derivate {} ...", derivateID);
         MCRMetadataManager.update(derivate);
     }
-    
+
     @MCRCommand(
         syntax = "migrate old coordinates to new",
         help = "migrates all objects with coordinates(point) to new coordinates(point and polygon).")
