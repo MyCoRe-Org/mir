@@ -1,6 +1,5 @@
 package org.mycore.mir.it.model;
 
-
 public class MIRComplexSearchQuery {
     private final MIRSearchFieldCondition searchFieldConditions;
 
@@ -26,6 +25,5 @@ public class MIRComplexSearchQuery {
     public MIRSearchField getSearchField() {
         return searchField;
     }
-
 
 }

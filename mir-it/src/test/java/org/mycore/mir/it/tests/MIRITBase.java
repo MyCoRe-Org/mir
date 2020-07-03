@@ -101,7 +101,7 @@ public class MIRITBase extends MCRSeleniumTestBase {
         Assert.assertTrue("Classification validation message should be visible!",
             this.editorController.isClassificationValidationMessageVisible());
     }
-    
+
     protected void assertAdminValidation() {
         Assert.assertTrue("Rights validation message should be visible!",
             this.editorController.isRightsValidationMessageVisible());

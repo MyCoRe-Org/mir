@@ -71,7 +71,8 @@ public class TestCommands extends MCRJPATestCase {
         chain.addCommand(importWebACLs);
 
         MIRWizardMCRCommand importRestApiACLs = new MIRWizardMCRCommand("import.restapiacls");
-        importRestApiACLs.setInputXML(MCRURIResolver.instance().resolve("resource:setup/restapiacl-wizard-commands.xml"));
+        importRestApiACLs
+            .setInputXML(MCRURIResolver.instance().resolve("resource:setup/restapiacl-wizard-commands.xml"));
         chain.addCommand(importRestApiACLs);
 
         endTransaction();

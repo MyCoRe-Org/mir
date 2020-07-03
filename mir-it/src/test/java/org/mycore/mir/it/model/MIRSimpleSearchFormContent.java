@@ -3,10 +3,15 @@ package org.mycore.mir.it.model;
 public class MIRSimpleSearchFormContent {
 
     private String title;
+
     private String author;
+
     private String metadata;
+
     private String files;
+
     private MIRInstitutes institute;
+
     private MIRStatus status;
 
     public MIRSimpleSearchFormContent(String title, String author, String metadata, String files,

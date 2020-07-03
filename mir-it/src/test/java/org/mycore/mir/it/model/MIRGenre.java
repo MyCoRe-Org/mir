@@ -43,6 +43,7 @@ public enum MIRGenre {
     picture("picture"),
     broadcasting("broadcasting"),
     lecture("lecture");
+
     String value;
 
     MIRGenre(String value) {

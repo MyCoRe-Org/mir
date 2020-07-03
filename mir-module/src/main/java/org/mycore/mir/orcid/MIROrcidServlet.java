@@ -16,7 +16,6 @@ import java.util.stream.Collectors;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 
-
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
@@ -34,7 +33,7 @@ import com.google.gson.Gson;
 public class MIROrcidServlet extends MCRServlet {
 
     private static final String ORCID_URL = "https://orcid.org/";
-    
+
     private static final String ORCID_API_URL = "https://pub.orcid.org/";
 
     private static final String ORCID_REQUEST_BASE = ORCID_API_URL + "v2.0/";
@@ -49,7 +48,8 @@ public class MIROrcidServlet extends MCRServlet {
     private static final Namespace ORCID_PERSONAL_DETAILS_NAMESPACE = Namespace
         .getNamespace("personal-details", "http://www.orcid.org/ns/personal-details");
 
-    private static final Namespace ORCID_COMMON_NAMESPACE = Namespace.getNamespace("common", "http://www.orcid.org/ns/common");
+    private static final Namespace ORCID_COMMON_NAMESPACE = Namespace.getNamespace("common",
+        "http://www.orcid.org/ns/common");
 
     private static final String SEARCH_ORCID_XPATH = "/search:search/search:result/common:orcid-identifier/common:path";
 
@@ -103,8 +103,7 @@ public class MIROrcidServlet extends MCRServlet {
                 return null;
             }
 
-
-            return new MIROrcidPersonEntry(givenName.getTextTrim(),familyName.getTextTrim(), ORCID_URL + orcid);
+            return new MIROrcidPersonEntry(givenName.getTextTrim(), familyName.getTextTrim(), ORCID_URL + orcid);
         } catch (JDOMException | IOException e) {
             throw new MCRException(e);
         }
@@ -135,10 +134,15 @@ public class MIROrcidServlet extends MCRServlet {
 
     public static class MIROrcidPersonEntry {
         public String term;
+
         public String value;
+
         public String forename;
+
         public String sureName;
+
         public String label;
+
         public String type;
 
         public MIROrcidPersonEntry(String givenName, String familyName, String value) {

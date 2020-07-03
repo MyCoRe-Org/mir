@@ -1,5 +1,9 @@
 package org.mycore.mir.it.controller;
 
+import java.util.AbstractMap;
+import java.util.List;
+import java.util.stream.IntStream;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.mycore.common.selenium.drivers.MCRWebdriverWrapper;
@@ -18,13 +22,8 @@ import org.mycore.mir.it.tests.MIRTestData;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.StaleElementReferenceException;
-
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
-
-import java.util.AbstractMap;
-import java.util.List;
-import java.util.stream.IntStream;
 
 public class MIRModsEditorController extends MIREditorController {
 
@@ -215,7 +214,8 @@ public class MIRModsEditorController extends MIREditorController {
                         e = null;
                         driver.waitAndFindElement(By.xpath(
                             ".//li[contains(@class, 'select2-results__option') and contains(normalize-space(text()),'"
-                                + currentLang.getValue() + "')]")).click();
+                                + currentLang.getValue() + "')]"))
+                            .click();
                     } catch (StaleElementReferenceException e2) {
                         e = e2;
                     }
@@ -232,8 +232,9 @@ public class MIRModsEditorController extends MIREditorController {
 
     public void setStatus(MIRStatus status) {
         new Select(driver.waitAndFindElement(
-            By.xpath(".//select[contains(@name, 'servstates/servstate') and option/@value='" + status.getValue() + "']")))
-            .selectByValue(status.getValue());
+            By.xpath(
+                ".//select[contains(@name, 'servstates/servstate') and option/@value='" + status.getValue() + "']")))
+                    .selectByValue(status.getValue());
     }
 
     public void setIdentifier(List<AbstractMap.Entry<MIRIdentifier, String>> typeIdentifierList) {

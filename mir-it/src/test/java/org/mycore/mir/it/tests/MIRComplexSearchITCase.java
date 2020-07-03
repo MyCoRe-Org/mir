@@ -1,8 +1,5 @@
 package org.mycore.mir.it.tests;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -15,8 +12,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.apache.solr.client.solrj.SolrServerException;
-import org.apache.solr.client.solrj.impl.HttpSolrClient;
-import org.apache.solr.common.SolrDocument;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -39,11 +34,7 @@ import org.mycore.mir.it.model.MIRSearchFieldCondition;
 import org.mycore.mir.it.model.MIRStatus;
 import org.mycore.mir.it.model.MIRTitleInfo;
 import org.mycore.mir.it.model.MIRTitleType;
-import org.mycore.solr.search.MCRSolrSearchUtils;
-import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 
 public class MIRComplexSearchITCase extends MIRITBase {
     private MIRSearchController searchController;
@@ -66,7 +57,7 @@ public class MIRComplexSearchITCase extends MIRITBase {
         if (!CREATED) {
             createDocument();
 
-           /* HttpSolrClient solrClient = new HttpSolrClient.Builder("http://localhost:9108/solr/mir").build();
+            /* HttpSolrClient solrClient = new HttpSolrClient.Builder("http://localhost:9108/solr/mir").build();
             solrClient.optimize();
             boolean found;
             long timeout = System.currentTimeMillis();
@@ -95,12 +86,13 @@ public class MIRComplexSearchITCase extends MIRITBase {
         editorController.setGenres(Collections.singletonList(MIRGenre.article));
         editorController.setTitleInfo(Stream.of(
             new MIRTitleInfo("Der", MIRLanguage.german, MIRTitleType.mainTitle, MIRTestData.TITLE,
-                MIRTestData.SUB_TITLE)).collect(Collectors.toList()));
+                MIRTestData.SUB_TITLE))
+            .collect(Collectors.toList()));
         editorController.setAuthor(MIRTestData.AUTHOR_2);
         editorController.setInstitution(MIRInstitutes.Universität_in_Deutschland);
         editorController.setPublisher(MIRTestData.SIGNATURE);
-        Map.Entry<MIRIdentifier, String> identifierStringMap =
-            new AbstractMap.SimpleEntry<>(MIRIdentifier.doi, "10.1000/182");
+        Map.Entry<MIRIdentifier, String> identifierStringMap = new AbstractMap.SimpleEntry<>(MIRIdentifier.doi,
+            "10.1000/182");
         editorController.setIdentifier(Collections.singletonList(identifierStringMap));
         String timeStamp = DateTimeFormatter.ofPattern("yyyy-MM-dd").format(LocalDateTime.now());
         editorController.setIssueDate(timeStamp);

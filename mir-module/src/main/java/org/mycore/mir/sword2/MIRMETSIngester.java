@@ -142,7 +142,6 @@ public class MIRMETSIngester extends MIRSwordIngesterBase {
         return convertedDocument;
     }
 
-
     @Override
     public MCRObjectID ingestMetadataResources(Deposit entry) throws SwordError, SwordServerException {
         final MCRObjectID objectID = this.ingestMetadata(entry);
@@ -180,7 +179,5 @@ public class MIRMETSIngester extends MIRSwordIngesterBase {
             }
         }
     }
-
-
 
 }

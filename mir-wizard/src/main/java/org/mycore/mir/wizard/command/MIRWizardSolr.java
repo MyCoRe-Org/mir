@@ -32,7 +32,7 @@ import org.mycore.solr.commands.MCRSolrCommands;
 public class MIRWizardSolr extends MIRWizardCommand {
 
     private static String DEFAULT_CORE = "main";
-    
+
     private static String DEFAULT_CLASSIFICATION = "classification";
 
     public MIRWizardSolr() {

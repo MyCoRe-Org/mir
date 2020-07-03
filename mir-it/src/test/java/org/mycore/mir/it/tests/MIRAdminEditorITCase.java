@@ -68,7 +68,7 @@ public class MIRAdminEditorITCase extends MIRITBase {
         simpleSearchController.simpleSearchBy(MIRTestData.TITLE, null, null, null, null);
         String noDocumentsFoundText = "Keine Dokumente gefunden";
         WebDriverWait wait = new WebDriverWait(driver, 1);
-        wait.until((driver)->{
+        wait.until((driver) -> {
             try {
                 driver.findElement(MCRBy.partialText(noDocumentsFoundText));
                 return false;

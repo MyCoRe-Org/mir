@@ -109,14 +109,14 @@ public class MIRSearchController extends MIRTestController {
             if (field != null) {
                 new Select(
                     driver.waitAndFindElement(By.xpath(".//select[contains(@name, '" + baseXP + "@field" + "')]")))
-                    .selectByValue(field.getValue());
+                        .selectByValue(field.getValue());
             }
 
             MIRSearchFieldCondition operator = complexSearchQuery.getSearchFieldConditions();
             if (operator != null) {
                 new Select(
                     driver.waitAndFindElement(By.xpath(".//select[contains(@name, '" + baseXP + "@operator" + "')]")))
-                    .selectByValue(operator.getValue());
+                        .selectByValue(operator.getValue());
             }
 
             String value = complexSearchQuery.getText();
