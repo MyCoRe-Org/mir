@@ -194,9 +194,10 @@
    * anchor elements should be shown as a link even when:
    * - a href attribute is missing and
    * - a tabindex attribute is missing and
+   * - it is not a pagination link and
    * - it has no dropdown-item class
    */
-   a:not([href]):not([tabindex]):not(.dropdown-item) {
+   a:not([href]):not([tabindex]):not(.dropdown-item):not(.page-link) {
     color: $link-color;
     text-decoration: $link-decoration;
     cursor: pointer;
