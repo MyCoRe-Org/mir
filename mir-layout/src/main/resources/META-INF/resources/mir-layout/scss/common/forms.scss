@@ -46,11 +46,17 @@
   border: 1px solid #DCE4EC;
   border-radius: 4px;
   margin-top: 4px;
+  margin-right: 2px;
   padding: 7px 14px;
 }
 
 #titles_thesis, #titles_thesis_translated {
   padding-bottom: 15px;
+}
+
+/* editor submit and cancel */
+#editor-buttons .btn {
+  margin-right: 1rem;
 }
 
 //
