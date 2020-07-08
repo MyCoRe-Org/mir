@@ -301,7 +301,7 @@
                 <xsl:when test="string-length($XSL.Status.Style) &gt; 0"><xsl:value-of select="concat('alert-', $XSL.Status.Style)" /></xsl:when>
                 <xsl:otherwise>alert-info</xsl:otherwise>
               </xsl:choose>
-              alert alert-dismissible fade in
+              alert alert-dismissible fade show
             </xsl:attribute>
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">×</span></button>

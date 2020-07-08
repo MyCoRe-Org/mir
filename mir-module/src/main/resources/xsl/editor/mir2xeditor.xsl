@@ -149,10 +149,10 @@
       <xsl:value-of select="concat(@xpath,'[@point=', $apos, 'end', $apos, ']')"/>
     </xsl:variable>
     <xsl:variable name="hiddenclasssimple" >
-      <xsl:if test="@onlyRange = 'true' ">hidden</xsl:if>
+      <xsl:if test="@onlyRange = 'true' ">d-none</xsl:if>
     </xsl:variable>
     <xsl:variable name="hiddenclassrange" >
-      <xsl:if test="not(@onlyRange = 'true')">hidden</xsl:if>
+      <xsl:if test="not(@onlyRange = 'true')">d-none</xsl:if>
     </xsl:variable>
     <div class="date-format" data-format="simple">
       <div class="date-simple {$hiddenclasssimple} input-group mb-1">
