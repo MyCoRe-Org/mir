@@ -19,7 +19,7 @@
   </xsl:template>
 
   <!-- "Vol. 67" -->
-  <xsl:template match="level[@field='mir.toc.host.volume']/item" priority="1">
+  <xsl:template match="level[(@field='mir.toc.host.volume')]/item" priority="1">
     <xsl:call-template name="toc.volume.title" />
   </xsl:template>
 
@@ -83,6 +83,30 @@
     </div>
   </xsl:template>
 
+  <xsl:template match="toc[@layout='legacy']//publications/doc" priority="2">
+    <div class="row">
+      <div class="col-10">
+        <h4 class="mir-toc-section-title">
+          <xsl:call-template name="toc.title" >
+            <xsl:with-param name="showVolume" select="'true'" />
+          </xsl:call-template>
+        </h4>
+      </div>
+      <xsl:if test="field[starts-with(@name,'mir.toc.host.page')]">
+        <div class="col-2 mir-toc-section-page">
+          <xsl:for-each select="field[starts-with(@name,'mir.toc.host.page')]">
+            <xsl:value-of select="i18n:translate('mir.pages.abbreviated.single')" />
+            <xsl:text> </xsl:text>
+            <xsl:value-of select="." />
+          </xsl:for-each>
+        </div>
+      </xsl:if>
+      <div class="col-12 mir-toc-section-author">
+        <xsl:call-template name="toc.authors" />
+      </div>
+    </div>
+  </xsl:template>
+
   <xsl:template match="toc[@layout='blog']//publications/doc" priority="2">
     <div class="row">
       <div class="col-1">
@@ -116,7 +140,15 @@
   </xsl:template>
 
   <xsl:template name="toc.title">
+    <xsl:param name="showVolume" select="'false'" />
     <a href="{$WebApplicationBaseURL}receive/{@id}">
+      <xsl:if test="$showVolume='true' and (field[@name='mir.toc.series.volume'] or field[@name='mir.toc.host.volume'])">
+        <xsl:choose>
+          <xsl:when test="field[@name='mir.toc.host.volume']"><xsl:value-of select="field[@name='mir.toc.host.volume']" /></xsl:when>
+          <xsl:otherwise><xsl:value-of select="field[@name='mir.toc.series.volume']" /></xsl:otherwise>
+        </xsl:choose>
+        <xsl:text> - </xsl:text>
+      </xsl:if>
       <xsl:value-of select="field[@name='mir.toc.title']" />
     </a>
   </xsl:template>
