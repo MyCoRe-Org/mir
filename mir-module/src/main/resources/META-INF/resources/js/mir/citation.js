@@ -42,7 +42,7 @@
         let style = localStorage.getItem('style');
         if (style !== undefined && style !== null && style !== '') {
             getCitation(objectID, style, true);
-            $('#citation-text').val(style);
+            $('#mir-csl-cite').val(style);
         }
         else {
             getCitation(objectID, 'deutsche-sprache', true);
