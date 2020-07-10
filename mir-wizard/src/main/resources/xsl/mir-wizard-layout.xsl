@@ -12,7 +12,7 @@
   <xsl:include href="layout-utils.xsl" />
 
   <xsl:param name="CurrentLang" select="'de'" />
-  <xsl:param name="MIR.DefaultLayout.CSS" select="'flatly'" />
+  <xsl:param name="MIR.DefaultLayout.CSS" select="'flatly.min'" />
   <xsl:param name="MIR.Layout.Theme" select="'flatmir'" />
 
   <xsl:variable name="PageTitle" select="/*/@title" />
