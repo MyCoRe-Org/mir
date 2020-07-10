@@ -14,10 +14,10 @@
 <xsl:param name="CurrentLang" />
 <xsl:param name="WebApplicationBaseURL" />
 <xsl:param name="MCR.ORCID.LinkURL" />
-<xsl:param name="MIR.DefaultLayout.CSS" select="'flatly.min'" />
+<xsl:param name="MIR.DefaultLayout.CSS" />
 <xsl:param name="MIR.CustomLayout.CSS" select="''" />
 <xsl:param name="MIR.CustomLayout.JS" select="''" />
-<xsl:param name="MIR.Layout.Theme" select="'flatmir'" />
+<xsl:param name="MIR.Layout.Theme" />
 
 <xsl:output method="html" encoding="UTF-8" media-type="text/html" indent="yes" xalan:indent-amount="2" />
 
