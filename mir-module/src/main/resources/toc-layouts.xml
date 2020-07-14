@@ -11,6 +11,8 @@
 
   level  : a grouping level for table of contents
     @field    : a SOLR index field to build this level as facet
+    @limit    : maximum number of level items at this level facet
+                overrides default from MIR.TableOfContents.LevelLimit
     @order    : display order for TOC level items
     @expanded : by default, should level be show expanded or collapsed?
                 options are true|false|first (only fist item at level expanded)
