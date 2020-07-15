@@ -111,12 +111,26 @@ $(document).ready(function() {
         }
     }
 
+    function rejumpToLocationHash(el) {
+        if(window.location.hash!==null && window.location.hash!==""){
+            let element = document.querySelector(window.location.hash);
+            if(element!==null){
+                if(el.parent().find(window.location.hash).length>0){
+                    element.scrollIntoView(true);
+                }
+            }
+        }
+    }
+
     if ($(".personExtended-container input:text[value='']").length > 0) {
-        $(".personExtended-container input:not(:text[value=''])").closest(".personExtended-container").removeClass("d-none").prev().removeClass("hiddenDetail");
+        let el = $(".personExtended-container input:not(:text[value=''])").closest(".personExtended-container").removeClass("d-none").prev();
+        el.removeClass("hiddenDetail");
+        rejumpToLocationHash(el);
     }
 
     if ($(".dateExtended-container input:not(:text[value=''])").length > 0) {
         $(".dateExtended-container").closest(".dateExtended-container").removeClass("d-none").prev().removeClass("d-none");
+        rejumpToLocationHash();
     }
 
     if ($(".date-select").length > 0) {
