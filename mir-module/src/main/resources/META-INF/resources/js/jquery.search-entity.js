@@ -462,7 +462,7 @@
     var $parent = this.$parent;
     var options = this.options;
 
-    var isActive = $parent.hasClass("open");
+    var isActive = $parent.find(".dropdown-menu").hasClass("show");
 
     this.clearAll();
 
@@ -475,29 +475,38 @@
         return;
 
       var type = null;
-      for ( var t in SearchEntity.TYPES) {
+      for (var t in SearchEntity.TYPES) {
         if (this.selectedType.toUpperCase() == t.toUpperCase()) {
           type = SearchEntity.TYPES[t][options.searchEntityType];
           break;
         }
       }
 
-      this.$searchBtn.button("loading");
+      let text = this.$searchBtn.text();
+      this.$searchBtn.text(" " + this.$searchBtn.attr("data-loading-text"));
+      let content = jQuery('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true">' +
+          '</span><span class="sr-only">' + this.$searchBtn.attr("data-loading-text") + '</span>');
+      this.$searchBtn.prepend(content);
+
+      let that = this;
       if (type != null) {
-        SearchEntity.loadData(type.url, type.dataType, type.data(input), function(data) {
+        SearchEntity.loadData(type.url, type.dataType, type.data(input), function (data) {
           if (data !== undefined) {
             that.showResult(SearchEntity.sortData(input, typeof type.dataConvert == "function" ? type.dataConvert(data) : data));
           } else {
             that.showResult();
           }
-          that.$searchBtn.button("reset");
-        }, function() {
+          content.detach();
+          that.$searchBtn.text(text);
+        }, function () {
           that.showResult();
-          that.$searchBtn.button("reset");
+          content.detach();
+          that.$searchBtn.text(text);
         })
       } else {
         console.error("Search type \"" + this.selectedType.toUpperCase() + "\" is unsupported!");
-        this.$searchBtn.button("reset");
+        content.detach();
+        this.$searchBtn.text(text);
       }
     }
 
