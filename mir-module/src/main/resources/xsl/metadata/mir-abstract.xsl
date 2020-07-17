@@ -202,19 +202,11 @@
           <xsl:for-each select="$mods/mods:abstract">
             <xsl:choose>
               <xsl:when test="(string-length(@altRepGroup) &gt; 0) and (string-length(@altFormat) &gt; 0)">
-                <!-- ignore abstract -->
+                <xsl:copy-of select="document(concat('unescape-html-content:', @altFormat))"/>
               </xsl:when>
-              <xsl:when test="(string-length(@altRepGroup) &gt; 0) and (string-length(@altFormat) = 0)">
-                <mods:abstract xml:lang="{@xml:lang}">
-                  <xsl:apply-templates select="." mode="mods.printAlternateFormat">
-                    <xsl:with-param name="asHTML" select="true()" />
-                    <xsl:with-param name="filtered" select="true()" />
-                  </xsl:apply-templates>
-                </mods:abstract>
+              <xsl:when test="not(@altRepGroup)">
+                <xsl:copy-of select="."/>
               </xsl:when>
-              <xsl:otherwise>
-                <xsl:copy-of select="." />
-              </xsl:otherwise>
             </xsl:choose>
           </xsl:for-each>
         </xsl:variable>
@@ -222,7 +214,6 @@
 
         <xsl:choose>
           <xsl:when test="count($abstracts/mods:abstract) &gt; 1">
-
             <div id="mir-abstract-tabs">
               <ul class="nav nav-tabs" role="tablist">
                 <xsl:for-each select="$abstracts/mods:abstract">
@@ -256,7 +247,7 @@
                     </xsl:if>
                     <p>
                       <span class="ellipsis-description">
-                        <xsl:apply-templates select="node()" mode="unescapeHtml" />
+                        <xsl:copy-of select="*"/>
                       </span>
                     </p>
                   </div>
@@ -279,7 +270,7 @@
               <div class="ellipsis ellipsis-text">
                 <p>
                   <span class="ellipsis-description">
-                    <xsl:apply-templates select="$abstracts/mods:abstract/node()" mode="unescapeHtml" />
+                    <xsl:copy-of select="$abstracts/mods:abstract/node()"/>
                   </span>
                 </p>
               </div>
@@ -420,4 +411,47 @@
       </xsl:if>
     </a>
   </xsl:template>
+
+  <xsl:template mode="mods.printTitle" match="mods:titleInfo" priority="1">
+    <xsl:param name="asHTML" select="false()" />
+    <xsl:param name="withSubtitle" select="false()" />
+
+    <xsl:variable name="altRepGroup" select="@altRepGroup" />
+    <xsl:variable name="hasAlternateFormat" select="count(..//mods:titleInfo[(@altRepGroup = $altRepGroup) and (string-length(@altFormat) &gt; 0)]) &gt; 0" />
+
+    <xsl:choose>
+      <xsl:when test="$asHTML and $hasAlternateFormat and (string-length(@altFormat) = 0)">
+        <!-- ignore titleInfo -->
+      </xsl:when>
+      <xsl:when test="$asHTML and $hasAlternateFormat and (string-length(@altFormat) &gt; 0)">
+        <xsl:variable name="alternateContent"
+                      select="document(concat('unescape-html-content:',..//mods:titleInfo[(@altRepGroup = $altRepGroup) and (string-length(@altFormat) &gt; 0)]/@altFormat))/*[local-name()='titleInfo']" />
+
+        <xsl:if test="$alternateContent/nonSort">
+          <xsl:copy-of select="$alternateContent/nonSort/node()" />
+
+        </xsl:if>
+        <xsl:copy-of select="$alternateContent/title/node()" />
+        <xsl:if test="$withSubtitle and $alternateContent/subTitle">
+          <span class="subtitle">
+            <xsl:text> : </xsl:text>
+            <xsl:copy-of select="$alternateContent/subTitle/node()" />
+          </span>
+        </xsl:if>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:if test="mods:nonSort">
+          <xsl:value-of select="concat(mods:nonSort, ' ')" />
+        </xsl:if>
+        <xsl:value-of select="mods:title" />
+        <xsl:if test="$withSubtitle and mods:subTitle">
+          <span class="subtitle">
+            <xsl:text> : </xsl:text>
+            <xsl:value-of select="mods:subTitle" />
+          </span>
+        </xsl:if>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
 </xsl:stylesheet>

@@ -20,6 +20,7 @@ module.exports = function(grunt) {
         },
         files : {
           'bootstrap/js' : 'bootstrap/dist/js',
+          'ckeditor4' : 'ckeditor4/',
 
           'font-awesome/css' : '@fortawesome/fontawesome-free/css',
           'font-awesome/webfonts' : '@fortawesome/fontawesome-free/webfonts',

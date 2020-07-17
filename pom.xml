@@ -435,6 +435,12 @@
         <version>${project.version}</version>
       </dependency>
       <dependency>
+        <groupId>org.jsoup</groupId>
+        <artifactId>jsoup</artifactId>
+        <version>1.12.1</version>
+        <scope>compile</scope>
+      </dependency>
+      <dependency>
         <groupId>org.mycore</groupId>
         <artifactId>mycore-meta</artifactId>
         <version>${mycore.version}</version>

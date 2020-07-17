@@ -200,6 +200,76 @@
     </div>
   </xsl:template>
 
+  <xsl:template match="mir:htmlArea">
+    <xsl:variable name="xed-val-marker" > {$xed-validation-marker} </xsl:variable>
+    <xsl:variable name="editorID" select="concat('editor_', generate-id())" />
+    <xsl:choose>
+      <xsl:when test="@repeat = 'true'">
+        <xed:repeat xpath="{@xpath}" min="{@min}" max="{@max}">
+          <div class="form-group row {@class} {$xed-val-marker}">
+            <label class="col-md-3 col-form-label text-right">
+              <xed:output i18n="{@label}" />
+            </label>
+            <div class="col-md-6">
+              <xsl:choose>
+                <xsl:when test="@bind" >
+                  <xed:bind xpath="{@bind}" >
+                    <textarea class="form-control">
+                      <xsl:copy-of select="@rows" />
+                      <xsl:copy-of select="@placeholder" />
+                    </textarea>
+                  </xed:bind>
+                </xsl:when>
+                <xsl:otherwise>
+                  <textarea id="{$editorID}" class="form-control">
+                    <xsl:copy-of select="@rows" />
+                    <xsl:copy-of select="@placeholder" />
+                  </textarea>
+                </xsl:otherwise>
+              </xsl:choose>
+            </div>
+            <div class="col-md-3">
+              <xsl:if test="string-length(@help-text) &gt; 0">
+                <xsl:call-template name="mir-helpbutton" />
+              </xsl:if>
+              <xsl:call-template name="mir-pmud" />
+            </div>
+          </div>
+          <xsl:call-template name="mir-required" />
+        </xed:repeat>
+      </xsl:when>
+      <xsl:otherwise>
+        <xed:bind xpath="{@xpath}">
+          <div class="form-group row {@class} {$xed-val-marker}">
+            <label class="col-md-3 col-form-label text-right">
+              <xed:output i18n="{@label}" />
+            </label>
+            <div class="col-md-6">
+              <textarea id="{$editorID}" class="form-control">
+                <xsl:copy-of select="@rows" />
+                <xsl:copy-of select="@placeholder" />
+              </textarea>
+            </div>
+            <div class="col-md-3">
+              <xsl:if test="string-length(@help-text) &gt; 0">
+                <xsl:call-template name="mir-helpbutton" />
+              </xsl:if>
+              <xsl:if test="@pmud = 'true'">
+                <xsl:call-template name="mir-pmud" />
+              </xsl:if>
+            </div>
+          </div>
+          <xsl:call-template name="mir-required" />
+        </xed:bind>
+      </xsl:otherwise>
+    </xsl:choose>
+    <script>
+      window.addEventListener('load', function(){
+        CKEDITOR.replace('<xsl:value-of select="$editorID" />', { });
+      });
+    </script>
+  </xsl:template>
+
   <xsl:template match="mir:textarea">
     <xsl:variable name="xed-val-marker" > {$xed-validation-marker} </xsl:variable>
     <xsl:choose>
