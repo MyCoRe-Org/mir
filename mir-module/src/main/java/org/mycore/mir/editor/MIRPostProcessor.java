@@ -91,7 +91,7 @@ public class MIRPostProcessor extends MCRPostProcessorXSL {
             .map(en -> titleInfoElement.getChild(en, MCRConstants.MODS_NAMESPACE))
             .filter(Objects::nonNull)
             .filter(child -> isHtml(child.getText()))
-            .forEach(child -> MIREditorUtils.getPlainTextString(child.getText()));
+            .forEach(child -> child.setText(MIREditorUtils.getPlainTextString(child.getText())));
         modsElement.addContent(modsElement.indexOf(titleInfoElement), altTitleInfo);
     }
 
