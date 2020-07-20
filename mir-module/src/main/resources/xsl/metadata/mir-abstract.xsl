@@ -204,9 +204,9 @@
               <xsl:when test="(string-length(@altRepGroup) &gt; 0) and (string-length(@altFormat) &gt; 0)">
                 <xsl:copy-of select="document(concat('unescape-html-content:', @altFormat))"/>
               </xsl:when>
-              <xsl:when test="not(@altRepGroup)">
+              <xsl:otherwise>
                 <xsl:copy-of select="."/>
-              </xsl:when>
+              </xsl:otherwise>
             </xsl:choose>
           </xsl:for-each>
         </xsl:variable>
@@ -247,7 +247,7 @@
                     </xsl:if>
                     <p>
                       <span class="ellipsis-description">
-                        <xsl:copy-of select="*"/>
+                        <xsl:copy-of select="node()"/>
                       </span>
                     </p>
                   </div>
