@@ -72,15 +72,25 @@ module.exports = function(grunt) {
           '<%= globalConfig.moduleDirectory %>/target/classes/META-INF/resources/js/mir/citation.min.js': '<%= globalConfig.moduleDirectory %>/src/main/resources/META-INF/resources/js/mir/citation.js',
 
           '<%= globalConfig.moduleDirectory %>/target/classes/META-INF/resources/js/jquery.search-entity.min.js': '<%= globalConfig.moduleDirectory %>/src/main/resources/META-INF/resources/js/jquery.search-entity.js',
-          '<%= globalConfig.moduleDirectory %>/target/classes/META-INF/resources/js/epusta.min.js': '<%= globalConfig.moduleDirectory %>/src/main/resources/META-INF/resources/js/epusta.js'
+          '<%= globalConfig.moduleDirectory %>/target/classes/META-INF/resources/js/epusta.min.js': '<%= globalConfig.moduleDirectory %>/src/main/resources/META-INF/resources/js/epusta.js',
+          '<%= globalConfig.moduleDirectory %>/target/classes/META-INF/assets/ckeditor4/config.min.js': '<%= globalConfig.moduleDirectory %>/src/main/resources/META-INF/resources/js/ckeditor-config.js'
         }
       }
     },
   });
+  grunt.registerTask('copy', function() {
+    const source = getAbsoluteDir(grunt.option('moduleDirectory'))+'/src/main/resources/META-INF/resources/js/ckeditor-config.js';
+    const target = getAbsoluteDir(grunt.option('assetsDirectory')) + '/ckeditor4/config.js';
+    fs.copyFile(source, target, (err) => {
+      if (err) throw err;
+      grunt.log('ckeditor config copied!');
+    });
+  })
   grunt.registerTask('none', function() {
   });
   grunt.registerTask('default', 'build assets directory', function() {
     grunt.task.run('npmcopy');
+    grunt.task.run('copy')
     grunt.task.run('uglify');
   });
 };

@@ -202,7 +202,6 @@
 
   <xsl:template match="mir:htmlArea">
     <xsl:variable name="xed-val-marker" > {$xed-validation-marker} </xsl:variable>
-    <xsl:variable name="editorID" select="concat('editor_', generate-id())" />
     <xsl:choose>
       <xsl:when test="@repeat = 'true'">
         <xed:repeat xpath="{@xpath}" min="{@min}" max="{@max}">
@@ -221,7 +220,7 @@
                   </xed:bind>
                 </xsl:when>
                 <xsl:otherwise>
-                  <textarea id="{$editorID}" class="form-control">
+                  <textarea class="form-control ckeditor">
                     <xsl:copy-of select="@rows" />
                     <xsl:copy-of select="@placeholder" />
                   </textarea>
@@ -245,7 +244,7 @@
               <xed:output i18n="{@label}" />
             </label>
             <div class="col-md-6">
-              <textarea id="{$editorID}" class="form-control">
+              <textarea class="form-control ckeditor">
                 <xsl:copy-of select="@rows" />
                 <xsl:copy-of select="@placeholder" />
               </textarea>
@@ -263,11 +262,6 @@
         </xed:bind>
       </xsl:otherwise>
     </xsl:choose>
-    <script>
-      window.addEventListener('load', function(){
-        CKEDITOR.replace('<xsl:value-of select="$editorID" />', { });
-      });
-    </script>
   </xsl:template>
 
   <xsl:template match="mir:textarea">
