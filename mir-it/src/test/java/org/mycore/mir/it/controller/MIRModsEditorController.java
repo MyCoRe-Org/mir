@@ -123,7 +123,7 @@ public class MIRModsEditorController extends MIREditorController {
     }
 
     public void setAbstract(String _abstract) {
-        setTextAreaText("mods:abstract", _abstract);
+        setHTMLAreaText("mods:abstract", _abstract);
     }
 
     public void setAbstracts(List<MIRAbstract> abstracts) {
@@ -138,7 +138,7 @@ public class MIRModsEditorController extends MIREditorController {
                 MIRAbstract anAbstract = abstracts.get(i);
                 setLang(xp + "/", anAbstract.getLanguage().getValue());
                 if (anAbstract.isText()) {
-                    setTextAreaText(xp, anAbstract.getTextOrLink());
+                    setHTMLAreaText(xp, anAbstract.getTextOrLink());
                 } else {
                     setInputText(xp + "/@xlink:href", anAbstract.getTextOrLink());
                 }
