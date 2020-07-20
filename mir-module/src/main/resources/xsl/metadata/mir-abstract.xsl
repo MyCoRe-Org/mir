@@ -204,9 +204,9 @@
               <xsl:when test="(string-length(@altRepGroup) &gt; 0) and (string-length(@altFormat) &gt; 0)">
                 <xsl:copy-of select="document(concat('unescape-html-content:', @altFormat))"/>
               </xsl:when>
-              <xsl:otherwise>
+              <xsl:when test="not(@altRepGroup)">
                 <xsl:copy-of select="."/>
-              </xsl:otherwise>
+              </xsl:when>
             </xsl:choose>
           </xsl:for-each>
         </xsl:variable>
