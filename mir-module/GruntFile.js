@@ -82,15 +82,17 @@ module.exports = function(grunt) {
     const source = getAbsoluteDir(grunt.option('moduleDirectory'))+'/src/main/resources/META-INF/resources/js/ckeditor-config.js';
     const target = getAbsoluteDir(grunt.option('assetsDirectory')) + '/ckeditor4/config.js';
     fs.copyFile(source, target, (err) => {
-      if (err) throw err;
+      if (err) {
+        throw err;
+      }
       grunt.log('ckeditor config copied!');
     });
-  })
+  });
   grunt.registerTask('none', function() {
   });
   grunt.registerTask('default', 'build assets directory', function() {
     grunt.task.run('npmcopy');
-    grunt.task.run('copy')
+    grunt.task.run('copy');
     grunt.task.run('uglify');
   });
 };
