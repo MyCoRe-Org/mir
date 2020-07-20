@@ -36,6 +36,7 @@ public abstract class MIREditorController extends MIRTestController {
         final WebElement body = driver.switchTo().frame(iframe).findElement(By.tagName("body"));
         body.clear();
         body.sendKeys(text);
+        driver.switchTo().parentFrame();
     }
 
     protected void clickRepeater(String field) {
