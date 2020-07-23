@@ -11,6 +11,7 @@ CKEDITOR.editorConfig = function( config ) {
     ];
 
     config.allowedContent = window["MIR.Editor.HTML.Elements"];
+    config.autoParagraph = false;
 
 };
 
