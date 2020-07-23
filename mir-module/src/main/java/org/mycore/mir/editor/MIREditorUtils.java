@@ -18,12 +18,17 @@ public class MIREditorUtils {
 
     public static String getXHTMlSnippedString(String text) {
         Document document = Jsoup.parse(text);
-        document.outputSettings().syntax(Document.OutputSettings.Syntax.xml);
-        document.outputSettings().escapeMode(Entities.EscapeMode.xhtml);
+        changeToXHTML(document);
 
         final Whitelist elementWhitelist = getWhiteList();
         document = getCleanDocument(document, elementWhitelist);
+        changeToXHTML(document);
         return document.body().html();
+    }
+
+    private static void changeToXHTML(Document document) {
+        document.outputSettings().syntax(Document.OutputSettings.Syntax.xml);
+        document.outputSettings().escapeMode(Entities.EscapeMode.xhtml);
     }
 
     private static Document getCleanDocument(Document document, Whitelist elementWhitelist) {
@@ -32,7 +37,6 @@ public class MIREditorUtils {
 
     private static Whitelist getWhiteList() {
         final Whitelist elementWhitelist = Whitelist.none();
-        elementWhitelist.addTags("html", "head", "body");
 
         final Stream<String> allowedElements = MCRConfiguration2.getString("MIR.Editor.HTML.Elements")
                 .map(s -> Stream.of(s.split(" ")))
