@@ -384,7 +384,7 @@
 			}
 			var newJson = clone(derivateJson);
 			newJson.children = sortChildren(json.children, newJson.mainDoc);
-
+			newJson.path = json.path;
 			if (json.pagination) {
 				newJson.pagination = buildPagination(newJson.children);
 				newJson.children = newJson.children.slice(newJson.pagination.start - 1, newJson.pagination.end);
