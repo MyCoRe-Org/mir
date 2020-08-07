@@ -318,9 +318,9 @@ $(document).ready(function() {
     function getGenre(genreID) {
       var cat = $(GenreXML).find('category[ID="' + genreID + '"]');
       var lang = $(cat).find("label").filter(function() {
-        return $(this).attr('xml:lang') == $("html.no-js").attr("lang");
+        return $(this).attr('xml:lang') == $("html").attr("lang");
       });
-      if (lang == undefined || lang == "") {
+      if ($(lang).length === 0) {
         lang = $(cat).find("label").filter(function() {
           return $(this).attr('xml:lang') == "de";
         });
