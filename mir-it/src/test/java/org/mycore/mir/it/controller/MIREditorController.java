@@ -8,6 +8,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.TimeoutException;
+import org.openqa.selenium.WebElement;
 
 public abstract class MIREditorController extends MIRTestController {
 
@@ -28,6 +29,15 @@ public abstract class MIREditorController extends MIRTestController {
 
     protected void setTextAreaText(String childElementName, String text) {
         driver.waitAndFindElement(By.xpath(".//textarea[contains(@name,'" + childElementName + "')]")).sendKeys(text);
+    }
+
+    protected void setHTMLAreaText(String childElementName, String text) {
+        final WebElement iframe = driver.waitAndFindElement(
+            By.xpath(".//div[contains(@id,'" + childElementName + "') and contains(@class, 'cke')]//iframe"));
+        final WebElement body = driver.switchTo().frame(iframe).findElement(By.tagName("body"));
+        body.clear();
+        body.sendKeys(text);
+        driver.switchTo().parentFrame();
     }
 
     protected void clickRepeater(String field) {

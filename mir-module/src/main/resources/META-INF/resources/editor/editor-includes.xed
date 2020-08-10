@@ -21,7 +21,7 @@
       url="../servlets/MCRLockServlet?action=unlock&amp;id={$id}&amp;url=/receive/{$id}?XSL.Status.Message=mir.editstatus.canceled&amp;XSL.Status.Style=danger" />
     <xed:cancel url="{$cancelUrl}?XSL.Status.Message=mir.editstatus.canceled&amp;XSL.Status.Style=danger" />
     <xed:cancel url="../index.html?XSL.Status.Message=mir.editstatus.canceled&amp;XSL.Status.Style=danger" />
-    <xed:post-processor xsl="editor/xeditor2mods.xsl" />
+    <xed:post-processor class="org.mycore.mir.editor.MIRPostProcessor" xsl="editor/xeditor2mods.xsl" />
   </xed:template>
 
   <xed:template id="mycore.common">
@@ -1675,7 +1675,7 @@
   </xed:template>
 
   <xed:template id="abstract.simple">
-    <mir:textarea xpath="mods:abstract[not(@xml:lang) or @xml:lang=../mods:language/mods:languageTerm[@authority='rfc5646' and @type='code']]"
+    <mir:htmlArea xpath="mods:abstract[not(@xml:lang) or @xml:lang=../mods:language/mods:languageTerm[@authority='rfc5646' and @type='code']]"
       label="mir.abstract.text" help-text="{i18n:mir.help.abstract}" rows="5" />
   </xed:template>
 
@@ -1736,7 +1736,7 @@
             <mir:help-pmud help-text="{i18n:mir.help.abstract.language}" pmud="true" />
           </div>
           <mir:textfield xpath="@xlink:href" label="mir.abstract.aslink" help-text="{i18n:mir.help.abstract.aslink}" placeholder="{i18n:mir.placeholder.abstract.link}" />
-          <mir:textarea xpath="." label="mir.abstract.ortext" help-text="{i18n:mir.help.abstract.ortext}" rows="5" />
+          <mir:htmlArea xpath="." label="mir.abstract.ortext" help-text="{i18n:mir.help.abstract.ortext}" rows="5" />
         </div>
       </xed:repeat>
     </fieldset>
@@ -2160,6 +2160,9 @@
   </xed:template>
 
   <xed:template id="javascript">
+    <script>
+      window["MIR.Editor.HTML.Elements"] = "<xed:output value="$MIR.Editor.HTML.Elements" />";
+    </script>
     <script type="text/javascript" src="{$WebApplicationBaseURL}js/jquery.search-entity.min.js"></script>
     <script src="{$WebApplicationBaseURL}assets/jquery/plugins/typeahead/bloodhound.min.js" type="text/javascript"></script>
     <script src="{$WebApplicationBaseURL}assets/jquery/plugins/bootstrap3-typeahead/bootstrap3-typeahead.min.js" type="text/javascript"></script>
@@ -2170,6 +2173,7 @@
     <script type="text/javascript" src="{$WebApplicationBaseURL}assets/bootstrap-datepicker/locales/bootstrap-datepicker.de.min.js"></script>
     <script type="text/javascript" src="{$WebApplicationBaseURL}assets/moment/min/moment.min.js"></script>
     <script type="text/javascript" src="{$WebApplicationBaseURL}js/mir/xeditor-form.min.js"></script>
+    <script type="text/javascript" src="{$WebApplicationBaseURL}assets/ckeditor4/ckeditor.js"></script>
     <link rel="stylesheet" type="text/css" href="{$WebApplicationBaseURL}assets/select2/css/select2.min.css" />
     <script type="text/javascript" src="{$WebApplicationBaseURL}assets/select2/js/select2.min.js" />
     <script type="text/javascript" src="{$WebApplicationBaseURL}assets/select2/js/i18n/{$MCR.Metadata.DefaultLang}.js" />
