@@ -45,7 +45,7 @@
       <xsl:apply-templates select="node()" />
     </xsl:copy>
   </xsl:template>
-
+  <!--
   <xsl:template match="mods:titleInfo|mods:abstract">
     <xsl:choose>
       <xsl:when test="mcrxml:isHtml(mods:nonSort/text()) or mcrxml:isHtml(mods:title/text()) or mcrxml:isHtml(mods:subTitle/text()) or mcrxml:isHtml(text())">
@@ -94,6 +94,7 @@
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
+  -->
 
   <!-- create value URI using valueURIxEditor and authorityURI -->
   <xsl:template match="@valueURIxEditor">

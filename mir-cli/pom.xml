@@ -21,6 +21,7 @@
     <acl-description.not-logged-in>not logged-in</acl-description.not-logged-in>
     <acl-description.require-login>require login</acl-description.require-login>
     <acl-description.submitters>submitters, editors and administrators</acl-description.submitters>
+    <cli.cmd />
   </properties>
   <build>
     <plugins>
@@ -160,6 +161,7 @@
                 <argument>-classpath</argument>
                 <classpath />
                 <argument>org.mycore.frontend.cli.MCRCommandLineInterface</argument>
+                <argument>${cli.cmd}</argument>
               </arguments>
             </configuration>
           </plugin>

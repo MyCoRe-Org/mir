@@ -8,7 +8,7 @@
     <xsl:variable name="objID" select="mycoreobject/@ID"/>
     <div id="mir-file-upload">
       <xsl:if test="key('rights', mycoreobject/@ID)/@write">
-        <div data-upload-object="{$objID}" data-upload-target="/">
+        <div data-upload-object="{$objID}" data-upload-target="/" data-upload-classifications="derivate_types:content">
           <xsl:choose>
             <xsl:when test="count(mycoreobject/structure/derobjects/derobject)=0">
               <xsl:attribute name="class">drop-to-object mir-file-upload-box card bg-light text-center</xsl:attribute>

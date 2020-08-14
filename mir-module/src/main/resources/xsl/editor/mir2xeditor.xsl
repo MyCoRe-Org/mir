@@ -149,10 +149,10 @@
       <xsl:value-of select="concat(@xpath,'[@point=', $apos, 'end', $apos, ']')"/>
     </xsl:variable>
     <xsl:variable name="hiddenclasssimple" >
-      <xsl:if test="@onlyRange = 'true' ">hidden</xsl:if>
+      <xsl:if test="@onlyRange = 'true' ">d-none</xsl:if>
     </xsl:variable>
     <xsl:variable name="hiddenclassrange" >
-      <xsl:if test="not(@onlyRange = 'true')">hidden</xsl:if>
+      <xsl:if test="not(@onlyRange = 'true')">d-none</xsl:if>
     </xsl:variable>
     <div class="date-format" data-format="simple">
       <div class="date-simple {$hiddenclasssimple} input-group mb-1">
@@ -198,6 +198,70 @@
         </li>
       </ul>
     </div>
+  </xsl:template>
+
+  <xsl:template match="mir:htmlArea">
+    <xsl:variable name="xed-val-marker" > {$xed-validation-marker} </xsl:variable>
+    <xsl:choose>
+      <xsl:when test="@repeat = 'true'">
+        <xed:repeat xpath="{@xpath}" min="{@min}" max="{@max}">
+          <div class="form-group row {@class} {$xed-val-marker}">
+            <label class="col-md-3 col-form-label text-right">
+              <xed:output i18n="{@label}" />
+            </label>
+            <div class="col-md-6">
+              <xsl:choose>
+                <xsl:when test="@bind" >
+                  <xed:bind xpath="{@bind}" >
+                    <textarea class="form-control">
+                      <xsl:copy-of select="@rows" />
+                      <xsl:copy-of select="@placeholder" />
+                    </textarea>
+                  </xed:bind>
+                </xsl:when>
+                <xsl:otherwise>
+                  <textarea class="form-control ckeditor">
+                    <xsl:copy-of select="@rows" />
+                    <xsl:copy-of select="@placeholder" />
+                  </textarea>
+                </xsl:otherwise>
+              </xsl:choose>
+            </div>
+            <div class="col-md-3">
+              <xsl:if test="string-length(@help-text) &gt; 0">
+                <xsl:call-template name="mir-helpbutton" />
+              </xsl:if>
+              <xsl:call-template name="mir-pmud" />
+            </div>
+          </div>
+          <xsl:call-template name="mir-required" />
+        </xed:repeat>
+      </xsl:when>
+      <xsl:otherwise>
+        <xed:bind xpath="{@xpath}">
+          <div class="form-group row {@class} {$xed-val-marker}">
+            <label class="col-md-3 col-form-label text-right">
+              <xed:output i18n="{@label}" />
+            </label>
+            <div class="col-md-6">
+              <textarea class="form-control ckeditor">
+                <xsl:copy-of select="@rows" />
+                <xsl:copy-of select="@placeholder" />
+              </textarea>
+            </div>
+            <div class="col-md-3">
+              <xsl:if test="string-length(@help-text) &gt; 0">
+                <xsl:call-template name="mir-helpbutton" />
+              </xsl:if>
+              <xsl:if test="@pmud = 'true'">
+                <xsl:call-template name="mir-pmud" />
+              </xsl:if>
+            </div>
+          </div>
+          <xsl:call-template name="mir-required" />
+        </xed:bind>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
 
   <xsl:template match="mir:textarea">

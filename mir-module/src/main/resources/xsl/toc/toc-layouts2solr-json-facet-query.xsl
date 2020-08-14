@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-  
+
   <xsl:param name="MIR.TableOfContents.MaxResults" select="'1000'" />
+  <xsl:param name="MIR.TableOfContents.LevelLimit" select="'100'" />
   <xsl:param name="MIR.TableOfContents.FieldsUsed" select="'*'" />
-  
+
   <xsl:template match="/toc-layouts">
     <xsl:copy>
       <xsl:copy-of select="@*" />
       <xsl:apply-templates select="toc-layout" />
     </xsl:copy>
   </xsl:template>
-  
+
   <xsl:template match="toc-layout">
     <xsl:copy>
       <xsl:copy-of select="@*" />
@@ -28,7 +29,7 @@
     </xsl:copy>
   </xsl:template>
 
-  <!-- build solr param for sort order of returned documents -->  
+  <!-- build solr param for sort order of returned documents -->
   <xsl:template match="*" mode="sort">
     <xsl:value-of select="concat(@field,'+',@order)" />
     <xsl:if test="position() != last()">,</xsl:if>
@@ -36,7 +37,8 @@
 
   <!-- build solr json for facet of publication ids at this level -->
   <xsl:template name="publications.json">
-    <xsl:text>docs:{type:terms,field:id,limit:1000</xsl:text>
+    <xsl:text>docs:{type:terms,field:id,limit:</xsl:text>
+    <xsl:value-of select="$MIR.TableOfContents.MaxResults" />
     <xsl:if test="level">
       <xsl:text>,domain:{filter:"</xsl:text> <!-- exclude all ids that will occur at any sub-level -->
       <xsl:for-each select="descendant::level">
@@ -53,7 +55,15 @@
   <xsl:template match="level" mode="json">
     <xsl:text>,</xsl:text>
     <xsl:value-of select="concat(@field,'_expanded_',@expanded)" />
-    <xsl:text>:{type:terms,limit:100</xsl:text>
+    <xsl:text>:{type:terms,limit:</xsl:text>
+    <xsl:choose>
+      <xsl:when test="@limit">
+        <xsl:value-of select="@limit" />
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="$MIR.TableOfContents.LevelLimit" />
+      </xsl:otherwise>
+    </xsl:choose>
     <xsl:value-of select="concat(',field:',@field)" />
     <xsl:value-of select="concat(',sort:{index:',@order,'}')" />
     <xsl:text>,facet:{</xsl:text>
@@ -63,4 +73,3 @@
   </xsl:template>
 
 </xsl:stylesheet>
- 

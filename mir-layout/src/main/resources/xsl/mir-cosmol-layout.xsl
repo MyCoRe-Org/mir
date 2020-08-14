@@ -12,10 +12,10 @@
     version="5" />
   <xsl:strip-space elements="*" />
   <xsl:include href="resource:xsl/mir-cosmol-layout-utils.xsl"/>
-  <xsl:param name="MIR.DefaultLayout.CSS" select="'cosmo'" />
+  <xsl:param name="MIR.DefaultLayout.CSS" />
   <xsl:param name="MIR.CustomLayout.CSS" select="''" />
   <xsl:param name="MIR.CustomLayout.JS" select="''" />
-  <xsl:param name="MIR.Layout.Theme" select="'cosmol'" />
+  <xsl:param name="MIR.Layout.Theme" />
 
   <xsl:variable name="PageTitle" select="/*/@title" />
 
