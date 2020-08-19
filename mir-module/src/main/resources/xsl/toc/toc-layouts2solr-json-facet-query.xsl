@@ -49,7 +49,9 @@
       <xsl:text>,domain:{filter:"</xsl:text> <!-- exclude all ids that will occur at any sub-level -->
       <xsl:for-each select="descendant::level">
         <xsl:value-of select="concat('-',@field,':[* TO *]')" />
-        <xsl:if test="level">+AND+</xsl:if>
+        <xsl:if test="level">
+          <xsl:value-of select="' AND '" />
+        </xsl:if>
       </xsl:for-each>
       <xsl:text>"}</xsl:text>
     </xsl:if>
