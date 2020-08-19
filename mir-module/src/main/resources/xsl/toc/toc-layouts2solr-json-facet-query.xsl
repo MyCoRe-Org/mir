@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+                xmlns:encoder="xalan://java.net.URLEncoder"
+                exclude-result-prefixes="encoder">
 
   <xsl:param name="MIR.TableOfContents.MaxResults" select="'1000'" />
   <xsl:param name="MIR.TableOfContents.LevelLimit" select="'100'" />
@@ -17,15 +19,19 @@
     <xsl:copy>
       <xsl:copy-of select="@*" />
       <xsl:text>&amp;fl=</xsl:text>
-      <xsl:value-of select="$MIR.TableOfContents.FieldsUsed" />
+      <xsl:value-of select="encoder:encode($MIR.TableOfContents.FieldsUsed,'UTF-8')" />
       <xsl:text>&amp;rows=</xsl:text>
       <xsl:value-of select="$MIR.TableOfContents.MaxResults" />
       <xsl:text>&amp;sort=</xsl:text>
       <xsl:apply-templates select="descendant::*[@field][@order]" mode="sort" />
-      <xsl:text>&amp;json.facet={</xsl:text>
-      <xsl:call-template name="publications.json" />
-      <xsl:apply-templates select="level" mode="json" />
-      <xsl:text>}</xsl:text>
+      <xsl:text>&amp;json.facet=</xsl:text>
+      <xsl:variable name="json.facet">
+        <xsl:text>{</xsl:text>
+        <xsl:call-template name="publications.json" />
+        <xsl:apply-templates select="level" mode="json" />
+        <xsl:text>}</xsl:text>
+      </xsl:variable>
+      <xsl:value-of select="encoder:encode($json.facet,'UTF-8')" />
     </xsl:copy>
   </xsl:template>
 
@@ -42,7 +48,7 @@
     <xsl:if test="level">
       <xsl:text>,domain:{filter:"</xsl:text> <!-- exclude all ids that will occur at any sub-level -->
       <xsl:for-each select="descendant::level">
-        <xsl:value-of select="concat('-',@field,':[*+TO+*]')" />
+        <xsl:value-of select="concat('-',@field,':[* TO *]')" />
         <xsl:if test="level">+AND+</xsl:if>
       </xsl:for-each>
       <xsl:text>"}</xsl:text>
