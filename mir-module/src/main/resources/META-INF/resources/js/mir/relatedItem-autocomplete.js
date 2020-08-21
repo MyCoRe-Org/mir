@@ -201,7 +201,7 @@ function getModsAfterTrans(fieldset, relItemid) {
 		dataType : "xml"
 	}).done(function(xml) {
 		fillFieldset(fieldset, xml)
-	}).error(function() {
+	}).fail(function() {
 		console.log("Mycore Propertie 'MCR.ContentTransformer.mods2xeditor.Stylesheet' not set");
 		getMods(fieldset, relItemid)
 	});
