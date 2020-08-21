@@ -2,8 +2,14 @@
 <!DOCTYPE xsl:stylesheet [
   <!ENTITY html-output SYSTEM "xsl/xsl-output-html.fragment">
 ]>
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0" xmlns:encoder="xalan://java.net.URLEncoder"
-  xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation" xmlns:xalan="http://xml.apache.org/xalan" xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions" exclude-result-prefixes="xalan i18n encoder">
+<xsl:stylesheet version="1.0"
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
+  xmlns:encoder="xalan://java.net.URLEncoder"
+  xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
+  xmlns:xalan="http://xml.apache.org/xalan"
+  xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions"
+  xmlns:str="http://exslt.org/strings"
+  exclude-result-prefixes="xalan i18n encoder str">
   &html-output;
   <xsl:include href="MyCoReLayout.xsl" />
   <xsl:include href="response-utils.xsl" />
@@ -11,6 +17,7 @@
 
   <xsl:param name="WebApplicationBaseURL" />
   <xsl:param name="MCR.Results.FetchHit" />
+  <xsl:param name="MIR.OwnerStrategy.AllowedRolesForSearch" select="'admin,editor'" />
 
   <xsl:decimal-format name="european" decimal-separator=',' grouping-separator='.' />
 
@@ -18,9 +25,16 @@
     <xsl:value-of select="i18n:translate('component.solr.searchresult.resultList')" />
   </xsl:variable>
 
+  <xsl:variable name="isSearchAllowedForCurrentUser">
+    <xsl:for-each select="str:tokenize($MIR.OwnerStrategy.AllowedRolesForSearch,',')">
+      <xsl:if test="mcrxsl:isCurrentUserInRole(.)">
+        <xsl:text>true</xsl:text>
+      </xsl:if>
+    </xsl:for-each>
+  </xsl:variable>
   <xsl:variable name="numFound">
     <xsl:choose>
-      <xsl:when test="mcrxsl:isCurrentUserInRole('editor') or mcrxsl:isCurrentUserInRole('admin')">
+      <xsl:when test="contains($isSearchAllowedForCurrentUser, 'true')">
         <xsl:value-of select="count(/response/lst[@name='terms']/lst[@name='mods.pindexname']/int)" />
       </xsl:when>
       <xsl:otherwise>
@@ -60,9 +74,9 @@
     <!-- if user is in role editor or admin, show all; other users only gets their own and published publications -->
     <xsl:variable name="owner">
       <xsl:choose>
-        <xsl:when test="mcrxsl:isCurrentUserInRole('admin') or mcrxsl:isCurrentUserInRole('editor')"><!--
-            -->*<!--
-          --></xsl:when>
+        <xsl:when test="contains($isSearchAllowedForCurrentUser, 'true')">
+          <xsl:text>*</xsl:text>
+        </xsl:when>
         <xsl:otherwise>
           <xsl:value-of select="$CurrentUser" />
         </xsl:otherwise>

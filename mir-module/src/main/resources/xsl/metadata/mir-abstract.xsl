@@ -1,11 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
-  xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:mods="http://www.loc.gov/mods/v3" xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions" xmlns:xalan="http://xml.apache.org/xalan"
+<xsl:stylesheet version="1.0"
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  xmlns:mods="http://www.loc.gov/mods/v3"
+  xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions"
+  xmlns:xalan="http://xml.apache.org/xalan"
   xmlns:exslt="http://exslt.org/common"
-  exclude-result-prefixes="i18n mods xlink mcrxsl xalan exslt"
+  xmlns:str="http://exslt.org/strings"
+  exclude-result-prefixes="i18n mods xlink mcrxsl xalan exslt str"
 >
 
   <xsl:import href="xslImport:modsmeta:metadata/mir-abstract.xsl" />
+
+  <xsl:param name="MIR.OwnerStrategy.AllowedRolesForSearch" select="'admin,editor'" />
 
   <xsl:variable name="objectID" select="/mycoreobject/@ID" />
   <xsl:variable name="modsPart" select="concat('mods.part.', $objectID)" />
@@ -13,9 +21,16 @@
   <xsl:template match="/">
 
     <xsl:variable name="mods" select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods" />
+    <xsl:variable name="isSearchAllowedForCurrentUser">
+      <xsl:for-each select="str:tokenize($MIR.OwnerStrategy.AllowedRolesForSearch,',')">
+        <xsl:if test="mcrxsl:isCurrentUserInRole(.)">
+          <xsl:text>true</xsl:text>
+        </xsl:if>
+      </xsl:for-each>
+    </xsl:variable>
     <xsl:variable name="owner">
       <xsl:choose>
-        <xsl:when test="mcrxsl:isCurrentUserInRole('admin') or mcrxsl:isCurrentUserInRole('editor')">
+        <xsl:when test="contains($isSearchAllowedForCurrentUser, 'true')">
           <xsl:text>*</xsl:text>
         </xsl:when>
         <xsl:otherwise>

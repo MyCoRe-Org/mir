@@ -4,9 +4,11 @@
     xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
     xmlns:mcrver="xalan://org.mycore.common.MCRCoreVersion"
     xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions"
-    exclude-result-prefixes="i18n mcrver mcrxsl">
+    xmlns:str="http://exslt.org/strings"
+    exclude-result-prefixes="i18n mcrver mcrxsl str">
 
   <xsl:import href="resource:xsl/layout/mir-common-layout.xsl" />
+  <xsl:param name="MIR.OwnerStrategy.AllowedRolesForSearch" select="'admin,editor'" />
 
   <xsl:template  name="mir.header">
     <div id="header_box" class="clearfix container">
@@ -32,6 +34,15 @@
   <xsl:template name="mir.navigation">
     <div class="navbar navbar-default mir-side-nav searchfield_box">
       <nav class="mir-main-nav-entries">
+        
+        <xsl:variable name="isSearchAllowedForCurrentUser">
+          <xsl:for-each select="str:tokenize($MIR.OwnerStrategy.AllowedRolesForSearch,',')">
+            <xsl:if test="mcrxsl:isCurrentUserInRole(.)">
+              <xsl:text>true</xsl:text>
+            </xsl:if>
+          </xsl:for-each>
+        </xsl:variable>
+        
         <form
           action="{$WebApplicationBaseURL}servlets/solr/find"
           class="searchfield_box form-inline my-2 my-lg-0"
@@ -46,7 +57,7 @@
               aria-label="Search"
               aria-describedby="" />
             <xsl:choose>
-              <xsl:when test="mcrxsl:isCurrentUserInRole('admin') or mcrxsl:isCurrentUserInRole('editor')">
+              <xsl:when test="contains($isSearchAllowedForCurrentUser, 'true')">
                 <input name="owner" type="hidden" value="createdby:*" />
               </xsl:when>
               <xsl:when test="not(mcrxsl:isCurrentUserGuestUser())">

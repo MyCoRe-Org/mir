@@ -1,8 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:mods="http://www.loc.gov/mods/v3" xmlns:encoder="xalan://java.net.URLEncoder"
-  xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation" xmlns:str="http://exslt.org/strings" xmlns:exslt="http://exslt.org/common" xmlns:mcr="xalan://org.mycore.common.xml.MCRXMLFunctions"
-  xmlns:acl="xalan://org.mycore.access.MCRAccessManager" xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions" xmlns:basket="xalan://org.mycore.frontend.basket.MCRBasketManager"
-  xmlns:decoder="xalan://java.net.URLDecoder" exclude-result-prefixes="i18n mods str exslt mcr acl mcrxsl basket encoder decoder"
+<xsl:stylesheet version="1.0"
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  xmlns:mods="http://www.loc.gov/mods/v3"
+  xmlns:encoder="xalan://java.net.URLEncoder"
+  xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
+  xmlns:str="http://exslt.org/strings"
+  xmlns:exslt="http://exslt.org/common"
+  xmlns:mcr="xalan://org.mycore.common.xml.MCRXMLFunctions"
+  xmlns:acl="xalan://org.mycore.access.MCRAccessManager"
+  xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions"
+  xmlns:basket="xalan://org.mycore.frontend.basket.MCRBasketManager"
+  xmlns:decoder="xalan://java.net.URLDecoder"
+  exclude-result-prefixes="i18n mods str exslt mcr acl mcrxsl basket encoder decoder"
 >
 
   <xsl:include href="response-mir-utils.xsl" />
@@ -10,6 +19,7 @@
   <xsl:param name="UserAgent" />
   <xsl:param name="MIR.testEnvironment" />
   <xsl:param name="MCR.ORCID.OAuth.ClientSecret" select="''" />
+  <xsl:param name="MIR.OwnerStrategy.AllowedRolesForSearch" select="'admin,editor'" />
 
   <xsl:variable name="maxScore" select="//result[@name='response'][1]/@maxScore" />
 
@@ -710,17 +720,20 @@
                 </xsl:variable>
                 <xsl:variable name="nameIdentifierAndType" select="substring-after(., ':')" />
                 <!-- if user is in role editor or admin, show all; other users only gets their own and published publications -->
+                <xsl:variable name="isSearchAllowedForCurrentUser">
+                  <xsl:for-each select="str:tokenize($MIR.OwnerStrategy.AllowedRolesForSearch,',')">
+                    <xsl:if test="mcrxsl:isCurrentUserInRole(.)">
+                      <xsl:text>true</xsl:text>
+                    </xsl:if>
+                  </xsl:for-each>
+                </xsl:variable>
                 <xsl:variable name="owner">
                   <xsl:choose>
-                    <xsl:when test="mcrxsl:isCurrentUserInRole('admin') or mcrxsl:isCurrentUserInRole('editor')"><!--
-                      -->
-                      *<!--
-                    -->
+                    <xsl:when test="contains($isSearchAllowedForCurrentUser, 'true')">
+                      <xsl:text>*</xsl:text>
                     </xsl:when>
-                    <xsl:otherwise><!--
-                      -->
-                      <xsl:value-of select="$CurrentUser" /><!--
-                    -->
+                    <xsl:otherwise>
+                      <xsl:value-of select="$CurrentUser" />
                     </xsl:otherwise>
                   </xsl:choose>
                 </xsl:variable>
