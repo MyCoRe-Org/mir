@@ -32,6 +32,7 @@
   <xsl:template name="mir.navigation">
     <div class="navbar navbar-default mir-side-nav searchfield_box">
       <nav class="mir-main-nav-entries">
+        
         <form
           action="{$WebApplicationBaseURL}servlets/solr/find"
           class="searchfield_box form-inline my-2 my-lg-0"
@@ -46,7 +47,7 @@
               aria-label="Search"
               aria-describedby="" />
             <xsl:choose>
-              <xsl:when test="mcrxsl:isCurrentUserInRole('admin') or mcrxsl:isCurrentUserInRole('editor')">
+              <xsl:when test="contains($isSearchAllowedForCurrentUser, 'true')">
                 <input name="owner" type="hidden" value="createdby:*" />
               </xsl:when>
               <xsl:when test="not(mcrxsl:isCurrentUserGuestUser())">
