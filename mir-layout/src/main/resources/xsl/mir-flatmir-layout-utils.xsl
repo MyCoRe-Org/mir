@@ -4,11 +4,9 @@
     xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
     xmlns:mcrver="xalan://org.mycore.common.MCRCoreVersion"
     xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions"
-    xmlns:str="http://exslt.org/strings"
-    exclude-result-prefixes="i18n mcrver mcrxsl str">
+    exclude-result-prefixes="i18n mcrver mcrxsl">
 
   <xsl:import href="resource:xsl/layout/mir-common-layout.xsl" />
-  <xsl:param name="MIR.OwnerStrategy.AllowedRolesForSearch" select="'admin,editor'" />
 
   <xsl:template name="mir.navigation">
 
@@ -63,14 +61,6 @@
               </xsl:for-each>
               <xsl:call-template name="mir.basketMenu" />
             </ul>
-
-            <xsl:variable name="isSearchAllowedForCurrentUser">
-              <xsl:for-each select="str:tokenize($MIR.OwnerStrategy.AllowedRolesForSearch,',')">
-                <xsl:if test="mcrxsl:isCurrentUserInRole(.)">
-                  <xsl:text>true</xsl:text>
-                </xsl:if>
-              </xsl:for-each>
-            </xsl:variable>
 
             <form
               action="{$WebApplicationBaseURL}servlets/solr/find"

@@ -19,7 +19,6 @@
   <xsl:param name="UserAgent" />
   <xsl:param name="MIR.testEnvironment" />
   <xsl:param name="MCR.ORCID.OAuth.ClientSecret" select="''" />
-  <xsl:param name="MIR.OwnerStrategy.AllowedRolesForSearch" select="'admin,editor'" />
 
   <xsl:variable name="maxScore" select="//result[@name='response'][1]/@maxScore" />
 
@@ -719,24 +718,6 @@
                   </xsl:choose>
                 </xsl:variable>
                 <xsl:variable name="nameIdentifierAndType" select="substring-after(., ':')" />
-                <!-- if user is in role editor or admin, show all; other users only gets their own and published publications -->
-                <xsl:variable name="isSearchAllowedForCurrentUser">
-                  <xsl:for-each select="str:tokenize($MIR.OwnerStrategy.AllowedRolesForSearch,',')">
-                    <xsl:if test="mcrxsl:isCurrentUserInRole(.)">
-                      <xsl:text>true</xsl:text>
-                    </xsl:if>
-                  </xsl:for-each>
-                </xsl:variable>
-                <xsl:variable name="owner">
-                  <xsl:choose>
-                    <xsl:when test="contains($isSearchAllowedForCurrentUser, 'true')">
-                      <xsl:text>*</xsl:text>
-                    </xsl:when>
-                    <xsl:otherwise>
-                      <xsl:value-of select="$CurrentUser" />
-                    </xsl:otherwise>
-                  </xsl:choose>
-                </xsl:variable>
                 <xsl:choose>
                   <xsl:when test="string-length($nameIdentifierAndType) &gt; 0">
                     <xsl:variable name="nameIdentifier" select="substring-after($nameIdentifierAndType, ':')" />

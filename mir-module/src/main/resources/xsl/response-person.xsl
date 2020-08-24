@@ -17,20 +17,11 @@
 
   <xsl:param name="WebApplicationBaseURL" />
   <xsl:param name="MCR.Results.FetchHit" />
-  <xsl:param name="MIR.OwnerStrategy.AllowedRolesForSearch" select="'admin,editor'" />
 
   <xsl:decimal-format name="european" decimal-separator=',' grouping-separator='.' />
 
   <xsl:variable name="PageTitle">
     <xsl:value-of select="i18n:translate('component.solr.searchresult.resultList')" />
-  </xsl:variable>
-
-  <xsl:variable name="isSearchAllowedForCurrentUser">
-    <xsl:for-each select="str:tokenize($MIR.OwnerStrategy.AllowedRolesForSearch,',')">
-      <xsl:if test="mcrxsl:isCurrentUserInRole(.)">
-        <xsl:text>true</xsl:text>
-      </xsl:if>
-    </xsl:for-each>
   </xsl:variable>
   <xsl:variable name="numFound">
     <xsl:choose>
@@ -71,18 +62,6 @@
   </xsl:variable>
 
   <xsl:template match="lst[@name='mods.pindexname'] | lst[@name='mods.pindexname.published']">
-    <!-- if user is in role editor or admin, show all; other users only gets their own and published publications -->
-    <xsl:variable name="owner">
-      <xsl:choose>
-        <xsl:when test="contains($isSearchAllowedForCurrentUser, 'true')">
-          <xsl:text>*</xsl:text>
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:value-of select="$CurrentUser" />
-        </xsl:otherwise>
-      </xsl:choose>
-    </xsl:variable>
-
     <xsl:for-each select="int">
       <xsl:sort select="@name" />
 
