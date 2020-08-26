@@ -16,12 +16,13 @@ public class MIREditorUtils {
         return document.text();
     }
 
-    public static String getXHTMlSnippedString(String text) {
+    public static String getXHTMLSnippedString(String text) {
         Document document = Jsoup.parse(text);
         changeToXHTML(document);
 
         final Whitelist elementWhitelist = getWhiteList();
         document = getCleanDocument(document, elementWhitelist);
+        document.outputSettings().prettyPrint(false);
         changeToXHTML(document);
         return document.body().html();
     }

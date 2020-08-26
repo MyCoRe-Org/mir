@@ -71,7 +71,7 @@ public class MIRPostProcessor extends MCRPostProcessorXSL {
             .forEach(child -> {
                 child.setNamespace(Namespace.NO_NAMESPACE);
                 if(isHtml(child.getText())){
-                    child.setText(MIREditorUtils.getXHTMlSnippedString(child.getText()));
+                    child.setText(MIREditorUtils.getXHTMLSnippedString(child.getText()));
                 } else {
                     child.setText(child.getText());
                 }
@@ -125,7 +125,7 @@ public class MIRPostProcessor extends MCRPostProcessorXSL {
         // need to generate a w3c document with the clean html as text
         final Element altAbstractContent = abstractElement.clone();
         altAbstractContent.setNamespace(Namespace.NO_NAMESPACE);
-        altAbstractContent.setText(MIREditorUtils.getXHTMlSnippedString(dirtyHTMLText));
+        altAbstractContent.setText(MIREditorUtils.getXHTMLSnippedString(dirtyHTMLText));
         final Document document = new Document(altAbstractContent);
         final DOMOutputter domOutputter = new DOMOutputter();
         final org.w3c.dom.Document domDocument = domOutputter.output(document);
