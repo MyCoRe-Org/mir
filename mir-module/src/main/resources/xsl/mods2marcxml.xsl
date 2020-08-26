@@ -2841,11 +2841,12 @@
             <xsl:value-of select="." />
           </marc:subfield>
         </xsl:for-each>
-        <xsl:if test="mods:part[mods:text]">
+        <!-- v3 part/text -->
+        <xsl:for-each select="mods:part/mods:text">
           <marc:subfield code="g">
-            <xsl:value-of select="." />
+            <xsl:value-of select="."/>
           </marc:subfield>
-        </xsl:if>
+        </xsl:for-each>
         <!-- v3 sici part/detail 773$q 	1:2:3<4-->
         <xsl:if test="mods:part/mods:detail">
           <xsl:variable name="parts">
