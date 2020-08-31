@@ -1,6 +1,8 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
   xmlns:encoder="xalan://java.net.URLEncoder" exclude-result-prefixes="xsl i18n encoder"
 >
+  
+  <xsl:include href="resource:xsl/mir-utils.xsl" />
 
   <xsl:template name="browse.Pagination">
     <xsl:param name="id" select="'pagination'" />

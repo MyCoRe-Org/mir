@@ -19,6 +19,7 @@
   <xsl:param name="MCR.Metadata.Languages" select="'de'" />
   <xsl:include href="layout/mir-layout-utils.xsl" />
   <xsl:include href="resource:xsl/layout/mir-navigation.xsl" />
+  <xsl:include href="resource:xsl/mir-utils.xsl" />
   <xsl:variable name="loaded_navigation_xml" select="layoutUtils:getPersonalNavigation()/navigation" />
   <xsl:variable name="browserAddress">
     <xsl:call-template name="getBrowserAddress" />

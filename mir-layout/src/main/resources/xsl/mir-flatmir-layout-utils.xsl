@@ -7,6 +7,7 @@
     exclude-result-prefixes="i18n mcrver mcrxsl">
 
   <xsl:import href="resource:xsl/layout/mir-common-layout.xsl" />
+
   <xsl:template name="mir.navigation">
 
     <div id="header_box" class="clearfix container">
@@ -73,7 +74,7 @@
                 type="text"
                 aria-label="Search" />
               <xsl:choose>
-                <xsl:when test="mcrxsl:isCurrentUserInRole('admin') or mcrxsl:isCurrentUserInRole('editor')">
+                <xsl:when test="contains($isSearchAllowedForCurrentUser, 'true')">
                   <input name="owner" type="hidden" value="createdby:*" />
                 </xsl:when>
                 <xsl:when test="not(mcrxsl:isCurrentUserGuestUser())">
