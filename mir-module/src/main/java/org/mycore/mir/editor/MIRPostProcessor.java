@@ -27,7 +27,7 @@ import org.xml.sax.SAXException;
 
 public class MIRPostProcessor extends MCRPostProcessorXSL {
 
-    private static final String[] TITLE_SUB_ELEMENTS = { "nonSort", "title", "subTitle" };
+    public static final String[] TITLE_SUB_ELEMENTS = { "nonSort", "title", "subTitle" };
 
     @Override
     public Document process(Document oldXML) throws IOException, JDOMException, SAXException {
