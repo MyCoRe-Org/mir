@@ -14,7 +14,6 @@ import javax.xml.transform.TransformerException;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.solr.client.solrj.SolrClient;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
@@ -24,6 +23,7 @@ import org.mycore.access.MCRAccessException;
 import org.mycore.common.MCRConstants;
 import org.mycore.common.MCRException;
 import org.mycore.datamodel.common.MCRDataURL;
+import org.mycore.datamodel.common.MCRXMLMetadataManager;
 import org.mycore.datamodel.metadata.MCRMetadataManager;
 import org.mycore.datamodel.metadata.MCRObject;
 import org.mycore.datamodel.metadata.MCRObjectID;
@@ -34,8 +34,6 @@ import org.mycore.mir.editor.MIREditorUtils;
 import org.mycore.mir.editor.MIRPostProcessor;
 import org.mycore.mir.editor.MIRUnescapeResolver;
 import org.mycore.mods.MCRMODSWrapper;
-import org.mycore.solr.MCRSolrClientFactory;
-import org.mycore.solr.search.MCRSolrSearchUtils;
 
 @MCRCommandGroup(
     name = "MIR migration 2020.06")
@@ -47,15 +45,11 @@ public class MIRMigration202006Utils {
         syntax = "select objects which need titleInfo or abstract migration",
         help = "select objects which need titleInfo or abstract migration")
     public static void selectObjectWhichNeedMigration() {
-        final SolrClient mainSolrClient = MCRSolrClientFactory.getMainSolrClient();
-        final List<String> objectIds = MCRSolrSearchUtils.listIDs(mainSolrClient, "objectType:mods");
+        final List<String> objectIds = MCRXMLMetadataManager.instance().listIDsOfType("mods");
+        final MIRUnescapeResolver unescapeResolver = new MIRUnescapeResolver();
 
         final List<String> objectsToMigrate = objectIds.stream().filter((mycoreObject) -> {
             final MCRObjectID objectID = MCRObjectID.getInstance(mycoreObject);
-
-            if (!MCRMetadataManager.exists(objectID)) {
-                return false;
-            }
 
             final MCRObject object = MCRMetadataManager.retrieveMCRObject(objectID);
             final MCRMODSWrapper wrapper = new MCRMODSWrapper(object);
@@ -66,7 +60,7 @@ public class MIRMigration202006Utils {
 
                 final Predicate<String> isInvalidAltFormat = altFormat -> {
                     try {
-                        return !new MIRUnescapeResolver().resolve("unescape-html-content:" + altFormat, "").isEmpty();
+                        return !unescapeResolver.resolve("unescape-html-content:" + altFormat, "").isEmpty();
                     } catch (TransformerException e) {
                         return true;
                     }
@@ -97,10 +91,6 @@ public class MIRMigration202006Utils {
         help = "migrate titleInfo or abstract for the Object {0} is required")
     public static void tryMigrationOfTitleInfoOrAbstractRequired(String mycoreObject) throws MCRAccessException {
         final MCRObjectID objectID = MCRObjectID.getInstance(mycoreObject);
-
-        if (!MCRMetadataManager.exists(objectID)) {
-            throw new MCRException("The object " + objectID.toString() + " does not exist!");
-        }
 
         final MCRObject object = MCRMetadataManager.retrieveMCRObject(objectID);
         final MCRMODSWrapper wrapper = new MCRMODSWrapper(object);
