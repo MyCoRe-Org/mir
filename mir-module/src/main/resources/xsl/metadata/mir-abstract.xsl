@@ -238,6 +238,11 @@
               <div class="tab-content">
                 <xsl:for-each select="$abstracts/mods:abstract">
                   <div class="tab-pane ellipsis ellipsis-text" role="tabpanel" id="tab{position()}">
+                    <xsl:if test="@xml:lang">
+                      <xsl:attribute name="lang">
+                        <xsl:value-of select="@xml:lang" />
+                      </xsl:attribute>
+                    </xsl:if>
                     <xsl:if test="position()=1">
                       <xsl:attribute name="class">tab-pane ellipsis ellipsis-text active</xsl:attribute>
                     </xsl:if>
@@ -264,6 +269,11 @@
           <xsl:otherwise>
             <div id="mir-abstract">
               <div class="ellipsis ellipsis-text">
+                <xsl:if test="@xml:lang">
+                  <xsl:attribute name="lang">
+                    <xsl:value-of select="@xml:lang" />
+                  </xsl:attribute>
+                </xsl:if>
                 <p>
                   <span class="ellipsis-description">
                     <xsl:copy-of select="$abstracts/mods:abstract/node()"/>
