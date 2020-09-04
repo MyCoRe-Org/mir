@@ -2,6 +2,7 @@ package org.mycore.mir.migration;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.StringReader;
 import java.net.MalformedURLException;
 import java.util.List;
 import java.util.Objects;
@@ -19,6 +20,10 @@ import org.jdom2.Element;
 import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
 import org.jdom2.output.DOMOutputter;
+import org.jdom2.output.Format;
+import org.jdom2.output.XMLOutputter;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Entities;
 import org.mycore.access.MCRAccessException;
 import org.mycore.common.MCRConstants;
 import org.mycore.common.MCRException;
@@ -98,25 +103,17 @@ public class MIRMigration202006Utils {
 
         final List<Element> abstracts = mods.getChildren("abstract", MCRConstants.MODS_NAMESPACE);
         final SAXBuilder sb = new SAXBuilder();
+        final DOMOutputter domOutputter = new DOMOutputter();
+        final XMLOutputter xout = new XMLOutputter(Format.getRawFormat());
 
         final boolean changedAbstracts = abstracts.stream()
             .filter(_abstract -> Objects.nonNull(_abstract.getAttributeValue("altFormat")))
             .peek(element -> {
-                final String format = element.getAttributeValue("altFormat");
-                final byte[] data = getBytesFromAltFormat(format);
-
-                final Element abstrct;
-
                 try {
-                    final Document decodedDocument = sb.build(new ByteArrayInputStream(data));
-                    abstrct = decodedDocument.getRootElement();
-                    final String wrongHTML = abstrct.getTextNormalize();
-                    abstrct.setText(MIREditorUtils.getXHTMLSnippedString(wrongHTML));
-
-                    final DOMOutputter domOutputter = new DOMOutputter();
-                    final org.w3c.dom.Document domDocument = domOutputter.output(decodedDocument);
-                    final String base64URL = MCRDataURL.build(domDocument, "base64", "text/xml", "UTF-8");
-                    element.setAttribute("altFormat", base64URL);
+                    final Document decodedDocument = getEmbeddedDocument(sb, element);
+                    final Element abstrct = decodedDocument.getRootElement();
+                    fixHTML(xout, abstrct);
+                    embedDocumentAsAltFormat(domOutputter, element, decodedDocument);
                 } catch (JDOMException | IOException | TransformerException e) {
                     throw new MCRException("Error while building document!", e);
                 }
@@ -126,26 +123,17 @@ public class MIRMigration202006Utils {
         final boolean changedTitleInfos = titleInfos.stream()
             .filter(el -> Objects.nonNull(el.getAttributeValue("altFormat")))
             .peek((element) -> {
-                final String format = element.getAttributeValue("altFormat");
-                final byte[] data = getBytesFromAltFormat(format);
-                final Element titleInfo;
-
                 try {
-                    final Document decodedDocument = sb.build(new ByteArrayInputStream(data));
-                    titleInfo = decodedDocument.getRootElement();
+                    final Document decodedDocument = getEmbeddedDocument(sb, element);
+                    final Element titleInfo = decodedDocument.getRootElement();
                     Stream.of(MIRPostProcessor.TITLE_SUB_ELEMENTS)
                         .map(en -> Optional.ofNullable(titleInfo.getChild(en, MCRConstants.MODS_NAMESPACE))
                             .orElse(titleInfo.getChild(en)))
                         .filter(Objects::nonNull)
                         .forEach(child -> {
-                            final String wrongHTML = child.getTextNormalize();
-                            child.setText(MIREditorUtils.getXHTMLSnippedString(wrongHTML));
+                            fixHTML(xout, child);
                         });
-
-                    final DOMOutputter domOutputter = new DOMOutputter();
-                    final org.w3c.dom.Document domDocument = domOutputter.output(decodedDocument);
-                    final String base64URL = MCRDataURL.build(domDocument, "base64", "text/xml", "UTF-8");
-                    element.setAttribute("altFormat", base64URL);
+                    embedDocumentAsAltFormat(domOutputter, element, decodedDocument);
                 } catch (JDOMException | IOException | TransformerException e) {
                     throw new MCRException("Error while building document!", e);
                 }
@@ -154,6 +142,33 @@ public class MIRMigration202006Utils {
         if (changedAbstracts || changedTitleInfos) {
             MCRMetadataManager.update(object);
         }
+    }
+
+    private static void embedDocumentAsAltFormat(DOMOutputter domOutputter, Element target, Document embeddable)
+        throws JDOMException, TransformerException, MalformedURLException {
+        final org.w3c.dom.Document domDocument = domOutputter.output(embeddable);
+        final String base64URL = MCRDataURL.build(domDocument, "base64", "text/xml", "UTF-8");
+        target.setAttribute("altFormat", base64URL);
+    }
+
+    private static void fixHTML(XMLOutputter xout, Element abstrct) {
+        final String wrongHTML = xout.outputString(abstrct.getContent());
+        abstrct.setText(MIREditorUtils.getXHTMLSnippedString(wrongHTML));//set XML as text nodes
+    }
+
+    private static Document getEmbeddedDocument(SAXBuilder saxBuilder, Element element)
+        throws JDOMException, IOException {
+        final String format = element.getAttributeValue("altFormat");
+        final byte[] data = getBytesFromAltFormat(format);
+        //parse as HTML, also resolves HTML entities like &ge;
+        final org.jsoup.nodes.Document jsoupDoc = Jsoup.parse(new ByteArrayInputStream(data), null, "");
+        //output as valid XML
+        jsoupDoc.outputSettings().prettyPrint(false);
+        jsoupDoc.outputSettings().escapeMode(Entities.EscapeMode.xhtml);
+        jsoupDoc.outputSettings().syntax(org.jsoup.nodes.Document.OutputSettings.Syntax.xml);
+        //re-parse as XML
+        final Document decodedDocument = saxBuilder.build(new StringReader(jsoupDoc.body().html()));
+        return decodedDocument;
     }
 
     private static byte[] getBytesFromAltFormat(String format) {
