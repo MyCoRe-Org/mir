@@ -155,8 +155,6 @@ public class MIRMigration202006Utils {
         //if child elements are present, the content is not yet encoded, print as XML string
         final String wrongHTML = element.getChildren().isEmpty() ? element.getTextTrim()
             : xout.outputString(element.getContent());
-        LOGGER.info("wronghtml: {}",wrongHTML);
-        LOGGER.info("fixed: {}",MIREditorUtils.getXHTMLSnippedString(wrongHTML));
         element.setText(MIREditorUtils.getXHTMLSnippedString(wrongHTML));//set XML as text nodes
     }
 
