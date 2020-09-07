@@ -144,21 +144,23 @@ public class MIRMigration202006Utils {
         }
     }
 
-    private static void embedDocumentAsAltFormat(DOMOutputter domOutputter, Element target, Document embeddable)
+    static void embedDocumentAsAltFormat(DOMOutputter domOutputter, Element target, Document embeddable)
         throws JDOMException, TransformerException, MalformedURLException {
         final org.w3c.dom.Document domDocument = domOutputter.output(embeddable);
         final String base64URL = MCRDataURL.build(domDocument, "base64", "text/xml", "UTF-8");
         target.setAttribute("altFormat", base64URL);
     }
 
-    private static void fixHTML(XMLOutputter xout, Element element) {
+    static void fixHTML(XMLOutputter xout, Element element) {
         //if child elements are present, the content is not yet encoded, print as XML string
         final String wrongHTML = element.getChildren().isEmpty() ? element.getTextTrim()
             : xout.outputString(element.getContent());
+        LOGGER.info("wronghtml: {}",wrongHTML);
+        LOGGER.info("fixed: {}",MIREditorUtils.getXHTMLSnippedString(wrongHTML));
         element.setText(MIREditorUtils.getXHTMLSnippedString(wrongHTML));//set XML as text nodes
     }
 
-    private static Document getEmbeddedDocument(SAXBuilder saxBuilder, Element element)
+    static Document getEmbeddedDocument(SAXBuilder saxBuilder, Element element)
         throws JDOMException, IOException {
         final String format = element.getAttributeValue("altFormat");
         final byte[] data = getBytesFromAltFormat(format);
@@ -173,7 +175,7 @@ public class MIRMigration202006Utils {
         return decodedDocument;
     }
 
-    private static byte[] getBytesFromAltFormat(String format) {
+    static byte[] getBytesFromAltFormat(String format) {
         final byte[] data;
 
         try {

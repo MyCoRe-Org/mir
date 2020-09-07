@@ -1,7 +1,5 @@
 package org.mycore.mir.editor;
 
-import java.util.stream.Stream;
-
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Entities;
@@ -39,11 +37,8 @@ public class MIREditorUtils {
     private static Whitelist getWhiteList() {
         final Whitelist elementWhitelist = Whitelist.none();
 
-        final Stream<String> allowedElements = MCRConfiguration2.getString("MIR.Editor.HTML.Elements")
-                .map(s -> Stream.of(s.split(" ")))
-                .orElseThrow(() -> MCRConfiguration2.createConfigurationException("MIR.Editor.HTML.Elements"));
-
-        allowedElements.forEach(elementWhitelist::addTags);
+        String[] allowedElements = MCRConfiguration2.getOrThrow("MIR.Editor.HTML.Elements", s -> s.split(" "));
+        elementWhitelist.addTags(allowedElements);
         return elementWhitelist;
     }
 
