@@ -123,7 +123,6 @@
             </xsl:call-template>
           </xsl:variable>
           <select class="form-control input-sm" id="mir-csl-cite" data-object-id="{/mycoreobject/@ID}">
-            <option value="deutsche-sprache">deutsche-sprache</option>
             <xsl:for-each select="exslt:node-set($cite-styles)/token">
               <option value="{.}">
                 <xsl:value-of select="." />
