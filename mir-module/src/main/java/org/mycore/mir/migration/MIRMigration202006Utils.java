@@ -164,15 +164,19 @@ public class MIRMigration202006Utils {
         throws JDOMException, IOException {
         final String format = element.getAttributeValue("altFormat");
         final byte[] data = getBytesFromAltFormat(format);
-        //parse as HTML, also resolves HTML entities like &ge;
-        final org.jsoup.nodes.Document jsoupDoc = Jsoup.parse(new ByteArrayInputStream(data), null, "");
-        //output as valid XML
-        jsoupDoc.outputSettings().prettyPrint(false);
-        jsoupDoc.outputSettings().escapeMode(Entities.EscapeMode.xhtml);
-        jsoupDoc.outputSettings().syntax(org.jsoup.nodes.Document.OutputSettings.Syntax.xml);
-        //re-parse as XML
-        final Document decodedDocument = saxBuilder.build(new StringReader(jsoupDoc.body().html()));
-        return decodedDocument;
+        try {
+            return saxBuilder.build(new ByteArrayInputStream(data));
+        } catch (JDOMException | IOException e) {
+            //parse as HTML, also resolves HTML entities like &ge;
+            final org.jsoup.nodes.Document jsoupDoc = Jsoup.parse(new ByteArrayInputStream(data), null, "");
+            //output as valid XML
+            jsoupDoc.outputSettings().prettyPrint(false);
+            jsoupDoc.outputSettings().escapeMode(Entities.EscapeMode.xhtml);
+            jsoupDoc.outputSettings().syntax(org.jsoup.nodes.Document.OutputSettings.Syntax.xml);
+            //re-parse as XML
+            final Document decodedDocument = saxBuilder.build(new StringReader(jsoupDoc.body().html()));
+            return decodedDocument;
+        }
     }
 
     static byte[] getBytesFromAltFormat(String format) {
