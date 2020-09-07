@@ -1,6 +1,5 @@
 package org.mycore.mir.migration;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 
 import org.jdom2.Document;
@@ -25,7 +24,6 @@ public class MIRMigration202006UtilsTest extends MCRTestCase {
         Element test = new Element("test");
         test.setAttribute("altFormat", dataURL);
         final Document document = MIRMigration202006Utils.getEmbeddedDocument(new SAXBuilder(), test);
-        XMLOutputter xout = new XMLOutputter(Format.getPrettyFormat());
         final Element title = document.getRootElement().getChild("title");
         String before = title.getText();
         MIRMigration202006Utils.fixHTML(new XMLOutputter(Format.getRawFormat()), title);
@@ -47,7 +45,6 @@ public class MIRMigration202006UtilsTest extends MCRTestCase {
         test.setAttribute("altFormat", dataURL);
         final Document document = MIRMigration202006Utils.getEmbeddedDocument(new SAXBuilder(), test);
         XMLOutputter xout = new XMLOutputter(Format.getRawFormat());
-        xout.output(document, System.out);
         final Element abstrct = document.getRootElement();
         String before = xout.outputString(abstrct.getContent());
         MIRMigration202006Utils.fixHTML(new XMLOutputter(Format.getRawFormat()), abstrct);
