@@ -151,9 +151,11 @@ public class MIRMigration202006Utils {
         target.setAttribute("altFormat", base64URL);
     }
 
-    private static void fixHTML(XMLOutputter xout, Element abstrct) {
-        final String wrongHTML = xout.outputString(abstrct.getContent());
-        abstrct.setText(MIREditorUtils.getXHTMLSnippedString(wrongHTML));//set XML as text nodes
+    private static void fixHTML(XMLOutputter xout, Element element) {
+        //if child elements are present, the content is not yet encoded, print as XML string
+        final String wrongHTML = element.getChildren().isEmpty() ? element.getTextTrim()
+            : xout.outputString(element.getContent());
+        element.setText(MIREditorUtils.getXHTMLSnippedString(wrongHTML));//set XML as text nodes
     }
 
     private static Document getEmbeddedDocument(SAXBuilder saxBuilder, Element element)
