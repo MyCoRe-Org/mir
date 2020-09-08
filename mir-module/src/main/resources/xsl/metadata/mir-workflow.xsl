@@ -68,10 +68,9 @@
       <xsl:variable name="currentStatus"
                     select="service/servstates/servstate[@classid='state']/@categid"/>
       <xsl:variable name="editURL">
-        <xsl:call-template name="mods.getObjectEditURL">
-          <xsl:with-param name="id" select="$id"/>
-          <xsl:with-param name="layout" select="$layout"/>
-        </xsl:call-template>
+          <xsl:call-template name="getEditURL">
+              <xsl:with-param name="id" select="$id" />
+          </xsl:call-template>
       </xsl:variable>
       <xsl:variable name="message">
         <p>
@@ -146,10 +145,9 @@
         Dokument review
       </xsl:message>
       <xsl:variable name="editURL">
-        <xsl:call-template name="mods.getObjectEditURL">
-          <xsl:with-param name="id" select="$id"/>
-          <xsl:with-param name="layout" select="$layout"/>
-        </xsl:call-template>
+          <xsl:call-template name="getEditURL">
+            <xsl:with-param name="id" select="$id" />
+          </xsl:call-template>
       </xsl:variable>
       <xsl:variable name="message">
         <p>
@@ -175,7 +173,28 @@
   </xsl:template>
 
 
-  <xsl:template match="mycoreobject" mode="creatorSubmittedAdd" priority="10">
+    <xsl:template name="getEditURL">
+        <xsl:param name="id"/>
+        <xsl:variable name="adminEditURL">
+            <xsl:value-of xmlns:actionmapping="xalan://org.mycore.wfc.actionmapping.MCRURLRetriever"
+                          select="actionmapping:getURLforID('update-admin',$id,true())"/>
+        </xsl:variable>
+        <xsl:variable name="normalEditURL">
+            <xsl:call-template name="mods.getObjectEditURL">
+                <xsl:with-param name="id" select="$id"/>
+                <xsl:with-param name="layout" select="$layout"/>
+            </xsl:call-template>
+        </xsl:variable>
+        <xsl:choose>
+            <xsl:when test="string-length($adminEditURL)&gt;0">
+                <xsl:value-of select="$adminEditURL"/><xsl:text>&amp;id=</xsl:text><xsl:value-of select="$id"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:value-of select="$normalEditURL"/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>
+    <xsl:template match="mycoreobject" mode="creatorSubmittedAdd" priority="10">
   </xsl:template>
 
   <xsl:template match="mycoreobject" mode="editorReviewAdd" priority="10">

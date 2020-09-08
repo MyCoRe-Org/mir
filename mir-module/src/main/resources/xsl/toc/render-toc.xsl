@@ -110,19 +110,6 @@
     </ol>
   </xsl:template>
 
-  <!-- default template to show a toc level item (a group) -->
-  <!-- may be overwritten by higher priority custom toc layout templates -->
-  <xsl:template match="item">
-    <xsl:apply-templates select="@value" />
-    <xsl:apply-templates select="doc" />
-  </xsl:template>
-
-  <xsl:template match="item/@value">
-    <span class="mir-toc-section-label">
-      <xsl:value-of select="." />
-    </span>
-  </xsl:template>
-
   <!-- show list of publications at current level -->  
   <xsl:template match="publications">
     <ul class="mir-toc-section-list">
@@ -133,14 +120,6 @@
         </li>
       </xsl:for-each>
     </ul>
-  </xsl:template>
-
-  <!-- default template to show publication -->
-  <!-- may be overwritten by higher priority custom toc layout templates -->
-  <xsl:template match="doc">
-    <a href="{$WebApplicationBaseURL}receive/{@id}">
-      <xsl:value-of select="field[@name='mods.title.main']" />
-    </a>
   </xsl:template>
 
 </xsl:stylesheet>
