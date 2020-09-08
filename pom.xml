@@ -4,7 +4,7 @@
   <parent>
     <groupId>org.mycore</groupId>
     <artifactId>mycore-parent</artifactId>
-    <version>45-SNAPSHOT</version>
+    <version>45</version>
   </parent>
   <groupId>org.mycore.mir</groupId>
   <artifactId>mir-parent</artifactId>
@@ -44,7 +44,7 @@
     <java.target.version>11</java.target.version>
     <jetty.version>9.4.24.v20191120</jetty.version>
     <maven.compiler.arg>-Werror</maven.compiler.arg>
-    <mycore.version>2020.08-SNAPSHOT</mycore.version>
+    <mycore.version>2020.08</mycore.version>
     <node.version>v12.16.3</node.version>
     <selenium.version>3.141.59</selenium.version>
     <site.suffix />
