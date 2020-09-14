@@ -175,15 +175,15 @@
           <div class="input-group">
             <xsl:apply-templates select="." mode="action" />
             <xsl:apply-templates select="." mode="widget" />
+            <xsl:apply-templates select="." mode="validation" />
           </div>
-          <xsl:apply-templates select="." mode="validation" />
         </xsl:when>
         <xsl:when test="@tooltip">
           <div class="input-group">
             <xsl:apply-templates select="." mode="widget" />
             <xsl:apply-templates select="." mode="inputTooltip" />
+            <xsl:apply-templates select="." mode="validation" />
           </div>
-          <xsl:apply-templates select="." mode="validation" />
         </xsl:when>
         <xsl:otherwise>
           <xsl:apply-templates select="." mode="widget" />
@@ -198,9 +198,9 @@
   <xsl:template match="mir:template[contains('textInput|passwordInput|selectInput|checkboxList|radioList|textArea', @name)]" mode="validation">
     <xsl:if test="@required = 'true' or @validate = 'true'">
       <xed:if test="contains($xed-validation-marker, 'is-invalid')">
-        <span class="fas fa-exclamation-triangle form-control-feedback" data-toggle="tooltip" data-placement="top"
-          title="{concat('{i18n:', @i18n.error, '}')}"
-        ></span>
+        <div class="invalid-feedback">
+          <xed:output i18n="{@i18n.error}" />
+        </div>
       </xed:if>
       <xed:validate display="local" required="{@required}">
         <xsl:copy-of select="@*[contains('matches|test|format|type', name())]" />
@@ -212,7 +212,10 @@
   <!-- MODE=widget -->
 
   <xsl:template match="mir:template[@name='textInput']" mode="widget">
-    <input type="text" class="form-control input-{$input-size} {@class}" id="{@id}">
+    <input type="text" id="{@id}">
+      <xsl:attribute name="class">
+        <xsl:value-of select="concat('form-control input-', $input-size, ' ', @class, ' ', '{$xed-validation-marker}')" />
+      </xsl:attribute>
       <xsl:apply-templates select="." mode="inputOptions" />
     </input>
   </xsl:template>
@@ -224,7 +227,10 @@
   </xsl:template>
 
   <xsl:template match="mir:template[@name='selectInput']" mode="widget">
-    <select class="form-control input-{$input-size} {@class}" id="{@id}">
+    <select id="{@id}">
+      <xsl:attribute name="class">
+        <xsl:value-of select="concat('form-control input-', $input-size, ' ', @class, ' ', '{$xed-validation-marker}')" />
+      </xsl:attribute>
       <xsl:apply-templates select="." mode="inputOptions" />
       <xsl:if test="not(@inlcudeOnly = 'true')">
         <option value="">
@@ -236,7 +242,10 @@
   </xsl:template>
 
   <xsl:template match="mir:template[@name='textArea']" mode="widget">
-    <textarea class="form-control input-{$input-size} {@class}" id="{@id}">
+    <textarea id="{@id}">
+      <xsl:attribute name="class">
+        <xsl:value-of select="concat('form-control input-', $input-size, ' ', @class, ' ', '{$xed-validation-marker}')" />
+      </xsl:attribute>
       <xsl:attribute name="rows">
         <xsl:choose>
           <xsl:when test="@rows">
@@ -281,16 +290,13 @@
     <xsl:choose>
       <xsl:when test="string-length(@uri) &gt; 0">
         <xsl:variable name="options" select="document(@uri)" />
-        <xsl:for-each select="$options//option">
-          <xsl:apply-templates select="." mode="optionList">
-            <xsl:with-param name="id" select="$id" />
-            <xsl:with-param name="multiple" select="count($options//option) &gt; 1" />
-            <xsl:with-param name="inputType" select="$inputType" />
-            <xsl:with-param name="inline" select="$inline" />
-            <xsl:with-param name="dynamic" select="true()" />
-            <xsl:with-param name="position" select="position()" />
-          </xsl:apply-templates>
-        </xsl:for-each>
+        <xsl:apply-templates select="$options//option" mode="optionList">
+          <xsl:with-param name="id" select="$id" />
+          <xsl:with-param name="multiple" select="count($options//option) &gt; 1" />
+          <xsl:with-param name="inputType" select="$inputType" />
+          <xsl:with-param name="inline" select="$inline" />
+          <xsl:with-param name="dynamic" select="true()" />
+        </xsl:apply-templates>
       </xsl:when>
       <xsl:otherwise>
         <xsl:apply-templates select="option" mode="optionList">
@@ -309,15 +315,14 @@
     <xsl:param name="inputType" select="'checkbox'" />
     <xsl:param name="inline" select="'false'" />
     <xsl:param name="dynamic" select="false()" />
-    <xsl:param name="position" select="''" />
 
     <xsl:variable name="gId">
       <xsl:choose>
+        <xsl:when test="string-length($id) &gt; 0 and string-length(@value) &gt; 0 and $multiple">
+          <xsl:value-of select="concat($id, '-', translate(@value, ' ', '_'))" />
+        </xsl:when>
         <xsl:when test="string-length($id) &gt; 0 and $multiple">
           <xsl:value-of select="concat($id, '-{xed:generate-id()}')" />
-          <xsl:if test="$position">
-            <xsl:value-of select="concat('-', $position)" />
-          </xsl:if>
         </xsl:when>
         <xsl:when test="string-length($id) &gt; 0">
           <xsl:value-of select="$id" />
@@ -431,7 +436,7 @@
 
   <xsl:template match="mir:template" mode="action">
     <xsl:if test="count(action) &gt; 0">
-      <span class="input-group-btn">
+      <span class="input-group-prepend">
         <xsl:for-each select="action">
           <xsl:variable name="id">
             <xsl:choose>
