@@ -57,7 +57,7 @@
 
   SearchEntity.TYPES = {
     GND : {
-      baseURI : "http://d-nb.info/gnd/",
+      baseURI : "https://d-nb.info/gnd/",
       person : {
         enabled : true,
         url : "//ws.gbv.de/suggest/gnd/",
@@ -112,33 +112,34 @@
           return result;
         }
       },
-      both : {
-        enabled : true,
-        url : "//ws.gbv.de/suggest/gnd/",
-        data : function(input) {
+      both: {
+        enabled: true,
+        url: "https://lobid.org/gnd/search",
+        data: function (input) {
           return {
-            searchterm : input,
-            type : "DifferentiatedPerson,CorporateBody",
-            count: "30"
+            q: input,
+            filter: "type:DifferentiatedPerson OR type:CorporateBody",
+            format: "json:suggest",
+            size: "30"
           }
         },
-        dataType : "jsonp",
-        dataConvert : function(data) {
+        dataType: "jsonp",
+        dataConvert: function (data) {
           var result = [];
-          if (data.length == 4) {
-            $(data[1]).each(function(index, item) {
-              if (parseType(data[2][index]) === "DifferentiatedPerson") {
+          if (typeof data !== 'undefined' && data.length > 0) {
+            data.forEach((element) => {
+              if ((element.category) === "Individualisierte Person") {
                 var person = {
-                  label : item,
-                  value : data[3][index],
+                  label: element.label,
+                  value: element.id,
                   type: "personal"
                 };
                 result.push(person);
               }
-              if (parseType(data[2][index]) === "CorporateBody") {
+              if ((element.category) === "Körperschaft") {
                 var organisation = {
-                  label : item,
-                  value : data[3][index],
+                  label: element.label,
+                  value: element.id,
                   type: "corporate"
                 };
                 result.push(organisation);
