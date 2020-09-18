@@ -4,7 +4,6 @@
   <xsl:import href="xslImport:modsmeta:metadata/mir-edit.xsl" />
   <!-- TODO: resolve dependencies -->
   <xsl:include href="mods.xsl" />
-  <xsl:include href="modsdetails-external.xsl" />
   <xsl:template match="/">
     <xsl:variable name="mods" select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods" />
     <xsl:variable name="objectRights" select="key('rights', mycoreobject/@ID)" />
