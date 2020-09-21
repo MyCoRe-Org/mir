@@ -58,24 +58,26 @@
   SearchEntity.TYPES = {
     GND : {
       baseURI : "https://d-nb.info/gnd/",
-      person : {
-        enabled : true,
-        url : "//ws.gbv.de/suggest/gnd/",
-        data : function(input) {
+      person: {
+        enabled: true,
+        url: "https://lobid.org/gnd/search",
+        data: function (input) {
           return {
-            searchterm : input,
-            type : "DifferentiatedPerson"
+            q: input,
+            filter: "type:DifferentiatedPerson",
+            format: "json:suggest",
+            size: "30"
           }
         },
-        dataType : "jsonp",
-        dataConvert : function(data) {
+        dataType: "jsonp",
+        dataConvert: function (data) {
           var result = [];
-          if (data.length == 4) {
-            $(data[1]).each(function(index, item) {
-              if (parseType(data[2][index]) === "DifferentiatedPerson") {
+          if (typeof data !== 'undefined' && data.length > 0) {
+            data.forEach((element) => {
+              if ((element.category) === "Individualisierte Person") {
                 var person = {
-                  label : item,
-                  value : data[3][index],
+                  label: element.label,
+                  value: element.id,
                   type: "personal"
                 };
                 result.push(person);
@@ -85,24 +87,26 @@
           return result;
         }
       },
-      organisation : {
-        enabled : true,
-        url : "//ws.gbv.de/suggest/gnd/",
-        data : function(input) {
+      organisation: {
+        enabled: true,
+        url: "https://lobid.org/gnd/search",
+        data: function (input) {
           return {
-            searchterm : input,
-            type : "CorporateBody"
+            q: input,
+            filter: "type:CorporateBody",
+            format: "json:suggest",
+            size: "30"
           }
         },
-        dataType : "jsonp",
-        dataConvert : function(data) {
+        dataType: "jsonp",
+        dataConvert: function (data) {
           var result = [];
-          if (data.length == 4) {
-            $(data[1]).each(function(index, item) {
-              if (parseType(data[2][index]) === "CorporateBody") {
+          if (typeof data !== 'undefined' && data.length > 0) {
+            data.forEach((element) => {
+              if ((element.category) === "Körperschaft") {
                 var organisation = {
-                  label : item,
-                  value : data[3][index],
+                  label: element.label,
+                  value: element.id,
                   type: "corporate"
                 };
                 result.push(organisation);
