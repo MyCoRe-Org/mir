@@ -629,7 +629,7 @@
         if (this.selectedType.toUpperCase() == t.toUpperCase()) {
           type = SearchEntity.TYPES[t][options.searchEntityType];
           if (SearchEntity.TYPES.hasOwnProperty(t + "_FALLBACK")) {
-            console.log('Set fallback for type ' + t);
+          	console.log('SearchEntity.prototype.search: Set fallback for type ' + t);
             type_fallback = SearchEntity.TYPES[t + "_FALLBACK"][options.searchEntityType];
           }
           break;
@@ -644,8 +644,8 @@
 
       let that = this;
       if (type != null) {
-        var handleData = function (url, dataType, data, isFallback) {
-          SearchEntity.loadData(url, dataType, data, function (data) {
+        var handleData = (url, dataType, data, isFallback) => {
+          SearchEntity.loadData(url, dataType, data, (data) => {
             if (data !== undefined) {
               that.showResult(SearchEntity.sortData(input, typeof type.dataConvert == "function" ? type.dataConvert(data) : data));
             } else {
@@ -654,11 +654,14 @@
             content.detach();
             that.$searchBtn.text(text);
           
-          }, function () {
+          }, () => {
             if (!isFallback && type_fallback != null) {
+            	console.log('SearchEntity.prototype.search: Failed to loadData for type: ' + this.selectedType.toUpperCase() + '. Set '
+            	  + this.selectedType.toUpperCase() + '_FALLBACK' + ' as type.');
               type = type_fallback;
               handleData(type.url, type.dataType, type.data(input), true);
             } else {
+            	console.error('SearchEntity.prototype.search: LoadData failed for type ' + this.selectedType.toUpperCase());
               that.showResult();
               content.detach();
               that.$searchBtn.text(text);
@@ -982,7 +985,7 @@
 
   function getTypeFromURL(url) {
     for ( var type in SearchEntity.TYPES) {
-      if (url.indexOf(SearchEntity.TYPES[type].baseURI) != -1)
+      if (url.indexOf(SearchEntity.TYPES[type].baseURI) != -1 && !type.includes("_FALLBACK"))
         return type;
     }
 
