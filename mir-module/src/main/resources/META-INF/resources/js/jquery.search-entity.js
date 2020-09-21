@@ -149,24 +149,26 @@
           return result;
         }
       },
-      topic : {
-        enabled : true,
-        url : "//ws.gbv.de/suggest/gnd/",
-        data : function(input) {
+      topic: {
+        enabled: true,
+        url: "https://lobid.org/gnd/search",
+        data: function (input) {
           return {
-            searchterm : input,
-            type: "SubjectHeading"
+            q: input,
+            filter: "type:SubjectHeading",
+            format: "json:suggest",
+            size: "30"
           }
         },
-        dataType : "jsonp",
-        dataConvert : function(data) {
+        dataType: "jsonp",
+        dataConvert: function (data) {
           var result = [];
-          if (data.length == 4) {
-            $(data[1]).each(function(index, item) {
-              if (parseType(data[2][index]) === "SubjectHeading") {
+          if (typeof data !== 'undefined' && data.length > 0) {
+            data.forEach((element) => {
+              if (element.category.includes("Schlagwort")) {
                 var topic = {
-                  label : item,
-                  value : data[3][index]
+                  label: element.label,
+                  value: element.id,
                 };
                 result.push(topic);
               }
@@ -175,30 +177,30 @@
           return result;
         }
       },
-      geographic : {
-        enabled : true,
-        url : "//ws.gbv.de/suggest/gnd/",
-        data : function(input) {
-            return {
-                searchterm : input,
-                type: "PlaceOrGeographicName"
-            }
+      geographic: {
+        enabled: true,
+        url: "https://lobid.org/gnd/search",
+        data: function (input) {
+          return {
+            q: input,
+            filter: "type:PlaceOrGeographicName",
+            format: "json:suggest",
+            size: "30"
+          }
         },
-        dataType : "jsonp",
-        dataConvert : function(data) {
-            var result = [];
-            if (data.length == 4) {
-                $(data[1]).each(function(index, item) {
-                    if (parseType(data[2][index]) === "PlaceOrGeographicName") {
-                        var geographic = {
-                            label : item,
-                            value : data[3][index]
-                        };
-                        result.push(geographic);
-                    }
-                });
-            }
-            return result;
+        dataType: "jsonp",
+        dataConvert: function (data) {
+          var result = [];
+          if (typeof data !== 'undefined' && data.length > 0) {
+            data.forEach((element) => {
+              var geographic = {
+                label: element.label,
+                value: element.id,
+              };
+              result.push(geographic);
+            });
+          }
+          return result;
         }
       }
     },
