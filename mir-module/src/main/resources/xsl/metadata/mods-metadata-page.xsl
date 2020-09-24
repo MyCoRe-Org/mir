@@ -16,12 +16,17 @@
   <xsl:param name="MIR.Layout.Display.Panel"/>
   <xsl:param name="MIR.Layout.Display.Div"/>
 
+  <xsl:param name="MIR.CanonicalBaseURL" />
+
   <xsl:param name="WebApplicationBaseURL"/>
 
   <xsl:template match="/site">
     <xsl:copy>
       <xsl:copy-of select="@*"/>
       <head>
+        <xsl:if test="string-length($MIR.CanonicalBaseURL) &gt; 0">
+          <link rel="canonical" href="{$MIR.CanonicalBaseURL}receive/{@ID}" />
+        </xsl:if>
         <xsl:copy-of select="citation_meta/*"/>
         <link href="{$WebApplicationBaseURL}mir-layout/assets/jquery/plugins/shariff/shariff.min.css" rel="stylesheet"/>
       </head>
