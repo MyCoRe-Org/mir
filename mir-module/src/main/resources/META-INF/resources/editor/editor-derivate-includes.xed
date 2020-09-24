@@ -17,7 +17,7 @@
   </xed:template>
 
   <xed:template id="derivate_types">
-    <xed:bind xpath="derivate/classifications[@class='MCRMetaClassification'][@heritable='false']/classification">
+    <xed:bind xpath="derivate/classifications[@class='MCRMetaClassification'][@heritable='false']/classification[contains(text(), 'derivate_types:')]">
       <div class="form-group row">
         <label class="col-md-3 col-form-label text-right d-inline">
           <xed:output i18n="mir.derivate.type"/>
@@ -28,6 +28,24 @@
               <xed:output i18n="mir.select" />
             </option>
             <xed:include uri="xslStyle:items2options:classification:editorComplete:1:children:derivate_types"/>
+          </select>
+        </div>
+      </div>
+    </xed:bind>
+  </xed:template>
+
+  <xed:template id="mir_access">
+    <xed:bind xpath="derivate/classifications[@class='MCRMetaClassification'][@heritable='false']/classification[contains(text(), 'mir_access:')]">
+      <div class="form-group row">
+        <label class="col-md-3 col-form-label text-right d-inline">
+          <xed:output i18n="mir.access"/>
+        </label>
+        <div class="col-md-6">
+          <select class="form-control form-control-inline">
+            <option value="">
+              <xed:output i18n="mir.select" />
+            </option>
+            <xed:include uri="xslStyle:items2options:classification:editorComplete:1:children:mir_access"/>
           </select>
         </div>
       </div>
