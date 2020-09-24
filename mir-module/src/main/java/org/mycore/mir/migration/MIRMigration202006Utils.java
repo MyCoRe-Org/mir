@@ -55,7 +55,7 @@ public class MIRMigration202006Utils {
     private static final MCRCategoryID CONTENT_TYPE_ID = MCRCategoryID.fromString("derivate_types:content");
 
     @MCRCommand(syntax = "migrate derivate display to category {0}",
-        help = "link derivates with @display=false to the given category {0}")
+        help = "link derivates with @display=false to the given category {0}, e.g. mir_access:intern")
     public static List<String> migrateDerivateDisplay(String targetCategory) {
         MCRCategoryID categoryID = MCRCategoryID.fromString(targetCategory);
         if (!MCRCategoryDAOFactory.getInstance().exist(categoryID)) {
