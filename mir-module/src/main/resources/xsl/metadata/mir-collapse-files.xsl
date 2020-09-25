@@ -105,20 +105,12 @@
               <div class="alert alert-warning" role="alert">
                 <xsl:variable name="embargoDate" select="embargo:getEmbargo(mycoreobject/@ID)" />
                 <xsl:choose>
-                  <xsl:when test="not(mcr:isDisplayedEnabledDerivate(mycoreobject/structure/derobjects/derobject/@xlink:href))">
-                    <xsl:value-of select="i18n:translate('mir.derivate.no_access')" />
-                  </xsl:when>
                   <xsl:when test="string-length($embargoDate)&gt;0">
                     <!-- embargo is active for guest user -->
                     <xsl:value-of select="i18n:translate('component.mods.metaData.dictionary.accessCondition.embargo.available',$embargoDate)" />
                   </xsl:when>
                   <xsl:otherwise>
-                    <strong>
-                      <xsl:value-of select="i18n:translate('mir.access')" />
-                    </strong>
-                    &#160;
-                    <xsl:apply-templates select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:accessCondition[@type='restriction on access']"
-                      mode="printModsClassInfo" />
+                    <xsl:value-of select="i18n:translate('mir.derivate.no_access')" />
                   </xsl:otherwise>
                 </xsl:choose>
               </div>

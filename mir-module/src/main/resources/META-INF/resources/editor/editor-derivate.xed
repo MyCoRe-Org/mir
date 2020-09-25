@@ -23,6 +23,8 @@
             <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-derivate-includes.xed" ref="order"/>
             <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-derivate-includes.xed"
                          ref="derivate_types"/>
+            <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-derivate-includes.xed"
+                         ref="mir_access"/>
             <xed:include uri="webapp:editor/editor-derivate-includes.xed" ref="cancel.submit"/>
           </div>
       </xed:bind>

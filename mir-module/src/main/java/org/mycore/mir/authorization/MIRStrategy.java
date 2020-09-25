@@ -32,7 +32,6 @@ import org.mycore.backend.jpa.access.MCRACCESS_;
 import org.mycore.common.MCRCache;
 import org.mycore.common.MCRException;
 import org.mycore.common.config.MCRConfiguration2;
-import org.mycore.common.xml.MCRXMLFunctions;
 import org.mycore.datamodel.classifications2.MCRCategLinkReference;
 import org.mycore.datamodel.classifications2.MCRCategLinkService;
 import org.mycore.datamodel.classifications2.MCRCategLinkServiceFactory;
@@ -122,7 +121,7 @@ public class MIRStrategy implements MCRAccessCheckStrategy {
             LOGGER.debug("Found match in CREATOR strategy for {} on {}.", permission, objectId);
             return CREATOR_STRATEGY.checkPermission(permissionId, permission);
         }
-        return getAccessCategory(objectId, objectId.getTypeId(), permission)
+        return getAccessCategory(objectId, null, permission)
             // 5. check if classification rule applies
             .map(c -> {
                 LOGGER.debug("using access rule defined for category: " + c);
@@ -169,16 +168,7 @@ public class MIRStrategy implements MCRAccessCheckStrategy {
             }
         }
 
-        // 2. check if derivate is hidden
-        if (MCRAccessManager.PERMISSION_READ.equals(permission)
-            && !MCRXMLFunctions.isDisplayedEnabledDerivate(derivateId.toString())
-            && !checkObjectPermission(derivateId, MCRAccessManager.PERMISSION_WRITE)) {
-            // Derivate is hidden and user cannot write
-            LOGGER.debug("Derivate {} is hidden and User has no write permission!", derivateId);
-            return false;
-        }
-
-        // 3.check if derivate has embargo
+        // 2.check if derivate has embargo
         if (objectId == null) {
             //2.1. fallback to MCRObjectBaseStrategy
             LOGGER.debug("Derivate {} is an orphan. Cannot apply rules for MCRObject.", derivateId);
@@ -196,30 +186,30 @@ public class MIRStrategy implements MCRAccessCheckStrategy {
             return false;
         }
 
-        // 4. check if access mapping for derivate id exists
+        // 3. check if access mapping for derivate id exists
         if (ID_STRATEGY.hasRuleMapping(permissionId, permission)) {
             LOGGER.debug("Found match in ID strategy for {} on {}.", permission, derivateId);
             return ID_STRATEGY.checkPermission(permissionId, permission);
         }
 
-        // 5. check if creator rule applies
+        // 4. check if creator rule applies
         if (CREATOR_STRATEGY.isCreatorRuleAvailable(objectId.toString(), permission)) {
             LOGGER.debug("Found match in CREATOR strategy for {} on {}.", permission, derivateId);
             return CREATOR_STRATEGY.checkPermission(objectId.toString(), permission);
         }
 
-        return getAccessCategory(objectId, derivateId.getTypeId(), permission)
-            // 6. use rule defined for all derivates of object in category
+        return getAccessCategory(objectId, derivateId, permission)
+            // 5. use rule defined for all derivates of object in category
             .map(c -> {
                 LOGGER.debug("using access rule defined for category: " + c);
                 return accessImpl.checkPermission(derivateId.getTypeId() + ":" + c.toString(), permission);
             })
             .orElseGet(() -> {
-                // 7. check if base strategy applies for derivate
+                // 6. check if base strategy applies for derivate
                 if (OBJECT_BASE_STRATEGY.hasRuleMapping(permissionId, permission)) {
                     return OBJECT_BASE_STRATEGY.checkPermission(permissionId, permission);
                 }
-                // 8. go for object permission, if object link exists.
+                // 7. go for object permission, if object link exists.
                 LOGGER.debug("No rule for base strategy found, check against object {}.", objectId);
                 return checkObjectPermission(objectId, permission);
             });
@@ -230,16 +220,22 @@ public class MIRStrategy implements MCRAccessCheckStrategy {
             .anyMatch(MCRUserManager.getCurrentUser()::isUserInRole);
     }
 
-    private Optional<MCRCategoryID> getAccessCategory(MCRObjectID objectId, String prefix, String permission) {
-        List<MCRCategoryID> accessMappedCategories = getAccessMappedCategories(prefix, permission,
-            accessClasses);
-        MCRCategLinkReference categLinkReference = new MCRCategLinkReference(objectId);
-        Optional<MCRCategoryID> accessCategory = accessMappedCategories
-            .stream()
-            .peek(c -> LOGGER.info("Checking if {} is in category {}.", objectId, c))
-            .filter(c -> linkService.isInCategory(categLinkReference, c))
-            .findFirst();
+    private Optional<MCRCategoryID> getAccessCategory(MCRObjectID objectId, MCRObjectID derivateId, String permission) {
+        String prefix = derivateId == null ? objectId.getTypeId() : derivateId.getTypeId();
+        List<MCRCategoryID> accessMappedCategories = getAccessMappedCategories(prefix, permission, accessClasses);
+        Optional<MCRCategoryID> accessCategory = getAccessCategory(accessMappedCategories, objectId)
+            .or(() -> getAccessCategory(accessMappedCategories, derivateId));
         return accessCategory;
+    }
+
+    private Optional<MCRCategoryID> getAccessCategory(List<MCRCategoryID> accessMappedCategories, MCRObjectID id) {
+        return Optional.ofNullable(id)
+            .map(MCRCategLinkReference::new)
+            .flatMap(ref -> accessMappedCategories
+                .stream()
+                .peek(c -> LOGGER.debug("Checking if {} is in category {}.", id, c))
+                .filter(c -> linkService.isInCategory(ref, c))
+                .findFirst());
     }
 
     private boolean hasRegisteredPI(MCRObjectID objectId) {

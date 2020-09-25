@@ -732,13 +732,6 @@
               </a>
             </li>
             </xsl:if>
-            <xsl:if test="key('rights', $deriv)/@write">
-            <li>
-              <a href="{$ServletsBaseURL}MCRDisplayHideDerivateServlet?derivate={$deriv}" class="option dropdown-item">
-                <xsl:value-of select="i18n:translate(concat('mir.derivate.display.', $derivate//derivate/@display))" />
-              </a>
-            </li>
-            </xsl:if>
             <xsl:if test="key('rights', $deriv)/@read">
               <li>
                 <a href="{$ServletsBaseURL}MCRZipServlet/{$deriv}" class="option downloadzip dropdown-item">

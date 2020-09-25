@@ -4,6 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.StringReader;
 import java.net.MalformedURLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -27,8 +28,12 @@ import org.jsoup.nodes.Entities;
 import org.mycore.access.MCRAccessException;
 import org.mycore.common.MCRConstants;
 import org.mycore.common.MCRException;
+import org.mycore.datamodel.classifications2.MCRCategoryDAOFactory;
+import org.mycore.datamodel.classifications2.MCRCategoryID;
 import org.mycore.datamodel.common.MCRDataURL;
 import org.mycore.datamodel.common.MCRXMLMetadataManager;
+import org.mycore.datamodel.metadata.MCRDerivate;
+import org.mycore.datamodel.metadata.MCRMetaClassification;
 import org.mycore.datamodel.metadata.MCRMetadataManager;
 import org.mycore.datamodel.metadata.MCRObject;
 import org.mycore.datamodel.metadata.MCRObjectID;
@@ -39,12 +44,57 @@ import org.mycore.mir.editor.MIREditorUtils;
 import org.mycore.mir.editor.MIRPostProcessor;
 import org.mycore.mir.editor.MIRUnescapeResolver;
 import org.mycore.mods.MCRMODSWrapper;
+import org.xml.sax.SAXException;
 
 @MCRCommandGroup(
     name = "MIR migration 2020.06")
 public class MIRMigration202006Utils {
 
     public static final Logger LOGGER = LogManager.getLogger();
+
+    private static final MCRCategoryID CONTENT_TYPE_ID = MCRCategoryID.fromString("derivate_types:content");
+
+    @MCRCommand(syntax = "migrate derivate display to category {0}",
+        help = "link derivates with @display=false to the given category {0}, e.g. mir_access:intern")
+    public static List<String> migrateDerivateDisplay(String targetCategory) {
+        MCRCategoryID categoryID = MCRCategoryID.fromString(targetCategory);
+        if (!MCRCategoryDAOFactory.getInstance().exist(categoryID)) {
+            throw new MCRException("Category " + categoryID + " does not exist!");
+        }
+        final MCRXMLMetadataManager mcrxmlMetadataManager = MCRXMLMetadataManager.instance();
+        final List<String> derivates = mcrxmlMetadataManager.listIDsOfType("derivate");
+        return derivates.stream()
+            .map(MCRObjectID::getInstance)
+            .map(mcrid -> {
+                try {
+                    return mcrxmlMetadataManager.retrieveXML(mcrid);
+                } catch (IOException | JDOMException | SAXException e) {
+                    throw new MCRException(e);
+                }
+            })
+            .filter(
+                der -> der.getRootElement().getChild("derivate").getAttributeValue("display", "true").equals("false"))
+            .map(MCRDerivate::new)
+            .peek(der -> addContentIfNeeded(der))
+            .map(der -> getMigrationCommand(der, categoryID))
+            .collect(Collectors.toList());
+    }
+
+    private static void addContentIfNeeded(MCRDerivate der) {
+        final ArrayList<MCRMetaClassification> metaClassifications = der.getDerivate().getClassifications();
+        if (!metaClassifications.isEmpty()) {
+            return;
+        }
+        metaClassifications.add(new MCRMetaClassification("classification", 0, null, CONTENT_TYPE_ID));
+    }
+
+    private static String getMigrationCommand(MCRDerivate der, MCRCategoryID targetCategory) {
+        return Stream.concat(
+            der.getDerivate().getClassifications().stream().map(m -> new MCRCategoryID(m.getClassId(), m.getCategId())),
+            Stream.of(targetCategory))
+            .map(MCRCategoryID::toString)
+            .collect(Collectors.joining(",", "set classification of derivate " + der.getId() + " to ", ""));
+    }
 
     @MCRCommand(
         syntax = "select objects which need titleInfo or abstract migration",
