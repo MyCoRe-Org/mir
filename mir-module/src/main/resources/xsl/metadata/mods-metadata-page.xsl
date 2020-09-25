@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+                xmlns:mcri18n="http://www.mycore.de/xslt/i18n"
                 version="3.0">
 
+  <xsl:include href="functions/i18n.xsl" />
 
   <xsl:param name="MIR.Layout.Top"/>
   <xsl:param name="MIR.Layout.End"/>
@@ -14,16 +16,17 @@
   <xsl:param name="MIR.Layout.Display.Panel"/>
   <xsl:param name="MIR.Layout.Display.Div"/>
 
+  <xsl:param name="MIR.CanonicalBaseURL" />
+
   <xsl:param name="WebApplicationBaseURL"/>
-
-
-  <xsl:variable name="translations"
-                select="document('i18n:mir.metaData.panel.heading.*,component.mods.metaData.dictionary.categorybox,component.mods.metaData.dictionary.*,metadata.versionInfo.label,button.cancel')"/>
 
   <xsl:template match="/site">
     <xsl:copy>
       <xsl:copy-of select="@*"/>
       <head>
+        <xsl:if test="string-length($MIR.CanonicalBaseURL) &gt; 0">
+          <link rel="canonical" href="{$MIR.CanonicalBaseURL}receive/{@ID}" />
+        </xsl:if>
         <xsl:copy-of select="citation_meta/*"/>
         <link href="{$WebApplicationBaseURL}mir-layout/assets/jquery/plugins/shariff/shariff.min.css" rel="stylesheet"/>
       </head>
@@ -89,7 +92,7 @@
                 <div class="modal-content">
                   <div class="modal-header">
                     <h4 class="modal-title" id="modalFrame-title">
-                      <xsl:value-of select="$translations/i18n/translation[@key='metadata.versionInfo.label']"/>
+                      <xsl:value-of select="mcri18n:translate('metadata.versionInfo.label')"/>
                     </h4>
                     <button
                         type="button"
@@ -108,7 +111,7 @@
                         type="button"
                         class="btn btn-danger"
                         data-dismiss="modal">
-                      <xsl:value-of select="$translations/i18n/translation[@key='button.cancel']"/>
+                      <xsl:value-of select="mcri18n:translate('button.cancel')"/>
                     </button>
                   </div>
                 </div>
@@ -128,7 +131,7 @@
                 <div class="card-header">
                   <h3 class="card-title">
                     <xsl:value-of
-                        select="$translations/i18n/translation[@key='component.mods.metaData.dictionary.systembox']"/>
+                        select="mcri18n:translate('component.mods.metaData.dictionary.systembox')"/>
                   </h3>
                 </div>
                 <div class="card-body">
@@ -143,7 +146,7 @@
             <div class="mir_metadata">
               <h3>
                 <xsl:value-of
-                    select="$translations/i18n/translation[@key='component.mods.metaData.dictionary.categorybox']"/>
+                    select="mcri18n:translate('component.mods.metaData.dictionary.categorybox')"/>
               </h3>
               <!-- Start: METADATA -->
               <xsl:apply-templates select="$originalContent/div[@id=$boxID]" mode="newMetadata"/>
@@ -166,7 +169,7 @@
               <div class="card-header">
                 <h3 class="card-title">
                   <xsl:value-of
-                      select="$translations/i18n/translation[@key=concat('mir.metaData.panel.heading.', $boxID)]"/>
+                      select="mcri18n:translate(concat('mir.metaData.panel.heading.', $boxID))"/>
                 </h3>
               </div>
               <div class="card-body">
