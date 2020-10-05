@@ -57,25 +57,27 @@
 
   SearchEntity.TYPES = {
     GND : {
-      baseURI : "http://d-nb.info/gnd/",
-      person : {
-        enabled : true,
-        url : "//ws.gbv.de/suggest/gnd/",
-        data : function(input) {
+      baseURI : "https://d-nb.info/gnd/",
+      person: {
+        enabled: true,
+        url: "https://lobid.org/gnd/search",
+        data: function (input) {
           return {
-            searchterm : input,
-            type : "DifferentiatedPerson"
+            q: input,
+            filter: "type:DifferentiatedPerson",
+            format: "json:suggest",
+            size: "30"
           }
         },
-        dataType : "jsonp",
-        dataConvert : function(data) {
+        dataType: "jsonp",
+        dataConvert: function (data) {
           var result = [];
-          if (data.length == 4) {
-            $(data[1]).each(function(index, item) {
-              if (parseType(data[2][index]) === "DifferentiatedPerson") {
+          if (typeof data !== 'undefined' && data.length > 0) {
+            data.forEach((element) => {
+              if ((element.category) === "Individualisierte Person") {
                 var person = {
-                  label : item,
-                  value : data[3][index],
+                  label: element.label,
+                  value: element.id,
                   type: "personal"
                 };
                 result.push(person);
@@ -85,24 +87,26 @@
           return result;
         }
       },
-      organisation : {
-        enabled : true,
-        url : "//ws.gbv.de/suggest/gnd/",
-        data : function(input) {
+      organisation: {
+        enabled: true,
+        url: "https://lobid.org/gnd/search",
+        data: function (input) {
           return {
-            searchterm : input,
-            type : "CorporateBody"
+            q: input,
+            filter: "type:CorporateBody",
+            format: "json:suggest",
+            size: "30"
           }
         },
-        dataType : "jsonp",
-        dataConvert : function(data) {
+        dataType: "jsonp",
+        dataConvert: function (data) {
           var result = [];
-          if (data.length == 4) {
-            $(data[1]).each(function(index, item) {
-              if (parseType(data[2][index]) === "CorporateBody") {
+          if (typeof data !== 'undefined' && data.length > 0) {
+            data.forEach((element) => {
+              if ((element.category) === "Körperschaft") {
                 var organisation = {
-                  label : item,
-                  value : data[3][index],
+                  label: element.label,
+                  value: element.id,
                   type: "corporate"
                 };
                 result.push(organisation);
@@ -112,33 +116,34 @@
           return result;
         }
       },
-      both : {
-        enabled : true,
-        url : "//ws.gbv.de/suggest/gnd/",
-        data : function(input) {
+      both: {
+        enabled: true,
+        url: "https://lobid.org/gnd/search",
+        data: function (input) {
           return {
-            searchterm : input,
-            type : "DifferentiatedPerson,CorporateBody",
-            count: "30"
+            q: input,
+            filter: "type:DifferentiatedPerson OR type:CorporateBody",
+            format: "json:suggest",
+            size: "30"
           }
         },
-        dataType : "jsonp",
-        dataConvert : function(data) {
+        dataType: "jsonp",
+        dataConvert: function (data) {
           var result = [];
-          if (data.length == 4) {
-            $(data[1]).each(function(index, item) {
-              if (parseType(data[2][index]) === "DifferentiatedPerson") {
+          if (typeof data !== 'undefined' && data.length > 0) {
+            data.forEach((element) => {
+              if ((element.category) === "Individualisierte Person") {
                 var person = {
-                  label : item,
-                  value : data[3][index],
+                  label: element.label,
+                  value: element.id,
                   type: "personal"
                 };
                 result.push(person);
               }
-              if (parseType(data[2][index]) === "CorporateBody") {
+              if ((element.category) === "Körperschaft") {
                 var organisation = {
-                  label : item,
-                  value : data[3][index],
+                  label: element.label,
+                  value: element.id,
                   type: "corporate"
                 };
                 result.push(organisation);
@@ -148,24 +153,26 @@
           return result;
         }
       },
-      topic : {
-        enabled : true,
-        url : "//ws.gbv.de/suggest/gnd/",
-        data : function(input) {
+      topic: {
+        enabled: true,
+        url: "https://lobid.org/gnd/search",
+        data: function (input) {
           return {
-            searchterm : input,
-            type: "SubjectHeading"
+            q: input,
+            filter: "type:SubjectHeading",
+            format: "json:suggest",
+            size: "30"
           }
         },
-        dataType : "jsonp",
-        dataConvert : function(data) {
+        dataType: "jsonp",
+        dataConvert: function (data) {
           var result = [];
-          if (data.length == 4) {
-            $(data[1]).each(function(index, item) {
-              if (parseType(data[2][index]) === "SubjectHeading") {
+          if (typeof data !== 'undefined' && data.length > 0) {
+            data.forEach((element) => {
+              if (element.category.includes("Schlagwort")) {
                 var topic = {
-                  label : item,
-                  value : data[3][index]
+                  label: element.label,
+                  value: element.id,
                 };
                 result.push(topic);
               }
@@ -174,30 +181,175 @@
           return result;
         }
       },
-      geographic : {
-        enabled : true,
-        url : "//ws.gbv.de/suggest/gnd/",
-        data : function(input) {
-            return {
-                searchterm : input,
-                type: "PlaceOrGeographicName"
-            }
+      geographic: {
+        enabled: true,
+        url: "https://lobid.org/gnd/search",
+        data: function (input) {
+          return {
+            q: input,
+            filter: "type:PlaceOrGeographicName",
+            format: "json:suggest",
+            size: "30"
+          }
         },
-        dataType : "jsonp",
-        dataConvert : function(data) {
-            var result = [];
-            if (data.length == 4) {
-                $(data[1]).each(function(index, item) {
-                    if (parseType(data[2][index]) === "PlaceOrGeographicName") {
-                        var geographic = {
-                            label : item,
-                            value : data[3][index]
-                        };
-                        result.push(geographic);
-                    }
-                });
-            }
-            return result;
+        dataType: "jsonp",
+        dataConvert: function (data) {
+          var result = [];
+          if (typeof data !== 'undefined' && data.length > 0) {
+            data.forEach((element) => {
+              var geographic = {
+                label: element.label,
+                value: element.id,
+              };
+              result.push(geographic);
+            });
+          }
+          return result;
+        }
+      }
+    },
+    GND_FALLBACK: {
+      baseURI: "http://d-nb.info/gnd/",
+      person: {
+        enabled: true,
+        url: "//ws.gbv.de/suggest/gnd/",
+        data: function (input) {
+          return {
+            searchterm: input,
+            type: "DifferentiatedPerson"
+          }
+        },
+        dataType: "jsonp",
+        dataConvert: function (data) {
+          var result = [];
+          if (data.length == 4) {
+            $(data[1]).each(function (index, item) {
+              if (parseType(data[2][index]) === "DifferentiatedPerson") {
+                var person = {
+                  label: item,
+                  value: data[3][index],
+                  type: "personal"
+                };
+                result.push(person);
+              }
+            });
+          }
+          return result;
+        }
+      },
+      organisation: {
+        enabled: true,
+        url: "//ws.gbv.de/suggest/gnd/",
+        data: function (input) {
+          return {
+            searchterm: input,
+            type: "CorporateBody"
+          }
+        },
+        dataType: "jsonp",
+        dataConvert: function (data) {
+          var result = [];
+          if (data.length == 4) {
+            $(data[1]).each(function (index, item) {
+              if (parseType(data[2][index]) === "CorporateBody") {
+                var organisation = {
+                  label: item,
+                  value: data[3][index],
+                  type: "corporate"
+                };
+                result.push(organisation);
+              }
+            });
+          }
+          return result;
+        }
+      },
+      both: {
+        enabled: true,
+        url: "//ws.gbv.de/suggest/gnd/",
+        data: function (input) {
+          return {
+            searchterm: input,
+            type: "DifferentiatedPerson,CorporateBody",
+            count: "30"
+          }
+        },
+        dataType: "jsonp",
+        dataConvert: function (data) {
+          var result = [];
+          if (data.length == 4) {
+            $(data[1]).each(function (index, item) {
+              if (parseType(data[2][index]) === "DifferentiatedPerson") {
+                var person = {
+                  label: item,
+                  value: data[3][index],
+                  type: "personal"
+                };
+                result.push(person);
+              }
+              if (parseType(data[2][index]) === "CorporateBody") {
+                var organisation = {
+                  label: item,
+                  value: data[3][index],
+                  type: "corporate"
+                };
+                result.push(organisation);
+              }
+            });
+          }
+          return result;
+        }
+      },
+      topic: {
+        enabled: true,
+        url: "//ws.gbv.de/suggest/gnd/",
+        data: function (input) {
+          return {
+            searchterm: input,
+            type: "SubjectHeading"
+          }
+        },
+        dataType: "jsonp",
+        dataConvert: function (data) {
+          var result = [];
+          if (data.length == 4) {
+            $(data[1]).each(function (index, item) {
+              if (parseType(data[2][index]) === "SubjectHeading") {
+                var topic = {
+                  label: item,
+                  value: data[3][index]
+                };
+                result.push(topic);
+              }
+            });
+          }
+          return result;
+        }
+      },
+      geographic: {
+        enabled: true,
+        url: "//ws.gbv.de/suggest/gnd/",
+        data: function (input) {
+          return {
+            searchterm: input,
+            type: "PlaceOrGeographicName"
+          }
+        },
+        dataType: "jsonp",
+        dataConvert: function (data) {
+          var result = [];
+          if (data.length == 4) {
+            $(data[1]).each(function (index, item) {
+              if (parseType(data[2][index]) === "PlaceOrGeographicName") {
+                var geographic = {
+                  label: item,
+                  value: data[3][index]
+                };
+                result.push(geographic);
+              }
+            });
+          }
+          return result;
         }
       }
     },
@@ -421,9 +573,10 @@
       $typeMenu.attr("role", "menu");
 
       for ( var type in SearchEntity.TYPES) {
-        if (SearchEntity.TYPES[type][options.searchEntityType].enabled == false)
-          continue;
-
+      	if (SearchEntity.TYPES[type][options.searchEntityType].enabled === false || type.includes("_FALLBACK")) {
+      		continue;
+      	}
+ 
         if (SearchEntity.TYPES[this.selectedType] != undefined && SearchEntity.TYPES[this.selectedType][options.searchEntityType].enabled == false) {
           this.selectedType = type;
         }
@@ -475,9 +628,15 @@
         return;
 
       var type = null;
+      var type_fallback = null;
+      
       for (var t in SearchEntity.TYPES) {
         if (this.selectedType.toUpperCase() == t.toUpperCase()) {
           type = SearchEntity.TYPES[t][options.searchEntityType];
+          if (SearchEntity.TYPES.hasOwnProperty(t + "_FALLBACK")) {
+          	console.log('SearchEntity.prototype.search: Set fallback for type ' + t);
+            type_fallback = SearchEntity.TYPES[t + "_FALLBACK"][options.searchEntityType];
+          }
           break;
         }
       }
@@ -490,19 +649,31 @@
 
       let that = this;
       if (type != null) {
-        SearchEntity.loadData(type.url, type.dataType, type.data(input), function (data) {
-          if (data !== undefined) {
-            that.showResult(SearchEntity.sortData(input, typeof type.dataConvert == "function" ? type.dataConvert(data) : data));
-          } else {
-            that.showResult();
-          }
-          content.detach();
-          that.$searchBtn.text(text);
-        }, function () {
-          that.showResult();
-          content.detach();
-          that.$searchBtn.text(text);
-        })
+        var handleData = (url, dataType, data, isFallback) => {
+          SearchEntity.loadData(url, dataType, data, (data) => {
+            if (data !== undefined) {
+              that.showResult(SearchEntity.sortData(input, typeof type.dataConvert == "function" ? type.dataConvert(data) : data));
+            } else {
+              that.showResult();
+            }
+            content.detach();
+            that.$searchBtn.text(text);
+          
+          }, () => {
+            if (!isFallback && type_fallback != null) {
+            	console.log('SearchEntity.prototype.search: Failed to loadData for type: ' + this.selectedType.toUpperCase() + '. Set '
+            	  + this.selectedType.toUpperCase() + '_FALLBACK' + ' as type.');
+              type = type_fallback;
+              handleData(type.url, type.dataType, type.data(input), true);
+            } else {
+            	console.error('SearchEntity.prototype.search: LoadData failed for type ' + this.selectedType.toUpperCase());
+              that.showResult();
+              content.detach();
+              that.$searchBtn.text(text);
+            }
+          })
+        };
+        handleData(type.url, type.dataType, type.data(input), false);
       } else {
         console.error("Search type \"" + this.selectedType.toUpperCase() + "\" is unsupported!");
         content.detach();
@@ -581,7 +752,8 @@
     var isNewNameFormGroup = true;
 
     if (item) {
-      this.$element != $output && item.label && this.$element.val(item.label.replace(SearchEntity.LABEL_CLEANUP, ""));
+      this.$element != $output && item.label && this.$element.val(item.label.replace(SearchEntity.LABEL_CLEANUP, "").split('|')[0].trim());
+      
       var outputType = getTypeFromURL(item.value);
 
       if (item.type) {
@@ -819,8 +991,9 @@
 
   function getTypeFromURL(url) {
     for ( var type in SearchEntity.TYPES) {
-      if (url.indexOf(SearchEntity.TYPES[type].baseURI) != -1)
+      if (url.indexOf(SearchEntity.TYPES[type].baseURI) != -1 && !type.includes("_FALLBACK")) {
         return type;
+      }
     }
 
     return "";
