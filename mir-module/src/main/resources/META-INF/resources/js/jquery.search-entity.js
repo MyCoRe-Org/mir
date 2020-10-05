@@ -573,8 +573,9 @@
       $typeMenu.attr("role", "menu");
 
       for ( var type in SearchEntity.TYPES) {
-      	if (SearchEntity.TYPES[type][options.searchEntityType].enabled == false || type.includes("_FALLBACK"))
+      	if (SearchEntity.TYPES[type][options.searchEntityType].enabled == false || type.includes("_FALLBACK")) {
            continue;
+      	}
  
         if (SearchEntity.TYPES[this.selectedType] != undefined && SearchEntity.TYPES[this.selectedType][options.searchEntityType].enabled == false) {
           this.selectedType = type;
@@ -751,7 +752,8 @@
     var isNewNameFormGroup = true;
 
     if (item) {
-      this.$element != $output && item.label && this.$element.val(item.label.replace(SearchEntity.LABEL_CLEANUP, ""));
+      this.$element != $output && item.label && this.$element.val(item.label.replace(SearchEntity.LABEL_CLEANUP, "").split('|')[0].trim());
+      
       var outputType = getTypeFromURL(item.value);
 
       if (item.type) {
@@ -989,8 +991,9 @@
 
   function getTypeFromURL(url) {
     for ( var type in SearchEntity.TYPES) {
-      if (url.indexOf(SearchEntity.TYPES[type].baseURI) != -1 && !type.includes("_FALLBACK"))
+      if (url.indexOf(SearchEntity.TYPES[type].baseURI) != -1 && !type.includes("_FALLBACK")) {
         return type;
+      }
     }
 
     return "";
