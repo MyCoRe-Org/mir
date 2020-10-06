@@ -7,25 +7,25 @@
  * <pre>
  * Usage:
  *
- * 	Parameters:
- * 		- target 				: the target container
- * 		- search 				: always &quot;searchEntity&quot;
+ *   Parameters:
+ *     - target              : the target container
+ *     - search              : always &quot;searchEntity&quot;
  *
- * 		- searchEntityType		: can be person or organisation
+ *     - searchEntityType    : can be person or organisation
  *
- * 		- searchType
- * 			- SELECT			: add searchType selection menu
- * 			- GND 				: search through http://lobid.org
- * 			- VIAF				: search through http://www.viaf.org
- * 		    - ORCID             : search through https://pub.orcid.org/
- * 		- searchOutput			: the output field for person the nameIdentifer ID,
- * 								  if nothing specified the input field is used
- * 		- searchOutputType		: the output field for person the nameIdentifer type,
- * 								  if nothing specified the input field is used
+ *     - searchType
+ *       - SELECT            : add searchType selection menu
+ *       - GND               : search through http://lobid.org
+ *       - VIAF              : search through http://www.viaf.org
+ *       - ORCID             : search through https://pub.orcid.org/
+ *     - searchOutput        : the output field for person the nameIdentifer ID,
+ *                             if nothing specified the input field is used
+ *     - searchOutputType    : the output field for person the nameIdentifer type,
+ *                             if nothing specified the input field is used
  *
- * 		- searchButton			: the search button text
- * 		- searchResultEmpty		: the label if search result was empty
- * 		- searchButtonLoading	: the button text on search
+ *     - searchButton        : the search button text
+ *     - searchResultEmpty   : the label if search result was empty
+ *     - searchButtonLoading : the button text on search
  * </pre>
  *
  * All parameters can be also set with jQuery <code>data-</code> attributes.
@@ -573,9 +573,9 @@
       $typeMenu.attr("role", "menu");
 
       for ( var type in SearchEntity.TYPES) {
-      	if (SearchEntity.TYPES[type][options.searchEntityType].enabled === false || type.includes("_FALLBACK")) {
-      		continue;
-      	}
+        if (SearchEntity.TYPES[type][options.searchEntityType].enabled === false || type.includes("_FALLBACK")) {
+          continue;
+        }
  
         if (SearchEntity.TYPES[this.selectedType] != undefined && SearchEntity.TYPES[this.selectedType][options.searchEntityType].enabled == false) {
           this.selectedType = type;
@@ -634,7 +634,7 @@
         if (this.selectedType.toUpperCase() == t.toUpperCase()) {
           type = SearchEntity.TYPES[t][options.searchEntityType];
           if (SearchEntity.TYPES.hasOwnProperty(t + "_FALLBACK")) {
-          	console.log('SearchEntity.prototype.search: Set fallback for type ' + t);
+            console.log('SearchEntity.prototype.search: Set fallback for type ' + t);
             type_fallback = SearchEntity.TYPES[t + "_FALLBACK"][options.searchEntityType];
           }
           break;
@@ -661,12 +661,12 @@
           
           }, () => {
             if (!isFallback && type_fallback != null) {
-            	console.log('SearchEntity.prototype.search: Failed to loadData for type: ' + this.selectedType.toUpperCase() + '. Set '
-            	  + this.selectedType.toUpperCase() + '_FALLBACK' + ' as type.');
+              console.log('SearchEntity.prototype.search: Failed to loadData for type: ' + this.selectedType.toUpperCase() + '. Set '
+                + this.selectedType.toUpperCase() + '_FALLBACK' + ' as type.');
               type = type_fallback;
               handleData(type.url, type.dataType, type.data(input), true);
             } else {
-            	console.error('SearchEntity.prototype.search: LoadData failed for type ' + this.selectedType.toUpperCase());
+              console.error('SearchEntity.prototype.search: LoadData failed for type ' + this.selectedType.toUpperCase());
               that.showResult();
               content.detach();
               that.$searchBtn.text(text);
