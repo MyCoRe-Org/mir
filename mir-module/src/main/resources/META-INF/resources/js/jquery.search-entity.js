@@ -628,14 +628,13 @@
         return;
 
       var type = null;
-      var type_fallback = null;
+      var typeFallback = null;
       
       for (var t in SearchEntity.TYPES) {
         if (this.selectedType.toUpperCase() == t.toUpperCase()) {
           type = SearchEntity.TYPES[t][options.searchEntityType];
           if (SearchEntity.TYPES.hasOwnProperty(t + "_FALLBACK")) {
-            console.log('SearchEntity.prototype.search: Set fallback for type ' + t);
-            type_fallback = SearchEntity.TYPES[t + "_FALLBACK"][options.searchEntityType];
+            typeFallback = SearchEntity.TYPES[t + "_FALLBACK"][options.searchEntityType];
           }
           break;
         }
@@ -660,10 +659,10 @@
             that.$searchBtn.text(text);
           
           }, () => {
-            if (!isFallback && type_fallback != null) {
+            if (!isFallback && typeFallback != null) {
               console.log('SearchEntity.prototype.search: Failed to loadData for type: ' + this.selectedType.toUpperCase() + '. Set '
                 + this.selectedType.toUpperCase() + '_FALLBACK' + ' as type.');
-              type = type_fallback;
+              type = typeFallback;
               handleData(type.url, type.dataType, type.data(input), true);
             } else {
               console.error('SearchEntity.prototype.search: LoadData failed for type ' + this.selectedType.toUpperCase());
