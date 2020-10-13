@@ -116,15 +116,15 @@
           <div class="input-group">
             <xsl:apply-templates select="." mode="action" />
             <xsl:apply-templates select="." mode="widget" />
+            <xsl:apply-templates select="." mode="validation" />
           </div>
-          <xsl:apply-templates select="." mode="validation" />
         </xsl:when>
         <xsl:when test="@tooltip">
           <div class="input-group">
             <xsl:apply-templates select="." mode="widget" />
             <xsl:apply-templates select="." mode="inputTooltip" />
+            <xsl:apply-templates select="." mode="validation" />
           </div>
-          <xsl:apply-templates select="." mode="validation" />
         </xsl:when>
         <xsl:otherwise>
           <xsl:apply-templates select="." mode="widget" />
