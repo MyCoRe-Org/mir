@@ -19,7 +19,6 @@
             success: function(data){
                 $('#citation-text').html(data);
                 $('#citation-text').removeClass("d-none");
-                $('#default-citation-text').addClass("d-none");
                 $('#citation-alert').addClass("d-none");
                 $('#citation-error').addClass("d-none");
             },
@@ -31,7 +30,6 @@
                 else {
                     $('#citation-alert').removeClass("d-none");
                 }
-                $('#default-citation-text').removeClass("d-none");
                 $('#citation-text').addClass("d-none");
                 $('#citation-error').removeClass("d-none");
             }

@@ -130,9 +130,6 @@
             </xsl:for-each>
           </select>
         </xsl:if>
-        <div id="default-citation-text">
-          <xsl:copy-of select="document(concat('xslTransform:mods2csl?format=html&amp;style=', $MIR.defaultCitationStyle, ':mcrobject:', /mycoreobject/@ID))" />
-        </div>
         <div id="citation-text" class="d-none">
         </div>
         <div id="citation-alert" class="alert alert-danger d-none"><xsl:value-of select="i18n:translate('mir.citationAlert')" /></div>
