@@ -19,21 +19,13 @@
             success: function(data){
                 $('#citation-text').html(data);
                 $('#citation-text').removeClass("d-none");
-                $('#default-citation-text').addClass("d-none");
                 $('#citation-alert').addClass("d-none");
                 $('#citation-error').addClass("d-none");
             },
             error: function (error) {
                 console.warn("Citation not available: " + error.status + " " + error.statusText + ": " + error.responseText);
-                if (first) {
-                    $('#citation-alert').addClass("d-none");
-                }
-                else {
-                    $('#citation-alert').removeClass("d-none");
-                }
-                $('#default-citation-text').removeClass("d-none");
+                $('#citation-alert').removeClass("d-none");
                 $('#citation-text').addClass("d-none");
-                $('#citation-error').removeClass("d-none");
             }
         });
     }

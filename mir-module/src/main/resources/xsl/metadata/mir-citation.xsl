@@ -113,7 +113,6 @@
           <strong>
             <xsl:value-of select="i18n:translate('mir.citationStyle')" />
           </strong>
-          <i id="citation-error" class="fas fa-exclamation-circle hidden" title="{i18n:translate('mir.citationAlertService')}"></i>
         </span>
         <xsl:if test="string-length($MIR.citationStyles) &gt; 0">
           <xsl:variable name="cite-styles">
@@ -130,9 +129,6 @@
             </xsl:for-each>
           </select>
         </xsl:if>
-        <div id="default-citation-text">
-          <xsl:copy-of select="document(concat('xslTransform:mods2csl?format=html&amp;style=', $MIR.defaultCitationStyle, ':mcrobject:', /mycoreobject/@ID))" />
-        </div>
         <div id="citation-text" class="d-none">
         </div>
         <div id="citation-alert" class="alert alert-danger d-none"><xsl:value-of select="i18n:translate('mir.citationAlert')" /></div>
