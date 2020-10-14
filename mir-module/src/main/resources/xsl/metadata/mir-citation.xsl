@@ -113,7 +113,6 @@
           <strong>
             <xsl:value-of select="i18n:translate('mir.citationStyle')" />
           </strong>
-          <i id="citation-error" class="fas fa-exclamation-circle hidden" title="{i18n:translate('mir.citationAlertService')}"></i>
         </span>
         <xsl:if test="string-length($MIR.citationStyles) &gt; 0">
           <xsl:variable name="cite-styles">
