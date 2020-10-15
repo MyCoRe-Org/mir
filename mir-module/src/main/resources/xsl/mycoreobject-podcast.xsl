@@ -118,9 +118,9 @@
   </xsl:template>
 
   <xsl:template match="mods:mods" mode="subtitle">
-    <xsl:if test="mods:titleInfo[1]/mods:subtitle">
+    <xsl:if test="mods:titleInfo[1]/mods:subTitle">
       <itunes:subtitle>
-        <xsl:value-of select="fn:exactly-one(mods:titleInfo[1]/mods:subtitle)" />
+        <xsl:value-of select="fn:exactly-one(mods:titleInfo[1]/mods:subTitle)" />
       </itunes:subtitle>
     </xsl:if>
   </xsl:template>
