@@ -8,6 +8,7 @@
 
   <xsl:param name="MIR.Layout.inputSize" />
   <xsl:param name="MIR.Layout.inputWidth" />
+  <xsl:param name="MCR.XEditor.Validation.Marker.error" />
 
   <xsl:variable name="grid-width" select="12" />
   <xsl:variable name="input-size">
@@ -197,7 +198,7 @@
 
   <xsl:template match="mir:template[contains('textInput|passwordInput|selectInput|checkboxList|radioList|textArea', @name)]" mode="validation">
     <xsl:if test="@required = 'true' or @validate = 'true'">
-      <xed:if test="contains($xed-validation-marker, 'is-invalid')">
+      <xed:if test="contains($xed-validation-marker, $MCR.XEditor.Validation.Marker.error)">
         <div class="invalid-feedback">
           <xed:output i18n="{@i18n.error}" />
         </div>
