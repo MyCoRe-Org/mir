@@ -2,7 +2,7 @@
 
 <!-- ======================================================================
  Converts MyCoRe/MODS to DataCite Schema, to register metadata for DOIs.
- See http://schema.datacite.org/meta/kernel-3/
+ See https://schema.datacite.org/meta/kernel-4.3/
  ====================================================================== -->
 
 <xsl:stylesheet version="1.0"
@@ -12,13 +12,26 @@
   xmlns:mods="http://www.loc.gov/mods/v3"
   xmlns:mcrmods="xalan://org.mycore.mods.classification.MCRMODSClassificationSupport"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xmlns="http://datacite.org/schema/kernel-3"
+  xmlns="http://datacite.org/schema/kernel-4"
   exclude-result-prefixes="xsl xlink mods xalan mcrmods">
 
   <xsl:output method="xml" encoding="UTF-8" indent="yes" xalan:indent-amount="2" />
 
-  <xsl:param name="MCR.DOI.HostingInstitution" select="''" />
+  <xsl:param name="WebApplicationBaseURL" />
+
   <xsl:param name="MCR.Metadata.DefaultLang" />
+
+  <xsl:param name="MCR.DOI.HostingInstitution" />
+
+  <xsl:param name="MCR.DOI.DataCite.MissingCreator" select="':none'" />
+  <xsl:param name="MCR.DOI.DataCite.MissingTitle" select="':unas'" />
+  <xsl:param name="MCR.DOI.DataCite.MissingYear" select="':unas'" />
+
+  <xsl:variable name="schemaLocation">http://datacite.org/schema/kernel-4 http://schema.datacite.org/meta/kernel-4.3/metadata.xsd</xsl:variable>
+
+  <xsl:variable name="lower">abcdefghijklmnopqrstuvwxyz</xsl:variable>
+  <xsl:variable name="upper">ABCDEFGHIJKLMNOPQRSTUVWXYZ</xsl:variable>
+
   <xsl:variable name="marcrelator" select="document('classification:metadata:-1:children:marcrelator')" />
 
   <xsl:template match="mycoreobject">
@@ -26,19 +39,22 @@
   </xsl:template>
 
   <xsl:template match="mods:mods">
-    <resource xsi:schemaLocation="http://datacite.org/schema/kernel-3 http://schema.datacite.org/meta/kernel-3/metadata.xsd">
+    <resource xsi:schemaLocation="{$schemaLocation}">
       <xsl:call-template name="identifier" />
       <xsl:call-template name="creators" />
       <xsl:call-template name="titles" />
       <xsl:call-template name="publisher" />
       <xsl:apply-templates select="." mode="publicationYear" />
-      <xsl:call-template name="contributors" />
       <xsl:call-template name="subjects" />
+      <xsl:call-template name="contributors" />
       <xsl:call-template name="dates" />
       <xsl:call-template name="language" />
       <xsl:call-template name="resourceType" />
-      <xsl:call-template name="descriptions" />
       <xsl:call-template name="alternateIdentifiers" />
+      <xsl:call-template name="relatedIdentifiers" />
+      <xsl:call-template name="rights" />
+      <xsl:call-template name="descriptions" />
+      <xsl:call-template name="fundingReference" />
     </resource>
   </xsl:template>
 
@@ -46,45 +62,138 @@
 
   <xsl:template name="identifier">
     <identifier identifierType="DOI">
-      <xsl:choose>
-        <xsl:when test="mods:identifier[@type='doi']">
-          <xsl:apply-templates select="mods:identifier[@type='doi']" mode="identifier" />
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:value-of select="concat('10.5072/dummy.',number(substring-after(substring-after(ancestor::mycoreobject/@ID,'_'),'_')))" />
-        </xsl:otherwise>
-      </xsl:choose>
+      <xsl:apply-templates select="mods:identifier[@type='doi'][1]" />
     </identifier>
   </xsl:template>
 
-  <xsl:template match="mods:identifier[@type='doi']" mode="identifier">
+  <xsl:template match="mods:identifier[@type='doi'][starts-with(text(),'doi:')]">
+    <xsl:value-of select="substring-after(text(),'doi:')" />
+  </xsl:template>
+
+  <xsl:template match="mods:identifier[@type='doi']">
+    <xsl:value-of select="." />
+  </xsl:template>
+
+  <!-- ========== creators (1-n) ========== -->
+
+  <xsl:template name="creators">
+    <creators>
+      <xsl:variable name="creatorRoles" select="$marcrelator//category[@ID='cre']/descendant-or-self::category" />
+      <xsl:choose>
+        <xsl:when test="mods:name[$creatorRoles/@ID=mods:role/mods:roleTerm]">
+          <xsl:apply-templates select="mods:name[$creatorRoles/@ID=mods:role/mods:roleTerm]" mode="creator"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <creator>
+            <creatorName>
+              <xsl:value-of select="$MCR.DOI.DataCite.MissingCreator" />
+            </creatorName>
+          </creator>
+        </xsl:otherwise>
+      </xsl:choose>
+    </creators>
+  </xsl:template>
+
+  <xsl:template match="mods:name" mode="creator">
+    <creator>
+      <creatorName>
+        <xsl:apply-templates select="@type" />
+        <xsl:call-template name="name" />
+      </creatorName>
+
+      <xsl:apply-templates select="mods:namePart[@type='given'][1]" />
+      <xsl:apply-templates select="mods:namePart[@type='family'][1]" />
+      <xsl:apply-templates select="mods:nameIdentifier" />
+      <xsl:apply-templates select="mods:affiliation" />
+    </creator>
+  </xsl:template>
+
+  <xsl:template name="name">
     <xsl:choose>
-      <xsl:when test="starts-with(text(),'doi:')">
-        <xsl:value-of select="substring-after(text(),'doi:')" />
+      <xsl:when test="mods:displayForm">
+        <xsl:value-of select="mods:displayForm" />
+      </xsl:when>
+      <xsl:when test="mods:namePart[@type='family'] and mods:namePart[@type='given']">
+        <xsl:value-of select="mods:namePart[@type='family']" />
+        <xsl:text>, </xsl:text>
+        <xsl:value-of select="mods:namePart[@type='given']" />
       </xsl:when>
       <xsl:otherwise>
-        <xsl:value-of select="." />
+        <xsl:variable name="classlink" select="mcrmods:getClassCategParentLink(.)" />
+        <xsl:if test="string-length($classlink) &gt; 0">
+          <xsl:for-each select="document($classlink)/mycoreclass//category[position()=1 or position()=last()]">
+            <xsl:if test="position() = 1">
+              <xsl:copy-of select="@xml:lang" />
+            </xsl:if>
+            <xsl:if test="position() > 1">
+              <xsl:value-of select="', '" />
+            </xsl:if>
+            <xsl:for-each select="label[lang($MCR.Metadata.DefaultLang)]">
+              <xsl:value-of select="@text" />
+            </xsl:for-each>
+          </xsl:for-each>
+        </xsl:if>
       </xsl:otherwise>
     </xsl:choose>
+  </xsl:template>
+
+  <xsl:template match="mods:name/@type[.='personal']">
+    <xsl:attribute name="nameType">Personal</xsl:attribute>
+  </xsl:template>
+
+  <xsl:template match="mods:name/@type[.='corporate']">
+    <xsl:attribute name="nameType">Organizational</xsl:attribute>
+  </xsl:template>
+
+  <xsl:template match="mods:namePart[@type='given']">
+    <givenName>
+      <xsl:value-of select="text()" />
+    </givenName>
+  </xsl:template>
+
+  <xsl:template match="mods:namePart[@type='family']">
+    <familyName>
+      <xsl:value-of select="text()" />
+    </familyName>
+  </xsl:template>
+
+  <xsl:template match="mods:nameIdentifier">
+    <nameIdentifier nameIdentifierScheme="{translate(@type,$lower,$upper)}">
+      <xsl:if test="@type='orcid'">
+        <xsl:attribute name="schemeURI">http://orcid.org/</xsl:attribute>
+      </xsl:if>
+      <xsl:value-of select="text()" />
+    </nameIdentifier>
+  </xsl:template>
+
+  <xsl:template match="mods:affiliation">
+    <affiliation>
+      <xsl:value-of select="text()" />
+    </affiliation>
   </xsl:template>
 
   <!-- ========== titles (1-n) ========== -->
 
   <xsl:template name="titles">
     <titles>
-      <xsl:apply-templates select="mods:titleInfo[not(@altFormat)]" />
+      <xsl:choose>
+        <xsl:when test="mods:titleInfo">
+          <xsl:apply-templates select="mods:titleInfo[not(@altFormat)]" />
+        </xsl:when>
+        <xsl:otherwise>
+          <title>
+            <xsl:value-of select="$MCR.DOI.DataCite.MissingTitle" />
+          </title>
+        </xsl:otherwise>
+      </xsl:choose>
     </titles>
   </xsl:template>
 
   <xsl:template match="mods:titleInfo">
     <title>
-      <xsl:copy-of select="@xml:lang" />
       <xsl:apply-templates select="@type" />
-      <xsl:apply-templates select="mods:nonSort" />
-      <xsl:apply-templates select="mods:title" />
-      <xsl:apply-templates select="mods:subTitle" />
-      <xsl:apply-templates select="mods:partNumber" />
-      <xsl:apply-templates select="mods:partName" />
+      <xsl:copy-of select="@xml:lang" />
+      <xsl:apply-templates select="." mode="text" />
     </title>
   </xsl:template>
 
@@ -97,6 +206,14 @@
         <xsl:attribute name="titleType">AlternativeTitle</xsl:attribute>
       </xsl:when>
     </xsl:choose>
+  </xsl:template>
+
+  <xsl:template match="mods:titleInfo" mode="text">
+    <xsl:apply-templates select="mods:nonSort" />
+    <xsl:apply-templates select="mods:title" />
+    <xsl:apply-templates select="mods:subTitle" />
+    <xsl:apply-templates select="mods:partNumber" />
+    <xsl:apply-templates select="mods:partName" />
   </xsl:template>
 
   <xsl:template match="mods:nonSort">
@@ -114,57 +231,23 @@
   </xsl:template>
 
   <xsl:template match="mods:partNumber|mods:partName">
+    <xsl:text>, </xsl:text>
     <xsl:value-of select="text()" />
-    <xsl:if test="position() != last()">
-      <xsl:text>, </xsl:text>
-    </xsl:if>
-  </xsl:template>
-
-  <!-- ========== creators (1-n) ========== -->
-
-  <xsl:template name="creators">
-    <creators>
-      <xsl:variable name="creatorRoles" select="$marcrelator/mycoreclass/categories/category[@ID='cre']/descendant-or-self::category" xmlns="" />
-      <xsl:apply-templates select="mods:name[$creatorRoles/@ID=mods:role/mods:roleTerm/text()]" mode="creator"/>
-    </creators>
-  </xsl:template>
-
-  <xsl:template mode="creator" match="mods:name">
-    <xsl:if test="mods:displayForm or @valueURI">
-      <creator>
-        <creatorName>
-          <xsl:choose>
-            <xsl:when test="mods:displayForm">
-              <xsl:value-of select="mods:displayForm" />
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:variable name="classlink" select="mcrmods:getClassCategParentLink(.)" />
-              <xsl:if test="string-length($classlink) &gt; 0">
-                <xsl:for-each select="document($classlink)/mycoreclass//category[position()=1 or position()=last()]">
-                  <xsl:if test="position() > 1">
-                    <xsl:value-of select="', '" />
-                  </xsl:if>
-                  <xsl:value-of select="./label[lang($MCR.Metadata.DefaultLang)]/@text" />
-                </xsl:for-each>
-              </xsl:if>
-            </xsl:otherwise>
-          </xsl:choose>
-        </creatorName>
-      </creator>
-    </xsl:if>
   </xsl:template>
 
   <!-- ========== publisher (1) ========== -->
 
   <xsl:template name="publisher">
-    <xsl:variable name="publisherRoles" select="$marcrelator/mycoreclass/categories/category[@ID='pbl']/descendant-or-self::category"  xmlns=""/>
     <publisher>
+      <xsl:variable name="publisherRoles" select="$marcrelator//category[@ID='pbl']/descendant-or-self::category" />
       <xsl:choose>
         <xsl:when test="mods:originInfo[not(@eventType) or @eventType='publication']/mods:publisher">
           <xsl:value-of select="mods:originInfo[not(@eventType) or @eventType='publication']/mods:publisher" />
         </xsl:when>
         <xsl:when test="mods:name[$publisherRoles/@ID=mods:role/mods:roleTerm/text()]">
-          <xsl:apply-templates select="mods:name[$publisherRoles/@ID=mods:role/mods:roleTerm/text()][1]" mode="publisher" />
+          <xsl:for-each select="mods:name[$publisherRoles/@ID=mods:role/mods:roleTerm/text()][1]">
+            <xsl:call-template name="name" />
+          </xsl:for-each>
         </xsl:when>
         <xsl:when test="mods:name[mods:role/mods:roleTerm/text()='his' and @valueURI]">
           <xsl:variable name="insti" select="substring-after(mods:name[mods:role/mods:roleTerm/text()='his' and @valueURI]/@valueURI, '#')" />
@@ -200,45 +283,44 @@
     </publisher>
   </xsl:template>
 
-  <xsl:template mode="publisher" match="mods:name">
-      <xsl:value-of select="mods:displayForm" />
-  </xsl:template>
-
   <!-- ========== publicationYear (1) ========== -->
 
   <xsl:template mode="publicationYear" match="mods:*">
-    <xsl:choose>
-      <xsl:when test="mods:originInfo[not(@eventType) or @eventType='publication']/mods:dateIssued[@encoding='w3cdtf']">
-        <xsl:apply-templates select="mods:originInfo[not(@eventType) or @eventType='publication']/mods:dateIssued[@encoding='w3cdtf']" mode="publicationYear" />
-      </xsl:when>
-      <xsl:when test="mods:originInfo[not(@eventType) or @eventType='publication']/mods:dateIssued[@encoding='marc']">
-        <xsl:apply-templates select="mods:originInfo[not(@eventType) or @eventType='publication']/mods:dateIssued[@encoding='marc']" mode="publicationYear" />
-      </xsl:when>
-      <xsl:when test="mods:originInfo[not(@eventType) or @eventType='publication']/mods:dateCreated">
-        <xsl:apply-templates select="mods:originInfo[not(@eventType) or @eventType='publication']/mods:dateCreated" mode="publicationYear" />
-      </xsl:when>
-      <xsl:when test="mods:relatedItem[@type='host']">
-        <xsl:apply-templates select="mods:relatedItem[@type='host']" mode="publicationYear" />
-      </xsl:when>
-    </xsl:choose>
-  </xsl:template>
-
-  <xsl:template match="mods:dateCreated|mods:dateIssued" mode="publicationYear">
     <publicationYear>
-      <xsl:value-of select="substring(text(),1,4)" />
+      <xsl:choose>
+        <xsl:when test="mods:originInfo[not(@eventType) or @eventType='publication']/mods:dateIssued[@encoding='w3cdtf']">
+          <xsl:apply-templates select="mods:originInfo[not(@eventType) or @eventType='publication']/mods:dateIssued[@encoding='w3cdtf']" mode="publicationYear" />
+        </xsl:when>
+        <xsl:when test="mods:originInfo[not(@eventType) or @eventType='publication']/mods:dateIssued[@encoding='marc']">
+          <xsl:apply-templates select="mods:originInfo[not(@eventType) or @eventType='publication']/mods:dateIssued[@encoding='marc']" mode="publicationYear" />
+        </xsl:when>
+        <xsl:when test="mods:originInfo[not(@eventType) or @eventType='publication']/mods:dateCreated">
+          <xsl:apply-templates select="mods:originInfo[not(@eventType) or @eventType='publication']/mods:dateCreated" mode="publicationYear" />
+        </xsl:when>
+        <xsl:when test="mods:relatedItem[@type='host']">
+          <xsl:apply-templates select="mods:relatedItem[@type='host']" mode="publicationYear" />
+        </xsl:when>
+        <xsl:when test="mods:relatedItem[@type='series']">
+          <xsl:apply-templates select="mods:relatedItem[@type='series']" mode="publicationYear" />
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="$MCR.DOI.DataCite.MissingYear" />
+        </xsl:otherwise>
+      </xsl:choose>
     </publicationYear>
   </xsl:template>
 
+  <xsl:template match="mods:dateCreated|mods:dateIssued" mode="publicationYear">
+    <xsl:value-of select="substring(text(),1,4)" />
+  </xsl:template>
 
   <!-- ========== contributors (0-n) ========== -->
+
   <xsl:template name="contributors">
-    <xsl:variable name="contributorRoles" select="$marcrelator/mycoreclass/categories/category[@ID='ctb']/descendant-or-self::category" xmlns="" />
+    <xsl:variable name="contributorRoles" select="$marcrelator//category[@ID='ctb']/descendant-or-self::category" />
     <contributors>
       <xsl:call-template name="hostingInstitution" />
-      <xsl:if test="mods:identifier[@type='project'][contains(text(), 'FP7')]" >
-        <xsl:call-template name="fundingInformation" />
-      </xsl:if>
-      <xsl:apply-templates select="mods:name[$contributorRoles/@ID=mods:role/mods:roleTerm/text()][1]" mode="contributor"/>
+      <xsl:apply-templates select="mods:name[$contributorRoles/@ID=mods:role/mods:roleTerm/text()]" mode="contributor" />
     </contributors>
   </xsl:template>
 
@@ -250,38 +332,19 @@
     </contributor>
   </xsl:template>
 
-  <xsl:template name="fundingInformation">
-    <contributor contributorType="Funder">
-      <contributorName>
-        <xsl:value-of select="'European Commission'" />
-      </contributorName>
-      <nameIdentifier nameIdentifierScheme="info">
-        <xsl:value-of select="mods:identifier[@type='project'][contains(text(), 'FP7')]" />
-      </nameIdentifier>
-    </contributor>
-  </xsl:template>
-  
   <xsl:template mode="contributor" match="mods:name">
     <contributor>
       <xsl:apply-templates select="mods:role/mods:roleTerm[@type='code' and @authority='marcrelator']" mode="contributorType"/>
+
       <contributorName>
-        <xsl:choose>
-          <xsl:when test="mods:displayForm">
-            <xsl:value-of select="mods:displayForm" />
-          </xsl:when>
-          <xsl:otherwise>
-            <xsl:variable name="classlink" select="mcrmods:getClassCategParentLink(.)" />
-            <xsl:if test="string-length($classlink) &gt; 0">
-              <xsl:for-each select="document($classlink)/mycoreclass//category[position()=1 or position()=last()]">
-                <xsl:if test="position() > 1">
-                  <xsl:value-of select="', '" />
-                </xsl:if>
-                <xsl:value-of select="./label[lang($MCR.Metadata.DefaultLang)]/@text" />
-              </xsl:for-each>
-            </xsl:if>
-          </xsl:otherwise>
-        </xsl:choose>
+        <xsl:apply-templates select="@type" />
+        <xsl:call-template name="name" />
       </contributorName>
+
+      <xsl:apply-templates select="mods:namePart[@type='given'][1]" />
+      <xsl:apply-templates select="mods:namePart[@type='family'][1]" />
+      <xsl:apply-templates select="mods:nameIdentifier" />
+      <xsl:apply-templates select="mods:affiliation" />
     </contributor>
   </xsl:template>
 
@@ -300,6 +363,9 @@
         <xsl:when test="text() = 'edt'">
           <xsl:value-of select="'Editor'" />
         </xsl:when>
+        <xsl:when test="text() = 'his'">
+          <xsl:value-of select="'HostingInstitution'" />
+        </xsl:when>
         <xsl:when test="text() = 'pro'">
           <xsl:value-of select="'Producer'" />
         </xsl:when>
@@ -315,9 +381,6 @@
         <xsl:when test="text() = 'ths'">
           <xsl:value-of select="'Supervisor'" />
         </xsl:when>
-        <xsl:when test="text() = 'oth' or text='ctb'">
-          <xsl:value-of select="'Other'" />
-        </xsl:when>
         <xsl:otherwise>
           <xsl:value-of select="'Other'" />
         </xsl:otherwise>
@@ -328,9 +391,10 @@
   <!-- ========== subjects (0-n)========== -->
 
   <xsl:template name="subjects">
-    <xsl:if test="mods:subject/mods:topic">
+    <xsl:if test="mods:subject[mods:topic] or mods:classification">
       <subjects>
         <xsl:apply-templates select="mods:subject/mods:topic" />
+        <xsl:apply-templates select="mods:classification[(@authority='sdnb') or (@authority='ddc')]" />
       </subjects>
     </xsl:if>
   </xsl:template>
@@ -341,48 +405,54 @@
     </subject>
   </xsl:template>
 
-
-  <!-- ========== language (0-n) ========== -->
-
-  <xsl:template name="language">
-    <xsl:if test="mods:language/mods:languageTerm[@authority='rfc5646' and @type='code']">
-      <language>
-        <xsl:value-of select="mods:language/mods:languageTerm[@authority='rfc5646' and @type='code']" />
-      </language>
+  <xsl:template match="mods:classification">
+    <xsl:if test="@authority">
+      <subject subjectScheme="{@authority}">
+        <xsl:value-of select="text()" />
+      </subject>
     </xsl:if>
-  </xsl:template>
 
-  <!-- ========== resourceType (0-n) ========== -->
+    <xsl:variable name="schemeURI" select="@authorityURI" />
+    <xsl:variable name="valueURI" select="@valueURI" />
+    <xsl:variable name="classlink" select="mcrmods:getClassCategParentLink(.)" />
+    <xsl:variable name="classif"   select="document($classlink)/mycoreclass" />
 
-  <xsl:template name="resourceType">
-    <resourceType resourceTypeGeneral="Text">
-      <xsl:value-of select="substring-after(mods:genre/@valueURI, '#')" />
-    </resourceType>
-  </xsl:template>
-
-  <!-- ========== descriptions (0-n) ========== -->
-
-  <xsl:template name="descriptions">
-    <xsl:if test="mods:abstract">
-      <descriptions>
-        <xsl:apply-templates select="mods:abstract" />
-      </descriptions>
-    </xsl:if>
-  </xsl:template>
-
-  <xsl:template match="mods:abstract">
-    <description descriptionType="Abstract">
-      <xsl:copy-of select="@xml:lang" />
-      <xsl:value-of select="text()" />
-    </description>
+    <xsl:for-each select="$classif//category[position() = last()]/label">
+      <xsl:choose>
+        <xsl:when test="starts-with(@xml:lang,'x-')" />
+        <xsl:otherwise>
+          <subject>
+            <xsl:if test="schemeURI">
+              <xsl:attribute name="schemeURI">
+                <xsl:value-of select="$schemeURI" />
+              </xsl:attribute>
+            </xsl:if>
+            <xsl:if test="valueURI">
+              <xsl:attribute name="valueURI">
+                <xsl:value-of select="$valueURI" />
+              </xsl:attribute>
+            </xsl:if>
+            <xsl:copy-of select="@xml:lang" />
+            <xsl:value-of select="@text" />
+          </subject>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:for-each>
   </xsl:template>
 
   <!-- ========== dates (0-n) ========== -->
 
   <xsl:template name="dates">
-    <dates>
-      <xsl:apply-templates select="mods:originInfo[not(@eventType) or @eventType='publication']/mods:dateOther|mods:originInfo[not(@eventType) or @eventType='publication']/mods:dateIssued|mods:originInfo[not(@eventType) or @eventType='publication']/mods:dateCreated|mods:originInfo[not(@eventType) or @eventType='publication']/mods:dateModified" />
-    </dates>
+    <xsl:if test="mods:originInfo[not(@eventType) or @eventType='publication'][mods:dateCreated or mods:dateIssued or mods:dateModified or mods:dateOther]">
+      <dates>
+        <xsl:for-each select="mods:originInfo[not(@eventType) or @eventType='publication']">
+          <xsl:apply-templates select="mods:dateCreated" />
+          <xsl:apply-templates select="mods:dateIssued" />
+          <xsl:apply-templates select="mods:dateModified" />
+          <xsl:apply-templates select="mods:dateOther" />
+        </xsl:for-each>
+      </dates>
+    </xsl:if>
   </xsl:template>
 
   <xsl:template match="mods:dateIssued[@encoding='w3cdtf']">
@@ -415,6 +485,30 @@
     </date>
   </xsl:template>
 
+  <xsl:template match="mods:dateOther[@encoding='w3cdtf']">
+    <date dateType="Other">
+      <xsl:value-of select="text()" />
+    </date>
+  </xsl:template>
+
+  <!-- ========== language (0-1) ========== -->
+
+  <xsl:template name="language">
+    <xsl:for-each select="mods:language[1]/mods:languageTerm[@authority='rfc5646'][@type='code']">
+      <language>
+        <xsl:value-of select="." />
+      </language>
+    </xsl:for-each>
+  </xsl:template>
+
+  <!-- ========== resourceType (0-n) ========== -->
+
+  <xsl:template name="resourceType">
+    <resourceType resourceTypeGeneral="Text">
+      <xsl:value-of select="substring-after(mods:genre/@valueURI, '#')" />
+    </resourceType>
+  </xsl:template>
+
   <!-- ========== alternateIdentifiers (0-n) ========== -->
 
   <xsl:template name="alternateIdentifiers">
@@ -425,15 +519,192 @@
   </xsl:template>
 
   <xsl:template match="mods:identifier[not(@type='doi')]">
-    <alternateIdentifier alternateIdentifierType="{translate(@type,'abcdefghijklmnopqrstuvwxyz','ABCDEFGHIJKLMNOPQRSTUVWXYZ')}">
+    <alternateIdentifier alternateIdentifierType="{translate(@type,$lower,$upper)}">
       <xsl:value-of select="." />
     </alternateIdentifier>
   </xsl:template>
 
   <xsl:template match="mycoreobject/@ID">
+    <alternateIdentifier alternateIdentifierType="URL">
+      <xsl:value-of select="concat($WebApplicationBaseURL,'receive/',.)" />
+    </alternateIdentifier>
     <alternateIdentifier alternateIdentifierType="MyCoRe">
       <xsl:value-of select="." />
     </alternateIdentifier>
+  </xsl:template>
+
+  <!-- ========== relatedIdentifiers (0-n) ========== -->
+
+  <xsl:variable name="supportedRelationTypes">host series original otherVersion otherFormat references isReferencedBy preceding succeeding reviewOf</xsl:variable>
+  <xsl:variable name="supportedRelationIDs">doi urn issn isbn</xsl:variable>
+
+  <xsl:template name="relatedIdentifiers">
+    <relatedIdentifiers>
+      <xsl:call-template name="linkToMetadata" />
+      <xsl:apply-templates select="mods:relatedItem[contains($supportedRelationTypes,@type)]" />
+    </relatedIdentifiers>
+  </xsl:template>
+
+  <xsl:variable name="modsScheme">https://www.loc.gov/standards/mods/v3/mods-3-7.xsd</xsl:variable>
+
+  <xsl:template name="linkToMetadata">
+    <relatedIdentifier relatedIdentifierType="URL" relationType="HasMetadata" relatedMetadataScheme="mods" schemeURI="{$modsScheme}">
+      <xsl:value-of select="concat($WebApplicationBaseURL,'receive/',ancestor::mycoreobject/@ID,'?XSL.Transformer=mods')" />
+    </relatedIdentifier>
+  </xsl:template>
+
+  <xsl:template match="mods:relatedItem">
+    <xsl:apply-templates select="mods:identifier[contains($supportedRelationIDs,@type)]" mode="related" />
+    <xsl:call-template name="relatedLink" />
+  </xsl:template>
+
+  <xsl:template name="relatedLink">
+    <relatedIdentifier relatedIdentifierType="URL">
+      <xsl:apply-templates select="@type" />
+      <xsl:value-of select="concat($WebApplicationBaseURL,'receive/',@xlink:href)" />
+    </relatedIdentifier>
+  </xsl:template>
+
+  <xsl:template match="mods:identifier" mode="related">
+    <relatedIdentifier relatedIdentifierType="{translate(@type,$lower,$upper)}">
+      <xsl:apply-templates select="../@type" />
+      <xsl:value-of select="text()" />
+    </relatedIdentifier>
+  </xsl:template>
+
+  <xsl:template match="mods:relatedItem/@type">
+    <xsl:attribute name="relationType">
+      <xsl:choose>
+        <xsl:when test=".='host'">IsPartOf</xsl:when>
+        <xsl:when test=".='series'">IsPartOf</xsl:when>
+        <xsl:when test=".='original'">IsVariantFormOf</xsl:when>
+        <xsl:when test=".='otherVersion'">IsVersionOf</xsl:when>
+        <xsl:when test=".='otherFormat'">IsVariantFormOf</xsl:when>
+        <xsl:when test=".='references'">References</xsl:when>
+        <xsl:when test=".='isReferencedBy'">IsReferencedBy</xsl:when>
+        <xsl:when test=".='preceding'">IsNewVersionOf</xsl:when>
+        <xsl:when test=".='succeeding'">IsPreviousVersionOf</xsl:when>
+        <xsl:when test=".='reviewOf'">Reviews</xsl:when>
+      </xsl:choose>
+    </xsl:attribute>
+  </xsl:template>
+
+  <!-- ========== rights (0-n) ========== -->
+
+  <xsl:template name="rights">
+    <xsl:if test="mods:accessCondition[@type='use and reproduction']">
+      <rightsList>
+        <xsl:for-each select="mods:accessCondition[@type='use and reproduction']">
+          <xsl:variable name="license_id" select="substring-after(@xlink:href,'#')" />
+          <xsl:variable name="licenses" select="document('classification:metadata:-1:children:mir_licenses')" />
+
+          <xsl:for-each select="$licenses/mycoreclass//category[@ID=$license_id]/label">
+            <xsl:choose>
+              <xsl:when test="starts-with(@xml:lang,'x-')" />
+              <!-- prefer english label, but only if one exists at all -->
+              <xsl:when test="not(@xml:lang='en') and ../label[@xml:lang='en']" />
+              <xsl:otherwise>
+                <rights>
+                  <xsl:copy-of select="@xml:lang" />
+                  <xsl:for-each select="../url/@xlink:href">
+                    <xsl:attribute name="rightsURI">
+                      <xsl:value-of select="." />
+                    </xsl:attribute>
+                  </xsl:for-each>
+                  <xsl:choose>
+                    <xsl:when test="../@ID='rights_reserved'">
+                      <xsl:value-of select="@text" />
+                    </xsl:when>
+                    <xsl:otherwise>
+                      <xsl:for-each select="@text">
+                        <xsl:attribute name="rightsIdentifier">
+                          <xsl:value-of select="translate(.,' ','-')" />
+                        </xsl:attribute>
+                      </xsl:for-each>
+                      <xsl:value-of select="@description" />
+                    </xsl:otherwise>
+                  </xsl:choose>
+                </rights>
+              </xsl:otherwise>
+            </xsl:choose>
+          </xsl:for-each>
+        </xsl:for-each>
+      </rightsList>
+    </xsl:if>
+  </xsl:template>
+
+  <!-- ========== descriptions (0-n) ========== -->
+
+  <xsl:template name="descriptions">
+    <xsl:if test="mods:abstract|mods:relatedItem[@type='host']|mods:relatedItem[@type='series']">
+      <descriptions>
+        <xsl:apply-templates select="mods:abstract[not(@altFormat)]" />
+        <xsl:apply-templates select="mods:relatedItem[@type='host']" mode="seriesInfo" />
+        <xsl:apply-templates select="mods:relatedItem[@type='series']" mode="seriesInfo" />
+      </descriptions>
+    </xsl:if>
+  </xsl:template>
+
+  <xsl:template match="mods:abstract">
+    <description descriptionType="Abstract">
+      <xsl:copy-of select="@xml:lang" />
+      <xsl:value-of select="text()" />
+    </description>
+  </xsl:template>
+
+  <xsl:template match="mods:relatedItem" mode="seriesInfo">
+    <description descriptionType="SeriesInformation">
+      <xsl:apply-templates select="." mode="seriesText" />
+    </description>
+  </xsl:template>
+
+  <xsl:template match="mods:relatedItem" mode="seriesText">
+    <xsl:apply-templates select="mods:relatedItem[@type=current()/@type]" mode="seriesText" />
+    <xsl:for-each select="mods:titleInfo[not(@altFormat)][1]">
+      <xsl:apply-templates select="." mode="text" />
+    </xsl:for-each>
+    <xsl:for-each select="mods:part">
+      <xsl:apply-templates select="mods:detail[@type='volume']" />
+      <xsl:apply-templates select="mods:detail[@type='issue']" />
+      <xsl:apply-templates select="mods:extent[@unit='pages']" />
+    </xsl:for-each>
+  </xsl:template>
+
+  <xsl:template match="mods:detail[@type='volume']">
+    <xsl:text>, vol. </xsl:text>
+    <xsl:value-of select="mods:number" />
+  </xsl:template>
+
+  <xsl:template match="mods:detail[@type='issue']">
+    <xsl:text>, no. </xsl:text>
+    <xsl:value-of select="mods:number" />
+  </xsl:template>
+
+  <xsl:template match="mods:extent[@unit='pages'][mods:start][mods:end]">
+    <xsl:text>, pp. </xsl:text>
+    <xsl:value-of select="mods:start" />
+    <xsl:text> - </xsl:text>
+    <xsl:value-of select="mods:end" />
+  </xsl:template>
+
+  <xsl:template match="mods:extent[@unit='pages'][mods:start|mods:list]">
+    <xsl:text>, p. </xsl:text>
+    <xsl:value-of select="mods:start|mods:list" />
+  </xsl:template>
+
+  <!-- ========== funding (0-n) ========== -->
+
+  <xsl:template name="fundingReference">
+    <xsl:if test="mods:identifier[@type='project'][contains(text(), 'FP7')]">
+      <fundingReferences>
+        <fundingReference>
+          <funderName>European Commission</funderName>
+          <awardNumber>
+            <xsl:value-of select="mods:identifier[@type='project'][contains(text(), 'FP7')]" />
+          </awardNumber>
+        </fundingReference>
+      </fundingReferences>
+    </xsl:if>
   </xsl:template>
 
   <!-- ========== ignore the rest ========== -->
