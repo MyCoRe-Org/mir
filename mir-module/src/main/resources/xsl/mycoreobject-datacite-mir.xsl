@@ -6,14 +6,14 @@
  ====================================================================== -->
 
 <xsl:stylesheet version="3.0"
-  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  xmlns:xlink="http://www.w3.org/1999/xlink"
-  xmlns:mods="http://www.loc.gov/mods/v3"
-  xmlns:fn="http://www.w3.org/2005/xpath-functions"
-  xmlns:mcrmods="http://www.mycore.de/xslt/mods"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xmlns="http://datacite.org/schema/kernel-4"
-  exclude-result-prefixes="xsl fn xlink mods">
+                xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+                xmlns:xlink="http://www.w3.org/1999/xlink"
+                xmlns:mods="http://www.loc.gov/mods/v3"
+                xmlns:fn="http://www.w3.org/2005/xpath-functions"
+                xmlns:mcrmods="http://www.mycore.de/xslt/mods"
+                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xmlns="http://datacite.org/schema/kernel-4"
+                exclude-result-prefixes="xsl fn xlink mods">
 
   <xsl:include href="functions/mods.xsl" />
 
@@ -42,18 +42,18 @@
       <xsl:call-template name="identifier" />
       <xsl:call-template name="creators" />
       <xsl:call-template name="titles" />
-        <xsl:call-template name="publisher" />
-      <xsl:apply-templates select="." mode="publicationYear" />
+      <xsl:call-template name="publisher" />
+      <xsl:call-template name="publicationYear" />
       <xsl:call-template name="subjects" />
       <xsl:call-template name="contributors" />
       <xsl:call-template name="dates" />
-       <xsl:call-template name="language" />
-       <xsl:call-template name="resourceType" />
-       <xsl:call-template name="alternateIdentifiers" />
-       <xsl:call-template name="relatedIdentifiers" />
-       <xsl:call-template name="rights" />
-       <xsl:call-template name="descriptions" />
-       <xsl:call-template name="fundingReference" />
+      <xsl:call-template name="language" />
+      <xsl:call-template name="resourceType" />
+      <xsl:call-template name="alternateIdentifiers" />
+      <xsl:call-template name="relatedIdentifiers" />
+      <xsl:call-template name="rights" />
+      <xsl:call-template name="descriptions" />
+      <xsl:call-template name="fundingReference" />
     </resource>
   </xsl:template>
 
@@ -281,30 +281,38 @@
   </xsl:template>
 
   <!-- ========== publicationYear (1) ========== -->
+  <xsl:template name="publicationYear">
+    <publicationYear>
+      <xsl:apply-templates select="." mode="publicationYear" />
+    </publicationYear>
+  </xsl:template>
 
   <xsl:template mode="publicationYear" match="mods:*">
-    <publicationYear>
-      <xsl:choose>
-        <xsl:when test="mods:originInfo[not(@eventType) or @eventType='publication']/mods:dateIssued[@encoding='w3cdtf']">
-          <xsl:apply-templates select="mods:originInfo[not(@eventType) or @eventType='publication']/mods:dateIssued[@encoding='w3cdtf']" mode="publicationYear" />
-        </xsl:when>
-        <xsl:when test="mods:originInfo[not(@eventType) or @eventType='publication']/mods:dateIssued[@encoding='marc']">
-          <xsl:apply-templates select="mods:originInfo[not(@eventType) or @eventType='publication']/mods:dateIssued[@encoding='marc']" mode="publicationYear" />
-        </xsl:when>
-        <xsl:when test="mods:originInfo[not(@eventType) or @eventType='publication']/mods:dateCreated">
-          <xsl:apply-templates select="mods:originInfo[not(@eventType) or @eventType='publication']/mods:dateCreated" mode="publicationYear" />
-        </xsl:when>
-        <xsl:when test="mods:relatedItem[@type='host']">
-          <xsl:apply-templates select="mods:relatedItem[@type='host']" mode="publicationYear" />
-        </xsl:when>
-        <xsl:when test="mods:relatedItem[@type='series']">
-          <xsl:apply-templates select="mods:relatedItem[@type='series']" mode="publicationYear" />
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:value-of select="$MCR.DOI.DataCite.MissingYear" />
-        </xsl:otherwise>
-      </xsl:choose>
-    </publicationYear>
+    <xsl:choose>
+      <xsl:when test="mods:originInfo[not(@eventType) or @eventType='publication']/mods:dateIssued[@encoding='w3cdtf']">
+        <xsl:apply-templates
+                select="mods:originInfo[not(@eventType) or @eventType='publication']/mods:dateIssued[@encoding='w3cdtf']"
+                mode="publicationYear"/>
+      </xsl:when>
+      <xsl:when test="mods:originInfo[not(@eventType) or @eventType='publication']/mods:dateIssued[@encoding='marc']">
+        <xsl:apply-templates
+                select="mods:originInfo[not(@eventType) or @eventType='publication']/mods:dateIssued[@encoding='marc']"
+                mode="publicationYear"/>
+      </xsl:when>
+      <xsl:when test="mods:originInfo[not(@eventType) or @eventType='publication']/mods:dateCreated">
+        <xsl:apply-templates select="mods:originInfo[not(@eventType) or @eventType='publication']/mods:dateCreated"
+                             mode="publicationYear"/>
+      </xsl:when>
+      <xsl:when test="mods:relatedItem[@type='host']">
+        <xsl:apply-templates select="mods:relatedItem[@type='host']" mode="publicationYear"/>
+      </xsl:when>
+      <xsl:when test="mods:relatedItem[@type='series']">
+        <xsl:apply-templates select="mods:relatedItem[@type='series']" mode="publicationYear"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="$MCR.DOI.DataCite.MissingYear"/>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
 
   <xsl:template match="mods:dateCreated|mods:dateIssued" mode="publicationYear">
