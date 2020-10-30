@@ -253,20 +253,8 @@
           <xsl:variable name="place" select="$cat/label[@xml:lang='x-place']/@text" />
           <xsl:choose>
             <xsl:when test="$place">
-              <xsl:variable name="placeSet" select="tokenize(string($place),'|')" />
-              <xsl:variable name="name" select="$placeSet[1]" />
-              <xsl:variable name="place" select="$placeSet[2]" />
-              <xsl:variable name="address">
-                <xsl:choose>
-                  <xsl:when test="$placeSet[3]">
-                    <xsl:value-of select="$placeSet[3]" />
-                  </xsl:when>
-                  <xsl:otherwise>
-                    <xsl:value-of select="''" />
-                  </xsl:otherwise>
-                </xsl:choose>
-              </xsl:variable>
-              <xsl:value-of select="$name" />
+              <xsl:variable name="placeSet" select="tokenize(string($place),'[|]')" />
+              <xsl:value-of select="$placeSet[1]" />
             </xsl:when>
             <xsl:otherwise>
               <xsl:value-of select="$MCR.DOI.HostingInstitution" />
