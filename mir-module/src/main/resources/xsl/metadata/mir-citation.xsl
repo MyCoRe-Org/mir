@@ -89,7 +89,7 @@
             </xsl:choose>
           </xsl:if>
           <xsl:if test="$MIR.plumx = 'show'">
-            <script type='text/javascript' src='//d39af2mgp1pqhg.cloudfront.net/widget-popup.js'></script>
+            <script type='text/javascript' src='//cdn.plu.mx/widget-popup.js'></script>
             <xsl:choose>
               <xsl:when test="$MIR.altmetrics = 'show'">
                 <!-- use PlumX badge-->
