@@ -494,11 +494,11 @@
     </xsl:for-each>
   </xsl:template>
 
-  <!-- ========== resourceType (0-n) ========== -->
+  <!-- ========== resourceType (1) ========== -->
 
   <xsl:template name="resourceType">
     <resourceType resourceTypeGeneral="Text">
-      <xsl:value-of select="substring-after(mods:genre/@valueURI, '#')" />
+      <xsl:value-of select="substring-after(mods:genre[@type='intern'][1]/@valueURI, '#')" />
     </resourceType>
   </xsl:template>
 
