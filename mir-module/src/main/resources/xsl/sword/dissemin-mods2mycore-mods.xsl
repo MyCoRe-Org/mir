@@ -156,4 +156,10 @@
     </xsl:if>
   </xsl:template>
 
+  <xsl:template match="mods:originInfo[not(@eventType)]">
+    <mods:originInfo eventType="publication">
+      <xsl:apply-templates />
+    </mods:originInfo>
+  </xsl:template>
+
 </xsl:stylesheet>
