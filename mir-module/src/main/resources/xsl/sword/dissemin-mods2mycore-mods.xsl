@@ -30,7 +30,64 @@
     <xsl:copy>
       <xsl:attribute name="version">3.7</xsl:attribute>
       <xsl:apply-templates/>
+
+      <xsl:variable name="dissemInBlock"
+                    select="/mets:mets/mets:amdSec/mets:rightsMD/mets:mdWrap/mets:xmlData/ds:dissemin"/>
+
+      <xsl:call-template name="addLicense">
+        <xsl:with-param name="dissemInBlock" select="$dissemInBlock"/>
+      </xsl:call-template>
+
+      <xsl:call-template name="addRecordInfo">
+        <xsl:with-param name="dissemInBlock" select="$dissemInBlock"/>
+      </xsl:call-template>
+
     </xsl:copy>
+  </xsl:template>
+
+  <xsl:template name="addLicense">
+    <xsl:param name="dissemInBlock"/>
+    <xsl:variable name="licenceURL" select="$dissemInBlock/ds:publication/ds:license/ds:licenseURI/text()"/>
+    <xsl:variable name="licenseClass" select="document('classification:metadata:-1:children:mir_licenses')"/>
+    <xsl:variable name="licenseID" select="$licenseClass/.//category[url/@xlink:href=$licenceURL]/@ID"/>
+    <xsl:choose>
+      <xsl:when test="string-length($licenseID)&gt;0">
+        <mods:accessCondition type="use and reproduction"
+                              xlink:href="http://www.mycore.org/classifications/mir_licenses#{$licenseID}"
+                              xlink:type="simple"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:message>Could not find license id for license with url
+          <xsl:value-of select="$licenceURL"/>
+          Will use rights_reserved
+        </xsl:message>
+        <mods:accessCondition type="use and reproduction"
+                              xlink:href="http://www.mycore.org/classifications/mir_licenses#rights_reserved"
+                              xlink:type="simple"/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
+  <xsl:template name="addRecordInfo">
+    <xsl:param name="dissemInBlock"/>
+    <xsl:variable name="dissemInID" select="$dissemInBlock/ds:publication/ds:disseminId/text()"/>
+    <xsl:variable name="romeoId" select="$dissemInBlock/ds:publication/ds:romeoId/text()"/>
+    <mods:recordInfo>
+
+      <xsl:if test="string-length($romeoId)&gt;0">
+        <mods:recordIdentifier source="romeo">
+          <xsl:value-of select="$romeoId"/>
+        </mods:recordIdentifier>
+      </xsl:if>
+
+      <xsl:if test="string-length($dissemInID)&gt;0">
+        <mods:recordIdentifier source="dissemin">
+          <xsl:value-of select="$dissemInID"/>
+        </mods:recordIdentifier>
+      </xsl:if>
+
+      <mods:recordOrigin>Deposited by dissem.in converted with dissemin-mods2mycore-mods.xsl</mods:recordOrigin>
+    </mods:recordInfo>
   </xsl:template>
 
   <xsl:template match="mods:titleInfo">
