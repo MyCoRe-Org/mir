@@ -31,20 +31,18 @@
                         </xsl:otherwise>
                     </xsl:choose>
                 </fn:string>
-                <fn:string key="publication_date">
-                    <xsl:choose>
-                        <xsl:when test="count($embargo)&gt;0">
+                <xsl:choose>
+                    <xsl:when test="count($embargo)&gt;0">
+                        <fn:string key="publication_date">
                             <xsl:value-of select="$embargo/text()"/>
-                        </xsl:when>
-                        <xsl:when test="count($publicationDate)&gt;0">
+                        </fn:string>
+                    </xsl:when>
+                    <xsl:when test="count($publicationDate)&gt;0">
+                        <fn:string key="publication_date">
                             <xsl:value-of select="$publicationDate"/>
-                        </xsl:when>
-                        <!--
-                        <xsl:otherwise>
-                            <xsl:value-of select="/mycoreobject/service/servdates/servdate[@type='modifydate']"/>
-                        </xsl:otherwise> -->
-                    </xsl:choose>
-                </fn:string>
+                        </fn:string>
+                    </xsl:when>
+                </xsl:choose>
                 <xsl:if test="count(/mycoreobject/structure/derobjects/derobject[fn:contains(maindoc/text(), '.pdf')])&gt;0">
                     <xsl:variable name="derivate"
                                   select="/mycoreobject/structure/derobjects/derobject[fn:contains(maindoc/text(), '.pdf')]"/>
