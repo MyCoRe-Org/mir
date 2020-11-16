@@ -221,11 +221,12 @@ public class MIRStrategy implements MCRAccessCheckStrategy {
     }
 
     private Optional<MCRCategoryID> getAccessCategory(MCRObjectID objectId, MCRObjectID derivateId, String permission) {
-        String prefix = derivateId == null ? objectId.getTypeId() : derivateId.getTypeId();
+        final boolean isObject = derivateId == null;
+        String prefix = isObject ? objectId.getTypeId() : derivateId.getTypeId();
         List<MCRCategoryID> accessMappedCategories = getAccessMappedCategories(prefix, permission, accessClasses);
-        Optional<MCRCategoryID> accessCategory = getAccessCategory(accessMappedCategories, objectId)
+        return getAccessCategory(accessMappedCategories,
+            isObject ? objectId : derivateId)
             .or(() -> getAccessCategory(accessMappedCategories, derivateId));
-        return accessCategory;
     }
 
     private Optional<MCRCategoryID> getAccessCategory(List<MCRCategoryID> accessMappedCategories, MCRObjectID id) {
