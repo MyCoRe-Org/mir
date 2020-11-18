@@ -604,7 +604,7 @@
 
   <xsl:template mode="relatedItem2source" match="mods:mods">
       <!--  If not use isPartOf use dc:source -->
-    <xsl:if test="not(contains(mods:genre/@valueURI, 'issue'))">
+    <xsl:if test="not(contains(mods:genre/@valueURI, 'issue') or contains(mods:genre/@valueURI, 'article'))">
       <xsl:for-each select="mods:relatedItem[@type='host']">
         <xsl:variable name="hosttitel" select="mods:titleInfo/mods:title" />
         <xsl:variable name="issue" select="mods:part/mods:detail[@type='issue']/mods:number" />
@@ -651,7 +651,7 @@
         </xsl:if>
       </dcterms:isPartOf>
     </xsl:if>
-    <xsl:if test="contains(mods:genre/@valueURI, 'issue')">
+    <xsl:if test="contains(mods:genre/@valueURI, 'issue') or contains(mods:genre/@valueURI, 'article')">
       <dcterms:isPartOf xsi:type="ddb:ZSTitelID">
         <xsl:value-of select="mods:relatedItem[@type='host']/@xlink:href" />
       </dcterms:isPartOf>
