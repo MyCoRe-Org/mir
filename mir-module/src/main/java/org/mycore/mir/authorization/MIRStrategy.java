@@ -4,6 +4,7 @@
 package org.mycore.mir.authorization;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
@@ -221,12 +222,11 @@ public class MIRStrategy implements MCRAccessCheckStrategy {
     }
 
     private Optional<MCRCategoryID> getAccessCategory(MCRObjectID objectId, MCRObjectID derivateId, String permission) {
-        final boolean isObject = derivateId == null;
-        String prefix = isObject ? objectId.getTypeId() : derivateId.getTypeId();
-        List<MCRCategoryID> accessMappedCategories = getAccessMappedCategories(prefix, permission, accessClasses);
-        return getAccessCategory(accessMappedCategories,
-            isObject ? objectId : derivateId)
-            .or(() -> getAccessCategory(accessMappedCategories, derivateId));
+        return Stream.of(derivateId, objectId)
+                .filter(Objects::nonNull)
+                .flatMap(id -> getAccessCategory(getAccessMappedCategories(
+                        id.getTypeId(), permission, accessClasses), id).stream())
+                .findFirst();
     }
 
     private Optional<MCRCategoryID> getAccessCategory(List<MCRCategoryID> accessMappedCategories, MCRObjectID id) {
