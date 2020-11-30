@@ -760,7 +760,7 @@
         $outputNameType.val(item.type.toLowerCase());
 
         /* Get dependent personExtended_box */
-        var itemPersonExtendedBox = $($output).closest('fieldset[class="personExtended_box"]');
+        var itemPersonExtendedBox = $($output).closest('[class="personExtended_box"]');
 
         /* get the next free output field */
         nameIdFields = $(itemPersonExtendedBox).find('input[name*="/mods:nameIdentifier"]');
@@ -818,7 +818,7 @@
           $output[0] = nameIdFields[currentIdFieldIndex];
 
           /* get dependent outputType selection */
-          let dependentOutputType = $('select[name="' + nameIdFields[currentIdFieldIndex].name + '/@type"]');
+          let dependentOutputType = $('[name="' + nameIdFields[currentIdFieldIndex].name + '/@type"]');
           $outputType[0] = dependentOutputType[0];
         }
       }
