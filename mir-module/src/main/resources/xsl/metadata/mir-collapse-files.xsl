@@ -12,6 +12,9 @@
 >
   <xsl:import href="xslImport:modsmeta:metadata/mir-collapse-files.xsl" />
   <xsl:template match="/">
+    <xsl:variable xmlns:encoder="xalan://java.net.URLEncoder" name="loginURL"
+      select="concat( $ServletsBaseURL, 'MCRLoginServlet',$HttpSession,'?url=', encoder:encode( string( $RequestURL ) ) )" />
+    
     <xsl:choose>
       <xsl:when test="key('rights', mycoreobject/@ID)/@read or key('rights', mycoreobject/structure/derobjects/derobject/@xlink:href)/@accKeyEnabled">
 
@@ -84,12 +87,11 @@
                 <xsl:otherwise>
                   <div id="collapse{@xlink:href}" class="row body collapse in show">
                     <div class="col-12">
-                      <xsl:value-of select="i18n:translate('mir.derivate.no_access')" />
+                     <xsl:value-of disable-output-escaping="yes" select="i18n:translate('mir.derivate.no_access',$loginURL)" />
                     </div>
                   </div>
                 </xsl:otherwise>
               </xsl:choose>
-
             </div>
           </xsl:for-each>
 
@@ -110,7 +112,7 @@
                     <xsl:value-of select="i18n:translate('component.mods.metaData.dictionary.accessCondition.embargo.available',$embargoDate)" />
                   </xsl:when>
                   <xsl:otherwise>
-                    <xsl:value-of select="i18n:translate('mir.derivate.no_access')" />
+                    <xsl:value-of disable-output-escaping="yes" select="i18n:translate('mir.derivate.no_access',$loginURL)" />
                   </xsl:otherwise>
                 </xsl:choose>
               </div>
