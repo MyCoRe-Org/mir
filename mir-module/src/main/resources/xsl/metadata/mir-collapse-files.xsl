@@ -87,7 +87,7 @@
                 <xsl:otherwise>
                   <div id="collapse{@xlink:href}" class="row body collapse in show">
                     <div class="col-12">
-                     <xsl:value-of disable-output-escaping="yes" select="i18n:translate('mir.derivate.no_access',$loginURL)" />
+                     <xsl:value-of select="i18n:translate('mir.derivate.no_access')" />
                     </div>
                   </div>
                 </xsl:otherwise>
@@ -111,8 +111,14 @@
                     <!-- embargo is active for guest user -->
                     <xsl:value-of select="i18n:translate('component.mods.metaData.dictionary.accessCondition.embargo.available',$embargoDate)" />
                   </xsl:when>
+                  <xsl:when test="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:accessCondition[@type='restriction on access'][substring-after(@xlink:href,'#')='intern']">
+                    <xsl:value-of disable-output-escaping="yes" select="i18n:translate('mir.derivate.no_access.intern',$loginURL)" />
+                  </xsl:when>
+                  <xsl:when test="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:accessCondition[@type='restriction on access'][substring-after(@xlink:href,'#')='ipAddressRange']">
+                    <xsl:value-of select="i18n:translate('mir.derivate.no_access.ipAddressRange')" />
+                  </xsl:when>
                   <xsl:otherwise>
-                    <xsl:value-of disable-output-escaping="yes" select="i18n:translate('mir.derivate.no_access',$loginURL)" />
+                    <xsl:value-of select="i18n:translate('mir.derivate.no_access')" />
                   </xsl:otherwise>
                 </xsl:choose>
               </div>
