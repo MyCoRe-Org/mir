@@ -184,7 +184,6 @@
                     </td>
                     <td class="metavalue">
                         <xsl:value-of select="."/>
-                        <div class="sherpa-issn hidden"><xsl:value-of select="."/></div>
                     </td>
                 </tr>
             </xsl:for-each>
