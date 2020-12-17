@@ -766,7 +766,8 @@
         nameIdFields = $(itemPersonExtendedBox).find('input[name*="/mods:nameIdentifier"]');
         nameIdFields = nameIdFields.toArray();
 
-        while (currentIdFieldIndex < nameIdFields.length && nameIdFields[currentIdFieldIndex].value) {
+        while (currentIdFieldIndex < nameIdFields.length && nameIdFields[currentIdFieldIndex].value
+          && nameIdFields[currentIdFieldIndex].type && nameIdFields[currentIdFieldIndex].type !== 'hidden') {
           currentIdFieldIndex++;
         }
 
