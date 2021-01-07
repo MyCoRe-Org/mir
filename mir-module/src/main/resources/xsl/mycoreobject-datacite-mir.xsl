@@ -247,7 +247,7 @@
           </xsl:for-each>
         </xsl:when>
         <xsl:when test="mods:name[mods:role/mods:roleTerm/text()='his' and @valueURI]">
-          <xsl:variable name="insti" select="substring-after(mods:name[mods:role/mods:roleTerm/text()='his' and @valueURI]/@valueURI, '#')" />
+          <xsl:variable name="insti" select="substring-after(mods:name[mods:role/mods:roleTerm/text()='his' and @valueURI][1]/@valueURI, '#')" />
           <xsl:variable name="myURI" select="concat('classification:metadata:0:parents:mir_institutes:',$insti)" />
           <xsl:variable name="cat" select="document($myURI)//category[@ID=$insti]/ancestor-or-self::category[label[lang('x-place')]][1]" />
           <xsl:variable name="place" select="$cat/label[@xml:lang='x-place']/@text" />
