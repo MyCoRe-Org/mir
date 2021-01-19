@@ -124,7 +124,15 @@
           <select class="form-control input-sm" id="mir-csl-cite" data-object-id="{/mycoreobject/@ID}">
             <xsl:for-each select="exslt:node-set($cite-styles)/token">
               <option value="{.}">
-                <xsl:value-of select="." />
+                <xsl:choose>
+                  <xsl:when test="contains(i18n:translate(concat('mir.citationStyle.',.)), '???')">
+                    <xsl:value-of select="." />
+                  </xsl:when>
+                  <xsl:otherwise>
+                    <xsl:value-of select="i18n:translate(concat('mir.citationStyle.',.))" />
+                  </xsl:otherwise>
+                </xsl:choose>
+                
               </option>
             </xsl:for-each>
           </select>

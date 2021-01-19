@@ -247,7 +247,7 @@
           </xsl:for-each>
         </xsl:when>
         <xsl:when test="mods:name[mods:role/mods:roleTerm/text()='his' and @valueURI]">
-          <xsl:variable name="insti" select="substring-after(mods:name[mods:role/mods:roleTerm/text()='his' and @valueURI]/@valueURI, '#')" />
+          <xsl:variable name="insti" select="substring-after(mods:name[mods:role/mods:roleTerm/text()='his' and @valueURI][1]/@valueURI, '#')" />
           <xsl:variable name="myURI" select="concat('classification:metadata:0:parents:mir_institutes:',$insti)" />
           <xsl:variable name="cat" select="document($myURI)//category[@ID=$insti]/ancestor-or-self::category[label[lang('x-place')]][1]" />
           <xsl:variable name="place" select="$cat/label[@xml:lang='x-place']/@text" />
@@ -494,11 +494,11 @@
     </xsl:for-each>
   </xsl:template>
 
-  <!-- ========== resourceType (0-n) ========== -->
+  <!-- ========== resourceType (1) ========== -->
 
   <xsl:template name="resourceType">
     <resourceType resourceTypeGeneral="Text">
-      <xsl:value-of select="substring-after(mods:genre/@valueURI, '#')" />
+      <xsl:value-of select="substring-after(mods:genre[@type='intern'][1]/@valueURI, '#')" />
     </resourceType>
   </xsl:template>
 

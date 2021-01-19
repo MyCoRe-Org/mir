@@ -107,13 +107,5 @@
     <url-pattern>/servlets/MCRDFGThumbnail/*</url-pattern>
   </servlet-mapping>
 
-  <servlet>
-    <servlet-name>MIRSherpaServlet</servlet-name>
-    <servlet-class>org.mycore.mir.sherpa.MIRSherpaServlet</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>MIRSherpaServlet</servlet-name>
-    <url-pattern>/servlets/MIRSherpaServlet</url-pattern>
-  </servlet-mapping>
 
 </web-fragment>

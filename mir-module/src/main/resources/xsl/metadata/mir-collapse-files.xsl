@@ -12,6 +12,9 @@
 >
   <xsl:import href="xslImport:modsmeta:metadata/mir-collapse-files.xsl" />
   <xsl:template match="/">
+    <xsl:variable xmlns:encoder="xalan://java.net.URLEncoder" name="loginURL"
+      select="concat( $ServletsBaseURL, 'MCRLoginServlet',$HttpSession,'?url=', encoder:encode( string( $RequestURL ) ) )" />
+    
     <xsl:choose>
       <xsl:when test="key('rights', mycoreobject/@ID)/@read or key('rights', mycoreobject/structure/derobjects/derobject/@xlink:href)/@accKeyEnabled">
 
@@ -84,12 +87,11 @@
                 <xsl:otherwise>
                   <div id="collapse{@xlink:href}" class="row body collapse in show">
                     <div class="col-12">
-                      <xsl:value-of select="i18n:translate('mir.derivate.no_access')" />
+                     <xsl:value-of select="i18n:translate('mir.derivate.no_access')" />
                     </div>
                   </div>
                 </xsl:otherwise>
               </xsl:choose>
-
             </div>
           </xsl:for-each>
 
@@ -108,6 +110,12 @@
                   <xsl:when test="string-length($embargoDate)&gt;0">
                     <!-- embargo is active for guest user -->
                     <xsl:value-of select="i18n:translate('component.mods.metaData.dictionary.accessCondition.embargo.available',$embargoDate)" />
+                  </xsl:when>
+                  <xsl:when test="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:accessCondition[@type='restriction on access'][substring-after(@xlink:href,'#')='intern']">
+                    <xsl:value-of disable-output-escaping="yes" select="i18n:translate('mir.derivate.no_access.intern',$loginURL)" />
+                  </xsl:when>
+                  <xsl:when test="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:accessCondition[@type='restriction on access'][substring-after(@xlink:href,'#')='ipAddressRange']">
+                    <xsl:value-of select="i18n:translate('mir.derivate.no_access.ipAddressRange')" />
                   </xsl:when>
                   <xsl:otherwise>
                     <xsl:value-of select="i18n:translate('mir.derivate.no_access')" />
