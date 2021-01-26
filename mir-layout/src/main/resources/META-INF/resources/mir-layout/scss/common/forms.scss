@@ -17,6 +17,11 @@
   top: 0;
 }
 
+// show not-allowed icon as in bootstrap 3
+.btn.disabled, .btn:disabled, fieldset:disabled .btn {
+  cursor: not-allowed;
+}
+
 .form-pmud .btn {
 //deprecated
   margin-right: 2px;
