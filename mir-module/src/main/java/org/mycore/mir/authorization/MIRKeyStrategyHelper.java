@@ -1,5 +1,8 @@
 package org.mycore.mir.authorization;
 
+import java.util.Objects;
+import java.util.stream.Stream;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.mycore.access.MCRAccessManager;
@@ -13,23 +16,47 @@ public class MIRKeyStrategyHelper {
     private static final Logger LOGGER = LogManager.getLogger();
 
     protected boolean checkObjectPermission(MCRObjectID objectId, String permission) {
+        LOGGER.debug("check object {} permission {}.", objectId, permission);
         boolean isWritePermission = MCRAccessManager.PERMISSION_WRITE.equals(permission);
         boolean isReadPermission = MCRAccessManager.PERMISSION_READ.equals(permission);
         if ((isWritePermission || isReadPermission)) {
-            String userKey = getUserKey(objectId);
-            if (userKey != null) {
-                MIRAccessKeyPair keyPair = MIRAccessKeyManager.getKeyPair(objectId);
-                if (keyPair != null && (userKey.equals(keyPair.getWriteKey())
-                    || isReadPermission && userKey.equals(keyPair.getReadKey()))) {
-                    LOGGER.debug("Access granted. User has a key to access the resource {}.", objectId);
-                    return true;
-                }
-                if (keyPair != null && !userKey.equals(keyPair.getWriteKey())
-                    && !userKey.equals(keyPair.getReadKey())) {
-                    LOGGER.warn("Neither read nor write key matches. Remove access key from user.");
-                    MIRAccessKeyManager.deleteAccessKey(objectId);
-                }
+            if (userHasValidAccessKey(objectId, isReadPermission)) {
+                return true;
             }
+        }
+        return false;
+    }
+
+    private static boolean userHasValidAccessKey(MCRObjectID objectId, boolean isReadPermission) {
+        String userKey = getUserKey(objectId);
+        if (userKey != null) {
+            MIRAccessKeyPair keyPair = MIRAccessKeyManager.getKeyPair(objectId);
+            if (keyPair != null && (userKey.equals(keyPair.getWriteKey())
+                || isReadPermission && userKey.equals(keyPair.getReadKey()))) {
+                LOGGER.debug("Access granted. User has a key to access the resource {}.", objectId);
+                return true;
+            }
+            if (keyPair != null && !userKey.equals(keyPair.getWriteKey())
+                && !userKey.equals(keyPair.getReadKey())) {
+                LOGGER.warn("Neither read nor write key matches. Remove access key from user.");
+                MIRAccessKeyManager.deleteAccessKey(objectId);
+            }
+        }
+        return false;
+    }
+
+    protected boolean checkDerivatePermission(MCRObjectID derivateId, MCRObjectID objectId, String permission) {
+        LOGGER.debug("check derivate {}, object {} permission {}.", derivateId, objectId, permission);
+        boolean isWritePermission = MCRAccessManager.PERMISSION_WRITE.equals(permission);
+        boolean isReadPermission = MCRAccessManager.PERMISSION_READ.equals(permission);
+        if ((isWritePermission || isReadPermission)) {
+            return Stream.of(derivateId, objectId)
+                .sequential()
+                .filter(Objects::nonNull)
+                .filter(id -> MIRAccessKeyManager.getKeyPair(id) != null)
+                .findFirst()
+                .map(id -> userHasValidAccessKey(id, isReadPermission))
+                .orElse(Boolean.FALSE);
         }
         return false;
     }

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mycoreclass xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="MCRClassification.xsd" ID="mir_access">
+  <label xml:lang="de" text="Zugriffsberechtigungen" />
+  <label xml:lang="x-uri" text="http://www.mycore.de/classifications/mir_access" />
+  <label xml:lang="x-auth" text="accessRestriction" />
+  <categories>
+    <category ID="unlimited">
+      <label xml:lang="en" text="public" description="everyone can access attached data" />
+      <label xml:lang="de" text="uneingeschränkt" description="jeder darf auf die angehängten Dateien zugreifen" />
+    </category>
+    <category ID="intern">
+      <label xml:lang="de" text="nur angemeldete Nutzer" description="angemeldete Nutzer ggf. nur eine spezielle Gruppe darf angehängte Dateien lesen" />
+      <label xml:lang="en" text="only signed in user" description="only signed in user can read attached data" />
+    </category>
+    <category ID="accessKey">
+      <label xml:lang="de" text="geschützt durch Zugriffsschlüssel" />
+      <label xml:lang="en" text="protected by access key" />
+    </category>
+  </categories>
+</mycoreclass>

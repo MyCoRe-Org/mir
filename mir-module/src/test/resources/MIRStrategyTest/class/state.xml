@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mycoreclass xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="MCRClassification.xsd" ID="state">
+  <label xml:lang="en" text="Object state" />
+  <label xml:lang="x-uri" text="http://www.mycore.org/classifications/state" />
+  <label xml:lang="de" text="Objektstatus" />
+  <label xml:lang="it" text="stato dell'oggetto" />
+  <categories>
+    <category ID="submitted">
+      <label xml:lang="it" text="presentata" />
+      <label xml:lang="de" text="eingereicht" />
+      <label xml:lang="en" text="submitted" />
+    </category>
+    <category ID="review">
+      <label xml:lang="en" text="in review" />
+      <label xml:lang="it" text="lavorazione" />
+      <label xml:lang="de" text="wird bearbeitet" />
+    </category>
+    <category ID="published">
+      <label xml:lang="en" text="published" />
+      <label xml:lang="de" text="veröffentlicht" />
+      <label xml:lang="it" text="pubblicato" />
+    </category>
+    <category ID="blocked">
+      <label xml:lang="en" text="blocked" />
+      <label xml:lang="it" text="bloccato" />
+      <label xml:lang="de" text="gesperrt" />
+    </category>
+    <category ID="deleted">
+      <label xml:lang="it" text="cancellato" />
+      <label xml:lang="en" text="deleted" />
+      <label xml:lang="de" text="gelöscht" />
+    </category>
+  </categories>
+</mycoreclass>
