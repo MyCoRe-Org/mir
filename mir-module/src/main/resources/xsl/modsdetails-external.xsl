@@ -31,6 +31,7 @@
   <xsl:param name="MIR.Workflow.Menu" select="'false'" />
 
   <xsl:include href="workflow-util.xsl" />
+  <xsl:include href="mir-mods-utils.xsl" />
 
   <!-- do nothing for display parent -->
   <xsl:template match="/mycoreobject" mode="parent" priority="1">
@@ -897,7 +898,7 @@
           <xsl:if test="position()!=1">
             <xsl:value-of select="'/ '" />
           </xsl:if>
-          <xsl:apply-templates select="." mode="nameLink" />
+          <xsl:apply-templates select="." mode="mirNameLink" />
         </xsl:for-each>
       </div>
 

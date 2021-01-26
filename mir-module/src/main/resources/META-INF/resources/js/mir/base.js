@@ -1,6 +1,18 @@
 (function ($) {
     $(document).ready(function () {
 
+        $(".personPopover").each(function (i, popoverElement){
+            let id = popoverElement.getAttribute("id");
+            let contentID = id + "-content";
+            let content$ = $("#"+ contentID);
+            content$.detach();
+            content$.removeClass("d-none");
+            $(popoverElement).popover({
+                content: content$,
+                html: true
+            })
+        })
+
         $('.dropdown-submenu a.submenu').on("click", function(e){
             $(this).next('ul').toggle();
             e.stopPropagation();
