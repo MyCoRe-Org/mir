@@ -31,15 +31,15 @@ public class MIRKeyStrategyHelper {
         String userKey = getUserKey(objectId);
         if (userKey != null) {
             MIRAccessKeyPair keyPair = MIRAccessKeyManager.getKeyPair(objectId);
-            if (keyPair != null && (userKey.equals(keyPair.getWriteKey())
-                || isReadPermission && userKey.equals(keyPair.getReadKey()))) {
-                LOGGER.debug("Access granted. User has a key to access the resource {}.", objectId);
-                return true;
-            }
-            if (keyPair != null && !userKey.equals(keyPair.getWriteKey())
-                && !userKey.equals(keyPair.getReadKey())) {
-                LOGGER.warn("Neither read nor write key matches. Remove access key from user.");
-                MIRAccessKeyManager.deleteAccessKey(objectId);
+            if (keyPair != null) {
+                if (userKey.equals(keyPair.getWriteKey()) || isReadPermission && userKey.equals(keyPair.getReadKey())) {
+                    LOGGER.debug("Access granted. User has a key to access the resource {}.", objectId);
+                    return true;
+                }
+                if (!userKey.equals(keyPair.getReadKey())) {
+                    LOGGER.warn("Neither read nor write key matches. Remove access key from user.");
+                    MIRAccessKeyManager.deleteAccessKey(objectId);
+                }
             }
         }
         return false;
@@ -51,7 +51,6 @@ public class MIRKeyStrategyHelper {
         boolean isReadPermission = MCRAccessManager.PERMISSION_READ.equals(permission);
         if ((isWritePermission || isReadPermission)) {
             return Stream.of(derivateId, objectId)
-                .sequential()
                 .filter(Objects::nonNull)
                 .filter(id -> MIRAccessKeyManager.getKeyPair(id) != null)
                 .findFirst()
