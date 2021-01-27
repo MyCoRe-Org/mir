@@ -19,12 +19,7 @@ public class MIRKeyStrategyHelper {
         LOGGER.debug("check object {} permission {}.", objectId, permission);
         boolean isWritePermission = MCRAccessManager.PERMISSION_WRITE.equals(permission);
         boolean isReadPermission = MCRAccessManager.PERMISSION_READ.equals(permission);
-        if ((isWritePermission || isReadPermission)) {
-            if (userHasValidAccessKey(objectId, isReadPermission)) {
-                return true;
-            }
-        }
-        return false;
+        return (isWritePermission || isReadPermission) && userHasValidAccessKey(objectId, isReadPermission);
     }
 
     private static boolean userHasValidAccessKey(MCRObjectID objectId, boolean isReadPermission) {
