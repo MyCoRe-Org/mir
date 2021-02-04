@@ -55,22 +55,14 @@
             </xsl:choose>
         </xsl:variable>
 
+        <xsl:variable name="affiliation" select="mods:affiliation/text()" />
         <xsl:variable name="personNodeId" select="generate-id(.)"/>
         <xsl:variable name="personName"><xsl:apply-templates select="." mode="nameString"/></xsl:variable>
-        <a href="{$query}"><xsl:value-of select="$personName" /></a>
-        <xsl:if test="count($nameIdentifiers) &gt; 0">
-            <xsl:text>&#160;</xsl:text>
-            <!-- class personPopover triggers the javascript popover code -->
-            <a id="{$personNodeId}" class="personPopover" title="{$personName}">
-                <span class="fa fa-info-circle">
-                    <xsl:text>&#160;</xsl:text>
-                </span>
-            </a>
-        </xsl:if>
-        <xsl:if test="count($nameIdentifiers) &gt; 0">
+        <xsl:if test="count($nameIdentifiers) &gt; 0 or string-length($affiliation) &gt; 0">
             <!-- This content will be inserted as popover-->
             <div id="{$personNodeId}-content" class="d-none">
                 <dl>
+                  <xsl:if test="count($nameIdentifiers) &gt; 0">
                     <xsl:for-each select="$nameIdentifiers">
                         <dt>
                             <xsl:value-of select="@label"/>
@@ -81,8 +73,24 @@
                             </a>
                         </dd>
                     </xsl:for-each>
+                  </xsl:if>
+                  <xsl:if test="string-length($affiliation) &gt; 0">
+                      <dt>
+                        <xsl:value-of select="'Affiliation'"/>
+                      </dt>
+                      <dd>
+                        <xsl:value-of select="$affiliation"/>
+                      </dd>
+                  </xsl:if>
                 </dl>
             </div>
+        </xsl:if>
+        <a href="{$query}"><xsl:value-of select="$personName" /></a>
+        <xsl:if test="count($nameIdentifiers) &gt; 0 or string-length($affiliation) &gt; 0">
+            <!-- class personPopover triggers the javascript popover code -->
+            <a id="{$personNodeId}" class="personPopover" title="Personendetails">
+                <span class="fa fa-info-circle"/>
+            </a>
         </xsl:if>
     </xsl:template>
 </xsl:stylesheet>

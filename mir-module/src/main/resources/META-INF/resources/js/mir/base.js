@@ -7,11 +7,16 @@
             let content$ = $("#"+ contentID);
             content$.detach();
             content$.removeClass("d-none");
+            popoverElement.setAttribute("title", popoverElement.getAttribute("title") + '<div class="popoverclose btn btn-xs"><i class="fa fa-times"></i></div>');
             $(popoverElement).popover({
                 content: content$,
                 html: true
             })
-        })
+        });
+
+        $("body").on("click", ".popoverclose", function(e){
+            $(this).parents(".popover").popover("hide");
+        });
 
         $('.dropdown-submenu a.submenu').on("click", function(e){
             $(this).next('ul').toggle();

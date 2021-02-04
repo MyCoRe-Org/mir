@@ -163,7 +163,7 @@
     <div id="mir-abstract-plus">
 
       <xsl:if test="$mods/mods:name[mods:role/mods:roleTerm/text()='aut'] or $mods/mods:name[mods:role/mods:roleTerm/text()='edt']">
-        <span id="authors_short">
+        <div id="authors_short">
           <xsl:choose>
             <xsl:when test="$mods/mods:name[mods:role/mods:roleTerm/text()='aut']">
               <xsl:for-each select="$mods/mods:name[mods:role/mods:roleTerm/text()='aut']">
@@ -190,7 +190,7 @@
               </xsl:for-each>
             </xsl:when>
           </xsl:choose>
-        </span>
+        </div>
       </xsl:if>
 
       <xsl:if test="$mods/mods:abstract">
