@@ -11,6 +11,7 @@
   <xsl:import href="xslImport:modsmeta" />
   <xsl:include href="layout/mir-layout-utils.xsl" />
   <xsl:include href="mods-utils.xsl" />
+  <xsl:include href="mir-mods-utils.xsl" />
   <xsl:key use="@id" name="rights" match="/mycoreobject/rights/right" />
   <xsl:variable name="mods-type">
     <xsl:apply-templates mode="mods-type" select="." />

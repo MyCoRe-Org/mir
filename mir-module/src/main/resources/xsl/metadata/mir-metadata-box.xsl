@@ -5,6 +5,7 @@
   exclude-result-prefixes="i18n mods xlink xalan mcrxsl">
   <xsl:import href="xslImport:modsmeta:metadata/mir-metadata-box.xsl" />
   <xsl:include href="modsmetadata.xsl" />
+  <xsl:include href="mir-mods-utils.xsl" />
   <!-- copied from http://www.loc.gov/standards/mods/v3/MODS3-4_HTML_XSLT1-0.xsl -->
 
   <xsl:key use="@type" name="title-by-type" match="//mods:mods/mods:titleInfo" />
@@ -100,7 +101,7 @@
                         <xsl:if test="position()!=1">
                           <xsl:value-of select="'; '" />
                         </xsl:if>
-                        <xsl:apply-templates select="." mode="nameLink" />
+                        <xsl:apply-templates select="." mode="mirNameLink" />
                       </xsl:for-each>
                         <xsl:if test="$mods/mods:name/mods:etal">
                             <em>et.al.</em>
