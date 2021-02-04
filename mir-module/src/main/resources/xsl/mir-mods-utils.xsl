@@ -76,7 +76,7 @@
                   </xsl:if>
                   <xsl:if test="string-length($affiliation) &gt; 0">
                       <dt>
-                        <xsl:value-of select="'Affiliation'"/>
+                        <xsl:value-of select="i18n:translate('mir.affiliation')"/>
                       </dt>
                       <dd>
                         <xsl:value-of select="$affiliation"/>
@@ -88,7 +88,7 @@
         <a href="{$query}"><xsl:value-of select="$personName" /></a>
         <xsl:if test="count($nameIdentifiers) &gt; 0 or string-length($affiliation) &gt; 0">
             <!-- class personPopover triggers the javascript popover code -->
-            <a id="{$personNodeId}" class="personPopover" title="Personendetails">
+            <a id="{$personNodeId}" class="personPopover" title="{i18n:translate('mir.details.personpopover.title')}">
                 <span class="fa fa-info-circle"/>
             </a>
         </xsl:if>
