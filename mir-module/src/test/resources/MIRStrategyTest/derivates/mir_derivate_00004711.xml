@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mycorederivate xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xsi:noNamespaceSchemaLocation="datamodel-derivate.xsd" ID="mir_derivate_00004711"
+                >
+  <derivate display="true">
+    <linkmetas class="MCRMetaLinkID" heritable="false">
+      <linkmeta inherited="0" xlink:type="locator" xlink:href="mir_mods_00004711" />
+    </linkmetas>
+    <internals class="MCRMetaIFS" heritable="false">
+      <internal inherited="0" sourcepath="mir_derivate_00004711" maindoc="test.txt" />
+    </internals>
+  </derivate>
+  <service>
+    <servdates class="MCRMetaISO8601Date">
+      <servdate type="createdate" inherited="0">2005-11-03T15:51:24.970Z</servdate>
+      <servdate type="modifydate" inherited="0">2005-04-20T11:35:30.930Z</servdate>
+    </servdates>
+  </service>
+</mycorederivate>

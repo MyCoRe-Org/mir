@@ -169,6 +169,11 @@ public class MIRStrategy implements MCRAccessCheckStrategy {
             }
         }
 
+        // 2. check read or write key of current user
+        if (KEY_STRATEGY_HELPER.checkDerivatePermission(derivateId, objectId, permission)) {
+            return true;
+        }
+
         // 2.check if derivate has embargo
         if (objectId == null) {
             //2.1. fallback to MCRObjectBaseStrategy

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mycoreobject xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:noNamespaceSchemaLocation="datamodel-mods.xsd" ID="mir_mods_00004711" label="mir_mods_00004711">
+  <structure />
+  <metadata>
+    <def.modsContainer class="MCRMetaXML" heritable="false" notinherit="true">
+      <modsContainer inherited="0">
+        <mods:mods xmlns:mods="http://www.loc.gov/mods/v3">
+          <mods:titleInfo xml:lang="de" xlink:type="simple">
+            <mods:title>JUnit</mods:title>
+            <mods:subTitle>Test case sample</mods:subTitle>
+          </mods:titleInfo>
+          <mods:name type="personal" xlink:type="simple">
+            <mods:displayForm>Author</mods:displayForm>
+            <mods:role>
+              <mods:roleTerm type="code" authority="marcrelator">aut</mods:roleTerm>
+            </mods:role>
+          </mods:name>
+          <mods:originInfo eventType="creation">
+            <mods:dateCreated encoding="w3cdtf">2021-01-21</mods:dateCreated>
+          </mods:originInfo>
+          <mods:originInfo eventType="publication">
+            <mods:dateIssued encoding="w3cdtf">2021-01-21</mods:dateIssued>
+          </mods:originInfo>
+          <mods:language>
+            <mods:languageTerm type="code" authority="rfc5646">de</mods:languageTerm>
+          </mods:language>
+        </mods:mods>
+      </modsContainer>
+    </def.modsContainer>
+  </metadata>
+  <service>
+    <servstates class="MCRMetaClassification">
+      <servstate inherited="0" classid="state" categid="published" />
+    </servstates>
+  </service>
+</mycoreobject>
