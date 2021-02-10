@@ -208,8 +208,12 @@ span.topicExtended-container input.topic_gnd, span.geographicExtended-container 
 
 .searchbadge {
   background-color:#FFFFFF !important;
-  border-width: 2px 2px 2px 0px !important;
-  padding: 1px 15px;
+  border: 1px solid #ced4da !important;
+  border-radius: .25rem;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  border-left-width: 0 !important;
+  padding: 5px 5px;
 }
 
 .searchbadge {
@@ -219,10 +223,6 @@ span.topicExtended-container input.topic_gnd, span.geographicExtended-container 
 
 .searchbadge.disabled {
   background-color:#ECF0F1 !important;
-}
-
-.searchbadge, .badge {
-    font-size: 75%;
 }
 
 .relItemsearch {
