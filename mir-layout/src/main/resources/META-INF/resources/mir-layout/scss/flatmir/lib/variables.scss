@@ -14,19 +14,19 @@ $h3-font-size:                1rem !default;
 
 // Brand colors
 // -------------------------
-$brand-success:      #6EBA6B;
-$brand-info:         #4B8FBC;
-$brand-warning:      #F39C12;
+$brand-success:      #6EBA6B !default;
+$brand-info:         #4B8FBC !default;
+$brand-warning:      #F39C12 !default;
 
 // Links
 // -------------------------
-$link-color:         $brand-info;
-$link-hover-color:   $brand-info;
+$link-color:         $brand-info !default;
+$link-hover-color:   $brand-info !default;
 
 // Navbar
 // -------------------------
 // inverse
-$navbar-inverse-bg:                         $brand-warning;
-$navbar-inverse-link-hover-bg:              $brand-warning;
+$navbar-inverse-bg:                         $brand-warning !default;
+$navbar-inverse-link-hover-bg:              $brand-warning !default;
 // default
-$navbar-default-link-hover-color:           $brand-warning;
+$navbar-default-link-hover-color:           $brand-warning !default;

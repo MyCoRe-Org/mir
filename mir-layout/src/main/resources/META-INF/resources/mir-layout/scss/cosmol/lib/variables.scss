@@ -4,13 +4,13 @@
 //   or create variables used in this theme only
 // --------------------------------------------------
 
-$brand-primary:      #15516e;
-$brand-warning:      #FF9900;
+$brand-primary:      #15516e !default;
+$brand-warning:      #FF9900 !default;
 
 // side nav settings
-$side-nav-back:       #ecf0f1;
-$side-nav-border:     #dcddde;
-$side-nav-link-color: #42526E;
+$side-nav-back:       #ecf0f1 !default;
+$side-nav-border:     #dcddde !default;
+$side-nav-link-color: #42526E !default;
 
-$side-nav-toggle-back: white;
-$side-nav-toggle-color-hover: white;
+$side-nav-toggle-back: white !default;
+$side-nav-toggle-color-hover: white !default;
