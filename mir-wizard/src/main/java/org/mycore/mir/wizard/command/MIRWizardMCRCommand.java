@@ -25,14 +25,15 @@ package org.mycore.mir.wizard.command;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
+import javax.persistence.PersistenceException;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.HibernateException;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
 import org.jdom2.Attribute;
 import org.jdom2.Element;
-import org.mycore.backend.hibernate.MCRHIBConnection;
+import org.mycore.backend.jpa.MCREntityManagerProvider;
 import org.mycore.common.content.MCRContent;
 import org.mycore.common.content.MCRJDOMContent;
 import org.mycore.common.xml.MCRURIResolver;
@@ -55,7 +56,7 @@ public class MIRWizardMCRCommand extends MIRWizardCommand {
      */
     @Override
     public void doExecute() {
-        Session currentSession = MCRHIBConnection.instance().getSession();
+        EntityManager em = MCREntityManagerProvider.getCurrentEntityManager();
 
         try {
             for (Element command : getInputXML().getChildren()) {
@@ -77,11 +78,12 @@ public class MIRWizardMCRCommand extends MIRWizardCommand {
 
                 MCRCommandManager mcrCmdMgr = new MCRCommandManager();
 
-                Transaction tx = currentSession.beginTransaction();
+                EntityTransaction tx = em.getTransaction();
+                tx.begin();
                 try {
                     mcrCmdMgr.invokeCommand(cmd);
                     tx.commit();
-                } catch (HibernateException e) {
+                } catch (PersistenceException e) {
                     tx.rollback();
 
                     this.result.setResult(result + e.toString());

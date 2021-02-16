@@ -24,14 +24,15 @@ package org.mycore.mir.wizard.command;
 
 import java.net.URL;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
+import javax.persistence.PersistenceException;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.HibernateException;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
 import org.jdom2.Document;
 import org.jdom2.Element;
-import org.mycore.backend.hibernate.MCRHIBConnection;
+import org.mycore.backend.jpa.MCREntityManagerProvider;
 import org.mycore.common.MCRException;
 import org.mycore.common.content.MCRContent;
 import org.mycore.common.content.MCRURLContent;
@@ -61,7 +62,7 @@ public class MIRWizardLoadClassifications extends MIRWizardCommand {
 
     @Override
     public void doExecute() {
-        Session currentSession = MCRHIBConnection.instance().getSession();
+        EntityManager em = MCREntityManagerProvider.getCurrentEntityManager();
 
         try {
             String result = "";
@@ -83,13 +84,14 @@ public class MIRWizardLoadClassifications extends MIRWizardCommand {
                                 .orElseThrow(
                                     () -> new MCRException("Classification " + category.getId() + " has no label.")));
 
-                        Transaction tx = currentSession.beginTransaction();
+                        EntityTransaction tx = em.getTransaction();
+                        tx.begin();
                         try {
                             DAO.addCategory(null, category);
                             tx.commit();
 
                             result += MCRTranslation.translate("component.mir.wizard.done").concat(".\n");
-                        } catch (HibernateException e) {
+                        } catch (PersistenceException e) {
                             tx.rollback();
                             result += MCRTranslation.translate("component.mir.wizard.error", e.toString())
                                 .concat(".\n");

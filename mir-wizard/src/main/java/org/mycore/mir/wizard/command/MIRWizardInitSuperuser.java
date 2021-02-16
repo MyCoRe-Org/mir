@@ -24,9 +24,10 @@ package org.mycore.mir.wizard.command;
 
 import java.util.List;
 
-import org.hibernate.Session;
-import org.hibernate.Transaction;
-import org.mycore.backend.hibernate.MCRHIBConnection;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
+
+import org.mycore.backend.jpa.MCREntityManagerProvider;
 import org.mycore.mir.wizard.MIRWizardCommand;
 import org.mycore.user2.MCRUserCommands;
 
@@ -43,13 +44,14 @@ public class MIRWizardInitSuperuser extends MIRWizardCommand {
     @Override
     public void doExecute() {
         try {
-            Session session = MCRHIBConnection.instance().getSession();
-            Transaction transaction = session.beginTransaction();
+            EntityManager em = MCREntityManagerProvider.getCurrentEntityManager();
+            EntityTransaction transaction = em.getTransaction();
+            transaction.begin();
 
             List<String> users = MCRUserCommands.initSuperuser();
 
             transaction.commit();
-            session.close();
+            em.close();
 
             if (users != null && users.size() != 0) {
                 this.result.setSuccess(true);
