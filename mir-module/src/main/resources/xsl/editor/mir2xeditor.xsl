@@ -478,8 +478,9 @@
   </xsl:template>
 
   <xsl:template match="mir:insitut.repeated">
+    <xsl:variable name="xed-val-marker" > {$xed-validation-marker} </xsl:variable>
     <xed:repeat xpath="mods:name[@type='corporate'][@authorityURI='{$institutesURI}']" min="{@min}" max="{@max}">
-      <div class="form-group row">
+      <div class="form-group row {@class} {$xed-val-marker}">
         <label class="col-md-3 col-form-label text-right">
           <xed:output i18n="{@label}" />
           :
