@@ -502,18 +502,22 @@
   <!-- ========== resourceType (1) ========== -->
 
   <xsl:template name="resourceType">
-    <xsl:choose>
-      <xsl:when test="$mods-type='research_data'">
-        <resourceType resourceTypeGeneral="Dataset">
-          <xsl:value-of select="$mods-type" />
-        </resourceType>
-      </xsl:when>
-      <xsl:otherwise>
-        <resourceType resourceTypeGeneral="Text">
-          <xsl:value-of select="$mods-type" />
-        </resourceType>
-      </xsl:otherwise>
-    </xsl:choose>
+    <xsl:variable name="resourceTypeGeneral">
+      <xsl:choose>
+        <xsl:when test="$mods-type='research_data'">
+          <xsl:value-of select="'Dataset'" />
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="'Text'" />
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+    <resourceType>
+      <xsl:attribute name="resourceTypeGeneral">
+        <xsl:value-of select="$resourceTypeGeneral" />
+      </xsl:attribute>
+      <xsl:value-of select="$mods-type" />
+    </resourceType>
   </xsl:template>
 
   <!-- ========== alternateIdentifiers (0-n) ========== -->
