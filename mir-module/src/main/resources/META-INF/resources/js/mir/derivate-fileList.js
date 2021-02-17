@@ -295,6 +295,9 @@
 				$.ajax({
 					url: webApplicationBaseURL + "rsc/jwt",
 					type: "GET",
+                    data: {
+                        ua: "acckey_" + objID
+                    },
 					dataType: "json",
 					success: function (data) {
 						if (data.login_success) {
