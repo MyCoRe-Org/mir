@@ -15,6 +15,7 @@
                 xmlns="http://datacite.org/schema/kernel-4"
                 exclude-result-prefixes="xsl fn xlink mods">
 
+  <xsl:include href="mods-utils.xsl" />
   <xsl:include href="functions/mods.xsl" />
 
   <xsl:output method="xml" encoding="UTF-8" indent="yes" />
@@ -33,6 +34,10 @@
 
   <xsl:variable name="marcrelator" select="document('classification:metadata:-1:children:marcrelator')" />
 
+  <xsl:variable name="mods-type">
+    <xsl:apply-templates select="." mode="mods-type" />
+  </xsl:variable>
+ 
   <xsl:template match="mycoreobject">
     <xsl:apply-templates select="metadata/def.modsContainer/modsContainer/mods:mods" />
   </xsl:template>
@@ -497,9 +502,18 @@
   <!-- ========== resourceType (1) ========== -->
 
   <xsl:template name="resourceType">
-    <resourceType resourceTypeGeneral="Text">
-      <xsl:value-of select="substring-after(mods:genre[@type='intern'][1]/@valueURI, '#')" />
-    </resourceType>
+    <xsl:choose>
+      <xsl:when test="$mods-type='research_data'">
+        <resourceType resourceTypeGeneral="Dataset">
+          <xsl:value-of select="$mods-type" />
+        </resourceType>
+      </xsl:when>
+      <xsl:otherwise>
+        <resourceType resourceTypeGeneral="Text">
+          <xsl:value-of select="$mods-type" />
+        </resourceType>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
 
   <!-- ========== alternateIdentifiers (0-n) ========== -->
