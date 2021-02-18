@@ -41,7 +41,7 @@ public class MIRModsEditorController extends MIREditorController {
             }
 
             IntStream.range(0, titleInfos.size()).forEach(i -> {
-                String baseXP = i == 0 ? "mods:titleInfo/" : "mods:titleInfo[" + (i + 1) + "]/";
+                String baseXP = "mods:titleInfo[" + (i + 1) + "]/";
                 MIRTitleInfo titleInfo = titleInfos.get(i);
 
                 String nonSort = titleInfo.getNonSort();
@@ -70,8 +70,8 @@ public class MIRModsEditorController extends MIREditorController {
 
     public void setTitleAndTranslation(String title, String subTitle, String translatedTitle, String translatedSubTitle,
         MIRLanguage language) {
-        setInputText("mods:titleInfo/mods:title", title);
-        setInputText("mods:titleInfo/mods:subTitle", subTitle);
+        setInputText("mods:titleInfo[1]/mods:title", title);
+        setInputText("mods:titleInfo[1]/mods:subTitle", subTitle);
         setInputText("mods:titleInfo[2]/mods:title", translatedTitle);
         setInputText("mods:titleInfo[2]/mods:subTitle", translatedSubTitle);
         setLang("mods:titleInfo[2]/", language.getValue());
@@ -134,7 +134,7 @@ public class MIRModsEditorController extends MIREditorController {
             }
 
             IntStream.range(0, abstracts.size()).forEach(i -> {
-                String xp = i == 0 ? "mods:abstract" : "mods:abstract[" + (i + 1) + "]";
+                String xp = "mods:abstract[" + (i + 1) + "]";
                 MIRAbstract anAbstract = abstracts.get(i);
                 setLang(xp + "/", anAbstract.getLanguage().getValue());
                 if (anAbstract.isText()) {
@@ -148,7 +148,7 @@ public class MIRModsEditorController extends MIREditorController {
 
     public void setTypeOfResource(MIRTypeOfResource typeOfResource) {
         Select resourceSelect = new Select(
-            driver.waitAndFindElement(By.xpath(".//select[contains(@name, 'mods:typeOfResource/@mcr:categId')]")));
+            driver.waitAndFindElement(By.xpath(".//select[contains(@name, 'mods:typeOfResource[1]/@mcr:categId')]")));
         resourceSelect.selectByValue(typeOfResource.getValue());
     }
 
@@ -160,8 +160,7 @@ public class MIRModsEditorController extends MIREditorController {
             }
 
             IntStream.range(0, typeOfResources.size()).forEach(i -> {
-                String xp = i == 0 ? "mods:typeOfResource/@mcr:categId"
-                    : "mods:typeOfResource[" + (i + 1) + "]/@mcr:categId";
+                String xp = "mods:typeOfResource[" + (i + 1) + "]/@mcr:categId";
                 MIRTypeOfResource typeOfResource = typeOfResources.get(i);
                 new Select(driver.waitAndFindElement(By.xpath(".//select[contains(@name, '" + xp + "')]")))
                     .selectByValue(typeOfResource.getValue());
@@ -185,7 +184,7 @@ public class MIRModsEditorController extends MIREditorController {
             }
 
             IntStream.range(0, genres.size()).forEach(i -> {
-                String xp = i == 0 ? "mods:genre/@valueURIxEditor" : "mods:genre[" + (i + 1) + "]/@valueURIxEditor";
+                String xp = "mods:genre[" + (i + 1) + "]/@valueURIxEditor";
                 MIRGenre currentLang = genres.get(i);
                 new Select(driver.waitAndFindElement(By.xpath(".//select[contains(@name, '" + xp + "')]")))
                     .selectByValue(currentLang.getValue());
@@ -202,8 +201,7 @@ public class MIRModsEditorController extends MIREditorController {
             }
 
             IntStream.range(0, langs.size()).forEach(i -> {
-                String xp = i == 0 ? "modslanguage/modslanguageTerm"
-                    : "modslanguage" + (i + 1) + "/modslanguageTerm";
+                String xp = "modslanguage" + (i + 1) + "/modslanguageTerm";
                 MIRLanguage currentLang = langs.get(i);
                 driver.waitAndFindElement(By.xpath(".//span[contains(@id, '" + xp + "')]")).click();
                 driver.waitAndFindElement(By.className("select2-search__field")).clear();
@@ -233,7 +231,7 @@ public class MIRModsEditorController extends MIREditorController {
     public void setStatus(MIRStatus status) {
         new Select(driver.waitAndFindElement(
             By.xpath(
-                ".//select[contains(@name, 'servstates/servstate') and option/@value='" + status.getValue() + "']")))
+                ".//select[contains(@name, '/servstate') and option/@value='" + status.getValue() + "']")))
                     .selectByValue(status.getValue());
     }
 
@@ -250,8 +248,8 @@ public class MIRModsEditorController extends MIREditorController {
             }
 
             IntStream.range(nonRepeaterExisting, nonRepeaterExisting + typeIdentifierList.size()).forEach(i -> {
-                String selectXP = i == 0 ? "mods:identifier/@type" : "mods:identifier[" + (i + 1) + "]/@type";
-                String inputXP = i == 0 ? "mods:mods/mods:identifier" : "mods:mods/mods:identifier[" + (i + 1) + "]";
+                String selectXP =  "mods:identifier[" + (i + 1) + "]/@type";
+                String inputXP = "mods:mods[1]/mods:identifier[" + (i + 1) + "]";
                 MIRIdentifier mirIdentifier = typeIdentifierList.get(i - nonRepeaterExisting).getKey();
                 String identifierValue = typeIdentifierList.get(i - nonRepeaterExisting).getValue();
                 new Select(driver.waitAndFindElement(By.xpath(".//select[contains(@name, '" + selectXP + "')]")))
@@ -269,7 +267,7 @@ public class MIRModsEditorController extends MIREditorController {
             }
 
             IntStream.range(0, topics.size()).forEach(i -> {
-                String xp = i == 0 ? "mods:topic" : "mods:topic[" + (i + 1) + "]";
+                String xp = "mods:topic[" + (i + 1) + "]";
                 String topic = topics.get(i);
                 setInputText(xp, topic);
             });
@@ -284,7 +282,7 @@ public class MIRModsEditorController extends MIREditorController {
             }
 
             IntStream.range(0, classifications.size()).forEach(i -> {
-                String xp = i == 0 ? "mods:classification" : "mods:classification[" + (i + 1) + "]";
+                String xp = "mods:classification[" + (i + 1) + "]";
                 MIRDNBClassification classification = classifications.get(i);
                 new Select(driver.waitAndFindElement(By.xpath(".//select[contains(@name, '" + xp + "')]")))
                     .selectByValue(classification.getValue());
@@ -312,8 +310,7 @@ public class MIRModsEditorController extends MIREditorController {
             }
 
             IntStream.range(0, names.size()).forEach(i -> {
-                String xp = i + fieldOffset == 0 ? "mods:name/mods:displayForm"
-                    : "mods:name[" + (i + 1 + fieldOffset) + "]/mods:displayForm";
+                String xp = "mods:name[" + (i + 1 + fieldOffset) + "]/mods:displayForm";
                 String name = names.get(i);
                 driver.waitAndFindElement(By.xpath("//button[contains(@name,'_xed_submit_servlet')]"));
                 setInputText(xp, name);
@@ -362,7 +359,7 @@ public class MIRModsEditorController extends MIREditorController {
             }
 
             IntStream.range(0, notes.size()).forEach(i -> {
-                String inputXP = i == 0 ? "mods:note" : "mods:note[" + (i + 1) + "]";
+                String inputXP = "mods:note[" + (i + 1) + "]";
                 String note = notes.get(i);
                 setTextAreaText(inputXP, note);
             });
@@ -370,11 +367,11 @@ public class MIRModsEditorController extends MIREditorController {
     }
 
     public void setExtend(String extend) {
-        setInputText("mods:physicalDescription/mods:extent", extend);
+        setInputText("mods:physicalDescription[1]/mods:extent[1]", extend);
     }
 
     public void setIssueDate(String issueDate) {
-        setInputText("mods:originInfo/mods:dateIssued", issueDate);
+        setInputText("mods:originInfo[1]/mods:dateIssued[1]", issueDate);
     }
 
     public void setIssueDate(String from, String to) {
@@ -388,7 +385,7 @@ public class MIRModsEditorController extends MIREditorController {
     }
 
     public void setRelatedTitle(String title) {
-        setInputText("mods:relatedItem/mods:titleInfo/mods:title", title);
+        setInputText("mods:relatedItem[1]/mods:titleInfo[1]/mods:title[1]", title);
     }
 
     private void setByValueXpath(String valueXpath, String value) {
@@ -407,30 +404,30 @@ public class MIRModsEditorController extends MIREditorController {
     }
 
     public void setISBN(String isbn) {
-        setInputText("mods:mods/mods:identifier", isbn);
+        setInputText("mods:mods[1]/mods:identifier", isbn);
     }
 
     public void setShelfLocator(String shelfLocator) {
-        setInputText("mods:location/mods:shelfLocator", shelfLocator);
+        setInputText("mods:location[1]/mods:shelfLocator[1]", shelfLocator);
     }
 
     public void setVolume(String volume) {
-        setInputText("mods:relatedItem/mods:part/mods:detail/mods:number", volume);
+        setInputText("mods:relatedItem[1]/mods:part[1]/mods:detail[1]/mods:number[1]", volume);
     }
 
     public void setExtend(String start, String end) {
-        setInputText("mods:relatedItem/mods:part/mods:extent/mods:list", start + " - " + end);
+        setInputText("mods:relatedItem[1]/mods:part[1]/mods:extent[1]/mods:list[1]", start + " - " + end);
     }
 
     public void setLinks(List<String> links) {
         if (links.size() > 0) {
             if (links.size() > 1) {
                 IntStream.range(1, links.size()).forEach((n) -> clickRepeaterAndWait("mods:url",
-                    ".//input[contains(@name, 'mods:location/mods:url[" + (n + 1) + "]')]"));
+                    ".//input[contains(@name, 'mods:location[1]/mods:url[" + (n + 1) + "]')]"));
             }
 
             IntStream.range(0, links.size()).forEach(i -> {
-                String xp = i == 0 ? "mods:location/mods:url" : "mods:location/mods:url[" + (i + 1) + "]";
+                String xp = "mods:location[1]/mods:url[" + (i + 1) + "]";
                 String link = links.get(i);
                 setInputText(xp, link);
             });
@@ -438,7 +435,7 @@ public class MIRModsEditorController extends MIREditorController {
     }
 
     public void setNumber(String number) {
-        setInputText("mods:relatedItem/mods:part/mods:detail[2]/mods:number", number);
+        setInputText("mods:relatedItem[1]/mods:part[1]/mods:detail[2]/mods:number[1]", number);
     }
 
     public boolean isTitleValidationMessageVisible() {
