@@ -98,11 +98,11 @@ public class MIRSearchController extends MIRTestController {
 
         if (complexSearchQueries.size() > 0 && complexSearchQueries.size() > 1) {
             IntStream.range(1, complexSearchQueries.size()).forEach((n) -> clickRepeaterAndWait(
-                ".//input[contains(@name, 'boolean/boolean/condition[" + (n + 1) + "]/')]"));
+                ".//input[contains(@name, 'boolean[1]/boolean[1]/condition[" + (n + 1) + "]/')]"));
         }
 
         IntStream.range(0, complexSearchQueries.size()).forEach(i -> {
-            String baseXP = i == 0 ? "boolean/condition/" : "boolean/condition[" + (i + 1) + "]/";
+            String baseXP = "boolean[1]/condition[" + (i + 1) + "]/";
             MIRComplexSearchQuery complexSearchQuery = complexSearchQueries.get(i);
 
             MIRSearchField field = complexSearchQuery.getSearchField();
