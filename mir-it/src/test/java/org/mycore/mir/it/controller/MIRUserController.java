@@ -43,13 +43,13 @@ public class MIRUserController {
         for (int i = 0; i < roles.length; i++) {
             if (i > 0) {
                 //append a role
-                By addRole = By.name("_xed_submit_insert:/user/roles|" + i + "|build|role|rep-" + (i + 1));
+                By addRole = By.name("_xed_submit_insert:/user/roles[1]|" + i + "|build|role|rep-" + (i + 1));
                 By startRoleSelect = By
-                    .xpath("//button[starts-with(@name,'_xed_submit_subselect:/user/roles/role[" + (i + 1) + "]:')]");
+                    .xpath("//button[starts-with(@name,'_xed_submit_subselect:/user/roles[1]/role[" + (i + 1) + "]:')]");
                 driver.waitAndFindElement(addRole).click();
                 driver.waitAndFindElement(startRoleSelect).click();
             } else {
-                By startRoleSelect = By.xpath("//button[starts-with(@name,'_xed_submit_subselect:/user/roles/role:')]");
+                By startRoleSelect = By.xpath("//button[starts-with(@name,'_xed_submit_subselect:/user/roles[1]/role[1]:')]");
                 driver.waitAndFindElement(startRoleSelect).click();
             }
             driver.waitAndFindElement(By.linkText("Systemnutzerrollen")).click();
