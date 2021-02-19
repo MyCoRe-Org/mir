@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+  <Appenders>
+    <Console name="Console" target="SYSTEM_OUT">
+      <PatternLayout pattern="%highlight{%d{ISO8601} [%t] %-5p %X{loginId} %c{1}: %m%ex}{STYLE=Logback}%style{%n}{Normal}" />
+    </Console>
+  </Appenders>
+  <Loggers>
+    <Root level="info">
+      <AppenderRef ref="Console"/>
+    </Root>
+    <logger name="org.mycore" level="info" />
+  </Loggers>
+</Configuration>

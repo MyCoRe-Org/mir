@@ -154,7 +154,8 @@
           <input type="hidden" name="action" value="add" />
           <input type="hidden" name="redirect" value="referer" />
           <input type="hidden" name="type" value="objects" />
-          <xsl:for-each select="/response/result/doc|/response/lst[@name='grouped']/lst[@name='returnId']/arr[@name='groups']/lst/str[@name='groupValue']">
+          <xsl:variable name="idNodes" select="/response/result/doc|/response/lst[@name='grouped']/lst[@name='returnId']/arr[@name='groups']/lst/str[@name='groupValue']" />
+          <xsl:for-each select="$idNodes">
             <xsl:variable name="docID">
               <xsl:choose>
                 <xsl:when test="@id!=''">
@@ -171,7 +172,17 @@
             <input type="hidden" name="id" value="{$docID}" />
             <input type="hidden" name="uri" value="{concat('mcrobject:',$docID)}" />
           </xsl:for-each>
-          <button type="submit" tabindex="1" class="basket_button btn-primary form-control" value="add">
+          <xsl:variable name="buttonDefaultClasses" select="'basket_button btn btn-primary form-control'" />
+          <button type="submit" tabindex="1" value="add">
+            <xsl:choose>
+              <xsl:when test="count($idNodes)=0">
+                <xsl:attribute name="disabled">disabled</xsl:attribute>
+                <xsl:attribute name="class"><xsl:value-of select="$buttonDefaultClasses" /> disabled</xsl:attribute>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:attribute name="class"><xsl:value-of select="$buttonDefaultClasses" /></xsl:attribute>
+              </xsl:otherwise>
+            </xsl:choose>
             <i class="fas fa-plus"></i>
             <xsl:text> </xsl:text>
             <xsl:value-of select="i18n:translate('basket.add.searchpage')" />

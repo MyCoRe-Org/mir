@@ -163,14 +163,14 @@
     <div id="mir-abstract-plus">
 
       <xsl:if test="$mods/mods:name[mods:role/mods:roleTerm/text()='aut'] or $mods/mods:name[mods:role/mods:roleTerm/text()='edt']">
-        <p id="authors_short">
+        <div id="authors_short">
           <xsl:choose>
             <xsl:when test="$mods/mods:name[mods:role/mods:roleTerm/text()='aut']">
               <xsl:for-each select="$mods/mods:name[mods:role/mods:roleTerm/text()='aut']">
                 <xsl:if test="position()!=1">
                   <xsl:value-of select="'; '" />
                 </xsl:if>
-                <xsl:apply-templates select="." mode="nameLink" />
+                <xsl:apply-templates select="." mode="mirNameLink" />
                 <xsl:if test="mods:etal">
                   <em>et.al.</em>
                 </xsl:if>
@@ -181,7 +181,7 @@
                 <xsl:if test="position()!=1">
                   <xsl:value-of select="'; '" />
                 </xsl:if>
-                <xsl:apply-templates select="." mode="nameLink" />
+                <xsl:apply-templates select="." mode="mirNameLink" />
                 <xsl:text> </xsl:text>
                 <xsl:value-of select="i18n:translate('mir.abstract.editor')" />
                 <xsl:if test="mods:etal">
@@ -190,7 +190,7 @@
               </xsl:for-each>
             </xsl:when>
           </xsl:choose>
-        </p>
+        </div>
       </xsl:if>
 
       <xsl:if test="$mods/mods:abstract">

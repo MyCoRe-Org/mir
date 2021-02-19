@@ -15,6 +15,7 @@
                 xmlns="http://datacite.org/schema/kernel-4"
                 exclude-result-prefixes="xsl fn xlink mods">
 
+  <xsl:include href="mods-utils.xsl" />
   <xsl:include href="functions/mods.xsl" />
 
   <xsl:output method="xml" encoding="UTF-8" indent="yes" />
@@ -33,6 +34,10 @@
 
   <xsl:variable name="marcrelator" select="document('classification:metadata:-1:children:marcrelator')" />
 
+  <xsl:variable name="mods-type">
+    <xsl:apply-templates select="." mode="mods-type" />
+  </xsl:variable>
+ 
   <xsl:template match="mycoreobject">
     <xsl:apply-templates select="metadata/def.modsContainer/modsContainer/mods:mods" />
   </xsl:template>
@@ -497,8 +502,21 @@
   <!-- ========== resourceType (1) ========== -->
 
   <xsl:template name="resourceType">
-    <resourceType resourceTypeGeneral="Text">
-      <xsl:value-of select="substring-after(mods:genre[@type='intern'][1]/@valueURI, '#')" />
+    <xsl:variable name="resourceTypeGeneral">
+      <xsl:choose>
+        <xsl:when test="$mods-type='research_data'">
+          <xsl:value-of select="'Dataset'" />
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="'Text'" />
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+    <resourceType>
+      <xsl:attribute name="resourceTypeGeneral">
+        <xsl:value-of select="$resourceTypeGeneral" />
+      </xsl:attribute>
+      <xsl:value-of select="$mods-type" />
     </resourceType>
   </xsl:template>
 
