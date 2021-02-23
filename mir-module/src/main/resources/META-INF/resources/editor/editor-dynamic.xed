@@ -44,7 +44,7 @@
 
         <xed:if test="not($host='standalone')">
           <fieldset class="mir-relatedItem">
-            <div class="col-md-11 mir-relatedItem-head">
+            <div class="col-md-12 mir-relatedItem-head">
               <xed:output value="concat('erschienen in ',$mir_genres//category[@ID=$host]/label[lang($CurrentLang)]/@text,':')" />
             </div>
             <div class="mir-relatedItem-body">
@@ -59,7 +59,7 @@
               <xed:if test="contains($mir_genres//category[@ID=$host]/label[lang('x-hosts')]/@text,'series')">
                 <xed:bind xpath="mods:relatedItem[(@type='host')][1]">
                   <fieldset class="mir-relatedItem">
-                    <div class="col-md-11 mir-relatedItem-head">
+                    <div class="col-md-12 mir-relatedItem-head">
                       <xed:output value="concat($mir_genres//category[@ID=$host]/label[lang($CurrentLang)]/@text,' erschienen in Serie:')" />
                     </div>
                     <div class="mir-relatedItem-body">
