@@ -112,9 +112,14 @@
   </xsl:template>
 
   <xsl:template match="mods:mods" mode="title">
-    <title>
-      <xsl:value-of select="fn:exactly-one(mods:titleInfo[1]/mods:title)" />
-    </title>
+    <xsl:for-each select="fn:exactly-one(mods:titleInfo[1])">
+      <title>
+        <xsl:for-each select="mods:nonSort">
+          <xsl:value-of select="concat(text(),' ')" />
+        </xsl:for-each>
+        <xsl:value-of select="mods:title" />
+      </title>
+    </xsl:for-each>
   </xsl:template>
 
   <xsl:template match="mods:mods" mode="subtitle">
