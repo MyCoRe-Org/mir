@@ -80,6 +80,7 @@ public class TestAccessKeys extends MCRJPATestCase {
         return testProperties;
     }
 
+/*
     @Test
     public void testKeyPairFull() {
         final MIRAccessKeyPair accKP = new MIRAccessKeyPair(MCRObjectID.getInstance(MCR_OBJECT_ID), READ_KEY,
@@ -269,5 +270,5 @@ public class TestAccessKeys extends MCRJPATestCase {
 
         assertTrue("user should have write permission",
             MCRAccessManager.checkPermission(mcrObjectId, MCRAccessManager.PERMISSION_WRITE));
-    }
+    }*/
 }

@@ -1,3 +1,4 @@
 <entity-mappings>
-  <entity class="org.mycore.mir.authorization.accesskeys.MIRAccessKeyPair" />
+  <entity class="org.mycore.mir.authorization.accesskeys.MIRAccessKeyInformation" />
+  <entity class="org.mycore.mir.authorization.accesskeys.MIRAccessKey" />
 </entity-mappings>

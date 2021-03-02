@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE MyCoReWebPage>
+<MyCoReWebPage title="{i18n}">
+  <section i18n="mir.accesskey" xml:lang="all">
+    <script type="text/javascript" src="mir/../../js/mir/accesskeys.js" />
+    <table id="accessKeys" class="table table-sm">
+      <thead>
+        <tr class="d-flex">
+          <th class="th-sm col-auto">#</th>
+          <th class="th-sm col-3 text-center">Type</th>
+          <th class="th-sm col text-center">Value</th>
+          <th class="th-sm col-auto"></th>
+        </tr>
+      </thead>
+    </table>
+ 
+    <button type="button" class="btn btn-primary float-right newAccessKeyModal" data-toggle="modal" data-target="#accessKeyModal">
+      <i18n key="mir.accesskey.add" />
+    </button>
+
+    <!-- Modal -->
+    <div class="modal fade" id="accessKeyModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">
+              <i18n key="mir.accesskey" />
+            </h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close" />
+          </div>
+          <div class="modal-body">
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col-auto">
+                  <select id="accessKeyType" class="form-control">
+                    <option>read</option>
+                    <option>writedb</option>
+                  </select>
+                </div>
+                <div class="col">
+                  <input id="accessKeyValue" class="form-control" placeholder="Value" />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">
+              <i18n key="button.cancel" />
+            </button>
+            <button id="accessKeyDelete" type="button" class="btn btn-danger">
+              <i18n key="mir.accesskey.delete" />
+            </button>
+            <button id="accessKeyUpdate" type="button" class="btn btn-primary">
+               Update
+            </button>
+            <button id="accessKeyNew" type="button" class="btn btn-primary">
+              <i18n key="mir.accesskey.add" />
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</MyCoReWebPage>

@@ -22,7 +22,8 @@
  */
 package org.mycore.mir.authorization.accesskeys;
 
-import java.util.Optional;
+import java.util.List;
+import java.util.UUID;
 
 import javax.persistence.EntityManager;
 
@@ -39,103 +40,173 @@ import org.mycore.user2.MCRUserManager;
 /**
  * Provides methods to store, update, delete and retrieve
  * {@link MCRObject} access keys.
- *
- * @author Ren\u00E9 Adler (eagle)
- * @since 0.3
  */
 public final class MIRAccessKeyManager {
 
+    /** Prefix for user attribute */
     public static final String ACCESS_KEY_PREFIX = "acckey_";
 
     /**
-     * Returns the {@link MIRAccessKeyPair} for given {@link MCRObjectID}.
+     * Returns the {@link MIRAccessKeyInformation} for given {@link MCRObjectID}.
      *
      * @param mcrObjectId the {@link MCRObjectID}
-     * @return the {@link MIRAccessKeyPair}
+     * @return the {@link MIRAccessKeyInformation} or null
      */
-    public static MIRAccessKeyPair getKeyPair(final MCRObjectID mcrObjectId) {
+    public static MIRAccessKeyInformation getAccessKeyInformation(final MCRObjectID objectId) {
         final EntityManager em = MCREntityManagerProvider.getCurrentEntityManager();
-        return em.find(MIRAccessKeyPair.class, mcrObjectId.toString());
+        return em.find(MIRAccessKeyInformation.class, objectId.toString());
     }
 
     /**
-     * Checks if an {@link MIRAccessKeyPair} exists for given {@link MCRObjectID}.
-     *
-     * @param mcrObjectId the {@link MCRObjectID}.
-     * @return <code>true</code> if exists or <code>false</code> if not
-     */
-    public static boolean existsKeyPair(final MCRObjectID mcrObjectId) {
-        return Optional.ofNullable(getKeyPair(mcrObjectId)).isPresent();
-    }
-
-    /**
-     * Persists the given {@link MIRAccessKeyPair}.
-     *
-     * @param accKP the {@link MIRAccessKeyPair}
-     */
-    public static void createKeyPair(final MIRAccessKeyPair accKP) {
-        if (existsKeyPair(accKP.getMCRObjectId())) {
-            throw new IllegalArgumentException(
-                "Access key pair for MCRObject " + accKP.getObjectId() + " already exists");
-        }
-
-        final EntityManager em = MCREntityManagerProvider.getCurrentEntityManager();
-        em.persist(accKP);
-    }
-
-    /**
-     * Updates the given {@link MIRAccessKeyPair} or create a new one if not exists.
-     *
-     * @param accKP the {@link MIRAccessKeyPair}
-     */
-    public static void updateKeyPair(final MIRAccessKeyPair accKP) {
-        if (!existsKeyPair(accKP.getMCRObjectId())) {
-            createKeyPair(accKP);
-            return;
-        }
-
-        final EntityManager em = MCREntityManagerProvider.getCurrentEntityManager();
-        em.merge(accKP);
-    }
-
-    /**
-     * Deletes the {@link MIRAccessKeyPair} for given {@link MCRObjectID}.
+     * Returns the internal id for a {@link MIRAccessKeyInformation} for given {@link MCRObjectID}.
      *
      * @param mcrObjectId the {@link MCRObjectID}
+     * @return the internal id {@link MIRAccessKeyInformation} or null
      */
-    public static void deleteKeyPair(final MCRObjectID mcrObjectId) {
-        if (!existsKeyPair(mcrObjectId)) {
-            throw new IllegalArgumentException("Couldn't delete non exists key pair for MCRObject " + mcrObjectId);
-        }
-
+    private static String getAccessKeyInformationId(final MCRObjectID objectId) {
         final EntityManager em = MCREntityManagerProvider.getCurrentEntityManager();
-        em.remove(getKeyPair(mcrObjectId));
+        return em.createNamedQuery("MIRAccessKeyInformation.getId", String.class)
+            .setParameter("objId", objectId.toString())
+            .getResultStream()
+            .findFirst()
+            .orElse(null);
+    }
+
+    /**
+     * Checks if a {@link MIRAccessKeyInformation} for given {@link MCRObjectID} exists.
+     *
+     * @param mcrObjectId the {@link MCRObjectID}
+     * @return true or false
+     */
+    private static boolean existsAccessKeyInformation(final MCRObjectID objectId) {
+        return getAccessKeyInformationId(objectId) != null;
+    }
+
+    /**
+     * Return all access keys for given {@link MCRObjectID}.
+     *
+     * @param mcrObjectId the {@link MCRObjectID}
+     * @return access keys as list
+     */
+    public static List<MIRAccessKey> getAccessKeys(final MCRObjectID objectId) {
+        final EntityManager em = MCREntityManagerProvider.getCurrentEntityManager();
+        return em.createNamedQuery("MIRAccessKeyInformation.getAccessKeys", MIRAccessKey.class)
+            .setParameter("objId", objectId.toString())
+            .getResultList();
+    }
+    
+    /**
+     * Return the access keys for given {@link MCRObjectID} and value.
+     *
+     * @param mcrObjectId the {@link MCRObjectID}
+     * @param value the key value
+     * @return access key or null
+     */
+    public static MIRAccessKey getAccessKey(final MCRObjectID objectId, final String value) {
+        final EntityManager em = MCREntityManagerProvider.getCurrentEntityManager();
+        return em.createNamedQuery("MIRAccessKeyInformation.getAccessKeyByValue", MIRAccessKey.class)
+            .setParameter("objId", objectId.toString())
+            .setParameter("value", value)
+            .getResultStream()
+            .findFirst()
+            .orElse(null);
+    }
+
+    /**
+     * Checks if an access key for given {@link MCRObjectID} and value exists.
+     *
+     * @param mcrObjectId the {@link MCRObjectID}
+     * @param value the key value
+     * @return true or false
+     */
+    public static boolean existsAccessKey(final MCRObjectID objectId, final String value) {
+        return getAccessKey(objectId, value) != null;
+    }
+
+    /**
+     * Stores a {@link MIRAccessKeyInformation}.
+     * If there is an existing information, it will be merged. 
+     * In the other hand it will saved.
+     *
+     * @param accessKeyInformation the {@link MIRAccessKeyInformation}
+     */
+    public static void storeAccessKeyInformation(MIRAccessKeyInformation accessKeyInformation)
+        throws MCRUsageException {
+        final String accessKeyInformationId = getAccessKeyInformationId(accessKeyInformation.getObjectId());
+        if (MIRAccessKeyInformation.isValid(accessKeyInformation)) {
+            final EntityManager em = MCREntityManagerProvider.getCurrentEntityManager();
+            if (accessKeyInformationId != null) {
+                em.merge(accessKeyInformation);
+            } else {
+                em.persist(accessKeyInformation);
+            }
+        } else {
+            throw new MCRUsageException("Invalid access key information"); 
+        }
+    }
+
+    public static void addAccessKey(final MCRObjectID objectId, final MIRAccessKey accessKey) {
+        MIRAccessKeyInformation accessKeyInformation = getAccessKeyInformation(objectId);
+        if (accessKeyInformation == null) {
+            accessKeyInformation = new MIRAccessKeyInformation(objectId);
+        }
+        accessKeyInformation.getAccessKeys().add(accessKey);
+        storeAccessKeyInformation(accessKeyInformation);
+    }
+
+    public static void deleteAccessKeyWithId(final UUID id) {
+        final EntityManager em = MCREntityManagerProvider.getCurrentEntityManager();
+        final MIRAccessKey accessKey = em.find(MIRAccessKey.class, id);
+        if (accessKey != null) {
+            em.remove(accessKey);
+        }
+    }
+
+    public static void updateAccessKey(MIRAccessKey accessKey) {
+        final EntityManager em = MCREntityManagerProvider.getCurrentEntityManager();
+        if (em.find(MIRAccessKey.class, accessKey.getId()) != null) {
+            em.merge(accessKey);
+        } 
+    }
+
+    /**
+     * Delets a {@link MIRAccessKeyInformation} if it exists.
+     *
+     * @param accessKeyInformation the {@link MIRAccessKeyInformation}
+     */
+    public static void deleteAccessKeyInformation(final MIRAccessKeyInformation accessKeyInformation) {
+        final EntityManager em = MCREntityManagerProvider.getCurrentEntityManager();
+        em.remove(accessKeyInformation);
     }
 
     /**
      * Add the access key to the current {@link MCRUser} for given {@link MCRObjectID}.
      *
-     * @param mcrObjectId the {@link MCRObjectID}
-     * @param accessKey the access key
+     * @param user the {@link MCRUser} the key should assigned
+     * @param objectId the {@link MCRObjectID}
+     * @param value the value of the access key
      * @throws MCRUsageException
      *             if an error was occured
      */
-    public static void addAccessKey(final MCRObjectID mcrObjectId, final String accessKey) throws MCRUsageException {
-        final MCRUser user = MCRUserManager.getCurrentUser();
+    public static void addAccessKey(final MCRUser user, final MCRObjectID objectId, final String value) 
+        throws MCRUsageException {
 
-        addAccessKey(user, mcrObjectId, accessKey);
+        final MIRAccessKey accessKey = getAccessKey(objectId, value);
+        if (accessKey == null) {
+            throw new MCRUsageException("Invalid access key \"" + value + "\"");
+        }
 
-        final String accessKeyType = getAccessKeyType(mcrObjectId, accessKey);
-        switch (accessKeyType) {
-            case MIRAccessKeyPair.PERMISSION_READ:
-                MCRAccessManager.invalidPermissionCache(mcrObjectId.toString(), MCRAccessManager.PERMISSION_READ);
-                break;
-            case MIRAccessKeyPair.PERMISSION_WRITE:
-                MCRAccessManager.invalidPermissionCache(mcrObjectId.toString(), MCRAccessManager.PERMISSION_READ);
-                MCRAccessManager.invalidPermissionCache(mcrObjectId.toString(), MCRAccessManager.PERMISSION_WRITE);
+        user.setUserAttribute(ACCESS_KEY_PREFIX + objectId, value);
+        MCRUserManager.updateUser(user);
+
+        switch (accessKey.getType()) {
+            case MCRAccessManager.PERMISSION_WRITE:
+                MCRAccessManager.invalidPermissionCache(objectId.toString(), MCRAccessManager.PERMISSION_WRITE);
+            case MCRAccessManager.PERMISSION_READ:
+                MCRAccessManager.invalidPermissionCache(objectId.toString(), MCRAccessManager.PERMISSION_READ);
                 break;
             default:
-                LogManager.getLogger().warn("Invalid access key type: " + accessKeyType);
+                LogManager.getLogger().warn("Invalid access key type: " + accessKey.getType());
                 break;
         }
 
@@ -143,55 +214,22 @@ public final class MIRAccessKeyManager {
     }
 
     /**
-     * Add the access key to the given {@link MCRUser} for {@link MCRObjectID}.
+     * Deletes the access key attribute from current {@link MCRUser} for given {@link MCRObjectID}.
      *
-     * @param user the {@link MCRUser}
-     * @param mcrObjectId the {@link MCRObjectID}
-     * @param accessKey the access key
-     * @throws MCRUsageException
-     *             if an error was occured
+     * @param objectId the {@link MCRObjectID}
      */
-    public static void addAccessKey(final MCRUser user, final MCRObjectID mcrObjectId, final String accessKey)
-        throws MCRUsageException {
-        if (getAccessKeyType(mcrObjectId, accessKey) == null) {
-            throw new MCRUsageException("Invalid access key \"" + accessKey + "\"");
-        }
-
-        user.setUserAttribute(ACCESS_KEY_PREFIX + mcrObjectId.toString(), accessKey);
-
-        MCRUserManager.updateUser(user);
+    public static void deleteAccessKey(final MCRObjectID objectId) {
+        deleteAccessKey(MCRUserManager.getCurrentUser(), objectId);
     }
 
     /**
-     * Deletes the access key from current {@link MCRUser} for given {@link MCRObjectID}.
-     *
-     * @param mcrObjectId the {@link MCRObjectID}
-     */
-    public static void deleteAccessKey(final MCRObjectID mcrObjectId) {
-        deleteAccessKey(MCRUserManager.getCurrentUser(), mcrObjectId);
-    }
-
-    /**
-     * Deletes the access key from given {@link MCRUser} for {@link MCRObjectID}.
+     * Deletes the access key attribute from given {@link MCRUser} for {@link MCRObjectID}.
      *
      * @param user the {@link MCRUser}
-     * @param mcrObjectId the {@link MCRObjectID}
+     * @param objectId the {@link MCRObjectID}
      */
-    public static void deleteAccessKey(final MCRUser user, final MCRObjectID mcrObjectId) {
-        user.getAttributes().removeIf(ua -> ua.getName().equals(ACCESS_KEY_PREFIX + mcrObjectId.toString()));
+    public static void deleteAccessKey(final MCRUser user, final MCRObjectID objectId) {
+        user.getAttributes().removeIf(ua -> ua.getName().equals(ACCESS_KEY_PREFIX + objectId.toString()));
         MCRUserManager.updateUser(user);
-    }
-
-    private static String getAccessKeyType(final MCRObjectID mcrObjectId, final String accessKey) {
-        final MIRAccessKeyPair accKP = getKeyPair(mcrObjectId);
-
-        if (accessKey.equals(accKP.getReadKey())) {
-            return MIRAccessKeyPair.PERMISSION_READ;
-        }
-        if (accessKey.equals(accKP.getWriteKey())) {
-            return MIRAccessKeyPair.PERMISSION_WRITE;
-        }
-
-        return null;
     }
 }

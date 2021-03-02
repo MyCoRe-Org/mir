@@ -8,6 +8,7 @@
   exclude-result-prefixes="acl mcrxsl mods"
   xmlns:ex="http://exslt.org/dates-and-times" 
   xmlns:exslt="http://exslt.org/common"
+  xmlns:acckey="http://org.mycore.mir.authorization.accesskeys.MIRAccessKeyHelper"
   extension-element-prefixes="ex exslt"
 >
   <xsl:variable name="read" select="'read'" />
@@ -72,13 +73,10 @@
 
   <xsl:template name="check-access-keys">
     <xsl:param name="id" />
-    <xsl:variable name="accKey" select="document(concat('accesskeys:', $id))/accesskeys" />
+    <xsl:variable name="hasAccessKeys" select="acckey:hasAccessKey($id)" />
     <xsl:attribute name="accKeyEnabled" /> <!-- need this to show menu -->
-    <xsl:if test="$accKey/@readkey">
-      <xsl:attribute name="readKey" />
-    </xsl:if>
-    <xsl:if test="$accKey/@writekey">
-      <xsl:attribute name="writeKey" />
+    <xsl:if test="$hasAccessKeys='true'">
+      <xsl:attribute name="hasAccessKeys" />
     </xsl:if>
   </xsl:template>
 </xsl:stylesheet>

@@ -30,10 +30,11 @@ import org.mycore.datamodel.metadata.MCRBase;
 import org.mycore.datamodel.metadata.MCRDerivate;
 import org.mycore.datamodel.metadata.MCRObject;
 
+
 /**
  * This class contains EventHandler methods to manage access keys of
  * MCRObjects and MCRDerivates.
- * 
+ * org.jdom2.output.XMLOutputter
  * @author Ren\u00E9 Adler (eagle)
  * @since 0.3
  */
@@ -90,39 +91,35 @@ public class MIRAccessKeyEventHandler extends MCREventHandlerBase {
     }
 
     private void handleBaseCreated(final MCRBase obj) {
-        final MIRAccessKeyPair accKP = MIRAccessKeyPairTransformer.buildAccessKeyPair(obj.createXML().getRootElement());
-
-        if (accKP != null) {
-            LOGGER.debug("Create access keys for " + obj.getId().toString());
-            MIRAccessKeyManager.createKeyPair(accKP);
-            removeAccessKeys(obj);
-        }
+        handleBaseUpdated(obj);
     }
 
     private void handleBaseUpdated(final MCRBase obj) {
-        final MIRAccessKeyPair accKP = MIRAccessKeyPairTransformer.buildAccessKeyPair(obj.createXML().getRootElement());
+        final MIRAccessKeyInformation accessKeyInformation = 
+            MIRAccessKeyTransformer.buildAccessKeyInformation(obj.createXML().getRootElement());
 
-        if (accKP != null) {
+        if (accessKeyInformation != null) {
             LOGGER.debug("Update access keys for " + obj.getId().toString());
-            MIRAccessKeyManager.updateKeyPair(accKP);
-            removeAccessKeys(obj);
+            MIRAccessKeyManager.storeAccessKeyInformation(accessKeyInformation);
+            //removeAccessKeys(obj);
         }
     }
 
     private void handleBaseDeleted(final MCRBase obj) {
-        final MIRAccessKeyPair accKP = MIRAccessKeyPairTransformer.buildAccessKeyPair(obj.createXML().getRootElement());
+        final MIRAccessKeyInformation accessKeyInformation = 
+            MIRAccessKeyTransformer.buildAccessKeyInformation(obj.createXML().getRootElement());
 
-        if (accKP != null) {
-            LOGGER.debug("Delete access keys for " + obj.getId().toString());
-            MIRAccessKeyManager.deleteKeyPair(accKP.getMCRObjectId());
-            removeAccessKeys(obj);
-        }
+        if (accessKeyInformation != null) {
+            LOGGER.debug("Delete access key information for " + obj.getId().toString());
+            MIRAccessKeyManager.deleteAccessKeyInformation(accessKeyInformation);
+            //removeAccessKeys(obj);
+        } 
     }
 
-    private void removeAccessKeys(final MCRBase obj) {
+    /*private void removeAccessKeys(final MCRBase obj) {
         LOGGER.debug("Remove access keys from pipe");
-        for (MIRAccessKeyPair.ServiceFlagType type : MIRAccessKeyPair.ServiceFlagType.values()) {
+        /*for (MIRAccessKey.ServiceFlagType type : MIRAccessKey.ServiceFlagType.values()) {
             obj.getService().removeFlags(type.value());
         }
-    }
+    }*/
 }
