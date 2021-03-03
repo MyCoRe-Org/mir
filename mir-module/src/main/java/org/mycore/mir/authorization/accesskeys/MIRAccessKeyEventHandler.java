@@ -95,25 +95,11 @@ public class MIRAccessKeyEventHandler extends MCREventHandlerBase {
     }
 
     private void handleBaseUpdated(final MCRBase obj) {
-        final MIRAccessKeyInformation accessKeyInformation = 
-            MIRAccessKeyTransformer.buildAccessKeyInformation(obj.createXML().getRootElement());
-
-        if (accessKeyInformation != null) {
-            LOGGER.debug("Update access keys for " + obj.getId().toString());
-            MIRAccessKeyManager.storeAccessKeyInformation(accessKeyInformation);
-            //removeAccessKeys(obj);
-        }
+        //TODO
     }
 
     private void handleBaseDeleted(final MCRBase obj) {
-        final MIRAccessKeyInformation accessKeyInformation = 
-            MIRAccessKeyTransformer.buildAccessKeyInformation(obj.createXML().getRootElement());
-
-        if (accessKeyInformation != null) {
-            LOGGER.debug("Delete access key information for " + obj.getId().toString());
-            MIRAccessKeyManager.deleteAccessKeyInformation(accessKeyInformation);
-            //removeAccessKeys(obj);
-        } 
+        //TODO
     }
 
     /*private void removeAccessKeys(final MCRBase obj) {

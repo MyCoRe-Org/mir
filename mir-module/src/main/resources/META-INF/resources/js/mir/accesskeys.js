@@ -9,6 +9,33 @@ function getParameterByName(name, url = window.location.href) {
     return decodeURIComponent(results[2].replace(/\+/g, ' '));
 }
 
+function generateKey(plength) {
+	var keylistalpha = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	var keylistint = "123456789";
+	var keylistspec = "!@#_%$";
+	var temp = '';
+	var len = plength / 2;
+	var len = len - 1;
+	var lenspec = plength - len - len;
+
+	for (i = 0; i < len; i++)
+		temp += keylistalpha.charAt(Math.floor(Math.random() * keylistalpha.length));
+
+	for (i = 0; i < lenspec; i++)
+		temp += keylistspec.charAt(Math.floor(Math.random() * keylistspec.length));
+
+	for (i = 0; i < len; i++)
+		temp += keylistint.charAt(Math.floor(Math.random() * keylistint.length));
+
+	temp = temp.split('').sort(function() {
+		return 0.5 - Math.random()
+	}).join('');
+
+	return temp;
+};
+
+
+
 function addAccessKeyTableRow(accessKey) {
     console.log(accessKey);
     const table = document.getElementById("accessKeys");
@@ -50,38 +77,52 @@ function proccessAccessKeyInformation(accessKeyInformation) {
     }
 }
 
-function getObjectById(objects, id) {
-    for (key in objects) {
-        if (objects.hasOwnProperty(key)) {
-            const object = objects[key];
-            if (object.hasOwnProperty('id')) {
-                if (object['id'] == id) {
-                    return object;
-                }
-            }
-        }
-    }
+function disableButtons() {
+    $('#accessKeyUpdate').prop("disabled", true);
+    $('#accessKeyDelete').prop("disabled", true);
+    $('#accessKeyNew').prop("disabled", true);
+    $('.closeModal').prop("disabled", true);
+}
 
-    return undefined;
+function enableButtons() {
+    $('#accessKeyUpdate').prop("disabled", false);
+    $('#accessKeyDelete').prop("disabled", false);
+    $('#accessKeyNew').prop("disabled", false);
+    $('.closeModal').prop("disabled", false);
 }
 
 $(document).ready(function() {
     const objectId = getParameterByName('objectid'); 
 
+    $("#accessKeyModal").modal({
+        backdrop: 'static',
+        show:false,
+    });
+
+
     $("#accessKeyNew").click(function() {
+        disableButtons();
         const type = $("#accessKeyType").val();
         const value = $("#accessKeyValue").val();
         const accessKey = {"type": type, "value": value};
 
+        if (value.length == 0) {
+            $("#accessKeyValue").addClass("is-invalid");
+            enableButtons();
+            return;
+        }
+            
         $.ajax({
             url: webApplicationBaseURL + "rsc/miraccesskeyinformation/" + objectId + "/accesskey",
             type: 'PUT',
             data: JSON.stringify(accessKey),
             contentType: 'application/json',
             success: function(data) {
-                addAccessKeyTableRow(accessKey);
-                $('#accessKeyModal').modal('hide');
-            }   
+                location.reload();
+            },
+            error: function(data) {
+                enableButtons();
+            }
         });
     });
 
@@ -108,40 +149,55 @@ $(document).ready(function() {
         $('#accessKeyDelete').show();
         $('#accessKeyUpdate').show();
         $('#accessKeyNew').hide();
+        $("#accessKeyValue").removeClass("is-invalid");
     });
 
     $('#accessKeyDelete').click(function() {
+        disableButtons();
         const accessKeyId = $(this).data('id');
         $.ajax({
             url: webApplicationBaseURL + "rsc/miraccesskeyinformation/" + objectId + "/accesskey/" + accessKeyId,
             type: 'DELETE',
             success: function(data) {
-                //TODO delete from row
-                $('#accessKeyModal').modal('hide');
-            }   
+                location.reload();
+            },
+            error: function(data) {
+                enableButtons();
+            }
         });
     });
 
+    $('#accessKeyGenerator').click(function() {
+        const key = generateKey(32);
+        $("#accessKeyValue").val(key);
+    });
+
     $('#accessKeyUpdate').click(function() {
+        disableButtons();
         const accessKeyId = $(this).data('id');
         const type = $("#accessKeyType").val();
         const value = $("#accessKeyValue").val();
         const accessKey = {"id": accessKeyId, "type": type, "value": value};
-        
-        console.log(accessKey);
 
+        if (value.length == 0) {
+            $("#accessKeyValue").addClass("is-invalid");
+            enableButtons();
+            return;
+        }
+        
         $.ajax({
             url: webApplicationBaseURL + "rsc/miraccesskeyinformation/" + objectId + "/accesskey",
             type: 'POST',
             data: JSON.stringify(accessKey),
             contentType: 'application/json',
             success: function(data) {
-                $('#accessKeyModal').modal('hide');
-            }   
+                location.reload();
+            },
+            error: function(data) {
+                enableButtons();
+            }
         });
     });
-
-
 
     $.ajax({
         url: webApplicationBaseURL + "rsc/miraccesskeyinformation/" + objectId,

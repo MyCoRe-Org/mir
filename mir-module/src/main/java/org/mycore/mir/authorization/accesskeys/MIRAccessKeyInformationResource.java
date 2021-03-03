@@ -86,7 +86,7 @@ public class MIRAccessKeyInformationResource {
     public Response geta(@PathParam("object") String object, @PathParam("uuid") String uuid) {
         try {
             final UUID id = UUID.fromString(uuid);
-            MIRAccessKeyManager.deleteAccessKeyWithId(id);
+            MIRAccessKeyManager.deleteAccessKey(id);
             return Response.status(Response.Status.OK).build();
         } catch (IllegalArgumentException e) {
             e.printStackTrace();

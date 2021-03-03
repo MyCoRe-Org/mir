@@ -34,7 +34,7 @@ public class MIRKeyStrategyHelper {
                 }
                 if (isReadPermission) {
                     LOGGER.warn("Neither read nor write key matches. Remove access key from user.");
-                    MIRAccessKeyManager.deleteAccessKey(objectId);
+                    MIRAccessKeyManager.deleteAccessKeyAttribute(objectId);
                 }
             }
         }
@@ -48,7 +48,7 @@ public class MIRKeyStrategyHelper {
         if ((isWritePermission || isReadPermission)) {
             return Stream.of(derivateId, objectId)
                 .filter(Objects::nonNull)
-                .filter(id -> MIRAccessKeyManager.getAccessKeyInformation(id) != null)
+                .filter(id -> MIRAccessKeyManager.getAccessKeys(id).size() > 0)
                 .findFirst()
                 .map(id -> userHasValidAccessKey(id, isReadPermission))
                 .orElse(Boolean.FALSE);

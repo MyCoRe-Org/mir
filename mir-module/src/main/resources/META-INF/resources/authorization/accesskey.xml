@@ -19,17 +19,20 @@
     </button>
 
     <!-- Modal -->
-    <div class="modal fade" id="accessKeyModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
+    <div class="modal fade" id="accessKeyModal" tabindex="-1" aria-labelledby="accessKeyModal" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">
+            <h5 class="modal-title">
               <i18n key="mir.accesskey" />
             </h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close" />
+            <button type="button" class="close closeModal" data-dismiss="modal" aria-label="Close" />
           </div>
           <div class="modal-body">
             <div class="container-fluid">
+              <div class="alert alert-danger" style="display: none;" role="alert">
+                This is a danger alert—check it out!
+              </div>
               <div class="row">
                 <div class="col-auto">
                   <select id="accessKeyType" class="form-control">
@@ -38,24 +41,40 @@
                   </select>
                 </div>
                 <div class="col">
-                  <input id="accessKeyValue" class="form-control" placeholder="Value" />
+                  <div class="input-group">
+                    <span class="input-group-prepend">
+                      <button aria-label="Generate" class="btn btn-secondary" id="accessKeyGenerator" title="Generate" type="button">
+                        <span aria-hidden="true" class="fas fa-cogs"></span>
+                        <span class="sr-only">Generate</span>
+                      </button>
+                    </span>
+                    <input id="accessKeyValue" type="text" class="form-control" placeholder="Value" />
+                  </div>
                 </div>
               </div>
             </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">
-              <i18n key="button.cancel" />
-            </button>
-            <button id="accessKeyDelete" type="button" class="btn btn-danger">
-              <i18n key="mir.accesskey.delete" />
-            </button>
-            <button id="accessKeyUpdate" type="button" class="btn btn-primary">
-               Update
-            </button>
-            <button id="accessKeyNew" type="button" class="btn btn-primary">
-              <i18n key="mir.accesskey.add" />
-            </button>
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col">
+                  <button id="accessKeyDelete" type="button" class="btn btn-danger">
+                    <i18n key="mir.accesskey.delete" />
+                  </button>
+                </div>
+                <div class="col-auto">
+                  <button type="button" class="btn btn-secondary closeModal" data-dismiss="modal">
+                    <i18n key="button.cancel" />
+                  </button>
+                  <button id="accessKeyUpdate" type="button" class="btn btn-primary">
+                    Update
+                  </button>
+                  <button id="accessKeyNew" type="button" class="btn btn-primary">
+                    <i18n key="mir.accesskey.add" />
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>

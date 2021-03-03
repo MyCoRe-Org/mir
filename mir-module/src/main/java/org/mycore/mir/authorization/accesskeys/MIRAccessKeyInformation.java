@@ -24,9 +24,7 @@
 package org.mycore.mir.authorization.accesskeys;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.CascadeType;
@@ -39,7 +37,6 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.mycore.access.MCRAccessManager;
 import org.mycore.datamodel.metadata.MCRObjectID;
 
 /**
@@ -48,14 +45,6 @@ import org.mycore.datamodel.metadata.MCRObjectID;
  */
 @Entity
 @NamedQueries({
-    @NamedQuery(name = "MIRAccessKeyInformation.get",
-        query = "SELECT i"
-            + "  FROM MIRAccessKeyInformation i"
-            + "  WHERE i.objectIdString = :objId"),
-    @NamedQuery(name = "MIRAccessKeyInformation.getId",
-        query = "SELECT i.id"
-            + "  FROM MIRAccessKeyInformation i"
-            + "  WHERE i.objectIdString = :objId"),
     @NamedQuery(name = "MIRAccessKeyInformation.getAccessKeys",
         query = "SELECT k"
             + "  FROM MIRAccessKeyInformation i"
@@ -101,39 +90,6 @@ public class MIRAccessKeyInformation {
         this.accessKeys = accessKeys;
     }
 
-    protected static boolean isValid(final MIRAccessKeyInformation accessKeyInformation) {
-        if (accessKeyInformation == null) {
-            return false;
-        }
-        if (accessKeyInformation.getObjectId() == null) {
-            return false;
-        }
-        Set<String> readValues = new HashSet<String>();
-        Set<String> writeValues = new HashSet<String>();
-        List<MIRAccessKey> accessKeys = accessKeyInformation.getAccessKeys();
-        if (accessKeys != null) {
-            for (MIRAccessKey accessKey : accessKeys) {
-                if (accessKey.getValue() != null && accessKey.getType() != null) {
-                    if (accessKey.getType().equals(MCRAccessManager.PERMISSION_READ)) {
-                        readValues.add(accessKey.getValue());
-                    } else if (accessKey.getType().equals(MCRAccessManager.PERMISSION_WRITE)) {
-                        writeValues.add(accessKey.getValue());
-                    } else { //should not happen
-                        return false;
-                    }
-                } else {
-                    return false;
-                }
-            }
-            int readValuesSize = readValues.size();
-            readValues.removeAll(writeValues);
-            if (readValues.size() != readValuesSize) {
-                return false;
-            }
-        }
-        return true;
-    }
-
     /**
      * @return the linked mcrObjectId
      */
@@ -164,7 +120,6 @@ public class MIRAccessKeyInformation {
     public void setObjectIdString(String objectIdString) {
         this.mcrObjectId = MCRObjectID.getInstance(objectIdString.trim());
     }
-
 
     /**
      * @return Assigned access keys

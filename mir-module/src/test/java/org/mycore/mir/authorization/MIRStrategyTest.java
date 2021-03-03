@@ -160,10 +160,8 @@ public class MIRStrategyTest extends MCRJPATestCase {
             .assertFalse(strategy.checkPermission(mir_derivate_00004711.toString(), MCRAccessManager.PERMISSION_WRITE));
         MIRAccessKey accessKeyRead = new MIRAccessKey("mySecret", "read");
         MIRAccessKey accessKeyWrite = new MIRAccessKey("letMeIn", "writedb");
-        MIRAccessKeyInformation accessKeyInformation = new MIRAccessKeyInformation(mir_mods_00004711);
-        accessKeyInformation.getAccessKeys().add(accessKeyRead);
-        accessKeyInformation.getAccessKeys().add(accessKeyWrite);
-        MIRAccessKeyManager.storeAccessKeyInformation(accessKeyInformation);
+        MIRAccessKeyManager.addAccessKey(mir_mods_00004711, accessKeyRead);
+        MIRAccessKeyManager.addAccessKey(mir_mods_00004711, accessKeyWrite);
 
         final MCRCategLinkService categLinkService = MCRCategLinkServiceFactory.getInstance();
         MCRCategLinkReference ref = new MCRCategLinkReference(mir_mods_00004711);
@@ -174,7 +172,7 @@ public class MIRStrategyTest extends MCRJPATestCase {
             .assertFalse(strategy.checkPermission(mir_derivate_00004711.toString(), MCRAccessManager.PERMISSION_READ));
 
         //Give user read access-token
-        MIRAccessKeyManager.addAccessKey(junitUser, mir_mods_00004711, accessKeyRead.getValue());
+        MIRAccessKeyManager.addAccessKeyAttribute(junitUser, mir_mods_00004711, accessKeyRead.getValue());
         junitUser = MCRUserManager.getUser(junitUser.getUserName());
         MCRSessionMgr.getCurrentSession().setUserInformation(junitUser);
 
@@ -187,7 +185,7 @@ public class MIRStrategyTest extends MCRJPATestCase {
         assertTrue(strategy.checkPermission(mir_mods_00004711.toString(), MCRAccessManager.PERMISSION_PREVIEW));
 
         //Give user write access-token
-        MIRAccessKeyManager.addAccessKey(junitUser, mir_mods_00004711, accessKeyWrite.getValue());
+        MIRAccessKeyManager.addAccessKeyAttribute(junitUser, mir_mods_00004711, accessKeyWrite.getValue());
         junitUser = MCRUserManager.getUser(junitUser.getUserName());
         MCRSessionMgr.getCurrentSession().setUserInformation(junitUser);
 

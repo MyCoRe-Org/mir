@@ -32,8 +32,6 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 
-import org.mycore.access.MCRAccessManager;
-
 /**
  * Access keys for a {@link MCRObject}.
  * An access keys contains a value and a type.
@@ -100,14 +98,7 @@ public class MIRAccessKey {
      * @param value key value
      */
     public void setValue(final String value) {
-        if (value == null) {
-            throw new IllegalArgumentException("Key must not be empty.");
-        }
-        String valueTrimmed = value.trim();
-        if (valueTrimmed.length() == 0) {
-            throw new IllegalArgumentException("Key must not be empty.");
-        }
-        this.value = valueTrimmed;
+        this.value = value;
     }
 
     /**
@@ -121,14 +112,6 @@ public class MIRAccessKey {
      * @param type permission type
      */
     public void setType(String type) {
-        if (type == null) {
-            throw new IllegalArgumentException("Unknown type: " + type);
-        }
-        final String typeTrimmed = type.trim();
-        if (!typeTrimmed.equals(MCRAccessManager.PERMISSION_READ)
-            && !typeTrimmed.equals(MCRAccessManager.PERMISSION_WRITE)) {
-            throw new IllegalArgumentException("Unknown type: " + type);
-        }
-        this.type = typeTrimmed;
+        this.type = type;
     }
 }
