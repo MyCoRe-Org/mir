@@ -1,22 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE MyCoReWebPage>
 <MyCoReWebPage title="{i18n}">
-  <section i18n="mir.accesskey" xml:lang="all">
+  <section i18n="mir.accesskey.manage" xml:lang="all">
     <script type="text/javascript" src="mir/../../js/mir/accesskeys.js" />
-    <table id="accessKeys" class="table table-sm">
-      <thead>
-        <tr class="d-flex">
-          <th class="th-sm col-auto">#</th>
-          <th class="th-sm col-3 text-center">Type</th>
-          <th class="th-sm col text-center">Value</th>
-          <th class="th-sm col-auto"></th>
-        </tr>
-      </thead>
-    </table>
- 
-    <button type="button" class="btn btn-primary float-right newAccessKeyModal" data-toggle="modal" data-target="#accessKeyModal">
-      <i18n key="mir.accesskey.add" />
-    </button>
+    <div class="container-fluid">
+      <div class="row pb-2">
+        <div class="col-auto mr-auto">
+          <h2>
+            <i18n key="mir.accesskey.manage" />
+          </h2>
+        </div>
+        <div class="col-auto">
+          <button type="button" class="btn btn-primary float-right newAccessKeyModal" data-toggle="modal" data-target="#accessKeyModal">
+            <i class="fa fa-plus"></i>
+          </button>
+        </div>
+      </div>
+      <table id="accessKeys" class="table">
+        <thead>
+          <tr class="d-flex">
+            <th class="th col-auto">#</th>
+            <th class="th col-3 text-center">
+              <i18n key="mir.accesskey.type" />
+            </th>
+            <th class="th col text-center">
+              <i18n key="mir.accesskey.value" />
+            </th>
+            <th class="th col-auto"></th>
+          </tr>
+        </thead>
+      </table>
+    </div>
 
     <!-- Modal -->
     <div class="modal fade" id="accessKeyModal" tabindex="-1" aria-labelledby="accessKeyModal" aria-hidden="true">
@@ -45,7 +59,9 @@
                     <span class="input-group-prepend">
                       <button aria-label="Generate" class="btn btn-secondary" id="accessKeyGenerator" title="Generate" type="button">
                         <span aria-hidden="true" class="fas fa-cogs"></span>
-                        <span class="sr-only">Generate</span>
+                        <span class="sr-only">
+                          <i18n key="mir.accesskey.generate" />
+                        </span>
                       </button>
                     </span>
                     <input id="accessKeyValue" type="text" class="form-control" placeholder="Value" />

@@ -624,16 +624,15 @@
                   </xsl:otherwise>
                 </xsl:choose>
               </xsl:if>
-
               <xsl:if test="(key('rights', @ID)/@accKeyEnabled) and (key('rights', @ID)/@write)">
                 <li>
                   <a role="menuitem" tabindex="-1"
-                     href="{$WebApplicationBaseURL}authorization/accesskey.xml?objectid={@ID}&amp;url={encoder:encode(string($RequestURL))}"
+                     href="{$WebApplicationBaseURL}authorization/accesskey.xml?objectid={@ID}"
                      class="dropdown-item"
                   >
                     <xsl:choose>
                       <xsl:when test="(key('rights', @ID)/@hasAccessKeys)">
-                        <xsl:value-of select="i18n:translate('mir.accesskey.edit')" />
+                        <xsl:value-of select="i18n:translate('mir.accesskey.manage')" />
                       </xsl:when>
                       <xsl:otherwise>
                         <xsl:value-of select="i18n:translate('mir.accesskey.add')" />
@@ -658,13 +657,21 @@
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
           <div class="modal-header">
+            <h2>
+              <xsl:value-of select="i18n:translate('mir.accesskey.setOnUser')" />
+            </h2>
           </div>
           <form action="{$WebApplicationBaseURL}rsc/miraccesskeyinformation/{@ID}" method="post">
             <div class="modal-body">
-              <input name="value" id="value" type="text" class="form-control" placeholder="Value" required="required" />
+              <input name="value" id="value" type="text" class="form-control" placeholder="{i18n:translate('mir.accesskey.value')}" required="required" />
             </div>
             <div class="modal-footer">
-              <button type="submit" id="submit" class="btn btn-primary">Submit</button>
+              <button type="button" class="btn btn-secondary closeModal" data-dismiss="modal">
+                <xsl:value-of select="i18n:translate('button.cancel')" />
+              </button>
+              <button type="submit" id="submit" class="btn btn-primary">
+                <xsl:value-of select="i18n:translate('mir.accesskey.add')" />
+              </button>
             </div>
           </form>
         </div>
