@@ -644,7 +644,7 @@
               </xsl:if>
               <xsl:if test="key('rights', @ID)/@accKeyEnabled and (key('rights', @ID)/@hasAccessKeys) and not(mcrxsl:isCurrentUserGuestUser() or $accessedit or $accessdelete)">
                 <li>
-                  <a role="menuitem" tabindex="-1" href="{$WebApplicationBaseURL}authorization/accesskey.xed?objId={@ID}&amp;url={encoder:encode(string($RequestURL))}" class="dropdown-item">
+                  <a role="menuitem" tabindex="-1" data-toggle="modal" data-target="#addAccessKeyModal" class="dropdown-item">
                     <xsl:value-of select="i18n:translate('mir.accesskey.setOnUser')" />
                   </a>
                 </li>
@@ -654,6 +654,23 @@
         </ul>
       </div>
     </div>
+    <div class="modal fade" id="addAccessKeyModal" tabindex="-1" role="dialog" data-backdrop="static">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+          </div>
+          <form action="{$WebApplicationBaseURL}rsc/miraccesskeyinformation/{@ID}" method="post">
+            <div class="modal-body">
+              <input name="value" id="value" type="text" class="form-control" placeholder="Value" required="required" />
+            </div>
+            <div class="modal-footer">
+              <button type="submit" id="submit" class="btn btn-primary">Submit</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+ 
     <div class="modal fade" id="modal-pi" tabindex="-1" role="dialog" data-backdrop="static">
       <div class="modal-dialog">
         <div class="modal-content">

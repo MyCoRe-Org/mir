@@ -31,7 +31,6 @@ import org.apache.logging.log4j.LogManager;
 import org.mycore.access.MCRAccessManager;
 import org.mycore.backend.jpa.MCREntityManagerProvider;
 import org.mycore.common.MCRSessionMgr;
-import org.mycore.common.MCRUsageException;
 import org.mycore.common.MCRException;
 import org.mycore.datamodel.metadata.MCRObject;
 import org.mycore.datamodel.metadata.MCRObjectID;
@@ -90,15 +89,15 @@ public final class MIRAccessKeyManager {
      * @param user the {@link MCRUser} the key should assigned
      * @param objectId the {@link MCRObjectID}
      * @param value the value of the access key
-     * @throws MCRUsageException
+     * @throws MIRAccessKeyManagerException
      *             if an error was occured
      */
     public static void addAccessKeyAttribute(final MCRUser user, final MCRObjectID objectId, final String value) 
-        throws MCRUsageException {
+        throws MIRAccessKeyManagerException {
 
         final MIRAccessKey accessKey = getAccessKey(objectId, value);
         if (accessKey == null) {
-            throw new MCRUsageException("Invalid access key \"" + value + "\"");
+            throw new MIRAccessKeyManagerException("Invalid access key \"" + value + "\"");
         }
 
         user.setUserAttribute(ACCESS_KEY_PREFIX + objectId, value);
@@ -210,6 +209,14 @@ public final class MIRAccessKeyManager {
             .getResultList();
     }
     
+    /**
+     * Checks if there is a value/type collison.
+     *
+     * @param accessKeys access keys 
+     * @param value value
+     * @param type permission type
+     * @return collision or not
+     */
     private static boolean hasCollision(final List<MIRAccessKey> accessKeys, final String value, final String type) {
         final String collisionType = type.equals(MCRAccessManager.PERMISSION_READ)
             ? MCRAccessManager.PERMISSION_WRITE : MCRAccessManager.PERMISSION_READ;
