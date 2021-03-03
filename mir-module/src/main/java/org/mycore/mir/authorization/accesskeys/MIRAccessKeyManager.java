@@ -53,17 +53,18 @@ public final class MIRAccessKeyManager {
      *
      * @param mcrObjectId the {@link MCRObjectID}
      * @param accessKey the access key
-     * @throws MCRException key is not valid
+     * @throws MIRAccessKeyManagerException key is not valid
      */
-    public static void addAccessKey(final MCRObjectID objectId, MIRAccessKey accessKey) throws MCRException {
+    public static void addAccessKey(final MCRObjectID objectId, MIRAccessKey accessKey) 
+        throws MIRAccessKeyManagerException {
         final String value = accessKey.getValue();
         if (value == null || value.length() == 0) {
-            throw new MCRException("Key cannot be empty.");
+            throw new MIRAccessKeyManagerException("Key cannot be empty.");
         }
         final String type = accessKey.getType();
         if (!(type.equals(MCRAccessManager.PERMISSION_READ)
             || type.equals(MCRAccessManager.PERMISSION_WRITE))) {
-            throw new MCRException("Unknown permission type.");
+            throw new MIRAccessKeyManagerException("Unknown permission type.");
         }
  
         final EntityManager em = MCREntityManagerProvider.getCurrentEntityManager();
@@ -73,9 +74,13 @@ public final class MIRAccessKeyManager {
             accessKeyInformation.getAccessKeys().add(accessKey);
             em.persist(accessKeyInformation);
         } else {
-            //checkCollison
-            accessKeyInformation.getAccessKeys().add(accessKey);
-            em.merge(accessKeyInformation);
+            final List<MIRAccessKey> accessKeys = accessKeyInformation.getAccessKeys();
+            if (accessKeys.size() > 0 && hasCollision(accessKeys, value, type)) {
+                throw new MIRAccessKeyManagerException("Key collision.");
+            } else {
+                accessKeyInformation.getAccessKeys().add(accessKey);
+                em.merge(accessKeyInformation);
+            }
         }
     }
 
@@ -119,13 +124,13 @@ public final class MIRAccessKeyManager {
      * @param id the id of the key
      * @throws MCRException if key does not exists
      */
-    public static void deleteAccessKey(final UUID id) throws MCRException {
+    public static void deleteAccessKey(final UUID id) throws MIRAccessKeyManagerException {
         final EntityManager em = MCREntityManagerProvider.getCurrentEntityManager();
         final MIRAccessKey accessKey = em.find(MIRAccessKey.class, id);
         if (accessKey != null) {
             em.remove(accessKey);
         } else {
-            throw new MCRException("Key does not exists.");
+            throw new MIRAccessKeyManagerException("Key does not exists.");
         }
     }
 
@@ -154,13 +159,13 @@ public final class MIRAccessKeyManager {
      * @param mcrObjectId the {@link MCRObjectID}
      * @throws MCRException if info does not exists
      */
-    public static void deleteAccessKeyInformation(final MCRObjectID objectId) throws MCRException {
+    public static void deleteAccessKeyInformation(final MCRObjectID objectId) throws MIRAccessKeyManagerException {
         final EntityManager em = MCREntityManagerProvider.getCurrentEntityManager();
         final MIRAccessKeyInformation accessKeyInformation = em.find(MIRAccessKeyInformation.class, objectId);
         if (accessKeyInformation != null) {
             em.remove(accessKeyInformation);
         } else {
-            throw new MCRException("Information does not exists.");
+            throw new MIRAccessKeyManagerException("Information does not exists.");
         }
     }
 
@@ -205,18 +210,32 @@ public final class MIRAccessKeyManager {
             .getResultList();
     }
     
+    private static boolean hasCollision(final List<MIRAccessKey> accessKeys, final String value, final String type) {
+        final String collisionType = type.equals(MCRAccessManager.PERMISSION_READ)
+            ? MCRAccessManager.PERMISSION_WRITE : MCRAccessManager.PERMISSION_READ;
+        return accessKeys.stream()
+            .filter(s -> s.getValue().equals(value))
+            .anyMatch(s -> s.getType().equals(collisionType));
+    }
+
     /**
      * Updates access key.
      *
      * @param accessKey the access key
      * @throws MCRException if key does not exists
      */
-    public static void updateAccessKey(MIRAccessKey accessKey) throws MCRException {
+    public static void updateAccessKey(MIRAccessKey accessKey) throws MIRAccessKeyManagerException {
         final EntityManager em = MCREntityManagerProvider.getCurrentEntityManager();
         if (em.find(MIRAccessKey.class, accessKey.getId()) != null) {
-            em.merge(accessKey);
+            em.merge(accessKey); //TODO collision check (requires bidirectional)
         } else {
-            throw new MCRException("Key does not exists.");
+            throw new MIRAccessKeyManagerException("Key does not exists.");
+        }
+    }
+
+    public static class MIRAccessKeyManagerException extends MCRException {
+        public MIRAccessKeyManagerException(String errorMessage) {
+            super(errorMessage);
         }
     }
 }

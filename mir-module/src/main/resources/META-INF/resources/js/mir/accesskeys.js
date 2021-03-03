@@ -121,6 +121,8 @@ $(document).ready(function() {
                 location.reload();
             },
             error: function(data) {
+                $('#accessKeyModalAlert').html(data.responseText);
+                $('#accessKeyModalAlert').show();
                 enableButtons();
             }
         });
@@ -132,6 +134,7 @@ $(document).ready(function() {
         $('#accessKeyDelete').hide();
         $('#accessKeyUpdate').hide();
         $('#accessKeyNew').show();
+        $('#accessKeyModalAlert').hide();
     });
 
     $(document).on("click", ".editAccessKeyModal", function () {
@@ -150,6 +153,7 @@ $(document).ready(function() {
         $('#accessKeyUpdate').show();
         $('#accessKeyNew').hide();
         $("#accessKeyValue").removeClass("is-invalid");
+        $('#accessKeyModalAlert').hide();
     });
 
     $('#accessKeyDelete').click(function() {

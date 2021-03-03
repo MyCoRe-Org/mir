@@ -19,6 +19,7 @@ import javax.ws.rs.PUT;
 
 import org.mycore.common.MCRException;
 import org.mycore.datamodel.metadata.MCRObjectID;
+import org.mycore.mir.authorization.accesskeys.MIRAccessKeyManager.MIRAccessKeyManagerException;
 
 @Path("/miraccesskeyinformation")
 public class MIRAccessKeyInformationResource {
@@ -75,6 +76,8 @@ public class MIRAccessKeyInformationResource {
             final MIRAccessKey accessKeyResult = MIRAccessKeyManager.getAccessKey(objectId, accessKey.getValue());
             String result = objectMapper.writeValueAsString(accessKeyResult);
             return Response.status(Response.Status.OK).entity(result).build();
+        } catch(MIRAccessKeyManagerException e) {
+            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         } catch (JsonProcessingException | MCRException e) {
             e.printStackTrace();
             return Response.status(Response.Status.BAD_REQUEST).build();
@@ -88,6 +91,8 @@ public class MIRAccessKeyInformationResource {
             final UUID id = UUID.fromString(uuid);
             MIRAccessKeyManager.deleteAccessKey(id);
             return Response.status(Response.Status.OK).build();
+        } catch(MIRAccessKeyManagerException e) {
+            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
             return Response.status(Response.Status.BAD_REQUEST).build();
@@ -103,6 +108,8 @@ public class MIRAccessKeyInformationResource {
             final MIRAccessKey accessKey = objectMapper.readValue(json, MIRAccessKey.class);
             MIRAccessKeyManager.updateAccessKey(accessKey);
             return Response.status(Response.Status.OK).build();
+        } catch(MIRAccessKeyManagerException e) {
+            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         } catch (JsonProcessingException e) {
             e.printStackTrace();
             return Response.status(Response.Status.BAD_REQUEST).build();

@@ -30,7 +30,7 @@
           </div>
           <div class="modal-body">
             <div class="container-fluid">
-              <div class="alert alert-danger" style="display: none;" role="alert">
+              <div id="accessKeyModalAlert" class="alert alert-danger" style="display: none;" role="alert">
                 This is a danger alert—check it out!
               </div>
               <div class="row">
