@@ -194,7 +194,7 @@
         <xsl:when test="text()='book-chapter'">chapter</xsl:when>
         <xsl:when test="text()='journal-article'">article</xsl:when>
         <xsl:when test="text()='journal-issue'">issue</xsl:when>
-        <xsl:when test="text()='poster'">poser</xsl:when>
+        <xsl:when test="text()='poster'">poster</xsl:when>
         <xsl:when test="text()='proceedings'">proceedings</xsl:when>
         <xsl:when test="text()='report'">report</xsl:when>
         <xsl:when test="text()='thesis'">thesis</xsl:when>
