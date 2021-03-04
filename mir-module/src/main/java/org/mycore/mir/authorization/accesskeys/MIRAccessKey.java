@@ -27,21 +27,19 @@ import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.JoinColumn;
 import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
+import javax.persistence.ManyToOne;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * Access keys for a {@link MCRObject}.
  * An access keys contains a value and a type.
  * Value is the key value of the key and type the permission.
  */
-@NamedQueries({
-    @NamedQuery(name = "MIRAccessKey.deleteWithId",
-        query = "DELETE FROM MIRAccessKey i"
-            + "  WHERE i.id = :id"),
-})
 @Entity
 public class MIRAccessKey {
 
@@ -55,6 +53,9 @@ public class MIRAccessKey {
 
     /** The permission type*/
     private String type;
+
+    /** The access key information*/
+    private MIRAccessKeyInformation accessKeyInformation;
 
     protected MIRAccessKey() {
     }
@@ -113,5 +114,22 @@ public class MIRAccessKey {
      */
     public void setType(String type) {
         this.type = type;
+    }
+
+    /**
+     * @return access key information
+     */
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "fk_accesskeyinformation")
+    public MIRAccessKeyInformation getAccessKeyInformation() {
+        return accessKeyInformation;
+    }
+
+    /**
+     * @param MIRAccessKeyInformation access key information
+     */
+    public void setAccessKeyInformation(MIRAccessKeyInformation accessKeyInformation) {
+        this.accessKeyInformation = accessKeyInformation;
     }
 }

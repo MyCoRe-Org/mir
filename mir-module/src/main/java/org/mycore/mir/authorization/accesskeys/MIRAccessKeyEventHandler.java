@@ -95,11 +95,11 @@ public class MIRAccessKeyEventHandler extends MCREventHandlerBase {
     }
 
     private void handleBaseUpdated(final MCRBase obj) {
-        //TODO
+        LOGGER.warn(obj.getId().toString());
     }
 
     private void handleBaseDeleted(final MCRBase obj) {
-        //TODO
+        LOGGER.warn(obj.getId().toString());
     }
 
     /*private void removeAccessKeys(final MCRBase obj) {

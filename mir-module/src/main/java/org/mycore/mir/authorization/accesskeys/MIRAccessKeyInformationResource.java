@@ -23,6 +23,9 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import org.mycore.access.MCRAccessManager;
 import org.mycore.common.MCRException;
 import org.mycore.common.MCRSystemUserInformation;
@@ -33,6 +36,8 @@ import org.mycore.user2.MCRUserManager;
 
 @Path("/miraccesskeyinformation")
 public class MIRAccessKeyInformationResource {
+
+    private static final Logger LOGGER = LogManager.getLogger();
 
     @GET
     @Path("/{object}")
@@ -53,10 +58,10 @@ public class MIRAccessKeyInformationResource {
             String result = objectMapper.writeValueAsString(accessKeyInformation);
             return Response.status(Response.Status.OK).entity(result).build();
         } catch (MCRException e) {
-            e.printStackTrace();
+            LOGGER.error("failed! {}", e);
             return Response.status(Response.Status.BAD_REQUEST).build();
         } catch (JsonProcessingException e) { 
-            e.printStackTrace();
+            LOGGER.error("failed! {}", e);
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
     }
@@ -74,11 +79,12 @@ public class MIRAccessKeyInformationResource {
             MIRAccessKeyManager.addAccessKeyAttribute(user, objectId, value);
             return Response.temporaryRedirect(new URI(referer)).build(); //TODO if referer null alternative
         } catch(URISyntaxException e) {
+            LOGGER.error("failed! {}", e);
             return Response.status(Response.Status.BAD_REQUEST).build();
         } catch(MIRAccessKeyManagerException e) {
             return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         } catch (MCRException e) {
-            e.printStackTrace();
+            LOGGER.error("failed! {}", e);
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
     }
@@ -101,10 +107,10 @@ public class MIRAccessKeyInformationResource {
             final String result = objectMapper.writeValueAsString(accessKeys);
             return Response.status(Response.Status.OK).entity(result).build();
         } catch (MCRException e) {
-            e.printStackTrace();
+            LOGGER.error("failed! {}", e);
             return Response.status(Response.Status.BAD_REQUEST).build();
         } catch (JsonProcessingException e) { 
-            e.printStackTrace();
+            LOGGER.error("failed! {}", e);
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
     }
@@ -132,7 +138,7 @@ public class MIRAccessKeyInformationResource {
         } catch(MIRAccessKeyManagerException e) {
             return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         } catch (JsonProcessingException | MCRException e) {
-            e.printStackTrace();
+            LOGGER.error("failed! {}", e);
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
     }
@@ -155,7 +161,7 @@ public class MIRAccessKeyInformationResource {
         } catch(MIRAccessKeyManagerException e) {
             return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         } catch (IllegalArgumentException | MCRException e) {
-            e.printStackTrace();
+            LOGGER.error("failed! {}", e);
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
     }
@@ -180,7 +186,7 @@ public class MIRAccessKeyInformationResource {
         } catch(MIRAccessKeyManagerException e) {
             return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         } catch (JsonProcessingException | MCRException e) {
-            e.printStackTrace();
+            LOGGER.error("failed! {}", e);
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
     }

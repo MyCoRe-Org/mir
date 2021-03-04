@@ -28,6 +28,8 @@ import java.util.UUID;
 import javax.persistence.EntityManager;
 
 import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import org.mycore.access.MCRAccessManager;
 import org.mycore.backend.jpa.MCREntityManagerProvider;
 import org.mycore.common.MCRSessionMgr;
@@ -42,6 +44,8 @@ import org.mycore.user2.MCRUserManager;
  * {@link MCRObject} access keys.
  */
 public final class MIRAccessKeyManager {
+
+    private static final Logger LOGGER = LogManager.getLogger();
 
     /** Prefix for user attribute */
     public static final String ACCESS_KEY_PREFIX = "acckey_";
@@ -58,11 +62,13 @@ public final class MIRAccessKeyManager {
         throws MIRAccessKeyManagerException {
         final String value = accessKey.getValue();
         if (value == null || value.length() == 0) {
+            LOGGER.warn("Key cannot be empty.");
             throw new MIRAccessKeyManagerException("Key cannot be empty.");
         }
         final String type = accessKey.getType();
         if (!(type.equals(MCRAccessManager.PERMISSION_READ)
             || type.equals(MCRAccessManager.PERMISSION_WRITE))) {
+            LOGGER.warn("Unknown permission type.");
             throw new MIRAccessKeyManagerException("Unknown permission type.");
         }
  
@@ -74,7 +80,8 @@ public final class MIRAccessKeyManager {
             em.persist(accessKeyInformation);
         } else {
             final List<MIRAccessKey> accessKeys = accessKeyInformation.getAccessKeys();
-            if (accessKeys.size() > 0 && hasCollision(accessKeys, value, type)) {
+            if (hasCollision(accessKeys, value, type)) {
+                LOGGER.warn("Key collision.");
                 throw new MIRAccessKeyManagerException("Key collision.");
             } else {
                 accessKeyInformation.getAccessKeys().add(accessKey);
@@ -104,13 +111,14 @@ public final class MIRAccessKeyManager {
         MCRUserManager.updateUser(user);
 
         switch (accessKey.getType()) {
-            case MCRAccessManager.PERMISSION_WRITE:
-                MCRAccessManager.invalidPermissionCache(objectId.toString(), MCRAccessManager.PERMISSION_WRITE);
             case MCRAccessManager.PERMISSION_READ:
                 MCRAccessManager.invalidPermissionCache(objectId.toString(), MCRAccessManager.PERMISSION_READ);
                 break;
+            case MCRAccessManager.PERMISSION_WRITE:
+                MCRAccessManager.invalidPermissionCache(objectId.toString(), MCRAccessManager.PERMISSION_WRITE);
+                break;
             default:
-                LogManager.getLogger().warn("Invalid access key type: " + accessKey.getType());
+                LOGGER.warn("Invalid access key type: " + accessKey.getType());
                 break;
         }
 
@@ -129,6 +137,7 @@ public final class MIRAccessKeyManager {
         if (accessKey != null) {
             em.remove(accessKey);
         } else {
+            LOGGER.warn("Key does not exists.");
             throw new MIRAccessKeyManagerException("Key does not exists.");
         }
     }
@@ -165,6 +174,7 @@ public final class MIRAccessKeyManager {
         if (accessKeyInformation != null) {
             em.remove(accessKeyInformation);
         } else {
+            LOGGER.warn("Information does not exists.");
             throw new MIRAccessKeyManagerException("Information does not exists.");
         }
     }
@@ -219,6 +229,9 @@ public final class MIRAccessKeyManager {
      * @return collision or not
      */
     private static boolean hasCollision(final List<MIRAccessKey> accessKeys, final String value, final String type) {
+        if (accessKeys.size() == 0) {
+            return false;
+        }
         final String collisionType = type.equals(MCRAccessManager.PERMISSION_READ)
             ? MCRAccessManager.PERMISSION_WRITE : MCRAccessManager.PERMISSION_READ;
         return accessKeys.stream()
@@ -234,9 +247,18 @@ public final class MIRAccessKeyManager {
      */
     public static synchronized void updateAccessKey(MIRAccessKey accessKey) throws MIRAccessKeyManagerException {
         final EntityManager em = MCREntityManagerProvider.getCurrentEntityManager();
-        if (em.find(MIRAccessKey.class, accessKey.getId()) != null) {
-            em.merge(accessKey); //TODO collision check (requires bidirectional)
+        final MIRAccessKey oldAccessKey = em.find(MIRAccessKey.class, accessKey.getId());
+        if (oldAccessKey != null) {
+            final MIRAccessKeyInformation accessKeyInformation = oldAccessKey.getAccessKeyInformation();
+            if (hasCollision(accessKeyInformation.getAccessKeys(), accessKey.getValue(), accessKey.getType())) {
+                LOGGER.warn("Key collision.");
+                throw new MIRAccessKeyManagerException("Key collision.");
+            } else {
+                accessKey.setAccessKeyInformation(accessKeyInformation);
+                em.merge(accessKey);
+            }
         } else {
+            LOGGER.warn("Key does not exists.");
             throw new MIRAccessKeyManagerException("Key does not exists.");
         }
     }

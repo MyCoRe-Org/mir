@@ -198,6 +198,8 @@ $(document).ready(function() {
                 location.reload();
             },
             error: function(data) {
+                $('#accessKeyModalAlert').html(data.responseText);
+                $('#accessKeyModalAlert').show();
                 enableButtons();
             }
         });
