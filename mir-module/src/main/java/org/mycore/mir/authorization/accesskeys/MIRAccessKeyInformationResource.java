@@ -82,7 +82,7 @@ public class MIRAccessKeyInformationResource {
             LOGGER.error("failed! {}", e);
             return Response.status(Response.Status.BAD_REQUEST).build();
         } catch(MIRAccessKeyManagerException e) {
-            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+            return Response.status(Response.Status.FORBIDDEN).build();
         } catch (MCRException e) {
             LOGGER.error("failed! {}", e);
             return Response.status(Response.Status.BAD_REQUEST).build();
