@@ -66,7 +66,7 @@ public final class MIRAccessKeyManager {
             throw new MIRAccessKeyManagerException("Key cannot be empty.");
         }
         final String type = accessKey.getType();
-        if (!(type.equals(MCRAccessManager.PERMISSION_READ)
+        if (type == null || !(type.equals(MCRAccessManager.PERMISSION_READ)
             || type.equals(MCRAccessManager.PERMISSION_WRITE))) {
             LOGGER.warn("Unknown permission type.");
             throw new MIRAccessKeyManagerException("Unknown permission type.");
@@ -74,6 +74,7 @@ public final class MIRAccessKeyManager {
  
         final EntityManager em = MCREntityManagerProvider.getCurrentEntityManager();
         MIRAccessKeyInformation accessKeyInformation = em.find(MIRAccessKeyInformation.class, objectId.toString());
+        accessKey.setAccessKeyInformation(accessKeyInformation);
         if (accessKeyInformation == null) {
             accessKeyInformation = new MIRAccessKeyInformation(objectId);
             accessKeyInformation.getAccessKeys().add(accessKey);
@@ -135,7 +136,8 @@ public final class MIRAccessKeyManager {
         final EntityManager em = MCREntityManagerProvider.getCurrentEntityManager();
         final MIRAccessKey accessKey = em.find(MIRAccessKey.class, id);
         if (accessKey != null) {
-            em.remove(accessKey);
+            final MIRAccessKeyInformation accessKeyInformation = accessKey.getAccessKeyInformation();
+            accessKeyInformation.getAccessKeys().remove(accessKey);
         } else {
             LOGGER.warn("Key does not exists.");
             throw new MIRAccessKeyManagerException("Key does not exists.");
@@ -180,7 +182,7 @@ public final class MIRAccessKeyManager {
     }
 
     /**
-     * Return the access keys for given {@link MCRObjectID} and value.
+     * Return the access key for given {@link MCRObjectID} and value.
      *
      * @param mcrObjectId the {@link MCRObjectID}
      * @param value the key value
@@ -194,6 +196,17 @@ public final class MIRAccessKeyManager {
             .getResultStream()
             .findFirst()
             .orElse(null);
+    }
+
+    /**
+     * Return the access key for given {@link MCRObjectID} and value.
+     *
+     * @param uuid the key value
+     * @return access key or null
+     */
+    public static synchronized MIRAccessKey getAccessKey(final UUID uuid) {
+        final EntityManager em = MCREntityManagerProvider.getCurrentEntityManager();
+        return em.find(MIRAccessKey.class, uuid);
     }
 
     /**
@@ -247,16 +260,11 @@ public final class MIRAccessKeyManager {
      */
     public static synchronized void updateAccessKey(MIRAccessKey accessKey) throws MIRAccessKeyManagerException {
         final EntityManager em = MCREntityManagerProvider.getCurrentEntityManager();
-        final MIRAccessKey oldAccessKey = em.find(MIRAccessKey.class, accessKey.getId());
+        final UUID uuid = accessKey.getId();
+        final MIRAccessKey oldAccessKey = em.find(MIRAccessKey.class, uuid);
         if (oldAccessKey != null) {
-            final MIRAccessKeyInformation accessKeyInformation = oldAccessKey.getAccessKeyInformation();
-            if (hasCollision(accessKeyInformation.getAccessKeys(), accessKey.getValue(), accessKey.getType())) {
-                LOGGER.warn("Key collision.");
-                throw new MIRAccessKeyManagerException("Key collision.");
-            } else {
-                accessKey.setAccessKeyInformation(accessKeyInformation);
-                em.merge(accessKey);
-            }
+            deleteAccessKey(uuid);
+            addAccessKey(oldAccessKey.getAccessKeyInformation().getObjectId(), accessKey);
         } else {
             LOGGER.warn("Key does not exists.");
             throw new MIRAccessKeyManagerException("Key does not exists.");
