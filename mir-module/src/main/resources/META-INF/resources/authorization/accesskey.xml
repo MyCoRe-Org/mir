@@ -3,7 +3,11 @@
 <MyCoReWebPage title="{i18n}">
   <section i18n="mir.accesskey.manage" xml:lang="all">
     <script type="text/javascript" src="mir/../../js/mir/accesskeys.js" />
-    <div class="container-fluid">
+    <div id="mainError" class="alert alert-warning" style="display: none;">
+      <h1>Access not granted!</h1>
+      <p>You do not have the privilege to acces this page.</p>
+    </div>
+    <div id="manageAccessKeys" class="container-fluid">
       <div class="row pb-2">
         <div class="col-auto mr-auto">
           <h2>

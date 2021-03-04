@@ -34,8 +34,6 @@ function generateKey(plength) {
 	return temp;
 };
 
-
-
 function addAccessKeyTableRow(accessKey) {
     console.log(accessKey);
     const table = document.getElementById("accessKeys");
@@ -110,6 +108,8 @@ $(document).ready(function() {
             $("#accessKeyValue").addClass("is-invalid");
             enableButtons();
             return;
+        } else {
+            $("#accessKeyValue").removeClass("is-invalid");
         }
             
         $.ajax({
@@ -121,8 +121,10 @@ $(document).ready(function() {
                 location.reload();
             },
             error: function(data) {
-                $('#accessKeyModalAlert').html(data.responseText);
-                $('#accessKeyModalAlert').show();
+                if (data.status == 400) {
+                    $('#accessKeyModalAlert').html(data.responseText);
+                    $('#accessKeyModalAlert').show();
+                }
                 enableButtons();
             }
         });
@@ -198,8 +200,10 @@ $(document).ready(function() {
                 location.reload();
             },
             error: function(data) {
-                $('#accessKeyModalAlert').html(data.responseText);
-                $('#accessKeyModalAlert').show();
+                if (data.status == 400) {
+                    $('#accessKeyModalAlert').html(data.responseText);
+                    $('#accessKeyModalAlert').show();
+                }
                 enableButtons();
             }
         });
@@ -208,7 +212,8 @@ $(document).ready(function() {
     $.ajax({
         url: webApplicationBaseURL + "rsc/miraccesskeyinformation/" + objectId,
         error: function() {
-            console.log("errror");
+            $('#mainError').show();
+            $('#manageAccessKeys').hide();
         },
         success: function(data) {
             proccessAccessKeyInformation(data);
