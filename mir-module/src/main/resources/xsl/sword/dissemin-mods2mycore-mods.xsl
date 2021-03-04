@@ -164,7 +164,8 @@
 
   <xsl:template match="mods:relatedItem">
     <xsl:copy>
-      <xsl:attribute name="type">host</xsl:attribute>
+      <xsl:attribute name="type">original</xsl:attribute>
+      <xsl:attribute name="type" namespace="http://www.w3.org/1999/xlink">simple</xsl:attribute>
       <!-- guess the genre if not present -->
       <xsl:if test="not(mods:genre)">
         <xsl:variable name="parentGenre">
