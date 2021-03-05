@@ -11,16 +11,23 @@
     
   <xsl:template match="mods:identifier[@type='isbn']" >
     <xsl:variable name="isbn" select="translate(text(),'-','')" />
-    <xsl:choose>
-      <xsl:when test="translate($isbn,'123456789X','0000000000') = '0000000000000' and (starts-with($isbn,'978') or starts-with($isbn,'979')) ">
-        <xsl:value-of select="text()"/>
-      </xsl:when>
-      <xsl:when test="translate($isbn,'123456789X','0000000000') = '0000000000' ">
-        <xsl:value-of select="text()"/>
-      </xsl:when>
-      <xsl:otherwise>
-      </xsl:otherwise>
-    </xsl:choose>
+    <xsl:variable name="valid_isbn">
+      <xsl:choose>
+        <xsl:when test="translate($isbn,'123456789X','0000000000') = '0000000000000' and (starts-with($isbn,'978') or starts-with($isbn,'979')) ">
+          <xsl:value-of select="text()"/>
+        </xsl:when>
+        <xsl:when test="translate($isbn,'123456789X','0000000000') = '0000000000' ">
+          <xsl:value-of select="text()"/>
+        </xsl:when>
+        <xsl:otherwise>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+    <xsl:if test="string-length($valid_isbn) &gt; 0">
+      <mods:identifier type="isbn">
+        <xsl:value-of select="$valid_isbn" />
+      </mods:identifier>
+    </xsl:if>
   </xsl:template>
 
 </xsl:stylesheet>
