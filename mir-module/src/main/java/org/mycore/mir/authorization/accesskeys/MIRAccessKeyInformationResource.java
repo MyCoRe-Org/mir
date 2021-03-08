@@ -31,6 +31,7 @@ import org.mycore.common.MCRException;
 import org.mycore.common.MCRSystemUserInformation;
 import org.mycore.datamodel.metadata.MCRObjectID;
 import org.mycore.mir.authorization.accesskeys.MIRAccessKeyManager.MIRAccessKeyManagerException;
+import org.mycore.services.i18n.MCRTranslation;
 import org.mycore.user2.MCRUser;
 import org.mycore.user2.MCRUserManager;
 
@@ -70,6 +71,10 @@ public class MIRAccessKeyInformationResource {
     @Path("/{object}")
     public Response setAccessKey(@PathParam("object") String object, @FormParam("value") String value,
         @HeaderParam("Referer") String referer) {
+        if (value == null) {
+            return Response.status(Response.Status.BAD_REQUEST)
+                .entity(MCRTranslation.translate("mir.accesskey.invalidKey")).build();
+        }
         try {
             final MCRObjectID objectId = MCRObjectID.getInstance(object);
             final MCRUser user = MCRUserManager.getCurrentUser();
@@ -82,7 +87,7 @@ public class MIRAccessKeyInformationResource {
             LOGGER.error("failed! {}", e);
             return Response.status(Response.Status.BAD_REQUEST).build();
         } catch(MIRAccessKeyManagerException e) {
-            return Response.status(Response.Status.FORBIDDEN).build();
+            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         } catch (MCRException e) {
             LOGGER.error("failed! {}", e);
             return Response.status(Response.Status.BAD_REQUEST).build();

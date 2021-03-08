@@ -220,5 +220,6 @@ $(document).ready(function() {
         },
         type: 'GET'
     });
+
 });
 

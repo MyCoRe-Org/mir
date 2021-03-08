@@ -643,7 +643,7 @@
               </xsl:if>
               <xsl:if test="key('rights', @ID)/@accKeyEnabled and (key('rights', @ID)/@hasAccessKeys) and not(mcrxsl:isCurrentUserGuestUser() or $accessedit or $accessdelete)">
                 <li>
-                  <a role="menuitem" tabindex="-1" data-toggle="modal" data-target="#addAccessKeyModal" class="dropdown-item">
+                  <a role="menuitem" tabindex="-1" data-toggle="modal" data-id="{@ID}" data-target="#addAccessKeyModal" class="dropdown-item setAccessKey">
                     <xsl:value-of select="i18n:translate('mir.accesskey.setOnUser')" />
                   </a>
                 </li>
@@ -654,29 +654,69 @@
       </div>
     </div>
     <div class="modal fade" id="addAccessKeyModal" tabindex="-1" role="dialog" data-backdrop="static">
-      <div class="modal-dialog modal-lg">
+     <div class="modal-dialog modal-lg">
         <div class="modal-content">
           <div class="modal-header">
             <h2>
               <xsl:value-of select="i18n:translate('mir.accesskey.setOnUser')" />
             </h2>
           </div>
-          <form action="{$WebApplicationBaseURL}rsc/miraccesskeyinformation/{@ID}" method="post">
-            <div class="modal-body">
-              <input name="value" id="value" type="text" class="form-control" placeholder="{i18n:translate('mir.accesskey.value')}" required="required" />
+          <div class="modal-body">
+            <div id="accessKeyModalAlert" class="alert alert-danger" style="display: none;" role="alert">
+              This is a danger alert—check it out!
             </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary closeModal" data-dismiss="modal">
-                <xsl:value-of select="i18n:translate('button.cancel')" />
-              </button>
-              <button type="submit" id="submit" class="btn btn-primary">
-                <xsl:value-of select="i18n:translate('mir.accesskey.add')" />
-              </button>
-            </div>
-          </form>
+            <input id="addAccessKeyModalValue" type="text" class="form-control" placeholder="{i18n:translate('mir.accesskey.value')}" />
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary closeModal" data-dismiss="modal">
+              <xsl:value-of select="i18n:translate('button.cancel')" />
+            </button>
+            <button type="submit" id="addAccessKeyModalSubmit" class="btn btn-primary">
+              <xsl:value-of select="i18n:translate('mir.accesskey.add')" />
+            </button>
+          </div>
         </div>
       </div>
     </div>
+ 
+<script>
+    $(document).ready(function() {
+        let objectId = undefined;
+        $('.setAccessKey').click(function() {
+            objectId = $(this).data('id');
+            $("#addAccessKeyModalValue").val("");
+            $('#accessKeyModalAlert').hide();
+        });
+        $('#addAccessKeyModalSubmit').click(function() {
+            const value = $("#addAccessKeyModalValue").val();
+            if (value.length == 0) {
+                $("#addAccessKeyModalValue").addClass("is-invalid");
+                return;
+            }
+
+            if (objectId == undefined) {
+                $('#accessKeyModalAlert').text("Unknown Object"); //should not happend, no i18n
+                $('#accessKeyModalAlert').show();
+                return;
+            }
+            
+            $.ajax({
+                url: webApplicationBaseURL + "rsc/miraccesskeyinformation/" + objectId,
+                type: 'POST',
+                data: {"value": value},
+                success: function(data) {
+                    location.reload();
+                },
+                error: function(data) {
+                    if (data.status == 400) {
+                        $('#accessKeyModalAlert').text(data.responseText);
+                        $('#accessKeyModalAlert').show();
+                    }
+                }
+            });
+        });
+    });
+</script>
  
     <div class="modal fade" id="modal-pi" tabindex="-1" role="dialog" data-backdrop="static">
       <div class="modal-dialog">
@@ -710,7 +750,7 @@
     <xsl:param name="parentObjID" />
 
     <xsl:if
-      test="(key('rights', $deriv)/@accKeyEnabled and (key('rights', $deriv)/@accKeyEnabled)) and not(mcrxsl:isCurrentUserGuestUser() or key('rights', $deriv)/@read or key('rights', $deriv)/@write)"
+      test="(key('rights', $deriv)/@accKeyEnabled and (key('rights', $deriv)/@hasAccessKeys)) and not(mcrxsl:isCurrentUserGuestUser() or key('rights', $deriv)/@write)"
     >
       <div class="options float-right dropdown">
         <div class="btn-group">
@@ -720,7 +760,8 @@
           </a>
           <ul class="dropdown-menu">
             <li>
-              <a role="menuitem" tabindex="-1" href="{$WebApplicationBaseURL}authorization/accesskey.xed?objId={$deriv}&amp;url={encoder:encode(string($RequestURL))}" class="dropdown-item">
+
+              <a role="menuitem" tabindex="-1" data-toggle="modal" data-id="{$deriv}" data-target="#addAccessKeyModal" class="dropdown-item setAccessKey">
                 <xsl:value-of select="i18n:translate('mir.accesskey.setOnUser')" />
               </a>
             </li>
@@ -781,14 +822,7 @@
                 <a role="menuitem" tabindex="-1" class="dropdown-item"
                   href="{$WebApplicationBaseURL}authorization/accesskey.xml?objectid={$deriv}&amp;url={encoder:encode(string($RequestURL))}"
                 >
-                  <xsl:choose>
-                    <xsl:when test="(key('rights', $deriv)/@hasAccessKeys)">
-                      <xsl:value-of select="i18n:translate('mir.accesskey.edit')" />
-                    </xsl:when>
-                    <xsl:otherwise>
-                      <xsl:value-of select="i18n:translate('mir.accesskey.add')" />
-                    </xsl:otherwise>
-                  </xsl:choose>
+                  <xsl:value-of select="i18n:translate('mir.accesskey.manage')" />
                 </a>
               </li>
             </xsl:if>
