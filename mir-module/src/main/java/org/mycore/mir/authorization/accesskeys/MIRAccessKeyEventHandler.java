@@ -29,6 +29,7 @@ import org.mycore.common.events.MCREventHandlerBase;
 import org.mycore.datamodel.metadata.MCRBase;
 import org.mycore.datamodel.metadata.MCRDerivate;
 import org.mycore.datamodel.metadata.MCRObject;
+import org.mycore.mir.authorization.accesskeys.MIRAccessKeyManager.MIRAccessKeyManagerException;
 
 
 /**
@@ -47,7 +48,7 @@ public class MIRAccessKeyEventHandler extends MCREventHandlerBase {
      */
     @Override
     protected void handleObjectCreated(MCREvent evt, MCRObject obj) {
-        handleBaseCreated(obj);
+        return;
     }
 
     /* (non-Javadoc)
@@ -55,7 +56,7 @@ public class MIRAccessKeyEventHandler extends MCREventHandlerBase {
      */
     @Override
     protected void handleObjectUpdated(MCREvent evt, MCRObject obj) {
-        handleBaseUpdated(obj);
+        return;
     }
 
     /* (non-Javadoc)
@@ -63,7 +64,7 @@ public class MIRAccessKeyEventHandler extends MCREventHandlerBase {
      */
     @Override
     protected void handleObjectDeleted(MCREvent evt, MCRObject obj) {
-        handleBaseDeleted(obj);
+        handleDeleted(obj);
     }
 
     /* (non-Javadoc)
@@ -71,7 +72,7 @@ public class MIRAccessKeyEventHandler extends MCREventHandlerBase {
      */
     @Override
     protected void handleDerivateCreated(MCREvent evt, MCRDerivate der) {
-        handleBaseCreated(der);
+        return;
     }
 
     /* (non-Javadoc)
@@ -79,7 +80,7 @@ public class MIRAccessKeyEventHandler extends MCREventHandlerBase {
      */
     @Override
     protected void handleDerivateUpdated(MCREvent evt, MCRDerivate der) {
-        handleBaseUpdated(der);
+        return;
     }
 
     /* (non-Javadoc)
@@ -87,25 +88,14 @@ public class MIRAccessKeyEventHandler extends MCREventHandlerBase {
      */
     @Override
     protected void handleDerivateDeleted(MCREvent evt, MCRDerivate der) {
-        handleBaseDeleted(der);
+        handleDeleted(der);
     }
 
-    private void handleBaseCreated(final MCRBase obj) {
-        handleBaseUpdated(obj);
-    }
-
-    private void handleBaseUpdated(final MCRBase obj) {
-        LOGGER.warn(obj.getId().toString());
-    }
-
-    private void handleBaseDeleted(final MCRBase obj) {
-        LOGGER.warn(obj.getId().toString());
-    }
-
-    /*private void removeAccessKeys(final MCRBase obj) {
-        LOGGER.debug("Remove access keys from pipe");
-        /*for (MIRAccessKey.ServiceFlagType type : MIRAccessKey.ServiceFlagType.values()) {
-            obj.getService().removeFlags(type.value());
+    private void handleDeleted(final MCRBase obj) {
+        try {
+            MIRAccessKeyManager.deleteAccessKeyInformation(obj.getId());
+        } catch(MIRAccessKeyManagerException e) {
+            LOGGER.warn("AccessKeyInformation doesnt exists.");
         }
-    }*/
+    }
 }

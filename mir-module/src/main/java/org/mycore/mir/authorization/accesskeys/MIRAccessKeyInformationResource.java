@@ -59,9 +59,11 @@ public class MIRAccessKeyInformationResource {
             String result = objectMapper.writeValueAsString(accessKeyInformation);
             return Response.status(Response.Status.OK).entity(result).build();
         } catch (MCRException e) {
+            System.out.println("aaa1");
             LOGGER.error("failed! {}", e);
             return Response.status(Response.Status.BAD_REQUEST).build();
         } catch (JsonProcessingException e) { 
+            System.out.println("aaa2");
             LOGGER.error("failed! {}", e);
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }

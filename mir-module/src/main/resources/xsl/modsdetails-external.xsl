@@ -630,14 +630,7 @@
                      href="{$WebApplicationBaseURL}authorization/accesskey.xml?objectid={@ID}"
                      class="dropdown-item"
                   >
-                    <xsl:choose>
-                      <xsl:when test="(key('rights', @ID)/@hasAccessKeys)">
-                        <xsl:value-of select="i18n:translate('mir.accesskey.manage')" />
-                      </xsl:when>
-                      <xsl:otherwise>
-                        <xsl:value-of select="i18n:translate('mir.accesskey.add')" />
-                      </xsl:otherwise>
-                    </xsl:choose>
+                    <xsl:value-of select="i18n:translate('mir.accesskey.manage')" />
                   </a>
                 </li>
               </xsl:if>

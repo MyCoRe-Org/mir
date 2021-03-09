@@ -140,13 +140,23 @@ public final class MIRAccessKeyManager {
             final EntityManager em = MCREntityManagerProvider.getCurrentEntityManager();
             final MIRAccessKey accessKey = em.find(MIRAccessKey.class, id);
             if (accessKey != null) {
-                final MIRAccessKeyInformation accessKeyInformation = accessKey.getAccessKeyInformation();
-                accessKeyInformation.getAccessKeys().remove(accessKey);
-                cleanPermissionCache(accessKeyInformation.getObjectId(), accessKey.getType());
+                deleteAccessKey(accessKey);
             } else {
                 LOGGER.warn("Key does not exists.");
                 throw new MIRAccessKeyManagerException(MCRTranslation.translate("mir.accesskey.unknownKey"));
             }
+        }
+
+        /**
+         * Deletes access key.
+         *
+         * @param id the id of the key
+         * @throws MCRException if key does not exists
+         */
+        private static void deleteAccessKey(final MIRAccessKey accessKey) {
+            final MIRAccessKeyInformation accessKeyInformation = accessKey.getAccessKeyInformation();
+            accessKeyInformation.getAccessKeys().remove(accessKey);
+            cleanPermissionCache(accessKeyInformation.getObjectId(), accessKey.getType());
         }
 
         /**
@@ -177,7 +187,8 @@ public final class MIRAccessKeyManager {
         public static synchronized void deleteAccessKeyInformation(final MCRObjectID objectId) 
             throws MIRAccessKeyManagerException {
             final EntityManager em = MCREntityManagerProvider.getCurrentEntityManager();
-            final MIRAccessKeyInformation accessKeyInformation = em.find(MIRAccessKeyInformation.class, objectId);
+            final MIRAccessKeyInformation accessKeyInformation = 
+                em.find(MIRAccessKeyInformation.class, objectId.toString());
             if (accessKeyInformation != null) {
                 em.remove(accessKeyInformation);
             } else {
@@ -266,10 +277,9 @@ public final class MIRAccessKeyManager {
          */
         public static synchronized void updateAccessKey(MIRAccessKey accessKey) throws MIRAccessKeyManagerException {
             final EntityManager em = MCREntityManagerProvider.getCurrentEntityManager();
-            final UUID uuid = accessKey.getId();
-            final MIRAccessKey oldAccessKey = em.find(MIRAccessKey.class, uuid);
+            final MIRAccessKey oldAccessKey = em.find(MIRAccessKey.class, accessKey.getId());
             if (oldAccessKey != null) {
-                deleteAccessKey(uuid);
+                deleteAccessKey(oldAccessKey);
                 MCRObjectID objectId = oldAccessKey.getAccessKeyInformation().getObjectId();
                 addAccessKey(objectId, accessKey);
                 cleanPermissionCache(objectId, accessKey.getType());
