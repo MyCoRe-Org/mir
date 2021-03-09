@@ -7,7 +7,6 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.UUID;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import javax.ws.rs.core.Response;
@@ -55,15 +54,12 @@ public class MIRAccessKeyInformationResource {
             }
             MIRAccessKeyInformation accessKeyInformation 
                 = MIRAccessKeyManager.getAccessKeyInformation(objectId);
-            ObjectMapper objectMapper = new ObjectMapper();
-            String result = objectMapper.writeValueAsString(accessKeyInformation);
+            String result = MIRAccessKeyTransformer.accessKeyInformationToJson(accessKeyInformation);
             return Response.status(Response.Status.OK).entity(result).build();
         } catch (MCRException e) {
-            System.out.println("aaa1");
             LOGGER.error("failed! {}", e);
             return Response.status(Response.Status.BAD_REQUEST).build();
         } catch (JsonProcessingException e) { 
-            System.out.println("aaa2");
             LOGGER.error("failed! {}", e);
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
@@ -110,8 +106,7 @@ public class MIRAccessKeyInformationResource {
                 return Response.status(Response.Status.FORBIDDEN).build();
             }
             final List<MIRAccessKey> accessKeys = MIRAccessKeyManager.getAccessKeys(objectId);
-            ObjectMapper objectMapper = new ObjectMapper();
-            final String result = objectMapper.writeValueAsString(accessKeys);
+            String result = MIRAccessKeyTransformer.accessKeysToJson(accessKeys);
             return Response.status(Response.Status.OK).entity(result).build();
         } catch (MCRException e) {
             LOGGER.error("failed! {}", e);
@@ -136,11 +131,10 @@ public class MIRAccessKeyInformationResource {
             if (!MCRAccessManager.checkPermission(objectId, PERMISSION_WRITE)) {
                 return Response.status(Response.Status.FORBIDDEN).build();
             }
-            ObjectMapper objectMapper = new ObjectMapper();
-            final MIRAccessKey accessKey = objectMapper.readValue(json, MIRAccessKey.class);
+            final MIRAccessKey accessKey = MIRAccessKeyTransformer.jsonToAccessKey(json);
             MIRAccessKeyManager.addAccessKey(objectId, accessKey);
             final MIRAccessKey accessKeyResult = MIRAccessKeyManager.getAccessKey(objectId, accessKey.getValue());
-            String result = objectMapper.writeValueAsString(accessKeyResult);
+            String result = MIRAccessKeyTransformer.accessKeyToJson(accessKeyResult);
             return Response.status(Response.Status.OK).entity(result).build();
         } catch(MIRAccessKeyManagerException e) {
             return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
@@ -186,8 +180,7 @@ public class MIRAccessKeyInformationResource {
             if (!MCRAccessManager.checkPermission(objectId, PERMISSION_WRITE)) {
                 return Response.status(Response.Status.FORBIDDEN).build();
             }
-            ObjectMapper objectMapper = new ObjectMapper();
-            final MIRAccessKey accessKey = objectMapper.readValue(json, MIRAccessKey.class);
+            final MIRAccessKey accessKey = MIRAccessKeyTransformer.jsonToAccessKey(json);
             MIRAccessKeyManager.updateAccessKey(accessKey);
             return Response.status(Response.Status.OK).build();
         } catch(MIRAccessKeyManagerException e) {

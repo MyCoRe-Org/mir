@@ -237,6 +237,27 @@ public final class MIRAccessKeyManager {
         }
 
         /**
+         * Returns all {@link MIRAccessKeyInformation}.
+         *
+         * @return all {@link MIRAccessKeyInformation} as List
+         */
+        protected static synchronized List<MIRAccessKeyInformation> getAccessKeyInformations() {
+            final EntityManager em = MCREntityManagerProvider.getCurrentEntityManager();
+            return em.createNamedQuery("MIRAccessKeyInformation.getAll", MIRAccessKeyInformation.class)
+                .getResultList();
+        }
+
+        protected static synchronized void setAccessKeysInformations(List<MIRAccessKeyInformation> 
+            accessKeyInformations) {
+            deleteAccessKeyInformations();
+        }
+
+        protected static void deleteAccessKeyInformations() {
+            final EntityManager em = MCREntityManagerProvider.getCurrentEntityManager();
+            em.createQuery("DELETE FROM MIRAccessKeyInformation").executeUpdate();
+        }
+
+        /**
          * Returns all access keys for given {@link MCRObjectID}.
          *
          * @param mcrObjectId the {@link MCRObjectID}

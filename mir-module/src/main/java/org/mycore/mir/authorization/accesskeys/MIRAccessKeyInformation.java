@@ -46,6 +46,9 @@ import org.mycore.datamodel.metadata.MCRObjectID;
  */
 @Entity
 @NamedQueries({
+    @NamedQuery(name = "MIRAccessKeyInformation.getAll",
+        query = "SELECT i"
+            + "  FROM MIRAccessKeyInformation i"),
     @NamedQuery(name = "MIRAccessKeyInformation.getAccessKeys",
         query = "SELECT k"
             + "  FROM MIRAccessKeyInformation i"
