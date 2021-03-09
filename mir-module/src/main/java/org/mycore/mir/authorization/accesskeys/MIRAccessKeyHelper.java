@@ -1,4 +1,3 @@
-
 package org.mycore.mir.authorization.accesskeys;
 
 import org.mycore.common.MCRException;
