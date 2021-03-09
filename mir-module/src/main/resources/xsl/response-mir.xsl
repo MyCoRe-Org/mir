@@ -278,7 +278,16 @@
     <!--
       Do not read MyCoRe object at this time
     -->
-    <xsl:variable name="identifier" select="@id" />
+    <xsl:variable name="identifier">
+      <xsl:choose>
+        <xsl:when test="@id!=''">
+          <xsl:value-of select="@id" />
+        </xsl:when>
+        <xsl:when test="str[@name='id']">
+          <xsl:value-of select="str[@name='id']" />
+        </xsl:when>
+      </xsl:choose>
+    </xsl:variable>
     <xsl:variable name="mcrobj" select="." />
     <xsl:variable name="mods-genre">
       <xsl:choose>
