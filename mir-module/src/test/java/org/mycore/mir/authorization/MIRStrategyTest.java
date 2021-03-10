@@ -65,6 +65,10 @@ public class MIRStrategyTest extends MCRJPATestCase {
             "update permission read for id mods:mir_access:accessKey with rulefile ${app.home}/config/acl/grant-editors.xml described by ${acl-description.editors}");
         cmds.add(
             "update permission writedb for id mods:mir_access:accessKey with rulefile ${app.home}/config/acl/grant-editors.xml described by ${acl-description.editors}");
+        cmds.add(
+            "update permission read for id derivate:mir_access:accessKey with rulefile ${app.home}/config/acl/grant-editors.xml described by ${acl-description.editors}");
+        cmds.add(
+            "update permission writedb for id derivate:mir_access:accessKey with rulefile ${app.home}/config/acl/grant-editors.xml described by ${acl-description.editors}");
         cmds.add("load classification from url " + mirAccessURL);
         executeCommands(cmds);
     }
@@ -147,6 +151,8 @@ public class MIRStrategyTest extends MCRJPATestCase {
     public void checkAccessKeyPermission() throws Exception {
         loadTestData();
         MCRUser junitUser = new MCRUser("junit");
+        MCRUser junitEditorUser = new MCRUser("junitEditor");
+        junitEditorUser.assignRole("editor");
         MCRSessionMgr.getCurrentSession().setUserInformation(junitUser);
         final MCRObjectID mir_mods_00004711 = MCRObjectID.getInstance("mir_mods_00004711");
         final MCRObjectID mir_derivate_00004711 = MCRObjectID.getInstance("mir_derivate_00004711");
@@ -193,6 +199,18 @@ public class MIRStrategyTest extends MCRJPATestCase {
         assertFalse(strategy.checkPermission(mir_mods_00004711.toString(), MCRAccessManager.PERMISSION_DELETE));
         assertTrue(strategy.checkPermission(mir_mods_00004711.toString(), MCRAccessManager.PERMISSION_VIEW));
         assertTrue(strategy.checkPermission(mir_mods_00004711.toString(), MCRAccessManager.PERMISSION_PREVIEW));
+        MCRSessionMgr.getCurrentSession().setUserInformation(junitUser);
+        //Check fallback to roles
+        MCRSessionMgr.getCurrentSession().setUserInformation(MCRSystemUserInformation.getGuestInstance());
+        MCRSessionMgr.getCurrentSession().setUserInformation(junitEditorUser);
+        assertTrue(strategy.checkPermission(mir_mods_00004711.toString(), MCRAccessManager.PERMISSION_WRITE));
+        System.err.println("Foo");
+        assertTrue(strategy.checkPermission(mir_derivate_00004711.toString(), MCRAccessManager.PERMISSION_READ));
+        Assert
+            .assertTrue(strategy.checkPermission(mir_derivate_00004711.toString(), MCRAccessManager.PERMISSION_WRITE));
+        assertFalse(strategy.checkPermission(mir_mods_00004711.toString(), MCRAccessManager.PERMISSION_DELETE));
+        assertTrue(strategy.checkPermission(mir_mods_00004711.toString(), MCRAccessManager.PERMISSION_VIEW));
+        assertTrue(strategy.checkPermission(mir_mods_00004711.toString(), MCRAccessManager.PERMISSION_PREVIEW));
     }
 
     private void loadTestData() throws Exception {
@@ -202,6 +220,7 @@ public class MIRStrategyTest extends MCRJPATestCase {
         MCRSessionMgr.getCurrentSession().setUserInformation(MCRSystemUserInformation.getSuperUserInstance());
         executeCommands(List.of(
             "load classification from file " + localTestDirectory.resolve("class").resolve("state.xml"),
+            "load classification from file " + localTestDirectory.resolve("class").resolve("mcr-roles.xml"),
             "load all objects from directory " + localTestDirectory.resolve("objects"),
             "load all derivates from directory " + localTestDirectory.resolve("derivates")));
     }

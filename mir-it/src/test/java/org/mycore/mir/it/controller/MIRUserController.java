@@ -63,11 +63,11 @@ public class MIRUserController {
         driver.findElement(By.id("password2")).sendKeys(password);
 
         if (name != null) {
-            driver.findElement(By.id("realName")).sendKeys(name);
+            driver.findElement(By.id("realNameInput")).sendKeys(name);
         }
 
         if (mail != null) {
-            driver.findElement(By.id("email")).sendKeys(mail);
+            driver.findElement(By.id("emailInput")).sendKeys(mail);
         }
 
         driver.waitAndFindElement(By.name("_xed_submit_servlet:MCRUserServlet")).click();
