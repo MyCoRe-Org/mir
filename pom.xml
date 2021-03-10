@@ -111,6 +111,11 @@
             <solrVersionString>${solr-runner.solrVersionString}</solrVersionString>
           </configuration>
         </plugin>
+        <plugin>
+          <groupId>com.github.eirslett</groupId>
+          <artifactId>frontend-maven-plugin</artifactId>
+          <version>1.11.2</version>
+        </plugin>
       </plugins>
     </pluginManagement>
     <plugins>
