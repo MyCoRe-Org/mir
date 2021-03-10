@@ -19,6 +19,9 @@
   <xsl:variable name="authorRoles"
                 select="$marcrelator/mycoreclass/categories/category[@ID='aut']/descendant-or-self::category"
                 xmlns="" />
+  <xsl:variable name="emailRegEx"
+                select="'[a-zA-Z0-9.!#$%&amp;’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*'"
+                xmlns="" />
   <xsl:include href="functions/mods.xsl" />
 
   <xsl:template match="/">
@@ -71,14 +74,7 @@
       <xsl:apply-templates select="$mods" mode="subtitle" />
       <xsl:apply-templates select="$mods" mode="author" />
       <xsl:apply-templates select="$mods" mode="description" />
-      <itunes:owner>
-        <itunes:name>
-          <xsl:value-of select="$MCR.ContentTransformer.mycoreobject-podcast.Owner.Name" />
-        </itunes:name>
-        <itunes:email>
-          <xsl:value-of select="$MCR.ContentTransformer.mycoreobject-podcast.Owner.EMail" />
-        </itunes:email>
-      </itunes:owner>
+      <xsl:apply-templates select="$mods" mode="owner" />
       <xsl:apply-templates select="." mode="thumbnail" />
       <xsl:apply-templates select="$mods" mode="category" />
       <xsl:variable name="items">
@@ -191,6 +187,32 @@
         </xsl:choose>
       </description>
     </xsl:if>
+  </xsl:template>
+
+  <xsl:template match="mods:mods" mode="owner">
+    <itunes:owner>
+      <xsl:variable name="podcastOwner"
+                    select="fn:zero-or-one(mods:name[mods:role/mods:roleTerm/text() = 'own' and
+                        fn:matches(mods:affiliation, $emailRegEx)])" />
+      <xsl:choose>
+        <xsl:when test="$podcastOwner">
+          <itunes:name>
+            <xsl:apply-templates select="$podcastOwner" mode="creator" />
+          </itunes:name>
+          <itunes:email>
+            <xsl:value-of select="$podcastOwner/mods:affiliation[fn:matches(text(), $emailRegEx)]" />
+          </itunes:email>
+        </xsl:when>
+        <xsl:otherwise>
+          <itunes:name>
+            <xsl:value-of select="$MCR.ContentTransformer.mycoreobject-podcast.Owner.Name" />
+          </itunes:name>
+          <itunes:email>
+            <xsl:value-of select="$MCR.ContentTransformer.mycoreobject-podcast.Owner.EMail" />
+          </itunes:email>
+        </xsl:otherwise>
+      </xsl:choose>
+    </itunes:owner>
   </xsl:template>
 
   <!-- RSS-Items -->
