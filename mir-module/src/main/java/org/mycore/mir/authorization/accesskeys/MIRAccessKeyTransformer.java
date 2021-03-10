@@ -14,6 +14,12 @@ public class MIRAccessKeyTransformer {
         return Arrays.asList(objectMapper.readValue(json, MIRAccessKeyInformation[].class));
     }
 
+    protected static List<MIRAccessKey> jsonToAccessKeys(String json)
+        throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        return Arrays.asList(objectMapper.readValue(json, MIRAccessKey[].class));
+    }
+
     protected static String accessKeyInformationToJson(MIRAccessKeyInformation accessKeyInformation) 
         throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();

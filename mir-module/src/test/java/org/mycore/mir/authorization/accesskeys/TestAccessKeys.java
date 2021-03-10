@@ -172,6 +172,21 @@ public class TestAccessKeys extends MCRJPATestCase {
     }
 
     @Test
+    public void testDeleteAllAccessKeys() throws MCRAccessException {
+        final MCRObjectID objectId = MCRObjectID.getInstance(MCR_OBJECT_ID);
+
+        MIRAccessKey accessKey = new MIRAccessKey(KEY, READ);
+        MIRAccessKeyManager.addAccessKey(objectId, accessKey);
+
+        endTransaction();
+        startNewTransaction();
+        
+        MIRAccessKeyManager.deleteAllAccessKeys();
+
+        assertTrue(MIRAccessKeyManager.getAccessKey(objectId, KEY) == null);
+    }
+
+    @Test
     public void testUpdateKey() throws MCRAccessException {
         final MCRObjectID objectId = MCRObjectID.getInstance(MCR_OBJECT_ID);
 
@@ -191,6 +206,8 @@ public class TestAccessKeys extends MCRJPATestCase {
         startNewTransaction();
 
         newAccessKey = MIRAccessKeyManager.getAccessKey(accessKey.getId());
+        System.out.println(newAccessKey.getValue());
+        System.out.println(newAccessKey.getType());
         assertTrue(newAccessKey.getType().equals(WRITE));
     }
 

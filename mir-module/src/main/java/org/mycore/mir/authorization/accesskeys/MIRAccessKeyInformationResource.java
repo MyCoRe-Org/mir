@@ -55,6 +55,7 @@ public class MIRAccessKeyInformationResource {
             MIRAccessKeyInformation accessKeyInformation 
                 = MIRAccessKeyManager.getAccessKeyInformation(objectId);
             String result = MIRAccessKeyTransformer.accessKeyInformationToJson(accessKeyInformation);
+            System.out.println(result);
             return Response.status(Response.Status.OK).entity(result).build();
         } catch (MCRException e) {
             LOGGER.error("failed! {}", e);

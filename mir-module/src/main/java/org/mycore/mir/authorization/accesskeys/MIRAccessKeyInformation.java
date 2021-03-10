@@ -32,11 +32,12 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.persistence.JoinColumn;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Transient;
-import javax.xml.bind.annotation.XmlRootElement;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import org.mycore.datamodel.metadata.MCRObjectID;
 
@@ -49,6 +50,9 @@ import org.mycore.datamodel.metadata.MCRObjectID;
     @NamedQuery(name = "MIRAccessKeyInformation.getAll",
         query = "SELECT i"
             + "  FROM MIRAccessKeyInformation i"),
+    @NamedQuery(name = "MIRAccessKeyInformation.getAllKeys",
+        query = "SELECT i"
+            + "  FROM MIRAccessKey i"),
     @NamedQuery(name = "MIRAccessKeyInformation.getAccessKeys",
         query = "SELECT k"
             + "  FROM MIRAccessKeyInformation i"
@@ -60,7 +64,6 @@ import org.mycore.datamodel.metadata.MCRObjectID;
             + "  JOIN i.accessKeys k"
             + "  WHERE i.objectIdString = :objId and k.value = :value"),
 })
-@XmlRootElement(name = "accesskeyinformation")
 public class MIRAccessKeyInformation {
 
     private static final long serialVersionUID = 1L;
@@ -69,7 +72,6 @@ public class MIRAccessKeyInformation {
     private MCRObjectID mcrObjectId; 
 
     /** Assigned accesskeys */
-    @OneToMany(cascade = CascadeType.ALL , fetch = FetchType.LAZY, mappedBy = "mirAccessKeyInformation")
     private List<MIRAccessKey> accessKeys = new ArrayList<MIRAccessKey>();
 
     protected MIRAccessKeyInformation() {
@@ -113,8 +115,10 @@ public class MIRAccessKeyInformation {
     /**
      * @return objectId as String
      */
+    @JsonIgnore
     @Id
-    @Column(name = "accesskeyinformation_id", nullable = false)
+    @Column(name = "accesskeyinformation_id", 
+        nullable = false)
     public String getObjectIdString() {
         return mcrObjectId.toString();
     }
@@ -129,8 +133,11 @@ public class MIRAccessKeyInformation {
     /**
      * @return Assigned access keys
      */
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "fk_accesskeyinformation")
+    @JsonManagedReference
+    @OneToMany(cascade = CascadeType.ALL, 
+        fetch = FetchType.LAZY, 
+        mappedBy = "accessKeyInformation",
+        orphanRemoval = true)
     public List<MIRAccessKey> getAccessKeys() {
         return accessKeys;
     }
@@ -140,5 +147,24 @@ public class MIRAccessKeyInformation {
      */
     public void setAccessKeys(final List<MIRAccessKey> accessKeys) {
         this.accessKeys = accessKeys;
+        for (MIRAccessKey accessKey : accessKeys) {
+            accessKey.setAccessKeyInformation(this);
+        }
+    }
+
+    public void addAccessKey(final MIRAccessKey accessKey) {
+        accessKey.setAccessKeyInformation(this);
+        accessKeys.add(accessKey);
+    }
+
+    public void removeAccessKey(final MIRAccessKey accessKey) {
+        accessKey.setAccessKeyInformation(null);
+        accessKeys.remove(accessKey);
+    }
+
+    public void removeAccessKeys() {
+        for (MIRAccessKey accessKey : accessKeys) {
+            removeAccessKey(accessKey);
+        }
     }
 }

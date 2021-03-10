@@ -33,7 +33,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 /**
  * Access keys for a {@link MCRObject}.
@@ -97,7 +97,7 @@ public class MIRAccessKey {
 
     /**
      * @param value key value
-     */
+     import com.fasterxml.jackson.annotation.JsonBackReference;*/
     public void setValue(final String value) {
         this.value = value;
     }
@@ -119,9 +119,9 @@ public class MIRAccessKey {
     /**
      * @return access key information
      */
-    @JsonIgnore
+    @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "fk_accesskeyinformation")
+    @JoinColumn(name = "fk_accesskeyinformation", nullable = false)
     public MIRAccessKeyInformation getAccessKeyInformation() {
         return accessKeyInformation;
     }
@@ -131,5 +131,18 @@ public class MIRAccessKey {
      */
     public void setAccessKeyInformation(MIRAccessKeyInformation accessKeyInformation) {
         this.accessKeyInformation = accessKeyInformation;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof MIRAccessKey)) {
+            return false;
+        }
+        MIRAccessKey other = (MIRAccessKey) o;
+        return this.id.equals(other.getId()) && this.type.equals(other.getType())
+            && this.value.equals(other.getValue());
     }
 }

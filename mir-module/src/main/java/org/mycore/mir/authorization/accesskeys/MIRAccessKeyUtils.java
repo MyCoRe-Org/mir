@@ -18,11 +18,11 @@ public class MIRAccessKeyUtils {
 
     public static final Logger LOGGER = LogManager.getLogger();
 
-    @MCRCommand(syntax = "export all access keys to file {0}",
-        help = "Exports all access keys the file {0}.")
-    public static void exportAllAccessKeysToFile(String filename) throws Exception {
-        List<MIRAccessKeyInformation> accessKeyInformations = MIRAccessKeyManager.getAccessKeyInformations();
-        String json = MIRAccessKeyTransformer.accessKeyInformationsToJson(accessKeyInformations);
+    @MCRCommand(syntax = "backup all access keys to file {0}",
+        help = "Backups all access keys the file {0}.")
+    public static void backupAllAccessKeysToFile(String filename) throws Exception {
+        List<MIRAccessKey> accessKeys = MIRAccessKeyManager.getAllAccessKeys();
+        String json = MIRAccessKeyTransformer.accessKeysToJson(accessKeys);
         Path path = Path.of(filename);
         if (Files.exists(path)) {
             LOGGER.warn("File {} yet exists, overwrite.", filename);
@@ -34,11 +34,11 @@ public class MIRAccessKeyUtils {
     @MCRCommand(syntax = "delete all access keys",
         help = "Deletes all access keys.")
     public static void exportAllAccessKeysToFile() throws Exception {
-        MIRAccessKeyManager.deleteAccessKeyInformations();
+        MIRAccessKeyManager.deleteAllAccessKeys();
     }
 
-    @MCRCommand(syntax = "import all access keys from file {0}",
-        help = "Imports all access keys from file {0}.")
+    @MCRCommand(syntax = "restore all access keys from file {0}",
+        help = "Restores all access keys from file {0}.")
     public static void loadAccessKeysToFile(String filename) throws Exception {
         Path path = Path.of(filename);
         if (!Files.exists(path)) {
@@ -46,8 +46,7 @@ public class MIRAccessKeyUtils {
             return;
         }
         String json = Files.readString(path, StandardCharsets.UTF_8);
-        List<MIRAccessKeyInformation> accessKeyInformations
-            = MIRAccessKeyTransformer.jsonToAccessKeyInformations(json);
-        MIRAccessKeyManager.setAccessKeysInformations(accessKeyInformations);
+        List<MIRAccessKey> accessKeys = MIRAccessKeyTransformer.jsonToAccessKeys(json);
+        MIRAccessKeyManager.restoreAllAccessKeys(accessKeys);
     }
 }
