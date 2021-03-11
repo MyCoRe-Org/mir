@@ -23,6 +23,11 @@
 
 package org.mycore.mir.authorization.accesskeys;
 
+import java.util.List;
+import java.util.ArrayList;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.mycore.common.events.MCREvent;
@@ -30,6 +35,7 @@ import org.mycore.common.events.MCREventHandlerBase;
 import org.mycore.datamodel.metadata.MCRBase;
 import org.mycore.datamodel.metadata.MCRDerivate;
 import org.mycore.datamodel.metadata.MCRObject;
+import org.mycore.datamodel.metadata.MCRObjectService;
 
 /**
  * This class contains EventHandler methods to manage access keys of
@@ -38,6 +44,8 @@ import org.mycore.datamodel.metadata.MCRObject;
 public class MIRAccessKeyEventHandler extends MCREventHandlerBase {
 
     private static Logger LOGGER = LogManager.getLogger();
+
+    private static final String ACCESS_KEYS = "accesskeys";
 
     /* (non-Javadoc)
      * @see org.mycore.common.events.MCREventHandlerBase#handleObjectCreated(org.mycore.common.events.MCREvent, org.mycore.datamodel.metadata.MCRObject)
@@ -88,11 +96,35 @@ public class MIRAccessKeyEventHandler extends MCREventHandlerBase {
     }
 
     private void handleCreated(final MCRBase obj) {
-        MIRAccessKeyManager.addAccessKeys(obj.getId(), null);
+        final MCRObjectService service = obj.getService();
+        final ArrayList<String> flags = service.getFlags(ACCESS_KEYS);
+        if (flags.size() > 0) {
+            final String json = flags.get(0);
+            try {
+                final List<MIRAccessKey> accessKeys = MIRAccessKeyTransformer.jsonToAccessKeys(json);
+                MIRAccessKeyManager.addAccessKeys(obj.getId(), accessKeys);
+            } catch (JsonProcessingException e) {
+                LOGGER.warn("Access Keys are not valid and removed from object");
+            } finally {
+                service.removeFlags(ACCESS_KEYS);
+            }
+        }
     }
 
     private void handleUpdated(final MCRBase obj) {
-        MIRAccessKeyManager.updateAccessKeys(obj.getId(), null);
+        final MCRObjectService service = obj.getService();
+        final ArrayList<String> flags = service.getFlags(ACCESS_KEYS);
+        if (flags.size() > 0) {
+            final String json = flags.get(0);
+            try {
+                final List<MIRAccessKey> accessKeys = MIRAccessKeyTransformer.jsonToAccessKeys(json);
+                MIRAccessKeyManager.updateAccessKeys(obj.getId(), accessKeys);
+            } catch (JsonProcessingException e) {
+                LOGGER.warn("Access Keys are not valid and removed from object");
+            } finally {
+                service.removeFlags(ACCESS_KEYS);
+            }
+        }
     }
 
     private void handleDeleted(final MCRBase obj) {
