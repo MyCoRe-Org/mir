@@ -29,7 +29,8 @@ import org.mycore.access.MCRAccessManager;
 import org.mycore.common.MCRException;
 import org.mycore.common.MCRSystemUserInformation;
 import org.mycore.datamodel.metadata.MCRObjectID;
-import org.mycore.mir.authorization.accesskeys.MIRAccessKeyManager.MIRAccessKeyManagerException;
+import org.mycore.mir.authorization.accesskeys.backend.MIRAccessKey;
+import org.mycore.mir.authorization.accesskeys.exceptions.MIRAccessKeyException;
 import org.mycore.services.i18n.MCRTranslation;
 import org.mycore.user2.MCRUser;
 import org.mycore.user2.MCRUserManager;
@@ -84,7 +85,7 @@ public class MIRAccessKeyResource {
         } catch(URISyntaxException e) {
             LOGGER.error("failed! {}", e);
             return Response.status(Response.Status.BAD_REQUEST).build();
-        } catch(MIRAccessKeyManagerException e) {
+        } catch(MIRAccessKeyException e) {
             return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         } catch (MCRException e) {
             LOGGER.error("failed! {}", e);
@@ -112,7 +113,7 @@ public class MIRAccessKeyResource {
             final MIRAccessKey accessKeyResult = MIRAccessKeyManager.getAccessKey(objectId, accessKey.getValue());
             final String result = MIRAccessKeyTransformer.accessKeyToJson(accessKeyResult);
             return Response.status(Response.Status.OK).entity(result).build();
-        } catch(MIRAccessKeyManagerException e) {
+        } catch(MIRAccessKeyException e) {
             return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         } catch (JsonProcessingException | MCRException e) {
             LOGGER.error("failed! {}", e);
@@ -134,7 +135,7 @@ public class MIRAccessKeyResource {
             }
             MIRAccessKeyManager.deleteAccessKey(uuid);
             return Response.status(Response.Status.OK).build();
-        } catch(MIRAccessKeyManagerException e) {
+        } catch(MIRAccessKeyException e) {
             return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         } catch (IllegalArgumentException | MCRException e) {
             LOGGER.error("failed! {}", e);
@@ -159,7 +160,7 @@ public class MIRAccessKeyResource {
             final MIRAccessKey accessKey = MIRAccessKeyTransformer.jsonToAccessKey(json);
             MIRAccessKeyManager.updateAccessKey(accessKey);
             return Response.status(Response.Status.OK).build();
-        } catch(MIRAccessKeyManagerException e) {
+        } catch(MIRAccessKeyException e) {
             return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         } catch (JsonProcessingException | MCRException e) {
             LOGGER.error("failed! {}", e);

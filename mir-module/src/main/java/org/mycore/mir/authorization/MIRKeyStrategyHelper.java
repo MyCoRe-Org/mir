@@ -8,8 +8,8 @@ import org.apache.logging.log4j.Logger;
 import org.mycore.access.MCRAccessManager;
 import org.mycore.common.MCRSessionMgr;
 import org.mycore.datamodel.metadata.MCRObjectID;
+import org.mycore.mir.authorization.accesskeys.backend.MIRAccessKey;
 import org.mycore.mir.authorization.accesskeys.MIRAccessKeyManager;
-import org.mycore.mir.authorization.accesskeys.MIRAccessKey;
 
 public class MIRKeyStrategyHelper {
 

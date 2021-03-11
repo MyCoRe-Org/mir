@@ -6,6 +6,8 @@ import java.util.List;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
+import org.mycore.mir.authorization.accesskeys.backend.MIRAccessKey;
+
 public class MIRAccessKeyTransformer {
 
     protected static List<MIRAccessKey> jsonToAccessKeys(String json)

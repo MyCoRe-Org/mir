@@ -49,7 +49,8 @@ import org.mycore.common.MCRJPATestCase;
 import org.mycore.common.MCRSessionMgr;
 import org.mycore.common.config.MCRConfiguration2;
 import org.mycore.datamodel.metadata.MCRObjectID;
-import org.mycore.mir.authorization.accesskeys.MIRAccessKeyManager.MIRAccessKeyManagerException;
+import org.mycore.mir.authorization.accesskeys.backend.MIRAccessKey;
+import org.mycore.mir.authorization.accesskeys.exceptions.MIRAccessKeyException;
 import org.mycore.user2.MCRTransientUser;
 import org.mycore.user2.MCRUser;
 import org.xml.sax.SAXParseException;
@@ -80,35 +81,35 @@ public class TestAccessKeys extends MCRJPATestCase {
         return testProperties;
     }
 
-    @Test(expected = MIRAccessKeyManagerException.class)
+    @Test(expected = MIRAccessKeyException.class)
     public void testAddKeyWithoutValue() {
         final MCRObjectID objectId = MCRObjectID.getInstance(MCR_OBJECT_ID);
         final MIRAccessKey accessKey = new MIRAccessKey(objectId, null, READ);
         MIRAccessKeyManager.addAccessKey(accessKey);
     }
 
-    @Test(expected = MIRAccessKeyManagerException.class)
+    @Test(expected = MIRAccessKeyException.class)
     public void testAddKeyWithEmptyValue() {
         final MCRObjectID objectId = MCRObjectID.getInstance(MCR_OBJECT_ID);
         final MIRAccessKey accessKey = new MIRAccessKey(objectId, "", READ);
         MIRAccessKeyManager.addAccessKey(accessKey);
     }
 
-    @Test(expected = MIRAccessKeyManagerException.class)
+    @Test(expected = MIRAccessKeyException.class)
     public void testAddKeyWithoutType() {
         final MCRObjectID objectId = MCRObjectID.getInstance(MCR_OBJECT_ID);
         final MIRAccessKey accessKey = new MIRAccessKey(objectId, KEY, null);
         MIRAccessKeyManager.addAccessKey(accessKey);
     }
 
-    @Test(expected = MIRAccessKeyManagerException.class)
+    @Test(expected = MIRAccessKeyException.class)
     public void testAddKeyWithWrongType() {
         final MCRObjectID objectId = MCRObjectID.getInstance(MCR_OBJECT_ID);
         final MIRAccessKey accessKey = new MIRAccessKey(objectId, KEY, KEY);
         MIRAccessKeyManager.addAccessKey(accessKey);
     }
 
-    @Test(expected = MIRAccessKeyManagerException.class)
+    @Test(expected = MIRAccessKeyException.class)
     public void testKeyCollision() {
         final MCRObjectID objectId = MCRObjectID.getInstance(MCR_OBJECT_ID);
         MIRAccessKey accessKeyRead = new MIRAccessKey(objectId, KEY, READ);

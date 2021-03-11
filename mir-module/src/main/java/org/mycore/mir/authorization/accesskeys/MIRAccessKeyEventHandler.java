@@ -30,12 +30,14 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
 import org.mycore.common.events.MCREvent;
 import org.mycore.common.events.MCREventHandlerBase;
 import org.mycore.datamodel.metadata.MCRBase;
 import org.mycore.datamodel.metadata.MCRDerivate;
 import org.mycore.datamodel.metadata.MCRObject;
 import org.mycore.datamodel.metadata.MCRObjectService;
+import org.mycore.mir.authorization.accesskeys.backend.MIRAccessKey;
 
 /**
  * This class contains EventHandler methods to manage access keys of
