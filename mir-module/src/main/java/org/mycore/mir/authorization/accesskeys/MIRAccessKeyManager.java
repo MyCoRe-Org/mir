@@ -115,6 +115,7 @@ public final class MIRAccessKeyManager {
             try {
                 updateAccessKey(accessKey);
             } catch (MIRAccessKeyNotFoundException e) {
+                accessKey.setId(null); //prevent uuid collision
                 addAccessKey(accessKey);
             }        
         }
@@ -127,6 +128,7 @@ public final class MIRAccessKeyManager {
      * @param accessKeys the access keys as list
      */
     public static synchronized void addAccessKeys(MCRObjectID objectId, List<MIRAccessKey> accessKeys) {
+        //TODO check for collision
         for (MIRAccessKey accessKey : accessKeys) {
             accessKey.setObjectId(objectId);
             addAccessKey(accessKey);
@@ -147,7 +149,7 @@ public final class MIRAccessKeyManager {
 
         final MIRAccessKey accessKey = getAccessKey(objectId, value);
         if (accessKey == null) {
-            throw new MIRAccessKeyException(MCRTranslation.translate("mir.accesskey.invalidKey"));
+            throw new MIRAccessKeyNotFoundException(MCRTranslation.translate("mir.accesskey.invalidKey"));
         }
 
         user.setUserAttribute(ACCESS_KEY_PREFIX + objectId, value);

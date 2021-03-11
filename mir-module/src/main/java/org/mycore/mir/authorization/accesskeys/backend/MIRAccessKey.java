@@ -132,7 +132,7 @@ public class MIRAccessKey {
      * @param objectId id as String
      */
     public void setObjectIdString(String objectIdString) {
-        this.mcrObjectId = MCRObjectID.getInstance(objectIdString.trim());
+        this.mcrObjectId = MCRObjectID.getInstance(objectIdString);
     }
 
     /**
