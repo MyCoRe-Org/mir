@@ -113,7 +113,7 @@ $(document).ready(function() {
         }
             
         $.ajax({
-            url: webApplicationBaseURL + "rsc/miraccesskeyinformation/" + objectId + "/accesskey",
+            url: webApplicationBaseURL + "rsc/accesskey/" + objectId,
             type: 'PUT',
             data: JSON.stringify(accessKey),
             contentType: 'application/json',
@@ -162,7 +162,7 @@ $(document).ready(function() {
         disableButtons();
         const accessKeyId = $(this).data('id');
         $.ajax({
-            url: webApplicationBaseURL + "rsc/miraccesskeyinformation/" + objectId + "/accesskey/" + accessKeyId,
+            url: webApplicationBaseURL + "rsc/accesskey/" + objectId + "/" + accessKeyId,
             type: 'DELETE',
             success: function(data) {
                 location.reload();
@@ -192,7 +192,7 @@ $(document).ready(function() {
         }
         
         $.ajax({
-            url: webApplicationBaseURL + "rsc/miraccesskeyinformation/" + objectId + "/accesskey",
+            url: webApplicationBaseURL + "rsc/accesskey/" + objectId + "/" + accessKeyId,
             type: 'POST',
             data: JSON.stringify(accessKey),
             contentType: 'application/json',
@@ -210,7 +210,7 @@ $(document).ready(function() {
     });
 
     $.ajax({
-        url: webApplicationBaseURL + "rsc/miraccesskeyinformation/" + objectId,
+        url: webApplicationBaseURL + "rsc/accesskey/",
         error: function() {
             $('#mainError').show();
             $('#manageAccessKeys').hide();

@@ -27,19 +27,35 @@ import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
-import javax.persistence.JoinColumn;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Transient;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import org.mycore.datamodel.metadata.MCRObjectID;
 
 /**
  * Access keys for a {@link MCRObject}.
  * An access keys contains a value and a type.
  * Value is the key value of the key and type the permission.
  */
+
+@NamedQueries({
+    @NamedQuery(name = "MIRAccessKey.getById",
+        query = "SELECT k"
+            + "  FROM MIRAccessKey k"
+            + "  WHERE k.objectIdString = :objId"),
+    @NamedQuery(name = "MIRAccessKey.getByValue",
+        query = "SELECT k"
+            + "  FROM MIRAccessKey k"
+            + "  WHERE k.value = :value AND k.objectIdString = :objId"),
+    @NamedQuery(name = "MIRAccessKey.deleteById",
+        query = "DELETE"
+            + "  FROM MIRAccessKey k"
+            + "  WHERE k.objectIdString = :objId"),
+})
+ 
 @Entity
 public class MIRAccessKey {
 
@@ -48,14 +64,14 @@ public class MIRAccessKey {
     /** The unique and internal information id */
     private UUID id;
 
+    /** The access key information*/
+    private MCRObjectID mcrObjectId; 
+
     /** The key value*/
     private String value;
 
     /** The permission type*/
     private String type;
-
-    /** The access key information*/
-    private MIRAccessKeyInformation accessKeyInformation;
 
     protected MIRAccessKey() {
     }
@@ -66,9 +82,41 @@ public class MIRAccessKey {
      * @param value the value the user must know to acquire permission.
      * @param type the type of permission.
      */
-    public MIRAccessKey(final String value, final String type) {
+    public MIRAccessKey(final MCRObjectID objectId, final String value, final String type) {
+        setObjectId(objectId);
         setValue(value);
         setType(type);
+    }
+
+    /**
+     * @return the linked mcrObjectId
+     */
+    @Transient
+    public MCRObjectID getObjectId() {
+        return mcrObjectId;
+    }
+
+    /**
+     * @param mcrObjectId the {@MCRObjectID} to set
+     */
+    public void setObjectId(final MCRObjectID mcrObjectId) {
+        this.mcrObjectId = mcrObjectId;
+    }
+
+    /**
+     * @return objectId as String
+     */
+    @Column(name = "objectid", 
+        nullable = false)
+    public String getObjectIdString() {
+        return mcrObjectId.toString();
+    }
+
+    /**
+     * @param objectId id as String
+     */
+    public void setObjectIdString(String objectIdString) {
+        this.mcrObjectId = MCRObjectID.getInstance(objectIdString.trim());
     }
 
     /**
@@ -114,23 +162,6 @@ public class MIRAccessKey {
      */
     public void setType(String type) {
         this.type = type;
-    }
-
-    /**
-     * @return access key information
-     */
-    @JsonBackReference
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "fk_accesskeyinformation", nullable = false)
-    public MIRAccessKeyInformation getAccessKeyInformation() {
-        return accessKeyInformation;
-    }
-
-    /**
-     * @param MIRAccessKeyInformation access key information
-     */
-    public void setAccessKeyInformation(MIRAccessKeyInformation accessKeyInformation) {
-        this.accessKeyInformation = accessKeyInformation;
     }
 
     @Override

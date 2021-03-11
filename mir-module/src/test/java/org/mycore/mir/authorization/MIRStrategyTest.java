@@ -37,7 +37,6 @@ import org.mycore.datamodel.metadata.MCRObjectID;
 import org.mycore.frontend.cli.MCRCommandLineInterface;
 import org.mycore.frontend.cli.MCRCommandManager;
 import org.mycore.mir.authorization.accesskeys.MIRAccessKey;
-import org.mycore.mir.authorization.accesskeys.MIRAccessKeyInformation;
 import org.mycore.mir.authorization.accesskeys.MIRAccessKeyManager;
 import org.mycore.user2.MCRUser;
 import org.mycore.user2.MCRUserManager;
@@ -158,10 +157,10 @@ public class MIRStrategyTest extends MCRJPATestCase {
         assertTrue(strategy.checkPermission(mir_derivate_00004711.toString(), MCRAccessManager.PERMISSION_READ));
         Assert
             .assertFalse(strategy.checkPermission(mir_derivate_00004711.toString(), MCRAccessManager.PERMISSION_WRITE));
-        MIRAccessKey accessKeyRead = new MIRAccessKey("mySecret", "read");
-        MIRAccessKey accessKeyWrite = new MIRAccessKey("letMeIn", "writedb");
-        MIRAccessKeyManager.addAccessKey(mir_mods_00004711, accessKeyRead);
-        MIRAccessKeyManager.addAccessKey(mir_mods_00004711, accessKeyWrite);
+        MIRAccessKey accessKeyRead = new MIRAccessKey(mir_mods_00004711, "mySecret", "read");
+        MIRAccessKey accessKeyWrite = new MIRAccessKey(mir_mods_00004711, "letMeIn", "writedb");
+        MIRAccessKeyManager.addAccessKey(accessKeyRead);
+        MIRAccessKeyManager.addAccessKey(accessKeyWrite);
 
         final MCRCategLinkService categLinkService = MCRCategLinkServiceFactory.getInstance();
         MCRCategLinkReference ref = new MCRCategLinkReference(mir_mods_00004711);

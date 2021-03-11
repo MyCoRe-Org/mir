@@ -83,46 +83,46 @@ public class TestAccessKeys extends MCRJPATestCase {
     @Test(expected = MIRAccessKeyManagerException.class)
     public void testAddKeyWithoutValue() {
         final MCRObjectID objectId = MCRObjectID.getInstance(MCR_OBJECT_ID);
-        final MIRAccessKey accessKey = new MIRAccessKey(null, READ);
-        MIRAccessKeyManager.addAccessKey(objectId, accessKey);
+        final MIRAccessKey accessKey = new MIRAccessKey(objectId, null, READ);
+        MIRAccessKeyManager.addAccessKey(accessKey);
     }
 
     @Test(expected = MIRAccessKeyManagerException.class)
     public void testAddKeyWithEmptyValue() {
         final MCRObjectID objectId = MCRObjectID.getInstance(MCR_OBJECT_ID);
-        final MIRAccessKey accessKey = new MIRAccessKey("", READ);
-        MIRAccessKeyManager.addAccessKey(objectId, accessKey);
+        final MIRAccessKey accessKey = new MIRAccessKey(objectId, "", READ);
+        MIRAccessKeyManager.addAccessKey(accessKey);
     }
 
     @Test(expected = MIRAccessKeyManagerException.class)
     public void testAddKeyWithoutType() {
         final MCRObjectID objectId = MCRObjectID.getInstance(MCR_OBJECT_ID);
-        final MIRAccessKey accessKey = new MIRAccessKey(KEY, null);
-        MIRAccessKeyManager.addAccessKey(objectId, accessKey);
+        final MIRAccessKey accessKey = new MIRAccessKey(objectId, KEY, null);
+        MIRAccessKeyManager.addAccessKey(accessKey);
     }
 
     @Test(expected = MIRAccessKeyManagerException.class)
     public void testAddKeyWithWrongType() {
         final MCRObjectID objectId = MCRObjectID.getInstance(MCR_OBJECT_ID);
-        final MIRAccessKey accessKey = new MIRAccessKey(KEY, KEY);
-        MIRAccessKeyManager.addAccessKey(objectId, accessKey);
+        final MIRAccessKey accessKey = new MIRAccessKey(objectId, KEY, KEY);
+        MIRAccessKeyManager.addAccessKey(accessKey);
     }
 
     @Test(expected = MIRAccessKeyManagerException.class)
     public void testKeyCollision() {
         final MCRObjectID objectId = MCRObjectID.getInstance(MCR_OBJECT_ID);
-        MIRAccessKey accessKeyRead = new MIRAccessKey(KEY, READ);
-        MIRAccessKey accessKeyWrite = new MIRAccessKey(KEY, WRITE);
+        MIRAccessKey accessKeyRead = new MIRAccessKey(objectId, KEY, READ);
+        MIRAccessKey accessKeyWrite = new MIRAccessKey(objectId, KEY, WRITE);
 
-        MIRAccessKeyManager.addAccessKey(objectId, accessKeyRead);
-        MIRAccessKeyManager.addAccessKey(objectId, accessKeyWrite);
+        MIRAccessKeyManager.addAccessKey(accessKeyRead);
+        MIRAccessKeyManager.addAccessKey(accessKeyWrite);
     }
 
     @Test
     public void testAddKey() throws MCRException, IOException {
         final MCRObjectID objectId = MCRObjectID.getInstance(MCR_OBJECT_ID);
-        final MIRAccessKey accessKey = new MIRAccessKey(KEY, READ);
-        MIRAccessKeyManager.addAccessKey(objectId, accessKey);
+        final MIRAccessKey accessKey = new MIRAccessKey(objectId, KEY, READ);
+        MIRAccessKeyManager.addAccessKey(accessKey);
 
         endTransaction();
         startNewTransaction();
@@ -133,8 +133,8 @@ public class TestAccessKeys extends MCRJPATestCase {
     @Test
     public void testGetAccessKeys() throws MCRException, IOException {
         final MCRObjectID objectId = MCRObjectID.getInstance(MCR_OBJECT_ID);
-        final MIRAccessKey accessKey = new MIRAccessKey(KEY, READ);
-        MIRAccessKeyManager.addAccessKey(objectId, accessKey);
+        final MIRAccessKey accessKey = new MIRAccessKey(objectId, KEY, READ);
+        MIRAccessKeyManager.addAccessKey(accessKey);
 
         endTransaction();
         startNewTransaction();
@@ -142,8 +142,8 @@ public class TestAccessKeys extends MCRJPATestCase {
         List<MIRAccessKey> accessKeys = MIRAccessKeyManager.getAccessKeys(objectId);
         assertTrue(accessKeys.size() == 1);
 
-        final MIRAccessKey accessKeyTwo = new MIRAccessKey(KEY, READ);
-        MIRAccessKeyManager.addAccessKey(objectId, accessKeyTwo);
+        final MIRAccessKey accessKeyTwo = new MIRAccessKey(objectId, KEY, READ);
+        MIRAccessKeyManager.addAccessKey(accessKeyTwo);
 
         endTransaction();
         startNewTransaction();
@@ -156,8 +156,8 @@ public class TestAccessKeys extends MCRJPATestCase {
     public void testDeleteKey() throws MCRAccessException {
         final MCRObjectID objectId = MCRObjectID.getInstance(MCR_OBJECT_ID);
 
-        MIRAccessKey accessKey = new MIRAccessKey(KEY, READ);
-        MIRAccessKeyManager.addAccessKey(objectId, accessKey);
+        MIRAccessKey accessKey = new MIRAccessKey(objectId, KEY, READ);
+        MIRAccessKeyManager.addAccessKey(accessKey);
 
         endTransaction();
         startNewTransaction();
@@ -172,33 +172,18 @@ public class TestAccessKeys extends MCRJPATestCase {
     }
 
     @Test
-    public void testDeleteAllAccessKeys() throws MCRAccessException {
-        final MCRObjectID objectId = MCRObjectID.getInstance(MCR_OBJECT_ID);
-
-        MIRAccessKey accessKey = new MIRAccessKey(KEY, READ);
-        MIRAccessKeyManager.addAccessKey(objectId, accessKey);
-
-        endTransaction();
-        startNewTransaction();
-        
-        MIRAccessKeyManager.deleteAllAccessKeys();
-
-        assertTrue(MIRAccessKeyManager.getAccessKey(objectId, KEY) == null);
-    }
-
-    @Test
     public void testUpdateKey() throws MCRAccessException {
         final MCRObjectID objectId = MCRObjectID.getInstance(MCR_OBJECT_ID);
 
-        MIRAccessKey accessKey = new MIRAccessKey(KEY, READ);
-        MIRAccessKeyManager.addAccessKey(objectId, accessKey);
+        MIRAccessKey accessKey = new MIRAccessKey(objectId, KEY, READ);
+        MIRAccessKeyManager.addAccessKey(accessKey);
 
         endTransaction();
         startNewTransaction();
 
         accessKey = MIRAccessKeyManager.getAccessKey(objectId, KEY);
 
-        MIRAccessKey newAccessKey = new MIRAccessKey(KEY, WRITE);
+        MIRAccessKey newAccessKey = new MIRAccessKey(objectId, KEY, WRITE);
         newAccessKey.setId(accessKey.getId());
         MIRAccessKeyManager.updateAccessKey(newAccessKey);
 
@@ -215,8 +200,8 @@ public class TestAccessKeys extends MCRJPATestCase {
     public void testTransientUser() throws SAXParseException, IOException, URISyntaxException {
         final MCRObjectID objectId = MCRObjectID.getInstance(MCR_OBJECT_ID);
 
-        final MIRAccessKey accessKey = new MIRAccessKey(KEY, WRITE);
-        MIRAccessKeyManager.addAccessKey(objectId, accessKey);
+        final MIRAccessKey accessKey = new MIRAccessKey(objectId, KEY, WRITE);
+        MIRAccessKeyManager.addAccessKey(accessKey);
 
         MCRUser user = new MCRUser("junit");
         user.setRealName("Test Case");

@@ -93,7 +93,7 @@ public class MIRAccessKeyEventHandler extends MCREventHandlerBase {
 
     private void handleDeleted(final MCRBase obj) {
         try {
-            MIRAccessKeyManager.deleteAccessKeyInformation(obj.getId());
+            MIRAccessKeyManager.deleteAccessKeys(obj.getId());
         } catch(MIRAccessKeyManagerException e) {
             LOGGER.warn("AccessKeyInformation doesnt exists.");
         }
