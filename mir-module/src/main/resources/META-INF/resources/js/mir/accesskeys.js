@@ -35,7 +35,6 @@ function generateKey(plength) {
 };
 
 function addAccessKeyTableRow(accessKey) {
-    console.log(accessKey);
     const table = document.getElementById("accessKeys");
     const index = table.rows.length++;
     let row = table.insertRow(-1);
@@ -65,8 +64,7 @@ function addAccessKeyTableRow(accessKey) {
     editCell.appendChild(a);
 }
 
-function proccessAccessKeyInformation(accessKeyInformation) {
-    accessKeys = accessKeyInformation["accessKeys"];
+function proccessAccessKeyInformation(accessKeys) {
     for (key in accessKeys) {
         if (accessKeys.hasOwnProperty(key)) {
             const accessKey = accessKeys[key];
@@ -96,7 +94,6 @@ $(document).ready(function() {
         backdrop: 'static',
         show:false,
     });
-
 
     $("#accessKeyNew").click(function() {
         disableButtons();
@@ -210,7 +207,7 @@ $(document).ready(function() {
     });
 
     $.ajax({
-        url: webApplicationBaseURL + "rsc/accesskey/",
+        url: webApplicationBaseURL + "rsc/accesskey/" + objectId,
         error: function() {
             $('#mainError').show();
             $('#manageAccessKeys').hide();

@@ -20,6 +20,7 @@
  * If not, write to the Free Software Foundation Inc.,
  * 59 Temple Place - Suite 330, Boston, MA  02111-1307 USA
  */
+
 package org.mycore.mir.authorization.accesskeys;
 
 import org.apache.logging.log4j.LogManager;
@@ -29,15 +30,10 @@ import org.mycore.common.events.MCREventHandlerBase;
 import org.mycore.datamodel.metadata.MCRBase;
 import org.mycore.datamodel.metadata.MCRDerivate;
 import org.mycore.datamodel.metadata.MCRObject;
-import org.mycore.mir.authorization.accesskeys.MIRAccessKeyManager.MIRAccessKeyManagerException;
-
 
 /**
  * This class contains EventHandler methods to manage access keys of
  * MCRObjects and MCRDerivates.
- * org.jdom2.output.XMLOutputter
- * @author Ren\u00E9 Adler (eagle)
- * @since 0.3
  */
 public class MIRAccessKeyEventHandler extends MCREventHandlerBase {
 
@@ -48,7 +44,7 @@ public class MIRAccessKeyEventHandler extends MCREventHandlerBase {
      */
     @Override
     protected void handleObjectCreated(MCREvent evt, MCRObject obj) {
-        return;
+        handleCreated(obj);
     }
 
     /* (non-Javadoc)
@@ -56,7 +52,7 @@ public class MIRAccessKeyEventHandler extends MCREventHandlerBase {
      */
     @Override
     protected void handleObjectUpdated(MCREvent evt, MCRObject obj) {
-        return;
+        handleUpdated(obj);
     }
 
     /* (non-Javadoc)
@@ -72,7 +68,7 @@ public class MIRAccessKeyEventHandler extends MCREventHandlerBase {
      */
     @Override
     protected void handleDerivateCreated(MCREvent evt, MCRDerivate der) {
-        return;
+        handleCreated(der);
     }
 
     /* (non-Javadoc)
@@ -80,7 +76,7 @@ public class MIRAccessKeyEventHandler extends MCREventHandlerBase {
      */
     @Override
     protected void handleDerivateUpdated(MCREvent evt, MCRDerivate der) {
-        return;
+        handleUpdated(der);
     }
 
     /* (non-Javadoc)
@@ -91,11 +87,15 @@ public class MIRAccessKeyEventHandler extends MCREventHandlerBase {
         handleDeleted(der);
     }
 
+    private void handleCreated(final MCRBase obj) {
+        MIRAccessKeyManager.addAccessKeys(obj.getId(), null);
+    }
+
+    private void handleUpdated(final MCRBase obj) {
+        MIRAccessKeyManager.updateAccessKeys(obj.getId(), null);
+    }
+
     private void handleDeleted(final MCRBase obj) {
-        try {
-            MIRAccessKeyManager.deleteAccessKeys(obj.getId());
-        } catch(MIRAccessKeyManagerException e) {
-            LOGGER.warn("AccessKeyInformation doesnt exists.");
-        }
+        MIRAccessKeyManager.deleteAccessKeys(obj.getId());
     }
 }

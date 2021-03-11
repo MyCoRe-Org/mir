@@ -42,7 +42,7 @@ public class MIRAccessKeyResource {
     @GET
     @Path("/{object}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getAccessKeyInformation(@PathParam("object") String object) {
+    public Response getAccessKeyInformation(@PathParam("object") final String object) {
         final MCRUser user = MCRUserManager.getCurrentUser();
         if (user.getUserID().equals(MCRSystemUserInformation.getGuestInstance().getUserID())) {
             return Response.status(Response.Status.FORBIDDEN).build();
@@ -52,10 +52,9 @@ public class MIRAccessKeyResource {
             if (!MCRAccessManager.checkPermission(objectId, PERMISSION_WRITE)) {
                 return Response.status(Response.Status.FORBIDDEN).build();
             }
-            List<MIRAccessKey> accessKeys 
+            final List<MIRAccessKey> accessKeys 
                 = MIRAccessKeyManager.getAccessKeys(objectId);
-            String result = MIRAccessKeyTransformer.accessKeysToJson(accessKeys);
-            System.out.println(result);
+            final String result = MIRAccessKeyTransformer.accessKeysToJson(accessKeys);
             return Response.status(Response.Status.OK).entity(result).build();
         } catch (MCRException e) {
             LOGGER.error("failed! {}", e);
@@ -68,8 +67,8 @@ public class MIRAccessKeyResource {
 
     @POST
     @Path("/{object}")
-    public Response setAccessKey(@PathParam("object") String object, @FormParam("value") String value,
-        @HeaderParam("Referer") String referer) {
+    public Response setAccessKey(@PathParam("object") final String object, @FormParam("value") final String value,
+        @HeaderParam("Referer") final String referer) {
         if (value == null) {
             return Response.status(Response.Status.BAD_REQUEST)
                 .entity(MCRTranslation.translate("mir.accesskey.invalidKey")).build();
@@ -97,7 +96,7 @@ public class MIRAccessKeyResource {
     @Path("/{object}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response addAccessKey(@PathParam("object") String object, String json) {
+    public Response addAccessKey(@PathParam("object") final String object, final String json) {
         final MCRUser user = MCRUserManager.getCurrentUser();
         if (user.getUserID().equals(MCRSystemUserInformation.getGuestInstance().getUserID())) {
             return Response.status(Response.Status.FORBIDDEN).build();
@@ -108,9 +107,10 @@ public class MIRAccessKeyResource {
                 return Response.status(Response.Status.FORBIDDEN).build();
             }
             final MIRAccessKey accessKey = MIRAccessKeyTransformer.jsonToAccessKey(json);
+            accessKey.setObjectId(objectId);
             MIRAccessKeyManager.addAccessKey(accessKey);
             final MIRAccessKey accessKeyResult = MIRAccessKeyManager.getAccessKey(objectId, accessKey.getValue());
-            String result = MIRAccessKeyTransformer.accessKeyToJson(accessKeyResult);
+            final String result = MIRAccessKeyTransformer.accessKeyToJson(accessKeyResult);
             return Response.status(Response.Status.OK).entity(result).build();
         } catch(MIRAccessKeyManagerException e) {
             return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
@@ -122,7 +122,7 @@ public class MIRAccessKeyResource {
 
     @DELETE
     @Path("/{object}/{uuid}")
-    public Response deleteAccessKey(@PathParam("object") String object, @PathParam("uuid") String id) {
+    public Response deleteAccessKey(@PathParam("object") final String object, @PathParam("uuid") final UUID uuid) {
         final MCRUser user = MCRUserManager.getCurrentUser();
         if (user.getUserID().equals(MCRSystemUserInformation.getGuestInstance().getUserID())) {
             return Response.status(Response.Status.FORBIDDEN).build();
@@ -132,7 +132,6 @@ public class MIRAccessKeyResource {
             if (!MCRAccessManager.checkPermission(objectId, PERMISSION_WRITE)) {
                 return Response.status(Response.Status.FORBIDDEN).build();
             }
-            final UUID uuid = UUID.fromString(id);
             MIRAccessKeyManager.deleteAccessKey(uuid);
             return Response.status(Response.Status.OK).build();
         } catch(MIRAccessKeyManagerException e) {
@@ -146,7 +145,8 @@ public class MIRAccessKeyResource {
     @POST
     @Path("/{object}/{uuid}")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response updateAccessKey(@PathParam("object") String object, @PathParam("uuid") UUID uuid, String json) {
+    public Response updateAccessKey(@PathParam("object") final String object, 
+            @PathParam("uuid") final UUID uuid, final String json) {
         final MCRUser user = MCRUserManager.getCurrentUser();
         if (user.getUserID().equals(MCRSystemUserInformation.getGuestInstance().getUserID())) {
                 return Response.status(Response.Status.FORBIDDEN).build();

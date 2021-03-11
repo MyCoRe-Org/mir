@@ -102,6 +102,26 @@ public final class MIRAccessKeyManager {
     }
 
     /**
+     * Update access keys.
+     *
+     * @param objectId the {@link MCRObjectID}
+     * @param accessKeys the access keys as list
+     */
+    public static synchronized void updateAccessKeys(MCRObjectID objectId, List<MIRAccessKey> accessKeys) {
+
+    }
+
+    /**
+     * Update access keys.
+     *
+     * @param objectId the {@link MCRObjectID}
+     * @param accessKeys the access keys as list
+     */
+    public static synchronized void addAccessKeys(MCRObjectID objectId, List<MIRAccessKey> accessKeys) {
+
+    }
+
+    /**
      * Add the access key to the current {@link MCRUser} for given {@link MCRObjectID}.
      *
      * @param user the {@link MCRUser} the key should assigned

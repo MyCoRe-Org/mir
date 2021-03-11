@@ -25,6 +25,8 @@ package org.mycore.mir.authorization.accesskeys;
 
 import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -82,6 +84,18 @@ public class MIRAccessKey {
      * @param value the value the user must know to acquire permission.
      * @param type the type of permission.
      */
+    public MIRAccessKey(final String value, final String type) {
+        setValue(value);
+        setType(type);
+    }
+
+    /**
+     * Creates a new access key with value and type.
+     *
+     * @param objectId the assigned {@MCRObjectID}.
+     * @param value the value the user must know to acquire permission.
+     * @param type the type of permission.
+     */
     public MIRAccessKey(final MCRObjectID objectId, final String value, final String type) {
         setObjectId(objectId);
         setValue(value);
@@ -91,6 +105,7 @@ public class MIRAccessKey {
     /**
      * @return the linked mcrObjectId
      */
+    @JsonIgnore
     @Transient
     public MCRObjectID getObjectId() {
         return mcrObjectId;
@@ -106,6 +121,7 @@ public class MIRAccessKey {
     /**
      * @return objectId as String
      */
+    @JsonIgnore
     @Column(name = "objectid", 
         nullable = false)
     public String getObjectIdString() {
@@ -124,7 +140,8 @@ public class MIRAccessKey {
      */
     @Id
     @GeneratedValue
-    @Column(name = "accesskey_id")
+    @Column(name = "accesskey_id",
+        nullable = false)
     public UUID getId() {
         return id;
     }
@@ -139,6 +156,8 @@ public class MIRAccessKey {
     /**
      * @return the key value
      */
+    @Column(name = "value",
+        nullable = false)
     public String getValue() {
         return value;
     }
@@ -153,6 +172,8 @@ public class MIRAccessKey {
     /**
      * @return permission type 
      */
+    @Column(name = "type",
+        nullable = false)
     public String getType() {
         return type;
     }
