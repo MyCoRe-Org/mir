@@ -30,6 +30,10 @@ public class MIRAccessKeyResolver implements URIResolver {
 
         List<MIRAccessKey> accessKeys = MIRAccessKeyManager.getAccessKeys(objectId);
         
+        if (accessKeys.size() == 0) {
+            return new JDOMSource(new Element("null"));
+        }
+        
         Element main = new Element("servflag");
         main.setAttribute("type", "accesskeys");
         main.setAttribute("inherited", "0");
