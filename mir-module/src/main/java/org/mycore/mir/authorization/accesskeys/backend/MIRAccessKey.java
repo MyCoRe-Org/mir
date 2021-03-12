@@ -37,12 +37,6 @@ import javax.persistence.Transient;
 
 import org.mycore.datamodel.metadata.MCRObjectID;
 
-/**
- * Access keys for a {@link MCRObject}.
- * An access keys contains a value and a type.
- * Value is the key value of the key and type the permission.
- */
-
 @NamedQueries({
     @NamedQuery(name = "MIRAccessKey.getById",
         query = "SELECT k"
@@ -58,6 +52,11 @@ import org.mycore.datamodel.metadata.MCRObjectID;
             + "  WHERE k.objectIdString = :objId"),
 })
  
+/**
+ * Access keys for a {@link MCRObject}.
+ * An access keys contains a value and a type.
+ * Value is the key value of the key and type the permission.
+ */
 @Entity
 public class MIRAccessKey {
 
