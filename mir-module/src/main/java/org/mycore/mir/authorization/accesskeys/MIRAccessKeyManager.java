@@ -86,7 +86,7 @@ public final class MIRAccessKeyManager {
      * @param accessKey the access key
      * @throws MIRAccessKeyException key is not valid
      */
-    public static synchronized void addAccessKey(MIRAccessKey accessKey) 
+    public static synchronized void addAccessKey(final MIRAccessKey accessKey) 
         throws MIRAccessKeyException {
         final MCRObjectID objectId = accessKey.getObjectId();
         if (objectId == null) {
@@ -110,7 +110,8 @@ public final class MIRAccessKeyManager {
      * @param objectId the {@link MCRObjectID}
      * @param accessKeys the access keys as list
      */
-    public static synchronized void updateAccessKeys(MCRObjectID objectId, List<MIRAccessKey> accessKeys) {
+    public static synchronized void updateAccessKeys(final MCRObjectID objectId, final List<MIRAccessKey> accessKeys)
+        throws MIRAccessKeyException {
         for (MIRAccessKey accessKey : accessKeys) {
             accessKey.setObjectId(objectId);
             try {
@@ -128,8 +129,8 @@ public final class MIRAccessKeyManager {
      * @param objectId the {@link MCRObjectID}
      * @param accessKeys the access keys as list
      */
-    public static synchronized void addAccessKeys(MCRObjectID objectId, List<MIRAccessKey> accessKeys) {
-        //TODO check for collision
+    public static synchronized void addAccessKeys(final MCRObjectID objectId, final List<MIRAccessKey> accessKeys)
+        throws MIRAccessKeyException {
         for (MIRAccessKey accessKey : accessKeys) {
             accessKey.setObjectId(objectId);
             addAccessKey(accessKey);
@@ -166,7 +167,7 @@ public final class MIRAccessKeyManager {
      * @param objectId the id of the object
      * @param type the permission type
      */
-    private static void cleanPermissionCache(final MCRObjectID objectId, String type) {
+    private static void cleanPermissionCache(final MCRObjectID objectId, final String type) {
         if (type.equals(MCRAccessManager.PERMISSION_READ)) {
             MCRAccessManager.invalidPermissionCache(objectId.toString(), MCRAccessManager.PERMISSION_READ);
         } else {
@@ -218,7 +219,7 @@ public final class MIRAccessKeyManager {
      * @param objectId the {@link MCRObjectID}
      */
     public static void clearAccessKeys(final MCRObjectID objectId) {
-        final EntityManager em = MCREntityManagerProvider.getCurrentEntityManager(); //TODO
+        final EntityManager em = MCREntityManagerProvider.getCurrentEntityManager();
         em.createNamedQuery("MIRAccessKey.cleanById", MIRAccessKey.class)
             .setParameter("objId", objectId.toString())
             .executeUpdate();
@@ -312,6 +313,10 @@ public final class MIRAccessKeyManager {
      * @throws MCRException if key does not exists
      */
     public static synchronized void updateAccessKey(MIRAccessKey newAccessKey) throws MIRAccessKeyException {
+        if (newAccessKey.getId() == null) {
+            LOGGER.warn("Cannot update Key without id.");
+            throw new MIRAccessKeyNotFoundException(MCRTranslation.translate("mir.accesskey.unknownKey"));
+        }
         if (isValidAccessKey(newAccessKey)) { 
             final EntityManager em = MCREntityManagerProvider.getCurrentEntityManager();
             final MIRAccessKey accessKey = em.find(MIRAccessKey.class, newAccessKey.getId());
@@ -335,5 +340,4 @@ public final class MIRAccessKeyManager {
             }
         }
     }
-
 }
