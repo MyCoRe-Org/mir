@@ -164,7 +164,7 @@ public class TestAccessKeys extends MCRJPATestCase {
         startNewTransaction();
 
         accessKey = MIRAccessKeyManager.getAccessKey(objectId, KEY);
-        MIRAccessKeyManager.deleteAccessKey(accessKey.getId());
+        MIRAccessKeyManager.removeAccessKey(accessKey.getId());
 
         endTransaction();
         startNewTransaction();

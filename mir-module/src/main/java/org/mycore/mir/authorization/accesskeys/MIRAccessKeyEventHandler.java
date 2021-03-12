@@ -130,6 +130,6 @@ public class MIRAccessKeyEventHandler extends MCREventHandlerBase {
     }
 
     private void handleDeleted(final MCRBase obj) {
-        MIRAccessKeyManager.deleteAccessKeys(obj.getId());
+        MIRAccessKeyManager.clearAccessKeys(obj.getId());
     }
 }

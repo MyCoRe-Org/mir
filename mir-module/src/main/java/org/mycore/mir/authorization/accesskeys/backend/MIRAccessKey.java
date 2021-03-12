@@ -46,10 +46,13 @@ import org.mycore.datamodel.metadata.MCRObjectID;
         query = "SELECT k"
             + "  FROM MIRAccessKey k"
             + "  WHERE k.value = :value AND k.objectIdString = :objId"),
-    @NamedQuery(name = "MIRAccessKey.deleteById",
+    @NamedQuery(name = "MIRAccessKey.clearById",
         query = "DELETE"
             + "  FROM MIRAccessKey k"
             + "  WHERE k.objectIdString = :objId"),
+    @NamedQuery(name = "MIRAccessKey.clear",
+        query = "DELETE"
+            + "  FROM MIRAccessKey k"),
 })
  
 /**

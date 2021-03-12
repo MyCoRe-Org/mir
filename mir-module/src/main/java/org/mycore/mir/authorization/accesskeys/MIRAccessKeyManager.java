@@ -177,9 +177,10 @@ public final class MIRAccessKeyManager {
     /**
      * Deletes all access keys.
      */
-    protected static void deleteAllAccessKeys() {
+    protected static void clearAccessKeys() {
         final EntityManager em = MCREntityManagerProvider.getCurrentEntityManager();
-        em.createQuery("DELETE FROM MIRAccessKey").executeUpdate();
+        em.createNamedQuery("MIRAccessKey.clean", MIRAccessKey.class)
+            .executeUpdate();
     }
 
     /**
@@ -188,11 +189,11 @@ public final class MIRAccessKeyManager {
      * @param id the id of the key
      * @throws MCRException if key does not exists
      */
-    public static synchronized void deleteAccessKey(final UUID id) throws MIRAccessKeyException {
+    public static synchronized void removeAccessKey(final UUID id) throws MIRAccessKeyException {
         final EntityManager em = MCREntityManagerProvider.getCurrentEntityManager();
         final MIRAccessKey accessKey = em.find(MIRAccessKey.class, id);
         if (accessKey != null) {
-            deleteAccessKey(accessKey);
+            removeAccessKey(accessKey);
         } else {
             LOGGER.warn("Key does not exists.");
             throw new MIRAccessKeyNotFoundException(MCRTranslation.translate("mir.accesskey.unknownKey"));
@@ -205,7 +206,7 @@ public final class MIRAccessKeyManager {
      * @param id the id of the key
      * @throws MCRException if key does not exists
      */
-    private static void deleteAccessKey(final MIRAccessKey accessKey) {
+    private static void removeAccessKey(final MIRAccessKey accessKey) {
         final EntityManager em = MCREntityManagerProvider.getCurrentEntityManager();
         em.remove(accessKey);
         cleanPermissionCache(accessKey.getObjectId(), accessKey.getType());
@@ -216,9 +217,9 @@ public final class MIRAccessKeyManager {
      *
      * @param objectId the {@link MCRObjectID}
      */
-    public static void deleteAccessKeys(final MCRObjectID objectId) {
+    public static void clearAccessKeys(final MCRObjectID objectId) {
         final EntityManager em = MCREntityManagerProvider.getCurrentEntityManager(); //TODO
-        em.createNamedQuery("MIRAccessKey.deleteById", MIRAccessKey.class)
+        em.createNamedQuery("MIRAccessKey.cleanById", MIRAccessKey.class)
             .setParameter("objId", objectId.toString())
             .executeUpdate();
     }
@@ -228,8 +229,8 @@ public final class MIRAccessKeyManager {
      *
      * @param objectId the {@link MCRObjectID}
      */
-    public static void deleteAccessKeyAttribute(final MCRObjectID objectId) {
-        deleteAccessKeyAttribute(MCRUserManager.getCurrentUser(), objectId);
+    public static void removeAccessKeyAttribute(final MCRObjectID objectId) {
+        removeAccessKeyAttribute(MCRUserManager.getCurrentUser(), objectId);
     }
 
     /**
@@ -238,7 +239,7 @@ public final class MIRAccessKeyManager {
      * @param user the {@link MCRUser}
      * @param objectId the {@link MCRObjectID}
      */
-    public static void deleteAccessKeyAttribute(final MCRUser user, final MCRObjectID objectId) {
+    public static void removeAccessKeyAttribute(final MCRUser user, final MCRObjectID objectId) {
         user.getAttributes().removeIf(ua -> ua.getName().equals(ACCESS_KEY_PREFIX + objectId.toString()));
         MCRUserManager.updateUser(user);
     }

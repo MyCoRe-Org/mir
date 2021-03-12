@@ -34,7 +34,7 @@ public class MIRKeyStrategyHelper {
                 }
                 if (isReadPermission) {
                     LOGGER.warn("Neither read nor write key matches. Remove access key from user.");
-                    MIRAccessKeyManager.deleteAccessKeyAttribute(objectId);
+                    MIRAccessKeyManager.removeAccessKeyAttribute(objectId);
                 }
             }
         }
