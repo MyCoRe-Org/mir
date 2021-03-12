@@ -1,3 +1,4 @@
+const RSC_URL = webApplicationBaseURL + "rsc/accesskey/";
 let accessKeys = undefined;
 
 function getParameterByName(name, url = window.location.href) {
@@ -110,7 +111,7 @@ $(document).ready(function() {
         }
             
         $.ajax({
-            url: webApplicationBaseURL + "rsc/accesskey/" + objectId,
+            url: RSC_URL + objectId,
             type: 'PUT',
             data: JSON.stringify(accessKey),
             contentType: 'application/json',
@@ -159,7 +160,7 @@ $(document).ready(function() {
         disableButtons();
         const accessKeyId = $(this).data('id');
         $.ajax({
-            url: webApplicationBaseURL + "rsc/accesskey/" + objectId + "/" + accessKeyId,
+            url: RSC_URL + objectId + "/" + accessKeyId,
             type: 'DELETE',
             success: function(data) {
                 location.reload();
@@ -189,7 +190,7 @@ $(document).ready(function() {
         }
         
         $.ajax({
-            url: webApplicationBaseURL + "rsc/accesskey/" + objectId + "/" + accessKeyId,
+            url: RSC_URL + objectId + "/" + accessKeyId,
             type: 'POST',
             data: JSON.stringify(accessKey),
             contentType: 'application/json',
@@ -207,7 +208,7 @@ $(document).ready(function() {
     });
 
     $.ajax({
-        url: webApplicationBaseURL + "rsc/accesskey/" + objectId,
+        url: RSC_URL + objectId,
         error: function() {
             $('#mainError').show();
             $('#manageAccessKeys').hide();

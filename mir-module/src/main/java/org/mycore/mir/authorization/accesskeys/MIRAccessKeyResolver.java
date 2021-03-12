@@ -55,8 +55,8 @@ public class MIRAccessKeyResolver implements URIResolver {
         }
         
         try {
-            final String json = accessKeysToJson(accessKeys);
-            final Element servFlag = accessKeysJsonToServFlag(json);
+            final String json = MIRAccessKeyTransformer.accessKeysToJson(accessKeys);
+            final Element servFlag = MIRAccessKeyTransformer.accessKeysJsonToServFlag(json);
             return new JDOMSource(servFlag);
         } catch (JsonProcessingException e) {
             LOGGER.error("Access keys could not be converted.");
