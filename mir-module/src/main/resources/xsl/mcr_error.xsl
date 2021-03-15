@@ -60,43 +60,5 @@
     </div>
   </xsl:template>
 
-  <xsl:template match="/mcr_error[contains('401|403', @HttpError)]">
-    <div class="alert alert-warning">
-      <h1>
-        <xsl:value-of select="i18n:translate(concat('mir.error.headline.', @HttpError))" />
-      </h1>
-      <p>
-        <xsl:choose>
-          <xsl:when test=" mcrxsl:isCurrentUserGuestUser()">
-            <xsl:value-of disable-output-escaping="yes" select="i18n:translate(concat('mir.error.codes.', @HttpError), @requestURI)" />
-            <xsl:text>&#160;</xsl:text>
-            <a href="{concat( $ServletsBaseURL, 'MCRLoginServlet', $HttpSession,'?url=', encoder:encode(string($RequestURL)))}">
-              <xsl:value-of select="i18n:translate('component.user2.button.login')" />
-            </a>
-          </xsl:when>
-          <xsl:when test="contains(@requestURI, '/receive/')">
-            <xsl:variable name="objectId" select="substring-after(@requestURI,'/receive/')" />
-            <xsl:variable name="accKP" select="document(concat('accesskeys:', $objectId))" />
-            <xsl:variable name="hasAccKP" select="count($accKP/accesskeys[@readkey|@writekey]) &gt; 0" />
-
-            <xsl:choose>
-              <xsl:when test="$hasAccKP">
-                <xsl:value-of disable-output-escaping="yes" select="i18n:translate('mir.error.accessKeyRequired', $objectId)" />
-                <xsl:text>&#160;</xsl:text>
-                <a
-                  href="{concat($WebApplicationBaseURL, 'authorization/accesskey.xed', '?objId=', $objectId, '&amp;url=', encoder:encode(string($RequestURL)))}">
-                  <xsl:value-of select="i18n:translate('mir.accesskey.setOnUser')" />
-                </a>
-              </xsl:when>
-              <xsl:otherwise>
-                <xsl:value-of disable-output-escaping="yes" select="i18n:translate('mir.error.blocked')" />
-              </xsl:otherwise>
-            </xsl:choose>
-          </xsl:when>
-        </xsl:choose>
-      </p>
-    </div>
-  </xsl:template>
-
   <xsl:include href="MyCoReLayout.xsl" />
 </xsl:stylesheet>

@@ -110,29 +110,11 @@ public final class MIRAccessKeyManager {
      * @param objectId the {@link MCRObjectID}
      * @param accessKeys the access keys as list
      */
-    public static synchronized void updateAccessKeys(final MCRObjectID objectId, final List<MIRAccessKey> accessKeys)
-        throws MIRAccessKeyException {
-        for (MIRAccessKey accessKey : accessKeys) {
-            accessKey.setObjectId(objectId);
-            try {
-                updateAccessKey(accessKey);
-            } catch (MIRAccessKeyNotFoundException e) {
-                accessKey.setId(null); //prevent uuid collision
-                addAccessKey(accessKey);
-            }        
-        }
-    }
-
-    /**
-     * Update access keys.
-     *
-     * @param objectId the {@link MCRObjectID}
-     * @param accessKeys the access keys as list
-     */
     public static synchronized void addAccessKeys(final MCRObjectID objectId, final List<MIRAccessKey> accessKeys)
         throws MIRAccessKeyException {
         for (MIRAccessKey accessKey : accessKeys) {
             accessKey.setObjectId(objectId);
+            accessKey.setId(null); //prevent uuid collision
             addAccessKey(accessKey);
         }
     }
