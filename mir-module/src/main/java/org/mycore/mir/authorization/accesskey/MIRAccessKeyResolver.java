@@ -21,7 +21,7 @@
  * 59 Temple Place - Suite 330, Boston, MA  02111-1307 USA
  */
 
-package org.mycore.mir.authorization.accesskeys;
+package org.mycore.mir.authorization.accesskey;
 
 import java.util.List;
 
@@ -38,7 +38,7 @@ import org.jdom2.Element;
 import org.jdom2.transform.JDOMSource;
 
 import org.mycore.datamodel.metadata.MCRObjectID;
-import org.mycore.mir.authorization.accesskeys.backend.MIRAccessKey;
+import org.mycore.mir.authorization.accesskey.backend.MIRAccessKey;
 
 public class MIRAccessKeyResolver implements URIResolver {
 

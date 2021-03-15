@@ -21,7 +21,7 @@
  * 59 Temple Place - Suite 330, Boston, MA  02111-1307 USA
  */
 
-package org.mycore.mir.authorization.accesskeys;
+package org.mycore.mir.authorization.accesskey;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,10 +37,10 @@ import org.mycore.backend.jpa.MCREntityManagerProvider;
 import org.mycore.common.MCRSessionMgr;
 import org.mycore.datamodel.metadata.MCRObject;
 import org.mycore.datamodel.metadata.MCRObjectID;
-import org.mycore.mir.authorization.accesskeys.backend.MIRAccessKey;
-import org.mycore.mir.authorization.accesskeys.exceptions.MIRAccessKeyCollisionException;
-import org.mycore.mir.authorization.accesskeys.exceptions.MIRAccessKeyException;
-import org.mycore.mir.authorization.accesskeys.exceptions.MIRAccessKeyNotFoundException;
+import org.mycore.mir.authorization.accesskey.backend.MIRAccessKey;
+import org.mycore.mir.authorization.accesskey.exception.MIRAccessKeyCollisionException;
+import org.mycore.mir.authorization.accesskey.exception.MIRAccessKeyException;
+import org.mycore.mir.authorization.accesskey.exception.MIRAccessKeyNotFoundException;
 import org.mycore.services.i18n.MCRTranslation;
 import org.mycore.user2.MCRUser;
 import org.mycore.user2.MCRUserManager;
@@ -160,7 +160,7 @@ public final class MIRAccessKeyManager {
     /**
      * Deletes all access keys.
      */
-    protected static void clearAccessKeys() {
+    public static void clearAccessKeys() {
         final EntityManager em = MCREntityManagerProvider.getCurrentEntityManager();
         em.createNamedQuery("MIRAccessKey.clear")
             .executeUpdate();

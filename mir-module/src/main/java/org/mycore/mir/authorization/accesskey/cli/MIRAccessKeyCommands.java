@@ -21,7 +21,7 @@
  * 59 Temple Place - Suite 330, Boston, MA  02111-1307 USA
  */
 
-package org.mycore.mir.authorization.accesskeys;
+package org.mycore.mir.authorization.accesskey.cli;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -30,9 +30,11 @@ import org.mycore.datamodel.metadata.MCRObjectID;
 import org.mycore.frontend.cli.annotation.MCRCommand;
 import org.mycore.frontend.cli.annotation.MCRCommandGroup;
 
+import org.mycore.mir.authorization.accesskey.MIRAccessKeyManager;
+
 @MCRCommandGroup(
     name = "Access keys")
-public class MIRAccessKeyUtils {
+public class MIRAccessKeyCommands {
     
     private static final Logger LOGGER = LogManager.getLogger();
 

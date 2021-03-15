@@ -21,7 +21,7 @@
  * 59 Temple Place - Suite 330, Boston, MA  02111-1307 USA
  */
 
-package org.mycore.mir.authorization.accesskeys.backend;
+package org.mycore.mir.authorization.accesskey.backend;
 
 import java.util.UUID;
 

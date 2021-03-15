@@ -21,7 +21,7 @@
  * 59 Temple Place - Suite 330, Boston, MA  02111-1307 USA
  */
 
-package org.mycore.mir.authorization.accesskeys;
+package org.mycore.mir.authorization.accesskey.frontend;
 
 import static org.mycore.access.MCRAccessManager.PERMISSION_WRITE;
 
@@ -52,8 +52,10 @@ import org.mycore.access.MCRAccessManager;
 import org.mycore.common.MCRException;
 import org.mycore.common.MCRSystemUserInformation;
 import org.mycore.datamodel.metadata.MCRObjectID;
-import org.mycore.mir.authorization.accesskeys.backend.MIRAccessKey;
-import org.mycore.mir.authorization.accesskeys.exceptions.MIRAccessKeyException;
+import org.mycore.mir.authorization.accesskey.backend.MIRAccessKey;
+import org.mycore.mir.authorization.accesskey.exception.MIRAccessKeyException;
+import org.mycore.mir.authorization.accesskey.MIRAccessKeyManager;
+import org.mycore.mir.authorization.accesskey.MIRAccessKeyTransformer;
 import org.mycore.services.i18n.MCRTranslation;
 import org.mycore.user2.MCRUser;
 import org.mycore.user2.MCRUserManager;

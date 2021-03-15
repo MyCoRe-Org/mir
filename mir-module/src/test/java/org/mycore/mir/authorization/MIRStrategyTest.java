@@ -36,8 +36,8 @@ import org.mycore.datamodel.common.MCRLinkTableManager;
 import org.mycore.datamodel.metadata.MCRObjectID;
 import org.mycore.frontend.cli.MCRCommandLineInterface;
 import org.mycore.frontend.cli.MCRCommandManager;
-import org.mycore.mir.authorization.accesskeys.backend.MIRAccessKey;
-import org.mycore.mir.authorization.accesskeys.MIRAccessKeyManager;
+import org.mycore.mir.authorization.accesskey.backend.MIRAccessKey;
+import org.mycore.mir.authorization.accesskey.MIRAccessKeyManager;
 import org.mycore.user2.MCRUser;
 import org.mycore.user2.MCRUserManager;
 

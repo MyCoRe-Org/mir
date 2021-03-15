@@ -21,13 +21,10 @@
  * 59 Temple Place - Suite 330, Boston, MA  02111-1307 USA
  */
 
-package org.mycore.mir.authorization.accesskeys.exceptions;
+package org.mycore.mir.authorization.accesskey.exception;
 
-import org.mycore.common.MCRException;
-
-public class MIRAccessKeyException extends MCRException {
-    public MIRAccessKeyException(String errorMessage) {
+public class MIRAccessKeyNotFoundException extends MIRAccessKeyException {
+    public MIRAccessKeyNotFoundException(String errorMessage) {
         super(errorMessage);
     }
 }
-

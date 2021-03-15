@@ -21,7 +21,7 @@
  * 59 Temple Place - Suite 330, Boston, MA  02111-1307 USA
  */
 
-package org.mycore.mir.authorization.accesskeys;
+package org.mycore.mir.authorization.accesskey;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -37,7 +37,7 @@ import org.mycore.datamodel.metadata.MCRBase;
 import org.mycore.datamodel.metadata.MCRDerivate;
 import org.mycore.datamodel.metadata.MCRObject;
 import org.mycore.datamodel.metadata.MCRObjectService;
-import org.mycore.mir.authorization.accesskeys.backend.MIRAccessKey;
+import org.mycore.mir.authorization.accesskey.backend.MIRAccessKey;
 
 /**
  * This class contains EventHandler methods to manage access keys of
@@ -62,7 +62,6 @@ public class MIRAccessKeyEventHandler extends MCREventHandlerBase {
      */
     @Override
     protected void handleObjectUpdated(MCREvent evt, MCRObject obj) {
-        handleUpdated(obj);
     }
 
     /* (non-Javadoc)
@@ -86,7 +85,6 @@ public class MIRAccessKeyEventHandler extends MCREventHandlerBase {
      */
     @Override
     protected void handleDerivateUpdated(MCREvent evt, MCRDerivate der) {
-        handleUpdated(der);
     }
 
     /* (non-Javadoc)
@@ -111,10 +109,6 @@ public class MIRAccessKeyEventHandler extends MCREventHandlerBase {
                 service.removeFlags(ACCESS_KEYS);
             }
         }
-    }
-
-    private void handleUpdated(final MCRBase obj) {
-        return;
     }
 
     private void handleDeleted(final MCRBase obj) {

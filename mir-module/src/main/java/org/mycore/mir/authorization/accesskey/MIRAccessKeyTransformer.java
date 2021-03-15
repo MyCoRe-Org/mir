@@ -21,7 +21,7 @@
  * 59 Temple Place - Suite 330, Boston, MA  02111-1307 USA
  */
 
-package org.mycore.mir.authorization.accesskeys;
+package org.mycore.mir.authorization.accesskey;
 
 import java.util.Arrays;
 import java.util.List;
@@ -31,35 +31,35 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 
 import org.jdom2.Element;
 
-import org.mycore.mir.authorization.accesskeys.backend.MIRAccessKey;
+import org.mycore.mir.authorization.accesskey.backend.MIRAccessKey;
 
 public class MIRAccessKeyTransformer {
 
-    protected static List<MIRAccessKey> jsonToAccessKeys(final String json)
+    public static List<MIRAccessKey> jsonToAccessKeys(final String json)
         throws JsonProcessingException {
         final ObjectMapper objectMapper = new ObjectMapper();
         return Arrays.asList(objectMapper.readValue(json, MIRAccessKey[].class));
     }
 
-    protected static String accessKeysToJson(final List<MIRAccessKey> accessKeys)
+    public static String accessKeysToJson(final List<MIRAccessKey> accessKeys)
         throws JsonProcessingException {
         final ObjectMapper objectMapper = new ObjectMapper();
         return objectMapper.writeValueAsString(accessKeys);
     }
 
-    protected static String accessKeyToJson(final MIRAccessKey accessKey)
+    public static String accessKeyToJson(final MIRAccessKey accessKey)
         throws JsonProcessingException {
         final ObjectMapper objectMapper = new ObjectMapper();
         return objectMapper.writeValueAsString(accessKey);
     }
 
-    protected static MIRAccessKey jsonToAccessKey(final String json)
+    public static MIRAccessKey jsonToAccessKey(final String json)
         throws JsonProcessingException {
         final ObjectMapper objectMapper = new ObjectMapper();
         return objectMapper.readValue(json, MIRAccessKey.class);
     }
 
-    protected static Element accessKeysJsonToServFlag(final String json) {
+    public static Element accessKeysJsonToServFlag(final String json) {
         final Element main = new Element("servflag");
         main.setAttribute("type", "accesskeys");
         main.setAttribute("inherited", "0");
