@@ -106,7 +106,10 @@ public class MIRAccessKeyResource {
                 return Response.status(Response.Status.FORBIDDEN).build();
             }
             MIRAccessKeyManager.addAccessKeyAttribute(user, objectId, value);
-            return Response.temporaryRedirect(new URI(referer)).build(); //TODO if referer null alternative
+            if (referer != null) {
+                return Response.temporaryRedirect(new URI(referer)).build();
+            }
+            return Response.temporaryRedirect(new URI("/")).build();
         } catch(URISyntaxException e) {
             LOGGER.error("failed! {}", e);
             return Response.status(Response.Status.BAD_REQUEST).build();

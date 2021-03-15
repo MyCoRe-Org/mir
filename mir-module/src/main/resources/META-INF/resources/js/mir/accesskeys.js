@@ -1,5 +1,4 @@
 const RSC_URL = webApplicationBaseURL + "rsc/accesskey/";
-let accessKeys = undefined;
 
 function getParameterByName(name, url = window.location.href) {
     name = name.replace(/[\[\]]/g, '\\$&');
@@ -174,6 +173,10 @@ $(document).ready(function() {
     $('#accessKeyGenerator').click(function() {
         const key = generateKey(32);
         $("#accessKeyValue").val(key);
+    });
+
+    $('#back').click(function() {
+        window.location.href = webApplicationBaseURL + "receive/" + objectId
     });
 
     $('#accessKeyUpdate').click(function() {
