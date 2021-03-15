@@ -43,8 +43,8 @@ public class MIRAccessKeyUtils {
         LOGGER.info("cleared all access keys");
     }
 
-    @MCRCommand(syntax = "clear access keys of object {0}",
-        help = "Deletes all access keys of given MCRObject")
+    @MCRCommand(syntax = "clear access keys of {0}",
+        help = "Deletes all access keys of given MCRObject/Derivate")
     public static void clearAccessKeys(String objId) throws Exception {
         final MCRObjectID objectId = MCRObjectID.getInstance(objId);
         MIRAccessKeyManager.clearAccessKeys(objectId);

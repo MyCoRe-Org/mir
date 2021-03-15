@@ -2,7 +2,7 @@
 <xsl:stylesheet version="1.0"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 > 
-  <xsl:import href="resource:xsl/save-object.xsl" />
+  <xsl:import href="resource:xsl/save-derivate.xsl" />
 
   <xsl:template match="/">
     <xsl:apply-templates select="*"/>
@@ -15,7 +15,7 @@
   </xsl:template>
 
   <xsl:template match="servflags[@class='MCRMetaLangText']">
-    <xsl:variable name="accessKeys" select="document(concat('accesskeys:', /mycoreobject/@ID))/servflag" />
+    <xsl:variable name="accessKeys" select="document(concat('accesskeys:', /mycorederivate/@ID))/servflag" />
     <xsl:copy>
       <xsl:copy-of select="@*"/>
       <xsl:copy-of select="node()"/>
