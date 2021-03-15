@@ -4,7 +4,7 @@
   <parent>
     <groupId>org.mycore</groupId>
     <artifactId>mycore-parent</artifactId>
-    <version>45</version>
+    <version>46-SNAPSHOT</version>
   </parent>
   <groupId>org.mycore.mir</groupId>
   <artifactId>mir-parent</artifactId>
