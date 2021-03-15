@@ -55,21 +55,32 @@
     </xsl:for-each>
     </metadata>
     <service>
-	  <xsl:copy-of select="mycoreobject/service/*[not(@class='MCRMetaLangText')]"/>
-      <servflags class="MCRMetaLangText">
-          <xsl:copy-of select="mycoreobject/service/*[@class='MCRMetaLangText']/*/"/>
-          <xsl:variable name="accKey" select="document(concat('accesskeys:', mycoreobject/@ID))/servflag" />
-          <xsl:copy-of select="$accKey" />
-      </servflags>
+      <xsl:apply-templates select="mycoreobject/service/*"/>
 	  <!-- include acl if available -->
 	  <xsl:variable name="acl" select="document(concat('access:action=all&amp;object=',mycoreobject/@ID))"/>
       <xsl:if test="$acl/*/*">
 	    <!-- acl are available -->
 	    <xsl:copy-of select="$acl"/>
 	  </xsl:if>
-    	</service>
+   	</service>
   </mycoreobject>
 </xsl:template>
 
-</xsl:stylesheet>
+<xsl:template match='@*|node()'>
+  <xsl:copy>
+    <xsl:apply-templates select='@*|node()' />
+  </xsl:copy>
+</xsl:template>
 
+<xsl:template match="servflags[@class='MCRMetaLangText']">
+  <xsl:variable name="accessKeys" select="document(concat('accesskeys:', /mycoreobject/@ID))/servflag" />
+  <xsl:copy>
+    <xsl:copy-of select="@*"/>
+    <xsl:copy-of select="node()"/>
+    <xsl:if test="$accessKeys">
+      <xsl:copy-of select="$accessKeys" />
+    </xsl:if>
+  </xsl:copy>
+</xsl:template>
+
+</xsl:stylesheet>

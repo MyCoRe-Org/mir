@@ -180,7 +180,7 @@ public final class MIRAccessKeyManager {
      */
     protected static void clearAccessKeys() {
         final EntityManager em = MCREntityManagerProvider.getCurrentEntityManager();
-        em.createNamedQuery("MIRAccessKey.clean", MIRAccessKey.class)
+        em.createNamedQuery("MIRAccessKey.clear")
             .executeUpdate();
     }
 
@@ -220,7 +220,7 @@ public final class MIRAccessKeyManager {
      */
     public static void clearAccessKeys(final MCRObjectID objectId) {
         final EntityManager em = MCREntityManagerProvider.getCurrentEntityManager();
-        em.createNamedQuery("MIRAccessKey.cleanById", MIRAccessKey.class)
+        em.createNamedQuery("MIRAccessKey.clearById")
             .setParameter("objId", objectId.toString())
             .executeUpdate();
     }

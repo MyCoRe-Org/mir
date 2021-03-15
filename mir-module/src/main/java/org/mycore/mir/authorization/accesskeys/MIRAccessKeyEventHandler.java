@@ -114,19 +114,7 @@ public class MIRAccessKeyEventHandler extends MCREventHandlerBase {
     }
 
     private void handleUpdated(final MCRBase obj) {
-        final MCRObjectService service = obj.getService();
-        final ArrayList<String> flags = service.getFlags(ACCESS_KEYS);
-        if (flags.size() > 0) {
-            final String json = flags.get(0);
-            try {
-                final List<MIRAccessKey> accessKeys = MIRAccessKeyTransformer.jsonToAccessKeys(json);
-                MIRAccessKeyManager.updateAccessKeys(obj.getId(), accessKeys);
-            } catch (JsonProcessingException e) {
-                LOGGER.warn("Access Keys are not valid and removed from object");
-            } finally {
-                service.removeFlags(ACCESS_KEYS);
-            }
-        }
+        return;
     }
 
     private void handleDeleted(final MCRBase obj) {
