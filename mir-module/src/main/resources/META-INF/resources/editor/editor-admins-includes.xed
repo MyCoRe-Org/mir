@@ -24,7 +24,7 @@
     <xed:include ref="type.of.resource" />
     <xed:include ref="language" />
     <xed:include ref="geographic.complex" />
-    <xed:include ref="cartographics" />
+    <xed:include ref="cartographics.repeat" />
     <xed:include ref="sdnb.repeat" />
     <xed:include ref="openAIRE" />
     <xed:include ref="identifier.managed" />
