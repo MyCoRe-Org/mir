@@ -1597,6 +1597,52 @@
     </div>
   </xed:template>
 
+  <xed:template id="cartographics.repeat">
+    <xed:repeat xpath="mods:subject/mods:cartographics/mods:coordinates">
+      <div class="form-group row">
+        <label class="col-md-3 col-form-label text-right">
+          <xed:output i18n="mir.cartographics.coordinates" />
+        </label>
+        <div class="col-md-6">
+          <input id="{@id}" type="text" class="form-control">
+            <xsl:copy-of select="@placeholder" />
+          </input>
+        </div>
+        <mir:help-pmud help-text="{i18n:mir.help.cartographics.coordinates}" pmud="true" />
+      </div>
+      <div class="form-group row openstreetmap">
+        <div class="col-md-2 offset-md-3">
+          <button type="button" class="show_openstreetmap btn btn-secondary" data-lat="{$MIR.editor.start.coordinates.lat}" data-lon="{$MIR.editor.start.coordinates.lon}">
+            OpenStreetMap
+          </button>
+        </div>
+        <div class="col-md-6 offset-md-3 collapse openstreetmap-container">
+          <label>
+            <xed:output i18n="mir.cartographics.coordinates.geoType" />
+          </label>
+          <select id="type" class="form-control" name="">
+            <option value="Point">
+              <xed:output i18n="mir.cartographics.coordinates.point" />
+            </option>
+            <option value="Box">
+              <xed:output i18n="mir.cartographics.coordinates.box" />
+            </option>
+            <option value="Polygon">
+              <xed:output i18n="mir.cartographics.coordinates.polygon" />
+            </option>
+            <option value="None">
+              <xed:output i18n="mir.cartographics.coordinates.none" />
+            </option>
+          </select>
+          <div class="map"></div>
+        </div>
+      </div>
+    </xed:repeat>
+    <link rel="stylesheet" type="text/css" href="{$WebApplicationBaseURL}assets/openlayers/ol.css" />
+    <script type="text/javascript" src="{$WebApplicationBaseURL}assets/openlayers/ol.js" />
+    <script type="text/javascript" src="{$WebApplicationBaseURL}js/mir/geo-coords.min.js" />
+  </xed:template>
+
   <xed:template id="cartographics">
     <mir:textfield xpath="mods:subject/mods:cartographics/mods:coordinates" label="mir.cartographics.coordinates" help-text="{i18n:mir.help.cartographics.coordinates}" />
     <div class="form-group row openstreetmap">
