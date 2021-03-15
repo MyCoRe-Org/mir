@@ -1,4 +1,5 @@
 const RSC_URL = webApplicationBaseURL + "rsc/accesskey/";
+let errors = undefined;
 
 function getParameterByName(name, url = window.location.href) {
     name = name.replace(/[\[\]]/g, '\\$&');
@@ -87,6 +88,20 @@ function enableButtons() {
     $('.closeModal').prop("disabled", false);
 }
 
+function showError(error) {
+    error = JSON.parse(error);
+    if (errors == undefined) {
+
+    
+    }    
+    if (error.hasOwnProperty("errorCode") && errors != undefined) {
+        $('#accessKeyModalAlert').html(error["errorCode"]);
+    } else {
+        $('#accessKeyModalAlert').html(error["message"]);
+    }
+    $('#accessKeyModalAlert').show();
+}
+
 $(document).ready(function() {
     const objectId = getParameterByName('objectid'); 
 
@@ -119,8 +134,7 @@ $(document).ready(function() {
             },
             error: function(data) {
                 if (data.status == 400) {
-                    $('#accessKeyModalAlert').html(data.responseText);
-                    $('#accessKeyModalAlert').show();
+                    showError(data.responseText);
                 }
                 enableButtons();
             }
@@ -166,6 +180,7 @@ $(document).ready(function() {
             },
             error: function(data) {
                 enableButtons();
+                showError(data.responseText);
             }
         });
     });
@@ -202,12 +217,19 @@ $(document).ready(function() {
             },
             error: function(data) {
                 if (data.status == 400) {
-                    $('#accessKeyModalAlert').html(data.responseText);
-                    $('#accessKeyModalAlert').show();
-                }
+                    showError(data.responseText);
+               }
                 enableButtons();
             }
         });
+    });
+
+    $.ajax({
+        url: webApplicationBaseURL + "rsc/locale/translate/mir.accesskey*",
+        success: function(data) {
+            console.log(data);
+        },
+        type: 'GET'
     });
 
     $.ajax({

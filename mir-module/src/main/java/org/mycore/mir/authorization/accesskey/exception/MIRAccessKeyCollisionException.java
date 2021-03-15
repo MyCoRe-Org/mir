@@ -25,6 +25,6 @@ package org.mycore.mir.authorization.accesskey.exception;
 
 public class MIRAccessKeyCollisionException extends MIRAccessKeyException {
     public MIRAccessKeyCollisionException(String errorMessage) {
-        super(errorMessage);
+        super(errorMessage, "collision");
     }
 }

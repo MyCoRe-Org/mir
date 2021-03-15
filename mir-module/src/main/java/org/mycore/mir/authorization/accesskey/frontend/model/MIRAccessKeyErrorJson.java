@@ -1,5 +1,5 @@
 /*
- * $Id$ 
+ * $Id$
  * $Revision$ $Date$
  *
  * This file is part of ***  M y C o R e  ***
@@ -21,24 +21,42 @@
  * 59 Temple Place - Suite 330, Boston, MA  02111-1307 USA
  */
 
-package org.mycore.mir.authorization.accesskey.exception;
+package org.mycore.mir.authorization.accesskey.frontend.model;
 
-import org.mycore.common.MCRException;
+import org.mycore.mir.authorization.accesskey.exception.MIRAccessKeyException;
 
-public class MIRAccessKeyException extends MCRException {
+public class MIRAccessKeyErrorJson {
+
+    private String message;
+    
     private String errorCode;
 
-    public MIRAccessKeyException(String errorMessage) {
-        super(errorMessage);
+    public MIRAccessKeyErrorJson() {
     }
 
-    public MIRAccessKeyException(String errorMessage, String errorCode) {
-        super(errorMessage);
+    public MIRAccessKeyErrorJson(String message, String errorCode) {
+        this.message = message;
         this.errorCode = errorCode;
+    }
+
+    public MIRAccessKeyErrorJson(MIRAccessKeyException exception) {
+        errorCode = exception.getErrorCode();
+        message = exception.getMessage();
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 
     public String getErrorCode() {
         return errorCode;
     }
-}
 
+    public void setErrorCode(String errorCode) {
+        this.errorCode = errorCode;
+    }
+}

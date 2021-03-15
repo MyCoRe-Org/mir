@@ -54,6 +54,7 @@ import org.mycore.common.MCRSystemUserInformation;
 import org.mycore.datamodel.metadata.MCRObjectID;
 import org.mycore.mir.authorization.accesskey.backend.MIRAccessKey;
 import org.mycore.mir.authorization.accesskey.exception.MIRAccessKeyException;
+import org.mycore.mir.authorization.accesskey.frontend.model.MIRAccessKeyErrorJson;
 import org.mycore.mir.authorization.accesskey.MIRAccessKeyManager;
 import org.mycore.mir.authorization.accesskey.MIRAccessKeyTransformer;
 import org.mycore.services.i18n.MCRTranslation;
@@ -93,6 +94,7 @@ public class MIRAccessKeyResource {
 
     @POST
     @Path("/{object}")
+    @Produces(MediaType.APPLICATION_JSON)
     public Response setAccessKey(@PathParam("object") final String object, @FormParam("value") final String value,
         @HeaderParam("Referer") final String referer) {
         if (value == null) {
@@ -114,7 +116,7 @@ public class MIRAccessKeyResource {
             LOGGER.error("failed! {}", e);
             return Response.status(Response.Status.BAD_REQUEST).build();
         } catch(MIRAccessKeyException e) {
-            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+            return Response.status(Response.Status.BAD_REQUEST).entity(new MIRAccessKeyErrorJson(e)).build();
         } catch (MCRException e) {
             LOGGER.error("failed! {}", e);
             return Response.status(Response.Status.BAD_REQUEST).build();
@@ -142,7 +144,7 @@ public class MIRAccessKeyResource {
             final String result = MIRAccessKeyTransformer.accessKeyToJson(accessKeyResult);
             return Response.status(Response.Status.OK).entity(result).build();
         } catch(MIRAccessKeyException e) {
-            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+            return Response.status(Response.Status.BAD_REQUEST).entity(new MIRAccessKeyErrorJson(e)).build();
         } catch (JsonProcessingException | MCRException e) {
             LOGGER.error("failed! {}", e);
             return Response.status(Response.Status.BAD_REQUEST).build();
@@ -151,6 +153,7 @@ public class MIRAccessKeyResource {
 
     @DELETE
     @Path("/{object}/{uuid}")
+    @Produces(MediaType.APPLICATION_JSON)
     public Response deleteAccessKey(@PathParam("object") final String object, @PathParam("uuid") final UUID uuid) {
         final MCRUser user = MCRUserManager.getCurrentUser();
         if (user.getUserID().equals(MCRSystemUserInformation.getGuestInstance().getUserID())) {
@@ -164,7 +167,7 @@ public class MIRAccessKeyResource {
             MIRAccessKeyManager.removeAccessKey(uuid);
             return Response.status(Response.Status.OK).build();
         } catch(MIRAccessKeyException e) {
-            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+            return Response.status(Response.Status.BAD_REQUEST).entity(new MIRAccessKeyErrorJson(e)).build();
         } catch (IllegalArgumentException | MCRException e) {
             LOGGER.error("failed! {}", e);
             return Response.status(Response.Status.BAD_REQUEST).build();
@@ -174,6 +177,7 @@ public class MIRAccessKeyResource {
     @POST
     @Path("/{object}/{uuid}")
     @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     public Response updateAccessKey(@PathParam("object") final String object, 
             @PathParam("uuid") final UUID uuid, final String json) {
         final MCRUser user = MCRUserManager.getCurrentUser();
@@ -189,7 +193,7 @@ public class MIRAccessKeyResource {
             MIRAccessKeyManager.updateAccessKey(accessKey);
             return Response.status(Response.Status.OK).build();
         } catch(MIRAccessKeyException e) {
-            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+            return Response.status(Response.Status.BAD_REQUEST).entity(new MIRAccessKeyErrorJson(e)).build();
         } catch (JsonProcessingException | MCRException e) {
             LOGGER.error("failed! {}", e);
             return Response.status(Response.Status.BAD_REQUEST).build();

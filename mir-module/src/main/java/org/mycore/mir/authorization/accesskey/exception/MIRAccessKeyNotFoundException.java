@@ -25,6 +25,6 @@ package org.mycore.mir.authorization.accesskey.exception;
 
 public class MIRAccessKeyNotFoundException extends MIRAccessKeyException {
     public MIRAccessKeyNotFoundException(String errorMessage) {
-        super(errorMessage);
+        super(errorMessage, "unknownKey");
     }
 }

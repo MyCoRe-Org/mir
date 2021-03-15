@@ -99,7 +99,7 @@ public final class MIRAccessKeyManager {
                 em.persist(accessKey);
             } else {
                 LOGGER.warn("Key collision.");
-                throw new MIRAccessKeyCollisionException(MCRTranslation.translate("mir.accesskey.collision"));
+                throw new MIRAccessKeyCollisionException("Key collision.");
             }
         }
     }
@@ -133,7 +133,7 @@ public final class MIRAccessKeyManager {
 
         final MIRAccessKey accessKey = getAccessKey(objectId, value);
         if (accessKey == null) {
-            throw new MIRAccessKeyNotFoundException(MCRTranslation.translate("mir.accesskey.invalidKey"));
+            throw new MIRAccessKeyNotFoundException("Key does not exists.");
         }
 
         user.setUserAttribute(ACCESS_KEY_PREFIX + objectId, value);
@@ -179,7 +179,7 @@ public final class MIRAccessKeyManager {
             removeAccessKey(accessKey);
         } else {
             LOGGER.warn("Key does not exists.");
-            throw new MIRAccessKeyNotFoundException(MCRTranslation.translate("mir.accesskey.unknownKey"));
+            throw new MIRAccessKeyNotFoundException("Key does not exists.");
         }
     }
 
@@ -297,7 +297,7 @@ public final class MIRAccessKeyManager {
     public static synchronized void updateAccessKey(MIRAccessKey newAccessKey) throws MIRAccessKeyException {
         if (newAccessKey.getId() == null) {
             LOGGER.warn("Cannot update Key without id.");
-            throw new MIRAccessKeyNotFoundException(MCRTranslation.translate("mir.accesskey.unknownKey"));
+            throw new MIRAccessKeyNotFoundException("Cannot update Key without id.");
         }
         if (isValidAccessKey(newAccessKey)) { 
             final EntityManager em = MCREntityManagerProvider.getCurrentEntityManager();
@@ -314,11 +314,11 @@ public final class MIRAccessKeyManager {
                     cleanPermissionCache(accessKey.getObjectId(), type);
                 } else {
                     LOGGER.warn("Key collision.");
-                    throw new MIRAccessKeyCollisionException(MCRTranslation.translate("mir.accesskey.collision"));
+                    throw new MIRAccessKeyCollisionException("Key collision.");
                 }
             } else {
                 LOGGER.warn("Key does not exists.");
-                throw new MIRAccessKeyNotFoundException(MCRTranslation.translate("mir.accesskey.unknownKey"));
+                throw new MIRAccessKeyNotFoundException("Key does not exists.");
             }
         }
     }
