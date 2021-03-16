@@ -34,9 +34,6 @@
           </tr>
         </thead>
       </table>
-      <button type="button" id="back" class="btn btn-secondary closeModal" data-dismiss="modal">
-        <i18n key="button.back" />
-      </button>
     </div>
 
     <!-- Modal -->
