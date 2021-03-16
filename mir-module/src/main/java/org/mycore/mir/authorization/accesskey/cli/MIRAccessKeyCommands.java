@@ -23,14 +23,18 @@
 
 package org.mycore.mir.authorization.accesskey.cli;
 
+import java.util.List;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import org.mycore.access.MCRAccessManager;
 import org.mycore.datamodel.metadata.MCRObjectID;
 import org.mycore.frontend.cli.annotation.MCRCommand;
 import org.mycore.frontend.cli.annotation.MCRCommandGroup;
-
 import org.mycore.mir.authorization.accesskey.MIRAccessKeyManager;
+import org.mycore.mir.authorization.accesskey.backend.MIRAccessKey;
+import org.mycore.mir.authorization.accesskey.backend.MIRAccessKeyPair;
 
 @MCRCommandGroup(
     name = "Access keys")
@@ -51,5 +55,26 @@ public class MIRAccessKeyCommands {
         final MCRObjectID objectId = MCRObjectID.getInstance(objId);
         MIRAccessKeyManager.clearAccessKeys(objectId);
         LOGGER.info("cleared all access keys of {}.", objId);
+    }
+
+    @MCRCommand(syntax = "migrate access key pairs",
+        help = "Migrates all access key pairs to access keys")
+    public static void migrateAccessKeyPairs() throws Exception {
+        final List<MIRAccessKeyPair> accessKeyPairs = MIRAccessKeyManager.getAccessKeyPairs();
+        for (MIRAccessKeyPair accessKeyPair : accessKeyPairs) {
+            final MCRObjectID objectId = accessKeyPair.getMCRObjectId();
+            final String readKey = accessKeyPair.getReadKey();
+            final String writeKey = accessKeyPair.getWriteKey();
+            if (readKey != null) {
+                final MIRAccessKey accessKey = new MIRAccessKey(objectId, readKey, MCRAccessManager.PERMISSION_READ);
+                MIRAccessKeyManager.addAccessKey(accessKey);
+            }
+            if (writeKey != null) {
+                final MIRAccessKey accessKey = new MIRAccessKey(objectId, writeKey, MCRAccessManager.PERMISSION_WRITE);
+                MIRAccessKeyManager.addAccessKey(accessKey);
+            }
+            MIRAccessKeyManager.removeAccessKeyPair(objectId);
+        }
+        LOGGER.info("migrated all access key pairs to access keys");
     }
 }

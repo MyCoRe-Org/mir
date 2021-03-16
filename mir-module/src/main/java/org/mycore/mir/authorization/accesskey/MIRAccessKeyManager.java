@@ -38,6 +38,7 @@ import org.mycore.common.MCRSessionMgr;
 import org.mycore.datamodel.metadata.MCRObject;
 import org.mycore.datamodel.metadata.MCRObjectID;
 import org.mycore.mir.authorization.accesskey.backend.MIRAccessKey;
+import org.mycore.mir.authorization.accesskey.backend.MIRAccessKeyPair;
 import org.mycore.mir.authorization.accesskey.exception.MIRAccessKeyCollisionException;
 import org.mycore.mir.authorization.accesskey.exception.MIRAccessKeyException;
 import org.mycore.mir.authorization.accesskey.exception.MIRAccessKeyNotFoundException;
@@ -286,6 +287,29 @@ public final class MIRAccessKeyManager {
         return accessKeys.stream()
             .filter(s -> s.getValue().equals(value))
             .anyMatch(s -> s.getType().equals(collisionType));
+    }
+
+    /**
+     * Returns all access keys.
+     *
+     * @return access key pairs as list
+     */
+    public static List<MIRAccessKeyPair> getAccessKeyPairs() {
+        final EntityManager em = MCREntityManagerProvider.getCurrentEntityManager();
+        return em.createNamedQuery("MIRAccessKeyPair.get", MIRAccessKeyPair.class)
+            .getResultList();
+    }
+
+    /**
+     * Removes access key pair for given {@link MCRObjectID}.
+     *
+     * @param mcrObjectId the {@link MCRObjectID}
+     */
+    public static void removeAccessKeyPair(final MCRObjectID objectId) {
+        final EntityManager em = MCREntityManagerProvider.getCurrentEntityManager();
+        em.createNamedQuery("MIRAccessKeyPair.removeById")
+            .setParameter("objId", objectId.toString())
+            .executeUpdate();
     }
 
     /**
