@@ -38,6 +38,7 @@ import org.mycore.datamodel.metadata.MCRObject;
 import org.mycore.datamodel.metadata.MCRObjectID;
 import org.mycore.frontend.servlets.MCRServlet;
 import org.mycore.frontend.servlets.MCRServletJob;
+import org.mycore.mir.authorization.accesskeys.backend.MIRAccessKeyPair;
 
 /**
  * @author Ren\u00E9 Adler (eagle)

@@ -28,7 +28,9 @@ import javax.xml.transform.URIResolver;
 
 import org.jdom2.Element;
 import org.jdom2.transform.JDOMSource;
+
 import org.mycore.datamodel.metadata.MCRObjectID;
+import org.mycore.mir.authorization.accesskeys.backend.MIRAccessKeyPair;
 
 /**
  * This resolver can be used to return a {@link MIRAccessKeyPair} for an given {@link MCRObjectID}.
