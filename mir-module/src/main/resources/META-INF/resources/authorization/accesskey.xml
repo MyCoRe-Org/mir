@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE MyCoReWebPage>
 <MyCoReWebPage title="{i18n}">
-  <section i18n="mir.accesskey.manage" xml:lang="all">
-    <script type="text/javascript" src="mir/../../js/mir/accesskeys.js" />
+  <section i18n="mir.accessKey.manage" xml:lang="all">
+    <script type="text/javascript" src="mir/../../js/mir/accesskey.js" />
     <div id="mainError" class="alert alert-warning" style="display: none;">
       <h1>Access not granted!</h1>
       <p>You do not have the privilege to acces this page.</p>
@@ -11,7 +11,7 @@
       <div class="row pb-2">
         <div class="col-auto mr-auto">
           <h2>
-            <i18n key="mir.accesskey.manage" />
+            <i18n key="mir.accessKey.manage" />
           </h2>
         </div>
         <div class="col-auto">
@@ -25,10 +25,10 @@
           <tr class="d-flex">
             <th class="th col-auto">#</th>
             <th class="th col-3 text-center">
-              <i18n key="mir.accesskey.type" />
+              <i18n key="mir.accessKey.type" />
             </th>
             <th class="th col text-center">
-              <i18n key="mir.accesskey.value" />
+              <i18n key="mir.accessKey.value" />
             </th>
             <th class="th col-auto"></th>
           </tr>
@@ -45,7 +45,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title">
-              <i18n key="mir.accesskey" />
+              <i18n key="mir.accessKey" />
             </h5>
             <button type="button" class="close closeModal" data-dismiss="modal" aria-label="Close" />
           </div>
@@ -67,7 +67,7 @@
                       <button aria-label="Generate" class="btn btn-secondary" id="accessKeyGenerator" title="Generate" type="button">
                         <span aria-hidden="true" class="fas fa-cogs"></span>
                         <span class="sr-only">
-                          <i18n key="mir.accesskey.generate" />
+                          <i18n key="mir.accessKey.generate" />
                         </span>
                       </button>
                     </span>
@@ -82,7 +82,7 @@
               <div class="row">
                 <div class="col">
                   <button id="accessKeyDelete" type="button" class="btn btn-danger">
-                    <i18n key="mir.accesskey.delete" />
+                    <i18n key="mir.accessKey.delete" />
                   </button>
                 </div>
                 <div class="col-auto">
@@ -93,7 +93,7 @@
                     Update
                   </button>
                   <button id="accessKeyNew" type="button" class="btn btn-primary">
-                    <i18n key="mir.accesskey.add" />
+                    <i18n key="mir.accessKey.add" />
                   </button>
                 </div>
               </div>

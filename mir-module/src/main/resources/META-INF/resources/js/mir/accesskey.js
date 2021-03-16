@@ -1,5 +1,5 @@
 const RSC_URL = webApplicationBaseURL + "rsc/accesskey/";
-let errors = undefined;
+let labels = undefined;
 
 function getParameterByName(name, url = window.location.href) {
     name = name.replace(/[\[\]]/g, '\\$&');
@@ -90,12 +90,8 @@ function enableButtons() {
 
 function showError(error) {
     error = JSON.parse(error);
-    if (errors == undefined) {
-
-    
-    }    
-    if (error.hasOwnProperty("errorCode") && errors != undefined) {
-        $('#accessKeyModalAlert').html(error["errorCode"]);
+    if (error.hasOwnProperty("errorCode") && labels != undefined) {
+        $('#accessKeyModalAlert').html(labels["mir.accessKey.error." + error["errorCode"]]);
     } else {
         $('#accessKeyModalAlert').html(error["message"]);
     }
@@ -225,9 +221,9 @@ $(document).ready(function() {
     });
 
     $.ajax({
-        url: webApplicationBaseURL + "rsc/locale/translate/mir.accesskey*",
+        url: webApplicationBaseURL + "rsc/locale/translate/mir.accessKey*",
         success: function(data) {
-            console.log(data);
+            labels = data;
         },
         type: 'GET'
     });
