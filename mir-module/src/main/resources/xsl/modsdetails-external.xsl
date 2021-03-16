@@ -630,14 +630,14 @@
                      href="{$WebApplicationBaseURL}authorization/accesskey.xml?objectid={@ID}"
                      class="dropdown-item"
                   >
-                    <xsl:value-of select="i18n:translate('mir.accesskey.manage')" />
+                    <xsl:value-of select="i18n:translate('mir.accessKey.manage')" />
                   </a>
                 </li>
               </xsl:if>
               <xsl:if test="key('rights', @ID)/@accKeyEnabled and (key('rights', @ID)/@hasAccessKeys) and not(mcrxsl:isCurrentUserGuestUser() or $accessedit or $accessdelete)">
                 <li>
                   <a role="menuitem" tabindex="-1" data-toggle="modal" data-id="{@ID}" data-target="#addAccessKeyModal" class="dropdown-item setAccessKey">
-                    <xsl:value-of select="i18n:translate('mir.accesskey.setOnUser')" />
+                    <xsl:value-of select="i18n:translate('mir.accessKey.setOnUser')" />
                   </a>
                 </li>
               </xsl:if>
@@ -651,21 +651,21 @@
         <div class="modal-content">
           <div class="modal-header">
             <h2>
-              <xsl:value-of select="i18n:translate('mir.accesskey.setOnUser')" />
+              <xsl:value-of select="i18n:translate('mir.accessKey.setOnUser')" />
             </h2>
           </div>
           <div class="modal-body">
             <div id="accessKeyModalAlert" class="alert alert-danger" style="display: none;" role="alert">
               This is a danger alert—check it out!
             </div>
-            <input id="addAccessKeyModalValue" type="text" class="form-control" placeholder="{i18n:translate('mir.accesskey.value')}" />
+            <input id="addAccessKeyModalValue" type="text" class="form-control" placeholder="{i18n:translate('mir.accessKey.value')}" />
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary closeModal" data-dismiss="modal">
               <xsl:value-of select="i18n:translate('button.cancel')" />
             </button>
             <button type="submit" id="addAccessKeyModalSubmit" class="btn btn-primary">
-              <xsl:value-of select="i18n:translate('mir.accesskey.add')" />
+              <xsl:value-of select="i18n:translate('mir.accessKey.add')" />
             </button>
           </div>
         </div>
@@ -675,6 +675,24 @@
 <script>
     $(document).ready(function() {
         let objectId = undefined;
+        let labels = undefined;
+        function showError(error) {
+            console.log(error);
+            console.log(labels);
+            if (error.hasOwnProperty("errorCode")) {
+                $('#accessKeyModalAlert').html(labels["mir.accessKey.error." + error["errorCode"]]);
+            } else {
+                $('#accessKeyModalAlert').html(error["message"]);
+            }
+            $('#accessKeyModalAlert').show();
+        }
+        $.ajax({
+            url: webApplicationBaseURL + "rsc/locale/translate/mir.accessKey*",
+            success: function(data) {
+                labels = data;
+            },
+            type: 'GET'
+        });
         $('.setAccessKey').click(function() {
             objectId = $(this).data('id');
             $("#addAccessKeyModalValue").val("");
@@ -694,7 +712,7 @@
             }
             
             $.ajax({
-                url: webApplicationBaseURL + "rsc/miraccesskeyinformation/" + objectId,
+                url: webApplicationBaseURL + "rsc/accesskey/" + objectId,
                 type: 'POST',
                 data: {"value": value},
                 success: function(data) {
@@ -702,8 +720,7 @@
                 },
                 error: function(data) {
                     if (data.status == 400) {
-                        $('#accessKeyModalAlert').text(data.responseText);
-                        $('#accessKeyModalAlert').show();
+                        showError(data.responseJSON);
                     }
                 }
             });
@@ -755,7 +772,7 @@
             <li>
 
               <a role="menuitem" tabindex="-1" data-toggle="modal" data-id="{$deriv}" data-target="#addAccessKeyModal" class="dropdown-item setAccessKey">
-                <xsl:value-of select="i18n:translate('mir.accesskey.setOnUser')" />
+                <xsl:value-of select="i18n:translate('mir.accessKey.setOnUser')" />
               </a>
             </li>
           </ul>
@@ -813,9 +830,9 @@
             <xsl:if test="key('rights', $deriv)/@accKeyEnabled and key('rights', $deriv)/@write">
               <li>
                 <a role="menuitem" tabindex="-1" class="dropdown-item"
-                  href="{$WebApplicationBaseURL}authorization/accesskey.xml?objectid={$deriv}&amp;url={encoder:encode(string($RequestURL))}"
+                  href="{$WebApplicationBaseURL}authorization/accesskey.xml?objectid={$deriv}"
                 >
-                  <xsl:value-of select="i18n:translate('mir.accesskey.manage')" />
+                  <xsl:value-of select="i18n:translate('mir.accessKey.manage')" />
                 </a>
               </li>
             </xsl:if>
