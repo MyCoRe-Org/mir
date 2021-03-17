@@ -94,7 +94,7 @@ public class MIRAccessKey {
     /**
      * Creates a new access key with value and type.
      *
-     * @param objectId the assigned {@MCRObjectID}.
+     * @param objectId the assigned {@link MCRObjectID}.
      * @param value the value the user must know to acquire permission.
      * @param type the type of permission.
      */
@@ -114,7 +114,7 @@ public class MIRAccessKey {
     }
 
     /**
-     * @param mcrObjectId the {@MCRObjectID} to set
+     * @param mcrObjectId the {@link MCRObjectID} to set
      */
     public void setObjectId(final MCRObjectID mcrObjectId) {
         this.mcrObjectId = mcrObjectId;
@@ -131,7 +131,7 @@ public class MIRAccessKey {
     }
 
     /**
-     * @param objectId id as String
+     * @param objectIdString id as String
      */
     public void setObjectIdString(String objectIdString) {
         this.mcrObjectId = MCRObjectID.getInstance(objectIdString);

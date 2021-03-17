@@ -333,7 +333,7 @@ public final class MIRAccessKeyManager {
     /**
      * Return the access key for given {@link MCRObjectID} and value.
      *
-     * @param mcrObjectId the {@link MCRObjectID}
+     * @param objectId the {@link MCRObjectID}
      * @param value the key value
      * @return access key or null
      */
@@ -361,7 +361,7 @@ public final class MIRAccessKeyManager {
     /**
      * Removes access key pair for given {@link MCRObjectID}.
      *
-     * @param mcrObjectId the {@link MCRObjectID}
+     * @param objectId the {@link MCRObjectID}
      */
     public static void removeAccessKeyPair(final MCRObjectID objectId) {
         final EntityManager em = MCREntityManagerProvider.getCurrentEntityManager();
