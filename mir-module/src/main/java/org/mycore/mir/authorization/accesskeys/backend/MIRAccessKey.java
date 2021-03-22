@@ -33,6 +33,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.mycore.datamodel.metadata.MCRObjectID;
@@ -61,6 +62,7 @@ import org.mycore.datamodel.metadata.MCRObjectID;
  * Value is the key value of the key and type the permission.
  */
 @Entity
+@Table(name = "miraccesskey")
 public class MIRAccessKey {
 
     private static final long serialVersionUID = 1L;
@@ -77,7 +79,7 @@ public class MIRAccessKey {
     /** The permission type*/
     private String type;
 
-    protected MIRAccessKey() {
+    private MIRAccessKey() {
     }
 
     /**
