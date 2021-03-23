@@ -73,6 +73,10 @@ $filter: #666 !default;
     float: right;
     @include clearfix;
 
+    .btn-csl-export {
+      @extend .btn-secondary;
+    }
+
     h2 {
       text-align: center;
       margin: 0 10px 23px 0;
