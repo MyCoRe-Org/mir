@@ -8,6 +8,10 @@
     margin: 0;
     float: none;
   }
+
+  .btn-csl-export {
+    @extend .btn-primary;
+  }
 }
 
 .basket_form {

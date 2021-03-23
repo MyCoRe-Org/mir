@@ -15,6 +15,8 @@
 >
 
   <xsl:include href="response-mir-utils.xsl" />
+  <xsl:include href="csl-export-gui.xsl" />
+
 
   <xsl:param name="UserAgent" />
   <xsl:param name="MIR.testEnvironment" />
@@ -220,6 +222,15 @@
       </div>
 
       <div class="col-12 col-sm-4 result_filter">
+        <div class="row result_export">
+          <div class="col-12">
+            <xsl:if test="$hits &gt; 0">
+              <xsl:call-template name="exportGUI">
+                <xsl:with-param name="type" select="'response'" />
+              </xsl:call-template>
+            </xsl:if>
+          </div>
+        </div>
         <xsl:if test="/response/lst[@name='facet_counts']/lst[@name='facet_fields']/lst[@name='worldReadableComplete']/int">
           <div class="card oa">
             <div class="card-header" data-toggle="collapse-next">
