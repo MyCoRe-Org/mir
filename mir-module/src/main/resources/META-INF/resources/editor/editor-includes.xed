@@ -676,6 +676,23 @@
       </div>
   </xed:template>
 
+  <xed:template id="languageIdentifier">
+    <div class="form-group row">
+      <label class="col-md-3 col-form-label text-right">
+        <xed:output i18n="mir.subject.language.gnd.type" />
+      </label>
+      <div class="col-md-6">
+        <xed:bind xpath="@valueURIxEditor">
+          <input type="text" size="20" class="form-control form-control-inline topic_gnd" />
+        </xed:bind>
+        <xed:bind xpath="@authority" initially="gnd">
+          <input type="hidden" class="topic_gndType" />
+        </xed:bind>
+      </div>
+      <mir:help-pmud help-text="{i18n:mir.help.languageIdentifier}" pmud="false" />
+    </div>
+</xed:template>
+
   <xed:template id="namePart.repeated">
     <xed:repeat xpath="mods:namePart" min="1" max="100">
       <div class="form-group row">
@@ -1772,6 +1789,14 @@
   </xed:template>
 
   <xed:template id="topic.input">
+    <div class="topic-search">
+      <input type="text" size="26" class="form-control form-control-inline" data-search="searchEntity" data-search-type="GND"
+           data-search-entity-type="topic" data-search-output=".topic_gnd" data-search-output-type=".topic_gndType" data-search-button="{i18n:button.search}"
+           data-search-button-loading="{i18n:button.loading}" data-search-result-empty="{i18n:mir.searchIdentifier.noResult}" data-next=".topicExtended-container"/>
+    </div>
+  </xed:template>
+
+  <xed:template id="language.input">
     <div class="topic-search">
       <input type="text" size="26" class="form-control form-control-inline" data-search="searchEntity" data-search-type="GND"
            data-search-entity-type="topic" data-search-output=".topic_gnd" data-search-output-type=".topic_gndType" data-search-button="{i18n:button.search}"

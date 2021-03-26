@@ -208,6 +208,34 @@
         }
       }
     },
+    language: {
+      enabled: true,
+      url: "https://lobid.org/gnd/search",
+      data: function (input) {
+        return {
+          q: input,
+          filter: "type:SubjectHeading",
+          format: "json:suggest",
+          size: "30"
+        }
+      },
+      dataType: "jsonp",
+      dataConvert: function (data) {
+        var result = [];
+        if (typeof data !== 'undefined' && data.length > 0) {
+          data.forEach((element) => {
+            if (element.category.includes("Sprache")) {
+              var language = {
+                label: element.label,
+                value: element.id,
+              };
+              result.push(language);
+            }
+          });
+        }
+        return result;
+      }
+    },
     GND_FALLBACK: {
       baseURI: "http://d-nb.info/gnd/",
       person: {
