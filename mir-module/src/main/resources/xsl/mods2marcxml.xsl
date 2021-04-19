@@ -230,6 +230,11 @@
         <!-- 20-23 -->
         <xsl:value-of select="'4500'" />
       </marc:leader>
+      <xsl:if test="@ID">
+        <marc:controlfield tag="001">
+          <xsl:value-of select="@ID" />
+        </marc:controlfield>
+      </xsl:if>
       <xsl:call-template name="source" />
       <xsl:apply-templates />
       <xsl:if test="mods:classification[@authority='lcc']">
@@ -580,6 +585,7 @@
           </xsl:with-param>
           <xsl:with-param name="subfields">
             <!-- show mods:displayForm in subfield a -->
+            <!-- https://www.loc.gov/marc/bibliographic/bd710.html -->
             <marc:subfield code="a">
               <xsl:choose>
                 <!-- if university. institute is given -->
@@ -599,37 +605,40 @@
                 <xsl:when test="@valueURI">
                   <xsl:variable name="categId" select="substring-after(@valueURI, '#')" />
                   <xsl:variable name="institute" select="$institutes//category[@ID=$categId]" />
-                  <xsl:apply-templates select="$institute" mode="name110-710-810-1" />
+                  <xsl:apply-templates select="$institute/ancestor-or-self::category[position() = last()]" mode="name110-710-810" />
                 </xsl:when>
                 <xsl:otherwise>
                   <xsl:value-of select="mods:displayForm" />
                 </xsl:otherwise>
               </xsl:choose>
             </marc:subfield>
-            <marc:subfield code="b">
-              <xsl:choose>
-                <!-- if university.institute is given -->
-                <xsl:when test="contains(mods:displayForm,'.')">
+            <xsl:choose>
+              <!-- if university.institute is given -->
+              <xsl:when test="contains(mods:displayForm,'.')">
+                <marc:subfield code="b">
                   <xsl:value-of select="substring-after(mods:displayForm,'. ')" />
-                </xsl:when>
-                <!-- if institution nameParts are given -->
-                <xsl:when test="mods:namePart">
-                  <xsl:value-of select="mods:namePart[position()>1]" />
-                </xsl:when>
-                <!-- if only whole institution name is given (whole name in subfield a, subfield b is empty) -->
-                <xsl:when test="mods:displayForm" />
-                <!-- if no institution name is given, but @valueURI is present -->
-                <!-- TODO resolve @valueURI locally (names of institution and universites) -->
-                <xsl:when test="@valueURI">
-                  <xsl:variable name="categId" select="substring-after(@valueURI, '#')" />
-                  <xsl:variable name="institute" select="$institutes//category[@ID=$categId]" />
-                  <xsl:apply-templates select="$institute" mode="name110-710-810-2" />
-                </xsl:when>
-                <xsl:otherwise>
-                  <xsl:value-of select="mods:namePart[position()>1]" />
-                </xsl:otherwise>
-              </xsl:choose>
-            </marc:subfield>
+                </marc:subfield>
+              </xsl:when>
+              <!-- if institution nameParts are given -->
+              <xsl:when test="mods:namePart">
+                <marc:subfield code="b">
+                <xsl:value-of select="mods:namePart[position()>1]" />
+                </marc:subfield>
+              </xsl:when>
+              <!-- if only whole institution name is given (whole name in subfield a, subfield b is empty) -->
+              <xsl:when test="mods:displayForm" />
+              <!-- if no institution name is given, but @valueURI is present -->
+              <!-- TODO resolve @valueURI locally (names of institution and universites) -->
+              <xsl:when test="@valueURI">
+                <xsl:variable name="categId" select="substring-after(@valueURI, '#')" />
+                <xsl:variable name="institute" select="$institutes//category[@ID=$categId]" />
+                <xsl:for-each select="$institute/ancestor-or-self::category[position() != last()]">
+                  <marc:subfield code="b">
+                    <xsl:apply-templates select="." mode="name110-710-810" />
+                  </marc:subfield>
+                </xsl:for-each>
+              </xsl:when>
+            </xsl:choose>
             <xsl:for-each select="mods:role/mods:roleTerm[@type='text']">
               <marc:subfield code="e">
                 <!-- TODO add labels to modsenhancer/relacode (update) ('issuing body' for 'isb' and 'host institution' for 'his') -->
@@ -704,31 +713,37 @@
                 <xsl:when test="@valueURI">
                   <xsl:variable name="categId" select="substring-after(@valueURI, '#')" />
                   <xsl:variable name="institute" select="$institutes//category[@ID=$categId]" />
-                  <xsl:apply-templates select="$institute" mode="name110-710-810-1" />
+                  <xsl:apply-templates select="$institute/ancestor-or-self::category[position() = last()]" mode="name110-710-810" />
                 </xsl:when>
               </xsl:choose>
             </marc:subfield>
-            <marc:subfield code="b">
-              <xsl:choose>
-                <!-- if university.institute is given -->
-                <xsl:when test="contains(mods:displayForm,'.')">
+            <xsl:choose>
+              <!-- if university.institute is given -->
+              <xsl:when test="contains(mods:displayForm,'.')">
+                <marc:subfield code="b">
                   <xsl:value-of select="substring-after(mods:displayForm,'. ')" />
-                </xsl:when>
-                <!-- if institution nameParts are given -->
-                <xsl:when test="mods:namePart">
+                </marc:subfield>
+              </xsl:when>
+              <!-- if institution nameParts are given -->
+              <xsl:when test="mods:namePart">
+                <marc:subfield code="b">
                   <xsl:value-of select="mods:namePart[position()>1]" />
-                </xsl:when>
-                <!-- if only whole institution name is given (whole name in subfield a, subfield b is empty) -->
-                <xsl:when test="mods:displayForm" />
-                <!-- if no institution name is given, but @valueURI is present -->
-                <!-- TODO resolve @valueURI locally (names of institution and universites) -->
-                <xsl:when test="@valueURI">
-                  <xsl:variable name="categId" select="substring-after(@valueURI, '#')" />
-                  <xsl:variable name="institute" select="$institutes//category[@ID=$categId]" />
-                  <xsl:apply-templates select="$institute" mode="name110-710-810-2" />
-                </xsl:when>
-              </xsl:choose>
-            </marc:subfield>
+                </marc:subfield>
+              </xsl:when>
+              <!-- if only whole institution name is given (whole name in subfield a, subfield b is empty) -->
+              <xsl:when test="mods:displayForm" />
+              <!-- if no institution name is given, but @valueURI is present -->
+              <!-- TODO resolve @valueURI locally (names of institution and universites) -->
+              <xsl:when test="@valueURI">
+                <xsl:variable name="categId" select="substring-after(@valueURI, '#')" />
+                <xsl:variable name="institute" select="$institutes//category[@ID=$categId]" />
+                <xsl:for-each select="$institute/ancestor-or-self::category[position() != last()]">
+                  <marc:subfield code="b">
+                    <xsl:apply-templates select="." mode="name110-710-810" />
+                  </marc:subfield>
+                </xsl:for-each>
+              </xsl:when>
+            </xsl:choose>
             <xsl:for-each select="mods:role/mods:roleTerm[@type='text']">
               <marc:subfield code="e">
                 <!-- TODO add labels to modsenhancer/relacode (update) ('issuing body' for 'isb' and 'host institution' for 'his') -->
@@ -777,32 +792,16 @@
     </xsl:choose>
   </xsl:template>
 
-  <xsl:template match="category" mode="name110-710-810-1">
-    <xsl:if test="ancestor::category">
-      <xsl:choose>
-        <xsl:when test=".[1]/label[@xml:lang='en']">
-          <xsl:value-of select="ancestor::category[1]/label[@xml:lang='en']/@text" />
-        </xsl:when>
-        <xsl:when test=".[1]/label[@xml:lang='de']">
-          <xsl:value-of select="ancestor::category[1]/label[@xml:lang='de']/@text" />
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:value-of select="ancestor::category[1]/label[1]/@text" />
-        </xsl:otherwise>
-      </xsl:choose>
-    </xsl:if>
-  </xsl:template>
-
-  <xsl:template match="category" mode="name110-710-810-2">
+  <xsl:template match="category" mode="name110-710-810">
     <xsl:choose>
-      <xsl:when test="./label[@xml:lang='en']">
+      <xsl:when test="label[@xml:lang='en']">
         <xsl:value-of select="label[@xml:lang='en']/@text" />
       </xsl:when>
-      <xsl:when test="./label[@xml:lang='de']">
+      <xsl:when test="label[@xml:lang='de']">
         <xsl:value-of select="label[@xml:lang='de']/@text" />
       </xsl:when>
       <xsl:otherwise>
-        <xsl:value-of select="label[1]/@text" />
+        <xsl:value-of select="label/@text[1]" />
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
@@ -1296,10 +1295,6 @@
       </xsl:with-param>
       <xsl:with-param name="subfields">
         <marc:subfield code='a'>
-          <!-- add '1 Online-Ressource' -->
-          <xsl:if test="not(contains(.,'Online-Ressource'))">
-            <xsl:value-of select="'1 Online-Ressource '" />
-          </xsl:if>
           <xsl:value-of select="." />
         </marc:subfield>
       </xsl:with-param>
@@ -2380,6 +2375,9 @@
         <marc:subfield code="u">
           <xsl:value-of select="." />
         </marc:subfield>
+        <marc:subfield code="y">
+          <xsl:value-of select="./@type"/>
+        </marc:subfield>
         <xsl:call-template name="mediaType" />
       </xsl:with-param>
     </xsl:call-template>
@@ -2394,6 +2392,11 @@
           <marc:subfield code="u">
             <xsl:value-of select="." />
           </marc:subfield>
+          <xsl:for-each select="@access">
+            <marc:subfield code="y">
+              <xsl:value-of select="."/>
+            </marc:subfield>
+          </xsl:for-each>
           <xsl:for-each select="@displayLabel">
             <marc:subfield code="3">
               <xsl:value-of select="." />
@@ -2629,6 +2632,20 @@
         </xsl:with-param>
       </xsl:call-template>
     </xsl:for-each>
+    <!-- 830-->
+    <xsl:for-each select="mods:titleInfo">
+      <xsl:call-template name="datafield">
+        <xsl:with-param name="tag">830</xsl:with-param>
+        <xsl:with-param name="subfields">
+          <xsl:call-template name="titleInfo"/>
+          <xsl:for-each select="../@xlink:href">
+            <marc:subfield code="w">
+              <xsl:value-of select="../@xlink:href"/>
+            </marc:subfield>
+          </xsl:for-each>
+        </xsl:with-param>
+      </xsl:call-template>
+    </xsl:for-each>
     <!-- 810 -->
     <xsl:for-each select="mods:name">
       <xsl:call-template name="datafield">
@@ -2682,37 +2699,40 @@
               <xsl:when test="@valueURI">
                 <xsl:variable name="categId" select="substring-after(@valueURI, '#')" />
                 <xsl:variable name="institute" select="$institutes//category[@ID=$categId]" />
-                <xsl:apply-templates select="$institute" mode="name110-710-810-1" />
+                <xsl:apply-templates select="$institute/ancestor-or-self::category[position() = last()]" mode="name110-710-810" />
               </xsl:when>
               <xsl:otherwise>
                 <xsl:value-of select="mods:displayForm" />
               </xsl:otherwise>
             </xsl:choose>
           </marc:subfield>
-          <marc:subfield code="b">
-            <xsl:choose>
-              <!-- if university.institute is given -->
-              <xsl:when test="contains(mods:displayForm,'.')">
+          <xsl:choose>
+            <!-- if university.institute is given -->
+            <xsl:when test="contains(mods:displayForm,'.')">
+              <marc:subfield code="b">
                 <xsl:value-of select="substring-after(mods:displayForm,'. ')" />
-              </xsl:when>
-              <!-- if institution nameParts are given -->
-              <xsl:when test="mods:namePart">
+              </marc:subfield>
+            </xsl:when>
+            <!-- if institution nameParts are given -->
+            <xsl:when test="mods:namePart">
+              <marc:subfield code="b">
                 <xsl:value-of select="mods:namePart[position()>1]" />
-              </xsl:when>
-              <!-- if only whole institution name is given (whole name in subfield a, subfield b is empty) -->
-              <xsl:when test="mods:displayForm" />
-              <!-- if no institution name is given, but @valueURI is present -->
-              <!-- TODO resolve @valueURI locally (names of institution and universites) -->
-              <xsl:when test="@valueURI">
-                <xsl:variable name="categId" select="substring-after(@valueURI, '#')" />
-                <xsl:variable name="institute" select="$institutes//category[@ID=$categId]" />
-                <xsl:apply-templates select="$institute" mode="name110-710-810-2" />
-              </xsl:when>
-              <xsl:otherwise>
-                <xsl:value-of select="mods:namePart[position()&gt;1]" />
-              </xsl:otherwise>
-            </xsl:choose>
-          </marc:subfield>
+              </marc:subfield>
+            </xsl:when>
+            <!-- if only whole institution name is given (whole name in subfield a, subfield b is empty) -->
+            <xsl:when test="mods:displayForm" />
+            <!-- if no institution name is given, but @valueURI is present -->
+            <!-- TODO resolve @valueURI locally (names of institution and universites) -->
+            <xsl:when test="@valueURI">
+              <xsl:variable name="categId" select="substring-after(@valueURI, '#')" />
+              <xsl:variable name="institute" select="$institutes//category[@ID=$categId]" />
+              <xsl:for-each select="$institute/ancestor-or-self::category[position() != last()]">
+                <marc:subfield code="b">
+                  <xsl:apply-templates select="." mode="name110-710-810" />
+                </marc:subfield>
+              </xsl:for-each>
+            </xsl:when>
+          </xsl:choose>
           <xsl:if test="@type='personal'">
             <marc:subfield code="c">
               <xsl:value-of select="mods:namePart[@type='termsOfAddress']" />
@@ -3018,6 +3038,7 @@
 </xsl:stylesheet>
 
     <!-- Übersicht der Änderungen:
+    - 001: MODS ID übernommen (für K10+ Zentral)
     - 024: Ersten Indikator gleich 7 gesetzt (in Feld 2 Quelle angegeben)
     - 041: Ersten Indikator unbesetzt lassen
     - 041: Bezeichnungen für Sprachen aufgelöst auf internationale Kürzel
@@ -3037,7 +3058,6 @@
     - 260: Angaben in subfield g in Klammern gesetzt
     - 260/264: subfield c korrigiert für die jeweiligen Varianten (Datum, nur start, start und end)
     - 264: @eventType als Kriterium für Indikatoren und Feld 264 festgelegt
-    - 300: Vermerk '1 Online-Ressource' hinzugefügt
     - 336/655/047: templates aufgespalten (drei templates statt nur eines)
     - 336: subfield a und 2 abgeändert, Codierung für subfield b definiert
     - 337/338: Felder hinzugefügt
