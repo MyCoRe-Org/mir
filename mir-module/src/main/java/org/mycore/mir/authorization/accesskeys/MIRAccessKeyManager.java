@@ -59,7 +59,7 @@ public final class MIRAccessKeyManager {
     private static List<MIRAccessKey> getAccessKeys(final MCRObjectID objectId) {
         final EntityManager em = MCREntityManagerProvider.getCurrentEntityManager();
         return em.createNamedQuery("MIRAccessKey.getById", MIRAccessKey.class)
-            .setParameter("objId", objectId.toString())
+            .setParameter("objId", objectId)
             .getResultList();
     }
 
@@ -70,17 +70,19 @@ public final class MIRAccessKeyManager {
      * @return the {@link MIRAccessKeyPair}
      */
     public static MIRAccessKeyPair getKeyPair(final MCRObjectID mcrObjectId) {
-        final List<MIRAccessKey> accessKeys = getAccessKeys(mcrObjectId);
-        if (accessKeys.size() == 1) {
-            final MIRAccessKey accessKeyRead = accessKeys.get(0);
-            return new MIRAccessKeyPair(mcrObjectId, accessKeyRead.getValue(), null);
-        } else if (accessKeys.size() == 2) {
-            final MIRAccessKey accessKeyOne = accessKeys.get(0);
-            final MIRAccessKey accessKeyTwo = accessKeys.get(1);
-            if (accessKeyOne.getType().equals(MCRAccessManager.PERMISSION_READ)) {
-                return new MIRAccessKeyPair(mcrObjectId, accessKeyOne.getValue(), accessKeyTwo.getValue());
+        final MIRAccessKey accessKeyRead = 
+            getAccessKeysByType(mcrObjectId, MCRAccessManager.PERMISSION_READ).stream()
+                .findFirst()
+                .orElse(null);
+        final MIRAccessKey accessKeyWrite = 
+            getAccessKeysByType(mcrObjectId, MCRAccessManager.PERMISSION_WRITE).stream()
+                .findFirst()
+                .orElse(null);
+        if (accessKeyRead != null) {
+            if (accessKeyWrite != null) {
+                return new MIRAccessKeyPair(mcrObjectId, accessKeyRead.getValue(), accessKeyWrite.getValue());
             } else {
-                return new MIRAccessKeyPair(mcrObjectId, accessKeyTwo.getValue(), accessKeyOne.getValue());
+                return new MIRAccessKeyPair(mcrObjectId, accessKeyRead.getValue(), null);
             }
         } else {
             return null;
@@ -214,7 +216,7 @@ public final class MIRAccessKeyManager {
     public static void clearAccessKeys(final MCRObjectID objectId) {
         final EntityManager em = MCREntityManagerProvider.getCurrentEntityManager();
         em.createNamedQuery("MIRAccessKey.clearById")
-            .setParameter("objId", objectId.toString())
+            .setParameter("objId", objectId)
             .executeUpdate();
     }
 
@@ -222,39 +224,41 @@ public final class MIRAccessKeyManager {
      * Updates the given {@link MIRAccessKeyPair} or create a new one if not exists.
      *
      * @param accKP the {@link MIRAccessKeyPair}
+     * @throws MIRAccessKeyException key is not valid
      */
     public static void updateKeyPair(final MIRAccessKeyPair accKP) {
+        if (accKP.getReadKey().equals(accKP.getWriteKey())) {
+            LOGGER.warn("Key collision.");
+            throw new MIRAccessKeyCollisionException("Key collision.");
+        }
         final MCRObjectID objectId = accKP.getMCRObjectId();
         final List<MIRAccessKey> accessKeys = getAccessKeys(objectId);
-        if (accessKeys.size() == 1) {
-            final MIRAccessKey accessKeyOld = accessKeys.get(0);
-            MIRAccessKey accessKeyNew = 
+
+        final MIRAccessKey accessKeyRead = getAccessKeysByType(objectId, MCRAccessManager.PERMISSION_READ).stream()
+            .findFirst()
+            .orElse(null);
+        final MIRAccessKey accessKeyWrite = getAccessKeysByType(objectId, MCRAccessManager.PERMISSION_WRITE).stream()
+            .findFirst()
+            .orElse(null);
+
+        final MIRAccessKey accessKeyReadNew = 
                 new MIRAccessKey(objectId, accKP.getReadKey(), MCRAccessManager.PERMISSION_READ);
-            accessKeyNew.setId(accessKeyOld.getId());
-            updateAccessKey(accessKeyNew);
-            final String writeKeyValue = accKP.getWriteKey();
-            if (writeKeyValue != null) {
-                final MIRAccessKey writeAccessKey = 
-                    new MIRAccessKey(objectId, writeKeyValue, MCRAccessManager.PERMISSION_WRITE);
-                addAccessKey(writeAccessKey);
-            }
-        }
-        if (accessKeys.size() == 2) {
-            final MIRAccessKey accessKeyOldOne = accessKeys.get(0);
-            final MIRAccessKey accessKeyOldTwo = accessKeys.get(1);
-            MIRAccessKey accessKeyNewOne = 
-                new MIRAccessKey(objectId, accKP.getReadKey(), MCRAccessManager.PERMISSION_READ);
-            MIRAccessKey accessKeyNewTwo = 
+        accessKeyReadNew.setId(accessKeyRead.getId());
+        updateAccessKey(accessKeyReadNew);
+
+        if (accKP.getWriteKey() != null) {
+            final MIRAccessKey accessKeyWriteNew = 
                 new MIRAccessKey(objectId, accKP.getWriteKey(), MCRAccessManager.PERMISSION_WRITE);
-            if (accessKeyOldOne.getType().equals(MCRAccessManager.PERMISSION_READ)) {
-                accessKeyNewOne.setId(accessKeyOldOne.getId());
-                accessKeyNewTwo.setId(accessKeyOldTwo.getId());
+            if (accessKeyWrite == null) {
+                addAccessKey(accessKeyWriteNew);
             } else {
-                accessKeyNewOne.setId(accessKeyOldTwo.getId());
-                accessKeyNewTwo.setId(accessKeyOldOne.getId());
+                accessKeyWriteNew.setId(accessKeyWrite.getId());
+                updateAccessKey(accessKeyWriteNew);
             }
-            updateAccessKey(accessKeyNewOne);
-            updateAccessKey(accessKeyNewTwo);
+        } else {
+            if (accessKeyWrite != null) {
+                removeAccessKey(accessKeyWrite);
+            }
         }
     }
 
@@ -335,16 +339,29 @@ public final class MIRAccessKeyManager {
      *
      * @param objectId the {@link MCRObjectID}
      * @param value the key value
-     * @return access key or null
+     * @return access key list
      */
-    public static synchronized MIRAccessKey getAccessKey(final MCRObjectID objectId, final String value) {
+    public static synchronized List<MIRAccessKey> getAccessKeysByValue(final MCRObjectID objectId, final String value) {
         final EntityManager em = MCREntityManagerProvider.getCurrentEntityManager();
         return em.createNamedQuery("MIRAccessKey.getByValue", MIRAccessKey.class)
-            .setParameter("objId", objectId.toString())
+            .setParameter("objId", objectId)
             .setParameter("value", value)
-            .getResultStream()
-            .findFirst()
-            .orElse(null);
+            .getResultList();
+    }
+
+    /**
+     * Return the access key for given {@link MCRObjectID} and value.
+     *
+     * @param objectId the {@link MCRObjectID}
+     * @param value the key value
+     * @return access key list
+     */
+    public static synchronized List<MIRAccessKey> getAccessKeysByType(final MCRObjectID objectId, final String type) {
+        final EntityManager em = MCREntityManagerProvider.getCurrentEntityManager();
+        return em.createNamedQuery("MIRAccessKey.getByType", MIRAccessKey.class)
+            .setParameter("objId", objectId)
+            .setParameter("type", type)
+            .getResultList();
     }
 
     /**
@@ -382,7 +399,9 @@ public final class MIRAccessKeyManager {
     public static void addAccessKeyAttribute(final MCRUser user, final MCRObjectID objectId, final String value) 
         throws MIRAccessKeyException {
 
-        final MIRAccessKey accessKey = getAccessKey(objectId, value);
+        final MIRAccessKey accessKey = getAccessKeysByValue(objectId, value).stream()
+            .findFirst()
+            .orElse(null);
         if (accessKey == null) {
             throw new MIRAccessKeyNotFoundException("Key does not exists.");
         }

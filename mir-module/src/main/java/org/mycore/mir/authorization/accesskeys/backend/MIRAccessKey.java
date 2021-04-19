@@ -25,32 +25,35 @@ package org.mycore.mir.authorization.accesskeys.backend;
 
 import java.util.UUID;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
+import org.mycore.backend.jpa.MCRObjectIDConverter;
 import org.mycore.datamodel.metadata.MCRObjectID;
 
 @NamedQueries({
     @NamedQuery(name = "MIRAccessKey.getById",
         query = "SELECT k"
             + "  FROM MIRAccessKey k"
-            + "  WHERE k.objectIdString = :objId"),
+            + "  WHERE k.objectId = :objId"),
     @NamedQuery(name = "MIRAccessKey.getByValue",
         query = "SELECT k"
             + "  FROM MIRAccessKey k"
-            + "  WHERE k.value = :value AND k.objectIdString = :objId"),
+            + "  WHERE k.value = :value AND k.objectId = :objId"),
+    @NamedQuery(name = "MIRAccessKey.getByType",
+        query = "SELECT k"
+            + "  FROM MIRAccessKey k"
+            + "  WHERE k.type = :type AND k.objectId = :objId"),
     @NamedQuery(name = "MIRAccessKey.clearById",
         query = "DELETE"
             + "  FROM MIRAccessKey k"
-            + "  WHERE k.objectIdString = :objId"),
+            + "  WHERE k.objectId = :objId"),
     @NamedQuery(name = "MIRAccessKey.clear",
         query = "DELETE"
             + "  FROM MIRAccessKey k"),
@@ -109,8 +112,10 @@ public class MIRAccessKey {
     /**
      * @return the linked mcrObjectId
      */
-    @JsonIgnore
-    @Transient
+    @Column(name = "objectid",
+        length = MCRObjectID.MAX_LENGTH,
+        nullable = false)
+    @Convert(converter = MCRObjectIDConverter.class)
     public MCRObjectID getObjectId() {
         return mcrObjectId;
     }
@@ -120,23 +125,6 @@ public class MIRAccessKey {
      */
     public void setObjectId(final MCRObjectID mcrObjectId) {
         this.mcrObjectId = mcrObjectId;
-    }
-
-    /**
-     * @return objectId as String
-     */
-    @JsonIgnore
-    @Column(name = "objectid", 
-        nullable = false)
-    public String getObjectIdString() {
-        return mcrObjectId.toString();
-    }
-
-    /**
-     * @param objectIdString id as String
-     */
-    public void setObjectIdString(String objectIdString) {
-        this.mcrObjectId = MCRObjectID.getInstance(objectIdString);
     }
 
     /**
@@ -168,7 +156,7 @@ public class MIRAccessKey {
 
     /**
      * @param value key value
-     import com.fasterxml.jackson.annotation.JsonBackReference;*/
+    */
     public void setValue(final String value) {
         this.value = value;
     }
