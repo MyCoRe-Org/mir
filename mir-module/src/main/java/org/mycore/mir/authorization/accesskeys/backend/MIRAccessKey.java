@@ -112,7 +112,7 @@ public class MIRAccessKey {
     /**
      * @return the linked mcrObjectId
      */
-    @Column(name = "objectid",
+    @Column(name = "object_id",
         length = MCRObjectID.MAX_LENGTH,
         nullable = false)
     @Convert(converter = MCRObjectIDConverter.class)
