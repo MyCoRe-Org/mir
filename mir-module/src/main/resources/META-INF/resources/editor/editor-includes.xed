@@ -1276,7 +1276,7 @@
   </xed:template>
   
   <xed:template id="host.articlenumber">
-    <mir:textfield xpath="mods:part/mods:detail[@type='articlenumber']/mods:number" label="mir.articlenumber" help-text="{i18n:mir.help.articlenumber}" class="mir-modspart" />
+    <mir:textfield xpath="mods:part/mods:detail[@type='article_number']/mods:number" label="mir.articlenumber" help-text="{i18n:mir.help.articlenumber}" class="mir-modspart" />
   </xed:template>
 
   <xed:template id="host.pages">
