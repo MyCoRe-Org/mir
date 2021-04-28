@@ -282,14 +282,14 @@
 
   <xsl:template mode="publicationYear" match="mods:*">
     <xsl:choose>
-      <xsl:when test="mods:originInfo[not(@eventType) or @eventType='publication']/mods:dateIssued[@encoding='w3cdtf']">
+      <xsl:when test="mods:originInfo[not(@eventType) or @eventType='publication']/mods:dateIssued[@encoding='w3cdtf'][@point='start' or string-length(@point) = 0]">
         <xsl:apply-templates
-                select="mods:originInfo[not(@eventType) or @eventType='publication']/mods:dateIssued[@encoding='w3cdtf']"
+                select="mods:originInfo[not(@eventType) or @eventType='publication']/mods:dateIssued[@encoding='w3cdtf'][@point='start' or string-length(@point) = 0]"
                 mode="publicationYear"/>
       </xsl:when>
-      <xsl:when test="mods:originInfo[not(@eventType) or @eventType='publication']/mods:dateIssued[@encoding='marc']">
+      <xsl:when test="mods:originInfo[not(@eventType) or @eventType='publication']/mods:dateIssued[@encoding='marc'][@point='start' or string-length(@point) = 0]">
         <xsl:apply-templates
-                select="mods:originInfo[not(@eventType) or @eventType='publication']/mods:dateIssued[@encoding='marc']"
+                select="mods:originInfo[not(@eventType) or @eventType='publication']/mods:dateIssued[@encoding='marc'][@point='start' or string-length(@point) = 0]"
                 mode="publicationYear"/>
       </xsl:when>
       <xsl:when test="mods:originInfo[not(@eventType) or @eventType='publication']/mods:dateCreated">
