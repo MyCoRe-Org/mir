@@ -1274,6 +1274,10 @@
     <mir:textfield xpath="mods:part/mods:detail[@type='issue']/mods:number" label="mir.issue" help-text="{i18n:mir.help.issue}" class="mir-modspart required"
       required="true" required-i18n="mir.validation.host.issue" />
   </xed:template>
+  
+  <xed:template id="host.articlenumber">
+    <mir:textfield xpath="mods:part/mods:detail[@type='articlenumber']/mods:number" label="mir.articlenumber" help-text="{i18n:mir.help.articlenumber}" class="mir-modspart" />
+  </xed:template>
 
   <xed:template id="host.pages">
     <div class="form-group row mir-modspart">
@@ -2021,6 +2025,7 @@
           <xed:include ref="title.nonrequired" />
           <xed:include ref="host.volume" />
           <xed:include ref="host.issue" />
+          <xed:include ref="host.articlenumber" />
           <xed:include ref="host.pages" />
           <xed:include ref="host.order" />
         </div>
