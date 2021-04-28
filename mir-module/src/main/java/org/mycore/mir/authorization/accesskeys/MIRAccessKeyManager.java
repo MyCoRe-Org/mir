@@ -22,7 +22,6 @@
  */
 package org.mycore.mir.authorization.accesskeys;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -90,26 +89,24 @@ public final class MIRAccessKeyManager {
     }
 
     /**
-     * Checks the quality of the key.
+     * Checks the quality of the permission.
      *
-     * @param accessKey the access key
+     * @param type permission type
      * @return valid or not
-     * @throws MIRAccessKeyException key is not valid
      */
-    private static boolean isValidAccessKey(MIRAccessKey accessKey)
-        throws MIRAccessKeyException {
-        final String value = accessKey.getValue();
-        if (value == null || value.length() == 0) {
-            LOGGER.warn("Key cannot be empty.");
-            throw new MIRAccessKeyException("Key cannot be empty.");
-        }
-        final String type = accessKey.getType();
-        if (type == null || !(type.equals(MCRAccessManager.PERMISSION_READ)
-            || type.equals(MCRAccessManager.PERMISSION_WRITE))) {
-            LOGGER.warn("Unknown permission type.");
-            throw new MIRAccessKeyException("Unknown permission type.");
-        }
-        return true;
+    private static boolean isValidType(String type) {
+        return (type.equals(MCRAccessManager.PERMISSION_READ)
+            || type.equals(MCRAccessManager.PERMISSION_WRITE));
+    }
+
+    /**
+     * Checks the quality of the value.
+     *
+     * @param value the value 
+     * @return valid or not
+     */
+    private static boolean isValidValue(String value) {
+        return value.length() > 0;
     }
 
     /**
@@ -155,47 +152,34 @@ public final class MIRAccessKeyManager {
     }
 
     /**
-     * Checks if there is a value/type collison.
-     *
-     * @param accessKeys access keys 
-     * @param value value
-     * @param type permission type
-     * @return collision or not
-     */
-    private static boolean hasCollision(final List<MIRAccessKey> accessKeys, 
-        final String value, final String type) {
-        if (accessKeys.size() == 0) {
-            return false;
-        }
-        final String collisionType = type.equals(MCRAccessManager.PERMISSION_READ)
-            ? MCRAccessManager.PERMISSION_WRITE : MCRAccessManager.PERMISSION_READ;
-        return accessKeys.stream()
-            .filter(s -> s.getValue().equals(value))
-            .anyMatch(s -> s.getType().equals(collisionType));
-    }
-
-    /**
      * Adds a access keys for given {@link MCRObjectID}.
      * If there is no value collision
      *
      * @param accessKey the access key
      * @throws MIRAccessKeyException key is not valid
      */
-    public static void addAccessKey(final MIRAccessKey accessKey) 
-        throws MIRAccessKeyException {
+    public static synchronized void addAccessKey(final MIRAccessKey accessKey) throws MIRAccessKeyException {
         final MCRObjectID objectId = accessKey.getObjectId();
         if (objectId == null) {
-            return;
+            LOGGER.warn("Object id is required.");
+            throw new MIRAccessKeyException("Object id is required.");
         }
-        if (isValidAccessKey(accessKey)) { 
-            List<MIRAccessKey> accessKeys = getAccessKeys(objectId);
-            if (!hasCollision(accessKeys, accessKey.getValue(), accessKey.getType())) {
-                final EntityManager em = MCREntityManagerProvider.getCurrentEntityManager();
-                em.persist(accessKey);
-            } else {
-                LOGGER.warn("Key collision.");
-                throw new MIRAccessKeyCollisionException("Key collision.");
-            }
+        final String type = accessKey.getType();
+        if (type == null || !isValidType(type)) {
+            LOGGER.warn("Invalid permission type.");
+            throw new MIRAccessKeyException("Invalid permission type.");
+        }
+        final String value = accessKey.getValue();
+        if (value == null || !isValidValue(value)) {
+            LOGGER.warn("Incorrect value.");
+            throw new MIRAccessKeyException("Incorrect value.");
+        }
+        if (getAccessKeyByValue(objectId, value) == null) {
+            final EntityManager em = MCREntityManagerProvider.getCurrentEntityManager();
+            em.persist(accessKey);
+        } else {
+            LOGGER.warn("Key collision.");
+            throw new MIRAccessKeyCollisionException("Key collision.");
         }
     }
 
@@ -232,28 +216,22 @@ public final class MIRAccessKeyManager {
             throw new MIRAccessKeyCollisionException("Key collision.");
         }
         final MCRObjectID objectId = accKP.getMCRObjectId();
-        final List<MIRAccessKey> accessKeys = getAccessKeys(objectId);
-
         final MIRAccessKey accessKeyRead = getAccessKeysByType(objectId, MCRAccessManager.PERMISSION_READ).stream()
             .findFirst()
             .orElse(null);
         final MIRAccessKey accessKeyWrite = getAccessKeysByType(objectId, MCRAccessManager.PERMISSION_WRITE).stream()
             .findFirst()
             .orElse(null);
-
         final MIRAccessKey accessKeyReadNew = 
                 new MIRAccessKey(objectId, accKP.getReadKey(), MCRAccessManager.PERMISSION_READ);
-        accessKeyReadNew.setId(accessKeyRead.getId());
-        updateAccessKey(accessKeyReadNew);
-
+        updateAccessKey(accessKeyRead.getId(), accessKeyReadNew);
         if (accKP.getWriteKey() != null) {
             final MIRAccessKey accessKeyWriteNew = 
                 new MIRAccessKey(objectId, accKP.getWriteKey(), MCRAccessManager.PERMISSION_WRITE);
             if (accessKeyWrite == null) {
                 addAccessKey(accessKeyWriteNew);
             } else {
-                accessKeyWriteNew.setId(accessKeyWrite.getId());
-                updateAccessKey(accessKeyWriteNew);
+                updateAccessKey(accessKeyWrite.getId(), accessKeyWriteNew);
             }
         } else {
             if (accessKeyWrite != null) {
@@ -289,35 +267,64 @@ public final class MIRAccessKeyManager {
     /**
      * Updates access key.
      *
-     * @param accessKey the access key
-     * @throws MCRException if key does not exists
+     * @param id id of the key to be updated
+     * @param newAccessKey the access key
+     * @throws MIRAccessKeyException if key is invalid
      */
-    private static void updateAccessKey(MIRAccessKey newAccessKey) throws MIRAccessKeyException {
-        if (newAccessKey.getId() == null) {
-            LOGGER.warn("Cannot update Key without id.");
-            throw new MIRAccessKeyNotFoundException("Cannot update Key without id.");
+    public static synchronized void updateAccessKey(final int id, final MIRAccessKey newAccessKey) 
+        throws MIRAccessKeyException {
+        final String type = newAccessKey.getType();
+        if (type == null) {
+            LOGGER.warn("Permission type is required");
+            throw new MIRAccessKeyException("Permission type is required.");
         }
-        if (isValidAccessKey(newAccessKey)) { 
-            final EntityManager em = MCREntityManagerProvider.getCurrentEntityManager();
-            final MIRAccessKey accessKey = em.find(MIRAccessKey.class, newAccessKey.getId());
-            if (accessKey != null) {
-                List<MIRAccessKey> accessKeys = new ArrayList<MIRAccessKey>();
-                accessKeys.addAll(getAccessKeys(accessKey.getObjectId()));
-                accessKeys.remove(accessKey);
-                final String type = newAccessKey.getType();
-                final String value = newAccessKey.getValue();
-                if (!hasCollision(accessKeys, value, type)) {
-                    accessKey.setType(type);
-                    accessKey.setValue(value);
-                    cleanPermissionCache(accessKey.getObjectId(), type);
+        final String value = newAccessKey.getValue();
+        if (value == null) {
+            LOGGER.warn("Value is required.");
+            throw new MIRAccessKeyException("Value is required.");
+        }
+        final EntityManager em = MCREntityManagerProvider.getCurrentEntityManager();
+        final MIRAccessKey accessKey = em.find(MIRAccessKey.class, id);
+        if (accessKey != null) {
+            final MCRObjectID objectId = accessKey.getObjectId();
+            if (!accessKey.getValue().equals(value)) {
+                if (!accessKey.getType().equals(type)) {
+                    if (isValidType(type)) {
+                        accessKey.setType(type);
+                        cleanPermissionCache(objectId, type);
+                    } else {
+                        LOGGER.warn("Unkown Type.");
+                        throw new MIRAccessKeyException("Unknown permission type.");
+                    }
+                }
+            } else {
+                if (getAccessKeyByValue(objectId, value) == null) {
+                    if (isValidValue(value)) {
+                        if (accessKey.getType().equals(type)) {
+                            accessKey.setValue(value);
+                            cleanPermissionCache(objectId, type);
+                        } else {
+                            if (isValidType(type)) {
+                                accessKey.setValue(value);
+                                accessKey.setType(type);
+                                cleanPermissionCache(objectId, type);
+                            } else {
+                                LOGGER.warn("Unkown Type.");
+                                throw new MIRAccessKeyException("Unknown permission type.");
+                            }
+                        }
+                    } else {
+                        LOGGER.warn("Incorrect Value.");
+                        throw new MIRAccessKeyException("Incorrect Value.");
+                    } 
                 } else {
                     LOGGER.warn("Key collision.");
                     throw new MIRAccessKeyCollisionException("Key collision.");
                 }
-            } else {
-                LOGGER.warn("Key does not exists.");
-                throw new MIRAccessKeyNotFoundException("Key does not exists.");
-            }
+            } 
+        } else {
+            LOGGER.warn("Key does not exists.");
+            throw new MIRAccessKeyNotFoundException("Key does not exists.");
         }
     }
 
@@ -341,19 +348,22 @@ public final class MIRAccessKeyManager {
      * @param value the key value
      * @return access key list
      */
-    public static synchronized List<MIRAccessKey> getAccessKeysByValue(final MCRObjectID objectId, final String value) {
+    public static synchronized MIRAccessKey getAccessKeyByValue(final MCRObjectID objectId, final String value) {
         final EntityManager em = MCREntityManagerProvider.getCurrentEntityManager();
         return em.createNamedQuery("MIRAccessKey.getByValue", MIRAccessKey.class)
             .setParameter("objId", objectId)
             .setParameter("value", value)
-            .getResultList();
+            .getResultList()
+            .stream()
+            .findFirst()
+            .orElse(null);
     }
 
     /**
      * Return the access key for given {@link MCRObjectID} and value.
      *
      * @param objectId the {@link MCRObjectID}
-     * @param value the key value
+     * @param type the type
      * @return access key list
      */
     public static synchronized List<MIRAccessKey> getAccessKeysByType(final MCRObjectID objectId, final String type) {
@@ -399,9 +409,7 @@ public final class MIRAccessKeyManager {
     public static void addAccessKeyAttribute(final MCRUser user, final MCRObjectID objectId, final String value) 
         throws MIRAccessKeyException {
 
-        final MIRAccessKey accessKey = getAccessKeysByValue(objectId, value).stream()
-            .findFirst()
-            .orElse(null);
+        final MIRAccessKey accessKey = getAccessKeyByValue(objectId, value);
         if (accessKey == null) {
             throw new MIRAccessKeyNotFoundException("Key does not exists.");
         }
@@ -432,5 +440,4 @@ public final class MIRAccessKeyManager {
         user.getAttributes().removeIf(ua -> ua.getName().equals(ACCESS_KEY_PREFIX + mcrObjectId.toString()));
         MCRUserManager.updateUser(user);
     }
-
 }

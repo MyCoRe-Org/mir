@@ -23,12 +23,11 @@
 
 package org.mycore.mir.authorization.accesskeys.backend;
 
-import java.util.UUID;
-
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -71,7 +70,7 @@ public class MIRAccessKey {
     private static final long serialVersionUID = 1L;
 
     /** The unique and internal information id */
-    private UUID id;
+    private int id;
 
     /** The access key information*/
     private MCRObjectID mcrObjectId; 
@@ -131,17 +130,17 @@ public class MIRAccessKey {
      * @return internal id
      */
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "accesskey_id",
         nullable = false)
-    public UUID getId() {
+    public int getId() {
         return id;
     }
 
     /**
      * @param id internal id
      */
-    public void setId(UUID id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -186,7 +185,7 @@ public class MIRAccessKey {
             return false;
         }
         MIRAccessKey other = (MIRAccessKey) o;
-        return this.id.equals(other.getId()) && this.type.equals(other.getType())
+        return this.id == other.getId() && this.type.equals(other.getType())
             && this.value.equals(other.getValue());
     }
 }
