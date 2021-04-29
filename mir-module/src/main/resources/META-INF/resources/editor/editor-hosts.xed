@@ -103,6 +103,7 @@
       <xed:bind xpath="mods:relatedItem[@type='host']">
         <xed:include ref="host.volume" />
         <xed:include ref="host.issue" />
+        <xed:include ref="host.articlenumber" />
         <xed:include ref="identifier.isbn.journal.relItemsearch" />
         <xed:include ref="host.pages" />
       </xed:bind>
