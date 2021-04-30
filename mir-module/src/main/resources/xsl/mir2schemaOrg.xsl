@@ -30,9 +30,21 @@
           <xsl:variable name="trimmed" select="substring-after(normalize-space(@xlink:href),'#')" />
           <xsl:variable name="licenseURI"
                         select="concat('classification:metadata:0:children:mir_licenses:',$trimmed)" />
-          <fn:string>
-            <xsl:value-of select="document($licenseURI)//category/url/@xlink:href" />
-          </fn:string>
+          <xsl:choose>
+            <xsl:when test="$trimmed='rights_reserved'">
+              <fn:string>
+                <xsl:value-of select="document($licenseURI)//category/label[@xml:lang='en']/@text" />
+              </fn:string>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:variable name="url" select="document($licenseURI)//category/url/@xlink:href" />
+              <xsl:if test="string-length($url)>0">
+                <fn:string>
+                  <xsl:value-of select="$url" />
+                </fn:string>
+              </xsl:if>
+            </xsl:otherwise>
+          </xsl:choose>
         </xsl:for-each>
       </fn:array>
   </xsl:template>
