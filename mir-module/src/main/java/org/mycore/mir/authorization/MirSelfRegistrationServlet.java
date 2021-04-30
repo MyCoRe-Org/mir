@@ -91,6 +91,7 @@ public class MirSelfRegistrationServlet extends MCRServlet {
 
         if (doc == null) {
             res.sendRedirect(MCRFrontendUtil.getBaseURL() + "authorization/new-author.xed");
+            return;
         }
 
         final Element u = doc.getRootElement();
