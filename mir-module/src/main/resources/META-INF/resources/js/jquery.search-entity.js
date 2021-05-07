@@ -734,14 +734,14 @@
       searchResultContainer : $resultBox
     }, options));
   };
-
-  SearchEntity.prototype.updateOutput = function(item) {
+  
+  SearchEntity.prototype.updateOutput = function (item) {
     var that = this;
     var options = this.options;
     var $output = $(options.searchOutput, getParent(this.$element))[0] !== undefined ? $(options.searchOutput, getParent(this.$element)).first() : this.$element;
     var $outputType = $(options.searchOutputType, getParent(this.$element))[0] !== undefined ? $(options.searchOutputType, getParent(this.$element)).first() : this.$element;
     var $outputNameType = $(options.searchOutputNameType, getParent(this.$element))[0] !== undefined ? $(options.searchOutputNameType, getParent(this.$element)).first() : this.$element;
-    
+
     var nameIdFields = [];
 
     if (item) {
@@ -773,9 +773,9 @@
           }
 
           /*
-					 * Get assigned name identifier types for the dependent
-					 * personExtended_box
-					 */
+           * Get assigned name identifier types for the dependent
+           * personExtended_box
+           */
           nameIdTypesElements = $(itemPersonExtendedBox).find('select[name*="/mods:nameIdentifier"]');
 
           nameIdTypes = nameIdTypesElements.map(function () {
@@ -783,9 +783,9 @@
           }).get();
 
           /*
-					 * Output will replace an old value with same identifier type or will
-					 * be the next free input field!
-					 */
+           * Output will replace an old value with same identifier type or will
+           * be the next free input field!
+           */
           if (nameIdTypes.includes(outputType.toLowerCase())) {
 
             /* note multiple id types on outputType */
@@ -807,9 +807,9 @@
             }
 
             /*
-						 * avoid default pointer for $output and $outputType -> do not
-						 * remove first
-						 */
+             * avoid default pointer for $output and $outputType -> do not
+             * remove first
+             */
             if (depIndexWithIdType === null) {
               depIndexWithIdType = defaultIndexWithIdType;
             }
@@ -848,12 +848,12 @@
       $feedback.attr("target", "_blank");
       $feedback.attr("class", "mcr-badge--origin");
       $feedback.css({
-        textDecoration : "none"
+        textDecoration: "none"
       });
-      if(type == null || SearchEntity.TYPES[type.toUpperCase()] ==  undefined) {
+      if (type == null || SearchEntity.TYPES[type.toUpperCase()] == undefined) {
         $feedback.attr("onclick", "return false;");
         $feedback.css({
-          cursor : "default"
+          cursor: "default"
         });
       }
 
@@ -864,10 +864,10 @@
       var $remover = $(document.createElement("a"));
       $remover.attr("href", "#");
       $remover.html("<i class=\"" + options.feedbackCleanIconClass + "\"></i>");
-      $remover.on("click", function(e) {
+      $remover.on("click", function (e) {
         e.preventDefault();
         that.updateOutput({
-          value : ""
+          value: ""
         })
       });
       $label.append($remover);
@@ -881,19 +881,19 @@
       this.$element.after($feedback);
 
       $feedback.css({
-        marginLeft : -($feedback.width() + 10)
+        marginLeft: -($feedback.width() + 10)
       });
       // prevent badge overlay
       // add padding to the input field in badge size
       this.$element.css({
-        paddingRight : ($feedback.width() + 20)
+        paddingRight: ($feedback.width() + 20)
       });
     } else {
       if (this.$feedback)
         this.$feedback.remove();
       // remove badge overlay padding
       this.$element.css({
-        paddingRight : 20
+        paddingRight: 20
       });
     }
 
