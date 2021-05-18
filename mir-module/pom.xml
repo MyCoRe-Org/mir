@@ -227,6 +227,7 @@
     <dependency>
       <groupId>org.mycore.pica2mods</groupId>
       <artifactId>pica2mods-xslt</artifactId>
+      <scope>runtime</scope>
     </dependency>
     <dependency>
       <groupId>org.mycore.sword</groupId>
