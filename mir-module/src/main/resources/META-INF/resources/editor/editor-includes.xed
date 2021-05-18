@@ -1805,6 +1805,12 @@
     </xed:bind>
   </xed:template>
 
+  <xed:template id="subject.simple.required">
+    <xed:bind xpath="mods:subject">
+      <mir:topic.repeated min="1" max="20" label="mir.subject.topic" help-text="{i18n:mir.help.subject.topic.gnd}" class="required" required="true" required-i18n="mir.validation.subject" />
+    </xed:bind>
+  </xed:template>
+
   <xed:template id="subject.complex">
     <xed:repeat xpath="mods:subject[not(mods:geographic)]" min="1" max="20">
       <fieldset>
@@ -1816,6 +1822,22 @@
         </div>
         <div class="mir-fieldset-content">
           <mir:topic.repeated min="1" max="20" label="mir.subject.topic" help-text="{i18n:mir.help.subject.topic.gnd}" extended="true" />
+        </div>
+      </fieldset>
+    </xed:repeat>
+  </xed:template>
+
+  <xed:template id="subject.complex.required">
+    <xed:repeat xpath="mods:subject[not(mods:geographic)]" min="1" max="20">
+      <fieldset>
+        <div class="row mir-fieldset-legend">
+          <legend class="col-md-9" style="margin-bottom:0px;padding-top:10px;">
+            <xed:output i18n="mir.subject.topic.complex" />
+          </legend>
+          <mir:help-pmud pmud="true" help-text="{i18n:mir.help.subject.topic.complex}" />
+        </div>
+        <div class="mir-fieldset-content">
+          <mir:topic.repeated min="1" max="20" label="mir.subject.topic" help-text="{i18n:mir.help.subject.topic.gnd}" extended="true" class="required" required="true" required-i18n="mir.validation.subject" />
         </div>
       </fieldset>
     </xed:repeat>
