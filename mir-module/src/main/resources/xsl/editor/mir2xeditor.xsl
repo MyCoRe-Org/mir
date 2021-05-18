@@ -545,10 +545,11 @@
 
   <xsl:template match="mir:topic.repeated">
     <xed:repeat xpath="mods:topic" min="{@min}" max="{@max}">
+      <xsl:variable name="xed-val-marker" > {$xed-validation-marker} </xsl:variable>
         <xed:bind xpath="@authorityURI" initially="http://d-nb.info/gnd/">
           <input type="hidden" />
         </xed:bind>
-        <div class="form-group row {@class}">
+        <div class="form-group row {@class} {$xed-val-marker}">
           <label class="col-md-3 col-form-label text-right">
             <xed:output i18n="{@label}" />
           </label>
@@ -577,6 +578,7 @@
         <span class="mir-fieldset-content topicExtended-container d-none">
           <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="topicIdentifier" />
         </span>
+        <xsl:call-template name="mir-required" />
     </xed:repeat>
   </xsl:template>
 
