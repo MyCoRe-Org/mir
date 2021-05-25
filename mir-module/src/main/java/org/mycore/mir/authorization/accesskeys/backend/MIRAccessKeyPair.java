@@ -30,6 +30,8 @@ import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -59,6 +61,17 @@ import org.mycore.datamodel.metadata.MCRObjectID;
  * @author Ren\u00E9 Adler (eagle)
  * @since 0.3
  */
+
+@NamedQueries({
+    @NamedQuery(name = "MIRAccessKeyPair.get",
+        query = "SELECT k"
+            + "  FROM MIRAccessKeyPair k"),
+    @NamedQuery(name = "MIRAccessKeyPair.removeById",
+        query = "DELETE"
+            + "  FROM MIRAccessKeyPair k"
+            + "  WHERE k.objectId = :objId"),
+})
+
 @Entity
 @Table(name = "MIRAccesskeys")
 @XmlRootElement(name = "accesskeys")
