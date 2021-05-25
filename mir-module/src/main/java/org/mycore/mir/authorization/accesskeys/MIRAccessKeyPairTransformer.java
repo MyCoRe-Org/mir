@@ -35,6 +35,7 @@ import org.jdom2.transform.JDOMSource;
 import org.mycore.common.MCRException;
 import org.mycore.common.content.MCRJAXBContent;
 import org.mycore.datamodel.metadata.MCRObjectID;
+import org.mycore.mir.authorization.accesskeys.backend.MIRAccessKeyPair;
 import org.xml.sax.SAXParseException;
 
 /**

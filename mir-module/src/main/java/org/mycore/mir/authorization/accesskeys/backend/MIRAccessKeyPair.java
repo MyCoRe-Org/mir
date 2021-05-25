@@ -20,7 +20,7 @@
  * If not, write to the Free Software Foundation Inc.,
  * 59 Temple Place - Suite 330, Boston, MA  02111-1307 USA
  */
-package org.mycore.mir.authorization.accesskeys;
+package org.mycore.mir.authorization.accesskeys.backend;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -95,7 +95,7 @@ public class MIRAccessKeyPair implements Serializable {
         setWriteKey(writeKey);
     }
 
-    protected static MIRAccessKeyPair fromServiceFlags(final MCRObjectID mcrObjectId, final ServiceFlags servFlags) {
+    public static MIRAccessKeyPair fromServiceFlags(final MCRObjectID mcrObjectId, final ServiceFlags servFlags) {
         final MIRAccessKeyPair accKP = new MIRAccessKeyPair();
         accKP.setMCRObjectId(mcrObjectId);
 
@@ -131,11 +131,11 @@ public class MIRAccessKeyPair implements Serializable {
     @Id
     @Column(name = "objId", nullable = false, length = 128)
     @XmlAttribute(name = "objId", required = true)
-    protected String getObjectId() {
+    public String getObjectId() {
         return mcrObjectId.toString();
     }
 
-    protected void setObjectId(final String mcrObjectId) {
+    public void setObjectId(final String mcrObjectId) {
         this.mcrObjectId = MCRObjectID.getInstance(mcrObjectId);
     }
 
@@ -194,7 +194,7 @@ public class MIRAccessKeyPair implements Serializable {
         }
     }
 
-    protected ServiceFlags toServiceFlags() {
+    public ServiceFlags toServiceFlags() {
         return ServiceFlags.build(this);
     }
 
@@ -230,7 +230,7 @@ public class MIRAccessKeyPair implements Serializable {
 
     @XmlType(name = "serviceFlagType")
     @XmlEnum
-    protected enum ServiceFlagType {
+    public enum ServiceFlagType {
         /**
          *  Read key permission type.
          */
@@ -276,7 +276,7 @@ public class MIRAccessKeyPair implements Serializable {
 
     @XmlRootElement(name = "servflags")
     @XmlAccessorType(XmlAccessType.FIELD)
-    protected static class ServiceFlags {
+    public static class ServiceFlags {
         @XmlElement(name = "servflag")
         public List<ServiceFlag> flags;
 
@@ -301,7 +301,7 @@ public class MIRAccessKeyPair implements Serializable {
 
     @XmlRootElement(name = "servflag")
     @XmlAccessorType(XmlAccessType.FIELD)
-    protected static class ServiceFlag {
+    public static class ServiceFlag {
         @XmlAttribute(name = "type", required = true)
         public ServiceFlagType type;
 

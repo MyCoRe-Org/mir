@@ -29,6 +29,7 @@ import org.mycore.common.events.MCREventHandlerBase;
 import org.mycore.datamodel.metadata.MCRBase;
 import org.mycore.datamodel.metadata.MCRDerivate;
 import org.mycore.datamodel.metadata.MCRObject;
+import org.mycore.mir.authorization.accesskeys.backend.MIRAccessKeyPair;
 
 /**
  * This class contains EventHandler methods to manage access keys of
