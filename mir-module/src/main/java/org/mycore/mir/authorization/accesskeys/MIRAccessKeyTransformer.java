@@ -29,6 +29,8 @@ import java.util.List;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
+import org.jdom2.Element;
+
 import org.mycore.mir.authorization.accesskeys.backend.MIRAccessKey;
 
 public class MIRAccessKeyTransformer {
@@ -38,4 +40,19 @@ public class MIRAccessKeyTransformer {
         final ObjectMapper objectMapper = new ObjectMapper();
         return Arrays.asList(objectMapper.readValue(json, MIRAccessKey[].class));
     }
+
+    public static String accessKeysToJson(final List<MIRAccessKey> accessKeys)
+        throws JsonProcessingException {
+        final ObjectMapper objectMapper = new ObjectMapper();
+        return objectMapper.writeValueAsString(accessKeys);
+    }
+
+    public static Element accessKeysJsonToServFlag(final String json) {
+        final Element main = new Element("servflag");
+        main.setAttribute("type", "accesskeys");
+        main.setAttribute("inherited", "0");
+        main.setAttribute("form", "plain");
+        main.setText(json);
+        return main;
+    } 
 }

@@ -22,58 +22,43 @@
  */
 package org.mycore.mir.authorization.accesskeys;
 
-import java.util.List;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-
 import javax.xml.transform.Source;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.URIResolver;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import org.jdom2.Element;
 import org.jdom2.transform.JDOMSource;
 
 import org.mycore.datamodel.metadata.MCRObjectID;
-import org.mycore.mir.authorization.accesskeys.backend.MIRAccessKey;
+import org.mycore.mir.authorization.accesskeys.backend.MIRAccessKeyPair;
 
 /**
- * This resolver can be used to return a JSON-String with {@link MIRAccessKey} for an given {@link MCRObjectID}.
+ * This resolver can be used to return a {@link MIRAccessKeyPair} for an given {@link MCRObjectID}.
  *
  *
  * <p>Syntax:</p>
  * <ul>
- * <li><code>accesskey:{mcrObjectId}</code> to resolve a {@link MIRAccessKey} list</li>
+ * <li><code>accesskeys:{mcrObjectId}</code> to resolve an {@link MIRAccessKeyPair}</li>
  * </ul>
  *
+ * @author Ren\u00E9 Adler (eagle)
  *
  */
-public class MIRAccessKeyResolver implements URIResolver {
-    
-    private static final Logger LOGGER = LogManager.getLogger();
+public class MIRAccessKeyPairResolver implements URIResolver {
 
     /* (non-Javadoc)
      * @see javax.xml.transform.URIResolver#resolve(java.lang.String, java.lang.String)
      */
     @Override
     public Source resolve(String href, String base) throws TransformerException {
-        final MCRObjectID objectId = MCRObjectID.getInstance(href.substring(href.indexOf(":") + 1));
+        final String objId = href.substring(href.indexOf(":") + 1);
 
-        final List<MIRAccessKey> accessKeys = MIRAccessKeyManager.getAccessKeys(objectId);
-        
-        if (accessKeys.size() == 0) {
-            return new JDOMSource(new Element("null"));
+        MIRAccessKeyPair accKP = MIRAccessKeyManager.getKeyPair(MCRObjectID.getInstance(objId));
+
+        if (accKP != null) {
+            return new JDOMSource(MIRAccessKeyPairTransformer.buildExportableXML(accKP));
         }
-        
-        try {
-            final String json = MIRAccessKeyTransformer.accessKeysToJson(accessKeys);
-            final Element servFlag = MIRAccessKeyTransformer.accessKeysJsonToServFlag(json);
-            return new JDOMSource(servFlag);
-        } catch (JsonProcessingException e) {
-            LOGGER.error("Access keys could not be converted.");
-            return new JDOMSource(new Element("null"));
-        }
+
+        return new JDOMSource(new Element("null"));
     }
 }
