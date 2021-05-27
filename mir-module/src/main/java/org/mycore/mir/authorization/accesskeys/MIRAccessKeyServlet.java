@@ -34,11 +34,12 @@ import org.mycore.access.MCRAccessManager;
 import org.mycore.common.MCRSessionMgr;
 import org.mycore.common.MCRSystemUserInformation;
 import org.mycore.common.MCRUserInformation;
-import org.mycore.datamodel.metadata.MCRObject;
 import org.mycore.datamodel.metadata.MCRObjectID;
 import org.mycore.frontend.servlets.MCRServlet;
 import org.mycore.frontend.servlets.MCRServletJob;
+import org.mycore.mir.authorization.accesskeys.backend.MIRAccessKey;
 import org.mycore.mir.authorization.accesskeys.backend.MIRAccessKeyPair;
+import org.mycore.mir.authorization.accesskeys.exception.MIRAccessKeyException;
 
 /**
  * @author Ren\u00E9 Adler (eagle)
@@ -49,31 +50,6 @@ public class MIRAccessKeyServlet extends MCRServlet {
     private static final long serialVersionUID = 1L;
 
     private static final String REDIRECT_URL_PARAMETER = "url";
-
-    /**
-     * Checks if the access key is correct and returns an error message, if not.
-     *
-     * @param objId the {@link MCRObjectID} of the {@link MCRObject} the key belongs to
-     * @param accessKey the read or write key stored for the given {@link MCRObject}
-     * @return <code>null</code>, if the given key matches either the read key or the write key.
-     * Returns an error message otherwise.
-     */
-    private static String checkAccessKey(final MCRObjectID objId, final String accessKey) {
-        if ((accessKey == null) || (accessKey.length() == 0)) {
-            return "Missing documentID or accessKey parameter";
-        }
-
-        MIRAccessKeyPair accKP = MIRAccessKeyManager.getKeyPair(objId);
-        if (accKP == null) {
-            return "No access keys defined for MCRObject " + objId;
-        }
-
-        if (accessKey.equals(accKP.getReadKey()) || accessKey.equals(accKP.getWriteKey())) {
-            return null;
-        } else {
-            return "Access key does not match";
-        }
-    }
 
     private static String getReturnURL(HttpServletRequest req) {
         String returnURL = req.getParameter(REDIRECT_URL_PARAMETER);
@@ -114,18 +90,16 @@ public class MIRAccessKeyServlet extends MCRServlet {
         if (action == null) {
             final String accessKey = xml.getTextTrim();
 
-            String message = checkAccessKey(mcrObjId, accessKey);
-            if (message != null) {
-                res.sendError(HttpServletResponse.SC_BAD_REQUEST, message);
+            if (accessKey == null || accessKey.length() == 0) {
+                res.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing documentID or accessKey parameter");
                 return;
             }
 
-            final MIRAccessKeyPair accKP = MIRAccessKeyManager.getKeyPair(mcrObjId);
-
-            if (accessKey.equals(accKP.getReadKey())) {
+            try {
                 MIRAccessKeyManager.addAccessKey(mcrObjId, accessKey);
-            } else if (accessKey.equals(accKP.getWriteKey())) {
-                MIRAccessKeyManager.addAccessKey(mcrObjId, accessKey);
+            } catch(MIRAccessKeyException e) {
+                res.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getErrorCode());
+                return;
             }
         } else if ("create".equals(action)) {
             if (!MCRAccessManager.checkPermission(mcrObjId, PERMISSION_WRITE)) {
@@ -134,8 +108,16 @@ public class MIRAccessKeyServlet extends MCRServlet {
             }
 
             final MIRAccessKeyPair accKP = MIRAccessKeyPairTransformer.buildAccessKeyPair(xml);
-
-            MIRAccessKeyManager.createKeyPair(accKP);
+            final String readKey = accKP.getReadKey();
+            final String writeKey = accKP.getWriteKey();
+            
+            final MIRAccessKey accessKeyRead = new MIRAccessKey(mcrObjId, readKey, MCRAccessManager.PERMISSION_READ);
+            MIRAccessKeyManager.addAccessKey(accessKeyRead);
+            if (writeKey != null) {
+                final MIRAccessKey accessKeyWrite = 
+                    new MIRAccessKey(mcrObjId, readKey, MCRAccessManager.PERMISSION_WRITE);
+                MIRAccessKeyManager.addAccessKey(accessKeyWrite);
+            }
         } else if ("edit".equals(action)) {
             if (!MCRAccessManager.checkPermission(mcrObjId, PERMISSION_WRITE)) {
                 throw MCRAccessException.missingPermission("Update access key on object.", mcrObjId.toString(),
@@ -151,7 +133,7 @@ public class MIRAccessKeyServlet extends MCRServlet {
                     PERMISSION_WRITE);
             }
 
-            MIRAccessKeyManager.deleteKeyPair(mcrObjId);
+            MIRAccessKeyManager.clearAccessKeys(mcrObjId);
         } else {
             res.sendError(HttpServletResponse.SC_BAD_REQUEST);
             return;
