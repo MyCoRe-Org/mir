@@ -9,7 +9,7 @@ import org.mycore.access.MCRAccessManager;
 import org.mycore.common.MCRSessionMgr;
 import org.mycore.datamodel.metadata.MCRObjectID;
 import org.mycore.mir.authorization.accesskeys.MIRAccessKeyManager;
-import org.mycore.mir.authorization.accesskeys.backend.MIRAccessKeyPair;
+import org.mycore.mir.authorization.accesskeys.backend.MIRAccessKey;
 
 public class MIRKeyStrategyHelper {
 
@@ -25,13 +25,14 @@ public class MIRKeyStrategyHelper {
     private static boolean userHasValidAccessKey(MCRObjectID objectId, boolean isReadPermission) {
         String userKey = getUserKey(objectId);
         if (userKey != null) {
-            MIRAccessKeyPair keyPair = MIRAccessKeyManager.getKeyPair(objectId);
-            if (keyPair != null) {
-                if (userKey.equals(keyPair.getWriteKey()) || isReadPermission && userKey.equals(keyPair.getReadKey())) {
+            MIRAccessKey accessKey = MIRAccessKeyManager.getAccessKeyByValue(objectId, userKey);
+            if (accessKey != null) {
+                 if (isReadPermission && accessKey.getType().equals(MCRAccessManager.PERMISSION_READ) || 
+                        accessKey.getType().equals(MCRAccessManager.PERMISSION_WRITE)) {
                     LOGGER.debug("Access granted. User has a key to access the resource {}.", objectId);
                     return true;
                 }
-                if (!userKey.equals(keyPair.getReadKey())) {
+                if (isReadPermission) {
                     LOGGER.warn("Neither read nor write key matches. Remove access key from user.");
                     MIRAccessKeyManager.deleteAccessKey(objectId);
                 }
@@ -47,7 +48,7 @@ public class MIRKeyStrategyHelper {
         if ((isWritePermission || isReadPermission)) {
             return Stream.of(derivateId, objectId)
                 .filter(Objects::nonNull)
-                .filter(id -> MIRAccessKeyManager.getKeyPair(id) != null)
+                .filter(id -> MIRAccessKeyManager.getAccessKeys(id).size() > 0)
                 .findFirst()
                 .map(id -> userHasValidAccessKey(id, isReadPermission))
                 .orElse(Boolean.FALSE);

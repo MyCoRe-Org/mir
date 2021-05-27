@@ -55,7 +55,7 @@ public final class MIRAccessKeyManager {
      * @param mcrObjectId the {@link MCRObjectID}
      * @return access keys as list
      */
-    private static List<MIRAccessKey> getAccessKeys(final MCRObjectID objectId) {
+    public static List<MIRAccessKey> getAccessKeys(final MCRObjectID objectId) {
         final EntityManager em = MCREntityManagerProvider.getCurrentEntityManager();
         return em.createNamedQuery("MIRAccessKey.getById", MIRAccessKey.class)
             .setParameter("objId", objectId)
