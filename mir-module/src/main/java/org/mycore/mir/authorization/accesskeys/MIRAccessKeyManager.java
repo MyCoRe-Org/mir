@@ -184,6 +184,21 @@ public final class MIRAccessKeyManager {
     }
 
     /**
+    * Update access keys.
+    *
+    * @param objectId the {@link MCRObjectID}
+    * @param accessKeys the access keys as list
+    */
+    public static synchronized void addAccessKeys(final MCRObjectID objectId, final List<MIRAccessKey> accessKeys)
+        throws MIRAccessKeyException {
+        for (MIRAccessKey accessKey : accessKeys) {
+            accessKey.setObjectId(objectId);
+            accessKey.setId(0); //prevent collision
+            addAccessKey(accessKey);
+        }
+    }
+
+    /**
      * Deletes all access keys.
      */
     public static void clearAccessKeys() {

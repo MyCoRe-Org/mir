@@ -22,25 +22,32 @@
  */
 package org.mycore.mir.authorization.accesskeys;
 
+import java.util.List;
+import java.util.ArrayList;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
 import org.mycore.common.events.MCREvent;
 import org.mycore.common.events.MCREventHandlerBase;
 import org.mycore.datamodel.metadata.MCRBase;
 import org.mycore.datamodel.metadata.MCRDerivate;
 import org.mycore.datamodel.metadata.MCRObject;
-import org.mycore.mir.authorization.accesskeys.backend.MIRAccessKeyPair;
+import org.mycore.datamodel.metadata.MCRObjectService;
+import org.mycore.mir.authorization.accesskeys.backend.MIRAccessKey;
 
 /**
  * This class contains EventHandler methods to manage access keys of
  * MCRObjects and MCRDerivates.
  * 
- * @author Ren\u00E9 Adler (eagle)
- * @since 0.3
  */
 public class MIRAccessKeyEventHandler extends MCREventHandlerBase {
 
     private static Logger LOGGER = LogManager.getLogger();
+
+    private static final String ACCESS_KEYS = "accesskeys";
 
     /* (non-Javadoc)
      * @see org.mycore.common.events.MCREventHandlerBase#handleObjectCreated(org.mycore.common.events.MCREvent, org.mycore.datamodel.metadata.MCRObject)
@@ -91,39 +98,30 @@ public class MIRAccessKeyEventHandler extends MCREventHandlerBase {
     }
 
     private void handleBaseCreated(final MCRBase obj) {
-        final MIRAccessKeyPair accKP = MIRAccessKeyPairTransformer.buildAccessKeyPair(obj.createXML().getRootElement());
-
-        if (accKP != null) {
-            LOGGER.debug("Create access keys for " + obj.getId().toString());
-            MIRAccessKeyManager.createKeyPair(accKP);
-            removeAccessKeys(obj);
+        final MCRObjectService service = obj.getService();
+        final ArrayList<String> flags = service.getFlags(ACCESS_KEYS);
+        if (flags.size() > 0) {
+            final String json = flags.get(0);
+            try {
+                final List<MIRAccessKey> accessKeys = MIRAccessKeyTransformer.jsonToAccessKeys(json);
+                MIRAccessKeyManager.addAccessKeys(obj.getId(), accessKeys);
+            } catch (JsonProcessingException e) {
+                LOGGER.warn("Access Keys are not valid and removed from object");
+            } finally {
+                service.removeFlags(ACCESS_KEYS);
+            }
         }
     }
 
-    private void handleBaseUpdated(final MCRBase obj) {
-        final MIRAccessKeyPair accKP = MIRAccessKeyPairTransformer.buildAccessKeyPair(obj.createXML().getRootElement());
-
-        if (accKP != null) {
-            LOGGER.debug("Update access keys for " + obj.getId().toString());
-            MIRAccessKeyManager.updateKeyPair(accKP);
-            removeAccessKeys(obj);
+    private void handleBaseUpdated(final MCRBase obj) { //Nothing to do, only remove keys from flags
+        final MCRObjectService service = obj.getService();
+        final ArrayList<String> flags = service.getFlags(ACCESS_KEYS);
+        if (flags.size() > 0) {
+            service.removeFlags(ACCESS_KEYS);
         }
     }
 
     private void handleBaseDeleted(final MCRBase obj) {
-        final MIRAccessKeyPair accKP = MIRAccessKeyPairTransformer.buildAccessKeyPair(obj.createXML().getRootElement());
-
-        if (accKP != null) {
-            LOGGER.debug("Delete access keys for " + obj.getId().toString());
-            MIRAccessKeyManager.deleteKeyPair(accKP.getMCRObjectId());
-            removeAccessKeys(obj);
-        }
-    }
-
-    private void removeAccessKeys(final MCRBase obj) {
-        LOGGER.debug("Remove access keys from pipe");
-        for (MIRAccessKeyPair.ServiceFlagType type : MIRAccessKeyPair.ServiceFlagType.values()) {
-            obj.getService().removeFlags(type.value());
-        }
+        MIRAccessKeyManager.clearAccessKeys(obj.getId());
     }
 }
