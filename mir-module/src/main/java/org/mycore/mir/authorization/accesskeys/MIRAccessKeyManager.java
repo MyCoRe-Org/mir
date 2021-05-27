@@ -287,7 +287,9 @@ public final class MIRAccessKeyManager {
         final MIRAccessKey accessKey = em.find(MIRAccessKey.class, id);
         if (accessKey != null) {
             final MCRObjectID objectId = accessKey.getObjectId();
-            if (!accessKey.getValue().equals(value)) {
+            if (accessKey.getValue().equals(value) && accessKey.getType().equals(type)) {
+                return;
+            } else if (!accessKey.getValue().equals(value)) {
                 if (!accessKey.getType().equals(type)) {
                     if (isValidType(type)) {
                         accessKey.setType(type);
@@ -295,6 +297,14 @@ public final class MIRAccessKeyManager {
                     } else {
                         LOGGER.warn("Unkown Type.");
                         throw new MIRAccessKeyException("Unknown permission type.");
+                    }
+                } else {
+                    if (isValidValue(value)) {
+                        accessKey.setValue(value);
+                        cleanPermissionCache(objectId, type);
+                    } else {
+                        LOGGER.warn("Incorrect Value.");
+                        throw new MIRAccessKeyException("Incorrect Value.");
                     }
                 }
             } else {
