@@ -51,7 +51,7 @@ import org.mycore.common.MCRSessionMgr;
 import org.mycore.common.config.MCRConfiguration2;
 import org.mycore.datamodel.metadata.MCRObjectID;
 import org.mycore.mir.authorization.accesskeys.backend.MIRAccessKey;
-import org.mycore.mir.authorization.accesskeys.backend.MIRAccessKeyPair;
+import org.mycore.mir.authorization.accesskeys.exception.MIRAccessKeyCollisionException;
 import org.mycore.user2.MCRTransientUser;
 import org.mycore.user2.MCRUser;
 import org.xml.sax.SAXParseException;
@@ -85,106 +85,78 @@ public class TestAccessKeys extends MCRJPATestCase {
     }
 
     @Test
-    public void testKeyPairFull() {
-        final MIRAccessKeyPair accKP = new MIRAccessKeyPair(MCRObjectID.getInstance(MCR_OBJECT_ID), READ_KEY,
-            WRITE_KEY);
+    public void testKey() {
+        final MIRAccessKey accessKey = new MIRAccessKey(MCRObjectID.getInstance(MCR_OBJECT_ID), READ_KEY, MCRAccessManager.PERMISSION_READ);
 
-        assertEquals(MCR_OBJECT_ID, accKP.getMCRObjectId().toString());
-        assertEquals(READ_KEY, accKP.getReadKey());
-        assertEquals(WRITE_KEY, accKP.getWriteKey());
+        assertEquals(MCR_OBJECT_ID, accessKey.getObjectId().toString());
+        assertEquals(READ_KEY, accessKey.getValue());
+        assertEquals(MCRAccessManager.PERMISSION_READ, accessKey.getType());
+    }
+
+    @Test(expected = MIRAccessKeyCollisionException.class)
+    public void testKeyCollison() {
+        final MIRAccessKey accessKeyRead = new MIRAccessKey(MCRObjectID.getInstance(MCR_OBJECT_ID), WRITE_KEY, MCRAccessManager.PERMISSION_READ);
+        MIRAccessKeyManager.addAccessKey(accessKeyRead);
+        final MIRAccessKey accessKeyWrite = new MIRAccessKey(MCRObjectID.getInstance(MCR_OBJECT_ID), WRITE_KEY, MCRAccessManager.PERMISSION_WRITE);
+        MIRAccessKeyManager.addAccessKey(accessKeyWrite);
     }
 
     @Test
-    public void testKeyPairWithoutWriteKey() {
-        final MIRAccessKeyPair accKP = new MIRAccessKeyPair(MCRObjectID.getInstance(MCR_OBJECT_ID), READ_KEY, null);
-
-        assertEquals(MCR_OBJECT_ID, accKP.getMCRObjectId().toString());
-        assertEquals(READ_KEY, accKP.getReadKey());
-        assertNull(accKP.getWriteKey());
+    public void testCreateKey() throws MCRException, IOException {
+        final MIRAccessKey accessKeyRead = new MIRAccessKey(MCRObjectID.getInstance(MCR_OBJECT_ID), READ_KEY, MCRAccessManager.PERMISSION_READ);
+        MIRAccessKeyManager.addAccessKey(accessKeyRead);
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void testKeyPairWithoutReadKey() {
-        final MIRAccessKeyPair accKP = new MIRAccessKeyPair(MCRObjectID.getInstance(MCR_OBJECT_ID), null, WRITE_KEY);
-
-        assertNull(accKP);
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void testKeyPairWithMatchingKeys() {
-        final MIRAccessKeyPair accKP = new MIRAccessKeyPair(MCRObjectID.getInstance(MCR_OBJECT_ID), WRITE_KEY,
-            WRITE_KEY);
-
-        assertNull(accKP);
+    @Test(expected = MIRAccessKeyCollisionException.class)
+    public void testDuplicate() throws MCRAccessException {
+        final MIRAccessKey accessKey = new MIRAccessKey(MCRObjectID.getInstance(MCR_OBJECT_ID), READ_KEY, MCRAccessManager.PERMISSION_READ);
+        MIRAccessKeyManager.addAccessKey(accessKey);
+        final MIRAccessKey accessKeySame = new MIRAccessKey(MCRObjectID.getInstance(MCR_OBJECT_ID), READ_KEY, MCRAccessManager.PERMISSION_READ);
+        MIRAccessKeyManager.addAccessKey(accessKeySame);
     }
 
     @Test
-    public void testCreateKeyPair() throws MCRException, IOException {
-        final MIRAccessKeyPair accKP = new MIRAccessKeyPair(MCRObjectID.getInstance(MCR_OBJECT_ID), READ_KEY,
-            WRITE_KEY);
-        MIRAccessKeyManager.createKeyPair(accKP);
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void testCreateSameKeyPair() throws MCRAccessException {
-        final MIRAccessKeyPair accKP = new MIRAccessKeyPair(MCRObjectID.getInstance(MCR_OBJECT_ID), WRITE_KEY,
-            WRITE_KEY);
-        MIRAccessKeyManager.createKeyPair(accKP);
-
-        final MIRAccessKeyPair sameAccKP = new MIRAccessKeyPair(MCRObjectID.getInstance(MCR_OBJECT_ID), WRITE_KEY,
-            WRITE_KEY);
-        MIRAccessKeyManager.createKeyPair(sameAccKP);
-    }
-
-    @Test
-    public void testExistsKeyPair() throws MCRAccessException {
-        final MIRAccessKeyPair accKP = new MIRAccessKeyPair(MCRObjectID.getInstance(MCR_OBJECT_ID), READ_KEY,
-            WRITE_KEY);
-        MIRAccessKeyManager.createKeyPair(accKP);
+    public void testExistsKey() throws MCRAccessException {
+        final MIRAccessKey accessKey = new MIRAccessKey(MCRObjectID.getInstance(MCR_OBJECT_ID), READ_KEY, MCRAccessManager.PERMISSION_READ);
+        MIRAccessKeyManager.addAccessKey(accessKey);
 
         endTransaction();
         startNewTransaction();
 
-        assertTrue(MIRAccessKeyManager.existsKeyPair(MCRObjectID.getInstance(MCR_OBJECT_ID)));
+        assertTrue(MIRAccessKeyManager.getAccessKeys(MCRObjectID.getInstance(MCR_OBJECT_ID)).size() > 0);
     }
 
     @Test
-    public void testUpdateKeyPair() throws MCRAccessException {
-        final MIRAccessKeyPair accKP = new MIRAccessKeyPair(MCRObjectID.getInstance(MCR_OBJECT_ID), READ_KEY,
-            WRITE_KEY);
-        MIRAccessKeyManager.createKeyPair(accKP);
+    public void testUpdateKey() throws MCRAccessException {
+        final MIRAccessKey accessKey = new MIRAccessKey(MCRObjectID.getInstance(MCR_OBJECT_ID), READ_KEY, MCRAccessManager.PERMISSION_READ);
+        MIRAccessKeyManager.addAccessKey(accessKey);
 
         endTransaction();
         startNewTransaction();
 
-        final MIRAccessKeyPair loadAccKP = MIRAccessKeyManager.getKeyPair(MCRObjectID.getInstance(MCR_OBJECT_ID));
+        final int accessKeyId = MIRAccessKeyManager.getAccessKeys(MCRObjectID.getInstance(MCR_OBJECT_ID)).get(0).getId();
 
-        assertNotNull(loadAccKP);
+        final MIRAccessKey accessKeyNew = new MIRAccessKey(MCRObjectID.getInstance(MCR_OBJECT_ID), READ_KEY + WRITE_KEY, MCRAccessManager.PERMISSION_READ);
+        MIRAccessKeyManager.updateAccessKey(accessKeyId, accessKeyNew);
 
-        loadAccKP.setReadKey(READ_KEY + WRITE_KEY);
-        loadAccKP.setWriteKey(WRITE_KEY + READ_KEY);
-
-        MIRAccessKeyManager.updateKeyPair(loadAccKP);
-
-        assertNotEquals(accKP.getReadKey(), loadAccKP.getReadKey());
-        assertNotEquals(accKP.getWriteKey(), loadAccKP.getWriteKey());
+        final MIRAccessKey accessKeyUpdated = MIRAccessKeyManager.getAccessKeys(MCRObjectID.getInstance(MCR_OBJECT_ID)).get(0);
+        assertEquals(accessKeyNew.getValue(), accessKeyUpdated.getValue());
     }
 
     @Test
-    public void testDeleteKeyPair() throws MCRAccessException {
-        final MIRAccessKeyPair accKP = new MIRAccessKeyPair(MCRObjectID.getInstance(MCR_OBJECT_ID), READ_KEY,
-            WRITE_KEY);
-        MIRAccessKeyManager.createKeyPair(accKP);
+    public void testDeleteKey() throws MCRAccessException {
+        final MIRAccessKey accessKey = new MIRAccessKey(MCRObjectID.getInstance(MCR_OBJECT_ID), READ_KEY, MCRAccessManager.PERMISSION_READ);
+        MIRAccessKeyManager.addAccessKey(accessKey);
 
         endTransaction();
         startNewTransaction();
 
-        MIRAccessKeyManager.deleteKeyPair(MCRObjectID.getInstance(MCR_OBJECT_ID));
+        MIRAccessKeyManager.clearAccessKeys(MCRObjectID.getInstance(MCR_OBJECT_ID));
 
         endTransaction();
         startNewTransaction();
 
-        assertFalse(MIRAccessKeyManager.existsKeyPair(MCRObjectID.getInstance(MCR_OBJECT_ID)));
+        assertFalse(MIRAccessKeyManager.getAccessKeys(MCRObjectID.getInstance(MCR_OBJECT_ID)).size() > 0);
     }
 
     @Test
@@ -259,9 +231,8 @@ public class TestAccessKeys extends MCRJPATestCase {
     public void testTransientUser() throws SAXParseException, IOException, URISyntaxException {
         final MCRObjectID mcrObjectId = MCRObjectID.getInstance(MCR_OBJECT_ID);
 
-        final MIRAccessKeyPair accKP = new MIRAccessKeyPair(mcrObjectId, READ_KEY,
-            WRITE_KEY);
-        MIRAccessKeyManager.createKeyPair(accKP);
+        final MIRAccessKey accessKey = new MIRAccessKey(mcrObjectId, WRITE_KEY, MCRAccessManager.PERMISSION_WRITE);
+        MIRAccessKeyManager.addAccessKey(accessKey);
 
         MCRUser user = new MCRUser("junit");
         user.setRealName("Test Case");
