@@ -52,7 +52,7 @@ public final class MIRAccessKeyManager {
     /**
      * Returns all access keys for given {@link MCRObjectID}.
      *
-     * @param mcrObjectId the {@link MCRObjectID}
+     * @param objectId the {@link MCRObjectID}
      * @return access keys as list
      */
     public static List<MIRAccessKey> getAccessKeys(final MCRObjectID objectId) {

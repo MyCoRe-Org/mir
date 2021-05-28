@@ -111,7 +111,7 @@ public class MIRAccessKeyPair implements Serializable {
     }
 
     /**
-     * @param mcrObjectId the {@MCRObjectID} to set
+     * @param mcrObjectId the {@link MCRObjectID} to set
      */
     protected void setMCRObjectId(final MCRObjectID mcrObjectId) {
         this.mcrObjectId = mcrObjectId;
