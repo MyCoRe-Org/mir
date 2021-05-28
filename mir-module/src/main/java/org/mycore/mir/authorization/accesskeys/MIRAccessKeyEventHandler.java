@@ -23,12 +23,6 @@
 package org.mycore.mir.authorization.accesskeys;
 
 import java.util.List;
-import java.util.ArrayList;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import org.mycore.common.events.MCREvent;
 import org.mycore.common.events.MCREventHandlerBase;
@@ -44,10 +38,6 @@ import org.mycore.mir.authorization.accesskeys.backend.MIRAccessKey;
  * 
  */
 public class MIRAccessKeyEventHandler extends MCREventHandlerBase {
-
-    private static Logger LOGGER = LogManager.getLogger();
-
-    private static final String ACCESS_KEYS = "accesskeys";
 
     /* (non-Javadoc)
      * @see org.mycore.common.events.MCREventHandlerBase#handleObjectCreated(org.mycore.common.events.MCREvent, org.mycore.datamodel.metadata.MCRObject)
@@ -99,26 +89,17 @@ public class MIRAccessKeyEventHandler extends MCREventHandlerBase {
 
     private void handleBaseCreated(final MCRBase obj) {
         final MCRObjectService service = obj.getService();
-        final ArrayList<String> flags = service.getFlags(ACCESS_KEYS);
-        if (flags.size() > 0) {
-            final String json = flags.get(0);
-            try {
-                final List<MIRAccessKey> accessKeys = MIRAccessKeyTransformer.jsonToAccessKeys(json);
-                MIRAccessKeyManager.addAccessKeys(obj.getId(), accessKeys);
-            } catch (JsonProcessingException e) {
-                LOGGER.warn("Access Keys are not valid and removed from object");
-            } finally {
-                service.removeFlags(ACCESS_KEYS);
-            }
+        final List<MIRAccessKey> accessKeys = MIRAccessKeyTransformer
+            .accessKeysFromElement(obj.getId(), service.createXML());
+        if (accessKeys.size() > 0) {
+            MIRAccessKeyManager.addAccessKeys(obj.getId(), accessKeys);
         }
+        service.removeFlags(MIRAccessKeyTransformer.ACCESS_KEY_TYPE);
     }
 
     private void handleBaseUpdated(final MCRBase obj) { //Nothing to do, only remove keys from flags
         final MCRObjectService service = obj.getService();
-        final ArrayList<String> flags = service.getFlags(ACCESS_KEYS);
-        if (flags.size() > 0) {
-            service.removeFlags(ACCESS_KEYS);
-        }
+        service.removeFlags(MIRAccessKeyTransformer.ACCESS_KEY_TYPE);
     }
 
     private void handleBaseDeleted(final MCRBase obj) {

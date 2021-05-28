@@ -31,6 +31,8 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import org.jdom2.Document;
@@ -48,6 +50,7 @@ import org.mycore.common.MCRJPATestCase;
 import org.mycore.common.MCRSessionMgr;
 import org.mycore.common.config.MCRConfiguration2;
 import org.mycore.datamodel.metadata.MCRObjectID;
+import org.mycore.mir.authorization.accesskeys.backend.MIRAccessKey;
 import org.mycore.mir.authorization.accesskeys.backend.MIRAccessKeyPair;
 import org.mycore.user2.MCRTransientUser;
 import org.mycore.user2.MCRUser;
@@ -185,75 +188,71 @@ public class TestAccessKeys extends MCRJPATestCase {
     }
 
     @Test
-    public void testKeyPairTransform() throws IOException {
-        final MIRAccessKeyPair accKP = new MIRAccessKeyPair(MCRObjectID.getInstance(MCR_OBJECT_ID), READ_KEY,
-            WRITE_KEY);
-
-        new XMLOutputter(Format.getPrettyFormat()).output(MIRAccessKeyPairTransformer.buildExportableXML(accKP),
-            System.out);
-    }
-
-    @Test
     public void testAccessKeysTransform() throws IOException {
-        final MIRAccessKeyPair accKP = new MIRAccessKeyPair(MCRObjectID.getInstance(MCR_OBJECT_ID), READ_KEY,
-            WRITE_KEY);
+        final MIRAccessKey accessKey = new MIRAccessKey(MCRObjectID.getInstance(MCR_OBJECT_ID), READ_KEY, MCRAccessManager.PERMISSION_READ);
+        final List<MIRAccessKey> accessKeys = new ArrayList<MIRAccessKey>();
+        accessKeys.add(accessKey);
+        final String json = MIRAccessKeyTransformer.jsonFromAccessKeys(accessKeys);
 
-        final Document xml = MIRAccessKeyPairTransformer.buildExportableXML(accKP);
+        final List<MIRAccessKey> transAccessKeys = MIRAccessKeyTransformer.accessKeysFromJson(json);
+        final MIRAccessKey transAccessKey = transAccessKeys.get(0);
 
-        new XMLOutputter(Format.getPrettyFormat()).output(xml, System.out);
-
-        final MIRAccessKeyPair transAccKP = MIRAccessKeyPairTransformer.buildAccessKeyPair(xml.getRootElement());
-
-        assertEquals(accKP.getMCRObjectId(), transAccKP.getMCRObjectId());
-        assertEquals(accKP.getReadKey(), transAccKP.getReadKey());
-        assertEquals(accKP.getWriteKey(), transAccKP.getWriteKey());
+        assertEquals(transAccessKey.getObjectId(), null);
+        assertEquals(transAccessKey.getId(), 0);
+        assertEquals(accessKey.getValue(), transAccessKey.getValue());
+        assertEquals(accessKey.getType(), transAccessKey.getType());
     }
 
     @Test
-    public void testServFlagsTransform() throws IOException {
-        /*
-        final MIRAccessKeyPair accKP = new MIRAccessKeyPair(MCRObjectID.getInstance(MCR_OBJECT_ID), READ_KEY,
-            WRITE_KEY);
+    public void testServFlagTransform() throws IOException {
+        final MIRAccessKey accessKeyRead = new MIRAccessKey(MCRObjectID.getInstance(MCR_OBJECT_ID), READ_KEY, MCRAccessManager.PERMISSION_READ);
+        final MIRAccessKey accessKeyWrite = new MIRAccessKey(MCRObjectID.getInstance(MCR_OBJECT_ID), WRITE_KEY, MCRAccessManager.PERMISSION_WRITE);
+        final List<MIRAccessKey> accessKeys = new ArrayList<MIRAccessKey>();
+        accessKeys.add(accessKeyRead);
+        accessKeys.add(accessKeyWrite);
+        final Element servFlag = MIRAccessKeyTransformer.servFlagFromAccessKeys(accessKeys);
 
-        final Document xml = MIRAccessKeyPairTransformer.buildServFlagsXML(accKP);
+        new XMLOutputter(Format.getPrettyFormat()).output(servFlag, System.out);
 
-        new XMLOutputter(Format.getPrettyFormat()).output(xml, System.out);
+        final List<MIRAccessKey> transAccessKeys = MIRAccessKeyTransformer.accessKeysFromElement(
+            MCRObjectID.getInstance(MCR_OBJECT_ID), servFlag);
+        assertTrue(transAccessKeys.size() == 2);
 
-        final MIRAccessKeyPair transAccKP = MIRAccessKeyPairTransformer.buildAccessKeyPair(
-            MCRObjectID.getInstance(MCR_OBJECT_ID), xml.getRootElement());
-
-        assertEquals(accKP.getMCRObjectId(), transAccKP.getMCRObjectId());
-        assertEquals(accKP.getReadKey(), transAccKP.getReadKey());
-        assertEquals(accKP.getWriteKey(), transAccKP.getWriteKey());
-        */
+        final MIRAccessKey transAccessKeyRead = transAccessKeys.get(0);
+        assertEquals(accessKeyRead.getObjectId(), transAccessKeyRead.getObjectId());
+        assertEquals(accessKeyRead.getValue(), transAccessKeyRead.getValue());
+        assertEquals(accessKeyRead.getType(), transAccessKeyRead.getType());
     }
 
     @Test
-    public void testServFlagsTransformWithOtherTypes() throws IOException {
-        /*
-        final MIRAccessKeyPair accKP = new MIRAccessKeyPair(MCRObjectID.getInstance(MCR_OBJECT_ID), READ_KEY,
-            WRITE_KEY);
+    public void testServiceTransform() throws IOException {
+        final Element service = new Element("service");
+        final Element servFlags = new Element("servflags");
 
-        final Document xml = MIRAccessKeyPairTransformer.buildServFlagsXML(accKP);
-        final Element root = xml.getRootElement();
+        final MIRAccessKey accessKey = new MIRAccessKey(MCRObjectID.getInstance(MCR_OBJECT_ID), READ_KEY, MCRAccessManager.PERMISSION_READ);
+        final List<MIRAccessKey> accessKeys = new ArrayList<MIRAccessKey>();
+        accessKeys.add(accessKey);
+        final Element servFlag = MIRAccessKeyTransformer.servFlagFromAccessKeys(accessKeys);
+        servFlags.addContent(servFlag);
 
         final Element sf1 = new Element("servflag");
         sf1.setAttribute("type", "createdby");
         sf1.setAttribute("inherited", "0");
         sf1.setAttribute("form", "plain");
         sf1.setText("administrator");
+        servFlags.addContent(sf1);
 
-        root.addContent(sf1);
+        service.addContent(servFlags);
 
-        new XMLOutputter(Format.getPrettyFormat()).output(xml, System.out);
+        new XMLOutputter(Format.getPrettyFormat()).output(service, System.out);
 
-        final MIRAccessKeyPair transAccKP = MIRAccessKeyPairTransformer.buildAccessKeyPair(
-            MCRObjectID.getInstance(MCR_OBJECT_ID), xml.getRootElement());
+        final List<MIRAccessKey> transAccessKeys = MIRAccessKeyTransformer.accessKeysFromElement(
+            MCRObjectID.getInstance(MCR_OBJECT_ID), service);
 
-        assertEquals(accKP.getMCRObjectId(), transAccKP.getMCRObjectId());
-        assertEquals(accKP.getReadKey(), transAccKP.getReadKey());
-        assertEquals(accKP.getWriteKey(), transAccKP.getWriteKey());
-        */
+        final MIRAccessKey transAccessKey = transAccessKeys.get(0);
+        assertEquals(accessKey.getObjectId(), transAccessKey.getObjectId());
+        assertEquals(accessKey.getValue(), transAccessKey.getValue());
+        assertEquals(accessKey.getType(), transAccessKey.getType());
     }
 
     @Test

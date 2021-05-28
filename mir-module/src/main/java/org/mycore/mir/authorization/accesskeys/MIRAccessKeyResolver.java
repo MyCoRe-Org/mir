@@ -24,16 +24,10 @@ package org.mycore.mir.authorization.accesskeys;
 
 import java.util.List;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-
 import javax.xml.transform.Source;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.URIResolver;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import org.jdom2.Element;
 import org.jdom2.transform.JDOMSource;
 
 import org.mycore.datamodel.metadata.MCRObjectID;
@@ -52,28 +46,14 @@ import org.mycore.mir.authorization.accesskeys.backend.MIRAccessKey;
  */
 public class MIRAccessKeyResolver implements URIResolver {
     
-    private static final Logger LOGGER = LogManager.getLogger();
-
     /* (non-Javadoc)
      * @see javax.xml.transform.URIResolver#resolve(java.lang.String, java.lang.String)
      */
     @Override
     public Source resolve(String href, String base) throws TransformerException {
         final MCRObjectID objectId = MCRObjectID.getInstance(href.substring(href.indexOf(":") + 1));
-
         final List<MIRAccessKey> accessKeys = MIRAccessKeyManager.getAccessKeys(objectId);
         
-        if (accessKeys.size() == 0) {
-            return new JDOMSource(new Element("null"));
-        }
-        
-        try {
-            final String json = MIRAccessKeyTransformer.accessKeysToJson(accessKeys);
-            final Element servFlag = MIRAccessKeyTransformer.accessKeysJsonToServFlag(json);
-            return new JDOMSource(servFlag);
-        } catch (JsonProcessingException e) {
-            LOGGER.error("Access keys could not be converted.");
-            return new JDOMSource(new Element("null"));
-        }
+        return new JDOMSource(MIRAccessKeyTransformer.servFlagFromAccessKeys(accessKeys));
     }
 }

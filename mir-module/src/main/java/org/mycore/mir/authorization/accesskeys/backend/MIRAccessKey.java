@@ -23,6 +23,8 @@
 
 package org.mycore.mir.authorization.accesskeys.backend;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
@@ -111,6 +113,7 @@ public class MIRAccessKey {
     /**
      * @return the linked mcrObjectId
      */
+    @JsonIgnore
     @Column(name = "object_id",
         length = MCRObjectID.MAX_LENGTH,
         nullable = false)
@@ -129,6 +132,7 @@ public class MIRAccessKey {
     /**
      * @return internal id
      */
+    @JsonIgnore
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "accesskey_id",

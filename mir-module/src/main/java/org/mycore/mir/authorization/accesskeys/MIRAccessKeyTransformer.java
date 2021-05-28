@@ -24,6 +24,7 @@
 package org.mycore.mir.authorization.accesskeys;
 
 import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -31,28 +32,80 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 
 import org.jdom2.Element;
 
+import org.mycore.common.MCRException;
+import org.mycore.datamodel.metadata.MCRObjectID;
 import org.mycore.mir.authorization.accesskeys.backend.MIRAccessKey;
 
 public class MIRAccessKeyTransformer {
 
-    public static List<MIRAccessKey> jsonToAccessKeys(final String json)
+    private static final String ROOT_SERVICE = "service";
+
+    private static final String ROOT_SERV_FLAGS = "servflags";
+    
+    private static final String SERV_FLAG = "servflag";
+
+    public static final String ACCESS_KEY_TYPE = "accesskeys";
+
+    public static List<MIRAccessKey> accessKeysFromJson(final String json)
         throws JsonProcessingException {
         final ObjectMapper objectMapper = new ObjectMapper();
         return Arrays.asList(objectMapper.readValue(json, MIRAccessKey[].class));
     }
 
-    public static String accessKeysToJson(final List<MIRAccessKey> accessKeys)
+    public static String jsonFromAccessKeys(final List<MIRAccessKey> accessKeys)
         throws JsonProcessingException {
         final ObjectMapper objectMapper = new ObjectMapper();
         return objectMapper.writeValueAsString(accessKeys);
     }
 
-    public static Element accessKeysJsonToServFlag(final String json) {
-        final Element main = new Element("servflag");
-        main.setAttribute("type", "accesskeys");
-        main.setAttribute("inherited", "0");
-        main.setAttribute("form", "plain");
-        main.setText(json);
-        return main;
+    public static List<MIRAccessKey> accessKeysFromElement(MCRObjectID objectId, Element element) {
+        if (element.getName().equals(ROOT_SERVICE)) {
+            Element servFlagsRoot = element.getChild(ROOT_SERV_FLAGS);
+            if (servFlagsRoot != null) {
+                final List<Element> servFlags = servFlagsRoot.getChildren(SERV_FLAG);
+                for (Element servFlag : servFlags) {
+                    if (servFlag.getAttributeValue("type").equals(ACCESS_KEY_TYPE)) {
+                        return accessKeysFromServFlag(objectId, servFlag);
+                    }
+                }
+            }
+        } else if (element.getName().equals(SERV_FLAG) && element.getAttributeValue("type") == ACCESS_KEY_TYPE) {
+            return accessKeysFromServFlag(objectId, element);
+        } 
+        return new ArrayList<MIRAccessKey>();
+    }
+
+    private static List<MIRAccessKey> accessKeysFromServFlag(MCRObjectID objectId, Element servFlag) {
+        final String json = servFlag.getText();
+        try {
+            final List<MIRAccessKey> accessKeyList = accessKeysFromJson(json);
+            for (MIRAccessKey accessKey : accessKeyList) {
+                accessKey.setObjectId(objectId);
+            }
+            return accessKeyList;
+        } catch (JsonProcessingException e) {
+            throw new MCRException("Exception while transforming Element to MIRAccessKey list.", e);
+        }
+    }
+
+    public static Element servFlagFromAccessKeys(final List<MIRAccessKey> accessKeys) {
+        if (accessKeys.size() == 0) {
+            return new Element("null");
+        }
+        try {
+            final String jsonString = jsonFromAccessKeys(accessKeys);
+            return servFlagfromAccessKeysJson(jsonString);
+        } catch (JsonProcessingException e) {
+            return new Element("null");
+        }
+    }
+
+    private static Element servFlagfromAccessKeysJson(final String json) {
+        final Element servFlag = new Element(SERV_FLAG);
+        servFlag.setAttribute("type", ACCESS_KEY_TYPE);
+        servFlag.setAttribute("inherited", "0");
+        servFlag.setAttribute("form", "plain");
+        servFlag.setText(json);
+        return servFlag;
     } 
 }
