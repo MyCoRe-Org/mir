@@ -22,8 +22,6 @@
  */
 package org.mycore.mir.authorization.accesskeys;
 
-import static org.mycore.access.MCRAccessManager.PERMISSION_WRITE;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -102,9 +100,9 @@ public class MIRAccessKeyServlet extends MCRServlet {
                 return;
             }
         } else if ("create".equals(action)) {
-            if (!MCRAccessManager.checkPermission(mcrObjId, PERMISSION_WRITE)) {
+            if (!MCRAccessManager.checkPermission(mcrObjId, MCRAccessManager.PERMISSION_WRITE)) {
                 throw MCRAccessException.missingPermission("Add access key to object.", mcrObjId.toString(),
-                    PERMISSION_WRITE);
+                    MCRAccessManager.PERMISSION_WRITE);
             }
 
             final MIRAccessKeyPair accKP = MIRAccessKeyPairTransformer.buildAccessKeyPair(xml);
@@ -119,18 +117,18 @@ public class MIRAccessKeyServlet extends MCRServlet {
                 MIRAccessKeyManager.addAccessKey(accessKeyWrite);
             }
         } else if ("edit".equals(action)) {
-            if (!MCRAccessManager.checkPermission(mcrObjId, PERMISSION_WRITE)) {
+            if (!MCRAccessManager.checkPermission(mcrObjId, MCRAccessManager.PERMISSION_WRITE)) {
                 throw MCRAccessException.missingPermission("Update access key on object.", mcrObjId.toString(),
-                    PERMISSION_WRITE);
+                    MCRAccessManager.PERMISSION_WRITE);
             }
 
             final MIRAccessKeyPair accKP = MIRAccessKeyPairTransformer.buildAccessKeyPair(xml);
 
             MIRAccessKeyManager.updateKeyPair(accKP);
         } else if ("delete".equals(action)) {
-            if (!MCRAccessManager.checkPermission(mcrObjId, PERMISSION_WRITE)) {
+            if (!MCRAccessManager.checkPermission(mcrObjId, MCRAccessManager.PERMISSION_WRITE)) {
                 throw MCRAccessException.missingPermission("Delete access key on object.", mcrObjId.toString(),
-                    PERMISSION_WRITE);
+                    MCRAccessManager.PERMISSION_WRITE);
             }
 
             MIRAccessKeyManager.clearAccessKeys(mcrObjId);
