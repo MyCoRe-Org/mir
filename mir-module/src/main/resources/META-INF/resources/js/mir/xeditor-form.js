@@ -158,12 +158,6 @@ $(document).ready(function() {
         });
     }
 
-    if ($("input.managedIdentifier").length > 0 && $("select.identifierSelect").length > 0) {
-        $("input.managedIdentifier").each(function() {
-            $("select.identifierSelect").find("option[value='" + $(this).attr("data-type") + "']").remove();
-        });
-    }
-
     function setLabelForClassification(parent) {
         $.ajax({
             url: webApplicationBaseURL + 'servlets/solr/select',
