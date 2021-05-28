@@ -115,7 +115,7 @@ public class MIRAccessKeyServlet extends MCRServlet {
             MIRAccessKeyManager.addAccessKey(accessKeyRead);
             if (writeKey != null) {
                 final MIRAccessKey accessKeyWrite = 
-                    new MIRAccessKey(mcrObjId, readKey, MCRAccessManager.PERMISSION_WRITE);
+                    new MIRAccessKey(mcrObjId, writeKey, MCRAccessManager.PERMISSION_WRITE);
                 MIRAccessKeyManager.addAccessKey(accessKeyWrite);
             }
         } else if ("edit".equals(action)) {
