@@ -4,25 +4,25 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.text.MessageFormat;
+import java.util.Comparator;
+import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import javax.imageio.ImageIO;
 
-import org.apache.logging.log4j.LogManager;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.mycore.common.selenium.util.MCRBy;
-import org.mycore.common.selenium.util.MCRExpectedConditions;
-import org.mycore.common.selenium.util.MCRExpectedConditions.DocumentReadyState;
 import org.mycore.mir.it.controller.MIRModsEditorController;
 import org.mycore.mir.it.controller.MIRPublishEditorController;
+import org.mycore.mir.it.controller.MIRUploadController;
 import org.mycore.mir.it.controller.MIRUserController;
+import org.mycore.mir.it.model.MIRAccess;
 import org.mycore.mir.it.model.MIRDNBClassification;
 import org.mycore.mir.it.model.MIRGenre;
 import org.mycore.mir.it.model.MIRLanguage;
@@ -30,25 +30,23 @@ import org.mycore.mir.it.model.MIRLicense;
 import org.mycore.mir.it.model.MIRTitleInfo;
 import org.mycore.mir.it.model.MIRTitleType;
 import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.OutputType;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Point;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 
 public class MIRUploadITCase extends MIRITBase {
 
-    private static final java.util.List<Color> UNIQUE_COLOR_LIST = Stream.of(
-        new Color(116, 207, 248),
-        new Color(203, 112, 83),
-        new Color(231, 115, 159),
-        new Color(191, 231, 1),
-        new Color(231, 0, 217)).collect(Collectors.toList());
+    private MIRUploadController uploadController;
 
     @Before
     public final void init() {
         String appURL = getAPPUrlString();
         userController = new MIRUserController(getDriver(), appURL);
         publishEditorController = new MIRPublishEditorController(getDriver(), appURL);
+        uploadController = new MIRUploadController(getDriver(), appURL);
         editorController = new MIRModsEditorController(getDriver(), appURL);
         userController.logoutIfLoggedIn();
         userController.loginAs(MIRUserController.ADMIN_LOGIN, MIRUserController.ADMIN_PASSWD);
@@ -57,9 +55,152 @@ public class MIRUploadITCase extends MIRITBase {
     }
 
     @Test
-    @Ignore
-    public final void testUpload() throws IOException, InterruptedException {
+    public final void testUnlimitedUpload() throws IOException, InterruptedException {
         driver.waitUntilPageIsLoaded("MODS-Dokument erstellen");
+        fillEditorDefault();
+        editorController.setAccessConditions(MIRAccess.public_);
+        editorController.save();
+
+        driver.waitUntilPageIsLoaded(MIRTitleType.mainTitle.getValue());
+        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.SAVE_SUCCESS));
+        driver.waitAndFindElement(MCRBy.partialLinkText("Aktionen"),
+            ExpectedConditions::elementToBeClickable).click();
+        driver.waitAndFindElement(MCRBy.partialLinkText("Hinzufügen eines Dateibereichs"),
+            ExpectedConditions::elementToBeClickable).click();
+
+        File upload = uploadController.createTestFile();
+        uploadController.uploadFile(upload);
+
+        String fileName = upload.getName();
+        requireFileLinkPresent(fileName);
+
+        String receiveURL = driver.getCurrentUrl();
+        userController.logOff();
+        driver.navigate().to(receiveURL);
+        requireFileLinkPresent(fileName);
+
+    }
+
+    @Test
+    public final void testInternUpload() throws IOException, InterruptedException {
+        driver.waitUntilPageIsLoaded("MODS-Dokument erstellen");
+        fillEditorDefault();
+        editorController.setAccessConditions(MIRAccess.intern);
+        editorController.save();
+
+        driver.waitUntilPageIsLoaded(MIRTitleType.mainTitle.getValue());
+        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.SAVE_SUCCESS));
+        driver.waitAndFindElement(MCRBy.partialLinkText("Aktionen"),
+            ExpectedConditions::elementToBeClickable).click();
+        driver.waitAndFindElement(MCRBy.partialLinkText("Hinzufügen eines Dateibereichs"),
+            ExpectedConditions::elementToBeClickable).click();
+
+        File upload = uploadController.createTestFile();
+        uploadController.uploadFile(upload);
+
+        String fileName = upload.getName();
+        requireFileLinkPresent(fileName);
+        String receiveURL = driver.getCurrentUrl();
+        userController.logOff();
+        driver.navigate().to(receiveURL);
+        driver.waitUntilPageIsLoaded(MIRTitleType.mainTitle.getValue());
+
+        Assert.assertNotNull("Forbidden Text should be present",
+            driver.waitAndFindElement(MCRBy.partialText("Um die angehangenen Dateien")));
+    }
+
+    @Test
+    public final void testInternUploadButFileAllowed() throws IOException, InterruptedException {
+        driver.waitUntilPageIsLoaded("MODS-Dokument erstellen");
+        fillEditorDefault();
+        editorController.setAccessConditions(MIRAccess.intern);
+        editorController.save();
+
+        driver.waitUntilPageIsLoaded(MIRTitleType.mainTitle.getValue());
+        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.SAVE_SUCCESS));
+        driver.waitAndFindElement(MCRBy.partialLinkText("Aktionen"),
+            ExpectedConditions::elementToBeClickable).click();
+        driver.waitAndFindElement(MCRBy.partialLinkText("Hinzufügen eines Dateibereichs"),
+            ExpectedConditions::elementToBeClickable).click();
+
+        File upload = uploadController.createTestFile();
+        uploadController.uploadFile(upload);
+
+        String fileName = upload.getName();
+        openFileEditor(fileName);
+        selectAccess(MIRAccess.public_);
+        driver.waitAndFindElement(MCRBy.partialText("Speichern")).click();
+        driver.waitUntilPageIsLoaded(MIRTitleType.mainTitle.getValue());
+
+        String receiveURL = driver.getCurrentUrl();
+        userController.logOff();
+        driver.navigate().to(receiveURL);
+        driver.waitUntilPageIsLoaded(MIRTitleType.mainTitle.getValue());
+
+        requireFileLinkPresent(fileName);
+    }
+
+    @Test
+    public final void testUnlimitedUploadButFileForbidden() throws IOException, InterruptedException {
+        driver.waitUntilPageIsLoaded("MODS-Dokument erstellen");
+        fillEditorDefault();
+        editorController.setAccessConditions(MIRAccess.public_);
+        editorController.save();
+
+        driver.waitUntilPageIsLoaded(MIRTitleType.mainTitle.getValue());
+        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.SAVE_SUCCESS));
+        driver.waitAndFindElement(MCRBy.partialLinkText("Aktionen"),
+                ExpectedConditions::elementToBeClickable).click();
+        driver.waitAndFindElement(MCRBy.partialLinkText("Hinzufügen eines Dateibereichs"),
+                ExpectedConditions::elementToBeClickable).click();
+
+        File upload = uploadController.createTestFile();
+        uploadController.uploadFile(upload);
+
+        String fileName = upload.getName();
+        openFileEditor(fileName);
+        selectAccess(MIRAccess.intern);
+        driver.waitAndFindElement(MCRBy.partialText("Speichern")).click();
+        driver.waitUntilPageIsLoaded(MIRTitleType.mainTitle.getValue());
+
+        String receiveURL = driver.getCurrentUrl();
+        userController.logOff();
+        driver.navigate().to(receiveURL);
+        driver.waitUntilPageIsLoaded(MIRTitleType.mainTitle.getValue());
+
+        Assert.assertNotNull("Forbidden Text should be present",
+                driver.waitAndFindElement(MCRBy.partialText("Sie haben nicht die nötigen Rechte um die angehangenen Dateien zu sehen.")));
+    }
+
+    private void selectAccess(MIRAccess access) {
+        getDriver().waitAndFindElement(MCRBy.partialLinkText("Dateibereich verwalten")).click();
+        String xpath =".//select[option/@value='mir_access:"+access.getValue()+"']";
+        new Select(getDriver().waitAndFindElement(By.xpath(xpath))).selectByValue("mir_access:"+access.getValue());
+    }
+
+    private void openFileEditor(String fileName) {
+        WebElement element = requireFileLinkPresent(fileName);
+
+        List<WebElement> elements = driver.waitAndFindElements(MCRBy.partialLinkText("Aktionen"));
+
+        int x = element.getLocation().getX();
+        int y = element.getLocation().getY();
+
+        WebElement nearestElement = elements.stream()
+            .min(Comparator.comparingDouble(k -> {
+                Point loc = k.getLocation();
+                return java.awt.Point.distance(x, y, loc.x, loc.y);
+            })).get();
+        nearestElement.click();
+    }
+
+    private WebElement requireFileLinkPresent(String fileName) {
+        WebElement element = driver.waitAndFindElement(MCRBy.partialLinkText(fileName));
+        Assert.assertNotNull("Element should be Present!", element);
+        return element;
+    }
+
+    private void fillEditorDefault() {
         editorController.setGenres(Stream.of(MIRGenre.article, MIRGenre.collection).collect(Collectors.toList()));
         editorController.setTitleInfo(Stream.of(
             new MIRTitleInfo("Der", MIRLanguage.german, MIRTitleType.mainTitle, MIRTestData.TITLE,
@@ -70,66 +211,5 @@ public class MIRUploadITCase extends MIRITBase {
         editorController.setClassifications(
             Stream.of(MIRDNBClassification._004, MIRDNBClassification._010).collect(Collectors.toList()));
         editorController.setAccessConditions(MIRLicense.cc_by_40);
-        editorController.save();
-
-        driver.waitUntilPageIsLoaded(MIRTitleType.mainTitle.getValue());
-        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.SAVE_SUCCESS));
-        driver.waitAndFindElement(MCRBy.partialLinkText("Aktionen"),
-            ExpectedConditions::elementToBeClickable).click();
-        driver.waitAndFindElement(MCRBy.partialLinkText("Hinzufügen eines Datenobjektes"),
-            ExpectedConditions::elementToBeClickable).click();
-
-        File upload = File.createTempFile("upload", "mir_test.tiff");
-
-        BufferedImage testImage = new BufferedImage(1024, 1024, BufferedImage.TYPE_INT_RGB);
-        Graphics graphics = testImage.getGraphics();
-        graphics.setFont(Font.decode("Arial-BOLD-30"));
-        graphics.drawString("Test-Image", 100, 300);
-
-        for (int i = 0; i < UNIQUE_COLOR_LIST.size(); i++) {
-            Color color = UNIQUE_COLOR_LIST.get(i);
-            graphics.setColor(color);
-            graphics.fillRect((i + 1) * 124, 124, 124, 124);
-        }
-        ImageIO.write(testImage, "tiff", upload);
-
-        String path = upload.getAbsolutePath();
-        getDriver().waitAndFindElement(By.xpath(".//input[@id='fileToUpload']")).sendKeys(path);
-        getDriver().waitAndFindElement(MCRBy.partialText("Abschicken")).click();
-        WebElement goToMetadata = getDriver()
-            .waitAndFindElement(By.xpath(".//button[contains(text(),'Fertig') and not(@disabled)]"));
-        Thread.sleep(2000); // should tile the image in 2s
-        goToMetadata.click();
-        getDriver().waitAndFindElement(MCRBy.partialText(MIRTestData.TITLE));
-        getDriver().waitFor(MCRExpectedConditions.documentReadyState(DocumentReadyState.complete));
-        try {
-            getDriver().findElement(MCRBy.partialText("Die Vorschau für ")/*{derivate} ist in Bearbeitung*/);
-            LogManager.getLogger().warn("Mycore-viewer is not loaded. Reload!");
-            Assert.fail("Image tiler was not ready in time.");
-        } catch (NoSuchElementException e) {
-            //mycore-viewer is present and we are fine
-        }
-        // TODO: find workaround is viewer loaded instead of wait 3 seconds
-        Thread.sleep(5000);
-
-        byte[] screenshotAsBytes = getDriver().getScreenshotAs(OutputType.BYTES);
-
-        BufferedImage read = ImageIO.read(new ByteArrayInputStream(screenshotAsBytes));
-
-        java.util.List<Color> colorList = UNIQUE_COLOR_LIST.stream().collect(Collectors.toList());
-        for (int x = 0; x < read.getWidth() - 1; x++) {
-            for (int y = 0; y < read.getHeight() - 1; y++) {
-                Color rgb = new Color(read.getRGB(x, y));
-                colorList.stream().filter(c -> {
-                    // compression kills exact colors :(
-                    return Math.abs(rgb.getRed() - c.getRed()) < 10 && Math.abs(rgb.getBlue() - c.getBlue()) < 10
-                        && Math.abs(rgb.getGreen() - c.getGreen()) < 10;
-                }).collect(Collectors.toList()).forEach(colorList::remove);
-            }
-        }
-        String colorsInList = colorList.stream().map(c -> c.toString()).collect(Collectors.joining(";"));
-        Assert.assertTrue(
-            "RGBList should be empty (every pixel should be found in screenshot) but list is: " + colorsInList,
-            colorList.isEmpty());
     }
 }
