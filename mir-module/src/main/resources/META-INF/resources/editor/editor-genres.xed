@@ -490,6 +490,7 @@
     <xed:include ref="blog_entry_link" />
     <xed:include ref="subject.simple" />
     <xed:include ref="abstract.repeated" />
+    <xed:include ref="rights" />
     <xed:include ref="comment" />
   </xed:template>
 
