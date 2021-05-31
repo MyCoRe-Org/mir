@@ -1021,64 +1021,35 @@
         </div>
         <mir:help-pmud help-text="{i18n:mir.help.identifier}" pmud="true" />
       </div>
-      <!--</div>-->
     </xed:repeat>
   </xed:template>
 
   <xed:template id="doi.handle.urn.repeated">
-    <!-- isManagedPI -->
     <xed:repeat xpath="mods:identifier[contains(' doi hdl urn ',concat(' ',@type,' '))]" min="1" max="10"
                 method="clone">
       <div class="form-group row">
-        <xed:choose>
-          <xed:when
-            test="xed:call-java('org.mycore.pi.frontend.MCRIdentifierXSLUtils','isManagedPI', string(text()), string(/mycoreobject/@ID))">
-            <label class="col-md-3 col-form-label text-right">
-              <xed:choose>
-                <xed:when test="@type='doi'">
-                  <xed:output i18n="mir.identifier.doi" />
-                </xed:when>
-                <xed:when test="@type='hdl'">
-                  <xed:output i18n="mir.identifier.hdl" />
-                </xed:when>
-                <xed:when test="@type='urn'">
-                  <xed:output i18n="mir.identifier.urn" />
-                </xed:when>
-                <xed:when test="@type='uri'">
-                  <xed:output i18n="mir.identifier.uri" />
-                </xed:when>
-              </xed:choose>
-            </label>
-            <div class="col-md-6">
-              <input type="text" size="20" class="form-control form-control-inline" disabled="true"
-                     value="{text()}" />
-            </div>
-          </xed:when>
-          <xed:otherwise>
-            <xed:bind xpath="@type">
-              <div class="col-md-3">
-                <select class="form-control identifierSelect" style="text-align:right; font-weight:bold;">
-                  <option value="doi">
-                    <xed:output i18n="mir.identifier.doi" />
-                  </option>
-                  <option value="hdl">
-                    <xed:output i18n="mir.identifier.hdl" />
-                  </option>
-                  <option value="urn">
-                    <xed:output i18n="mir.identifier.urn" />
-                  </option>
-                  <option value="uri">
-                    <xed:output i18n="mir.identifier.uri" />
-                  </option>
-                </select>
-              </div>
-            </xed:bind>
-            <div class="col-md-6">
-              <input type="text" size="20" class="form-control form-control-inline {$xed-validation-marker}" />
-            </div>
-            <mir:help-pmud help-text="{i18n:mir.help.doi.handle.urn}" pmud="true" />
-          </xed:otherwise>
-        </xed:choose>
+        <xed:bind xpath="@type">
+          <div class="col-md-3">
+            <select class="form-control identifierSelect" style="text-align:right; font-weight:bold;">
+              <option value="doi">
+                <xed:output i18n="mir.identifier.doi" />
+              </option>
+              <option value="hdl">
+                <xed:output i18n="mir.identifier.hdl" />
+              </option>
+              <option value="urn">
+                <xed:output i18n="mir.identifier.urn" />
+              </option>
+              <option value="uri">
+                <xed:output i18n="mir.identifier.uri" />
+              </option>
+            </select>
+          </div>
+        </xed:bind>
+        <div class="col-md-6">
+          <input type="text" size="20" class="form-control form-control-inline {$xed-validation-marker}" />
+        </div>
+        <mir:help-pmud help-text="{i18n:mir.help.doi.handle.urn}" pmud="true" />
       </div>
     </xed:repeat>
   </xed:template>
