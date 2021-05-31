@@ -227,10 +227,12 @@ public class MIRStrategy implements MCRAccessCheckStrategy {
     }
 
     private Optional<MCRCategoryID> getAccessCategory(MCRObjectID objectId, MCRObjectID derivateId, String permission) {
+        String type = Stream.of(derivateId, objectId).filter(Objects::nonNull).map(MCRObjectID::getTypeId).findFirst()
+                .get();
+        List<MCRCategoryID> amc = getAccessMappedCategories(type, permission, accessClasses);
         return Stream.of(derivateId, objectId)
                 .filter(Objects::nonNull)
-                .flatMap(id -> getAccessCategory(getAccessMappedCategories(
-                        id.getTypeId(), permission, accessClasses), id).stream())
+                .flatMap(id -> getAccessCategory(amc, id).stream())
                 .findFirst();
     }
 
