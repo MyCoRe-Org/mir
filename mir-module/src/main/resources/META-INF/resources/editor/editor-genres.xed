@@ -467,6 +467,34 @@
     <xed:include ref="comment" />
   </xed:template>
 
+  <xed:template id="genres.blog">
+    <xed:include ref="title" />
+    <xed:include ref="editor.repeated" />
+    <xed:include ref="blog_link" />
+    <xed:include ref="publisher" />
+    <xed:include ref="date.onlyrange.issued.datetimepicker" />
+    <xed:include ref="language" />
+    <xed:include ref="identifier.managed" />
+    <xed:include ref="doi.handle.urn.repeated" />
+    <xed:include ref="subject.simple" />
+    <xed:include ref="abstract.simple" />
+    <xed:include ref="comment" />
+  </xed:template>
+
+  <xed:template id="genres.blog_entry">
+    <xed:include ref="title.original" />
+    <xed:include ref="author.repeated" />
+    <xed:include ref="date.issued.required" />
+    <xed:include ref="language" />
+    <xed:include ref="identifier.managed" />
+    <xed:include ref="doi.handle.urn.repeated" />
+    <xed:include ref="blog_entry_link" />
+    <xed:include ref="subject.simple" />
+    <xed:include ref="abstract.repeated" />
+    <xed:include ref="rights" />
+    <xed:include ref="comment" />
+  </xed:template>
+
   <xed:template id="genres.submit">
     <xed:include ref="cancel.submit" />
     <xed:include ref="cleanup-rules" />
