@@ -474,6 +474,7 @@
     <xed:include ref="publisher" />
     <xed:include ref="date.onlyrange.issued.datetimepicker" />
     <xed:include ref="language" />
+    <xed:include ref="identifier.managed" />
     <xed:include ref="doi.handle.urn.repeated" />
     <xed:include ref="subject.simple" />
     <xed:include ref="abstract.simple" />
