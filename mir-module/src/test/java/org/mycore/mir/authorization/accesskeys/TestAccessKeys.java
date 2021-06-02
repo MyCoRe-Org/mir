@@ -134,10 +134,8 @@ public class TestAccessKeys extends MCRJPATestCase {
         endTransaction();
         startNewTransaction();
 
-        final int accessKeyId = MIRAccessKeyManager.getAccessKeys(MCRObjectID.getInstance(MCR_OBJECT_ID)).get(0).getId();
-
         final MIRAccessKey accessKeyNew = new MIRAccessKey(MCRObjectID.getInstance(MCR_OBJECT_ID), READ_KEY + WRITE_KEY, MCRAccessManager.PERMISSION_READ);
-        MIRAccessKeyManager.updateAccessKey(accessKeyId, accessKeyNew);
+        MIRAccessKeyManager.updateAccessKey(MCRObjectID.getInstance(MCR_OBJECT_ID), READ_KEY, accessKeyNew);
 
         final MIRAccessKey accessKeyUpdated = MIRAccessKeyManager.getAccessKeys(MCRObjectID.getInstance(MCR_OBJECT_ID)).get(0);
         assertEquals(accessKeyNew.getValue(), accessKeyUpdated.getValue());
@@ -151,7 +149,7 @@ public class TestAccessKeys extends MCRJPATestCase {
         endTransaction();
         startNewTransaction();
 
-        MIRAccessKeyManager.clearAccessKeys(MCRObjectID.getInstance(MCR_OBJECT_ID));
+        MIRAccessKeyManager.deleteAccessKey(MCRObjectID.getInstance(MCR_OBJECT_ID), READ_KEY);
 
         endTransaction();
         startNewTransaction();

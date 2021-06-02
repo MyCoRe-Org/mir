@@ -1,7 +1,4 @@
 /*
- * $Id$ 
- * $Revision$ $Date$
- *
  * This file is part of ***  M y C o R e  ***
  * See http://www.mycore.de/ for details.
  *
@@ -23,26 +20,8 @@
 
 package org.mycore.mir.authorization.accesskeys.exception;
 
-import org.mycore.common.MCRException;
-
-public class MIRAccessKeyException extends MCRException {
-
-    private String errorCode;
-
-    public MIRAccessKeyException(String errorMessage) {
-        super(errorMessage);
-    }
-
-    public MIRAccessKeyException(String errorMessage, String errorCode) {
-        super(errorMessage);
-        this.errorCode = errorCode;
-    }
-
-    public String getErrorCode() {
-        return errorCode;
-    }
-
-    public void setErrorCode(String errorCode) {
-        this.errorCode = errorCode;
+public class MIRAccessKeyInvalidTypeException extends MIRAccessKeyException {
+    public MIRAccessKeyInvalidTypeException(String errorMessage) {
+        super(errorMessage, "invalidType");
     }
 }
