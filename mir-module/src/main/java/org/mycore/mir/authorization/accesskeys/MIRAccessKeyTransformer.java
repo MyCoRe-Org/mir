@@ -32,7 +32,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 
 import org.jdom2.Element;
 
-import org.mycore.common.MCRException;
 import org.mycore.datamodel.metadata.MCRObjectID;
 import org.mycore.mir.authorization.accesskeys.backend.MIRAccessKey;
 
@@ -46,16 +45,22 @@ public class MIRAccessKeyTransformer {
 
     public static final String ACCESS_KEY_TYPE = "accesskeys";
 
-    public static List<MIRAccessKey> accessKeysFromJson(final String json)
-        throws JsonProcessingException {
-        final ObjectMapper objectMapper = new ObjectMapper();
-        return Arrays.asList(objectMapper.readValue(json, MIRAccessKey[].class));
+    public static List<MIRAccessKey> accessKeysFromJson(final String json) {
+        try {
+            final ObjectMapper objectMapper = new ObjectMapper();
+            return Arrays.asList(objectMapper.readValue(json, MIRAccessKey[].class));
+        } catch (JsonProcessingException e) {
+            return new ArrayList<MIRAccessKey>(); 
+        }
     }
 
-    public static String jsonFromAccessKeys(final List<MIRAccessKey> accessKeys)
-        throws JsonProcessingException {
-        final ObjectMapper objectMapper = new ObjectMapper();
-        return objectMapper.writeValueAsString(accessKeys);
+    public static String jsonFromAccessKeys(final List<MIRAccessKey> accessKeys) {
+        try {
+            final ObjectMapper objectMapper = new ObjectMapper();
+            return objectMapper.writeValueAsString(accessKeys);
+        } catch (JsonProcessingException e) {
+            return null;
+        }
     }
 
     public static List<MIRAccessKey> accessKeysFromElement(MCRObjectID objectId, Element element) {
@@ -77,27 +82,20 @@ public class MIRAccessKeyTransformer {
 
     private static List<MIRAccessKey> accessKeysFromServFlag(MCRObjectID objectId, Element servFlag) {
         final String json = servFlag.getText();
-        try {
-            final List<MIRAccessKey> accessKeyList = accessKeysFromJson(json);
-            for (MIRAccessKey accessKey : accessKeyList) {
-                accessKey.setObjectId(objectId);
-            }
-            return accessKeyList;
-        } catch (JsonProcessingException e) {
-            throw new MCRException("Exception while transforming Element to MIRAccessKey list.", e);
+
+        final List<MIRAccessKey> accessKeyList = accessKeysFromJson(json);
+        for (MIRAccessKey accessKey : accessKeyList) {
+            accessKey.setObjectId(objectId);
         }
+        return accessKeyList;
     }
 
     public static Element servFlagFromAccessKeys(final List<MIRAccessKey> accessKeys) {
-        if (accessKeys.size() == 0) {
-            return new Element("null");
-        }
-        try {
-            final String jsonString = jsonFromAccessKeys(accessKeys);
+        final String jsonString = jsonFromAccessKeys(accessKeys);
+        if (jsonString != null) {
             return servFlagfromAccessKeysJson(jsonString);
-        } catch (JsonProcessingException e) {
-            return new Element("null");
         }
+        return new Element("null");
     }
 
     private static Element servFlagfromAccessKeysJson(final String json) {

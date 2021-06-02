@@ -29,6 +29,7 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.URIResolver;
 
 import org.jdom2.transform.JDOMSource;
+import org.jdom2.Element;
 
 import org.mycore.datamodel.metadata.MCRObjectID;
 import org.mycore.mir.authorization.accesskeys.backend.MIRAccessKey;
@@ -53,7 +54,10 @@ public class MIRAccessKeyResolver implements URIResolver {
     public Source resolve(String href, String base) throws TransformerException {
         final MCRObjectID objectId = MCRObjectID.getInstance(href.substring(href.indexOf(":") + 1));
         final List<MIRAccessKey> accessKeys = MIRAccessKeyManager.getAccessKeys(objectId);
-        
-        return new JDOMSource(MIRAccessKeyTransformer.servFlagFromAccessKeys(accessKeys));
+
+        if (accessKeys.size() != 0) {
+            return new JDOMSource(MIRAccessKeyTransformer.servFlagFromAccessKeys(accessKeys));
+        }
+        return new JDOMSource(new Element("null"));
     }
 }
