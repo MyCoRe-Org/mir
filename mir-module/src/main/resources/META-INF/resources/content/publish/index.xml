@@ -58,7 +58,7 @@
 
       <!-- more options -->
       <div id="more_options_box" class="row form-group">
-        <h2>Publikation aus Scopus, PubMed, CrossRef oder GVK importieren</h2>
+        <h2>Publikation aus Scopus, PubMed, CrossRef oder K10plus importieren</h2>
         <div class="row form-group">
           <label class="col-sm-3 col-lg-2 control-label">
             <select name="type">
@@ -68,7 +68,7 @@
               <option value="isbn">ISBN</option>
               <option value="issn">ISSN</option>
               <option value="ieee">IEEE</option>
-              <option value="ppn">GVK-PPN</option>
+              <option value="ppn">K10plus-PPN</option>
               <option value="zdbid">ZDB-ID</option>
             </select>
           </label>

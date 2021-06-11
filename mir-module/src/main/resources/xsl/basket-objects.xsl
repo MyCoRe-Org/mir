@@ -20,6 +20,8 @@
   <!-- include custom templates for supported objecttypes -->
   <xsl:include href="xslInclude:objectTypes" />
 
+  <xsl:include href="csl-export-gui.xsl" />
+
   <xsl:variable name="Type" select="'mods'" />
   <xsl:variable name="PageTitle" select="i18n:translate(concat('basket.title.',/basket/@type))" />
 
@@ -32,11 +34,23 @@
         <xsl:value-of select="i18n:translate(concat('basket.title.',/basket/@type))" />
       </h2>
       <xsl:call-template name="basketNumEntries" />
+      <xsl:call-template name="export-csl" />
       <xsl:call-template name="basketEntries" />
     </div>
   </xsl:template>
 
 
+  <xsl:template name="export-csl">
+    <div class="row result_export">
+      <div class="col-12">
+        <xsl:if test="count(entry)&gt;0">
+          <xsl:call-template name="exportGUI">
+            <xsl:with-param name="type" select="'basket'" />
+          </xsl:call-template>
+        </xsl:if>
+      </div>
+    </div>
+  </xsl:template>
 
 
   <xsl:template name="basketNumEntries">

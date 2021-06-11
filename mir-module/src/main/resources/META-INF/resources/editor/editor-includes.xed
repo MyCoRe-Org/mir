@@ -207,6 +207,11 @@
       class="required" required="true" required-i18n="mir.validation.title.newspaper" />
   </xed:template>
 
+  <xed:template id="title.blog.relItemsearch">
+    <mir:relItemsearch searchengine="title" genre="blog" responsefield="mods.title" xpath="mods:titleInfo/mods:title" label="mir.title.blog" help-text="{i18n:mir.help.title.blog}" 
+      class="required" required="true" required-i18n="mir.validation.blog.title"/>
+  </xed:template>
+
   <xed:template id="subtitle">
     <mir:textfield xpath="mods:titleInfo/mods:subTitle" label="mir.title.subTitle" help-text="{i18n:mir.help.title.subTitle}" />
   </xed:template>
@@ -1016,64 +1021,35 @@
         </div>
         <mir:help-pmud help-text="{i18n:mir.help.identifier}" pmud="true" />
       </div>
-      <!--</div>-->
     </xed:repeat>
   </xed:template>
 
   <xed:template id="doi.handle.urn.repeated">
-    <!-- isManagedPI -->
     <xed:repeat xpath="mods:identifier[contains(' doi hdl urn ',concat(' ',@type,' '))]" min="1" max="10"
                 method="clone">
       <div class="form-group row">
-        <xed:choose>
-          <xed:when
-            test="xed:call-java('org.mycore.pi.frontend.MCRIdentifierXSLUtils','isManagedPI', string(text()), string(/mycoreobject/@ID))">
-            <label class="col-md-3 col-form-label text-right">
-              <xed:choose>
-                <xed:when test="@type='doi'">
-                  <xed:output i18n="mir.identifier.doi" />
-                </xed:when>
-                <xed:when test="@type='hdl'">
-                  <xed:output i18n="mir.identifier.hdl" />
-                </xed:when>
-                <xed:when test="@type='urn'">
-                  <xed:output i18n="mir.identifier.urn" />
-                </xed:when>
-                <xed:when test="@type='uri'">
-                  <xed:output i18n="mir.identifier.uri" />
-                </xed:when>
-              </xed:choose>
-            </label>
-            <div class="col-md-6">
-              <input type="text" size="20" class="form-control form-control-inline" disabled="true"
-                     value="{text()}" />
-            </div>
-          </xed:when>
-          <xed:otherwise>
-            <xed:bind xpath="@type">
-              <div class="col-md-3">
-                <select class="form-control identifierSelect" style="text-align:right; font-weight:bold;">
-                  <option value="doi">
-                    <xed:output i18n="mir.identifier.doi" />
-                  </option>
-                  <option value="hdl">
-                    <xed:output i18n="mir.identifier.hdl" />
-                  </option>
-                  <option value="urn">
-                    <xed:output i18n="mir.identifier.urn" />
-                  </option>
-                  <option value="uri">
-                    <xed:output i18n="mir.identifier.uri" />
-                  </option>
-                </select>
-              </div>
-            </xed:bind>
-            <div class="col-md-6">
-              <input type="text" size="20" class="form-control form-control-inline {$xed-validation-marker}" />
-            </div>
-            <mir:help-pmud help-text="{i18n:mir.help.doi.handle.urn}" pmud="true" />
-          </xed:otherwise>
-        </xed:choose>
+        <xed:bind xpath="@type">
+          <div class="col-md-3">
+            <select class="form-control identifierSelect" style="text-align:right; font-weight:bold;">
+              <option value="doi">
+                <xed:output i18n="mir.identifier.doi" />
+              </option>
+              <option value="hdl">
+                <xed:output i18n="mir.identifier.hdl" />
+              </option>
+              <option value="urn">
+                <xed:output i18n="mir.identifier.urn" />
+              </option>
+              <option value="uri">
+                <xed:output i18n="mir.identifier.uri" />
+              </option>
+            </select>
+          </div>
+        </xed:bind>
+        <div class="col-md-6">
+          <input type="text" size="20" class="form-control form-control-inline {$xed-validation-marker}" />
+        </div>
+        <mir:help-pmud help-text="{i18n:mir.help.doi.handle.urn}" pmud="true" />
       </div>
     </xed:repeat>
   </xed:template>
@@ -1182,6 +1158,21 @@
     </xed:repeat>
   </xed:template>
 
+  <xed:template id="blog_link">
+    <mir:textfield xpath="mods:location/mods:url[@access='raw object']" label="mir.link.blog" help-text="{i18n:mir.help.link.blog}" 
+      class="required" required="true" required-i18n="mir.validation.link.blog" />
+  </xed:template>
+
+  <xed:template id="blog_entry_link">
+    <mir:textfield xpath="mods:location/mods:url[@access='raw object']" label="mir.link.blog_entry" help-text="{i18n:mir.help.link.blog_entry}" 
+      class="required" required="true" required-i18n="mir.validation.link.blog_entry" />
+  </xed:template>
+
+  <xed:template id="blog_link.relItemsearch">
+    <mir:relItemsearch searchengine="empty" genre="blog" responsefield="url.access.raw_object" xpath="mods:location/mods:url[@access='raw object']" 
+      label="mir.link.blog" help-text="{i18n:mir.help.link.blog}" />
+  </xed:template>
+
   <xed:template id="creator">
     <mir:textfield xpath="mods:originInfo[@eventType='creation']/mods:publisher" label="mir.creator" help-text="{i18n:mir.help.creator}"/>
   </xed:template>
@@ -1273,6 +1264,10 @@
   <xed:template id="host.issue.required">
     <mir:textfield xpath="mods:part/mods:detail[@type='issue']/mods:number" label="mir.issue" help-text="{i18n:mir.help.issue}" class="mir-modspart required"
       required="true" required-i18n="mir.validation.host.issue" />
+  </xed:template>
+  
+  <xed:template id="host.articlenumber">
+    <mir:textfield xpath="mods:part/mods:detail[@type='article_number']/mods:number" label="mir.articlenumber" help-text="{i18n:mir.help.articlenumber}" class="mir-modspart" />
   </xed:template>
 
   <xed:template id="host.pages">
@@ -1801,6 +1796,12 @@
     </xed:bind>
   </xed:template>
 
+  <xed:template id="subject.simple.required">
+    <xed:bind xpath="mods:subject">
+      <mir:topic.repeated min="1" max="20" label="mir.subject.topic" help-text="{i18n:mir.help.subject.topic.gnd}" class="required" required="true" required-i18n="mir.validation.subject" />
+    </xed:bind>
+  </xed:template>
+
   <xed:template id="subject.complex">
     <xed:repeat xpath="mods:subject[not(mods:geographic)]" min="1" max="20">
       <fieldset>
@@ -1812,6 +1813,22 @@
         </div>
         <div class="mir-fieldset-content">
           <mir:topic.repeated min="1" max="20" label="mir.subject.topic" help-text="{i18n:mir.help.subject.topic.gnd}" extended="true" />
+        </div>
+      </fieldset>
+    </xed:repeat>
+  </xed:template>
+
+  <xed:template id="subject.complex.required">
+    <xed:repeat xpath="mods:subject[not(mods:geographic)]" min="1" max="20">
+      <fieldset>
+        <div class="row mir-fieldset-legend">
+          <legend class="col-md-9" style="margin-bottom:0px;padding-top:10px;">
+            <xed:output i18n="mir.subject.topic.complex" />
+          </legend>
+          <mir:help-pmud pmud="true" help-text="{i18n:mir.help.subject.topic.complex}" />
+        </div>
+        <div class="mir-fieldset-content">
+          <mir:topic.repeated min="1" max="20" label="mir.subject.topic" help-text="{i18n:mir.help.subject.topic.gnd}" extended="true" class="required" required="true" required-i18n="mir.validation.subject" />
         </div>
       </fieldset>
     </xed:repeat>
@@ -2021,6 +2038,7 @@
           <xed:include ref="title.nonrequired" />
           <xed:include ref="host.volume" />
           <xed:include ref="host.issue" />
+          <xed:include ref="host.articlenumber" />
           <xed:include ref="host.pages" />
           <xed:include ref="host.order" />
         </div>
@@ -2170,7 +2188,7 @@
     <xed:validate xpath="//mods:mods/mods:genre[@authorityURI=$mir_genres/label[@xml:lang='x-uri']/@text]/@valueURIxEditor" required="true"
       i18n="mir.validation.genre" display="global" />
     <!-- don't validate author, date issued and rights for journal etc.  -->
-    <xed:if test="//mods:mods/mods:genre[@valueURIxEditor!='journal'][@valueURIxEditor!='newspaper'][@valueURIxEditor!='series'][@valueURIxEditor!='lecture']">
+    <xed:if test="//mods:mods/mods:genre[@valueURIxEditor!='journal'][@valueURIxEditor!='newspaper'][@valueURIxEditor!='series'][@valueURIxEditor!='lecture'][@valueURIxEditor!='blog']">
       <xed:validate xpath="//mods:mods/mods:accessCondition[@type='use and reproduction']" required="true" i18n="mir.validation.rights" display="global" />
     </xed:if>
 

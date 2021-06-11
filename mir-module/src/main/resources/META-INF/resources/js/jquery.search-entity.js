@@ -734,93 +734,97 @@
       searchResultContainer : $resultBox
     }, options));
   };
-
-  SearchEntity.prototype.updateOutput = function(item) {
+  
+  SearchEntity.prototype.updateOutput = function (item) {
     var that = this;
     var options = this.options;
     var $output = $(options.searchOutput, getParent(this.$element))[0] !== undefined ? $(options.searchOutput, getParent(this.$element)).first() : this.$element;
     var $outputType = $(options.searchOutputType, getParent(this.$element))[0] !== undefined ? $(options.searchOutputType, getParent(this.$element)).first() : this.$element;
     var $outputNameType = $(options.searchOutputNameType, getParent(this.$element))[0] !== undefined ? $(options.searchOutputNameType, getParent(this.$element)).first() : this.$element;
 
-    var currentIdFieldIndex = 0;
     var nameIdFields = [];
-    var nameIdTypes = null;
-
-    var nameIdTypesElements = null;
-
-    var isNewNameFormGroup = true;
 
     if (item) {
       this.$element != $output && item.label && this.$element.val(item.label.replace(SearchEntity.LABEL_CLEANUP, "").split('|')[0].trim());
-      
+
       var outputType = getTypeFromURL(item.value);
 
       if (item.type) {
 
         $outputNameType.val(item.type.toLowerCase());
 
-        /* Get dependent personExtended_box */
         var itemPersonExtendedBox = $($output).closest('[class="personExtended_box"]');
 
-        /* get the next free output field */
-        nameIdFields = $(itemPersonExtendedBox).find('input[name*="/mods:nameIdentifier"]');
-        nameIdFields = nameIdFields.toArray();
+        /* handle search entity personExtended_box with multiple ids */
+        if (itemPersonExtendedBox && itemPersonExtendedBox.length > 0) {
 
-        while (currentIdFieldIndex < nameIdFields.length && nameIdFields[currentIdFieldIndex].value
+          var currentIdFieldIndex = 0;
+          var nameIdTypes = null;
+          var nameIdTypesElements = null;
+          var isNewNameFormGroup = true;
+
+          /* get the next free output field */
+          nameIdFields = $(itemPersonExtendedBox).find('input[name*="/mods:nameIdentifier"]');
+          nameIdFields = nameIdFields.toArray();
+
+          while (currentIdFieldIndex < nameIdFields.length && nameIdFields[currentIdFieldIndex].value
           && nameIdFields[currentIdFieldIndex].type && nameIdFields[currentIdFieldIndex].type !== 'hidden') {
-          currentIdFieldIndex++;
-        }
-
-        /*
-         * Get assigned name identifier types for the dependent
-         * personExtended_box
-         */
-        nameIdTypesElements = $(itemPersonExtendedBox).find('select[name*="/mods:nameIdentifier"]');
-
-        nameIdTypes = nameIdTypesElements.map(function () {return this.value;}).get();
-
-        /*
-         * Output will replace an old value with same identifier type or will be
-         * the next free input field!
-         */
-        if (nameIdTypes.includes(outputType.toLowerCase())) {
-
-          /* note multiple id types on outputType */
-          let depIndexWithIdType = null;
-          let defaultIndexWithIdType = null;
-
-          for (var ind=0; ind < nameIdTypes.length && depIndexWithIdType === null; ind++) {
-
-            if (nameIdTypes[ind] === outputType.toLowerCase()) {
-
-              var outputWithIdType = $(nameIdTypesElements[ind]).closest('div.form-group').find('input[name*="/mods:nameIdentifier"]');
-
-              if (outputWithIdType.val()) {
-                depIndexWithIdType = ind;
-              }
-
-              defaultIndexWithIdType = ind;
-            }
+            currentIdFieldIndex++;
           }
 
           /*
-           * avoid default pointer for $output and $outputType -> do not remove
-           * first
+           * Get assigned name identifier types for the dependent
+           * personExtended_box
            */
-          if (depIndexWithIdType === null) {
-            depIndexWithIdType = defaultIndexWithIdType;
+          nameIdTypesElements = $(itemPersonExtendedBox).find('select[name*="/mods:nameIdentifier"]');
+
+          nameIdTypes = nameIdTypesElements.map(function () {
+            return this.value;
+          }).get();
+
+          /*
+           * Output will replace an old value with same identifier type or will
+           * be the next free input field!
+           */
+          if (nameIdTypes.includes(outputType.toLowerCase())) {
+
+            /* note multiple id types on outputType */
+            let depIndexWithIdType = null;
+            let defaultIndexWithIdType = null;
+
+            for (var ind = 0; ind < nameIdTypes.length && depIndexWithIdType === null; ind++) {
+
+              if (nameIdTypes[ind] === outputType.toLowerCase()) {
+
+                var outputWithIdType = $(nameIdTypesElements[ind]).closest('div.form-group').find('input[name*="/mods:nameIdentifier"]');
+
+                if (outputWithIdType.val()) {
+                  depIndexWithIdType = ind;
+                }
+
+                defaultIndexWithIdType = ind;
+              }
+            }
+
+            /*
+             * avoid default pointer for $output and $outputType -> do not
+             * remove first
+             */
+            if (depIndexWithIdType === null) {
+              depIndexWithIdType = defaultIndexWithIdType;
+            }
+
+            $output[0] = outputWithIdType[0];
+            $outputType[0] = nameIdTypesElements[depIndexWithIdType];
+
+          } else {
+            /* $output will be the next free Input field */
+            $output[0] = nameIdFields[currentIdFieldIndex];
+
+            /* get dependent outputType selection */
+            let dependentOutputType = $('[name="' + nameIdFields[currentIdFieldIndex].name + '/@type"]');
+            $outputType[0] = dependentOutputType[0];
           }
-
-          $output[0] = outputWithIdType[0];
-          $outputType[0] = nameIdTypesElements[depIndexWithIdType];
-
-        } else {
-          /* $output will be the next free Input field */
-          $output[0] = nameIdFields[currentIdFieldIndex];
-
-          /* get dependent outputType selection */
-          let dependentOutputType = $('[name="' + nameIdFields[currentIdFieldIndex].name + '/@type"]');
-          $outputType[0] = dependentOutputType[0];
         }
       }
 
@@ -844,12 +848,12 @@
       $feedback.attr("target", "_blank");
       $feedback.attr("class", "mcr-badge--origin");
       $feedback.css({
-        textDecoration : "none"
+        textDecoration: "none"
       });
-      if(type == null || SearchEntity.TYPES[type.toUpperCase()] ==  undefined) {
+      if (type == null || SearchEntity.TYPES[type.toUpperCase()] == undefined) {
         $feedback.attr("onclick", "return false;");
         $feedback.css({
-          cursor : "default"
+          cursor: "default"
         });
       }
 
@@ -860,10 +864,10 @@
       var $remover = $(document.createElement("a"));
       $remover.attr("href", "#");
       $remover.html("<i class=\"" + options.feedbackCleanIconClass + "\"></i>");
-      $remover.on("click", function(e) {
+      $remover.on("click", function (e) {
         e.preventDefault();
         that.updateOutput({
-          value : ""
+          value: ""
         })
       });
       $label.append($remover);
@@ -877,19 +881,19 @@
       this.$element.after($feedback);
 
       $feedback.css({
-        marginLeft : -($feedback.width() + 10)
+        marginLeft: -($feedback.width() + 10)
       });
       // prevent badge overlay
       // add padding to the input field in badge size
       this.$element.css({
-        paddingRight : ($feedback.width() + 20)
+        paddingRight: ($feedback.width() + 20)
       });
     } else {
       if (this.$feedback)
         this.$feedback.remove();
       // remove badge overlay padding
       this.$element.css({
-        paddingRight : 20
+        paddingRight: 20
       });
     }
 

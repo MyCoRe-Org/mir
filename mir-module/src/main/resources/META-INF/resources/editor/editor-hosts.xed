@@ -103,6 +103,7 @@
       <xed:bind xpath="mods:relatedItem[@type='host']">
         <xed:include ref="host.volume" />
         <xed:include ref="host.issue" />
+        <xed:include ref="host.articlenumber" />
         <xed:include ref="identifier.isbn.journal.relItemsearch" />
         <xed:include ref="host.pages" />
       </xed:bind>
@@ -120,6 +121,16 @@
       <xed:bind xpath="mods:relatedItem[@type='host']">
         <xed:include ref="host.pages" />
       </xed:bind>
+  </xed:template>
+
+  <xed:template id="hosts.blog">
+    <div class="mir-form-group-body">
+      <xed:bind xpath="mods:relatedItem[@type='host']">
+        <xed:bind xpath="@xlink:href" initially="{$MIR.projectid.default}_mods_00000000"> <input id="relItem-journal" type="hidden" /> </xed:bind>
+        <xed:include ref="title.blog.relItemsearch" />
+        <xed:include ref="blog_link.relItemsearch" />
+      </xed:bind>
+    </div>
   </xed:template>
 
 </xed:template>
