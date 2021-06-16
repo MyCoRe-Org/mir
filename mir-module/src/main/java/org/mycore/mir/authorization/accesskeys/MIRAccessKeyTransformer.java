@@ -27,6 +27,9 @@ import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
@@ -34,8 +37,11 @@ import org.jdom2.Element;
 
 import org.mycore.datamodel.metadata.MCRObjectID;
 import org.mycore.mir.authorization.accesskeys.backend.MIRAccessKey;
+import org.mycore.mir.authorization.accesskeys.exception.MIRAccessKeyTransformationException;
 
 public class MIRAccessKeyTransformer {
+
+    private static final Logger LOGGER = LogManager.getLogger();
 
     private static final String ROOT_SERVICE = "service";
 
@@ -45,25 +51,28 @@ public class MIRAccessKeyTransformer {
 
     public static final String ACCESS_KEY_TYPE = "accesskeys";
 
-    public static List<MIRAccessKey> accessKeysFromJson(final String json) {
+    public static List<MIRAccessKey> accessKeysFromJson(final String json) 
+        throws MIRAccessKeyTransformationException {
+        final ObjectMapper objectMapper = new ObjectMapper();
         try {
-            final ObjectMapper objectMapper = new ObjectMapper();
             return Arrays.asList(objectMapper.readValue(json, MIRAccessKey[].class));
         } catch (JsonProcessingException e) {
-            return new ArrayList<MIRAccessKey>(); 
+            throw new MIRAccessKeyTransformationException("Invalid JSON.");
         }
     }
 
     public static String jsonFromAccessKeys(final List<MIRAccessKey> accessKeys) {
+        final ObjectMapper objectMapper = new ObjectMapper();
         try {
-            final ObjectMapper objectMapper = new ObjectMapper();
             return objectMapper.writeValueAsString(accessKeys);
-        } catch (JsonProcessingException e) {
+        } catch (JsonProcessingException e) { //should not happen
+            LOGGER.warn("Access keys could not be converted to JSON.");
             return null;
         }
     }
 
-    public static List<MIRAccessKey> accessKeysFromElement(MCRObjectID objectId, Element element) {
+    public static List<MIRAccessKey> accessKeysFromElement(MCRObjectID objectId, Element element)
+        throws MIRAccessKeyTransformationException {
         if (element.getName().equals(ROOT_SERVICE)) {
             Element servFlagsRoot = element.getChild(ROOT_SERV_FLAGS);
             if (servFlagsRoot != null) {
@@ -80,9 +89,9 @@ public class MIRAccessKeyTransformer {
         return new ArrayList<MIRAccessKey>();
     }
 
-    private static List<MIRAccessKey> accessKeysFromServFlag(MCRObjectID objectId, Element servFlag) {
+    private static List<MIRAccessKey> accessKeysFromServFlag(MCRObjectID objectId, Element servFlag)
+        throws MIRAccessKeyTransformationException {
         final String json = servFlag.getText();
-
         final List<MIRAccessKey> accessKeyList = accessKeysFromJson(json);
         for (MIRAccessKey accessKey : accessKeyList) {
             accessKey.setObjectId(objectId);

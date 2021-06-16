@@ -57,7 +57,7 @@ public final class MIRAccessKeyManager {
      * @param objectId the {@link MCRObjectID}
      * @return access keys as list
      */
-    public static List<MIRAccessKey> getAccessKeys(final MCRObjectID objectId) {
+    public static synchronized List<MIRAccessKey> getAccessKeys(final MCRObjectID objectId) {
         final EntityManager em = MCREntityManagerProvider.getCurrentEntityManager();
         return em.createNamedQuery("MIRAccessKey.getById", MIRAccessKey.class)
             .setParameter("objId", objectId)
@@ -70,7 +70,7 @@ public final class MIRAccessKeyManager {
      * @param mcrObjectId the {@link MCRObjectID}
      * @return the {@link MIRAccessKeyPair}
      */
-    public static MIRAccessKeyPair getKeyPair(final MCRObjectID mcrObjectId) {
+    public static synchronized MIRAccessKeyPair getKeyPair(final MCRObjectID mcrObjectId) {
         final MIRAccessKey accessKeyRead = 
             getAccessKeysByType(mcrObjectId, MCRAccessManager.PERMISSION_READ).stream()
                 .findFirst()
@@ -322,9 +322,10 @@ public final class MIRAccessKeyManager {
         final MIRAccessKey accessKey = getAccessKeyByValue(objectId, currentValue);
         if (accessKey != null) {
             if (accessKey.getValue().equals(value) && accessKey.getType().equals(type)) {
+                LOGGER.info("Nothing to update.");
                 return;
-            } else if (!accessKey.getValue().equals(value)) {
-                if (!accessKey.getType().equals(type)) {
+            } else {
+                if (accessKey.getValue().equals(value)) {
                     if (isValidType(type)) {
                         accessKey.setType(type);
                         cleanPermissionCache(objectId, type);
@@ -333,39 +334,30 @@ public final class MIRAccessKeyManager {
                         throw new MIRAccessKeyInvalidTypeException("Unknown permission type.");
                     }
                 } else {
-                    if (isValidValue(value)) {
-                        accessKey.setValue(value);
-                        cleanPermissionCache(objectId, type);
-                    } else {
-                        LOGGER.warn("Incorrect Value.");
-                        throw new MIRAccessKeyInvalidValueException("Incorrect Value.");
-                    }
-                }
-            } else {
-                if (getAccessKeyByValue(objectId, value) == null) {
-                    if (isValidValue(value)) {
-                        if (accessKey.getType().equals(type)) {
-                            accessKey.setValue(value);
-                            cleanPermissionCache(objectId, type);
-                        } else {
+                    if (getAccessKeyByValue(objectId, value) == null) {
+                        if (!accessKey.getType().equals(type)) {
                             if (isValidType(type)) {
-                                accessKey.setValue(value);
                                 accessKey.setType(type);
                                 cleanPermissionCache(objectId, type);
                             } else {
                                 LOGGER.warn("Unkown Type.");
                                 throw new MIRAccessKeyInvalidTypeException("Unknown permission type.");
                             }
+                        } else {
+                            if (isValidValue(value)) {
+                                accessKey.setValue(value);
+                                cleanPermissionCache(objectId, type);
+                            } else {
+                                LOGGER.warn("Incorrect Value.");
+                                throw new MIRAccessKeyInvalidValueException("Incorrect Value.");
+                            }
                         }
                     } else {
-                        LOGGER.warn("Incorrect Value.");
-                        throw new MIRAccessKeyInvalidValueException("Incorrect Value.");
-                    } 
-                } else {
-                    LOGGER.warn("Key collision.");
-                    throw new MIRAccessKeyCollisionException("Key collision.");
+                        LOGGER.warn("Key collision.");
+                        throw new MIRAccessKeyCollisionException("Key collision.");
+                    }
                 }
-            } 
+            }
         } else {
             LOGGER.warn("Key does not exists.");
             throw new MIRAccessKeyNotFoundException("Key does not exists.");

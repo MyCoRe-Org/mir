@@ -24,6 +24,9 @@ package org.mycore.mir.authorization.accesskeys;
 
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import org.mycore.common.events.MCREvent;
 import org.mycore.common.events.MCREventHandlerBase;
 import org.mycore.datamodel.metadata.MCRBase;
@@ -31,6 +34,7 @@ import org.mycore.datamodel.metadata.MCRDerivate;
 import org.mycore.datamodel.metadata.MCRObject;
 import org.mycore.datamodel.metadata.MCRObjectService;
 import org.mycore.mir.authorization.accesskeys.backend.MIRAccessKey;
+import org.mycore.mir.authorization.accesskeys.exception.MIRAccessKeyTransformationException;
 
 /**
  * This class contains EventHandler methods to manage access keys of
@@ -38,6 +42,8 @@ import org.mycore.mir.authorization.accesskeys.backend.MIRAccessKey;
  * 
  */
 public class MIRAccessKeyEventHandler extends MCREventHandlerBase {
+
+    private static final Logger LOGGER = LogManager.getLogger();
 
     /* (non-Javadoc)
      * @see org.mycore.common.events.MCREventHandlerBase#handleObjectCreated(org.mycore.common.events.MCREvent, org.mycore.datamodel.metadata.MCRObject)
@@ -89,10 +95,14 @@ public class MIRAccessKeyEventHandler extends MCREventHandlerBase {
 
     private void handleBaseCreated(final MCRBase obj) {
         final MCRObjectService service = obj.getService();
-        final List<MIRAccessKey> accessKeys = MIRAccessKeyTransformer
-            .accessKeysFromElement(obj.getId(), service.createXML());
-        if (accessKeys.size() > 0) {
-            MIRAccessKeyManager.addAccessKeys(obj.getId(), accessKeys);
+        try {
+            final List<MIRAccessKey> accessKeys = MIRAccessKeyTransformer
+                .accessKeysFromElement(obj.getId(), service.createXML());
+            if (accessKeys.size() > 0) {
+                MIRAccessKeyManager.addAccessKeys(obj.getId(), accessKeys);
+            }
+        } catch (MIRAccessKeyTransformationException e) {
+            LOGGER.warn("Access keys can not be handled.");
         }
         service.removeFlags(MIRAccessKeyTransformer.ACCESS_KEY_TYPE);
     }

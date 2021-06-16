@@ -94,11 +94,38 @@ public class TestAccessKeys extends MCRJPATestCase {
     }
 
     @Test(expected = MIRAccessKeyCollisionException.class)
-    public void testKeyCollison() {
+    public void testKeyAddCollison() {
         final MIRAccessKey accessKeyRead = new MIRAccessKey(MCRObjectID.getInstance(MCR_OBJECT_ID), WRITE_KEY, MCRAccessManager.PERMISSION_READ);
         MIRAccessKeyManager.addAccessKey(accessKeyRead);
         final MIRAccessKey accessKeyWrite = new MIRAccessKey(MCRObjectID.getInstance(MCR_OBJECT_ID), WRITE_KEY, MCRAccessManager.PERMISSION_WRITE);
         MIRAccessKeyManager.addAccessKey(accessKeyWrite);
+    }
+
+    @Test(expected = MIRAccessKeyCollisionException.class)
+    public void testKeyTypeUpdateCollison() {
+        final MIRAccessKey accessKeyRead = new MIRAccessKey(MCRObjectID.getInstance(MCR_OBJECT_ID), READ_KEY, MCRAccessManager.PERMISSION_READ);
+        MIRAccessKeyManager.addAccessKey(accessKeyRead);
+        final MIRAccessKey accessKeyNew = new MIRAccessKey(MCRObjectID.getInstance(MCR_OBJECT_ID), WRITE_KEY + READ_KEY, MCRAccessManager.PERMISSION_WRITE);
+        MIRAccessKeyManager.addAccessKey(accessKeyNew);
+
+        endTransaction();
+        startNewTransaction();
+
+        final MIRAccessKey accessKeyWrite = new MIRAccessKey(MCRObjectID.getInstance(MCR_OBJECT_ID), READ_KEY, MCRAccessManager.PERMISSION_WRITE);
+        MIRAccessKeyManager.updateAccessKey(MCRObjectID.getInstance(MCR_OBJECT_ID), WRITE_KEY + READ_KEY, accessKeyWrite);
+    }
+
+    @Test(expected = MIRAccessKeyCollisionException.class)
+    public void testKeyUpdateCollison() {
+        final MIRAccessKey accessKeyRead = new MIRAccessKey(MCRObjectID.getInstance(MCR_OBJECT_ID), READ_KEY, MCRAccessManager.PERMISSION_READ);
+        MIRAccessKeyManager.addAccessKey(accessKeyRead);
+        final MIRAccessKey accessKeyNew = new MIRAccessKey(MCRObjectID.getInstance(MCR_OBJECT_ID), WRITE_KEY + READ_KEY, MCRAccessManager.PERMISSION_READ);
+        MIRAccessKeyManager.addAccessKey(accessKeyNew);
+
+        endTransaction();
+        startNewTransaction();
+
+        MIRAccessKeyManager.updateAccessKey(MCRObjectID.getInstance(MCR_OBJECT_ID), WRITE_KEY + READ_KEY, accessKeyRead);
     }
 
     @Test
@@ -127,7 +154,7 @@ public class TestAccessKeys extends MCRJPATestCase {
     }
 
     @Test
-    public void testUpdateKey() throws MCRAccessException {
+    public void testUpdateValue() throws MCRAccessException {
         final MIRAccessKey accessKey = new MIRAccessKey(MCRObjectID.getInstance(MCR_OBJECT_ID), READ_KEY, MCRAccessManager.PERMISSION_READ);
         MIRAccessKeyManager.addAccessKey(accessKey);
 
@@ -139,6 +166,21 @@ public class TestAccessKeys extends MCRJPATestCase {
 
         final MIRAccessKey accessKeyUpdated = MIRAccessKeyManager.getAccessKeys(MCRObjectID.getInstance(MCR_OBJECT_ID)).get(0);
         assertEquals(accessKeyNew.getValue(), accessKeyUpdated.getValue());
+    }
+
+    @Test
+    public void testUpdateType() throws MCRAccessException {
+        final MIRAccessKey accessKey = new MIRAccessKey(MCRObjectID.getInstance(MCR_OBJECT_ID), READ_KEY, MCRAccessManager.PERMISSION_READ);
+        MIRAccessKeyManager.addAccessKey(accessKey);
+
+        endTransaction();
+        startNewTransaction();
+
+        final MIRAccessKey accessKeyNew = new MIRAccessKey(MCRObjectID.getInstance(MCR_OBJECT_ID), READ_KEY, MCRAccessManager.PERMISSION_WRITE);
+        MIRAccessKeyManager.updateAccessKey(MCRObjectID.getInstance(MCR_OBJECT_ID), READ_KEY, accessKeyNew);
+ 
+        final MIRAccessKey accessKeyUpdated = MIRAccessKeyManager.getAccessKeys(MCRObjectID.getInstance(MCR_OBJECT_ID)).get(0);
+        assertEquals(accessKeyNew.getType(), accessKeyUpdated.getType());
     }
 
     @Test
