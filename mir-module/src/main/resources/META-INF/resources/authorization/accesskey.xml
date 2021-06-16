@@ -41,77 +41,7 @@
             <td class="th-sm col-2 text-center"></td>
             <td class="th-sm col text-center"></td>
             <td class="th-sm col-auto">
-              <a class="edit-btn" href="#key-modal" data-toggle="modal" data-index="0">
-                <i class="fas fa-edit"></i>
-              </a>
-            </td>
-          </tr>
-          <tr class="d-flex">
-            <td class="th-sm col-auto"></td>
-            <td class="th-sm col-2 text-center"></td>
-            <td class="th-sm col text-center"></td>
-            <td class="th-sm col-auto">
-              <a class="edit-btn" href="#key-modal" data-toggle="modal" data-index="1">
-                <i class="fas fa-edit"></i>
-              </a>
-            </td>
-          </tr>
-          <tr class="d-flex">
-            <td class="th-sm col-auto"></td>
-            <td class="th-sm col-2 text-center"></td>
-            <td class="th-sm col text-center"></td>
-            <td class="th-sm col-auto">
-              <a class="edit-btn" href="#key-modal" data-toggle="modal" data-index="2">
-                <i class="fas fa-edit"></i>
-              </a>
-            </td>
-          </tr>
-          <tr class="d-flex">
-            <td class="th-sm col-auto"></td>
-            <td class="th-sm col-2 text-center"></td>
-            <td class="th-sm col text-center"></td>
-            <td class="th-sm col-auto">
-              <a class="edit-btn" href="#key-modal" data-toggle="modal" data-index="3">
-                <i class="fas fa-edit"></i>
-              </a>
-            </td>
-          </tr>
-          <tr class="d-flex">
-            <td class="th-sm col-auto"></td>
-            <td class="th-sm col-2 text-center"></td>
-            <td class="th-sm col text-center"></td>
-            <td class="th-sm col-auto">
-              <a class="edit-btn" href="#key-modal" data-toggle="modal" data-index="4">
-                <i class="fas fa-edit"></i>
-              </a>
-            </td>
-          </tr>
-          <tr class="d-flex">
-            <td class="th-sm col-auto"></td>
-            <td class="th-sm col-2 text-center"></td>
-            <td class="th-sm col text-center"></td>
-            <td class="th-sm col-auto">
-              <a class="edit-btn" href="#key-modal" data-toggle="modal" data-index="5">
-                <i class="fas fa-edit"></i>
-              </a>
-            </td>
-          </tr>
-          <tr class="d-flex">
-            <td class="th-sm col-auto"></td>
-            <td class="th-sm col-2 text-center"></td>
-            <td class="th-sm col text-center"></td>
-            <td class="th-sm col-auto">
-              <a class="edit-btn" href="#key-modal" data-toggle="modal" data-index="6">
-                <i class="fas fa-edit"></i>
-              </a>
-            </td>
-          </tr>
-          <tr class="d-flex">
-            <td class="th-sm col-auto"></td>
-            <td class="th-sm col-2 text-center"></td>
-            <td class="th-sm col text-center"></td>
-            <td class="th-sm col-auto">
-              <a class="edit-btn" href="#key-modal" data-toggle="modal" data-index="7">
+              <a class="edit-btn" href="#key-modal" data-toggle="modal">
                 <i class="fas fa-edit"></i>
               </a>
             </td>

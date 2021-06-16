@@ -90,10 +90,11 @@ class MIRAccessKeyEditor {
     _init() {
         this._client = new Client(this._objectId);
         this._tableModel = new TableModel([]);
-        const itemLimit = $("#key-table").find("tbody").find("tr").length;
+        const itemLimit = 8;
         this._paginatorModel = new PaginatorModel(0, itemLimit, 0);
         this._initTableHandler();
         this._initPaginationHandler();
+        this._initTable(itemLimit);
         this._client.getKeys(0, itemLimit, (error, result) => {
             if (!error) {
                 this._paginatorModel.itemCount = result["totalResults"];
@@ -115,7 +116,7 @@ class MIRAccessKeyEditor {
             this._renderTable(this._paginatorModel.itemOffset, data);
             this._renderPagination();
         };
-        const handleRowDeleted = (index) => { //TODO imporve logic
+        const handleRowDeleted = (index) => {
             const itemLimit = this._paginatorModel.itemLimit;
             const pageOffset = this._paginatorModel.pageOffset;
             if ((this._tableModel.data.length == 0 && pageOffset > 0)
@@ -461,6 +462,15 @@ class MIRAccessKeyEditor {
             } else {
                 this._renderRow(index);
             }
+        }
+    }
+    _initTable(itemLimit) {
+        const row = $("#key-table").find("tbody tr:first");
+        $("#key-table tbody > tr").remove();
+        for (let index = 0; index < itemLimit; index++) {
+            let newRow = row.clone();
+            $(newRow).find("td:last a").attr("data-index", index);
+            $("#key-table tbody").append(newRow);
         }
     }
 }
