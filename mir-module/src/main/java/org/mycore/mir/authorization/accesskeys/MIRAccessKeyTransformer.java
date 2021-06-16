@@ -51,6 +51,16 @@ public class MIRAccessKeyTransformer {
 
     public static final String ACCESS_KEY_TYPE = "accesskeys";
 
+    public static MIRAccessKey accessKeyFromJson(final String json) 
+        throws MIRAccessKeyTransformationException {
+        final ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            return objectMapper.readValue(json, MIRAccessKey.class);
+        } catch (JsonProcessingException e) {
+            throw new MIRAccessKeyTransformationException("Cannot transform JSON.");
+        }
+    }
+
     public static List<MIRAccessKey> accessKeysFromJson(final String json) 
         throws MIRAccessKeyTransformationException {
         final ObjectMapper objectMapper = new ObjectMapper();

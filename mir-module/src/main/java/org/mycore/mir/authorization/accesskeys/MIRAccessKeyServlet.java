@@ -27,16 +27,12 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.jdom2.Document;
 import org.jdom2.Element;
-import org.mycore.access.MCRAccessException;
-import org.mycore.access.MCRAccessManager;
 import org.mycore.common.MCRSessionMgr;
 import org.mycore.common.MCRSystemUserInformation;
 import org.mycore.common.MCRUserInformation;
 import org.mycore.datamodel.metadata.MCRObjectID;
 import org.mycore.frontend.servlets.MCRServlet;
 import org.mycore.frontend.servlets.MCRServletJob;
-import org.mycore.mir.authorization.accesskeys.backend.MIRAccessKey;
-import org.mycore.mir.authorization.accesskeys.backend.MIRAccessKeyPair;
 import org.mycore.mir.authorization.accesskeys.exception.MIRAccessKeyException;
 
 /**
@@ -68,7 +64,7 @@ public class MIRAccessKeyServlet extends MCRServlet {
 
         final MCRUserInformation userInfo = MCRSessionMgr.getCurrentSession().getUserInformation();
 
-        if (userInfo.equals(MCRSystemUserInformation.getGuestInstance())) {
+        if (userInfo.getUserID().equals(MCRSystemUserInformation.getGuestInstance().getUserID())) {
             res.sendError(HttpServletResponse.SC_FORBIDDEN, "Access can only be granted to personalized users");
             return;
         }
@@ -99,39 +95,6 @@ public class MIRAccessKeyServlet extends MCRServlet {
                 res.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getErrorCode());
                 return;
             }
-        } else if ("create".equals(action)) {
-            if (!MCRAccessManager.checkPermission(mcrObjId, MCRAccessManager.PERMISSION_WRITE)) {
-                throw MCRAccessException.missingPermission("Add access key to object.", mcrObjId.toString(),
-                    MCRAccessManager.PERMISSION_WRITE);
-            }
-
-            final MIRAccessKeyPair accKP = MIRAccessKeyPairTransformer.buildAccessKeyPair(xml);
-            final String readKey = accKP.getReadKey();
-            final String writeKey = accKP.getWriteKey();
-            
-            final MIRAccessKey accessKeyRead = new MIRAccessKey(mcrObjId, readKey, MCRAccessManager.PERMISSION_READ);
-            MIRAccessKeyManager.addAccessKey(accessKeyRead);
-            if (writeKey != null) {
-                final MIRAccessKey accessKeyWrite = 
-                    new MIRAccessKey(mcrObjId, writeKey, MCRAccessManager.PERMISSION_WRITE);
-                MIRAccessKeyManager.addAccessKey(accessKeyWrite);
-            }
-        } else if ("edit".equals(action)) {
-            if (!MCRAccessManager.checkPermission(mcrObjId, MCRAccessManager.PERMISSION_WRITE)) {
-                throw MCRAccessException.missingPermission("Update access key on object.", mcrObjId.toString(),
-                    MCRAccessManager.PERMISSION_WRITE);
-            }
-
-            final MIRAccessKeyPair accKP = MIRAccessKeyPairTransformer.buildAccessKeyPair(xml);
-
-            MIRAccessKeyManager.updateKeyPair(accKP);
-        } else if ("delete".equals(action)) {
-            if (!MCRAccessManager.checkPermission(mcrObjId, MCRAccessManager.PERMISSION_WRITE)) {
-                throw MCRAccessException.missingPermission("Delete access key on object.", mcrObjId.toString(),
-                    MCRAccessManager.PERMISSION_WRITE);
-            }
-
-            MIRAccessKeyManager.clearAccessKeys(mcrObjId);
         } else {
             res.sendError(HttpServletResponse.SC_BAD_REQUEST);
             return;

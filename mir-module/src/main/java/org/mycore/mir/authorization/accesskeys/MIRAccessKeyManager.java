@@ -103,7 +103,7 @@ public final class MIRAccessKeyManager {
      * @return valid or not
      */
     private static boolean isValidValue(String value) {
-        return (value.length() > 0);
+        return value.length() > 0 && value.matches("[a-zA-Z0-9]*");
     }
 
     /**

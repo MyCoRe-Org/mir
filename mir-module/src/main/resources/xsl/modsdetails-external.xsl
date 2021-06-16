@@ -626,29 +626,12 @@
               </xsl:if>
 
               <xsl:if test="(key('rights', @ID)/@accKeyEnabled) and (key('rights', @ID)/@write)">
-                <xsl:variable name="action">
-                  <xsl:choose>
-                    <xsl:when test="key('rights', @ID)/@hasAccKey">
-                      <xsl:text>edit</xsl:text>
-                    </xsl:when>
-                    <xsl:otherwise>
-                      <xsl:text>create</xsl:text>
-                    </xsl:otherwise>
-                  </xsl:choose>
-                </xsl:variable>
                 <li>
                   <a role="menuitem" tabindex="-1"
-                     href="{$WebApplicationBaseURL}authorization/accesskey.xed?action={$action}&amp;objId={@ID}&amp;url={encoder:encode(string($RequestURL))}"
+                     href="{$WebApplicationBaseURL}authorization/accesskey.xml?objId={@ID}&amp;url={encoder:encode(string($RequestURL))}"
                      class="dropdown-item"
                   >
-                    <xsl:choose>
-                      <xsl:when test="key('rights', @ID)/@hasAccKey">
-                        <xsl:value-of select="i18n:translate('mir.accesskey.edit')" />
-                      </xsl:when>
-                      <xsl:otherwise>
-                        <xsl:value-of select="i18n:translate('mir.accesskey.add')" />
-                      </xsl:otherwise>
-                    </xsl:choose>
+                    <xsl:value-of select="i18n:translate('mir.accesskey.manage')" />
                   </a>
                 </li>
               </xsl:if>
@@ -763,28 +746,11 @@
               </li>
             </xsl:if>
             <xsl:if test="key('rights', $deriv)/@accKeyEnabled and key('rights', $deriv)/@write">
-              <xsl:variable name="action">
-                <xsl:choose>
-                  <xsl:when test="key('rights', $deriv)/@hasAccKey">
-                    <xsl:text>edit</xsl:text>
-                  </xsl:when>
-                  <xsl:otherwise>
-                    <xsl:text>create</xsl:text>
-                  </xsl:otherwise>
-                </xsl:choose>
-              </xsl:variable>
               <li>
                 <a role="menuitem" tabindex="-1" class="dropdown-item"
-                  href="{$WebApplicationBaseURL}authorization/accesskey.xed?action={$action}&amp;objId={$deriv}&amp;url={encoder:encode(string($RequestURL))}"
+                  href="{$WebApplicationBaseURL}authorization/accesskey.xml?objId&amp;url={encoder:encode(string($RequestURL))}"
                 >
-                  <xsl:choose>
-                    <xsl:when test="key('rights', $deriv)/@hasAccKey">
-                      <xsl:value-of select="i18n:translate('mir.accesskey.edit')" />
-                    </xsl:when>
-                    <xsl:otherwise>
-                      <xsl:value-of select="i18n:translate('mir.accesskey.add')" />
-                    </xsl:otherwise>
-                  </xsl:choose>
+                  <xsl:value-of select="i18n:translate('mir.accesskey.manage')" />
                 </a>
               </li>
             </xsl:if>
