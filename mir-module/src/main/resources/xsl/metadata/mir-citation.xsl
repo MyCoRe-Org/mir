@@ -216,7 +216,7 @@
                   mode="ogl-logo" />
               </xsl:when>
               <xsl:otherwise>
-                <xsl:value-of select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:accessCondition[@type='use and reproduction']" />
+                <xsl:value-of select="document(concat('classification:metadata:0:children:mir_licenses:', $trimmed))/mycoreclass/categories/category[@ID=$trimmed]/label[@xml:lang=$CurrentLang]/@text" />
               </xsl:otherwise>
             </xsl:choose>
           </p>
