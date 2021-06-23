@@ -148,8 +148,7 @@
         </div>
       </div>
     </div>
-    <script type="text/javascript" src="mir/../../js/mir/accesskey-client.js" />
-    <script type="text/javascript" src="mir/../../js/mir/accesskey-utils.js" />
-    <script type="text/javascript" src="mir/../../js/mir/accesskey.js" />
+    <script type="text/javascript" src="mir/../../js/mir/accesskey-utils.min.js" />
+    <script type="text/javascript" src="mir/../../js/mir/accesskey.min.js" />
   </section>
 </MyCoReWebPage>

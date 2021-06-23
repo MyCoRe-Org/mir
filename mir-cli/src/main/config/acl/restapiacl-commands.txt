@@ -1,2 +1,1 @@
 update permission read for id restapi:/ with rulefile ${app.home}/config/acl/grant-all.xml described by ${acl-description.all}
-update permission read for id restapi:/accesskeys with rulefile ${app.home}/config/acl/grant-admin.xml described by ${acl-description.admins}
