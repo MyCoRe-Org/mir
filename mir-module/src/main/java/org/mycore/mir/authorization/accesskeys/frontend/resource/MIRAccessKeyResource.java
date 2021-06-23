@@ -18,7 +18,7 @@
  * 59 Temple Place - Suite 330, Boston, MA  02111-1307 USA
  */
 
-package org.mycore.mir.authorization.accesskeys.frontend;
+package org.mycore.mir.authorization.accesskeys.frontend.resource;
 
 import static org.mycore.restapi.v2.MCRRestAuthorizationFilter.PARAM_MCRID;
 
@@ -42,8 +42,8 @@ import org.mycore.datamodel.metadata.MCRObjectID;
 import org.mycore.mir.authorization.accesskeys.MIRAccessKeyManager;
 import org.mycore.mir.authorization.accesskeys.MIRAccessKeyTransformer;
 import org.mycore.mir.authorization.accesskeys.backend.MIRAccessKey;
-import org.mycore.mir.authorization.accesskeys.frontend.annotation.MIRRequireAccessKeyAuthorization;
-import org.mycore.mir.authorization.accesskeys.frontend.model.MIRAccessKeyInformation;
+import org.mycore.mir.authorization.accesskeys.frontend.resource.annotation.MIRRequireAccessKeyAuthorization;
+import org.mycore.mir.authorization.accesskeys.frontend.resource.model.MIRAccessKeyInformation;
 import org.mycore.restapi.annotations.MCRRequireTransaction;
 
 @Path("/accesskeys")

@@ -16,7 +16,7 @@
  * along with MyCoRe.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.mycore.mir.authorization.accesskeys.frontend;
+package org.mycore.mir.authorization.accesskeys.frontend.resource;
 
 import java.util.Optional;
 

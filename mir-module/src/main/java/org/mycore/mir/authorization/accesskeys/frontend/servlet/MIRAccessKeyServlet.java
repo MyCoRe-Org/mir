@@ -20,25 +20,24 @@
  * If not, write to the Free Software Foundation Inc.,
  * 59 Temple Place - Suite 330, Boston, MA  02111-1307 USA
  */
-package org.mycore.mir.authorization.accesskeys;
+
+package org.mycore.mir.authorization.accesskeys.frontend.servlet;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.jdom2.Document;
 import org.jdom2.Element;
+
 import org.mycore.common.MCRSessionMgr;
 import org.mycore.common.MCRSystemUserInformation;
 import org.mycore.common.MCRUserInformation;
 import org.mycore.datamodel.metadata.MCRObjectID;
 import org.mycore.frontend.servlets.MCRServlet;
 import org.mycore.frontend.servlets.MCRServletJob;
+import org.mycore.mir.authorization.accesskeys.MIRAccessKeyManager;
 import org.mycore.mir.authorization.accesskeys.exception.MIRAccessKeyException;
 
-/**
- * @author Ren\u00E9 Adler (eagle)
- * @since 0.3
- */
 public class MIRAccessKeyServlet extends MCRServlet {
 
     private static final long serialVersionUID = 1L;

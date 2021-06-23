@@ -43,7 +43,7 @@
 
   <servlet>
     <servlet-name>MIRAccessKeyServlet</servlet-name>
-    <servlet-class>org.mycore.mir.authorization.accesskeys.MIRAccessKeyServlet</servlet-class>
+    <servlet-class>org.mycore.mir.authorization.accesskeys.frontend.servlet.MIRAccessKeyServlet</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>MIRAccessKeyServlet</servlet-name>
