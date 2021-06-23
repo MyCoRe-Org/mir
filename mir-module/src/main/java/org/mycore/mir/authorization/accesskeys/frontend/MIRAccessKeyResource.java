@@ -20,7 +20,7 @@
 
 package org.mycore.mir.authorization.accesskeys.frontend;
 
-import static org.mycore.access.MCRAccessManager.PERMISSION_WRITE;
+import static org.mycore.restapi.v2.MCRRestAuthorizationFilter.PARAM_MCRID;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,36 +38,26 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import org.mycore.access.MCRAccessManager;
 import org.mycore.datamodel.metadata.MCRObjectID;
-
 import org.mycore.mir.authorization.accesskeys.MIRAccessKeyManager;
 import org.mycore.mir.authorization.accesskeys.MIRAccessKeyTransformer;
 import org.mycore.mir.authorization.accesskeys.backend.MIRAccessKey;
+import org.mycore.mir.authorization.accesskeys.frontend.annotation.MIRRequireAccessKeyAuthorization;
 import org.mycore.mir.authorization.accesskeys.frontend.model.MIRAccessKeyInformation;
+import org.mycore.restapi.annotations.MCRRequireTransaction;
 
 @Path("/accesskeys")
 public class MIRAccessKeyResource {
 
-    private static final Logger LOGGER = LogManager.getLogger();
-    
-    private static final String MCRID = "mcrid";
-
     private static final String VALUE = "value";
 
     @GET
-    @Path("/{" + MCRID + "}")
+    @Path("/{" + PARAM_MCRID + "}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getAccessKeys(@PathParam(MCRID) final MCRObjectID objectId,
+    @MIRRequireAccessKeyAuthorization
+    public Response getAccessKeys(@PathParam(PARAM_MCRID) final MCRObjectID objectId,
         @DefaultValue("0") @QueryParam("offset") long offset,
         @DefaultValue("128") @QueryParam("limit") long limit) {
-        if (!MCRAccessManager.checkPermission(objectId, PERMISSION_WRITE)) {
-            throw MCRErrorResponse.fromStatus(Response.Status.FORBIDDEN.getStatusCode())
-            .toException();
-        }
         final long fromIndex = offset;
         List<MIRAccessKey> accessKeys = MIRAccessKeyManager.getAccessKeys(objectId);
         final int totalAccessKeyCount = accessKeys.size();
@@ -88,14 +78,12 @@ public class MIRAccessKeyResource {
     }
 
     @POST
-    @Path("/{" + MCRID + "}")
+    @Path("/{" + PARAM_MCRID + "}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response addAccessKey(@PathParam(MCRID) final MCRObjectID objectId, final String accessKeyJson) {
-        if (!MCRAccessManager.checkPermission(objectId, PERMISSION_WRITE)) {
-            throw MCRErrorResponse.fromStatus(Response.Status.FORBIDDEN.getStatusCode())
-            .toException();
-        }
+    @MIRRequireAccessKeyAuthorization
+    @MCRRequireTransaction
+    public Response addAccessKey(@PathParam(PARAM_MCRID) final MCRObjectID objectId, final String accessKeyJson) {
         final MIRAccessKey accessKey = MIRAccessKeyTransformer.accessKeyFromJson(accessKeyJson);
         accessKey.setObjectId(objectId);
         MIRAccessKeyManager.addAccessKey(accessKey);
@@ -103,28 +91,24 @@ public class MIRAccessKeyResource {
     }
 
     @DELETE
-    @Path("/{" + MCRID + "}/{" + VALUE + "}")
+    @Path("/{" + PARAM_MCRID + "}/{" + VALUE + "}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response deleteAccessKey(@PathParam(MCRID) final MCRObjectID objectId, 
+    @MIRRequireAccessKeyAuthorization
+    @MCRRequireTransaction
+    public Response deleteAccessKey(@PathParam(PARAM_MCRID) final MCRObjectID objectId, 
         @PathParam(VALUE) final String value) {
-        if (!MCRAccessManager.checkPermission(objectId, PERMISSION_WRITE)) {
-            throw MCRErrorResponse.fromStatus(Response.Status.FORBIDDEN.getStatusCode())
-            .toException();
-        }
         MIRAccessKeyManager.deleteAccessKey(objectId, value);
         return Response.noContent().build();
     }
     
     @PUT
-    @Path("/{" + MCRID + "}/{" + VALUE + "}")
+    @Path("/{" + PARAM_MCRID + "}/{" + VALUE + "}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateAccessKey(@PathParam(MCRID) final MCRObjectID objectId, 
+    @MIRRequireAccessKeyAuthorization
+    @MCRRequireTransaction
+    public Response updateAccessKey(@PathParam(PARAM_MCRID) final MCRObjectID objectId, 
         @PathParam(VALUE) final String value, final String accessKeyJson) {
-        if (!MCRAccessManager.checkPermission(objectId, PERMISSION_WRITE)) {
-            throw MCRErrorResponse.fromStatus(Response.Status.FORBIDDEN.getStatusCode())
-            .toException();
-        }
         final MIRAccessKey accessKey = MIRAccessKeyTransformer.accessKeyFromJson(accessKeyJson);
         MIRAccessKeyManager.updateAccessKey(objectId, value, accessKey);
         return Response.noContent().build();

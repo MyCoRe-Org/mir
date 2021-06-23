@@ -18,70 +18,37 @@
 
 package org.mycore.mir.authorization.accesskeys.frontend;
 
-import java.util.List;
 import java.util.Optional;
 
-import javax.annotation.Priority;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Request;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Variant;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import org.mycore.mir.authorization.accesskeys.exception.MIRAccessKeyException;
 import org.mycore.mir.authorization.accesskeys.exception.MIRAccessKeyNotFoundException;
+import org.mycore.restapi.v2.MCRErrorResponse;
 
 @Provider
-@Priority(1)
-public class MIRAccessKeyExceptionMapper implements ExceptionMapper<Exception> {
-
-    private final static List<Variant> SUPPORTED_VARIANTS = Variant
-        .mediaTypes(MediaType.APPLICATION_JSON_TYPE, MediaType.APPLICATION_XML_TYPE).build();
-
-    private final static Logger LOGGER = LogManager.getLogger();
+public class MIRAccessKeyExceptionMapper implements ExceptionMapper<MIRAccessKeyException> {
 
     @Context
     Request request;
 
     @Override
-    public Response toResponse(Exception exception) {
-        return Optional.ofNullable(request.selectVariant(SUPPORTED_VARIANTS))
-            .map(v -> fromException(exception))
-            .orElseGet(() -> (exception instanceof WebApplicationException)
-                ? ((WebApplicationException) exception).getResponse()
-                : null);
+    public Response toResponse(MIRAccessKeyException exception) {
+            return fromException(exception);
     }
 
-    public static Response fromWebApplicationException(WebApplicationException wae) {
-        if (wae.getResponse().hasEntity()) {
-            //usually WAEs with entity do not arrive here
-            LOGGER.warn("WebApplicationException already has an entity attached, forwarding response");
-            return wae.getResponse();
-        }
-        final Response response = getResponse(wae, wae.getResponse().getStatus());
-        response.getHeaders().putAll(wae.getResponse().getHeaders());
-        return response;
-    }
-
-    public static Response fromException(Exception e) {
-        if (e instanceof WebApplicationException) {
-            return fromWebApplicationException((WebApplicationException) e);
-        }
-        if (e instanceof MIRAccessKeyException) {
-            if (e instanceof MIRAccessKeyNotFoundException) {
-                return getResponse(e, Response.Status.NOT_FOUND.getStatusCode(),
-                    ((MIRAccessKeyException) e).getErrorCode());
-            }
-            return getResponse(e, Response.Status.BAD_REQUEST.getStatusCode(),
+    public static Response fromException(MIRAccessKeyException e) {
+        if (e instanceof MIRAccessKeyNotFoundException) {
+            return getResponse(e, Response.Status.NOT_FOUND.getStatusCode(),
                 ((MIRAccessKeyException) e).getErrorCode());
         }
-        return getResponse(e, Response.Status.INTERNAL_SERVER_ERROR.getStatusCode());
+        return getResponse(e, Response.Status.BAD_REQUEST.getStatusCode(),
+            ((MIRAccessKeyException) e).getErrorCode());
     }
 
     private static Response getResponse(Exception e, int statusCode, String errorCode) {
@@ -94,13 +61,9 @@ public class MIRAccessKeyExceptionMapper implements ExceptionMapper<Exception> {
                 .map(Class::getName)
                 .orElse(null))
             .withErrorCode(errorCode);
-        LogManager.getLogger().error(response::getLogMessage, e);
+        //LogManager.getLogger().error(response::getLogMessage, e);
         return Response.status(response.getStatus())
             .entity(response)
             .build();
-    }
-
-    private static Response getResponse(Exception e, int statusCode) {
-        return getResponse(e, statusCode, null);
     }
 }

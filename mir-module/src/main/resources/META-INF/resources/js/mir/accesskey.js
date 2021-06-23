@@ -83,12 +83,11 @@ class PaginatorModel extends EventEmitter {
     }
 }
 class MIRAccessKeyEditor {
-    constructor(objectId) {
-        this._objectId = objectId;
+    constructor(client) {
+        this._client = client;
         this._init();
     }
     _init() {
-        this._client = new Client(this._objectId);
         this._tableModel = new TableModel([]);
         const itemLimit = 8;
         this._paginatorModel = new PaginatorModel(0, itemLimit, 0);
@@ -489,7 +488,28 @@ $(document).ready(function () {
         }
     });
     if (objectId !== undefined) {
-        new MIRAccessKeyEditor(objectId);
+        $.ajax({
+            url: webApplicationBaseURL + "rsc/jwt",
+            type: "GET",
+            data: {
+                ua: "acckey_" + objectId
+            },
+            dataType: "json",
+            success: function(data) {
+                console.log(data);
+                if (data.login_success) {
+                    const client = new Client(objectId, data);
+                    new MIRAccessKeyEditor(client);
+                } else {
+                    $("#spinner").hide();
+                    $("#alert-div").show();
+                }
+            },
+            error: function(data) {
+                $("#spinner").hide();
+                $("#alert-div").show();
+            }
+        });
     } else {
         $("#spinner").hide();
         $("#alert-div").show();
