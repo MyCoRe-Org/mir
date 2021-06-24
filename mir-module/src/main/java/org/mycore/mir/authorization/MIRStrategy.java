@@ -39,6 +39,7 @@ import org.mycore.datamodel.classifications2.MCRCategLinkServiceFactory;
 import org.mycore.datamodel.classifications2.MCRCategoryID;
 import org.mycore.datamodel.metadata.MCRMetadataManager;
 import org.mycore.datamodel.metadata.MCRObjectID;
+import org.mycore.mir.authorization.accesskeys.strategy.MIRAccessKeyStrategy;
 import org.mycore.mods.MCRMODSEmbargoUtils;
 import org.mycore.pi.MCRPIManager;
 import org.mycore.pi.MCRPIRegistrationInfo;
@@ -77,7 +78,7 @@ public class MIRStrategy implements MCRAccessCheckStrategy {
 
     private static final MCRCreatorRuleStrategy CREATOR_STRATEGY = new MCRCreatorRuleStrategy();
 
-    private static final MIRKeyStrategyHelper KEY_STRATEGY_HELPER = new MIRKeyStrategyHelper();
+    private static final MIRAccessKeyStrategy ACCESS_KEY_STRATEGY = new MIRAccessKeyStrategy();
 
     private static final long CACHE_TIME = 1000 * 60 * 60;
 
@@ -106,12 +107,13 @@ public class MIRStrategy implements MCRAccessCheckStrategy {
         }
 
         // 2. check read or write key of current user
-        if (KEY_STRATEGY_HELPER.checkObjectPermission(objectId, permission)) {
+        String permissionId = objectId.toString();
+        if (ACCESS_KEY_STRATEGY.checkPermission(permissionId, permission)) {
+            LOGGER.debug("Found match in access key strategy for {} on {}.", permission, objectId);
             return true;
         }
 
         // 3. check if access mapping for object id exists
-        String permissionId = objectId.toString();
         if (ID_STRATEGY.hasRuleMapping(permissionId, permission)) {
             LOGGER.debug("Found match in ID strategy for {} on {}.", permission, objectId);
             return ID_STRATEGY.checkPermission(permissionId, permission);
@@ -170,7 +172,7 @@ public class MIRStrategy implements MCRAccessCheckStrategy {
         }
 
         // 2. check read or write key of current user
-        if (KEY_STRATEGY_HELPER.checkDerivatePermission(derivateId, objectId, permission)) {
+        if (ACCESS_KEY_STRATEGY.checkPermission(permissionId, permission)) {
             return true;
         }
 
@@ -186,7 +188,7 @@ public class MIRStrategy implements MCRAccessCheckStrategy {
             && embargo != null
             && (!MCRMODSEmbargoUtils.isCurrentUserCreator(objectId) &&
                 !MCRAccessManager.checkPermission(MCRMODSEmbargoUtils.POOLPRIVILEGE_EMBARGO) &&
-                !KEY_STRATEGY_HELPER.checkObjectPermission(objectId, "read"))) {
+                !ACCESS_KEY_STRATEGY.checkPermission(permissionId, "read"))) {
             LOGGER.debug("Derivate {} has embargo {} and current user is not creator and doesn't has {} POOLPRIVILEGE",
                 derivateId, embargo, MCRMODSEmbargoUtils.POOLPRIVILEGE_EMBARGO);
             return false;

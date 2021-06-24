@@ -1,21 +1,35 @@
-package org.mycore.mir.authorization;
+package org.mycore.mir.authorization.accesskeys.strategy;
 
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
 import org.mycore.access.MCRAccessManager;
+import org.mycore.access.strategies.MCRAccessCheckStrategy;
+import org.mycore.datamodel.metadata.MCRMetadataManager;
 import org.mycore.datamodel.metadata.MCRObjectID;
 import org.mycore.mir.authorization.accesskeys.MIRAccessKeyManager;
 import org.mycore.mir.authorization.accesskeys.MIRAccessKeyUserUtils;
 import org.mycore.mir.authorization.accesskeys.backend.MIRAccessKey;
 
-public class MIRKeyStrategyHelper {
+public class MIRAccessKeyStrategy implements MCRAccessCheckStrategy {
 
     private static final Logger LOGGER = LogManager.getLogger();
+    
+    @Override
+    public boolean checkPermission(String id, String permission) {
+        final MCRObjectID objectId = MCRObjectID.getInstance(id);
+        if (id.contains("_derivate_")) {
+            MCRObjectID objId = MCRMetadataManager.getObjectId(objectId, 10, TimeUnit.MINUTES);
+            return checkDerivatePermission(objectId, objId, permission);
+        }
+        return checkObjectPermission(objectId, permission);
+    }
 
-    protected boolean checkObjectPermission(MCRObjectID objectId, String permission) {
+    private boolean checkObjectPermission(MCRObjectID objectId, String permission) {
         LOGGER.debug("check object {} permission {}.", objectId, permission);
         boolean isWritePermission = MCRAccessManager.PERMISSION_WRITE.equals(permission);
         boolean isReadPermission = MCRAccessManager.PERMISSION_READ.equals(permission);
@@ -41,7 +55,7 @@ public class MIRKeyStrategyHelper {
         return false;
     }
 
-    protected boolean checkDerivatePermission(MCRObjectID derivateId, MCRObjectID objectId, String permission) {
+    private boolean checkDerivatePermission(MCRObjectID derivateId, MCRObjectID objectId, String permission) {
         LOGGER.debug("check derivate {}, object {} permission {}.", derivateId, objectId, permission);
         boolean isWritePermission = MCRAccessManager.PERMISSION_WRITE.equals(permission);
         boolean isReadPermission = MCRAccessManager.PERMISSION_READ.equals(permission);
