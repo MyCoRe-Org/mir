@@ -108,7 +108,7 @@ public final class MIRAccessKeyManager {
      * @return valid or not
      */
     private static boolean isValidValue(String value) {
-        return value.length() > 0;
+        return (value.length() > 0);
     }
 
     /**
@@ -136,20 +136,6 @@ public final class MIRAccessKeyManager {
             final MIRAccessKey accessKeyWrite = 
                 new MIRAccessKey(objectId, writeKeyValue, MCRAccessManager.PERMISSION_WRITE);
             addAccessKey(accessKeyWrite);
-        }
-    }
-
-    /**
-     * cleans Permission cache.
-     *
-     * @param objectId the id of the object
-     * @param type the permission type
-     */
-    private static void cleanPermissionCache(final MCRObjectID objectId, final String type) {
-        if (type.equals(MCRAccessManager.PERMISSION_READ)) {
-            MCRAccessManager.invalidPermissionCache(objectId.toString(), MCRAccessManager.PERMISSION_READ);
-        } else {
-            MCRAccessManager.invalidPermissionCache(objectId.toString(), MCRAccessManager.PERMISSION_WRITE);
         }
     }
 
@@ -295,7 +281,7 @@ public final class MIRAccessKeyManager {
     private static void removeAccessKey(final MIRAccessKey accessKey) {
         final EntityManager em = MCREntityManagerProvider.getCurrentEntityManager();
         em.remove(accessKey);
-        cleanPermissionCache(accessKey.getObjectId(), accessKey.getType());
+        MCRAccessManager.invalidPermissionCache(accessKey.getObjectId().toString(), accessKey.getType());
     }
 
     /**
@@ -323,12 +309,12 @@ public final class MIRAccessKeyManager {
         if (accessKey != null) {
             if (accessKey.getValue().equals(value) && accessKey.getType().equals(type)) {
                 LOGGER.info("Nothing to update.");
-                return;
             } else {
                 if (accessKey.getValue().equals(value)) {
                     if (isValidType(type)) {
+                        MCRAccessManager.invalidPermissionCache(objectId.toString(), accessKey.getType());
                         accessKey.setType(type);
-                        cleanPermissionCache(objectId, type);
+                        MCRAccessManager.invalidPermissionCache(objectId.toString(), accessKey.getType());
                     } else {
                         LOGGER.warn("Unkown Type.");
                         throw new MIRAccessKeyInvalidTypeException("Unknown permission type.");
@@ -337,8 +323,9 @@ public final class MIRAccessKeyManager {
                     if (getAccessKeyByValue(objectId, value) == null) {
                         if (!accessKey.getType().equals(type)) {
                             if (isValidType(type)) {
+                                MCRAccessManager.invalidPermissionCache(objectId.toString(), accessKey.getType());
                                 accessKey.setType(type);
-                                cleanPermissionCache(objectId, type);
+                                MCRAccessManager.invalidPermissionCache(objectId.toString(), accessKey.getType());
                             } else {
                                 LOGGER.warn("Unkown Type.");
                                 throw new MIRAccessKeyInvalidTypeException("Unknown permission type.");
@@ -346,7 +333,7 @@ public final class MIRAccessKeyManager {
                         } else {
                             if (isValidValue(value)) {
                                 accessKey.setValue(value);
-                                cleanPermissionCache(objectId, type);
+                                MCRAccessManager.invalidPermissionCache(objectId.toString(), accessKey.getType());
                             } else {
                                 LOGGER.warn("Incorrect Value.");
                                 throw new MIRAccessKeyInvalidValueException("Incorrect Value.");
@@ -453,7 +440,7 @@ public final class MIRAccessKeyManager {
         user.setUserAttribute(ACCESS_KEY_PREFIX + objectId, value);
         MCRUserManager.updateUser(user);
 
-        cleanPermissionCache(objectId, accessKey.getType());
+        MCRAccessManager.invalidPermissionCache(objectId.toString(), accessKey.getType());
         MCRSessionMgr.getCurrentSession().setUserInformation(user.clone());
     }
 
@@ -475,5 +462,7 @@ public final class MIRAccessKeyManager {
     public static void deleteAccessKey(final MCRUser user, final MCRObjectID mcrObjectId) {
         user.getAttributes().removeIf(ua -> ua.getName().equals(ACCESS_KEY_PREFIX + mcrObjectId.toString()));
         MCRUserManager.updateUser(user);
+        MCRAccessManager.invalidPermissionCache(mcrObjectId.toString(), MCRAccessManager.PERMISSION_READ);
+        MCRAccessManager.invalidPermissionCache(mcrObjectId.toString(), MCRAccessManager.PERMISSION_WRITE);
     }
 }
