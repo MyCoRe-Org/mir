@@ -37,6 +37,7 @@ import org.mycore.datamodel.metadata.MCRObjectID;
 import org.mycore.frontend.cli.MCRCommandLineInterface;
 import org.mycore.frontend.cli.MCRCommandManager;
 import org.mycore.mir.authorization.accesskeys.MIRAccessKeyManager;
+import org.mycore.mir.authorization.accesskeys.MIRAccessKeyUserUtils;
 import org.mycore.mir.authorization.accesskeys.backend.MIRAccessKey;
 import org.mycore.user2.MCRUser;
 import org.mycore.user2.MCRUserManager;
@@ -178,7 +179,7 @@ public class MIRStrategyTest extends MCRJPATestCase {
             .assertFalse(strategy.checkPermission(mir_derivate_00004711.toString(), MCRAccessManager.PERMISSION_READ));
 
         //Give user read access-token
-        MIRAccessKeyManager.addAccessKey(mir_mods_00004711, accessKeyRead.getValue());
+        MIRAccessKeyUserUtils.addAccessKey(mir_mods_00004711, accessKeyRead.getValue());
         junitUser = MCRUserManager.getUser(junitUser.getUserName());
         MCRSessionMgr.getCurrentSession().setUserInformation(junitUser);
 
@@ -191,7 +192,7 @@ public class MIRStrategyTest extends MCRJPATestCase {
         assertTrue(strategy.checkPermission(mir_mods_00004711.toString(), MCRAccessManager.PERMISSION_PREVIEW));
 
         //Give user write access-token
-        MIRAccessKeyManager.addAccessKey(mir_mods_00004711, accessKeyWrite.getValue());
+        MIRAccessKeyUserUtils.addAccessKey(mir_mods_00004711, accessKeyWrite.getValue());
         junitUser = MCRUserManager.getUser(junitUser.getUserName());
         MCRSessionMgr.getCurrentSession().setUserInformation(junitUser);
 

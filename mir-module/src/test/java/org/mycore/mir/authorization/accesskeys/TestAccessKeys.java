@@ -50,6 +50,7 @@ import org.mycore.common.MCRJPATestCase;
 import org.mycore.common.MCRSessionMgr;
 import org.mycore.common.config.MCRConfiguration2;
 import org.mycore.datamodel.metadata.MCRObjectID;
+import org.mycore.mir.authorization.accesskeys.MIRAccessKeyUserUtils;
 import org.mycore.mir.authorization.accesskeys.backend.MIRAccessKey;
 import org.mycore.mir.authorization.accesskeys.exception.MIRAccessKeyCollisionException;
 import org.mycore.user2.MCRTransientUser;
@@ -280,7 +281,7 @@ public class TestAccessKeys extends MCRJPATestCase {
 
         MCRTransientUser tu = new MCRTransientUser(user);
         MCRSessionMgr.getCurrentSession().setUserInformation(tu);
-        MIRAccessKeyManager.addAccessKey(mcrObjectId, WRITE_KEY);
+        MIRAccessKeyUserUtils.addAccessKey(mcrObjectId, WRITE_KEY);
 
         assertTrue("user should have write permission",
             MCRAccessManager.checkPermission(mcrObjectId, MCRAccessManager.PERMISSION_WRITE));

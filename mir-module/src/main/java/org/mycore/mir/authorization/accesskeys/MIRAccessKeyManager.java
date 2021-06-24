@@ -20,6 +20,7 @@
  * If not, write to the Free Software Foundation Inc.,
  * 59 Temple Place - Suite 330, Boston, MA  02111-1307 USA
  */
+
 package org.mycore.mir.authorization.accesskeys;
 
 import java.util.List;
@@ -32,11 +33,7 @@ import org.apache.logging.log4j.Logger;
 
 import org.mycore.access.MCRAccessManager;
 import org.mycore.backend.jpa.MCREntityManagerProvider;
-import org.mycore.common.MCRSessionMgr;
-import org.mycore.common.MCRUsageException;
 import org.mycore.datamodel.metadata.MCRObjectID;
-import org.mycore.user2.MCRUser;
-import org.mycore.user2.MCRUserManager;
 import org.mycore.mir.authorization.accesskeys.backend.MIRAccessKey;
 import org.mycore.mir.authorization.accesskeys.backend.MIRAccessKeyPair;
 import org.mycore.mir.authorization.accesskeys.exception.MIRAccessKeyCollisionException;
@@ -48,8 +45,6 @@ import org.mycore.mir.authorization.accesskeys.exception.MIRAccessKeyNotFoundExc
 public final class MIRAccessKeyManager {
 
     private static final Logger LOGGER = LogManager.getLogger();
-
-    public static final String ACCESS_KEY_PREFIX = "acckey_";
 
     /**
      * Returns all access keys for given {@link MCRObjectID}.
@@ -352,19 +347,6 @@ public final class MIRAccessKeyManager {
     }
 
     /**
-     * Add the access key to the current {@link MCRUser} for given {@link MCRObjectID}.
-     *
-     * @param mcrObjectId the {@link MCRObjectID}
-     * @param accessKey the access key
-     * @throws MCRUsageException
-     *             if an error was occured
-     */
-    public static void addAccessKey(final MCRObjectID mcrObjectId, final String accessKey) throws MCRUsageException {
-        final MCRUser user = MCRUserManager.getCurrentUser();
-        addAccessKeyAttribute(user, mcrObjectId, accessKey);
-    }
-
-    /**
      * Return the access key for given {@link MCRObjectID} and value.
      *
      * @param objectId the {@link MCRObjectID}
@@ -418,51 +400,5 @@ public final class MIRAccessKeyManager {
         em.createNamedQuery("MIRAccessKeyPair.removeById")
             .setParameter("objId", objectId.toString())
             .executeUpdate();
-    }
-
-    /**
-     * Add the access key to the current {@link MCRUser} for given {@link MCRObjectID}.
-     *
-     * @param user the {@link MCRUser} the key should assigned
-     * @param objectId the {@link MCRObjectID}
-     * @param value the value of the access key
-     * @throws MIRAccessKeyException
-     *             if an error was occured
-     */
-    public static void addAccessKeyAttribute(final MCRUser user, final MCRObjectID objectId, final String value) 
-        throws MIRAccessKeyException {
-
-        final MIRAccessKey accessKey = getAccessKeyByValue(objectId, value);
-        if (accessKey == null) {
-            throw new MIRAccessKeyNotFoundException("Key does not exists.");
-        }
-
-        user.setUserAttribute(ACCESS_KEY_PREFIX + objectId, value);
-        MCRUserManager.updateUser(user);
-
-        MCRAccessManager.invalidPermissionCache(objectId.toString(), accessKey.getType());
-        MCRSessionMgr.getCurrentSession().setUserInformation(user.clone());
-    }
-
-    /**
-     * Deletes the access key from current {@link MCRUser} for given {@link MCRObjectID}.
-     *
-     * @param mcrObjectId the {@link MCRObjectID}
-     */
-    public static void deleteAccessKey(final MCRObjectID mcrObjectId) {
-        deleteAccessKey(MCRUserManager.getCurrentUser(), mcrObjectId);
-    }
-
-    /**
-     * Deletes the access key from given {@link MCRUser} for {@link MCRObjectID}.
-     *
-     * @param user the {@link MCRUser}
-     * @param mcrObjectId the {@link MCRObjectID}
-     */
-    public static void deleteAccessKey(final MCRUser user, final MCRObjectID mcrObjectId) {
-        user.getAttributes().removeIf(ua -> ua.getName().equals(ACCESS_KEY_PREFIX + mcrObjectId.toString()));
-        MCRUserManager.updateUser(user);
-        MCRAccessManager.invalidPermissionCache(mcrObjectId.toString(), MCRAccessManager.PERMISSION_READ);
-        MCRAccessManager.invalidPermissionCache(mcrObjectId.toString(), MCRAccessManager.PERMISSION_WRITE);
     }
 }

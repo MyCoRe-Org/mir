@@ -6,9 +6,9 @@ import java.util.stream.Stream;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.mycore.access.MCRAccessManager;
-import org.mycore.common.MCRSessionMgr;
 import org.mycore.datamodel.metadata.MCRObjectID;
 import org.mycore.mir.authorization.accesskeys.MIRAccessKeyManager;
+import org.mycore.mir.authorization.accesskeys.MIRAccessKeyUserUtils;
 import org.mycore.mir.authorization.accesskeys.backend.MIRAccessKey;
 
 public class MIRKeyStrategyHelper {
@@ -23,7 +23,7 @@ public class MIRKeyStrategyHelper {
     }
 
     private static boolean userHasValidAccessKey(MCRObjectID objectId, boolean isReadPermission) {
-        String userKey = getUserKey(objectId);
+        final String userKey = MIRAccessKeyUserUtils.getAccessKey(objectId);
         if (userKey != null) {
             MIRAccessKey accessKey = MIRAccessKeyManager.getAccessKeyByValue(objectId, userKey);
             if (accessKey != null) {
@@ -34,7 +34,7 @@ public class MIRKeyStrategyHelper {
                 }
                 if (isReadPermission) {
                     LOGGER.warn("Neither read nor write key matches. Remove access key from user.");
-                    MIRAccessKeyManager.deleteAccessKey(objectId);
+                    MIRAccessKeyUserUtils.deleteAccessKey(objectId);
                 }
             }
         }
@@ -55,10 +55,4 @@ public class MIRKeyStrategyHelper {
         }
         return false;
     }
-
-    private static String getUserKey(MCRObjectID objectId) {
-        return MCRSessionMgr.getCurrentSession().getUserInformation()
-            .getUserAttribute(MIRAccessKeyManager.ACCESS_KEY_PREFIX + objectId.toString());
-    }
-
 }
