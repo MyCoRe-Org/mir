@@ -35,7 +35,7 @@ import org.mycore.common.MCRUserInformation;
 import org.mycore.datamodel.metadata.MCRObjectID;
 import org.mycore.frontend.servlets.MCRServlet;
 import org.mycore.frontend.servlets.MCRServletJob;
-import org.mycore.mir.authorization.accesskeys.MIRAccessKeyManager;
+import org.mycore.mir.authorization.accesskeys.MIRAccessKeyUserUtils;
 import org.mycore.mir.authorization.accesskeys.exception.MIRAccessKeyException;
 
 public class MIRAccessKeyServlet extends MCRServlet {
