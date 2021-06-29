@@ -22,7 +22,7 @@ public class MIRAccessKeyStrategy implements MCRAccessCheckStrategy {
     @Override
     public boolean checkPermission(String id, String permission) {
         final MCRObjectID objectId = MCRObjectID.getInstance(id);
-        if (id.contains("_derivate_")) {
+        if (objectId.getTypeId().equals("derivate")) {
             MCRObjectID objId = MCRMetadataManager.getObjectId(objectId, 10, TimeUnit.MINUTES);
             return checkDerivatePermission(objectId, objId, permission);
         }
@@ -41,15 +41,13 @@ public class MIRAccessKeyStrategy implements MCRAccessCheckStrategy {
         if (userKey != null) {
             MIRAccessKey accessKey = MIRAccessKeyManager.getAccessKeyByValue(objectId, userKey);
             if (accessKey != null) {
-                 if (isReadPermission && accessKey.getType().equals(MCRAccessManager.PERMISSION_READ) || 
+                if (isReadPermission && accessKey.getType().equals(MCRAccessManager.PERMISSION_READ) || 
                         accessKey.getType().equals(MCRAccessManager.PERMISSION_WRITE)) {
                     LOGGER.debug("Access granted. User has a key to access the resource {}.", objectId);
                     return true;
                 }
-                if (isReadPermission) {
-                    LOGGER.warn("Neither read nor write key matches. Remove access key from user.");
-                    MIRAccessKeyUserUtils.deleteAccessKey(objectId);
-                }
+            } else {
+                MIRAccessKeyUserUtils.deleteAccessKey(objectId);
             }
         }
         return false;
