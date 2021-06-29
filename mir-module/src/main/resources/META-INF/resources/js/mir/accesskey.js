@@ -519,7 +519,7 @@ class Client {
  deleteKey(value, callback) {
    const token = this._token;
    $.ajax({
-     url: API_URL + this._id + "/" + value,
+     url: API_URL + this._id + "/" + urlEncode(value),
      type: "DELETE",
      beforeSend: function (xhr) {
        if (token != undefined) {
@@ -534,10 +534,10 @@ class Client {
      }
    });
  }
- updateKey(id, accessKey, callback) {
+ updateKey(value, accessKey, callback) {
    const token = this._token;
    $.ajax({
-     url: API_URL + this._id + "/" + id,
+     url: API_URL + this._id + "/" + urlEncode(value),
      type: "PUT",
      data: JSON.stringify(accessKey),
      contentType: "application/json",

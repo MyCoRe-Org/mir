@@ -24,6 +24,7 @@ import static org.mycore.restapi.v2.MCRRestAuthorizationFilter.PARAM_MCRID;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Base64;
 
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.MediaType;
@@ -96,7 +97,8 @@ public class MIRAccessKeyResource {
     @MIRRequireAccessKeyAuthorization
     @MCRRequireTransaction
     public Response deleteAccessKey(@PathParam(PARAM_MCRID) final MCRObjectID objectId, 
-        @PathParam(VALUE) final String value) {
+        @PathParam(VALUE) final String valueEncoded) {
+        final String value = new String(Base64.getUrlDecoder().decode(valueEncoded));
         MIRAccessKeyManager.deleteAccessKey(objectId, value);
         return Response.noContent().build();
     }
@@ -108,8 +110,9 @@ public class MIRAccessKeyResource {
     @MIRRequireAccessKeyAuthorization
     @MCRRequireTransaction
     public Response updateAccessKey(@PathParam(PARAM_MCRID) final MCRObjectID objectId, 
-        @PathParam(VALUE) final String value, final String accessKeyJson) {
+        @PathParam(VALUE) final String valueEncoded, final String accessKeyJson) {
         final MIRAccessKey accessKey = MIRAccessKeyTransformer.accessKeyFromJson(accessKeyJson);
+        final String value = new String(Base64.getUrlDecoder().decode(valueEncoded));
         MIRAccessKeyManager.updateAccessKey(objectId, value, accessKey);
         return Response.noContent().build();
     }
