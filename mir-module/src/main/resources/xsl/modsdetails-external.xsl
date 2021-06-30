@@ -628,17 +628,17 @@
               <xsl:if test="(key('rights', @ID)/@accKeyEnabled) and (key('rights', @ID)/@write)">
                 <li>
                   <a role="menuitem" tabindex="-1"
-                     href="{$WebApplicationBaseURL}authorization/accesskey.xml?objId={@ID}&amp;url={encoder:encode(string($RequestURL))}"
+                     href="{$WebApplicationBaseURL}accesskey/editor.xml?objId={@ID}&amp;url={encoder:encode(string($RequestURL))}"
                      class="dropdown-item"
                   >
-                    <xsl:value-of select="i18n:translate('mir.accesskey.manage')" />
+                    <xsl:value-of select="i18n:translate('mcr.accesskey.manage')" />
                   </a>
                 </li>
               </xsl:if>
               <xsl:if test="key('rights', @ID)/@accKeyEnabled and key('rights', @ID)/@hasAccKey and not(mcrxsl:isCurrentUserGuestUser() or $accessedit or $accessdelete)">
                 <li>
-                  <a role="menuitem" tabindex="-1" href="{$WebApplicationBaseURL}authorization/accesskey.xed?objId={@ID}&amp;url={encoder:encode(string($RequestURL))}" class="dropdown-item">
-                    <xsl:value-of select="i18n:translate('mir.accesskey.setOnUser')" />
+                  <a role="menuitem" tabindex="-1" href="{$WebApplicationBaseURL}accesskey/set.xed?objId={@ID}&amp;url={encoder:encode(string($RequestURL))}" class="dropdown-item">
+                    <xsl:value-of select="i18n:translate('mcr.accesskey.setOnUser')" />
                   </a>
                 </li>
               </xsl:if>
@@ -689,8 +689,8 @@
           </a>
           <ul class="dropdown-menu">
             <li>
-              <a role="menuitem" tabindex="-1" href="{$WebApplicationBaseURL}authorization/accesskey.xed?objId={$deriv}&amp;url={encoder:encode(string($RequestURL))}" class="dropdown-item">
-                <xsl:value-of select="i18n:translate('mir.accesskey.setOnUser')" />
+              <a role="menuitem" tabindex="-1" href="{$WebApplicationBaseURL}accesskey/set.xed?objId={$deriv}&amp;url={encoder:encode(string($RequestURL))}" class="dropdown-item">
+                <xsl:value-of select="i18n:translate('mcr.accesskey.setOnUser')" />
               </a>
             </li>
           </ul>
@@ -748,9 +748,9 @@
             <xsl:if test="key('rights', $deriv)/@accKeyEnabled and key('rights', $deriv)/@write">
               <li>
                 <a role="menuitem" tabindex="-1" class="dropdown-item"
-                  href="{$WebApplicationBaseURL}authorization/accesskey.xml?objId&amp;url={encoder:encode(string($RequestURL))}"
+                  href="{$WebApplicationBaseURL}accesskey/editor.xml?objId&amp;url={encoder:encode(string($RequestURL))}"
                 >
-                  <xsl:value-of select="i18n:translate('mir.accesskey.manage')" />
+                  <xsl:value-of select="i18n:translate('mcr.accesskey.manage')" />
                 </a>
               </li>
             </xsl:if>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE MyCoReWebPage>
 <MyCoReWebPage>
-  <section xml:lang="all" i18n="mir.accesskey">
+  <section xml:lang="all" i18n="mcr.accesskey">
     <xed:form class="accessKey form-horizontal" role="form" xmlns:xed="http://www.mycore.de/xeditor" xmlns:mir="http://www.mycore.de/mir">
       <xed:cancel url="{$url}" />
       <xed:cancel url="{$WebApplicationBaseURL}receive/{$objId}" />
@@ -10,15 +10,17 @@
         <div class="card">
           <div class="card-header">
             <h3 class="card-title">
-              <xed:include uri="xslStyle:xeditor-mir-templates:webapp:authorization/accesskey-includes.xed" ref="title" />
+              <xed:output i18n="mcr.accesskey.setOnUser" />
             </h3>
           </div>
           <div class="card-body">
-            <xed:include uri="xslStyle:xeditor-mir-templates:webapp:authorization/accesskey-includes.xed" ref="editor" />
+            <xed:bind xpath="@objId" set="{$objId}" />
+            <mir:template name="textInput" xpath="." id="accessKey" i18n="mcr.accesskey" i18n.error="mcr.accesskey.required" required="true" />
           </div>
           <div class="card-footer clearfix">
             <div class="float-right">
-              <xed:include uri="xslStyle:xeditor-mir-templates:webapp:authorization/accesskey-includes.xed" ref="buttons" />
+              <mir:template name="submitButton" i18n="button.save" target="servlet" href="MCRAccessKeyServlet" />
+              <mir:template name="cancelButton" i18n="button.cancel" />
             </div>
           </div>
         </div>

@@ -26,6 +26,7 @@ import org.mycore.access.strategies.MCRAccessCheckStrategy;
 import org.mycore.access.strategies.MCRCreatorRuleStrategy;
 import org.mycore.access.strategies.MCRObjectBaseStrategy;
 import org.mycore.access.strategies.MCRObjectIDStrategy;
+import org.mycore.accesskey.strategy.MCRAccessKeyStrategy;
 import org.mycore.backend.jpa.MCREntityManagerProvider;
 import org.mycore.backend.jpa.access.MCRACCESS;
 import org.mycore.backend.jpa.access.MCRACCESSPK_;
@@ -39,7 +40,6 @@ import org.mycore.datamodel.classifications2.MCRCategLinkServiceFactory;
 import org.mycore.datamodel.classifications2.MCRCategoryID;
 import org.mycore.datamodel.metadata.MCRMetadataManager;
 import org.mycore.datamodel.metadata.MCRObjectID;
-import org.mycore.mir.authorization.accesskeys.strategy.MIRAccessKeyStrategy;
 import org.mycore.mods.MCRMODSEmbargoUtils;
 import org.mycore.pi.MCRPIManager;
 import org.mycore.pi.MCRPIRegistrationInfo;
@@ -78,7 +78,7 @@ public class MIRStrategy implements MCRAccessCheckStrategy {
 
     private static final MCRCreatorRuleStrategy CREATOR_STRATEGY = new MCRCreatorRuleStrategy();
 
-    private static final MIRAccessKeyStrategy ACCESS_KEY_STRATEGY = new MIRAccessKeyStrategy();
+    private static final MCRAccessKeyStrategy ACCESS_KEY_STRATEGY = new MCRAccessKeyStrategy();
 
     private static final long CACHE_TIME = 1000 * 60 * 60;
 

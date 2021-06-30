@@ -36,9 +36,9 @@ import org.mycore.datamodel.common.MCRLinkTableManager;
 import org.mycore.datamodel.metadata.MCRObjectID;
 import org.mycore.frontend.cli.MCRCommandLineInterface;
 import org.mycore.frontend.cli.MCRCommandManager;
-import org.mycore.mir.authorization.accesskeys.MIRAccessKeyManager;
-import org.mycore.mir.authorization.accesskeys.MIRAccessKeyUserUtils;
-import org.mycore.mir.authorization.accesskeys.backend.MIRAccessKey;
+import org.mycore.accesskey.MCRAccessKeyManager;
+import org.mycore.accesskey.MCRAccessKeyUserUtils;
+import org.mycore.accesskey.backend.MCRAccessKey;
 import org.mycore.user2.MCRUser;
 import org.mycore.user2.MCRUserManager;
 
@@ -165,10 +165,10 @@ public class MIRStrategyTest extends MCRJPATestCase {
         Assert
             .assertFalse(strategy.checkPermission(mir_derivate_00004711.toString(), MCRAccessManager.PERMISSION_WRITE));
 
-        final MIRAccessKey accessKeyRead = new MIRAccessKey(mir_mods_00004711, "mySecret", MCRAccessManager.PERMISSION_READ);
-        MIRAccessKeyManager.addAccessKey(accessKeyRead);
-        final MIRAccessKey accessKeyWrite = new MIRAccessKey(mir_mods_00004711, "letMeIn", MCRAccessManager.PERMISSION_WRITE);
-        MIRAccessKeyManager.addAccessKey(accessKeyWrite);
+        final MCRAccessKey accessKeyRead = new MCRAccessKey(mir_mods_00004711, "mySecret", MCRAccessManager.PERMISSION_READ);
+        MCRAccessKeyManager.addAccessKey(accessKeyRead);
+        final MCRAccessKey accessKeyWrite = new MCRAccessKey(mir_mods_00004711, "letMeIn", MCRAccessManager.PERMISSION_WRITE);
+        MCRAccessKeyManager.addAccessKey(accessKeyWrite);
 
         final MCRCategLinkService categLinkService = MCRCategLinkServiceFactory.getInstance();
         MCRCategLinkReference ref = new MCRCategLinkReference(mir_mods_00004711);
@@ -179,7 +179,7 @@ public class MIRStrategyTest extends MCRJPATestCase {
             .assertFalse(strategy.checkPermission(mir_derivate_00004711.toString(), MCRAccessManager.PERMISSION_READ));
 
         //Give user read access-token
-        MIRAccessKeyUserUtils.addAccessKey(mir_mods_00004711, accessKeyRead.getValue());
+        MCRAccessKeyUserUtils.addAccessKey(mir_mods_00004711, accessKeyRead.getValue());
         junitUser = MCRUserManager.getUser(junitUser.getUserName());
         MCRSessionMgr.getCurrentSession().setUserInformation(junitUser);
 
@@ -192,7 +192,7 @@ public class MIRStrategyTest extends MCRJPATestCase {
         assertTrue(strategy.checkPermission(mir_mods_00004711.toString(), MCRAccessManager.PERMISSION_PREVIEW));
 
         //Give user write access-token
-        MIRAccessKeyUserUtils.addAccessKey(mir_mods_00004711, accessKeyWrite.getValue());
+        MCRAccessKeyUserUtils.addAccessKey(mir_mods_00004711, accessKeyWrite.getValue());
         junitUser = MCRUserManager.getUser(junitUser.getUserName());
         MCRSessionMgr.getCurrentSession().setUserInformation(junitUser);
 
