@@ -88,10 +88,10 @@ public class MIRStrategyTest extends MCRJPATestCase {
 
     @After
     public void tearDown() throws Exception {
-        final Collection<String> allControlledIDs = MCRAccessManager.getAccessImpl().getAllControlledIDs();
+        final Collection<String> allControlledIDs = MCRAccessManager.requireRulesInterface().getAllControlledIDs();
         allControlledIDs.stream()
             .peek(id -> LogManager.getLogger().debug("Removing {} rules...", id))
-            .forEach(MCRAccessManager.getAccessImpl()::removeAllRules);
+            .forEach(MCRAccessManager.requireRulesInterface()::removeAllRules);
         MCRJPARuleStore.getInstance().retrieveAllIDs()
             .stream()
             .peek(rule -> LogManager.getLogger().debug("Remove rule {}", rule))
