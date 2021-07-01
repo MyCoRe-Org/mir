@@ -42,6 +42,15 @@
   </servlet-mapping>
 
   <servlet>
+    <servlet-name>MIRAccessKeyServlet</servlet-name>
+    <servlet-class>org.mycore.mir.authorization.accesskeys.frontend.servlet.MIRAccessKeyServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>MIRAccessKeyServlet</servlet-name>
+    <url-pattern>/servlets/MIRAccessKeyServlet</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
     <servlet-name>MIRClassificationServlet</servlet-name>
     <servlet-class>org.mycore.mir.MIRClassificationServlet</servlet-class>
   </servlet>

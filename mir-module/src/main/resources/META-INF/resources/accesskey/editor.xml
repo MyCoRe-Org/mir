@@ -148,8 +148,8 @@
         </div>
       </div>
     </div>
-    <script type="text/javascript" src="../accesskey-utils.min.js" />
-    <script type="text/javascript" src="../accesskey.min.js" />
+    <script type="text/javascript" src="mir/../../js/mir/accesskey-utils.min.js" />
+    <script type="text/javascript" src="mir/../../js/mir/accesskey-editor.min.js" />
     <script type="text/javascript">
       const url = getParameterByName("url");
       $("#back-btn").click(function() {
