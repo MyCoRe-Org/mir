@@ -190,7 +190,6 @@
     <dependency>
       <groupId>org.mycore</groupId>
       <artifactId>mycore-accesskey</artifactId>
-      <version>2021.06.0-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>org.mycore</groupId>
