@@ -2187,8 +2187,8 @@
     <xed:load-resource name="mir_genres" uri="classification:metadata:-1:children:mir_genres" />
     <xed:validate xpath="//mods:mods/mods:genre[@authorityURI=$mir_genres/label[@xml:lang='x-uri']/@text]/@valueURIxEditor" required="true"
       i18n="mir.validation.genre" display="global" />
-    <!-- don't validate author, date issued and rights for journal etc.  -->
-    <xed:if test="//mods:mods/mods:genre[@valueURIxEditor!='journal'][@valueURIxEditor!='newspaper'][@valueURIxEditor!='series'][@valueURIxEditor!='lecture'][@valueURIxEditor!='blog']">
+    <!-- don't validate rights for specified genres configured in MIR.Editor.Validate.Genre.Licence -->
+    <xed:if test="//mods:mods/mods:genre[not(contains(concat(' ',$MIR.Editor.Validate.Genre.Licence,' '),concat(' ',@valueURIxEditor,' ')))]">
       <xed:validate xpath="//mods:mods/mods:accessCondition[@type='use and reproduction']" required="true" i18n="mir.validation.rights" display="global" />
     </xed:if>
 
