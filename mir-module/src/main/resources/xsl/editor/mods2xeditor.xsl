@@ -102,13 +102,6 @@
     </xsl:copy>
   </xsl:template>
 
-  <xsl:template match="mods:namePart[not(@type)]">
-    <xsl:copy>
-      <xsl:attribute name="type">other</xsl:attribute>
-      <xsl:apply-templates select="@*|node()" />
-    </xsl:copy>
-  </xsl:template>
-
   <!-- Remove this mods:classification entry, will be created again while saving using mods:accessCondtition (see MIR-161) -->
   <xsl:template match="mods:classification[@authority='accessRestriction']">
     <!-- do nothing -->
