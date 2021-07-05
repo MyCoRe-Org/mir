@@ -19,7 +19,7 @@
           </div>
           <div class="card-footer clearfix">
             <div class="float-right">
-              <mir:template name="submitButton" i18n="button.save" target="servlet" href="MCRAccessKeyServlet" />
+              <mir:template name="submitButton" i18n="button.save" target="servlet" href="MIRAccessKeyServlet" />
               <mir:template name="cancelButton" i18n="button.cancel" />
             </div>
           </div>
