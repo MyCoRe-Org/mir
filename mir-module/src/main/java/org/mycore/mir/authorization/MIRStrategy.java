@@ -26,9 +26,9 @@ import org.mycore.access.strategies.MCRAccessCheckStrategy;
 import org.mycore.access.strategies.MCRCreatorRuleStrategy;
 import org.mycore.access.strategies.MCRObjectBaseStrategy;
 import org.mycore.access.strategies.MCRObjectIDStrategy;
-import org.mycore.accesskey.strategy.MCRAccessKeyStrategy;
 import org.mycore.accesskey.MCRAccessKeyUserUtils;
-import org.mycore.accesskey.MCRAccessKeyManager;
+import org.mycore.accesskey.backend.MCRAccessKey;
+import org.mycore.accesskey.strategy.MCRAccessKeyStrategy;
 import org.mycore.backend.jpa.MCREntityManagerProvider;
 import org.mycore.backend.jpa.access.MCRACCESS;
 import org.mycore.backend.jpa.access.MCRACCESSPK_;
@@ -113,12 +113,13 @@ public class MIRStrategy implements MCRAccessCheckStrategy {
         boolean isWritePermission = MCRAccessManager.PERMISSION_WRITE.equals(permission);
         boolean isReadPermission = MCRAccessManager.PERMISSION_READ.equals(permission);
         if (isWritePermission || isReadPermission) {
-            if (ACCESS_KEY_STRATEGY.checkPermission(permissionId, permission)) {
+            final MCRAccessKey accessKey = MCRAccessKeyUserUtils.getAccessKey(objectId);
+            if (accessKey != null) {
                 LOGGER.debug("Found match in access key strategy for {} on {}.", permission, objectId);
-                return true;
-            } else {
-                final String userKey = MCRAccessKeyUserUtils.getAccessKey(objectId);
-                if (userKey != null && MCRAccessKeyManager.getAccessKeyByValue(objectId, userKey) == null) {
+                if (ACCESS_KEY_STRATEGY.checkPermission(objectId.toString(), permission, accessKey)) {
+                    return true;
+                }
+                if (permission.equals(MCRAccessManager.PERMISSION_READ)) {
                     MCRAccessKeyUserUtils.deleteAccessKey(objectId);
                 }
             }
@@ -186,13 +187,29 @@ public class MIRStrategy implements MCRAccessCheckStrategy {
         boolean isWritePermission = MCRAccessManager.PERMISSION_WRITE.equals(permission);
         boolean isReadPermission = MCRAccessManager.PERMISSION_READ.equals(permission);
         if (isWritePermission || isReadPermission) {
-            if (ACCESS_KEY_STRATEGY.checkPermission(permissionId, permission)) {
-                LOGGER.debug("Found match in access key strategy for {} on {}.", permission, objectId);
-                return true;
-            } else {
-                final String userKey = MCRAccessKeyUserUtils.getAccessKey(objectId);
-                if (userKey != null && MCRAccessKeyManager.getAccessKeyByValue(objectId, userKey) == null) {
-                    MCRAccessKeyUserUtils.deleteAccessKey(objectId);
+            MCRAccessKey accessKey = MCRAccessKeyUserUtils.getAccessKey(derivateId);
+            if (accessKey != null) {
+                System.out.println("es gibt einen derivate schlüssel");
+                LOGGER.debug("Found match in access key strategy for {} on {}.", permission, derivateId);
+                if (ACCESS_KEY_STRATEGY.checkPermission(permissionId, permission, accessKey)) {
+                    return true;
+                }
+                if (permission.equals(MCRAccessManager.PERMISSION_READ)) {
+                    MCRAccessKeyUserUtils.deleteAccessKey(derivateId);
+                    LOGGER.warn("Neither read nor write key matches. Remove access key from user.");
+                }
+            }  else {
+                System.out.println("es gibt !k!einen derivate schlüssel");
+                accessKey = MCRAccessKeyUserUtils.getAccessKey(objectId);
+                if (accessKey != null) {
+                    LOGGER.debug("Found match in access key strategy for {} on {}.", permission, objectId);
+                    if (ACCESS_KEY_STRATEGY.checkPermission(objectId.toString(), permission,  accessKey)) {
+                        return true;
+                    }
+                    if (permission.equals(MCRAccessManager.PERMISSION_READ)) {
+                        MCRAccessKeyUserUtils.deleteAccessKey(objectId);
+                        LOGGER.warn("Neither read nor write key matches. Remove access key from user.");
+                    }
                 }
             }
         }
