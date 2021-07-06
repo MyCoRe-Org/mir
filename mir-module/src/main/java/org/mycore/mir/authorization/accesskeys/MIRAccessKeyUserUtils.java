@@ -96,7 +96,7 @@ public class MIRAccessKeyUserUtils {
     /**
      * Fetches access key value from user attribute.
      *
-     * @param mcrObjectId the {@link MCRObjectID}
+     * @param objectId the {@link MCRObjectID}
      * @return access key value or null
      */
     public static synchronized String getAccessKey(MCRObjectID objectId) {
