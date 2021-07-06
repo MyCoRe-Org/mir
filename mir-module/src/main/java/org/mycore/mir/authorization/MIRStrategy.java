@@ -26,6 +26,7 @@ import org.mycore.access.strategies.MCRAccessCheckStrategy;
 import org.mycore.access.strategies.MCRCreatorRuleStrategy;
 import org.mycore.access.strategies.MCRObjectBaseStrategy;
 import org.mycore.access.strategies.MCRObjectIDStrategy;
+import org.mycore.accesskey.MCRAccessKeyManager;
 import org.mycore.accesskey.MCRAccessKeyUserUtils;
 import org.mycore.accesskey.backend.MCRAccessKey;
 import org.mycore.accesskey.strategy.MCRAccessKeyStrategy;
@@ -113,13 +114,15 @@ public class MIRStrategy implements MCRAccessCheckStrategy {
         boolean isWritePermission = MCRAccessManager.PERMISSION_WRITE.equals(permission);
         boolean isReadPermission = MCRAccessManager.PERMISSION_READ.equals(permission);
         if (isWritePermission || isReadPermission) {
-            final MCRAccessKey accessKey = MCRAccessKeyUserUtils.getAccessKey(objectId);
-            if (accessKey != null) {
-                LOGGER.debug("Found match in access key strategy for {} on {}.", permission, objectId);
-                if (ACCESS_KEY_STRATEGY.checkPermission(objectId.toString(), permission, accessKey)) {
-                    return true;
-                }
-                if (permission.equals(MCRAccessManager.PERMISSION_READ)) {
+            final String userKey = MCRAccessKeyUserUtils.getUserAccessKeyValue(objectId);
+            if (userKey != null) {
+                final MCRAccessKey accessKey = MCRAccessKeyManager.getAccessKeyByValue(objectId, userKey);
+                if (accessKey != null) {
+                    LOGGER.debug("Found match in access key strategy for {} on {}.", permission, objectId);
+                    if (ACCESS_KEY_STRATEGY.checkPermission(objectId.toString(), permission, accessKey)) {
+                        return true;
+                    }
+                } else {
                     MCRAccessKeyUserUtils.deleteAccessKey(objectId);
                 }
             }
@@ -187,29 +190,28 @@ public class MIRStrategy implements MCRAccessCheckStrategy {
         boolean isWritePermission = MCRAccessManager.PERMISSION_WRITE.equals(permission);
         boolean isReadPermission = MCRAccessManager.PERMISSION_READ.equals(permission);
         if (isWritePermission || isReadPermission) {
-            MCRAccessKey accessKey = MCRAccessKeyUserUtils.getAccessKey(derivateId);
-            if (accessKey != null) {
-                System.out.println("es gibt einen derivate schlüssel");
-                LOGGER.debug("Found match in access key strategy for {} on {}.", permission, derivateId);
-                if (ACCESS_KEY_STRATEGY.checkPermission(permissionId, permission, accessKey)) {
-                    return true;
-                }
-                if (permission.equals(MCRAccessManager.PERMISSION_READ)) {
+            String userKey = MCRAccessKeyUserUtils.getUserAccessKeyValue(derivateId);
+            if (userKey != null) {
+                final MCRAccessKey accessKey = MCRAccessKeyManager.getAccessKeyByValue(derivateId, userKey);
+                if (accessKey != null) {
+                    LOGGER.debug("Found match in access key strategy for {} on {}.", permission, derivateId);
+                    if (ACCESS_KEY_STRATEGY.checkPermission(permissionId, permission, accessKey)) {
+                        return true;
+                    }
+                } else {
                     MCRAccessKeyUserUtils.deleteAccessKey(derivateId);
-                    LOGGER.warn("Neither read nor write key matches. Remove access key from user.");
                 }
-            }  else {
-                System.out.println("es gibt !k!einen derivate schlüssel");
-                accessKey = MCRAccessKeyUserUtils.getAccessKey(objectId);
+            }
+            userKey = MCRAccessKeyUserUtils.getUserAccessKeyValue(objectId);
+            if (userKey != null) {
+                final MCRAccessKey accessKey = MCRAccessKeyManager.getAccessKeyByValue(objectId, userKey);
                 if (accessKey != null) {
                     LOGGER.debug("Found match in access key strategy for {} on {}.", permission, objectId);
                     if (ACCESS_KEY_STRATEGY.checkPermission(objectId.toString(), permission,  accessKey)) {
                         return true;
                     }
-                    if (permission.equals(MCRAccessManager.PERMISSION_READ)) {
-                        MCRAccessKeyUserUtils.deleteAccessKey(objectId);
-                        LOGGER.warn("Neither read nor write key matches. Remove access key from user.");
-                    }
+                } else {
+                    MCRAccessKeyUserUtils.deleteAccessKey(objectId);
                 }
             }
         }
