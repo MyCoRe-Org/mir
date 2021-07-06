@@ -22,6 +22,8 @@ package org.mycore.mir.authorization.accesskeys.frontend.resource;
 
 import static org.mycore.restapi.v2.MCRRestAuthorizationFilter.PARAM_MCRID;
 
+import java.io.IOException;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Base64;
@@ -97,8 +99,8 @@ public class MIRAccessKeyResource {
     @MIRRequireAccessKeyAuthorization
     @MCRRequireTransaction
     public Response deleteAccessKey(@PathParam(PARAM_MCRID) final MCRObjectID objectId, 
-        @PathParam(VALUE) final String valueEncoded) {
-        final String value = new String(Base64.getUrlDecoder().decode(valueEncoded));
+        @PathParam(VALUE) final String valueEncoded) throws IOException {
+        final String value = new String(Base64.getUrlDecoder().decode(valueEncoded), "UTF-8");
         MIRAccessKeyManager.deleteAccessKey(objectId, value);
         return Response.noContent().build();
     }
@@ -110,9 +112,9 @@ public class MIRAccessKeyResource {
     @MIRRequireAccessKeyAuthorization
     @MCRRequireTransaction
     public Response updateAccessKey(@PathParam(PARAM_MCRID) final MCRObjectID objectId, 
-        @PathParam(VALUE) final String valueEncoded, final String accessKeyJson) {
+        @PathParam(VALUE) final String valueEncoded, final String accessKeyJson) throws IOException {
         final MIRAccessKey accessKey = MIRAccessKeyTransformer.accessKeyFromJson(accessKeyJson);
-        final String value = new String(Base64.getUrlDecoder().decode(valueEncoded));
+        final String value = new String(Base64.getUrlDecoder().decode(valueEncoded), "UTF-8");
         MIRAccessKeyManager.updateAccessKey(objectId, value, accessKey);
         return Response.noContent().build();
     }
