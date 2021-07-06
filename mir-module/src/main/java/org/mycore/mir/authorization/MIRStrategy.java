@@ -26,6 +26,10 @@ import org.mycore.access.strategies.MCRAccessCheckStrategy;
 import org.mycore.access.strategies.MCRCreatorRuleStrategy;
 import org.mycore.access.strategies.MCRObjectBaseStrategy;
 import org.mycore.access.strategies.MCRObjectIDStrategy;
+import org.mycore.mcr.acl.accesskey.MCRAccessKeyManager;
+import org.mycore.mcr.acl.accesskey.MCRAccessKeyUserUtils;
+import org.mycore.mcr.acl.accesskey.backend.MCRAccessKey;
+import org.mycore.mcr.acl.accesskey.strategy.MCRAccessKeyStrategy;
 import org.mycore.backend.jpa.MCREntityManagerProvider;
 import org.mycore.backend.jpa.access.MCRACCESS;
 import org.mycore.backend.jpa.access.MCRACCESSPK_;
@@ -77,7 +81,7 @@ public class MIRStrategy implements MCRAccessCheckStrategy {
 
     private static final MCRCreatorRuleStrategy CREATOR_STRATEGY = new MCRCreatorRuleStrategy();
 
-    private static final MIRKeyStrategyHelper KEY_STRATEGY_HELPER = new MIRKeyStrategyHelper();
+    private static final MCRAccessKeyStrategy ACCESS_KEY_STRATEGY = new MCRAccessKeyStrategy();
 
     private static final long CACHE_TIME = 1000 * 60 * 60;
 
@@ -105,13 +109,27 @@ public class MIRStrategy implements MCRAccessCheckStrategy {
             return false;
         }
 
+        String permissionId = objectId.toString();
+
         // 2. check read or write key of current user
-        if (KEY_STRATEGY_HELPER.checkObjectPermission(objectId, permission)) {
-            return true;
+        boolean isWritePermission = MCRAccessManager.PERMISSION_WRITE.equals(permission);
+        boolean isReadPermission = MCRAccessManager.PERMISSION_READ.equals(permission);
+        if (isWritePermission || isReadPermission) {
+            final String userKey = MCRAccessKeyUserUtils.getUserAccessKeyValue(objectId);
+            if (userKey != null) {
+                final MCRAccessKey accessKey = MCRAccessKeyManager.getAccessKeyByValue(objectId, userKey);
+                if (accessKey != null) {
+                    LOGGER.debug("Found match in access key strategy for {} on {}.", permission, objectId);
+                    if (ACCESS_KEY_STRATEGY.checkPermission(objectId.toString(), permission, accessKey)) {
+                        return true;
+                    }
+                } else {
+                    MCRAccessKeyUserUtils.deleteAccessKey(objectId);
+                }
+            }
         }
 
         // 3. check if access mapping for object id exists
-        String permissionId = objectId.toString();
         if (ID_STRATEGY.hasRuleMapping(permissionId, permission)) {
             LOGGER.debug("Found match in ID strategy for {} on {}.", permission, objectId);
             return ID_STRATEGY.checkPermission(permissionId, permission);
@@ -170,8 +188,33 @@ public class MIRStrategy implements MCRAccessCheckStrategy {
         }
 
         // 2. check read or write key of current user
-        if (KEY_STRATEGY_HELPER.checkDerivatePermission(derivateId, objectId, permission)) {
-            return true;
+        boolean isWritePermission = MCRAccessManager.PERMISSION_WRITE.equals(permission);
+        boolean isReadPermission = MCRAccessManager.PERMISSION_READ.equals(permission);
+        if (isWritePermission || isReadPermission) {
+            String userKey = MCRAccessKeyUserUtils.getUserAccessKeyValue(derivateId);
+            if (userKey != null) {
+                final MCRAccessKey accessKey = MCRAccessKeyManager.getAccessKeyByValue(derivateId, userKey);
+                if (accessKey != null) {
+                    LOGGER.debug("Found match in access key strategy for {} on {}.", permission, derivateId);
+                    if (ACCESS_KEY_STRATEGY.checkPermission(permissionId, permission, accessKey)) {
+                        return true;
+                    }
+                } else {
+                    MCRAccessKeyUserUtils.deleteAccessKey(derivateId);
+                }
+            }
+            userKey = MCRAccessKeyUserUtils.getUserAccessKeyValue(objectId);
+            if (userKey != null) {
+                final MCRAccessKey accessKey = MCRAccessKeyManager.getAccessKeyByValue(objectId, userKey);
+                if (accessKey != null) {
+                    LOGGER.debug("Found match in access key strategy for {} on {}.", permission, objectId);
+                    if (ACCESS_KEY_STRATEGY.checkPermission(objectId.toString(), permission,  accessKey)) {
+                        return true;
+                    }
+                } else {
+                    MCRAccessKeyUserUtils.deleteAccessKey(objectId);
+                }
+            }
         }
 
         // 2.check if derivate has embargo
@@ -185,8 +228,7 @@ public class MIRStrategy implements MCRAccessCheckStrategy {
         if (MCRAccessManager.PERMISSION_READ.equals(permission)
             && embargo != null
             && (!MCRMODSEmbargoUtils.isCurrentUserCreator(objectId) &&
-                !MCRAccessManager.checkPermission(MCRMODSEmbargoUtils.POOLPRIVILEGE_EMBARGO) &&
-                !KEY_STRATEGY_HELPER.checkObjectPermission(objectId, "read"))) {
+                !MCRAccessManager.checkPermission(MCRMODSEmbargoUtils.POOLPRIVILEGE_EMBARGO))) {
             LOGGER.debug("Derivate {} has embargo {} and current user is not creator and doesn't has {} POOLPRIVILEGE",
                 derivateId, embargo, MCRMODSEmbargoUtils.POOLPRIVILEGE_EMBARGO);
             return false;
