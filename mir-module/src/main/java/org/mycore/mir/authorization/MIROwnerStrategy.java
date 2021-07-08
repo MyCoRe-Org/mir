@@ -37,8 +37,8 @@ import org.mycore.common.MCRSessionMgr;
 import org.mycore.common.MCRSystemUserInformation;
 import org.mycore.common.MCRUserInformation;
 import org.mycore.common.config.MCRConfiguration2;
+import org.mycore.datamodel.common.MCRAbstractMetadataVersion;
 import org.mycore.datamodel.common.MCRXMLMetadataManager;
-import org.mycore.datamodel.ifs2.MCRMetadataVersion;
 import org.mycore.datamodel.metadata.MCRObjectID;
 
 import com.google.common.cache.CacheBuilder;
@@ -77,12 +77,12 @@ public class MIROwnerStrategy implements MCRAccessCheckStrategy {
             @Override
             public String load(MCRObjectID mcrObjectID) throws Exception {
                 MCRXMLMetadataManager metadataManager = MCRXMLMetadataManager.instance();
-                List<MCRMetadataVersion> versions = metadataManager.listRevisions(mcrObjectID);
+                List<? extends MCRAbstractMetadataVersion<?>> versions = metadataManager.listRevisions(mcrObjectID);
                 if (versions != null && !versions.isEmpty()) {
                     Collections.reverse(versions); //newest revision first
-                    for (MCRMetadataVersion version : versions) {
+                    for (MCRAbstractMetadataVersion<?> version : versions) {
                         //time machine: go back in history
-                        if (version.getType() == MCRMetadataVersion.CREATED) {
+                        if (version.getType() == MCRAbstractMetadataVersion.CREATED) {
                             LOGGER.info("Found creator " + version.getUser() + " in revision "
                                 + version.getRevision() + " of " + mcrObjectID);
                             return version.getUser();
