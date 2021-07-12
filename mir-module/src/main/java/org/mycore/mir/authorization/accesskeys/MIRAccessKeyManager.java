@@ -123,7 +123,7 @@ public final class MIRAccessKeyManager {
             }
         } else {
             if (accessKeyWrite != null) {
-                MCRAccessKeyManager.removeAccessKey(accessKeyWrite);
+                MCRAccessKeyManager.deleteAccessKey(accessKeyWrite);
             }
         }
     }
