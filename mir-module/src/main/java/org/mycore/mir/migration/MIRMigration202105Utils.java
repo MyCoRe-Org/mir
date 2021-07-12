@@ -1,7 +1,4 @@
 /*
- * $Id$ 
- * $Revision$ $Date$
- *
  * This file is part of ***  M y C o R e  ***
  * See http://www.mycore.de/ for details.
  *
@@ -32,8 +29,9 @@ import org.mycore.access.MCRAccessManager;
 import org.mycore.datamodel.metadata.MCRObjectID;
 import org.mycore.frontend.cli.annotation.MCRCommand;
 import org.mycore.frontend.cli.annotation.MCRCommandGroup;
+import org.mycore.mcr.acl.accesskey.MCRAccessKeyManager;
+import org.mycore.mcr.acl.accesskey.backend.MCRAccessKey;
 import org.mycore.mir.authorization.accesskeys.MIRAccessKeyManager;
-import org.mycore.mir.authorization.accesskeys.backend.MIRAccessKey;
 import org.mycore.mir.authorization.accesskeys.backend.MIRAccessKeyPair;
 
 @MCRCommandGroup(
@@ -51,12 +49,12 @@ public class MIRMigration202105Utils {
             final String readKey = accessKeyPair.getReadKey();
             final String writeKey = accessKeyPair.getWriteKey();
             if (readKey != null) {
-                final MIRAccessKey accessKey = new MIRAccessKey(objectId, readKey, MCRAccessManager.PERMISSION_READ);
-                MIRAccessKeyManager.addAccessKey(accessKey);
+                final MCRAccessKey accessKey = new MCRAccessKey(objectId, readKey, MCRAccessManager.PERMISSION_READ);
+                MCRAccessKeyManager.addAccessKey(accessKey);
             }
             if (writeKey != null) {
-                final MIRAccessKey accessKey = new MIRAccessKey(objectId, writeKey, MCRAccessManager.PERMISSION_WRITE);
-                MIRAccessKeyManager.addAccessKey(accessKey);
+                final MCRAccessKey accessKey = new MCRAccessKey(objectId, writeKey, MCRAccessManager.PERMISSION_WRITE);
+                MCRAccessKeyManager.addAccessKey(accessKey);
             }
             MIRAccessKeyManager.removeAccessKeyPair(objectId);
         }
