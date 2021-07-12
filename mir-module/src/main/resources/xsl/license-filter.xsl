@@ -21,20 +21,17 @@
     </xsl:choose>
   </xsl:template>
 
+  <!-- copies item when: x-genres-mode and x-genre are not present, 
+    x-genres-mode is 'deny' and x-genres is not present or not contains current genre,
+    x-genres-mode is 'allow' and x-genre is present and contains current genre.
+    if x-genres is present and x-genres-mode is not present, 'allow' is default mode. -->
   <xsl:template match="item">
-    <xsl:choose>
-      <xsl:when test="not(label[@xml:lang='x-genres'])">
-        <xsl:copy>
-          <xsl:apply-templates select="@* | node()"/>
-        </xsl:copy>
-      </xsl:when>
-      <xsl:otherwise>
-        <xsl:if test="contains(label[@xml:lang='x-genres'], $genre)">
-          <xsl:copy>
-            <xsl:apply-templates select="@* | node()"/>
-          </xsl:copy>
-        </xsl:if>
-      </xsl:otherwise>
-    </xsl:choose>
+    <xsl:if test="(not(label[@xml:lang='x-genres']) and not(label[@xml:lang='x-genres-mode']))
+      or ((label[@xml:lang='x-genres-mode']='deny') and (not(contains(label[@xml:lang='x-genres'], $genre))))
+      or (((label[@xml:lang='x-genres-mode']='allow') or not(label[@xml:lang='x-genres-mode'])) and contains(label[@xml:lang='x-genres'], $genre))">
+      <xsl:copy>
+        <xsl:apply-templates select="@* | node()"/>
+      </xsl:copy>
+    </xsl:if>
   </xsl:template>
 </xsl:stylesheet>
