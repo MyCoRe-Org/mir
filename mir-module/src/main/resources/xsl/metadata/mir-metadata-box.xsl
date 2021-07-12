@@ -127,7 +127,7 @@
                     <xsl:value-of select="@displayLabel"/>
                   </xsl:when>
                   <xsl:otherwise>
-                    <xsl:value-of select="i18n:translate(concat('mir.relatedItem.', @type))"/>
+                    <xsl:value-of select="i18n:translate(concat('mir.relatedItem', @type))"/>
                   </xsl:otherwise>
                 </xsl:choose>
               </xsl:variable>

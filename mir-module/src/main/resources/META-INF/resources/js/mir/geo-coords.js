@@ -5,17 +5,29 @@
             $(parent).html($(parent).data("fullcoords"));
         }); 
         
-        $('.show_openstreetmap').click(function() {
-            $(this).parent().next(".openstreetmap-container").collapse('toggle');
+        $('.show-openstreetmap-editor').click(function() {
+            const mapContainer = $(this).parent().parent().parent().parent().next().children(".openstreetmap-container");
+            mapContainer.collapse('toggle');
             if(!$(this).hasClass("map_drawn")) {
-                drawMap($(this));
+                drawMap($(this), mapContainer);
+            }
+            $(this).parent().parent().parent().parent().toggleClass("form-group");
+            $(this).children("i").toggleClass("fa-chevron-down");
+            $(this).children("i").toggleClass("fa-chevron-up");
+        });
+
+        $('.show_openstreetmap').click(function() {
+            const mapContainer = $(this).parent().next();
+            mapContainer.collapse('toggle');
+            if(!$(this).hasClass("map_drawn")) {
+                drawMap($(this), mapContainer);
             }
         });
 
-        function drawMap(btn) {
-            var input = $(btn).parent().parent().prev().find("input[name*='coordinates']")[0];
-            var typeSelect = $(btn).parent().next().find("#type")[0];
-            var mapElement = $(btn).parent().next().find(".map")[0];
+        function drawMap(btn, mapContainer) {
+            var input = $(btn).parent().prev()[0];
+            var typeSelect = mapContainer.find("#type")[0];
+            var mapElement = mapContainer.find(".map")[0];
             var lat = $(btn).data("lat") === "" ? 50.930453 : $(btn).data("lat");
             var lon = $(btn).data("lon") === "" ? 11.587786 : $(btn).data("lon");
             

@@ -1093,35 +1093,38 @@
       help-text="{i18n:mir.help.shelfmark}" />
   </xed:template>
 
+  <!-- related.item.link.repeated -->
   <xed:template id="related.item.link">
     <xed:repeat xpath="mods:relatedItem" min="1" max="10">
-      <div class="form-group row">
-        <div class="col-md-3">
-          <xed:bind xpath="@type">
-            <select class="form-control form-control-inline" style="text-align: right; font-weight:bold;">
-              <option value="">
-                <xed:output i18n="mir.link.title" />
-              </option>
-              <option value="original">
-                <xed:output i18n="mir.relatedItem.original" />
-              </option>
-              <option value="otherVersion">
-                <xed:output i18n="mir.relatedItem.otherVersion" />
-              </option>
-              <option value="otherFormat">
-                <xed:output i18n="mir.relatedItem.otherFormat" />
-              </option>
-            </select>
-          </xed:bind>
+      <div class="mir-fieldset-content">
+        <div class="form-group row">
+          <div class="col-md-3">
+            <xed:bind xpath="@type">
+              <select class="form-control form-control-inline" style="text-align: right; font-weight:bold;">
+                <option value="">
+                  <xed:output i18n="mir.link.title" />
+                </option>
+                <option value="original">
+                  <xed:output i18n="mir.relatedItem.original" />
+                </option>
+                <option value="otherVersion">
+                  <xed:output i18n="mir.relatedItem.otherVersion" />
+                </option>
+                <option value="otherFormat">
+                  <xed:output i18n="mir.relatedItem.otherFormat" />
+                </option>
+              </select>
+            </xed:bind>
+          </div>
+          <div class="col-md-6">
+            <xed:bind xpath="mods:titleInfo/mods:title">
+              <input type="text" class="form-control" placeholder="{i18n:mir.placeholder.title.link}" />
+            </xed:bind>
+          </div>
+          <mir:help-pmud help-text="{i18n:mir.help.link.title}" pmud="true" />
         </div>
-        <div class="col-md-6">
-          <xed:bind xpath="mods:titleInfo/mods:title">
-            <input type="text" class="form-control" placeholder="{i18n:mir.placeholder.title.link}" />
-          </xed:bind>
-        </div>
-        <mir:help-pmud help-text="{i18n:mir.help.link.title}" pmud="true" />
+        <mir:textfield xpath="mods:location/mods:url[@access='raw object']" help-text="{i18n:mir.help.link.raw_object}" placeholder="{i18n:mir.placeholder.abstract.link}" />
       </div>
-      <mir:textfield xpath="mods:location/mods:url[@access='raw object']" help-text="{i18n:mir.help.link.raw_object}" placeholder="{i18n:mir.placeholder.abstract.link}" />
     </xed:repeat>
   </xed:template>
 
@@ -1592,60 +1595,14 @@
     </div>
   </xed:template>
 
-  <xed:template id="cartographics.repeat">
-    <xed:repeat xpath="mods:subject/mods:cartographics/mods:coordinates">
-      <div class="form-group row">
-        <label class="col-md-3 col-form-label text-right">
-          <xed:output i18n="mir.cartographics.coordinates" />
-        </label>
-        <div class="col-md-6">
-          <input id="{@id}" type="text" class="form-control">
-            <xsl:copy-of select="@placeholder" />
-          </input>
-        </div>
-        <mir:help-pmud help-text="{i18n:mir.help.cartographics.coordinates}" pmud="true" />
-      </div>
-      <div class="form-group row openstreetmap">
-        <div class="col-md-2 offset-md-3">
-          <button type="button" class="show_openstreetmap btn btn-secondary" data-lat="{$MIR.editor.start.coordinates.lat}" data-lon="{$MIR.editor.start.coordinates.lon}">
-            OpenStreetMap
-          </button>
-        </div>
-        <div class="col-md-6 offset-md-3 collapse openstreetmap-container">
-          <label>
-            <xed:output i18n="mir.cartographics.coordinates.geoType" />
-          </label>
-          <select id="type" class="form-control" name="">
-            <option value="Point">
-              <xed:output i18n="mir.cartographics.coordinates.point" />
-            </option>
-            <option value="Box">
-              <xed:output i18n="mir.cartographics.coordinates.box" />
-            </option>
-            <option value="Polygon">
-              <xed:output i18n="mir.cartographics.coordinates.polygon" />
-            </option>
-            <option value="None">
-              <xed:output i18n="mir.cartographics.coordinates.none" />
-            </option>
-          </select>
-          <div class="map"></div>
-        </div>
-      </div>
-    </xed:repeat>
+  <xed:template id="cartographics-assets">
     <link rel="stylesheet" type="text/css" href="{$WebApplicationBaseURL}assets/openlayers/ol.css" />
     <script type="text/javascript" src="{$WebApplicationBaseURL}assets/openlayers/ol.js" />
     <script type="text/javascript" src="{$WebApplicationBaseURL}js/mir/geo-coords.min.js" />
   </xed:template>
 
-  <xed:template id="cartographics">
-    <mir:textfield xpath="mods:subject/mods:cartographics/mods:coordinates" label="mir.cartographics.coordinates" help-text="{i18n:mir.help.cartographics.coordinates}" />
-    <div class="form-group row openstreetmap">
-      <div class="col-md-2 offset-md-3">
-        <button type="button" class="show_openstreetmap btn btn-secondary" data-lat="{$MIR.editor.start.coordinates.lat}" data-lon="{$MIR.editor.start.coordinates.lon}">
-          OpenStreetMap
-        </button>
-      </div>
+  <xed:template id="cartographics-OpenStreetMap-container">
+    <div class="row form-group openstreetmap">
       <div class="col-md-6 offset-md-3 collapse openstreetmap-container">
         <label>
           <xed:output i18n="mir.cartographics.coordinates.geoType" />
@@ -1667,9 +1624,58 @@
         <div class="map"></div>
       </div>
     </div>
-    <link rel="stylesheet" type="text/css" href="{$WebApplicationBaseURL}assets/openlayers/ol.css" />
-    <script type="text/javascript" src="{$WebApplicationBaseURL}assets/openlayers/ol.js" />
-    <script type="text/javascript" src="{$WebApplicationBaseURL}js/mir/geo-coords.min.js" />
+  </xed:template>
+
+  <xed:template id="cartographics">
+    <div class="mir-fieldset-content">
+      <div class="row">
+        <label class="col-md-3 col-form-label text-right mir-formgroup-label">
+          <xed:output i18n="mir.cartographics.coordinates" />
+        </label>
+        <div class="col-md-6">
+          <div class="input-group">
+            <xed:bind xpath="mods:subject/mods:cartographics/mods:coordinates">
+              <input class="form-control form-control-inline" type="text" />
+            </xed:bind>
+            <div class="input-group-append">
+              <button type="button" class="show-openstreetmap-editor btn btn-secondary" data-lat="{$MIR.editor.start.coordinates.lat}" data-lon="{$MIR.editor.start.coordinates.lon}">
+                OpenStreetMap
+                <i class="fa fa-chevron-down" style="padding-left: 7px;"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+        <mir:help-pmud pmud="false" help-text="{i18n:mir.help.cartographics.coordinates}"/>
+      </div>
+      <xed:include ref="cartographics-OpenStreetMap-container" />
+    </div>
+    <xed:include ref="cartographics-assets" />
+  </xed:template>
+
+  <xed:template id="cartographics.repeat">
+    <xed:repeat xpath="mods:subject/mods:cartographics/mods:coordinates">
+      <div class="mir-fieldset-content">
+        <div class="row">
+          <label class="col-md-3 col-form-label text-right">
+            <xed:output i18n="mir.cartographics.coordinates" />
+          </label>
+          <div class="col-md-6">
+            <div class="input-group">
+              <input id="{@id}" type="text" class="form-control" />
+              <div class="input-group-append">
+                <button type="button" class="show-openstreetmap-editor btn btn-secondary" data-lat="{$MIR.editor.start.coordinates.lat}" data-lon="{$MIR.editor.start.coordinates.lon}">
+                  OpenStreetMap
+                  <i class="fa fa-chevron-down" style="padding-left: 7px;"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+          <mir:help-pmud help-text="{i18n:mir.help.cartographics.coordinates}" pmud="true" />
+        </div>
+        <xed:include ref="cartographics-OpenStreetMap-container" />
+      </div>
+    </xed:repeat>
+    <xed:include ref="cartographics-assets" />
   </xed:template>
 
   <xed:template id="sdnb">
