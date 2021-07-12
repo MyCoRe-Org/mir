@@ -23,11 +23,6 @@
 
   <xsl:template match="item">
     <xsl:choose>
-      <xsl:when test="not(label[@xml:lang='x-genres-mode'])">
-        <xsl:copy>
-          <xsl:apply-templates select="@* | node()"/>
-        </xsl:copy>
-      </xsl:when>
       <xsl:when test="label[@xml:lang='x-genres-mode']='deny'">
         <xsl:if test="not(contains(label[@xml:lang='x-genres'], $genre))">
           <xsl:copy>
@@ -36,7 +31,7 @@
         </xsl:if>
       </xsl:when>
       <xsl:otherwise>
-        <xsl:if test="contains(label[@xml:lang='x-genres'], $genre)">
+        <xsl:if test="(not(label[@xml:lang='x-genres-mode'])) or (contains(label[@xml:lang='x-genres'], $genre))">
           <xsl:copy>
             <xsl:apply-templates select="@* | node()"/>
           </xsl:copy>
