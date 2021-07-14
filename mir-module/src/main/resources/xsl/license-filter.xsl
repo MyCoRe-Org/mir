@@ -22,21 +22,12 @@
   </xsl:template>
 
   <xsl:template match="item">
-    <xsl:choose>
-      <xsl:when test="label[@xml:lang='x-genres-mode']='deny'">
-        <xsl:if test="not(contains(label[@xml:lang='x-genres'], $genre))">
-          <xsl:copy>
-            <xsl:apply-templates select="@* | node()"/>
-          </xsl:copy>
-        </xsl:if>
-      </xsl:when>
-      <xsl:otherwise>
-        <xsl:if test="(not(label[@xml:lang='x-genres-mode'])) or (contains(label[@xml:lang='x-genres'], $genre))">
-          <xsl:copy>
-            <xsl:apply-templates select="@* | node()"/>
-          </xsl:copy>
-        </xsl:if>
-      </xsl:otherwise>
-    </xsl:choose>
+    <xsl:if test="((label[@xml:lang='x-genres-mode']='deny') and (not(contains(label[@xml:lang='x-genres'], $genre))))
+        or (contains(label[@xml:lang='x-genres'], $genre) and ((label[@xml:lang='x-genres-mode']='allow') or not(label[@xml:lang='x-genres-mode'])))
+        or not(label[@xml:lang='x-genres'])">
+      <xsl:copy>
+        <xsl:apply-templates select="@* | node()"/>
+      </xsl:copy>
+    </xsl:if>
   </xsl:template>
 </xsl:stylesheet>
