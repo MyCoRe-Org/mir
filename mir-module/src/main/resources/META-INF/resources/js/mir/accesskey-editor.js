@@ -1,4 +1,4 @@
-const API_URL = webApplicationBaseURL + "api/v2/accesskeys/";
+const API_URL = webApplicationBaseURL + "api/v2/objects/";
 class EventEmitter {
   constructor() {
     this._events = {};
@@ -481,7 +481,7 @@ class Client {
      queryString = "?offset=" + offset + "&limit=" + limit;
    }
    $.ajax({
-     url: API_URL + this._id + queryString,
+     url: API_URL + this._id + "/accesskeys"+ queryString,
      type: "GET",
      beforeSend: function (xhr) {
        if (token != undefined) {
@@ -499,7 +499,7 @@ class Client {
  addKey(accessKey, callback) {
    const token = this._token;
    $.ajax({
-     url: API_URL + this._id,
+     url: API_URL + this._id + "/accesskeys",
      type: "POST",
      data: JSON.stringify(accessKey),
      contentType: "application/json",
@@ -519,7 +519,7 @@ class Client {
  deleteKey(value, callback) {
    const token = this._token;
    $.ajax({
-     url: API_URL + this._id + "/" + urlEncode(value),
+     url: API_URL + this._id + "/accesskeys/" + urlEncode(value),
      type: "DELETE",
      beforeSend: function (xhr) {
        if (token != undefined) {
@@ -537,7 +537,7 @@ class Client {
  updateKey(value, accessKey, callback) {
    const token = this._token;
    $.ajax({
-     url: API_URL + this._id + "/" + urlEncode(value),
+     url: API_URL + this._id + "/accesskeys/" + urlEncode(value),
      type: "PUT",
      data: JSON.stringify(accessKey),
      contentType: "application/json",

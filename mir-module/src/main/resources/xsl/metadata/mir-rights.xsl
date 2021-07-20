@@ -16,10 +16,9 @@
 
   <!-- checks for AccessKey enabled (default is enabled for 'mods')    -->
   <!-- to enable set # MCR.AccessKey.ObjectTypes=mods,derivate-->
-  <xsl:param name="MCR.Access.Strategy.Class" />
-  <xsl:param name="MCR.AccessKey.ObjectTypes" />
-  <xsl:variable name="modsAccKeyEnabled" select="contains($MCR.AccessKey.ObjectTypes, 'mods')" />
-  <xsl:variable name="derivateAccKeyEnabled" select="contains($MCR.AccessKey.ObjectTypes, 'derivate')" />
+  <xsl:param name="MIR.Strategy.AccessKey.ObjectTypes" />
+  <xsl:variable name="modsAccKeyEnabled" select="contains($MIR.Strategy.AccessKey.ObjectTypes, 'mods')" />
+  <xsl:variable name="derivateAccKeyEnabled" select="contains($MIR.Strategy.AccessKey.ObjectTypes, 'derivate')" />
   
   <xsl:include href="coreFunctions.xsl"/>
   
