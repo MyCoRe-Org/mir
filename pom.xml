@@ -36,15 +36,15 @@
     <cargo.start.jvmargs />
     <cargo.tomcat.ajp.port>8292</cargo.tomcat.ajp.port>
     <cargo.tomcat.connector.maxHttpHeaderSize>8192</cargo.tomcat.connector.maxHttpHeaderSize>
-    <cargo.version>1.7.8</cargo.version>
+    <cargo.version>1.9.9</cargo.version>
     <changelog.since>2021-02-23</changelog.since>
     <!-- until snapshot matches released version (required for 'mvn changes:changes-check') -->
     <changes.version>2021.05</changes.version>
-    <hibernate.version>5.4.4.Final</hibernate.version>
+    <hibernate.version>5.5.4.Final</hibernate.version>
     <java.target.version>11</java.target.version>
-    <jetty.version>9.4.43.v20210629</jetty.version>
+    <jetty.version>11.0.7</jetty.version>
     <maven.compiler.arg>-Werror</maven.compiler.arg>
-    <mycore.version>2021.11</mycore.version>
+    <mycore.version>2022.02-SNAPSHOT</mycore.version>
     <node.version>v12.16.3</node.version>
     <selenium.version>3.141.59</selenium.version>
     <site.suffix />
@@ -53,7 +53,7 @@
     <sortpom.sortDeps>scope,groupId,artifactId</sortpom.sortDeps>
     <sortpom.sortFile>https://gist.githubusercontent.com/yagee-de/dfd3698c1b49173dbf251f74eb6a9297/raw/406460c088ff3cb6354e4ae6b40535e6f841607d/mycore_sort.xml</sortpom.sortFile>
     <sortpom.sortProps>true</sortpom.sortProps>
-    <tomcat.version>9.0.46</tomcat.version>
+    <tomcat.version>10.0.14</tomcat.version>
     <yarn.version>v1.22.4</yarn.version>
   </properties>
   <build>
@@ -61,7 +61,7 @@
       <plugins>
         <plugin>
           <groupId>org.codehaus.cargo</groupId>
-          <artifactId>cargo-maven2-plugin</artifactId>
+          <artifactId>cargo-maven3-plugin</artifactId>
           <version>${cargo.version}</version>
         </plugin>
         <!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself. -->
@@ -315,33 +315,31 @@
         </property>
       </activation>
       <properties>
-        <cargo.container>jetty9x</cargo.container>
+        <cargo.container>jetty11x</cargo.container>
       </properties>
       <build>
         <pluginManagement>
           <plugins>
             <plugin>
               <groupId>org.codehaus.cargo</groupId>
-              <artifactId>cargo-maven2-plugin</artifactId>
+              <artifactId>cargo-maven3-plugin</artifactId>
               <configuration>
                 <container>
                   <containerId>${cargo.container}</containerId>
                   <artifactInstaller>
                     <groupId>org.eclipse.jetty</groupId>
-                    <artifactId>jetty-distribution</artifactId>
+                    <artifactId>jetty-home</artifactId>
                     <version>${jetty.version}</version>
+                    <type>tar.gz</type>
                   </artifactInstaller>
-                  <dependencies>
-                    <dependency>
-                      <groupId>com.sun.activation</groupId>
-                      <artifactId>jakarta.activation</artifactId>
-                    </dependency>
-                  </dependencies>
                 </container>
                 <configuration>
+                  <home>${project.build.directory}/jetty-home</home>
                   <properties>
+                    <!-- default modules without "console-capture"
+                    see: https://codehaus-cargo.github.io/cargo/Jetty+11.x.html -->
+                    <cargo.jetty.modules>server,http,http2c,annotations,plus,websocket,jsp,ext,deploy</cargo.jetty.modules>
                     <cargo.servlet.port>${cargo.servlet.port}</cargo.servlet.port>
-                    <cargo.runtime.args>-Dorg.eclipse.jetty.util.log.class=org.eclipse.jetty.util.log.JavaUtilLog</cargo.runtime.args>
                     <cargo.jetty.realm.name>Restricted</cargo.jetty.realm.name>
                   </properties>
                 </configuration>
@@ -359,14 +357,14 @@
         </property>
       </activation>
       <properties>
-        <cargo.container>tomcat9x</cargo.container>
+        <cargo.container>tomcat10x</cargo.container>
       </properties>
       <build>
         <pluginManagement>
           <plugins>
             <plugin>
               <groupId>org.codehaus.cargo</groupId>
-              <artifactId>cargo-maven2-plugin</artifactId>
+              <artifactId>cargo-maven3-plugin</artifactId>
               <configuration>
                 <container>
                   <containerId>${cargo.container}</containerId>
@@ -383,8 +381,8 @@
                     </dependency>
                   </dependencies>
                 </container>
-                <home>${project.build.directory}/catalina-base</home>
                 <configuration>
+                  <home>${project.build.directory}/catalina-base</home>
                   <properties>
                     <cargo.rmi.port>${cargo.rmi.port}</cargo.rmi.port>
                     <cargo.servlet.port>${cargo.servlet.port}</cargo.servlet.port>
@@ -478,7 +476,7 @@
       <dependency>
         <groupId>com.zaxxer</groupId>
         <artifactId>HikariCP</artifactId>
-        <version>3.4.1</version>
+        <version>5.0.0</version>
         <scope>runtime</scope>
       </dependency>
       <dependency>
@@ -490,6 +488,10 @@
           <exclusion>
             <groupId>com.zaxxer</groupId>
             <artifactId>HikariCP-java6</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
           </exclusion>
         </exclusions>
       </dependency>

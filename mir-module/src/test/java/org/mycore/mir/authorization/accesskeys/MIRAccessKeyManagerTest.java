@@ -30,12 +30,8 @@ import static org.mycore.access.MCRAccessManager.PERMISSION_WRITE;
 
 import java.util.Map;
 
-import javax.persistence.EntityManager;
-
-import org.junit.Test;
 import org.junit.Before;
-import org.mycore.backend.jpa.MCREntityManagerProvider;
-import org.mycore.common.MCRException;
+import org.junit.Test;
 import org.mycore.common.MCRJPATestCase;
 import org.mycore.datamodel.metadata.MCRObjectID;
 import org.mycore.mcr.acl.accesskey.MCRAccessKeyManager;

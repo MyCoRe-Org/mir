@@ -23,12 +23,13 @@
 
 package org.mycore.mymaker.mir;
 
-import javax.xml.bind.JAXBException;
 import javax.xml.transform.TransformerException;
 
 import org.junit.Test;
 import org.mycore.common.MCRJPATestCase;
 import org.mycore.wfc.actionmapping.MCRActionMappingsManager;
+
+import jakarta.xml.bind.JAXBException;
 
 /**
  * @author Thomas Scheffler (yagee)

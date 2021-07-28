@@ -12,8 +12,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jdom2.Document;
@@ -40,6 +38,8 @@ import org.swordapp.server.SwordError;
 import org.swordapp.server.SwordServerException;
 import org.swordapp.server.UriRegistry;
 import org.xml.sax.SAXException;
+
+import jakarta.servlet.http.HttpServletResponse;
 
 public class MIRMETSIngester extends MIRSwordIngesterBase {
 

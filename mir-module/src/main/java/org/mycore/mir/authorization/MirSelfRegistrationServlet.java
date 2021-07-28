@@ -24,9 +24,6 @@ package org.mycore.mir.authorization;
 
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jdom2.Document;
@@ -43,6 +40,9 @@ import org.mycore.user2.MCRPasswordHashType;
 import org.mycore.user2.MCRUser;
 import org.mycore.user2.MCRUserManager;
 import org.mycore.user2.utils.MCRUserTransformer;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * @author Ren\u00E9 Adler (eagle)

@@ -3,8 +3,6 @@ package org.mycore.mir;
 import java.util.Arrays;
 import java.util.Optional;
 
-import javax.servlet.http.HttpServletResponse;
-
 import org.mycore.access.MCRAccessManager;
 import org.mycore.datamodel.classifications2.MCRCategory;
 import org.mycore.datamodel.classifications2.MCRCategoryDAO;
@@ -17,6 +15,8 @@ import org.mycore.datamodel.metadata.MCRObjectID;
 import org.mycore.frontend.MCRFrontendUtil;
 import org.mycore.frontend.servlets.MCRServlet;
 import org.mycore.frontend.servlets.MCRServletJob;
+
+import jakarta.servlet.http.HttpServletResponse;
 
 public class MIRStateServlet extends MCRServlet {
 

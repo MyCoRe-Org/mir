@@ -22,10 +22,6 @@
  */
 package org.mycore.mir.wizard.command;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
-import javax.persistence.PersistenceException;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jdom2.Document;
@@ -39,6 +35,10 @@ import org.mycore.datamodel.classifications2.impl.MCRCategoryDAOImpl;
 import org.mycore.datamodel.classifications2.utils.MCRXMLTransformer;
 import org.mycore.mir.wizard.MIRWizardCommand;
 import org.mycore.services.i18n.MCRTranslation;
+
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.PersistenceException;
 
 public class MIRWizardLoadClassifications extends MIRWizardCommand {
 

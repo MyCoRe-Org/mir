@@ -3,8 +3,6 @@ package org.mycore.mir.sword2;
 import java.io.IOException;
 import java.util.List;
 
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.abdera.i18n.iri.IRI;
 import org.apache.abdera.model.Entry;
 import org.jdom2.Element;
@@ -23,6 +21,8 @@ import org.swordapp.server.DepositReceipt;
 import org.swordapp.server.SwordError;
 import org.swordapp.server.UriRegistry;
 import org.xml.sax.SAXException;
+
+import jakarta.servlet.http.HttpServletResponse;
 
 public class MIRSwordMetadataProvider extends MCRSwordMetadataProvider {
 
