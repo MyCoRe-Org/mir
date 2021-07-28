@@ -23,7 +23,7 @@
 
 package org.mycore.mymaker.mir;
 
-import javax.xml.bind.JAXBException;
+import jakarta.xml.bind.JAXBException;
 import javax.xml.transform.TransformerException;
 
 import org.junit.Test;

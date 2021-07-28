@@ -27,10 +27,10 @@ import java.util.EnumSet;
 import java.util.Locale;
 import java.util.UUID;
 
-import javax.servlet.DispatcherType;
-import javax.servlet.FilterRegistration.Dynamic;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletRegistration;
+import jakarta.servlet.DispatcherType;
+import jakarta.servlet.FilterRegistration.Dynamic;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.ServletRegistration;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

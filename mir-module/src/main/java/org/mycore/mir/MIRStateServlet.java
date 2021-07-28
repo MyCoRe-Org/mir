@@ -3,7 +3,7 @@ package org.mycore.mir;
 import java.util.Arrays;
 import java.util.Optional;
 
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
 
 import org.mycore.access.MCRAccessManager;
 import org.mycore.datamodel.classifications2.MCRCategory;

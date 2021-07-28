@@ -3,7 +3,7 @@ package org.mycore.mir.sword2;
 import java.io.IOException;
 import java.util.List;
 
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
 
 import org.apache.abdera.i18n.iri.IRI;
 import org.apache.abdera.model.Entry;

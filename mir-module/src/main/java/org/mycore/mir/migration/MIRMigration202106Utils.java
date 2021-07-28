@@ -23,8 +23,6 @@ package org.mycore.mir.migration;
 import static org.mycore.access.MCRAccessManager.PERMISSION_READ;
 import static org.mycore.access.MCRAccessManager.PERMISSION_WRITE;
 
-import javax.persistence.EntityManager;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -45,6 +43,8 @@ import org.mycore.mir.authorization.accesskeys.backend.MIRAccessKeyPair;
 import org.mycore.user2.MCRUser;
 import org.mycore.user2.MCRUserAttribute;
 import org.mycore.user2.MCRUserManager;
+
+import jakarta.persistence.EntityManager;
 
 @MCRCommandGroup(
     name = "MIR migration 2021.06")

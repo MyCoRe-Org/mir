@@ -2,7 +2,7 @@ package org.mycore.mir.viewer;
 
 import java.util.Locale;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.mycore.common.xml.MCRXMLFunctions;
 import org.mycore.common.xsl.MCRParameterCollector;
