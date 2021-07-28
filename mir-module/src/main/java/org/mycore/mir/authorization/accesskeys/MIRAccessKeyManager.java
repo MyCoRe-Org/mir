@@ -28,8 +28,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-import org.mycore.common.MCRSessionMgr;
 import org.mycore.common.MCRException;
+import org.mycore.common.MCRSessionMgr;
 import org.mycore.datamodel.metadata.MCRObjectID;
 import org.mycore.mcr.acl.accesskey.MCRAccessKeyManager;
 import org.mycore.mcr.acl.accesskey.model.MCRAccessKey;
@@ -44,14 +44,14 @@ public final class MIRAccessKeyManager {
      * @return the {@link MIRAccessKeyPair}
      */
     public static synchronized MIRAccessKeyPair getKeyPair(final MCRObjectID mcrObjectId) {
-        final MCRAccessKey accessKeyRead = 
-            MCRAccessKeyManager.listAccessKeysWithType(mcrObjectId, PERMISSION_READ).stream()
-                .findFirst()
-                .orElse(null);
-        final MCRAccessKey accessKeyWrite = 
-            MCRAccessKeyManager.listAccessKeysWithType(mcrObjectId, PERMISSION_WRITE).stream()
-                .findFirst()
-                .orElse(null);
+        final MCRAccessKey accessKeyRead = MCRAccessKeyManager.listAccessKeysWithType(mcrObjectId, PERMISSION_READ)
+            .stream()
+            .findFirst()
+            .orElse(null);
+        final MCRAccessKey accessKeyWrite = MCRAccessKeyManager.listAccessKeysWithType(mcrObjectId, PERMISSION_WRITE)
+            .stream()
+            .findFirst()
+            .orElse(null);
         if (accessKeyRead != null) {
             if (accessKeyWrite != null) {
                 return new MIRAccessKeyPair(mcrObjectId, accessKeyRead.getSecret(), accessKeyWrite.getSecret());
@@ -144,7 +144,7 @@ public final class MIRAccessKeyManager {
                 if (!MCRAccessKeyManager.isValidSecret(writeValue)) {
                     throw new MCRException("Secret is invalid.");
                 }
-                if (accessKeyWrite == null){
+                if (accessKeyWrite == null) {
                     accessKeyWrite = new MCRAccessKey(writeValue, PERMISSION_WRITE);
                 }
                 accessKeyWrite.setSecret(MCRAccessKeyManager.hashSecret(writeValue, objectId));

@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.naming.OperationNotSupportedException;
-import javax.servlet.http.HttpServletResponse;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -26,6 +25,8 @@ import org.swordapp.server.SwordError;
 import org.swordapp.server.SwordServerException;
 import org.swordapp.server.UriRegistry;
 import org.xml.sax.SAXException;
+
+import jakarta.servlet.http.HttpServletResponse;
 
 public class MIRGoobiIngester extends MIRSwordIngesterBase {
 

@@ -58,16 +58,16 @@
               <xsl:copy-of select="@*[name() != 'value']" />
               <xsl:attribute name="value">
                 <xsl:choose>
-                  <xsl:when test="@name = 'javax.persistence.jdbc.driver'">
+                  <xsl:when test="@name = 'jakarta.persistence.jdbc.driver'">
                     <xsl:value-of select="xalan:nodeset($cfg)//driver" />
                   </xsl:when>
-                  <xsl:when test="@name = 'javax.persistence.jdbc.url'">
+                  <xsl:when test="@name = 'jakarta.persistence.jdbc.url'">
                     <xsl:value-of select="xalan:nodeset($cfg)//url" />
                   </xsl:when>
-                  <xsl:when test="@name = 'javax.persistence.jdbc.user'">
+                  <xsl:when test="@name = 'jakarta.persistence.jdbc.user'">
                     <xsl:value-of select="xalan:nodeset($cfg)//username" />
                   </xsl:when>
-                  <xsl:when test="@name = 'javax.persistence.jdbc.password'">
+                  <xsl:when test="@name = 'jakarta.persistence.jdbc.password'">
                     <xsl:value-of select="xalan:nodeset($cfg)//password" />
                   </xsl:when>
                   <xsl:when test="@name = 'hibernate.default_schema'">

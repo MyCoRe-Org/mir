@@ -2,13 +2,13 @@ package org.mycore.mir.viewer;
 
 import java.util.Locale;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.mycore.common.xml.MCRXMLFunctions;
 import org.mycore.common.xsl.MCRParameterCollector;
 import org.mycore.frontend.MCRFrontendUtil;
 import org.mycore.viewer.configuration.MCRViewerConfiguration;
 import org.mycore.viewer.configuration.MCRViewerDefaultConfigurationStrategy;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 public class MIRViewerConfigurationStrategy extends MCRViewerDefaultConfigurationStrategy {
 

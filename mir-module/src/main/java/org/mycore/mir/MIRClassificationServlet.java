@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.mycore.access.MCRAccessManager;
@@ -18,6 +16,8 @@ import org.mycore.datamodel.classifications2.MCRLabel;
 import org.mycore.frontend.servlets.MCRServlet;
 import org.mycore.frontend.servlets.MCRServletJob;
 import org.mycore.user2.MCRUser2Constants;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 public class MIRClassificationServlet extends MCRServlet {
 

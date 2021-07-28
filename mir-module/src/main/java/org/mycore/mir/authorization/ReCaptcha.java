@@ -25,8 +25,6 @@ package org.mycore.mir.authorization;
 import java.io.IOException;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -39,6 +37,8 @@ import org.mycore.common.MCRSessionMgr;
 import org.mycore.common.config.MCRConfiguration2;
 
 import com.google.gson.Gson;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * @author Ren\u00E9 Adler (eagle)

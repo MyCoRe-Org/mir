@@ -20,9 +20,6 @@
 
 package org.mycore.mir.authorization.accesskeys.frontend.servlet;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.mycore.common.MCRSessionMgr;
@@ -33,6 +30,9 @@ import org.mycore.frontend.servlets.MCRServlet;
 import org.mycore.frontend.servlets.MCRServletJob;
 import org.mycore.mcr.acl.accesskey.MCRAccessKeyUtils;
 import org.mycore.mcr.acl.accesskey.exception.MCRAccessKeyException;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 public class MIRAccessKeyServlet extends MCRServlet {
 

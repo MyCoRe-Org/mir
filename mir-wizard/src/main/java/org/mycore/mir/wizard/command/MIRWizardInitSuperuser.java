@@ -24,12 +24,12 @@ package org.mycore.mir.wizard.command;
 
 import java.util.List;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
-
 import org.mycore.backend.jpa.MCREntityManagerProvider;
 import org.mycore.mir.wizard.MIRWizardCommand;
 import org.mycore.user2.MCRUserCommands;
+
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityTransaction;
 
 public class MIRWizardInitSuperuser extends MIRWizardCommand {
 

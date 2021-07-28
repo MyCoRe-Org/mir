@@ -25,10 +25,6 @@ package org.mycore.mir.wizard.command;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
-import javax.persistence.PersistenceException;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jdom2.Attribute;
@@ -39,6 +35,10 @@ import org.mycore.common.content.MCRJDOMContent;
 import org.mycore.common.xml.MCRURIResolver;
 import org.mycore.frontend.cli.MCRCommandManager;
 import org.mycore.mir.wizard.MIRWizardCommand;
+
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.PersistenceException;
 
 /**
  * @author René Adler (eagle)
