@@ -275,6 +275,7 @@
       }
     </script>
     <script src="{$WebApplicationBaseURL}js/mir/session-polling.js"></script>
+    <script src="{$WebApplicationBaseURL}js/mir/sherpa.js"></script>
     <script src="{$WebApplicationBaseURL}modules/webtools/upload/js/upload-api.js"></script>
     <script src="{$WebApplicationBaseURL}modules/webtools/upload/js/upload-gui.js"></script>
     <link rel="stylesheet" type="text/css" href="{$WebApplicationBaseURL}modules/webtools/upload/css/upload-gui.css" />
