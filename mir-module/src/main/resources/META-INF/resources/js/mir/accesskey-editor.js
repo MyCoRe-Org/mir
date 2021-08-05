@@ -102,11 +102,11 @@ class MIRAccessKeyEditor {
         $("#spinner").hide();
         $("#key-table").show();
         $("#paginator-div").show();
-        $("#alert-div").text("");
+        $("#error-alert-div").text("");
         $("#new-btn").show();
       } else {
         $("#spinner").hide();
-        $("#alert-div").show();
+        $("#error-alert-div").show();
       }
     });
     this._initModalHandler();
@@ -157,10 +157,10 @@ class MIRAccessKeyEditor {
     this._tableModel.on("dataChanged", handleDataChanged);
     this._tableModel.on("rowDeleted", handleRowDeleted);
   }
-  _fetchI18n() {
+  _fetchI18n(system) {
     let result = "";
     $.ajax({
-      url: webApplicationBaseURL + "rsc/locale/translate/" + $("html").attr("lang") + "/mcr.accesskey*",
+      url: webApplicationBaseURL + "rsc/locale/translate/" + $("html").attr("lang") + "/" + system + ".accesskey*",
       type: 'GET',
       success: function (data) {
         result = data;
@@ -170,18 +170,26 @@ class MIRAccessKeyEditor {
     return result;
   }
   _getI18n(code) {
-    if (this._i18n === undefined) {
-      this._i18n = this._fetchI18n();
-    } 
-    if (this._i18n !== undefined) {
-      return this._i18n["mcr.accesskey." + code];
-    } else {
-      return undefined;
+    if (code.startsWith("mcr")) {
+      if (this._i18nMCR === undefined) {
+        this._i18nMCR = this._fetchI18n("mcr");
+      }
+      if (this._i18nMCR !== undefined && this._i18nMCR.hasOwnProperty(code)) {
+        return this._i18nMCR[code];
+      }
+    } else if (code.startsWith("mir")) {
+      if (this._i18nMIR === undefined) {
+        this._i18nMIR = this._fetchI18n("mir");
+      }
+      if (this._i18nMIR !== undefined && this._i18nMIR.hasOwnProperty(code)) {
+        return this._i18nMIR[code];
+      }
     }
+    return "???" + code + "???";
   }
   _updateTableModel(itemOffset, itemLimit) {
     $("#spinner").show();
-    $("#alert-div").hide();
+    $("#error-alert-div").hide();
     this._client.getKeys(itemOffset, itemLimit, (error, result) => {
       if (!error) {
         this._paginatorModel.itemCount = result["totalResults"];
@@ -189,8 +197,8 @@ class MIRAccessKeyEditor {
         $("#spinner").hide();
       } else {
         const errorString = this._handleError(error)
-        $("#alert-div").text(errorString);
-        $("#alert-div").show();
+        $("#error-alert-div").text(errorString);
+        $("#error-alert-div").show();
         $("#spinner").hide();
       }
     });
@@ -201,40 +209,74 @@ class MIRAccessKeyEditor {
       if (data.index != undefined) {
         const accessKey = this._tableModel.getDataAt(data.index);
         $("#id-input").val(accessKey.value);
+        $("#id-div").show();
         $("#type-input").val(accessKey.type);
-        $("#value-input").val(accessKey.value);
+        $("#value-div").hide();
+        $("#comment-textarea").val(accessKey.comment);
+        $("#creator-input").show();
+        $("#creator-input").show();
+        $("#creation-input").show();
+        $("#creation-input").show();
+        $("#last-changer-input").show();
+        $("#last-changer-input").show();
+        $("#last-change-input").show();
+        $("#last-change-input").show();
+        $("#meta-div").show();
+        $("#creator-input").val(accessKey.creator);
+        $("#creator-input").attr("readonly","true");
+        const creation = accessKey.creation;
+        if (creation === undefined) {
+          $("#creation-input").val("");
+        } else {
+          $("#creation-input").val(new Date(creation).toLocaleString());
+        }
+        $("#creation-input").attr("readonly","true");
+        $("#last-changer-input").val(accessKey.lastChanger);
+        $("#last-changer-input").attr("readonly","true");
+        const lastChange = accessKey.lastChange;
+        if (lastChange === undefined) {
+          $("#last-change-input").val("");
+        } else {
+          $("#last-change-input").val(new Date(lastChange).toLocaleString());
+        }
+        $("#last-change-input").attr("readonly","true");
         $("#add-btn").hide();
         $("#modal-alert-div").hide();
         $("#update-btn").show();
         $("#delete-btn").show();
-        $("#value-input").removeClass("is-invalid");
-        $("#type-input").removeClass("is-invalid");
       }
       if (data.mode == "new") {
-        $("#id-input").val("");
+        $("#id-div").hide();
+        $("#value-div").show();
         $("#value-input").val("");
         $("#type-input").val("read");
+        $("#comment-textarea").val("");
+        $("#value-gen-btn").show();
         $("#add-btn").show();
         $("#delete-btn").hide();
         $("#update-btn").hide();
+        $("#meta-div").hide();
         $("#modal-alert-div").hide();
         $("#value-input").removeClass("is-invalid");
-        $("#type-input").removeClass("is-invalid");
       }
     };
     const handleDeleteButtonClicked = () => {
       $("#delete-btn").prop("disabled", true);
       $("#update-btn").prop("disabled", true);
       $(".modal-close-btn").prop("disabled", true);
-      const value = $("#value-input").val();
-      this._client.deleteKey(value, (error, data) => {
+      const accessKeyId = $("#id-input").val();
+      this._client.deleteKey(accessKeyId, (error, data) => {
         if (!error) {
-          const index = this._tableModel.data.findIndex(key => key.value === value);
+          const index = this._tableModel.data.findIndex(key => key.value === accessKeyId);
           if (index == -1) {
             console.error("inconsistency");
           } else {
             this._tableModel.deleteRow(index);
             $("#key-modal").modal("hide");
+            $("#add-alert-div").hide();
+            $("#success-alert-div").text(this._getI18n("mir.accesskey.delete.success")
+              .format(accessKeyId.substring(0, 7)));
+            $("#success-alert-div").show();
           }
         } else {
           this._handleModalError(error);
@@ -250,27 +292,27 @@ class MIRAccessKeyEditor {
       $(".modal-close-btn").prop("disabled", true);
       const accessKey = {
         "type": $("#type-input").val(),
-        "value": $("#value-input").val(),
+        "comment": $("#comment-textarea").val()
       };
-      if (!isValidValue(accessKey.value)) {
-        $("#delete-btn").prop("disabled", false);
-        $("#update-btn").prop("disabled", false);
-        $(".modal-close-btn").prop("disabled", false);
-        $("#value-input").addClass("is-invalid");
-        return;
-      } else {
-        $("#value-input").removeClass("is-invalid");
-      }
       const accessKeyId = $("#id-input").val();
       this._client.updateKey(accessKeyId, accessKey, (error, data) => {
+        $("#add-alert-div").hide();
         if (!error) {
           const index = this._tableModel.data.findIndex(key => key.value === accessKeyId);
           if (index == -1) {
             console.error("inconsistency");
           } else {
-            this._tableModel.updateRow(index, accessKey);
+            if (data.creation === undefined) {
+              this._tableModel.deleteRow(index);
+              this._tableModel.addRow(data);
+            } else {
+              this._tableModel.updateRow(index, data);
+            }
             $("#key-modal").modal("hide");
           }
+          $("#success-alert-div").text(this._getI18n("mir.accesskey.update.success")
+            .format(accessKeyId.substring(0, 7)));
+          $("#success-alert-div").show();
         } else {
           this._handleModalError(error);
         }
@@ -288,6 +330,7 @@ class MIRAccessKeyEditor {
       const accessKey = {
         value: $("#value-input").val(),
         type: $("#type-input").val(),
+        comment: $("#comment-textarea").val(),
       };
       if (!isValidValue(accessKey.value)) {
         $(".closeModal").prop("disabled", false);
@@ -299,8 +342,13 @@ class MIRAccessKeyEditor {
       }
       this._client.addKey(accessKey, (error, data) => {
         if (!error) {
-          this._tableModel.addRow(accessKey);
+          this._tableModel.addRow(data);
           $("#key-modal").modal("hide");
+          $("#add-alert-id").text("(" + data.value.substring(0, 7) + ")");
+          $("#add-alert-type").text(this._getI18n("mir.accesskey.type." + data.type));
+          $("#add-alert-value").text(accessKey.value);
+          $("#success-alert-div").hide();
+          $("#add-alert-div").show();
         } else {
           this._handleModalError(error);
         }
@@ -313,6 +361,20 @@ class MIRAccessKeyEditor {
     $("#update-btn").click(handleUpdateButtonClicked);
     $("#value-gen-btn").click(handleGeneratorButtonClicked);
     $("#key-modal").on("show.bs.modal", handleShowEditModal);
+    $("#type-popover").popover({
+      html: true,
+      content: this._getI18n("mir.accesskey.information.type"),
+      container: $("#key-modal")
+    });
+    $("#value-popover").popover({
+      html: true,
+      content: this._getI18n("mir.accesskey.information.value"),
+      container: $("#key-modal")
+    });
+    $("#alert-success-value").tooltip();
+    $("#alert-success-value").click(function() {
+      copyToClipboard($(this).text());
+    });
   }
   _initPaginationHandler() {
     const handleItemLimitChanged = (itemLimit) => {
@@ -322,6 +384,8 @@ class MIRAccessKeyEditor {
     const handlePaginatorClicked = event => {
       const target = $(event.currentTarget);
       if (!target.hasClass("disabled") && !target.hasClass("active")) {
+        $("#add-alert-div").hide();
+        $("#success-alert-div").hide();
         const id = target[0].id;
         if (id == "pre") {
           this._paginatorModel.pageOffset -= 1;
@@ -344,11 +408,13 @@ class MIRAccessKeyEditor {
     $("#modal-alert-div").show();
   }
   _handleError(error) {
+    $("#add-alert-div").hide();
+    $("#success-alert-div").hide();
     if (error.status < 500) {
       const result = error.responseJSON;
       if (result !== undefined) {
         if (result.errorCode !== undefined) {
-          const errorMessage = this._getI18n("error." + result.errorCode);
+          let errorMessage = this._getI18n("mcr.accesskey.error." + result.errorCode);
           if (errorMessage !== undefined) {
             return errorMessage;
           } else {
@@ -429,22 +495,26 @@ class MIRAccessKeyEditor {
       }
     }
   }
-  _renderRow(index, accessKey, offset) {
+  _renderRow(index, accessKey) {
     const row = $("#key-table").find("tbody").find("tr").eq(index);
     if (accessKey === undefined) {
       for (let jindex = 1; jindex < 3; jindex++) {
-        row.find("td").eq(jindex).html("");
+        row.find("td").eq(jindex).text("");
       }
       row.css("visibility", "hidden");
     } else {
-      if (offset !== undefined) {
-        const indexCell = row.find("td").eq(0);
-        indexCell.html(String(offset + index + 1));
-      }
+      const indexCell = row.find("td").eq(0);
+      indexCell.text(accessKey.value.substring(0,7));
+      const typName = this._getI18n("mir.accesskey.type." + accessKey["type"]);
       const typeCell = row.find("td").eq(1);
-      typeCell.html(accessKey["type"]);
-      const valueCell = row.find("td").eq(2);
-      valueCell.html(accessKey["value"]);
+      typeCell.text(typName);
+      const comment = accessKey["comment"];
+      const commentCell = row.find("td").eq(2);
+      /*if (comment.length > 64) {
+        commentCell.text(comment.substring(0, 61) + "...");
+      } else {*/
+        commentCell.text(comment);
+      //}
       row.css("visibility", "visible");
     }
   }
@@ -453,7 +523,7 @@ class MIRAccessKeyEditor {
     for (let index = 0; index < tableRows.length; index++) {
       if (index < data.length) {
         const accessKey = data[index];
-        this._renderRow(index, accessKey, startIndex);
+        this._renderRow(index, accessKey);
       } else {
         this._renderRow(index);
       }
@@ -519,7 +589,7 @@ class Client {
  deleteKey(value, callback) {
    const token = this._token;
    $.ajax({
-     url: API_URL + this._id + "/accesskeys/" + urlEncode(value),
+     url: API_URL + this._id + "/accesskeys/" + value,
      type: "DELETE",
      beforeSend: function (xhr) {
        if (token != undefined) {
@@ -537,7 +607,7 @@ class Client {
  updateKey(value, accessKey, callback) {
    const token = this._token;
    $.ajax({
-     url: API_URL + this._id + "/accesskeys/" + urlEncode(value),
+     url: API_URL + this._id + "/accesskeys/" + value,
      type: "PUT",
      data: JSON.stringify(accessKey),
      contentType: "application/json",
@@ -583,16 +653,16 @@ $(document).ready(function () {
           new MIRAccessKeyEditor(client);
         } else {
           $("#spinner").hide();
-          $("#alert-div").show();
+          $("#error-alert-div").show();
         }
       },
       error: function(data) {
         $("#spinner").hide();
-        $("#alert-div").show();
+        $("#error-alert-div").show();
       }
     });
   } else {
     $("#spinner").hide();
-    $("#alert-div").show();
+    $("#error-alert-div").show();
   }
 });

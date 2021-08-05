@@ -20,6 +20,7 @@
 
 package org.mycore.mir.migration;
 
+import java.util.Date;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
@@ -40,6 +41,11 @@ public class MIRMigration202105Utils {
 
     public static final Logger LOGGER = LogManager.getLogger();
 
+    private static String createComment(final String value) {
+        return String.format("This access key was migrated on %s from an access key pair.\nValue: %s", 
+            new Date().toString(), value);
+    }
+
     @MCRCommand(syntax = "migrate access key pairs",
         help = "Migrates all access key pairs to access keys")
     public static void migrateAccessKeyPairs() throws Exception {
@@ -50,10 +56,16 @@ public class MIRMigration202105Utils {
             final String writeKey = accessKeyPair.getWriteKey();
             if (readKey != null) {
                 final MCRAccessKey accessKey = new MCRAccessKey(objectId, readKey, MCRAccessManager.PERMISSION_READ);
+                accessKey.setCreator("migration");
+                accessKey.setCreation(new Date());
+                accessKey.setComment(createComment(readKey));
                 MCRAccessKeyManager.addAccessKey(accessKey);
             }
             if (writeKey != null) {
                 final MCRAccessKey accessKey = new MCRAccessKey(objectId, writeKey, MCRAccessManager.PERMISSION_WRITE);
+                accessKey.setCreator("migration");
+                accessKey.setCreation(new Date());
+                accessKey.setComment(createComment(writeKey));
                 MCRAccessKeyManager.addAccessKey(accessKey);
             }
             MIRAccessKeyManager.removeAccessKeyPair(objectId);

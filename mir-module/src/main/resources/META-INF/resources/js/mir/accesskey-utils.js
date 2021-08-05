@@ -29,9 +29,17 @@ function generateKey(plength) {
 function isValidValue(value) {
   return value.length > 0;
 }
-function urlEncode(value) {
-  return btoa(value)
-    .replace(/=/g, "")
-    .replace(/\+/g, "-")
-    .replace(/\//g, "_");
+String.prototype.format = String.prototype.f = function() {
+  var s = this, i = arguments.length;
+  while (i--) {
+    s = s.replace(new RegExp('\\{' + i + '\\}', 'gm'), arguments[i]);
+  }
+  return s;
+};
+function copyToClipboard(text) {
+  let $temp = $('<input type="hidden">');
+  $("body").append($temp);
+  $temp.val(text).select();
+  document.execCommand("copy");
+  $temp.remove();
 }
