@@ -48,7 +48,7 @@
     <node.version>v12.16.3</node.version>
     <selenium.version>3.141.59</selenium.version>
     <site.suffix>2020.06.x</site.suffix>
-    <solr-runner.solrMirrorURL>http://mirror.23media.de/apache/lucene/solr/</solr-runner.solrMirrorURL>
+    <solr-runner.solrMirrorURL>https://archive.apache.org/dist/lucene/solr/</solr-runner.solrMirrorURL>
     <solr-runner.solrVersionString>8.6.1</solr-runner.solrVersionString>
     <sortpom.sortDeps>scope,groupId,artifactId</sortpom.sortDeps>
     <sortpom.sortFile>https://gist.githubusercontent.com/yagee-de/dfd3698c1b49173dbf251f74eb6a9297/raw/406460c088ff3cb6354e4ae6b40535e6f841607d/mycore_sort.xml</sortpom.sortFile>
