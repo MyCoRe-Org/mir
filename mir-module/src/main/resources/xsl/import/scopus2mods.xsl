@@ -23,8 +23,6 @@
       </mods:originInfo>
       <xsl:apply-templates select="item/bibrecord/head/citation-info/author-keywords/author-keyword" />
       <xsl:apply-templates select="scopus:language[@xml:lang]" />
-      <xsl:apply-templates select="item/bibrecord/head/abstracts/abstract" />
-      <!-- xsl:apply-templates select="scopus:coredata/scopus:openaccess" / -->
     </mods:mods>
   </xsl:template>
 
@@ -109,13 +107,6 @@
     </mods:namePart>
   </xsl:template>
 
-  <xsl:template match="abstracts/abstract">
-    <mods:abstract>
-      <xsl:apply-templates select="@xml:lang" />
-      <xsl:apply-templates select="*|text()" />
-    </mods:abstract>
-  </xsl:template>
-
   <xsl:template match="@xml:lang">
     <xsl:attribute name="xml:lang">
       <xsl:value-of select="document(concat('language:',.))/language/@xmlCode" />
@@ -134,7 +125,7 @@
     <mods:relatedItem type="host">
       <xsl:apply-templates select="@type" />
       <xsl:apply-templates select="sourcetitle|sourcetitle-abbrev" />
-      <xsl:apply-templates select="volisspag" />
+      <xsl:call-template name="part" />
       <xsl:apply-templates select="issn|isbn" />
       <mods:originInfo eventType="publication">
         <xsl:apply-templates select="publisher/publishername" />
@@ -200,15 +191,26 @@
     </mods:titleInfo>
   </xsl:template>
 
-  <xsl:template match="volisspag">
+  <xsl:template name="part">
     <mods:part>
-      <xsl:apply-templates select="voliss/@volume|voliss/@issue" />
-      <xsl:apply-templates select="pagerange" />
+      <xsl:for-each select="volisspag">
+        <xsl:apply-templates select="voliss/@volume|voliss/@issue" />
+        <xsl:apply-templates select="pagerange" />
+      </xsl:for-each>
+      <xsl:apply-templates select="article-number" />
     </mods:part>
   </xsl:template>
 
   <xsl:template match="voliss/@volume|voliss/@issue">
     <mods:detail type="{name()}">
+      <mods:number>
+        <xsl:value-of select="." />
+      </mods:number>
+    </mods:detail>
+  </xsl:template>
+
+  <xsl:template match="article-number">
+    <mods:detail type="article_number">
       <mods:number>
         <xsl:value-of select="." />
       </mods:number>
@@ -259,6 +261,12 @@
     </mods:identifier>
   </xsl:template>
 
+  <xsl:template match="scopus:pubmed-id">
+    <mods:identifier type="pubmed">
+      <xsl:value-of select="text()" />
+    </mods:identifier>
+  </xsl:template>
+
   <xsl:template match="itemidlist">
     <xsl:apply-templates select="ce:doi" />
     <xsl:apply-templates select="itemid[@idtype='SCP']" />
@@ -283,14 +291,6 @@
       </mods:topic>
     </mods:subject>
   </xsl:template>
-
-  <!-- xsl:variable name="authorityOA">https://bibliographie.ub.uni-due.de/classifications/oa</xsl:variable>
-
-  <xsl:template match="scopus:coredata/scopus:openaccess">
-    <xsl:if test=".='1'">
-      <mods:classification authorityURI="{$authorityOA}" valueURI="{$authorityOA}#oa" />
-    </xsl:if>
-  </xsl:template -->
 
   <xsl:template match="text()" />
 
