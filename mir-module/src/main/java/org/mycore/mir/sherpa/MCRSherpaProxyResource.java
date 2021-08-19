@@ -49,7 +49,7 @@ public class MCRSherpaProxyResource {
         Optional<MCRSherpaConfig> configOpt = MCRConfiguration2.getSingleInstanceOf(MIR_SHERPA_CONFIG_KEY);
 
         if(configOpt.isEmpty()){
-            LOGGER.error("MCR.Sherpa property is not set!");
+            LOGGER.error("MIR.Sherpa property is not set!");
             return Response.serverError().build();
         }
 

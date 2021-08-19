@@ -73,6 +73,7 @@
 
                 if (response["items"].length !== 1) {
                     onresolve();
+                    return;
                 }
 
                 let policies = response["items"][0]["publisher_policy"];
