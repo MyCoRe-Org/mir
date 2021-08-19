@@ -28,7 +28,7 @@
       <xsl:copy-of select="@*|node()" />
       <xsl:variable name="parentReadable" select="acl:checkPermission(@ID, $read)" />
       <rights>
-        <xsl:for-each select="@ID|structure/*/*/@xlink:href">
+        <xsl:for-each select="@ID|structure/*/*[not(local-name() = 'child')]/@xlink:href">
           <xsl:call-template name="check-rights">
             <xsl:with-param name="id" select="." />
             <xsl:with-param name="parentReadable" select="$parentReadable" />

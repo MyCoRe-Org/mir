@@ -169,13 +169,11 @@
           var result = [];
           if (typeof data !== 'undefined' && data.length > 0) {
             data.forEach((element) => {
-              if (element.category.includes("Schlagwort")) {
-                var topic = {
-                  label: element.label,
-                  value: element.id,
-                };
-                result.push(topic);
-              }
+              var topic = {
+                label: element.label,
+                value: element.id,
+              };
+              result.push(topic);
             });
           }
           return result;
