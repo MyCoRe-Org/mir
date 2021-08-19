@@ -11,6 +11,7 @@
   <xsl:param name="layout" select="'$'"/>
   <xsl:param name="MIR.Workflow.Box" select="'false'"/>
   <xsl:param name="MIR.Workflow.ReviewDerivateRequired" select="'true'"/>
+  <xsl:param name="MIR.Sherpa.API.Key" select="''"/>
   <xsl:param name="CurrentUser"/>
 
   <xsl:param name="MIR.Workflow.Debug" select="'false'"/>
@@ -98,12 +99,14 @@
                 </xsl:call-template>
               </xsl:otherwise>
             </xsl:choose>
-            <xsl:variable name="issn"
-                          select="/mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:relatedItem/mods:identifier[@type='issn']/text()"/>
-            <xsl:if test="string-length($issn)&gt;0">
-              <li data-sherpainfo-issn="{$issn}">
-
-              </li>
+            <xsl:if test="string-length($MIR.Sherpa.API.Key)&gt;0">
+              <xsl:variable name="issn"
+                            select="/mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:relatedItem/mods:identifier[@type='issn']/text()"/>
+              <xsl:if test="string-length($issn)&gt;0">
+                <li data-sherpainfo-issn="{$issn}">
+                  <xsl:value-of select="i18n:translate('mir.workflow.sherpa.loading')" /><span class="spinner-grow spinner-grow-sm" role="status"></span>
+                </li>
+              </xsl:if>
             </xsl:if>
           </ul>
         </p>
