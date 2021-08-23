@@ -628,7 +628,7 @@
               <xsl:if test="(key('rights', @ID)/@accKeyEnabled) and (key('rights', @ID)/@write)">
                 <li>
                   <a role="menuitem" tabindex="-1"
-                     href="{$WebApplicationBaseURL}accesskey/editor.xml?objId={@ID}&amp;url={encoder:encode(string($RequestURL))}"
+                     href="{$WebApplicationBaseURL}accesskey/manager.xml?objectId={@ID}&amp;url={encoder:encode(string($RequestURL))}"
                      class="dropdown-item"
                   >
                     <xsl:value-of select="i18n:translate('mir.accesskey.manage')" />
@@ -748,7 +748,7 @@
             <xsl:if test="key('rights', $deriv)/@accKeyEnabled and key('rights', $deriv)/@write">
               <li>
                 <a role="menuitem" tabindex="-1" class="dropdown-item"
-                  href="{$WebApplicationBaseURL}accesskey/editor.xml?objId&amp;url={encoder:encode(string($RequestURL))}"
+                  href="{$WebApplicationBaseURL}accesskey/manager.xml?objectId&amp;url={encoder:encode(string($RequestURL))}"
                 >
                   <xsl:value-of select="i18n:translate('mir.accesskey.manage')" />
                 </a>
