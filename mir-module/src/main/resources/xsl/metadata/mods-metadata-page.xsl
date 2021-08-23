@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:mcri18n="http://www.mycore.de/xslt/i18n"
+                xmlns:mcrproperty="http://www.mycore.de/xslt/property"
                 version="3.0">
 
   <xsl:include href="functions/i18n.xsl" />
+  <xsl:include href="functions/property.xsl" />
 
   <xsl:param name="MIR.Layout.Top"/>
   <xsl:param name="MIR.Layout.End"/>
@@ -73,6 +75,7 @@
     <xsl:param name="properties"/>
 
     <xsl:variable name="originalContent" select="."/>
+    <xsl:variable name="icons" select="mcrproperty:all('MIR.Layout.Display.Panel.Icon')" />
     <xsl:for-each select="tokenize($properties, ',')">
       <xsl:variable name="boxID" select="normalize-space(.)"/>
       <xsl:if test="count($originalContent/div[@id=$boxID])&gt;=1">
@@ -168,6 +171,10 @@
             <div class="card" id="{concat($boxID, '-panel')}">
               <div class="card-header">
                 <h3 class="card-title">
+                  <xsl:variable name="icon" select="$icons/entry[@key=concat('MIR.Layout.Display.Panel.Icon.', $boxID)]" />
+                  <xsl:if test="$icon">
+                    <i class="{$icon/text()}" style="margin-right:1ex;" aria-hidden="true" />
+                  </xsl:if>
                   <xsl:value-of
                       select="mcri18n:translate(concat('mir.metaData.panel.heading.', $boxID))"/>
                 </h3>
