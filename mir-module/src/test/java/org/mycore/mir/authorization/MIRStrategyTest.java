@@ -179,7 +179,7 @@ public class MIRStrategyTest extends MCRJPATestCase {
             .assertFalse(strategy.checkPermission(mir_derivate_00004711.toString(), MCRAccessManager.PERMISSION_READ));
 
         //Give user read access-token
-        MCRAccessKeyUserUtils.addAccessKey(mir_mods_00004711, accessKeyRead.getValue());
+        MCRAccessKeyUserUtils.addAccessKey(mir_mods_00004711, "mySecret");
         junitUser = MCRUserManager.getUser(junitUser.getUserName());
         MCRSessionMgr.getCurrentSession().setUserInformation(junitUser);
 
@@ -192,7 +192,7 @@ public class MIRStrategyTest extends MCRJPATestCase {
         assertTrue(strategy.checkPermission(mir_mods_00004711.toString(), MCRAccessManager.PERMISSION_PREVIEW));
 
         //Give user write access-token
-        MCRAccessKeyUserUtils.addAccessKey(mir_mods_00004711, accessKeyWrite.getValue());
+        MCRAccessKeyUserUtils.addAccessKey(mir_mods_00004711, "letMeIn");
         junitUser = MCRUserManager.getUser(junitUser.getUserName());
         MCRSessionMgr.getCurrentSession().setUserInformation(junitUser);
 
