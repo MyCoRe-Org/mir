@@ -61,7 +61,7 @@
                 <xsl:value-of disable-output-escaping="yes" select="i18n:translate('mir.error.accessKeyRequired', $objId)" />
                 <xsl:text>&#160;</xsl:text>
                 <a href="{concat($WebApplicationBaseURL, 'authorization/accesskey.xed', '?objId=', $objId, '&amp;url=', encoder:encode(string($RequestURL)))}">
-                  <xsl:value-of select="i18n:translate('mir.accesskey.setOnUser')" />
+                  <xsl:value-of select="i18n:translate('mir.accessKey.setOnUser')" />
                 </a>
               </xsl:when>
               <xsl:otherwise>
