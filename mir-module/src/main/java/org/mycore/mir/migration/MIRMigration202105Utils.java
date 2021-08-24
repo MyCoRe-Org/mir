@@ -31,9 +31,12 @@ import org.mycore.datamodel.metadata.MCRObjectID;
 import org.mycore.frontend.cli.annotation.MCRCommand;
 import org.mycore.frontend.cli.annotation.MCRCommandGroup;
 import org.mycore.mcr.acl.accesskey.MCRAccessKeyManager;
+import org.mycore.mcr.acl.accesskey.MCRAccessKeyUserUtils;
 import org.mycore.mcr.acl.accesskey.model.MCRAccessKey;
 import org.mycore.mir.authorization.accesskeys.MIRAccessKeyManager;
 import org.mycore.mir.authorization.accesskeys.backend.MIRAccessKeyPair;
+import org.mycore.user2.MCRUser;
+import org.mycore.user2.MCRUserManager;
 
 @MCRCommandGroup(
     name = "MIR migration 2021.05")
@@ -44,6 +47,17 @@ public class MIRMigration202105Utils {
     private static String createComment(final String value) {
         return String.format("This access key was migrated on %s from an access key pair.\nValue: %s", 
             new Date().toString(), value);
+    }
+
+    private static void encryptAccessKeyAttribute(MCRObjectID objectId) {
+        final List<MCRUser> users = MCRUserManager.listUsers(null, null, null, null);
+        for (MCRUser user : users) {
+            final String property = MCRAccessKeyUserUtils.ACCESS_KEY_PREFIX + objectId.toString();
+            final String value = user.getUserAttribute(property);
+            if (value != null) {
+                user.setUserAttribute(property, MCRAccessKeyManager.encryptValue(value, objectId));
+            }
+        }
     }
 
     @MCRCommand(syntax = "migrate access key pairs",
@@ -68,8 +82,19 @@ public class MIRMigration202105Utils {
                 accessKey.setComment(createComment(writeKey));
                 MCRAccessKeyManager.addAccessKey(accessKey);
             }
-            MIRAccessKeyManager.removeAccessKeyPair(objectId);
+            encryptAccessKeyAttribute(objectId);
         }
         LOGGER.info("migrated all access key pairs to access keys");
+    }
+
+    @MCRCommand(syntax = "delete access key pairs",
+        help = "Delete all access key pairs")
+    public static void deleteAccessKeyPairs() throws Exception {
+        final List<MIRAccessKeyPair> accessKeyPairs = MIRAccessKeyManager.getAccessKeyPairs();
+        for (MIRAccessKeyPair accessKeyPair : accessKeyPairs) {
+            final MCRObjectID objectId = accessKeyPair.getMCRObjectId();
+            MIRAccessKeyManager.removeAccessKeyPair(objectId);
+        }
+        LOGGER.info("deleted all access key pairs");
     }
 }
