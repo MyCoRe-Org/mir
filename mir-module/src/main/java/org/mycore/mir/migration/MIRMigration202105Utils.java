@@ -31,7 +31,7 @@ import org.mycore.datamodel.metadata.MCRObjectID;
 import org.mycore.frontend.cli.annotation.MCRCommand;
 import org.mycore.frontend.cli.annotation.MCRCommandGroup;
 import org.mycore.mcr.acl.accesskey.MCRAccessKeyManager;
-import org.mycore.mcr.acl.accesskey.MCRAccessKeyUserUtils;
+import org.mycore.mcr.acl.accesskey.MCRAccessKeyUtils;
 import org.mycore.mcr.acl.accesskey.model.MCRAccessKey;
 import org.mycore.mir.authorization.accesskeys.MIRAccessKeyManager;
 import org.mycore.mir.authorization.accesskeys.backend.MIRAccessKeyPair;
@@ -52,7 +52,7 @@ public class MIRMigration202105Utils {
     private static void encryptAccessKeyAttribute(MCRObjectID objectId) {
         final List<MCRUser> users = MCRUserManager.listUsers(null, null, null, null);
         for (MCRUser user : users) {
-            final String property = MCRAccessKeyUserUtils.ACCESS_KEY_PREFIX + objectId.toString();
+            final String property = MCRAccessKeyUtils.ACCESS_KEY_PREFIX + objectId.toString();
             final String value = user.getUserAttribute(property);
             if (value != null) {
                 user.setUserAttribute(property, MCRAccessKeyManager.encryptValue(value, objectId));

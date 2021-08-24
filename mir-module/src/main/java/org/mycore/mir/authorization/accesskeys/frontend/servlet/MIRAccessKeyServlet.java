@@ -32,7 +32,7 @@ import org.mycore.common.MCRUserInformation;
 import org.mycore.datamodel.metadata.MCRObjectID;
 import org.mycore.frontend.servlets.MCRServlet;
 import org.mycore.frontend.servlets.MCRServletJob;
-import org.mycore.mcr.acl.accesskey.MCRAccessKeyUserUtils;
+import org.mycore.mcr.acl.accesskey.MCRAccessKeyUtils;
 import org.mycore.mcr.acl.accesskey.exception.MCRAccessKeyException;
 
 public class MIRAccessKeyServlet extends MCRServlet {
@@ -78,7 +78,7 @@ public class MIRAccessKeyServlet extends MCRServlet {
                 return;
             }
             try {
-                MCRAccessKeyUserUtils.addAccessKey(mcrObjId, accessKey);
+                MCRAccessKeyUtils.addAccessKey(mcrObjId, accessKey);
             } catch(MCRAccessKeyException e) {
                 res.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getErrorCode());
                 return;
