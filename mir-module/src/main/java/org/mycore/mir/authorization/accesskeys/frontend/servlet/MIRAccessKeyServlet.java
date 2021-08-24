@@ -72,13 +72,13 @@ public class MIRAccessKeyServlet extends MCRServlet {
         final String objId = xml.getAttributeValue("objId");
         final MCRObjectID mcrObjId = MCRObjectID.getInstance(objId);
         if (action == null) {
-            final String accessKey = xml.getTextTrim();
-            if (accessKey == null || accessKey.length() == 0) {
+            final String value = xml.getTextTrim();
+            if (value == null || value.length() == 0) {
                 res.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing documentID or accessKey parameter");
                 return;
             }
             try {
-                MCRAccessKeyUtils.addAccessKey(mcrObjId, accessKey);
+                MCRAccessKeyUtils.addAccessKeyToCurrentUser(mcrObjId, value);
             } catch(MCRAccessKeyException e) {
                 res.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getErrorCode());
                 return;

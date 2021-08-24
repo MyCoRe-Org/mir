@@ -115,7 +115,7 @@ public class MIRStrategy implements MCRAccessCheckStrategy {
         boolean isWritePermission = MCRAccessManager.PERMISSION_WRITE.equals(permission);
         boolean isReadPermission = MCRAccessManager.PERMISSION_READ.equals(permission);
         if (isWritePermission || isReadPermission) {
-            final String userKey = MCRAccessKeyUtils.getUserAccessKeyValue(objectId);
+            final String userKey = MCRAccessKeyUtils.getAccessKeyValueFromCurrentUser(objectId);
             if (userKey != null) {
                 final MCRAccessKey accessKey = MCRAccessKeyManager.getAccessKeyByValue(objectId, userKey);
                 if (accessKey != null) {
@@ -124,7 +124,7 @@ public class MIRStrategy implements MCRAccessCheckStrategy {
                         return true;
                     }
                 } else {
-                    MCRAccessKeyUtils.deleteAccessKey(objectId);
+                    MCRAccessKeyUtils.deleteAccessKeyFromCurrentUser(objectId);
                 }
             }
         }
@@ -191,7 +191,7 @@ public class MIRStrategy implements MCRAccessCheckStrategy {
         boolean isWritePermission = MCRAccessManager.PERMISSION_WRITE.equals(permission);
         boolean isReadPermission = MCRAccessManager.PERMISSION_READ.equals(permission);
         if (isWritePermission || isReadPermission) {
-            String userKey = MCRAccessKeyUtils.getUserAccessKeyValue(derivateId);
+            String userKey = MCRAccessKeyUtils.getAccessKeyValueFromCurrentUser(derivateId);
             if (userKey != null) {
                 final MCRAccessKey accessKey = MCRAccessKeyManager.getAccessKeyByValue(derivateId, userKey);
                 if (accessKey != null) {
@@ -200,10 +200,10 @@ public class MIRStrategy implements MCRAccessCheckStrategy {
                         return true;
                     }
                 } else {
-                    MCRAccessKeyUtils.deleteAccessKey(derivateId);
+                    MCRAccessKeyUtils.deleteAccessKeyFromCurrentUser(derivateId);
                 }
             }
-            userKey = MCRAccessKeyUtils.getUserAccessKeyValue(objectId);
+            userKey = MCRAccessKeyUtils.getAccessKeyValueFromCurrentUser(objectId);
             if (userKey != null) {
                 final MCRAccessKey accessKey = MCRAccessKeyManager.getAccessKeyByValue(objectId, userKey);
                 if (accessKey != null) {
@@ -212,7 +212,7 @@ public class MIRStrategy implements MCRAccessCheckStrategy {
                         return true;
                     }
                 } else {
-                    MCRAccessKeyUtils.deleteAccessKey(objectId);
+                    MCRAccessKeyUtils.deleteAccessKeyFromCurrentUser(objectId);
                 }
             }
         }
