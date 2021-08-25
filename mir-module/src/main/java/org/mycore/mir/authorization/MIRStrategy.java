@@ -100,18 +100,7 @@ public class MIRStrategy implements MCRAccessCheckStrategy {
         accessImpl = MCRAccessManager.getAccessImpl();
     }
 
-    private boolean checkObjectPermission(MCRObjectID objectId, String permission) {
-        LOGGER.debug("checkObjectPermission({}, {})", objectId, permission);
-
-        // 1. check if the object has a assigned identifier
-        final boolean hasRegisteredPI = hasRegisteredPI(objectId);
-        if (MCRAccessManager.PERMISSION_DELETE.equalsIgnoreCase(permission) && hasRegisteredPI && !canEditPI()) {
-            return false;
-        }
-
-        String permissionId = objectId.toString();
-
-        // 2. check read or write key of current user
+    private boolean hasValidAccessKey(final MCRObjectID objectId, final String permission) {
         boolean isWritePermission = MCRAccessManager.PERMISSION_WRITE.equals(permission);
         boolean isReadPermission = MCRAccessManager.PERMISSION_READ.equals(permission);
         if (isWritePermission || isReadPermission) {
@@ -127,6 +116,24 @@ public class MIRStrategy implements MCRAccessCheckStrategy {
                     MCRAccessKeyUtils.deleteAccessKeyFromCurrentUser(objectId);
                 }
             }
+        }
+        return false;
+    }
+
+    private boolean checkObjectPermission(MCRObjectID objectId, String permission) {
+        LOGGER.debug("checkObjectPermission({}, {})", objectId, permission);
+
+        // 1. check if the object has a assigned identifier
+        final boolean hasRegisteredPI = hasRegisteredPI(objectId);
+        if (MCRAccessManager.PERMISSION_DELETE.equalsIgnoreCase(permission) && hasRegisteredPI && !canEditPI()) {
+            return false;
+        }
+
+        String permissionId = objectId.toString();
+
+        // 2. check read or write key of current user
+        if (hasValidAccessKey(objectId, permission)) {
+            return true;
         }
 
         // 3. check if access mapping for object id exists
@@ -187,37 +194,13 @@ public class MIRStrategy implements MCRAccessCheckStrategy {
             }
         }
 
+
         // 2. check read or write key of current user
-        boolean isWritePermission = MCRAccessManager.PERMISSION_WRITE.equals(permission);
-        boolean isReadPermission = MCRAccessManager.PERMISSION_READ.equals(permission);
-        if (isWritePermission || isReadPermission) {
-            String userKey = MCRAccessKeyUtils.getAccessKeyValueFromCurrentUser(derivateId);
-            if (userKey != null) {
-                final MCRAccessKey accessKey = MCRAccessKeyManager.getAccessKeyByValue(derivateId, userKey);
-                if (accessKey != null) {
-                    LOGGER.debug("Found match in access key strategy for {} on {}.", permission, derivateId);
-                    if (ACCESS_KEY_STRATEGY.checkPermission(permissionId, permission, accessKey)) {
-                        return true;
-                    }
-                } else {
-                    MCRAccessKeyUtils.deleteAccessKeyFromCurrentUser(derivateId);
-                }
-            }
-            userKey = MCRAccessKeyUtils.getAccessKeyValueFromCurrentUser(objectId);
-            if (userKey != null) {
-                final MCRAccessKey accessKey = MCRAccessKeyManager.getAccessKeyByValue(objectId, userKey);
-                if (accessKey != null) {
-                    LOGGER.debug("Found match in access key strategy for {} on {}.", permission, objectId);
-                    if (ACCESS_KEY_STRATEGY.checkPermission(objectId.toString(), permission,  accessKey)) {
-                        return true;
-                    }
-                } else {
-                    MCRAccessKeyUtils.deleteAccessKeyFromCurrentUser(objectId);
-                }
-            }
+        if (hasValidAccessKey(derivateId, permission) || hasValidAccessKey(objectId, permission)) {
+            return true;
         }
 
-        // 2.check if derivate has embargo
+        // 3.check if derivate has embargo
         if (objectId == null) {
             //2.1. fallback to MCRObjectBaseStrategy
             LOGGER.debug("Derivate {} is an orphan. Cannot apply rules for MCRObject.", derivateId);
@@ -234,30 +217,30 @@ public class MIRStrategy implements MCRAccessCheckStrategy {
             return false;
         }
 
-        // 3. check if access mapping for derivate id exists
+        // 4. check if access mapping for derivate id exists
         if (ID_STRATEGY.hasRuleMapping(permissionId, permission)) {
             LOGGER.debug("Found match in ID strategy for {} on {}.", permission, derivateId);
             return ID_STRATEGY.checkPermission(permissionId, permission);
         }
 
-        // 4. check if creator rule applies
+        // 5. check if creator rule applies
         if (CREATOR_STRATEGY.isCreatorRuleAvailable(objectId.toString(), permission)) {
             LOGGER.debug("Found match in CREATOR strategy for {} on {}.", permission, derivateId);
             return CREATOR_STRATEGY.checkPermission(objectId.toString(), permission);
         }
 
         return getAccessCategory(objectId, derivateId, permission)
-            // 5. use rule defined for all derivates of object in category
+            // 6. use rule defined for all derivates of object in category
             .map(c -> {
                 LOGGER.debug("using access rule defined for category: " + c);
                 return accessImpl.checkPermission(derivateId.getTypeId() + ":" + c.toString(), permission);
             })
             .orElseGet(() -> {
-                // 6. check if base strategy applies for derivate
+                // 7. check if base strategy applies for derivate
                 if (OBJECT_BASE_STRATEGY.hasRuleMapping(permissionId, permission)) {
                     return OBJECT_BASE_STRATEGY.checkPermission(permissionId, permission);
                 }
-                // 7. go for object permission, if object link exists.
+                // 8. go for object permission, if object link exists.
                 LOGGER.debug("No rule for base strategy found, check against object {}.", objectId);
                 return checkObjectPermission(objectId, permission);
             });
