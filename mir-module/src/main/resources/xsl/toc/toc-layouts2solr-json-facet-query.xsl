@@ -24,6 +24,12 @@
       <xsl:value-of select="$MIR.TableOfContents.MaxResults" />
       <xsl:text>&amp;sort=</xsl:text>
       <xsl:apply-templates select="descendant::*[@field][@order]" mode="sort" />
+      <xsl:for-each select="descendant::level">
+        <xsl:text>&amp;toc.</xsl:text>
+        <xsl:value-of select="@field" />
+        <xsl:text>.expanded=</xsl:text>
+        <xsl:value-of select="@expanded" />
+      </xsl:for-each>
       <xsl:text>&amp;json.facet=</xsl:text>
       <xsl:variable name="json.facet">
         <xsl:text>{</xsl:text>
@@ -62,7 +68,7 @@
   <!-- pass-through the default expanded state of level encoded as part of the facet name -->
   <xsl:template match="level" mode="json">
     <xsl:text>,</xsl:text>
-    <xsl:value-of select="concat(@field,'_expanded_',@expanded)" />
+    <xsl:value-of select="@field" />
     <xsl:text>:{type:terms,limit:</xsl:text>
     <xsl:choose>
       <xsl:when test="@limit">
