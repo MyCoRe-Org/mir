@@ -75,6 +75,9 @@ public class MIRStrategy implements MCRAccessCheckStrategy {
 
     private static final Logger LOGGER = LogManager.getLogger();
 
+    private static boolean accessKeySessionEnabled = 
+        MCRConfiguration2.getBoolean("MCR.AccessKey.Session").orElse(false);
+
     private static final MCRObjectIDStrategy ID_STRATEGY = new MCRObjectIDStrategy();
 
     private static final MCRObjectBaseStrategy OBJECT_BASE_STRATEGY = new MCRObjectBaseStrategy();
@@ -104,12 +107,26 @@ public class MIRStrategy implements MCRAccessCheckStrategy {
         boolean isWritePermission = MCRAccessManager.PERMISSION_WRITE.equals(permission);
         boolean isReadPermission = MCRAccessManager.PERMISSION_READ.equals(permission);
         if (isWritePermission || isReadPermission) {
+            if (accessKeySessionEnabled) {
+                final String sessionKey = MCRAccessKeyUtils.getAccessKeyValueFromCurrentSession(objectId);
+                if (sessionKey != null) {
+                    final MCRAccessKey accessKey = MCRAccessKeyManager.getAccessKeyByValue(objectId, sessionKey);
+                    if (accessKey != null) {
+                        LOGGER.debug("Found match in access key strategy for {} on {}.", permission, objectId);
+                        if (ACCESS_KEY_STRATEGY.checkObjectPermission(objectId.toString(), permission, accessKey)) {
+                            return true;
+                        }
+                    } else {
+                        MCRAccessKeyUtils.deleteAccessKeyFromCurrentSession(objectId);
+                    }
+                }
+            }
             final String userKey = MCRAccessKeyUtils.getAccessKeyValueFromCurrentUser(objectId);
             if (userKey != null) {
                 final MCRAccessKey accessKey = MCRAccessKeyManager.getAccessKeyByValue(objectId, userKey);
                 if (accessKey != null) {
                     LOGGER.debug("Found match in access key strategy for {} on {}.", permission, objectId);
-                    if (ACCESS_KEY_STRATEGY.checkPermission(objectId.toString(), permission, accessKey)) {
+                    if (ACCESS_KEY_STRATEGY.checkObjectPermission(objectId.toString(), permission, accessKey)) {
                         return true;
                     }
                 } else {
@@ -196,7 +213,7 @@ public class MIRStrategy implements MCRAccessCheckStrategy {
 
 
         // 2. check read or write key of current user
-        if (hasValidAccessKey(derivateId, permission) || hasValidAccessKey(objectId, permission)) {
+        if (hasValidAccessKey(objectId, permission) || hasValidAccessKey(derivateId, permission)) {
             return true;
         }
 
