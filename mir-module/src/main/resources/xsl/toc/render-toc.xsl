@@ -100,7 +100,7 @@
           <xsl:if test="level|publications">
             <div id="{$id}">
               <xsl:attribute name="class">
-                <xsl:text>below collapse</xsl:text>
+                <xsl:text>mir-toc-section-content below collapse </xsl:text>
                 <xsl:if test="$expanded='true'"> show</xsl:if>
               </xsl:attribute>
               <xsl:apply-templates select="level|publications" />
