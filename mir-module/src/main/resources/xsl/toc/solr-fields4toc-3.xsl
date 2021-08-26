@@ -30,21 +30,32 @@
         </xsl:when>
       </xsl:choose>
 
-      <!-- host.volume, host.issue, series.volume - only first occurrence -->
-      <xsl:apply-templates select="(descendant::mods:relatedItem[@type='host']/mods:part/mods:detail[@type='volume'])[1]/mods:number" mode="toc.field" />
-      <xsl:apply-templates select="(descendant::mods:relatedItem[@type='host']/mods:part/mods:detail[@type='issue'])[1]/mods:number" mode="toc.field" />
-      <xsl:apply-templates select="(descendant::mods:relatedItem[@type='series']/mods:part/mods:detail[@type='volume'])[1]/mods:number" mode="toc.field" />
+      <xsl:variable name="topHostsParts" select="mods:relatedItem[@type='host']/mods:part"/>
+      <xsl:variable name="topSeriesParts" select="mods:relatedItem[@type='series']/mods:part"/>
+      <xsl:variable name="allHostsParts" select="descendant::mods:relatedItem[@type='host']/mods:part"/>
+      <xsl:variable name="allSeriesParts" select="descendant::mods:relatedItem[@type='series']/mods:part"/>
 
-      <!-- host.page -->
-      <xsl:apply-templates select="(descendant::mods:relatedItem[@type='host']/mods:part/mods:extent[@unit='pages'])[1]/mods:start" mode="toc.field">
+      <!-- host.volume, host.issue, series.volume - only first occurrence -->
+      <xsl:apply-templates select="($allHostsParts/mods:detail[@type='volume'])[1]/mods:number" mode="toc.field" >
+        <xsl:with-param name="name">volume</xsl:with-param>
+      </xsl:apply-templates>
+      <xsl:apply-templates select="($allHostsParts/mods:detail[@type='issue'])[1]/mods:number" mode="toc.field" >
+        <xsl:with-param name="name">issue</xsl:with-param>
+      </xsl:apply-templates>
+      <xsl:apply-templates select="($allSeriesParts/mods:detail[@type='volume'])[1]/mods:number" mode="toc.field" >
+        <xsl:with-param name="name">volume</xsl:with-param>
+      </xsl:apply-templates>
+
+      <!-- host.page - only first occurrence -->
+      <xsl:apply-templates select="($allHostsParts/mods:extent[@unit='pages'])[1]/mods:start" mode="toc.field">
         <xsl:with-param name="name">page</xsl:with-param>
       </xsl:apply-templates>
 
       <!-- host.order, series.order - only first occurrence -->
-      <xsl:apply-templates select="(mods:relatedItem[@type='host']/mods:part[@order])[1]/@order" mode="toc.field">
+      <xsl:apply-templates select="($topHostsParts[@order])[1]/@order" mode="toc.field">
         <xsl:with-param name="name">order</xsl:with-param>
       </xsl:apply-templates>
-      <xsl:apply-templates select="(mods:relatedItem[@type='series']/mods:part[@order])[1]/@order" mode="toc.field">
+      <xsl:apply-templates select="($topSeriesParts[@order])[1]/@order" mode="toc.field">
         <xsl:with-param name="name">order</xsl:with-param>
       </xsl:apply-templates>
 
@@ -98,7 +109,7 @@
   </xsl:template>
 
   <xsl:template match="*|@*" mode="toc.field">
-    <xsl:param name="name" select="../@type" />
+    <xsl:param name="name" />
     <xsl:variable name="field" select="concat('mir.toc.',ancestor::mods:relatedItem/@type,'.',$name)" />
 
     <field name="{$field}">
