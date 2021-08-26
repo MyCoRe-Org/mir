@@ -35,6 +35,17 @@
       <xsl:variable name="allHostsParts" select="descendant::mods:relatedItem[@type='host']/mods:part"/>
       <xsl:variable name="allSeriesParts" select="descendant::mods:relatedItem[@type='series']/mods:part"/>
 
+      <!-- host.volume.top, host.issue.top, series.volume.top - only first occurrence -->
+      <xsl:apply-templates select="($topHostsParts/mods:detail[@type='volume'])[1]/mods:number" mode="toc.field" >
+        <xsl:with-param name="name">volume.top</xsl:with-param>
+      </xsl:apply-templates>
+      <xsl:apply-templates select="($topHostsParts/mods:detail[@type='issue'])[1]/mods:number" mode="toc.field" >
+        <xsl:with-param name="name">issue.top</xsl:with-param>
+      </xsl:apply-templates>
+      <xsl:apply-templates select="($topSeriesParts/mods:detail[@type='volume'])[1]/mods:number" mode="toc.field" >
+        <xsl:with-param name="name">volume.top</xsl:with-param>
+      </xsl:apply-templates>
+
       <!-- host.volume, host.issue, series.volume - only first occurrence -->
       <xsl:apply-templates select="($allHostsParts/mods:detail[@type='volume'])[1]/mods:number" mode="toc.field" >
         <xsl:with-param name="name">volume</xsl:with-param>
