@@ -31,11 +31,10 @@
         </xsl:when>
       </xsl:choose>
 
-      <!-- host.volume, host.issue, series.volume, series.issue - only first occurrence -->
+      <!-- host.volume, host.issue, series.volume - only first occurrence -->
       <xsl:apply-templates select="(descendant::mods:relatedItem[@type='host']/mods:part/mods:detail[@type='volume'])[1]/mods:number" mode="toc.field" />
       <xsl:apply-templates select="(descendant::mods:relatedItem[@type='host']/mods:part/mods:detail[@type='issue'])[1]/mods:number" mode="toc.field" />
       <xsl:apply-templates select="(descendant::mods:relatedItem[@type='series']/mods:part/mods:detail[@type='volume'])[1]/mods:number" mode="toc.field" />
-      <xsl:apply-templates select="(descendant::mods:relatedItem[@type='series']/mods:part/mods:detail[@type='issue'])[1]/mods:number" mode="toc.field" />
 
       <!-- host.page -->
       <xsl:apply-templates select="(descendant::mods:relatedItem[@type='host']/mods:part/mods:extent[@unit='pages'])[1]/mods:start" mode="toc.field">
