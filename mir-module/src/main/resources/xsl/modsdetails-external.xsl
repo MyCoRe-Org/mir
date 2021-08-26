@@ -431,7 +431,7 @@
         <ul class="dropdown-menu dropdown-menu-right">
           <xsl:variable name="type" select="substring-before(substring-after($id,'_'),'_')" />
           <xsl:choose>
-            <xsl:when test="mcrxsl:isCurrentUserGuestUser()">
+            <xsl:when test="not($accessedit) and mcrxsl:isCurrentUserGuestUser()">
               <li>
                 <a href="{$ServletsBaseURL}MCRLoginServlet?action=login" class="dropdown-item">
                   <xsl:value-of select="i18n:translate('mir.actions.noaccess')" />
@@ -748,7 +748,7 @@
             <xsl:if test="key('rights', $deriv)/@accKeyEnabled and key('rights', $deriv)/@write">
               <li>
                 <a role="menuitem" tabindex="-1" class="dropdown-item"
-                  href="{$WebApplicationBaseURL}accesskey/manager.xml?objectId&amp;url={encoder:encode(string($RequestURL))}"
+                  href="{$WebApplicationBaseURL}accesskey/manager.xml?objectId={$deriv}&amp;url={encoder:encode(string($RequestURL))}"
                 >
                   <xsl:value-of select="i18n:translate('mir.accessKey.manage')" />
                 </a>
