@@ -136,7 +136,6 @@
     <div class="row">
       <xsl:call-template name="toc.title">
         <xsl:with-param name="class">col-10</xsl:with-param>
-        <xsl:with-param name="showVolume" select="'true'" />
       </xsl:call-template>
       <xsl:call-template name="toc.page">
         <xsl:with-param name="class">col-2</xsl:with-param>
@@ -172,7 +171,6 @@
 
   <xsl:template name="toc.title">
     <xsl:param name="class" select="''" />
-    <xsl:param name="showVolume" select="'false'" />
 
     <h4>
       <xsl:attribute name="class">
@@ -181,19 +179,22 @@
           <xsl:value-of select="concat(' ', $class)"/>
         </xsl:if>
       </xsl:attribute>
+      <xsl:choose>
+        <xsl:when test="field[@name='mir.toc.series.volume.top']">
+          <xsl:value-of select="i18n:translate('mir.details.volume.series')" />
+          <xsl:value-of select="concat(' ',field[@name='mir.toc.series.volume.top'],': ')" />
+        </xsl:when>
+        <xsl:when test="field[@name='mir.toc.host.volume.top']">
+          <xsl:value-of select="i18n:translate('mir.details.volume.journal')" />
+          <xsl:value-of select="concat(' ',field[@name='mir.toc.host.volume.top'],': ')" />
+        </xsl:when>
+        <xsl:when test="field[@name='mir.toc.host.issue.top']">
+          <xsl:value-of select="i18n:translate('mir.details.issue')" />
+          <xsl:value-of select="concat(' ',field[@name='mir.toc.host.issue.top'],': ')" />
+        </xsl:when>
+      </xsl:choose>
       <a href="{$WebApplicationBaseURL}receive/{@id}">
-        <xsl:if test="$showVolume='true' and (field[@name='mir.toc.series.volume'] or field[@name='mir.toc.host.volume'])">
-          <xsl:choose>
-            <xsl:when test="field[@name='mir.toc.host.volume']">
-              <xsl:value-of select="field[@name='mir.toc.host.volume']" />
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:value-of select="field[@name='mir.toc.series.volume']" />
-            </xsl:otherwise>
-          </xsl:choose>
-          <xsl:text> - </xsl:text>
-        </xsl:if>
-        <xsl:value-of select="field[@name='mir.toc.title']" />
+      <xsl:value-of select="field[@name='mir.toc.title']" />
       </a>
     </h4>
   </xsl:template>
