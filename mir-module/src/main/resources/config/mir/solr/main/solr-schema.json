@@ -118,6 +118,15 @@
   },
   {
     "add-field": {
+      "name": "mir.toc.series.volume.top",
+      "type": "string",
+      "indexed": true,
+      "stored": true,
+      "multiValued": false
+    }
+  },
+  {
+    "add-field": {
       "name": "mir.toc.host.volume",
       "type": "string",
       "indexed": true,
@@ -127,7 +136,25 @@
   },
   {
     "add-field": {
+      "name": "mir.toc.host.volume.top",
+      "type": "string",
+      "indexed": true,
+      "stored": true,
+      "multiValued": false
+    }
+  },
+  {
+    "add-field": {
       "name": "mir.toc.host.issue",
+      "type": "string",
+      "indexed": true,
+      "stored": true,
+      "multiValued": false
+    }
+  },
+  {
+    "add-field": {
+      "name": "mir.toc.host.issue.top",
       "type": "string",
       "indexed": true,
       "stored": true,
