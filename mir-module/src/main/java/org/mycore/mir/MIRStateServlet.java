@@ -60,7 +60,7 @@ public class MIRStateServlet extends MCRServlet {
 
         if (!present) {
             job.getResponse()
-                .sendError(HttpServletResponse.SC_BAD_REQUEST, X_NEXT_LANGUAGE + " doesnt contain " + newState);
+                .sendError(HttpServletResponse.SC_FORBIDDEN, X_NEXT_LANGUAGE + " doesnt contain " + newState);
             return;
         }
 
