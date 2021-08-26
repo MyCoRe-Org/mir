@@ -63,6 +63,21 @@
        authors
        ==================== -->
 
+  <xsl:template match="level[@field='mir.toc.series.volume']/item" mode="label" priority="1">
+    <xsl:value-of select="i18n:translate('mir.details.volume.series')" />
+    <xsl:text> </xsl:text>
+    <xsl:value-of select="@value" />
+    <xsl:apply-templates select="doc" />
+  </xsl:template>
+
+  <!-- ====================
+       volume level:
+       - - - - - - - - - -
+       Vol. #
+  -or- Vol. #: title(linked)
+       authors
+       ==================== -->
+
   <xsl:template match="level[@field='mir.toc.host.volume']/item" mode="label" priority="1">
     <xsl:value-of select="i18n:translate('mir.details.volume.journal')" />
     <xsl:text> </xsl:text>
