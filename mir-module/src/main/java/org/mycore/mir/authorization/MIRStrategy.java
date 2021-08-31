@@ -75,9 +75,10 @@ public class MIRStrategy implements MCRAccessCheckStrategy {
 
     private static final Logger LOGGER = LogManager.getLogger();
 
-    private static boolean accessKeySessionEnabled = 
-        MCRConfiguration2.getBoolean("MCR.AccessKey.Session").orElse(false);
-
+    private static final String ALLOWED_SESSION_PERMISSION_TYPES = MCRConfiguration2
+        .getString("MCR.AccessKey.Session.AllowedPermissionTypes")
+        .orElse(null);
+    
     private static final MCRObjectIDStrategy ID_STRATEGY = new MCRObjectIDStrategy();
 
     private static final MCRObjectBaseStrategy OBJECT_BASE_STRATEGY = new MCRObjectBaseStrategy();
@@ -107,7 +108,7 @@ public class MIRStrategy implements MCRAccessCheckStrategy {
         boolean isWritePermission = MCRAccessManager.PERMISSION_WRITE.equals(permission);
         boolean isReadPermission = MCRAccessManager.PERMISSION_READ.equals(permission);
         if (isWritePermission || isReadPermission) {
-            if (accessKeySessionEnabled) {
+            if (ALLOWED_SESSION_PERMISSION_TYPES != null && ALLOWED_SESSION_PERMISSION_TYPES.contains(permission)) {
                 final String sessionKey = MCRAccessKeyUtils.getAccessKeyValueFromCurrentSession(objectId);
                 if (sessionKey != null) {
                     final MCRAccessKey accessKey = MCRAccessKeyManager.getAccessKeyByValue(objectId, sessionKey);
