@@ -25,7 +25,6 @@ import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
 import org.mycore.access.MCRAccessManager;
 import org.mycore.datamodel.metadata.MCRObjectID;
 import org.mycore.frontend.cli.annotation.MCRCommand;
@@ -72,6 +71,8 @@ public class MIRMigration202105Utils {
                 final MCRAccessKey accessKey = new MCRAccessKey(objectId, readKey, MCRAccessManager.PERMISSION_READ);
                 accessKey.setCreator("migration");
                 accessKey.setCreation(new Date());
+                accessKey.setLastChanger("migration");
+                accessKey.setLastChange(new Date());
                 accessKey.setComment(createComment(readKey));
                 MCRAccessKeyManager.addAccessKey(accessKey);
             }
@@ -79,6 +80,8 @@ public class MIRMigration202105Utils {
                 final MCRAccessKey accessKey = new MCRAccessKey(objectId, writeKey, MCRAccessManager.PERMISSION_WRITE);
                 accessKey.setCreator("migration");
                 accessKey.setCreation(new Date());
+                accessKey.setLastChanger("migration");
+                accessKey.setLastChange(new Date());
                 accessKey.setComment(createComment(writeKey));
                 MCRAccessKeyManager.addAccessKey(accessKey);
             }
