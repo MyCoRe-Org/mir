@@ -44,8 +44,7 @@ public class MIRMigration202105Utils {
     public static final Logger LOGGER = LogManager.getLogger();
 
     private static String createComment(final String value) {
-        return String.format("This access key was migrated on %s from an access key pair.\nValue: %s", 
-            new Date().toString(), value);
+        return "Migrated on " + new Date().toString() + " from an access key pair.\nValue: " + value;
     }
 
     private static void encryptAccessKeyAttribute(MCRObjectID objectId) {
