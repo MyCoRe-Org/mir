@@ -356,7 +356,7 @@
     <xsl:if test="$paginateStart != number($page)">
       <li class="page-item">
         <xsl:if test="($paginateStart &lt; $paginateStart-mobile) or ($paginateStart &gt; $paginateEnd-mobile)">
-          <xsl:attribute name="class">d-xs-none</xsl:attribute>
+          <xsl:attribute name="class">d-none d-sm-block</xsl:attribute>
         </xsl:if>
         <a class="page-link" tabindex="0">
           <xsl:attribute name="href">

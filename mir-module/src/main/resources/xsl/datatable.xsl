@@ -182,7 +182,7 @@
 
           <xsl:if test="$disableFilter = false()">
             <!-- entries filter -->
-            <div class="col-xs-{$colWidth}">
+            <div class="col-{$colWidth}">
               <div class="form-group no-margin" id="{$id}_filter">
                 <label>
                   <span class="fas fa-filter" aria-hidden="true" />
@@ -208,7 +208,7 @@
                   <xsl:value-of select="concat('offset-', $colWidth div 2, ' col-', $colWidth div 2)" />
                 </xsl:when>
                 <xsl:otherwise>
-                  <xsl:value-of select="concat(' col-xs-', $colWidth)" />
+                  <xsl:value-of select="concat(' col-', $colWidth)" />
                 </xsl:otherwise>
               </xsl:choose>
             </xsl:attribute>
@@ -265,7 +265,7 @@
       <div class="card-footer clearfix">
         <span id="{$id}_info">
           <xsl:if test="$pages &gt; 1">
-            <xsl:attribute name="class">d-xs-none</xsl:attribute>
+            <xsl:attribute name="class">d-none d-sm-block</xsl:attribute>
           </xsl:if>
           <xsl:value-of select="i18n:translate(concat($i18nprefix, '.filterInfo'), concat($start, ';', $end, ';', $total))" />
         </span>
