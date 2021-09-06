@@ -75,7 +75,7 @@
             <xsl:choose>
               <xsl:when test="$MIR.plumx = 'show'">
                 <!-- use altmeltrics badge -->
-                <div class="col-xs-6">
+                <div class="col-6">
                   <div data-badge-type="1" data-badge-popover="right" data-doi="{//mods:mods/mods:identifier[@type='doi']}" data-hide-no-mentions="{$MIR.altmetrics.hide}" class="altmetric-embed"></div>
                 </div>
               </xsl:when>
@@ -93,7 +93,7 @@
             <xsl:choose>
               <xsl:when test="$MIR.altmetrics = 'show'">
                 <!-- use PlumX badge-->
-                <div class="col-xs-6">
+                <div class="col-6">
                   <a href="https://plu.mx/plum/a/?doi={//mods:mods/mods:identifier[@type='doi']}" data-popup="right" data-badge="true" class="plumx-plum-print-popup plum-bigben-theme" data-site="plum" data-hide-when-empty="{$MIR.plumx.hide}">PlumX Metrics</a>
                 </div>
               </xsl:when>
