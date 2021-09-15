@@ -9,7 +9,7 @@
   xmlns:exslt="http://exslt.org/common"
   xmlns:piUtil="xalan://org.mycore.pi.frontend.MCRIdentifierXSLUtils"
   xmlns:csl="http://purl.org/net/xbiblio/csl"
-                exclude-result-prefixes="i18n mcr mods xlink cmd exslt piUtil"
+  exclude-result-prefixes="i18n mcr mods xlink cmd exslt piUtil"
 >
   <xsl:import href="xslImport:modsmeta:metadata/mir-citation.xsl" />
   <xsl:include href="mods-dc-meta.xsl"/>
