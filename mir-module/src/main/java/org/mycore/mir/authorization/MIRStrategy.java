@@ -109,29 +109,29 @@ public class MIRStrategy implements MCRAccessCheckStrategy {
         boolean isReadPermission = MCRAccessManager.PERMISSION_READ.equals(permission);
         if (isWritePermission || isReadPermission) {
             if (ALLOWED_SESSION_PERMISSION_TYPES != null && ALLOWED_SESSION_PERMISSION_TYPES.contains(permission)) {
-                final String sessionKey = MCRAccessKeyUtils.getAccessKeyValueFromCurrentSession(objectId);
+                final String sessionKey = MCRAccessKeyUtils.getAccessKeySecretFromCurrentSession(objectId);
                 if (sessionKey != null) {
-                    final MCRAccessKey accessKey = MCRAccessKeyManager.getAccessKeyByValue(objectId, sessionKey);
+                    final MCRAccessKey accessKey = MCRAccessKeyManager.getAccessKeyWithSecret(objectId, sessionKey);
                     if (accessKey != null) {
                         LOGGER.debug("Found match in access key strategy for {} on {}.", permission, objectId);
-                        if (ACCESS_KEY_STRATEGY.checkObjectPermission(objectId.toString(), permission, accessKey)) {
+                        if (ACCESS_KEY_STRATEGY.checkObjectPermission(objectId, permission, accessKey)) {
                             return true;
                         }
                     } else {
-                        MCRAccessKeyUtils.deleteAccessKeyFromCurrentSession(objectId);
+                        MCRAccessKeyUtils.removeAccessKeySecretFromCurrentSession(objectId);
                     }
                 }
             }
-            final String userKey = MCRAccessKeyUtils.getAccessKeyValueFromCurrentUser(objectId);
+            final String userKey = MCRAccessKeyUtils.getAccessKeySecretFromCurrentUser(objectId);
             if (userKey != null) {
-                final MCRAccessKey accessKey = MCRAccessKeyManager.getAccessKeyByValue(objectId, userKey);
+                final MCRAccessKey accessKey = MCRAccessKeyManager.getAccessKeyWithSecret(objectId, userKey);
                 if (accessKey != null) {
                     LOGGER.debug("Found match in access key strategy for {} on {}.", permission, objectId);
-                    if (ACCESS_KEY_STRATEGY.checkObjectPermission(objectId.toString(), permission, accessKey)) {
+                    if (ACCESS_KEY_STRATEGY.checkObjectPermission(objectId, permission, accessKey)) {
                         return true;
                     }
                 } else {
-                    MCRAccessKeyUtils.deleteAccessKeyFromCurrentUser(objectId);
+                    MCRAccessKeyUtils.removeAccessKeySecretFromCurrentUser(objectId);
                 }
             }
         }

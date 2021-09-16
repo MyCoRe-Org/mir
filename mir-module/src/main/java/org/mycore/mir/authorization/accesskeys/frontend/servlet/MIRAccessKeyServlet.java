@@ -78,7 +78,7 @@ public class MIRAccessKeyServlet extends MCRServlet {
                 return;
             }
             try {
-                MCRAccessKeyUtils.addAccessKeyToCurrentUser(mcrObjId, value);
+                MCRAccessKeyUtils.addAccessKeySecretToCurrentUser(mcrObjId, value);
             } catch(MCRAccessKeyException e) {
                 res.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getErrorCode());
                 return;

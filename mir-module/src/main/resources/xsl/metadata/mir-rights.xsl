@@ -71,9 +71,9 @@
 
   <xsl:template name="check-access-keys">
     <xsl:param name="id" />
-    <xsl:variable name="accKey" select="document(concat('accesskey:', $id))/servflag" />
+    <xsl:variable name="accessKeyCount" select="document(concat('accesskeys:', $id))//@count" />
     <xsl:attribute name="accKeyEnabled" /> <!-- need this to show menu -->
-    <xsl:if test="$accKey != ''">
+    <xsl:if test="$accessKeyCount &gt; 0">
       <xsl:attribute name="hasAccKey" />
     </xsl:if>
   </xsl:template>

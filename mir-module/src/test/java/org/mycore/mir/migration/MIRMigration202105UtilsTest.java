@@ -70,10 +70,10 @@ public class MIRMigration202105UtilsTest extends MCRJPATestCase {
         final MIRAccessKeyPair accessKeyPair = new MIRAccessKeyPair(objectId, READ_KEY, null);
         MIRAccessKeyManager.createKeyPair(accessKeyPair);
         MIRMigration202105Utils.migrateAccessKeyPairs();
-        final List<MCRAccessKey> accessKeys = MCRAccessKeyManager.getAccessKeys(objectId);
+        final List<MCRAccessKey> accessKeys = MCRAccessKeyManager.listAccessKeys(objectId);
         assertTrue(accessKeys.size() == 1);
         final MCRAccessKey accessKey = accessKeys.get(0);
-        assertEquals(MCRAccessKeyManager.encryptValue(READ_KEY, objectId), accessKey.getValue());
+        assertEquals(MCRAccessKeyManager.hashSecret(READ_KEY, objectId), accessKey.getSecret());
         assertEquals(PERMISSION_READ, accessKey.getType());
     }
 
@@ -82,13 +82,13 @@ public class MIRMigration202105UtilsTest extends MCRJPATestCase {
         final MIRAccessKeyPair accessKeyPair = new MIRAccessKeyPair(objectId, READ_KEY, WRITE_KEY);
         MIRAccessKeyManager.createKeyPair(accessKeyPair);
         MIRMigration202105Utils.migrateAccessKeyPairs();
-        final List<MCRAccessKey> accessKeys = MCRAccessKeyManager.getAccessKeys(objectId);
+        final List<MCRAccessKey> accessKeys = MCRAccessKeyManager.listAccessKeys(objectId);
         assertTrue(accessKeys.size() == 2);
         final MCRAccessKey accessKeyRead = accessKeys.get(0);
-        assertEquals(MCRAccessKeyManager.encryptValue(READ_KEY, objectId), accessKeyRead.getValue());
+        assertEquals(MCRAccessKeyManager.hashSecret(READ_KEY, objectId), accessKeyRead.getSecret());
         assertEquals(PERMISSION_READ, accessKeyRead.getType());
         final MCRAccessKey accessKeyWrite = accessKeys.get(1);
-        assertEquals(MCRAccessKeyManager.encryptValue(WRITE_KEY, objectId), accessKeyWrite.getValue());
+        assertEquals(MCRAccessKeyManager.hashSecret(WRITE_KEY, objectId), accessKeyWrite.getSecret());
         assertEquals(PERMISSION_WRITE, accessKeyWrite.getType());
     }
 
@@ -97,18 +97,18 @@ public class MIRMigration202105UtilsTest extends MCRJPATestCase {
         final MIRAccessKeyPair accessKeyPair = new MIRAccessKeyPair(objectId, READ_KEY, WRITE_KEY);
         MIRAccessKeyManager.createKeyPair(accessKeyPair);
         final MCRUser user1 = new MCRUser("junit");
-        MCRAccessKeyUtils.addAccessKey(user1, objectId, READ_KEY); 
+        MCRAccessKeyUtils.addAccessKeySecret(user1, objectId, READ_KEY);
         final MCRUser user2 = new MCRUser("junit");
-        MCRAccessKeyUtils.addAccessKey(user2, objectId, WRITE_KEY); 
+        MCRAccessKeyUtils.addAccessKeySecret(user2, objectId, WRITE_KEY);
         
         MIRMigration202105Utils.migrateAccessKeyPairs();
 
-        final String valueRead = MCRAccessKeyUtils.getAccessKeyValue(user1, objectId);
+        final String valueRead = MCRAccessKeyUtils.getAccessKeySecret(user1, objectId);
         assertNotNull(valueRead);
-        assertEquals(MCRAccessKeyManager.encryptValue(READ_KEY, objectId), valueRead);
+        assertEquals(MCRAccessKeyManager.hashSecret(READ_KEY, objectId), valueRead);
 
-        final String valueWrite = MCRAccessKeyUtils.getAccessKeyValue(user2, objectId);
+        final String valueWrite = MCRAccessKeyUtils.getAccessKeySecret(user2, objectId);
         assertNotNull(valueWrite);
-        assertEquals(MCRAccessKeyManager.encryptValue(WRITE_KEY, objectId), valueWrite);
+        assertEquals(MCRAccessKeyManager.hashSecret(WRITE_KEY, objectId), valueWrite);
     }
 }

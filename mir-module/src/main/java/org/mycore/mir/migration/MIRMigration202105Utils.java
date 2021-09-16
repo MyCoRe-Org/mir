@@ -43,7 +43,7 @@ public class MIRMigration202105Utils {
 
     public static final Logger LOGGER = LogManager.getLogger();
 
-    private static String createComment(final String value) {
+    private static String createMigrationComment(final String value) {
         return "Migrated on " + new Date().toString() + " from an access key pair.\nValue: " + value;
     }
 
@@ -53,7 +53,7 @@ public class MIRMigration202105Utils {
             final String property = MCRAccessKeyUtils.ACCESS_KEY_PREFIX + objectId.toString();
             final String value = user.getUserAttribute(property);
             if (value != null) {
-                user.setUserAttribute(property, MCRAccessKeyManager.encryptValue(value, objectId));
+                user.setUserAttribute(property, MCRAccessKeyManager.hashSecret(value, objectId));
             }
         }
     }
@@ -67,22 +67,22 @@ public class MIRMigration202105Utils {
             final String readKey = accessKeyPair.getReadKey();
             final String writeKey = accessKeyPair.getWriteKey();
             if (readKey != null) {
-                final MCRAccessKey accessKey = new MCRAccessKey(objectId, readKey, MCRAccessManager.PERMISSION_READ);
-                accessKey.setCreator("migration");
-                accessKey.setCreation(new Date());
-                accessKey.setLastChanger("migration");
-                accessKey.setLastChange(new Date());
-                accessKey.setComment(createComment(readKey));
-                MCRAccessKeyManager.addAccessKey(accessKey);
+                final MCRAccessKey accessKey = new MCRAccessKey(readKey, MCRAccessManager.PERMISSION_READ);
+                accessKey.setCreated(new Date());
+                accessKey.setCreatedBy("migration");
+                accessKey.setLastModified(new Date());
+                accessKey.setLastModifiedBy("migration");
+                accessKey.setComment(createMigrationComment(readKey));
+                MCRAccessKeyManager.createAccessKey(objectId, accessKey);
             }
             if (writeKey != null) {
-                final MCRAccessKey accessKey = new MCRAccessKey(objectId, writeKey, MCRAccessManager.PERMISSION_WRITE);
-                accessKey.setCreator("migration");
-                accessKey.setCreation(new Date());
-                accessKey.setLastChanger("migration");
-                accessKey.setLastChange(new Date());
-                accessKey.setComment(createComment(writeKey));
-                MCRAccessKeyManager.addAccessKey(accessKey);
+                final MCRAccessKey accessKey = new MCRAccessKey(writeKey, MCRAccessManager.PERMISSION_WRITE);
+                accessKey.setCreated(new Date());
+                accessKey.setCreatedBy("migration");
+                accessKey.setLastModified(new Date());
+                accessKey.setLastModifiedBy("migration");
+                accessKey.setComment(createMigrationComment(writeKey));
+                MCRAccessKeyManager.createAccessKey(objectId, accessKey);
             }
             encryptAccessKeyAttribute(objectId);
         }

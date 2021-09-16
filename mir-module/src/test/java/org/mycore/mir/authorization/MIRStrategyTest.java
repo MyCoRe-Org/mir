@@ -165,10 +165,10 @@ public class MIRStrategyTest extends MCRJPATestCase {
         Assert
             .assertFalse(strategy.checkPermission(mir_derivate_00004711.toString(), MCRAccessManager.PERMISSION_WRITE));
 
-        final MCRAccessKey accessKeyRead = new MCRAccessKey(mir_mods_00004711, "mySecret", MCRAccessManager.PERMISSION_READ);
-        MCRAccessKeyManager.addAccessKey(accessKeyRead);
-        final MCRAccessKey accessKeyWrite = new MCRAccessKey(mir_mods_00004711, "letMeIn", MCRAccessManager.PERMISSION_WRITE);
-        MCRAccessKeyManager.addAccessKey(accessKeyWrite);
+        final MCRAccessKey accessKeyRead = new MCRAccessKey("mySecret", MCRAccessManager.PERMISSION_READ);
+        MCRAccessKeyManager.createAccessKey(mir_mods_00004711, accessKeyRead);
+        final MCRAccessKey accessKeyWrite = new MCRAccessKey("letMeIn", MCRAccessManager.PERMISSION_WRITE);
+        MCRAccessKeyManager.createAccessKey(mir_mods_00004711, accessKeyWrite);
 
         final MCRCategLinkService categLinkService = MCRCategLinkServiceFactory.getInstance();
         MCRCategLinkReference ref = new MCRCategLinkReference(mir_mods_00004711);
@@ -179,7 +179,7 @@ public class MIRStrategyTest extends MCRJPATestCase {
             .assertFalse(strategy.checkPermission(mir_derivate_00004711.toString(), MCRAccessManager.PERMISSION_READ));
 
         //Give user read access-token
-        MCRAccessKeyUtils.addAccessKeyToCurrentUser(mir_mods_00004711, "mySecret");
+        MCRAccessKeyUtils.addAccessKeySecretToCurrentUser(mir_mods_00004711, "mySecret");
         junitUser = MCRUserManager.getUser(junitUser.getUserName());
         MCRSessionMgr.getCurrentSession().setUserInformation(junitUser);
 
@@ -192,7 +192,7 @@ public class MIRStrategyTest extends MCRJPATestCase {
         assertTrue(strategy.checkPermission(mir_mods_00004711.toString(), MCRAccessManager.PERMISSION_PREVIEW));
 
         //Give user write access-token
-        MCRAccessKeyUtils.addAccessKeyToCurrentUser(mir_mods_00004711, "letMeIn");
+        MCRAccessKeyUtils.addAccessKeySecretToCurrentUser(mir_mods_00004711, "letMeIn");
         junitUser = MCRUserManager.getUser(junitUser.getUserName());
         MCRSessionMgr.getCurrentSession().setUserInformation(junitUser);
 
