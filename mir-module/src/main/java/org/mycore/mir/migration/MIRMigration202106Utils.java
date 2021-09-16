@@ -38,8 +38,8 @@ import org.mycore.user2.MCRUser;
 import org.mycore.user2.MCRUserManager;
 
 @MCRCommandGroup(
-    name = "MIR migration 2021.05")
-public class MIRMigration202105Utils {
+    name = "MIR migration 2021.06")
+public class MIRMigration202106Utils {
 
     public static final Logger LOGGER = LogManager.getLogger();
 

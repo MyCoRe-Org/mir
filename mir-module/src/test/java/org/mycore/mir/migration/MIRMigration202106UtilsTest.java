@@ -41,7 +41,7 @@ import org.mycore.mcr.acl.accesskey.MCRAccessKeyUtils;
 import org.mycore.mcr.acl.accesskey.model.MCRAccessKey;
 import org.mycore.user2.MCRUser;
 
-public class MIRMigration202105UtilsTest extends MCRJPATestCase {
+public class MIRMigration202106UtilsTest extends MCRJPATestCase {
 
     private static final String OBJECT_ID = "mcr_test_00000001";
 
@@ -69,7 +69,7 @@ public class MIRMigration202105UtilsTest extends MCRJPATestCase {
     public void testMigrationRead() throws Exception {
         final MIRAccessKeyPair accessKeyPair = new MIRAccessKeyPair(objectId, READ_KEY, null);
         MIRAccessKeyManager.createKeyPair(accessKeyPair);
-        MIRMigration202105Utils.migrateAccessKeyPairs();
+        MIRMigration202106Utils.migrateAccessKeyPairs();
         final List<MCRAccessKey> accessKeys = MCRAccessKeyManager.listAccessKeys(objectId);
         assertTrue(accessKeys.size() == 1);
         final MCRAccessKey accessKey = accessKeys.get(0);
@@ -81,7 +81,7 @@ public class MIRMigration202105UtilsTest extends MCRJPATestCase {
     public void testMigrationReadAndWrite() throws Exception {
         final MIRAccessKeyPair accessKeyPair = new MIRAccessKeyPair(objectId, READ_KEY, WRITE_KEY);
         MIRAccessKeyManager.createKeyPair(accessKeyPair);
-        MIRMigration202105Utils.migrateAccessKeyPairs();
+        MIRMigration202106Utils.migrateAccessKeyPairs();
         final List<MCRAccessKey> accessKeys = MCRAccessKeyManager.listAccessKeys(objectId);
         assertTrue(accessKeys.size() == 2);
         final MCRAccessKey accessKeyRead = accessKeys.get(0);
@@ -101,7 +101,7 @@ public class MIRMigration202105UtilsTest extends MCRJPATestCase {
         final MCRUser user2 = new MCRUser("junit");
         MCRAccessKeyUtils.addAccessKeySecret(user2, objectId, WRITE_KEY);
         
-        MIRMigration202105Utils.migrateAccessKeyPairs();
+        MIRMigration202106Utils.migrateAccessKeyPairs();
 
         final String valueRead = MCRAccessKeyUtils.getAccessKeySecret(user1, objectId);
         assertNotNull(valueRead);
