@@ -474,7 +474,7 @@
 
   <xed:template id="research.data.date.repeated">
     <xed:repeat xpath="mods:originInfo" min="1" max="6">
-      <div class="form-group">
+      <div class="form-group row">
         <div class="col-md-3">
           <xed:bind xpath="@eventType" default="creation">
             <select class="form-control form-control-inline date-select">
