@@ -33,7 +33,7 @@
       <xsl:apply-templates select="descendant-or-self::mods:publisher[not(ancestor::mods:relatedItem[not(@type='host')])][1]" mode="dc" />
 
       <xsl:apply-templates select="mods:identifier|mods:location/mods:url|mods:location/mods:shelfLocator" mode="dc" />
-      <xsl:apply-templates select="mods:note|mods:abstract" mode="dc" />
+      <xsl:apply-templates select="mods:note" mode="dc" />
       <xsl:apply-templates select="mods:abstract|mods:abstract/@xlink:href" mode="dc" />
 
       <xsl:apply-templates select="mods:physicalDescription/mods:extent" mode="dc" />
