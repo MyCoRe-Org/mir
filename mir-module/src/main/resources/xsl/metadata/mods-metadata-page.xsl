@@ -82,6 +82,7 @@
         <!-- this function is bloated due backward compatibility -->
         <xsl:choose>
           <xsl:when test="$boxID='mir-historydata'">
+            <xsl:if test="$originalContent/@write">
             <div
                 id="historyModal"
                 class="modal fade"
@@ -120,6 +121,7 @@
                 </div>
               </div>
             </div>
+            </xsl:if>
           </xsl:when>
           <xsl:when test="$boxID='mir-collapse-files'">
             <div class="detail_block">
