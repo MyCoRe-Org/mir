@@ -4,7 +4,7 @@
   <parent>
     <groupId>org.mycore</groupId>
     <artifactId>mycore-parent</artifactId>
-    <version>46</version>
+    <version>47-SNAPSHOT</version>
   </parent>
   <groupId>org.mycore.mir</groupId>
   <artifactId>mir-parent</artifactId>
@@ -42,7 +42,7 @@
     <changes.version>2021.05</changes.version>
     <hibernate.version>5.4.4.Final</hibernate.version>
     <java.target.version>11</java.target.version>
-    <jetty.version>9.4.24.v20191120</jetty.version>
+    <jetty.version>9.4.43.v20210629</jetty.version>
     <maven.compiler.arg>-Werror</maven.compiler.arg>
     <mycore.version>2021.06.0-SNAPSHOT</mycore.version>
     <node.version>v12.16.3</node.version>
@@ -405,6 +405,13 @@
   <dependencyManagement>
     <dependencies>
       <dependency>
+        <groupId>org.mycore</groupId>
+        <artifactId>mycore</artifactId>
+        <version>${mycore.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+      <dependency>
         <groupId>${project.groupId}</groupId>
         <artifactId>mir-cli</artifactId>
         <version>${project.version}</version>
@@ -485,13 +492,6 @@
             <artifactId>HikariCP-java6</artifactId>
           </exclusion>
         </exclusions>
-      </dependency>
-      <dependency>
-        <groupId>org.mycore</groupId>
-        <artifactId>mycore</artifactId>
-        <version>${mycore.version}</version>
-        <type>pom</type>
-        <scope>import</scope>
       </dependency>
     </dependencies>
   </dependencyManagement>

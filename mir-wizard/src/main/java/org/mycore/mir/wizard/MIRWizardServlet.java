@@ -52,7 +52,7 @@ public class MIRWizardServlet extends MCRServlet {
 
     private static final Logger LOGGER = LogManager.getLogger();
 
-    @SuppressWarnings("PMD.DoNotCallSystemExit")
+    @SuppressWarnings("PMD.DoNotTerminateVM")
     public void doGetPost(final MCRServletJob job) throws Exception {
         final HttpServletRequest req = job.getRequest();
 
