@@ -106,6 +106,7 @@ public class MIRStrategyTest extends MCRJPATestCase {
     @Override
     protected Map<String, String> getTestProperties() {
         final Map<String, String> testProperties = super.getTestProperties();
+        testProperties.put("MCR.ACL.AccessKey.Strategy.AllowedObjectTypes", "mods,derivate");
         Path mirCliSrcMainPath = Paths.get("..", "mir-cli", "src", "main").toAbsolutePath().normalize();
         testProperties.putAll(Map.ofEntries(
             Map.entry("app.home", mirCliSrcMainPath.toString()),

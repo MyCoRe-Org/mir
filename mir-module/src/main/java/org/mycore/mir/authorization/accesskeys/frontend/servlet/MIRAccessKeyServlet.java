@@ -25,7 +25,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.jdom2.Document;
 import org.jdom2.Element;
-
 import org.mycore.common.MCRSessionMgr;
 import org.mycore.common.MCRSystemUserInformation;
 import org.mycore.common.MCRUserInformation;

@@ -748,7 +748,7 @@
             <xsl:if test="key('rights', $deriv)/@accKeyEnabled and key('rights', $deriv)/@write">
               <li>
                 <a role="menuitem" tabindex="-1" class="dropdown-item"
-                  href="{$WebApplicationBaseURL}accesskey/manager.xml?objectId={$deriv}&amp;parentId={$parentObjID}"
+                  href="{$WebApplicationBaseURL}accesskey/manager.xml?objectId={$parentObjID}&amp;derivateId={$deriv}"
                 >
                   <xsl:value-of select="i18n:translate('mir.accessKey.manage')" />
                 </a>

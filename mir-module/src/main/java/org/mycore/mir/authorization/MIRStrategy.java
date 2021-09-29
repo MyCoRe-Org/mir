@@ -6,6 +6,7 @@ package org.mycore.mir.authorization;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -29,7 +30,7 @@ import org.mycore.access.strategies.MCRObjectIDStrategy;
 import org.mycore.mcr.acl.accesskey.MCRAccessKeyManager;
 import org.mycore.mcr.acl.accesskey.MCRAccessKeyUtils;
 import org.mycore.mcr.acl.accesskey.model.MCRAccessKey;
-import org.mycore.mcr.acl.accesskey.strategy.MCRAccessKeyStrategy;
+import org.mycore.mcr.acl.accesskey.strategy.MCRAccessKeyStrategyHelper;
 import org.mycore.backend.jpa.MCREntityManagerProvider;
 import org.mycore.backend.jpa.access.MCRACCESS;
 import org.mycore.backend.jpa.access.MCRACCESSPK_;
@@ -75,17 +76,23 @@ public class MIRStrategy implements MCRAccessCheckStrategy {
 
     private static final Logger LOGGER = LogManager.getLogger();
 
-    private static final String ALLOWED_SESSION_PERMISSION_TYPES = MCRConfiguration2
-        .getString("MCR.AccessKey.Session.AllowedPermissionTypes")
-        .orElse(null);
-    
+    private static final Set<String> ALLOWED_OBJECT_TYPES = MCRConfiguration2
+        .getString("MCR.ACL.AccessKey.Strategy.AllowedObjectTypes")
+        .stream()
+        .flatMap(MCRConfiguration2::splitValue)
+        .collect(Collectors.toSet());
+
+    private static final Set<String> ALLOWED_SESSION_PERMISSION_TYPES = MCRConfiguration2
+        .getString("MCR.ACL.AccessKey.Strategy.AllowedSessionPermissionTypes")
+        .stream()
+        .flatMap(MCRConfiguration2::splitValue)
+        .collect(Collectors.toSet());
+
     private static final MCRObjectIDStrategy ID_STRATEGY = new MCRObjectIDStrategy();
 
     private static final MCRObjectBaseStrategy OBJECT_BASE_STRATEGY = new MCRObjectBaseStrategy();
 
     private static final MCRCreatorRuleStrategy CREATOR_STRATEGY = new MCRCreatorRuleStrategy();
-
-    private static final MCRAccessKeyStrategy ACCESS_KEY_STRATEGY = new MCRAccessKeyStrategy();
 
     private static final long CACHE_TIME = 1000 * 60 * 60;
 
@@ -109,28 +116,31 @@ public class MIRStrategy implements MCRAccessCheckStrategy {
         boolean isReadPermission = MCRAccessManager.PERMISSION_READ.equals(permission);
         if (isWritePermission || isReadPermission) {
             if (ALLOWED_SESSION_PERMISSION_TYPES != null && ALLOWED_SESSION_PERMISSION_TYPES.contains(permission)) {
-                final String sessionKey = MCRAccessKeyUtils.getAccessKeySecretFromCurrentSession(objectId);
-                if (sessionKey != null) {
-                    final MCRAccessKey accessKey = MCRAccessKeyManager.getAccessKeyWithSecret(objectId, sessionKey);
+                final String sessionSecret = MCRAccessKeyUtils.getAccessKeySecretFromCurrentSession(objectId);
+                if (sessionSecret != null) {
+                    final MCRAccessKey accessKey = MCRAccessKeyManager.getAccessKeyWithSecret(objectId, sessionSecret);
                     if (accessKey != null) {
-                        LOGGER.debug("Found match in access key strategy for {} on {}.", permission, objectId);
-                        if (ACCESS_KEY_STRATEGY.checkObjectPermission(objectId, permission, accessKey)) {
+                        LOGGER.debug("Found match in access key strategy for {} on {} in session.", permission,
+                            objectId);
+                        if (MCRAccessKeyStrategyHelper.verifyAccessKey(permission, accessKey)) {
                             return true;
                         }
-                    } else {
+                    }
+                    if (accessKey == null || permission.equals(MCRAccessManager.PERMISSION_READ)) {
                         MCRAccessKeyUtils.removeAccessKeySecretFromCurrentSession(objectId);
                     }
                 }
             }
-            final String userKey = MCRAccessKeyUtils.getAccessKeySecretFromCurrentUser(objectId);
-            if (userKey != null) {
-                final MCRAccessKey accessKey = MCRAccessKeyManager.getAccessKeyWithSecret(objectId, userKey);
+            final String userSecret = MCRAccessKeyUtils.getAccessKeySecretFromCurrentUser(objectId);
+            if (userSecret != null) {
+                final MCRAccessKey accessKey = MCRAccessKeyManager.getAccessKeyWithSecret(objectId, userSecret);
                 if (accessKey != null) {
-                    LOGGER.debug("Found match in access key strategy for {} on {}.", permission, objectId);
-                    if (ACCESS_KEY_STRATEGY.checkObjectPermission(objectId, permission, accessKey)) {
+                    LOGGER.debug("Found match in access key strategy for {} on {} for user.", permission, objectId);
+                    if (MCRAccessKeyStrategyHelper.verifyAccessKey(permission, accessKey)) {
                         return true;
                     }
-                } else {
+                }
+                if (accessKey == null || permission.equals(MCRAccessManager.PERMISSION_READ)) {
                     MCRAccessKeyUtils.removeAccessKeySecretFromCurrentUser(objectId);
                 }
             }
@@ -150,7 +160,7 @@ public class MIRStrategy implements MCRAccessCheckStrategy {
         String permissionId = objectId.toString();
 
         // 2. check read or write key of current user
-        if (hasValidAccessKey(objectId, permission)) {
+        if (ALLOWED_OBJECT_TYPES.contains(objectId.getTypeId()) && hasValidAccessKey(objectId, permission)) {
             return true;
         }
 
@@ -212,9 +222,9 @@ public class MIRStrategy implements MCRAccessCheckStrategy {
             }
         }
 
-
         // 2. check read or write key of current user
-        if (hasValidAccessKey(objectId, permission) || hasValidAccessKey(derivateId, permission)) {
+        if ((ALLOWED_OBJECT_TYPES.contains(objectId.getTypeId()) && hasValidAccessKey(objectId, permission))
+            || (ALLOWED_OBJECT_TYPES.contains(derivateId.getTypeId()) && hasValidAccessKey(derivateId, permission))) {
             return true;
         }
 

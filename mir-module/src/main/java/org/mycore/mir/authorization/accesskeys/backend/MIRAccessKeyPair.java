@@ -53,13 +53,9 @@ import org.mycore.datamodel.metadata.MCRObjectID;
  */
 
 @NamedQueries({
-    @NamedQuery(name = "MIRAccessKeyPair.get",
+    @NamedQuery(name = "MIRAccessKeyPair.listAll",
         query = "SELECT k"
             + "  FROM MIRAccessKeyPair k"),
-    @NamedQuery(name = "MIRAccessKeyPair.removeById",
-        query = "DELETE"
-            + "  FROM MIRAccessKeyPair k"
-            + "  WHERE k.objectId = :objId"),
 })
 
 @Entity

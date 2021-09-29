@@ -20,17 +20,19 @@
 
 package org.mycore.mir.authorization.accesskeys;
 
+import static org.mycore.access.MCRAccessManager.PERMISSION_READ;
+import static org.mycore.access.MCRAccessManager.PERMISSION_WRITE;
+
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-
-import javax.persistence.EntityManager;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import org.mycore.access.MCRAccessManager;
-import org.mycore.backend.jpa.MCREntityManagerProvider;
-import org.mycore.common.MCRUsageException;
+import org.mycore.common.MCRSessionMgr;
+import org.mycore.common.MCRException;
 import org.mycore.datamodel.metadata.MCRObjectID;
 import org.mycore.mcr.acl.accesskey.MCRAccessKeyManager;
 import org.mycore.mcr.acl.accesskey.model.MCRAccessKey;
@@ -49,11 +51,11 @@ public final class MIRAccessKeyManager {
      */
     public static synchronized MIRAccessKeyPair getKeyPair(final MCRObjectID mcrObjectId) {
         final MCRAccessKey accessKeyRead = 
-            MCRAccessKeyManager.listAccessKeysWithType(mcrObjectId, MCRAccessManager.PERMISSION_READ).stream()
+            MCRAccessKeyManager.listAccessKeysWithType(mcrObjectId, PERMISSION_READ).stream()
                 .findFirst()
                 .orElse(null);
         final MCRAccessKey accessKeyWrite = 
-            MCRAccessKeyManager.listAccessKeysWithType(mcrObjectId, MCRAccessManager.PERMISSION_WRITE).stream()
+            MCRAccessKeyManager.listAccessKeysWithType(mcrObjectId, PERMISSION_WRITE).stream()
                 .findFirst()
                 .orElse(null);
         if (accessKeyRead != null) {
@@ -81,86 +83,102 @@ public final class MIRAccessKeyManager {
      * Persists the given {@link MIRAccessKeyPair}.
      *
      * @param accKP the {@link MIRAccessKeyPair}
-     * @throws MCRUsageException pair is not valid
+     * @throws MCRException pair is not valid
      */
-    public static void createKeyPair(final MIRAccessKeyPair accKP) throws MCRUsageException {
+    public static void createKeyPair(final MIRAccessKeyPair accKP) throws MCRException {
         final MCRObjectID objectId = accKP.getMCRObjectId();
         if (objectId == null) {
-            throw new MCRUsageException("Object id is needed.");
+            throw new MCRException("Object id is needed.");
         }
         if (existsKeyPair(objectId)) {
-            throw new MCRUsageException("There is already an existing key piar.");
+            throw new MCRException("There is already an existing key pair.");
         }
         final String readValue = accKP.getReadKey();
         if (readValue == null || !MCRAccessKeyManager.isValidSecret(readValue)) {
-            throw new MCRUsageException("Read key is needed or invalid.");
+            throw new MCRException("Read key is needed or invalid.");
         }
         final String writeValue = accKP.getWriteKey();
         if (writeValue != null && !MCRAccessKeyManager.isValidSecret(writeValue)) {
-            throw new MCRUsageException("Write key is invalid.");
+            throw new MCRException("Write key is invalid.");
         }
-        final MCRAccessKey accessKeyRead = new MCRAccessKey(readValue, MCRAccessManager.PERMISSION_READ);
+        final MCRAccessKey accessKeyRead = new MCRAccessKey(readValue, PERMISSION_READ);
         MCRAccessKeyManager.createAccessKey(objectId, accessKeyRead);
         if (writeValue != null) {
-            final MCRAccessKey accessKeyWrite = new MCRAccessKey(writeValue, MCRAccessManager.PERMISSION_WRITE);
+            final MCRAccessKey accessKeyWrite = new MCRAccessKey(writeValue, PERMISSION_WRITE);
             MCRAccessKeyManager.createAccessKey(objectId, accessKeyWrite);
         }
     }
 
     /**
-     * Updates the given {@link MIRAccessKeyPair}.
+     * Updates or creates the given {@link MIRAccessKeyPair}.
      *
      * @param accKP the {@link MIRAccessKeyPair}
-     * @throws MCRUsageException pair is not valid
+     * @throws MCRException pair is not valid
      */
-    public static void updateKeyPair(final MIRAccessKeyPair accKP) throws MCRUsageException {
+    public static void updateKeyPair(final MIRAccessKeyPair accKP) throws MCRException {
         final MCRObjectID objectId = accKP.getMCRObjectId();
         if (objectId == null) {
-            throw new MCRUsageException("Object id is needed.");
+            throw new MCRException("Object id is needed.");
         }
         final String readValue = accKP.getReadKey();
         final String writeValue = accKP.getWriteKey();
-        if (readValue == null && writeValue == null) {
-            MCRAccessKeyManager.clearAccessKeys(objectId);
+        if (readValue == null && writeValue != null) {
+            throw new MCRException("Cannot update without existing read key.");
+        }
+        final MCRAccessKey accessKeyRead = MCRAccessKeyManager.listAccessKeysWithType(objectId, PERMISSION_READ)
+            .stream()
+            .findFirst()
+            .orElse(null);
+        MCRAccessKey accessKeyWrite = MCRAccessKeyManager.listAccessKeysWithType(objectId, PERMISSION_WRITE)
+            .stream()
+            .findFirst()
+            .orElse(null);
+
+        if (accessKeyRead == null && accessKeyWrite == null) { // create
+            createKeyPair(accKP);
         } else {
-            if (readValue == null || !MCRAccessKeyManager.isValidSecret(readValue)) {
-                throw new MCRUsageException("Read key is needed or invalid.");
-            }
-            if (writeValue != null && !MCRAccessKeyManager.isValidSecret(writeValue)) {
-                throw new MCRUsageException("Write key is invalid.");
-            }
+            final List<MCRAccessKey> accessKeys = new ArrayList<>();
             MCRAccessKeyManager.clearAccessKeys(objectId);
-            final MCRAccessKey readAccessKey = new MCRAccessKey(readValue,
-                MCRAccessManager.PERMISSION_READ);
-            MCRAccessKeyManager.createAccessKey(objectId, readAccessKey);
-            if (writeValue != null) {
-                final MCRAccessKey writeAccessKey = new MCRAccessKey(writeValue,
-                    MCRAccessManager.PERMISSION_WRITE);
-                MCRAccessKeyManager.createAccessKey(objectId, writeAccessKey);
+            if (readValue.length() > 0) {
+                if (!MCRAccessKeyManager.isValidSecret(readValue)) {
+                    throw new MCRException("Secret is invalid.");
+                }
+                accessKeyRead.setSecret(MCRAccessKeyManager.hashSecret(readValue, objectId));
+                accessKeys.add(accessKeyRead);
             }
+            if (writeValue != null && writeValue.length() > 0) {
+                if (!MCRAccessKeyManager.isValidSecret(writeValue)) {
+                    throw new MCRException("Secret is invalid.");
+                }
+                if (accessKeyWrite == null){
+                    accessKeyWrite = new MCRAccessKey(writeValue, PERMISSION_WRITE);
+                }
+                accessKeyWrite.setSecret(MCRAccessKeyManager.hashSecret(writeValue, objectId));
+                accessKeys.add(accessKeyWrite);
+            }
+            addDefaultKeyInformations(accessKeys);
+            MCRAccessKeyManager.addAccessKeys(objectId, accessKeys);
+        }
+    }
+
+    private static void addDefaultKeyInformations(final List<MCRAccessKey> accessKeys) {
+        for (final MCRAccessKey accessKey : accessKeys) {
+            accessKey.setIsActive(true);
+            accessKey.setLastModified(new Date());
+            accessKey.setLastModifiedBy(MCRSessionMgr.getCurrentSession().getUserInformation().getUserID());
         }
     }
 
     /**
-     * Returns all access keys.
+     * Removes {@link MIRAccessKeyPair}.
      *
-     * @return access key pairs as list
+     * @param accKP the {@link MIRAccessKeyPair}
      */
-    public static List<MIRAccessKeyPair> getAccessKeyPairs() {
-        final EntityManager em = MCREntityManagerProvider.getCurrentEntityManager();
-        return em.createNamedQuery("MIRAccessKeyPair.get", MIRAccessKeyPair.class)
-            .getResultList();
-    }
-
-    /**
-     * Removes access key pair for given {@link MCRObjectID}.
-     *
-     * @param objectId the {@link MCRObjectID}
-     */
-    public static void removeAccessKeyPair(final MCRObjectID objectId) {
-        final EntityManager em = MCREntityManagerProvider.getCurrentEntityManager();
-        em.createNamedQuery("MIRAccessKeyPair.removeById")
-            .setParameter("objId", objectId.toString())
-            .executeUpdate();
+    public static void deleteKeyPair(final MIRAccessKeyPair accKP) {
+        final MCRObjectID objectId = accKP.getMCRObjectId();
+        if (objectId == null) {
+            throw new MCRException("Object id is needed.");
+        }
+        MCRAccessKeyManager.clearAccessKeys(objectId);
     }
 }
