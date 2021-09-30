@@ -90,7 +90,7 @@ public class MIRMigration202106Utils {
             accessKey.setCreatedBy("migration");
             accessKey.setLastModified(new Date());
             accessKey.setLastModifiedBy("migration");
-            accessKey.setComment(createMigrationComment(mirAccessKey.getValue()));
+            accessKey.setComment(mirAccessKey.getValue());
             final List<MCRAccessKey> accessKeys = new ArrayList<>();
             accessKeys.add(accessKey);
             MCRAccessKeyManager.addAccessKeys(objectId, accessKeys);
@@ -125,10 +125,6 @@ public class MIRMigration202106Utils {
             offset += limit;
         }
         while (users.size() == limit);
-    }
-
-    private static String createMigrationComment(final String value) {
-        return "Migrated on " + new Date().toString() + " from an access key/pair.\nValue: " + value;
     }
 
     /**
