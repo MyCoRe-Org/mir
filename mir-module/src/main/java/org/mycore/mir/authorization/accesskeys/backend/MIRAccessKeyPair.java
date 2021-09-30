@@ -20,8 +20,10 @@
 
 package org.mycore.mir.authorization.accesskeys.backend;
 
-import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -33,8 +35,14 @@ import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlEnum;
+import javax.xml.bind.annotation.XmlEnumValue;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.XmlValue;
 
+import org.mycore.datamodel.metadata.MCRMetaLangText;
 import org.mycore.datamodel.metadata.MCRObject;
 import org.mycore.datamodel.metadata.MCRObjectID;
 
@@ -92,6 +100,22 @@ public class MIRAccessKeyPair implements Serializable {
         this.mcrObjectId = mcrObjectId;
         setReadKey(readKey);
         setWriteKey(writeKey);
+    }
+
+    public static MIRAccessKeyPair fromServiceFlags(final MCRObjectID mcrObjectId, final ServiceFlags servFlags) {
+        final MIRAccessKeyPair accKP = new MIRAccessKeyPair();
+        accKP.setMCRObjectId(mcrObjectId);
+
+        for (ServiceFlag flag : servFlags.flags) {
+            if (flag.type == ServiceFlagType.READ) {
+                accKP.setReadKey(flag.key);
+            }
+            if (flag.type == ServiceFlagType.WRITE) {
+                accKP.setWriteKey(flag.key);
+            }
+        }
+
+        return accKP.getReadKey() != null && accKP.getWriteKey() != null ? accKP : null;
     }
 
     /**
@@ -177,6 +201,10 @@ public class MIRAccessKeyPair implements Serializable {
         }
     }
 
+    public ServiceFlags toServiceFlags() {
+        return ServiceFlags.build(this);
+    }
+
     /* (non-Javadoc)
      * @see java.lang.Object#hashCode()
      */
@@ -205,5 +233,103 @@ public class MIRAccessKeyPair implements Serializable {
         return Objects.equals(mcrObjectId, that.mcrObjectId) &&
             Objects.equals(readKey, that.readKey) &&
             Objects.equals(writeKey, that.writeKey);
+    }
+
+    @XmlType(name = "serviceFlagType")
+    @XmlEnum
+    public enum ServiceFlagType {
+        /**
+         *  Read key permission type.
+         */
+        @XmlEnumValue("readkey")
+        READ("readkey"),
+
+        /**
+         * Write key permission type.
+         */
+        @XmlEnumValue("writekey")
+        WRITE("writekey");
+
+        private final String value;
+
+        ServiceFlagType(final String value) {
+            this.value = value;
+        }
+
+        /**
+         * Returns the access key permission type from given value.
+         *
+         * @param value the access key permission type value
+         * @return the access key permission type
+         */
+        public static ServiceFlagType fromValue(final String value) {
+            for (ServiceFlagType type : ServiceFlagType.values()) {
+                if (type.value.equals(value)) {
+                    return type;
+                }
+            }
+            throw new IllegalArgumentException(value);
+        }
+
+        /**
+         * Returns the set access key permission type.
+         *
+         * @return the set access key permission type
+         */
+        public String value() {
+            return value;
+        }
+    }
+
+    @XmlRootElement(name = "servflags")
+    @XmlAccessorType(XmlAccessType.FIELD)
+    public static class ServiceFlags {
+        @XmlElement(name = "servflag")
+        public List<ServiceFlag> flags;
+
+        @XmlAttribute(name = "class", required = true)
+        @SuppressWarnings("PMD.UnusedPrivateField")
+        private String cls = MCRMetaLangText.class.getSimpleName();
+
+        public static ServiceFlags build(final MIRAccessKeyPair accKP) {
+            ServiceFlags servFlags = new ServiceFlags();
+
+            servFlags.flags = new ArrayList<ServiceFlag>();
+
+            servFlags.flags.add(ServiceFlag.build(ServiceFlagType.READ, accKP.getReadKey()));
+
+            if (accKP.getWriteKey() != null) {
+                servFlags.flags.add(ServiceFlag.build(ServiceFlagType.WRITE, accKP.getWriteKey()));
+            }
+
+            return servFlags;
+        }
+    }
+
+    @XmlRootElement(name = "servflag")
+    @XmlAccessorType(XmlAccessType.FIELD)
+    public static class ServiceFlag {
+        @XmlAttribute(name = "type", required = true)
+        public ServiceFlagType type;
+
+        @XmlValue
+        public String key;
+
+        @XmlAttribute(name = "inherited")
+        @SuppressWarnings("PMD.UnusedPrivateField")
+        private int inherited = 0;
+
+        @XmlAttribute(name = "form")
+        @SuppressWarnings("PMD.UnusedPrivateField")
+        private String form = "plain";
+
+        public static ServiceFlag build(final ServiceFlagType permission, final String key) {
+            ServiceFlag accKey = new ServiceFlag();
+
+            accKey.type = permission;
+            accKey.key = key;
+
+            return accKey;
+        }
     }
 }

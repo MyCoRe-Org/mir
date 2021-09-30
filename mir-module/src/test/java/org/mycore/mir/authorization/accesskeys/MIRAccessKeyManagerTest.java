@@ -175,7 +175,7 @@ public class MIRAccessKeyManagerTest extends MCRJPATestCase {
         MIRAccessKeyPair pair = new MIRAccessKeyPair(objectId, READ_KEY, WRITE_KEY);
         MIRAccessKeyManager.createKeyPair(pair);
 
-        MIRAccessKeyManager.deleteKeyPair(pair);
+        MIRAccessKeyManager.deleteKeyPair(objectId);
 
         assertFalse(MIRAccessKeyManager.existsKeyPair(objectId));
     }

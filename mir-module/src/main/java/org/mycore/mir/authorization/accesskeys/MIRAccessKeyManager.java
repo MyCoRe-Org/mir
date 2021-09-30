@@ -28,9 +28,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import org.mycore.common.MCRSessionMgr;
 import org.mycore.common.MCRException;
 import org.mycore.datamodel.metadata.MCRObjectID;
@@ -39,9 +36,6 @@ import org.mycore.mcr.acl.accesskey.model.MCRAccessKey;
 import org.mycore.mir.authorization.accesskeys.backend.MIRAccessKeyPair;
 
 public final class MIRAccessKeyManager {
-
-    @SuppressWarnings("unused")
-    private static final Logger LOGGER = LogManager.getLogger();
 
     /**
      * Returns the {@link MIRAccessKeyPair} for given {@link MCRObjectID}.
@@ -170,15 +164,12 @@ public final class MIRAccessKeyManager {
     }
 
     /**
-     * Removes {@link MIRAccessKeyPair}.
+     * Deletes the {@link MIRAccessKeyPair} for given {@link MCRObjectID}.
      *
-     * @param accKP the {@link MIRAccessKeyPair}
+     * @param objectId the {@link MCRObjectID}
+     * @throws MCRException pair is not valid
      */
-    public static void deleteKeyPair(final MIRAccessKeyPair accKP) {
-        final MCRObjectID objectId = accKP.getMCRObjectId();
-        if (objectId == null) {
-            throw new MCRException("Object id is needed.");
-        }
+    public static void deleteKeyPair(final MCRObjectID objectId) {
         MCRAccessKeyManager.clearAccessKeys(objectId);
     }
 }
