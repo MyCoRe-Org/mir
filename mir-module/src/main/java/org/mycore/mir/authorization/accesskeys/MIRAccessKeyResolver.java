@@ -35,7 +35,7 @@ import org.mycore.mir.authorization.accesskeys.backend.MIRAccessKeyPair;
  *
  * <p>Syntax:</p>
  * <ul>
- * <li><code>accesskeys:{mcrObjectId}</code> to resolve an {@link MIRAccessKeyPair}</li>
+ * <li><code>accesskeypairs:{mcrObjectId}</code> to resolve an {@link MIRAccessKeyPair}</li>
  * </ul>
  *
  * @author Ren\u00E9 Adler (eagle)

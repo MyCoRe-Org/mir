@@ -54,12 +54,9 @@ public class MIRMigration202106Utils {
 
     protected static final String ACCESS_KEY_PREFIX = "acckey_";
 
-    private static String createMigrationComment(final String value) {
-        return "Migrated on " + new Date().toString() + " from an access key pair.\nValue: " + value;
-    }
-
-    @MCRCommand(syntax = "migrate access key pairs",
-        help = "Migrates all access key pairs to MCR access keys (2020.06)")
+    @MCRCommand(syntax = "migrate all access key pairs",
+        help = "Migrates all access key pairs to MCR access keys (2020.06"
+            + " Should be used to migrate from version up to and including 2020.06.")
     public static void migrateAccessKeyPairs() throws MCRException {
         final List<MIRAccessKeyPair> accessKeyPairs = listAccessKeyPairs();
         for (final MIRAccessKeyPair accessKeyPair : accessKeyPairs) {
@@ -80,7 +77,8 @@ public class MIRMigration202106Utils {
     }
 
     @MCRCommand(syntax = "migrate all access keys",
-        help = "Migrates all MIR access key to MCR access keys (2021.05)")
+        help = "Migrates all MIR access key to MCR access keys."
+            + " Should be used to migrate from version 2021.05.")
     public static void migrateAccessKeys() throws MCRException {
         final List<MIRAccessKey> mirAccessKeys = listAccessKeys();
         for (final MIRAccessKey mirAccessKey : mirAccessKeys) {
@@ -93,19 +91,18 @@ public class MIRMigration202106Utils {
             accessKey.setLastModified(new Date());
             accessKey.setLastModifiedBy("migration");
             accessKey.setComment(createMigrationComment(mirAccessKey.getValue()));
-
             final List<MCRAccessKey> accessKeys = new ArrayList<>();
             accessKeys.add(accessKey);
-            
             MCRAccessKeyManager.addAccessKeys(objectId, accessKeys);
-
             removeAccessKey(mirAccessKey);
         }
         LOGGER.info("migrated all keys to MCR access keys");
     }
 
     @MCRCommand(syntax = "migrate all access key user attributes",
-        help = "Hashes all access key user attributes. Should be done after access key migration.")
+        help = "Hashes all access key user attributes."
+            + " Is only necessary if the secrets are hashed."
+            + " Should be used after access key migration.")
     public static void migrateAccessKeyUserAttributes() {
         int offset = 0;
         final int limit = 1024;
@@ -128,6 +125,10 @@ public class MIRMigration202106Utils {
             offset += limit;
         }
         while (users.size() == limit);
+    }
+
+    private static String createMigrationComment(final String value) {
+        return "Migrated on " + new Date().toString() + " from an access key/pair.\nValue: " + value;
     }
 
     /**
