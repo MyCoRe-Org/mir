@@ -467,10 +467,10 @@ chalk@~2.4.1:
     escape-string-regexp "^1.0.5"
     supports-color "^5.3.0"
 
-ckeditor4@^4.14.1:
-  version "4.14.1"
-  resolved "https://registry.yarnpkg.com/ckeditor4/-/ckeditor4-4.14.1.tgz#662bd605f33eaa6bb5644d5fd81c15dbe9d9a18c"
-  integrity sha512-0TgtXFDsEe1GROggaEyJ8zKKvCxk/ULqVk0Uze+XEKSimTnz4NVOsCKOZDAakvtW57I8hkusFjmzzz1QSFP3Gw==
+ckeditor4@^4.16.2:
+  version "4.16.2"
+  resolved "https://registry.yarnpkg.com/ckeditor4/-/ckeditor4-4.16.2.tgz#322e0aa22cc79cfc825345b015b29bcdd8ada3a2"
+  integrity sha512-5x2FmI+yGpQIKISh24Wp4HwjQxN6C4Lw59yh68HbFwcnMu8DvSiZLJfeINGvRG1oQ1L9GzJ5Pqd0PL0KDH08Jw==
 
 class-utils@^0.3.5:
   version "0.3.6"
