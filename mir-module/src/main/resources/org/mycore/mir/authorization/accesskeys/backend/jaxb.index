@@ -1,1 +1,4 @@
 MIRAccessKeyPair
+MIRAccessKeyPair$ServiceFlags
+MIRAccessKeyPair$ServiceFlag
+MIRAccessKeyPair$ServiceFlagType
