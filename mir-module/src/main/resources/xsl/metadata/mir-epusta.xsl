@@ -49,7 +49,7 @@
               </strong>
             </span>
             <div class="row">
-              <div class="col-md-7 col-sm-9 col-xs-6 text-right">
+              <div class="col-md-7 col-sm-9 col-6 text-right">
                 <xsl:value-of select="i18n:translate('mir.epusta.counter.fulltext')" />
               </div>
               <div
@@ -60,7 +60,7 @@
               />
             </div>
             <div class="row">
-              <div class="col-md-7 col-sm-9 col-xs-6 text-right">
+              <div class="col-md-7 col-sm-9 col-6 text-right">
                 <xsl:value-of select="i18n:translate('mir.epusta.counter.abstract')" />
               </div>
               <div
@@ -76,7 +76,7 @@
               </strong>
             </span>
             <div class="row">
-              <div class="col-md-7 col-sm-9 col-xs-6 text-right">
+              <div class="col-md-7 col-sm-9 col-6 text-right">
                 <xsl:value-of select="i18n:translate('mir.epusta.counter.fulltext')" />
               </div>
               <div
@@ -88,7 +88,7 @@
               />
             </div>
             <div class="row">
-              <div class="col-md-7 col-sm-9 col-xs-6 text-right">
+              <div class="col-md-7 col-sm-9 col-6 text-right">
                 <xsl:value-of select="i18n:translate('mir.epusta.counter.abstract')" />
               </div>
               <div data-epustaelementtype="ePuStaInline"
