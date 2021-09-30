@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE MyCoReWebPage>
 <MyCoReWebPage>
-  <section xml:lang="all" i18n="mir.accessKey">
+  <section xml:lang="all" i18n="mir.accesskey">
     <xed:form class="accessKey form-horizontal" role="form" xmlns:xed="http://www.mycore.de/xeditor" xmlns:mir="http://www.mycore.de/mir">
       <xed:cancel url="{$url}" />
       <xed:cancel url="{$WebApplicationBaseURL}receive/{$objId}" />
@@ -10,12 +10,12 @@
         <div class="card">
           <div class="card-header">
             <h3 class="card-title">
-              <xed:output i18n="mir.accessKey.setOnUser" />
+              <xed:output i18n="mir.accesskey.setOnUser" />
             </h3>
           </div>
           <div class="card-body">
             <xed:bind xpath="@objId" set="{$objId}" />
-            <mir:template name="textInput" xpath="." id="accessKey" i18n="mir.accessKey" i18n.error="mir.accessKey.required" required="true" />
+            <mir:template name="textInput" xpath="." id="accessKey" i18n="mir.accesskey" i18n.error="mir.accesskey.required" required="true" />
           </div>
           <div class="card-footer clearfix">
             <div class="float-right">

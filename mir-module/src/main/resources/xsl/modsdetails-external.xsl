@@ -631,14 +631,14 @@
                      href="{$WebApplicationBaseURL}accesskey/manager.xml?objectId={@ID}"
                      class="dropdown-item"
                   >
-                    <xsl:value-of select="i18n:translate('mir.accessKey.manage')" />
+                    <xsl:value-of select="i18n:translate('mir.accesskey.manage')" />
                   </a>
                 </li>
               </xsl:if>
               <xsl:if test="key('rights', @ID)/@accKeyEnabled and key('rights', @ID)/@hasAccKey and not(mcrxsl:isCurrentUserGuestUser() or $accessedit or $accessdelete)">
                 <li>
                   <a role="menuitem" tabindex="-1" href="{$WebApplicationBaseURL}accesskey/set.xed?objId={@ID}&amp;url={encoder:encode(string($RequestURL))}" class="dropdown-item">
-                    <xsl:value-of select="i18n:translate('mir.accessKey.setOnUser')" />
+                    <xsl:value-of select="i18n:translate('mir.accesskey.setOnUser')" />
                   </a>
                 </li>
               </xsl:if>
@@ -690,7 +690,7 @@
           <ul class="dropdown-menu">
             <li>
               <a role="menuitem" tabindex="-1" href="{$WebApplicationBaseURL}accesskey/set.xed?objId={$deriv}&amp;url={encoder:encode(string($RequestURL))}" class="dropdown-item">
-                <xsl:value-of select="i18n:translate('mir.accessKey.setOnUser')" />
+                <xsl:value-of select="i18n:translate('mir.accesskey.setOnUser')" />
               </a>
             </li>
           </ul>
@@ -750,7 +750,7 @@
                 <a role="menuitem" tabindex="-1" class="dropdown-item"
                   href="{$WebApplicationBaseURL}accesskey/manager.xml?objectId={$parentObjID}&amp;derivateId={$deriv}"
                 >
-                  <xsl:value-of select="i18n:translate('mir.accessKey.manage')" />
+                  <xsl:value-of select="i18n:translate('mir.accesskey.manage')" />
                 </a>
               </li>
             </xsl:if>
