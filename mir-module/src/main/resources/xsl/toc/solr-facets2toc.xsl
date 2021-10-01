@@ -42,10 +42,10 @@
   </xsl:template>
 
   <xsl:template match="lst[descendant::lst[@name='docs'][arr/lst]]">
-    <!-- the default expanded/collapsed state of this toc level was encoded into the facet field name: -->
-    <!-- e.g. volume_expanded_true, issue_expanded_false -->
-    <xsl:variable name="field" select="substring-before(@name,'_expanded_')" />
-    <xsl:variable name="expanded" select="substring-after(@name,'_expanded_')" />
+
+    <xsl:variable name="field" select="@name" />
+    <xsl:variable name="params" select="/response/lst[@name='responseHeader']/lst[@name='params']"/>
+    <xsl:variable name="expanded" select="$params/str[@name=concat('toc.',$field,'.expanded')]/text()"/>
 
     <!--  build the mir_genres publication type ID, e.g. host.issue = mir_genres:issue -->
     <xsl:variable name="category.top">

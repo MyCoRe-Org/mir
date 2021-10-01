@@ -31,17 +31,26 @@
     <!-- Transform toc-layouts.xml to SOLR parameters to get a TOC via JSON facet API-->
     <xsl:variable name="tocLayouts" select="document('xslStyle:toc/toc-layouts2solr-json-facet-query:resource:toc-layouts.xml')/*" />
 
-    <!-- get ID of toc layout to use from service flag or toc-layouts.xml @default -->
-    <xsl:variable name="layoutID">
+    <!-- get preferred ID of toc layout to use from URL parameter of service flag -->
+    <xsl:variable name="preferredLayoutID">
       <xsl:choose>
         <xsl:when test="string-length($TOC.LayoutID) &gt; 0">
-          <xsl:value-of select="$TOC.LayoutID" />
+          <xsl:value-of select="$TOC.LayoutID"/>
         </xsl:when>
         <xsl:when test="mycoreobject/service/servflags/servflag[@type='tocLayout'][string-length(text()) &gt; 0]">
-          <xsl:value-of select="mycoreobject/service/servflags/servflag[@type='tocLayout']" />
+          <xsl:value-of select="mycoreobject/service/servflags/servflag[@type='tocLayout']"/>
+        </xsl:when>
+      </xsl:choose>
+    </xsl:variable>
+
+    <!-- select actual ID of toc layout to use. Use preferred ID, if available, or fallback to toc-layouts.xml @default -->
+    <xsl:variable name="layoutID">
+      <xsl:choose>
+        <xsl:when test="$preferredLayoutID and $tocLayouts/toc-layout[@id=$preferredLayoutID]">
+          <xsl:value-of select="$preferredLayoutID"/>
         </xsl:when>
         <xsl:otherwise>
-          <xsl:value-of select="$tocLayouts/@default" />
+          <xsl:value-of select="$tocLayouts/@default"/>
         </xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
@@ -85,8 +94,17 @@
       <div id="toc" class="detail_block mt-4 mb-4">
         <xsl:call-template name="toc.debug">
           <xsl:with-param name="headline">TOC Layout ID</xsl:with-param>
-          <xsl:with-param name="content" select="$layoutID" />
-          <xsl:with-param name="rows">1</xsl:with-param>
+          <xsl:with-param name="content"  >
+            <xsl:text>URL parameter = </xsl:text>
+            <xsl:value-of select="$TOC.LayoutID"/>
+            <xsl:text>&#xA;</xsl:text>
+            <xsl:text>Service flag = </xsl:text>
+            <xsl:value-of select="mycoreobject/service/servflags/servflag[@type='tocLayout']"/>
+            <xsl:text>&#xA;</xsl:text>
+            <xsl:text>Actually used = </xsl:text>
+            <xsl:value-of select="$layoutID"/>
+          </xsl:with-param>
+          <xsl:with-param name="rows">3</xsl:with-param>
         </xsl:call-template>
         <xsl:call-template name="toc.debug">
           <xsl:with-param name="headline">TOC SOLR Query</xsl:with-param>
