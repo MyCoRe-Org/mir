@@ -296,7 +296,8 @@
 					url: webApplicationBaseURL + "rsc/jwt",
 					type: "GET",
                     			data: {
-                        			ua: "acckey_" + objID
+                        			ua: "acckey_" + objID,
+                        			sa: "acckey_" + objID
                     			},
 					dataType: "json",
 					success: function (data) {

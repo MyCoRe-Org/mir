@@ -36,8 +36,9 @@ import org.mycore.datamodel.common.MCRLinkTableManager;
 import org.mycore.datamodel.metadata.MCRObjectID;
 import org.mycore.frontend.cli.MCRCommandLineInterface;
 import org.mycore.frontend.cli.MCRCommandManager;
-import org.mycore.mir.authorization.accesskeys.MIRAccessKeyManager;
-import org.mycore.mir.authorization.accesskeys.backend.MIRAccessKeyPair;
+import org.mycore.mcr.acl.accesskey.MCRAccessKeyManager;
+import org.mycore.mcr.acl.accesskey.MCRAccessKeyUtils;
+import org.mycore.mcr.acl.accesskey.model.MCRAccessKey;
 import org.mycore.user2.MCRUser;
 import org.mycore.user2.MCRUserManager;
 
@@ -105,6 +106,7 @@ public class MIRStrategyTest extends MCRJPATestCase {
     @Override
     protected Map<String, String> getTestProperties() {
         final Map<String, String> testProperties = super.getTestProperties();
+        testProperties.put("MCR.ACL.AccessKey.Strategy.AllowedObjectTypes", "mods,derivate");
         Path mirCliSrcMainPath = Paths.get("..", "mir-cli", "src", "main").toAbsolutePath().normalize();
         testProperties.putAll(Map.ofEntries(
             Map.entry("app.home", mirCliSrcMainPath.toString()),
@@ -163,8 +165,11 @@ public class MIRStrategyTest extends MCRJPATestCase {
         assertTrue(strategy.checkPermission(mir_derivate_00004711.toString(), MCRAccessManager.PERMISSION_READ));
         Assert
             .assertFalse(strategy.checkPermission(mir_derivate_00004711.toString(), MCRAccessManager.PERMISSION_WRITE));
-        MIRAccessKeyPair accessKeyPair = new MIRAccessKeyPair(mir_mods_00004711, "mySecret", "letMeIn");
-        MIRAccessKeyManager.createKeyPair(accessKeyPair);
+
+        final MCRAccessKey accessKeyRead = new MCRAccessKey("mySecret", MCRAccessManager.PERMISSION_READ);
+        MCRAccessKeyManager.createAccessKey(mir_mods_00004711, accessKeyRead);
+        final MCRAccessKey accessKeyWrite = new MCRAccessKey("letMeIn", MCRAccessManager.PERMISSION_WRITE);
+        MCRAccessKeyManager.createAccessKey(mir_mods_00004711, accessKeyWrite);
 
         final MCRCategLinkService categLinkService = MCRCategLinkServiceFactory.getInstance();
         MCRCategLinkReference ref = new MCRCategLinkReference(mir_mods_00004711);
@@ -175,7 +180,7 @@ public class MIRStrategyTest extends MCRJPATestCase {
             .assertFalse(strategy.checkPermission(mir_derivate_00004711.toString(), MCRAccessManager.PERMISSION_READ));
 
         //Give user read access-token
-        MIRAccessKeyManager.addAccessKey(mir_mods_00004711, accessKeyPair.getReadKey());
+        MCRAccessKeyUtils.addAccessKeySecretToCurrentUser(mir_mods_00004711, "mySecret");
         junitUser = MCRUserManager.getUser(junitUser.getUserName());
         MCRSessionMgr.getCurrentSession().setUserInformation(junitUser);
 
@@ -188,7 +193,7 @@ public class MIRStrategyTest extends MCRJPATestCase {
         assertTrue(strategy.checkPermission(mir_mods_00004711.toString(), MCRAccessManager.PERMISSION_PREVIEW));
 
         //Give user write access-token
-        MIRAccessKeyManager.addAccessKey(mir_mods_00004711, accessKeyPair.getWriteKey());
+        MCRAccessKeyUtils.addAccessKeySecretToCurrentUser(mir_mods_00004711, "letMeIn");
         junitUser = MCRUserManager.getUser(junitUser.getUserName());
         MCRSessionMgr.getCurrentSession().setUserInformation(junitUser);
 

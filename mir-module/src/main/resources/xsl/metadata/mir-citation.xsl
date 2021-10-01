@@ -8,6 +8,7 @@
   xmlns:cmd="http://www.cdlib.org/inside/diglib/copyrightMD"
   xmlns:exslt="http://exslt.org/common"
   xmlns:piUtil="xalan://org.mycore.pi.frontend.MCRIdentifierXSLUtils"
+  xmlns:csl="http://purl.org/net/xbiblio/csl"
   exclude-result-prefixes="i18n mcr mods xlink cmd exslt piUtil"
 >
   <xsl:import href="xslImport:modsmeta:metadata/mir-citation.xsl" />
@@ -75,7 +76,7 @@
             <xsl:choose>
               <xsl:when test="$MIR.plumx = 'show'">
                 <!-- use altmeltrics badge -->
-                <div class="col-xs-6">
+                <div class="col-6">
                   <div data-badge-type="1" data-badge-popover="right" data-doi="{//mods:mods/mods:identifier[@type='doi']}" data-hide-no-mentions="{$MIR.altmetrics.hide}" class="altmetric-embed"></div>
                 </div>
               </xsl:when>
@@ -93,7 +94,7 @@
             <xsl:choose>
               <xsl:when test="$MIR.altmetrics = 'show'">
                 <!-- use PlumX badge-->
-                <div class="col-xs-6">
+                <div class="col-6">
                   <a href="https://plu.mx/plum/a/?doi={//mods:mods/mods:identifier[@type='doi']}" data-popup="right" data-badge="true" class="plumx-plum-print-popup plum-bigben-theme" data-site="plum" data-hide-when-empty="{$MIR.plumx.hide}">PlumX Metrics</a>
                 </div>
               </xsl:when>
@@ -124,12 +125,16 @@
           <select class="form-control input-sm" id="mir-csl-cite" data-object-id="{/mycoreobject/@ID}">
             <xsl:for-each select="exslt:node-set($cite-styles)/token">
               <option value="{.}">
+                <xsl:variable name="cslDocument" select="document(concat('resource:', text(), '.csl'))"/>
+                <xsl:variable name="title" select="$cslDocument/csl:style/csl:info/csl:title"/>
+                <xsl:variable name="short-title" select="$cslDocument/csl:style/csl:info/csl:title-short"/>
+
                 <xsl:choose>
-                  <xsl:when test="contains(i18n:translate(concat('mir.citationStyle.',.)), '???')">
-                    <xsl:value-of select="." />
+                  <xsl:when test="string-length($short-title) &gt; 0">
+                    <xsl:value-of select="concat($short-title, ' (', $title, ')')"/>
                   </xsl:when>
                   <xsl:otherwise>
-                    <xsl:value-of select="i18n:translate(concat('mir.citationStyle.',.))" />
+                    <xsl:value-of select="$title" />
                   </xsl:otherwise>
                 </xsl:choose>
                 

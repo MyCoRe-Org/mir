@@ -5,7 +5,8 @@
   xmlns:xalan="http://xml.apache.org/xalan"
   xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
   exclude-result-prefixes="xsl xalan i18n">
-  
+
+  <xsl:param name="MIR.TableOfContents.HideTrivialLevel" />
   <xsl:param name="WebApplicationBaseURL" />
   
   <!-- custom layouts of level items and publications -->
@@ -45,7 +46,7 @@
   </xsl:template>
 
   <!-- if at top level, there is only one group, without deeper levels, just show publications -->
-  <xsl:template match="toc/level[count(item)=1][item[not(level)][publications]]" priority="1">
+  <xsl:template match="toc[$MIR.TableOfContents.HideTrivialLevel='true']/level[count(item)=1][item[not(level)][publications]]" priority="1">
     <xsl:apply-templates select="item/publications" />
   </xsl:template>
   
@@ -99,7 +100,7 @@
           <xsl:if test="level|publications">
             <div id="{$id}">
               <xsl:attribute name="class">
-                <xsl:text>below collapse</xsl:text>
+                <xsl:text>mir-toc-section-content below collapse </xsl:text>
                 <xsl:if test="$expanded='true'"> show</xsl:if>
               </xsl:attribute>
               <xsl:apply-templates select="level|publications" />

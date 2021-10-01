@@ -1,7 +1,4 @@
 /*
- * $Id$ 
- * $Revision$ $Date$
- *
  * This file is part of ***  M y C o R e  ***
  * See http://www.mycore.de/ for details.
  *
@@ -20,12 +17,13 @@
  * If not, write to the Free Software Foundation Inc.,
  * 59 Temple Place - Suite 330, Boston, MA  02111-1307 USA
  */
+
 package org.mycore.mir.authorization.accesskeys.backend;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -63,13 +61,9 @@ import org.mycore.datamodel.metadata.MCRObjectID;
  */
 
 @NamedQueries({
-    @NamedQuery(name = "MIRAccessKeyPair.get",
+    @NamedQuery(name = "MIRAccessKeyPair.listAll",
         query = "SELECT k"
             + "  FROM MIRAccessKeyPair k"),
-    @NamedQuery(name = "MIRAccessKeyPair.removeById",
-        query = "DELETE"
-            + "  FROM MIRAccessKeyPair k"
-            + "  WHERE k.objectId = :objId"),
 })
 
 @Entity
@@ -135,9 +129,9 @@ public class MIRAccessKeyPair implements Serializable {
     }
 
     /**
-     * @param mcrObjectId the {@MCRObjectID} to set
+     * @param mcrObjectId the {@link MCRObjectID} to set
      */
-    private void setMCRObjectId(final MCRObjectID mcrObjectId) {
+    protected void setMCRObjectId(final MCRObjectID mcrObjectId) {
         this.mcrObjectId = mcrObjectId;
     }
 

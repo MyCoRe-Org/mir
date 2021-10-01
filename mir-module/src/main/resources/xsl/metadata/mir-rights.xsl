@@ -15,11 +15,10 @@
   <xsl:variable name="delete" select="'deletedb'" />
 
   <!-- checks for AccessKey enabled (default is enabled for 'mods')    -->
-  <!-- to enable set # MIR.Strategy.AccessKey.ObjectTypes=mods,derivate-->
-  <xsl:param name="MCR.Access.Strategy.Class" />
-  <xsl:param name="MIR.Strategy.AccessKey.ObjectTypes" />
-  <xsl:variable name="derivateAccKeyEnabled" select="contains($MCR.Access.Strategy.Class, 'MIRStrategy') and contains($MIR.Strategy.AccessKey.ObjectTypes, 'derivate')" />
-  <xsl:variable name="modsAccKeyEnabled" select="contains($MCR.Access.Strategy.Class, 'MIRStrategy') and contains($MIR.Strategy.AccessKey.ObjectTypes, 'mods')" />
+  <!-- to enable set # MCR.ACL.AccessKey.Strategy.AllowedObjectTypes=mods,derivate-->
+  <xsl:param name="MCR.ACL.AccessKey.Strategy.AllowedObjectTypes" />
+  <xsl:variable name="derivateAccKeyEnabled" select="contains($MCR.ACL.AccessKey.Strategy.AllowedObjectTypes, 'derivate')" />
+  <xsl:variable name="modsAccKeyEnabled" select="contains($MCR.ACL.AccessKey.Strategy.AllowedObjectTypes, 'mods')" />
   
   <xsl:include href="coreFunctions.xsl"/>
   
@@ -72,13 +71,10 @@
 
   <xsl:template name="check-access-keys">
     <xsl:param name="id" />
-    <xsl:variable name="accKey" select="document(concat('accesskeys:', $id))/accesskeys" />
+    <xsl:variable name="accessKeyCount" select="document(concat('accesskeys:', $id))//@count" />
     <xsl:attribute name="accKeyEnabled" /> <!-- need this to show menu -->
-    <xsl:if test="$accKey/@readkey">
-      <xsl:attribute name="readKey" />
-    </xsl:if>
-    <xsl:if test="$accKey/@writekey">
-      <xsl:attribute name="writeKey" />
+    <xsl:if test="$accessKeyCount &gt; 0">
+      <xsl:attribute name="hasAccKey" />
     </xsl:if>
   </xsl:template>
 </xsl:stylesheet>

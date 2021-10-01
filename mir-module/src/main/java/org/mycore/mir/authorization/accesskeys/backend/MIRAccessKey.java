@@ -1,7 +1,4 @@
 /*
- * $Id$ 
- * $Revision$ $Date$
- *
  * This file is part of ***  M y C o R e  ***
  * See http://www.mycore.de/ for details.
  *
@@ -37,24 +34,12 @@ import org.mycore.backend.jpa.MCRObjectIDConverter;
 import org.mycore.datamodel.metadata.MCRObjectID;
 
 @NamedQueries({
-    @NamedQuery(name = "MIRAccessKey.getById",
+    @NamedQuery(name = "MIRAccessKey.getWithValue",
         query = "SELECT k"
             + "  FROM MIRAccessKey k"
-            + "  WHERE k.objectId = :objId"),
-    @NamedQuery(name = "MIRAccessKey.getByValue",
+            + "  WHERE k.value = :value AND k.objectId = :objectId"),
+    @NamedQuery(name = "MIRAccessKey.listAll",
         query = "SELECT k"
-            + "  FROM MIRAccessKey k"
-            + "  WHERE k.value = :value AND k.objectId = :objId"),
-    @NamedQuery(name = "MIRAccessKey.getByType",
-        query = "SELECT k"
-            + "  FROM MIRAccessKey k"
-            + "  WHERE k.type = :type AND k.objectId = :objId"),
-    @NamedQuery(name = "MIRAccessKey.clearById",
-        query = "DELETE"
-            + "  FROM MIRAccessKey k"
-            + "  WHERE k.objectId = :objId"),
-    @NamedQuery(name = "MIRAccessKey.clear",
-        query = "DELETE"
             + "  FROM MIRAccessKey k"),
 })
  
@@ -81,7 +66,7 @@ public class MIRAccessKey {
     /** The permission type*/
     private String type;
 
-    private MIRAccessKey() {
+    protected MIRAccessKey() {
     }
 
     /**
@@ -91,19 +76,7 @@ public class MIRAccessKey {
      * @param type the type of permission.
      */
     public MIRAccessKey(final String value, final String type) {
-        setValue(value);
-        setType(type);
-    }
-
-    /**
-     * Creates a new access key with value and type.
-     *
-     * @param objectId the assigned {@link MCRObjectID}.
-     * @param value the value the user must know to acquire permission.
-     * @param type the type of permission.
-     */
-    public MIRAccessKey(final MCRObjectID objectId, final String value, final String type) {
-        setObjectId(objectId);
+        this();
         setValue(value);
         setType(type);
     }

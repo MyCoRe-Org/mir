@@ -156,10 +156,16 @@
   <!-- ========== title ========== -->
 
   <xsl:template name="toc.title">
-    <xsl:param name="class" />
+    <xsl:param name="class" select="''" />
     <xsl:param name="showVolume" select="'false'" />
 
-    <h4 class="{$class} mir-toc-section-title">
+    <h4>
+      <xsl:attribute name="class">
+        <xsl:text>mir-toc-section-title</xsl:text>
+        <xsl:if test="string-length($class) &gt; 0">
+          <xsl:value-of select="concat(' ', $class)"/>
+        </xsl:if>
+      </xsl:attribute>
       <a href="{$WebApplicationBaseURL}receive/{@id}">
         <xsl:if test="$showVolume='true' and (field[@name='mir.toc.series.volume'] or field[@name='mir.toc.host.volume'])">
           <xsl:choose>
@@ -180,11 +186,17 @@
   <!-- ========== authors ========== -->
 
   <xsl:template name="toc.authors">
-    <xsl:param name="class" />
+    <xsl:param name="class" select="''"/>
 
     <!-- if no authors, then no div too-->
     <xsl:for-each select="field[@name='mir.toc.authors']">
-      <div class="{$class} mir-toc-section-author">
+      <div>
+        <xsl:attribute name="class">
+          <xsl:text>mir-toc-section-author</xsl:text>
+          <xsl:if test="string-length($class) &gt; 0">
+            <xsl:value-of select="concat(' ', $class)"/>
+          </xsl:if>
+        </xsl:attribute>
         <xsl:value-of select="." />
       </div>
     </xsl:for-each>
@@ -193,11 +205,17 @@
   <!-- =========== page ========= -->
 
   <xsl:template name="toc.page">
-    <xsl:param name="class" />
+    <xsl:param name="class" select="''" />
 
     <!-- if no page, then no div too-->
     <xsl:for-each select="field[starts-with(@name,'mir.toc.host.page')]">
-      <div class="{$class} mir-toc-section-page">
+      <div>
+        <xsl:attribute name="class">
+          <xsl:text>mir-toc-section-page</xsl:text>
+          <xsl:if test="string-length($class) &gt; 0">
+            <xsl:value-of select="concat(' ', $class)"/>
+          </xsl:if>
+        </xsl:attribute>
         <xsl:value-of select="i18n:translate('mir.pages.abbreviated.single')" />
         <xsl:text> </xsl:text>
         <xsl:value-of select="." />
@@ -208,9 +226,15 @@
   <!-- =========== day.month ========= -->
 
   <xsl:template name="toc.day.month">
-    <xsl:param name="class" />
+    <xsl:param name="class" select="''" />
 
     <div class="{$class}">
+      <xsl:attribute name="class">
+        <xsl:text>mir-toc-section-date</xsl:text>
+        <xsl:if test="string-length($class) &gt; 0">
+          <xsl:value-of select="concat(' ', $class)"/>
+        </xsl:if>
+      </xsl:attribute>
       <xsl:for-each select="field[@name='mods.dateIssued'][1]">
         <xsl:call-template name="formatISODate">
           <xsl:with-param name="date" select="." />

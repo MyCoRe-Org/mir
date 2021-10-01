@@ -15,7 +15,7 @@
                 xmlns="http://datacite.org/schema/kernel-4"
                 exclude-result-prefixes="xsl fn xlink mods">
 
-  <xsl:include href="mods-utils.xsl" />
+  <xsl:include href="utils/mods-utils-3.xsl" />
   <xsl:include href="functions/mods.xsl" />
 
   <xsl:output method="xml" encoding="UTF-8" indent="yes" />
@@ -566,11 +566,16 @@
 
   <xsl:template match="mods:relatedItem">
     <xsl:apply-templates select="mods:identifier[contains($supportedRelationIDs,@type)]" mode="related" />
-    <xsl:call-template name="relatedLink" />
+    <xsl:if test="@xlink:href">
+      <xsl:call-template name="relatedLink" />
+    </xsl:if>
   </xsl:template>
 
   <xsl:template name="relatedLink">
-    <relatedIdentifier relatedIdentifierType="URL">
+    <!-- TODO: make relationType dependent from related item type,
+               see https://support.datacite.org/docs/schema-optional-properties-v41#122-relationtype
+               for details -->
+    <relatedIdentifier relatedIdentifierType="URL" relationType="References">
       <xsl:apply-templates select="@type" />
       <xsl:value-of select="concat($WebApplicationBaseURL,'receive/',@xlink:href)" />
     </relatedIdentifier>
