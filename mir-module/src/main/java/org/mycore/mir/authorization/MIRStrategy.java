@@ -6,6 +6,7 @@ package org.mycore.mir.authorization;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -26,6 +27,10 @@ import org.mycore.access.strategies.MCRAccessCheckStrategy;
 import org.mycore.access.strategies.MCRCreatorRuleStrategy;
 import org.mycore.access.strategies.MCRObjectBaseStrategy;
 import org.mycore.access.strategies.MCRObjectIDStrategy;
+import org.mycore.mcr.acl.accesskey.MCRAccessKeyManager;
+import org.mycore.mcr.acl.accesskey.MCRAccessKeyUtils;
+import org.mycore.mcr.acl.accesskey.model.MCRAccessKey;
+import org.mycore.mcr.acl.accesskey.strategy.MCRAccessKeyStrategyHelper;
 import org.mycore.backend.jpa.MCREntityManagerProvider;
 import org.mycore.backend.jpa.access.MCRACCESS;
 import org.mycore.backend.jpa.access.MCRACCESSPK_;
@@ -71,13 +76,23 @@ public class MIRStrategy implements MCRAccessCheckStrategy {
 
     private static final Logger LOGGER = LogManager.getLogger();
 
+    private static final Set<String> ALLOWED_OBJECT_TYPES = MCRConfiguration2
+        .getString("MCR.ACL.AccessKey.Strategy.AllowedObjectTypes")
+        .stream()
+        .flatMap(MCRConfiguration2::splitValue)
+        .collect(Collectors.toSet());
+
+    private static final Set<String> ALLOWED_SESSION_PERMISSION_TYPES = MCRConfiguration2
+        .getString("MCR.ACL.AccessKey.Strategy.AllowedSessionPermissionTypes")
+        .stream()
+        .flatMap(MCRConfiguration2::splitValue)
+        .collect(Collectors.toSet());
+
     private static final MCRObjectIDStrategy ID_STRATEGY = new MCRObjectIDStrategy();
 
     private static final MCRObjectBaseStrategy OBJECT_BASE_STRATEGY = new MCRObjectBaseStrategy();
 
     private static final MCRCreatorRuleStrategy CREATOR_STRATEGY = new MCRCreatorRuleStrategy();
-
-    private static final MIRKeyStrategyHelper KEY_STRATEGY_HELPER = new MIRKeyStrategyHelper();
 
     private static final long CACHE_TIME = 1000 * 60 * 60;
 
@@ -96,6 +111,43 @@ public class MIRStrategy implements MCRAccessCheckStrategy {
         accessImpl = MCRAccessManager.getAccessImpl();
     }
 
+    private boolean hasValidAccessKey(final MCRObjectID objectId, final String permission) {
+        boolean isWritePermission = MCRAccessManager.PERMISSION_WRITE.equals(permission);
+        boolean isReadPermission = MCRAccessManager.PERMISSION_READ.equals(permission);
+        if (isWritePermission || isReadPermission) {
+            if (ALLOWED_SESSION_PERMISSION_TYPES != null && ALLOWED_SESSION_PERMISSION_TYPES.contains(permission)) {
+                final String sessionSecret = MCRAccessKeyUtils.getAccessKeySecretFromCurrentSession(objectId);
+                if (sessionSecret != null) {
+                    final MCRAccessKey accessKey = MCRAccessKeyManager.getAccessKeyWithSecret(objectId, sessionSecret);
+                    if (accessKey != null) {
+                        LOGGER.debug("Found match in access key strategy for {} on {} in session.", permission,
+                            objectId);
+                        if (MCRAccessKeyStrategyHelper.verifyAccessKey(permission, accessKey)) {
+                            return true;
+                        }
+                    }
+                    if (accessKey == null || permission.equals(MCRAccessManager.PERMISSION_READ)) {
+                        MCRAccessKeyUtils.removeAccessKeySecretFromCurrentSession(objectId);
+                    }
+                }
+            }
+            final String userSecret = MCRAccessKeyUtils.getAccessKeySecretFromCurrentUser(objectId);
+            if (userSecret != null) {
+                final MCRAccessKey accessKey = MCRAccessKeyManager.getAccessKeyWithSecret(objectId, userSecret);
+                if (accessKey != null) {
+                    LOGGER.debug("Found match in access key strategy for {} on {} for user.", permission, objectId);
+                    if (MCRAccessKeyStrategyHelper.verifyAccessKey(permission, accessKey)) {
+                        return true;
+                    }
+                }
+                if (accessKey == null || permission.equals(MCRAccessManager.PERMISSION_READ)) {
+                    MCRAccessKeyUtils.removeAccessKeySecretFromCurrentUser(objectId);
+                }
+            }
+        }
+        return false;
+    }
+
     private boolean checkObjectPermission(MCRObjectID objectId, String permission) {
         LOGGER.debug("checkObjectPermission({}, {})", objectId, permission);
 
@@ -105,13 +157,14 @@ public class MIRStrategy implements MCRAccessCheckStrategy {
             return false;
         }
 
+        String permissionId = objectId.toString();
+
         // 2. check read or write key of current user
-        if (KEY_STRATEGY_HELPER.checkObjectPermission(objectId, permission)) {
+        if (ALLOWED_OBJECT_TYPES.contains(objectId.getTypeId()) && hasValidAccessKey(objectId, permission)) {
             return true;
         }
 
         // 3. check if access mapping for object id exists
-        String permissionId = objectId.toString();
         if (ID_STRATEGY.hasRuleMapping(permissionId, permission)) {
             LOGGER.debug("Found match in ID strategy for {} on {}.", permission, objectId);
             return ID_STRATEGY.checkPermission(permissionId, permission);
@@ -170,11 +223,12 @@ public class MIRStrategy implements MCRAccessCheckStrategy {
         }
 
         // 2. check read or write key of current user
-        if (KEY_STRATEGY_HELPER.checkDerivatePermission(derivateId, objectId, permission)) {
+        if ((ALLOWED_OBJECT_TYPES.contains(objectId.getTypeId()) && hasValidAccessKey(objectId, permission))
+            || (ALLOWED_OBJECT_TYPES.contains(derivateId.getTypeId()) && hasValidAccessKey(derivateId, permission))) {
             return true;
         }
 
-        // 2.check if derivate has embargo
+        // 3.check if derivate has embargo
         if (objectId == null) {
             //2.1. fallback to MCRObjectBaseStrategy
             LOGGER.debug("Derivate {} is an orphan. Cannot apply rules for MCRObject.", derivateId);
@@ -185,37 +239,36 @@ public class MIRStrategy implements MCRAccessCheckStrategy {
         if (MCRAccessManager.PERMISSION_READ.equals(permission)
             && embargo != null
             && (!MCRMODSEmbargoUtils.isCurrentUserCreator(objectId) &&
-                !MCRAccessManager.checkPermission(MCRMODSEmbargoUtils.POOLPRIVILEGE_EMBARGO) &&
-                !KEY_STRATEGY_HELPER.checkObjectPermission(objectId, "read"))) {
+                !MCRAccessManager.checkPermission(MCRMODSEmbargoUtils.POOLPRIVILEGE_EMBARGO))) {
             LOGGER.debug("Derivate {} has embargo {} and current user is not creator and doesn't has {} POOLPRIVILEGE",
                 derivateId, embargo, MCRMODSEmbargoUtils.POOLPRIVILEGE_EMBARGO);
             return false;
         }
 
-        // 3. check if access mapping for derivate id exists
+        // 4. check if access mapping for derivate id exists
         if (ID_STRATEGY.hasRuleMapping(permissionId, permission)) {
             LOGGER.debug("Found match in ID strategy for {} on {}.", permission, derivateId);
             return ID_STRATEGY.checkPermission(permissionId, permission);
         }
 
-        // 4. check if creator rule applies
+        // 5. check if creator rule applies
         if (CREATOR_STRATEGY.isCreatorRuleAvailable(objectId.toString(), permission)) {
             LOGGER.debug("Found match in CREATOR strategy for {} on {}.", permission, derivateId);
             return CREATOR_STRATEGY.checkPermission(objectId.toString(), permission);
         }
 
         return getAccessCategory(objectId, derivateId, permission)
-            // 5. use rule defined for all derivates of object in category
+            // 6. use rule defined for all derivates of object in category
             .map(c -> {
                 LOGGER.debug("using access rule defined for category: " + c);
                 return accessImpl.checkPermission(derivateId.getTypeId() + ":" + c.toString(), permission);
             })
             .orElseGet(() -> {
-                // 6. check if base strategy applies for derivate
+                // 7. check if base strategy applies for derivate
                 if (OBJECT_BASE_STRATEGY.hasRuleMapping(permissionId, permission)) {
                     return OBJECT_BASE_STRATEGY.checkPermission(permissionId, permission);
                 }
-                // 7. go for object permission, if object link exists.
+                // 8. go for object permission, if object link exists.
                 LOGGER.debug("No rule for base strategy found, check against object {}.", objectId);
                 return checkObjectPermission(objectId, permission);
             });

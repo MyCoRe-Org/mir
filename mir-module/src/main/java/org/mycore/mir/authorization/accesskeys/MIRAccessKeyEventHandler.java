@@ -1,7 +1,4 @@
 /*
- * $Id$ 
- * $Revision$ $Date$
- *
  * This file is part of ***  M y C o R e  ***
  * See http://www.mycore.de/ for details.
  *
@@ -20,6 +17,7 @@
  * If not, write to the Free Software Foundation Inc.,
  * 59 Temple Place - Suite 330, Boston, MA  02111-1307 USA
  */
+
 package org.mycore.mir.authorization.accesskeys;
 
 import org.apache.logging.log4j.LogManager;

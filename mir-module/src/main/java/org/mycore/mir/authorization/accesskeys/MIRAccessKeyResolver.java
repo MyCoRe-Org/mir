@@ -1,7 +1,4 @@
 /*
- * $Id$
- * $Revision$ $Date$
- *
  * This file is part of ***  M y C o R e  ***
  * See http://www.mycore.de/ for details.
  *
@@ -20,6 +17,7 @@
  * If not, write to the Free Software Foundation Inc.,
  * 59 Temple Place - Suite 330, Boston, MA  02111-1307 USA
  */
+
 package org.mycore.mir.authorization.accesskeys;
 
 import javax.xml.transform.Source;
@@ -28,7 +26,6 @@ import javax.xml.transform.URIResolver;
 
 import org.jdom2.Element;
 import org.jdom2.transform.JDOMSource;
-
 import org.mycore.datamodel.metadata.MCRObjectID;
 import org.mycore.mir.authorization.accesskeys.backend.MIRAccessKeyPair;
 
@@ -38,7 +35,7 @@ import org.mycore.mir.authorization.accesskeys.backend.MIRAccessKeyPair;
  *
  * <p>Syntax:</p>
  * <ul>
- * <li><code>accesskeys:{mcrObjectId}</code> to resolve an {@link MIRAccessKeyPair}</li>
+ * <li><code>accesskeypairs:{mcrObjectId}</code> to resolve an {@link MIRAccessKeyPair}</li>
  * </ul>
  *
  * @author Ren\u00E9 Adler (eagle)
