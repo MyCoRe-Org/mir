@@ -26,7 +26,17 @@
                   <h4 class="mir-toc-section-title">
                     <a target="_blank">
                       <xsl:attribute name="href">
-                        <xsl:value-of select="mods:location/mods:url[1]"/>
+                        <xsl:choose>
+                          <xsl:when test="mods:identifier[@type='doi']">
+                            <xsl:value-of select="concat('https://doi.org/',mods:identifier[@type='doi'][1])"/>
+                          </xsl:when>
+                          <xsl:when test="mods:identifier[@type='urn']">
+                            <xsl:value-of select="concat('https://nbn-resolving.org/',mods:identifier[@type='urn'][1])"/>
+                          </xsl:when>
+                          <xsl:otherwise>
+                            <xsl:value-of select="mods:location/mods:url[1]"/>
+                          </xsl:otherwise>
+                        </xsl:choose>
                       </xsl:attribute>
                       <xsl:value-of select="mods:titleInfo/mods:title"/>
                       <xsl:if test="mods:titleInfo/mods:subTitle">
