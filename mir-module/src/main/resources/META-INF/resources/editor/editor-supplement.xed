@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<MyCoReWebPage>
+  <section title="Ergänzende Materialien erstellen" xml:lang="de"/>
+  <section xml:lang="all">
+
+  <xed:form xmlns:xed="http://www.mycore.de/xeditor" xmlns:cmd="http://www.cdlib.org/inside/diglib/copyrightMD" method="post" role="form" class="form-horizontal">
+
+    <xed:preload uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" />
+    <xed:preload uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-supplement-includes.xed" />
+    <xed:preload uri="{$MIR.EditorForms.CustomIncludes}" />
+
+    <xed:include ref="in.out" />
+
+    <xed:bind xpath="/mycoreobject">
+      <xed:include ref="mycore.common" />
+
+      <xed:bind xpath="metadata/def.modsContainer[@class='MCRMetaXML'][@notinherit='true']/modsContainer/mods:mods">
+
+        <xed:include ref="failed-validation-messages" />
+
+        <fieldset>
+          <legend class="mir-fieldset-legend">
+            <!-- TODO: i18n -->
+            Ergänzendes Material für: <xed:output value="mods:titleInfo/mods:title" />
+          </legend>
+          <xed:repeat xpath="mods:relatedItem[@otherType='supplement']" min="1" max="10">
+            <div class="mir-fieldset-content">
+              <div class="form-group row">
+                <div class="col-md-9">
+                </div>
+                <div class="col-md-3">
+                  <xed:controls />
+                </div>
+              </div>
+              <xed:include ref="supplement" />
+            </div>
+          </xed:repeat>
+        </fieldset>
+
+        <xed:include ref="cancel.submit" />
+        <xed:include ref="cleanup-rules" />
+        <xed:include ref="javascript" />
+
+      </xed:bind>
+    </xed:bind>
+
+
+  </xed:form>
+
+  </section>
+</MyCoReWebPage>

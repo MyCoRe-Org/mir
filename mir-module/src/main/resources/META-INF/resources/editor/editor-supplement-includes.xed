@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<xed:template xmlns:xed="http://www.mycore.de/xeditor"
+              xmlns:mir="http://www.mycore.de/mir"
+              xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+
+  <xed:template id="supplement">
+    <xed:include ref="title" />
+    <xed:include ref="genre.supplement" />
+    <xed:include ref="contributor.repeated" />
+    <xed:include ref="doi.urn.uri" />
+  </xed:template>
+
+  <xed:template id="genre.supplement">
+    <xed:load-resource name="marc_gt" uri="classification:metadata:-1:children:marcgt" />
+    <xed:bind xpath="mods:genre[@type='intern'][@authorityURI=$marc_gt/label[@xml:lang='x-uri']/@text]/@valueURIxEditor">
+      <div class="form-group row required {$xed-validation-marker}">
+        <label class="col-md-3 col-form-label text-right">
+          <xed:output i18n="component.mods.genre" />
+        </label>
+        <div class="col-md-6">
+          <div class="controls">
+            <select class="form-control form-control-inline">
+              <option value="">
+                <xed:output i18n="mir.select" />
+              </option>
+              <xed:include uri="xslStyle:items2options:classification:editor:-1:children:marcgt" />
+            </select>
+          </div>
+        </div>
+        <mir:help-pmud help-text="{i18n:mir.help.marcgt}" />
+      </div>
+    </xed:bind>
+  </xed:template>
+
+  <xed:template id="contributor.repeated">
+    <mir:role.repeated role="ctb" label="mir.role.ctb" help-text="{i18n:mir.help.role.ctb}" />
+  </xed:template>
+
+  <xed:template id="doi.urn.uri">
+    <xed:bind xpath="mods:identifier[contains(' doi urn uri ',concat(' ',@type,' '))]">
+      <div class="form-group row">
+        <xed:bind xpath="@type">
+          <div class="col-md-3">
+            <select class="form-control identifierSelect" style="text-align:right; font-weight:bold;">
+              <option value="doi">
+                <xed:output i18n="mir.identifier.doi" />
+              </option>
+              <option value="urn">
+                <xed:output i18n="mir.identifier.urn" />
+              </option>
+              <option value="uri">
+                <xed:output i18n="mir.identifier.uri" />
+              </option>
+            </select>
+          </div>
+        </xed:bind>
+        <div class="col-md-6">
+          <input type="text" size="20" class="form-control form-control-inline {$xed-validation-marker}" />
+        </div>
+        <mir:help-pmud help-text="{i18n:mir.help.doi.urn.uri}" pmud="false" />
+      </div>
+    </xed:bind>
+  </xed:template>
+  
+</xed:template>
