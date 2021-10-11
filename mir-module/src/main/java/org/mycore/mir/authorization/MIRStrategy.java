@@ -222,7 +222,8 @@ public class MIRStrategy implements MCRAccessCheckStrategy {
             }
         }
 
-        LOGGER.info("check read or write key of current user for derivateId: {}, allowed object types are: {}", derivateId, ALLOWED_OBJECT_TYPES);
+        LOGGER.info("check read or write key of current user for derivateId: {}, allowed object types are: {}",
+            derivateId, ALLOWED_OBJECT_TYPES);
         // 2. check read or write key of current user
         if ((ALLOWED_OBJECT_TYPES.contains(objectId.getTypeId()) && hasValidAccessKey(objectId, permission))
             || (ALLOWED_OBJECT_TYPES.contains(derivateId.getTypeId()) && hasValidAccessKey(derivateId, permission))) {
