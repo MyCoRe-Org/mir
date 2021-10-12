@@ -214,7 +214,11 @@ public class MIRStrategy implements MCRAccessCheckStrategy {
 
         // 1. check if the object has a assigned identifier
         MCRObjectID objectId = MCRMetadataManager.getObjectId(derivateId, 10, TimeUnit.MINUTES);
-        LOGGER.info("objectId: {}", objectId);
+        if (objectId != null) {
+            LOGGER.info("objectId: {}", objectId);
+        } else {
+            LOGGER.info("Derivate {} is an orphan", derivateId);
+        }
         if (MCRAccessManager.PERMISSION_WRITE.equalsIgnoreCase(permission) ||
             MCRAccessManager.PERMISSION_DELETE.equalsIgnoreCase(permission)) {
             final boolean hasRegisteredPI = hasRegisteredPI(objectId);
