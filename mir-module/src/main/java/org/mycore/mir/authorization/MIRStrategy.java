@@ -115,7 +115,7 @@ public class MIRStrategy implements MCRAccessCheckStrategy {
         boolean isWritePermission = MCRAccessManager.PERMISSION_WRITE.equals(permission);
         boolean isReadPermission = MCRAccessManager.PERMISSION_READ.equals(permission);
         if (isWritePermission || isReadPermission) {
-            if (ALLOWED_SESSION_PERMISSION_TYPES != null && ALLOWED_SESSION_PERMISSION_TYPES.contains(permission)) {
+            if (ALLOWED_SESSION_PERMISSION_TYPES.contains(permission)) {
                 final String sessionSecret = MCRAccessKeyUtils.getAccessKeySecretFromCurrentSession(objectId);
                 if (sessionSecret != null) {
                     final MCRAccessKey accessKey = MCRAccessKeyManager.getAccessKeyWithSecret(objectId, sessionSecret);
@@ -223,18 +223,19 @@ public class MIRStrategy implements MCRAccessCheckStrategy {
         }
 
         // 2. check read or write key of current user
-        if ((ALLOWED_OBJECT_TYPES.contains(objectId.getTypeId()) && hasValidAccessKey(objectId, permission))
-            || (ALLOWED_OBJECT_TYPES.contains(derivateId.getTypeId()) && hasValidAccessKey(derivateId, permission))) {
+        if ((objectId != null && ALLOWED_OBJECT_TYPES.contains(objectId.getTypeId()) &&
+            hasValidAccessKey(objectId, permission)) || (ALLOWED_OBJECT_TYPES.contains(derivateId.getTypeId()) &&
+            hasValidAccessKey(derivateId, permission))) {
             return true;
         }
 
-        // 3.check if derivate has embargo
         if (objectId == null) {
             //2.1. fallback to MCRObjectBaseStrategy
             LOGGER.debug("Derivate {} is an orphan. Cannot apply rules for MCRObject.", derivateId);
             return OBJECT_BASE_STRATEGY.checkPermission(permissionId, permission);
         }
 
+        // 3.check if derivate has embargo
         String embargo = MCRMODSEmbargoUtils.getEmbargo(objectId);
         if (MCRAccessManager.PERMISSION_READ.equals(permission)
             && embargo != null
