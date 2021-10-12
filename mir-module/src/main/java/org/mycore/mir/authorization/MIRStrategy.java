@@ -212,10 +212,16 @@ public class MIRStrategy implements MCRAccessCheckStrategy {
         LOGGER.debug("checkDerivatePermission({}, {})", derivateId, permission);
         String permissionId = derivateId.toString();
 
-        // 1. check if the object has a assigned identifier
         MCRObjectID objectId = MCRMetadataManager.getObjectId(derivateId, 10, TimeUnit.MINUTES);
-        if (objectId != null && (MCRAccessManager.PERMISSION_WRITE.equalsIgnoreCase(permission) ||
-            MCRAccessManager.PERMISSION_DELETE.equalsIgnoreCase(permission))) {
+        if (objectId == null) {
+            // Fallback to MCRObjectBaseStrategy
+            LOGGER.debug("Derivate {} is an orphan. Cannot apply rules for MCRObject.", derivateId);
+            return OBJECT_BASE_STRATEGY.checkPermission(permissionId, permission);
+        }
+
+        // 1. check if the object has a assigned identifier
+        if (MCRAccessManager.PERMISSION_WRITE.equalsIgnoreCase(permission) ||
+            MCRAccessManager.PERMISSION_DELETE.equalsIgnoreCase(permission)) {
             final boolean hasRegisteredPI = hasRegisteredPI(objectId);
             if (hasRegisteredPI && !canEditPI()) {
                 return false;
@@ -223,16 +229,9 @@ public class MIRStrategy implements MCRAccessCheckStrategy {
         }
 
         // 2. check read or write key of current user
-        if ((objectId != null && ALLOWED_OBJECT_TYPES.contains(objectId.getTypeId()) &&
-            hasValidAccessKey(objectId, permission)) || (ALLOWED_OBJECT_TYPES.contains(derivateId.getTypeId()) &&
-            hasValidAccessKey(derivateId, permission))) {
+        if ((ALLOWED_OBJECT_TYPES.contains(objectId.getTypeId()) && hasValidAccessKey(objectId, permission)) ||
+            (ALLOWED_OBJECT_TYPES.contains(derivateId.getTypeId()) && hasValidAccessKey(derivateId, permission))) {
             return true;
-        }
-
-        if (objectId == null) {
-            //2.1. fallback to MCRObjectBaseStrategy
-            LOGGER.debug("Derivate {} is an orphan. Cannot apply rules for MCRObject.", derivateId);
-            return OBJECT_BASE_STRATEGY.checkPermission(permissionId, permission);
         }
 
         // 3.check if derivate has embargo
