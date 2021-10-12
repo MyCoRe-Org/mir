@@ -4,10 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.StringReader;
 import java.net.MalformedURLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -44,6 +41,7 @@ import org.mycore.mir.editor.MIREditorUtils;
 import org.mycore.mir.editor.MIRPostProcessor;
 import org.mycore.mir.editor.MIRUnescapeResolver;
 import org.mycore.mods.MCRMODSWrapper;
+import org.mycore.services.staticcontent.MCRObjectStaticContentGenerator;
 import org.xml.sax.SAXException;
 
 @MCRCommandGroup(
@@ -94,6 +92,114 @@ public class MIRMigration202006Utils {
             Stream.of(targetCategory))
             .map(MCRCategoryID::toString)
             .collect(Collectors.joining(",", "set classification of derivate " + der.getId() + " to ", ""));
+    }
+
+    @MCRCommand(
+            syntax = "harmonize derivates for all objects",
+            help = "harmonize derivates for all objects."
+    )
+    public static List<String> harmonizeDerivatesGenre() {
+        TreeSet<String> ids = new TreeSet<>(MCRXMLMetadataManager.instance().listIDsOfType("mods"));
+        ArrayList<String> commands = new ArrayList<>(ids.size());
+        for (String id : ids) {
+            commands.add("harmonize derivates for object " + id);
+        }
+        return commands;
+    }
+
+    @MCRCommand(
+            syntax = "harmonize derivates for object {0}",
+            help = "harmonize derivates for object with the given id."
+    )
+    public static void harmonizeDerivatesGenre(String id) {
+
+        MCRObjectID objectId = MCRObjectID.getInstance(id);
+        MCRObject object = MCRMetadataManager.retrieveMCRObject(objectId);
+
+        MCRCategoryID derivateTypeId = new MCRCategoryID("derivate_types", "content");
+        if (!MCRCategoryDAOFactory.getInstance().exist(derivateTypeId)) {
+            throw new MCRException("Derivate type with id " + derivateTypeId + " does not exist");
+        }
+
+        MCRMetaClassification derivateTypeClassification = new MCRMetaClassification(
+                "classification",
+                0,
+                null,
+                derivateTypeId.getRootID(),
+                derivateTypeId.getID()
+        );
+
+        object.getStructure().getDerivates().forEach(derivateLink -> {
+
+            MCRObjectID derivateId = MCRObjectID.getInstance(derivateLink.getXLinkHref());
+            MCRDerivate derivate = MCRMetadataManager.retrieveMCRDerivate(derivateId);
+
+            if (derivate.getLabel() != null && !derivate.getLabel().isEmpty()) {
+
+                LOGGER.info("harmonizing derivates with id {}", id);
+
+                boolean hasTypeClassification = derivate
+                        .getDerivate()
+                        .getClassifications()
+                        .stream()
+                        .anyMatch(classification ->
+                                classification.getClassId().equals(derivateTypeClassification.getClassId())
+                        );
+
+                if (!hasTypeClassification) {
+                    derivate.getDerivate().getClassifications().add(derivateTypeClassification);
+                }
+                derivate.getService().setState(object.getService().getState());
+                derivate.setLabel(null);
+
+                LOGGER.info("harmonized derivates with id {}", id);
+
+                try {
+                    MCRMetadataManager.update(derivate);
+                } catch (Exception e) {
+                    LOGGER.error("failed to update derivate", e);
+                }
+
+            }
+
+        });
+
+    }
+
+    @MCRCommand(
+            syntax = "generate static content for all objects",
+            help = "generate static content for all objects."
+    )
+    public static List<String> generateStaticContent() {
+        TreeSet<String> ids = new TreeSet<>(MCRXMLMetadataManager.instance().listIDsOfType("mods"));
+        ArrayList<String> commands = new ArrayList<>(ids.size());
+        for (String id : ids) {
+            commands.add("generate static content for object " + id);
+        }
+        return commands;
+    }
+
+    @MCRCommand(
+            syntax = "generate static content for object {0}",
+            help = "generate static content for object with the given id."
+    )
+    public static void generateStaticContent(String id) {
+
+        MCRObjectID objectId = MCRObjectID.getInstance(id);
+        MCRObject object = MCRMetadataManager.retrieveMCRObject(objectId);
+
+        MCRObjectStaticContentGenerator.getContentGenerators()
+                .stream()
+                .map(MCRObjectStaticContentGenerator::new)
+                .forEach(contentGenerator -> {
+                    try {
+                        contentGenerator.generate(object);
+                    } catch (IOException e) {
+                        LOGGER.error("Error while creating static content "
+                                + contentGenerator.getTransformer() + " for " + objectId + "!", e);
+                    }
+                });
+
     }
 
     @MCRCommand(
