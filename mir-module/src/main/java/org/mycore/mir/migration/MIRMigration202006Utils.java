@@ -100,7 +100,7 @@ public class MIRMigration202006Utils {
 
     @MCRCommand(
             syntax = "harmonize derivates for all objects",
-            help = "harmonize derivates for all objects."
+            help = "executes 'harmonize derivates' command for all objects."
     )
     public static List<String> harmonizeDerivatesGenre() {
         TreeSet<String> ids = new TreeSet<>(MCRXMLMetadataManager.instance().listIDsOfType("mods"));
@@ -113,7 +113,13 @@ public class MIRMigration202006Utils {
 
     @MCRCommand(
             syntax = "harmonize derivates for object {0}",
-            help = "harmonize derivates for object with the given id."
+            help = "harmonizes derivates for object with the given id (" +
+                    "remove label-attribute; " +
+                    "remove display-attribute; " +
+                    "add derivate_type classification value 'content', " +
+                    "if no other value for this classification is present; " +
+                    "set service state equal to the owning objects service state; " +
+                    "see MIR-1067)."
     )
     public static void harmonizeDerivatesGenre(String id) {
 
@@ -172,7 +178,7 @@ public class MIRMigration202006Utils {
 
     @MCRCommand(
             syntax = "generate static content for all objects",
-            help = "generate static content for all objects."
+            help = "executes 'generate static content' command for all objects."
     )
     public static List<String> generateStaticContent() {
         TreeSet<String> ids = new TreeSet<>(MCRXMLMetadataManager.instance().listIDsOfType("mods"));
@@ -185,7 +191,10 @@ public class MIRMigration202006Utils {
 
     @MCRCommand(
             syntax = "generate static content for object {0}",
-            help = "generate static content for object with the given id."
+            help = "generates static content for the object with the given id (" +
+                    "creates static/mir-admindata-box, static/mir-history, ... " +
+                    "in the applications data directory, otherwise only created by an update handler; " +
+                    "see MIR-1067)."
     )
     public static void generateStaticContent(String id) {
 
