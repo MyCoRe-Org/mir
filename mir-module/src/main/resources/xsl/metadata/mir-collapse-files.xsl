@@ -68,9 +68,6 @@
                                 <xsl:when test="$derivateXML//titles/title[@xml:lang=$CurrentLang]">
                                   <xsl:value-of select="$derivateXML//titles/title[@xml:lang=$CurrentLang]" />
                                 </xsl:when>
-                                <xsl:when test="not(contains($derivateXML/mycorederivate/@label,'data object from'))">
-                                  <xsl:value-of select="$derivateXML/mycorederivate/@label" />
-                                </xsl:when>
                                 <xsl:otherwise>
                                   <xsl:value-of select="i18n:translate('metadata.files.file')" />
                                 </xsl:otherwise>
