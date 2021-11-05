@@ -192,6 +192,9 @@
           <xsl:value-of select="i18n:translate('mir.details.issue')" />
           <xsl:value-of select="concat(' ',field[@name='mir.toc.host.issue.top'],': ')" />
         </xsl:when>
+        <xsl:when test="field[@name='mir.toc.host.articleNumber.top']">
+          <xsl:value-of select="concat('#',field[@name='mir.toc.host.articleNumber.top'],': ')" />
+        </xsl:when>
       </xsl:choose>
       <a href="{$WebApplicationBaseURL}receive/{@id}">
       <xsl:value-of select="field[@name='mir.toc.title']" />
