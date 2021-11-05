@@ -163,6 +163,24 @@
   },
   {
     "add-field": {
+      "name": "mir.toc.host.articleNumber",
+      "type": "string",
+      "indexed": true,
+      "stored": true,
+      "multiValued": false
+    }
+  },
+  {
+    "add-field": {
+      "name": "mir.toc.host.articleNumber.top",
+      "type": "string",
+      "indexed": true,
+      "stored": true,
+      "multiValued": false
+    }
+  },
+  {
+    "add-field": {
       "name": "mir.toc.host.page.str",
       "type": "string",
       "indexed": true,
