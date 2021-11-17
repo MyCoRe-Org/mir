@@ -177,13 +177,18 @@
                   <xsl:if test="$icon">
                     <i class="{$icon/text()}" style="margin-right:1ex;" aria-hidden="true" />
                   </xsl:if>
-                  <xsl:value-of
-                      select="mcri18n:translate(concat('mir.metaData.panel.heading.', $boxID))"/>
+                  <xsl:value-of select="mcri18n:translate(concat('mir.metaData.panel.heading.', $boxID))"/>
                 </h3>
               </div>
               <div class="card-body">
                 <xsl:copy-of select="$originalContent/div[@id=$boxID]/*"/>
               </div>
+              <xsl:variable name="boxFooterID" select="concat($boxID,'--footer')"/>
+              <xsl:for-each select="$originalContent/div[@id=$boxFooterID][1]">
+                <div class="card-footer">
+                  <xsl:copy-of select="./*"/>
+                </div>
+              </xsl:for-each>
             </div>
           </xsl:when>
           <xsl:when test="contains($MIR.Layout.Display.Div, $boxID)">
