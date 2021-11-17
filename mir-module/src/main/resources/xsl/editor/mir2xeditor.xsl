@@ -51,7 +51,7 @@
 
   <xsl:template name="mir-required-relItem">
     <xsl:if test="@required='true'">
-      <xed:validate test="(text()!='') or (../../@xlink:href!='')" display="global">
+      <xed:validate required="true" relevant-if="../../@xlink:href=''" display="global">
         <xsl:value-of select="i18n:translate(@required-i18n)" />
       </xed:validate>
     </xsl:if>
