@@ -26,9 +26,11 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jdom2.Element;
 import org.mycore.common.MCRSessionMgr;
+import org.mycore.common.config.MCRConfigurationDir;
 import org.mycore.common.xml.MCRURIResolver;
 import org.mycore.frontend.servlets.MCRServlet;
 
+import java.io.File;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
@@ -37,6 +39,15 @@ public class MIRWizard extends MCRServlet {
     private static final long serialVersionUID = 1L;
 
     private static final Logger LOGGER = LogManager.getLogger();
+
+    public static boolean isNecessary() {
+
+        File mcrProps = MCRConfigurationDir.getConfigFile("mycore.properties");
+        File jpaCfg = MCRConfigurationDir.getConfigFile("resources/META-INF/persistence.xml");
+
+        return (mcrProps == null || !mcrProps.canRead()) || (jpaCfg == null || !jpaCfg.canRead());
+
+    }
 
     public Element doMagic(Element wizXML) {
 

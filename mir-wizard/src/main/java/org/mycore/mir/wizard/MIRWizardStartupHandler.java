@@ -109,14 +109,14 @@ public class MIRWizardStartupHandler implements MCRStartupHandler.AutoExecutable
             File baseDir = MCRConfigurationDir.getConfigurationDirectory();
 
             if (!baseDir.exists()) {
-                LOGGER.info("Create missing MCR.basedir (" + baseDir.getAbsolutePath() + ")...");
+                LOGGER.info("Create missing MCR.basedir (" + baseDir.getAbsolutePath() + "). Wizard necessary.");
                 baseDir.mkdirs();
                 MCRConfiguration2.set("MCR.basedir", convertToNixPath(baseDir));
             } else {
-                File mcrProps = MCRConfigurationDir.getConfigFile("mycore.properties");
-                File jpaCfg = MCRConfigurationDir.getConfigFile("resources/META-INF/persistence.xml");
-
-                if ((mcrProps != null && mcrProps.canRead()) || (jpaCfg != null && jpaCfg.canRead())) {
+                if (MIRWizard.isNecessary()) {
+                    LOGGER.info("Didn't find readable mycore.properties and persistence.xml. Wizard necessary.");
+                } else {
+                    LOGGER.info("Found readable mycore.properties and persistence.xml. Wizard unnecessary.");
                     return;
                 }
 
