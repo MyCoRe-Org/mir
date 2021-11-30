@@ -23,8 +23,6 @@
 package org.mycore.mir.wizard;
 
 import java.io.IOException;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.StringTokenizer;
 
 import javax.servlet.http.HttpServletRequest;
@@ -114,58 +112,10 @@ public class MIRWizardServlet extends MCRServlet {
             return null;
         }
 
-        final Element results = new Element("results");
-
-        final Element commands = MCRURIResolver.instance().resolve("resource:setup/install.xml");
-
-        final MIRWizardCommandChain chain = new MIRWizardCommandChain();
-
-        for (Element command : commands.getChildren("command")) {
-            final String cls = command.getAttributeValue("class");
-            final String name = command.getAttributeValue("name");
-            final String src = command.getAttributeValue("src");
-
-            try {
-                final Class<?> cmdCls = Class.forName(cls);
-                MIRWizardCommand cmd = null;
-
-                if (name != null) {
-                    final Constructor<?> cmdC = cmdCls.getConstructor(String.class);
-                    cmd = (MIRWizardCommand) cmdC.newInstance(name);
-                } else {
-                    final Constructor<?> cmdC = cmdCls.getConstructor();
-                    cmd = (MIRWizardCommand) cmdC.newInstance();
-                }
-
-                if (src != null) {
-                    cmd.setInputXML(MCRURIResolver.instance().resolve(src));
-                }
-
-                if (cmd != null) {
-                    chain.addCommand(cmd);
-                }
-            } catch (final ClassNotFoundException | NoSuchMethodException | SecurityException
-                | InstantiationException | IllegalAccessException | IllegalArgumentException
-                | InvocationTargetException e) {
-                LOGGER.error(e);
-            }
-        }
-
         initializeApplication(job);
 
-        LOGGER.info("Execute Wizard Commands...");
-        chain.execute(wizXML);
-        LOGGER.info("done.");
+        resXML.addContent(new MIRWizard().doMagic(wizXML));
 
-        for (MIRWizardCommand cmd : chain.getCommands()) {
-            if (cmd.getResult() != null) {
-                results.addContent(cmd.getResult().toElement());
-            }
-        }
-
-        results.setAttribute("success", Boolean.toString(chain.isSuccess()));
-
-        resXML.addContent(results);
         return resXML;
     }
 
