@@ -22,7 +22,6 @@
  */
 package org.mycore.mir.wizard;
 
-import java.io.File;
 import java.io.IOException;
 
 import javax.servlet.Filter;
@@ -38,7 +37,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.mycore.common.MCRSessionMgr;
-import org.mycore.common.config.MCRConfigurationDir;
 
 /**
  * @author René Adler (eagle)
@@ -74,15 +72,13 @@ public class MIRWizardRequestFilter implements Filter {
     public void init(FilterConfig filterConfig) throws ServletException {
         LOGGER.info("Initialize MIR Wizard request filter...");
 
-        File mcrProps = MCRConfigurationDir.getConfigFile("mycore.properties");
-        File hibCfg = MCRConfigurationDir.getConfigFile("hibernate.cfg.xml");
-
-        if (mcrProps == null || hibCfg == null || !mcrProps.canRead() || !hibCfg.canRead()) {
-            needWizardRun = true;
+        if (MIRWizard.isNecessary()) {
             LOGGER.info("...enable Wizard run.");
+            needWizardRun = true;
         } else {
             LOGGER.info("...disable Wizard run.");
         }
+
     }
 
     /* (non-Javadoc)
