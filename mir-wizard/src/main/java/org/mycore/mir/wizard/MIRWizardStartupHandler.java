@@ -23,6 +23,7 @@
 package org.mycore.mir.wizard;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.EnumSet;
 import java.util.Locale;
 import java.util.UUID;
@@ -34,6 +35,9 @@ import javax.servlet.ServletRegistration;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.jdom2.Element;
+import org.jdom2.JDOMException;
+import org.jdom2.input.SAXBuilder;
 import org.mycore.access.MCRAccessBaseImpl;
 import org.mycore.access.strategies.MCRObjectIDStrategy;
 import org.mycore.common.config.MCRConfiguration2;
@@ -114,6 +118,20 @@ public class MIRWizardStartupHandler implements MCRStartupHandler.AutoExecutable
 
                 if ((mcrProps != null && mcrProps.canRead()) || (jpaCfg != null && jpaCfg.canRead())) {
                     return;
+                }
+
+                File wizXml = MCRConfigurationDir.getConfigFile("wizard.xml");
+                if ((wizXml != null && wizXml.canRead())) {
+                    LOGGER.info("Found readable wizard.xml");
+                    try {
+                        Element results = new MIRWizard().doMagic(new SAXBuilder().build(wizXml).getRootElement());
+                        if(Boolean.parseBoolean(results.getAttributeValue("success"))){
+                            LOGGER.info("Wizard executed successfully. No further wizard needed.");
+                            return;
+                        }
+                    } catch (IOException | JDOMException e) {
+                        LOGGER.info("Failed to parse wizard.xml", e);
+                    }
                 }
             }
 
