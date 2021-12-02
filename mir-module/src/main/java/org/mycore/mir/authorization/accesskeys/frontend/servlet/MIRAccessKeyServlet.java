@@ -57,7 +57,8 @@ public class MIRAccessKeyServlet extends MCRServlet {
         HttpServletRequest req = job.getRequest();
         HttpServletResponse res = job.getResponse();
         final MCRUserInformation userInfo = MCRSessionMgr.getCurrentSession().getUserInformation();
-        if (userInfo.getUserID().equals(MCRSystemUserInformation.getGuestInstance().getUserID())) {
+        final boolean isGuest = userInfo.getUserID().equals(MCRSystemUserInformation.getGuestInstance().getUserID());
+        if (isGuest && !MCRAccessKeyUtils.isAccessKeyForSessionAllowed()) {
             res.sendError(HttpServletResponse.SC_FORBIDDEN, "Access can only be granted to personalized users");
             return;
         }
@@ -77,9 +78,13 @@ public class MIRAccessKeyServlet extends MCRServlet {
                 return;
             }
             try {
-                MCRAccessKeyUtils.addAccessKeySecretToCurrentUser(mcrObjId, value);
+                if (isGuest) {
+                    MCRAccessKeyUtils.addAccessKeySecretToCurrentSession(mcrObjId, value);
+                } else {
+                    MCRAccessKeyUtils.addAccessKeySecretToCurrentUser(mcrObjId, value);
+                }
             } catch(MCRAccessKeyException e) {
-                res.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getErrorCode());
+                res.sendError(HttpServletResponse.SC_BAD_REQUEST, "Access key is unknown or not allowed.");
                 return;
             }
         } else {
