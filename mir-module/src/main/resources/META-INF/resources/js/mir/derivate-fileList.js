@@ -295,10 +295,11 @@
 				$.ajax({
 					url: webApplicationBaseURL + "rsc/jwt",
 					type: "GET",
-                    			data: {
-                        			ua: "acckey_" + objID,
-                        			sa: "acckey_" + objID
-                    			},
+          data: {
+            ua: ["acckey_" + objID, "acckey_" + deriID],
+            sa: ["acckey_" + objID, "acckey_" + deriID]
+          },
+          traditional: true,
 					dataType: "json",
 					success: function (data) {
 						if (data.login_success) {
