@@ -7,6 +7,7 @@
   xmlns:xlink="http://www.w3.org/1999/xlink"
   xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
   exclude-result-prefixes="xlink i18n">
+  <xsl:import href="layout-utils.xsl" />
 
   <xsl:output method="html" indent="yes" omit-xml-declaration="yes" media-type="text/html"
     version="5" />
