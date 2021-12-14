@@ -115,6 +115,6 @@
     <filter-name>MCRAccessKeyFilter</filter-name>
     <servlet-name>MCRObjectServlet</servlet-name>
     <dispatcher>REQUEST</dispatcher>
- </filter-mapping>
+  </filter-mapping>
 
 </web-fragment>
