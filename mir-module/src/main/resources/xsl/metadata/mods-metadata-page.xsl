@@ -148,20 +148,23 @@
             </xsl:if>
           </xsl:when>
           <xsl:when test="$boxID='mir-metadata'">
-            <div class="mir_metadata">
-              <h3>
-                <xsl:value-of
-                    select="mcri18n:translate('component.mods.metaData.dictionary.categorybox')"/>
-              </h3>
-              <!-- Start: METADATA -->
-              <xsl:apply-templates select="$originalContent/div[@id=$boxID]" mode="newMetadata"/>
-              <!-- End: METADATA -->
-              <xsl:if
-                  test="$originalContent/div[@id=$boxID]/table[@class='mir-metadata']/tr/td/div[contains(@class,'openstreetmap-container')]">
-                <link rel="stylesheet" type="text/css" href="{$WebApplicationBaseURL}assets/openlayers/ol.css"/>
-                <script type="text/javascript" src="{$WebApplicationBaseURL}assets/openlayers/ol.js"/>
-                <script type="text/javascript" src="{$WebApplicationBaseURL}js/mir/geo-coords.min.js"></script>
-              </xsl:if>
+            <div class="detail_block">
+              <div class="mir_metadata">
+                <xsl:copy-of select="$originalContent/div[@id='mir-metadata-buttons']/*" />
+                <h3>
+                  <xsl:value-of
+                      select="mcri18n:translate('component.mods.metaData.dictionary.categorybox')"/>
+                </h3>
+                <!-- Start: METADATA -->
+                <xsl:apply-templates select="$originalContent/div[@id=$boxID]" mode="newMetadata"/>
+                <!-- End: METADATA -->
+                <xsl:if
+                    test="$originalContent/div[@id=$boxID]/table[@class='mir-metadata']/tr/td/div[contains(@class,'openstreetmap-container')]">
+                  <link rel="stylesheet" type="text/css" href="{$WebApplicationBaseURL}assets/openlayers/ol.css"/>
+                  <script type="text/javascript" src="{$WebApplicationBaseURL}assets/openlayers/ol.js"/>
+                  <script type="text/javascript" src="{$WebApplicationBaseURL}js/mir/geo-coords.min.js"></script>
+                </xsl:if>
+              </div>
             </div>
           </xsl:when>
           <xsl:when test="$boxID='mir-abstract-plus'">
