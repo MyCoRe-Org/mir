@@ -472,6 +472,16 @@ ckeditor4@^4.14.1:
   resolved "https://registry.yarnpkg.com/ckeditor4/-/ckeditor4-4.14.1.tgz#662bd605f33eaa6bb5644d5fd81c15dbe9d9a18c"
   integrity sha512-0TgtXFDsEe1GROggaEyJ8zKKvCxk/ULqVk0Uze+XEKSimTnz4NVOsCKOZDAakvtW57I8hkusFjmzzz1QSFP3Gw==
 
+ckeditor-notification@^4.11.2:
+  version "4.11.2"
+  resolved "https://registry.yarnpkg.com/ckeditor-notification/-/ckeditor-notification-4.11.2.tgz#6f37c1d5e7489d346fd725a3e96d40743588fe6b"
+  integrity sha512-bQ0lrx8DUkEuZ1vfCSOIcoYPK8R7ozL0baypqu/VLcrmByu8D6cWLjk5yXOA84q/64EhQxfIR4lmHk+PO/5DbA==
+
+ckeditor-wordcount-plugin@^1.17.6:
+  version "1.17.6"
+  resolved "https://registry.yarnpkg.com/ckeditor-wordcount-plugin/-/ckeditor-wordcount-plugin-1.17.6.tgz#cb1a2a988ce8c3f29cd701f38b120c3a03daef85"
+  integrity sha512-73Q0/W445UoToQ8fyaBhXxhsZXMOxoeGGaIZ1HyiPc1nisK1gbIGAFi1ksgKoavQhri0+sOfpnYSFXDEC608EQ==
+
 class-utils@^0.3.5:
   version "0.3.6"
   resolved "https://registry.yarnpkg.com/class-utils/-/class-utils-0.3.6.tgz#f93369ae8b9a7ce02fd41faad0ca83033190c463"

@@ -1,5 +1,7 @@
 CKEDITOR.editorConfig = function( config ) {
 
+    config.extraPlugins = 'notification,wordcount';
+
     config.toolbar = [
         { name: 'document', items: [ 'Source'] },
         { name: 'clipboard', items: ['Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo' ] },
@@ -12,6 +14,23 @@ CKEDITOR.editorConfig = function( config ) {
 
     config.allowedContent = window["MIR.Editor.HTML.Elements"];
     config.autoParagraph = false;
+
+    config.wordcount = {
+        showRemaining: false,
+        showParagraphs: true,
+        showWordCount: true,
+        showCharCount: false,
+        countBytesAsChars: false,
+        countSpacesAsChars: false,
+        countHTML: false,
+        countLineBreaks: false,
+        hardLimit: true,
+        warnOnLimitOnly: false,
+        maxParagraphs: -1,
+        maxWordCount: -1,
+        maxCharCount: -1,
+        pasteWarningDuration: 0
+    };
 
 };
 
