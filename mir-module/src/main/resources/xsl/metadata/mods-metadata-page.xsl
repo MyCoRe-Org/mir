@@ -149,7 +149,8 @@
           </xsl:when>
           <xsl:when test="$boxID='mir-metadata'">
             <div class="mir_metadata">
-              <h3>
+              <xsl:copy-of select="$originalContent/div[@id='mir-metadata-pre']" />
+              <h3 style="margin-top:8px;">
                 <xsl:value-of
                     select="mcri18n:translate('component.mods.metaData.dictionary.categorybox')"/>
               </h3>

@@ -11,6 +11,25 @@
   <xsl:key use="@type" name="title-by-type" match="//mods:mods/mods:titleInfo" />
 
   <xsl:template match="/">
+    <div id="mir-metadata-pre">
+      <xsl:if test="key('rights', mycoreobject/@ID)/@write">
+        <xsl:variable name="editURL">
+          <xsl:call-template name="mods.getObjectEditURL">
+            <xsl:with-param name="id" select="mycoreobject/@ID"/>
+            <xsl:with-param name="layout" select="'$'"/>
+          </xsl:call-template>
+        </xsl:variable>
+        <div class="btn-group btn-group-sm float-right">
+          <a class="btn btn-light " data-content="{i18n:translate('mir.metadata.help')}" data-placement="top" data-toggle="popover" role="button"
+             tabindex="0" data-original-title="" title="" style="margin-top:0px;">
+            <i class="fas fa-info fa-fw"/>
+          </a>
+          <a id="derivate-toggle-button" class="btn btn-success" href="{$editURL}">
+            <i class="fas fa-pencil-alt fa-fw"/>
+          </a>
+        </div>
+      </xsl:if>
+    </div>
     <xsl:variable name="mods" select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods" />
     <!-- $mods-type contains genre -->
     <div id="mir-metadata">
