@@ -121,6 +121,9 @@
     <xsl:call-template name="rights">
       <xsl:with-param name="derivateID" select="structure/derobjects/derobject/@xlink:href" />
     </xsl:call-template>
+    <xsl:call-template name="licence" >
+      <xsl:with-param name="derivateID" select="structure/derobjects/derobject/@xlink:href" />
+    </xsl:call-template>
     <xsl:text disable-output-escaping="yes">
       &#60;/xMetaDiss:xMetaDiss&#62;
     </xsl:text>
@@ -784,6 +787,51 @@
         <ddb:rights ddb:kind="domain" />
       </xsl:otherwise>
     </xsl:choose>
+  </xsl:template>
+
+  <xsl:template name="licence">
+    <xsl:param name="derivateID" />
+    <xsl:variable name="mods" select="metadata/def.modsContainer/modsContainer/mods:mods" />
+    <xsl:choose>
+      <xsl:when test="acl:checkPermission($derivateID,'read')">
+        <ddb:licence ddb:licenceType="access">OA</ddb:licence>
+      </xsl:when>
+      <xsl:otherwise>
+        <ddb:licence ddb:licenceType="access">nOA</ddb:licence>
+      </xsl:otherwise>
+    </xsl:choose>
+    <xsl:for-each select="$mods/mods:accessCondition[@type='use and reproduction' and @xlink:href]">
+      <xsl:variable name="licenseId" select="substring-after(@xlink:href,'#')" />
+      <xsl:variable name="licence" select="document(concat('classification:metadata:0:children:mir_licenses:',$licenseId))" />
+      <xsl:variable name="licenceScheme">
+        <xsl:choose>
+          <xsl:when test="$licence//label[@xml:lang='x-dnb-type']">
+            <xsl:value-of select="$licence//label[@xml:lang='x-dnb-type']/@text" />
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:value-of select="'otherScheme'" />
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:variable>
+      <xsl:variable name="licenceValue">
+        <xsl:choose>
+          <xsl:when test="$licence//label[@xml:lang='x-dnb']">
+            <xsl:value-of select="$licence//label[@xml:lang='x-dnb']/@text" />
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:value-of select="$licenseId" />
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:variable>
+      <ddb:licence ddb:licenceType="{$licenceScheme}">
+        <xsl:value-of select="$licenceValue" />
+      </ddb:licence>
+      <xsl:for-each select="$licence//url[@xlink:href and @xlink:type='locator']">
+        <ddb:licence ddb:licenceType="URL">
+          <xsl:value-of select="@xlink:href" />
+        </ddb:licence>
+      </xsl:for-each>
+    </xsl:for-each>
   </xsl:template>
 
 </xsl:stylesheet>
