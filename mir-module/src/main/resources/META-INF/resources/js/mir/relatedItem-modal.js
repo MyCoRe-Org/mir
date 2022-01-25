@@ -234,7 +234,8 @@ $(document).ready(function() {
       autoSelect: false
     });
 
-    $("#modal-searchInput .fa-search").unbind().click(function() {
+    $("#modal-searchInput button").unbind().click(function(event) {
+      event.preventDefault();
       searchPublikation();
     });
 
