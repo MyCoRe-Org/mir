@@ -42,6 +42,9 @@
 				args.pop();
 				return args.join('');
 			});
+			Handlebars.registerHelper("getParent", function (input) {
+				return input.substring(0, input.lastIndexOf('/', input.length - 2));
+			});
 			Handlebars.registerHelper("formatFileSize", function(input) {
 				return toReadableSize(input, 0);
 			});
