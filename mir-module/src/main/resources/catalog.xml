@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog">
+    <system systemId="https://www.cdlib.org/groups/rmg/docs/copyrightMD.xsd" uri="xsd/copyrightMD_schema.xsd"/>
+</catalog>
