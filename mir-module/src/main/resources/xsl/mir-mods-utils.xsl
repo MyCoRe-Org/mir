@@ -49,7 +49,7 @@
                 </xsl:when>
                 <xsl:otherwise>
                     <xsl:value-of select="concat($ServletsBaseURL,'solr/mods_nameIdentifier?q=', '+mods.name:&quot;')"/>
-                    <xsl:apply-templates select="." mode="nameString"/>
+                    <xsl:apply-templates select="." mode="queryableNameString"/>
                     <xsl:value-of select="concat('&quot;', '&amp;owner=createdby:', $owner)"/>
                 </xsl:otherwise>
             </xsl:choose>
