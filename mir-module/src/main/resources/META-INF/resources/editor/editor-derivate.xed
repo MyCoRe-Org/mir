@@ -33,7 +33,7 @@
           </div>
         </xed:when>
         <xed:otherwise>
-          <p>Sie sind nicht berechtigt, dieses Derivat zu bearbeiten.</p>
+          <xed:output i18n="mir.actions.norights" />
         </xed:otherwise>
       </xed:choose>
     </xed:form>
