@@ -22,8 +22,6 @@
  */
 package org.mycore.mir.wizard.command;
 
-import java.net.URL;
-
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceException;
@@ -34,8 +32,6 @@ import org.jdom2.Document;
 import org.jdom2.Element;
 import org.mycore.backend.jpa.MCREntityManagerProvider;
 import org.mycore.common.MCRException;
-import org.mycore.common.content.MCRContent;
-import org.mycore.common.content.MCRURLContent;
 import org.mycore.common.xml.MCRURIResolver;
 import org.mycore.datamodel.classifications2.MCRCategory;
 import org.mycore.datamodel.classifications2.MCRCategoryDAO;
@@ -71,12 +67,13 @@ public class MIRWizardLoadClassifications extends MIRWizardCommand {
             for (Element classification : classifications.getChildren()) {
                 String classifURL = classification.getAttributeValue("url");
 
-                MCRContent content = new MCRURLContent(new URL(classifURL));
-
                 try {
-                    Document classif = content.asXML();
-                    if (classif.hasRootElement() && classif.getRootElement().getChildren().size() > 0) {
-                        MCRCategory category = MCRXMLTransformer.getCategory(classif);
+                    Element classifElement = MCRURIResolver.instance().resolve(classifURL);
+                    Document classifDocument = new Document();
+                    classifDocument.addContent(classifElement);
+
+                    if (classifElement.getChildren().size() > 0) {
+                        MCRCategory category = MCRXMLTransformer.getCategory(classifDocument);
 
                         result += MCRTranslation.translate("component.mir.wizard.loadClassification",
                             category
@@ -98,7 +95,7 @@ public class MIRWizardLoadClassifications extends MIRWizardCommand {
                             LOGGER.error("Exception while loading classification " + category.getId(), e);
                         }
                     }
-                } catch (MCRException ex) {
+                } catch (Exception ex) {
                     result += MCRTranslation.translate("component.mir.wizard.loadClassification.error", classifURL)
                         .concat("\n");
                     LOGGER.error(MCRTranslation.translate("component.mir.wizard.loadClassification.error", classifURL),

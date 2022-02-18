@@ -97,7 +97,13 @@ var engines = {
 				transform : function(list) {
 					list = list.response.docs;
 					$.each(list, function(index, item) {
-						item.name = item['mods.title'][0];
+						var host = null;
+						if (item['mods.title.host']) {
+							host = '(' + item['mods.title.host'][0] + ')'
+						} else if (item['mods.title.series']) {
+							host = '(' + item['mods.title.series'][0] + ')'
+						}
+						item.name = item['mods.title'][0] + (host !== null ? " " + host : '');
 						item.value = item['mods.title'][0];
 					});
 					return list;
@@ -106,7 +112,7 @@ var engines = {
 					var param = "q=%2Bmods.title%3A*" + query + "*";
 					param += "+%2Bcategory.top%3A%22mir_genres\%3A" + $(document.activeElement).data("genre") + "%22";
 					param += "+%2BobjectType%3A%22mods%22";
-					param += "&fl=mods.title%2Cid%2Cidentifier.type.issn%2Cidentifier.type.isbn%2CshelfLocator";
+					param += "&fl=mods.title%2Cid%2Cidentifier.type.issn%2Cidentifier.type.isbn%2CshelfLocator%2Cmods.title.host%2Cmods.title.series";
 					param += "&version=4.5&rows=1000&wt=json";
 
 					settings.url = settings.url.replace("%QUERY", param);

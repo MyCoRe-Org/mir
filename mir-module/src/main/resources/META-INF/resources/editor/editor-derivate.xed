@@ -5,31 +5,38 @@
 
   <section title="Bearbeiten des Derivates" xml:lang="de"/>
   <section title="Edit Derivate" xml:lang="en"/>
-  
+
   <section xml:lang="all">
-    <xed:form xmlns:xed="http://www.mycore.de/xeditor" method="post" role="form" class="form-horizontal" id="derivate_editor">
-      <xed:include uri="webapp:editor/editor-derivate-includes.xed" ref="in.out" />
-      <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-derivate-includes.xed" ref="javascript" />
-      <div class="panel panel-default">
-        <xed:bind xpath="/mycorederivate">
-          <div class="panel-heading">
-            <h1 class="panel-title">
-              <xed:output i18n="component.mods.metaData.options.updateDerivateName"/>
-            </h1>
+    <xed:form method="post" role="form" class="form-horizontal" id="derivate_editor" xmlns:xed="http://www.mycore.de/xeditor">
+      <xed:choose>
+        <xed:when test="xed:call-java('org.mycore.access.MCRAccessManager', 'checkPermission', $derivateid,'writedb')">
+          <xed:include uri="webapp:editor/editor-derivate-includes.xed" ref="in.out"/>
+          <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-derivate-includes.xed" ref="javascript"/>
+          <div class="panel panel-default">
+            <xed:bind xpath="/mycorederivate">
+              <div class="panel-heading">
+                <h1 class="panel-title">
+                  <xed:output i18n="component.mods.metaData.options.updateDerivateName"/>
+                </h1>
+              </div>
+              <div class="panel-body">
+                <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-derivate-includes.xed"
+                             ref="title_repeat"/>
+                <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-derivate-includes.xed" ref="order"/>
+                <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-derivate-includes.xed"
+                             ref="derivate_types"/>
+                <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-derivate-includes.xed"
+                             ref="mir_access"/>
+                <xed:include uri="webapp:editor/editor-derivate-includes.xed" ref="cancel.submit"/>
+              </div>
+            </xed:bind>
           </div>
-          <div class="panel-body">
-            <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-derivate-includes.xed"
-                         ref="title_repeat"/>
-            <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-derivate-includes.xed" ref="order"/>
-            <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-derivate-includes.xed"
-                         ref="derivate_types"/>
-            <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-derivate-includes.xed"
-                         ref="mir_access"/>
-            <xed:include uri="webapp:editor/editor-derivate-includes.xed" ref="cancel.submit"/>
-          </div>
-      </xed:bind>
-      </div>
+        </xed:when>
+        <xed:otherwise>
+          <xed:output i18n="mir.actions.norights" />
+        </xed:otherwise>
+      </xed:choose>
     </xed:form>
   </section>
-  
+
 </MyCoReWebPage>

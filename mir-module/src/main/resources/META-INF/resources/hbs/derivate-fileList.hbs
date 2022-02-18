@@ -1,5 +1,15 @@
 <div id="collapse{{mycorederivate}}" class="body collapse in show">
   <table class="table table-sm table-striped">
+    {{#isNot '/' path}}
+      <tr class="file_set d-flex">
+        <td class="file_preview col-1 text-center text-nowrap">
+          <span class="fas fa-folder" aria-hidden="true"></span>
+        </td>
+        <td class="file_name derivate_folder col-6">
+          <a data-path="{{getParent path}}/" href="#">..</a>
+        </td>
+      </tr>
+    {{/isNot}}
     {{#each children}}
       {{#is (concat '/' ../mainDoc) path}}
         <tr class="file_set active_file d-flex">

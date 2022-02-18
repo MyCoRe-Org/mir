@@ -54,7 +54,7 @@
         <li class="nav-item dropdown">
           <xsl:if test="$loaded_navigation_xml/menu[@id='user']//item[@href = $browserAddress ]">
             <xsl:attribute name="class">
-              <xsl:value-of select="'active'" />
+              <xsl:value-of select="'nav-item dropdown active'" />
             </xsl:attribute>
           </xsl:if>
           <a id="currentUser" class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">

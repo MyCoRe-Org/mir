@@ -42,6 +42,9 @@
 				args.pop();
 				return args.join('');
 			});
+			Handlebars.registerHelper("getParent", function (input) {
+				return input.substring(0, input.lastIndexOf('/', input.length - 2));
+			});
 			Handlebars.registerHelper("formatFileSize", function(input) {
 				return toReadableSize(input, 0);
 			});
@@ -295,10 +298,11 @@
 				$.ajax({
 					url: webApplicationBaseURL + "rsc/jwt",
 					type: "GET",
-                    			data: {
-                        			ua: "acckey_" + objID,
-                        			sa: "acckey_" + objID
-                    			},
+          data: {
+            ua: ["acckey_" + objID, "acckey_" + deriID],
+            sa: ["acckey_" + objID, "acckey_" + deriID]
+          },
+          traditional: true,
 					dataType: "json",
 					success: function (data) {
 						if (data.login_success) {

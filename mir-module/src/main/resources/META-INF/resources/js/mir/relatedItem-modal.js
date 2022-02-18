@@ -100,8 +100,8 @@ $(document).ready(function() {
       // TODO: remove styles from js code (by moving it to our css files)
       $("#main_left_content, #main_right_content").css({"max-height": "560px", "overflow": "auto"});
       $("#main_right_content").css("padding-left", "10px");
-      //create pager
-      $("#modalFrame-body").append("<div class='col-12'><nav style='clear: both'><ul class='pager'><li id='first' class='previous disabled'><a href='#' data='0'>First</a></li><li id='previous' class='previous disabled'><a href='#'>Previous</a></li><li class='next disabled'><a href='#'>Next</a></li></ul></nav></div>");
+      //create pagination
+      $("#modalFrame-body").append("<div class='col-12 mt-2'><nav style='clear: both'><ul class='modal-frame-pagination pagination justify-content-center'><li id='first' class='page-item previous disabled'><a href='#' class='page-link' data='0'>First</a></li><li id='previous' class='page-item previous disabled'><a href='#' class='page-link'>Previous</a></li><li class='page-item next disabled'><a href='#' class='page-link'>Next</a></li></ul></nav></div>");
       $(".already-linked").after("<div class='col-md-4 type-select'><select class='form-control'><option value=''>Ohne Eingrenzung nach Typ:</option></select></div>");
       $("li a").css("cursor", "pointer");
       $("#modal-searchInput").removeAttr("hidden");
@@ -134,7 +134,7 @@ $(document).ready(function() {
           $(elm).attr("data-title", $(this).find("str[name='mods.title.main']").text());
         });
       });
-      updatePager(data);
+      updatePagination(data);
       updateType(data);
     }
 
@@ -155,7 +155,7 @@ $(document).ready(function() {
       $(".modal-footer select").val(encodeURIComponent(sortType));
     }
 
-    function updatePager(data) {
+    function updatePagination(data) {
       var start = $(data).find("str[name='start']").text();
       var rows = $(data).find("str[name='rows']").text();
       var matches = $(data).find("int[name='matches']").text();
@@ -164,7 +164,7 @@ $(document).ready(function() {
       }
 
       $("#previous, li.next, #first").show();
-      $("ul.pager li").removeClass("disabled");
+      $("ul.modal-frame-pagination li").removeClass("disabled");
 
       if(parseInt(start) - parseInt(rows) < 0) {
         $("#previous").addClass("disabled");
@@ -234,7 +234,8 @@ $(document).ready(function() {
       autoSelect: false
     });
 
-    $("#modal-searchInput .fa-search").unbind().click(function() {
+    $("#modal-searchInput button").unbind().click(function(event) {
+      event.preventDefault();
       searchPublikation();
     });
 

@@ -107,5 +107,14 @@
     <url-pattern>/servlets/MCRDFGThumbnail/*</url-pattern>
   </servlet-mapping>
 
+  <filter>
+    <filter-name>MCRAccessKeyFilter</filter-name>
+    <filter-class>org.mycore.mcr.acl.accesskey.frontend.filter.MCRAccessKeyFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>MCRAccessKeyFilter</filter-name>
+    <servlet-name>MCRObjectServlet</servlet-name>
+    <dispatcher>REQUEST</dispatcher>
+  </filter-mapping>
 
 </web-fragment>

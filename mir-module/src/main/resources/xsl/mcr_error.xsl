@@ -80,7 +80,7 @@
             <xsl:variable name="hasAccKP" select="count($accKP/accesskeys[@readkey|@writekey]) &gt; 0" />
 
             <xsl:choose>
-              <xsl:when test="$hasAccKP">
+              <xsl:when test="$hasAccKP='true'">
                 <xsl:value-of disable-output-escaping="yes" select="i18n:translate('mir.error.accessKeyRequired', $objectId)" />
                 <xsl:text>&#160;</xsl:text>
                 <a

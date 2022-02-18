@@ -104,7 +104,6 @@
         <xed:include ref="host.volume" />
         <xed:include ref="host.issue" />
         <xed:include ref="host.articlenumber" />
-        <xed:include ref="identifier.isbn.journal.relItemsearch" />
         <xed:include ref="host.pages" />
       </xed:bind>
   </xed:template>
@@ -117,7 +116,6 @@
         <xed:include ref="shelfmark.newspaper.relItemsearch" />
       </xed:bind>
       <xed:include ref="date.issued.datetimepicker" />
-      <xed:include ref="identifier.isbn.newspaper.relItemsearch" />
       <xed:bind xpath="mods:relatedItem[@type='host']">
         <xed:include ref="host.pages" />
       </xed:bind>

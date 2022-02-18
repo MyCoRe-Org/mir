@@ -111,14 +111,12 @@ public class MIRAuthorEditorITCase extends MIRITBase {
         editorController.setIssueDate(MIRTestData.ISSUE_DATE);
         editorController.setVolume(MIRTestData.VOLUME);
         editorController.setNumber(MIRTestData.NUMBER);
-        editorController.setISBNValueXpath(MIRTestData.ISBN);
         editorController.setExtend(MIRTestData.EXTEND_START, MIRTestData.EXTEND_END);
 
         // wrong test data
         List<AbstractMap.Entry<MIRIdentifier, String>> identifierList = new ArrayList<>();
         identifierList.add(new AbstractMap.SimpleEntry<>(MIRIdentifier.doi, MIRTestData.WRONG_DOI));
         identifierList.add(new AbstractMap.SimpleEntry<>(MIRIdentifier.urn, MIRTestData.WRONG_URN));
-        editorController.setISBNValueXpath(MIRTestData.WRONG_ISBN);
         editorController.setISSNValueXpath(MIRTestData.WRONG_ISSN);
         editorController.setIdentifier(identifierList);
         editorController.save();
@@ -126,7 +124,6 @@ public class MIRAuthorEditorITCase extends MIRITBase {
         // check for validation message
         driver.waitAndFindElement(MCRBy.partialText(MIRTestData.VALIDATION));
         driver.waitAndFindElement(MCRBy.partialText(MIRTestData.VALIDATION_DOI));
-        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.VALIDATION_ISBN));
         driver.waitAndFindElement(MCRBy.partialText(MIRTestData.VALIDATION_ISSN));
         driver.waitAndFindElement(MCRBy.partialText(MIRTestData.VALIDATION_URN));
         driver.waitAndFindElement(MCRBy.partialText(MIRTestData.EXTEND_START));
@@ -137,7 +134,6 @@ public class MIRAuthorEditorITCase extends MIRITBase {
         identifierList.add(new AbstractMap.SimpleEntry<>(MIRIdentifier.doi, MIRTestData.DOI));
         identifierList.add(new AbstractMap.SimpleEntry<>(MIRIdentifier.urn, MIRTestData.URN));
         editorController.setISSNValueXpath(MIRTestData.ISSN);
-        editorController.setISBNValueXpath(MIRTestData.ISBN);
         editorController.setIdentifier(identifierList, 2, 0);
 
         editorController.save();
@@ -163,7 +159,6 @@ public class MIRAuthorEditorITCase extends MIRITBase {
         // look for parent article
         driver.findElement(MCRBy.partialText(MIRTestData.RELATED_TITLE));
         driver.findElement(MCRBy.partialText(MIRTestData.SIGNATURE));
-        driver.findElement(MCRBy.partialText(MIRTestData.ISBN));
         driver.findElement(MCRBy.partialText(MIRTestData.ISSN));
     }
 
