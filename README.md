@@ -3,7 +3,7 @@ MIR (acronym for MyCoRe/MODS Institutional Repository) is an open source reposit
 
 
 ## Installation instructions for developer
-Detailed instructions for application usage you can find on [MIR Documentation site](https://www.mycore.de/documentation/getting_started/gs_mir_install/).
+Detailed instructions for application usage you can find on [MIR Documentation site](https://www.mycore.de/documentation/apps/mir/mir_install/).
 
 This guide addresses developers. Thats why you run it in 'dev' profile!
  - run `mvn clean install -am -pl mir-webapp` in mir folder

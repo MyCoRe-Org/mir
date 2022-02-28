@@ -110,7 +110,7 @@
 
   <xsl:template match="*|@*" mode="toc.field">
     <xsl:param name="name" />
-    <xsl:variable name="field" select="concat('mir.toc.',ancestor::mods:relatedItem/@type,'.',$name)" />
+    <xsl:variable name="field" select="concat('mir.toc.',ancestor::mods:relatedItem[1]/@type,'.',$name)" />
 
     <field name="{$field}">
       <xsl:value-of select="." />
