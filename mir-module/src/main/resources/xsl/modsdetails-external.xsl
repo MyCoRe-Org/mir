@@ -685,7 +685,7 @@
         <div class="btn-group">
           <a href="#" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">
             <i class="fas fa-cog"></i>
-            <xsl:value-of select="' Aktionen'" />
+            <xsl:value-of select="concat(' ',i18n:translate('mir.actions'))" />
           </a>
           <ul class="dropdown-menu">
             <li>
@@ -706,7 +706,7 @@
         <div class="btn-group">
           <a href="#" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">
             <i class="fas fa-cog"></i>
-            <xsl:value-of select="' Aktionen'" />
+            <xsl:value-of select="concat(' ',i18n:translate('mir.actions'))" />
           </a>
           <ul class="dropdown-menu dropdown-menu-right">
             <xsl:if test="key('rights', $deriv)/@write">
