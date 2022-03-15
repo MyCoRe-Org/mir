@@ -8,7 +8,7 @@
   <xsl:include href="mir-accesskey-utils.xsl" />
 
   <xsl:param name="HttpSession" />
-  <xsl:param name="RequestURL" select="bla" />
+  <xsl:param name="RequestURL" />
   <xsl:param name="WebApplicationBaseURL" />
 
   <xsl:template name="extractObjectIdFromRequestURL">
