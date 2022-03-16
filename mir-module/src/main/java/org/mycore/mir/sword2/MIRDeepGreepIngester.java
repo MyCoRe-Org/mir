@@ -11,6 +11,7 @@ import java.util.Optional;
 
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.archivers.zip.ZipFile;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jdom2.Document;
@@ -83,7 +84,7 @@ public class MIRDeepGreepIngester extends MIRSwordIngesterBase {
                     resultingObject.getService().addFlag("sword", this.getLifecycleConfiguration().getCollection());
 
                     MCRMetadataManager.create(resultingObject);
-                    final String fileName = pdfEntry.getName();
+                    final String fileName = FilenameUtils.getName( pdfEntry.getName() );
                     final MCRDerivate derivate = MCRSwordUtil.createDerivate(resultingObject.getId().toString());
                     Files.copy(pdfIS, MCRPath.getPath(derivate.getId().toString(), fileName));
                     derivate.getDerivate().getInternals().setMainDoc(fileName);
