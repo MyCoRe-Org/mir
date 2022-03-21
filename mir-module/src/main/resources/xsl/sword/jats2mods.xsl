@@ -348,16 +348,18 @@
       <xsl:value-of select="." />
     </mods:nameIdentifier>
   </xsl:template>
+  
+  <xsl:variable name="orcidSite">orcid.org/</xsl:variable>
 
   <!-- Reduce ORCID iDs given as complete URL -->
-  <xsl:template match="contrib-id[contains(.,'orcid.org/')]" priority="1">
+  <xsl:template match="contrib-id[contains(.,$orcidSite)]" priority="1">
     <mods:nameIdentifier type="orcid">
-      <xsl:value-of select="substring-after(.,'orcid.org/')" />
+      <xsl:value-of select="substring-after(.,$orcidSite)" />
     </mods:nameIdentifier>
   </xsl:template>
 
   <!-- Ignore empty ORCIDs -->
-  <xsl:template match="contrib-id[text()='http://orcid.org/']" />
+  <xsl:template match="contrib-id[contains(.,$orcidSite)][normalize-space(substring-after(.,$orcidSite)) = '']" priority="2" />
 
   <xsl:template name="pub-date">
     <xsl:choose>
