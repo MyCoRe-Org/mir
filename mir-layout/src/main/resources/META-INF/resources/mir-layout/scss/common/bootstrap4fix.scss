@@ -32,21 +32,22 @@
 }
 .mcr-invalid {
   label {
-    color: red;
+    color: $danger;
   }
   input,
-  select {
-    border: 1px solid red;
-    padding-right: calc((1em + .75rem) * 3 / 4 + 1.75rem);
+  select,
+  textarea {
+    border: 1px solid $danger;
   }
 }
 .mcr-valid {
   label {
-    color: green;
+    color: $success;
   }
   input,
-  select {
-    border: 1px solid green;
+  select,
+  textarea  {
+    border: 1px solid $success;
   }
 }
 .btn,
