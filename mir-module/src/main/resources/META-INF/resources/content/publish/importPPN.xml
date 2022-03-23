@@ -24,7 +24,8 @@
       <div class="row form-group">
         <label for="genre" class="col-sm-3 col-lg-2 control-label">PPN:</label>
         <div class="col-sm-7 col-md-5  col-lg-4">
-          <input type="text" name="ppn" id="ppn" class="form-control" size="20" placeholder="z.B. 198562268" />
+          <input type="text" name="modsId" id="modsId" class="form-control" size="20" placeholder="z.B. 198562268" />
+          <input type="hidden" name="type" id="type" value="ppn" />
         </div>
         <div class="d-xs-none col-sm-3 d-lg-none"></div>
         <div class="col-sm-7 col-md-4 col-lg-5">
