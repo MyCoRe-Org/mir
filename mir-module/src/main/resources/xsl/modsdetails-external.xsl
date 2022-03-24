@@ -538,6 +538,22 @@
                   </li>
                 </xsl:if>
               </xsl:if>
+              <xsl:if test="acl:checkPermission('create-mods')">
+                <xsl:if test="string-length($copyURL) &gt; 0">
+                  <li>
+                    <a href="{$copyURL}?copyofid={$id}" class="dropdown-item">
+                      <xsl:value-of select="i18n:translate('object.copyObject')" />
+                    </a>
+                  </li>
+                </xsl:if>
+                <xsl:if test="string-length($copyURL) &gt; 0">
+                  <li>
+                    <a href="{$copyURL}?oldVersion={$id}" class="dropdown-item">
+                      <xsl:value-of select="i18n:translate('object.newVersion')" />
+                    </a>
+                  </li>
+                </xsl:if>
+              </xsl:if>
               <xsl:if
                 test="$CurrentUser=$MCR.Users.Superuser.UserName or $accessdelete">
                 <li>
