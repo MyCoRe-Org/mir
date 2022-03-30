@@ -18,9 +18,18 @@
     <xsl:template match="mods:abstract[not(@altFormat)] | mods:tableOfContents[not(@altFormat)]" mode="seo">
         <xsl:if test="@xml:lang = $CurrentLang" >
             <meta>
-                <xsl:attribute name="name">Description</xsl:attribute>
+                <xsl:attribute name="name">description</xsl:attribute>
                 <xsl:attribute name="content">
-                    <xsl:value-of select="concat(substring(.,0,141), '...')" />
+                    <xsl:choose>
+                        <!-- SEO descriptions are limited to about 155 characters for desktop search and 120 characters
+                             for mobile search. -->
+                        <xsl:when test="string-length(.)>=140">
+                            <xsl:value-of select="concat(substring(.,1,140), '&amp;hellip;')" />
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:value-of select="." />
+                        </xsl:otherwise>
+                    </xsl:choose>
                 </xsl:attribute>
             </meta>
         </xsl:if>
