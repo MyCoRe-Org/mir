@@ -670,4 +670,19 @@
     </xed:bind>
   </xsl:template>
 
+  <xsl:template match="mir:editorConfig">
+    <xsl:variable name="editorProperties" select="document('property:MIR.WebConfig.Editor.*')"/>
+    <xsl:if test="$editorProperties">
+      <xsl:element name="script">
+        <xsl:for-each select="$editorProperties/properties/entry">
+          <xsl:text>window["</xsl:text>
+          <xsl:value-of select="@key"/>
+          <xsl:text>"] = </xsl:text>
+          <xsl:value-of select="."/>
+          <xsl:text>;</xsl:text>
+        </xsl:for-each>
+      </xsl:element>
+    </xsl:if>
+  </xsl:template>
+
 </xsl:stylesheet>
