@@ -670,17 +670,6 @@
               <xsl:choose>
                 <xsl:when test="./str[@name='search_result_link_text']">
                   <xsl:value-of select="./str[@name='search_result_link_text']" />
-                  <xsl:if test="not(contains(./str[@name='search_result_link_text'], '...')) and ./str[@name='mods.title.subtitle']">
-                    <xsl:variable name="mylength" select="75 - string-length(./str[@name='search_result_link_text'])" />
-                    <xsl:if test="$mylength &gt; 7">
-                      <span class="subtitle">
-                        <xsl:value-of select="concat(' : ', substring(./str[@name='mods.title.subtitle'],1, $mylength))" />
-                        <xsl:if test="string-length(./str[@name='mods.title.subtitle']) &gt; $mylength">
-                          ...
-                        </xsl:if>
-                      </span>
-                    </xsl:if>
-                  </xsl:if>
                 </xsl:when>
                 <xsl:when test="./str[@name='fileName']">
                   <xsl:value-of select="./str[@name='fileName']" />
