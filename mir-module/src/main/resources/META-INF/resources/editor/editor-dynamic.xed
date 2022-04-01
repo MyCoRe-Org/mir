@@ -29,10 +29,10 @@
         <xed:param name="series" default="no" />
 
         <h1>
-          <xed:output i18n="mir.form.editor.dynamic.header" />
+          <xed:output i18n="editor.dynamic.header" />
           <xed:output value="$mir_genres//category[@ID=$genre_intern]/label[lang($CurrentLang)]/@text" />
           <xed:if test="not($host='standalone')">
-            <xed:output i18n="mir.form.editor.dynamic.header.in" />
+            <xed:output i18n="editor.dynamic.header.in" />
             <xed:output value="$mir_genres//category[@ID=$host]/label[lang($CurrentLang)]/@text" />
           </xed:if>
         </h1>
