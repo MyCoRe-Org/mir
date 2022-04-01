@@ -29,7 +29,7 @@
         <xed:param name="series" default="no" />
 
         <h1>
-          Eingabeformular für
+          <xed:output i18n="mir.editing.title" />
           <xed:output value="$mir_genres//category[@ID=$genre_intern]/label[lang($CurrentLang)]/@text" />
           <xed:if test="not($host='standalone')">
             <xed:output value="concat(' in ',$mir_genres//category[@ID=$host]/label[lang($CurrentLang)]/@text)" />
