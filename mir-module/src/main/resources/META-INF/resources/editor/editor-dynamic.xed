@@ -46,7 +46,7 @@
         <xed:if test="not($host='standalone')">
           <fieldset class="mir-relatedItem">
             <div class="col-md-12 mir-relatedItem-head">
-              <xed:output i18n="editor.dynamic.partof" />
+              <xed:output i18n="mir.form.editor.dynamic.partof" />
               <xed:output value="concat($mir_genres//category[@ID=$host]/label[lang($CurrentLang)]/@text,':')" />
             </div>
             <div class="mir-relatedItem-body">
@@ -62,7 +62,7 @@
                 <xed:bind xpath="mods:relatedItem[(@type='host')][1]">
                   <fieldset class="mir-relatedItem">
                     <div class="col-md-12 mir-relatedItem-head">
-                      <xed:output i18n="editor.dynamic.partof" />
+                      <xed:output i18n="mir.form.editor.dynamic.partof" />
                       <xed:output value="concat($mir_genres//category[@ID='series']/label[lang($CurrentLang)]/@text,':')" />
                     </div>
                     <div class="mir-relatedItem-body">
