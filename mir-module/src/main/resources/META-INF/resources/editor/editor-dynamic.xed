@@ -29,10 +29,10 @@
         <xed:param name="series" default="no" />
 
         <h1>
-          <xed:output i18n="editor.dynamic.header" />
+          <xed:output i18n="mir.form.editor.dynamic.header" />
           <xed:output value="$mir_genres//category[@ID=$genre_intern]/label[lang($CurrentLang)]/@text" />
           <xed:if test="not($host='standalone')">
-            <xed:output i18n="editor.dynamic.header.in" />
+            <xed:output i18n="mir.form.editor.dynamic.header.in" />
             <xed:output value="$mir_genres//category[@ID=$host]/label[lang($CurrentLang)]/@text" />
           </xed:if>
         </h1>
@@ -46,7 +46,7 @@
         <xed:if test="not($host='standalone')">
           <fieldset class="mir-relatedItem">
             <div class="col-md-12 mir-relatedItem-head">
-              <xed:output i18n="editor.dynamic.partof" />
+              <xed:output i18n="mir.form.editor.dynamic.partof" />
               <xed:output value="concat($mir_genres//category[@ID=$host]/label[lang($CurrentLang)]/@text,':')" />
             </div>
             <div class="mir-relatedItem-body">
@@ -62,7 +62,7 @@
                 <xed:bind xpath="mods:relatedItem[(@type='host')][1]">
                   <fieldset class="mir-relatedItem">
                     <div class="col-md-12 mir-relatedItem-head">
-                      <xed:output i18n="editor.dynamic.partof" />
+                      <xed:output i18n="mir.form.editor.dynamic.partof" />
                       <xed:output value="concat($mir_genres//category[@ID='series']/label[lang($CurrentLang)]/@text,':')" />
                     </div>
                     <div class="mir-relatedItem-body">
