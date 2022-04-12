@@ -121,6 +121,9 @@
     <xsl:call-template name="rights">
       <xsl:with-param name="derivateID" select="structure/derobjects/derobject/@xlink:href" />
     </xsl:call-template>
+    <xsl:call-template name="licence" >
+      <xsl:with-param name="derivateID" select="structure/derobjects/derobject/@xlink:href" />
+    </xsl:call-template>
     <xsl:text disable-output-escaping="yes">
       &#60;/xMetaDiss:xMetaDiss&#62;
     </xsl:text>
@@ -784,6 +787,35 @@
         <ddb:rights ddb:kind="domain" />
       </xsl:otherwise>
     </xsl:choose>
+  </xsl:template>
+
+  <xsl:template name="licence">
+    <xsl:param name="derivateID" />
+    <xsl:variable name="mods" select="metadata/def.modsContainer/modsContainer/mods:mods" />
+    <xsl:choose>
+      <xsl:when test="acl:checkPermission($derivateID,'read')">
+        <ddb:licence ddb:licenceType="access">OA</ddb:licence>
+      </xsl:when>
+      <xsl:otherwise>
+        <ddb:licence ddb:licenceType="access">nOA</ddb:licence>
+      </xsl:otherwise>
+    </xsl:choose>
+    <xsl:for-each select="$mods/mods:accessCondition[@type='use and reproduction' and @xlink:href]">
+      <xsl:variable name="licenseId" select="substring-after(@xlink:href,'#')"/>
+      <xsl:variable name="license" select="document(concat('classification:metadata:0:children:mir_licenses:',$licenseId))"/>
+      <xsl:for-each select="$license//label[starts-with(@xml:lang,'x-dnb-')]">
+        <xsl:if test="contains(@text,':')">
+          <ddb:licence ddb:licenceType="{substring-before(@text,':')}">
+            <xsl:value-of select="substring-after(@text,':')"/>
+          </ddb:licence>
+        </xsl:if>
+      </xsl:for-each>
+      <xsl:for-each select="$license//url[@xlink:href and @xlink:type='locator']">
+        <ddb:licence ddb:licenceType="URL">
+          <xsl:value-of select="@xlink:href"/>
+        </ddb:licence>
+      </xsl:for-each>
+    </xsl:for-each>
   </xsl:template>
 
 </xsl:stylesheet>
