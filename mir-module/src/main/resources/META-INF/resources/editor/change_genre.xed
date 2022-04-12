@@ -7,7 +7,6 @@
     <p>Bitte geben Sie das korrekte Genre für die Publikation xy an:</p>
 
     <xed:form xmlns:xed="http://www.mycore.de/xeditor" role="form" class="form-horizontal">
-      <xed:source uri="xslStyle:mods2editor:{$sourceUri}"/>
       <xed:source uri="xslStyle:mods2editor:xslStyle:asParent:mcrobject:{$parentId}" />
       <xed:source uri="xslStyle:mods2editor:xslStyle:mycoreobject-editor:mcrobject:{$id}" />
       <xed:cancel url="servlets/MCRLockServlet?action=unlock&amp;id={$id}&amp;url=/receive/{$id}" />
