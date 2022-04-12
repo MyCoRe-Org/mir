@@ -10,7 +10,6 @@
   <xed:template id="in.out">
     <xed:source uri="xslStyle:import/remove-genres,import/mods2mycoreobject,editor/mods2xeditor:enrich:import:buildxml:_rootName_=mods:mods&amp;mods:identifier={$modsId}&amp;mods:identifier/@type={$type}" />
     <xed:source uri="xslStyle:RDF-mods-journal,editor/mods2xeditor:http://ld.zdb-services.de/data/{$zdbid}.rdf" />
-    <xed:source uri="xslStyle:editor/mods2xeditor:{$sourceUri}" />
     <xed:source uri="xslStyle:mycoreobject-editor,editor/mods2xeditor:mcrobject:{$id}" />
     <xed:source uri="xslStyle:mycoreobject-copyof,editor/mods2xeditor:mcrobject:{$copyofid}" />
     <xed:source uri="xslStyle:mods-addPreceding,mycoreobject-copyof,editor/mods2xeditor:mcrobject:{$oldVersion}" />
