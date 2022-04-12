@@ -471,20 +471,6 @@
                         <xsl:value-of select="i18n:translate('object.editGenre')" />
                       </a>
                     </li -->
-                    <xsl:if test="string-length($copyURL) &gt; 0">
-                      <li>
-                        <a href="{$copyURL}?copyofid={$id}" class="dropdown-item">
-                          <xsl:value-of select="i18n:translate('object.copyObject')" />
-                        </a>
-                      </li>
-                    </xsl:if>
-                    <xsl:if test="string-length($copyURL) &gt; 0">
-                      <li>
-                        <a href="{$copyURL}?oldVersion={$id}" class="dropdown-item">
-                          <xsl:value-of select="i18n:translate('object.newVersion')" />
-                        </a>
-                      </li>
-                    </xsl:if>
                   </xsl:when>
                   <xsl:otherwise>
                     <li>
@@ -492,6 +478,22 @@
                     </li>
                   </xsl:otherwise>
                 </xsl:choose>
+                <xsl:if test="acl:checkPermission('create-mods')">
+                  <xsl:if test="string-length($copyURL) &gt; 0">
+                    <li>
+                      <a href="{$copyURL}?copyofid={$id}" class="dropdown-item">
+                        <xsl:value-of select="i18n:translate('object.copyObject')" />
+                      </a>
+                    </li>
+                  </xsl:if>
+                  <xsl:if test="string-length($copyURL) &gt; 0">
+                    <li>
+                      <a href="{$copyURL}?oldVersion={$id}" class="dropdown-item">
+                        <xsl:value-of select="i18n:translate('object.newVersion')" />
+                      </a>
+                    </li>
+                  </xsl:if>
+                </xsl:if>
                 <xsl:if test="$displayAddDerivate='true' and not(piUtil:hasManagedPI($id))">
                   <li>
                     <a onclick="javascript: $('.drop-to-object-optional').toggle();" class="dropdown-item">
@@ -532,6 +534,22 @@
                       href="{$ServletsBaseURL}MCRPackerServlet?packer=ImageWare&amp;objectId={/mycoreobject/@ID}&amp;redirect={encoder:encode(concat($WebApplicationBaseURL,'receive/',/mycoreobject/@ID,'?XSL.Status.Message=mir.iwstatus.success&amp;XSL.Status.Style=success'))}"
                     >
                       <xsl:value-of select="i18n:translate('object.createImagewareZipPackage')" />
+                    </a>
+                  </li>
+                </xsl:if>
+              </xsl:if>
+              <xsl:if test="acl:checkPermission('create-mods')">
+                <xsl:if test="string-length($copyURL) &gt; 0">
+                  <li>
+                    <a href="{$copyURL}?copyofid={$id}" class="dropdown-item">
+                      <xsl:value-of select="i18n:translate('object.copyObject')" />
+                    </a>
+                  </li>
+                </xsl:if>
+                <xsl:if test="string-length($copyURL) &gt; 0">
+                  <li>
+                    <a href="{$copyURL}?oldVersion={$id}" class="dropdown-item">
+                      <xsl:value-of select="i18n:translate('object.newVersion')" />
                     </a>
                   </li>
                 </xsl:if>
@@ -685,7 +703,7 @@
         <div class="btn-group">
           <a href="#" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">
             <i class="fas fa-cog"></i>
-            <xsl:value-of select="' Aktionen'" />
+            <xsl:value-of select="concat(' ',i18n:translate('mir.actions'))" />
           </a>
           <ul class="dropdown-menu">
             <li>
@@ -706,7 +724,7 @@
         <div class="btn-group">
           <a href="#" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">
             <i class="fas fa-cog"></i>
-            <xsl:value-of select="' Aktionen'" />
+            <xsl:value-of select="concat(' ',i18n:translate('mir.actions'))" />
           </a>
           <ul class="dropdown-menu dropdown-menu-right">
             <xsl:if test="key('rights', $deriv)/@write">

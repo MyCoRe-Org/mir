@@ -629,7 +629,8 @@
         <div class="col-md-6">
           <div class="input-group">
             <input class="form-control relItemsearch" data-searchengine="{@searchengine}" data-genre="{@genre}"
-                   data-valuexpath="//mods:mods/{@xpath}" data-provide="typeahead" type="text" autocomplete="off"/>
+                   data-valuexpath="//mods:mods/{@xpath}" data-provide="typeahead" type="text" autocomplete="off"
+                   placeholder="{@placeholder}" />
             <span class="input-group-addon searchbadge"> </span>
           </div>
         </div>

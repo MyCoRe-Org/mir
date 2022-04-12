@@ -47,18 +47,15 @@
     <xsl:variable name="params" select="/response/lst[@name='responseHeader']/lst[@name='params']"/>
     <xsl:variable name="expanded" select="$params/str[@name=concat('toc.',$field,'.expanded')]/text()"/>
 
-    <!--  build the mir_genres publication type ID, e.g. host.issue = mir_genres:issue -->
-    <xsl:variable name="category.top">
+    <!-- find the field name whose presence identifies the single document that "represents" this toc level as object -->
+    <xsl:variable name="levelField">
       <xsl:choose>
         <xsl:when test="starts-with($field,'mir.toc.host.')">
-          <xsl:value-of select="concat('mir_genres:',substring-after($field,'mir.toc.host.'))" />
+          <xsl:value-of select="concat($field,'.top')" />
         </xsl:when>
         <xsl:when test="starts-with($field,'mir.toc.series.')">
-          <xsl:value-of select="concat('mir_genres:',substring-after($field,'mir.toc.series.'))" />
+          <xsl:value-of select="concat($field,'.top')" />
         </xsl:when>
-        <xsl:otherwise>
-          <xsl:value-of select="concat('mir_genres:',$field)" />
-        </xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
 
@@ -80,12 +77,12 @@
           <!-- there may be a single document that "represents" this toc level as object -->
           <!-- for example, there may be an object for the complete current issue -->
           <xsl:for-each select="lst[@name='docs']/arr/lst">
-            <xsl:apply-templates select="key('id2doc',str[@name='val'])[arr[@name='category.top'][str[text()=$category.top]]]" />
+            <xsl:apply-templates select="key('id2doc',str[@name='val'])[str[@name=$levelField]]" />
           </xsl:for-each>
 
           <!-- handle deeper levels and publication list -->
           <xsl:apply-templates select="lst">
-            <xsl:with-param name="category.top" select="$category.top" />
+            <xsl:with-param name="levelField" select="$levelField" />
           </xsl:apply-templates>
 
         </item>
@@ -97,12 +94,12 @@
 
   <!-- output list of publications at the current toc level, if any -->
   <xsl:template match="lst[@name='docs']">
-    <xsl:param name="category.top" select="'?'" />
+    <xsl:param name="levelField" select="'?'" />
 
     <xsl:variable name="publications">
       <xsl:for-each select="arr/lst">
         <!-- skip publication document if it is not below, but -at- the current level, e.g. level=issue, category.top=mir_genres:issue -->
-        <xsl:apply-templates select="key('id2doc',str[@name='val'])[not(arr[@name='category.top'][str[text()=$category.top]])]" />
+        <xsl:apply-templates select="key('id2doc',str[@name='val'])[not(str[@name=$levelField])]" />
       </xsl:for-each>
     </xsl:variable>
     <xsl:if test="string-length($publications) &gt; 0">

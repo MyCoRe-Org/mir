@@ -164,51 +164,54 @@
 
   <xed:template id="title.series.relItemsearch">
     <mir:relItemsearch searchengine="title" genre="series" responsefield="mods.title" xpath="mods:titleInfo/mods:title" label="mir.title"
-      help-text="{i18n:mir.help.series.title}" class="required" required="true" required-i18n="mir.validation.title.series" />
+      help-text="{i18n:mir.help.series.title}" class="required" required="true" required-i18n="mir.validation.title.series"
+      placeholder="{i18n:mir.title.placeholder.series.relItemsearch}" />
   </xed:template>
 
   <xed:template id="title.lecture.relItemsearch">
     <mir:relItemsearch searchengine="title" genre="lecture" responsefield="mods.title" xpath="mods:titleInfo/mods:title" label="mir.title"
-      help-text="{i18n:mir.help.series.title}" />
+      help-text="{i18n:mir.help.series.title}" placeholder="{i18n:mir.title.placeholder.lecture.relItemsearch}" />
   </xed:template>
 
   <xed:template id="title.book.relItemsearch">
     <mir:relItemsearch searchengine="title" genre="book" responsefield="mods.title" xpath="mods:titleInfo/mods:title" label="mir.title"
-    class="required" required="true" required-i18n="mir.validation.title.book" />
+      class="required" required="true" required-i18n="mir.validation.title.book" placeholder="{i18n:mir.title.placeholder.book.relItemsearch}"/>
   </xed:template>
 
   <xed:template id="title.lexicon.relItemsearch">
     <mir:relItemsearch searchengine="title" genre="lexicon" responsefield="mods.title" xpath="mods:titleInfo/mods:title" label="mir.title"
-      class="required" required="true" required-i18n="mir.validation.title.lexicon" />
+      class="required" required="true" required-i18n="mir.validation.title.lexicon" placeholder="{i18n:mir.title.placeholder.lexicon.relItemsearch}" />
   </xed:template>
 
   <xed:template id="title.journal.relItemsearch">
     <mir:relItemsearch searchengine="title" genre="journal" responsefield="mods.title" xpath="mods:titleInfo/mods:title" label="mir.title.journal"
-      help-text="{i18n:mir.help.title.journal}" class="required" required="true" required-i18n="mir.validation.title.series" />
+      help-text="{i18n:mir.help.title.journal}" class="required" required="true" required-i18n="mir.validation.title.series"
+      placeholder="{i18n:mir.title.placeholder.journal.relItemsearch}" />
   </xed:template>
 
   <xed:template id="title.collection.relItemsearch">
     <mir:relItemsearch searchengine="title" genre="collection" responsefield="mods.title" xpath="mods:titleInfo/mods:title" label="mir.title"
-      class="required" required="true" required-i18n="mir.validation.title.collection" />
+      class="required" required="true" required-i18n="mir.validation.title.collection" placeholder="{i18n:mir.title.placeholder.collection.relItemsearch}" />
   </xed:template>
 
   <xed:template id="title.festschrift.relItemsearch">
     <mir:relItemsearch searchengine="title" genre="festschrift" responsefield="mods.title" xpath="mods:titleInfo/mods:title" label="mir.title"
-      class="required" required="true" required-i18n="mir.validation.title.festschrift" />
+      class="required" required="true" required-i18n="mir.validation.title.festschrift" placeholder="{i18n:mir.title.placeholder.festschrift.relItemsearch}" />
   </xed:template>
 
   <xed:template id="title.proceedings.relItemsearch">
-    <mir:relItemsearch searchengine="title" genre="proceedings" responsefield="mods.title" xpath="mods:titleInfo/mods:title" label="mir.title" />
+    <mir:relItemsearch searchengine="title" genre="proceedings" responsefield="mods.title" xpath="mods:titleInfo/mods:title" label="mir.title"
+      placeholder="{i18n:mir.title.placeholder.proceedings.relItemsearch}" />
   </xed:template>
 
   <xed:template id="title.newspaper.relItemsearch">
     <mir:relItemsearch searchengine="title" genre="newspaper" responsefield="mods.title" xpath="mods:titleInfo/mods:title" label="mir.title"
-      class="required" required="true" required-i18n="mir.validation.title.newspaper" />
+      class="required" required="true" required-i18n="mir.validation.title.newspaper" placeholder="{i18n:mir.title.placeholder.newspaper.relItemsearch}" />
   </xed:template>
 
   <xed:template id="title.blog.relItemsearch">
-    <mir:relItemsearch searchengine="title" genre="blog" responsefield="mods.title" xpath="mods:titleInfo/mods:title" label="mir.title.blog" help-text="{i18n:mir.help.title.blog}" 
-      class="required" required="true" required-i18n="mir.validation.blog.title"/>
+    <mir:relItemsearch searchengine="title" genre="blog" responsefield="mods.title" xpath="mods:titleInfo/mods:title" label="mir.title.blog" help-text="{i18n:mir.help.title.blog}"
+      class="required" required="true" required-i18n="mir.validation.blog.title" placeholder="{i18n:mir.title.placeholder.blog.relItemsearch}"/>
   </xed:template>
 
   <xed:template id="subtitle">

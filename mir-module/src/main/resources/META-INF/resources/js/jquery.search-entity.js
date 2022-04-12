@@ -85,7 +85,8 @@
             });
           }
           return result;
-        }
+        },
+        dataSort: true
       },
       organisation: {
         enabled: true,
@@ -114,7 +115,8 @@
             });
           }
           return result;
-        }
+        },
+        dataSort: true
       },
       both: {
         enabled: true,
@@ -151,7 +153,8 @@
             });
           }
           return result;
-        }
+        },
+        dataSort: true
       },
       topic: {
         enabled: true,
@@ -177,7 +180,8 @@
             });
           }
           return result;
-        }
+        },
+        dataSort: true
       },
       geographic: {
         enabled: true,
@@ -203,7 +207,8 @@
             });
           }
           return result;
-        }
+        },
+        dataSort: true
       }
     },
     GND_FALLBACK: {
@@ -233,7 +238,8 @@
             });
           }
           return result;
-        }
+        },
+        dataSort: true
       },
       organisation: {
         enabled: true,
@@ -260,7 +266,8 @@
             });
           }
           return result;
-        }
+        },
+        dataSort: true
       },
       both: {
         enabled: true,
@@ -296,7 +303,8 @@
             });
           }
           return result;
-        }
+        },
+        dataSort: true
       },
       topic: {
         enabled: true,
@@ -322,7 +330,8 @@
             });
           }
           return result;
-        }
+        },
+        dataSort: true
       },
       geographic: {
         enabled: true,
@@ -348,7 +357,8 @@
             });
           }
           return result;
-        }
+        },
+        dataSort: true
       }
     },
     VIAF : {
@@ -376,8 +386,8 @@
             });
           }
           return result;
-        }
-
+        },
+        dataSort: true
       },
       organisation : {
         enabled : true,
@@ -402,7 +412,8 @@
             });
           }
           return result;
-        }
+        },
+        dataSort: true
       },
       both : {
         enabled: true,
@@ -436,7 +447,8 @@
             });
           }
           return result;
-        }
+        },
+        dataSort: true
       },
       topic : {
         enabled : false
@@ -458,7 +470,8 @@
             },
             dataConvert: function (data) {
                 return data;
-            }
+            },
+            dataSort: true
         },
         organisation: {
             enabled: false
@@ -474,7 +487,8 @@
             },
             dataConvert: function (data) {
                 return data;
-            }
+            },
+            dataSort: true
         },
         topic:{
             enabled: false
@@ -649,7 +663,9 @@
         var handleData = (url, dataType, data, isFallback) => {
           SearchEntity.loadData(url, dataType, data, (data) => {
             if (data !== undefined) {
-              that.showResult(SearchEntity.sortData(input, typeof type.dataConvert == "function" ? type.dataConvert(data) : data));
+              var convertedData = typeof type.dataConvert == "function" ? type.dataConvert(data) : data;
+              var sortedData = type.dataSort ? SearchEntity.sortData(input, convertedData) : convertedData;
+              that.showResult(sortedData);
             } else {
               that.showResult();
             }

@@ -112,7 +112,7 @@
     <xsl:for-each select=".//mods:name[@type='personal']">
       <!-- person index name entry -->
       <xsl:variable name="pindexname">
-        <xsl:apply-templates select="." mode="nameString" />
+        <xsl:apply-templates select="." mode="queryableNameString" />
         <xsl:variable name="nameIds">
           <xsl:call-template name="getNameIdentifiers">
             <xsl:with-param name="entity" select="." />

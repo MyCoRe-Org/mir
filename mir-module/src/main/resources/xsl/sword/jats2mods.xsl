@@ -4,9 +4,8 @@
 <!-- See https://jats.nlm.nih.gov -->
 
 <!-- TODO: <pub-date pub-type="ppub" date-type="actual"> -->
-<!-- TODO: affiliation mit Umbrüchen -->
 <!-- TODO: abbrev title = main title -->
-<!-- TODO: <xref ref-type="aff" rid="A">a oder <sup>1</sup></xref> <aff id="A"><sup>a</sup>Allgemeine<break/>Psychologie </aff>  -->
+<!-- TODO: <xref ref-type="aff" rid="A">a oder <sup>1</sup></xref> -->
 <!-- TODO: funding-group -->
 <!-- TODO: map article-type to mods:genre -->
 <!-- TODO: lookup existing host for xlink:href -->
@@ -243,7 +242,7 @@
 
   <xsl:template match="contrib">
     <mods:name type="personal">
-      <xsl:for-each select="name">
+      <xsl:for-each select="name|string-name">
         <xsl:apply-templates select="surname" />
         <xsl:apply-templates select="given-names" />
         <xsl:apply-templates select="prefix|suffix" />
@@ -323,35 +322,44 @@
 
   <xsl:template match="aff">
     <mods:affiliation>
-      <xsl:choose>
-        <xsl:when test="institution">
-          <xsl:value-of select="institution" />
-        </xsl:when>
-        <xsl:when test="institution-wrap">
-          <xsl:value-of select="institution-wrap/institution" />
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:value-of select="." />
-        </xsl:otherwise>
-      </xsl:choose>
+      <xsl:apply-templates select="node()" mode="copy-affiliation" />
     </mods:affiliation>
   </xsl:template>
+  
+  <xsl:template match="text()" mode="copy-affiliation">
+    <xsl:value-of select="normalize-space(.)" />  
+  </xsl:template>
+  
+  <xsl:template match="break" mode="copy-affiliation">
+    <xsl:text> </xsl:text>
+  </xsl:template>
+
+  <xsl:template match="named-content|institution|institution-wrap|postal-code|addr-line|city|country" mode="copy-affiliation">
+    <xsl:apply-templates select="node()" mode="copy-affiliation" />
+    <xsl:if test="following::*">
+      <xsl:text> </xsl:text>
+    </xsl:if>
+  </xsl:template>
+
+  <xsl:template match="*" mode="copy-affiliation" />
 
   <xsl:template match="contrib-id">
     <mods:nameIdentifier type="{@contrib-id-type}">
       <xsl:value-of select="." />
     </mods:nameIdentifier>
   </xsl:template>
+  
+  <xsl:variable name="orcidSite">orcid.org/</xsl:variable>
 
   <!-- Reduce ORCID iDs given as complete URL -->
-  <xsl:template match="contrib-id[contains(.,'orcid.org/')]" priority="1">
+  <xsl:template match="contrib-id[contains(.,$orcidSite)]" priority="1">
     <mods:nameIdentifier type="orcid">
-      <xsl:value-of select="substring-after(.,'orcid.org/')" />
+      <xsl:value-of select="substring-after(.,$orcidSite)" />
     </mods:nameIdentifier>
   </xsl:template>
 
   <!-- Ignore empty ORCIDs -->
-  <xsl:template match="contrib-id[text()='http://orcid.org/']" />
+  <xsl:template match="contrib-id[contains(.,$orcidSite)][normalize-space(substring-after(.,$orcidSite)) = '']" priority="2" />
 
   <xsl:template name="pub-date">
     <xsl:choose>

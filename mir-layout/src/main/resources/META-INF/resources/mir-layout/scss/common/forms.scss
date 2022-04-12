@@ -248,8 +248,12 @@ span.topicExtended-container input.topic_gnd, span.geographicExtended-container 
   margin-bottom: 40px;
 }
 
-.mcr-invalid iframe {
-  border: solid thin $danger;
+.mcr-invalid .cke_contents {
+    border: 1px solid $danger;
+}
+
+.mcr-valid .cke_contents {
+    border: 1px solid $success;
 }
 
 /* xs: default up to 750px ***************************************************/

@@ -28,7 +28,7 @@
           Mobile viewport optimisation
         </xsl:comment>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <link href="{$WebApplicationBaseURL}assets/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+        <link href="{$WebApplicationBaseURL}assets/font-awesome/css/all.min.css" rel="stylesheet" />
         <link href="{$WebApplicationBaseURL}rsc/sass/mir-layout/scss/{$MIR.Layout.Theme}-{$MIR.DefaultLayout.CSS}.css" rel="stylesheet" />
 
         <script type="text/javascript" src="{$WebApplicationBaseURL}assets/jquery/jquery.min.js"></script>
@@ -55,7 +55,7 @@
                   Layout based on
                   <a href="http://getbootstrap.com/">Bootstrap</a>
                   ―
-                  <a href="http://fortawesome.github.com/Font-Awesome">Font Awesome</a>
+                  <a href="https://github.com/FortAwesome/Font-Awesome">Font Awesome</a>
                   by Dave Gandy
                 </p>
               </div>
