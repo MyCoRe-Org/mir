@@ -3,9 +3,10 @@
 <xsl:stylesheet version="1.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:mods="http://www.loc.gov/mods/v3"
+                xmlns:mcrxml="xalan://org.mycore.common.xml.MCRXMLFunctions"
                 xmlns:xlink="http://www.w3.org/1999/xlink"
                 xmlns:xalan="http://xml.apache.org/xalan"
-                exclude-result-prefixes="xsl mods xlink xalan">
+                exclude-result-prefixes="xsl mcrxml mods xlink xalan">
 
     <xsl:include href="mods-utils.xsl"/>
 
@@ -23,8 +24,8 @@
                     <xsl:choose>
                         <!-- SEO descriptions are limited to about 155 characters for desktop search and 120 characters
                              for mobile search. -->
-                        <xsl:when test="string-length(.)>=140">
-                            <xsl:value-of select="concat(substring(.,1,140), '&amp;hellip;')" />
+                        <xsl:when test="string-length(.)>140">
+                            <xsl:value-of select="mcrxml:shortenText(.,140)" />
                         </xsl:when>
                         <xsl:otherwise>
                             <xsl:value-of select="." />
