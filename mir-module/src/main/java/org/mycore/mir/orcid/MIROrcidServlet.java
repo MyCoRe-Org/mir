@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
+import java.nio.charset.StandardCharsets;
 
 import org.jdom2.Document;
 import org.jdom2.Element;
@@ -127,7 +128,8 @@ public class MIROrcidServlet extends MCRServlet {
         HttpServletResponse resp = job.getResponse();
         ServletOutputStream outputStream = resp.getOutputStream();
         resp.setContentType("application/json");
-        outputStream.print(json);
+        resp.setCharacterEncoding("UTF-8");
+        outputStream.write(json.getBytes(StandardCharsets.UTF_8));
         outputStream.flush();
         outputStream.close();
     }
