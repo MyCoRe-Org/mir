@@ -1119,7 +1119,9 @@
             <xsl:variable name="uri" select="$ifs/der/mcr_directory/children//child[@type='file']/uri" />
             <xsl:variable name="derId" select="substring-before(substring-after($uri,':/'), ':')" />
             <xsl:variable name="filePath" select="substring-after(substring-after($uri, ':'), ':')" />
-            <xsl:value-of select="concat($ServletsBaseURL,'MCRFileNodeServlet/',$derId,$filePath)" />
+            <!-- DNB requires ASCII-only URLs -->
+            <xsl:value-of select="concat($ServletsBaseURL,'MCRFileNodeServlet/', $derId,
+             mcrxsl:encodeURIPath(mcrxsl:decodeURIPath($filePath), true()))" />
           </xsl:when>
           <xsl:otherwise>
             <xsl:choose>
