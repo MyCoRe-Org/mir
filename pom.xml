@@ -36,13 +36,13 @@
     <cargo.start.jvmargs />
     <cargo.tomcat.ajp.port>8292</cargo.tomcat.ajp.port>
     <cargo.tomcat.connector.maxHttpHeaderSize>8192</cargo.tomcat.connector.maxHttpHeaderSize>
-    <cargo.version>1.9.9</cargo.version>
+    <cargo.version>1.9.11</cargo.version>
     <changelog.since>2021-02-23</changelog.since>
     <!-- until snapshot matches released version (required for 'mvn changes:changes-check') -->
     <changes.version>2021.05</changes.version>
     <hibernate.version>5.5.4.Final</hibernate.version>
     <java.target.version>11</java.target.version>
-    <jetty.version>11.0.7</jetty.version>
+    <jetty.version>11.0.9</jetty.version>
     <maven.compiler.arg>-Werror</maven.compiler.arg>
     <mycore.version>2022.02-SNAPSHOT</mycore.version>
     <node.version>v12.16.3</node.version>
@@ -53,7 +53,7 @@
     <sortpom.sortDeps>scope,groupId,artifactId</sortpom.sortDeps>
     <sortpom.sortFile>https://gist.githubusercontent.com/yagee-de/dfd3698c1b49173dbf251f74eb6a9297/raw/406460c088ff3cb6354e4ae6b40535e6f841607d/mycore_sort.xml</sortpom.sortFile>
     <sortpom.sortProps>true</sortpom.sortProps>
-    <tomcat.version>10.0.14</tomcat.version>
+    <tomcat.version>10.0.20</tomcat.version>
     <yarn.version>v1.22.4</yarn.version>
   </properties>
   <build>

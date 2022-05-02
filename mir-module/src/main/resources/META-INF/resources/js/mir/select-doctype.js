@@ -1,5 +1,17 @@
 
 var GenreXML;
+let lang = window["currentLang"]
+
+function resolveTranslation(callback) {
+	let requestUrl = window["webApplicationBaseURL"] + "rsc/locale/translate/mir.select.optional";
+	$.ajax({
+		url: requestUrl
+	}).done(function(text, result) {
+		if(result==="success"){
+			callback(text);
+		}
+	});
+}
 
 function changeHostOptions(){
 	var id = $( '#genre option:selected' )[0].value;
@@ -10,9 +22,12 @@ function changeHostOptions(){
 		var hosts = host.split(' ');
 		$.each(hosts,function (ind,val) {
 			if (val=='standalone') {
-				$('#host').prepend('<option value="standalone" selected="selected" >(bitte ggf. auswählen)</option>');
+				$('#host').prepend('<option value="standalone" selected="selected" ></option>');
+				resolveTranslation(function (result) {
+					$('#host').children("option[value='standalone']").text(result);
+				});
 			} else {
-				text = $($(GenreXML).find('[ID="'+val+'"]')[0]).children('label[xml\\:lang="de"]').attr('text');
+				text = $($(GenreXML).find('[ID="'+val+'"]')[0]).children('label[xml\\:lang='+lang+']').attr('text');
 				$('#host').append('<option value="'+val+'">'+text+'</option>');
 			}
 		});
@@ -27,7 +42,7 @@ function changeHostOptions(){
 function createGenreOption(category,level) {
     if (level > 8) {return ("");}
     var Option="";
-    var Title = category.children('label[xml\\:lang="de"]').attr('text');
+    var Title = category.children('label[xml\\:lang="'+lang+'"]').attr('text');
     var xEditorGroup = category.children('label[xml\\:lang="x-group"]').attr('text');
     var xEditorDisable = category.children('label[xml\\:lang="x-disable"]').attr('text');
     var id = category.attr('ID');

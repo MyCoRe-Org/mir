@@ -5,6 +5,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
@@ -127,7 +128,8 @@ public class MIROrcidServlet extends MCRServlet {
         HttpServletResponse resp = job.getResponse();
         ServletOutputStream outputStream = resp.getOutputStream();
         resp.setContentType("application/json");
-        outputStream.print(json);
+        resp.setCharacterEncoding("UTF-8");
+        outputStream.write(json.getBytes(StandardCharsets.UTF_8));
         outputStream.flush();
         outputStream.close();
     }
