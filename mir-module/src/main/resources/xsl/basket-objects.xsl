@@ -181,45 +181,6 @@
   </xsl:template>
 
   <xsl:template name="options">
-    <div class="btn-group">
-      <a href="#" class="btn btn-primary dropdown-toggle btn-sm" data-toggle="dropdown">
-        <span class="fas fa-file-export mr-1"></span>
-        Exportieren
-        <span class="caret"></span>
-      </a>
-      <ul class="dropdown-menu">
-        <li>
-          <a href="{$ServletsBaseURL}MCRExportServlet{$HttpSession}?basket={@type}&amp;transformer=mods" class="dropdown-item">
-            <xsl:value-of select="i18n:translate('basket.export','MODS')" />
-          </a>
-        </li>
-        <li>
-          <a href="{$ServletsBaseURL}MCRExportServlet{$HttpSession}?basket={@type}&amp;transformer=bibtex" class="dropdown-item">
-            <xsl:value-of select="i18n:translate('basket.export','BibTex')" />
-          </a>
-        </li>
-        <li>
-          <a href="{$ServletsBaseURL}MCRExportServlet{$HttpSession}?basket={@type}&amp;transformer=endnote" class="dropdown-item">
-            <xsl:value-of select="i18n:translate('basket.export','Endnote')" />
-          </a>
-        </li>
-        <li>
-          <a href="{$ServletsBaseURL}MCRExportServlet{$HttpSession}?basket={@type}&amp;transformer=ris" class="dropdown-item">
-            <xsl:value-of select="i18n:translate('basket.export','RIS')" />
-          </a>
-        </li>
-        <li>
-          <a href="{$ServletsBaseURL}MCRExportServlet{$HttpSession}?basket={@type}&amp;transformer=isi" class="dropdown-item">
-            <xsl:value-of select="i18n:translate('basket.export','ISI')" />
-          </a>
-        </li>
-        <li>
-          <a href="{$ServletsBaseURL}MCRExportServlet{$HttpSession}?basket={@type}&amp;transformer=mods2csv" class="dropdown-item">
-            <xsl:value-of select="i18n:translate('basket.export','CSV')" />
-          </a>
-        </li>
-      </ul>
-    </div>
     <a href="{$ServletsBaseURL}MCRBasketServlet{$HttpSession}?type={@type}&amp;action=clear&amp;redirect=referer" class="btn btn-danger btn-sm">
       <span class="fas fa-trash-alt mr-1"></span>
       <xsl:value-of select="i18n:translate('basket.clear')" />
