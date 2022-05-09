@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0"
-  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
-  xmlns:encoder="xalan://java.net.URLEncoder"
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation" xmlns:encoder="xalan://java.net.URLEncoder"
   exclude-result-prefixes="i18n encoder">
 
+  <xsl:include href="layout-utils.xsl" />
   <xsl:include href="mir-accesskey-utils.xsl" />
 
   <xsl:param name="HttpSession" />
