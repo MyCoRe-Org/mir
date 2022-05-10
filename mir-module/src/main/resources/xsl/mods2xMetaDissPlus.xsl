@@ -303,12 +303,12 @@
     <xsl:copy-of select="$documentPublisher"/>
     <!-- Beteiligte Personen und und Beteiligte Organisationen(Autorenschaft) -->
     <xsl:call-template name="contributor" />
-    <!-- Erscheinungsdatum -->
-    <xsl:call-template name="dateIssued" />
     <!-- Hochschulschriftenvermerk (1) Prüfungsjahr -->
     <xsl:if test="$printThesisNote='true'">
       <xsl:call-template name="dateAccepted" />
     </xsl:if>
+    <!-- Erscheinungsdatum -->
+    <xsl:call-template name="dateIssued" />
     <!-- Art der elektronischen Ressource -->
     <xsl:call-template name="type" >
       <xsl:with-param name="dokType" select="$documentType" />
