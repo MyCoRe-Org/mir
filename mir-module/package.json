@@ -24,7 +24,7 @@
         "handlebars": "4.5.3",
         "jquery.dotdotdot": "1.7.4",
         "jquery.placeholder": "https://github.com/matoilic/jquery.placeholder.git",
-        "moment": "2.19.3",
+        "moment": "2.29.2",
         "myclabs.jquery.confirm": "2.7.0",
         "openlayers": "4.6.4",
         "popper.js": "^1.14.7",
