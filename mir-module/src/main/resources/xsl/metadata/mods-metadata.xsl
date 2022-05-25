@@ -67,8 +67,6 @@
           <div id="mir-message">
             <xsl:call-template name="mir.printNotLoggedIn">
               <xsl:with-param name="objectId" select="mycoreobject/@ID" />
-              <xsl:with-param name="hasAccessKey"
-                select="count(key('rights', mycoreobject/@ID)/@hasAccKey) &gt; 0" />
             </xsl:call-template>
           </div>
         </xsl:otherwise>

@@ -21,6 +21,7 @@
                 xmlns:exslt="http://exslt.org/common"
                 extension-element-prefixes="ex exslt"
 >
+  <xsl:include href="mir-accesskey-utils.xsl" />
 
   <xsl:param name="MIR.registerDOI" select="''" />
   <xsl:param name="MIR.registerURN" select="'true'" />
@@ -32,6 +33,12 @@
 
   <xsl:include href="workflow-util.xsl" />
   <xsl:include href="mir-mods-utils.xsl" />
+
+  <xsl:param name="isUserAllowedToManageDerivateAccessKeys">
+    <xsl:call-template name="isCurrentUserAllowedToManageAccessKeys">
+      <xsl:with-param name="typeId" select="'derivate'"/>
+    </xsl:call-template>
+  </xsl:param>
 
   <!-- do nothing for display parent -->
   <xsl:template match="/mycoreobject" mode="parent" priority="1">
@@ -642,26 +649,37 @@
                   </xsl:otherwise>
                 </xsl:choose>
               </xsl:if>
-
-              <xsl:if test="(key('rights', @ID)/@accKeyEnabled) and (key('rights', @ID)/@write)">
-                <li>
-                  <a role="menuitem" tabindex="-1"
-                     href="{$WebApplicationBaseURL}accesskey/manager.xml?objectId={@ID}"
-                     class="dropdown-item"
-                  >
-                    <xsl:value-of select="i18n:translate('mir.accesskey.manage')" />
-                  </a>
-                </li>
-              </xsl:if>
-              <xsl:if test="key('rights', @ID)/@accKeyEnabled and key('rights', @ID)/@hasAccKey and not(mcrxsl:isCurrentUserGuestUser() or $accessedit or $accessdelete)">
-                <li>
-                  <a role="menuitem" tabindex="-1" href="{$WebApplicationBaseURL}accesskey/set.xed?objId={@ID}&amp;url={encoder:encode(string($RequestURL))}" class="dropdown-item">
-                    <xsl:value-of select="i18n:translate('mir.accesskey.setOnUser')" />
-                  </a>
-                </li>
+              <xsl:if test="(key('rights', @ID)/@write)">
+                <xsl:variable name="isUserAllowedToManageModsAccessKeys">
+                  <xsl:call-template name="isCurrentUserAllowedToManageAccessKeys">
+                    <xsl:with-param name="typeId" select="'mods'"/>
+                  </xsl:call-template>
+                </xsl:variable>
+                <xsl:if test="$isUserAllowedToManageModsAccessKeys='true'">
+                  <li>
+                    <a role="menuitem" tabindex="-1"
+                       href="{$WebApplicationBaseURL}accesskey/manager.xml?objectId={@ID}"
+                       class="dropdown-item"
+                    >
+                      <xsl:value-of select="i18n:translate('mir.accesskey.manage')" />
+                    </a>
+                  </li>
+                </xsl:if>
               </xsl:if>
             </xsl:otherwise>
           </xsl:choose>
+          <xsl:if test="not($accessedit or $accessdelete)">
+            <xsl:variable name="isUserAllowedToSetAccessKey">
+              <xsl:call-template name="isCurrentUserAllowedToSetAccessKey" />
+            </xsl:variable>
+            <xsl:if test="$isUserAllowedToSetAccessKey='true'">
+              <li>
+                <a role="menuitem" tabindex="-1" href="{$WebApplicationBaseURL}accesskey/set.xed?objId={@ID}&amp;url={encoder:encode(string($RequestURL))}" class="dropdown-item">
+                  <xsl:value-of select="i18n:translate('mir.accesskey.setOnUser')" />
+                </a>
+              </li>
+            </xsl:if>
+          </xsl:if>
         </ul>
       </div>
     </div>
@@ -695,26 +713,6 @@
   <xsl:template match="derobject" mode="derivateActions">
     <xsl:param name="deriv" />
     <xsl:param name="parentObjID" />
-
-    <xsl:if
-      test="(key('rights', $deriv)/@accKeyEnabled and key('rights', $deriv)/@hasAccKey) and not(mcrxsl:isCurrentUserGuestUser() or key('rights', $deriv)/@read or key('rights', $deriv)/@write)"
-    >
-      <div class="options float-right dropdown">
-        <div class="btn-group">
-          <a href="#" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">
-            <i class="fas fa-cog"></i>
-            <xsl:value-of select="concat(' ',i18n:translate('mir.actions'))" />
-          </a>
-          <ul class="dropdown-menu">
-            <li>
-              <a role="menuitem" tabindex="-1" href="{$WebApplicationBaseURL}accesskey/set.xed?objId={$deriv}&amp;url={encoder:encode(string($RequestURL))}" class="dropdown-item">
-                <xsl:value-of select="i18n:translate('mir.accesskey.setOnUser')" />
-              </a>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </xsl:if>
 
     <xsl:if test="key('rights', $deriv)/@read">
       <xsl:variable select="concat('mcrobject:',$deriv)" name="derivlink" />
@@ -763,14 +761,16 @@
                 </a>
               </li>
             </xsl:if>
-            <xsl:if test="key('rights', $deriv)/@accKeyEnabled and key('rights', $deriv)/@write">
-              <li>
-                <a role="menuitem" tabindex="-1" class="dropdown-item"
-                  href="{$WebApplicationBaseURL}accesskey/manager.xml?objectId={$parentObjID}&amp;derivateId={$deriv}"
-                >
-                  <xsl:value-of select="i18n:translate('mir.accesskey.manage')" />
-                </a>
-              </li>
+            <xsl:if test="key('rights', $deriv)/@write">
+              <xsl:if test= "$isUserAllowedToManageDerivateAccessKeys='true'">
+                <li>
+                  <a role="menuitem" tabindex="-1" class="dropdown-item"
+                    href="{$WebApplicationBaseURL}accesskey/manager.xml?objectId={$parentObjID}&amp;derivateId={$deriv}"
+                  >
+                    <xsl:value-of select="i18n:translate('mir.accesskey.manage')" />
+                  </a>
+                </li>
+              </xsl:if>
             </xsl:if>
           </ul>
         </div>

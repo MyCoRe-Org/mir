@@ -515,9 +515,23 @@
             <xsl:variable name="imageElement">
               <xsl:choose>
                 <!-- when the thumbnail derivate has pdf as maindoc or a iviewFile, then use the iiif api -->
-                <xsl:when test="$displayDerivate/str[@name='iviewFile'] or translate(str:tokenize($displayDerivate/str[@name='derivateMaindoc'],'.')[position()=last()],'PDF','pdf') = 'pdf'">
-                  <div class="hit_icon"
-                       style="background-image: url('{$WebApplicationBaseURL}api/iiif/image/v2/thumbnail/{$identifier}/full/!300,300/0/default.jpg');">
+                <xsl:when
+                        test="$displayDerivate/str[@name='iviewFile'] or translate(str:tokenize($displayDerivate/str[@name='derivateMaindoc'],'.')[position()=last()],'PDF','pdf') = 'pdf'">
+                  <div class="hit_icon">
+                    <xsl:choose>
+                      <xsl:when test="not(mcrxsl:isCurrentUserGuestUser())">
+                        <xsl:attribute name="data-iiif-jwt">
+                          <xsl:value-of select="concat($WebApplicationBaseURL, 'api/iiif/image/v2/thumbnail/', $identifier,'/full/!300,300/0/default.jpg')"/>
+                        </xsl:attribute>
+                      </xsl:when>
+                      <xsl:otherwise>
+                        <xsl:attribute name="style">
+                          <xsl:variable name="apos">'</xsl:variable>
+                          <xsl:value-of
+                                  select="concat('background-image: url(', $apos, $WebApplicationBaseURL, 'api/iiif/image/v2/thumbnail/', $identifier, '/full/!300,300/0/default.jpg',$apos,')')"/>
+                        </xsl:attribute>
+                      </xsl:otherwise>
+                    </xsl:choose>
                   </div>
                 </xsl:when>
                 <!-- when there is no content derivate then use disabled icon -->

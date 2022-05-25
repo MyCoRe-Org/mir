@@ -1,5 +1,42 @@
 (function ($) {
     $(document).ready(function () {
+        const iiifSearchSelector = "data-iiif-jwt";
+
+        if ($("[" + iiifSearchSelector + "]").length > 0) {
+            $.ajax({
+                url: webApplicationBaseURL + "rsc/jwt",
+                type: "GET",
+                traditional: true,
+                dataType: "json",
+                success: function (data) {
+                    if (data.login_success) {
+                        loadImages(data);
+                    }
+                },
+                error: function (resp, title, message) {
+                    console.log(resp);
+                    console.log("Token request failed.");
+                }
+            });
+        }
+
+        function loadImages(token) {
+            $("[" + iiifSearchSelector + "]").each(function (i, div) {
+                let url = div.getAttribute(iiifSearchSelector);
+                var xhr = new XMLHttpRequest();
+                xhr.onreadystatechange = function () {
+                    if (this.readyState === 4 && this.status === 200) {
+                        //console.log(this.response, typeof this.response);
+                        var url = window.URL || window.webkitURL;
+                        div.style.backgroundImage = "url(\"" + url.createObjectURL(this.response) + "\")";
+                    }
+                }
+                xhr.open('GET', url);
+                xhr.responseType = 'blob';
+                xhr.setRequestHeader("Authorization", token.token_type + " " + token.access_token);
+                xhr.send();
+            });
+        }
 
         $(".personPopover").each(function (i, popoverElement){
             let id = popoverElement.getAttribute("id");
