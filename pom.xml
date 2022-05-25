@@ -4,7 +4,7 @@
   <parent>
     <groupId>org.mycore</groupId>
     <artifactId>mycore-parent</artifactId>
-    <version>48</version>
+    <version>49-SNAPSHOT</version>
   </parent>
   <groupId>org.mycore.mir</groupId>
   <artifactId>mir-parent</artifactId>
@@ -41,7 +41,7 @@
     <!-- until snapshot matches released version (required for 'mvn changes:changes-check') -->
     <changes.version>2022.05</changes.version>
     <hibernate.version>5.5.4.Final</hibernate.version>
-    <java.target.version>11</java.target.version>
+    <java.target.version>17</java.target.version>
     <jetty.version>11.0.9</jetty.version>
     <maven.compiler.arg>-Werror</maven.compiler.arg>
     <mycore.version>2022.05-SNAPSHOT</mycore.version>
