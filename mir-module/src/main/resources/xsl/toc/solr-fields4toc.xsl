@@ -88,7 +88,7 @@
       </xsl:for-each>
       <xsl:value-of select="mods:title" />
       <xsl:for-each select="mods:subTitle">
-        <xsl:text>: </xsl:text>
+        <xsl:text> : </xsl:text>
         <xsl:value-of select="text()" />
       </xsl:for-each>
     </field>
