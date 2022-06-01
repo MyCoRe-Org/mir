@@ -34,7 +34,7 @@
         "videojs-contrib-hls": "5.12.2"
     },
     "dependencies": {
-        "ckeditor4": "^4.14.1",
+        "ckeditor4": "^4.18.0",
         "ckeditor-notification": "^4.11.2",
         "ckeditor-wordcount-plugin": "^1.17.6"
     }
