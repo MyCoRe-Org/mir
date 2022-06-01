@@ -110,7 +110,6 @@
         }
       </style>
       <script src="{$WebApplicationBaseURL}assets/videojs/js/video.min.js"></script>
-      <script src="{$WebApplicationBaseURL}assets/videojs-contrib-hls/videojs-contrib-hls.min.js"></script>
     </xsl:if>
   </xsl:template>
 
@@ -118,7 +117,7 @@
   <xsl:template match="doc" mode="resultsByDerivate">
     <xsl:variable name="fileIFSID" select="str[@name='id']" />
     <xsl:variable name="fileMimeType" select="str[@name='stream_content_type']" />
-    <xsl:variable name="filePath" select="str[@name='filePath']/text()" />
+    <xsl:variable name="filePath" select="substring(str[@name='filePath']/text(),2)" />
     <xsl:variable name="fileIFSPath" select="str[@name='stream_source_info']" />
     <xsl:variable name="derivateID" select="str[@name='derivateID']" />
     <xsl:variable name="fileName" select="str[@name='fileName']" />
@@ -133,7 +132,7 @@
     <xsl:choose>
       <xsl:when test="$fileMimeType = 'video/mp4'">
         <option data-file-extension="{$lowercaseExtension}" data-audio="false"
-                data-is-main-doc="{mcr:getMainDocName($derivateID)=substring($filePath,2)}">
+                data-is-main-doc="{mcr:getMainDocName($derivateID)=$filePath}">
           <xsl:attribute name="data-sources">
             <xsl:for-each select="$sources">
               <xsl:value-of select="concat(@type, ',', @src, ';')" />
@@ -144,8 +143,8 @@
       </xsl:when>
       <xsl:otherwise>
         <option data-file-extension="{$lowercaseExtension}" data-mime-type="{$fileMimeType}"
-          data-src="{concat($ServletsBaseURL, 'MCRFileNodeServlet/', $derivateID, $filePath)}" data-audio="true"
-          data-is-main-doc="{mcr:getMainDocName($derivateID)=substring($filePath,2)}">
+          data-src="{concat($ServletsBaseURL, 'MCRFileNodeServlet/', $derivateID, '/', $filePath)}" data-audio="true"
+          data-is-main-doc="{mcr:getMainDocName($derivateID)=$filePath}">
           <xsl:value-of select="$fileName" />
         </option>
       </xsl:otherwise>
