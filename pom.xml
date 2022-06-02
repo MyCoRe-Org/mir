@@ -39,12 +39,12 @@
     <cargo.version>1.9.11</cargo.version>
     <changelog.since>2021-02-23</changelog.since>
     <!-- until snapshot matches released version (required for 'mvn changes:changes-check') -->
-    <changes.version>2021.05</changes.version>
+    <changes.version>2021.06.2</changes.version>
     <hibernate.version>5.4.4.Final</hibernate.version>
     <java.target.version>11</java.target.version>
     <jetty.version>10.0.9</jetty.version>
     <maven.compiler.arg>-Werror</maven.compiler.arg>
-    <mycore.version>2021.06.1</mycore.version>
+    <mycore.version>2021.06.2-SNAPSHOT</mycore.version>
     <node.version>v12.16.3</node.version>
     <selenium.version>3.141.59</selenium.version>
     <site.suffix />
