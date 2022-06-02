@@ -17,25 +17,24 @@
         "bootstrap": "4.4.1",
         "bootstrap-3-typeahead": "4.0.2",
         "bootstrap-datepicker": "1.9.0",
-        "grunt": "^1.5.2",
+        "grunt": "^1.5.3",
         "grunt-cli": "^1.2.0",
         "grunt-contrib-uglify": "https://github.com/gruntjs/grunt-contrib-uglify.git#harmony",
         "grunt-npmcopy": "^0.1.0",
         "handlebars": "4.5.3",
         "jquery.dotdotdot": "1.7.4",
         "jquery.placeholder": "https://github.com/matoilic/jquery.placeholder.git",
-        "moment": "2.19.3",
+        "moment": "2.29.2",
         "myclabs.jquery.confirm": "2.7.0",
         "openlayers": "4.6.4",
         "popper.js": "^1.14.7",
         "select2": "4.0.6-rc.1",
         "typeahead.js": "0.11.1",
-        "video.js": "6.4.0",
-        "videojs-contrib-hls": "5.12.2"
+        "video.js": "7.14.3"
     },
     "dependencies": {
-        "ckeditor4": "^4.14.1",
         "ckeditor-notification": "^4.11.2",
-        "ckeditor-wordcount-plugin": "^1.17.6"
+        "ckeditor-wordcount-plugin": "^1.17.6",
+        "ckeditor4": "^4.18.0"
     }
 }

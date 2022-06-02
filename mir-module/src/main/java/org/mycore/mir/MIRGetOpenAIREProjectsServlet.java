@@ -32,7 +32,7 @@ public class MIRGetOpenAIREProjectsServlet extends HttpServlet {
     public void init() throws ServletException {
         PoolingHttpClientConnectionManager connectManager = new PoolingHttpClientConnectionManager();
         connectManager.setDefaultMaxPerRoute(20);
-        client = HttpClients.custom().setConnectionManager(connectManager).build();
+        client = HttpClients.custom().useSystemProperties().setConnectionManager(connectManager).build();
     }
 
     @Override
