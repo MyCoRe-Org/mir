@@ -49,7 +49,9 @@ module.exports = function(grunt) {
           'videojs-contrib-hls': 'videojs-contrib-hls/dist/videojs-contrib-hls.min.js',
 
           'select2/js': 'select2/dist/js',
-          'select2/css': 'select2/dist/css/select2.min.css'
+          'select2/css': 'select2/dist/css/select2.min.css',
+
+          'vue':'vue/dist/'
         },
       }
     },
