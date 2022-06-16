@@ -310,22 +310,32 @@ public class MIRModsEditorController extends MIREditorController {
             }
 
             IntStream.range(0, names.size()).forEach(i -> {
-                String xp = "mods:name[" + (i + 1 + fieldOffset) + "]/mods:displayForm";
                 String name = names.get(i);
-                driver.waitAndFindElement(By.xpath("//button[contains(@name,'_xed_submit_servlet')]"));
-                setInputText(xp, name);
-                String inputPath = ".//input[contains(@name,'" + xp + "')]";
-                driver.waitAndFindElement(By.xpath(inputPath + "/.././/button[contains(text(), 'Suchen...')]")).click();
-                driver.waitAndFindElement(By.xpath(".//a[@data-type='personal' and contains(text(),'" + name + "')]"))
-                    .click();
+                String inputPath = ".//input[contains(@id,'personLabel-" + (i + 1 + fieldOffset) + "')]";
+                driver.waitAndFindElement(By.xpath(inputPath)).sendKeys(name);
+                driver.waitAndFindElement(By.xpath(inputPath + "/.././/button[contains(text(), 'Suchen')]")).click();
+                waitForResults();
+                driver.waitAndFindElement(By.xpath(inputPath + "/../../.././/i[contains(@class,'applyPerson')]"))
+                        .click();
             });
         }
     }
 
+    private void waitForResults() {
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public void setAuthor(String name) {
-        setInputText("mods:displayForm", name);
-        driver.waitAndFindElement(By.xpath(".//button[contains(text(), 'Suchen...')]")).click();
-        driver.waitAndFindElement(By.xpath(".//a[@data-type='personal' and contains(text(),'" + name + "')]")).click();
+        String inputPath = ".//input[contains(@id,'personLabel-')]";
+        driver.waitAndFindElement(By.xpath(inputPath)).sendKeys(name);
+        driver.waitAndFindElement(By.xpath(inputPath + "/.././/button[contains(text(), 'Suchen')]")).click();
+        this.waitForResults();
+        driver.waitAndFindElement(By.xpath(".//i[contains(@class,'applyPerson')][1]"))
+            .click();
     }
 
     public void setAccessConditions(MIRLicense ac) {

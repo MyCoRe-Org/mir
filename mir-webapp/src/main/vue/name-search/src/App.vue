@@ -2,7 +2,7 @@
   <div ref="root" class="form-group" v-click-outside="closeDrops">
     <template v-if="i18nLoaded && classesLoaded">
       <div ref="input" class="input-group">
-        <input type="text" class="form-control" id="personLabel" :placeholder="personPlaceholder" v-model="search"
+        <input type="text" class="form-control" :id="`personLabel-${this.nameIndex}`" :placeholder="personPlaceholder" v-model="search"
                v-on:keydown.enter.prevent="startSearch()">
         <div class="input-group-append">
           <button class="btn btn-secondary"
@@ -10,7 +10,7 @@
             <i class="fas fa-address-card"></i>
             <span class="identifier-count">{{ currentIdentifier.length }}</span>
           </button>
-          <button type="button" class="btn btn-outline-secondary" v-if="!searching" v-on:click.prevent="startSearch()">
+          <button :id="`search-${this.nameIndex}`" type="button" class="btn btn-outline-secondary" v-if="!searching" v-on:click.prevent="startSearch()">
             {{ searchLabel }}
           </button>
           <button type="button" class="btn btn-outline-secondary" v-else><span
