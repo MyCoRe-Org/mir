@@ -440,7 +440,9 @@
         <xsl:copy-of select="$alternateContent/title/node()" />
         <xsl:if test="$withSubtitle and $alternateContent/subTitle">
           <span class="subtitle">
-            <xsl:text> : </xsl:text>
+            <span class="delimiter">
+              <xsl:text> : </xsl:text>
+            </span>
             <xsl:copy-of select="$alternateContent/subTitle/node()" />
           </span>
         </xsl:if>
@@ -452,7 +454,9 @@
         <xsl:value-of select="mods:title" />
         <xsl:if test="$withSubtitle and mods:subTitle">
           <span class="subtitle">
-            <xsl:text> : </xsl:text>
+            <span class="delimiter">
+              <xsl:text> : </xsl:text>
+            </span>
             <xsl:value-of select="mods:subTitle" />
           </span>
         </xsl:if>
