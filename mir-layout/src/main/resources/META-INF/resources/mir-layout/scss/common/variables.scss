@@ -1,23 +1,34 @@
-// Do not define your own variables here! They are unknown for all themes,
-// like flatmir or cosmol and leading to errors.
+/* ----------------
+ *   Attention
+ * ----------------
+ * You dont have access to bootstrap or bootswatch variables here.
+ * They are still unknown, except they were defined before in:
+ * - the project variables,
+ * - theme variables or
+ * - here directly
+ *
+ * Please use the default flag for all variables in this file,
+ * so previous set variables will not be overwriten.
+ * Overwriting will cause a breakdown of the CSS architecture.
+ *
+ * If you like to read more about the CSS architecture, see the comment in:
+ * ../template.scss.template
+ */
 
-// Just use bootstrap variables in this common section and only adjust them
-// to define a default layout, applied in all themes.
+// bootstrap settings
+$body-color: #212529 !default;
 
-$icon-font-path:          "../../../../mir-layout/assets/bootstrap/fonts/bootstrap/" !default;
-$font-size-base:          0.875rem !default;
+$icon-font-path: "../../../../mir-layout/assets/bootstrap/fonts/bootstrap/" !default;
+$font-size-base: 0.875rem !default;
 
-//$alert-success-bg: lighten($brand-success, 35%);
-//$alert-success-text: $brand-success;
-
-//$alert-info-bg: lighten($brand-info, 35%);
-//$alert-info-text: $brand-info;
-
+// outdated, just to keep compatibility
 $alert-warning-bg: lighten($brand-warning, 35%) !default;
 $alert-warning-text: $brand-warning !default;
 
-//$alert-danger-bg: lighten($brand-danger, 35%);
-//$alert-danger-text: $brand-danger;
+// set color for close button
+$close-color: $body-color !default;
 
-$body-color:          #212529 !default;
-$close-color:         $body-color !default;
+// navbar adjustments
+// bootstrap uses $success color instead
+$mir-navlink-hover-color: white !default;
+$mir-navlink-active-color: white !default;

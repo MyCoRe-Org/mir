@@ -1,6 +1,58 @@
-@import "%layout%/lib/variables";
-@import "common/variables";
-@import  "../assets/bootswatch/%template%/variables";
-@import  "../assets/bootstrap/bootstrap";
-@import  "../assets/bootswatch/%template%/bootswatch";
-@import "%layout%/layout";
+// **************************************************
+//  sass master
+//  - includes all needed styles
+// **************************************************
+
+/*  -------------------------
+ *    Variables
+ *  -------------------------
+ *  Bootstrap and bootswatch variables are all defined with the default flag.
+ *  A variable with a default flag is only used, when no other variable with
+ *  that name was defined before. No matter if with or without that flag.
+ *  The first default variable is used but can be overwriten by not using NOT
+ *  using the default flag.
+ *
+ *  Therefore have have that order of variable declaration:
+ *
+ *  1. project (no defaults)
+ *  2. theme (default)
+ *  3. bootswatch (default)
+ *  4. bootstrap (default)
+ *
+ *  A problem is, that you can't use variables from a decleration below.
+ *  So you can't access bootstrap variables in your project settings.
+ *  But the huge benefit is, that bootsstrap will work with your values.
+ *  All modifications of the bootstrap results, has to be done after the
+ *  boostrap include.
+ */
+
+/*
+@import "project_styles/_variables";                  // project variables
+*/
+@import "%layout%/lib/variables";                     // theme variables
+@import "common/variables";                           // mir variables
+@import  "../assets/bootswatch/%template%/variables"; // bootswatch variables
+
+@import  "../assets/bootstrap/bootstrap"; // bootstrap variables and styles
+
+/*  -------------------------
+ *    Styles
+ *  -------------------------
+ *  Now the usual rule is valid: the last setting wins.
+ *  That's why we have a inverted order for the styles from now:
+ *
+ *  1. bootstrap
+ *  2. bootswatch
+ *  3. theme
+ *  4. project
+ *
+ * With that in mind take care where you add your changes.
+ */
+
+@import  "../assets/bootswatch/%template%/bootswatch";  // bootswatch styles
+@import "%layout%/layout";                              // mir/theme styles
+
+//  project styles
+/*
+@import "project_styles/_allYourProjectfiles"; // example file
+*/
