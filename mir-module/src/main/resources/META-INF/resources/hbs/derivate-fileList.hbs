@@ -92,6 +92,16 @@
                       {{/isNot}}
                     {{/if}}
                     {{#if ../permDelete}}
+                        {{#is type "file"}}
+                            <li>
+                                <a href="{{../serverBaseURL}}servlets/MCRDerivateServlet?derivateid={{../mycorederivate}}&amp;objectid={{../mycoreobject}}&amp;todo=smovfile&amp;file={{path}}"
+                                class="option rename dropdown-item"
+                                title="{{getI18n (concat "IFS." type "Rename")}}">
+                                <span class="fas fa-file-signature"></span>
+                                {{getI18n (concat "IFS." type "Rename")}}
+                                </a>
+                            </li>
+                        {{/is}}
                         <li>
                           <a href="{{../serverBaseURL}}servlets/MCRDerivateServlet?derivateid={{../mycorederivate}}&amp;objectid={{../mycoreobject}}&amp;todo=sdelfile&amp;file={{path}}"
                              class="option confirm_deletion dropdown-item"
