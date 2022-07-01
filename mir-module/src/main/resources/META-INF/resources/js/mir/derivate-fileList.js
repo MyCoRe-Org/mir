@@ -406,8 +406,31 @@
 				buildBreadcrumbs(json.path);
 			}
 			$(fileBox).append(fileList);
-            mycore.upload.enable($(fileBox)[0]);
+			mycore.upload.enable($(fileBox)[0]);
 			$('.confirm_deletion').confirm();
+			$('.rename').click(function (e) {
+				let href = $(this).attr("href");
+				let hrefURL = new URL(href);
+				let fileParam = hrefURL.searchParams.get("file");
+				let lastSlashInFile = fileParam.lastIndexOf("/");
+				let directory = "";
+
+				// find the directory of the current file
+				directory = fileParam.substr(0, lastSlashInFile+1);
+				let oldName = fileParam.substr(directory.length);
+
+				let newName = prompt(i18nKeys["IFS.fileRename.to"], oldName);
+				if (newName == null) {
+					e.preventDefault();
+				} else {
+					// remove any path parts from the name
+					const lastSlashInName = newName.lastIndexOf("/");
+					if (lastSlashInName > 0) {
+						newName = newName.substr(lastSlashInName);
+					}
+					$(this).attr("href", href + "&file2=" + directory + newName);
+				}
+			});
 		}
 
 		function buildBreadcrumbs(path) {
@@ -497,7 +520,7 @@
 					.when($.ajax(ifsKeyURL), $.ajax(mirKeyURL), $.ajax(pagiKeyURL), $.ajax(uploadKeyURL))
 					.done(
 							function(d1, d2, d3, d4) {
-								if (d1[0] != {} && d1[0] != "???IFS*???" && d1[0]["IFS"]) {
+								if (d1[0] != {} && d1[0] != "???IFS*???") {
 									i18nKeys = $.extend(d1[0], i18nKeys);
 								} else {
 									i18nKeys["IFS.fileDelete"] = "Datei l\u00F6schen";
