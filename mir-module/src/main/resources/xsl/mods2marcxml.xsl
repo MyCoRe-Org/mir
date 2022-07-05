@@ -7,7 +7,7 @@
                 xmlns:mcrmods="http://www.mycore.de/xslt/mods"
                 xmlns:xs="http://www.w3.org/2001/XMLSchema"
                 exclude-result-prefixes="mods xlink mcrmods mirmarc xs"
-                xmlns:marc="http://www.loc.gov/MARC21/slim">
+                xmlns:marc21="http://www.loc.gov/MARC21/slim">
   <!--
     Version 2.0 - 2012/05/11 WS
     Upgraded stylesheet to XSLT 2.0
@@ -42,10 +42,10 @@
   </xsl:template>
 
   <xsl:template match="mods:modsCollection">
-    <marc:collection xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    <marc21:collection xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                      xsi:schemaLocation="http://www.loc.gov/MARC21/slim http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd">
       <xsl:apply-templates />
-    </marc:collection>
+    </marc21:collection>
   </xsl:template>
 
   <xsl:template match="mods:targetAudience[@authority='marctarget']" mode="ctrl008">
@@ -176,8 +176,8 @@
   </xsl:template>
 
   <xsl:template match="mods:mods">
-    <marc:record>
-      <marc:leader>
+    <marc21:record>
+      <marc21:leader>
         <!-- 00-04 -->
         <xsl:value-of select="'     '" />
         <!-- 05 -->
@@ -229,11 +229,11 @@
         <xsl:value-of select="' '" />
         <!-- 20-23 -->
         <xsl:value-of select="'4500'" />
-      </marc:leader>
+      </marc21:leader>
       <xsl:if test="@ID">
-        <marc:controlfield tag="001">
+        <marc21:controlfield tag="001">
           <xsl:value-of select="@ID" />
-        </marc:controlfield>
+        </marc21:controlfield>
       </xsl:if>
       <xsl:call-template name="source" />
       <xsl:apply-templates />
@@ -266,21 +266,33 @@
                       select="document(concat('xslTransform:mods:mcrobject:',$isReferencedById))/mods:mods" />
         <xsl:apply-templates select="$isReferencedByMods" mode="isReferencedBy" />
       </xsl:for-each>
+
+      <xsl:call-template name="datafield">
+        <xsl:with-param name="tag">
+          <xsl:value-of select="'035'" />
+        </xsl:with-param>
+        <xsl:with-param name="subfields">
+          <marc21:subfield code="a">
+            <xsl:value-of select="@ID" />
+          </marc21:subfield>
+        </xsl:with-param>
+      </xsl:call-template>
+
       <!-- add field 337 media type -->
       <xsl:call-template name="datafield">
         <xsl:with-param name="tag">
           <xsl:value-of select="'337'" />
         </xsl:with-param>
         <xsl:with-param name="subfields">
-          <marc:subfield code="a">
+          <marc21:subfield code="a">
             <xsl:value-of select="'Computermedien'" />
-          </marc:subfield>
-          <marc:subfield code="b">
+          </marc21:subfield>
+          <marc21:subfield code="b">
             <xsl:value-of select="'c'" />
-          </marc:subfield>
-          <marc:subfield code="2">
+          </marc21:subfield>
+          <marc21:subfield code="2">
             <xsl:value-of select="'rdamedia'" />
-          </marc:subfield>
+          </marc21:subfield>
         </xsl:with-param>
       </xsl:call-template>
       <!-- add field 338 carrier type -->
@@ -289,18 +301,18 @@
           <xsl:value-of select="'338'" />
         </xsl:with-param>
         <xsl:with-param name="subfields">
-          <marc:subfield code="a">
+          <marc21:subfield code="a">
             <xsl:value-of select="'Online-Ressource'" />
-          </marc:subfield>
-          <marc:subfield code="b">
+          </marc21:subfield>
+          <marc21:subfield code="b">
             <xsl:value-of select="'cr'" />
-          </marc:subfield>
-          <marc:subfield code="2">
+          </marc21:subfield>
+          <marc21:subfield code="2">
             <xsl:value-of select="'rdacarrier'" />
-          </marc:subfield>
+          </marc21:subfield>
         </xsl:with-param>
       </xsl:call-template>
-    </marc:record>
+    </marc21:record>
   </xsl:template>
 
   <xsl:template match="*" />
@@ -437,9 +449,9 @@
         <xsl:value-of select="'720'" />
       </xsl:with-param>
       <xsl:with-param name="subfields">
-        <marc:subfield code="a">
+        <marc21:subfield code="a">
           <xsl:value-of select="mods:namePart" />
-        </marc:subfield>
+        </marc21:subfield>
       </xsl:with-param>
     </xsl:call-template>
   </xsl:template>
@@ -459,42 +471,42 @@
           </xsl:with-param>
           <xsl:with-param name="subfields">
             <!-- show mods:displayForm in subfield a -->
-            <marc:subfield code="a">
+            <marc21:subfield code="a">
               <xsl:value-of select="mods:displayForm" />
-            </marc:subfield>
+            </marc21:subfield>
             <xsl:for-each select="mods:namePart[@type='termsOfAddress']">
-              <marc:subfield code="c">
+              <marc21:subfield code="c">
                 <xsl:value-of select="." />
-              </marc:subfield>
+              </marc21:subfield>
             </xsl:for-each>
             <xsl:for-each select="mods:namePart[@type='date']">
-              <marc:subfield code="d">
+              <marc21:subfield code="d">
                 <xsl:value-of select="." />
-              </marc:subfield>
+              </marc21:subfield>
             </xsl:for-each>
             <xsl:for-each select="mods:role/mods:roleTerm[@type='text']">
-              <marc:subfield code="e">
+              <marc21:subfield code="e">
                 <xsl:value-of select="." />
-              </marc:subfield>
+              </marc21:subfield>
             </xsl:for-each>
             <xsl:for-each select="mods:role/mods:roleTerm[@type='code']">
-              <marc:subfield code="4">
+              <marc21:subfield code="4">
                 <xsl:value-of select="." />
-              </marc:subfield>
+              </marc21:subfield>
             </xsl:for-each>
             <xsl:for-each select="mods:affiliation">
-              <marc:subfield code="u">
+              <marc21:subfield code="u">
                 <xsl:value-of select="." />
-              </marc:subfield>
+              </marc21:subfield>
             </xsl:for-each>
             <xsl:for-each select="mods:description">
-              <marc:subfield code="g">
+              <marc21:subfield code="g">
                 <xsl:value-of select="." />
-              </marc:subfield>
+              </marc21:subfield>
             </xsl:for-each>
             <!-- add identifier and gnd as source -->
             <xsl:for-each select="mods:nameIdentifier[@type='gnd']">
-              <marc:subfield code="0">
+              <marc21:subfield code="0">
                 <xsl:choose>
                   <xsl:when test="contains(.,'(DE-588)')">
                     <xsl:value-of select="." />
@@ -506,7 +518,7 @@
                     <xsl:value-of select="concat('(DE-588)',.)" />
                   </xsl:otherwise>
                 </xsl:choose>
-              </marc:subfield>
+              </marc21:subfield>
             </xsl:for-each>
           </xsl:with-param>
         </xsl:call-template>
@@ -521,37 +533,37 @@
           </xsl:with-param>
           <xsl:with-param name="subfields">
             <!-- show mods:displayForm in subfield a -->
-            <marc:subfield code="a">
+            <marc21:subfield code="a">
               <xsl:value-of select="mods:displayForm" />
-            </marc:subfield>
+            </marc21:subfield>
             <xsl:for-each select="mods:namePart[@type='termsOfAddress']">
-              <marc:subfield code="c">
+              <marc21:subfield code="c">
                 <xsl:value-of select="." />
-              </marc:subfield>
+              </marc21:subfield>
             </xsl:for-each>
             <xsl:for-each select="mods:namePart[@type='date']">
-              <marc:subfield code="d">
+              <marc21:subfield code="d">
                 <xsl:value-of select="." />
-              </marc:subfield>
+              </marc21:subfield>
             </xsl:for-each>
             <xsl:for-each select="mods:role/mods:roleTerm[@type='text']">
-              <marc:subfield code="e">
+              <marc21:subfield code="e">
                 <xsl:value-of select="." />
-              </marc:subfield>
+              </marc21:subfield>
             </xsl:for-each>
             <xsl:for-each select="mods:role/mods:roleTerm[@type='code']">
-              <marc:subfield code="4">
+              <marc21:subfield code="4">
                 <xsl:value-of select="." />
-              </marc:subfield>
+              </marc21:subfield>
             </xsl:for-each>
             <xsl:for-each select="mods:affiliation">
-              <marc:subfield code="u">
+              <marc21:subfield code="u">
                 <xsl:value-of select="." />
-              </marc:subfield>
+              </marc21:subfield>
             </xsl:for-each>
             <!-- add identifier and gnd as source -->
             <xsl:for-each select="mods:nameIdentifier[@type='gnd']">
-              <marc:subfield code="0">
+              <marc21:subfield code="0">
                 <xsl:choose>
                   <xsl:when test="contains(.,'(DE-588)')">
                     <xsl:value-of select="." />
@@ -563,7 +575,7 @@
                     <xsl:value-of select="concat('(DE-588)',.)" />
                   </xsl:otherwise>
                 </xsl:choose>
-              </marc:subfield>
+              </marc21:subfield>
             </xsl:for-each>
           </xsl:with-param>
         </xsl:call-template>
@@ -586,7 +598,7 @@
           <xsl:with-param name="subfields">
             <!-- show mods:displayForm in subfield a -->
             <!-- https://www.loc.gov/marc/bibliographic/bd710.html -->
-            <marc:subfield code="a">
+            <marc21:subfield code="a">
               <xsl:choose>
                 <!-- if university. institute is given -->
                 <xsl:when test="contains(mods:displayForm,'.')">
@@ -611,19 +623,19 @@
                   <xsl:value-of select="mods:displayForm" />
                 </xsl:otherwise>
               </xsl:choose>
-            </marc:subfield>
+            </marc21:subfield>
             <xsl:choose>
               <!-- if university.institute is given -->
               <xsl:when test="contains(mods:displayForm,'.')">
-                <marc:subfield code="b">
+                <marc21:subfield code="b">
                   <xsl:value-of select="substring-after(mods:displayForm,'. ')" />
-                </marc:subfield>
+                </marc21:subfield>
               </xsl:when>
               <!-- if institution nameParts are given -->
               <xsl:when test="mods:namePart">
-                <marc:subfield code="b">
+                <marc21:subfield code="b">
                 <xsl:value-of select="mods:namePart[position()>1]" />
-                </marc:subfield>
+                </marc21:subfield>
               </xsl:when>
               <!-- if only whole institution name is given (whole name in subfield a, subfield b is empty) -->
               <xsl:when test="mods:displayForm" />
@@ -633,14 +645,14 @@
                 <xsl:variable name="categId" select="substring-after(@valueURI, '#')" />
                 <xsl:variable name="institute" select="$institutes//category[@ID=$categId]" />
                 <xsl:for-each select="$institute/ancestor-or-self::category[position() != last()]">
-                  <marc:subfield code="b">
+                  <marc21:subfield code="b">
                     <xsl:apply-templates select="." mode="name110-710-810" />
-                  </marc:subfield>
+                  </marc21:subfield>
                 </xsl:for-each>
               </xsl:when>
             </xsl:choose>
             <xsl:for-each select="mods:role/mods:roleTerm[@type='text']">
-              <marc:subfield code="e">
+              <marc21:subfield code="e">
                 <!-- TODO add labels to modsenhancer/relacode (update) ('issuing body' for 'isb' and 'host institution' for 'his') -->
                 <xsl:choose>
                   <xsl:when test="../mods:roleTerm[@type='code']='isb'">
@@ -653,21 +665,21 @@
                     <xsl:value-of select="." />
                   </xsl:otherwise>
                 </xsl:choose>
-              </marc:subfield>
+              </marc21:subfield>
             </xsl:for-each>
             <xsl:for-each select="mods:role/mods:roleTerm[@type='code']">
-              <marc:subfield code="4">
+              <marc21:subfield code="4">
                 <xsl:value-of select="." />
-              </marc:subfield>
+              </marc21:subfield>
             </xsl:for-each>
             <xsl:for-each select="mods:description">
-              <marc:subfield code="g">
+              <marc21:subfield code="g">
                 <xsl:value-of select="." />
-              </marc:subfield>
+              </marc21:subfield>
             </xsl:for-each>
             <!-- add identifier and gnd as source -->
             <xsl:for-each select="mods:nameIdentifier[@type='gnd']">
-              <marc:subfield code="0">
+              <marc21:subfield code="0">
                 <xsl:choose>
                   <xsl:when test="contains(.,'(DE-588)')">
                     <xsl:value-of select="." />
@@ -679,7 +691,7 @@
                     <xsl:value-of select="concat('(DE-588)',.)" />
                   </xsl:otherwise>
                 </xsl:choose>
-              </marc:subfield>
+              </marc21:subfield>
             </xsl:for-each>
           </xsl:with-param>
         </xsl:call-template>
@@ -694,7 +706,7 @@
           </xsl:with-param>
           <xsl:with-param name="subfields">
             <!-- show mods:displayForm in subfield a -->
-            <marc:subfield code="a">
+            <marc21:subfield code="a">
               <xsl:choose>
                 <!-- if university. institute is given -->
                 <xsl:when test="contains(mods:displayForm,'.')">
@@ -716,19 +728,19 @@
                   <xsl:apply-templates select="$institute/ancestor-or-self::category[position() = last()]" mode="name110-710-810" />
                 </xsl:when>
               </xsl:choose>
-            </marc:subfield>
+            </marc21:subfield>
             <xsl:choose>
               <!-- if university.institute is given -->
               <xsl:when test="contains(mods:displayForm,'.')">
-                <marc:subfield code="b">
+                <marc21:subfield code="b">
                   <xsl:value-of select="substring-after(mods:displayForm,'. ')" />
-                </marc:subfield>
+                </marc21:subfield>
               </xsl:when>
               <!-- if institution nameParts are given -->
               <xsl:when test="mods:namePart">
-                <marc:subfield code="b">
+                <marc21:subfield code="b">
                   <xsl:value-of select="mods:namePart[position()>1]" />
-                </marc:subfield>
+                </marc21:subfield>
               </xsl:when>
               <!-- if only whole institution name is given (whole name in subfield a, subfield b is empty) -->
               <xsl:when test="mods:displayForm" />
@@ -738,14 +750,14 @@
                 <xsl:variable name="categId" select="substring-after(@valueURI, '#')" />
                 <xsl:variable name="institute" select="$institutes//category[@ID=$categId]" />
                 <xsl:for-each select="$institute/ancestor-or-self::category[position() != last()]">
-                  <marc:subfield code="b">
+                  <marc21:subfield code="b">
                     <xsl:apply-templates select="." mode="name110-710-810" />
-                  </marc:subfield>
+                  </marc21:subfield>
                 </xsl:for-each>
               </xsl:when>
             </xsl:choose>
             <xsl:for-each select="mods:role/mods:roleTerm[@type='text']">
-              <marc:subfield code="e">
+              <marc21:subfield code="e">
                 <!-- TODO add labels to modsenhancer/relacode (update) ('issuing body' for 'isb' and 'host institution' for 'his') -->
                 <xsl:choose>
                   <xsl:when test="../mods:roleTerm[@type='code']='isb'">
@@ -758,21 +770,21 @@
                     <xsl:value-of select="." />
                   </xsl:otherwise>
                 </xsl:choose>
-              </marc:subfield>
+              </marc21:subfield>
             </xsl:for-each>
             <xsl:for-each select="mods:role/mods:roleTerm[@type='code']">
-              <marc:subfield code="4">
+              <marc21:subfield code="4">
                 <xsl:value-of select="." />
-              </marc:subfield>
+              </marc21:subfield>
             </xsl:for-each>
             <xsl:for-each select="mods:description">
-              <marc:subfield code="g">
+              <marc21:subfield code="g">
                 <xsl:value-of select="." />
-              </marc:subfield>
+              </marc21:subfield>
             </xsl:for-each>
             <!-- add identifier and gnd as source -->
             <xsl:for-each select="mods:nameIdentifier[@type='gnd']">
-              <marc:subfield code="0">
+              <marc21:subfield code="0">
                 <xsl:choose>
                   <xsl:when test="contains(.,'(DE-588)')">
                     <xsl:value-of select="." />
@@ -784,7 +796,7 @@
                     <xsl:value-of select="concat('(DE-588)',.)" />
                   </xsl:otherwise>
                 </xsl:choose>
-              </marc:subfield>
+              </marc21:subfield>
             </xsl:for-each>
           </xsl:with-param>
         </xsl:call-template>
@@ -819,17 +831,17 @@
             <xsl:value-of select="'2'" />
           </xsl:with-param>
           <xsl:with-param name="subfields">
-            <marc:subfield code="a">
+            <marc21:subfield code="a">
               <xsl:value-of select="mods:namePart" />
-            </marc:subfield>
+            </marc21:subfield>
             <xsl:for-each select="mods:role/mods:roleTerm[@type='code']">
-              <marc:subfield code="4">
+              <marc21:subfield code="4">
                 <xsl:value-of select="." />
-              </marc:subfield>
+              </marc21:subfield>
             </xsl:for-each>
             <!-- add identifier and gnd as source -->
             <xsl:for-each select="mods:nameIdentifier[@type='gnd']">
-              <marc:subfield code="0">
+              <marc21:subfield code="0">
                 <xsl:choose>
                   <xsl:when test="contains(.,'(DE-588)')">
                     <xsl:value-of select="." />
@@ -841,7 +853,7 @@
                     <xsl:value-of select="concat('(DE-588)',.)" />
                   </xsl:otherwise>
                 </xsl:choose>
-              </marc:subfield>
+              </marc21:subfield>
             </xsl:for-each>
           </xsl:with-param>
         </xsl:call-template>
@@ -855,17 +867,17 @@
             <xsl:value-of select="'2'" />
           </xsl:with-param>
           <xsl:with-param name="subfields">
-            <marc:subfield code="a">
+            <marc21:subfield code="a">
               <xsl:value-of select="mods:namePart" />
-            </marc:subfield>
+            </marc21:subfield>
             <xsl:for-each select="mods:role/mods:roleTerm[@type='code']">
-              <marc:subfield code="4">
+              <marc21:subfield code="4">
                 <xsl:value-of select="." />
-              </marc:subfield>
+              </marc21:subfield>
             </xsl:for-each>
             <!-- add identifier and gnd as source -->
             <xsl:for-each select="mods:nameIdentifier[@type='gnd']">
-              <marc:subfield code="0">
+              <marc21:subfield code="0">
                 <xsl:choose>
                   <xsl:when test="contains(.,'(DE-588)')">
                     <xsl:value-of select="." />
@@ -877,7 +889,7 @@
                     <xsl:value-of select="concat('(DE-588)',.)" />
                   </xsl:otherwise>
                 </xsl:choose>
-              </marc:subfield>
+              </marc21:subfield>
             </xsl:for-each>
           </xsl:with-param>
         </xsl:call-template>
@@ -894,13 +906,13 @@
         <xsl:value-of select="'7'" />
       </xsl:with-param>
       <xsl:with-param name="subfields">
-        <marc:subfield code='a'>
+        <marc21:subfield code='a'>
           <xsl:value-of select="." />
-        </marc:subfield>
+        </marc21:subfield>
         <xsl:for-each select="@authority">
-          <marc:subfield code='2'>
+          <marc21:subfield code='2'>
             <xsl:value-of select="." />
-          </marc:subfield>
+          </marc21:subfield>
         </xsl:for-each>
       </xsl:with-param>
     </xsl:call-template>
@@ -919,16 +931,16 @@
         <xsl:choose>
           <!-- two different terms-->
           <xsl:when test="../mods:genre[@authority='marcgt'][1]/text()!=../mods:genre[@authority='marcgt'][2]/text()">
-            <marc:subfield code="a">
+            <marc21:subfield code="a">
               <xsl:value-of
                   select="concat(../mods:genre[@authority='marcgt'][1],', ',../mods:genre[@authority='marcgt'][2])" />
-            </marc:subfield>
+            </marc21:subfield>
           </xsl:when>
           <!-- one term only -->
           <xsl:otherwise>
-            <marc:subfield code="a">
+            <marc21:subfield code="a">
               <xsl:value-of select="../mods:genre[@authority='marcgt'][1]" />
-            </marc:subfield>
+            </marc21:subfield>
           </xsl:otherwise>
         </xsl:choose>
       </xsl:with-param>
@@ -942,10 +954,10 @@
         <xsl:value-of select="'336'" />
       </xsl:with-param>
       <xsl:with-param name="subfields">
-        <marc:subfield code="a">
+        <marc21:subfield code="a">
           <xsl:value-of select="../mods:typeOfResource" />
-        </marc:subfield>
-        <marc:subfield code="b">
+        </marc21:subfield>
+        <marc21:subfield code="b">
           <xsl:choose>
             <xsl:when test="../mods:typeOfResource/text()='text'">
               <xsl:value-of select="'txt'" />
@@ -984,10 +996,10 @@
               <xsl:value-of select="'xxx'" />
             </xsl:otherwise>
           </xsl:choose>
-        </marc:subfield>
-        <marc:subfield code="2">
+        </marc21:subfield>
+        <marc21:subfield code="2">
           <xsl:value-of select="'rdacontent'" />
-        </marc:subfield>
+        </marc21:subfield>
       </xsl:with-param>
     </xsl:call-template>
   </xsl:template>
@@ -1000,9 +1012,9 @@
           <xsl:value-of select="'044'" />
         </xsl:with-param>
         <xsl:with-param name="subfields">
-          <marc:subfield code='c'>
+          <marc21:subfield code='c'>
             <xsl:value-of select="." />
-          </marc:subfield>
+          </marc21:subfield>
         </xsl:with-param>
       </xsl:call-template>
     </xsl:for-each>
@@ -1026,9 +1038,9 @@
         </xsl:with-param>
         <xsl:with-param name="subfields">
           <xsl:for-each select="mods:dateCaptured">
-            <marc:subfield code='a'>
+            <marc21:subfield code='a'>
               <xsl:value-of select="." />
-            </marc:subfield>
+            </marc21:subfield>
           </xsl:for-each>
         </xsl:with-param>
       </xsl:call-template>
@@ -1040,29 +1052,29 @@
         </xsl:with-param>
         <xsl:with-param name="subfields">
           <xsl:for-each select="mods:dateModified">
-            <marc:subfield code='j'>
+            <marc21:subfield code='j'>
               <xsl:value-of select="." />
-            </marc:subfield>
+            </marc21:subfield>
           </xsl:for-each>
           <xsl:for-each select="mods:dateCreated[@point='start']|mods:dateCreated[not(@point)]">
-            <marc:subfield code='k'>
+            <marc21:subfield code='k'>
               <xsl:value-of select="." />
-            </marc:subfield>
+            </marc21:subfield>
           </xsl:for-each>
           <xsl:for-each select="mods:dateCreated[@point='end']">
-            <marc:subfield code='l'>
+            <marc21:subfield code='l'>
               <xsl:value-of select="." />
-            </marc:subfield>
+            </marc21:subfield>
           </xsl:for-each>
           <xsl:for-each select="mods:dateValid[@point='start']|mods:dateValid[not(@point)]">
-            <marc:subfield code='m'>
+            <marc21:subfield code='m'>
               <xsl:value-of select="." />
-            </marc:subfield>
+            </marc21:subfield>
           </xsl:for-each>
           <xsl:for-each select="mods:dateValid[@point='end']">
-            <marc:subfield code='n'>
+            <marc21:subfield code='n'>
               <xsl:value-of select="." />
-            </marc:subfield>
+            </marc21:subfield>
           </xsl:for-each>
         </xsl:with-param>
       </xsl:call-template>
@@ -1073,9 +1085,9 @@
           <xsl:value-of select="'250'" />
         </xsl:with-param>
         <xsl:with-param name="subfields">
-          <marc:subfield code='a'>
+          <marc21:subfield code='a'>
             <xsl:value-of select="." />
-          </marc:subfield>
+          </marc21:subfield>
         </xsl:with-param>
       </xsl:call-template>
     </xsl:for-each>
@@ -1085,9 +1097,9 @@
           <xsl:value-of select="'310'" />
         </xsl:with-param>
         <xsl:with-param name="subfields">
-          <marc:subfield code='a'>
+          <marc21:subfield code='a'>
             <xsl:value-of select="." />
-          </marc:subfield>
+          </marc21:subfield>
         </xsl:with-param>
       </xsl:call-template>
     </xsl:for-each>
@@ -1127,17 +1139,17 @@
         </xsl:with-param>
         <xsl:with-param name="subfields">
           <xsl:for-each select="mods:place/mods:placeTerm[@type='text']">
-            <marc:subfield code='a'>
+            <marc21:subfield code='a'>
               <xsl:value-of select="." />
-            </marc:subfield>
+            </marc21:subfield>
           </xsl:for-each>
           <xsl:for-each select="mods:publisher">
-            <marc:subfield code='b'>
+            <marc21:subfield code='b'>
               <xsl:value-of select="." />
-            </marc:subfield>
+            </marc21:subfield>
           </xsl:for-each>
           <xsl:for-each select="mods:dateIssued">
-            <marc:subfield code='c'>
+            <marc21:subfield code='c'>
               <!-- if only one date (neither start  nor end date) is present -->
               <xsl:if test="not(@point)">
                 <xsl:value-of select="." />
@@ -1154,13 +1166,13 @@
               <xsl:if test="@qualifier='questionable'">
                 <xsl:value-of select="'?'" />
               </xsl:if>
-            </marc:subfield>
+            </marc21:subfield>
           </xsl:for-each>
           <xsl:for-each select="mods:dateCreated">
             <!-- add parentheses -->
-            <marc:subfield code='g'>
+            <marc21:subfield code='g'>
               <xsl:value-of select="concat('(',.,')')" />
-            </marc:subfield>
+            </marc21:subfield>
           </xsl:for-each>
         </xsl:with-param>
       </xsl:call-template>
@@ -1180,52 +1192,52 @@
       <xsl:with-param name="subfields">
         <xsl:choose>
           <xsl:when test="mods:languageTerm[@objectPart='text/sound track']">
-            <marc:subfield code='a'>
+            <marc21:subfield code='a'>
               <xsl:value-of select="$biblLang" />
-            </marc:subfield>
+            </marc21:subfield>
           </xsl:when>
           <xsl:when
               test="mods:languageTerm[@objectPart='summary or abstract' or @objectPart='summary' or @objectPart='abstract']">
-            <marc:subfield code='b'>
+            <marc21:subfield code='b'>
               <xsl:value-of select="$biblLang" />
-            </marc:subfield>
+            </marc21:subfield>
           </xsl:when>
           <xsl:when test="mods:languageTerm[@objectPart='sung or spoken text']">
-            <marc:subfield code='d'>
+            <marc21:subfield code='d'>
               <xsl:value-of select="$biblLang" />
-            </marc:subfield>
+            </marc21:subfield>
           </xsl:when>
           <xsl:when test="mods:languageTerm[@objectPart='librettos' or @objectPart='libretto']">
-            <marc:subfield code='e'>
+            <marc21:subfield code='e'>
               <xsl:value-of select="$biblLang" />
-            </marc:subfield>
+            </marc21:subfield>
           </xsl:when>
           <xsl:when test="mods:languageTerm[@objectPart='table of contents']">
-            <marc:subfield code='f'>
+            <marc21:subfield code='f'>
               <xsl:value-of select="$biblLang" />
-            </marc:subfield>
+            </marc21:subfield>
           </xsl:when>
           <xsl:when
               test="mods:languageTerm[@objectPart='accompanying material other than librettos' or @objectPart='accompanying material']">
-            <marc:subfield code='g'>
+            <marc21:subfield code='g'>
               <xsl:value-of select="$biblLang" />
-            </marc:subfield>
+            </marc21:subfield>
           </xsl:when>
           <xsl:when
               test="mods:languageTerm[@objectPart='original and/or intermediate translations of text' or @objectPart='translation']">
-            <marc:subfield code='h'>
+            <marc21:subfield code='h'>
               <xsl:value-of select="$biblLang" />
-            </marc:subfield>
+            </marc21:subfield>
           </xsl:when>
           <xsl:when test="mods:languageTerm[@objectPart='subtitles or captions' or @objectPart='subtitle or caption']">
-            <marc:subfield code='j'>
+            <marc21:subfield code='j'>
               <xsl:value-of select="$biblLang" />
-            </marc:subfield>
+            </marc21:subfield>
           </xsl:when>
           <xsl:otherwise>
-            <marc:subfield code='a'>
+            <marc21:subfield code='a'>
               <xsl:value-of select="$biblLang" />
-            </marc:subfield>
+            </marc21:subfield>
           </xsl:otherwise>
         </xsl:choose>
       </xsl:with-param>
@@ -1241,9 +1253,9 @@
         <xsl:value-of select="'0'" />
       </xsl:with-param>
       <xsl:with-param name="subfields">
-        <marc:subfield code='a'>
+        <marc21:subfield code='a'>
           <xsl:value-of select="." />
-        </marc:subfield>
+        </marc21:subfield>
       </xsl:with-param>
     </xsl:call-template>
   </xsl:template>
@@ -1260,12 +1272,12 @@
         <xsl:value-of select="'7'" />
       </xsl:with-param>
       <xsl:with-param name="subfields">
-        <marc:subfield code='a'>
+        <marc21:subfield code='a'>
           <xsl:value-of select="." />
-        </marc:subfield>
-        <marc:subfield code='2'>
+        </marc21:subfield>
+        <marc21:subfield code='2'>
           <xsl:value-of select="'rfc3066'" />
-        </marc:subfield>
+        </marc21:subfield>
       </xsl:with-param>
     </xsl:call-template>
   </xsl:template>
@@ -1276,9 +1288,9 @@
         <xsl:value-of select="'546'" />
       </xsl:with-param>
       <xsl:with-param name="subfields">
-        <marc:subfield code='b'>
+        <marc21:subfield code='b'>
           <xsl:value-of select="." />
-        </marc:subfield>
+        </marc21:subfield>
       </xsl:with-param>
     </xsl:call-template>
   </xsl:template>
@@ -1294,9 +1306,9 @@
         <xsl:value-of select="'300'" />
       </xsl:with-param>
       <xsl:with-param name="subfields">
-        <marc:subfield code='a'>
+        <marc21:subfield code='a'>
           <xsl:value-of select="." />
-        </marc:subfield>
+        </marc21:subfield>
       </xsl:with-param>
     </xsl:call-template>
   </xsl:template>
@@ -1315,25 +1327,25 @@
       </xsl:with-param>
       <xsl:with-param name="subfields">
         <xsl:if test="not(@type='technique')">
-          <marc:subfield code="a">
+          <marc21:subfield code="a">
             <xsl:value-of select="." />
-          </marc:subfield>
+          </marc21:subfield>
         </xsl:if>
         <!-- add subfield b-->
         <xsl:if test="@code!=''">
-          <marc:subfield code="b">
+          <marc21:subfield code="b">
             <xsl:value-of select="@code" />
-          </marc:subfield>
+          </marc21:subfield>
         </xsl:if>
         <xsl:if test="@type='technique'">
-          <marc:subfield code="d">
+          <marc21:subfield code="d">
             <xsl:value-of select="." />
-          </marc:subfield>
+          </marc21:subfield>
         </xsl:if>
         <xsl:if test="@authority">
-          <marc:subfield code="2">
+          <marc21:subfield code="2">
             <xsl:value-of select="@authority" />
-          </marc:subfield>
+          </marc21:subfield>
         </xsl:if>
       </xsl:with-param>
     </xsl:call-template>
@@ -1368,14 +1380,14 @@
         </xsl:choose>
       </xsl:with-param>
       <xsl:with-param name="subfields">
-        <marc:subfield code="a">
+        <marc21:subfield code="a">
           <!-- delete CR and NL -->
           <xsl:value-of select="translate(., '&#10;&#13;', ' ')" />
-        </marc:subfield>
+        </marc21:subfield>
         <xsl:for-each select="@xlink:href">
-          <marc:subfield code="u">
+          <marc21:subfield code="u">
             <xsl:value-of select="." />
-          </marc:subfield>
+          </marc21:subfield>
         </xsl:for-each>
       </xsl:with-param>
     </xsl:call-template>
@@ -1404,13 +1416,13 @@
         </xsl:choose>
       </xsl:with-param>
       <xsl:with-param name="subfields">
-        <marc:subfield code="a">
+        <marc21:subfield code="a">
           <xsl:value-of select="." />
-        </marc:subfield>
+        </marc21:subfield>
         <xsl:for-each select="@xlink:href">
-          <marc:subfield code="u">
+          <marc21:subfield code="u">
             <xsl:value-of select="." />
-          </marc:subfield>
+          </marc21:subfield>
         </xsl:for-each>
       </xsl:with-param>
     </xsl:call-template>
@@ -1442,9 +1454,9 @@
         </xsl:choose>
       </xsl:with-param>
       <xsl:with-param name="subfields">
-        <marc:subfield code='a'>
+        <marc21:subfield code='a'>
           <xsl:value-of select="." />
-        </marc:subfield>
+        </marc21:subfield>
       </xsl:with-param>
     </xsl:call-template>
   </xsl:template>
@@ -1466,9 +1478,9 @@
         </xsl:choose>
       </xsl:with-param>
       <xsl:with-param name="subfields">
-        <marc:subfield code='a'>
+        <marc21:subfield code='a'>
           <xsl:value-of select="." />
-        </marc:subfield>
+        </marc21:subfield>
       </xsl:with-param>
     </xsl:call-template>
     <xsl:for-each select="@xlink:href">
@@ -1477,9 +1489,9 @@
           <xsl:value-of select="'856'" />
         </xsl:with-param>
         <xsl:with-param name="subfields">
-          <marc:subfield code='u'>
+          <marc21:subfield code='u'>
             <xsl:value-of select="." />
-          </marc:subfield>
+          </marc21:subfield>
         </xsl:with-param>
       </xsl:call-template>
     </xsl:for-each>
@@ -1499,9 +1511,9 @@
         </xsl:choose>
       </xsl:with-param>
       <xsl:with-param name="subfields">
-        <marc:subfield code='a'>
+        <marc21:subfield code='a'>
           <xsl:value-of select="concat('embargo until ',.)" />
-        </marc:subfield>
+        </marc21:subfield>
       </xsl:with-param>
     </xsl:call-template>
   </xsl:template>
@@ -1513,17 +1525,17 @@
       </xsl:with-param>
       <xsl:with-param name="subfields">
         <!-- set cataloging language to german -->
-        <marc:subfield code="b">
+        <marc21:subfield code="b">
           <xsl:value-of select="'ger'" />
-        </marc:subfield>
+        </marc21:subfield>
         <!-- set cataloging source to 'DE-601' (GBV) -->
-        <marc:subfield code="c">
+        <marc21:subfield code="c">
           <xsl:value-of select="'DE-601'" />
-        </marc:subfield>
+        </marc21:subfield>
         <!-- set cataloging rules to RDA -->
-        <marc:subfield code="e">
+        <marc21:subfield code="e">
           <xsl:value-of select="'rda'" />
-        </marc:subfield>
+        </marc21:subfield>
       </xsl:with-param>
     </xsl:call-template>
   </xsl:template>
@@ -1566,28 +1578,28 @@
               <xsl:call-template name="authorityInd" />
             </xsl:with-param>
             <xsl:with-param name="subfields">
-              <marc:subfield code="a">
+              <marc21:subfield code="a">
                 <xsl:value-of select="mods:namePart" />
-              </marc:subfield>
+              </marc21:subfield>
               <xsl:for-each select="mods:namePart[@type='termsOfAddress']">
-                <marc:subfield code="c">
+                <marc21:subfield code="c">
                   <xsl:value-of select="." />
-                </marc:subfield>
+                </marc21:subfield>
               </xsl:for-each>
               <xsl:for-each select="mods:namePart[@type='date']">
-                <marc:subfield code="d">
+                <marc21:subfield code="d">
                   <xsl:value-of select="." />
-                </marc:subfield>
+                </marc21:subfield>
               </xsl:for-each>
               <xsl:for-each select="mods:role/mods:roleTerm[@type='text']">
-                <marc:subfield code="e">
+                <marc21:subfield code="e">
                   <xsl:value-of select="." />
-                </marc:subfield>
+                </marc21:subfield>
               </xsl:for-each>
               <xsl:for-each select="mods:affiliation">
-                <marc:subfield code="u">
+                <marc21:subfield code="u">
                   <xsl:value-of select="." />
-                </marc:subfield>
+                </marc21:subfield>
               </xsl:for-each>
               <xsl:apply-templates select="*[position()>1]" />
             </xsl:with-param>
@@ -1605,16 +1617,16 @@
               <xsl:call-template name="authorityInd" />
             </xsl:with-param>
             <xsl:with-param name="subfields">
-              <marc:subfield code="a">
+              <marc21:subfield code="a">
                 <xsl:value-of select="mods:namePart[1]" />
-              </marc:subfield>
-              <marc:subfield code="b">
+              </marc21:subfield>
+              <marc21:subfield code="b">
                 <xsl:value-of select="mods:namePart[position()>1]" />
-              </marc:subfield>
+              </marc21:subfield>
               <xsl:for-each select="mods:role/mods:roleTerm[@type='text']">
-                <marc:subfield code="e">
+                <marc21:subfield code="e">
                   <xsl:value-of select="." />
-                </marc:subfield>
+                </marc21:subfield>
               </xsl:for-each>
               <xsl:apply-templates select="ancestor-or-self::mods:subject/*[position()>1]" />
             </xsl:with-param>
@@ -1632,13 +1644,13 @@
               <xsl:call-template name="authorityInd" />
             </xsl:with-param>
             <xsl:with-param name="subfields">
-              <marc:subfield code="a">
+              <marc21:subfield code="a">
                 <xsl:value-of select="mods:namePart" />
-              </marc:subfield>
+              </marc21:subfield>
               <xsl:for-each select="mods:role/mods:roleTerm[@type='code']">
-                <marc:subfield code="4">
+                <marc21:subfield code="4">
                   <xsl:value-of select="." />
-                </marc:subfield>
+                </marc21:subfield>
               </xsl:for-each>
               <xsl:apply-templates select="*[position()>1]" />
             </xsl:with-param>
@@ -1663,22 +1675,22 @@
       <xsl:with-param name="subfields">
         <!-- put all topical terms in subfield a, one field 651a per term -->
         <xsl:for-each select=".">
-          <marc:subfield code="a">
+          <marc21:subfield code="a">
             <xsl:value-of select="." />
-          </marc:subfield>
+          </marc21:subfield>
         </xsl:for-each>
         <!-- add subfield 2 (source) -->
         <xsl:for-each select=".">
           <xsl:choose>
             <xsl:when test="./@authority">
-              <marc:subfield code="2">
+              <marc21:subfield code="2">
                 <xsl:value-of select="@authority" />
-              </marc:subfield>
+              </marc21:subfield>
             </xsl:when>
             <xsl:when test="../@authority">
-              <marc:subfield code="2">
+              <marc21:subfield code="2">
                 <xsl:value-of select="../@authority" />
-              </marc:subfield>
+              </marc21:subfield>
             </xsl:when>
           </xsl:choose>
         </xsl:for-each>
@@ -1697,9 +1709,9 @@
         <xsl:call-template name="authorityInd" />
       </xsl:with-param>
       <xsl:with-param name="subfields">
-        <marc:subfield code="a">
+        <marc21:subfield code="a">
           <xsl:value-of select="*[1]" />
-        </marc:subfield>
+        </marc21:subfield>
         <xsl:apply-templates select="*[position()&gt;1]" />
       </xsl:with-param>
     </xsl:call-template>
@@ -1720,22 +1732,22 @@
       <xsl:with-param name="subfields">
         <!-- put all topical terms in subfield a, one field 650a per term -->
         <xsl:for-each select=".">
-          <marc:subfield code="a">
+          <marc21:subfield code="a">
             <xsl:value-of select="." />
-          </marc:subfield>
+          </marc21:subfield>
         </xsl:for-each>
         <!-- add subfield 2 (source) -->
         <xsl:for-each select=".">
           <xsl:choose>
             <xsl:when test="./@authority">
-              <marc:subfield code="2">
+              <marc21:subfield code="2">
                 <xsl:value-of select="@authority" />
-              </marc:subfield>
+              </marc21:subfield>
             </xsl:when>
             <xsl:when test="../@authority">
-              <marc:subfield code="2">
+              <marc21:subfield code="2">
                 <xsl:value-of select="../@authority" />
-              </marc:subfield>
+              </marc21:subfield>
             </xsl:when>
           </xsl:choose>
         </xsl:for-each>
@@ -1754,9 +1766,9 @@
         <xsl:call-template name="authorityInd" />
       </xsl:with-param>
       <xsl:with-param name="subfields">
-        <marc:subfield code="a">
+        <marc21:subfield code="a">
           <xsl:value-of select="*[1]" />
-        </marc:subfield>
+        </marc21:subfield>
         <xsl:apply-templates select="*[position()>1]" />
       </xsl:with-param>
     </xsl:call-template>
@@ -1769,14 +1781,14 @@
       </xsl:with-param>
       <xsl:with-param name="subfields">
         <xsl:for-each select="self::mods:geographicCode[@authority='marcgac']">
-          <marc:subfield code='a'>
+          <marc21:subfield code='a'>
             <xsl:value-of select="." />
-          </marc:subfield>
+          </marc21:subfield>
         </xsl:for-each>
         <xsl:for-each select="self::mods:geographicCode[@authority='iso3166']">
-          <marc:subfield code='c'>
+          <marc21:subfield code='c'>
             <xsl:value-of select="." />
-          </marc:subfield>
+          </marc21:subfield>
         </xsl:for-each>
       </xsl:with-param>
     </xsl:call-template>
@@ -1789,24 +1801,24 @@
       </xsl:with-param>
       <xsl:with-param name="subfields">
         <xsl:for-each select="mods:country">
-          <marc:subfield code="a">
+          <marc21:subfield code="a">
             <xsl:value-of select="." />
-          </marc:subfield>
+          </marc21:subfield>
         </xsl:for-each>
         <xsl:for-each select="mods:state">
-          <marc:subfield code="b">
+          <marc21:subfield code="b">
             <xsl:value-of select="." />
-          </marc:subfield>
+          </marc21:subfield>
         </xsl:for-each>
         <xsl:for-each select="mods:county">
-          <marc:subfield code="c">
+          <marc21:subfield code="c">
             <xsl:value-of select="." />
-          </marc:subfield>
+          </marc21:subfield>
         </xsl:for-each>
         <xsl:for-each select="mods:city">
-          <marc:subfield code="d">
+          <marc21:subfield code="d">
             <xsl:value-of select="." />
-          </marc:subfield>
+          </marc21:subfield>
         </xsl:for-each>
       </xsl:with-param>
     </xsl:call-template>
@@ -1819,19 +1831,19 @@
       </xsl:with-param>
       <xsl:with-param name="subfields">
         <xsl:for-each select="mods:coordinates">
-          <marc:subfield code="c">
+          <marc21:subfield code="c">
             <xsl:value-of select="." />
-          </marc:subfield>
+          </marc21:subfield>
         </xsl:for-each>
         <xsl:for-each select="mods:scale">
-          <marc:subfield code="a">
+          <marc21:subfield code="a">
             <xsl:value-of select="." />
-          </marc:subfield>
+          </marc21:subfield>
         </xsl:for-each>
         <xsl:for-each select="mods:projection">
-          <marc:subfield code="b">
+          <marc21:subfield code="b">
             <xsl:value-of select="." />
-          </marc:subfield>
+          </marc21:subfield>
         </xsl:for-each>
       </xsl:with-param>
     </xsl:call-template>
@@ -1843,9 +1855,9 @@
         <xsl:value-of select="'656'" />
       </xsl:with-param>
       <xsl:with-param name="subfields">
-        <marc:subfield code="a">
+        <marc21:subfield code="a">
           <xsl:value-of select="." />
-        </marc:subfield>
+        </marc21:subfield>
       </xsl:with-param>
     </xsl:call-template>
   </xsl:template>
@@ -1865,22 +1877,22 @@
       <xsl:with-param name="subfields">
         <!-- put all topical terms in subfield a, one field 650a per term -->
         <xsl:for-each select=".">
-          <marc:subfield code="a">
+          <marc21:subfield code="a">
             <xsl:value-of select="." />
-          </marc:subfield>
+          </marc21:subfield>
         </xsl:for-each>
         <!-- add subfield 2 (source) -->
         <xsl:for-each select=".">
           <xsl:choose>
             <xsl:when test="./@authority">
-              <marc:subfield code="2">
+              <marc21:subfield code="2">
                 <xsl:value-of select="./@authority" />
-              </marc:subfield>
+              </marc21:subfield>
             </xsl:when>
             <xsl:when test="../@authority">
-              <marc:subfield code="2">
+              <marc21:subfield code="2">
                 <xsl:value-of select="../@authority" />
-              </marc:subfield>
+              </marc21:subfield>
             </xsl:when>
           </xsl:choose>
         </xsl:for-each>
@@ -1902,9 +1914,9 @@
         <xsl:call-template name="authorityInd" />
       </xsl:with-param>
       <xsl:with-param name="subfields">
-        <marc:subfield code="a">
+        <marc21:subfield code="a">
           <xsl:value-of select="*[1]" />
-        </marc:subfield>
+        </marc21:subfield>
         <xsl:apply-templates select="*[position()>1]" />
       </xsl:with-param>
     </xsl:call-template>
@@ -1912,61 +1924,61 @@
 
   <xsl:template
       match="mods:subject[@authority='lcsh' or @authority='lcshac' or @authority='mesh' or @authority='csh' or @authority='nal' or @authority='rvm']/mods:topic">
-    <marc:subfield code="x">
+    <marc21:subfield code="x">
       <xsl:value-of select="." />
-    </marc:subfield>
+    </marc21:subfield>
   </xsl:template>
 
   <xsl:template
       match="mods:subject[@authority='lcsh' or @authority='lcshac' or @authority='mesh' or @authority='csh' or @authority='nal' or @authority='rvm']/mods:temporal">
-    <marc:subfield code="y">
+    <marc21:subfield code="y">
       <xsl:value-of select="." />
-    </marc:subfield>
+    </marc21:subfield>
   </xsl:template>
 
   <xsl:template
       match="mods:subject[@authority='lcsh' or @authority='lcshac' or @authority='mesh' or @authority='csh' or @authority='nal' or @authority='rvm']/mods:geographic">
-    <marc:subfield code="z">
+    <marc21:subfield code="z">
       <xsl:value-of select="." />
-    </marc:subfield>
+    </marc21:subfield>
   </xsl:template>
 
   <xsl:template name="titleInfo">
     <xsl:for-each select="mods:title">
-      <marc:subfield code="a">
+      <marc21:subfield code="a">
         <!-- add additional space -->
         <xsl:if test="../mods:nonSort">
           <xsl:value-of select="concat(../mods:nonSort,' ')" />
         </xsl:if>
         <xsl:value-of select="." />
-      </marc:subfield>
+      </marc21:subfield>
     </xsl:for-each>
     <xsl:for-each select="mods:subTitle">
-      <marc:subfield code="b">
+      <marc21:subfield code="b">
         <xsl:value-of select="." />
-      </marc:subfield>
+      </marc21:subfield>
     </xsl:for-each>
     <xsl:for-each select="mods:partNumber">
-      <marc:subfield code="n">
+      <marc21:subfield code="n">
         <xsl:value-of select="." />
-      </marc:subfield>
+      </marc21:subfield>
     </xsl:for-each>
     <xsl:for-each select="mods:partName">
-      <marc:subfield code="p">
+      <marc21:subfield code="p">
         <xsl:value-of select="." />
-      </marc:subfield>
+      </marc21:subfield>
     </xsl:for-each>
   </xsl:template>
 
   <xsl:template name="stmtOfResponsibility">
     <xsl:choose>
       <xsl:when test="../mods:note[@type='statement of responsibility']">
-        <marc:subfield code='c'>
+        <marc21:subfield code='c'>
           <xsl:value-of select="../mods:note[@type='statement of responsibility']" />
-        </marc:subfield>
+        </marc21:subfield>
       </xsl:when>
       <xsl:otherwise>
-        <marc:subfield code="c">
+        <marc21:subfield code="c">
           <xsl:for-each
               select="/mods:mods/mods:name/mods:displayForm[../mods:role/mods:roleTerm[@type='code']!='rev'][../mods:role/mods:roleTerm[@type='code']!='pbl'][../mods:role/mods:roleTerm[@type='code']!='dst']">
             <xsl:value-of select="." />
@@ -1974,7 +1986,7 @@
               <xsl:value-of select="';'" />
             </xsl:if>
           </xsl:for-each>
-        </marc:subfield>
+        </marc21:subfield>
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
@@ -1989,13 +2001,13 @@
         <xsl:value-of select="'0'" />
       </xsl:with-param>
       <xsl:with-param name="subfields">
-        <marc:subfield code="a">
+        <marc21:subfield code="a">
           <xsl:value-of select="." />
-        </marc:subfield>
+        </marc21:subfield>
         <xsl:for-each select="@edition">
-          <marc:subfield code="2">
+          <marc21:subfield code="2">
             <xsl:value-of select="." />
-          </marc:subfield>
+          </marc21:subfield>
         </xsl:for-each>
       </xsl:with-param>
     </xsl:call-template>
@@ -2007,9 +2019,9 @@
         <xsl:value-of select="'080'" />
       </xsl:with-param>
       <xsl:with-param name="subfields">
-        <marc:subfield code="a">
+        <marc21:subfield code="a">
           <xsl:value-of select="." />
-        </marc:subfield>
+        </marc21:subfield>
       </xsl:with-param>
     </xsl:call-template>
   </xsl:template>
@@ -2023,9 +2035,9 @@
         <xsl:value-of select="'4'" />
       </xsl:with-param>
       <xsl:with-param name="subfields">
-        <marc:subfield code="a">
+        <marc21:subfield code="a">
           <xsl:value-of select="." />
-        </marc:subfield>
+        </marc21:subfield>
       </xsl:with-param>
     </xsl:call-template>
   </xsl:template>
@@ -2039,9 +2051,9 @@
         <xsl:value-of select="'0'" />
       </xsl:with-param>
       <xsl:with-param name="subfields">
-        <marc:subfield code="a">
+        <marc21:subfield code="a">
           <xsl:value-of select="." />
-        </marc:subfield>
+        </marc21:subfield>
       </xsl:with-param>
     </xsl:call-template>
   </xsl:template>
@@ -2055,9 +2067,9 @@
         <xsl:value-of select="'1'" />
       </xsl:with-param>
       <xsl:with-param name="subfields">
-        <marc:subfield code="a">
+        <marc21:subfield code="a">
           <xsl:value-of select="." />
-        </marc:subfield>
+        </marc21:subfield>
       </xsl:with-param>
     </xsl:call-template>
   </xsl:template>
@@ -2068,9 +2080,9 @@
         <xsl:value-of select="'084'" />
       </xsl:with-param>
       <xsl:with-param name="subfields">
-        <marc:subfield code="a">
+        <marc21:subfield code="a">
           <xsl:value-of select="." />
-        </marc:subfield>
+        </marc21:subfield>
       </xsl:with-param>
     </xsl:call-template>
   </xsl:template>
@@ -2082,12 +2094,12 @@
         <xsl:value-of select="'084'" />
       </xsl:with-param>
       <xsl:with-param name="subfields">
-        <marc:subfield code="a">
+        <marc21:subfield code="a">
           <xsl:value-of select="." />
-        </marc:subfield>
-        <marc:subfield code="2">
+        </marc21:subfield>
+        <marc21:subfield code="2">
           <xsl:value-of select="./@authority" />
-        </marc:subfield>
+        </marc21:subfield>
       </xsl:with-param>
     </xsl:call-template>
   </xsl:template>
@@ -2111,9 +2123,9 @@
       </xsl:with-param>
       <xsl:with-param name="subfields">
         <xsl:for-each select="mods:classification[@authority='lcc']">
-          <marc:subfield code="a">
+          <marc21:subfield code="a">
             <xsl:value-of select="." />
-          </marc:subfield>
+          </marc21:subfield>
         </xsl:for-each>
       </xsl:with-param>
     </xsl:call-template>
@@ -2130,12 +2142,12 @@
         <xsl:value-of select="'7'" />
       </xsl:with-param>
       <xsl:with-param name="subfields">
-        <marc:subfield code="a">
+        <marc21:subfield code="a">
           <xsl:value-of select="." />
-        </marc:subfield>
-        <marc:subfield code="2">
+        </marc21:subfield>
+        <marc21:subfield code="2">
           <xsl:value-of select="@type" />
-        </marc:subfield>
+        </marc21:subfield>
       </xsl:with-param>
     </xsl:call-template>
   </xsl:template>
@@ -2146,7 +2158,7 @@
         <xsl:value-of select="'020'" />
       </xsl:with-param>
       <xsl:with-param name="subfields">
-        <marc:subfield>
+        <marc21:subfield>
           <xsl:attribute name="code">
             <xsl:choose>
               <xsl:when test="@invalid='yes'">
@@ -2158,7 +2170,7 @@
             </xsl:choose>
           </xsl:attribute>
           <xsl:value-of select="." />
-        </marc:subfield>
+        </marc21:subfield>
       </xsl:with-param>
     </xsl:call-template>
   </xsl:template>
@@ -2171,7 +2183,7 @@
         <xsl:value-of select="'0'" />
       </xsl:with-param>
       <xsl:with-param name="subfields">
-        <marc:subfield>
+        <marc21:subfield>
           <xsl:attribute name="code">
             <xsl:choose>
               <xsl:when test="@invalid='yes'">
@@ -2183,7 +2195,7 @@
             </xsl:choose>
           </xsl:attribute>
           <xsl:value-of select="." />
-        </marc:subfield>
+        </marc21:subfield>
       </xsl:with-param>
     </xsl:call-template>
   </xsl:template>
@@ -2196,7 +2208,7 @@
         <xsl:value-of select="'2'" />
       </xsl:with-param>
       <xsl:with-param name="subfields">
-        <marc:subfield>
+        <marc21:subfield>
           <xsl:attribute name="code">
             <xsl:choose>
               <xsl:when test="@invalid='yes'">
@@ -2208,7 +2220,7 @@
             </xsl:choose>
           </xsl:attribute>
           <xsl:value-of select="." />
-        </marc:subfield>
+        </marc21:subfield>
       </xsl:with-param>
     </xsl:call-template>
   </xsl:template>
@@ -2218,7 +2230,7 @@
         <xsl:value-of select="'022'" />
       </xsl:with-param>
       <xsl:with-param name="subfields">
-        <marc:subfield>
+        <marc21:subfield>
           <xsl:attribute name="code">
             <xsl:choose>
               <xsl:when test="@invalid='yes'">
@@ -2230,7 +2242,7 @@
             </xsl:choose>
           </xsl:attribute>
           <xsl:value-of select="." />
-        </marc:subfield>
+        </marc21:subfield>
       </xsl:with-param>
     </xsl:call-template>
   </xsl:template>
@@ -2246,9 +2258,9 @@
         <xsl:value-of select="'0'" />
       </xsl:with-param>
       <xsl:with-param name="subfields">
-        <marc:subfield code="a">
+        <marc21:subfield code="a">
           <xsl:value-of select="." />
-        </marc:subfield>
+        </marc21:subfield>
       </xsl:with-param>
     </xsl:call-template>
   </xsl:template>
@@ -2258,7 +2270,7 @@
         <xsl:value-of select="'010'" />
       </xsl:with-param>
       <xsl:with-param name="subfields">
-        <marc:subfield>
+        <marc21:subfield>
           <xsl:attribute name="code">
             <xsl:choose>
               <xsl:when test="@invalid='yes'">
@@ -2270,7 +2282,7 @@
             </xsl:choose>
           </xsl:attribute>
           <xsl:value-of select="." />
-        </marc:subfield>
+        </marc21:subfield>
       </xsl:with-param>
     </xsl:call-template>
   </xsl:template>
@@ -2286,9 +2298,9 @@
         <xsl:value-of select="'0'" />
       </xsl:with-param>
       <xsl:with-param name="subfields">
-        <marc:subfield code="a">
+        <marc21:subfield code="a">
           <xsl:value-of select="." />
-        </marc:subfield>
+        </marc21:subfield>
       </xsl:with-param>
     </xsl:call-template>
   </xsl:template>
@@ -2304,9 +2316,9 @@
         <xsl:value-of select="'0'" />
       </xsl:with-param>
       <xsl:with-param name="subfields">
-        <marc:subfield code="a">
+        <marc21:subfield code="a">
           <xsl:value-of select="." />
-        </marc:subfield>
+        </marc21:subfield>
       </xsl:with-param>
     </xsl:call-template>
   </xsl:template>
@@ -2322,9 +2334,9 @@
         <xsl:value-of select="'0'" />
       </xsl:with-param>
       <xsl:with-param name="subfields">
-        <marc:subfield code="a">
+        <marc21:subfield code="a">
           <xsl:value-of select="." />
-        </marc:subfield>
+        </marc21:subfield>
       </xsl:with-param>
     </xsl:call-template>
   </xsl:template>
@@ -2337,7 +2349,7 @@
         <xsl:value-of select="'4'" />
       </xsl:with-param>
       <xsl:with-param name="subfields">
-        <marc:subfield>
+        <marc21:subfield>
           <xsl:attribute name="code">
             <xsl:choose>
               <xsl:when test="@invalid='yes'">
@@ -2349,7 +2361,7 @@
             </xsl:choose>
           </xsl:attribute>
           <xsl:value-of select="." />
-        </marc:subfield>
+        </marc21:subfield>
       </xsl:with-param>
     </xsl:call-template>
   </xsl:template>
@@ -2360,9 +2372,9 @@
         <xsl:value-of select="'037'" />
       </xsl:with-param>
       <xsl:with-param name="subfields">
-        <marc:subfield code="a">
+        <marc21:subfield code="a">
           <xsl:value-of select="." />
-        </marc:subfield>
+        </marc21:subfield>
       </xsl:with-param>
     </xsl:call-template>
   </xsl:template>
@@ -2372,12 +2384,12 @@
         <xsl:value-of select="'856'" />
       </xsl:with-param>
       <xsl:with-param name="subfields">
-        <marc:subfield code="u">
+        <marc21:subfield code="u">
           <xsl:value-of select="." />
-        </marc:subfield>
-        <marc:subfield code="y">
+        </marc21:subfield>
+        <marc21:subfield code="y">
           <xsl:value-of select="./@type"/>
-        </marc:subfield>
+        </marc21:subfield>
         <xsl:call-template name="mediaType" />
       </xsl:with-param>
     </xsl:call-template>
@@ -2389,23 +2401,23 @@
           <xsl:value-of select="'856'" />
         </xsl:with-param>
         <xsl:with-param name="subfields">
-          <marc:subfield code="u">
+          <marc21:subfield code="u">
             <xsl:value-of select="." />
-          </marc:subfield>
+          </marc21:subfield>
           <xsl:for-each select="@access">
-            <marc:subfield code="y">
+            <marc21:subfield code="y">
               <xsl:value-of select="."/>
-            </marc:subfield>
+            </marc21:subfield>
           </xsl:for-each>
           <xsl:for-each select="@displayLabel">
-            <marc:subfield code="3">
+            <marc21:subfield code="3">
               <xsl:value-of select="." />
-            </marc:subfield>
+            </marc21:subfield>
           </xsl:for-each>
           <xsl:for-each select="@dateLastAccessed">
-            <marc:subfield code="z">
+            <marc21:subfield code="z">
               <xsl:value-of select="concat('Last accessed: ',.)" />
-            </marc:subfield>
+            </marc21:subfield>
           </xsl:for-each>
         </xsl:with-param>
       </xsl:call-template>
@@ -2420,7 +2432,7 @@
         <xsl:value-of select="'1'" />
       </xsl:with-param>
       <xsl:with-param name="subfields">
-        <marc:subfield>
+        <marc21:subfield>
           <xsl:attribute name="code">
             <xsl:choose>
               <xsl:when test="@invalid='yes'">
@@ -2432,7 +2444,7 @@
             </xsl:choose>
           </xsl:attribute>
           <xsl:value-of select="." />
-        </marc:subfield>
+        </marc21:subfield>
       </xsl:with-param>
     </xsl:call-template>
   </xsl:template>
@@ -2449,9 +2461,9 @@
         <xsl:value-of select="'0'" />
       </xsl:with-param>
       <xsl:with-param name="subfields">
-        <marc:subfield code="a">
+        <marc21:subfield code="a">
           <xsl:value-of select="." />
-        </marc:subfield>
+        </marc21:subfield>
       </xsl:with-param>
     </xsl:call-template>
   </xsl:template>
@@ -2493,9 +2505,9 @@
         <xsl:value-of select="'2'" />
       </xsl:with-param>
       <xsl:with-param name="subfields">
-        <marc:subfield code="u">
+        <marc21:subfield code="u">
           <xsl:value-of select="." />
-        </marc:subfield>
+        </marc21:subfield>
         <xsl:call-template name="mediaType" />
       </xsl:with-param>
     </xsl:call-template>
@@ -2508,13 +2520,13 @@
           <xsl:value-of select="'852'" />
         </xsl:with-param>
         <xsl:with-param name="subfields">
-          <marc:subfield code="a">
+          <marc21:subfield code="a">
             <xsl:value-of select="." />
-          </marc:subfield>
+          </marc21:subfield>
           <xsl:for-each select="@displayLabel">
-            <marc:subfield code="3">
+            <marc21:subfield code="3">
               <xsl:value-of select="." />
-            </marc:subfield>
+            </marc21:subfield>
           </xsl:for-each>
         </xsl:with-param>
       </xsl:call-template>
@@ -2528,9 +2540,9 @@
           <xsl:value-of select="'852'" />
         </xsl:with-param>
         <xsl:with-param name="subfields">
-          <marc:subfield code="u">
+          <marc21:subfield code="u">
             <xsl:value-of select="." />
-          </marc:subfield>
+          </marc21:subfield>
         </xsl:with-param>
       </xsl:call-template>
     </xsl:for-each>
@@ -2542,7 +2554,7 @@
           <xsl:value-of select="'852'" />
         </xsl:with-param>
         <xsl:with-param name="subfields">
-          <marc:subfield>
+          <marc21:subfield>
             <xsl:choose>
               <xsl:when test="@displayLabel='content'">
                 <xsl:value-of select="'3'" />
@@ -2567,7 +2579,7 @@
               </xsl:when>
             </xsl:choose>
             <xsl:value-of select="." />
-          </marc:subfield>
+          </marc21:subfield>
         </xsl:with-param>
       </xsl:call-template>
     </xsl:for-each>
@@ -2579,26 +2591,26 @@
         <xsl:value-of select="'887'" />
       </xsl:with-param>
       <xsl:with-param name="subfields">
-        <marc:subfield code="a">
+        <marc21:subfield code="a">
           <xsl:value-of select="." />
-        </marc:subfield>
+        </marc21:subfield>
       </xsl:with-param>
     </xsl:call-template>
   </xsl:template>
 
   <xsl:template name="mediaType">
     <xsl:if test="../mods:physicalDescription/mods:internetMediaType">
-      <marc:subfield code="q">
+      <marc21:subfield code="q">
         <xsl:value-of select="../mods:physicalDescription/mods:internetMediaType" />
-      </marc:subfield>
+      </marc21:subfield>
     </xsl:if>
   </xsl:template>
 
   <xsl:template name="form">
     <xsl:if test="../mods:physicalDescription/mods:form[@authority='gmd']">
-      <marc:subfield code="h">
+      <marc21:subfield code="h">
         <xsl:value-of select="../mods:physicalDescription/mods:form[@authority='gmd']" />
-      </marc:subfield>
+      </marc21:subfield>
     </xsl:if>
   </xsl:template>
 
@@ -2609,10 +2621,10 @@
         <xsl:value-of select="'510'" />
       </xsl:with-param>
       <xsl:with-param name="subfields">
-        <marc:subfield code="a">
+        <marc21:subfield code="a">
           <xsl:value-of
               select="concat(mods:titleInfo/mods:title[not(ancestor-or-self::mods:titleInfo/@type)],' (',mods:identifier[@type='local']|@xlink:href|@ID, ')')" />
-        </marc:subfield>
+        </marc21:subfield>
       </xsl:with-param>
     </xsl:call-template>
   </xsl:template>
@@ -2639,9 +2651,9 @@
         <xsl:with-param name="subfields">
           <xsl:call-template name="titleInfo"/>
           <xsl:for-each select="../@xlink:href">
-            <marc:subfield code="w">
+            <marc21:subfield code="w">
               <xsl:value-of select="../@xlink:href"/>
-            </marc:subfield>
+            </marc21:subfield>
           </xsl:for-each>
         </xsl:with-param>
       </xsl:call-template>
@@ -2680,7 +2692,7 @@
           </xsl:choose>
         </xsl:with-param>
         <xsl:with-param name="subfields">
-          <marc:subfield code="a">
+          <marc21:subfield code="a">
             <xsl:choose>
               <!-- if university. institute is given -->
               <xsl:when test="contains(mods:displayForm,'.')">
@@ -2705,19 +2717,19 @@
                 <xsl:value-of select="mods:displayForm" />
               </xsl:otherwise>
             </xsl:choose>
-          </marc:subfield>
+          </marc21:subfield>
           <xsl:choose>
             <!-- if university.institute is given -->
             <xsl:when test="contains(mods:displayForm,'.')">
-              <marc:subfield code="b">
+              <marc21:subfield code="b">
                 <xsl:value-of select="substring-after(mods:displayForm,'. ')" />
-              </marc:subfield>
+              </marc21:subfield>
             </xsl:when>
             <!-- if institution nameParts are given -->
             <xsl:when test="mods:namePart">
-              <marc:subfield code="b">
+              <marc21:subfield code="b">
                 <xsl:value-of select="mods:namePart[position()>1]" />
-              </marc:subfield>
+              </marc21:subfield>
             </xsl:when>
             <!-- if only whole institution name is given (whole name in subfield a, subfield b is empty) -->
             <xsl:when test="mods:displayForm" />
@@ -2727,22 +2739,22 @@
               <xsl:variable name="categId" select="substring-after(@valueURI, '#')" />
               <xsl:variable name="institute" select="$institutes//category[@ID=$categId]" />
               <xsl:for-each select="$institute/ancestor-or-self::category[position() != last()]">
-                <marc:subfield code="b">
+                <marc21:subfield code="b">
                   <xsl:apply-templates select="." mode="name110-710-810" />
-                </marc:subfield>
+                </marc21:subfield>
               </xsl:for-each>
             </xsl:when>
           </xsl:choose>
           <xsl:if test="@type='personal'">
-            <marc:subfield code="c">
+            <marc21:subfield code="c">
               <xsl:value-of select="mods:namePart[@type='termsOfAddress']" />
-            </marc:subfield>
-            <marc:subfield code="d">
+            </marc21:subfield>
+            <marc21:subfield code="d">
               <xsl:value-of select="mods:namePart[@type='date']" />
-            </marc:subfield>
+            </marc21:subfield>
           </xsl:if>
           <xsl:if test="@type!='conference'">
-            <marc:subfield code="e">
+            <marc21:subfield code="e">
               <!-- TODO add labels to modsenhancer/relacode (update) ('issuing body' for 'isb' and 'host institution' for 'his') -->
               <xsl:choose>
                 <xsl:when test="../mods:roleTerm[@type='code']='isb'">
@@ -2755,11 +2767,11 @@
                   <xsl:value-of select="mods:role/mods:roleTerm[@type='text']" />
                 </xsl:otherwise>
               </xsl:choose>
-            </marc:subfield>
+            </marc21:subfield>
           </xsl:if>
-          <marc:subfield code="4">
+          <marc21:subfield code="4">
             <xsl:value-of select="mods:role/mods:roleTerm[@type='code']" />
-          </marc:subfield>
+          </marc21:subfield>
         </xsl:with-param>
       </xsl:call-template>
     </xsl:for-each>
@@ -2857,15 +2869,15 @@
       </xsl:with-param>
       <xsl:with-param name="subfields">
         <xsl:for-each select="@displaylabel">
-          <marc:subfield code="3">
+          <marc21:subfield code="3">
             <xsl:value-of select="." />
-          </marc:subfield>
+          </marc21:subfield>
         </xsl:for-each>
         <!-- v3 part/text -->
         <xsl:for-each select="mods:part/mods:text">
-          <marc:subfield code="g">
+          <marc21:subfield code="g">
             <xsl:value-of select="."/>
-          </marc:subfield>
+          </marc21:subfield>
         </xsl:for-each>
         <!-- v3 sici part/detail 773$q 	1:2:3<4-->
         <xsl:if test="mods:part/mods:detail">
@@ -2874,7 +2886,7 @@
               <xsl:value-of select="concat(mods:number,':')" />
             </xsl:for-each>
           </xsl:variable>
-          <marc:subfield code="q">
+          <marc21:subfield code="q">
             <xsl:choose>
               <xsl:when test="mods:part/mods:extent/mods:start">
                 <xsl:value-of
@@ -2884,17 +2896,17 @@
                 <xsl:value-of select="substring($parts,1,string-length($parts)-1)" />
               </xsl:otherwise>
             </xsl:choose>
-          </marc:subfield>
+          </marc21:subfield>
         </xsl:if>
         <xsl:if test="mods:titleInfo[@type='abbreviated']">
-          <marc:subfield code="p">
+          <marc21:subfield code="p">
             <xsl:for-each select="mods:titleInfo[@type='abbreviated']/mods:title">
               <xsl:if test="position() != 1">
                 <xsl:value-of select="', '" />
               </xsl:if>
               <xsl:value-of select="." />
             </xsl:for-each>
-          </marc:subfield>
+          </marc21:subfield>
         </xsl:if>
         <xsl:call-template name="relatedItem76X-78X" />
       </xsl:with-param>
@@ -2922,71 +2934,71 @@
       <xsl:for-each select="mods:title">
         <xsl:choose>
           <xsl:when test="not(ancestor-or-self::mods:titleInfo/@type)">
-            <marc:subfield code="t">
+            <marc21:subfield code="t">
               <xsl:value-of select="." />
-            </marc:subfield>
+            </marc21:subfield>
           </xsl:when>
           <xsl:when test="ancestor-or-self::mods:titleInfo/@type='uniform'">
-            <marc:subfield code="s">
+            <marc21:subfield code="s">
               <xsl:value-of select="." />
-            </marc:subfield>
+            </marc21:subfield>
           </xsl:when>
         </xsl:choose>
       </xsl:for-each>
       <xsl:for-each select="mods:partNumber">
-        <marc:subfield code="g">
+        <marc21:subfield code="g">
           <xsl:value-of select="." />
-        </marc:subfield>
+        </marc21:subfield>
       </xsl:for-each>
       <xsl:for-each select="mods:partName">
-        <marc:subfield code="g">
+        <marc21:subfield code="g">
           <xsl:value-of select="." />
-        </marc:subfield>
+        </marc21:subfield>
       </xsl:for-each>
     </xsl:for-each>
     <xsl:if test="@type!='original'">
       <xsl:for-each select="mods:physicalDescription/mods:extent">
-        <marc:subfield code="h">
+        <marc21:subfield code="h">
           <xsl:value-of select="." />
-        </marc:subfield>
+        </marc21:subfield>
       </xsl:for-each>
     </xsl:if>
     <xsl:for-each select="@displayLabel">
-      <marc:subfield code="i">
+      <marc21:subfield code="i">
         <xsl:value-of select="." />
-      </marc:subfield>
+      </marc21:subfield>
     </xsl:for-each>
     <xsl:for-each select="mods:identifier[not(@type)]">
-      <marc:subfield code="o">
+      <marc21:subfield code="o">
         <xsl:value-of select="." />
-      </marc:subfield>
+      </marc21:subfield>
     </xsl:for-each>
     <xsl:for-each select="mods:identifier[@type='issn']">
-      <marc:subfield code="x">
+      <marc21:subfield code="x">
         <xsl:value-of select="." />
-      </marc:subfield>
+      </marc21:subfield>
     </xsl:for-each>
     <xsl:for-each select="mods:identifier[@type='isbn']">
-      <marc:subfield code="z">
+      <marc21:subfield code="z">
         <xsl:value-of select="." />
-      </marc:subfield>
+      </marc21:subfield>
     </xsl:for-each>
     <xsl:for-each select="mods:identifier[@type='local']|@xlink:href|@ID">
-      <marc:subfield code="w">
+      <marc21:subfield code="w">
         <xsl:value-of select="." />
-      </marc:subfield>
+      </marc21:subfield>
     </xsl:for-each>
     <xsl:for-each select="mods:note">
-      <marc:subfield code="n">
+      <marc21:subfield code="n">
         <xsl:value-of select="." />
-      </marc:subfield>
+      </marc21:subfield>
     </xsl:for-each>
   </xsl:template>
 
   <!-- subfield a contains only names, no additional role terms -->
   <xsl:template name="relatedItemNames">
     <xsl:if test="mods:name">
-      <marc:subfield code="a">
+      <marc21:subfield code="a">
         <xsl:for-each select="mods:name">
           <xsl:choose>
             <xsl:when test="mods:displayForm">
@@ -3031,7 +3043,7 @@
             <xsl:value-of select="'; '" />
           </xsl:if>
         </xsl:for-each>
-      </marc:subfield>
+      </marc21:subfield>
     </xsl:if>
   </xsl:template>
 

@@ -1,5 +1,5 @@
 <?xml version='1.0'?>
-<xsl:stylesheet version="1.0" xmlns:marc="http://www.loc.gov/MARC21/slim"
+<xsl:stylesheet version="1.0" xmlns:marc21="http://www.loc.gov/MARC21/slim"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 	<!-- 08/08/08: tmee added corrected chopPunctuation templates for 260c -->
@@ -31,7 +31,7 @@
 			<xsl:text> </xsl:text>
 		</xsl:param>
 		<xsl:param name="subfields"/>
-		<xsl:element name="marc:datafield">
+		<xsl:element name="marc21:datafield">
 			<xsl:attribute name="tag">
 				<xsl:value-of select="$tag"/>
 			</xsl:attribute>
@@ -51,7 +51,7 @@
 			<xsl:text> </xsl:text>
 		</xsl:param>
 		<xsl:variable name="str">
-			<xsl:for-each select="marc:subfield">
+			<xsl:for-each select="marc21:subfield">
 				<xsl:if test="contains($codes, @code)">
 					<xsl:value-of select="text()"/>
 					<xsl:value-of select="$delimeter"/>
