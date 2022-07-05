@@ -13,8 +13,8 @@
     "engineStrict": true,
     "devDependencies": {
         "@fortawesome/fontawesome-free": "5.11.2",
-        "bootstrap": "4.4.1",
-        "bootswatch": "4.4.1",
+        "bootstrap": "4.6.1",
+        "bootswatch": "4.6.1",
         "grunt": "^1.5.3",
         "grunt-cli": "^1.2.0",
         "grunt-contrib-concat": "^1.0.1",

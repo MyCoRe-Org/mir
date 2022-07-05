@@ -2,24 +2,44 @@
 // Navbar
 // --------------------------------------------------
 
-.navbar-inverse .dropdown-menu > li > a {
-  &:hover,
-  &:focus {
-    text-decoration: none;
-    color: $dropdown-link-hover-color;
-    background-color: darken($brand-warning, 6.5%);
+  .navbar-inverse .dropdown-menu > li > a {
+    &:hover,
+    &:focus {
+      text-decoration: none;
+      color: $dropdown-link-hover-color;
+      background-color: darken($brand-warning, 6.5%);
+    }
   }
-}
-.navbar-form {
-    padding: 0px 0px;
-}
-
-.dropdown-submenu {
-  position: relative;
-
-  .dropdown-menu {
-    top: 0;
-    left: 100%;
-    margin-top: -1px;
+  .navbar-form {
+      padding: 0px 0px;
   }
-}
+
+  .dropdown-submenu {
+    position: relative;
+
+    .dropdown-menu {
+      top: 0;
+      left: 100%;
+      margin-top: -1px;
+    }
+  }
+
+  // overwrite bootwatch settings
+  // for link colors in navbars
+  // was set to $success before
+  .bg-primary {
+    .navbar-nav {
+      .nav-link {
+        &:hover,
+        &:focus {
+          color: $mir-navlink-hover-color !important;
+        }
+      }
+      .show,
+      .active {
+        & > .nav-link {
+          color: $mir-navlink-active-color !important;
+        }
+      }
+    }
+  }
