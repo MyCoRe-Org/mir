@@ -507,6 +507,9 @@
         <xsl:when test="$mods-type='research_data'">
           <xsl:value-of select="'Dataset'" />
         </xsl:when>
+        <xsl:when test="$mods-type='software'">
+          <xsl:value-of select="'Software'" />
+        </xsl:when>
         <xsl:otherwise>
           <xsl:value-of select="'Text'" />
         </xsl:otherwise>
