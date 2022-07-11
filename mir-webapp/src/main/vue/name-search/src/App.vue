@@ -10,11 +10,9 @@
             <i class="fas fa-address-card"></i>
             <span class="identifier-count">{{ currentIdentifier.length }}</span>
           </button>
-          <button :id="`search-${this.nameIndex}`" type="button" class="btn btn-outline-secondary" v-if="!searching" v-on:click.prevent="startSearch()">
+          <button :id="`search-${this.nameIndex}`" type="button" class="btn btn-outline-secondary"
+                  v-on:click.prevent="startSearch()">
             {{ searchLabel }}
-          </button>
-          <button type="button" class="btn btn-outline-secondary" v-else><span
-              class="spinner-border spinner-border-sm"></span> {{ searchingLabel }}
           </button>
         </div>
       </div>
@@ -60,17 +58,17 @@
         <div class="card-body">
 
           <ul class="nav nav-tabs">
-            <li v-for="(obj, provider) in results" :class="`nav-item`" :key="provider">
-              <a :class="`nav-link${currentProvider===provider?' active':''}${obj.searching===true || obj.nameList.length === 0?' disabled':''}`"
-                 v-on:click.prevent="currentProvider=provider">
-                {{ provider }}
+            <li v-for="obj in results" :class="`nav-item`" :key="obj.name">
+              <a :class="`nav-link${currentProvider===obj.name?' active':''}${obj.searching===true || obj.nameList.length === 0?' disabled':''}`"
+                 v-on:click.prevent="currentProvider=obj.name">
+                {{ obj.name }}
                 <span v-if="obj.searching===true" class="spinner-border spinner-border-sm">
               </span>
               </a>
             </li>
           </ul>
 
-          <template v-for="searchResult in results[currentProvider].nameList">
+          <template v-for="searchResult in getCurrentResults(currentProvider).nameList">
             <div class="row" :key="`row-${searchResult.id}`">
               <div class="col-10">
                 <span class="result-title">{{ searchResult.displayForm }}</span>
@@ -151,13 +149,11 @@ export default class PersonSearch extends Vue {
 
   isPerson = true;
 
-  results: Record<string, { searching: boolean, nameList: NameSearchResult[] }> = {};
+  results: Array<{ name: string; searching: boolean, nameList: NameSearchResult[] }> = []
 
   currentIdentifier: Identifier[] = [];
 
   dropVisible = 0;
-
-  searching = false;
 
   currentProvider = "";
 
@@ -172,14 +168,13 @@ export default class PersonSearch extends Vue {
 
   private personPlaceholder?: string;
   private searchLabel?: string;
-  private searchingLabel?: string;
   private addLabel?: string;
   private selectLabel?: string;
+  private currentSearch?: number;
 
 
   @Watch('currentIdentifier')
   identifierChanged() {
-    console.log("Watch currentIdentifier")
     if (!this.isDevMode() && this.nameIndex !== undefined) {
       storeIdentifiers(this.nameIndex, this.currentIdentifier);
     }
@@ -187,7 +182,6 @@ export default class PersonSearch extends Vue {
 
   @Watch('search')
   searchChanged() {
-    console.log("Watch search")
     if (!this.isDevMode() && this.nameIndex !== undefined) {
       storeName(this.nameIndex, this.search);
     }
@@ -195,7 +189,6 @@ export default class PersonSearch extends Vue {
 
   @Watch('isPerson')
   isPersonChanged() {
-    console.log("Watch search")
     if (!this.isDevMode() && this.nameIndex !== undefined) {
       storeIsPerson(this.nameIndex, this.isPerson);
     }
@@ -232,7 +225,6 @@ export default class PersonSearch extends Vue {
   }
 
   private async loadLanguage() {
-    this.searchingLabel = await i18n("button.search");
     this.searchLabel = await i18n("editor.search.search");
     this.personPlaceholder = `${await i18n("mir.namePart.family")}, ${await i18n("mir.namePart.given")}`;
     this.addLabel = await i18n("mir.editor.addIdentifier");
@@ -279,41 +271,50 @@ export default class PersonSearch extends Vue {
     }
   }
 
-  async startSearch() {
+  getCurrentResults(currentProvider: string) {
+    const result = this.results.filter(prov => prov.name === currentProvider)[0];
+    console.log(["Getting current results of ", currentProvider, result]);
+    return result;
+  }
+
+  startSearch() {
     console.log("Start Search!");
-    if (this.searching) {
-      console.log("Abort Search, already Searching!")
-      return;
+    let currentSearchID = Math.random();
+    this.currentSearch = currentSearchID;
+    this.currentProvider = SearchProviderRegistry.getProviders()[0].name;
+    while (this.results.length > 0) {
+      this.results.pop();
     }
-    this.searching = true;
 
     this.currentProvider = SearchProviderRegistry.getProviders()[0].name;
-
     for (const provider of SearchProviderRegistry.getProviders()) {
-
-      if (!(provider.name in this.results)) {
-        this.results[provider.name] = {nameList: [], searching: true};
-      }
-
-      while (this.results[provider.name].nameList.length > 0) {
-        this.results[provider.name].nameList.pop()
-      }
-
-      this.results[provider.name].searching = true;
+      const currentSearch = {
+        name: provider.name,
+        searching: true,
+        nameList: [] as NameSearchResult[]
+      };
+      this.results.push(currentSearch);
+      console.time(provider.name,);
+      provider.searchPerson(this.search).then((nameSearchResults => {
+        if (this.currentSearch == currentSearchID) {
+          currentSearch.nameList = nameSearchResults;
+          console.log(["Results", nameSearchResults]);
+          console.timeEnd(provider.name);
+          currentSearch.searching = false;
+        } else {
+          console.log("Old Search!");
+        }
+      }), (err) => {
+        if (this.currentSearch == currentSearchID) {
+          console.error(["Error", err])
+          currentSearch.searching = false;
+        } else {
+          console.log("Old Search!");
+        }
+      });
     }
 
-    for (const provider of SearchProviderRegistry.getProviders()) {
-      try {
-        (await provider.searchPerson(this.search)).forEach(pers => this.results[provider.name].nameList.push(pers));
-      } catch (e) {
-        console.error(["Error ", e]);
-      } finally {
-        this.results[provider.name].searching = false;
-        this.dropVisible = 1;
-      }
-    }
-
-    this.searching = false;
+    this.dropVisible = 1;
   }
 
 
@@ -334,7 +335,6 @@ export default class PersonSearch extends Vue {
     if (this.currentIdentifier.filter(id => id.type == identifier.type && id.value == identifier.value).length == 0) {
       this.currentIdentifier.push(identifier);
     }
-    this.dropVisible = 0;
   }
 
   removeIdentifier(identifier: Identifier) {
@@ -352,6 +352,7 @@ export default class PersonSearch extends Vue {
   }
 
   closeDrops() {
+    console.log("Clicked outside!")
     this.dropVisible = 0;
   }
 }
