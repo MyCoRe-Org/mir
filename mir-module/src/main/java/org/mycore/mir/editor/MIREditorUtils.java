@@ -4,7 +4,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Entities;
 import org.jsoup.safety.Cleaner;
-import org.jsoup.safety.Whitelist;
+import org.jsoup.safety.Safelist;
 import org.mycore.common.config.MCRConfiguration2;
 import org.mycore.frontend.MCRFrontendUtil;
 
@@ -25,7 +25,7 @@ public class MIREditorUtils {
         Document document = Jsoup.parse(text);
         changeToXHTML(document);
 
-        final Whitelist elementWhitelist = getWhiteList();
+        final Safelist elementWhitelist = getSafeList();
         document = getCleanDocument(document, elementWhitelist);
         document.outputSettings().prettyPrint(false);
         changeToXHTML(document);
@@ -40,12 +40,12 @@ public class MIREditorUtils {
         document.setBaseUri(MCRFrontendUtil.getBaseURL() + "receive/placeholder");
     }
 
-    protected static Document getCleanDocument(Document document, Whitelist elementWhitelist) {
+    protected static Document getCleanDocument(Document document, Safelist elementWhitelist) {
         return new Cleaner(elementWhitelist).clean(document);
     }
 
-    protected static Whitelist getWhiteList() {
-        final Whitelist elementWhitelist = Whitelist.none();
+    protected static Safelist getSafeList() {
+        final Safelist elementSafelist = Safelist.none();
 
         String[] allowedElements = MCRConfiguration2.getOrThrow("MIR.Editor.HTML.Elements", s -> s.split(";"));
         Stream.of(allowedElements).forEach(content -> {
@@ -99,19 +99,19 @@ public class MIREditorUtils {
                 elements.add(currentElement.toString());
             }
             elements.forEach(tagName -> {
-                elementWhitelist.addTags(tagName);
+                elementSafelist.addTags(tagName);
                 if (attributes.size() > 0) {
                     attributes.forEach(attr -> {
-                        elementWhitelist.addAttributes(tagName, attr);
+                        elementSafelist.addAttributes(tagName, attr);
                         if (Objects.equals(attr, "href")) {
-                            elementWhitelist.addProtocols(tagName, attr, "http", "https", "ftp", "mailto", "#");
+                            elementSafelist.addProtocols(tagName, attr, "http", "https", "ftp", "mailto", "#");
                         }
                     });
                 }
             });
         });
-        elementWhitelist.preserveRelativeLinks(true);
-        return elementWhitelist;
+        elementSafelist.preserveRelativeLinks(true);
+        return elementSafelist;
     }
 
 }

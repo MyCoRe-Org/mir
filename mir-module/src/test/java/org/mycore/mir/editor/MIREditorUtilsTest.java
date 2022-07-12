@@ -27,7 +27,7 @@ public class MIREditorUtilsTest extends MCRTestCase {
             "<i>i</i>\n" +
             "</body>\n" +
             "</html>");
-        final Document cleanDocument = MIREditorUtils.getCleanDocument(document, MIREditorUtils.getWhiteList());
+        final Document cleanDocument = MIREditorUtils.getCleanDocument(document, MIREditorUtils.getSafeList());
 
         final Element body = cleanDocument.body();
         final Element test1 = body.getElementById("test1");
