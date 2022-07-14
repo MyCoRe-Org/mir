@@ -2,10 +2,11 @@
   <div ref="root" class="form-group" v-click-outside="closeDrops">
     <template v-if="i18nLoaded && classesLoaded">
       <div ref="input" class="input-group">
-        <input type="text" class="form-control" :id="`personLabel-${this.nameIndex}`" :placeholder="personPlaceholder" v-model="search"
+        <input type="text" ref="searchBox" class="form-control" :id="`personLabel-${this.nameIndex}`"
+               :placeholder="personPlaceholder" v-model="search"
                v-on:keydown.enter.prevent="startSearch()">
         <div class="input-group-append">
-          <button class="btn btn-secondary"
+          <button ref="identifierOpenButton" class="btn btn-secondary"
                   v-on:click.prevent="currentIdentifierClicked()">
             <i class="fas fa-address-card"></i>
             <span class="identifier-count">{{ currentIdentifier.length }}</span>
@@ -18,7 +19,7 @@
       </div>
 
       <!-- List of selected identifiers -->
-      <div v-if="$refs.input && (currentIdentifier.length>0 || defineOwnIdentifier ) && dropVisible===2"
+      <div v-if="(currentIdentifier.length>0 || defineOwnIdentifier ) && dropVisible===2"
            class="card current-identifier-list"
            :style="`width: ${getGroupSize()}px;`">
         <div class="card-body">
@@ -53,13 +54,13 @@
         </div>
       </div>
       <!-- Search results -->
-      <div v-if="$refs.input && dropVisible===1" class="card search-completion"
+      <div v-if="dropVisible===1" class="card search-completion"
            :style="`width: ${getGroupSize()}px`">
         <div class="card-body">
 
           <ul class="nav nav-tabs">
             <li v-for="obj in results" :class="`nav-item`" :key="obj.name">
-              <a :class="`nav-link${currentProvider===obj.name?' active':''}${obj.searching===true || obj.nameList.length === 0?' disabled':''}`"
+              <a :class="`nav-link${currentProvider===obj.name?' active':''}${obj.searching===true || obj.nameList.length === 0?' initalism disabled':''}`"
                  v-on:click.prevent="currentProvider=obj.name">
                 {{ obj.name }}
                 <span v-if="obj.searching===true" class="spinner-border spinner-border-sm">
@@ -83,7 +84,8 @@
                 </ul>
               </div>
               <div class="col-2 applyPersonDiv">
-                <i class="applyPerson fas fa-check text-info" v-on:click="applyName(searchResult)"></i>
+                <i class="applyPerson fas fa-check text-info" v-on:click="applyName(searchResult, $event)"
+                   :title="applyPersonTitle"></i>
               </div>
             </div>
             <div class="row" :key="`row2-${searchResult.id}`">
@@ -91,7 +93,9 @@
                 <div class="identifier" v-for="identifier in searchResult.identifier"
                      :key="`${identifier.type}-${identifier.value}`">
                   <identifier-display :type="identifier.type" :value="identifier.value"/>
-                  <i class="identifier-add fas fa-plus-circle text-info" v-on:click="addIdentifier(identifier)"></i>
+                  <i class="identifier-add fas fa-plus-circle text-info"
+                     :title="addLabel"
+                     v-on:click="addIdentifier(identifier, $event)"></i>
                 </div>
               </div>
             </div>
@@ -123,8 +127,10 @@ import IdentifierDisplay from "@/components/IdentifierDisplay.vue";
 import vClickOutside from 'v-click-outside';
 import {i18n} from "@/api/I18N";
 import {RorSearchProvider} from "@/api/RorSearchProvider";
+import {LocalSearchProvider} from "@/api/LocalSearchProvider";
 
 Vue.use(vClickOutside)
+LocalSearchProvider.init();
 LobidSearchProvider.init();
 ViafSearchProvider.init();
 ProxiedOrcidProvider.init();
@@ -170,6 +176,8 @@ export default class PersonSearch extends Vue {
   private searchLabel?: string;
   private addLabel?: string;
   private selectLabel?: string;
+  private applyPersonTitle?: string;
+
   private currentSearch?: number;
 
 
@@ -225,10 +233,18 @@ export default class PersonSearch extends Vue {
   }
 
   private async loadLanguage() {
-    this.searchLabel = await i18n("editor.search.search");
     this.personPlaceholder = `${await i18n("mir.namePart.family")}, ${await i18n("mir.namePart.given")}`;
-    this.addLabel = await i18n("mir.editor.addIdentifier");
-    this.selectLabel = await i18n("mir.select");
+    [
+      this.searchLabel,
+      this.addLabel,
+      this.selectLabel,
+      this.applyPersonTitle
+    ] = await Promise.all([
+      i18n("mir.editor.person.search"),
+      i18n("mir.editor.addIdentifier"),
+      i18n("mir.select"),
+      i18n("mir.editor.person.applyPerson")
+    ]);
   }
 
   private initializeXEditorConnection() {
@@ -281,12 +297,11 @@ export default class PersonSearch extends Vue {
     console.log("Start Search!");
     let currentSearchID = Math.random();
     this.currentSearch = currentSearchID;
-    this.currentProvider = SearchProviderRegistry.getProviders()[0].name;
     while (this.results.length > 0) {
       this.results.pop();
     }
 
-    this.currentProvider = SearchProviderRegistry.getProviders()[0].name;
+    this.currentProvider = "";
     for (const provider of SearchProviderRegistry.getProviders()) {
       const currentSearch = {
         name: provider.name,
@@ -301,6 +316,10 @@ export default class PersonSearch extends Vue {
           console.log(["Results", nameSearchResults]);
           console.timeEnd(provider.name);
           currentSearch.searching = false;
+          if (this.currentProvider == "" && currentSearch.nameList.length > 0) {
+            // the first tabs with results is shown
+            this.currentProvider = provider.name;
+          }
         } else {
           console.log("Old Search!");
         }
@@ -331,10 +350,36 @@ export default class PersonSearch extends Vue {
     return (this.$refs.input instanceof Element ? this.$refs.input.clientWidth : 0);
   }
 
-  addIdentifier(identifier: Identifier) {
+  async addIdentifier(identifier: Identifier, event?: PointerEvent) {
+    // if the function is caused by user action, we do a fancy animation
+    if (event) {
+      const clickTarget = event.currentTarget as HTMLElement;
+      const identifier = (clickTarget.parentElement as HTMLElement).firstElementChild as HTMLElement;
+      const identifierOpenButton = this.$refs.identifierOpenButton as HTMLElement;
+      const animation = this.animateElementToElement(identifier, identifierOpenButton);
+      await animation.finished;
+    }
+
     if (this.currentIdentifier.filter(id => id.type == identifier.type && id.value == identifier.value).length == 0) {
       this.currentIdentifier.push(identifier);
     }
+  }
+
+  animateElementToElement(from: HTMLElement, to: HTMLElement): Animation {
+    const yMove = -1 * (from.getBoundingClientRect().y - to.getBoundingClientRect().y);
+    const xMove = -1 * (from.getBoundingClientRect().x - to.getBoundingClientRect().x);
+
+    const timing = {
+      duration: 500,
+      interations: 1
+    };
+
+    const movement = [
+      {transform: `translate(0px,0px)`, opacity: 0.8},
+      {transform: `translate(${xMove}px,${yMove}px)`, opacity: 0.4}
+    ];
+
+    return from.animate(movement, timing);
   }
 
   removeIdentifier(identifier: Identifier) {
@@ -342,7 +387,26 @@ export default class PersonSearch extends Vue {
     this.currentIdentifier.splice(number, 1);
   }
 
-  applyName(name: NameSearchResult) {
+  async applyName(name: NameSearchResult, event: PointerEvent) {
+    const clickTarget = event.currentTarget as HTMLElement;
+    const clickParent = clickTarget.parentElement?.parentElement;
+    const resultTitle = (clickParent?.querySelector(".result-title") as HTMLElement | undefined);
+    const identifiers = clickParent?.nextElementSibling?.querySelectorAll('.identifier');
+    const identifierOpenButton = this.$refs.identifierOpenButton as HTMLElement;
+    const searchBox = this.$refs.searchBox as HTMLElement;
+
+    console.log(["identifier elements ", identifiers, clickParent, clickParent?.nextElementSibling]);
+
+    if (resultTitle != undefined && identifiers != undefined) {
+      const identifierElements = Array.from(identifiers);
+      const animations = identifierElements
+          .map(el => this.animateElementToElement(el as HTMLElement, identifierOpenButton))
+          .concat(this.animateElementToElement(resultTitle, searchBox))
+          .map(anim => anim.finished);
+
+      await Promise.all(animations);
+    }
+
     while (this.currentIdentifier.length > 0) {
       this.currentIdentifier.pop();
     }
@@ -359,6 +423,10 @@ export default class PersonSearch extends Vue {
 </script>
 
 <style scoped>
+
+.search-completion .nav-link {
+  padding: 0.5rem 1rem;
+}
 
 .disabled {
   color: gray !important;
@@ -399,6 +467,7 @@ export default class PersonSearch extends Vue {
 .result-title {
   font-weight: bold;
   margin-right: 0.5em;
+  display: inline-block; /* required for the animation */
 }
 
 

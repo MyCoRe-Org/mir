@@ -59,11 +59,19 @@ export default class IdentifierDisplay extends Vue {
 </script>
 
 <style scoped>
+span {
+  display: inline-block;
+}
+
 .identifier-key {
   text-transform: uppercase;
 }
 
 .identifier-key::after {
-  content: ': ';
+  content: ':';
+}
+
+.identifier-value {
+  padding-left: 3px;
 }
 </style>
