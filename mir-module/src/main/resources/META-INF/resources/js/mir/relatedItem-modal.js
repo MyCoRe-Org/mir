@@ -1,14 +1,23 @@
 $(document).ready(function() {
   var GenreXML;
 
-  $(".mir-related-item-search input[name*='mods:titleInfo/mods:title']").each(function() {
-    var id = $(this).closest(".mir-related-item-search").find("input[name$='@xlink:href']").val();
-    if (typeof id === "string" && id.split("_").length === 3) {
-      if ($(this).val() === "") {
-        loadTitle(id, $(this));
-      } else {
-        $(this).attr("disabled", "true");
+  $(".mir-related-item-search").each(function() {
+    const id = $(this).find("input[name$='@xlink:href']").val();
+    if (id.length > 0) {
+      const titleInput = $(this).find("input[name*='mods:title']");
+      const urlInput = $(this).find("input[name*='mods:url']");
+      const genreInput = $(this).find("select[name*='mods:genre']");
+      if ($(titleInput).val().length === 0) {
+        if (typeof id === "string" && id.split("_").length === 3) {
+          getInformation(id, function(data) {
+            titleInput.val($(data).find("str[name='mods.title.main']").text());
+            genreInput.val($(data).find("str[name='mods.type']").text());
+          });
+        }
       }
+      $(titleInput).attr("disabled", "true");
+      $(genreInput).attr("disabled", "true");
+      $(urlInput).attr("disabled", "true");
     }
   });
 
@@ -49,19 +58,15 @@ $(document).ready(function() {
     });
   }
 
-  function loadTitle(id, element){
+  function getInformation(id, callback) {
     $.ajax({
       url: webApplicationBaseURL + "servlets/solr/select?q=id:" + id + "&XSL.Style=xml",
       type: "GET",
-      success: function(data) {
-        var title = $(data).find("str[name='mods.title.main']").text();
-        $(element).val(title);
-        $(element).attr("disabled", "true");
-      },
+      success: callback,
       error: function(error) {
-        console.log("Failed to load title for " + id );
-        console.log(error);
-      }
+        console.error("Failed to load title for " + id );
+        console.error(error);
+      },
     });
   }
 
@@ -197,9 +202,15 @@ $(document).ready(function() {
     $("#modalFrame-send").unbind().click(function() {
       input.val($(".list-group-item.active").attr("value"));
       $(button).next("span").text($(".list-group-item.active").attr("value"));
-      var titleInput = $(button).parents(".mir-related-item-search").find("input[name*='mods:title']");
+      const titleInput = $(button).parents(".mir-related-item-search").find("input[name*='mods:title']");
+      const genreInput = $(button).parents(".mir-related-item-search").find("select[name*='mods:genre']");
+      const urlInput = $(button).parents(".mir-related-item-search").find("input[name*='mods:url']");
       $(titleInput).val($(".list-group-item.active").attr("data-title"));
       $(titleInput).attr("disabled", "true");
+      $(genreInput).attr("disabled", "true");
+      $(genreInput).val($(".list-group-item.active").attr("data-type")).change();
+      $(urlInput).attr("disabled", "true");
+      $(urlInput).val('');
       $("#modalFrame").modal("hide");
     });
 
