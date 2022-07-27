@@ -19,6 +19,7 @@ update permission read for id webpage:/content/publish/importPPN.xml with rulefi
 update permission read for id webpage:/modules/webcli/launchpad.xml with rulefile ${app.home}/config/acl/grant-admin.xml described by ${acl-description.admins}
 update permission read for id webpage:/modules/webtools/session/sessionListing.xml with rulefile ${app.home}/config/acl/grant-admin.xml described by ${acl-description.admins}
 update permission read for id webpage:/modules/webtools/processing/processing.xml with rulefile ${app.home}/config/acl/grant-admin.xml described by ${acl-description.admins}
+update permission read for id webpage:/authorization/change-password.xed with rulefile ${app.home}/config/acl/grant-admin.xml described by ${acl-description.admins}
 update permission read for id webpage:/authorization/change-password.xed?action=password with rulefile ${app.home}/config/acl/require-login.xml described by ${acl-description.require-login}
 update permission read for id webpage:/servlets/MCRUserServlet?action=show with rulefile ${app.home}/config/acl/require-login.xml described by ${acl-description.require-login}
 update permission read for id webpage:/authorization/change-current-user.xed?action=saveCurrentUser with rulefile ${app.home}/config/acl/require-login.xml described by ${acl-description.require-login}
