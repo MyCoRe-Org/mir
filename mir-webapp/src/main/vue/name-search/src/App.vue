@@ -11,7 +11,7 @@
             <i class="fas fa-address-card"></i>
             <span class="identifier-count">{{ currentIdentifier.length }}</span>
           </button>
-          <button :id="`search-${this.nameIndex}`" type="button" class="btn btn-outline-secondary"
+          <button :id="`search-${this.nameIndex}`" type="button" class="btn btn-secondary"
                   v-on:click.prevent="startSearch()">
             {{ searchLabel }}
           </button>
@@ -248,15 +248,11 @@ export default class PersonSearch extends Vue {
   }
 
   private initializeXEditorConnection() {
-    console.log(["devmode is ", this.isDevMode()]);
-    console.log(["Element is ", this.$refs.root]);
     if (!this.isDevMode() && this.$refs.root instanceof Element) {
       this.nameIndex = findNameIndex(this.$refs.root);
       this.search = retrieveDisplayName(this.nameIndex);
       this.currentIdentifier = retrieveIdentifiers(this.nameIndex);
       this.isPerson = retrieveIsPerson(this.nameIndex);
-      console.log("Name Index is " + this.nameIndex);
-      console.log(["Identifiers are ", this.currentIdentifier])
     }
   }
 
@@ -288,13 +284,10 @@ export default class PersonSearch extends Vue {
   }
 
   getCurrentResults(currentProvider: string) {
-    const result = this.results.filter(prov => prov.name === currentProvider)[0];
-    console.log(["Getting current results of ", currentProvider, result]);
-    return result;
+    return this.results.filter(prov => prov.name === currentProvider)[0];
   }
 
   startSearch() {
-    console.log("Start Search!");
     let currentSearchID = Math.random();
     this.currentSearch = currentSearchID;
     while (this.results.length > 0) {
@@ -309,26 +302,18 @@ export default class PersonSearch extends Vue {
         nameList: [] as NameSearchResult[]
       };
       this.results.push(currentSearch);
-      console.time(provider.name,);
       provider.searchPerson(this.search).then((nameSearchResults => {
         if (this.currentSearch == currentSearchID) {
           currentSearch.nameList = nameSearchResults;
-          console.log(["Results", nameSearchResults]);
-          console.timeEnd(provider.name);
           currentSearch.searching = false;
           if (this.currentProvider == "" && currentSearch.nameList.length > 0) {
             // the first tabs with results is shown
             this.currentProvider = provider.name;
           }
-        } else {
-          console.log("Old Search!");
         }
       }), (err) => {
         if (this.currentSearch == currentSearchID) {
-          console.error(["Error", err])
           currentSearch.searching = false;
-        } else {
-          console.log("Old Search!");
         }
       });
     }
@@ -395,8 +380,6 @@ export default class PersonSearch extends Vue {
     const identifierOpenButton = this.$refs.identifierOpenButton as HTMLElement;
     const searchBox = this.$refs.searchBox as HTMLElement;
 
-    console.log(["identifier elements ", identifiers, clickParent, clickParent?.nextElementSibling]);
-
     if (resultTitle != undefined && identifiers != undefined) {
       const identifierElements = Array.from(identifiers);
       const animations = identifierElements
@@ -416,7 +399,6 @@ export default class PersonSearch extends Vue {
   }
 
   closeDrops() {
-    console.log("Clicked outside!")
     this.dropVisible = 0;
   }
 }

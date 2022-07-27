@@ -40,7 +40,6 @@ export class LocalSearchProvider implements SearchProvider {
 
         for (let i = 0; i < array.length; i+=2) {
             const term = array[i] as string;
-            const count = array[i+1] as number;
 
             const [name, type, identifier] = term.split(":", 3);
 
@@ -60,6 +59,6 @@ export class LocalSearchProvider implements SearchProvider {
     }
 
     getUrl(searchTerm:string) {
-        return (<any>window)["webApplicationBaseURL"] + "servlets/solr/personindexp?XSL.Style=xml&wt=json&terms.regex=" + escapeRegex(searchTerm) + ".*";
+        return (window as any)["webApplicationBaseURL"] + "servlets/solr/personindexp?XSL.Style=xml&wt=json&terms.regex=" + escapeRegex(searchTerm) + ".*";
     }
 }

@@ -31,7 +31,7 @@ export class ViafSearchProvider implements SearchProvider {
             const scriptElement = document.createElement('script');
             const callbackID = `viaf_${Math.random().toString(16).toString().substr(2)}`;
 
-            (<any>window)[callbackID] = (data: any) => {
+            (window as any)[callbackID] = (data: any) => {
                 const result: NameSearchResult[] = [];
 
                 for (const suggestIndex in data.result) {

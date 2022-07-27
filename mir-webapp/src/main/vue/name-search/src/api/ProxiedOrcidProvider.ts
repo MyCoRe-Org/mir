@@ -64,6 +64,6 @@ export class ProxiedOrcidProvider implements SearchProvider {
     }
 
     get url() {
-        return (<any>window)["webApplicationBaseURL"] + "servlets/MIROrcidServlet"
+        return (window as any)["webApplicationBaseURL"] + "servlets/MIROrcidServlet"
     }
 }

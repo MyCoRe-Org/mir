@@ -1,7 +1,7 @@
 const store: Record<string, string | Promise<string>> = {}
 
 export async function i18n(key: string): Promise<string> {
-    const {webApplicationBaseURL, currentLang} = <any>window;
+    const {webApplicationBaseURL, currentLang} = window as any;
     if (key in store) {
         const storeContent = store[key];
         if (typeof storeContent === "string") {
