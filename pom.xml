@@ -37,15 +37,14 @@
     <cargo.tomcat.ajp.port>8292</cargo.tomcat.ajp.port>
     <cargo.tomcat.connector.maxHttpHeaderSize>8192</cargo.tomcat.connector.maxHttpHeaderSize>
     <cargo.version>1.9.13</cargo.version>
-    <changelog.since>2021-02-23</changelog.since>
+    <changelog.since>2022-02-18</changelog.since>
     <!-- until snapshot matches released version (required for 'mvn changes:changes-check') -->
     <changes.version>2022.05</changes.version>
     <hibernate.version>5.6.7.Final</hibernate.version>
     <java.target.version>17</java.target.version>
     <jetty.version>11.0.9</jetty.version>
     <maven.compiler.arg>-Werror</maven.compiler.arg>
-    <mycore.version>2022.05-SNAPSHOT</mycore.version>
-    <node.version>v12.16.3</node.version>
+    <mycore.version>2022.05</mycore.version>
     <selenium.version>4.3.0</selenium.version>
     <site.suffix />
     <solr-runner.solrMirrorURL>https://archive.apache.org/dist/lucene/solr/</solr-runner.solrMirrorURL>
@@ -54,7 +53,6 @@
     <sortpom.sortFile>https://gist.githubusercontent.com/yagee-de/dfd3698c1b49173dbf251f74eb6a9297/raw/406460c088ff3cb6354e4ae6b40535e6f841607d/mycore_sort.xml</sortpom.sortFile>
     <sortpom.sortProps>true</sortpom.sortProps>
     <tomcat.version>10.0.22</tomcat.version>
-    <yarn.version>v1.22.4</yarn.version>
   </properties>
   <build>
     <pluginManagement>
