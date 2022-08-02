@@ -4,11 +4,11 @@
   <parent>
     <groupId>org.mycore</groupId>
     <artifactId>mycore-parent</artifactId>
-    <version>49</version>
+    <version>50-SNAPSHOT</version>
   </parent>
   <groupId>org.mycore.mir</groupId>
   <artifactId>mir-parent</artifactId>
-  <version>2022.05</version>
+  <version>2022.06.0-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>MIR</name>
   <description>MyCoRe/MODS Institutional Repository</description>
@@ -22,7 +22,7 @@
     <connection>scm:git:https://github.com/MyCoRe-Org/mir.git</connection>
     <developerConnection>scm:git:https://github.com/MyCoRe-Org/mir.git</developerConnection>
     <url>https://github.com/MyCoRe-Org/mir/tree/master</url>
-    <tag>v2022.05</tag>
+    <tag>2017.06.0.x</tag>
   </scm>
   <properties>
     <cargo.container.zipUrlInstaller.downloadDir>${settings.localRepository}/../cargo/containers</cargo.container.zipUrlInstaller.downloadDir>
@@ -37,14 +37,14 @@
     <cargo.tomcat.ajp.port>8292</cargo.tomcat.ajp.port>
     <cargo.tomcat.connector.maxHttpHeaderSize>8192</cargo.tomcat.connector.maxHttpHeaderSize>
     <cargo.version>1.9.13</cargo.version>
-    <changelog.since>2022-02-18</changelog.since>
+    <changelog.since>2022-08-02</changelog.since>
     <!-- until snapshot matches released version (required for 'mvn changes:changes-check') -->
     <changes.version>2022.05</changes.version>
     <hibernate.version>5.6.7.Final</hibernate.version>
     <java.target.version>17</java.target.version>
     <jetty.version>11.0.9</jetty.version>
     <maven.compiler.arg>-Werror</maven.compiler.arg>
-    <mycore.version>2022.05</mycore.version>
+    <mycore.version>2022.06.0-SNAPSHOT</mycore.version>
     <selenium.version>4.3.0</selenium.version>
     <site.suffix />
     <solr-runner.solrMirrorURL>https://archive.apache.org/dist/lucene/solr/</solr-runner.solrMirrorURL>
