@@ -39,7 +39,7 @@
     <cargo.version>1.9.13</cargo.version>
     <changelog.since>2022-08-02</changelog.since>
     <!-- until snapshot matches released version (required for 'mvn changes:changes-check') -->
-    <changes.version>2022.05</changes.version>
+    <changes.version>2022.06.0</changes.version>
     <hibernate.version>5.6.7.Final</hibernate.version>
     <java.target.version>17</java.target.version>
     <jetty.version>11.0.9</jetty.version>
