@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<or xmlns:rh="https://mycore.org/rule-helper">
+    <and>
+        <or>
+            <and>
+                <target>webpage</target>
+                <or>
+                    <id>webpage:/authorization/roles-editor.xml</id>
+                    <regex>webpage:/authorization/new-user.xed.*</regex>
+                    <regex>webpage:/authorization/change-user.xed.*</regex>
+                    <regex>webpage:/servlets/MCRUserServlet.*</regex>
+                </or>
+            </and>
+            <action>administrate-users</action>
+        </or>
+        <role>admin</role>
+    </and>
+    <and>
+        <target>webpage</target>
+        <or>
+            <regex>webpage:/authorization/change-current-user.xed.*</regex>
+            <regex>webpage:/authorization/change-password.xed.*</regex>
+            <id>webpage:/servlets/MCRUserServlet?action=show</id>
+            <id>webpage:/authorization/change-current-user.xed?action=saveCurrentUser</id>
+        </or>
+    </and>
+</or>
+
