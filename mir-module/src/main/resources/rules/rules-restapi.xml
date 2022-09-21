@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<or xmlns:rh="https://mycore.org/rule-helper">
+     <and>
+        <action>read</action>
+        <regex>restapi:/.*</regex>
+    </and>
+</or>

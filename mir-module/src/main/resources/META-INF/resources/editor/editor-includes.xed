@@ -120,7 +120,7 @@
       <label class="col-md-3 col-form-label text-right">
         <xed:output i18n="component.mods.metaData.dictionary.status" />
       </label>
-      <xed:bind xpath="servstates[@class='MCRMetaClassification']/servstate[@classid='state']/@categid" initially="submitted">
+      <xed:bind xpath="servstates[@class='MCRMetaClassification']/servstate[@classid='state']/@categid" initially="{$MIR.Editor.Default.State}">
         <div class="col-md-6">
           <div class="controls">
             <select class="form-control form-control-inline">

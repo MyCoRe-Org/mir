@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<or xmlns:rh="https://mycore.org/rule-helper">
+    <and>
+        <or>
+            <action>use-processable</action>
+            <!-- manage sessions page -->
+            <and>
+                <target>webpage</target>
+                <id>webpage:/modules/webtools/processing/processing.xml</id>
+            </and>
+        </or>
+        <role>admin</role>
+    </and>
+</or>
+

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<and xmlns:rh="https://mycore.org/rule-helper">
+    <or>
+        <!-- actual use acl -->
+        <action>use-webcli</action>
+        <!-- webcli launchpad page -->
+        <and>
+            <target>webpage</target>
+            <id>webpage:/modules/webcli/launchpad.xml</id>
+        </and>
+    </or>
+    <role>admin</role>
+</and>
+
+

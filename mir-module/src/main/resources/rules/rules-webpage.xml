@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~  This file is part of ***  M y C o R e  ***
+  ~  See http://www.mycore.de/ for details.
+  ~
+  ~  MyCoRe is free software: you can redistribute it and/or modify
+  ~  it under the terms of the GNU General Public License as published by
+  ~  the Free Software Foundation, either version 3 of the License, or
+  ~  (at your option) any later version.
+  ~
+  ~  MyCoRe is distributed in the hope that it will be useful,
+  ~  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~  GNU General Public License for more details.
+  ~
+  ~  You should have received a copy of the GNU General Public License
+  ~  along with MyCoRe.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+
+<or xmlns:rh="https://mycore.org/rule-helper">
+    <and>
+        <target>webpage</target>
+        <id>webpage:navigation</id>
+        <action>read</action>
+    </and>
+    <and>
+        <!-- shitty bug in org.mycore.frontend.MCRLayoutUtilities.itemAccess -->
+        <target>webpage</target>
+        <id>webpage:null</id>
+        <action>read</action>
+    </and>
+    <and>
+        <target>webpage</target>
+        <action>read</action>
+        <or>
+            <!-- public pages, with exceptions -->
+            <regex>webpage:/.*</regex>
+        </or>
+        <and>
+            <!-- Internal pages -->
+            <or>
+                <and>
+                    <not>
+                        <regex>webpage:/content/search/simple.xed</regex>
+                    </not>
+                    <not>
+                        <regex>webpage:/content/search/complex.xed</regex>
+                    </not>
+                </and>
+                <and>
+                    <not>
+                        <role>admin</role>
+                    </not>
+                    <not>
+                        <role>editor</role>
+                    </not>
+                </and>
+            </or>
+            <or>
+                <not>
+                    <regex>webpage:/.*_intern\..*</regex>
+                </not>
+                <role>admin</role>
+                <role>editor</role>
+            </or>
+            <or>
+                <not>
+                    <regex>webpage:/search/search-expert.xed.*</regex>
+                </not>
+                <role>admin</role>
+                <role>editor</role>
+            </or>
+            <not>
+                <!-- editors are handled somewhere else -->
+                <regex>webpage:/editor/.*</regex>
+            </not>
+            <not>
+                <!-- modules are handled somewhere else -->
+                <regex>webpage:/modules/.*</regex>
+            </not>
+            <not>
+                <!-- authorization is handled somewhere else -->
+                <regex>webpage:/authorization/.*</regex>
+            </not>
+            <not>
+                <!-- authorization is handled somewhere else -->
+                <regex>webpage:/servlets/MCRUserServlet.*</regex>
+            </not>
+            <not>
+                <!-- we dont need that here -->
+                <regex>webpage:/rsc/ACLE/start.*</regex>
+            </not>
+        </and>
+    </and>
+</or>
+
