@@ -1108,9 +1108,6 @@
             <div class="col-md-3">
               <xed:bind xpath="@type">
                 <select class="form-control form-control-inline" style="text-align: right; font-weight:bold;">
-                  <option value="">
-                    <xed:output i18n="mir.link.title" />
-                  </option>
                   <option value="original">
                     <xed:output i18n="mir.relatedItem.original" />
                   </option>
