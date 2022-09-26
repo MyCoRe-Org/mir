@@ -23,6 +23,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.Select;
 
 public class MIRModsEditorController extends MIREditorController {
@@ -312,13 +313,24 @@ public class MIRModsEditorController extends MIREditorController {
             IntStream.range(0, names.size()).forEach(i -> {
                 String name = names.get(i);
                 String inputPath = ".//input[contains(@id,'personLabel-" + (i + 1 + fieldOffset) + "')]";
-                driver.waitAndFindElement(By.xpath(inputPath)).sendKeys(name);
+                WebElement inputElement = driver.waitAndFindElement(By.xpath(inputPath));
+                inputElement.sendKeys(name);
                 driver.waitAndFindElement(By.xpath(inputPath + "/.././/button[contains(text(), 'Suchen')]")).click();
                 waitForResults();
+                driver.waitAndFindElement(By.xpath(inputPath + "/../../.././/a[contains(text(),'Lobid')]"))
+                        .click();
+                waitForAnimationFinish();
                 driver.waitAndFindElement(By.xpath(inputPath + "/../../.././/i[contains(@class,'applyPerson')]"))
                         .click();
+                waitForAnimationFinish();
+                clickOutside();
+                waitForAnimationFinish();
             });
         }
+    }
+    public void clickOutside() {
+        Actions action = new Actions(driver);
+        action.moveByOffset(0, 0).click().build().perform();
     }
 
     private void waitForResults() {
@@ -329,13 +341,27 @@ public class MIRModsEditorController extends MIREditorController {
         }
     }
 
+    private void waitForAnimationFinish() {
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public void setAuthor(String name) {
         String inputPath = ".//input[contains(@id,'personLabel-')]";
         driver.waitAndFindElement(By.xpath(inputPath)).sendKeys(name);
         driver.waitAndFindElement(By.xpath(inputPath + "/.././/button[contains(text(), 'Suchen')]")).click();
         this.waitForResults();
+        driver.waitAndFindElement(By.xpath(inputPath + "/../../.././/a[contains(text(),'Lobid')]"))
+                .click();
+        waitForAnimationFinish();
         driver.waitAndFindElement(By.xpath(".//i[contains(@class,'applyPerson')][1]"))
             .click();
+        waitForAnimationFinish();
+        clickOutside();
+        waitForAnimationFinish();
     }
 
     public void setAccessConditions(MIRLicense ac) {
