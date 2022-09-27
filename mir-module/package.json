@@ -35,6 +35,7 @@
     "dependencies": {
         "ckeditor-notification": "^4.11.2",
         "ckeditor-wordcount-plugin": "^1.17.6",
-        "ckeditor4": "^4.18.0"
+        "ckeditor4": "^4.18.0",
+        "vue": "2.6.14"
     }
 }
