@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~  This file is part of ***  M y C o R e  ***
+  ~  See http://www.mycore.de/ for details.
+  ~
+  ~  MyCoRe is free software: you can redistribute it and/or modify
+  ~  it under the terms of the GNU General Public License as published by
+  ~  the Free Software Foundation, either version 3 of the License, or
+  ~  (at your option) any later version.
+  ~
+  ~  MyCoRe is distributed in the hope that it will be useful,
+  ~  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~  GNU General Public License for more details.
+  ~
+  ~  You should have received a copy of the GNU General Public License
+  ~  along with MyCoRe.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+
+<or xmlns:rh="https://mycore.org/rule-helper">
+    <and>
+        <or>
+            <target>files</target>
+            <target>metadata</target>
+            <!-- this should be fixed in acl module -->
+            <action>create-mods</action>
+            <action>create-derivate</action>
+        </or>
+        <or>
+            <and>
+                <or>
+                    <action>create-mods</action>
+                    <action>create-derivate</action>
+                </or>
+                <or>
+                    <role>editor</role>
+                    <role>submitter</role>
+                    <role>admin</role>
+                </or>
+            </and>
+            <!-- reading -->
+            <and>
+                <action>read</action>
+                <or>
+                    <and>
+                        <status>published</status>
+                        <or>
+                            <and>
+                                <or>
+                                    <and>
+                                        <target>files</target>
+                                        <category idfact="derid">mir_access:intern</category>
+                                    </and>
+                                    <category>mir_access:intern</category>
+                                </or>
+                                <or>
+                                    <role>reader</role>
+                                    <role>admin</role>
+                                    <role>editor</role>
+                                    <role>submitter</role>
+                                    <createdby/>
+                                </or>
+                            </and>
+                            <and>
+                                <or>
+                                    <and>
+                                        <target>files</target>
+                                        <category idfact="derid">mir_access:ipAddressRange</category>
+                                    </and>
+                                    <category>mir_access:ipAddressRange</category>
+                                </or>
+                                <or>
+                                    <role>admin</role>
+                                    <role>editor</role>
+                                    <ip-from-institution />
+                                    <createdby/>
+                                </or>
+                            </and>
+                            <and>
+                                <embargo/>
+                                <target>files</target>
+                                <or>
+                                    <role>admin</role>
+                                    <role>editor</role>
+                                    <createdby/>
+                                </or>
+                            </and>
+                            <or>
+                                <!-- if all these things are not present, then its readable -->
+                                <not>
+                                    <or>
+                                        <and>
+                                            <target>files</target>
+                                            <category idfact="derid">mir_access:intern</category>
+                                        </and>
+                                        <category>mir_access:intern</category>
+                                        <and>
+                                            <embargo/>
+                                            <target>files</target>
+                                        </and>
+                                        <and>
+                                            <and>
+                                                <target>files</target>
+                                                <category idfact="derid">mir_access:ipAddressRange</category>
+                                            </and>
+                                        </and>
+                                        <category>mir_access:ipAddressRange</category>
+                                    </or>
+                                </not>
+                            </or>
+                        </or>
+                    </and>
+                    <and>
+                        <or>
+                            <status>new</status>
+                            <status>submitted</status>
+                        </or>
+                        <or>
+                            <createdby/>
+                            <role>editor</role>
+                            <role>admin</role>
+                        </or>
+                    </and>
+                    <and>
+                        <or>
+                            <status>blocked</status>
+                            <status>deleted</status>
+                        </or>
+
+                        <or>
+                            <and>
+                                <not>
+                                    <target>files</target>
+                                </not>
+                                <not>
+                                    <category>mir_access:intern</category>
+                                </not>
+                            </and>
+                            <role>admin</role>
+                            <role>editor</role>
+                        </or>
+                    </and>
+                </or>
+            </and>
+            <!-- writing -->
+            <and>
+                <action>write</action>
+                <or>
+                    <and>
+                        <or>
+                            <status>new</status>
+                        </or>
+                        <or>
+                            <createdby/>
+                            <role>editor</role>
+                            <role>admin</role>
+                        </or>
+                    </and>
+                    <and>
+                        <or>
+                            <status>blocked</status>
+                            <status>deleted</status>
+                            <status>submitted</status>
+                            <status>published</status>
+                        </or>
+                        <or>
+                            <role>editor</role>
+                            <role>admin</role>
+                        </or>
+                    </and>
+                </or>
+            </and>
+            <and>
+                <action>delete</action>
+                <or>
+                    <and>
+                        <status>new</status>
+                        <or>
+                            <createdby/>
+                            <role>admin</role>
+                            <role>editor</role>
+                        </or>
+                    </and>
+                    <and>
+                        <status>submitted</status>
+                        <or>
+                            <role>admin</role>
+                            <role>editor</role>
+                        </or>
+                    </and>
+                    <and>
+                        <or>
+                            <status>published</status>
+                            <status>blocked</status>
+                            <status>deleted</status>
+                        </or>
+                        <role>admin</role>
+                    </and>
+                </or>
+            </and>
+        </or>
+    </and>
+</or>

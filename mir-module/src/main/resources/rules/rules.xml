@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~  This file is part of ***  M y C o R e  ***
+  ~  See http://www.mycore.de/ for details.
+  ~
+  ~  MyCoRe is free software: you can redistribute it and/or modify
+  ~  it under the terms of the GNU General Public License as published by
+  ~  the Free Software Foundation, either version 3 of the License, or
+  ~  (at your option) any later version.
+  ~
+  ~  MyCoRe is distributed in the hope that it will be useful,
+  ~  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~  GNU General Public License for more details.
+  ~
+  ~  You should have received a copy of the GNU General Public License
+  ~  along with MyCoRe.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+
+<or xmlns:rh="https://mycore.org/rule-helper">
+    <rh:include href="rules-webpage.xml" rule-helper="true"/>
+    <rh:include href="rules-objects.xml" rule-helper="true"/>
+    <rh:include href="rules-editor.xml" rule-helper="true"/>
+    <rh:include href="rules-solr.xml" rule-helper="true"/>
+    <rh:include href="rules-classes.xml" rule-helper="true"/>
+    <rh:include href="rules-wcms.xml" rule-helper="true"/>
+    <rh:include href="rules-administrate-users.xml" rule-helper="true"/>
+    <rh:include href="rules-cli.xml" rule-helper="true"/>
+    <rh:include href="rules-sessions.xml" rule-helper="true"/>
+    <rh:include href="rules-processing.xml" rule-helper="true"/>
+    <rh:include href="rules-restapi.xml" rule-helper="true"/>
+</or>

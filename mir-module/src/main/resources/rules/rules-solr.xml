@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<and xmlns:rh="https://mycore.org/rule-helper">
+    <target>solr</target>
+    <action>read</action>
+    <and>
+        <!-- Internal solr cores -->
+        <or>
+            <not>
+                <or>
+                    <rh:each-property property="MIR.Rules.Solr.Protected.RequestHandler">
+                        <id>solr:/<rh:each-property-replace property="MIR.Rules.Solr.Protected.RequestHandler"/></id>
+                    </rh:each-property>
+                </or>
+            </not>
+            <role>admin</role>
+            <role>editor</role>
+            <role>submitter</role>
+            <role>reader</role>
+        </or>
+    </and>
+</and>

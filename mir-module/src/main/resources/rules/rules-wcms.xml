@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<and xmlns:rh="https://mycore.org/rule-helper">
+    <or>
+        <and>
+            <target>webpage</target>
+            <regex>webpage:/modules/wcms2/wcms2.xml.*</regex>
+        </and>
+        <action>use-wcms</action>
+    </or>
+    <role>admin</role>
+</and>

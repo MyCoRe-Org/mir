@@ -120,7 +120,7 @@
       <label class="col-md-3 col-form-label text-right">
         <xed:output i18n="component.mods.metaData.dictionary.status" />
       </label>
-      <xed:bind xpath="servstates[@class='MCRMetaClassification']/servstate[@classid='state']/@categid" initially="submitted">
+      <xed:bind xpath="servstates[@class='MCRMetaClassification']/servstate[@classid='state']/@categid" initially="{$MIR.Editor.Default.State}">
         <div class="col-md-6">
           <div class="controls">
             <select class="form-control form-control-inline">
@@ -572,17 +572,17 @@
         <input type="hidden" class="nameType" />
       </xed:bind>
       <xed:bind xpath="mods:displayForm">
-        <input type="text" size="26" class="form-control form-control-inline" data-search="searchEntity" data-search-type="select"
-               data-search-entity-type="both" data-search-output=".nameIdentifier" data-search-output-type=".nameIdentifierType" data-search-output-name-type=".nameType" data-search-button="{i18n:button.search}"
-               data-search-button-loading="{i18n:button.loading}" data-search-result-empty="{i18n:mir.searchIdentifier.noResult}" data-target=".search-person"
-               placeholder="{i18n:mir.placeholder.name.family}, {i18n:mir.placeholder.name.given}" />
+        <input type="hidden"/>
+        <div class="nameSearchApp">
+          <ns define-own-identifier="false"/>
+        </div>
       </xed:bind>
-      <xed:bind xpath="mods:nameIdentifier">
-        <input type="hidden" class="nameIdentifier" />
-      </xed:bind>
-      <xed:bind xpath="mods:nameIdentifier/@type">
-        <input type="hidden" class="nameIdentifierType" />
-      </xed:bind>
+      <xed:repeat xpath="mods:nameIdentifier" min="10" max="10">
+        <input type="hidden" class="nameIdentifier"/>
+        <xed:bind xpath="@type">
+          <input type="hidden" class="nameIdentifierType"/>
+        </xed:bind>
+      </xed:repeat>
     </div>
     <!-- ========== LSF subselect ==========
     <button type="submit" class="btn btn-secondary" xed:target="subselect" xed:href="../lsfSearch.html?lastName={mods:namePart[@type='family']}">
@@ -606,11 +606,17 @@
   <xed:template id="person.fields.noHidden">
     <div class="search-person">
       <xed:bind xpath="mods:displayForm">
-        <input type="text" size="26" class="form-control form-control-inline" data-search="searchEntity" data-search-type="select"
-               data-search-entity-type="both" data-search-output=".nameIdentifier" data-search-output-type=".nameIdentifierType" data-search-output-name-type=".nameType" data-search-button="{i18n:button.search}"
-               data-search-button-loading="{i18n:button.loading}" data-search-result-empty="{i18n:mir.searchIdentifier.noResult}" data-target=".personExtended_box"
-               placeholder="{i18n:mir.placeholder.name.family}, {i18n:mir.placeholder.name.given}" />
+        <input type="hidden"/>
+        <div class="nameSearchApp">
+          <ns define-own-identifier="false"/>
+        </div>
       </xed:bind>
+      <xed:repeat xpath="mods:nameIdentifier" min="10" max="10">
+        <input type="hidden" class="nameIdentifier"/>
+        <xed:bind xpath="@type">
+          <input type="hidden" class="nameIdentifierType"/>
+        </xed:bind>
+      </xed:repeat>
     </div>
   </xed:template>
 
@@ -1096,36 +1102,39 @@
 
   <!-- related.item.link.repeated -->
   <xed:template id="related.item.link">
-    <xed:repeat xpath="mods:relatedItem" min="1" max="10">
-      <div class="mir-fieldset-content">
-        <div class="form-group row">
-          <div class="col-md-3">
-            <xed:bind xpath="@type">
-              <select class="form-control form-control-inline" style="text-align: right; font-weight:bold;">
-                <option value="">
-                  <xed:output i18n="mir.link.title" />
-                </option>
-                <option value="original">
-                  <xed:output i18n="mir.relatedItem.original" />
-                </option>
-                <option value="otherVersion">
-                  <xed:output i18n="mir.relatedItem.otherVersion" />
-                </option>
-                <option value="otherFormat">
-                  <xed:output i18n="mir.relatedItem.otherFormat" />
-                </option>
-              </select>
-            </xed:bind>
+    <xed:repeat xpath="mods:relatedItem[string-length(@xlink:href) = 0][@type = 'original' or @type = 'otherVersion' or @type = 'otherFormat']" 
+        min="1" max="10">
+      <fieldset>
+        <legend class="mir-fieldset-legend">
+          <xed:output i18n="mir.link.title" />
+        </legend>  
+        <div class="mir-fieldset-content">
+          <div class="form-group row">
+            <div class="col-md-3">
+              <xed:bind xpath="@type">
+                <select class="form-control form-control-inline" style="text-align: right; font-weight:bold;">
+                  <option value="original">
+                    <xed:output i18n="mir.relatedItem.original" />
+                  </option>
+                  <option value="otherVersion">
+                    <xed:output i18n="mir.relatedItem.otherVersion" />
+                  </option>
+                  <option value="otherFormat">
+                    <xed:output i18n="mir.relatedItem.otherFormat" />
+                  </option>
+                </select>
+              </xed:bind>
+            </div>
+            <div class="col-md-6">
+              <xed:bind xpath="mods:titleInfo/mods:title">
+                <input type="text" class="form-control" placeholder="{i18n:mir.placeholder.title.link}" />
+              </xed:bind>
+            </div>
+            <mir:help-pmud help-text="{i18n:mir.help.link.title}" pmud="true" />
           </div>
-          <div class="col-md-6">
-            <xed:bind xpath="mods:titleInfo/mods:title">
-              <input type="text" class="form-control" placeholder="{i18n:mir.placeholder.title.link}" />
-            </xed:bind>
-          </div>
-          <mir:help-pmud help-text="{i18n:mir.help.link.title}" pmud="true" />
+          <mir:textfield xpath="mods:location/mods:url[@access='raw object']" help-text="{i18n:mir.help.link.raw_object}" placeholder="{i18n:mir.placeholder.abstract.link}" />
         </div>
-        <mir:textfield xpath="mods:location/mods:url[@access='raw object']" help-text="{i18n:mir.help.link.raw_object}" placeholder="{i18n:mir.placeholder.abstract.link}" />
-      </div>
+      </fieldset>
     </xed:repeat>
   </xed:template>
 
@@ -2238,15 +2247,30 @@
     <script src="{$WebApplicationBaseURL}assets/jquery/plugins/bootstrap3-typeahead/bootstrap3-typeahead.min.js" type="text/javascript"></script>
     <script src="{$WebApplicationBaseURL}js/mir/relatedItem-autocomplete.min.js" type="text/javascript"></script>
     <script src="{$WebApplicationBaseURL}js/mir/item-autocomplete.js" type="text/javascript"></script>
-    <link href="{$WebApplicationBaseURL}assets/bootstrap-datepicker/css/bootstrap-datepicker.css" rel="stylesheet" />
-    <script type="text/javascript" src="{$WebApplicationBaseURL}assets/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
-    <script type="text/javascript" src="{$WebApplicationBaseURL}assets/bootstrap-datepicker/locales/bootstrap-datepicker.de.min.js"></script>
+    <link href="{$WebApplicationBaseURL}assets/bootstrap-datepicker/css/bootstrap-datepicker.css" rel="stylesheet"/>
+    <script type="text/javascript"
+            src="{$WebApplicationBaseURL}assets/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
+    <script type="text/javascript"
+            src="{$WebApplicationBaseURL}assets/bootstrap-datepicker/locales/bootstrap-datepicker.de.min.js"></script>
     <script type="text/javascript" src="{$WebApplicationBaseURL}assets/moment/min/moment.min.js"></script>
     <script type="text/javascript" src="{$WebApplicationBaseURL}js/mir/xeditor-form.min.js"></script>
     <script type="text/javascript" src="{$WebApplicationBaseURL}assets/ckeditor4/ckeditor.js"></script>
-    <link rel="stylesheet" type="text/css" href="{$WebApplicationBaseURL}assets/select2/css/select2.min.css" />
-    <script type="text/javascript" src="{$WebApplicationBaseURL}assets/select2/js/select2.min.js" />
-    <script type="text/javascript" src="{$WebApplicationBaseURL}assets/select2/js/i18n/{$MCR.Metadata.DefaultLang}.js" />
+    <link rel="stylesheet" type="text/css" href="{$WebApplicationBaseURL}assets/select2/css/select2.min.css"/>
+    <script type="text/javascript" src="{$WebApplicationBaseURL}assets/select2/js/select2.min.js"/>
+    <script type="text/javascript" src="{$WebApplicationBaseURL}assets/select2/js/i18n/{$MCR.Metadata.DefaultLang}.js"/>
+    <script src="{$WebApplicationBaseURL}assets/vue/vue.min.js"/>
+    <script src="{$WebApplicationBaseURL}vue/nameSearch.umd.min.js"/>
+    <link href="{$WebApplicationBaseURL}vue/nameSearch.css" rel="stylesheet"/>
+    <script>
+      document.querySelectorAll(".nameSearchApp").forEach(function (element) {
+        new Vue({
+          components: {
+            ns: nameSearch
+          }
+        }).$mount(element);
+      });
+
+    </script>
   </xed:template>
 
 </xed:template>
