@@ -1102,36 +1102,39 @@
 
   <!-- related.item.link.repeated -->
   <xed:template id="related.item.link">
-    <xed:repeat xpath="mods:relatedItem" min="1" max="10">
-      <div class="mir-fieldset-content">
-        <div class="form-group row">
-          <div class="col-md-3">
-            <xed:bind xpath="@type">
-              <select class="form-control form-control-inline" style="text-align: right; font-weight:bold;">
-                <option value="">
-                  <xed:output i18n="mir.link.title" />
-                </option>
-                <option value="original">
-                  <xed:output i18n="mir.relatedItem.original" />
-                </option>
-                <option value="otherVersion">
-                  <xed:output i18n="mir.relatedItem.otherVersion" />
-                </option>
-                <option value="otherFormat">
-                  <xed:output i18n="mir.relatedItem.otherFormat" />
-                </option>
-              </select>
-            </xed:bind>
+    <xed:repeat xpath="mods:relatedItem[string-length(@xlink:href) = 0][@type = 'original' or @type = 'otherVersion' or @type = 'otherFormat']" 
+        min="1" max="10">
+      <fieldset>
+        <legend class="mir-fieldset-legend">
+          <xed:output i18n="mir.link.title" />
+        </legend>  
+        <div class="mir-fieldset-content">
+          <div class="form-group row">
+            <div class="col-md-3">
+              <xed:bind xpath="@type">
+                <select class="form-control form-control-inline" style="text-align: right; font-weight:bold;">
+                  <option value="original">
+                    <xed:output i18n="mir.relatedItem.original" />
+                  </option>
+                  <option value="otherVersion">
+                    <xed:output i18n="mir.relatedItem.otherVersion" />
+                  </option>
+                  <option value="otherFormat">
+                    <xed:output i18n="mir.relatedItem.otherFormat" />
+                  </option>
+                </select>
+              </xed:bind>
+            </div>
+            <div class="col-md-6">
+              <xed:bind xpath="mods:titleInfo/mods:title">
+                <input type="text" class="form-control" placeholder="{i18n:mir.placeholder.title.link}" />
+              </xed:bind>
+            </div>
+            <mir:help-pmud help-text="{i18n:mir.help.link.title}" pmud="true" />
           </div>
-          <div class="col-md-6">
-            <xed:bind xpath="mods:titleInfo/mods:title">
-              <input type="text" class="form-control" placeholder="{i18n:mir.placeholder.title.link}" />
-            </xed:bind>
-          </div>
-          <mir:help-pmud help-text="{i18n:mir.help.link.title}" pmud="true" />
+          <mir:textfield xpath="mods:location/mods:url[@access='raw object']" help-text="{i18n:mir.help.link.raw_object}" placeholder="{i18n:mir.placeholder.abstract.link}" />
         </div>
-        <mir:textfield xpath="mods:location/mods:url[@access='raw object']" help-text="{i18n:mir.help.link.raw_object}" placeholder="{i18n:mir.placeholder.abstract.link}" />
-      </div>
+      </fieldset>
     </xed:repeat>
   </xed:template>
 
