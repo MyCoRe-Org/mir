@@ -29,6 +29,29 @@ This guide addresses developers. Thats why you run it in 'dev' profile!
  - to starting up a servlet container in development environment go back to mir folder
   - run `mvn install -am -pl mir-webapp && mvn -Pdev -Djetty org.codehaus.cargo:cargo-maven2-plugin:run -pl mir-webapp` If you want to test the application with Tomcat instead replace `-Djetty` by `-Dtomcat=9`
 
+## Docker-Container
+The docker container has its own install script which uses the environment variables. 
+
+### Environment Variables
+| Property                 | Default,  required  | Description                                                                                                                                                                                                                                                                          |
+|--------------------------|---------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| SOLR_URL                 | none, required      | The URL to the SOLR Server. Same as MCR.Solr.ServerURL in mycore.properties.                                                                                                                                                                                                         |
+| SOLR_CORE                | mir                 | The name of the Solr main core. Same as MCR.Solr.Core.main.Name in mycore.properties.                                                                                                                                                                                                |
+| SOLR_CLASSIFICATION_CORE | mir-classifications | The name of the Solr classification core. Same as MCR.Solr.Core.classification.Name in mycore.properties.                                                                                                                                                                            |
+| JDBC_NAME                | none, required      | The username for the Database authentication. Same as javax.persistence.jdbc.user in persistence.xml.                                                                                                                                                                                |
+| JDBC_PASSWORD            | none, required      | The password for the Database authentication. Same as javax.persistence.jdbc.password in persistence.xml.                                                                                                                                                                            |
+| JDBC_DRIVER              | none, required      | The driver for the Database. Same as javax.persistence.jdbc.driver in persistence.xml.   If you use org.postgresql.Driver, org.mariadb.jdbc.Driver, org.hsqldb.jdbcDriver, org.h2.Driver or com.mysql.jdbc.Driver the right database drivers get downloaded by the installer script. |
+| JDBC_URL                 | none, required      | The schema for the Database. Same as hibernate.default_schema in persistence.xml.                                                                                                                                                                                                    |
+| APP_CONTEXT              | mir                 | The url context in which the app lifes. (The .war will be renamed to the $APP_CONTEXT.war)                                                                                                                                                                                           |
+| MCR_CONFIG_DIR           | /mcr/home/          | The location for the home directory. Same as the MCR.ConfigDir .                                                                                                                                                                                                                     |
+| MCR_DATA_DIR             | /mcr/data/          | The location for the data directory. Same as MCR.datadir in mycore.properties.                                                                                                                                                                                                       |
+| XMX                      | 1g                  | The value of the -Xmx parameter for Tomcat.                                                                                                                                                                                                                                          |
+| XMS                      | 1g                  | The value of the -Xms parameter for Tomcat.                                                                                                                                                                                                                                          |
+
+### Mount Points
+
+The paths in `MCR_CONFIG_DIR` and `MCR_DATA_DIR` should be mountet. Default values are /mcr/home/ and /mcr/data/.
+
 ## FAQ
  1. Installation hangs while generating secret  
     There is entropy missing for GPG key generation. For ubuntu eg. you can use rng-tools:  
