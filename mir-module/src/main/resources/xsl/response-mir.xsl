@@ -929,9 +929,9 @@
     <xsl:param name="classId" />
     <xsl:param name="i18nPrefix" />
     <xsl:for-each select="lst[@name=$facet_name]/int">
-      <xsl:variable name="fqFragment">
-        <xsl:value-of select="concat('fq=',$facet_name,':',@name)" />
-      </xsl:variable>
+      <xsl:variable name="fqValue" select="concat($facet_name,':',@name)"/>
+      <xsl:variable name="fqFragment" select="concat('fq=',$fqValue)" />
+      <xsl:variable name="fqFragmentEncoded" select="concat('fq=',encoder:encode($fqValue, 'UTF-8'))" />
       <xsl:variable name="queryWithoutStart" select="mcrxsl:regexp($RequestURL, '(&amp;|%26)(start=)[0-9]*', '')" />
       <xsl:variable name="queryURL">
         <xsl:choose>
@@ -946,6 +946,17 @@
               </xsl:otherwise>
             </xsl:choose>
           </xsl:when>
+          <xsl:when test="contains($queryWithoutStart, $fqFragmentEncoded)">
+            <xsl:choose>
+              <xsl:when test="not(substring-after($queryWithoutStart, $fqFragmentEncoded))">
+                <!-- last parameter -->
+                <xsl:value-of select="substring($queryWithoutStart, 1, string-length($queryWithoutStart) - string-length($fqFragmentEncoded) - 1)" />
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:value-of select="concat(substring-before($queryWithoutStart, $fqFragmentEncoded), substring-after($queryWithoutStart, concat($fqFragmentEncoded,'&amp;')))" />
+              </xsl:otherwise>
+            </xsl:choose>
+          </xsl:when>
           <xsl:when test="not(contains($queryWithoutStart, '?'))">
             <xsl:value-of select="concat($queryWithoutStart, '?', $fqFragment)" />
           </xsl:when>
@@ -955,7 +966,6 @@
         </xsl:choose>
       </xsl:variable>
 
-      <xsl:variable name="fqValue" select="concat($facet_name,':',@name)" />
       <li data-fq="{$fqValue}">
         <div class="custom-control custom-checkbox" onclick="location.href='{$queryURL}';">
             <input type="checkbox" class="custom-control-input">
