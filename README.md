@@ -27,7 +27,7 @@ This guide addresses developers. Thats why you run it in 'dev' profile!
   - stop solr with the command: `mvn -Pdev solr-runner:stop`
   - update solr with the command: `mvn -Pdev solr-runner:stop solr-runner:copyHome solr-runner:start`
  - to starting up a servlet container in development environment go back to mir folder
-  - run `mvn install -am -pl mir-webapp && mvn -Pdev -Djetty org.codehaus.cargo:cargo-maven2-plugin:run -pl mir-webapp` If you want to test the application with Tomcat instead replace `-Djetty` by `-Dtomcat=9`
+  - run `mvn install -am -pl mir-webapp && mvn -Pdev -Dtomcat org.codehaus.cargo:cargo-maven2-plugin:run -pl mir-webapp`
 
 ## FAQ
  1. Installation hangs while generating secret  
