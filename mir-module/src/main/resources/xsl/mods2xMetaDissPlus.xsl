@@ -48,7 +48,11 @@
   <xsl:param name="MIR.HostedPeriodicals.List" select="''" />
   <xsl:param name="MIR.xMetaDissPlus.disabledTemplates" select="''" />
   <xsl:param name="MIR.xMetaDissPlus.rights.rightsReserved2free" select="''" />
-  
+
+  <xsl:param name="MIR.xMetaDissPlus.diniPublType.classificationId" select="'diniPublType'" />
+  <xsl:variable name="diniPublTypeClassificationId" select="$MIR.xMetaDissPlus.diniPublType.classificationId" />
+  <xsl:variable name="diniPublTypeClassification" select="document(concat('classification:metadata:0:children:',$diniPublTypeClassificationId))" />
+  <xsl:variable name="diniPublTypeAuthorityURI" select="$diniPublTypeClassification//label[lang('x-uri')]/@text" />
 
   <xsl:variable name="languages" select="document('classification:metadata:-1:children:rfc5646')" />
   <xsl:variable name="marcrelator" select="document('classification:metadata:-1:children:marcrelator')" />
@@ -79,10 +83,11 @@
   
   <xsl:variable name="type">
     <xsl:choose>
-      <xsl:when test="contains($mods/mods:classification/@authorityURI,'diniPublType')">
-        <xsl:variable name="diniPublType" select="substring-after($mods/mods:classification[contains(@authorityURI,'diniPublType')]/@valueURI,'diniPublType#')" />
+      <xsl:when test="mods:classification[@authorityURI=$diniPublTypeAuthorityURI]">
+        <xsl:variable name="diniPublType" select="substring-after(mods:classification[@authorityURI=$diniPublTypeAuthorityURI]/@valueURI,concat($diniPublTypeAuthorityURI,'#'))" />
         <xsl:choose>
-          <xsl:when test="$diniPublType = 'other'">
+          <!-- fix erroneous entry in https://www.mycore.de/classifications/diniPublType.xml -->
+          <xsl:when test="$diniPublTypeClassificationId='diniPublType' and $diniPublType = 'other'">
             <xsl:value-of select="'Other'"/>
           </xsl:when>
           <xsl:otherwise>
