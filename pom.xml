@@ -364,7 +364,7 @@
     <dependencies>
       <dependency>
         <groupId>org.mycore</groupId>
-        <artifactId>mycore</artifactId>
+        <artifactId>mycore-bom</artifactId>
         <version>${mycore.version}</version>
         <type>pom</type>
         <scope>import</scope>
