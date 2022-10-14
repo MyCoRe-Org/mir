@@ -137,7 +137,7 @@ public class MIRImageWarePacker extends MCRPacker {
             }
 
             Map.Entry<String, String> identifierValueEntry = detectedIdentifiers.get();
-            if (identifierValueEntry.getKey().equals("ppn")) {
+            if ("ppn".equals(identifierValueEntry.getKey())) {
                 return Optional.of(identifierValueEntry.getValue().replace(":", "_"));
             }
         }
