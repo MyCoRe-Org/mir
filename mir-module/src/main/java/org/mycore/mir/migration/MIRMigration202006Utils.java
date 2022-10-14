@@ -75,7 +75,7 @@ public class MIRMigration202006Utils {
                 }
             })
             .filter(
-                der -> der.getRootElement().getChild("derivate").getAttributeValue("display", "true").equals("false"))
+                der -> "false".equals(der.getRootElement().getChild("derivate").getAttributeValue("display", "true")))
             .map(MCRDerivate::new)
             .peek(der -> addContentIfNeeded(der))
             .map(der -> getMigrationCommand(der, categoryID))

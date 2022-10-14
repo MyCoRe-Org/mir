@@ -150,7 +150,7 @@ public class MirSelfRegistrationServlet extends MCRServlet {
                             user.assignRole(DEFAULT_ROLE);
                         }
 
-                        if (user.getAttributes().removeIf(ua -> ua.getName().equalsIgnoreCase("mailtoken"))) {
+                        if (user.getAttributes().removeIf(ua -> "mailtoken".equalsIgnoreCase(ua.getName()))) {
                             MCRUserManager.updateUser(user);
                         }
 

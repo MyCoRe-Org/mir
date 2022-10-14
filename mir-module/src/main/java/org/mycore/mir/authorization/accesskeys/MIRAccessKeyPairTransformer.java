@@ -118,7 +118,7 @@ public abstract class MIRAccessKeyPairTransformer {
     }
 
     public static MIRAccessKeyPair buildAccessKeyPair(final MCRObjectID mcrObjectId, final Element element) {
-        if (!element.getName().equals(ROOT_SERV_FLAGS)) {
+        if (!ROOT_SERV_FLAGS.equals(element.getName())) {
             throw new IllegalArgumentException("Element is not a MIRAccessKeyPair element.");
         }
         try {
