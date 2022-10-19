@@ -1,4 +1,4 @@
-# MIR [![Build Status](https://travis-ci.org/MyCoRe-Org/mir.svg?branch=master)](https://travis-ci.org/MyCoRe-Org/mir) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/3005892d274040d8a29e33a080a956d9)](https://www.codacy.com/app/MyCoRe/mir?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=MyCoRe-Org/mir&amp;utm_campaign=Badge_Grade)
+# MIR [![Build Status](https://travis-ci.org/MyCoRe-Org/mir.svg?branch=master)](https://travis-ci.org/MyCoRe-Org/mir) [![Codacy Badge](https://app.codacy.com/project/badge/Grade/edf89bf4bb564a56b74aeb3d3e6474a4)](https://www.codacy.com/gh/MyCoRe-Org/mir/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=MyCoRe-Org/mir&amp;utm_campaign=Badge_Grade)
 MIR (acronym for MyCoRe/MODS Institutional Repository) is an open source repository software that is build upon [MyCoRe](https://github.com/MyCoRe-Org/mycore) and [MODS](http://www.loc.gov/standards/mods/).
 
 
@@ -29,29 +29,6 @@ This guide addresses developers. Thats why you run it in 'dev' profile!
  - to starting up a servlet container in development environment go back to mir folder
   - run `mvn install -am -pl mir-webapp && mvn -Pdev -Dtomcat org.codehaus.cargo:cargo-maven2-plugin:run -pl mir-webapp`
 
-## Docker-Container
-The docker container has its own install script which uses the environment variables. 
-
-### Environment Variables
-| Property                 | Default,  required  | Description                                                                                                                                                                                                                                                                          |
-|--------------------------|---------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| SOLR_URL                 | none, required      | The URL to the SOLR Server. Same as MCR.Solr.ServerURL in mycore.properties.                                                                                                                                                                                                         |
-| SOLR_CORE                | mir                 | The name of the Solr main core. Same as MCR.Solr.Core.main.Name in mycore.properties.                                                                                                                                                                                                |
-| SOLR_CLASSIFICATION_CORE | mir-classifications | The name of the Solr classification core. Same as MCR.Solr.Core.classification.Name in mycore.properties.                                                                                                                                                                            |
-| JDBC_NAME                | none, required      | The username for the Database authentication. Same as javax.persistence.jdbc.user in persistence.xml.                                                                                                                                                                                |
-| JDBC_PASSWORD            | none, required      | The password for the Database authentication. Same as javax.persistence.jdbc.password in persistence.xml.                                                                                                                                                                            |
-| JDBC_DRIVER              | none, required      | The driver for the Database. Same as javax.persistence.jdbc.driver in persistence.xml.   If you use org.postgresql.Driver, org.mariadb.jdbc.Driver, org.hsqldb.jdbcDriver, org.h2.Driver or com.mysql.jdbc.Driver the right database drivers get downloaded by the installer script. |
-| JDBC_URL                 | none, required      | The schema for the Database. Same as hibernate.default_schema in persistence.xml.                                                                                                                                                                                                    |
-| APP_CONTEXT              | mir                 | The url context in which the app lifes. (The .war will be renamed to the $APP_CONTEXT.war)                                                                                                                                                                                           |
-| MCR_CONFIG_DIR           | /mcr/home/          | The location for the home directory. Same as the MCR.ConfigDir .                                                                                                                                                                                                                     |
-| MCR_DATA_DIR             | /mcr/data/          | The location for the data directory. Same as MCR.datadir in mycore.properties.                                                                                                                                                                                                       |
-| XMX                      | 1g                  | The value of the -Xmx parameter for Tomcat.                                                                                                                                                                                                                                          |
-| XMS                      | 1g                  | The value of the -Xms parameter for Tomcat.                                                                                                                                                                                                                                          |
-
-### Mount Points
-
-The paths in `MCR_CONFIG_DIR` and `MCR_DATA_DIR` should be mountet. Default values are /mcr/home/ and /mcr/data/.
-
 ## FAQ
  1. Installation hangs while generating secret  
     There is entropy missing for GPG key generation. For ubuntu eg. you can use rng-tools:  
@@ -64,6 +41,52 @@ The paths in `MCR_CONFIG_DIR` and `MCR_DATA_DIR` should be mountet. Default valu
     Set `JAVA_OPTS` environment variable to `-DMCR.DataPrefix=dev` before running.
  1. How can I get more than one connection to h2?  
     add `;AUTO_SERVER=TRUE` in jdbc url (configured in persistence.xml)
+
+## `mir` Docker-Container
+The docker container has its own install script which uses the environment variables.
+
+### Environment Variables
+| Property                 | Default,  required  | Description                                                                                                                                                                                                                                                                          |
+|--------------------------|---------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| SOLR_URL                 | none, required      | The URL to the SOLR Server. Same as MCR.Solr.ServerURL in mycore.properties.                                                                                                                                                                                                         |
+| SOLR_CORE                | mir                 | The name of the Solr main core. Same as MCR.Solr.Core.main.Name in mycore.properties.                                                                                                                                                                                                |
+| SOLR_CLASSIFICATION_CORE | mir-classifications | The name of the Solr classification core. Same as MCR.Solr.Core.classification.Name in mycore.properties.                                                                                                                                                                            |
+| JDBC_NAME                | none, required      | The username for the Database authentication. Same as javax.persistence.jdbc.user in persistence.xml.                                                                                                                                                                                |
+| JDBC_PASSWORD            | none, required      | The password for the Database authentication. Same as javax.persistence.jdbc.password in persistence.xml.                                                                                                                                                                            |
+| JDBC_DRIVER              | none, required      | The driver for the Database. Same as javax.persistence.jdbc.driver in persistence.xml.   If you use org.postgresql.Driver, org.mariadb.jdbc.Driver, org.hsqldb.jdbcDriver, org.h2.Driver or com.mysql.jdbc.Driver the right database drivers get downloaded by the installer script. |
+| JDBC_URL                 | none, required      | The schema for the Database. Same as hibernate.default_schema in persistence.xml.                                                                                                                                                                                                    |
+| APP_CONTEXT              | mir                 | The url context in which the app lives. (The .war will be renamed to the $APP_CONTEXT.war)                                                                                                                                                                                           |
+| MCR_CONFIG_DIR           | /mcr/home/          | The location for the home directory. Same as the MCR.ConfigDir .                                                                                                                                                                                                                     |
+| MCR_DATA_DIR             | /mcr/data/          | The location for the data directory. Same as MCR.datadir in mycore.properties.                                                                                                                                                                                                       |
+| XMX                      | 1g                  | The value of the -Xmx parameter for Tomcat.                                                                                                                                                                                                                                          |
+| XMS                      | 1g                  | The value of the -Xms parameter for Tomcat.                                                                                                                                                                                                                                          |
+
+### Mount Points
+
+The paths in `MCR_CONFIG_DIR` and `MCR_DATA_DIR` should be mountet. Default values are /mcr/home/ and /mcr/data/.
+
+## `mir-solr` Docker-Container
+The docker container creates the required solr cores if they do not exist.
+
+### Mount Points
+
+The path `/var/solr/data` should be mounted, it contains all persistent data.
+
+## Docker-Compose
+
+There is an [example docker-compose.yml](docker-compose.yml) which can be used for local development. 
+The ports and other settings can be changed in the [.env file](.env). You can use the commands:
+```shell
+mvn clean install -Pdev -Dtomcat clean install && docker-compose up --build
+```
+
+There is another [example docker-compose.prod.yml](docker-compose.prod.yml) which uses prebuild images which are stored at [dockerhub](https://hub.docker.com/u/mycoreorg). 
+You can start them with the commands:
+```shell
+docker-compose -f docker-compose.prod.yml up
+```
+
+It's strongly recommended to add a reverse proxy like Apache or Nginx in front. 
 
 ## Git-Style-Guide
 For the moment see [agis-:Git-Style-Guide](https://github.com/agis-/git-style-guide) and use it with the following exceptions:
