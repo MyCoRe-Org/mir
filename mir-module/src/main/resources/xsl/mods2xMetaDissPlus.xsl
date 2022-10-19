@@ -51,8 +51,10 @@
 
   <xsl:param name="MIR.xMetaDissPlus.diniPublType.classificationId" select="'diniPublType'" />
   <xsl:variable name="diniPublTypeClassificationId" select="$MIR.xMetaDissPlus.diniPublType.classificationId" />
-  <xsl:variable name="diniPublTypeClassification" select="document(concat('classification:metadata:0:children:',$diniPublTypeClassificationId))" />
-  <xsl:variable name="diniPublTypeAuthorityURI" select="$diniPublTypeClassification//label[lang('x-uri')]/@text" />
+  <xsl:variable name="diniPublTypeAuthorityURI" >
+    <xsl:variable name="diniPublTypeClassification" select="document(concat('classification:metadata:0:children:',$diniPublTypeClassificationId))" />
+    <xsl:value-of select="$diniPublTypeClassification//label[lang('x-uri')]/@text"/>
+  </xsl:variable>
 
   <xsl:variable name="languages" select="document('classification:metadata:-1:children:rfc5646')" />
   <xsl:variable name="marcrelator" select="document('classification:metadata:-1:children:marcrelator')" />
