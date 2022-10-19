@@ -13,14 +13,14 @@ services:
     ports:
       - ${DB_PORT}:5432
   solr:
-    build: mir-webapp/src/main/solr
+    image: mycoreorg/mir-solr:2022.06.x
     restart: unless-stopped
     volumes:
       - ${SOLR_DATA}:/var/solr/data
     ports:
       - ${SOLR_HTTP}:8983
   mir:
-    build: ./
+    image: mycoreorg/mir:2022.06.x
     restart: unless-stopped
     environment:
       - APP_CONTEXT=${APP_CONTEXT}
