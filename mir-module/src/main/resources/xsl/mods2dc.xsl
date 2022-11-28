@@ -60,7 +60,7 @@
 
   <xsl:template match="/">
 
-    <xsl:variable name="objId" select="@ID" />
+    <xsl:variable name="objId" select="mods:mods/@ID" />
 
     <xsl:choose>
       <!-- WS: updated schema location -->
