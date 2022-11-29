@@ -211,7 +211,7 @@
         <xsl:choose>
           <xsl:when test="count($abstracts/mods:abstract) &gt; 1">
             <div id="mir-abstract-tabs">
-              <ul class="nav nav-tabs" role="tablist">
+              <ul class="nav nav-tabs justify-content-end" role="tablist">
                 <xsl:for-each select="$abstracts/mods:abstract">
                   <xsl:variable name="tabName">
                     <xsl:choose>
@@ -225,7 +225,7 @@
                       </xsl:otherwise>
                     </xsl:choose>
                   </xsl:variable>
-                  <li class="float-right nav-item">
+                  <li class="nav-item">
                     <a class="nav-link" href="#tab{position()}" role="tab" data-toggle="tab">
                       <xsl:if test="position()=1">
                         <xsl:attribute name="class">active nav-link</xsl:attribute>
