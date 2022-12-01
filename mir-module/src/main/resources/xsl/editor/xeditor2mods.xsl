@@ -215,13 +215,18 @@
           <xsl:copy-of select="node()[name()!='mods:namePart']" />
         </xsl:when>
         <xsl:otherwise>
-          <xsl:copy-of select="node()" />
+          <xsl:copy-of select="node()[name()!='mods:role']" />
         </xsl:otherwise>
       </xsl:choose>
       <xsl:if test="(not(mods:namePart[@type='family']) or @simpleEditor)  and mods:displayForm and @type='personal'">
         <xsl:call-template name="mods.seperateName">
           <xsl:with-param name="displayForm" select="mods:displayForm" />
         </xsl:call-template>
+      </xsl:if>
+      <xsl:if test="mods:role/mods:roleTerm">
+        <mods:role>
+          <xsl:apply-templates select="mods:role/node()"/>
+        </mods:role>
       </xsl:if>
     </xsl:copy>
   </xsl:template>
