@@ -2225,7 +2225,7 @@
       relevant-if="(string-length(normalize-space(text())) &gt; 0) or mods:* or cmd:* or (string-length(@xlink:href) &gt; 0) or (string-length(@valueURIxEditor) &gt; 0) or (string-length(@mcr:categId) &gt; 0) or (string-length(@order) &gt; 0)" />
     <xed:cleanup-rule xpath="//mods:name" relevant-if="(mods:namePart|mods:displayForm) or (string-length(@valueURI) &gt; 0) or (string-length(@valueURIxEditor) &gt; 0)" />
     <xed:cleanup-rule xpath="//mods:name/@authorityURI" relevant-if="(string-length(../@valueURI) &gt; 0) or (string-length(../@valueURIxEditor) &gt; 0)" />
-    <xed:cleanup-rule xpath="//mods:roleTerm" relevant-if="(string-length(@valueURI) &gt; 0) or (string-length(@valueURIxEditor) &gt; 0)" />
+    <xed:cleanup-rule xpath="//mods:roleTerm" relevant-if="(string-length(@valueURI) &gt; 0) or (string-length(@valueURIxEditor) &gt; 0) or (string-length(@authority) &gt; 0)" />
     <xed:cleanup-rule xpath="//mods:topic/@authorityURI" relevant-if="(string-length(../@valueURI) &gt; 0) or (string-length(../@valueURIxEditor) &gt; 0)" />
     <xed:cleanup-rule xpath="//mods:topic/@authority" relevant-if="(string-length(../@valueURI) &gt; 0) or (string-length(../@valueURIxEditor) &gt; 0)" />
     <xed:cleanup-rule xpath="//mods:geographic/@authorityURI" relevant-if="(string-length(../@valueURI) &gt; 0) or (string-length(../@valueURIxEditor) &gt; 0)" />
