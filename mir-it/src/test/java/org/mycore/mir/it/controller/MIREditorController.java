@@ -34,8 +34,9 @@ public abstract class MIREditorController extends MIRTestController {
     protected void setHTMLAreaText(String childElementName, String text) {
         final WebElement iframe = driver.waitAndFindElement(
             By.xpath(".//div[contains(@id,'" + childElementName + "') and contains(@class, 'cke')]//iframe"));
+        iframe.click();
         final WebElement body = driver.switchTo().frame(iframe).findElement(By.tagName("body"));
-        body.clear();
+        body.click();
         body.sendKeys(text);
         driver.switchTo().parentFrame();
     }
