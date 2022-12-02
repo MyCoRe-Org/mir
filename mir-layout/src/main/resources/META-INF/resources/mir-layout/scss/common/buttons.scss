@@ -1,0 +1,41 @@
+/*  buttons settings
+ *  - for buttons and links that look like buttons
+ */
+
+// Extra large devices (large desktops) and below
+// no (xl) media query necessary (desktop first)
+// set the defaults for all responsive levels here
+
+  .back-to-top {
+    position: fixed;
+    bottom: 5rem;
+    right: 2.5rem;
+    font-size: 2.5rem;
+    z-index: 3000;
+    border-radius: 50%;
+    color: $primary;
+    background-color: white;
+    padding: 0;
+    line-height: 0;
+  }
+
+// Large devices (desktops) and below
+@include media-breakpoint-down(lg) {
+    // add/overwrite styles for responsive level lg and lower
+}
+
+// Medium devices (tablets) and below
+@include media-breakpoint-down(md) {
+    // add/overwrite styles for responsive level md and lower
+}
+
+// Small devices (landscape phones) and below
+@include media-breakpoint-down(sm) {
+    // add/overwrite styles for responsive level sm and lower
+}
+
+// Extra small devices (portrait phones)
+@include media-breakpoint-down(xs) {
+    // add/overwrite styles for responsive level xs
+
+}
