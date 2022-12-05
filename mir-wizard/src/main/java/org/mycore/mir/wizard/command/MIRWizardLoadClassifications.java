@@ -65,7 +65,7 @@ public class MIRWizardLoadClassifications extends MIRWizardCommand {
             Element classifications = MCRURIResolver.instance().resolve(CLASSIFICATIONS_CFG);
 
             for (Element classification : classifications.getChildren()) {
-                String classifURL = classification.getAttributeValue("url");
+                String classifURL = classification.getAttributeValue("uri");
 
                 try {
                     Element classifElement = MCRURIResolver.instance().resolve(classifURL);
