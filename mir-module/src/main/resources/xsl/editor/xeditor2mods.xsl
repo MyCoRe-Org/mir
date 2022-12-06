@@ -212,7 +212,7 @@
       </xsl:if>
       <xsl:choose>
         <xsl:when test="@simpleEditor">
-          <xsl:copy-of select="node()[name()!='mods:namePart']" />
+          <xsl:apply-templates select="node()[name()!='mods:namePart']" />
         </xsl:when>
         <xsl:otherwise>
           <xsl:apply-templates />
