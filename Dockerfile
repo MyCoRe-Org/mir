@@ -1,22 +1,32 @@
 FROM tomcat:jdk17-temurin-focal
-EXPOSE 8080
-EXPOSE 8009
+RUN groupadd -r mcr -g 501 && \
+    useradd -d /home/mcr -u 501 -m -s /bin/bash -g mcr mcr
 WORKDIR /usr/local/tomcat/
 ARG PACKET_SIZE="65536"
-ENV APP_CONTEXT="mir"
-ENV MCR_CONFIG_DIR="/mcr/home/"
-ENV MCR_DATA_DIR="/mcr/data/"
-ENV SOLR_CORE="mir"
-ENV SOLR_CLASSIFICATION_CORE="mir-classifications"
-ENV XMX="1g"
-ENV XMS="1g"
-COPY --from=regreb/bibutils --chown=root:root /usr/local/bin/* /usr/local/bin/
-COPY docker-entrypoint.sh /usr/local/bin/mir.sh
-RUN ["chmod", "+x", "/usr/local/bin/mir.sh"]
-RUN rm -rf /usr/local/tomcat/webapps/*
-RUN mkdir /opt/mir/
-RUN sed -ri "s/<\/Service>/<Connector protocol=\"AJP\/1.3\" packetSize=\"$PACKET_SIZE\" tomcatAuthentication=\"false\" scheme=\"https\" secretRequired=\"false\" allowedRequestAttributesPattern=\".*\" encodedSolidusHandling=\"decode\" address=\"0.0.0.0\" port=\"8009\" redirectPort=\"8443\" \/>&/g" /usr/local/tomcat/conf/server.xml
-COPY --chown=root:root mir-webapp/target/mir-*.war /opt/mir/mir.war
-COPY --chown=root:root mir-cli/target/mir-*.tar.gz /opt/mir/mir.tar.gz
-RUN cd /opt/mir/ && tar -zxf /opt/mir/mir.tar.gz && /bin/sh -c "mv mir-cli-* mir"
+ENV APP_CONTEXT="mir" \
+ MCR_CONFIG_DIR="/mcr/home/" \
+ MCR_DATA_DIR="/mcr/data/" \
+ MCR_LOG_DIR="/mcr/logs/" \
+ SOLR_CORE="mir" \
+ SOLR_CLASSIFICATION_CORE="mir-classifications" \
+ XMX="1g" \
+ XMS="1g"
+COPY --from=regreb/bibutils --chown=mcr:mcr /usr/local/bin/* /usr/local/bin/
+COPY --chown=mcr:mcr docker-entrypoint.sh /usr/local/bin/mir.sh
+RUN set -eux; \
+	apt-get update; \
+	apt-get install -y gosu; \
+	rm -rf /var/lib/apt/lists/*;
+RUN chmod +x /usr/local/bin/mir.sh  && \
+    rm -rf /usr/local/tomcat/webapps/* && \
+    mkdir /opt/mir/ && \
+    chown mcr:mcr -R /opt/mir/ && \
+    sed -ri "s/<\/Service>/<Connector protocol=\"AJP\/1.3\" packetSize=\"$PACKET_SIZE\" tomcatAuthentication=\"false\" scheme=\"https\" secretRequired=\"false\" allowedRequestAttributesPattern=\".*\" encodedSolidusHandling=\"decode\" address=\"0.0.0.0\" port=\"8009\" redirectPort=\"8443\" \/>&/g" /usr/local/tomcat/conf/server.xml
+COPY --chown=mcr:mcr mir-webapp/target/mir-*.war /opt/mir/mir.war
+COPY --chown=mcr:mcr mir-cli/target/mir-*.tar.gz /opt/mir/mir.tar.gz
+COPY --chown=mcr:mcr docker-log4j2.xml /opt/mir/log4j2.xml
+RUN cd /opt/mir/ &&  \
+    tar -zxf /opt/mir/mir.tar.gz && \
+    /bin/sh -c "mv mir-cli-* mir" && \
+    chown mcr:mcr -R /opt/mir/ /usr/local/tomcat/webapps/
 CMD ["bash", "/usr/local/bin/mir.sh"]

@@ -1,14 +1,12 @@
 #!/usr/bin/bash
 set -e
 
-echo "MIR Starter Script"
-sleep 5 # wait for database (TODO: replace with wait-for-it)
-
 MCR_SAVE_DIR="${MCR_CONFIG_DIR}save/"
 
 MCR_CONFIG_DIR_ESCAPED=$(echo "$MCR_CONFIG_DIR" | sed 's/\//\\\//g')
 MCR_DATA_DIR_ESCAPED=$(echo "$MCR_DATA_DIR" | sed 's/\//\\\//g')
 MCR_SAVE_DIR_ESCAPED=$(echo "$MCR_SAVE_DIR" | sed 's/\//\\\//g')
+MCR_LOG_DIR_ESCAPED=$(echo "$MCR_LOG_DIR" | sed 's/\//\\\//g')
 
 SOLR_URL_ESCAPED=$(echo "$SOLR_URL" | sed 's/\//\\\//g')
 SOLR_CORE_ESCAPED=$(echo "$SOLR_CORE" | sed 's/\//\\\//g')
@@ -22,6 +20,28 @@ HIBERNATE_SCHEMA_ESCAPED=$(echo "$JDBC_URL" | sed 's/\//\\\//g')
 
 MYCORE_PROPERTIES="${MCR_CONFIG_DIR}mycore.properties"
 PERSISTENCE_XML="${MCR_CONFIG_DIR}resources/META-INF/persistence.xml"
+
+echo "Running MIR Starter Script as User: $(whoami)"
+
+if [ "$EUID" -eq 0 ]
+  then
+    chown -R mcr:mcr "$MCR_CONFIG_DIR"
+    chown -R mcr:mcr "$MCR_DATA_DIR"
+    chown -R mcr:mcr "$MCR_LOG_DIR"
+    exec gosu mcr "$0"
+    exit 0;
+fi
+
+sleep 5 # wait for database (TODO: replace with wait-for-it)
+
+cd /usr/local/tomcat/
+
+function setupLog4jConfig() {
+  if [[ ! -f "${MCR_CONFIG_DIR}resources/log4j2.xml" ]]
+  then
+    cp /opt/mir/log4j2.xml "${MCR_CONFIG_DIR}resources/"
+  fi
+}
 
 function downloadDriver {
   FILENAME=$(basename $1)
@@ -104,6 +124,7 @@ function setUpMyCoRe {
     echo "Set up MyCoRe!"
     /opt/mir/mir/bin/mir.sh create configuration directory
     setDockerValues
+    setupLog4jConfig
     sed -ri "s/<mapping-file>META-INF\/mycore-viewer-mappings.xml<\/mapping-file>/&\n    <mapping-file>META-INF\/mir-module-mappings.xml<\/mapping-file>\n    <mapping-file>META-INF\/mycore-acl-mappings.xml<\/mapping-file>/" "${MCR_CONFIG_DIR}resources/META-INF/persistence.xml"
     sed -ri "s/(<\/properties>)/<property name=\"hibernate\.connection\.provider_class\" value=\"org\.hibernate\.connection\.C3P0ConnectionProvider\" \/>\n<property name=\"hibernate\.c3p0\.min_size\" value=\"2\" \/>\n<property name=\"hibernate\.c3p0\.max_size\" value=\"50\" \/>\n<property name=\"hibernate\.c3p0\.acquire_increment\" value=\"2\" \/>\n<property name=\"hibernate\.c3p0\.max_statements\" value=\"30\" \/>\n<property name=\"hibernate\.c3p0\.timeout\" value=\"1800\" \/>\n\1/" "${MCR_CONFIG_DIR}resources/META-INF/persistence.xml"
     /opt/mir/mir/bin/setup.sh
