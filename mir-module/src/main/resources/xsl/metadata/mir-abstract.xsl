@@ -15,6 +15,7 @@
 
   <xsl:variable name="objectID" select="/mycoreobject/@ID" />
   <xsl:variable name="modsPart" select="concat('mods.part.', $objectID)" />
+  <xsl:variable name="nbsp" select="'&#xa0;'"/>
 
   <xsl:template match="/">
 
@@ -441,7 +442,8 @@
         <xsl:if test="$withSubtitle and $alternateContent/subTitle">
           <span class="subtitle">
             <span class="delimiter">
-              <xsl:text> : </xsl:text>
+              <xsl:value-of select="$nbsp" />
+              <xsl:text>: </xsl:text>
             </span>
             <xsl:copy-of select="$alternateContent/subTitle/node()" />
           </span>
@@ -455,7 +457,8 @@
         <xsl:if test="$withSubtitle and mods:subTitle">
           <span class="subtitle">
             <span class="delimiter">
-              <xsl:text> : </xsl:text>
+              <xsl:value-of select="$nbsp" />
+              <xsl:text>: </xsl:text>
             </span>
             <xsl:value-of select="mods:subTitle" />
           </span>
