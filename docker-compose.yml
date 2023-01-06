@@ -2,6 +2,7 @@ version: '3.1'
 
 services:
   db:
+    container_name: ${NAME}-db
     image: postgres:12
     restart: unless-stopped
     environment:
@@ -13,6 +14,7 @@ services:
     ports:
       - ${DB_PORT}:5432
   solr:
+    container_name: ${NAME}-solr
     build: mir-webapp/src/main/solr
     restart: unless-stopped
     volumes:
@@ -20,6 +22,7 @@ services:
     ports:
       - ${SOLR_HTTP}:8983
   mir:
+    container_name: ${NAME}-mir
     build: ./
     restart: unless-stopped
     environment:
@@ -31,9 +34,12 @@ services:
       - SOLR_URL=http://solr:8983
       - SOLR_CORE=mir
       - SOLR_CLASSIFICATION_CORE=mir-classifications
+      - XMX=${MIR_XMX}
+      - XMS=${MIR_XMS}
     volumes:
       - ${MIR_HOME}:/mcr/home/
       - ${MIR_DATA}:/mcr/data/
+      - ${MIR_LOGS}:/mcr/logs/
     depends_on:
       - db
       - solr
