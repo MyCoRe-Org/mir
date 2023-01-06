@@ -12,8 +12,9 @@ ENV APP_CONTEXT="mir" \
  XMX="1g" \
  XMS="1g"
 COPY --from=regreb/bibutils --chown=mcr:mcr /usr/local/bin/* /usr/local/bin/
-COPY --chown=mcr:mcr docker-entrypoint.sh /usr/local/bin/mir.sh
+COPY --chown=root:root docker-entrypoint.sh /usr/local/bin/mir.sh
 RUN set -eux; \
+    chmod 555 /usr/local/bin/mir.sh; \
 	apt-get update; \
 	apt-get install -y gosu; \
 	rm -rf /var/lib/apt/lists/*;
