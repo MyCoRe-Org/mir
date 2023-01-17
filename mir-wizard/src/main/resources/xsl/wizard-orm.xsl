@@ -26,7 +26,7 @@
         <xsl:when test="name() = 'persistence-unit-defaults'">
           <xsl:if test="xalan:nodeset($cfg)//extra_properties//property[contains('schema|catalog', @name)]">
             <xsl:for-each select="xalan:nodeset($cfg)//extra_properties//property[contains('schema|catalog', @name)]">
-              <xsl:element name="{@name}" xmlns="http://java.sun.com/xml/ns/persistence/orm">
+              <xsl:element name="{@name}" xmlns="http://xmlns.jcp.org/xml/ns/persistence">
                 <xsl:value-of select="." />
               </xsl:element>
             </xsl:for-each>

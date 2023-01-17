@@ -45,7 +45,7 @@ public class MIRMigration201706Utils {
     public static void migrateURN(String derId)
         throws MCRPersistenceException, MCRActiveLinkException, MCRAccessException, IOException {
         MCRObjectID derivateID = MCRObjectID.getInstance(derId);
-        if (!derivateID.getTypeId().equals("derivate")) {
+        if (!"derivate".equals(derivateID.getTypeId())) {
             LOGGER.error("Command needs derivate as parameter: ", derId);
             return;
         }

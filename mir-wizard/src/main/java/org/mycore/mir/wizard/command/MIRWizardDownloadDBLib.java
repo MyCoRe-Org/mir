@@ -23,17 +23,15 @@
 package org.mycore.mir.wizard.command;
 
 import java.io.File;
-import java.lang.reflect.Method;
 import java.net.URL;
-import java.net.URLClassLoader;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jdom2.Element;
-import org.mycore.common.MCRClassTools;
 import org.mycore.common.config.MCRConfigurationDir;
+import org.mycore.common.config.MCRConfigurationDirSetup;
 import org.mycore.mir.wizard.MIRWizardCommand;
 
 public class MIRWizardDownloadDBLib extends MIRWizardCommand {
@@ -63,7 +61,7 @@ public class MIRWizardDownloadDBLib extends MIRWizardCommand {
                 try {
 
                     FileUtils.copyURLToFile(new URL(url), file);
-                    loadLib(file.toURI().toURL());
+                    MCRConfigurationDirSetup.loadExternalLibs();
 
                     success = true;
                 } catch (Exception ex) {
@@ -82,14 +80,5 @@ public class MIRWizardDownloadDBLib extends MIRWizardCommand {
 
             this.result.setSuccess(success);
         }
-    }
-
-    private void loadLib(URL jarFile) throws ReflectiveOperationException {
-        URLClassLoader sysloader = (URLClassLoader) MCRClassTools.getClassLoader();
-        Class<URLClassLoader> sysclass = URLClassLoader.class;
-
-        Method method = sysclass.getDeclaredMethod("addURL", URL.class);
-        method.setAccessible(true);
-        method.invoke(sysloader, new Object[] { jarFile });
     }
 }

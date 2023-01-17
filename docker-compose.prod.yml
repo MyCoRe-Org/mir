@@ -1,0 +1,48 @@
+version: '3.1'
+
+services:
+  db:
+    container_name: ${NAME}-db
+    image: postgres:12
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=mir
+    volumes:
+      - ${DB_DATA}:/var/lib/postgresql/data/
+    ports:
+      - ${DB_PORT}:5432
+  solr:
+    container_name: ${NAME}-solr
+    image: mycoreorg/mir-solr:2022.06.x
+    restart: unless-stopped
+    volumes:
+      - ${SOLR_DATA}:/var/solr/data
+    ports:
+      - ${SOLR_HTTP}:8983
+  mir:
+    container_name: ${NAME}-mir
+    image: mycoreorg/mir:2022.06.x
+    restart: unless-stopped
+    environment:
+      - APP_CONTEXT=${APP_CONTEXT}
+      - JDBC_NAME=${DB_USER}
+      - JDBC_PASSWORD=${DB_PASSWORD}
+      - JDBC_DRIVER=org.postgresql.Driver
+      - JDBC_URL=jdbc:postgresql://db:5432/mir
+      - SOLR_URL=http://solr:8983
+      - SOLR_CORE=mir
+      - SOLR_CLASSIFICATION_CORE=mir-classifications
+      - XMX=${MIR_XMX}
+      - XMS=${MIR_XMS}
+    volumes:
+      - ${MIR_HOME}:/mcr/home/
+      - ${MIR_DATA}:/mcr/data/
+      - ${MIR_LOGS}:/mcr/logs/
+    depends_on:
+      - db
+      - solr
+    ports:
+      - ${MIR_HTTP}:8080
+      - ${MIR_AJP}:8009

@@ -60,7 +60,7 @@
 
   <xsl:template match="/">
 
-    <xsl:variable name="objId" select="@ID" />
+    <xsl:variable name="objId" select="mods:mods/@ID" />
 
     <xsl:choose>
       <!-- WS: updated schema location -->
@@ -247,7 +247,7 @@
       <dc:coverage>
         <xsl:for-each select="mods:temporal">
           <xsl:value-of select="."/>
-          <xsl:if test="position()!=last()">-</xsl:if>
+          <xsl:if test="position()!=last()">/</xsl:if>
         </xsl:for-each>
       </dc:coverage>
     </xsl:if>
