@@ -539,27 +539,18 @@
                   <img class="hit_icon" src="{$WebApplicationBaseURL}images/icons/icon_common_disabled.png"/>
                 </xsl:when>
                 <xsl:otherwise>
-                  <div class="hit_icon" style="background-image: url('{$WebApplicationBaseURL}images/icons/icon_common.png');" />
+                  <div class="hit_icon"
+                       style="background-image: url('{$WebApplicationBaseURL}images/icons/icon_common.png');"/>
                   <!-- if not, then the content type decides a icon -->
-                  <xsl:variable name="contentType" select="document(concat('ifs:/',$derivid))/mcr_directory/children/child[name=$maindoc]/contentType"/>
-                  <xsl:variable name="fileType" select="document('webapp:FileContentTypes.xml')/FileContentTypes/type[mime=$contentType]/@ID"/>
-                  <xsl:choose>
-                    <xsl:when test="$fileType='pdf' or $fileType='msexcel' or $fileType='xlsx' or $fileType='msword97' or $fileType='docx' or $fileType='pptx' or $fileType='msppt' or $fileType='zip'">
-                      <img class="hit_icon_overlay" src="{$WebApplicationBaseURL}images/svg_icons/download_{$fileType}.svg"/>
-                    </xsl:when>
-                    <xsl:when test="$fileType='png' or $fileType='jpeg' or $fileType='tiff' or $fileType='gif' or $fileType='bmp'">
-                      <img class="hit_icon_overlay" src="{$WebApplicationBaseURL}images/svg_icons/download_image.svg"/>
-                    </xsl:when>
-                    <xsl:when test="$fileType='mp3' or $fileType='wav' or $fileType='m4a' or $fileType='m4b' or $fileType='wma'">
-                      <img class="hit_icon_overlay" src="{$WebApplicationBaseURL}images/svg_icons/download_audio.svg"/>
-                    </xsl:when>
-                    <xsl:when test="$fileType='mpeg4' or $fileType='m4v' or $fileType='avi' or $fileType='wmv' or $fileType='asf'">
-                      <img class="hit_icon_overlay" src="{$WebApplicationBaseURL}images/svg_icons/download_video.svg"/>
-                    </xsl:when>
-                    <xsl:otherwise>
-                      <img class="hit_icon_overlay" src="{$WebApplicationBaseURL}images/svg_icons/download_default.svg"/>
-                    </xsl:otherwise>
-                  </xsl:choose>
+                  <xsl:variable name="contentType"
+                                select="document(concat('ifs:/',$derivid))/mcr_directory/children/child[name=$maindoc]/contentType"/>
+                  <xsl:variable name="iconLink">
+                    <xsl:call-template name="iconLink">
+                      <xsl:with-param name="baseURL" select="$WebApplicationBaseURL"/>
+                      <xsl:with-param name="mimeType" select="$contentType"/>
+                    </xsl:call-template>
+                  </xsl:variable>
+                  <img class="hit_icon_overlay" src="{$iconLink}"/>
                 </xsl:otherwise>
               </xsl:choose>
             </xsl:variable>

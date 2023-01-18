@@ -30,9 +30,11 @@
   <xsl:param name="MCR.Packaging.Packer.ImageWare.FlagType" />
   <xsl:param name="MIR.ImageWare.Enabled" />
   <xsl:param name="MIR.Workflow.Menu" select="'false'" />
+  <xsl:param name="MCR.Module-iview2.SupportedContentTypes"/>
 
   <xsl:include href="workflow-util.xsl" />
   <xsl:include href="mir-mods-utils.xsl" />
+  <xsl:include href="mir-utils.xsl" />
 
   <xsl:param name="isUserAllowedToManageDerivateAccessKeys">
     <xsl:call-template name="isCurrentUserAllowedToManageAccessKeys">
@@ -69,7 +71,6 @@
               <xsl:variable name="deriv" select="@xlink:href" />
               <xsl:variable name="derivlink" select="concat('mcrobject:',$deriv)" />
               <xsl:variable name="derivate" select="document($derivlink)" />
-              <xsl:variable name="contentTypes" select="document('resource:FileContentTypes.xml')/FileContentTypes" />
               <xsl:variable name="fileType" select="document(concat('ifs:/',@xlink:href,'/'))/mcr_directory/children/child/contentType" />
 
               <xsl:variable name="derivid" select="$derivate/mycorederivate/@ID" />
@@ -796,25 +797,37 @@
           <xsl:variable name="derivate" select="document(concat('mcrobject:',$derivid))" />
           <xsl:variable name="maindoc" select="$derivate/mycorederivate/derivate/internals/internal/@maindoc" />
           <xsl:variable name="contentType" select="document(concat('ifs:/',$derivid))/mcr_directory/children/child[name=$maindoc]/contentType" />
-          <xsl:variable name="fileType" select="document('webapp:FileContentTypes.xml')/FileContentTypes/type[mime=$contentType]/@ID" />
+
           <xsl:choose>
-            <xsl:when
-                    test="$fileType='msexcel' or $fileType='xlsx' or $fileType='msword97' or $fileType='docx' or $fileType='pptx' or $fileType='msppt' or $fileType='zip'"
-            >
-              <div class="hit_icon" style="background-image: url('{$WebApplicationBaseURL}images/icons/icon_common.png');" />
-              <img class="hit_icon_overlay" src="{$WebApplicationBaseURL}images/svg_icons/download_{$fileType}.svg" />
-            </xsl:when>
-            <xsl:when test="$fileType='mp3'">
-              <div class="hit_icon" style="background-image: url('{$WebApplicationBaseURL}images/icons/icon_common.png');" />
-              <img class="hit_icon_overlay" src="{$WebApplicationBaseURL}images/svg_icons/download_audio.svg" />
-            </xsl:when>
-            <xsl:when test="$fileType='mpg4'">
-              <div class="hit_icon" style="background-image: url('{$WebApplicationBaseURL}images/icons/icon_common.png');" />
-              <img class="hit_icon_overlay" src="{$WebApplicationBaseURL}images/svg_icons/download_video.svg" />
+            <xsl:when test="contains($MCR.Module-iview2.SupportedContentTypes, $contentType) or $contentType ='application/pdf'">
+              <div class="hit_icon">
+                <xsl:choose>
+                  <xsl:when test="not(mcrxsl:isCurrentUserGuestUser())">
+                    <xsl:attribute name="data-iiif-jwt">
+                      <xsl:value-of select="concat($WebApplicationBaseURL, 'api/iiif/image/v2/thumbnail/', $objID,'/full/!300,300/0/default.jpg')"/>
+                    </xsl:attribute>
+                  </xsl:when>
+                  <xsl:otherwise>
+                    <xsl:attribute name="style">
+                      <xsl:variable name="apos">'</xsl:variable>
+                      <xsl:value-of
+                              select="concat('background-image: url(', $apos, $WebApplicationBaseURL, 'api/iiif/image/v2/thumbnail/', $objID, '/full/!300,300/0/default.jpg',$apos,')')"/>
+                    </xsl:attribute>
+                  </xsl:otherwise>
+                </xsl:choose>
+              </div>
             </xsl:when>
             <xsl:otherwise>
-              <div class="hit_icon {$contentType}"
-                   style="background-image:url('{$WebApplicationBaseURL}rsc/thumbnail/{$identifier}/100.jpg')" />
+              <div class="hit_icon"
+                   style="background-image: url('{$WebApplicationBaseURL}images/icons/icon_common.png');"/>
+              <!-- if not, then the content type decides a icon -->
+              <xsl:variable name="iconLink">
+                <xsl:call-template name="iconLink">
+                  <xsl:with-param name="baseURL" select="$WebApplicationBaseURL"/>
+                  <xsl:with-param name="mimeType" select="$contentType"/>
+                </xsl:call-template>
+              </xsl:variable>
+              <img class="hit_icon_overlay" src="{$iconLink}"/>
             </xsl:otherwise>
           </xsl:choose>
         </xsl:when>
