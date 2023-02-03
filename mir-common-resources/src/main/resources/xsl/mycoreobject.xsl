@@ -179,7 +179,6 @@
     <xsl:variable name="derivxml" select="concat('ifs:/',$derivid)" />
     <xsl:variable name="details" select="document($derivxml)" />
     <xsl:variable name="ctype" select="$details/mcr_directory/children/child[name=$derivmain]/contentType" />
-    <xsl:variable name="ftype" select="document('webapp:FileContentTypes.xml')/FileContentTypes/type[@ID=$ctype]/label" />
     <xsl:variable name="size" select="$details/mcr_directory/size" />
     <div class="derivateHeading">
       <xsl:choose>

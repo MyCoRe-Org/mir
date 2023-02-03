@@ -8,7 +8,9 @@
   xmlns:xlink="http://www.w3.org/1999/xlink"
   xmlns:mcrmods="xalan://org.mycore.mods.classification.MCRMODSClassificationSupport"
   xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions"
-  exclude-result-prefixes="xsl mods mcrmods mcrxsl xlink srw_dc">
+  xmlns:str="http://exslt.org/strings"
+  xmlns:exslt="http://exslt.org/common"
+  exclude-result-prefixes="xsl mods mcrmods mcrxsl xlink srw_dc str exslt">
 
   <!-- xmlns:opf="http://www.idpf.org/2007/opf" -->
 
@@ -55,6 +57,24 @@
 -->
 
   <xsl:output method="xml" indent="yes"/>
+
+  <xsl:param name="MIR.dc.diniPublType.classificationId" select="'diniPublType'" />
+  <xsl:variable name="diniPublTypeClassificationId" select="$MIR.dc.diniPublType.classificationId" />
+  <xsl:variable name="diniPublTypeAuthorityURI">
+    <xsl:variable name="diniPublTypeClassification" select="document(concat('classification:metadata:0:children:',$diniPublTypeClassificationId))" />
+    <xsl:value-of select="$diniPublTypeClassification//label[lang('x-uri')]/@text" />
+  </xsl:variable>
+
+  <xsl:param name="MIR.dc.ignoredClassificationIds" select="'diniPublType2022'" />
+  <xsl:variable name="ignoredClassificationIds" select="str:tokenize($MIR.dc.ignoredClassificationIds,',')" />
+  <xsl:variable name="ignoredClassificationAuthorityURIs">
+    <xsl:for-each select="$ignoredClassificationIds">
+      <uri>
+        <xsl:variable name="ignoredClassification" select="document(concat('classification:metadata:0:children:',.))" />
+        <xsl:value-of select="$ignoredClassification//label[lang('x-uri')]/@text" />
+      </uri>
+    </xsl:for-each>
+  </xsl:variable>
 
   <xsl:variable name="marcrelator" select="document('classification:metadata:-1:children:marcrelator')" />
 
@@ -183,24 +203,32 @@
     </dc:subject>
   </xsl:template>
 
-  <xsl:template match="mods:classification[@authorityURI='http://www.mycore.org/classifications/diniPublType']">
+  <xsl:template match="mods:classification[@authorityURI=$diniPublTypeAuthorityURI]">
     <dc:type>
       <xsl:value-of select="concat('doc-type:',substring-after(@valueURI,'#'))" />
     </dc:type>
   </xsl:template>
 
   <xsl:template match="mods:classification">
-
-    <xsl:variable name="classlink" select="mcrmods:getClassCategLink(.)" />
-
-    <dc:subject>
-    <xsl:choose>
-      <xsl:when test="string-length($classlink) &gt; 0"><xsl:value-of select="document($classlink)/mycoreclass/categories/category/label/@text"/></xsl:when>
-      <xsl:when test="@valueURI"><xsl:value-of select="substring-after(@valueURI, '#')"/></xsl:when>
-      <xsl:when test="@value"><xsl:value-of select="@value"/></xsl:when>
-      <xsl:otherwise><xsl:value-of select="."/></xsl:otherwise>
-    </xsl:choose>
-    </dc:subject>
+    <xsl:variable name="authorityURI" select="@authorityURI" />
+    <xsl:variable name="subject">
+      <xsl:choose>
+        <xsl:when test="string-length($authorityURI)&gt;0">
+          <xsl:if test="not(exslt:node-set($ignoredClassificationAuthorityURIs)/uri[text()=$authorityURI])">
+            <xsl:variable name="classlink" select="mcrmods:getClassCategLink(.)" />
+            <xsl:value-of select="document($classlink)/mycoreclass/categories/category/label/@text"/>
+          </xsl:if>
+        </xsl:when>
+        <xsl:when test="@valueURI"><xsl:value-of select="substring-after(@valueURI, '#')"/></xsl:when>
+        <xsl:when test="@value"><xsl:value-of select="@value"/></xsl:when>
+        <xsl:otherwise><xsl:value-of select="."/></xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+    <xsl:if test="string-length($subject)&gt;0">
+      <dc:subject>
+        <xsl:value-of select="$subject"/>
+      </dc:subject>
+    </xsl:if>
   </xsl:template>
 
   <xsl:template

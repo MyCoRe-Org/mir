@@ -19,6 +19,7 @@
       -Djava.awt.headless=true</cargo.jvmargs>
     <cargo.rmi.port>9100</cargo.rmi.port>
     <cargo.servlet.port>9107</cargo.servlet.port>
+    <failsafe.arg />
     <it.host>127.0.0.1</it.host>
     <maven.deploy.skip>true</maven.deploy.skip>
     <maven.install.skip>true</maven.install.skip>
@@ -226,6 +227,7 @@
         <artifactId>maven-failsafe-plugin</artifactId>
         <version>2.19.1</version>
         <configuration>
+          <argLine>${failsafe.arg}</argLine>
           <systemPropertyVariables>
             <project.build.directory>${project.build.directory}</project.build.directory>
             <it.port>${cargo.servlet.port}</it.port>
