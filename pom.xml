@@ -8,7 +8,7 @@
   </parent>
   <groupId>org.mycore.mir</groupId>
   <artifactId>mir-parent</artifactId>
-  <version>2022.08</version>
+  <version>2023.02-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>MIR</name>
   <description>MyCoRe/MODS Institutional Repository</description>
@@ -21,8 +21,8 @@
   <scm>
     <connection>scm:git:https://github.com/MyCoRe-Org/mir.git</connection>
     <developerConnection>scm:git:https://github.com/MyCoRe-Org/mir.git</developerConnection>
-    <url>https://github.com/MyCoRe-Org/mir/tree/master</url>
-    <tag>v2022.08</tag>
+    <url>https://github.com/MyCoRe-Org/mir/tree/main</url>
+    <tag>HEAD</tag>
   </scm>
   <properties>
     <cargo.container.zipUrlInstaller.downloadDir>${settings.localRepository}/../cargo/containers</cargo.container.zipUrlInstaller.downloadDir>
@@ -44,7 +44,7 @@
     <java.target.version>17</java.target.version>
     <jetty.version>11.0.9</jetty.version>
     <maven.compiler.arg>-Werror</maven.compiler.arg>
-    <mycore.version>2022.08</mycore.version>
+    <mycore.version>2023.02-SNAPSHOT</mycore.version>
     <selenium.version>4.3.0</selenium.version>
     <site.suffix />
     <solr-runner.solrMirrorURL>https://archive.apache.org/dist/lucene/solr/</solr-runner.solrMirrorURL>
