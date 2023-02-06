@@ -22,13 +22,7 @@ MYCORE_PROPERTIES="${MCR_CONFIG_DIR}mycore.properties"
 PERSISTENCE_XML="${MCR_CONFIG_DIR}resources/META-INF/persistence.xml"
 
 function fixDirectoryRights() {
-      # check if the directory has a direct child with the wrong permissions
-      files=$(find "$1" -maxdepth 1 ! -user "$2" -printf '%f\n')
-      if [ -n "$files" ]; then
-        echo "The directory $1 contains some files which are not owned by $2:"
-        echo "$files"
-        chown -R "$2:$2" "$1"
-      fi
+  find "$1" \! -user "$2" -exec chown "$2:$2" '{}' +
 }
 
 echo "Running MIR Starter Script as User: $(whoami)"
