@@ -23,23 +23,3 @@
       margin-top: -1px;
     }
   }
-
-  // overwrite bootwatch settings
-  // for link colors in navbars
-  // was set to $success before
-  .bg-primary {
-    .navbar-nav {
-      .nav-link {
-        &:hover,
-        &:focus {
-          color: $mir-navlink-hover-color !important;
-        }
-      }
-      .show,
-      .active {
-        & > .nav-link {
-          color: $mir-navlink-active-color !important;
-        }
-      }
-    }
-  }

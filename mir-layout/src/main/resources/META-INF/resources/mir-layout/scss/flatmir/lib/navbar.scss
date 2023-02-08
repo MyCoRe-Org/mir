@@ -1,0 +1,60 @@
+//
+// Navbar
+// --------------------------------------------------
+
+  // overwrite bootwatch flatly settings
+  // for link colors in navbars
+  // was set to $success before
+  .bg-primary .navbar-nav,
+  .navbar-nav {
+    color: $mir-navlink-color;
+    .navbar-nav {
+      .nav-link {
+        &:hover,
+        &:focus {
+          color: $mir-navlink-hover-color !important;
+        }
+      }
+      .show,
+      .active {
+        & > .nav-link {
+          color: $mir-navlink-active-color !important;
+        }
+      }
+    }
+  }
+
+  // enables the bootstrap settings for navbar
+  // disabled from bootwatch flatly with its important flag
+  .navbar-dark {
+    .navbar-nav {
+      .nav-link {
+        color: $navbar-dark-color;
+        @include hover-focus() {
+          color: $navbar-dark-hover-color !important;
+        }
+      }
+      .show > .nav-link,
+      .active > .nav-link,
+      .nav-link.show,
+      .nav-link.active {
+        color: $navbar-dark-active-color !important;
+      }
+    }
+  }
+  .navbar-light {
+    .navbar-nav {
+      .nav-link {
+        color: $navbar-light-color;
+        @include hover-focus() {
+          color: $navbar-light-hover-color !important;
+        }
+      }
+      .show > .nav-link,
+      .active > .nav-link,
+      .nav-link.show,
+      .nav-link.active {
+        color: $navbar-light-active-color !important;
+      }
+    }
+  }

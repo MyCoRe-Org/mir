@@ -30,3 +30,14 @@ $navbar-inverse-bg:                         $brand-warning !default;
 $navbar-inverse-link-hover-bg:              $brand-warning !default;
 // default
 $navbar-default-link-hover-color:           $brand-warning !default;
+
+// navbar adjustments
+// bootswatch flatly uses fixed $success color
+// now you can adjust those values
+$mir-navlink-color: white !default;
+$mir-navlink-hover-color: white !default;
+$mir-navlink-active-color: white !default;
+// dark mode colors from flatly were not useful
+$navbar-dark-color: white !default;
+$navbar-dark-hover-color: white !default;
+$navbar-dark-active-color: white !default;
