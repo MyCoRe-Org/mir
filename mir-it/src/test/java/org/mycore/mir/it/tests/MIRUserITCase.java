@@ -13,7 +13,6 @@ import org.mycore.mir.it.controller.MIRUserController;
  */
 public class MIRUserITCase extends MIRITBase {
 
-
     @Before
     public final void init() {
         String appURL = getAPPUrlString();
@@ -34,7 +33,8 @@ public class MIRUserITCase extends MIRITBase {
 
     @Test
     public final void testCreateSubmitterValidationPasswordInName() {
-        userController.createUser("submitter", "submitter123", null, null, ()-> userController.assertValidationErrorVisible(),"submitter");
+        userController.createUser("submitter", "submitter123", null, null,
+            () -> userController.assertValidationErrorVisible(), "submitter");
     }
 
     @Test
@@ -45,8 +45,8 @@ public class MIRUserITCase extends MIRITBase {
 
     @Test
     public final void testCreateUserNameValidation() {
-        userController.createUser("Submitter", "submitter123", null, null, () -> userController.assertValidationErrorVisible(),
-            "submitter");
+        userController.createUser("Submitter", "submitter123", null, null,
+            () -> userController.assertValidationErrorVisible(), "submitter");
     }
 
     @Test
