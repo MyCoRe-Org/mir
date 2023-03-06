@@ -45,7 +45,8 @@
 
     <xsl:variable name="field" select="@name" />
     <xsl:variable name="params" select="/response/lst[@name='responseHeader']/lst[@name='params']"/>
-    <xsl:variable name="expanded" select="$params/str[@name=concat('toc.',$field,'.expanded')]/text()"/>
+    <xsl:variable name="expanded" select="$params/str[@name=concat('toc.',$field,'.expanded')]"/>
+    <xsl:variable name="displayField" select="$params/str[@name=concat('toc.',$field,'.displayField')]" />
 
     <!-- find the field name whose presence identifies the single document that "represents" this toc level as object -->
     <xsl:variable name="levelField">
@@ -72,7 +73,30 @@
         </xsl:choose>
       </xsl:attribute>
       <xsl:for-each select="arr/lst">
-        <item value="{*[@name='val']}">
+        <xsl:variable name="value" >
+          <xsl:choose>
+            <xsl:when test="$displayField">
+              <!--
+                  1. all documents in this bucket must have the same value for the $field, because that
+                     field (level/@field) is used to create the bucket
+                  2. the display field (level/@displayField) of a level, ip present, must be selected
+                     such, that all documents with the same field value also have the same display field value
+                  3. therefore: all documents in this bucket must have the same value for the
+                     display field (level/@displayField)
+                  4. therefore: it is safe to pick any document in this bucket to look up either the field
+                     or display field value. we use the first document
+                  5. the fist document might be nested multiple levels deep if there are levels
+                     without publications
+              -->
+              <xsl:variable name="firstId" select="(descendant::lst[@name='docs']/arr/lst/str[@name='val'])[1]"/>
+              <xsl:value-of select="key('id2doc',$firstId)/*[@name=$displayField]"/>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:value-of select="*[@name='val']"/>
+            </xsl:otherwise>
+          </xsl:choose>
+        </xsl:variable>
+        <item value="{$value}">
 
           <!-- there may be a single document that "represents" this toc level as object -->
           <!-- for example, there may be an object for the complete current issue -->
