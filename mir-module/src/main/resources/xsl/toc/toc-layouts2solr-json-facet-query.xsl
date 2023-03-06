@@ -29,6 +29,12 @@
         <xsl:value-of select="@field" />
         <xsl:text>.expanded=</xsl:text>
         <xsl:value-of select="@expanded" />
+        <xsl:if test="@displayField">
+          <xsl:text>&amp;toc.</xsl:text>
+          <xsl:value-of select="@field"/>
+          <xsl:text>.displayField=</xsl:text>
+          <xsl:value-of select="@displayField"/>
+        </xsl:if>
       </xsl:for-each>
       <xsl:text>&amp;json.facet=</xsl:text>
       <xsl:variable name="json.facet">
