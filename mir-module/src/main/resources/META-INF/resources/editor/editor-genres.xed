@@ -170,6 +170,7 @@
     <xed:include ref="type.of.resource.repeated" />
     <xed:include ref="language" />
     <xed:include ref="identifier.isbn" />
+    <xed:include ref="doi.handle.urn.repeated" />
     <xed:include ref="sdnb.repeat" />
     <xed:include ref="subject.simple" />
     <xed:include ref="abstract.repeated" />
@@ -194,6 +195,7 @@
     <xed:include ref="type.of.resource.repeated" />
     <xed:include ref="institutes" />
     <xed:include ref="language" />
+    <xed:include ref="doi.handle.urn.repeated" />
     <xed:include ref="sdnb.repeat" />
     <xed:include ref="subject.simple" />
     <xed:include ref="abstract.repeated" />
@@ -349,6 +351,7 @@
     <xed:include ref="identifier.patent" />
     <xed:include ref="country" />
     <xed:include ref="language" />
+    <xed:include ref="doi.handle.urn.repeated" />
     <xed:include ref="date.submitted.datetimepicker" />
     <xed:include ref="date.issued.datetimepicker" />
     <xed:include ref="sdnb.repeat" />
@@ -371,6 +374,7 @@
       <xed:include ref="place" />
     </xed:if>
     <xed:include ref="language" />
+    <xed:include ref="doi.handle.urn.repeated" />
     <xed:include ref="sdnb.repeat" />
     <xed:include ref="subject.simple" />
     <xed:include ref="abstract.simple" />
@@ -402,6 +406,7 @@
     <xed:include ref="geographic" />
     <xed:include ref="cartographics" />
     <xed:include ref="language" />
+    <xed:include ref="doi.handle.urn.repeated" />
     <xed:include ref="sdnb.repeat" />
     <xed:include ref="subject.simple" />
     <xed:include ref="abstract.simple" />
@@ -438,6 +443,7 @@
     <xed:include ref="subtitle" />
     <xed:include ref="name.repeated" />
     <xed:include ref="language" />
+    <xed:include ref="doi.handle.urn.repeated" />
     <xed:include ref="sdnb.repeat" />
     <xed:include ref="geographic" />
     <xed:include ref="subject.simple" />
