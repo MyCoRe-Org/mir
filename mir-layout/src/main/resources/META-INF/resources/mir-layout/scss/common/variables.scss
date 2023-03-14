@@ -31,9 +31,4 @@ $alert-warning-text: $brand-warning !default;
 // set color for close button
 $close-color: $body-color !default;
 
-// navbar adjustments
-// bootstrap uses $success color instead
-$mir-navlink-hover-color: white !default;
-$mir-navlink-active-color: white !default;
-
-$input-color:         $body-color !default;
+$input-color: $body-color !default;

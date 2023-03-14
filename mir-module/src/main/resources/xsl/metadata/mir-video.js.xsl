@@ -42,7 +42,7 @@
               <div class="card-body">
                 <xsl:if test="count($options//optgroup/option[@data-file-extension ='mp4']) &gt; 0">
                   <video id="player_video" class="video-js embed-responsive-item" controls="" preload="auto" poster="">
-                    <xsl:attribute name="data-setup">{}</xsl:attribute>
+                    <xsl:attribute name="data-setup">{"playbackRates":[0.5,0.75,1,1.25,1.5,1.75,2]}</xsl:attribute>
                     <p class="vjs-no-js">
                       To view this video please enable JavaScript, and consider upgrading
                       to a web browser that
@@ -53,7 +53,7 @@
                 <xsl:if
                   test="count($options//optgroup/option[@data-file-extension ='mp3']) &gt; 0 or count($options//optgroup/option[@data-file-extension ='wav']) &gt; 0">
                   <audio id="player_audio" class="video-js embed-responsive-item" controls="" preload="auto" poster="">
-                    <xsl:attribute name="data-setup">{}</xsl:attribute>
+                    <xsl:attribute name="data-setup">{"playbackRates":[0.5,0.75,1,1.25,1.5,1.75,2]}</xsl:attribute>
                     <p class="vjs-no-js">
                       To listen to this audio file please enable JavaScript, and consider upgrading
                       to a web browser that

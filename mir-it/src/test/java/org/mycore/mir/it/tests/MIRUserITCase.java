@@ -11,44 +11,48 @@ import org.mycore.mir.it.controller.MIRUserController;
 /**
  * @author Thomas Scheffler (yagee)
  */
-public class MIRUserITCase extends MCRSeleniumTestBase {
-
-    MIRUserController controller;
+public class MIRUserITCase extends MIRITBase {
 
     @Before
     public final void init() {
-        controller = new MIRUserController(getDriver(),
-            getBaseUrl(System.getProperty("it.port", "8080")) + "/" + System.getProperty("it.context"));
+        String appURL = getAPPUrlString();
+        userController = new MIRUserController(getDriver(), appURL);
 
-        controller.goToStart();
-        if (controller.isLoggedIn()) {
-            controller.logOff();
+        userController.goToStart();
+        if (userController.isLoggedIn()) {
+            userController.logOff();
         }
-        controller.loginAs(MIRUserController.ADMIN_LOGIN, MIRUserController.ADMIN_PASSWD);
+        userController.loginAs(MIRUserController.ADMIN_LOGIN, MIRUserController.ADMIN_PASSWD);
     }
 
     @Test
     public final void testCreateSubmitter() {
-        controller.createUser("submitter", "submitter123", null, null, "submitter");
-        controller.deleteUser("submitter");
+        userController.createUser("submitter", "subm1tter123", null, null, "submitter");
+        userController.deleteUser("submitter");
+    }
+
+    @Test
+    public final void testCreateSubmitterValidationPasswordInName() {
+        userController.createUser("submitter", "submitter123", null, null,
+            () -> userController.assertValidationErrorVisible(), "submitter");
     }
 
     @Test
     public final void testCreateAdmin() {
-        controller.createUser("allgroups", "password123", null, null, "reader", "submitter", "editor", "admin");
-        controller.deleteUser("allgroups");
+        userController.createUser("allgroups", "password123", null, null, "reader", "submitter", "editor", "admin");
+        userController.deleteUser("allgroups");
     }
 
     @Test
     public final void testCreateUserNameValidation() {
-        controller.createUser("Submitter", "submitter123", null, null, () -> controller.assertValidationErrorVisible(),
-            "submitter");
+        userController.createUser("Submitter", "submitter123", null, null,
+            () -> userController.assertValidationErrorVisible(), "submitter");
     }
 
     @Test
     public final void testCreateUserMailValidation() {
-        controller.createUser("submitter", "submitter123", null, "wrongmail",
-            () -> controller.assertValidationErrorVisible(), "submitter");
+        userController.createUser("submitter", "submitter123", null, "wrongmail",
+            () -> userController.assertValidationErrorVisible(), "submitter");
     }
 
 }

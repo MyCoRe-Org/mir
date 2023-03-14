@@ -21,13 +21,17 @@ HIBERNATE_SCHEMA_ESCAPED=$(echo "$JDBC_URL" | sed 's/\//\\\//g')
 MYCORE_PROPERTIES="${MCR_CONFIG_DIR}mycore.properties"
 PERSISTENCE_XML="${MCR_CONFIG_DIR}resources/META-INF/persistence.xml"
 
+function fixDirectoryRights() {
+  find "$1" \! -user "$2" -exec chown "$2:$2" '{}' +
+}
+
 echo "Running MIR Starter Script as User: $(whoami)"
 
 if [ "$EUID" -eq 0 ]
   then
-    chown -R mcr:mcr "$MCR_CONFIG_DIR"
-    chown -R mcr:mcr "$MCR_DATA_DIR"
-    chown -R mcr:mcr "$MCR_LOG_DIR"
+    fixDirectoryRights "$MCR_CONFIG_DIR" "mcr"
+    fixDirectoryRights "$MCR_DATA_DIR" "mcr"
+    fixDirectoryRights "$MCR_LOG_DIR" "mcr"
     exec gosu mcr "$0"
     exit 0;
 fi
