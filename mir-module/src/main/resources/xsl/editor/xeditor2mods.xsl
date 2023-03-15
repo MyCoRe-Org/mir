@@ -145,6 +145,12 @@
       </xsl:choose>
     </xsl:variable>
     <mods:nameIdentifier type="{$type}" typeURI="{$uri}">
+      <xsl:if test="string-length($uri) &gt; 0">
+        <xsl:attribute name="valueURI">
+          <xsl:value-of select="$uri" />
+        </xsl:attribute>
+      </xsl:if>
+
       <xsl:value-of select="." />
     </mods:nameIdentifier>
   </xsl:template>
