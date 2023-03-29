@@ -10,16 +10,13 @@
 <!-- TODO: map article-type to mods:genre -->
 <!-- TODO: lookup existing host for xlink:href -->
 
-<xsl:stylesheet version="1.0"
+<xsl:stylesheet version="3.0"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:xlink="http://www.w3.org/1999/xlink"
-  xmlns:xalan="http://xml.apache.org/xalan"
-  xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
   xmlns:mods="http://www.loc.gov/mods/v3"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  exclude-result-prefixes="xalan i18n">
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 
-  <xsl:output method="xml" encoding="UTF-8" indent="yes" xalan:indent-amount="2" />
+  <xsl:output method="xml" encoding="UTF-8" indent="yes"/>
 
   <xsl:param name="MIR.projectid.default" />
 
@@ -42,7 +39,10 @@
         <xsl:apply-templates select="kwd-group/kwd" />
         <xsl:apply-templates select="permissions/copyright-statement" />
         <xsl:apply-templates select="permissions/license" />
-        <xsl:call-template name="oa_nlz" />
+        <xsl:if test="not(permissions/license)">
+          <xsl:call-template name="oa_nlz" />
+        </xsl:if>
+
       </xsl:for-each>
       <xsl:apply-templates select="@xml:lang" mode="lang2mods" />
       <xsl:apply-templates select="." mode="copy" />
@@ -110,8 +110,16 @@
 
   <xsl:template name="href">
     <xsl:if test="$MCR.ContentTransformer.deepgreenjats2mods.HostRelation='link'">
+      <xsl:variable name="solrQueryISSN">
+        <xsl:for-each select="issn">
+          <xsl:if test="not(position()=1)">
+            <xsl:text>+</xsl:text>
+          </xsl:if>
+          <xsl:value-of select="."/>
+        </xsl:for-each>
+      </xsl:variable>
       <xsl:variable name="solrQuery"
-                    select="document(concat('solr:main:q=%2Bmods.identifier%3A%22', issn, '%22%20AND%20%2Bmods.genre%3Ajournal'))" />
+                    select="document(concat('solr:main:q=%2Bmods.identifier%3A%28', $solrQueryISSN, '%29%20AND%20%2Bmods.genre%3Ajournal'))" />
       <xsl:attribute name="href" namespace="http://www.w3.org/1999/xlink">
         <xsl:choose>
           <xsl:when test="$solrQuery/response/result/@numFound &gt; 0">
@@ -344,18 +352,23 @@
   <xsl:template match="*" mode="copy-affiliation" />
 
   <xsl:template match="contrib-id">
-    <mods:nameIdentifier type="{@contrib-id-type}">
-      <xsl:value-of select="." />
-    </mods:nameIdentifier>
+    <xsl:if test="text() != ''">
+      <mods:nameIdentifier type="{@contrib-id-type}">
+        <xsl:value-of select="." />
+      </mods:nameIdentifier>
+    </xsl:if>
   </xsl:template>
   
   <xsl:variable name="orcidSite">orcid.org/</xsl:variable>
 
   <!-- Reduce ORCID iDs given as complete URL -->
   <xsl:template match="contrib-id[contains(.,$orcidSite)]" priority="1">
-    <mods:nameIdentifier type="orcid">
-      <xsl:value-of select="substring-after(.,$orcidSite)" />
-    </mods:nameIdentifier>
+    <xsl:variable name="orcid" select="substring-after(.,$orcidSite)"/>
+      <xsl:if test="string-length($orcid)>0">
+        <mods:nameIdentifier type="orcid">
+          <xsl:value-of select="$orcid" />
+        </mods:nameIdentifier>
+      </xsl:if>
   </xsl:template>
 
   <!-- Ignore empty ORCIDs -->
@@ -376,13 +389,13 @@
   </xsl:template>
 
   <xsl:template match="pub-date[@iso-8601-date]">
-    <mods:dateIssued encoding="iso8601">
+    <mods:dateIssued encoding="w3cdtf">
       <xsl:value-of select="@iso-8601-date" />
     </mods:dateIssued>
   </xsl:template>
 
   <xsl:template match="pub-date">
-    <mods:dateIssued encoding="iso8601">
+    <mods:dateIssued encoding="w3cdtf">
       <xsl:value-of select="year" />
       <xsl:apply-templates select="month" />
       <xsl:apply-templates select="day" />
@@ -469,11 +482,23 @@
   <xsl:variable name="mir_licenses_uri" select="$mir_licenses/label[@xml:lang='x-uri']/@text" />
 
   <xsl:template match="permissions/license">
-    <xsl:variable name="url" select="substring-after(@xlink:href,'//')" />
+    <xsl:variable name="url">
+      <xsl:choose>
+        <xsl:when test="@xlink:href">
+          <xsl:value-of select="substring-after(@xlink:href,'//')"/>
+        </xsl:when>
+        <xsl:when test="license-p/ext-link/@xlink:href">
+          <xsl:value-of select="substring-after(license-p/ext-link/@xlink:href,'//')"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="''"/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
     <xsl:variable name="categoryID" select="$mir_licenses//category[url[contains(@xlink:href,$url)]]/@ID" />
 
       <xsl:choose>
-        <xsl:when test="@xlink:href and (string-length($categoryID) &gt; 0)">
+        <xsl:when test="string-length($url) and (string-length($categoryID) &gt; 0)">
         <mods:accessCondition type="use and reproduction">
           <xsl:attribute name="xlink:href">
             <xsl:value-of select="concat($mir_licenses_uri,'#',$categoryID)" />
@@ -481,9 +506,11 @@
         </mods:accessCondition>
         </xsl:when>
         <xsl:otherwise>
-        <mods:accessCondition type="use and reproduction">
-          <xsl:value-of select="license-p" />
-        </mods:accessCondition>
+          <!-- Can not recognize license, use default license, and safe original license text -->
+          <mods:accessCondition type="use and reproduction" xlink:href="{$mir_licenses_uri}#oa_nlz" />
+          <mods:accessCondition type="use and reproduction">
+            <xsl:value-of select="license-p" />
+          </mods:accessCondition>
         </xsl:otherwise>
       </xsl:choose>
   </xsl:template>
