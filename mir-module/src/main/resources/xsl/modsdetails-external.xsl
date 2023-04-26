@@ -16,7 +16,7 @@
                 xmlns:imageware="org.mycore.mir.imageware.MIRImageWarePacker"
                 xmlns:pi="xalan://org.mycore.pi.frontend.MCRIdentifierXSLUtils"
                 xmlns:piUtil="xalan://org.mycore.pi.frontend.MCRIdentifierXSLUtils"
-                exclude-result-prefixes="basket xalan xlink mcr i18n mods mcrmods mcrxsl str encoder acl imageware pi"
+                exclude-result-prefixes="basket xalan xlink mcr i18n mods mcrmods mcrxsl str encoder acl imageware pi piUtil"
                 xmlns:ex="http://exslt.org/dates-and-times"
                 xmlns:exslt="http://exslt.org/common"
                 extension-element-prefixes="ex exslt"
