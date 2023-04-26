@@ -5,8 +5,9 @@
                 xmlns:mcrxml="xalan://org.mycore.common.xml.MCRXMLFunctions"
                 xmlns:str="http://exslt.org/strings"
                 xmlns:mods="http://www.loc.gov/mods/v3"
+                xmlns:encoder="xalan://java.net.URLEncoder"
                 version="1.0"
-                exclude-result-prefixes="i18n mcrxml str xalan"
+                exclude-result-prefixes="i18n mcrxml str xalan encoder"
 >
 
 
@@ -41,7 +42,7 @@
                         </xsl:if>
                         <xsl:text>mods.nameIdentifier:</xsl:text>
                         <xsl:value-of select="@type"/>
-                        <xsl:text>%5C:</xsl:text>
+                        <xsl:text>\:</xsl:text>
                         <xsl:value-of select="@id" />
                     </xsl:for-each>
                     <xsl:text>&amp;owner=createdby:</xsl:text>
@@ -85,7 +86,7 @@
                 </dl>
             </div>
         </xsl:if>
-        <a href="{$query}"><xsl:value-of select="$personName" /></a>
+        <a href="{encoder:encode($query)}"><xsl:value-of select="$personName" /></a>
         <xsl:if test="count($nameIdentifiers) &gt; 0 or string-length($affiliation) &gt; 0">
             <!-- class personPopover triggers the javascript popover code -->
             <a id="{$personNodeId}" class="personPopover" title="{i18n:translate('mir.details.personpopover.title')}">

@@ -150,7 +150,7 @@
             <xsl:with-param name="class" select="$class" />
             <xsl:with-param name="title" select="$title" />
             <xsl:with-param name="linkText" select="$classText" />
-            <xsl:with-param name="query" select="concat('*&amp;fq=category.top:%22mir_genres:', @ID, '%22 AND (', $state, ' )')" />
+            <xsl:with-param name="query" select="concat('*&amp;fq=category.top:%22mir_genres:', @ID, '%22%20AND%20(', encoder:encode($state), ')')" />
           </xsl:call-template>
         </xsl:for-each>
       </xsl:when>
