@@ -129,7 +129,7 @@ function setUpMyCoRe {
     /opt/mir/mir/bin/mir.sh create configuration directory
     setDockerValues
     setupLog4jConfig
-    sed -ri "s/<mapping-file>META-INF\/mycore-viewer-mappings.xml<\/mapping-file>/&\n    <mapping-file>META-INF\/mir-module-mappings.xml<\/mapping-file>\n    <mapping-file>META-INF\/mycore-acl-mappings.xml<\/mapping-file>/" "${MCR_CONFIG_DIR}resources/META-INF/persistence.xml"
+    sed -ri "s/<mapping-file>META-INF\/mycore-viewer-mappings.xml<\/mapping-file>/&\n    <mapping-file>META-INF\/mir-module-mappings.xml<\/mapping-file>\n    <mapping-file>META-INF\/mycore-acl-mappings.xml<\/mapping-file>\n    <mapping-file>META-INF\/mycore-jobqueue-mappings.xml<\/mapping-file>/" "${MCR_CONFIG_DIR}resources/META-INF/persistence.xml"
     sed -ri "s/(<\/properties>)/<property name=\"hibernate\.connection\.provider_class\" value=\"org\.hibernate\.connection\.C3P0ConnectionProvider\" \/>\n<property name=\"hibernate\.c3p0\.min_size\" value=\"2\" \/>\n<property name=\"hibernate\.c3p0\.max_size\" value=\"50\" \/>\n<property name=\"hibernate\.c3p0\.acquire_increment\" value=\"2\" \/>\n<property name=\"hibernate\.c3p0\.max_statements\" value=\"30\" \/>\n<property name=\"hibernate\.c3p0\.timeout\" value=\"1800\" \/>\n\1/" "${MCR_CONFIG_DIR}resources/META-INF/persistence.xml"
     /opt/mir/mir/bin/setup.sh
 }
