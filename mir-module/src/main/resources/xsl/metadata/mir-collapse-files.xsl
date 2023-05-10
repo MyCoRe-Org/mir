@@ -8,7 +8,7 @@
                 xmlns:acl="xalan://org.mycore.access.MCRAccessManager"
                 xmlns:embargo="xalan://org.mycore.mods.MCRMODSEmbargoUtils"
                 xmlns:piUtil="xalan://org.mycore.pi.frontend.MCRIdentifierXSLUtils"
-                exclude-result-prefixes="i18n mcr mods acl xlink embargo"
+                exclude-result-prefixes="i18n mcr mods acl xlink embargo piUtil"
 >
   <xsl:import href="xslImport:modsmeta:metadata/mir-collapse-files.xsl" />
   <xsl:param name="MIR.NotFullAccessInfo.Genres" />

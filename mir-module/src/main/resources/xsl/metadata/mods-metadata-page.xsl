@@ -2,6 +2,7 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:mcri18n="http://www.mycore.de/xslt/i18n"
                 xmlns:mcrproperty="http://www.mycore.de/xslt/property"
+                exclude-result-prefixes="mcri18n mcrproperty"
                 version="3.0">
 
   <xsl:include href="functions/i18n.xsl" />

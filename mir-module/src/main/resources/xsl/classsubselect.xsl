@@ -4,7 +4,7 @@
 ]>
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xlink="http://www.w3.org/1999/xlink"
-  xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation" xmlns:encoder="xalan://java.net.URLEncoder" exclude-result-prefixes="xlink">
+  xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation" xmlns:encoder="xalan://java.net.URLEncoder" exclude-result-prefixes="xlink encoder">
   &html-output;
   <xsl:variable name="Navigation.title" select="i18n:translate('subselect.category.title')" />
   <xsl:variable name="MainTitle" select="i18n:translate('common.titles.mainTitle')" />
