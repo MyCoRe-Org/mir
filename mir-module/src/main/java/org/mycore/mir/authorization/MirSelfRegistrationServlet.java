@@ -59,6 +59,12 @@ public class MirSelfRegistrationServlet extends MCRServlet {
     private static final String DEFAULT_ROLE = MCRConfiguration2.getString("MIR.SelfRegistration.DefaultRole")
         .orElse(null);
 
+    private static final String DEFAULT_REGISTRATION_DISABLED_STATUS = MCRConfiguration2.getString("MIR.SelfRegistration.Registration.setDisabled")
+            .orElse(null);
+
+    private static final String DEFAULT_EMAIL_VERIFICATION_DISABLED_STATUS = MCRConfiguration2.getString("MIR.SelfRegistration.EmailVerification.setDisabled")
+            .orElse(null);
+
     /**
      * Checks if given user is exists.
      *
@@ -113,7 +119,9 @@ public class MirSelfRegistrationServlet extends MCRServlet {
 
             final String password = doc.getRootElement().getChildText("password");
 
-            user.setDisabled(true);
+            if (DEFAULT_REGISTRATION_DISABLED_STATUS != null && !DEFAULT_REGISTRATION_DISABLED_STATUS.isEmpty()) {
+                user.setDisabled(Boolean.parseBoolean(DEFAULT_REGISTRATION_DISABLED_STATUS));
+            }
 
             // remove all roles set by editor
             user.getSystemRoleIDs().clear();
@@ -144,7 +152,9 @@ public class MirSelfRegistrationServlet extends MCRServlet {
                 final String umt = user.getUserAttribute("mailtoken");
                 if (umt != null) {
                     if (umt.equals(mailToken)) {
-                        user.setDisabled(false);
+                        if (DEFAULT_EMAIL_VERIFICATION_DISABLED_STATUS != null && !DEFAULT_EMAIL_VERIFICATION_DISABLED_STATUS.isEmpty()) {
+                            user.setDisabled(Boolean.parseBoolean(DEFAULT_EMAIL_VERIFICATION_DISABLED_STATUS));
+                        }
 
                         if (DEFAULT_ROLE != null && !DEFAULT_ROLE.isEmpty()) {
                             user.assignRole(DEFAULT_ROLE);
