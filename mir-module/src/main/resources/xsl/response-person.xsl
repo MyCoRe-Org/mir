@@ -9,7 +9,7 @@
   xmlns:xalan="http://xml.apache.org/xalan"
   xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions"
   xmlns:str="http://exslt.org/strings"
-  exclude-result-prefixes="xalan i18n encoder str">
+  exclude-result-prefixes="xalan i18n encoder str mcrxsl">
   &html-output;
   <xsl:include href="MyCoReLayout.xsl" />
   <xsl:include href="response-utils.xsl" />
