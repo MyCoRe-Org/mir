@@ -359,7 +359,7 @@
     <xsl:variable name="hitCount" select="$hitNumberOnPage + (($currentPage) -1) * $rows"/>
 
     <!-- hit entry -->
-    <div id="hit_{$hitCount}" class="hit_item {$hitItemClass}">
+    <div id="hit_{$hitCount}" class="hit_item {normalize-space($hitItemClass)}">
 
       <!-- hit head -->
       <div class="row hit_item_head">
