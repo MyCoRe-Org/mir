@@ -13,11 +13,21 @@
   <xsl:param name="WebApplicationBaseURL" />
   <xsl:param name="MIR.PPN.DatabaseList" select="'gvk'" />
 
-  <!-- put value string (after authority URI) in attribute valueURIxEditor -->
+  <!-- put value string (after authority URI) in attribute valueURIxEditor, but only if it contains # -->
   <xsl:template match="@valueURI">
-    <xsl:attribute name="valueURIxEditor">
+    <xsl:choose>
+      <xsl:when test="contains(.,'#')">
+        <xsl:attribute name="valueURIxEditor">
           <xsl:value-of select="substring-after(.,'#')" />
         </xsl:attribute>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:attribute name="valueURI">
+          <xsl:value-of select="." />
+        </xsl:attribute>
+      </xsl:otherwise>
+    </xsl:choose>
+    
   </xsl:template>
 
   <xsl:template match="mods:subject/mods:topic/@valueURI">
