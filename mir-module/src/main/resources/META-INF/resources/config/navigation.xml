@@ -73,13 +73,13 @@
   <menu id="publish" dir="/content/publish">
     <label xml:lang="de">Dokumente einreichen</label>
     <label xml:lang="en">Submit Document</label>
-    <item href="/servlets/MCRActionMappingServlet/mods/create" type="intern">
-      <label xml:lang="de">Publizieren</label>
-      <label xml:lang="en">Publish</label>
+    <item href="/content/publish/index.xml" type="intern" replaceMenu="false" constrainPopUp="false">
+        <label xml:lang="de">Dokument einreichen</label>
+        <label xml:lang="en">Submit new document</label>
     </item>
-    <item href="/content/publish/importPPN.xml" type="intern">
-      <label xml:lang="de">Publizieren (PPN Import)</label>
-      <label xml:lang="en">Publish (PPN Import)</label>
+    <item href="/editor/editor-admins.xed" type="intern" replaceMenu="false" constrainPopUp="false">
+        <label xml:lang="de">Dokument einreichen (Admin)</label>
+        <label xml:lang="en">Submit new document (admin)</label>
     </item>
     <item href="/content/publish/guidelines.xml" type="intern">
       <label xml:lang="de">Leitlinien</label>
