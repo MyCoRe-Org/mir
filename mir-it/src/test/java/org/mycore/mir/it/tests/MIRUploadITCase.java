@@ -50,7 +50,7 @@ public class MIRUploadITCase extends MIRITBase {
         editorController = new MIRModsEditorController(getDriver(), appURL);
         userController.logoutIfLoggedIn();
         userController.loginAs(MIRUserController.ADMIN_LOGIN, MIRUserController.ADMIN_PASSWD);
-        publishEditorController.open(() -> {
+        publishEditorController.openAdmin(() -> {
         });
     }
 
