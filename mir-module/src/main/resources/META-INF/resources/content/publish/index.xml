@@ -95,9 +95,9 @@
           <h2>Publication</h2>
           <p>
             Please select the type of the publication. Afterwards you will be directed
-            to the appropriate form. If record already have an identifier you can enter one.
-            We will look in other databases if there is already metadata available which
-            we can use here.
+            to the appropriate form. If you know an identifier for the publication record
+            you may enter it here. It will be used to look up and reuse metadata from
+            external databases.
           </p>
           <h3>Set publication type</h3>
         </div>
