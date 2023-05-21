@@ -29,6 +29,14 @@ public class MIRPublishEditorController {
         }
     }
 
+    public void openAdmin(Runnable assertion) {
+        driver.waitAndFindElement(MCRBy.partialLinkText("Dokumente einreichen")).click();
+        driver.waitAndFindElement(MCRBy.partialLinkText("Publizieren (Admin)")).click();
+        if (assertion != null) {
+            assertion.run();
+        }
+    }
+
     public void selectType(MIRGenre genre, MIRHost host) {
         Select genreSelect = new Select(driver.waitAndFindElement(By.id("genre")));
         genreSelect.selectByValue(genre.getValue());

@@ -43,7 +43,7 @@ public class MIRAdminEditorITCase extends MIRITBase {
         editorController = new MIRModsEditorController(getDriver(), appURL);
         userController.logoutIfLoggedIn();
         userController.loginAs(MIRUserController.ADMIN_LOGIN, MIRUserController.ADMIN_PASSWD);
-        publishEditorController.open(() -> {
+        publishEditorController.openAdmin(() -> {
         });
         simpleSearchController = new MIRSearchController(driver, appURL);
         driver.waitUntilPageIsLoaded("MODS-Dokument erstellen");
