@@ -74,12 +74,12 @@
     <label xml:lang="de">Dokumente einreichen</label>
     <label xml:lang="en">Submit Document</label>
     <item href="/content/publish/index.xml" type="intern" replaceMenu="false" constrainPopUp="false">
-        <label xml:lang="de">Dokument einreichen</label>
-        <label xml:lang="en">Submit new document</label>
+        <label xml:lang="de">Publizieren</label>
+        <label xml:lang="en">Publish</label>
     </item>
     <item href="/editor/editor-admins.xed" type="intern" replaceMenu="false" constrainPopUp="false">
-        <label xml:lang="de">Dokument einreichen (Admin)</label>
-        <label xml:lang="en">Submit new document (admin)</label>
+        <label xml:lang="de">Publizieren (Admin)</label>
+        <label xml:lang="en">Publish (admin)</label>
     </item>
     <item href="/content/publish/guidelines.xml" type="intern">
       <label xml:lang="de">Leitlinien</label>
