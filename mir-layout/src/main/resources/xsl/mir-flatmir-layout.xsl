@@ -5,13 +5,11 @@
 <xsl:stylesheet version="1.0"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:xlink="http://www.w3.org/1999/xlink"
-  xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
-  exclude-result-prefixes="xlink i18n">
+  xmlns:i18ntr="http://www.mycore.org/i18n"
+  exclude-result-prefixes="xlink i18ntr">
 
-  <xsl:output method="html" indent="yes" omit-xml-declaration="yes" media-type="text/html"
-    version="5" />
   <xsl:strip-space elements="*" />
-  <xsl:include href="resource:xsl/mir-flatmir-layout-utils.xsl"/>
+  <xsl:include href="mir-flatmir-layout-utils.xsl" />
   <xsl:param name="MIR.DefaultLayout.CSS" />
   <xsl:param name="MIR.CustomLayout.CSS" select="''" />
   <xsl:param name="MIR.CustomLayout.JS" select="''" />
@@ -20,7 +18,6 @@
   <xsl:variable name="PageTitle" select="/*/@title" />
 
   <xsl:template match="/site">
-    <xsl:text disable-output-escaping='yes'>&lt;!DOCTYPE html&gt;</xsl:text>
     <html lang="{$CurrentLang}" class="no-js">
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -53,9 +50,9 @@
           <xsl:call-template name="mir.navigation" />
           <noscript>
             <div class="mir-no-script alert alert-warning text-center" style="border-radius: 0;">
-              <xsl:value-of select="i18n:translate('mir.noScript.text')" />&#160;
+              <i18ntr:code>mir.noScript.text</i18ntr:code>&#160;
               <a href="http://www.enable-javascript.com/de/" target="_blank">
-                <xsl:value-of select="i18n:translate('mir.noScript.link')" />
+                <i18ntr:code>mir.noScript.link</i18ntr:code>
               </a>
               .
             </div>
@@ -79,7 +76,9 @@
                       <div class="col-12">
                         <ul itemprop="breadcrumb" class="breadcrumb">
                           <li class="breadcrumb-item">
-                            <a class="navtrail" href="{$WebApplicationBaseURL}"><xsl:value-of select="i18n:translate('mir.breadcrumb.home')" /></a>
+                            <a class="navtrail" href="{$WebApplicationBaseURL}">
+                              <i18ntr:code>mir.breadcrumb.home</i18ntr:code>
+                            </a>
                           </li>
                           <xsl:copy-of select="breadcrumb/ul[@class='breadcrumb']/*" />
                         </ul>
@@ -112,9 +111,9 @@
           $( document ).ready(function() {
             $('.overtext').tooltip();
             $.confirm.options = {
-              title: "<xsl:value-of select="i18n:translate('mir.confirm.title')" />",
-              confirmButton: "<xsl:value-of select="i18n:translate('mir.confirm.confirmButton')" />",
-              cancelButton: "<xsl:value-of select="i18n:translate('mir.confirm.cancelButton')" />",
+              title: "<i18ntr:code>mir.confirm.title</i18ntr:code>",
+              confirmButton: "<i18ntr:code>mir.confirm.confirmButton</i18ntr:code>",
+              cancelButton: "<i18ntr:code>mir.confirm.cancelButton</i18ntr:code>",
               post: false,
               confirmButtonClass: "btn-danger",
               cancelButtonClass: "btn-secondary",
@@ -134,4 +133,5 @@
   <xsl:template match="/*[not(local-name()='site')]">
     <xsl:message terminate="yes">This is not a site document, fix your properties.</xsl:message>
   </xsl:template>
+  <xsl:param name="RequestURL" />
 </xsl:stylesheet>
