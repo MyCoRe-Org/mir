@@ -59,10 +59,12 @@ public class MirSelfRegistrationServlet extends MCRServlet {
     private static final String DEFAULT_ROLE = MCRConfiguration2.getString("MIR.SelfRegistration.DefaultRole")
         .orElse(null);
 
-    private static final String DEFAULT_REGISTRATION_DISABLED_STATUS = MCRConfiguration2.getString("MIR.SelfRegistration.Registration.setDisabled")
+    private static final String DEFAULT_REGISTRATION_DISABLED_STATUS =
+            MCRConfiguration2.getString("MIR.SelfRegistration.Registration.setDisabled")
             .orElse(null);
 
-    private static final String DEFAULT_EMAIL_VERIFICATION_DISABLED_STATUS = MCRConfiguration2.getString("MIR.SelfRegistration.EmailVerification.setDisabled")
+    private static final String DEFAULT_EMAIL_VERIFICATION_DISABLED_STATUS =
+            MCRConfiguration2.getString("MIR.SelfRegistration.EmailVerification.setDisabled")
             .orElse(null);
 
     /**
@@ -145,6 +147,7 @@ public class MirSelfRegistrationServlet extends MCRServlet {
         final String userName = req.getParameter("user");
         final String realmId = req.getParameter("realm");
         final String mailToken = req.getParameter("token");
+        // final String mailConfirmationRequired = req.getParameter("mailConfirmationRequired");
 
         if (userName != null && realmId != null && mailToken != null) {
             final MCRUser user = MCRUserManager.getUser(userName, realmId);
@@ -152,7 +155,8 @@ public class MirSelfRegistrationServlet extends MCRServlet {
                 final String umt = user.getUserAttribute("mailtoken");
                 if (umt != null) {
                     if (umt.equals(mailToken)) {
-                        if (DEFAULT_EMAIL_VERIFICATION_DISABLED_STATUS != null && !DEFAULT_EMAIL_VERIFICATION_DISABLED_STATUS.isEmpty()) {
+                        if (DEFAULT_EMAIL_VERIFICATION_DISABLED_STATUS != null
+                                && !DEFAULT_EMAIL_VERIFICATION_DISABLED_STATUS.isEmpty()) {
                             user.setDisabled(Boolean.parseBoolean(DEFAULT_EMAIL_VERIFICATION_DISABLED_STATUS));
                         }
 
@@ -169,6 +173,19 @@ public class MirSelfRegistrationServlet extends MCRServlet {
                         root.addContent(u.clone());
 
                         getLayoutService().doLayout(req, res, new MCRJDOMContent(root));
+
+                        if (DEFAULT_EMAIL_VERIFICATION_DISABLED_STATUS != null
+                                && !DEFAULT_EMAIL_VERIFICATION_DISABLED_STATUS.isEmpty()
+                                && Boolean.parseBoolean(DEFAULT_EMAIL_VERIFICATION_DISABLED_STATUS)) {
+                            try {
+                                MCRMailer.sendMail(MCRUserTransformer.buildExportableSafeXML(user),
+                                        "e-mail-new-author-confirmation");
+                            } catch (final Exception ex) {
+                                LOGGER.error(ex);
+                                res.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, errorMsg("mailError"));
+                                return;
+                            }
+                        }
                     } else {
                         res.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, errorMsg("missingParameter"));
                     }
