@@ -318,8 +318,10 @@ public class MIRModsEditorController extends MIREditorController {
                 inputElement.sendKeys(name);
                 driver.waitAndFindElement(By.xpath(inputPath + "/.././/button[contains(text(), 'Suchen')]")).click();
                 waitForResults();
-                driver.waitAndFindElement(By.xpath(inputPath + "/../../.././/a[contains(text(),'Lobid')]"))
-                        .click();
+                driver
+                    .waitAndFindElement(By.xpath(
+                        inputPath + "/../../.././/a[contains(text(),'Lobid') and not(contains(@class, 'disabled'))]"))
+                    .click();
                 waitForAnimationFinish();
                 driver.waitAndFindElement(By.xpath(inputPath + "/../../.././/i[contains(@class,'applyPerson')]"))
                         .click();
@@ -331,7 +333,7 @@ public class MIRModsEditorController extends MIREditorController {
     }
     public void clickOutside() {
         Actions action = new Actions(driver);
-        action.moveByOffset(0, 0).click().build().perform();
+        action.moveByOffset(1, 1).click().build().perform();
     }
 
     private void waitForResults() {
@@ -355,7 +357,9 @@ public class MIRModsEditorController extends MIREditorController {
         driver.waitAndFindElement(By.xpath(inputPath)).sendKeys(name);
         driver.waitAndFindElement(By.xpath(inputPath + "/.././/button[contains(text(), 'Suchen')]")).click();
         this.waitForResults();
-        driver.waitAndFindElement(By.xpath(inputPath + "/../../.././/a[contains(text(),'Lobid')]"))
+        driver
+            .waitAndFindElement(
+                By.xpath(inputPath + "/../../.././/a[contains(text(),'Lobid')  and not(contains(@class, 'disabled'))]"))
                 .click();
         waitForAnimationFinish();
         driver.waitAndFindElement(By.xpath(".//i[contains(@class,'applyPerson')][1]"))
