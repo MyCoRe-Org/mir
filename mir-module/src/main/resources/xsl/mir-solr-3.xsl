@@ -171,7 +171,14 @@
       <field name="mods.relatedItem">
         <xsl:value-of select="@xlink:href" />
         |
-        <xsl:value-of select="@type" />
+        <xsl:choose>
+          <xsl:when test="@type">
+            <xsl:value-of select="@type" />
+          </xsl:when>
+          <xsl:when test="@otherType">
+            <xsl:value-of select="@otherType" />
+          </xsl:when>
+        </xsl:choose>
       </field>
       <xsl:if test="mods:part/@order">
         <field name="mods.part.order.{@xlink:href}">
