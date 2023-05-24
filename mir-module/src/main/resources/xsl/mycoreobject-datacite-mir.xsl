@@ -510,6 +510,9 @@
         <xsl:when test="$mods-type='software'">
           <xsl:value-of select="'Software'" />
         </xsl:when>
+        <xsl:when test="mods-type='grouping'">
+          <xsl:value-of select="'Collection'" />
+        </xsl:when>
         <xsl:otherwise>
           <xsl:value-of select="'Text'" />
         </xsl:otherwise>
@@ -604,6 +607,7 @@
         <xsl:when test=".='preceding'">IsNewVersionOf</xsl:when>
         <xsl:when test=".='succeeding'">IsPreviousVersionOf</xsl:when>
         <xsl:when test=".='reviewOf'">Reviews</xsl:when>
+        <xsl:when test=".='has_grouping'">IsPartOf<xsl:when>
       </xsl:choose>
     </xsl:attribute>
   </xsl:template>

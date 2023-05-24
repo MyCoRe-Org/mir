@@ -2092,6 +2092,38 @@
     </fieldset>
   </xed:template>
 
+  <xed:template id="related.item.other.search.of.all.items">
+    <fieldset>
+      <legend class="mir-fieldset-legend">
+        <xed:output i18n="mir.relatedItem.others" />
+      </legend>
+      <xed:repeat xpath="mods:relatedItem[@otherType]" min="1" max="10">
+        <div class="mir-fieldset-content mir-related-item-search">
+          <div class="form-group row">
+            <div class="col-md-3">
+              <xed:bind xpath="@otherType">
+                <select class="form-control">
+                  <xed:include uri="xslStyle:items2options:classification:editor:-1:children:mir_relateditem" />
+                </select>
+              </xed:bind>
+            </div>
+            <div class="col-md-6">
+              <div class="controls form-inline">
+                <input type="button" class="form-control mir-relatedItem-select" value="{i18n:mir.editing.related.select}" />
+                <span />
+                <xed:bind xpath="@xlink:href">
+                  <input type="hidden" />
+                </xed:bind>
+              </div>
+            </div>
+            <mir:help-pmud help-text="{i18n:mir.help.related.item}" pmud="true" /> <!-- TODO -->
+          </div>
+        </div>
+      </xed:repeat>
+      <script src="{$WebApplicationBaseURL}js/mir/relatedItem-modal.min.js" type="text/javascript"></script>
+    </fieldset>
+  </xed:template>
+
   <xed:template id="extension.characteristics">
     <fieldset>
       <legend class="mir-fieldset-legend">
