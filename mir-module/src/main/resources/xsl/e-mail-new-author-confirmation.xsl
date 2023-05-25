@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+                version="2.0"
+                xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
+                exclude-result-prefixes="i18n">
     <xsl:param name="DefaultLang"/>
     <xsl:param name="WebApplicationBaseURL"/>
     <xsl:param name="ServletsBaseURL"/>
@@ -22,23 +25,30 @@
             <xsl:value-of select="$MCR.mir-module.NewUserMail"/>
         </to>
         <subject>
-            Der Benutzer hat seine E-Mail-Adresse bestätigt!
+            <xsl:value-of select="i18n:translate('selfRegistration.step.verified.email.admin.subject')"/>
         </subject>
         <body>
-            <xsl:text>Der Benutzer hat soeben seine E-Mail-Adresse bestätigt.</xsl:text>
+            <xsl:value-of select="i18n:translate('selfRegistration.step.verified.email.admin.info')"/>
             <xsl:value-of select="$newline"/>
             <xsl:value-of select="$newline"/>
-            <xsl:value-of select="concat('Benutzerkennung : ',@name,' (',@realm,')',$newline)"/>
-            <xsl:value-of select="concat('Name            : ',realName,$newline)"/>
-            <xsl:value-of select="concat('E-Mail          : ',eMail,$newline)"/>
-            <xsl:value-of
-                    select="concat('Link            : ',$ServletsBaseURL,'MCRUserServlet?action=show&amp;id=',@name,'@',@realm,$newline)"/>
+            <!-- User ID -->
+            <xsl:value-of select="i18n:translate('selfRegistration.step.verified.email.admin.info.userId')"/>
+            <xsl:value-of select="concat(@name,' (',@realm,')',$newline)"/>
+            <!-- Name -->
+            <xsl:value-of select="i18n:translate('selfRegistration.step.verified.email.admin.info.name')"/>
+            <xsl:value-of select="concat(realName,$newline)"/>
+            <!-- Email -->
+            <xsl:value-of select="i18n:translate('selfRegistration.step.verified.email.admin.info.mail')"/>
+            <xsl:value-of select="concat(eMail,$newline)"/>
+            <!-- Link -->
+            <xsl:value-of select="i18n:translate('selfRegistration.step.verified.email.admin.info.link')"/>
+            <xsl:value-of select="concat($ServletsBaseURL,'MCRUserServlet?action=show&amp;id=',@name,'@',@realm,$newline)"/>
             <xsl:value-of select="$newline"/>
 
             <xsl:choose>
                 <xsl:when
                         test="$MIR.SelfRegistration.EmailVerification.setDisabled = 'true' or  $MIR.SelfRegistration.EmailVerification.setDisabled = 'TRUE'">
-                    <xsl:text>Bitte überprüfen Sie die erstellte Benutzerkennung und heben Sie die Sperrung nach Möglichkeit auf.</xsl:text>
+                    <xsl:value-of select="i18n:translate('selfRegistration.step.verified.email.admin.info.forDisabled')"/>
                     <xsl:value-of select="$newline"/>
                 </xsl:when>
             </xsl:choose>
