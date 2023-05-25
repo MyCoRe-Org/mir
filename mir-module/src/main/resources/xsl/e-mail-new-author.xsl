@@ -28,7 +28,7 @@
 
       <xsl:choose>
         <xsl:when
-                test="$MIR.SelfRegistration.EmailVerification.setDisabled = 'true' or  $MIR.SelfRegistration.EmailVerification.setDisabled = 'TRUE'">
+            test="$MIR.SelfRegistration.EmailVerification.setDisabled = 'true' or  $MIR.SelfRegistration.EmailVerification.setDisabled = 'TRUE'">
           <xsl:value-of select="i18n:translate('selfRegistration.step.created.email.user.disabled.info.0')"/>
         </xsl:when>
         <xsl:otherwise>
@@ -40,12 +40,12 @@
       <xsl:value-of select="i18n:translate('selfRegistration.step.created.email.user.info.1')"/>
       <xsl:value-of select="$newline" />
       <xsl:value-of
-        select="concat($ServletsBaseURL, 'MirSelfRegistrationServlet?action=verify&amp;user=', @name, '&amp;realm=', @realm, '&amp;token=', attributes/attribute[@name='mailtoken']/@value)" />
+        select="concat($ServletsBaseURL, 'MirSelfRegistrationServlet?action=verify&amp;user=', @name, '&amp;realm=',@realm, '&amp;token=', attributes/attribute[@name='mailtoken']/@value)" />
       <xsl:value-of select="$newline" />
 
       <xsl:choose>
         <xsl:when
-                test="$MIR.SelfRegistration.EmailVerification.setDisabled = 'true' or  $MIR.SelfRegistration.EmailVerification.setDisabled = 'TRUE'">
+            test="$MIR.SelfRegistration.EmailVerification.setDisabled = 'true' or  $MIR.SelfRegistration.EmailVerification.setDisabled = 'TRUE'">
           <xsl:value-of select="i18n:translate('selfRegistration.step.created.email.user.disabled.info.1')"/>
         </xsl:when>
       </xsl:choose>
