@@ -13,12 +13,12 @@
         <xsl:when
                 test="$MIR.SelfRegistration.EmailVerification.setDisabled = 'true' or  $MIR.SelfRegistration.EmailVerification.setDisabled = 'TRUE'">
           <xsl:value-of
-                  select="i18n:translate('selfRegistration.step.verified.info.accountDisabled')"
+                  select="i18n:translate('selfRegistration.step.verified.user.disabled.info')"
                   disable-output-escaping="yes" />
         </xsl:when>
         <xsl:otherwise>
           <xsl:value-of
-                  select="i18n:translate('selfRegistration.step.verified.info', concat(user/eMail, ';', concat($ServletsBaseURL, 'MCRLoginServlet?url=', $WebApplicationBaseURL, 'content/index.xml')))"
+                  select="i18n:translate('selfRegistration.step.verified.user.info', concat(user/eMail, ';', concat($ServletsBaseURL, 'MCRLoginServlet?url=', $WebApplicationBaseURL, 'content/index.xml')))"
                   disable-output-escaping="yes" />
         </xsl:otherwise>
       </xsl:choose>
