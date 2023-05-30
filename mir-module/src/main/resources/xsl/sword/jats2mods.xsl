@@ -311,8 +311,9 @@
         <xsl:apply-templates select="xref[(@ref-type='aff') or not(@ref-type)][string-length(@rid) > 0]" />
       </xsl:when>
       <!-- Affiliation is given at article level -->
-      <xsl:when test="not(xref[(@ref-type='aff') or not(@ref-type)]) and //article-meta/aff[not(@*)][position()=last()][string-length(text()) > 0]">
-        <xsl:apply-templates select="//article-meta/aff[not(@*)][position()=last()][string-length(text()) > 0]" />
+      <xsl:when test="not(xref[(@ref-type='aff') or not(@ref-type)])
+        and //article-meta/aff[not(@*)][position()=last()][string-length(text()[1]) > 0]">
+        <xsl:apply-templates select="//article-meta/aff[not(@*)][position()=last()][string-length(text()[1]) > 0]" />
       </xsl:when>
       <!-- Affiliation is given in aff ellement -->
       <xsl:otherwise>
@@ -364,11 +365,9 @@
   <!-- Reduce ORCID iDs given as complete URL -->
   <xsl:template match="contrib-id[contains(.,$orcidSite)]" priority="1">
     <xsl:variable name="orcid" select="substring-after(.,$orcidSite)"/>
-      <xsl:if test="string-length($orcid)>0">
-        <mods:nameIdentifier type="orcid">
-          <xsl:value-of select="$orcid" />
-        </mods:nameIdentifier>
-      </xsl:if>
+    <mods:nameIdentifier type="orcid">
+      <xsl:value-of select="$orcid" />
+    </mods:nameIdentifier>
   </xsl:template>
 
   <!-- Ignore empty ORCIDs -->
@@ -490,9 +489,6 @@
         <xsl:when test="license-p/ext-link/@xlink:href">
           <xsl:value-of select="substring-after(license-p/ext-link/@xlink:href,'//')"/>
         </xsl:when>
-        <xsl:otherwise>
-          <xsl:value-of select="''"/>
-        </xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
     <xsl:variable name="categoryID" select="$mir_licenses//category[url[contains(@xlink:href,$url)]]/@ID" />
