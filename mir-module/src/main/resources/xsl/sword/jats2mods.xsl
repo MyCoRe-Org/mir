@@ -352,12 +352,10 @@
 
   <xsl:template match="*" mode="copy-affiliation" />
 
-  <xsl:template match="contrib-id">
-    <xsl:if test="text() != ''">
-      <mods:nameIdentifier type="{@contrib-id-type}">
-        <xsl:value-of select="." />
-      </mods:nameIdentifier>
-    </xsl:if>
+  <xsl:template match="contrib-id" priority="1">
+    <mods:nameIdentifier type="{@contrib-id-type}">
+      <xsl:value-of select="." />
+    </mods:nameIdentifier>
   </xsl:template>
   
   <xsl:variable name="orcidSite">orcid.org/</xsl:variable>
@@ -371,7 +369,9 @@
   </xsl:template>
 
   <!-- Ignore empty ORCIDs -->
-  <xsl:template match="contrib-id[contains(.,$orcidSite)][normalize-space(substring-after(.,$orcidSite)) = '']" priority="2" />
+  <xsl:template match="contrib-id[(normalize-space() = '')
+    or (contains(., $orcidSite) and normalize-space(substring-after(., $orcidSite)) = '')]" priority="2" />
+<!--  <xsl:template match="contrib-id[contains(.,$orcidSite)][normalize-space(substring-after(.,$orcidSite)) = '']" priority="2" />-->
 
   <xsl:template name="pub-date">
     <xsl:choose>
