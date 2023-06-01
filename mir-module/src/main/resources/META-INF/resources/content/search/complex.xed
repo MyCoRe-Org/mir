@@ -1,12 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <MyCoReWebPage>
 
-  <section xml:lang="all" xmlns:xed="http://www.mycore.de/xeditor"  xmlns:mir="http://www.mycore.de/mir"
+  <section xml:lang="de" xmlns:xed="http://www.mycore.de/xeditor"  xmlns:mir="http://www.mycore.de/mir"
            i18n="component.mods.editor.search.complex.pagetitle">
     <head>
-      <meta name="title" i18n="component.mods.editor.search.complex.pagetitle" />
-      <meta name="description" i18n="component.mods.editor.search.complex.pagetitle" />
+      <meta name="title" content="Komplexe Suche" />
+      <meta name="description" content="Komplexe Suche über alle Publikationen" />
     </head>
+  </section>
+  <section xml:lang="en" xmlns:xed="http://www.mycore.de/xeditor"  xmlns:mir="http://www.mycore.de/mir"
+           i18n="component.mods.editor.search.complex.pagetitle">
+    <head>
+      <meta name="title" content="Complex search mask" />
+      <meta name="description" content="Complex search mask for all publications" />
+    </head>
+  </section>
+
+  <section xml:lang="all" xmlns:xed="http://www.mycore.de/xeditor"  xmlns:mir="http://www.mycore.de/mir"
+           i18n="component.mods.editor.search.complex.pagetitle">
     <xed:form class="form-horizontal" role="form">
       <xed:cleanup-rule xpath="//condition" relevant-if="(string-length(@value) &gt; 0) or value[string-length(text()) &gt; 0 ]" />
       <xed:cleanup-rule xpath="//boolean" relevant-if="boolean|condition" />
