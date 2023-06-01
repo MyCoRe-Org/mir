@@ -2,6 +2,10 @@
 <!DOCTYPE MyCoReWebPage>
 <MyCoReWebPage>
 <section xml:lang="de" title="Vertragsbedingungen">
+  <head>
+    <meta name="title" content="Vertragsbedingungen"/>
+    <meta name="description" content="Vertragsbedingungen für Veröffentlichungen auf dem Publikationsserver"/>
+  </head>
 
   <h2>Vertragsbedingungen für Veröffentlichungen auf dem Publikationsserver</h2>
   <h3>1. Online-Bereitstellung</h3>

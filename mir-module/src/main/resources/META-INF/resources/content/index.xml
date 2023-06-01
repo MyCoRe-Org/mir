@@ -3,6 +3,10 @@
 <MyCoReWebPage>
 
   <section title="Willkommen bei MIR!" xml:lang="de">
+        <head>
+          <meta name="title" content="Willkommen bei MIR!" />
+          <meta name="description" content="MIR Startseite" />
+        </head>
         <div class="jumbotwo" >
             <div class="row">
 

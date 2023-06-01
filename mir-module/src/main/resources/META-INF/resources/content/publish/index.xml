@@ -3,6 +3,10 @@
 <MyCoReWebPage>
 
   <section title="Publizieren" xml:lang="de">
+    <head>
+      <meta name="title" content="Publizieren"/>
+      <meta name="description" content="Publizieren mit Metadatenerfassung"/>
+    </head>
     <script src='../../js/mir/select-doctype.min.js'> </script>
 
     <form id="submit_publication"
@@ -17,7 +21,7 @@
           <h2>Publizieren</h2>
           <p>
             Bitte wählen sie den Typ der Publikation aus. Anschließend werden sie auf das passende
-            Eingabeformular weitergeleitet. Falls der Datensatz bereits einen Identifikator besitzt
+            Eingabeformular weitergeleitet. Falls der Datensatz bereits einen Identifikator besitzt,
             können ggf. Metadaten aus anderen Datenquellen übernommen werden.
           </p>
           <h3>Publikationstyp festlegen</h3>

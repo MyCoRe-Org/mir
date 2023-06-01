@@ -1,6 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE MyCoReWebPage>
 <MyCoReWebPage>
+
+  <section i18n="component.user2.admin.create.title" xml:lang="de">
+    <head>
+      <meta name="title" content="Registrierung"/>
+      <meta name="description" content="Schritt 1: Selbstregistrierung"/>
+    </head>
+  </section>
+  <section i18n="component.user2.admin.create.title" xml:lang="en">
+    <head>
+      <meta name="title" content="Registration"/>
+      <meta name="description" content="Step 1: Self-registration"/>
+    </head>
+  </section>
+
   <section xml:lang="all" i18n="component.user2.admin.create.title">
     <h3>
       <i18n key="selfRegistration.step.create.title" />
