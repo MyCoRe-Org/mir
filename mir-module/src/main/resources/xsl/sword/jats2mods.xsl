@@ -352,7 +352,7 @@
 
   <xsl:template match="*" mode="copy-affiliation" />
 
-  <xsl:template match="contrib-id" priority="1">
+  <xsl:template match="contrib-id">
     <mods:nameIdentifier type="{@contrib-id-type}">
       <xsl:value-of select="." />
     </mods:nameIdentifier>
