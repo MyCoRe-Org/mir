@@ -47,6 +47,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Ren\u00E9 Adler (eagle)
@@ -76,7 +77,7 @@ public class MirSelfRegistrationServlet extends MCRServlet {
         .orElse(null);
 
     private static final String ROLES = MCRConfiguration2.getString(
-            "MCR.Rest.JWT.Roles")
+            "MIR.SelfRegistration.RoleHierarchy")
         .orElse(null);
 
     /**
@@ -226,8 +227,9 @@ public class MirSelfRegistrationServlet extends MCRServlet {
         if (userName != null && realmId != null && disabled != null) {
             final MCRUser user = MCRUserManager.getUser(userName, realmId);
             if (user != null) {
-
-                if (checkUsersPermissionToChangeDisableUserStatus(user, roles)) {
+                Map.Entry<Integer, String> usersPermissionToChangeDisableUserStatus =
+                    checkUsersPermissionToChangeDisableUserStatus(user, roles);
+                if (usersPermissionToChangeDisableUserStatus.getKey() == 0) {
                     boolean userIsDisabled = user.isDisabled();
                     if (userIsDisabled != Boolean.parseBoolean(disabled)) {
                         user.setDisabled(Boolean.parseBoolean(disabled));
@@ -256,7 +258,8 @@ public class MirSelfRegistrationServlet extends MCRServlet {
                             errorMsg("userAlreadyHasStatus"));
                     }
                 } else {
-                    res.sendError(HttpServletResponse.SC_FORBIDDEN, errorMsg("mir.error.headline.403"));
+                    res.sendError(usersPermissionToChangeDisableUserStatus.getKey(),
+                        usersPermissionToChangeDisableUserStatus.getValue());
                 }
             } else {
                 res.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, errorMsg("userNotFound"));
@@ -286,73 +289,120 @@ public class MirSelfRegistrationServlet extends MCRServlet {
     }
 
     /**
+     * Check the user's permission to change the status of a disabled user
+     * @param user modifiable user
+     * @param roles role List
+     * @return returns the key-value pair, where key is the error number and value is the error message as a string.
+     * If there is no error, the following pair is returned: key: 0; value: ""
+     */
+    private Map.Entry<Integer, String> checkUsersPermissionToChangeDisableUserStatus(MCRUser user, List<String> roles) {
+        Map.Entry<Integer, String> mapEntry = isCurrentUserInRole(roles);
+        if (mapEntry.getKey() != 0) {
+            return mapEntry;
+        }
+        mapEntry = compareUsersPermissionsLevel(user);
+        if (mapEntry.getKey() != 0) {
+            return mapEntry;
+        }
+        mapEntry = isCurrentUserEnabled();
+        if (mapEntry.getKey() != 0) {
+            return mapEntry;
+        }
+        return areModifiableUserAndCurrentUserIdentical(user);
+    }
+
+    /**
      * Checks if the role of the current user is included in the list of roles with which the current user have the
      * right to administer other users
      * @param roles list of roles
-     * @return true if it included or false if not
+     * @return returns the key-value pair, where key is the error number and value is the error message as a string.
+     * If there is no error, the following pair is returned: key: 0; value: ""
      */
-    private boolean isCurrentUserInRole(List<String> roles) {
+    private Map.Entry<Integer, String> isCurrentUserInRole(List<String> roles) {
         if (roles != null && !roles.isEmpty()) {
             for (String role : roles) {
                 if (MCRXMLFunctions.isCurrentUserInRole(role)) {
-                    return true;
+                    return Map.entry(0, "");
                 }
             }
         }
-        return false;
+        return Map.entry(HttpServletResponse.SC_FORBIDDEN, errorMsg("mir.error.headline.403"));
     }
 
     /**
-     * check the user's permission to change the status of a disabled user
+     * Comparing the level of user permissions. if the permission level of the current user is higher than that of
+     * the user being modified, no error is returned, otherwise an error occurs
      * @param user modifiable user
-     * @param roles role List
-     * @return true if the permissions level allows you to modify the user to the current user or false is not
+     * @return returns the key-value pair, where key is the error number and value is the error message as a string.
+     * If there is no error, the following pair is returned: key: 0; value: ""
      */
-    private boolean checkUsersPermissionToChangeDisableUserStatus(MCRUser user, List<String> roles) {
-        return isCurrentUserInRole(roles) && compareUsersPermissionsLevel(user) && isCurrentUserEnabled();
-    }
-
-    /**
-     * Comparing the level of user permissions
-     * @param user modifiable user
-     * @return true if the permission level of the current user is higher than the permission level of
-     * the user being modified or false if not
-     */
-    private boolean compareUsersPermissionsLevel(MCRUser user) {
-        if (ROLES != null && !ROLES.isEmpty()) {
-            String[] roleHierarchy = ROLES.replaceAll("\\s+", "").split(",");
-            Collection<String> modifiableUserRoles = user.getSystemRoleIDs();
-            int permissionHighestLevel = 100000000; // roleHierarchy.length;
-            int modifiableUserPermissionHighestLevel = permissionHighestLevel;
-            for (String role : modifiableUserRoles) {
-                int index = Arrays.asList(roleHierarchy).indexOf(role);
-                if (index != -1 && index < modifiableUserPermissionHighestLevel) {
-                    modifiableUserPermissionHighestLevel = index;
+    private Map.Entry<Integer, String> compareUsersPermissionsLevel(MCRUser user) {
+        if (user != null) {
+            if (ROLES != null && !ROLES.isEmpty()) {
+                String[] roleHierarchy = ROLES.replaceAll("\\s+", "").split(",");
+                Collection<String> modifiableUserRoles = user.getSystemRoleIDs();
+                int permissionHighestLevel = 100000000; // roleHierarchy.length;
+                int modifiableUserPermissionHighestLevel = permissionHighestLevel;
+                for (String role : modifiableUserRoles) {
+                    int index = Arrays.asList(roleHierarchy).indexOf(role);
+                    if (index != -1 && index < modifiableUserPermissionHighestLevel) {
+                        modifiableUserPermissionHighestLevel = index;
+                    }
                 }
-            }
-            String currentUserId = MCRSessionMgr.getCurrentSession().getUserInformation().getUserID();
-            MCRUser currentUser = MCRUserManager.getUser(currentUserId);
-            Collection<String> currentUserRoles = currentUser.getSystemRoleIDs();
-            int currentUserPermissionHighestLevel = permissionHighestLevel;
-            for (String role : currentUserRoles) {
-                int index = Arrays.asList(roleHierarchy).indexOf(role);
-                if (index != -1 && index < currentUserPermissionHighestLevel) {
-                    currentUserPermissionHighestLevel = index;
+                String currentUserId = MCRSessionMgr.getCurrentSession().getUserInformation().getUserID();
+                MCRUser currentUser = MCRUserManager.getUser(currentUserId);
+                Collection<String> currentUserRoles = currentUser.getSystemRoleIDs();
+                int currentUserPermissionHighestLevel = permissionHighestLevel;
+                for (String role : currentUserRoles) {
+                    int index = Arrays.asList(roleHierarchy).indexOf(role);
+                    if (index != -1 && index < currentUserPermissionHighestLevel) {
+                        currentUserPermissionHighestLevel = index;
+                    }
                 }
+                return currentUserPermissionHighestLevel <= modifiableUserPermissionHighestLevel
+                       ? Map.entry(0, "")
+                       : Map.entry(HttpServletResponse.SC_FORBIDDEN,
+                           errorMsg("mir.error.headline.403"));
+            } else {
+                return Map.entry(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+                    errorMsg("roleHierarchyNotDefined"));
             }
-            return currentUserPermissionHighestLevel <= modifiableUserPermissionHighestLevel;
         } else {
-            return true;
+            return Map.entry(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+                errorMsg("userNotFound"));
         }
     }
 
     /**
      * Check if the current user is enabled
-     * @return true if enabled or false if not
+     * @return returns the key-value pair, where key is the error number and value is the error message as a string.
+     * If there is no error, the following pair is returned: key: 0; value: "".
      */
-    private boolean isCurrentUserEnabled() {
+    private Map.Entry<Integer, String> isCurrentUserEnabled() {
         String currentUserId = MCRSessionMgr.getCurrentSession().getUserInformation().getUserID();
         MCRUser currentUser = MCRUserManager.getUser(currentUserId);
-        return !currentUser.isDisabled();
+        return !currentUser.isDisabled()
+               ? Map.entry(0, "")
+               : Map.entry(HttpServletResponse.SC_FORBIDDEN, errorMsg("mir.error.headline.403"));
+    }
+
+    /**
+     * Check if the user being modified and the current user are identical
+     * @param user modifiable user
+     * @return returns the key-value pair, where key is the error number and value is the error message as a string.
+     * If there is no error, the following pair is returned: key: 0; value: "".
+     */
+    private Map.Entry<Integer, String> areModifiableUserAndCurrentUserIdentical(MCRUser user) {
+        if (user != null) {
+            String currentUserId = MCRSessionMgr.getCurrentSession().getUserInformation().getUserID();
+
+            return user.getUserID().equals(currentUserId)
+                   ? Map.entry(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, // TODO: .SC_FORBIDDEN?
+                errorMsg("modifiableUserIsCurrentUser"))
+                   : Map.entry(0, "");
+        } else {
+            return Map.entry(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+                errorMsg("userNotFound"));
+        }
     }
 }
