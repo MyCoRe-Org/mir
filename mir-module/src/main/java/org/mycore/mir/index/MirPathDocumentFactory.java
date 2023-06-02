@@ -25,7 +25,6 @@ package org.mycore.mir.index;
 
 import static org.mycore.wfc.MCRConstants.STATUS_CLASS_ID;
 
-import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Collection;
@@ -33,7 +32,6 @@ import java.util.Collection;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.solr.common.SolrInputDocument;
-import org.mycore.common.MCRPersistenceException;
 import org.mycore.datamodel.classifications2.MCRCategLinkReference;
 import org.mycore.datamodel.classifications2.MCRCategLinkServiceFactory;
 import org.mycore.datamodel.classifications2.MCRCategoryID;
@@ -45,11 +43,10 @@ import org.mycore.solr.index.file.MCRSolrPathDocumentFactory;
  *
  */
 public class MirPathDocumentFactory extends MCRSolrPathDocumentFactory {
-    private static Logger LOGGER = LogManager.getLogger();
+    private static final Logger LOGGER = LogManager.getLogger();
 
     @Override
-    public SolrInputDocument getDocument(Path input, BasicFileAttributes attr) throws IOException,
-        MCRPersistenceException {
+    public SolrInputDocument getDocument(Path input, BasicFileAttributes attr) {
         SolrInputDocument document = super.getDocument(input, attr);
         Object returnId = document.getFieldValue("returnId");
         if (returnId == null) {

@@ -20,7 +20,6 @@ import org.mycore.sword.application.MCRSwordMetadataProvider;
 import org.swordapp.server.DepositReceipt;
 import org.swordapp.server.SwordError;
 import org.swordapp.server.UriRegistry;
-import org.xml.sax.SAXException;
 
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -68,7 +67,7 @@ public class MIRSwordMetadataProvider extends MCRSwordMetadataProvider {
         final List<Element> elementList;
         try {
             elementList = mcrContent.asXML().getRootElement().getChildren();
-        } catch (JDOMException | IOException | SAXException e) {
+        } catch (JDOMException | IOException e) {
             throw new SwordError(UriRegistry.ERROR_BAD_REQUEST, HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
                 "Error getting transform result of mods to dc transformation!", e);
         }

@@ -32,7 +32,6 @@ import org.mycore.sword.MCRSwordUtil;
 import org.swordapp.server.Deposit;
 import org.swordapp.server.SwordError;
 import org.swordapp.server.SwordServerException;
-import org.xml.sax.SAXException;
 
 public class MIRDeepGreepIngester extends MIRSwordIngesterBase {
 
@@ -90,7 +89,7 @@ public class MIRDeepGreepIngester extends MIRSwordIngesterBase {
                     derivate.getDerivate().getInternals().setMainDoc(fileName);
                     MCRMetadataManager.update(derivate);
                     return newObjectId;
-                } catch (SAXException | JDOMException | MCRAccessException e) {
+                } catch (JDOMException | MCRAccessException e) {
                     throw new SwordServerException("Error while creating mods", e);
                 }
             } catch (IOException e) {

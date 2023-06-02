@@ -23,14 +23,13 @@ import org.mycore.common.MCRConstants;
 import org.mycore.common.MCRException;
 import org.mycore.datamodel.common.MCRDataURL;
 import org.mycore.frontend.xeditor.MCRPostProcessorXSL;
-import org.xml.sax.SAXException;
 
 public class MIRPostProcessor extends MCRPostProcessorXSL {
 
     public static final String[] TITLE_SUB_ELEMENTS = { "nonSort", "title", "subTitle" };
 
     @Override
-    public Document process(Document oldXML) throws IOException, JDOMException, SAXException {
+    public Document process(Document oldXML) throws IOException, JDOMException {
         final Document newXML = oldXML.clone();
 
         fixAbstracts(newXML);

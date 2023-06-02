@@ -37,7 +37,6 @@ import org.swordapp.server.Deposit;
 import org.swordapp.server.SwordError;
 import org.swordapp.server.SwordServerException;
 import org.swordapp.server.UriRegistry;
-import org.xml.sax.SAXException;
 
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -136,7 +135,7 @@ public class MIRMETSIngester extends MIRSwordIngesterBase {
         Document convertedDocument;
         try {
             convertedDocument = mcrContent.asXML();
-        } catch (JDOMException | IOException | SAXException e) {
+        } catch (JDOMException | IOException e) {
             throw new SwordServerException("Error getting result of the transformation!", e);
         }
         return convertedDocument;
