@@ -8,6 +8,7 @@
   <xsl:param name="ServletsBaseURL" />
   <xsl:param name="MCR.mir-module.MailSender" />
   <xsl:param name="MIR.SelfRegistration.EmailVerification.setDisabled"/>
+  <xsl:param name="MCR.NameOfProject"/>
   <xsl:variable name="newline" select="'&#xA;'" />
 
   <xsl:template match="/">
@@ -25,6 +26,9 @@
       <xsl:value-of select="i18n:translate('selfRegistration.step.created.email.user.subject')"/>
     </subject>
     <body>
+      <xsl:value-of select="i18n:translate('selfRegistration.user.contacting')"/>
+      <xsl:value-of select="$newline" />
+      <xsl:value-of select="$newline" />
 
       <xsl:choose>
         <xsl:when
@@ -47,8 +51,13 @@
         <xsl:when
             test="$MIR.SelfRegistration.EmailVerification.setDisabled = 'true' or  $MIR.SelfRegistration.EmailVerification.setDisabled = 'TRUE'">
           <xsl:value-of select="i18n:translate('selfRegistration.step.created.email.user.disabled.info.1')"/>
+          <xsl:value-of select="$newline" />
         </xsl:when>
       </xsl:choose>
+
+      <xsl:value-of select="$newline" />
+      <xsl:value-of select="i18n:translate('selfRegistration.user.goodbye', $MCR.NameOfProject)"/>
+      <xsl:value-of select="$newline" />
 
     </body>
   </xsl:template>

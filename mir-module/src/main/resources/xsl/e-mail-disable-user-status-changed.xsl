@@ -7,6 +7,7 @@
   <xsl:param name="WebApplicationBaseURL"/>
   <xsl:param name="ServletsBaseURL"/>
   <xsl:param name="MCR.mir-module.MailSender"/>
+  <xsl:param name="MCR.NameOfProject"/>
   <xsl:variable name="newline" select="'&#xA;'"/>
 
   <xsl:template match="/">
@@ -33,12 +34,16 @@
       </xsl:choose>
     </subject>
     <body>
+      <xsl:value-of select="i18n:translate('selfRegistration.user.contacting')"/>
+      <xsl:value-of select="$newline" />
+      <xsl:value-of select="$newline"/>
+
       <xsl:choose>
         <xsl:when test="@disabled='false'">
-          <xsl:value-of select="i18n:translate('selfRegistration.step.disableUserChanged.email.user.enabled.subject')"/>
+          <xsl:value-of select="i18n:translate('selfRegistration.step.disableUserChanged.email.user.enabled.info')"/>
         </xsl:when>
         <xsl:otherwise>
-          <xsl:value-of select="i18n:translate('selfRegistration.step.disableUserChanged.email.user.disabled.subject')"/>
+          <xsl:value-of select="i18n:translate('selfRegistration.step.disableUserChanged.email.user.disabled.info')"/>
         </xsl:otherwise>
       </xsl:choose>
       <xsl:value-of select="$newline"/>
@@ -60,6 +65,11 @@
         <xsl:value-of select="concat($ServletsBaseURL,'MCRUserServlet?action=show&amp;id=',@name,'@',@realm,$newline)"/>
         <xsl:value-of select="$newline"/>
       </xsl:if>
+
+
+      <xsl:value-of select="$newline" />
+      <xsl:value-of select="i18n:translate('selfRegistration.user.goodbye', $MCR.NameOfProject)"/>
+      <xsl:value-of select="$newline" />
     </body>
   </xsl:template>
 </xsl:stylesheet>

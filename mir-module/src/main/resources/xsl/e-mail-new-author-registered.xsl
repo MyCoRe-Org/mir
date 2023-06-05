@@ -25,7 +25,7 @@
       <xsl:value-of select="$MCR.mir-module.NewUserMail"/>
     </to>
     <subject>
-      <xsl:value-of select="i18n:translate('selfRegistration.step.created.email.admin.subject')"/>
+      <xsl:value-of select="i18n:translate('selfRegistration.step.created.email.admin.subject', concat(@name,' (',@realm,')'))"/>
     </subject>
     <body>
       <xsl:value-of select="i18n:translate('selfRegistration.step.created.email.admin.info')"/>
