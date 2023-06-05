@@ -46,7 +46,6 @@ import org.mycore.mir.editor.MIRPostProcessor;
 import org.mycore.mir.editor.MIRUnescapeResolver;
 import org.mycore.mods.MCRMODSWrapper;
 import org.mycore.services.staticcontent.MCRObjectStaticContentGenerator;
-import org.xml.sax.SAXException;
 
 @MCRCommandGroup(
     name = "MIR migration 2020.06")
@@ -70,7 +69,7 @@ public class MIRMigration202006Utils {
             .map(mcrid -> {
                 try {
                     return mcrxmlMetadataManager.retrieveXML(mcrid);
-                } catch (IOException | JDOMException | SAXException e) {
+                } catch (IOException | JDOMException e) {
                     throw new MCRException(e);
                 }
             })
