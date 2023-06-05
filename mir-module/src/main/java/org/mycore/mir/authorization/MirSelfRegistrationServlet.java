@@ -396,16 +396,14 @@ public class MirSelfRegistrationServlet extends MCRServlet {
      * If there is no error, the following pair is returned: key: 0; value: "".
      */
     private Map.Entry<Integer, String> areModifiableUserAndCurrentUserIdentical(MCRUser user) {
-        if (user != null) {
-            String currentUserId = MCRSessionMgr.getCurrentSession().getUserInformation().getUserID();
-
-            return user.getUserID().equals(currentUserId)
-                   ? Map.entry(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, // TODO: .SC_FORBIDDEN?
-                errorMsg("modifiableUserIsCurrentUser"))
-                   : Map.entry(0, "");
-        } else {
-            return Map.entry(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+        if(user == null){
+            return Map.entry(HttpServletResponse.SC_BAD_REQUEST,
                 errorMsg("userNotFound"));
         }
+        String currentUserId = MCRSessionMgr.getCurrentSession().getUserInformation().getUserID();
+        return user.getUserID().equals(currentUserId)
+               ? Map.entry(HttpServletResponse.SC_FORBIDDEN,
+            errorMsg("modifiableUserIsCurrentUser"))
+               : Map.entry(0, "");
     }
 }
