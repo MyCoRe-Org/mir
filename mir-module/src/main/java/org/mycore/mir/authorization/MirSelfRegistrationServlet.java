@@ -95,6 +95,16 @@ public class MirSelfRegistrationServlet extends MCRServlet {
         return MCRUserManager.exists(userName, realmId);
     }
 
+    public static boolean mailExists(final List<Element> nodes) {
+        Element eMail = nodes.get(0).getChild("eMail");
+        if(eMail == null){
+            return false;
+        }
+
+        List<MCRUser> users = MCRUserManager.listUsers(null, null, null, eMail.getText());
+        return users.size() != 0;
+    }
+
     public void doGetPost(final MCRServletJob job) throws Exception {
         final HttpServletRequest req = job.getRequest();
         final HttpServletResponse res = job.getResponse();

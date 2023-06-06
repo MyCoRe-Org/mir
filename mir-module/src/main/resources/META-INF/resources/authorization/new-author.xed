@@ -53,9 +53,13 @@
             <xed:include uri="xslStyle:user-xeditor-templates:webapp:authorization/new-author-includes.xed" ref="captcha" />
 
             <xed:validate display="global" xpath="/user/@name"
-              test="not(xed:call-java('org.mycore.mir.authorization.MirSelfRegistrationServlet', 'userExists', /user))"
-            >
+              test="not(xed:call-java('org.mycore.mir.authorization.MirSelfRegistrationServlet', 'userExists', /user))">
               <xed:output i18n="selfRegistration.error.userExists" />
+            </xed:validate>
+
+            <xed:validate display="global" xpath="/user/eMail"
+              test="not(xed:call-java('org.mycore.mir.authorization.MirSelfRegistrationServlet', 'mailExists', /user))">
+              <xed:output i18n="selfRegistration.error.mailExists"/>
             </xed:validate>
           </div>
           <div class="card-footer clearfix">
