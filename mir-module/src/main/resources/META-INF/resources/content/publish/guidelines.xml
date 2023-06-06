@@ -2,6 +2,10 @@
 <!DOCTYPE MyCoReWebPage>
 <MyCoReWebPage>
 <section xml:lang="de" title="Leitlinie Publikationsserver">
+  <head>
+    <meta name="title" content="Leitlinie Publikationsserver"/>
+    <meta name="description" content="Leitlinien für den Betrieb des Publikationsservers"/>
+  </head>
 
   <h2>Leitlinien für den Betrieb des Publikationsservers</h2>
   <h3>1. Ziele und inhaltliche Kriterien für den Publikationsserver</h3>

@@ -2,6 +2,10 @@
 <!DOCTYPE MyCoReWebPage>
 <MyCoReWebPage>
   <section xml:lang="de" title="Impressum">
+  <head>
+    <meta name="title" content="Impressum"/>
+    <meta name="description" content="Impressum und Pflichtangaben zur Anbieterkennzeichnung"  />
+  </head>
   <div>
     <h2>Impressum</h2>
     <h3>Diensteanbieter</h3>

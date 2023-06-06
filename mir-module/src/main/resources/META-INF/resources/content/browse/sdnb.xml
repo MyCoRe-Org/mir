@@ -3,6 +3,19 @@
 
 <MyCoReWebPage>
 
+  <section xml:lang="de">
+    <head>
+      <meta name="title" content="SDNB"/>
+      <meta name="description" content="SDNB durchsuchen"/>
+    </head>
+  </section>
+  <section xml:lang="en">
+    <head>
+      <meta name="title" content="SDNB"/>
+      <meta name="description" content="Browse SDNB"/>
+    </head>
+  </section>
+
   <section i18n="browse.sdnb" xml:lang="all">
 
     <div class="row">

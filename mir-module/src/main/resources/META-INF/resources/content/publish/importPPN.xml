@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <MyCoReWebPage>
-  <section title="Publizieren (PPN Import)" xml:lang="de"/>
+  <section title="Publizieren (PPN Import)" xml:lang="de">
+    <head>
+      <meta name="title" content="Publizieren (PPN Import)"/>
+      <meta name="description" content="Publizieren mit Hilfe des PPN Imports"/>
+    </head>
+  </section>
   <section title="Publication (PPN Import)" xml:lang="en"/>
   <section xml:lang="de">
     <form id="submit_publication_ppn"
