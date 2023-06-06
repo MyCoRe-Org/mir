@@ -5,8 +5,9 @@
                 xmlns:mcrxml="xalan://org.mycore.common.xml.MCRXMLFunctions"
                 xmlns:str="http://exslt.org/strings"
                 xmlns:mods="http://www.loc.gov/mods/v3"
+                xmlns:encoder="xalan://java.net.URLEncoder"
                 version="1.0"
-                exclude-result-prefixes="i18n mcrxml str xalan"
+                exclude-result-prefixes="i18n mcrxml str xalan encoder"
 >
 
 
@@ -33,22 +34,20 @@
         <xsl:variable name="query">
             <xsl:choose>
                 <xsl:when test="count($nameIdentifiers) &gt; 0">
-                    <xsl:value-of select="$ServletsBaseURL"/>
-                    <xsl:text>solr/mods_nameIdentifier?q=</xsl:text>
                     <xsl:for-each select="$nameIdentifiers">
                         <xsl:if test="position()&gt;1">
                             <xsl:text> OR </xsl:text>
                         </xsl:if>
                         <xsl:text>mods.nameIdentifier:</xsl:text>
                         <xsl:value-of select="@type"/>
-                        <xsl:text>%5C:</xsl:text>
+                        <xsl:text>\:</xsl:text>
                         <xsl:value-of select="@id" />
                     </xsl:for-each>
                     <xsl:text>&amp;owner=createdby:</xsl:text>
                     <xsl:value-of select="$owner" />
                 </xsl:when>
                 <xsl:otherwise>
-                    <xsl:value-of select="concat($ServletsBaseURL,'solr/mods_nameIdentifier?q=', '+mods.name:&quot;')"/>
+                    <xsl:value-of select="'+mods.name:&quot;'"/>
                     <xsl:apply-templates select="." mode="queryableNameString"/>
                     <xsl:value-of select="concat('&quot;', '&amp;owner=createdby:', $owner)"/>
                 </xsl:otherwise>
@@ -85,7 +84,7 @@
                 </dl>
             </div>
         </xsl:if>
-        <a href="{$query}"><xsl:value-of select="$personName" /></a>
+        <a href="{concat($ServletsBaseURL,'solr/mods_nameIdentifier?q=', encoder:encode($query))}"><xsl:value-of select="$personName" /></a>
         <xsl:if test="count($nameIdentifiers) &gt; 0 or string-length($affiliation) &gt; 0">
             <!-- class personPopover triggers the javascript popover code -->
             <a id="{$personNodeId}" class="personPopover" title="{i18n:translate('mir.details.personpopover.title')}">

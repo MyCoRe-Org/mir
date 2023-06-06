@@ -359,7 +359,7 @@
     <xsl:variable name="hitCount" select="$hitNumberOnPage + (($currentPage) -1) * $rows"/>
 
     <!-- hit entry -->
-    <div id="hit_{$hitCount}" class="hit_item {$hitItemClass}">
+    <div id="hit_{$hitCount}" class="hit_item {normalize-space($hitItemClass)}">
 
       <!-- hit head -->
       <div class="row hit_item_head">
@@ -730,8 +730,9 @@
                       select="document(concat('classification:metadata:all:children:','nameIdentifier',':',$nameIdentifierType))/mycoreclass/categories/category[@ID=$nameIdentifierType]" />
                     <xsl:variable name="uri" select="$classi/label[@xml:lang='x-uri']/@text" />
                     <xsl:variable name="idType" select="$classi/label[@xml:lang='de']/@text" />
+                    <xsl:variable name="nameQuery" select="concat('mods.nameIdentifier:', $nameIdentifierType, '\:', $nameIdentifier)" />
                     <a
-                      href="{$ServletsBaseURL}solr/mods_nameIdentifier?q=mods.nameIdentifier:{$nameIdentifierType}%5C:{$nameIdentifier}&amp;owner=createdby:{$owner}"
+                      href="{$ServletsBaseURL}solr/mods_nameIdentifier?q={encoder:encode($nameQuery)}&amp;owner=createdby:{$owner}"
                       title="Suche nach allen Publikationen"
                     >
                       <xsl:value-of select="$author_name" />

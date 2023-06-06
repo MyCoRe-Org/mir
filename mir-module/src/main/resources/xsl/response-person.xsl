@@ -9,7 +9,7 @@
   xmlns:xalan="http://xml.apache.org/xalan"
   xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions"
   xmlns:str="http://exslt.org/strings"
-  exclude-result-prefixes="xalan i18n encoder str">
+  exclude-result-prefixes="xalan i18n encoder str mcrxsl">
   &html-output;
   <xsl:include href="MyCoReLayout.xsl" />
   <xsl:include href="response-utils.xsl" />
@@ -85,8 +85,9 @@
           <xsl:variable name="classi" select="document(concat('classification:metadata:all:children:','nameIdentifier',':',$nameIdentifierType))/mycoreclass/categories/category[@ID=$nameIdentifierType]" />
           <xsl:variable name="uri" select="$classi/label[@xml:lang='x-uri']/@text" />
           <xsl:variable name="idType" select="$classi/label[@xml:lang='de']/@text" />
+          <xsl:variable name="nameQuery" select="concat('mods.nameIdentifier:', $nameIdentifierType, '\:', $nameIdentifier)" />
           <li>
-            <a href="{$ServletsBaseURL}solr/mods_nameIdentifier?q=mods.nameIdentifier:{$nameIdentifierType}%5C:{$nameIdentifier}&amp;owner=createdby:{$owner}" title="Suche nach allen Publikationen">
+            <a href="{$ServletsBaseURL}solr/mods_nameIdentifier?q={encoder:encode($nameQuery)}&amp;owner=createdby:{$owner}" title="Suche nach allen Publikationen">
               <xsl:value-of select="$linkText" />
             </a>
             <xsl:text>&#160;</xsl:text><!-- add whitespace here -->

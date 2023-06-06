@@ -28,7 +28,7 @@
               <div class="col-4">
                 <select class="form-control " v-model="currentOwnIdentifierType">
                   <option selected="selected" value="">{{ selectLabel }}</option>
-                  <option v-for="identifierType in possibleIdentifierTypes" :key="identifierType.value">
+                  <option v-for="identifierType in possibleIdentifierTypes" :key="identifierType.value" :value="identifierType.value">
                     {{ identifierType.label }}
                   </option>
                 </select>

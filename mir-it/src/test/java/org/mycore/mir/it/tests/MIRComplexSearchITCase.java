@@ -79,7 +79,7 @@ public class MIRComplexSearchITCase extends MIRITBase {
     }
 
     private void createDocument() throws IOException {
-        publishEditorController.open(() -> {
+        publishEditorController.openAdmin(() -> {
         });
         driver.waitUntilPageIsLoaded("MODS-Dokument erstellen");
         editorController.setStatus(MIRStatus.gesperrt);

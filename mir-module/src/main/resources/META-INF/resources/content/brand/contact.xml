@@ -2,6 +2,10 @@
 <!DOCTYPE MyCoReWebPage>
 <MyCoReWebPage>
   <section xml:lang="de" title="Kontakt">
+  <head>
+    <meta name="title" content="Kontakt"/>
+    <meta name="description" content="Kontaktinformationen zur MyCoRe-Geschäftsstelle"/>
+  </head>
   <div>
     <h2>Kontakt</h2>
     <p>

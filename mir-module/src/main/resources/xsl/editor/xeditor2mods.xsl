@@ -144,7 +144,13 @@
         </xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
-    <mods:nameIdentifier type="{$type}" typeURI="{$uri}">
+    <mods:nameIdentifier type="{$type}">
+      <xsl:if test="string-length($uri) &gt; 0">
+        <xsl:attribute name="typeURI">
+          <xsl:value-of select="$uri" />
+        </xsl:attribute>
+      </xsl:if>
+
       <xsl:value-of select="." />
     </mods:nameIdentifier>
   </xsl:template>

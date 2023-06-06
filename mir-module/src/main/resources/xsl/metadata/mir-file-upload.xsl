@@ -1,7 +1,8 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
                 xmlns:mods="http://www.loc.gov/mods/v3"
-                xmlns:xlink="http://www.w3.org/1999/xlink">
+                xmlns:xlink="http://www.w3.org/1999/xlink"
+                exclude-result-prefixes="xlink i18n mods">
   <xsl:import href="xslImport:modsmeta:metadata/mir-file-upload.xsl"/>
 
   <xsl:template match="/">
