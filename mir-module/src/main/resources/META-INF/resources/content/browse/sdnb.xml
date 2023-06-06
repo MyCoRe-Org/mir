@@ -3,16 +3,16 @@
 
 <MyCoReWebPage>
 
-  <section i18n="browse.mods.institution.corporate" xml:lang="de">
+  <section xml:lang="de">
     <head>
-      <meta name="title" content="Einrichtungen"/>
-      <meta name="description" content="Einrichtungen durchsuchen"/>
+      <meta name="title" content="SDNB"/>
+      <meta name="description" content="SDNB durchsuchen"/>
     </head>
   </section>
-  <section i18n="browse.mods.institution.corporate" xml:lang="en">
+  <section xml:lang="en">
     <head>
-      <meta name="title" content="Institutions"/>
-      <meta name="description" content="Browse institutions"/>
+      <meta name="title" content="SDNB"/>
+      <meta name="description" content="Browse SDNB"/>
     </head>
   </section>
 

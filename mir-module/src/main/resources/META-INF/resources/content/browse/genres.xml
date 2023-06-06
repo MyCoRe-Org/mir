@@ -3,13 +3,13 @@
 
 <MyCoReWebPage>
 
-  <section i18n="browse.genre" xml:lang="de">
+  <section xml:lang="de">
     <head>
       <meta name="title" content="Dokumenttypen"/>
       <meta name="description" content="Dokumenttypen durchsuchen"/>
     </head>
   </section>
-  <section i18n="browse.genre" xml:lang="en">
+  <section xml:lang="en">
     <head>
       <meta name="title" content="Genres"/>
       <meta name="description" content="Browse genre types"/>

@@ -2,13 +2,13 @@
 <!DOCTYPE MyCoReWebPage>
 <MyCoReWebPage>
 
-  <section i18n="component.user2.admin.create.title" xml:lang="de">
+  <section xml:lang="de">
     <head>
       <meta name="title" content="Registrierung"/>
       <meta name="description" content="Schritt 1: Selbstregistrierung"/>
     </head>
   </section>
-  <section i18n="component.user2.admin.create.title" xml:lang="en">
+  <section xml:lang="en">
     <head>
       <meta name="title" content="Registration"/>
       <meta name="description" content="Step 1: Self-registration"/>

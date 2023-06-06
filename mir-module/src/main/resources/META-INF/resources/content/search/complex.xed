@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <MyCoReWebPage>
 
-  <section xml:lang="de" i18n="component.mods.editor.search.complex.pagetitle">
+  <section xml:lang="de">
     <head>
       <meta name="title" content="Komplexe Suche" />
       <meta name="description" content="Komplexe Suche über alle Publikationen" />
     </head>
   </section>
-  <section xml:lang="en" i18n="component.mods.editor.search.complex.pagetitle">
+  <section xml:lang="en">
     <head>
       <meta name="title" content="Complex search mask" />
       <meta name="description" content="Complex search mask for all publications" />
