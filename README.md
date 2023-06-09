@@ -60,10 +60,12 @@ The docker container has its own install script which uses the environment varia
 | MCR_DATA_DIR             | /mcr/data/          | The location for the data directory. Same as MCR.datadir in mycore.properties.                                                                                                                                                                                                       |
 | XMX                      | 1g                  | The value of the -Xmx parameter for Tomcat.                                                                                                                                                                                                                                          |
 | XMS                      | 1g                  | The value of the -Xms parameter for Tomcat.                                                                                                                                                                                                                                          |
+| FIX_FILE_SYSTEM_RIGHTS   | false               | If true the file system rights of the mounted volumes get corrected to be owned by the right user.                                                                                                                                                                                   |
+| MIR_OPTS                 |                     | Additional options which will be passed as JAVA_OPTS to the tomcat process                                                                                                                                                                                                           |
 
 ### Mount Points
 
-The paths in `MCR_CONFIG_DIR` and `MCR_DATA_DIR` should be mountet. Default values are /mcr/home/ and /mcr/data/.
+The paths in `MCR_CONFIG_DIR` and `MCR_DATA_DIR` should be mounted. Default values are /mcr/home/ and /mcr/data/.
 
 ## `mir-solr` Docker-Container
 The docker container creates the required solr cores if they do not exist.
