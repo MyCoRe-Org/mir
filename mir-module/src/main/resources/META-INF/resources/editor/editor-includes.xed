@@ -566,6 +566,12 @@
     </mir:person.extended.repeated>
   </xed:template>
 
+  <xed:template id="name.extended.full.repeated">
+    <mir:person.extended.repeated help-text="{i18n:mir.help.name.repeated}" authorSpecification="true">
+      <xed:include uri="xslStyle:items2options:classification:editor:-1:children:marcrelator" />
+    </mir:person.extended.repeated>
+  </xed:template>
+
   <xed:template id="person.fields">
     <div class="search-person">
       <xed:bind xpath="@type" initially="personal">
@@ -641,6 +647,29 @@
         <mir:help-pmud help-text="{i18n:mir.help.nameType}" />
       </div>
     </xed:bind>
+  </xed:template>
+
+  <xed:template id="authorSpecification.repeated">
+    <xed:repeat xpath="mods:role/mods:roleTerm[@authorityURI='https://www.mycore.de/classifications/author_roles']" min="1">
+      <div class="form-group row authorSpecification">
+        <label class="col-md-3 col-form-label text-right">
+          <xed:output i18n="mir.editor.person.authorSpecification" />
+        </label>
+        <div class="col-md-6">
+          <div class="controls">
+            <xed:bind xpath="@valueURIxEditor">
+              <select class="form-control form-control-inline">
+                <option value="">
+                  <xed:output i18n="mir.select.optional" />
+                </option>
+                <xed:include uri="xslStyle:items2options:classification:editor:-1:children:author_roles" />
+              </select>
+            </xed:bind>
+          </div>
+        </div>
+        <mir:help-pmud help-text="{i18n:mir.help.authorSpecification}" pmud="true" />
+      </div>
+    </xed:repeat>
   </xed:template>
 
   <xed:template id="person.affiliation">
@@ -2226,6 +2255,7 @@
     <xed:cleanup-rule xpath="//mods:name" relevant-if="(mods:namePart|mods:displayForm) or (string-length(@valueURI) &gt; 0) or (string-length(@valueURIxEditor) &gt; 0)" />
     <xed:cleanup-rule xpath="//mods:name/@authorityURI" relevant-if="(string-length(../@valueURI) &gt; 0) or (string-length(../@valueURIxEditor) &gt; 0)" />
     <xed:cleanup-rule xpath="//mods:roleTerm" relevant-if="(string-length(@valueURI) &gt; 0) or (string-length(@valueURIxEditor) &gt; 0) or (string-length(@authority) &gt; 0)" />
+    <xed:cleanup-rule xpath="//mods:role/mods:roleTerm[@authorityURI='https://www.mycore.de/classifications/author_roles']" relevant-if="(../mods:roleTerm[@authority='marcrelator'and text()='aut']) and (string-length(@valueURIxEditor) &gt; 0)" />
     <xed:cleanup-rule xpath="//mods:topic/@authorityURI" relevant-if="(string-length(../@valueURI) &gt; 0) or (string-length(../@valueURIxEditor) &gt; 0)" />
     <xed:cleanup-rule xpath="//mods:topic/@authority" relevant-if="(string-length(../@valueURI) &gt; 0) or (string-length(../@valueURIxEditor) &gt; 0)" />
     <xed:cleanup-rule xpath="//mods:geographic/@authorityURI" relevant-if="(string-length(../@valueURI) &gt; 0) or (string-length(../@valueURIxEditor) &gt; 0)" />

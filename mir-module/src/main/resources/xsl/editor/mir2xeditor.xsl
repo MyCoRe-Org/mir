@@ -420,7 +420,7 @@
               <xed:bind xpath=".."> <!-- Move up again after validation marker is set -->
                 <div class="col-md-3" style="text-align:right; font-weight:bold;">
                   <xed:bind xpath="mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']" initially="aut">
-                    <select class="form-control form-control-inline">
+                    <select class="form-control form-control-inline roleSelect">
                       <xsl:apply-templates select="*" />
                     </select>
                   </xed:bind>
@@ -444,9 +444,31 @@
           <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="nameType" />
           <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="namePart.repeated" />
           <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="person.affiliation" />
+          <xsl:if test="@authorSpecification">
+            <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="authorSpecification.repeated" />
+          </xsl:if>
         </div>
       </fieldset>
     </xed:repeat>
+    <script>
+    function handleRoleSelect(select) {
+      const currentRole = select.find(":selected").val();
+      const authorSpecificationDivs = select.parents(".personExtended_box").children(".personExtended-container").children(".authorSpecification");
+      if (currentRole === "aut") {
+        authorSpecificationDivs.show();
+      } else {
+        authorSpecificationDivs.hide();
+      }
+    }
+    $(document).ready(function() {
+      $(".roleSelect").each(function(e) {
+        handleRoleSelect($(this));
+      });
+    });
+    $(".roleSelect").change(function(e) {
+      handleRoleSelect($(e.currentTarget));
+    });
+    </script>
   </xsl:template>
 
   <xsl:template match="mir:person.repeated">

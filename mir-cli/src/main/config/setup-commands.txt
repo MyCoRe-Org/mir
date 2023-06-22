@@ -19,6 +19,7 @@ update classification from uri resource:mycore-classifications/typeOfResource.xm
 update classification from uri resource:mycore-classifications/nameIdentifier.xml
 update classification from uri resource:mycore-classifications/noteTypes.xml
 update classification from uri resource:mycore-classifications/identifier.xml
+update classification from uri resource:mycore-classifications/author_roles.xml
 init superuser
 process ${app.home}/config/acl/defaultrules-commands.txt
 process ${app.home}/config/acl/webacl-commands.txt
