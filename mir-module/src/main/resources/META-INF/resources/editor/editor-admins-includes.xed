@@ -40,6 +40,7 @@
     <xed:include ref="abstract.repeated" />
     <xed:include ref="comment.complex" />
     <xed:include ref="related.item.search.of.all.items" />
+    <xed:include ref="related.item.other.search.of.all.items" />
 
     <xed:include ref="cancel.submit" />
     <xed:include ref="cleanup-rules" />
