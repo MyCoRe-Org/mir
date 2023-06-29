@@ -7,7 +7,7 @@
                 xmlns:mods="http://www.loc.gov/mods/v3"
                 xmlns:encoder="xalan://java.net.URLEncoder"
                 version="1.0"
-                exclude-result-prefixes="i18n mcrxml str xalan encoder"
+                exclude-result-prefixes="i18n mcrxml str xalan encoder mods"
 >
 
 
