@@ -12,7 +12,7 @@
     <xed:include ref="genre" />
     <xed:include ref="toc-layout" />
     <xed:include ref="title.complex.repeated" />
-    <xed:include ref="name.extended.repeated" />
+    <xed:include ref="name.extended.full.repeated" />
     <xed:include ref="conference.itemsearch" />
     <xed:include ref="date.range.extended.datetimepicker" />
     <xed:include ref="place" />
