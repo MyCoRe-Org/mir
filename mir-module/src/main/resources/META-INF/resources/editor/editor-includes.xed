@@ -38,6 +38,22 @@
     <input type="hidden" name="XSL.Status.Style" value="success" />
   </xed:template>
 
+  <xed:template id="genre.base">
+    <label class="col-md-3 col-form-label text-right">
+      <xed:output i18n="component.mods.genre" />
+    </label>
+    <div class="col-md-6">
+      <div class="controls">
+        <select class="form-control form-control-inline">
+          <option value="">
+            <xed:output i18n="mir.select" />
+          </option>
+          <xed:include uri="xslStyle:items2options:classification:editor:-1:children:mir_genres" />
+        </select>
+      </div>
+    </div>
+  </xed:template>
+
   <xed:template id="genre">
     <xed:load-resource name="mir_genres" uri="classification:metadata:-1:children:mir_genres" />
     <xed:if test="mods:genre[@type='intern'][not(@authorityURI)]">
@@ -48,19 +64,7 @@
     <xed:repeat xpath="mods:genre[@type='intern'][@authorityURI=$mir_genres/label[@xml:lang='x-uri']/@text]" min="1" max="10">
       <xed:bind xpath="@valueURIxEditor" initially="{$genre}">
         <div class="form-group row required {$xed-validation-marker}">
-          <label class="col-md-3 col-form-label text-right">
-            <xed:output i18n="component.mods.genre" />
-          </label>
-          <div class="col-md-6">
-            <div class="controls">
-              <select class="form-control form-control-inline">
-                <option value="">
-                  <xed:output i18n="mir.select" />
-                </option>
-                <xed:include uri="xslStyle:items2options:classification:editor:-1:children:mir_genres" />
-              </select>
-            </div>
-          </div>
+          <xed:include ref="genre.base" />
           <mir:help-pmud help-text="{i18n:mir.help.genre}" pmud="true" />
         </div>
       </xed:bind>
@@ -71,19 +75,16 @@
     <xed:load-resource name="mir_genres" uri="classification:metadata:-1:children:mir_genres" />
     <xed:bind xpath="mods:genre[@type='intern'][@authorityURI=$mir_genres/label[@xml:lang='x-uri']/@text]/@valueURIxEditor" initially="{$genre}">
       <div class="form-group row required {$xed-validation-marker}">
-        <label class="col-md-3 col-form-label text-right">
-          <xed:output i18n="component.mods.genre" />
-        </label>
-        <div class="col-md-6">
-          <div class="controls">
-            <select class="form-control form-control-inline">
-              <option value="">
-                <xed:output i18n="mir.select" />
-              </option>
-              <xed:include uri="xslStyle:items2options:classification:editor:-1:children:mir_genres" />
-            </select>
-          </div>
-        </div>
+        <xed:include ref="genre.base" />
+        <mir:help-pmud help-text="{i18n:mir.help.genre}" />
+      </div>
+    </xed:bind>
+  </xed:template>
+
+  <xed:template id="genre.simple.nonrequired">
+    <xed:bind xpath="mods:genre[@type='intern'][@authorityURI=$mir_genres/label[@xml:lang='x-uri']/@text]/@valueURIxEditor" initially="{$genre}">
+      <div class="form-group row">
+        <xed:include ref="genre.base" />
         <mir:help-pmud help-text="{i18n:mir.help.genre}" />
       </div>
     </xed:bind>
@@ -566,6 +567,12 @@
     </mir:person.extended.repeated>
   </xed:template>
 
+  <xed:template id="name.extended.full.repeated">
+    <mir:person.extended.repeated help-text="{i18n:mir.help.name.repeated}" authorSpecification="true">
+      <xed:include uri="xslStyle:items2options:classification:editor:-1:children:marcrelator" />
+    </mir:person.extended.repeated>
+  </xed:template>
+
   <xed:template id="person.fields">
     <div class="search-person">
       <xed:bind xpath="@type" initially="personal">
@@ -641,6 +648,29 @@
         <mir:help-pmud help-text="{i18n:mir.help.nameType}" />
       </div>
     </xed:bind>
+  </xed:template>
+
+  <xed:template id="authorSpecification.repeated">
+    <xed:repeat xpath="mods:role/mods:roleTerm[@authorityURI='https://www.mycore.de/classifications/author_roles']" min="1">
+      <div class="form-group row authorSpecification">
+        <label class="col-md-3 col-form-label text-right">
+          <xed:output i18n="mir.editor.person.authorSpecification" />
+        </label>
+        <div class="col-md-6">
+          <div class="controls">
+            <xed:bind xpath="@valueURIxEditor">
+              <select class="form-control form-control-inline">
+                <option value="">
+                  <xed:output i18n="mir.select.optional" />
+                </option>
+                <xed:include uri="xslStyle:items2options:classification:editor:-1:children:author_roles" />
+              </select>
+            </xed:bind>
+          </div>
+        </div>
+        <mir:help-pmud help-text="{i18n:mir.help.authorSpecification}" pmud="true" />
+      </div>
+    </xed:repeat>
   </xed:template>
 
   <xed:template id="person.affiliation">
@@ -2007,7 +2037,7 @@
   <xed:template id="related.item.search.of.all.items">
     <fieldset>
       <legend class="mir-fieldset-legend">Related Item</legend><!-- TODO: i18n -->
-      <xed:repeat xpath="mods:relatedItem[not(@type='isReferencedBy') and not(@otherType)]" min="1" max="10">
+      <xed:repeat xpath="mods:relatedItem[not(@otherType)]" min="1" max="10">
         <div class="mir-fieldset-content mir-related-item-search">
           <div class="form-group row">
             <div class="col-md-3">
@@ -2024,6 +2054,9 @@
                   </option>
                   <option value="original">
                     <xed:output i18n="mir.relatedItem.original" />
+                  </option>
+                  <option value="isReferencedBy">
+                    <xed:output i18n="mir.relatedItem.isReferencedBy" />
                   </option>
                   <option value="references">
                     <xed:output i18n="mir.relatedItem.references" />
@@ -2052,11 +2085,47 @@
             <mir:help-pmud help-text="{i18n:mir.help.related.item}" pmud="true" />
           </div>
           <xed:include ref="title.nonrequired" />
+          <xed:include ref="genre.simple.nonrequired" />
+          <mir:textfield xpath="mods:location/mods:url[@access='raw object']" help-text="{i18n:mir.help.link.raw_object}"
+              placeholder="{i18n:mir.placeholder.abstract.link}" />
           <xed:include ref="host.volume" />
           <xed:include ref="host.issue" />
           <xed:include ref="host.articlenumber" />
           <xed:include ref="host.pages" />
           <xed:include ref="host.order" />
+        </div>
+      </xed:repeat>
+      <script src="{$WebApplicationBaseURL}js/mir/relatedItem-modal.min.js" type="text/javascript"></script>
+      <xed:validate xpath="//mods:relatedItem[@xlink:href!='']" test="(@type!='isReferencedBy')" i18n="mir.validation.relatedItem" display="global" />
+    </fieldset>
+  </xed:template>
+
+  <xed:template id="related.item.other.search.of.all.items">
+    <fieldset>
+      <legend class="mir-fieldset-legend">
+        <xed:output i18n="mir.relatedItem.others" />
+      </legend>
+      <xed:repeat xpath="mods:relatedItem[@otherType]" min="1" max="10">
+        <div class="mir-fieldset-content mir-related-item-search">
+          <div class="form-group row">
+            <div class="col-md-3">
+              <xed:bind xpath="@otherType">
+                <select class="form-control">
+                  <xed:include uri="xslStyle:items2options:classification:editor:-1:children:mir_relateditem" />
+                </select>
+              </xed:bind>
+            </div>
+            <div class="col-md-6">
+              <div class="controls form-inline">
+                <input type="button" class="form-control mir-relatedItem-select" value="{i18n:mir.editing.related.select}" />
+                <span />
+                <xed:bind xpath="@xlink:href">
+                  <input type="hidden" />
+                </xed:bind>
+              </div>
+            </div>
+            <mir:help-pmud help-text="{i18n:mir.help.related.item}" pmud="true" /> <!-- TODO -->
+          </div>
         </div>
       </xed:repeat>
       <script src="{$WebApplicationBaseURL}js/mir/relatedItem-modal.min.js" type="text/javascript"></script>
@@ -2226,6 +2295,7 @@
     <xed:cleanup-rule xpath="//mods:name" relevant-if="(mods:namePart|mods:displayForm) or (string-length(@valueURI) &gt; 0) or (string-length(@valueURIxEditor) &gt; 0)" />
     <xed:cleanup-rule xpath="//mods:name/@authorityURI" relevant-if="(string-length(../@valueURI) &gt; 0) or (string-length(../@valueURIxEditor) &gt; 0)" />
     <xed:cleanup-rule xpath="//mods:roleTerm" relevant-if="(string-length(@valueURI) &gt; 0) or (string-length(@valueURIxEditor) &gt; 0) or (string-length(@authority) &gt; 0)" />
+    <xed:cleanup-rule xpath="//mods:role/mods:roleTerm[@authorityURI='https://www.mycore.de/classifications/author_roles']" relevant-if="(../mods:roleTerm[@authority='marcrelator'and text()='aut']) and (string-length(@valueURIxEditor) &gt; 0)" />
     <xed:cleanup-rule xpath="//mods:topic/@authorityURI" relevant-if="(string-length(../@valueURI) &gt; 0) or (string-length(../@valueURIxEditor) &gt; 0)" />
     <xed:cleanup-rule xpath="//mods:topic/@authority" relevant-if="(string-length(../@valueURI) &gt; 0) or (string-length(../@valueURIxEditor) &gt; 0)" />
     <xed:cleanup-rule xpath="//mods:geographic/@authorityURI" relevant-if="(string-length(../@valueURI) &gt; 0) or (string-length(../@valueURIxEditor) &gt; 0)" />
@@ -2240,6 +2310,9 @@
     <xed:cleanup-rule xpath="//mods:extension[@displayLabel='characteristics']" relevant-if="(string-length(chars/@year) &gt; 0) or (string-length(chars/@refereed) &gt; 0)" />
     <xed:cleanup-rule xpath="//structure/parents" relevant-if="false()" />
     <xed:cleanup-rule xpath="//mods:dateIssued" relevant-if="@encoding='w3cdtf' and string-length(text()) &gt; 0" />
+    <xed:cleanup-rule xpath="//mods:relatedItem/mods:location|//mods:relatedItem/mods:genre" relevant-if="string-length(../@xlink:href)=0" />
+    <xed:cleanup-rule xpath="//mods:relatedItem/mods:location" relevant-if="mods:*" />
+    <xed:cleanup-rule xpath="//mods:relatedItem/mods:genre[@type='intern']" relevant-if="string-length(@valueURIxEditor) &gt; 0" />
   </xed:template>
 
   <xed:template id="javascript">

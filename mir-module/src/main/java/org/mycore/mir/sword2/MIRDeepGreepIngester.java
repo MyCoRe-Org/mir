@@ -22,7 +22,10 @@ import org.mycore.access.MCRAccessException;
 import org.mycore.common.config.MCRConfiguration2;
 import org.mycore.common.content.MCRJDOMContent;
 import org.mycore.common.function.MCRThrowFunction;
+import org.mycore.datamodel.classifications2.MCRCategoryDAOFactory;
+import org.mycore.datamodel.classifications2.MCRCategoryID;
 import org.mycore.datamodel.metadata.MCRDerivate;
+import org.mycore.datamodel.metadata.MCRMetaClassification;
 import org.mycore.datamodel.metadata.MCRMetadataManager;
 import org.mycore.datamodel.metadata.MCRObject;
 import org.mycore.datamodel.metadata.MCRObjectID;
@@ -87,6 +90,17 @@ public class MIRDeepGreepIngester extends MIRSwordIngesterBase {
                     final MCRDerivate derivate = MCRSwordUtil.createDerivate(resultingObject.getId().toString());
                     Files.copy(pdfIS, MCRPath.getPath(derivate.getId().toString(), fileName));
                     derivate.getDerivate().getInternals().setMainDoc(fileName);
+                    MCRCategoryID derivateTypeId = new MCRCategoryID("derivate_types", "content");
+                    if (MCRCategoryDAOFactory.getInstance().exist(derivateTypeId)) {
+                        MCRMetaClassification derivateTypeClassification = new MCRMetaClassification(
+                            "classification",
+                            0,
+                            null,
+                            derivateTypeId.getRootID(),
+                            derivateTypeId.getID()
+                        );
+                        derivate.getDerivate().getClassifications().add(derivateTypeClassification);
+                    }
                     MCRMetadataManager.update(derivate);
                     return newObjectId;
                 } catch (JDOMException | MCRAccessException e) {

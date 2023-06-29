@@ -129,6 +129,9 @@
                   <xsl:when test="@type">
                     <xsl:value-of select="i18n:translate(concat('mir.relatedItem.', @type))"/>
                   </xsl:when>
+                  <xsl:when test="@otherType">
+                    <xsl:value-of select="i18n:translate(concat('mir.relatedItem.', @otherType))"/>
+                  </xsl:when>
                   <xsl:otherwise>
                     <xsl:value-of select="i18n:translate('mir.relatedItem')"/>
                   </xsl:otherwise>
