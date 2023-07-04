@@ -67,8 +67,8 @@ public class MIRMETSIngester extends MIRSwordIngesterBase {
 
     @Override
     public MCRObjectID ingestMetadata(Deposit entry) throws SwordError, SwordServerException {
-        final MCRObjectID newObjectId = MCRObjectID
-            .getNextFreeId(MCRConfiguration2.getStringOrThrow("MIR.projectid.default") + "_mods");
+        String baseId = MCRConfiguration2.getStringOrThrow("MIR.projectid.default") + "_mods";
+        final MCRObjectID newObjectId = MCRMetadataManager.getMCRObjectIDGenerator().getNextFreeId(baseId);
         Document convertedDocument;
 
         Path tempFile = null;
