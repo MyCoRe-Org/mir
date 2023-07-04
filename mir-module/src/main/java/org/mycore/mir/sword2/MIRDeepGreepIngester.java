@@ -42,8 +42,8 @@ public class MIRDeepGreepIngester extends MIRSwordIngesterBase {
 
     @Override
     public MCRObjectID ingestMetadata(Deposit deposit) throws SwordError, SwordServerException {
-        final MCRObjectID newObjectId = MCRObjectID
-            .getNextFreeId(MCRConfiguration2.getStringOrThrow("MIR.projectid.default") + "_mods");
+        String baseId = MCRConfiguration2.getStringOrThrow("MIR.projectid.default") + "_mods";
+        final MCRObjectID newObjectId = MCRMetadataManager.getMCRObjectIDGenerator().getNextFreeId(baseId);
         try {
             final Path dgZip = MCRSwordUtil
                 .createTempFileFromStream("dgZip", deposit.getInputStream(), deposit.getMd5());
