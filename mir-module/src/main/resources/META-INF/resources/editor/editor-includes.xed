@@ -147,6 +147,10 @@
     <mir:textfield xpath="mods:titleInfo[@type='abbreviated']/mods:title" label="mir.title.type.abbreviated" help-text="{i18n:mir.help.title.abbreviated}" />
   </xed:template>
 
+  <xed:template id="title.issue.relItemsearch">
+    <mir:relItemsearch searchengine="title" genre="issue" responsefield="mods.title" xpath="mods:titleInfo/mods:title" label="mir.title" class="required" />
+  </xed:template>
+
   <xed:template id="title.journal">
     <mir:textfield xpath="mods:titleInfo/mods:title" label="mir.title.journal" help-text="{i18n:mir.help.title.journal}" class="required"
       required="true" required-i18n="mir.validation.title" />
@@ -699,6 +703,11 @@
         <mir:help-pmud help-text="{i18n:mir.help.nameIdentifier}" pmud="true" />
       </div>
     </xed:repeat>
+  </xed:template>
+
+  <xed:template id="identifier.issn.issue.relItemsearch">
+    <mir:relItemsearch searchengine="issn" genre="issue" responsefield="identifier.type.issn" xpath="mods:identifier[@type='issn']" label="mir.identifier.issn"
+      help-text="{i18n:mir.help.identifier.issn}" />
   </xed:template>
 
   <xed:template id="topicIdentifier">

@@ -58,6 +58,12 @@
     <xed:include ref="genres.journal.common" />
   </xed:template>
 
+  <xed:template id="genres.issue">
+    <xed:include ref="title.original" />
+    <xed:include ref="author.repeated" />
+    <xed:include ref="genres.single_issue.common" />
+  </xed:template>
+
   <xed:template id="genres.series">
     <xed:include ref="title" />
     <xed:include ref="genres.journal.common" />
