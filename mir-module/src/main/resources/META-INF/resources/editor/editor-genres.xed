@@ -61,7 +61,25 @@
   <xed:template id="genres.issue">
     <xed:include ref="title.original" />
     <xed:include ref="author.repeated" />
-    <xed:include ref="genres.single_issue.common" />
+    <xed:if test="$host='series'">
+      <xed:include ref="year.issued" />
+      <xed:include ref="place" />
+      <xed:include ref="publisher" />
+    </xed:if>
+    <xed:include ref="edition" />
+    <xed:include ref="extent" />
+    <xed:include ref="language" />
+    <xed:include ref="sdnb.repeat" />
+    <xed:include ref="identifier.isbn" />
+    <xed:include ref="identifier.managed" />
+    <xed:include ref="doi.handle.urn.repeated" />
+    <xed:include ref="subject.simple" />
+    <xed:include ref="shelfmark" />
+    <xed:include ref="abstract.simple" />
+    <xed:include ref="embargo.datetimepicker" />
+    <xed:include ref="rights" />
+    <xed:include ref="institutes.repeat" />
+    <xed:include ref="comment" />
   </xed:template>
 
   <xed:template id="genres.series">
