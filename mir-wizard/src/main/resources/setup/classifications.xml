@@ -19,4 +19,5 @@
   <classification uri="resource:mycore-classifications/nameIdentifier.xml" />
   <classification uri="resource:mycore-classifications/noteTypes.xml" />
   <classification uri="resource:mycore-classifications/identifier.xml" />
+  <classification uri="resource:mycore-classifications/mir_relateditem.xml" />
 </classification>
