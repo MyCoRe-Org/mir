@@ -108,6 +108,15 @@
       </xed:bind>
   </xed:template>
 
+  <xed:template id="hosts.issue">
+    <xed:bind xpath="mods:relatedItem[@type='host']">
+      <xed:bind xpath="@xlink:href" initially="{$MIR.projectid.default}_mods_00000000"> <input id="relItem-journal" type="hidden" /> </xed:bind>
+      <xed:include ref="title.issue.relItemsearch" />
+      <xed:include ref="identifier.issn.issue.relItemsearch" />
+      <xed:include ref="host.pages" />
+    </xed:bind>
+  </xed:template>
+
   <xed:template id="hosts.newspaper">
       <xed:bind xpath="mods:relatedItem[@type='host']">
         <xed:bind xpath="@xlink:href" initially="{$MIR.projectid.default}_mods_00000000"> <input id="relItem-newspaper" type="hidden" /> </xed:bind>

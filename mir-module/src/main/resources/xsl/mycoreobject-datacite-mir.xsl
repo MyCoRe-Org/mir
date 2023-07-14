@@ -607,7 +607,7 @@
         <xsl:when test=".='preceding'">IsNewVersionOf</xsl:when>
         <xsl:when test=".='succeeding'">IsPreviousVersionOf</xsl:when>
         <xsl:when test=".='reviewOf'">Reviews</xsl:when>
-        <xsl:when test=".='has_grouping'">IsPartOf<xsl:when>
+        <xsl:when test=".='has_grouping'">IsPartOf</xsl:when>
       </xsl:choose>
     </xsl:attribute>
   </xsl:template>
