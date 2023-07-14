@@ -44,7 +44,7 @@
     <java.target.version>17</java.target.version>
     <jetty.version>11.0.13</jetty.version>
     <maven.compiler.arg>-Werror</maven.compiler.arg>
-    <mycore.version>2023.02-SNAPSHOT</mycore.version>
+    <mycore.version>2023.05</mycore.version>
     <selenium.version>4.3.0</selenium.version>
     <site.suffix />
     <solr-runner.solrMirrorURL>https://archive.apache.org/dist/lucene/solr/</solr-runner.solrMirrorURL>
@@ -458,7 +458,7 @@
       <dependency>
         <groupId>org.mycore</groupId>
         <artifactId>mycore-classifications</artifactId>
-        <version>1.1-SNAPSHOT</version>
+        <version>1.1</version>
         <scope>runtime</scope>
       </dependency>
     </dependencies>
