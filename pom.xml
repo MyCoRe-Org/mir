@@ -8,7 +8,7 @@
   </parent>
   <groupId>org.mycore.mir</groupId>
   <artifactId>mir-parent</artifactId>
-  <version>2022.06.2</version>
+  <version>2022.06.3-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>MIR</name>
   <description>MyCoRe/MODS Institutional Repository</description>
@@ -44,7 +44,7 @@
     <java.target.version>17</java.target.version>
     <jetty.version>11.0.13</jetty.version>
     <maven.compiler.arg>-Werror</maven.compiler.arg>
-    <mycore.version>2022.06.2</mycore.version>
+    <mycore.version>2022.06.3-SNAPSHOT</mycore.version>
     <selenium.version>4.3.0</selenium.version>
     <site.suffix />
     <solr-runner.solrMirrorURL>https://archive.apache.org/dist/lucene/solr/</solr-runner.solrMirrorURL>
