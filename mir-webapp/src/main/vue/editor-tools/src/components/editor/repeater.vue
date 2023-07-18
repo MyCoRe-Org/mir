@@ -1,0 +1,108 @@
+<template>
+    <div class="btn-group btn-group-sm" role="group">
+        <button v-if="editVisible"
+                :class="`btn btn-sm btn-secondary${editEnabled? '':' disabled'}${editPressed? ' active':''}`"
+                type="button"
+                v-on:click.prevent="editClicked()">
+            <i class="fas fa-edit"/>
+        </button>
+        <button v-if="plusVisible"
+                :class="`btn btn-sm btn-secondary${plusEnabled? '':' disabled'}`"
+                type="button"
+                v-on:click.prevent="plusClicked()">
+            <i class="fas fa-plus"/>
+        </button>
+        <button v-if="minusVisible"
+                :class="`btn btn-sm btn-secondary${minusEnabled? '':' disabled'}`"
+                type="button"
+                v-on:click.prevent="minusClicked()">
+            <i class="fas fa-minus"/>
+        </button>
+        <button v-if="upVisible"
+                :class="`btn btn-sm btn-secondary${upEnabled? '':' disabled'}`"
+                type="button"
+                v-on:click.prevent="upClicked()">
+            <i class="fas fa-arrow-up"/>
+        </button>
+        <button v-if="downVisible"
+                :class="`btn btn-sm btn-secondary${downEnabled? '':' disabled'}`"
+                type="button"
+                v-on:click.prevent="downClicked()">
+            <i class="fas fa-arrow-down"/>
+        </button>
+    </div>
+</template>
+
+<script setup lang="ts">
+
+interface Props {
+    plusEnabled: boolean,
+    minusEnabled: boolean,
+    plusVisible?: boolean,
+    minusVisible?: boolean
+    upEnabled?: boolean,
+    upVisible?: boolean,
+    downEnabled?: boolean,
+    downVisible?: boolean,
+    editEnabled: boolean,
+    editVisible?: boolean
+    editPressed?: boolean,
+}
+
+const props = withDefaults(defineProps<Props>(), {
+    editEnabled: false,
+    plusEnabled: true,
+    minusEnabled: true,
+    editVisible: false,
+    plusVisible: true,
+    minusVisible: true,
+    upEnabled: false,
+    upVisible: false,
+    downEnabled: false,
+    downVisible: false,
+    editPressed: false
+});
+
+const emit = defineEmits<{
+    plusClicked: [],
+    minusClicked: [],
+    upClicked: [],
+    downClicked: [],
+    editClicked: []
+}>();
+
+const plusClicked = () => {
+    if (props.plusEnabled && props.plusVisible) {
+        emit('plusClicked');
+    }
+}
+
+const minusClicked = () => {
+    if (props.minusEnabled && props.minusVisible) {
+        emit('minusClicked');
+    }
+}
+
+const upClicked = () => {
+    if (props.upEnabled && props.upVisible) {
+        emit('upClicked');
+    }
+}
+
+const downClicked = () => {
+    if (props.downEnabled && props.downVisible) {
+        emit('downClicked');
+    }
+}
+
+const editClicked = () => {
+    if (props.editEnabled && props.editVisible) {
+        emit('editClicked');
+    }
+}
+
+</script>
+
+<script>
+
+</script>

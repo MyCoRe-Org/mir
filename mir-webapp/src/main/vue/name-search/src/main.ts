@@ -1,9 +1,4 @@
-import Vue from 'vue'
-import PersonSearch from './App.vue'
+import { createApp } from 'vue'
+import App from './App.vue'
 
-Vue.config.productionTip = false
-
-new Vue({
-  render: h => h(PersonSearch),
-}).$mount('#app')
-
+createApp(App).mount('#app')

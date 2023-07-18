@@ -3,7 +3,9 @@ package org.mycore.mir.editor;
 import static org.mycore.common.xml.MCRXMLFunctions.isHtml;
 
 import java.io.IOException;
+import java.io.StringReader;
 import java.net.MalformedURLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -16,6 +18,7 @@ import org.jdom2.Element;
 import org.jdom2.JDOMException;
 import org.jdom2.Namespace;
 import org.jdom2.filter.Filters;
+import org.jdom2.input.SAXBuilder;
 import org.jdom2.output.DOMOutputter;
 import org.jdom2.xpath.XPathExpression;
 import org.jdom2.xpath.XPathFactory;
@@ -33,7 +36,33 @@ public class MIRPostProcessor extends MCRPostProcessorXSL {
         final Document newXML = oldXML.clone();
 
         fixAbstracts(newXML);
+        fixTitleInfos(newXML);
 
+        final XPathExpression<Element> subjectsXPath = XPathFactory.instance().compile(".//mods:subjectXML",
+            Filters.element(), null, MCRConstants.MODS_NAMESPACE,
+            MCRConstants.XLINK_NAMESPACE);
+        final List<Element> subjectElements = new ArrayList<>(subjectsXPath.evaluate(newXML));
+
+        for (Element subject : subjectElements) {
+            subject.setName("subject");
+            String xmlContent = subject.getText();
+            SAXBuilder saxBuilder = new SAXBuilder();
+            Document result;
+            try (StringReader characterStream = new StringReader(xmlContent)) {
+                result = saxBuilder.build(characterStream);
+            }
+            Element newSubject = result.getRootElement();
+            subject.removeContent();
+            new ArrayList<>(newSubject.getChildren()).forEach(child -> {
+                child.detach();
+                subject.addContent(child);
+            });
+        }
+
+        return super.process(newXML);
+    }
+
+    private static void fixTitleInfos(Document newXML) {
         final XPathExpression<Element> titleInfoXPath = XPathFactory.instance().compile(".//mods:titleInfo",
             Filters.element(), null, MCRConstants.MODS_NAMESPACE,
             MCRConstants.XLINK_NAMESPACE);
@@ -50,8 +79,6 @@ public class MIRPostProcessor extends MCRPostProcessorXSL {
                     throw new MCRException("Error while converting HTML title!", e);
                 }
             });
-
-        return super.process(newXML);
     }
 
     private static void fixTitle(Element titleInfoElement)

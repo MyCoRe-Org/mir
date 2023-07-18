@@ -7,7 +7,14 @@ import org.jsoup.safety.Cleaner;
 import org.jsoup.safety.Safelist;
 import org.mycore.common.config.MCRConfiguration2;
 import org.mycore.frontend.MCRFrontendUtil;
+import org.w3c.dom.Node;
 
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -42,6 +49,13 @@ public class MIREditorUtils {
 
     protected static Document getCleanDocument(Document document, Safelist elementWhitelist) {
         return new Cleaner(elementWhitelist).clean(document);
+    }
+
+    public static String xmlAsString(Node node) throws TransformerException {
+        StringWriter writer = new StringWriter();
+        Transformer transformer = TransformerFactory.newInstance().newTransformer();
+        transformer.transform(new DOMSource(node), new StreamResult(writer));
+        return  writer.toString();
     }
 
     protected static Safelist getSafeList() {

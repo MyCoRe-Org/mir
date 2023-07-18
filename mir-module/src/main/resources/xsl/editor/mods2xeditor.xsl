@@ -4,7 +4,8 @@
   xmlns:mirmapper="xalan://org.mycore.mir.impexp.MIRClassificationMapper" xmlns:mirdateconverter="xalan://org.mycore.mir.date.MIRDateConverter"
   xmlns:mirvalidationhelper="xalan://org.mycore.mir.validation.MIRValidationHelper"
   xmlns:piUtil="xalan://org.mycore.pi.frontend.MCRIdentifierXSLUtils"
-  exclude-result-prefixes="mcrmods xlink mirmapper i18n mirdateconverter mirvalidationhelper piUtil" version="1.0"
+  xmlns:editorUtils="xalan://org.mycore.mir.editor.MIREditorUtils"
+  exclude-result-prefixes="mcrmods xlink mirmapper i18n mirdateconverter mirvalidationhelper piUtil editorUtils" version="1.0"
 >
 
   <xsl:include href="copynodes.xsl" />
@@ -32,16 +33,15 @@
     
   </xsl:template>
 
-  <xsl:template match="mods:subject/mods:topic/@valueURI">
-    <xsl:attribute name="valueURIxEditor">
-      <xsl:value-of select="substring-after(.,../@authorityURI)" />
+  <xsl:template match="mods:subject">
+    <xsl:variable name="geoCount" select="count(mods:cartographics) + count(mods:geographic)" />
+    <xsl:attribute name="geo">
+      <xsl:choose>
+        <xsl:when test="(count(mods:cartographics) &lt; 2 or count(mods:geographic) &lt; 2) and $geoCount &gt; 0 and $geoCount = count(mods:*)">true</xsl:when>
+        <xsl:otherwise>false</xsl:otherwise>
+      </xsl:choose>
     </xsl:attribute>
-  </xsl:template>
-
-  <xsl:template match="mods:subject/mods:geographic/@valueURI">
-    <xsl:attribute name="valueURIxEditor">
-      <xsl:value-of select="substring-after(.,../@authorityURI)" />
-    </xsl:attribute>
+    <mods:subjectXML><xsl:copy-of select="editorUtils:xmlAsString(.)" /></mods:subjectXML>
   </xsl:template>
 
   <xsl:template match="mods:titleInfo[string-length(@altRepGroup) &gt; 0]|mods:abstract[string-length(@altRepGroup) &gt; 0]">

@@ -427,8 +427,7 @@
     <xed:include ref="subtitle" />
     <xed:include ref="name.repeated" />
     <xed:include ref="date.recorded.datetimepicker" />
-    <xed:include ref="geographic" />
-    <xed:include ref="cartographics" />
+    <xed:include ref="geographicAndCartographics" />
     <xed:include ref="language" />
     <xed:include ref="doi.handle.urn.repeated" />
     <xed:include ref="sdnb.repeat" />

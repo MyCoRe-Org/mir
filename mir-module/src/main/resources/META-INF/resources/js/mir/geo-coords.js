@@ -174,13 +174,13 @@
 
                 // use the given coords to draw on map
                 function loadLonLat(lonLatData) {
-                    var data = lonLatData.trim().split(", ");
+                    var data = lonLatData.trim().split(",");
                     var obj, geometry;
                     
                     if(data.length >= 2) {
                         var newArray = [];
                         $.each(data, function(i, val) {
-                            var lonLat = val.split(" ");
+                            var lonLat = val.trim().split(" ");
                             newArray.push(ol.proj.fromLonLat([parseFloat(lonLat[0]), parseFloat(lonLat[1])]));
                         });
                         geometry = new ol.geom.Polygon([newArray]);
