@@ -1733,123 +1733,164 @@
   -->
   <xed:template id="geographicAndCartographics">
     <xed:repeat xpath="mods:subjectXML[@geo='true']" min="1" max="10">
-      <div class="form-group row">
+      <div class="form-group row {$xed-validation-marker}">
         <label class="col-md-3 col-form-label text-right">
           <xed:output i18n="mir.geographic" />
         </label>
         <div class="col-md-6">
           <input type="hidden" class="subjectXML"/>
-          <div class="editorToolsApp" data-searchable="Geographic" data-editor="Geographic,Cartographic" data-simple="geographicPair" data-required="false"> </div>
+          <div class="editorToolsApp" data-searchable="Geographic" data-editor="Geographic,Cartographic" data-admin="geographicPair" data-required="false"> </div>
         </div>
         <mir:help-pmud help-text="{i18n:mir.help.cartographics.place}" pmud="true"/>
       </div>
     </xed:repeat>
+    <xed:validate xpath="//mods:subjectXML[@geo='true']" class="org.mycore.mir.validation.MIRValidationHelper" method="validateSubject" display="global" i18n="mir.validation.subject.geographic" />
   </xed:template>
 
   <xed:template id="geographic">
     <xed:repeat xpath="mods:subjectXML[@geo='true']" min="1" max="10">
-      <div class="form-group row">
+      <div class="form-group row {$xed-validation-marker}">
         <label class="col-md-3 col-form-label text-right">
           <xed:output i18n="mir.geographic" />
         </label>
         <div class="col-md-6">
           <input type="hidden" class="subjectXML"/>
-          <div class="editorToolsApp" data-searchable="" data-editor="Geographic"  data-simple="true" data-required="false"> </div>
+          <div class="editorToolsApp" data-searchable="" data-editor="Geographic"  data-admin="false" data-required="false"> </div>
         </div>
         <mir:help-pmud help-text="{i18n:mir.help.cartographics.place}" pmud="true"/>
       </div>
     </xed:repeat>
+    <xed:validate xpath="//mods:subjectXML[@geo='true']" class="org.mycore.mir.validation.MIRValidationHelper" method="validateSubject" display="global" i18n="mir.validation.subject.geographic" />
   </xed:template>
 
   <xed:template id="geographic.complex">
     <xed:repeat xpath="mods:subjectXML[@geo='true']" min="1" max="10">
-      <div class="form-group row">
+      <div class="form-group row {$xed-validation-marker}">
         <label class="col-md-3 col-form-label text-right">
           <xed:output i18n="mir.geographic" />
         </label>
         <div class="col-md-6">
           <input type="hidden" class="subjectXML"/>
-          <div class="editorToolsApp" data-searchable="Geographic" data-editor="Geographic"  data-simple="true" data-required="false"> </div>
+          <div class="editorToolsApp" data-searchable="Geographic" data-editor="Geographic"  data-admin="false" data-required="false"> </div>
         </div>
         <mir:help-pmud help-text="{i18n:mir.help.cartographics.place}" pmud="true"/>
       </div>
     </xed:repeat>
+    <xed:validate xpath="//mods:subjectXML[@geo='true']" class="org.mycore.mir.validation.MIRValidationHelper" method="validateSubject" display="global" i18n="mir.validation.subject.geographic" />
   </xed:template>
 
   <xed:template id="cartographics">
     <xed:bind xpath="mods:subjectXML[@geo='true']">
-      <div class="form-group row">
+      <div class="form-group row {$xed-validation-marker}">
         <label class="col-md-3 col-form-label text-right">
           <xed:output i18n="mir.cartographics.coordinates" />
         </label>
         <div class="col-md-6">
           <input type="hidden" class="subjectXML"/>
-          <div class="editorToolsApp" data-searchable="" data-editor="Cartographic" data-simple="true" data-required="false"> </div>
+          <div class="editorToolsApp" data-searchable="" data-editor="Cartographic" data-admin="false" data-required="false"> </div>
         </div>
         <mir:help-pmud help-text="{i18n:mir.help.subject}" pmud="false"/>
       </div>
     </xed:bind>
+    <xed:validate xpath="//mods:subjectXML[@geo='true']" class="org.mycore.mir.validation.MIRValidationHelper" method="validateSubject" display="global" i18n="mir.validation.subject.geographic" />
   </xed:template>
 
   <xed:template id="cartographics.repeat">
     <xed:repeat xpath="mods:subjectXML[@geo='true']" min="1" max="10">
-      <div class="form-group row">
+      <div class="form-group row {$xed-validation-marker}">
         <label class="col-md-3 col-form-label text-right">
           <xed:output i18n="mir.cartographics.coordinates" />
         </label>
         <div class="col-md-6">
           <input type="hidden" class="subjectXML"/>
-          <div class="editorToolsApp" data-searchable="" data-editor="Cartographic" data-simple="true" data-required="false"> </div>
+          <div class="editorToolsApp" data-searchable="" data-editor="Cartographic" data-admin="false" data-required="false"> </div>
         </div>
         <mir:help-pmud help-text="{i18n:mir.help.subject}" pmud="true"/>
       </div>
     </xed:repeat>
+    <xed:validate xpath="//mods:subjectXML[@geo='true']" class="org.mycore.mir.validation.MIRValidationHelper" method="validateSubject" display="global" i18n="mir.validation.subject.geographic" />
+  </xed:template>
+
+  <xed:template id="subject.simple">
+    <xed:repeat xpath="mods:subjectXML[not(@geo='true')]" min="1" max="10">
+      <div class="form-group row {$xed-validation-marker}">
+        <label class="col-md-3 col-form-label text-right">
+          <xed:output i18n="mir.subject.topic"/>
+        </label>
+        <div class="col-md-6">
+          <input type="hidden" class="subjectXML"/>
+          <div class="editorToolsApp" data-searchable="" data-editor="*" data-admin="false" data-required="false"> </div>
+        </div>
+        <mir:help-pmud help-text="{i18n:mir.help.subject}" pmud="true"/>
+      </div>
+    </xed:repeat>
+    <xed:validate xpath=".//mods:subjectXML[not(@geo='true')]" class="org.mycore.mir.validation.MIRValidationHelper" method="validateSubject" display="global" i18n="mir.validation.subject.simple" />
   </xed:template>
 
   <xed:template id="subject.simple.required">
     <xed:repeat xpath="mods:subjectXML[not(@geo='true')]" min="1" max="10">
-      <div class="form-group row">
+      <div class="form-group row {$xed-validation-marker}">
         <label class="col-md-3 col-form-label text-right">
           <xed:output i18n="mir.subject.topic"/>
         </label>
         <div class="col-md-6">
           <input type="hidden" class="subjectXML"/>
-          <div class="editorToolsApp" data-searchable="" data-editor="*" data-simple="true" data-required="true"> </div>
+          <div class="editorToolsApp" data-searchable="" data-editor="*" data-admin="false" data-required="true"> </div>
         </div>
         <mir:help-pmud help-text="{i18n:mir.help.subject}" pmud="true"/>
       </div>
     </xed:repeat>
+    <xed:validate xpath=".//mods:subjectXML[not(@geo='true')]" class="org.mycore.mir.validation.MIRValidationHelper" method="validateSubjectRequired" display="global" i18n="mir.validation.subject.simple.required" />
   </xed:template>
 
   <xed:template id="subject.complex">
     <xed:repeat xpath="mods:subjectXML[not(@geo='true')]" min="1" max="10">
-      <div class="form-group row">
+      <div class="form-group row {$xed-validation-marker}">
         <label class="col-md-3 col-form-label text-right">
           <xed:output i18n="mir.subject.topic"/>
         </label>
         <div class="col-md-6">
           <input type="hidden" class="subjectXML"/>
-          <div class="editorToolsApp" data-searchable="*" data-editor="*" data-simple="false" data-required="false"> </div>
+          <div class="editorToolsApp" data-searchable="*" data-editor="*" data-admin="false" data-required="false"> </div>
         </div>
         <mir:help-pmud help-text="{i18n:mir.help.subject}" pmud="true"/>
       </div>
     </xed:repeat>
+    <xed:validate xpath=".//mods:subjectXML[not(@geo='true')]" class="org.mycore.mir.validation.MIRValidationHelper" method="validateSubject" display="global" i18n="mir.validation.subject.complex" />
   </xed:template>
 
   <xed:template id="subject.complex.required">
     <xed:repeat xpath="mods:subjectXML" min="1" max="10">
-      <div class="form-group row">
+      <div class="form-group row {$xed-validation-marker}">
         <label class="col-md-3 col-form-label text-right">
           <xed:output i18n="mir.subject.topic"/>
         </label>
         <div class="col-md-6">
           <input type="hidden" class="subjectXML"/>
-          <div class="editorToolsApp" data-searchable="*" data-editor="*" data-simple="false" data-required="true"> </div>
+          <div class="editorToolsApp" data-searchable="*" data-editor="*" data-admin="false" data-required="true"> </div>
         </div>
         <mir:help-pmud help-text="{i18n:mir.help.subject}" pmud="true"/>
       </div>
     </xed:repeat>
+    <xed:validate xpath=".//mods:subjectXML[not(@geo='true')]" class="org.mycore.mir.validation.MIRValidationHelper" method="validateSubjectRequired" display="global" i18n="mir.validation.subject.complex.required" />
   </xed:template>
+
+  <xed:template id="subject.admin">
+    <xed:repeat xpath="mods:subjectXML[not(@geo='true')]" min="1" max="10">
+      <div class="form-group row {$xed-validation-marker}">
+        <label class="col-md-3 col-form-label text-right">
+          <xed:output i18n="mir.subject.topicChain"/>
+        </label>
+        <div class="col-md-6">
+          <input type="hidden" class="subjectXML"/>
+          <div class="editorToolsApp" data-searchable="*" data-editor="*" data-admin="true" data-required="false"> </div>
+        </div>
+        <mir:help-pmud help-text="{i18n:mir.help.subject}" pmud="true"/>
+      </div>
+    </xed:repeat>
+    <xed:validate xpath=".//mods:subjectXML[not(@geo='true')]" class="org.mycore.mir.validation.MIRValidationHelper" method="validateSubject" display="global" i18n="mir.validation.subject.admin" />
+  </xed:template>
+
 
   <xed:template id="classification">
     <xed:repeat xpath="mods:classification[@generator='user selected']" min="1" max="10">

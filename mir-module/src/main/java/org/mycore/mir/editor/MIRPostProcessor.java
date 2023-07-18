@@ -38,6 +38,12 @@ public class MIRPostProcessor extends MCRPostProcessorXSL {
         fixAbstracts(newXML);
         fixTitleInfos(newXML);
 
+        fixSubject(newXML);
+
+        return super.process(newXML);
+    }
+
+    private static void fixSubject(Document newXML) throws JDOMException, IOException {
         final XPathExpression<Element> subjectsXPath = XPathFactory.instance().compile(".//mods:subjectXML",
             Filters.element(), null, MCRConstants.MODS_NAMESPACE,
             MCRConstants.XLINK_NAMESPACE);
@@ -45,6 +51,7 @@ public class MIRPostProcessor extends MCRPostProcessorXSL {
 
         for (Element subject : subjectElements) {
             subject.setName("subject");
+            subject.removeAttribute("geo");
             String xmlContent = subject.getText();
             SAXBuilder saxBuilder = new SAXBuilder();
             Document result;
@@ -58,8 +65,6 @@ public class MIRPostProcessor extends MCRPostProcessorXSL {
                 subject.addContent(child);
             });
         }
-
-        return super.process(newXML);
     }
 
     private static void fixTitleInfos(Document newXML) {

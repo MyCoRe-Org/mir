@@ -34,7 +34,7 @@
     <xed:include ref="rights" />
     <xed:include ref="copyrightMD" />
     <xed:include ref="institutes" />
-    <xed:include ref="subject.complex" />
+    <xed:include ref="subject.admin" />
     <xed:include ref="abstract.repeated" />
     <xed:include ref="comment.complex" />
     <xed:include ref="related.item.search.of.all.items" />

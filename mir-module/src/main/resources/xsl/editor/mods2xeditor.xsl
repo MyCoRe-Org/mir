@@ -35,13 +35,15 @@
 
   <xsl:template match="mods:subject">
     <xsl:variable name="geoCount" select="count(mods:cartographics) + count(mods:geographic)" />
-    <xsl:attribute name="geo">
-      <xsl:choose>
-        <xsl:when test="(count(mods:cartographics) &lt; 2 or count(mods:geographic) &lt; 2) and $geoCount &gt; 0 and $geoCount = count(mods:*)">true</xsl:when>
-        <xsl:otherwise>false</xsl:otherwise>
-      </xsl:choose>
-    </xsl:attribute>
-    <mods:subjectXML><xsl:copy-of select="editorUtils:xmlAsString(.)" /></mods:subjectXML>
+    <mods:subjectXML>
+      <xsl:attribute name="geo">
+        <xsl:choose>
+          <xsl:when test="(count(mods:cartographics) &lt; 2 or count(mods:geographic) &lt; 2) and $geoCount &gt; 0 and $geoCount = count(mods:*)">true</xsl:when>
+          <xsl:otherwise>false</xsl:otherwise>
+        </xsl:choose>
+      </xsl:attribute>
+      <xsl:copy-of select="editorUtils:xmlAsString(.)" />
+    </mods:subjectXML>
   </xsl:template>
 
   <xsl:template match="mods:titleInfo[string-length(@altRepGroup) &gt; 0]|mods:abstract[string-length(@altRepGroup) &gt; 0]">
