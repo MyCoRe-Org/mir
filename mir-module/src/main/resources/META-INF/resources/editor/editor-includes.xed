@@ -2317,6 +2317,7 @@
     <xed:cleanup-rule xpath="//mods:dateIssued" relevant-if="@encoding='w3cdtf' and string-length(text()) &gt; 0" />
     <xed:cleanup-rule xpath="//mods:relatedItem/mods:location|//mods:relatedItem/mods:genre" relevant-if="string-length(../@xlink:href)=0" />
     <xed:cleanup-rule xpath="//mods:relatedItem/mods:location" relevant-if="mods:*" />
+    <xed:cleanup-rule xpath="//mods:relatedItem/mods:genre[@type='intern']" relevant-if="string-length(@valueURIxEditor) &gt; 0" />
   </xed:template>
 
   <xed:template id="javascript">
