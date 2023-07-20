@@ -677,8 +677,8 @@
     </xed:repeat>
   </xed:template>
 
-  <xed:template id="person.affiliation">
-    <mir:textfield xpath="mods:affiliation" help-text="{i18n:mir.help.affiliation}" label="mir.affiliation" />
+  <xed:template id="person.affiliation.repeated">
+    <mir:textfield repeat="true" xpath="mods:affiliation" help-text="{i18n:mir.help.affiliation}" label="mir.affiliation" />
   </xed:template>
 
   <xed:template id="nameIdentifier.repeated">
@@ -1841,7 +1841,7 @@
 
   <!-- TODO: check template for usage!
   <xed:template id="subject.genre">
-    <mir:textfield repeat="true" xpath="mods:subject/mods:genre" min="1" max="10" label="mir.subject.genre" help-text="{i18n:mir.help.subject.genre}" />
+    <mir:textfield  xpath="mods:subject/mods:genre" min="1" max="10" label="mir.subject.genre" help-text="{i18n:mir.help.subject.genre}" />
   </xed:template>
   -->
 
