@@ -16,7 +16,7 @@
 
 <script lang="ts" setup>
 
-import {watch, reactive, defineProps, ref} from "vue";
+import {reactive, defineProps} from "vue";
 
 interface SearchFormProps {
     searchButton: string,

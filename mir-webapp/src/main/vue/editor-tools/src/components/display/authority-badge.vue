@@ -5,7 +5,7 @@
     <a v-else-if="props.authority && props.valueURI"
        :href="props.valueURI"
        class="badge badge-pill badge-info"
-       target="_blank">{{ model.label }} <i
+       target="_blank">{{ i18n["mir.subject.bagde." + props.authority] }} <i
             class="fas fa-external-link"> </i>
     </a>
     <a class="badge badge-pill badge-danger" v-if="editable" href="#empty" @click.prevent="removeBadge">
@@ -14,8 +14,8 @@
 </template>
 
 <script lang="ts" setup>
-import {defineProps, reactive, onMounted} from "vue";
-import {getAuthorityBadgeName} from "@/api/Utils";
+import {defineProps, reactive} from "vue";
+import {provideTranslations} from "@/api/I18N";
 
 const props = defineProps<{
     authority?: string
@@ -29,15 +29,15 @@ const model = reactive({
     label: ""
 });
 
+const i18n = provideTranslations([
+    "mir.subject.bagde.wikidata",
+    "mir.subject.bagde.gnd",
+    "mir.subject.bagde.lcsh",
+    "mir.subject.bagde.viaf"
+]);
+
 const emit = defineEmits<{ (e: 'removeAuthority'): void}>();
 
-onMounted(() => {
-    if (props.authority) {
-        getAuthorityBadgeName(props.authority).then((label) => {
-            model.label = label;
-        });
-    }
-})
 
 const removeBadge = () => {
   emit('removeAuthority');

@@ -51,7 +51,7 @@
 </template>
 
 <script setup lang="ts">
-import {watch, reactive, defineProps, ref} from "vue";
+import {watch, reactive, defineProps} from "vue";
 import {SearchSettings} from "@/api/search/SearchSettings";
 import {EditorSettings} from "@/api/XEditorConnector";
 import {provideTranslations} from "@/api/I18N";

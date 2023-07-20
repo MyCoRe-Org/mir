@@ -11,7 +11,7 @@
 
 <script setup lang="ts">
 
-import {watch, reactive, defineProps, ref} from "vue";
+import {defineProps} from "vue";
 import {Name} from "@/api/Subject";
 import AuthorityBadge from "@/components/display/authority-badge.vue";
 

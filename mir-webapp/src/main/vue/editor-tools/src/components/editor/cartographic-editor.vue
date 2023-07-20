@@ -96,7 +96,7 @@ import {View} from "ol";
 
 import * as ol  from "vue3-openlayers";
 import {provideTranslations} from "@/api/I18N";
-const {Map, MapControls, Layers, Sources, Styles, Geometries, Interactions, Animations} = ol;
+const {Map, Layers, Sources, Styles, Geometries, Interactions} = ol;
 const {OlMap, OlView, OlFeature} =Map;
 const {OlStyle, OlStyleStroke} = Styles;
 const { OlGeomMultiPolygon } = Geometries;

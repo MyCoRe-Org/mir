@@ -14,7 +14,7 @@
 
 <script lang="ts" setup>
 import {defineProps} from "vue";
-import { TitleInfo} from "@/api/Subject";
+import {TitleInfo} from "@/api/Subject";
 import AuthorityBadge from "@/components/display/authority-badge.vue";
 
 const props = defineProps<{ titleInfo: TitleInfo }>();

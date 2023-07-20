@@ -7,7 +7,7 @@
 
 <script lang="ts" setup>
 
-import {defineProps, defineEmits, watch, computed, reactive, onMounted} from "vue";
+import {defineProps, defineEmits, watch, reactive, onMounted} from "vue";
 
 
 const props = defineProps<{
