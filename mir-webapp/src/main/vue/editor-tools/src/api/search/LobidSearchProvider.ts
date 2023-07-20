@@ -129,7 +129,7 @@ export class LobidSearchProvider extends SearchProvider {
             searchResult.info.push({
                 "id": this.generateID(),
                 "type": "string",
-                "labelI18N": "mir.editor.corporateBody.dateOfEstablishment",
+                "label": "mir.editor.corporateBody.dateOfEstablishment",
                 "value": member.dateOfEstablishment
             });
         }
@@ -168,7 +168,7 @@ export class LobidSearchProvider extends SearchProvider {
             searchResult.info.push({
                 id: this.generateID(),
                 type: "string",
-                labelI18N: "mir.editor.person.dateOfBirth",
+                label: "mir.editor.person.dateOfBirth",
                 value: member.dateOfBirth.join(", ")
             });
         }
@@ -177,7 +177,7 @@ export class LobidSearchProvider extends SearchProvider {
             searchResult.info.push({
                 id: this.generateID(),
                 type: "string",
-                labelI18N: "mir.editor.person.dateOfDeath",
+                label: "mir.editor.person.dateOfDeath",
                 value: member.dateOfDeath.join(", ")
             });
         }
@@ -205,7 +205,7 @@ export class LobidSearchProvider extends SearchProvider {
         }
         if (professionCollector.length > 0) {
             searchResult.info.push({
-                labelI18N: "mir.editor.person.profession",
+                label: "mir.editor.person.profession",
                 value: professionCollector.join(", "),
                 id: this.generateID(),
                 type: "string"
@@ -222,7 +222,7 @@ export class LobidSearchProvider extends SearchProvider {
             info.push({
                 id: this.generateID(),
                 type: "string",
-                labelI18N: "mir.editor.variantName",
+                label: "mir.editor.variantName",
                 value: (member.variantName as string[]).join(", ")
             });
         }
@@ -234,7 +234,7 @@ export class LobidSearchProvider extends SearchProvider {
                 info.push({
                     id: this.generateID(),
                     type: "url",
-                    labelI18N: "mir.editor.person.website",
+                    label: "mir.editor.person.website",
                     value: url,
                 })
             });
@@ -246,7 +246,7 @@ export class LobidSearchProvider extends SearchProvider {
             info.push({
                 id: this.generateID(),
                 type: "url",
-                labelI18N: "mir.editor.person.gndLink",
+                label: "mir.editor.person.gndLink",
                 value: member.id,
             })
         }
@@ -287,7 +287,7 @@ export class LobidSearchProvider extends SearchProvider {
             searchResult.info.push({
                 id: this.generateID(),
                 type: "string",
-                labelI18N: "mir.editor.place.biographicalOrHistoricalInformation",
+                label: "mir.editor.place.biographicalOrHistoricalInformation",
                 value: bio
             });
         });

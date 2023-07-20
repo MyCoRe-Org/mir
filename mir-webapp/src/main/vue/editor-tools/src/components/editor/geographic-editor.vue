@@ -3,7 +3,7 @@
         <div>
 
         </div>
-        <label class="col-3" :for="id">Ort</label>
+        <label class="col-3" :for="id"> {{ i18n['mir.editor.subject.geographic.editor.name'] }}</label>
 
         <div class="col-7">
             <input :class="'form-control form-control-sm' + validClass(geographic.text)"
@@ -11,7 +11,7 @@
                    :id="id"
                    v-model="geographic.text">
             <div class="invalid-feedback">
-                Please provide a name.
+                {{ i18n["mir.editor.subject.geographic.editor.invalid.name"] }}
             </div>
         </div>
 
@@ -31,6 +31,7 @@ import {defineProps, defineEmits, watch, computed, reactive} from "vue";
 import {Geographic} from "@/api/Subject";
 import AuthorityBadge from "@/components/display/authority-badge.vue";
 import {useVModel} from "@vueuse/core";
+import {provideTranslations} from "@/api/I18N";
 
 const emit = defineEmits(['update:modelValue', "invalid:data", "valid:data"])
 
@@ -49,6 +50,11 @@ watch(geographic, (value) => {
         emit("invalid:data", value);
     }
 }, {deep: true});
+
+const i18n = provideTranslations([
+    "mir.editor.subject.geographic.editor.name",
+    "mir.editor.subject.geographic.editor.invalid.name",
+]);
 
 const validClass = (value: string) => {
     return valid(value) ? ' is-valid' : ' is-invalid';

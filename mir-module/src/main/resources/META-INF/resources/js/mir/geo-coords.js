@@ -1,6 +1,6 @@
 (function($) {
     $﻿(document).ready(function() {
-        $("#flipCoords").click(function() {
+        $(".flipCoords").click(function() {
             var parent = $(this).parent();
             $(parent).html($(parent).data("fullcoords"));
         }); 

@@ -2,14 +2,14 @@
     <div class="row">
         <div class="col-3">
             <label :for="id" >
-                Topic
+                {{ i18n["mir.editor.subject.topic.editor.topic"] }}
             </label>
         </div>
 
         <div class="col-7">
             <input :id="id" v-model="topic.text"  :class="'form-control form-control-sm' + validClass(topic.text)" type="text">
             <div class="invalid-feedback">
-                Please provide a topic.
+                {{ i18n["mir.editor.subject.topic.editor.invalid.topic"] }}
             </div>
         </div>
 
@@ -24,7 +24,7 @@
 </template>
 <script lang="ts" setup>
 
-import {i18n} from "@/api/I18N";
+import {i18n, provideTranslations} from "@/api/I18N";
 import {defineEmits, defineProps, reactive, watch} from "vue";
 import {Topic} from "@/api/Subject";
 import AuthorityBadge from "@/components/display/authority-badge.vue";
@@ -47,6 +47,12 @@ watch(topic, (value) => {
         emit("invalid:data", value);
     }
 }, {deep: true});
+
+const i18n = provideTranslations([
+    "mir.editor.subject.topic.editor.topic",
+    "mir.editor.subject.topic.editor.invalid.topic",
+
+]);
 
 const validClass = (value: string) => {
     return valid(value) ? ' is-valid' : ' is-invalid';

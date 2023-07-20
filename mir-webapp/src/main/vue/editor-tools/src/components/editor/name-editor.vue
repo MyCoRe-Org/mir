@@ -2,7 +2,7 @@
 
     <div class="row">
         <div class="col-3">
-            <label :for="id+'displayForm'">Darstellungsform</label>
+            <label :for="id+'displayForm'">{{ i18n["mir.editor.subject.name.editor.displayForm"] }}</label>
         </div>
 
         <div class="col-7">
@@ -10,7 +10,7 @@
                    v-model="name.displayForm" :class="'form-control form-control-sm' + validClass(name.displayForm)"
                    type="text">
             <div class="invalid-feedback">
-                Please provide a display form.
+                {{ i18n["mir.editor.subject.name.editor.invalid.displayForm"] }}
             </div>
         </div>
 
@@ -27,22 +27,22 @@
         v-if="name.nameParts.length>0 || name.nameType=='personal' || name.nameType=='family'"
        v-model="name.nameParts" :default-content="{ type: 'given',text: '' }">
         <template #label="content">
-            <label :for="content.object? `${id}name${content.index}`: null">Name</label>
+            <label :for="content.object? `${id}name${content.index}`: null">{{ i18n["mir.editor.subject.name.editor.namePart"] }}</label>
         </template>
         <template #displayContent="content">
             <div class="row">
                 <div class="col-6">
                     <select v-model="content.object.type" class="form-control form-control-sm">
-                        <option value="given">Vorname</option>
-                        <option value="family">Nachname</option>
-                        <option value="termsOfAddress">Anrede</option>
+                        <option value="given">{{ i18n["mir.editor.subject.name.editor.namePart.type.given"] }}</option>
+                        <option value="family">{{ i18n["mir.editor.subject.name.editor.namePart.type.family"] }}</option>
+                        <option value="termsOfAddress">{{ i18n["mir.editor.subject.name.editor.namePart.type.termsOfAddress"] }}</option>
                     </select>
                 </div>
                 <div class="col-6">
                     <input :id="`${id}name${content.index}`" v-model="content.object.text"
                            :class="'form-control form-control-sm' + validClass(content.object.text)">
                     <div class="invalid-feedback">
-                        Please provide a name.
+                        {{ i18n["mir.editor.subject.name.editor.invalid.namePart"] }}
                     </div>
                 </div>
             </div>
@@ -52,20 +52,19 @@
     <array-repeater v-model="name.nameIdentifier"
                     :default-content="{ type: 'gnd', text: ''}">
         <template #label="content">
-            <label :for="content.object ? `${id}id${content.index}`:null">Identifikatoren</label>
+            <label :for="content.object ? `${id}id${content.index}`:null">{{ i18n["mir.editor.subject.name.editor.identifier"] }}</label>
         </template>
         <template #displayContent="content">
             <div class="row">
                 <div class="col-6">
-                    <!-- TODO: change -->
                     <classification-select v-model="content.object.type"
-                                           url="https://www.openagrar.de/api/v2/classifications/nameIdentifier"/>
+                                           :url="`${webApplicationBaseURL}api/v2/classifications/nameIdentifier`"/>
                 </div>
                 <div class="col-6">
                     <input :id="`${id}id${content.index}`" v-model="content.object.text"
                            :class="'form-control form-control-sm' + validClass(content.object.text)">
                     <div class="invalid-feedback">
-                        Please provide an identifier.
+                        {{ i18n["mir.editor.subject.name.editor.invalid.identifier"] }}
                     </div>
                 </div>
             </div>
@@ -77,7 +76,7 @@
             v-model="name.affiliation"
             :default-content="''">
         <template #label="content">
-            <label :for="`${id}affiliation${content.index}`">Affiliation</label>
+            <label :for="`${id}affiliation${content.index}`">{{ i18n["mir.editor.subject.name.editor.affiliation"] }}</label>
         </template>
         <template #displayContent="content">
             <div class="row">
@@ -85,7 +84,7 @@
                     <input :id="`${id}affiliation${content.index}`" v-model="name.affiliation[content.index]"
                            :class="'form-control form-control-sm' + validClass(name.affiliation[content.index])">
                     <div class="invalid-feedback">
-                        Please provide an affiliation.
+                        {{ i18n["mir.editor.subject.name.editor.invalid.affiliation"] }}
                     </div>
                 </div>
             </div>
@@ -113,6 +112,8 @@ const props = defineProps<{
     modelValue: Name
 }>();
 
+const webApplicationBaseURL = (window as any)['webApplicationBaseURL'];
+
 const name = useVModel(props, 'modelValue', emit)
 
 watch(() => name.value, (value) => {
@@ -122,7 +123,22 @@ watch(() => name.value, (value) => {
     } else {
         emit("invalid:data", value)
     }
-}, {deep: true})
+}, {deep: true});
+
+const i18n = provideTranslations([
+    "mir.editor.subject.name.editor.displayForm",
+    "mir.editor.subject.name.editor.invalid.displayForm",
+    "mir.editor.subject.name.editor.namePart",
+    "mir.editor.subject.name.editor.invalid.namePart",
+    "mir.editor.subject.name.editor.namePart.type.given",
+    "mir.editor.subject.name.editor.namePart.type.family",
+    "mir.editor.subject.name.editor.namePart.type.termsOfAddress",
+    "mir.editor.subject.name.editor.namePart.type.date",
+    "mir.editor.subject.name.editor.identifier",
+    "mir.editor.subject.name.editor.invalid.identifier",
+    "mir.editor.subject.name.editor.affiliation",
+    "mir.editor.subject.name.editor.invalid.affiliation",
+])
 
 function allValid(name_: Name = name.value) {
     return name_.nameIdentifier.filter((t) => !valid(t.text)).length == 0 &&

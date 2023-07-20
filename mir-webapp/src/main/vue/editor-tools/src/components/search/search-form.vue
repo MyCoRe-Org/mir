@@ -2,12 +2,12 @@
     <form>
         <div class="form-group">
             <div class="input-group input-group-sm mb-3">
-                <input v-model="model.inputValue" @submit.prevent type="text" class="form-control">
+                <input v-model="model.inputValue" :disabled="searchEnabled?null:''" @submit.prevent type="text" class="form-control">
 
                 <div class="input-group-append ">
                     <button class="btn btn-sm btn-secondary" type="button" @click.prevent="openSearchSettings"><i class="fas fa-gear" /></button>
-                    <button class="btn btn-sm btn-primary" type="submit" @click.prevent="search" >{{ props.searchButton }}</button>
-                    <button class="btn btn-sm btn-primary" type="button" @click.prevent="addCustom" ><i class="fas fa-plus" /> </button>
+                    <button class="btn btn-sm btn-primary" type="submit" :disabled="searchEnabled?null:''" @click.prevent="search" >{{ props.searchButton }}</button>
+                    <button class="btn btn-sm btn-primary" v-if="addCustomEnabled" type="button" @click.prevent="addCustom" ><i class="fas fa-plus" /> </button>
                 </div>
             </div>
         </div>
@@ -19,7 +19,9 @@
 import {watch, reactive, defineProps, ref} from "vue";
 
 interface SearchFormProps {
-  searchButton: string
+    searchButton: string,
+    searchEnabled: boolean,
+    addCustomEnabled: boolean,
 }
 
 const emit = defineEmits(["searchSubmitted", "openSearchSettings", "addCustom"]);
@@ -30,7 +32,9 @@ const model = reactive({
 });
 
 const search = () => {
-    emit("searchSubmitted", model.inputValue);
+    if(props.searchEnabled){
+        emit("searchSubmitted", model.inputValue);
+    }
 };
 
 const openSearchSettings = () => {

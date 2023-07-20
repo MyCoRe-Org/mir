@@ -2,7 +2,7 @@
   <div>
         <array-repeater v-model="cartographics.scale" default-content="">
             <template #label="{index}">
-                <span> Maßstab </span>
+                <span> {{ i18n["mir.editor.subject.cartographics.editor.scale"] }} </span>
             </template>
 
             <template #displayContent="content">
@@ -11,13 +11,13 @@
                        :class="'form-control form-control-sm' + validClass(cartographics.scale[content.index])"
                        type="text" />
                 <div class="invalid-feedback">
-                    The scale is not valid.
+                    {{ i18n["mir.editor.subject.cartographics.editor.invalid.scale"] }}
                 </div>
             </template>
         </array-repeater>
         <array-repeater v-model="cartographics.coordinates" default-content="">
             <template #label="{index}">
-                <span> Koordinaten </span>
+                <span> {{ i18n["mir.editor.subject.cartographics.editor.coordinates"] }} </span>
             </template>
 
             <template #displayContent="content">
@@ -26,7 +26,7 @@
                        :class="'form-control form-control-sm' + validClass(cartographics.coordinates[content.index])"
                        type="text" />
                 <div class="invalid-feedback">
-                    The coordinates are not valid.
+                    {{ i18n["mir.editor.subject.cartographics.editor.invalid.coordinates"] }}
                 </div>
             </template>
         </array-repeater>
@@ -34,10 +34,10 @@
             <div class="col-12">
                 <div class="btn-group btn-group-sm">
                     <button class="btn btn-secondary" @click.prevent="addPolygon">
-                        <i class="fas fa-plus"></i> Polygon
+                        <i class="fas fa-plus"></i> {{ i18n["mir.editor.subject.cartographics.editor.add.polygon"] }}
                     </button>
                     <button class="btn btn-secondary" @click.prevent="addPoint">
-                        <i class="fas fa-plus"></i> Punkt
+                        <i class="fas fa-plus"></i> {{ i18n["mir.editor.subject.cartographics.editor.add.point"] }}
                     </button>
                 </div>
             </div>
@@ -68,8 +68,8 @@
                                 </ol-geom-multi-polygon>
                                 <ol-style>
                                     <ol-style-stroke
-                                        :color="'red'"
-                                        :width="'5'"
+                                        :color="'blue'"
+                                        :width="'3'"
                                     ></ol-style-stroke>
                                 </ol-style>
                             </ol-feature>
@@ -90,11 +90,12 @@ import {useVModel} from "@vueuse/core";
 import {transform} from "ol/proj";
 import {DrawEvent} from "ol/interaction/Draw";
 import {Point, Polygon} from "ol/geom";
-import {boundingExtent} from "ol/extent";
+import {boundingExtent, isEmpty} from "ol/extent";
 import {View} from "ol";
 
 
 import * as ol  from "vue3-openlayers";
+import {provideTranslations} from "@/api/I18N";
 const {Map, MapControls, Layers, Sources, Styles, Geometries, Interactions, Animations} = ol;
 const {OlMap, OlView, OlFeature} =Map;
 const {OlStyle, OlStyleStroke} = Styles;
@@ -130,13 +131,24 @@ const addPoint = () => {
     model.searchType = 'Point';
 }
 
+const i18n = provideTranslations([
+    "mir.editor.subject.cartographics.editor.scale",
+    "mir.editor.subject.cartographics.editor.invalid.scale",
+    "mir.editor.subject.cartographics.editor.coordinates",
+    "mir.editor.subject.cartographics.editor.invalid.coordinates",
+    "mir.editor.subject.cartographics.editor.add.polygon",
+    "mir.editor.subject.cartographics.editor.add.point",
+]);
+
 onMounted(() => {
     nextTick(()=>{
         if(convertedTransformedCoords.value !== undefined && view.value) {
             const coord = convertedTransformedCoords.value;
             const flatCoord = coord.flat(1)
             const extent = boundingExtent(flatCoord);
-            (view.value as View).fit(extent, {});
+            if(!isEmpty(extent)){
+                (view.value as View).fit(extent, {});
+            }
         }
     });
 });

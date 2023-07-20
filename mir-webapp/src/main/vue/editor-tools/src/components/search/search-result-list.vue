@@ -36,6 +36,7 @@
                             </template>
 
                             <template v-else-if="result.result.type === 'HierarchicalGeographic'">
+
                             </template>
 
                             <template v-else-if="result.result.type === 'Cartographics'">
@@ -53,7 +54,7 @@
                             <div v-if="result.info.length > 0">
                                 <ul>
                                     <li v-for="info in result.info">
-                                        {{ info.labelI18N }}:
+                                        {{ info.label }}:
                                         <span v-if="info.type=='string'">{{ info.value }}</span>
                                         <a v-else :href="info.value">{{ info.value }}</a>
                                     </li>
@@ -64,7 +65,7 @@
 
                         <div class="col-2 float-right">
                             <button class="btn btn-primary btn-sm" @click.prevent="emit('resultSelected', result)">
-                                Hinzufügen
+                                {{ i18n["mir.editor.subject.search.result.add"] }}
                             </button>
                         </div>
                     </div>
@@ -93,6 +94,7 @@ import NameDisplay from "@/components/display/name-display.vue";
 import TopicDisplay from "@/components/display/topic-display.vue";
 import GeographicDisplay from "@/components/display/geographic-display.vue";
 import TitleInfoDisplay from "@/components/display/title-info-display.vue";
+import {provideTranslations} from "@/api/I18N";
 
 export interface SearchResultListProps {
     searchResultGroup: SearchResultGroup[]
@@ -112,6 +114,10 @@ const model = reactive({
     currentGroupId: undefined as string | undefined,
     inputValue: "",
 });
+
+const i18n = provideTranslations([
+    "mir.editor.subject.search.result.add",
+]);
 
 watch(()=>props.searchResultGroup, (newValue) => {
     const isGroupPresent = newValue.filter(g => g.groupId === model.currentGroupId)[0];

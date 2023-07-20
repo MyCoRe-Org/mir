@@ -16,7 +16,7 @@ export abstract class SearchProvider {
 
 export interface SearchResultInfo {
     id: string;
-    labelI18N: string;
+    label: string;
     type: "string" | "url";
     value: string;
 }

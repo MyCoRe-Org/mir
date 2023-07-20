@@ -5,7 +5,9 @@
             <div class="card mt-3">
 
                 <div class="card-body">
-                    <search-form searchButton="Suche"
+                    <search-form :addCustomEnabled="possibleTypeList.length>0"
+                                 :searchButton="i18n['mir.editor.subject.search']"
+                                 :searchEnabled="searchEnabled"
                                  @addCustom="addCustom"
                                  @openSearchSettings="openSearchSettings"
                                  @searchSubmitted="searchSubmitted"
@@ -19,7 +21,7 @@
                         <div class="modal-dialog modal-lg" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title">Suchergebnisse</h5>
+                                    <h5 class="modal-title">{{ i18n["mir.editor.subject.search.modal.title"] }}</h5>
                                     <button aria-label="Close" class="close" data-dismiss="modal" type="button" @click.prevent>
                                         <span aria-hidden="true">&times;</span>
                                     </button>
@@ -36,7 +38,8 @@
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button class="btn btn-secondary" data-dismiss="modal" type="button" @click.prevent>Schließen
+                                    <button class="btn btn-secondary" data-dismiss="modal" type="button" @click.prevent>
+                                        {{ i18n["mir.editor.subject.search.modal.close"]}}
                                     </button>
                                 </div>
                             </div>
@@ -48,7 +51,7 @@
                         <div class="modal-dialog modal-lg" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title">Eigene Eingabe</h5>
+                                    <h5 class="modal-title">{{ i18n["mir.editor.subject.custom.modal.title"] }}</h5>
                                     <button aria-label="Close" class="close" data-dismiss="modal" type="button"
                                             @click.prevent>
                                         <span aria-hidden="true">&times;</span>
@@ -58,13 +61,13 @@
                                 <div class="modal-body">
                                     <div class="row mb-2">
                                         <div class="col-3">
-                                            <label>Typ</label>
+                                            <label>{{ i18n["mir.editor.subject.custom.modal.type"] }}</label>
                                         </div>
                                         <div class="col-7">
                                             <select v-model="model.custom.type" class="form-control">
-                                                <option v-for="type in model.custom.possibleTypes"
+                                                <option v-for="type in possibleTypeList"
                                                         :value="type">
-                                                    {{ type }}
+                                                    {{ i18n["mir.editor.subject.custom.modal.type."+type] }}
                                                 </option>
                                             </select>
                                         </div>
@@ -100,10 +103,10 @@
 
                                 <div class="modal-footer">
                                     <button class="btn btn-secondary" data-dismiss="modal" type="button"
-                                            @click.prevent>Schließen
+                                            @click.prevent>{{ i18n["mir.editor.subject.custom.modal.close"]}}
                                     </button>
                                     <button :disabled="!model.custom.valid" class="btn btn-primary" type="button"
-                                            @click.prevent="addCustomObject">Hinzufügen
+                                            @click.prevent="addCustomObject">{{ i18n["mir.editor.subject.custom.modal.add"]}}
                                     </button>
                                 </div>
                             </div>
@@ -122,7 +125,7 @@
 </template>
 
 <script lang="ts" setup>
-import {onMounted, reactive, ref, watch} from "vue";
+import {computed, onMounted, reactive, ref, watch} from "vue";
 import {Cartographics, Geographic, Name, Subject, TitleInfo, Topic} from "@/api/Subject";
 import subjectEditor from "@/components/editor/subject-editor.vue";
 import searchForm from "@/components/search/search-form.vue";
@@ -137,6 +140,7 @@ import NameEditor from "@/components/editor/name-editor.vue";
 import TitleInfoEditor from "@/components/editor/title-info-editor.vue";
 import GeographicEditor from "@/components/editor/geographic-editor.vue";
 import CartographicsEditor from "@/components/editor/cartographic-editor.vue";
+import {provideTranslations} from "@/api/I18N";
 
 const model = reactive({
     settings: undefined as EditorSettings | undefined,
@@ -157,7 +161,7 @@ const model = reactive({
     } as SearchSettingsModel,
     custom: {
         possibleTypes: possibleTypes,
-        type: possibleTypes[0] as "Topic" | "Geographic" | "Institution" | "Person" | "Family" | "Conference" | "TitleInfo" | "Cartographic",
+        type: possibleTypes[0] as "Topic" | "Geographic" | "Institution" | "Person" | "Family" | "Conference" | "TitleInfo" | "Cartographics" | undefined,
         editObject: {
             type: "Topic",
             text: "",
@@ -165,6 +169,23 @@ const model = reactive({
         valid: false
     }
 });
+
+const i18n = provideTranslations([
+    "mir.editor.subject.search",
+    "mir.editor.subject.search.modal.title",
+    "mir.editor.subject.search.modal.close",
+    "mir.editor.subject.custom.modal.title",
+    "mir.editor.subject.custom.modal.type.Topic",
+    "mir.editor.subject.custom.modal.type.Geographic",
+    "mir.editor.subject.custom.modal.type.Institution",
+    "mir.editor.subject.custom.modal.type.Person",
+    "mir.editor.subject.custom.modal.type.Family",
+    "mir.editor.subject.custom.modal.type.Conference",
+    "mir.editor.subject.custom.modal.type.TitleInfo",
+    "mir.editor.subject.custom.modal.type.Cartographics",
+    "mir.editor.subject.custom.modal.close",
+    "mir.editor.subject.custom.modal.add",
+]);
 
 const searchDialog = ref<HTMLElement | null>(null);
 
@@ -190,12 +211,6 @@ onMounted(() => {
         model.searchOptions.searchPlace = model.settings.searchable.includes("Geographic") || model.settings.searchable.includes("*");
         model.searchOptions.searchTitle = model.settings.searchable.includes("TitleInfo") || model.settings.searchable.includes("*");
         model.searchOptions.searchTopic = model.settings.searchable.includes("Topic") || model.settings.searchable.includes("*");
-
-        model.custom.possibleTypes = possibleTypes.filter(t =>
-            model.settings?.editor.includes("*") ||
-            model.settings?.editor.includes(t as any));
-
-        model.custom.type = model.custom.possibleTypes[0] as any;
     }
 });
 const searchSubmitted = async (searchTerm: string) => {
@@ -212,6 +227,61 @@ const searchSubmitted = async (searchTerm: string) => {
     model.searching = false;
 }
 
+const searchEnabled = computed(()=>{
+   if(model.settings?.admin == "geographicPair"){
+        return model.subject?.children.length == undefined || model.subject?.children.filter(child=>child.type=="Geographic").length == 0;
+    } else {
+       if(model.settings?.admin === false){
+           return model.subject?.children.length==0
+       } else {
+           return true;
+       }
+   }
+});
+
+const possibleTypeList = computed(() => {
+    if(model.settings?.admin === "geographicPair"){
+        if(model.subject?.children.length == undefined || model.subject?.children.length > 1){
+            return [];
+        } else {
+            const geographicPresent = model.subject.children.filter(c => {
+                if(c.type === "Geographic"){
+                    return true;
+                }
+            }).length == 1;
+            const cartographicsPresent = model.subject.children.filter(c => {
+                if(c.type === "Cartographics"){
+                    return true;
+                }
+            }).length == 1;
+            if(geographicPresent && cartographicsPresent){
+                return [];
+            } else if(geographicPresent){
+                return ["Cartographics"];
+            } else if(cartographicsPresent){
+                return ["Geographic"];
+            } else {
+                return ["Geographic", "Cartographics"];
+            }
+        }
+    } else {
+        if(model.settings?.admin === false && (model.subject == undefined || model.subject?.children.length > 0)){
+            return [];
+        }
+        return possibleTypes.filter(t => {
+            return model.settings?.editor.includes("*") ||
+                model.settings?.editor.includes(t as any);
+        });
+    }
+});
+
+
+watch(()=> possibleTypeList.value, (newValue) => {
+    if(model.custom.type == undefined || !newValue.includes(model.custom.type)){
+        model.custom.type = (newValue[0] as any) || undefined;
+    }
+}, {deep: true});
+
 const openSearchSettings = () => {
     model.searchOptionsVisible = !model.searchOptionsVisible;
 }
@@ -225,10 +295,7 @@ const resultSelected = (result: SearchResult) => {
 const addCustom = () => {
     const jq = (window as any).$;
     jq(customDialog.value).modal("show");
-
-
 }
-
 
 watch(()=> model.custom.type, (newType)=> {
     switch (newType){
@@ -299,7 +366,7 @@ watch(()=> model.custom.type, (newType)=> {
                 displayLabel: "",
             } as TitleInfo;
             break;
-        case "Cartographic":
+        case "Cartographics":
             model.custom.editObject = {
                 type: "Cartographics",
                 scale: [],
@@ -307,6 +374,8 @@ watch(()=> model.custom.type, (newType)=> {
                 coordinates: []
             } as Cartographics;
             break;
+        default:
+            console.log("Unknown type " + model.custom.type);
     }
 
 });

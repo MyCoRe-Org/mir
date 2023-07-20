@@ -1,4 +1,5 @@
 <template>
+    <!--
         <div class="row">
             <div class="col-3">
                 <label :for="id+'titleType'">Typ</label>
@@ -23,32 +24,32 @@
                                  @removeAuthority="removeLink" />
             </div>
         </div>
-
+    -->
 
         <array-repeater v-model="titleInfo.title" :default-content="''">
             <template #label="content">
-                <label :for="titleInfo.title.length == 0 ? null : `${id}id${content.index}`">Titel</label>
+                <label :for="titleInfo.title.length == 0 ? null : `${id}id${content.index}`">{{ i18n["mir.editor.subject.titleInfo.editor.title"] }}</label>
             </template>
             <template #displayContent="content">
                 <input :id="`${id}id${content.index}`"
                     v-model.trim.lazy="titleInfo.title[content.index]"
                     :class="'form-control form-control-sm' + validClass(titleInfo.title[content.index])">
                 <div class="invalid-feedback">
-                    Please provide a title.
+                    {{ i18n["mir.editor.subject.titleInfo.editor.invalid.title"] }}
                 </div>
             </template>
         </array-repeater>
 
     <array-repeater v-model="titleInfo.subTitle" :default-content="''">
         <template #label="content">
-            <label :for="titleInfo.subTitle.length == 0 ? null : `${id}id${content.index}`">Untertitel</label>
+            <label :for="titleInfo.subTitle.length == 0 ? null : `${id}id${content.index}`">{{ i18n["mir.editor.subject.titleInfo.editor.subtitle"] }}</label>
         </template>
         <template #displayContent="content">
               <input :id="`${id}id${content.index}`"
                            v-model.trim.lazy="titleInfo.subTitle[content.index]"
                            :class="'form-control form-control-sm' + validClass(titleInfo.subTitle[content.index])">
             <div class="invalid-feedback">
-                Please provide a subtitle.
+                {{ i18n["mir.editor.subject.titleInfo.editor.invalid.subtitle"] }}
             </div>
         </template>
     </array-repeater>
@@ -56,28 +57,28 @@
 
     <array-repeater v-model="titleInfo.partNumber" :default-content="''">
         <template #label="content">
-            <label :for="titleInfo.partNumber.length == 0 ? null :` ${id}id${content.index}`">Teilnummer</label>
+            <label :for="titleInfo.partNumber.length == 0 ? null :` ${id}id${content.index}`">{{ i18n["mir.editor.subject.titleInfo.editor.partNumber"] }}</label>
         </template>
         <template #displayContent="content">
               <input :id="`${id}id${content.index}`"
                            v-model.trim.lazy="titleInfo.partNumber[content.index]"
                            :class="'form-control form-control-sm' + validClass(titleInfo.partNumber[content.index])">
             <div class="invalid-feedback">
-                Please provide a part number.
+                {{ i18n["mir.editor.subject.titleInfo.editor.invalid.partNumber"] }}
             </div>
         </template>
     </array-repeater>
 
     <array-repeater v-model="titleInfo.partName" :default-content="''">
         <template #label="content">
-            <label :for="titleInfo.partName.length == 0 ? null: ` ${id}id${content.index}`">Teilname</label>
+            <label :for="titleInfo.partName.length == 0 ? null: ` ${id}id${content.index}`">{{ i18n["mir.editor.subject.titleInfo.editor.partName"] }} </label>
         </template>
         <template #displayContent="content">
             <input :id="`${id}id${content.index}`"
                    v-model.trim.lazy="titleInfo.partName[content.index]"
                    :class="'form-control form-control-sm' + validClass(titleInfo.partName[content.index])">
             <div class="invalid-feedback">
-                Please provide a part name.
+                {{ i18n["mir.editor.subject.titleInfo.editor.invalid.partName"] }}
             </div>
         </template>
     </array-repeater>
@@ -90,7 +91,7 @@ import {defineEmits, defineProps, watch} from "vue";
 import ArrayRepeater from "@/components/editor/array-repeater.vue";
 import {TitleInfo} from "@/api/Subject";
 import {useVModel} from "@vueuse/core";
-import AuthorityBadge from "@/components/display/authority-badge.vue";
+import {provideTranslations} from "@/api/I18N";
 
 const emit = defineEmits(['update:modelValue', "invalid:data", "valid:data"]);
 
@@ -111,6 +112,18 @@ watch(titleInfo, (value) => {
         emit("invalid:data", value);
     }
 }, {deep: true});
+
+const i18n = provideTranslations([
+    "mir.editor.subject.titleInfo.editor.title",
+    "mir.editor.subject.titleInfo.editor.invalid.title",
+    "mir.editor.subject.titleInfo.editor.subtitle",
+    "mir.editor.subject.titleInfo.editor.invalid.subtitle",
+    "mir.editor.subject.titleInfo.editor.partNumber",
+    "mir.editor.subject.titleInfo.editor.invalid.partNumber",
+    "mir.editor.subject.titleInfo.editor.partName",
+    "mir.editor.subject.titleInfo.editor.invalid.partName",
+
+]);
 
 function allValid(titleInfo_: TitleInfo = titleInfo.value) {
     return titleInfo_.title.filter((t) => !valid(t)).length == 0 &&

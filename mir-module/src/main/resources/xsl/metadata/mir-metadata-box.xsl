@@ -223,79 +223,257 @@
               <xsl:with-param name="nodes" select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:originInfo[not(@eventType) or @eventType='publication']/mods:publisher" />
             </xsl:call-template>
             <xsl:call-template name="printMetaDate.mods">
-              <xsl:with-param name="nodes" select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:originInfo[@eventType='creation']/mods:publisher" />
-              <xsl:with-param name="label" select="i18n:translate('component.mods.metaData.dictionary.publisher.creation')" />
+                <xsl:with-param name="nodes"
+                                select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:originInfo[@eventType='creation']/mods:publisher"/>
+                <xsl:with-param name="label"
+                                select="i18n:translate('component.mods.metaData.dictionary.publisher.creation')"/>
             </xsl:call-template>
-            <!-- <xsl:for-each select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:subject">  -->
+            <!--
               <xsl:call-template name="printMetaDate.mods">
                 <xsl:with-param name="nodes" select="//mods:mods/mods:subject/mods:topic" />
                 <xsl:with-param name="label" select="i18n:translate('component.mods.metaData.dictionary.subject')" />
                 <xsl:with-param name="sep" select="'; '" />
                 <xsl:with-param name="property" select="'keyword'" />
               </xsl:call-template>
-            <!-- </xsl:for-each>  -->
-            <xsl:call-template name="printMetaDate.mods">
-              <xsl:with-param name="nodes" select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:subject/mods:geographic" />
-            </xsl:call-template>
-            <xsl:for-each select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:subject/mods:cartographics/mods:coordinates">
-              <tr>
-                <td class="metaname" valign="top">
-                  <xsl:value-of select="i18n:translate('mir.cartographics.coordinates')" />
-                </td>
-                <td class="metavalue">
-                  <xsl:choose>
-                    <xsl:when test="contains(., ', ')">
-                      <div id="displayCoords" data-fullcoords="{.}">
-                        <xsl:value-of select="substring-before(., ', ')" />
-                        <a id="flipCoords" role="button">...</a>
-                      </div>
-                    </xsl:when>
-                    <xsl:otherwise>
-                      <xsl:value-of select="." />
-                    </xsl:otherwise>
-                  </xsl:choose>
-                  <div>
-                    <button type="button" class="show_openstreetmap btn btn-secondary" data-coords="{.}" >
-                      OpenStreetMap
-                    </button>
-                  </div>
-                  <div class="openstreetmap-container collapse">
-                    <div class="map"></div>
-                  </div>
-                </td>
-              </tr>
-            </xsl:for-each>
-            <xsl:apply-templates mode="present" select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:classification[not(@generator)]" />
-            <xsl:apply-templates mode="present" select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:part/mods:extent" />
-            <xsl:apply-templates mode="present" select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:location/mods:url" />
-            <xsl:call-template name="printMetaDate.mods">
-              <xsl:with-param name="nodes" select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:location/mods:physicalLocation[not(starts-with(@xlink:href, '#'))]" />
-            </xsl:call-template>
-            <xsl:call-template name="printMetaDate.mods">
-              <xsl:with-param name="nodes" select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:location/mods:shelfLocator" />
-              <xsl:with-param name="label" select="i18n:translate('mir.shelfmark')" />
-            </xsl:call-template>
-            <xsl:apply-templates mode="present" select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:name[@type='corporate'][@ID or @authorityURI=$institutesURI]" />
-            <xsl:apply-templates mode="present" select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:extension[@displayLabel='characteristics']" />
-            <xsl:for-each select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:note">
-              <xsl:variable name="myURI" select="concat('classification:metadata:0:children:noteTypes:',mcrxsl:regexp(@type,' ', '_'))" />
-              <xsl:variable name="x-access">
-                <xsl:value-of select="document($myURI)//label[@xml:lang='x-access']/@text"/>
-              </xsl:variable>
-              <xsl:variable name="noteLabel">
-                <xsl:value-of select="document($myURI)//category/label[@xml:lang=$CurrentLang]/@text"/>
-              </xsl:variable>
-              <xsl:if test="contains($x-access, 'guest')">
+           -->
+            <xsl:for-each
+                    select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:subject[(count(mods:geographic)&gt;0 or count(mods:cartographics)&gt;0) and (count(mods:geographic) + count(mods:cartographics) = count(mods:*))]">
                 <xsl:call-template name="printMetaDate.mods">
-                  <xsl:with-param select="." name="nodes" />
-                  <xsl:with-param select="$noteLabel" name="label"/>
+                    <xsl:with-param name="nodes" select="mods:geographic"/>
                 </xsl:call-template>
-              </xsl:if>
+                <xsl:for-each select="mods:cartographics/mods:coordinates">
+                    <tr>
+                        <td class="metaname" valign="top">
+                            <xsl:value-of select="i18n:translate('mir.cartographics.coordinates')"/>
+                        </td>
+                        <td class="metavalue">
+                            <xsl:call-template name="displayCoordinates"/>
+                        </td>
+                    </tr>
+                </xsl:for-each>
             </xsl:for-each>
-          </table>
+
+
+            <xsl:if test="count(mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:subject[not(count(mods:geographic)&gt;0 or count(mods:cartographics)&gt;0 and (count(mods:geographic) + count(mods:cartographics) = count(mods:*)))])&gt;1">
+                <tr>
+                    <td class="metaname" valign="top">
+                        <xsl:value-of select="concat(i18n:translate('component.mods.metaData.dictionary.subject'),':')"/>
+                    </td>
+                    <td class="metavalue">
+                        <xsl:for-each
+                                select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:subject[not(count(mods:geographic)&gt;0 or count(mods:cartographics)&gt;0 and (count(mods:geographic) + count(mods:cartographics) = count(mods:*)))]">
+                            <ol class="topic-list">
+                                <xsl:for-each select="mods:*">
+                                    <li class="topic-element">
+                                        <xsl:apply-templates select="." mode="displaySubject"/>
+                                    </li>
+                                </xsl:for-each>
+                            </ol>
+                            <xsl:if test="position()!=last()">
+                                <hr/>
+                            </xsl:if>
+                        </xsl:for-each>
+                    </td>
+                </tr>
+            </xsl:if>
+
+            <xsl:apply-templates mode="present"
+                                 select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:classification[not(@generator)]"/>
+            <xsl:apply-templates mode="present"
+                                 select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:part/mods:extent"/>
+            <xsl:apply-templates mode="present"
+                                 select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:location/mods:url"/>
+            <xsl:call-template name="printMetaDate.mods">
+                <xsl:with-param name="nodes"
+                                select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:location/mods:physicalLocation[not(starts-with(@xlink:href, '#'))]"/>
+            </xsl:call-template>
+            <xsl:call-template name="printMetaDate.mods">
+                <xsl:with-param name="nodes"
+                                select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:location/mods:shelfLocator"/>
+                <xsl:with-param name="label" select="i18n:translate('mir.shelfmark')"/>
+            </xsl:call-template>
+            <xsl:apply-templates mode="present"
+                                 select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:name[@type='corporate'][@ID or @authorityURI=$institutesURI]"/>
+            <xsl:apply-templates mode="present"
+                                 select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:extension[@displayLabel='characteristics']"/>
+            <xsl:for-each select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:note">
+                <xsl:variable name="myURI"
+                              select="concat('classification:metadata:0:children:noteTypes:',mcrxsl:regexp(@type,' ', '_'))"/>
+                <xsl:variable name="x-access">
+                    <xsl:value-of select="document($myURI)//label[@xml:lang='x-access']/@text"/>
+                </xsl:variable>
+                <xsl:variable name="noteLabel">
+                    <xsl:value-of select="document($myURI)//category/label[@xml:lang=$CurrentLang]/@text"/>
+                </xsl:variable>
+                <xsl:if test="contains($x-access, 'guest')">
+                    <xsl:call-template name="printMetaDate.mods">
+                        <xsl:with-param select="." name="nodes"/>
+                        <xsl:with-param select="$noteLabel" name="label"/>
+                    </xsl:call-template>
+                </xsl:if>
+            </xsl:for-each>
+        </table>
 
     </div>
-    <xsl:apply-imports />
+      <xsl:apply-imports/>
   </xsl:template>
+
+    <xsl:template name="displayCoordinates">
+        <xsl:choose>
+            <xsl:when test="contains(., ',')">
+                <span class="displayCoords" data-fullcoords="{.}">
+                    <xsl:value-of select="substring-before(., ',')"/>
+                    <a class="flipCoords" role="button">...</a>
+                </span>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:value-of select="."/>
+            </xsl:otherwise>
+        </xsl:choose>
+        <span>
+            <button type="button" class="show_openstreetmap btn btn-secondary btn-inline btn-sm" data-coords="{.}">
+                OpenStreetMap
+            </button>
+        </span>
+        <span class="openstreetmap-container collapse">
+            <div class="map"> </div>
+        </span>
+    </xsl:template>
+
+    <xsl:template match="mods:geographic" mode="displaySubject">
+        <i class="fas fa-map-location-dot mr-2"> </i>
+        <xsl:call-template name="authorityLink">
+            <xsl:with-param name="content">
+                <xsl:value-of select="."/>
+            </xsl:with-param>
+        </xsl:call-template>
+    </xsl:template>
+
+    <xsl:template match="mods:cartographics" mode="displaySubject">
+        <i class="fas fa-map-marker-alt mr-2"> </i>
+        <xsl:call-template name="authorityLink">
+                <xsl:with-param name="content">
+                    <xsl:call-template name="displayCoordinates"/>
+                </xsl:with-param>
+        </xsl:call-template>
+    </xsl:template>
+
+    <xsl:template match="mods:topic" mode="displaySubject">
+        <i class="fas fa-tag mr-2"> </i>
+        <xsl:call-template name="authorityLink">
+            <xsl:with-param name="content">
+                <xsl:value-of select="."/>
+            </xsl:with-param>
+        </xsl:call-template>
+    </xsl:template>
+
+    <xsl:template match="mods:name" mode="displaySubject">
+        <xsl:choose>
+            <xsl:when test="@type='family'">
+                <i class="fas fa-people-roof mr-2"> </i>
+            </xsl:when>
+            <xsl:when test="@type='personal'">
+                <i class="fas fa-person mr-2"> </i>
+            </xsl:when>
+            <xsl:when test="@type='corporate'">
+                <i class="fas fa-building mr-2"> </i>
+            </xsl:when>
+            <xsl:when test="@type='conference'">
+                <i class="fas fa-people-line mr-2"> </i>
+            </xsl:when>
+        </xsl:choose>
+        <xsl:call-template name="authorityLink">
+            <xsl:with-param name="content">
+                <xsl:value-of select="mods:displayForm"/>
+            </xsl:with-param>
+        </xsl:call-template>
+
+
+        <xsl:variable name="nameIds">
+            <xsl:call-template name="getNameIdentifiers">
+                <xsl:with-param name="entity" select="."/>
+            </xsl:call-template>
+        </xsl:variable>
+        <xsl:variable name="nameIdentifiers" select="xalan:nodeset($nameIds)/nameIdentifier"/>
+        <xsl:variable name="affiliation" select="mods:affiliation/text()" />
+
+        <xsl:if test="count($nameIdentifiers) &gt; 0 or string-length($affiliation) &gt; 0">
+            <xsl:call-template name="displayInfoIconWithBox">
+                <xsl:with-param name="boxContent">
+                    <dl>
+                        <xsl:if test="count($nameIdentifiers) &gt; 0">
+                            <xsl:for-each select="$nameIdentifiers">
+                                <dt>
+                                    <xsl:value-of select="@label"/>
+                                </dt>
+                                <dd>
+                                    <a href="{@uri}{@id}">
+                                        <xsl:value-of select="@id"/>
+                                    </a>
+                                </dd>
+                            </xsl:for-each>
+                        </xsl:if>
+                        <xsl:if test="string-length($affiliation) &gt; 0">
+                            <dt>
+                                <xsl:value-of select="i18n:translate('mir.affiliation')"/>
+                            </dt>
+                            <dd>
+                                <xsl:value-of select="$affiliation"/>
+                            </dd>
+                        </xsl:if>
+                    </dl>
+                </xsl:with-param>
+            </xsl:call-template>
+        </xsl:if>
+
+    </xsl:template>
+
+    <xsl:template match="mods:titleInfo" mode="displaySubject">
+        <i class="fa fa-newspaper mr-2"></i>
+        <xsl:call-template name="authorityLink">
+            <xsl:with-param name="content">
+                <xsl:value-of select="mods:title"/>
+                <xsl:if test="mods:subTitle">
+                    <xsl:text>: </xsl:text>
+                    <xsl:value-of select="mods:subTitle"/>
+                </xsl:if>
+                <xsl:if test="mods:partNumber">
+                    <xsl:text> </xsl:text>
+                    <xsl:value-of select="mods:partNumber"/>
+                </xsl:if>
+                <xsl:if test="mods:partName">
+                    <xsl:text> </xsl:text>
+                    <xsl:value-of select="mods:partName"/>
+                </xsl:if>
+            </xsl:with-param>
+        </xsl:call-template>
+    </xsl:template>
+
+    <xsl:template name="authorityLink">
+        <xsl:param name="content" />
+        <xsl:choose>
+            <xsl:when test="(@authority or @authorityURI) and @valueURI">
+                <a href="{@valueURI}" target="_blank">
+                    <xsl:copy-of select="$content" />
+                </a>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:copy-of select="$content" />
+            </xsl:otherwise>
+        </xsl:choose>
+
+    </xsl:template>
+
+    <xsl:template name="displayInfoIconWithBox">
+        <xsl:param name="boxContent" />
+        <xsl:variable name="boxId" select="generate-id(.)"/>
+        <div id="{$boxId}-content" class="d-none">
+            <xsl:copy-of select="$boxContent"/>
+        </div>
+
+        <a id="{$boxId}" class="boxPopover" title="{i18n:translate('mir.details.popover.title')}">
+            <span class="fa fa-info-circle"/>
+        </a>
+    </xsl:template>
 
 </xsl:stylesheet>

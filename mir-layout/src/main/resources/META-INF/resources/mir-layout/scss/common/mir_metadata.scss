@@ -41,6 +41,21 @@
   }
 }
 
+ol.topic-list {
+  list-style: none;
+  display: inline;
+  padding: 0px;
+}
+
+li.topic-element {
+  &:not(:last-child):after {
+    content: "/";
+    margin-right: 5px;
+    margin-left: 5px;
+  }
+  display: inline;
+}
+
 .workflow-box {
   padding: 0.75rem 1rem;;
   margin-bottom: 1rem;

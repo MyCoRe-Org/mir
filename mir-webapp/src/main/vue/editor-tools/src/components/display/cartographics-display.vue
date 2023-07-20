@@ -3,20 +3,23 @@
         <span class="fas fa-map-marker-alt mr-2"></span>
         <div v-if="$props.cartographics.coordinates?.length>0" class="btn-group btn-group-sm" role="group">
             <button :class="`btn btn-sm btn-secondary${model.showMap ? ' active' : ''}`"
-                    @click.prevent="model.showMap = !model.showMap">Zeige Karte
+                    @click.prevent="model.showMap = !model.showMap">
+                {{ i18n["mir.editor.subject.cartographics.display.showMap"] }}
             </button>
 
 
             <button :class="`btn btn-sm btn-secondary${!model.hideSecondaryCoords ? ' active' : ''}`"
-                    @click.prevent="model.hideSecondaryCoords = !model.hideSecondaryCoords">Zeige alle Koordinaten
+                    @click.prevent="model.hideSecondaryCoords = !model.hideSecondaryCoords">
+                {{ i18n["mir.editor.subject.cartographics.display.showAllCoordinates"] }}
             </button>
         </div>
-        <span v-if="props.cartographics.projection?.length>0">{{ props.cartographics.projection.join(",") }}</span>
-        <span v-if="props.cartographics.scale?.length>0">
-            Maßstab:
+        <div v-if="props.cartographics.projection?.length>0">{{ props.cartographics.projection.join(",") }}</div>
+        <div v-if="props.cartographics.scale?.length>0">
+            {{ i18n["mir.editor.subject.cartographics.display.scale"] }}:
             {{ props.cartographics.scale.join(",") }}
-        </span>
+        </div>
         <div v-if="props.cartographics.coordinates">
+            {{ i18n["mir.editor.subject.cartographics.display.coordinates"] }}:
             <template v-if="props.cartographics.coordinates && model.hideSecondaryCoords">
                 {{ shrinkedCoords }}
 
@@ -68,9 +71,10 @@ import {transform} from 'ol/proj';
 import {computed, defineProps, nextTick, reactive, ref, watch} from "vue";
 import {Cartographics} from "@/api/Subject";
 import {View} from "ol";
-import {boundingExtent} from 'ol/extent';
+import {boundingExtent, isEmpty} from 'ol/extent';
 
 import * as ol  from "vue3-openlayers";
+import {provideTranslations} from "@/api/I18N";
 const {Map, MapControls, Layers, Sources, Styles, Geometries, Interactions, Animations} = ol;
 const {OlMap, OlView, OlFeature} =Map;
 const {OlStyle, OlStyleStroke} = Styles;
@@ -93,13 +97,22 @@ watch(() => model.showMap, (zoom) => {
             const coord = convertedTransformedCoords.value;
             const flatCoord = coord.flat(1)
             const extent = boundingExtent(flatCoord);
-            (view.value as View).fit(extent, {});
+            if(!isEmpty(extent)){
+                (view.value as View).fit(extent, {});
+            }
         }
     });
 }, {immediate: false})
 
 
 const props = defineProps<{ cartographics: Cartographics }>();
+
+const i18n = provideTranslations([
+    "mir.editor.subject.cartographics.display.coordinates",
+    "mir.editor.subject.cartographics.display.scale",
+    "mir.editor.subject.cartographics.display.showMap",
+    "mir.editor.subject.cartographics.display.showAllCoordinates",
+]);
 
 const centerOfCoords = computed(()=>{
    const bboxes = props.cartographics.coordinates?.map(coordPairs => {

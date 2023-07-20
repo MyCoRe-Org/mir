@@ -38,7 +38,7 @@
     <mods:subjectXML>
       <xsl:attribute name="geo">
         <xsl:choose>
-          <xsl:when test="(count(mods:cartographics) &lt; 2 or count(mods:geographic) &lt; 2) and $geoCount &gt; 0 and $geoCount = count(mods:*)">true</xsl:when>
+          <xsl:when test="$geoCount &gt; 0 and $geoCount = count(mods:*)">true</xsl:when>
           <xsl:otherwise>false</xsl:otherwise>
         </xsl:choose>
       </xsl:attribute>

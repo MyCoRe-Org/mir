@@ -24,16 +24,16 @@
                     <div class="col-2 col-md-3">
                         <repeater
                                 :downEnabled="i < model.subject.children.length - 1"
-                                :downVisible="!props.settings.simple && !simpleAndMultipleChilds"
+                                :downVisible="props.settings.admin && !notAdminAndMultipleChilds"
                                 :editEnabled="true"
                                 :editPressed="model.editingObject == subjectChild"
-                                :editVisible="(!props.settings.simple || props.settings.simple=='geographicPair') && !simpleAndMultipleChilds"
+                                :editVisible="props.settings.admin=='geographicPair' || !notAdminAndMultipleChilds"
                                 :minusEnabled="true"
-                                :minusVisible="(!props.settings.simple || props.settings.simple=='geographicPair') && !simpleAndMultipleChilds "
+                                :minusVisible="props.settings.admin=='geographicPair' || !notAdminAndMultipleChilds"
                                 :plusEnabled="false"
                                 :plusVisible="false"
-                                :upEnabled="i > 0 && !!simpleAndMultipleChilds"
-                                :upVisible="!props.settings.simple"
+                                :upEnabled="i > 0 && !notAdminAndMultipleChilds"
+                                :upVisible="props.settings.admin"
                                 v-on:downClicked="moveChildDown(subjectChild,i)"
                                 v-on:editClicked="editChild(subjectChild,i)"
                                 v-on:minusClicked="removeChild(subjectChild,i)"
@@ -146,8 +146,8 @@ watch(() => model.subject, (newValue) => {
     deep: true
 });
 
-const simpleAndMultipleChilds = computed(() => {
-   return props.settings.simple===true && model.subject.children.length > 1
+const notAdminAndMultipleChilds = computed(() => {
+   return props.settings.admin===false && model.subject.children.length > 1
 });
 
 const removeChild = (subjectChild: SubjectChild<any>, i: number) => {

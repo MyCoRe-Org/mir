@@ -1871,8 +1871,8 @@
         </div>
         <mir:help-pmud help-text="{i18n:mir.help.subject}" pmud="true"/>
       </div>
+      <xed:validate class="org.mycore.mir.validation.MIRValidationHelper" method="validateSubjectRequired" display="global" i18n="mir.validation.subject.complex.required" />
     </xed:repeat>
-    <xed:validate xpath=".//mods:subjectXML[not(@geo='true')]" class="org.mycore.mir.validation.MIRValidationHelper" method="validateSubjectRequired" display="global" i18n="mir.validation.subject.complex.required" />
   </xed:template>
 
   <xed:template id="subject.admin">
@@ -2296,7 +2296,7 @@
 
   <xed:template id="cleanup-rules">
     <xed:cleanup-rule xpath="//mods:*"
-      relevant-if="(string-length(normalize-space(text())) &gt; 0) or mods:* or cmd:* or (string-length(@xlink:href) &gt; 0) or (string-length(@In) &gt; 0) or (string-length(@mcr:categId) &gt; 0) or (string-length(@order) &gt; 0)" />
+      relevant-if="(string-length(normalize-space(text())) &gt; 0) or mods:* or cmd:* or (string-length(@xlink:href) &gt; 0) or (string-length(@valueURIxEditor) &gt; 0) or (string-length(@mcr:categId) &gt; 0) or (string-length(@order) &gt; 0)" />
     <xed:cleanup-rule xpath="//mods:name" relevant-if="(mods:namePart|mods:displayForm) or (string-length(@valueURI) &gt; 0) or (string-length(@valueURIxEditor) &gt; 0)" />
     <xed:cleanup-rule xpath="//mods:name/@authorityURI" relevant-if="(string-length(../@valueURI) &gt; 0) or (string-length(../@valueURIxEditor) &gt; 0)" />
     <xed:cleanup-rule xpath="//mods:roleTerm" relevant-if="(string-length(@valueURI) &gt; 0) or (string-length(@valueURIxEditor) &gt; 0) or (string-length(@authority) &gt; 0)" />
@@ -2317,7 +2317,6 @@
     <xed:cleanup-rule xpath="//mods:dateIssued" relevant-if="@encoding='w3cdtf' and string-length(text()) &gt; 0" />
     <xed:cleanup-rule xpath="//mods:relatedItem/mods:location|//mods:relatedItem/mods:genre" relevant-if="string-length(../@xlink:href)=0" />
     <xed:cleanup-rule xpath="//mods:relatedItem/mods:location" relevant-if="mods:*" />
-    <xed:cleanup-rule xpath="//mods:relatedItem/mods:genre[@type='intern']" relevant-if="string-length(@valueURIxEditor) &gt; 0" />
   </xed:template>
 
   <xed:template id="javascript">

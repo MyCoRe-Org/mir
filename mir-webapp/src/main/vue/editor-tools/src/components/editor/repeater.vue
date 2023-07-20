@@ -1,30 +1,35 @@
 <template>
     <div class="btn-group btn-group-sm" role="group">
         <button v-if="editVisible"
+                :title="props.editTitle"
                 :class="`btn btn-sm btn-secondary${editEnabled? '':' disabled'}${editPressed? ' active':''}`"
                 type="button"
                 v-on:click.prevent="editClicked()">
             <i class="fas fa-edit"/>
         </button>
         <button v-if="plusVisible"
+                :title="props.plusTitle"
                 :class="`btn btn-sm btn-secondary${plusEnabled? '':' disabled'}`"
                 type="button"
                 v-on:click.prevent="plusClicked()">
             <i class="fas fa-plus"/>
         </button>
         <button v-if="minusVisible"
+                :title="props.minusTitle"
                 :class="`btn btn-sm btn-secondary${minusEnabled? '':' disabled'}`"
                 type="button"
                 v-on:click.prevent="minusClicked()">
             <i class="fas fa-minus"/>
         </button>
         <button v-if="upVisible"
+                :title="props.upTitle"
                 :class="`btn btn-sm btn-secondary${upEnabled? '':' disabled'}`"
                 type="button"
                 v-on:click.prevent="upClicked()">
             <i class="fas fa-arrow-up"/>
         </button>
         <button v-if="downVisible"
+                :title="props.downTitle"
                 :class="`btn btn-sm btn-secondary${downEnabled? '':' disabled'}`"
                 type="button"
                 v-on:click.prevent="downClicked()">
@@ -47,6 +52,11 @@ interface Props {
     editEnabled: boolean,
     editVisible?: boolean
     editPressed?: boolean,
+    plusTitle?: string,
+    minusTitle?: string,
+    upTitle?: string,
+    downTitle?: string,
+    editTitle?: string
 }
 
 const props = withDefaults(defineProps<Props>(), {

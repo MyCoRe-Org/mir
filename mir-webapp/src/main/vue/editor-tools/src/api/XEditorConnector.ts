@@ -48,10 +48,10 @@ export interface EditorSettings {
     editor: ("Topic" | "Geographic" | "Institution" | "Person" | "Family" | "Conference" | "TitleInfo" | "Cartographic"|"*"|"")[],
 
     /**
-     * If true the editor only allows editing of one subelement. If the subject contains more than one subelement, the
+     * If false the editor only allows editing of one subelement. If the subject contains more than one subelement, the
      * editor is disabled. If the type is "geographicPair" the editor allows editing of two subelements.
      */
-    simple: boolean|"geographicPair",
+    admin: boolean|"geographicPair",
 
     /**
      * If true there must be at least one subelement. If the subject contains no subelements the editor will print
@@ -60,7 +60,7 @@ export interface EditorSettings {
     required: boolean|string[],
 }
 
-export const possibleTypes = ["Topic", "Geographic" , "Institution" , "Person" , "Family" , "Conference" , "TitleInfo" , "Cartographic"];
+export const possibleTypes = ["Topic", "Geographic" , "Institution" , "Person" , "Family" , "Conference" , "TitleInfo" , "Cartographics"];
 
 export const retrieveSettings = (root: HTMLElement): EditorSettings => {
     const input = root.parentElement;
@@ -72,15 +72,15 @@ export const retrieveSettings = (root: HTMLElement): EditorSettings => {
 
         const editor = input.getAttribute("data-editor") || "*";
         const searchable = input.getAttribute("data-searchable") || "*";
-        const simpleStr = input.getAttribute("data-simple") || "false";
+        const adminStr = input.getAttribute("data-admin") || "false";
         const requiredStr= input.getAttribute("data-required") || "false";
 
-        if(simpleStr != "true" && simpleStr != "false" && simpleStr != "geographicPair"){
-            throw new Error(`Unknown value ${simpleStr} for data-simple. Expected true, false or geographicPair`);
-        } else if(simpleStr == "true" || simpleStr == "false") {
-            settings.simple = simpleStr == "true";
+        if(adminStr != "true" && adminStr != "false" && adminStr != "geographicPair"){
+            throw new Error(`Unknown value ${adminStr} for data-simple. Expected true, false or geographicPair`);
+        } else if(adminStr == "true" || adminStr == "false") {
+            settings.admin = adminStr === "true";
         } else {
-            settings.simple = "geographicPair";
+            settings.admin = "geographicPair";
         }
 
         if(requiredStr == "true" || requiredStr == "false") {
