@@ -1,5 +1,6 @@
 <template>
     <select class="form-control form-control-sm" v-model="model.value">
+        <option v-if="props.emptyLabel" :value="undefined">{{ props.emptyLabel }}</option>
         <option v-for="option in model.options" :value="option.value">{{ option.label }}</option>
     </select>
 </template>
@@ -12,6 +13,7 @@ import {defineProps, defineEmits, watch, computed, reactive, onMounted} from "vu
 const props = defineProps<{
     url: string;
     modelValue: string;
+    emptyLabel?: string;
 }>()
 
 const model = reactive({

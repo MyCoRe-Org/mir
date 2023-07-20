@@ -26,6 +26,18 @@
         </div>
     -->
 
+        <div class="row mt-2">
+            <div class="col-3">
+                <label :for="id+'language'">{{ i18n["mir.editor.subject.editor.language"] }}</label>
+            </div>
+
+            <div class="col-7">
+                <classification-select v-model="titleInfo.lang"
+                                       :empty-label="i18n['mir.editor.subject.editor.language.choose']"
+                                       :url="`${webApplicationBaseURL}api/v2/classifications/rfc5646`"/>
+            </div>
+        </div>
+
         <array-repeater v-model="titleInfo.title" :default-content="''">
             <template #label="content">
                 <label :for="titleInfo.title.length == 0 ? null : `${id}id${content.index}`">{{ i18n["mir.editor.subject.titleInfo.editor.title"] }}</label>
@@ -92,6 +104,7 @@ import ArrayRepeater from "@/components/editor/array-repeater.vue";
 import {TitleInfo} from "@/api/Subject";
 import {useVModel} from "@vueuse/core";
 import {provideTranslations} from "@/api/I18N";
+import ClassificationSelect from "@/components/editor/classification-select.vue";
 
 const emit = defineEmits(['update:modelValue', "invalid:data", "valid:data"]);
 
@@ -122,8 +135,11 @@ const i18n = provideTranslations([
     "mir.editor.subject.titleInfo.editor.invalid.partNumber",
     "mir.editor.subject.titleInfo.editor.partName",
     "mir.editor.subject.titleInfo.editor.invalid.partName",
-
+    "mir.editor.subject.editor.language",
+    "mir.editor.subject.editor.language.choose",
 ]);
+
+const webApplicationBaseURL = (window as any)['webApplicationBaseURL'];
 
 function allValid(titleInfo_: TitleInfo = titleInfo.value) {
     return titleInfo_.title.filter((t) => !valid(t)).length == 0 &&

@@ -24,7 +24,8 @@ export const parseTopic = (child: Element): Topic => {
         text: child.textContent || "",
         authority: child.getAttribute("authority") || undefined,
         authorityURI: child.getAttribute("authorityURI") || undefined,
-        valueURI: child.getAttribute("valueURI") || undefined
+        valueURI: child.getAttribute("valueURI") || undefined,
+        lang: child.getAttributeNS("http://www.w3.org/XML/1998/namespace", "lang") || undefined
     }
 };
 
@@ -35,7 +36,8 @@ export const parseGeographic = (child: Element): Geographic => {
         text: child.textContent || "",
         authority: child.getAttribute("authority") || undefined,
         authorityURI: child.getAttribute("authorityURI") || undefined,
-        valueURI: child.getAttribute("valueURI") || undefined
+        valueURI: child.getAttribute("valueURI") || undefined,
+        lang: child.getAttributeNS("http://www.w3.org/XML/1998/namespace", "lang") || undefined
     }
 };
 
@@ -51,7 +53,8 @@ export const parseTemporal = (child: Element): Temporal => {
         keyDate: child.getAttribute("keyDate") === "yes" || undefined,
         qualifier: child.getAttribute("qualifier") as "approximate" | "inferred" | "questionable" || undefined,
         calendar: child.getAttribute("calendar") || undefined,
-        encoding: child.getAttribute("encoding") || undefined
+        encoding: child.getAttribute("encoding") || undefined,
+        lang: child.getAttributeNS("http://www.w3.org/XML/1998/namespace", "lang") || undefined
     }
 };
 
@@ -154,6 +157,7 @@ export const parseName = (child: Element): Name => {
         authorityURI: child.getAttribute("authorityURI") || undefined,
         valueURI: child.getAttribute("valueURI") || undefined,
         nameType: child.getAttribute("type") as "personal" | "corporate" | "conference" | "family" || undefined,
+        lang: child.getAttributeNS("http://www.w3.org/XML/1998/namespace", "lang") || undefined,
     }
 };
 
@@ -166,6 +170,7 @@ export const parseGenre = (child: Element): Genre => {
         authorityURI: child.getAttribute("authorityURI") || undefined,
         valueURI: child.getAttribute("valueURI") || undefined,
         genreType: child.getAttribute("type") as "code" | "text" || undefined,
+        lang: child.getAttributeNS("http://www.w3.org/XML/1998/namespace", "lang") || undefined,
     }
 }
 

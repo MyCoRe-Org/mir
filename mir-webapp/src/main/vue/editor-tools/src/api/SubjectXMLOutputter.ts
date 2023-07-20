@@ -23,6 +23,9 @@ export const outputTopic = (topic: Topic): Element => {
     if (topic.valueURI) {
         topicElement.setAttribute("valueURI", topic.valueURI);
     }
+    if(topic.lang) {
+        topicElement.setAttributeNS("http://www.w3.org/XML/1998/namespace", "xml:lang", topic.lang);
+    }
     return topicElement;
 }
 
@@ -37,6 +40,9 @@ export const outputGeographic = (geographic: Geographic): Element => {
     }
     if (geographic.valueURI) {
         geographicElement.setAttribute("valueURI", geographic.valueURI);
+    }
+    if (geographic.lang) {
+        geographicElement.setAttributeNS("http://www.w3.org/XML/1998/namespace", "xml:lang", geographic.lang);
     }
 
     return geographicElement;
@@ -68,6 +74,9 @@ export const outputTemporal = (temporal: Temporal): Element => {
     }
     if (temporal.encoding) {
         temporalElement.setAttribute("encoding", temporal.encoding);
+    }
+    if (temporal.lang) {
+        temporalElement.setAttributeNS("http://www.w3.org/XML/1998/namespace", "xml:lang", temporal.lang);
     }
     return temporalElement;
 }
@@ -212,6 +221,10 @@ export const outputName = (name: Name): Element => {
         nameElement.appendChild(roleElement);
     }
 
+    if (name.lang) {
+        nameElement.setAttributeNS("http://www.w3.org/XML/1998/namespace", "xml:lang", name.lang);
+    }
+
     return nameElement;
 
 }
@@ -238,6 +251,10 @@ export const outputGenre = (genre: Genre): Element => {
 
     if (genre.genreType) {
         genreElement.setAttribute("type", genre.genreType);
+    }
+
+    if(genre.lang) {
+        genreElement.setAttributeNS("http://www.w3.org/XML/1998/namespace", "xml:lang", genre.lang);
     }
 
     return genreElement;

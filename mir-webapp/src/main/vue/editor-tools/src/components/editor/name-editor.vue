@@ -23,6 +23,18 @@
         </div>
     </div>
 
+    <div class="row mt-2">
+        <div class="col-3">
+            <label :for="id+'language'">{{ i18n["mir.editor.subject.editor.language"] }}</label>
+        </div>
+
+        <div class="col-7">
+            <classification-select v-model="name.lang"
+                                   :empty-label="i18n['mir.editor.subject.editor.language.choose']"
+                                   :url="`${webApplicationBaseURL}api/v2/classifications/rfc5646`"/>
+        </div>
+    </div>
+
     <array-repeater
         v-if="name.nameParts.length>0 || name.nameType=='personal' || name.nameType=='family'"
        v-model="name.nameParts" :default-content="{ type: 'given',text: '' }">
@@ -138,6 +150,8 @@ const i18n = provideTranslations([
     "mir.editor.subject.name.editor.invalid.identifier",
     "mir.editor.subject.name.editor.affiliation",
     "mir.editor.subject.name.editor.invalid.affiliation",
+    "mir.editor.subject.editor.language",
+    "mir.editor.subject.editor.language.choose",
 ])
 
 function allValid(name_: Name = name.value) {

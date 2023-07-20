@@ -21,6 +21,18 @@
                              @removeAuthority="removeLink" />
         </div>
     </div>
+
+    <div class="row mt-2">
+        <div class="col-3">
+            <label :for="id+'language'">{{ i18n["mir.editor.subject.editor.language"] }}</label>
+        </div>
+
+        <div class="col-7">
+            <classification-select v-model="topic.lang"
+                                   :empty-label="i18n['mir.editor.subject.editor.language.choose']"
+                                   :url="`${webApplicationBaseURL}api/v2/classifications/rfc5646`"/>
+        </div>
+    </div>
 </template>
 <script lang="ts" setup>
 
@@ -29,6 +41,7 @@ import {defineEmits, defineProps, reactive, watch} from "vue";
 import {Topic} from "@/api/Subject";
 import AuthorityBadge from "@/components/display/authority-badge.vue";
 import {useVModel} from "@vueuse/core";
+import ClassificationSelect from "@/components/editor/classification-select.vue";
 
 const emit = defineEmits(['update:modelValue', "invalid:data", "valid:data"])
 
@@ -39,6 +52,8 @@ const props = defineProps<{
 }>();
 
 const topic = useVModel(props, 'modelValue', emit);
+
+const webApplicationBaseURL = (window as any)['webApplicationBaseURL'];
 
 watch(topic, (value) => {
     if (valid(topic.value.text)) {
@@ -51,7 +66,8 @@ watch(topic, (value) => {
 const i18n = provideTranslations([
     "mir.editor.subject.topic.editor.topic",
     "mir.editor.subject.topic.editor.invalid.topic",
-
+    "mir.editor.subject.editor.language",
+    "mir.editor.subject.editor.language.choose",
 ]);
 
 const validClass = (value: string) => {

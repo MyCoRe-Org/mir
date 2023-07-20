@@ -7,6 +7,10 @@ export interface Authority {
     valueURI?: string;
 }
 
+export interface Language {
+    lang?: string;
+}
+
 export interface Subject extends Authority {
     children: Array<Topic | Geographic | Temporal | TitleInfo | Name | Genre | HierarchicalGeographic | Cartographics | GeographicCode | Occupation>;
 }
@@ -17,15 +21,15 @@ export interface SubjectChild<T extends string> {
     type: T;
 }
 
-export interface Topic extends Authority, SubjectChild<"Topic"> {
+export interface Topic extends Authority, Language, SubjectChild<"Topic"> {
     text: string;
 }
 
-export interface Geographic extends Authority, SubjectChild<"Geographic"> {
+export interface Geographic extends Authority, Language, SubjectChild<"Geographic"> {
     text: string;
 }
 
-export interface Temporal extends Authority, SubjectChild<"Temporal"> {
+export interface Temporal extends Authority, Language, SubjectChild<"Temporal"> {
     text: string;
     encoding?: string;
     point?: "start" | "end";
@@ -34,7 +38,7 @@ export interface Temporal extends Authority, SubjectChild<"Temporal"> {
     calendar?: string;
 }
 
-export interface TitleInfo extends Authority, SubjectChild<"TitleInfo"> {
+export interface TitleInfo extends Authority, Language, SubjectChild<"TitleInfo"> {
     title: string[];
     subTitle: string[];
     partNumber: string[];
@@ -42,7 +46,6 @@ export interface TitleInfo extends Authority, SubjectChild<"TitleInfo"> {
     nonSort: string[];
     displayLabel?: string;
     titleType?: string;
-    lang?: string;
 }
 
 export interface NameIdentifier {
@@ -50,7 +53,7 @@ export interface NameIdentifier {
     text: string;
 }
 
-export interface Name extends Authority, SubjectChild<"Name"> {
+export interface Name extends Authority, Language, SubjectChild<"Name"> {
     nameType?: "personal" | "corporate" | "conference" | "family";
     displayForm?: string;
     nameParts: NamePart[];
@@ -69,7 +72,7 @@ export interface NamePart {
     text: string;
 }
 
-export interface Genre extends Authority, SubjectChild<"Genre"> {
+export interface Genre extends Authority, Language, SubjectChild<"Genre"> {
     genreType?: string;
     text: string;
 }

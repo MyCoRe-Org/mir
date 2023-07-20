@@ -237,7 +237,7 @@
               </xsl:call-template>
            -->
             <xsl:for-each
-                    select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:subject[(count(mods:geographic)&gt;0 or count(mods:cartographics)&gt;0) and (count(mods:geographic) + count(mods:cartographics) = count(mods:*))]">
+                    select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:subject[(count(mods:geographic)&gt;0 or count(mods:cartographics)&gt;0) and (count(mods:geographic) + count(mods:cartographics)) = count(mods:*)]">
                 <xsl:call-template name="printMetaDate.mods">
                     <xsl:with-param name="nodes" select="mods:geographic"/>
                 </xsl:call-template>
@@ -254,15 +254,15 @@
             </xsl:for-each>
 
 
-            <xsl:if test="count(mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:subject[not(count(mods:geographic)&gt;0 or count(mods:cartographics)&gt;0 and (count(mods:geographic) + count(mods:cartographics) = count(mods:*)))])&gt;1">
+            <xsl:if test="count(mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:subject[not((count(mods:geographic)&gt;0 or count(mods:cartographics)&gt;0) and (count(mods:geographic) + count(mods:cartographics)) = count(mods:*))])&gt;0">
                 <tr>
                     <td class="metaname" valign="top">
                         <xsl:value-of select="concat(i18n:translate('component.mods.metaData.dictionary.subject'),':')"/>
                     </td>
                     <td class="metavalue">
                         <xsl:for-each
-                                select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:subject[not(count(mods:geographic)&gt;0 or count(mods:cartographics)&gt;0 and (count(mods:geographic) + count(mods:cartographics) = count(mods:*)))]">
-                            <ol class="topic-list">
+                                select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:subject[not((count(mods:geographic)&gt;0 or count(mods:cartographics)&gt;0) and (count(mods:geographic) + count(mods:cartographics)) = count(mods:*))]">
+                        <ol class="topic-list">
                                 <xsl:for-each select="mods:*">
                                     <li class="topic-element">
                                         <xsl:apply-templates select="." mode="displaySubject"/>
