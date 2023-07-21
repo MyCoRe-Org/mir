@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:mods="http://www.loc.gov/mods/v3"
-  xmlns:mcrmods="xalan://org.mycore.mods.classification.MCRMODSClassificationSupport" xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
-  xmlns:mirmapper="xalan://org.mycore.mir.impexp.MIRClassificationMapper" xmlns:mirdateconverter="xalan://org.mycore.mir.date.MIRDateConverter"
-  xmlns:mirvalidationhelper="xalan://org.mycore.mir.validation.MIRValidationHelper"
-  xmlns:piUtil="xalan://org.mycore.pi.frontend.MCRIdentifierXSLUtils"
-  xmlns:editorUtils="xalan://org.mycore.mir.editor.MIREditorUtils"
-  exclude-result-prefixes="mcrmods xlink mirmapper i18n mirdateconverter mirvalidationhelper piUtil editorUtils" version="1.0"
+                xmlns:mcrmods="xalan://org.mycore.mods.classification.MCRMODSClassificationSupport" xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
+                xmlns:mirmapper="xalan://org.mycore.mir.impexp.MIRClassificationMapper" xmlns:mirdateconverter="xalan://org.mycore.mir.date.MIRDateConverter"
+                xmlns:mirvalidationhelper="xalan://org.mycore.mir.validation.MIRValidationHelper"
+                xmlns:piUtil="xalan://org.mycore.pi.frontend.MCRIdentifierXSLUtils"
+                xmlns:editorUtils="xalan://org.mycore.mir.editor.MIREditorUtils"
+                exclude-result-prefixes="mcrmods xlink mirmapper i18n mirdateconverter mirvalidationhelper piUtil editorUtils" version="1.0"
 >
 
   <xsl:include href="copynodes.xsl" />
@@ -30,20 +30,23 @@
         </xsl:attribute>
       </xsl:otherwise>
     </xsl:choose>
-    
+
   </xsl:template>
 
   <xsl:template match="mods:subject">
     <xsl:variable name="geoCount" select="count(mods:cartographics) + count(mods:geographic)" />
-    <mods:subjectXML>
-      <xsl:attribute name="geo">
-        <xsl:choose>
-          <xsl:when test="$geoCount &gt; 0 and $geoCount = count(mods:*)">true</xsl:when>
-          <xsl:otherwise>false</xsl:otherwise>
-        </xsl:choose>
-      </xsl:attribute>
-      <xsl:copy-of select="editorUtils:xmlAsString(.)" />
-    </mods:subjectXML>
+    <xsl:choose>
+      <xsl:when test="$geoCount &gt; 0 and $geoCount = count(mods:*)">
+        <mods:subjectGEO>
+          <xsl:copy-of select="editorUtils:xmlAsString(.)" />
+        </mods:subjectGEO>
+      </xsl:when>
+      <xsl:otherwise>
+        <mods:subjectXML>
+          <xsl:copy-of select="editorUtils:xmlAsString(.)" />
+        </mods:subjectXML>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
 
   <xsl:template match="mods:titleInfo[string-length(@altRepGroup) &gt; 0]|mods:abstract[string-length(@altRepGroup) &gt; 0]">
@@ -108,11 +111,11 @@
         </xsl:when>
       </xsl:choose>
       <xsl:apply-templates select="*" />
-        <xsl:if test="@type='personal' and not(mods:role/mods:roleTerm)">
-          <mods:role>
-            <mods:roleTerm authority="marcrelator" type="code">aut</mods:roleTerm>
-          </mods:role>
-        </xsl:if>
+      <xsl:if test="@type='personal' and not(mods:role/mods:roleTerm)">
+        <mods:role>
+          <mods:roleTerm authority="marcrelator" type="code">aut</mods:roleTerm>
+        </mods:role>
+      </xsl:if>
     </xsl:copy>
   </xsl:template>
 

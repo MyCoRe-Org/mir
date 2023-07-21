@@ -2,12 +2,12 @@
     <form>
         <div class="form-group">
             <div class="input-group input-group-sm mb-3">
-                <input v-model="model.inputValue" :disabled="searchEnabled?null:''" @submit.prevent type="text" class="form-control">
+                <input v-model="model.inputValue" :disabled="searchEnabled?null:''" @submit.prevent type="text" class="form-control search-topic">
 
                 <div class="input-group-append ">
                     <button class="btn btn-sm btn-secondary" type="button" @click.prevent="openSearchSettings"><i class="fas fa-gear" /></button>
                     <button class="btn btn-sm btn-primary" type="submit" :disabled="searchEnabled?null:''" @click.prevent="search" >{{ props.searchButton }}</button>
-                    <button class="btn btn-sm btn-primary" v-if="addCustomEnabled" type="button" @click.prevent="addCustom" ><i class="fas fa-plus" /> </button>
+                    <button class="btn btn-sm btn-primary search-add-custom" v-if="addCustomEnabled" type="button" @click.prevent="addCustom"><i class="fas fa-plus" /> </button>
                 </div>
             </div>
         </div>

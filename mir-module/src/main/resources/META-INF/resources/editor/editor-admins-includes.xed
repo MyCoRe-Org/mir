@@ -23,6 +23,7 @@
     <xed:include ref="extent" />
     <xed:include ref="type.of.resource" />
     <xed:include ref="language" />
+    <xed:include ref="geographicAndCartographics" />
     <xed:include ref="sdnb.repeat" />
     <xed:include ref="openAIRE" />
     <xed:include ref="identifier.managed" />
@@ -34,7 +35,7 @@
     <xed:include ref="rights" />
     <xed:include ref="copyrightMD" />
     <xed:include ref="institutes" />
-    <xed:include ref="subject.admin" />
+    <xed:include ref="subject.complex" />
     <xed:include ref="abstract.repeated" />
     <xed:include ref="comment.complex" />
     <xed:include ref="related.item.search.of.all.items" />

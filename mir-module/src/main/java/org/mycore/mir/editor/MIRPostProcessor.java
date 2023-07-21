@@ -44,11 +44,13 @@ public class MIRPostProcessor extends MCRPostProcessorXSL {
     }
 
     private static void fixSubject(Document newXML) throws JDOMException, IOException {
-        final XPathExpression<Element> subjectsXPath = XPathFactory.instance().compile(".//mods:subjectXML",
+        final XPathExpression<Element> subjectsXPath
+            = XPathFactory.instance().compile(".//mods:*[local-name()='subjectXML' or local-name()='subjectGEO']",
             Filters.element(), null, MCRConstants.MODS_NAMESPACE,
             MCRConstants.XLINK_NAMESPACE);
         final List<Element> subjectElements = new ArrayList<>(subjectsXPath.evaluate(newXML));
 
+        List<Element> subjectsToRemove = new ArrayList<>();
         for (Element subject : subjectElements) {
             subject.setName("subject");
             subject.removeAttribute("geo");
@@ -64,7 +66,12 @@ public class MIRPostProcessor extends MCRPostProcessorXSL {
                 child.detach();
                 subject.addContent(child);
             });
+            if (subject.getChildren().size() == 0) {
+                subjectsToRemove.add(subject);
+            }
         }
+
+        subjectsToRemove.forEach(subjectToRemove -> subjectToRemove.getParent().removeContent(subjectToRemove));
     }
 
     private static void fixTitleInfos(Document newXML) {

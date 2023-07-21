@@ -64,7 +64,7 @@
                                             <label>{{ i18n["mir.editor.subject.custom.modal.type"] }}</label>
                                         </div>
                                         <div class="col-7">
-                                            <select v-model="model.custom.type" class="form-control form-control-sm">
+                                            <select v-model="model.custom.type" class="form-control form-control-sm custom-type-select">
                                                 <option v-for="type in possibleTypeList"
                                                         :value="type">
                                                     {{ i18n["mir.editor.subject.custom.modal.type."+type] }}
@@ -105,7 +105,7 @@
                                     <button class="btn btn-secondary" data-dismiss="modal" type="button"
                                             @click.prevent>{{ i18n["mir.editor.subject.custom.modal.close"]}}
                                     </button>
-                                    <button :disabled="!model.custom.valid" class="btn btn-primary" type="button"
+                                    <button :disabled="!model.custom.valid" class="btn btn-primary custom-add" type="button"
                                             @click.prevent="addCustomObject">{{ i18n["mir.editor.subject.custom.modal.add"]}}
                                     </button>
                                 </div>
@@ -175,6 +175,7 @@ const i18n = provideTranslations([
     "mir.editor.subject.search.modal.title",
     "mir.editor.subject.search.modal.close",
     "mir.editor.subject.custom.modal.title",
+    "mir.editor.subject.custom.modal.type",
     "mir.editor.subject.custom.modal.type.Topic",
     "mir.editor.subject.custom.modal.type.Geographic",
     "mir.editor.subject.custom.modal.type.Institution",

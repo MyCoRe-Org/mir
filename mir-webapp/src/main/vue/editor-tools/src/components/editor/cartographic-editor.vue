@@ -1,13 +1,14 @@
 <template>
   <div>
         <array-repeater v-model="cartographics.scale" default-content="">
-            <template #label="{index}">
-                <span> {{ i18n["mir.editor.subject.cartographics.editor.scale"] }} </span>
+            <template #label="content">
+                <label :for="content.object ? `${id}scale${content.index}`:null">{{ i18n["mir.editor.subject.cartographics.editor.scale"] }}</label>
             </template>
 
             <template #displayContent="content">
                 <input v-if="cartographics.scale"
-                        v-model="cartographics.scale[content.index]"
+                       :id="`${id}scale${content.index}`"
+                       v-model="cartographics.scale[content.index]"
                        :class="'form-control form-control-sm' + validClass(cartographics.scale[content.index])"
                        type="text" />
                 <div class="invalid-feedback">
@@ -16,12 +17,13 @@
             </template>
         </array-repeater>
         <array-repeater v-model="cartographics.coordinates" default-content="">
-            <template #label="{index}">
-                <span> {{ i18n["mir.editor.subject.cartographics.editor.coordinates"] }} </span>
+            <template #label="content">
+                <label :for="content.object ? `${id}coordinates${content.index}`:null"> {{ i18n["mir.editor.subject.cartographics.editor.coordinates"] }}</label>
             </template>
 
             <template #displayContent="content">
                 <input v-if="cartographics.coordinates"
+                       :id="`${id}coordinates${content.index}`"
                         v-model="cartographics.coordinates[content.index]"
                        :class="'form-control form-control-sm' + validClass(cartographics.coordinates[content.index])"
                        type="text" />
