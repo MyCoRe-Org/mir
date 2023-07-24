@@ -1,15 +1,7 @@
 import {SearchSettings} from "@/api/search/SearchSettings";
-import {
-    Cartographics,
-    Genre,
-    Geographic, GeographicCode,
-    HierarchicalGeographic,
-    Name, NameIdentifier, Occupation, RoleTerm,
-    Temporal,
-    TitleInfo,
-    Topic
-} from "@/api/Subject";
+import {Geographic, Name, NameIdentifier, RoleTerm, TitleInfo, Topic} from "@/api/Subject";
 import {SearchProvider, SearchResult, SearchResultInfo} from "@/api/search/SearchProvider";
+import {i18n} from "@/api/I18N";
 
 const VIAF_ID_PREFIX_1 = "http://viaf.org/viaf/";
 const VIAF_ID_PREFIX_2 = "https://viaf.org/viaf/";
@@ -59,50 +51,50 @@ export class LobidSearchProvider extends SearchProvider {
         const response = await fetch(url);
         const json = await response.json();
 
-        json.member.forEach((member: any) => {
-            const memberResult = this.handleMember(member);
+        for (const member of json.member) {
+            const memberResult = await this.handleMember(member);
             if (memberResult != null) {
                 result.push(memberResult);
             }
-        });
+        }
 
 
         return result;
     }
 
-    handleMember(member: any): SearchResult | null {
+    async handleMember(member: any): Promise<SearchResult | null> {
         if (member.type.indexOf("CorporateBody") > -1) {
-            return this.handleCorporateBody(member);
+            return await this.handleCorporateBody(member);
         }
 
         if (member.type.indexOf("Person") > -1) {
-            return this.handlePerson(member);
+            return await this.handlePerson(member);
         }
 
         if (member.type.indexOf("Family") > -1) {
-            return this.handleFamily(member);
+            return await this.handleFamily(member);
         }
 
         if (member.type.indexOf("ConferenceOrEvent") > -1) {
-            return this.handleConference(member);
+            return await this.handleConference(member);
         }
 
         if (member.type.indexOf("PlaceOrGeographicName") > -1) {
-            return this.handlePlace(member);
+            return await this.handlePlace(member);
         }
 
         if (member.type.indexOf("SubjectHeading") > -1) {
-            return this.handleTopic(member);
+            return await this.handleTopic(member);
         }
 
         if (member.type.indexOf("Work") > -1) {
-            return this.handleTitle(member);
+            return await this.handleTitle(member);
         }
 
         return null;
     }
 
-    handleCorporateBody(member: any): SearchResult | null {
+    async handleCorporateBody(member: any): Promise<SearchResult | null> {
         const result: Name = {
             "type": "Name",
             "nameType": "corporate",
@@ -129,18 +121,18 @@ export class LobidSearchProvider extends SearchProvider {
             searchResult.info.push({
                 "id": this.generateID(),
                 "type": "string",
-                "label": "mir.editor.corporateBody.dateOfEstablishment",
+                "label": await i18n("mir.editor.subject.provider.corporateBody.dateOfEstablishment"),
                 "value": member.dateOfEstablishment
             });
         }
 
-        this.addGNDLink(member, searchResult.info);
+        await this.addGNDLink(member, searchResult.info);
 
         return searchResult;
     }
 
 
-    private handlePerson(member: any): SearchResult | null {
+    async handlePerson(member: any): Promise<SearchResult | null> {
         const result: Name = {
             "type": "Name",
             "nameType": "personal",
@@ -168,7 +160,7 @@ export class LobidSearchProvider extends SearchProvider {
             searchResult.info.push({
                 id: this.generateID(),
                 type: "string",
-                label: "mir.editor.person.dateOfBirth",
+                label: await i18n("mir.editor.subject.provider.person.dateOfBirth"),
                 value: member.dateOfBirth.join(", ")
             });
         }
@@ -177,7 +169,7 @@ export class LobidSearchProvider extends SearchProvider {
             searchResult.info.push({
                 id: this.generateID(),
                 type: "string",
-                label: "mir.editor.person.dateOfDeath",
+                label: await i18n("mir.editor.subject.provider.person.dateOfDeath"),
                 value: member.dateOfDeath.join(", ")
             });
         }
@@ -194,7 +186,7 @@ export class LobidSearchProvider extends SearchProvider {
                 }
             }
         }
-        this.addVariantName(member, searchResult.info);
+        (await this.addVariantName(member, searchResult.info));
 
         const professionCollector: string[] = [];
         for (const professionIndex in member.professionOrOccupation) {
@@ -205,48 +197,50 @@ export class LobidSearchProvider extends SearchProvider {
         }
         if (professionCollector.length > 0) {
             searchResult.info.push({
-                label: "mir.editor.person.profession",
+                label: await i18n("mir.editor.subject.provider.person.profession"),
                 value: professionCollector.join(", "),
                 id: this.generateID(),
                 type: "string"
             });
         }
-        this.addWebsiteIfPresent(member, searchResult.info);
-        this.addGNDLink(member, searchResult.info);
+        await this.addWebsiteIfPresent(member, searchResult.info);
+        await this.addGNDLink(member, searchResult.info);
 
         return searchResult;
     }
 
-    private addVariantName(member: any, info: Array<SearchResultInfo>) {
+    async addVariantName(member: any, info: Array<SearchResultInfo>) {
         if ("variantName" in member) {
             info.push({
                 id: this.generateID(),
                 type: "string",
-                label: "mir.editor.variantName",
+                label: await i18n("mir.editor.subject.provider.variantName"),
                 value: (member.variantName as string[]).join(", ")
             });
         }
     }
 
-    private addWebsiteIfPresent(member: any, info: Array<SearchResultInfo>) {
+    async addWebsiteIfPresent(member: any, info: Array<SearchResultInfo>) {
         if ("homepage" in member) {
-            (member.homepage as { id: string; label: string }[]).map(hp => hp.id).forEach((url: string) => {
+            const urls = (member.homepage as { id: string; label: string }[]).map(hp => hp.id);
+            for (let i = 0; i < urls.length; i++){
+                const url: string = urls[i];
                 info.push({
                     id: this.generateID(),
                     type: "url",
-                    label: "mir.editor.person.website",
+                    label: await i18n("mir.editor.subject.provider.website"),
                     value: url,
                 })
-            });
+            }
         }
     }
 
-    private addGNDLink(member: any, info: Array<SearchResultInfo>) {
+    async addGNDLink(member: any, info: Array<SearchResultInfo>) {
         if("id" in member) {
             info.push({
                 id: this.generateID(),
                 type: "url",
-                label: "mir.editor.person.gndLink",
+                label: await i18n( "mir.editor.subject.provider.gndLink"),
                 value: member.id,
             })
         }
@@ -256,8 +250,8 @@ export class LobidSearchProvider extends SearchProvider {
         return Math.random().toString(16);
     }
 
-    private handleConference(member: any) {
-        const conference = this.handleCorporateBody(member);
+    async handleConference(member: any) {
+        const conference = await this.handleCorporateBody(member);
         if (conference == null) {
             return null;
         }
@@ -266,7 +260,7 @@ export class LobidSearchProvider extends SearchProvider {
         return conference;
     }
 
-    private handlePlace(member: any) {
+    async handlePlace(member: any) {
         const result: Geographic = {
             "type": "Geographic",
             text: member.preferredName,
@@ -280,24 +274,27 @@ export class LobidSearchProvider extends SearchProvider {
             info: [] as Array<SearchResultInfo>
         }
 
-        this.addWebsiteIfPresent(member, searchResult.info);
-        this.addVariantName(member, searchResult.info);
+        await this.addWebsiteIfPresent(member, searchResult.info);
+        await this.addVariantName(member, searchResult.info);
 
-        member.biographicalOrHistoricalInformation?.forEach((bio: string) => {
-            searchResult.info.push({
-                id: this.generateID(),
-                type: "string",
-                label: "mir.editor.place.biographicalOrHistoricalInformation",
-                value: bio
-            });
-        });
+        if("biographicalOrHistoricalInformation" in member && member.biographicalOrHistoricalInformation.length > 0){
+            for (const bio of member.biographicalOrHistoricalInformation) {
+                searchResult.info.push({
+                    id: this.generateID(),
+                    type: "string",
+                    label: await i18n("mir.editor.subject.provider.place.biographicalOrHistoricalInformation"),
+                    value: bio
+                });
+            }
+        }
 
-        this.addGNDLink(member, searchResult.info);
+
+        await this.addGNDLink(member, searchResult.info);
 
         return searchResult;
     }
 
-    private handleTopic(member: any) {
+    async handleTopic(member: any) {
         const result: Topic = {
             "type": "Topic",
             text: member.preferredName,
@@ -314,8 +311,8 @@ export class LobidSearchProvider extends SearchProvider {
         return searchResult;
     }
 
-    private handleFamily(member: any) {
-        const handlePerson = this.handlePerson(member);
+    async handleFamily(member: any) {
+        const handlePerson = await this.handlePerson(member);
         if(handlePerson == null) {
             return null;
         }
@@ -325,7 +322,7 @@ export class LobidSearchProvider extends SearchProvider {
         return handlePerson;
     }
 
-    private handleTitle(member: any) {
+    async handleTitle(member: any) {
         const result: TitleInfo = {
             "type": "TitleInfo",
             title: [member.preferredName],
@@ -345,8 +342,8 @@ export class LobidSearchProvider extends SearchProvider {
             info: [] as Array<SearchResultInfo>
         }
 
-        this.addVariantName(member, searchResult.info);
-        this.addWebsiteIfPresent(member, searchResult.info);
+        await this.addVariantName(member, searchResult.info);
+        await this.addWebsiteIfPresent(member, searchResult.info);
 
 
 
