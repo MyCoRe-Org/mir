@@ -9,6 +9,7 @@
   <xsl:param name="MCR.mir-module.NewUserMail"/>
   <xsl:param name="MCR.mir-module.MailSender"/>
   <xsl:param name="MIR.SelfRegistration.EmailVerification.setDisabled"/>
+  <xsl:param name="MIR.SelfRegistration.DisabledStatus.UnlockViaAdminLink"/>
   <xsl:variable name="newline" select="'&#xA;'"/>
 
   <xsl:template match="/">
@@ -47,9 +48,19 @@
 
       <xsl:choose>
         <xsl:when
-          test="$MIR.SelfRegistration.EmailVerification.setDisabled = 'true' or  $MIR.SelfRegistration.EmailVerification.setDisabled = 'TRUE'">
+          test="($MIR.SelfRegistration.EmailVerification.setDisabled = 'true' or  $MIR.SelfRegistration.EmailVerification.setDisabled = 'TRUE')
+                  and ($MIR.SelfRegistration.DisabledStatus.UnlockViaAdminLink = 'false' or $MIR.SelfRegistration.DisabledStatus.UnlockViaAdminLink = 'FALSE')">
           <xsl:value-of select="i18n:translate('selfRegistration.step.verified.email.admin.info.forDisabled')"/>
           <xsl:value-of select="$newline"/>
+        </xsl:when>
+        <xsl:when
+          test="($MIR.SelfRegistration.EmailVerification.setDisabled = 'true' or  $MIR.SelfRegistration.EmailVerification.setDisabled = 'TRUE')
+                  and ($MIR.SelfRegistration.DisabledStatus.UnlockViaAdminLink = 'true' or $MIR.SelfRegistration.DisabledStatus.UnlockViaAdminLink = 'TRUE')">
+          <xsl:value-of select="i18n:translate('selfRegistration.step.verified.email.admin.info.forDisabled.UnlockViaAdminLink')"/>
+          <xsl:value-of select="$newline" />
+          <xsl:value-of
+            select="concat($ServletsBaseURL, 'MirSelfRegistrationServlet?action=changeDisableUserStatus&amp;user=', @name, '&amp;realm=',@realm, '&amp;disabled=false')" />
+          <xsl:value-of select="$newline" />
         </xsl:when>
       </xsl:choose>
     </body>

@@ -22,16 +22,18 @@
  */
 package org.mycore.mir.authorization;
 
-import java.util.List;
-
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.mycore.common.MCRMailer;
+import org.mycore.common.MCRSessionMgr;
 import org.mycore.common.MCRUtils;
 import org.mycore.common.config.MCRConfiguration2;
 import org.mycore.common.content.MCRJDOMContent;
+import org.mycore.common.xml.MCRXMLFunctions;
 import org.mycore.frontend.MCRFrontendUtil;
 import org.mycore.frontend.servlets.MCRServlet;
 import org.mycore.frontend.servlets.MCRServletJob;
@@ -41,8 +43,10 @@ import org.mycore.user2.MCRUser;
 import org.mycore.user2.MCRUserManager;
 import org.mycore.user2.utils.MCRUserTransformer;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * @author Ren\u00E9 Adler (eagle)
@@ -67,6 +71,14 @@ public class MirSelfRegistrationServlet extends MCRServlet {
             "MIR.SelfRegistration.EmailVerification.setDisabled")
         .orElse(null);
 
+    private static final String DEFAULT_ADMINISTRATE_USERS_ROLES = MCRConfiguration2.getString(
+            "MIR.SelfRegistration.AdministrateUsers.Roles")
+        .orElse(null);
+
+    private static final String ROLES = MCRConfiguration2.getString(
+            "MCR.Rest.JWT.Roles")
+        .orElse(null);
+
     /**
      * Checks if given user is exists.
      *
@@ -89,6 +101,8 @@ public class MirSelfRegistrationServlet extends MCRServlet {
         final String action = req.getParameter("action");
         if ("verify".equals(action)) {
             verify(req, res);
+        } else if ("changeDisableUserStatus".equals(action)) {
+            changeDisableUserStatus(req, res);
         } else {
             register(req, res);
         }
@@ -200,8 +214,145 @@ public class MirSelfRegistrationServlet extends MCRServlet {
         }
     }
 
+    /**
+     * Change "Disabled user" status
+     */
+    private void changeDisableUserStatus(final HttpServletRequest req,
+        final HttpServletResponse res) throws Exception {
+        List<String> roles = getAdministrateUsersRoles();
+        final String userName = req.getParameter("user");
+        final String realmId = req.getParameter("realm");
+        final String disabled = req.getParameter("disabled");
+        if (userName != null && realmId != null && disabled != null) {
+            final MCRUser user = MCRUserManager.getUser(userName, realmId);
+            if (user != null) {
+
+                if (checkUsersPermissionToChangeDisableUserStatus(user, roles)) {
+                    boolean userIsDisabled = user.isDisabled();
+                    if (userIsDisabled != Boolean.parseBoolean(disabled)) {
+                        user.setDisabled(Boolean.parseBoolean(disabled));
+                        // check if the user disabled status has changed
+                        if (userIsDisabled != user.isDisabled()) {
+
+                            final Element root = new Element("disable-user-status-changed");
+                            final Element u = MCRUserTransformer.buildExportableSafeXML(user).getRootElement();
+                            root.addContent(u.clone());
+                            getLayoutService().doLayout(req, res, new MCRJDOMContent(root));
+
+                            // email the user about the change of status "Disable user"
+                            try {
+                                MCRMailer.sendMail(MCRUserTransformer.buildExportableSafeXML(user),
+                                    "e-mail-disable-user-status-changed");
+                            } catch (final Exception ex) {
+                                LOGGER.error(ex);
+                                res.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, errorMsg("mailError"));
+                            }
+                        } else {
+                            res.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+                                errorMsg("disabledUserStatusHasNotChanged"));
+                        }
+                    } else {
+                        res.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+                            errorMsg("userAlreadyHasStatus"));
+                    }
+                } else {
+                    res.sendError(HttpServletResponse.SC_FORBIDDEN, errorMsg("mir.error.headline.403"));
+                }
+            } else {
+                res.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, errorMsg("userNotFound"));
+            }
+        } else {
+            res.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, errorMsg("missingParameter"));
+        }
+    }
+
     private String errorMsg(final String subIdentifier, final Object... args) {
         final String key = I18N_ERROR_PREFIX + "." + subIdentifier;
         return MCRTranslation.translate(key, args);
+    }
+
+    /**
+     * Get roles from the MIR.SelfRegistration.AdministrateUsers.Roles property as a list
+     * @return list of roles
+     */
+    private List<String> getAdministrateUsersRoles() {
+        List<String> roles = new ArrayList<>();
+        if (DEFAULT_ADMINISTRATE_USERS_ROLES != null
+            && !DEFAULT_ADMINISTRATE_USERS_ROLES.isEmpty()) {
+            roles = Arrays.asList(DEFAULT_ADMINISTRATE_USERS_ROLES
+                .replaceAll("\\s+", "").split(","));
+        }
+        return roles;
+    }
+
+    /**
+     * Checks if the role of the current user is included in the list of roles with which the current user have the
+     * right to administer other users
+     * @param roles list of roles
+     * @return true if it included or false if not
+     */
+    private boolean isCurrentUserInRole(List<String> roles) {
+        if (roles != null && !roles.isEmpty()) {
+            for (String role : roles) {
+                if (MCRXMLFunctions.isCurrentUserInRole(role)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * check the user's permission to change the status of a disabled user
+     * @param user modifiable user
+     * @param roles role List
+     * @return true if the permissions level allows you to modify the user to the current user or false is not
+     */
+    private boolean checkUsersPermissionToChangeDisableUserStatus(MCRUser user, List<String> roles) {
+        return isCurrentUserInRole(roles) && compareUsersPermissionsLevel(user) && isCurrentUserEnabled();
+    }
+
+    /**
+     * Comparing the level of user permissions
+     * @param user modifiable user
+     * @return true if the permission level of the current user is higher than the permission level of
+     * the user being modified or false if not
+     */
+    private boolean compareUsersPermissionsLevel(MCRUser user) {
+        if (ROLES != null && !ROLES.isEmpty()) {
+            String[] roleHierarchy = ROLES.replaceAll("\\s+", "").split(",");
+            Collection<String> modifiableUserRoles = user.getSystemRoleIDs();
+            int permissionHighestLevel = 100000000; // roleHierarchy.length;
+            int modifiableUserPermissionHighestLevel = permissionHighestLevel;
+            for (String role : modifiableUserRoles) {
+                int index = Arrays.asList(roleHierarchy).indexOf(role);
+                if (index != -1 && index < modifiableUserPermissionHighestLevel) {
+                    modifiableUserPermissionHighestLevel = index;
+                }
+            }
+            String currentUserId = MCRSessionMgr.getCurrentSession().getUserInformation().getUserID();
+            MCRUser currentUser = MCRUserManager.getUser(currentUserId);
+            Collection<String> currentUserRoles = currentUser.getSystemRoleIDs();
+            int currentUserPermissionHighestLevel = permissionHighestLevel;
+            for (String role : currentUserRoles) {
+                int index = Arrays.asList(roleHierarchy).indexOf(role);
+                if (index != -1 && index < currentUserPermissionHighestLevel) {
+                    currentUserPermissionHighestLevel = index;
+                }
+            }
+            return currentUserPermissionHighestLevel <= modifiableUserPermissionHighestLevel;
+        } else {
+            return true;
+        }
+    }
+
+    /**
+     * Check if the current user is enabled
+     * @return true if enabled or false if not
+     */
+    private boolean isCurrentUserEnabled() {
+        String currentUserId = MCRSessionMgr.getCurrentSession().getUserInformation().getUserID();
+        MCRUser currentUser = MCRUserManager.getUser(currentUserId);
+        return !currentUser.isDisabled();
     }
 }
