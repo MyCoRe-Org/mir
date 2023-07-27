@@ -169,6 +169,7 @@ public class MirSelfRegistrationServlet extends MCRServlet {
                 final String umt = user.getUserAttribute("mailtoken");
                 if (umt != null) {
                     if (umt.equals(mailToken)) {
+                        // set user disabled or not
                         if (DEFAULT_EMAIL_VERIFICATION_DISABLED_STATUS != null
                             && !DEFAULT_EMAIL_VERIFICATION_DISABLED_STATUS.isEmpty()) {
                             user.setDisabled(Boolean.parseBoolean(DEFAULT_EMAIL_VERIFICATION_DISABLED_STATUS));
@@ -241,13 +242,15 @@ public class MirSelfRegistrationServlet extends MCRServlet {
                             root.addContent(u.clone());
                             getLayoutService().doLayout(req, res, new MCRJDOMContent(root));
 
-                            // email the user about the change of status "Disable user"
-                            try {
-                                MCRMailer.sendMail(MCRUserTransformer.buildExportableSafeXML(user),
-                                    "e-mail-disable-user-status-changed");
-                            } catch (final Exception ex) {
-                                LOGGER.error(ex);
-                                res.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, errorMsg("mailError"));
+                            if (user.getEMailAddress() != null && !user.getEMailAddress().trim().isEmpty()) {
+                                // email the user about the change of status "Disable user"
+                                try {
+                                    MCRMailer.sendMail(MCRUserTransformer.buildExportableSafeXML(user),
+                                        "e-mail-disable-user-status-changed");
+                                } catch (final Exception ex) {
+                                    LOGGER.error(ex);
+                                    res.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, errorMsg("mailError"));
+                                }
                             }
                         } else {
                             res.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,

@@ -36,8 +36,10 @@
       <xsl:value-of select="i18n:translate('selfRegistration.step.verified.email.admin.info.userId')"/>
       <xsl:value-of select="concat(@name,' (',@realm,')',$newline)"/>
       <!-- Name -->
-      <xsl:value-of select="i18n:translate('selfRegistration.step.verified.email.admin.info.name')"/>
-      <xsl:value-of select="concat(realName,$newline)"/>
+      <xsl:if test="realName">
+        <xsl:value-of select="i18n:translate('selfRegistration.step.verified.email.admin.info.name')"/>
+        <xsl:value-of select="concat(realName,$newline)"/>
+      </xsl:if>
       <!-- Email -->
       <xsl:value-of select="i18n:translate('selfRegistration.step.verified.email.admin.info.mail')"/>
       <xsl:value-of select="concat(eMail,$newline)"/>

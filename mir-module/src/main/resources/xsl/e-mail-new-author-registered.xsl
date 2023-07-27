@@ -35,11 +35,15 @@
       <xsl:value-of select="i18n:translate('selfRegistration.step.created.email.admin.info.userId')"/>
       <xsl:value-of select="concat(@name,' (',@realm,')',$newline)"/>
       <!-- Name -->
-      <xsl:value-of select="i18n:translate('selfRegistration.step.created.email.admin.info.name')"/>
-      <xsl:value-of select="concat(realName,$newline)"/>
+      <xsl:if test="realName">
+        <xsl:value-of select="i18n:translate('selfRegistration.step.created.email.admin.info.name')"/>
+        <xsl:value-of select="concat(realName,$newline)"/>
+      </xsl:if>
       <!-- Email -->
-      <xsl:value-of select="i18n:translate('selfRegistration.step.created.email.admin.info.mail')"/>
-      <xsl:value-of select="concat(eMail,$newline)"/>
+      <xsl:if test="eMail">
+        <xsl:value-of select="i18n:translate('selfRegistration.step.created.email.admin.info.mail')"/>
+        <xsl:value-of select="concat(eMail,$newline)"/>
+      </xsl:if>
       <!-- Link -->
       <xsl:value-of select="i18n:translate('selfRegistration.step.created.email.admin.info.link')"/>
       <xsl:value-of select="concat($ServletsBaseURL,'MCRUserServlet?action=show&amp;id=',@name,'@',@realm,$newline)"/>
