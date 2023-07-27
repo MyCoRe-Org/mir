@@ -19,12 +19,22 @@
     <h3>
       <i18n key="selfRegistration.step.create.title" />
     </h3>
-    <p>
-      <i18n key="selfRegistration.step.create.info" />
-    </p>
 
     <xed:form class="userEditor form-horizontal" role="form" xmlns:xed="http://www.mycore.de/xeditor" xmlns:mcruser="http://www.mycore.de/components/mcruser">
       <xed:cancel url="{$ServletsBaseURL}MirSelfRegistrationServlet" />
+
+      <p class="sub-title">
+        <xed:choose>
+          <xed:when
+            test="$MIR.SelfRegistration.EmailVerification.setDisabled = 'true' or  $MIR.SelfRegistration.EmailVerification.setDisabled = 'TRUE'">
+            <xed:output i18n="selfRegistration.step.create.user.disabled.info" />
+          </xed:when>
+          <xed:otherwise>
+            <xed:output i18n="selfRegistration.step.create.user.info" />
+          </xed:otherwise>
+        </xed:choose>
+      </p>
+
       <xed:bind xpath="user">
         <xed:bind xpath="attributes/attribute[@name='mailtoken']/@value" initially="{xed:generate-id()}" />
 
@@ -43,9 +53,13 @@
             <xed:include uri="xslStyle:user-xeditor-templates:webapp:authorization/new-author-includes.xed" ref="captcha" />
 
             <xed:validate display="global" xpath="/user/@name"
-              test="not(xed:call-java('org.mycore.mir.authorization.MirSelfRegistrationServlet', 'userExists', /user))"
-            >
+              test="not(xed:call-java('org.mycore.mir.authorization.MirSelfRegistrationServlet', 'userExists', /user))">
               <xed:output i18n="selfRegistration.error.userExists" />
+            </xed:validate>
+
+            <xed:validate display="global" xpath="/user/eMail"
+              test="not(xed:call-java('org.mycore.mir.authorization.MirSelfRegistrationServlet', 'mailExists', /user))">
+              <xed:output i18n="selfRegistration.error.mailExists"/>
             </xed:validate>
           </div>
           <div class="card-footer clearfix">
