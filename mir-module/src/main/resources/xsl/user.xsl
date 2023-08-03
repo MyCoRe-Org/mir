@@ -223,25 +223,23 @@
                 </xsl:choose>
               </td>
             </tr>
-            <xsl:if test="attributes[not(attribute[@name='id_orcid'])]">
-              <tr class="d-flex">
-                <th class="col-md-3">
-                  <xsl:value-of select="i18n:translate('component.user2.admin.user.attributes')" />
-                </th>
-                <td class="col-md-9">
-                  <dl>
-                    <xsl:for-each select="attributes/attribute[@name!='id_orcid']">
-                      <dt>
-                        <xsl:value-of select="@name" />
-                      </dt>
-                      <dd>
-                        <xsl:value-of select="@value" />
-                      </dd>
-                    </xsl:for-each>
-                  </dl>
-                </td>
-              </tr>
-            </xsl:if>
+            <tr class="d-flex">
+              <th class="col-md-3">
+                <xsl:value-of select="i18n:translate('component.user2.admin.user.attributes')" />
+              </th>
+              <td class="col-md-9">
+                <dl>
+                  <xsl:for-each select="attributes/attribute[@name!='id_orcid']">
+                    <dt>
+                      <xsl:value-of select="@name" />
+                    </dt>
+                    <dd>
+                      <xsl:value-of select="@value" />
+                    </dd>
+                  </xsl:for-each>
+                </dl>
+              </td>
+            </tr>
             <xsl:if test="attributes/attribute[@name='id_orcid']" >
               <tr class="d-flex">
                 <th class="col-md-3">
