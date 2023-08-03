@@ -294,6 +294,11 @@ export default class PersonSearch extends Vue {
       this.results.pop();
     }
 
+    if(this.search.trim().length == 0) {
+      this.dropVisible = 0;
+      return;
+    }
+
     this.currentProvider = "";
     for (const provider of SearchProviderRegistry.getProviders()) {
       const currentSearch = {
