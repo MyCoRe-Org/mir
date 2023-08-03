@@ -65,7 +65,12 @@ The docker container has its own install script which uses the environment varia
 
 ### Mount Points
 
-The paths in `MCR_CONFIG_DIR` and `MCR_DATA_DIR` should be mounted. Default values are /mcr/home/ and /mcr/data/.
+The paths in `MCR_CONFIG_DIR` and `MCR_DATA_DIR` should be mounted. Default values are `/mcr/home/` and `/mcr/data/`.
+When starting the container the first time you may receive errors like
+`java.io.FileNotFoundException: /mcr/home/mycore.active.properties (Permission denied)` this is because the container 
+runs as user `mcr` and the mounted volumes are owned by `root`.
+To fix this you can set the docker property `FIX_FILE_SYSTEM_RIGHTS` to `true`. This will change the owner of the
+mounted volumes to `mcr` and the container will start without errors.
 
 ## `mir-solr` Docker-Container
 The docker container creates the required solr cores if they do not exist.
