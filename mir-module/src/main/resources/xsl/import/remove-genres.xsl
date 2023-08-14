@@ -30,4 +30,8 @@
     </xsl:if>
   </xsl:template>
 
+  <xsl:template match="mods:relatedItem/@otherType[../@type]">
+    <!-- MIR-1120 remove @otherType if @type is present -->
+  </xsl:template>
+
 </xsl:stylesheet>
