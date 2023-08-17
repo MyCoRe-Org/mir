@@ -35,6 +35,7 @@ import org.mycore.common.content.transformer.MCRXSLTransformer;
 import org.mycore.mir.wizard.MIRWizardCommand;
 
 public class MIRWizardGenerateJPAConfig extends MIRWizardCommand {
+
     private static final Logger LOGGER = LogManager.getLogger();
 
     public MIRWizardGenerateJPAConfig() {

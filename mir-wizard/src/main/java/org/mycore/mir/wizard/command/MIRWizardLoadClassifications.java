@@ -109,6 +109,7 @@ public class MIRWizardLoadClassifications extends MIRWizardCommand {
             this.result.setResult(result);
             this.result.setSuccess(true);
         } catch (Exception ex) {
+            LOGGER.error("Exception while loading classifiactions.", ex);
             this.result.setResult(ex.toString());
             this.result.setSuccess(false);
         }

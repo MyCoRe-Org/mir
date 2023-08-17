@@ -48,37 +48,45 @@ public class MIRWizardDownloadDBLib extends MIRWizardCommand {
 
     @Override
     public void doExecute() {
-        Element library = getInputXML().getChild("database").getChild("library");
+        try {
 
-        if (library != null && library.getChildren().size() > 0) {
-            String libDir = MCRConfigurationDir.getConfigurationDirectory().getAbsolutePath() + File.separator + "lib";
+            Element library = getInputXML().getChild("database").getChild("library");
 
-            boolean success = true;
-            for (Element lib : library.getChildren()) {
-                String url = lib.getTextTrim();
-                String fname = FilenameUtils.getName(url);
-                File file = new File(libDir + File.separator + fname);
-                try {
+            if (library != null && library.getChildren().size() > 0) {
+                String libDir = MCRConfigurationDir.getConfigurationDirectory().getAbsolutePath() + File.separator 
+                    + "lib";
 
-                    FileUtils.copyURLToFile(new URL(url), file);
-                    MCRConfigurationDirSetup.loadExternalLibs();
+                boolean success = true;
+                for (Element lib : library.getChildren()) {
+                    String url = lib.getTextTrim();
+                    String fname = FilenameUtils.getName(url);
+                    File file = new File(libDir + File.separator + fname);
+                    try {
 
-                    success = true;
-                } catch (Exception ex) {
-                    LOGGER.error("Exception while downloading or loading database library: " + file.getAbsolutePath(),
-                        ex);
-                    success = false;
+                        FileUtils.copyURLToFile(new URL(url), file);
+                        MCRConfigurationDirSetup.loadExternalLibs();
+
+                        success = true;
+                    } catch (Exception ex) {
+                        LOGGER.error("Exception while downloading or loading database library: " 
+                                + file.getAbsolutePath(), ex);
+                        success = false;
+                    }
+
+                    if (success) {
+                        this.result.setAttribute("lib", fname);
+                        this.result.setAttribute("url", url);
+                        this.result.setAttribute("to", libDir);
+                        break;
+                    }
                 }
 
-                if (success) {
-                    this.result.setAttribute("lib", fname);
-                    this.result.setAttribute("url", url);
-                    this.result.setAttribute("to", libDir);
-                    break;
-                }
+                this.result.setSuccess(success);
             }
-
-            this.result.setSuccess(success);
+        } catch (Exception ex) {
+            LOGGER.error("Exception while downloading DB library.", ex);
+            this.result.setResult(ex.toString());
+            this.result.setSuccess(false);
         }
     }
 }

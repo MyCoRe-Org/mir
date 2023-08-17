@@ -24,6 +24,8 @@ package org.mycore.mir.wizard.command;
 
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.mycore.backend.jpa.MCREntityManagerProvider;
 import org.mycore.mir.wizard.MIRWizardCommand;
 import org.mycore.user2.MCRUserCommands;
@@ -32,6 +34,8 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 
 public class MIRWizardInitSuperuser extends MIRWizardCommand {
+
+    private static final Logger LOGGER = LogManager.getLogger();
 
     public MIRWizardInitSuperuser() {
         this("init.superuser");
@@ -60,7 +64,9 @@ public class MIRWizardInitSuperuser extends MIRWizardCommand {
             }
 
         } catch (Exception ex) {
-            this.result.setResult(ex.getMessage());
+            LOGGER.error("Exception while initializing superuser.", ex);
+            this.result.setResult(ex.toString());
+            this.result.setSuccess(false);
         }
     }
 }
