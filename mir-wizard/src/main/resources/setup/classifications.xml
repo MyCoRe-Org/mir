@@ -13,10 +13,12 @@
   <classification uri="resource:mycore-classifications/mir_institutes.xml" />
   <classification uri="resource:mycore-classifications/mir_licenses.xml" />
   <classification uri="resource:mycore-classifications/rfc5646.xml" />
+  <classification uri="resource:mycore-classifications/schemaOrg.xml" />
   <classification uri="resource:mycore-classifications/sdnb.xml" />
   <classification uri="resource:mycore-classifications/state.xml" />
   <classification uri="resource:mycore-classifications/typeOfResource.xml" />
   <classification uri="resource:mycore-classifications/nameIdentifier.xml" />
   <classification uri="resource:mycore-classifications/noteTypes.xml" />
   <classification uri="resource:mycore-classifications/identifier.xml" />
+  <classification uri="resource:mycore-classifications/author_roles.xml" />
 </classification>
