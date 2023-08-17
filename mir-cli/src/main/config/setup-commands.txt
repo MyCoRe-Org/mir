@@ -13,6 +13,7 @@ update classification from uri resource:mycore-classifications/mir_genres.xml
 update classification from uri resource:mycore-classifications/mir_institutes.xml
 update classification from uri resource:mycore-classifications/mir_licenses.xml
 update classification from uri resource:mycore-classifications/rfc5646.xml
+update classification from uri resource:mycore-classifications/schemaOrg.xml
 update classification from uri resource:mycore-classifications/sdnb.xml
 update classification from uri resource:mycore-classifications/state.xml
 update classification from uri resource:mycore-classifications/typeOfResource.xml
