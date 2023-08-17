@@ -28,12 +28,17 @@ import java.nio.charset.StandardCharsets;
 import java.util.Properties;
 import java.util.Scanner;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jdom2.Element;
 import org.mycore.common.config.MCRConfiguration2;
 import org.mycore.common.config.MCRConfigurationDir;
 import org.mycore.mir.wizard.MIRWizardCommand;
 
 public class MIRWizardGenerateProperties extends MIRWizardCommand {
+
+    private static final Logger LOGGER = LogManager.getLogger();
+
     public MIRWizardGenerateProperties() {
         this("mycore.properties");
     }
@@ -67,9 +72,9 @@ public class MIRWizardGenerateProperties extends MIRWizardCommand {
             scanner.close();
 
             this.result.setSuccess(true);
-        } catch (Exception e) {
-            this.result.setResult(e.getMessage());
-
+        } catch (Exception ex) {
+            LOGGER.error("Exception while generating properties.", ex);
+            this.result.setResult(ex.toString());
             this.result.setSuccess(false);
         }
     }

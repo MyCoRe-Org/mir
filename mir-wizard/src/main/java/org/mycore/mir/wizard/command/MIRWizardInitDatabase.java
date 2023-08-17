@@ -43,10 +43,10 @@ import jakarta.persistence.Query;
 
 public class MIRWizardInitDatabase extends MIRWizardCommand {
 
-    private final static String ACTION = "create";
-
     private static final Logger LOGGER = LogManager.getLogger();
 
+    private final static String ACTION = "create";
+    
     public MIRWizardInitDatabase() {
         this("init.database");
     }
@@ -79,8 +79,8 @@ public class MIRWizardInitDatabase extends MIRWizardCommand {
             this.result.setResult(res.toString());
         } catch (IOException | PersistenceException ex) {
             LOGGER.error("Exception while initializing database.", ex);
+            this.result.setResult(ex.toString());
             this.result.setSuccess(false);
-            this.result.setResult(ex.getMessage());
         }
     }
 

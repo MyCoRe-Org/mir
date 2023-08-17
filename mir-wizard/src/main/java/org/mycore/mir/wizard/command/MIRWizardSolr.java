@@ -22,6 +22,8 @@
  */
 package org.mycore.mir.wizard.command;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.mycore.mir.wizard.MIRWizardCommand;
 import org.mycore.solr.commands.MCRSolrCommands;
 
@@ -31,9 +33,12 @@ import org.mycore.solr.commands.MCRSolrCommands;
  */
 public class MIRWizardSolr extends MIRWizardCommand {
 
-    private static String DEFAULT_CORE = "main";
+    private static final Logger LOGGER = LogManager.getLogger();
 
-    private static String DEFAULT_CLASSIFICATION = "classification";
+
+    private static final String DEFAULT_CORE = "main";
+
+    private static final String DEFAULT_CLASSIFICATION = "classification";
 
     public MIRWizardSolr() {
         this("solr");
@@ -57,7 +62,9 @@ public class MIRWizardSolr extends MIRWizardCommand {
 
             this.result.setSuccess(true);
         } catch (final Exception ex) {
-            this.result.setResult(ex.getMessage());
+            LOGGER.error("Exception while initializing SOLR.", ex);
+            this.result.setResult(ex.toString());
+            this.result.setSuccess(false);
         }
     }
 }
