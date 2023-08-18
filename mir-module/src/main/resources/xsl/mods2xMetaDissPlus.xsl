@@ -28,7 +28,6 @@
   xmlns:thesis="http://www.ndltd.org/standards/metadata/etdms/1.0/"
   xmlns:ddb="http://www.d-nb.de/standards/ddb/"
   xmlns:dini="http://www.d-nb.de/standards/xmetadissplus/type/"
-  xmlns:sub="http://www.d-nb.de/standards/subject/"
 
   exclude-result-prefixes="xalan mcrxsl piUtil cc dc dcmitype dcterms pc urn thesis ddb dini xlink exslt mods i18n xsl gndo rdf cmd"
   xsi:schemaLocation="http://www.d-nb.de/standards/xmetadissplus/  http://files.dnb.de/standards/xmetadissplus/xmetadissplus.xsd">
@@ -48,6 +47,7 @@
   <xsl:param name="MIR.HostedPeriodicals.List" select="''" />
   <xsl:param name="MIR.xMetaDissPlus.disabledTemplates" select="''" />
   <xsl:param name="MIR.xMetaDissPlus.rights.rightsReserved2free" select="''" />
+  <xsl:param name="MIR.xMetaDissPlus.person.termsOfAddress2academicTitle" select="''" />
 
   <xsl:param name="MIR.xMetaDissPlus.diniPublType.classificationId" select="'diniPublType'" />
   <xsl:variable name="diniPublTypeClassificationId" select="$MIR.xMetaDissPlus.diniPublType.classificationId" />
@@ -579,6 +579,11 @@
           </xsl:otherwise>
         </xsl:choose>
       </pc:name>
+      <xsl:if test="mods:namePart[@type='termsOfAddress'] and $MIR.xMetaDissPlus.person.termsOfAddress2academicTitle = 'true' ">
+        <pc:academicTitle>
+          <xsl:value-of select="mods:namePart[@type='termsOfAddress']"/>
+        </pc:academicTitle>
+      </xsl:if>
     </pc:person>
   </xsl:template>
   
@@ -846,6 +851,11 @@
         <xsl:apply-templates select="$mods" mode="preferredDOI" />
       </ddb:identifier>
     </xsl:if>
+    <xsl:for-each select="mods:identifier[@type='isbn']">
+      <ddb:identifier ddb:type="ISBN">
+        <xsl:value-of select="."/>
+      </ddb:identifier>
+    </xsl:for-each>
   </xsl:template>
 
   <xsl:template mode="preferredURN" match="mods:mods">
