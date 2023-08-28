@@ -298,7 +298,7 @@
                   <properties>
                     <!-- default modules without "console-capture"
                     see: https://codehaus-cargo.github.io/cargo/Jetty+12.x.html -->
-                    <cargo.jetty.modules>server,ext,http,http2c,ee10-annotations,ee10-plus,ee10-jsp,ee10-deploy</cargo.jetty.modules>
+                    <cargo.jetty.modules>server,ext,http,http2c,ee10-annotations,ee10-plus,ee10-jsp,ee10-deploy,ee10-websocket-jakarta</cargo.jetty.modules>
                     <cargo.servlet.port>${cargo.servlet.port}</cargo.servlet.port>
                     <cargo.jetty.realm.name>Restricted</cargo.jetty.realm.name>
                   </properties>
