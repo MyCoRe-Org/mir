@@ -286,8 +286,8 @@ const startSearch = async () => {
         model.results.pop();
     }
 
-    if(this.search.trim().length == 0) {
-        this.dropVisible = 0;
+    if(model.search.trim().length == 0) {
+        model.dropVisible = 0;
         return;
     }
 
