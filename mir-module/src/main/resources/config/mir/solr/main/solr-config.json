@@ -192,12 +192,7 @@
       "appends": {
         "facet": "true",
         "facet.field": [
-          "mods.genre",
-          "derivates",
-          "state",
-          "createdby",
-          "modifiedby",
-          "mods.author"
+          "mods.genre"
         ],
         "facet.mincount": "1"
       }
