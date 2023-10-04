@@ -20,6 +20,7 @@
   <xsl:param name="MIR.citationStyles" select="''" />
   <xsl:param name="MIR.defaultCitationStyle" select="''" />
   <xsl:param name="MIR.altmetrics" select="'show'" />
+  <xsl:param name="MIR.altmetrics.badge" select="'true'" />
   <xsl:param name="MIR.altmetrics.hide" select="'true'" />
   <xsl:param name="MIR.plumx" select="'hide'" />
   <xsl:param name="MIR.plumx.hide" select="'true'" />
@@ -76,6 +77,12 @@
           <xsl:if test="$MIR.altmetrics = 'show'">
             <script type='text/javascript' src='https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js'></script>
             <xsl:choose>
+              <xsl:when test="$MIR.altmetrics.badge = 'false'">
+                <!-- use altmeltrics badge -->
+                <div class="col-6">
+                  <div data-badge-details="right" data-badge-type="donut" data-doi="{//mods:mods/mods:identifier[@type='doi']}" data-hide-no-mentions="{$MIR.altmetrics.hide}" class="altmetric-embed"></div>
+                </div>
+              </xsl:when>
               <xsl:when test="$MIR.plumx = 'show'">
                 <!-- use altmeltrics badge -->
                 <div class="col-6">
