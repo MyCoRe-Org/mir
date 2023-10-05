@@ -23,7 +23,7 @@
 package org.mycore.mir.wizard.command;
 
 import java.io.File;
-import java.net.URL;
+import java.net.URI;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -63,7 +63,7 @@ public class MIRWizardDownloadDBLib extends MIRWizardCommand {
                     File file = new File(libDir + File.separator + fname);
                     try {
 
-                        FileUtils.copyURLToFile(new URL(url), file);
+                        FileUtils.copyURLToFile(new URI(url).toURL(), file);
                         MCRConfigurationDirSetup.loadExternalLibs();
 
                         success = true;
