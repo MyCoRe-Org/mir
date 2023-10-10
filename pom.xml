@@ -334,12 +334,6 @@
                     <version>${tomcat.version}</version>
                     <type>tar.gz</type>
                   </artifactInstaller>
-                  <dependencies>
-                    <dependency>
-                      <groupId>com.sun.activation</groupId>
-                      <artifactId>jakarta.activation</artifactId>
-                    </dependency>
-                  </dependencies>
                 </container>
                 <configuration>
                   <home>${project.build.directory}/catalina-base</home>
