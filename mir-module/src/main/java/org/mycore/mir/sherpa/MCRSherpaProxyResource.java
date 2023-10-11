@@ -22,8 +22,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Optional;
 
@@ -66,15 +64,17 @@ public class MCRSherpaProxyResource {
             urlStr+="&filter="+filter;
         }
         try {
-            URL url = new URI(urlStr).toURL();
-            try (InputStream is = url.openStream(); ByteArrayOutputStream bos = new ByteArrayOutputStream()) {
-                is.transferTo(bos);
-                return Response.ok(bos.toByteArray()).build();
+            URL url = new URL(urlStr);
+            try(InputStream is = url.openStream()){
+                try(ByteArrayOutputStream bos = new ByteArrayOutputStream()){
+                    is.transferTo(bos);
+                    return Response.ok(bos.toByteArray()).build();
+                }
             } catch (IOException e) {
                 LOGGER.error("Error while performing request!", e);
                 return Response.serverError().build();
             }
-        } catch (MalformedURLException | URISyntaxException e) {
+        } catch (MalformedURLException e) {
             LOGGER.error("Error while building URL " + urlStr, e);
             return Response.serverError().build();
         }
