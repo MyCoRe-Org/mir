@@ -429,7 +429,7 @@
         </xsl:otherwise>
       </xsl:choose>
       <div class="btn-group w-100">
-        <a href="#" class="btn btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown">
+        <a href="#" class="btn btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-display="static" >
           <i class="fas fa-cog">
             <xsl:value-of select="' '" />
           </i>
