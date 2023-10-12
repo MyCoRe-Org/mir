@@ -22,7 +22,7 @@
 
       <xsl:for-each select="exslt:node-set($token)/token">
         <xsl:variable name="newStatus" select="text()"/>
-        <li>
+        <li class="mir-list-edit-actions mir-list-status-actions">
           <a class="{$class}" href="{$ServletsBaseURL}MIRStateServlet?newState={$newStatus}&amp;id={$id}"
              title="{i18n:translate(concat('mir.workflow.state.', $currentStatus, '2', $newStatus,'.message'))}">
             <xsl:value-of select="i18n:translate(concat('mir.workflow.state.', $currentStatus, '2', $newStatus))"/>

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<MyCoReWebPage>
+  <section xml:lang="de" title="Menu Test">
+     <div
+      id="menu-test"
+      class="text-right"
+      style="min-height: 600px; padding: 1rem;">
+
+      <style>
+        .mir-indent {
+          padding-left: 2.5rem;
+        }
+        .mir-spacer {
+          margin-top: 0.5rem;
+        }
+        .mir-marked {
+          background-color: rgba(0,0,0,0.1);
+        }
+        .mir-separate {
+          border-top: 1px solid rgba(255,255,255,0.5);
+          border-bottom: 1px solid rgba(255,255,255,0.5);
+        }
+        .mir-separate-top {
+          border-top: 1px solid rgba(255,255,255,0.5);
+        }
+        .mir-separate-bottom {
+          border-bottom: 1px solid rgba(255,255,255,0.5);
+        }
+      </style>
+
+      <div id="mir-edit-div">
+        <div class="btn-group">
+          <div class="btn-group show">
+            <a class="btn btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-display="static" href="#" aria-expanded="true"><i class="fas fa-cog"></i> Aktionen<span class="caret"></span></a>
+            <ul class="dropdown-menu dropdown-menu-right" x-placement="top-end" style="">
+              <li>
+                <a class="dropdown-item" href="http://localhost:8291/mir/servlets/MCRLockServlet?url=/editor/editor-dynamic.xed&amp;id=mir_mods_00000003">Bearbeiten dieses Dokumentes</a>
+              </li>
+              <li class="mir-separate">
+                <a class="dropdown-item" href="http://localhost:8291/mir/servlets/MCRLockServlet?url=/editor/editor-admins.xed&amp;id=mir_mods_00000003">Bearbeiten im Admin-Editor</a>
+              </li>
+              <li>
+                <a title="Metadaten und Volltext werden geprüft und ggf. ergänzt." href="http://localhost:8291/mir/servlets/MIRStateServlet?newState=review&amp;id=mir_mods_00000003" class="dropdown-item">Einreichung überprüfen</a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="http://localhost:8291/mir/editor/editor-admins.xed?copyofid=mir_mods_00000003">Kopie dieses Eintrages erstellen</a>
+              </li>
+              <li class="mir-spacer">
+                <a class="dropdown-item" href="http://localhost:8291/mir/editor/editor-admins.xed?oldVersion=mir_mods_00000003">Neue Version dieses Eintrages erstellen</a>
+              </li>
+              <li>
+                <a class="dropdown-item" onclick="javascript: $('.drop-to-object-optional').toggle();">Hinzufügen eines Dateibereichs</a>
+              </li>
+              <li class="mir-spacer">
+                <a data-baseurl="http://localhost:8291/mir/" data-mycoreid="mir_mods_00000003" data-type="dnbUrn" href="#" class="dropdown-item" data-register-pi="DNBURN">URN registrieren</a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="http://localhost:8291/mir/editor/editor-admins.xed?copyofid=mir_mods_00000003">Kopie dieses Eintrages erstellen</a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="http://localhost:8291/mir/editor/editor-admins.xed?oldVersion=mir_mods_00000003">Neue Version dieses Eintrages erstellen</a>
+              </li>
+              <li>
+                <a data-text="Wollen Sie das Dokument mit ggf. allen angehangenen Dateien wirklich löschen?" class="confirm_deletion dropdown-item" href="http://localhost:8291/mir/servlets/object/delete?id=mir_mods_00000003">Löschen dieses Dokumentes</a>
+              </li>
+              <li class="mir-separate">
+                <a class="dropdown-item" href="http://localhost:8291/mir/servlets/MCRLockServlet?url=/editor/editor-xml.xed&amp;id=mir_mods_00000003">Bearbeiten als XML</a>
+              </li>
+              <li><a href="" class="dropdown-item mir-indent mir-marked">Artikel / Aufsatz</a></li>
+              <li><a href="" class="dropdown-item mir-indent mir-marked">Vorwort / Nachwort</a></li>
+              <li><a href="" class="dropdown-item mir-indent mir-marked">Rezension</a></li>
+              <li><a href="" class="dropdown-item mir-indent mir-marked">Zeitschriftenband</a></li>
+              <li class="mir-separate-bottom"><a href="" class="dropdown-item mir-indent mir-marked">Interview</a></li>
+              <li>
+                <a class="dropdown-item" href="http://localhost:8291/mir/accesskey/manager.xml?objectId=mir_mods_00000003" tabindex="-1" role="menuitem">Zugriffsschlüssel verwalten</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+  <meta>
+    <log lastEditor="administrator" date="2020-04-24" time="10:15"/>
+  </meta>
+</MyCoReWebPage>

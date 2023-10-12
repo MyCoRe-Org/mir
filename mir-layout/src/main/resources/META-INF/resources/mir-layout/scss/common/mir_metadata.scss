@@ -48,8 +48,24 @@
   border-radius: $border-radius;
 }
 
-#mir-edit-div, #mir-abstract-badges-div {
+#mir-edit-div,
+#mir-abstract-badges-div {
   margin-bottom: 15px;
+}
+
+#mir-tools-div {
+  background-color: $light;
+  border-radius: $border-radius;
+  margin-bottom: 2rem;
+  .nav-link {
+    padding: 0.25rem 0.5rem;
+  }
+  .mir-document-hotkeys {
+    .nav-item {
+      margin-right: .5rem;
+    }
+  }
+  .mir-document-options {}
 }
 
 #badges {
@@ -298,4 +314,43 @@ $grayDark: #ECF0F1 !default;
 .mir-toc-section-page,
 .mir-toc-section-author {
   line-height: $headings-line-height;
+}
+
+.mir-list-section {
+  display: block;
+  padding: 0.25rem 1.5rem;
+  font-style: italic;
+}
+.mir-list-indent {
+  padding-left: 2.5rem;
+}
+.mir-list-spacer {
+  margin-top: 0.5rem;
+}
+.mir-list-marked {
+  background-color: rgba(0,0,0,0.1);
+}
+.mir-list-separate {
+  border-top: 1px solid rgba(255,255,255,0.5);
+  border-bottom: 1px solid rgba(255,255,255,0.5);
+}
+.mir-list-separate-top {
+  border-top: 1px solid rgba(255,255,255,0.5);
+}
+.mir-list-separate-bottom {
+  border-bottom: 1px solid rgba(255,255,255,0.5);
+}
+
+li.mir-list-child-actions + li:not(.mir-list-child-actions) .dropdown-item {
+  border-top: 1px solid rgba(255,255,255,0.5);
+}
+
+li.mir-list-status-actions {
+  border-top: 1px solid rgba(255,255,255,0.5);
+}
+li.mir-list-status-actions + li.mir-list-status-actions {
+  border-bottom: none;
+}
+li.mir-list-status-actions + li:not(.mir-list-status-actions) {
+  border-top: 1px solid rgba(255,255,255,0.5);
 }

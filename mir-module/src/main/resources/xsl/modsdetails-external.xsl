@@ -457,13 +457,13 @@
               <xsl:if test="$accessedit">
                 <xsl:choose>
                   <xsl:when test="string-length($editURL) &gt; 0">
-                    <li>
+                    <li class="mir-list-edit-actions">
                       <a href="{$editURL}" class="dropdown-item">
                         <xsl:value-of select="i18n:translate('object.editObject')" />
                       </a>
                     </li>
                     <xsl:if test="string-length($adminEditURL) &gt; 0">
-                      <li>
+                      <li class="mir-list-edit-actions">
                         <a href="{$adminEditURL}&amp;id={$id}" class="dropdown-item">
                           <xsl:value-of select="i18n:translate('mir.admineditor')" />
                         </a>
@@ -481,13 +481,13 @@
                     </li -->
                   </xsl:when>
                   <xsl:otherwise>
-                    <li>
+                    <li class="mir-list-edit-actions">
                       <xsl:value-of select="i18n:translate('object.locked')" />
                     </li>
                   </xsl:otherwise>
                 </xsl:choose>
                 <xsl:if test="$displayAddDerivate='true' and not(piUtil:hasManagedPI($id))">
-                  <li>
+                  <li class="mir-list-edit-actions">
                     <a onclick="javascript: $('.drop-to-object-optional').toggle();" class="dropdown-item">
                       <xsl:value-of select="i18n:translate('mir.upload.addDerivate')" />
                     </a>
@@ -497,7 +497,7 @@
                 <xsl:variable name="piServiceInformation" select="piUtil:getPIServiceInformation($id)" />
                 <xsl:for-each select="$piServiceInformation">
                   <xsl:if test="@permission='true'">
-                    <li>
+                    <li class="mir-list-edit-actions">
                     <!-- data-type is just used for translation -->
                       <a href="#" data-type="{@type}"
                          data-mycoreID="{$id}"
@@ -520,7 +520,7 @@
                 </xsl:for-each>
                 <!-- Packing with ImageWare Packer -->
                 <xsl:if test="imageware:displayPackerButton($id, 'ImageWare')">
-                  <li>
+                  <li class="mir-list-edit-actions">
                     <a
                       class="dropdown-item"
                       href="{$ServletsBaseURL}MCRPackerServlet?packer=ImageWare&amp;objectId={/mycoreobject/@ID}&amp;redirect={encoder:encode(concat($WebApplicationBaseURL,'receive/',/mycoreobject/@ID,'?XSL.Status.Message=mir.iwstatus.success&amp;XSL.Status.Style=success'))}"
@@ -590,7 +590,9 @@
               </xsl:message -->
               <!-- actionmapping.xml must be available for this functionality -->
               <xsl:if test="string-length($child-layout) &gt; 0 and $accessedit and mcrxsl:resourceAvailable('actionmappings.xml')">
-
+                <li class="mir-list-section mir-list-separate-top mir-list-marked mir-list-child-actions">
+                  <span>Anlegen von ...</span>
+                </li>
                 <xsl:variable name="url">
                   <xsl:value-of select="actionmapping:getURLforID('create-child',$id,true())" xmlns:actionmapping="xalan://org.mycore.wfc.actionmapping.MCRURLRetriever" />
                 </xsl:variable>
@@ -598,7 +600,7 @@
                 <xsl:choose>
                   <xsl:when test="not(contains($url, 'editor-dynamic.xed')) and $mods-type != 'series'">
                     <xsl:for-each select="str:tokenize($child-layout,'|')">
-                      <li>
+                      <li class="mir-list-child-actions">
                         <a href="{$url}{$HttpSession}?relatedItemId={$id}&amp;relatedItemType=host&amp;genre={.}" class="dropdown-item">
                           <xsl:value-of select="mcrxsl:getDisplayName('mir_genres',.)" />
                         </a>
@@ -607,7 +609,7 @@
                   </xsl:when>
                   <xsl:when test="not(contains($url, 'editor-dynamic.xed')) and $mods-type = 'series'">
                     <xsl:for-each select="str:tokenize($child-layout,'|')">
-                      <li>
+                      <li class="mir-list-child-actions">
                         <a href="{$url}{$HttpSession}?relatedItemId={$id}&amp;relatedItemType=series&amp;genre={.}" class="dropdown-item">
                           <xsl:value-of select="mcrxsl:getDisplayName('mir_genres',.)" />
                         </a>
@@ -616,7 +618,7 @@
                   </xsl:when>
                   <xsl:when test="contains($url, 'editor-dynamic.xed') and $mods-type = 'lecture'">
                     <xsl:for-each select="str:tokenize($child-layout,'|')">
-                      <li>
+                      <li class="mir-list-child-actions">
                         <a href="{$url}{$HttpSession}?relatedItemId={$id}&amp;relatedItemType=series&amp;genre={.}&amp;host={$mods-type}" class="dropdown-item">
                           <xsl:value-of select="mcrxsl:getDisplayName('mir_genres',.)" />
                         </a>
@@ -625,7 +627,7 @@
                   </xsl:when>
                   <xsl:otherwise>
                     <xsl:for-each select="str:tokenize($child-layout,'|')">
-                      <li>
+                      <li class="mir-list-child-actions">
                         <a href="{$url}{$HttpSession}?relatedItemId={$id}&amp;relatedItemType=host&amp;genre={.}" class="dropdown-item">
                           <xsl:value-of select="mcrxsl:getDisplayName('mir_genres',.)" />
                         </a>
