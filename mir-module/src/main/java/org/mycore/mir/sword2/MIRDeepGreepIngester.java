@@ -109,7 +109,7 @@ public class MIRDeepGreepIngester extends MIRSwordIngesterBase {
                             0,
                             null,
                             derivateTypeId.getRootID(),
-                            derivateTypeId.getID()
+                            derivateTypeId.getId()
                         );
                         derivate.getDerivate().getClassifications().add(derivateTypeClassification);
                     }

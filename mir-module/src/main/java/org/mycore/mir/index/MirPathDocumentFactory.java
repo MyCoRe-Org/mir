@@ -59,7 +59,7 @@ public class MirPathDocumentFactory extends MCRSolrPathDocumentFactory {
             LOGGER.warn("No status set for " + objId + ", could not set for MCRFile: " + input);
             return document;
         }
-        document.setField(status.getRootID(), status.getID());
+        document.setField(status.getRootID(), status.getId());
         return document;
     }
 

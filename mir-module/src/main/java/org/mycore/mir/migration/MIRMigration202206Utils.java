@@ -109,7 +109,7 @@ public class MIRMigration202206Utils {
 
         MCRCategory category = foundCategoryByLabel.iterator().next();
         LOGGER.info("Found single matching category: " + category.toString());
-        nameIdentifier.setAttribute("type", category.getId().getID());
+        nameIdentifier.setAttribute("type", category.getId().getId());
         update.set(true);
 
         if (nameIdentifier.getAttributeValue("typeURI") != null) {
