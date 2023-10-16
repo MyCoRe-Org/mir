@@ -233,8 +233,6 @@
                   </xsl:choose>
                 </td>
               </tr>
-            </xsl:if>
-            <xsl:if test="$fullDetails and attributes[not(attribute[@name='id_orcid'])]">
               <tr class="d-flex">
                 <th class="col-md-3">
                   <xsl:value-of select="i18n:translate('component.user2.admin.user.attributes')" />
