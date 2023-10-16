@@ -1,4 +1,4 @@
-FROM tomcat:jdk17-temurin-focal
+FROM tomcat:10-jdk17-temurin-jammy
 RUN groupadd -r mcr -g 501 && \
     useradd -d /home/mcr -u 501 -m -s /bin/bash -g mcr mcr
 WORKDIR /usr/local/tomcat/
