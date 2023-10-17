@@ -1,13 +1,15 @@
 (function() {
     $(document).ready(function () {
-        let objectID = $("#mir-csl-cite").attr("data-object-id");
+        const citeSelect = $("#mir-csl-cite");
+        let objectID = citeSelect.attr("data-object-id");
+        let defaultStyle = citeSelect.attr("data-default-selected");
 
         $('#mir-csl-cite').on('change', function() {
             getCitation(objectID, $(this).val(), false);
             localStorage.setItem('style', $(this).val());
         });
 
-        loadStyle(objectID);
+        loadStyle(objectID, defaultStyle);
     });
 
     function getCitation(objectID, style, first) {
@@ -30,14 +32,20 @@
         });
     }
 
-    function loadStyle(objectID) {
+    function loadStyle(objectID, defaultStyle) {
         let style = localStorage.getItem('style');
         if (style !== undefined && style !== null && style !== '') {
             getCitation(objectID, style, true);
             $('#mir-csl-cite').val(style);
         }
         else {
-            getCitation(objectID, 'deutsche-sprache', true);
+            if(defaultStyle){
+                getCitation(objectID, defaultStyle, true);
+                $('#mir-csl-cite').val(defaultStyle);
+            } else {
+                getCitation(objectID, 'deutsche-sprache', true);
+                console.warn("No default style defined. Using 'deutsche-sprache'.");
+            }
         }
     }
 
