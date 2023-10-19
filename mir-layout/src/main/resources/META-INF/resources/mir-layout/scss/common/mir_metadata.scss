@@ -54,18 +54,19 @@
 }
 
 #mir-tools-div {
-  background-color: $light;
-  border-radius: $border-radius;
+  margin-top: 2rem;
   margin-bottom: 2rem;
   .nav-link {
     padding: 0.25rem 0.5rem;
+    & > i {
+      margin-right: .5rem;
+    }
   }
-  .mir-document-hotkeys {
+  .mir-document-options {
     .nav-item {
       margin-right: .5rem;
     }
   }
-  .mir-document-options {}
 }
 
 #badges {

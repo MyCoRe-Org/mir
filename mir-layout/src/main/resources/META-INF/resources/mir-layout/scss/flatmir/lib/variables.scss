@@ -18,6 +18,9 @@ $brand-success:      #6EBA6B !default;
 $brand-info:         #4B8FBC !default;
 $brand-warning:      #F39C12 !default;
 
+$body-color:         #212529 !default;
+$primary:            #2c3e50 !default;
+
 // Links
 // -------------------------
 $link-color:         $brand-info !default;
@@ -41,3 +44,7 @@ $mir-navlink-active-color: white !default;
 $navbar-dark-color: white !default;
 $navbar-dark-hover-color: white !default;
 $navbar-dark-active-color: white !default;
+
+$dropdown-link-color:               $body-color !default;
+$dropdown-link-hover-color:         white !default;
+$dropdown-border-color:             $primary !default;
