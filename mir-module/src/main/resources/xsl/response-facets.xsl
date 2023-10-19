@@ -10,7 +10,6 @@
   <xsl:param name="MIR.Response.Facet.Prefix.Classification"/>
 
   <xsl:template name="facets">
-    <!-- xsl:variable name="facet_prefix" select="'classification.'"/ -->
 
     <xsl:if test="/response/lst[@name='facet_counts']/lst[@name='facet_fields'] !=''">
       <xsl:for-each select="/response/lst[@name='facet_counts']/lst[@name='facet_fields']/*">
