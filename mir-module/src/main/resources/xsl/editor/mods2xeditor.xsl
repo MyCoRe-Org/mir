@@ -119,6 +119,14 @@
     </xsl:copy>
   </xsl:template>
 
+  <xsl:template match="mods:role[preceding-sibling::mods:role]">
+    <xsl:comment>removed additional role due to MIR-1247</xsl:comment>
+  </xsl:template>
+
+  <xsl:template match="mods:roleTerm[@authority and @authority != 'marcrelator']">
+    <xsl:comment>removed additional roleTerm due to MIR-1247</xsl:comment>
+  </xsl:template>
+
   <!-- Remove this mods:classification entry, will be created again while saving using mods:accessCondtition (see MIR-161) -->
   <xsl:template match="mods:classification[@authority='accessRestriction']">
     <!-- do nothing -->
