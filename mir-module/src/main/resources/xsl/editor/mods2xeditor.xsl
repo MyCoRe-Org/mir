@@ -13,6 +13,8 @@
   <xsl:param name="WebApplicationBaseURL" />
   <xsl:param name="MIR.PPN.DatabaseList" select="'gvk'" />
 
+  <xsl:variable name="marcrelator" select="document('classification:metadata:-1:children:marcrelator')" />
+
   <!-- put value string (after authority URI) in attribute valueURIxEditor, but only if it contains # -->
   <xsl:template match="@valueURI">
     <xsl:choose>
@@ -119,12 +121,38 @@
     </xsl:copy>
   </xsl:template>
 
-  <xsl:template match="mods:role[preceding-sibling::mods:role]">
+  <xsl:template match="mods:role[$marcrelator//category/@ID = mods:roleTerm[@authority='marcrelator']/text()][1]">
+    <xsl:copy>
+      <xsl:apply-templates select="@*|node()" />
+    </xsl:copy>
+  </xsl:template>
+
+  <xsl:template match="mods:role[position() = last()]">
+    <xsl:choose>
+      <xsl:when test="preceding-sibling::mods:role[$marcrelator//category/@ID = mods:roleTerm[@authority='marcrelator']/text()][1]">
+        <xsl:comment>removed additional role due to MIR-1247</xsl:comment>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:copy>
+          <xsl:apply-templates select="@*|node()" />
+        </xsl:copy>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
+  <xsl:template match="mods:role">
     <xsl:comment>removed additional role due to MIR-1247</xsl:comment>
   </xsl:template>
 
   <xsl:template match="mods:roleTerm[@authority and @authority != 'marcrelator']">
     <xsl:comment>removed additional roleTerm due to MIR-1247</xsl:comment>
+  </xsl:template>
+
+  <xsl:template match="mods:roleTerm[@authority = 'marcrelator' and not($marcrelator//category/@ID = text())]">
+    <xsl:copy>
+      <xsl:apply-templates select="@*" />
+      <xsl:text>oth</xsl:text>
+    </xsl:copy>
   </xsl:template>
 
   <!-- Remove this mods:classification entry, will be created again while saving using mods:accessCondtition (see MIR-161) -->
