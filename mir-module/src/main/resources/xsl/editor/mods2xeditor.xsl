@@ -33,15 +33,33 @@
   </xsl:template>
 
   <xsl:template match="mods:subject/mods:topic/@valueURI">
-    <xsl:attribute name="valueURIxEditor">
-      <xsl:value-of select="substring-after(.,../@authorityURI)" />
-    </xsl:attribute>
+    <xsl:choose>
+      <xsl:when test="contains(.,'#')">
+        <xsl:attribute name="valueURIxEditor">
+          <xsl:value-of select="substring-after(.,'#')" />
+        </xsl:attribute>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:attribute name="valueURIxEditor">
+          <xsl:value-of select="substring-after(.,../@authorityURI)" />
+        </xsl:attribute>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
 
   <xsl:template match="mods:subject/mods:geographic/@valueURI">
-    <xsl:attribute name="valueURIxEditor">
-      <xsl:value-of select="substring-after(.,../@authorityURI)" />
-    </xsl:attribute>
+    <xsl:choose>
+      <xsl:when test="contains(.,'#')">
+        <xsl:attribute name="valueURIxEditor">
+          <xsl:value-of select="substring-after(.,'#')" />
+        </xsl:attribute>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:attribute name="valueURIxEditor">
+          <xsl:value-of select="substring-after(.,../@authorityURI)" />
+        </xsl:attribute>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
 
   <xsl:template match="mods:titleInfo[string-length(@altRepGroup) &gt; 0]|mods:abstract[string-length(@altRepGroup) &gt; 0]">
