@@ -26,11 +26,9 @@
           </xsl:choose>
         </xsl:variable>
 
-        <!-- Check if a classification named $classId exists -->
-        <xsl:variable name="is_classification_exist">
-          <xsl:call-template name="is_classification_exist">
-            <xsl:with-param name="classId" select="$classId"/>
-          </xsl:call-template>
+        <!-- Get the classification named $classId -->
+        <xsl:variable name="classification">
+          <xsl:value-of select="concat('notnull:classification:metadata:all:children:',$classId)"/>
         </xsl:variable>
 
         <!-- TODO: remove conditions for facets 'worldReadableComplete' and 'mods.genre' after code refactoring -->
@@ -59,8 +57,8 @@
                         <xsl:value-of select="i18n:translate(concat('mir.response.facet.', $facet_name, '.title'))"/>
                       </xsl:when>
 
-                      <xsl:when test="$is_classification_exist != 'false'">
-                        <xsl:variable name="category_label" select="document(concat('notnull:classification:metadata:all:children:',$classId))/mycoreclass/label[@xml:lang=$CurrentLang]/@text"/>
+                      <xsl:when test="name(document($classification)/*) != 'null'">
+                        <xsl:variable name="category_label" select="document($classification)/mycoreclass/label[@xml:lang=$CurrentLang]/@text"/>
                         <!-- TODO: need we this choose? -->
                         <xsl:choose>
                           <xsl:when test="$category_label != ''">
@@ -75,6 +73,7 @@
                       <xsl:otherwise>
                         <xsl:value-of select="$facet_name"/>
                       </xsl:otherwise>
+
                     </xsl:choose>
                   </xsl:otherwise>
                 </xsl:choose>
@@ -93,6 +92,7 @@
                       <xsl:with-param name="facet_name" select="$facet_name"/>
                       <xsl:with-param name="i18nPrefix"
                                       select="'mir.response.openAccess.facet.'"/>
+                      <xsl:with-param name="classification" select="$classification"/>
                     </xsl:apply-templates>
                   </xsl:when>
 
@@ -102,17 +102,17 @@
                       select="/response/lst[@name='facet_counts']/lst[@name='facet_fields']">
                       <xsl:with-param name="facet_name" select="$facet_name"/>
                       <xsl:with-param name="classId" select="'mir_genres'"/>
+                      <xsl:with-param name="classification" select="$classification"/>
                     </xsl:apply-templates>
                   </xsl:when>
 
                   <!-- all other facets -->
                   <xsl:otherwise>
-
                     <xsl:apply-templates
                       select="/response/lst[@name='facet_counts']/lst[@name='facet_fields']">
                       <xsl:with-param name="facet_name" select="$facet_name"/>
                       <xsl:with-param name="classId" select="$classId"/>
-                      <xsl:with-param name="is_classification_facet" select="$is_classification_exist"/>
+                      <xsl:with-param name="classification" select="$classification"/>
                     </xsl:apply-templates>
                   </xsl:otherwise>
                 </xsl:choose>
@@ -129,13 +129,7 @@
     <xsl:param name="facet_name"/>
     <xsl:param name="classId"/>
     <xsl:param name="i18nPrefix"/>
-    <xsl:param name="is_classification_facet"/>
-
-    <xsl:variable name="is_classification_exist">
-      <xsl:call-template name="is_classification_exist">
-        <xsl:with-param name="classId" select="$classId"/>
-      </xsl:call-template>
-    </xsl:variable>
+    <xsl:param name="classification"/>
 
     <xsl:for-each select="lst[@name=$facet_name]/int">
       <xsl:variable name="fqValue" select="concat($facet_name,':',@name)"/>
@@ -193,21 +187,13 @@
             <span class="title">
               <xsl:choose>
 
-                <xsl:when test="$is_classification_facet='true'">
+                <xsl:when test="name(document($classification)/*) != 'null'">
+                  <xsl:variable name="category" select="@name"/>
+                  <xsl:variable name="category_label" select="document($classification)/mycoreclass/categories/category[@ID=$category]/label[@xml:lang=$CurrentLang]/@text"/>
                   <xsl:choose>
-                    <xsl:when test="$is_classification_exist != 'false'">
-                      <xsl:variable name="category" select="@name"/>
-                      <xsl:variable name="category_label" select="document(concat('notnull:classification:metadata:all:children:',$classId))/mycoreclass/categories/category[@ID=$category]/label[@xml:lang=$CurrentLang]/@text"/>
-                      <xsl:choose>
-                        <xsl:when test="$category_label != ''">
-                          <xsl:value-of select="$category_label"/>
-                        </xsl:when>
-                        <xsl:otherwise>
-                          <xsl:value-of select="@name"/>
-                        </xsl:otherwise>
-                      </xsl:choose>
+                    <xsl:when test="$category_label != ''">
+                      <xsl:value-of select="$category_label"/>
                     </xsl:when>
-
                     <xsl:otherwise>
                       <xsl:value-of select="@name"/>
                     </xsl:otherwise>
@@ -233,6 +219,7 @@
                 <xsl:otherwise>
                   <xsl:value-of select="@name"/>
                 </xsl:otherwise>
+
               </xsl:choose>
             </span>
             <span class="hits">
@@ -242,12 +229,6 @@
         </div>
       </li>
     </xsl:for-each>
-  </xsl:template>
-
-  <!-- The template checks if a classification named $classId exists and returns true or false -->
-  <xsl:template name="is_classification_exist">
-    <xsl:param name="classId"/>
-    <xsl:value-of select="name(document(concat('notnull:classification:metadata:all:children:',$classId))/*) != 'null'"/>
   </xsl:template>
 
 </xsl:stylesheet>
