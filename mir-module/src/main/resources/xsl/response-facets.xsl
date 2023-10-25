@@ -11,117 +11,115 @@
 
   <xsl:template name="facets">
 
-    <xsl:if test="/response/lst[@name='facet_counts']/lst[@name='facet_fields'] !=''">
-      <xsl:for-each select="/response/lst[@name='facet_counts']/lst[@name='facet_fields']/*">
-        <xsl:variable name="facet_name" select="self::node()/@name"/>
-        <xsl:variable name="classId">
-          <!-- Check if facet has a prefix -->
-          <xsl:choose>
-            <xsl:when test="contains($facet_name, $MIR.Response.Facet.Prefix.Classification)">
-              <xsl:value-of select="substring-after($facet_name, $MIR.Response.Facet.Prefix.Classification)"/>
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:value-of select="$facet_name" />
-            </xsl:otherwise>
-          </xsl:choose>
-        </xsl:variable>
+    <xsl:for-each select="/response/lst[@name='facet_counts']/lst[@name='facet_fields']/*">
+      <xsl:variable name="facet_name" select="self::node()/@name"/>
+      <xsl:variable name="classId">
+        <!-- Check if facet has a prefix -->
+        <xsl:choose>
+          <xsl:when test="contains($facet_name, $MIR.Response.Facet.Prefix.Classification)">
+            <xsl:value-of select="substring-after($facet_name, $MIR.Response.Facet.Prefix.Classification)"/>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:value-of select="$facet_name" />
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:variable>
 
-        <!-- Get the classification named $classId -->
-        <xsl:variable name="classification">
-          <xsl:value-of select="concat('notnull:classification:metadata:all:children:',$classId)"/>
-        </xsl:variable>
+      <!-- Get the classification named $classId -->
+      <xsl:variable name="classification">
+        <xsl:value-of select="concat('notnull:classification:metadata:all:children:',$classId)"/>
+      </xsl:variable>
 
-        <!-- TODO: remove conditions for facets 'worldReadableComplete' and 'mods.genre' after code refactoring -->
-        <xsl:if test="self::node()[@name=$facet_name]/int">
-          <div class="card {$facet_name}">
-            <div class="card-header" data-toggle="collapse-next">
-              <h3 class="card-title">
-                <!-- Checking facet name for compatibility with old code, facets named -->
-                <!-- 'worldReadableComplete' and 'mods.genre' from old code -->
-                <xsl:choose>
-                  <!-- facet 'worldReadableComplete' -->
-                  <xsl:when test="$facet_name='worldReadableComplete'">
-                    <xsl:value-of select="i18n:translate('mir.response.openAccess.facet.title')"/>
-                  </xsl:when>
+      <!-- TODO: remove conditions for facets 'worldReadableComplete' and 'mods.genre' after code refactoring -->
+      <xsl:if test="self::node()[@name=$facet_name]/int">
+        <div class="card {$facet_name}">
+          <div class="card-header" data-toggle="collapse-next">
+            <h3 class="card-title">
+              <!-- Checking facet name for compatibility with old code, facets named -->
+              <!-- 'worldReadableComplete' and 'mods.genre' from old code -->
+              <xsl:choose>
+                <!-- facet 'worldReadableComplete' -->
+                <xsl:when test="$facet_name='worldReadableComplete'">
+                  <xsl:value-of select="i18n:translate('mir.response.openAccess.facet.title')"/>
+                </xsl:when>
 
-                  <!-- facet 'mods.genre' -->
-                  <xsl:when test="$facet_name='mods.genre'">
-                    <xsl:value-of select="i18n:translate('editor.search.mir.genre')"/>
-                  </xsl:when>
+                <!-- facet 'mods.genre' -->
+                <xsl:when test="$facet_name='mods.genre'">
+                  <xsl:value-of select="i18n:translate('editor.search.mir.genre')"/>
+                </xsl:when>
 
-                  <!-- all other facets -->
-                  <xsl:otherwise>
-                    <!-- If there is no value in the messages_*.properties files, then we take the facet name as the title of the card -->
-                    <xsl:choose>
-                      <xsl:when test="i18n:exists(concat('mir.response.facet.', $facet_name, '.title'))">
-                        <xsl:value-of select="i18n:translate(concat('mir.response.facet.', $facet_name, '.title'))"/>
-                      </xsl:when>
+                <!-- all other facets -->
+                <xsl:otherwise>
+                  <!-- If there is no value in the messages_*.properties files, then we take the facet name as the title of the card -->
+                  <xsl:choose>
+                    <xsl:when test="i18n:exists(concat('mir.response.facet.', $facet_name, '.title'))">
+                      <xsl:value-of select="i18n:translate(concat('mir.response.facet.', $facet_name, '.title'))"/>
+                    </xsl:when>
 
-                      <xsl:when test="name(document($classification)/*) != 'null'">
-                        <xsl:variable name="category_label" select="document($classification)/mycoreclass/label[@xml:lang=$CurrentLang]/@text"/>
-                        <!-- TODO: need we this choose? -->
-                        <xsl:choose>
-                          <xsl:when test="$category_label != ''">
-                            <xsl:value-of select="$category_label"/>
-                          </xsl:when>
-                          <xsl:otherwise>
-                            <xsl:value-of select="$facet_name"/>
-                          </xsl:otherwise>
-                        </xsl:choose>
-                      </xsl:when>
+                    <xsl:when test="name(document($classification)/*) != 'null'">
+                      <xsl:variable name="category_label" select="document($classification)/mycoreclass/label[@xml:lang=$CurrentLang]/@text"/>
+                      <!-- TODO: need we this choose? -->
+                      <xsl:choose>
+                        <xsl:when test="$category_label != ''">
+                          <xsl:value-of select="$category_label"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                          <xsl:value-of select="$facet_name"/>
+                        </xsl:otherwise>
+                      </xsl:choose>
+                    </xsl:when>
 
-                      <xsl:otherwise>
-                        <xsl:value-of select="$facet_name"/>
-                      </xsl:otherwise>
+                    <xsl:otherwise>
+                      <xsl:value-of select="$facet_name"/>
+                    </xsl:otherwise>
 
-                    </xsl:choose>
-                  </xsl:otherwise>
-                </xsl:choose>
-              </h3>
-            </div>
-
-            <div class="card-body collapse show">
-              <ul class="filter">
-                <!-- Checking facet name for compatibility with old code, facets named -->
-                <!-- 'worldReadableComplete' and 'mods.genre' from old code -->
-                <xsl:choose>
-                  <!-- facet 'worldReadableComplete' -->
-                  <xsl:when test="$facet_name='worldReadableComplete'">
-                    <xsl:apply-templates
-                      select="/response/lst[@name='facet_counts']/lst[@name='facet_fields']">
-                      <xsl:with-param name="facet_name" select="$facet_name"/>
-                      <xsl:with-param name="i18nPrefix"
-                                      select="'mir.response.openAccess.facet.'"/>
-                      <xsl:with-param name="classification" select="$classification"/>
-                    </xsl:apply-templates>
-                  </xsl:when>
-
-                  <!-- facet 'mods.genre' -->
-                  <xsl:when test="$facet_name='mods.genre'">
-                    <xsl:apply-templates
-                      select="/response/lst[@name='facet_counts']/lst[@name='facet_fields']">
-                      <xsl:with-param name="facet_name" select="$facet_name"/>
-                      <xsl:with-param name="classId" select="'mir_genres'"/>
-                      <xsl:with-param name="classification" select="$classification"/>
-                    </xsl:apply-templates>
-                  </xsl:when>
-
-                  <!-- all other facets -->
-                  <xsl:otherwise>
-                    <xsl:apply-templates
-                      select="/response/lst[@name='facet_counts']/lst[@name='facet_fields']">
-                      <xsl:with-param name="facet_name" select="$facet_name"/>
-                      <xsl:with-param name="classId" select="$classId"/>
-                      <xsl:with-param name="classification" select="$classification"/>
-                    </xsl:apply-templates>
-                  </xsl:otherwise>
-                </xsl:choose>
-              </ul>
-            </div>
+                  </xsl:choose>
+                </xsl:otherwise>
+              </xsl:choose>
+            </h3>
           </div>
-        </xsl:if>
-      </xsl:for-each>
-    </xsl:if>
+
+          <div class="card-body collapse show">
+            <ul class="filter">
+              <!-- Checking facet name for compatibility with old code, facets named -->
+              <!-- 'worldReadableComplete' and 'mods.genre' from old code -->
+              <xsl:choose>
+                <!-- facet 'worldReadableComplete' -->
+                <xsl:when test="$facet_name='worldReadableComplete'">
+                  <xsl:apply-templates
+                    select="/response/lst[@name='facet_counts']/lst[@name='facet_fields']">
+                    <xsl:with-param name="facet_name" select="$facet_name"/>
+                    <xsl:with-param name="i18nPrefix"
+                                    select="'mir.response.openAccess.facet.'"/>
+                    <xsl:with-param name="classification" select="$classification"/>
+                  </xsl:apply-templates>
+                </xsl:when>
+
+                <!-- facet 'mods.genre' -->
+                <xsl:when test="$facet_name='mods.genre'">
+                  <xsl:apply-templates
+                    select="/response/lst[@name='facet_counts']/lst[@name='facet_fields']">
+                    <xsl:with-param name="facet_name" select="$facet_name"/>
+                    <xsl:with-param name="classId" select="'mir_genres'"/>
+                    <xsl:with-param name="classification" select="$classification"/>
+                  </xsl:apply-templates>
+                </xsl:when>
+
+                <!-- all other facets -->
+                <xsl:otherwise>
+                  <xsl:apply-templates
+                    select="/response/lst[@name='facet_counts']/lst[@name='facet_fields']">
+                    <xsl:with-param name="facet_name" select="$facet_name"/>
+                    <xsl:with-param name="classId" select="$classId"/>
+                    <xsl:with-param name="classification" select="$classification"/>
+                  </xsl:apply-templates>
+                </xsl:otherwise>
+              </xsl:choose>
+            </ul>
+          </div>
+        </div>
+      </xsl:if>
+    </xsl:for-each>
 
   </xsl:template>
 
