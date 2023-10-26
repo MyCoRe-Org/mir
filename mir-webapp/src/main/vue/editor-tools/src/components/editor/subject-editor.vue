@@ -1,99 +1,107 @@
 <template>
-    <div>
-        <TransitionGroup class="list-group" name="child-list" tag="ol">
-            <li v-for="(subjectChild, i) in model.subject.children" :key="(subjectChild as any).key"
-                class="list-group-item subject-child">
-                <div class="row">
-                    <div class="col-10 col-md-9">
-                        <div v-if="subjectChild.type == 'Topic'">
-                            <topic-display :topic="subjectChild as Topic"/>
-                        </div>
-                        <div v-else-if="subjectChild.type == 'Name'">
-                            <name-display :name="subjectChild as Name"/>
-                        </div>
-                        <div v-else-if="subjectChild.type == 'Geographic'">
-                            <geographic-display :geographic="subjectChild as Geographic"/>
-                        </div>
-                        <div v-else-if="subjectChild.type == 'TitleInfo'">
-                            <title-info-display :titleInfo="subjectChild as TitleInfo"/>
-                        </div>
-                        <div v-else-if="subjectChild.type == 'Cartographics'">
-                            <cartographics-display :cartographics="subjectChild as Cartographics"/>
-                        </div>
+
+    <TransitionGroup class="list-group list-group-flush" name="child-list" tag="ol">
+        <li v-if="model.subject.children.length==0" class="list-group-item text-secondary">
+            {{ i18n["mir.editor.subject.empty"] }}
+        </li>
+        <li v-for="(subjectChild, i) in model.subject.children" :key="(subjectChild as any).key"
+            class="list-group-item subject-child">
+            <div class="row">
+                <div class="col-xl-8 col-md-6 col-sm-12">
+                    <div v-if="subjectChild.type == 'Topic'">
+                        <topic-display mode="editor" :topic="subjectChild as Topic"/>
                     </div>
-                    <div class="col-2 col-md-3">
-                        <repeater
-                                :downEnabled="i < model.subject.children.length - 1"
-                                :downVisible="props.settings.admin && !notAdminAndMultipleChilds"
-                                :editEnabled="true"
-                                :editPressed="model.editingObject == subjectChild"
-                                :editVisible="props.settings.admin=='geographicPair' || !notAdminAndMultipleChilds"
-                                :minusEnabled="true"
-                                :minusVisible="props.settings.admin=='geographicPair' || !notAdminAndMultipleChilds"
-                                :plusEnabled="false"
-                                :plusVisible="false"
-                                :upEnabled="i > 0 && !notAdminAndMultipleChilds"
-                                :upVisible="props.settings.admin"
-                                v-on:downClicked="moveChildDown(subjectChild,i)"
-                                v-on:editClicked="editChild(subjectChild,i)"
-                                v-on:minusClicked="removeChild(subjectChild,i)"
-                                v-on:upClicked="moveChildUp(subjectChild,i)"
-                        />
+                    <div v-else-if="subjectChild.type == 'Name'">
+                        <name-display mode="editor" :name="subjectChild as Name"/>
+                    </div>
+                    <div v-else-if="subjectChild.type == 'Geographic'">
+                        <geographic-display mode="editor" :geographic="subjectChild as Geographic"/>
+                    </div>
+                    <div v-else-if="subjectChild.type == 'TitleInfo'">
+                        <title-info-display mode="editor" :titleInfo="subjectChild as TitleInfo"/>
+                    </div>
+                    <div v-else-if="subjectChild.type == 'Cartographics'">
+                        <cartographics-display mode="editor" :cartographics="subjectChild as Cartographics"/>
                     </div>
                 </div>
-            </li>
-        </TransitionGroup>
-        <div ref="editDialog" class="modal" role="dialog" tabindex="-1">
-            <div class="modal-dialog modal-lg" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Bearbeiten</h5>
-                        <button aria-label="Close" class="close" data-dismiss="modal" type="button">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body" style="overflow: scroll">
-                        <div v-if="model.editingObject != null">
-                            <div v-if="model.editingObject.type == 'Topic'">
-                                <topic-editor v-model="model.editingObjectCopy"
-                                              @invalid:data="markInvalid"
-                                              @valid:data="markValid"
-                                />
-                            </div>
-                            <div v-else-if="model.editingObject.type == 'Name'">
-                                <name-editor v-model="model.editingObjectCopy"
-                                             @invalid:data="markInvalid"
-                                             @valid:data="markValid"
-                                />
-                            </div>
-                            <div v-else-if="model.editingObject.type == 'Geographic'">
-                                <geographic-editor v-model="model.editingObjectCopy"
-                                             @invalid:data="markInvalid"
-                                             @valid:data="markValid"
-                                />
-                            </div>
-                            <div v-else-if="model.editingObject.type == 'TitleInfo'">
-                                <title-info-editor v-model="model.editingObjectCopy"
-                                                   @invalid:data="markInvalid"
-                                                   @valid:data="markValid"
-                                />
-                            </div>
-                            <div v-else-if="model.editingObject.type == 'Cartographics'">
-                                <cartographics-editor v-model="model.editingObjectCopy"
-                                                    @invalid:data="markInvalid"
-                                                    @valid:data="markValid"
-                                />
-                            </div>
+                <div class="col-xl-4 col-md-6 col-sm-12 pmud-row">
+                    <repeater
+                        :downEnabled="i < model.subject.children.length - 1"
+                        :downVisible="props.settings.admin && !notAdminAndMultipleChilds"
+                        :editEnabled="!(('authority' in subjectChild && subjectChild.authority != undefined) || ('valueURI' in subjectChild && subjectChild.valueURI != undefined))"
+                        :editPressed="model.editingObject == subjectChild"
+                        :editVisible="props.settings.admin=='geographicPair' || !notAdminAndMultipleChilds"
+                        :minusEnabled="true"
+                        :minusVisible="props.settings.admin=='geographicPair' || !notAdminAndMultipleChilds"
+                        :plusEnabled="false"
+                        :plusVisible="false"
+                        :upEnabled="i > 0 && !notAdminAndMultipleChilds"
+                        :upVisible="props.settings.admin"
+                        v-on:downClicked="moveChildDown(subjectChild,i)"
+                        v-on:editClicked="editChild(subjectChild,i)"
+                        v-on:minusClicked="removeChild(subjectChild,i)"
+                        v-on:upClicked="moveChildUp(subjectChild,i)"
+                    />
+                </div>
+            </div>
+        </li>
+
+        <li v-if="'coords' in slots" class="list-group-item">
+            <slot name="coords"/>
+        </li>
+
+    </TransitionGroup>
+
+    <div ref="editDialog" class="modal" role="dialog" tabindex="-1">
+        <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Bearbeiten</h5>
+                    <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" style="overflow: scroll">
+                    <div v-if="model.editingObject != null">
+                        <div v-if="model.editingObject.type == 'Topic'">
+                            <topic-editor v-model="model.editingObjectCopy"
+                                          @invalid:data="markInvalid"
+                                          @valid:data="markValid"
+                            />
+                        </div>
+                        <div v-else-if="model.editingObject.type == 'Name'">
+                            <name-editor v-model="model.editingObjectCopy"
+                                         @invalid:data="markInvalid"
+                                         @valid:data="markValid"
+                            />
+                        </div>
+                        <div v-else-if="model.editingObject.type == 'Geographic'">
+                            <geographic-editor v-model="model.editingObjectCopy"
+                                               @invalid:data="markInvalid"
+                                               @valid:data="markValid"
+                            />
+                        </div>
+                        <div v-else-if="model.editingObject.type == 'TitleInfo'">
+                            <title-info-editor v-model="model.editingObjectCopy"
+                                               @invalid:data="markInvalid"
+                                               @valid:data="markValid"
+                            />
+                        </div>
+                        <div v-else-if="model.editingObject.type == 'Cartographics'">
+                            <cartographics-editor v-model="model.editingObjectCopy"
+                                                  @invalid:data="markInvalid"
+                                                  @valid:data="markValid"
+                            />
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <button class="btn btn-secondary" type="button" @click.prevent="abortEdit()">
-                            Abbrechen
-                        </button>
-                        <button :class="'btn btn-primary' + (!model.valid ? ' disabled':'')" type="button" @click.prevent="applyEdit()">
-                            Speichern
-                        </button>
-                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" @click.prevent="abortEdit()">
+                        Abbrechen
+                    </button>
+                    <button :class="'btn btn-primary' + (!model.valid ? ' disabled':'')" type="button" @click.prevent="applyEdit()">
+                        Speichern
+                    </button>
                 </div>
             </div>
         </div>
@@ -105,7 +113,7 @@
 import {Cartographics, Geographic, Name, Subject, SubjectChild, TitleInfo, Topic} from "@/api/Subject";
 import TopicEditor from "@/components/editor/topic-editor.vue";
 import repeater from "@/components/editor/repeater.vue";
-import {computed, defineProps, onMounted, reactive, ref, watch} from "vue";
+import {computed, defineProps, defineSlots, nextTick, onMounted, reactive, ref, watch} from "vue";
 import NameEditor from "@/components/editor/name-editor.vue";
 import NameDisplay from "@/components/display/name-display.vue";
 import GeographicDisplay from "@/components/display/geographic-display.vue";
@@ -116,6 +124,7 @@ import TitleInfoDisplay from "@/components/display/title-info-display.vue";
 import CartographicsDisplay from "@/components/display/cartographics-display.vue";
 import CartographicsEditor from "@/components/editor/cartographic-editor.vue";
 import {EditorSettings} from "@/api/XEditorConnector";
+import {provideTranslations} from "@/api/I18N";
 
 const props = defineProps<{
     modelValue: Subject,
@@ -133,6 +142,10 @@ const model = reactive({
     valid: false,
 });
 
+const i18n = provideTranslations([
+    "mir.editor.subject.empty",
+]);
+
 watch(() => props.modelValue, (newValue) => {
     addKeys(newValue);
     model.subject = newValue;
@@ -145,6 +158,10 @@ watch(() => model.subject, (newValue) => {
 }, {
     deep: true
 });
+
+const slots = defineSlots<{
+    coords: () => any
+}>()
 
 const notAdminAndMultipleChilds = computed(() => {
    return props.settings.admin===false && model.subject.children.length > 1
@@ -188,11 +205,16 @@ const removeKeys = (subject: Subject) => {
 }
 
 onMounted(() => {
+    // the ref to modal is not yet available at this point, so we wait a bit
     const jq = (window as any).$;
-    jq(editDialog.value).modal({show: false});
-    jq(editDialog.value).on('hidden.bs.modal', function () {
-        abortEdit();
-    })
+    nextTick(()=> {
+       setTimeout(()=> {
+           jq(editDialog.value).modal({show: false});
+           jq(editDialog.value).on('hidden.bs.modal', function () {
+               abortEdit();
+           })
+       }, 1000);
+    });
 });
 
 
@@ -230,8 +252,8 @@ const markValid = () => {
 
 <style scoped>
 
-.modal-dialog {
-    max-width: 90%;
+.pmud-row>* {
+    float: right;
 }
 
 .child-list-enter, .child-list-move, .child-list-leave {

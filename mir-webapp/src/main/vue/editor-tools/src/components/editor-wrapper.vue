@@ -4,121 +4,128 @@
 
             <div class="card mt-3">
 
-                <div class="card-body">
-                    <search-form :addCustomEnabled="possibleTypeList.length>0"
-                                 :searchButton="i18n['mir.editor.subject.search']"
-                                 :searchEnabled="searchEnabled"
-                                 @addCustom="addCustom"
-                                 @openSearchSettings="openSearchSettings"
+                <div v-if="anySearchable" class="card-body">
+                    <search-form :searchEnabled="searchEnabled"
                                  @searchSubmitted="searchSubmitted"
+                                 :searchTerm="model.searchTerm"
                     />
-                    <div v-if="model.searchOptionsVisible">
-                        <search-settings :editor-settings="model.settings" v-model="model.searchOptions"/>
-                    </div>
 
-                    <!-- search results -->
-                    <div ref="searchDialog" class="modal" role="dialog" tabindex="-1">
-                        <div class="modal-dialog modal-lg" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title">{{ i18n["mir.editor.subject.search.modal.title"] }}</h5>
-                                    <button aria-label="Close" class="close" data-dismiss="modal" type="button" @click.prevent>
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    <search-result-list
-                                        :search-result-group="model.searchResultGroup"
-                                        @resultSelected="resultSelected"/>
+                </div>
 
-                                    <div v-if="model.searching" class="text-center">
-                                        <div class="spinner-border" role="status">
-                                            <span class="sr-only">Loading...</span>
-                                        </div>
+                <!-- search results -->
+                <div ref="searchDialog" class="modal" role="dialog" tabindex="-1">
+                    <div class="modal-dialog modal-xl" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">{{ i18n["mir.editor.subject.search.modal.title"] }}</h5>
+                                <button aria-label="Close" class="close" data-dismiss="modal" type="button" @click.prevent>
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <search-result-list
+                                    v-model:search-settings="model.searchOptions"
+                                    :addCustomEnabled="possibleTypeList.length>0"
+                                    :editor-settings="model.settings"
+                                    :search-result-group="model.searchResultGroup"
+                                    :searchOptionsVisible="model.searchOptionsVisible"
+                                    @addCustom="addCustom"
+                                    @openSearchSettings="openSearchSettings"
+                                    @resultSelected="resultSelected"
+                                />
+
+                                <div v-if="model.searching" class="text-center">
+                                    <div class="spinner-border" role="status">
+                                        <span class="sr-only">Loading...</span>
                                     </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button class="btn btn-secondary" data-dismiss="modal" type="button" @click.prevent>
-                                        {{ i18n["mir.editor.subject.search.modal.close"]}}
-                                    </button>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-
-                    <!-- add custom -->
-                    <div ref="customDialog" class="modal" role="dialog" tabindex="-1">
-                        <div class="modal-dialog modal-lg" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title">{{ i18n["mir.editor.subject.custom.modal.title"] }}</h5>
-                                    <button aria-label="Close" class="close" data-dismiss="modal" type="button"
-                                            @click.prevent>
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-
-                                <div class="modal-body">
-                                    <div class="row mb-2">
-                                        <div class="col-3">
-                                            <label>{{ i18n["mir.editor.subject.custom.modal.type"] }}</label>
-                                        </div>
-                                        <div class="col-7">
-                                            <select v-model="model.custom.type" class="form-control form-control-sm custom-type-select">
-                                                <option v-for="type in possibleTypeList"
-                                                        :value="type">
-                                                    {{ i18n["mir.editor.subject.custom.modal.type."+type] }}
-                                                </option>
-                                            </select>
-                                        </div>
-                                    </div>
-
-                                        <topic-editor v-if="model.custom.editObject.type=='Topic'"
-                                                      v-model="model.custom.editObject"
-                                                      @valid:data="markValid"
-                                                      @invalid:data="markInvalid"
-                                        />
-                                        <name-editor v-if="model.custom.editObject.type=='Name'"
-                                                     v-model="model.custom.editObject"
-                                                     @valid:data="markValid"
-                                                     @invalid:data="markInvalid"
-                                        />
-                                        <title-info-editor v-if="model.custom.editObject.type=='TitleInfo'"
-                                                           v-model="model.custom.editObject"
-                                                           @valid:data="markValid"
-                                                           @invalid:data="markInvalid"
-                                        />
-                                        <cartographics-editor v-if="model.custom.editObject.type=='Cartographics'"
-                                                               v-model="model.custom.editObject"
-                                                               @valid:data="markValid"
-                                                               @invalid:data="markInvalid"
-                                        />
-                                        <geographic-editor v-if="model.custom.editObject.type=='Geographic'"
-                                                           v-model="model.custom.editObject"
-                                                           @valid:data="markValid"
-                                                           @invalid:data="markInvalid"
-                                        />
-
-                                </div>
-
-                                <div class="modal-footer">
-                                    <button class="btn btn-secondary" data-dismiss="modal" type="button"
-                                            @click.prevent>{{ i18n["mir.editor.subject.custom.modal.close"]}}
-                                    </button>
-                                    <button :disabled="!model.custom.valid" class="btn btn-primary custom-add" type="button"
-                                            @click.prevent="addCustomObject">{{ i18n["mir.editor.subject.custom.modal.add"]}}
-                                    </button>
-                                </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-secondary" data-dismiss="modal" type="button" @click.prevent>
+                                    {{ i18n["mir.editor.subject.search.modal.close"]}}
+                                </button>
                             </div>
                         </div>
                     </div>
                 </div>
 
+                <!-- add custom -->
+                <div ref="customDialog" class="modal" role="dialog" tabindex="-1">
+                    <div class="modal-dialog modal-xl" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">{{ i18n["mir.editor.subject.custom.modal.title"] }}</h5>
+                                <button aria-label="Close" class="close" data-dismiss="modal" type="button"
+                                        @click.prevent>
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+
+                            <div class="modal-body">
+                                <div class="row mb-2">
+                                    <div class="col-3">
+                                        <label>{{ i18n["mir.editor.subject.custom.modal.type"] }}</label>
+                                    </div>
+                                    <div class="col-7">
+                                        <select v-model="model.custom.type" class="form-control form-control-sm custom-type-select">
+                                            <option v-for="type in possibleTypeList"
+                                                    :value="type">
+                                                {{ i18n["mir.editor.subject.custom.modal.type."+type] }}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <topic-editor v-if="model.custom.editObject.type=='Topic'"
+                                              v-model="model.custom.editObject"
+                                              @valid:data="markValid"
+                                              @invalid:data="markInvalid"
+                                />
+                                <name-editor v-if="model.custom.editObject.type=='Name'"
+                                             v-model="model.custom.editObject"
+                                             @valid:data="markValid"
+                                             @invalid:data="markInvalid"
+                                />
+                                <title-info-editor v-if="model.custom.editObject.type=='TitleInfo'"
+                                                   v-model="model.custom.editObject"
+                                                   @valid:data="markValid"
+                                                   @invalid:data="markInvalid"
+                                />
+                                <cartographics-editor v-if="model.custom.editObject.type=='Cartographics'"
+                                                      v-model="model.custom.editObject"
+                                                      @valid:data="markValid"
+                                                      @invalid:data="markInvalid"
+                                />
+                                <geographic-editor v-if="model.custom.editObject.type=='Geographic'"
+                                                   v-model="model.custom.editObject"
+                                                   @valid:data="markValid"
+                                                   @invalid:data="markInvalid"
+                                />
+
+                            </div>
+
+                            <div class="modal-footer">
+                                <button class="btn btn-secondary" data-dismiss="modal" type="button"
+                                        @click.prevent>{{ i18n["mir.editor.subject.custom.modal.close"]}}
+                                </button>
+                                <button :disabled="!model.custom.valid" class="btn btn-primary custom-add" type="button"
+                                        @click.prevent="addCustomObject">{{ i18n["mir.editor.subject.custom.modal.add"]}}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <subject-editor v-model="model.subject" :settings="model.settings">
+                    <template v-if="showCartographics" #coords>
+                        <a @click="addCoordinates">
+                            {{ i18n["mir.editor.subject.addCoordinates"] }}
+                        </a>
+                    </template>
+                </subject-editor>
+
             </div>
 
-            <form class="form mt-2" @submit.prevent>
-                <subject-editor :settings="model.settings" v-model="model.subject"/>
-            </form>
 
         </div>
     </div>
@@ -150,6 +157,7 @@ const model = reactive({
     currentTab: "search",
     searchResultGroup: [] as SearchResultGroup[],
     searching: false,
+    searchTerm: "",
     searchOptions: {
         searchInstitution: true,
         searchTopic: true,
@@ -171,7 +179,6 @@ const model = reactive({
 });
 
 const i18n = provideTranslations([
-    "mir.editor.subject.search",
     "mir.editor.subject.search.modal.title",
     "mir.editor.subject.search.modal.close",
     "mir.editor.subject.custom.modal.title",
@@ -186,6 +193,8 @@ const i18n = provideTranslations([
     "mir.editor.subject.custom.modal.type.Cartographics",
     "mir.editor.subject.custom.modal.close",
     "mir.editor.subject.custom.modal.add",
+    "mir.editor.subject.addCoordinates",
+    "mir.editor.subject.search.leaving"
 ]);
 
 const searchDialog = ref<HTMLElement | null>(null);
@@ -200,26 +209,58 @@ watch(()=>model.subject, (newValue) => {
     }
 }, {deep: true});
 
+watch( () => model.searchOptions, (newValue) => {
+    search();
+}, {deep: true});
+
 onMounted(() => {
     if(rootEl.value) {
         model.subject = retrieveSubject(rootEl.value);
         model.settings = retrieveSettings(rootEl.value);
 
-        model.searchOptions.searchConference = model.settings.searchable.includes("Conference") || model.settings.searchable.includes("*");
-        model.searchOptions.searchFamily = model.settings.searchable.includes("Family") || model.settings.searchable.includes("*");
-        model.searchOptions.searchInstitution = model.settings.searchable.includes("Institution") || model.settings.searchable.includes("*");
-        model.searchOptions.searchPersons = model.settings.searchable.includes("Person") || model.settings.searchable.includes("*");
-        model.searchOptions.searchPlace = model.settings.searchable.includes("Geographic") || model.settings.searchable.includes("*");
-        model.searchOptions.searchTitle = model.settings.searchable.includes("TitleInfo") || model.settings.searchable.includes("*");
-        model.searchOptions.searchTopic = model.settings.searchable.includes("Topic") || model.settings.searchable.includes("*");
+        const filter = model.settings?.searchFilterDefault || [];
+        const searchable = model.settings.searchable || [];
+
+        model.searchOptions.searchConference = filter.includes("Conference") && searchable.includes("Conference");
+        model.searchOptions.searchFamily = filter.includes("Family") && searchable.includes("Family");
+        model.searchOptions.searchInstitution =  filter.includes("Institution") && searchable.includes("Institution");
+        model.searchOptions.searchPersons = filter.includes("Person") && searchable.includes("Person");
+        model.searchOptions.searchPlace = filter.includes("Geographic") && searchable.includes("Geographic");
+        model.searchOptions.searchTitle = filter.includes("TitleInfo") && searchable.includes("TitleInfo");
+        model.searchOptions.searchTopic = filter.includes("Topic") && searchable.includes("Topic");
+
+        // prevent leaving the page if the search term is not empty. This is to prevent the user from accidentally
+        // entering a topic thinking it will be saved.
+        const value = rootEl.value as HTMLElement;
+        let parent : HTMLElement|null= value as HTMLElement;
+        do  {
+            parent = parent.parentElement;
+        } while (parent != null && parent.tagName != "FORM");
+        if(parent != null) {
+            parent.addEventListener("submit", (e) => {
+                const searchEl = rootEl.value?.querySelector("input.search-topic") as HTMLInputElement;
+                const searchElVal = searchEl?.value;
+                if(searchable != null && searchElVal.trim().length>0){
+                    searchEl.scrollIntoView({ behavior: 'smooth', block: 'center'});
+                    if(!confirm(i18n["mir.editor.subject.search.leaving"])){
+                        e.preventDefault();
+                    }
+                }
+            });
+        }
     }
 });
 const searchSubmitted = async (searchTerm: string) => {
     const jq = (window as any).$;
     jq(searchDialog.value).modal("show");
     model.searching = true;
+    model.searchTerm = searchTerm;
+    await search();
+}
+
+const search = async () => {
     const searchProvider = new LobidSearchProvider();
-    const result = await searchProvider.search(searchTerm, model.searchOptions);
+    const result = await searchProvider.search(model.searchTerm, model.searchOptions);
     model.searchResultGroup = [{
         groupId: "lobid",
         title: "Lobid",
@@ -228,16 +269,40 @@ const searchSubmitted = async (searchTerm: string) => {
     model.searching = false;
 }
 
+// used to make the search form not editable
 const searchEnabled = computed(()=>{
-   if(model.settings?.admin == "geographicPair"){
-        return model.subject?.children.length == undefined || model.subject?.children.filter(child=>child.type=="Geographic").length == 0;
+    if(model.settings?.admin == "geographicPair"){
+       const enabled = model.subject?.children.length == undefined || model.subject?.children.filter(child=>child.type=="Geographic").length == 0;
+       console.log("search enabled", enabled);
+       return enabled;
     } else {
        if(model.settings?.admin === false){
-           return model.subject?.children.length==0
+           const enabled = model.subject?.children.length==0 && model.settings?.searchable.length > 0;
+           console.log("search enabled child searchable", enabled)
+           return enabled;
        } else {
+           console.log("search enabled is admin!");
            return true;
        }
    }
+});
+
+// used to display the 'add cartographics button'
+const showCartographics = computed(() => {
+    const isPair = model.settings?.admin == 'geographicPair' && possibleTypeList.value.includes('Cartographics');
+    const isGeographic = model.settings?.editor.length == 1 && model.settings?.editor[0] == "Cartographics" &&
+        model.subject?.children.filter(c => c.type == "Cartographics").length == 0;
+
+    return isPair || isGeographic;
+});
+
+// used to hide the entire search form
+const anySearchable = computed( () => {
+    if(model.settings?.admin == "geographicPair"){
+        return true;
+    }
+
+    return model.settings?.searchable.length != undefined && model.settings?.searchable.length > 0;
 });
 
 const possibleTypeList = computed(() => {
@@ -291,11 +356,31 @@ const resultSelected = (result: SearchResult) => {
     const jq = (window as any).$;
     jq(searchDialog.value).modal("hide");
     model.subject?.children.push(JSON.parse(JSON.stringify(result.result)));
+    model.searchTerm = "";
 }
 
 const addCustom = () => {
     const jq = (window as any).$;
+    jq(searchDialog.value).modal("hide");
     jq(customDialog.value).modal("show");
+    switch (model.custom.editObject.type) {
+        case "Geographic":
+        case "Topic":
+            model.custom.editObject.text = model.searchTerm;
+            break;
+        case "TitleInfo":
+            model.custom.editObject.title = [model.searchTerm];
+            break;
+        case "Name":
+            model.custom.editObject.displayForm = model.searchTerm;
+            break;
+    }
+
+}
+
+const addCoordinates = () => {
+    model.custom.type = "Cartographics";
+    addCustom();
 }
 
 watch(()=> model.custom.type, (newType)=> {
@@ -393,14 +478,12 @@ const addCustomObject = () => {
     model.subject?.children.push(JSON.parse(JSON.stringify(model.custom.editObject)));
     const jq = (window as any).$;
     jq(customDialog.value).modal("hide");
+    model.searchTerm = "";
 }
 
 </script>
 
 <style scoped>
-.modal-dialog {
-    max-width: 90%;
-}
 
 .modal-body {
     overflow-y: scroll;

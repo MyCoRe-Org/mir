@@ -36,16 +36,20 @@ export const retrieveSubject = (root: HTMLElement): Subject => {
 
 export interface EditorSettings {
     /**
-     * Comma separated list of searchable elements. If contains *, all elements are searchable.
+     * List of types which facet should be enabled in the search.
+     */
+    searchFilterDefault:  ("Topic" | "Geographic" | "Institution" | "Person" | "Family" | "Conference" | "TitleInfo" | "Cartographics" | "*"|"")[]
+    /**
+     * List of searchable types. If contains *, all elements are searchable.
      * If empty, no elements are searchable.
      */
-    searchable: ("Topic" | "Geographic" | "Institution" | "Person" | "Family" | "Conference" | "TitleInfo" | "Cartographic" | "*"|"")[],
+    searchable: ("Topic" | "Geographic" | "Institution" | "Person" | "Family" | "Conference" | "TitleInfo" | "Cartographics" | "*"|"")[],
 
     /**
-     * Comma separated list of editable elements. If contains *, all elements are editable. If empty, no elements are
+     * List of editable types. If contains *, all elements are editable. If empty, no elements are
      * editable.
      */
-    editor: ("Topic" | "Geographic" | "Institution" | "Person" | "Family" | "Conference" | "TitleInfo" | "Cartographic"|"*"|"")[],
+    editor: ("Topic" | "Geographic" | "Institution" | "Person" | "Family" | "Conference" | "TitleInfo" | "Cartographics"|"*"|"")[],
 
     /**
      * If false the editor only allows editing of one subelement. If the subject contains more than one subelement, the
@@ -70,10 +74,31 @@ export const retrieveSettings = (root: HTMLElement): EditorSettings => {
             editor: []
         } as any;
 
-        const editor = input.getAttribute("data-editor") || "*";
-        const searchable = input.getAttribute("data-searchable") || "*";
-        const adminStr = input.getAttribute("data-admin") || "false";
-        const requiredStr= input.getAttribute("data-required") || "false";
+
+        let editor = input.getAttribute("data-editor");
+        if(editor == null){
+            editor = "*";
+        }
+
+        let searchable = input.getAttribute("data-searchable");
+        if(searchable == null){
+            searchable = "*";
+        }
+
+        let adminStr = input.getAttribute("data-admin");
+        if(adminStr == null){
+            adminStr = "false";
+        }
+
+        let requiredStr= input.getAttribute("data-required");
+        if(requiredStr == null){
+            requiredStr = "false";
+        }
+
+        let searchFilterDefaultStr = input.getAttribute("data-search-filter-default");
+        if(searchFilterDefaultStr == null) {
+            searchFilterDefaultStr = "*";
+        }
 
         if(adminStr != "true" && adminStr != "false" && adminStr != "geographicPair"){
             throw new Error(`Unknown value ${adminStr} for data-simple. Expected true, false or geographicPair`);
@@ -100,7 +125,9 @@ export const retrieveSettings = (root: HTMLElement): EditorSettings => {
             settings.editor = Array.of(...possibleTypes) as any;
         } else {
             settings.editor = editor.split(",") as any;
-            settings.editor = settings.editor.filter((value, index, array) => {
+            settings.editor = settings.editor
+                .filter(value => value.trim().length >0 )
+                .filter((value, index, array) => {
                 const includes = possibleTypes.includes(value);
                 if(!includes){
                     console.warn(`Unknown type ${value} in editor list`);
@@ -117,6 +144,19 @@ export const retrieveSettings = (root: HTMLElement): EditorSettings => {
                 const includes = possibleTypes.includes(value);
                 if(!includes){
                     console.warn(`Unknown type ${value} in searchable list`);
+                }
+                return includes;
+            });
+        }
+
+        if(searchFilterDefaultStr == "*") {
+            settings.searchFilterDefault = Array.of(...possibleTypes) as any;
+        } else {
+            settings.searchFilterDefault = searchFilterDefaultStr.split(",") as any;
+            settings.searchFilterDefault = settings.searchFilterDefault.filter((value, index, array) => {
+                const includes = possibleTypes.includes(value);
+                if(!includes){
+                    console.warn(`Unknown type ${value} in searchFilterDefault list`);
                 }
                 return includes;
             });

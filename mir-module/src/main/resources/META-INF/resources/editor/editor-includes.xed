@@ -1739,7 +1739,7 @@
         </label>
         <div class="col-md-6">
           <input type="hidden" class="subjectXML"/>
-          <div class="editorToolsApp" data-searchable="Geographic" data-editor="Geographic,Cartographic" data-admin="geographicPair" data-required="false"> </div>
+          <div class="editorToolsApp" data-searchable="Geographic" data-editor="Geographic,Cartographic" data-search-filter-default="Geographic" data-admin="geographicPair" data-required="false"> </div>
         </div>
         <mir:help-pmud help-text="{i18n:mir.help.cartographics.place}" pmud="true"/>
       </div>
@@ -1755,7 +1755,7 @@
         </label>
         <div class="col-md-6">
           <input type="hidden" class="subjectXML"/>
-          <div class="editorToolsApp" data-searchable="" data-editor="Geographic"  data-admin="false" data-required="false"> </div>
+          <div class="editorToolsApp" data-searchable="Geographic" data-editor="Geographic" data-search-filter-default="Geographic" data-admin="false" data-required="false"> </div>
         </div>
         <mir:help-pmud help-text="{i18n:mir.help.cartographics.place}" pmud="true"/>
       </div>
@@ -1771,7 +1771,7 @@
         </label>
         <div class="col-md-6">
           <input type="hidden" class="subjectXML"/>
-          <div class="editorToolsApp" data-searchable="Geographic" data-editor="Geographic"  data-admin="false" data-required="false"> </div>
+          <div class="editorToolsApp" data-searchable="Geographic" data-editor="Geographic" data-search-filter-default="Geographic" data-admin="false" data-required="false"> </div>
         </div>
         <mir:help-pmud help-text="{i18n:mir.help.cartographics.place}" pmud="true"/>
       </div>
@@ -1787,7 +1787,7 @@
         </label>
         <div class="col-md-6">
           <input type="hidden" class="subjectXML"/>
-          <div class="editorToolsApp" data-searchable="" data-editor="Cartographic" data-admin="false" data-required="false"> </div>
+          <div class="editorToolsApp" data-searchable="" data-editor="Cartographics" data-search-filter-default="" data-admin="false" data-required="false"> </div>
         </div>
         <mir:help-pmud help-text="{i18n:mir.help.cartographics.coordinates}" pmud="false"/>
       </div>
@@ -1803,7 +1803,7 @@
         </label>
         <div class="col-md-6">
           <input type="hidden" class="subjectXML"/>
-          <div class="editorToolsApp" data-searchable="" data-editor="Cartographic" data-admin="false" data-required="false"> </div>
+          <div class="editorToolsApp" data-searchable="" data-editor="Cartographics" data-search-filter-default="" data-admin="false" data-required="false"> </div>
         </div>
         <mir:help-pmud help-text="{i18n:mir.help.cartographics.coordinates}" pmud="true"/>
       </div>
@@ -1819,7 +1819,7 @@
         </label>
         <div class="col-md-6">
           <input type="hidden" class="subjectXML"/>
-          <div class="editorToolsApp" data-searchable="" data-editor="*" data-admin="false" data-required="false"> </div>
+          <div class="editorToolsApp" data-searchable="*" data-editor="*" data-search-filter-default="Topic" data-admin="false" data-required="false"> </div>
         </div>
         <mir:help-pmud help-text="{i18n:mir.help.subject.topic}" pmud="true"/>
       </div>
@@ -1835,7 +1835,7 @@
         </label>
         <div class="col-md-6">
           <input type="hidden" class="subjectXML"/>
-          <div class="editorToolsApp" data-searchable="" data-editor="*" data-admin="false" data-required="true"> </div>
+          <div class="editorToolsApp" data-searchable="*" data-editor="*" data-search-filter-default="Topic" data-admin="false" data-required="true"> </div>
         </div>
         <mir:help-pmud help-text="{i18n:mir.help.subject.topic}" pmud="true"/>
       </div>
@@ -1851,7 +1851,7 @@
         </label>
         <div class="col-md-6">
           <input type="hidden" class="subjectXML"/>
-          <div class="editorToolsApp" data-searchable="*" data-editor="*" data-admin="true" data-required="true"> </div>
+          <div class="editorToolsApp" data-searchable="*" data-editor="*" data-search-filter-default="*" data-admin="true" data-required="true"> </div>
         </div>
         <mir:help-pmud help-text="{i18n:mir.help.subject.topic.complex}" pmud="true"/>
       </div>
@@ -1867,7 +1867,7 @@
         </label>
         <div class="col-md-6">
           <input type="hidden" class="subjectXML"/>
-          <div class="editorToolsApp" data-searchable="*" data-editor="*" data-admin="true" data-required="false"> </div>
+          <div class="editorToolsApp" data-searchable="*" data-editor="*" data-search-filter-default="*" data-admin="true" data-required="false"> </div>
         </div>
         <mir:help-pmud help-text="{i18n:mir.help.subject.topic.complex}" pmud="true"/>
       </div>

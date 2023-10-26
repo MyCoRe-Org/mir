@@ -9,19 +9,24 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
-
+    <script>
+      window["webApplicationBaseURL"] = "https://mycorebibliocon23.gbv.de/mir/";
+      window["currentLang"] = "de";
+    </script>
   </head>
   <body>
     <noscript>
       <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
     </noscript>
+    <div class="container">
     <input class="subjectXML" value="&lt;mods:subject xlink:type=&quot;simple&quot; xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot; xmlns:mods=&quot;http://www.loc.gov/mods/v3&quot;&gt;
 &lt;mods:geographic&gt;Konjunkturprognosen&lt;/mods:geographic&gt;
 &lt;mods:cartographics&gt;
 &lt;mods:coordinates&gt;7.778320312499998 55.1947562242448, 15.0732421875 54.486207574779996, 15.688476562499998 50.92058046649939, 13.139648437499996 50.307117207253185, 14.809570312499996 48.53503606746668, 13.842773437499996 47.77280551446739, 12.436523437499998 46.87921767714815, 10.678710937499998 46.81910741006777, 8.833007812499998 46.99923642194153, 7.3388671874999964 47.41718428777418, 6.108398437499997 47.94971016205548, 6.811523437499999 48.767292368126476, 5.932617187499997 49.74246733313473, 5.581054687500002 50.64272526767974, 4.877929687500001 51.9614171524629, 6.4599609375 53.03152313613208, 7.778320312499998 55.1947562242448&lt;/mods:coordinates&gt;
 &lt;/mods:cartographics&gt;
 &lt;/mods:subject&gt;" type="text">
-    <div class="editorToolsApp" data-searchable="Geographic" data-editor="Geographic,Cartographic" data-simple="geographicPair" data-required="false"></div>
+    <div class="editorToolsApp" data-searchable="*" data-editor="*" data-admin="true" data-required="true"></div>
+    </div>
     <!-- built files will be auto injected -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>
 

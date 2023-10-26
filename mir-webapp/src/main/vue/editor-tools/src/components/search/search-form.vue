@@ -2,12 +2,10 @@
     <form>
         <div class="form-group">
             <div class="input-group input-group-sm mb-3">
-                <input v-model="model.inputValue" :disabled="searchEnabled?null:''" @submit.prevent type="text" class="form-control search-topic">
+                <input v-model="model.inputValue" :disabled="searchEnabled?null:''" @submit.prevent type="text" :placeholder="i18n['mir.editor.subject.search.placeholder']" class="form-control search-topic">
 
                 <div class="input-group-append ">
-                    <button class="btn btn-sm btn-secondary" type="button" @click.prevent="openSearchSettings"><i class="fas fa-gear" /></button>
-                    <button class="btn btn-sm btn-primary" type="submit" :disabled="searchEnabled?null:''" @click.prevent="search" >{{ props.searchButton }}</button>
-                    <button class="btn btn-sm btn-primary search-add-custom" v-if="addCustomEnabled" type="button" @click.prevent="addCustom"><i class="fas fa-plus" /> </button>
+                    <button class="btn btn-sm btn-primary" type="submit" :disabled="searchEnabled?null:''" @click.prevent="search" >{{ i18n['mir.editor.subject.search'] }}</button>
                 </div>
             </div>
         </div>
@@ -16,20 +14,31 @@
 
 <script lang="ts" setup>
 
-import {reactive, defineProps} from "vue";
+import {reactive, defineProps, watch} from "vue";
+import {provideTranslations} from "@/api/I18N";
 
 interface SearchFormProps {
-    searchButton: string,
     searchEnabled: boolean,
-    addCustomEnabled: boolean,
+    searchTerm: string,
 }
 
-const emit = defineEmits(["searchSubmitted", "openSearchSettings", "addCustom"]);
+watch(()=> props.searchTerm, (newValue) => {
+    model.inputValue = newValue;
+}, {
+    deep: true
+});
+
+const emit = defineEmits(["searchSubmitted"]);
 const props = defineProps<SearchFormProps>();
 
 const model = reactive({
     inputValue: "",
 });
+
+const i18n = provideTranslations([
+    "mir.editor.subject.search",
+    "mir.editor.subject.search.placeholder",
+]);
 
 const search = () => {
     if(props.searchEnabled){
@@ -37,13 +46,6 @@ const search = () => {
     }
 };
 
-const openSearchSettings = () => {
-    emit("openSearchSettings");
-}
-
-const addCustom = () => {
-    emit("addCustom");
-}
 
 </script>
 

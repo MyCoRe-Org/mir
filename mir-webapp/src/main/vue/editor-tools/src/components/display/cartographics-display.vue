@@ -1,6 +1,5 @@
 <template>
     <div v-if="props.cartographics">
-        <span class="fas fa-map-marker-alt mr-2"></span>
         <div v-if="$props.cartographics.coordinates?.length>0" class="btn-group btn-group-sm" role="group">
             <button :class="`btn btn-sm btn-secondary${model.showMap ? ' active' : ''}`"
                     @click.prevent="model.showMap = !model.showMap">

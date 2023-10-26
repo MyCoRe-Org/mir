@@ -41,10 +41,15 @@
   }
 }
 
-ol.topic-list {
+ol.topic-list{
   list-style: none;
-  display: inline;
-  padding: 0px;
+  display: block;
+  padding: 0;
+  margin-bottom: 0;
+}
+
+ol.topic-list:not(:last-child){
+  margin-bottom: 0.5em;
 }
 
 li.topic-element {
