@@ -118,7 +118,7 @@
 
                 <subject-editor v-model="model.subject" :settings="model.settings">
                     <template v-if="showCartographics" #coords>
-                        <a @click="addCoordinates">
+                        <a class="add-coordinate" @click="addCoordinates">
                             {{ i18n["mir.editor.subject.addCoordinates"] }}
                         </a>
                     </template>

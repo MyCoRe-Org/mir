@@ -266,12 +266,20 @@ public class MIRModsEditorController extends MIREditorController {
             IntStream.range(0, topics.size()).forEach((i) -> {
                 String appBaseXPath = ".//input[contains(@name, 'mods:subjectXML[" + (i + 1)
                     + "]')]/following-sibling::div[contains(@class, 'editorToolsApp')]";
-                String addCustomButton = appBaseXPath + "//button[contains(@class, 'search-add-custom')]";
-                if (i > 0) {
-                    clickRepeaterAndWait("mods:subjectXML", addCustomButton);
+                String searchInputXPath = appBaseXPath + "//input[contains(@class, 'search-topic')]";
+
+                if(i > 0) {
+                    clickRepeaterAndWait("mods:subjectXML", searchInputXPath);
                 }
 
-                driver.waitAndFindElement(By.xpath(addCustomButton)).click();
+                WebElement searchInput = driver.waitAndFindElement(By.xpath(searchInputXPath));
+                searchInput.click();
+                searchInput.sendKeys(topics.get(i));
+                searchInput.sendKeys(Keys.ENTER);
+
+                String searchAddCustomXPath = appBaseXPath + "//button[contains(@class, 'search-add-custom')]";
+                WebElement searchAddCustom = driver.waitAndFindElement(By.xpath(searchAddCustomXPath));
+                searchAddCustom.click();;
 
                 WebElement selectElement = driver
                     .waitAndFindElement(By.xpath(appBaseXPath + "//select[contains(@class, 'custom-type-select')]"));
@@ -289,14 +297,21 @@ public class MIRModsEditorController extends MIREditorController {
 
     public void setGeoPair(String place, String coordinates) {
         IntStream.range(0, 2).forEach((i) -> {
-            String appBaseXPath = ".//input[contains(@name, 'mods:subjectGEO[" + (i + 1)
-                + "]')]/following-sibling::div[contains(@class, 'editorToolsApp')]";
-            String addCustomButton = appBaseXPath + "//button[contains(@class, 'search-add-custom')]";
-            if (i > 0) {
-                clickRepeaterAndWait("mods:subjectGEO", addCustomButton);
-            }
+            String appBaseXPath = ".//input[contains(@name, 'mods:subjectGEO[1]')]/following-sibling::div[contains(@class, 'editorToolsApp')]";
 
-            driver.waitAndFindElement(By.xpath(addCustomButton)).click();
+            if(i==1) {
+                String addCoordinateButton = appBaseXPath + "//a[contains(@class, 'add-coordinate')]";
+                driver.waitAndFindElement(By.xpath(addCoordinateButton)).click();
+            } else {
+                String searchInputXPath = appBaseXPath + "//input[contains(@class, 'search-topic')]";
+                WebElement searchInput = driver.waitAndFindElement(By.xpath(searchInputXPath));
+                searchInput.click();
+                searchInput.sendKeys("Jena");
+                searchInput.sendKeys(Keys.ENTER);
+                String searchAddCustomXPath = appBaseXPath + "//button[contains(@class, 'search-add-custom')]";
+                WebElement searchAddCustom = driver.waitAndFindElement(By.xpath(searchAddCustomXPath));
+                searchAddCustom.click();;
+            }
             if (i == 0) {
                 WebElement selectElement = driver
                     .waitAndFindElement(By.xpath(appBaseXPath + "//select[contains(@class, 'custom-type-select')]"));
