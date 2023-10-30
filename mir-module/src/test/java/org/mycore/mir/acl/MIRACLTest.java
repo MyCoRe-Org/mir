@@ -195,7 +195,7 @@ public class MIRACLTest extends MCRStoreTestCase {
             "org.mycore.common.content.transformer.MCRXSLTransformer");
         testProperties.put("MCR.ContentTransformer.rules-helper.TransformerFactoryClass",
             "net.sf.saxon.TransformerFactoryImpl");
-        testProperties.put("MCR.ContentTransformer.rules-helper.Stylesheet", "xsl/rules-helper.xsl");
+        testProperties.put("MCR.ContentTransformer.rules-helper.Stylesheet", "xslt/rules-helper.xsl");
 
         testProperties.put("MCR.Access.Strategy.Class", "org.mycore.access.facts.MCRFactsAccessSystem");
         testProperties.put("MCR.Access.Class", "org.mycore.access.facts.MCRFactsAccessSystem");
