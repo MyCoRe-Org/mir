@@ -5,8 +5,8 @@
                 exclude-result-prefixes="mcri18n mcrproperty"
                 version="3.0">
 
-  <xsl:include href="functions/i18n.xsl" />
-  <xsl:include href="functions/property.xsl" />
+  <xsl:include href="resource:xslt/functions/i18n.xsl" />
+  <xsl:include href="resource:xslt/functions/property.xsl" />
 
   <xsl:param name="MIR.Layout.Top"/>
   <xsl:param name="MIR.Layout.End"/>
