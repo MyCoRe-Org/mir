@@ -325,14 +325,6 @@
 
     $('.confirm_deletion').confirm();
 
-    // modify empty search
-    // add * as value for an empty search to get results
-    $(".searchfield_box").submit(function() {
-      if ( $("input.search-query").val() == "" ) {
-        $("input.search-query").val("*");
-      }
-    });
-
     // search person index
     // makes sure the query ends with .* on submit
     $("#index_search_form").submit( function () {
