@@ -8,6 +8,7 @@ import java.nio.file.Path;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.archivers.zip.ZipFile;
@@ -49,25 +50,36 @@ public class MIRDeepGreepIngester extends MIRSwordIngesterBase {
                 .createTempFileFromStream("dgZip", deposit.getInputStream(), deposit.getMd5());
 
             LOGGER.info("Zip File is : " + dgZip.toAbsolutePath().toString());
+            LOGGER.info("Deposit Filename is : " + deposit.getFilename());
             try (SeekableByteChannel sbc = Files.newByteChannel(dgZip)) {
                 final ZipFile zipFile = new ZipFile(sbc);
                 final List<ZipArchiveEntry> entriesInPhysicalOrder = Collections
                     .list(zipFile.getEntriesInPhysicalOrder());
+
                 final Optional<ZipArchiveEntry> metadataEntryOpt = entriesInPhysicalOrder.stream()
                     .filter(e -> e.getName().endsWith(".xml")).findFirst();
-                final Optional<ZipArchiveEntry> pdfEntryOpt = entriesInPhysicalOrder.stream()
-                    .filter(e -> e.getName().endsWith(".pdf")).findFirst();
-
                 if (metadataEntryOpt.isEmpty()) {
                     throw new SwordServerException("No Metadata File Found!");
                 }
-
-                if (pdfEntryOpt.isEmpty()) {
-                    throw new SwordServerException("No PDF File Found!");
-                }
-
                 final ZipArchiveEntry metadataEntry = metadataEntryOpt.get();
+                String filenameWithoutExt = FilenameUtils.getBaseName(metadataEntry.getName());
+                LOGGER.info("Metadata Filename is : " + filenameWithoutExt);
+
+                Optional<ZipArchiveEntry> pdfEntryOpt = entriesInPhysicalOrder.stream()
+                    .filter(e -> e.getName().contains(filenameWithoutExt) && e.getName().endsWith(".pdf")).findFirst();
+                if (pdfEntryOpt.isEmpty()) {
+                    LOGGER.info("No PDF File Found, with Filename " + filenameWithoutExt + "! Using first PDF File!");
+                    pdfEntryOpt = entriesInPhysicalOrder.stream()
+                        .filter(e -> e.getName().endsWith(".pdf")).findFirst();
+                    if (pdfEntryOpt.isEmpty()) {
+                        throw new SwordServerException("No PDF File Found!");
+                    }
+                }
                 final ZipArchiveEntry pdfEntry = pdfEntryOpt.get();
+
+                List<ZipArchiveEntry> otherEntryList = entriesInPhysicalOrder.stream()
+                    .filter(e -> !e.getName().equals(metadataEntry.getName())
+                        && !e.getName().equals(pdfEntry.getName())).collect(Collectors.toList());
 
                 final MCRThrowFunction<ZipArchiveEntry, InputStream, IOException> getIS = zipFile::getInputStream;
                 try (InputStream metadataIS = getIS.apply(metadataEntry); InputStream pdfIS = getIS.apply(pdfEntry)) {
@@ -100,6 +112,16 @@ public class MIRDeepGreepIngester extends MIRSwordIngesterBase {
                             derivateTypeId.getID()
                         );
                         derivate.getDerivate().getClassifications().add(derivateTypeClassification);
+                    }
+                    if (!otherEntryList.isEmpty()) {
+                        otherEntryList.forEach(e -> {
+                                try (InputStream otherDataIS = getIS.apply(e)) {
+                                    Files.copy(otherDataIS, MCRPath.getPath(derivate.getId().toString(),
+                                        FilenameUtils.getName(e.getName())));
+                                } catch (IOException ex) {
+                                    LOGGER.error("Error while processing File " + e.getName());
+                                }
+                        });
                     }
                     MCRMetadataManager.update(derivate);
                     return newObjectId;
