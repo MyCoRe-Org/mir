@@ -7,27 +7,14 @@
                 xmlns:fn="http://www.w3.org/2005/xpath-functions"
                 exclude-result-prefixes="i18n mcrxsl encoder xalan fn">
 
-  <xsl:param name="MIR.Response.Facet.Prefix.Classification"/>
-
   <xsl:template name="facets">
 
     <xsl:for-each select="/response/lst[@name='facet_counts']/lst[@name='facet_fields']/*">
       <xsl:variable name="facet_name" select="self::node()/@name"/>
-      <xsl:variable name="classId">
-        <!-- Check if facet has a prefix -->
-        <xsl:choose>
-          <xsl:when test="contains($facet_name, $MIR.Response.Facet.Prefix.Classification)">
-            <xsl:value-of select="substring-after($facet_name, $MIR.Response.Facet.Prefix.Classification)"/>
-          </xsl:when>
-          <xsl:otherwise>
-            <xsl:value-of select="$facet_name" />
-          </xsl:otherwise>
-        </xsl:choose>
-      </xsl:variable>
 
-      <!-- Get the classification named $classId -->
+      <!-- Get the classification named $facet_name -->
       <xsl:variable name="classification">
-        <xsl:value-of select="concat('notnull:classification:metadata:all:children:',$classId)"/>
+        <xsl:value-of select="concat('notnull:classification:metadata:all:children:',$facet_name)"/>
       </xsl:variable>
 
       <!-- TODO: remove conditions for facets 'worldReadableComplete' and 'mods.genre' after code refactoring -->
@@ -110,7 +97,7 @@
                   <xsl:apply-templates
                     select="/response/lst[@name='facet_counts']/lst[@name='facet_fields']">
                     <xsl:with-param name="facet_name" select="$facet_name"/>
-                    <xsl:with-param name="classId" select="$classId"/>
+                    <xsl:with-param name="classId" select="$facet_name"/>
                     <xsl:with-param name="classification" select="$classification"/>
                   </xsl:apply-templates>
                 </xsl:otherwise>
