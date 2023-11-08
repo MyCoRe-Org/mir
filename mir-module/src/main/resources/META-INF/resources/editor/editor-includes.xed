@@ -2295,7 +2295,7 @@
     <xed:validate xpath="//mods:url|//mods:abstract/@xlink:href" matches="(ftp|http|https)://[\w\d.]+\S*" i18n="mir.validation.url" display="global" />
     <xed:validate xpath="//mods:*[@encoding='w3cdtf'][not(ancestor::mods:recordInfo)]|//mods:mods/mods:accessCondition[@type='embargo']" matches="\d{4}(\-\d{2}(\-\d{2})?)?" type="datetime" format="yyyy;yyyy-MM;yyyy-MM-dd" i18n="mir.validation.date"
       display="global" />
-    <xed:validate xpath="//mods:*[@encoding='iso8601']" matches="\d{4}(\-\d{2}(\-\d{2})?)?(\/\d{4}(\-\d{2}(\-\d{2})?)?)?" display="global"  i18n="mir.validation.date.iso8601"/>
+    <xed:validate xpath="//mods:*[@encoding='iso8601']" matches="\d{4}(\d{2}(\d{2})?)?(T\d{2}\d{2}\d{2})?(\/\d{4}(\d{2}(\d{2})?)?(T\d{2}\d{2}\d{2})?)?" display="global"  i18n="mir.validation.date.iso8601"/>
     <xed:validate xpath="//mods:part/@order" type="integer" display="global" i18n="mir.validation.order" />
   </xed:template>
 
