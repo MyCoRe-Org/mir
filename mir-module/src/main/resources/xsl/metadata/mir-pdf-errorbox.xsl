@@ -6,7 +6,7 @@
                 xmlns:xalan="http://xml.apache.org/xalan"
                 version="1.0" exclude-result-prefixes="i18n mcrxsl">
 
-    <xsl:variable name="foo" select="structure/derobjects/derobject/xlink:href/collection/dir/file"/>
+
     <xsl:param name="WebApplicationBaseURL"/>
     <xsl:param name="ServletsBaseURL" />
     <xsl:param name="HttpSession"/>
