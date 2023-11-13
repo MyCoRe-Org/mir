@@ -204,6 +204,11 @@
             <xsl:value-of select="i18n:translate('mir.date.period')" />
           </a>
         </li>
+        <li>
+          <a href="#" class="date-timeOption dropdown-item">
+            <xsl:value-of select="i18n:translate('mir.date.datetime')" />
+          </a>
+        </li>
       </ul>
     </div>
   </xsl:template>
