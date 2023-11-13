@@ -74,10 +74,11 @@ module.exports = function(grunt) {
           '<%= globalConfig.moduleDirectory %>/target/classes/META-INF/resources/js/mir/geo-coords.min.js': '<%= globalConfig.moduleDirectory %>/src/main/resources/META-INF/resources/js/mir/geo-coords.js',
           '<%= globalConfig.moduleDirectory %>/target/classes/META-INF/resources/js/mir/select-doctype.min.js': '<%= globalConfig.moduleDirectory %>/src/main/resources/META-INF/resources/js/mir/select-doctype.js',
           '<%= globalConfig.moduleDirectory %>/target/classes/META-INF/resources/js/mir/citation.min.js': '<%= globalConfig.moduleDirectory %>/src/main/resources/META-INF/resources/js/mir/citation.js',
-
           '<%= globalConfig.moduleDirectory %>/target/classes/META-INF/resources/js/jquery.search-entity.min.js': '<%= globalConfig.moduleDirectory %>/src/main/resources/META-INF/resources/js/jquery.search-entity.js',
           '<%= globalConfig.moduleDirectory %>/target/classes/META-INF/resources/js/epusta.min.js': '<%= globalConfig.moduleDirectory %>/src/main/resources/META-INF/resources/js/epusta.js',
-          '<%= globalConfig.moduleDirectory %>/target/classes/META-INF/assets/ckeditor4/config.min.js': '<%= globalConfig.moduleDirectory %>/src/main/resources/META-INF/resources/js/ckeditor-config.js'
+          '<%= globalConfig.moduleDirectory %>/target/classes/META-INF/assets/ckeditor4/config.min.js': '<%= globalConfig.moduleDirectory %>/src/main/resources/META-INF/resources/js/ckeditor-config.js',
+          '<%= globalConfig.moduleDirectory %>/target/classes/META-INF/resources/js/mir/bootstrap-datepicker-timepicker/bootstrap-datepicker-timepicker.js': '<%= globalConfig.moduleDirectory %>/src/main/resources/META-INF/resources/js/mir/bootstrap-datepicker-timepicker/bootstrap-datepicker-timepicker.js',
+          '<%= globalConfig.moduleDirectory %>/target/classes/META-INF/resources/js/mir/bootstrap-datepicker-timepicker/bootstrap-datepicker-timepicker.de.js': '<%= globalConfig.moduleDirectory %>/src/main/resources/META-INF/resources/js/mir/bootstrap-datepicker-timepicker/bootstrap-datepicker-timepicker.de.js',
         }
       }
     },

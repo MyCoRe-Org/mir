@@ -103,7 +103,8 @@
                 <xsl:call-template name="searchLink">
                   <xsl:with-param name="class" select="'date_published badge badge-primary'" />
                   <xsl:with-param name="linkText" select="$dateText" />
-                  <xsl:with-param name="query" select="concat('*&amp;fq=mods.dateIssued:',$firstDate, '&amp;owner=createdby:', $owner)" />
+                  <xsl:with-param name="query"
+                                  select="concat('*&amp;fq=mods.dateIssued:',concat(substring($firstDate,1,10),'*'), '&amp;owner=createdby:', $owner)"/>
                 </xsl:call-template>
               </xsl:when>
               <xsl:otherwise>
