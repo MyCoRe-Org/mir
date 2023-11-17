@@ -14,40 +14,34 @@
     <xsl:for-each select="/response/lst[@name='facet_counts']/lst[@name='facet_fields']/*">
       <xsl:variable name="facet_name" select="self::node()/@name"/>
 
-      <!-- Get the classification named $facet_name -->
-      <xsl:variable name="classification">
-        <xsl:value-of select="concat('notnull:classification:metadata:all:children:', $facet_name)"/>
-      </xsl:variable>
-
       <xsl:if test="self::node()[@name=$facet_name]/int">
         <!-- name of facet -->
         <div class="card {$facet_name}">
           <div class="card-header" data-toggle="collapse-next">
             <h3 class="card-title">
-              <!-- Checking facet name for compatibility with old code, facets named -->
-              <!-- 'worldReadableComplete' and 'mods.genre' from old code -->
+              <!--
+                Checking facet name for compatibility with old code, facets named
+               'worldReadableComplete' and 'mods.genre' from old code
+               -->
               <xsl:choose>
-                <!-- facet 'worldReadableComplete' -->
                 <xsl:when test="$facet_name='worldReadableComplete'">
                   <xsl:value-of select="i18n:translate('mir.response.openAccess.facet.title')"/>
                 </xsl:when>
-
-                <!-- facet 'mods.genre' -->
                 <xsl:when test="$facet_name='mods.genre'">
                   <xsl:value-of select="i18n:translate('editor.search.mir.genre')"/>
                 </xsl:when>
-
                 <!-- all other facets -->
                 <xsl:otherwise>
+                  <xsl:variable name="classification"
+                                select="document(concat('notnull:classification:metadata:all:children:', $facet_name))"/>
                   <!-- If there is no value in the messages_*.properties files, then we take the facet name as the title of the card -->
                   <xsl:choose>
                     <xsl:when test="i18n:exists(concat('mir.response.facet.', $facet_name, '.title'))">
                       <xsl:value-of select="i18n:translate(concat('mir.response.facet.', $facet_name, '.title'))"/>
                     </xsl:when>
-
-                    <xsl:when test="name(document($classification)/*) != 'null'">
+                    <xsl:when test="not($classification/null)">
                       <xsl:variable name="category_label"
-                                    select="document($classification)/mycoreclass/label[@xml:lang=$CurrentLang]/@text"/>
+                                    select="$classification/mycoreclass/label[@xml:lang=$CurrentLang]/@text"/>
                       <xsl:choose>
                         <xsl:when test="string-length($category_label) &gt; 0">
                           <xsl:value-of select="$category_label"/>
