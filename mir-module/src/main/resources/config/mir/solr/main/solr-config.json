@@ -191,7 +191,14 @@
       },
       "appends": {
         "facet": "true",
-        "facet.field": "mods.genre",
+        "facet.field": [
+          "mods.genre",
+          "derivates",
+          "state",
+          "createdby",
+          "modifiedby",
+          "mods.author"
+        ],
         "facet.mincount": "1"
       }
     }
