@@ -16,6 +16,7 @@
 
   <xsl:include href="response-mir-utils.xsl" />
   <xsl:include href="csl-export-gui.xsl" />
+  <xsl:include href="resource:xsl/response-facets.xsl"/>
 
 
   <xsl:param name="UserAgent" />

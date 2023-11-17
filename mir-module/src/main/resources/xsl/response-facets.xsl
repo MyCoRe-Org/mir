@@ -1,16 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="3.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:encoder="xalan://java.net.URLEncoder"
                 xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
                 xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions"
                 xmlns:xalan="http://xml.apache.org/xalan"
                 xmlns:fn="http://www.w3.org/2005/xpath-functions"
-                exclude-result-prefixes="i18n mcrxsl encoder fn"
->
+                exclude-result-prefixes="i18n mcrxsl encoder xalan fn">
+
+  <xsl:param name="MIR.Response.Facet.Prefix.Classification"/>
+
   <xsl:template name="facets">
+    <!-- xsl:variable name="facet_prefix" select="'classification.'"/ -->
+
     <xsl:if test="/response/lst[@name='facet_counts']/lst[@name='facet_fields'] !=''">
       <xsl:for-each select="/response/lst[@name='facet_counts']/lst[@name='facet_fields']/*">
         <xsl:variable name="facet_name" select="self::node()/@name"/>
+        <xsl:variable name="classId">
+          <!-- Check if facet has a prefix -->
+          <xsl:choose>
+            <xsl:when test="contains($facet_name, $MIR.Response.Facet.Prefix.Classification)">
+              <xsl:value-of select="substring-after($facet_name, $MIR.Response.Facet.Prefix.Classification)"/>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:value-of select="$facet_name" />
+            </xsl:otherwise>
+          </xsl:choose>
+        </xsl:variable>
+
+        <!-- Check if a classification named $classId exists -->
+        <xsl:variable name="is_classification_exist">
+          <xsl:call-template name="is_classification_exist">
+            <xsl:with-param name="classId" select="$classId"/>
+          </xsl:call-template>
+        </xsl:variable>
+
         <!-- TODO: remove conditions for facets 'worldReadableComplete' and 'mods.genre' after code refactoring -->
         <xsl:if test="self::node()[@name=$facet_name]/int">
           <div class="card {$facet_name}">
@@ -33,13 +56,25 @@
                   <xsl:otherwise>
                     <!-- If there is no value in the messages_*.properties files, then we take the facet name as the title of the card -->
                     <xsl:choose>
-                      <xsl:when
-                        test="fn:matches(i18n:translate(concat('mir.response.facet.', $facet_name, '.title')),'^\?\?\?(.*?)\?\?\?$')">
-                        <xsl:value-of select="$facet_name"/>
+                      <xsl:when test="i18n:exists(concat('mir.response.facet.', $facet_name, '.title'))">
+                        <xsl:value-of select="i18n:translate(concat('mir.response.facet.', $facet_name, '.title'))"/>
                       </xsl:when>
+
+                      <xsl:when test="$is_classification_exist != 'false'">
+                        <xsl:variable name="category_label" select="document(concat('notnull:classification:metadata:all:children:',$classId))/mycoreclass/label[@xml:lang=$CurrentLang]/@text"/>
+                        <!-- TODO: need we this choose? -->
+                        <xsl:choose>
+                          <xsl:when test="$category_label != ''">
+                            <xsl:value-of select="$category_label"/>
+                          </xsl:when>
+                          <xsl:otherwise>
+                            <xsl:value-of select="$facet_name"/>
+                          </xsl:otherwise>
+                        </xsl:choose>
+                      </xsl:when>
+
                       <xsl:otherwise>
-                        <xsl:value-of
-                          select="i18n:translate(concat('mir.response.facet.', $facet_name, '.title'))"/>
+                        <xsl:value-of select="$facet_name"/>
                       </xsl:otherwise>
                     </xsl:choose>
                   </xsl:otherwise>
@@ -73,10 +108,12 @@
 
                   <!-- all other facets -->
                   <xsl:otherwise>
+
                     <xsl:apply-templates
                       select="/response/lst[@name='facet_counts']/lst[@name='facet_fields']">
                       <xsl:with-param name="facet_name" select="$facet_name"/>
-                      <xsl:with-param name="classId" select="$facet_name"/>
+                      <xsl:with-param name="classId" select="$classId"/>
+                      <xsl:with-param name="is_classification_facet" select="$is_classification_exist"/>
                     </xsl:apply-templates>
                   </xsl:otherwise>
                 </xsl:choose>
@@ -93,6 +130,13 @@
     <xsl:param name="facet_name"/>
     <xsl:param name="classId"/>
     <xsl:param name="i18nPrefix"/>
+    <xsl:param name="is_classification_facet"/>
+
+    <xsl:variable name="is_classification_exist">
+      <xsl:call-template name="is_classification_exist">
+        <xsl:with-param name="classId" select="$classId"/>
+      </xsl:call-template>
+    </xsl:variable>
 
     <xsl:for-each select="lst[@name=$facet_name]/int">
       <xsl:variable name="fqValue" select="concat($facet_name,':',@name)"/>
@@ -149,6 +193,28 @@
           <label class="custom-control-label">
             <span class="title">
               <xsl:choose>
+
+                <xsl:when test="$is_classification_facet='true'">
+                  <xsl:choose>
+                    <xsl:when test="$is_classification_exist != 'false'">
+                      <xsl:variable name="category" select="@name"/>
+                      <xsl:variable name="category_label" select="document(concat('notnull:classification:metadata:all:children:',$classId))/mycoreclass/categories/category[@ID=$category]/label[@xml:lang=$CurrentLang]/@text"/>
+                      <xsl:choose>
+                        <xsl:when test="$category_label != ''">
+                          <xsl:value-of select="$category_label"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                          <xsl:value-of select="@name"/>
+                        </xsl:otherwise>
+                      </xsl:choose>
+                    </xsl:when>
+
+                    <xsl:otherwise>
+                      <xsl:value-of select="@name"/>
+                    </xsl:otherwise>
+                  </xsl:choose>
+                </xsl:when>
+
                 <xsl:when test="string-length($classId) &gt; 0">
                   <xsl:variable name="displayName" select="mcrxsl:getDisplayName($classId, @name)"/>
                   <xsl:choose>
@@ -164,6 +230,7 @@
                   <xsl:value-of select="i18n:translate(concat($i18nPrefix,@name))"
                                 disable-output-escaping="yes"/>
                 </xsl:when>
+
                 <xsl:otherwise>
                   <xsl:value-of select="@name"/>
                 </xsl:otherwise>
@@ -176,6 +243,12 @@
         </div>
       </li>
     </xsl:for-each>
+  </xsl:template>
+
+  <!-- The template checks if a classification named $classId exists and returns true or false -->
+  <xsl:template name="is_classification_exist">
+    <xsl:param name="classId"/>
+    <xsl:value-of select="name(document(concat('notnull:classification:metadata:all:children:',$classId))/*) != 'null'"/>
   </xsl:template>
 
 </xsl:stylesheet>
