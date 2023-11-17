@@ -11,13 +11,11 @@
   xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions"
   xmlns:basket="xalan://org.mycore.frontend.basket.MCRBasketManager"
   xmlns:decoder="xalan://java.net.URLDecoder"
-  exclude-result-prefixes="i18n mods str exslt mcr acl mcrxsl basket encoder decoder"
->
+  exclude-result-prefixes="i18n mods str exslt mcr acl mcrxsl basket encoder decoder">
 
-  <xsl:include href="response-mir-utils.xsl" />
-  <xsl:include href="csl-export-gui.xsl" />
+  <xsl:include href="resource:xsl/csl-export-gui.xsl" />
   <xsl:include href="resource:xsl/response-facets.xsl"/>
-
+  <xsl:include href="resource:xsl/response-mir-utils.xsl" />
 
   <xsl:param name="UserAgent" />
   <xsl:param name="MIR.testEnvironment" />
@@ -885,103 +883,6 @@
         </xsl:choose>
       </xsl:otherwise>
     </xsl:choose>
-  </xsl:template>
-
-  <xsl:template match="/response/lst[@name='facet_counts']/lst[@name='facet_fields']">
-    <xsl:param name="facet_name" />
-    <xsl:param name="classId" />
-    <xsl:param name="categoryClassValues" select="false()"/>
-    <xsl:param name="i18nPrefix" />
-    <xsl:for-each select="lst[@name=$facet_name]/int">
-      <xsl:variable name="fqValue" >
-        <xsl:choose>
-          <xsl:when test="$categoryClassValues">
-            <xsl:value-of select="concat($classId,':',substring-before(@name,':'),'%5C:',substring-after(@name,':'))"/>
-          </xsl:when>
-          <xsl:otherwise>
-            <xsl:value-of select="concat($classId,':',@name)"/>
-          </xsl:otherwise>
-        </xsl:choose>
-      </xsl:variable>
-      <xsl:variable name="fqResponseValue" >
-        <xsl:choose>
-          <xsl:when test="$categoryClassValues">
-            <xsl:value-of select="concat($classId,':',substring-before(@name,':'),'\:',substring-after(@name,':'))"/>
-          </xsl:when>
-          <xsl:otherwise>
-            <xsl:value-of select="concat($classId,':',@name)"/>
-          </xsl:otherwise>
-        </xsl:choose>
-      </xsl:variable>
-      <xsl:variable name="fqFragment" select="concat('fq=',$fqValue)" />
-      <xsl:variable name="fqFragmentEncoded" select="concat('fq=',encoder:encode($fqResponseValue, 'UTF-8'))" />
-      <xsl:variable name="queryWithoutStart" select="mcrxsl:regexp($RequestURL, '(&amp;|%26)(start=)[0-9]*', '')" />
-      <xsl:variable name="queryURL">
-        <xsl:choose>
-          <xsl:when test="contains($queryWithoutStart, $fqFragment)">
-            <xsl:choose>
-              <xsl:when test="not(substring-after($queryWithoutStart, $fqFragment))">
-                <!-- last parameter -->
-                <xsl:value-of select="substring($queryWithoutStart, 1, string-length($queryWithoutStart) - string-length($fqFragment) - 1)" />
-              </xsl:when>
-              <xsl:otherwise>
-                <xsl:value-of select="concat(substring-before($queryWithoutStart, $fqFragment), substring-after($queryWithoutStart, concat($fqFragment,'&amp;')))" />
-              </xsl:otherwise>
-            </xsl:choose>
-          </xsl:when>
-          <xsl:when test="contains($queryWithoutStart, $fqFragmentEncoded)">
-            <xsl:choose>
-              <xsl:when test="not(substring-after($queryWithoutStart, $fqFragmentEncoded))">
-                <!-- last parameter -->
-                <xsl:value-of select="substring($queryWithoutStart, 1, string-length($queryWithoutStart) - string-length($fqFragmentEncoded) - 1)" />
-              </xsl:when>
-              <xsl:otherwise>
-                <xsl:value-of select="concat(substring-before($queryWithoutStart, $fqFragmentEncoded), substring-after($queryWithoutStart, concat($fqFragmentEncoded,'&amp;')))" />
-              </xsl:otherwise>
-            </xsl:choose>
-          </xsl:when>
-          <xsl:when test="not(contains($queryWithoutStart, '?'))">
-            <xsl:value-of select="concat($queryWithoutStart, '?', $fqFragment)" />
-          </xsl:when>
-          <xsl:otherwise>
-            <xsl:value-of select="concat($queryWithoutStart, '&amp;', $fqFragment)" />
-          </xsl:otherwise>
-        </xsl:choose>
-      </xsl:variable>
-
-      <li data-fq="{$fqResponseValue}">
-        <div class="custom-control custom-checkbox" onclick="location.href='{$queryURL}';">
-          <input type="checkbox" class="custom-control-input">
-            <xsl:if test="
-              /response/lst[@name='responseHeader']/lst[@name='params']/str[@name='fq' and text() = $fqResponseValue] |
-              /response/lst[@name='responseHeader']/lst[@name='params']/arr[@name='fq']/str[text() = $fqResponseValue]">
-              <xsl:attribute name="checked">true</xsl:attribute>
-            </xsl:if>
-          </input>
-          <label class="custom-control-label">
-            <span class="title">
-              <xsl:choose>
-                <xsl:when test="$categoryClassValues">
-                  <xsl:value-of select="mcrxsl:getDisplayName(substring-before(@name,':'),substring-after(@name,':'))" />
-                </xsl:when>
-                <xsl:when test="string-length($classId) &gt; 0">
-                  <xsl:value-of select="mcrxsl:getDisplayName($classId, @name)" />
-                </xsl:when>
-                <xsl:when test="string-length($i18nPrefix) &gt; 0">
-                  <xsl:value-of select="i18n:translate(concat($i18nPrefix,@name))" disable-output-escaping="yes" />
-                </xsl:when>
-                <xsl:otherwise>
-                  <xsl:value-of select="@name" />
-                </xsl:otherwise>
-              </xsl:choose>
-            </span>
-            <span class="hits">
-              <xsl:value-of select="." />
-            </span>
-          </label>
-        </div>
-      </li>
-    </xsl:for-each>
   </xsl:template>
 
   <xsl:template name="print.classiFilter">
