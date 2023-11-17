@@ -7,17 +7,20 @@
                 xmlns:fn="http://www.w3.org/2005/xpath-functions"
                 exclude-result-prefixes="i18n mcrxsl encoder xalan fn">
 
-  <xsl:template name="facets">
+  <xsl:param name="CurrentLang"/>
+  <xsl:param name="RequestURL"/>
 
+  <xsl:template name="facets">
     <xsl:for-each select="/response/lst[@name='facet_counts']/lst[@name='facet_fields']/*">
       <xsl:variable name="facet_name" select="self::node()/@name"/>
 
       <!-- Get the classification named $facet_name -->
       <xsl:variable name="classification">
-        <xsl:value-of select="concat('notnull:classification:metadata:all:children:',$facet_name)"/>
+        <xsl:value-of select="concat('notnull:classification:metadata:all:children:', $facet_name)"/>
       </xsl:variable>
 
       <xsl:if test="self::node()[@name=$facet_name]/int">
+        <!-- name of facet -->
         <div class="card {$facet_name}">
           <div class="card-header" data-toggle="collapse-next">
             <h3 class="card-title">
@@ -43,10 +46,10 @@
                     </xsl:when>
 
                     <xsl:when test="name(document($classification)/*) != 'null'">
-                      <xsl:variable name="category_label" select="document($classification)/mycoreclass/label[@xml:lang=$CurrentLang]/@text"/>
-                      <!-- TODO: need we this choose? -->
+                      <xsl:variable name="category_label"
+                                    select="document($classification)/mycoreclass/label[@xml:lang=$CurrentLang]/@text"/>
                       <xsl:choose>
-                        <xsl:when test="$category_label != ''">
+                        <xsl:when test="string-length($category_label) &gt; 0">
                           <xsl:value-of select="$category_label"/>
                         </xsl:when>
                         <xsl:otherwise>
@@ -65,39 +68,30 @@
             </h3>
           </div>
 
+          <!-- facet values -->
           <div class="card-body collapse show">
             <ul class="filter">
-              <!-- Checking facet name for compatibility with old code, facets named -->
-              <!-- 'worldReadableComplete' and 'mods.genre' from old code -->
+              <!--
+                Checking facet name for compatibility with old code, facets named
+               'worldReadableComplete' and 'mods.genre' from old code
+               -->
               <xsl:choose>
-                <!-- facet 'worldReadableComplete' -->
                 <xsl:when test="$facet_name='worldReadableComplete'">
-                  <xsl:apply-templates
-                    select="/response/lst[@name='facet_counts']/lst[@name='facet_fields']">
+                  <xsl:apply-templates select="/response/lst[@name='facet_counts']/lst[@name='facet_fields']">
                     <xsl:with-param name="facet_name" select="$facet_name"/>
-                    <xsl:with-param name="i18nPrefix"
-                                    select="'mir.response.openAccess.facet.'"/>
-                    <xsl:with-param name="classification" select="$classification"/>
+                    <xsl:with-param name="i18nPrefix" select="'mir.response.openAccess.facet.'"/>
                   </xsl:apply-templates>
                 </xsl:when>
-
-                <!-- facet 'mods.genre' -->
                 <xsl:when test="$facet_name='mods.genre'">
-                  <xsl:apply-templates
-                    select="/response/lst[@name='facet_counts']/lst[@name='facet_fields']">
+                  <xsl:apply-templates select="/response/lst[@name='facet_counts']/lst[@name='facet_fields']">
                     <xsl:with-param name="facet_name" select="$facet_name"/>
                     <xsl:with-param name="classId" select="'mir_genres'"/>
-                    <xsl:with-param name="classification" select="$classification"/>
                   </xsl:apply-templates>
                 </xsl:when>
-
                 <!-- all other facets -->
                 <xsl:otherwise>
-                  <xsl:apply-templates
-                    select="/response/lst[@name='facet_counts']/lst[@name='facet_fields']">
+                  <xsl:apply-templates select="/response/lst[@name='facet_counts']/lst[@name='facet_fields']">
                     <xsl:with-param name="facet_name" select="$facet_name"/>
-                    <xsl:with-param name="classId" select="$facet_name"/>
-                    <xsl:with-param name="classification" select="$classification"/>
                   </xsl:apply-templates>
                 </xsl:otherwise>
               </xsl:choose>
@@ -106,48 +100,53 @@
         </div>
       </xsl:if>
     </xsl:for-each>
-
   </xsl:template>
 
   <xsl:template match="/response/lst[@name='facet_counts']/lst[@name='facet_fields']">
-    <xsl:param name="facet_name" />
-    <xsl:param name="classId" />
     <xsl:param name="categoryClassValues" select="false()"/>
-    <xsl:param name="i18nPrefix" />
+    <xsl:param name="classId"/>
+    <xsl:param name="facet_name"/>
+    <xsl:param name="i18nPrefix"/>
+
     <xsl:for-each select="lst[@name=$facet_name]/int">
-      <xsl:variable name="fqValue" >
+      <xsl:variable name="fqValue">
         <xsl:choose>
           <xsl:when test="$categoryClassValues">
             <xsl:value-of select="concat($classId,':',substring-before(@name,':'),'%5C:',substring-after(@name,':'))"/>
           </xsl:when>
           <xsl:otherwise>
-            <xsl:value-of select="concat($classId,':',@name)"/>
+            <xsl:value-of select="concat($facet_name,':',@name)"/>
           </xsl:otherwise>
         </xsl:choose>
       </xsl:variable>
-      <xsl:variable name="fqResponseValue" >
+
+      <xsl:variable name="fqResponseValue">
         <xsl:choose>
           <xsl:when test="$categoryClassValues">
             <xsl:value-of select="concat($classId,':',substring-before(@name,':'),'\:',substring-after(@name,':'))"/>
           </xsl:when>
           <xsl:otherwise>
-            <xsl:value-of select="concat($classId,':',@name)"/>
+            <xsl:value-of select="concat($facet_name,':',@name)"/>
           </xsl:otherwise>
         </xsl:choose>
       </xsl:variable>
-      <xsl:variable name="fqFragment" select="concat('fq=',$fqValue)" />
-      <xsl:variable name="fqFragmentEncoded" select="concat('fq=',encoder:encode($fqResponseValue, 'UTF-8'))" />
-      <xsl:variable name="queryWithoutStart" select="mcrxsl:regexp($RequestURL, '(&amp;|%26)(start=)[0-9]*', '')" />
+
+      <xsl:variable name="fqFragment" select="concat('fq=',$fqValue)"/>
+      <xsl:variable name="fqFragmentEncoded" select="concat('fq=',encoder:encode($fqResponseValue, 'UTF-8'))"/>
+      <xsl:variable name="queryWithoutStart" select="mcrxsl:regexp($RequestURL, '(&amp;|%26)(start=)[0-9]*', '')"/>
+
       <xsl:variable name="queryURL">
         <xsl:choose>
           <xsl:when test="contains($queryWithoutStart, $fqFragment)">
             <xsl:choose>
               <xsl:when test="not(substring-after($queryWithoutStart, $fqFragment))">
                 <!-- last parameter -->
-                <xsl:value-of select="substring($queryWithoutStart, 1, string-length($queryWithoutStart) - string-length($fqFragment) - 1)" />
+                <xsl:value-of
+                  select="substring($queryWithoutStart, 1, string-length($queryWithoutStart) - string-length($fqFragment) - 1)"/>
               </xsl:when>
               <xsl:otherwise>
-                <xsl:value-of select="concat(substring-before($queryWithoutStart, $fqFragment), substring-after($queryWithoutStart, concat($fqFragment,'&amp;')))" />
+                <xsl:value-of
+                  select="concat(substring-before($queryWithoutStart, $fqFragment), substring-after($queryWithoutStart, concat($fqFragment,'&amp;')))"/>
               </xsl:otherwise>
             </xsl:choose>
           </xsl:when>
@@ -155,18 +154,20 @@
             <xsl:choose>
               <xsl:when test="not(substring-after($queryWithoutStart, $fqFragmentEncoded))">
                 <!-- last parameter -->
-                <xsl:value-of select="substring($queryWithoutStart, 1, string-length($queryWithoutStart) - string-length($fqFragmentEncoded) - 1)" />
+                <xsl:value-of
+                  select="substring($queryWithoutStart, 1, string-length($queryWithoutStart) - string-length($fqFragmentEncoded) - 1)"/>
               </xsl:when>
               <xsl:otherwise>
-                <xsl:value-of select="concat(substring-before($queryWithoutStart, $fqFragmentEncoded), substring-after($queryWithoutStart, concat($fqFragmentEncoded,'&amp;')))" />
+                <xsl:value-of
+                  select="concat(substring-before($queryWithoutStart, $fqFragmentEncoded), substring-after($queryWithoutStart, concat($fqFragmentEncoded,'&amp;')))"/>
               </xsl:otherwise>
             </xsl:choose>
           </xsl:when>
           <xsl:when test="not(contains($queryWithoutStart, '?'))">
-            <xsl:value-of select="concat($queryWithoutStart, '?', $fqFragment)" />
+            <xsl:value-of select="concat($queryWithoutStart, '?', $fqFragment)"/>
           </xsl:when>
           <xsl:otherwise>
-            <xsl:value-of select="concat($queryWithoutStart, '&amp;', $fqFragment)" />
+            <xsl:value-of select="concat($queryWithoutStart, '&amp;', $fqFragment)"/>
           </xsl:otherwise>
         </xsl:choose>
       </xsl:variable>
@@ -180,25 +181,27 @@
               <xsl:attribute name="checked">true</xsl:attribute>
             </xsl:if>
           </input>
+
           <label class="custom-control-label">
             <span class="title">
               <xsl:choose>
                 <xsl:when test="$categoryClassValues">
-                  <xsl:value-of select="mcrxsl:getDisplayName(substring-before(@name,':'),substring-after(@name,':'))" />
+                  <xsl:value-of select="mcrxsl:getDisplayName(substring-before(@name,':'),substring-after(@name,':'))"/>
                 </xsl:when>
-                <xsl:when test="string-length($classId) &gt; 0">
-                  <xsl:value-of select="mcrxsl:getDisplayName($classId, @name)" />
+                <xsl:when test="mcrxsl:isCategoryID($facet_name, @name)">
+                  <xsl:value-of select="mcrxsl:getDisplayName($facet_name, @name)"/>
                 </xsl:when>
                 <xsl:when test="string-length($i18nPrefix) &gt; 0">
-                  <xsl:value-of select="i18n:translate(concat($i18nPrefix,@name))" disable-output-escaping="yes" />
+                  <xsl:value-of select="i18n:translate(concat($i18nPrefix, @name))" disable-output-escaping="yes"/>
                 </xsl:when>
                 <xsl:otherwise>
-                  <xsl:value-of select="@name" />
+                  <xsl:value-of select="@name"/>
                 </xsl:otherwise>
               </xsl:choose>
             </span>
+
             <span class="hits">
-              <xsl:value-of select="." />
+              <xsl:value-of select="."/>
             </span>
           </label>
         </div>
