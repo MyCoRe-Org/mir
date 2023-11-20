@@ -1,6 +1,6 @@
 <template>
     <div>
-        <i v-if="props.mode == 'search'" class="fas fa-tag mr-1"> </i>
+        <i v-if="props.mode == 'search'" class="fas fa-tag fa-fw mr-1"> </i>
         <a v-if="props.topic.valueURI"
            :href="props.topic.valueURI"
            target="_blank">

@@ -1,6 +1,6 @@
 <template>
     <a ref="popoverTrigger" class="popover-trigger ml-1">
-        <i class="fa fa-info-circle"> </i>
+        <i class="fas fa-info-circle"> </i>
     </a>
     <div ref="popoverContent" class="popover-content d-none">
         <slot></slot>
@@ -40,7 +40,7 @@ onMounted(() => {
                 content: content$,
                 placement: "right",
                 title: function () {
-                    const el = jq("<div><div>"+props.title+"</div><div class='popoverclose btn btn-xs'><i class='fa fa-times'></i></div></div>");
+                    const el = jq("<div><div>"+props.title+"</div><div class='popoverclose btn btn-xs'><i class='fas fa-times'></i></div></div>");
 
                     el.click(() => {
                         content$.parents(".popover-trigger").popover("hide");
