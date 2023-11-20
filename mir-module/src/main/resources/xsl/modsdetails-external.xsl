@@ -496,6 +496,8 @@
                 <!-- Register DOI -->
                 <xsl:variable name="piServiceInformation" select="piUtil:getPIServiceInformation($id)" />
                 <xsl:for-each select="$piServiceInformation">
+                  <xsl:sort select="@type" />
+                  <xsl:sort select="@id" />
                   <xsl:if test="@permission='true'">
                     <li>
                     <!-- data-type is just used for translation -->
