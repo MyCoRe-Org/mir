@@ -1,8 +1,9 @@
 package org.mycore.mir.orcid;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -55,10 +56,10 @@ public class MIROrcidServlet extends MCRServlet {
     private static final String SEARCH_ORCID_XPATH = "/search:search/search:result/common:orcid-identifier/common:path";
 
     private static List<MIROrcidPersonEntry> getPersonList(String query)
-        throws MalformedURLException, UnsupportedEncodingException {
-        String encodedQuery = URLEncoder.encode(query, "UTF-8");
+        throws MalformedURLException, URISyntaxException {
+        String encodedQuery = URLEncoder.encode(query, StandardCharsets.UTF_8);
 
-        URL url = new URL(ORCID_REQUEST_BASE + "search/?q=" + encodedQuery + "&rows=" + ORCID_FETCH_SIZE * 2);
+        URL url = new URI(ORCID_REQUEST_BASE + "search/?q=" + encodedQuery + "&rows=" + ORCID_FETCH_SIZE * 2).toURL();
 
         try {
             Document document = new SAXBuilder().build(url);
@@ -88,7 +89,7 @@ public class MIROrcidServlet extends MCRServlet {
 
     private static MIROrcidPersonEntry getEntry(String orcid) {
         try {
-            URL url = new URL(ORCID_REQUEST_BASE + orcid + "/personal-details");
+            URL url = new URI(ORCID_REQUEST_BASE + orcid + "/personal-details").toURL();
             Document document = new SAXBuilder().build(url);
             Element element = document.getRootElement();
 
@@ -105,7 +106,7 @@ public class MIROrcidServlet extends MCRServlet {
             }
 
             return new MIROrcidPersonEntry(givenName.getTextTrim(), familyName.getTextTrim(), ORCID_URL + orcid);
-        } catch (JDOMException | IOException e) {
+        } catch (JDOMException | IOException | URISyntaxException e) {
             throw new MCRException(e);
         }
     }

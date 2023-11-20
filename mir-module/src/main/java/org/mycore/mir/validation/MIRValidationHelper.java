@@ -3,6 +3,8 @@ package org.mycore.mir.validation;
 import java.io.IOException;
 import java.io.StringReader;
 import java.net.HttpURLConnection;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Objects;
 
@@ -37,7 +39,7 @@ public class MIRValidationHelper {
     public static boolean validatePPN(String ppn) {
         String database = MCRConfiguration2.getString("MIR.PPN.DatabaseList").orElse("gvk");
         try {
-            URL url = new URL("http://uri.gbv.de/document/" + database + ":ppn:" + ppn);
+            URL url = new URI("http://uri.gbv.de/document/" + database + ":ppn:" + ppn).toURL();
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
             connection.connect();
@@ -45,8 +47,8 @@ public class MIRValidationHelper {
             if (resCode == 200 || resCode == 302) {
                 return true;
             }
-        } catch (IOException e) {
-            LogManager.getLogger().error("IOException while validating PPN.", e);
+        } catch (IOException | URISyntaxException e) {
+            LogManager.getLogger().error("Exception while validating PPN.", e);
         }
         return false;
     }
