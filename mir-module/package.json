@@ -13,7 +13,7 @@
     },
     "engineStrict": true,
     "devDependencies": {
-        "@fortawesome/fontawesome-free": "5.11.2",
+        "@fortawesome/fontawesome-free": "6.4.0",
         "bootstrap": "4.4.1",
         "bootstrap-3-typeahead": "4.0.2",
         "bootstrap-datepicker": "1.9.0",
@@ -36,6 +36,7 @@
         "ckeditor-notification": "^4.11.2",
         "ckeditor-wordcount-plugin": "^1.17.6",
         "ckeditor4": "^4.18.0",
-        "vue": "2.6.14"
+        "vue": "3.2.13",
+        "vue3-openlayers": "^1.0.0"
     }
 }

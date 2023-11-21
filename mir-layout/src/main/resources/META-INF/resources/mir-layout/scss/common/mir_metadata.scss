@@ -41,6 +41,26 @@
   }
 }
 
+ol.topic-list{
+  list-style: none;
+  display: block;
+  padding: 0;
+  margin-bottom: 0;
+}
+
+ol.topic-list:not(:last-child){
+  margin-bottom: 0.5em;
+}
+
+li.topic-element {
+  &:not(:last-child):after {
+    content: "/";
+    margin-right: 5px;
+    margin-left: 5px;
+  }
+  display: inline;
+}
+
 .workflow-box {
   padding: 0.75rem 1rem;;
   margin-bottom: 1rem;

@@ -25,6 +25,7 @@ import org.mycore.mir.it.model.MIRInstitutes;
 import org.mycore.mir.it.model.MIRLanguage;
 import org.mycore.mir.it.model.MIRLicense;
 import org.mycore.mir.it.model.MIRTypeOfResource;
+import org.openqa.selenium.By;
 
 public class MIRAuthorEditorITCase extends MIRITBase {
 
@@ -240,8 +241,11 @@ public class MIRAuthorEditorITCase extends MIRITBase {
         driver.waitAndFindElement(MCRBy.partialText(MIRTestData.VALIDATION_UNI_GER));
         driver.waitAndFindElement(MCRBy.partialText(MIRTestData.VALIDATION_INFORMATIK));
         driver.waitAndFindElement(MCRBy.partialText(MIRTestData.VALIDATION_BIBLIOGRAPHIEN));
-        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.TOPIC1));
-        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.TOPIC2));
+        driver.waitAndFindElement(
+            By.xpath(".//*[contains(@class, 'topic-element') and contains(text(), " + MIRTestData.TOPIC1 + ")]"));
+        driver.waitAndFindElement(
+            By.xpath(".//*[contains(@class, 'topic-element') and contains(text(), " + MIRTestData.TOPIC2 + ")]"));
+
         // TODO: enable validation for license
         //driver.waitAndFindElement(MCRBy.partialText(MIRLicense.cc_by_40.getValue()));
         driver.waitAndFindElement(MCRBy.partialText(MIRTestData.VALIDATION_RESOURCE_TEXT));
@@ -326,8 +330,10 @@ public class MIRAuthorEditorITCase extends MIRITBase {
         driver.waitAndFindElement(MCRBy.partialText(MIRTestData.URN));
         driver.waitAndFindElement(MCRBy.partialText(MIRTestData.DOI));
 
-        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.TOPIC1));
-        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.TOPIC2));
+        driver.waitAndFindElement(
+                By.xpath(".//*[contains(@class, 'topic-element') and contains(text(), " + MIRTestData.TOPIC1 + ")]"));
+        driver.waitAndFindElement(
+                By.xpath(".//*[contains(@class, 'topic-element') and contains(text(), " + MIRTestData.TOPIC2 + ")]"));
         driver.waitAndFindElement(MCRBy.partialText(MIRTestData.ABSTRACT));
     }
 

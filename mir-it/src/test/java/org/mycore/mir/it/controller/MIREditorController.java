@@ -9,6 +9,7 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
 public abstract class MIREditorController extends MIRTestController {
 
@@ -44,7 +45,8 @@ public abstract class MIREditorController extends MIRTestController {
     protected void clickRepeater(String field) {
         driver
             .waitAndFindElement(
-                By.xpath(".//button[contains(@name, '" + field + "') and contains(@name, '_xed_submit_insert')]"))
+                By.xpath(".//button[contains(@name, '" + field + "') and contains(@name, '_xed_submit_insert')]"),
+                ExpectedConditions::elementToBeClickable)
             .click();
     }
 
