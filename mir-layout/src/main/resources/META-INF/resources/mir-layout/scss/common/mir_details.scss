@@ -10,6 +10,11 @@
     border-bottom: 1px solid #ddd;
   }
 
+  .detail_buttons {
+    float: right;
+    margin-top: -8px;
+  }
+
   .ellipsis {
     max-height: 150px;
   }
@@ -61,14 +66,10 @@
 }
 
 .mir_metadata {
-  overflow: hidden;
   margin-bottom: 30px;
-  h3 {
-    font-size: 16px;
-    margin-top: 0;
-    margin-bottom: 20px;
-    padding-bottom: 5px;
-    border-bottom: 1px solid #ddd;
+
+  dl {
+    margin-top: 20px;
   }
 
   dt {
