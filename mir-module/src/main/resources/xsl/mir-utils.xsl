@@ -4,8 +4,7 @@
     xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
     xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions"
     xmlns:str="http://exslt.org/strings"
-    exclude-result-prefixes="i18n mcrxsl str"
-    >
+    exclude-result-prefixes="i18n mcrxsl str">
     
     <xsl:param name="MIR.OwnerStrategy.AllowedRolesForSearch" select="'admin,editor'" />
     
@@ -31,6 +30,8 @@
     <xsl:template name="iconLink">
         <xsl:param name="baseURL"/>
         <xsl:param name="mimeType"/>
+        <xsl:param name="derivateMaindoc"/>
+        <xsl:param name="returnId"/>
 
         <xsl:choose>
             <xsl:when test="$mimeType='application/pdf' or
@@ -101,9 +102,16 @@
                 <xsl:value-of select="concat($baseURL,'images/svg_icons/download_video.svg')"/>
             </xsl:when>
             <xsl:otherwise>
-                <xsl:value-of select="concat($baseURL,'images/svg_icons/download_default.svg')"/>
+                <xsl:choose>
+                    <xsl:when test="string-length($derivateMaindoc) &gt; 0 and string-length($returnId) &gt; 0">
+                        <xsl:variable name="ext" select="substring-after($derivateMaindoc, '.')"/>
+                        <xsl:value-of select="concat($baseURL,'receive/', $returnId, '?XSL.Transformer=svg-download&amp;XSL.extension=', $ext)"/>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:value-of select="concat($baseURL,'images/svg_icons/download_default.svg')"/>
+                    </xsl:otherwise>
+                </xsl:choose>
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
-
 </xsl:stylesheet>
