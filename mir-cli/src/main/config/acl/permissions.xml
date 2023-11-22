@@ -46,6 +46,15 @@
       </boolean>
     </condition>
   </mcrpermission>
+  <mcrpermission name="create-derivate" description="Erzeugen eines Dateibereichs" ruledescription="submitter, editor and administrator">
+    <condition format="xml">
+      <boolean operator="or">
+        <condition value="admin" operator="=" field="group" />
+        <condition value="editor" operator="=" field="group" />
+        <condition value="submitter" operator="=" field="group" />
+      </boolean>
+    </condition>
+  </mcrpermission>
   <mcrpermission name="use-aclEditor" description="Zugriff auf den ACL-Editor" ruledescription="administrators only">
     <condition format="xml">
       <boolean operator="or">
