@@ -40,7 +40,7 @@
     <changelog.since>2022-08-02</changelog.since>
     <!-- until snapshot matches released version (required for 'mvn changes:changes-check') -->
     <changes.version>2023.02</changes.version>
-    <hibernate.version>5.6.7.Final</hibernate.version>
+    <hibernate.version>6.3.1.Final</hibernate.version>
     <java.target.version>17</java.target.version>
     <jetty.version>12.0.0</jetty.version>
     <maven.compiler.arg>-Werror</maven.compiler.arg>
@@ -430,24 +430,14 @@
       <dependency>
         <groupId>com.zaxxer</groupId>
         <artifactId>HikariCP</artifactId>
-        <version>5.0.1</version>
+        <version>5.1.0</version>
         <scope>runtime</scope>
       </dependency>
       <dependency>
-        <groupId>org.hibernate</groupId>
+        <groupId>org.hibernate.orm</groupId>
         <artifactId>hibernate-hikaricp</artifactId>
         <version>${hibernate.version}</version>
         <scope>runtime</scope>
-        <exclusions>
-          <exclusion>
-            <groupId>com.zaxxer</groupId>
-            <artifactId>HikariCP-java6</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-core</artifactId>
-          </exclusion>
-        </exclusions>
       </dependency>
       <dependency>
         <groupId>org.mycore</groupId>
