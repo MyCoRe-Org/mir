@@ -20,7 +20,7 @@
   <xsl:param name="objectID" />
   <!-- this is where the master file group is located (files that are referenced by a relative URL) -->
   <xsl:variable name="masterFileGrp"
-    select="/mets:mets/mets:fileSec/mets:fileGrp[
+                select="/mets:mets/mets:fileSec/mets:fileGrp[
       @USE='MASTER' and
       mets:file/mets:FLocat/@LOCTYPE='URL' and
       not(
@@ -138,7 +138,7 @@
           <xsl:when test="$use='DOWNLOAD' and $MCR.Viewer.PDFCreatorURI">
             <mets:file ID="{concat($use,'_',$ncName)}" MIMETYPE="application/pdf">
               <mets:FLocat LOCTYPE="URL"
-                xlink:href="{concat($MCR.Viewer.PDFCreatorURI, '?mets=', encoder:encode(concat($WebApplicationServletsURL, 'MCRMETSServlet', '/',$derivateID, '/mets.xml?XSL.Style=pdf'), 'UTF-8'), '&amp;pages=', position())}" />
+                           xlink:href="{concat($WebApplicationBaseURL, 'rsc/pdf', '/',$derivateID, '?pages=', position())}" />
             </mets:file>
           </xsl:when>
           <xsl:otherwise>
@@ -194,9 +194,9 @@
         <mets:fptr FILEID="{concat('DOWNLOAD_',$ncName)}" />
       </xsl:if>
 
-      <xsl:if test="mets:fptr[$copyFileGrp/mets:file/@ID=@FILEID]">
+      <xsl:if test="mets:fptr[$copyFileGrp/mets:fileGrp/mets:file/@ID=@FILEID]">
         <!-- Copy fptr that have match in copyFileGrp -->
-        <xsl:copy-of select="mets:fptr[$copyFileGrp/mets:file/@ID=@FILEID]" />
+        <xsl:copy-of select="mets:fptr[$copyFileGrp/mets:fileGrp/mets:file/@ID=@FILEID]" />
       </xsl:if>
     </xsl:copy>
   </xsl:template>

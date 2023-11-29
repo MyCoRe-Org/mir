@@ -3,9 +3,9 @@
                 xmlns:mods="http://www.loc.gov/mods/v3" xmlns:xalan="http://xml.apache.org/xalan"
                 xmlns:mcr="xalan://org.mycore.common.xml.MCRXMLFunctions"
                 exclude-result-prefixes="mcr" version="1.0">
-  <xsl:include href="mets-iview.xsl" />
-  <xsl:include href="mets-amd.xsl" />
-  <xsl:include href="mods-enhancer.xsl" />
+  <xsl:include href="resource:xsl/mets/mets-iview.xsl" />
+  <xsl:include href="resource:xsl/mets/mets-amd.xsl" />
+  <xsl:include href="resource:xsl/mods-enhancer.xsl" />
 
   <xsl:output method="xml" encoding="utf-8" />
   <xsl:param name="MCR.Module-iview2.SupportedContentTypes" />
