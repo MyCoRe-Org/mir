@@ -14,5 +14,8 @@
     <logger name="org.mycore.common.xsl.MCRTraceListener" level="info" />
     <!-- remove me later -->
     <logger name="org.mycore.access.facts" level="debug" />
+    <logger name="org.mycore.common.xml.MCRURIResolver" >
+      <MCRUniqueFilter targetMarker="tryResolveXML"/>
+    </logger>
   </loggers>
 </configuration>
