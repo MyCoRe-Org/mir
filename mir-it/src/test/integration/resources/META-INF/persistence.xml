@@ -22,6 +22,7 @@
       <property name="hibernate.hbm2ddl.auto" value="update" />
       <property name="hibernate.jdbc.batch_size" value="0" />
       <property name="hibernate.show_sql" value="false" />
+      <property name="hibernate.auto_quote_keyword" value="true" />
     </properties>
   </persistence-unit>
 </persistence>
