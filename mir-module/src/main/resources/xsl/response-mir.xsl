@@ -925,20 +925,20 @@
       <xsl:variable name="fqValue" >
         <xsl:choose>
           <xsl:when test="$categoryClassValues">
-            <xsl:value-of select="concat($classId,':',substring-before(@name,':'),'%5C:',substring-after(@name,':'))"/>
+            <xsl:value-of select="concat('category.top:',substring-before(@name,':'),'%5C:',substring-after(@name,':'))"/>
           </xsl:when>
           <xsl:otherwise>
-            <xsl:value-of select="concat($classId,':',@name)"/>
+            <xsl:value-of select="concat($facet_name,':',@name)"/>
           </xsl:otherwise>
         </xsl:choose>
       </xsl:variable>
       <xsl:variable name="fqResponseValue" >
         <xsl:choose>
           <xsl:when test="$categoryClassValues">
-            <xsl:value-of select="concat($classId,':',substring-before(@name,':'),'\:',substring-after(@name,':'))"/>
+            <xsl:value-of select="concat('category.top:',substring-before(@name,':'),'\:',substring-after(@name,':'))"/>
           </xsl:when>
           <xsl:otherwise>
-            <xsl:value-of select="concat($classId,':',@name)"/>
+            <xsl:value-of select="concat($facet_name,':',@name)"/>
           </xsl:otherwise>
         </xsl:choose>
       </xsl:variable>
