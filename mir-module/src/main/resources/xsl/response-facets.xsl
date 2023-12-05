@@ -50,35 +50,13 @@
           <!-- facet values -->
           <div class="card-body collapse show">
             <ul class="filter">
-              <!--
-                Checking facet name for compatibility with old code, facets named
-               'worldReadableComplete' and 'mods.genre' from old code
-               -->
-              <xsl:choose>
-                <xsl:when test="$facet_name='worldReadableComplete'">
-                  <xsl:apply-templates select="/response/lst[@name='facet_counts']/lst[@name='facet_fields']">
-                    <xsl:with-param name="facet_name" select="$facet_name"/>
-                    <xsl:with-param name="i18nPrefix" select="'mir.response.openAccess.facet.'"/>
-                  </xsl:apply-templates>
-                </xsl:when>
-                <xsl:when test="$facet_name='mods.genre'">
-                  <xsl:apply-templates select="/response/lst[@name='facet_counts']/lst[@name='facet_fields']">
-                    <xsl:with-param name="facet_name" select="$facet_name"/>
-                    <xsl:with-param name="classId" select="'mir_genres'"/>
-                  </xsl:apply-templates>
-                </xsl:when>
-                <!-- all other facets -->
-                <xsl:otherwise>
-                  <xsl:variable name="CategoryClassValues"
-                                select="concat('MIR.Response.Facet.', $facet_name, '.CategoryClassValues')"/>
-
-                  <xsl:apply-templates select="/response/lst[@name='facet_counts']/lst[@name='facet_fields']">
-                    <xsl:with-param name="facet_name" select="$facet_name"/>
-                    <xsl:with-param name="CategoryClassValues"
-                                    select="boolean($facetProperties/properties/entry[@key = $CategoryClassValues])"/>
-                  </xsl:apply-templates>
-                </xsl:otherwise>
-              </xsl:choose>
+              <xsl:variable name="CategoryClassValues"
+                            select="concat('MIR.Response.Facet.', $facet_name, '.CategoryClassValues')"/>
+              <xsl:apply-templates select="/response/lst[@name='facet_counts']/lst[@name='facet_fields']">
+                <xsl:with-param name="facet_name" select="$facet_name"/>
+                <xsl:with-param name="CategoryClassValues"
+                                select="boolean($facetProperties/properties/entry[@key = $CategoryClassValues])"/>
+              </xsl:apply-templates>
             </ul>
           </div>
         </div>
@@ -177,8 +155,9 @@
                 <xsl:when test="mcrxsl:isCategoryID($facet_name, @name)">
                   <xsl:value-of select="mcrxsl:getDisplayName($facet_name, @name)"/>
                 </xsl:when>
-                <xsl:when test="string-length($i18nPrefix) &gt; 0">
-                  <xsl:value-of select="i18n:translate(concat($i18nPrefix, @name))" disable-output-escaping="yes"/>
+                <xsl:when test="i18n:exists(concat('mir.response.facet.' ,$facet_name, '.value.', @name))">
+                  <xsl:value-of select="i18n:translate(concat('mir.response.facet.' ,$facet_name, '.value.', @name))"
+                                disable-output-escaping="yes"/>
                 </xsl:when>
                 <xsl:otherwise>
                   <xsl:value-of select="@name"/>
