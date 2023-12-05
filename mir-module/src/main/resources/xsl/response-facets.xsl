@@ -28,11 +28,10 @@
                   <xsl:value-of select="i18n:translate(concat('mir.response.facet.', $facet_name, '.title'))"/>
                 </xsl:when>
                 <xsl:when test="not($classification/null)">
-                  <xsl:variable name="category_label"
-                                select="$classification/mycoreclass/label[@xml:lang=$CurrentLang]/@text"/>
+                  <xsl:variable name="label" select="$classification/mycoreclass/label[@xml:lang=$CurrentLang]/@text"/>
                   <xsl:choose>
-                    <xsl:when test="string-length($category_label) &gt; 0">
-                      <xsl:value-of select="$category_label"/>
+                    <xsl:when test="string-length($label) &gt; 0">
+                      <xsl:value-of select="$label"/>
                     </xsl:when>
                     <xsl:otherwise>
                       <xsl:value-of select="$facet_name"/>
