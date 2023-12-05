@@ -72,13 +72,11 @@
                 <xsl:otherwise>
                   <xsl:variable name="CategoryClassValues"
                                 select="concat('MIR.Response.Facet.', $facet_name, '.CategoryClassValues')"/>
-                  <xsl:variable name="ClassId" select="concat('MIR.Response.Facet.', $facet_name, '.ClassId')"/>
 
                   <xsl:apply-templates select="/response/lst[@name='facet_counts']/lst[@name='facet_fields']">
                     <xsl:with-param name="facet_name" select="$facet_name"/>
                     <xsl:with-param name="CategoryClassValues"
-                                    select="$facetProperties/properties/entry[@key = $CategoryClassValues]"/>
-                    <xsl:with-param name="ClassId" select="$facetProperties/properties/entry[@key = $ClassId]"/>
+                                    select="boolean($facetProperties/properties/entry[@key = $CategoryClassValues])"/>
                   </xsl:apply-templates>
                 </xsl:otherwise>
               </xsl:choose>
@@ -91,28 +89,15 @@
 
   <xsl:template match="/response/lst[@name='facet_counts']/lst[@name='facet_fields']">
     <xsl:param name="CategoryClassValues" select="false()"/>
-    <xsl:param name="ClassId"/>
     <xsl:param name="facet_name"/>
     <xsl:param name="i18nPrefix"/>
-
-    <xsl:message>
-      <xsl:value-of select="concat('CategoryClassValues: ', $CategoryClassValues)"/>
-    </xsl:message>
-    <xsl:message>
-      <xsl:value-of select="concat('ClassId: ', $ClassId)"/>
-    </xsl:message>
-    <xsl:message>
-      <xsl:value-of select="concat('facet_name: ', $facet_name)"/>
-    </xsl:message>
-    <xsl:message>
-      <xsl:value-of select="concat('i18nPrefix: ', $i18nPrefix)"/>
-    </xsl:message>
 
     <xsl:for-each select="lst[@name=$facet_name]/int">
       <xsl:variable name="fqValue">
         <xsl:choose>
-          <xsl:when test="$CategoryClassValues = 'true'">
-            <xsl:value-of select="concat($ClassId,':',substring-before(@name,':'),'%5C:',substring-after(@name,':'))"/>
+          <xsl:when test="$CategoryClassValues = true()">
+            <xsl:value-of
+              select="concat('category.top',':',substring-before(@name,':'),'%5C:',substring-after(@name,':'))"/>
           </xsl:when>
           <xsl:otherwise>
             <xsl:value-of select="concat($facet_name,':',@name)"/>
@@ -123,14 +108,14 @@
       <xsl:variable name="fqResponseValue">
         <xsl:choose>
           <xsl:when test="$CategoryClassValues = true()">
-            <xsl:value-of select="concat($ClassId,':',substring-before(@name,':'),'\:',substring-after(@name,':'))"/>
+            <xsl:value-of
+              select="concat('category.top',':',substring-before(@name,':'),'\:',substring-after(@name,':'))"/>
           </xsl:when>
           <xsl:otherwise>
             <xsl:value-of select="concat($facet_name,':',@name)"/>
           </xsl:otherwise>
         </xsl:choose>
       </xsl:variable>
-
       <xsl:variable name="fqFragment" select="concat('fq=',$fqValue)"/>
       <xsl:variable name="fqFragmentEncoded" select="concat('fq=',encoder:encode($fqResponseValue, 'UTF-8'))"/>
       <xsl:variable name="queryWithoutStart" select="mcrxsl:regexp($RequestURL, '(&amp;|%26)(start=)[0-9]*', '')"/>
@@ -186,7 +171,7 @@
             <span class="title">
               <xsl:choose>
                 <xsl:when
-                  test="string-length($CategoryClassValues) &gt; 0 and string-length($ClassId) &gt; 0 and mcrxsl:isCategoryID(substring-before(@name, ':'), substring-after(@name, ':'))">
+                  test="$CategoryClassValues = true() and mcrxsl:isCategoryID(substring-before(@name, ':'), substring-after(@name, ':'))">
                   <xsl:value-of
                     select="mcrxsl:getDisplayName(substring-before(@name, ':'), substring-after(@name, ':'))"/>
                 </xsl:when>
