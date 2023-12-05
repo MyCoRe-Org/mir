@@ -12,6 +12,7 @@ $filter_border: #ccc !default;
 $filter_headline: #999 !default;
 $filter_hits: #999 !default;
 $filter: #666 !default;
+$hover_darken: 20%;
 
 @-webkit-keyframes bouncedelay {
   0%, 80%, 100% { -webkit-transform: scale(0.0) }
@@ -89,54 +90,75 @@ $filter: #666 !default;
       float: left;
       width: 100%;
       .card-header {
+        cursor: pointer;
         .card-title {
           font-size: 1rem;
           color: $filter_headline;
           margin-bottom: 0px;
+          &:hover {
+            color: darken($filter_headline, $hover_darken);
+          }
         }
       }
       .filter {
         li {
-          .checkbox {
+          cursor: pointer;
+          &:hover * {
+            background-color: transparent;
+          }
+          &:hover {
+            .custom-checkbox {
+              label {
+                .title {
+                  color: darken($filter, $hover_darken);
+                }
+                .hits {
+                  color: darken($filter_hits, $hover_darken);
+                }
+              }
+            }
+          }
+          .custom-checkbox {
             margin-top: 0px;
             margin-bottom: 0px;
             label {
+              cursor: pointer;
               vertical-align: middle;
-            }
-            .hits {
-              color: $filter_hits;
+              .hits {
+                color: $filter_hits;
+              }
             }
           }
         }
       }
-	  &.oa {
-	   li[data-fq^='worldReadableComplete']{
-	     .title:before{
-           display: inline-block;
-           font: normal normal 900 14px/1 'Font Awesome 5 Free';
-           text-rendering: auto;
-           -webkit-font-smoothing: antialiased;
-           -moz-osx-font-smoothing: grayscale;
-           margin-right: 5px;
-         }
-       }
-       li[data-fq='worldReadableComplete:true'] {
-         .title {
-           @extend .text-success;
-           &:before{
-             content: "\f13e"; //fa-unlock-alt
-           }
-         }
-       }
-       li[data-fq='worldReadableComplete:false'] {
-         .title {
-           @extend .text-warning;
-           &:before{
-             content: "\f023"; //fa-lock
-           }
-         }
-       }
-     }
+      &.worldReadableComplete {
+        li[data-fq^='worldReadableComplete']{
+          .title:before{
+            display: inline-block;
+            font: normal normal 900 14px/1 'Font Awesome 5 Free';
+            text-rendering: auto;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            margin-right: 5px;
+          }
+        }
+        li[data-fq='worldReadableComplete:true'] {
+          .title {
+            @extend .text-success;
+            &:before{
+              content: "\f13e"; //fa-unlock-alt
+            }
+          }
+        }
+        li[data-fq='worldReadableComplete:false'] {
+          .title {
+            @extend .text-warning;
+            &:before{
+              content: "\f023"; //fa-lock
+            }
+          }
+        }
+      }
 
     }
   }

@@ -191,7 +191,9 @@
       },
       "appends": {
         "facet": "true",
-        "facet.field": "mods.genre",
+        "facet.field": [
+          "mods.genre"
+        ],
         "facet.mincount": "1"
       }
     }
