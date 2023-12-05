@@ -22,5 +22,11 @@
         </root>
         <logger name="org.hibernate" level="error" />
         <logger name="org.mycore.frontend.editor.validation" level="info" />
+        <logger name="org.mycore.common.xml.MCRURIResolver" >
+            <filters>
+                <MarkerFilter marker="tryResolveXML" onMatch="NEUTRAL" onMismatch="ACCEPT"/>
+                <MCRUniqueFilter onMatch="DENY" onMismatch="ACCEPT"/>
+            </filters>
+        </logger>
     </loggers>
 </configuration>
