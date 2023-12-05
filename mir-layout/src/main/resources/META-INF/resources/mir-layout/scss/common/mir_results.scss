@@ -163,256 +163,256 @@ $hover_darken: 20%;
     }
   }
   .result_list {
-    #hit_list {
-      .hit_item {
-        margin-bottom: 30px;
-        border-top: 1px solid $light_neutral;
-        border-radius: 10px;
-        .hit_counter {
-          text-align: center;
-          font-weight: bold;
-          color: $light_neutral;
-          border: 1px solid $light_neutral;
-          border-width: 0 0 0 1px;
-          border-top-left-radius: 10px;
-          padding: 1px 0 0 0;
-          width: 73px;
-          float: left;
+  #hit_list {
+    .hit_item {
+      margin-bottom: 30px;
+      border-top: 1px solid $light_neutral;
+      border-radius: 10px;
+      .hit_counter {
+        text-align: center;
+        font-weight: bold;
+        color: $light_neutral;
+        border: 1px solid $light_neutral;
+        border-width: 0 0 0 1px;
+        border-top-left-radius: 10px;
+        padding: 1px 0 0 0;
+        width: 73px;
+        float: left;
+      }
+      .hit_stars {
+        margin: 0px 0px 5px 15px;
+        overflow: hidden;
+        width: 73px;
+        float: left;
+        .hit_star {
+          float:left;
+          width: 5px;
+          height: 5px;
+          background-color: $light_neutral;
+          margin: 8px 2px 0 2px;
+          border-radius: 50%;
         }
-        .hit_stars {
-          margin: 0px 0px 5px 15px;
-          overflow: hidden;
-          width: 73px;
-          float: left;
-          .hit_star {
-            float:left;
-            width: 5px;
-            height: 5px;
-            background-color: $light_neutral;
-            margin: 8px 2px 0 2px;
-            border-radius: 50%;
-          }
+      }
+      .hit_stars_1 .hit_star_1 {
+        background-color: $dark_neutral;
+      }
+      .hit_stars_2 .hit_star_1 {
+        background-color: $dark_neutral;
+      }
+      .hit_stars_2 .hit_star_2 {
+        background-color: $dark_neutral;
+      }
+      .hit_stars_3 .hit_star_1 {
+        background-color: $dark_neutral;
+      }
+      .hit_stars_3 .hit_star_2 {
+        background-color: $dark_neutral;
+      }
+      .hit_stars_3 .hit_star_3 {
+        background-color: $dark_neutral;
+      }
+      .hit_stars_4 .hit_star {
+        background-color: $dark_neutral;
+      }
+      .hit_stars_4 .hit_star_5 {
+        background-color: $dark_neutral;
+      }
+      .hit_stars_5 .hit_star {
+        background-color: $dark_neutral;
+      }
+      .hit_star_1 {}
+      .hit_star_2 {}
+      .hit_star_3 {}
+      .hit_star_4 {}
+      .hit_star_5 {}
+      .hit_download_box {
+        position:relative;
+        float: left;
+        width: 73px;
+        display: none;
+      }
+      a .hit_icon {
+        &:hover {
+          box-shadow: 1px 1px 4px #999;
         }
-        .hit_stars_1 .hit_star_1 {
-          background-color: $dark_neutral;
-        }
-        .hit_stars_2 .hit_star_1 {
-          background-color: $dark_neutral;
-        }
-        .hit_stars_2 .hit_star_2 {
-          background-color: $dark_neutral;
-        }
-        .hit_stars_3 .hit_star_1 {
-          background-color: $dark_neutral;
-        }
-        .hit_stars_3 .hit_star_2 {
-          background-color: $dark_neutral;
-        }
-        .hit_stars_3 .hit_star_3 {
-          background-color: $dark_neutral;
-        }
-        .hit_stars_4 .hit_star {
-          background-color: $dark_neutral;
-        }
-        .hit_stars_4 .hit_star_5 {
-          background-color: $dark_neutral;
-        }
-        .hit_stars_5 .hit_star {
-          background-color: $dark_neutral;
-        }
-        .hit_star_1 {}
-        .hit_star_2 {}
-        .hit_star_3 {}
-        .hit_star_4 {}
-        .hit_star_5 {}
-        .hit_download_box {
-          position:relative;
-          float: left;
-          width: 73px;
-          display: none;
-        }
-        a .hit_icon {
-          &:hover {
-            box-shadow: 1px 1px 4px #999;
-          }
-        }
-        .hit_icon {
-          height: 100px;
-          background-color: #EDEDED;
-          background-position: center center;
-          background-size: 100% auto;
-          background-repeat: no-repeat;
-          border: 1px solid $light_neutral;
-          border-bottom-left-radius: 25px;
-        }
-        .hit_icon_overlay {
-          position: absolute;
-          top: 20px;
-          left: -8px;
-          width: 50%;
-        }
-        .hit_tnd_container {
-        }
-        .hit_tnd_content {
+      }
+      .hit_icon {
+        height: 100px;
+        background-color: #EDEDED;
+        background-position: center center;
+        background-size: 100% auto;
+        background-repeat: no-repeat;
+        border: 1px solid $light_neutral;
+        border-bottom-left-radius: 25px;
+      }
+      .hit_icon_overlay {
+        position: absolute;
+        top: 20px;
+        left: -8px;
+        width: 50%;
+      }
+      .hit_tnd_container {
+      }
+      .hit_tnd_content {
           overflow:hidden;
           > div {
             float:left;
-            &:nth-child(n+1) {
-              margin-left: 5px;
-            }
+	        &:nth-child(n+1) {
+		      margin-left: 5px;
+	        }
           }
+      }
+      .hit_date {
+        color: $dark_neutral;
+      }
+      .hit_type {
+        color: $dark_neutral;
+      }
+      .hit_state {
+        color: $white;
+        .mir-published {
+          background-color: $success;
         }
-        .hit_date {
+        .mir-submitted,
+        .mir-new,
+        .mir-imported {
+          background-color: $warning;
+        }
+        .mir-review {
+          background-color: $primary;
+        }
+        .mir-blocked {
+          background-color: $danger;
+        }
+        .mir-deleted {
+          background-color: $secondary;
+        }
+        span {
+          background-color: $secondary;
+        }
+      }
+      .hit_title {
+        font-size: 20px;
+        margin: 15px 0 5px 0;
+        border-left: 0px solid $light_neutral;
+      }
+      .hit_author {
+        font-size: 16px;
+        margin: 0 0 0px 0;
+      }
+      .hit_source {
+        margin-top: 10px;
+        .label_parent {
           color: $dark_neutral;
         }
-        .hit_type {
+      }
+      .hit_abstract {
+        margin: 10px 0 5px 0;
+      }
+      .hit_pub_name {
+        .label_publisher {
           color: $dark_neutral;
         }
-        .hit_state {
-          color: $white;
-          .mir-published {
-            background-color: $success;
-          }
-          .mir-submitted,
-          .mir-new,
-          .mir-imported {
-            background-color: $warning;
-          }
-          .mir-review {
-            background-color: $primary;
-          }
-          .mir-blocked {
-            background-color: $danger;
-          }
-          .mir-deleted {
-            background-color: $secondary;
-          }
-          span {
-            background-color: $secondary;
-          }
-        }
-        .hit_title {
-          font-size: 20px;
-          margin: 15px 0 5px 0;
-          border-left: 0px solid $light_neutral;
-        }
-        .hit_author {
-          font-size: 16px;
-          margin: 0 0 0px 0;
-        }
-        .hit_source {
-          margin-top: 10px;
-          .label_parent {
-            color: $dark_neutral;
-          }
-        }
-        .hit_abstract {
-          margin: 10px 0 5px 0;
-        }
-        .hit_pub_name {
-          .label_publisher {
-            color: $dark_neutral;
-          }
-        }
-        .hit_options {
-          .btn {
-            margin-right: 0px;
-            padding: 2px 10px;
-            background-color: transparent;
-            border: 1px solid $light_neutral;
-            border-width: 0px 1px 0px 0px;
-            border-radius: 0;
-            border-top-right-radius: 10px;
-            color: $dark_neutral;
-            &:hover {
-              color: $link_color;
-              background-color: transparent;
-            }
-          }
-          .caret {
-            margin-left: 6px;
-          }
-          .hit_option {
-            .fas,
-            .far {
-              margin-right: 5px;
-            }
-          }
-        }
-        .single_hit_option {
+      }
+      .hit_options {
+        .btn {
           margin-right: 0px;
           padding: 2px 10px;
           background-color: transparent;
           border: 1px solid $light_neutral;
           border-width: 0px 1px 0px 0px;
           border-radius: 0;
-          border-top-right-radius: 9px;
-          a:hover {
+          border-top-right-radius: 10px;
+          color: $dark_neutral;
+          &:hover {
             color: $link_color;
-            text-decoration: none;
+            background-color: transparent;
           }
-          a {
-            color: $dark_neutral;
-            .fas,
-            .far {
-              margin-right: 5px;
-            }
+        }
+        .caret {
+          margin-left: 6px;
+        }
+        .hit_option {
+          .fas,
+          .far {
+            margin-right: 5px;
           }
         }
       }
-      .hit_item:hover {
+      .single_hit_option {
+        margin-right: 0px;
+        padding: 2px 10px;
+        background-color: transparent;
+        border: 1px solid $light_neutral;
+        border-width: 0px 1px 0px 0px;
+        border-radius: 0;
+        border-top-right-radius: 9px;
+        a:hover {
+          color: $link_color;
+          text-decoration: none;
+        }
+        a {
+          color: $dark_neutral;
+          .fas,
+          .far {
+            margin-right: 5px;
+          }
+        }
+      }
+    }
+    .hit_item:hover {
+      border-color: $highlight;
+      border-bottom-left-radius: 25%;
+      .hit_counter {
+        color: $highlight;
         border-color: $highlight;
-        border-bottom-left-radius: 25%;
-        .hit_counter {
-          color: $highlight;
-          border-color: $highlight;
-        }
-        .hit_stars_1 .hit_star_1 {
-          background-color: $highlight;
-        }
-        .hit_stars_2 .hit_star_1 {
-          background-color: $highlight;
-        }
-        .hit_stars_2 .hit_star_2 {
-          background-color: $highlight;
-        }
-        .hit_stars_3 .hit_star_1 {
-          background-color: $highlight;
-        }
-        .hit_stars_3 .hit_star_2 {
-          background-color: $highlight;
-        }
-        .hit_stars_3 .hit_star_3 {
-          background-color: $highlight;
-        }
-        .hit_stars_4 .hit_star {
-          background-color: $highlight;
-        }
-        .hit_stars_5 .hit_star {
-          background-color: $highlight;
-        }
-        .hit_icon {
-          border-left-color: $highlight;
-        }
-        .hitmid {
-          border-color: $highlight;
-        }
-        .btn {
-          border-color: $highlight;
-        }
-        .hit_title {
-          border-color: $link_color;
-        }
+      }
+      .hit_stars_1 .hit_star_1 {
+        background-color: $highlight;
+      }
+      .hit_stars_2 .hit_star_1 {
+        background-color: $highlight;
+      }
+      .hit_stars_2 .hit_star_2 {
+        background-color: $highlight;
+      }
+      .hit_stars_3 .hit_star_1 {
+        background-color: $highlight;
+      }
+      .hit_stars_3 .hit_star_2 {
+        background-color: $highlight;
+      }
+      .hit_stars_3 .hit_star_3 {
+        background-color: $highlight;
+      }
+      .hit_stars_4 .hit_star {
+        background-color: $highlight;
+      }
+      .hit_stars_5 .hit_star {
+        background-color: $highlight;
+      }
+      .hit_icon {
+        border-left-color: $highlight;
+      }
+      .hitmid {
+        border-color: $highlight;
+      }
+      .btn {
+        border-color: $highlight;
+      }
+      .hit_title {
+        border-color: $link_color;
       }
     }
-    .result_list_end {
-      height: 20px;
-      border-bottom-left-radius: 5px;
-      border-bottom-right-radius: 5px;
-      border: 1px solid $light_neutral;
-      border-width: 0 1px 1px 1px;
-      margin: 0 0 20px 0px;
-    }
+  }
+  .result_list_end {
+    height: 20px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border: 1px solid $light_neutral;
+    border-width: 0 1px 1px 1px;
+    margin: 0 0 20px 0px;
+  }
   }
 }
 
@@ -420,224 +420,224 @@ $hover_darken: 20%;
 /* file box *****************************************************************/
 $file_box_color: $card-bg !default;
 
-.file_box {
-  border: 0px solid $file_box_color;
-  border-radius: 0px;
-  margin-bottom: 30px;
+      .file_box {
+        border: 0px solid $file_box_color;
+          border-radius: 0px;
+          margin-bottom: 30px;
 
-  .filelist-loading {
-    position: absolute;
-    width: 100%;
-    text-align: center;
-    div {
-      width: 18px;
-      height: 18px;
-      background-color: #333;
-      border-radius: 100%;
-      display: inline-block;
-      -webkit-animation: bouncedelay 1.4s infinite ease-in-out;
-      animation: bouncedelay 1.4s infinite ease-in-out;
-      box-shadow: 0 2px 2px 0 rgba(50, 50, 50, 0.2);
-      /* Prevent first frame from flickering when animation starts */
-      -webkit-animation-fill-mode: both;
-      animation-fill-mode: both;
-    }
-    .bounce1 {
-      -webkit-animation-delay: -0.32s;
-      animation-delay: -0.32s;
-    }
-    .bounce2 {
-      -webkit-animation-delay: -0.16s;
-      animation-delay: -0.16s;
-    }
-  }
-  .file_box_breadcrumbs {
-    padding: 5px 0;
-    overflow: hidden;
-    .derivate_folder {
-      padding-right: 5px;
-    }
-    .derivate_folder > a:after {
-      content: "/";
-      padding-left: 5px;
-    }
-  }
-  .header {
-    .headline {
-      border-bottom: 1px solid #ddd;
-      padding: 0px 0 0px 0;
-      .title {
-        padding: 0 0 0 0;
-        .file_toggle {
-          font-size: 16px;
-          border: none;
-          background-color: transparent;
-          color: #333;
-          padding: 0;
-          font-weight: 300;
-          .set_number {
-            margin-left: 6px;
-          }
-        }
-      }
-      .options {
-        .btn {
-          border: 0px solid transparent;
-          margin-right: 0px;
-          background-color: transparent;
-          color: $primary;
-          padding: 5px 10px;
-          font-size: 12px;
-          line-height: 1.5;
-          &:hover {
-            color: $link_color;
-            background-color: transparent;
-          }
-        }
-        .caret {
-          margin-left: 6px;
-        }
-        .option {
-          .fas,
-          .far {
-            margin-right: 5px;
-          }
-        }
-      }
-      .title {
-        float: left;
-      }
-    }
-  }
-  .body {
-    .table {
-      margin-bottom: 0;
-    }
-    .file_set {
-      a {
-        text-decoration: none;
-      }
-      &.active_file {
-        background-color: fade($primary, 5%);
-        .file_name {
-          position: relative;
-          font-weight: bold;
-          > a::after {
-            font-family:"Font Awesome 5 Free"; // TODO: Find fontawesome mixing for sass
-            font-weight: 900;
-            content: "\f005";
-            position: absolute;
-            right: 0;
-            top: 0;
-            margin-top: 5px;
-            // color: $text-color; TODO: whats the bootstrap 4 default color?
-          }
-        }
-      }
-      &.waiting_file {
-        background-color: fade($primary, 5%);
-        .file_name {
-          position: relative;
-          font-weight: bold;
-          > a::after {
-            content: " ";
-            width: 20px;
-            height: 20px;
-            position: absolute;
-            right: 0;
-            top: 0;
+        .filelist-loading {
+          position: absolute;
+          width: 100%;
+          text-align: center;
+          div {
+            width: 18px;
+            height: 18px;
+            background-color: #333;
             border-radius: 100%;
-            margin-top: 5px;
-            // color: $text-color;TODO: whats the bootstrap 4 default color?
-            //background-color: $text-color; TODO: whats the bootstrap 4 default color?
-            animation: sk-scaleout 0.8s infinite ease-in-out;
-            -webkit-animation: sk-scaleout 0.8s infinite ease-in-out;
+            display: inline-block;
+            -webkit-animation: bouncedelay 1.4s infinite ease-in-out;
+            animation: bouncedelay 1.4s infinite ease-in-out;
+            box-shadow: 0 2px 2px 0 rgba(50, 50, 50, 0.2);
+            /* Prevent first frame from flickering when animation starts */
+            -webkit-animation-fill-mode: both;
+            animation-fill-mode: both;
+          }
+          .bounce1 {
+            -webkit-animation-delay: -0.32s;
+            animation-delay: -0.32s;
+          }
+          .bounce2 {
+            -webkit-animation-delay: -0.16s;
+            animation-delay: -0.16s;
+          }
+        }
+        .file_box_breadcrumbs {
+          padding: 5px 0;
+          overflow: hidden;
+          .derivate_folder {
+            padding-right: 5px;
+          }
+          .derivate_folder > a:after {
+            content: "/";
+            padding-left: 5px;
+          }
+        }
+        .header {
+          .headline {
+            border-bottom: 1px solid #ddd;
+            padding: 0px 0 0px 0;
+            .title {
+              padding: 0 0 0 0;
+              .file_toggle {
+                font-size: 16px;
+                border: none;
+                background-color: transparent;
+                color: #333;
+                padding: 0;
+                font-weight: 300;
+                .set_number {
+                  margin-left: 6px;
+                }
+              }
+            }
+            .options {
+                .btn {
+                  border: 0px solid transparent;
+                  margin-right: 0px;
+                  background-color: transparent;
+                  color: $primary;
+                  padding: 5px 10px;
+                  font-size: 12px;
+                  line-height: 1.5;
+                  &:hover {
+                    color: $link_color;
+                    background-color: transparent;
+                  }
+                }
+                .caret {
+                  margin-left: 6px;
+                }
+                .option {
+                  .fas,
+                  .far {
+                    margin-right: 5px;
+                  }
+                }
+            }
+            .title {
+              float: left;
+            }
+          }
+        }
+        .body {
+          .table {
+            margin-bottom: 0;
+          }
+          .file_set {
+            a {
+              text-decoration: none;
+            }
+            &.active_file {
+              background-color: fade($primary, 5%);
+              .file_name {
+                position: relative;
+                font-weight: bold;
+                > a::after {
+                  font-family:"Font Awesome 5 Free"; // TODO: Find fontawesome mixing for sass
+                  font-weight: 900;
+                  content: "\f005";
+                  position: absolute;
+                  right: 0;
+                  top: 0;
+                  margin-top: 5px;
+                  // color: $text-color; TODO: whats the bootstrap 4 default color?
+                }
+              }
+            }
+            &.waiting_file {
+              background-color: fade($primary, 5%);
+              .file_name {
+                position: relative;
+                font-weight: bold;
+                > a::after {
+                  content: " ";
+                  width: 20px;
+                  height: 20px;
+                  position: absolute;
+                  right: 0;
+                  top: 0;
+                  border-radius: 100%;
+                  margin-top: 5px;
+                  // color: $text-color;TODO: whats the bootstrap 4 default color?
+                  //background-color: $text-color; TODO: whats the bootstrap 4 default color?
+                  animation: sk-scaleout 0.8s infinite ease-in-out;
+                  -webkit-animation: sk-scaleout 0.8s infinite ease-in-out;
+                }
+              }
+            }
+
+            .options {
+                .btn {
+                  margin-right: 0px;
+                  padding: 2px 10px;
+                  background-color: transparent;
+                  border: 1px solid $light_neutral;
+                  border-width: 0px 0px 0px 0px;
+                  border-radius: 0;
+                  border-top-right-radius: 0px;
+                  color: $dark_neutral;
+                  &:hover {
+                    color: $link_color;
+                    background-color: transparent;
+                  }
+                }
+                .caret {
+                  margin-left: 6px;
+                }
+                .option {
+                  .fas,
+                  .far {
+                    margin-right: 5px;
+                  }
+                }
+            }
+            .file_date {}
+            .file_preview {}
+            .file_name {}
+            .derivate_folder {
+              cursor: pointer;
+            }
+            .go_back {
+              padding-left: 140px;
+            }
+            .file_urn {
+                padding-left: 2px;
+            }
+            .file_size {}
+          }
+        }
+
+        .file_box_pagination {
+          .pagination-info, .pagination {
+            margin: 5px 0;
+          }
+
+          .pagination-info {
+            // line-height: $line-height-small; // TODO find small text height
           }
         }
       }
-
-      .options {
-        .btn {
-          margin-right: 0px;
-          padding: 2px 10px;
-          background-color: transparent;
-          border: 1px solid $light_neutral;
-          border-width: 0px 0px 0px 0px;
-          border-radius: 0;
-          border-top-right-radius: 0px;
-          color: $dark_neutral;
-          &:hover {
-            color: $link_color;
-            background-color: transparent;
-          }
-        }
-        .caret {
-          margin-left: 6px;
-        }
-        .option {
-          .fas,
-          .far {
-            margin-right: 5px;
-          }
-        }
-      }
-      .file_date {}
-      .file_preview {}
-      .file_name {}
-      .derivate_folder {
-        cursor: pointer;
-      }
-      .go_back {
-        padding-left: 140px;
-      }
-      .file_urn {
-        padding-left: 2px;
-      }
-      .file_size {}
-    }
-  }
-
-  .file_box_pagination {
-    .pagination-info, .pagination {
-      margin: 5px 0;
-    }
-
-    .pagination-info {
-      // line-height: $line-height-small; // TODO find small text height
-    }
-  }
-}
 
 /* filter *******************************************************************/
 
 .filter {
-  border-right: 0px solid #ccc;
+    border-right: 0px solid #ccc;
 }
 .filter,
 .filter > li ul {
-  list-style:none;
-  margin:0;
-  padding:0;
+    list-style:none;
+    margin:0;
+    padding:0;
 }
 .filter > li ul {
-  display:none;
+    display:none;
 }
 .filter > li {
-  margin:0 0 0px 0;
-  padding:0 0 0 0;
+    margin:0 0 0px 0;
+    padding:0 0 0 0;
 }
 .filter > li > ul > li {
-  margin:0 0 0px 0px;
-  padding:0 0 0 0;
+    margin:0 0 0px 0px;
+    padding:0 0 0 0;
 }
 .filter .hits {
-  color: #ccc;
+    color: #ccc;
 }
 .filter .hits:before {
-  content: " (";
+    content: " (";
 }
 .filter .hits:after {
-  content: ")";
+    content: ")";
 }
 
 
