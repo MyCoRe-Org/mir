@@ -107,7 +107,7 @@
                       <xsl:variable name="ext"
                                     select="document(concat('callJava:org.apache.commons.io.FilenameUtils:getExtension:', $derivateMaindoc))"/>
                       <xsl:value-of
-                        select="concat($baseURL,'receive/', $returnId, '?XSL.Transformer=svg-download&amp;XSL.extension=', $ext)"/>
+                        select="concat($baseURL,'images/svg_icons/download-generic.xml?XSL.Transformer=svg-download&amp;XSL.extension=', $ext)"/>
                     </xsl:when>
                     <xsl:otherwise>
                         <xsl:value-of select="concat($baseURL,'images/svg_icons/download_default.svg')"/>
