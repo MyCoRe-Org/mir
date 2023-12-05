@@ -31,7 +31,6 @@
         <xsl:param name="baseURL"/>
         <xsl:param name="mimeType"/>
         <xsl:param name="derivateMaindoc"/>
-        <xsl:param name="returnId"/>
 
         <xsl:choose>
             <xsl:when test="$mimeType='application/pdf' or
@@ -103,7 +102,7 @@
             </xsl:when>
             <xsl:otherwise>
                 <xsl:choose>
-                    <xsl:when test="string-length($derivateMaindoc) &gt; 0 and string-length($returnId) &gt; 0">
+                    <xsl:when test="string-length($derivateMaindoc) &gt; 0">
                       <xsl:variable name="ext"
                                     select="document(concat('callJava:org.apache.commons.io.FilenameUtils:getExtension:', $derivateMaindoc))"/>
                       <xsl:value-of
