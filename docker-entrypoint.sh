@@ -59,8 +59,56 @@ function downloadDriver {
   fi
 }
 
+function migrateC3P0toHikari {
+    # check if c3p0 is used (if any c3p0-* file present)
+    if ls "${MCR_CONFIG_DIR}lib/c3p0-"*.jar 1> /dev/null 2>&1; then
+      echo "Migrate from c3p0 to HikariCP"
+      # delete old c3p0 drivers
+      rm "${MCR_CONFIG_DIR}lib/c3p0-"*.jar
+      rm "${MCR_CONFIG_DIR}lib/mchange-commons-java-"*.jar
+      rm "${MCR_CONFIG_DIR}lib/hibernate-c3p0-"*.jar
+
+      # delete old database drivers
+      rm "${MCR_CONFIG_DIR}lib/postgresql-42.2.9.jar"
+      rm "${MCR_CONFIG_DIR}lib/mariadb-java-client-2.5.4.jar"
+      rm "${MCR_CONFIG_DIR}lib/h2-1.4.200.jar"
+      rm "${MCR_CONFIG_DIR}lib/mysql-connector-java-8.0.19.jar"
+
+      # delete old configuration and add new configuration
+      if grep -q "hibernate.c3p0" "${PERSISTENCE_XML}"; then
+        sed -ri "s/.*hibernate.c3p0.*//" "${PERSISTENCE_XML}"
+        sed -ri "s/(<property name=\"hibernate.connection.provider_class\" value=\")(.*)(\" \/>)/\1org.hibernate.hikaricp.internal.HikariCPConnectionProvider\3/" "${PERSISTENCE_XML}"
+        sed -ri "s/(<\/properties>)/<property name=\"hibernate.hikari.maximumPoolSize\" value=\"30\" \/>\n<property name=\"hibernate.hikari.minimumIdle\" value=\"2\" \/>\n<property name=\"hibernate.hikari.idleTimeout\" value=\"30000\" \/>\n<property name=\"hibernate.hikari.maxLifetime\" value=\"1800000\" \/>\n<property name=\"hibernate.hikari.leakDetectionThreshold\" value=\"9000\" \/>\n<property name=\"hibernate.hikari.registerMbeans\" value=\"true\" \/>\n\1/" "${PERSISTENCE_XML}"
+      fi
+
+      /opt/mir/mir/bin/mir.sh reload mappings in jpa configuration file
+    else
+      echo "No c3p0 driver found. Skip migration."
+    fi
+}
+
+function migrateJavaxPropertiesToJakarta() {
+  if grep -q "javax.persistence" "${PERSISTENCE_XML}"; then
+    echo "Migrate properties in persistence.xml from javax to jakarta"
+    sed -ri "s/(<property name=\")javax.persistence(.*\" value=\".*\" \/>)/\1jakarta.persistence\2/" "${PERSISTENCE_XML}"
+  fi
+  if grep -q "xmlns.jcp.org" "${PERSISTENCE_XML}"; then
+    echo "Migrate xmlns in persistence.xml from jcp.org to jakarta.ee"
+    sed -ri "s/xmlns=\".+persistence\"/xmlns=\"https:\/\/jakarta.ee\/xml\/ns\/persistence\"/" "${PERSISTENCE_XML}"
+    echo "Migrate schemaLocation in persistence.xml from jcp.org to jakarta.ee"
+    grep -ri "s/(xsi:schemaLocation=\").*jcp.org.*(\")/\1https:\/\/jakarta.ee\/xml\/ns\/persistence https:\/\/jakarta.ee\/xml\/ns\/persistence\/persistence_3_0.xsd\2/" "${PERSISTENCE_XML}"
+  fi
+  if grep -q "version=\"2" "${PERSISTENCE_XML}"; then
+    echo "Migrate version in persistence.xml from 2.* to 3.0"
+    sed -ri "s/version=\"2.*\"/version=\"3.0\"/" "${PERSISTENCE_XML}"
+  fi
+}
+
 function setDockerValues() {
     echo "Set Docker Values to Config!"
+
+    migrateJavaxPropertiesToJakarta
+
     if [ -n "${SOLR_URL}" ]; then
       sed -ri "s/#?(MCR\.Solr\.ServerURL=).+/\1${SOLR_URL_ESCAPED}/" "${MYCORE_PROPERTIES}";
     fi
@@ -74,19 +122,19 @@ function setDockerValues() {
     fi
 
     if [ -n "${JDBC_NAME}" ]; then
-      sed -ri "s/(name=\"javax.persistence.jdbc.user\" value=\").*(\")/\1${JDBC_NAME_ESCAPED}\2/" "${PERSISTENCE_XML}"
+      sed -ri "s/(name=\"jakarta.persistence.jdbc.user\" value=\").*(\")/\1${JDBC_NAME_ESCAPED}\2/" "${PERSISTENCE_XML}"
     fi
 
     if [ -n "${JDBC_PASSWORD}" ]; then
-      sed -ri "s/(name=\"javax.persistence.jdbc.password\" value=\").*(\")/\1${JDBC_PASSWORD_ESCAPED}\2/" "${PERSISTENCE_XML}"
+      sed -ri "s/(name=\"jakarta.persistence.jdbc.password\" value=\").*(\")/\1${JDBC_PASSWORD_ESCAPED}\2/" "${PERSISTENCE_XML}"
     fi
 
     if [ -n "${JDBC_DRIVER}" ]; then
-      sed -ri "s/(name=\"javax.persistence.jdbc.driver\" value=\").*(\")/\1${JDBC_DRIVER_ESCAPED}\2/" "${PERSISTENCE_XML}"
+      sed -ri "s/(name=\"jakarta.persistence.jdbc.driver\" value=\").*(\")/\1${JDBC_DRIVER_ESCAPED}\2/" "${PERSISTENCE_XML}"
     fi
 
     if [ -n "${JDBC_URL}" ]; then
-      sed -ri "s/(name=\"javax.persistence.jdbc.url\" value=\").*(\")/\1${JDBC_URL_ESCAPED}\2/" "${PERSISTENCE_XML}"
+      sed -ri "s/(name=\"jakarta.persistence.jdbc.url\" value=\").*(\")/\1${JDBC_URL_ESCAPED}\2/" "${PERSISTENCE_XML}"
     fi
 
     if [ -n "${SOLR_CLASSIFICATION_CORE}" ]; then
@@ -113,19 +161,18 @@ function setDockerValues() {
           echo "MCR.Save.FileSystem=${MCR_SAVE_DIR}">>"${MYCORE_PROPERTIES}"
     fi
 
+    migrateC3P0toHikari
+
     case $JDBC_DRIVER in
-      org.postgresql.Driver) downloadDriver "https://jdbc.postgresql.org/download/postgresql-42.2.9.jar";;
-      org.mariadb.jdbc.Driver) downloadDriver "https://repo.maven.apache.org/maven2/org/mariadb/jdbc/mariadb-java-client/2.5.4/mariadb-java-client-2.5.4.jar";;
-      org.hsqldb.jdbcDriver) downloadDriver "https://repo.maven.apache.org/maven2/org/hsqldb/hsqldb/2.5.0/hsqldb-2.5.0.jar";;
-      org.h2.Driver) downloadDriver "https://repo.maven.apache.org/maven2/com/h2database/h2/1.4.200/h2-1.4.200.jar";;
-      com.mysql.jdbc.Driver) downloadDriver "https://repo.maven.apache.org/maven2/mysql/mysql-connector-java/8.0.19/mysql-connector-java-8.0.19.jar";;
+      org.postgresql.Driver) downloadDriver "https://jdbc.postgresql.org/download/postgresql-42.7.0.jar";;
+      org.mariadb.jdbc.Driver) downloadDriver "https://repo.maven.apache.org/maven2/org/mariadb/jdbc/mariadb-java-client/3.3.0/mariadb-java-client-3.3.0.jar";;
+      org.h2.Driver) downloadDriver "https://repo1.maven.org/maven2/com/h2database/h2/2.2.224/h2-2.2.224.jar";;
+      com.mysql.jdbc.Driver) downloadDriver "https://repo1.maven.org/maven2/com/mysql/mysql-connector-j/8.2.0/mysql-connector-j-8.2.0.jar";;
     esac
 
     mkdir -p "${MCR_CONFIG_DIR}lib"
 
-    downloadDriver https://repo1.maven.org/maven2/org/hibernate/hibernate-c3p0/5.3.9.Final/hibernate-c3p0-5.3.9.Final.jar
-    downloadDriver https://repo1.maven.org/maven2/com/mchange/c3p0/0.9.5.2/c3p0-0.9.5.2.jar
-    downloadDriver https://repo1.maven.org/maven2/com/mchange/mchange-commons-java/0.2.15/mchange-commons-java-0.2.15.jar
+    downloadDriver https://repo1.maven.org/maven2/com/zaxxer/HikariCP/5.1.0/HikariCP-5.1.0.jar
 }
 
 function setUpMyCoRe {
@@ -133,8 +180,8 @@ function setUpMyCoRe {
     /opt/mir/mir/bin/mir.sh create configuration directory
     setDockerValues
     setupLog4jConfig
-    sed -ri "s/<mapping-file>META-INF\/mycore-viewer-mappings.xml<\/mapping-file>/&\n    <mapping-file>META-INF\/mir-module-mappings.xml<\/mapping-file>\n    <mapping-file>META-INF\/mycore-acl-mappings.xml<\/mapping-file>\n    <mapping-file>META-INF\/mycore-jobqueue-mappings.xml<\/mapping-file>/" "${MCR_CONFIG_DIR}resources/META-INF/persistence.xml"
-    sed -ri "s/(<\/properties>)/<property name=\"hibernate\.connection\.provider_class\" value=\"org\.hibernate\.connection\.C3P0ConnectionProvider\" \/>\n<property name=\"hibernate\.c3p0\.min_size\" value=\"2\" \/>\n<property name=\"hibernate\.c3p0\.max_size\" value=\"50\" \/>\n<property name=\"hibernate\.c3p0\.acquire_increment\" value=\"2\" \/>\n<property name=\"hibernate\.c3p0\.max_statements\" value=\"30\" \/>\n<property name=\"hibernate\.c3p0\.timeout\" value=\"1800\" \/>\n\1/" "${MCR_CONFIG_DIR}resources/META-INF/persistence.xml"
+    /opt/mir/mir/bin/mir.sh reload mappings in jpa configuration file
+    sed -ri "s/(<\/properties>)/<property name=\"hibernate.hikari.maximumPoolSize\" value=\"30\" \/>\n<property name=\"hibernate.hikari.minimumIdle\" value=\"2\" \/>\n<property name=\"hibernate.hikari.idleTimeout\" value=\"30000\" \/>\n<property name=\"hibernate.hikari.maxLifetime\" value=\"1800000\" \/>\n<property name=\"hibernate.hikari.leakDetectionThreshold\" value=\"9000\" \/>\n<property name=\"hibernate.hikari.registerMbeans\" value=\"true\" \/>\n\1/" "${MCR_CONFIG_DIR}resources/META-INF/persistence.xml"
     /opt/mir/mir/bin/setup.sh
 }
 
