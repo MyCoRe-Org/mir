@@ -12,8 +12,8 @@
     <driver>org.postgresql.Driver</driver>
     <url>jdbc:postgresql://127.0.0.1/mir</url>
     <library>
-      <url>https://jdbc.postgresql.org/download/postgresql-42.6.0.jar</url>
-      <url>https://repo1.maven.org/maven2/org/postgresql/postgresql/42.6.0/postgresql-42.6.0.jar</url>
+      <url>https://jdbc.postgresql.org/download/postgresql-42.7.0.jar</url>
+      <url>https://repo1.maven.org/maven2/org/postgresql/postgresql/42.6.0/postgresql-42.7.0.jar</url>
     </library>
   </db>
   <db name="HSQLDB">
@@ -28,14 +28,14 @@
     <driver>org.mariadb.jdbc.Driver</driver>
     <url>jdbc:mariadb://127.0.0.1/mir</url>
     <library>
-      <url>https://repo1.maven.org/maven2/org/mariadb/jdbc/mariadb-java-client/3.2.0/mariadb-java-client-3.2.0.jar</url>
+      <url>https://repo1.maven.org/maven2/org/mariadb/jdbc/mariadb-java-client/3.3.0/mariadb-java-client-3.3.0.jar</url>
     </library>
   </db>
   <db name="MySQL">
     <driver>com.mysql.jdbc.Driver</driver>
     <url>jdbc:mysql://127.0.0.1/mir</url>
     <library>
-      <url>https://repo1.maven.org/maven2/com/mysql/mysql-connector-j/8.1.0/mysql-connector-j-8.1.0.jar</url>
+      <url>https://repo1.maven.org/maven2/com/mysql/mysql-connector-j/8.2.0/mysql-connector-j-8.2.0.jar</url>
     </library>
   </db>
 </dbtypes>

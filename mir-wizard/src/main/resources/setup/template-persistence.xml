@@ -19,6 +19,8 @@
       <property name="jakarta.persistence.jdbc.password" />
       <property name="hibernate.cache.use_second_level_cache" value="false" />
       <property name="hibernate.hbm2ddl.auto" value="validate" />
+      <!-- Automatically quote database identifiers that are keywords -->
+      <property name="hibernate.auto_quote_keyword" value="true" />
       <property name="hibernate.default_schema" />
       <property name="hibernate.default_catalog" />
       <!-- Connection-Pool -->
