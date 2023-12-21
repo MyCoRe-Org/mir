@@ -120,7 +120,7 @@ public class MIRAccessKey {
     /**
      * @return the key value
      */
-    @Column(name = "value",
+    @Column(name = "\"value\"",
         nullable = false)
     public String getValue() {
         return value;

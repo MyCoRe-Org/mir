@@ -144,8 +144,7 @@ public class MIRAdminEditorITCase extends MIRITBase {
         editorController.setEdition(MIRTestData.EDITION);
         editorController.setExtend(MIRTestData.EXTEND_SOLO);
         editorController.setTypeOfResource(MIRTypeOfResource.still_image);
-        editorController.setCoordinates(MIRTestData.COORDINATES);
-        editorController.setGeograhicPlace(MIRTestData.GEOGRAPHIC_PLACE);
+        editorController.setGeoPair(MIRTestData.GEOGRAPHIC_PLACE, MIRTestData.COORDINATES);
         editorController.setClassifications(
             Stream.of(MIRDNBClassification._004, MIRDNBClassification._010).collect(Collectors.toList()));
     }

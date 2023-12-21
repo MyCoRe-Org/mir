@@ -5,8 +5,8 @@
                 exclude-result-prefixes="mcri18n mcrproperty"
                 version="3.0">
 
-  <xsl:include href="functions/i18n.xsl" />
-  <xsl:include href="functions/property.xsl" />
+  <xsl:include href="resource:xslt/functions/i18n.xsl" />
+  <xsl:include href="resource:xslt/functions/property.xsl" />
 
   <xsl:param name="MIR.Layout.Top"/>
   <xsl:param name="MIR.Layout.End"/>
@@ -158,7 +158,7 @@
               <xsl:apply-templates select="$originalContent/div[@id=$boxID]" mode="newMetadata"/>
               <!-- End: METADATA -->
               <xsl:if
-                  test="$originalContent/div[@id=$boxID]/table[@class='mir-metadata']/tr/td/div[contains(@class,'openstreetmap-container')]">
+                  test="$originalContent/div[@id=$boxID]/table[@class='mir-metadata']//*[contains(@class,'openstreetmap-container')]">
                 <link rel="stylesheet" type="text/css" href="{$WebApplicationBaseURL}assets/openlayers/ol.css"/>
                 <script type="text/javascript" src="{$WebApplicationBaseURL}assets/openlayers/ol.js"/>
                 <script type="text/javascript" src="{$WebApplicationBaseURL}js/mir/geo-coords.min.js"></script>

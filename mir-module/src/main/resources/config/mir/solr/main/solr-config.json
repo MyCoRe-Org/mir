@@ -11,6 +11,7 @@
         "wt": "xml",
         "bq": "created:[NOW/DAY-6MONTH TO NOW/DAY]",
         "condQuery": "*",
+        "q.alt": "*:*",
         "sort": "score desc, mods.dateIssued desc"
       },
       "appends": {
@@ -190,7 +191,9 @@
       },
       "appends": {
         "facet": "true",
-        "facet.field": "mods.genre",
+        "facet.field": [
+          "mods.genre"
+        ],
         "facet.mincount": "1"
       }
     }

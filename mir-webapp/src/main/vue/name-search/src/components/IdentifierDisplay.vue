@@ -20,42 +20,38 @@
   <span><span class="identifier-key">{{ type }}</span><a class="identifier-value" :href="url">{{ value }}</a> </span>
 </template>
 
-<script>
-import {Component, Prop, Vue} from "vue-property-decorator";
+<script setup lang="ts">
 
-@Component({})
-export default class IdentifierDisplay extends Vue {
+import { computed, defineProps } from "vue";
 
-  @Prop()
-  value;
+const props = defineProps< {
+    value: string,
+    type: string
+}>();
 
-  @Prop()
-  type;
-
-  get url() {
-    switch (this.type.toLowerCase()) {
-      case "orcid":
-        return `https://orcid.org/${this.value}`;
-      case "gnd":
-        return `http://d-nb.info/gnd/${this.value}`;
-      case "viaf":
-        return `https://viaf.org/viaf/${this.value}/`;
-      case "loc":
-        return `https://id.loc.gov/authorities/names/${this.value}.html`
-      case "grid":
-        return `https://www.grid.ac/institutes/${this.value}`;
-      case "isni":
-        return `https://isni.org/isni/${this.value.replaceAll(/ /g, '')}`;
-      case "wikidata":
-        return `https://www.wikidata.org/wiki/${this.value}`;
-      case "ror":
-        return `https://ror.org/${this.value}`;
-      default:
-        return this.value;
+const url = computed(() => {
+    switch (props.type.toLowerCase()) {
+        case "orcid":
+            return `https://orcid.org/${props.value}`;
+        case "gnd":
+            return `http://d-nb.info/gnd/${props.value}`;
+        case "viaf":
+            return `https://viaf.org/viaf/${props.value}/`;
+        case "loc":
+            return `https://id.loc.gov/authorities/names/${props.value}.html`
+        case "grid":
+            return `https://www.grid.ac/institutes/${props.value}`;
+        case "isni":
+            return `https://isni.org/isni/${props.value.replaceAll(/ /g, '')}`;
+        case "wikidata":
+            return `https://www.wikidata.org/wiki/${props.value}`;
+        case "ror":
+            return `https://ror.org/${props.value}`;
+        default:
+            return props.value;
     }
-  }
 
-}
+});
 </script>
 
 <style scoped>

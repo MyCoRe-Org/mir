@@ -51,6 +51,19 @@
             })
         });
 
+        $(".boxPopover").each(function (i, popoverElement){
+            let id = popoverElement.getAttribute("id");
+            let contentID = id + "-content";
+            let content$ = $("#"+ contentID);
+            content$.detach();
+            content$.removeClass("d-none");
+            popoverElement.setAttribute("title", popoverElement.getAttribute("title") + '<div class="popoverclose btn btn-xs"><i class="fa fa-times"></i></div>');
+            $(popoverElement).popover({
+                content: content$,
+                html: true
+            })
+        });
+
         $("body").on("click", ".popoverclose", function(e){
             $(this).parents(".popover").popover("hide");
         });
@@ -324,14 +337,6 @@
     $('table.editorPanel td:has(table)').css('padding', '0');
 
     $('.confirm_deletion').confirm();
-
-    // modify empty search
-    // add * as value for an empty search to get results
-    $(".searchfield_box").submit(function() {
-      if ( $("input.search-query").val() == "" ) {
-        $("input.search-query").val("*");
-      }
-    });
 
     // search person index
     // makes sure the query ends with .* on submit

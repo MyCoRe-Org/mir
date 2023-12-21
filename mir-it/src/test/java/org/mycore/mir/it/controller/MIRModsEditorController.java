@@ -6,7 +6,6 @@ import java.util.stream.IntStream;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.mycore.common.MCRException;
 import org.mycore.common.selenium.drivers.MCRWebdriverWrapper;
 import org.mycore.mir.it.model.MIRAbstract;
 import org.mycore.mir.it.model.MIRAccess;
@@ -263,17 +262,84 @@ public class MIRModsEditorController extends MIREditorController {
 
     public void setTopics(List<String> topics) {
         if (topics.size() > 0) {
-            if (topics.size() > 1) {
-                IntStream.range(1, topics.size()).forEach((n) -> clickRepeaterAndWait("mods:topic",
-                    ".//input[contains(@name, 'mods:topic[" + (n + 1) + "]')]"));
-            }
 
-            IntStream.range(0, topics.size()).forEach(i -> {
-                String xp = "mods:topic[" + (i + 1) + "]";
-                String topic = topics.get(i);
-                setInputText(xp, topic);
+            IntStream.range(0, topics.size()).forEach((i) -> {
+                String appBaseXPath = ".//input[contains(@name, 'mods:subjectXML[" + (i + 1)
+                    + "]')]/following-sibling::div[contains(@class, 'editorToolsApp')]";
+                String searchInputXPath = appBaseXPath + "//input[contains(@class, 'search-topic')]";
+
+                if(i > 0) {
+                    clickRepeaterAndWait("mods:subjectXML", searchInputXPath);
+                }
+
+                WebElement searchInput = driver.waitAndFindElement(By.xpath(searchInputXPath));
+                searchInput.click();
+                searchInput.sendKeys(topics.get(i));
+                searchInput.sendKeys(Keys.ENTER);
+
+                String searchAddCustomXPath = appBaseXPath + "//button[contains(@class, 'search-add-custom')]";
+                WebElement searchAddCustom = driver.waitAndFindElement(By.xpath(searchAddCustomXPath));
+                searchAddCustom.click();;
+
+                WebElement selectElement = driver
+                    .waitAndFindElement(By.xpath(appBaseXPath + "//select[contains(@class, 'custom-type-select')]"));
+                new Select(selectElement).selectByValue("Topic");
+                WebElement topicInput = driver.waitAndFindElement(
+                    By.xpath(appBaseXPath + "//input[contains(@id, 'topic') and contains(@class, 'form-control')]"));
+                topicInput.clear();
+                topicInput.sendKeys(topics.get(i));
+                waitForAnimationFinish();
+                driver.waitAndFindElement(By.xpath(appBaseXPath + "//button[contains(@class, 'custom-add')]"))
+                    .click();
             });
         }
+    }
+
+    public void setGeoPair(String place, String coordinates) {
+        IntStream.range(0, 2).forEach((i) -> {
+            String appBaseXPath = ".//input[contains(@name, 'mods:subjectGEO[1]')]/following-sibling::div[contains(@class, 'editorToolsApp')]";
+
+            if(i==1) {
+                String addCoordinateButton = appBaseXPath + "//a[contains(@class, 'add-coordinate')]";
+                driver.waitAndFindElement(By.xpath(addCoordinateButton)).click();
+            } else {
+                String searchInputXPath = appBaseXPath + "//input[contains(@class, 'search-topic')]";
+                WebElement searchInput = driver.waitAndFindElement(By.xpath(searchInputXPath));
+                searchInput.click();
+                searchInput.sendKeys("Jena");
+                searchInput.sendKeys(Keys.ENTER);
+                String searchAddCustomXPath = appBaseXPath + "//button[contains(@class, 'search-add-custom')]";
+                WebElement searchAddCustom = driver.waitAndFindElement(By.xpath(searchAddCustomXPath));
+                searchAddCustom.click();;
+            }
+            if (i == 0) {
+                WebElement selectElement = driver
+                    .waitAndFindElement(By.xpath(appBaseXPath + "//select[contains(@class, 'custom-type-select')]"));
+                new Select(selectElement).selectByValue("Geographic");
+            } else {
+                WebElement selectElement = driver
+                    .waitAndFindElement(By.xpath(appBaseXPath + "//select[contains(@class, 'custom-type-select')]"));
+                new Select(selectElement).selectByValue("Cartographics");
+
+                driver.waitAndFindElement(
+                    By.xpath(
+                        appBaseXPath + "//div[label[contains(text(), 'Koordinaten')]]/following-sibling::div/button"))
+                    .click();
+            }
+
+            WebElement topicInput = driver.waitAndFindElement(By.xpath(appBaseXPath + "//input[contains(@id, "
+                + (i == 0 ? "'geographic'" : "'coordinates'") + ") and contains(@class, 'form-control')]"));
+            topicInput.clear();
+            if (i == 0) {
+                topicInput.sendKeys(place);
+            } else {
+                topicInput.sendKeys(coordinates);
+            }
+
+            waitForAnimationFinish();
+            driver.waitAndFindElement(By.xpath(appBaseXPath + "//button[contains(@class, 'custom-add')]"))
+                .click();
+        });
     }
 
     public void setClassifications(List<MIRDNBClassification> classifications) {
@@ -290,14 +356,6 @@ public class MIRModsEditorController extends MIREditorController {
                     .selectByValue(classification.getValue());
             });
         }
-    }
-
-    public void setGeograhicPlace(String place) {
-        setInputText("mods:geographic", place);
-    }
-
-    public void setCoordinates(String coordinates) {
-        setInputText("mods:coordinates", coordinates);
     }
 
     public void setAuthors(List<String> names) {

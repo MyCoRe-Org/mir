@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<persistence xmlns="http://xmlns.jcp.org/xml/ns/persistence"
+<persistence xmlns="https://jakarta.ee/xml/ns/persistence"
              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-             xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd"
-             version="2.2">
+             xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence https://jakarta.ee/xml/ns/persistence/persistence_3_0.xsd"
+             version="3.0">
   <persistence-unit name="MyCoRe" transaction-type="RESOURCE_LOCAL">
     <!-- http://stackoverflow.com/questions/15026302/multiple-jars-single-persistence-unit-solution -->
     <mapping-file>META-INF/mycore-base-mappings.xml</mapping-file>
@@ -14,14 +14,15 @@
     <!-- required for MIR only: -->
     <mapping-file>META-INF/mir-module-mappings.xml</mapping-file>
     <properties>
-      <property name="javax.persistence.jdbc.driver" value="org.h2.Driver" />
-      <property name="javax.persistence.jdbc.url" value="jdbc:h2:${MCR.Home.Integration}/${MCR.AppName}/data/h2/mir" />
-      <property name="javax.persistence.jdbc.user" value="sa" />
-      <property name="javax.persistence.jdbc.password" value="" />
+      <property name="jakarta.persistence.jdbc.driver" value="org.h2.Driver" />
+      <property name="jakarta.persistence.jdbc.url" value="jdbc:h2:${MCR.Home.Integration}/${MCR.AppName}/data/h2/mir" />
+      <property name="jakarta.persistence.jdbc.user" value="sa" />
+      <property name="jakarta.persistence.jdbc.password" value="" />
       <property name="hibernate.cache.use_second_level_cache" value="false" />
       <property name="hibernate.hbm2ddl.auto" value="update" />
       <property name="hibernate.jdbc.batch_size" value="0" />
       <property name="hibernate.show_sql" value="false" />
+      <property name="hibernate.auto_quote_keyword" value="true" />
     </properties>
   </persistence-unit>
 </persistence>

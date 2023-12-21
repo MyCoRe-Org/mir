@@ -135,7 +135,7 @@ public class MIRMigration202006Utils {
                 0,
                 null,
                 derivateTypeId.getRootID(),
-                derivateTypeId.getID()
+                derivateTypeId.getId()
         );
 
         object.getStructure().getDerivates().forEach(derivateLink -> {

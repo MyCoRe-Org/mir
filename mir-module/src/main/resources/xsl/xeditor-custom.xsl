@@ -45,7 +45,14 @@
 
   <xsl:template match="xed:validate[@i18n]" mode="message">
     <li>
-      <xsl:value-of select="i18n:translate(@i18n)" />
+      <xsl:choose>
+        <xsl:when test="@disable-output-escaping='yes'">
+          <xsl:value-of disable-output-escaping="yes" select="i18n:translate(@i18n)"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="i18n:translate(@i18n)"/>
+        </xsl:otherwise>
+      </xsl:choose>
     </li>
   </xsl:template>
 

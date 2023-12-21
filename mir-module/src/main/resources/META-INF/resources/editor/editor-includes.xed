@@ -584,8 +584,7 @@
       </xed:bind>
       <xed:bind xpath="mods:displayForm">
         <input type="hidden"/>
-        <div class="nameSearchApp">
-          <ns define-own-identifier="false"/>
+        <div class="nameSearchApp" define-own-identifier="false">
         </div>
       </xed:bind>
       <xed:repeat xpath="mods:nameIdentifier" min="10" max="10">
@@ -1611,121 +1610,9 @@
     </xed:repeat>
   </xed:template>
 
-  <xed:template id="geographic">
-    <mir:geographic.repeated path="mods:subject[not(mods:topic)]/mods:geographic" min="1" max="20" label="mir.geographic" help-text="{i18n:mir.help.cartographics.place}" />
-  </xed:template>
 
-  <xed:template id="geographic.complex">
-    <mir:geographic.repeated path="mods:subject[not(mods:topic)]/mods:geographic" min="1" max="20" label="mir.geographic" help-text="{i18n:mir.help.cartographics.place}" extended="true" />
-  </xed:template>
 
-  <xed:template id="geographic.input">
-    <div class="geographic-search">
-      <input type="text" size="26" class="form-control form-control-inline" data-search="searchEntity" data-search-type="GND"
-             data-search-entity-type="geographic" data-search-output=".geographic_gnd" data-search-output-type=".geographic_gndType" data-search-button="{i18n:button.search}"
-             data-search-button-loading="{i18n:button.loading}" data-search-result-empty="{i18n:mir.searchIdentifier.noResult}" data-next=".geographicExtended-container"/>
-    </div>
-  </xed:template>
 
-  <xed:template id="geographicIdentifier">
-    <div class="form-group row">
-      <label class="col-md-3 col-form-label text-right">
-        <xed:output i18n="mir.geographic.gnd.type" />
-      </label>
-      <div class="col-md-6">
-        <xed:bind xpath="@valueURIxEditor">
-          <input type="text" size="20" class="form-control form-control-inline geographic_gnd" />
-        </xed:bind>
-        <xed:bind xpath="@authority" initially="gnd">
-          <input type="hidden" class="geographic_gndType" />
-        </xed:bind>
-      </div>
-      <mir:help-pmud help-text="{i18n:mir.help.geographicIdentifier}" pmud="false" />
-    </div>
-  </xed:template>
-
-  <xed:template id="cartographics-assets">
-    <link rel="stylesheet" type="text/css" href="{$WebApplicationBaseURL}assets/openlayers/ol.css" />
-    <script type="text/javascript" src="{$WebApplicationBaseURL}assets/openlayers/ol.js" />
-    <script type="text/javascript" src="{$WebApplicationBaseURL}js/mir/geo-coords.min.js" />
-  </xed:template>
-
-  <xed:template id="cartographics-OpenStreetMap-container">
-    <div class="row form-group openstreetmap">
-      <div class="col-md-6 offset-md-3 collapse openstreetmap-container">
-        <label>
-          <xed:output i18n="mir.cartographics.coordinates.geoType" />
-        </label>
-        <select id="type" class="form-control" name="">
-          <option value="Point">
-            <xed:output i18n="mir.cartographics.coordinates.point" />
-          </option>
-          <option value="Box">
-            <xed:output i18n="mir.cartographics.coordinates.box" />
-          </option>
-          <option value="Polygon">
-            <xed:output i18n="mir.cartographics.coordinates.polygon" />
-          </option>
-          <option value="None">
-            <xed:output i18n="mir.cartographics.coordinates.none" />
-          </option>
-        </select>
-        <div class="map"></div>
-      </div>
-    </div>
-  </xed:template>
-
-  <xed:template id="cartographics">
-    <div class="mir-fieldset-content">
-      <div class="row">
-        <label class="col-md-3 col-form-label text-right mir-formgroup-label">
-          <xed:output i18n="mir.cartographics.coordinates" />
-        </label>
-        <div class="col-md-6">
-          <div class="input-group">
-            <xed:bind xpath="mods:subject/mods:cartographics/mods:coordinates">
-              <input class="form-control form-control-inline" type="text" />
-            </xed:bind>
-            <div class="input-group-append">
-              <button type="button" class="show-openstreetmap-editor btn btn-secondary" data-lat="{$MIR.editor.start.coordinates.lat}" data-lon="{$MIR.editor.start.coordinates.lon}">
-                OpenStreetMap
-                <i class="fa fa-chevron-down" style="padding-left: 7px;"></i>
-              </button>
-            </div>
-          </div>
-        </div>
-        <mir:help-pmud pmud="false" help-text="{i18n:mir.help.cartographics.coordinates}"/>
-      </div>
-      <xed:include ref="cartographics-OpenStreetMap-container" />
-    </div>
-    <xed:include ref="cartographics-assets" />
-  </xed:template>
-
-  <xed:template id="cartographics.repeat">
-    <xed:repeat xpath="mods:subject/mods:cartographics/mods:coordinates">
-      <div class="mir-fieldset-content">
-        <div class="row">
-          <label class="col-md-3 col-form-label text-right">
-            <xed:output i18n="mir.cartographics.coordinates" />
-          </label>
-          <div class="col-md-6">
-            <div class="input-group">
-              <input id="{@id}" type="text" class="form-control" />
-              <div class="input-group-append">
-                <button type="button" class="show-openstreetmap-editor btn btn-secondary" data-lat="{$MIR.editor.start.coordinates.lat}" data-lon="{$MIR.editor.start.coordinates.lon}">
-                  OpenStreetMap
-                  <i class="fa fa-chevron-down" style="padding-left: 7px;"></i>
-                </button>
-              </div>
-            </div>
-          </div>
-          <mir:help-pmud help-text="{i18n:mir.help.cartographics.coordinates}" pmud="true" />
-        </div>
-        <xed:include ref="cartographics-OpenStreetMap-container" />
-      </div>
-    </xed:repeat>
-    <xed:include ref="cartographics-assets" />
-  </xed:template>
 
   <xed:template id="sdnb">
     <xed:bind xpath="mods:classification[@authority='sdnb'][@displayLabel='sdnb']">
@@ -1844,58 +1731,150 @@
     <mir:textfield repeat="true" xpath="mods:subject/mods:genre" min="1" max="10" label="mir.subject.genre" help-text="{i18n:mir.help.subject.genre}" />
   </xed:template>
   -->
+  <xed:template id="geographicAndCartographics">
+    <xed:repeat xpath="mods:subjectGEO" min="1" max="10">
+      <div class="form-group row {$xed-validation-marker}">
+        <label class="col-md-3 col-form-label text-right">
+          <xed:output i18n="mir.geographic" />
+        </label>
+        <div class="col-md-6">
+          <input type="hidden" class="subjectXML"/>
+          <div class="editorToolsApp" data-searchable="Geographic" data-editor="Geographic,Cartographic" data-search-filter-default="Geographic" data-admin="geographicPair" data-required="false"> </div>
+        </div>
+        <mir:help-pmud help-text="{i18n:mir.help.cartographics.place}" pmud="true"/>
+      </div>
+      <xed:validate class="org.mycore.mir.validation.MIRValidationHelper" method="validateSubject" display="global" i18n="mir.validation.subject.geographic" />
+    </xed:repeat>
+  </xed:template>
+
+  <xed:template id="geographic">
+    <xed:repeat xpath="mods:subjectGEO" min="1" max="10">
+      <div class="form-group row {$xed-validation-marker}">
+        <label class="col-md-3 col-form-label text-right">
+          <xed:output i18n="mir.geographic" />
+        </label>
+        <div class="col-md-6">
+          <input type="hidden" class="subjectXML"/>
+          <div class="editorToolsApp" data-searchable="Geographic" data-editor="Geographic" data-search-filter-default="Geographic" data-admin="false" data-required="false"> </div>
+        </div>
+        <mir:help-pmud help-text="{i18n:mir.help.cartographics.place}" pmud="true"/>
+      </div>
+      <xed:validate class="org.mycore.mir.validation.MIRValidationHelper" method="validateSubject" display="global" i18n="mir.validation.subject.geographic" />
+    </xed:repeat>
+  </xed:template>
+
+  <xed:template id="geographic.complex">
+    <xed:repeat xpath="mods:subjectGEO" min="1" max="10">
+      <div class="form-group row {$xed-validation-marker}">
+        <label class="col-md-3 col-form-label text-right">
+          <xed:output i18n="mir.geographic" />
+        </label>
+        <div class="col-md-6">
+          <input type="hidden" class="subjectXML"/>
+          <div class="editorToolsApp" data-searchable="Geographic" data-editor="Geographic" data-search-filter-default="Geographic" data-admin="false" data-required="false"> </div>
+        </div>
+        <mir:help-pmud help-text="{i18n:mir.help.cartographics.place}" pmud="true"/>
+      </div>
+      <xed:validate class="org.mycore.mir.validation.MIRValidationHelper" method="validateSubject" display="global" i18n="mir.validation.subject.geographic" />
+    </xed:repeat>
+  </xed:template>
+
+  <xed:template id="cartographics">
+    <xed:bind xpath="mods:subjectGEO">
+      <div class="form-group row {$xed-validation-marker}">
+        <label class="col-md-3 col-form-label text-right">
+          <xed:output i18n="mir.cartographics.coordinates" />
+        </label>
+        <div class="col-md-6">
+          <input type="hidden" class="subjectXML"/>
+          <div class="editorToolsApp" data-searchable="" data-editor="Cartographics" data-search-filter-default="" data-admin="false" data-required="false"> </div>
+        </div>
+        <mir:help-pmud help-text="{i18n:mir.help.cartographics.coordinates}" pmud="false"/>
+      </div>
+      <xed:validate class="org.mycore.mir.validation.MIRValidationHelper" method="validateSubject" display="global" i18n="mir.validation.subject.geographic" />
+    </xed:bind>
+  </xed:template>
+
+  <xed:template id="cartographics.repeat">
+    <xed:repeat xpath="mods:subjectGEO" min="1" max="10">
+      <div class="form-group row {$xed-validation-marker}">
+        <label class="col-md-3 col-form-label text-right">
+          <xed:output i18n="mir.cartographics.coordinates" />
+        </label>
+        <div class="col-md-6">
+          <input type="hidden" class="subjectXML"/>
+          <div class="editorToolsApp" data-searchable="" data-editor="Cartographics" data-search-filter-default="" data-admin="false" data-required="false"> </div>
+        </div>
+        <mir:help-pmud help-text="{i18n:mir.help.cartographics.coordinates}" pmud="true"/>
+      </div>
+      <xed:validate class="org.mycore.mir.validation.MIRValidationHelper" method="validateSubject" display="global" i18n="mir.validation.subject.geographic" />
+    </xed:repeat>
+  </xed:template>
 
   <xed:template id="subject.simple">
-    <xed:bind xpath="mods:subject">
-      <mir:topic.repeated min="1" max="20" label="mir.subject.topic" help-text="{i18n:mir.help.subject.topic.gnd}" />
-    </xed:bind>
+    <xed:repeat xpath="mods:subjectXML" min="1" max="10">
+      <div class="form-group row {$xed-validation-marker}">
+        <label class="col-md-3 col-form-label text-right">
+          <xed:output i18n="mir.subject.topic"/>
+        </label>
+        <div class="col-md-6">
+          <input type="hidden" class="subjectXML"/>
+          <div class="editorToolsApp" data-searchable="*" data-editor="*" data-search-filter-default="Topic" data-admin="false" data-required="false"> </div>
+        </div>
+        <mir:help-pmud help-text="{i18n:mir.help.subject.topic}" pmud="true"/>
+      </div>
+      <xed:validate class="org.mycore.mir.validation.MIRValidationHelper" method="validateSubject" display="global" i18n="mir.validation.subject.simple" />
+    </xed:repeat>
   </xed:template>
 
   <xed:template id="subject.simple.required">
-    <xed:bind xpath="mods:subject">
-      <mir:topic.repeated min="1" max="20" label="mir.subject.topic" help-text="{i18n:mir.help.subject.topic.gnd}" class="required" required="true" required-i18n="mir.validation.subject" />
-    </xed:bind>
-  </xed:template>
-
-  <xed:template id="subject.complex">
-    <xed:repeat xpath="mods:subject[not(mods:geographic)]" min="1" max="20">
-      <fieldset>
-        <div class="row mir-fieldset-legend">
-          <legend class="col-md-9" style="margin-bottom:0px;padding-top:10px;">
-            <xed:output i18n="mir.subject.topic.complex" />
-          </legend>
-          <mir:help-pmud pmud="true" help-text="{i18n:mir.help.subject.topic.complex}" />
+    <xed:repeat xpath="mods:subjectXML" min="1" max="10">
+      <div class="form-group row {$xed-validation-marker}">
+        <label class="col-md-3 col-form-label text-right">
+          <xed:output i18n="mir.subject.topic"/>
+        </label>
+        <div class="col-md-6">
+          <input type="hidden" class="subjectXML"/>
+          <div class="editorToolsApp" data-searchable="*" data-editor="*" data-search-filter-default="Topic" data-admin="false" data-required="true"> </div>
         </div>
-        <div class="mir-fieldset-content">
-          <mir:topic.repeated min="1" max="20" label="mir.subject.topic" help-text="{i18n:mir.help.subject.topic.gnd}" extended="true" />
-        </div>
-      </fieldset>
+        <mir:help-pmud help-text="{i18n:mir.help.subject.topic}" pmud="true"/>
+      </div>
+      <xed:validate class="org.mycore.mir.validation.MIRValidationHelper" method="validateSubjectRequired" display="global" i18n="mir.validation.subject.simple.required" />
     </xed:repeat>
   </xed:template>
 
   <xed:template id="subject.complex.required">
-    <xed:repeat xpath="mods:subject[not(mods:geographic)]" min="1" max="20">
-      <fieldset>
-        <div class="row mir-fieldset-legend">
-          <legend class="col-md-9" style="margin-bottom:0px;padding-top:10px;">
-            <xed:output i18n="mir.subject.topic.complex" />
-          </legend>
-          <mir:help-pmud pmud="true" help-text="{i18n:mir.help.subject.topic.complex}" />
+    <xed:repeat xpath="mods:subjectXML" min="1" max="10">
+      <div class="form-group row {$xed-validation-marker}">
+        <label class="col-md-3 col-form-label text-right">
+          <xed:output i18n="mir.subject.topic.complex "/>
+        </label>
+        <div class="col-md-6">
+          <input type="hidden" class="subjectXML"/>
+          <div class="editorToolsApp" data-searchable="*" data-editor="*" data-search-filter-default="*" data-admin="true" data-required="true"> </div>
         </div>
-        <div class="mir-fieldset-content">
-          <mir:topic.repeated min="1" max="20" label="mir.subject.topic" help-text="{i18n:mir.help.subject.topic.gnd}" extended="true" class="required" required="true" required-i18n="mir.validation.subject" />
-        </div>
-      </fieldset>
+        <mir:help-pmud help-text="{i18n:mir.help.subject.topic.complex}" pmud="true"/>
+      </div>
+      <xed:validate class="org.mycore.mir.validation.MIRValidationHelper" method="validateSubject" display="global" i18n="mir.validation.subject.admin" />
     </xed:repeat>
   </xed:template>
 
-  <xed:template id="topic.input">
-    <div class="topic-search">
-      <input type="text" size="26" class="form-control form-control-inline" data-search="searchEntity" data-search-type="GND"
-           data-search-entity-type="topic" data-search-output=".topic_gnd" data-search-output-type=".topic_gndType" data-search-button="{i18n:button.search}"
-           data-search-button-loading="{i18n:button.loading}" data-search-result-empty="{i18n:mir.searchIdentifier.noResult}" data-next=".topicExtended-container"/>
-    </div>
+  <xed:template id="subject.complex">
+    <xed:repeat xpath="mods:subjectXML" min="1" max="10">
+      <div class="form-group row {$xed-validation-marker}">
+        <label class="col-md-3 col-form-label text-right">
+          <xed:output i18n="mir.subject.topic.complex"/>
+        </label>
+        <div class="col-md-6">
+          <input type="hidden" class="subjectXML"/>
+          <div class="editorToolsApp" data-searchable="*" data-editor="*" data-search-filter-default="*" data-admin="true" data-required="false"> </div>
+        </div>
+        <mir:help-pmud help-text="{i18n:mir.help.subject.topic.complex}" pmud="true"/>
+      </div>
+      <xed:validate class="org.mycore.mir.validation.MIRValidationHelper" method="validateSubject" display="global" i18n="mir.validation.subject.admin" />
+    </xed:repeat>
   </xed:template>
+
 
   <xed:template id="classification">
     <xed:repeat xpath="mods:classification[@generator='user selected']" min="1" max="10">
@@ -2295,7 +2274,7 @@
     <xed:validate xpath="//mods:url|//mods:abstract/@xlink:href" matches="(ftp|http|https)://[\w\d.]+\S*" i18n="mir.validation.url" display="global" />
     <xed:validate xpath="//mods:*[@encoding='w3cdtf'][not(ancestor::mods:recordInfo)]|//mods:mods/mods:accessCondition[@type='embargo']" matches="\d{4}(\-\d{2}(\-\d{2})?)?" type="datetime" format="yyyy;yyyy-MM;yyyy-MM-dd" i18n="mir.validation.date"
       display="global" />
-    <xed:validate xpath="//mods:*[@encoding='iso8601']" matches="\d{4}(\-\d{2}(\-\d{2})?)?(\/\d{4}(\-\d{2}(\-\d{2})?)?)?" display="global"  i18n="mir.validation.date.iso8601"/>
+    <xed:validate xpath="//mods:*[@encoding='iso8601']" matches="\d{4}(\d{2}(\d{2})?)?(T\d{2}\d{2}\d{2})?(\/\d{4}(\d{2}(\d{2})?)?(T\d{2}\d{2}\d{2})?)?" display="global"  i18n="mir.validation.date.iso8601"/>
     <xed:validate xpath="//mods:part/@order" type="integer" display="global" i18n="mir.validation.order" />
   </xed:template>
 
@@ -2306,8 +2285,8 @@
     <xed:cleanup-rule xpath="//mods:name/@authorityURI" relevant-if="(string-length(../@valueURI) &gt; 0) or (string-length(../@valueURIxEditor) &gt; 0)" />
     <xed:cleanup-rule xpath="//mods:roleTerm" relevant-if="(string-length(@valueURI) &gt; 0) or (string-length(@valueURIxEditor) &gt; 0) or (string-length(@authority) &gt; 0)" />
     <xed:cleanup-rule xpath="//mods:role/mods:roleTerm[@authorityURI='https://www.mycore.de/classifications/author_roles']" relevant-if="(../mods:roleTerm[@authority='marcrelator'and text()='aut']) and (string-length(@valueURIxEditor) &gt; 0)" />
-    <xed:cleanup-rule xpath="//mods:topic/@authorityURI" relevant-if="(string-length(../@valueURI) &gt; 0) or (string-length(../@valueURIxEditor) &gt; 0)" />
-    <xed:cleanup-rule xpath="//mods:topic/@authority" relevant-if="(string-length(../@valueURI) &gt; 0) or (string-length(../@valueURIxEditor) &gt; 0)" />
+   <!-- <xed:cleanup-rule xpath="//mods:topic/@authorityURI" relevant-if="(string-length(../@valueURI) &gt; 0) or (string-length(../@valueURIxEditor) &gt; 0)" />
+    <xed:cleanup-rule xpath="//mods:topic/@authority" relevant-if="(string-length(../@valueURI) &gt; 0) or (string-length(../@valueURIxEditor) &gt; 0)" /> -->
     <xed:cleanup-rule xpath="//mods:geographic/@authorityURI" relevant-if="(string-length(../@valueURI) &gt; 0) or (string-length(../@valueURIxEditor) &gt; 0)" />
     <xed:cleanup-rule xpath="//mods:geographic/@authority" relevant-if="(string-length(../@valueURI) &gt; 0) or (string-length(../@valueURIxEditor) &gt; 0)" />
     <xed:cleanup-rule xpath="//mods:name/mods:namePart" relevant-if="string-length(text()) &gt; 0" />
@@ -2343,18 +2322,19 @@
     <link rel="stylesheet" type="text/css" href="{$WebApplicationBaseURL}assets/select2/css/select2.min.css"/>
     <script type="text/javascript" src="{$WebApplicationBaseURL}assets/select2/js/select2.min.js"/>
     <script type="text/javascript" src="{$WebApplicationBaseURL}assets/select2/js/i18n/{$MCR.Metadata.DefaultLang}.js"/>
-    <script src="{$WebApplicationBaseURL}assets/vue/vue.min.js"/>
-    <script src="{$WebApplicationBaseURL}vue/nameSearch.umd.min.js"/>
-    <link href="{$WebApplicationBaseURL}vue/nameSearch.css" rel="stylesheet"/>
+    <script src="{$WebApplicationBaseURL}assets/vue/vue.runtime.global.prod.js"/>
+    <script src="{$WebApplicationBaseURL}vue/name-search/nameSearch.umd.min.js"/>
+    <script src="{$WebApplicationBaseURL}vue/editor-tools/editor-tools.umd.min.js"/>
+    <link href="{$WebApplicationBaseURL}vue/name-search/nameSearch.css" rel="stylesheet"/>
+    <link href="{$WebApplicationBaseURL}vue/editor-tools/editor-tools.css" rel="stylesheet"/>
     <script>
       document.querySelectorAll(".nameSearchApp").forEach(function (element) {
-        new Vue({
-          components: {
-            ns: nameSearch
-          }
-        }).$mount(element);
+        Vue.createApp(nameSearch).mount(element);
       });
 
+      document.querySelectorAll(".editorToolsApp").forEach(function (element) {
+        Vue.createApp(window["editor-tools"]).mount(element);
+      });
     </script>
   </xed:template>
 
