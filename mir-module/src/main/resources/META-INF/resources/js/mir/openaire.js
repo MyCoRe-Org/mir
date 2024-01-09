@@ -130,7 +130,7 @@ $﻿(document).ready(function() {
         var identifier = id.split("/");
         $(funder).val(identifier[2]);
         $(fundingProgramm).val(identifier[3]);
-        $(projectId).val(identifier[4]);
+        $(projectId).val(replaceEscapedSlash(identifier[4]));
         $(projectName).val(identifier[6]);
         $(projectAcronym).val("");
         if(identifier[7] != "") {
@@ -167,5 +167,10 @@ $﻿(document).ready(function() {
     function replaceSlash(text) {
       return text.replace(/\//g, "%2F");
     }
+
+    function replaceEscapedSlash(text) {
+      return text.replace(/%2F/g, "/");
+    }
+
   });
 });

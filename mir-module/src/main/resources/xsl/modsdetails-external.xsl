@@ -11,6 +11,7 @@
                 xmlns:mods="http://www.loc.gov/mods/v3"
                 xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions"
                 xmlns:str="http://exslt.org/strings"
+                xmlns:string="xalan://java.lang.String"
                 xmlns:encoder="xalan://java.net.URLEncoder"
                 xmlns:acl="xalan://org.mycore.access.MCRAccessManager"
                 xmlns:imageware="org.mycore.mir.imageware.MIRImageWarePacker"
@@ -966,7 +967,7 @@
           <xsl:value-of select="concat(i18n:translate('mir.project.grantID'),':')" />
         </td>
         <td class="metavalue">
-          <xsl:value-of select="exslt:node-set($project-details)/token[position() = 5]" />
+          <xsl:value-of select="string:replaceAll(string(exslt:node-set($project-details)/token[position() = 5]),'%2F','/')" />
         </td>
       </tr>
     </xsl:if>
