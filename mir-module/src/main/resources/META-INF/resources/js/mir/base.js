@@ -211,8 +211,8 @@
     $("body").on("click", ".mir_mainfile", function (event) {
       event.preventDefault();
       var that = $(this);
-      var oldMainFile = $(".file_set.active_file");
-      $(".file_set.active_file").removeClass("active_file");
+      var oldMainFile = $(that).closest(".file_set.active_file");
+      $(that).closest(".file_set.active_file").removeClass("active_file");
       $(that).closest(".file_set").addClass("waiting_file");
       var path = $(this).data("path");
       path = (path.charAt(0) == "/" ? path.substr(1) : path);
