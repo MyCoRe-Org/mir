@@ -85,8 +85,8 @@
   
   <xsl:variable name="type">
     <xsl:choose>
-      <xsl:when test="mods:classification[@authorityURI=$diniPublTypeAuthorityURI]">
-        <xsl:variable name="diniPublType" select="substring-after(mods:classification[@authorityURI=$diniPublTypeAuthorityURI]/@valueURI,concat($diniPublTypeAuthorityURI,'#'))" />
+      <xsl:when test="$mods/mods:classification[@authorityURI=$diniPublTypeAuthorityURI]">
+        <xsl:variable name="diniPublType" select="substring-after($mods/mods:classification[@authorityURI=$diniPublTypeAuthorityURI]/@valueURI,concat($diniPublTypeAuthorityURI,'#'))" />
         <xsl:choose>
           <!-- fix erroneous entry in https://www.mycore.de/classifications/diniPublType.xml -->
           <xsl:when test="$diniPublTypeClassificationId='diniPublType' and $diniPublType = 'other'">
