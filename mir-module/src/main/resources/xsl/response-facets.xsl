@@ -5,7 +5,8 @@
                 xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions"
                 xmlns:xalan="http://xml.apache.org/xalan"
                 xmlns:fn="http://www.w3.org/2005/xpath-functions"
-                exclude-result-prefixes="i18n mcrxsl encoder xalan fn">
+                xmlns:str="http://exslt.org/strings"
+                exclude-result-prefixes="i18n mcrxsl encoder xalan fn str">
 
   <xsl:param name="CurrentLang"/>
   <xsl:param name="RequestURL"/>
