@@ -5,7 +5,8 @@
                 xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions"
                 xmlns:xalan="http://xml.apache.org/xalan"
                 xmlns:fn="http://www.w3.org/2005/xpath-functions"
-                exclude-result-prefixes="i18n mcrxsl encoder xalan fn">
+                xmlns:str="http://exslt.org/strings"
+                exclude-result-prefixes="i18n mcrxsl encoder xalan fn str">
 
   <xsl:param name="CurrentLang"/>
   <xsl:param name="RequestURL"/>
@@ -16,7 +17,17 @@
     <xsl:for-each select="/response/lst[@name='facet_counts']/lst[@name='facet_fields']/*">
       <xsl:variable name="facet_name" select="self::node()/@name"/>
 
-      <xsl:if test="self::node()[@name=$facet_name]/int">
+      <xsl:variable name="enabledProperty">
+        <xsl:value-of select="$facetProperties/properties/entry[@key=concat('MIR.Response.Facet.', $facet_name, '.Enabled')]"/>
+      </xsl:variable>
+      <xsl:variable name="isEnabled" select="$enabledProperty!='false'"/>
+
+      <xsl:variable name="rolesProperty">
+        <xsl:value-of select="$facetProperties/properties/entry[@key=concat('MIR.Response.Facet.', $facet_name, '.Roles')]"/>
+      </xsl:variable>
+      <xsl:variable name="hasRole" select="string-length($rolesProperty)=0 or count(str:tokenize($rolesProperty,',')[mcrxsl:isCurrentUserInRole(.)])!=0"/>
+
+      <xsl:if test="$isEnabled and $hasRole and self::node()[@name=$facet_name]/int">
         <!-- name of facet -->
         <div class="card {$facet_name}">
           <div class="card-header" data-toggle="collapse-next">
