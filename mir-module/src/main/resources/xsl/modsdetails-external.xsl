@@ -723,7 +723,7 @@
             </xsl:if>
             <xsl:if test="key('rights', $deriv)/@write and iview2:getSupportedMainFile($deriv) and normalize-space($MIR.METSEditor.enable)='true'">
               <li>
-                <a href="{$WebApplicationBaseURL}rsc/mets/editor/start" class="option startmets dropdown-item">
+                <a href="{$WebApplicationBaseURL}rsc/mets/editor/start/{$deriv}" class="option startmets dropdown-item">
                   <xsl:value-of select="i18n:translate('component.mods.metaData.options.startmets')" />
                 </a>
               </li>
