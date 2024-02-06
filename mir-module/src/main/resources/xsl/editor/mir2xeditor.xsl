@@ -4,6 +4,8 @@
   xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation" xmlns:mir="http://www.mycore.de/mir"
   exclude-result-prefixes="xsl mir i18n">
 
+  <xsl:param name="MIR.Editor.AddTimeWidget"/>
+
   <xsl:include href="copynodes.xsl" />
   <xsl:variable name="institutesURI">
     <xsl:choose>
@@ -204,11 +206,13 @@
             <xsl:value-of select="i18n:translate('mir.date.period')" />
           </a>
         </li>
+        <xsl:if test="$MIR.Editor.AddTimeWidget='true'">
         <li>
           <a href="#" class="date-timeOption dropdown-item">
             <xsl:value-of select="i18n:translate('mir.date.datetime')" />
           </a>
         </li>
+        </xsl:if>
       </ul>
     </div>
   </xsl:template>
