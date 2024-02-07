@@ -622,10 +622,10 @@ ckeditor-wordcount-plugin@^1.17.12:
   resolved "https://registry.yarnpkg.com/ckeditor-wordcount-plugin/-/ckeditor-wordcount-plugin-1.17.12.tgz#09452308b460398d7b045efb69b240242a5150f5"
   integrity sha512-UU6ZpNoJvo6TQ7LoiV1hcEWboHKwqoLKK0CW951ZXH2QywMX+b4FkYNk3ajdrkCWbe2jVT2kbyMHf/H4FK+u8w==
 
-ckeditor4@^4.18.0:
-  version "4.18.0"
-  resolved "https://registry.yarnpkg.com/ckeditor4/-/ckeditor4-4.18.0.tgz#d54861a9d5a01029f16a54b820a4af10d3bbc156"
-  integrity sha512-O4tnQCH0APKrBsz78L+m48s9Cs90aq0Nsatmh9CUj2YBTh8UZYdYcelBLVA84SlwA1nsx07aC76Zn08vgHqmLQ==
+ckeditor4@^4.24.0:
+  version "4.24.0"
+  resolved "https://registry.yarnpkg.com/ckeditor4/-/ckeditor4-4.24.0.tgz#9699ddbce7eaa9cb1063f7f7d75b0ae761106405"
+  integrity sha512-ShtIqZMMNmP5r8AhZqnysSaONsx+qKjI/zf5AkU9wKxl0yHVw2/CSxWYmdd40u3dMjJR2kOthQ6USahz528lbw==
 
 cliui@^2.1.0:
   version "2.1.0"
