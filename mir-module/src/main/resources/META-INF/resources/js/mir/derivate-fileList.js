@@ -419,7 +419,7 @@
 				directory = fileParam.substr(0, lastSlashInFile+1);
 				let oldName = fileParam.substr(directory.length);
 
-				let newName = prompt(i18nKeys["IFS.fileRename.to"], oldName);
+				let newName = prompt(i18nKeys["IFS.fileRename.to"], decodeURI(oldName));
 				if (newName == null) {
 					e.preventDefault();
 				} else {
@@ -428,7 +428,7 @@
 					if (lastSlashInName > 0) {
 						newName = newName.substr(lastSlashInName);
 					}
-					$(this).attr("href", href + "&file2=" + directory + newName);
+					$(this).attr("href", href + "&file2=" + directory + encodeURI(newName));
 				}
 			});
 		}
