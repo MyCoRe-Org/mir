@@ -132,7 +132,7 @@
   <xsl:template name="loadViewer">
     <xsl:param name="derivate" />
     <xsl:param name="file" />
-    <script src="{$WebApplicationBaseURL}rsc/viewer/{$derivate}{$file}?embedded=true&amp;XSL.Style=js">
+    <script src="{$WebApplicationBaseURL}rsc/viewer/{$derivate}{mcrxsl:encodeURIPath($file)}?embedded=true&amp;XSL.Style=js">
     </script>
   </xsl:template>
 

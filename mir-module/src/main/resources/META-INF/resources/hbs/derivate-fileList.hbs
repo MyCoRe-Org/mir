@@ -83,7 +83,7 @@
                              data-derivateid="{{../mycorederivate}}"
                              data-objectid="{{../mycoreobject}}"
                              data-file="{{name}}"
-                             data-path="{{path}}"
+                             data-path="{{urlPath}}"
                              class="option mir_mainfile dropdown-item">
                             <span class="fas fa-star"></span>
                             {{getI18n "IFS.mainFile"}}
@@ -94,7 +94,7 @@
                     {{#if ../permDelete}}
                         {{#is type "file"}}
                             <li>
-                                <a href="{{../serverBaseURL}}servlets/MCRDerivateServlet?derivateid={{../mycorederivate}}&amp;objectid={{../mycoreobject}}&amp;todo=smovfile&amp;file={{path}}"
+                                <a href="{{../serverBaseURL}}servlets/MCRDerivateServlet?derivateid={{../mycorederivate}}&amp;objectid={{../mycoreobject}}&amp;todo=smovfile&amp;file={{urlPath}}"
                                 class="option rename dropdown-item"
                                 title="{{getI18n (concat "IFS." type "Rename")}}">
                                 <span class="fas fa-file-signature"></span>
@@ -103,7 +103,7 @@
                             </li>
                         {{/is}}
                         <li>
-                          <a href="{{../serverBaseURL}}servlets/MCRDerivateServlet?derivateid={{../mycorederivate}}&amp;objectid={{../mycoreobject}}&amp;todo=sdelfile&amp;file={{path}}"
+                          <a href="{{../serverBaseURL}}servlets/MCRDerivateServlet?derivateid={{../mycorederivate}}&amp;objectid={{../mycoreobject}}&amp;todo=sdelfile&amp;file={{urlPath}}"
                              class="option confirm_deletion dropdown-item"
                              data-text="{{getI18n (concat "mir.confirm." type ".text")}}"
                              title="{{getI18n (concat "IFS." type "Delete")}}">
