@@ -43,10 +43,9 @@ public class MIRWizard extends MCRServlet {
     public static boolean isNecessary() {
 
         File mcrProps = MCRConfigurationDir.getConfigFile("mycore.properties");
-        File jpaCfg = MCRConfigurationDir.getConfigFile("resources/META-INF/persistence.xml");
 
-        return (mcrProps == null || !mcrProps.canRead()) || (jpaCfg == null || !jpaCfg.canRead());
 
+        return (mcrProps == null || !mcrProps.canRead());
     }
 
     public Element doMagic(Element wizXML) {
