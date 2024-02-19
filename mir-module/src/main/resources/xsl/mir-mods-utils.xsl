@@ -82,7 +82,7 @@
                 </dl>
             </div>
         </xsl:if>
-        <a href="{concat($ServletsBaseURL,'solr/mods_nameIdentifier?q=',encoder:encode($query),'&amp;owner=createdby:',encoder:encode($owner))}"><xsl:value-of select="$personName" /></a>
+        <a href="{concat($ServletsBaseURL,'solr/mods_nameIdentifier?q=',encoder:encode($query),'&amp;owner=',encoder:encode(concat('createdby:',$owner)))}"><xsl:value-of select="$personName" /></a>
         <xsl:if test="count($nameIdentifiers) &gt; 0 or string-length($affiliation) &gt; 0">
             <!-- class personPopover triggers the javascript popover code -->
             <a id="{$personNodeId}" class="personPopover" title="{i18n:translate('mir.details.personpopover.title')}">
