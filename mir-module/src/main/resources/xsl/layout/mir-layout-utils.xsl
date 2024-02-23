@@ -41,8 +41,13 @@
   <xsl:template name="displaySetAccessKey">
     <xsl:param name="objectId" />
     <xsl:variable name="loginURL" select="concat($WebApplicationBaseURL, 'accesskey/set.xed', '?objId=', $objectId, '&amp;url=', encoder:encode(string($RequestURL)))" />
-    <br></br>
-    <xsl:value-of disable-output-escaping="yes" select="i18n:translate('mir.accesskey.setInfo', $loginURL)" />
+    <br/>
+
+    <xsl:value-of select="concat(i18n:translate('mir.accesskey.setInfo.leading'), ' ')" />
+    <a href="{$loginURL}">
+      <xsl:value-of select="i18n:translate('mir.accesskey.setInfo.link')"/>
+    </a>
+    <xsl:value-of select="concat(' ', i18n:translate('mir.accesskey.setInfo.trailing'))" />
   </xsl:template>
 
   <xsl:template name="mir.printNotLoggedIn">
