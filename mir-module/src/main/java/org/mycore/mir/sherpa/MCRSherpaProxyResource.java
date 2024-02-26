@@ -49,7 +49,8 @@ public class MCRSherpaProxyResource {
     @Produces(MediaType.APPLICATION_JSON)
     @GET
     public Response retrieve(@PathParam("type") String type, @QueryParam("filter") String filter){
-        Optional<MCRSherpaConfig> configOpt = MCRConfiguration2.getSingleInstanceOf(MIR_SHERPA_CONFIG_KEY);
+        Optional<MCRSherpaConfig> configOpt = MCRConfiguration2.getSingleInstanceOf(
+            MCRSherpaConfig.class, MIR_SHERPA_CONFIG_KEY);
 
         if(configOpt.isEmpty()){
             LOGGER.error("MIR.Sherpa property is not set!");
