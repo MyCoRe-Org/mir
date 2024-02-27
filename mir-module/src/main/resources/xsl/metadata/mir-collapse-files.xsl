@@ -57,6 +57,7 @@
               <xsl:for-each select="mycoreobject/structure/derobjects/derobject[key('rights', @xlink:href)/@read]">
                 <xsl:variable name="derId" select="@xlink:href" />
                 <xsl:variable name="derivateXML" select="document(concat('mcrobject:',$derId))" />
+                <xsl:variable name="derivateType" select="$derivateXML/mycorederivate/derivate/classifications/classification[@classid='derivate_types']/@categid" />
                 <div id="files{@xlink:href}" class="file_box">
                   <div class="row header">
                     <div class="col-12">
@@ -67,6 +68,9 @@
                               <xsl:choose>
                                 <xsl:when test="$derivateXML//titles/title[@xml:lang=$CurrentLang]">
                                   <xsl:value-of select="$derivateXML//titles/title[@xml:lang=$CurrentLang]" />
+                                </xsl:when>
+                                <xsl:when test="string-length($derivateType)!=0">
+                                  <xsl:value-of select="mcr:getDisplayName('derivate_types',$derivateType)" />
                                 </xsl:when>
                                 <xsl:otherwise>
                                   <xsl:value-of select="i18n:translate('metadata.files.file')" />
