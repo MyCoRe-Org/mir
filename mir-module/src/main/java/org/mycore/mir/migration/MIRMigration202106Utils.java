@@ -148,8 +148,8 @@ public class MIRMigration202106Utils {
     }
 
     private static List<MCRUser> listUsersWithMIRAccessKeyUserAttribute(final int offset, final int limit) {
-        return MCRUserManager.listUsers(null, null, null, null, ACCESS_KEY_PREFIX + "*", offset,
-            limit);
+        return MCRUserManager.listUsers(null, null, null, null, ACCESS_KEY_PREFIX + "*",
+            null, offset, limit);
     }
 
     /**
