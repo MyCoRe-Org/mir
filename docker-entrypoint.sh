@@ -7,6 +7,8 @@ MCR_CONFIG_DIR_ESCAPED=$(echo "$MCR_CONFIG_DIR" | sed 's/\//\\\//g')
 
 MYCORE_PROPERTIES="${MCR_CONFIG_DIR}mycore.properties"
 
+DOCKER_PROPERTIES="${MCR_CONFIG_DIR}docker.properties"
+
 PERSISTENCE_XML="${MCR_CONFIG_DIR}resources/META-INF/persistence.xml"
 
 function fixDirectoryRights() {
@@ -71,17 +73,19 @@ function migrateC3P0toHikari {
 function setOrAddProperty() {
     KEY=$1
     VALUE=$2
+    PROPERTIES_FILE=${3:-$DOCKER_PROPERTIES}
 
-    if grep -q "$KEY=" "${MYCORE_PROPERTIES}" ; then
+    if grep -q "$KEY=" "${PROPERTIES_FILE}" ; then
       ESCAPED_KEY=$(echo "${KEY}" | sed 's/\//\\\//g')
       ESCAPED_VALUE=$(echo "${VALUE}" | sed 's/\//\\\//g')
-      sed -ri "s/($ESCAPED_KEY=).+/\1$ESCAPED_VALUE/" "${MYCORE_PROPERTIES}"
+      sed -ri "s/($ESCAPED_KEY=).+/\1$ESCAPED_VALUE/" "${PROPERTIES_FILE}"
     else
-      echo "$KEY=$VALUE">>"${MYCORE_PROPERTIES}"
+      echo "$KEY=$VALUE">>"${PROPERTIES_FILE}"
     fi
 }
 
 function setDockerValues() {
+    rm -f "${DOCKER_PROPERTIES}"
     echo "Set Docker Values to Config!"
 
     if [ -n "${SOLR_URL}" ]; then
@@ -147,14 +151,11 @@ function setDockerValues() {
 
     downloadDriver https://repo1.maven.org/maven2/com/zaxxer/HikariCP/5.1.0/HikariCP-5.1.0.jar
 
-    # iterate over all environment variables starting with MCR.JPA. and add them to the mycore.properties
-    for var in $(env | grep -E "^MCR.JPA."); do
-      key=$(echo $var | cut -d'=' -f1 | sed 's/MCR.JPA.//g')
-      value=$(echo $var | cut -d'=' -f2)
-      complete_key="MCR.JPA.$key"
-
-      setOrAddProperty "$complete_key" "$value"
-    done
+    if [[ -z "${EXTRA_PROPERTIES}" ]]; then
+      setOrAddProperty "MCR.Configuration.Include" "${DOCKER_PROPERTIES}" "${MYCORE_PROPERTIES}"
+    else
+      setOrAddProperty "MCR.Configuration.Include" "${DOCKER_PROPERTIES} ${EXTRA_PROPERTIES}" "${MYCORE_PROPERTIES}"
+    fi
 
     rm -f "${PERSISTENCE_XML}"
 }

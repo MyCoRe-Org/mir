@@ -37,6 +37,7 @@ services:
       - XMX=${MIR_XMX}
       - XMS=${MIR_XMS}
       - FIX_FILE_SYSTEM_RIGHTS=false
+      - EXTRA_PROPERTIES=${MIR_EXTRA_PROPERTIES}
     volumes:
       - ${MIR_HOME}:/mcr/home/
       - ${MIR_DATA}:/mcr/data/
