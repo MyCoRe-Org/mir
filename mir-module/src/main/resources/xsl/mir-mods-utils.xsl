@@ -43,13 +43,11 @@
                         <xsl:text>\:</xsl:text>
                         <xsl:value-of select="@id" />
                     </xsl:for-each>
-                    <xsl:text>&amp;owner=createdby:</xsl:text>
-                    <xsl:value-of select="$owner" />
                 </xsl:when>
                 <xsl:otherwise>
                     <xsl:value-of select="'+mods.name:&quot;'"/>
                     <xsl:apply-templates select="." mode="queryableNameString"/>
-                    <xsl:value-of select="concat('&quot;', '&amp;owner=createdby:', $owner)"/>
+                    <xsl:value-of select="'&quot;'"/>
                 </xsl:otherwise>
             </xsl:choose>
         </xsl:variable>
@@ -84,7 +82,7 @@
                 </dl>
             </div>
         </xsl:if>
-        <a href="{concat($ServletsBaseURL,'solr/mods_nameIdentifier?q=', encoder:encode($query))}"><xsl:value-of select="$personName" /></a>
+        <a href="{concat($ServletsBaseURL,'solr/mods_nameIdentifier?q=',encoder:encode($query),'&amp;owner=',encoder:encode(concat('createdby:',$owner)))}"><xsl:value-of select="$personName" /></a>
         <xsl:if test="count($nameIdentifiers) &gt; 0 or string-length($affiliation) &gt; 0">
             <!-- class personPopover triggers the javascript popover code -->
             <a id="{$personNodeId}" class="personPopover" title="{i18n:translate('mir.details.personpopover.title')}">
