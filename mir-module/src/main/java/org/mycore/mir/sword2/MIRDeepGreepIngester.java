@@ -52,7 +52,7 @@ public class MIRDeepGreepIngester extends MIRSwordIngesterBase {
             LOGGER.info("Zip File is : " + dgZip.toAbsolutePath().toString());
             LOGGER.info("Deposit Filename is : " + deposit.getFilename());
             try (SeekableByteChannel sbc = Files.newByteChannel(dgZip)) {
-                final ZipFile zipFile = new ZipFile(sbc);
+                final ZipFile zipFile = ZipFile.builder().setSeekableByteChannel(sbc).get();
                 final List<ZipArchiveEntry> entriesInPhysicalOrder = Collections
                     .list(zipFile.getEntriesInPhysicalOrder());
 
