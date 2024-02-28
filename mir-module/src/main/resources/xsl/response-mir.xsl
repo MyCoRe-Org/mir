@@ -517,6 +517,7 @@
                     <xsl:call-template name="iconLink">
                       <xsl:with-param name="baseURL" select="$WebApplicationBaseURL"/>
                       <xsl:with-param name="mimeType" select="$contentType"/>
+                      <xsl:with-param name="derivateMaindoc" select="$displayDerivate/str[@name='derivateMaindoc']"/>
                     </xsl:call-template>
                   </xsl:variable>
                   <img class="hit_icon_overlay" src="{$iconLink}"/>

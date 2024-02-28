@@ -4,11 +4,10 @@
     xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
     xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions"
     xmlns:str="http://exslt.org/strings"
-    exclude-result-prefixes="i18n mcrxsl str"
-    >
-    
+    exclude-result-prefixes="i18n mcrxsl str">
+
     <xsl:param name="MIR.OwnerStrategy.AllowedRolesForSearch" select="'admin,editor'" />
-    
+
     <xsl:variable name="isSearchAllowedForCurrentUser">
         <xsl:for-each select="str:tokenize($MIR.OwnerStrategy.AllowedRolesForSearch,',')">
             <xsl:if test="mcrxsl:isCurrentUserInRole(.)">
@@ -31,6 +30,7 @@
     <xsl:template name="iconLink">
         <xsl:param name="baseURL"/>
         <xsl:param name="mimeType"/>
+        <xsl:param name="derivateMaindoc"/>
 
         <xsl:choose>
             <xsl:when test="$mimeType='application/pdf' or
@@ -101,9 +101,18 @@
                 <xsl:value-of select="concat($baseURL,'images/svg_icons/download_video.svg')"/>
             </xsl:when>
             <xsl:otherwise>
-                <xsl:value-of select="concat($baseURL,'images/svg_icons/download_default.svg')"/>
+                <xsl:choose>
+                    <xsl:when test="string-length($derivateMaindoc) &gt; 0">
+                      <xsl:variable name="ext"
+                                    select="document(concat('callJava:org.apache.commons.io.FilenameUtils:getExtension:', $derivateMaindoc))"/>
+                      <xsl:value-of
+                        select="concat($baseURL,'images/svg_icons/download-generic.xml?XSL.Transformer=svg-download&amp;XSL.extension=', $ext)"/>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:value-of select="concat($baseURL,'images/svg_icons/download_default.svg')"/>
+                    </xsl:otherwise>
+                </xsl:choose>
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
-
 </xsl:stylesheet>
