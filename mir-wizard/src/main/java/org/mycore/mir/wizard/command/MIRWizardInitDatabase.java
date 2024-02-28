@@ -33,6 +33,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.mycore.backend.jpa.MCREntityManagerProvider;
 import org.mycore.backend.jpa.MCRJPABootstrapper;
+import org.mycore.common.config.MCRConfiguration2;
 import org.mycore.mir.wizard.MIRWizardCommand;
 
 import jakarta.persistence.EntityManager;
@@ -59,10 +60,11 @@ public class MIRWizardInitDatabase extends MIRWizardCommand {
     public void doExecute() {
         try {
             StringBuffer res = new StringBuffer();
+            String persistenceUnitName = MCRConfiguration2.getStringOrThrow("MCR.JPA.PersistenceUnitName");
 
             HashMap<String, String> initProps = new HashMap<String, String>();
             initProps.put("hibernate.hbm2ddl.auto", "create");
-            MCRJPABootstrapper.initializeJPA(MCRJPABootstrapper.PERSISTENCE_UNIT_NAME, initProps);
+            MCRJPABootstrapper.initializeJPA(persistenceUnitName, initProps);
 
             doSchemaOperation(schema -> "create schema " + schema);
 
@@ -71,7 +73,7 @@ public class MIRWizardInitDatabase extends MIRWizardCommand {
             try (StringWriter output = new StringWriter()) {
                 schemaProperties.put("javax.persistence.schema-generation.scripts.action", ACTION);
                 schemaProperties.put("javax.persistence.schema-generation.scripts." + ACTION + "-target", output);
-                Persistence.generateSchema(MCRJPABootstrapper.PERSISTENCE_UNIT_NAME, schemaProperties);
+                Persistence.generateSchema(persistenceUnitName, schemaProperties);
                 res.append(output.toString());
             }
 
