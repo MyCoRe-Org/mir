@@ -51,9 +51,12 @@
 
   <xsl:param name="MIR.xMetaDissPlus.diniPublType.classificationId" select="'diniPublType'" />
   <xsl:variable name="diniPublTypeClassificationId" select="$MIR.xMetaDissPlus.diniPublType.classificationId" />
+  <xsl:variable name="diniPublTypeClassification" select="document(concat('classification:metadata:-1:children:',$diniPublTypeClassificationId))" />
   <xsl:variable name="diniPublTypeAuthorityURI" >
-    <xsl:variable name="diniPublTypeClassification" select="document(concat('classification:metadata:0:children:',$diniPublTypeClassificationId))" />
-    <xsl:value-of select="$diniPublTypeClassification//label[lang('x-uri')]/@text"/>
+    <xsl:value-of select="$diniPublTypeClassification/mycoreclass/label[lang('x-uri')]/@text"/>
+  </xsl:variable>
+  <xsl:variable name="defaultDiniPublType" >
+    <xsl:value-of select="$diniPublTypeClassification/mycoreclass/categories//category[label[lang('x-default') and @text='true']][1]/@ID"/>
   </xsl:variable>
 
   <xsl:variable name="languages" select="document('classification:metadata:-1:children:rfc5646')" />
@@ -82,40 +85,21 @@
   
   <xsl:variable name="mycoreobject" select="/mycoreobject" />
   <xsl:variable name="mods" select="/mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods" />
-  
+
   <xsl:variable name="type">
+    <xsl:variable name="diniPublType" select="substring-after($mods/mods:classification[@authorityURI=$diniPublTypeAuthorityURI]/@valueURI,concat($diniPublTypeAuthorityURI,'#'))"/>
     <xsl:choose>
-      <xsl:when test="mods:classification[@authorityURI=$diniPublTypeAuthorityURI]">
-        <xsl:variable name="diniPublType" select="substring-after(mods:classification[@authorityURI=$diniPublTypeAuthorityURI]/@valueURI,concat($diniPublTypeAuthorityURI,'#'))" />
-        <xsl:choose>
-          <!-- fix erroneous entry in https://www.mycore.de/classifications/diniPublType.xml -->
-          <xsl:when test="$diniPublTypeClassificationId='diniPublType' and $diniPublType = 'other'">
-            <xsl:value-of select="'Other'"/>
-          </xsl:when>
-          <xsl:otherwise>
-            <xsl:value-of select="$diniPublType"/>
-          </xsl:otherwise>
-        </xsl:choose>
-        
+      <xsl:when test="string-length($diniPublType)!=0">
+        <xsl:value-of select="$diniPublType"/>
       </xsl:when>
-      <xsl:when test="contains($mods/mods:genre/@valueURI, 'article')">
-        <xsl:text>contributionToPeriodical</xsl:text>
-      </xsl:when>
-      <xsl:when test="contains($mods/mods:genre/@valueURI, 'issue')">
-        <xsl:text>PeriodicalPart</xsl:text>
-      </xsl:when>
-      <xsl:when test="contains($mods/mods:genre/@valueURI, 'journal')">
-        <xsl:text>Periodical</xsl:text>
-      </xsl:when>
-      <xsl:when test="contains($mods/mods:genre/@valueURI, 'book')">
-        <xsl:text>book</xsl:text>
-      </xsl:when>
-      <xsl:when test="contains($mods/mods:genre/@valueURI, 'dissertation') or
-              contains($mods/mods:genre/@valueURI, 'habilitation')">
-        <xsl:text>doctoralThesis</xsl:text>
+      <xsl:when test="string-length($defaultDiniPublType)!=0">
+        <xsl:value-of select="$defaultDiniPublType"/>
       </xsl:when>
       <xsl:otherwise>
-        <xsl:text>Other</xsl:text>
+        <xsl:copy-of select="$diniPublTypeClassification"/>
+        <xsl:message terminate="yes">
+          <xsl:value-of select="concat('Object ',mycoreobject/@ID,' has no DINI publication type and no default DINI publication type is set')"/>
+        </xsl:message>
       </xsl:otherwise>
     </xsl:choose>
   </xsl:variable>
@@ -226,7 +210,7 @@
           <xsl:with-param name="periodicalAsPartOf" select="'false'"/>
         </xsl:call-template> 
       </xsl:when>
-      <xsl:when test="$type and ($publisher/dc:publisher/cc:universityOrInstitution/cc:name and $publisher/dc:publisher/cc:universityOrInstitution/cc:place)">
+      <xsl:when test="$publisher/dc:publisher/cc:universityOrInstitution/cc:name and $publisher/dc:publisher/cc:universityOrInstitution/cc:place">
         <!-- Implizite Zweitveröffentlichung -->
         <xsl:call-template name="XMDP_Document">
           <xsl:with-param name="documentType" select="$type"/>
@@ -235,18 +219,10 @@
           <xsl:with-param name="periodicalAsPartOf" select="'false'"/>
         </xsl:call-template> 
       </xsl:when>
-      <xsl:when test="$type">
+      <xsl:otherwise>
         <!-- Implizite Erstveröffentlichung -->
         <xsl:call-template name="XMDP_Document">
           <xsl:with-param name="documentType" select="$type"/>
-          <xsl:with-param name="documentPublisher" select="$repositoryPublisher"/>
-          <xsl:with-param name="periodicalAsPartOf" select="'false'"/>
-        </xsl:call-template> 
-      </xsl:when>
-      <xsl:otherwise>
-        <!-- Fallback der niemals erreicht werden sollte. -->
-        <xsl:call-template name="XMDP_Document">
-          <xsl:with-param name="documentType" select="'book'"/>
           <xsl:with-param name="documentPublisher" select="$repositoryPublisher"/>
           <xsl:with-param name="periodicalAsPartOf" select="'false'"/>
         </xsl:call-template> 

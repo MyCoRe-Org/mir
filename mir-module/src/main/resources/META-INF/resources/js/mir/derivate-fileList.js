@@ -419,7 +419,7 @@
 				directory = fileParam.substr(0, lastSlashInFile+1);
 				let oldName = fileParam.substr(directory.length);
 
-				let newName = prompt(i18nKeys["IFS.fileRename.to"], oldName);
+				let newName = prompt(i18nKeys["IFS.fileRename.to"], decodeURI(oldName));
 				if (newName == null) {
 					e.preventDefault();
 				} else {
@@ -428,7 +428,7 @@
 					if (lastSlashInName > 0) {
 						newName = newName.substr(lastSlashInName);
 					}
-					$(this).attr("href", href + "&file2=" + directory + newName);
+					$(this).attr("href", href + "&file2=" + directory + encodeURI(newName));
 				}
 			});
 		}
@@ -512,60 +512,25 @@
 		}
 
 		function loadI18nKeys(lang, callback) {
-			var ifsKeyURL = webApplicationBaseURL + "rsc/locale/translate/" + lang + "/IFS*";
-			var mirKeyURL = webApplicationBaseURL + "rsc/locale/translate/" + lang + "/mir.confirm.*";
-			var pagiKeyURL = webApplicationBaseURL + "rsc/locale/translate/" + lang + "/mir.pagination.*";
-			var uploadKeyURL = webApplicationBaseURL + "rsc/locale/translate/" + lang + "/mir.upload.drop.derivate";
-			$
-					.when($.ajax(ifsKeyURL), $.ajax(mirKeyURL), $.ajax(pagiKeyURL), $.ajax(uploadKeyURL))
-					.done(
-							function(d1, d2, d3, d4) {
-								if (d1[0] != {} && d1[0] != "???IFS*???") {
-									i18nKeys = $.extend(d1[0], i18nKeys);
-								} else {
-									i18nKeys["IFS.fileDelete"] = "Datei l\u00F6schen";
-									i18nKeys["IFS.mainFile"] = "Hauptdatei";
-									i18nKeys["IFS.directoryDelete"] = "Verzeichnis l\u00F6schen";
-								}
-								if (d2[0] != {} && d2[0] != "???mir.confirm.*???" && d2[0]["mir.confirm"]) {
-									i18nKeys = $.extend(d2[0], i18nKeys);
-								} else {
-									i18nKeys["mir.confirm.directory.text"] = "Wollen Sie dieses Verzeichnis inkl. aller enthaltenen Dateien und ggf. Unterverzeichnissen l\u00F6schen?";
-									i18nKeys["mir.confirm.file.text"] = "Wollen Sie diese Datei wirklich l\u00F6schen?";
-								}
-								if (d3[0] != {} && d3[0] != "???mir.pagination.*???" && d3[0]["mir.pagination"]) {
-									i18nKeys = $.extend(d3[0], i18nKeys);
-								} else {
-									i18nKeys["mir.pagination.entriesInfo"] = "{0} bis {1} von {2} Eintr\u00E4gen";
-									i18nKeys["mir.pagination.first"] = "erste Seite";
-									i18nKeys["mir.pagination.last"] = "letzte Seite ({0})";
-									i18nKeys["mir.pagination.previous"] = "vorherige Seite";
-									i18nKeys["mir.pagination.next"] = "n\u00E4chste Seite";
-								}
+			const ifsKeyURL = webApplicationBaseURL + "rsc/locale/translate/" + lang + "/IFS*";
+			const mirKeyURL = webApplicationBaseURL + "rsc/locale/translate/" + lang + "/mir.confirm.*";
+			const pagiKeyURL = webApplicationBaseURL + "rsc/locale/translate/" + lang + "/mir.pagination.*";
+			const uploadKeyURL = webApplicationBaseURL + "rsc/locale/translate/" + lang + "/mir.upload.drop.*";
+			const allRequests = Promise.all([ifsKeyURL, mirKeyURL, pagiKeyURL, uploadKeyURL]
+				.map((url)=> fetch(url))
+				.map((promise)=> promise.then((response)=> response.json())));
 
-								if(typeof d4[0]==="string") {
-								    i18nKeys["mir.upload.drop.derivate"] = d4[0];
-                                } else {
-                                    i18nKeys["mir.upload.drop.derivate"] = "Dateien zum Anh\u00E4ngen ablegen.";
-                                }
-
-								callback();
-							})
-					.fail(
-							function() {
-								i18nKeys["IFS.fileDelete"] = "Datei l\u00F6schen";
-								i18nKeys["IFS.mainFile"] = "Hauptdatei";
-								i18nKeys["IFS.directoryDelete"] = "Verzeichnis l\u00F6schen";
-								i18nKeys["mir.confirm.directory.text"] = "Wollen Sie dieses Verzeichnis inkl. aller enthaltenen Dateien und ggf. Unterverzeichnissen l\u00F6schen?";
-								i18nKeys["mir.confirm.file.text"] = "Wollen Sie diese Datei wirklich l\u00F6schen?";
-								i18nKeys["mir.pagination.entriesInfo"] = "{0} bis {1} von {2} Eintr\u00E4gen";
-								i18nKeys["mir.pagination.first"] = "erste Seite";
-								i18nKeys["mir.pagination.last"] = "letzte Seite ({0})";
-								i18nKeys["mir.pagination.previous"] = "vorherige Seite";
-								i18nKeys["mir.pagination.next"] = "n\u00E4chste Seite";
-                                i18nKeys["mir.upload.drop.derivate"] = "Datei zum Anh\u00E4ngen ablegen.";
-								callback();
-							});
+			allRequests.then((translations)=> {
+				for (const translation of translations) {
+					for (const key in translation) {
+						i18nKeys[key] = translation[key];
+					}
+				}
+				callback();
+			}, (error)=> {
+				console.error("Error while loading i18n keys: " + error);
+				callback(); // continue without translations
+			});
 		}
 
 		function changeVideo(elm) {
@@ -633,17 +598,17 @@
 				});
 
 				Handlebars.registerHelper("getI18n", function(input, params) {
-					var text = i18nKeys[input];
-					var args = Array.prototype.slice.call(arguments, 1);
-					if (text != undefined) {
-						if (args != undefined) {
-							for (var i = 0; i < args.length; i++) {
-								text = text.replace(RegExp("\\{" + i + "\\}", 'g'), args[i]);
-							}
-						}
-						return text;
+					let text = i18nKeys[input];
+					if(text === undefined) { // this happens if the translation could not be loaded
+						text = "???" + input + "???"; // default mycore behaviour
 					}
-					return "";
+					let args = Array.prototype.slice.call(arguments, 1);
+					if (args != undefined) {
+						for (let i = 0; i < args.length; i++) {
+							text = text.replace(RegExp("\\{" + i + "\\}", 'g'), args[i]);
+						}
+					}
+					return text;
 				});
 
 				Handlebars.registerHelper("getFileIcon", function(ext) {

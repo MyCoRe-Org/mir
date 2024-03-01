@@ -11,12 +11,14 @@
                 xmlns:mods="http://www.loc.gov/mods/v3"
                 xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions"
                 xmlns:str="http://exslt.org/strings"
+                xmlns:string="xalan://java.lang.String"
                 xmlns:encoder="xalan://java.net.URLEncoder"
                 xmlns:acl="xalan://org.mycore.access.MCRAccessManager"
                 xmlns:imageware="org.mycore.mir.imageware.MIRImageWarePacker"
                 xmlns:pi="xalan://org.mycore.pi.frontend.MCRIdentifierXSLUtils"
                 xmlns:piUtil="xalan://org.mycore.pi.frontend.MCRIdentifierXSLUtils"
-                exclude-result-prefixes="basket xalan xlink mcr i18n mods mcrmods mcrxsl str encoder acl imageware pi piUtil"
+                xmlns:iview2="xalan://org.mycore.iview2.services.MCRIView2Tools"
+                exclude-result-prefixes="basket xalan xlink mcr i18n mods mcrmods mcrxsl str encoder acl imageware pi piUtil iview2"
                 xmlns:ex="http://exslt.org/dates-and-times"
                 xmlns:exslt="http://exslt.org/common"
                 extension-element-prefixes="ex exslt"
@@ -25,6 +27,7 @@
 
   <xsl:param name="MIR.registerDOI" select="''" />
   <xsl:param name="MIR.registerURN" select="'true'" />
+  <xsl:param name="MIR.METSEditor.enable" select="'false'" />
   <xsl:param name="template" select="'fixme'" />
 
   <xsl:param name="MCR.Packaging.Packer.ImageWare.FlagType" />
@@ -441,7 +444,7 @@
           <xsl:choose>
             <xsl:when test="not($accessedit) and mcrxsl:isCurrentUserGuestUser()">
               <li>
-                <a href="{$ServletsBaseURL}MCRLoginServlet?action=login" class="dropdown-item">
+                <a href="{concat($ServletsBaseURL, 'MCRLoginServlet', $HttpSession,'?url=', encoder:encode(string($RequestURL)))}" class="dropdown-item">
                   <xsl:value-of select="i18n:translate('mir.actions.noaccess')" />
                 </a>
               </li>
@@ -449,7 +452,7 @@
             <xsl:otherwise>
               <xsl:if test="not($accessedit or $accessdelete)">
                 <li>
-                  <a href="{$ServletsBaseURL}MCRLoginServlet?action=login" class="dropdown-item">
+                  <a href="{concat($ServletsBaseURL, 'MCRLoginServlet', $HttpSession,'?url=', encoder:encode(string($RequestURL)))}" class="dropdown-item">
                     <xsl:value-of select="i18n:translate('mir.actions.norights')" />
                   </a>
                 </li>
@@ -719,6 +722,13 @@
               </a>
             </li>
             </xsl:if>
+            <xsl:if test="key('rights', $deriv)/@write and iview2:getSupportedMainFile($deriv) and normalize-space($MIR.METSEditor.enable)='true'">
+              <li>
+                <a href="{$WebApplicationBaseURL}rsc/mets/editor/start/{$deriv}" class="option startmets dropdown-item">
+                  <xsl:value-of select="i18n:translate('component.mods.metaData.options.startmets')" />
+                </a>
+              </li>
+            </xsl:if>
             <xsl:if test="key('rights', $deriv)/@read">
               <li>
                 <a href="{$ServletsBaseURL}MCRZipServlet/{$deriv}" class="option downloadzip dropdown-item">
@@ -966,7 +976,7 @@
           <xsl:value-of select="concat(i18n:translate('mir.project.grantID'),':')" />
         </td>
         <td class="metavalue">
-          <xsl:value-of select="exslt:node-set($project-details)/token[position() = 5]" />
+          <xsl:value-of select="string:replaceAll(string(exslt:node-set($project-details)/token[position() = 5]),'%2F','/')" />
         </td>
       </tr>
     </xsl:if>
