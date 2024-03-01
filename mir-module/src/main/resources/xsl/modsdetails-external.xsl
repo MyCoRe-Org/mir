@@ -17,7 +17,8 @@
                 xmlns:imageware="org.mycore.mir.imageware.MIRImageWarePacker"
                 xmlns:pi="xalan://org.mycore.pi.frontend.MCRIdentifierXSLUtils"
                 xmlns:piUtil="xalan://org.mycore.pi.frontend.MCRIdentifierXSLUtils"
-                exclude-result-prefixes="basket xalan xlink mcr i18n mods mcrmods mcrxsl str encoder acl imageware pi piUtil"
+                xmlns:iview2="xalan://org.mycore.iview2.services.MCRIView2Tools"
+                exclude-result-prefixes="basket xalan xlink mcr i18n mods mcrmods mcrxsl str encoder acl imageware pi piUtil iview2"
                 xmlns:ex="http://exslt.org/dates-and-times"
                 xmlns:exslt="http://exslt.org/common"
                 extension-element-prefixes="ex exslt"
@@ -26,6 +27,7 @@
 
   <xsl:param name="MIR.registerDOI" select="''" />
   <xsl:param name="MIR.registerURN" select="'true'" />
+  <xsl:param name="MIR.METSEditor.enable" select="'false'" />
   <xsl:param name="template" select="'fixme'" />
 
   <xsl:param name="MCR.Packaging.Packer.ImageWare.FlagType" />
@@ -719,6 +721,13 @@
                 <xsl:value-of select="i18n:translate('component.mods.metaData.options.updateDerivateName')" />
               </a>
             </li>
+            </xsl:if>
+            <xsl:if test="key('rights', $deriv)/@write and iview2:getSupportedMainFile($deriv) and normalize-space($MIR.METSEditor.enable)='true'">
+              <li>
+                <a href="{$WebApplicationBaseURL}rsc/mets/editor/start/{$deriv}" class="option startmets dropdown-item">
+                  <xsl:value-of select="i18n:translate('component.mods.metaData.options.startmets')" />
+                </a>
+              </li>
             </xsl:if>
             <xsl:if test="key('rights', $deriv)/@read">
               <li>
