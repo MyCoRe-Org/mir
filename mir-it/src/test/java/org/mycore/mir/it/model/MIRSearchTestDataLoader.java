@@ -37,7 +37,7 @@ public class MIRSearchTestDataLoader {
             userController.logoutIfLoggedIn();
             userController.loginAs(MIRUserController.ADMIN_LOGIN, MIRUserController.ADMIN_PASSWD);
 
-            webDriverWrapper.waitAndFindElement(By.xpath(".//strong[contains(text(), 'administrator')]")).click();
+            webDriverWrapper.waitAndFindElement(By.xpath(".//strong[contains(text(), '" + MIRUserController.ADMIN_REALNAME + "')]")).click();
             webDriverWrapper.waitAndFindElement(By.xpath(".//a[contains(text(), 'WebCLI')]")).click();
             String mainWindowHandle = webDriverWrapper.getWindowHandle();
             webDriverWrapper.waitAndFindElement(By.xpath(".//input[contains(@onclick, 'WebCLI')]")).click();
