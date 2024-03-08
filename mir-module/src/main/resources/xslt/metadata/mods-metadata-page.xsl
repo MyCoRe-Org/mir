@@ -171,7 +171,15 @@
             </div>
           </xsl:when>
           <xsl:when test="contains($MIR.Layout.Display.Panel, $boxID)">
-            <div class="card" id="{concat($boxID, '-panel')}">
+            <div id="{concat($boxID, '-panel')}">
+              <xsl:attribute name="class">
+                <xsl:value-of select="'card'"/>
+                <xsl:for-each select="$originalContent/div[@id=$boxID]/@*[local-name()='class']">
+                  <xsl:value-of select="' '"/>
+                  <xsl:value-of select="."/>
+                </xsl:for-each>
+              </xsl:attribute>
+              <xsl:copy-of select="$originalContent/div[@id=$boxID]/@*[local-name()!='id' and local-name()!='class']"/>
               <div class="card-header">
                 <h3 class="card-title">
                   <xsl:variable name="icon" select="$icons/entry[@key=concat('MIR.Layout.Display.Panel.Icon.', $boxID)]" />
@@ -194,6 +202,7 @@
           </xsl:when>
           <xsl:when test="contains($MIR.Layout.Display.Div, $boxID)">
             <div id="{concat($boxID, '-div')}">
+              <xsl:copy-of select="$originalContent/div[@id=$boxID]/@*[local-name()!='id']"/>
               <xsl:copy-of select="$originalContent/div[@id=$boxID]/*"/>
             </div>
           </xsl:when>
