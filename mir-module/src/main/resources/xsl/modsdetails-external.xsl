@@ -34,6 +34,7 @@
   <xsl:param name="MIR.ImageWare.Enabled" />
   <xsl:param name="MIR.Workflow.Menu" select="'false'" />
   <xsl:param name="MCR.Module-iview2.SupportedContentTypes"/>
+  <xsl:param name="RequestURL"/>
 
   <xsl:include href="workflow-util.xsl" />
   <xsl:include href="mir-mods-utils.xsl" />
@@ -717,7 +718,7 @@
           <ul class="dropdown-menu dropdown-menu-right">
             <xsl:if test="key('rights', $deriv)/@write">
             <li>
-              <a href="{$WebApplicationBaseURL}editor/editor-derivate.xed{$HttpSession}?derivateid={$deriv}" class="option dropdown-item">
+              <a href="{$WebApplicationBaseURL}editor/editor-derivate.xed{$HttpSession}?derivateid={$deriv}&amp;cancelUrl={encoder:encode($RequestURL)}" class="option dropdown-item">
                 <xsl:value-of select="i18n:translate('component.mods.metaData.options.updateDerivateName')" />
               </a>
             </li>
