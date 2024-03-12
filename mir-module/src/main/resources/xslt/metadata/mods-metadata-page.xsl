@@ -2,11 +2,13 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:mcri18n="http://www.mycore.de/xslt/i18n"
                 xmlns:mcrproperty="http://www.mycore.de/xslt/property"
-                exclude-result-prefixes="mcri18n mcrproperty"
+                xmlns:mcracl="http://www.mycore.de/xslt/acl"
+                exclude-result-prefixes="mcracl mcri18n mcrproperty"
                 version="3.0">
 
   <xsl:include href="resource:xslt/functions/i18n.xsl" />
   <xsl:include href="resource:xslt/functions/property.xsl" />
+  <xsl:include href="resource:xslt/functions/acl.xsl" />
 
   <xsl:param name="MIR.Layout.Top"/>
   <xsl:param name="MIR.Layout.End"/>
@@ -22,6 +24,8 @@
   <xsl:param name="MIR.CanonicalBaseURL" />
 
   <xsl:param name="WebApplicationBaseURL"/>
+
+  <xsl:variable name="canViewSystembox" select="mcracl:check-permission(site/@ID, 'read-history')"/>
 
   <xsl:template match="/site">
     <xsl:copy>
@@ -83,7 +87,7 @@
         <!-- this function is bloated due backward compatibility -->
         <xsl:choose>
           <xsl:when test="$boxID='mir-historydata'">
-            <xsl:if test="$originalContent/@write">
+            <xsl:if test="$originalContent/@write or $canViewSystembox">
             <div
                 id="historyModal"
                 class="modal fade"
@@ -132,7 +136,7 @@
             </div>
           </xsl:when>
           <xsl:when test="$boxID='mir-admindata'">
-            <xsl:if test="$originalContent/@write">
+            <xsl:if test="$originalContent/@write or $canViewSystembox">
               <div id="mir_admindata_panel" class="card system">
                 <div class="card-header">
                   <h3 class="card-title">
