@@ -17,7 +17,7 @@
   -->
 
 <template>
-  <span><span class="identifier-key">{{ type }}</span><a class="identifier-value" :href="url">{{ value }}</a> </span>
+  <span><span class="identifier-key">{{ type }}</span><a class="identifier-value" :href="url" target="_blank">{{ value }}</a> </span>
 </template>
 
 <script setup lang="ts">
