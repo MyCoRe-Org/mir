@@ -52,13 +52,20 @@
             <xsl:value-of select="normalize-space(substring-after(.,','))" />
         </mods:namePart>
     </xsl:template>
-    
+
     <xsl:template match="nameIdentifier[@nameIdentifierScheme='ORCID']">
         <mods:nameIdentifier type="orcid">
-            <xsl:value-of select="text()" />
+            <xsl:choose>
+                <xsl:when test="contains(text(), '://orcid.org/')">
+                    <xsl:value-of select="substring-after(text(), '://orcid.org/')"/>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:value-of select="text()" />
+                </xsl:otherwise>
+            </xsl:choose>
         </mods:nameIdentifier>
     </xsl:template>
-    
+
     <xsl:template match="affiliation">
         <mods:affiliation>
             <xsl:value-of select="text()" />
