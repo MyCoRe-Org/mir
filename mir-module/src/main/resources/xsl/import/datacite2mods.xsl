@@ -58,9 +58,11 @@
 
     <xsl:template match="nameIdentifier">
         <xsl:variable name="orcid" select="mcrxml:getMatchingString(text(), $orcidRegex)"/>
-        <mods:nameIdentifier type="orcid">
-            <xsl:value-of select="$orcid"/>
-        </mods:nameIdentifier>
+        <xsl:if test="string-length($orcid) = 19">
+            <mods:nameIdentifier type="orcid">
+                <xsl:value-of select="$orcid"/>
+            </mods:nameIdentifier>
+        </xsl:if>
     </xsl:template>
 
     <xsl:template match="affiliation">
