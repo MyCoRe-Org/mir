@@ -42,7 +42,7 @@
             <mods:role>
                 <mods:roleTerm authority="marcrelator" type="code">aut</mods:roleTerm>
             </mods:role>
-            <xsl:apply-templates select="nameIdentifier[string-length(mcrxml:getMatchingString(text(), $orcidRegex)) = (19)]" />
+            <xsl:apply-templates select="nameIdentifier[@nameIdentifierScheme='ORCID']" />
             <xsl:apply-templates select="affiliation" />
         </mods:name>
     </xsl:template>
