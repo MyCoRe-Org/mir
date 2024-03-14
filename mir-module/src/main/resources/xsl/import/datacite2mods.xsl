@@ -7,10 +7,13 @@
     xmlns:mods="http://www.loc.gov/mods/v3"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:xalan="http://xml.apache.org/xalan"
-    exclude-result-prefixes="xsl xsi xalan">
-    
+    xmlns:mcrxml="xalan://org.mycore.common.xml.MCRXMLFunctions"
+    exclude-result-prefixes="mcrxml xsl xsi xalan">
+
     <xsl:output method="xml" encoding="UTF-8" indent="yes" xalan:indent-amount="2" />
-    
+
+    <xsl:variable name="orcidRegex" select="'[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{3}[0-9,X]'"/>
+
     <xsl:template match="resource">
         <mods:mods>
             <xsl:apply-templates select="titles/title" />
@@ -39,7 +42,7 @@
             <mods:role>
                 <mods:roleTerm authority="marcrelator" type="code">aut</mods:roleTerm>
             </mods:role>
-            <xsl:apply-templates select="nameIdentifier[@nameIdentifierScheme='ORCID']" />
+            <xsl:apply-templates select="nameIdentifier[string-length(mcrxml:getMatchingString(text(), $orcidRegex)) = (19)]" />
             <xsl:apply-templates select="affiliation" />
         </mods:name>
     </xsl:template>
@@ -53,16 +56,10 @@
         </mods:namePart>
     </xsl:template>
 
-    <xsl:template match="nameIdentifier[@nameIdentifierScheme='ORCID']">
+    <xsl:template match="nameIdentifier">
+        <xsl:variable name="orcid" select="mcrxml:getMatchingString(text(), $orcidRegex)"/>
         <mods:nameIdentifier type="orcid">
-            <xsl:choose>
-                <xsl:when test="contains(text(), '://orcid.org/')">
-                    <xsl:value-of select="substring-after(text(), '://orcid.org/')"/>
-                </xsl:when>
-                <xsl:otherwise>
-                    <xsl:value-of select="text()" />
-                </xsl:otherwise>
-            </xsl:choose>
+            <xsl:value-of select="$orcid"/>
         </mods:nameIdentifier>
     </xsl:template>
 
