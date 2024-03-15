@@ -7,10 +7,13 @@
     xmlns:mods="http://www.loc.gov/mods/v3"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:xalan="http://xml.apache.org/xalan"
-    exclude-result-prefixes="xsl xsi xalan">
-    
+    xmlns:mcrxml="xalan://org.mycore.common.xml.MCRXMLFunctions"
+    exclude-result-prefixes="mcrxml xsl xsi xalan">
+
     <xsl:output method="xml" encoding="UTF-8" indent="yes" xalan:indent-amount="2" />
-    
+
+    <xsl:variable name="orcidRegex" select="'[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{3}[0-9,X]'"/>
+
     <xsl:template match="resource">
         <mods:mods>
             <xsl:apply-templates select="titles/title" />
@@ -52,13 +55,16 @@
             <xsl:value-of select="normalize-space(substring-after(.,','))" />
         </mods:namePart>
     </xsl:template>
-    
-    <xsl:template match="nameIdentifier[@nameIdentifierScheme='ORCID']">
-        <mods:nameIdentifier type="orcid">
-            <xsl:value-of select="text()" />
-        </mods:nameIdentifier>
+
+    <xsl:template match="nameIdentifier">
+        <xsl:variable name="orcid" select="mcrxml:getMatchingString(text(), $orcidRegex)"/>
+        <xsl:if test="string-length($orcid) = 19">
+            <mods:nameIdentifier type="orcid">
+                <xsl:value-of select="$orcid"/>
+            </mods:nameIdentifier>
+        </xsl:if>
     </xsl:template>
-    
+
     <xsl:template match="affiliation">
         <mods:affiliation>
             <xsl:value-of select="text()" />
