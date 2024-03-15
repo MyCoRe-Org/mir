@@ -19,8 +19,8 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 public class MIRUserController {
 
     public static final String ADMIN_PASSWD = "alleswirdgut";
+
     public static final String ADMIN_LOGIN = "administrator";
-    public static final String ADMIN_REALNAME = "Superuser";
 
     String baseURL;
 
@@ -101,16 +101,8 @@ public class MIRUserController {
         driver.findElement(By.name("pwd")).clear();
         driver.findElement(By.name("pwd")).sendKeys(password);
         driver.findElement(By.name("LoginSubmit")).click();
-        assertEqualsIgnoreCase(getRealname(user), driver.findElement(By.xpath("//a[@id='currentUser']")).getText());
+        assertEqualsIgnoreCase(user, driver.findElement(By.xpath("//a[@id='currentUser']")).getText());
     }
-
-    protected String getRealname(String user) {
-        return switch (user) {
-            case ADMIN_LOGIN -> ADMIN_REALNAME;
-            default -> user;
-        };
-    }
-
 
     @Test
     public void logOnLogOff() {

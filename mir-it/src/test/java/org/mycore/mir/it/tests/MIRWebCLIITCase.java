@@ -22,8 +22,7 @@ public class MIRWebCLIITCase extends MIRITBase {
     public void testWebCLIStartup() {
         MCRWebdriverWrapper driver = getDriver();
 
-        driver.waitAndFindElement(By.xpath(".//strong[contains(text(), '" + MIRUserController.ADMIN_REALNAME + "')]"))
-            .click();
+        driver.waitAndFindElement(By.xpath(".//strong[contains(text(), 'administrator')]")).click();
         driver.waitAndFindElement(By.xpath(".//a[contains(text(), 'WebCLI')]")).click();
         String mainWindowHandle = driver.getWindowHandle();
         driver.waitAndFindElement(By.xpath(".//input[contains(@onclick, 'WebCLI')]")).click();
