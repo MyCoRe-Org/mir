@@ -118,15 +118,7 @@
 
     <xsl:template name="get-doc-state-label">
         <xsl:param name="state-categ-id"/>
-        <xsl:choose>
-            <xsl:when test="mcrxsl:isCategoryID('state', $state-categ-id)">
-                <xsl:value-of
-                  select="document(concat('callJava:org.apache.commons.lang3.StringUtils:capitalize:', mcrxsl:getDisplayName('state', $state-categ-id)))"/>
-            </xsl:when>
-            <xsl:otherwise>
-                <xsl:value-of select="i18n:translate(concat('mir.state.', $state-categ-id))"/>
-            </xsl:otherwise>
-        </xsl:choose>
+        <xsl:value-of select="document(concat('callJava:org.apache.commons.lang3.StringUtils:capitalize:', mcrxsl:getDisplayName('state', $state-categ-id)))"/>
     </xsl:template>
 
 </xsl:stylesheet>
