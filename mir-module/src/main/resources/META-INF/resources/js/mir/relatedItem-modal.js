@@ -75,6 +75,7 @@ $(document).ready(function() {
 
     var input = button.next().next("input");
     var sortType = "";
+    let fq = button.data("fq");
 
     //load genre classification
     loadGenres(initContent);
@@ -91,7 +92,7 @@ $(document).ready(function() {
 
 
       if(!input.val() || parseInt(input.val().substr(input.val().lastIndexOf("_") + 1)) < 1) {
-        loadPublikation(leftContent, "find", "", "0");
+        loadPublikation(leftContent, "find", "", "0", fq);
       }
     }
 
@@ -233,7 +234,7 @@ $(document).ready(function() {
       updater: function(item) {
         $("#main_right_content").empty();
         sortType = "";
-        loadPublikation(leftContent, "select", "id:" + item.id, "0");
+        loadPublikation(leftContent, "select", "id:" + item.id, "0", fq);
         setTimeout(function() {
           $("#modalFrame").find(".list-group-item").addClass("active");
         }, 300);
@@ -267,7 +268,7 @@ $(document).ready(function() {
 
     $(".modal-footer select").change(function() {
       sortType = decodeURIComponent($(this).val());
-      loadPublikation(leftContent, "find",  $("#modal-searchInput > input").val(), "0", "xml");
+      loadPublikation(leftContent, "find",  $("#modal-searchInput > input").val(), "0", fq);
       $("#main_right_content").empty();
       $("#modalFrame-send").attr("disabled", "");
     });
@@ -276,19 +277,19 @@ $(document).ready(function() {
       $("#main_right_content").empty();
       $("#modalFrame-send").attr("disabled", "");
       sortType = "";
-      loadPublikation(leftContent, "find", $("#modal-searchInput > input").val(), "0", "xml");
+      loadPublikation(leftContent, "find", $("#modal-searchInput > input").val(), "0", fq);
     }
 
-    function loadPublikation(callback, type, qry, start){
+    function loadPublikation(callback, type, qry, start, fq="*:*"){
       var url = "";
       var dataType = "";
       switch (type) {
         case "find":
-              url = "servlets/solr/find?condQuery=*" + qry + "*&fq=" + sortType + "&start=" + start + "&rows=10&owner=createdby:*&XSL.Style=xml";
+              url = "servlets/solr/find?fq=" + fq + "&condQuery=*" + qry + "*&fq=" + sortType + "&start=" + start + "&rows=10&owner=createdby:*&XSL.Style=xml";
               dataType = "xml";
               break;
         case "select":
-              url = "servlets/solr/select?q=" + qry + "&fq=objectType%3A\"mods\"&start=0&rows=10&XSL.Style=xml";
+              url = "servlets/solr/select?fq=" + fq + "q=" + qry + "&fq=objectType%3A\"mods\"&start=0&rows=10&XSL.Style=xml";
               dataType = "xml";
               break;
         case "receive":
