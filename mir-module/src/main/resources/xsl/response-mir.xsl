@@ -620,7 +620,10 @@
               <xsl:if test="not (mcrxsl:isCurrentUserGuestUser())">
                 <div class="hit_state">
                   <xsl:variable name="status-i18n">
-                    <xsl:value-of select="i18n:translate(concat('mir.state.',str[@name='state']))" />
+                    <!-- template in mir-utils.xsl -->
+                    <xsl:call-template name="get-doc-state-label">
+                      <xsl:with-param name="state-categ-id" select="str[@name='state']"/>
+                    </xsl:call-template>
                   </xsl:variable>
                   <span class="badge mir-{str[@name='state']}" title="{i18n:translate('component.mods.metaData.dictionary.status')}">
                     <xsl:value-of select="$status-i18n" />
