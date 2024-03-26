@@ -85,15 +85,15 @@ function setDockerValues() {
     echo "Set Docker Values to Config!"
 
     if [ -n "${SOLR_URL}" ]; then
-      setOrAddProperty "Solr.ServerURL" "${SOLR_URL}"
+      setOrAddProperty "MCR.Solr.ServerURL" "${SOLR_URL}"
     fi
 
     if [ -n "${SOLR_CORE}" ]; then
-      setOrAddProperty "Solr.Core.main.Name" "${SOLR_CORE}"
+      setOrAddProperty "MCR.Solr.Core.main.Name" "${SOLR_CORE}"
     fi
 
     if [ -n "${SOLR_CLASSIFICATION_CORE}" ]; then
-      setOrAddProperty "Solr.Core.classification.Name" "${SOLR_CLASSIFICATION_CORE}"
+      setOrAddProperty "MCR.Solr.Core.classification.Name" "${SOLR_CLASSIFICATION_CORE}"
     fi
 
     if [ -n "${JDBC_NAME}" ]; then
