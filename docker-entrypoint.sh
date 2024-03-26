@@ -75,7 +75,7 @@ function setOrAddProperty() {
     if grep -q "$KEY=" "${MYCORE_PROPERTIES}" ; then
       ESCAPED_KEY=$(echo "${KEY}" | sed 's/\//\\\//g')
       ESCAPED_VALUE=$(echo "${VALUE}" | sed 's/\//\\\//g')
-      sed -ri "s/($ESCAPED_KEY=).+/\1$ESCAPED_VALUE/" "${MYCORE_PROPERTIES}"
+      sed -ri "s/#*($ESCAPED_KEY=).+/\1$ESCAPED_VALUE/" "${MYCORE_PROPERTIES}"
     else
       echo "$KEY=$VALUE">>"${MYCORE_PROPERTIES}"
     fi
