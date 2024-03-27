@@ -24,7 +24,6 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-
 import org.junit.Assert;
 import org.mycore.access.facts.MCRFactsAccessSystem;
 import org.mycore.access.facts.fact.MCRStringFact;
@@ -47,7 +46,7 @@ public class MIRACLTest extends MCRStoreTestCase {
     @Override
     public void setUp() throws Exception {
         super.setUp();
-        accessSystem = MCRConfiguration2.<MCRFactsAccessSystem>getInstanceOf("MCR.Access.Class")
+        accessSystem = MCRConfiguration2.getInstanceOf(MCRFactsAccessSystem.class,"MCR.Access.Class")
             .orElseThrow();
     }
 
