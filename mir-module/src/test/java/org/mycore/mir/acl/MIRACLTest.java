@@ -46,7 +46,7 @@ public class MIRACLTest extends MCRStoreTestCase {
     @Override
     public void setUp() throws Exception {
         super.setUp();
-        accessSystem = MCRConfiguration2.getInstanceOf(MCRFactsAccessSystem.class,"MCR.Access.Class")
+        accessSystem = MCRConfiguration2.getInstanceOf(MCRFactsAccessSystem.class, "MCR.Access.Class")
             .orElseThrow();
     }
 
