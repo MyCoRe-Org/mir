@@ -75,7 +75,7 @@ function setOrAddProperty() {
     if grep -q "$KEY=" "${MYCORE_PROPERTIES}" ; then
       ESCAPED_KEY=$(echo "${KEY}" | sed 's/\//\\\//g')
       ESCAPED_VALUE=$(echo "${VALUE}" | sed 's/\//\\\//g')
-      sed -ri "s/($ESCAPED_KEY=).+/\1$ESCAPED_VALUE/" "${MYCORE_PROPERTIES}"
+      sed -ri "s/#*($ESCAPED_KEY=).+/\1$ESCAPED_VALUE/" "${MYCORE_PROPERTIES}"
     else
       echo "$KEY=$VALUE">>"${MYCORE_PROPERTIES}"
     fi
@@ -85,15 +85,15 @@ function setDockerValues() {
     echo "Set Docker Values to Config!"
 
     if [ -n "${SOLR_URL}" ]; then
-      setOrAddProperty "Solr.ServerURL" "${SOLR_URL}"
+      setOrAddProperty "MCR.Solr.ServerURL" "${SOLR_URL}"
     fi
 
     if [ -n "${SOLR_CORE}" ]; then
-      setOrAddProperty "Solr.Core.main.Name" "${SOLR_CORE}"
+      setOrAddProperty "MCR.Solr.Core.main.Name" "${SOLR_CORE}"
     fi
 
     if [ -n "${SOLR_CLASSIFICATION_CORE}" ]; then
-      setOrAddProperty "Solr.Core.classification.Name" "${SOLR_CLASSIFICATION_CORE}"
+      setOrAddProperty "MCR.Solr.Core.classification.Name" "${SOLR_CLASSIFICATION_CORE}"
     fi
 
     if [ -n "${JDBC_NAME}" ]; then
