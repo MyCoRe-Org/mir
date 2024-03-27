@@ -428,7 +428,7 @@
 					if (lastSlashInName > 0) {
 						newName = newName.substr(lastSlashInName);
 					}
-					$(this).attr("href", href + "&file2=" + directory + encodeURI(newName));
+					$(this).attr("href", href + "&file2=" + encodeURI(directory) + encodeURI(newName));
 				}
 			});
 		}
