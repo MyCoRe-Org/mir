@@ -27,12 +27,10 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.mycore.access.strategies.MCRAccessCheckStrategy;
-import org.mycore.access.strategies.MCRObjectTypeStrategy;
 import org.mycore.common.MCRSessionMgr;
 import org.mycore.common.MCRSystemUserInformation;
 import org.mycore.common.MCRUserInformation;
@@ -55,19 +53,18 @@ public class MIROwnerStrategy implements MCRAccessCheckStrategy {
 
     private static final String CONFIG_PREFIX = "MIR.OwnerStrategy.";
 
-    private static final MCRAccessCheckStrategy BASE_STRATEGY = MCRConfiguration2
-        .<MCRAccessCheckStrategy>getInstanceOf(CONFIG_PREFIX + "FallbackClass")
-        .orElseGet(MCRObjectTypeStrategy::new);
+    private static final MCRAccessCheckStrategy BASE_STRATEGY = MCRConfiguration2.getInstanceOfOrThrow(
+        MCRAccessCheckStrategy.class, CONFIG_PREFIX + "FallbackClass");
 
     private static final List<String> OBJECT_TYPES = MCRConfiguration2.getString(CONFIG_PREFIX + "ObjectTypes")
         .stream()
         .flatMap(MCRConfiguration2::splitValue)
-        .collect(Collectors.toList());
+        .toList();
 
     private static final List<String> PERMISSIONS = MCRConfiguration2.getString(CONFIG_PREFIX + "AllowedPermissions")
         .stream()
         .flatMap(MCRConfiguration2::splitValue)
-        .collect(Collectors.toList());
+        .toList();
 
     private static final Pattern TYPE_PATTERN = Pattern.compile("[^_]*_([^_]*)_*");
 

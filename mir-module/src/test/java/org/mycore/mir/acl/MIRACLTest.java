@@ -47,8 +47,7 @@ public class MIRACLTest extends MCRStoreTestCase {
     @Override
     public void setUp() throws Exception {
         super.setUp();
-        accessSystem = MCRConfiguration2.<MCRFactsAccessSystem>getInstanceOf("MCR.Access.Class")
-            .orElseThrow();
+        accessSystem = MCRConfiguration2.getInstanceOfOrThrow(MCRFactsAccessSystem.class, "MCR.Access.Class");
     }
 
     protected void checkWebpage(String webpageURL, boolean shouldBeAbleToRead, String... userRole) {
