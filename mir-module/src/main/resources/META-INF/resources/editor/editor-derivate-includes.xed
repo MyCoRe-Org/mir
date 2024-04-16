@@ -3,7 +3,7 @@
 <xed:template xmlns:xed="http://www.mycore.de/xeditor" xmlns:mir="http://www.mycore.de/mir">
 
   <xed:template id="in.out">
-    <xed:source uri="notnull:checkPermissionChain:{$derivateid}:writedb:xslStyle:editor/derivate2xeditor:mcrobject:{$derivateid}" />
+    <xed:source uri="notnull:checkPermissionChain:{$derivateid}:writedb:xslStyleXEditor:editor/derivate2xeditor:mcrobject:{$derivateid}" />
     <xed:cancel url="/receive/{$objectid}" />
     <xed:cancel url="{$cancelUrl}" />
     <xed:cancel url="../index.html" />
@@ -27,7 +27,7 @@
             <option value="">
               <xed:output i18n="mir.select" />
             </option>
-            <xed:include uri="xslStyle:items2options:classification:editorComplete:1:children:derivate_types"/>
+            <xed:include uri="xslStyleXEditor:items2options:classification:editorComplete:1:children:derivate_types"/>
           </select>
         </div>
       </div>
@@ -45,7 +45,7 @@
             <option value="">
               <xed:output i18n="mir.select" />
             </option>
-            <xed:include uri="xslStyle:items2options:classification:editorComplete:1:children:mir_access"/>
+            <xed:include uri="xslStyleXEditor:items2options:classification:editorComplete:1:children:mir_access"/>
           </select>
         </div>
       </div>
