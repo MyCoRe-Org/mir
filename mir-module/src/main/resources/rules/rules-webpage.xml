@@ -70,6 +70,14 @@
                 <role>admin</role>
                 <role>editor</role>
             </or>
+            <or>
+                <not>
+                    <regex>webpage:/servlets/solr/select\?q=createdby:\{CurrentUser\}&amp;fq=objectType:mods.*</regex>
+                </not>
+                <role>admin</role>
+                <role>editor</role>
+                <role>submitter</role>
+            </or>
             <not>
                 <!-- editors are handled somewhere else -->
                 <regex>webpage:/editor/.*</regex>
