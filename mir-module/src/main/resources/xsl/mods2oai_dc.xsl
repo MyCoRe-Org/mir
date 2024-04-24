@@ -25,7 +25,7 @@
   <xsl:variable name="ifsTemp">
     <xsl:for-each select="structure/derobjects/derobject[mcr:isDisplayedEnabledDerivate(@xlink:href)]">
       <der id="{@xlink:href}">
-        <xsl:copy-of select="document(concat('xslStyleXEditor:mcr_directory-recursive:ifs:',@xlink:href,'/'))" />
+        <xsl:copy-of select="document(concat('xslStyle:mcr_directory-recursive:ifs:',@xlink:href,'/'))" />
       </der>
     </xsl:for-each>
   </xsl:variable>
