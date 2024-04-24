@@ -27,7 +27,7 @@ import org.xml.sax.SAXException;
 
 public class MIRPostProcessor extends MCRPostProcessorXSL {
 
-    public static final String[] TITLE_SUB_ELEMENTS = { "nonSort", "title", "subTitle" };
+    public static final String[] TITLE_SUB_ELEMENTS = {"nonSort", "title", "subTitle"};
 
     @Override
     public Document process(Document oldXML) throws IOException, JDOMException, SAXException {
@@ -36,8 +36,8 @@ public class MIRPostProcessor extends MCRPostProcessorXSL {
         fixAbstracts(newXML);
 
         final XPathExpression<Element> titleInfoXPath = XPathFactory.instance().compile(".//mods:titleInfo",
-            Filters.element(), null, MCRConstants.MODS_NAMESPACE,
-            MCRConstants.XLINK_NAMESPACE);
+                Filters.element(), null, MCRConstants.MODS_NAMESPACE,
+                MCRConstants.XLINK_NAMESPACE);
         final List<Element> titleInfos = titleInfoXPath.evaluate(newXML);
 
         titleInfos.forEach(titleInfoElement -> {
@@ -53,6 +53,7 @@ public class MIRPostProcessor extends MCRPostProcessorXSL {
                 titleInfoElement.removeAttribute("altFormat");
             }
         });
+        return super.process(newXML);
     }
 
     private static boolean isAnyTitleSubElementHtml(Element ti) {
@@ -60,8 +61,6 @@ public class MIRPostProcessor extends MCRPostProcessorXSL {
                 final Element element = ti.getChild(elementName, MCRConstants.MODS_NAMESPACE);
                 return element != null && isHtml(element.getText());
             });
-
-        return super.process(newXML);
     }
 
     private static void fixTitle(Element titleInfoElement)
