@@ -6,20 +6,15 @@
                 xmlns:xalan="http://xml.apache.org/xalan"
                 version="1.0" exclude-result-prefixes="i18n mcrxsl">
 
-
     <xsl:param name="WebApplicationBaseURL"/>
     <xsl:param name="ServletsBaseURL" />
     <xsl:param name="HttpSession"/>
+
     <xsl:template match="mycoreobject" mode="displayPdfError">
 
-
         <xsl:variable name="errorMessages">
-            <xsl:apply-templates
-                    select="structure/derobjects/derobject"/>
+            <xsl:apply-templates select="structure/derobjects/derobject" mode="displayPdfError"/>
         </xsl:variable>
-
-
-
 
         <xsl:choose>
             <xsl:when test="contains($errorMessages,'Clause')">
@@ -54,24 +49,20 @@
         </xsl:choose>
     </xsl:template>
 
-
-    <xsl:template match="structure/derobjects/derobject">
+    <xsl:template match="structure/derobjects/derobject" mode="displayPdfError">
         <xsl:variable name="derivateID" select="@xlink:href"/>
         <xsl:variable name="result" select="document(concat('pdfAValidator:', $derivateID))"/>
         <xsl:if test="not(normalize-space($result))">
-            <xsl:apply-templates select="$result/derivate/file"/>
+            <xsl:apply-templates select="$result/derivate/file" mode="displayPdfError"/>
         </xsl:if>
         <xsl:variable name="derivbase" select="concat($ServletsBaseURL,'MCRFileNodeServlet/',$result/derivate/@id,'/')" />
         <xsl:variable name="derivdir" select="concat($derivbase,$HttpSession)" />
     </xsl:template>
 
-
-    <xsl:template match="file">
+    <xsl:template match="file" mode="displayPdfError">
         <xsl:variable name="derivate" select="../@id"/>
-
-
         <xsl:variable name="name">
-            <xsl:call-template name="getFilename">
+            <xsl:call-template name="pdfError.getFilename">
                 <xsl:with-param name="filePath" select="@name"/>
             </xsl:call-template>
         </xsl:variable>
@@ -115,12 +106,11 @@
                     <i class="fas fa-download"/>
                 </a>
             </li>
-            <xsl:apply-templates select="failed"/>
+            <xsl:apply-templates select="failed" mode="displayPdfError"/>
         </ul>
     </xsl:template>
 
-
-    <xsl:template match="failed">
+    <xsl:template match="failed" mode="displayPdfError">
         <li class="list-group-item d-flex flex-column flex-xl-row flex-grow-1 text-break">
             <p class="flex-grow col-lg-8 col-md-9 align-self-center">
                 <span class="text-muted pdf-term">
@@ -158,13 +148,12 @@
         </li>
     </xsl:template>
 
-
-    <xsl:template name="getFilename">
+    <xsl:template name="pdfError.getFilename">
         <xsl:param name="filePath" />
         <xsl:variable name="rest-of" select="substring-after($filePath, '/')" />
         <xsl:choose>
             <xsl:when test="contains($rest-of, '/')">
-                <xsl:call-template name="getFilename">
+                <xsl:call-template name="pdfError.getFilename">
                     <xsl:with-param name="filePath" select="$rest-of" />
                 </xsl:call-template>
             </xsl:when>
