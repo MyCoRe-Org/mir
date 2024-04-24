@@ -40,16 +40,25 @@ public class MIRPostProcessor extends MCRPostProcessorXSL {
             MCRConstants.XLINK_NAMESPACE);
         final List<Element> titleInfos = titleInfoXPath.evaluate(newXML);
 
-        titleInfos.stream().filter(ti -> Stream.of(TITLE_SUB_ELEMENTS)
-            .anyMatch(elementName -> {
-                final Element element = ti.getChild(elementName, MCRConstants.MODS_NAMESPACE);
-                return element != null && isHtml(element.getText());
-            })).forEach(titleInfoElement -> {
+        titleInfos.forEach(titleInfoElement -> {
+            if (isAnyTitleSubElementHtml(titleInfoElement)) {
                 try {
                     fixTitle(titleInfoElement);
                 } catch (JDOMException | TransformerException | MalformedURLException e) {
                     throw new MCRException("Error while converting HTML title!", e);
                 }
+            } else {
+                titleInfoElement.removeAttribute("altRepGroup");
+                titleInfoElement.removeAttribute("contentType");
+                titleInfoElement.removeAttribute("altFormat");
+            }
+        });
+    }
+
+    private static boolean isAnyTitleSubElementHtml(Element ti) {
+        return Stream.of(TITLE_SUB_ELEMENTS).anyMatch(elementName -> {
+                final Element element = ti.getChild(elementName, MCRConstants.MODS_NAMESPACE);
+                return element != null && isHtml(element.getText());
             });
 
         return super.process(newXML);
@@ -101,15 +110,19 @@ public class MIRPostProcessor extends MCRPostProcessorXSL {
             MCRConstants.XLINK_NAMESPACE);
         final List<Element> abstracts = abstractXPath.evaluate(newXML);
 
-        abstracts.stream()
-            .filter(abstractElement -> isHtml(abstractElement.getText()))
-            .forEach(abstractElement1 -> {
+        abstracts.forEach(abstractElement -> {
+            if (isHtml(abstractElement.getText())) {
                 try {
-                    fixAbstract(abstractElement1);
+                    fixAbstract(abstractElement);
                 } catch (JDOMException | TransformerException | MalformedURLException e) {
                     throw new MCRException("Error while converting HTML abstract!", e);
                 }
-            });
+            } else {
+                abstractElement.removeAttribute("altRepGroup");
+                abstractElement.removeAttribute("contentType");
+                abstractElement.removeAttribute("altFormat");
+            }
+        });
     }
 
     private static void fixAbstract(Element abstractElement)
