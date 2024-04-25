@@ -82,9 +82,10 @@ public class MIRWizardStartupHandler implements MCRStartupHandler.AutoExecutable
             .append("\n\n");
 
         if (System.getProperty("os.name").toLowerCase(Locale.ROOT).contains("win")) {
-            sb.append(" Login token: " + servletContext.getAttribute(LOGIN_TOKEN));
+            sb.append(" Login token: ").append(servletContext.getAttribute(LOGIN_TOKEN));
         } else {
-            sb.append(" \u001b[41m\u001b[1;37mLogin token: " + servletContext.getAttribute(LOGIN_TOKEN) + "\u001b[m");
+            sb.append(" \u001b[41m\u001b[1;37mLogin token: ").append(servletContext.getAttribute(LOGIN_TOKEN))
+                .append("\u001b[m");
         }
 
         sb.append("\n\n")

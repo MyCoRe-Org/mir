@@ -89,7 +89,7 @@ public class MirSelfRegistrationServlet extends MCRServlet {
      * @return true on exists or false if not
      */
     public static boolean userExists(final List<Element> nodes) {
-        final Element user = nodes.get(0);
+        final Element user = nodes.getFirst();
         final String userName = user.getAttributeValue("name");
         final String realmId = user.getAttribute("realm").getValue();
 
@@ -98,7 +98,7 @@ public class MirSelfRegistrationServlet extends MCRServlet {
     }
 
     public static boolean mailExists(final List<Element> nodes) {
-        Element eMail = nodes.get(0).getChild("eMail");
+        Element eMail = nodes.getFirst().getChild("eMail");
         if(eMail == null){
             return false;
         }

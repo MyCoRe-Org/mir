@@ -58,7 +58,7 @@ public class ReCaptcha {
      */
     public static Boolean isSubmittedCaptchaCorrect(List<Attribute> attributes) {
         String ip = MCRSessionMgr.getCurrentSession().getCurrentIP();
-        String response = attributes.get(0).getValue();
+        String response = attributes.getFirst().getValue();
 
         LOGGER.info("Verify ReCaptcha: ip-" + ip + " response-" + response + ".");
 

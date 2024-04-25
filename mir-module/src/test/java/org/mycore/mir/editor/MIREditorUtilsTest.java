@@ -14,19 +14,20 @@ public class MIREditorUtilsTest extends MCRTestCase {
 
     @Test
     public void getCleanDocument() {
-        Document document = Jsoup.parse("<!DOCTYPE html>\n" +
-            "<html>\n" +
-            "<head></head>\n" +
-            "<body>\n" +
-            "<h1 id=\"test1\">a h1</h1>\n" +
-            "<a id=\"test2\" href='http://google.de' title='test'>test link</a>\n" +
-            "<script id=\"test3\">alert(\"test1\")</script>\n" +
-            "<a id=\"test4\" href='javascript:alert(\"test2\")'>test script</a>\n" +
-            "<a id=\"test5\" onmouseover='alert(\"test3\")'>test script2</a>\n" +
-            "<p>p</p>\n" +
-            "<i>i</i>\n" +
-            "</body>\n" +
-            "</html>");
+        Document document = Jsoup.parse("""
+            <!DOCTYPE html>
+            <html>
+            <head></head>
+            <body>
+            <h1 id="test1">a h1</h1>
+            <a id="test2" href='http://google.de' title='test'>test link</a>
+            <script id="test3">alert("test1")</script>
+            <a id="test4" href='javascript:alert("test2")'>test script</a>
+            <a id="test5" onmouseover='alert("test3")'>test script2</a>
+            <p>p</p>
+            <i>i</i>
+            </body>
+            </html>""");
         final Document cleanDocument = MIREditorUtils.getCleanDocument(document, MIREditorUtils.getSafeList());
 
         final Element body = cleanDocument.body();

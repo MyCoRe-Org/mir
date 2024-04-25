@@ -267,7 +267,7 @@ public class MIRClassificationMapper {
         BigDecimal ddc = new BigDecimal(ddcString.replaceAll("[^0-9.]+", ""));
 
         switch (ddcString.charAt(0)) {
-            case '0': {
+            case '0' -> {
                 if (between(ddc, toBigDecimal("000"), toBigDecimal("004"))) {
                     return "000";
                 }
@@ -275,10 +275,8 @@ public class MIRClassificationMapper {
                 if (between(ddc, toBigDecimal("004"), toBigDecimal("007"))) {
                     return "004";
                 }
-                break;
             }
-
-            case '1': {
+            case '1' -> {
                 if (between(ddc, toBigDecimal("100"), toBigDecimal("130"))) {
                     return "100";
                 }
@@ -290,10 +288,8 @@ public class MIRClassificationMapper {
                 if (between(ddc, toBigDecimal("160"), toBigDecimal("200"))) {
                     return "100";
                 }
-                break;
             }
-
-            case '2': {
+            case '2' -> {
                 if (between(ddc, toBigDecimal("210"), toBigDecimal("220"))) {
                     return "200";
                 }
@@ -301,10 +297,8 @@ public class MIRClassificationMapper {
                 if (between(ddc, toBigDecimal("230"), toBigDecimal("290"))) {
                     return "230";
                 }
-                break;
             }
-
-            case '3': {
+            case '3' -> {
                 if (between(ddc, toBigDecimal("333.7"), toBigDecimal("334"))) {
                     return "333.7";
                 }
@@ -316,10 +310,8 @@ public class MIRClassificationMapper {
                 if (between(ddc, toBigDecimal("355"), toBigDecimal("360"))) {
                     return "355";
                 }
-                break;
             }
-
-            case '4': {
+            case '4' -> {
                 if (between(ddc, toBigDecimal("410"), toBigDecimal("420"))) {
                     return "400";
                 }
@@ -331,10 +323,8 @@ public class MIRClassificationMapper {
                 if (between(ddc, toBigDecimal("491.7"), toBigDecimal("491.9"))) {
                     return "491.8";
                 }
-                break;
             }
-
-            case '6': {
+            case '6' -> {
                 if (between(ddc, toBigDecimal("621"), toBigDecimal("622")) && !equal(ddc, toBigDecimal("621.3"))
                     && !equal(ddc, toBigDecimal("621.46"))) {
                     return "620";
@@ -369,10 +359,8 @@ public class MIRClassificationMapper {
                 if (between(ddc, toBigDecimal("680"), toBigDecimal("690"))) {
                     return "670";
                 }
-                break;
             }
-
-            case '7': {
+            case '7' -> {
                 if (equal(ddc, toBigDecimal("741.5"))) {
                     return "741.5";
                 }
@@ -392,10 +380,8 @@ public class MIRClassificationMapper {
                 if (between(ddc, toBigDecimal("796"), toBigDecimal("800"))) {
                     return "796";
                 }
-                break;
             }
-
-            case '8': {
+            case '8' -> {
                 if (between(ddc, toBigDecimal("839"), toBigDecimal("840"))) {
                     return "839";
                 }
@@ -403,10 +389,8 @@ public class MIRClassificationMapper {
                 if (between(ddc, toBigDecimal("891.7"), toBigDecimal("891.9"))) {
                     return "891.8";
                 }
-                break;
             }
-
-            case '9': {
+            case '9' -> {
                 if (between(ddc, toBigDecimal("914.3"), toBigDecimal("914.36"))) {
                     return "914.3";
                 }
@@ -414,10 +398,9 @@ public class MIRClassificationMapper {
                 if (between(ddc, toBigDecimal("943"), toBigDecimal("943.6"))) {
                     return "943";
                 }
-                break;
             }
-            default:
-                break;
+            default -> {
+            }
         }
 
         ddc = ddc.setScale(-1, RoundingMode.DOWN);

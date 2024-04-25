@@ -16,29 +16,30 @@ import org.mycore.common.config.MCRConfigurationDir;
 
 public class MirSolrFileStrategyTest extends MCRTestCase {
 
-    private static String testMets = "<mets:mets xmlns:mets=\"http://www.loc.gov/METS/\" "
-        + "xmlns:xlink=\"http://www.w3.org/1999/xlink\" >\n"
-        + "  <mets:metsHdr LASTMODDATE=\"2016-08-09T12:12:51.320141-04:00\"/>\n"
-        + "  <mets:dmdSec ID=\"dmd1\">\n"
-        + "  </mets:dmdSec>\n"
-        + "  <mets:fileSec>\n"
-        + "    <mets:fileGrp USE=\"MASTER\">\n"
-        + "      <mets:file MIMETYPE=\"image/tiff\" GROUPID=\"G1\" ID=\"f0178m\">\n"
-        + "\t<mets:FLocat LOCTYPE=\"URL\" "
-        + "xlink:href=\"http://lcweb4.loc.gov/natlib/ihas/warehouse/afc9999005/AFS_300_A-734_B/0178.tif\"/>\n"
-        + "      </mets:file>\n"
-        + "    </mets:fileGrp>\n"
-        + "  </mets:fileSec>\n"
-        + "  <mets:structMap>\n"
-        + "    <mets:div DMDID=\"dmd1\" TYPE=\"bib:modsBibCard\">\n"
-        + "      <mets:div TYPE=\"bib:card\">\n"
-        + "\t<mets:div\">\n"
-        + "\t  <mets:fptr FILEID=\"f0178m\"/>\n"
-        + "\t</mets:div>\n"
-        + "      </mets:div>\n"
-        + "    </mets:div>\n"
-        + "  </mets:structMap>\n"
-        + "</mets:mets>";
+    private static String testMets = """
+        <mets:mets xmlns:mets="http://www.loc.gov/METS/" \
+        xmlns:xlink="http://www.w3.org/1999/xlink" >
+          <mets:metsHdr LASTMODDATE="2016-08-09T12:12:51.320141-04:00"/>
+          <mets:dmdSec ID="dmd1">
+          </mets:dmdSec>
+          <mets:fileSec>
+            <mets:fileGrp USE="MASTER">
+              <mets:file MIMETYPE="image/tiff" GROUPID="G1" ID="f0178m">
+                <mets:FLocat LOCTYPE="URL" \
+                  xlink:href="http://lcweb4.loc.gov/natlib/ihas/warehouse/afc9999005/AFS_300_A-734_B/0178.tif"/>
+              </mets:file>
+            </mets:fileGrp>
+          </mets:fileSec>
+          <mets:structMap>
+            <mets:div DMDID="dmd1" TYPE="bib:modsBibCard">
+              <mets:div TYPE="bib:card">
+                <mets:div">
+                  <mets:fptr FILEID="f0178m"/>
+                </mets:div>
+              </mets:div>
+            </mets:div>
+          </mets:structMap>
+        </mets:mets>""";
 
     private static String simpleXML = "<foo><bar /></foo>";
 

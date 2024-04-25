@@ -154,10 +154,9 @@ public class MIRAccessKey {
         if (o == this) {
             return true;
         }
-        if (!(o instanceof MIRAccessKey)) {
+        if (!(o instanceof MIRAccessKey other)) {
             return false;
         }
-        MIRAccessKey other = (MIRAccessKey) o;
         return this.id == other.getId() && this.type.equals(other.getType())
             && this.value.equals(other.getValue());
     }

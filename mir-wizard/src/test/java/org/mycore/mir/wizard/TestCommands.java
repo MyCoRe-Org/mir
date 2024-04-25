@@ -51,7 +51,7 @@ public class TestCommands extends MCRJPATestCase {
         endTransaction();
         chain.execute(null);
 
-        MIRWizardCommandResult result = chain.getCommands().get(0).getResult();
+        MIRWizardCommandResult result = chain.getCommands().getFirst().getResult();
 
         new XMLOutputter(Format.getPrettyFormat()).output(result.getResult(), System.out);
 
@@ -78,7 +78,7 @@ public class TestCommands extends MCRJPATestCase {
         endTransaction();
         chain.execute(null);
 
-        MIRWizardCommandResult result = chain.getCommands().get(0).getResult();
+        MIRWizardCommandResult result = chain.getCommands().getFirst().getResult();
 
         new XMLOutputter(Format.getPrettyFormat()).output(result.getResult(), System.out);
 
