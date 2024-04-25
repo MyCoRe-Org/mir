@@ -61,8 +61,6 @@
             </div>
           </noscript>
         </header>
-        <!-- include Internet Explorer warning -->
-        <xsl:call-template name="msie-note" />
 
         <xsl:call-template name="mir.jumbotwo" />
 
