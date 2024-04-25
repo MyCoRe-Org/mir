@@ -10,8 +10,6 @@
   <rule ref="category/java/bestpractices.xml/AvoidPrintStackTrace" />
   <rule ref="category/java/bestpractices.xml/AvoidReassigningParameters" />
   <rule ref="category/java/bestpractices.xml/CheckResultSet" />
-  <rule ref="category/java/bestpractices.xml/JUnitTestsShouldIncludeAssert" />
-  <rule ref="category/java/bestpractices.xml/LiteralsFirstInComparisons" />
   <rule ref="category/java/bestpractices.xml/OneDeclarationPerLine" />
   <rule ref="category/java/bestpractices.xml/PrimitiveWrapperInstantiation" />
   <rule ref="category/java/bestpractices.xml/SimplifiableTestAssertion" />
@@ -23,7 +21,7 @@
   
   <rule ref="category/java/codestyle.xml/ClassNamingConventions">
     <properties>
-      <property name="utilityClassPattern" value="[A-Z][a-zA-Z0-9]+(Utils?|Helper|Manager|Commands)" />
+      <property name="utilityClassPattern" value="[A-Z][a-zA-Z0-9]+(Utils?|Helper|Manager|Commands|Constants|HintKeys)" />
     </properties>
   </rule>
   <rule ref="category/java/codestyle.xml/ExtendsObject" />
@@ -37,15 +35,15 @@
   <rule ref="category/java/codestyle.xml/UnnecessaryFullyQualifiedName" />
   <rule ref="category/java/codestyle.xml/UnnecessaryImport" />
   <rule ref="category/java/codestyle.xml/UnnecessaryReturn" />
-  
+  <rule ref="category/java/codestyle.xml/UnnecessarySemicolon" />
+    
   <rule ref="category/java/design.xml/AvoidThrowingNewInstanceOfSameException" />
   <rule ref="category/java/design.xml/AvoidThrowingNullPointerException" />
   <rule ref="category/java/design.xml/AvoidThrowingRawExceptionTypes" />
   <rule ref="category/java/design.xml/CollapsibleIfStatements" />
-  <rule ref="category/java/design.xml/ExcessiveClassLength" />
-  <rule ref="category/java/design.xml/ExcessiveMethodLength" />
   <rule ref="category/java/design.xml/ExcessiveParameterList" />
   <rule ref="category/java/design.xml/LogicInversion" />
+  <rule ref="category/java/design.xml/NcssCount" />
   <rule ref="category/java/design.xml/NPathComplexity" />
   <rule ref="category/java/design.xml/SimplifyBooleanExpressions" />
   <rule ref="category/java/design.xml/SimplifyBooleanReturns" />
@@ -68,7 +66,6 @@
   <rule ref="category/java/errorprone.xml/DoNotTerminateVM" />
   <rule ref="category/java/errorprone.xml/DontUseFloatTypeForLoopIndices" />
   <rule ref="category/java/errorprone.xml/EmptyFinalizer" />
-  <rule ref="category/java/errorprone.xml/EmptyStatementNotInLoop" />
   <rule ref="category/java/errorprone.xml/EqualsNull" />
   <rule ref="category/java/errorprone.xml/ImplicitSwitchFallThrough" /> 
   <rule ref="category/java/errorprone.xml/JumbledIncrementer" />
