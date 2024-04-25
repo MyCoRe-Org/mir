@@ -263,7 +263,7 @@ public class MIRAccessKeyPair implements Serializable {
          * @return the access key permission type
          */
         public static ServiceFlagType fromValue(final String value) {
-            for (ServiceFlagType type : ServiceFlagType.values()) {
+            for (ServiceFlagType type : values()) {
                 if (type.value.equals(value)) {
                     return type;
                 }

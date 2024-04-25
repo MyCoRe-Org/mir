@@ -171,11 +171,8 @@ public class MIRImageWarePacker extends MCRPacker {
         }
 
         Date date = mcrObject.getService().getDate(configuration.get(FLAG_TYPE_CONFIGURATION_KEY));
-        if (date != null) {
-            return false;
-        }
 
-        return detectPPN(mcrObject, configuration.get(DEFAULT_PPN_DB_CONFIGURATION_KEY)).isPresent();
+        return date == null || detectPPN(mcrObject, configuration.get(DEFAULT_PPN_DB_CONFIGURATION_KEY)).isPresent();
     }
 
     @Override
