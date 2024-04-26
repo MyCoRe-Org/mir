@@ -77,6 +77,10 @@
         <label xml:lang="de">Publizieren</label>
         <label xml:lang="en">Publish</label>
     </item>
+    <item href="/servlets/solr/select?q=createdby:{CurrentUser}&amp;fq=objectType:mods" type="intern" replaceMenu="false" constrainPopUp="false">
+      <label xml:lang="de">Meine Einreichungen</label>
+      <label xml:lang="en">My submissions</label>
+    </item>
     <item href="/editor/editor-admins.xed" type="intern" replaceMenu="false" constrainPopUp="false">
         <label xml:lang="de">Publizieren (Admin)</label>
         <label xml:lang="en">Publish (admin)</label>
