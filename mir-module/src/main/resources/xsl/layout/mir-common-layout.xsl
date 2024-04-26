@@ -17,6 +17,9 @@
   <xsl:param name="page" />
   <xsl:param name="breadCrumb" />
   <xsl:param name="MCR.Metadata.Languages" select="'de'" />
+  <xsl:param name="mcruser" select="document('user:current')/user"/>
+  <xsl:param name="MIR.Layout.usermenu.realname.enabled" select="false()"/>
+
   <xsl:include href="layout/mir-layout-utils.xsl" />
   <xsl:include href="resource:xsl/layout/mir-navigation.xsl" />
   <xsl:include href="resource:xsl/mir-utils.xsl" />
@@ -37,6 +40,7 @@
       </xsl:otherwise>
     </xsl:choose>
   </xsl:variable>
+
 
   <xsl:template name="mir.loginMenu">
     <xsl:variable xmlns:encoder="xalan://java.net.URLEncoder" name="loginURL"
@@ -59,7 +63,24 @@
           </xsl:if>
           <a id="currentUser" class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">
             <strong>
-              <xsl:value-of select="$CurrentUser" />
+              <xsl:choose>
+                <xsl:when test="$MIR.Layout.usermenu.realname.enabled = false()">
+                  <xsl:value-of select="$mcruser/@name"/>
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:choose>
+                    <xsl:when test="$mcruser/realName">
+                      <xsl:value-of select="$mcruser/realName"/>
+                    </xsl:when>
+                    <xsl:when test="$mcruser/eMail">
+                      <xsl:value-of select="$mcruser/eMail"/>
+                    </xsl:when>
+                    <xsl:otherwise>
+                      <xsl:value-of select="$mcruser/@name"/>
+                    </xsl:otherwise>
+                  </xsl:choose>
+                </xsl:otherwise>
+              </xsl:choose>
             </strong>
             <span class="caret" />
           </a>

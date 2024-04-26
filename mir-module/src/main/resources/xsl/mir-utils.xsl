@@ -115,4 +115,10 @@
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
+
+    <xsl:template name="get-doc-state-label">
+        <xsl:param name="state-categ-id"/>
+        <xsl:value-of select="document(concat('callJava:org.apache.commons.lang3.StringUtils:capitalize:', mcrxsl:getDisplayName('state', $state-categ-id)))"/>
+    </xsl:template>
+
 </xsl:stylesheet>

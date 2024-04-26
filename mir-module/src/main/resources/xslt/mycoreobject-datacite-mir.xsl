@@ -15,7 +15,7 @@
                 xmlns="http://datacite.org/schema/kernel-4"
                 exclude-result-prefixes="xsl fn xlink mods">
 
-  <xsl:include href="utils/mods-utils-3.xsl" />
+  <xsl:include href="utils/mods-utils.xsl" />
   <xsl:include href="functions/mods.xsl" />
 
   <xsl:output method="xml" encoding="UTF-8" indent="yes" />

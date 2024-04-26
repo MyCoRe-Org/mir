@@ -2063,7 +2063,7 @@
             </div>
             <div class="col-md-6">
               <div class="controls form-inline">
-                <input type="button" class="form-control mir-relatedItem-select" value="{i18n:mir.editing.related.select}" />
+                <input type="button" class="form-control mir-relatedItem-select" data-fq="-id:{$id}" value="{i18n:mir.editing.related.select}" />
                 <span />
                 <xed:bind xpath="@xlink:href">
                   <input type="hidden" />
@@ -2105,7 +2105,7 @@
             </div>
             <div class="col-md-6">
               <div class="controls form-inline">
-                <input type="button" class="form-control mir-relatedItem-select" value="{i18n:mir.editing.related.select}" />
+                <input type="button" class="form-control mir-relatedItem-select" data-fq="-id:{$id}" value="{i18n:mir.editing.related.select}" />
                 <span />
                 <xed:bind xpath="@xlink:href">
                   <input type="hidden" />
