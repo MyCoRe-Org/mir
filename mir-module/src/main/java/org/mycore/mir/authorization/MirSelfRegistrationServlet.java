@@ -43,6 +43,7 @@ import org.mycore.user2.MCRUser;
 import org.mycore.user2.MCRUserManager;
 import org.mycore.user2.utils.MCRUserTransformer;
 
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -50,11 +51,12 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @author Ren\u00E9 Adler (eagle)
+ * @author René Adler (eagle)
  *
  */
 public class MirSelfRegistrationServlet extends MCRServlet {
 
+    @Serial
     private static final long serialVersionUID = -7105234919911900795L;
 
     private static final Logger LOGGER = LogManager.getLogger();
@@ -87,7 +89,7 @@ public class MirSelfRegistrationServlet extends MCRServlet {
      * @return true on exists or false if not
      */
     public static boolean userExists(final List<Element> nodes) {
-        final Element user = nodes.get(0);
+        final Element user = nodes.getFirst();
         final String userName = user.getAttributeValue("name");
         final String realmId = user.getAttribute("realm").getValue();
 
@@ -96,13 +98,13 @@ public class MirSelfRegistrationServlet extends MCRServlet {
     }
 
     public static boolean mailExists(final List<Element> nodes) {
-        Element eMail = nodes.get(0).getChild("eMail");
+        Element eMail = nodes.getFirst().getChild("eMail");
         if(eMail == null){
             return false;
         }
 
         List<MCRUser> users = MCRUserManager.listUsers(null, null, null, eMail.getText());
-        return users.size() != 0;
+        return !users.isEmpty();
     }
 
     public void doGetPost(final MCRServletJob job) throws Exception {
@@ -208,7 +210,6 @@ public class MirSelfRegistrationServlet extends MCRServlet {
                             } catch (final Exception ex) {
                                 LOGGER.error(ex);
                                 res.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, errorMsg("mailError"));
-                                return;
                             }
                         }
                     } else {

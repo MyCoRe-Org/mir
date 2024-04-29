@@ -98,20 +98,19 @@ public class MIRImageWarePacker extends MCRPacker {
             Element firstPPNElement = ppnElements.stream().findFirst().get();
             String ppnElementContent = firstPPNElement.getText();
             String[] ppnParts = ppnElementContent.split(":");
-            switch (ppnParts.length) {
-                case 1:
+            return switch (ppnParts.length) {
+                case 1 ->
                     // User inserted 812684613, then defaultPPNDB will be used to build $defaultPPNDB_ppn_812684613
-                    return Optional.of(String.format(Locale.ROOT, "%s_ppn_%s", defaultPPNDB, ppnElementContent));
-                case 2:
+                    Optional.of(String.format(Locale.ROOT, "%s_ppn_%s", defaultPPNDB, ppnElementContent));
+                case 2 ->
                     // User inserted  gvk:812684613, then gvk_ppn_812684613 will be build
-                    return Optional.of(String.format(Locale.ROOT, "%s_ppn_%s", ppnParts[0], ppnParts[1]));
-                case 3:
+                    Optional.of(String.format(Locale.ROOT, "%s_ppn_%s", ppnParts[0], ppnParts[1]));
+                case 3 ->
                     // user inserted gvk:ppn:812684613, then gvk_ppn_812684613 will be build
-                    return Optional.of(ppnElementContent.replace(":", "_"));
-                default:
-                    throw new MCRException(
-                        "ppn in mods:identifier[@type='ppn'] cannot be parsed (" + ppnElementContent + ")");
-            }
+                    Optional.of(ppnElementContent.replace(":", "_"));
+                default -> throw new MCRException(
+                    "ppn in mods:identifier[@type='ppn'] cannot be parsed (" + ppnElementContent + ")");
+            };
         }
 
         List<Element> elements = modsWrapper.getElements(".//mods:identifier[@type='uri']");
@@ -171,11 +170,8 @@ public class MIRImageWarePacker extends MCRPacker {
         }
 
         Date date = mcrObject.getService().getDate(configuration.get(FLAG_TYPE_CONFIGURATION_KEY));
-        if (date != null) {
-            return false;
-        }
 
-        return detectPPN(mcrObject, configuration.get(DEFAULT_PPN_DB_CONFIGURATION_KEY)).isPresent();
+        return date == null || detectPPN(mcrObject, configuration.get(DEFAULT_PPN_DB_CONFIGURATION_KEY)).isPresent();
     }
 
     @Override

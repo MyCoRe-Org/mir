@@ -137,11 +137,11 @@ public class MIRModsEditorController extends MIREditorController {
             IntStream.range(0, abstracts.size()).forEach(i -> {
                 String xp = "mods:abstract[" + (i + 1) + "]";
                 MIRAbstract anAbstract = abstracts.get(i);
-                setLang(xp + "/", anAbstract.getLanguage().getValue());
-                if (anAbstract.isText()) {
-                    setHTMLAreaText(xp, anAbstract.getTextOrLink());
+                setLang(xp + "/", anAbstract.language().getValue());
+                if (anAbstract.text()) {
+                    setHTMLAreaText(xp, anAbstract.textOrLink());
                 } else {
-                    setInputText(xp + "/@xlink:href", anAbstract.getTextOrLink());
+                    setInputText(xp + "/@xlink:href", anAbstract.textOrLink());
                 }
             });
         }

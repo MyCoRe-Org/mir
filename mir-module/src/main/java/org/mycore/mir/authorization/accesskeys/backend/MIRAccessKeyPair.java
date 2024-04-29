@@ -226,10 +226,9 @@ public class MIRAccessKeyPair implements Serializable {
         if (this == obj) {
             return true;
         }
-        if (!(obj instanceof MIRAccessKeyPair)) {
+        if (!(obj instanceof MIRAccessKeyPair that)) {
             return false;
         }
-        MIRAccessKeyPair that = (MIRAccessKeyPair) obj;
         return Objects.equals(mcrObjectId, that.mcrObjectId) &&
             Objects.equals(readKey, that.readKey) &&
             Objects.equals(writeKey, that.writeKey);
@@ -263,7 +262,7 @@ public class MIRAccessKeyPair implements Serializable {
          * @return the access key permission type
          */
         public static ServiceFlagType fromValue(final String value) {
-            for (ServiceFlagType type : ServiceFlagType.values()) {
+            for (ServiceFlagType type : values()) {
                 if (type.value.equals(value)) {
                     return type;
                 }

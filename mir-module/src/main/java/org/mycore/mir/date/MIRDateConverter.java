@@ -27,22 +27,14 @@ public class MIRDateConverter {
     private static String getFormatedDateString(String date, DateTimeFormatter formatter) {
         TemporalAccessor ta = formatter.parseBest(date,
             LocalDateTime::from, LocalDate::from, YearMonth::from, Year::from);
-        if (ta instanceof LocalDateTime) {
-            LocalDateTime ld = LocalDateTime.from(ta);
-            return ld.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss", Locale.ROOT));
-        }
-        if (ta instanceof LocalDate) {
-            LocalDate ld = LocalDate.from(ta);
-            return ld.format(DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.ROOT));
-        }
-        if (ta instanceof YearMonth) {
-            YearMonth ld = YearMonth.from(ta);
-            return ld.format(DateTimeFormatter.ofPattern("yyyy-MM", Locale.ROOT));
-        }
-        if (ta instanceof Year) {
-            Year ld = Year.from(ta);
-            return ld.format(DateTimeFormatter.ofPattern("yyyy", Locale.ROOT));
-        }
-        return date;
+        return switch (ta) {
+            case LocalDateTime localDateTime
+                -> LocalDateTime.from(ta).format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss", Locale.ROOT));
+            case LocalDate localDate
+                -> LocalDate.from(ta).format(DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.ROOT));
+            case YearMonth yearMonth -> YearMonth.from(ta).format(DateTimeFormatter.ofPattern("yyyy-MM", Locale.ROOT));
+            case Year year -> Year.from(ta).format(DateTimeFormatter.ofPattern("yyyy", Locale.ROOT));
+            default -> date;
+        };
     }
 }

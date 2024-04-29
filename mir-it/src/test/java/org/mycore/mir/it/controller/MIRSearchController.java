@@ -105,21 +105,21 @@ public class MIRSearchController extends MIRTestController {
             String baseXP = "boolean[1]/condition[" + (i + 1) + "]/";
             MIRComplexSearchQuery complexSearchQuery = complexSearchQueries.get(i);
 
-            MIRSearchField field = complexSearchQuery.getSearchField();
+            MIRSearchField field = complexSearchQuery.searchField();
             if (field != null) {
                 new Select(
                     driver.waitAndFindElement(By.xpath(".//select[contains(@name, '" + baseXP + "@field" + "')]")))
                         .selectByValue(field.getValue());
             }
 
-            MIRSearchFieldCondition operator = complexSearchQuery.getSearchFieldConditions();
+            MIRSearchFieldCondition operator = complexSearchQuery.searchFieldConditions();
             if (operator != null) {
                 new Select(
                     driver.waitAndFindElement(By.xpath(".//select[contains(@name, '" + baseXP + "@operator" + "')]")))
                         .selectByValue(operator.getValue());
             }
 
-            String value = complexSearchQuery.getText();
+            String value = complexSearchQuery.text();
             if (value != null) {
                 driver.waitAndFindElement(By.xpath(".//input[contains(@name, '" + baseXP + "@value" + "')]"))
                     .sendKeys(value);

@@ -75,7 +75,7 @@ public class MIRMigration202106UtilsTest extends MCRJPATestCase {
 
         final List<MCRAccessKey> accessKeys = MCRAccessKeyManager.listAccessKeys(objectId);
         assertTrue(accessKeys.size() == 2);
-        final MCRAccessKey accessKeyRead = accessKeys.get(0);
+        final MCRAccessKey accessKeyRead = accessKeys.getFirst();
         assertEquals(MCRAccessKeyManager.hashSecret(READ_KEY, objectId), accessKeyRead.getSecret());
         assertEquals(PERMISSION_READ, accessKeyRead.getType());
         final MCRAccessKey accessKeyWrite = accessKeys.get(1);

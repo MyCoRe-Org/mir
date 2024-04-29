@@ -182,16 +182,12 @@ public class MIRStrategy implements MCRAccessCheckStrategy {
     @Override
     public boolean checkPermission(String id, String permission) {
         LOGGER.debug("checkPermission({}, {})", id, permission);
-        switch (PermissionIDType.fromID(id)) {
-            case MCRObject:
-                return checkObjectPermission(MCRObjectID.getInstance(id), permission);
-            case MCRDerivate:
-                return checkDerivatePermission(MCRObjectID.getInstance(id), permission);
-            case Other:
-                return checkOtherPermission(id, permission);
-            default:
-                throw new MCRException("Could not handle PermissionIDType: " + PermissionIDType.fromID(id));
-        }
+        return switch (PermissionIDType.fromID(id)) {
+            case MCRObject -> checkObjectPermission(MCRObjectID.getInstance(id), permission);
+            case MCRDerivate -> checkDerivatePermission(MCRObjectID.getInstance(id), permission);
+            case Other -> checkOtherPermission(id, permission);
+            default -> throw new MCRException("Could not handle PermissionIDType: " + PermissionIDType.fromID(id));
+        };
     }
 
     //TODO: remove annotation below and fix code
