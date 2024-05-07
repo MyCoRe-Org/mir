@@ -201,6 +201,9 @@
               <xsl:when test="(string-length(@altRepGroup) &gt; 0) and (string-length(@altFormat) &gt; 0)">
                 <xsl:copy-of select="document(concat('unescape-html-content:', @altFormat))"/>
               </xsl:when>
+              <xsl:when test="@altRepGroup and count(../mods:abstract[@altRepGroup=current()/@altRepGroup]) = 1">
+                <xsl:copy-of select="."/>
+              </xsl:when>
               <xsl:when test="not(@altRepGroup)">
                 <xsl:copy-of select="."/>
               </xsl:when>
