@@ -65,6 +65,14 @@
   },
   {
     "add-dynamic-field": {
+      "name": "mods.abstract.result.*",
+      "type": "text_general",
+      "stored": true,
+      "multiValued": true
+    }
+  },
+  {
+    "add-dynamic-field": {
       "name": "mods.nameByRole.*",
       "type": "string",
       "multiValued": true
