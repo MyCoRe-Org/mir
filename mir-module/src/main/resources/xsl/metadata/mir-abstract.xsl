@@ -214,6 +214,7 @@
 
         <xsl:choose>
           <xsl:when test="count($abstracts/mods:abstract) &gt; 1">
+            <xsl:variable name="has-abstract-in-current-lang" select="$abstracts/mods:abstract[@xml:lang=$CurrentLang]"/>
             <div id="mir-abstract-tabs">
               <ul class="nav nav-tabs justify-content-end" role="tablist">
                 <xsl:for-each select="$abstracts/mods:abstract">
@@ -231,9 +232,19 @@
                   </xsl:variable>
                   <li class="nav-item">
                     <a class="nav-link" href="#tab{position()}" role="tab" data-toggle="tab">
-                      <xsl:if test="position()=1">
-                        <xsl:attribute name="class">active nav-link</xsl:attribute>
-                      </xsl:if>
+                      <xsl:choose>
+                        <xsl:when test="$has-abstract-in-current-lang">
+                          <xsl:if test="./@xml:lang=$CurrentLang">
+                            <xsl:attribute name="class">active nav-link</xsl:attribute>
+                          </xsl:if>
+                        </xsl:when>
+                        <xsl:otherwise>
+                          <xsl:if test="position()=1">
+                            <xsl:attribute name="class">active nav-link</xsl:attribute>
+                          </xsl:if>
+                        </xsl:otherwise>
+                      </xsl:choose>
+
                       <xsl:value-of select="$tabName" />
                     </a>
                   </li>
@@ -247,9 +258,18 @@
                         <xsl:value-of select="@xml:lang" />
                       </xsl:attribute>
                     </xsl:if>
-                    <xsl:if test="position()=1">
-                      <xsl:attribute name="class">tab-pane ellipsis ellipsis-text active</xsl:attribute>
-                    </xsl:if>
+                    <xsl:choose>
+                      <xsl:when test="$has-abstract-in-current-lang">
+                        <xsl:if test="./@xml:lang=$CurrentLang">
+                          <xsl:attribute name="class">tab-pane ellipsis ellipsis-text active</xsl:attribute>
+                        </xsl:if>
+                      </xsl:when>
+                      <xsl:otherwise>
+                        <xsl:if test="position()=1">
+                          <xsl:attribute name="class">tab-pane ellipsis ellipsis-text active</xsl:attribute>
+                        </xsl:if>
+                      </xsl:otherwise>
+                    </xsl:choose>
                     <p>
                       <span class="ellipsis-description">
                         <xsl:copy-of select="node()"/>
