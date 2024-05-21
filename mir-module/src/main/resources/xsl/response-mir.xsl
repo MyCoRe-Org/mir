@@ -751,7 +751,16 @@
           </xsl:if>
 
 <!-- hit abstract -->
-          <xsl:variable name="description" select="str[@name='mods.abstract.result']" />
+          <xsl:variable name="description">
+            <xsl:choose>
+              <xsl:when test="arr[@name=concat('mods.abstract.result.', $CurrentLang)]/str">
+                <xsl:value-of select="arr[@name=concat('mods.abstract.result.', $CurrentLang)]/str[1]"/>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:value-of select="str[@name='mods.abstract.result']"/>
+              </xsl:otherwise>
+            </xsl:choose>
+          </xsl:variable>
           <xsl:if test="$description">
             <div class="hit_abstract">
               <xsl:value-of select="$description" />

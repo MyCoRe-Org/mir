@@ -167,6 +167,11 @@
         <xsl:value-of select="mcrstring:shorten(text(),300)" />
       </field>
     </xsl:for-each>
+    <xsl:for-each select="mods:abstract[not(@altFormat)][@xml:lang]">
+      <field name="mods.abstract.result.{@xml:lang}">
+        <xsl:value-of select="mcrstring:shorten(text(),300)" />
+      </field>
+    </xsl:for-each>
     <xsl:for-each select="mods:relatedItem[@xlink:href]">
       <field name="mods.relatedItem">
         <xsl:value-of select="@xlink:href" />
