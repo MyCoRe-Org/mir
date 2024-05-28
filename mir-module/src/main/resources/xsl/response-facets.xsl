@@ -26,34 +26,64 @@
         <xsl:value-of select="$facetProperties/properties/entry[@key=concat('MIR.Response.Facet.', $facet_name, '.Roles')]"/>
       </xsl:variable>
       <xsl:variable name="hasRole" select="string-length($rolesProperty)=0 or count(str:tokenize($rolesProperty,',')[mcrxsl:isCurrentUserInRole(.)])!=0"/>
-
+      
       <xsl:if test="$isEnabled and $hasRole and self::node()[@name=$facet_name]/int">
+        
+        <xsl:variable name="classIdProperty">
+          <xsl:value-of select="$facetProperties/properties/entry[@key=concat('MIR.Response.Facet.', $facet_name, '.ClassId')]"/>
+        </xsl:variable>
+        <xsl:variable name="classId">
+          <xsl:choose>
+            <xsl:when test="$classIdProperty!=''">
+              <xsl:value-of select="$classIdProperty"/>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:value-of select="$facet_name"/>
+            </xsl:otherwise>
+          </xsl:choose>
+        </xsl:variable>
+
+        <xsl:variable name="categoryClassValuesProperty">
+          <xsl:value-of select="$facetProperties/properties/entry[@key=concat('MIR.Response.Facet.', $facet_name, '.CategoryClassValues')]"/>
+        </xsl:variable>
+        <xsl:variable name="categoryClassValues">
+          <xsl:choose>
+            <xsl:when test="$categoryClassValuesProperty!=''">
+              <xsl:value-of select="$categoryClassValuesProperty"/>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:value-of select="'false'"/>
+            </xsl:otherwise>
+          </xsl:choose>
+        </xsl:variable>
+
         <!-- name of facet -->
         <div class="card {$facet_name}">
           <div class="card-header" data-toggle="collapse-next">
             <h3 class="card-title">
-              <xsl:variable name="classification"
-                            select="document(concat('notnull:classification:metadata:all:children:', $facet_name))"/>
               <xsl:choose>
                 <xsl:when test="i18n:exists(concat('mir.response.facet.', $facet_name, '.title'))">
                   <xsl:value-of select="i18n:translate(concat('mir.response.facet.', $facet_name, '.title'))"/>
                 </xsl:when>
-                <xsl:when test="not($classification/null)">
-                  <xsl:variable name="label" select="$classification/mycoreclass/label[@xml:lang=$CurrentLang]/@text"/>
+                <xsl:otherwise>
+                  <xsl:variable name="classification" select="document(concat('notnull:classification:metadata:0:children:', $classId))"/>
                   <xsl:choose>
-                    <xsl:when test="string-length($label) &gt; 0">
-                      <xsl:value-of select="$label"/>
+                    <xsl:when test="not($classification/null)">
+                      <xsl:variable name="label" select="$classification/mycoreclass/label[@xml:lang=$CurrentLang]/@text"/>
+                      <xsl:choose>
+                        <xsl:when test="string-length($label) &gt; 0">
+                          <xsl:value-of select="$label"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                          <xsl:value-of select="$facet_name"/>
+                        </xsl:otherwise>
+                      </xsl:choose>
                     </xsl:when>
                     <xsl:otherwise>
                       <xsl:value-of select="$facet_name"/>
                     </xsl:otherwise>
                   </xsl:choose>
-                </xsl:when>
-
-                <xsl:otherwise>
-                  <xsl:value-of select="$facet_name"/>
                 </xsl:otherwise>
-
               </xsl:choose>
             </h3>
           </div>
@@ -61,35 +91,6 @@
           <!-- facet values -->
           <div class="card-body collapse show">
             <ul class="filter">
-
-              <xsl:variable name="classIdProperty">
-                <xsl:value-of select="$facetProperties/properties/entry[@key=concat('MIR.Response.Facet.', $facet_name, '.ClassId')]"/>
-              </xsl:variable>
-              <xsl:variable name="classId">
-                <xsl:choose>
-                  <xsl:when test="$classIdProperty!=''">
-                    <xsl:value-of select="$classIdProperty"/>
-                  </xsl:when>
-                  <xsl:otherwise>
-                    <xsl:value-of select="$facet_name"/>
-                  </xsl:otherwise>
-                </xsl:choose>
-              </xsl:variable>
-
-              <xsl:variable name="categoryClassValuesProperty">
-                <xsl:value-of select="$facetProperties/properties/entry[@key=concat('MIR.Response.Facet.', $facet_name, '.CategoryClassValues')]"/>
-              </xsl:variable>
-              <xsl:variable name="categoryClassValues">
-                <xsl:choose>
-                  <xsl:when test="$categoryClassValuesProperty!=''">
-                    <xsl:value-of select="$categoryClassValuesProperty"/>
-                  </xsl:when>
-                  <xsl:otherwise>
-                    <xsl:value-of select="'false'"/>
-                  </xsl:otherwise>
-                </xsl:choose>
-              </xsl:variable>
-              
               <xsl:apply-templates select="/response/lst[@name='facet_counts']/lst[@name='facet_fields']">
                 <xsl:with-param name="facet_name" select="$facet_name"/>
                 <xsl:with-param name="classId" select="$classId"/>
