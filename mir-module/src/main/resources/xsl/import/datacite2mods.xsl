@@ -8,11 +8,15 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:xalan="http://xml.apache.org/xalan"
     xmlns:mcrxml="xalan://org.mycore.common.xml.MCRXMLFunctions"
-    exclude-result-prefixes="mcrxml xsl xsi xalan">
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+    exclude-result-prefixes="mcrxml xsl xsi xlink xalan">
 
     <xsl:output method="xml" encoding="UTF-8" indent="yes" xalan:indent-amount="2" />
 
+    <xsl:include href="copynodes.xsl" />
+
     <xsl:variable name="orcidRegex" select="'[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{3}[0-9,X]'"/>
+    <xsl:variable name="mir_licences" select="document('classification:metadata:-1:children:mir_licenses')"/>
 
     <xsl:template match="resource">
         <mods:mods>
@@ -25,9 +29,10 @@
             <xsl:apply-templates select="language" />
             <xsl:apply-templates select="subjects/subject" />
             <xsl:apply-templates select="descriptions/description[@descriptionType='Abstract']" />
+            <xsl:apply-templates select="rightsList/rights[@rightsURI]" />
         </mods:mods>
     </xsl:template>
-    
+
     <xsl:template match="title">
         <mods:titleInfo>
             <mods:title>
@@ -35,7 +40,7 @@
             </mods:title>
         </mods:titleInfo>
     </xsl:template>
-    
+
     <xsl:template match="creator[contains(creatorName,',')]">
         <mods:name type="personal">
             <xsl:apply-templates select="creatorName" />
@@ -46,7 +51,7 @@
             <xsl:apply-templates select="affiliation" />
         </mods:name>
     </xsl:template>
-    
+
     <xsl:template match="creatorName">
         <mods:namePart type="family">
             <xsl:value-of select="normalize-space(substring-before(.,','))" />
@@ -70,19 +75,19 @@
             <xsl:value-of select="text()" />
         </mods:affiliation>
     </xsl:template>
-    
+
     <xsl:template match="publisher">
         <mods:publisher>
             <xsl:value-of select="text()" />
         </mods:publisher>
     </xsl:template>
-    
+
     <xsl:template match="publicationYear">
         <mods:dateIssued encoding="w3cdtf">
             <xsl:value-of select="text()" />
         </mods:dateIssued>
     </xsl:template>
-    
+
     <xsl:template match="language">
         <xsl:for-each select="document(concat('notnull:language:',.))/language/@xmlCode">
             <mods:language>
@@ -92,7 +97,7 @@
             </mods:language>
         </xsl:for-each>
     </xsl:template>
-    
+
     <xsl:template match="subject">
         <mods:subject>
             <mods:topic>
@@ -100,13 +105,22 @@
             </mods:topic>
         </mods:subject>
     </xsl:template>
-    
+
     <xsl:template match="description[@descriptionType='Abstract']">
         <mods:abstract>
             <xsl:value-of select="text()" />
         </mods:abstract>
     </xsl:template>
-    
-    <xsl:template match="@*|*" />
-    
+
+    <xsl:template match="rights[@rightsURI]">
+        <xsl:variable name="rightsURI" select="@rightsURI"/>
+        <xsl:variable name="categid" select="$mir_licences//category[url[substring-after(@xlink:href, '//') = substring-after($rightsURI, '//')]]/@ID"/>
+
+        <xsl:if test="string-length($categid) &gt; 0">
+            <mods:accessCondition type="use and reproduction" xlink:href="{$mir_licences/mycoreclass/label[@xml:lang='x-uri']/@text}#{$categid}">
+                <xsl:value-of select="$categid"/>
+            </mods:accessCondition>
+        </xsl:if>
+    </xsl:template>
+
 </xsl:stylesheet>
