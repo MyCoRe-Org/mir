@@ -28,11 +28,12 @@
 
   <xsl:param name="MCR.DOI.DataCite.MissingCreator" />
   <xsl:param name="MCR.DOI.DataCite.MissingTitle" />
-  <xsl:param name="MCR.DOI.DataCite.MissingYear" />
 
   <xsl:variable name="schemaLocation">http://datacite.org/schema/kernel-4 http://schema.datacite.org/meta/kernel-4.3/metadata.xsd</xsl:variable>
 
   <xsl:variable name="marcrelator" select="document('classification:metadata:-1:children:marcrelator')" />
+
+  <xsl:variable name="creation-year" select="substring(mycoreobject/service/servdates/servdate[@type='createdate'],1,4)" />
 
   <xsl:variable name="mods-type">
     <xsl:apply-templates select="." mode="mods-type" />
@@ -303,7 +304,7 @@
         <xsl:apply-templates select="mods:relatedItem[@type='series']" mode="publicationYear"/>
       </xsl:when>
       <xsl:otherwise>
-        <xsl:value-of select="$MCR.DOI.DataCite.MissingYear"/>
+        <xsl:value-of select="$creation-year"/>
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
