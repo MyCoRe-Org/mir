@@ -7,4 +7,9 @@
     <name>mycore</name>
     <others/>
   </absolute-ordering>
+  <session-config>
+    <cookie-config>
+      <name>MCRSESSIONID</name>
+    </cookie-config>
+  </session-config>
 </web-app>
