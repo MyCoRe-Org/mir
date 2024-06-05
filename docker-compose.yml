@@ -21,6 +21,19 @@ services:
       - ${SOLR_DATA}:/var/solr/data
     ports:
       - ${SOLR_HTTP}:8983
+    environment:
+      - SOLR_ADMIN_USER=${SOLR_ADMIN_USER}
+      - SOLR_ADMIN_PASSWORD=${SOLR_ADMIN_PASSWORD}
+      - SOLR_SEARCH_USER=${SOLR_SEARCH_USER}
+      - SOLR_SEARCH_PASSWORD=${SOLR_SEARCH_PASSWORD}
+      - SOLR_INDEX_USER=${SOLR_INDEX_USER}
+      - SOLR_INDEX_PASSWORD=${SOLR_INDEX_PASSWORD}
+  tika:
+    container_name: ${NAME}-tika
+    image: apache/tika:2.9.2.1-full
+    restart: unless-stopped
+    ports:
+      - ${TIKA_PORT}:9998
   mir:
     container_name: ${NAME}-mir
     build: ./
@@ -34,6 +47,14 @@ services:
       - SOLR_URL=http://solr:8983
       - SOLR_CORE=mir
       - SOLR_CLASSIFICATION_CORE=mir-classifications
+      - ENABLE_SOLR_CLOUD=true
+      - SOLR_ADMIN_USER=${SOLR_ADMIN_USER}
+      - SOLR_ADMIN_PASSWORD=${SOLR_ADMIN_PASSWORD}
+      - SOLR_SEARCH_USER=${SOLR_SEARCH_USER}
+      - SOLR_SEARCH_PASSWORD=${SOLR_SEARCH_PASSWORD}
+      - SOLR_INDEX_USER=${SOLR_INDEX_USER}
+      - SOLR_INDEX_PASSWORD=${SOLR_INDEX_PASSWORD}
+      - TIKASERVER_URL=http://tika:9998/
       - XMX=${MIR_XMX}
       - XMS=${MIR_XMS}
       - MIR_OPTS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:8295
