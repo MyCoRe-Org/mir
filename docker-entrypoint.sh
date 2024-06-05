@@ -72,6 +72,15 @@ function setOrAddProperty() {
     KEY=$1
     VALUE=$2
 
+    if [ -z "$VALUE" ]; then
+      # remove property
+      sed -ri "/$KEY/d" "${MYCORE_PROPERTIES}"
+      return
+    elif [ -z "$KEY" ]; then
+      echo "No Key given. Skip setting property."
+      return
+    fi
+
     if grep -q "$KEY=" "${MYCORE_PROPERTIES}" ; then
       ESCAPED_KEY=$(echo "${KEY}" | sed 's/\//\\\//g')
       ESCAPED_VALUE=$(echo "${VALUE}" | sed 's/\//\\\//g')
@@ -114,6 +123,45 @@ function setDockerValues() {
 
     if [ -n "${HIBERNATE_SCHEMA}" ]; then
       setOrAddProperty "MCR.JPA.DefaultSchema" "${HIBERNATE_SCHEMA}"
+    fi
+
+    if [ -n "${SOLR_ADMIN_USER}" ]; then
+          setOrAddProperty "MCR.Solr.Server.Auth.Admin.Class" "org.mycore.solr.auth.MCRSolrBasicPropertyAuthentication"
+          setOrAddProperty "MCR.Solr.Server.Auth.Admin.Username" "${SOLR_ADMIN_USER}"
+          setOrAddProperty "MCR.Solr.Server.Auth.Admin.Password" "${SOLR_ADMIN_PASSWORD}"
+    else
+          setOrAddProperty "MCR.Solr.Server.Auth.Admin.Class"
+          setOrAddProperty "MCR.Solr.Server.Auth.Admin.Username"
+          setOrAddProperty "MCR.Solr.Server.Auth.Admin.Password"
+    fi
+
+
+    if [ -n "${SOLR_INDEX_USER}" ]; then
+          setOrAddProperty "MCR.Solr.Server.Auth.Index.Class" "org.mycore.solr.auth.MCRSolrBasicPropertyAuthentication"
+          setOrAddProperty "MCR.Solr.Server.Auth.Index.Username" "${SOLR_INDEX_USER}"
+          setOrAddProperty "MCR.Solr.Server.Auth.Index.Password" "${SOLR_INDEX_PASSWORD}"
+    else
+          setOrAddProperty "MCR.Solr.Server.Auth.Index.Class"
+          setOrAddProperty "MCR.Solr.Server.Auth.Index.Username"
+          setOrAddProperty "MCR.Solr.Server.Auth.Index.Password"
+    fi
+
+    if [ -n "${SOLR_SEARCH_USER}" ]; then
+          setOrAddProperty "MCR.Solr.Server.Auth.Search.Class" "org.mycore.solr.auth.MCRSolrBasicPropertyAuthentication"
+          setOrAddProperty "MCR.Solr.Server.Auth.Search.Username" "${SOLR_SEARCH_USER}"
+          setOrAddProperty "MCR.Solr.Server.Auth.Search.Password" "${SOLR_SEARCH_PASSWORD}"
+    else
+          setOrAddProperty "MCR.Solr.Server.Auth.Search.Class"
+          setOrAddProperty "MCR.Solr.Server.Auth.Search.Username"
+          setOrAddProperty "MCR.Solr.Server.Auth.Search.Password"
+    fi
+
+    if [ -n "${TIKASERVER_URL}" ]; then
+      setOrAddProperty "MCR.Solr.Tika.ServerURL" "${TIKASERVER_URL}"
+      setOrAddProperty "MCR.Solr.FileIndexStrategy" "org.mycore.solr.index.file.tika.MCRTikaSolrFileStrategy"
+    else
+      setOrAddProperty "MCR.Solr.Tika.ServerURL"
+      setOrAddProperty "MCR.Solr.FileIndexStrategy"
     fi
 
     setOrAddProperty "MCR.JPA.Hbm2ddlAuto" "update"
@@ -164,6 +212,17 @@ function setUpMyCoRe {
     /opt/mir/mir/bin/mir.sh create configuration directory
     setDockerValues
     setupLog4jConfig
+
+    # ENABLE_SOLR_CLOUD
+    if [[ "$ENABLE_SOLR_CLOUD" == "true" ]]
+    then
+      echo "upload local config set for main" >> "${MCR_CONFIG_DIR}setup-solr-cloud.txt"
+      echo "upload local config set for classification" >> "${MCR_CONFIG_DIR}setup-solr-cloud.txt"
+      echo "create collection for core main" >> "${MCR_CONFIG_DIR}setup-solr-cloud.txt"
+      echo "create collection for core classification" >> "${MCR_CONFIG_DIR}setup-solr-cloud.txt"
+      /opt/mir/mir/bin/mir.sh process /mcr/home/setup-solr-cloud.txt
+    fi
+
     /opt/mir/mir/bin/setup.sh
 }
 

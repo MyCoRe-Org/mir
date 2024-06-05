@@ -52,6 +52,32 @@
                   i18n="component.mir.wizard.solr.mainCore" />
                 <mir:template name="textInput" xpath="property[@name='MCR.Solr.Core.classification.Name']" id="solrClassificationCore"
                   i18n="component.mir.wizard.solr.classificationCore" />
+                <xed:bind xpath="../solr">
+                  <mir:template name="checkboxList" xpath="createCores">
+                    <option i18n="component.mir.wizard.solr.createCores" value="true" />
+                  </mir:template>
+                </xed:bind>
+                <mir:template name="checkboxList" xpath="property[@name='MCR.Solr.Server.Auth.Admin.Class']">
+                  <option i18n="component.mir.wizard.solr.adminUserEnabled" value="org.mycore.solr.auth.MCRSolrBasicPropertyAuthentication" />
+                </mir:template>
+                <mir:template name="textInput" xpath="property[@name='MCR.Solr.Server.Auth.Admin.Username']" id="solrAdminUsername"
+                  i18n="component.mir.wizard.solr.admin.username" />
+                <mir:template name="passwordInput" xpath="property[@name='MCR.Solr.Server.Auth.Admin.Password']" id="solrAdminPassword"
+                  i18n="component.mir.wizard.solr.admin.password" />
+                <mir:template name="checkboxList" xpath="property[@name='MCR.Solr.Server.Auth.Index.Class']">
+                  <option i18n="component.mir.wizard.solr.indexUserEnabled" value="org.mycore.solr.auth.MCRSolrBasicPropertyAuthentication" />
+                </mir:template>
+                <mir:template name="textInput" xpath="property[@name='MCR.Solr.Server.Auth.Index.Username']" id="solrIndexUsername"
+                  i18n="component.mir.wizard.solr.index.username" />
+                <mir:template name="passwordInput" xpath="property[@name='MCR.Solr.Server.Auth.Index.Password']" id="solrIndexPassword"
+                  i18n="component.mir.wizard.solr.index.password" />
+                <mir:template name="checkboxList" xpath="property[@name='MCR.Solr.Server.Auth.Search.Class']">
+                  <option i18n="component.mir.wizard.solr.searchUserEnabled" value="org.mycore.solr.auth.MCRSolrBasicPropertyAuthentication" />
+                </mir:template>
+                <mir:template name="textInput" xpath="property[@name='MCR.Solr.Server.Auth.Search.Username']" id="solrSearchUsername"
+                  i18n="component.mir.wizard.solr.search.username" />
+                <mir:template name="passwordInput" xpath="property[@name='MCR.Solr.Server.Auth.Search.Password']" id="solrSearchPassword"
+                  i18n="component.mir.wizard.solr.search.password" />
               </fieldset>
               <fieldset>
                 <legend>
