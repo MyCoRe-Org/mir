@@ -11,5 +11,6 @@
     <cookie-config>
       <name>MCRSESSIONID</name>
     </cookie-config>
+    <tracking-mode>COOKIE</tracking-mode>
   </session-config>
 </web-app>
