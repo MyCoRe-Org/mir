@@ -68,14 +68,14 @@ echo "    \"permissions\":[" >> $secruity_json
 if [ -n "$SOLR_SEARCH_USER" ]; then
   echo "      {" >> $secruity_json
   echo "        \"name\":\"read\"," >> $secruity_json
-  echo "        \"role\":\"searcher\"" >> $secruity_json
+  echo "        \"role\":[\"searcher\",\"indexer\",\"admin\"]" >> $secruity_json
   echo "      }," >> $secruity_json
 fi
 
 if [ -n "$SOLR_INDEX_USER" ]; then
   echo "      {" >> $secruity_json
   echo "        \"name\":\"update\"," >> $secruity_json
-  echo "        \"role\":\"indexer\"" >> $secruity_json
+  echo "        \"role\":[\"indexer\",\"admin\"]" >> $secruity_json
   echo "      }," >> $secruity_json
 fi
 
