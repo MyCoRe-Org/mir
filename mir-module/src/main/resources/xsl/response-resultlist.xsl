@@ -6,7 +6,6 @@
 
   <xsl:output method="html" encoding="UTF-8" omit-xml-declaration="yes" />
   <xsl:param name="WebApplicationBaseURL" />
-  <xsl:param name="HttpSession" />
   <xsl:param name="ServletsBaseURL" />
   <xsl:include href="response-utils.xsl" />
   <xsl:include href="response-mir.xsl" />

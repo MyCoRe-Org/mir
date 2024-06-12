@@ -49,9 +49,7 @@
           <xsl:value-of select="@href" />
         </xsl:when>
         <xsl:otherwise>
-          <xsl:call-template name="UrlAddSession">
-            <xsl:with-param name="url" select="concat($WebApplicationBaseURL,substring-after(@href,'/'))" />
-          </xsl:call-template>
+          <xsl:value-of select="concat($WebApplicationBaseURL,substring-after(@href,'/'))"/>
         </xsl:otherwise>
       </xsl:choose>
     </xsl:param>
@@ -114,9 +112,7 @@
           <xsl:value-of select="@href" />
         </xsl:when>
         <xsl:otherwise>
-          <xsl:call-template name="UrlAddSession">
-            <xsl:with-param name="url" select="concat($WebApplicationBaseURL,substring-after(@href,'/'))" />
-          </xsl:call-template>
+          <xsl:value-of select="concat($WebApplicationBaseURL,substring-after(@href,'/'))"/>
         </xsl:otherwise>
       </xsl:choose>
     </xsl:param>

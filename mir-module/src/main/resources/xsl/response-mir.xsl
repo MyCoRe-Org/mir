@@ -60,7 +60,7 @@
     <div class="row result_searchline">
       <div class="col-12 col-sm-8 text-center result_search">
         <div class="search_box">
-          <xsl:variable name="searchlink" select="concat($proxyBaseURL, $HttpSession, $solrParams)" />
+          <xsl:variable name="searchlink" select="concat($proxyBaseURL,$solrParams)" />
           <form action="{$searchlink}" class="search_form" method="post">
             <div class="input-group input-group-sm">
               <div class="input-group-btn input-group-prepend">
@@ -151,7 +151,7 @@
 
       <!-- START: alle zu basket -->
       <div class="col-12 col-sm-4">
-        <form class="basket_form" action="{$ServletsBaseURL}MCRBasketServlet{$HttpSession}" method="post">
+        <form class="basket_form" action="{$ServletsBaseURL}MCRBasketServlet" method="post">
           <input type="hidden" name="action" value="add" />
           <input type="hidden" name="redirect" value="referer" />
           <input type="hidden" name="type" value="objects" />
@@ -292,7 +292,7 @@
     </xsl:variable>
 
     <!-- generate browsing url -->
-    <xsl:variable name="href" select="concat($proxyBaseURL,$HttpSession,$solrParams)" />
+    <xsl:variable name="href" select="concat($proxyBaseURL,$solrParams)" />
     <xsl:variable name="startPosition" select="$hitNumberOnPage - 1 + (($currentPage) -1) * $rows" />
     <xsl:variable name="completeHref">
       <xsl:variable name="q">
@@ -322,7 +322,7 @@
     <xsl:variable name="derivate" select="$derivates[str[@name='id']=$derivid]"/>
     <xsl:variable name="maindoc" select="$derivates/str[@name='derivateMaindoc'][1]"/>
     <xsl:variable name="derivbase" select="concat($ServletsBaseURL,'MCRFileNodeServlet/',$derivid,'/')"/>
-    <xsl:variable name="derivifs" select="concat($derivbase,$maindoc,$HttpSession)"/>
+    <xsl:variable name="derivifs" select="concat($derivbase,$maindoc)"/>
 
 
     <xsl:variable name="hitCount" select="$hitNumberOnPage + (($currentPage) -1) * $rows"/>
@@ -447,7 +447,7 @@
                   <xsl:value-of select="concat($WebApplicationBaseURL, 'rsc/viewer/', $derivid,'/', $derivate/str[@name='iviewFile'])"/>
                 </xsl:when>
                 <xsl:when test="translate(str:tokenize($derivate/str[@name='derivateMaindoc'],'.')[position()=last()],'PDF','pdf') = 'pdf'">
-                  <xsl:variable name="filePath" select="concat($derivate/str[@name='id'],'/',mcr:encodeURIPath($derivate/str[@name='derivateMaindoc']),$HttpSession)"/>
+                  <xsl:variable name="filePath" select="concat($derivate/str[@name='id'],'/',mcr:encodeURIPath($derivate/str[@name='derivateMaindoc']))"/>
                   <xsl:choose>
                     <xsl:when test="mcrxsl:isMobileDevice($UserAgent)">
                       <!-- for mobile users just show the file link -->
@@ -862,15 +862,10 @@
         <xsl:choose>
           <xsl:when test="string-length($url)=0" />
           <xsl:otherwise>
-            <xsl:variable name="urlWithParam">
-              <xsl:call-template name="UrlSetParam">
-                <xsl:with-param name="url" select="$url" />
-                <xsl:with-param name="par" select="'id'" />
-                <xsl:with-param name="value" select="$id" />
-              </xsl:call-template>
-            </xsl:variable>
-            <xsl:call-template name="UrlAddSession">
-              <xsl:with-param name="url" select="$urlWithParam" />
+            <xsl:call-template name="UrlSetParam">
+              <xsl:with-param name="url" select="$url" />
+              <xsl:with-param name="par" select="'id'" />
+              <xsl:with-param name="value" select="$id" />
             </xsl:call-template>
           </xsl:otherwise>
         </xsl:choose>
@@ -879,10 +874,10 @@
       <!-- URL mapping disabled -->
         <xsl:choose>
           <xsl:when test="$layout != '$'">
-            <xsl:value-of select="concat($WebApplicationBaseURL,'/editor/editor-dynamic.xed',$HttpSession,'?id=',$id,'&amp;genre=article&amp;host=standalone')" />
+            <xsl:value-of select="concat($WebApplicationBaseURL,'/editor/editor-dynamic.xed?id=',$id,'&amp;genre=article&amp;host=standalone')" />
           </xsl:when>
           <xsl:otherwise>
-            <xsl:value-of select="concat($WebApplicationBaseURL,'/editor/editor-admin.xed',$HttpSession,'?id=',$id)" />
+            <xsl:value-of select="concat($WebApplicationBaseURL,'/editor/editor-admin.xed?id=',$id)" />
           </xsl:otherwise>
         </xsl:choose>
       </xsl:otherwise>
@@ -1067,7 +1062,7 @@
         <!-- remove from basket -->
         <a
           class="hit_option remove_from_basket {$dropdownclass}"
-          href="{$ServletsBaseURL}MCRBasketServlet{$HttpSession}?type=objects&amp;action=remove&amp;id={$identifier}&amp;redirect=referer"
+          href="{$ServletsBaseURL}MCRBasketServlet?type=objects&amp;action=remove&amp;id={$identifier}&amp;redirect=referer"
           title="" >
           <span class="fas fa-bookmark"></span>&#160;
           <xsl:value-of select="i18n:translate('basket.remove')" />
@@ -1077,7 +1072,7 @@
         <!-- add to basket -->
         <a
           class="hit_option hit_to_basket {$dropdownclass}"
-          href="{$ServletsBaseURL}MCRBasketServlet{$HttpSession}?type=objects&amp;action=add&amp;id={$identifier}&amp;uri=mcrobject:{$identifier}&amp;redirect=referer"
+          href="{$ServletsBaseURL}MCRBasketServlet?type=objects&amp;action=add&amp;id={$identifier}&amp;uri=mcrobject:{$identifier}&amp;redirect=referer"
           title="" >
           <span class="fas fa-bookmark"></span>&#160;
           <xsl:value-of select="i18n:translate('basket.add')" />

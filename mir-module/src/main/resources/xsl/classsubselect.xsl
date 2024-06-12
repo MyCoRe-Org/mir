@@ -18,12 +18,12 @@
   <xsl:param name="template" />
 
   <xsl:variable name="cancelURL"
-    select="concat($ServletsBaseURL,'XMLEditor',$HttpSession,
+    select="concat($ServletsBaseURL,'XMLEditor',
     '?_action=end.subselect&amp;subselect.session=',$subselect.session,
     '&amp;subselect.webpage=', encoder:encode($subselect.webpage))" />
 
   <xsl:variable name="url"
-    select="concat($ServletsBaseURL,'XMLEditor',$HttpSession,
+    select="concat($ServletsBaseURL,'XMLEditor',
     '?_action=end.subselect&amp;subselect.session=',$subselect.session,
     '&amp;subselect.varpath=', $subselect.varpath,
     '&amp;subselect.webpage=', encoder:encode($subselect.webpage))" />

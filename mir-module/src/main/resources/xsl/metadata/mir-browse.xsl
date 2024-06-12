@@ -52,7 +52,7 @@
 
         <!-- xsl:variable name="origRows" select="lst[@name='responseHeader']/lst[@name='params']/str[@name='origrows']" />
         <xsl:variable name="newStart" select="$start - ($start mod $origRows)" />
-        <xsl:variable name="href" select="concat($proxyBaseURL,'?', $HttpSession, $params, '&amp;start=', $newStart)" />
+        <xsl:variable name="href" select="concat($proxyBaseURL,'?', $params, '&amp;start=', $newStart)" />
 
         <a href="{$href}" class="btn btn-secondary btn-sm" role="button">
           <xsl:value-of select="i18n:translate('component.solr.searchresult.back')" />
@@ -70,7 +70,7 @@
           <xsl:variable name="linkToDocument">
             <xsl:value-of select="$staticUrl" />
           </xsl:variable>
-          <a href="{concat($staticUrl,$HttpSession)}">
+          <a href="{$staticUrl}">
             <xsl:value-of select="$staticUrl" />
           </a>
         </span>

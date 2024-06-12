@@ -167,18 +167,18 @@
 
   <xsl:template name="browseCtrl">
     <xsl:if test="string-length($previousObject)>0">
-      <a href="{$WebApplicationBaseURL}receive/{$previousObject}{$HttpSession}">&lt;&lt;</a>
+      <a href="{$WebApplicationBaseURL}receive/{$previousObject}">&lt;&lt;</a>
       &#160;&#160;
     </xsl:if>
     <xsl:if test="string-length($numPerPage)>0">
       <a
-        href="{$ServletsBaseURL}MCRSearchServlet{$HttpSession}?mode=results&amp;id={$resultListEditorID}&amp;page={$page}&amp;numPerPage={$numPerPage}">
+        href="{$ServletsBaseURL}MCRSearchServlet?mode=results&amp;id={$resultListEditorID}&amp;page={$page}&amp;numPerPage={$numPerPage}">
         ^
     </a>
     </xsl:if>
     <xsl:if test="string-length($nextObject)>0">
       &#160;&#160;
-      <a href="{$WebApplicationBaseURL}receive/{$nextObject}{$HttpSession}">&gt;&gt;</a>
+      <a href="{$WebApplicationBaseURL}receive/{$nextObject}">&gt;&gt;</a>
     </xsl:if>
   </xsl:template>
 
@@ -196,8 +196,8 @@
     <xsl:variable name="derivlabel" select="../../@label" />
     <xsl:variable name="derivmain" select="internal/@maindoc" />
     <xsl:variable name="derivbase" select="concat($ServletsBaseURL,'MCRFileNodeServlet/',$derivid,'/')" />
-    <xsl:variable name="derivifs" select="concat($derivbase,$derivmain,$HttpSession)" />
-    <xsl:variable name="derivdir" select="concat($derivbase,$HttpSession)" />
+    <xsl:variable name="derivifs" select="concat($derivbase,$derivmain)" />
+    <xsl:variable name="derivdir" select="$derivbase" />
     <xsl:variable name="derivxml" select="concat('ifs:/',$derivid)" />
     <xsl:variable name="details" select="document($derivxml)" />
     <xsl:variable name="ctype" select="$details/mcr_directory/children/child[name=$derivmain]/contentType" />
@@ -222,7 +222,7 @@
       (
       <xsl:value-of select="ceiling(number($size) div 1024)" />
       &#160;kB) &#160;&#160;
-      <xsl:variable name="ziplink" select="concat($ServletsBaseURL,'MCRZipServlet',$JSessionID,'?id=',$derivid)" />
+      <xsl:variable name="ziplink" select="concat($ServletsBaseURL,'MCRZipServlet?id=',$derivid)" />
       <a class="linkButton" href="{$ziplink}">
         <xsl:value-of select="i18n:translate('buttons.zipGen')" />
       </a>
@@ -279,7 +279,7 @@
             <xsl:value-of select="@xlink:href" />
           </xsl:variable>
           <xsl:if test="position() = $pos - 1">
-            <a href="{$WebApplicationBaseURL}receive/{$child}{$HttpSession}">
+            <a href="{$WebApplicationBaseURL}receive/{$child}">
               &#60;--
             </a>
           </xsl:if>
@@ -303,7 +303,7 @@
             <xsl:value-of select="@xlink:href" />
           </xsl:variable>
           <xsl:if test="position() = $pos + 1">
-            <a href="{$WebApplicationBaseURL}receive/{$child}{$HttpSession}">
+            <a href="{$WebApplicationBaseURL}receive/{$child}">
               --&#62; </a>
           </xsl:if>
         </xsl:for-each>

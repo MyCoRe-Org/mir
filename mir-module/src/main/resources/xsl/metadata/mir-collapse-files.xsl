@@ -14,7 +14,7 @@
   <xsl:param name="MIR.NotFullAccessInfo.Genres" />
   <xsl:template match="/">
     <xsl:variable xmlns:encoder="xalan://java.net.URLEncoder" name="loginURL"
-      select="concat( $ServletsBaseURL, 'MCRLoginServlet',$HttpSession,'?url=', encoder:encode( string( $RequestURL ) ) )" />
+      select="concat( $ServletsBaseURL, 'MCRLoginServlet?url=', encoder:encode( string( $RequestURL ) ) )" />
     
     <xsl:choose>
       <xsl:when test="key('rights', mycoreobject/@ID)/@read or key('rights', mycoreobject/structure/derobjects/derobject/@xlink:href)/@accKeyEnabled">

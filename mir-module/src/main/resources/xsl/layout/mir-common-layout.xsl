@@ -44,7 +44,7 @@
 
   <xsl:template name="mir.loginMenu">
     <xsl:variable xmlns:encoder="xalan://java.net.URLEncoder" name="loginURL"
-      select="concat( $ServletsBaseURL, 'MCRLoginServlet',$HttpSession,'?url=', encoder:encode( string( $RequestURL ) ) )" />
+      select="concat( $ServletsBaseURL, 'MCRLoginServlet?url=', encoder:encode( string( $RequestURL ) ) )" />
     <xsl:choose>
       <xsl:when test="contains($RequestURL, 'MCRLoginServlet') and mcrxsl:isCurrentUserGuestUser()"></xsl:when>
       <xsl:when test="mcrxsl:isCurrentUserGuestUser()">
@@ -154,15 +154,10 @@
   </xsl:template>
   <xsl:template name="mir.languageLink">
     <xsl:param name="lang" />
-    <xsl:variable name="langURL">
-      <xsl:call-template name="UrlSetParam">
-        <xsl:with-param name="url" select="$RequestURL" />
-        <xsl:with-param name="par" select="'lang'" />
-        <xsl:with-param name="value" select="$lang" />
-      </xsl:call-template>
-    </xsl:variable>
-    <xsl:call-template name="UrlAddSession">
-      <xsl:with-param name="url" select="$langURL" />
+    <xsl:call-template name="UrlSetParam">
+      <xsl:with-param name="url" select="$RequestURL" />
+      <xsl:with-param name="par" select="'lang'" />
+      <xsl:with-param name="value" select="$lang" />
     </xsl:call-template>
   </xsl:template>
 
@@ -207,13 +202,7 @@
                   </xsl:choose>
                 </xsl:when>
                 <xsl:otherwise>
-                  <a>
-                    <xsl:attribute name="href">
-                      <xsl:call-template name="UrlAddSession">
-                        <xsl:with-param name="url"
-                      select="concat($WebApplicationBaseURL,substring-after(@href,'/'))" />
-                      </xsl:call-template>
-                    </xsl:attribute>
+                  <a href="{concat($WebApplicationBaseURL,substring-after(@href,'/'))}">
                     <xsl:choose>
                       <xsl:when test="./label[lang($CurrentLang)] != ''">
                         <xsl:value-of select="./label[lang($CurrentLang)]" />
@@ -273,7 +262,7 @@
       </a>
       <ul class="dropdown-menu" role="menu">
         <li>
-          <a href="{$ServletsBaseURL}MCRBasketServlet{$HttpSession}?type={$basket/@type}&amp;action=show" class="dropdown-item">
+          <a href="{$ServletsBaseURL}MCRBasketServlet?type={$basket/@type}&amp;action=show" class="dropdown-item">
             <xsl:value-of select="i18n:translate('basket.open')" />
           </a>
         </li>
