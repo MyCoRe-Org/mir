@@ -46,8 +46,8 @@ public class MIRPostProcessor extends MCRPostProcessorXSL {
     private static void fixSubject(Document newXML) throws JDOMException, IOException {
         final XPathExpression<Element> subjectsXPath
             = XPathFactory.instance().compile(".//mods:*[local-name()='subjectXML' or local-name()='subjectGEO']",
-            Filters.element(), null, MCRConstants.MODS_NAMESPACE,
-            MCRConstants.XLINK_NAMESPACE);
+                Filters.element(), null, MCRConstants.MODS_NAMESPACE,
+                MCRConstants.XLINK_NAMESPACE);
         final List<Element> subjectElements = new ArrayList<>(subjectsXPath.evaluate(newXML));
 
         List<Element> subjectsToRemove = new ArrayList<>();
@@ -80,17 +80,26 @@ public class MIRPostProcessor extends MCRPostProcessorXSL {
             MCRConstants.XLINK_NAMESPACE);
         final List<Element> titleInfos = titleInfoXPath.evaluate(newXML);
 
-        titleInfos.stream().filter(ti -> Stream.of(TITLE_SUB_ELEMENTS)
-            .anyMatch(elementName -> {
-                final Element element = ti.getChild(elementName, MCRConstants.MODS_NAMESPACE);
-                return element != null && isHtml(element.getText());
-            })).forEach(titleInfoElement -> {
+        titleInfos.forEach(titleInfoElement -> {
+            if (isAnyTitleSubElementHtml(titleInfoElement)) {
                 try {
                     fixTitle(titleInfoElement);
                 } catch (JDOMException | TransformerException | MalformedURLException e) {
                     throw new MCRException("Error while converting HTML title!", e);
                 }
-            });
+            } else {
+                titleInfoElement.removeAttribute("altRepGroup");
+                titleInfoElement.removeAttribute("contentType");
+                titleInfoElement.removeAttribute("altFormat");
+            }
+        });
+    }
+
+    private static boolean isAnyTitleSubElementHtml(Element ti) {
+        return Stream.of(TITLE_SUB_ELEMENTS).anyMatch(elementName -> {
+            final Element element = ti.getChild(elementName, MCRConstants.MODS_NAMESPACE);
+            return element != null && isHtml(element.getText());
+        });
     }
 
     private static void fixTitle(Element titleInfoElement)
@@ -108,7 +117,7 @@ public class MIRPostProcessor extends MCRPostProcessorXSL {
             .filter(Objects::nonNull)
             .forEach(child -> {
                 child.setNamespace(Namespace.NO_NAMESPACE);
-                if(isHtml(child.getText())){
+                if (isHtml(child.getText())) {
                     child.setText(MIREditorUtils.getXHTMLSnippedString(child.getText()));
                 } else {
                     child.setText(child.getText());
@@ -139,15 +148,19 @@ public class MIRPostProcessor extends MCRPostProcessorXSL {
             MCRConstants.XLINK_NAMESPACE);
         final List<Element> abstracts = abstractXPath.evaluate(newXML);
 
-        abstracts.stream()
-            .filter(abstractElement -> isHtml(abstractElement.getText()))
-            .forEach(abstractElement1 -> {
+        abstracts.forEach(abstractElement -> {
+            if (isHtml(abstractElement.getText())) {
                 try {
-                    fixAbstract(abstractElement1);
+                    fixAbstract(abstractElement);
                 } catch (JDOMException | TransformerException | MalformedURLException e) {
                     throw new MCRException("Error while converting HTML abstract!", e);
                 }
-            });
+            } else {
+                abstractElement.removeAttribute("altRepGroup");
+                abstractElement.removeAttribute("contentType");
+                abstractElement.removeAttribute("altFormat");
+            }
+        });
     }
 
     private static void fixAbstract(Element abstractElement)

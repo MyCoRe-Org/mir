@@ -910,9 +910,14 @@
 
 <!-- hit abstract -->
       <div class="hit_abstract">
-        <xsl:if test="mods:abstract[not(@altFormat)]">
-          <xsl:value-of select="mcrxsl:shortenText(mods:abstract[not(@altFormat)],300)" />
-        </xsl:if>
+        <xsl:choose>
+          <xsl:when test="mods:abstract[not(@altFormat)][@xml:lang=$CurrentLang]">
+            <xsl:value-of select="mcrxsl:shortenText(mods:abstract[not(@altFormat)][@xml:lang=$CurrentLang],300)"/>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:value-of select="mcrxsl:shortenText(mods:abstract[not(@altFormat)],300)"/>
+          </xsl:otherwise>
+        </xsl:choose>
       </div>
 
 <!-- hit publisher -->
