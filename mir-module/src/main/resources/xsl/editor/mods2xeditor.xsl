@@ -50,21 +50,26 @@
   </xsl:template>
 
   <xsl:template match="mods:titleInfo[string-length(@altRepGroup) &gt; 0]|mods:abstract[string-length(@altRepGroup) &gt; 0]">
-    <xsl:if test="string-length(@altFormat) &gt; 0">
-      <xsl:variable name="content" select="document(@altFormat)" />
-      <xsl:apply-templates select="$content/node()" mode="asXmlNode">
-        <xsl:with-param name="levels">
-          <xsl:choose>
-            <xsl:when test="name() = 'mods:titleInfo'">
-              <xsl:value-of select="2" />
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:value-of select="1" />
-            </xsl:otherwise>
-          </xsl:choose>
-        </xsl:with-param>
-      </xsl:apply-templates>
-    </xsl:if>
+    <xsl:choose>
+      <xsl:when test="string-length(@altFormat) &gt; 0">
+        <xsl:variable name="content" select="document(@altFormat)"/>
+        <xsl:apply-templates select="$content/node()" mode="asXmlNode">
+          <xsl:with-param name="levels">
+            <xsl:choose>
+              <xsl:when test="local-name() = 'titleInfo'">
+                <xsl:value-of select="2"/>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:value-of select="1"/>
+              </xsl:otherwise>
+            </xsl:choose>
+          </xsl:with-param>
+        </xsl:apply-templates>
+      </xsl:when>
+      <xsl:when test="count(../*[@altRepGroup=current()/@altRepGroup]) = 1">
+        <xsl:copy-of select="."/>
+      </xsl:when>
+    </xsl:choose>
   </xsl:template>
 
   <!-- Derive dateIssued from dateOther if not present -->

@@ -15,8 +15,8 @@
   <xsl:param name="MIR.Layout.Start"/>
   <xsl:param name="MIR.Layout.Bottom"/>
 
-  <xsl:param name="MIR.Layout.Start.Col" select="'col-12 col-sm-8'"/>
-  <xsl:param name="MIR.Layout.End.Col" select="'col-12 col-sm-4'"/>
+  <xsl:param name="MIR.Layout.Start.Col" select="'col-12 col-lg-8'"/>
+  <xsl:param name="MIR.Layout.End.Col" select="'col-12 col-lg-4'"/>
 
   <xsl:param name="MIR.Layout.Display.Panel"/>
   <xsl:param name="MIR.Layout.Display.Div"/>
