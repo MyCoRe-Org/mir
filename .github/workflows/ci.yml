@@ -76,6 +76,9 @@ jobs:
 
         echo "${HOME}/bibutils/bin" >> $GITHUB_PATH
 
+    - name: Set current date as env variable
+      run: echo "BUILD_START=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
+
     - name: Build
       run: |
         export $(dbus-launch)
@@ -95,10 +98,12 @@ jobs:
     - name: Build the mir Docker images and push them
       if: contains('refs/heads/2022.06.x refs/heads/2023.06.x refs/heads/main', github.ref) && github.event_name=='push' && success()
       run: |
-        docker build . --file Dockerfile --tag mycoreorg/mir:${GITHUB_REF_NAME}
-        docker build mir-webapp/src/main/solr/ --file mir-webapp/src/main/solr/Dockerfile --tag mycoreorg/mir-solr:${GITHUB_REF_NAME}
-        docker push mycoreorg/mir:${GITHUB_REF_NAME}
+        docker build . --file Dockerfile --tag mycoreorg/mir:${GITHUB_REF_NAME} --tag mycoreorg/mir:${GITHUB_REF_NAME}-${BUILD_START}
+        docker build mir-webapp/src/main/solr/ --file mir-webapp/src/main/solr/Dockerfile --tag mycoreorg/mir-solr:${GITHUB_REF_NAME} --tag mycoreorg/mir-solr:${GITHUB_REF_NAME}-${BUILD_START}
+        docker push mycoreorg/mir:${GITHUB_REF_NAME} 
+        docker push mycoreorg/mir:${GITHUB_REF_NAME}-${BUILD_START}
         docker push mycoreorg/mir-solr:${GITHUB_REF_NAME}
+        docker push mycoreorg/mir-solr:${GITHUB_REF_NAME}-${BUILD_START}
     - name: Upload logs on build failure
       if: failure()
       uses: actions/upload-artifact@v2
