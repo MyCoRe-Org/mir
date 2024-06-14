@@ -16,7 +16,7 @@ JDBC_NAME_ESCAPED=$(echo "$JDBC_NAME" | sed 's/\//\\\//g')
 JDBC_PASSWORD_ESCAPED=$(echo "$JDBC_PASSWORD" | sed 's/\//\\\//g')
 JDBC_DRIVER_ESCAPED=$(echo "$JDBC_DRIVER" | sed 's/\//\\\//g')
 JDBC_URL_ESCAPED=$(echo "$JDBC_URL" | sed 's/\//\\\//g')
-HIBERNATE_SCHEMA_ESCAPED=$(echo "$JDBC_URL" | sed 's/\//\\\//g')
+JDBC_SCHEMA_ESCAPED=$(echo "$JDBC_SCHEMA" | sed 's/\//\\\//g')
 
 MYCORE_PROPERTIES="${MCR_CONFIG_DIR}mycore.properties"
 PERSISTENCE_XML="${MCR_CONFIG_DIR}resources/META-INF/persistence.xml"
@@ -137,8 +137,18 @@ function setDockerValues() {
       sed -ri "s/(name=\"jakarta.persistence.jdbc.url\" value=\").*(\")/\1${JDBC_URL_ESCAPED}\2/" "${PERSISTENCE_XML}"
     fi
 
-    if [ -n "${SOLR_CLASSIFICATION_CORE}" ]; then
-      sed -ri "s/(name=\"hibernate.default_schema\" value=\").*(\")/\1${HIBERNATE_SCHEMA_ESCAPED}\2/" "${PERSISTENCE_XML}"
+    if [ -n "${JDBC_SCHEMA}" ]; then
+      if grep -q "hibernate.default_schema" "${PERSISTENCE_XML}"; then
+        sed -ri "s/(name=\"hibernate.default_schema\" value=\").*(\")/\1${JDBC_SCHEMA_ESCAPED}\2/" "${PERSISTENCE_XML}"
+      else
+        sed -ri "s/(<\/properties>)/<property name=\"hibernate.default_schema\" value=\"${JDBC_SCHEMA_ESCAPED}\" \/>\n\1/" "${PERSISTENCE_XML}"
+      fi
+
+      if grep -q "hibernate.hbm2ddl.create_namespaces" "${PERSISTENCE_XML}"; then
+        sed -ri "s/(name=\"hibernate.hbm2ddl.create_namespaces\" value=\").*(\")/\1true\2/" "${PERSISTENCE_XML}"
+      else
+        sed -ri "s/(<\/properties>)/<property name=\"hibernate.hbm2ddl.create_namespaces\" value=\"true\" \/>\n\1/" "${PERSISTENCE_XML}"
+      fi
     fi
 
     sed -ri "s/(name=\"hibernate.hbm2ddl.auto\" value=\").*(\")/\1update\2/" "${PERSISTENCE_XML}"
