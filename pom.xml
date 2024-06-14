@@ -43,7 +43,7 @@
     <java.target.version>21</java.target.version>
     <jetty.version>12.0.0</jetty.version>
     <maven.compiler.arg>-Werror</maven.compiler.arg>
-    <mycore.version>2024.05-SNAPSHOT</mycore.version>
+    <mycore.version>2024.05</mycore.version>
     <pmd.version>7.0.0</pmd.version>
     <selenium.version>4.3.0</selenium.version>
     <site.suffix />
