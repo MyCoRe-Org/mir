@@ -29,9 +29,13 @@ echo "Running MIR Starter Script as User: $(whoami)"
 
 if [ "$EUID" -eq 0 ]
   then
-    fixDirectoryRights "$MCR_CONFIG_DIR" "mcr"
-    fixDirectoryRights "$MCR_DATA_DIR" "mcr"
-    fixDirectoryRights "$MCR_LOG_DIR" "mcr"
+    if [[ "$FIX_FILE_SYSTEM_RIGHTS" == "true" ]]
+    then
+      echo "Fixing File System Rights"
+      fixDirectoryRights "$MCR_CONFIG_DIR" "mcr"
+      fixDirectoryRights "$MCR_DATA_DIR" "mcr"
+      fixDirectoryRights "$MCR_LOG_DIR" "mcr"
+    fi
     exec gosu mcr "$0"
     exit 0;
 fi
