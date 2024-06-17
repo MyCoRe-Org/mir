@@ -13,7 +13,7 @@
     <url>jdbc:postgresql://127.0.0.1/mir</url>
     <library>
       <url>https://jdbc.postgresql.org/download/postgresql-42.7.0.jar</url>
-      <url>https://repo1.maven.org/maven2/org/postgresql/postgresql/42.6.0/postgresql-42.7.0.jar</url>
+      <url>https://repo1.maven.org/maven2/org/postgresql/postgresql/42.7.0/postgresql-42.7.0.jar</url>
     </library>
   </db>
   <db name="HSQLDB">
