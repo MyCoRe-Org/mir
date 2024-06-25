@@ -181,7 +181,7 @@
   </xsl:template>
 
   <xsl:template name="options">
-    <a href="{$ServletsBaseURL}MCRBasketServlet{$HttpSession}?type={@type}&amp;action=clear&amp;redirect=referer" class="btn btn-danger btn-sm">
+    <a href="{$ServletsBaseURL}MCRBasketServlet?type={@type}&amp;action=clear&amp;redirect=referer" class="btn btn-danger btn-sm">
       <span class="fas fa-trash-alt mr-1"></span>
       <xsl:value-of select="i18n:translate('basket.clear')" />
     </a>

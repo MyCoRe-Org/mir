@@ -176,7 +176,7 @@
                   <xsl:if test="$query = @search">
                     <xsl:attribute name="class">active</xsl:attribute>
                   </xsl:if>
-                  <a href="{concat($proxyBaseURL,$HttpSession, '?XSL.Style=person&amp;terms.regex=', @search)}">
+                  <a href="{concat($proxyBaseURL,'?XSL.Style=person&amp;terms.regex=',@search)}">
                     <xsl:value-of select="name()" />
                   </a>
                   <xsl:if test="position() != last()">
@@ -194,7 +194,7 @@
                   role="form"
                   id="index_search_form"
                   method="get"
-                  action="{concat($proxyBaseURL,$HttpSession)}">
+                  action="{$proxyBaseURL}">
               <xsl:for-each
                 select="lst[@name='responseHeader']/lst[@name='params']/str[not(@name='terms.regex')]">
                 <input type="hidden" name="{@name}" value="{.}" />

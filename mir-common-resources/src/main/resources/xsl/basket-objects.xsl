@@ -8,7 +8,6 @@
   xmlns:xalan="http://xml.apache.org/xalan"
   xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation" 
   exclude-result-prefixes="xlink xalan i18n">
-  <xsl:param name="HttpSession"/>
   
   <xsl:include href="MyCoReLayout.xsl" />
 
@@ -40,7 +39,7 @@
         </xsl:choose>
       </p>
       <xsl:if test="entry">
-        <a href="MCRBasketServlet{$HttpSession}?type={@type}&amp;action=clear">
+        <a href="MCRBasketServlet?type={@type}&amp;action=clear">
           <xsl:value-of select="i18n:translate('basket.clear')" />
         </a>
       </xsl:if>
@@ -102,7 +101,7 @@
 
     <xsl:choose>
       <xsl:when test="$condition">
-        <a href="MCRBasketServlet{$HttpSession}?action={$action}&amp;type={/basket/@type}&amp;id={@id}">
+        <a href="MCRBasketServlet?action={$action}&amp;type={/basket/@type}&amp;id={@id}">
           <img alt="{i18n:translate(concat('basket.button.',$action))}" src="{$WebApplicationBaseURL}images/pmud-{$image}.png" />
         </a>
       </xsl:when>

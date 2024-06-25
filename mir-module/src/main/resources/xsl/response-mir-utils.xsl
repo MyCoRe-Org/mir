@@ -9,7 +9,7 @@
     <xsl:param name="i18nprefix" select="'mir.pagination.hits'" />
     <xsl:param name="class" select="''" />
 
-    <xsl:param name="href" select="concat($proxyBaseURL,$HttpSession,$solrParams)" />
+    <xsl:param name="href" select="concat($proxyBaseURL,$solrParams)" />
 
     <xsl:param name="page" />
     <xsl:param name="pages" />
@@ -56,7 +56,7 @@
               </xsl:variable>
               <xsl:value-of select="concat('?', substring-after($tmp, '&amp;'))" />
             </xsl:variable>
-            <xsl:value-of select="concat($proxyBaseURL, $HttpSession, $params, '&amp;start=', $newStart, '#hit_', $page)" />
+            <xsl:value-of select="concat($proxyBaseURL, $params, '&amp;start=', $newStart, '#hit_', $page)" />
           </xsl:attribute>
           <span class="fas fa-chevron-up" />
         </a>
@@ -119,7 +119,7 @@
     <xsl:param name="i18nprefix" select="'mir.pagination'" />
     <xsl:param name="class" select="''" />
 
-    <xsl:param name="href" select="concat($proxyBaseURL,$HttpSession,$solrParams)" />
+    <xsl:param name="href" select="concat($proxyBaseURL,$solrParams)" />
 
     <!-- variable can be used to change numbers of Page entries to display -->
     <xsl:param name="maxEntries" select="7" />

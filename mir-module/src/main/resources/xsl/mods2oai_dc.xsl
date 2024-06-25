@@ -14,7 +14,6 @@
 >
 
   <xsl:param name="ServletsBaseURL" select="''" />
-  <xsl:param name="HttpSession" select="''" />
 
   <xsl:include href="mods2dc.xsl" />
   <xsl:include href="mods2record.xsl" />

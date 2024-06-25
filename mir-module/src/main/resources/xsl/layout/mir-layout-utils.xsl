@@ -6,7 +6,6 @@
   <xsl:include href="layout-utils.xsl" />
   <xsl:include href="mir-accesskey-utils.xsl" />
 
-  <xsl:param name="HttpSession" />
   <xsl:param name="RequestURL" />
   <xsl:param name="WebApplicationBaseURL" />
 
@@ -33,7 +32,7 @@
   </xsl:template>
 
   <xsl:template name="displayLogin">
-    <xsl:variable name="loginURL" select="concat($ServletsBaseURL, 'MCRLoginServlet', $HttpSession,'?url=', encoder:encode(string($RequestURL)))" />
+    <xsl:variable name="loginURL" select="concat($ServletsBaseURL, 'MCRLoginServlet?url=', encoder:encode(string($RequestURL)))" />
     <br></br>
     <xsl:value-of disable-output-escaping="yes" select="i18n:translate('mir.loginRequiredInfo', $loginURL)" />
   </xsl:template>
