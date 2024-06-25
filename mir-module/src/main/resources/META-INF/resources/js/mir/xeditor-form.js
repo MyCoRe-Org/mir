@@ -115,7 +115,11 @@ $(document).ready(function() {
         if(window.location.hash!==null && window.location.hash!==""){
             let element = document.querySelector(window.location.hash);
             if(element!==null){
-                if(el.parent().find(window.location.hash).length>0){
+                if(el != null){
+                    if(el.parent().find(window.location.hash).length>0){
+                        element.scrollIntoView(true);
+                    }
+                } else {
                     element.scrollIntoView(true);
                 }
             }
