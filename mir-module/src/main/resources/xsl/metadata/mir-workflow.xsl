@@ -7,7 +7,7 @@
 
   <xsl:import href="xslImport:modsmeta:metadata/mir-workflow.xsl"/>
   <xsl:import href="xslImport:mirworkflow:metadata/mir-workflow.xsl"/>
-
+  <xsl:import href="mir-pdf-errorbox.xsl"/>
   <xsl:param name="layout" select="'$'"/>
   <xsl:param name="MIR.Workflow.Box" select="'false'"/>
   <xsl:param name="MIR.Workflow.ReviewDerivateRequired" select="'true'"/>
@@ -127,6 +127,7 @@
         Dokument submitted
       </xsl:message>
     </xsl:if>
+     <xsl:apply-templates select="." mode="displayPdfError"/>
   </xsl:template>
 
   <xsl:template match="mycoreobject" mode="creatorReview" priority="10">
