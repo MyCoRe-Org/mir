@@ -588,7 +588,7 @@
 
     function resolvePPN(element) {
         $.ajax({
-            url: "http://daia.gbv.de/?id=" + $(element).attr('href') + "&format=json",
+            url: "https://daia.gbv.de/?id=" + $(element).attr('href') + "&format=json",
             type: "GET",
             dataType: "json",
             success: function(data) {
