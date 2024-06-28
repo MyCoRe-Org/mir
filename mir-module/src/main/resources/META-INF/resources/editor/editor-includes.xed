@@ -2243,6 +2243,172 @@
     </div>
   </xed:template>
 
+  <xed:template id="codemeta.facts">
+    <xed:bind xpath="mods:extension[@displayLabel='codemeta-part']/fn:map" xmlns:fn="http://www.w3.org/2005/xpath-functions">
+      <xed:bind xpath="fn:string[@key='@type']">
+        <input type="hidden" value="SoftwareSourceCode" />
+      </xed:bind>
+      <fieldset>
+        <legend class="mir-fieldset-legend mb-3">
+          <xed:output i18n="mir.codeMeta.facts" />
+        </legend>
+        <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/codemeta-includes.xed" ref="developement-status" />
+        <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/codemeta-includes.xed" ref="version" />
+        <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/codemeta-includes.xed" ref="application-category.repeated" />
+        <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/codemeta-includes.xed" ref="application-sub-category.repeated" />
+        <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/codemeta-includes.xed" ref="programming-language.repeated" />
+        <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/codemeta-includes.xed" ref="operating-system.repeated" />
+      </fieldset>
+    </xed:bind>
+  </xed:template>
+
+  <xed:template id="codemeta.instance">
+    <xed:bind xpath="mods:extension[@displayLabel='codemeta-part']/fn:map" xmlns:fn="http://www.w3.org/2005/xpath-functions">
+      <fieldset>
+        <legend class="mir-fieldset-legend mb-3">
+          <xed:output i18n="mir.codeMeta.instance" />
+        </legend>
+        <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/codemeta-includes.xed" ref="processor-requirements.repeated" />
+        <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/codemeta-includes.xed" ref="memory-requirements.repeated" />
+        <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/codemeta-includes.xed" ref="storage-requirements.repeated" />
+        <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/codemeta-includes.xed" ref="runtime-platform.repeated" />
+        <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/codemeta-includes.xed" ref="software-requirements.repeated" />
+        <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/codemeta-includes.xed" ref="software-suggestions.repeated" />
+        <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/codemeta-includes.xed" ref="permissions.repeated" />
+      </fieldset>
+    </xed:bind>
+  </xed:template>
+
+  <xed:template id="codemeta.other">
+    <xed:bind xpath="mods:extension[@displayLabel='codemeta-part']/fn:map" xmlns:fn="http://www.w3.org/2005/xpath-functions">
+      <fieldset>
+        <legend class="mir-fieldset-legend mb-3">
+          <xed:output i18n="mir.codeMeta.other" />
+        </legend>
+        <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/codemeta-includes.xed" ref="code-repository" />
+        <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/codemeta-includes.xed" ref="readme" />
+        <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/codemeta-includes.xed" ref="build-instructions" />
+        <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/codemeta-includes.xed" ref="release-notes" />
+        <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/codemeta-includes.xed" ref="cont-integration" />
+        <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/codemeta-includes.xed" ref="issue-tracker" />
+      </fieldset>
+    </xed:bind>
+  </xed:template>
+
+  <xed:template id="software.involved.repeated">
+    <mir:person.extended.repeated help-text="{i18n:mir.help.research.data.person}">
+      <option value="cre">
+        <xed:output i18n="mir.role.creator" />
+      </option>
+      <option value="ctb">
+        <xed:output i18n="mir.role.contributor" />
+      </option>
+      <option value="pbl">
+        <xed:output i18n="mir.role.publisher" />
+      </option>
+      <option value="cph">
+        <xed:output i18n="mir.role.copyrightHolder" />
+      </option>
+      <option value="spn">
+        <xed:output i18n="mir.role.sponsor" />
+      </option>
+      <option value="prv">
+        <xed:output i18n="mir.role.provider" />
+      </option>
+      <option value="led">
+        <xed:output i18n="mir.role.maintainer" />
+      </option>
+      <option value="fnd">
+        <xed:output i18n="mir.role.funder" />
+      </option>
+    </mir:person.extended.repeated>
+  </xed:template>
+
+  <xed:template id="software.relatedPublication.repeated">
+    <fieldset>
+      <legend class="mir-fieldset-legend">
+        <xed:output i18n="mir.relatedPublication" />
+      </legend>
+      <xed:repeat xpath="mods:relatedItem" min="1" max="10">
+        <div class="mir-fieldset-content">
+          <div class="form-group row {$xed-validation-marker}">
+            <label class="col-md-3 col-form-label text-right">
+              <xed:output i18n="mir.relatedPublication.type" />
+            </label>
+            <div class="col-md-6 controls">
+              <xed:bind xpath="@type" initially="">
+                <select class="form-control form-control-inline">
+                  <option value="">
+                    <xed:output i18n="mir.select" />
+                  </option>
+                  <option value="host">
+                    <xed:output i18n="mir.relatedItem.host" />
+                  </option>
+                  <option value="constituent">
+                    <xed:output i18n="mir.relatedItem.constituent" />
+                  </option>
+                  <option value="isReferencedBy">
+                    <xed:output i18n="mir.relatedItem.isReferencedBy" />
+                  </option>
+                </select>
+              </xed:bind>
+            </div>
+            <mir:help-pmud help-text="{i18n:mir.help.related.item}" pmud="true" />
+          </div>
+          <div class="form-group row">
+            <label class="col-md-3 col-form-label text-right">
+              <xed:output i18n="mir.relatedPublication.title" />
+            </label>
+            <div class="col-md-6 controls">
+              <xed:bind xpath="mods:titleInfo/mods:title">
+                <input type="text" class="form-control form-control-inline" />
+              </xed:bind>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-md-3 col-form-label text-right">
+              <xed:output i18n="mir.relatedPublication.genre" />
+            </label>
+            <div class="col-md-6 controls">
+              <xed:bind xpath="mods:genre[@type='intern'][@authorityURI=$mir_genres/label[@xml:lang='x-uri']/@text]/@valueURIxEditor">
+                <select class="form-control form-control-inline">
+                  <option value="">
+                    <xed:output i18n="mir.select" />
+                  </option>
+                  <option>
+                    <xed:output i18n="mir.genre.publication" />
+                  </option>
+                  <option value="research_data">
+                    <xed:output i18n="mir.genre.researchData" />
+                  </option>
+                  <option value="software">
+                    <xed:output i18n="mir.genre.software" />
+                  </option>
+                  <option value="speech">
+                    <xed:output i18n="mir.genre.presentation" />
+                  </option>
+                </select>
+              </xed:bind>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-md-3 col-form-label text-right">
+              <xed:output i18n="mir.relatedPublication.link" />
+            </label>
+            <div class="col-md-6 controls">
+              <xed:bind xpath="mods:location/mods:url[@access='raw object']">
+                <input type="text" class="form-control form-control-inline" />
+              </xed:bind>
+            </div>
+          </div>
+        </div>
+        <xed:validate display="global" i18n="mir.relatedPublication.error"
+            relevant-if="string-length(@type) &gt; 0 or string-length(mods:titleInfo/mods:title) &gt; 0 or string-length(mods:location/mods:url) &gt; 0"
+            test="string-length(@type) &gt; 0 and (string-length(mods:titleInfo/mods:title) &gt; 0 or string-length(mods:location/mods:url) &gt; 0)" />
+      </xed:repeat>
+    </fieldset>
+  </xed:template>
+
   <xed:template id="failed-validation-messages">
     <xed:if test="$xed-validation-failed">
       <div class="alert alert-danger">
@@ -2302,6 +2468,10 @@
     <xed:cleanup-rule xpath="//mods:relatedItem/mods:location|//mods:relatedItem/mods:genre" relevant-if="string-length(../@xlink:href)=0" />
     <xed:cleanup-rule xpath="//mods:relatedItem/mods:location" relevant-if="mods:*" />
     <xed:cleanup-rule xpath="//mods:relatedItem/mods:genre[@type='intern']" relevant-if="string-length(@valueURIxEditor) &gt; 0" />
+    <xed:cleanup-rule xpath="//mods:extension[@displayLabel='codemeta-part']" relevant-if="*" />
+    <xed:cleanup-rule xpath="//mods:extension[@displayLabel='codemeta-part']//fn:string" relevant-if="(string-length(text()) &gt; 0)" />
+    <xed:cleanup-rule xpath="//mods:extension[@displayLabel='codemeta-part']//fn:array" relevant-if="*" />
+    <xed:cleanup-rule xpath="//mods:extension[@displayLabel='codemeta-part']//fn:map" relevant-if="(count(*) &gt; 1)" />
   </xed:template>
 
   <xed:template id="javascript">

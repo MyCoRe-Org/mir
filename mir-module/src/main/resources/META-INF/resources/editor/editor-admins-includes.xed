@@ -41,6 +41,10 @@
     <xed:include ref="related.item.search.of.all.items" />
     <xed:include ref="related.item.other.search.of.all.items" />
 
+    <xed:include ref="codemeta.facts" />
+    <xed:include ref="codemeta.instance" />
+    <xed:include ref="codemeta.other" />
+
     <xed:include ref="cancel.submit" />
     <xed:include ref="cleanup-rules" />
     <xed:include ref="validation-rules" />

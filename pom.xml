@@ -433,6 +433,12 @@
         <version>1.1</version>
         <scope>runtime</scope>
       </dependency>
+      <!-- TODO move to bom -->
+      <dependency>
+        <groupId>com.github.jsonld-java</groupId>
+        <artifactId>jsonld-java</artifactId>
+        <version>0.13.4</version>
+      </dependency>
     </dependencies>
   </dependencyManagement>
   <developers>

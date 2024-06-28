@@ -461,6 +461,25 @@
     <xed:include ref="comment" />
   </xed:template>
 
+  <xed:template id="genres.software">
+    <xed:include ref="title" />
+    <xed:include ref="abstract.simple" />
+    <xed:include ref="doi.handle.urn.repeated" />
+    <xed:include ref="research.data.date.repeated" />
+    <xed:include ref="language" />
+    <xed:include ref="subject.simple" />
+    <xed:include ref="software.involved.repeated" />
+    <xed:include ref="copyrightMD" />
+    <xed:include ref="access" />
+    <xed:include ref="rights" />
+    <xed:include ref="embargo.datetimepicker" />
+    <xed:include ref="software.relatedPublication.repeated" />
+    <xed:include ref="comment" />
+    <xed:include ref="codemeta.facts" />
+    <xed:include ref="codemeta.instance" />
+    <xed:include ref="codemeta.other" />
+  </xed:template>
+
   <xed:template id="genres.lecture">
     <xed:include ref="title" />
     <xed:include ref="subtitle" />

@@ -3,6 +3,7 @@ package org.mycore.mir.validation;
 import java.io.IOException;
 import java.io.StringReader;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -160,5 +161,14 @@ public class MIRValidationHelper {
             }
         }
         return false;
+    }
+
+    public static boolean validateURL(String url) {
+        try {
+            new URL(url).toURI();
+        } catch (MalformedURLException | URISyntaxException e) {
+            return false;
+        }
+        return true;
     }
 }

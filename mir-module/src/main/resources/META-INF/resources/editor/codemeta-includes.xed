@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xed:template xmlns:xed="http://www.mycore.de/xeditor"
+  xmlns:mir="http://www.mycore.de/mir"
+  xmlns:fn="http://www.w3.org/2005/xpath-functions">
+
+  <!-- TODO -->
+  <!-- funding -->
+  <!-- related link -->
+  <!-- isAccessibleForFree standard? -->
+  <!-- supportingData -->
+  <!-- softwareHelp -->
+  <!-- targetProduct -->
+
+  <!-- developmentStatus -->
+  <xed:template id="developement-status">
+    <xed:bind xpath="fn:map[@key='developmentStatus']">
+      <xed:bind xpath="fn:string[@key='@type']">
+        <input type="hidden" value="Text" />
+      </xed:bind>
+      <div class="form-group row">
+        <label class="col-md-3 col-form-label text-right">
+          <xed:output i18n="mir.codeMeta.developmentStatus" />
+        </label>
+        <div class="col-md-6">
+          <xed:bind xpath="fn:string[@key='@value']" initially="">
+            <select class="form-control form-control-inline">
+              <option value="">
+                <xed:output i18n="mir.select" />
+              </option>
+              <xed:include uri="xslStyle:items2options:classification:editorComplete:1:children:development_status" />
+            </select>
+          </xed:bind>
+        </div>
+        <mir:help-pmud help-text="{i18n:mir.codeMeta.developmentStatus.help}" pmud="false" />
+      </div>
+    </xed:bind>
+  </xed:template>
+
+  <!-- version -->
+  <xed:template id="version">
+    <mir:textfield xpath="fn:string[@key='version']" label="mir.codeMeta.version"
+      help-text="{i18n:mir.codeMeta.version.help}" />
+  </xed:template>
+
+  <!-- applicationCategory -->
+  <xed:template id="application-category.repeated">
+    <xed:repeat xpath="fn:array[@key='applicationCategory']/fn:map">
+      <xed:bind xpath="fn:string[@key='@type']">
+        <input type="hidden" value="Text" />
+      </xed:bind>
+      <div class="form-group row">
+        <label class="col-md-3 col-form-label text-right">
+          <xed:output i18n="mir.codeMeta.applicationCategory" />
+        </label>
+        <div class="col-md-6">
+          <xed:bind xpath="fn:string[@key='@value']">
+            <input type="text" class="form-control form-control-inline" />
+          </xed:bind>
+        </div>
+        <mir:help-pmud help-text="{i18n:mir.codeMeta.applicationCategory.help}" pmud="true" />
+      </div>
+    </xed:repeat>
+  </xed:template>
+
+  <!-- applicationSubCategory -->
+  <xed:template id="application-sub-category.repeated">
+    <xed:repeat xpath="fn:array[@key='applicationSubCategory']/fn:map">
+      <xed:bind xpath="fn:string[@key='@type']">
+        <input type="hidden" value="Text" />
+      </xed:bind>
+      <div class="form-group row">
+        <label class="col-md-3 col-form-label text-right">
+          <xed:output i18n="mir.codeMeta.applicationSubCategory" />
+        </label>
+        <div class="col-md-6">
+          <xed:bind xpath="fn:string[@key='@value']">
+            <input type="text" class="form-control form-control-inline" />
+          </xed:bind>
+        </div>
+        <mir:help-pmud help-text="{i18n:mir.codeMeta.applicationSubCategory.help}" pmud="true" />
+      </div>
+    </xed:repeat>
+  </xed:template>
+
+  <!-- programmingLanguage -->
+  <xed:template id="programming-language.repeated">
+    <xed:repeat xpath="fn:array[@key='programmingLanguage']/fn:map">
+      <xed:bind xpath="fn:string[@key='@type']">
+        <input type="hidden" value="http://schema.org/ComputerLanguage" />
+      </xed:bind>
+      <div class="form-group row">
+        <label class="col-md-3 col-form-label text-right">
+          <xed:output i18n="mir.codeMeta.programmingLanguage" />
+        </label>
+        <div class="col-md-6">
+          <xed:bind xpath="fn:string[@key='name']">
+            <input type="text" class="form-control form-control-inline" />
+          </xed:bind>
+        </div>
+        <mir:help-pmud help-text="{i18n:mir.codeMeta.programmingLanguage.help}" pmud="true" />
+      </div>
+    </xed:repeat>
+  </xed:template>
+
+  <!-- operatingSystem -->
+  <xed:template id="operating-system.repeated">
+    <xed:bind xpath="fn:array[@key='operatingSystem']">
+      <mir:textfield xpath="fn:string" label="mir.codeMeta.operatingSystem"
+        help-text="{i18n:mir.codeMeta.operatingSystem.help}" repeat="true" />
+    </xed:bind>
+  </xed:template>
+
+  <!-- processorRequirements -->
+  <xed:template id="processor-requirements.repeated">
+    <xed:bind xpath="fn:array[@key='processorRequirements']">
+      <mir:textfield xpath="fn:string" label="mir.codeMeta.processorRequirements"
+        help-text="{i18n:mir.codeMeta.processorRequirements.help}" repeat="true" />
+    </xed:bind>
+  </xed:template>
+
+  <!-- memoryRequirements -->
+  <xed:template id="memory-requirements.repeated">
+    <xed:repeat xpath="fn:array[@key='memoryRequirements']/fn:map">
+      <xed:bind xpath="fn:string[@key='@type']">
+        <input type="hidden" value="Text" />
+      </xed:bind>
+      <div class="form-group row">
+        <label class="col-md-3 col-form-label text-right">
+          <xed:output i18n="mir.codeMeta.memoryRequirements" />
+        </label>
+        <div class="col-md-6">
+          <xed:bind xpath="fn:string[@key='@value']">
+            <input type="text" class="form-control form-control-inline" />
+          </xed:bind>
+        </div>
+        <mir:help-pmud help-text="{i18n:mir.codeMeta.memoryRequirements.help}" pmud="true" />
+      </div>
+    </xed:repeat>
+  </xed:template>
+
+  <!-- storageRequirements -->
+  <xed:template id="storage-requirements.repeated">
+    <xed:repeat xpath="fn:array[@key='storageRequirements']/fn:map">
+      <xed:bind xpath="fn:string[@key='@type']">
+        <input type="hidden" value="Text" />
+      </xed:bind>
+      <div class="form-group row">
+        <label class="col-md-3 col-form-label text-right">
+          <xed:output i18n="mir.codeMeta.storageRequirements" />
+        </label>
+        <div class="col-md-6">
+          <xed:bind xpath="fn:string[@key='@value']">
+            <input type="text" class="form-control form-control-inline" />
+          </xed:bind>
+        </div>
+        <mir:help-pmud help-text="{i18n:mir.codeMeta.storageRequirements.help}" pmud="true" />
+      </div>
+    </xed:repeat>
+  </xed:template>
+
+  <!-- runtimePlatform -->
+  <xed:template id="runtime-platform.repeated">
+    <xed:bind xpath="fn:array[@key='runtimePlatform']">
+      <mir:textfield xpath="fn:string" label="mir.codeMeta.runtimePlatform"
+        help-text="{i18n:mir.codeMeta.runtimePlatform.help}" repeat="true" />
+    </xed:bind>
+  </xed:template>
+ 
+  <!-- softwareRequirements -->
+  <xed:template id="software-requirements.repeated">
+    <xed:repeat xpath="fn:array[@key='softwareRequirements']/fn:map">
+      <xed:bind xpath="fn:string[@key='@type']">
+        <input type="hidden" value="SoftwareSourceCode" />
+      </xed:bind>
+      <div class="mir-fieldset-content-centered">
+        <div class="form-group row d-flex align-items-center">
+          <label class="col-md-3 col-form-label text-right">
+            <xed:output i18n="mir.codeMeta.softwareRequirements" />
+          </label>
+          <div class="col-md-6 controls">
+            <div class="row">
+              <div class="col">
+                <xed:bind xpath="fn:string[@key='name']">
+                  <input type="text" class="form-control form-control-inline"
+                    placeholder="{i18n:mir.codeMeta.softwareRequirements.name}"/>
+                </xed:bind>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <xed:bind xpath="fn:string[@key='codeRepository']">
+                  <input type="text" class="form-control form-control-inline"
+                    placeholder="{i18n:mir.codeMeta.softwareRequirements.link}" />
+                  <xed:validate class="org.mycore.mir.validation.MIRValidationHelper" method="validateURL"
+                    i18n="mir.validation.url" display="global" />
+                </xed:bind>
+              </div>
+            </div>
+          </div>
+          <mir:help-pmud help-text="{i18n:mir.codeMeta.softwareRequirements.help}" pmud="true" />
+        </div>
+      </div>
+    </xed:repeat>
+  </xed:template>
+
+  <!-- softwareSuggestions -->
+  <xed:template id="software-suggestions.repeated">
+    <xed:repeat xpath="fn:array[@key='softwareSuggestions']/fn:map">
+      <xed:bind xpath="fn:string[@key='@type']">
+        <input type="hidden" value="SoftwareSourceCode" />
+      </xed:bind>
+      <div class="mir-fieldset-content-centered">
+        <div class="form-group row d-flex align-items-center">
+          <label class="col-md-3 col-form-label text-right">
+            <xed:output i18n="mir.codeMeta.softwareSuggestions" />
+          </label>
+          <div class="col-md-6 controls">
+            <div class="row">
+              <div class="col">
+                <xed:bind xpath="fn:string[@key='name']">
+                  <input type="text" class="form-control form-control-inline"
+                    placeholder="{i18n:mir.codeMeta.softwareSuggestions.name}"/>
+                </xed:bind>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <xed:bind xpath="fn:string[@key='codeRepository']">
+                  <input type="text" class="form-control form-control-inline"
+                    placeholder="{i18n:mir.codeMeta.softwareSuggestions.link}" />
+                  <xed:validate class="org.mycore.mir.validation.MIRValidationHelper" method="validateURL"
+                    i18n="mir.validation.url" display="global" />
+                </xed:bind>
+              </div>
+            </div>
+          </div>
+          <mir:help-pmud help-text="{i18n:mir.codeMeta.softwareSuggestions.help}" pmud="true" />
+        </div>
+      </div>
+    </xed:repeat>
+  </xed:template>
+
+  <!-- permissions -->
+  <xed:template id="permissions.repeated">
+    <xed:bind xpath="fn:array[@key='permissions']">
+      <mir:textfield xpath="fn:string" label="mir.codeMeta.permissions"
+        help-text="{i18n:mir.codeMeta.permissions.help}" repeat="true" />
+    </xed:bind>
+  </xed:template>
+
+  <!-- codeRepository -->
+  <xed:template id="code-repository">
+    <mir:textfield xpath="fn:string[@key='codeRepository']" label="mir.codeMeta.codeRepository"
+      help-text="{i18n:mir.codeMeta.codeRepository.help}" />
+    <xed:validate xpath="//fn:string[@key='codeRepository']" class="org.mycore.mir.validation.MIRValidationHelper"
+      method="validateURL" i18n="mir.validation.url" display="global" />
+  </xed:template>
+
+  <!-- buildInstructions -->
+  <xed:template id="build-instructions">
+    <mir:textfield xpath="fn:string[@key='buildInstructions']" label="mir.codeMeta.buildInstructions"
+      help-text="{i18n:mir.codeMeta.buildInstructions.help}" />
+    <xed:validate xpath="//fn:string[@key='buildInstructions']" class="org.mycore.mir.validation.MIRValidationHelper"
+      method="validateURL" i18n="mir.validation.url" display="global" />
+  </xed:template>
+
+  <!-- releaseNotes -->
+  <xed:template id="release-notes">
+    <mir:textfield xpath="fn:string[@key='releaseNotes']" label="mir.codeMeta.releaseNotes"
+      help-text="{i18n:mir.codeMeta.releaseNotes.help}" />
+    <xed:validate xpath="//fn:string[@key='releaseNotes']" class="org.mycore.mir.validation.MIRValidationHelper"
+      method="validateURL" i18n="mir.validation.url" display="global" />
+  </xed:template>
+
+  <!-- contIntegration -->
+  <xed:template id="cont-integration">
+    <mir:textfield xpath="fn:string[@key='contIntegration']" label="mir.codeMeta.contIntegration"
+      help-text="{i18n:mir.codeMeta.contIntegration.help}" />
+    <xed:validate xpath="//fn:string[@key='contIntegration']" class="org.mycore.mir.validation.MIRValidationHelper"
+      method="validateURL" i18n="mir.validation.url" display="global" />
+  </xed:template>
+
+  <!-- issueTracker -->
+  <xed:template id="issue-tracker">
+    <mir:textfield xpath="fn:string[@key='issueTracker']" label="mir.codeMeta.issueTracker"
+      help-text="{i18n:mir.codeMeta.issueTracker.help}" />
+    <xed:validate xpath="//fn:string[@key='issueTracker']" class="org.mycore.mir.validation.MIRValidationHelper"
+      method="validateURL" i18n="mir.validation.url" display="global" />
+  </xed:template>
+
+  <!-- readme -->
+  <xed:template id="readme">
+    <mir:textfield xpath="fn:string[@key='readme']" label="mir.codeMeta.readme"
+      help-text="{i18n:mir.codeMeta.readme.help}" />
+    <xed:validate xpath="//fn:string[@key='readme']" class="org.mycore.mir.validation.MIRValidationHelper"
+      method="validateURL" i18n="mir.validation.url" display="global" />
+  </xed:template>
+
+</xed:template>
