@@ -28,7 +28,7 @@
         "myclabs.jquery.confirm": "2.7.0",
         "openlayers": "4.6.4",
         "popper.js": "^1.14.7",
-        "select2": "4.0.6-rc.1",
+        "select2": "4.0.6",
         "typeahead.js": "0.11.1",
         "video.js": "7.14.3"
     },
