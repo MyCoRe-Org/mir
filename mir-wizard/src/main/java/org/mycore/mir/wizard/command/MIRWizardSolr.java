@@ -24,8 +24,12 @@ package org.mycore.mir.wizard.command;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.jdom2.Element;
 import org.mycore.mir.wizard.MIRWizardCommand;
+import org.mycore.solr.commands.MCRSolrCloudCommands;
 import org.mycore.solr.commands.MCRSolrCommands;
+
+import java.util.Optional;
 
 /**
  * @author René Adler (eagle)
@@ -57,6 +61,19 @@ public class MIRWizardSolr extends MIRWizardCommand {
     @Override
     public void doExecute() {
         try {
+            Optional<Element> createCores = Optional.ofNullable(getInputXML())
+                    .map(input -> input.getChild("solr"))
+                    .map(input -> input.getChild("createCores"))
+                    .filter(input -> input.getTextTrim().equals("true"));
+
+            if (createCores.isPresent()) {
+                MCRSolrCloudCommands.uploadLocalConfig(DEFAULT_CORE);
+                MCRSolrCloudCommands.uploadLocalConfig(DEFAULT_CLASSIFICATION);
+
+                MCRSolrCloudCommands.createCollection(DEFAULT_CORE);
+                MCRSolrCloudCommands.createCollection(DEFAULT_CLASSIFICATION);
+            }
+
             MCRSolrCommands.reloadSolrConfiguration(DEFAULT_CORE, DEFAULT_CORE);
             MCRSolrCommands.reloadSolrConfiguration(DEFAULT_CLASSIFICATION, DEFAULT_CLASSIFICATION);
 

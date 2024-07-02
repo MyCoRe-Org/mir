@@ -1,0 +1,4 @@
+upload local config set for main
+upload local config set for classification
+create collection for core main
+create collection for core classification
