@@ -12,7 +12,7 @@
     "@vueuse/core": "^10.2.1",
     "core-js": "^3.8.3",
     "ol": "^7.4.0",
-    "ol-contextmenu": "^5.2.1",
+    "ol-contextmenu": "^5.4.0",
     "ol-ext": "^4.0.9",
     "vue": "^3.2.13",
     "vue3-openlayers": "^1.0.0"
