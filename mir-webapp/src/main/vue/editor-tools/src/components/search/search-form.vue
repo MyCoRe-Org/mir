@@ -22,17 +22,17 @@ interface SearchFormProps {
     searchTerm: string,
 }
 
-watch(()=> props.searchTerm, (newValue) => {
-    model.inputValue = newValue;
-}, {
-    deep: true
-});
-
 const emit = defineEmits(["searchSubmitted"]);
 const props = defineProps<SearchFormProps>();
 
 const model = reactive({
     inputValue: "",
+});
+
+watch(()=> props.searchTerm, (newValue) => {
+  model.inputValue = newValue;
+}, {
+  deep: true
 });
 
 const i18n = provideTranslations([
