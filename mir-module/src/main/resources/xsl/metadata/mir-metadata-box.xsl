@@ -183,7 +183,13 @@
               mode="present" />
             <xsl:apply-templates select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:originInfo[@eventType='update']/mods:dateModified"
               mode="present" />
-            <xsl:apply-templates mode="present" select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:identifier[@type!='open-aire' and @type!='intern' and @type!='issn']" />
+
+            <xsl:variable name="identifierTypes" select="document('classification:metadata:-1:children:identifier')/mycoreclass/categories" />
+            <xsl:for-each select="$identifierTypes/category[@ID!='open-aire' and @ID!='intern' and @ID!='issn']">
+                <xsl:variable name="identifierType" select="@ID"/>
+                        <xsl:apply-templates mode="present" select="$mods/mods:identifier[@type=$identifierType]" />
+            </xsl:for-each>
+
             <xsl:for-each select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:identifier[@type='issn']">
                 <tr>
                     <td class="metaname" valign="top">
