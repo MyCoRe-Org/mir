@@ -591,9 +591,21 @@
         });
     }
 
+    function trimPPNUrl(ppnUrl) {
+        if (ppnUrl) {
+            try {
+                let url = new URL(ppnUrl);
+                return (url && url.protocol + "//" + url.host + url.pathname) || ppnUrl;
+            } catch (e) {
+                console.error(e);
+            }
+        }
+        return ppnUrl;
+    }
+
     function resolvePPN(element) {
         $.ajax({
-            url: "http://daia.gbv.de/?id=" + $(element).attr('href') + "&format=json",
+            url: "https://daia.gbv.de/?id=" + trimPPNUrl($(element).attr("href")) + "&format=json",
             type: "GET",
             dataType: "json",
             success: function(data) {
