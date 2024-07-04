@@ -39,7 +39,6 @@ import org.mycore.frontend.MCRFrontendUtil;
 import org.mycore.frontend.servlets.MCRServlet;
 import org.mycore.frontend.servlets.MCRServletJob;
 import org.mycore.services.i18n.MCRTranslation;
-import org.mycore.user2.MCRPasswordHashType;
 import org.mycore.user2.MCRUser;
 import org.mycore.user2.MCRUserManager;
 import org.mycore.user2.utils.MCRUserTransformer;
@@ -161,8 +160,7 @@ public class MirSelfRegistrationServlet extends MCRServlet {
             DateTimeFormatter formatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME.withZone(ZoneOffset.UTC);
             user.setUserAttribute("registeredAt", registeredAt.format(formatter));
 
-            user.setHashType(MCRPasswordHashType.md5);
-            user.setPassword(MCRUtils.asMD5String(1, null, doc.getRootElement().getChildText("password")));
+            MCRUserManager.setUserPassword(user, doc.getRootElement().getChildText("password"));
 
             MCRUserManager.createUser(user);
 
