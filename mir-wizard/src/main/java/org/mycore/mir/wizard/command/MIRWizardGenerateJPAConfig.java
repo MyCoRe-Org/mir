@@ -50,6 +50,8 @@ public class MIRWizardGenerateJPAConfig extends MIRWizardCommand {
 
     private static final String COMPLEX_DATABASE_PREFIX
         = MCRPersistenceProvider.JPA_PERSISTENCE_UNIT_PROPERTY_NAME + PERSISTENCE_UNIT_NAME + ".";
+    
+    public static final String HIKARI_PROVIDER = "org.hibernate.hikaricp.internal.HikariCPConnectionProvider";
 
     public MIRWizardGenerateJPAConfig() {
         this("persistence.properties");
@@ -62,10 +64,12 @@ public class MIRWizardGenerateJPAConfig extends MIRWizardCommand {
     private static Properties getDefaultProps() {
         Properties props = new Properties();
 
-        props.setProperty(COMPLEX_DATABASE_PREFIX + "Class",
-            MCRSimpleConfigPersistenceUnitDescriptor.class.getName());
-        props.setProperty("MCR.JPA.Connection.MaximumPoolSize", "10");
+        props.setProperty(COMPLEX_DATABASE_PREFIX + "Class", MCRSimpleConfigPersistenceUnitDescriptor.class.getName());
         props.setProperty(COMPLEX_DATABASE_PREFIX + "Properties.hibernate.auto_quote_keyword", "true");
+        props.setProperty("MCR.JPA.Cache.UseSecondLevelCache", "false");
+        props.setProperty("MCR.JPA.Hbm2ddlAuto", "validate");
+        props.setProperty("MCR.JPA.Connection.ProviderClass", HIKARI_PROVIDER);
+        props.setProperty("MCR.JPA.Connection.MaximumPoolSize", "10");
 
         return props;
     }
