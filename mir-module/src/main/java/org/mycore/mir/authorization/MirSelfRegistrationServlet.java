@@ -31,7 +31,6 @@ import org.jdom2.Document;
 import org.jdom2.Element;
 import org.mycore.common.MCRMailer;
 import org.mycore.common.MCRSessionMgr;
-import org.mycore.common.MCRUtils;
 import org.mycore.common.config.MCRConfiguration2;
 import org.mycore.common.content.MCRJDOMContent;
 import org.mycore.common.xml.MCRXMLFunctions;
