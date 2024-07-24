@@ -6,7 +6,7 @@
                 exclude-result-prefixes="i18n mods xlink mcrxsl">
   <!-- copied from http://www.loc.gov/standards/mods/v3/MODS3-4_HTML_XSLT1-0.xsl -->
   <xsl:include href="layout-utils.xsl" />
-
+  <xsl:param name="WebApplicationBaseURL"/>
 
   <xsl:template match="/">
     <div id="system_box" class="detailbox">
@@ -30,10 +30,13 @@
             <xsl:with-param select="mycoreobject/service/servdates/servdate[@type='createdate']" name="nodes"/>
             <xsl:with-param select="i18n:translate('metaData.createdAt')" name="label"/>
           </xsl:call-template>
-          <xsl:call-template name="printMetaDate">
-            <xsl:with-param select="mycoreobject/service/servflags/servflag[@type='createdby']" name="nodes"/>
-            <xsl:with-param select="i18n:translate('metaData.createdby')" name="label"/>
+
+          <xsl:call-template name="print-user-info">
+            <xsl:with-param name="user" select="document(concat('notnull:user:', mycoreobject/service/servflags/servflag[@type='createdby']))"/>
+            <xsl:with-param name="label" select="i18n:translate('metaData.createdby')"/>
+            <xsl:with-param name="link-to-profile" select="true()"/>
           </xsl:call-template>
+
           <xsl:for-each select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:note">
             <xsl:variable name="noteType">
               <xsl:choose>
@@ -65,10 +68,12 @@
             <xsl:with-param select="mycoreobject/service/servdates/servdate[@type='modifydate']" name="nodes"/>
             <xsl:with-param select="i18n:translate('metaData.lastChanged')" name="label"/>
           </xsl:call-template>
-          <xsl:call-template name="printMetaDate">
-            <xsl:with-param select="mycoreobject/service/servflags/servflag[@type='modifiedby']" name="nodes"/>
-            <xsl:with-param select="i18n:translate('metaData.modifiedBy')" name="label"/>
+
+          <xsl:call-template name="print-user-info">
+            <xsl:with-param name="user" select="document(concat('notnull:user:', mycoreobject/service/servflags/servflag[@type='modifiedby']))"/>
+            <xsl:with-param name="label" select="i18n:translate('metaData.modifiedBy')"/>
           </xsl:call-template>
+
           <!--*** MyCoRe-ID and intern ID *************************** -->
           <tr>
             <td class="metaname">
@@ -129,4 +134,47 @@
       </div>
     </div>
   </xsl:template>
+
+  <xsl:template name="print-user-info">
+    <xsl:param name="user"/>
+    <xsl:param name="label"/>
+    <xsl:param name="link-to-profile" select="false()"/>
+
+    <xsl:variable name="display-name">
+      <xsl:choose>
+        <xsl:when test="$user/user/realName">
+          <xsl:value-of select="$user/user/realName"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="$user/user/@name"/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+
+    <tr>
+      <td class="metaname">
+        <xsl:value-of select="concat($label, ':')"/>
+      </td>
+
+      <td class="metavalue">
+        <xsl:if test="$user/user/realName">
+          <xsl:attribute name="title">
+            <xsl:value-of select="concat($user/user/@name, '@', $user/user/@realm)"/>
+          </xsl:attribute>
+        </xsl:if>
+
+        <xsl:choose>
+          <xsl:when test="$link-to-profile = true()">
+            <a href="{$WebApplicationBaseURL}/servlets/MCRUserServlet?action=show&amp;id={$user/user/@name}">
+              <xsl:value-of select="$display-name"/>
+            </a>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:value-of select="$display-name"/>
+          </xsl:otherwise>
+        </xsl:choose>
+      </td>
+    </tr>
+  </xsl:template>
+
 </xsl:stylesheet>
