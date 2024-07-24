@@ -24,6 +24,7 @@ package org.mycore.mir.authorization;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jdom2.Document;
@@ -44,6 +45,9 @@ import org.mycore.user2.MCRUserManager;
 import org.mycore.user2.utils.MCRUserTransformer;
 
 import java.io.Serial;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -146,8 +150,6 @@ public class MirSelfRegistrationServlet extends MCRServlet {
 
             LOGGER.info("create new user " + user.getUserID() + " " + user.getRealm().getID());
 
-            final String password = doc.getRootElement().getChildText("password");
-
             if (DEFAULT_REGISTRATION_DISABLED_STATUS != null && !DEFAULT_REGISTRATION_DISABLED_STATUS.isEmpty()) {
                 user.setDisabled(Boolean.parseBoolean(DEFAULT_REGISTRATION_DISABLED_STATUS));
             }
@@ -155,8 +157,12 @@ public class MirSelfRegistrationServlet extends MCRServlet {
             // remove all roles set by editor
             user.getSystemRoleIDs().clear();
 
+            ZonedDateTime registeredAt = ZonedDateTime.now().withNano(0);
+            DateTimeFormatter formatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME.withZone(ZoneOffset.UTC);
+            user.setUserAttribute("registeredAt", registeredAt.format(formatter));
+
             user.setHashType(MCRPasswordHashType.md5);
-            user.setPassword(MCRUtils.asMD5String(1, null, password));
+            user.setPassword(MCRUtils.asMD5String(1, null, doc.getRootElement().getChildText("password")));
 
             MCRUserManager.createUser(user);
 
