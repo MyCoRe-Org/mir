@@ -34,7 +34,6 @@
           <xsl:call-template name="print-user-info">
             <xsl:with-param name="user" select="document(concat('notnull:user:', mycoreobject/service/servflags/servflag[@type='createdby']))"/>
             <xsl:with-param name="label" select="i18n:translate('metaData.createdby')"/>
-            <xsl:with-param name="link-to-profile" select="true()"/>
           </xsl:call-template>
 
           <xsl:for-each select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:note">
@@ -138,7 +137,6 @@
   <xsl:template name="print-user-info">
     <xsl:param name="user"/>
     <xsl:param name="label"/>
-    <xsl:param name="link-to-profile" select="false()"/>
 
     <xsl:variable name="display-name">
       <xsl:choose>
@@ -162,17 +160,7 @@
             <xsl:value-of select="concat($user/user/@name, '@', $user/user/@realm)"/>
           </xsl:attribute>
         </xsl:if>
-
-        <xsl:choose>
-          <xsl:when test="$link-to-profile = true()">
-            <a href="{$WebApplicationBaseURL}/servlets/MCRUserServlet?action=show&amp;id={$user/user/@name}">
-              <xsl:value-of select="$display-name"/>
-            </a>
-          </xsl:when>
-          <xsl:otherwise>
-            <xsl:value-of select="$display-name"/>
-          </xsl:otherwise>
-        </xsl:choose>
+        <xsl:value-of select="$display-name"/>
       </td>
     </tr>
   </xsl:template>
