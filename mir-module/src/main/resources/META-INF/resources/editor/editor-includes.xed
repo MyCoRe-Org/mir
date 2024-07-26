@@ -905,7 +905,7 @@
           </label>
           <div class="col-md-6 center-vertical">
             <mir:dateRangeInput xpath="mods:originInfo[@eventType='publication']/mods:dateIssued[@encoding='w3cdtf']" class="datetimepicker mainDate"
-              placeholder="{i18n:mir.placeholder.date}" type="publication" />
+              placeholder="{i18n:mir.placeholder.date}" type="publication" startsWithDateTime="false" showDateTimeOption="false"/>
             <span class="fas fa-chevron-down expand-item" title="{i18n:mir.help.expand}" aria-hidden="true"></span>
           </div>
           <mir:help-pmud help-text="{i18n:mir.help.date.issued.10}" pmud="false" />
