@@ -84,17 +84,19 @@ $(document).ready(function() {
         $(elm).attr("data-format", "range");
         var input = $(elm).find("div.date-simple > input");
         var simpleVal = $(input).val();
+        var clock = $(elm).find("div.date-range > input.startDate").hasClass("withTime");
         if (simpleVal != "") {
             $(elm).find("div.date-range > input.startDate").val(simpleVal);
             $(input).val("");
-            updateDatePicker($(elm).find("div.date-range > input.startDate"), false);
-            updateDatePicker($(input));
         }
+        updateDatePicker($(elm).find("div.date-range > input.startDate"), clock);
+        updateDatePicker($(input));
         var endDate = $(input).attr("data-end");
         if(endDate != "" && endDate != undefined){
             $(elm).find("div.date-range > input.endDate").val(endDate);
-            updateDatePicker($(elm).find("div.date-range > input.endDate"), false);
         }
+        updateDatePicker($(elm).find("div.date-range > input.endDate"), clock);
+
     }
 
     function setDateToSimple(elm){
@@ -321,9 +323,12 @@ $(document).ready(function() {
      // Enables the datetimepicker
      if (jQuery.fn.datepicker) {
          $('.datetimepicker').find('input').each( function(index, elm){
-             if ($(elm).val().includes("T")) {
+
+             if ($(elm).val().includes("T") || $(elm).hasClass('startsWithDatetime')) {
                  pickDatePickerFormatAndAdd(elm, true);
+                 if ($(elm).val().trim() !== "") {
                  initTime(elm);
+                 }
              } else {
                  pickDatePickerFormatAndAdd(elm, false);
              }
