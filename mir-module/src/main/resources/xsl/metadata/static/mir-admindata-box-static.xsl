@@ -32,7 +32,7 @@
           </xsl:call-template>
           <xsl:call-template name="printMetaDate">
             <xsl:with-param select="mycoreobject/service/servflags/servflag[@type='createdby']" name="nodes"/>
-            <xsl:with-param select="i18n:translate('metaData.createdby')" name="label"/>
+            <xsl:with-param select="i18n:translate('mir.metaData.detailBox.by')" name="label"/>
           </xsl:call-template>
           <xsl:for-each select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:note">
             <xsl:variable name="noteType">
@@ -67,7 +67,7 @@
           </xsl:call-template>
           <xsl:call-template name="printMetaDate">
             <xsl:with-param select="mycoreobject/service/servflags/servflag[@type='modifiedby']" name="nodes"/>
-            <xsl:with-param select="i18n:translate('metaData.modifiedBy')" name="label"/>
+            <xsl:with-param select="i18n:translate('mir.metaData.detailBox.by')" name="label"/>
           </xsl:call-template>
           <!--*** MyCoRe-ID and intern ID *************************** -->
           <tr>
