@@ -24,6 +24,7 @@ import {i18n} from "@/api/I18N";
 
 const VIAF_ID_PREFIX_1 = "http://viaf.org/viaf/";
 const VIAF_ID_PREFIX_2 = "https://viaf.org/viaf/";
+const ORCID_ID_PREFIX = "https://orcid.org/";
 
 export class LobidSearchProvider implements SearchProvider {
 
@@ -95,7 +96,10 @@ export class LobidSearchProvider implements SearchProvider {
             for (const sameAsIndex in member.sameAs) {
                 const sameAs = member.sameAs[sameAsIndex];
                 if ("id" in sameAs) {
-                    if (sameAs.id.indexOf(VIAF_ID_PREFIX_1) == 0) {
+                    if (sameAs.id.indexOf(ORCID_ID_PREFIX) == 0) {
+                        const id = {type: "orcid", value: sameAs.id.substr(ORCID_ID_PREFIX.length)};
+                        searchResult.identifier.push(id);
+                    } else if (sameAs.id.indexOf(VIAF_ID_PREFIX_1) == 0) {
                         const id = {type: "viaf", value: sameAs.id.substr(VIAF_ID_PREFIX_1.length)};
                         searchResult.identifier.push(id);
                     } else if (sameAs.id.indexOf(VIAF_ID_PREFIX_2) == 0) {
