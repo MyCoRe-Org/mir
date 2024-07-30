@@ -22,14 +22,14 @@
  */
 package org.mycore.mir.wizard.command;
 
+import java.util.Optional;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jdom2.Element;
 import org.mycore.mir.wizard.MIRWizardCommand;
 import org.mycore.solr.commands.MCRSolrCloudCommands;
-import org.mycore.solr.commands.MCRSolrCommands;
-
-import java.util.Optional;
+import org.mycore.solr.commands.MCRSolrCoreAdminCommands;
 
 /**
  * @author René Adler (eagle)
@@ -74,8 +74,8 @@ public class MIRWizardSolr extends MIRWizardCommand {
                 MCRSolrCloudCommands.createCollection(DEFAULT_CLASSIFICATION);
             }
 
-            MCRSolrCommands.reloadSolrConfiguration(DEFAULT_CORE, DEFAULT_CORE);
-            MCRSolrCommands.reloadSolrConfiguration(DEFAULT_CLASSIFICATION, DEFAULT_CLASSIFICATION);
+            MCRSolrCoreAdminCommands.reloadSolrConfiguration(DEFAULT_CORE, DEFAULT_CORE);
+            MCRSolrCoreAdminCommands.reloadSolrConfiguration(DEFAULT_CLASSIFICATION, DEFAULT_CLASSIFICATION);
 
             this.result.setSuccess(true);
         } catch (final Exception ex) {
