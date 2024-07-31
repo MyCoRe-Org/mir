@@ -164,6 +164,18 @@
         </configuration>
         <executions>
           <execution>
+            <id>setup-solr-cloud</id>
+            <goals>
+              <goal>exec</goal>
+            </goals>
+            <phase>pre-integration-test</phase>
+            <configuration>
+              <workingDirectory>${project.build.directory}/dependency/mir-cli-${project.version}</workingDirectory>
+              <executable>bin${file.separator}mir.${script.suffix}</executable>
+              <arguments>process ${project.build.directory}/dependency/mir-cli-${project.version}/config/setup-solrcloud.txt</arguments>
+            </configuration>
+          </execution>
+          <execution>
             <id>setup-cli</id>
             <goals>
               <goal>exec</goal>

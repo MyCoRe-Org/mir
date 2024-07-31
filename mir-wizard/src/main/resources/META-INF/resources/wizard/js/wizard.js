@@ -81,4 +81,66 @@ jQuery(document).ready(function() {
 	 * Description: Initialize all Bootstrap Tooltips.
 	 */
 	$('*[data-toggle="tooltip"]').tooltip();
+
+	const formGroupSelector = '.form-group.row';
+
+	/**
+	 * Set the visibility of the closest form group of the given element ID.
+	 * @param {string} containedElementID
+	 * @param {boolean} visible
+	 * @returns {void}
+	 */
+	const setFormGroupVisible = (containedElementID, visible) => {
+			document.querySelector(`#${containedElementID}`)
+				.closest(formGroupSelector).style.display = visible ? '' : 'none';
+	};
+
+	const adminAuthCheckbox = document.getElementById('adminUserEnabled');
+	const indexAuthCheckbox = document.getElementById('indexUserEnabled');
+	const searchAuthCheckbox = document.getElementById('searchUserEnabled');
+	const tikaServerCheckbox = document.getElementById('tikaServer');
+
+	const updateAdminAuthForms = () => {
+		setFormGroupVisible('solrAdminUsername', adminAuthCheckbox.checked);
+		setFormGroupVisible('solrAdminPassword', adminAuthCheckbox.checked);
+	}
+
+	adminAuthCheckbox.addEventListener('change', () => {
+		updateAdminAuthForms();
+	});
+
+	updateAdminAuthForms();
+
+	const updateIndexAuthForms = () => {
+		setFormGroupVisible('solrIndexUsername', indexAuthCheckbox.checked);
+		setFormGroupVisible('solrIndexPassword', indexAuthCheckbox.checked);
+	}
+
+	indexAuthCheckbox.addEventListener('change', () => {
+		updateIndexAuthForms();
+	});
+
+	updateIndexAuthForms();
+
+	const updateSearchAuthForms = () => {
+		setFormGroupVisible('solrSearchUsername', searchAuthCheckbox.checked);
+		setFormGroupVisible('solrSearchPassword', searchAuthCheckbox.checked);
+	}
+
+	searchAuthCheckbox.addEventListener('change', () => {
+		updateSearchAuthForms();
+	});
+
+	updateSearchAuthForms();
+
+	const updateTikaServerForms = () => {
+		setFormGroupVisible('tikaServerURL', tikaServerCheckbox.checked);
+	}
+
+	tikaServerCheckbox.addEventListener('change', () => {
+		updateTikaServerForms();
+	});
+
+	updateTikaServerForms();
+
 });

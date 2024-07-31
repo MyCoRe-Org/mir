@@ -68,6 +68,7 @@ public class MIRITBase extends MCRSeleniumTestBase {
 
     protected static LukeResponse getLukeResponse(Core core) throws IOException, SolrServerException {
         LukeRequest request = new LukeRequest();
+        request.setBasicAuthCredentials("admin", "alleswirdgut");
         request.setNumTerms(0);
         request.setShowSchema(false);
         final LukeResponse lukeResponse = request.process(SOLR_CLIENT, core.getCoreName());

@@ -52,6 +52,42 @@
                   i18n="component.mir.wizard.solr.mainCore" />
                 <mir:template name="textInput" xpath="property[@name='MCR.Solr.Core.classification.Name']" id="solrClassificationCore"
                   i18n="component.mir.wizard.solr.classificationCore" />
+                <xed:bind xpath="../solr">
+                  <mir:template name="checkboxList" xpath="createCores">
+                    <option i18n="component.mir.wizard.solr.createCores" value="true" />
+                  </mir:template>
+                </xed:bind>
+
+                <mir:template id="adminUserEnabled" name="checkboxList" xpath="property[@name='MCR.Solr.Server.Auth.Admin.Class']">
+                  <option i18n="component.mir.wizard.solr.adminUserEnabled" value="org.mycore.solr.auth.MCRSolrBasicPropertyAuthentication" />
+                </mir:template>
+                <mir:template id="solrAdminUsername" name="textInput" xpath="property[@name='MCR.Solr.Server.Auth.Admin.Username']"
+                  i18n="component.mir.wizard.solr.admin.username" />
+                <mir:template id="solrAdminPassword" name="passwordInput" xpath="property[@name='MCR.Solr.Server.Auth.Admin.Password']"
+                  i18n="component.mir.wizard.solr.admin.password" />
+
+                <mir:template id="indexUserEnabled" name="checkboxList" xpath="property[@name='MCR.Solr.Server.Auth.Index.Class']">
+                  <option i18n="component.mir.wizard.solr.indexUserEnabled" value="org.mycore.solr.auth.MCRSolrBasicPropertyAuthentication" />
+                </mir:template>
+                <mir:template id="solrIndexUsername" name="textInput" xpath="property[@name='MCR.Solr.Server.Auth.Index.Username']"
+                  i18n="component.mir.wizard.solr.index.username" />
+                <mir:template id="solrIndexPassword" name="passwordInput" xpath="property[@name='MCR.Solr.Server.Auth.Index.Password']"
+                  i18n="component.mir.wizard.solr.index.password" />
+
+                <mir:template id="searchUserEnabled" name="checkboxList" xpath="property[@name='MCR.Solr.Server.Auth.Search.Class']">
+                  <option i18n="component.mir.wizard.solr.searchUserEnabled" value="org.mycore.solr.auth.MCRSolrBasicPropertyAuthentication" />
+                </mir:template>
+                <mir:template id="solrSearchUsername" name="textInput" xpath="property[@name='MCR.Solr.Server.Auth.Search.Username']"
+                  i18n="component.mir.wizard.solr.search.username" />
+                <mir:template id="solrSearchPassword" name="passwordInput" xpath="property[@name='MCR.Solr.Server.Auth.Search.Password']"
+                  i18n="component.mir.wizard.solr.search.password" />
+
+                <mir:template id="tikaServer" name="checkboxList" xpath="property[@name='MCR.Solr.FileIndexStrategy']">
+                  <option i18n="component.mir.wizard.solr.useTika" value="org.mycore.solr.index.file.tika.MCRTikaSolrFileStrategy" />
+                </mir:template>
+                <mir:template id="tikaServerURL" name="textInput" xpath="property[@name='MCR.Solr.Tika.ServerURL']"
+                              i18n="component.mir.wizard.solr.tikaUrl" />
+
               </fieldset>
               <fieldset>
                 <legend>

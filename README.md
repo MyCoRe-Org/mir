@@ -20,10 +20,12 @@ This guide addresses developers. Thats why you run it in 'dev' profile!
       </properties>
     </profile>
 ```
- - initialize solr configuration using `git submodule update --init --recursive`
  - to start solr, go to mir-webapp
   - install solr with the command: `mvn -Pdev solr-runner:copyHome`
   - run solr with the command: `mvn -Pdev solr-runner:start`
+    - The default users are `admin`, `indexer` and `searcher` with password `alleswirdgut` 
+    - In the wizard of the application you need to check `Erstelle SOLR-Kerne per Solr-Cloud rest-API` and the configure
+    user options with the above-mentioned users and passwords.
   - stop solr with the command: `mvn -Pdev solr-runner:stop`
   - update solr with the command: `mvn -Pdev solr-runner:stop solr-runner:copyHome solr-runner:start`
  - to starting up a servlet container in development environment go back to mir folder
@@ -48,6 +50,14 @@ The docker container has its own install script which uses the environment varia
 ### Environment Variables
 | Property                 | Default,  required  | Description                                                                                                                                                                                                                                                                          |
 |--------------------------|---------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| ENABLE_SOLR_CLOUD        | false               | If true the Solr Cloud mode is enabled. (solr cores will be created on install)                                                                                                                                                                                                      |
+| SOLR_ADMIN_USER          | none                | The username for the Solr Admin. (will be used for admin commands like creating cores)                                                                                                                                                                                               |
+| SOLR_ADMIN_PASSWORD      | none                | The password for the Solr Admin.                                                                                                                                                                                                                                                     |
+| SOLR_INDEX_USER          | none                | The username for the Solr Indexer. (will be used for indexing)                                                                                                                                                                                                                       |
+| SOLR_INDEX_PASSWORD      | none                | The password for the Solr Indexer.                                                                                                                                                                                                                                                   |
+| SOLR_SEARCH_USER         | none                | The username for the Solr Searcher. (will be used for searching)                                                                                                                                                                                                                     |
+| SOLR_SEARCH_PASSWORD     | none                | The password for the Solr Searcher.                                                                                                                                                                                                                                                  |
+| TIKASERVER_URL           | none                | The URL to the Tika Server. Same as MCR.Solr.Tika.ServerURL in mycore.properties. (also sets `MCR.Solr.FileIndexStrategy` to `org.mycore.solr.index.file.tika.MCRTikaSolrFileStrategy`)                                                                                              |
 | SOLR_URL                 | none, required      | The URL to the SOLR Server. Same as MCR.Solr.ServerURL in mycore.properties.                                                                                                                                                                                                         |
 | SOLR_CORE                | mir                 | The name of the Solr main core. Same as MCR.Solr.Core.main.Name in mycore.properties.                                                                                                                                                                                                |
 | SOLR_CLASSIFICATION_CORE | mir-classifications | The name of the Solr classification core. Same as MCR.Solr.Core.classification.Name in mycore.properties.                                                                                                                                                                            |
@@ -74,7 +84,7 @@ To fix this you can set the docker property `FIX_FILE_SYSTEM_RIGHTS` to `true`. 
 mounted volumes to `mcr` and the container will start without errors.
 
 ## `mir-solr` Docker-Container
-The docker container creates the required solr cores if they do not exist.
+The docker container starts solr in cloud mode. It preconfigures the users with the environment variables (see table above).
 
 ### Mount Points
 

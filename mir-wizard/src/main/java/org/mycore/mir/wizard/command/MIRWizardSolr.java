@@ -22,10 +22,14 @@
  */
 package org.mycore.mir.wizard.command;
 
+import java.util.Optional;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.jdom2.Element;
 import org.mycore.mir.wizard.MIRWizardCommand;
-import org.mycore.solr.commands.MCRSolrCommands;
+import org.mycore.solr.commands.MCRSolrCloudCommands;
+import org.mycore.solr.commands.MCRSolrCoreAdminCommands;
 
 /**
  * @author René Adler (eagle)
@@ -57,8 +61,21 @@ public class MIRWizardSolr extends MIRWizardCommand {
     @Override
     public void doExecute() {
         try {
-            MCRSolrCommands.reloadSolrConfiguration(DEFAULT_CORE, DEFAULT_CORE);
-            MCRSolrCommands.reloadSolrConfiguration(DEFAULT_CLASSIFICATION, DEFAULT_CLASSIFICATION);
+            Optional<Element> createCores = Optional.ofNullable(getInputXML())
+                    .map(input -> input.getChild("solr"))
+                    .map(input -> input.getChild("createCores"))
+                    .filter(input -> input.getTextTrim().equals("true"));
+
+            if (createCores.isPresent()) {
+                MCRSolrCloudCommands.uploadLocalConfig(DEFAULT_CORE);
+                MCRSolrCloudCommands.uploadLocalConfig(DEFAULT_CLASSIFICATION);
+
+                MCRSolrCloudCommands.createCollection(DEFAULT_CORE);
+                MCRSolrCloudCommands.createCollection(DEFAULT_CLASSIFICATION);
+            }
+
+            MCRSolrCoreAdminCommands.reloadSolrConfiguration(DEFAULT_CORE, DEFAULT_CORE);
+            MCRSolrCoreAdminCommands.reloadSolrConfiguration(DEFAULT_CLASSIFICATION, DEFAULT_CLASSIFICATION);
 
             this.result.setSuccess(true);
         } catch (final Exception ex) {
