@@ -24,6 +24,7 @@
   <xsl:param name="MIR.CanonicalBaseURL" />
 
   <xsl:param name="WebApplicationBaseURL"/>
+  <xsl:param name="CurrentLang"/>
 
   <xsl:variable name="canViewSystembox" select="mcracl:check-permission(site/@ID, 'read-history')"/>
 
@@ -88,8 +89,7 @@
         <xsl:choose>
           <xsl:when test="$boxID='mir-historydata'">
             <xsl:if test="$originalContent/@write or $canViewSystembox">
-            <div
-                id="historyModal"
+            <div id="historyModal"
                 class="modal fade"
                 tabindex="-1"
                 role="dialog"
@@ -103,23 +103,15 @@
                     <h4 class="modal-title" id="modalFrame-title">
                       <xsl:value-of select="mcri18n:translate('metadata.versionInfo.label')"/>
                     </h4>
-                    <button
-                        type="button"
-                        class="close modalFrame-cancel"
-                        data-dismiss="modal"
-                        aria-label="Close">
-                      <i class="fas fa-times" aria-hidden="true"></i>
+                    <button type="button" class="close modalFrame-cancel" data-dismiss="modal" aria-label="Close">
+                      <i class="fas fa-times" aria-hidden="true"/>
                     </button>
                   </div>
                   <div id="modalFrame-body" class="modal-body">
-                    <xsl:copy-of select="$originalContent/div[@id=$boxID]/*"/>
+                    <xsl:apply-templates select="$originalContent/div[@id=$boxID]/*" mode="history-modal"/>
                   </div>
                   <div class="modal-footer">
-                    <button
-                        id="modalFrame-cancel"
-                        type="button"
-                        class="btn btn-danger"
-                        data-dismiss="modal">
+                    <button id="modalFrame-cancel" type="button" class="btn btn-danger" data-dismiss="modal">
                       <xsl:value-of select="mcri18n:translate('button.cancel')"/>
                     </button>
                   </div>
@@ -209,6 +201,66 @@
     </xsl:for-each>
   </xsl:template>
 
+  <xsl:template match="versions" mode="history-modal">
+    <table class="table table-hover table-condensed">
+      <tr class="info">
+        <th>
+          <xsl:value-of select="mcri18n:translate('metadata.versionInfo.version')"/>
+        </th>
+        <th>
+          <xsl:value-of select="mcri18n:translate('metadata.versionInfo.revision')"/>
+        </th>
+        <th>
+          <xsl:value-of select="mcri18n:translate('metadata.versionInfo.action')"/>
+        </th>
+        <th>
+          <xsl:value-of select="mcri18n:translate('metadata.versionInfo.date')"/>
+        </th>
+        <th>
+          <xsl:value-of select="mcri18n:translate('metadata.versionInfo.user')"/>
+        </th>
+      </tr>
+      <xsl:for-each select="version">
+        <xsl:sort order="descending" select="string(position())" data-type="number"/>
+        <tr>
+          <td class="ver">
+            <xsl:number level="single" format="1."/>
+          </td>
+          <td class="rev">
+            <xsl:if test="@r">
+              <xsl:variable name="href">
+                <xsl:value-of select="concat($WebApplicationBaseURL,'receive/',@ID, '?r=', @r)" />
+              </xsl:variable>
+              <xsl:choose>
+                <xsl:when test="@action='D'">
+                  <xsl:value-of select="@r"/>
+                </xsl:when>
+                <xsl:otherwise>
+                  <a href="{$href}">
+                    <xsl:value-of select="@r"/>
+                  </a>
+                </xsl:otherwise>
+              </xsl:choose>
+            </xsl:if>
+          </td>
+          <td class="action">
+            <xsl:if test="@action">
+              <xsl:value-of select="mcri18n:translate(concat('metaData.versions.action.',@action))"/>
+            </xsl:if>
+          </td>
+          <td class="@date">
+            <xsl:value-of
+              select="document(concat('notnull:callJava:org.mycore.common.xml.MCRXMLFunctions:formatISODate:', encode-for-uri(@date), ':', encode-for-uri(mcri18n:translate('metaData.dateTime')), ':', $CurrentLang))"/>
+          </td>
+          <td class="user">
+            <xsl:if test="@user">
+              <xsl:value-of select="@user"/>
+            </xsl:if>
+          </td>
+        </tr>
+      </xsl:for-each>
+    </table>
+  </xsl:template>
 
   <!-- this is spooky ; TODO: Replace-->
   <xsl:template match="div[@id='mir-metadata']" mode="newMetadata">
