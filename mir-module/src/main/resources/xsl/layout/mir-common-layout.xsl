@@ -18,7 +18,7 @@
   <xsl:param name="breadCrumb" />
   <xsl:param name="MCR.Metadata.Languages" select="'de'" />
   <xsl:param name="mcruser" select="document('user:current')/user"/>
-  <xsl:param name="MIR.Layout.usermenu.realname.enabled" select="false()"/>
+  <xsl:param name="MIR.Layout.usermenu.realname.enabled" select="'false'"/>
 
   <xsl:include href="layout/mir-layout-utils.xsl" />
   <xsl:include href="resource:xsl/layout/mir-navigation.xsl" />
@@ -64,7 +64,7 @@
           <a id="currentUser" class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">
             <strong>
               <xsl:choose>
-                <xsl:when test="$MIR.Layout.usermenu.realname.enabled = false()">
+                <xsl:when test="$MIR.Layout.usermenu.realname.enabled != 'true'">
                   <xsl:value-of select="$mcruser/@name"/>
                 </xsl:when>
                 <xsl:otherwise>
