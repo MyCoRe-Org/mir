@@ -48,7 +48,7 @@
                     </xsl:for-each>
                   </xsl:if>
                   <xsl:variable name="hitsPrecending"
-                                select="document(concat('solr:q=',encoder:encode(concat('mods.relatedItem.preceding:', mycoreobject/@ID)), '&amp;rows=1000&amp;sort=mods.dateIssued desc,mods.dateIssued.host desc,mods.title.main desc&amp;group=true&amp;group.limit=100&amp;group.field=mods.yearIssued'))/response/lst[@name='grouped']/lst[@name='mods.yearIssued']" />
+                                select="document(concat('solr:q=',encoder:encode(concat('mods.relatedItem.preceding:', mycoreobject/@ID)), '&amp;rows=1000&amp;sort=mods.dateIssued%20desc,mods.dateIssued.host%20desc,mods.title.main%20desc&amp;group=true&amp;group.limit=100&amp;group.field=mods.yearIssued'))/response/lst[@name='grouped']/lst[@name='mods.yearIssued']" />
                   <xsl:if test="$hitsPrecending/int[@name='matches'] &gt; 0">
                     <xsl:call-template name="listRelatedItems">
                       <xsl:with-param name="hits" select="$hitsPrecending" />
