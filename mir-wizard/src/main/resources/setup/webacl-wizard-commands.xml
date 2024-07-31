@@ -1,133 +1,138 @@
 <?xml version="1.0" encoding="utf-8"?>
 <commands>
-  <command file="resource:setup/acl/grant-editors.xml" describeBy="administrators and editors">
+  <command file="resource:setup/acl/grant-editors.xml" describedBy="administrators and editors">
     update permission read for id
     webpage:/servlets/MCRActionMappingServlet/expert/search with
-    rulefile {file} described by describeBy}
+    rule {file} described by {describedBy}
   </command>
-  <command file="resource:setup/acl/grant-guest-and-submitter.xml" describeBy="guests and submitters">
+  <command file="resource:setup/acl/grant-guest-and-submitter.xml" describedBy="guests and submitters">
     update permission read for id
     webpage:/content/search/simple.xed with
-    rulefile {file} described by {describeBy}
+    rule {file} described by {describedBy}
   </command>
-  <command file="resource:setup/acl/grant-editors.xml" describeBy="administrators and editors">
+  <command file="resource:setup/acl/grant-editors.xml" describedBy="administrators and editors">
     update permission read for id
     webpage:/content/search/simple_intern.xed with
-    rulefile {file} described by {describeBy}
+    rule {file} described by {describedBy}
   </command>
-  <command file="resource:setup/acl/grant-editors.xml" describeBy="administrators and editors">
+  <command file="resource:setup/acl/grant-editors.xml" describedBy="administrators and editors">
     update permission read for id
     webpage:/search/search-expert.xed with
-    rulefile {file} described by {describeBy}
+    rule {file} described by {describedBy}
   </command>
-  <command file="resource:setup/acl/grant-guest-and-submitter.xml" describeBy="guests and submitters">
+  <command file="resource:setup/acl/grant-guest-and-submitter.xml" describedBy="guests and submitters">
     update permission read for id
     webpage:/content/search/complex.xed with
-    rulefile {file} described by {describeBy}
+    rule {file} described by {describedBy}
   </command>
-  <command file="resource:setup/acl/grant-editors.xml" describeBy="administrators and editors">
+  <command file="resource:setup/acl/grant-editors.xml" describedBy="administrators and editors">
     update permission read for id
     webpage:/content/search/complex_intern.xed with
-    rulefile {file} described by {describeBy}
+    rule {file} described by {describedBy}
   </command>
-  <command file="resource:setup/acl/grant-submitter.xml" describeBy="submitters, editors and administrators">
-    update permission read for id
-    webpage:/content/publish/index.xml with
-    rulefile {file} described by {describeBy}
-  </command>
-  <command file="resource:setup/acl/grant-editors.xml" describeBy="administrators and editors">
-    update permission read for id
-    webpage:/editor/editor-admins.xed with rulefile {file}
-    described by {describeBy}
-  </command>
-  <command file="resource:setup/acl/grant-all.xml" describeBy="not logged in">
-    update permission read for id
-    webpage:/authorization/new-author.xed with
-    rulefile {file} described by {describeBy}
-  </command>
-  <command file="resource:setup/acl/grant-admin.xml" describeBy="administrators only">
-    update permission read for id
-    webpage:/authorization/roles-editor.xml with
-    rulefile {file} described by {describeBy}
-  </command>
-  <command file="resource:setup/acl/grant-admin.xml" describeBy="administrators only">
-    update permission read for id
-    webpage:/servlets/MCRSessionListingServlet with
-    rulefile {file} described by {describeBy}
-  </command>
-  <command file="resource:setup/acl/grant-admin.xml" describeBy="administrators only">
-    update permission read for id
-    webpage:/servlets/MCRLockServlet?url=/editor_form_commit-mods-all.xml with
-    rulefile {file} described by {describeBy}
-  </command>
-  <command file="resource:setup/acl/grant-admin.xml" describeBy="administrators only">
-    update permission read for id
-    webpage:/servlets/MCRUserServlet with
-    rulefile {file} described by {describeBy}
-  </command>
-  <command file="resource:setup/acl/grant-admin.xml" describeBy="administrators only">
-    update permission read for id
-    webpage:/modules/classeditor/classificationEditor.xml?XSL.classeditor.showId=true with
-    rulefile {file} described by {describeBy}
-  </command>
-  <command file="resource:setup/acl/grant-admin.xml" describeBy="administrators only">
-    update permission read for id
-    webpage:/rsc/ACLE/start with
-    rulefile {file} described by {describeBy}
-  </command>
-  <command file="resource:setup/acl/grant-admin.xml" describeBy="administrators only">
-    update permission read for id
-    webpage:/modules/wcms2/wcms2.xml?XSL.useMT=false with
-    rulefile {file} described by {describeBy}
-  </command>
-  <command file="resource:setup/acl/grant-admin.xml" describeBy="administrators only">
-    update permission write for id
-    webpage:/modules/wcms2/wcms2.xml?XSL.useMT=false with
-    rulefile {file} described by {describeBy}
-  </command>
-  <command file="resource:setup/acl/grant-editors.xml" describeBy="administrators and editors">
-    update permission read for id
-    webpage:/content/publish/importPPN.xml with
-    rulefile {file} described by {describeBy}
-  </command>
-  <command file="resource:setup/acl/grant-admin.xml" describeBy="administrators only">
-    update permission read for id
-    webpage:/modules/webcli/launchpad.xml with
-    rulefile {file} described by {describeBy}
-  </command>
-  <command file="resource:setup/acl/grant-admin.xml" describeBy="administrators only">
+  <command file="resource:setup/acl/grant-admin.xml" describedBy="administrators only">
     update permission read for id
     webpage:/authorization/new-user.xed?action=save with
-    rulefile {file} described by {describeBy}
+    rule {file} described by {describedBy}
   </command>
-  <command file="resource:setup/acl/grant-admin.xml" describeBy="administrators only">
+  <command file="resource:setup/acl/grant-submitter.xml" describedBy="submitters, editors and administrators">
+    update permission read for id
+    webpage:/content/publish/index.xml with
+    rule {file} described by {describedBy}
+  </command>
+  <command file="resource:setup/acl/grant-editors.xml" describedBy="administrators and editors">
+    update permission read for id
+    webpage:/editor/editor-admins.xed with
+    rule {file} described by {describedBy}
+  </command>
+  <command file="resource:setup/acl/not-logged-in.xml" describedBy="not logged in">
+    update permission read for id
+    webpage:/authorization/new-author.xed?action=save with
+    rule {file} described by {describedBy}
+  </command>
+  <command file="resource:setup/acl/grant-admin.xml" describedBy="administrators only">
+    update permission read for id
+    webpage:/authorization/roles-editor.xml with
+    rule {file} described by {describedBy}
+  </command>
+  <command file="resource:setup/acl/grant-admin.xml" describedBy="administrators only">
+    update permission read for id
+    webpage:/servlets/MCRSessionListingServlet with
+    rule {file} described by {describedBy}
+  </command>
+  <command file="resource:setup/acl/grant-admin.xml" describedBy="administrators only">
+    update permission read for id
+    webpage:/servlets/MCRLockServlet?url=/editor_form_commit-mods-all.xml with
+    rule {file} described by {describedBy}
+  </command>
+  <command file="resource:setup/acl/grant-admin.xml" describedBy="administrators only">
+    update permission read for id
+    webpage:/servlets/MCRUserServlet with
+    rule {file} described by {describedBy}
+  </command>
+  <command file="resource:setup/acl/grant-admin.xml" describedBy="administrators only">
+    update permission read for id
+    webpage:/modules/classeditor/classificationEditor.xml?XSL.classeditor.showId=true with
+    rule {file} described by {describedBy}
+  </command>
+  <command file="resource:setup/acl/grant-admin.xml" describedBy="administrators only">
+    update permission read for id
+    webpage:/rsc/ACLE/start with
+    rule {file} described by {describedBy}
+  </command>
+  <command file="resource:setup/acl/grant-admin.xml" describedBy="administrators only">
+    update permission read for id
+    webpage:/modules/wcms2/wcms2.xml?XSL.useMT=false with
+    rule {file} described by {describedBy}
+  </command>
+  <command file="resource:setup/acl/grant-admin.xml" describedBy="administrators only">
+    update permission write for id
+    webpage:/modules/wcms2/wcms2.xml?XSL.useMT=false with
+    rule {file} described by {describedBy}
+  </command>
+  <command file="resource:setup/acl/grant-editors.xml" describedBy="administrators and editors">
+    update permission read for id
+    webpage:/content/publish/importPPN.xml with
+    rule {file} described by {describedBy}
+  </command>
+  <command file="resource:setup/acl/grant-admin.xml" describedBy="administrators only">
+    update permission read for id
+    webpage:/modules/webcli/launchpad.xml with
+    rule {file} described by {describedBy}
+  </command>
+  <command file="resource:setup/acl/grant-admin.xml" describedBy="administrators only">
     update permission read for id
     webpage:/modules/webtools/session/sessionListing.xml with
-    rulefile {file} described by {describeBy}
+    rule {file} described by {describedBy}
   </command>
-  <command file="resource:setup/acl/grant-admin.xml" describeBy="administrators only">
+  <command file="resource:setup/acl/grant-admin.xml" describedBy="administrators only">
     update permission read for id
     webpage:/modules/webtools/processing/processing.xml with
-    rulefile {file} described by {describeBy}
+    rule {file} described by {describedBy}
   </command>
-  <command file="resource:setup/acl/grant-admin.xml" describeBy="administrators only">
+  <command file="resource:setup/acl/grant-admin.xml" describedBy="administrators only">
     update permission read for id
-    webpage:/authorization/change-password.xed
-    rulefile {file} described by {describeBy}
+    webpage:/authorization/change-password.xed with
+    rule {file} described by {describedBy}
   </command>
-  <command file="resource:setup/acl/require-login.xml" describeBy="require login">
+  <command file="resource:setup/acl/require-login.xml" describedBy="require login">
     update permission read for id
     webpage:/authorization/change-password.xed?action=password with
-    rulefile {file} described by {describeBy}
+    rule {file} described by {describedBy}
   </command>
-  <command file="resource:setup/acl/require-login.xml" describeBy="require login">
+  <command file="resource:setup/acl/require-login.xml" describedBy="require login">
     update permission read for id
     webpage:/servlets/MCRUserServlet?action=show with
-    rulefile {file} described by {describeBy}
+    rule {file} described by {describedBy}
   </command>
-  <command file="resource:setup/acl/require-login.xml" describeBy="require login">
+  <command file="resource:setup/acl/require-login.xml" describedBy="require login">
     update permission read for id
     webpage:/authorization/change-current-user.xed?action=saveCurrentUser with
-    rulefile {file} described by {describeBy}
+    rule {file} described by {describedBy}
+  </command>
+  <command file="resource:setup/acl/grant-submitter.xml" describedBy="submitters, editors and administrators">
+    update permission read for id
+    webpage:/servlets/solr/select?q=createdby:{CurrentUser}&amp;fq=objectType:mods with
+    rule {file} described by {describedBy}
   </command>
 </commands>

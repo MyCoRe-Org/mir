@@ -22,17 +22,15 @@
  */
 package org.mycore.mir.wizard.command;
 
-import java.io.File;
 import java.lang.reflect.InvocationTargetException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jdom2.Attribute;
 import org.jdom2.Element;
 import org.mycore.backend.jpa.MCREntityManagerProvider;
-import org.mycore.common.content.MCRContent;
-import org.mycore.common.content.MCRJDOMContent;
-import org.mycore.common.xml.MCRURIResolver;
 import org.mycore.frontend.cli.MCRCommandManager;
 import org.mycore.mir.wizard.MIRWizardCommand;
 
@@ -56,32 +54,28 @@ public class MIRWizardMCRCommand extends MIRWizardCommand {
      */
     @Override
     public void doExecute() {
+
         EntityManager em = MCREntityManagerProvider.getCurrentEntityManager();
+        MCRCommandManager cm = new MCRCommandManager();
 
         try {
             for (Element command : getInputXML().getChildren()) {
+
                 String cmd = command.getTextTrim();
-                cmd = cmd.replaceAll("\n", "").replaceAll("\r", "").replaceAll("  ", " ");
-                cmd = cmd.replaceAll("  ", " ");
+                cmd = cmd.replaceAll("[\\r\\n]+", " ");
+                cmd = cmd.replaceAll("  +", " ");
 
                 for (Attribute attr : command.getAttributes()) {
-                    if (attr.getValue().startsWith("resource:")) {
-                        File tmpFile = File.createTempFile("resfile", ".xml");
-                        MCRContent source = new MCRJDOMContent(MCRURIResolver.instance().resolve(attr.getValue()));
-                        source.sendTo(tmpFile);
-
-                        cmd = cmd.replace("{" + attr.getName() + "}", tmpFile.getAbsolutePath());
-                    } else {
-                        cmd = cmd.replace("{" + attr.getName() + "}", attr.getValue());
-                    }
+                    cmd = cmd.replaceAll(Pattern.quote("{" + attr.getName() + "}"),
+                        Matcher.quoteReplacement(attr.getValue()));
                 }
 
-                MCRCommandManager mcrCmdMgr = new MCRCommandManager();
+                LOGGER.info("Executing command: {}", cmd);
 
                 EntityTransaction tx = em.getTransaction();
                 tx.begin();
                 try {
-                    mcrCmdMgr.invokeCommand(cmd);
+                    cm.invokeCommand(cmd);
                     tx.commit();
                 } catch (PersistenceException e) {
                     tx.rollback();
