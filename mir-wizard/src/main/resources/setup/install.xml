@@ -5,7 +5,7 @@
   <command class="org.mycore.mir.wizard.command.MIRWizardDownloadDBLib" />
   <command class="org.mycore.mir.wizard.command.MIRWizardInitDatabase" />
   <command class="org.mycore.mir.wizard.command.MIRWizardSolr" />
-  <command class="org.mycore.mir.wizard.command.MIRWizardLoadClassifications" />
+  <command class="org.mycore.mir.wizard.command.MIRWizardMCRCommand" name="load.classifications" src="resource:setup/classifications-wizard-commands.xml"/>
   <command class="org.mycore.mir.wizard.command.MIRWizardInitSuperuser" />
   <command class="org.mycore.mir.wizard.command.MIRWizardMCRCommand" name="import.acls" src="resource:setup/defaultrules-wizard-commands.xml" />
   <command class="org.mycore.mir.wizard.command.MIRWizardMCRCommand" name="import.webacls" src="resource:setup/webacl-wizard-commands.xml" />
