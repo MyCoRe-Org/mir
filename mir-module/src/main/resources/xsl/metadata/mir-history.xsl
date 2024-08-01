@@ -7,7 +7,7 @@
   <xsl:template match="/">
     <xsl:variable name="ID" select="/mycoreobject/@ID" />
     <div id="mir-historydata" class="table-responsive col-sm-12">
-      <xsl:copy-of select="document(concat('staticcontent:mir-history:', $ID))/table" />
+      <xsl:copy-of select="document(concat('staticcontent:mir-history:', $ID))" />
     </div>
     <xsl:apply-imports />
   </xsl:template>
