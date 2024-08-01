@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<commands>
+  <command uri="resource:mycore-classifications/XMetaDissPlusThesisLevel.xml">load classification from uri {uri}</command>
+  <command uri="resource:mycore-classifications/derivate_types.xml">load classification from uri {uri}</command>
+  <command uri="resource:mycore-classifications/diniPublType.xml">load classification from uri {uri}</command>
+  <command uri="resource:mycore-classifications/diniPublType2022.xml">load classification from uri {uri}</command>
+  <command uri="resource:mycore-classifications/marcrelator.xml">load classification from uri {uri}</command>
+  <command uri="resource:mycore-classifications/marcgt.xml">load classification from uri {uri}</command>
+  <command uri="resource:mycore-classifications/mcr-roles.xml">load classification from uri {uri}</command>
+  <command uri="resource:mycore-classifications/mir_access.xml">load classification from uri {uri}</command>
+  <command uri="resource:mycore-classifications/mir_filetype.xml">load classification from uri {uri}</command>
+  <command uri="resource:mycore-classifications/mir_genres.xml">load classification from uri {uri}</command>
+  <command uri="resource:mycore-classifications/mir_institutes.xml">load classification from uri {uri}</command>
+  <command uri="resource:mycore-classifications/mir_licenses.xml">load classification from uri {uri}</command>
+  <command uri="resource:mycore-classifications/rfc5646.xml">load classification from uri {uri}</command>
+  <command uri="resource:mycore-classifications/schemaOrg.xml" >load classification from uri {uri}</command>
+  <command uri="resource:mycore-classifications/sdnb.xml">load classification from uri {uri}</command>
+  <command uri="resource:mycore-classifications/state.xml">load classification from uri {uri}</command>
+  <command uri="resource:mycore-classifications/typeOfResource.xml">load classification from uri {uri}</command>
+  <command uri="resource:mycore-classifications/nameIdentifier.xml">load classification from uri {uri}</command>
+  <command uri="resource:mycore-classifications/noteTypes.xml">load classification from uri {uri}</command>
+  <command uri="resource:mycore-classifications/identifier.xml">load classification from uri {uri}</command>
+  <command uri="resource:mycore-classifications/author_roles.xml">load classification from uri {uri}</command>
+  <command uri="resource:mycore-classifications/mir_relateditem.xml">load classification from uri {uri}</command>
+</commands>

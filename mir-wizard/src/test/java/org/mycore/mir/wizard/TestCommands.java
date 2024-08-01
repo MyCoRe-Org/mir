@@ -34,7 +34,6 @@ import org.junit.Test;
 import org.mycore.common.MCRJPATestCase;
 import org.mycore.common.MCRStreamUtils;
 import org.mycore.common.xml.MCRURIResolver;
-import org.mycore.mir.wizard.command.MIRWizardLoadClassifications;
 import org.mycore.mir.wizard.command.MIRWizardMCRCommand;
 
 /**
@@ -46,7 +45,9 @@ public class TestCommands extends MCRJPATestCase {
     @Test
     public void testLoadClassifications() throws Exception {
         MIRWizardCommandChain chain = new MIRWizardCommandChain();
-        chain.addCommand(new MIRWizardLoadClassifications());
+        MIRWizardMCRCommand loadClassifications = new MIRWizardMCRCommand("load.classifications");
+        loadClassifications.setInputXML(MCRURIResolver.instance().resolve("resource:setup/classifications-wizard-commands.xml"));
+        chain.addCommand(loadClassifications);
 
         endTransaction();
         chain.execute(null);
