@@ -7,7 +7,7 @@ import java.time.Duration;
 
 import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.SolrServerException;
-import org.apache.solr.client.solrj.impl.HttpSolrClient;
+import org.apache.solr.client.solrj.impl.HttpJdkSolrClient;
 import org.apache.solr.client.solrj.request.LukeRequest;
 import org.apache.solr.client.solrj.response.LukeResponse;
 import org.junit.After;
@@ -49,8 +49,7 @@ public class MIRITBase extends MCRSeleniumTestBase {
     public static void setupSolr() {
         int solrPort = Integer.parseInt(System.getProperty("solr.port"));
         final String baseSolrUrl = String.format("http://localhost:%d/solr/", solrPort);
-        SOLR_CLIENT = new HttpSolrClient.Builder()
-            .withBaseSolrUrl(baseSolrUrl)
+        SOLR_CLIENT = new HttpJdkSolrClient.Builder(baseSolrUrl)
             .build();
     }
 
