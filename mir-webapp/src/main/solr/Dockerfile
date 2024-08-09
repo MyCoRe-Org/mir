@@ -1,4 +1,4 @@
-FROM solr:8.11
+FROM solr:9.6
 USER root
 RUN apt-get update && \
     apt-get -y install sudo
