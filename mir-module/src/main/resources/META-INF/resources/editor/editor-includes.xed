@@ -2008,10 +2008,13 @@
             </label>
             <div class="col-md-6">
               <xed:bind xpath="@type">
-                <select class="form-control" style="font-weight:bold;">
-                  <xed:include uri="xslStyle:items2options,convertClassificationOptions:classification:editor:-1:children:noteTypes" />
+                <select class="form-control">
+                    <option value="">
+                      <xed:output i18n="mir.select"/>
+                    </option>
+                    <xed:include uri="xslStyle:items2options,convertClassificationOptions:classification:editor:-1:children:noteTypes" />
                 </select>
-              </xed:bind>
+              </xed:bind >
             </div>
             <mir:help-pmud help-text="{i18n:mir.help.comment.type}" pmud="true" />
           </div>
