@@ -3,8 +3,8 @@
   xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation" xmlns:encoder="xalan://java.net.URLEncoder"
   exclude-result-prefixes="i18n encoder">
 
-  <xsl:include href="layout-utils.xsl" />
-  <xsl:include href="mir-accesskey-utils.xsl" />
+  <xsl:include href="../layout-utils.xsl" />
+  <xsl:include href="../mir-accesskey-utils.xsl" />
 
   <xsl:param name="RequestURL" />
   <xsl:param name="WebApplicationBaseURL" />
