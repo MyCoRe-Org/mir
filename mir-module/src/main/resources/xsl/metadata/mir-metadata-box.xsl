@@ -294,20 +294,29 @@
             <xsl:apply-templates mode="present"
                                  select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:extension[@displayLabel='characteristics']"/>
             <xsl:for-each select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:note">
-                <xsl:variable name="myURI"
-                              select="concat('classification:metadata:0:children:noteTypes:',mcrxsl:regexp(@type,' ', '_'))"/>
-                <xsl:variable name="x-access">
-                    <xsl:value-of select="document($myURI)//label[@xml:lang='x-access']/@text"/>
-                </xsl:variable>
-                <xsl:variable name="noteLabel">
-                    <xsl:value-of select="document($myURI)//category/label[@xml:lang=$CurrentLang]/@text"/>
-                </xsl:variable>
-                <xsl:if test="contains($x-access, 'guest')">
-                    <xsl:call-template name="printMetaDate.mods">
-                        <xsl:with-param select="." name="nodes"/>
-                        <xsl:with-param select="$noteLabel" name="label"/>
-                    </xsl:call-template>
-                </xsl:if>
+                <xsl:choose>
+                    <xsl:when test="@type">
+                        <xsl:variable name="myURI"
+                                      select="concat('classification:metadata:0:children:noteTypes:',mcrxsl:regexp(@type,' ', '_'))"/>
+                        <xsl:variable name="x-access">
+                            <xsl:value-of select="document($myURI)//label[@xml:lang='x-access']/@text"/>
+                        </xsl:variable>
+                        <xsl:variable name="noteLabel">
+                            <xsl:value-of select="document($myURI)//category/label[@xml:lang=$CurrentLang]/@text"/>
+                        </xsl:variable>
+                        <xsl:if test="contains($x-access, 'guest')">
+                            <xsl:call-template name="printMetaDate.mods">
+                                <xsl:with-param select="." name="nodes"/>
+                                <xsl:with-param select="$noteLabel" name="label"/>
+                            </xsl:call-template>
+                        </xsl:if>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:call-template name="printMetaDate.mods">
+                            <xsl:with-param select="." name="nodes"/>
+                        </xsl:call-template>
+                    </xsl:otherwise>
+                </xsl:choose>
             </xsl:for-each>
         </table>
 
