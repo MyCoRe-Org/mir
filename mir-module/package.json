@@ -19,7 +19,7 @@
         "bootstrap-datepicker": "1.9.0",
         "grunt": "^1.5.3",
         "grunt-cli": "^1.2.0",
-        "grunt-contrib-uglify": "https://github.com/gruntjs/grunt-contrib-uglify.git#harmony",
+        "grunt-contrib-uglify": "^5.2.2",
         "grunt-npmcopy": "^0.1.0",
         "handlebars": "4.5.3",
         "jquery.dotdotdot": "1.7.4",
@@ -28,14 +28,14 @@
         "myclabs.jquery.confirm": "2.7.0",
         "openlayers": "4.6.4",
         "popper.js": "^1.14.7",
-        "select2": "4.0.6",
+        "select2": "^4.0.13",
         "typeahead.js": "0.11.1",
         "video.js": "7.14.3"
     },
     "dependencies": {
         "ckeditor-notification": "^4.11.2",
         "ckeditor-wordcount-plugin": "^1.17.12",
-        "ckeditor4": "^4.18.0",
+        "ckeditor4": "~4.22.0",
         "vue": "3.2.13",
         "vue3-openlayers": "^1.0.0"
     }

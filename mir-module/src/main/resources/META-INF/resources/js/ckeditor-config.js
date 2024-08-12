@@ -1,5 +1,7 @@
 CKEDITOR.editorConfig = function( config ) {
 
+    config.versionCheck = false;
+
     config.extraPlugins = 'notification,wordcount';
 
     config.toolbar = JSON.parse(window["MIR.WebConfig.Editor.CKEditor.Toolbar"] || "{}");
