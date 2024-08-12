@@ -115,6 +115,7 @@ jobs:
           ./**/screenshots
           ./**/*error*.log
           ./**/*test.log
+          ~/.m2/repository/solr-*/server/logs/*.log
 
     - name: Save Maven cache
       uses: skjolber/maven-cache-github-action@v1
