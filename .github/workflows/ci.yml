@@ -5,7 +5,7 @@ on: [ push, pull_request ]
 env:
   MAVEN_OPTS: -Xmx1024M -Xss128M
   GECKODRIVER_VERSION: 0.34.0
-  BIBUTILS_VERSION: 6.10
+  BIBUTILS_VERSION: 7.2
 
 jobs:
   build:
@@ -87,7 +87,7 @@ jobs:
         export FIREFOX_BIN=$(which firefox-esr)
         export SELENIUM_BROWSER=firefox
 
-        mvn -B -P!standard-with-extra-repos -U -Djetty clean install
+        mvn -B -P!standard-with-extra-repos -U -Djetty -e clean install
         mvn -P!standard-with-extra-repos -B javadoc:javadoc javadoc:test-javadoc -T1C
     - name: Login to Docker Hub
       if: contains('refs/heads/2022.06.x refs/heads/2023.06.x refs/heads/main', github.ref) && github.event_name=='push' && success()
@@ -115,6 +115,7 @@ jobs:
           ./**/screenshots
           ./**/*error*.log
           ./**/*test.log
+          ~/.m2/repository/solr-*/server/logs/*.log
 
     - name: Save Maven cache
       uses: skjolber/maven-cache-github-action@v1

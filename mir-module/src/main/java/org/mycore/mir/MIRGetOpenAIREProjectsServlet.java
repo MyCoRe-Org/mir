@@ -2,18 +2,16 @@ package org.mycore.mir;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
 import java.net.URLEncoder;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 
-import org.apache.commons.io.IOUtils;
-import org.apache.http.HttpEntity;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.mycore.frontend.MCRFrontendUtil;
+import org.mycore.services.http.MCRHttpUtils;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
@@ -26,13 +24,11 @@ public class MIRGetOpenAIREProjectsServlet extends HttpServlet {
 
     private static Logger LOGGER = LogManager.getLogger();
 
-    private CloseableHttpClient client;
+    private HttpClient client;
 
     @Override
     public void init() throws ServletException {
-        PoolingHttpClientConnectionManager connectManager = new PoolingHttpClientConnectionManager();
-        connectManager.setDefaultMaxPerRoute(20);
-        client = HttpClients.custom().useSystemProperties().setConnectionManager(connectManager).build();
+        client = MCRHttpUtils.getHttpClient();
     }
 
     @Override
@@ -44,24 +40,29 @@ public class MIRGetOpenAIREProjectsServlet extends HttpServlet {
             : "acronym=" + URLEncoder.encode(acronym, "UTF-8");
         String urlString = "http://api.openaire.eu/search/projects?" + suffix;
 
-        HttpGet method = new HttpGet(urlString);
-        try (CloseableHttpResponse httpRes = client.execute(method)) {
-            response.setStatus(httpRes.getStatusLine().getStatusCode());
-            HttpEntity entity = httpRes.getEntity();
-            try (InputStream contentStream = entity.getContent()) {
-                IOUtils.copy(contentStream, response.getOutputStream());
+        HttpRequest openaireRequest = MCRHttpUtils.getRequestBuilder()
+            .uri(URI.create(urlString))
+            .build();
+        boolean transmitted = false;
+        try {
+            HttpResponse<InputStream> openaireResponse = client
+                .send(openaireRequest, HttpResponse.BodyHandlers.ofInputStream());
+            response.setStatus(openaireResponse.statusCode());
+            try (InputStream contentStream = openaireResponse.body()) {
+                contentStream.transferTo(response.getOutputStream());
+                transmitted = true;
             }
-        } catch (IOException e) {
-            LOGGER.error("Failed to load " + urlString, e);
+        } catch (InterruptedException e) {
+            throw new ServletException(e);
+        } finally {
+            if (!transmitted) {
+                LOGGER.error("Error while loading eternal resource: " + openaireRequest.uri());
+            }
         }
     }
 
     @Override
     public void destroy() {
-        try {
-            client.close();
-        } catch (IOException e) {
-            LOGGER.error("Could not close HttpClient!", e);
-        }
+        client.close();
     }
 }

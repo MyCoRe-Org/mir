@@ -104,5 +104,5 @@ echo "    }" >> $secruity_json
 echo "  }" >> $secruity_json
 echo "}" >> $secruity_json
 
-(/opt/docker-solr/scripts/wait-for-solr.sh;/opt/solr/bin/solr zk cp $secruity_json zk:security.json -z localhost:9983)&
-/opt/docker-solr/scripts/solr-foreground -c;
+(/opt/solr/docker/scripts/wait-for-solr.sh;/opt/solr/bin/solr zk cp $secruity_json zk:security.json -z localhost:9983)&
+/opt/solr/docker/scripts/solr-foreground -c;

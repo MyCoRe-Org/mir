@@ -23,18 +23,18 @@
 package org.mycore.mir.authorization;
 
 import java.io.IOException;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.util.List;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.util.EntityUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jdom2.Attribute;
 import org.mycore.common.MCRSessionMgr;
 import org.mycore.common.config.MCRConfiguration2;
+import org.mycore.services.http.MCRHttpUtils;
 
 import com.google.gson.Gson;
 
@@ -94,25 +94,24 @@ public class ReCaptcha {
     }
 
     private Boolean verifyResponse(final String response, final String ip) {
-        final CloseableHttpClient client = HttpClientBuilder.create().build();
+        try (HttpClient client = MCRHttpUtils.getHttpClient()) {
+            final String url = "https://www.google.com/recaptcha/api/siteverify?secret=" + secretKey + "&response="
+                + response + "&remoteip=" + ip;
 
-        final String url = "https://www.google.com/recaptcha/api/siteverify?secret=" + secretKey + "&response="
-            + response + "&remoteip=" + ip;
+            final HttpRequest get = MCRHttpUtils.getRequestBuilder().uri(URI.create(url)).build();
 
-        final HttpGet get = new HttpGet(url);
-
-        try {
-            final HttpResponse res = client.execute(get);
-            final String json = EntityUtils.toString(res.getEntity());
+            final HttpResponse<String> res = client.send(get, HttpResponse.BodyHandlers.ofString());
+            final String json = res.body();
 
             final Gson gson = new Gson();
             final ReCaptchaResult rcResult = gson.fromJson(json, ReCaptchaResult.class);
 
             return Boolean.valueOf(rcResult.success);
-        } catch (final IOException e) {
+        } catch (final IOException | InterruptedException e) {
             LOGGER.warn("ReCaptcha response could not be verified!", e);
             return Boolean.FALSE;
         }
+
     }
 
     /**
