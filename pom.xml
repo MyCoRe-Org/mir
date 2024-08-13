@@ -45,7 +45,7 @@
     <maven.compiler.arg>-Werror</maven.compiler.arg>
     <mycore.version>2024.06.0-SNAPSHOT</mycore.version>
     <pmd.version>7.0.0</pmd.version>
-    <selenium.version>4.3.0</selenium.version>
+    <selenium.version>4.23.0</selenium.version>
     <site.suffix />
     <solr-runner.solrVersionString>9.6.1</solr-runner.solrVersionString>
     <sortpom.sortDeps>scope,groupId,artifactId</sortpom.sortDeps>

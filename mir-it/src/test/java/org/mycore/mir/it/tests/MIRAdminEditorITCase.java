@@ -1,6 +1,7 @@
 package org.mycore.mir.it.tests;
 
 import java.io.IOException;
+import java.time.Duration;
 import java.util.AbstractMap;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -67,7 +68,7 @@ public class MIRAdminEditorITCase extends MIRITBase {
         waitForIndexVersionChange(Core.main, beforeVersion); //document in index
         simpleSearchController.simpleSearchBy(MIRTestData.TITLE, null, null, null, null);
         String noDocumentsFoundText = "Keine Dokumente gefunden";
-        WebDriverWait wait = new WebDriverWait(driver, 1);
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(1));
         wait.until((driver) -> {
             try {
                 driver.findElement(MCRBy.partialText(noDocumentsFoundText));
