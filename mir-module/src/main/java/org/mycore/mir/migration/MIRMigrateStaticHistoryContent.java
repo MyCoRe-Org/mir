@@ -1,37 +1,29 @@
 package org.mycore.mir.migration;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
 import jakarta.servlet.ServletContext;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.jdom2.Document;
-import org.jdom2.input.SAXBuilder;
-import org.mycore.common.config.MCRConfiguration2;
+import org.mycore.backend.jpa.MCREntityManagerProvider;
 import org.mycore.common.events.MCRStartupHandler.AutoExecutable;
-import org.mycore.datamodel.metadata.MCRMetadataManager;
-import org.mycore.datamodel.metadata.MCRObjectID;
-import org.mycore.services.queuedjob.staticcontent.MCRJobStaticContentGenerator;
+import org.mycore.services.queuedjob.MCRJob;
+import org.mycore.services.queuedjob.MCRJobQueue;
+import org.mycore.services.queuedjob.MCRJobQueueManager;
+import org.mycore.services.queuedjob.MCRJobStatus;
+import org.mycore.services.queuedjob.MCRJob_;
 import org.mycore.util.concurrent.MCRTransactionableRunnable;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.FileVisitResult;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.SimpleFileVisitor;
-import java.nio.file.attribute.BasicFileAttributes;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * Class converts automatically all static history content on start up.
+ * Class creates {@link MCRJob} in {@link MCRJobQueue} that migrates all static history content.
  *
  * @author shermann (Silvio Hermann)
  * */
 public class MIRMigrateStaticHistoryContent implements AutoExecutable {
-
-    protected static final Path MIR_STATIC_HISTORY_PATH = Path.of(
-        MCRConfiguration2.getString("MCR.Object.Static.Content.Default.Path").get() + File.separator + "mir-history");
-
-    private static Logger LOGGER = LogManager.getLogger(MIRMigrateStaticHistoryContent.class);
 
     @Override
     public String getName() {
@@ -46,37 +38,29 @@ public class MIRMigrateStaticHistoryContent implements AutoExecutable {
     @Override
     public void startUp(ServletContext servletContext) {
         MCRTransactionableRunnable runnable = new MCRTransactionableRunnable(() -> {
-            try {
-                SAXBuilder builder = new SAXBuilder();
-                Files.walkFileTree(MIR_STATIC_HISTORY_PATH, new SimpleFileVisitor<Path>() {
-                    @Override
-                    public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-                        try (InputStream is = Files.newInputStream(file)) {
-                            Document history = builder.build(is);
-                            if ("table".equals(history.getRootElement().getName())) {
-                                String filename = file.getFileName().toString();
-                                String id = filename.substring(0, filename.lastIndexOf('.'));
-
-                                if (!MCRObjectID.isValid(id)) {
-                                    return FileVisitResult.CONTINUE;
-                                }
-
-                                LOGGER.info("Migrating static history for object {}", id);
-                                MCRJobStaticContentGenerator generator = new MCRJobStaticContentGenerator(
-                                    "mir-history");
-                                generator.generate(MCRMetadataManager.retrieveMCRObject(MCRObjectID.getInstance(id)));
-                            }
-                        } catch (Exception e) {
-                            LOGGER.error("Could not migrate static mcr-history for file {}", file.getFileName(), e);
-                        }
-                        return FileVisitResult.CONTINUE;
-                    }
-                });
-            } catch (IOException e) {
-                LOGGER.error("Error occurred during migration of static history content", e);
+            if (!alreadyDone()) {
+                MCRJobQueueManager
+                    .getInstance()
+                    .getJobQueue(MIRMigrateStaticHistoryContentJobAction.class)
+                    .offer(new MCRJob(MIRMigrateStaticHistoryContentJobAction.class));
             }
         });
-
         new Thread(runnable).start();
+    }
+
+    private boolean alreadyDone() {
+        EntityManager manager = MCREntityManagerProvider.getCurrentEntityManager();
+        CriteriaBuilder builder = manager.getCriteriaBuilder();
+        CriteriaQuery<MCRJob> criteria = builder.createQuery(MCRJob.class);
+        Root<MCRJob> root = criteria.from(MCRJob.class);
+
+        List<Predicate> predicates = new ArrayList<Predicate>();
+        predicates.add(builder.equal(root.get(MCRJob_.action), MIRMigrateStaticHistoryContentJobAction.class));
+        predicates.add(builder.equal(root.get(MCRJob_.status), MCRJobStatus.FINISHED));
+
+        criteria.where(predicates.toArray(new Predicate[] {}));
+        List<MCRJob> resultList = manager.createQuery(criteria).getResultList();
+
+        return resultList.size() > 0;
     }
 }
