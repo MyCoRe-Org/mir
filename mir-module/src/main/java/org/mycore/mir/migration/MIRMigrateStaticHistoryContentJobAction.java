@@ -46,16 +46,16 @@ public class MIRMigrateStaticHistoryContentJobAction extends MCRJobAction {
             Files.walkFileTree(staticHistoryPath, new SimpleFileVisitor<Path>() {
                 @Override
                 public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+                    String filename = file.getFileName().toString();
+                    String id = filename.substring(0, filename.lastIndexOf('.'));
+
+                    if (!MCRObjectID.isValid(id)) {
+                        return FileVisitResult.CONTINUE;
+                    }
 
                     try (InputStream is = Files.newInputStream(file)) {
                         Document history = builder.build(is);
                         if ("table".equals(history.getRootElement().getName())) {
-                            String filename = file.getFileName().toString();
-                            String id = filename.substring(0, filename.lastIndexOf('.'));
-
-                            if (!MCRObjectID.isValid(id)) {
-                                return FileVisitResult.CONTINUE;
-                            }
                             logger.info("Migrating static history for object {}", id);
                             MCRJobStaticContentGenerator generator = new MCRJobStaticContentGenerator(
                                 "mir-history");
