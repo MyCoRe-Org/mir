@@ -35,7 +35,6 @@ public class MIRMigrateStaticHistoryContent implements AutoExecutable {
 
     @Override
     public String getName() {
-
         return MIRMigrateStaticHistoryContent.class.getName();
     }
 
