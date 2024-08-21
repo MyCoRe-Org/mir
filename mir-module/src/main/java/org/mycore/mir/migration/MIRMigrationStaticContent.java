@@ -10,6 +10,7 @@ import org.mycore.common.events.MCRStartupHandler.AutoExecutable;
 import org.mycore.datamodel.metadata.MCRMetadataManager;
 import org.mycore.datamodel.metadata.MCRObjectID;
 import org.mycore.services.queuedjob.staticcontent.MCRJobStaticContentGenerator;
+import org.mycore.util.concurrent.MCRTransactionableRunnable;
 
 import java.io.File;
 import java.io.IOException;
@@ -45,29 +46,34 @@ public class MIRMigrationStaticContent implements AutoExecutable {
 
     @Override
     public void startUp(ServletContext servletContext) {
-        try {
-            SAXBuilder builder = new SAXBuilder();
-            Files.walkFileTree(MIR_STATIC_HISTORY_PATH, new SimpleFileVisitor<Path>() {
-                @Override
-                public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-                    try (InputStream is = Files.newInputStream(file)) {
-                        Document history = builder.build(is);
-                        if ("table".equals(history.getRootElement().getName())) {
-                            String filename = file.getFileName().toString();
-                            String id = filename.substring(0, filename.lastIndexOf('.'));
-                            LOGGER.info("Migrating static history for object {}", id);
+        MCRTransactionableRunnable runnable = new MCRTransactionableRunnable(() -> {
+            try {
+                SAXBuilder builder = new SAXBuilder();
+                Files.walkFileTree(MIR_STATIC_HISTORY_PATH, new SimpleFileVisitor<Path>() {
+                    @Override
+                    public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+                        try (InputStream is = Files.newInputStream(file)) {
+                            Document history = builder.build(is);
+                            if ("table".equals(history.getRootElement().getName())) {
+                                String filename = file.getFileName().toString();
+                                String id = filename.substring(0, filename.lastIndexOf('.'));
+                                LOGGER.info("Migrating static history for object {}", id);
 
-                            MCRJobStaticContentGenerator generator = new MCRJobStaticContentGenerator("mir-history");
-                            generator.generate(MCRMetadataManager.retrieveMCRObject(MCRObjectID.getInstance(id)));
+                                MCRJobStaticContentGenerator generator = new MCRJobStaticContentGenerator(
+                                    "mir-history");
+                                generator.generate(MCRMetadataManager.retrieveMCRObject(MCRObjectID.getInstance(id)));
+                            }
+                        } catch (Exception e) {
+                            LOGGER.error("Could not migrate static mcr-history for file {}", file.getFileName(), e);
                         }
-                    } catch (Exception e) {
-                        LOGGER.error("Could not migrate static mcr-history for file {}", file.getFileName(), e);
+                        return FileVisitResult.CONTINUE;
                     }
-                    return FileVisitResult.CONTINUE;
-                }
-            });
-        } catch (IOException e) {
-            LOGGER.error("Error occured during migration of static history content", e);
-        }
+                });
+            } catch (IOException e) {
+                LOGGER.error("Error occurred during migration of static history content", e);
+            }
+        });
+
+        new Thread(runnable).start();
     }
 }
