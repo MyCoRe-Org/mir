@@ -32,7 +32,7 @@ public class MIRMigrateStaticHistoryContent implements AutoExecutable {
 
     @Override
     public int getPriority() {
-        return 0;
+        return Integer.MIN_VALUE;
     }
 
     @Override
