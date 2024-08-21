@@ -35,7 +35,7 @@ public class MIRMigrateStaticHistoryContentJobAction extends MCRJobAction {
         logger = LogManager.getLogger(MIRMigrateStaticHistoryContentJobAction.class);
 
         staticHistoryPath = Path.of(
-            MCRConfiguration2.getString("MCR.Object.Static.Content.Default.Path").get() + File.separator
+            MCRConfiguration2.getStringOrThrow("MCR.Object.Static.Content.Default.Path") + File.separator
                 + "mir-history");
     }
 
