@@ -26,17 +26,17 @@ import java.nio.file.attribute.BasicFileAttributes;
  *
  * @author shermann (Silvio Hermann)
  * */
-public class MIRMigrationStaticContent implements AutoExecutable {
+public class MIRMigrateStaticHistoryContent implements AutoExecutable {
 
     protected static final Path MIR_STATIC_HISTORY_PATH = Path.of(
         MCRConfiguration2.getString("MCR.Object.Static.Content.Default.Path").get() + File.separator + "mir-history");
 
-    private static Logger LOGGER = LogManager.getLogger(MIRMigrationStaticContent.class);
+    private static Logger LOGGER = LogManager.getLogger(MIRMigrateStaticHistoryContent.class);
 
     @Override
     public String getName() {
 
-        return MIRMigrationStaticContent.class.getName();
+        return MIRMigrateStaticHistoryContent.class.getName();
     }
 
     @Override
