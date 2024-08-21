@@ -56,8 +56,12 @@ public class MIRMigrateStaticHistoryContent implements AutoExecutable {
                             if ("table".equals(history.getRootElement().getName())) {
                                 String filename = file.getFileName().toString();
                                 String id = filename.substring(0, filename.lastIndexOf('.'));
-                                LOGGER.info("Migrating static history for object {}", id);
 
+                                if (!MCRObjectID.isValid(id)) {
+                                    return FileVisitResult.CONTINUE;
+                                }
+
+                                LOGGER.info("Migrating static history for object {}", id);
                                 MCRJobStaticContentGenerator generator = new MCRJobStaticContentGenerator(
                                     "mir-history");
                                 generator.generate(MCRMetadataManager.retrieveMCRObject(MCRObjectID.getInstance(id)));
