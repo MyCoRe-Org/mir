@@ -434,10 +434,10 @@
   <xsl:template name="user-display-name">
     <xsl:choose>
       <xsl:when test="/user/realName">
-        <xsl:value-of select="/user/realName"/>
+        <xsl:value-of select="concat(i18n:translate('component.user2.admin.userDisplay'), ' ', /user/realName)"/>
       </xsl:when>
       <xsl:otherwise>
-        <xsl:value-of select="concat(i18n:translate('component.user2.admin.userDisplay'), /user/@name)"/>
+        <xsl:value-of select="concat(i18n:translate('component.user2.admin.userDisplay'), ' ', /user/@name)"/>
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
