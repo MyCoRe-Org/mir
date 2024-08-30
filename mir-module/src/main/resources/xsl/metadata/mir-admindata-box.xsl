@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:xlink="http://www.w3.org/1999/xlink"
+                xmlns:encoder="xalan://xalan://java.net.URLEncoder"
                 xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation" xmlns:mods="http://www.loc.gov/mods/v3"
                 xmlns:mcracl="xalan://org.mycore.access.MCRAccessManager"
                 xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions"
-                exclude-result-prefixes="i18n mcracl mods xlink mcrxsl">
+                exclude-result-prefixes="encoder i18n mcracl mods xlink mcrxsl">
   <xsl:import href="xslImport:modsmeta:metadata/mir-admindata-box.xsl"/>
   <xsl:param name="WebApplicationBaseURL"/>
 
@@ -143,6 +144,7 @@
         </xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
+    <xsl:variable name="userid-with-realm" select="concat($user/user/@name, '@', $user/user/@realm)"/>
 
     <tr>
       <td class="metaname">
@@ -152,13 +154,13 @@
       <td class="metavalue">
         <xsl:if test="$user/user/realName">
           <xsl:attribute name="title">
-            <xsl:value-of select="concat($user/user/@name, '@', $user/user/@realm)"/>
+            <xsl:value-of select="$userid-with-realm"/>
           </xsl:attribute>
         </xsl:if>
 
         <xsl:choose>
           <xsl:when test="mcracl:checkPermission('POOLPRIVILEGE', 'administrate-users')">
-            <a href="{$WebApplicationBaseURL}servlets/MCRUserServlet?action=show&amp;id={$user/user/@name}">
+            <a href="{$WebApplicationBaseURL}servlets/MCRUserServlet?action=show&amp;id={encoder:encode($userid-with-realm, 'UTF-8')}">
               <xsl:value-of select="$display-name"/>
             </a>
           </xsl:when>
