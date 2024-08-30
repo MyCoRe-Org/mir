@@ -11,7 +11,9 @@
 
   <xsl:variable name="PageID" select="'show-user'" />
 
-  <xsl:variable name="PageTitle" select="concat(i18n:translate('component.user2.admin.userDisplay'),/user/@name)" />
+  <xsl:variable name="PageTitle">
+    <xsl:call-template name="user-display-name"/>
+  </xsl:variable>
 
   <xsl:param name="step" />
   <xsl:param name="MCR.ORCID.LinkURL" />
@@ -79,7 +81,7 @@
       </div>
       <div class="clearfix" />
       <h2>
-        <xsl:value-of select="concat(i18n:translate('component.user2.admin.userDisplay'),@name)" />
+        <xsl:call-template name="user-display-name"/>
       </h2>
       <xsl:if test="$step = 'confirmDelete'">
         <div class="section alert alert-danger">
@@ -427,6 +429,17 @@
         </li>
       </ul>
     </xsl:if>
+  </xsl:template>
+
+  <xsl:template name="user-display-name">
+    <xsl:choose>
+      <xsl:when test="/user/realName">
+        <xsl:value-of select="concat(i18n:translate('component.user2.admin.userDisplay'), ' ', /user/realName)"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="concat(i18n:translate('component.user2.admin.userDisplay'), ' ', /user/@name)"/>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
 
 </xsl:stylesheet>

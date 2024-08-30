@@ -280,6 +280,11 @@
   </xsl:template>
   <xsl:template match="td[@class='metavalue']" mode="newMetadata" priority="2">
     <dd>
+      <xsl:if test="@title">
+        <xsl:attribute name="title">
+          <xsl:value-of select="@title"/>
+        </xsl:attribute>
+      </xsl:if>
       <xsl:copy-of select="node()|*"/>
     </dd>
   </xsl:template>
