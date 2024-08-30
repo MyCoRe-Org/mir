@@ -2,8 +2,9 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:xlink="http://www.w3.org/1999/xlink"
                 xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation" xmlns:mods="http://www.loc.gov/mods/v3"
+                xmlns:mcracl="xalan://org.mycore.access.MCRAccessManager"
                 xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions"
-                exclude-result-prefixes="i18n mods xlink mcrxsl">
+                exclude-result-prefixes="i18n mcracl mods xlink mcrxsl">
   <xsl:import href="xslImport:modsmeta:metadata/mir-admindata-box.xsl"/>
   <xsl:param name="WebApplicationBaseURL"/>
 
@@ -156,7 +157,7 @@
         </xsl:if>
 
         <xsl:choose>
-          <xsl:when test="mcrxsl:isCurrentUserInRole('admin')">
+          <xsl:when test="mcracl:checkPermission('POOLPRIVILEGE', 'administrate-users')">
             <a href="{$WebApplicationBaseURL}servlets/MCRUserServlet?action=show&amp;id={$user/user/@name}">
               <xsl:value-of select="$display-name"/>
             </a>
