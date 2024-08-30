@@ -12,6 +12,7 @@
 >
   <xsl:import href="xslImport:modsmeta:metadata/mir-collapse-files.xsl" />
   <xsl:param name="MIR.NotFullAccessInfo.Genres" />
+  <xsl:param name="MIR.FileBrowser.FilesPerPage" />
   <xsl:template match="/">
     <xsl:variable xmlns:encoder="xalan://java.net.URLEncoder" name="loginURL"
       select="concat( $ServletsBaseURL, 'MCRLoginServlet',$HttpSession,'?url=', encoder:encode( string( $RequestURL ) ) )" />
@@ -91,7 +92,7 @@
                   <xsl:choose>
                     <xsl:when test="key('rights', @xlink:href)/@read">
                       <xsl:variable name="maindoc" select="$derivateXML/mycorederivate/derivate/internals/internal/@maindoc" />
-                      <div class="file_box_files" data-objID="{$objID}" data-deriID="{$derId}" data-mainDoc="{$maindoc}" data-writedb="{acl:checkPermission($derId,'writedb')}" data-deletedb="{acl:checkPermission($derId,'deletedb')}">
+                      <div class="file_box_files" data-objID="{$objID}" data-deriID="{$derId}" data-mainDoc="{$maindoc}" data-writedb="{acl:checkPermission($derId,'writedb')}" data-deletedb="{acl:checkPermission($derId,'deletedb')}" data-numperpage="{$MIR.FileBrowser.FilesPerPage}">
                         <xsl:if test="acl:checkPermission($derId,'read')">
                           <xsl:attribute name="data-jwt">
                             <xsl:value-of select="'required'" />
