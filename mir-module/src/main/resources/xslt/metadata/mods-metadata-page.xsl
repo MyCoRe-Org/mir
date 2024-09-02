@@ -202,6 +202,7 @@
   </xsl:template>
 
   <xsl:template match="versions" mode="history-modal">
+    <xsl:variable name="ID" select="ancestor::site/@ID"/>
     <table class="table table-hover table-condensed">
       <tr class="info">
         <th>
@@ -229,7 +230,7 @@
           <td class="rev">
             <xsl:if test="@r">
               <xsl:variable name="href">
-                <xsl:value-of select="concat($WebApplicationBaseURL,'receive/',@ID, '?r=', @r)" />
+                <xsl:value-of select="concat($WebApplicationBaseURL,'receive/',$ID, '?r=', @r)" />
               </xsl:variable>
               <xsl:choose>
                 <xsl:when test="@action='D'">
