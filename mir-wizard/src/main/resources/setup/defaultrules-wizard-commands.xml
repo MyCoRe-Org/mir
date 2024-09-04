@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <commands>
-  <command file="resource:setup/acl/permissions.xml">load permissions data from file {file}</command>
+  <command file="resource:setup/acl/permissions.xml">load permissions data from {file}</command>
 
   <command file="resource:setup/acl/grant-all.xml" describedBy="always allowed">update permission read for id default with rule {file} described by {describedBy}</command>
   <command file="resource:setup/acl/grant-admin.xml" describedBy="administrators only">update permission writedb for id default with rule {file} described by {describedBy}</command>
