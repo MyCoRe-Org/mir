@@ -96,7 +96,7 @@ function migrateJavaxPropertiesToJakarta() {
     echo "Migrate xmlns in persistence.xml from jcp.org to jakarta.ee"
     sed -ri "s/xmlns=\".+persistence\"/xmlns=\"https:\/\/jakarta.ee\/xml\/ns\/persistence\"/" "${PERSISTENCE_XML}"
     echo "Migrate schemaLocation in persistence.xml from jcp.org to jakarta.ee"
-    grep -ri "s/(xsi:schemaLocation=\").*jcp.org.*(\")/\1https:\/\/jakarta.ee\/xml\/ns\/persistence https:\/\/jakarta.ee\/xml\/ns\/persistence\/persistence_3_0.xsd\2/" "${PERSISTENCE_XML}"
+    sed -ri "s/(xsi:schemaLocation=\").*jcp.org.*(\")/\1https:\/\/jakarta.ee\/xml\/ns\/persistence https:\/\/jakarta.ee\/xml\/ns\/persistence\/persistence_3_0.xsd\2/" "${PERSISTENCE_XML}"
   fi
   if grep -q "version=\"2" "${PERSISTENCE_XML}"; then
     echo "Migrate version in persistence.xml from 2.* to 3.0"
