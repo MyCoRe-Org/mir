@@ -185,7 +185,7 @@
               mode="present" />
 
             <xsl:variable name="identifierTypes" select="document('classification:metadata:-1:children:identifier')/mycoreclass/categories" />
-            <xsl:for-each select="$identifierTypes/category[@ID!='open-aire' and @ID!='intern' and @ID!='issn']">
+            <xsl:for-each select="$identifierTypes//category[@ID!='open-aire' and @ID!='intern' and @ID!='issn']">
                 <xsl:variable name="identifierType" select="@ID"/>
                         <xsl:apply-templates mode="present" select="$mods/mods:identifier[@type=$identifierType]" />
             </xsl:for-each>
