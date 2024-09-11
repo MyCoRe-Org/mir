@@ -128,7 +128,7 @@ public class MIRUserController {
     }
 
     public void assertUserCreated(String user) {
-        driver.waitFor(ExpectedConditions.titleContains("Nutzerdaten anzeigen:" + user));
+        driver.waitFor(ExpectedConditions.titleContains("Nutzerdaten anzeigen: " + user));
     }
 
     public void assertValidationErrorVisible() {

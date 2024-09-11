@@ -485,7 +485,7 @@
                     </li -->
                   </xsl:when>
                   <xsl:otherwise>
-                    <li>
+                    <li class="dropdown-item">
                       <xsl:value-of select="i18n:translate('object.locked')" />
                     </li>
                   </xsl:otherwise>

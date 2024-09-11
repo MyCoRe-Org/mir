@@ -106,7 +106,7 @@ jobs:
         docker push mycoreorg/mir-solr:${GITHUB_REF_NAME}-${BUILD_START}
     - name: Upload logs on build failure
       if: failure()
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
         name: test-results
         path: |
