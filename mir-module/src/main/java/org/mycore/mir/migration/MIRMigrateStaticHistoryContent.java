@@ -51,16 +51,17 @@ public class MIRMigrateStaticHistoryContent implements AutoExecutable {
     private boolean alreadyDone() {
         EntityManager manager = MCREntityManagerProvider.getCurrentEntityManager();
         CriteriaBuilder builder = manager.getCriteriaBuilder();
-        CriteriaQuery<MCRJob> criteria = builder.createQuery(MCRJob.class);
+        CriteriaQuery<Long> criteria = builder.createQuery(Long.class);
         Root<MCRJob> root = criteria.from(MCRJob.class);
 
-        List<Predicate> predicates = new ArrayList<Predicate>();
+        List<Predicate> predicates = new ArrayList<>();
         predicates.add(builder.equal(root.get(MCRJob_.action), MIRMigrateStaticHistoryContentJobAction.class));
         predicates.add(builder.equal(root.get(MCRJob_.status), MCRJobStatus.FINISHED));
 
+        criteria.select(builder.count(root));
         criteria.where(predicates.toArray(new Predicate[] {}));
-        List<MCRJob> resultList = manager.createQuery(criteria).getResultList();
+        Long result = manager.createQuery(criteria).getSingleResult();
 
-        return resultList.size() > 0;
+        return result > 0;
     }
 }
