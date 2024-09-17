@@ -20,16 +20,25 @@ This guide addresses developers. Thats why you run it in 'dev' profile!
       </properties>
     </profile>
 ```
- - to start solr, go to mir-webapp
-  - install solr with the command: `mvn -Pdev solr-runner:copyHome`
-  - run solr with the command: `mvn -Pdev solr-runner:start`
-    - The default users are `admin`, `indexer` and `searcher` with password `alleswirdgut` 
-    - In the wizard of the application you need to check `Erstelle SOLR-Kerne per Solr-Cloud rest-API` and the configure
-    user options with the above-mentioned users and passwords.
-  - stop solr with the command: `mvn -Pdev solr-runner:stop`
-  - update solr with the command: `mvn -Pdev solr-runner:stop solr-runner:copyHome solr-runner:start`
- - to starting up a servlet container in development environment go back to mir folder
-  - run `mvn install -am -pl mir-webapp && mvn -Pdev -Dtomcat org.codehaus.cargo:cargo-maven3-plugin:run -pl mir-webapp`
+ - To start Solr, go to `mir-webapp`
+   - Install Solr with the command: `mvn -Pdev solr-runner:copyHome`
+   - Run Solr with the command: `mvn -Pdev solr-runner:start`
+ - To start up a servlet container as a development environment go back to `mir` folder
+   - Run `mvn install -am -pl mir-webapp && mvn -Pdev -Dtomcat org.codehaus.cargo:cargo-maven3-plugin:run -pl mir-webapp`
+   - Open `http://localhost/mir` in your browser
+ - To perform the guided initial configuration
+   - Use the login token from the server log to continue
+   - Use the SOLR server URL `http://localhost:8983`
+   - Use main core name `mir` and classification core name `mir-classifications`
+   - Check "Create cores in Solr server via SolrCloud API"
+   - Check "Configure a user for Solr administration", "indexing in Solr" and "searching in Solr"
+   - Enter usernames `admin`, `indexer` and `searcher` respectively and password `alleswirdgut` for all three users
+   - Select database type `H2`
+   - Continue and restart the servlet container as instructed
+
+Afterward, you can stop Solr from the `mir-webapp` folder with `mvn -Pdev solr-runner:stop`.
+If you need to update Solr cores, you can do this from the `mir-webapp` folder with `mvn -Pdev solr-runner:stop solr-runner:copyHome solr-runner:start`.
+
 
 ## FAQ
  1. Installation hangs while generating secret  
