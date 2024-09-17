@@ -12,7 +12,7 @@
 
   <xsl:import  href="xslImport:modsmeta:metadata/mir-abstract.xsl" />
   <xsl:include href="resource:xsl/mir-utils.xsl" />
-
+  <xsl:param name="MIR.Layout.Abstract.Type.Classification"/>
   <xsl:variable name="objectID" select="/mycoreobject/@ID" />
   <xsl:variable name="modsPart" select="concat('mods.part.', $objectID)" />
   <xsl:variable name="nbsp" select="'&#xa0;'"/>
@@ -232,6 +232,9 @@
                 <xsl:for-each select="$abstracts/mods:abstract">
                   <xsl:variable name="tabName">
                     <xsl:choose>
+                      <xsl:when test="@type and $MIR.Layout.Abstract.Type.Classification">
+                        <xsl:value-of select="document(concat('classification:metadata:0:children:', $MIR.Layout.Abstract.Type.Classification,':',@type))//category/label[@xml:lang=$CurrentLang]/@text"/>
+                      </xsl:when>
                       <xsl:when test="@xml:lang">
                         <xsl:value-of
                           select="document(concat('classification:metadata:0:children:rfc5646:',./@xml:lang))//category/label[@xml:lang=$CurrentLang]/@text" />
