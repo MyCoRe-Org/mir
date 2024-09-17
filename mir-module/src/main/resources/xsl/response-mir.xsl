@@ -3,6 +3,7 @@
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:mods="http://www.loc.gov/mods/v3"
   xmlns:encoder="xalan://java.net.URLEncoder"
+  xmlns:exsl="http://exslt.org/common" 
   xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
   xmlns:str="http://exslt.org/strings"
   xmlns:exslt="http://exslt.org/common"
@@ -13,17 +14,31 @@
   xmlns:decoder="xalan://java.net.URLDecoder"
   exclude-result-prefixes="i18n mods str exslt mcr acl mcrxsl basket encoder decoder">
 
+  <xsl:include href="resource:xsl/mir-orcid-utils.xsl"/>
   <xsl:include href="resource:xsl/csl-export-gui.xsl" />
   <xsl:include href="resource:xsl/response-facets.xsl"/>
   <xsl:include href="resource:xsl/response-mir-utils.xsl" />
 
   <xsl:param name="UserAgent" />
   <xsl:param name="MIR.testEnvironment" />
-  <xsl:param name="MCR.ORCID.OAuth.ClientSecret" select="''" />
   <xsl:param name="MIR.Solr.Secondary.Search.RequestHandler.List" select="'find'" />
   <xsl:param name="RequestURL" />
+  <xsl:param name="MCR.ORCID2.OAuth.ClientSecret" select="''" />
+  <xsl:param name="orcidIntegrationEnabled" select="string-length($MCR.ORCID2.OAuth.ClientSecret) &gt; 0"/>
 
   <xsl:variable name="maxScore" select="//result[@name='response'][1]/@maxScore" />
+  <xsl:variable name="currentUserIdsXml">
+    <xsl:call-template name="extractUserIdsFromUserAttributes">
+      <xsl:with-param name="userAttributes" select="document('user:current')/user/attributes"/>
+    </xsl:call-template>
+  </xsl:variable>
+  <xsl:variable name="currentUserIds" select="exsl:node-set($currentUserIdsXml)/str"/>
+  <xsl:variable name="currentUserOrcidsXml">
+    <xsl:call-template name="extractOrcidsFromUserAttributes">
+      <xsl:with-param name="userAttributes" select="document('user:current')/user/attributes"/>
+    </xsl:call-template>
+  </xsl:variable>
+  <xsl:variable name="currentUserOrcids" select="exsl:node-set($currentUserOrcidsXml)/str"/>
 
   <xsl:template match="/response/result|lst[@name='grouped']/lst[@name='returnId']" priority="10">
     <xsl:variable name="ResultPages">
@@ -467,9 +482,7 @@
       </div>
 
     </div>
-    <xsl:if test="string-length($MCR.ORCID.OAuth.ClientSecret) &gt; 0">
-      <script src="{$WebApplicationBaseURL}js/mir/mycore2orcid.js" />
-    </xsl:if>
+    <script type="module" src="{$WebApplicationBaseURL}js/mir/result-list.js"/>
   </xsl:template>
 
   <xsl:template match="doc" priority="10" mode="resultList">
@@ -509,6 +522,19 @@
         </xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
+
+    <xsl:variable name="currentUserMatchingTrustedIdsXml">
+      <xsl:choose>
+        <xsl:when test="$orcidIntegrationEnabled">
+          <xsl:call-template name="getMatchingTrustedIds">
+            <xsl:with-param name="idsA" select="$currentUserIds"/>
+            <xsl:with-param name="idsB" select="arr[@name='mods.nameIdentifier']/str"/>
+          </xsl:call-template>
+        </xsl:when>
+        <xsl:otherwise/>
+      </xsl:choose>
+    </xsl:variable>
+    <xsl:variable name="hasCurrentUserMatchingTrustedIds" select="count(exsl:node-set($currentUserMatchingTrustedIdsXml)/str) &gt; 0"/>
 
     <!-- generate browsing url -->
     <xsl:variable name="href" select="concat($proxyBaseURL,$solrParams)" />
@@ -849,8 +875,8 @@
                   </span>
                 </div>
               </xsl:if>
-              <xsl:if test="string-length($MCR.ORCID.OAuth.ClientSecret) &gt; 0">
-                <div class="orcid-status" data-id="{$identifier}" />
+              <xsl:if test="$hasCurrentUserMatchingTrustedIds and count($currentUserOrcids) &gt; 0">
+                <div class="orcid-status" data-object-id="{$identifier}" data-orcid="{$currentUserOrcids[1]}"/>
               </xsl:if>
             </div>
           </div>
@@ -1025,11 +1051,6 @@
               </xsl:for-each>
             </div>
           </xsl:if>
-
-          <xsl:if test="string-length($MCR.ORCID.OAuth.ClientSecret) &gt; 0">
-            <div class="orcid-publish" data-id="{$identifier}" />
-          </xsl:if>
-
         </div><!-- end hit col -->
       </div><!-- end hit body -->
     </div><!-- end hit item -->
