@@ -15,6 +15,7 @@
   exclude-result-prefixes="xlink xalan i18n mods str mcr acl mcrxsl encoder">
 
 
+  <xsl:import href="resource:xsl/orcid/mir-orcid.xsl"/>
   <xsl:include href="MyCoReLayout.xsl" />
 
   <!-- include custom templates for supported objecttypes -->
@@ -37,6 +38,9 @@
       <xsl:call-template name="export-csl" />
       <xsl:call-template name="basketEntries" />
     </div>
+    <xsl:if test="$isOrcidEnabled">
+      <script type="module" src="{$WebApplicationBaseURL}js/mir/orcid-basket.js"/>
+    </xsl:if>
   </xsl:template>
 
 
