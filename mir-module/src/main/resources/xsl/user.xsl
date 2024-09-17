@@ -16,8 +16,12 @@
   </xsl:variable>
 
   <xsl:param name="step" />
-  <xsl:param name="MCR.ORCID.LinkURL" />
-  <xsl:param name="MIR.ORCID.InfoURL" />
+  <xsl:param name="MCR.ORCID2.OAuth.ClientSecret"/>
+  <xsl:param name="MCR.ORCID2.BaseURL"/>
+  <xsl:param name="MCR.ORCID2.OAuth.Scope"/>
+  <xsl:param name="MIR.ORCID.InfoURL"/>
+  <xsl:param name="orcidIntegrationEnabled" select="string-length($MCR.ORCID2.OAuth.ClientSecret) &gt; 0"/>
+
   <xsl:param name="MIR.User.ShowSimpleDetailsOnly" select="'false'" />
 
   <xsl:variable name="uid">
@@ -241,7 +245,8 @@
                 </th>
                 <td class="col-md-9">
                   <dl>
-                    <xsl:for-each select="attributes/attribute[@name!='id_orcid']">
+                    <!-- filter orcid attributes -->
+                    <xsl:for-each select="attributes/attribute[not(@name='id_orcid' or starts-with(@name, 'orcid_credential_'))]">
                       <dt>
                         <xsl:value-of select="@name" />
                       </dt>
@@ -260,7 +265,7 @@
                   <xsl:text>:</xsl:text>
                 </th>
                 <td class="col-md-9">
-                  <xsl:variable name="url" select="concat($MCR.ORCID.LinkURL,attributes/attribute[@name='id_orcid']/@value)" />
+                  <xsl:variable name="url" select="concat($MCR.ORCID2.BaseURL, '/', attributes/attribute[@name='id_orcid']/@value)" />
                   <a href="{$url}">
                     <img alt="ORCID iD" src="{$WebApplicationBaseURL}images/orcid_icon.svg" class="orcid-icon" />
                     <xsl:value-of select="$url" />
@@ -319,7 +324,7 @@
             </xsl:if>
           </table>
         </div>
-        <xsl:if test="string-length($MCR.ORCID.LinkURL) &gt; 0">
+        <xsl:if test="$orcidIntegrationEnabled and @realm!='orcid.org'">
           <xsl:call-template name="orcid" />
         </xsl:if>
       </div>
@@ -349,86 +354,78 @@
   <xsl:template name="orcid">
     <article>
       <xsl:choose>
-        <xsl:when test="attributes/attribute[@name='token_orcid']">
-          <xsl:call-template name="orcidIntegrationConfirmed" />
+        <xsl:when test="attributes/attribute[starts-with(@name, 'orcid_credential_')]">
+          <xsl:variable name="orcidCredentialAttribute"
+            select="attributes/attribute[starts-with(@name, 'orcid_credential_')][1]"/>
+          <xsl:call-template name="printORCIDOAuthDetails">
+            <xsl:with-param name="orcid"
+              select="substring-after($orcidCredentialAttribute/@name, 'orcid_credential_')"/>
+          </xsl:call-template>
         </xsl:when>
         <xsl:otherwise>
-          <xsl:call-template name="orcidIntegrationPending" />
+          <xsl:call-template name="printORCIDOAuthOption"/>
         </xsl:otherwise>
       </xsl:choose>
-      <p>
+      <xsl:if test="$MIR.ORCID.InfoURL">
+        <br/>
         <a href="{$MIR.ORCID.InfoURL}">
-          <xsl:value-of select="i18n:translate('orcid.integration.more')" />
+          <xsl:value-of select="document('i18n:orcid.integration.more')"/>
           <xsl:text>...</xsl:text>
         </a>
-      </p>
+      </xsl:if>
     </article>
   </xsl:template>
 
-  <xsl:template name="orcidIntegrationConfirmed">
-    <h3 style="margin-bottom: 0.5em;">
-      <span class="fas fa-check" aria-hidden="true" />
-      <xsl:text> </xsl:text>
-      <xsl:value-of select="i18n:translate('orcid.integration.confirmed.headline')" />
-    </h3>
-    <p>
-      <xsl:value-of select="i18n:translate('orcid.integration.confirmed.text')" />
-    </p>
-    <xsl:if test="string-length(normalize-space(i18n:translate('orcid.integration.import'))) &gt; 0 and
-                  string-length(normalize-space(i18n:translate('orcid.integration.publish'))) &gt; 0">
-      <ul style="margin-top:1ex;">
-        <li>
-          <xsl:value-of select="i18n:translate('orcid.integration.import')" />
-        </li>
-        <li>
-          <xsl:value-of select="i18n:translate('orcid.integration.publish')" />
-        </li>
-      </ul>
-    </xsl:if>
+  <xsl:template name="printORCIDOAuthScopeDescriptionList">
+    <xsl:param name="scopeString" select="''"/>
+    <ul>
+      <xsl:if test="contains($scopeString, '/authenticate')">
+        <li><xsl:value-of select="document('i18n:component.orcid2.oauth.message.authenticate')"/></li>
+      </xsl:if>
+      <xsl:if test="contains($scopeString, '/read-limited')">
+          <li><xsl:value-of select="document('i18n:component.orcid2.oauth.message.read-limited')"/></li>
+      </xsl:if>
+      <xsl:if test="contains($scopeString, '/activities/update')">
+          <li><xsl:value-of select="document('i18n:component.orcid2.oauth.message.activities_update')"/></li>
+      </xsl:if>
+      <xsl:if test="contains($scopeString, '/person/update')">
+          <li><xsl:value-of select="document('i18n:component.orcid2.oauth.message.person_update')"/></li>
+      </xsl:if>
+    </ul>
   </xsl:template>
 
-  <xsl:template name="orcidIntegrationPending">
-    <h3 style="margin-bottom: 0.5em;">
-      <span class="far fa-hand-point-right" aria-hidden="true" style="margin-right:1ex;" />
-      <xsl:text> </xsl:text>
-      <xsl:value-of select="i18n:translate('orcid.integration.pending.headline')" />
+  <xsl:template name="printORCIDOAuthDetails">
+    <xsl:param name="orcid" select="'ORCiD'"/>
+    <script src="{$WebApplicationBaseURL}modules/orcid2/js/orcid-auth.js"/>
+    <h3>
+      <span class="fas fa-check pr-1" aria-hidden="true"/>
+      <xsl:value-of select="document('i18n:orcid.integration.confirmed.headline')"/>
     </h3>
-    <p>
-      <xsl:value-of select="i18n:translate('orcid.integration.pending.intro')" />
-    </p>
-    <script type="text/javascript">
-      function orcidOAuth() {
-      <!-- Force logout before login -->
-      jQuery.ajax({
-      url: '<xsl:value-of select='$MCR.ORCID.LinkURL' />userStatus.json?logUserOut=true',
-      dataType: 'jsonp',
-      success: function(result,status,xhr) {
-      <!-- Login in popup window -->
-      window.open("<xsl:value-of select='$WebApplicationBaseURL' />orcid",
-      "_blank", "toolbar=no, scrollbars=yes, width=500, height=600, top=500, left=500");
-      },
-      error: function (xhr, status, error) { alert(status); }
-      });
-      }
-    </script>
-    <button id="orcid-oauth-button" onclick="orcidOAuth();" title="({i18n:translate('orcid.integration.popup.tooltip')})">
-      <img alt="ORCID iD" src="{$WebApplicationBaseURL}images/orcid_icon.svg" class="orcid-icon" />
-      <xsl:value-of select="i18n:translate('orcid.oauth.link')" />
+    <p><xsl:value-of select="document('i18n:orcid.integration.confirmed.text')"/></p>
+    <xsl:call-template name="printORCIDOAuthScopeDescriptionList">
+      <xsl:with-param name="scopeString" select="document(concat('orcidCredential:scope:', $orcid))/string"/>
+    </xsl:call-template>
+    <button class="btn btn-danger" title="{document('i18n:orcid.oauth.revoke')}"
+      onclick="revokeORCID('{$orcid}', '{$WebApplicationBaseURL}servlets/MCRUserServlet?action=show')">
+      <xsl:value-of select="document('i18n:orcid.oauth.revoke')"/>
     </button>
-    <p>
-      <xsl:value-of select="i18n:translate('orcid.integration.pending.authorize')" />
-    </p>
-    <xsl:if test="string-length(normalize-space(i18n:translate('orcid.integration.import'))) &gt; 0 and
-                  string-length(normalize-space(i18n:translate('orcid.integration.publish'))) &gt; 0">
-      <ul style="margin-top:1ex;">
-        <li>
-          <xsl:value-of select="i18n:translate('orcid.integration.import')" />
-        </li>
-        <li>
-          <xsl:value-of select="i18n:translate('orcid.integration.publish')" />
-        </li>
-      </ul>
-    </xsl:if>
+  </xsl:template>
+
+  <xsl:template name="printORCIDOAuthOption">
+    <script src="{$WebApplicationBaseURL}modules/orcid2/js/orcid-auth.js"/>
+    <h3>
+      <span class="far fa-hand-point-right pr-1" aria-hidden="true"/>
+      <xsl:value-of select="document('i18n:orcid.integration.pending.headline')"/>
+    </h3>
+    <p><xsl:value-of select="document('i18n:orcid.integration.pending.intro')"/></p>
+    <xsl:call-template name="printORCIDOAuthScopeDescriptionList">
+      <xsl:with-param name="scopeString" select="$MCR.ORCID2.OAuth.Scope"/>
+    </xsl:call-template>
+    <button class="btn btn-primary" title="{document('i18n:orcid.integration.popup.tooltip')}"
+      onclick="orcidOAuth('{$MCR.ORCID2.OAuth.Scope}')">
+      <img alt="ORCID iD" src="{$WebApplicationBaseURL}images/orcid_icon.svg" class="orcid-icon"/>
+      <xsl:value-of select="document('i18n:orcid.oauth.link')"/>
+    </button>
   </xsl:template>
 
   <xsl:template name="user-display-name">
