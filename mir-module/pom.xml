@@ -97,6 +97,28 @@
               <arguments>--verbose --assetsDirectory=${template.assetsdir} --moduleDirectory=${basedir}</arguments>
             </configuration>
           </execution>
+          <execution>
+            <id>yarn-install-js</id>
+            <goals>
+              <goal>yarn</goal>
+            </goals>
+            <phase>process-resources</phase>
+            <configuration>
+              <arguments>install</arguments>
+              <workingDirectory>src/main/js</workingDirectory>
+            </configuration>
+          </execution>
+          <execution>
+            <id>yarn-build-js</id>
+            <goals>
+              <goal>yarn</goal>
+            </goals>
+            <phase>process-resources</phase>
+            <configuration>
+              <arguments>build</arguments>
+              <workingDirectory>src/main/js</workingDirectory>
+            </configuration>
+          </execution>
         </executions>
       </plugin>
     </plugins>
@@ -191,6 +213,10 @@
     <dependency>
       <groupId>org.mycore</groupId>
       <artifactId>mycore-mods</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.mycore</groupId>
+      <artifactId>mycore-orcid2</artifactId>
     </dependency>
     <dependency>
       <groupId>org.mycore</groupId>

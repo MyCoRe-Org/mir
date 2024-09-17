@@ -14,13 +14,15 @@
   exclude-result-prefixes="i18n mods str exslt mcr acl mcrxsl basket encoder decoder">
 
   <xsl:import href="xslImport:badges" />
+  <xsl:import href="resource:xsl/orcid/mir-orcid-user.xsl"/>
+  <xsl:include href="resource:xsl/orcid/mir-orcid-export-ui.xsl"/>
+  <xsl:include href="resource:xsl/orcid/mir-orcid-work.xsl"/>
   <xsl:include href="resource:xsl/csl-export-gui.xsl" />
   <xsl:include href="resource:xsl/response-facets.xsl"/>
   <xsl:include href="resource:xsl/response-mir-utils.xsl" />
 
   <xsl:param name="UserAgent" />
   <xsl:param name="MIR.testEnvironment" />
-  <xsl:param name="MCR.ORCID.OAuth.ClientSecret" select="''" />
   <xsl:param name="MIR.Solr.Secondary.Search.RequestHandler.List" select="'find'" />
   <xsl:param name="RequestURL" />
 
@@ -468,8 +470,9 @@
       </div>
 
     </div>
-    <xsl:if test="string-length($MCR.ORCID.OAuth.ClientSecret) &gt; 0">
-      <script src="{$WebApplicationBaseURL}js/mir/mycore2orcid.js" />
+    <xsl:if test="$isOrcidEnabled">
+      <xsl:call-template name="render-export-to-orcid-modal"/>
+      <script type="module" src="{$WebApplicationBaseURL}js/mir/orcid-result-list.js"/>
     </xsl:if>
   </xsl:template>
 
@@ -584,7 +587,7 @@
 
 <!-- hit options -->
           <xsl:choose>
-            <xsl:when test="acl:checkPermission($identifier,'writedb')">
+            <xsl:when test="not($isGuestUser)">
               <div class="hit_options float-end">
                 <div class="btn-group">
                   <a data-bs-toggle="dropdown" class="btn btn-secondary dropdown-toggle" href="#">
@@ -600,7 +603,7 @@
                       </xsl:call-template>
                     </li>
                         <!-- direct link to editor -->
-                    <xsl:if test="acl:checkPermission($identifier,'writedb')">
+                    <xsl:if test="document(concat('checkPermission:', $identifier, ':writedb'))/boolean='true'">
                       <li>
                         <xsl:variable name="editURL">
                           <xsl:call-template name="mods.getObjectEditURL">
@@ -628,6 +631,25 @@
                         </a>
                       </li>
                     </xsl:if>
+                    <xsl:if test="$isOrcidEnabled">
+                      <li>
+                        <xsl:variable name="currentUserHasTrustedMatchingId">
+                          <xsl:call-template name="check-current-user-has-trusted-matching-id">
+                            <xsl:with-param name="nameIds" select="arr[@name='mods.nameIdentifier']/str"/>
+                          </xsl:call-template>
+                        </xsl:variable>
+                        <xsl:variable name="isPublishable">
+                          <xsl:call-template name="check-state-is-publishable">
+                            <xsl:with-param name="state" select="str[@name='state']"/>
+                          </xsl:call-template>
+                        </xsl:variable>
+                        <xsl:call-template name="render-export-to-orcid-menu-item">
+                          <xsl:with-param name="objectId" select="$identifier"/>
+                          <xsl:with-param name="disabled"
+                            select="$isPublishable='false' or $currentUserHasTrustedMatchingId='false' or not($hasLinkedOrcidCredential)"/>
+                        </xsl:call-template>
+                      </li>
+                    </xsl:if>
                   </ul>
                 </div>
               </div>
@@ -641,6 +663,7 @@
               </div>
             </xsl:otherwise>
           </xsl:choose>
+          
 
 
         </div><!-- end col -->
@@ -708,7 +731,7 @@
                         test="$displayDerivate/str[@name='iviewFile'] or translate(str:tokenize($displayDerivate/str[@name='derivateMaindoc'],'.')[position()=last()],'PDF','pdf') = 'pdf'">
                   <div class="hit_icon">
                     <xsl:choose>
-                      <xsl:when test="not(mcrxsl:isCurrentUserGuestUser())">
+                      <xsl:when test="not($isGuestUser)">
                         <xsl:attribute name="data-iiif-jwt">
                           <xsl:value-of select="concat($WebApplicationBaseURL, 'api/iiif/image/v2/thumbnail/', $identifier,'/full/!300,300/0/default.jpg')"/>
                         </xsl:attribute>
@@ -762,9 +785,6 @@
           <div class="hit_tnd_container">
             <div class="hit_tnd_content mir-badge-container">
               <xsl:apply-templates select="." mode="badge"/>
-              <xsl:if test="string-length($MCR.ORCID.OAuth.ClientSecret) &gt; 0">
-                <div class="orcid-status" data-id="{$identifier}" />
-              </xsl:if>
             </div>
           </div>
 
@@ -938,11 +958,6 @@
               </xsl:for-each>
             </div>
           </xsl:if>
-
-          <xsl:if test="string-length($MCR.ORCID.OAuth.ClientSecret) &gt; 0">
-            <div class="orcid-publish" data-id="{$identifier}" />
-          </xsl:if>
-
         </div><!-- end hit col -->
       </div><!-- end hit body -->
     </div><!-- end hit item -->
