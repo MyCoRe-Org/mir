@@ -217,11 +217,13 @@
 
         <xsl:choose>
           <xsl:when test="count($abstracts/mods:abstract) &gt; 1">
-            <xsl:variable name="fnode" select="$abstracts/mods:abstract[@xml:lang=$CurrentLang][1]"/>
-
+            <xsl:variable name="first-abstract-in-current-lang-node" select="$abstracts/mods:abstract[@xml:lang=$CurrentLang][1]"/>
             <xsl:variable name="first-abstract-in-current-lang-position">
               <xsl:for-each select="$abstracts/mods:abstract">
-                <xsl:if test=".= $fnode">
+                <xsl:sort select="@type"/>
+                <xsl:sort select="@xml:lang"/>
+
+                <xsl:if test=".= $first-abstract-in-current-lang-node">
                   <xsl:value-of select="position()"/>
                 </xsl:if>
               </xsl:for-each>
@@ -230,6 +232,9 @@
             <div id="mir-abstract-tabs">
               <ul class="nav nav-tabs justify-content-end" role="tablist">
                 <xsl:for-each select="$abstracts/mods:abstract">
+                  <xsl:sort select="@type"/>
+                  <xsl:sort select="@xml:lang"/>
+
                   <xsl:variable name="tabName">
                     <xsl:choose>
                       <xsl:when test="@type and $MIR.Layout.Abstract.Type.Classification">
@@ -265,6 +270,9 @@
               </ul>
               <div class="tab-content">
                 <xsl:for-each select="$abstracts/mods:abstract">
+                  <xsl:sort select="@type"/>
+                  <xsl:sort select="@xml:lang"/>
+
                   <div class="tab-pane ellipsis ellipsis-text" role="tabpanel" id="tab{position()}">
                     <xsl:if test="@xml:lang">
                       <xsl:attribute name="lang">
