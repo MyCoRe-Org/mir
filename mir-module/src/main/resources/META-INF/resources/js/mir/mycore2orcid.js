@@ -34,7 +34,9 @@ const fetchI18nData = async (webApplicationBaseUrl, lang, keyPrefix) => {
   }
   return await response.json();
 }
-const publishObjectToOrcid = async (webApplicationBaseUrl, accessToken, objectId) => {
+const publishObjectToOrcid = async (webApplicationBaseUrl, accessToken, objectId, orcid) => {
+  console.log(`Publishing ${objectId} to ORCID profile ${orcid}`);
+  //TODO define orcid in request
   const response = await fetch(`${webApplicationBaseURL}api/orcid/v1/create-work/v3/${objectId}`, {
     method: 'POST',
     headers: { Authorization: `Bearer ${accessToken}`}
@@ -89,24 +91,20 @@ const lang = window["currentLang"];
     div.appendChild(statusElement);
 	}
 
-	const createOrcidPublishButton = async (div, objectId, isInOrcidProfile) => {
+	const createOrcidPublishButton = async (div, objectId, orcid) => {
     div.innerHTML = '';
     const publishButtonElement = document.createElement('button');
     publishButtonElement.classList.add('orcid-button');
-    // update work is not supported
-    publishButtonElement.disabled = isInOrcidProfile;
     publishButtonElement.innerHTML = await getI18n('orcid.publication.action.create');
-    if (!isInOrcidProfile) {
-      publishButtonElement.addEventListener('click', async () => {
-        const accessToken = await getAccessToken();
-        await publishObjectToOrcid(webApplicationBaseUrl, accessToken, objectId);
-        document.querySelectorAll(`div.orcid-status[data-id="${objectId}"]`).forEach((e) => {
-          setOrcidPublicationStatus(e, true);
-        });
-        publishButtonElement.disabled = true;
-        alert(await getI18n('orcid.publication.action.confirmation'));
+    publishButtonElement.addEventListener('click', async () => {
+      const accessToken = await getAccessToken();
+      await publishObjectToOrcid(webApplicationBaseUrl, accessToken, objectId, orcid);
+      document.querySelectorAll(`div.orcid-status[data-id="${objectId}"]`).forEach((e) => {
+        setOrcidPublicationStatus(e, true);
       });
-    }
+      publishButtonElement.disabled = true;
+      alert(await getI18n('orcid.publication.action.confirmation'));
+    });
     div.appendChild(publishButtonElement);
 	}
 
@@ -123,14 +121,20 @@ const lang = window["currentLang"];
     });
   }
 
-  const createOrcidPublishButtons = () => {
+  const createOrcidPublishButtons = (trustedOrcids) => {
     document.querySelectorAll('div.orcid-publish').forEach(async (e) => {
       const objectId = e.dataset.id;
-      if (objectId) {
+      const orcidsString = e.dataset.orcids;
+      if (objectId && orcidsString && orcidsString.length > 0) {
+        const orcids = orcidsString.split(",");
+        const acceptedOrcids = trustedOrcids.filter((o) => orcids.includes(o));
+        if (orcids.length !== 1) {
+          return;
+        }
         const accessToken = await getAccessToken();
         const objectStatus = await getObjectStatus(webApplicationBaseUrl, accessToken, objectId);
-        if (objectStatus.usersPublication) {
-          createOrcidPublishButton(e, objectId, objectStatus.inORCIDProfile);
+        if (objectStatus.usersPublication && !objectStatus.inORCIDProfile) {
+          createOrcidPublishButton(e, objectId, acceptedOrcids[0]);
         }
       }
     });
@@ -140,8 +144,9 @@ const lang = window["currentLang"];
     const userStatus = await getUserStatus(webApplicationBaseUrl, await getAccessToken());
     if (userStatus.orcids.length !== 0) {
       setOrcidPublicationStatuses();
-      // TODO check if trustedOrcid is relevant orcid
-      createOrcidPublishButtons();
+      if (userStatus.trustedOrcids.length !== 0) {
+        createOrcidPublishButtons(userStatus.trustedOrcids);
+      }
     }
 	}
 

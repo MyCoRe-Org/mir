@@ -632,7 +632,10 @@
                 </div>
               </xsl:if>
               <xsl:if test="$orcidIntegrationEnabled">
-                <div class="orcid-status" data-id="{$identifier}" />
+                <xsl:variable name="orcidIdentifiers" select="arr[@name='mods.nameIdentifier']/str[starts-with(text(), 'orcid')]"/>
+                <xsl:if test="string-length($orcidIdentifiers) &gt; 0">
+                  <div class="orcid-status" data-id="{$identifier}" />
+                </xsl:if>
               </xsl:if>
             </div>
           </div>
@@ -806,12 +809,24 @@
           </xsl:if>
 
           <xsl:if test="$orcidIntegrationEnabled">
-            <div class="orcid-publish" data-id="{$identifier}" />
+            <xsl:variable name="orcidIdentifiers" select="arr[@name='mods.nameIdentifier']/str[starts-with(text(), 'orcid')]"/>
+            <xsl:if test="string-length($orcidIdentifiers) &gt; 0">
+              <xsl:variable name="orcids">
+                <xsl:apply-templates select="$orcidIdentifiers" mode="create_comma_seperated_orcid_list"/>
+              </xsl:variable>
+              <div class="orcid-publish" data-id="{$identifier}" data-orcids="{$orcids}"/>
+            </xsl:if>
           </xsl:if>
+
 
         </div><!-- end hit col -->
       </div><!-- end hit body -->
     </div><!-- end hit item -->
+  </xsl:template>
+
+  <xsl:template match="str" mode="create_comma_seperated_orcid_list">
+    <xsl:value-of select="substring(., 7)"/>
+    <xsl:if test="position() != last()">, </xsl:if>
   </xsl:template>
 
   <xsl:template name="detectSearchParam">
