@@ -19,7 +19,8 @@
 
   <xsl:param name="UserAgent" />
   <xsl:param name="MIR.testEnvironment" />
-  <xsl:param name="MCR.ORCID.OAuth.ClientSecret" select="''" />
+  <xsl:param name="MCR.ORCID2.OAuth.ClientSecret" select="''" />
+  <xsl:param name="orcidIntegrationEnabled" select="string-length($MCR.ORCID2.OAuth.ClientSecret) &gt; 0"/>
 
   <xsl:variable name="maxScore" select="//result[@name='response'][1]/@maxScore" />
 
@@ -248,7 +249,7 @@
       </div>
 
     </div>
-    <xsl:if test="string-length($MCR.ORCID.OAuth.ClientSecret) &gt; 0">
+    <xsl:if test="$orcidIntegrationEnabled">
       <script src="{$WebApplicationBaseURL}js/mir/mycore2orcid.js" />
     </xsl:if>
   </xsl:template>
@@ -630,7 +631,7 @@
                   </span>
                 </div>
               </xsl:if>
-              <xsl:if test="string-length($MCR.ORCID.OAuth.ClientSecret) &gt; 0">
+              <xsl:if test="$orcidIntegrationEnabled">
                 <div class="orcid-status" data-id="{$identifier}" />
               </xsl:if>
             </div>
@@ -804,7 +805,7 @@
             </div>
           </xsl:if>
 
-          <xsl:if test="string-length($MCR.ORCID.OAuth.ClientSecret) &gt; 0">
+          <xsl:if test="$orcidIntegrationEnabled">
             <div class="orcid-publish" data-id="{$identifier}" />
           </xsl:if>
 
