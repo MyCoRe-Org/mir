@@ -238,7 +238,7 @@
                   <xsl:variable name="tabName">
                     <xsl:choose>
                       <xsl:when test="@type and $MIR.Layout.Abstract.Type.Classification">
-                        <xsl:value-of select="document(concat('classification:metadata:0:children:', $MIR.Layout.Abstract.Type.Classification,':',@type))//category/label[@xml:lang=$CurrentLang]/@text"/>
+                        <xsl:value-of select="mcrxsl:getDisplayName($MIR.Layout.Abstract.Type.Classification, @type)"/>
                       </xsl:when>
                       <xsl:when test="@xml:lang">
                         <xsl:value-of
