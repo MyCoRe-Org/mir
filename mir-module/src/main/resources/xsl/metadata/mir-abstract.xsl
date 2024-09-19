@@ -257,7 +257,7 @@
                           <xsl:attribute name="class">active nav-link</xsl:attribute>
                         </xsl:when>
                         <xsl:otherwise>
-                          <xsl:if test="position() = 1 and not($first-abstract-in-current-lang-position)">
+                          <xsl:if test="position() = 1 and not($first-abstract-in-current-lang-position &gt;0)">
                             <xsl:attribute name="class">active nav-link</xsl:attribute>
                           </xsl:if>
                         </xsl:otherwise>
@@ -284,7 +284,7 @@
                           <xsl:attribute name="class">tab-pane ellipsis ellipsis-text active</xsl:attribute>
                       </xsl:when>
                       <xsl:otherwise>
-                        <xsl:if test="position() = 1 and not($first-abstract-in-current-lang-position)">
+                        <xsl:if test="position() = 1 and not($first-abstract-in-current-lang-position &gt;0)">
                           <xsl:attribute name="class">tab-pane ellipsis ellipsis-text active</xsl:attribute>
                         </xsl:if>
                       </xsl:otherwise>
