@@ -3,6 +3,7 @@
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:mods="http://www.loc.gov/mods/v3"
   xmlns:encoder="xalan://java.net.URLEncoder"
+  xmlns:exsl="http://exslt.org/common" 
   xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
   xmlns:str="http://exslt.org/strings"
   xmlns:exslt="http://exslt.org/common"
@@ -19,7 +20,8 @@
 
   <xsl:param name="UserAgent" />
   <xsl:param name="MIR.testEnvironment" />
-  <xsl:param name="MCR.ORCID2.OAuth.ClientSecret" select="''" />
+  <xsl:param name="MCR.ORCID2.OAuth.ClientSecret" select="''"/>
+  <xsl:param name="MCR.ORCID2.OAuth.Scope" select="''"/>
   <xsl:param name="orcidIntegrationEnabled" select="string-length($MCR.ORCID2.OAuth.ClientSecret) &gt; 0"/>
 
   <xsl:variable name="maxScore" select="//result[@name='response'][1]/@maxScore" />
@@ -291,6 +293,25 @@
         </xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
+    <xsl:variable name="matchingUserOrcids">
+    <xsl:variable name="orcidIdentifiers" select="arr[@name='mods.nameIdentifier']/str[starts-with(text(), 'orcid')]"/>
+    <xsl:variable name="currentUserOrcids" select="document('user:current')/user/attributes/attribute[@name='id_orcid']"/>
+      <xsl:choose>
+        <xsl:when test="not(mcrxsl:isCurrentUserGuestUser()) and $orcidIntegrationEnabled
+                        and count($orcidIdentifiers) &gt; 0 and count($currentUserOrcids)">
+          <xsl:for-each select="$orcidIdentifiers">
+            <xsl:variable name="currentOrcid" select="substring-after(.,':')"/>
+            <xsl:if test="$currentUserOrcids[contains(@value, $currentOrcid)]">
+              <matchingOrcid>
+                <xsl:value-of select="$currentOrcid"/>
+              </matchingOrcid>
+            </xsl:if>
+          </xsl:for-each>
+        </xsl:when>
+        <xsl:otherwise/>
+      </xsl:choose>
+    </xsl:variable>
+    <xsl:variable name="matchingUserOrcidsNoteSet" select="exsl:node-set($matchingUserOrcids)"/>
 
     <!-- generate browsing url -->
     <xsl:variable name="href" select="concat($proxyBaseURL,$solrParams)" />
@@ -631,11 +652,8 @@
                   </span>
                 </div>
               </xsl:if>
-              <xsl:if test="$orcidIntegrationEnabled">
-                <xsl:variable name="orcidIdentifiers" select="arr[@name='mods.nameIdentifier']/str[starts-with(text(), 'orcid')]"/>
-                <xsl:if test="string-length($orcidIdentifiers) &gt; 0">
-                  <div class="orcid-status" data-id="{$identifier}" />
-                </xsl:if>
+              <xsl:if test="count($matchingUserOrcidsNoteSet/matchingOrcid) &gt; 0">
+                <div class="orcid-status" data-object-id="{$identifier}" data-orcid="{$matchingUserOrcidsNoteSet/matchingOrcid[1]}"/>
               </xsl:if>
             </div>
           </div>
@@ -808,25 +826,16 @@
             </div>
           </xsl:if>
 
-          <xsl:if test="$orcidIntegrationEnabled">
-            <xsl:variable name="orcidIdentifiers" select="arr[@name='mods.nameIdentifier']/str[starts-with(text(), 'orcid')]"/>
-            <xsl:if test="string-length($orcidIdentifiers) &gt; 0">
-              <xsl:variable name="orcids">
-                <xsl:apply-templates select="$orcidIdentifiers" mode="create_comma_seperated_orcid_list"/>
-              </xsl:variable>
-              <div class="orcid-publish" data-id="{$identifier}" data-orcids="{$orcids}"/>
+          <xsl:if test="count($matchingUserOrcidsNoteSet/matchingOrcid) &gt; 0">
+            <xsl:variable name="orcid" select="$matchingUserOrcidsNoteSet/matchingOrcid[1]"/>
+            <xsl:if test="document(concat('orcidCredential:exists:', $orcid))/boolean='true'
+                          and contains(document(concat('orcidCredential:scope:', $orcid))/string, '/activities/update')">
+              <div class="orcid-publish" data-object-id="{$identifier}" data-orcid="{$orcid}"/>
             </xsl:if>
           </xsl:if>
-
-
         </div><!-- end hit col -->
       </div><!-- end hit body -->
     </div><!-- end hit item -->
-  </xsl:template>
-
-  <xsl:template match="str" mode="create_comma_seperated_orcid_list">
-    <xsl:value-of select="substring(., 7)"/>
-    <xsl:if test="position() != last()">, </xsl:if>
   </xsl:template>
 
   <xsl:template name="detectSearchParam">
