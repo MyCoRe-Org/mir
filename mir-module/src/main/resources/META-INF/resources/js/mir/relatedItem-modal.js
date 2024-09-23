@@ -99,7 +99,7 @@ $(document).ready(function() {
     function initBody() {
       $("#modalFrame-title").text(button.val());
       $("#modalFrame-cancel").text($("button[name='_xed_submit_cancel']").text());
-      $("#modalFrame-send").text("Auswählen").attr("disabled", "").removeAttr("style");
+      $("#modalFrame-send").attr("disabled", "").removeAttr("style");
       // TODO: check if you can remove HTML from js code (e.g. by a js template)
       $("#modalFrame-body").append("<div id='main_left_content' class='list-group col-md-4' />");
       $("#modalFrame-body").append("<div id='main_right_content' class='list-group col-md-8' />");
