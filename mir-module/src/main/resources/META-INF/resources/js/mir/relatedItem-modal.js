@@ -111,6 +111,7 @@ $(document).ready(function() {
       $(".already-linked").after("<div class='col-md-4 type-select'><select class='form-control'><option value=''>Ohne Eingrenzung nach Typ:</option></select></div>");
       $("li a").css("cursor", "pointer");
       $("#modal-searchInput").removeAttr("hidden");
+      $("#modal-searchInput button span").removeAttr("style");
       $("#modal-searchInput > input").attr("autocomplete", "off");
       $("#modalFrame").modal("show");
     }
