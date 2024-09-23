@@ -108,7 +108,11 @@ $(document).ready(function() {
       $("#main_right_content").css("padding-left", "10px");
       //create pagination
       $("#modalFrame-body").append("<div class='col-12 mt-2'><nav style='clear: both'><ul class='modal-frame-pagination pagination justify-content-center'><li id='first' class='page-item previous disabled'><a href='#' class='page-link' data='0'>First</a></li><li id='previous' class='page-item previous disabled'><a href='#' class='page-link'>Previous</a></li><li class='page-item next disabled'><a href='#' class='page-link'>Next</a></li></ul></nav></div>");
-      $(".already-linked").after("<div class='col-md-4 type-select'><select class='form-control'><option value=''>Ohne Eingrenzung nach Typ:</option></select></div>");
+
+      if($(".type-select").length == 0) {
+        $(".already-linked").after("<div class='col-md-4 type-select'><select class='form-control'><option value=''>Ohne Eingrenzung nach Typ:</option></select></div>");
+      }
+
       $("li a").css("cursor", "pointer");
       $("#modal-searchInput").removeAttr("hidden");
       $("#modal-searchInput button span").removeAttr("style");
