@@ -289,7 +289,7 @@ $(document).ready(function() {
               dataType = "xml";
               break;
         case "select":
-              url = "servlets/solr/select?fq=" + fq + "q=" + qry + "&fq=objectType%3A\"mods\"&start=0&rows=10&XSL.Style=xml";
+              url = "servlets/solr/select?fq=" + fq + "&q=" + qry + "&fq=objectType%3A\"mods\"&start=0&rows=10&XSL.Style=xml";
               dataType = "xml";
               break;
         case "receive":
