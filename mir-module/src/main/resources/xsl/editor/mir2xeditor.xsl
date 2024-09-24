@@ -152,8 +152,8 @@
   </xsl:template>
 
   <xsl:template name="mir-dateRange">
-    <xsl:param name="showDateTimeOption" select="false" />
-    <xsl:param name="startsWithDateTime" select="false" />
+    <xsl:param name="showDateTimeOption" select="'false'" />
+    <xsl:param name="startsWithDateTime" select="'false'" />
     <xsl:variable name="timeClass">
       <xsl:choose>
         <xsl:when test="$startsWithDateTime='true'">
@@ -223,7 +223,7 @@
   </xsl:template>
 
   <xsl:template name="date-selectFormat">
-    <xsl:param name="showDateTimeOption" select="false" />
+    <xsl:param name="showDateTimeOption" select="'false'" />
     <div class="input-group-btn date-selectFormat input-group-append">
       <button class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"><span class="caret"></span><span class="sr-only">Toggle Dropdown</span></button>
       <ul class="dropdown-menu dropdown-menu-right" role="menu">
