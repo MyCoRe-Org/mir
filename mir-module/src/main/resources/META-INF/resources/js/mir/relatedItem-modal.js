@@ -76,6 +76,10 @@ $(document).ready(function() {
     var input = button.next().next("input");
     var sortType = "";
     let fq = button.data("fq");
+    //if no id is given set fq empty
+    if(fq == "-id:") {
+      fq = "";
+    }
 
     //load genre classification
     loadGenres(initContent);
