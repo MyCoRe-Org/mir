@@ -1935,7 +1935,9 @@
                 </div>
                 <div class="col-md-8 text-right mt-2 mt-md-0">
                   <button id="modalFrame-cancel" type="button" class="btn btn-danger mr-0 ml-1" data-dismiss="modal"></button>
-                  <button id="modalFrame-send" type="button" class="btn btn-primary mr-0 ml-1"></button>
+                  <button id="modalFrame-send" type="button" class="btn btn-primary mr-0 ml-1">
+                    <xed:output i18n="button.select"/>
+                  </button>
                 </div>
               </div>
             </div>
