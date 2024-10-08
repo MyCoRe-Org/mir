@@ -4,6 +4,7 @@
   xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation" xmlns:mir="http://www.mycore.de/mir"
   exclude-result-prefixes="xsl mir i18n">
 
+
   <xsl:include href="copynodes.xsl" />
   <xsl:variable name="institutesURI">
     <xsl:choose>
@@ -129,7 +130,10 @@
         <xed:output i18n="{@label}" />
       </label>
       <div class="col-md-6 {@class}" data-type="{@type}">
-        <xsl:call-template name="mir-dateRange"/>
+        <xsl:call-template name="mir-dateRange">
+          <xsl:with-param name="showDateTimeOption" select="@showDateTimeOption"/>
+          <xsl:with-param name="startsWithDateTime" select="@startsWithDateTime"/>
+        </xsl:call-template>
       </div>
       <div class="col-md-3">
         <xsl:if test="string-length(@help-text) &gt; 0">
@@ -141,11 +145,35 @@
 
   <xsl:template match="mir:dateRangeInput">
     <div class="{@class}" data-type="{@type}">
-      <xsl:call-template name="mir-dateRange"/>
+      <xsl:call-template name="mir-dateRange">
+        <xsl:with-param name="showDateTimeOption" select="@showDateTimeOption"/>
+      </xsl:call-template>
     </div>
   </xsl:template>
 
   <xsl:template name="mir-dateRange">
+    <xsl:param name="showDateTimeOption" select="'false'" />
+    <xsl:param name="startsWithDateTime" select="'false'" />
+    <xsl:variable name="timeClass">
+      <xsl:choose>
+        <xsl:when test="$startsWithDateTime='true'">
+          <xsl:text>startsWithDatetime</xsl:text>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:text></xsl:text>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+    <xsl:variable name="dateRangeWithTime">
+      <xsl:choose>
+        <xsl:when test="$showDateTimeOption='true'">
+          <xsl:text>withTime</xsl:text>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:text></xsl:text>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
     <xsl:variable name="apos">'</xsl:variable>
     <xsl:variable name="xpathSimple" >
       <xsl:value-of select="concat(@xpath,'[not(@point)]')"/>
@@ -165,32 +193,37 @@
     <div class="date-format" data-format="simple">
       <div class="date-simple {$hiddenclasssimple} input-group mb-1">
         <xed:bind xpath="{$xpathSimple}">
-          <input type="text" class="form-control" autocomplete="off">
+          <input type="text" class="form-control {$timeClass}" autocomplete="off">
             <xsl:copy-of select="@placeholder" />
           </input>
         </xed:bind>
-        <xsl:call-template name="date-selectFormat"/>
+        <xsl:call-template name="date-selectFormat">
+          <xsl:with-param name="showDateTimeOption" select="$showDateTimeOption"/>
+        </xsl:call-template>
       </div>
       <div class="date-range input-group {$hiddenclassrange} input-daterange">
         <xed:bind xpath="{$xpathStart}">
-          <input type="text" class="form-control startDate" data-point="start">
+          <input type="text" class="form-control {$dateRangeWithTime} startDate" data-point="start">
             <xsl:copy-of select="@placeholder" />
           </input>
         </xed:bind>
         <span class="fas fa-minus input-group-text" aria-hidden="true"></span>
         <xed:bind xpath="{$xpathEnd}">
-          <input type="text" class="form-control endDate" data-point="end">
+          <input type="text" class="form-control {$dateRangeWithTime} endDate" data-point="end">
             <xsl:copy-of select="@placeholder" />
           </input>
         </xed:bind>
         <xsl:if test="not(@onlyRange = 'true') ">
-          <xsl:call-template name="date-selectFormat"/>
+          <xsl:call-template name="date-selectFormat">
+            <xsl:with-param name="showDateTimeOption" select="$showDateTimeOption"/>
+          </xsl:call-template>
         </xsl:if>
       </div>
     </div>
   </xsl:template>
 
   <xsl:template name="date-selectFormat">
+    <xsl:param name="showDateTimeOption" select="'false'" />
     <div class="input-group-btn date-selectFormat input-group-append">
       <button class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"><span class="caret"></span><span class="sr-only">Toggle Dropdown</span></button>
       <ul class="dropdown-menu dropdown-menu-right" role="menu">
@@ -204,6 +237,13 @@
             <xsl:value-of select="i18n:translate('mir.date.period')" />
           </a>
         </li>
+        <xsl:if test="$showDateTimeOption='true'">
+        <li>
+          <a href="#" class="date-timeOption dropdown-item">
+            <xsl:value-of select="i18n:translate('mir.date.datetime')" />
+          </a>
+        </li>
+        </xsl:if>
       </ul>
     </div>
   </xsl:template>

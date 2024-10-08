@@ -96,6 +96,18 @@
   </xsl:template>
   -->
 
+  <!-- convert date-time with timezone to UTC -->
+  <xsl:template match="mods:*[@encoding='w3cdtf' and contains(text(), 'T') and substring(text(), string-length(text())) != 'Z']">
+    <xsl:copy>
+      <xsl:copy-of select="@*" />
+      <xsl:variable name="apos">'</xsl:variable>
+      <xsl:variable name="w3ctf-date-time" select="text()" />
+      <xsl:variable name="simple-date-format" select="concat('yyyy-MM-dd',$apos,'T',$apos,'HH:mm:ssX')" />
+      <xsl:variable name="iso-8601-format" select="'UUUU-MM-DDThh:mm:ssTZD'" />
+      <xsl:value-of select="mcrxml:getISODate($w3ctf-date-time, $simple-date-format, $iso-8601-format)" />
+    </xsl:copy>
+  </xsl:template>
+
   <!-- create value URI using valueURIxEditor and authorityURI -->
   <xsl:template match="@valueURIxEditor">
     <xsl:choose>

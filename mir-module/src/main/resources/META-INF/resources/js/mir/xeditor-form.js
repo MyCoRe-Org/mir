@@ -1,20 +1,20 @@
 $(document).ready(function() {
 
-    function pickDatePickerFormatAndAdd(elm) {
+    function pickDatePickerFormatAndAdd(elm, clockBtn) {
         if (moment($(elm).val(), "YYYY-MM-DD", true).isValid()){
-            addDatePicker(elm, 0);
+            addDatePicker(elm, 0, clockBtn);
         }
         else {
             if (moment($(elm).val(), "YYYY-MM", true).isValid()){
-                addDatePicker(elm, 1);
+                addDatePicker(elm, 1, clockBtn);
             }
             else {
-                addDatePicker(elm, 2);
+                addDatePicker(elm, 2, clockBtn);
             }
         }
     }
 
-    function addDatePicker(elm, startView, format) {
+    function addDatePicker(elm, startView, clockIsActivated, format) {
         $(elm).datepicker({
             format: {
                 toDisplay: function (date, format, language) {
@@ -30,26 +30,32 @@ $(document).ready(function() {
             clearBtn: true,
             todayBtn: "linked",
             language: $("html").attr("lang"),
-            forceParse: false,
+            timeBtn: clockIsActivated,
+            forceParse: !clockIsActivated,
             autoclose: true,
             todayHighlight: true,
+            maxViewMode: 4,
             daysOfWeekHighlighted: "0"
         }).on("changeYear", function(e) {
             $(this).val(moment(e.date).format("YYYY"))
         }).on("changeMonth", function(e) {
             $(this).val(moment(e.date).format("YYYY-MM"));
-        }).on("hide", function(e) {
-            updateDatePicker($(this));
         });
+        if (clockIsActivated) {
+            $(elm).timepicker({
+                pattern: "YYYY-MM-DDTHH:mm:ssZ"
+            });
+        }
     }
 
-    function updateDatePicker(elm) {
-        $(elm).datepicker("remove");
+    function updateDatePicker(elm, clockBtn) {
+        $(elm).datepicker("destroy");
         $(elm).off("hide");
-        pickDatePickerFormatAndAdd($(elm));
+        pickDatePickerFormatAndAdd($(elm), clockBtn);
     }
 
     function getDate(parent, point) {
+
         if (point == "simple") {
             return $(parent).find(".date-changeable:not('.d-none') .date-simple input").val();
         }
@@ -61,13 +67,14 @@ $(document).ready(function() {
     function setDate(parent, point, date) {
         if (point == "simple") {
             $(parent).find(".date-changeable:not('.d-none') .date-simple input").val(date);
-            updateDatePicker($(parent).find(".date-changeable:not('.d-none') .date-simple input"));
+            updateDatePicker($(parent).find(".date-changeable:not('.d-none') .date-simple input"), true);
         }
+
         var elm = $(parent).find(".date-changeable:not('.d-none') .date-range input").filter(function () {
             return $(this).attr("data-point") == point;
         });
         $(elm).val(date);
-        updateDatePicker(elm);
+        updateDatePicker(elm, true);
 
     }
 
@@ -77,17 +84,19 @@ $(document).ready(function() {
         $(elm).attr("data-format", "range");
         var input = $(elm).find("div.date-simple > input");
         var simpleVal = $(input).val();
+        var clock = $(elm).find("div.date-range > input.startDate").hasClass("withTime");
         if (simpleVal != "") {
             $(elm).find("div.date-range > input.startDate").val(simpleVal);
             $(input).val("");
-            updateDatePicker($(elm).find("div.date-range > input.startDate"));
-            updateDatePicker($(input));
         }
+        updateDatePicker($(elm).find("div.date-range > input.startDate"), clock);
+        updateDatePicker($(input));
         var endDate = $(input).attr("data-end");
         if(endDate != "" && endDate != undefined){
             $(elm).find("div.date-range > input.endDate").val(endDate);
-            updateDatePicker($(elm).find("div.date-range > input.endDate"));
         }
+        updateDatePicker($(elm).find("div.date-range > input.endDate"), clock);
+
     }
 
     function setDateToSimple(elm){
@@ -101,13 +110,36 @@ $(document).ready(function() {
         if (startVal != "") {
             $(elm).find("div.date-simple > input").val(startVal);
             $(inputStart).val("");
-            updateDatePicker($(elm).find("div.date-simple > input"));
-            updateDatePicker($(inputStart));
         }
-        if(endVal != ""){
+        updateDatePicker($(elm).find("div.date-simple > input"), false);
+        updateDatePicker($(inputStart), false);
+
+        if (endVal != "") {
             $(elm).find("div.date-simple > input").attr("data-end", endVal);
             $(inputEnd).val("");
-            updateDatePicker($(inputEnd));
+            updateDatePicker($(inputEnd), false);
+        }
+    }
+
+    function setDateToDateTime(elm) {
+        $(elm).find("div.date-simple").removeClass("d-none");
+        $(elm).find("div.date-range").addClass("d-none");
+        $(elm).attr("data-format", "simple");
+        var inputStart = $(elm).find("div.date-range > input.startDate");
+        var inputEnd = $(elm).find("div.date-range > input.endDate");
+        var startVal = $(inputStart).val();
+        var endVal = $(inputEnd).val();
+        if (startVal != "") {
+            $(elm).find("div.date-simple > input").val(startVal);
+            $(inputStart).val("");
+        }
+        updateDatePicker($(elm).find("div.date-simple > input"), true);
+        updateDatePicker($(inputStart), true);
+
+        if (endVal != "") {
+            $(elm).find("div.date-simple > input").attr("data-end", endVal);
+            $(inputEnd).val("");
+            updateDatePicker($(inputEnd), true);
         }
     }
 
@@ -148,6 +180,8 @@ $(document).ready(function() {
         });
     }
 
+
+
     if ($("div.date-format").length > 0) {
         $("div.date-format").each(function() {
             notEmpty = false;
@@ -161,6 +195,7 @@ $(document).ready(function() {
             }
         });
     }
+
 
     function setLabelForClassification(parent) {
         $.ajax({
@@ -288,11 +323,19 @@ $(document).ready(function() {
      // Enables the datetimepicker
      if (jQuery.fn.datepicker) {
          $('.datetimepicker').find('input').each( function(index, elm){
-             pickDatePickerFormatAndAdd(elm);
+
+             if ($(elm).val().includes("T") || $(elm).hasClass('startsWithDatetime')) {
+                 pickDatePickerFormatAndAdd(elm, true);
+                 if ($(elm).val().trim() !== "") {
+                 initTime(elm);
+                 }
+             } else {
+                 pickDatePickerFormatAndAdd(elm, false);
+             }
          });
      }
 
-     $("body").on("click", ".expand-item", function () {
+    $("body").on("click", ".expand-item", function () {
          if($(this).attr("data-target")){
              $(this).closest(".form-group").next($(this).attr("data-target")).toggleClass("d-none");
          }
@@ -309,6 +352,7 @@ $(document).ready(function() {
          }
      });
 
+
      $("body").on("click", "div.date-selectFormat a.date-rangeOption", function (event) {
          event.preventDefault();
          setDateToRange($(this).closest("div.date-format"));
@@ -318,6 +362,10 @@ $(document).ready(function() {
          event.preventDefault();
          setDateToSimple($(this).closest("div.date-format"));
      });
+    $("body").on("click", "div.date-selectFormat a.date-timeOption", function (event) {
+        event.preventDefault();
+        setDateToDateTime($(this).closest("div.date-format"));
+    });
 
      $("body").on("change", ".date-select", function () {
          var type = $(this).val();
@@ -349,4 +397,16 @@ $(document).ready(function() {
              $(this).parents(".personExtended_box").find(".search-person .input-group > a").remove();
          }
      });
+
+    function initTime(elm) {
+        const tp = $(elm).datepicker().data().timepicker;
+        const currentDateTime = new Date($(elm).val());
+        $(elm).datepicker().data().datepicker.viewDate.setTime(currentDateTime.getTime());
+        const $timepickerContainer = tp.$timepickerContainer;
+        const padZero = (value) => String(value).padStart(2, '0');
+        $timepickerContainer.find('.timepicker-hour').text(padZero(currentDateTime.getHours()));
+        $timepickerContainer.find('.timepicker-minute').text(padZero(currentDateTime.getMinutes()));
+        $timepickerContainer.find('.timepicker-second').text(padZero(currentDateTime.getSeconds()));
+        elm.value = moment(elm.value).format("YYYY-MM-DDTHH:mm:ssZ");
+    }
  });
