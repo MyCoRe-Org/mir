@@ -104,5 +104,6 @@ echo "    }" >> $secruity_json
 echo "  }" >> $secruity_json
 echo "}" >> $secruity_json
 
-(/opt/solr/docker/scripts/wait-for-solr.sh;/opt/solr/bin/solr zk cp $secruity_json zk:security.json -z localhost:9983)&
+ZK_HOST=${ZK_HOST:-localhost:9983}
+(/opt/solr/docker/scripts/wait-for-solr.sh;/opt/solr/bin/solr zk cp $secruity_json zk:security.json -z "$ZK_HOST")&
 /opt/solr/docker/scripts/solr-foreground -c;
