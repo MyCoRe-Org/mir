@@ -233,8 +233,7 @@ $(document).ready(function () {
                     });
                     return process(list);
                 }, "select", "mods.title:*" + query + "*", "0");
-            },
-            updater: function (item) {
+            }, updater: function (item) {
                 $("#main_right_content").empty();
                 sortType = "";
                 loadPublikation(leftContent, "select", "id:" + item.id, "0");
@@ -244,9 +243,7 @@ $(document).ready(function () {
                 loadPublikation(rightContent, "receive", item.id, "");
                 activateSendButton(item.id);
                 return item;
-            },
-            items: 10,
-            autoSelect: false
+            }, items: 10, autoSelect: false
         });
 
         $("#modal-searchInput button").unbind().click(function (event) {
@@ -303,13 +300,9 @@ $(document).ready(function () {
                     break;
             }
             $.ajax({
-                url: webApplicationBaseURL + url,
-                type: "GET",
-                dataType: dataType,
-                success: function (data) {
+                url: webApplicationBaseURL + url, type: "GET", dataType: dataType, success: function (data) {
                     callback(data);
-                },
-                error: function (error) {
+                }, error: function (error) {
                     console.log("Failed to load " + webApplicationBaseURL + url);
                     console.log(error);
                 }
@@ -319,9 +312,7 @@ $(document).ready(function () {
         function loadGenres(callback) {
             if (!webApplicationBaseURL) console.log("Error: webApplicationBaseURL not set");
             $.ajax({
-                method: "GET",
-                url: webApplicationBaseURL + "api/v1/classifications/mir_genres",
-                dataType: "xml"
+                method: "GET", url: webApplicationBaseURL + "api/v1/classifications/mir_genres", dataType: "xml"
             }).done(function (xml) {
                 GenreXML = xml;
                 callback();
