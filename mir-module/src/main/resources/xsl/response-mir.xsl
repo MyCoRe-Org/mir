@@ -293,9 +293,9 @@
         </xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
-    <xsl:variable name="matchingUserOrcids">
     <xsl:variable name="orcidIdentifiers" select="arr[@name='mods.nameIdentifier']/str[starts-with(text(), 'orcid')]"/>
     <xsl:variable name="currentUserOrcids" select="document('user:current')/user/attributes/attribute[@name='id_orcid']"/>
+    <xsl:variable name="matchingUserOrcids">
       <xsl:choose>
         <xsl:when test="not(mcrxsl:isCurrentUserGuestUser()) and $orcidIntegrationEnabled
                         and count($orcidIdentifiers) &gt; 0 and count($currentUserOrcids)">

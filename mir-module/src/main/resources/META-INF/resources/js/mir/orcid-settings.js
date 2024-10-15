@@ -1,123 +1,197 @@
-const fetchAccessToken = async (webApplicationBaseUrl) => {
-  const response = await fetch(`${webApplicationBaseUrl}rsc/jwt`);
+
+const fetchAccessToken = async (baseUrl) => {
+  const response = await fetch(`${baseUrl}rsc/jwt`);
   if (!response.ok) {
     throw new Error('Failed to fetch JWT for current user.');
   }
   const result = await response.json();
   if (!result.login_success) {
-    throw new Error('Login failed');
+    throw new Error('Login failed.');
   }
   return result.access_token;
 }
 
-const fetchOrcidUserSettings = async (webApplicationBaseUrl, accessToken, orcid) => {
-  const response = await fetch(`${webApplicationBaseUrl}api/orcid/v1/${orcid}/user-properties`, {
-    headers: { Authorization: `Bearer ${accessToken}`},
-  });
-  if (!response.ok) {
-    throw new Error(`Failed to fetch ORCID user settings for ${orcid}.`);
+class OrcidSettingsService {
+  constructor(baseUrl, bearerAccessToken) {
+    this.baseUrl = baseUrl;
+    this.accessToken = bearerAccessToken;
   }
-  return await response.json();
-};
 
-const updateOrcidUserSettings = async (webApplicationBaseUrl, accessToken, orcid, userSettings) => {
-  const response = await fetch(`${webApplicationBaseUrl}api/orcid/v1/${orcid}/user-properties`, {
-    method: 'PUT',
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(userSettings),
-  });
-  if (!response.ok) {
-    throw new Error(`Failed to update ORCID user settings for ${orcid}.`);
+  fetchSettings = async (orcid) => {
+    const response = await fetch(`${this.baseUrl}api/orcid/v1/user-properties/${orcid}`, {
+      headers: { Authorization: `Bearer ${this.accessToken}`},
+    });
+    if (!response.ok) {
+      throw new Error(`Failed to fetch ORCID user settings for ${orcid}.`);
+    }
+    return await response.json();
   }
-};
 
-const webApplicationBaseUrl = window['webApplicationBaseURL'];
+  updateSettings = async (orcid, settings) => {
+    const response = await fetch(`${this.baseUrl}api/orcid/v1/user-properties/${orcid}`, {
+      method: 'PUT',
+      headers: {
+        Authorization: `Bearer ${this.accessToken}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(settings),
+    });
+    if (!response.ok) {
+      throw new Error(`Failed to update ORCID user settings for ${orcid}.`);
+    }
+  }
+}
+
+const baseUrl = window['webApplicationBaseURL'];
+
+class OrcidSettingsForm {
+  constructor() {
+    this.createFirstWorkInput = document.querySelector('#orcid-settings-form #create-first-work-setting');
+    this.alwaysUpdateWork = document.querySelector('#orcid-settings-form #always-update-work-setting');
+    this.createDuplicateWork = document.querySelector('#orcid-settings-form #create-duplicate-work-setting');
+    this.recreateDeletedWork = document.querySelector('#orcid-settings-form #recreate-deleted-work-setting');
+    this.listeners = {};
+
+    document.querySelector('#save-orcid-settings-btn').addEventListener('click', () => {
+      this.dispatchEvent(new CustomEvent('saveClicked'));
+    });
+  }
+
+  setSettings = (settings) => {
+    this.createFirstWorkInput.checked = settings.createFirstWork;
+    this.alwaysUpdateWork.checked = settings.alwaysUpdateWork;
+    this.createDuplicateWork.checked = settings.createDuplicateWork;
+    this.recreateDeletedWork.checked = settings.recreateDeletedWork;
+  }
+
+  getSettings = () => {
+    return {
+      createFirstWork: this.createFirstWorkInput.checked,
+      alwaysUpdateWork: this.alwaysUpdateWork.checked,
+      createDuplicateWork: this.createDuplicateWork.checked,
+      recreateDeletedWork: this.recreateDeletedWork.checked,
+    }
+  }
+
+  dispatchEvent(event) {
+    const eventName = event.type;
+    if (this.listeners[eventName]) {
+        this.listeners[eventName].forEach(listener => {
+            listener(event);
+        });
+    }
+  }
+
+  addEventListener(eventName, listener) {
+    if (!this.listeners[eventName]) {
+        this.listeners[eventName] = [];
+    }
+    this.listeners[eventName].push(listener);
+  }
+}
+
+class OrcidSetttingsModal {
+  constructor(service) {
+    this.service = service;
+    this.modalId = "orcid-settings-modal";
+    this.alertElement = document.querySelector('#orcid-settings-container #orcid-missing-setting-alert');
+    this.titleElement = document.querySelector(`#${modalId} #modal-title-orcid`);
+    this.modalElement = document.querySelector(`#${modalId}`);
+    this.form = new OrcidSettingsForm();
+    this.orcid = null;
+  }
+
+  show = () => {
+    if (this.modalElement) {
+      $(this.modalElement).modal('show');
+    }
+  }
+
+  hide = () => {
+    if (this.modalElement) {
+      $(this.modalElement).modal('hide');
+    }
+  }
+}
 
 document.addEventListener('DOMContentLoaded', () => {
-  const modalElement = document.querySelector('#orcid-settings-modal');
+  const modalId = "orcid-settings-modal";
   const alertElement = document.querySelector('#orcid-settings-container #orcid-missing-setting-alert');
-  const settingsMapping = [
-    { key: 'createFirstWork', input: document.querySelector('#orcid-settings-form #create-first-work-setting') },
-    { key: 'alwaysUpdateWork', input: document.querySelector('#orcid-settings-form #always-update-work-setting') },
-    { key: 'createDuplicateWork', input: document.querySelector('#orcid-settings-form #create-duplicate-work-setting') },
-    { key: 'recreateDeletedWork', input: document.querySelector('#orcid-settings-form #recreate-deleted-work-setting') }
-  ];
+  const titleElement = document.querySelector(`#${modalId} #modal-title-orcid`);
+  const modalElement = document.querySelector(`#${modalId}`);
+  const form = new OrcidSettingsForm();
+  let service = null;
+  let orcid = null;
 
-  let accessToken;
-  let orcid;
-
-  const getAccessToken = async () => {
-    if (!accessToken) {
-      accessToken = await fetchAccessToken(webApplicationBaseUrl);
+  const showModal = () => {
+    if (modalElement) {
+      $(modalElement).modal('show');
     }
-    return accessToken;
   }
 
-  const getDefaultSetting = (name) => {
-    if (modalElement.dataset.hasOwnProperty(name)) {
+  const hideModal = () => {
+    if (modalElement) {
+      $(modalElement).modal('hide');
+    }
+  }
+
+  const setModalTitle = (orcid) => {
+    if (titleElement) {
+      titleElement.innerHTML = ` ${orcid}`;
+    }
+  }
+
+  const showSettingMissingAlert = (show) => {
+    if (alertElement) {
+      if (show) {
+        alertElement.classList.remove('d-none');
+      } else {
+        alertElement.classList.add('d-none');
+      }
+    }
+  }
+
+  const initModal = async () => {
+    const settingNames = ['createFirstWork', 'alwaysUpdateWork', 'createDuplicateWork', 'recreateDeletedWork'];
+    if (orcid && service) {
+      try {
+        const settings = await service.fetchSettings(orcid);
+        let settingMissing = false;
+        let fixedSettings = {};
+        settingNames.forEach((settingName) => {
+          if (settings.hasOwnProperty(settingName) && settings[settingName] !== null) {
+            fixedSettings[settingName] = settings[settingName];
+          } else {
+            fixedSettings[settingName] = getDefaultSetting(settingName);
+            settingMissing = true;
+          }
+        });
+        if (settingMissing) {
+          showSettingMissingAlert(true);
+        }
+        setModalTitle(orcid);
+        form.setSettings(fixedSettings);
+        showModal();
+      } catch (err) {
+        console.error(err);
+      }
+    }
+  }
+
+  getDefaultSetting = (name) => {
+    if (modalElement && modalElement.dataset.hasOwnProperty(name)) {
       return modalElement.dataset[name] == true;
     }
     throw new Error(`There is not default setting for '${name}'.`);
   }
 
-  const showSettingMissingAlert = (show) => {
-    if (show) {
-      alertElement.classList.remove('d-none');
-    } else {
-      alertElement.classList.add('d-none');
-    }
-  };
-
-  const init = async () => {
-    const accessToken = await getAccessToken();
-    const settings = await fetchOrcidUserSettings(webApplicationBaseUrl, accessToken, orcid);
-    let settingMissing = false;
-    const processSetting = ({ key, input }) => {
-      if (key in settings && settings[key] !== null) {
-          input.checked = settings[key];
-      } else {
-          input.checked = getDefaultSetting(key);
-          settingMissing = true;
-      }
-    };
-    settingsMapping.forEach(processSetting);
-    if (settingMissing) {
-      showSettingMissingAlert(true);
-    }
-  };
-
-  $('#orcid-settings-modal').on('show.bs.modal', (event) => {
-    const orcidTitleElement = document.querySelector('#orcid-settings-modal #modal-title-orcid');
-    orcidTitleElement.innerHTML = '';
-    const button = event.relatedTarget;
-    orcid = button.getAttribute('data-orcid');
-    if (orcid) {
-      orcidTitleElement.innerHTML = ` ${orcid}`;
-      init();
-    } else {
-      console.error('Failed to init modal, orcid is undefined.');
-    }
-  });
-
-  const getSettings = () => {
-    const settings = {};
-    settingsMapping.forEach(({ key, input }) => {
-      settings[key] = input.checked;
-    });
-    return settings;
-  };
-
-  document.querySelector('#save-orcid-settings-btn').addEventListener('click', async () => {
-    if (orcid) {
-      const accessToken = await getAccessToken();
-      const settings = getSettings();
+  form.addEventListener('saveClicked', async (event) => {
+    if (orcid && service) {
+      const settings = form.getSettings();
       try {
-        await updateOrcidUserSettings(webApplicationBaseUrl, accessToken, orcid, settings);
+        await service.updateSettings(orcid, settings);
         showSettingMissingAlert(false);
-        // TODO close modal or show success alert
+        hideModal();
       } catch (err) {
         // TODO show generic error alert
         console.error(err);
@@ -126,5 +200,21 @@ document.addEventListener('DOMContentLoaded', () => {
       console.error('Failed to save user settings, orcid is undefined.');
     }
   });
-});
 
+  document.getElementById('openSettingsModalBtn').addEventListener('click', async (event) => {
+    orcid = event.currentTarget.dataset.orcid;
+    try {
+      if (orcid) {
+        if (!service) {
+          const accessToken = await fetchAccessToken(baseUrl);
+          service = new OrcidSettingsService(baseUrl, accessToken);
+        }
+        initModal();
+      } else {
+        console.error('ORCID iD is missing.');
+      }
+    } catch (err) {
+      console.error('Failed to load settings modal.');
+    }
+  });
+});

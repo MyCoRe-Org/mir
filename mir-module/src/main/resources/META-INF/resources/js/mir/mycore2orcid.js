@@ -1,50 +1,10 @@
-class OrcidService {
+class I18nService {
   constructor(baseUrl) {
     this.baseUrl = baseUrl;
-    this.accessToken = null;
   }
 
-  fetchAccessToken = async () => {
-    const response = await fetch(`${this.baseUrl}rsc/jwt`);
-    if (!response.ok) {
-      throw new Error('Failed to fetch JWT for current user.');
-    }
-    const result = await response.json();
-    if (!result.login_success) {
-      throw new Error('Login failed.');
-    }
-    this.accessToken = result.access_token;
-  }
-
-  getWorkStatus = async (orcid, objectId) => {
-    const response = await fetch(`${this.baseUrl}api/orcid/v1/${orcid}/work-status?objectId=${objectId}`, {
-      headers: { Authorization: `Bearer ${this.accessToken}`}
-    });
-    if (!response.ok) {
-      throw new Error(`Failed to fetch work status for ${objectId}.`);
-    }
-    return await response.json();
-  }
-
-  publishObjectToOrcid = async (orcid, objectId) => {
-    const response = await fetch(`${this.baseUrl}api/orcid/v1/${orcid}/create-work?objectId=${objectId}`, {
-      method: 'POST',
-      headers: { Authorization: `Bearer ${this.accessToken}`},
-    });
-    if (!response.ok) {
-      throw new Error(`Failed to publish ${objectId} to ORCID profile.`);
-    }
-  }
-}
-
-class I18nService {
-  constructor(baseUrl, lang) {
-    this.baseUrl = baseUrl;
-    this.lang = lang;
-  }
-
-  fetchI18nData = async (key) => {
-    const response = await fetch(`${webApplicationBaseUrl}rsc/locale/translate/${lang}/${key}`);
+  fetchI18nData = async (lang, key) => {
+    const response = await fetch(`${this.baseUrl}rsc/locale/translate/${lang}/${key}`);
     if (!response.ok) {
       throw new Error('Failed to fetch I18n data.');
     }
@@ -59,93 +19,141 @@ class I18nService {
   }
 }
 
-class OrcidUi {
-  constructor(baseUrl, i18nService, orcidService) {
-    this.baseUrl = baseUrl;
-    this.i18nService = i18nService;
-    this.orcidService = orcidService;
+const fetchAccessToken = async (baseUrl) => {
+  const response = await fetch(`${baseUrl}rsc/jwt`);
+  if (!response.ok) {
+    throw new Error('Failed to fetch JWT for current user.');
   }
-
-	setOrcidPublicationStatus = (div, workStatus) => {
-    div.innerHTML = '';
-    const statusElement = document.createElement('span');
-    statusElement.classList.add('orcid-info');
-    statusElement.title = workStatus.isInOrcidProfile
-      ? this.i18nService.translate('orcid.publication.inProfile.true')
-      : this.i18nService.translate('orcid.publication.inProfile.false');
-    statusElement.appendChild(this.createOrcidIcon());
-    statusElement.appendChild(this.createThumbsElement(workStatus));
-    div.appendChild(statusElement);
-	}
-
-  setOrcidPublicationStatuses = async () => {
-    document.querySelectorAll('div.orcid-status').forEach(async (e) => {
-      const objectId = e.dataset.objectId;
-      const orcid = e.dataset.orcid;
-      if (objectId && orcid) {
-        const workStatus = await this.orcidService.getWorkStatus(orcid, objectId);
-        this.setOrcidPublicationStatus(e, workStatus);
-      }
-    });
+  const result = await response.json();
+  if (!result.login_success) {
+    throw new Error('Login failed.');
   }
-
-	createOrcidPublishButton = async (div, objectId, orcid, workStatus) => {
-    div.innerHTML = '';
-    const publishButtonElement = document.createElement('button');
-    publishButtonElement.classList.add('orcid-button');
-    publishButtonElement.innerHTML = this.i18nService.translate('orcid.publication.action.create');
-    publishButtonElement.addEventListener('click', async () => {
-      await this.orcidService.publishObjectToOrcid(orcid, objectId );
-      document.querySelectorAll(`div.orcid-status[data-object-id='${objectId}']`).forEach(async (e) => {
-        const workStatus = await this.orcidService.getWorkStatus(orcid, objectId);
-        this.setOrcidPublicationStatus(e, workStatus);
-      });
-      publishButtonElement.disabled = true;
-      alert(this.i18nService.translate('orcid.publication.action.confirmation'));
-    });
-    div.appendChild(publishButtonElement);
-	}
-
-  createOrcidPublishButtons = async () => {
-    document.querySelectorAll('div.orcid-publish').forEach(async (e) => {
-      const objectId = e.dataset.objectId;
-      const orcid = e.dataset.orcid;
-      if (objectId && orcid) {
-        const workStatus = await this.orcidService.getWorkStatus(orcid, objectId);
-        if (!workStatus.isInOrcidProfile) {
-          this.createOrcidPublishButton(e, objectId, orcid, workStatus);
-        }
-      }
-    });
-  }
-
-  createThumbsElement = (workStatus) => {
-    const thumbsElement = document.createElement('span');
-    thumbsElement.classList.add('far');
-    thumbsElement.classList.add(`fa-thumbs-${(workStatus.isInOrcidProfile ? 'up' : 'down')}`);
-    thumbsElement.classList.add(`orcid-in-profile-${workStatus.isInOrcidProfile}`);
-    return thumbsElement;
-  }
-
-  createOrcidIcon = () => {
-    const orcidIcon =  document.createElement('img');
-    orcidIcon.alt = 'ORCID iD';
-    orcidIcon.classList.add('orcid-icon');
-    orcidIcon.src = `${this.baseUrl}images/orcid_icon.svg`;
-    return orcidIcon;
-  }
-
+  return result.access_token;
 }
 
-const webApplicationBaseUrl = window['webApplicationBaseURL'];
+class OrcidService {
+  constructor(baseUrl, accessToken) {
+    this.baseUrl = baseUrl;
+    this.accessToken = accessToken;
+  }
+
+  fetchUserStatus = async () => {
+    const response = await fetch(`${this.baseUrl}api/orcid/v1/user-status`, {
+      headers: { Authorization: `Bearer ${this.accessToken}`}
+    });
+    if (!response.ok) {
+      throw new Error('Failed to fetch Orcid user status');
+    }
+    return await response.json();
+  }
+
+  fetchWorkStatus = async (orcid, objectId, useMember = false) => {
+    const mode = useMember ? 'member' : 'public';
+    const response = await fetch(`${this.baseUrl}api/orcid/v1/${mode}/${orcid}/works/object/${objectId}`, {
+      headers: { Authorization: `Bearer ${this.accessToken}`}
+    });
+    if (!response.ok) {
+      throw new Error(`Failed to fetch work status for ${objectId}.`);
+    }
+    return await response.json();
+  }
+
+  // TODO endpoint does not work
+  publishObjectToOrcid = async (orcid, objectId) => {
+    const response = await fetch(`${this.baseUrl}api/orcid/v1/member/${orcid}/works/object/${objectId}`, {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${this.accessToken}`},
+    });
+    if (!response.ok) {
+      throw new Error(`Failed to publish ${objectId} to ${orcid}.`);
+    }
+  }
+}
+
+const baseUrl = window['webApplicationBaseURL'];
 const lang = window['currentLang'];
 
 document.addEventListener('DOMContentLoaded', async () => {
-  const orcidService = new OrcidService(webApplicationBaseUrl);
-  const i18nService = new I18nService(webApplicationBaseUrl);
-  const orcidUi = new OrcidUi(webApplicationBaseUrl, i18nService, orcidService);
-  await i18nService.fetchI18nData('orcid.publication*');
-  await orcidService.fetchAccessToken();
-  await orcidUi.setOrcidPublicationStatuses();
-  await orcidUi.createOrcidPublishButtons();
+  const i18nService = new I18nService(baseUrl);
+  i18nService.fetchI18nData(lang, 'orcid.publication*');
+  const accessToken = await fetchAccessToken(baseUrl);
+  const orcidService = new OrcidService(baseUrl, accessToken);
+  const userStatus = await orcidService.fetchUserStatus();
+
+  const checkIsInOrcidProfile = (workStatus) => {
+    return workStatus.own !== undefined || (workStatus.other !== undefined && workStatus.other.length > 0);
+  }
+
+  const createOrcidIconElement = () => {
+    const orcidIcon =  document.createElement('img');
+    orcidIcon.alt = 'ORCID iD';
+    orcidIcon.classList.add('orcid-icon');
+    orcidIcon.src = `${baseUrl}images/orcid_icon.svg`;
+    return orcidIcon;
+  }
+
+  const createThumbsElement = (up) => {
+    const thumbsElement = document.createElement('span');
+    thumbsElement.classList.add('far');
+    thumbsElement.classList.add(`fa-thumbs-${up ? 'up' : 'down'}`);
+    thumbsElement.classList.add(`orcid-in-profile-${up}`);
+    return thumbsElement;
+  }
+
+	const createOrcidPublicationStatus = (workStatus) => {
+    const statusElement = document.createElement('span');
+    statusElement.classList.add('orcid-info');
+    statusElement.appendChild(createOrcidIconElement());
+    if (checkIsInOrcidProfile(workStatus)) {
+      statusElement.title = i18nService.translate('orcid.publication.inProfile.true')
+      statusElement.appendChild(createThumbsElement(true));
+    } else {
+      statusElement.title = i18nService.translate('orcid.publication.inProfile.false');
+      statusElement.appendChild(createThumbsElement(false));
+    }
+    return statusElement;
+	}
+
+  const createOrcidStatus = async (div, orcid, objectId) => {
+    const workStatus = userStatus.trustedOrcids.includes(orcid)
+      ? await orcidService.fetchWorkStatus(orcid, objectId)
+      : await orcidService.fetchWorkStatus(orcid, objectId, true); 
+    const statusElement = createOrcidPublicationStatus(workStatus);
+    div.appendChild(statusElement);
+  }
+
+  document.querySelectorAll('div.orcid-status').forEach(async (div) => {
+    const objectId = div.dataset.objectId;
+    const orcid = div.dataset.orcid;
+    if (objectId && orcid) {
+      await createOrcidStatus(div, orcid, objectId);
+    }
+  });
+
+	const createPublishToOrcidButton = (orcid, objectId) => {
+    const publishButton = document.createElement('button');
+    publishButton.classList.add('orcid-button');
+    publishButton.innerHTML = i18nService.translate('orcid.publication.action.create');
+    publishButton.addEventListener('click', async () => {
+      await orcidService.publishObjectToOrcid(orcid, objectId);
+      document.querySelectorAll(`div.orcid-status[data-object-id='${objectId}']`).forEach(async (div) => {
+        await createOrcidStatus(orcid, objectId);
+      });
+      publishButton.classList.add('d-none');
+      alert(i18nService.translate('orcid.publication.action.confirmation'));
+    });
+    return publishButton;
+	}
+
+  document.querySelectorAll('div.orcid-publish').forEach(async (div) => {
+    const objectId = div.dataset.objectId;
+    const orcid = div.dataset.orcid;
+    if (objectId && orcid && userStatus.trustedOrcids.includes(orcid)) {
+      const workStatus = await orcidService.fetchWorkStatus(orcid, objectId);
+      if (!workStatus.own) {
+        const publishButton = createPublishToOrcidButton(orcid, objectId);
+        div.appendChild(publishButton);
+      }
+    }
+  });
 });

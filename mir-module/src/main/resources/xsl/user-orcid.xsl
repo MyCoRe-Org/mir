@@ -86,7 +86,7 @@
   <xsl:template name="printRevokeOrcidButton">
     <xsl:param name="orcid" />
     <button type="button" class="btn btn-danger btn-sm ml-2" title="{document('i18n:orcid.oauth.revoke')}"
-      onclick="revokeORCID('{$orcid}', '{$WebApplicationBaseURL}servlets/MCRUserServlet?action=show')">
+      onclick="revokeOrcidOAuth('{$orcid}', '{$WebApplicationBaseURL}servlets/MCRUserServlet?action=show')">
       <xsl:value-of select="document('i18n:orcid.oauth.revoke')"/>
     </button>
   </xsl:template>
@@ -102,8 +102,8 @@
 
   <xsl:template name="printShowOrcidSettingsButton">
     <xsl:param name="orcid" />
-    <button type="button" class="btn btn-primary btn-sm" title="{document('i18n:orcid.settings.open')}"
-      data-toggle="modal" data-target="#orcid-settings-modal" data-orcid="{$orcid}">
+    <button type="button" class="btn btn-primary btn-sm" id="openSettingsModalBtn"
+      title="{document('i18n:orcid.settings.open')}" data-orcid="{$orcid}">
       <xsl:value-of select="document('i18n:orcid.settings.open')"/>
     </button>
   </xsl:template>
