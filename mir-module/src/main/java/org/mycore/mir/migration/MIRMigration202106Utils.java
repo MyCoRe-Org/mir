@@ -76,6 +76,7 @@ public class MIRMigration202106Utils {
         migrateAccessKeys();
     }
 
+    @Deprecated
     @MCRCommand(syntax = "migrate all access keys",
         help = "Migrates all MIR access key to MCR access keys."
             + " Should be used to migrate from version 2021.05.")
@@ -99,6 +100,7 @@ public class MIRMigration202106Utils {
         LOGGER.info("migrated all keys to MCR access keys");
     }
 
+    @Deprecated
     @MCRCommand(syntax = "migrate all access key user attributes",
         help = "Hashes all access key user attributes."
             + " Is only necessary if the secrets are hashed."
@@ -111,20 +113,19 @@ public class MIRMigration202106Utils {
             users = listUsersWithMIRAccessKeyUserAttribute(offset, limit);
             for (final MCRUser user : users) {
                 final List<MCRUserAttribute> attributes = user.getAttributes()
-                        .stream()
-                        .filter(attribute -> attribute.getName().startsWith(ACCESS_KEY_PREFIX))
-                        .collect(Collectors.toList());
+                    .stream()
+                    .filter(attribute -> attribute.getName().startsWith(ACCESS_KEY_PREFIX))
+                    .collect(Collectors.toList());
                 for (MCRUserAttribute attribute : attributes) {
                     final String attributeName = attribute.getName();
                     final MCRObjectID objectId = MCRObjectID.getInstance(attributeName.substring(
-                            attributeName.indexOf("_") + 1));
+                        attributeName.indexOf("_") + 1));
                     attribute.setName(MCRAccessKeyUtils.ACCESS_KEY_PREFIX + objectId.toString());
                     attribute.setValue(MCRAccessKeyManager.hashSecret(attribute.getValue(), objectId));
                 }
             }
             offset += limit;
-        }
-        while (users.size() == limit);
+        } while (users.size() == limit);
     }
 
     /**
@@ -216,7 +217,7 @@ public class MIRMigration202106Utils {
         }
     }
 
-   /**
+    /**
      * Removes {@link MIRAccessKey}
      *
      * @param accessKey the {@link MIRAccessKey}

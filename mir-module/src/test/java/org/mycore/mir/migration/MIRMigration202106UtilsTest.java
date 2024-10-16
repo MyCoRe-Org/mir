@@ -58,7 +58,7 @@ public class MIRMigration202106UtilsTest extends MCRJPATestCase {
         super.setUp();
         objectId = MCRObjectID.getInstance(OBJECT_ID);
     }
- 
+
     @Override
     protected Map<String, String> getTestProperties() {
         Map<String, String> testProperties = super.getTestProperties();
@@ -66,6 +66,7 @@ public class MIRMigration202106UtilsTest extends MCRJPATestCase {
         return testProperties;
     }
 
+    @Deprecated
     @Test
     public void testMigrationAccessKeyPair() throws Exception {
         final MIRAccessKeyPair accessKeyPair = new MIRAccessKeyPair(objectId, READ_KEY, WRITE_KEY);
@@ -83,6 +84,7 @@ public class MIRMigration202106UtilsTest extends MCRJPATestCase {
         assertEquals(PERMISSION_WRITE, accessKeyWrite.getType());
     }
 
+    @Deprecated
     @Test
     public void testMigrateMIRAccessKey() throws Exception {
         final MIRAccessKey mirAccessKey = new MIRAccessKey(READ_KEY, PERMISSION_READ);
@@ -103,6 +105,7 @@ public class MIRMigration202106UtilsTest extends MCRJPATestCase {
         assertTrue(accessKey.getIsActive());
     }
 
+    @Deprecated
     @Test
     public void testUserAttributeMigration() throws Exception {
         final MCRUser user1 = new MCRUser("junit");
