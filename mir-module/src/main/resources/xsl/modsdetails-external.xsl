@@ -40,12 +40,6 @@
   <xsl:include href="mir-mods-utils.xsl" />
   <xsl:include href="mir-utils.xsl" />
 
-  <xsl:param name="isUserAllowedToManageDerivateAccessKeys">
-    <xsl:call-template name="isCurrentUserAllowedToManageAccessKeys">
-      <xsl:with-param name="typeId" select="'derivate'"/>
-    </xsl:call-template>
-  </xsl:param>
-
   <!-- do nothing for display parent -->
   <xsl:template match="/mycoreobject" mode="parent" priority="1">
   </xsl:template>
@@ -378,6 +372,47 @@
     </div>
   </xsl:template>
 
+  <xsl:template name="checkAccessKeyManagePermissionsForCurrentUser">
+    <xsl:param name="reference" />
+    <xsl:param name="permissionsToCheck">
+      <perm>read</perm>
+      <perm>writedb</perm>
+    </xsl:param>
+    <xsl:variable name="availablePermissions"
+      select="exslt:node-set($permissionsToCheck)/perm[
+         document(concat('checkPermission:', $reference, ':manage-access-key-',.))/boolean='true'
+       ]" />
+    <xsl:choose>
+      <xsl:when test="count($availablePermissions) &gt; 0">
+         <xsl:for-each select="$availablePermissions">
+           <xsl:value-of select="." />
+           <xsl:if test="position() != last()">,</xsl:if>
+        </xsl:for-each>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="''" />
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
+  <xsl:template name="printManageAccessKeysMenuItem">
+    <xsl:param name="objectId"/>
+    <xsl:variable name="availableAccessKeyManagePermissions">
+      <xsl:call-template name="checkAccessKeyManagePermissionsForCurrentUser">
+        <xsl:with-param name="reference" select="$objectId" />
+      </xsl:call-template>
+    </xsl:variable>
+    <xsl:if test="string-length($availableAccessKeyManagePermissions) &gt; 0">
+      <li class="mir-action-item mir-action-item-manage-access-key">
+        <a role="menuitem" tabindex="-1" class="dropdown-item"
+           href="{$WebApplicationBaseURL}access-key-manager/{$objectId}?availablePermissions={$availableAccessKeyManagePermissions}"
+        >
+          <xsl:value-of select="i18n:translate('mir.accesskey.manage')" />
+        </a>
+      </li>
+    </xsl:if>
+  </xsl:template>
+
   <xsl:template match="/mycoreobject[contains(@ID,'_mods_')]" mode="objectActions" priority="2">
     <xsl:param name="id" select="./@ID" />
     <xsl:param name="accessedit" select="key('rights', $id)/@write" />
@@ -639,21 +674,10 @@
                   </xsl:otherwise>
                 </xsl:choose>
               </xsl:if>
-              <xsl:if test="(key('rights', @ID)/@write)">
-                <xsl:variable name="isUserAllowedToManageModsAccessKeys">
-                  <xsl:call-template name="isCurrentUserAllowedToManageAccessKeys">
-                    <xsl:with-param name="typeId" select="'mods'"/>
-                  </xsl:call-template>
-                </xsl:variable>
-                <xsl:if test="$isUserAllowedToManageModsAccessKeys='true'">
-                  <li class="mir-action-item mir-action-item-manage-access-key">
-                    <a role="menuitem" tabindex="-1"
-                       href="{$WebApplicationBaseURL}accesskey/manager.xml?objectId={@ID}"
-                       class="dropdown-item">
-                      <xsl:value-of select="i18n:translate('mir.accesskey.manage')" />
-                    </a>
-                  </li>
-                </xsl:if>
+              <xsl:if test="$isAccessKeyForModsEnabled">
+                <xsl:call-template name="printManageAccessKeysMenuItem">
+                  <xsl:with-param name="objectId" select="$id"/>
+                </xsl:call-template>
               </xsl:if>
             </xsl:otherwise>
           </xsl:choose>
@@ -769,16 +793,10 @@
                 </a>
               </li>
             </xsl:if>
-            <xsl:if test="key('rights', $deriv)/@write">
-              <xsl:if test= "$isUserAllowedToManageDerivateAccessKeys='true'">
-                <li>
-                  <a role="menuitem" tabindex="-1" class="dropdown-item"
-                    href="{$WebApplicationBaseURL}accesskey/manager.xml?objectId={$parentObjID}&amp;derivateId={$deriv}"
-                  >
-                    <xsl:value-of select="i18n:translate('mir.accesskey.manage')" />
-                  </a>
-                </li>
-              </xsl:if>
+            <xsl:if test="$isAccessKeyForDerivateEnabled">
+              <xsl:call-template name="printManageAccessKeysMenuItem">
+                <xsl:with-param name="objectId" select="$deriv"/>
+              </xsl:call-template>
             </xsl:if>
           </ul>
         </div>

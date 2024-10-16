@@ -2,7 +2,6 @@
 <xsl:stylesheet
   version="1.0"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-  <xsl:import href="accesskey.xsl" />
   <xsl:param name="MCR.ACL.AccessKey.Strategy.AllowedObjectTypes" />
   <xsl:param name="MCR.ACL.AccessKey.Strategy.AllowedSessionPermissionTypes" />
   <xsl:param name="isAccessKeyForDerivateEnabled" select="contains($MCR.ACL.AccessKey.Strategy.AllowedObjectTypes, 'derivate')" />
@@ -11,21 +10,6 @@
   <xsl:param name="isAccessKeyForSessionEnabled" select="$isReadAccessKeyForSessionEnabled or $isWriteAccessKeyForSessionEnabled" />
   <xsl:param name="isAccessKeyForModsEnabled" select="contains($MCR.ACL.AccessKey.Strategy.AllowedObjectTypes, 'mods')" />
   <xsl:param name="isAccessKeyEnabled" select="$isAccessKeyForDerivateEnabled or $isAccessKeyForModsEnabled" />
-
-  <xsl:template name="isCurrentUserAllowedToManageAccessKeys">
-    <xsl:param name="typeId" />
-    <xsl:choose>
-      <xsl:when test="not(contains($MCR.ACL.AccessKey.Strategy.AllowedObjectTypes, $typeId))">
-        <xsl:value-of select="false()" />
-      </xsl:when>
-      <xsl:otherwise>
-        <xsl:call-template name="checkRestAccessKeyPathPermission">
-          <xsl:with-param name="typeId" select="$typeId" />
-          <xsl:with-param name="permission" select="'writedb'" />
-        </xsl:call-template>
-      </xsl:otherwise>
-    </xsl:choose>
-  </xsl:template>
 
   <xsl:template name="isCurrentUserAllowedToSetAccessKey">
     <xsl:param name="typeId"/>
