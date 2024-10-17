@@ -81,9 +81,12 @@
                         <xsl:for-each select="mods:affiliation[contains(@authorityURI, '//ror.org')][@valueURI]">
                             <xsl:sort select="@valueURI"/>
                             <div class="mir-affiliation-ror">
-                                <xsl:value-of select="'ROR ID: '"/>
+                                <a href="https://ror.org/" alt="ROR logo">
+                                    <img src="{$WebApplicationBaseURL}images/ror/ror-icon-rgb-transparent.svg"
+                                         class="pr-1 mir-ror-logo"/>
+                                </a>
                                 <a href="{@valueURI}">
-                                    <xsl:value-of select="substring-after(@valueURI, @authorityURI)"/>
+                                    <xsl:value-of select="@valueURI"/>
                                 </a>
                             </div>
                         </xsl:for-each>
