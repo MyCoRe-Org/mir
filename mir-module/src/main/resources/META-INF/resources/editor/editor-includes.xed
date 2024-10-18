@@ -678,7 +678,7 @@
 
   <xed:template id="person.affiliation">
     <mir:textfield repeat="true" xpath="mods:affiliation[not(@authorityURI)]" help-text="{i18n:mir.help.affiliation}" label="mir.affiliation" />
-    <mir:textfield repeat="true" xpath="mods:affiliation[@authorityURI='https://ror.org/']" help-text="{i18n:mir.help.affiliation.ror}" label="mir.affiliation.ror" />
+    <mir:textfield repeat="true" xpath="mods:affiliation[@authorityURI='https://ror.org/']" help-text="{i18n:mir.help.affiliation.ror}" label="mir.affiliation.ror" id="mir-ror-input"/>
   </xed:template>
 
   <xed:template id="nameIdentifier.repeated">
