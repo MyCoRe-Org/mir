@@ -155,6 +155,10 @@
     </mods:nameIdentifier>
   </xsl:template>
 
+  <xsl:template match="mods:affiliation[@authorityURI='https://ror.org/']">
+    <mods:affiliation authorityURI="{@authorityURI}" valueURI="{@authorityURI}{.}"/>
+  </xsl:template>
+
   <!-- Copy content of mods:accessCondtition to mods:classification to enable classification support (see MIR-161) -->
   <xsl:template match="mods:accessCondition[@type='restriction on access'][contains(@xlink:href,'mir_access')]">
     <mods:accessCondition type="restriction on access">
