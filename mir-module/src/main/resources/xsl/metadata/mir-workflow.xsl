@@ -15,7 +15,7 @@
   <xsl:param name="CurrentUser"/>
 
   <xsl:param name="MIR.Workflow.Debug" select="'false'"/>
-  <xsl:param name="MIR.EnablePdfaValidationInWorkflow" select="'false'"/>
+  <xsl:param name="MIR.Workflow.PDFValidation" select="'false'"/>
   <xsl:key use="@id" name="rights" match="/mycoreobject/rights/right"/>
   <xsl:variable name="id" select="/mycoreobject/@ID"/>
 
@@ -129,7 +129,7 @@
       </xsl:message>
     </xsl:if>
 
-    <xsl:if test="normalize-space($MIR.EnablePdfaValidationInWorkflow)='true'">
+    <xsl:if test="normalize-space($MIR.Workflow.PDFValidation)='true'">
       <xsl:apply-templates select="." mode="displayPdfError"/>
     </xsl:if>
   </xsl:template>
