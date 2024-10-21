@@ -11,7 +11,7 @@ const RORSearch = {
             let label = rorIdentifier.name;
             let item = {};
 
-            item.id = rorIdentifier.id.substring(rorIdentifier.id.lastIndexOf("/") + 1);
+            item.id = rorIdentifier.id;
             item.label = label + " (" + item.id + ")";
             rorIdentifiers.push(item);
         });

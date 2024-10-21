@@ -156,7 +156,7 @@
   </xsl:template>
 
   <xsl:template match="mods:affiliation[@authorityURI='https://ror.org/']">
-    <mods:affiliation authorityURI="{@authorityURI}" valueURI="{@authorityURI}{.}"/>
+    <mods:affiliation authorityURI="{@authorityURI}" valueURI="{.}"/>
   </xsl:template>
 
   <!-- Copy content of mods:accessCondtition to mods:classification to enable classification support (see MIR-161) -->
