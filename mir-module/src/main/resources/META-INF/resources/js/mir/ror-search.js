@@ -12,6 +12,7 @@ const RORSearch = {
             let item = {};
 
             item.id = rorIdentifier.id;
+            item.name = rorIdentifier.name;
             item.label = label + " (" + item.id + ")";
             rorIdentifiers.push(item);
         });
@@ -87,6 +88,20 @@ const RORSearch = {
                 f.apply(null, args);
             }, wait);
         };
+    },
+
+    /**
+     * Resolve ror links on metadata page.
+     * */
+    resolve: async function () {
+        let rorLinks = document.querySelectorAll("a.mir-ror-link");
+        for (const rorLink of rorLinks) {
+            RORSearch.search(rorLink.href).then(data => {
+                if (data.length > 0) {
+                    rorLink.innerHTML = data[0].name;
+                }
+            });
+        }
     }
 };
 
@@ -108,4 +123,6 @@ document.addEventListener('DOMContentLoaded', function () {
         // add the actual event handler
         input.addEventListener('input', debouncedInputHandler);
     }
+
+    RORSearch.resolve();
 });

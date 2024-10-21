@@ -85,7 +85,7 @@
                                     <img src="{$WebApplicationBaseURL}images/ror/ror-icon-rgb-transparent.svg"
                                          class="pr-1 mir-ror-logo"/>
                                 </a>
-                                <a href="{@valueURI}">
+                                <a class="mir-ror-link" href="{@valueURI}">
                                     <xsl:value-of select="@valueURI"/>
                                 </a>
                             </div>
@@ -93,6 +93,7 @@
                       </dd>
                   </xsl:if>
                 </dl>
+                <script src="{$WebApplicationBaseURL}js/mir/ror-search.js"/>
             </div>
         </xsl:if>
         <a href="{concat($ServletsBaseURL,'solr/mods_nameIdentifier?q=',encoder:encode($query),'&amp;owner=',encoder:encode(concat('createdby:',$owner)))}"><xsl:value-of select="$personName" /></a>
