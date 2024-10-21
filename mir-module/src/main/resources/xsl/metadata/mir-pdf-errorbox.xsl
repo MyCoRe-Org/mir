@@ -6,18 +6,16 @@
                 xmlns:xalan="http://xml.apache.org/xalan"
                 version="1.0" exclude-result-prefixes="i18n mcrxsl">
 
-    <xsl:param name="WebApplicationBaseURL"/>
-    <xsl:param name="ServletsBaseURL" />
-    <xsl:param name="HttpSession"/>
+    <xsl:param name="ServletsBaseURL"/>
+
 
     <xsl:template match="mycoreobject" mode="displayPdfError">
-
         <xsl:variable name="errorMessages">
             <xsl:apply-templates select="structure/derobjects/derobject" mode="displayPdfError"/>
         </xsl:variable>
 
         <xsl:choose>
-            <xsl:when test="contains($errorMessages,'Clause')">
+            <xsl:when test="contains($errorMessages,i18n:translate('pdf.errorbox.clause'))">
                 <div class="container pdf-validation mb-3 px-0" id="accordion">
                     <div class="card-header bg-danger text-white">
                         <div class="list-group list-group-root well p-3">
@@ -34,7 +32,8 @@
                     </div>
                 </div>
             </xsl:when>
-            <xsl:when test="string-length(normalize-space($errorMessages)) > 0 and not(contains($errorMessages,'Clause'))">
+            <xsl:when
+                    test="string-length(normalize-space($errorMessages)) > 0">
                 <div class="card-header bg-success text-white mb-3">
                     <div class="list-group list-group-root well p-3">
                         <p class="h5">
@@ -55,8 +54,6 @@
         <xsl:if test="not(normalize-space($result))">
             <xsl:apply-templates select="$result/derivate/file" mode="displayPdfError"/>
         </xsl:if>
-        <xsl:variable name="derivbase" select="concat($ServletsBaseURL,'MCRFileNodeServlet/',$result/derivate/@id,'/')" />
-        <xsl:variable name="derivdir" select="concat($derivbase,$HttpSession)" />
     </xsl:template>
 
     <xsl:template match="file" mode="displayPdfError">
@@ -76,7 +73,7 @@
         <div id="{$derivate}{$uniqueFileId}" class="font-weight-bold d-flex list-group list-group-root">
             <a onclick="$('#{$derivate}{$uniqueFileId}cbButton').toggleClass('fa-chevron-right fa-chevron-down');"
                data-toggle="collapse" href="#collapse{$derivate}{$uniqueFileId}"
-               class="text-left  d-flex  flex-md-row flex-grow-1 list-group-item align-items-center">
+               class="text-left d-flex flex-md-row flex-grow-1 list-group-item align-items-center">
                 <i id="{$derivate}{$uniqueFileId}cbButton" class="fa fa-chevron-right ml-auto mr-1"/>
                 <span class="flex-grow-1 font-weight-bold text-break">
                     <xsl:value-of select="$name"/>
@@ -97,7 +94,8 @@
                     </span>
                 </p>
                 <xsl:variable name="downloadLink">
-                    <xsl:value-of select="concat($ServletsBaseURL,'MCRFileNodeServlet/',$derivate,'/',mcrxsl:encodeURIPath(@name))"/>
+                    <xsl:value-of
+                            select="concat($ServletsBaseURL,'MCRFileNodeServlet/',$derivate,'/',mcrxsl:encodeURIPath(@name))"/>
                 </xsl:variable>
 
 
@@ -114,19 +112,19 @@
         <li class="list-group-item d-flex flex-column flex-xl-row flex-grow-1 text-break">
             <p class="flex-grow col-lg-8 col-md-9 align-self-center">
                 <span class="text-muted pdf-term">
-                    Specification:
+                    <xsl:value-of select="concat(i18n:translate('pdf.errorbox.specification'),': ')"/>
                 </span>
                 <span class="pdf-value">
                     <xsl:value-of select="concat(' ', @specification, ' ')"/>
                 </span>
                 <span class="text-muted pdf-term">
-                    Clause:
+                    <xsl:value-of select="concat(i18n:translate('pdf.errorbox.clause'),': ')"/>
                 </span>
                 <span class="pdf-value">
                     <xsl:value-of select="concat(' ', @clause, ' ')"/>
                 </span>
                 <span class="text-muted pdf-term">
-                    Test:
+                    <xsl:value-of select="concat(i18n:translate('pdf.errorbox.test'),': ')"/>
                 </span>
                 <span class="pdf-value">
                     <xsl:value-of select="concat(' ', @testNumber, ' ')"/>
@@ -149,20 +147,20 @@
     </xsl:template>
 
     <xsl:template name="pdfError.getFilename">
-        <xsl:param name="filePath" />
-        <xsl:variable name="rest-of" select="substring-after($filePath, '/')" />
+        <xsl:param name="filePath"/>
+        <xsl:variable name="rest-of" select="substring-after($filePath, '/')"/>
         <xsl:choose>
             <xsl:when test="contains($rest-of, '/')">
                 <xsl:call-template name="pdfError.getFilename">
-                    <xsl:with-param name="filePath" select="$rest-of" />
+                    <xsl:with-param name="filePath" select="$rest-of"/>
                 </xsl:call-template>
             </xsl:when>
             <xsl:otherwise>
                 <xsl:if test="normalize-space($rest-of)">
-                    <xsl:value-of select="$rest-of" />
+                    <xsl:value-of select="$rest-of"/>
                 </xsl:if>
                 <xsl:if test="not(normalize-space($rest-of))">
-                    <xsl:value-of select="$filePath" />
+                    <xsl:value-of select="$filePath"/>
                 </xsl:if>
             </xsl:otherwise>
         </xsl:choose>
