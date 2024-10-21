@@ -76,6 +76,17 @@ const RORSearch = {
             option.setAttribute("data-ror", suggestion.id);
             dataList.appendChild(option);
         }
+    },
+
+    debounce: (f, wait) => {
+        let timeoutId = null;
+
+        return (...args) => {
+            window.clearTimeout(timeoutId);
+            timeoutId = window.setTimeout(() => {
+                f.apply(null, args);
+            }, wait);
+        };
     }
 };
 
@@ -83,6 +94,8 @@ const RORSearch = {
  * Adds event handler to every ror input element.
  * */
 document.addEventListener('DOMContentLoaded', function () {
+    const debouncedInputHandler = RORSearch.debounce(RORSearch.onInput, 500);
+
     for (const input of document.querySelectorAll('[id="mir-ror-input"]')) {
         // create datalist element with random uuid as element id
         let dataList = document.createElement("datalist");
@@ -93,6 +106,6 @@ document.addEventListener('DOMContentLoaded', function () {
         input.parentElement.append(dataList);
 
         // add the actual event handler
-        input.addEventListener('input', RORSearch.onInput);
+        input.addEventListener('input', debouncedInputHandler);
     }
 });
