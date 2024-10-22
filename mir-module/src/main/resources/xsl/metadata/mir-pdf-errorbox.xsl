@@ -15,7 +15,8 @@
         </xsl:variable>
 
         <xsl:choose>
-            <xsl:when test="contains($errorMessages,i18n:translate('pdf.errorbox.clause'))">
+            <xsl:when test="contains($errorMessages,i18n:translate('pdf.errorbox.clause')) or
+                contains($errorMessages,i18n:translate('pdf.errorbox.validationerror.message'))">
                 <div class="container pdf-validation mb-3 px-0" id="accordion">
                     <div class="card-header bg-danger text-white">
                         <div class="list-group list-group-root well p-3">
@@ -32,8 +33,8 @@
                     </div>
                 </div>
             </xsl:when>
-            <xsl:when
-                    test="string-length(normalize-space($errorMessages)) > 0">
+            <xsl:when test="string-length(normalize-space($errorMessages)) >0 and
+            not(contains($errorMessages,i18n:translate('pdf.errorbox.validationerror.message')))">
                 <div class="card-header bg-success text-white mb-3">
                     <div class="list-group list-group-root well p-3">
                         <p class="h5">
@@ -65,6 +66,7 @@
         </xsl:variable>
         <xsl:variable name="badgecolor">
             <xsl:choose>
+                <xsl:when test="failed[@clause='Validation error!']">warning</xsl:when>
                 <xsl:when test="failed">danger</xsl:when>
                 <xsl:otherwise>success</xsl:otherwise>
             </xsl:choose>
@@ -73,44 +75,63 @@
         <div id="{$derivate}{$uniqueFileId}" class="font-weight-bold d-flex list-group list-group-root">
             <a onclick="$('#{$derivate}{$uniqueFileId}cbButton').toggleClass('fa-chevron-right fa-chevron-down');"
                data-toggle="collapse" href="#collapse{$derivate}{$uniqueFileId}"
-               class="text-left d-flex flex-md-row flex-grow-1 list-group-item align-items-center">
+               class="text-left  d-flex  flex-md-row flex-grow-1 list-group-item align-items-center">
                 <i id="{$derivate}{$uniqueFileId}cbButton" class="fa fa-chevron-right ml-auto mr-1"/>
                 <span class="flex-grow-1 font-weight-bold text-break">
                     <xsl:value-of select="$name"/>
                 </span>
                 <span class="badge badge-{$badgecolor} badge-pill align-self-center">
-                    <xsl:value-of select="count(failed)"/>
+                    <xsl:choose>
+                        <xsl:when test="$badgecolor = 'warning'">
+                            !
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:value-of select="count(failed)"/>
+                        </xsl:otherwise>
+                    </xsl:choose>
                 </span>
             </a>
         </div>
         <ul class="list-group collapse" id="collapse{$derivate}{$uniqueFileId}">
             <li class="list-group-item d-flex flex-column flex-xl-row flex-grow-2 text-break">
-                <p class="flex-grow-1 col-lg-8 align-items-center">
-                    <span class="text-muted pdf-term">
-                        <xsl:value-of select="concat(i18n:translate('pdf.errorbox.conformity.level'),': ')"/>
-                    </span>
-                    <span class="pdf-value">
-                        <xsl:value-of select="concat('PDF/A-',@flavour)"/>
-                    </span>
-                </p>
+                <xsl:choose>
+                    <xsl:when test="failed[@clause='Validation error!']">
+                        <xsl:apply-templates select="failed" mode="displayValidationError"/>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <p class="flex-grow-1 col-xl-8 align-items-center">
+                            <span class="text-muted pdf-term">
+                                <xsl:value-of select="concat(i18n:translate('pdf.errorbox.conformity.level'),': ')"/>
+                            </span>
+                            <span class="pdf-value">
+                                <xsl:value-of select="concat('PDF/A-',@flavour)"/>
+                            </span>
+                        </p>
+                    </xsl:otherwise>
+                </xsl:choose>
                 <xsl:variable name="downloadLink">
                     <xsl:value-of
-                            select="concat($ServletsBaseURL,'MCRFileNodeServlet/',$derivate,'/',mcrxsl:encodeURIPath(@name))"/>
+                            select="concat($ServletsBaseURL,'MCRFileNodeServlet/',$derivate,'/',
+                            mcrxsl:encodeURIPath(@name))"/>
                 </xsl:variable>
+                <div class="w-100 d-flex align-self-center justify-content-center">
+                    <a role="button" href="{$downloadLink}" target="_blank"
+                       class="btn btn-primary d-flex justify-content-center align-items-center w-100 py-2">
+                        <xsl:value-of select="concat(i18n:translate('pdf.errorbox.button.download'),' ')"/>
+                        <i class="fas fa-download ms-2"></i>
+                    </a>
+                </div>
 
-
-                <a class="btn  btn-primary col" href="{$downloadLink}" target="_blank">
-                    <xsl:value-of select="concat(i18n:translate('pdf.errorbox.button.download'),' ')"/>
-                    <i class="fas fa-download"/>
-                </a>
             </li>
-            <xsl:apply-templates select="failed" mode="displayPdfError"/>
+            <xsl:if test="not(@flavour='0')">
+                <xsl:apply-templates select="failed" mode="displayPdfError"/>
+            </xsl:if>
         </ul>
     </xsl:template>
 
     <xsl:template match="failed" mode="displayPdfError">
         <li class="list-group-item d-flex flex-column flex-xl-row flex-grow-1 text-break">
-            <p class="flex-grow col-lg-8 col-md-9 align-self-center">
+            <p class="flex-grow-1 col-xl-8 align-items-center">
                 <span class="text-muted pdf-term">
                     <xsl:value-of select="concat(i18n:translate('pdf.errorbox.specification'),': ')"/>
                 </span>
@@ -132,10 +153,13 @@
             </p>
             <xsl:choose>
                 <xsl:when test="not(@link)">
-                    <a class="btn btn-info col" role="button" href="{@Link}" target="_blank">
-                        <xsl:value-of select="concat(i18n:translate('pdf.errorbox.button.info'),' ')"/>
-                        <i class="fas fa-external-link-alt"/>
-                    </a>
+                    <div class="w-100 d-flex align-self-center justify-content-center">
+                        <a role="button" href="{@Link}" target="_blank"
+                           class="btn btn-info col d-flex justify-content-center align-items-center w-100 py-2">
+                            <xsl:value-of select="concat(i18n:translate('pdf.errorbox.button.info'),' ')"/>
+                            <i class="fas fa-external-link-alt ms-2"></i>
+                        </a>
+                    </div>
                 </xsl:when>
                 <xsl:otherwise>
                     <div class="text-center alert alert-danger col" role="alert">
@@ -145,6 +169,15 @@
             </xsl:choose>
         </li>
     </xsl:template>
+
+    <xsl:template match="failed" mode="displayValidationError">
+        <span class="flex-grow-1 col-xl-8 align-items-center">
+            <p class="text-danger mb-2">
+                <xsl:value-of select="i18n:translate('pdf.errorbox.validationerror.message')"/>
+            </p>
+        </span>
+    </xsl:template>
+
 
     <xsl:template name="pdfError.getFilename">
         <xsl:param name="filePath"/>
