@@ -7,7 +7,7 @@
 
   <xsl:import href="xslImport:modsmeta:metadata/mir-workflow.xsl"/>
   <xsl:import href="xslImport:mirworkflow:metadata/mir-workflow.xsl"/>
-
+  <xsl:import href="mir-pdf-errorbox.xsl"/>
   <xsl:param name="layout" select="'$'"/>
   <xsl:param name="MIR.Workflow.Box" select="'false'"/>
   <xsl:param name="MIR.Workflow.ReviewDerivateRequired" select="'true'"/>
@@ -15,6 +15,7 @@
   <xsl:param name="CurrentUser"/>
 
   <xsl:param name="MIR.Workflow.Debug" select="'false'"/>
+  <xsl:param name="MIR.Workflow.PDFValidation" select="'false'"/>
   <xsl:key use="@id" name="rights" match="/mycoreobject/rights/right"/>
   <xsl:variable name="id" select="/mycoreobject/@ID"/>
 
@@ -126,6 +127,10 @@
         Nutzer editor
         Dokument submitted
       </xsl:message>
+    </xsl:if>
+
+    <xsl:if test="normalize-space($MIR.Workflow.PDFValidation)='true'">
+      <xsl:apply-templates select="." mode="displayPdfError"/>
     </xsl:if>
   </xsl:template>
 
