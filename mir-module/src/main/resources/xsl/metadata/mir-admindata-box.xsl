@@ -96,7 +96,7 @@
                 <xsl:text>:</xsl:text>
               </td>
               <td class="metavalue">
-                <xsl:variable name="verinfo" select="document(concat('versioninfo:',mycoreobject/@ID))"/>
+                <xsl:variable name="verinfo" select="document(concat('notnull:staticcontent:mir-history:', mycoreobject/@ID))"/>
                 <xsl:variable name="revision">
                   <xsl:call-template name="UrlGetParam">
                     <xsl:with-param name="url" select="$RequestURL"/>

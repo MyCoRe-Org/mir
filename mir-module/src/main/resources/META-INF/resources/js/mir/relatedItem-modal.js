@@ -76,6 +76,10 @@ $(document).ready(function() {
     var input = button.next().next("input");
     var sortType = "";
     let fq = button.data("fq");
+    //if no id is given set fq empty
+    if(fq == "-id:") {
+      fq = "";
+    }
 
     //load genre classification
     loadGenres(initContent);
@@ -99,7 +103,7 @@ $(document).ready(function() {
     function initBody() {
       $("#modalFrame-title").text(button.val());
       $("#modalFrame-cancel").text($("button[name='_xed_submit_cancel']").text());
-      $("#modalFrame-send").text("Auswählen").attr("disabled", "").removeAttr("style");
+      $("#modalFrame-send").attr("disabled", "").removeAttr("style");
       // TODO: check if you can remove HTML from js code (e.g. by a js template)
       $("#modalFrame-body").append("<div id='main_left_content' class='list-group col-md-4' />");
       $("#modalFrame-body").append("<div id='main_right_content' class='list-group col-md-8' />");
@@ -108,9 +112,14 @@ $(document).ready(function() {
       $("#main_right_content").css("padding-left", "10px");
       //create pagination
       $("#modalFrame-body").append("<div class='col-12 mt-2'><nav style='clear: both'><ul class='modal-frame-pagination pagination justify-content-center'><li id='first' class='page-item previous disabled'><a href='#' class='page-link' data='0'>First</a></li><li id='previous' class='page-item previous disabled'><a href='#' class='page-link'>Previous</a></li><li class='page-item next disabled'><a href='#' class='page-link'>Next</a></li></ul></nav></div>");
-      $(".already-linked").after("<div class='col-md-4 type-select'><select class='form-control'><option value=''>Ohne Eingrenzung nach Typ:</option></select></div>");
+
+      if($(".type-select").length == 0) {
+        $(".already-linked").after("<div class='col-md-4 type-select'><select class='form-control'><option value=''>Ohne Eingrenzung nach Typ:</option></select></div>");
+      }
+
       $("li a").css("cursor", "pointer");
       $("#modal-searchInput").removeAttr("hidden");
+      $("#modal-searchInput button span").removeAttr("style");
       $("#modal-searchInput > input").attr("autocomplete", "off");
       $("#modalFrame").modal("show");
     }
@@ -289,7 +298,7 @@ $(document).ready(function() {
               dataType = "xml";
               break;
         case "select":
-              url = "servlets/solr/select?fq=" + fq + "q=" + qry + "&fq=objectType%3A\"mods\"&start=0&rows=10&XSL.Style=xml";
+              url = "servlets/solr/select?fq=" + fq + "&q=" + qry + "&fq=objectType%3A\"mods\"&start=0&rows=10&XSL.Style=xml";
               dataType = "xml";
               break;
         case "receive":
