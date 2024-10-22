@@ -56,6 +56,7 @@ const RORSearch = {
         // User selects value from list
         if (option != null) {
             input.value = option.getAttribute("data-ror");
+            input.title = option.getAttribute("value")
             event.preventDefault();
             return;
         }
@@ -86,6 +87,24 @@ const RORSearch = {
     },
 
     /**
+     * Resolve ror links in xEditor and update title attributes of ror inputs.
+     * */
+    updateXEditorInputTitle: async function () {
+        let rorInputs = document.querySelectorAll("[id='mir-ror-input']");
+        for (const rorInput of rorInputs) {
+            if (rorInput.value.length == 0) {
+                continue;
+            }
+
+            RORSearch.search(rorInput.value).then(data => {
+                if (data.length > 0) {
+                    rorInput.setAttribute("title", data[0].name + " (" + data[0].id + ")");
+                }
+            });
+        }
+    },
+
+    /**
      * Resolve ror links on metadata page.
      * */
     resolve: async function () {
@@ -93,8 +112,8 @@ const RORSearch = {
         for (const rorLink of rorLinks) {
             RORSearch.search(rorLink.href).then(data => {
                 if (data.length > 0) {
-                    if (data[0].name.length > 30) {
-                        rorLink.innerHTML = data[0].name.substring(0, 30).trim() + " …";
+                    if (data[0].name.length > 25) {
+                        rorLink.innerHTML = data[0].name.substring(0, 25).trim() + " …";
                     } else {
                         rorLink.innerHTML = data[0].name;
                     }
@@ -125,4 +144,5 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     RORSearch.resolve();
+    RORSearch.updateXEditorInputTitle();
 });
