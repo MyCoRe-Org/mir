@@ -7,13 +7,8 @@ const RORSearch = {
 
         let rorIdentifiers = [];
 
-        json.items.forEach((rorIdentifier) => {
-            let label = rorIdentifier.name;
-            let item = {};
-
-            item.id = rorIdentifier.id;
-            item.name = rorIdentifier.name;
-            item.label = label + " (" + item.id + ")";
+        json.items.forEach((item) => {
+            item.label = item.name + " (" + item.id + ")";
             rorIdentifiers.push(item);
         });
 

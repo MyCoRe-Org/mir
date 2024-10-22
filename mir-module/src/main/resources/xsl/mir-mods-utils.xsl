@@ -93,7 +93,7 @@
                       </dd>
                   </xsl:if>
                 </dl>
-                <script src="{$WebApplicationBaseURL}js/mir/ror-search.js"/>
+                <script src="{$WebApplicationBaseURL}js/mir/ror-search.min.js"/>
             </div>
         </xsl:if>
         <a href="{concat($ServletsBaseURL,'solr/mods_nameIdentifier?q=',encoder:encode($query),'&amp;owner=',encoder:encode(concat('createdby:',$owner)))}"><xsl:value-of select="$personName" /></a>
