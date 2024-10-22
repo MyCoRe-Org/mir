@@ -93,7 +93,12 @@ const RORSearch = {
         for (const rorLink of rorLinks) {
             RORSearch.search(rorLink.href).then(data => {
                 if (data.length > 0) {
-                    rorLink.innerHTML = data[0].name;
+                    if (data[0].name.length > 30) {
+                        rorLink.innerHTML = data[0].name.substring(0, 30).trim() + " …";
+                    } else {
+                        rorLink.innerHTML = data[0].name;
+                    }
+                    rorLink.setAttribute("title", data[0].name + " | " + data[0].id);
                 }
             });
         }
