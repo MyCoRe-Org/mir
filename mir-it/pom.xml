@@ -41,7 +41,7 @@
               <excludeDefaultDirectories>true</excludeDefaultDirectories>
               <filesets>
                 <fileset>
-                  <directory>${MCR.Home.Integration}/${MCR.AppName}</directory>
+                  <directory>${MCR.Home.Integration}</directory>
                 </fileset>
               </filesets>
             </configuration>
