@@ -400,12 +400,6 @@
     <xsl:variable name="adminEditURL">
       <xsl:value-of select="actionmapping:getURLforID('update-admin',$id,true())" xmlns:actionmapping="xalan://org.mycore.wfc.actionmapping.MCRURLRetriever" />
     </xsl:variable>
-    <xsl:variable name="editURL_allMods">
-      <xsl:call-template name="mods.getObjectEditURL">
-        <xsl:with-param name="id" select="$id" />
-        <xsl:with-param name="layout" select="'all'" />
-      </xsl:call-template>
-    </xsl:variable>
     <xsl:variable name="copyURL">
       <xsl:value-of select="actionmapping:getURLforID('create-copy',$id,true())" xmlns:actionmapping="xalan://org.mycore.wfc.actionmapping.MCRURLRetriever" />
     </xsl:variable>
@@ -423,8 +417,7 @@
         </xsl:when>
         <xsl:otherwise>
           <a class="btn btn-primary btn-sm w-100"
-             href="{$ServletsBaseURL}MCRBasketServlet{$HttpSession}?type={$basketType}&amp;action=add&amp;redirect={encoder:encode($RequestURL)}&amp;id={/mycoreobject/@ID}&amp;uri=mcrobject:{/mycoreobject/@ID}"
-          >
+             href="{$ServletsBaseURL}MCRBasketServlet{$HttpSession}?type={$basketType}&amp;action=add&amp;redirect={encoder:encode($RequestURL)}&amp;id={/mycoreobject/@ID}&amp;uri=mcrobject:{/mycoreobject/@ID}">
             <i class="fas fa-plus">
               <xsl:value-of select="' '" />
             </i>
@@ -572,9 +565,11 @@
                   </xsl:choose>
                 </li>
               </xsl:if>
-              <xsl:if test="string-length($editURL_allMods) &gt; 0">
+
+              <xsl:variable name="edit-all-mods-url" select="actionmapping:getURLforID('update-xml', $id, true())" xmlns:actionmapping="xalan://org.mycore.wfc.actionmapping.MCRURLRetriever"/>
+              <xsl:if test="string-length($edit-all-mods-url) &gt; 0">
                 <li>
-                  <a href="{$editURL_allMods}" class="dropdown-item">
+                  <a href="{$edit-all-mods-url}{$id}" class="dropdown-item">
                     <xsl:value-of select="i18n:translate('component.mods.object.editAllModsXML')" />
                   </a>
                 </li>
