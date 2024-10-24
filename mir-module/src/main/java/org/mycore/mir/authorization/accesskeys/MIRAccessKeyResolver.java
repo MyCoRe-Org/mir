@@ -41,6 +41,7 @@ import org.mycore.mir.authorization.accesskeys.backend.MIRAccessKeyPair;
  * @author Ren\u00E9 Adler (eagle)
  *
  */
+@Deprecated
 public class MIRAccessKeyResolver implements URIResolver {
 
     /* (non-Javadoc)
