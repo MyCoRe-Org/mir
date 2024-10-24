@@ -305,21 +305,31 @@
     // do nothing if a query is missing
     $( ".search_box form" ).submit( function( event ) {
       if($(this).find("input[name='qry']").val().trim() != '') {
-        var origSearchAction = $(this).attr('action');
-        var addValue = encodeURIComponent(solrEscapeSearchValue($('.search_box input').val().trim()));
+        const origSearchAction = $(this).attr('action');
+        // To get the condQuery parameter, the URLSearchParams API is used
+        // (https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams)
+        // (compatible: https://caniuse.com/?search=URLSearchParams)
+        const urlObj = new URL(origSearchAction);
+        // Get the query parameters
+        const params = new URLSearchParams(urlObj.search);
+        // Get the 'condQuery' parameter value
+        const condQuery = params.get('condQuery');
+        const searchTypeButtonValueAttr = $('#search_type_button').attr('value');
+        const addValue = encodeURIComponent(solrEscapeSearchValue($('.search_box input').val().trim()));
+        let newAction;
         if (origSearchAction.includes('servlets/solr/find')) {
-          var replAction = origSearchAction.replace(/(.*[&|\?])(condQuery=.*?)&(.*)/,'$1$3');
-          if ($('#search_type_button').attr('value') == 'all') {
-            var newAction = replAction + "&condQuery=" + addValue;
+          const replAction = origSearchAction.replace(/(.*[&|\?])(condQuery=.*?)&(.*)/,'$1$3');
+          if (searchTypeButtonValueAttr === 'all') {
+            newAction = replAction + "&condQuery=" + condQuery + "&fq=allMeta:" + addValue;
           } else {
-            var newAction = replAction + "&condQuery=" + addValue + "&df=" + $('#search_type_button').attr('value');
+            newAction = replAction + "&condQuery=" + condQuery + "&fq=" + searchTypeButtonValueAttr + ":" + addValue;
           }
-        } else {
-          var replAction = origSearchAction.replace(/(.*[&|\?])(condQuery=.*?)&(.*)/,'$1$3&$2');
-          if ($('#search_type_button').attr('value') == 'all') {
-            var newAction = replAction + "+%2BallMeta:" + addValue;
+        } else { // TODO: do it right
+          const replAction = origSearchAction.replace(/(.*[&|\?])(condQuery=.*?)&(.*)/,'$1$3&$2');
+          if (searchTypeButtonValueAttr === 'all') {
+            newAction = replAction + "+%2BallMeta:" + addValue;
           } else {
-            var newAction = replAction + "+%2B" + $('#search_type_button').attr('value') + ":" + addValue;
+            newAction = replAction + "+%2B" + searchTypeButtonValueAttr + ":" + addValue;
           }
         }
         $(this).attr('action', newAction);
