@@ -40,6 +40,7 @@ import jakarta.xml.bind.Unmarshaller;
  * @author Ren\u00E9 Adler (eagle)
  * @since 0.3
  */
+@Deprecated
 public abstract class MIRAccessKeyPairTransformer {
 
     public static final JAXBContext JAXB_CONTEXT = initContext();
