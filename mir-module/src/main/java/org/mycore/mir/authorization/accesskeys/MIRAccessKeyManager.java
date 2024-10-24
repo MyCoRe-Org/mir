@@ -35,6 +35,7 @@ import org.mycore.mcr.acl.accesskey.MCRAccessKeyManager;
 import org.mycore.mcr.acl.accesskey.model.MCRAccessKey;
 import org.mycore.mir.authorization.accesskeys.backend.MIRAccessKeyPair;
 
+@Deprecated
 public final class MIRAccessKeyManager {
 
     /**
