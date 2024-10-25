@@ -320,7 +320,7 @@
         if (origSearchAction.includes('servlets/solr/find')) {
           const replAction = origSearchAction.replace(/(.*[&|\?])(condQuery=.*?)&(.*)/,'$1$3');
           if (searchTypeButtonValueAttr === 'all') {
-            newAction = replAction + "&condQuery=" + condQuery + "&fq=allMeta:" + addValue;
+            newAction = replAction + "&condQuery=" + condQuery + "+AND+" + addValue;
           } else {
             newAction = replAction + "&condQuery=" + condQuery + "&fq=" + searchTypeButtonValueAttr + ":" + addValue;
           }
