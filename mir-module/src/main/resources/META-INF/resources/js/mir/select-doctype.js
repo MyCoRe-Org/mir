@@ -95,7 +95,7 @@ $(document).ready( function() {
     $('#genre').change(function (){changeHostOptions();});
 	$.ajax({
 		method: "GET",
-		url: webApplicationBaseURL+"api/v1/classifications/mir_genres",
+		url: webApplicationBaseURL+"api/v2/classifications/mir_genres",
 		dataType: "xml"
 	}) .done(function( xml ) {
 		GenreXML=xml;
