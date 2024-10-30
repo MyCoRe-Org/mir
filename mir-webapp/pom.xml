@@ -327,6 +327,10 @@
           <groupId>ch.qos.logback</groupId>
           <artifactId>logback-classic</artifactId>
         </exclusion>
+        <exclusion>
+          <groupId>org.mycore</groupId>
+          <artifactId>mycore-neo4j</artifactId>
+        </exclusion>
       </exclusions>
     </dependency>
   </dependencies>
