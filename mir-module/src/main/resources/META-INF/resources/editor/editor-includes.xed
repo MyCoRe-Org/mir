@@ -1612,11 +1612,11 @@
   </xed:template>
 
   <xed:template id="geographic">
-    <mir:geographic.repeated path="mods:subject[not(mods:topic)]/mods:geographic" min="1" max="20" label="mir.geographic" help-text="{i18n:mir.help.cartographics.place}" />
+    <mir:geographic.repeated path="mods:subject[mods:geographic]/mods:geographic" min="1" max="20" label="mir.geographic" help-text="{i18n:mir.help.cartographics.place}" />
   </xed:template>
 
   <xed:template id="geographic.complex">
-    <mir:geographic.repeated path="mods:subject[not(mods:topic)]/mods:geographic" min="1" max="20" label="mir.geographic" help-text="{i18n:mir.help.cartographics.place}" extended="true" />
+    <mir:geographic.repeated path="mods:subject[mods:geographic]/mods:geographic" min="1" max="20" label="mir.geographic" help-text="{i18n:mir.help.cartographics.place}" extended="true" />
   </xed:template>
 
   <xed:template id="geographic.input">
@@ -1858,7 +1858,7 @@
   </xed:template>
 
   <xed:template id="subject.complex">
-    <xed:repeat xpath="mods:subject[not(mods:geographic)]" min="1" max="20">
+    <xed:repeat xpath="mods:subject[mods:topic]" min="1" max="20">
       <fieldset>
         <div class="row mir-fieldset-legend">
           <legend class="col-md-9" style="margin-bottom:0px;padding-top:10px;">
@@ -1874,7 +1874,7 @@
   </xed:template>
 
   <xed:template id="subject.complex.required">
-    <xed:repeat xpath="mods:subject[not(mods:geographic)]" min="1" max="20">
+    <xed:repeat xpath="mods:subject[mods:topic]" min="1" max="20">
       <fieldset>
         <div class="row mir-fieldset-legend">
           <legend class="col-md-9" style="margin-bottom:0px;padding-top:10px;">
