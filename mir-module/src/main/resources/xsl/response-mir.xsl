@@ -256,6 +256,37 @@
     </xsl:if>
   </xsl:template>
 
+  <xsl:template name="extractUserIdsFromUserAttributes">
+    <xsl:param name="userAttributes"/>
+    <xsl:for-each select="$userAttributes/attribute[starts-with(@name, 'id_')]">
+      <xsl:variable name="type" select="substring(./@name, 4)"/>
+      <str>
+        <xsl:value-of select="concat($type,':',./@value)"/>
+      </str>
+    </xsl:for-each>
+  </xsl:template>
+
+  <xsl:template name="extractOrcidsFromUserAttributes">
+    <xsl:param name="userAttributes"/>
+    <xsl:for-each select="$userAttributes/attribute[starts-with(@name, 'id_orcid')]">
+      <str>
+        <xsl:value-of select="./@value"/>
+      </str>
+    </xsl:for-each>
+  </xsl:template>
+ 
+  <xsl:template name="intersectLists">
+    <xsl:param name="listA"/>
+    <xsl:param name="listB"/>
+    <xsl:for-each select="$listB">
+      <xsl:if test="$listA[contains(text(), .)]">
+        <str>
+          <xsl:value-of select="."/>
+        </str>
+      </xsl:if>
+    </xsl:for-each>
+  </xsl:template>
+
   <xsl:template match="doc" priority="10" mode="resultList">
     <xsl:param name="hitNumberOnPage" select="count(preceding-sibling::*[name()=name(.)])+1" />
     <!--
@@ -293,25 +324,33 @@
         </xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
-    <xsl:variable name="orcidIdentifiers" select="arr[@name='mods.nameIdentifier']/str[starts-with(text(), 'orcid')]"/>
-    <xsl:variable name="currentUserOrcids" select="document('user:current')/user/attributes/attribute[@name='id_orcid']"/>
-    <xsl:variable name="matchingUserOrcids">
+
+    <xsl:variable name="currentUserIdsXml">
+      <xsl:call-template name="extractUserIdsFromUserAttributes">
+        <xsl:with-param name="userAttributes" select="document('user:current')/user/attributes"/>
+      </xsl:call-template>
+    </xsl:variable>
+    <xsl:variable name="currentUserIds" select="exsl:node-set($currentUserIdsXml)/str"/>
+    <xsl:variable name="currentUserOrcidsXml">
+      <xsl:call-template name="extractOrcidsFromUserAttributes">
+        <xsl:with-param name="userAttributes" select="document('user:current')/user/attributes"/>
+      </xsl:call-template>
+    </xsl:variable>
+    <xsl:variable name="currentUserOrcids" select="exsl:node-set($currentUserOrcidsXml)/str"/>
+    <xsl:variable name="orcidNameIds" select="arr[@name='mods.nameIdentifier']/str[starts-with(text(), 'orcid:')]"/>
+    <xsl:variable name="matchingIdsXml">
       <xsl:choose>
         <xsl:when test="not(mcrxsl:isCurrentUserGuestUser()) and $orcidIntegrationEnabled
-                        and count($orcidIdentifiers) &gt; 0 and count($currentUserOrcids)">
-          <xsl:for-each select="$orcidIdentifiers">
-            <xsl:variable name="currentOrcid" select="substring-after(.,':')"/>
-            <xsl:if test="$currentUserOrcids[contains(@value, $currentOrcid)]">
-              <matchingOrcid>
-                <xsl:value-of select="$currentOrcid"/>
-              </matchingOrcid>
-            </xsl:if>
-          </xsl:for-each>
+                        and count($orcidNameIds) &gt; 0 and count($currentUserIds) &gt; 0">
+          <xsl:call-template name="intersectLists">
+            <xsl:with-param name="listA" select="$currentUserIds"/>
+            <xsl:with-param name="listB" select="$orcidNameIds"/>
+          </xsl:call-template>
         </xsl:when>
         <xsl:otherwise/>
       </xsl:choose>
     </xsl:variable>
-    <xsl:variable name="matchingUserOrcidsNoteSet" select="exsl:node-set($matchingUserOrcids)"/>
+    <xsl:variable name="matchingIds" select="exsl:node-set($matchingIdsXml)/str"/>
 
     <!-- generate browsing url -->
     <xsl:variable name="href" select="concat($proxyBaseURL,$solrParams)" />
@@ -652,8 +691,8 @@
                   </span>
                 </div>
               </xsl:if>
-              <xsl:if test="count($matchingUserOrcidsNoteSet/matchingOrcid) &gt; 0">
-                <div class="orcid-status" data-object-id="{$identifier}" data-orcid="{$matchingUserOrcidsNoteSet/matchingOrcid[1]}"/>
+              <xsl:if test="count($matchingIds) &gt; 0 and count($currentUserOrcids) &gt; 0">
+                <div class="orcid-status" data-object-id="{$identifier}" data-orcid="{$currentUserOrcids[1]}"/>
               </xsl:if>
             </div>
           </div>
@@ -826,8 +865,8 @@
             </div>
           </xsl:if>
 
-          <xsl:if test="count($matchingUserOrcidsNoteSet/matchingOrcid) &gt; 0">
-            <xsl:variable name="orcid" select="$matchingUserOrcidsNoteSet/matchingOrcid[1]"/>
+          <xsl:if test="count($matchingIds) &gt; 0 and count($currentUserOrcids) &gt; 0">
+            <xsl:variable name="orcid" select="$currentUserOrcids[1]"/>
             <xsl:if test="document(concat('orcidCredential:exists:', $orcid))/boolean='true'
                           and contains(document(concat('orcidCredential:scope:', $orcid))/string, '/activities/update')">
               <div class="orcid-publish" data-object-id="{$identifier}" data-orcid="{$orcid}"/>
