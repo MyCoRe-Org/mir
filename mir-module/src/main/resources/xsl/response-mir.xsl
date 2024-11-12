@@ -15,6 +15,7 @@
 
   <xsl:include href="resource:xsl/csl-export-gui.xsl" />
   <xsl:include href="resource:xsl/response-facets.xsl"/>
+  <xsl:include href="resource:xsl/response-mir-hit-oa.xsl" />
   <xsl:include href="resource:xsl/response-mir-utils.xsl" />
 
   <xsl:param name="UserAgent" />
@@ -541,27 +542,7 @@
 <!-- hit type -->
           <div class="hit_tnd_container">
             <div class="hit_tnd_content">
-              <div class="hit_oa" data-toggle="tooltip">
-                <xsl:variable name="isOpenAccess" select="bool[@name='worldReadableComplete']='true'" />
-                <xsl:choose>
-                  <xsl:when test="$isOpenAccess">
-                    <xsl:attribute name="title">
-                      <xsl:value-of select="i18n:translate('mir.response.openAccess.true')" />
-                    </xsl:attribute>
-                    <span class="badge badge-success">
-                      <i class="fas fa-unlock-alt" aria-hidden="true"></i>
-                    </span>
-                  </xsl:when>
-                  <xsl:otherwise>
-                    <xsl:attribute name="title">
-                      <xsl:value-of select="i18n:translate('mir.response.openAccess.false')" />
-                    </xsl:attribute>
-                    <span class="badge badge-warning">
-                      <i class="fas fa-lock" aria-hidden="true"></i>
-                    </span>
-                  </xsl:otherwise>
-                </xsl:choose>
-              </div>
+              <xsl:call-template name="hit-oa"/>
               <xsl:choose>
                 <xsl:when test="arr[@name='mods.genre']">
                   <xsl:for-each select="arr[@name='mods.genre']/str">
