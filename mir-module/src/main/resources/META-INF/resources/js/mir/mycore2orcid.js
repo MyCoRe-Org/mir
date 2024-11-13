@@ -58,7 +58,6 @@ class OrcidService {
     return await response.json();
   }
 
-  // TODO endpoint does not work
   publishObjectToOrcid = async (orcid, objectId) => {
     const response = await fetch(`${this.baseUrl}api/orcid/v1/member/${orcid}/works/object/${objectId}`, {
       method: 'POST',
@@ -129,31 +128,46 @@ document.addEventListener('DOMContentLoaded', async () => {
       await createOrcidStatus(div, orcid, objectId);
     }
   });
+});
 
-	const createPublishToOrcidButton = (orcid, objectId) => {
-    const publishButton = document.createElement('button');
-    publishButton.classList.add('orcid-button');
-    publishButton.innerHTML = i18nService.translate('orcid.publication.action.create');
-    publishButton.addEventListener('click', async () => {
-      await orcidService.publishObjectToOrcid(orcid, objectId);
-      document.querySelectorAll(`div.orcid-status[data-object-id='${objectId}']`).forEach(async (div) => {
-        await createOrcidStatus(orcid, objectId);
-      });
-      publishButton.classList.add('d-none');
-      alert(i18nService.translate('orcid.publication.action.confirmation'));
-    });
-    return publishButton;
-	}
+// TODO kill jquery
+class OrcidExportModal {
+  constructor(modalId, exportButtonId, orcidSelectId) {
+    this.modal = $(modalId);
+    this.exportButton = this.modal.find(exportButtonId);
+    this.orcidSelect = this.modal.find(orcidSelectId);
+    this.modal.on('show.bs.modal', (event) => this.showModalHandler(event));
+    this.exportButton.on('click', () => this.exportToOrcid());
+    this.orcidSelect.on('change', () => this.handleSelectChange());
+  }
 
-  document.querySelectorAll('div.orcid-publish').forEach(async (div) => {
-    const objectId = div.dataset.objectId;
-    const orcid = div.dataset.orcid;
-    if (objectId && orcid && userStatus.trustedOrcids.includes(orcid)) {
-      const workStatus = await orcidService.fetchWorkStatus(orcid, objectId);
-      if (!workStatus.own) {
-        const publishButton = createPublishToOrcidButton(orcid, objectId);
-        div.appendChild(publishButton);
-      }
+  showModalHandler = async (event) => {
+    const button = $(event.relatedTarget);
+    this.objectId = button.data('objectId');
+    const accessToken = await fetchAccessToken(baseUrl);
+    this.orcidService = new OrcidService(baseUrl, accessToken);
+    const userStatus = await this.orcidService.fetchUserStatus();
+    userStatus.trustedOrcids.forEach((o) => {
+      this.orcidSelect.append(new Option(o, o));
+    })
+  }
+
+  exportToOrcid = async () => {
+    const selectedOrcid = this.orcidSelect.val();
+    if (selectedOrcid !== "") {
+      await this.orcidService.publishObjectToOrcid(selectedOrcid, this.objectId);
+      alert('orcid.publication.action.confirmation');
     }
-  });
+  }
+
+  handleSelectChange = () => {
+    const selectedValue = this.orcidSelect.val();
+    if (selectedValue !== "") {
+      console.log(selectedValue);
+    }
+  }
+}
+
+$(document).ready(() => {
+  new OrcidExportModal('#exportToOrcidModal', '#exportToOrcidBtn', '#orcidProfileSelect');
 });

@@ -265,7 +265,7 @@
 
     </div>
     <xsl:if test="$orcidIntegrationEnabled">
-      <script src="{$WebApplicationBaseURL}js/mir/mycore2orcid.js" />
+      <script src="{$WebApplicationBaseURL}js/mir/mycore2orcid.js"/>
     </xsl:if>
   </xsl:template>
 
@@ -307,19 +307,18 @@
       </xsl:choose>
     </xsl:variable>
 
-    <xsl:variable name="currentUserHasMatchingTrustedId">
+    <xsl:variable name="currentUserMatchingTrustedIdsXml">
       <xsl:choose>
         <xsl:when test="$orcidIntegrationEnabled">
-          <xsl:call-template name="checkMatchingTrustedIdExists">
+          <xsl:call-template name="getMatchingTrustedIds">
             <xsl:with-param name="idsA" select="$currentUserIds"/>
             <xsl:with-param name="idsB" select="arr[@name='mods.nameIdentifier']/str"/>
           </xsl:call-template>
         </xsl:when>
-        <xsl:otherwise>
-          <xsl:value-of select="'false'"/>
-        </xsl:otherwise>
+        <xsl:otherwise/>
       </xsl:choose>
     </xsl:variable>
+    <xsl:variable name="hasCurrentUserMatchingTrustedIds" select="count(exsl:node-set($currentUserMatchingTrustedIdsXml)/str) &gt; 0"/>
 
     <!-- generate browsing url -->
     <xsl:variable name="href" select="concat($proxyBaseURL,$solrParams)" />
@@ -660,7 +659,7 @@
                   </span>
                 </div>
               </xsl:if>
-              <xsl:if test="$currentUserHasMatchingTrustedId='true' and count($currentUserOrcids) &gt; 0">
+              <xsl:if test="$hasCurrentUserMatchingTrustedIds and count($currentUserOrcids) &gt; 0">
                 <div class="orcid-status" data-object-id="{$identifier}" data-orcid="{$currentUserOrcids[1]}"/>
               </xsl:if>
             </div>
@@ -833,23 +832,6 @@
               </xsl:for-each>
             </div>
           </xsl:if>
-
-          <!--
-          <xsl:if test="$currentUserHasMatchingTrustedId='true' and count($currentUserOrcids) &gt; 0">
-            <xsl:variable name="isAllowedToPublish">
-              <xsl:call-template name="checkStateIsAllowedToPublish">
-                <xsl:with-param name="state" select="str[@name='state']"/>
-              </xsl:call-template>
-            </xsl:variable>
-            <xsl:if test="$isAllowedToPublish='true'">
-              <xsl:variable name="orcid" select="$currentUserOrcids[1]"/>
-              <xsl:if test="document(concat('orcidCredential:exists:', $orcid))/boolean='true'
-                            and contains(document(concat('orcidCredential:scope:', $orcid))/string, '/activities/update')">
-                <div class="orcid-publish" data-object-id="{$identifier}" data-orcid="{$orcid}"/>
-              </xsl:if>           
-            </xsl:if>
-          </xsl:if>
-          -->
         </div><!-- end hit col -->
       </div><!-- end hit body -->
     </div><!-- end hit item -->

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:exslt="http://exslt.org/common">
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:exsl="http://exslt.org/common"
+  extension-element-prefixes="exsl" version="1.0">
 
   <xsl:import href="resource:xsl/coreFunctions.xsl"/>
 
@@ -10,7 +11,7 @@
       <xsl:with-param name="delimiter" select="','"/>
     </xsl:call-template>
   </xsl:param>
-  <xsl:param name="trustedIdTypes" select="exslt:node-set($trustedIdTypesXml)"/>
+  <xsl:param name="trustedIdTypes" select="exsl:node-set($trustedIdTypesXml)"/>
   <xsl:param name="MCR.ORCID2.Work.PublishStates"/>
   <xsl:param name="publishStatesXml">
     <xsl:call-template name="Tokenizer">
@@ -18,13 +19,13 @@
       <xsl:with-param name="delimiter" select="','"/>
     </xsl:call-template>
   </xsl:param>
-  <xsl:param name="publishStates" select="exslt:node-set($publishStatesXml)"/>
+  <xsl:param name="publishStates" select="exsl:node-set($publishStatesXml)"/>
 
-  <xsl:template name="checkIdIsTrusted">
-    <xsl:param name="id"/>
-    <xsl:variable name="type" select="substring-after(.,':')"/>
+  <xsl:template name="checkElementContainsNodeSet">
+    <xsl:param name="nodeSet"/>
+    <xsl:param name="element"/>
     <xsl:choose>
-      <xsl:when test="$trustedIdTypes[contains(text(), $type)]">
+      <xsl:when test="$nodeSet[.=$element]">
         <xsl:value-of select="'true'"/>
       </xsl:when>
       <xsl:otherwise>
@@ -33,23 +34,45 @@
     </xsl:choose>
   </xsl:template>
 
+  <xsl:template name="checkIdIsTrusted">
+    <xsl:param name="id"/>
+    <xsl:variable name="type" select="substring-before($id,':')"/>
+    <xsl:call-template name="checkElementContainsNodeSet">
+      <xsl:with-param name="nodeSet" select="$trustedIdTypes"/>
+      <xsl:with-param name="element" select="$type"/>
+    </xsl:call-template>
+  </xsl:template>
+
   <xsl:template name="checkStateIsAllowedToPublish">
     <xsl:param name="state"/>
-    <xsl:choose>
-      <xsl:when test="$publishStates[contains(text(), $state)]">
-        <xsl:value-of select="'true'"/>
-      </xsl:when>
-      <xsl:otherwise>
-        <xsl:value-of select="'false'"/>
-      </xsl:otherwise>
-    </xsl:choose>
+    <xsl:call-template name="checkElementContainsNodeSet">
+      <xsl:with-param name="nodeSet" select="$publishStates"/>
+      <xsl:with-param name="element" select="$state"/>
+    </xsl:call-template>
   </xsl:template>
  
   <xsl:template name="intersectLists">
     <xsl:param name="listA"/>
     <xsl:param name="listB"/>
     <xsl:for-each select="$listB">
-      <xsl:if test="$listA[contains(text(), .)]">
+      <xsl:variable name="currentItem" select="."/>
+      <xsl:if test="$listA[.=$currentItem]">
+        <str>
+          <xsl:value-of select="."/>
+        </str>
+      </xsl:if>
+    </xsl:for-each>
+  </xsl:template>
+
+  <xsl:template name="filterTrustedIds">
+    <xsl:param name="ids"/>
+    <xsl:for-each select="$ids">
+      <xsl:variable name="idIsTrusted">
+        <xsl:call-template name="checkIdIsTrusted">
+          <xsl:with-param name="id" select="."/>
+        </xsl:call-template>
+      </xsl:variable>
+      <xsl:if test="$idIsTrusted='true'">
         <str>
           <xsl:value-of select="."/>
         </str>
@@ -61,46 +84,18 @@
     <xsl:param name="idsA"/>
     <xsl:param name="idsB"/>
     <xsl:choose>
-      <xsl:when test="count($trustedIdTypes) &gt; 0 or count($idsA) &gt; 0 or count($idsB) &gt; 0">
+      <xsl:when test="count($trustedIdTypes) &gt; 0">
         <xsl:variable name="trustedIdsAXml">
-          <xsl:for-each select="idsA">
-            <xsl:variable name="idIsTrusted">
-              <xsl:call-template name="checkIdIsTrusted">
-                <xsl:with-param name="id" select="."/>
-              </xsl:call-template>
-            </xsl:variable>
-            <xsl:if test="$idIsTrusted='true'">
-              <str>
-                <xsl:value-of select="."/>
-              </str>
-            </xsl:if>
-          </xsl:for-each>
+          <xsl:call-template name="filterTrustedIds">
+            <xsl:with-param name="ids" select="$idsA"/>
+          </xsl:call-template>
         </xsl:variable>
         <xsl:call-template name="intersectLists">
-          <xsl:with-param name="listA" select="exslt:node-set($trustedIdsAXml)"/>
+          <xsl:with-param name="listA" select="exsl:node-set($trustedIdsAXml)"/>
           <xsl:with-param name="listB" select="$idsB"/>
         </xsl:call-template>
       </xsl:when>
       <xsl:otherwise/>
-    </xsl:choose>
-  </xsl:template>
-
-  <xsl:template name="checkMatchingTrustedIdExists">
-    <xsl:param name="idsA"/>
-    <xsl:param name="idsB"/>
-    <xsl:choose>
-      <xsl:when test="count($trustedIdTypes) &gt; 0 or count($idsA) &gt; 0 or count($idsB) &gt; 0">
-        <xsl:variable name="matchingTrustedIdsXml">
-          <xsl:call-template name="getMatchingTrustedIds">
-            <xsl:with-param name="idsA" select="$idsA"/>
-            <xsl:with-param name="idsB" select="$idsB"/>
-          </xsl:call-template>
-        </xsl:variable>
-        <xsl:value-of select="count(exslt:node-set($matchingTrustedIdsXml)/str) &gt; 0"/>
-      </xsl:when>
-      <xsl:otherwise>
-        <xsl:value-of select="'false'"/>
-      </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
 
@@ -122,4 +117,5 @@
       </str>
     </xsl:for-each>
   </xsl:template>
+
 </xsl:stylesheet>
