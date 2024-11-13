@@ -293,51 +293,77 @@
       });
     });
 
-    //for select box in search field on hit list page
-    $( ".search_type a" ).click(function() {
-        $( "#search_type_label" ).html( $( this ).html() );
-        $( "#search_type_button" ).attr( 'value', $( this ).attr('value') );
+    // Input element in the original search
+    const originalSearchInputElement = "#searchInput";
+    // Selector for the search form
+    const subSearchFormName = "form.search_form";
+    // ID of the input field for the second search text
+    const qrySelector = "#qry";
+    // ID of the select box with the filter query key
+    const selectMods = "#select_mods";
+    // ID of the hidden element with the fq parameter
+    const fqElement = "#fq";
+    // ID of the hidden element with the initial condQuery parameter in the first search form
+    const initialCondQueryFirst = "#initialCondQuery";
+    // ID of the hidden element with the initial condQuery parameter in the second search form
+    const initialCondQuerySecond = "#initialCondQuerySecond";
+    // ID of the hidden element 'condQuery' for the query parameter 'condQuery'
+    const condQuery = "#condQuery";
+
+    // Input element's changes in the original search
+    $(originalSearchInputElement).change(() => {
+        if ($(initialCondQueryFirst)) {
+            $(initialCondQueryFirst).attr('value', $('#searchInput').val().trim());
+        }
     });
 
-    // filter for result lists
-    // modify search query
-    // TODO: modify? add why and how
-    // do nothing if a query is missing
-    $( ".search_box form" ).submit( function( event ) {
-      if($(this).find("input[name='qry']").val().trim() != '') {
-        const origSearchAction = $(this).attr('action');
-        // To get the condQuery parameter, the URLSearchParams API is used
-        // (https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams)
-        // (compatible: https://caniuse.com/?search=URLSearchParams)
-        const urlObj = new URL(origSearchAction);
-        // Get the query parameters
-        const params = new URLSearchParams(urlObj.search);
-        // Get the 'condQuery' parameter value
-        const condQuery = params.get('condQuery');
-        const searchTypeButtonValueAttr = $('#search_type_button').attr('value');
-        const addValue = encodeURIComponent(solrEscapeSearchValue($('.search_box input').val().trim()));
-        let newAction;
-        if (origSearchAction.includes('servlets/solr/find')) {
-          const replAction = origSearchAction.replace(/(.*[&|\?])(condQuery=.*?)&(.*)/,'$1$3');
-          if (searchTypeButtonValueAttr === 'all') {
-            newAction = replAction + "&condQuery=" + condQuery + "+AND+" + addValue;
-          } else {
-            newAction = replAction + "&condQuery=" + condQuery + "&fq=" + searchTypeButtonValueAttr + ":" + addValue;
-          }
-        } else { // TODO: do it right
-          const replAction = origSearchAction.replace(/(.*[&|\?])(condQuery=.*?)&(.*)/,'$1$3&$2');
-          if (searchTypeButtonValueAttr === 'all') {
-            newAction = replAction + "+%2BallMeta:" + addValue;
-          } else {
-            newAction = replAction + "+%2B" + searchTypeButtonValueAttr + ":" + addValue;
-          }
-        }
-        $(this).attr('action', newAction);
-      } else {
-        // nothing to do if a value is missing
-        event.preventDefault();
-      }
+    // Changes in the select box for the filter query
+    $(selectMods).change(() => {
+        setFQAndCondQueryElementsValues();
     });
+
+    // Changes in the input field of the filter query
+    $(qrySelector).change(() => {
+        setFQAndCondQueryElementsValues();
+    });
+
+    // Changes for the fq element and condQuery element
+    function setFQAndCondQueryElementsValues() {
+        if ($(selectMods) && $(qrySelector) && $(fqElement) && $(initialCondQuerySecond) && $(condQuery)) {
+            let queryText = '';
+            if ($(qrySelector).val() !== '') {
+                queryText = $(qrySelector).val().trim();
+                // Remove all duplicate spaces, tabs, newlines etc
+                queryText = queryText.replace(/\s\s+/g, ' ');
+            }
+
+            const initialCondQueryValue = $(initialCondQuerySecond).val().trim();
+
+            const selectModsValue = $(selectMods).val();
+            // Case if selectMods is 'all' - 'everything'
+            if (selectModsValue === 'all') {
+                $(fqElement).attr('value', '');
+                let condQueryValue = initialCondQueryValue;
+                if (initialCondQueryValue !== '') {
+                    if (queryText !== '') {
+                        condQueryValue += ' AND ' + queryText;
+                    }
+                } else {
+                    if (queryText !== '') {
+                        condQueryValue += queryText;
+                    }
+                }
+                $(condQuery).attr('value', condQueryValue);
+            } else {
+                if (queryText !== '') {
+                    // const selectModsValue = $(selectMods).val();
+                    const filterQuery = selectModsValue + ':' + queryText;
+                    $(fqElement).attr('value', filterQuery);
+                    $(condQuery).attr('value', initialCondQueryValue);
+                }
+            }
+        }
+    }
 
     var languageList = jQuery('#topnav .languageList');
     jQuery('#topnav .languageSelect').click(function() {
