@@ -53,6 +53,7 @@
             <xsl:if test="count($matchingTrustedIds) &gt; 0">
               <xsl:call-template name="printExportToOrcidMenuItem"/>
               <xsl:call-template name="printExportToOrcidModal"/>
+              <script type="module" src="{$WebApplicationBaseURL}js/mir/orcid-metadata.js"/>
             </xsl:if>
           </xsl:if>
         </xsl:if>
@@ -62,57 +63,51 @@
   </xsl:template>
 
   <xsl:template name="printExportToOrcidModal">
-    <div class="modal fade" id="exportToOrcidModal" tabindex="-1"
+    <div id="exportToOrcidModal" class="modal fade" tabindex="-1"
       aria-labelledby="exportToOrcidModalLabel" aria-hidden="true" role="dialog">
       <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="exportToOrcidModalLabel">
-              <xsl:value-of select="document('i18n:mir.orcid.publish.modal.title')"/>
+            <h5 id="exportToOrcidModalLabel" class="modal-title">
+              <xsl:value-of select="document('i18n:mir.orcid.export.modal.title')"/>
             </h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&#215;</span>
             </button>
           </div>
           <div class="modal-body">
+            <div id="alertDiv" class="alert alert-danger" role="alert">
+              <xsl:value-of select="document('i18n:mir.orcid.export.modal.error')"/>
+            </div>
             <div class="form-group">
               <label class="mr-1" for="orcidProfileSelect">
-                <xsl:value-of select="document('i18n:mir.orcid.publish.modal.description')"/>
+                <xsl:value-of select="document('i18n:mir.orcid.export.modal.description')"/>
               </label>   
               <select class="form-control" id="orcidProfileSelect">
-                <option value="" selected="selected" disabled="disabled">
+                <option value="" selected="selected">
                   <xsl:value-of select="document('i18n:mir.select')"/>
                 </option>
-                <!-- TODO fill with orcids -->
               </select>
             </div>
           </div>
           <div class="modal-footer">
-            <button id="exportToOrcidBtn" type="button" class="btn btn-primary">
-              <xsl:value-of select="document('i18n:mir.orcid.publish.modal.button.export')"/>
+            <button id="exportToOrcidBtn" class="btn btn-primary" type="button">
+              <xsl:value-of select="document('i18n:mir.orcid.export.modal.button.export')"/>
             </button>
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">
+            <button class="btn btn-secondary" type="button" data-dismiss="modal">
               <xsl:value-of select="document('i18n:button.cancel')"/>
             </button>
           </div>
         </div>
       </div>
     </div>
-    <script src="{$WebApplicationBaseURL}js/mir/mycore2orcid.js"/>
   </xsl:template>
 
   <xsl:template name="printExportToOrcidMenuItem">
     <li id="publishToOrcidMenuItem">
-      <a class="dropdown-item" role="menuitem" data-toggle="modal" data-target="#exportToOrcidModal" data-object-id="{$objectId}">
-        <xsl:value-of select="document('i18n:mir.orcid.export.openExportModal')"/>
+      <a id="openPublishToOrcidModal" class="dropdown-item" role="menuitem" data-object-id="{$objectId}">
+        <xsl:value-of select="document('i18n:mir.orcid.export.openExportModal.button')"/>
       </a>
     </li>
-    <script>
-      document.addEventListener('DOMContentLoaded', () => {
-        const menu = document.querySelector('div#mir-edit-div ul.dropdown-menu');
-        const item = document.querySelector('li#publishToOrcidMenuItem');
-        menu.append(item);
-      });
-    </script>
   </xsl:template>
 </xsl:stylesheet>

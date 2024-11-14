@@ -7,7 +7,7 @@
   <xsl:param name="MCR.ORCID2.WorkEventHandler.RecreateDeletedWork" select="'false'"/>
 
   <xsl:template name="printOrcidSettingsModal">
-    <div class="modal fade" id="orcid-settings-modal" tabindex="-1" aria-labelledby="orcid-settings-modal-label"
+    <div id="orcid-settings-modal" class="modal fade" tabindex="-1" aria-labelledby="orcid-settings-modal-label"
       aria-hidden="true" data-create-first-work="{$MCR.ORCID2.WorkEventHandler.CreateFirstWork}"
       data-always-update-work="{$MCR.ORCID2.WorkEventHandler.AlwaysUpdateWork}"
       data-create-duplicate-work="{$MCR.ORCID2.WorkEventHandler.CreateDuplicateWork}"
@@ -24,31 +24,31 @@
             </button>
           </div>
           <div class="modal-body" id="orcid-settings-container">
-            <div class="alert alert-danger d-none" id="orcid-missing-setting-alert">
+            <div id="orcid-missing-setting-alert" class="alert alert-danger d-none">
               <xsl:value-of select="document('i18n:orcid.settingsModal.missingSettingAlertTest')"/>
             </div>
             <p><xsl:value-of select="document('i18n:orcid.settingsModal.work.introduction')"/></p>
             <form id="orcid-settings-form">
               <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="create-first-work-setting"/>
+                <input id="create-first-work-setting" class="form-check-input" type="checkbox" name="createFirstWork"/>
                 <label class="form-check-label" for="create-first-work-setting">
                   <xsl:value-of select="document('i18n:orcid.setting.work.createFirstWork.info')"/>
                 </label>
               </div>
               <div class="form-check mt-1">
-                <input class="form-check-input" type="checkbox" value="" id="always-update-work-setting"/>
+                <input id="always-update-work-setting" class="form-check-input" type="checkbox" name="alwaysUpdateWork"/>
                 <label class="form-check-label" for="always-update-work-setting">
                   <xsl:value-of select="document('i18n:orcid.setting.work.alwaysUpdateWork.info')"/>
                 </label>
               </div>
               <div class="form-check mt-1">
-                <input class="form-check-input" type="checkbox" value="" id="create-duplicate-work-setting"/>
+                <input id="create-duplicate-work-setting" class="form-check-input" type="checkbox" name="createDuplicateWork"/>
                 <label class="form-check-label" for="create-duplicate-work-setting">
                   <xsl:value-of select="document('i18n:orcid.setting.work.createDuplicateWork.info')"/>
                 </label>
               </div>
               <div class="form-check mt-1">
-                <input class="form-check-input" type="checkbox" value="" id="recreate-deleted-work-setting"/>
+                <input id="recreate-deleted-work-setting" class="form-check-input" type="checkbox" name="recreateDeletedWork"/>
                 <label class="form-check-label" for="recreate-deleted-work-setting">
                   <xsl:value-of select="document('i18n:orcid.setting.work.recreateDeletedWork.info')"/>
                 </label>
@@ -56,7 +56,7 @@
             </form>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-primary" id="save-orcid-settings-btn">
+            <button id="save-orcid-settings-btn" class="btn btn-primary" type="button">
               <xsl:value-of select="document('i18n:orcid.settings.save')"/>
             </button>
           </div>

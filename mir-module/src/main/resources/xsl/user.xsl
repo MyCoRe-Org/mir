@@ -390,7 +390,7 @@
                 </xsl:for-each>
               </ul>
               <xsl:call-template name="printOrcidSettingsModal" />
-              <script src="{$WebApplicationBaseURL}js/mir/orcid-settings.js"/>
+              <script type="module" src="{$WebApplicationBaseURL}js/mir/orcid-user-settings.js"/>
             </xsl:otherwise>
           </xsl:choose>
         </xsl:when>
