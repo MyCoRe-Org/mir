@@ -265,7 +265,7 @@
 
     </div>
     <xsl:if test="$orcidIntegrationEnabled">
-      <script type="module" src="{$WebApplicationBaseURL}js/mir/orcid-response.js"/>
+      <script type="module" src="{$WebApplicationBaseURL}js/mir/orcid/orcid-response.js"/>
     </xsl:if>
   </xsl:template>
 

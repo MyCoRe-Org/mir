@@ -1,16 +1,18 @@
-class UiHandler {
-  static toggleElement(element, shouldShow) {
-    if (element) element.classList.toggle('d-none', !shouldShow);
-  }
-
-  static setDisabled(element, isDisabled) {
-    if (element) element.disabled = isDisabled;
-  }
-}
+import { UiHandler } from '../ui-utils.js';
 
 export class OrcidExportModalHandler {
-  constructor(orcidService, modalId, exportButtonId, orcidSelectId, alertDiv) {
-    this.#orcidService = orcidService;
+  #orcidWorkService;
+  #orcidUserService;
+  #objectId;
+  #modal;
+  #exportButton;
+  #orcidSelect;
+  #alertDiv;
+  #isBusy = false;
+
+  constructor(orcidWorkService, orcidUserService, modalId, exportButtonId, orcidSelectId, alertDiv) {
+    this.#orcidWorkService = orcidWorkService;
+    this.#orcidUserService = orcidUserService;
     this.#modal = document.querySelector(modalId);
     this.#exportButton = document.querySelector(exportButtonId);
     this.#orcidSelect = document.querySelector(orcidSelectId);
@@ -19,15 +21,7 @@ export class OrcidExportModalHandler {
     this.#bindEvents();
   }
 
-  #orcidService;
-  #objectId;
-  #modal;
-  #exportButton;
-  #orcidSelect;
-  #alertDiv;
-  #isBusy = false;
-
-  get isBusy() {
+  get isBusy () {
     return this.#isBusy;
   }
 
@@ -76,9 +70,9 @@ export class OrcidExportModalHandler {
     }
     this.#resetModal();
     try {
-      const userStatus = await this.#orcidService.fetchUserStatus();
+      const userStatus = await this.#orcidUserService.fetchCurrentUserOrcidStatus();
       const orcidPromises = userStatus.trustedOrcids.map(async (orcid) => {
-        const workStatus = await this.#orcidService.fetchWorkStatus(orcid, this.objectId, true);
+        const workStatus = await this.#orcidWorkService.fetchWorkStatus(orcid, this.objectId, true);
         if (!workStatus.own) this.#addOrcidSelectOption(orcid);
       });
       await Promise.all(orcidPromises);
@@ -96,7 +90,7 @@ export class OrcidExportModalHandler {
     UiHandler.setDisabled(this.#orcidSelect, true);
     UiHandler.toggleElement(this.#alertDiv, false);
     try {
-      await this.#orcidService.publishObjectToOrcid(selectedOrcid, this.objectId);
+      await this.#orcidWorkService.exportObjectToOrcid(selectedOrcid, this.objectId);
       alert('Success');
       this.#removeSelectOptionByValue(selectedOrcid);
     } catch (error) {

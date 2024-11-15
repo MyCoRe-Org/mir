@@ -1,24 +1,6 @@
-class UiHandler {
-  static toggleElement(element, shouldShow) {
-    if (element) element.classList.toggle('d-none', !shouldShow);
-  }
-
-  static setDisabled(element, isDisabled) {
-    if (element) element.disabled = isDisabled;
-  }
-}
+import { UiHandler } from '../ui-utils.js';
 
 export class OrcidUserSetttingsModalHandler {
-  constructor(userService, modalId, formId, saveButtonId, alertId) {
-    this.#userService = userService;
-    this.#modal = document.querySelector(modalId);
-    this.#form = document.querySelector(formId);
-    this.#saveButton = document.querySelector(saveButtonId);
-    this.#alertDiv = document.querySelector(alertId);
-    this.#titleDiv = this.#modal.querySelector('#modal-title-orcid');
-    this.#bindEvents();
-  }
-
   #userService;
   #isBusy = false;
   #modal;
@@ -27,6 +9,16 @@ export class OrcidUserSetttingsModalHandler {
   #titleDiv;
   #alertDiv;
   #orcid;
+
+  constructor(userService, modalSelector, formSelector, saveButtonSelector, alertDivSelector) {
+    this.#userService = userService;
+    this.#modal = document.querySelector(modalSelector);
+    this.#form = document.querySelector(formSelector);
+    this.#saveButton = document.querySelector(saveButtonSelector);
+    this.#alertDiv = document.querySelector(alertDivSelector);
+    this.#titleDiv = this.#modal.querySelector('#modal-title-orcid');
+    this.#bindEvents();
+  }
 
   set orcid (orcid) {
     this.#orcid = orcid;
@@ -67,6 +59,7 @@ export class OrcidUserSetttingsModalHandler {
   }
 
   #handleOpenModal = async (event) => {
+
     if (!this.#orcid) {
       console.error('Orcid is not set');
       return;
@@ -74,16 +67,16 @@ export class OrcidUserSetttingsModalHandler {
     this.#setModalTitle(this.#orcid);
     let userSettings = null;
     try {
-      userSettings = await this.#userService.fetchSettings(this.orcid);
+      userSettings = await this.#userService.fetchCurrentUserOrcidSettings(this.orcid);
     } catch (error) {
       console.error(error);
     }
     if (!userSettings) {
       return;
     }
-    let settingMissing = false;
     const settingNames = this.#getSettingNames();
     const settings = {};
+    let settingMissing = false;
     settingNames.forEach((name) => {
       if (userSettings.hasOwnProperty(name) && userSettings[name] !== null) {
         settings[name] = userSettings[name];
@@ -92,7 +85,6 @@ export class OrcidUserSetttingsModalHandler {
         settingMissing = true;
       }
     });
-    console.log(settings);
     if (settingMissing) {
       UiHandler.toggleElement(this.#alertDiv, true);
     }
@@ -133,7 +125,7 @@ export class OrcidUserSetttingsModalHandler {
     this.#isBusy = true;
     UiHandler.setDisabled(this.#saveButton, true);
     try {
-      await this.#userService.updateSettings(this.#orcid, settings);
+      await this.#userService.updateCurrentUserOrcidSettings(this.#orcid, settings);
       UiHandler.toggleElement(this.#alertDiv, false);
       this.#isBusy = false;
       this.closeModal(true);
