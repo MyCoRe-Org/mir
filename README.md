@@ -35,6 +35,8 @@ This guide addresses developers. Thats why you run it in 'dev' profile!
    - Enter usernames `admin`, `indexer` and `searcher` respectively and password `alleswirdgut` for all three users
    - Select database type `H2`
    - Continue and restart the servlet container as instructed
+   - Open `http://localhost:8291/mir` in your browser again
+   - Log in using username `administrator`and password `alleswirdgut`
 
 Afterward, you can stop Solr from the `mir-webapp` folder with `mvn -Pdev solr-runner:stop`.
 If you need to update Solr cores, you can do this from the `mir-webapp` folder with `mvn -Pdev solr-runner:stop solr-runner:copyHome solr-runner:start`.
