@@ -1,185 +1,287 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0"
-    xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-    xmlns:mods="http://www.loc.gov/mods/v3"
-    xmlns:mcrmods="xalan://org.mycore.mods.classification.MCRMODSClassificationSupport"
-    xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions"
-    xmlns:xlink="http://www.w3.org/1999/xlink"
-    xmlns:encoder="xalan://java.net.URLEncoder"
-    xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
-    exclude-result-prefixes=" i18n mods mcrmods mcrxsl xlink encoder">
-  <xsl:import href="xslImport:modsmeta" />
-  <xsl:include href="layout/mir-layout-utils.xsl" />
-  <xsl:include href="mods-utils.xsl" />
-  <xsl:include href="mir-mods-utils.xsl" />
-  <xsl:key use="@id" name="rights" match="/mycoreobject/rights/right" />
-  <xsl:variable name="mods-type">
-    <xsl:apply-templates mode="mods-type" select="." />
-  </xsl:variable>
-  <xsl:template match="/">
-    <site ID="{mycoreobject/@ID}">
-      <xsl:if test="key('rights', mycoreobject/@ID)/@read">
-        <xsl:attribute name="read"/>
-      </xsl:if>
-      <xsl:if test="key('rights', mycoreobject/@ID)/@write">
-        <xsl:attribute name="write"/>
-      </xsl:if>
-      <xsl:attribute name="title">
+                xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+                xmlns:mods="http://www.loc.gov/mods/v3"
+                xmlns:mcrmods="xalan://org.mycore.mods.classification.MCRMODSClassificationSupport"
+                xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions"
+                xmlns:xlink="http://www.w3.org/1999/xlink"
+                xmlns:encoder="xalan://java.net.URLEncoder"
+                xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
+                exclude-result-prefixes=" i18n mods mcrmods mcrxsl xlink encoder">
+    <xsl:import href="xslImport:modsmeta"/>
+    <xsl:include href="layout/mir-layout-utils.xsl"/>
+    <xsl:include href="mods-utils.xsl"/>
+    <xsl:include href="mir-mods-utils.xsl"/>
+    <xsl:key use="@id" name="rights" match="/mycoreobject/rights/right"/>
+    <xsl:param name="MCR.URN.Resolver.MasterURL" select="''"/>
+    <xsl:param name="MCR.DOI.Resolver.MasterURL" select="''"/>
+    <xsl:param name="MIR.Blocked.Detailpage" select="'false'"/>
+    <xsl:variable name="mods-type">
+        <xsl:apply-templates mode="mods-type" select="."/>
+    </xsl:variable>
+    <xsl:template match="/">
+        <site ID="{mycoreobject/@ID}">
+            <xsl:if test="key('rights', mycoreobject/@ID)/@read">
+                <xsl:attribute name="read"/>
+            </xsl:if>
+            <xsl:if test="key('rights', mycoreobject/@ID)/@write">
+                <xsl:attribute name="write"/>
+            </xsl:if>
+            <xsl:attribute name="title">
         <xsl:apply-templates mode="mods.title" select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods">
-          <xsl:with-param name="asHTML" select="false()" />
-          <xsl:with-param name="withSubtitle" select="false()" />
-        </xsl:apply-templates>
-      </xsl:attribute>
-      <xsl:call-template name="debug-rights" />
-      <xsl:variable name="docState" select="//servstates/servstate/@categid" />
-      <xsl:choose>
-        <xsl:when test="key('rights', mycoreobject/@ID)/@read">
-          <xsl:choose>
-            <xsl:when test="key('rights', mycoreobject/@ID)/@write">
-              <xsl:apply-imports />
-            </xsl:when>
-            <xsl:when test="$docState='blocked' or $docState='deleted'">
-              <xsl:call-template name="printMirMessage">
-                <xsl:with-param name="title" select="i18n:translate(concat('mir.error.', $docState))" />
-                <xsl:with-param name="msg">
-                  <xsl:if test="//mods:note[@type='admin']">
-                    <xsl:for-each select="//mods:note[@type='admin']">
-                      <xsl:value-of select="." />
-                    </xsl:for-each>
-                  </xsl:if>
-                  <xsl:variable name="hitsPrecending"
-                                select="document(concat('solr:q=',encoder:encode(concat('mods.relatedItem.preceding:', mycoreobject/@ID)), '&amp;rows=1000&amp;sort=mods.dateIssued%20desc,mods.dateIssued.host%20desc,mods.title.main%20desc&amp;group=true&amp;group.limit=100&amp;group.field=mods.yearIssued'))/response/lst[@name='grouped']/lst[@name='mods.yearIssued']" />
-                  <xsl:if test="$hitsPrecending/int[@name='matches'] &gt; 0">
-                    <xsl:call-template name="listRelatedItems">
-                      <xsl:with-param name="hits" select="$hitsPrecending" />
+                    <xsl:with-param name="asHTML" select="false()"/>
+                    <xsl:with-param name="withSubtitle" select="false()"/>
+                </xsl:apply-templates>
+            </xsl:attribute>
+            <xsl:call-template name="debug-rights"/>
+            <xsl:variable name="docState" select="//servstates/servstate/@categid"/>
+            <xsl:choose>
+                <xsl:when test="key('rights', mycoreobject/@ID)/@read">
+                    <xsl:choose>
+                        <xsl:when test="key('rights', mycoreobject/@ID)/@write">
+                            <xsl:apply-imports/>
+                        </xsl:when>
+                        <xsl:when test="$docState='blocked' or $docState='deleted'">
+                            <xsl:call-template name="printMirMessage">
+                                <xsl:with-param name="title" select="i18n:translate(concat('mir.error.', $docState))"/>
+                                <xsl:with-param name="msg">
+                                    <xsl:if test="//mods:note[@type='admin']">
+                                        <xsl:for-each select="//mods:note[@type='admin']">
+                                            <xsl:value-of select="."/>
+                                        </xsl:for-each>
+                                    </xsl:if>
+                                    <xsl:variable name="hitsPrecending"
+                                                  select="document(concat('solr:q=',encoder:encode(concat('mods.relatedItem.preceding:', mycoreobject/@ID)), '&amp;rows=1000&amp;sort=mods.dateIssued%20desc,mods.dateIssued.host%20desc,mods.title.main%20desc&amp;group=true&amp;group.limit=100&amp;group.field=mods.yearIssued'))/response/lst[@name='grouped']/lst[@name='mods.yearIssued']"/>
+                                    <xsl:if test="$hitsPrecending/int[@name='matches'] &gt; 0">
+                                        <xsl:call-template name="listRelatedItems">
+                                            <xsl:with-param name="hits" select="$hitsPrecending"/>
                       <xsl:with-param name="label" select="i18n:translate('mir.metadata.succeedingVersion')" />
+                                        </xsl:call-template>
+                                    </xsl:if>
+                                </xsl:with-param>
+                            </xsl:call-template>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:apply-imports/>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </xsl:when>
+                <xsl:otherwise>
+                    <div id="mir-message">
+                        <xsl:call-template name="mir.printNotLoggedIn">
+                            <xsl:with-param name="objectId" select="mycoreobject/@ID"/>
+                        </xsl:call-template>
+                    </div>
+                </xsl:otherwise>
+            </xsl:choose>
+        </site>
+    </xsl:template>
+
+    <xsl:template name="printMirMessage">
+        <xsl:param name="title"/>
+        <xsl:param name="msg"/>
+        <div id="mir-message">
+            <div class="jumbotron">
+                <h1>
+                    <xsl:value-of select="$title"/>
+                </h1>
+                <xsl:if test="$MIR.Blocked.Detailpage='true'">
+                    <xsl:call-template name="renderMetadata">
+                        <xsl:with-param name="mods"
+                                        select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods"/>
+                        <xsl:with-param name="doiResolver" select="$MCR.DOI.Resolver.MasterURL"/>
+                        <xsl:with-param name="urnResolver" select="$MCR.URN.Resolver.MasterURL"/>
                     </xsl:call-template>
-                  </xsl:if>
-                </xsl:with-param>
-              </xsl:call-template>
+                    <xsl:apply-templates select="mods:name" mode="printName"/>
+                </xsl:if>
+                <xsl:if test="$msg">
+                    <p>
+                        <xsl:copy-of select="$msg"/>
+                    </p>
+                </xsl:if>
+            </div>
+        </div>
+    </xsl:template>
+
+    <xsl:template name="debug-rights">
+        <xsl:variable name="lbr" select="'&#x0a;'"/>
+        <xsl:comment>
+            <xsl:value-of select="concat('Permissions:',$lbr,$lbr)"/>
+            <xsl:for-each select="/mycoreobject/rights/right">
+                <xsl:value-of select="concat(@id,': ')"/>
+                <xsl:for-each select="@*[not(name()='id')]">
+                    <xsl:value-of select="concat(' ',name())"/>
+                </xsl:for-each>
+                <xsl:value-of select="$lbr"/>
+            </xsl:for-each>
+        </xsl:comment>
+    </xsl:template>
+
+    <xsl:template name="categorySearchLink">
+        <xsl:param name="class"/>
+        <xsl:param name="title"/>
+        <xsl:param name="node" select="."/>
+        <xsl:param name="parent" select="false()"/>
+        <xsl:param name="owner"/>
+
+        <xsl:variable name="classlink">
+            <xsl:choose>
+                <xsl:when test="$parent=true()">
+                    <xsl:value-of select="mcrmods:getClassCategParentLink($node)"/>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:value-of select="mcrmods:getClassCategLink($node)"/>
+                </xsl:otherwise>
+            </xsl:choose>
+        </xsl:variable>
+        <xsl:choose>
+            <xsl:when test="string-length($classlink) &gt; 0">
+                <xsl:for-each select="document($classlink)/mycoreclass/categories/category">
+                    <xsl:variable name="classText">
+                        <xsl:variable name="selectLang">
+                            <xsl:call-template name="selectLang">
+                                <xsl:with-param name="nodes" select="./label"/>
+                            </xsl:call-template>
+                        </xsl:variable>
+                        <xsl:for-each select="./label[lang($selectLang)]">
+                            <xsl:value-of select="@text"/>
+                        </xsl:for-each>
+                    </xsl:variable>
+                    <!-- check for relatedItem containing mycoreobject ID dependent on current user using solr query on field mods.relatedItem -->
+                    <xsl:variable name="state">
+                        <xsl:choose>
+              <xsl:when test="mcrxsl:isCurrentUserInRole('admin') or mcrxsl:isCurrentUserInRole('editor')">
+                                <xsl:text>state:*</xsl:text>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:value-of select="concat('state:published OR createdby:', $CurrentUser)"/>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </xsl:variable>
+                    <xsl:call-template name="searchLink">
+                        <xsl:with-param name="class" select="$class"/>
+                        <xsl:with-param name="title" select="$title"/>
+                        <xsl:with-param name="linkText" select="$classText"/>
+            <xsl:with-param name="query" select="concat('*&amp;fq=category.top:%22mir_genres:', @ID, '%22%20AND%20(', encoder:encode($state), ')')" />
+                    </xsl:call-template>
+                </xsl:for-each>
             </xsl:when>
             <xsl:otherwise>
-              <xsl:apply-imports />
+                <!-- xsl:message terminate="yes">
+                  <xsl:value-of select="concat('not a classification: ',name())" />
+                </xsl:message -->
             </xsl:otherwise>
-          </xsl:choose>
-        </xsl:when>
-        <xsl:otherwise>
-          <div id="mir-message">
-            <xsl:call-template name="mir.printNotLoggedIn">
-              <xsl:with-param name="objectId" select="mycoreobject/@ID" />
-            </xsl:call-template>
-          </div>
-        </xsl:otherwise>
-      </xsl:choose>
-    </site>
-  </xsl:template>
+        </xsl:choose>
+    </xsl:template>
 
-  <xsl:template name="printMirMessage">
-    <xsl:param name="title" />
-    <xsl:param name="msg" />
-    <div id="mir-message">
-      <div class="jumbotron">
-        <h1>
-          <xsl:value-of select="$title" />
-        </h1>
-        <xsl:if test="$msg">
-          <p>
-            <xsl:copy-of select="$msg" />
-          </p>
-        </xsl:if>
-      </div>
-    </div>
-  </xsl:template>
+    <xsl:template name="searchLink">
+        <xsl:param name="class"/>
+        <xsl:param name="title"/>
+        <xsl:param name="linkText"/>
+        <xsl:param name="query"/>
+        <a href="{$ServletsBaseURL}solr/find?condQuery={$query}">
+            <xsl:if test="$title">
+                <xsl:attribute name="title">
+                    <xsl:value-of select="$title"/>
+                </xsl:attribute>
+            </xsl:if>
+            <xsl:if test="$class">
+                <xsl:attribute name="class">
+                    <xsl:value-of select="$class"/>
+                </xsl:attribute>
+            </xsl:if>
+            <xsl:copy-of select="$linkText"/>
+        </a>
+    </xsl:template>
+    <xsl:template name="renderMetadata">
+        <xsl:param name="mods" select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods"/>
+        <xsl:param name="doiResolver" select="$MCR.DOI.Resolver.MasterURL"/>
+        <xsl:param name="urnResolver" select="$MCR.URN.Resolver.MasterURL"/>
 
-  <xsl:template name="debug-rights">
-    <xsl:variable name="lbr" select="'&#x0a;'" />
-    <xsl:comment>
-      <xsl:value-of select="concat('Permissions:',$lbr,$lbr)" />
-      <xsl:for-each select="/mycoreobject/rights/right">
-        <xsl:value-of select="concat(@id,': ')" />
-        <xsl:for-each select="@*[not(name()='id')]">
-          <xsl:value-of select="concat(' ',name())" />
-        </xsl:for-each>
-        <xsl:value-of select="$lbr" />
-      </xsl:for-each>
-    </xsl:comment>
-  </xsl:template>
-
-  <xsl:template name="categorySearchLink">
-    <xsl:param name="class" />
-    <xsl:param name="title" />
-    <xsl:param name="node" select="." />
-    <xsl:param name="parent" select="false()" />
-    <xsl:param name="owner" />
-
-    <xsl:variable name="classlink">
-      <xsl:choose>
-        <xsl:when test="$parent=true()">
-          <xsl:value-of select="mcrmods:getClassCategParentLink($node)" />
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:value-of select="mcrmods:getClassCategLink($node)" />
-        </xsl:otherwise>
-      </xsl:choose>
-    </xsl:variable>
-    <xsl:choose>
-      <xsl:when test="string-length($classlink) &gt; 0">
-        <xsl:for-each select="document($classlink)/mycoreclass/categories/category">
-          <xsl:variable name="classText">
-            <xsl:variable name="selectLang">
-              <xsl:call-template name="selectLang">
-                <xsl:with-param name="nodes" select="./label" />
-              </xsl:call-template>
-            </xsl:variable>
-            <xsl:for-each select="./label[lang($selectLang)]">
-              <xsl:value-of select="@text" />
-            </xsl:for-each>
-          </xsl:variable>
-          <!-- check for relatedItem containing mycoreobject ID dependent on current user using solr query on field mods.relatedItem -->
-          <xsl:variable name="state">
+        <div class="mb-3">
+            <h2 class="text-primary">
+                <xsl:value-of select="$mods/mods:titleInfo/mods:title"/>
+            </h2>
             <xsl:choose>
-              <xsl:when test="mcrxsl:isCurrentUserInRole('admin') or mcrxsl:isCurrentUserInRole('editor')">
-                <xsl:text>state:*</xsl:text>
-              </xsl:when>
-              <xsl:otherwise>
-                <xsl:value-of select="concat('state:published OR createdby:', $CurrentUser)" />
-              </xsl:otherwise>
+                <xsl:when test="$mods/mods:name[mods:role/mods:roleTerm/text()='aut']">
+                    <xsl:for-each select="$mods/mods:name[mods:role/mods:roleTerm/text()='aut']">
+                        <xsl:if test="position()!=1">
+                            <xsl:value-of select="'; '"/>
+                        </xsl:if>
+                        <xsl:apply-templates select="." mode="mirNameLink"/>
+                        <xsl:if test="mods:etal">
+                            <em>et.al.</em>
+                        </xsl:if>
+                    </xsl:for-each>
+                </xsl:when>
+                <xsl:when test="$mods/mods:name[mods:role/mods:roleTerm/text()='edt']">
+                    <xsl:for-each select="$mods/mods:name[mods:role/mods:roleTerm/text()='edt']">
+                        <xsl:if test="position()!=1">
+                            <xsl:value-of select="'; '"/>
+                        </xsl:if>
+                        <xsl:apply-templates select="." mode="mirNameLink"/>
+                        <xsl:text> </xsl:text>
+                        <xsl:value-of select="i18n:translate('mir.abstract.editor')"/>
+                        <xsl:if test="mods:etal">
+                            <em>et.al.</em>
+                        </xsl:if>
+                    </xsl:for-each>
+                </xsl:when>
             </xsl:choose>
-          </xsl:variable>
-          <xsl:call-template name="searchLink">
-            <xsl:with-param name="class" select="$class" />
-            <xsl:with-param name="title" select="$title" />
-            <xsl:with-param name="linkText" select="$classText" />
-            <xsl:with-param name="query" select="concat('*&amp;fq=category.top:%22mir_genres:', @ID, '%22%20AND%20(', encoder:encode($state), ')')" />
-          </xsl:call-template>
-        </xsl:for-each>
-      </xsl:when>
-      <xsl:otherwise>
-        <!-- xsl:message terminate="yes">
-          <xsl:value-of select="concat('not a classification: ',name())" />
-        </xsl:message -->
-      </xsl:otherwise>
-    </xsl:choose>
-  </xsl:template>
+        </div>
 
-  <xsl:template name="searchLink">
-    <xsl:param name="class" />
-    <xsl:param name="title" />
-    <xsl:param name="linkText" />
-    <xsl:param name="query" />
-    <a href="{$ServletsBaseURL}solr/find?condQuery={$query}">
-      <xsl:if test="$title">
-        <xsl:attribute name="title">
-          <xsl:value-of select="$title" />
-        </xsl:attribute>
-      </xsl:if>
-      <xsl:if test="$class">
-        <xsl:attribute name="class">
-          <xsl:value-of select="$class" />
-        </xsl:attribute>
-      </xsl:if>
-      <xsl:copy-of select="$linkText" />
-    </a>
-  </xsl:template>
+        <dl class="mb-3 mir_metadata">
+            <xsl:if test="$mods/mods:originInfo/mods:dateIssued">
+                <dt style="width:auto">
+                    <xsl:value-of select="concat(i18n:translate('component.mods.metaData.dictionary.dateIssued'),':')"/>
+                </dt>
+                <dd>
+                    <xsl:value-of select="$mods/mods:originInfo/mods:dateIssued"/>
+                </dd>
+            </xsl:if>
+            <xsl:if test="$mods/mods:identifier[@type='doi']">
+                <dt style="width:auto">
+                    <xsl:value-of select="i18n:translate('mir.identifier.doi')"/>
+                </dt>
+                <dd>
+                    <a href="{concat($doiResolver, '/', $mods/mods:identifier[@type='doi'])}">
+                        <xsl:value-of select="$mods/mods:identifier[@type='doi']"/>
+                    </a>
+                </dd>
+            </xsl:if>
+            <xsl:if test="$mods/mods:identifier[@type='urn']">
+                <dt style="width:auto">
+                    <xsl:value-of select="i18n:translate('mir.identifier.urn')"/>
+                </dt>
+                <dd>
+                    <a href="{concat($urnResolver, '/', $mods/mods:identifier[@type='urn'])}">
+                        <xsl:value-of select="$mods/mods:identifier[@type='urn']"/>
+                    </a>
+                </dd>
+            </xsl:if>
+        </dl>
+    </xsl:template>
 
+    <!-- copied from modsmetadata.xsl -->
+    <xsl:template match="mods:name" mode="printName">
+        <xsl:choose>
+            <xsl:when test="mods:namePart">
+                <xsl:choose>
+                    <xsl:when test="mods:namePart[@type='given'] and mods:namePart[@type='family']">
+                        <xsl:value-of
+                                select="concat(mods:namePart[@type='family'], ', ',mods:namePart[@type='given'])"/>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:value-of select="mods:namePart"/>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </xsl:when>
+            <xsl:when test="mods:displayForm">
+                <xsl:value-of select="mods:displayForm"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:value-of select="."/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>
 </xsl:stylesheet>
