@@ -361,8 +361,8 @@
             if (selectModsValue === 'all') {
                 $(fqElement).attr('value', '');
                 let condQueryValue = initialCondQueryValue;
-                if (initialCondQueryValue !== '') {
-                    condQueryValue += ' AND ' + queryText;
+                if (queryText !== '') {
+                    condQueryValue += ' AND ' + preparingQueryStringForSolr(queryText);
                 } else {
                     condQueryValue += queryText;
                 }
@@ -372,7 +372,7 @@
                     enableButton(secondSearchFormSubmitButtonElement);
                 }
             } else {
-                const filterQuery = selectModsValue + ':' + queryText;
+                const filterQuery = selectModsValue + ':' + preparingQueryStringForSolr(queryText);
                 $(fqElement).attr('value', filterQuery);
                 $(condQuery).attr('value', initialCondQueryValue);
                 if (eventType === 'selectMods') {
@@ -386,6 +386,11 @@
                 }
             }
         }
+    }
+
+    // Add special characters to the query string for the SOLR request and remove all quotes from the query string
+    function preparingQueryStringForSolr(queryStr) {
+        return queryStr ? '"' + queryStr.replace(/"|%22/g, '') + '"' : queryStr;
     }
 
     // Disable the button
