@@ -315,7 +315,11 @@
     // Input element's changes in the original search
     $(originalSearchInputElement).change(() => {
         if ($(initialCondQueryFirst)) {
-            $(initialCondQueryFirst).attr('value', $('#searchInput').val().trim());
+            let initialCondQueryValue = $(originalSearchInputElement).val().trim();
+            if (initialCondQueryValue === '') {
+                initialCondQueryValue = '*';
+            }
+            $(initialCondQueryFirst).attr('value', initialCondQueryValue);
         }
     });
 

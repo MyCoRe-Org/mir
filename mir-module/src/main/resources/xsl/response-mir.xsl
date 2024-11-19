@@ -254,7 +254,14 @@
                       <xsl:choose>
                         <!-- If $lastTypeRequest is 'condQuery', concatenate $initialCondQuery, ' AND ' and $currentQry -->
                         <xsl:when test="$lastTypeRequest = 'condQuery'">
-                          <xsl:value-of select="concat($initialCondQuery, ' AND ', $decodedCurrentQryFromLastRequest)" />
+                          <xsl:choose>
+                            <xsl:when test="$initialCondQuery = '*' or $initialCondQuery = ''">
+                              <xsl:value-of select="'*'" />
+                            </xsl:when>
+                            <xsl:otherwise>
+                              <xsl:value-of select="concat($initialCondQuery, ' AND ', $decodedCurrentQryFromLastRequest)" />
+                            </xsl:otherwise>
+                          </xsl:choose>
                         </xsl:when>
                         <!-- If $lastTypeRequest is 'fq' or empty, use $initialCondQuery -->
                         <xsl:when test="$lastTypeRequest = 'fq' or $lastTypeRequest = ''">
