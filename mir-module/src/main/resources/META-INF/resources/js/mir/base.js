@@ -411,6 +411,23 @@
         }
     }
 
+    // Check the SOLR request after submitting
+    $(subSearchFormName).submit(() => {
+        let originalSearchAction = $(subSearchFormName).attr('action');
+        // If the request not for 'find' but 'select'
+        if (!originalSearchAction.includes('servlets/solr/find')) {
+            let condQueryValue = '*';
+            if (condQuery && ($(condQuery).val().trim() !== '')) {
+                condQueryValue = $(condQuery).val().trim();
+            }
+            let qQueryParameterElement = document.createElement("input");
+            qQueryParameterElement.setAttribute('type', 'hidden');
+            qQueryParameterElement.setAttribute('name', 'q');
+            qQueryParameterElement.setAttribute('value', condQueryValue);
+            document.querySelector(subSearchFormName).appendChild(qQueryParameterElement);
+        }
+    });
+
     // Element with the link to toggle to show/hide md5 sums
     const toggleMD5LinkElement = '.toggleMD5Link';
     // Derivate action dropdown toggle button element
