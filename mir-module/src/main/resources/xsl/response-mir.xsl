@@ -62,16 +62,7 @@
         <div class="search_box">
 
           <!-- Check if 'condQuery' exists and extract its value if it does -->
-          <xsl:variable name="condQuery">
-            <xsl:choose>
-              <xsl:when test="contains($solrParams, 'condQuery=')">
-                <xsl:value-of select="substring-before(substring-after($solrParams, 'condQuery='), '&amp;')" />
-              </xsl:when>
-              <xsl:otherwise>
-                <xsl:value-of select="''" />
-              </xsl:otherwise>
-            </xsl:choose>
-          </xsl:variable>
+          <xsl:variable name="condQuery" select="/response/lst[@name='responseHeader']/lst[@name='params']/str[@name='condQuery']" />
 
           <!-- Check if 'initialCondQuery' exists and extract its value if it does -->
           <xsl:variable name="initialCondQuery" select="/response/lst[@name='responseHeader']/lst[@name='params']/str[@name='initialCondQuery']" />
@@ -84,7 +75,6 @@
 
           <!-- Check if 'version' exists and extract its value if it does -->
           <xsl:variable name="version" select="/response/lst[@name='responseHeader']/lst[@name='params']/str[@name='version']" />
-
 
           <!-- Extract part before ':' ('%3A') if $fq is not empty or null -->
           <xsl:variable name="initialSelectMods">
@@ -209,7 +199,7 @@
                             <xsl:value-of select="''" />
                           </xsl:when>
                           <xsl:otherwise>
-                            <xsl:variable name="searchString" select="concat($initialCondQuery, '+AND+')" />
+                            <xsl:variable name="searchString" select="concat($initialCondQuery, ' AND ')" />
                             <xsl:value-of select="substring-after($condQuery, $searchString)" />
                           </xsl:otherwise>
                         </xsl:choose>
@@ -236,6 +226,9 @@
                     </xsl:choose>
                   </xsl:variable>
 
+                  <!-- Decode the current query -->
+                  <xsl:variable name="decodedCurrentQryFromLastRequest" select="decoder:decode($currentQryFromLastRequest, 'UTF-8')" />
+
                   <!-- Get a type of the last request -->
                   <xsl:variable name="lastTypeRequest">
                     <xsl:choose>
@@ -259,9 +252,9 @@
                   <input type="hidden" id="condQuery" name="condQuery">
                     <xsl:attribute name="value">
                       <xsl:choose>
-                        <!-- If $lastTypeRequest is 'condQuery', concatenate $initialCondQuery, ' AND ', and $currentQry -->
+                        <!-- If $lastTypeRequest is 'condQuery', concatenate $initialCondQuery, ' AND ' and $currentQry -->
                         <xsl:when test="$lastTypeRequest = 'condQuery'">
-                          <xsl:value-of select="concat($initialCondQuery, ' AND ', $currentQryFromLastRequest)" />
+                          <xsl:value-of select="concat($initialCondQuery, ' AND ', $decodedCurrentQryFromLastRequest)" />
                         </xsl:when>
                         <!-- If $lastTypeRequest is 'fq' or empty, use $initialCondQuery -->
                         <xsl:when test="$lastTypeRequest = 'fq' or $lastTypeRequest = ''">
@@ -275,8 +268,10 @@
                     </xsl:attribute>
                   </input>
 
+                  <!-- Preparing the current query for the input field (remove all quotes) -->
+                  <xsl:variable name="preparedCurrentQryFromLastRequest" select="translate($decodedCurrentQryFromLastRequest, '&quot;', '')" />
                   <!-- Input element for the second search -->
-                  <input class="form-control" id="qry" placeholder="{i18n:translate('mir.placeholder.response.search')}" type="text" value="{$currentQryFromLastRequest}" />
+                  <input class="form-control" id="qry" placeholder="{i18n:translate('mir.placeholder.response.search')}" type="text" value="{$preparedCurrentQryFromLastRequest}" />
 
                 </xsl:when>
                 <xsl:otherwise>
