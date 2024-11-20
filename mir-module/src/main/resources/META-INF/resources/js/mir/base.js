@@ -410,23 +410,6 @@
         }
     }
 
-    // Check the SOLR request after submitting
-    $(subSearchFormName).submit(() => {
-        let originalSearchAction = $(subSearchFormName).attr('action');
-        // If the request not for 'find' but 'select'
-        if (!originalSearchAction.includes('servlets/solr/find')) {
-            let condQueryValue = '*';
-            if (condQuery && ($(condQuery).val().trim() !== '')) {
-                condQueryValue = $(condQuery).val().trim();
-            }
-            let qQueryParameterElement = document.createElement("input");
-            qQueryParameterElement.setAttribute('type', 'hidden');
-            qQueryParameterElement.setAttribute('name', 'q');
-            qQueryParameterElement.setAttribute('value', condQueryValue);
-            document.querySelector(subSearchFormName).appendChild(qQueryParameterElement);
-        }
-    });
-
     var languageList = jQuery('#topnav .languageList');
     jQuery('#topnav .languageSelect').click(function() {
       languageList.toggleClass('hide');
