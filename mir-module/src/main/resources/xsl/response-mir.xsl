@@ -179,8 +179,9 @@
                   <xsl:with-param name="delimiter" select="'/'" />
                 </xsl:call-template>
               </xsl:variable>
-              <xsl:choose>
-                <xsl:when test="$resolver = 'find'">
+              <!-- xsl:choose -->
+                <!-- xsl:when test="$resolver = 'find'" -->
+                  <!-- TODO: remove this variable -->
                   <xsl:variable name="qry">
                     <xsl:variable name="encodedQry">
                       <xsl:call-template name="UrlGetParam">
@@ -248,11 +249,11 @@
                     </xsl:choose>
                   </xsl:variable>
 
-                  <!-- Hidden query parameter 'condQuery' -->
+<!--                  &lt;!&ndash; Hidden query parameter 'condQuery' &ndash;&gt;
                   <input type="hidden" id="condQuery" name="condQuery">
                     <xsl:attribute name="value">
                       <xsl:choose>
-                        <!-- If $lastTypeRequest is 'condQuery', concatenate $initialCondQuery, ' AND ' and $currentQry -->
+                        &lt;!&ndash; If $lastTypeRequest is 'condQuery', concatenate $initialCondQuery, ' AND ' and $currentQry &ndash;&gt;
                         <xsl:when test="$lastTypeRequest = 'condQuery'">
                           <xsl:choose>
                             <xsl:when test="$initialCondQuery = '*' or $initialCondQuery = ''">
@@ -263,11 +264,54 @@
                             </xsl:otherwise>
                           </xsl:choose>
                         </xsl:when>
+                        &lt;!&ndash; If $lastTypeRequest is 'fq' or empty, use $initialCondQuery &ndash;&gt;
+                        <xsl:when test="$lastTypeRequest = 'fq' or $lastTypeRequest = ''">
+                          <xsl:value-of select="$initialCondQuery" />
+                        </xsl:when>
+                        &lt;!&ndash; Default case (if needed, though not specified in your conditions) &ndash;&gt;
+                        <xsl:otherwise>
+                          <xsl:value-of select="$initialCondQuery" />
+                        </xsl:otherwise>
+                      </xsl:choose>
+                    </xsl:attribute>
+                  </input>-->
+                  <!-- Hidden query parameter 'condQuery' or 'q' based on $resolver -->
+                  <input type="hidden" id="condQuery">
+                    <!-- Conditionally set the 'name' attribute based on the value of $resolver -->
+                    <xsl:attribute name="name">
+                      <xsl:choose>
+                        <!-- If $resolver is 'find', use 'condQuery' -->
+                        <xsl:when test="$resolver = 'find'">
+                          <xsl:value-of select="'condQuery'" />
+                        </xsl:when>
+                        <!-- Otherwise, use 'q' -->
+                        <xsl:otherwise>
+                          <xsl:value-of select="'q'" />
+                        </xsl:otherwise>
+                      </xsl:choose>
+                    </xsl:attribute>
+
+                    <!-- Set the 'value' attribute based on conditions -->
+                    <xsl:attribute name="value">
+                      <xsl:choose>
+                        <!-- If $lastTypeRequest is 'condQuery' -->
+                        <xsl:when test="$lastTypeRequest = 'condQuery'">
+                          <xsl:choose>
+                            <!-- If $initialCondQuery is '*' or empty -->
+                            <xsl:when test="$initialCondQuery = '*' or $initialCondQuery = ''">
+                              <xsl:value-of select="'*'" />
+                            </xsl:when>
+                            <!-- Otherwise, concatenate $initialCondQuery, ' AND ', and $decodedCurrentQryFromLastRequest -->
+                            <xsl:otherwise>
+                              <xsl:value-of select="concat($initialCondQuery, ' AND ', $decodedCurrentQryFromLastRequest)" />
+                            </xsl:otherwise>
+                          </xsl:choose>
+                        </xsl:when>
                         <!-- If $lastTypeRequest is 'fq' or empty, use $initialCondQuery -->
                         <xsl:when test="$lastTypeRequest = 'fq' or $lastTypeRequest = ''">
                           <xsl:value-of select="$initialCondQuery" />
                         </xsl:when>
-                        <!-- Default case (if needed, though not specified in your conditions) -->
+                        <!-- Default case, use $initialCondQuery -->
                         <xsl:otherwise>
                           <xsl:value-of select="$initialCondQuery" />
                         </xsl:otherwise>
@@ -280,11 +324,11 @@
                   <!-- Input element for the second search -->
                   <input class="form-control" id="qry" placeholder="{i18n:translate('mir.placeholder.response.search')}" type="text" value="{$preparedCurrentQryFromLastRequest}" />
 
-                </xsl:when>
-                <xsl:otherwise>
-                  <input class="form-control" name="condQuery" placeholder="{i18n:translate('mir.placeholder.response.search')}" type="text" />
-                </xsl:otherwise>
-              </xsl:choose>
+                <!-- /xsl:when -->
+                <!-- xsl:otherwise -->
+                  <!-- input class="form-control" name="condQuery" placeholder="{i18n:translate('mir.placeholder.response.search')}" type="text" / -->
+                <!-- /xsl:otherwise -->
+              <!-- /xsl:choose -->
               <span class="input-group-btn input-group-append">
                 <button class="btn btn-primary" type="submit">
                   <span class="fas fa-search"></span>
