@@ -504,7 +504,7 @@
                   <xsl:sort select="@type" />
                   <xsl:sort select="@id" />
                   <xsl:if test="@permission='true'">
-                    <li class="mir-action-item mir-action-item-register-doi">
+                    <li class="mir-action-item mir-action-item-register-pi mir-action-item-register-{@type}">
                     <!-- data-type is just used for translation -->
                       <a href="#" data-type="{@type}"
                          data-mycoreID="{$id}"
