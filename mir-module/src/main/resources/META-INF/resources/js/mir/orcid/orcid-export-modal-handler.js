@@ -10,13 +10,13 @@ export class OrcidExportModalHandler {
   #alertDiv;
   #isBusy = false;
 
-  constructor(orcidWorkService, orcidUserService, modalId, exportButtonId, orcidSelectId, alertDiv) {
+  constructor(orcidWorkService, orcidUserService, modalSelector, exportButtonSelector, orcidSelectSelector, alertDivSelector) {
     this.#orcidWorkService = orcidWorkService;
     this.#orcidUserService = orcidUserService;
-    this.#modal = document.querySelector(modalId);
-    this.#exportButton = document.querySelector(exportButtonId);
-    this.#orcidSelect = document.querySelector(orcidSelectId);
-    this.#alertDiv = document.querySelector(alertDiv);
+    this.#modal = document.querySelector(modalSelector);
+    this.#exportButton = document.querySelector(exportButtonSelector);
+    this.#orcidSelect = document.querySelector(orcidSelectSelector);
+    this.#alertDiv = document.querySelector(alertDivSelector);
     this.#resetModal();
     this.#bindEvents();
   }
