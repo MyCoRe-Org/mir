@@ -15,7 +15,7 @@
 
   <xsl:include href="resource:xsl/csl-export-gui.xsl" />
   <xsl:include href="resource:xsl/response-facets.xsl"/>
-  <xsl:include href="resource:xsl/response-mir-hit-oa.xsl" />
+  <xsl:include href="xslInclude:solrResponseBadges"/>
   <xsl:include href="resource:xsl/response-mir-utils.xsl" />
 
   <xsl:param name="UserAgent" />
@@ -543,74 +543,15 @@
           <div class="hit_tnd_container">
             <div class="hit_tnd_content">
               <xsl:call-template name="hit-oa"/>
-              <xsl:choose>
-                <xsl:when test="arr[@name='mods.genre']">
-                  <xsl:for-each select="arr[@name='mods.genre']/str">
-                    <div class="hit_type">
-                      <span class="badge badge-info">
-                        <xsl:value-of select="mcrxsl:getDisplayName('mir_genres',.)" ></xsl:value-of>
-                      </span>
-                    </div>
-                  </xsl:for-each>
-                </xsl:when>
-                <xsl:otherwise>
-                  <div class="hit_type">
-                    <span class="badge badge-info">
-                      <xsl:value-of select="mcrxsl:getDisplayName('mir_genres','article')" />
-                    </span>
-                  </div>
-                </xsl:otherwise>
-              </xsl:choose>
-              <xsl:if test="arr[@name='category.top']/str[contains(text(), 'mir_licenses:')]">
-                <div class="hit_license">
-                  <span class="badge badge-primary">
-                    <xsl:variable name="accessCondition">
-                      <xsl:value-of select="substring-after(arr[@name='category.top']/str[contains(text(), 'mir_licenses:')][last()],':')" />
-                    </xsl:variable>
-                    <xsl:choose>
-                      <xsl:when test="contains($accessCondition, 'rights_reserved')">
-                        <xsl:value-of select="i18n:translate('component.mods.metaData.dictionary.rightsReserved')" />
-                      </xsl:when>
-                      <xsl:when test="contains($accessCondition, 'oa_nlz')">
-                        <xsl:value-of select="i18n:translate('component.mods.metaData.dictionary.oa_nlz.short')" />
-                      </xsl:when>
-                      <xsl:otherwise>
-                        <xsl:value-of select="mcrxsl:getDisplayName('mir_licenses',$accessCondition)" />
-                      </xsl:otherwise>
-                    </xsl:choose>
-                  </span>
-                </div>
-              </xsl:if>
-              <xsl:if test="str[@name='mods.dateIssued'] or str[@name='mods.dateIssued.host']">
-                <div class="hit_date">
-                  <xsl:variable name="date">
-                    <xsl:choose>
-                      <xsl:when test="str[@name='mods.dateIssued']">
-                        <xsl:value-of select="str[@name='mods.dateIssued']" />
-                      </xsl:when>
-                      <xsl:otherwise>
-                        <xsl:value-of select="str[@name='mods.dateIssued.host']" />
-                      </xsl:otherwise>
-                    </xsl:choose>
-                  </xsl:variable>
-                  <span class="badge badge-primary">
-                    <xsl:value-of select="$date" />
-                  </span>
-                </div>
-              </xsl:if>
-              <xsl:if test="not (mcrxsl:isCurrentUserGuestUser())">
-                <div class="hit_state">
-                  <xsl:variable name="status-i18n">
-                    <!-- template in mir-utils.xsl -->
-                    <xsl:call-template name="get-doc-state-label">
-                      <xsl:with-param name="state-categ-id" select="str[@name='state']"/>
-                    </xsl:call-template>
-                  </xsl:variable>
-                  <span class="badge mir-{str[@name='state']}" title="{i18n:translate('component.mods.metaData.dictionary.status')}">
-                    <xsl:value-of select="$status-i18n" />
-                  </span>
-                </div>
-              </xsl:if>
+
+              <xsl:call-template name="hit-type"/>
+
+              <xsl:call-template name="hit-licence"/>
+
+              <xsl:call-template name="hit-date"/>
+
+              <xsl:call-template name="hit-state"/>
+
               <xsl:if test="string-length($MCR.ORCID.OAuth.ClientSecret) &gt; 0">
                 <div class="orcid-status" data-id="{$identifier}" />
               </xsl:if>
