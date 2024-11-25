@@ -183,25 +183,83 @@
         <div id="collapse{$uniqueName}stacktrace" class="collapse list-group-item text-center"
              style="overflow-x: auto;">
             <xsl:for-each select="exception">
-                <ul class="list-unstyled pl-3">
-                    <li class="alert alert-info" role="alert">
-                        <xsl:value-of select="message/@message"/>
-                    </li>
-                    <li class="text-primary font-italic" style="font-size: 1em;">
-                        <xsl:value-of select="class/@name"/>
-                    </li>
-                    <pre style="font-size: 0.8em;">
-                        <code>
-                            <xsl:for-each select="stackTrace/frame">
-                                <xsl:value-of select="@text"/>
-                                <xsl:text>&#10;</xsl:text>
-                            </xsl:for-each>
-                        </code>
-                    </pre>
-                </ul>
+                <xsl:call-template name="render-exception">
+                    <xsl:with-param name="exception" select="."/>
+                </xsl:call-template>
             </xsl:for-each>
         </div>
     </xsl:template>
+
+    <xsl:template name="render-exception">
+        <xsl:param name="exception"/>
+
+
+        <xsl:variable name="currentId" select="generate-id($exception)"/>
+
+        <ul class="list-unstyled pl-3" id="{$currentId}">
+            <li class="alert alert-info" role="alert">
+                <xsl:value-of select="$exception/message/@message"/>
+            </li>
+            <li class="text-primary font-italic" style="font-size: 1em;">
+                <xsl:value-of select="$exception/class/@name"/>
+            </li>
+            <xsl:call-template name="render-exception-details">
+                <xsl:with-param name="exception" select="$exception"/>
+            </xsl:call-template>
+        </ul>
+
+        <xsl:if test="$exception/suppressed/exception">
+            <xsl:for-each select="$exception/suppressed/exception">
+                <xsl:call-template name="render-exception">
+                    <xsl:with-param name="exception" select="."/>
+                </xsl:call-template>
+            </xsl:for-each>
+        </xsl:if>
+    </xsl:template>
+
+    <xsl:template name="render-exception-details">
+        <xsl:param name="exception"/>
+
+
+        <pre style="font-size: 0.8em;">
+            <code>
+                <xsl:for-each select="$exception/stackTrace/frame">
+                    <xsl:value-of select="@text"/>
+                    <xsl:text>&#10;</xsl:text>
+                </xsl:for-each>
+            </code>
+        </pre>
+
+
+        <xsl:if test="$exception/cause/exception">
+            <p><strong>Caused by:</strong></p>
+            <xsl:text>&#10;</xsl:text>
+            <li class="alert alert-info" role="alert">
+                <xsl:value-of select="$exception/cause/exception/message/@message"/>
+            </li>
+            <li class="text-primary font-italic" style="font-size: 1em;">
+                <xsl:value-of select="$exception/cause/exception/class/@name"/>
+            </li>
+            <xsl:call-template name="render-exception-details">
+                <xsl:with-param name="exception" select="$exception/cause/exception"/>
+            </xsl:call-template>
+        </xsl:if>
+
+
+            <xsl:for-each select="$exception/suppressed/exception">
+                <li class="alert alert-info" role="alert">
+                    <xsl:value-of select="$exception/suppressed/exception/message/@message"/>
+                </li>
+                <li class="text-primary font-italic" style="font-size: 1em;">
+                    <xsl:value-of select="$exception/suppressed/exception/class/@name"/>
+                </li>
+                <p>Suppressed:</p>
+                <xsl:call-template name="render-exception-details">
+                    <xsl:with-param name="exception" select="."/>
+                </xsl:call-template>
+            </xsl:for-each>
+    </xsl:template>
+
 
 
     <xsl:template match="failed" mode="displayPdfError">
