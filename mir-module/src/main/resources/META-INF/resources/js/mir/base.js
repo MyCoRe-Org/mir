@@ -333,12 +333,14 @@
     const toggleMD5LinkElement = '#toggleMD5Link';
     // Derivate action dropdown toggle button element
     const derivateActionDropdownToggleButton = '.headline .dropdown.options .dropdown-toggle';
+    // Element selector with md5 information
+    const md5ElementSelector = '.file_md5';
 
     // Show md5 sums by derivate files by clicking on the 'toggleMD5LinkElement' element
     $(toggleMD5LinkElement).click((evt) => {
         evt.preventDefault();
         // Get the element to show/hide
-        const elements = document.querySelectorAll('.md5');
+        const elements = document.querySelectorAll(md5ElementSelector);
 
         elements.forEach(element => {
             element.classList.toggle('hidden');
@@ -348,10 +350,9 @@
     // Getting i18n translation for the link to switch state 'show/hide MD5 amounts' depending on the visibility of the
     // message with this amount when clicking on the 'derivateActionDropdownToggleButton' element
     $(derivateActionDropdownToggleButton).click((evt) => {
-        const md5Element = '.md5';
-        if ($(md5Element)) {
+        if ($(md5ElementSelector)) {
             let i18nKey = '';
-            if ($(md5Element).hasClass('hidden')) {
+            if ($(md5ElementSelector).hasClass('hidden')) {
                 i18nKey = 'component.mods.metaData.options.MD5.show';
             } else {
                 i18nKey = 'component.mods.metaData.options.MD5.hide';
