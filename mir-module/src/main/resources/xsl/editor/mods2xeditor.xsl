@@ -43,6 +43,11 @@
       </xsl:when>
       <xsl:otherwise>
         <mods:subjectXML>
+          <xsl:if test="@xml:lang">
+            <xsl:attribute name="xml:lang">
+              <xsl:value-of select="@xml:lang" />
+            </xsl:attribute>
+          </xsl:if>
           <xsl:copy-of select="editorUtils:xmlAsString(.)" />
         </mods:subjectXML>
       </xsl:otherwise>
