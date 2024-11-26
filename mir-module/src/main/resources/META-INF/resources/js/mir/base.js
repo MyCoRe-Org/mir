@@ -329,6 +329,37 @@
       }
     });
 
+    // Element with the link to toggle to show/hide md5 sums
+    const toggleMD5LinkElement = '#toggleMD5Link';
+    // Derivate action dropdown toggle button element
+    const derivateActionDropdownToggleButton = '.headline .dropdown.options .dropdown-toggle';
+
+    // Show md5 sums by derivate files by clicking on the 'toggleMD5LinkElement' element
+    $(toggleMD5LinkElement).click((evt) => {
+        evt.preventDefault();
+        // Get the element to show/hide
+        const elements = document.querySelectorAll('.md5');
+
+        elements.forEach(element => {
+            element.classList.toggle('hidden');
+        });
+    });
+
+    // Getting i18n translation for the link to switch state 'show/hide MD5 amounts' depending on the visibility of the
+    // message with this amount when clicking on the 'derivateActionDropdownToggleButton' element
+    $(derivateActionDropdownToggleButton).click((evt) => {
+        const md5Element = '.md5';
+        if ($(md5Element)) {
+            let i18nKey = '';
+            if ($(md5Element).hasClass('hidden')) {
+                i18nKey = 'component.mods.metaData.options.MD5.show';
+            } else {
+                i18nKey = 'component.mods.metaData.options.MD5.hide';
+            }
+            getI18n(i18nKey, toggleMD5LinkElement);
+        }
+    });
+
     var languageList = jQuery('#topnav .languageList');
     jQuery('#topnav .languageSelect').click(function() {
       languageList.toggleClass('hide');
