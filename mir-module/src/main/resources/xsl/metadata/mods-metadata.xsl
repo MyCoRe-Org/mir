@@ -8,11 +8,15 @@
     xmlns:encoder="xalan://java.net.URLEncoder"
     xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
     exclude-result-prefixes=" i18n mods mcrmods mcrxsl xlink encoder">
+
   <xsl:import href="xslImport:modsmeta" />
   <xsl:include href="layout/mir-layout-utils.xsl" />
   <xsl:include href="mods-utils.xsl" />
   <xsl:include href="mir-mods-utils.xsl" />
   <xsl:key use="@id" name="rights" match="/mycoreobject/rights/right" />
+  <xsl:param name="MCR.DOI.Resolver.MasterURL" select="''"/>
+  <xsl:param name="MCR.URN.Resolver.MasterURL" select="''"/>
+  <xsl:param name="MIR.Blocked.Detailpage" select="'false'"/>
   <xsl:variable name="mods-type">
     <xsl:apply-templates mode="mods-type" select="." />
   </xsl:variable>
@@ -86,6 +90,20 @@
           <p>
             <xsl:copy-of select="$msg" />
           </p>
+            <xsl:if test="$MIR.Blocked.Detailpage='true'">
+                <xsl:call-template name="renderMetadata">
+                    <xsl:with-param name="mods"
+                                    select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods"/>
+                    <xsl:with-param name="doiResolver" select="$MCR.DOI.Resolver.MasterURL"/>
+                    <xsl:with-param name="urnResolver" select="$MCR.URN.Resolver.MasterURL"/>
+                </xsl:call-template>
+                <xsl:apply-templates select="mods:name" mode="printName"/>
+            </xsl:if>
+            <xsl:if test="$msg">
+                <p>
+                    <xsl:copy-of select="$msg"/>
+                </p>
+            </xsl:if>
         </xsl:if>
       </div>
     </div>
@@ -182,4 +200,95 @@
     </a>
   </xsl:template>
 
+    <xsl:template name="renderMetadata">
+        <xsl:param name="mods" select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods"/>
+        <xsl:param name="doiResolver" select="$MCR.DOI.Resolver.MasterURL"/>
+        <xsl:param name="urnResolver" select="$MCR.URN.Resolver.MasterURL"/>
+
+        <div class="mb-3">
+            <h2 class="text-primary">
+                <xsl:value-of select="$mods/mods:titleInfo/mods:title"/>
+            </h2>
+            <xsl:choose>
+                <xsl:when test="$mods/mods:name[mods:role/mods:roleTerm/text()='aut']">
+                    <xsl:for-each select="$mods/mods:name[mods:role/mods:roleTerm/text()='aut']">
+                        <xsl:if test="position()!=1">
+                            <xsl:value-of select="'; '"/>
+                        </xsl:if>
+                        <xsl:apply-templates select="." mode="mirNameLink"/>
+                        <xsl:if test="mods:etal">
+                            <em>et.al.</em>
+                        </xsl:if>
+                    </xsl:for-each>
+                </xsl:when>
+                <xsl:when test="$mods/mods:name[mods:role/mods:roleTerm/text()='edt']">
+                    <xsl:for-each select="$mods/mods:name[mods:role/mods:roleTerm/text()='edt']">
+                        <xsl:if test="position()!=1">
+                            <xsl:value-of select="'; '"/>
+                        </xsl:if>
+                        <xsl:apply-templates select="." mode="mirNameLink"/>
+                        <xsl:text> </xsl:text>
+                        <xsl:value-of select="i18n:translate('mir.abstract.editor')"/>
+                        <xsl:if test="mods:etal">
+                            <em>et.al.</em>
+                        </xsl:if>
+                    </xsl:for-each>
+                </xsl:when>
+            </xsl:choose>
+        </div>
+
+        <dl class="mb-3 mir_metadata">
+            <xsl:if test="$mods/mods:originInfo/mods:dateIssued">
+                <dt style="width:auto">
+                    <xsl:value-of select="concat(i18n:translate('component.mods.metaData.dictionary.dateIssued'),':')"/>
+                </dt>
+                <dd>
+                    <xsl:value-of select="$mods/mods:originInfo/mods:dateIssued"/>
+                </dd>
+            </xsl:if>
+            <xsl:if test="$mods/mods:identifier[@type='doi']">
+                <dt style="width:auto">
+                    <xsl:value-of select="i18n:translate('mir.identifier.doi')"/>
+                </dt>
+                <dd>
+                    <a href="{concat($doiResolver, '/', $mods/mods:identifier[@type='doi'])}">
+                        <xsl:value-of select="$mods/mods:identifier[@type='doi']"/>
+                    </a>
+                </dd>
+            </xsl:if>
+            <xsl:if test="$mods/mods:identifier[@type='urn']">
+                <dt style="width:auto">
+                    <xsl:value-of select="i18n:translate('mir.identifier.urn')"/>
+                </dt>
+                <dd>
+                    <a href="{concat($urnResolver, '/', $mods/mods:identifier[@type='urn'])}">
+                        <xsl:value-of select="$mods/mods:identifier[@type='urn']"/>
+                    </a>
+                </dd>
+            </xsl:if>
+        </dl>
+    </xsl:template>
+
+    <!-- copied from modsmetadata.xsl -->
+    <xsl:template match="mods:name" mode="printName">
+        <xsl:choose>
+            <xsl:when test="mods:namePart">
+                <xsl:choose>
+                    <xsl:when test="mods:namePart[@type='given'] and mods:namePart[@type='family']">
+                        <xsl:value-of
+                                select="concat(mods:namePart[@type='family'], ', ',mods:namePart[@type='given'])"/>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:value-of select="mods:namePart"/>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </xsl:when>
+            <xsl:when test="mods:displayForm">
+                <xsl:value-of select="mods:displayForm"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:value-of select="."/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>
 </xsl:stylesheet>
