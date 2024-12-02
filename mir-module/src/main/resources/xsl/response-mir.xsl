@@ -15,7 +15,7 @@
 
   <xsl:include href="resource:xsl/csl-export-gui.xsl" />
   <xsl:include href="resource:xsl/response-facets.xsl"/>
-  <xsl:include href="xslInclude:solrResponseBadges"/>
+  <xsl:include href="resource:xsl/response-mir-hit-badges.xsl"/>
   <xsl:include href="resource:xsl/response-mir-utils.xsl" />
 
   <xsl:param name="UserAgent" />
@@ -765,15 +765,7 @@
 <!-- hit type -->
           <div class="hit_tnd_container">
             <div class="hit_tnd_content">
-              <xsl:call-template name="hit-oa"/>
-
-              <xsl:call-template name="hit-type"/>
-
-              <xsl:call-template name="hit-licence"/>
-
-              <xsl:call-template name="hit-date"/>
-
-              <xsl:call-template name="hit-state"/>
+              <xsl:call-template name="mir-hit-badges"/>
 
               <xsl:if test="string-length($MCR.ORCID.OAuth.ClientSecret) &gt; 0">
                 <div class="orcid-status" data-id="{$identifier}" />
