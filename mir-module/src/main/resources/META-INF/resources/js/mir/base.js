@@ -293,41 +293,122 @@
       });
     });
 
-    //for select box in search field on hit list page
-    $( ".search_type a" ).click(function() {
-        $( "#search_type_label" ).html( $( this ).html() );
-        $( "#search_type_button" ).attr( 'value', $( this ).attr('value') );
+    // Input element in the original search
+    const originalSearchInputElement = "#searchInput";
+    // Selector for the second search form
+    const subSearchFormName = "form.search_form";
+    // The submit button in the second search form
+    const secondSearchFormSubmitButtonElement = subSearchFormName + ' button[type="submit"]';
+    // ID of the input field for the second search text
+    const qrySelector = "#qry";
+    // ID of the select box with the filter query key
+    const selectMods = "#select_mods";
+    // ID of the hidden element with the fq parameter
+    const fqElement = "#fq";
+    // ID of the hidden element with the initial condQuery parameter in the first search form
+    const initialCondQueryFirst = "#initialCondQuery";
+    // ID of the hidden element with the initial condQuery parameter in the second search form
+    const initialCondQuerySecond = "#initialCondQuerySecond";
+    // ID of the hidden element 'condQuery' for the query parameter 'condQuery'
+    const condQuery = "#condQuery";
+
+    // Input element's changes in the original search
+    $(originalSearchInputElement).change(() => {
+        if ($(initialCondQueryFirst)) {
+            let initialCondQueryValue = $(originalSearchInputElement).val().trim();
+            if (initialCondQueryValue === '') {
+                initialCondQueryValue = '*';
+            }
+            $(initialCondQueryFirst).attr('value', initialCondQueryValue);
+        }
     });
 
-    // filter for result lists
-    // modify search query
-    // TODO: modify? add why and how
-    // do nothing if a query is missing
-    $( ".search_box form" ).submit( function( event ) {
-      if($(this).find("input[name='qry']").val().trim() != '') {
-        var origSearchAction = $(this).attr('action');
-        var addValue = encodeURIComponent(solrEscapeSearchValue($('.search_box input').val().trim()));
-        if (origSearchAction.includes('servlets/solr/find')) {
-          var replAction = origSearchAction.replace(/(.*[&|\?])(condQuery=.*?)&(.*)/,'$1$3');
-          if ($('#search_type_button').attr('value') == 'all') {
-            var newAction = replAction + "&condQuery=" + addValue;
-          } else {
-            var newAction = replAction + "&condQuery=" + addValue + "&df=" + $('#search_type_button').attr('value');
-          }
-        } else {
-          var replAction = origSearchAction.replace(/(.*[&|\?])(condQuery=.*?)&(.*)/,'$1$3&$2');
-          if ($('#search_type_button').attr('value') == 'all') {
-            var newAction = replAction + "+%2BallMeta:" + addValue;
-          } else {
-            var newAction = replAction + "+%2B" + $('#search_type_button').attr('value') + ":" + addValue;
-          }
-        }
-        $(this).attr('action', newAction);
-      } else {
-        // nothing to do if a value is missing
-        event.preventDefault();
-      }
+    // Changes in the select box for the filter query
+    $(selectMods).change(() => {
+        setFQAndCondQueryElementsValues('selectMods');
     });
+
+    // Changes in the input field of the filter query
+    $(qrySelector).change(() => {
+        setFQAndCondQueryElementsValues('changeQry');
+    });
+
+    // Key up changes in the second search input element
+    $(qrySelector).keyup(() => {
+        if ($(selectMods)) {
+            const queryText = $(qrySelector).val().trim();
+            const selectModsValue = $(selectMods).val();
+            // Case if selectMods is 'all' - 'everything'
+            if (selectModsValue !== 'all') {
+                if (queryText !== '') {
+                    // Enable the submit button in the second search form
+                    enableButton(secondSearchFormSubmitButtonElement);
+                } else {
+                    // Disable the submit button in the second search form
+                    disableButton(secondSearchFormSubmitButtonElement);
+                }
+            }
+        }
+    });
+
+    // Changes for the fq element and condQuery element
+    function setFQAndCondQueryElementsValues(eventType = 'selectMods') {
+        if ($(selectMods) && $(qrySelector) && $(fqElement) && $(initialCondQuerySecond) && $(condQuery)) {
+            let queryText = '';
+            queryText = $(qrySelector).val().trim();
+            // Remove all duplicate spaces, tabs, newlines etc
+            queryText = queryText.replace(/\s\s+/g, ' ');
+            const initialCondQueryValue = $(initialCondQuerySecond).val().trim();
+            const selectModsValue = $(selectMods).val();
+            // Case if selectMods is 'all' - 'everything'
+            if (selectModsValue === 'all') {
+                $(fqElement).attr('value', '');
+                let condQueryValue = initialCondQueryValue;
+                if (queryText !== '') {
+                    condQueryValue += ' AND ' + preparingQueryStringForSolr(queryText);
+                } else {
+                    condQueryValue += queryText;
+                }
+                $(condQuery).attr('value', condQueryValue);
+                if (eventType === 'selectMods') {
+                    // Enable the submit button in the second search form
+                    enableButton(secondSearchFormSubmitButtonElement);
+                }
+            } else {
+                const filterQuery = selectModsValue + ':' + preparingQueryStringForSolr(queryText);
+                $(fqElement).attr('value', filterQuery);
+                $(condQuery).attr('value', initialCondQueryValue);
+                if (eventType === 'selectMods') {
+                    if (queryText !== '') {
+                        // Enable the submit button in the second search form
+                        enableButton(secondSearchFormSubmitButtonElement);
+                    } else {
+                        // Disable the submit button in the second search form
+                        disableButton(secondSearchFormSubmitButtonElement);
+                    }
+                }
+            }
+        }
+    }
+
+    // Add special characters to the query string for the SOLR request and remove all quotes from the query string
+    function preparingQueryStringForSolr(queryStr) {
+        return queryStr ? '"' + queryStr.replace(/"|%22/g, '') + '"' : queryStr;
+    }
+
+    // Disable the button
+    function disableButton(element) {
+        if (element) {
+            $(element).attr('disabled','disabled');
+        }
+    }
+
+    // Enable the button
+    function enableButton(element) {
+        if (element) {
+            $(element).removeAttr('disabled');
+        }
+    }
 
     var languageList = jQuery('#topnav .languageList');
     jQuery('#topnav .languageSelect').click(function() {

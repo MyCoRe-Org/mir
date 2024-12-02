@@ -177,45 +177,45 @@ public class MIRSearchController extends MIRTestController {
     public void searchByPublication(String title, String subTitle, String author, String name, String nameIdentifier,
         String metadata, String content) {
 
+        // select mods (filter query) is 'all'
         if (title != null) {
-            driver.waitAndFindElement(By.id("search_type_label")).click();
-            driver.waitAndFindElement(MCRBy.partialLinkText("Alles")).click();
+            new Select(driver.waitAndFindElement(By.id("select_mods"))).selectByValue("all");
             qry(title);
         }
 
+        // select mods (filter query) is 'mods.title'
         if (subTitle != null) {
-            driver.waitAndFindElement(By.id("search_type_label")).click();
-            driver.waitAndFindElement(MCRBy.partialLinkText("Titel")).click();
+            new Select(driver.waitAndFindElement(By.id("select_mods"))).selectByValue("mods.title");
             qry(subTitle);
         }
 
+        // select mods (filter query) is 'mods.author'
         if (author != null) {
-            driver.waitAndFindElement(By.id("search_type_label")).click();
-            driver.waitAndFindElement(MCRBy.partialLinkText("Autor")).click();
+            new Select(driver.waitAndFindElement(By.id("select_mods"))).selectByValue("mods.author");
             qry(author);
         }
 
+        // select mods (filter query) is 'mods.name.top'
         if (name != null) {
-            driver.waitAndFindElement(By.id("search_type_label")).click();
-            driver.waitAndFindElement(MCRBy.partialLinkText("Name")).click();
+            new Select(driver.waitAndFindElement(By.id("select_mods"))).selectByValue("mods.name.top");
             qry(name);
         }
 
+        // select mods (filter query) is 'mods.nameIdentifier'
         if (nameIdentifier != null) {
-            driver.waitAndFindElement(By.id("search_type_label")).click();
-            driver.waitAndFindElement(MCRBy.partialLinkText("Namens Identifikator")).click();
+            new Select(driver.waitAndFindElement(By.id("select_mods"))).selectByValue("mods.nameIdentifier");
             qry(nameIdentifier);
         }
 
+        // select mods (filter query) is 'allMeta'
         if (metadata != null) {
-            driver.waitAndFindElement(By.id("search_type_label")).click();
-            driver.waitAndFindElement(MCRBy.partialLinkText("Alle Metadaten")).click();
+            new Select(driver.waitAndFindElement(By.id("select_mods"))).selectByValue("allMeta");
             qry(metadata);
         }
 
+        // select mods (filter query) is 'content'
         if (content != null) {
-            driver.waitAndFindElement(By.id("search_type_label")).click();
-            driver.waitAndFindElement(MCRBy.partialLinkText("Volltext")).click();
+            new Select(driver.waitAndFindElement(By.id("select_mods"))).selectByValue("content");
             qry(content);
         }
 
