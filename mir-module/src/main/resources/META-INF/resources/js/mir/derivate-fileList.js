@@ -516,7 +516,9 @@
 			const mirKeyURL = webApplicationBaseURL + "rsc/locale/translate/" + lang + "/mir.confirm.*";
 			const pagiKeyURL = webApplicationBaseURL + "rsc/locale/translate/" + lang + "/mir.pagination.*";
 			const uploadKeyURL = webApplicationBaseURL + "rsc/locale/translate/" + lang + "/mir.upload.drop.*";
-			const allRequests = Promise.all([ifsKeyURL, mirKeyURL, pagiKeyURL, uploadKeyURL]
+			const derivateFileKeyURL = webApplicationBaseURL + "rsc/locale/translate/" + lang + "/mir.derivate.file.*";
+			const allRequests = Promise.all([ifsKeyURL, mirKeyURL, pagiKeyURL, uploadKeyURL,
+				derivateFileKeyURL]
 				.map((url)=> fetch(url))
 				.map((promise)=> promise.then((response)=> response.json())));
 
