@@ -7,20 +7,18 @@
 
   <xsl:param name="MCR.DOI.Resolver.MasterURL" select="''" />
 
-  <!-- xsl:include href="xslInclude:solrResponseBadges"/ -->
-
-  <xsl:template name="hit-register-only">
+  <xsl:template name="mir-abstract-register-only">
     <xsl:if test="//mods:classification[contains(@valueURI, 'registerOnly#true')]">
       <xsl:variable name="doi" select="//mods:identifier[@type='doi']" />
       <xsl:choose>
         <xsl:when test="$doi">
           <a href="{$MCR.DOI.Resolver.MasterURL}{$doi}"
-             class="badge badge-primary hit_register_only">
+             class="badge badge-primary mir-abstract-register-only">
             <xsl:value-of select="i18n:translate('mir.registered.record')" />
           </a>
         </xsl:when>
         <xsl:otherwise>
-          <span class="badge badge-primary hit_register_only">
+          <span class="badge badge-primary mir-abstract-register-only">
             <xsl:value-of select="i18n:translate('mir.registered.record')" />
           </span>
         </xsl:otherwise>
