@@ -12,7 +12,7 @@
 
   <xsl:import  href="xslImport:modsmeta:metadata/mir-abstract.xsl" />
   <xsl:include href="resource:xsl/mir-utils.xsl" />
-  <xsl:include href="resource:xsl/response-mir-hit-register-only.xsl"/>
+  <xsl:include href="resource:xsl/mir-abstract-badges.xsl"/>
   <xsl:param name="MIR.Layout.Abstract.Type.Classification"/>
   <xsl:variable name="objectID" select="/mycoreobject/@ID" />
   <xsl:variable name="modsPart" select="concat('mods.part.', $objectID)" />
@@ -23,139 +23,7 @@
     <xsl:variable name="mods" select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods" />
 
     <!-- badges -->
-    <div id="mir-abstract-badges">
-      <xsl:variable name="dateIssued">
-        <xsl:choose>
-          <xsl:when test="$mods/mods:originInfo[not(@eventType) or @eventType='publication']/mods:dateIssued[@encoding='w3cdtf']">
-            <xsl:choose>
-              <xsl:when test="$mods/mods:originInfo[not(@eventType) or @eventType='publication']/mods:dateIssued[@encoding='w3cdtf' and @point]">
-                <xsl:apply-templates mode="mods.datePublished" select="$mods/mods:originInfo[not(@eventType) or @eventType='publication']/mods:dateIssued[@encoding='w3cdtf' and @point='start']" />
-                <xsl:text>|</xsl:text>
-                <xsl:apply-templates mode="mods.datePublished" select="$mods/mods:originInfo[not(@eventType) or @eventType='publication']/mods:dateIssued[@encoding='w3cdtf' and @point='end']" />
-              </xsl:when>
-              <xsl:when test="$mods/mods:originInfo[not(@eventType) or @eventType='publication']/mods:dateIssued[@encoding='w3cdtf' and not(@point)]">
-                <xsl:apply-templates mode="mods.datePublished" select="$mods/mods:originInfo[not(@eventType) or @eventType='publication']/mods:dateIssued[@encoding='w3cdtf']" />
-              </xsl:when>
-            </xsl:choose>
-          </xsl:when>
-          <xsl:when test="$mods/mods:relatedItem/mods:originInfo[not(@eventType) or @eventType='publication']/mods:dateIssued[@encoding='w3cdtf']"><xsl:apply-templates mode="mods.datePublished" select="$mods/mods:relatedItem/mods:originInfo[not(@eventType) or @eventType='publication']/mods:dateIssued[@encoding='w3cdtf']" />
-          </xsl:when>
-        </xsl:choose>
-      </xsl:variable>
-
-      <xsl:variable name="firstDate">
-        <xsl:for-each select="$mods/mods:originInfo[not(@eventType) or @eventType='publication']/mods:dateIssued[@encoding='w3cdtf']">
-          <xsl:sort data-type="number" select="count(ancestor::mods:originInfo[not(@eventType) or @eventType='publication'])" />
-          <xsl:if test="position()=1">
-            <xsl:value-of select="." />
-          </xsl:if>
-        </xsl:for-each>
-      </xsl:variable>
-
-        <!-- TODO: Update badges -->
-      <div id="badges">
-        <xsl:for-each select="$mods/mods:genre[@type='kindof']|$mods/mods:genre[@type='intern']">
-          <xsl:call-template name="categorySearchLink">
-            <xsl:with-param name="class" select="'mods_genre badge badge-info'" />
-            <xsl:with-param name="node" select="." />
-            <xsl:with-param name="owner"  select="$owner" />
-          </xsl:call-template>
-        </xsl:for-each>
-
-        <xsl:if test="string-length($dateIssued) > 0">
-          <time datetime="{$dateIssued}" data-toggle="tooltip" title="Publication date">
-              <xsl:variable name="dateText">
-                <xsl:variable name="date">
-                  <xsl:call-template name="Tokenizer"><!-- use split function from mycore-base/coreFunctions.xsl -->
-                    <xsl:with-param name="string" select="$dateIssued" />
-                    <xsl:with-param name="delimiter" select="'|'" />
-                  </xsl:call-template>
-                </xsl:variable>
-                <xsl:for-each select="exslt:node-set($date)/token">
-                  <xsl:if test="position()=2">
-                    <xsl:text> - </xsl:text>
-                  </xsl:if>
-                  <xsl:if test="mcrxsl:trim(.) != ''">
-                    <xsl:variable name="format">
-                      <xsl:choose>
-                        <xsl:when test="string-length(normalize-space(.))=4">
-                          <xsl:value-of select="i18n:translate('metaData.dateYear')" />
-                        </xsl:when>
-                        <xsl:when test="string-length(normalize-space(.))=7">
-                          <xsl:value-of select="i18n:translate('metaData.dateYearMonth')" />
-                        </xsl:when>
-                        <xsl:when test="string-length(normalize-space(.))=10">
-                          <xsl:value-of select="i18n:translate('metaData.dateYearMonthDay')" />
-                        </xsl:when>
-                        <xsl:otherwise>
-                          <xsl:value-of select="i18n:translate('metaData.dateTime')" />
-                        </xsl:otherwise>
-                      </xsl:choose>
-                    </xsl:variable>
-                    <xsl:call-template name="formatISODate">
-                      <xsl:with-param name="date" select="." />
-                      <xsl:with-param name="format" select="$format" />
-                    </xsl:call-template>
-                  </xsl:if>
-                </xsl:for-each>
-              </xsl:variable>
-            <xsl:choose>
-              <xsl:when test="$firstDate and $firstDate != ''">
-                <xsl:call-template name="searchLink">
-                  <xsl:with-param name="class" select="'date_published badge badge-primary'" />
-                  <xsl:with-param name="linkText" select="$dateText" />
-                  <xsl:with-param name="query" select="concat('*&amp;fq=mods.dateIssued:',$firstDate, '&amp;owner=createdby:', $owner)" />
-                </xsl:call-template>
-              </xsl:when>
-              <xsl:otherwise>
-                <span class="date_published badge badge-primary">
-                  <xsl:value-of select="$dateText"/>
-                </span>
-              </xsl:otherwise>
-            </xsl:choose>
-          </time>
-        </xsl:if>
-
-        <xsl:variable name="accessCondition" select="substring-after(normalize-space($mods/mods:accessCondition[@type='use and reproduction']/@xlink:href),'#')" />
-        <xsl:if test="$accessCondition">
-          <xsl:variable name="linkText">
-            <xsl:choose>
-              <xsl:when test="contains($accessCondition, 'rights_reserved')">
-                <xsl:value-of select="i18n:translate('component.mods.metaData.dictionary.rightsReserved')" />
-              </xsl:when>
-              <xsl:when test="contains($accessCondition, 'oa_nlz')">
-                <xsl:value-of select="i18n:translate('component.mods.metaData.dictionary.oa_nlz.short')" />
-              </xsl:when>
-              <xsl:otherwise>
-                <xsl:value-of select="mcrxsl:getDisplayName('mir_licenses',$accessCondition)" />
-              </xsl:otherwise>
-            </xsl:choose>
-          </xsl:variable>
-          <xsl:call-template name="searchLink">
-            <xsl:with-param name="class" select="'access_condition badge badge-success'" />
-            <xsl:with-param name="linkText" select="$linkText" />
-            <xsl:with-param name="query" select="concat('*&amp;fq=link:*',$accessCondition, '&amp;owner=createdby:', $owner)" />
-          </xsl:call-template>
-        </xsl:if>
-
-        <xsl:call-template name="hit-register-only" />
-
-        <xsl:variable name="doc-state" select="/mycoreobject/service/servstates/servstate/@categid" />
-        <xsl:if test="$doc-state">
-          <div class="doc_state">
-            <xsl:variable name="status-i18n">
-              <!-- template in mir-utils.xsl -->
-              <xsl:call-template name="get-doc-state-label">
-                <xsl:with-param name="state-categ-id" select="$doc-state"/>
-              </xsl:call-template>
-            </xsl:variable>
-            <span class="badge mir-{$doc-state}" title="{i18n:translate('component.mods.metaData.dictionary.status')}">
-              <xsl:value-of select="$status-i18n" />
-            </span>
-          </div>
-        </xsl:if>
-      </div><!-- end: badges -->
-    </div><!-- end: badgets structure -->
+    <xsl:call-template name="mir-abstract-badges"/>
 
     <!-- headline -->
     <div id="mir-abstract-title">
