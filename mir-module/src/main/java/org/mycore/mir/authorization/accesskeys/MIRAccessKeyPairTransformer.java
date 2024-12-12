@@ -20,16 +20,19 @@
 package org.mycore.mir.authorization.accesskeys;
 
 import java.io.IOException;
+import java.util.Map;
 
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.transform.JDOMSource;
 import org.mycore.common.MCRException;
+import org.mycore.common.config.MCRConfiguration2;
 import org.mycore.common.content.MCRJAXBContent;
 import org.mycore.datamodel.metadata.MCRObjectID;
 import org.mycore.mir.authorization.accesskeys.backend.MIRAccessKeyPair;
 
 import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.JAXBContextFactory;
 import jakarta.xml.bind.JAXBException;
 import jakarta.xml.bind.Unmarshaller;
 
@@ -54,8 +57,13 @@ public abstract class MIRAccessKeyPairTransformer {
 
     private static JAXBContext initContext() {
         try {
-            return JAXBContext.newInstance(MIRAccessKeyPair.class.getPackage().getName(),
-                MIRAccessKeyPair.class.getClassLoader());
+            String factoryProperty = "MIR.AccessKey.JAXBContextFactory";
+            JAXBContextFactory jaxbContextFactory =
+                MCRConfiguration2.<JAXBContextFactory>getInstanceOf(factoryProperty)
+                    .orElseThrow(() -> MCRConfiguration2.createConfigurationException(factoryProperty));
+            JAXBContext jaxbContext = jaxbContextFactory.createContext(MIRAccessKeyPair.class.getPackage().getName(),
+                MIRAccessKeyPair.class.getClassLoader(), Map.of());
+            return jaxbContext;
         } catch (final JAXBException e) {
             throw new MCRException("Could not instantiate JAXBContext.", e);
         }
@@ -121,8 +129,9 @@ public abstract class MIRAccessKeyPairTransformer {
         }
         try {
             final Unmarshaller unmarshaller = JAXB_CONTEXT.createUnmarshaller();
-            return MIRAccessKeyPair.fromServiceFlags(mcrObjectId,
-                (MIRAccessKeyPair.ServiceFlags) unmarshaller.unmarshal(new JDOMSource(element)));
+            MIRAccessKeyPair.ServiceFlags serviceFlags =
+                unmarshaller.unmarshal(new JDOMSource(element.clone()), MIRAccessKeyPair.ServiceFlags.class).getValue();
+            return MIRAccessKeyPair.fromServiceFlags(mcrObjectId, serviceFlags);
         } catch (final JAXBException e) {
             throw new MCRException("Exception while transforming Element to MIRAccessKeyPair.", e);
         }
