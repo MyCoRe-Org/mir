@@ -243,6 +243,11 @@
       </exclusions>
     </dependency>
     <dependency>
+      <groupId>org.glassfish.jaxb</groupId>
+      <artifactId>jaxb-runtime</artifactId>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
       <groupId>org.hibernate.orm</groupId>
       <artifactId>hibernate-hikaricp</artifactId>
       <scope>runtime</scope>
