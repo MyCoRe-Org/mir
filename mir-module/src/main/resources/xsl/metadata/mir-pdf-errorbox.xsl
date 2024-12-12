@@ -34,9 +34,19 @@
                     </xsl:otherwise>
                 </xsl:choose>
             </xsl:variable>
+            <xsl:variable name="CaughtException">
+                <xsl:choose>
+                    <xsl:when test="contains($errorMessages,i18n:translate('pdf.error.runtimeerror.message'))">
+                        <xsl:value-of select="'true'"/>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:value-of select="'false'"/>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </xsl:variable>
             <xsl:variable name="validationWasSuccessfull">
                 <xsl:choose>
-                    <xsl:when test="$couldNotBeValidated='false' and $containsValidationError='false'">
+                    <xsl:when test="$couldNotBeValidated='false' and $containsValidationError='false' and $CaughtException='false'">
                         <xsl:value-of select="'true'"/>
                     </xsl:when>
                     <xsl:otherwise>
@@ -46,7 +56,7 @@
             </xsl:variable>
 
             <xsl:choose>
-                <xsl:when test="$validationWasSuccessfull='false'">
+                <xsl:when test="$validationWasSuccessfull='false' and $CaughtException='false'">
                     <div class="container pdf-validation mb-3 px-0" id="accordion">
                         <div class="card-header bg-danger text-white">
                             <div class="list-group list-group-root well p-3">
@@ -75,17 +85,38 @@
                         </div>
                     </div>
                 </xsl:when>
+                <xsl:otherwise> <xsl:copy-of select="$errorMessages"/></xsl:otherwise>
             </xsl:choose>
         </xsl:if>
     </xsl:template>
 
     <xsl:template match="structure/derobjects/derobject" mode="displayPdfError">
         <xsl:variable name="derivateID" select="@xlink:href"/>
-        <xsl:variable name="result" select="document(concat('pdfAValidator:', $derivateID))"/>
-        <xsl:if test="not(normalize-space($result))">
-            <xsl:apply-templates select="$result/derivate/file" mode="displayPdfError"/>
-        </xsl:if>
+        <xsl:variable name="result" select="document(concat('catchEx:pdfAValidator:', $derivateID))"/>
+            <xsl:choose>
+            <xsl:when test="not(normalize-space($result))">
+                <xsl:apply-templates select="$result/derivate/file" mode="displayPdfError"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <div class="card text-white bg-danger mb-3 pdfa-runtime-exception">
+                    <div class="card-header">
+                        <xsl:value-of select="concat($derivateID,': ',$result)"/>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text">
+                            <xsl:value-of select="i18n:translate('pdf.error.runtimeerror.message')"/>
+                        </p>
+                        <p class="card-text font-italic">
+                            <xsl:value-of select="i18n:translate('mir.error.finalLine')"/>
+                        </p>
+                    </div>
+                </div>
+
+            </xsl:otherwise>
+            </xsl:choose>
     </xsl:template>
+
+
 
     <xsl:template match="file" mode="displayPdfError">
         <xsl:variable name="ValidationError" select="@flavour = 'Validation Error'"/>
@@ -147,9 +178,11 @@
                     </xsl:otherwise>
                 </xsl:choose>
 
-                <xsl:variable name="downloadLink" select="concat($ServletsBaseURL, 'MCRFileNodeServlet/', $derivate, '/', mcrxsl:encodeURIPath(@name))"/>
+                <xsl:variable name="downloadLink"
+                              select="concat($ServletsBaseURL, 'MCRFileNodeServlet/', $derivate, '/', mcrxsl:encodeURIPath(@name))"/>
                 <div class="w-100 d-flex align-self-center justify-content-center">
-                    <a role="button" href="{$downloadLink}" target="_blank" class="btn btn-primary d-flex justify-content-center align-items-center w-100 py-2">
+                    <a role="button" href="{$downloadLink}" target="_blank"
+                       class="btn btn-primary d-flex justify-content-center align-items-center w-100 py-2">
                         <xsl:value-of select="concat(i18n:translate('pdf.errorbox.button.download'), ' ')"/>
                         <i class="fas fa-download ms-2"/>
                     </a>
@@ -232,7 +265,9 @@
 
 
         <xsl:if test="$exception/cause/exception">
-            <p><strong>Caused by:</strong></p>
+            <p>
+                <strong>Caused by:</strong>
+            </p>
             <xsl:text>&#10;</xsl:text>
             <li class="alert alert-info" role="alert">
                 <xsl:value-of select="$exception/cause/exception/message/@message"/>
@@ -246,20 +281,19 @@
         </xsl:if>
 
 
-            <xsl:for-each select="$exception/suppressed/exception">
-                <li class="alert alert-info" role="alert">
-                    <xsl:value-of select="$exception/suppressed/exception/message/@message"/>
-                </li>
-                <li class="text-primary font-italic" style="font-size: 1em;">
-                    <xsl:value-of select="$exception/suppressed/exception/class/@name"/>
-                </li>
-                <p>Suppressed:</p>
-                <xsl:call-template name="render-exception-details">
-                    <xsl:with-param name="exception" select="."/>
-                </xsl:call-template>
-            </xsl:for-each>
+        <xsl:for-each select="$exception/suppressed/exception">
+            <li class="alert alert-info" role="alert">
+                <xsl:value-of select="$exception/suppressed/exception/message/@message"/>
+            </li>
+            <li class="text-primary font-italic" style="font-size: 1em;">
+                <xsl:value-of select="$exception/suppressed/exception/class/@name"/>
+            </li>
+            <p>Suppressed:</p>
+            <xsl:call-template name="render-exception-details">
+                <xsl:with-param name="exception" select="."/>
+            </xsl:call-template>
+        </xsl:for-each>
     </xsl:template>
-
 
 
     <xsl:template match="failed" mode="displayPdfError">
