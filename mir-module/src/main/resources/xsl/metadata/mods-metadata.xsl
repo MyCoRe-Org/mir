@@ -11,6 +11,7 @@
 
   <xsl:import href="xslImport:modsmeta" />
   <xsl:include href="layout/mir-layout-utils.xsl" />
+  <xsl:include href="import/helperTemplates.xsl" />
   <xsl:include href="mods-utils.xsl" />
   <xsl:include href="mir-mods-utils.xsl" />
   <xsl:key use="@id" name="rights" match="/mycoreobject/rights/right" />
@@ -78,36 +79,33 @@
     </site>
   </xsl:template>
 
-  <xsl:template name="printMirMessage">
-    <xsl:param name="title" />
-    <xsl:param name="msg" />
-    <div id="mir-message">
-      <div class="jumbotron">
-        <h1>
-          <xsl:value-of select="$title" />
-        </h1>
-        <xsl:if test="$msg">
-          <p>
-            <xsl:copy-of select="$msg" />
-          </p>
-            <xsl:if test="$MIR.Blocked.Detailpage='true'">
-                <xsl:call-template name="renderMetadata">
+    <xsl:template name="printMirMessage">
+        <xsl:param name="title" />
+        <xsl:param name="msg" />
+        <div id="mir-message">
+            <div class="jumbotron">
+                <h1>
+                    <xsl:value-of select="$title" />
+                </h1>
+                <xsl:if test="$msg">
+                    <p>
+                        <xsl:copy-of select="$msg" />
+                    </p>
+                </xsl:if>
+                <xsl:if test="$MIR.Blocked.Detailpage = 'true'">
+                    <xsl:call-template name="renderMetadata">
                     <xsl:with-param name="mods"
                                     select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods"/>
-                    <xsl:with-param name="doiResolver" select="$MCR.DOI.Resolver.MasterURL"/>
-                    <xsl:with-param name="urnResolver" select="$MCR.URN.Resolver.MasterURL"/>
-                </xsl:call-template>
-                <xsl:apply-templates select="mods:name" mode="printName"/>
-            </xsl:if>
-            <xsl:if test="$msg">
-                <p>
-                    <xsl:copy-of select="$msg"/>
-                </p>
-            </xsl:if>
-        </xsl:if>
-      </div>
-    </div>
-  </xsl:template>
+                        <xsl:with-param name="doiResolver" select="$MCR.DOI.Resolver.MasterURL" />
+                        <xsl:with-param name="urnResolver" select="$MCR.URN.Resolver.MasterURL" />
+                    </xsl:call-template>
+                    <xsl:call-template name="printAuthorName">
+                        <xsl:with-param name="node" select="mods:name" />
+                    </xsl:call-template>
+                </xsl:if>
+            </div>
+        </div>
+    </xsl:template>
 
   <xsl:template name="debug-rights">
     <xsl:variable name="lbr" select="'&#x0a;'" />
@@ -267,28 +265,5 @@
                 </dd>
             </xsl:if>
         </dl>
-    </xsl:template>
-
-    <!-- copied from modsmetadata.xsl -->
-    <xsl:template match="mods:name" mode="printName">
-        <xsl:choose>
-            <xsl:when test="mods:namePart">
-                <xsl:choose>
-                    <xsl:when test="mods:namePart[@type='given'] and mods:namePart[@type='family']">
-                        <xsl:value-of
-                                select="concat(mods:namePart[@type='family'], ', ',mods:namePart[@type='given'])"/>
-                    </xsl:when>
-                    <xsl:otherwise>
-                        <xsl:value-of select="mods:namePart"/>
-                    </xsl:otherwise>
-                </xsl:choose>
-            </xsl:when>
-            <xsl:when test="mods:displayForm">
-                <xsl:value-of select="mods:displayForm"/>
-            </xsl:when>
-            <xsl:otherwise>
-                <xsl:value-of select="."/>
-            </xsl:otherwise>
-        </xsl:choose>
     </xsl:template>
 </xsl:stylesheet>
