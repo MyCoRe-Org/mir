@@ -66,6 +66,9 @@
               action="{$WebApplicationBaseURL}servlets/solr/find"
               class="searchfield_box form-inline my-2 my-lg-0"
               role="search">
+              <!-- Check if 'initialCondQuery' exists and extract its value if it does -->
+              <xsl:variable name="initialCondQuery" select="/response/lst[@name='responseHeader']/lst[@name='params']/str[@name='initialCondQuery']" />
+
               <input
                 name="condQuery"
                 placeholder="{i18n:translate('mir.navsearch.placeholder')}"
@@ -73,7 +76,17 @@
                 id="searchInput"
                 type="text"
                 aria-label="Search" />
-              <input type="hidden" id="initialCondQuery" name="initialCondQuery" value="*"/>
+
+              <input type="hidden" id="initialCondQueryMirFlatmirLayout" name="initialCondQuery">
+                <xsl:choose>
+                  <xsl:when test="$initialCondQuery">
+                    <xsl:value-of select="$initialCondQuery"/>
+                  </xsl:when>
+                  <xsl:otherwise>
+                    <xsl:value-of select="'*'"/>
+                  </xsl:otherwise>
+                </xsl:choose>
+              </input>
               <xsl:choose>
                 <xsl:when test="contains($isSearchAllowedForCurrentUser, 'true')">
                   <input name="owner" type="hidden" value="createdby:*" />
