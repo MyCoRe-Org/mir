@@ -68,7 +68,36 @@
           <xsl:variable name="initialCondQuery" select="/response/lst[@name='responseHeader']/lst[@name='params']/str[@name='initialCondQuery']" />
 
           <!-- Check if 'fq' exists and extract its value if it does -->
-          <xsl:variable name="fq" select="/response/lst[@name='responseHeader']/lst[@name='params']/str[@name='fq']" />
+          <xsl:variable name="fq">
+            <xsl:choose>
+              <!-- Case 1: fq is an array -->
+              <xsl:when test="/response/lst[@name='responseHeader']/lst[@name='params']/arr[@name='fq']">
+                <xsl:value-of select="/response/lst[@name='responseHeader']/lst[@name='params']/arr[@name='fq']/str[
+                starts-with(., 'mods.title:') or
+                starts-with(., 'mods.author:') or
+                starts-with(., 'mods.name.top:') or
+                starts-with(., 'mods.nameIdentifier:') or
+                starts-with(., 'allMeta:')
+            ][1]" />
+              </xsl:when>
+
+              <!-- Case 2: fq is a single string -->
+              <xsl:when test="/response/lst[@name='responseHeader']/lst[@name='params']/str[@name='fq']">
+                <xsl:if test="starts-with(/response/lst[@name='responseHeader']/lst[@name='params']/str[@name='fq'], 'mods.title:') or
+                          starts-with(/response/lst[@name='responseHeader']/lst[@name='params']/str[@name='fq'], 'mods.author:') or
+                          starts-with(/response/lst[@name='responseHeader']/lst[@name='params']/str[@name='fq'], 'mods.name.top:') or
+                          starts-with(/response/lst[@name='responseHeader']/lst[@name='params']/str[@name='fq'], 'mods.nameIdentifier:') or
+                          starts-with(/response/lst[@name='responseHeader']/lst[@name='params']/str[@name='fq'], 'allMeta:')">
+                  <xsl:value-of select="/response/lst[@name='responseHeader']/lst[@name='params']/str[@name='fq']" />
+                </xsl:if>
+              </xsl:when>
+
+              <!-- Default: No valid fq parameter found -->
+              <xsl:otherwise>
+                <xsl:text></xsl:text>
+              </xsl:otherwise>
+            </xsl:choose>
+          </xsl:variable>
 
           <!-- Check if 'owner' exists and extract its value if it does -->
           <xsl:variable name="owner" select="/response/lst[@name='responseHeader']/lst[@name='params']/str[@name='owner']" />
