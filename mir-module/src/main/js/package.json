@@ -1,0 +1,22 @@
+{
+  "name": "js",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@golsch/test": "npm:@jsr/golsch__test",
+    "@types/bootstrap": "4.3.1",
+    "vite": "^6.0.3"
+  },
+  "devDependencies": {
+    "@types/jquery": "^3.5.32",
+    "@types/node": "^22.10.2",
+    "typescript": "^5.7.2"
+  }
+}
