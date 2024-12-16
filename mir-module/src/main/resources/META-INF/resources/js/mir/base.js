@@ -293,8 +293,8 @@
       });
     });
 
-    // Input element in the original search
-    const originalSearchInputElement = "#searchInput";
+    // Input element in the mir-flatmir-layout-utils.xsl search
+    const mirFlatmirLayoutSearchInputElement = "#searchInput";
     // Selector for the second search form
     const subSearchFormName = "form.search_form";
     // The submit button in the second search form
@@ -305,21 +305,23 @@
     const selectMods = "#select_mods";
     // ID of the hidden element with the fq parameter
     const fqElement = "#fq";
-    // ID of the hidden element with the initial condQuery parameter in the first search form
-    const initialCondQueryFirst = "#initialCondQuery";
+      // ID of the hidden element with the initial condQuery parameter in the mir-cosmol-layout-utils.xsl search form
+      const initialCondQueryMirCosmolLayout = "#initialCondQueryMirCosmolLayout";
+    // ID of the hidden element with the initial condQuery parameter in the mir-flatmir-layout-utils.xsl search form
+    const initialCondQueryMirFlatmirLayout = "#initialCondQueryMirFlatmirLayout";
     // ID of the hidden element with the initial condQuery parameter in the second search form
     const initialCondQuerySecond = "#initialCondQuerySecond";
     // ID of the hidden element 'condQuery' for the query parameter 'condQuery'
     const condQuery = "#condQuery";
 
-    // Input element's changes in the original search
-    $(originalSearchInputElement).change(() => {
-        if ($(initialCondQueryFirst)) {
-            let initialCondQueryValue = $(originalSearchInputElement).val().trim();
+    // Input element's changes in the mir-flatmir-layout-utils.xsl search
+    $(mirFlatmirLayoutSearchInputElement).change(() => {
+        if ($(initialCondQueryMirFlatmirLayout).length) {
+            let initialCondQueryValue = $(mirFlatmirLayoutSearchInputElement).val().trim();
             if (initialCondQueryValue === '') {
                 initialCondQueryValue = '*';
             }
-            $(initialCondQueryFirst).attr('value', initialCondQueryValue);
+            $(initialCondQueryMirFlatmirLayout).attr('value', initialCondQueryValue);
         }
     });
 
@@ -335,7 +337,7 @@
 
     // Key up changes in the second search input element
     $(qrySelector).keyup(() => {
-        if ($(selectMods)) {
+        if ($(selectMods).length) {
             const queryText = $(qrySelector).val().trim();
             const selectModsValue = $(selectMods).val();
             // Case if selectMods is 'all' - 'everything'
@@ -353,7 +355,8 @@
 
     // Changes for the fq element and condQuery element
     function setFQAndCondQueryElementsValues(eventType = 'selectMods') {
-        if ($(selectMods) && $(qrySelector) && $(fqElement) && $(initialCondQuerySecond) && $(condQuery)) {
+        if ($(selectMods).length && $(qrySelector).length && $(fqElement).length && $(initialCondQuerySecond).length
+          && $(condQuery).length) {
             let queryText = '';
             queryText = $(qrySelector).val().trim();
             // Remove all duplicate spaces, tabs, newlines etc
