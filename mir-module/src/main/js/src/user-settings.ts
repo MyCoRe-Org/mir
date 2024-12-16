@@ -49,7 +49,7 @@ const getSettingsModalHandlerInstance = async (): Promise<MIROrcidUserSetttingsM
   return settingsModalHandlerInstance;
 };
 
-const handleOpenModal = async (event: MouseEvent) => {
+const handleOpenModal = async (event: MouseEvent): Promise<void> => {
   const targetElement = event.currentTarget as HTMLElement;
   const { orcid } = targetElement.dataset;
   if (!orcid) {
@@ -61,7 +61,7 @@ const handleOpenModal = async (event: MouseEvent) => {
   modalHandler.showModal();
 };
 
-const initSettingsModal = () => {
+const initSettingsModal = (): void => {
   const openModalButton = document.getElementById('openSettingsModalBtn');
   if (openModalButton) {
     openModalButton.addEventListener('click', handleOpenModal);

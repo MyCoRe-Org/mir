@@ -17,22 +17,28 @@
  */
 
 import { fetchJWT } from '@golsch/test/auth';
+import { MCRLangServiceImpl } from '@golsch/test/i18n';
 
 declare global {
   interface Window {
     webApplicationBaseURL: string;
+    currentLang: string;
   }
-}
+};
 
-export const getBaseUrl = (): URL => {
-  return new URL(window.webApplicationBaseURL);
-}
+export const getBaseUrl = (): URL =>  new URL(window.webApplicationBaseURL);
+
+export const getCurrentLang = (): string => window.currentLang;
 
 let accessToken: string | null;
 
-export const getAccessToken = async () => {
+export const getAccessToken = async (): Promise<string> => {
   if (!accessToken) {
     accessToken = await fetchJWT(getBaseUrl().toString());
   }
   return accessToken;
-}
+};
+
+export const getLangService = (): MCRLangServiceImpl => {
+  return new MCRLangServiceImpl(getBaseUrl(), getCurrentLang());
+};
