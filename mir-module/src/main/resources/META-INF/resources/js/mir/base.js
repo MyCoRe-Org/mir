@@ -305,8 +305,6 @@
     const selectMods = "#select_mods";
     // ID of the hidden element with the fq parameter
     const fqElement = "#fq";
-      // ID of the hidden element with the initial condQuery parameter in the mir-cosmol-layout-utils.xsl search form
-      const initialCondQueryMirCosmolLayout = "#initialCondQueryMirCosmolLayout";
     // ID of the hidden element with the initial condQuery parameter in the mir-flatmir-layout-utils.xsl search form
     const initialCondQueryMirFlatmirLayout = "#initialCondQueryMirFlatmirLayout";
     // ID of the hidden element with the initial condQuery parameter in the second search form
