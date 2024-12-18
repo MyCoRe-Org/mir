@@ -43,6 +43,11 @@
       </xsl:when>
       <xsl:otherwise>
         <mods:subjectXML>
+          <xsl:if test="@xml:lang">
+            <xsl:attribute name="xml:lang">
+              <xsl:value-of select="@xml:lang" />
+            </xsl:attribute>
+          </xsl:if>
           <xsl:copy-of select="editorUtils:xmlAsString(.)" />
         </mods:subjectXML>
       </xsl:otherwise>
@@ -163,6 +168,12 @@
       <xsl:apply-templates select="@*" />
       <xsl:text>oth</xsl:text>
     </xsl:copy>
+  </xsl:template>
+
+  <xsl:template match="mods:affiliation[@authorityURI='https://ror.org/'][@valueURI]">
+    <mods:affiliation authorityURI="{@authorityURI}">
+      <xsl:value-of select="@valueURI"/>
+    </mods:affiliation>
   </xsl:template>
 
   <!-- Remove this mods:classification entry, will be created again while saving using mods:accessCondtition (see MIR-161) -->

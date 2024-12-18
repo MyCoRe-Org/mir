@@ -25,7 +25,7 @@ This guide addresses developers. Thats why you run it in 'dev' profile!
    - Run Solr with the command: `mvn -Pdev solr-runner:start`
  - To start up a servlet container as a development environment go back to `mir` folder
    - Run `mvn install -am -pl mir-webapp && mvn -Pdev -Dtomcat org.codehaus.cargo:cargo-maven3-plugin:run -pl mir-webapp`
-   - Open `http://localhost/mir` in your browser
+   - Open `http://localhost:8291/mir` in your browser
  - To perform the guided initial configuration
    - Use the login token from the server log to continue
    - Use the SOLR server URL `http://localhost:8983`
@@ -35,6 +35,8 @@ This guide addresses developers. Thats why you run it in 'dev' profile!
    - Enter usernames `admin`, `indexer` and `searcher` respectively and password `alleswirdgut` for all three users
    - Select database type `H2`
    - Continue and restart the servlet container as instructed
+   - Open `http://localhost:8291/mir` in your browser again
+   - Log in using username `administrator` and password `alleswirdgut`
 
 Afterward, you can stop Solr from the `mir-webapp` folder with `mvn -Pdev solr-runner:stop`.
 If you need to update Solr cores, you can do this from the `mir-webapp` folder with `mvn -Pdev solr-runner:stop solr-runner:copyHome solr-runner:start`.

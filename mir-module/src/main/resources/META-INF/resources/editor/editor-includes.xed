@@ -677,7 +677,8 @@
   </xed:template>
 
   <xed:template id="person.affiliation">
-    <mir:textfield repeat="true" xpath="mods:affiliation" help-text="{i18n:mir.help.affiliation}" label="mir.affiliation" />
+    <mir:textfield repeat="true" xpath="mods:affiliation[not(@authorityURI)]" help-text="{i18n:mir.help.affiliation}" label="mir.affiliation" />
+    <mir:textfield repeat="true" xpath="mods:affiliation[@authorityURI='https://ror.org/']" help-text="{i18n:mir.help.affiliation.ror}" label="mir.affiliation.ror" id="mir-ror-input"/>
   </xed:template>
 
   <xed:template id="nameIdentifier.repeated">
@@ -1812,7 +1813,7 @@
   </xed:template>
 
   <xed:template id="subject.simple">
-    <xed:repeat xpath="mods:subjectXML" min="1" max="10">
+    <xed:repeat xpath="mods:subjectXML" min="1" max="{$MIR.Editor.repeat.max.subject.simple}">
       <div class="form-group row {$xed-validation-marker}">
         <label class="col-md-3 col-form-label text-right">
           <xed:output i18n="mir.subject.topic"/>
@@ -1828,7 +1829,7 @@
   </xed:template>
 
   <xed:template id="subject.simple.required">
-    <xed:repeat xpath="mods:subjectXML" min="1" max="10">
+    <xed:repeat xpath="mods:subjectXML" min="1" max="{$MIR.Editor.repeat.max.subject.simple.required}">
       <div class="form-group row {$xed-validation-marker}">
         <label class="col-md-3 col-form-label text-right">
           <xed:output i18n="mir.subject.topic"/>
