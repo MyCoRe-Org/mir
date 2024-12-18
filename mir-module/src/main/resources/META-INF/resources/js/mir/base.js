@@ -329,6 +329,57 @@
       }
     });
 
+    // Element with the link to toggle to show/hide md5 sums
+    const toggleMD5LinkElement = '.toggleMD5Link';
+    // Derivate action dropdown toggle button element
+    const derivateActionDropdownToggleButton = '.headline .dropdown.options .dropdown-toggle';
+    // Element selector with md5 information
+    const md5ElementSelector = '.file_md5';
+    // Element selector for the derivate file box
+    const fileBoxSelector = '.file_box';
+
+    // Show/hide md5 sums by derivate files by clicking on the 'toggleMD5LinkElement' element
+    $(toggleMD5LinkElement).click((evt) => {
+      evt.preventDefault();
+      // Get a current derivate parent element
+      const currentDerivateIdParentElements = $(evt.currentTarget).closest(fileBoxSelector);
+      if (currentDerivateIdParentElements.length) {
+        // Get all elements for all files with the md5 sum
+        const currentMd5Elements = $(currentDerivateIdParentElements.get(0)).find(md5ElementSelector);
+        if (currentMd5Elements.length) {
+          // Show/hide every element
+          currentMd5Elements.each((index, element) => {
+            $(element).toggleClass('hidden');
+          });
+        }
+      }
+    });
+
+    // Getting i18n translation for the link to switch state 'show/hide MD5 amounts' depending on the visibility of the
+    // message with this amount when clicking on the 'derivateActionDropdownToggleButton' element
+    $(derivateActionDropdownToggleButton).click((evt) => {
+      // Get a current derivate parent element
+    	const currentDerivateIdParentElements = $(evt.currentTarget).closest(fileBoxSelector);
+    	if (currentDerivateIdParentElements.length) {
+        // Get all elements for all files with the md5 sum
+    		const currentMd5Elements = $(currentDerivateIdParentElements.get(0)).find(md5ElementSelector);
+    		if (currentMd5Elements.length) {
+          // only the first element is checked for the presence/absence of a hidden class,
+          // assuming that the remaining elements of the current derivate meet this condition
+    			const i18nKey = ($(currentMd5Elements.get(0)).hasClass('hidden'))
+        	  		? ('component.mods.metaData.options.MD5.show')
+        	  		: ('component.mods.metaData.options.MD5.hide');
+          
+          // Get a current toggle element
+          const currentToggleMD5LinkElement = $(currentDerivateIdParentElements.get(0)).find(toggleMD5LinkElement);
+
+          if (currentToggleMD5LinkElement.length) {
+            getI18n(i18nKey, currentToggleMD5LinkElement.get(0));
+          }
+    		}
+    	}
+    });
+
     var languageList = jQuery('#topnav .languageList');
     jQuery('#topnav .languageSelect').click(function() {
       languageList.toggleClass('hide');
