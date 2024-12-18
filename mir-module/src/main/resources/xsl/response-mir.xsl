@@ -152,56 +152,58 @@
             <div class="input-group input-group-sm">
 
               <!-- Select box for the filter query (select mods) -->
-              <select id="select_mods" class="btn btn-primary">
-                <option value="all">
-                  <xsl:if test="$initialSelectMods = 'all' or not($initialSelectMods)">
-                    <xsl:attribute name="selected">selected</xsl:attribute>
-                  </xsl:if>
-                  <xsl:value-of select="i18n:translate('mir.dropdown.all')" />
-                </option>
+              <div class="input-group-btn input-group-prepend">
+                <select id="select_mods" class="btn btn-primary">
+                  <option value="all">
+                    <xsl:if test="$initialSelectMods = 'all' or not($initialSelectMods)">
+                      <xsl:attribute name="selected">selected</xsl:attribute>
+                    </xsl:if>
+                    <xsl:value-of select="i18n:translate('mir.dropdown.all')" />
+                  </option>
 
-                <option value="mods.title">
-                  <xsl:if test="$initialSelectMods = 'mods.title'">
-                    <xsl:attribute name="selected">selected</xsl:attribute>
-                  </xsl:if>
-                  <xsl:value-of select="i18n:translate('mir.dropdown.title')" />
-                </option>
+                  <option value="mods.title">
+                    <xsl:if test="$initialSelectMods = 'mods.title'">
+                      <xsl:attribute name="selected">selected</xsl:attribute>
+                    </xsl:if>
+                    <xsl:value-of select="i18n:translate('mir.dropdown.title')" />
+                  </option>
 
-                <option value="mods.author">
-                  <xsl:if test="$initialSelectMods = 'mods.author'">
-                    <xsl:attribute name="selected">selected</xsl:attribute>
-                  </xsl:if>
-                  <xsl:value-of select="i18n:translate('mir.dropdown.author')" />
-                </option>
+                  <option value="mods.author">
+                    <xsl:if test="$initialSelectMods = 'mods.author'">
+                      <xsl:attribute name="selected">selected</xsl:attribute>
+                    </xsl:if>
+                    <xsl:value-of select="i18n:translate('mir.dropdown.author')" />
+                  </option>
 
-                <option value="mods.name.top">
-                  <xsl:if test="$initialSelectMods = 'mods.name.top'">
-                    <xsl:attribute name="selected">selected</xsl:attribute>
-                  </xsl:if>
-                  <xsl:value-of select="i18n:translate('mir.dropdown.name')" />
-                </option>
+                  <option value="mods.name.top">
+                    <xsl:if test="$initialSelectMods = 'mods.name.top'">
+                      <xsl:attribute name="selected">selected</xsl:attribute>
+                    </xsl:if>
+                    <xsl:value-of select="i18n:translate('mir.dropdown.name')" />
+                  </option>
 
-                <option value="mods.nameIdentifier">
-                  <xsl:if test="$initialSelectMods = 'mods.nameIdentifier'">
-                    <xsl:attribute name="selected">selected</xsl:attribute>
-                  </xsl:if>
-                  <xsl:value-of select="i18n:translate('mir.dropdown.nameIdentifier')" />
-                </option>
+                  <option value="mods.nameIdentifier">
+                    <xsl:if test="$initialSelectMods = 'mods.nameIdentifier'">
+                      <xsl:attribute name="selected">selected</xsl:attribute>
+                    </xsl:if>
+                    <xsl:value-of select="i18n:translate('mir.dropdown.nameIdentifier')" />
+                  </option>
 
-                <option value="allMeta">
-                  <xsl:if test="$initialSelectMods = 'allMeta'">
-                    <xsl:attribute name="selected">selected</xsl:attribute>
-                  </xsl:if>
-                  <xsl:value-of select="i18n:translate('mir.dropdown.allMeta')" />
-                </option>
+                  <option value="allMeta">
+                    <xsl:if test="$initialSelectMods = 'allMeta'">
+                      <xsl:attribute name="selected">selected</xsl:attribute>
+                    </xsl:if>
+                    <xsl:value-of select="i18n:translate('mir.dropdown.allMeta')" />
+                  </option>
 
-                <option value="content">
-                  <xsl:if test="$initialSelectMods = 'content'">
-                    <xsl:attribute name="selected">selected</xsl:attribute>
-                  </xsl:if>
-                  <xsl:value-of select="i18n:translate('mir.dropdown.content')" />
-                </option>
-              </select>
+                  <option value="content">
+                    <xsl:if test="$initialSelectMods = 'content'">
+                      <xsl:attribute name="selected">selected</xsl:attribute>
+                    </xsl:if>
+                    <xsl:value-of select="i18n:translate('mir.dropdown.content')" />
+                  </option>
+                </select>
+              </div>
 
               <xsl:variable name="resolver">
                 <xsl:call-template name="substring-after-last">
