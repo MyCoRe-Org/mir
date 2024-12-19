@@ -561,21 +561,6 @@ chalk@~0.4.0:
     has-color "~0.1.0"
     strip-ansi "~0.1.0"
 
-ckeditor-notification@^4.11.2:
-  version "4.11.2"
-  resolved "https://registry.yarnpkg.com/ckeditor-notification/-/ckeditor-notification-4.11.2.tgz#6f37c1d5e7489d346fd725a3e96d40743588fe6b"
-  integrity sha512-bQ0lrx8DUkEuZ1vfCSOIcoYPK8R7ozL0baypqu/VLcrmByu8D6cWLjk5yXOA84q/64EhQxfIR4lmHk+PO/5DbA==
-
-ckeditor-wordcount-plugin@^1.17.12:
-  version "1.17.12"
-  resolved "https://registry.yarnpkg.com/ckeditor-wordcount-plugin/-/ckeditor-wordcount-plugin-1.17.12.tgz#09452308b460398d7b045efb69b240242a5150f5"
-  integrity sha512-UU6ZpNoJvo6TQ7LoiV1hcEWboHKwqoLKK0CW951ZXH2QywMX+b4FkYNk3ajdrkCWbe2jVT2kbyMHf/H4FK+u8w==
-
-ckeditor4@~4.22.0:
-  version "4.22.1"
-  resolved "https://registry.yarnpkg.com/ckeditor4/-/ckeditor4-4.22.1.tgz#a4e79db1bac2ccb9a672c47e601ba4882afaf455"
-  integrity sha512-Yj4vTHX5YxHwc48gNqUqTm+KLkRr9tuyb4O2VIABu4oKHWRNVIdLdy6vUNe/XNx+RiTavMejfA1MVOU/MxLjqQ==
-
 cliui@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/cliui/-/cliui-2.1.0.tgz#4b475760ff80264c762c3a1719032e91c7fea0d1"
@@ -2816,6 +2801,16 @@ throttleit@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/throttleit/-/throttleit-1.0.0.tgz#9e785836daf46743145a5984b6268d828528ac6c"
   integrity sha1-nnhYNtr0Z0MUWlmEtiaNgoUorGw=
+
+tinymce-i18n@^24.12.9:
+  version "24.12.9"
+  resolved "https://registry.yarnpkg.com/tinymce-i18n/-/tinymce-i18n-24.12.9.tgz#1303caffa9c151073dfb628c9a3c224da781b29b"
+  integrity sha512-G4FTRiyrHLL+YSGAWuuxGsEYvx4WONFpgRkOnVgB2AQbPpJcqyu4IabC2OWLqe9vAmcZs/kE1PJu32aj7qawSg==
+
+tinymce@^7.6.0:
+  version "7.6.0"
+  resolved "https://registry.yarnpkg.com/tinymce/-/tinymce-7.6.0.tgz#476069a3e98f46f3f6e7875ca878313d6b3345b9"
+  integrity sha512-kUrklnD7H8JbpSDEGRh51GKK6Mrf+pR9neSDzUHvXKV+2oRtMB7sqfAtEOnM0/WKdstwaX0qoNCZNo2H1Y0EFA==
 
 tmp@0.0.31:
   version "0.0.31"

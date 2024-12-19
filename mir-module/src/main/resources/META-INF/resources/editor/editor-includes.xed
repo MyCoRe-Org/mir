@@ -2326,7 +2326,8 @@
     <script type="text/javascript" src="{$WebApplicationBaseURL}js/mir/xeditor-form.min.js"></script>
     <script type="text/javascript" src="{$WebApplicationBaseURL}js/mir/bootstrap-datepicker-timepicker/bootstrap-datepicker-timepicker.js"></script>
     <script type="text/javascript" src="{$WebApplicationBaseURL}js/mir/bootstrap-datepicker-timepicker/bootstrap-datepicker-timepicker.de.js"></script>
-    <script type="text/javascript" src="{$WebApplicationBaseURL}assets/ckeditor4/ckeditor.js"></script>
+    <script type="text/javascript" src="{$WebApplicationBaseURL}assets/tinymce/tinymce.js"></script>
+    <script type="text/javascript" src="{$WebApplicationBaseURL}assets/tinymce/config.js"></script>
     <link rel="stylesheet" type="text/css" href="{$WebApplicationBaseURL}assets/select2/css/select2.min.css"/>
     <script type="text/javascript" src="{$WebApplicationBaseURL}assets/select2/js/select2.min.js"/>
     <script type="text/javascript" src="{$WebApplicationBaseURL}assets/select2/js/i18n/{$MCR.Metadata.DefaultLang}.js"/>
