@@ -33,9 +33,8 @@
         "video.js": "7.14.3"
     },
     "dependencies": {
-        "ckeditor-notification": "^4.11.2",
-        "ckeditor-wordcount-plugin": "^1.17.12",
-        "ckeditor4": "~4.22.0",
+        "tinymce": "^7.6.0",
+        "tinymce-i18n": "^24.12.9",
         "vue": "3.2.13",
         "vue3-openlayers": "^1.0.0"
     }
