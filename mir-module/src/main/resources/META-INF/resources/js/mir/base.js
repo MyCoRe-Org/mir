@@ -301,8 +301,12 @@
     const secondSearchFormSubmitButtonElement = subSearchFormName + ' button[type="submit"]';
     // ID of the input field for the second search text
     const qrySelector = "#qry";
-    // ID of the select box with the filter query key
+    // ID of the dropdown element with the filter query key
     const selectMods = "#select_mods";
+    // ID of the dropdown element with the filter query key
+    const selectModsLabel = "#select_mods_label";
+    // Selector of a dropdown-menu item
+    const selectModsItem = ".select_mods_type .dropdown-item";
     // ID of the hidden element with the fq parameter
     const fqElement = "#fq";
     // ID of the hidden element with the initial condQuery parameter in the mir-flatmir-layout-utils.xsl search form
@@ -323,9 +327,18 @@
         }
     });
 
-    // Changes in the select box for the filter query
-    $(selectMods).change(() => {
+    // Select one of the dropdown-menu items
+    $(selectModsItem).click(function() {
+      if ($(selectModsLabel).length) {
+        // Change the dropdowns label
+        $(selectModsLabel).html( $( this ).html() );
+      }
+      if ($(selectMods).length) {
+        // Change the dropdowns value
+        $(selectMods).attr( 'value', $( this ).attr('value') );
+
         setFQAndCondQueryElementsValues('selectMods');
+      }
     });
 
     // Changes in the input field of the filter query
