@@ -4,7 +4,7 @@ export default defineConfig({
   build: {
     rollupOptions: {
       input: {
-        "orcid-user-settings": 'src/user-settings.ts',
+        "user": 'src/user.ts',
       },
       output: {
         entryFileNames: '[name].js',  // Jeder Entry Point bekommt eine eigene JavaScript-Datei
