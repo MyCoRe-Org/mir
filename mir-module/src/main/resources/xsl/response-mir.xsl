@@ -264,9 +264,7 @@
       </div>
 
     </div>
-    <xsl:if test="$orcidIntegrationEnabled">
-      <script type="module" src="{$WebApplicationBaseURL}js/mir/orcid/orcid-response.js"/>
-    </xsl:if>
+    <script type="module" src="{$WebApplicationBaseURL}js/mir/result-list.js"/>
   </xsl:template>
 
   <xsl:template match="doc" priority="10" mode="resultList">

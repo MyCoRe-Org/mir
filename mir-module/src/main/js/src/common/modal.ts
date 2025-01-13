@@ -16,8 +16,8 @@
  * along with MyCoRe.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import $ from 'jquery';
-import 'bootstrap';
+// import $ from 'jquery';
+// import 'bootstrap';
 
 export abstract class MIRModalHandler {
   private _isBusy = false;
@@ -28,7 +28,7 @@ export abstract class MIRModalHandler {
   ) {
     this._modalDiv = modalDiv;
     this.handleOpenModal = this.handleOpenModal.bind(this);
-    this.bindEvents();
+    this.bindBasicEvents();
   }
 
   protected get isBusy(): boolean {
@@ -43,7 +43,7 @@ export abstract class MIRModalHandler {
     return this.modalDiv;
   }
 
-  protected bindEvents(): void {
+  private bindBasicEvents(): void {
     $(this._modalDiv).on('hide.bs.modal', this.handleClose);
     $(this._modalDiv).on('show.bs.modal', this.handleOpenModal);
   }

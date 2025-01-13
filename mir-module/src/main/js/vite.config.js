@@ -4,7 +4,9 @@ export default defineConfig({
   build: {
     rollupOptions: {
       input: {
-        "user": 'src/user.ts',
+        // 'user': 'src/user.ts',
+        // 'result-list': 'src/result-list.ts'
+        'metadata': 'src/metadata.ts',
       },
       output: {
         entryFileNames: '[name].js',  // Jeder Entry Point bekommt eine eigene JavaScript-Datei
@@ -12,6 +14,7 @@ export default defineConfig({
         assetFileNames: '[name].[ext]',  // Assets wie CSS, Bilder etc. bekommen ihren ursprünglichen Namen
         dir: 'dist',  // Alle Bundles werden im Verzeichnis 'dist' abgelegt
       },
+      external: ['jquery', 'bootstrap'],
     },
   },
 });

@@ -45,7 +45,7 @@ const createOrcidExportModalHandler = (accessToken: string): MIROrcidExportModal
 
 let orcidExportModalHandlerInstance: MIROrcidExportModalHandler | null;;
 
-const getOrcidExportModalHandlerInstance = async (): Promise<MIROrcidExportModalHandler> => {
+const getOrcidExportModalHandlerInstance = async (): Promise<MIROrcidExportModalHandler > => {
   if (!orcidExportModalHandlerInstance) {
     const accessToken = await getAccessToken();
     orcidExportModalHandlerInstance = createOrcidExportModalHandler(accessToken);
@@ -78,4 +78,5 @@ const initExportModal = async () => {
     appendMenuButton();
   }
 };
+
 document.addEventListener('DOMContentLoaded', initExportModal);

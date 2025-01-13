@@ -53,7 +53,7 @@
             <xsl:if test="count($matchingTrustedIds) &gt; 0">
               <xsl:call-template name="printExportToOrcidMenuItem"/>
               <xsl:call-template name="printExportToOrcidModal"/>
-              <script type="module" src="{$WebApplicationBaseURL}js/mir/orcid/orcid-metadata.js"/>
+              <script type="module" src="{$WebApplicationBaseURL}js/mir/metadata.js"/>
             </xsl:if>
           </xsl:if>
         </xsl:if>

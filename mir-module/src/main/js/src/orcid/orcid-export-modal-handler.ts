@@ -40,6 +40,7 @@ export class MIROrcidExportModalHandler extends MIRModalHandler {
     alertDiv: HTMLDivElement
   ) {
     super(modalDiv);
+    console.log(exportBtn);
     this._accessToken = accessToken;
     this._orcidWorkService = orcidWorkService;
     this._orcidUserService = orcidUserService;
@@ -60,8 +61,7 @@ export class MIROrcidExportModalHandler extends MIRModalHandler {
     return this._objectId;
   }
 
-  protected bindEvents(): void {
-    super.bindEvents();
+  private bindEvents(): void {
     this._exportBtn.addEventListener('click', this.exportToOrcid);
     this._orcidSelect.addEventListener('change', this.handleSelectChange);
   }
