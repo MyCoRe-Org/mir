@@ -9,10 +9,10 @@ export default defineConfig({
         'metadata': 'src/metadata.ts',
       },
       output: {
-        entryFileNames: '[name].js',  // Jeder Entry Point bekommt eine eigene JavaScript-Datei
-        chunkFileNames: '[name].[hash].js',  // Chunks werden mit Hashes benannt (falls vorhanden)
-        assetFileNames: '[name].[ext]',  // Assets wie CSS, Bilder etc. bekommen ihren ursprünglichen Namen
-        dir: 'dist',  // Alle Bundles werden im Verzeichnis 'dist' abgelegt
+        entryFileNames: '[name].js',
+        chunkFileNames: '[name].[hash].js',
+        assetFileNames: '[name].[ext]',
+        dir: '../../../target/classes/META-INF/resources/js/mir',
       },
     },
   },
