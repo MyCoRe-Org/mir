@@ -4,8 +4,8 @@ export default defineConfig({
   build: {
     rollupOptions: {
       input: {
-        // 'user': 'src/user.ts',
-        // 'result-list': 'src/result-list.ts'
+        'user': 'src/user.ts',
+        'result-list': 'src/result-list.ts',
         'metadata': 'src/metadata.ts',
       },
       output: {

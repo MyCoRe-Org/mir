@@ -40,7 +40,6 @@ export class MIROrcidExportModalHandler extends MIRModalHandler {
     alertDiv: HTMLDivElement
   ) {
     super(modalDiv);
-    console.log(exportBtn);
     this._accessToken = accessToken;
     this._orcidWorkService = orcidWorkService;
     this._orcidUserService = orcidUserService;
@@ -50,6 +49,7 @@ export class MIROrcidExportModalHandler extends MIRModalHandler {
     this._objectId = null;
     this.resetModal();
     this.handleOpenModal = this.handleOpenModal.bind(this);
+    this.handleSelectChange = this.handleSelectChange.bind(this);
     this.bindEvents();
   }
 
