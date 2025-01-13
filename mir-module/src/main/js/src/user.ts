@@ -19,8 +19,9 @@
 import { getBaseUrl, getAccessToken } from './common/helpers';
 import { MCROrcidUserService } from '@golsch/test/orcid';
 import { MIROrcidUserSetttingsModalHandler } from './orcid/orcid-user-settings-modal-handler';
+import { revokeOrcidOAuth, getOrcidOAuthInitUrl } from '@golsch/test/orcid';
 
-const createSettingsModalHandler = (accessToken: string): MIROrcidUserSetttingsModalHandler => {
+const createOrcidSettingsModalHandler = (accessToken: string): MIROrcidUserSetttingsModalHandler => {
   const userService = new MCROrcidUserService(getBaseUrl());
   const modalDiv: HTMLDivElement | null = document.querySelector('#orcid-settings-modal');
   const settingsForm: HTMLFormElement | null = document.querySelector('#orcid-settings-form');
@@ -39,35 +40,81 @@ const createSettingsModalHandler = (accessToken: string): MIROrcidUserSetttingsM
   );
 };
 
-let settingsModalHandlerInstance: MIROrcidUserSetttingsModalHandler | null  = null;
+let orcidSettingsModalHandlerInstance: MIROrcidUserSetttingsModalHandler | null  = null;
 
 const getSettingsModalHandlerInstance = async (): Promise<MIROrcidUserSetttingsModalHandler> =>  {
-  if (!settingsModalHandlerInstance) {
+  if (!orcidSettingsModalHandlerInstance) {
     const accessToken = await getAccessToken();
-    settingsModalHandlerInstance = createSettingsModalHandler(accessToken);
+    orcidSettingsModalHandlerInstance = createOrcidSettingsModalHandler(accessToken);
   }
-  return settingsModalHandlerInstance;
+  return orcidSettingsModalHandlerInstance;
 };
 
-const handleOpenModal = async (event: MouseEvent): Promise<void> => {
+const doOpenOrcidSettingsModal = async (orcid: string): Promise<void> => {
+  const modalHandler = await getSettingsModalHandlerInstance();
+  modalHandler.orcid = orcid;
+  modalHandler.showModal();
+};
+
+const doRevokeOrcidOAuth = async (orcid: string, redirectUrl: string | null) => {
+  await revokeOrcidOAuth(getBaseUrl(), await getAccessToken(), orcid);
+  if (redirectUrl) {
+    window.location.href = redirectUrl;
+  }
+}
+
+const doInitOrcidOAuth = (scope: string | null) => {
+  const width = 540;
+  const height = 750;
+  let left = 0;
+  let top = 0;
+  if (window.top) {
+    left = window.top.outerWidth / 2 + window.top.screenX - (width / 2);
+    top = window.top.outerHeight / 2 + window.top.screenY - (height / 2);
+  }
+  const initUrl = getOrcidOAuthInitUrl(getBaseUrl(), scope !== null ? scope : undefined);
+  const w = window.open(initUrl, '_blank', `toolbar=no, width=${width}, height=${height}, top=${top}, left=${left}`);
+  w?.addEventListener("beforeunload", (event) => {
+    window.location.reload();
+  });
+}
+
+const handleOpenOrcidSettingsModal = (event: Event) => {
   const targetElement = event.currentTarget as HTMLElement;
   const { orcid } = targetElement.dataset;
   if (!orcid) {
     console.error('ORCID iD is missing.');
     return;
   }
-  const modalHandler = await getSettingsModalHandlerInstance();
-  modalHandler.orcid = orcid;
-  modalHandler.showModal();
-};
+  doOpenOrcidSettingsModal(orcid);
+}
 
-const initSettingsModal = (): void => {
-  const openModalButton = document.getElementById('openSettingsModalBtn');
-  if (openModalButton) {
-    openModalButton.addEventListener('click', handleOpenModal);
+const handleRevokeOrcidOAuth = async (event: Event) => {
+  const target = event.target as HTMLButtonElement;
+  const orcid: string | null = target.getAttribute('data-orcid');
+  if (orcid) {
+    await doRevokeOrcidOAuth(orcid, target.getAttribute('data-redirect-url'));
   } else {
-    console.error('Modal button not found');
+    console.error('Orcid is required to revoke Orcid OAuth');
+  }
+}
+
+const init = (): void => {
+  const openOrcidSettingsModalBtns: NodeListOf<HTMLButtonElement> = document.querySelectorAll('button.open-orcid-settings');
+  openOrcidSettingsModalBtns.forEach((button: HTMLButtonElement) => {
+    button.addEventListener('click', async (event: MouseEvent) =>  handleOpenOrcidSettingsModal(event));
+  });
+  const revokeOrcidBtns: NodeListOf<HTMLButtonElement> = document.querySelectorAll('button.revoke-orcid-oauth');
+  revokeOrcidBtns.forEach((button: HTMLButtonElement) => {
+    button.addEventListener('click', async (event: MouseEvent) => handleRevokeOrcidOAuth(event));
+  });
+  const initOrcidBtn: HTMLButtonElement | null = document.querySelector('#initOrcidOAuthBtn');
+  if (initOrcidBtn) {
+    const scope: string | null = initOrcidBtn.getAttribute('data-scope');
+    initOrcidBtn.addEventListener('click', () => {
+      doInitOrcidOAuth(scope);
+    });
   }
 };
 
-document.addEventListener('DOMContentLoaded', initSettingsModal);
+document.addEventListener('DOMContentLoaded', init);

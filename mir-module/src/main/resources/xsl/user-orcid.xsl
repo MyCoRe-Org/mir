@@ -85,16 +85,16 @@
 
   <xsl:template name="printRevokeOrcidButton">
     <xsl:param name="orcid" />
-    <button type="button" class="btn btn-danger btn-sm ml-2" title="{document('i18n:orcid.oauth.revoke')}"
-      onclick="revokeOrcidOAuth('{$orcid}', '{$WebApplicationBaseURL}servlets/MCRUserServlet?action=show')">
+    <button type="button" class="btn btn-danger btn-sm ml-2 revoke-orcid-oauth" title="{document('i18n:orcid.oauth.revoke')}"
+      data-orcid="{$orcid}" data-redirect-url="{$WebApplicationBaseURL}servlets/MCRUserServlet?action=show">
       <xsl:value-of select="document('i18n:orcid.oauth.revoke')"/>
     </button>
   </xsl:template>
 
   <xsl:template name="printShowOrcidOAuthButton">
     <xsl:param name="scope"/>
-    <button type="button" class="btn btn-primary" title="{document('i18n:orcid.integration.popup.tooltip')}"
-      onclick="orcidOAuth('{scope}')">
+    <button id="initOrcidOAuthBtn" type="button" class="btn btn-primary"
+      title="{document('i18n:orcid.integration.popup.tooltip')}" data-scope="{$scope}">
       <img alt="ORCID iD" src="{$WebApplicationBaseURL}images/orcid_icon.svg" class="orcid-icon"/>
       <xsl:value-of select="document('i18n:orcid.oauth.link')"/>
     </button>
@@ -102,7 +102,7 @@
 
   <xsl:template name="printShowOrcidSettingsButton">
     <xsl:param name="orcid" />
-    <button type="button" class="btn btn-primary btn-sm" id="openSettingsModalBtn"
+    <button type="button" class="btn btn-primary btn-sm open-orcid-settings"
       title="{document('i18n:orcid.settings.open')}" data-orcid="{$orcid}">
       <xsl:value-of select="document('i18n:orcid.settings.open')"/>
     </button>

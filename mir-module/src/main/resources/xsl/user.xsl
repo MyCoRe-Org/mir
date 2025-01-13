@@ -330,6 +330,7 @@
         </xsl:if>
       </div>
     </div>
+    <script type="module" src="{$WebApplicationBaseURL}js/mir/user.js"/>
   </xsl:template>
 
   <xsl:template match="user|owner" mode="link">
@@ -371,7 +372,6 @@
               </xsl:call-template>
               <br/><br/>
               <xsl:call-template name="printOrcidSettingsModal" />
-              <script type="module" src="{$WebApplicationBaseURL}js/mir/orcid/orcid-user-settings.js"/>
             </xsl:when>
             <xsl:otherwise>
               <xsl:value-of select="document('i18n:orcid.integration.confirmedOrcids.text')"/>
@@ -390,7 +390,6 @@
                 </xsl:for-each>
               </ul>
               <xsl:call-template name="printOrcidSettingsModal" />
-              <script type="module" src="{$WebApplicationBaseURL}js/mir/orcid/orcid-user-settings.js"/>
             </xsl:otherwise>
           </xsl:choose>
         </xsl:when>
@@ -414,7 +413,6 @@
           <xsl:value-of select="document('i18n:orcid.integration.more')"/>
         </a>
       </xsl:if>
-      <script src="{$WebApplicationBaseURL}modules/orcid2/js/orcid-auth.js"/>
     </article>
   </xsl:template>
 
