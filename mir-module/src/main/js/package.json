@@ -11,12 +11,12 @@
   "description": "",
   "dependencies": {
     "@golsch/test": "npm:@jsr/golsch__test",
-    "@types/bootstrap": "4.3.1",
     "vite": "^6.0.3"
   },
   "devDependencies": {
-    "@types/jquery": "^3.5.32",
     "@types/node": "^22.10.2",
-    "typescript": "^5.7.2"
+    "typescript": "^5.7.2",
+    "@types/bootstrap": "4.3.1",
+    "@types/jquery": "^3.5.32"
   }
 }

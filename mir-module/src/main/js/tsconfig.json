@@ -8,7 +8,7 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "outDir": "../dist",
-    "types": ["jquery"]
+    "types": ["jquery", "bootstrap"]
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts"]
 }

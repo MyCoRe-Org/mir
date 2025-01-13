@@ -16,9 +16,6 @@
  * along with MyCoRe.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-// import $ from 'jquery';
-// import 'bootstrap';
-
 export abstract class MIRModalHandler {
   private _isBusy = false;
   private _modalDiv: HTMLDivElement;

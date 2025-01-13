@@ -14,7 +14,6 @@ export default defineConfig({
         assetFileNames: '[name].[ext]',  // Assets wie CSS, Bilder etc. bekommen ihren ursprünglichen Namen
         dir: 'dist',  // Alle Bundles werden im Verzeichnis 'dist' abgelegt
       },
-      external: ['jquery', 'bootstrap'],
     },
   },
 });
