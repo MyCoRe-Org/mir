@@ -2,7 +2,8 @@
   <div ref="root" class="form-group" v-on-click-outside="closeDrops">
     <template v-if="model.i18nLoaded && model.classesLoaded">
       <div ref="input" class="input-group">
-        <input :id="`personLabel-${model.nameLocator}`" ref="searchBox" v-model="model.search" :placeholder="model.personPlaceholder"
+        <input :id="`personLabel-${nameLocatorString}`" ref="searchBox" v-model="model.search"
+               :placeholder="model.personPlaceholder"
                class="form-control" type="text"
                v-on:keydown.enter.prevent="startSearch()">
         <div class="input-group-append">
@@ -11,7 +12,7 @@
             <i class="fas fa-address-card"></i>
             <span class="identifier-count">{{ model.currentIdentifier.length }}</span>
           </button>
-          <button :id="`search-${model.nameLocator}`" class="btn btn-secondary" type="button"
+          <button :id="`search-${nameLocatorString}`" class="btn btn-secondary" type="button"
                   v-on:click.prevent="startSearch()">
             {{ model.searchLabel }}
           </button>
@@ -113,7 +114,8 @@
 
 import {Identifier, NameSearchResult, SearchProviderRegistry} from "@/api/SearchProvider";
 import {
-  findNameLocator, NameLocator,
+  findNameLocator,
+  NameLocator,
   retrieveDisplayName,
   retrieveIdentifiers,
   retrieveIsPerson,
@@ -129,7 +131,7 @@ import {i18n} from "@/api/I18N";
 import {RorSearchProvider} from "@/api/RorSearchProvider";
 import {LocalSearchProvider} from "@/api/LocalSearchProvider";
 import {computed, defineProps, onMounted, reactive, ref, watch} from "vue";
-import { vOnClickOutside } from '@vueuse/components'
+import {vOnClickOutside} from '@vueuse/components'
 
 LocalSearchProvider.init();
 LobidSearchProvider.init();
@@ -172,6 +174,10 @@ const model = reactive({
 const isDevMode = () => {
     return process.env.NODE_ENV === 'development';
 }
+
+const nameLocatorString = computed(() => {
+  return model.nameLocator?.modsIndex + "-" + model.nameLocator?.nameIndex + "-" + (model.nameLocator?.relatedItemIndex || '');
+})
 
 watch(() => model.currentIdentifier, (val) => {
     if (!isDevMode() && model.nameLocator !== undefined) {
