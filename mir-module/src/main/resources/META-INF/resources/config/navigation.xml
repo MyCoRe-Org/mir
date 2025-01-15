@@ -144,7 +144,7 @@
         <label xml:lang="de">Aktive Sitzungen</label>
         <label xml:lang="en">Session Management</label>
       </item>
-      <item href="/modules/webtools/processing/processing.xml" type="intern">
+      <item href="/modules/webtools/processing" type="intern">
         <label xml:lang="de">Aktive Prozesse</label>
         <label xml:lang="en">Processing</label>
       </item>
