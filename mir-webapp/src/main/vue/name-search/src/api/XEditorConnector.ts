@@ -18,30 +18,57 @@
 
 import {Identifier} from "@/api/SearchProvider";
 
-export function findNameIndex(anyElement: Element): number {
+export interface NameLocator {
+    modsIndex: number;
+    relatedItemIndex?: number;
+    nameIndex: number;
+}
+
+export function findNameLocator(anyElement: Element): NameLocator | undefined {
     for (const child of anyElement.children) {
         if (child instanceof HTMLInputElement) {
-            const match = child.name.match(/.*mods:name\[(\d+)\].*/);
+            const match = child.name.match(/(mods:mods\[(?<modsIndex>[\d+])\]\/)?(mods:relatedItem\[(?<relatedItemIndex>[\d+])\]\/)?mods:name\[(?<nameIndex>\d+)\].*/);
             if (match != null && match.length > 0) {
-                return parseInt(match[1]);
+                const relatedItemGroup = match?.groups?.relatedItemIndex;
+                const modsGroup = match?.groups?.modsIndex;
+                const nameGroup = match?.groups?.nameIndex || "1";
+                if (!nameGroup) {
+                    console.error("Name index not found in name locator");
+                    return undefined;
+                }
+                if(!modsGroup){
+                    console.error("Mods index not found in name locator");
+                    return undefined;
+                }
+                return {
+                    relatedItemIndex: relatedItemGroup ? parseInt(relatedItemGroup) : undefined,
+                    modsIndex: parseInt(modsGroup),
+                    nameIndex: parseInt(nameGroup)
+                }
             }
         }
     }
 
     if (anyElement.parentElement) {
-        return findNameIndex(anyElement.parentElement);
+        return findNameLocator(anyElement.parentElement);
     } else {
-        return -1;
+        return undefined;
     }
 }
 
-export function retrieveDisplayName(nameIndex: number): string {
-    const input = document.querySelector(`[name*="mods:name[${nameIndex}]/mods:displayForm"]`) as HTMLInputElement;
+export function retrieveDisplayName(nameLocator: NameLocator): string {
+    const {relatedItemIndex, nameIndex} = nameLocator;
+    let riPart = relatedItemIndex ? `mods:relatedItem[${relatedItemIndex}]/`: "";
+    let modsPart = nameLocator.modsIndex ? `mods:mods[${nameLocator.modsIndex}]/` : "";
+    const input = document.querySelector(`[name*="${modsPart}${riPart}mods:name[${nameIndex}]/mods:displayForm"]`) as HTMLInputElement;
     return input.value;
 }
 
-export function retrieveIsPerson(nameIndex: number): boolean {
-    const input = document.querySelector(`[name*="mods:name[${nameIndex}]/@type"]`);
+export function retrieveIsPerson(nameLocator: NameLocator): boolean {
+    const {relatedItemIndex, nameIndex} = nameLocator;
+    let riPart = relatedItemIndex ? `mods:relatedItem[${relatedItemIndex}]/`: "";
+    let modsPart = nameLocator.modsIndex ? `mods:mods[${nameLocator.modsIndex}]/` : "";
+    const input = document.querySelector(`[name*="${modsPart}${riPart}mods:name[${nameIndex}]/@type"]`);
     if(input instanceof HTMLInputElement || input instanceof HTMLSelectElement){
         if(input.value == "personal"){
             return true;
@@ -53,21 +80,27 @@ export function retrieveIsPerson(nameIndex: number): boolean {
     }
 }
 
-export function storeName(nameIndex: number, name: string) {
-    const input = document.querySelector(`[name*="mods:name[${nameIndex}]/mods:displayForm"]`) as HTMLInputElement;
+export function storeName(nameLocator: NameLocator, name: string) {
+    const {relatedItemIndex, nameIndex} = nameLocator;
+    let riPart = relatedItemIndex ? `mods:relatedItem[${relatedItemIndex}]/`: "";
+    let modsPart = nameLocator.modsIndex ? `mods:mods[${nameLocator.modsIndex}]/` : "";
+    const input = document.querySelector(`[name*="${modsPart}${riPart}mods:name[${nameIndex}]/mods:displayForm"]`) as HTMLInputElement;
     input.value = name;
 }
 
-export function storeIsPerson(nameIndex:number, isPerson: boolean) {
-    const input = document.querySelector(`[name*="mods:name[${nameIndex}]/@type"]`);
+export function storeIsPerson(nameLocator: NameLocator, isPerson: boolean) {
+    const {relatedItemIndex, nameIndex} = nameLocator;
+    let riPart = relatedItemIndex ? `mods:relatedItem[${relatedItemIndex}]/`: "";
+    let modsPart = nameLocator.modsIndex ? `mods:mods[${nameLocator.modsIndex}]/` : "";
+    const input = document.querySelector(`[name*="${modsPart}${riPart}mods:name[${nameIndex}]/@type"]`);
 
     if(input instanceof HTMLInputElement || input instanceof HTMLSelectElement){
         input.value = isPerson ? "personal" : "corporate";
     }
 }
 
-export function storeIdentifiers(nameIndex: number, identifiers: Identifier[]) {
-    const {typeMap, identifierMap} = retrieveElementMaps(nameIndex);
+export function storeIdentifiers(nameLocator: NameLocator, identifiers: Identifier[]) {
+    const {typeMap, identifierMap} = retrieveElementMaps(nameLocator);
     console.log(["storeIdentifiers ", typeMap, identifierMap, identifiers])
     Object.keys(identifierMap).map(key => parseInt(key)).sort().forEach(index => {
         identifierMap[index].value = "";
@@ -80,8 +113,8 @@ export function storeIdentifiers(nameIndex: number, identifiers: Identifier[]) {
     }
 }
 
-export function retrieveIdentifiers(nameIndex: number): Identifier[] {
-    const elementMaps = retrieveElementMaps(nameIndex);
+export function retrieveIdentifiers(nameLocator: NameLocator): Identifier[] {
+    const elementMaps = retrieveElementMaps(nameLocator);
 
     return Object.keys(elementMaps.identifierMap)
         .map(key => parseInt(key))
@@ -93,8 +126,11 @@ export function retrieveIdentifiers(nameIndex: number): Identifier[] {
         }).filter(identifier => identifier.type != "" && identifier.value != "");
 }
 
-export function retrieveElementMaps(nameIndex: number) {
-    const elements = document.querySelectorAll(`[name*="mods:name[${nameIndex}]/mods:nameIdentifier"]`);
+export function retrieveElementMaps(nameLocator: NameLocator) {
+    const {relatedItemIndex, nameIndex} = nameLocator;
+    let riPart = relatedItemIndex ? `mods:relatedItem[${relatedItemIndex}]/`: "";
+    let modsPart = nameLocator.modsIndex ? `mods:mods[${nameLocator.modsIndex}]/` : "";
+    const elements = document.querySelectorAll(`[name*="${modsPart}${riPart}mods:name[${nameIndex}]/mods:nameIdentifier"]`);
     const typeMap: Record<number, HTMLInputElement> = {};
     const identifierMap: Record<number, HTMLInputElement> = {};
 
