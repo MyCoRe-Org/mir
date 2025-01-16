@@ -7,9 +7,9 @@ import org.apache.logging.log4j.Logger;
 import org.mycore.access.MCRAccessManager;
 import org.mycore.access.strategies.MCRAccessCheckStrategy;
 import org.mycore.datamodel.metadata.MCRObjectID;
-import org.mycore.mcr.acl.accesskey.MCRAccessKeyConfig;
-import org.mycore.mcr.acl.accesskey.MCRAccessKeyServiceFactory;
+import org.mycore.mcr.acl.accesskey.config.MCRAccessKeyConfig;
 import org.mycore.mcr.acl.accesskey.dto.MCRAccessKeyDto;
+import org.mycore.mcr.acl.accesskey.service.MCRAccessKeyServiceFactory;
 
 /**
  * Strategy class for checking access permissions on objects based on access keys.

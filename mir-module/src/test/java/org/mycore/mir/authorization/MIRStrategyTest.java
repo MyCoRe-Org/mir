@@ -36,8 +36,8 @@ import org.mycore.datamodel.common.MCRLinkTableManager;
 import org.mycore.datamodel.metadata.MCRObjectID;
 import org.mycore.frontend.cli.MCRCommandLineInterface;
 import org.mycore.frontend.cli.MCRCommandManager;
-import org.mycore.mcr.acl.accesskey.MCRAccessKeyServiceFactory;
 import org.mycore.mcr.acl.accesskey.dto.MCRAccessKeyDto;
+import org.mycore.mcr.acl.accesskey.service.MCRAccessKeyServiceFactory;
 import org.mycore.user2.MCRUser;
 import org.mycore.user2.MCRUserManager;
 
@@ -168,13 +168,13 @@ public class MIRStrategyTest extends MCRJPATestCase {
             .assertFalse(strategy.checkPermission(mir_derivate_00004711.toString(), MCRAccessManager.PERMISSION_WRITE));
 
         final MCRAccessKeyDto accessKeyRead = new MCRAccessKeyDto();
-        accessKeyRead.setValue("mySecret");
+        accessKeyRead.setSecret("mySecret");
         accessKeyRead.setPermission(MCRAccessManager.PERMISSION_READ);
         accessKeyRead.setReference(mir_mods_00004711.toString());
         MCRAccessKeyServiceFactory.getAccessKeyService().addAccessKey(accessKeyRead);
 
         final MCRAccessKeyDto accessKeyWrite = new MCRAccessKeyDto();
-        accessKeyWrite.setValue("letMeIn");
+        accessKeyWrite.setSecret("letMeIn");
         accessKeyWrite.setPermission(MCRAccessManager.PERMISSION_READ);
         accessKeyWrite.setReference(mir_mods_00004711.toString());
         MCRAccessKeyServiceFactory.getAccessKeyService().addAccessKey(accessKeyWrite);

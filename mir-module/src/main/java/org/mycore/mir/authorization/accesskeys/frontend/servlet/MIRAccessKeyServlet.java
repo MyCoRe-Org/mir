@@ -27,9 +27,9 @@ import org.mycore.common.MCRSystemUserInformation;
 import org.mycore.datamodel.metadata.MCRObjectID;
 import org.mycore.frontend.servlets.MCRServlet;
 import org.mycore.frontend.servlets.MCRServletJob;
-import org.mycore.mcr.acl.accesskey.MCRAccessKeyConfig;
-import org.mycore.mcr.acl.accesskey.MCRAccessKeyServiceFactory;
+import org.mycore.mcr.acl.accesskey.config.MCRAccessKeyConfig;
 import org.mycore.mcr.acl.accesskey.exception.MCRAccessKeyException;
+import org.mycore.mcr.acl.accesskey.service.MCRAccessKeyServiceFactory;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
