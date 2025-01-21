@@ -107,11 +107,6 @@
   </command>
   <command file="resource:setup/acl/grant-admin.xml" describedBy="administrators only">
     update permission read for id
-    webpage:/modules/webtools/processing/processing.xml with
-    rule {file} described by {describedBy}
-  </command>
-  <command file="resource:setup/acl/grant-admin.xml" describedBy="administrators only">
-    update permission read for id
     webpage:/authorization/change-password.xed with
     rule {file} described by {describedBy}
   </command>
