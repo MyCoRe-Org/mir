@@ -390,7 +390,7 @@
                 </label>
                 <div class="col-md-6 center-vertical">
                   <div class="controls">
-                    <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="person.fields.noHidden" />
+                    <xed:include ref="person.fields.noHidden" />
                   </div>
                   <span class="fas fa-chevron-down expand-item" title="{i18n:translate('mir.help.expand')}" aria-hidden="true"></span>
                 </div>
@@ -406,9 +406,9 @@
           </xed:bind>
         </legend>
         <div class="mir-fieldset-content personExtended-container d-none">
-          <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="nameType" />
-          <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="namePart.repeated" />
-          <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="person.affiliation" />
+          <xed:include ref="nameType" />
+          <xed:include ref="namePart.repeated" />
+          <xed:include ref="person.affiliation" />
         </div>
       </fieldset>
     </xed:repeat>
@@ -431,9 +431,7 @@
             </label>
             <div class="col-md-6">
               <div class="controls">
-                <xed:include
-                  uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed"
-                  ref="person.fields" />
+                <xed:include ref="person.fields" />
               </div>
             </div>
             <div class="col-md-3">
@@ -466,7 +464,7 @@
                   </xed:bind>
                 </div>
                 <div class="col-md-6 center-vertical">
-                  <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="person.fields.noHidden" />
+                  <xed:include ref="person.fields.noHidden" />
                   <span class="fas fa-chevron-down expand-item" title="{i18n:translate('mir.help.expand')}" aria-hidden="true"></span>
                 </div>
                 <div class="col-md-3">
@@ -481,11 +479,11 @@
          </xed:bind>
         </legend>
         <div class="mir-fieldset-content personExtended-container d-none">
-          <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="nameType" />
-          <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="namePart.repeated" />
-          <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="person.affiliation" />
+          <xed:include ref="nameType" />
+          <xed:include ref="namePart.repeated" />
+          <xed:include ref="person.affiliation" />
           <xsl:if test="@authorSpecification">
-            <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="authorSpecification.repeated" />
+            <xed:include ref="authorSpecification.repeated" />
           </xsl:if>
         </div>
       </fieldset>
@@ -527,7 +525,7 @@
               </xed:bind>
             </div>
             <div class="col-md-6">
-              <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="person.fields" />
+              <xed:include ref="person.fields" />
             </div>
             <div class="col-md-3">
               <xsl:if test="string-length(@help-text) &gt; 0">
@@ -584,14 +582,14 @@
             <xsl:when test="@extended='true'">
               <div class="col-md-6 center-vertical">
                 <div class="search-geographic-extended">
-                  <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="geographic.input" />
+                  <xed:include ref="geographic.input" />
                 </div>
                 <span class="fas fa-chevron-down expand-item" data-target=".geographicExtended-container" title="{i18n:translate('mir.help.expand')}" aria-hidden="true"></span>
               </div>
             </xsl:when>
             <xsl:otherwise>
               <div class="col-md-6">
-                <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="geographic.input" />
+                <xed:include ref="geographic.input" />
               </div>
             </xsl:otherwise>
           </xsl:choose>
@@ -603,7 +601,7 @@
           </div>
         </div>
         <span class="geographicExtended-container d-none">
-          <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="geographicIdentifier" />
+          <xed:include ref="geographicIdentifier" />
         </span>
     </xed:repeat>
   </xsl:template>
@@ -622,14 +620,14 @@
             <xsl:when test="@extended='true'">
               <div class="col-md-6 center-vertical">
                 <div class="search-topic-extended">
-                  <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="topic.input" />
+                  <xed:include ref="topic.input" />
                 </div>
                 <span class="fas fa-chevron-down expand-item" data-target=".topicExtended-container" title="{i18n:translate('mir.help.expand')}" aria-hidden="true"></span>
               </div>
             </xsl:when>
             <xsl:otherwise>
               <div class="col-md-6">
-                  <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="topic.input" />
+                  <xed:include ref="topic.input" />
                 </div>
             </xsl:otherwise>
           </xsl:choose>
@@ -641,7 +639,7 @@
           </div>
         </div>
         <span class="mir-fieldset-content topicExtended-container d-none">
-          <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" ref="topicIdentifier" />
+          <xed:include ref="topicIdentifier" />
         </span>
         <xsl:call-template name="mir-required" />
     </xed:repeat>
