@@ -38,6 +38,7 @@ import org.mycore.mcr.acl.accesskey.MCRAccessKeyManager;
 import org.mycore.mcr.acl.accesskey.model.MCRAccessKey;
 import org.mycore.mir.authorization.accesskeys.backend.MIRAccessKeyPair;
 
+@Deprecated
 public class MIRAccessKeyManagerTest extends MCRJPATestCase {
 
     private static final String OBJECT_ID = "mcr_test_00000001";
@@ -102,7 +103,6 @@ public class MIRAccessKeyManagerTest extends MCRJPATestCase {
         final MIRAccessKeyPair sameAccKP = new MIRAccessKeyPair(objectId, WRITE_KEY, WRITE_KEY);
         MIRAccessKeyManager.createKeyPair(sameAccKP);
     }
-
 
     @Test
     public void testGetKeyPair() {
