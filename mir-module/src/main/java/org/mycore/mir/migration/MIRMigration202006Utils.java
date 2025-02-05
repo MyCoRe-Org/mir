@@ -82,7 +82,7 @@ public class MIRMigration202006Utils {
     }
 
     private static void addContentIfNeeded(MCRDerivate der) {
-        final ArrayList<MCRMetaClassification> metaClassifications = der.getDerivate().getClassifications();
+        final List<MCRMetaClassification> metaClassifications = der.getDerivate().getClassifications();
         if (!metaClassifications.isEmpty()) {
             return;
         }
