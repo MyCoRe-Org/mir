@@ -26,9 +26,9 @@
         <xsl:value-of select="$facetProperties/properties/entry[@key=concat('MIR.Response.Facet.', $facet_name, '.Roles')]"/>
       </xsl:variable>
       <xsl:variable name="hasRole" select="string-length($rolesProperty)=0 or count(str:tokenize($rolesProperty,',')[mcrxsl:isCurrentUserInRole(.)])!=0"/>
-      
+
       <xsl:if test="$isEnabled and $hasRole and self::node()[@name=$facet_name]/int">
-        
+
         <xsl:variable name="classIdProperty">
           <xsl:value-of select="$facetProperties/properties/entry[@key=concat('MIR.Response.Facet.', $facet_name, '.ClassId')]"/>
         </xsl:variable>
@@ -50,6 +50,20 @@
           <xsl:choose>
             <xsl:when test="$categoryClassValuesProperty!=''">
               <xsl:value-of select="$categoryClassValuesProperty"/>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:value-of select="'false'"/>
+            </xsl:otherwise>
+          </xsl:choose>
+        </xsl:variable>
+
+        <xsl:variable name="parameterValuesProperty">
+          <xsl:value-of select="$facetProperties/properties/entry[@key=concat('MIR.Response.Facet.', $facet_name, '.ParameterValues')]"/>
+        </xsl:variable>
+        <xsl:variable name="parameterValues">
+          <xsl:choose>
+            <xsl:when test="$parameterValuesProperty!=''">
+              <xsl:value-of select="$parameterValuesProperty"/>
             </xsl:when>
             <xsl:otherwise>
               <xsl:value-of select="'false'"/>
@@ -95,6 +109,7 @@
                 <xsl:with-param name="facet_name" select="$facet_name"/>
                 <xsl:with-param name="classId" select="$classId"/>
                 <xsl:with-param name="categoryClassValues" select="$categoryClassValues='true'"/>
+                <xsl:with-param name="parameterValues" select="$parameterValues='true'"/>
               </xsl:apply-templates>
             </ul>
           </div>
@@ -107,6 +122,7 @@
     <xsl:param name="facet_name"/>
     <xsl:param name="classId" select="$facet_name"/>
     <xsl:param name="categoryClassValues" select="false()"/>
+    <xsl:param name="parameterValues" select="false()"/>
 
     <xsl:for-each select="lst[@name=$facet_name]/int">
       <xsl:variable name="fqValue">
@@ -185,25 +201,13 @@
 
           <label class="custom-control-label">
             <span class="title">
-              <xsl:choose>
-                <xsl:when
-                  test="$categoryClassValues = true() and mcrxsl:isCategoryID(substring-before(@name, ':'), substring-after(@name, ':'))">
-                  <xsl:value-of
-                    select="mcrxsl:getDisplayName(substring-before(@name, ':'), substring-after(@name, ':'))"/>
-                </xsl:when>
-                <xsl:when test="mcrxsl:isCategoryID($classId, @name)">
-                  <xsl:value-of select="mcrxsl:getDisplayName($classId, @name)"/>
-                </xsl:when>
-                <xsl:when test="i18n:exists(concat('mir.response.facet.' ,$facet_name, '.value.', @name))">
-                  <xsl:value-of select="i18n:translate(concat('mir.response.facet.' ,$facet_name, '.value.', @name))"
-                                disable-output-escaping="yes"/>
-                </xsl:when>
-                <xsl:otherwise>
-                  <xsl:value-of select="@name"/>
-                </xsl:otherwise>
-              </xsl:choose>
+              <xsl:call-template name="label">
+                <xsl:with-param name="parameterValues" select="$parameterValues"/>
+                <xsl:with-param name="categoryClassValues" select="$categoryClassValues"/>
+                <xsl:with-param name="classId" select="$classId"/>
+                <xsl:with-param name="facet_name" select="$facet_name"/>
+              </xsl:call-template>
             </span>
-
             <span class="hits">
               <xsl:value-of select="."/>
             </span>
@@ -211,6 +215,52 @@
         </div>
       </li>
     </xsl:for-each>
+  </xsl:template>
+
+  <xsl:template name="label">
+    <xsl:param name="parameterValues"/>
+    <xsl:param name="categoryClassValues"/>
+    <xsl:param name="classId"/>
+    <xsl:param name="facet_name"/>
+    <xsl:choose>
+      <xsl:when test="$parameterValues">
+        <xsl:variable name="encodedParameterValue">
+          <xsl:call-template name="UrlGetParam">
+            <xsl:with-param name="url" select="$RequestURL" />
+            <xsl:with-param name="par" select="concat('facet.label.',@name)" />
+          </xsl:call-template>
+        </xsl:variable>
+        <xsl:variable name="parameterValue" xmlns:decoder="xalan://java.net.URLDecoder" select="decoder:decode($encodedParameterValue, 'UTF-8')"/>
+        <xsl:choose>
+          <xsl:when test="string-length($parameterValue)!=0">
+            <xsl:value-of select="$parameterValue"/>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:call-template name="label">
+              <xsl:with-param name="parameterValues" select="false()"/>
+              <xsl:with-param name="categoryClassValues" select="$categoryClassValues"/>
+              <xsl:with-param name="classId" select="$classId"/>
+              <xsl:with-param name="facet_name" select="$facet_name"/>
+            </xsl:call-template>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:when>
+      <xsl:when
+          test="$categoryClassValues = true() and mcrxsl:isCategoryID(substring-before(@name, ':'), substring-after(@name, ':'))">
+        <xsl:value-of
+            select="mcrxsl:getDisplayName(substring-before(@name, ':'), substring-after(@name, ':'))"/>
+      </xsl:when>
+      <xsl:when test="mcrxsl:isCategoryID($classId, @name)">
+        <xsl:value-of select="mcrxsl:getDisplayName($classId, @name)"/>
+      </xsl:when>
+      <xsl:when test="i18n:exists(concat('mir.response.facet.' ,$facet_name, '.value.', @name))">
+        <xsl:value-of select="i18n:translate(concat('mir.response.facet.' ,$facet_name, '.value.', @name))"
+                      disable-output-escaping="yes"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="@name"/>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
 
 </xsl:stylesheet>
