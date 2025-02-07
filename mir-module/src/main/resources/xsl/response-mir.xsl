@@ -671,6 +671,9 @@
                   </xsl:when>
                   <xsl:when test="arr[@name='mods.nameByRole.personal.edt']">
                     <xsl:copy-of select="arr[@name='mods.nameByRole.personal.edt']/." />
+                    <xsl:if test="arr[@name='mods.nameByRole.corporate.edt']">
+                      <xsl:copy-of select="arr[@name='mods.nameByRole.corporate.edt']/." />
+                    </xsl:if>
                   </xsl:when>
                   <xsl:when test="arr[@name='mods.nameByRole.corporate.pbl']">
                     <xsl:copy-of select="arr[@name='mods.nameByRole.corporate.pbl']/." />
