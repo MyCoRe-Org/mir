@@ -23,6 +23,7 @@
 package org.mycore.mir.wizard;
 
 import java.io.IOException;
+import java.io.Serial;
 import java.util.StringTokenizer;
 
 import org.apache.logging.log4j.LogManager;
@@ -46,6 +47,7 @@ import jakarta.servlet.http.HttpServletResponse;
  */
 public class MIRWizardServlet extends MCRServlet {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     private static final Logger LOGGER = LogManager.getLogger();
