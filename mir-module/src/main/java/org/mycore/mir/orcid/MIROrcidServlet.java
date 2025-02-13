@@ -1,6 +1,7 @@
 package org.mycore.mir.orcid;
 
 import java.io.IOException;
+import java.io.Serial;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -33,6 +34,9 @@ import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
 
 public class MIROrcidServlet extends MCRServlet {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     private static final String ORCID_URL = "https://orcid.org/";
 
