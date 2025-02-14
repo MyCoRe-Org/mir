@@ -20,9 +20,9 @@ module.exports = function(grunt) {
         },
         files : {
           'bootstrap/js' : 'bootstrap/dist/js',
-          'ckeditor4' : 'ckeditor4/',
-          'ckeditor4/plugins/notification/' : 'ckeditor-notification-plugin',
-          'ckeditor4/plugins/wordcount/' : 'ckeditor-wordcount-plugin/wordcount',
+
+          'tinymce' : 'tinymce',
+          'tinymce/langs' : 'tinymce-i18n/langs7',
 
           'font-awesome/css' : '@fortawesome/fontawesome-free/css',
           'font-awesome/webfonts' : '@fortawesome/fontawesome-free/webfonts',
@@ -78,19 +78,18 @@ module.exports = function(grunt) {
 
           '<%= globalConfig.moduleDirectory %>/target/classes/META-INF/resources/js/jquery.search-entity.min.js': '<%= globalConfig.moduleDirectory %>/src/main/resources/META-INF/resources/js/jquery.search-entity.js',
           '<%= globalConfig.moduleDirectory %>/target/classes/META-INF/resources/js/epusta.min.js': '<%= globalConfig.moduleDirectory %>/src/main/resources/META-INF/resources/js/epusta.js',
-          '<%= globalConfig.moduleDirectory %>/target/classes/META-INF/assets/ckeditor4/config.min.js': '<%= globalConfig.moduleDirectory %>/src/main/resources/META-INF/resources/js/ckeditor-config.js'
         }
       }
     },
   });
   grunt.registerTask('copy', function() {
-    const source = getAbsoluteDir(grunt.option('moduleDirectory'))+'/src/main/resources/META-INF/resources/js/ckeditor-config.js';
-    const target = getAbsoluteDir(grunt.option('assetsDirectory')) + '/ckeditor4/config.js';
+    const source = getAbsoluteDir(grunt.option('moduleDirectory'))+'/src/main/resources/META-INF/resources/js/tinymce-config.js';
+    const target = getAbsoluteDir(grunt.option('assetsDirectory')) + '/tinymce/config.js';
     fs.copyFile(source, target, (err) => {
       if (err) {
         throw err;
       }
-      grunt.log('ckeditor config copied!');
+      grunt.log('tinymce config copied!');
     });
   });
   grunt.registerTask('none', function() {
