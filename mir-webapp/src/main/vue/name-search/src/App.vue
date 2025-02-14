@@ -2,7 +2,8 @@
   <div ref="root" class="form-group" v-on-click-outside="closeDrops">
     <template v-if="model.i18nLoaded && model.classesLoaded">
       <div ref="input" class="input-group">
-        <input :id="`personLabel-${model.nameIndex}`" ref="searchBox" v-model="model.search" :placeholder="model.personPlaceholder"
+        <input :id="`personLabel-${nameLocatorString}`" ref="searchBox" v-model="model.search"
+               :placeholder="model.personPlaceholder"
                class="form-control" type="text"
                v-on:keydown.enter.prevent="startSearch()">
         <div class="input-group-append">
@@ -11,7 +12,7 @@
             <i class="fas fa-address-card"></i>
             <span class="identifier-count">{{ model.currentIdentifier.length }}</span>
           </button>
-          <button :id="`search-${model.nameIndex}`" class="btn btn-secondary" type="button"
+          <button :id="`search-${nameLocatorString}`" class="btn btn-secondary" type="button"
                   v-on:click.prevent="startSearch()">
             {{ model.searchLabel }}
           </button>
@@ -113,13 +114,14 @@
 
 import {Identifier, NameSearchResult, SearchProviderRegistry} from "@/api/SearchProvider";
 import {
-    findNameIndex,
-    retrieveDisplayName,
-    retrieveIdentifiers,
-    retrieveIsPerson,
-    storeIdentifiers,
-    storeIsPerson,
-    storeName
+  findNameLocator,
+  NameLocator,
+  retrieveDisplayName,
+  retrieveIdentifiers,
+  retrieveIsPerson,
+  storeIdentifiers,
+  storeIsPerson,
+  storeName
 } from "@/api/XEditorConnector";
 import {LobidSearchProvider} from "@/api/LobidSearchProvider";
 import {ViafSearchProvider} from "@/api/ViafSearchProvider";
@@ -129,7 +131,7 @@ import {i18n} from "@/api/I18N";
 import {RorSearchProvider} from "@/api/RorSearchProvider";
 import {LocalSearchProvider} from "@/api/LocalSearchProvider";
 import {computed, defineProps, onMounted, reactive, ref, watch} from "vue";
-import { vOnClickOutside } from '@vueuse/components'
+import {vOnClickOutside} from '@vueuse/components'
 
 LocalSearchProvider.init();
 LobidSearchProvider.init();
@@ -149,7 +151,7 @@ const props = defineProps<
 >()
 
 const model = reactive({
-    nameIndex: undefined as number | undefined,
+    nameLocator: undefined as (NameLocator | undefined),
     search: "",
     isPerson: true as boolean,
     results: [] as Array<{ name: string; searching: boolean, nameList: NameSearchResult[] }>,
@@ -173,22 +175,26 @@ const isDevMode = () => {
     return process.env.NODE_ENV === 'development';
 }
 
+const nameLocatorString = computed(() => {
+  return model.nameLocator?.modsIndex + "-" + model.nameLocator?.nameIndex + "-" + (model.nameLocator?.relatedItemIndex || '');
+})
+
 watch(() => model.currentIdentifier, (val) => {
-    if (!isDevMode() && model.nameIndex !== undefined) {
-        storeIdentifiers(model.nameIndex, model.currentIdentifier);
+    if (!isDevMode() && model.nameLocator !== undefined) {
+        storeIdentifiers(model.nameLocator, model.currentIdentifier);
     }
 
 }, {deep: true});
 
 watch(() => model.search, (val) => {
-    if (!isDevMode() && model.nameIndex !== undefined) {
-        storeName(model.nameIndex, model.search);
+    if (!isDevMode() && model.nameLocator !== undefined) {
+        storeName(model.nameLocator, model.search);
     }
 }, {deep: true});
 
 watch(() => model.isPerson, (val) => {
-    if (!isDevMode() && model.nameIndex !== undefined) {
-        storeIsPerson(model.nameIndex, model.isPerson);
+    if (!isDevMode() && model.nameLocator !== undefined) {
+        storeIsPerson(model.nameLocator, model.isPerson);
     }
 }, {deep: true});
 
@@ -241,10 +247,14 @@ const loadLanguage = async () => {
 
 const initializeXEditorConnection = async () => {
     if (!isDevMode() && root.value instanceof Element) {
-        model.nameIndex = findNameIndex(root.value);
-        model.search = retrieveDisplayName(model.nameIndex);
-        model.currentIdentifier = retrieveIdentifiers(model.nameIndex);
-        model.isPerson = retrieveIsPerson(model.nameIndex);
+        model.nameLocator = findNameLocator(root.value);
+        if(model.nameLocator === undefined) {
+            console.error("Name locator not found");
+            return;
+        }
+        model.search = retrieveDisplayName(model.nameLocator);
+        model.currentIdentifier = retrieveIdentifiers(model.nameLocator);
+        model.isPerson = retrieveIsPerson(model.nameLocator);
     }
 }
 
@@ -336,7 +346,7 @@ const getGroupSize = () => {
     return (input.value instanceof HTMLElement ? input.value.clientWidth : 0);
 }
 
-const addIdentifier = async (identifier: Identifier, event?: PointerEvent) => {
+const addIdentifier = async (identifier: Identifier, event?: MouseEvent) => {
     // if the function is caused by user action, we do a fancy animation
     if (event) {
         const clickTarget = event.currentTarget as HTMLElement;
@@ -372,7 +382,7 @@ const removeIdentifier = (identifier: Identifier) => {
     model.currentIdentifier.splice(number, 1);
 }
 
-const applyName = async (name: NameSearchResult, event: PointerEvent) => {
+const applyName = async (name: NameSearchResult, event: MouseEvent) => {
     const clickTarget = event.currentTarget as HTMLElement;
     const clickParent = clickTarget.parentElement?.parentElement;
     const resultTitle = (clickParent?.querySelector(".result-title") as HTMLElement | undefined);
