@@ -1,6 +1,7 @@
 package org.mycore.mir.index;
 
 import java.io.InputStream;
+import java.io.Serial;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
@@ -62,6 +63,9 @@ public class MirSolrFileStrategy extends MCRSolrMimeTypeStrategy {
     }
 
     private static class ProbeXMLException extends RuntimeException {
+
+        @Serial
+        private static final long serialVersionUID = 1L;
 
         private String rootName;
 
