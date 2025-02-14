@@ -21,7 +21,6 @@
 package org.mycore.mir.authorization.accesskeys.backend;
 
 import org.mycore.backend.jpa.MCRObjectIDConverter;
-import org.mycore.datamodel.metadata.MCRObject;
 import org.mycore.datamodel.metadata.MCRObjectID;
 
 import jakarta.persistence.Column;
@@ -45,7 +44,7 @@ import jakarta.persistence.Table;
 })
 
 /**
- * Access keys for a {@link MCRObject}.
+ * Access keys for a {@link MCRObjectID}.
  * An access keys contains a value and a type.
  * Value is the key value of the key and type the permission.
  */
