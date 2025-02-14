@@ -8,7 +8,7 @@
                 exclude-result-prefixes="encoder i18n mcracl mods xlink mcrxsl">
   <xsl:import href="xslImport:modsmeta:metadata/mir-admindata-box.xsl"/>
   <xsl:param name="WebApplicationBaseURL"/>
-
+  <xsl:param name="MIR.Metadata.Admindata.ShowRealUserName"/>
   <xsl:template match="/">
     <xsl:variable name="ID" select="/mycoreobject/@ID"/>
     <div id="mir-admindata">
@@ -136,7 +136,7 @@
 
     <xsl:variable name="display-name">
       <xsl:choose>
-        <xsl:when test="$user/user/realName">
+        <xsl:when test="$user/user/realName and $MIR.Metadata.Admindata.ShowRealUserName='true'">
           <xsl:value-of select="$user/user/realName"/>
         </xsl:when>
         <xsl:otherwise>
