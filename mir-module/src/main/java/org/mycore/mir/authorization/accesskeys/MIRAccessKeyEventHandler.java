@@ -32,10 +32,11 @@ import org.mycore.mir.authorization.accesskeys.backend.MIRAccessKeyPair;
 /**
  * This class contains EventHandler methods to manage access keys of
  * MCRObjects and MCRDerivates.
- * 
+ *
  * @author Ren\u00E9 Adler (eagle)
  * @since 0.3
  */
+@Deprecated
 public class MIRAccessKeyEventHandler extends MCREventHandlerBase {
 
     private static Logger LOGGER = LogManager.getLogger();
