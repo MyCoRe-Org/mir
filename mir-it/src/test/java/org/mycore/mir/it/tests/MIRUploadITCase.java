@@ -1,18 +1,11 @@
 package org.mycore.mir.it.tests;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.text.MessageFormat;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import javax.imageio.ImageIO;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -30,9 +23,7 @@ import org.mycore.mir.it.model.MIRLicense;
 import org.mycore.mir.it.model.MIRTitleInfo;
 import org.mycore.mir.it.model.MIRTitleType;
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Point;
-import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
@@ -118,6 +109,7 @@ public class MIRUploadITCase extends MIRITBase {
 
         driver.waitUntilPageIsLoaded(MIRTitleType.mainTitle.getValue());
         driver.waitAndFindElement(MCRBy.partialText(MIRTestData.SAVE_SUCCESS));
+        String receiveURL = driver.getCurrentUrl();
         driver.waitAndFindElement(MCRBy.partialLinkText("Aktionen"),
             ExpectedConditions::elementToBeClickable).click();
         driver.waitAndFindElement(MCRBy.partialLinkText("Hinzufügen eines Dateibereichs"),
@@ -132,7 +124,7 @@ public class MIRUploadITCase extends MIRITBase {
         driver.waitAndFindElement(MCRBy.partialText("Speichern")).click();
         driver.waitUntilPageIsLoaded(MIRTitleType.mainTitle.getValue());
 
-        String receiveURL = driver.getCurrentUrl();
+        Assert.assertEquals(receiveURL, driver.getCurrentUrl());
         userController.logOff();
         driver.navigate().to(receiveURL);
         driver.waitUntilPageIsLoaded(MIRTitleType.mainTitle.getValue());
@@ -149,6 +141,7 @@ public class MIRUploadITCase extends MIRITBase {
 
         driver.waitUntilPageIsLoaded(MIRTitleType.mainTitle.getValue());
         driver.waitAndFindElement(MCRBy.partialText(MIRTestData.SAVE_SUCCESS));
+        String receiveURL = driver.getCurrentUrl();
         driver.waitAndFindElement(MCRBy.partialLinkText("Aktionen"),
                 ExpectedConditions::elementToBeClickable).click();
         driver.waitAndFindElement(MCRBy.partialLinkText("Hinzufügen eines Dateibereichs"),
@@ -163,7 +156,8 @@ public class MIRUploadITCase extends MIRITBase {
         driver.waitAndFindElement(MCRBy.partialText("Speichern")).click();
         driver.waitUntilPageIsLoaded(MIRTitleType.mainTitle.getValue());
 
-        String receiveURL = driver.getCurrentUrl();
+        Assert.assertEquals(receiveURL, driver.getCurrentUrl());
+
         userController.logOff();
         driver.navigate().to(receiveURL);
         driver.waitUntilPageIsLoaded(MIRTitleType.mainTitle.getValue());
