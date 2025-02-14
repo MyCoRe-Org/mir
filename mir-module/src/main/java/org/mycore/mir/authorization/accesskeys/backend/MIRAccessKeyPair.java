@@ -47,15 +47,15 @@ import jakarta.xml.bind.annotation.XmlType;
 import jakarta.xml.bind.annotation.XmlValue;
 
 /**
- * Represent access keys to acquire access permission on a {@link MCRObject}. 
+ * Represent access keys to acquire access permission on a {@link MCRObject}.
  * For a {@link MCRObject}, there may be a read key and a write key stored.
  * A user can input the key in UI and acquire the permission to access the {@link MCRObject}
- * if the key is correct. When the user enters the read key, 
+ * if the key is correct. When the user enters the read key,
  * he will be granted read permission on the {@link MCRObject}. When the user enters the write
- * key, he will be granted write permission on the {@link MCRObject}. The read 
- * key and write key must be different. There can not be a write key without a read key, 
+ * key, he will be granted write permission on the {@link MCRObject}. The read
+ * key and write key must be different. There can not be a write key without a read key,
  * if there is any key at all for a {@link MCRObject}.
- *  
+ *
  * @author Ren\u00E9 Adler (eagle)
  * @since 0.3
  */
@@ -70,6 +70,7 @@ import jakarta.xml.bind.annotation.XmlValue;
 @Table(name = "MIRAccesskeys")
 @XmlRootElement(name = "accesskeys")
 @XmlAccessorType(XmlAccessType.NONE)
+@Deprecated
 public class MIRAccessKeyPair implements Serializable {
 
     public static final String PERMISSION_READ = "read";
@@ -120,7 +121,7 @@ public class MIRAccessKeyPair implements Serializable {
 
     /**
      * Returns the {@link MCRObjectID} of the {@link MCRObject} the keys belong to.
-     * 
+     *
      * @return the mcrObjectId
      */
     @Transient
@@ -148,7 +149,7 @@ public class MIRAccessKeyPair implements Serializable {
 
     /**
      * Returns the key the user must know to acquire read permission on the {@link MCRObject}.
-     * 
+     *
      * @return the key the user must know to acquire read permission on the {@link MCRObject}.
      */
     @Column(name = "readkey", nullable = false, length = 128)
@@ -160,7 +161,7 @@ public class MIRAccessKeyPair implements Serializable {
     /**
      * Sets the key the user must know to acquire read permission on the {@link MCRObject}.
      * If there is a write key specified, too, the read key must be different from the write key.
-     * 
+     *
      * @param readKey the key the user must know to acquire read permission on the {@link MCRObject}.
      */
     public void setReadKey(String readKey) {
@@ -175,7 +176,7 @@ public class MIRAccessKeyPair implements Serializable {
 
     /**
      * Returns the key the user must know to acquire write permission on the {@link MCRObject}.
-     * 
+     *
      * @return the key the user must know to acquire write permission on the {@link MCRObject}. This key may be empty.
      */
     @Column(name = "writekey", nullable = true, length = 128)
@@ -187,7 +188,7 @@ public class MIRAccessKeyPair implements Serializable {
     /**
      * Sets the key the user must know to acquire write permission on the {@link MCRObject}.
      * This may be set to null. The write key must be different from the read key.
-     * 
+     *
      * @param writeKey the key the user must know to acquire write permission on the {@link MCRObject}.
      *                This key may be empty.
      */

@@ -57,6 +57,7 @@ public class MIRMigration202106Utils {
     @MCRCommand(syntax = "migrate all access key pairs",
         help = "Migrates all access key pairs to MCR access keys (2020.06"
             + " Should be used to migrate from version up to and including 2020.06.")
+    @Deprecated
     public static void migrateAccessKeyPairs() throws MCRException {
         final List<MIRAccessKeyPair> accessKeyPairs = listAccessKeyPairs();
         for (final MIRAccessKeyPair accessKeyPair : accessKeyPairs) {
@@ -79,6 +80,7 @@ public class MIRMigration202106Utils {
     @MCRCommand(syntax = "migrate all access keys",
         help = "Migrates all MIR access key to MCR access keys."
             + " Should be used to migrate from version 2021.05.")
+    @Deprecated
     public static void migrateAccessKeys() throws MCRException {
         final List<MIRAccessKey> mirAccessKeys = listAccessKeys();
         for (final MIRAccessKey mirAccessKey : mirAccessKeys) {
@@ -103,6 +105,7 @@ public class MIRMigration202106Utils {
         help = "Hashes all access key user attributes."
             + " Is only necessary if the secrets are hashed."
             + " Should be used after access key migration.")
+    @Deprecated
     public static void migrateAccessKeyUserAttributes() {
         int offset = 0;
         final int limit = 1024;
@@ -111,20 +114,19 @@ public class MIRMigration202106Utils {
             users = listUsersWithMIRAccessKeyUserAttribute(offset, limit);
             for (final MCRUser user : users) {
                 final List<MCRUserAttribute> attributes = user.getAttributes()
-                        .stream()
-                        .filter(attribute -> attribute.getName().startsWith(ACCESS_KEY_PREFIX))
-                        .collect(Collectors.toList());
+                    .stream()
+                    .filter(attribute -> attribute.getName().startsWith(ACCESS_KEY_PREFIX))
+                    .collect(Collectors.toList());
                 for (MCRUserAttribute attribute : attributes) {
                     final String attributeName = attribute.getName();
                     final MCRObjectID objectId = MCRObjectID.getInstance(attributeName.substring(
-                            attributeName.indexOf("_") + 1));
+                        attributeName.indexOf("_") + 1));
                     attribute.setName(MCRAccessKeyUtils.ACCESS_KEY_PREFIX + objectId.toString());
                     attribute.setValue(MCRAccessKeyManager.hashSecret(attribute.getValue(), objectId));
                 }
             }
             offset += limit;
-        }
-        while (users.size() == limit);
+        } while (users.size() == limit);
     }
 
     /**
@@ -133,6 +135,7 @@ public class MIRMigration202106Utils {
      * @param type permission type
      * @return valid or not
      */
+    @Deprecated
     private static boolean isValidType(String type) {
         return (type.equals(PERMISSION_READ) || type.equals(PERMISSION_WRITE));
     }
@@ -143,10 +146,12 @@ public class MIRMigration202106Utils {
      * @param value the value
      * @return valid or not
      */
+    @Deprecated
     private static boolean isValidValue(String value) {
         return value.length() > 0;
     }
 
+    @Deprecated
     private static List<MCRUser> listUsersWithMIRAccessKeyUserAttribute(final int offset, final int limit) {
         return MCRUserManager.listUsers(null, null, null, null, ACCESS_KEY_PREFIX + "*",
             null, offset, limit);
@@ -157,6 +162,7 @@ public class MIRMigration202106Utils {
      *
      * @return access keys as list
      */
+    @Deprecated
     private static List<MIRAccessKey> listAccessKeys() {
         final EntityManager em = MCREntityManagerProvider.getCurrentEntityManager();
         final List<MIRAccessKey> accessKeys = em.createNamedQuery("MIRAccessKey.listAll",
@@ -174,6 +180,7 @@ public class MIRMigration202106Utils {
      * @param value the key value
      * @return access key
      */
+    @Deprecated
     private static synchronized MIRAccessKey getAccessKeyWithValue(final MCRObjectID objectId, final String value) {
         final EntityManager em = MCREntityManagerProvider.getCurrentEntityManager();
         final MIRAccessKey accessKey = em.createNamedQuery("MIRAccessKey.getWithValue", MIRAccessKey.class)
@@ -196,6 +203,7 @@ public class MIRMigration202106Utils {
      * @param accessKey the access key
      * @throws MCRException key is not valid
      */
+    @Deprecated
     private static synchronized void createAccessKey(final MCRObjectID objectId, final MIRAccessKey accessKey)
         throws MCRException {
         accessKey.setObjectId(objectId);
@@ -216,11 +224,12 @@ public class MIRMigration202106Utils {
         }
     }
 
-   /**
+    /**
      * Removes {@link MIRAccessKey}
      *
      * @param accessKey the {@link MIRAccessKey}
      */
+    @Deprecated
     private static void removeAccessKey(final MIRAccessKey accessKey) {
         final EntityManager em = MCREntityManagerProvider.getCurrentEntityManager();
         em.remove(em.contains(accessKey) ? accessKey : em.merge(accessKey));
@@ -231,6 +240,7 @@ public class MIRMigration202106Utils {
      *
      * @return access key pairs as list
      */
+    @Deprecated
     private static List<MIRAccessKeyPair> listAccessKeyPairs() {
         final EntityManager em = MCREntityManagerProvider.getCurrentEntityManager();
         final List<MIRAccessKeyPair> accessKeyPairs = em.createNamedQuery("MIRAccessKeyPair.listAll",
@@ -246,6 +256,7 @@ public class MIRMigration202106Utils {
      *
      * @param accessKeyPair the {@link MIRAccessKeyPair}
      */
+    @Deprecated
     private static void removeAccessKeyPair(final MIRAccessKeyPair accessKeyPair) {
         final EntityManager em = MCREntityManagerProvider.getCurrentEntityManager();
         em.remove(em.contains(accessKeyPair) ? accessKeyPair : em.merge(accessKeyPair));

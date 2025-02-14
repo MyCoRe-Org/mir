@@ -40,6 +40,7 @@ import jakarta.xml.bind.Unmarshaller;
  * @author Ren\u00E9 Adler (eagle)
  * @since 0.3
  */
+@Deprecated
 public abstract class MIRAccessKeyPairTransformer {
 
     public static final JAXBContext JAXB_CONTEXT = initContext();
@@ -58,8 +59,8 @@ public abstract class MIRAccessKeyPairTransformer {
     private static JAXBContext initContext() {
         try {
             String factoryProperty = "MIR.AccessKey.JAXBContextFactory";
-            JAXBContextFactory jaxbContextFactory =
-                MCRConfiguration2.getInstanceOf(JAXBContextFactory.class, factoryProperty)
+            JAXBContextFactory jaxbContextFactory
+                = MCRConfiguration2.getInstanceOf(JAXBContextFactory.class, factoryProperty)
                     .orElseThrow(() -> MCRConfiguration2.createConfigurationException(factoryProperty));
             return jaxbContextFactory.createContext(MIRAccessKeyPair.class.getPackage().getName(),
                 MIRAccessKeyPair.class.getClassLoader(), Map.of());
@@ -128,8 +129,8 @@ public abstract class MIRAccessKeyPairTransformer {
         }
         try {
             final Unmarshaller unmarshaller = JAXB_CONTEXT.createUnmarshaller();
-            MIRAccessKeyPair.ServiceFlags serviceFlags =
-                unmarshaller.unmarshal(new JDOMSource(element.clone()), MIRAccessKeyPair.ServiceFlags.class).getValue();
+            MIRAccessKeyPair.ServiceFlags serviceFlags = unmarshaller
+                .unmarshal(new JDOMSource(element.clone()), MIRAccessKeyPair.ServiceFlags.class).getValue();
             return MIRAccessKeyPair.fromServiceFlags(mcrObjectId, serviceFlags);
         } catch (final JAXBException e) {
             throw new MCRException("Exception while transforming Element to MIRAccessKeyPair.", e);
