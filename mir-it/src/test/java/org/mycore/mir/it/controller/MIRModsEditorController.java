@@ -371,7 +371,7 @@ public class MIRModsEditorController extends MIREditorController {
 
             IntStream.range(0, names.size()).forEach(i -> {
                 String name = names.get(i);
-                String inputPath = ".//input[contains(@id,'personLabel-" + (i + 1 + fieldOffset) + "')]";
+                String inputPath = ".//input[contains(@id,'personLabel-1-" + (i + 1 + fieldOffset) + "')]";
                 WebElement inputElement = driver.waitAndFindElement(By.xpath(inputPath));
                 inputElement.sendKeys(name);
                 driver.waitAndFindElement(By.xpath(inputPath + "/.././/button[contains(text(), 'Suchen')]")).click();
