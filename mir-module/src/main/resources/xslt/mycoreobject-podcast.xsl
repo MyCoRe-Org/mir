@@ -249,6 +249,11 @@
         <xsl:value-of select="concat('Document ', @ID, ' does not have a derivate of type content!')" />
       </xsl:comment>
     </xsl:if>
+    <xsl:if test="count(structure/derobjects/derobject[classification/@categid='thumbnail']) &gt; 1">
+      <xsl:comment>
+        <xsl:value-of select="concat('Document ', @ID, ' has too many thumbnails!')" />
+      </xsl:comment>
+    </xsl:if>
     <xsl:if test="count($mods/mods:abstract) != 1 and
       not(count($mods/mods:abstract) = 2 and $mods/mods:abstract[@altRepGroup]) and
       not($mods/mods:relatedItem[@type='host']/mods:part/@order = 0)">
