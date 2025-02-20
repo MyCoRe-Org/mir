@@ -13,7 +13,7 @@
     <div id="header_box" class="clearfix container">
       <div id="options_nav_box" class="mir-prop-nav">
         <nav>
-          <ul class="navbar-nav ml-auto flex-row">
+          <ul class="navbar-nav ms-auto flex-row">
             <xsl:call-template name="mir.loginMenu" />
             <xsl:call-template name="mir.languageMenu" />
           </ul>
@@ -21,7 +21,7 @@
       </div>
       <div id="project_logo_box">
         <a href="{concat($WebApplicationBaseURL,substring($loaded_navigation_xml/@hrefStartingPage,2))}"
-           class="">
+           class="text-decoration-none">
           <span id="logo_mir">mir</span>
           <span id="logo_modul">mycore</span>
           <span id="logo_slogan">mods institutional repository</span>
@@ -34,57 +34,62 @@
       <div class="container">
         <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
 
-          <button
-            class="navbar-toggler"
-            type="button"
-            data-toggle="collapse"
-            data-target="#mir-main-nav-collapse-box"
-            aria-controls="mir-main-nav-collapse-box"
-            aria-expanded="false"
-            aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
+          <div class="container-fluid">
+            <button
+              class="navbar-toggler"
+              type="button"
+              data-bs-toggle="collapse"
+              data-target="#mir-main-nav-collapse-box"
+              aria-controls="mir-main-nav-collapse-box"
+              aria-expanded="false"
+              aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
 
-          <div id="mir-main-nav-collapse-box" class="collapse navbar-collapse mir-main-nav__entries">
-            <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-              <xsl:for-each select="$loaded_navigation_xml/menu">
+            <div
+              id="mir-main-nav-collapse-box"
+              class="collapse navbar-collapse mir-main-nav__entries justify-content-between">
+
+              <ul class="navbar-nav me-auto mt-2 mt-lg-0">
+                <xsl:for-each select="$loaded_navigation_xml/menu">
+                  <xsl:choose>
+                    <!-- Ignore some menus, they are shown elsewhere in the layout -->
+                    <xsl:when test="@id='main'"/>
+                    <xsl:when test="@id='brand'"/>
+                    <xsl:when test="@id='below'"/>
+                    <xsl:when test="@id='user'"/>
+                    <xsl:otherwise>
+                      <xsl:apply-templates select="."/>
+                    </xsl:otherwise>
+                  </xsl:choose>
+                </xsl:for-each>
+                <xsl:call-template name="mir.basketMenu" />
+              </ul>
+
+              <form
+                action="{$WebApplicationBaseURL}servlets/solr/find"
+                class="searchfield_box d-flex"
+                role="search">
+                <input
+                  name="condQuery"
+                  placeholder="{i18n:translate('mir.navsearch.placeholder')}"
+                  class="form-control me-sm-2 search-query"
+                  id="searchInput"
+                  type="text"
+                  aria-label="Search" />
                 <xsl:choose>
-                  <!-- Ignore some menus, they are shown elsewhere in the layout -->
-                  <xsl:when test="@id='main'"/>
-                  <xsl:when test="@id='brand'"/>
-                  <xsl:when test="@id='below'"/>
-                  <xsl:when test="@id='user'"/>
-                  <xsl:otherwise>
-                    <xsl:apply-templates select="."/>
-                  </xsl:otherwise>
+                  <xsl:when test="contains($isSearchAllowedForCurrentUser, 'true')">
+                    <input name="owner" type="hidden" value="createdby:*" />
+                  </xsl:when>
+                  <xsl:when test="not(mcrxsl:isCurrentUserGuestUser())">
+                    <input name="owner" type="hidden" value="createdby:{$CurrentUser}" />
+                  </xsl:when>
                 </xsl:choose>
-              </xsl:for-each>
-              <xsl:call-template name="mir.basketMenu" />
-            </ul>
-
-            <form
-              action="{$WebApplicationBaseURL}servlets/solr/find"
-              class="searchfield_box form-inline my-2 my-lg-0"
-              role="search">
-              <input
-                name="condQuery"
-                placeholder="{i18n:translate('mir.navsearch.placeholder')}"
-                class="form-control mr-sm-2 search-query"
-                id="searchInput"
-                type="text"
-                aria-label="Search" />
-              <xsl:choose>
-                <xsl:when test="contains($isSearchAllowedForCurrentUser, 'true')">
-                  <input name="owner" type="hidden" value="createdby:*" />
-                </xsl:when>
-                <xsl:when test="not(mcrxsl:isCurrentUserGuestUser())">
-                  <input name="owner" type="hidden" value="createdby:{$CurrentUser}" />
-                </xsl:when>
-              </xsl:choose>
-              <button type="submit" class="btn btn-primary my-2 my-sm-0">
-                <i class="fas fa-search"></i>
-              </button>
-            </form>
+                <button type="submit" class="btn btn-primary my-2 my-sm-0">
+                  <i class="fas fa-search"></i>
+                </button>
+              </form>
+            </div>
 
           </div>
 

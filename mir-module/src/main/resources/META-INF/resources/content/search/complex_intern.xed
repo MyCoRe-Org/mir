@@ -81,7 +81,7 @@
                           </xed:bind>
                         </div>
                         <div class="btn-group col-md-4">
-                          <span class="float-right">
+                          <span class="float-end">
                             <xed:controls>insert remove</xed:controls>
                           </span>
                         </div>
@@ -164,7 +164,7 @@
                               <xed:output i18n="editor.search.mir.openAccess" />
                             </option>
                           </select>
-                          <span class="input-group-append" data-toggle="tooltip" data-html="true"
+                          <span class="input-group-append" data-bs-toggle="tooltip" data-html="true"
                                 title="{i18n:editor.search.fulltext.tooltip}">
                             <i class="fas fa-info-circle input-group-text"/>
                           </span>
@@ -239,7 +239,7 @@
 
           <!-- submit -->
           <div class="card-footer clearfix">
-            <div class="float-right">
+            <div class="float-end">
               <mir:template name="submitButton" i18n="editor.search.search"
                 target="servlet_MCRQLSearchServlet" order="primary-button"/>
             </div>

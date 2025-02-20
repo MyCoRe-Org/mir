@@ -49,7 +49,7 @@
               </strong>
             </span>
             <div class="row">
-              <div class="col-md-7 col-sm-9 col-6 text-right">
+              <div class="col-md-7 col-sm-9 col-6 text-end">
                 <xsl:value-of select="i18n:translate('mir.epusta.counter.fulltext')" />
               </div>
               <div
@@ -60,7 +60,7 @@
               />
             </div>
             <div class="row">
-              <div class="col-md-7 col-sm-9 col-6 text-right">
+              <div class="col-md-7 col-sm-9 col-6 text-end">
                 <xsl:value-of select="i18n:translate('mir.epusta.counter.abstract')" />
               </div>
               <div
@@ -76,7 +76,7 @@
               </strong>
             </span>
             <div class="row">
-              <div class="col-md-7 col-sm-9 col-6 text-right">
+              <div class="col-md-7 col-sm-9 col-6 text-end">
                 <xsl:value-of select="i18n:translate('mir.epusta.counter.fulltext')" />
               </div>
               <div
@@ -88,7 +88,7 @@
               />
             </div>
             <div class="row">
-              <div class="col-md-7 col-sm-9 col-6 text-right">
+              <div class="col-md-7 col-sm-9 col-6 text-end">
                 <xsl:value-of select="i18n:translate('mir.epusta.counter.abstract')" />
               </div>
               <div data-epustaelementtype="ePuStaInline"
@@ -98,8 +98,8 @@
                    data-epustafrom="{$from}" data-epustauntil="{$until}"
               />
             </div>
-            <div class="text-right">
-              <a href="#" data-toggle="modal" data-target="#epustaGraphModal">
+            <div class="text-end">
+              <a href="#" data-bs-toggle="modal" data-target="#epustaGraphModal">
                 <xsl:value-of select="i18n:translate('mir.epusta.open')" />
               </a>
             </div>

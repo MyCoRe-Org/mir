@@ -64,7 +64,7 @@
           <form action="{$searchlink}" class="search_form" method="post">
             <div class="input-group input-group-sm">
               <div class="input-group-btn input-group-prepend">
-                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" value="all" id="search_type_button">
+                <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" value="all" id="search_type_button">
                   <span id="search_type_label">
                     <xsl:value-of select="i18n:translate('mir.dropdown.all')" />
                   </span>
@@ -365,9 +365,9 @@
 <!-- hit options -->
           <xsl:choose>
             <xsl:when test="acl:checkPermission($identifier,'writedb')">
-              <div class="hit_options float-right">
+              <div class="hit_options float-end">
                 <div class="btn-group">
-                  <a data-toggle="dropdown" class="btn btn-secondary dropdown-toggle" href="#">
+                  <a data-bs-toggle="dropdown" class="btn btn-secondary dropdown-toggle" href="#">
                     <i class="fas fa-cog"></i>
                     <xsl:value-of select="concat(' ',i18n:translate('mir.actions'))" />
                     <span class="caret"></span>
@@ -413,7 +413,7 @@
               </div>
             </xsl:when>
             <xsl:otherwise>
-              <div class="single_hit_option float-right">
+              <div class="single_hit_option float-end">
                 <xsl:call-template name="basketLink">
                   <xsl:with-param name="identifier" select="$identifier" />
                   <xsl:with-param name="dropdown" select="'false'" />
@@ -541,7 +541,7 @@
 <!-- hit type -->
           <div class="hit_tnd_container">
             <div class="hit_tnd_content">
-              <div class="hit_oa" data-toggle="tooltip">
+              <div class="hit_oa" data-bs-toggle="tooltip">
                 <xsl:variable name="isOpenAccess" select="bool[@name='worldReadableComplete']='true'" />
                 <xsl:choose>
                   <xsl:when test="$isOpenAccess">
@@ -912,7 +912,7 @@
           </div>
         </xsl:if>
         <div class="dropdown">
-          <button class="btn btn-secondary dropdown-toggle col-12" type="button" data-toggle="dropdown">
+          <button class="btn btn-secondary dropdown-toggle col-12" type="button" data-bs-toggle="dropdown">
             <!--Filter-->
             <xsl:value-of select="i18n:translate('mir.response.button.filter')" />
             <span class="caret" />
@@ -1014,7 +1014,7 @@
           </div>
         </xsl:if>
         <div class="dropdown">
-          <button class="btn btn-secondary dropdown-toggle col-12" type="button" data-toggle="dropdown">
+          <button class="btn btn-secondary dropdown-toggle col-12" type="button" data-bs-toggle="dropdown">
             <!--Filter-->
             <xsl:value-of select="i18n:translate('mir.response.button.filter')" />
             <span class="caret" />
