@@ -12,7 +12,7 @@
     <div id="header_box" class="clearfix container">
       <div id="options_nav_box" class="mir-prop-nav">
         <nav>
-          <ul class="navbar-nav ml-auto flex-row">
+          <ul class="navbar-nav ms-auto flex-row">
             <xsl:call-template name="mir.loginMenu" />
             <xsl:call-template name="mir.languageMenu" />
           </ul>
@@ -32,7 +32,7 @@
   <xsl:template name="mir.navigation">
     <div class="navbar navbar-default mir-side-nav searchfield_box">
       <nav class="mir-main-nav-entries">
-        
+
         <form
           action="{$WebApplicationBaseURL}servlets/solr/find"
           class="searchfield_box form-inline my-2 my-lg-0"

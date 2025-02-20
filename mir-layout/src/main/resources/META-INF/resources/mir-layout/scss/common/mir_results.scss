@@ -96,7 +96,7 @@ $hover_darken: 20%;
           color: $filter_headline;
           margin-bottom: 0px;
           &:hover {
-            color: darken($filter_headline, $hover_darken);
+            color: shade-color($filter_headline, $hover_darken);
           }
         }
       }
@@ -110,10 +110,10 @@ $hover_darken: 20%;
             .custom-checkbox {
               label {
                 .title {
-                  color: darken($filter, $hover_darken);
+                  color: shade-color($filter, $hover_darken);
                 }
                 .hits {
-                  color: darken($filter_hits, $hover_darken);
+                  color: shade-color($filter_hits, $hover_darken);
                 }
               }
             }

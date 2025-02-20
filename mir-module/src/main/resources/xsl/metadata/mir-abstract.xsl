@@ -62,7 +62,7 @@
         </xsl:for-each>
 
         <xsl:if test="string-length($dateIssued) > 0">
-          <time datetime="{$dateIssued}" data-toggle="tooltip" title="Publication date">
+          <time datetime="{$dateIssued}" data-bs-toggle="tooltip" title="Publication date">
               <xsl:variable name="dateText">
                 <xsl:variable name="date">
                   <xsl:call-template name="Tokenizer"><!-- use split function from mycore-base/coreFunctions.xsl -->
@@ -252,7 +252,7 @@
                     </xsl:choose>
                   </xsl:variable>
                   <li class="nav-item">
-                    <a class="nav-link" href="#tab{position()}" role="tab" data-toggle="tab">
+                    <a class="nav-link" href="#tab{position()}" role="tab" data-bs-toggle="tab">
                       <xsl:choose>
                         <xsl:when test="$first-abstract-in-current-lang-position = position()">
                           <xsl:attribute name="class">active nav-link</xsl:attribute>
@@ -404,8 +404,8 @@
       <xsl:if
               test="$hits/arr[@name='groups']/lst/result/@numFound &gt; 0 and not($hits/arr[@name='groups']/lst/null/@name='groupValue') and count($hits/arr[@name='groups']/lst) &gt; 1"
       >
-        <a id="mir_relatedItem_showAll" class="float-right" href="#"><xsl:value-of select="i18n:translate('mir.abstract.showGroups')" /></a>
-        <a id="mir_relatedItem_hideAll" class="float-right" href="#"><xsl:value-of select="i18n:translate('mir.abstract.hideGroups')" /></a>
+        <a id="mir_relatedItem_showAll" class="float-end" href="#"><xsl:value-of select="i18n:translate('mir.abstract.showGroups')" /></a>
+        <a id="mir_relatedItem_hideAll" class="float-end" href="#"><xsl:value-of select="i18n:translate('mir.abstract.hideGroups')" /></a>
       </xsl:if>
     </h3>
     <xsl:choose>

@@ -23,7 +23,7 @@
 jQuery(document).ready(function() {
 	/*
 	 * FILL FORM WITH DEFAULT
-	 * 
+	 *
 	 * Description: Fills database options with loaded defaults.
 	 */
 	var wizFillForm = function() {
@@ -38,7 +38,7 @@ jQuery(document).ready(function() {
 
 	/*
 	 * LOAD DATABASE DEFAULTS
-	 * 
+	 *
 	 * Description: Loads database default from given XML.
 	 */
 	jQuery.get(jQuery.wizard.WebApplicationBaseURL + "wizard/config/dbtypes.xml", function(xml) {
@@ -49,7 +49,7 @@ jQuery(document).ready(function() {
 
 	/*
 	 * HIDE DATABASE OPTIONS
-	 * 
+	 *
 	 * Description: Hide database options on startup or on deselect.
 	 */
 	if (jQuery("#dbType").val() == "") {
@@ -60,7 +60,7 @@ jQuery(document).ready(function() {
 
 	/*
 	 * TOGGLE DATABASE OPTIONS
-	 * 
+	 *
 	 * Description: Toggles database options and fill with defaults.
 	 */
 	jQuery("#dbType").change(function() {
@@ -77,10 +77,10 @@ jQuery(document).ready(function() {
 
 	/*
 	 * TOOLTIP
-	 * 
+	 *
 	 * Description: Initialize all Bootstrap Tooltips.
 	 */
-	$('*[data-toggle="tooltip"]').tooltip();
+	$('*[data-bs-toggle="tooltip"]').tooltip();
 
 	const formGroupSelector = '.form-group.row';
 

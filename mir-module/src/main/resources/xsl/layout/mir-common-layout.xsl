@@ -61,7 +61,7 @@
               <xsl:value-of select="'nav-item dropdown active'" />
             </xsl:attribute>
           </xsl:if>
-          <a id="currentUser" class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">
+          <a id="currentUser" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#">
             <strong>
               <xsl:choose>
                 <xsl:when test="$MIR.Layout.usermenu.realname.enabled != 'true'">
@@ -107,7 +107,7 @@
 <!--         <label xml:lang="en">German</label> -->
 <!--       </language> -->
       <li class="nav-item dropdown mir-lang">
-        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" title="{i18n:translate('mir.language.change')}">
+        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" title="{i18n:translate('mir.language.change')}">
           <xsl:value-of select="$curLang/language/@xmlCode" />
           <span class="caret" />
         </a>
@@ -254,7 +254,7 @@
     </xsl:variable>
 
     <li class="dropdown" id="basket-list-item">
-      <a class="dropdown-toggle nav-link" data-toggle="dropdown" href="#" title="{$basketTitle}">
+      <a class="dropdown-toggle nav-link" data-bs-toggle="dropdown" href="#" title="{$basketTitle}">
         <i class="fas fa-bookmark"></i>
         <sup>
           <xsl:value-of select="$entryCount" />

@@ -1,7 +1,7 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
   xmlns:encoder="xalan://java.net.URLEncoder" exclude-result-prefixes="xsl i18n encoder"
 >
-  
+
   <xsl:include href="resource:xsl/mir-utils.xsl" />
 
   <xsl:template name="browse.Pagination">
@@ -26,7 +26,7 @@
             <xsl:with-param name="numPerPage" select="1" />
           </xsl:call-template>
         </xsl:variable>
-        <div class="col-12 col-md-5 text-left">
+        <div class="col-12 col-md-5 text-start">
           <a tabindex="0" class="previous" href="{$link}" data-pagination=".caption:mods.title.main">
             <span class="fas fa-chevron-left icon" />
             <span class="caption">
@@ -71,7 +71,7 @@
             <xsl:with-param name="numPerPage" select="1" />
           </xsl:call-template>
         </xsl:variable>
-        <div class="col-12 col-md-5 text-right">
+        <div class="col-12 col-md-5 text-end">
           <a tabindex="0" class="next" href="{$link}" data-pagination=".caption:mods.title.main">
             <span class="fas fa-chevron-right icon" />
             <span class="caption">

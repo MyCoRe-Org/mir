@@ -8,12 +8,12 @@
 
   <xsl:param name="MIR.TableOfContents.HideTrivialLevel" />
   <xsl:param name="WebApplicationBaseURL" />
-  
+
   <!-- custom layouts of level items and publications -->
   <xsl:include href="toc/custom-toc-layouts.xsl" />
-  
+
   <xsl:include href="coreFunctions.xsl" />
-  
+
   <xsl:template match="toc">
     <!-- show table of contents only if the response returned any documents -->
     <xsl:if test="//doc">
@@ -24,7 +24,7 @@
 
             <!-- links to expand/collapse all toc levels at once -->
             <xsl:if test="count(//item) &gt; 1">
-              <span class="float-right" style="font-size:smaller;">
+              <span class="float-end" style="font-size:smaller;">
                 <a id="tocShowAll" href="#">
                   <xsl:value-of select="i18n:translate('mir.abstract.showGroups')" />
                 </a>
@@ -49,7 +49,7 @@
   <xsl:template match="toc[$MIR.TableOfContents.HideTrivialLevel='true']/level[count(item)=1][item[not(level)][publications]]" priority="1">
     <xsl:apply-templates select="item/publications" />
   </xsl:template>
-  
+
   <!-- show a toc level -->
   <xsl:template match="level">
     <ol class="mir-toc-sections">
@@ -70,7 +70,7 @@
             <!-- if there are deeper levels below, prepare expand/collapse functionality -->
             <xsl:when test="level|publications">
 
-              <a href="#{$id}" data-toggle="collapse" aria-expanded="{$expanded}" aria-controls="{$id}">
+              <a href="#{$id}" data-bs-toggle="collapse" aria-expanded="{$expanded}" aria-controls="{$id}">
                 <xsl:attribute name="class">
                   <xsl:choose>
                     <xsl:when test="$expanded='false'">mir-toc-section-toggle collapsed</xsl:when>
@@ -111,7 +111,7 @@
     </ol>
   </xsl:template>
 
-  <!-- show list of publications at current level -->  
+  <!-- show list of publications at current level -->
   <xsl:template match="publications">
     <ul class="mir-toc-section-list">
       <xsl:for-each select="doc">
