@@ -1,6 +1,6 @@
 <template>
     <div>
-        <i v-if="props.mode == 'search'" class="fas fa-tag fa-fw mr-1"> </i>
+        <i v-if="props.mode == 'search'" class="fas fa-tag fa-fwme-1"> </i>
         <a v-if="props.topic.valueURI"
            :href="props.topic.valueURI"
            target="_blank">
@@ -14,7 +14,7 @@
             <dl>
                 <dt>{{ i18n["mir.details.popover.type"]}}</dt>
                 <dd>
-                    <i class="fas fa-tag ml-1"> </i>
+                    <i class="fas fa-tag ms-1"> </i>
                     {{ i18n["mir.details.popover.type.topic"] }}
                 </dd>
             </dl>

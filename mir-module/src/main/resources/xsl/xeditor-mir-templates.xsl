@@ -426,7 +426,7 @@
 
   <xsl:template match="mir:template" mode="inputTooltip">
     <xsl:if test="@tooltip">
-      <span class="input-group-append" data-toggle="tooltip" data-html="true">
+      <span class="input-group-append" data-bs-toggle="tooltip" data-html="true">
         <xsl:attribute name="title">
           <xsl:value-of select="concat('{i18n:',@tooltip,'}')" />
         </xsl:attribute>

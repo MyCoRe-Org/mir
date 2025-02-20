@@ -32,7 +32,7 @@
               </div>
               <mir:template name="textInput" xpath="login" id="loginToken" i18n="component.mir.wizard.loginToken" i18n.error="component.mir.wizard.loginToken.required"
                 required="true" />
-              <div class="float-right">
+              <div class="float-end">
                 <mir:template name="submitButton" i18n="component.mir.wizard.login.button" target="servlet" href="MIRWizardServlet" />
               </div>
             </fieldset>
@@ -129,7 +129,7 @@
                   </div>
                 </div>
               </xed:bind>
-              <div class="float-right">
+              <div class="float-end">
                 <mir:template name="submitButton" i18n="component.mir.wizard.save" target="servlet" href="MIRWizardServlet" />
               </div>
             </fieldset>

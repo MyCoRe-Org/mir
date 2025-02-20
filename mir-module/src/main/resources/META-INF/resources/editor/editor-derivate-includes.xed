@@ -19,7 +19,7 @@
   <xed:template id="derivate_types">
     <xed:bind xpath="derivate/classifications[@class='MCRMetaClassification'][@heritable='false']/classification[contains(text(), 'derivate_types:')]">
       <div class="form-group row">
-        <label class="col-md-3 col-form-label text-right d-inline">
+        <label class="col-md-3 col-form-label text-end d-inline">
           <xed:output i18n="mir.derivate.type"/>
         </label>
         <div class="col-md-6">
@@ -37,7 +37,7 @@
   <xed:template id="mir_access">
     <xed:bind xpath="derivate/classifications[@class='MCRMetaClassification'][@heritable='false']/classification[contains(text(), 'mir_access:')]">
       <div class="form-group row">
-        <label class="col-md-3 col-form-label text-right d-inline">
+        <label class="col-md-3 col-form-label text-end d-inline">
           <xed:output i18n="mir.access"/>
         </label>
         <div class="col-md-6">
@@ -55,7 +55,7 @@
   <xed:template id="title_repeat">
     <xed:repeat xpath="derivate/titles[@class='MCRMetaLangText'][@heritable='false'][1]/title">
       <div class="form-group row">
-        <label class="col-md-3 col-form-label text-right d-inline">
+        <label class="col-md-3 col-form-label text-end d-inline">
           <xed:output i18n="mir.title"/>
         </label>
         <div class="col-md-2">

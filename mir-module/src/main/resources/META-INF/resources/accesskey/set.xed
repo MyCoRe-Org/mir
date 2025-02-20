@@ -18,7 +18,7 @@
             <mir:template name="textInput" xpath="." id="accessKey" i18n="mir.accesskey" i18n.error="mir.accesskey.required" required="true" />
           </div>
           <div class="card-footer clearfix">
-            <div class="float-right">
+            <div class="float-end">
               <mir:template name="submitButton" i18n="button.save" target="servlet" href="MIRAccessKeyServlet" />
               <mir:template name="cancelButton" i18n="button.cancel" />
             </div>

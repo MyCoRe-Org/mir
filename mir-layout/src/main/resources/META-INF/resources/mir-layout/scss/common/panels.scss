@@ -5,7 +5,7 @@
 .flatmir-footer {
     color:                      $gray-400;
     background-color:           $primary;
-    border-top:                 1px solid darken($primary, 50%);
+    border-top:                 1px solid shade-color($primary, 50%);
      @include border-bottom-radius(0); // overwrite default
     margin-top:                 50px;
     padding:                    0px;

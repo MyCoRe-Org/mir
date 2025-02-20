@@ -212,7 +212,7 @@
                 </xsl:otherwise>
               </xsl:choose>
             </xsl:attribute>
-            <div id="{$id}_length" class="form-group float-right no-margin">
+            <div id="{$id}_length" class="form-group float-end no-margin">
               <label>
                 <select class="form-control input-sm" name="numPerPage" size="1" onchange="this.form.submit()">
                   <xsl:variable name="tokens">
@@ -331,7 +331,7 @@
                     </xsl:call-template>
                   </xsl:attribute>
                   <xsl:value-of select="text()" />
-                  <span class="float-left {$iconClass} sort-icon" />
+                  <span class="float-start {$iconClass} sort-icon" />
                 </a>
               </xsl:when>
               <xsl:otherwise>
@@ -432,7 +432,7 @@
     <xsl:param name="i18nprefix" select="'dataTable'" />
     <xsl:param name="pages" />
 
-    <ul id="{$id}_paginate" class="pagination pagination-sm float-right no-margin">
+    <ul id="{$id}_paginate" class="pagination pagination-sm float-end no-margin">
       <li>
         <xsl:choose>
           <xsl:when test="number($Page) &gt; 1">

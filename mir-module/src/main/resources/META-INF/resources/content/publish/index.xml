@@ -77,7 +77,7 @@
       <!-- submit -->
       <div class="row form-group mt-4">
         <div class="col-lg-7 col-sm-12">
-          <button type="submit" class="btn btn-primary float-right">Weiter</button>
+          <button type="submit" class="btn btn-primary float-end">Weiter</button>
         </div>
       </div>
 
@@ -156,7 +156,7 @@
       <!-- submit -->
       <div class="row form-group mt-4">
         <div class="col-lg-7 col-sm-12">
-          <button type="submit" class="btn btn-primary float-right">Next</button>
+          <button type="submit" class="btn btn-primary float-end">Next</button>
         </div>
       </div>
 

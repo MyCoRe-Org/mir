@@ -56,7 +56,7 @@
         <xed:bind xpath="conditions/boolean[@operator='and']" -->
             <!--Fulltext -->
               <div class="form-group row">
-                <label for="inputFulltext1" class="col-md-3  col-form-label text-right">
+                <label for="inputFulltext1" class="col-md-3  col-form-label text-end">
                   <xed:output i18n="mir.dropdown.content" />
                 </label>
                 <div class="col-md-9">
@@ -76,7 +76,7 @@
                           <xed:output i18n="editor.search.mir.openAccess" />
                         </option>
                       </select>
-                      <span class="input-group-append" data-toggle="tooltip" data-html="true" title="{i18n:editor.search.fulltext.tooltip}">
+                      <span class="input-group-append" data-bs-toggle="tooltip" data-html="true" title="{i18n:editor.search.fulltext.tooltip}">
                         <i class="fas fa-info-circle  input-group-text" />
                       </span>
                     </xed:bind>
@@ -87,7 +87,7 @@
           </div>
          <!-- submit -->
           <div class="card-footer clearfix">
-            <div class="float-right">
+            <div class="float-end">
               <mir:template name="submitButton" i18n="editor.search.search" target="servlet_MCRQLSearchServlet" />
             </div>
           </div>

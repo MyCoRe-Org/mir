@@ -59,7 +59,7 @@
                   by Dave Gandy
                 </p>
               </div>
-              <div class="col-md-4 text-right">
+              <div class="col-md-4 text-end">
                 <p>
                   ©
                   <a href="http://www.mycore.de">

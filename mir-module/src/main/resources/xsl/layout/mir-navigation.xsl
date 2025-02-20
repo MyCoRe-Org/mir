@@ -14,7 +14,7 @@
           <xsl:value-of select="'nav-item dropdown active'" />
         </xsl:attribute>
       </xsl:if>
-      <a id="{$menuId}" class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">
+      <a id="{$menuId}" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#">
         <xsl:apply-templates select="." mode="linkText" />
       </a>
       <ul class="dropdown-menu" role="menu" aria-labelledby="{$menuId}">
