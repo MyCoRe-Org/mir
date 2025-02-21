@@ -23,6 +23,7 @@ import org.mycore.mods.MCRMODSWrapper;
 
 @MCRCommandGroup(
     name = "MIR migration 2017.06")
+@SuppressWarnings("PMD.MCR.ResourceResolver")
 public class MIRMigration201706Utils {
 
     private static final Logger LOGGER = LogManager.getLogger();

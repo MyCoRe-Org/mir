@@ -19,6 +19,7 @@ import org.mycore.frontend.cli.annotation.MCRCommandGroup;
  */
 @MCRCommandGroup(
     name = "MIR migration 2016.03")
+@SuppressWarnings("PMD.MCR.ResourceResolver")
 public class MIRMigration201603Utils {
 
     private static final Logger LOGGER = LogManager.getLogger();
