@@ -26,10 +26,10 @@
       <xsl:variable name="statusClass">
         <xsl:choose>
           <xsl:when test="@success = 'true'">
-            <xsl:text>badge-success</xsl:text>
+            <xsl:text>bg-success</xsl:text>
           </xsl:when>
           <xsl:otherwise>
-            <xsl:text>badge-danger</xsl:text>
+            <xsl:text>bg-danger</xsl:text>
           </xsl:otherwise>
         </xsl:choose>
       </xsl:variable>

@@ -248,7 +248,7 @@ function fillFieldset(fieldset, xml) {
 }
 
 function createbadge(inputgroup, relItemid) {
-	badge = '<a href="../receive/' + relItemid + '" target="_blank" class="badge badge-primary"> ';
+	badge = '<a href="../receive/' + relItemid + '" target="_blank" class="badge bg-primary"> ';
 	badge += 'intern ';
 	badge += '<span class="far fa-times-circle relItem-reset"> </span>';
 	badge += '</a>';

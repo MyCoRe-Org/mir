@@ -548,7 +548,7 @@
                     <xsl:attribute name="title">
                       <xsl:value-of select="i18n:translate('mir.response.openAccess.true')" />
                     </xsl:attribute>
-                    <span class="badge badge-success">
+                    <span class="badge bg-success">
                       <i class="fas fa-unlock-alt" aria-hidden="true"></i>
                     </span>
                   </xsl:when>
@@ -556,7 +556,7 @@
                     <xsl:attribute name="title">
                       <xsl:value-of select="i18n:translate('mir.response.openAccess.false')" />
                     </xsl:attribute>
-                    <span class="badge badge-warning">
+                    <span class="badge bg-warning">
                       <i class="fas fa-lock" aria-hidden="true"></i>
                     </span>
                   </xsl:otherwise>
@@ -566,7 +566,7 @@
                 <xsl:when test="arr[@name='mods.genre']">
                   <xsl:for-each select="arr[@name='mods.genre']/str">
                     <div class="hit_type">
-                      <span class="badge badge-info">
+                      <span class="badge bg-info">
                         <xsl:value-of select="mcrxsl:getDisplayName('mir_genres',.)" ></xsl:value-of>
                       </span>
                     </div>
@@ -574,7 +574,7 @@
                 </xsl:when>
                 <xsl:otherwise>
                   <div class="hit_type">
-                    <span class="badge badge-info">
+                    <span class="badge bg-info">
                       <xsl:value-of select="mcrxsl:getDisplayName('mir_genres','article')" />
                     </span>
                   </div>
@@ -582,7 +582,7 @@
               </xsl:choose>
               <xsl:if test="arr[@name='category.top']/str[contains(text(), 'mir_licenses:')]">
                 <div class="hit_license">
-                  <span class="badge badge-primary">
+                  <span class="badge bg-primary">
                     <xsl:variable name="accessCondition">
                       <xsl:value-of select="substring-after(arr[@name='category.top']/str[contains(text(), 'mir_licenses:')][last()],':')" />
                     </xsl:variable>
@@ -612,7 +612,7 @@
                       </xsl:otherwise>
                     </xsl:choose>
                   </xsl:variable>
-                  <span class="badge badge-primary">
+                  <span class="badge bg-primary">
                     <xsl:value-of select="$date" />
                   </span>
                 </div>
