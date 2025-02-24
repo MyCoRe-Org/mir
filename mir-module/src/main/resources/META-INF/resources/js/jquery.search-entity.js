@@ -503,7 +503,7 @@
     // Button style
     buttonClass : "btn btn-secondary",
     // Feedback style (optical feedback for current selection)
-    feedbackClass : "feedback badge badge-primary",
+    feedbackClass : "feedback badge bg-primary",
     // Feedback cleaner icon style
     feedbackCleanIconClass : "feedback-clean far fa-times-circle",
 
@@ -588,7 +588,7 @@
         if (SearchEntity.TYPES[type][options.searchEntityType].enabled === false || type.includes("_FALLBACK")) {
           continue;
         }
- 
+
         if (SearchEntity.TYPES[this.selectedType] != undefined && SearchEntity.TYPES[this.selectedType][options.searchEntityType].enabled == false) {
           this.selectedType = type;
         }
@@ -641,7 +641,7 @@
 
       var type = null;
       var typeFallback = null;
-      
+
       for (var t in SearchEntity.TYPES) {
         if (this.selectedType.toUpperCase() == t.toUpperCase()) {
           type = SearchEntity.TYPES[t][options.searchEntityType];
@@ -671,7 +671,7 @@
             }
             content.detach();
             that.$searchBtn.text(text);
-          
+
           }, () => {
             if (!isFallback && typeFallback != null) {
               console.log('SearchEntity.prototype.search: Failed to loadData for type: ' + this.selectedType.toUpperCase() + '. Set '
@@ -748,7 +748,7 @@
       searchResultContainer : $resultBox
     }, options));
   };
-  
+
   SearchEntity.prototype.updateOutput = function (item) {
     var that = this;
     var options = this.options;

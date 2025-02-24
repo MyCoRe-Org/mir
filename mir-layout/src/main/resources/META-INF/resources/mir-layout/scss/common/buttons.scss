@@ -21,6 +21,82 @@
     line-height: 0;
   }
 
+  // adds hover and focus effects for buttons and links with badge class
+  a,
+  button {
+    &.badge {
+      &.bg-primary,
+      &.text-bg-primary {
+        &:hover,
+        &:focus {
+          background-color: shift-color($primary,$btn-hover-bg-shade-amount) !important;
+        }
+      }
+      &.bg-secondary,
+      &.text-bg-secondary {
+        &:hover,
+        &:focus {
+          background-color: shift-color($secondary,$btn-hover-bg-shade-amount) !important;
+        }
+      }
+      &.bg-success,
+      &.text-bg-success {
+        &:hover,
+        &:focus {
+          background-color: shift-color($success,$btn-hover-bg-shade-amount) !important;
+        }
+      }
+      &.bg-danger,
+      &.text-bg-danger {
+        &:hover,
+        &:focus {
+          background-color: shift-color($danger,$btn-hover-bg-shade-amount) !important;
+        }
+      }
+      &.bg-warning,
+      &.text-bg-warning {
+        &:hover,
+        &:focus {
+          background-color: shift-color($warning,$btn-hover-bg-shade-amount) !important;
+        }
+      }
+      &.bg-info,
+      &.text-bg-info {
+        &:hover,
+        &:focus {
+          background-color: shift-color($info,$btn-hover-bg-shade-amount) !important;
+        }
+      }
+      &.bg-light,
+      &.text-bg-light {
+        &:hover,
+        &:focus {
+          background-color: shift-color($light,$btn-hover-bg-shade-amount) !important;
+        }
+      }
+      &.bg-dark,
+      &.text-bg-dark {
+        &:hover,
+        &:focus {
+          background-color: shift-color($dark,$btn-hover-bg-shade-amount) !important;
+        }
+      }
+    }
+  }
+
+  // removes text decoration from links with badge class
+  a {
+    &.badge {
+      text-decoration: none;
+      &:focus,
+      &:hover {
+        text-decoration: none;
+      }
+    }
+  }
+
+
+
 // X-Large devices (large desktops, less than 1400px)
 @include media-breakpoint-down(xxl) {
   // add/overwrite styles for responsive level xl and lower
