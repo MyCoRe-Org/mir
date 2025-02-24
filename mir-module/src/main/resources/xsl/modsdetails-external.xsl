@@ -844,13 +844,13 @@
       <div class="hit_tnd_container">
         <div class="hit_tnd_content">
           <div class="hit_type">
-            <span class="badge badge-info">
+            <span class="badge bg-info">
               <xsl:value-of select="mcrxsl:getDisplayName('mir_genres',$mods-type)" />
             </span>
           </div>
           <xsl:if test="mods:originInfo[not(@eventType) or @eventType='publication']/mods:dateIssued or mods:relatedItem/mods:originInfo[not(@eventType) or @eventType='publication']/mods:dateIssued">
             <div class="hit_date">
-              <span class="badge badge-primary">
+              <span class="badge bg-primary">
                 <xsl:variable name="dateIssued">
                   <xsl:choose>
                     <xsl:when test="mods:originInfo[not(@eventType) or @eventType='publication']/mods:dateIssued"><xsl:apply-templates mode="mods.datePublished" select="mods:originInfo[not(@eventType) or @eventType='publication']/mods:dateIssued" /></xsl:when>

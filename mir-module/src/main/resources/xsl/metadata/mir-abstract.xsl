@@ -55,7 +55,7 @@
       <div id="badges">
         <xsl:for-each select="$mods/mods:genre[@type='kindof']|$mods/mods:genre[@type='intern']">
           <xsl:call-template name="categorySearchLink">
-            <xsl:with-param name="class" select="'mods_genre badge badge-info'" />
+            <xsl:with-param name="class" select="'mods_genre badge bg-info'" />
             <xsl:with-param name="node" select="." />
             <xsl:with-param name="owner"  select="$owner" />
           </xsl:call-template>
@@ -101,14 +101,14 @@
             <xsl:choose>
               <xsl:when test="$firstDate and $firstDate != ''">
                 <xsl:call-template name="searchLink">
-                  <xsl:with-param name="class" select="'date_published badge badge-primary'" />
+                  <xsl:with-param name="class" select="'date_published badge bg-primary'" />
                   <xsl:with-param name="linkText" select="$dateText" />
                   <xsl:with-param name="query"
                                   select="concat('*&amp;fq=mods.dateIssued:',concat(substring($firstDate,1,10),'*'), '&amp;owner=createdby:', $owner)"/>
                 </xsl:call-template>
               </xsl:when>
               <xsl:otherwise>
-                <span class="date_published badge badge-primary">
+                <span class="date_published badge bg-primary">
                   <xsl:value-of select="$dateText"/>
                 </span>
               </xsl:otherwise>
@@ -132,7 +132,7 @@
             </xsl:choose>
           </xsl:variable>
           <xsl:call-template name="searchLink">
-            <xsl:with-param name="class" select="'access_condition badge badge-success'" />
+            <xsl:with-param name="class" select="'access_condition badge bg-success'" />
             <xsl:with-param name="linkText" select="$linkText" />
             <xsl:with-param name="query" select="concat('*&amp;fq=link:*',$accessCondition, '&amp;owner=createdby:', $owner)" />
           </xsl:call-template>
