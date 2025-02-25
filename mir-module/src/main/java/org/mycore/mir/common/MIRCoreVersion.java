@@ -36,6 +36,7 @@ import java.util.stream.Collectors;
  * @author Thomas Scheffler (yagee)
  *
  */
+@SuppressWarnings("PMD.MCR.ResourceResolver")
 public class MIRCoreVersion {
     private static Properties prop = loadVersionProperties();
 
