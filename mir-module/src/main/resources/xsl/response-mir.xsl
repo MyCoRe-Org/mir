@@ -60,54 +60,129 @@
     <div class="row result_searchline">
       <div class="col-12 col-sm-8 text-center result_search">
         <div class="search_box">
-          <xsl:variable name="searchlink" select="concat($proxyBaseURL, $HttpSession, $solrParams)" />
+
+          <!-- Check if 'condQuery' exists and extract its value if it does -->
+          <xsl:variable name="condQuery">
+            <xsl:choose>
+              <xsl:when test="contains($solrParams, 'condQuery=')">
+                <xsl:value-of select="substring-before(substring-after($solrParams, 'condQuery='), '&amp;')" />
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:value-of select="''" />
+              </xsl:otherwise>
+            </xsl:choose>
+          </xsl:variable>
+
+          <!-- Check if 'initialCondQuery' exists and extract its value if it does -->
+          <xsl:variable name="initialCondQuery" select="/response/lst[@name='responseHeader']/lst[@name='params']/str[@name='initialCondQuery']" />
+
+          <!-- Check if 'fq' exists and extract its value if it does -->
+          <xsl:variable name="fq" select="/response/lst[@name='responseHeader']/lst[@name='params']/str[@name='fq']" />
+
+          <!-- Check if 'owner' exists and extract its value if it does -->
+          <xsl:variable name="owner" select="/response/lst[@name='responseHeader']/lst[@name='params']/str[@name='owner']" />
+
+          <!-- Check if 'version' exists and extract its value if it does -->
+          <xsl:variable name="version" select="/response/lst[@name='responseHeader']/lst[@name='params']/str[@name='version']" />
+
+
+          <!-- Extract part before ':' ('%3A') if $fq is not empty or null -->
+          <xsl:variable name="initialSelectMods">
+            <xsl:choose>
+              <xsl:when test="$fq">
+                <!-- xsl:value-of select="substring-before($fq, '%3A')" / -->
+                <xsl:value-of select="substring-before($fq, ':')" />
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:value-of select="''" />
+              </xsl:otherwise>
+            </xsl:choose>
+          </xsl:variable>
+
+          <!-- Extract part after ':' ('%3A') if $fq is not empty or null -->
+          <xsl:variable name="filterQueryValue">
+            <xsl:choose>
+              <xsl:when test="$fq">
+                <xsl:value-of select="substring-after($fq, ':')" />
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:value-of select="''" />
+              </xsl:otherwise>
+            </xsl:choose>
+          </xsl:variable>
+
+          <!-- Variable for the 'action' attribute in the form element -->
+          <xsl:variable name="searchlink" select="concat($proxyBaseURL, $HttpSession)" />
+
+          <!-- Form for the second search -->
           <form action="{$searchlink}" class="search_form" method="post">
+            <xsl:choose>
+              <xsl:when test="not($fq)">
+                <input type="hidden" id="fq" name="fq" value=""/>
+              </xsl:when>
+              <xsl:otherwise>
+                <input type="hidden" id="fq" name="fq" value="{$fq}"/>
+              </xsl:otherwise>
+            </xsl:choose>
+
+            <!-- Hidden elements -->
+            <input type="hidden" id="initialCondQuerySecond" name="initialCondQuery" value="{$initialCondQuery}"/>
+            <input type="hidden" id="owner" name="owner" value="{$owner}"/>
+            <input type="hidden" id="version" name="version" value="{$version}"/>
+
             <div class="input-group input-group-sm">
-              <div class="input-group-btn input-group-prepend">
-                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" value="all" id="search_type_button">
-                  <span id="search_type_label">
-                    <xsl:value-of select="i18n:translate('mir.dropdown.all')" />
-                  </span>
-                  <span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu search_type">
-                  <li>
-                    <a href="#" value="all" class="dropdown-item">
-                      <xsl:value-of select="i18n:translate('mir.dropdown.all')" />
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#" value="mods.title" class="dropdown-item">
-                      <xsl:value-of select="i18n:translate('mir.dropdown.title')" />
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#" value="mods.author" class="dropdown-item">
-                      <xsl:value-of select="i18n:translate('mir.dropdown.author')" />
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#" value="mods.name.top" class="dropdown-item">
-                      <xsl:value-of select="i18n:translate('mir.dropdown.name')" />
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#" value="mods.nameIdentifier" class="dropdown-item">
-                      <xsl:value-of select="i18n:translate('mir.dropdown.nameIdentifier')" />
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#" value="allMeta" class="dropdown-item">
-                      <xsl:value-of select="i18n:translate('mir.dropdown.allMeta')" />
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#" value="content" class="dropdown-item">
-                      <xsl:value-of select="i18n:translate('mir.dropdown.content')" />
-                    </a>
-                  </li>
-                </ul>
-              </div>
+              <!-- Select box for the filter query (select mods) -->
+              <select id="select_mods" class="btn btn-primary">
+                <option value="all">
+                  <xsl:if test="$initialSelectMods = 'all' or not($initialSelectMods)">
+                    <xsl:attribute name="selected">selected</xsl:attribute>
+                  </xsl:if>
+                  <xsl:value-of select="i18n:translate('mir.dropdown.all')" />
+                </option>
+
+                <option value="mods.title">
+                  <xsl:if test="$initialSelectMods = 'mods.title'">
+                    <xsl:attribute name="selected">selected</xsl:attribute>
+                  </xsl:if>
+                  <xsl:value-of select="i18n:translate('mir.dropdown.title')" />
+                </option>
+
+                <option value="mods.author">
+                  <xsl:if test="$initialSelectMods = 'mods.author'">
+                    <xsl:attribute name="selected">selected</xsl:attribute>
+                  </xsl:if>
+                  <xsl:value-of select="i18n:translate('mir.dropdown.author')" />
+                </option>
+
+                <option value="mods.name.top">
+                  <xsl:if test="$initialSelectMods = 'mods.name.top'">
+                    <xsl:attribute name="selected">selected</xsl:attribute>
+                  </xsl:if>
+                  <xsl:value-of select="i18n:translate('mir.dropdown.name')" />
+                </option>
+
+                <option value="mods.nameIdentifier">
+                  <xsl:if test="$initialSelectMods = 'mods.nameIdentifier'">
+                    <xsl:attribute name="selected">selected</xsl:attribute>
+                  </xsl:if>
+                  <xsl:value-of select="i18n:translate('mir.dropdown.nameIdentifier')" />
+                </option>
+
+                <option value="allMeta">
+                  <xsl:if test="$initialSelectMods = 'allMeta'">
+                    <xsl:attribute name="selected">selected</xsl:attribute>
+                  </xsl:if>
+                  <xsl:value-of select="i18n:translate('mir.dropdown.allMeta')" />
+                </option>
+
+                <option value="content">
+                  <xsl:if test="$initialSelectMods = 'content'">
+                    <xsl:attribute name="selected">selected</xsl:attribute>
+                  </xsl:if>
+                  <xsl:value-of select="i18n:translate('mir.dropdown.content')" />
+                </option>
+              </select>
+
               <xsl:variable name="resolver">
                 <xsl:call-template name="substring-after-last">
                   <xsl:with-param name="string" select="$proxyBaseURL" />
@@ -125,14 +200,84 @@
                     </xsl:variable>
                     <xsl:value-of select="decoder:decode($encodedQry, 'UTF-8')" />
                   </xsl:variable>
-                  <xsl:choose>
-                    <xsl:when test="$qry = '*'">
-                      <input class="form-control" name="qry" placeholder="{i18n:translate('mir.placeholder.response.search')}" type="text" />
-                    </xsl:when>
-                    <xsl:otherwise>
-                      <input class="form-control" name="qry" placeholder="{i18n:translate('mir.placeholder.response.search')}" type="text" value="{$qry}" />
-                    </xsl:otherwise>
-                  </xsl:choose>
+
+                  <xsl:variable name="query">
+                    <xsl:choose>
+                      <xsl:when test="$condQuery">
+                        <xsl:choose>
+                          <xsl:when test="$condQuery = $initialCondQuery">
+                            <xsl:value-of select="''" />
+                          </xsl:when>
+                          <xsl:otherwise>
+                            <xsl:variable name="searchString" select="concat($initialCondQuery, '+AND+')" />
+                            <xsl:value-of select="substring-after($condQuery, $searchString)" />
+                          </xsl:otherwise>
+                        </xsl:choose>
+                      </xsl:when>
+                      <xsl:otherwise>
+                        <xsl:value-of select="''" />
+                      </xsl:otherwise>
+                    </xsl:choose>
+                  </xsl:variable>
+
+                  <!-- Get a current qry from the last request value -->
+                  <xsl:variable name="currentQryFromLastRequest">
+                    <xsl:choose>
+                      <xsl:when test="not($filterQueryValue) or $filterQueryValue = ''">
+                        <xsl:value-of select="$query" />
+                      </xsl:when>
+                      <xsl:when test="$filterQueryValue = '*'">
+                        <!-- If filterQueryValue is '*', leave value empty -->
+                        <xsl:value-of select="''" />
+                      </xsl:when>
+                      <xsl:otherwise>
+                        <xsl:value-of select="$filterQueryValue" />
+                      </xsl:otherwise>
+                    </xsl:choose>
+                  </xsl:variable>
+
+                  <!-- Get a type of the last request -->
+                  <xsl:variable name="lastTypeRequest">
+                    <xsl:choose>
+                      <xsl:when test="not($filterQueryValue) or $filterQueryValue = ''">
+                        <xsl:choose>
+                          <xsl:when test="$condQuery = $initialCondQuery">
+                            <xsl:value-of select="''" />
+                          </xsl:when>
+                          <xsl:otherwise>
+                            <xsl:value-of select="'condQuery'" />
+                          </xsl:otherwise>
+                        </xsl:choose>
+                      </xsl:when>
+                      <xsl:otherwise>
+                        <xsl:value-of select="'fq'" />
+                      </xsl:otherwise>
+                    </xsl:choose>
+                  </xsl:variable>
+
+                  <!-- Hidden query parameter 'condQuery' -->
+                  <input type="hidden" id="condQuery" name="condQuery">
+                    <xsl:attribute name="value">
+                      <xsl:choose>
+                        <!-- If $lastTypeRequest is 'condQuery', concatenate $initialCondQuery, ' AND ', and $currentQry -->
+                        <xsl:when test="$lastTypeRequest = 'condQuery'">
+                          <xsl:value-of select="concat($initialCondQuery, ' AND ', $currentQryFromLastRequest)" />
+                        </xsl:when>
+                        <!-- If $lastTypeRequest is 'fq' or empty, use $initialCondQuery -->
+                        <xsl:when test="$lastTypeRequest = 'fq' or $lastTypeRequest = ''">
+                          <xsl:value-of select="$initialCondQuery" />
+                        </xsl:when>
+                        <!-- Default case (if needed, though not specified in your conditions) -->
+                        <xsl:otherwise>
+                          <xsl:value-of select="$initialCondQuery" />
+                        </xsl:otherwise>
+                      </xsl:choose>
+                    </xsl:attribute>
+                  </input>
+
+                  <!-- Input element for the second search -->
+                  <input class="form-control" id="qry" placeholder="{i18n:translate('mir.placeholder.response.search')}" type="text" value="{$currentQryFromLastRequest}" />
+
                 </xsl:when>
                 <xsl:otherwise>
                   <input class="form-control" name="condQuery" placeholder="{i18n:translate('mir.placeholder.response.search')}" type="text" />
