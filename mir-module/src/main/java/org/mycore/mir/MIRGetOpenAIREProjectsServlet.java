@@ -2,6 +2,7 @@ package org.mycore.mir;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serial;
 import java.net.URI;
 import java.net.URLEncoder;
 import java.net.http.HttpClient;
@@ -20,6 +21,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 public class MIRGetOpenAIREProjectsServlet extends HttpServlet {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     private static Logger LOGGER = LogManager.getLogger();

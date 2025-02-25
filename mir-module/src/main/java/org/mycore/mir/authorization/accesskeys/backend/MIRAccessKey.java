@@ -52,8 +52,6 @@ import jakarta.persistence.Table;
 @Table(name = "miraccesskey")
 public class MIRAccessKey {
 
-    private static final long serialVersionUID = 1L;
-
     /** The unique and internal information id */
     private int id;
 
