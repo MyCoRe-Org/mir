@@ -73,6 +73,7 @@
                 id="searchInput"
                 type="text"
                 aria-label="Search" />
+              <input type="hidden" id="initialCondQuery" name="initialCondQuery" value=""/>
               <xsl:choose>
                 <xsl:when test="contains($isSearchAllowedForCurrentUser, 'true')">
                   <input name="owner" type="hidden" value="createdby:*" />
