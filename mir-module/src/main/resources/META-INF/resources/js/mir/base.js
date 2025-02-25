@@ -295,8 +295,10 @@
 
     // Input element in the original search
     const originalSearchInputElement = "#searchInput";
-    // Selector for the search form
+    // Selector for the second search form
     const subSearchFormName = "form.search_form";
+    // The submit button in the second search form
+    const secondSearchFormSubmitButtonElement = subSearchFormName + ' button[type="submit"]';
     // ID of the input field for the second search text
     const qrySelector = "#qry";
     // ID of the select box with the filter query key
@@ -319,24 +321,39 @@
 
     // Changes in the select box for the filter query
     $(selectMods).change(() => {
-        setFQAndCondQueryElementsValues();
+        setFQAndCondQueryElementsValues('selectMods');
     });
 
     // Changes in the input field of the filter query
     $(qrySelector).change(() => {
-        setFQAndCondQueryElementsValues();
+        setFQAndCondQueryElementsValues('changeQry');
+    });
+
+    // Key up changes in the second search input element
+    $(qrySelector).keyup(() => {
+        if ($(selectMods)) {
+            const queryText = $(qrySelector).val().trim();
+            const selectModsValue = $(selectMods).val();
+            // Case if selectMods is 'all' - 'everything'
+            if (selectModsValue !== 'all') {
+                if (queryText !== '') {
+                    // Enable the submit button in the second search form
+                    enableButton(secondSearchFormSubmitButtonElement);
+                } else {
+                    // Disable the submit button in the second search form
+                    disableButton(secondSearchFormSubmitButtonElement);
+                }
+            }
+        }
     });
 
     // Changes for the fq element and condQuery element
-    function setFQAndCondQueryElementsValues() {
+    function setFQAndCondQueryElementsValues(eventType = 'selectMods') {
         if ($(selectMods) && $(qrySelector) && $(fqElement) && $(initialCondQuerySecond) && $(condQuery)) {
             let queryText = '';
-            if ($(qrySelector).val() !== '') {
-                queryText = $(qrySelector).val().trim();
-                // Remove all duplicate spaces, tabs, newlines etc
-                queryText = queryText.replace(/\s\s+/g, ' ');
-            }
-
+            queryText = $(qrySelector).val().trim();
+            // Remove all duplicate spaces, tabs, newlines etc
+            queryText = queryText.replace(/\s\s+/g, ' ');
             const initialCondQueryValue = $(initialCondQuerySecond).val().trim();
 
             const selectModsValue = $(selectMods).val();
@@ -345,23 +362,43 @@
                 $(fqElement).attr('value', '');
                 let condQueryValue = initialCondQueryValue;
                 if (initialCondQueryValue !== '') {
-                    if (queryText !== '') {
-                        condQueryValue += ' AND ' + queryText;
-                    }
+                    condQueryValue += ' AND ' + queryText;
                 } else {
-                    if (queryText !== '') {
-                        condQueryValue += queryText;
-                    }
+                    condQueryValue += queryText;
                 }
                 $(condQuery).attr('value', condQueryValue);
+                if (eventType === 'selectMods') {
+                    // Enable the submit button in the second search form
+                    enableButton(secondSearchFormSubmitButtonElement);
+                }
             } else {
-                if (queryText !== '') {
-                    // const selectModsValue = $(selectMods).val();
-                    const filterQuery = selectModsValue + ':' + queryText;
-                    $(fqElement).attr('value', filterQuery);
-                    $(condQuery).attr('value', initialCondQueryValue);
+                const filterQuery = selectModsValue + ':' + queryText;
+                $(fqElement).attr('value', filterQuery);
+                $(condQuery).attr('value', initialCondQueryValue);
+                if (eventType === 'selectMods') {
+                    if (queryText !== '') {
+                        // Enable the submit button in the second search form
+                        enableButton(secondSearchFormSubmitButtonElement);
+                    } else {
+                        // Disable the submit button in the second search form
+                        disableButton(secondSearchFormSubmitButtonElement);
+                    }
                 }
             }
+        }
+    }
+
+    // Disable the button
+    function disableButton(element) {
+        if (element) {
+            $(element).attr('disabled','disabled');
+        }
+    }
+
+    // Enable the button
+    function enableButton(element) {
+        if (element) {
+            $(element).removeAttr('disabled');
         }
     }
 
