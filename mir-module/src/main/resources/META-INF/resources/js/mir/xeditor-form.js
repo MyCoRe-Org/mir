@@ -314,7 +314,7 @@ $(document).ready(function() {
     });
 
     $(document).popover({
-        selector: "[data-toggle=popover]",
+        selector: "[data-bs-toggle=popover]",
         container: "body",
         html: true,
         trigger: "focus"

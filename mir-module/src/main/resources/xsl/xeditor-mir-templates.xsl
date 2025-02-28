@@ -367,7 +367,7 @@
             </xsl:if>
           </xsl:attribute>
 
-          <input class="custom-control-input" type="{$inputType}" value="{@value}" id="{$gId}">
+          <input class="form-check-input" type="{$inputType}" value="{@value}" id="{$gId}">
             <xsl:if test="@disabled = 'true'">
               <xsl:attribute name="disabled">
               <xsl:text>disabled</xsl:text>
@@ -375,7 +375,7 @@
             </xsl:if>
             <xsl:apply-templates select="." mode="inputOptions" />
           </input>
-          <label class="custom-control-label" for="{$gId}">
+          <label class="form-check-label" for="{$gId}">
             <xsl:if test="string-length(@i18n) &gt; 0">
               <xed:output i18n="{@i18n}" />
             </xsl:if>

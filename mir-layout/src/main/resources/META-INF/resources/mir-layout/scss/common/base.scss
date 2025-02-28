@@ -64,6 +64,12 @@
     letter-spacing: 0.4em;
     padding-left: 12px
   }
+
+  // all the elements that should have no underline by default
+  .hit_title,
+  .hit_author,
+  .hit_source,
+  .single_hit_option,
   .internal_links,
   .social_links {
     a {

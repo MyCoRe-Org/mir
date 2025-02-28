@@ -103,11 +103,8 @@ $hover_darken: 20%;
       .filter {
         li {
           cursor: pointer;
-          &:hover * {
-            background-color: transparent;
-          }
           &:hover {
-            .custom-checkbox {
+            .form-check {
               label {
                 .title {
                   color: shade-color($filter, $hover_darken);
@@ -118,15 +115,15 @@ $hover_darken: 20%;
               }
             }
           }
-          .custom-checkbox {
-            margin-top: 0px;
-            margin-bottom: 0px;
+          .form-check {
             label {
               cursor: pointer;
-              vertical-align: middle;
               .hits {
                 color: $filter_hits;
               }
+            }
+            input {
+              cursor: pointer;
             }
           }
         }

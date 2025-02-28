@@ -18,7 +18,7 @@
   </xsl:variable>
 
   <xsl:template name="mir-helpbutton">
-    <a tabindex="0" class="btn btn-secondary info-button" role="button" data-toggle="popover" data-placement="right" data-content="{@help-text}">
+    <a tabindex="0" class="btn btn-secondary info-button" role="button" data-bs-toggle="popover" data-placement="right" data-content="{@help-text}">
       <i class="fas fa-info"></i>
     </a>
   </xsl:template>
