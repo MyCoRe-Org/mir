@@ -26,9 +26,9 @@
         <xsl:value-of select="$facetProperties/properties/entry[@key=concat('MIR.Response.Facet.', $facet_name, '.Roles')]"/>
       </xsl:variable>
       <xsl:variable name="hasRole" select="string-length($rolesProperty)=0 or count(str:tokenize($rolesProperty,',')[mcrxsl:isCurrentUserInRole(.)])!=0"/>
-      
+
       <xsl:if test="$isEnabled and $hasRole and self::node()[@name=$facet_name]/int">
-        
+
         <xsl:variable name="classIdProperty">
           <xsl:value-of select="$facetProperties/properties/entry[@key=concat('MIR.Response.Facet.', $facet_name, '.ClassId')]"/>
         </xsl:variable>
@@ -174,8 +174,8 @@
       </xsl:variable>
 
       <li data-fq="{$fqResponseValue}">
-        <div class="custom-control custom-checkbox" onclick="location.href='{$queryURL}';">
-          <input type="checkbox" class="custom-control-input">
+        <div class="form-check" onclick="location.href='{$queryURL}';">
+          <input type="checkbox" class="form-check-input">
             <xsl:if test="
               /response/lst[@name='responseHeader']/lst[@name='params']/str[@name='fq' and text() = $fqResponseValue] |
               /response/lst[@name='responseHeader']/lst[@name='params']/arr[@name='fq']/str[text() = $fqResponseValue]">
@@ -183,7 +183,7 @@
             </xsl:if>
           </input>
 
-          <label class="custom-control-label">
+          <label class="form-check-label">
             <span class="title">
               <xsl:choose>
                 <xsl:when

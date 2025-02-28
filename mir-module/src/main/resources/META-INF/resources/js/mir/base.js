@@ -369,7 +369,7 @@
     			const i18nKey = ($(currentMd5Elements.get(0)).hasClass('hidden'))
         	  		? ('component.mods.metaData.options.MD5.show')
         	  		: ('component.mods.metaData.options.MD5.hide');
-          
+
           // Get a current toggle element
           const currentToggleMD5LinkElement = $(currentDerivateIdParentElements.get(0)).find(toggleMD5LinkElement);
 
@@ -689,10 +689,10 @@
     return true;
   };
 
-  $(document).tooltip({
-    selector : "[data-toggle=tooltip]",
-    container : "body"
-  });
+  // initiate bs tooltips
+  // https://getbootstrap.com/docs/5.3/components/tooltips/#enable-tooltips
+  const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+  const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
 
   /* =================
   /   go back to top
