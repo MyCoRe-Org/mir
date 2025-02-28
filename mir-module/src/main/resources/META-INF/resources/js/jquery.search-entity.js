@@ -575,7 +575,7 @@
 
       var $typeBtn = this.$typeBtn = $(document.createElement("button"));
       $typeBtn.addClass(options.buttonClass).addClass("dropdown-toggle");
-      $typeBtn.attr("data-toggle", "dropdown");
+      $typeBtn.attr("data-bs-toggle", "dropdown");
       $typeBtn.html("<span class=\"caret\"></span><span class=\"sr-only\">Toggle Dropdown</span>");
 
       $actions.append($typeBtn);
