@@ -36,7 +36,7 @@ import org.mycore.mir.wizard.MIRWizardCommand;
 
 public class MIRWizardDownloadDBLib extends MIRWizardCommand {
 
-    private static Logger LOGGER = LogManager.getLogger();
+    private static final Logger LOGGER = LogManager.getLogger();
 
     public MIRWizardDownloadDBLib() {
         this("download");

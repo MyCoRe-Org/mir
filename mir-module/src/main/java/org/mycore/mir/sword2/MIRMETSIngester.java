@@ -42,7 +42,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 public class MIRMETSIngester extends MIRSwordIngesterBase {
 
-    public static final Logger LOGGER = LogManager.getLogger();
+    private static final Logger LOGGER = LogManager.getLogger();
 
     private static Document readXMLFile(Path file) {
         try (InputStream metsIS = Files.newInputStream(file)) {

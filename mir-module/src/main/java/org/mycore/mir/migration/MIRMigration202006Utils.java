@@ -51,7 +51,7 @@ import org.mycore.services.staticcontent.MCRObjectStaticContentGenerator;
     name = "MIR migration 2020.06")
 public class MIRMigration202006Utils {
 
-    public static final Logger LOGGER = LogManager.getLogger();
+    private static final Logger LOGGER = LogManager.getLogger();
 
     private static final MCRCategoryID CONTENT_TYPE_ID = MCRCategoryID.fromString("derivate_types:content");
 
