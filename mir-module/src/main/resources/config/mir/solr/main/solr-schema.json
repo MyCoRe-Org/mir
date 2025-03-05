@@ -162,6 +162,24 @@
   },
   {
     "add-field": {
+    "name": "mir.toc.host.issue.int",
+    "type": "pint",
+    "indexed": true,
+    "stored": true,
+    "multiValued": false
+    }
+  },
+  {
+    "add-field": {
+    "name": "mir.toc.host.issue.str",
+    "type": "pint",
+    "indexed": true,
+    "stored": true,
+    "multiValued": false
+    }
+  },
+  {
+    "add-field": {
       "name": "mir.toc.host.issue.top",
       "type": "string",
       "indexed": true,
