@@ -3,15 +3,15 @@
         $(".flipCoords").click(function() {
             var parent = $(this).parent();
             $(parent).html($(parent).data("fullcoords"));
-        }); 
-        
+        });
+
         $('.show-openstreetmap-editor').click(function() {
             const mapContainer = $(this).parent().parent().parent().parent().next().children(".openstreetmap-container");
             mapContainer.collapse('toggle');
             if(!$(this).hasClass("map_drawn")) {
                 drawMap($(this), mapContainer);
             }
-            $(this).parent().parent().parent().parent().toggleClass("form-group");
+            $(this).parent().parent().parent().parent().toggleClass("mir-form-group");
             $(this).children("i").toggleClass("fa-chevron-down");
             $(this).children("i").toggleClass("fa-chevron-up");
         });
@@ -30,7 +30,7 @@
             var mapElement = mapContainer.find(".map")[0];
             var lat = $(btn).data("lat") === "" ? 50.930453 : $(btn).data("lat");
             var lon = $(btn).data("lon") === "" ? 11.587786 : $(btn).data("lon");
-            
+
             function init() {
                 var raster = new ol.layer.Tile({
                     source: new ol.source.OSM()
@@ -176,7 +176,7 @@
                 function loadLonLat(lonLatData) {
                     var data = lonLatData.trim().split(",");
                     var obj, geometry;
-                    
+
                     if(data.length >= 2) {
                         var newArray = [];
                         $.each(data, function(i, val) {
@@ -189,7 +189,7 @@
                         var pointCoords = ol.proj.fromLonLat([parseFloat(lonLat[0]), parseFloat(lonLat[1])]);
                         geometry = new ol.geom.Point(pointCoords);
                     }
-                    
+
                     if(geometry) {
                         obj = new ol.Feature({
                             geometry: geometry

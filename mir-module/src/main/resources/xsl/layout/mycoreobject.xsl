@@ -45,7 +45,7 @@
   <xsl:template match="/mycoreobject" mode="pageTitle" priority="0">
     <xsl:value-of select="i18n:translate('metaData.pageTitle')" />
   </xsl:template>
-  
+
   <xsl:template match="/mycoreobject" mode="breadCrumb" priority="0">
     Todo: Krümelleiste
   </xsl:template>
@@ -81,7 +81,7 @@
               <label>Was erzeugen?</label>
             </td>
             <td>
-              <select name="XSL.Style">
+              <select name="XSL.Style" class="form-select">
                 <option value="generateMessages">messages_*.properties Vorlage</option>
                 <option value="generateStylesheet">
                   <xsl:value-of select="concat($objectType,'.xsl Vorlage')" />

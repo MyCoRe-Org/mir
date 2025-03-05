@@ -33,8 +33,8 @@
       </script>
       <script src='https://www.google.com/recaptcha/api.js?hl={$CurrentLang}'></script>
       <xed:bind xpath="attributes/attribute[@name='recaptchaParam']/@value">
-        <div class="form-group {$xed-validation-marker} required">
-          <label class="col-md-3 control-label" for="my-g-recaptcha-response">
+        <div class="mir-form-group {$xed-validation-marker} required">
+          <label class="col-md-3 control-label form-label" for="my-g-recaptcha-response">
             <xed:output i18n="selfRegistration.captcha" />
           </label>
           <div id="captcha" class="g-recaptcha col-md-9" data-sitekey="{$MIR.ReCaptcha.site.key}" data-callback="verifyCallback" />

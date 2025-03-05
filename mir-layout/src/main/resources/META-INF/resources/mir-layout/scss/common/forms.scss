@@ -12,6 +12,11 @@
   pointer-events: auto;
 }
 
+// replaces bs4 form-group
+.mir-form-group {
+  margin-bottom: 1rem;
+}
+
 .input-group > .input-group-addon {
   border-width: 2px 0px;
   top: 0;
@@ -110,10 +115,6 @@
     margin-bottom: 15px;
 }
 
-.mir-fieldset-content > .form-group {
-    margin-bottom: 0px;
-}
-
 .mir-fieldset-legend {
     border-style: solid;
     border-width: 0px 0px 2px;
@@ -156,7 +157,8 @@
 }
 
 div.mir-fieldset-content {
-  & > div.form-group {
+  & > div.mir-form-group {
+    margin-bottom: 0px;
     & > div.col-md-6 {
       border-style: solid;
       border-width: 0px 0px 0px 2px;

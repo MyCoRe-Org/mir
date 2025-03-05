@@ -199,7 +199,7 @@
             </xsl:if>
           </input>
 
-          <label class="form-check-label">
+          <label class="form-check-label form-label">
             <span class="title">
               <xsl:call-template name="label">
                 <xsl:with-param name="parameterValues" select="$parameterValues"/>

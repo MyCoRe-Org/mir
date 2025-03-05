@@ -1,12 +1,9 @@
 <template>
     <form>
-        <div class="form-group">
+        <div class="mir-form-group">
             <div class="input-group input-group-sm mb-3">
                 <input v-model="model.inputValue" :disabled="searchEnabled?null:''" @submit.prevent type="text" :placeholder="i18n['mir.editor.subject.search.placeholder']" class="form-control search-topic">
-
-                <div class="input-group-append ">
-                    <button class="btn btn-sm btn-primary" type="submit" :disabled="searchEnabled?null:''" @click.prevent="search" >{{ i18n['mir.editor.subject.search'] }}</button>
-                </div>
+                <button class="btn btn-sm btn-primary" type="submit" :disabled="searchEnabled?null:''" @click.prevent="search" >{{ i18n['mir.editor.subject.search'] }}</button>
             </div>
         </div>
     </form>

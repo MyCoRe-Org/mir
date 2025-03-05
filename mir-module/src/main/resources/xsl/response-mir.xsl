@@ -591,7 +591,7 @@
                     <xsl:value-of select="concat(' ',i18n:translate('mir.actions'))" />
                     <span class="caret"></span>
                   </a>
-                  <ul class="dropdown-menu dropdown-menu-right">
+                  <ul class="dropdown-menu dropdown-menu-end">
                     <li>
                       <xsl:call-template name="basketLink">
                         <xsl:with-param name="identifier" select="$identifier" />
@@ -1139,7 +1139,7 @@
             <xsl:value-of select="i18n:translate('mir.response.button.filter')" />
             <span class="caret" />
           </button>
-          <ul class="dropdown-menu dropdown-menu-right" role="menu" style="max-height: 500px; overflow-y: scroll;">
+          <ul class="dropdown-menu dropdown-menu-end" role="menu" style="max-height: 500px; overflow-y: scroll;">
             <xsl:apply-templates select="$classiDocument/select/option" mode="calculate_option_notselected">
               <xsl:with-param name="classId" select="$classId" />
             </xsl:apply-templates>
@@ -1241,10 +1241,10 @@
             <xsl:value-of select="i18n:translate('mir.response.button.filter')" />
             <span class="caret" />
           </button>
-          <div class="dropdown-menu dropdown-menu-right stopAutoclose col-md-12 mir-date-arrowTop" role="menu">
+          <div class="dropdown-menu dropdown-menu-end stopAutoclose col-md-12 mir-date-arrowTop" role="menu">
             <div class="container-fluid">
-              <div class="col-md-12 form-group">
-                <select class="form-control">
+              <div class="col-md-12 mir-form-group">
+                <select class="form-control form-select">
                   <option value="=">=</option>
                   <option value="&gt;">&gt;</option>
                   <option value="&gt;=">&gt;=</option>
@@ -1252,7 +1252,7 @@
                   <option value="&lt;=">&lt;=</option>
                 </select>
               </div>
-              <div class="col-md-12 form-group dateContainer">
+              <div class="col-md-12 mir-form-group dateContainer">
                 <div class="col-md-4">
                   <input class="form-control" placeholder="DD" type="number" min="1" max="31" style="padding: 0.4em" />
                 </div>
@@ -1263,7 +1263,7 @@
                   <input class="form-control" placeholder="YYYY" type="number" min="1000" max="2050" style="padding: 0.1em" />
                 </div>
               </div>
-              <div class="col-md-12 form-group">
+              <div class="col-md-12 mir-form-group">
                 <input id="dateSearch" type="button" class="btn btn-secondary form-control" value="Go!" />
               </div>
             </div>

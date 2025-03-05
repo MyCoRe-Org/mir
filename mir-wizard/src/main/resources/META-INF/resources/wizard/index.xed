@@ -111,8 +111,8 @@
                   required="true" />
                 <mir:template name="textInput" xpath="username" id="dbUsername" i18n="component.mir.wizard.db.username" />
                 <mir:template name="passwordInput" xpath="password" id="dbPassword" i18n="component.mir.wizard.db.password" />
-                <div class="form-group extraOptions">
-                  <label class="col-md-3 control-label">
+                <div class="mir-form-group extraOptions">
+                  <label class="col-md-3 control-label form-label">
                     <xed:output i18n="component.mir.wizard.db.extraOptions" />
                   </label>
                   <div class="col-md-9 row">
