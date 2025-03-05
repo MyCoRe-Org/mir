@@ -18,12 +18,12 @@
 
   <xed:template id="derivate_types">
     <xed:bind xpath="derivate/classifications[@class='MCRMetaClassification'][@heritable='false']/classification[contains(text(), 'derivate_types:')]">
-      <div class="form-group row">
-        <label class="col-md-3 col-form-label text-end d-inline">
+      <div class="mir-form-group row">
+        <label class="col-md-3 col-form-label text-end d-inline form-label">
           <xed:output i18n="mir.derivate.type"/>
         </label>
         <div class="col-md-6">
-          <select class="form-control form-control-inline">
+          <select class="form-control form-control-inline form-select">
             <option value="">
               <xed:output i18n="mir.select" />
             </option>
@@ -36,12 +36,12 @@
 
   <xed:template id="mir_access">
     <xed:bind xpath="derivate/classifications[@class='MCRMetaClassification'][@heritable='false']/classification[contains(text(), 'mir_access:')]">
-      <div class="form-group row">
-        <label class="col-md-3 col-form-label text-end d-inline">
+      <div class="mir-form-group row">
+        <label class="col-md-3 col-form-label text-end d-inline form-label">
           <xed:output i18n="mir.access"/>
         </label>
         <div class="col-md-6">
-          <select class="form-control form-control-inline">
+          <select class="form-control form-control-inline form-select">
             <option value="">
               <xed:output i18n="mir.select" />
             </option>
@@ -54,8 +54,8 @@
 
   <xed:template id="title_repeat">
     <xed:repeat xpath="derivate/titles[@class='MCRMetaLangText'][@heritable='false'][1]/title">
-      <div class="form-group row">
-        <label class="col-md-3 col-form-label text-end d-inline">
+      <div class="mir-form-group row">
+        <label class="col-md-3 col-form-label text-end d-inline form-label">
           <xed:output i18n="mir.title"/>
         </label>
         <div class="col-md-2">
@@ -76,7 +76,7 @@
   </xed:template>
 
   <xed:template id="lang.list">
-    <select class="form-control form-control-inline lang-select" data-dlang="{$MCR.Metadata.DefaultLang}" data-langs="{$MCR.Metadata.Languages}">
+    <select class="form-control form-control-inline lang-select form-select" data-dlang="{$MCR.Metadata.DefaultLang}" data-langs="{$MCR.Metadata.Languages}">
       <xed:choose>
         <xed:when test="string-length(.) &gt; 0">
           <option value="{.}" selected="">
@@ -97,7 +97,7 @@
   </xed:template>
 
   <xed:template id="debug.cancel.submit">
-    <div class="form-group row" id="editor-buttons">
+    <div class="mir-form-group row" id="editor-buttons">
       <div class="offset-md-2 col-md-6">
         <button type="submit" class="btn btn-secondary" xed:target="debug">Debug</button>
         <button type="submit" class="btn btn-secondary" xed:target="cancel">
@@ -114,7 +114,7 @@
     <xed:include ref="validation-rules" />
     <xed:include ref="cleanup-rules" />
 
-    <div class="form-group row" id="editor-buttons">
+    <div class="mir-form-group row" id="editor-buttons">
       <div class="offset-md-2 col-md-6">
         <button type="submit" class="btn btn-secondary" xed:target="cancel">
           <xed:output i18n="button.cancel" />

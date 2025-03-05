@@ -67,7 +67,7 @@
                                         <label>{{ i18n["mir.editor.subject.custom.modal.type"] }}</label>
                                     </div>
                                     <div class="col-7">
-                                        <select v-model="model.custom.type" class="form-control form-control-sm custom-type-select">
+                                        <select v-model="model.custom.type" class="form-control form-control-sm custom-type-select form-select">
                                             <option v-for="type in possibleTypeList"
                                                     :value="type">
                                                 {{ i18n["mir.editor.subject.custom.modal.type."+type] }}

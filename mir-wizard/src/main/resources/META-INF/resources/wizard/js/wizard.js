@@ -54,7 +54,7 @@ jQuery(document).ready(function() {
 	 */
 	if (jQuery("#dbType").val() == "") {
 		jQuery.each(jQuery.wizard.dbToggleElms, function(index, elm) {
-			jQuery(elm).parents("div.form-group").hide();
+			jQuery(elm).parents("div.mir-form-group").hide();
 		});
 	}
 
@@ -65,7 +65,7 @@ jQuery(document).ready(function() {
 	 */
 	jQuery("#dbType").change(function() {
 		jQuery.each(jQuery.wizard.dbToggleElms, function(index, id) {
-			var elm = jQuery(id).parents("div.form-group");
+			var elm = jQuery(id).parents("div.mir-form-group");
 			if (jQuery("#dbType").val() != "")
 				elm.slideDown();
 			else
@@ -82,7 +82,7 @@ jQuery(document).ready(function() {
 	 */
 	$('*[data-bs-toggle="tooltip"]').tooltip();
 
-	const formGroupSelector = '.form-group.row';
+	const formGroupSelector = '.mir-form-group.row';
 
 	/**
 	 * Set the visibility of the closest form group of the given element ID.

@@ -56,12 +56,12 @@
       </xsl:when>
       <xsl:otherwise>
         <li class="nav-item dropdown">
-          <xsl:if test="$loaded_navigation_xml/menu[@id='user']//item[@href = $browserAddress ]">
-            <xsl:attribute name="class">
-              <xsl:value-of select="'nav-item dropdown active'" />
-            </xsl:attribute>
-          </xsl:if>
           <a id="currentUser" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#">
+            <xsl:if test="$loaded_navigation_xml/menu[@id='user']//item[@href = $browserAddress ]">
+              <xsl:attribute name="class">
+                <xsl:value-of select="'nav-link dropdown-toggle active'" />
+              </xsl:attribute>
+            </xsl:if>
             <strong>
               <xsl:choose>
                 <xsl:when test="$MIR.Layout.usermenu.realname.enabled != 'true'">

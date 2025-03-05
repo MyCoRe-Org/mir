@@ -183,7 +183,7 @@
             </xsl:if>
           </input>
 
-          <label class="form-check-label">
+          <label class="form-check-label form-label">
             <span class="title">
               <xsl:choose>
                 <xsl:when

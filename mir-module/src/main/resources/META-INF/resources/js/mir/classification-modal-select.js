@@ -1,7 +1,7 @@
 $﻿(document).ready(function() {
 	$(".mir-classification-select").each(function() {
 		var button = $(this);
-		
+
 		if(!!button.next().val()) {
   		var label = button.next().val();
 			var classi = button.next().next().val();
@@ -10,34 +10,34 @@ $﻿(document).ready(function() {
 				button.parent().find("span").append(label);
 			}
 		}
-		
+
 		button.click(function() {
 			work(button);
 		})
 	});
-	
+
 	function work(button){
 		initBody();
 		loadClassifications(leftContent, "");
-		
+
 		function leftContent(data) {
 			var mainBody = $(data).find("#main_content");
 			mainBody.filter("#main_content").addClass("list-group");
 			mainBody.filter("#main_content").attr("id", "main_left_content").attr("style" , "max-height: 560px; overflow: auto");
 			$("#modalFrame-body").html(mainBody);
-			
+
 			$("#main_left_content > a").each(function() {
 				var href = $(this).attr("href");
 				$(this).attr("data-href", href).attr("style", "cursor: pointer");
 				$(this).removeAttr("href");
-				
+
 				$(this).click(function() {
 					$(".list-group-item").removeClass("active");
 					$(this).addClass("active");
 					loadClassifications(rightContent, $(this).attr("data-href"));
 				});
 			});
-			
+
 			setTimeout(function() {
 				if(!!button.next().val() && button.next().next().val().indexOf(":") > 0) {
 					var classi = button.next().next().val().split(':')[0];
@@ -49,13 +49,13 @@ $﻿(document).ready(function() {
         function rightContent(data) {
 			$("#modalFrame-body > #main_right_content").remove();
 			var mainBody = $(data).find("#main_content");
-			mainBody.filter("#main_content").attr("id", "main_right_content").addClass("col-md-6 form-group").attr("style" , "max-height: 560px; overflow: auto");
+			mainBody.filter("#main_content").attr("id", "main_right_content").addClass("col-md-6 mir-form-group").attr("style" , "max-height: 560px; overflow: auto");
 			mainBody.find(".classificationBrowser").removeAttr("class");
 			if(!$("#main_left_content").hasClass("col-md-6")) {
 				$("#main_left_content").addClass("col-md-6");
 			}
 			$("#modalFrame-body").append(mainBody);
-			
+
 			setTimeout(function() {
 				removeHrefCbList();
 			}, 300);
@@ -64,9 +64,9 @@ $﻿(document).ready(function() {
 			$("#main_right_content .cbList > li > a").each(function() {
 				if($(this).attr("href") != "#" && !!$(this).attr("href")) {
 					var href = decodeURIComponent($(this).attr("href"));
-					var classi = href.substr(href.indexOf("@name=") + 6); 
+					var classi = href.substr(href.indexOf("@name=") + 6);
 					classi = classi.split("&")[0];
-					var label = href.substr(href.indexOf("@text=") + 6); 
+					var label = href.substr(href.indexOf("@text=") + 6);
 					label = label.replace(/\+/g, " ");
 					$(this).removeAttr("href").attr("style", "cursor: pointer");
 					//fix when you only get categID without classification ID (like mcr-roles)
@@ -75,7 +75,7 @@ $﻿(document).ready(function() {
 						classiHref = classiHref.substr(classiHref.indexOf("categID=") + 8);
 						classi = classiHref.split("&")[0] + ":" + classi;
 					}
-					
+
 					$(this).click(function() {
 						button.next().val(label);
 						button.next().next().val(classi);
@@ -83,7 +83,7 @@ $﻿(document).ready(function() {
 						displayComplett();
 					});
 				}
-				
+
 				if($(this).attr("href") == "#") {
 					$(this).removeAttr("href").attr("style", "cursor: pointer");
 					$(this).click(function() {
@@ -102,11 +102,11 @@ $﻿(document).ready(function() {
 				button.parent().find("span").append(label);
 			}
 		}
-		
+
 		$("#modalFrame").on('hidden.bs.modal', function() {
 			$("#modalFrame-body").empty();
 		});
-		
+
 		function initBody() {
 			$("#modalFrame-title").text(button.val());
 			$("#modalFrame-cancel").text($("button[name='_xed_submit_cancel']").text());
@@ -133,4 +133,3 @@ $﻿(document).ready(function() {
         }
     }
 });
-
