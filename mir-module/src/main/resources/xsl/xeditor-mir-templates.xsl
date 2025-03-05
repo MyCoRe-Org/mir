@@ -51,7 +51,7 @@
         </xsl:when>
         <xsl:otherwise>
           <div>
-            <xsl:attribute name="class">form-group row {$xed-validation-marker}</xsl:attribute>
+            <xsl:attribute name="class">mir-form-group row {$xed-validation-marker}</xsl:attribute>
             <xsl:apply-templates select="." mode="formline" />
           </div>
         </xsl:otherwise>
@@ -230,7 +230,7 @@
   <xsl:template match="mir:template[@name='selectInput']" mode="widget">
     <select id="{@id}">
       <xsl:attribute name="class">
-        <xsl:value-of select="concat('form-control input-', $input-size, ' ', @class, ' ', '{$xed-validation-marker}')" />
+        <xsl:value-of select="concat('form-control form-select input-', $input-size, ' ', @class, ' ', '{$xed-validation-marker}')" />
       </xsl:attribute>
       <xsl:apply-templates select="." mode="inputOptions" />
       <xsl:if test="not(@inlcudeOnly = 'true')">
@@ -344,7 +344,7 @@
               <xsl:text> form-check-inline</xsl:text>
             </xsl:if>
           </xsl:attribute>
-          <label class="my-0">
+          <label class="my-0 form-label">
             <input class="form-check-input" type="{$inputType}" value="{@value}" id="{$gId}">
               <xsl:if test="@disabled = 'true'">
                 <xsl:attribute name="disabled">
@@ -375,7 +375,7 @@
             </xsl:if>
             <xsl:apply-templates select="." mode="inputOptions" />
           </input>
-          <label class="form-check-label" for="{$gId}">
+          <label class="form-check-label form-label" for="{$gId}">
             <xsl:if test="string-length(@i18n) &gt; 0">
               <xed:output i18n="{@i18n}" />
             </xsl:if>
@@ -419,14 +419,14 @@
         </xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
-    <label for="{@id}" class="{$colsize} col-form-label text-md-right">
+    <label for="{@id}" class="{$colsize} col-form-label text-md-end form-label">
       <xed:output i18n="{@i18n}" />
     </label>
   </xsl:template>
 
   <xsl:template match="mir:template" mode="inputTooltip">
     <xsl:if test="@tooltip">
-      <span class="input-group-append" data-bs-toggle="tooltip" data-html="true">
+      <span class="input-group-text" data-bs-toggle="tooltip" data-html="true">
         <xsl:attribute name="title">
           <xsl:value-of select="concat('{i18n:',@tooltip,'}')" />
         </xsl:attribute>
@@ -437,51 +437,50 @@
 
   <xsl:template match="mir:template" mode="action">
     <xsl:if test="count(action) &gt; 0">
-      <span class="input-group-prepend">
-        <xsl:for-each select="action">
-          <xsl:variable name="id">
-            <xsl:choose>
-              <xsl:when test="string-length(@id) &gt; 0">
-                <xsl:value-of select="@id" />
-              </xsl:when>
-              <xsl:otherwise>
-                <xsl:text>{xed:generate-id()}</xsl:text>
-              </xsl:otherwise>
-            </xsl:choose>
-          </xsl:variable>
-          <button id="{$id}" class="btn btn-secondary" type="button" aria-label="{concat('{i18n:', @i18n,'}')}">
-            <xsl:if test="string-length(@i18n) &gt; 0 and (string-length(@icon) &gt; 0 and @iconOnly = 'true')">
-              <xsl:attribute name="title">
-              <xsl:value-of select="concat('{i18n:',@i18n,'}')" />
-            </xsl:attribute>
-            </xsl:if>
-            <xsl:if test="string-length(@icon) &gt; 0">
-              <span class="{@icon}" aria-hidden="true" />
-            </xsl:if>
-            <xsl:choose>
-              <xsl:when
-                test="string-length(@i18n) &gt; 0 and (string-length(@icon) = 0 or (string-length(@icon) &gt; 0 and (string-length(@iconOnly) = 0 or @iconOnly = 'false')))"
-              >
-                <xsl:choose>
-                  <xsl:when test="string-length(@icon) &gt; 0">
-                    <span class="d-none d-md-inline">
-                      <xed:output i18n="{@i18n}" />
-                    </span>
-                  </xsl:when>
-                  <xsl:otherwise>
+      <xsl:for-each select="action">
+        <xsl:variable name="id">
+          <xsl:choose>
+            <xsl:when test="string-length(@id) &gt; 0">
+              <xsl:value-of select="@id" />
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:text>{xed:generate-id()}</xsl:text>
+            </xsl:otherwise>
+          </xsl:choose>
+        </xsl:variable>
+        <button id="{$id}" class="btn btn-secondary" type="button" aria-label="{concat('{i18n:', @i18n,'}')}">
+          <xsl:if test="string-length(@i18n) &gt; 0 and (string-length(@icon) &gt; 0 and @iconOnly = 'true')">
+            <xsl:attribute name="title">
+            <xsl:value-of select="concat('{i18n:',@i18n,'}')" />
+          </xsl:attribute>
+          </xsl:if>
+          <xsl:if test="string-length(@icon) &gt; 0">
+            <span class="{@icon}" aria-hidden="true" />
+          </xsl:if>
+          <xsl:choose>
+            <xsl:when
+              test="string-length(@i18n) &gt; 0 and (string-length(@icon) = 0 or (string-length(@icon) &gt; 0 and (string-length(@iconOnly) = 0 or @iconOnly = 'false')))"
+            >
+              <xsl:choose>
+                <xsl:when test="string-length(@icon) &gt; 0">
+                  <span class="d-none d-md-inline">
                     <xed:output i18n="{@i18n}" />
-                  </xsl:otherwise>
-                </xsl:choose>
-              </xsl:when>
-              <xsl:when test="string-length(@i18n) &gt; 0 and string-length(@icon) &gt; 0">
-                <span class="sr-only">
+                  </span>
+                </xsl:when>
+                <xsl:otherwise>
                   <xed:output i18n="{@i18n}" />
-                </span>
-              </xsl:when>
-            </xsl:choose>
-          </button>
-        </xsl:for-each>
-      </span>
+                </xsl:otherwise>
+              </xsl:choose>
+            </xsl:when>
+            <xsl:when test="string-length(@i18n) &gt; 0 and string-length(@icon) &gt; 0">
+              <span class="sr-only">
+                <xed:output i18n="{@i18n}" />
+              </span>
+            </xsl:when>
+          </xsl:choose>
+        </button>
+      </xsl:for-each>
+
     </xsl:if>
   </xsl:template>
 </xsl:stylesheet>

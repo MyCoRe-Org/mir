@@ -189,7 +189,7 @@ $(document).ready(function() {
 
 function disableFieldset(fieldset) {
 	relatedItemBody = fieldset.children('div.mir-relatedItem-body');
-	relatedItemBody.find("div.form-group:not(.mir-modspart)").find("input[type!='hidden'], select").each(function(index, input) {
+	relatedItemBody.find("div.mir-form-group:not(.mir-modspart)").find("input[type!='hidden'], select").each(function(index, input) {
 		if (input != document.activeElement) {
 			$(input).prop('disabled', true);
 			$(input).data('value', $(input).val());
@@ -258,7 +258,7 @@ function createbadge(inputgroup, relItemid) {
 	inputgroup.find(".relItem-reset").click(function(event) {
 		event.preventDefault();
 		relatedItemBody = $(this).closest("fieldset.mir-relatedItem").children('div.mir-relatedItem-body');
-		relatedItemBody.find("div.form-group:not(.mir-modspart)").find("input[type!='hidden']").each(function(index, input) {
+		relatedItemBody.find("div.mir-form-group:not(.mir-modspart)").find("input[type!='hidden']").each(function(index, input) {
 			$(input).prop('disabled', false);
 			$(input).val($(input).data('value'));
 		});

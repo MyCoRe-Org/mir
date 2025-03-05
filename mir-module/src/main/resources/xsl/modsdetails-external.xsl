@@ -441,7 +441,7 @@
           <span class="caret"></span>
         </a>
 
-        <ul class="dropdown-menu dropdown-menu-right">
+        <ul class="dropdown-menu dropdown-menu-end">
           <xsl:variable name="type" select="substring-before(substring-after($id,'_'),'_')" />
           <xsl:choose>
             <xsl:when test="not($accessedit) and mcrxsl:isCurrentUserGuestUser()">
@@ -713,7 +713,7 @@
             <i class="fas fa-cog"></i>
             <xsl:value-of select="concat(' ',i18n:translate('mir.actions'))" />
           </a>
-          <ul class="dropdown-menu dropdown-menu-right">
+          <ul class="dropdown-menu dropdown-menu-end">
             <xsl:if test="key('rights', $deriv)/@write">
             <li>
               <a href="{$WebApplicationBaseURL}editor/editor-derivate.xed?derivateid={$deriv}&amp;cancelUrl={encoder:encode($RequestURL)}" class="option dropdown-item">

@@ -124,7 +124,7 @@
               <xsl:with-param name="delimiter" select="','" />
             </xsl:call-template>
           </xsl:variable>
-          <select class="form-control input-sm" id="mir-csl-cite"
+          <select class="form-control input-sm form-select" id="mir-csl-cite"
                   data-default-selected="{$MIR.defaultCitationStyle}"
                   data-object-id="{/mycoreobject/@ID}">
             <xsl:for-each select="exslt:node-set($cite-styles)/token">

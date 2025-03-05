@@ -28,22 +28,22 @@
         </div>
       </div>
 
-      <div class="row form-group">
-        <label for="genre" class="col-sm-3 col-lg-2 control-label">
+      <div class="row mir-form-group">
+        <label for="genre" class="col-sm-3 col-lg-2 control-label form-label">
           <text i18n="component.mods.genre" />
         </label>
         <div class="col-sm-7 col-md-5 col-lg-4">
-          <select id="genre" class="form-control" name="genre" size="1">
+          <select id="genre" class="form-control form-select" name="genre" size="1">
           </select>
         </div>
       </div>
 
-      <div class="row form-group">
-        <label for="host"  class="col-sm-3 col-lg-2 control-label">
+      <div class="row mir-form-group">
+        <label for="host"  class="col-sm-3 col-lg-2 control-label form-label">
           <text i18n="mir.select.host" />
         </label>
         <div class="col-sm-7 col-md-5 col-lg-4">
-          <select id="host" class="form-control" name="host" size="1">
+          <select id="host" class="form-control form-select" name="host" size="1">
           </select>
         </div>
       </div>
@@ -56,9 +56,9 @@
         </div>
       </div>
 
-      <div class="row form-group">
+      <div class="row mir-form-group">
         <div class="col-sm-3 col-lg-2 control-label">
-          <select name="type" class="form-control">
+          <select name="type" class="form-control form-select">
             <option value="doi">DOI</option>
             <option value="scopus">Scopus-ID</option>
             <option value="pubmed">PubMed-ID</option>
@@ -75,7 +75,7 @@
       </div>
 
       <!-- submit -->
-      <div class="row form-group mt-4">
+      <div class="row mir-form-group mt-4">
         <div class="col-lg-7 col-sm-12">
           <button type="submit" class="btn btn-primary float-end">Weiter</button>
         </div>
@@ -107,22 +107,22 @@
         </div>
       </div>
 
-      <div class="row form-group">
-        <label for="genre" class="col-sm-3 col-lg-2 control-label">
+      <div class="row mir-form-group">
+        <label for="genre" class="col-sm-3 col-lg-2 control-label form-label">
           <text i18n="component.mods.genre" />
         </label>
         <div class="col-sm-7 col-md-5 col-lg-4">
-          <select id="genre" class="form-control" name="genre" size="1">
+          <select id="genre" class="form-control form-select" name="genre" size="1">
           </select>
         </div>
       </div>
 
-      <div class="row form-group">
-        <label for="host"  class="col-sm-3 col-lg-2 control-label">
+      <div class="row mir-form-group">
+        <label for="host"  class="col-sm-3 col-lg-2 control-label form-label">
           <text i18n="mir.select.host" />
         </label>
         <div class="col-sm-7 col-md-5 col-lg-4">
-          <select id="host" class="form-control" name="host" size="1">
+          <select id="host" class="form-control form-select" name="host" size="1">
           </select>
         </div>
       </div>
@@ -135,9 +135,9 @@
         </div>
       </div>
 
-      <div class="row form-group">
+      <div class="row mir-form-group">
         <div class="col-sm-3 col-lg-2 control-label">
-          <select name="type" class="form-control">
+          <select name="type" class="form-control form-select">
             <option value="doi">DOI</option>
             <option value="scopus">Scopus-ID</option>
             <option value="pubmed">PubMed-ID</option>
@@ -154,7 +154,7 @@
       </div>
 
       <!-- submit -->
-      <div class="row form-group mt-4">
+      <div class="row mir-form-group mt-4">
         <div class="col-lg-7 col-sm-12">
           <button type="submit" class="btn btn-primary float-end">Next</button>
         </div>

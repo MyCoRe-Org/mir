@@ -183,7 +183,7 @@
           <xsl:if test="$disableFilter = false()">
             <!-- entries filter -->
             <div class="col-{$colWidth}">
-              <div class="form-group no-margin" id="{$id}_filter">
+              <div class="mir-form-group no-margin" id="{$id}_filter">
                 <label>
                   <span class="fas fa-filter" aria-hidden="true" />
                   <xsl:value-of select="i18n:translate(concat($i18nprefix, '.filter'))" />
@@ -212,9 +212,9 @@
                 </xsl:otherwise>
               </xsl:choose>
             </xsl:attribute>
-            <div id="{$id}_length" class="form-group float-end no-margin">
+            <div id="{$id}_length" class="mir-form-group float-end no-margin form-select">
               <label>
-                <select class="form-control input-sm" name="numPerPage" size="1" onchange="this.form.submit()">
+                <select class="form-control form-select input-sm" name="numPerPage" size="1" onchange="this.form.submit()">
                   <xsl:variable name="tokens">
                     <xsl:call-template name="str:tokenize">
                       <xsl:with-param name="string" select="$dataTableNumPerPageList" />

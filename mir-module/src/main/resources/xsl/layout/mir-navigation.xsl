@@ -9,12 +9,12 @@
     <xsl:param name="active" select="descendant-or-self::item[@href = $browserAddress ]" />
     <xsl:variable name="menuId" select="generate-id(.)" />
     <li class="nav-item dropdown">
+      <a id="{$menuId}" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#">
       <xsl:if test="$active">
         <xsl:attribute name="class">
-          <xsl:value-of select="'nav-item dropdown active'" />
+          <xsl:value-of select="'nav-link dropdown-toggle active'" />
         </xsl:attribute>
       </xsl:if>
-      <a id="{$menuId}" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#">
         <xsl:apply-templates select="." mode="linkText" />
       </a>
       <ul class="dropdown-menu" role="menu" aria-labelledby="{$menuId}">

@@ -68,7 +68,7 @@ public abstract class MIREditorController extends MIRTestController {
         try {
             driver.waitAndFindElement(
                 By.xpath(
-                    ".//div[contains(@class, 'mcr-invalid')  and contains(@class, 'form-group')]//*[contains(@name,'"
+                    ".//div[contains(@class, 'mcr-invalid')  and contains(@class, 'mir-form-group')]//*[contains(@name,'"
                         + childElementName + "')]"));
         } catch (NoSuchElementException | TimeoutException e) {
             LOGGER.error("Could not find red validation border !", e);
