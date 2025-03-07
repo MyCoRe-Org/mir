@@ -54,7 +54,7 @@ public class MIRWizard extends MCRServlet {
 
         final Element results = new Element("results");
 
-        final Element commands = MCRURIResolver.instance().resolve("resource:setup/install.xml");
+        final Element commands = MCRURIResolver.obtainInstance().resolve("resource:setup/install.xml");
 
         final MIRWizardCommandChain chain = new MIRWizardCommandChain();
 
@@ -76,7 +76,7 @@ public class MIRWizard extends MCRServlet {
                 }
 
                 if (src != null) {
-                    cmd.setInputXML(MCRURIResolver.instance().resolve(src));
+                    cmd.setInputXML(MCRURIResolver.obtainInstance().resolve(src));
                 }
 
                 if (cmd != null) {

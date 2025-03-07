@@ -32,7 +32,7 @@ public class MIRMigration201603Utils {
             LOGGER.error("Could not find migration stylesheet. File a bug!");
             return null;
         }
-        TreeSet<String> ids = new TreeSet<>(MCRXMLMetadataManager.instance().listIDsOfType("mods"));
+        TreeSet<String> ids = new TreeSet<>(MCRXMLMetadataManager.getInstance().listIDsOfType("mods"));
         ArrayList<String> cmds = new ArrayList<>(ids.size());
         for (String id : ids) {
             cmds.add("xslt " + id + " with file " + styleFile.toString());
@@ -52,15 +52,15 @@ public class MIRMigration201603Utils {
             return null;
         }
         //get all categories:
-        MCRCategory mirRights = MCRCategoryDAOFactory.getInstance().getCategory(MCRCategoryID.rootID("mir_rights"), -1);
+        MCRCategory mirRights = MCRCategoryDAOFactory.obtainInstance().getCategory(new MCRCategoryID("mir_rights"), -1);
         if (mirRights == null) {
             LOGGER.info("No classification 'mir_rights' found.");
             return null;
         }
 
-        TreeSet<String> ids = new TreeSet<>(MCRXMLMetadataManager.instance().listIDsOfType("mods"));
+        TreeSet<String> ids = new TreeSet<>(MCRXMLMetadataManager.getInstance().listIDsOfType("mods"));
         ArrayList<String> cmds = new ArrayList<>(ids.size());
-        MCRCategory mirLicenses = MCRCategoryDAOFactory.getInstance().getCategory(MCRCategoryID.rootID("mir_licenses"),
+        MCRCategory mirLicenses = MCRCategoryDAOFactory.obtainInstance().getCategory(new MCRCategoryID("mir_licenses"),
             -1);
         if (mirLicenses == null) {
             LOGGER.info("licenses classification is not present, loading from MyCoRe server.");
@@ -83,7 +83,7 @@ public class MIRMigration201603Utils {
             LOGGER.error("Could not find migration stylesheet. File a bug!");
             return null;
         }
-        TreeSet<String> ids = new TreeSet<>(MCRXMLMetadataManager.instance().listIDsOfType("mods"));
+        TreeSet<String> ids = new TreeSet<>(MCRXMLMetadataManager.getInstance().listIDsOfType("mods"));
         ArrayList<String> cmds = new ArrayList<>(ids.size());
         for (String id : ids) {
             cmds.add("xslt " + id + " with file " + styleFile.toString());
