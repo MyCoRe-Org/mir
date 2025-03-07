@@ -55,7 +55,7 @@ public class MIRMigration202206Utils {
         MCRObject mcrObject = MCRMetadataManager.retrieveMCRObject(mcrObjectID);
         MCRMODSWrapper mcrModsWrapper = new MCRMODSWrapper(mcrObject);
 
-        MCRCategoryID rootID = MCRCategoryID.rootID(NAME_IDENTIFIER);
+        MCRCategoryID rootID = new MCRCategoryID(NAME_IDENTIFIER);
         MCRCategory rootCategory = MCRCategoryDAOFactory.getInstance().getCategory(rootID, -1);
         HashSet<String> labelLanguages = getAllRegularLabelLanguagesPresentInCategory(rootCategory, new HashSet<>());
 

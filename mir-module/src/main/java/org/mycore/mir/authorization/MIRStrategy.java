@@ -336,7 +336,7 @@ public class MIRStrategy implements MCRAccessCheckStrategy {
         List<String> accessClasses) {
         return accessKeys.stream()
             .map(s -> s.substring((objectType + ":").length()))
-            .map(MCRCategoryID::fromString)
+            .map(MCRCategoryID::ofString)
             .filter(c -> accessClasses.contains(c.getRootID()))
             .sorted((c1, c2) -> {
                 return accessClasses.indexOf(c1.getRootID()) - accessClasses.indexOf(c2.getRootID());

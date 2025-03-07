@@ -75,11 +75,11 @@ public class MIRClassificationServlet extends MCRServlet {
         String categID = getProperty(request, "categID");
         if (MCRAccessManager.checkPermission(categID, MCRAccessManager.PERMISSION_READ)) {
             if (categID != null) {
-                categoryID = MCRCategoryID.fromString(categID);
+                categoryID = MCRCategoryID.ofString(categID);
             } else {
                 String rootID = getProperty(request, "classID");
-                categoryID = (rootID == null) ? MCRCategoryID.rootID(MCRUser2Constants.getRoleRootId())
-                    : MCRCategoryID.rootID(rootID);
+                categoryID = (rootID == null) ? new MCRCategoryID(MCRUser2Constants.getRoleRootId())
+                    : new MCRCategoryID(rootID);
             }
             Element rootElement = getRootElement(request);
             rootElement.setAttribute("classID", categoryID.getRootID());
