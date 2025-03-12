@@ -17,6 +17,19 @@
   .ellipsis.expand {
     max-height: none;
   }
+
+  .mir-abstract-tab-lang {
+    padding-left: 0.25rem;
+    text-transform: uppercase;
+  }
+
+  .mir-abstract-tab-lang::before {
+    content: "[";
+  }
+
+  .mir-abstract-tab-lang::after {
+    content: "]";
+  }
 }
 
 #search_options {
