@@ -38,7 +38,7 @@ import org.mycore.mir.authorization.accesskeys.backend.MIRAccessKeyPair;
  */
 public class MIRAccessKeyEventHandler extends MCREventHandlerBase {
 
-    private static Logger LOGGER = LogManager.getLogger();
+    private static final Logger LOGGER = LogManager.getLogger();
 
     /* (non-Javadoc)
      * @see org.mycore.common.events.MCREventHandlerBase#handleObjectCreated(org.mycore.common.events.MCREvent, org.mycore.datamodel.metadata.MCRObject)

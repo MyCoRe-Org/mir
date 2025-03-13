@@ -41,6 +41,7 @@ import org.apache.logging.log4j.core.filter.ThresholdFilter;
 import org.apache.logging.log4j.core.layout.PatternLayout;
 import org.jdom2.Element;
 
+@SuppressWarnings({"PMD.MCR.Logger.MatchingFieldName"})
 public class MIRWizardCommandResult {
 
     private final static Logger ROOT_LOGGER = (Logger) LogManager.getRootLogger();
