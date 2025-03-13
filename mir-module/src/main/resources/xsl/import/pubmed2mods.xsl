@@ -168,10 +168,10 @@
     </xsl:if>
   </xsl:template -->
   <xsl:template match="language">
-    <xsl:apply-templates select="document(concat('language:',.))/language/@xmlCode" />
+    <xsl:apply-templates select="document(concat('language:',.))/language/@XML_CODE" />
   </xsl:template>
 
-  <xsl:template match="language/@xmlCode">
+  <xsl:template match="language/@XML_CODE">
     <mods:language>
       <mods:languageTerm authority="rfc5646" type="code">
         <xsl:value-of select="." />

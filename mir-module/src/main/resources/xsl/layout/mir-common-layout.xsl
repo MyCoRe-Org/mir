@@ -138,7 +138,7 @@
     </xsl:if>
   </xsl:template>
   <xsl:template match="language" mode="mir.langTitle">
-    <xsl:variable name="code" select="@xmlCode" />
+    <xsl:variable name="code" select="@XML_CODE" />
     <xsl:choose>
       <xsl:when test="label[lang($code)]">
         <xsl:value-of select="label[lang($code)]" />
@@ -150,7 +150,7 @@
         <xsl:value-of select="label[lang($DefaultLang)]" />
       </xsl:when>
       <xsl:otherwise>
-        <xsl:value-of select="@xmlCode" />
+        <xsl:value-of select="@XML_CODE" />
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>

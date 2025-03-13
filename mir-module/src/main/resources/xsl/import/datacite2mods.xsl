@@ -89,7 +89,7 @@
     </xsl:template>
 
     <xsl:template match="language">
-        <xsl:for-each select="document(concat('notnull:language:',.))/language/@xmlCode">
+        <xsl:for-each select="document(concat('notnull:language:',.))/language/@XML_CODE">
             <mods:language>
                 <mods:languageTerm authority="rfc5646" type="code">
                     <xsl:value-of select="." />
