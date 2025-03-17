@@ -365,7 +365,7 @@
                         <xsl:value-of select="i18n:translate('mir.details.popover.type')"/>
                     </dt>
                     <dd>
-                        <i class="fas fa-map-location-dotme-2"> </i>
+                        <i class="fas fa-map-location-dot me-2"> </i>
                         <xsl:value-of select="i18n:translate('mir.details.popover.type.geographic')"/>
                     </dd>
                 </dl>
@@ -374,7 +374,7 @@
     </xsl:template>
 
     <xsl:template match="mods:cartographics" mode="displaySubject">
-        <!-- <i class="fas fa-map-marker-altme-2"> </i> -->
+        <!-- <i class="fas fa-map-marker-alt me-2"> </i> -->
         <xsl:call-template name="authorityLink">
                 <xsl:with-param name="content">
                     <xsl:call-template name="displayCoordinates"/>
@@ -396,7 +396,7 @@
                         <xsl:value-of select="i18n:translate('mir.details.popover.type')"/>
                     </dt>
                     <dd>
-                        <i class="fas fa-tagme-2"> </i>
+                        <i class="fas fa-tag me-2"> </i>
                         <xsl:value-of select="i18n:translate('mir.details.popover.type.topic')"/>
                     </dd>
                 </dl>
@@ -429,16 +429,16 @@
                     <dd>
                         <xsl:choose>
                             <xsl:when test="@type='family'">
-                                <i class="fas fa-people-roofme-2"> </i>
+                                <i class="fas fa-people-roof me-2"> </i>
                             </xsl:when>
                             <xsl:when test="@type='personal'">
-                                <i class="fas fa-personme-2"> </i>
+                                <i class="fas fa-person me-2"> </i>
                             </xsl:when>
                             <xsl:when test="@type='corporate'">
-                                <i class="fas fa-buildingme-2"> </i>
+                                <i class="fas fa-building me-2"> </i>
                             </xsl:when>
                             <xsl:when test="@type='conference'">
-                                <i class="fas fa-people-lineme-2"> </i>
+                                <i class="fas fa-people-line me-2"> </i>
                             </xsl:when>
                         </xsl:choose>
                         <xsl:value-of select="i18n:translate(concat('mir.details.popover.type.', @type))"/>
@@ -495,7 +495,7 @@
                         <xsl:value-of select="i18n:translate('mir.details.popover.type')"/>
                     </dt>
                     <dd>
-                        <i class="fa fa-newspaperme-2"> </i>
+                        <i class="fa fa-newspaper me-2"> </i>
                         <xsl:value-of select="i18n:translate('mir.details.popover.type.titleInfo')"/>
                     </dd>
                 </dl>
