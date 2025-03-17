@@ -1,6 +1,6 @@
 <template>
   <div>
-      <i v-if="props.mode == 'search'" class="fas fa-newspaper fa-fwme-1"></i>
+      <i v-if="props.mode == 'search'" class="fas fa-newspaper fa-fw me-1"></i>
       <a v-if="props.titleInfo.valueURI"
          :href="props.titleInfo.valueURI"
          target="_blank">
