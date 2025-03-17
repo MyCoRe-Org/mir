@@ -1,9 +1,9 @@
 <template>
     <div>
-        <i v-if="props.mode == 'search' && props.name.nameType == 'family'" class="fas fa-people-roof fa-fwme-1"> </i>
-        <i v-else-if="props.mode == 'search' && props.name.nameType == 'corporate'" class="fas fa-building fa-fwme-1"> </i>
-        <i v-else-if="props.mode == 'search' && props.name.nameType == 'personal'" class="fas fa-person fa-fwme-1"> </i>
-        <i v-else-if="props.mode == 'search' && props.name.nameType == 'conference'" class="fas fa-people-line fa-fwme-1"> </i>
+        <i v-if="props.mode == 'search' && props.name.nameType == 'family'" class="fas fa-people-roof fa-fw me-1"> </i>
+        <i v-else-if="props.mode == 'search' && props.name.nameType == 'corporate'" class="fas fa-building fa-fw me-1"> </i>
+        <i v-else-if="props.mode == 'search' && props.name.nameType == 'personal'" class="fas fa-person fa-fw me-1"> </i>
+        <i v-else-if="props.mode == 'search' && props.name.nameType == 'conference'" class="fas fa-people-line fa-fw me-1"> </i>
         <a v-if="props.name.valueURI"
            :href="props.name.valueURI"
            target="_blank">
@@ -14,10 +14,10 @@
             <dl>
                 <dt>{{ i18n["mir.details.popover.type"]}}</dt>
                 <dd>
-                    <i v-if="props.name.nameType == 'family'" class="fas fa-people-roof fa-fwme-1"> </i>
-                    <i v-else-if="props.name.nameType == 'corporate'" class="fas fa-building fa-fwme-1"> </i>
-                    <i v-else-if="props.name.nameType == 'personal'" class="fas fa-person fa-fwme-1"> </i>
-                    <i v-else-if="props.name.nameType == 'conference'" class="fas fa-people-line fa-fwme-1"> </i>
+                    <i v-if="props.name.nameType == 'family'" class="fas fa-people-roof fa-fw me-1"> </i>
+                    <i v-else-if="props.name.nameType == 'corporate'" class="fas fa-building fa-fw me-1"> </i>
+                    <i v-else-if="props.name.nameType == 'personal'" class="fas fa-person fa-fw me-1"> </i>
+                    <i v-else-if="props.name.nameType == 'conference'" class="fas fa-people-line fa-fw me-1"> </i>
                     {{ i18n["mir.details.popover.type." + props.name.nameType] }}
                 </dd>
                 <name-identifier-display :type="(id as any).type" :value="id.text" v-for="id in props.name.nameIdentifier" />
