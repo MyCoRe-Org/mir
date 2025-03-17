@@ -1,5 +1,5 @@
 <template>
-    <i v-if="props.mode == 'search'" class="fas fa-map-location-dotme-2"> </i>
+    <i v-if="props.mode == 'search'" class="fas fa-map-location-dot me-2"> </i>
     <a v-if="props.geographic.valueURI"
        :href="props.geographic.valueURI"
        target="_blank">
