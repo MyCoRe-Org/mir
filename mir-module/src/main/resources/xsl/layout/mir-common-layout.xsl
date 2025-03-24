@@ -316,8 +316,7 @@
               </xsl:choose>
               alert alert-dismissible fade show
             </xsl:attribute>
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">×</span></button>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             <span aria-hidden="true"><xsl:value-of select="i18n:translate($XSL.Status.Message)" /></span>
           </div>
         </div>
