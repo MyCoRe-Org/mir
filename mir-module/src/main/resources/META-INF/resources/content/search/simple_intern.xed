@@ -77,7 +77,7 @@
                         </option>
                       </select>
                       <span class="input-group-text" data-bs-toggle="tooltip" data-html="true" title="{i18n:editor.search.fulltext.tooltip}">
-                        <i class="fas fa-info-circle  input-group-text" />
+                        <i class="fas fa-info-circle  input-group" />
                       </span>
                     </xed:bind>
                   </div>
