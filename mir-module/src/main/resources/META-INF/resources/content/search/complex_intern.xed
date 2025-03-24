@@ -166,7 +166,7 @@
                           </select>
                           <span class="input-group-text" data-bs-toggle="tooltip" data-html="true"
                                 title="{i18n:editor.search.fulltext.tooltip}">
-                            <i class="fas fa-info-circle input-group-text"/>
+                            <i class="fas fa-info-circle input-group"/>
                           </span>
                         </xed:bind>
                       </div>
@@ -210,7 +210,7 @@
                   </label>
                   <div class="col-md-4">
                     <xed:bind xpath="@name">
-                      <select class="form-control form-select form-label">
+                      <select class="form-control form-select input-md">
                         <option value="mods.dateIssued">
                           <xed:output i18n="component.mods.metaData.dictionary.dateIssued" />
                         </option>
