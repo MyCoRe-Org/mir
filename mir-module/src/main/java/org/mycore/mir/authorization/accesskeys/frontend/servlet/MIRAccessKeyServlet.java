@@ -24,12 +24,12 @@ import org.jdom2.Document;
 import org.jdom2.Element;
 import org.mycore.common.MCRSessionMgr;
 import org.mycore.common.MCRSystemUserInformation;
-import org.mycore.common.MCRUserInformation;
 import org.mycore.datamodel.metadata.MCRObjectID;
 import org.mycore.frontend.servlets.MCRServlet;
 import org.mycore.frontend.servlets.MCRServletJob;
-import org.mycore.mcr.acl.accesskey.MCRAccessKeyUtils;
+import org.mycore.mcr.acl.accesskey.config.MCRAccessKeyConfig;
 import org.mycore.mcr.acl.accesskey.exception.MCRAccessKeyException;
+import org.mycore.mcr.acl.accesskey.service.MCRAccessKeyServiceFactory;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -41,59 +41,64 @@ public class MIRAccessKeyServlet extends MCRServlet {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    private static final String REDIRECT_URL_PARAMETER = "url";
+    private static final String QUERY_PARAM_ACTION = "action";
 
-    private static String getReturnURL(HttpServletRequest req) {
-        String returnURL = req.getParameter(REDIRECT_URL_PARAMETER);
-        if (returnURL == null) {
-            String referer = req.getHeader("Referer");
-            returnURL = (referer != null) ? referer : req.getContextPath() + "/";
-        }
-        return returnURL;
-    }
+    private static final String QUERY_PARAM_OBJ_ID = "objId";
+
+    private static final String QUERY_PARAM_REDIRECT_URL = "url";
 
     /* (non-Javadoc)
      * @see org.mycore.frontend.servlets.MCRServlet#doGetPost(org.mycore.frontend.servlets.MCRServletJob)
      */
     @Override
     protected void doGetPost(MCRServletJob job) throws Exception {
-        HttpServletRequest req = job.getRequest();
-        HttpServletResponse res = job.getResponse();
-        final MCRUserInformation userInfo = MCRSessionMgr.getCurrentSession().getUserInformation();
-        final boolean isGuest = userInfo.getUserID().equals(MCRSystemUserInformation.getGuestInstance().getUserID());
-        if (isGuest && !MCRAccessKeyUtils.isAccessKeyForSessionAllowed()) {
+        final HttpServletRequest req = job.getRequest();
+        final HttpServletResponse res = job.getResponse();
+        final boolean isGuest = checkCurrentUserIsGuest();
+        if (isGuest && MCRAccessKeyConfig.getAllowedSessionPermissionTypes().isEmpty()) {
             res.sendError(HttpServletResponse.SC_FORBIDDEN, "Access can only be granted to personalized users");
             return;
         }
         final Document doc = (Document) (job.getRequest().getAttribute("MCRXEditorSubmission"));
-        if (doc == null) {
+        if (doc == null || req.getParameter(QUERY_PARAM_ACTION) != null) {
             res.sendError(HttpServletResponse.SC_BAD_REQUEST);
             return;
         }
-        final String action = req.getParameter("action");
         final Element xml = doc.getRootElement();
-        final String objId = xml.getAttributeValue("objId");
-        final MCRObjectID mcrObjId = MCRObjectID.getInstance(objId);
-        if (action == null) {
-            final String value = xml.getTextTrim();
-            if (value == null || value.length() == 0) {
-                res.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing documentID or accessKey parameter");
-                return;
-            }
-            try {
-                if (isGuest) {
-                    MCRAccessKeyUtils.addAccessKeySecretToCurrentSession(mcrObjId, value);
-                } else {
-                    MCRAccessKeyUtils.addAccessKeySecretToCurrentUser(mcrObjId, value);
-                }
-            } catch(MCRAccessKeyException e) {
-                res.sendError(HttpServletResponse.SC_BAD_REQUEST, "Access key is unknown or not allowed.");
-                return;
-            }
-        } else {
+        final String objId = xml.getAttributeValue(QUERY_PARAM_OBJ_ID);
+        if (objId == null || !MCRObjectID.isValid(objId)) {
             res.sendError(HttpServletResponse.SC_BAD_REQUEST);
+            return;
+        }
+        final String value = xml.getTextTrim();
+        if (value.isEmpty()) {
+            res.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing documentID or accessKey parameter");
+            return;
+        }
+        try {
+            if (isGuest) {
+                MCRAccessKeyServiceFactory.getAccessKeySessionService().activateAccessKey(objId, value);
+            } else {
+                MCRAccessKeyServiceFactory.getAccessKeyUserService().activateAccessKey(objId, value);
+            }
+        } catch (MCRAccessKeyException e) {
+            res.sendError(HttpServletResponse.SC_BAD_REQUEST, "Access key is unknown or not allowed.");
             return;
         }
         res.sendRedirect(getReturnURL(req));
+    }
+
+    private static boolean checkCurrentUserIsGuest() {
+        return MCRSessionMgr.getCurrentSession().getUserInformation().getUserID()
+            .equals(MCRSystemUserInformation.getGuestInstance().getUserID());
+    }
+
+    private static String getReturnURL(HttpServletRequest req) {
+        String returnURL = req.getParameter(QUERY_PARAM_REDIRECT_URL);
+        if (returnURL == null) {
+            String referer = req.getHeader("Referer");
+            returnURL = (referer != null) ? referer : req.getContextPath() + "/";
+        }
+        return returnURL;
     }
 }
