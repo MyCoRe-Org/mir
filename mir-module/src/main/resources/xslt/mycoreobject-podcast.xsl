@@ -7,6 +7,7 @@
                 xmlns:xlink="http://www.w3.org/1999/xlink"
                 xmlns:fn="http://www.w3.org/2005/xpath-functions"
                 xmlns:xs="http://www.w3.org/2001/XMLSchema"
+                xmlns:pc="http://www.mycore.de/xslt/mir/podcast"
                 exclude-result-prefixes="mods fn xs mcrmods xlink">
   <xsl:output cdata-section-elements="description" method="xml" />
   <xsl:param name="WebApplicationBaseURL" required="yes" />
@@ -90,7 +91,7 @@
   <xsl:template match="mycoreobject" mode="thumbnail">
     <xsl:if test="structure/derobjects/derobject[classification/@categid='thumbnail']">
       <itunes:image
-          href="{concat($WebApplicationBaseURL,'api/iiif/image/v2/thumbnail/',@ID,'/square/3000,/0/default.jpg')}" />
+              href="{concat($WebApplicationBaseURL,'api/iiif/image/v2/thumbnail/',@ID,'/square/3000,/0/default.jpg')}" />
     </xsl:if>
   </xsl:template>
 
@@ -167,8 +168,18 @@
   </xsl:template>
 
   <xsl:template match="mycoreobject" mode="link">
+    <xsl:variable name="mods" select="metadata/def.modsContainer/modsContainer/mods:mods" />
+    <xsl:variable name="contextURL"
+                  select="$mods/mods:location/mods:url[@access='object in context']" />
     <link>
-      <xsl:value-of select="concat($WebApplicationBaseURL,'receive/',@ID)" />
+      <xsl:choose>
+        <xsl:when test="$contextURL">
+          <xsl:value-of select="$contextURL" />
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="concat($WebApplicationBaseURL,'receive/',@ID)" />
+        </xsl:otherwise>
+      </xsl:choose>
     </link>
   </xsl:template>
 
@@ -178,8 +189,8 @@
         <xsl:attribute name="xml:space">preserve</xsl:attribute>
         <xsl:choose>
           <xsl:when test="mods:abstract[@altRepGroup and @contentType='text/xml']">
-              <xsl:copy-of
-                  select="document(fn:exactly-one(mods:abstract[@altRepGroup and @contentType='text/xml'])/@altFormat)/*/node()" />
+            <xsl:copy-of
+                    select="document(fn:exactly-one(mods:abstract[@altRepGroup and @contentType='text/xml'])/@altFormat)/*/node()" />
           </xsl:when>
           <xsl:otherwise>
             <xsl:value-of select="fn:exactly-one(mods:abstract)" />
@@ -238,6 +249,11 @@
         <xsl:value-of select="concat('Document ', @ID, ' does not have a derivate of type content!')" />
       </xsl:comment>
     </xsl:if>
+    <xsl:if test="count(structure/derobjects/derobject[classification/@categid='thumbnail']) &gt; 1">
+      <xsl:comment>
+        <xsl:value-of select="concat('Document ', @ID, ' has too many thumbnails!')" />
+      </xsl:comment>
+    </xsl:if>
     <xsl:if test="count($mods/mods:abstract) != 1 and
       not(count($mods/mods:abstract) = 2 and $mods/mods:abstract[@altRepGroup]) and
       not($mods/mods:relatedItem[@type='host']/mods:part/@order = 0)">
@@ -253,14 +269,13 @@
           <xsl:value-of select="concat('Document ', @ID, ' does not have a publication date!')" />
         </xsl:comment>
       </xsl:when>
-      <xsl:when test="not($pubDate castable as xs:date)">
+      <xsl:when test="not($pubDate castable as xs:date or $pubDate castable as xs:dateTime)">
         <xsl:comment>
-          <xsl:value-of select="concat('Document ', @ID, ' publication date is not valid: ',$pubDate,'!')" />
+          <xsl:value-of select="concat('Document ', @ID, ' publication date or dateTime is not valid: ',$pubDate,'!')" />
         </xsl:comment>
       </xsl:when>
       <xsl:otherwise>
-        <xsl:variable name="pubDateTime"
-                      select="fn:dateTime($pubDate, xs:time(fn:format-time(fn:current-time(),'00:00:00[Z]')))" />
+        <xsl:variable name="pubDateTime" select="pc:pubDate($pubDate)" />
         <xsl:if test="fn:current-dateTime() &lt; $pubDateTime">
           <xsl:comment>
             <xsl:value-of select="concat('Podcast episode ', @ID, ' will be published on ',$pubDateTime,'.')" />
@@ -282,7 +297,7 @@
     <xsl:if test="/mycoreobject/service/servstates/servstate[@classid='state']/@categid != 'published'">
       <xsl:comment>
         <xsl:value-of
-            select="concat('Podcast episode ', @ID, ' is not in state published: ',
+                select="concat('Podcast episode ', @ID, ' is not in state published: ',
             /mycoreobject/service/servstates/servstate[@classid='state']/@categid,'!')" />
       </xsl:comment>
     </xsl:if>
@@ -306,6 +321,7 @@
           <xsl:apply-templates select="$mods" mode="author" />
           <xsl:apply-templates select="$mods" mode="subtitle" />
           <xsl:apply-templates select="$mods" mode="description" />
+          <xsl:apply-templates select="." mode="thumbnail" />
           <xsl:apply-templates select="." mode="enclosure" />
           <xsl:if test="$mods/mods:relatedItem[@type='host']/mods:part/@order = 0">
             <itunes:episodeType>trailer</itunes:episodeType>
@@ -316,10 +332,9 @@
           <pubDate>
             <xsl:variable name="pubDate"
                           select="fn:exactly-one($mods/mods:originInfo[@eventType='publication']/mods:dateIssued[@encoding='w3cdtf'])" />
-            <xsl:variable name="pubDateTime"
-                          select="fn:dateTime($pubDate, xs:time(fn:format-time(fn:current-time(),'00:00:00[Z]')))" />
+            <xsl:variable name="pubDateTime" select="pc:pubDate($pubDate)" />
             <xsl:value-of
-                select="fn:format-dateTime($pubDateTime,'[FNn,3-3], [D,2] [MNn,3-3] [Y] [H01]:[m01]:[s01] [Z0000]')" />
+                    select="fn:format-dateTime($pubDateTime,'[FNn,3-3], [D,2] [MNn,3-3] [Y] [H01]:[m01]:[s01] [Z0000]')" />
           </pubDate>
           <itunes:duration>
             <xsl:value-of select="$mods/mods:physicalDescription/mods:extent" />
@@ -356,5 +371,20 @@
       </xsl:attribute>
     </enclosure>
   </xsl:template>
+
+  <xsl:function name="pc:pubDate" as="xs:dateTime">
+    <xsl:param name="dateTime" as="xs:anyAtomicType"/>
+    <xsl:choose>
+      <xsl:when test="$dateTime castable as xs:dateTime">
+        <xsl:sequence select="xs:dateTime($dateTime)"/>
+      </xsl:when>
+      <xsl:when test="$dateTime castable as xs:date">
+        <xsl:sequence select="fn:dateTime($dateTime, xs:time(fn:format-time(fn:current-time(),'00:00:00[Z]')))"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:message terminate="yes">Parameter is not of type xs:date or xs:dateTime</xsl:message>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:function>
 
 </xsl:stylesheet>
