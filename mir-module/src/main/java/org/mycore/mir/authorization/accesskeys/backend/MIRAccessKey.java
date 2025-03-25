@@ -42,14 +42,15 @@ import jakarta.persistence.Table;
         query = "SELECT k"
             + "  FROM MIRAccessKey k"),
 })
- 
+
 /**
- * Access keys for a {@link MCRObject}.
+ * Access keys for a {@link MCRObjectID}.
  * An access keys contains a value and a type.
  * Value is the key value of the key and type the permission.
  */
 @Entity
 @Table(name = "miraccesskey")
+@Deprecated
 public class MIRAccessKey {
 
     private static final long serialVersionUID = 1L;
@@ -58,7 +59,7 @@ public class MIRAccessKey {
     private int id;
 
     /** The access key information*/
-    private MCRObjectID mcrObjectId; 
+    private MCRObjectID mcrObjectId;
 
     /** The key value*/
     private String value;
@@ -134,7 +135,7 @@ public class MIRAccessKey {
     }
 
     /**
-     * @return permission type 
+     * @return permission type
      */
     @Column(name = "type",
         nullable = false)
