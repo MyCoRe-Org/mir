@@ -26,10 +26,10 @@
       <xsl:variable name="statusClass">
         <xsl:choose>
           <xsl:when test="@success = 'true'">
-            <xsl:text>badge-success</xsl:text>
+            <xsl:text>bg-success</xsl:text>
           </xsl:when>
           <xsl:otherwise>
-            <xsl:text>badge-danger</xsl:text>
+            <xsl:text>bg-danger</xsl:text>
           </xsl:otherwise>
         </xsl:choose>
       </xsl:variable>
@@ -68,7 +68,7 @@
                 </xsl:if>
               </xsl:otherwise>
             </xsl:choose>
-            <span class="float-right badge {$statusClass}">
+            <span class="float-end badge {$statusClass}">
               <xsl:value-of select="i18n:translate(concat('component.mir.wizard.status.', @success))" />
             </span>
           </legend>
@@ -119,7 +119,7 @@
         </div>
       </div>
       <br />
-      <a class="btn btn-primary float-right" data-toggle="modal" data-target="#confirm-shutdown" href="#">
+      <a class="btn btn-primary float-end" data-bs-toggle="modal" data-target="#confirm-shutdown" href="#">
         <xsl:value-of select="i18n:translate('component.mir.wizard.shutdownServer')" />
       </a>
       <br />

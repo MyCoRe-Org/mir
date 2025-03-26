@@ -27,7 +27,7 @@
 
   <xsl:template match="/basket">
     <div id="basket">
-      <div id="options" class="btn-group float-right">
+      <div id="options" class="btn-group float-end">
         <xsl:call-template name="options" />
       </div>
       <h2>
@@ -108,7 +108,7 @@
           </div>
 
 <!-- hit options -->
-          <div class="hit_options float-right">
+          <div class="hit_options float-end">
               <div class="btn-group">
                 <xsl:apply-templates select="." mode="basketButtonsUpDownDelete" />
             </div>
@@ -182,7 +182,7 @@
 
   <xsl:template name="options">
     <a href="{$ServletsBaseURL}MCRBasketServlet?type={@type}&amp;action=clear&amp;redirect=referer" class="btn btn-danger btn-sm">
-      <span class="fas fa-trash-alt mr-1"></span>
+      <span class="fas fa-trash-alt me-1"></span>
       <xsl:value-of select="i18n:translate('basket.clear')" />
     </a>
   </xsl:template>

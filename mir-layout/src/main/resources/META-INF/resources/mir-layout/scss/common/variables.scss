@@ -25,7 +25,7 @@ $icon-font-path: "../../../../mir-layout/assets/bootstrap/fonts/bootstrap/" !def
 $font-size-base: 0.875rem !default;
 
 // outdated, just to keep compatibility
-$alert-warning-bg: lighten($brand-warning, 35%) !default;
+$alert-warning-bg: tint-color($brand-warning, 35%) !default;
 $alert-warning-text: $brand-warning !default;
 
 // set color for close button

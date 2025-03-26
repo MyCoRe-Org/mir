@@ -503,7 +503,7 @@
     // Button style
     buttonClass : "btn btn-secondary",
     // Feedback style (optical feedback for current selection)
-    feedbackClass : "feedback badge badge-primary",
+    feedbackClass : "feedback badge bg-primary",
     // Feedback cleaner icon style
     feedbackCleanIconClass : "feedback-clean far fa-times-circle",
 
@@ -548,9 +548,6 @@
     this.$element.remove();
     this.$element = $element;
 
-    var $actions = $(document.createElement("div"));
-    $actions.addClass("input-group-btn input-group-append");
-
     var $searchBtn = this.$searchBtn = $(document.createElement("button"));
     $searchBtn.addClass(options.buttonClass);
     $searchBtn.attr("data-loading-text", options.searchButtonLoading);
@@ -561,8 +558,7 @@
       that.search(e);
     });
 
-    $actions.append($searchBtn);
-    $inputGroup.append($actions);
+    $inputGroup.append($searchBtn);
     $parent.append($inputGroup);
 
     if (options.searchType.toUpperCase() == "SELECT") {
@@ -575,20 +571,20 @@
 
       var $typeBtn = this.$typeBtn = $(document.createElement("button"));
       $typeBtn.addClass(options.buttonClass).addClass("dropdown-toggle");
-      $typeBtn.attr("data-toggle", "dropdown");
+      $typeBtn.attr("data-bs-toggle", "dropdown");
       $typeBtn.html("<span class=\"caret\"></span><span class=\"sr-only\">Toggle Dropdown</span>");
 
-      $actions.append($typeBtn);
+      $inputGroup.append($typeBtn);
 
       var $typeMenu = this.$typeMenu = $(document.createElement("ul"));
-      $typeMenu.addClass("dropdown-menu dropdown-menu-right");
+      $typeMenu.addClass("dropdown-menu dropdown-menu-end");
       $typeMenu.attr("role", "menu");
 
       for ( var type in SearchEntity.TYPES) {
         if (SearchEntity.TYPES[type][options.searchEntityType].enabled === false || type.includes("_FALLBACK")) {
           continue;
         }
- 
+
         if (SearchEntity.TYPES[this.selectedType] != undefined && SearchEntity.TYPES[this.selectedType][options.searchEntityType].enabled == false) {
           this.selectedType = type;
         }
@@ -615,7 +611,7 @@
         $typeMenu.append($entry);
       }
 
-      $actions.append($typeMenu);
+      $inputGroup.append($typeMenu);
       $typeBtn.dropdown();
     }
 
@@ -641,7 +637,7 @@
 
       var type = null;
       var typeFallback = null;
-      
+
       for (var t in SearchEntity.TYPES) {
         if (this.selectedType.toUpperCase() == t.toUpperCase()) {
           type = SearchEntity.TYPES[t][options.searchEntityType];
@@ -671,7 +667,7 @@
             }
             content.detach();
             that.$searchBtn.text(text);
-          
+
           }, () => {
             if (!isFallback && typeFallback != null) {
               console.log('SearchEntity.prototype.search: Failed to loadData for type: ' + this.selectedType.toUpperCase() + '. Set '
@@ -748,7 +744,7 @@
       searchResultContainer : $resultBox
     }, options));
   };
-  
+
   SearchEntity.prototype.updateOutput = function (item) {
     var that = this;
     var options = this.options;
@@ -810,7 +806,7 @@
 
               if (nameIdTypes[ind] === outputType.toLowerCase()) {
 
-                var outputWithIdType = $(nameIdTypesElements[ind]).closest('div.form-group').find('input[name*="/mods:nameIdentifier"]');
+                var outputWithIdType = $(nameIdTypesElements[ind]).closest('div.mir-form-group').find('input[name*="/mods:nameIdentifier"]');
 
                 if (outputWithIdType.val()) {
                   depIndexWithIdType = ind;
@@ -913,7 +909,7 @@
 
     if (item && item.type && isNewNameFormGroup) {
       /* Toggle last add Button to generate new nameField */
-      let addIdentifierButton = $(nameIdFields[nameIdFields.length - 1]).closest('div[class="form-group row"]').find('button[name^="_xed_submit_insert"]');
+      let addIdentifierButton = $(nameIdFields[nameIdFields.length - 1]).closest('div[class="mir-form-group row"]').find('button[name^="_xed_submit_insert"]');
       addIdentifierButton.click();
     }
   };
@@ -1047,7 +1043,7 @@
 
     if (!selector) {
       if ($this.attr('data-next')) {
-        selector = $this.closest(".form-group").next($this.attr('data-next'));
+        selector = $this.closest(".mir-form-group").next($this.attr('data-next'));
       }
       else {
         selector = $this.attr('href');

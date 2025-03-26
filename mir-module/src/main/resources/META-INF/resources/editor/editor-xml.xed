@@ -19,8 +19,8 @@
 
       <xed:bind xpath="/raw">
 
-        <div class="form-group">
-          <label class="col-md-10 control-label" for="raw">
+        <div class="mir-form-group">
+          <label class="col-md-10 control-label form-label" for="raw">
             <xed:output value="$id" />
           </label>
           <div class="col-md-10">

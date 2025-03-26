@@ -44,7 +44,7 @@
         <template #displayContent="content">
             <div class="row">
                 <div class="col-6">
-                    <select v-model="content.object.type" class="form-control form-control-sm">
+                    <select v-model="content.object.type" class="form-control form-control-sm form-select">
                         <option value="given">{{ i18n["mir.editor.subject.name.editor.namePart.type.given"] }}</option>
                         <option value="family">{{ i18n["mir.editor.subject.name.editor.namePart.type.family"] }}</option>
                         <option value="termsOfAddress">{{ i18n["mir.editor.subject.name.editor.namePart.type.termsOfAddress"] }}</option>
