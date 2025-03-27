@@ -109,14 +109,14 @@
 
   <xsl:template match="@xml:lang">
     <xsl:attribute name="xml:lang">
-      <xsl:value-of select="document(concat('language:',.))/language/@xmlCode" />
+      <xsl:value-of select="document(concat('language:',.))/language/@XML_CODE" />
     </xsl:attribute>
   </xsl:template>
 
   <xsl:template match="scopus:language">
     <mods:language>
       <mods:languageTerm authority="rfc5646" type="code">
-        <xsl:value-of select="document(concat('language:',@xml:lang))/language/@xmlCode" />
+        <xsl:value-of select="document(concat('language:',@xml:lang))/language/@XML_CODE" />
       </mods:languageTerm>
     </mods:language>
   </xsl:template>

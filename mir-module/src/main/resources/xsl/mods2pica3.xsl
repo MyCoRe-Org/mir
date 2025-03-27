@@ -108,7 +108,7 @@
   <xsl:template match="mods:language/mods:languageTerm[@authority='rfc5646' and ( not (../mods:languageTerm[@authority='iso639-2b']) )]" mode="pica3">
     <line>
       <xsl:text>1500  </xsl:text>
-      <xsl:value-of select="document(concat('language:',.))/language/@biblCode" />
+      <xsl:value-of select="document(concat('language:',.))/language/@BIBL_CODE" />
     </line>
   </xsl:template>
 

@@ -203,7 +203,7 @@
   <xsl:template match="mab:datafield[@tag='037']/mab:subfield[@code='a']">
     <mods:language>
       <mods:languageTerm authority="rfc5646" type="code">
-        <xsl:value-of select="document(concat('language:',.))/language/@xmlCode" />
+        <xsl:value-of select="document(concat('language:',.))/language/@XML_CODE" />
       </mods:languageTerm>
     </mods:language>
   </xsl:template>

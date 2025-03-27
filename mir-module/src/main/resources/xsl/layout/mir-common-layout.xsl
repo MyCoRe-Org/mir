@@ -102,13 +102,15 @@
     <xsl:variable name="langToken" select="exslt:node-set($availableLanguages)/token" />
     <xsl:if test="count($langToken) &gt; 1">
       <xsl:variable name="curLang" select="document(concat('language:',$CurrentLang))" />
-<!--       <language termCode="deu" biblCode="ger" xmlCode="de"> -->
-<!--         <label xml:lang="de">Deutsch</label> -->
-<!--         <label xml:lang="en">German</label> -->
-<!--       </language> -->
+      <!--
+      <language TERM_CODE="deu" BIBL_CODE="ger" XML_CODE="de" rtl="false">
+        <label xml:lang="de">Deutsch</label>
+        <label xml:lang="en">German</label>
+      </language>
+      -->
       <li class="nav-item dropdown mir-lang">
         <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" title="{i18n:translate('mir.language.change')}">
-          <xsl:value-of select="$curLang/language/@xmlCode" />
+          <xsl:value-of select="$curLang/language/@XML_CODE" />
           <span class="caret" />
         </a>
         <ul class="dropdown-menu language-menu" role="menu">
@@ -119,14 +121,14 @@
               <li>
                 <xsl:variable name="langURL">
                   <xsl:call-template name="mir.languageLink">
-                    <xsl:with-param name="lang" select="$langDef/language/@xmlCode" />
+                    <xsl:with-param name="lang" select="$langDef/language/@XML_CODE" />
                   </xsl:call-template>
                 </xsl:variable>
                 <xsl:variable name="langTitle">
                   <xsl:apply-templates select="$langDef/language" mode="mir.langTitle" />
                 </xsl:variable>
                 <a href="{$langURL}" class="dropdown-item" title="{$langTitle}">
-                  <xsl:value-of select="$langDef/language/@xmlCode" />
+                  <xsl:value-of select="$langDef/language/@XML_CODE" />
                 </a>
               </li>
             </xsl:if>
@@ -136,7 +138,7 @@
     </xsl:if>
   </xsl:template>
   <xsl:template match="language" mode="mir.langTitle">
-    <xsl:variable name="code" select="@xmlCode" />
+    <xsl:variable name="code" select="@XML_CODE" />
     <xsl:choose>
       <xsl:when test="label[lang($code)]">
         <xsl:value-of select="label[lang($code)]" />
@@ -148,7 +150,7 @@
         <xsl:value-of select="label[lang($DefaultLang)]" />
       </xsl:when>
       <xsl:otherwise>
-        <xsl:value-of select="@xmlCode" />
+        <xsl:value-of select="@XML_CODE" />
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
