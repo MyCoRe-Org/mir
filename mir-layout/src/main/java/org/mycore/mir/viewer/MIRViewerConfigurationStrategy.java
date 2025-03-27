@@ -3,8 +3,8 @@ package org.mycore.mir.viewer;
 import java.util.Locale;
 
 import org.mycore.common.xml.MCRXMLFunctions;
-import org.mycore.common.xsl.MCRParameterCollector;
 import org.mycore.frontend.MCRFrontendUtil;
+import org.mycore.common.config.MCRConfiguration2;
 import org.mycore.viewer.configuration.MCRViewerConfiguration;
 import org.mycore.viewer.configuration.MCRViewerDefaultConfigurationStrategy;
 
@@ -14,40 +14,40 @@ public class MIRViewerConfigurationStrategy extends MCRViewerDefaultConfiguratio
 
     @Override
     public MCRViewerConfiguration get(HttpServletRequest request) {
-        MCRViewerConfiguration mcrViewerConfiguration = super.get(request);
+        MCRViewerConfiguration configuration = super.get(request);
         String baseURL = MCRFrontendUtil.getBaseURL(request);
-        MCRParameterCollector params = new MCRParameterCollector(request);
 
         if (!MCRXMLFunctions.isMobileDevice(request.getHeader("User-Agent"))) {
             // Default Stylesheet
-            String theme = params.getParameter("MIR.Layout.Theme", null);
-            String file = params.getParameter("MIR.DefaultLayout.CSS", null);
-            String mirBootstrapCSSURL = String.format(Locale.ROOT, "%srsc/sass/mir-layout/scss/%s-%s.css", baseURL,
-                theme, file);
-            mcrViewerConfiguration.addCSS(mirBootstrapCSSURL);
+            MCRConfiguration2.getString("MIR.Layout.Theme").ifPresent(theme ->
+                    MCRConfiguration2.getString("MIR.DefaultLayout.CSS").ifPresent(file -> {
+                        String defaultCssUrl = String.format(Locale.ROOT, "%srsc/sass/mir-layout/scss/%s-%s.css",
+                                baseURL, theme, file);
+                        configuration.addCSS(defaultCssUrl);
+                    }));
 
-            // customLayout Stylesheet
-            String customLayout = params.getParameter("MIR.CustomLayout.CSS", "");
-            if (customLayout.length() > 0) {
-                String customLayoutURL = String.format(Locale.ROOT, "%scss/%s", baseURL, customLayout);
-                mcrViewerConfiguration.addCSS(customLayoutURL);
-            }
+            // custom Stylesheet
+            MCRConfiguration2.getString("MIR.CustomLayout.CSS").ifPresent(customCss -> {
+                String customCssUrl = String.format(Locale.ROOT, "%scss/%s", baseURL, customCss);
+                configuration.addCSS(customCssUrl);
+            });
 
-            String customJS = params.getParameter("MIR.CustomLayout.JS", "");
-            if (customJS.length() > 0) {
-                mcrViewerConfiguration.addScript(String.format(Locale.ROOT, "%sjs/%s", baseURL, customJS), false);
-            }
+            // custom Script
+            MCRConfiguration2.getString("MIR.CustomLayout.JS").ifPresent(customJs -> {
+                String customJsUrl = String.format(Locale.ROOT, "%sjs/%s", baseURL, customJs);
+                configuration.addScript(customJsUrl, false);
+            });
 
             if (request.getParameter("embedded") != null) {
-                mcrViewerConfiguration.setProperty("permalink.updateHistory", false);
-                mcrViewerConfiguration.setProperty("chapter.showOnStart", false);
+                configuration.setProperty("permalink.updateHistory", false);
+                configuration.setProperty("chapter.showOnStart", false);
             } else {
                 // Default JS
-                mcrViewerConfiguration
-                    .addScript(MCRFrontendUtil.getBaseURL() + "assets/bootstrap/js/bootstrap.min.js", false);
+                String defaultJsUrl = MCRFrontendUtil.getBaseURL() + "assets/bootstrap/js/bootstrap.min.js";
+                configuration.addScript(defaultJsUrl, false);
             }
         }
 
-        return mcrViewerConfiguration;
+        return configuration;
     }
 }

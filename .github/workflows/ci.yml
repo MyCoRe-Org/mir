@@ -31,7 +31,7 @@ jobs:
 
     - name: Fetch Bibutils cache
       id: bibutils-cache
-      uses: actions/cache@v2
+      uses: actions/cache@v4
       with:
         path: ~/bibutils
         key: ${{ env.BIBUTILS_VERSION }}
