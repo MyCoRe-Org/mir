@@ -90,7 +90,7 @@ public class MIRAccessKeyServlet extends MCRServlet {
 
     private static boolean checkCurrentUserIsGuest() {
         return MCRSessionMgr.getCurrentSession().getUserInformation().getUserID()
-            .equals(MCRSystemUserInformation.getGuestInstance().getUserID());
+            .equals(MCRSystemUserInformation.GUEST.getUserID());
     }
 
     private static String getReturnURL(HttpServletRequest req) {

@@ -34,15 +34,15 @@ public class MIRMigration03Utils {
             return null;
         }
         //get all categories:
-        MCRCategory mirStatus = MCRCategoryDAOFactory.getInstance().getCategory(MCRCategoryID.rootID("mir_status"), -1);
+        MCRCategory mirStatus = MCRCategoryDAOFactory.obtainInstance().getCategory(new MCRCategoryID("mir_status"), -1);
         if (mirStatus == null) {
             LOGGER.info("No classification 'mir_status' found.");
             return null;
         }
-        boolean stateClassPresent = MCRCategoryDAOFactory.getInstance().exist(MCRCategoryID.rootID("state"));
+        boolean stateClassPresent = MCRCategoryDAOFactory.obtainInstance().exist(new MCRCategoryID("state"));
         TreeSet<String> ids = new TreeSet<>();
         for (MCRCategory state : mirStatus.getChildren()) {
-            ids.addAll(MCRCategLinkServiceFactory.getInstance().getLinksFromCategoryForType(state.getId(), "mods"));
+            ids.addAll(MCRCategLinkServiceFactory.obtainInstance().getLinksFromCategoryForType(state.getId(), "mods"));
         }
         ArrayList<String> cmds = new ArrayList<>(ids.size() + (stateClassPresent ? 1 : 2));
         if (!stateClassPresent) {
@@ -65,7 +65,7 @@ public class MIRMigration03Utils {
             LOGGER.error("Could not find migration stylesheet. File a bug!");
             return null;
         }
-        TreeSet<String> ids = new TreeSet<>(MCRXMLMetadataManager.instance().listIDsOfType("mods"));
+        TreeSet<String> ids = new TreeSet<>(MCRXMLMetadataManager.getInstance().listIDsOfType("mods"));
         ArrayList<String> cmds = new ArrayList<>(ids.size());
         for (String id : ids) {
             cmds.add("xslt " + id + " with file " + styleFile.toString());
@@ -82,7 +82,7 @@ public class MIRMigration03Utils {
             LOGGER.error("Could not find migration stylesheet. File a bug!");
             return null;
         }
-        TreeSet<String> ids = new TreeSet<>(MCRXMLMetadataManager.instance().listIDsOfType("mods"));
+        TreeSet<String> ids = new TreeSet<>(MCRXMLMetadataManager.getInstance().listIDsOfType("mods"));
         ArrayList<String> cmds = new ArrayList<>(ids.size());
         for (String id : ids) {
             cmds.add("xslt " + id + " with file " + styleFile.toString());

@@ -73,7 +73,7 @@ public class MIROwnerStrategy implements MCRAccessCheckStrategy {
 
             @Override
             public String load(MCRObjectID mcrObjectID) throws Exception {
-                MCRXMLMetadataManager metadataManager = MCRXMLMetadataManager.instance();
+                MCRXMLMetadataManager metadataManager = MCRXMLMetadataManager.getInstance();
                 List<? extends MCRAbstractMetadataVersion<?>> versions = metadataManager.listRevisions(mcrObjectID);
                 if (versions != null && !versions.isEmpty()) {
                     Collections.reverse(versions); //newest revision first
@@ -109,7 +109,7 @@ public class MIROwnerStrategy implements MCRAccessCheckStrategy {
             try {
                 mcrObjectId = MCRObjectID.getInstance(id);
                 MCRUserInformation currentUser = MCRSessionMgr.getCurrentSession().getUserInformation();
-                if (!currentUser.equals(MCRSystemUserInformation.getGuestInstance())
+                if (!currentUser.equals(MCRSystemUserInformation.GUEST)
                     && isCurrentUserCreator(mcrObjectId, currentUser)) {
                     return true;
                 }
