@@ -94,12 +94,12 @@ public class MIRStrategyTest extends MCRJPATestCase {
         allControlledIDs.stream()
             .peek(id -> LogManager.getLogger().debug("Removing {} rules...", id))
             .forEach(MCRAccessManager.requireRulesInterface()::removeAllRules);
-        MCRJPARuleStore.getInstance().retrieveAllIDs()
+        MCRJPARuleStore.obtainInstance().retrieveAllIDs()
             .stream()
             .peek(rule -> LogManager.getLogger().debug("Remove rule {}", rule))
-            .forEach(MCRJPARuleStore.getInstance()::deleteRule);
-        assertEquals(0, MCRJPAAccessStore.getInstance().getDistinctStringIDs().size());
-        assertEquals(0, MCRJPARuleStore.getInstance().retrieveAllIDs().size());
+            .forEach(MCRJPARuleStore.obtainInstance()::deleteRule);
+        assertEquals(0, MCRJPAAccessStore.obtainInstance().getDistinctStringIDs().size());
+        assertEquals(0, MCRJPARuleStore.obtainInstance().retrieveAllIDs().size());
         ACLResetter.resetIDTable();
         super.tearDown();
     }
@@ -159,7 +159,7 @@ public class MIRStrategyTest extends MCRJPATestCase {
         MCRSessionMgr.getCurrentSession().setUserInformation(junitUser);
         final MCRObjectID mir_mods_00004711 = MCRObjectID.getInstance("mir_mods_00004711");
         final MCRObjectID mir_derivate_00004711 = MCRObjectID.getInstance("mir_derivate_00004711");
-        MCRLinkTableManager.instance().addReferenceLink(mir_mods_00004711, mir_derivate_00004711,
+        MCRLinkTableManager.getInstance().addReferenceLink(mir_mods_00004711, mir_derivate_00004711,
             MCRLinkTableManager.ENTRY_TYPE_DERIVATE, "");
         assertTrue(strategy.checkPermission(mir_mods_00004711.toString(), MCRAccessManager.PERMISSION_READ));
         assertFalse(strategy.checkPermission(mir_mods_00004711.toString(), MCRAccessManager.PERMISSION_WRITE));
@@ -181,7 +181,7 @@ public class MIRStrategyTest extends MCRJPATestCase {
 
         final MCRCategLinkService categLinkService = MCRCategLinkServiceFactory.getInstance();
         MCRCategLinkReference ref = new MCRCategLinkReference(mir_mods_00004711);
-        categLinkService.setLinks(ref, List.of(MCRCategoryID.fromString("mir_access:accessKey")));
+        categLinkService.setLinks(ref, List.of(MCRCategoryID.ofString("mir_access:accessKey")));
 
         assertFalse(strategy.checkPermission(mir_mods_00004711.toString(), MCRAccessManager.PERMISSION_READ));
         Assert
