@@ -23,7 +23,7 @@ import org.mycore.mir.impexp.MIRClassificationMapper;
 public class MIRValidationHelper {
 
     public static String validateSDNB(String sdnb) {
-        MCRCategoryDAO dao = MCRCategoryDAOFactory.getInstance();
+        MCRCategoryDAO dao = MCRCategoryDAOFactory.obtainInstance();
         if (dao.exist(new MCRCategoryID("SDNB", sdnb))) {
             return sdnb;
         }

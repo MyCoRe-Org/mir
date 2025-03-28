@@ -229,7 +229,7 @@ public class MIRImageWarePacker extends MCRPacker {
         openZip(zipFileSystem -> {
             try {
                 // transform & write metadata
-                MCRContent modsContent = MCRXMLMetadataManager.instance().retrieveContent(objectID);
+                MCRContent modsContent = MCRXMLMetadataManager.getInstance().retrieveContent(objectID);
                 MCRContentInputStream resultStream = getTransformer().transform(modsContent).getContentInputStream();
                 Files.copy(resultStream, zipFileSystem.getPath("/", ppn + ".xml"));
 

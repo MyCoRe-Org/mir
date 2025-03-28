@@ -46,7 +46,7 @@ public class TestCommands extends MCRJPATestCase {
     public void testLoadClassifications() throws Exception {
         MIRWizardCommandChain chain = new MIRWizardCommandChain();
         MIRWizardMCRCommand loadClassifications = new MIRWizardMCRCommand("load.classifications");
-        loadClassifications.setInputXML(MCRURIResolver.instance().resolve("resource:setup/classifications-wizard-commands.xml"));
+        loadClassifications.setInputXML(MCRURIResolver.obtainInstance().resolve("resource:setup/classifications-wizard-commands.xml"));
         chain.addCommand(loadClassifications);
 
         endTransaction();
@@ -64,16 +64,16 @@ public class TestCommands extends MCRJPATestCase {
         MIRWizardCommandChain chain = new MIRWizardCommandChain();
 
         MIRWizardMCRCommand importACLs = new MIRWizardMCRCommand("import.acls");
-        importACLs.setInputXML(MCRURIResolver.instance().resolve("resource:setup/defaultrules-wizard-commands.xml"));
+        importACLs.setInputXML(MCRURIResolver.obtainInstance().resolve("resource:setup/defaultrules-wizard-commands.xml"));
         chain.addCommand(importACLs);
 
         MIRWizardMCRCommand importWebACLs = new MIRWizardMCRCommand("import.webacls");
-        importWebACLs.setInputXML(MCRURIResolver.instance().resolve("resource:setup/webacl-wizard-commands.xml"));
+        importWebACLs.setInputXML(MCRURIResolver.obtainInstance().resolve("resource:setup/webacl-wizard-commands.xml"));
         chain.addCommand(importWebACLs);
 
         MIRWizardMCRCommand importRestApiACLs = new MIRWizardMCRCommand("import.restapiacls");
         importRestApiACLs
-            .setInputXML(MCRURIResolver.instance().resolve("resource:setup/restapiacl-wizard-commands.xml"));
+                .setInputXML(MCRURIResolver.obtainInstance().resolve("resource:setup/restapiacl-wizard-commands.xml"));
         chain.addCommand(importRestApiACLs);
 
         endTransaction();
