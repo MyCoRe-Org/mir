@@ -109,7 +109,7 @@ public class MIROwnerStrategy implements MCRAccessCheckStrategy {
             try {
                 mcrObjectId = MCRObjectID.getInstance(id);
                 MCRUserInformation currentUser = MCRSessionMgr.getCurrentSession().getUserInformation();
-                if (!currentUser.equals(MCRSystemUserInformation.getGuestInstance())
+                if (!currentUser.equals(MCRSystemUserInformation.GUEST)
                     && isCurrentUserCreator(mcrObjectId, currentUser)) {
                     return true;
                 }
