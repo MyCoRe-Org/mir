@@ -103,7 +103,7 @@ public class MIRDeepGreepIngester extends MIRSwordIngesterBase {
                     Files.copy(pdfIS, MCRPath.getPath(derivate.getId().toString(), fileName));
                     derivate.getDerivate().getInternals().setMainDoc(fileName);
                     MCRCategoryID derivateTypeId = new MCRCategoryID("derivate_types", "content");
-                    if (MCRCategoryDAOFactory.getInstance().exist(derivateTypeId)) {
+                    if (MCRCategoryDAOFactory.obtainInstance().exist(derivateTypeId)) {
                         MCRMetaClassification derivateTypeClassification = new MCRMetaClassification(
                             "classification",
                             0,

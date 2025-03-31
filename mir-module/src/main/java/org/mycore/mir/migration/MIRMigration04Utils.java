@@ -30,7 +30,7 @@ public class MIRMigration04Utils {
             return null;
         }
         //get all categories:
-        TreeSet<String> ids = new TreeSet<>(MCRXMLMetadataManager.instance().listIDsOfType("mods"));
+        TreeSet<String> ids = new TreeSet<>(MCRXMLMetadataManager.getInstance().listIDsOfType("mods"));
         ArrayList<String> cmds = new ArrayList<>(ids.size());
         for (String id : ids) {
             cmds.add("xslt " + id + " with file " + styleFile.toString());

@@ -104,7 +104,15 @@ public class MIRAccessKeyPair implements Serializable {
         setWriteKey(writeKey);
     }
 
+    /**
+     * @deprecated Use {@link #ofServiceFlags(MCRObjectID, ServiceFlags)} instead
+     */
+    @Deprecated
     public static MIRAccessKeyPair fromServiceFlags(final MCRObjectID mcrObjectId, final ServiceFlags servFlags) {
+        return ofServiceFlags(mcrObjectId, servFlags);
+    }
+
+    public static MIRAccessKeyPair ofServiceFlags(final MCRObjectID mcrObjectId, final ServiceFlags servFlags) {
         final MIRAccessKeyPair accKP = new MIRAccessKeyPair();
         accKP.setMCRObjectId(mcrObjectId);
 

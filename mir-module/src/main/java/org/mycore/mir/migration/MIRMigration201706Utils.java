@@ -31,7 +31,7 @@ public class MIRMigration201706Utils {
         syntax = "migrate URN for all derivates",
         help = "migrate URN from Derivate to Document")
     public static List<String> migrateURN() {
-        TreeSet<String> ids = new TreeSet<>(MCRXMLMetadataManager.instance().listIDsOfType("derivate"));
+        TreeSet<String> ids = new TreeSet<>(MCRXMLMetadataManager.getInstance().listIDsOfType("derivate"));
         ArrayList<String> cmds = new ArrayList<>(ids.size());
         for (String id : ids) {
             cmds.add("migrate URN for derivate " + id);
@@ -80,7 +80,7 @@ public class MIRMigration201706Utils {
             LOGGER.error("Could not find migration stylesheet. File a bug!");
             return null;
         }
-        TreeSet<String> ids = new TreeSet<>(MCRXMLMetadataManager.instance().listIDsOfType("mods"));
+        TreeSet<String> ids = new TreeSet<>(MCRXMLMetadataManager.getInstance().listIDsOfType("mods"));
         ArrayList<String> cmds = new ArrayList<>(ids.size());
         for (String id : ids) {
             cmds.add("xslt " + id + " with file " + styleFile.toString());

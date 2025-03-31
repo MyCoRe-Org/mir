@@ -53,16 +53,16 @@ public class MIRMigration202006Utils {
 
     public static final Logger LOGGER = LogManager.getLogger();
 
-    private static final MCRCategoryID CONTENT_TYPE_ID = MCRCategoryID.fromString("derivate_types:content");
+    private static final MCRCategoryID CONTENT_TYPE_ID = MCRCategoryID.ofString("derivate_types:content");
 
     @MCRCommand(syntax = "migrate derivate display to category {0}",
         help = "link derivates with @display=false to the given category {0}, e.g. mir_access:intern")
     public static List<String> migrateDerivateDisplay(String targetCategory) {
-        MCRCategoryID categoryID = MCRCategoryID.fromString(targetCategory);
-        if (!MCRCategoryDAOFactory.getInstance().exist(categoryID)) {
+        MCRCategoryID categoryID = MCRCategoryID.ofString(targetCategory);
+        if (!MCRCategoryDAOFactory.obtainInstance().exist(categoryID)) {
             throw new MCRException("Category " + categoryID + " does not exist!");
         }
-        final MCRXMLMetadataManager mcrxmlMetadataManager = MCRXMLMetadataManager.instance();
+        final MCRXMLMetadataManager mcrxmlMetadataManager = MCRXMLMetadataManager.getInstance();
         final List<String> derivates = mcrxmlMetadataManager.listIDsOfType("derivate");
         return derivates.stream()
             .map(MCRObjectID::getInstance)
@@ -102,7 +102,7 @@ public class MIRMigration202006Utils {
             help = "executes 'harmonize derivates' command for all objects."
     )
     public static List<String> harmonizeDerivatesGenre() {
-        TreeSet<String> ids = new TreeSet<>(MCRXMLMetadataManager.instance().listIDsOfType("mods"));
+        TreeSet<String> ids = new TreeSet<>(MCRXMLMetadataManager.getInstance().listIDsOfType("mods"));
         ArrayList<String> commands = new ArrayList<>(ids.size());
         for (String id : ids) {
             commands.add("harmonize derivates for object " + id);
@@ -126,7 +126,7 @@ public class MIRMigration202006Utils {
         MCRObject object = MCRMetadataManager.retrieveMCRObject(objectId);
 
         MCRCategoryID derivateTypeId = new MCRCategoryID("derivate_types", "content");
-        if (!MCRCategoryDAOFactory.getInstance().exist(derivateTypeId)) {
+        if (!MCRCategoryDAOFactory.obtainInstance().exist(derivateTypeId)) {
             throw new MCRException("Derivate type with id " + derivateTypeId + " does not exist");
         }
 
@@ -180,7 +180,7 @@ public class MIRMigration202006Utils {
             help = "executes 'generate static content' command for all objects."
     )
     public static List<String> generateStaticContent() {
-        TreeSet<String> ids = new TreeSet<>(MCRXMLMetadataManager.instance().listIDsOfType("mods"));
+        TreeSet<String> ids = new TreeSet<>(MCRXMLMetadataManager.getInstance().listIDsOfType("mods"));
         ArrayList<String> commands = new ArrayList<>(ids.size());
         for (String id : ids) {
             commands.add("generate static content for object " + id);
@@ -218,7 +218,7 @@ public class MIRMigration202006Utils {
         syntax = "select objects which need titleInfo or abstract migration",
         help = "select objects which need titleInfo or abstract migration")
     public static void selectObjectWhichNeedMigration() {
-        final List<String> objectIds = MCRXMLMetadataManager.instance().listIDsOfType("mods");
+        final List<String> objectIds = MCRXMLMetadataManager.getInstance().listIDsOfType("mods");
         final MIRUnescapeResolver unescapeResolver = new MIRUnescapeResolver();
 
         final List<String> objectsToMigrate = objectIds.stream().filter((mycoreObject) -> {
