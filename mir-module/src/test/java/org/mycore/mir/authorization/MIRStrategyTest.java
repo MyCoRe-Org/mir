@@ -248,7 +248,7 @@ public class MIRStrategyTest extends MCRJPATestCase {
 
     private static class ACLResetter {
         public static void resetIDTable() throws IllegalAccessException, NoSuchFieldException {
-            final Field ruleIDTable = MCRAccessControlSystem.class.getDeclaredField("ruleIDTable");
+            final Field ruleIDTable = MCRAccessControlSystem.class.getDeclaredField("RULE_ID_TABLE");
             ruleIDTable.setAccessible(true); //package private
             ((Map) ruleIDTable.get(null)).clear();
         }
