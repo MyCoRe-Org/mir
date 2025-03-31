@@ -68,8 +68,33 @@ public class MIRSearchController extends MIRTestController {
     }
 
     public void search() {
-        driver.waitAndFindElement(By.xpath(".//button[contains(text(), 'Suchen')]")).click();
-        driver.waitUntilPageIsLoaded("Suchergebnisse");
+        String currentUrl = driver.getCurrentUrl();
+        // Check URL condition
+        if (shouldProceedWithSearch(currentUrl)) {
+            driver.waitAndFindElement(By.xpath(".//button[contains(text(), 'Suchen')]")).click();
+            driver.waitUntilPageIsLoaded("Suchergebnisse");
+        }
+    }
+
+    /**
+     * Determines whether the search action should proceed based on the current URL.
+     * <p>
+     * The method checks the following conditions:
+     * <ul>
+     *   <li>If the URL contains '/servlets/solr/', it must also contain '/find?' to proceed</li>
+     *   <li>If the URL doesn't contain '/servlets/solr/', the search is allowed to proceed</li>
+     * </ul>
+     *
+     * @param url The current URL to be checked (typically obtained from driver.getCurrentUrl())
+     * @return {@code true} if the search should proceed, {@code false} otherwise
+     * @throws NullPointerException if the provided URL is null
+     */
+    private boolean shouldProceedWithSearch(String url) {
+        // If URL contains '/servlets/solr/' it must also contain '/find?'
+        if (url.contains("/servlets/solr/")) {
+            return url.contains("/find?");
+        }
+        return true;
     }
 
     public void setTitle(String title) {
