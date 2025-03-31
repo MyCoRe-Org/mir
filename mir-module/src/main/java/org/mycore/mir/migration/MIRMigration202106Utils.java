@@ -48,9 +48,10 @@ import jakarta.persistence.EntityManager;
 
 @MCRCommandGroup(
     name = "MIR migration 2021.06")
+@SuppressWarnings("PMD.MCR.ResourceResolver")
 public class MIRMigration202106Utils {
 
-    public static final Logger LOGGER = LogManager.getLogger();
+    private static final Logger LOGGER = LogManager.getLogger();
 
     protected static final String ACCESS_KEY_PREFIX = "acckey_";
 
