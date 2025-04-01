@@ -113,7 +113,14 @@
                     </xsl:for-each>
                   </xsl:when>
                   <xsl:otherwise>
-                    <xsl:value-of select="count($verinfo/versions/version)"/>
+                    <xsl:choose>
+                      <xsl:when test="count($verinfo/versions/version)">
+                        <xsl:value-of select="count($verinfo/versions/version)"/>
+                      </xsl:when>
+                      <xsl:otherwise>
+                        <xsl:value-of select="i18n:translate('metadata.versionInfo.inProgress')"/>
+                      </xsl:otherwise>
+                    </xsl:choose>
                   </xsl:otherwise>
                 </xsl:choose>
                 <br/>
