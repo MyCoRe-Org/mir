@@ -264,6 +264,12 @@
                       </xsl:choose>
 
                       <xsl:value-of select="$tabName" />
+
+                      <xsl:if test="@type and $MIR.Layout.Abstract.Type.Classification and @xml:lang">
+                        <sup class="mir-abstract-tab-lang">
+                          <xsl:value-of select="@xml:lang"/>
+                        </sup>
+                      </xsl:if>
                     </a>
                   </li>
                 </xsl:for-each>
