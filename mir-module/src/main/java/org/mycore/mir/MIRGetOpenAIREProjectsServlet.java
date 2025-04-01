@@ -24,7 +24,7 @@ public class MIRGetOpenAIREProjectsServlet extends HttpServlet {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    private static Logger LOGGER = LogManager.getLogger();
+    private static final Logger LOGGER = LogManager.getLogger();
 
     private HttpClient client;
 
