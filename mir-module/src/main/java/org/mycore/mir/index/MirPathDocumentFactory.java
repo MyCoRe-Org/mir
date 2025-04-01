@@ -65,7 +65,7 @@ public class MirPathDocumentFactory extends MCRSolrPathDocumentFactory {
 
     protected MCRCategoryID getStatus(MCRObjectID objId) {
         MCRCategLinkReference reference = new MCRCategLinkReference(objId);
-        Collection<MCRCategoryID> linkedCategories = MCRCategLinkServiceFactory.getInstance().getLinksFromReference(
+        Collection<MCRCategoryID> linkedCategories = MCRCategLinkServiceFactory.obtainInstance().getLinksFromReference(
             reference);
         for (MCRCategoryID categId : linkedCategories) {
             LOGGER.info("Checking " + categId);

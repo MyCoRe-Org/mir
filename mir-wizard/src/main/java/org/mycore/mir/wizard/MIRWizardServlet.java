@@ -70,7 +70,7 @@ public class MIRWizardServlet extends MCRServlet {
             } else {
                 LOGGER.info("Request file \"" + request + "\"...");
                 getLayoutService().doLayout(job.getRequest(), job.getResponse(),
-                    new MCRJDOMContent(MCRURIResolver.instance().resolve("resource:setup/" + request)));
+                    new MCRJDOMContent(MCRURIResolver.obtainInstance().resolve("resource:setup/" + request)));
             }
         } else {
             final Element resXML = getResult(job);
