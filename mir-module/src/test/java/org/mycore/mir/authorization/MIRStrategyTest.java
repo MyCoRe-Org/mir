@@ -22,6 +22,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mycore.access.MCRAccessManager;
 import org.mycore.access.mcrimpl.MCRAccessControlSystem;
+import org.mycore.access.mcrimpl.MCRAccessStore;
+import org.mycore.access.mcrimpl.MCRRuleStore;
 import org.mycore.backend.jpa.access.MCRJPAAccessStore;
 import org.mycore.backend.jpa.access.MCRJPARuleStore;
 import org.mycore.common.MCRJPATestCase;
@@ -36,9 +38,8 @@ import org.mycore.datamodel.common.MCRLinkTableManager;
 import org.mycore.datamodel.metadata.MCRObjectID;
 import org.mycore.frontend.cli.MCRCommandLineInterface;
 import org.mycore.frontend.cli.MCRCommandManager;
-import org.mycore.mcr.acl.accesskey.MCRAccessKeyManager;
-import org.mycore.mcr.acl.accesskey.MCRAccessKeyUtils;
-import org.mycore.mcr.acl.accesskey.model.MCRAccessKey;
+import org.mycore.mcr.acl.accesskey.dto.MCRAccessKeyDto;
+import org.mycore.mcr.acl.accesskey.service.MCRAccessKeyServiceFactory;
 import org.mycore.user2.MCRUser;
 import org.mycore.user2.MCRUserManager;
 
@@ -48,6 +49,7 @@ public class MIRStrategyTest extends MCRJPATestCase {
 
     Path localTestDirectory;
 
+    @Override
     @Before
     public void setUp() throws Exception {
         super.setUp();
@@ -87,18 +89,19 @@ public class MIRStrategyTest extends MCRJPATestCase {
         }
     }
 
+    @Override
     @After
     public void tearDown() throws Exception {
         final Collection<String> allControlledIDs = MCRAccessManager.requireRulesInterface().getAllControlledIDs();
         allControlledIDs.stream()
             .peek(id -> LogManager.getLogger().debug("Removing {} rules...", id))
             .forEach(MCRAccessManager.requireRulesInterface()::removeAllRules);
-        MCRJPARuleStore.getInstance().retrieveAllIDs()
+        MCRRuleStore.obtainInstance().retrieveAllIDs()
             .stream()
             .peek(rule -> LogManager.getLogger().debug("Remove rule {}", rule))
-            .forEach(MCRJPARuleStore.getInstance()::deleteRule);
-        assertEquals(0, MCRJPAAccessStore.getInstance().getDistinctStringIDs().size());
-        assertEquals(0, MCRJPARuleStore.getInstance().retrieveAllIDs().size());
+            .forEach(MCRRuleStore.obtainInstance()::deleteRule);
+        assertEquals(0, MCRAccessStore.obtainInstance().getDistinctStringIDs().size());
+        assertEquals(0, MCRRuleStore.obtainInstance().retrieveAllIDs().size());
         ACLResetter.resetIDTable();
         super.tearDown();
     }
@@ -136,7 +139,7 @@ public class MIRStrategyTest extends MCRJPATestCase {
     @Test
     public void checkSuperUserPermission() {
         final MCRObjectID mir_mods_00004711 = MCRObjectID.getInstance("mir_mods_00004711");
-        MCRSessionMgr.getCurrentSession().setUserInformation(MCRSystemUserInformation.getSuperUserInstance());
+        MCRSessionMgr.getCurrentSession().setUserInformation(MCRSystemUserInformation.SUPER_USER);
         assertTrue(strategy.checkPermission(mir_mods_00004711.toString(), MCRAccessManager.PERMISSION_READ));
         assertTrue(strategy.checkPermission(mir_mods_00004711.toString(), MCRAccessManager.PERMISSION_WRITE));
         assertTrue(strategy.checkPermission(mir_mods_00004711.toString(), MCRAccessManager.PERMISSION_DELETE));
@@ -158,7 +161,7 @@ public class MIRStrategyTest extends MCRJPATestCase {
         MCRSessionMgr.getCurrentSession().setUserInformation(junitUser);
         final MCRObjectID mir_mods_00004711 = MCRObjectID.getInstance("mir_mods_00004711");
         final MCRObjectID mir_derivate_00004711 = MCRObjectID.getInstance("mir_derivate_00004711");
-        MCRLinkTableManager.instance().addReferenceLink(mir_mods_00004711, mir_derivate_00004711,
+        MCRLinkTableManager.getInstance().addReferenceLink(mir_mods_00004711, mir_derivate_00004711,
             MCRLinkTableManager.ENTRY_TYPE_DERIVATE, "");
         assertTrue(strategy.checkPermission(mir_mods_00004711.toString(), MCRAccessManager.PERMISSION_READ));
         assertFalse(strategy.checkPermission(mir_mods_00004711.toString(), MCRAccessManager.PERMISSION_WRITE));
@@ -166,21 +169,29 @@ public class MIRStrategyTest extends MCRJPATestCase {
         Assert
             .assertFalse(strategy.checkPermission(mir_derivate_00004711.toString(), MCRAccessManager.PERMISSION_WRITE));
 
-        final MCRAccessKey accessKeyRead = new MCRAccessKey("mySecret", MCRAccessManager.PERMISSION_READ);
-        MCRAccessKeyManager.createAccessKey(mir_mods_00004711, accessKeyRead);
-        final MCRAccessKey accessKeyWrite = new MCRAccessKey("letMeIn", MCRAccessManager.PERMISSION_WRITE);
-        MCRAccessKeyManager.createAccessKey(mir_mods_00004711, accessKeyWrite);
+        final MCRAccessKeyDto accessKeyRead = new MCRAccessKeyDto();
+        accessKeyRead.setSecret("mySecret");
+        accessKeyRead.setPermission(MCRAccessManager.PERMISSION_READ);
+        accessKeyRead.setReference(mir_mods_00004711.toString());
+        MCRAccessKeyServiceFactory.getAccessKeyService().addAccessKey(accessKeyRead);
 
-        final MCRCategLinkService categLinkService = MCRCategLinkServiceFactory.getInstance();
+        final MCRAccessKeyDto accessKeyWrite = new MCRAccessKeyDto();
+        accessKeyWrite.setSecret("letMeIn");
+        accessKeyWrite.setPermission(MCRAccessManager.PERMISSION_WRITE);
+        accessKeyWrite.setReference(mir_mods_00004711.toString());
+        MCRAccessKeyServiceFactory.getAccessKeyService().addAccessKey(accessKeyWrite);
+
+        final MCRCategLinkService categLinkService = MCRCategLinkServiceFactory.obtainInstance();
         MCRCategLinkReference ref = new MCRCategLinkReference(mir_mods_00004711);
-        categLinkService.setLinks(ref, List.of(MCRCategoryID.fromString("mir_access:accessKey")));
+        categLinkService.setLinks(ref, List.of(MCRCategoryID.ofString("mir_access:accessKey")));
 
         assertFalse(strategy.checkPermission(mir_mods_00004711.toString(), MCRAccessManager.PERMISSION_READ));
         Assert
             .assertFalse(strategy.checkPermission(mir_derivate_00004711.toString(), MCRAccessManager.PERMISSION_READ));
 
         //Give user read access-token
-        MCRAccessKeyUtils.addAccessKeySecretToCurrentUser(mir_mods_00004711, "mySecret");
+        MCRAccessKeyServiceFactory.getAccessKeyUserService()
+            .activateAccessKey(mir_mods_00004711.toString(), "mySecret");
         junitUser = MCRUserManager.getUser(junitUser.getUserName());
         MCRSessionMgr.getCurrentSession().setUserInformation(junitUser);
 
@@ -193,7 +204,8 @@ public class MIRStrategyTest extends MCRJPATestCase {
         assertTrue(strategy.checkPermission(mir_mods_00004711.toString(), MCRAccessManager.PERMISSION_PREVIEW));
 
         //Give user write access-token
-        MCRAccessKeyUtils.addAccessKeySecretToCurrentUser(mir_mods_00004711, "letMeIn");
+        MCRAccessKeyServiceFactory.getAccessKeyUserService().activateAccessKey(
+            mir_mods_00004711.toString(), "letMeIn");
         junitUser = MCRUserManager.getUser(junitUser.getUserName());
         MCRSessionMgr.getCurrentSession().setUserInformation(junitUser);
 
@@ -206,7 +218,7 @@ public class MIRStrategyTest extends MCRJPATestCase {
         assertTrue(strategy.checkPermission(mir_mods_00004711.toString(), MCRAccessManager.PERMISSION_PREVIEW));
         MCRSessionMgr.getCurrentSession().setUserInformation(junitUser);
         //Check fallback to roles
-        MCRSessionMgr.getCurrentSession().setUserInformation(MCRSystemUserInformation.getGuestInstance());
+        MCRSessionMgr.getCurrentSession().setUserInformation(MCRSystemUserInformation.GUEST);
         MCRSessionMgr.getCurrentSession().setUserInformation(junitEditorUser);
         assertTrue(strategy.checkPermission(mir_mods_00004711.toString(), MCRAccessManager.PERMISSION_WRITE));
         System.err.println("Foo");
@@ -222,7 +234,7 @@ public class MIRStrategyTest extends MCRJPATestCase {
         requireLocalTestFiles();
         //remove org.mycore.services.staticcontent.MCRStaticContentEventHandler
         MCRConfiguration2.set("MCR.EventHandler.MCRObject.025.Class", "");
-        MCRSessionMgr.getCurrentSession().setUserInformation(MCRSystemUserInformation.getSuperUserInstance());
+        MCRSessionMgr.getCurrentSession().setUserInformation(MCRSystemUserInformation.SUPER_USER);
         executeCommands(List.of(
             "load classification from file " + localTestDirectory.resolve("class").resolve("state.xml"),
             "load classification from file " + localTestDirectory.resolve("class").resolve("mcr-roles.xml"),
@@ -236,7 +248,7 @@ public class MIRStrategyTest extends MCRJPATestCase {
 
     private static class ACLResetter {
         public static void resetIDTable() throws IllegalAccessException, NoSuchFieldException {
-            final Field ruleIDTable = MCRAccessControlSystem.class.getDeclaredField("ruleIDTable");
+            final Field ruleIDTable = MCRAccessControlSystem.class.getDeclaredField("RULE_ID_TABLE");
             ruleIDTable.setAccessible(true); //package private
             ((Map) ruleIDTable.get(null)).clear();
         }

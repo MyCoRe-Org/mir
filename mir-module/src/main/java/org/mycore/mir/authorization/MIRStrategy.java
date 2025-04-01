@@ -33,10 +33,6 @@ import org.mycore.datamodel.classifications2.MCRCategLinkServiceFactory;
 import org.mycore.datamodel.classifications2.MCRCategoryID;
 import org.mycore.datamodel.metadata.MCRMetadataManager;
 import org.mycore.datamodel.metadata.MCRObjectID;
-import org.mycore.mcr.acl.accesskey.MCRAccessKeyManager;
-import org.mycore.mcr.acl.accesskey.MCRAccessKeyUtils;
-import org.mycore.mcr.acl.accesskey.model.MCRAccessKey;
-import org.mycore.mcr.acl.accesskey.strategy.MCRAccessKeyStrategyHelper;
 import org.mycore.mods.MCRMODSEmbargoUtils;
 import org.mycore.pi.MCRPIManager;
 import org.mycore.pi.MCRPIRegistrationInfo;
@@ -81,6 +77,8 @@ public class MIRStrategy implements MCRAccessCheckStrategy {
 
     private static final MCRCreatorRuleStrategy CREATOR_STRATEGY = new MCRCreatorRuleStrategy();
 
+    private static final MIRAccessKeyStrategy ACCESS_KEY_OBJECT_STRATEGY = new MIRAccessKeyStrategy();
+
     private static final long CACHE_TIME = 1000 * 60 * 60;
 
     private final List<String> accessClasses;
@@ -94,45 +92,8 @@ public class MIRStrategy implements MCRAccessCheckStrategy {
             .map(MCRConfiguration2::splitValue)
             .orElseGet(() -> Stream.of("mir_access"))
             .collect(Collectors.toList());
-        linkService = MCRCategLinkServiceFactory.getInstance();
+        linkService = MCRCategLinkServiceFactory.obtainInstance();
         accessImpl = MCRAccessManager.getAccessImpl();
-    }
-
-    private boolean hasValidAccessKey(final MCRObjectID objectId, final String permission) {
-        boolean isWritePermission = MCRAccessManager.PERMISSION_WRITE.equals(permission);
-        boolean isReadPermission = MCRAccessManager.PERMISSION_READ.equals(permission);
-        if (isWritePermission || isReadPermission) {
-            if (MCRAccessKeyUtils.isAccessKeyForSessionAllowed(permission)) {
-                final String sessionSecret = MCRAccessKeyUtils.getAccessKeySecretFromCurrentSession(objectId);
-                if (sessionSecret != null) {
-                    final MCRAccessKey accessKey = MCRAccessKeyManager.getAccessKeyWithSecret(objectId, sessionSecret);
-                    if (accessKey != null) {
-                        LOGGER.debug("Found match in access key strategy for {} on {} in session.", permission,
-                                objectId);
-                        if (MCRAccessKeyStrategyHelper.verifyAccessKey(permission, accessKey)) {
-                            return true;
-                        }
-                    }
-                    if (accessKey == null || permission.equals(MCRAccessManager.PERMISSION_READ)) {
-                        MCRAccessKeyUtils.removeAccessKeySecretFromCurrentSession(objectId);
-                    }
-                }
-            }
-            final String userSecret = MCRAccessKeyUtils.getAccessKeySecretFromCurrentUser(objectId);
-            if (userSecret != null) {
-                final MCRAccessKey accessKey = MCRAccessKeyManager.getAccessKeyWithSecret(objectId, userSecret);
-                if (accessKey != null) {
-                    LOGGER.debug("Found match in access key strategy for {} on {} for user.", permission, objectId);
-                    if (MCRAccessKeyStrategyHelper.verifyAccessKey(permission, accessKey)) {
-                        return true;
-                    }
-                }
-                if (accessKey == null || permission.equals(MCRAccessManager.PERMISSION_READ)) {
-                    MCRAccessKeyUtils.removeAccessKeySecretFromCurrentUser(objectId);
-                }
-            }
-        }
-        return false;
     }
 
     private boolean checkObjectPermission(MCRObjectID objectId, String permission) {
@@ -146,9 +107,8 @@ public class MIRStrategy implements MCRAccessCheckStrategy {
 
         String permissionId = objectId.toString();
 
-        // 2. check read or write key of current user
-        if (MCRAccessKeyUtils.isAccessKeyForObjectTypeAllowed(objectId.getTypeId())
-                && hasValidAccessKey(objectId, permission)) {
+        // 2. check read or write key
+        if (ACCESS_KEY_OBJECT_STRATEGY.checkObjectPermission(objectId, permission)) {
             return true;
         }
 
@@ -212,11 +172,9 @@ public class MIRStrategy implements MCRAccessCheckStrategy {
             }
         }
 
-        // 2. check read or write key of current user
-        if ((MCRAccessKeyUtils.isAccessKeyForObjectTypeAllowed(objectId.getTypeId())
-                && hasValidAccessKey(objectId, permission))
-                || (MCRAccessKeyUtils.isAccessKeyForObjectTypeAllowed(derivateId.getTypeId())
-                        && hasValidAccessKey(derivateId, permission))) {
+        // 2. check read or write key
+        if (ACCESS_KEY_OBJECT_STRATEGY.checkObjectPermission(objectId, permission)
+            || ACCESS_KEY_OBJECT_STRATEGY.checkObjectPermission(derivateId, permission)) {
             return true;
         }
 
@@ -267,12 +225,12 @@ public class MIRStrategy implements MCRAccessCheckStrategy {
 
     private Optional<MCRCategoryID> getAccessCategory(MCRObjectID objectId, MCRObjectID derivateId, String permission) {
         String type = Stream.of(derivateId, objectId).filter(Objects::nonNull).map(MCRObjectID::getTypeId).findFirst()
-                .get();
+            .get();
         List<MCRCategoryID> amc = getAccessMappedCategories(type, permission, accessClasses);
         return Stream.of(derivateId, objectId)
-                .filter(Objects::nonNull)
-                .flatMap(id -> getAccessCategory(amc, id).stream())
-                .findFirst();
+            .filter(Objects::nonNull)
+            .flatMap(id -> getAccessCategory(amc, id).stream())
+            .findFirst();
     }
 
     private Optional<MCRCategoryID> getAccessCategory(List<MCRCategoryID> accessMappedCategories, MCRObjectID id) {
@@ -336,7 +294,7 @@ public class MIRStrategy implements MCRAccessCheckStrategy {
         List<String> accessClasses) {
         return accessKeys.stream()
             .map(s -> s.substring((objectType + ":").length()))
-            .map(MCRCategoryID::fromString)
+            .map(MCRCategoryID::ofString)
             .filter(c -> accessClasses.contains(c.getRootID()))
             .sorted((c1, c2) -> {
                 return accessClasses.indexOf(c1.getRootID()) - accessClasses.indexOf(c2.getRootID());

@@ -1,5 +1,6 @@
 package org.mycore.mir;
 
+import java.io.Serial;
 import java.util.Arrays;
 import java.util.Optional;
 
@@ -19,6 +20,9 @@ import org.mycore.frontend.servlets.MCRServletJob;
 import jakarta.servlet.http.HttpServletResponse;
 
 public class MIRStateServlet extends MCRServlet {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     protected static final String X_NEXT_LANGUAGE = "x-next";
 
@@ -50,7 +54,7 @@ public class MIRStateServlet extends MCRServlet {
         final MCRObject object = MCRMetadataManager.retrieveMCRObject(objectID);
         final MCRCategoryID state = object.getService().getState();
 
-        final MCRCategoryDAO instance = MCRCategoryDAOFactory.getInstance();
+        final MCRCategoryDAO instance = MCRCategoryDAOFactory.obtainInstance();
         final MCRCategory category = instance.getCategory(state, -1);
         final Optional<MCRLabel> label = category.getLabel(X_NEXT_LANGUAGE);
         final boolean present = label

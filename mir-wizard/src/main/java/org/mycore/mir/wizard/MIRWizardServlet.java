@@ -23,6 +23,7 @@
 package org.mycore.mir.wizard;
 
 import java.io.IOException;
+import java.io.Serial;
 import java.util.StringTokenizer;
 
 import org.apache.logging.log4j.LogManager;
@@ -46,6 +47,7 @@ import jakarta.servlet.http.HttpServletResponse;
  */
 public class MIRWizardServlet extends MCRServlet {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     private static final Logger LOGGER = LogManager.getLogger();
@@ -68,7 +70,7 @@ public class MIRWizardServlet extends MCRServlet {
             } else {
                 LOGGER.info("Request file \"" + request + "\"...");
                 getLayoutService().doLayout(job.getRequest(), job.getResponse(),
-                    new MCRJDOMContent(MCRURIResolver.instance().resolve("resource:setup/" + request)));
+                    new MCRJDOMContent(MCRURIResolver.obtainInstance().resolve("resource:setup/" + request)));
             }
         } else {
             final Element resXML = getResult(job);

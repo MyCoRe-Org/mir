@@ -1,5 +1,6 @@
 package org.mycore.mir;
 
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -21,6 +22,7 @@ import jakarta.servlet.http.HttpServletRequest;
 
 public class MIRClassificationServlet extends MCRServlet {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     private static final String LAYOUT_ELEMENT_KEY = MIRClassificationServlet.class.getName() + ".layoutElement";
@@ -48,7 +50,7 @@ public class MIRClassificationServlet extends MCRServlet {
     }
 
     private Collection<Element> getRoleElements() {
-        MCRCategoryDAO categoryDao = MCRCategoryDAOFactory.getInstance();
+        MCRCategoryDAO categoryDao = MCRCategoryDAOFactory.obtainInstance();
         List<MCRCategory> allClassi = categoryDao.getRootCategories();
         ArrayList<Element> list = new ArrayList<Element>(allClassi.size());
         for (MCRCategory category : allClassi) {
@@ -73,11 +75,11 @@ public class MIRClassificationServlet extends MCRServlet {
         String categID = getProperty(request, "categID");
         if (MCRAccessManager.checkPermission(categID, MCRAccessManager.PERMISSION_READ)) {
             if (categID != null) {
-                categoryID = MCRCategoryID.fromString(categID);
+                categoryID = MCRCategoryID.ofString(categID);
             } else {
                 String rootID = getProperty(request, "classID");
-                categoryID = (rootID == null) ? MCRCategoryID.rootID(MCRUser2Constants.getRoleRootId())
-                    : MCRCategoryID.rootID(rootID);
+                categoryID = (rootID == null) ? new MCRCategoryID(MCRUser2Constants.getRoleRootId())
+                    : new MCRCategoryID(rootID);
             }
             Element rootElement = getRootElement(request);
             rootElement.setAttribute("classID", categoryID.getRootID());

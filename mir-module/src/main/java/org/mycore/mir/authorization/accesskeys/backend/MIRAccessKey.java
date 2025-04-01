@@ -53,8 +53,6 @@ import jakarta.persistence.Table;
 @Deprecated
 public class MIRAccessKey {
 
-    private static final long serialVersionUID = 1L;
-
     /** The unique and internal information id */
     private int id;
 
