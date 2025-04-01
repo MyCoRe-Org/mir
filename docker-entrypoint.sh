@@ -126,7 +126,7 @@ function setDockerValues() {
     fi
 
     if [ -n "${SOLR_ADMIN_USER}" ]; then
-          setOrAddProperty "MCR.Solr.Server.Auth.Admin.Class" "org.mycore.solr.auth.MCRSolrBasicPropertyAuthentication"
+          setOrAddProperty "MCR.Solr.Server.Auth.Admin.Class" "org.mycore.solr.auth.MCRSolrPropertyBasicAuthenticator"
           setOrAddProperty "MCR.Solr.Server.Auth.Admin.Username" "${SOLR_ADMIN_USER}"
           setOrAddProperty "MCR.Solr.Server.Auth.Admin.Password" "${SOLR_ADMIN_PASSWORD}"
     else
@@ -137,7 +137,7 @@ function setDockerValues() {
 
 
     if [ -n "${SOLR_INDEX_USER}" ]; then
-          setOrAddProperty "MCR.Solr.Server.Auth.Index.Class" "org.mycore.solr.auth.MCRSolrBasicPropertyAuthentication"
+          setOrAddProperty "MCR.Solr.Server.Auth.Index.Class" "org.mycore.solr.auth.MCRSolrPropertyBasicAuthenticator"
           setOrAddProperty "MCR.Solr.Server.Auth.Index.Username" "${SOLR_INDEX_USER}"
           setOrAddProperty "MCR.Solr.Server.Auth.Index.Password" "${SOLR_INDEX_PASSWORD}"
     else
@@ -147,7 +147,7 @@ function setDockerValues() {
     fi
 
     if [ -n "${SOLR_SEARCH_USER}" ]; then
-          setOrAddProperty "MCR.Solr.Server.Auth.Search.Class" "org.mycore.solr.auth.MCRSolrBasicPropertyAuthentication"
+          setOrAddProperty "MCR.Solr.Server.Auth.Search.Class" "org.mycore.solr.auth.MCRSolrPropertyBasicAuthenticator"
           setOrAddProperty "MCR.Solr.Server.Auth.Search.Username" "${SOLR_SEARCH_USER}"
           setOrAddProperty "MCR.Solr.Server.Auth.Search.Password" "${SOLR_SEARCH_PASSWORD}"
     else

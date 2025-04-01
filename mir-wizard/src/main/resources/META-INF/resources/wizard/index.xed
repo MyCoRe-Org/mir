@@ -59,7 +59,7 @@
                 </xed:bind>
 
                 <mir:template id="adminUserEnabled" name="checkboxList" xpath="property[@name='MCR.Solr.Server.Auth.Admin.Class']">
-                  <option i18n="component.mir.wizard.solr.adminUserEnabled" value="org.mycore.solr.auth.MCRSolrBasicPropertyAuthentication" />
+                  <option i18n="component.mir.wizard.solr.adminUserEnabled" value="org.mycore.solr.auth.MCRSolrPropertyBasicAuthenticator" />
                 </mir:template>
                 <mir:template id="solrAdminUsername" name="textInput" xpath="property[@name='MCR.Solr.Server.Auth.Admin.Username']"
                   i18n="component.mir.wizard.solr.admin.username" />
@@ -67,7 +67,7 @@
                   i18n="component.mir.wizard.solr.admin.password" />
 
                 <mir:template id="indexUserEnabled" name="checkboxList" xpath="property[@name='MCR.Solr.Server.Auth.Index.Class']">
-                  <option i18n="component.mir.wizard.solr.indexUserEnabled" value="org.mycore.solr.auth.MCRSolrBasicPropertyAuthentication" />
+                  <option i18n="component.mir.wizard.solr.indexUserEnabled" value="org.mycore.solr.auth.MCRSolrPropertyBasicAuthenticator" />
                 </mir:template>
                 <mir:template id="solrIndexUsername" name="textInput" xpath="property[@name='MCR.Solr.Server.Auth.Index.Username']"
                   i18n="component.mir.wizard.solr.index.username" />
@@ -75,7 +75,7 @@
                   i18n="component.mir.wizard.solr.index.password" />
 
                 <mir:template id="searchUserEnabled" name="checkboxList" xpath="property[@name='MCR.Solr.Server.Auth.Search.Class']">
-                  <option i18n="component.mir.wizard.solr.searchUserEnabled" value="org.mycore.solr.auth.MCRSolrBasicPropertyAuthentication" />
+                  <option i18n="component.mir.wizard.solr.searchUserEnabled" value="org.mycore.solr.auth.MCRSolrPropertyBasicAuthenticator" />
                 </mir:template>
                 <mir:template id="solrSearchUsername" name="textInput" xpath="property[@name='MCR.Solr.Server.Auth.Search.Username']"
                   i18n="component.mir.wizard.solr.search.username" />
