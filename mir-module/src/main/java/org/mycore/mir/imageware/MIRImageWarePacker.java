@@ -24,6 +24,7 @@ import org.apache.logging.log4j.Logger;
 import org.jdom2.Element;
 import org.mycore.access.MCRAccessException;
 import org.mycore.access.MCRAccessManager;
+import org.mycore.access.MCRMissingPermissionException;
 import org.mycore.common.MCRException;
 import org.mycore.common.MCRUsageException;
 import org.mycore.common.config.MCRConfigurationException;
@@ -200,10 +201,10 @@ public class MIRImageWarePacker extends MCRPacker {
     private static void checkACL(MCRObjectID objectID, String packer) throws MCRAccessException {
         String permission = "packer-" + packer;
         if (!MCRAccessManager.checkPermission(objectID, permission)) {
-            throw MCRAccessException.missingPermission("Packing ImageWare packet", objectID.toString(), permission);
+            throw new MCRMissingPermissionException("Packing ImageWare packet", objectID.toString(), permission);
         }
         if (!MCRAccessManager.checkPermission(objectID, MCRAccessManager.PERMISSION_WRITE)) {
-            throw MCRAccessException.missingPermission("Add packer flag to " + objectID.toString(), objectID.toString(),
+            throw new MCRMissingPermissionException("Add packer flag to " + objectID.toString(), objectID.toString(),
                 MCRAccessManager.PERMISSION_WRITE);
         }
     }
