@@ -20,6 +20,7 @@
   <xsl:param name="UserAgent" />
   <xsl:param name="MIR.testEnvironment" />
   <xsl:param name="MCR.ORCID.OAuth.ClientSecret" select="''" />
+  <xsl:param name="MIR.Solr.Secondary.Search.RequestHandler.List" select="'find'" />
   <xsl:param name="RequestURL" />
 
   <xsl:variable name="maxScore" select="//result[@name='response'][1]/@maxScore" />
@@ -61,8 +62,24 @@
     <div class="row result_searchline">
       <div class="col-12 col-sm-8 text-center result_search">
 
-        <!-- check which SOLR RequestHandler is used, if /find, then shows the form with the secondary search -->
-        <xsl:if test="contains($RequestURL, '/servlets/solr/find?')">
+        <!-- check which SOLR RequestHandler is used, if the value is from the list of the -->
+        <!-- $MIR.Solr.Secondary.Search.RequestHandler.List, then it shows the form with secondary search -->
+        <xsl:variable name="isSolrSearchRequest">
+          <xsl:for-each select="str:tokenize($MIR.Solr.Secondary.Search.RequestHandler.List, ',')">
+            <xsl:variable name="handlerPattern" select="concat('/servlets/solr/', .)"/>
+            <xsl:if test="contains($RequestURL, $handlerPattern)">
+              <xsl:variable name="afterHandler" select="substring-after($RequestURL, $handlerPattern)"/>
+              <xsl:if test="
+                $afterHandler = '' or
+                starts-with($afterHandler, '?') or
+                starts-with($afterHandler, '&amp;')">
+                <xsl:text>true</xsl:text>
+              </xsl:if>
+            </xsl:if>
+          </xsl:for-each>
+        </xsl:variable>
+
+        <xsl:if test="normalize-space($isSolrSearchRequest) = 'true'">
 
           <div class="search_box">
 
