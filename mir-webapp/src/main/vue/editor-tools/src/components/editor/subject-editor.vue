@@ -57,9 +57,8 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Bearbeiten</h5>
-                    <button aria-label="Close" class="close" data-dismiss="modal" type="button">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                  <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button">
+                  </button>
                 </div>
                 <div class="modal-body" style="overflow: scroll">
                     <div v-if="model.editingObject != null">
