@@ -93,7 +93,7 @@
           <div class="modal-content">
 
             <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+              <button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true">
                 <xsl:text disable-output-escaping="yes">&amp;times;</xsl:text>
               </button>
               <h4 class="modal-title" id="confirmTitle">
@@ -108,7 +108,7 @@
             </div>
 
             <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                 <xsl:value-of select="i18n:translate('component.mir.wizard.cancel')" />
               </button>
               <a href="{$ServletsBaseURL}MIRWizardServlet/shutdown" class="btn btn-danger danger">
