@@ -2,10 +2,13 @@
  * - basic settings for the webpage
  * TODO: what does it mean: basic settings?
  */
+//
 
-// Extra large devices (large desktops) and below
-// no (xl) media query necessary (desktop first)
-// set the defaults for all responsive levels here
+// set the defaults for all responsive levels here (desktop first)
+// after that, use the media queryies to adujust the lower responsive levels
+
+// XX-Large devices (larger desktops)
+// No media query since the xxl breakpoint has no upper bound on its width
 
   body {
     // TODO do we still need those background settings?
@@ -60,6 +63,19 @@
   #logo_modul {
     letter-spacing: 0.4em;
     padding-left: 12px
+  }
+
+  // all the elements that should have no underline by default
+  .hit_title,
+  .hit_author,
+  .hit_source,
+  .single_hit_option,
+  .names,
+  .internal_links,
+  .social_links {
+    a {
+      text-decoration: none;
+    }
   }
   .internal_links {
     list-style: none;
@@ -201,7 +217,7 @@
     color: $link-color;
     text-decoration: $link-decoration;
     cursor: pointer;
-    @include hover {
+    &:hover {
       color: $link-hover-color;
       text-decoration: $link-hover-decoration;
     }
@@ -216,7 +232,8 @@
    a:not([href]).dropdown-item {
     color: $dropdown-link-color;
     cursor: pointer;
-    @include hover-focus() {
+    &:hover,
+    &:focus {
       color: $dropdown-link-hover-color;
     }
     &.active,
@@ -233,23 +250,51 @@
     color: inherit;
   }
 
-// Large devices (desktops) and below
+  // bs 5 droped jumbotron
+  // we keep it alive
+  $jumbotron-padding: 2rem !default;
+  $jumbotron-color: null !default;
+  $jumbotron-bg: $gray-200 !default;
+
+  .jumbotron {
+    padding: $jumbotron-padding ($jumbotron-padding / 2);
+    margin-bottom: $jumbotron-padding;
+    color: $jumbotron-color;
+    background-color: $jumbotron-bg;
+    @include border-radius($border-radius-lg);
+
+    @include media-breakpoint-up(sm) {
+      padding: ($jumbotron-padding * 2) $jumbotron-padding;
+    }
+  }
+  .jumbotron-fluid {
+    padding-right: 0;
+    padding-left: 0;
+    @include border-radius(0);
+  }
+
+
+// X-Large devices (large desktops, less than 1400px)
+@include media-breakpoint-down(xxl) {
+  // add/overwrite styles for responsive level xl and lower
+}
+
+// Large devices (desktops, less than 1200px)
+@include media-breakpoint-down(xl) {
+  // lg and lower
+}
+
+// Medium devices (tablets, less than 992px)
 @include media-breakpoint-down(lg) {
-    // add/overwrite styles for responsive level lg and lower
+  // md and lower
 }
 
-// Medium devices (tablets) and below
+// Small devices (landscape phones, less than 768px)
 @include media-breakpoint-down(md) {
-    // add/overwrite styles for responsive level md and lower
+  // sm and lower
 }
 
-// Small devices (landscape phones) and below
+// X-Small devices (portrait phones, less than 576px)
 @include media-breakpoint-down(sm) {
-    // add/overwrite styles for responsive level sm and lower
-}
-
-// Extra small devices (portrait phones)
-@include media-breakpoint-down(xs) {
-    // add/overwrite styles for responsive level xs
-
+  // xs
 }

@@ -294,7 +294,7 @@
         test="((./structure/children/child) and not($mods-type='series' or $mods-type='journal' or $mods-type='confpro' or $mods-type='book')) or (./structure/derobjects/derobject)"
       >
         <div id="derivate_box" class="accordion-group">
-          <h4 id="derivate_switch" data-target="#derivate_content" data-toggle="collapse" class="accordion-heading">
+          <h4 id="derivate_switch" data-target="#derivate_content" data-bs-toggle="collapse" class="accordion-heading">
             <a name="derivate_box"></a>
             <xsl:value-of select="i18n:translate('component.mods.metaData.dictionary.derivatebox')" />
           </h4>
@@ -340,7 +340,7 @@
       <!--*** Created ************************************* -->
       <div id="system_box" class="accordion-group">
         <div class="accordion-heading">
-          <h4 data-target="#system_content" data-toggle="collapse" class="accordion-toggle">
+          <h4 data-target="#system_content" data-bs-toggle="collapse" class="accordion-toggle">
             <xsl:value-of select="i18n:translate('component.mods.metaData.dictionary.systembox')" />
           </h4>
         </div>
@@ -433,7 +433,7 @@
         </xsl:otherwise>
       </xsl:choose>
       <div class="btn-group w-100">
-        <a href="#" class="btn btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-display="static" >
+        <a href="#" class="btn btn-secondary btn-sm dropdown-toggle" data-bs-toggle="dropdown" data-display="static" >
           <i class="fas fa-cog">
             <xsl:value-of select="' '" />
           </i>
@@ -441,7 +441,7 @@
           <span class="caret"></span>
         </a>
 
-        <ul class="dropdown-menu dropdown-menu-right">
+        <ul class="dropdown-menu dropdown-menu-end">
           <xsl:variable name="type" select="substring-before(substring-after($id,'_'),'_')" />
           <xsl:choose>
             <xsl:when test="not($accessedit) and mcrxsl:isCurrentUserGuestUser()">
@@ -687,7 +687,7 @@
             </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary modal-pi-cancel" data-dismiss="modal">
+            <button type="button" class="btn btn-secondary modal-pi-cancel" data-bs-dismiss="modal">
               <xsl:value-of select="i18n:translate('component.pi.register.modal.abort')" />
             </button>
             <button type="button" class="btn btn-danger" id="modal-pi-add"
@@ -707,13 +707,13 @@
       <xsl:variable select="concat('mcrobject:',$deriv)" name="derivlink" />
       <xsl:variable select="document($derivlink)" name="derivate" />
 
-      <div class="dropdown float-right options">
+      <div class="dropdown float-end options">
         <div class="btn-group">
-          <a href="#" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">
+          <a href="#" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown">
             <i class="fas fa-cog"></i>
             <xsl:value-of select="concat(' ',i18n:translate('mir.actions'))" />
           </a>
-          <ul class="dropdown-menu dropdown-menu-right">
+          <ul class="dropdown-menu dropdown-menu-end">
             <xsl:if test="key('rights', $deriv)/@write">
             <li>
               <a href="{$WebApplicationBaseURL}editor/editor-derivate.xed?derivateid={$deriv}&amp;cancelUrl={encoder:encode($RequestURL)}" class="option dropdown-item">
@@ -844,13 +844,13 @@
       <div class="hit_tnd_container">
         <div class="hit_tnd_content">
           <div class="hit_type">
-            <span class="badge badge-info">
+            <span class="badge bg-info">
               <xsl:value-of select="mcrxsl:getDisplayName('mir_genres',$mods-type)" />
             </span>
           </div>
           <xsl:if test="mods:originInfo[not(@eventType) or @eventType='publication']/mods:dateIssued or mods:relatedItem/mods:originInfo[not(@eventType) or @eventType='publication']/mods:dateIssued">
             <div class="hit_date">
-              <span class="badge badge-primary">
+              <span class="badge bg-primary">
                 <xsl:variable name="dateIssued">
                   <xsl:choose>
                     <xsl:when test="mods:originInfo[not(@eventType) or @eventType='publication']/mods:dateIssued"><xsl:apply-templates mode="mods.datePublished" select="mods:originInfo[not(@eventType) or @eventType='publication']/mods:dateIssued" /></xsl:when>

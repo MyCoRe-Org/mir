@@ -16,7 +16,7 @@
   <xsl:template match="/">
     <xsl:variable xmlns:encoder="xalan://java.net.URLEncoder" name="loginURL"
       select="concat( $ServletsBaseURL, 'MCRLoginServlet?url=', encoder:encode( string( $RequestURL ) ) )" />
-    
+
     <xsl:choose>
       <xsl:when test="key('rights', mycoreobject/@ID)/@read or key('rights', mycoreobject/structure/derobjects/derobject/@xlink:href)/@accKeyEnabled">
         <xsl:variable name="objID" select="mycoreobject/@ID" />
@@ -64,7 +64,7 @@
                     <div class="col-12">
                       <div class="headline">
                         <div class="title">
-                          <a class="btn btn-primary btn-sm file_toggle dropdown-toggle" data-toggle="collapse" href="#collapse{@xlink:href}" aria-expanded="false" aria-controls="collapse{@xlink:href}">
+                          <a class="btn btn-primary btn-sm file_toggle dropdown-toggle" data-bs-toggle="collapse" href="#collapse{@xlink:href}" aria-expanded="false" aria-controls="collapse{@xlink:href}">
                             <span>
                               <xsl:choose>
                                 <xsl:when test="$derivateXML//titles/title[@xml:lang=$CurrentLang]">

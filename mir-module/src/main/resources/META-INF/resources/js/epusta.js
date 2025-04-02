@@ -42,7 +42,7 @@ EPuStaInline.prototype= {
   ,render() {
     switch(this.state) {
       case "error":
-        this.$element.html("<i class='fas fa-exclamation-triangle' data-toggle='tooltip' title='"+this.errortext+"'></i>");
+        this.$element.html("<i class='fas fa-exclamation-triangle' data-bs-toggle='tooltip' title='"+this.errortext+"'></i>");
         break;
       case "waiting":
         this.$element.html("<i class='fas fa-spinner fa-pulse'></i>");
@@ -124,7 +124,7 @@ EPuStaGraph.prototype= {
     switch(this.state) {
       case "error":
         var html='<div style="with:100%;text-align:center;">';
-        html+="<i class='fas fa-exclamation-triangle' data-toggle='tooltip' title='"+this.errortext+"'/>";
+        html+="<i class='fas fa-exclamation-triangle' data-bs-toggle='tooltip' title='"+this.errortext+"'/>";
         html+=this.errortext;
         html+="</div>";
         this.$element.html(html);

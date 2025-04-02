@@ -7,7 +7,7 @@
 
             <div class="col-7">
                 <select :id="id+'titleType'" v-model="titleInfo.titleType"
-                        class="form-control form-control-sm">
+                        class="form-control form-control-sm form-select">
                     <option :value="undefined">Keine Angabe</option>
                     <option value="uniform">Einheitssachtitel</option>
                     <option value="abbreviated">Kurztitel</option>

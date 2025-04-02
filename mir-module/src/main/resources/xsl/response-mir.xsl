@@ -62,9 +62,14 @@
         <div class="search_box">
           <xsl:variable name="searchlink" select="concat($proxyBaseURL,$solrParams)" />
           <form action="{$searchlink}" class="search_form" method="post">
-            <div class="input-group input-group-sm">
-              <div class="input-group-btn input-group-prepend">
-                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" value="all" id="search_type_button">
+            <div class="input-group">
+
+                <button
+                  type="button"
+                  class="btn btn-primary dropdown-toggle"
+                  data-bs-toggle="dropdown"
+                  value="all"
+                  id="search_type_button">
                   <span id="search_type_label">
                     <xsl:value-of select="i18n:translate('mir.dropdown.all')" />
                   </span>
@@ -107,7 +112,7 @@
                     </a>
                   </li>
                 </ul>
-              </div>
+
               <xsl:variable name="resolver">
                 <xsl:call-template name="substring-after-last">
                   <xsl:with-param name="string" select="$proxyBaseURL" />
@@ -138,12 +143,12 @@
                   <input class="form-control" name="condQuery" placeholder="{i18n:translate('mir.placeholder.response.search')}" type="text" />
                 </xsl:otherwise>
               </xsl:choose>
-              <span class="input-group-btn input-group-append">
-                <button class="btn btn-primary" type="submit">
-                  <span class="fas fa-search"></span>
-                   <xsl:value-of select="i18n:translate('editor.search.search')"/>
-                </button>
-              </span>
+
+              <button class="btn btn-primary" type="submit">
+                <span class="fas fa-search"></span>
+                 <xsl:value-of select="i18n:translate('editor.search.search')"/>
+              </button>
+
             </div>
           </form>
         </div>
@@ -365,14 +370,14 @@
 <!-- hit options -->
           <xsl:choose>
             <xsl:when test="acl:checkPermission($identifier,'writedb')">
-              <div class="hit_options float-right">
+              <div class="hit_options float-end">
                 <div class="btn-group">
-                  <a data-toggle="dropdown" class="btn btn-secondary dropdown-toggle" href="#">
+                  <a data-bs-toggle="dropdown" class="btn btn-secondary dropdown-toggle" href="#">
                     <i class="fas fa-cog"></i>
                     <xsl:value-of select="concat(' ',i18n:translate('mir.actions'))" />
                     <span class="caret"></span>
                   </a>
-                  <ul class="dropdown-menu dropdown-menu-right">
+                  <ul class="dropdown-menu dropdown-menu-end">
                     <li>
                       <xsl:call-template name="basketLink">
                         <xsl:with-param name="identifier" select="$identifier" />
@@ -413,7 +418,7 @@
               </div>
             </xsl:when>
             <xsl:otherwise>
-              <div class="single_hit_option float-right">
+              <div class="single_hit_option float-end">
                 <xsl:call-template name="basketLink">
                   <xsl:with-param name="identifier" select="$identifier" />
                   <xsl:with-param name="dropdown" select="'false'" />
@@ -541,14 +546,14 @@
 <!-- hit type -->
           <div class="hit_tnd_container">
             <div class="hit_tnd_content">
-              <div class="hit_oa" data-toggle="tooltip">
+              <div class="hit_oa" data-bs-toggle="tooltip">
                 <xsl:variable name="isOpenAccess" select="bool[@name='worldReadableComplete']='true'" />
                 <xsl:choose>
                   <xsl:when test="$isOpenAccess">
                     <xsl:attribute name="title">
                       <xsl:value-of select="i18n:translate('mir.response.openAccess.true')" />
                     </xsl:attribute>
-                    <span class="badge badge-success">
+                    <span class="badge bg-success">
                       <i class="fas fa-unlock-alt" aria-hidden="true"></i>
                     </span>
                   </xsl:when>
@@ -556,7 +561,7 @@
                     <xsl:attribute name="title">
                       <xsl:value-of select="i18n:translate('mir.response.openAccess.false')" />
                     </xsl:attribute>
-                    <span class="badge badge-warning">
+                    <span class="badge bg-warning">
                       <i class="fas fa-lock" aria-hidden="true"></i>
                     </span>
                   </xsl:otherwise>
@@ -566,7 +571,7 @@
                 <xsl:when test="arr[@name='mods.genre']">
                   <xsl:for-each select="arr[@name='mods.genre']/str">
                     <div class="hit_type">
-                      <span class="badge badge-info">
+                      <span class="badge bg-info">
                         <xsl:value-of select="mcrxsl:getDisplayName('mir_genres',.)" ></xsl:value-of>
                       </span>
                     </div>
@@ -574,7 +579,7 @@
                 </xsl:when>
                 <xsl:otherwise>
                   <div class="hit_type">
-                    <span class="badge badge-info">
+                    <span class="badge bg-info">
                       <xsl:value-of select="mcrxsl:getDisplayName('mir_genres','article')" />
                     </span>
                   </div>
@@ -582,7 +587,7 @@
               </xsl:choose>
               <xsl:if test="arr[@name='category.top']/str[contains(text(), 'mir_licenses:')]">
                 <div class="hit_license">
-                  <span class="badge badge-primary">
+                  <span class="badge bg-primary">
                     <xsl:variable name="accessCondition">
                       <xsl:value-of select="substring-after(arr[@name='category.top']/str[contains(text(), 'mir_licenses:')][last()],':')" />
                     </xsl:variable>
@@ -612,7 +617,7 @@
                       </xsl:otherwise>
                     </xsl:choose>
                   </xsl:variable>
-                  <span class="badge badge-primary">
+                  <span class="badge bg-primary">
                     <xsl:value-of select="$date" />
                   </span>
                 </div>
@@ -915,12 +920,12 @@
           </div>
         </xsl:if>
         <div class="dropdown">
-          <button class="btn btn-secondary dropdown-toggle col-12" type="button" data-toggle="dropdown">
+          <button class="btn btn-secondary dropdown-toggle col-12" type="button" data-bs-toggle="dropdown">
             <!--Filter-->
             <xsl:value-of select="i18n:translate('mir.response.button.filter')" />
             <span class="caret" />
           </button>
-          <ul class="dropdown-menu dropdown-menu-right" role="menu" style="max-height: 500px; overflow-y: scroll;">
+          <ul class="dropdown-menu dropdown-menu-end" role="menu" style="max-height: 500px; overflow-y: scroll;">
             <xsl:apply-templates select="$classiDocument/select/option" mode="calculate_option_notselected">
               <xsl:with-param name="classId" select="$classId" />
             </xsl:apply-templates>
@@ -1017,15 +1022,15 @@
           </div>
         </xsl:if>
         <div class="dropdown">
-          <button class="btn btn-secondary dropdown-toggle col-12" type="button" data-toggle="dropdown">
+          <button class="btn btn-secondary dropdown-toggle col-12" type="button" data-bs-toggle="dropdown">
             <!--Filter-->
             <xsl:value-of select="i18n:translate('mir.response.button.filter')" />
             <span class="caret" />
           </button>
-          <div class="dropdown-menu dropdown-menu-right stopAutoclose col-md-12 mir-date-arrowTop" role="menu">
+          <div class="dropdown-menu dropdown-menu-end stopAutoclose col-md-12 mir-date-arrowTop" role="menu">
             <div class="container-fluid">
-              <div class="col-md-12 form-group">
-                <select class="form-control">
+              <div class="col-md-12 mir-form-group">
+                <select class="form-control form-select">
                   <option value="=">=</option>
                   <option value="&gt;">&gt;</option>
                   <option value="&gt;=">&gt;=</option>
@@ -1033,7 +1038,7 @@
                   <option value="&lt;=">&lt;=</option>
                 </select>
               </div>
-              <div class="col-md-12 form-group dateContainer">
+              <div class="col-md-12 mir-form-group dateContainer">
                 <div class="col-md-4">
                   <input class="form-control" placeholder="DD" type="number" min="1" max="31" style="padding: 0.4em" />
                 </div>
@@ -1044,7 +1049,7 @@
                   <input class="form-control" placeholder="YYYY" type="number" min="1000" max="2050" style="padding: 0.1em" />
                 </div>
               </div>
-              <div class="col-md-12 form-group">
+              <div class="col-md-12 mir-form-group">
                 <input id="dateSearch" type="button" class="btn btn-secondary form-control" value="Go!" />
               </div>
             </div>

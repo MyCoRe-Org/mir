@@ -96,37 +96,34 @@ $hover_darken: 20%;
           color: $filter_headline;
           margin-bottom: 0px;
           &:hover {
-            color: darken($filter_headline, $hover_darken);
+            color: shade-color($filter_headline, $hover_darken);
           }
         }
       }
       .filter {
         li {
           cursor: pointer;
-          &:hover * {
-            background-color: transparent;
-          }
           &:hover {
-            .custom-checkbox {
+            .form-check {
               label {
                 .title {
-                  color: darken($filter, $hover_darken);
+                  color: shade-color($filter, $hover_darken);
                 }
                 .hits {
-                  color: darken($filter_hits, $hover_darken);
+                  color: shade-color($filter_hits, $hover_darken);
                 }
               }
             }
           }
-          .custom-checkbox {
-            margin-top: 0px;
-            margin-bottom: 0px;
+          .form-check {
             label {
               cursor: pointer;
-              vertical-align: middle;
               .hits {
                 color: $filter_hits;
               }
+            }
+            input {
+              cursor: pointer;
             }
           }
         }

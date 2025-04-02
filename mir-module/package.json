@@ -14,7 +14,7 @@
     "engineStrict": true,
     "devDependencies": {
         "@fortawesome/fontawesome-free": "6.4.0",
-        "bootstrap": "4.4.1",
+        "bootstrap": "5.3.3",
         "bootstrap-3-typeahead": "4.0.2",
         "bootstrap-datepicker": "1.9.0",
         "grunt": "^1.5.3",
@@ -27,7 +27,7 @@
         "moment": "2.29.4",
         "myclabs.jquery.confirm": "2.7.0",
         "openlayers": "4.6.4",
-        "popper.js": "^1.14.7",
+        "popper.js": "^2.0.0-next.1",
         "select2": "^4.0.13",
         "typeahead.js": "0.11.1",
         "video.js": "7.14.3"

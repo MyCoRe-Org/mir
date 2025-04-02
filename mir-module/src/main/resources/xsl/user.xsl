@@ -76,7 +76,7 @@
     <xsl:variable name="isUserAdmin" select="acl:checkPermission(const:getUserAdminPermission())" />
     <xsl:variable name="fullDetails" select="$isUserAdmin or not($MIR.User.ShowSimpleDetailsOnly='true')" />
     <div class="user-details">
-      <div id="buttons" class="btn-group float-right">
+      <div id="buttons" class="btn-group float-end">
         <xsl:apply-templates select="." mode="actions" />
       </div>
       <div class="clearfix" />
@@ -100,7 +100,7 @@
               </strong>
             </xsl:if>
           </p>
-          <form class="float-left" method="post" action="MCRUserServlet">
+          <form class="float-start" method="post" action="MCRUserServlet">
             <input name="action" value="delete" type="hidden" />
             <input name="id" value="{$uid}" type="hidden" />
             <input name="XSL.step" value="deleted" type="hidden" />

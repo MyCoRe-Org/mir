@@ -56,12 +56,12 @@
       </xsl:when>
       <xsl:otherwise>
         <li class="nav-item dropdown">
-          <xsl:if test="$loaded_navigation_xml/menu[@id='user']//item[@href = $browserAddress ]">
-            <xsl:attribute name="class">
-              <xsl:value-of select="'nav-item dropdown active'" />
-            </xsl:attribute>
-          </xsl:if>
-          <a id="currentUser" class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">
+          <a id="currentUser" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#">
+            <xsl:if test="$loaded_navigation_xml/menu[@id='user']//item[@href = $browserAddress ]">
+              <xsl:attribute name="class">
+                <xsl:value-of select="'nav-link dropdown-toggle active'" />
+              </xsl:attribute>
+            </xsl:if>
             <strong>
               <xsl:choose>
                 <xsl:when test="$MIR.Layout.usermenu.realname.enabled != 'true'">
@@ -107,7 +107,7 @@
 <!--         <label xml:lang="en">German</label> -->
 <!--       </language> -->
       <li class="nav-item dropdown mir-lang">
-        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" title="{i18n:translate('mir.language.change')}">
+        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" title="{i18n:translate('mir.language.change')}">
           <xsl:value-of select="$curLang/language/@xmlCode" />
           <span class="caret" />
         </a>
@@ -254,7 +254,7 @@
     </xsl:variable>
 
     <li class="dropdown" id="basket-list-item">
-      <a class="dropdown-toggle nav-link" data-toggle="dropdown" href="#" title="{$basketTitle}">
+      <a class="dropdown-toggle nav-link" data-bs-toggle="dropdown" href="#" title="{$basketTitle}">
         <i class="fas fa-bookmark"></i>
         <sup>
           <xsl:value-of select="$entryCount" />
@@ -316,8 +316,7 @@
               </xsl:choose>
               alert alert-dismissible fade show
             </xsl:attribute>
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">×</span></button>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             <span aria-hidden="true"><xsl:value-of select="i18n:translate($XSL.Status.Message)" /></span>
           </div>
         </div>
