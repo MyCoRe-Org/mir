@@ -119,7 +119,7 @@
                     <button
                       type="button"
                       class="close modalFrame-cancel"
-                      data-dismiss="modal"
+                      data-bs-dismiss="modal"
                       aria-label="Close">
                       <i class="fas fa-times" aria-hidden="true"></i>
                     </button>

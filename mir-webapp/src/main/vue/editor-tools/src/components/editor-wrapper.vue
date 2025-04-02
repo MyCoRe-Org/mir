@@ -17,9 +17,8 @@
                     <div class="modal-dialog modal-xl" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title">{{ i18n["mir.editor.subject.search.modal.title"] }}</h5>
-                                <button aria-label="Close" class="close" data-dismiss="modal" type="button" @click.prevent>
-                                    <span aria-hidden="true">&times;</span>
+                                <h5>{{ i18n["mir.editor.subject.search.modal.title"] }}</h5>
+                                <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button" @click.prevent>
                                 </button>
                             </div>
                             <div class="modal-body">
@@ -41,7 +40,7 @@
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button class="btn btn-secondary" data-dismiss="modal" type="button" @click.prevent>
+                                <button class="btn btn-secondary" data-bs-dismiss="modal" type="button" @click.prevent>
                                     {{ i18n["mir.editor.subject.search.modal.close"]}}
                                 </button>
                             </div>
@@ -54,11 +53,9 @@
                     <div class="modal-dialog modal-xl" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title">{{ i18n["mir.editor.subject.custom.modal.title"] }}</h5>
-                                <button aria-label="Close" class="close" data-dismiss="modal" type="button"
-                                        @click.prevent>
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
+                                <h5>{{ i18n["mir.editor.subject.custom.modal.title"] }}</h5>
+                              <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button" @click.prevent>
+                              </button>
                             </div>
 
                             <div class="modal-body">
@@ -105,7 +102,7 @@
                             </div>
 
                             <div class="modal-footer">
-                                <button class="btn btn-secondary" data-dismiss="modal" type="button"
+                                <button class="btn btn-secondary" data-bs-dismiss="modal" type="button"
                                         @click.prevent>{{ i18n["mir.editor.subject.custom.modal.close"]}}
                                 </button>
                                 <button :disabled="!model.custom.valid" class="btn btn-primary custom-add" type="button"

@@ -280,13 +280,13 @@
       <div class="modal-dialog modal-lg modal-xl" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h4 class="modal-title" id="modalFrame-title">
+            <h4  id="modalFrame-title">
               <xsl:value-of select="i18n:translate('mir.citationLink')" />
             </h4>
             <button
               type="button"
               class="close modalFrame-cancel"
-              data-dismiss="modal"
+              data-bs-dismiss="modal"
               aria-label="Close">
               <i class="fas fa-times" aria-hidden="true"></i>
             </button>
