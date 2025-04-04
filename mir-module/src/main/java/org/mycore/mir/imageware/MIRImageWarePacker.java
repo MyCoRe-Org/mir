@@ -15,7 +15,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
@@ -225,7 +224,7 @@ public class MIRImageWarePacker extends MCRPacker {
             .orElseThrow(() -> new MCRException("Could not detect ppn of mycore object " + mcrObject.getId()));
 
         LOGGER.info("Start packing of : " + objectID);
-        List<MCRObjectID> derivateIds = MCRMetadataManager.getDerivateIds(objectID, 10, TimeUnit.SECONDS);
+        List<MCRObjectID> derivateIds = MCRMetadataManager.getDerivateIds(objectID);
         final String zipFileName = ppn + ".zip";
         openZip(zipFileSystem -> {
             try {

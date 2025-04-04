@@ -6,7 +6,6 @@ package org.mycore.mir.authorization;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -156,7 +155,7 @@ public class MIRStrategy implements MCRAccessCheckStrategy {
         LOGGER.debug("checkDerivatePermission({}, {})", derivateId, permission);
         String permissionId = derivateId.toString();
 
-        MCRObjectID objectId = MCRMetadataManager.getObjectId(derivateId, 10, TimeUnit.MINUTES);
+        MCRObjectID objectId = MCRMetadataManager.getObjectId(derivateId);
         if (objectId == null) {
             // Fallback to MCRObjectBaseStrategy
             LOGGER.debug("Derivate {} is an orphan. Cannot apply rules for MCRObject.", derivateId);
