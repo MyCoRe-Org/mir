@@ -3,7 +3,8 @@
                 xmlns:mcri18n="http://www.mycore.de/xslt/i18n"
                 xmlns:mcrproperty="http://www.mycore.de/xslt/property"
                 xmlns:mcracl="http://www.mycore.de/xslt/acl"
-                exclude-result-prefixes="mcracl mcri18n mcrproperty"
+                xmlns:mods="http://www.loc.gov/mods/v3"
+                exclude-result-prefixes="mcracl mcri18n mcrproperty mods"
                 version="3.0">
 
   <xsl:include href="resource:xslt/functions/i18n.xsl" />
@@ -50,6 +51,22 @@
       </div>
       <div class="row middle detail_row">
         <div class="{$MIR.Layout.Start.Col} main_col west">
+
+          <!-- Badges -->
+          <!-- First collect JUST the badge content -->
+          <xsl:variable name="badges">
+            <xsl:apply-templates select="div[contains(@class, 'badge-item')]" mode="badge-output"/>
+          </xsl:variable>
+
+          <!-- Only add wrapper if we have actual badges -->
+          <xsl:if test="$badges/div[contains(@class, 'badge-item')]">
+            <div id="mir-abstract-badges-div">
+              <div id="badges">
+                <xsl:copy-of select="$badges"/>
+              </div>
+            </div>
+          </xsl:if>
+
           <xsl:call-template name="displayDirection">
             <xsl:with-param name="properties" select="$MIR.Layout.Start"/>
           </xsl:call-template>
@@ -68,14 +85,20 @@
         </div>
       </div>
 
-      <script src="{$WebApplicationBaseURL}mir-layout/assets/jquery/plugins/shariff/shariff.min.js"></script>
-      <script src="{$WebApplicationBaseURL}assets/moment/min/moment.min.js"></script>
-      <script src="{$WebApplicationBaseURL}assets/handlebars/handlebars.min.js"></script>
-      <script src="{$WebApplicationBaseURL}js/mir/derivate-fileList.min.js"></script>
+      <script src="{$WebApplicationBaseURL}mir-layout/assets/jquery/plugins/shariff/shariff.min.js"/>
+      <script src="{$WebApplicationBaseURL}assets/moment/min/moment.min.js"/>
+      <script src="{$WebApplicationBaseURL}assets/handlebars/handlebars.min.js"/>
+      <script src="{$WebApplicationBaseURL}js/mir/derivate-fileList.min.js"/>
       <link rel="stylesheet" href="{$WebApplicationBaseURL}rsc/stat/{@ID}.css"/>
     </xsl:copy>
   </xsl:template>
 
+  <!-- Simplified badge template -->
+  <xsl:template match="div[contains(@class, 'badge-item')]" mode="badge-output">
+    <xsl:copy>
+      <xsl:copy-of select="@*|node()"/>
+    </xsl:copy>
+  </xsl:template>
 
   <xsl:template name="displayDirection">
     <xsl:param name="properties"/>
@@ -157,7 +180,7 @@
                   test="$originalContent/div[@id=$boxID]/table[@class='mir-metadata']//*[contains(@class,'openstreetmap-container')]">
                 <link rel="stylesheet" type="text/css" href="{$WebApplicationBaseURL}assets/openlayers/ol.css"/>
                 <script type="text/javascript" src="{$WebApplicationBaseURL}assets/openlayers/ol.js"/>
-                <script type="text/javascript" src="{$WebApplicationBaseURL}js/mir/geo-coords.min.js"></script>
+                <script type="text/javascript" src="{$WebApplicationBaseURL}js/mir/geo-coords.min.js"/>
               </xsl:if>
             </div>
           </xsl:when>
@@ -189,7 +212,7 @@
             </div>
           </xsl:when>
           <xsl:when test="contains($MIR.Layout.Display.Div, $boxID)">
-            <div id="{concat($boxID, '-div')}">
+            <div id="{concat($boxID, '-div')}" class="test222">
               <xsl:copy-of select="$originalContent/div[@id=$boxID]/*"/>
             </div>
           </xsl:when>

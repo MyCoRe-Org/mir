@@ -73,16 +73,22 @@ li.topic-element {
 }
 
 #badges {
+
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem; /* creates consistent spacing between badge items (class="badge-item") */
+
   a.mods_genre {
-    margin-right: 3px;
+    // margin-right: 3px;
   }
   time {
     .date_published {
-      margin-right: 3px;
+      // margin-right: 3px;
     }
   }
   a.access_condition {
-    margin-right: 3px;
+    // margin-right: 3px;
   }
   .doc_state {
     display: inline;
