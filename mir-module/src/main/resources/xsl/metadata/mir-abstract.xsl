@@ -12,7 +12,6 @@
 
   <xsl:import  href="xslImport:modsmeta:metadata/mir-abstract.xsl" />
   <xsl:include href="resource:xsl/mir-utils.xsl" />
-  <xsl:include href="resource:xsl/mir-abstract-badges.xsl"/>
   <xsl:param name="MIR.Layout.Abstract.Type.Classification"/>
   <xsl:variable name="objectID" select="/mycoreobject/@ID" />
   <xsl:variable name="modsPart" select="concat('mods.part.', $objectID)" />
@@ -21,9 +20,6 @@
   <xsl:template match="/">
 
     <xsl:variable name="mods" select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods" />
-
-    <!-- badges -->
-    <xsl:call-template name="mir-abstract-badges"/>
 
     <!-- headline -->
     <div id="mir-abstract-title">
