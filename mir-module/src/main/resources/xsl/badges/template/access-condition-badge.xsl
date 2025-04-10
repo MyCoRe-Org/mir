@@ -5,13 +5,26 @@
                 xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions"
                 xmlns:mods="http://www.loc.gov/mods/v3"
                 xmlns:xlink="http://www.w3.org/1999/xlink"
-                exclude-result-prefixes="i18n xsl mcrxsl mods xlink">
+                xmlns:mcrxml="xalan://org.mycore.common.xml.MCRXMLFunctions"
+                exclude-result-prefixes="i18n xsl mcrxsl mods xlink mcrxsl">
 
   <!-- Access condition badge -->
   <xsl:template name="access-condition-badge">
     <xsl:variable name="mods" select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods" />
 
     <xsl:variable name="accessCondition" select="substring-after(normalize-space($mods/mods:accessCondition[@type='use and reproduction']/@xlink:href),'#')" />
+
+    <!-- if user is in role editor or admin, show all; other users only gets their own and published publications -->
+    <xsl:variable name="owner">
+      <xsl:choose>
+        <xsl:when test="mcrxml:isCurrentUserInRole('admin') or mcrxml:isCurrentUserInRole('editor')">
+          <xsl:text>*</xsl:text>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="$CurrentUser"/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
 
     <xsl:if test="$accessCondition">
       <div class="badge-item">

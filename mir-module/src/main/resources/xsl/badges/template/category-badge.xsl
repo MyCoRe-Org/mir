@@ -26,6 +26,7 @@
         <xsl:call-template name="categorySearchLink">
           <xsl:with-param name="class" select="'mods_genre badge badge-info'" />
           <xsl:with-param name="node" select="." />
+          <!-- We are no need this parameter, because $owner not  used in the categorySearchLink template -->
           <xsl:with-param name="owner"  select="$owner" />
         </xsl:call-template>
       </div>
