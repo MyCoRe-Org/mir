@@ -268,7 +268,7 @@
                   </xed:bind>
                 </xsl:when>
                 <xsl:otherwise>
-                  <textarea class="form-control ckeditor">
+                  <textarea class="form-control tinymce">
                     <xsl:copy-of select="@rows" />
                     <xsl:copy-of select="@placeholder" />
                   </textarea>
@@ -292,7 +292,7 @@
               <xed:output i18n="{@label}" />
             </label>
             <div class="col-md-6">
-              <textarea class="form-control ckeditor">
+              <textarea class="form-control tinymce">
                 <xsl:copy-of select="@rows" />
                 <xsl:copy-of select="@placeholder" />
               </textarea>
