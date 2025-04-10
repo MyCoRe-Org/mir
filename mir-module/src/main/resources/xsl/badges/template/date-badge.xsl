@@ -97,29 +97,22 @@
           </xsl:attribute>
         </xsl:variable>
 
-        <xsl:choose>
-          <xsl:when test="$firstDate and $firstDate != ''">
-            <xsl:call-template name="create-badge">
-              <xsl:with-param name="label" select="$dateText" />
-              <xsl:with-param name="color" select="'primary'" />
-              <xsl:with-param name="class" select="'date_published'" />
-              <xsl:with-param name="URL"
-                              select="concat($ServletsBaseURL, 'solr/find?condQuery=*&amp;fq=mods.dateIssued:',
-                $firstDate, '&amp;owner=createdby:', $owner)" />
-              <xsl:with-param name="dataAttributes" select="$dataAttributes" />
-              <xsl:with-param name="tooltip" select="i18n:translate('metaData.publicationDate')" />
-            </xsl:call-template>
-          </xsl:when>
-          <xsl:otherwise>
-            <xsl:call-template name="create-badge">
-              <xsl:with-param name="label" select="$dateText" />
-              <xsl:with-param name="color" select="'primary'" />
-              <xsl:with-param name="class" select="'date_published'" />
-              <xsl:with-param name="dataAttributes" select="$dataAttributes" />
-              <xsl:with-param name="tooltip" select="i18n:translate('metaData.publicationDate')" />
-            </xsl:call-template>
-          </xsl:otherwise>
-        </xsl:choose>
+        <xsl:variable name="url">
+          <xsl:if test="$firstDate and $firstDate != ''">
+            <xsl:value-of select="concat($ServletsBaseURL, 'solr/find?condQuery=*&amp;fq=mods.dateIssued:',
+                            $firstDate, '&amp;owner=createdby:', $owner)"/>
+          </xsl:if>
+        </xsl:variable>
+
+        <xsl:call-template name="create-badge">
+          <xsl:with-param name="label" select="$dateText"/>
+          <xsl:with-param name="color" select="'primary'"/>
+          <xsl:with-param name="class" select="'date_published'"/>
+          <xsl:with-param name="dataAttributes" select="$dataAttributes"/>
+          <xsl:with-param name="tooltip" select="i18n:translate('mir.publication.date')"/>
+          <xsl:with-param name="URL" select="$url"/>
+        </xsl:call-template>
+
       </xsl:if>
     </xsl:for-each>
   </xsl:template>

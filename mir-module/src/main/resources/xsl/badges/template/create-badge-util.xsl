@@ -4,55 +4,74 @@
                 xmlns:exslt="http://exslt.org/common"
                 exclude-result-prefixes="xsl exslt">
 
+  <!-- Shared content for badges -->
+  <xsl:template name="badge-content">
+    <xsl:param name="tooltip" select="''"/>
+    <xsl:param name="tooltip-data-placement" select="'top'"/>
+    <xsl:param name="title" select="''"/>
+    <xsl:param name="dataAttributes"/>
+    <xsl:param name="label" select="''"/>
+
+    <!-- Handle tooltip if specified -->
+    <xsl:if test="$tooltip != ''">
+      <xsl:attribute name="data-toggle">tooltip</xsl:attribute>
+      <xsl:attribute name="data-placement">
+        <xsl:value-of select="$tooltip-data-placement"/>
+      </xsl:attribute>
+      <xsl:attribute name="title">
+        <xsl:value-of select="$tooltip"/>
+      </xsl:attribute>
+    </xsl:if>
+    <!-- Regular title attribute (non-tooltip) -->
+    <xsl:if test="$title != '' and $tooltip = ''">
+      <xsl:attribute name="title">
+        <xsl:value-of select="$title"/>
+      </xsl:attribute>
+    </xsl:if>
+    <!-- Handle data attributes -->
+    <xsl:if test="$dataAttributes">
+      <xsl:for-each select="exslt:node-set($dataAttributes)/@*">
+        <xsl:attribute name="{name()}">
+          <xsl:value-of select="."/>
+        </xsl:attribute>
+      </xsl:for-each>
+    </xsl:if>
+    <xsl:value-of select="$label"/>
+  </xsl:template>
+
   <!-- Central badge creation template -->
   <xsl:template name="create-badge">
-    <xsl:param name="label" />
-    <xsl:param name="color" select="'primary'" />
-    <xsl:param name="URL" select="''" />
-    <xsl:param name="class" select="''" />
-    <xsl:param name="title" select="''" />
-    <xsl:param name="dataAttributes" />
-    <xsl:param name="tooltip" select="''" />
-    <xsl:param name="tooltip-data-placement" select="'top'" />
+    <xsl:param name="label" select="''"/>
+    <xsl:param name="color" select="'primary'"/>
+    <xsl:param name="URL" select="''"/>
+    <xsl:param name="class" select="''"/>
+    <xsl:param name="title" select="''"/>
+    <xsl:param name="dataAttributes"/>
+    <xsl:param name="tooltip" select="''"/>
+    <xsl:param name="tooltip-data-placement" select="'top'"/>
 
     <div class="badge-item">
-      <xsl:variable name="badge-content">
-        <!-- Handle tooltip if specified -->
-        <xsl:if test="$tooltip != ''">
-          <xsl:attribute name="data-toggle">tooltip</xsl:attribute>
-          <xsl:attribute name="data-placement">
-            <xsl:value-of select="$tooltip-data-placement"/>
-          </xsl:attribute>
-          <xsl:attribute name="title">
-            <xsl:value-of select="$tooltip"/>
-          </xsl:attribute>
-        </xsl:if>
-        <!-- Regular title attribute (non-tooltip) -->
-        <xsl:if test="$title != '' and $tooltip = ''">
-          <xsl:attribute name="title">
-            <xsl:value-of select="$title"/>
-          </xsl:attribute>
-        </xsl:if>
-        <!-- Handle data attributes -->
-        <xsl:if test="$dataAttributes">
-          <xsl:for-each select="exslt:node-set($dataAttributes)/@*">
-            <xsl:attribute name="{name()}">
-              <xsl:value-of select="."/>
-            </xsl:attribute>
-          </xsl:for-each>
-        </xsl:if>
-        <xsl:value-of select="$label" />
-      </xsl:variable>
-
       <xsl:choose>
         <xsl:when test="$URL != ''">
           <a href="{$URL}" class="badge badge-{$color} {$class}">
-            <xsl:copy-of select="$badge-content"/>
+            <xsl:call-template name="badge-content">
+              <xsl:with-param name="tooltip" select="$tooltip"/>
+              <xsl:with-param name="tooltip-data-placement" select="$tooltip-data-placement"/>
+              <xsl:with-param name="title" select="$title"/>
+              <xsl:with-param name="dataAttributes" select="$dataAttributes"/>
+              <xsl:with-param name="label" select="$label"/>
+            </xsl:call-template>
           </a>
         </xsl:when>
         <xsl:otherwise>
           <span class="badge badge-{$color} {$class}">
-            <xsl:copy-of select="$badge-content"/>
+            <xsl:call-template name="badge-content">
+              <xsl:with-param name="tooltip" select="$tooltip"/>
+              <xsl:with-param name="tooltip-data-placement" select="$tooltip-data-placement"/>
+              <xsl:with-param name="title" select="$title"/>
+              <xsl:with-param name="dataAttributes" select="$dataAttributes"/>
+              <xsl:with-param name="label" select="$label"/>
+            </xsl:call-template>
           </span>
         </xsl:otherwise>
       </xsl:choose>
