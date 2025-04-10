@@ -212,7 +212,7 @@
             </div>
           </xsl:when>
           <xsl:when test="contains($MIR.Layout.Display.Div, $boxID)">
-            <div id="{concat($boxID, '-div')}" class="test222">
+            <div id="{concat($boxID, '-div')}">
               <xsl:copy-of select="$originalContent/div[@id=$boxID]/*"/>
             </div>
           </xsl:when>
