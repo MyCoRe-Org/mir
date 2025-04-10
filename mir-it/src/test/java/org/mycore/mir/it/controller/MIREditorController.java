@@ -33,13 +33,22 @@ public abstract class MIREditorController extends MIRTestController {
     }
 
     protected void setHTMLAreaText(String childElementName, String text) {
-        final WebElement iframe = driver.waitAndFindElement(
-            By.xpath(".//div[contains(@id,'" + childElementName + "') and contains(@class, 'cke')]//iframe"));
-        iframe.click();
-        final WebElement body = driver.switchTo().frame(iframe).findElement(By.tagName("body"));
+        // get text area and corresponding iframe
+        WebElement textArea = driver.waitAndFindElement(
+            By.xpath(".//textarea[contains(@name, '" + childElementName + "') and contains(@class, 'tinymce')]")
+        );
+        String iframeId = textArea.getAttribute("id") + "_ifr";
+        WebElement iframe = driver.waitAndFindElement(By.id(iframeId));
+
+        // Switch to the iframe, click on the body, and send the text
+        driver.switchTo().frame(iframe);
+        WebElement body = driver.findElement(By.tagName("body"));
         body.click();
+        body.clear();
         body.sendKeys(text);
-        driver.switchTo().parentFrame();
+
+        // Switch back
+        driver.switchTo().defaultContent();
     }
 
     protected void clickRepeater(String field) {
