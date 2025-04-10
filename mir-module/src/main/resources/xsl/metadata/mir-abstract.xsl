@@ -12,6 +12,7 @@
 
   <xsl:import  href="xslImport:modsmeta:metadata/mir-abstract.xsl" />
   <xsl:include href="resource:xsl/mir-utils.xsl" />
+  <xsl:include href="resource:xsl/response-mir-hit-register-only.xsl"/>
   <xsl:param name="MIR.Layout.Abstract.Type.Classification"/>
   <xsl:variable name="objectID" select="/mycoreobject/@ID" />
   <xsl:variable name="modsPart" select="concat('mods.part.', $objectID)" />
@@ -136,6 +137,9 @@
             <xsl:with-param name="query" select="concat('*&amp;fq=link:*',$accessCondition, '&amp;owner=createdby:', $owner)" />
           </xsl:call-template>
         </xsl:if>
+
+        <xsl:call-template name="hit-register-only" />
+
         <xsl:variable name="doc-state" select="/mycoreobject/service/servstates/servstate/@categid" />
         <xsl:if test="$doc-state">
           <div class="doc_state">
