@@ -285,11 +285,9 @@
             </h4>
             <button
               type="button"
-              class="close modalFrame-cancel"
+              class="btn-close modalFrame-cancel"
               data-bs-dismiss="modal"
-              aria-label="Close">
-              <i class="fas fa-times" aria-hidden="true"></i>
-            </button>
+              aria-label="Close" />
           </div>
           <div class="modal-body">
             <xsl:apply-templates select="mods:identifier[@type='urn' or @type='doi']" mode="identifierList" />
