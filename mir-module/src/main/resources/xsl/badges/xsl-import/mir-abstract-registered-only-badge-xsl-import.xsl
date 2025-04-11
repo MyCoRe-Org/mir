@@ -3,15 +3,15 @@
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 exclude-result-prefixes="xsl">
 
-  <xsl:import href="xslImport:mirAbstractBadges:badges/xsl-import/mir-abstract-register-only-badge-xsl-import.xsl" />
+  <xsl:import href="xslImport:mirAbstractBadges:badges/xsl-import/mir-abstract-registered-only-badge-xsl-import.xsl" />
 
-  <xsl:include href="resource:xsl/badges/template/register-only-badge.xsl"/>
+  <xsl:include href="resource:xsl/badges/template/registered-only-badge.xsl"/>
 
   <xsl:template match="/">
 
     <xsl:apply-imports/>
 
-    <!-- Register only badge -->
+    <!-- Registered only badge -->
     <xsl:call-template name="register-only-badge"/>
 
   </xsl:template>
