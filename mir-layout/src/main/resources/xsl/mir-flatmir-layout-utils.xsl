@@ -107,7 +107,7 @@
                 <i class="fas fa-search"></i>
               </button>
             </form>
-
+            </div>
           </div>
 
         </nav>
