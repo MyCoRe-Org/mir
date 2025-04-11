@@ -103,7 +103,7 @@
                     <h4 class="modal-title" id="modalFrame-title">
                       <xsl:value-of select="mcri18n:translate('metadata.versionInfo.label')"/>
                     </h4>
-                    <button type="button" class="close modalFrame-cancel" data-dismiss="modal" aria-label="Close">
+                    <button type="button" class="close modalFrame-cancel" data-bs-dismiss="modal" aria-label="Close">
                       <i class="fas fa-times" aria-hidden="true"/>
                     </button>
                   </div>
@@ -111,7 +111,7 @@
                     <xsl:apply-templates select="$originalContent/div[@id=$boxID]/*" mode="history-modal"/>
                   </div>
                   <div class="modal-footer">
-                    <button id="modalFrame-cancel" type="button" class="btn btn-danger" data-dismiss="modal">
+                    <button id="modalFrame-cancel" type="button" class="btn btn-danger" data-bs-dismiss="modal">
                       <xsl:value-of select="mcri18n:translate('button.cancel')"/>
                     </button>
                   </div>

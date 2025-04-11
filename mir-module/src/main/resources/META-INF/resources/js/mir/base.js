@@ -38,34 +38,34 @@
             });
         }
 
-        $(".personPopover").each(function (i, popoverElement){
+        document.querySelectorAll(".personPopover, .boxPopover").forEach(function (popoverElement) {
             let id = popoverElement.getAttribute("id");
             let contentID = id + "-content";
-            let content$ = $("#"+ contentID);
-            content$.detach();
-            content$.removeClass("d-none");
-            popoverElement.setAttribute("title", popoverElement.getAttribute("title") + '<div class="popoverclose btn btn-xs"><i class="fa fa-times"></i></div>');
-            $(popoverElement).popover({
-                content: content$,
+            let contentElement = document.getElementById(contentID);
+            if (!contentElement) return;
+            contentElement.classList.remove("d-none");
+            contentElement.remove();
+            let closeButton = document.createElement("div");
+            closeButton.classList.add("popoverclose", "position-absolute", "top-0", "end-0", "p-2");
+            closeButton.innerHTML = '<button class="btn-close btn-close-white"></button>';
+            contentElement.prepend(closeButton);
+            new bootstrap.Popover(popoverElement, {
+                content: contentElement,
                 html: true
-            })
+            });
         });
 
-        $(".boxPopover").each(function (i, popoverElement){
-            let id = popoverElement.getAttribute("id");
-            let contentID = id + "-content";
-            let content$ = $("#"+ contentID);
-            content$.detach();
-            content$.removeClass("d-none");
-            popoverElement.setAttribute("title", popoverElement.getAttribute("title") + '<div class="popoverclose btn btn-xs"><i class="fa fa-times"></i></div>');
-            $(popoverElement).popover({
-                content: content$,
-                html: true
-            })
-        });
-
-        $("body").on("click", ".popoverclose", function(e){
-            $(this).parents(".popover").popover("hide");
+        $("body").on("click", ".popoverclose", function(e) {
+            let popoverElement = $(this).closest(".popover")[0];
+            if (popoverElement) {
+                let triggerElement = document.querySelector(`[aria-describedby="${popoverElement.id}"]`);
+                if (triggerElement) {
+                    let popoverInstance = bootstrap.Popover.getInstance(triggerElement);
+                    if (popoverInstance) {
+                        popoverInstance.hide();
+                    }
+                }
+            }
         });
 
         $('.dropdown-submenu a.submenu').on("click", function(e){
@@ -785,10 +785,15 @@
     return true;
   };
 
-  $(document).tooltip({
-    selector : "[data-toggle=tooltip]",
-    container : "body"
-  });
+  // initiate bs tooltips
+  // https://getbootstrap.com/docs/5.3/components/tooltips/#enable-tooltips
+  const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+  const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
+
+  // iniate bs popovers
+  // https://getbootstrap.com/docs/5.3/components/popovers/
+  const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]');
+  const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl, {html:true}));
 
   /* =================
   /   go back to top

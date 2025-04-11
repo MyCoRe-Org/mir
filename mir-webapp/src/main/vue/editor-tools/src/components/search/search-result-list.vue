@@ -5,7 +5,7 @@
 
             <div class="row">
                 <div class="col-12 mb-1">
-                    <button v-if="addCustomEnabled" class="btn btn-sm btn-primary search-add-custom float-right" type="button"
+                    <button v-if="addCustomEnabled" class="btn btn-sm btn-primary search-add-custom float-end" type="button"
                             @click.prevent="addCustom"> {{ i18n["mir.editor.subject.search.result.addCustom"] }}
                     </button>
                 </div>
@@ -86,7 +86,7 @@
 
 
                         <div class="col-xl-2 col-sm-12">
-                            <button class="btn btn-primary btn-sm float-right mb-1" @click.prevent="emit('resultSelected', result)">
+                            <button class="btn btn-primary btn-sm float-end mb-1" @click.prevent="emit('resultSelected', result)">
                                 {{ i18n["mir.editor.subject.search.result.add"] }}
                             </button>
                         </div>

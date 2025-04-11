@@ -3,7 +3,7 @@
   <!ENTITY html-output SYSTEM "xsl/xsl-output-html.fragment">
 ]>
 <xsl:stylesheet version="1.0"
-  xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:encoder="xalan://java.net.URLEncoder"
   xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
   xmlns:xalan="http://xml.apache.org/xalan"
@@ -215,8 +215,8 @@
                 <xsl:value-of select="i18n:translate('browse.person.searchplaceholder')" />
               </xsl:variable>
 
-              <div class="form-group">
-                <label class="sr-only" for="index_search">Gesuchte Zeichen</label>
+              <div class="mir-form-group">
+                <label class="sr-only form-label" for="index_search">Gesuchte Zeichen</label>
                 <input value="{$search_value}"
                        name="terms.regex"
                        class="search_text_gray focus_form_field form-control"

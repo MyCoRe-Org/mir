@@ -8,8 +8,8 @@
     }
   }
 
-  background-color: darken($info, 10%)!important;
-  color: darken($info, 10%) !important;
+  background-color: shade-color($info, 10%)!important;
+  color: shade-color($info, 10%) !important;
 }
 
 [data-upload-target].well {

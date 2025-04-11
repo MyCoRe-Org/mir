@@ -1,22 +1,20 @@
 <template>
-  <div ref="root" class="form-group" v-on-click-outside="closeDrops">
+  <div ref="root" class="mir-form-group" v-on-click-outside="closeDrops">
     <template v-if="model.i18nLoaded && model.classesLoaded">
       <div ref="input" class="input-group">
         <input :id="`personLabel-${nameLocatorString}`" ref="searchBox" v-model="model.search"
                :placeholder="model.personPlaceholder"
                class="form-control" type="text"
                v-on:keydown.enter.prevent="startSearch()">
-        <div class="input-group-append">
-          <button ref="identifierOpenButton" class="btn btn-secondary"
-                  v-on:click.prevent="currentIdentifierClicked()">
-            <i class="fas fa-address-card"></i>
-            <span class="identifier-count">{{ model.currentIdentifier.length }}</span>
-          </button>
-          <button :id="`search-${nameLocatorString}`" class="btn btn-secondary" type="button"
-                  v-on:click.prevent="startSearch()">
-            {{ model.searchLabel }}
-          </button>
-        </div>
+        <button ref="identifierOpenButton" class="btn btn-secondary"
+                v-on:click.prevent="currentIdentifierClicked()">
+          <i class="fas fa-address-card"></i>
+          <span class="identifier-count">{{ model.currentIdentifier.length }}</span>
+        </button>
+        <button :id="`search-${nameLocatorString}`" class="btn btn-secondary" type="button"
+                v-on:click.prevent="startSearch()">
+          {{ model.searchLabel }}
+        </button>
       </div>
 
       <!-- List of selected identifiers -->
@@ -25,9 +23,9 @@
            :style="`width: ${getGroupSize()}px;`">
         <div class="card-body">
           <template v-if="defineOwnIdentifier">
-            <div class="form-group row">
+            <div class="mir-form-group row">
               <div class="col-4">
-                <select v-model="model.currentOwnIdentifierType" class="form-control ">
+                <select v-model="model.currentOwnIdentifierType" class="form-control  form-select">
                   <option selected="selected" value="">{{ model.selectLabel }}</option>
                   <option v-for="identifierType in model.possibleIdentifierTypes" :key="identifierType.value" :value="identifierType.value">
                     {{ identifierType.label }}
