@@ -430,7 +430,7 @@
         <xsl:attribute name="title">
           <xsl:value-of select="concat('{i18n:',@tooltip,'}')" />
         </xsl:attribute>
-        <i class="fas fa-info-circle input-group" />
+        <i class="fas fa-info-circle" />
       </span>
     </xsl:if>
   </xsl:template>

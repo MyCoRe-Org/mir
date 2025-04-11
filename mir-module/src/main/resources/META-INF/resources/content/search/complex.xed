@@ -144,7 +144,7 @@
                       <xed:bind xpath="condition[@field='worldReadableComplete'][@value='true'][@operator='='][@selectable='true'][@id='condOpenAccess']" />
                       <!-- selectCondition must always be after @selectable conditions for xed:cleanup-rule to work -->
                       <xed:bind xpath="selectCondition[@delete='true']/@keep">
-                        <select class="form-control input-md form-select" id="inputFulltext1">
+                        <select class="form-control form-select" id="inputFulltext1">
                           <option value="">
                             <xed:output i18n="mir.select" />
                           </option>
@@ -156,7 +156,7 @@
                           </option>
                         </select>
                         <span class="input-group-text" data-bs-toggle="tooltip" data-html="true" title="{i18n:editor.search.fulltext.tooltip}">
-                          <i class="fas fa-info-circle input-group" />
+                          <i class="fas fa-info-circle" />
                         </span>
                       </xed:bind>
                     </div>
