@@ -105,13 +105,19 @@ $(document).ready(function () {
             $("#modalFrame-title").text(button.val());
             $("#modalFrame-cancel").text($("button[name='_xed_submit_cancel']").text());
             $("#modalFrame-send").attr("disabled", "").removeAttr("style");
+            // TODO: check if you can remove HTML from js code (e.g. by a js template)
             if ($("#modalFrame-body .modal-frame-pagination").length === 0) {
+                //create pagination
                 $("#modalFrame-body").append("<div class='col-12 mt-2'><nav style='clear: both'><ul class='modal-frame-pagination pagination justify-content-center'><li id='first' class='page-item previous disabled'><a href='#' class='page-link' data='0'>First</a></li><li id='previous' class='page-item previous disabled'><a href='#' class='page-link'>Previous</a></li><li class='page-item next disabled'><a href='#' class='page-link'>Next</a></li></ul></nav></div>");
             }
             $("#modalFrame-body").append("<div id='main_left_content' class='list-group col-md-4' />");
             $("#modalFrame-body").append("<div id='main_right_content' class='list-group col-md-8' />");
+            // TODO: remove styles from js code (by moving it to our css files)
             $("#main_left_content, #main_right_content").css({"max-height": "560px", "overflow": "auto"});
             $("#main_right_content").css("padding-left", "10px");
+            if($(".type-select").length == 0) {
+              $(".already-linked").after("<div class='col-md-4 type-select'><select class='form-control form-select'><option value=''>Ohne Eingrenzung nach Typ:</option></select></div>");
+            }
             $("li a").css("cursor", "pointer");
             $("#modal-searchInput").removeAttr("hidden");
             $("#modal-searchInput button span").removeAttr("style");

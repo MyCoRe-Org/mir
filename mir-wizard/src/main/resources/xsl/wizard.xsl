@@ -93,9 +93,7 @@
           <div class="modal-content">
 
             <div class="modal-header">
-              <button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true">
-                <xsl:text disable-output-escaping="yes">&amp;times;</xsl:text>
-              </button>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" />
               <h4 class="modal-title" id="confirmTitle">
                 <xsl:value-of select="i18n:translate('component.mir.wizard.shutdownServer.confirmTitle')" />
               </h4>

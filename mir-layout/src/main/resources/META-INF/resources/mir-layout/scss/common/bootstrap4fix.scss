@@ -70,7 +70,9 @@
   top: 10px;
 }
 
+  // TODO: check if we can remove it now
   // fix outdated bs3 myclabs confirm modal
+  /* temporary deactivated
   .modal-header {
     .modal-title {
       order: 1;
@@ -79,6 +81,7 @@
       order: 2;
     }
   }
+ */
 
 // X-Large devices (large desktops, less than 1400px)
 @include media-breakpoint-down(xxl) {
