@@ -58,8 +58,8 @@
     <xsl:param name="dataAttributes"/>
     <xsl:param name="tooltip" select="''"/>
     <xsl:param name="tooltip-data-placement" select="'top'"/>
-    <xsl:param name="color-label" select="''"/> <!-- New: text color -->
-    <xsl:param name="background-color" select="''"/> <!-- New: bg color -->
+    <xsl:param name="color-label" select="''"/> <!-- Custom text color -->
+    <xsl:param name="background-color" select="''"/> <!-- Custom bg color -->
 
     <div class="badge-item">
       <xsl:choose>
