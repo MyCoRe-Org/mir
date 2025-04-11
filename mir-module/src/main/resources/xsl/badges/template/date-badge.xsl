@@ -109,7 +109,7 @@
           <xsl:with-param name="color" select="'primary'"/>
           <xsl:with-param name="class" select="'date_published'"/>
           <xsl:with-param name="dataAttributes" select="$dataAttributes"/>
-          <xsl:with-param name="tooltip" select="i18n:translate('mir.publication.date')"/>
+          <xsl:with-param name="tooltip" select="i18n:translate('mir.badge.date.tooltip')"/>
           <xsl:with-param name="URL" select="$url"/>
         </xsl:call-template>
 
