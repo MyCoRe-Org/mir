@@ -25,54 +25,49 @@ export class ViafSearchProvider implements SearchProvider {
     name = "Viaf";
 
     async searchPerson(searchTerm: string) {
-        const url = "https://viaf.org/viaf/AutoSuggest?";
-        const params = new URLSearchParams();
-        params.append("query", searchTerm);
-        params.toString()
-        const response = await fetch(url + params.toString(), {
-            method: "GET",
-            headers: {
-                "Accept": "application/json"
-            }
-        });
-        const data = await response.json()
-        return this.processData(data);
-    }
-
-
-    async processData(data: any): Promise<NameSearchResult[]> {
-        const result: NameSearchResult[] = [];
         const otherData = await i18n("mir.namePart.other");
+        return new Promise<NameSearchResult[]>((resolve, reject) => {
+            // The VIAF API does not set CORS Header, so we need to use the ancient script & callback method
+            const scriptElement = document.createElement('script');
+            const callbackID = `viaf_${Math.random().toString(16).toString().substr(2)}`;
+
+            (window as any)[callbackID] = (data: any) => {
+                const result: NameSearchResult[] = [];
+
+                for (const suggestIndex in data.result) {
+                    const suggest = data.result[suggestIndex];
+                    if (suggest.nametype == "personal") {
+                        const displayFormUnparsed = suggest.displayForm as string;
 
 
-        for (const suggestIndex in data.result) {
-            const suggest = data.result[suggestIndex];
-            if (suggest.nametype == "personal") {
-                const displayFormUnparsed = suggest.displayForm as string;
+                        const person: NameSearchResult = {
+                            id: uuid(),
+                            displayForm: this.parseDisplayForm(displayFormUnparsed),
+                            identifier: [] as Identifier[],
+                            metadata: [] as GenericMetadata[],
+                            person: true
+                        }
 
+                        if (displayFormUnparsed.length > person.displayForm.length) {
+                            const rest = displayFormUnparsed.substr(displayFormUnparsed.indexOf(",") + 1);
+                            person.metadata.push({id: uuid(), label: otherData, value: rest});
+                        }
 
-                const person: NameSearchResult = {
-                    id: uuid(),
-                    displayForm: this.parseDisplayForm(displayFormUnparsed),
-                    identifier: [] as Identifier[],
-                    metadata: [] as GenericMetadata[],
-                    person: true
+                        this.addIdentifierType(suggest, person, "viaf", "viafid");
+                        this.addIdentifierType(suggest, person, "gnd", "dnb");
+                        this.addIdentifierType(suggest, person, "selibre", "selibre");
+                        this.addIdentifierType(suggest, person, "loc", "lc");
+
+                        result.push(person);
+                    }
                 }
+                scriptElement.parentElement?.removeChild(scriptElement);
 
-                if (displayFormUnparsed.length > person.displayForm.length) {
-                    const rest = displayFormUnparsed.substr(displayFormUnparsed.indexOf(",") + 1);
-                    person.metadata.push({id: uuid(), label: otherData, value: rest});
-                }
-
-                this.addIdentifierType(suggest, person, "viaf", "viafid");
-                this.addIdentifierType(suggest, person, "gnd", "dnb");
-                this.addIdentifierType(suggest, person, "selibre", "selibre");
-                this.addIdentifierType(suggest, person, "loc", "lc");
-
-                result.push(person);
-            }
-        }
-        return result;
+                resolve(result);
+            };
+            scriptElement.src = `https://www.viaf.org/viaf/AutoSuggest?query=${encodeURIComponent(searchTerm)}&callback=${callbackID}&_=${uuid()}`;
+            document.body.append(scriptElement);
+        });
     }
 
     private addIdentifierType(suggest: any, person: NameSearchResult, idType: string, type: string) {
