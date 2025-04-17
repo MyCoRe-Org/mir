@@ -256,7 +256,7 @@ public class MirSelfRegistrationServlet extends MCRServlet {
                             root.addContent(u.clone());
                             getLayoutService().doLayout(req, res, new MCRJDOMContent(root));
 
-                            if (user.getEMailAddress() != null && !user.getEMailAddress().trim().isEmpty()) {
+                            if (user.getEMail() != null && !user.getEMail().trim().isEmpty()) {
                                 // email the user about the change of status "Disable user"
                                 try {
                                     MCRMailer.sendMail(MCRUserTransformer.buildExportableSafeXML(user),
