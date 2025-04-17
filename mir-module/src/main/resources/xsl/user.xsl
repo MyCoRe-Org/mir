@@ -356,7 +356,7 @@
           <xsl:variable name="orcidCredentialAttributes"
             select="attributes/attribute[starts-with(@name, 'orcid_credential_')]"/>
           <h3>
-            <span class="fas fa-check pr-1" aria-hidden="true"/>
+            <span class="fas fa-check pe-1" aria-hidden="true"/>
             <xsl:value-of select="document('i18n:orcid.integration.confirmed.headline')"/>
           </h3>
           <p><xsl:value-of select="document('i18n:orcid.integration.confirmed.text')"/></p>
@@ -371,11 +371,11 @@
             </xsl:when>
             <xsl:otherwise>
               <xsl:value-of select="document('i18n:orcid.integration.confirmedOrcids.text')"/>
-              <ul>
+              <ul class="list-group">
                 <xsl:for-each select="$orcidCredentialAttributes/@name">
                   <xsl:variable name="orcid" select="substring-after(., 'orcid_credential_')" />
-                  <li>
-                    <span class="mr-2"><xsl:value-of select="$orcid"/></span>
+                  <li class="list-group-item d-flex align-items-center">
+                    <xsl:value-of select="$orcid"/>
                     <xsl:call-template name="printOrcidSettingsButtonIfRequired">
                       <xsl:with-param name="orcid" select="$orcid"/>
                     </xsl:call-template>
@@ -391,7 +391,7 @@
         </xsl:when>
         <xsl:otherwise>
           <h3>
-            <span class="far fa-hand-point-right pr-1" aria-hidden="true"/>
+            <span class="far fa-hand-point-right pe-1" aria-hidden="true"/>
             <xsl:value-of select="document('i18n:orcid.integration.pending.headline')"/>
           </h3>
           <p><xsl:value-of select="document('i18n:orcid.integration.pending.intro')"/></p>

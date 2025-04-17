@@ -78,10 +78,10 @@
               <xsl:value-of select="document('i18n:mir.orcid.export.modal.error')"/>
             </div>
             <div class="form-group">
-              <label class="mr-1" for="orcidProfileSelect">
+              <label for="orcidProfileSelect">
                 <xsl:value-of select="document('i18n:mir.orcid.export.modal.description')"/>
               </label>   
-              <select class="form-control" id="orcidProfileSelect">
+              <select class="form-control mt-1" id="orcidProfileSelect">
                 <option value="" selected="selected">
                   <xsl:value-of select="document('i18n:mir.select')"/>
                 </option>
