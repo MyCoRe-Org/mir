@@ -1,6 +1,7 @@
-import { getBaseUrl, getLangService } from './common/helpers.js';
+import { getBaseUrl } from './utils/config.js';
 import { OrcidUserStatus, OrcidWorkStatus } from '@jsr/mycore__js-common/orcid';
 import { OrcidServiceFactory } from './orcid/orcid-service-factory.js';
+import { LangService } from '@jsr/mycore__js-common/i18n';
 
 const baseUrl = getBaseUrl();
 
@@ -30,7 +31,7 @@ const checkIsInOrcidProfile = (workStatus: OrcidWorkStatus): boolean => {
 };
 
 const initOrcidStatus = async (): Promise<void> => {
-  const langService = getLangService();
+  const langService = new LangService(getBaseUrl());
 
   const createOrcidPublicationStatus = async (
     isInOrcidProfile: boolean

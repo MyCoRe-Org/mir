@@ -2,7 +2,8 @@ import {
   OrcidWorkService,
   OrcidUserService,
 } from '@jsr/mycore__js-common/orcid';
-import { getBaseUrl, getAuthStrategy } from '../common/helpers';
+import { getBaseUrl } from '../utils/config';
+import { getAuthStrategy } from '../utils/auth';
 
 export class OrcidServiceFactory {
   private static workService?: OrcidWorkService;
@@ -10,16 +11,14 @@ export class OrcidServiceFactory {
 
   static async getWorkService(): Promise<OrcidWorkService> {
     if (!this.workService) {
-      const authStrategy = await getAuthStrategy();
-      this.workService = new OrcidWorkService(getBaseUrl(), () => authStrategy);
+      this.workService = new OrcidWorkService(getBaseUrl(), getAuthStrategy());
     }
     return this.workService;
   }
 
   static async getUserService(): Promise<OrcidUserService> {
     if (!this.userService) {
-      const authStrategy = await getAuthStrategy();
-      this.userService = new OrcidUserService(getBaseUrl(), () => authStrategy);
+      this.userService = new OrcidUserService(getBaseUrl(), getAuthStrategy());
     }
     return this.userService;
   }

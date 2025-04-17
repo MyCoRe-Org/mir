@@ -11,7 +11,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "@jsr/mycore__js-common": "^0.0.3"
+    "@jsr/mycore__js-common": "^0.0.4"
   },
   "devDependencies": {
     "@popperjs/core": "^2.11.8",

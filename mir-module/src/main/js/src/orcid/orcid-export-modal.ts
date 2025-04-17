@@ -3,7 +3,7 @@ import {
   OrcidUserService,
   OrcidWorkService,
 } from '@jsr/mycore__js-common/orcid';
-import { UiHandler } from '../common/ui-utils';
+import { UiHandler } from '../utils/ui';
 
 export class MIROrcidExportModal {
   private modalInstance: Modal;

@@ -2,7 +2,7 @@ import {
   OrcidUserService,
   getOrcidAuthInitUrl,
 } from '@jsr/mycore__js-common/orcid';
-import { getBaseUrl } from './common/helpers';
+import { getBaseUrl } from './utils/config';
 import { MIROrcidUserSettingsModal } from './orcid/orcid-user-settings-modal';
 import { OrcidServiceFactory } from './orcid/orcid-service-factory';
 

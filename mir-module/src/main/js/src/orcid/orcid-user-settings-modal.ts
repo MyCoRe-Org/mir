@@ -2,7 +2,7 @@ import {
   OrcidUserService,
   OrcidUserSettings,
 } from '@jsr/mycore__js-common/orcid';
-import { UiHandler } from '../common/ui-utils';
+import { UiHandler } from '../utils/ui';
 import { Modal } from 'bootstrap';
 
 export class MIROrcidUserSettingsModal {
