@@ -3,31 +3,36 @@ name: test
 on: [ push, pull_request ]
 
 env:
-  MAVEN_OPTS: -Xmx1024M -Xss128M
-  GECKODRIVER_VERSION: 0.34.0
+  MAVEN_OPTS: -Dorg.slf4j.simpleLogger.showDateTime=true -Dorg.slf4j.simpleLogger.dateTimeFormat=HH:mm:ss,SSS
   BIBUTILS_VERSION: 7.2
 
 jobs:
   build:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
 
     steps:
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
       with:
         submodules: recursive
 
     - name: Set up JDK
-      uses: actions/setup-java@v2
+      uses: actions/setup-java@v4
       with:
         java-version: 17
         distribution: temurin
         cache: maven
 
-    - name: Setup Gecko driver
-      uses: browser-actions/setup-geckodriver@latest
-      with:
-        geckodriver-version: ${{ env.GECKODRIVER_VERSION }}
+    - name: Set up Browser
+      run: |
+        # Geckodriver
+        echo ${GECKOWEBDRIVER} >> $GITHUB_PATH
+
+        # Chromedriver
+        echo ${CHROMEWEBDRIVER} >> $GITHUB_PATH
+
+        firefox --version
+        ${GECKOWEBDRIVER}/geckodriver --version
 
     - name: Fetch Bibutils cache
       id: bibutils-cache
@@ -46,45 +51,14 @@ jobs:
         ./configure
         make -j2
 
-    - name: Setup firefox
-      id: setup-firefox
-      uses: browser-actions/setup-firefox@v1
-      with:
-        firefox-version: latest-esr
-
-    - name: Setup Chrome
-      id: setup-chrome
-      uses: browser-actions/setup-chrome@v1
-      with:
-        chrome-version: stable
-
-    - name: Setup Chromedriver
-      uses: nanasess/setup-chromedriver@v2
-      with:
-        chromedriver-version: ${{ steps.setup-chrome.outputs.chrome-version }}
-
-    - name: Set up test dependencies
-      run: |
-        sudo apt install dbus-x11
-
-        # Selenium wants to run non-ESR FF
-        sudo ln -sfn ${{ steps.setup-firefox.outputs.firefox-path }} /usr/bin/firefox
-        sudo ln -sfn ${{ steps.setup-firefox.outputs.firefox-path }} /usr/bin/firefox-esr
-        firefox --version
-
-        geckodriver --version
-
-        echo "${HOME}/bibutils/bin" >> $GITHUB_PATH
-
     - name: Set current date as env variable
       run: echo "BUILD_START=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
 
     - name: Build
       run: |
-        export $(dbus-launch)
-        mkdir ~/tmp
-        export TMPDIR=~/tmp
-        export FIREFOX_BIN=$(which firefox-esr)
+        mkdir ${{ runner.temp }}/${{ github.run_id }}.tmp
+        export TMPDIR=${{ runner.temp }}/${{ github.run_id }}.tmp
+        export FIREFOX_BIN=$(which firefox)
         export SELENIUM_BROWSER=firefox
 
         mvn -B -P!standard-with-extra-repos -U -Djetty -e clean install
@@ -116,8 +90,3 @@ jobs:
           ./**/*error*.log
           ./**/*test.log
           ~/.m2/repository/solr-*/server/logs/*.log
-
-    - name: Save Maven cache
-      uses: skjolber/maven-cache-github-action@v1
-      with:
-        step: save
