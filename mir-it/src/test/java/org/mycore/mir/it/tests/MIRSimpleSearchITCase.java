@@ -5,6 +5,7 @@ import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -78,7 +79,8 @@ public class MIRSimpleSearchITCase extends MIRITBase {
 
         List<String> foundIds = getDriver().waitAndFindElements(By.xpath(".//input[@name='id']"))
             .stream()
-            .map(v -> v.getAttribute("value"))
+            .map(v -> Optional.ofNullable(v.getDomProperty("value"))
+                .orElseGet(() -> v.getDomAttribute("value")))
             .collect(Collectors.toList());
 
         ids.forEach(id -> Assert
