@@ -1,5 +1,7 @@
 package org.mycore.mir.it.controller;
 
+import java.util.Optional;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.mycore.common.selenium.drivers.MCRWebdriverWrapper;
@@ -37,7 +39,9 @@ public abstract class MIREditorController extends MIRTestController {
         WebElement textArea = driver.waitAndFindElement(
             By.xpath(".//textarea[contains(@name, '" + childElementName + "') and contains(@class, 'tinymce')]")
         );
-        String iframeId = textArea.getAttribute("id") + "_ifr";
+        String iframeId = Optional
+            .ofNullable(textArea.getDomProperty("id"))
+            .orElseGet(() -> textArea.getDomAttribute("id")) + "_ifr";
         WebElement iframe = driver.waitAndFindElement(By.id(iframeId));
 
         // Switch to the iframe, click on the body, and send the text
