@@ -12,16 +12,14 @@
       data-always-update-work="{$MCR.ORCID2.WorkEventHandler.AlwaysUpdateWork}"
       data-create-duplicate-work="{$MCR.ORCID2.WorkEventHandler.CreateDuplicateWork}"
       data-recreate-deleted-work="{$MCR.ORCID2.WorkEventHandler.RecreateDeletedWork}">
-      <div class="modal-dialog" role="document">
+      <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="orcid-settings-modal-label">
                <span><xsl:value-of select="document('i18n:orcid.settingsModal.headline')"/></span>
                <span id="modal-title-orcid" />
             </h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&#x00D7;</span>
-            </button>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body" id="orcid-settings-container">
             <div id="orcid-missing-setting-alert" class="alert alert-danger d-none">
