@@ -65,15 +65,13 @@
   <xsl:template name="printExportToOrcidModal">
     <div id="exportToOrcidModal" class="modal fade" tabindex="-1"
       aria-labelledby="exportToOrcidModalLabel" aria-hidden="true" role="dialog">
-      <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-dialog modal-lg">
         <div class="modal-content">
           <div class="modal-header">
             <h5 id="exportToOrcidModalLabel" class="modal-title">
               <xsl:value-of select="document('i18n:mir.orcid.export.modal.title')"/>
             </h5>
-            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&#215;</span>
-            </button>
+            <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
             <div id="alertDiv" class="alert alert-danger" role="alert">
@@ -94,7 +92,7 @@
             <button id="exportToOrcidBtn" class="btn btn-primary" type="button">
               <xsl:value-of select="document('i18n:mir.orcid.export.modal.button.export')"/>
             </button>
-            <button class="btn btn-secondary" type="button" data-dismiss="modal">
+            <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">
               <xsl:value-of select="document('i18n:button.cancel')"/>
             </button>
           </div>
