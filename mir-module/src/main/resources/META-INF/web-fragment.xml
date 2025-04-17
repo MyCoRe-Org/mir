@@ -112,6 +112,23 @@
     <url-pattern>/servlets/MCRDFGThumbnail/*</url-pattern>
   </servlet-mapping>
 
+  <servlet>
+    <servlet-name>AccessKeyManager</servlet-name>
+    <servlet-class>org.mycore.webtools.vue.MCRVueRootServlet</servlet-class>
+    <init-param>
+      <param-name>heading</param-name>
+      <param-value>component.acl.accesskey.frontend.title.main</param-value>
+    </init-param>
+    <init-param>
+      <param-name>properties</param-name>
+      <param-value>MCR.ACL.AccessKey.Strategy.AllowedSessionPermissionTypes</param-value>
+    </init-param>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>AccessKeyManager</servlet-name>
+    <url-pattern>/access-key-manager/*</url-pattern>
+  </servlet-mapping>
+
   <filter>
     <filter-name>MCRAccessKeyFilter</filter-name>
     <filter-class>org.mycore.mcr.acl.accesskey.frontend.filter.MCRAccessKeyFilter</filter-class>
