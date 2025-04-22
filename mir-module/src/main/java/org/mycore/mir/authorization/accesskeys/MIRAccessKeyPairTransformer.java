@@ -130,7 +130,7 @@ public abstract class MIRAccessKeyPairTransformer {
             final Unmarshaller unmarshaller = JAXB_CONTEXT.createUnmarshaller();
             MIRAccessKeyPair.ServiceFlags serviceFlags =
                 unmarshaller.unmarshal(new JDOMSource(element.clone()), MIRAccessKeyPair.ServiceFlags.class).getValue();
-            return MIRAccessKeyPair.fromServiceFlags(mcrObjectId, serviceFlags);
+            return MIRAccessKeyPair.ofServiceFlags(mcrObjectId, serviceFlags);
         } catch (final JAXBException e) {
             throw new MCRException("Exception while transforming Element to MIRAccessKeyPair.", e);
         }
