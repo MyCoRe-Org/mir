@@ -3,6 +3,14 @@
  * - should be replaced by a refactoring of our css/sass
  */
 
+//Bootstrap 5 is not compatible with Selenium, so we need this in scss
+//https://fullstacktutorials.blogspot.com/2023/03/selenium-doesnt-work-with-bootstrap-5.html
+$enable-smooth-scroll: false !default;
+html {
+  scroll-behavior: auto !important;
+}
+
+
 // set the defaults for all responsive levels here (desktop first)
 // after that, use the media queryies to adujust the lower responsive levels
 
