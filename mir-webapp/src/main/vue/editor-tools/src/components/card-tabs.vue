@@ -8,7 +8,7 @@
              v-on:click="changeToTab(tab)"
              href="#">{{ tab.title }}</a>
         </li>
-          <li class="close-btn nav-item ml-auto" v-if="closeBtn">
+          <li class="close-btn nav-item ms-auto" v-if="closeBtn">
               <a class="nav-link" href="#" v-on:click="emit('closeButtonPressed')"><i class="fas fa-times"></i></a>
           </li>
       </ul>

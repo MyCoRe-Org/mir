@@ -1,5 +1,5 @@
 <template>
-    <a ref="popoverTrigger" class="popover-trigger ml-1">
+    <a ref="popoverTrigger" class="popover-trigger ms-1">
         <i class="fas fa-info-circle"> </i>
     </a>
     <div ref="popoverContent" class="popover-content d-none">

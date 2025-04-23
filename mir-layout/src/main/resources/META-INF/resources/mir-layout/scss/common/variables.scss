@@ -25,10 +25,14 @@ $icon-font-path: "../../../../mir-layout/assets/bootstrap/fonts/bootstrap/" !def
 $font-size-base: 0.875rem !default;
 
 // outdated, just to keep compatibility
-$alert-warning-bg: lighten($brand-warning, 35%) !default;
+$alert-warning-bg: tint-color($brand-warning, 35%) !default;
 $alert-warning-text: $brand-warning !default;
 
 // set color for close button
 $close-color: $body-color !default;
 
 $input-color: $body-color !default;
+
+// Bootstrap 5 is not compatible with Selenium, so we need this in scss
+// https://fullstacktutorials.blogspot.com/2023/03/selenium-doesnt-work-with-bootstrap-5.html
+$enable-smooth-scroll: false !default;

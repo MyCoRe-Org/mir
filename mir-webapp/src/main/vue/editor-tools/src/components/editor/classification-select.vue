@@ -1,5 +1,5 @@
 <template>
-    <select class="form-control form-control-sm" v-model="model.value">
+    <select class="form-control form-control-sm form-select" v-model="model.value">
         <option v-if="props.emptyLabel" :value="undefined">{{ props.emptyLabel }}</option>
         <option v-for="option in model.options" :value="option.value">{{ option.label }}</option>
     </select>

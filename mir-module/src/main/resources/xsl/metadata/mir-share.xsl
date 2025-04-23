@@ -14,7 +14,7 @@
         </div>
         <div class="col-md-5">
           <!-- QR-Code BEGIN -->
-          <span class="float-right d-none d-sm-block" rel="tooltip" title="QR-code for easy mobile access to this page.">
+          <span class="float-end d-none d-sm-block" rel="tooltip" title="QR-code for easy mobile access to this page.">
             <xsl:variable name="qrSize" select="145" />
             <img src="{$WebApplicationBaseURL}img/qrcodes/{$qrSize}/receive/{$objId}" style="min-width:{$qrSize}px" alt="QR-code for easy mobile access" />
           </span>

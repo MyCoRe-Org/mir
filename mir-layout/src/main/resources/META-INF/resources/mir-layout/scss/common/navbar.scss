@@ -7,7 +7,7 @@
     &:focus {
       text-decoration: none;
       color: $dropdown-link-hover-color;
-      background-color: darken($brand-warning, 6.5%);
+      background-color: shade-color($brand-warning, 6.5%);
     }
   }
   .navbar-form {

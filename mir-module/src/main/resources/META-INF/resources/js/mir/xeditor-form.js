@@ -172,7 +172,7 @@ $(document).ready(function() {
     if ($(".date-select").length > 0) {
         $(".date-select").each(function() {
             var type = $(this).val();
-            var parent = $(this).closest(".form-group");
+            var parent = $(this).closest(".mir-form-group");
             $(parent).find(".date-changeable").addClass("d-none");
             $(parent).find(".date-changeable").filter(function () {
                 return $(this).attr("data-type") == type;
@@ -313,12 +313,14 @@ $(document).ready(function() {
         }
     });
 
+    /*
     $(document).popover({
-        selector: "[data-toggle=popover]",
+        selector: "[data-bs-toggle=popover]",
         container: "body",
         html: true,
         trigger: "focus"
     });
+    */
 
      // Enables the datetimepicker
      if (jQuery.fn.datepicker) {
@@ -337,7 +339,7 @@ $(document).ready(function() {
 
     $("body").on("click", ".expand-item", function () {
          if($(this).attr("data-target")){
-             $(this).closest(".form-group").next($(this).attr("data-target")).toggleClass("d-none");
+             $(this).closest(".mir-form-group").next($(this).attr("data-target")).toggleClass("d-none");
          }
          else {
              $(this).closest("legend").toggleClass("hiddenDetail").next().toggleClass("d-none");
@@ -369,7 +371,7 @@ $(document).ready(function() {
 
      $("body").on("change", ".date-select", function () {
          var type = $(this).val();
-         var parent = $(this).closest(".form-group");
+         var parent = $(this).closest(".mir-form-group");
          var start = getDate(parent, "start");
          var end = getDate(parent, "end");
          var simple = getDate(parent, "simple");

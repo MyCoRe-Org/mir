@@ -1,5 +1,5 @@
 <template>
-    <i v-if="props.mode == 'search'" class="fas fa-map-location-dot mr-2"> </i>
+    <i v-if="props.mode == 'search'" class="fas fa-map-location-dot me-2"> </i>
     <a v-if="props.geographic.valueURI"
        :href="props.geographic.valueURI"
        target="_blank">
@@ -12,7 +12,7 @@
         <dl>
             <dt>{{ i18n["mir.details.popover.type"]}}</dt>
             <dd>
-                <i class="fas fa-map-location-dot ml-1"> </i>
+                <i class="fas fa-map-location-dot ms-1"> </i>
                 {{ i18n["mir.details.popover.type.geographic"] }}
             </dd>
         </dl>

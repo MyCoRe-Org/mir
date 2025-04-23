@@ -26,10 +26,10 @@
       <xsl:variable name="statusClass">
         <xsl:choose>
           <xsl:when test="@success = 'true'">
-            <xsl:text>badge-success</xsl:text>
+            <xsl:text>bg-success</xsl:text>
           </xsl:when>
           <xsl:otherwise>
-            <xsl:text>badge-danger</xsl:text>
+            <xsl:text>bg-danger</xsl:text>
           </xsl:otherwise>
         </xsl:choose>
       </xsl:variable>
@@ -68,7 +68,7 @@
                 </xsl:if>
               </xsl:otherwise>
             </xsl:choose>
-            <span class="float-right badge {$statusClass}">
+            <span class="float-end badge {$statusClass}">
               <xsl:value-of select="i18n:translate(concat('component.mir.wizard.status.', @success))" />
             </span>
           </legend>
@@ -93,9 +93,7 @@
           <div class="modal-content">
 
             <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-                <xsl:text disable-output-escaping="yes">&amp;times;</xsl:text>
-              </button>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" />
               <h4 class="modal-title" id="confirmTitle">
                 <xsl:value-of select="i18n:translate('component.mir.wizard.shutdownServer.confirmTitle')" />
               </h4>
@@ -108,7 +106,7 @@
             </div>
 
             <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                 <xsl:value-of select="i18n:translate('component.mir.wizard.cancel')" />
               </button>
               <a href="{$ServletsBaseURL}MIRWizardServlet/shutdown" class="btn btn-danger danger">
@@ -119,7 +117,7 @@
         </div>
       </div>
       <br />
-      <a class="btn btn-primary float-right" data-toggle="modal" data-target="#confirm-shutdown" href="#">
+      <a class="btn btn-primary float-end" data-bs-toggle="modal" data-target="#confirm-shutdown" href="#">
         <xsl:value-of select="i18n:translate('component.mir.wizard.shutdownServer')" />
       </a>
       <br />
