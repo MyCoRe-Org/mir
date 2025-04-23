@@ -32,3 +32,7 @@ $alert-warning-text: $brand-warning !default;
 $close-color: $body-color !default;
 
 $input-color: $body-color !default;
+
+// Bootstrap 5 is not compatible with Selenium, so we need this in scss
+// https://fullstacktutorials.blogspot.com/2023/03/selenium-doesnt-work-with-bootstrap-5.html
+$enable-smooth-scroll: false !default;
