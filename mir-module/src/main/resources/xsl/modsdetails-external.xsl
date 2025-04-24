@@ -715,17 +715,11 @@
           </a>
           <ul class="dropdown-menu dropdown-menu-right">
             <xsl:if test="key('rights', $deriv)/@write">
-            <li>
-              <a href="{$WebApplicationBaseURL}editor/editor-derivate.xed{$HttpSession}?derivateid={$deriv}&amp;cancelUrl={encoder:encode($RequestURL)}" class="option dropdown-item">
-                <xsl:value-of select="i18n:translate('component.mods.metaData.options.updateDerivateName')" />
-              </a>
-            </li>
-            <li>
-              <!-- Link to toggle to show/hide md5 sum -->
-              <a href="#" class="option dropdown-item toggleMD5Link">
-                <xsl:value-of select="i18n:translate('component.mods.metaData.options.MD5.show')" />
-              </a>
-            </li>
+              <li>
+                <a href="{$WebApplicationBaseURL}editor/editor-derivate.xed{$HttpSession}?derivateid={$deriv}&amp;cancelUrl={encoder:encode($RequestURL)}" class="option dropdown-item">
+                  <xsl:value-of select="i18n:translate('component.mods.metaData.options.updateDerivateName')" />
+                </a>
+              </li>
             </xsl:if>
             <xsl:if test="key('rights', $deriv)/@write and iview2:getSupportedMainFile($deriv) and normalize-space($MIR.METSEditor.enable)='true'">
               <li>
@@ -735,6 +729,12 @@
               </li>
             </xsl:if>
             <xsl:if test="key('rights', $deriv)/@read">
+              <li>
+                <!-- Link to toggle to show/hide md5 sum -->
+                <a href="#" class="option dropdown-item toggleMD5Link">
+                  <xsl:value-of select="i18n:translate('component.mods.metaData.options.MD5.show')" />
+                </a>
+              </li>
               <li>
                 <a href="{$ServletsBaseURL}MCRZipServlet/{$deriv}" class="option downloadzip dropdown-item">
                   <xsl:value-of select="i18n:translate('component.mods.metaData.options.zip')" />
