@@ -766,45 +766,6 @@
           <div class="hit_tnd_container">
             <div class="hit_tnd_content">
               <xsl:apply-imports/>
-              <div class="hit_oa" data-toggle="tooltip">
-                <xsl:variable name="isOpenAccess" select="bool[@name='worldReadableComplete']='true'" />
-                <xsl:choose>
-                  <xsl:when test="$isOpenAccess">
-                    <xsl:attribute name="title">
-                      <xsl:value-of select="i18n:translate('mir.response.openAccess.true')" />
-                    </xsl:attribute>
-                    <span class="badge badge-success">
-                      <i class="fas fa-unlock-alt" aria-hidden="true"></i>
-                    </span>
-                  </xsl:when>
-                  <xsl:otherwise>
-                    <xsl:attribute name="title">
-                      <xsl:value-of select="i18n:translate('mir.response.openAccess.false')" />
-                    </xsl:attribute>
-                    <span class="badge badge-warning">
-                      <i class="fas fa-lock" aria-hidden="true"></i>
-                    </span>
-                  </xsl:otherwise>
-                </xsl:choose>
-              </div>
-              <xsl:choose>
-                <xsl:when test="arr[@name='mods.genre']">
-                  <xsl:for-each select="arr[@name='mods.genre']/str">
-                    <div class="hit_type">
-                      <span class="badge badge-info">
-                        <xsl:value-of select="mcrxsl:getDisplayName('mir_genres',.)" ></xsl:value-of>
-                      </span>
-                    </div>
-                  </xsl:for-each>
-                </xsl:when>
-                <xsl:otherwise>
-                  <div class="hit_type">
-                    <span class="badge badge-info">
-                      <xsl:value-of select="mcrxsl:getDisplayName('mir_genres','article')" />
-                    </span>
-                  </div>
-                </xsl:otherwise>
-              </xsl:choose>
               <xsl:if test="arr[@name='category.top']/str[contains(text(), 'mir_licenses:')]">
                 <div class="hit_license">
                   <span class="badge badge-primary">
