@@ -9,25 +9,33 @@
 
   <xsl:template match="doc" mode="resultList">
     <xsl:if test="arr[@name='category.top']/str[contains(text(), 'mir_licenses:')]">
-      <div class="hit_license">
-        <span class="badge badge-primary">
-          <xsl:variable name="accessCondition">
-            <xsl:value-of
-              select="substring-after(arr[@name='category.top']/str[contains(text(), 'mir_licenses:')][last()],':')"/>
-          </xsl:variable>
-          <xsl:choose>
-            <xsl:when test="contains($accessCondition, 'rights_reserved')">
-              <xsl:value-of select="i18n:translate('component.mods.metaData.dictionary.rightsReserved')"/>
-            </xsl:when>
-            <xsl:when test="contains($accessCondition, 'oa_nlz')">
-              <xsl:value-of select="i18n:translate('component.mods.metaData.dictionary.oa_nlz.short')"/>
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:value-of select="mcrxsl:getDisplayName('mir_licenses',$accessCondition)"/>
-            </xsl:otherwise>
-          </xsl:choose>
-        </span>
-      </div>
+      <xsl:variable name="accessConditionClass" select="arr[@name='category.top']/str[contains(text(), 'mir_licenses:')][last()]"/>
+      <xsl:variable name="accessCondition">
+        <xsl:value-of
+          select="substring-after($accessConditionClass, ':')"/>
+      </xsl:variable>
+
+      <xsl:variable name="label">
+        <xsl:choose>
+          <xsl:when test="contains($accessCondition, 'rights_reserved')">
+            <xsl:value-of select="i18n:translate('component.mods.metaData.dictionary.rightsReserved')"/>
+          </xsl:when>
+          <xsl:when test="contains($accessCondition, 'oa_nlz')">
+            <xsl:value-of select="i18n:translate('component.mods.metaData.dictionary.oa_nlz.short')"/>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:value-of select="mcrxsl:getDisplayName('mir_licenses', $accessCondition)"/>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:variable>
+
+      <xsl:call-template name="output-badge">
+        <xsl:with-param name="of-type" select="'hit_license'"/>
+        <xsl:with-param name="badge-type" select="'badge-primary'"/>
+        <xsl:with-param name="label" select="$label"/>
+        <xsl:with-param name="link"  select="concat($ServletsBaseURL, 'solr/find?condQuery=*&amp;fq=category:%22', $accessConditionClass, '%22')"/>
+        <xsl:with-param name="link-class" select="'access_condition'"/>
+      </xsl:call-template>
     </xsl:if>
 
     <xsl:apply-imports/>

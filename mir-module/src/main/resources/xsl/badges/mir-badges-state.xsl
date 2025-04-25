@@ -6,24 +6,17 @@
 
   <xsl:import href="xslImport:badges:badges/mir-badges-state.xsl"/>
   <xsl:include href="mir-badges-style-template.xsl"/>
-  <xsl:include href="../mir-utils.xsl"/>
-  
+
   <xsl:param name="CurrentUser"/>
 
   <xsl:template match="doc" mode="resultList">
     <xsl:if test="not (mcrxsl:isCurrentUserGuestUser())">
-      <div class="hit_state">
-        <xsl:variable name="status-i18n">
-          <!-- template in mir-utils.xsl -->
-          <xsl:call-template name="get-doc-state-label">
-            <xsl:with-param name="state-categ-id" select="str[@name='state']"/>
-          </xsl:call-template>
-        </xsl:variable>
-        <span class="badge mir-{str[@name='state']}"
-              title="{i18n:translate('component.mods.metaData.dictionary.status')}">
-          <xsl:value-of select="$status-i18n"/>
-        </span>
-      </div>
+      <xsl:call-template name="output-badge">
+        <xsl:with-param name="of-type" select="'doc_state'"/>
+        <xsl:with-param name="badge-type" select="concat('mir-', str[@name='state'])"/>
+        <xsl:with-param name="label" select="document(concat('callJava:org.apache.commons.lang3.StringUtils:capitalize:', mcrxsl:getDisplayName('state', str[@name='state'])))"/>
+        <xsl:with-param name="tooltip" select="i18n:translate('component.mods.metaData.dictionary.status')"/>
+      </xsl:call-template>
     </xsl:if>
 
     <xsl:apply-imports/>

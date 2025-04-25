@@ -11,22 +11,24 @@
     <xsl:choose>
       <xsl:when test="arr[@name='mods.genre']">
         <xsl:for-each select="arr[@name='mods.genre']/str">
-          <div class="hit_type">
-            <span class="badge badge-info">
-              <xsl:value-of select="mcrxsl:getDisplayName('mir_genres',.)"/>
-            </span>
-          </div>
+          <xsl:call-template name="output-badge">
+            <xsl:with-param name="of-type" select="'hit_type'"/>
+            <xsl:with-param name="badge-type" select="'badge-primary'"/>
+            <xsl:with-param name="label" select="mcrxsl:getDisplayName('mir_genres', .)"/>
+            <xsl:with-param name="link" select="concat($ServletsBaseURL, 'solr/find?condQuery=*&amp;fq=category.top:%22mir_genres:', ., '%22')"/>
+          </xsl:call-template>
         </xsl:for-each>
       </xsl:when>
       <xsl:otherwise>
-        <div class="hit_type">
-          <span class="badge badge-info">
-            <xsl:value-of select="mcrxsl:getDisplayName('mir_genres','article')"/>
-          </span>
-        </div>
+        <span class="mr-1 hit_type">
+          <xsl:call-template name="output-badge">
+            <xsl:with-param name="of-type" select="'hit_type'"/>
+            <xsl:with-param name="badge-type" select="'badge-primary'"/>
+            <xsl:with-param name="label" select="mcrxsl:getDisplayName('mir_genres','article')"/>
+          </xsl:call-template>
+        </span>
       </xsl:otherwise>
     </xsl:choose>
-
 
     <xsl:apply-imports/>
   </xsl:template>

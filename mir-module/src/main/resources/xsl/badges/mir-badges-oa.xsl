@@ -7,28 +7,34 @@
   <xsl:include href="mir-badges-style-template.xsl"/>
 
   <xsl:template match="doc" mode="resultList">
-    <div class="hit_oa" data-toggle="tooltip">
-      <xsl:variable name="isOpenAccess" select="bool[@name='worldReadableComplete']='true'"/>
-
+    <xsl:variable name="isOpenAccess" select="bool[@name='worldReadableComplete']='true'"/>
+    <xsl:variable name="badge-type">
       <xsl:choose>
         <xsl:when test="$isOpenAccess">
-          <xsl:attribute name="title">
-            <xsl:value-of select="i18n:translate('mir.response.openAccess.true')"/>
-          </xsl:attribute>
-          <span class="badge badge-success">
-            <i class="fas fa-unlock-alt" aria-hidden="true"/>
-          </span>
+          <xsl:value-of select="'badge-success'"/>
         </xsl:when>
         <xsl:otherwise>
-          <xsl:attribute name="title">
-            <xsl:value-of select="i18n:translate('mir.response.openAccess.false')"/>
-          </xsl:attribute>
-          <span class="badge badge-warning">
-            <i class="fas fa-lock" aria-hidden="true"/>
-          </span>
+          <xsl:value-of select="'badge-warning'"/>
         </xsl:otherwise>
       </xsl:choose>
-    </div>
+    </xsl:variable>
+    <xsl:variable name="icon-class">
+      <xsl:choose>
+        <xsl:when test="$isOpenAccess">
+          <xsl:value-of select="'fas fa-unlock-alt'"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="'fas fa-lock'"/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+
+    <xsl:call-template name="output-badge">
+      <xsl:with-param name="of-type" select="'hit_oa'"/>
+      <xsl:with-param name="tooltip" select="i18n:translate(concat('mir.response.openAccess.', $isOpenAccess))"/>
+      <xsl:with-param name="badge-type" select="$badge-type"/>
+      <xsl:with-param name="icon-class" select="$icon-class"/>
+    </xsl:call-template>
 
     <xsl:apply-imports/>
   </xsl:template>
