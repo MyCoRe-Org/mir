@@ -766,37 +766,6 @@
           <div class="hit_tnd_container">
             <div class="hit_tnd_content">
               <xsl:apply-imports/>
-
-              <xsl:if test="str[@name='mods.dateIssued'] or str[@name='mods.dateIssued.host']">
-                <div class="hit_date">
-                  <xsl:variable name="date">
-                    <xsl:choose>
-                      <xsl:when test="str[@name='mods.dateIssued']">
-                        <xsl:value-of select="str[@name='mods.dateIssued']" />
-                      </xsl:when>
-                      <xsl:otherwise>
-                        <xsl:value-of select="str[@name='mods.dateIssued.host']" />
-                      </xsl:otherwise>
-                    </xsl:choose>
-                  </xsl:variable>
-                  <span class="badge badge-primary">
-                    <xsl:value-of select="$date" />
-                  </span>
-                </div>
-              </xsl:if>
-              <xsl:if test="not (mcrxsl:isCurrentUserGuestUser())">
-                <div class="hit_state">
-                  <xsl:variable name="status-i18n">
-                    <!-- template in mir-utils.xsl -->
-                    <xsl:call-template name="get-doc-state-label">
-                      <xsl:with-param name="state-categ-id" select="str[@name='state']"/>
-                    </xsl:call-template>
-                  </xsl:variable>
-                  <span class="badge mir-{str[@name='state']}" title="{i18n:translate('component.mods.metaData.dictionary.status')}">
-                    <xsl:value-of select="$status-i18n" />
-                  </span>
-                </div>
-              </xsl:if>
               <xsl:if test="string-length($MCR.ORCID.OAuth.ClientSecret) &gt; 0">
                 <div class="orcid-status" data-id="{$identifier}" />
               </xsl:if>
