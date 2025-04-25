@@ -843,6 +843,9 @@
 <!-- hit type -->
       <div class="hit_tnd_container">
         <div class="hit_tnd_content">
+
+          <xsl:copy-of select="document(concat('xslStyle:mir-badges-solr:solr:q=id%3A', $objID))" />
+
           <div class="hit_type">
             <span class="badge badge-info">
               <xsl:value-of select="mcrxsl:getDisplayName('mir_genres',$mods-type)" />

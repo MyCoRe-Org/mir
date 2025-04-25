@@ -51,6 +51,8 @@
         </xsl:for-each>
       </xsl:variable>
 
+      <xsl:copy-of select="document(concat('xslStyle:mir-badges-solr:solr:q=id%3A', $objectID))" />
+
         <!-- TODO: Update badges -->
       <div id="badges">
         <xsl:for-each select="$mods/mods:genre[@type='kindof']|$mods/mods:genre[@type='intern']">
