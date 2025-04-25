@@ -35,6 +35,7 @@
         <xsl:with-param name="label" select="$label"/>
         <xsl:with-param name="link"  select="concat($ServletsBaseURL, 'solr/find?condQuery=*&amp;fq=category:%22', $accessConditionClass, '%22')"/>
         <xsl:with-param name="link-class" select="'access_condition'"/>
+        <xsl:with-param name="tooltip" select="i18n:translate('mir.rights')"/>
       </xsl:call-template>
     </xsl:if>
 

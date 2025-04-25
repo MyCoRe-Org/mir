@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions"
-                exclude-result-prefixes="mcrxsl">
+                xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
+                exclude-result-prefixes="i18n mcrxsl">
 
   <xsl:import href="xslImport:badges:badges/mir-badges-genre.xsl"/>
   <xsl:include href="mir-badges-style-template.xsl"/>
@@ -16,6 +17,7 @@
             <xsl:with-param name="badge-type" select="'badge-primary'"/>
             <xsl:with-param name="label" select="mcrxsl:getDisplayName('mir_genres', .)"/>
             <xsl:with-param name="link" select="concat($ServletsBaseURL, 'solr/find?condQuery=*&amp;fq=category.top:%22mir_genres:', ., '%22')"/>
+            <xsl:with-param name="tooltip" select="substring-before(i18n:translate('component.mods.genre'), ':')"/>
           </xsl:call-template>
         </xsl:for-each>
       </xsl:when>
@@ -25,6 +27,7 @@
             <xsl:with-param name="of-type" select="'hit_type'"/>
             <xsl:with-param name="badge-type" select="'badge-primary'"/>
             <xsl:with-param name="label" select="mcrxsl:getDisplayName('mir_genres','article')"/>
+            <xsl:with-param name="tooltip" select="substring-before(i18n:translate('component.mods.genre'), ':')"/>
           </xsl:call-template>
         </span>
       </xsl:otherwise>

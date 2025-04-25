@@ -43,6 +43,7 @@
         <xsl:with-param name="label" select="$label"/>
         <xsl:with-param name="link" select="concat($ServletsBaseURL, 'solr/find?condQuery=*&amp;fq=mods.dateIssued:%22', $date, '%22')"/>
         <xsl:with-param name="link-class" select="'date_published'"/>
+        <xsl:with-param name="tooltip" select="i18n:translate('mir.date.published')"/>
       </xsl:call-template>
     </xsl:if>
 
