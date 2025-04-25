@@ -4,7 +4,7 @@
                 exclude-result-prefixes="i18n">
 
   <xsl:import href="xslImport:badges:badges/mir-badges-oa.xsl"/>
-  <xsl:include href="mir-badges-style-template.xsl"/>
+  <xsl:include href="resource:xsl/badges/mir-badges-style-template.xsl"/>
 
   <xsl:template match="doc" mode="resultList">
     <xsl:variable name="isOpenAccess" select="bool[@name='worldReadableComplete']='true'"/>

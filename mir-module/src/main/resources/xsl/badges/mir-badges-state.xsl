@@ -5,7 +5,7 @@
                 exclude-result-prefixes="i18n mcrxsl">
 
   <xsl:import href="xslImport:badges:badges/mir-badges-state.xsl"/>
-  <xsl:include href="mir-badges-style-template.xsl"/>
+  <xsl:include href="resource:xsl/badges/mir-badges-style-template.xsl"/>
 
   <xsl:param name="CurrentUser"/>
 
@@ -13,7 +13,7 @@
     <xsl:if test="not (mcrxsl:isCurrentUserGuestUser())">
       <xsl:call-template name="output-badge">
         <xsl:with-param name="of-type" select="'doc_state'"/>
-        <xsl:with-param name="badge-type" select="concat('mir-', str[@name='state'])"/>
+        <xsl:with-param name="badge-type" select="concat('text-white mir-', str[@name='state'])"/>
         <xsl:with-param name="label" select="document(concat('callJava:org.apache.commons.lang3.StringUtils:capitalize:', mcrxsl:getDisplayName('state', str[@name='state'])))"/>
         <xsl:with-param name="tooltip" select="i18n:translate('component.mods.metaData.dictionary.status')"/>
       </xsl:call-template>

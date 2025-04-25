@@ -5,7 +5,7 @@
                 exclude-result-prefixes="i18n mcrxsl">
 
   <xsl:import href="xslImport:badges:badges/mir-badges-license.xsl"/>
-  <xsl:include href="mir-badges-style-template.xsl"/>
+  <xsl:include href="resource:xsl/badges/mir-badges-style-template.xsl"/>
 
   <xsl:template match="doc" mode="resultList">
     <xsl:if test="arr[@name='category.top']/str[contains(text(), 'mir_licenses:')]">

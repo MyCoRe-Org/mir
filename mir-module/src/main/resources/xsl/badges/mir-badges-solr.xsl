@@ -8,9 +8,9 @@
   </xsl:template>
 
   <xsl:template match="doc" mode="resultList">
-    <div id="badges">
+    <span>
       <xsl:apply-imports/>
-    </div>
+    </span>
   </xsl:template>
 
 </xsl:stylesheet>
