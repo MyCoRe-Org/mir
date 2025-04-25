@@ -8,7 +8,7 @@
   </xsl:template>
 
   <xsl:template match="doc" mode="resultList">
-    <div class="mir-badges">
+    <div id="badges">
       <xsl:apply-imports/>
     </div>
   </xsl:template>

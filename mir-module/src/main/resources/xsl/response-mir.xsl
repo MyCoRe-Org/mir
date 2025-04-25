@@ -13,7 +13,6 @@
   xmlns:decoder="xalan://java.net.URLDecoder"
   exclude-result-prefixes="i18n mods str exslt mcr acl mcrxsl basket encoder decoder">
 
-
   <xsl:import href="xslImport:badges" />
   <xsl:include href="resource:xsl/csl-export-gui.xsl" />
   <xsl:include href="resource:xsl/response-facets.xsl"/>
@@ -766,9 +765,7 @@
 <!-- hit type -->
           <div class="hit_tnd_container">
             <div class="hit_tnd_content">
-
               <xsl:apply-imports/>
-
               <div class="hit_oa" data-toggle="tooltip">
                 <xsl:variable name="isOpenAccess" select="bool[@name='worldReadableComplete']='true'" />
                 <xsl:choose>

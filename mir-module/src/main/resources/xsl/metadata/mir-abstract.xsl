@@ -51,7 +51,7 @@
         </xsl:for-each>
       </xsl:variable>
 
-      <xsl:copy-of select="document(concat('xslStyle:mir-badges-solr:solr:q=id%3A', $objectID))" />
+      <xsl:copy-of select="document(concat('xslStyle:badges/mir-badges-solr:solr:q=id%3A', $objectID))" />
 
         <!-- TODO: Update badges -->
       <div id="badges">
