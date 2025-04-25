@@ -4,7 +4,6 @@
                 exclude-result-prefixes="mcrxsl">
 
   <xsl:import href="xslImport:badges:badges/mir-badges-genre.xsl"/>
-
   <xsl:include href="mir-badges-style-template.xsl"/>
 
   <xsl:template match="doc" mode="resultList">
