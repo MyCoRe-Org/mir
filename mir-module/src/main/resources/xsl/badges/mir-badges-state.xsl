@@ -10,6 +10,8 @@
   <xsl:param name="CurrentUser"/>
 
   <xsl:template match="doc" mode="resultList">
+    <xsl:apply-imports/>
+
     <xsl:if test="not (mcrxsl:isCurrentUserGuestUser())">
       <xsl:call-template name="output-badge">
         <xsl:with-param name="of-type" select="'doc_state'"/>
@@ -18,7 +20,5 @@
         <xsl:with-param name="tooltip" select="i18n:translate('component.mods.metaData.dictionary.status')"/>
       </xsl:call-template>
     </xsl:if>
-
-    <xsl:apply-imports/>
   </xsl:template>
 </xsl:stylesheet>

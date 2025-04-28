@@ -7,6 +7,8 @@
   <xsl:include href="resource:xsl/badges/mir-badges-style-template.xsl"/>
 
   <xsl:template match="doc" mode="resultList">
+    <xsl:apply-imports/>
+
     <xsl:variable name="isOpenAccess" select="bool[@name='worldReadableComplete']='true'"/>
     <xsl:variable name="badge-type">
       <xsl:choose>
@@ -35,7 +37,5 @@
       <xsl:with-param name="badge-type" select="$badge-type"/>
       <xsl:with-param name="icon-class" select="$icon-class"/>
     </xsl:call-template>
-
-    <xsl:apply-imports/>
   </xsl:template>
 </xsl:stylesheet>

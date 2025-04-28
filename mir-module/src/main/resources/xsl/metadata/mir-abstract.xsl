@@ -52,7 +52,7 @@
       </xsl:variable>
 
       <div id="badges">
-        <xsl:copy-of select="document(concat('xslStyle:badges/mir-badges-solr:solr:q=id%3A', $objectID))" />
+        <xsl:copy-of select="document(concat('xslStyle:badges/mir-badges-solr:notnull:solr:q=id%3A', $objectID))" />
       </div><!-- end: badges -->
     </div><!-- end: badgets structure -->
 

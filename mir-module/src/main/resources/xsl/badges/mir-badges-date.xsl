@@ -8,6 +8,8 @@
   <xsl:include href="resource:xsl/badges/mir-badges-style-template.xsl"/>
 
   <xsl:template match="doc" mode="resultList">
+    <xsl:apply-imports/>
+
     <xsl:if test="str[@name='mods.dateIssued'] or str[@name='mods.dateIssued.host']">
       <xsl:variable name="date">
         <xsl:choose>
@@ -46,7 +48,5 @@
         <xsl:with-param name="tooltip" select="i18n:translate('mir.date.published')"/>
       </xsl:call-template>
     </xsl:if>
-
-    <xsl:apply-imports/>
   </xsl:template>
 </xsl:stylesheet>

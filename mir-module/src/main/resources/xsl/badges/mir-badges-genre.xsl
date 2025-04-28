@@ -8,6 +8,7 @@
   <xsl:include href="resource:xsl/badges/mir-badges-style-template.xsl"/>
 
   <xsl:template match="doc" mode="resultList">
+    <xsl:apply-imports/>
 
     <xsl:choose>
       <xsl:when test="arr[@name='mods.genre']">
@@ -33,6 +34,5 @@
       </xsl:otherwise>
     </xsl:choose>
 
-    <xsl:apply-imports/>
   </xsl:template>
 </xsl:stylesheet>

@@ -8,6 +8,8 @@
   <xsl:include href="resource:xsl/badges/mir-badges-style-template.xsl"/>
 
   <xsl:template match="doc" mode="resultList">
+    <xsl:apply-imports/>
+
     <xsl:if test="arr[@name='category.top']/str[contains(text(), 'mir_licenses:')]">
       <xsl:variable name="accessConditionClass" select="arr[@name='category.top']/str[contains(text(), 'mir_licenses:')][last()]"/>
       <xsl:variable name="accessCondition">
@@ -38,7 +40,5 @@
         <xsl:with-param name="tooltip" select="i18n:translate('mir.rights')"/>
       </xsl:call-template>
     </xsl:if>
-
-    <xsl:apply-imports/>
   </xsl:template>
 </xsl:stylesheet>
