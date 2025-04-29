@@ -29,7 +29,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 public class MIRGoobiIngester extends MIRSwordIngesterBase {
 
-    public static final Logger LOGGER = LogManager.getLogger();
+    private static final Logger LOGGER = LogManager.getLogger();
 
     @Override
     public MCRObjectID ingestMetadata(Deposit entry) throws SwordError, SwordServerException {

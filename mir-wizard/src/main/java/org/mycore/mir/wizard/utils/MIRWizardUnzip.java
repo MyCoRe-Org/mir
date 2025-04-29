@@ -43,7 +43,8 @@ import org.apache.logging.log4j.Logger;
  *
  */
 public class MIRWizardUnzip {
-    private static final Logger LOGGER = LogManager.getLogger(MIRWizardUnzip.class);
+
+    private static final Logger LOGGER = LogManager.getLogger();
 
     /**
      * Size of the buffer to read/write data.

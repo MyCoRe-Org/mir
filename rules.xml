@@ -1,0 +1,439 @@
+<?xml version="1.0"?>
+<ruleset name="Custom MyCoRe rules" xmlns="http://pmd.sourceforge.net/ruleset/2.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 https://pmd.sourceforge.io/ruleset_2_0_0.xsd">
+
+  <description>
+    This ruleset contains custom MyCoRe rules
+  </description>
+
+  <rule name="MCR.Logger.MaxOneField"
+        language="java"
+        message="There should only be one field with name 'logger' or 'LOGGER' and type 'Logger'"
+        class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
+    <priority>4</priority>
+    <properties>
+      <property name="xpath">
+        <value>
+          //ClassBody/FieldDeclaration
+            [
+              VariableDeclarator/VariableId/@Name=('logger','LOGGER')
+                or
+              ClassType[@SimpleName='Logger']
+            ]
+            [
+              position()>1
+            ]
+        </value>
+      </property>
+    </properties>
+  </rule>
+
+  <rule name="MCR.Logger.MatchingLoggerType"
+        language="java"
+        message="A field with name 'logger' or 'LOGGER' should have type 'Logger'"
+        class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
+    <priority>4</priority>
+    <properties>
+      <property name="xpath">
+        <value>
+          //ClassBody/FieldDeclaration
+            [
+              VariableDeclarator/VariableId/@Name=('logger','LOGGER')
+                and
+              not(ClassType[@SimpleName='Logger'])
+            ]
+        </value>
+      </property>
+    </properties>
+  </rule>
+
+  <rule name="MCR.Logger.MatchingFieldName"
+        language="java"
+        message="A field with type 'Logger' should have name 'logger' or 'LOGGER'"
+        class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
+    <priority>4</priority>
+    <properties>
+      <property name="xpath">
+        <value>
+          //ClassBody/FieldDeclaration
+            [
+              ClassType[@SimpleName='Logger']
+                and
+              not(VariableDeclarator/VariableId/@Name=('logger','LOGGER'))
+            ]
+        </value>
+      </property>
+    </properties>
+  </rule>
+
+  <rule name="MCR.Logger.CorrectLoggerType"
+        language="java"
+        message="A field with type 'Logger' should have name actual type 'org.apache.logging.log4j.Logger'"
+        class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
+    <priority>4</priority>
+    <properties>
+      <property name="xpath">
+        <value>
+          //ClassBody/FieldDeclaration
+            [
+              ClassType[@SimpleName='Logger']
+                and
+              not(ClassType[pmd-java:typeIs('org.apache.logging.log4j.Logger')])
+            ]
+        </value>
+      </property>
+    </properties>
+  </rule>
+
+  <rule name="MCR.Logger.CorrectStaticInitialisation"
+        language="java"
+        message="A field with type 'Logger' and name 'LOGGER' should be initialized as 'private static final Logger LOGGER = LogManager.getLogger();'"
+        class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
+    <priority>4</priority>
+    <properties>
+      <property name="xpath">
+        <value>
+          //ClassBody/FieldDeclaration
+            [
+              ClassType[@SimpleName='Logger']
+                and
+              VariableDeclarator/VariableId/@Name='LOGGER'
+            ]
+            [
+              not(
+                deep-equal(pmd-java:modifiers(), ('private','static','final'))
+                  and
+                VariableDeclarator/MethodCall[
+                  TypeExpression/ClassType[@SimpleName='LogManager']
+                    and
+                  @MethodName='getLogger'
+                    and
+                  count(*)=2
+                   and
+                  count(ArgumentList/*)=0
+                ]
+              )
+            ]
+        </value>
+      </property>
+    </properties>
+  </rule>
+
+  <rule name="MCR.Logger.CorrectDynamicInitialisation"
+        language="java"
+        message="A field with type 'Logger' and name 'logger' should be initialized as 'protected final Logger LOGGER = LogManager.getLogger(getClass());'"
+        class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
+    <priority>4</priority>
+    <properties>
+      <property name="xpath">
+        <value>
+          //ClassBody/FieldDeclaration
+            [
+              ClassType[@SimpleName='Logger']
+                and
+              VariableDeclarator/VariableId/@Name='logger'
+            ]
+            [
+              not(
+                deep-equal(pmd-java:modifiers(), ('protected','final'))
+                  and
+                VariableDeclarator/MethodCall[
+                  TypeExpression/ClassType[@SimpleName='LogManager']
+                    and
+                  @MethodName='getLogger'
+                    and
+                  count(*)=2
+                    and
+                  count(ArgumentList/*)=1
+                    and
+                  ArgumentList[1][
+                    MethodCall[
+                      @MethodName='getClass'
+                        and
+                      count(*)=1
+                        and
+                      count(ArgumentList/*)=0
+                    ]
+                  ]
+                ]
+              )
+            ]
+        </value>
+      </property>
+    </properties>
+  </rule>
+
+  <rule name="MCR.Logger.IndirectAccess"
+        language="java"
+        message="A field with name 'Logger' should be accessed directly (either logger.info(...) or this.logger.info(...))"
+        class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
+    <priority>4</priority>
+    <properties>
+      <property name="xpath">
+        <value>
+          //FieldAccess[@Name='logger'][VariableAccess|ConstructorCall]
+        </value>
+      </property>
+    </properties>
+  </rule>
+
+  <!--rule name="MCR.Logger.AbstractClassesShouldHaveDynamic"
+        language="java"
+        message="An abstract class should have a Logger initialized as 'protected final Logger LOGGER = LogManager.getLogger(getClass());' "
+        class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
+    <priority>5</priority>
+    <properties>
+      <property name="xpath">
+        <value>
+          //ClassBody/FieldDeclaration
+            [
+              ../..[pmd-java:modifiers()='abstract']
+                and
+              ClassType[@SimpleName='Logger']
+                and
+              VariableDeclarator/VariableId/@Name!='logger'
+            ]
+        </value>
+      </property>
+    </properties>
+  </rule-->
+
+  <rule name="MCR.Singleton.MethodModifiers"
+        language="java"
+        message="A method named 'getInstance' should be static"
+        class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
+    <priority>4</priority>
+    <properties>
+      <property name="xpath">
+        <value>
+          //MethodDeclaration
+            [
+              @Name='getInstance'
+                and
+              not(ModifierList/Annotation/ClassType[pmd-java:typeIs('java.lang.Deprecated')])
+            ]
+            [
+              not(pmd-java:modifiers()='static')
+            ]
+        </value>
+      </property>
+    </properties>
+  </rule>
+
+  <rule name="MCR.Singleton.MethodReturnType"
+        language="java"
+        message="A method named 'getInstance' should return an instance of the enclosing class"
+        class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
+    <priority>4</priority>
+    <properties>
+      <property name="xpath">
+        <value>
+          //MethodDeclaration
+            [
+              @Name='getInstance'
+                and
+              not(ModifierList/Annotation/ClassType[pmd-java:typeIs('java.lang.Deprecated')])
+            ]
+            [
+              not(ClassType[pmd-java:typeIs(../../../@CanonicalName)])
+            ]
+        </value>
+      </property>
+    </properties>
+  </rule>
+
+  <rule name="MCR.Singleton.ClassModifiers"
+        language="java"
+        message="A singleton class (with method named 'getInstance') should be final"
+        class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
+    <priority>4</priority>
+    <properties>
+      <property name="xpath">
+        <value>
+          //MethodDeclaration
+            [
+              @Name='getInstance'
+                and
+              not(ModifierList/Annotation/ClassType[pmd-java:typeIs('java.lang.Deprecated')])
+            ]
+            [
+              not(../..[pmd-java:modifiers()='final'])
+            ]
+        </value>
+      </property>
+    </properties>
+  </rule>
+
+  <rule name="MCR.Singleton.PrivateConstructor"
+        language="java"
+        message="A singleton class with (method named 'getInstance') should have a private constructor"
+        class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
+    <priority>4</priority>
+    <properties>
+      <property name="xpath">
+        <value>
+          //MethodDeclaration
+            [
+              @Name='getInstance'
+                and
+              not(ModifierList/Annotation/ClassType[pmd-java:typeIs('java.lang.Deprecated')])
+            ]
+            [
+              not(../ConstructorDeclaration[pmd-java:modifiers()='private'])
+            ]
+        </value>
+      </property>
+    </properties>
+  </rule>
+
+  <rule name="MCR.Singleton.NonPrivateConstructors"
+        language="java"
+        message="A singleton class with (method named 'getInstance') should only have a private constructors"
+        class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
+    <priority>4</priority>
+    <properties>
+      <property name="xpath">
+        <value>
+          //MethodDeclaration
+            [
+              @Name='getInstance'
+                and
+              not(ModifierList/Annotation/ClassType[pmd-java:typeIs('java.lang.Deprecated')])
+            ]
+            [
+              ../ConstructorDeclaration[not(deep-equal(pmd-java:modifiers(),('private')))]
+            ]
+        </value>
+      </property>
+    </properties>
+  </rule>
+
+  <rule name="MCR.SerialVersionUid.ModifiersAndType"
+        language="java"
+        message="The serialVersionUID should have modifiers private static final and type long"
+        class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
+    <priority>4</priority>
+    <properties>
+      <property name="xpath">
+        <value>
+          <![CDATA[
+            //ClassBody/FieldDeclaration
+              [
+                VariableDeclarator/VariableId[@Name='serialVersionUID']
+              ]
+              [
+                not(
+                  deep-equal(pmd-java:modifiers(), ('private','static','final'))
+                    and
+                  PrimitiveType[@Kind='long']
+                )
+              ]
+          ]]>
+        </value>
+      </property>
+    </properties>
+  </rule>
+
+  <rule name="MCR.SerialVersionUid.Annotation"
+        language="java"
+        message="The serialVersionUID should be annotated with @java.io.Serial"
+        class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
+    <priority>4</priority>
+    <description>
+      Field should look like this:
+
+      @Serial
+      private static final long serialVersionUID = 1L;
+    </description>
+    <properties>
+      <property name="xpath">
+        <value>
+          <![CDATA[
+            //ClassBody/FieldDeclaration
+              [
+                VariableDeclarator/VariableId[@Name='serialVersionUID']
+              ]
+              [
+                not(ModifierList/Annotation/ClassType[pmd-java:typeIs('java.io.Serial')])
+              ]
+          ]]>
+        </value>
+      </property>
+    </properties>
+  </rule>
+
+  <rule name="MCR.SerialVersionUid.Value"
+        language="java"
+        message="The serialVersionUID should have literal value '1L'"
+        class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
+    <priority>4</priority>
+    <description>
+      Field should look like this:
+
+      @Serial
+      private static final long serialVersionUID = 1L;
+    </description>
+    <properties>
+      <property name="xpath">
+        <value>
+          <![CDATA[
+            //ClassBody/FieldDeclaration
+              [
+                VariableDeclarator/VariableId[@Name='serialVersionUID']
+              ]
+              [
+                not(VariableDeclarator/NumericLiteral[@Image='1L'])
+              ]
+          ]]>
+        </value>
+      </property>
+    </properties>
+  </rule>
+
+  <rule name="MCR.ResourceResolver"
+        language="java"
+        message="Resources should be accessed using MCRResourceResolver or MCRResourceHelper"
+        class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
+    <description>
+      Accessing resources directly via Class, ClassLoader or ServletContext should only be done
+      - in classes that are part of the setup of the MyCoRe application (e.g. MCRConfigurationInputStream, MCRComponent),
+      - in classes that are used by MCRResourceResolver (e.g. MCRResourceProvider, MCRResourceLocator) or
+      - in rare cases where module specific files need to be accessed (e.g. MCRCoreVersion accessing git.properties).
+      Otherwise, MCRResourceResolver or MCRResourceHelper should be used.
+    </description>
+    <priority>1</priority>
+    <properties>
+      <property name="xpath">
+        <value>
+          <![CDATA[
+            //(MethodCall|MethodReference)
+              [*[position() = 1 and pmd-java:typeIs('java.lang.Class')]]
+              [@MethodName=(
+                'getResource',
+                'getResourceAsStream'
+              )]
+              |
+            //(MethodCall|MethodReference)
+              [*[position() = 1 and pmd-java:typeIs('java.lang.ClassLoader')]]
+              [@MethodName=(
+                'resources',
+                'getResource',
+                'getResources',
+                'getResourceAsStream'
+              )]
+              |
+            //(MethodCall|MethodReference)
+              [*[position() = 1 and pmd-java:typeIs('jakarta.servlet.ServletContext')]]
+              [@MethodName=(
+                'getResource',
+                'getResourcePaths',
+                'getResourceAsStream'
+              )]
+          ]]>
+        </value>
+      </property>
+    </properties>
+  </rule>
+
+</ruleset>

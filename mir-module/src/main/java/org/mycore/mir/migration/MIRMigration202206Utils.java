@@ -27,6 +27,7 @@ import org.mycore.mods.MCRMODSWrapper;
 public class MIRMigration202206Utils {
 
     private static final Logger LOGGER = LogManager.getLogger();
+
     public static final String NAME_IDENTIFIER = "nameIdentifier";
 
     public static final HashSet<String> getAllRegularLabelLanguagesPresentInCategory(MCRCategory category,
