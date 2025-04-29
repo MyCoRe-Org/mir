@@ -17,20 +17,18 @@
             <xsl:with-param name="of-type" select="'hit_type'"/>
             <xsl:with-param name="badge-type" select="'badge-primary'"/>
             <xsl:with-param name="label" select="mcrxsl:getDisplayName('mir_genres', .)"/>
-            <xsl:with-param name="link" select="concat($ServletsBaseURL, 'solr/find?condQuery=*&amp;fq=category.top:%22mir_genres:', ., '%22')"/>
+            <xsl:with-param name="link"  select="concat($ServletsBaseURL, 'solr/find?condQuery=*&amp;fq=category.top:%22mir_genres:', ., '%22')"/>
             <xsl:with-param name="tooltip" select="substring-before(i18n:translate('component.mods.genre'), ':')"/>
           </xsl:call-template>
         </xsl:for-each>
       </xsl:when>
       <xsl:otherwise>
-        <span class="mr-1 hit_type">
-          <xsl:call-template name="output-badge">
-            <xsl:with-param name="of-type" select="'hit_type'"/>
-            <xsl:with-param name="badge-type" select="'badge-primary'"/>
-            <xsl:with-param name="label" select="mcrxsl:getDisplayName('mir_genres','article')"/>
-            <xsl:with-param name="tooltip" select="substring-before(i18n:translate('component.mods.genre'), ':')"/>
-          </xsl:call-template>
-        </span>
+        <xsl:call-template name="output-badge">
+          <xsl:with-param name="of-type" select="'hit_type'"/>
+          <xsl:with-param name="badge-type" select="'badge-primary'"/>
+          <xsl:with-param name="label" select="mcrxsl:getDisplayName('mir_genres','article')"/>
+          <xsl:with-param name="tooltip" select="substring-before(i18n:translate('component.mods.genre'), ':')"/>
+        </xsl:call-template>
       </xsl:otherwise>
     </xsl:choose>
 
