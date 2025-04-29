@@ -45,7 +45,7 @@ jobs:
       if: steps.bibutils-cache.outputs.cache-hit != 'true'
       run: |
         mkdir ~/bibutils
-        curl -L https://kumisystems.dl.sourceforge.net/project/bibutils/bibutils_${BIBUTILS_VERSION}_src.tgz | \
+        curl -L https://downloads.sourceforge.net/project/bibutils/bibutils_${BIBUTILS_VERSION}_src.tgz | \
           tar -C ~/bibutils --strip-components=1 -xzvf-
         cd ~/bibutils
         ./configure
