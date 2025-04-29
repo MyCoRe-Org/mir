@@ -716,7 +716,7 @@
           <ul class="dropdown-menu dropdown-menu-right">
             <xsl:if test="key('rights', $deriv)/@write">
               <li>
-                <a href="{$WebApplicationBaseURL}editor/editor-derivate.xed{$HttpSession}?derivateid={$deriv}&amp;cancelUrl={encoder:encode($RequestURL)}" class="option dropdown-item">
+                <a href="{$WebApplicationBaseURL}editor/editor-derivate.xed?derivateid={$deriv}&amp;cancelUrl={encoder:encode($RequestURL)}" class="option dropdown-item">
                   <xsl:value-of select="i18n:translate('component.mods.metaData.options.updateDerivateName')" />
                 </a>
               </li>
