@@ -13,7 +13,7 @@
 
     <xsl:output method="xml" encoding="UTF-8" indent="yes" xalan:indent-amount="2" />
 
-    <xsl:include href="copynodes.xsl" />
+    <xsl:include href="resource:xsl/copynodes.xsl" />
 
     <xsl:variable name="orcidRegex" select="'[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{3}[0-9,X]'"/>
     <xsl:variable name="mir_licences" select="document('classification:metadata:-1:children:mir_licenses')"/>
@@ -40,6 +40,8 @@
             </mods:title>
         </mods:titleInfo>
     </xsl:template>
+
+    <xsl:template match="creator"/>
 
     <xsl:template match="creator[contains(creatorName,',')]">
         <mods:name type="personal">
