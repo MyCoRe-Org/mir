@@ -84,8 +84,8 @@
             <arg>${maven.compiler.arg}</arg>
             <arg>-Xpkginfo:always</arg>
           </compilerArgs>
-            <showWarnings>false</showWarnings>
-            <showDeprecation>false</showDeprecation>
+          <showWarnings>false</showWarnings>
+          <showDeprecation>false</showDeprecation>
         </configuration>
       </plugin>
       <plugin>
