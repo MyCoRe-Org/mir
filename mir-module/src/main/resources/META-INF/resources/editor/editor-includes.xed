@@ -2333,7 +2333,9 @@
     <link href="{$WebApplicationBaseURL}vue/editor-tools/editor-tools.css" rel="stylesheet"/>
     <script>
       document.querySelectorAll(".nameSearchApp").forEach(function (element) {
-        Vue.createApp(nameSearch).mount(element);
+      Vue.createApp(nameSearch, {
+      defineOwnIdentifier : element.getAttribute("define-own-identifier") === "true"
+      }).mount(element);
       });
 
       document.querySelectorAll(".editorToolsApp").forEach(function (element) {
