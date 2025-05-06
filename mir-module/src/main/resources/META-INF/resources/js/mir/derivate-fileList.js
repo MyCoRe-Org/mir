@@ -209,49 +209,63 @@
 		var objID, deriID, mainDoc, fileBox, aclWriteDB, aclDeleteDB, derivateJson, defaultTemplate, templates = new Array(), urn, hbs = new Array(), numPerPage, page;
 		var i18nKeys = {};
 
-		var fileIcons = {
-			"PDF" : {
-				icon : "fa-file-pdf",
-				extensions : "pdf|ps"
+		/**
+		 * @typedef {Object} FileTypeDefinition
+		 * @property {string} icon - Font Awesome icon class
+		 * @property {string} extensions - Pipe-separated list of file extensions
+		 */
+
+		/**
+		 * Mapping of file categories to their icons and extensions
+		 * @type {Object.<string, FileTypeDefinition>}
+		 */
+		const fileIcons = {
+			"PDF": {
+				icon: "fa-file-pdf",
+				extensions: "pdf|ps"
 			},
-			"Archive" : {
-				icon : "fa-file-archive",
-				extensions : "zip|tar|rar|bz|xs|gz|bz2|xz"
+			"Archive": {
+				icon: "fa-file-archive",
+				extensions: "zip|tar|rar|bz|xs|gz|bz2|xz|7z|tgz|tbz2"
 			},
-			"Image" : {
-				icon : "fa-file-image",
-				extensions : "tif|tiff|gif|jpeg|jpg|jif|jfif|jp2|jpx|j2k|j2c|fpx|pcd|png"
+			"Image": {
+				icon: "fa-file-image",
+				extensions: "tif|tiff|gif|jpeg|jpg|jif|jfif|jp2|jpx|j2k|j2c|fpx|pcd|png|webp|bmp|svg|ico"
 			},
-			"Text" : {
-				icon : "fa-file-alt",
-				extensions : "txt|rtf"
+			"Text": {
+				icon: "fa-file-alt",
+				extensions: "txt|rtf|md|markdown|log"
 			},
-			"Audio" : {
-				icon : "fa-file-audio",
-				extensions : "wav|wma|mp3"
+			"Audio": {
+				icon: "fa-file-audio",
+				extensions: "wav|wma|mp3|ogg|flac|aac|m4a|mid|midi"
 			},
-			"Video" : {
-				icon : "fa-file-video",
-				extensions : "mp4|f4v|flv|rm|avi|wmv"
+			"Video": {
+				icon: "fa-file-video",
+				extensions: "mp4|f4v|flv|rm|avi|wmv|mov|mkv|webm|mpeg|mpg|3gp"
 			},
-			"Code" : {
-				icon : "fa-file-code",
-				extensions : "css|htm|html|php|c|cpp|bat|cmd|pas|java"
+			"Code": {
+				icon: "fa-file-code",
+				extensions: "css|scss|less|htm|html|xhtml|php|phtml|c|h|cpp|hpp|cc|hh|bat|cmd|sh|bash|pas|java|class|jar|m|mm|swift|go|rs|py|pyc|rb|pl|pm|js|jsx|ts|tsx|cs|vb|vbs|f|for|f90|lua|d|r|scala|groovy|kt|kts|clj|cljs|cljc|edn|hs|lhs|erl|hrl|ex|exs|ml|mli|sql|json|xml|yml|yaml|toml|ini|cfg|conf|properties|gradle|pom|lock|gitignore|dockerfile|makefile|cmake|proto|thrift|avdl|graphql|gql"
 			},
-			"Word" : {
-				icon : "fa-file-word",
-				extensions : "doc|docx|dot"
+			"Word": {
+				icon: "fa-file-word",
+				extensions: "doc|docx|dot|dotx|docm|dotm|odt|ott"
 			},
-			"Excel" : {
-				icon : "fa-file-excel",
-				extensions : "xls|xlt|xlsx|xltx"
+			"Excel": {
+				icon: "fa-file-excel",
+				extensions: "xls|xlt|xlsx|xltx|xlsm|xltm|csv|ods|ots"
 			},
-			"Powerpoint" : {
-				icon : "fa-file-powerpoint",
-				extensions : "ppt|potx|ppsx|sldx"
+			"Powerpoint": {
+				icon: "fa-file-powerpoint",
+				extensions: "ppt|pot|pptx|potx|ppsx|sldx|odp|otp"
 			},
-			"_default" : {
-				icon : "fa-file"
+			"Database": {
+				icon: "fa-database",
+				extensions: "db|sqlite|sqlite3|mdb|accdb|dbf"
+			},
+			"_default": {
+				icon: "fa-file"
 			}
 		};
 
@@ -262,15 +276,15 @@
 				type : "GET",
 				dataType : "json",
 				beforeSend: function (xhr) {
-					if (token != undefined) {
+					if (token !== undefined) {
 						xhr.setRequestHeader("Authorization", token.token_type + " " + token.access_token);
 					}
 				},
 				success : function(data) {
 					data.mainDoc = mainDoc;
 					data.serverBaseURL = webApplicationBaseURL;
-					data.permWrite = aclWriteDB == "true";
-					data.permDelete = aclDeleteDB == "true";
+					data.permWrite = aclWriteDB === "true";
+					data.permDelete = aclDeleteDB === "true";
 
 					setPath("/");
 					data.pagination = buildPagination(data.children);
@@ -552,6 +566,27 @@
 			return "";
 		}
 
+		/**
+		 * Gets file type information (icon or label)
+		 * @param {string} ext - File extension (e.g., 'pdf', 'mp3')
+		 * @param {'icon'|'label'} property - What to return ('icon' or 'label')
+		 * @returns {string} - Font Awesome class or category label
+		 * @private
+		 */
+		function getFileType(ext, property) {
+			ext = ext.toLowerCase().trim();
+			for (var label in fileIcons) {
+				if (label !== "_default") {
+					var extensions = fileIcons[label].extensions.split('|');
+					if (extensions.includes(ext)) {
+						// For label, return the key (label) itself
+						return property === 'label' ? label : fileIcons[label][property];
+					}
+				}
+			}
+			return property === 'label' ? "File" : fileIcons["_default"].icon;
+		}
+
 		// init
 		return {
 			init : function(list) {
@@ -605,7 +640,7 @@
 						text = "???" + input + "???"; // default mycore behaviour
 					}
 					let args = Array.prototype.slice.call(arguments, 1);
-					if (args != undefined) {
+					if (args !== undefined) {
 						for (let i = 0; i < args.length; i++) {
 							text = text.replace(RegExp("\\{" + i + "\\}", 'g'), args[i]);
 						}
@@ -613,24 +648,33 @@
 					return text;
 				});
 
+				/**
+				 * Handlebars helper to get file icon class
+				 * @function getFileIcon
+				 * @memberof Handlebars.helpers
+				 * @param {string} ext - File extension
+				 * @returns {string} Font Awesome icon class
+				 * @example
+				 * {{getFileIcon "pdf"}} → "fa-file-pdf"
+				 */
 				Handlebars.registerHelper("getFileIcon", function(ext) {
-					for ( var label in fileIcons) {
-						if (label != "_default" && fileIcons[label].extensions.indexOf(ext.toLowerCase()) != -1)
-							return fileIcons[label].icon;
-					}
-
-					return fileIcons["_default"].icon;
+					return getFileType(ext, 'icon');
 				});
+
+				/**
+				 * Handlebars helper to get file type label
+				 * @function getFileLabel
+				 * @memberof Handlebars.helpers
+				 * @param {string} ext - File extension
+				 * @returns {string} File type label
+				 * @example
+				 * {{getFileLabel "pdf"}} → "PDF"
+				 */
 				Handlebars.registerHelper("getFileLabel", function(ext) {
-					for ( var label in fileIcons) {
-						if (label != "_default" && fileIcons[label].extensions.indexOf(ext.toLowerCase()) != -1)
-							return label;
-					}
-
-					return "";
+					return getFileType(ext, 'label');
 				});
 
-				if (objID != undefined && objID != "" && deriID != undefined && deriID != "") {
+				if (objID !== undefined && objID !== "" && deriID !== undefined && deriID !== "") {
 					loadI18nKeys($("html").attr("lang"), function () {
 						getToken(function (data) {
 							getDerivate(data);
