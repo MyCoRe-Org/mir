@@ -41,6 +41,12 @@ This guide addresses developers. Thats why you run it in 'dev' profile!
 Afterward, you can stop Solr from the `mir-webapp` folder with `mvn -Pdev solr-runner:stop`.
 If you need to update Solr cores, you can do this from the `mir-webapp` folder with `mvn -Pdev solr-runner:stop solr-runner:copyHome solr-runner:start`.
 
+**Notice**
+
+When switching from the 2023.06 branch to a newer version, make sure to run the following command to remove deprecated submodules from `mir-webapp/src/main`:
+```
+git submodule deinit --all
+```
 
 ## FAQ
  1. Installation hangs while generating secret  
