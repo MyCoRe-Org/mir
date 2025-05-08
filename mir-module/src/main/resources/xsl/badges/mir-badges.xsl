@@ -6,4 +6,6 @@
 
   <!-- terminate xslImport chain sparked in response-mir.xsl-->
   <xsl:template match="doc" mode="resultList"/>
+  <!-- terminate xslImport chain sparked in mir-badges.xsl -->
+  <xsl:template match="mycoreobject" mode="mycoreobject-badge"/>
 </xsl:stylesheet>
