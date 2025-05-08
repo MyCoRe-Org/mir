@@ -49,6 +49,8 @@
     </xsl:if>
   </xsl:template>
 
-  <xsl:template match="mycoreobject" mode="mycoreobject-badge"/>
+  <xsl:template match="mycoreobject" mode="mycoreobject-badge">
+    <xsl:apply-imports/>
+  </xsl:template>
 
 </xsl:stylesheet>
