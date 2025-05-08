@@ -7,14 +7,15 @@
   <xsl:import href="xslImport:badges:badges/mir-badges-license.xsl"/>
   <xsl:include href="resource:xsl/badges/mir-badges-style-template.xsl"/>
 
+  <xsl:variable name="tooltip-licence" select="document('i18n:mir.rights')/i18n/text()"/>
+
   <xsl:template match="doc" mode="resultList">
     <xsl:apply-imports/>
 
     <xsl:if test="arr[@name='category.top']/str[contains(text(), 'mir_licenses:')]">
       <xsl:variable name="accessConditionClass" select="arr[@name='category.top']/str[contains(text(), 'mir_licenses:')][last()]"/>
       <xsl:variable name="accessCondition">
-        <xsl:value-of
-          select="substring-after($accessConditionClass, ':')"/>
+        <xsl:value-of select="substring-after($accessConditionClass, ':')"/>
       </xsl:variable>
 
       <xsl:variable name="label">
@@ -37,7 +38,7 @@
         <xsl:with-param name="label" select="$label"/>
         <xsl:with-param name="link"  select="concat($ServletsBaseURL, 'solr/find?condQuery=*&amp;fq=category:%22', $accessConditionClass, '%22')"/>
         <xsl:with-param name="link-class" select="'access_condition'"/>
-        <xsl:with-param name="tooltip" select="document('i18n:mir.rights')/i18n/text()"/>
+        <xsl:with-param name="tooltip" select="$tooltip-licence"/>
       </xsl:call-template>
     </xsl:if>
   </xsl:template>
@@ -65,9 +66,9 @@
         <xsl:with-param name="of-type" select="'hit_license'"/>
         <xsl:with-param name="badge-type" select="'badge-primary'"/>
         <xsl:with-param name="label" select="$label"/>
-        <xsl:with-param name="link"  select="concat($ServletsBaseURL, 'solr/find?condQuery=*&amp;fq=category:%22', $accessCondition, '%22')"/>
+        <xsl:with-param name="link"  select="concat($ServletsBaseURL, 'solr/find?condQuery=*&amp;fq=category:%22mir_licenses:', $accessCondition, '%22')"/>
         <xsl:with-param name="link-class" select="'access_condition'"/>
-        <xsl:with-param name="tooltip" select="document('i18n:mir.rights')/i18n/text()"/>
+        <xsl:with-param name="tooltip" select="$tooltip-licence"/>
       </xsl:call-template>
     </xsl:if>
   </xsl:template>
