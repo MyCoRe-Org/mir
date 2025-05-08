@@ -18,4 +18,6 @@
       </xsl:call-template>
     </xsl:if>
   </xsl:template>
+
+  <xsl:template match="mycoreobject" mode="mycoreobject-badge"/>
 </xsl:stylesheet>

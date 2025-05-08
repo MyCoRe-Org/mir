@@ -13,4 +13,14 @@
     </span>
   </xsl:template>
 
+  <xsl:template match="/mycoreobject">
+    <xsl:apply-templates select="." mode="mycoreobject-badge"/>
+  </xsl:template>
+
+  <xsl:template match="mycoreobject" mode="mycoreobject-badge">
+    <span>
+      <xsl:apply-imports/>
+    </span>
+  </xsl:template>
+
 </xsl:stylesheet>

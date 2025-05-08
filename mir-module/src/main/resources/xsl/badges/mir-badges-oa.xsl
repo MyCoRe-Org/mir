@@ -36,4 +36,6 @@
       <xsl:with-param name="icon-class" select="$icon-class"/>
     </xsl:call-template>
   </xsl:template>
+
+  <xsl:template match="mycoreobject" mode="mycoreobject-badge"/>
 </xsl:stylesheet>

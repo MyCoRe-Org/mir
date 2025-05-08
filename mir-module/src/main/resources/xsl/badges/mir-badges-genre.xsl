@@ -30,4 +30,6 @@
     </xsl:choose>
 
   </xsl:template>
+
+  <xsl:template match="mycoreobject" mode="mycoreobject-badge"/>
 </xsl:stylesheet>
