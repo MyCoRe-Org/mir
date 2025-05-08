@@ -25,7 +25,7 @@
     <xed:include ref="language" />
     <xed:include ref="geographicAndCartographics" />
     <xed:include ref="sdnb.repeat" />
-    <xed:include ref="openAIRE" />
+    <xed:include ref="project.repeated"/>
     <xed:include ref="identifier.managed" />
     <xed:include ref="identifier.repeated" />
     <xed:include ref="shelfmark" />

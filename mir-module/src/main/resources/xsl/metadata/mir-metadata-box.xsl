@@ -185,7 +185,7 @@
               mode="present" />
 
             <xsl:variable name="identifierTypes" select="document('classification:metadata:-1:children:identifier')/mycoreclass/categories" />
-            <xsl:for-each select="$identifierTypes//category[@ID!='open-aire' and @ID!='intern' and @ID!='issn']">
+            <xsl:for-each select="$identifierTypes//category[@ID!='intern' and @ID!='issn']">
                 <xsl:variable name="identifierType" select="@ID"/>
                         <xsl:apply-templates mode="present" select="$mods/mods:identifier[@type=$identifierType]" />
             </xsl:for-each>
@@ -215,7 +215,7 @@
               <xsl:with-param name="nodes"
                 select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:physicalDescription/mods:extent" />
             </xsl:call-template>
-            <xsl:apply-templates mode="openaire" select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:identifier[@type='open-aire']" />
+            <xsl:apply-templates mode="funding" select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:extension[@type='datacite-funding']" />
             <xsl:call-template name="printMetaDate.mods">
               <xsl:with-param name="nodes"
                 select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:originInfo[not(@eventType) or @eventType='publication']/mods:place/mods:placeTerm[not(@authority='marccountry')]" />
