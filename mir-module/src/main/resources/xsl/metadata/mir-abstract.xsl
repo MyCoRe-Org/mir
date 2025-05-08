@@ -23,33 +23,6 @@
 
     <!-- badges -->
     <div id="mir-abstract-badges">
-      <xsl:variable name="dateIssued">
-        <xsl:choose>
-          <xsl:when test="$mods/mods:originInfo[not(@eventType) or @eventType='publication']/mods:dateIssued[@encoding='w3cdtf']">
-            <xsl:choose>
-              <xsl:when test="$mods/mods:originInfo[not(@eventType) or @eventType='publication']/mods:dateIssued[@encoding='w3cdtf' and @point]">
-                <xsl:apply-templates mode="mods.datePublished" select="$mods/mods:originInfo[not(@eventType) or @eventType='publication']/mods:dateIssued[@encoding='w3cdtf' and @point='start']" />
-                <xsl:text>|</xsl:text>
-                <xsl:apply-templates mode="mods.datePublished" select="$mods/mods:originInfo[not(@eventType) or @eventType='publication']/mods:dateIssued[@encoding='w3cdtf' and @point='end']" />
-              </xsl:when>
-              <xsl:when test="$mods/mods:originInfo[not(@eventType) or @eventType='publication']/mods:dateIssued[@encoding='w3cdtf' and not(@point)]">
-                <xsl:apply-templates mode="mods.datePublished" select="$mods/mods:originInfo[not(@eventType) or @eventType='publication']/mods:dateIssued[@encoding='w3cdtf']" />
-              </xsl:when>
-            </xsl:choose>
-          </xsl:when>
-          <xsl:when test="$mods/mods:relatedItem/mods:originInfo[not(@eventType) or @eventType='publication']/mods:dateIssued[@encoding='w3cdtf']"><xsl:apply-templates mode="mods.datePublished" select="$mods/mods:relatedItem/mods:originInfo[not(@eventType) or @eventType='publication']/mods:dateIssued[@encoding='w3cdtf']" />
-          </xsl:when>
-        </xsl:choose>
-      </xsl:variable>
-
-      <xsl:variable name="firstDate">
-        <xsl:for-each select="$mods/mods:originInfo[not(@eventType) or @eventType='publication']/mods:dateIssued[@encoding='w3cdtf']">
-          <xsl:sort data-type="number" select="count(ancestor::mods:originInfo[not(@eventType) or @eventType='publication'])" />
-          <xsl:if test="position()=1">
-            <xsl:value-of select="." />
-          </xsl:if>
-        </xsl:for-each>
-      </xsl:variable>
 
       <div id="badges">
         <xsl:copy-of select="document(concat('xslStyle:badges/mir-badges-solr:notnull:solr:q=id%3A', $objectID))" />
