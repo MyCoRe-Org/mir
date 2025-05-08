@@ -1,0 +1,29 @@
+{
+  "name": "js",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "vite build",
+    "lint": "eslint --max-warnings 0",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "eslint": "^9.24.0",
+    "eslint-config-prettier": "^10.1.2",
+    "eslint-plugin-prettier": "^5.2.6",
+    "prettier": "3.0.0",
+    "rollup": "^2.25.0",
+    "rollup-plugin-external-globals": "^0.13.0",
+    "typescript": "^5.7.2",
+    "typescript-eslint": "^8.30.1",
+    "vite": "^6.0.3",
+    "vite-plugin-eslint": "^1.8.1"
+  }
+}
+
