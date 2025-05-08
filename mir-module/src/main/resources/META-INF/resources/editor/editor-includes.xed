@@ -1958,37 +1958,53 @@
     </div>
   </xed:template>
 
-  <xed:template id="openAIRE">
-    <fieldset id="open-aire_box">
+  <!--
+    TODO delete i18n 
+    mir.project.grantID
+    mir.project.sponsor.programmID
+    mir.project.sponsor.organisationID
+    mir.help.project.grant
+    mir.help.project.acronym
+  -->
+  <xed:template id="fundingReference.repeated">
+    <fieldset id="fundingInfoBox">
       <legend class="mir-fieldset-legend">
-        <xed:output i18n="mir.project.information" />
+        <xed:output i18n="mir.editor.fundingReference" />
       </legend>
-      <div class="mir-fieldset-content mir-openAIRE-container">
-        <mir:textfield.nobind id="name" label="mir.project.name" help-text="{i18n:mir.help.project.name}" autocomplete="off" />
-        <mir:textfield.nobind id="acronym" label="mir.project.acronym" help-text="{i18n:mir.help.project.acronym}" autocomplete="off" />
-        <div class="mir-form-group row">
-          <label class="col-md-3 col-form-label text-end form-label" />
-          <div class="col-md-6">
-            <div class="row">
-              <div class="col-md-4">
-                <input type="text" class="form-control inputWarning" name="" placeholder="{i18n:mir.project.grantID}" />
-              </div>
-              <div class="col-md-4">
-                <input type="text" class="form-control inputWarning" name="" placeholder="{i18n:mir.project.sponsor.programmID}" />
-              </div>
-              <div class="col-md-4">
-                <input type="text" class="form-control inputWarning" name="" placeholder="{i18n:mir.project.sponsor.organisationID}" />
-              </div>
+      <xed:repeat xpath="mods:extension[@type='datacite-funding']/resource[@xsi:schemaLocation='http://datacite.org/schema/kernel-4 http://schema.datacite.org/meta/kernel-4.3/metadata.xsd']/fundingReferences/fundingReference">
+        <div class="mir-fieldset-content mir-funding-reference-container">
+          <div class="mir-form-group row">
+            <label class="col-md-3 col-form-label text-end form-label">
+              <xed:output i18n="mir.editor.fundingReference.funderType" />
+            </label>
+            <div class="col-md-6">
+              <select class="form-control form-control-inline form-select">
+                <option value="">
+                  <xed:output i18n="mir.title.type.main" />
+                </option>
+                <option value="translated">
+                  <xed:output i18n="mir.title.type.translated" />
+                </option>
+                <option value="alternative">
+                  <xed:output i18n="mir.title.type.alternative" />
+                </option>
+                <option value="abbreviated">
+                  <xed:output i18n="mir.title.type.abbreviated" />
+                </option>
+                <option value="uniform">
+                  <xed:output i18n="mir.title.type.uniform" />
+                </option>
+              </select>
             </div>
+            <mir:help-pmud help-text="{i18n:mir.help.title.complex}" pmud="true" />
           </div>
-          <mir:help-pmud help-text="{i18n:mir.help.project.grant}" pmud="false" />
+          <mir:textfield xpath="funderName" label="mir.editor.fundingReference.funderName"/>
+          <mir:textfield xpath="funderIdentifier" label="mir.editor.fundingReference.funderIdentifier"/>
+          <mir:textfield xpath="awardNumber" label="mir.editor.fundingReference.awardNumber"/>
+          <mir:textfield xpath="awardTitle" label="mir.editor.fundingReference.awardTitle"/>
         </div>
-        <xed:bind xpath="mods:openAireID">
-          <input type="hidden" />
-        </xed:bind>
-      </div>
+      </xed:repeat>
     </fieldset>
-    <script type="text/javascript" src="{$WebApplicationBaseURL}js/mir/openaire.min.js" />
   </xed:template>
 
   <xed:template id="comment">
