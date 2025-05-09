@@ -18,12 +18,10 @@ import java.util.stream.Collectors;
 
 /**
  * A JAX-RS resource that serves a JSON file containing MIME type mappings.
- * <p>
+ *
  * The path to the mapping file is configured using the property key
  * {@code MIR.Mimetype.Mapping.List.Filename} in the MyCoRe configuration.
- * </p>
  *
- * <p>
  * This resource is accessible via the endpoint:
  * <pre>{@code
  *   GET /rsc/mimetypeMappingList/get
@@ -31,9 +29,7 @@ import java.util.stream.Collectors;
  * }</pre>
  * It returns the content of the configured JSON file or an appropriate HTTP
  * error status if the file is not found or cannot be read.
- * </p>
  *
- * <p>
  * Example response on success:
  * <pre>{@code
  *   HTTP/1.1 200 OK
@@ -46,10 +42,7 @@ import java.util.stream.Collectors;
  *     ...
  *   }
  * }</pre>
- * </p>
- *
  */
-
 @Path("mimetypeMappingList")
 @MCRStaticContent
 public class MimetypeMappingResource {
