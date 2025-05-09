@@ -1975,33 +1975,78 @@
         <div class="mir-fieldset-content mir-funding-reference-container">
           <div class="mir-form-group row">
             <label class="col-md-3 col-form-label text-end form-label">
-              <xed:output i18n="mir.editor.fundingReference.funderType" />
+              <xed:output i18n="mir.editor.fundingReference.funderName" />
             </label>
             <div class="col-md-6">
-              <select class="form-control form-control-inline form-select">
-                <option value="">
-                  <xed:output i18n="mir.title.type.main" />
-                </option>
-                <option value="translated">
-                  <xed:output i18n="mir.title.type.translated" />
-                </option>
-                <option value="alternative">
-                  <xed:output i18n="mir.title.type.alternative" />
-                </option>
-                <option value="abbreviated">
-                  <xed:output i18n="mir.title.type.abbreviated" />
-                </option>
-                <option value="uniform">
-                  <xed:output i18n="mir.title.type.uniform" />
-                </option>
-              </select>
+              <div class="row">
+                <div class="col">
+                  <select class="form-control form-control-inline form-select">
+                    <option value="">
+                      <xed:output i18n="mir.select" />
+                    </option>
+                    <option value="dfg">
+                      <xed:output i18n="mir.editor.fundingReference.funderType.dfg" />
+                    </option>
+                    <option value="openAIRE">
+                      <xed:output i18n="mir.editor.fundingReference.funderType.openAIRE" />
+                    </option>
+                    <option value="other">
+                      <xed:output i18n="mir.editor.fundingReference.funderType.other" />
+                    </option>
+                  </select>
+                </div>
+                <div class="col-8 d-none ps-0">
+                  <input type="text" class="form-control" />
+                </div>
+              </div>
             </div>
             <mir:help-pmud help-text="{i18n:mir.help.title.complex}" pmud="true" />
           </div>
-          <mir:textfield xpath="funderName" label="mir.editor.fundingReference.funderName"/>
-          <mir:textfield xpath="funderIdentifier" label="mir.editor.fundingReference.funderIdentifier"/>
-          <mir:textfield xpath="awardNumber" label="mir.editor.fundingReference.awardNumber"/>
-          <mir:textfield xpath="awardTitle" label="mir.editor.fundingReference.awardTitle"/>
+          <div class="mir-form-group row">
+            <label class="col-md-3 col-form-label text-end form-label">
+              <xed:output i18n="mir.editor.fundingReference.funderIdentifier" />
+            </label>
+            <div class="col-md-6">
+              <div class="row">
+                <div class="col-md-4">
+                  <select class="form-control form-control-inline form-select">
+                    <option value="">
+                      <xed:output i18n="mir.select" />
+                    </option>
+                    <option value="crossref">
+                      <xed:output i18n="mir.editor.fundingReference.funderIdentifier.crossref" />
+                    </option>
+                    <option value="grid">
+                      <xed:output i18n="mir.editor.fundingReference.funderIdentifier.grid" />
+                    </option>
+                    <option value="isni">
+                      <xed:output i18n="mir.editor.fundingReference.funderIdentifier.isni" />
+                    </option>
+                    <option value="ror">
+                      <xed:output i18n="mir.editor.fundingReference.funderIdentifier.ror" />
+                    </option>
+                    <option value="other">
+                      <xed:output i18n="mir.editor.fundingReference.funderIdentifier.other" />
+                    </option>
+                  </select>
+                </div>
+                <div class="col-md-8 ps-0">
+                  <input type="text" class="form-control" />
+                </div>
+              </div>
+            </div>
+            <mir:help-pmud help-text="{i18n:mir.help.title.complex}" />
+          </div>
+          <mir:textfield
+            xpath="awardNumber"
+            label="mir.editor.fundingReference.awardNumber"
+            help-text="bla"
+          />
+          <mir:textfield
+            xpath="awardTitle"
+            label="mir.editor.fundingReference.awardTitle"
+            help-text="bla"
+          />
         </div>
       </xed:repeat>
     </fieldset>
