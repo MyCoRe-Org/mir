@@ -1,0 +1,50 @@
+{
+  "PDF": {
+    "icon": "fa-file-pdf",
+    "mimeTypes": []
+  },
+  "Archive": {
+    "icon": "fa-file-archive",
+    "mimeTypes": []
+  },
+  "Image": {
+    "icon": "fa-file-image",
+    "mimeTypes": []
+  },
+  "Text": {
+    "icon": "fa-file-alt",
+    "mimeTypes": []
+  },
+  "Code": {
+    "icon": "fa-file-code",
+    "mimeTypes": ["application/vnd.wolfram.mathematica.package"]
+  },
+  "Audio": {
+    "icon": "fa-file-audio",
+    "mimeTypes": []
+  },
+  "Video": {
+    "icon": "fa-file-video",
+    "mimeTypes": []
+  },
+  "Word": {
+    "icon": "fa-file-word",
+    "mimeTypes": []
+  },
+  "Excel": {
+    "icon": "fa-file-excel",
+    "mimeTypes": []
+  },
+  "Powerpoint": {
+    "icon": "fa-file-powerpoint",
+    "mimeTypes": []
+  },
+  "Database": {
+    "icon": "fa-database",
+    "mimeTypes": []
+  },
+  "_default": {
+    "icon": "fa-file",
+    "mimeTypes": []
+  }
+}

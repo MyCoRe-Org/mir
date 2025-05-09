@@ -1,8 +1,117 @@
 (function() {
+
+	let iconsMapping = null;
+
+	/**
+	 * @typedef {Object} FileTypeDefinition
+	 * @property {string} icon - Font Awesome icon class
+	 * @property {string[]} mimeTypes - Array of associated MIME types
+	 */
+
+	/**
+	 * Mapping of file categories to their icons and optional MIME types.
+	 * Used as a fallback or static default mapping if dynamic loading fails.
+	 *
+	 * @type {Object.<string, FileTypeDefinition>}
+	 */
+	const fileIcons = {
+		PDF: {
+			icon: "fa-file-pdf",
+			mimeTypes: []
+		},
+		Archive: {
+			icon: "fa-file-archive",
+			mimeTypes: []
+		},
+		Image: {
+			icon: "fa-file-image",
+			mimeTypes: []
+		},
+		Text: {
+			icon: "fa-file-alt",
+			mimeTypes: []
+		},
+		Code: {
+			icon: "fa-file-code",
+			mimeTypes: ["application/vnd.wolfram.mathematica.package"]
+		},
+		Audio: {
+			icon: "fa-file-audio",
+			mimeTypes: []
+		},
+		Video: {
+			icon: "fa-file-video",
+			mimeTypes: []
+		},
+		Word: {
+			icon: "fa-file-word",
+			mimeTypes: []
+		},
+		Excel: {
+			icon: "fa-file-excel",
+			mimeTypes: []
+		},
+		Powerpoint: {
+			icon: "fa-file-powerpoint",
+			mimeTypes: []
+		},
+		Database: {
+			icon: "fa-database",
+			mimeTypes: []
+		},
+		_default: {
+			icon: "fa-file",
+			mimeTypes: []
+		}
+	};
+
+
 	$(document).ready(function() {
+
+		/**
+		 * Loads the MIME type to icon mapping from the backend.
+		 *
+		 * Falls back to default mapping (`fileIcons`) if the request fails.
+		 * * @async
+		 *  * @function loadMimetypeMapping
+		 *  * @returns {Promise<Object>} Resolves to a valid mapping object.
+		 *  * @throws Will re-throw on network or response errors.
+		 *  */
+		async function loadMimetypeMapping() {
+			try {
+				const response = await fetch(webApplicationBaseURL + "rsc/mimetypeMappingList/get", {
+					method: "GET",
+					headers: {
+						"Accept": "application/json",
+						"Content-Type": "application/json; charset=utf-8"
+					}
+				});
+
+				if (!response.ok) {
+					throw new Error(`HTTP error! status: ${response.status}`);
+				}
+
+				return await response.json();
+			} catch (error) {
+				console.error('Error loading mimetype mapping:', error);
+				throw error;
+			}
+		}
+
+		// Load the mapping and handle fallback
+		loadMimetypeMapping()
+			.then(mapping => {
+				iconsMapping = mapping;
+			})
+			.catch(error => {
+				iconsMapping = fileIcons
+				console.warn("Fallback to default mapping due to error:", error);
+			});
+
+
 		if ($(".file_box_files").length > 0) {
 			Handlebars.registerHelper('is', function(a, b, options) {
-				if (a == b) {
+				if (a === b) {
 					return options.fn(this);
 				}
 				return options.inverse(this);
@@ -14,7 +123,7 @@
 				return options.inverse(this);
 			});
 			Handlebars.registerHelper('isNot', function(a, b, options) {
-				if (a != b) {
+				if (a !== b) {
 					return options.fn(this);
 				}
 				return options.inverse(this);
@@ -32,7 +141,7 @@
                 return options.inverse(this);
             });
 			Handlebars.registerHelper('notContains', function(a, b, options) {
-				if (a.indexOf(b) == -1) {
+				if (a.indexOf(b) === -1) {
 					return options.fn(this);
 				}
 				return options.inverse(this);
@@ -50,7 +159,7 @@
 			});
 			Handlebars.registerHelper("formatDate", function(input) {
 				var lang = $("html").attr("lang");
-				if (lang == "en") {
+				if (lang === "en") {
 					return moment(input).format("YYYY-MM-DD");
 				}
 				return moment(input).format('DD.MM.YYYY');
@@ -209,66 +318,6 @@
 		var objID, deriID, mainDoc, fileBox, aclWriteDB, aclDeleteDB, derivateJson, defaultTemplate, templates = new Array(), urn, hbs = new Array(), numPerPage, page;
 		var i18nKeys = {};
 
-		/**
-		 * @typedef {Object} FileTypeDefinition
-		 * @property {string} icon - Font Awesome icon class
-		 * @property {string} extensions - Pipe-separated list of file extensions
-		 */
-
-		/**
-		 * Mapping of file categories to their icons and extensions
-		 * @type {Object.<string, FileTypeDefinition>}
-		 */
-		const fileIcons = {
-			"PDF": {
-				icon: "fa-file-pdf",
-				extensions: "pdf|ps"
-			},
-			"Archive": {
-				icon: "fa-file-archive",
-				extensions: "zip|tar|rar|bz|xs|gz|bz2|xz|7z|tgz|tbz2"
-			},
-			"Image": {
-				icon: "fa-file-image",
-				extensions: "tif|tiff|gif|jpeg|jpg|jif|jfif|jp2|jpx|j2k|j2c|fpx|pcd|png|webp|bmp|svg|ico"
-			},
-			"Text": {
-				icon: "fa-file-alt",
-				extensions: "txt|rtf|md|markdown|log"
-			},
-			"Audio": {
-				icon: "fa-file-audio",
-				extensions: "wav|wma|mp3|ogg|flac|aac|m4a|mid|midi"
-			},
-			"Video": {
-				icon: "fa-file-video",
-				extensions: "mp4|f4v|flv|rm|avi|wmv|mov|mkv|webm|mpeg|mpg|3gp"
-			},
-			"Code": {
-				icon: "fa-file-code",
-				extensions: "css|scss|less|htm|html|xhtml|php|phtml|c|h|cpp|hpp|cc|hh|bat|cmd|sh|bash|pas|java|class|jar|m|mm|swift|go|rs|py|pyc|rb|pl|pm|js|jsx|ts|tsx|cs|vb|vbs|f|for|f90|lua|d|r|scala|groovy|kt|kts|clj|cljs|cljc|edn|hs|lhs|erl|hrl|ex|exs|ml|mli|sql|json|xml|yml|yaml|toml|ini|cfg|conf|properties|gradle|pom|lock|gitignore|dockerfile|makefile|cmake|proto|thrift|avdl|graphql|gql"
-			},
-			"Word": {
-				icon: "fa-file-word",
-				extensions: "doc|docx|dot|dotx|docm|dotm|odt|ott"
-			},
-			"Excel": {
-				icon: "fa-file-excel",
-				extensions: "xls|xlt|xlsx|xltx|xlsm|xltm|csv|ods|ots"
-			},
-			"Powerpoint": {
-				icon: "fa-file-powerpoint",
-				extensions: "ppt|pot|pptx|potx|ppsx|sldx|odp|otp"
-			},
-			"Database": {
-				icon: "fa-database",
-				extensions: "db|sqlite|sqlite3|mdb|accdb|dbf"
-			},
-			"_default": {
-				icon: "fa-file"
-			}
-		};
-
 		// functions
 		function getDerivate(token) {
 			$.ajax({
@@ -345,7 +394,7 @@
 		}
 
 		function getTemplate(json, templateName, cb) {
-			if (hbs[templateName] == undefined) {
+			if (hbs[templateName] === undefined) {
 				$.ajax({
 					url: webApplicationBaseURL + "hbs/" + templateName,
 					type : "GET",
@@ -354,7 +403,7 @@
 						if (templates[templateName] === undefined) {
 							templates[templateName] = Handlebars.compile(hbs[templateName]);
 						}
-						if (templateName == "derivate-fileList.hbs") {
+						if (templateName === "derivate-fileList.hbs") {
 							defaultTemplate = templates[templateName];
 						}
 
@@ -382,11 +431,11 @@
 			if (json.path === path) {
 				return json;
 			}
-			if (json.children != undefined) {
+			if (json.children !== undefined) {
 				for (var i = 0; i < json.children.length; i++) {
 					var child = json.children[i];
 					var returnJson = getFolder(child, path);
-					if (returnJson != undefined) {
+					if (returnJson !== undefined) {
 						return returnJson;
 					}
 				}
@@ -395,7 +444,7 @@
 		}
 
 		function setPath(path) {
-			if (fileBox.data("path") != path)
+			if (fileBox.data("path") !== path)
 				page = 1;
 			fileBox.data("path", path);
 		}
@@ -416,7 +465,7 @@
 
 			var fileList = template(newJson);
 			$(fileBox).html("");
-			if (json.path != "/") {
+			if (json.path !== "/") {
 				buildBreadcrumbs(json.path);
 			}
 			$(fileBox).append(fileList);
@@ -450,7 +499,7 @@
 		function buildBreadcrumbs(path) {
 			$(fileBox).append('<div class="col-12"><div class="file_set file"><div class="file_box_breadcrumbs"></div></div>');
 			var currentPath = path;
-			while (currentPath != "/") {
+			while (currentPath !== "/") {
 				var currentElm = getCurrentElm(currentPath);
 				$(fileBox).find(".file_box_breadcrumbs").prepend(
 						'<span class="file_name derivate_folder"><a href="#" data-path="' + currentPath + '">' + currentElm + '</a></span>');
@@ -465,7 +514,7 @@
 		}
 
 		function buildPagination(children) {
-			var pageCount = Math.floor(children.length / numPerPage) + (children.length % numPerPage != 0 ? 1 : 0);
+			var pageCount = Math.floor(children.length / numPerPage) + (children.length % numPerPage !== 0 ? 1 : 0);
 			var start = ((page || 1) - 1) * numPerPage;
 			var end = start + numPerPage;
 			(end > children.length) && (end = children.length);
@@ -482,16 +531,16 @@
 
 		function sortChildren(children, mainDoc) {
 			return children.sort(function(a, b) {
-				if (a.path == "/" + mainDoc) {
+				if (a.path === "/" + mainDoc) {
 					return -1;
 				}
-				if (b.path == "/" + mainDoc) {
+				if (b.path === "/" + mainDoc) {
 					return 1;
 				}
-				if (a.type == "directory" && b.type != "directory") {
+				if (a.type === "directory" && b.type !== "directory") {
 					return -1;
 				}
-				if (b.type == "directory" && a.type != "directory") {
+				if (b.type === "directory" && a.type !== "directory") {
 					return 1;
 				}
 				return a.name.localeCompare(b.name);
@@ -510,8 +559,8 @@
 
 		function getParentPath(path) {
 			path = path.trim();
-			if (path != "/" && path != "") {
-				if (path.lastIndexOf("/") == path.length - 1) {
+			if (path !== "/" && path !== "") {
+				if (path.lastIndexOf("/") === path.length - 1) {
 					path = path.substring(0, path.length - 1);
 				}
 				return path.substring(0, path.lastIndexOf("/") + 1);
@@ -519,7 +568,7 @@
 		}
 
 		function getCurrentElm(path) {
-			if (path.lastIndexOf("/") == path.length - 1) {
+			if (path.lastIndexOf("/") === path.length - 1) {
 				path = path.substring(0, path.length - 1);
 			}
 			return path.substr(path.lastIndexOf("/") + 1);
@@ -551,7 +600,7 @@
 
 		function changeVideo(elm) {
 			var vID = getVideoID($(elm).attr("data-deriid"), $(elm).attr("data-name"));
-			if (vID != undefined && vID != "") {
+			if (vID !== undefined && vID !== "") {
 				$("#videoChooser").val(vID);
 				$("#videoChooser").change();
 			}
@@ -560,31 +609,102 @@
 		function getVideoID(vDeriID, name) {
 			if ($("#videoChooser").length > 0) {
 				return $("#videoChooser optgroup[label='" + vDeriID + "'] > option").filter(function() {
-					return $(this).html() == name;
+					return $(this).html() === name;
 				}).val();
 			}
 			return "";
 		}
 
 		/**
-		 * Gets file type information (icon or label)
-		 * @param {string} ext - File extension (e.g., 'pdf', 'mp3')
-		 * @param {'icon'|'label'} property - What to return ('icon' or 'label')
-		 * @returns {string} - Font Awesome class or category label
-		 * @private
+		 * Strips any charset or additional parameters from the content-type string.
+		 *
+		 * @param {string} [contentType=""] - The full Content-Type string (e.g., "text/plain; charset=utf-8")
+		 * @returns {string} - Clean MIME type without parameters (e.g., "text/plain")
 		 */
-		function getFileType(ext, property) {
-			ext = ext.toLowerCase().trim();
-			for (var label in fileIcons) {
-				if (label !== "_default") {
-					var extensions = fileIcons[label].extensions.split('|');
-					if (extensions.includes(ext)) {
-						// For label, return the key (label) itself
-						return property === 'label' ? label : fileIcons[label][property];
-					}
+		function stripCharset(contentType = "") {
+			return contentType.split(";")[0].trim();
+		}
+
+		/**
+		 * Returns the icon class for the given MIME type.
+		 *
+		 * Priority:
+		 * 1. Exact match from loaded `iconsMapping`
+		 * 2. Heuristic fallback via `getHeuristicType()`
+		 * 3. Default icon
+		 *
+		 * @param {string} contentType - MIME type (e.g., "application/pdf")
+		 * @returns {string} Font Awesome icon class (e.g., "fa-file-pdf")
+		 */
+		function getFileIcon(contentType = "") {
+			const cleanType = stripCharset(contentType?.toLowerCase() || "");
+			let typeKey = "";
+
+			// Exact match
+			for (const [key, value] of Object.entries(iconsMapping)) {
+				if (value.mimeTypes?.includes(cleanType)) {
+					typeKey = key;
+					break;
 				}
 			}
-			return property === 'label' ? "File" : fileIcons["_default"].icon;
+
+			// Heuristic fallback
+			if (!typeKey) {
+				typeKey = getHeuristicType(cleanType);
+			}
+
+			return iconsMapping[typeKey]?.icon || iconsMapping._default.icon;
+		}
+
+
+
+		// for the test of differnt formats can you use this link: https://www.filesampleshub.com/format
+		/**
+		 * Heuristic mapping for MIME types not explicitly listed in iconsMapping.
+		 *
+		 * @param {string} contentType - Clean MIME type string
+		 * @returns {string} The determined category key from fileIcons
+		 */
+		function getHeuristicType(contentType = "") {
+			if (contentType === "text/plain") {
+				return "Text";
+			}
+
+			if (contentType.startsWith("text/")) {
+				const subtype = contentType.split("/")[1];
+				const codeSubtypes = [
+					"markdown", "html", "xml", "css", "javascript", "typescript",
+					"x-java-source", "x-java", "java", "ms-java", "x-python", "x-c", "x-c++", "x-csharp",
+					"x-ruby", "x-php", "x-perl", "x-shellscript", "x-sql", "x-scala", "x-go"
+				];
+				if (codeSubtypes.includes(subtype)) {
+					return "Code";
+				}
+			}
+
+			if (contentType.startsWith("application/")) {
+				const subtype = contentType.split("/")[1];
+				const codeAppTypes = [
+					"javascript", "json", "xml", "xhtml+xml", "rdf+xml",
+					"x-httpd-php", "x-sh", "x-java-source", "x-java", "java", "ms-java", "x-python-code",
+					"x-csharp", "x-perl", "x-ruby", "x-latex", "yaml", "rdf+xml"
+				];
+				if (codeAppTypes.includes(subtype)) {
+					return "Code";
+				}
+			}
+
+			if (contentType.startsWith("image/")) return "Image";
+			if (contentType.startsWith("audio/")) return "Audio";
+			if (contentType.startsWith("video/")) return "Video";
+			if (contentType.includes("pdf")) return "PDF";
+			if (/zip|tar|x-7z-compressed|vnd\.rar/.test(contentType)) return "Archive";
+			if (contentType.includes("word")) return "Word";
+			if (contentType.includes("excel")) return "Excel";
+			if (contentType.includes("powerpoint")) return "Powerpoint";
+			if (contentType.includes("sql") || contentType.includes("db")) return "Database";
+
+			return "";
 		}
 
 		// init
@@ -621,7 +741,7 @@
 						var path = fileBox.data("path");
 						page = $this.data("page");
 
-						if (path != "/") {
+						if (path !== "/") {
 							openFolder(path);
 						} else {
 							useTemplate(derivateJson);
@@ -648,31 +768,44 @@
 					return text;
 				});
 
+
 				/**
-				 * Handlebars helper to get file icon class
+				 * Handlebars helper to return a file icon class based on the MIME type.
+				 *
 				 * @function getFileIcon
 				 * @memberof Handlebars.helpers
-				 * @param {string} ext - File extension
-				 * @returns {string} Font Awesome icon class
-				 * @example
-				 * {{getFileIcon "pdf"}} → "fa-file-pdf"
+				 * @param {string} contentType - MIME type (e.g., "image/png")
+				 * @returns {string} Font Awesome icon class (e.g., "fa-file-image")
 				 */
-				Handlebars.registerHelper("getFileIcon", function(ext) {
-					return getFileType(ext, 'icon');
+				Handlebars.registerHelper("getFileIcon", function(contentType) {
+					return getFileIcon(contentType);
 				});
 
 				/**
-				 * Handlebars helper to get file type label
+				 * Handlebars helper to get file category label based on the MIME type.
+				 * Note: Not reliable in async or repeated use unless adapted per item.
+				 *
 				 * @function getFileLabel
 				 * @memberof Handlebars.helpers
-				 * @param {string} ext - File extension
-				 * @returns {string} File type label
-				 * @example
-				 * {{getFileLabel "pdf"}} → "PDF"
+				 * @param {string} contentType - MIME type
+				 * @returns {string} File type label (e.g., "Image", "PDF")
 				 */
-				Handlebars.registerHelper("getFileLabel", function(ext) {
-					return getFileType(ext, 'label');
+				Handlebars.registerHelper("getFileLabel", function(contentType) {
+					const cleanType = stripCharset(contentType?.toLowerCase() || "");
+					let typeKey = "";
+
+					for (const [key, value] of Object.entries(iconsMapping)) {
+						if (value.mimeTypes?.includes(cleanType)) {
+							typeKey = key;
+							break;
+						}
+					}
+					if (!typeKey) {
+						typeKey = getHeuristicType(cleanType);
+					}
+					return typeKey;
 				});
+
 
 				if (objID !== undefined && objID !== "" && deriID !== undefined && deriID !== "") {
 					loadI18nKeys($("html").attr("lang"), function () {
