@@ -1967,7 +1967,7 @@
     mir.help.project.acronym
   -->
   <xed:template id="fundingReference.repeated">
-    <fieldset id="fundingInfoBox">
+    <fieldset id="fundingReferenceBox">
       <legend class="mir-fieldset-legend">
         <xed:output i18n="mir.editor.fundingReference" />
       </legend>
@@ -1978,9 +1978,9 @@
               <xed:output i18n="mir.editor.fundingReference.funderName" />
             </label>
             <div class="col-md-6">
-              <div class="row">
+              <div class="row funder-name-select-group">
                 <div class="col">
-                  <select class="form-control form-control-inline form-select">
+                  <select class="form-control form-control-inline form-select funder-name-select">
                     <option value="">
                       <xed:output i18n="mir.select" />
                     </option>
@@ -1995,7 +1995,7 @@
                     </option>
                   </select>
                 </div>
-                <div class="col-8 d-none ps-0">
+                <div class="col-8 d-none ps-0 funder-name-free">
                   <input type="text" class="form-control" />
                 </div>
               </div>
@@ -2050,6 +2050,33 @@
         </div>
       </xed:repeat>
     </fieldset>
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        const fundingGroups = document.querySelectorAll('.funder-name-select-group');
+
+        fundingGroups.forEach(function(group) {
+          const select = group.querySelector('.funder-name-select');
+          const freeInputWrapper = group.querySelector('.funder-name-free');
+
+          function toggleInput() {
+            console.log(select.value);
+            if (select.value === 'other') {
+              freeInputWrapper.classList.remove('d-none');
+            } else {
+              freeInputWrapper.classList.add('d-none');
+              const input = freeInputWrapper.querySelector('input');
+              if (input) input.value = '';
+            }
+          }
+
+          // Initialzustand prüfen
+          toggleInput();
+
+          // Bei Änderung reagieren
+          select.addEventListener('change', toggleInput);
+        });
+      });
+    </script>
   </xed:template>
 
   <xed:template id="comment">
