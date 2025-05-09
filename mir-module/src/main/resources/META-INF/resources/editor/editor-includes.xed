@@ -1971,84 +1971,86 @@
       <legend class="mir-fieldset-legend">
         <xed:output i18n="mir.editor.fundingReference" />
       </legend>
-      <xed:repeat xpath="mods:extension[@type='datacite-funding']/resource[@xsi:schemaLocation='http://datacite.org/schema/kernel-4 http://schema.datacite.org/meta/kernel-4.3/metadata.xsd']/fundingReferences/fundingReference">
-        <div class="mir-fieldset-content mir-funding-reference-container">
-          <div class="mir-form-group row">
-            <label class="col-md-3 col-form-label text-end form-label">
-              <xed:output i18n="mir.editor.fundingReference.funderName" />
-            </label>
-            <div class="col-md-6">
-              <div class="row funder-name-select-group">
-                <div class="col">
-                  <select class="form-control form-control-inline form-select funder-name-select">
-                    <option value="">
-                      <xed:output i18n="mir.select" />
-                    </option>
-                    <option value="dfg">
-                      <xed:output i18n="mir.editor.fundingReference.funderName.dfg" />
-                    </option>
-                    <option value="openAIRE">
-                      <xed:output i18n="mir.editor.fundingReference.funderName.openAIRE" />
-                    </option>
-                    <option value="other">
-                      <xed:output i18n="mir.editor.fundingReference.funderName.other" />
-                    </option>
-                  </select>
-                </div>
-                <div class="col-8 d-none ps-0 funder-name-free">
-                  <input type="text" class="form-control" />
-                </div>
-              </div>
-            </div>
-            <mir:help-pmud help-text="{i18n:mir.editor.fundingReference.funderName.help}" pmud="true" />
-          </div>
-          <div class="mir-form-group row">
-            <label class="col-md-3 col-form-label text-end form-label">
-              <xed:output i18n="mir.editor.fundingReference.identifier" />
-            </label>
-            <div class="col-md-6">
-              <div class="row">
-                <div class="col-md-4">
-                  <select class="form-control form-control-inline form-select">
-                    <option value="">
-                      <xed:output i18n="mir.select" />
-                    </option>
-                    <option value="crossref">
-                      <xed:output i18n="mir.editor.fundingReference.identifier.crossref" />
-                    </option>
-                    <option value="grid">
-                      <xed:output i18n="mir.editor.fundingReference.identifier.grid" />
-                    </option>
-                    <option value="isni">
-                      <xed:output i18n="mir.editor.fundingReference.identifier.isni" />
-                    </option>
-                    <option value="ror">
-                      <xed:output i18n="mir.editor.fundingReference.identifier.ror" />
-                    </option>
-                    <option value="other">
-                      <xed:output i18n="mir.editor.fundingReference.identifier.other" />
-                    </option>
-                  </select>
-                </div>
-                <div class="col-md-8 ps-0">
-                  <input type="text" class="form-control" />
+      <xed:bind xpath="mods:extension[@type='datacite-funding']/resource[@xsi:schemaLocation='http://datacite.org/schema/kernel-4 http://schema.datacite.org/meta/kernel-4.3/metadata.xsd']/fundingReferences">
+      <xed:repeat xpath="fundingReference">
+          <div class="mir-fieldset-content mir-funding-reference-container">
+            <div class="mir-form-group row">
+              <label class="col-md-3 col-form-label text-end form-label">
+                <xed:output i18n="mir.editor.fundingReference.funderName" />
+              </label>
+              <div class="col-md-6">
+                <div class="row funder-name-select-group">
+                  <div class="col">
+                    <select class="form-control form-control-inline form-select funder-name-select">
+                      <option value="">
+                        <xed:output i18n="mir.select" />
+                      </option>
+                      <option value="dfg">
+                        <xed:output i18n="mir.editor.fundingReference.funderName.dfg" />
+                      </option>
+                      <option value="openAIRE">
+                        <xed:output i18n="mir.editor.fundingReference.funderName.openAIRE" />
+                      </option>
+                      <option value="other">
+                        <xed:output i18n="mir.editor.fundingReference.funderName.other" />
+                      </option>
+                    </select>
+                  </div>
+                  <div class="col-8 d-none ps-0 funder-name-free">
+                    <input type="text" class="form-control" />
+                  </div>
                 </div>
               </div>
+              <mir:help-pmud help-text="{i18n:mir.editor.fundingReference.funderName.help}" pmud="true" />
             </div>
-            <mir:help-pmud help-text="{i18n:mir.editor.fundingReference.identifier.help}" />
+            <div class="mir-form-group row">
+              <label class="col-md-3 col-form-label text-end form-label">
+                <xed:output i18n="mir.editor.fundingReference.identifier" />
+              </label>
+              <div class="col-md-6">
+                <div class="row">
+                  <div class="col-md-4">
+                    <select class="form-control form-control-inline form-select">
+                      <option value="">
+                        <xed:output i18n="mir.select" />
+                      </option>
+                      <option value="crossref">
+                        <xed:output i18n="mir.editor.fundingReference.identifier.crossref" />
+                      </option>
+                      <option value="grid">
+                        <xed:output i18n="mir.editor.fundingReference.identifier.grid" />
+                      </option>
+                      <option value="isni">
+                        <xed:output i18n="mir.editor.fundingReference.identifier.isni" />
+                      </option>
+                      <option value="ror">
+                        <xed:output i18n="mir.editor.fundingReference.identifier.ror" />
+                      </option>
+                      <option value="other">
+                        <xed:output i18n="mir.editor.fundingReference.identifier.other" />
+                      </option>
+                    </select>
+                  </div>
+                  <div class="col-md-8 ps-0">
+                    <input type="text" class="form-control" />
+                  </div>
+                </div>
+              </div>
+              <mir:help-pmud help-text="{i18n:mir.editor.fundingReference.identifier.help}" />
+            </div>
+            <mir:textfield
+              xpath="awardNumber"
+              label="mir.editor.fundingReference.awardNumber"
+              help-text="{i18n:mir.editor.fundingReference.awardNumber.help}"
+            />
+            <mir:textfield
+              xpath="awardTitle"
+              label="mir.editor.fundingReference.awardTitle"
+              help-text="{i18n:mir.editor.fundingReference.awardTitle.help}"
+            />
           </div>
-          <mir:textfield
-            xpath="awardNumber"
-            label="mir.editor.fundingReference.awardNumber"
-            help-text="mir.editor.fundingReference.awardNumber.help"
-          />
-          <mir:textfield
-            xpath="awardTitle"
-            label="mir.editor.fundingReference.awardTitle"
-            help-text="mir.editor.fundingReference.awardTitle.help"
-          />
-        </div>
-      </xed:repeat>
+        </xed:repeat>
+      </xed:bind>
     </fieldset>
     <script>
       document.addEventListener('DOMContentLoaded', function () {
