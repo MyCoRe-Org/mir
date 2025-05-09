@@ -1972,34 +1972,33 @@
         <xed:output i18n="mir.editor.fundingReference" />
       </legend>
       <xed:bind xpath="mods:extension[@type='datacite-funding']/resource[@xsi:schemaLocation='http://datacite.org/schema/kernel-4 http://schema.datacite.org/meta/kernel-4.3/metadata.xsd']/fundingReferences">
-      <xed:repeat xpath="fundingReference">
+        <xed:repeat xpath="fundingReference">
           <div class="mir-fieldset-content mir-funding-reference-container">
+            <div class="mir-form-group row award-title-container">
+              <label class="col-md-3 col-form-label text-end form-label">
+                <xed:output i18n="mir.editor.fundingReference.awardTitle" />
+              </label>
+              <div class="col-md-6">
+                <xed:bind xpath="awardTitle">
+                  <input class="form-control" autocomplete="off" />
+                </xed:bind>
+                <ul class="autocomplete-list dropdown-menu w-100" id="suggestions"></ul>
+              </div>
+              <mir:help-pmud help-text="{i18n:mir.editor.fundingReference.awardTitle.help}" />
+            </div>
+            <mir:textfield
+              xpath="awardNumber"
+              label="mir.editor.fundingReference.awardNumber"
+              help-text="{i18n:mir.editor.fundingReference.awardNumber.help}"
+            />
             <div class="mir-form-group row">
               <label class="col-md-3 col-form-label text-end form-label">
                 <xed:output i18n="mir.editor.fundingReference.funderName" />
               </label>
               <div class="col-md-6">
-                <div class="row funder-name-select-group">
-                  <div class="col">
-                    <select class="form-control form-control-inline form-select funder-name-select">
-                      <option value="">
-                        <xed:output i18n="mir.select" />
-                      </option>
-                      <option value="dfg">
-                        <xed:output i18n="mir.editor.fundingReference.funderName.dfg" />
-                      </option>
-                      <option value="openAIRE">
-                        <xed:output i18n="mir.editor.fundingReference.funderName.openAIRE" />
-                      </option>
-                      <option value="other">
-                        <xed:output i18n="mir.editor.fundingReference.funderName.other" />
-                      </option>
-                    </select>
-                  </div>
-                  <div class="col-8 d-none ps-0 funder-name-free">
-                    <input type="text" class="form-control" />
-                  </div>
-                </div>
+                <xed:bind xpath="funderName">
+                  <input type="text" class="form-control" />
+                </xed:bind>
               </div>
               <mir:help-pmud help-text="{i18n:mir.editor.fundingReference.funderName.help}" pmud="true" />
             </div>
@@ -2008,74 +2007,102 @@
                 <xed:output i18n="mir.editor.fundingReference.identifier" />
               </label>
               <div class="col-md-6">
-                <div class="row">
-                  <div class="col-md-4">
-                    <select class="form-control form-control-inline form-select">
-                      <option value="">
-                        <xed:output i18n="mir.select" />
-                      </option>
-                      <option value="crossref">
-                        <xed:output i18n="mir.editor.fundingReference.identifier.crossref" />
-                      </option>
-                      <option value="grid">
-                        <xed:output i18n="mir.editor.fundingReference.identifier.grid" />
-                      </option>
-                      <option value="isni">
-                        <xed:output i18n="mir.editor.fundingReference.identifier.isni" />
-                      </option>
-                      <option value="ror">
-                        <xed:output i18n="mir.editor.fundingReference.identifier.ror" />
-                      </option>
-                      <option value="other">
-                        <xed:output i18n="mir.editor.fundingReference.identifier.other" />
-                      </option>
-                    </select>
+                <xed:bind xpath="funderIdentifier">
+                  <div class="row">
+                    <div class="col-md-4">
+                      <xed:bind xpath="@funderIdentifierType">
+                        <select class="form-control form-control-inline form-select">
+                          <option value="">
+                            <xed:output i18n="mir.select" />
+                          </option>
+                          <option value="crossref">
+                            <xed:output i18n="mir.editor.fundingReference.identifier.crossref" />
+                          </option>
+                          <option value="grid">
+                            <xed:output i18n="mir.editor.fundingReference.identifier.grid" />
+                          </option>
+                          <option value="isni">
+                            <xed:output i18n="mir.editor.fundingReference.identifier.isni" />
+                          </option>
+                          <option value="ror">
+                            <xed:output i18n="mir.editor.fundingReference.identifier.ror" />
+                          </option>
+                          <option value="other">
+                            <xed:output i18n="mir.editor.fundingReference.identifier.other" />
+                          </option>
+                        </select>
+                      </xed:bind>
+                    </div>
+                    <div class="col-md-8 ps-0">
+                      <input type="text" class="form-control" />
+                    </div>
                   </div>
-                  <div class="col-md-8 ps-0">
-                    <input type="text" class="form-control" />
-                  </div>
-                </div>
+                </xed:bind>
               </div>
               <mir:help-pmud help-text="{i18n:mir.editor.fundingReference.identifier.help}" />
             </div>
-            <mir:textfield
-              xpath="awardNumber"
-              label="mir.editor.fundingReference.awardNumber"
-              help-text="{i18n:mir.editor.fundingReference.awardNumber.help}"
-            />
-            <mir:textfield
-              xpath="awardTitle"
-              label="mir.editor.fundingReference.awardTitle"
-              help-text="{i18n:mir.editor.fundingReference.awardTitle.help}"
-            />
           </div>
         </xed:repeat>
       </xed:bind>
     </fieldset>
+
     <script>
-      document.addEventListener('DOMContentLoaded', function () {
-        const fundingGroups = document.querySelectorAll('.funder-name-select-group');
+      function setupAutocomplete(input, fetchData, buildItemText, onItemSelected) {
+        const container = document.createElement("div");
+        const dropdownContainer = document.createElement('div');
+        dropdownContainer.classList.add('dropdown-menu', 'position-absolute');
+        dropdownContainer.style.display = 'none';
+        dropdownContainer.style.width = `${input.offsetWidth}px`;
 
-        fundingGroups.forEach(function(group) {
-          const select = group.querySelector('.funder-name-select');
-          const freeInputWrapper = group.querySelector('.funder-name-free');
-
-          function toggleInput() {
-            console.log(select.value);
-            if (select.value === 'other') {
-              freeInputWrapper.classList.remove('d-none');
-            } else {
-              freeInputWrapper.classList.add('d-none');
-              const input = freeInputWrapper.querySelector('input');
-              if (input) input.value = '';
-            }
+        input.parentNode.appendChild(dropdownContainer);
+        input.addEventListener("input", async () => {
+          const val = input.value.toLowerCase();
+          dropdownContainer.innerHTML = '';
+          dropdownContainer.style.display = 'none';
+          if (!val) return;
+          const data = await fetchData(val);
+          data.forEach(match => {
+            const item = document.createElement('li');
+            item.classList.add('dropdown-item');
+            item.textContent = buildItemText(match);
+            item.addEventListener("click", () => {
+              dropdownContainer.style.display = 'none';
+              if (onItemSelected) {
+                onItemSelected(match);
+              }
+            });
+            input.parentNode.style.position = 'relative';
+            dropdownContainer.appendChild(item);
+          });
+          dropdownContainer.style.display = 'block';
+        });
+        document.addEventListener("click", (e) => {
+          if (!input.contains(e.target) &amp;&amp; !dropdownContainer.contains(e.target)) {
+            dropdownContainer.style.display = 'none';
           }
+        });
+      }
 
-          // Initialzustand prüfen
-          toggleInput();
+      function buildItemText(item) {
+        return item;
+      }
 
-          // Bei Änderung reagieren
-          select.addEventListener('change', toggleInput);
+      function fetchSuggestions(query) {
+        return new Promise((resolve) => {
+          setTimeout(() => {
+            const data = [
+              "Apfel", "Banane", "Birne", "Brombeere", "Avocado", "Ananas", "Aprikose"
+            ].filter(item => item.toLowerCase().startsWith(query.toLowerCase()));
+            resolve(data); // Asynchron zurückgeben
+          }, 500);
+        });
+      }
+
+      document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('.award-title-container input').forEach(input => {
+          setupAutocomplete(input, fetchSuggestions, buildItemText, (item) => {
+            input.value = item
+          });
         });
       });
     </script>
