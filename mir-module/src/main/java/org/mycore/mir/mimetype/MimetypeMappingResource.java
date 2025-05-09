@@ -17,19 +17,39 @@ import java.nio.charset.StandardCharsets;
 import java.util.stream.Collectors;
 
 /**
- * Jersey resource that provides MIME type mappings as a JSON object.
- * The mapping file path is configured via the property key {@code MIR.Mimetype.Mapping.List.Filename}.
- *
+ * A JAX-RS resource that serves a JSON file containing MIME type mappings.
  * <p>
- * Example usage:
- * <pre>
- *   GET /rsc/mimetypeMappingList/get
- *   Accept: application/json
- * </pre>
+ * The path to the mapping file is configured using the property key
+ * {@code MIR.Mimetype.Mapping.List.Filename} in the MyCoRe configuration.
  * </p>
  *
- * @see <a href="https://mycore.de">MyCoRe Documentation</a>
+ * <p>
+ * This resource is accessible via the endpoint:
+ * <pre>{@code
+ *   GET /rsc/mimetypeMappingList/get
+ *   Accept: application/json
+ * }</pre>
+ * It returns the content of the configured JSON file or an appropriate HTTP
+ * error status if the file is not found or cannot be read.
+ * </p>
+ *
+ * <p>
+ * Example response on success:
+ * <pre>{@code
+ *   HTTP/1.1 200 OK
+ *   Content-Type: application/json
+ *   {
+ *     "application/pdf": {
+ *       "label": "PDF Document",
+ *       "icon": "fa-file-pdf"
+ *     },
+ *     ...
+ *   }
+ * }</pre>
+ * </p>
+ *
  */
+
 @Path("mimetypeMappingList")
 @MCRStaticContent
 public class MimetypeMappingResource {
