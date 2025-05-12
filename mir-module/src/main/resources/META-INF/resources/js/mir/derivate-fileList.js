@@ -34,7 +34,6 @@
 		Code: {
 			icon: "fa-file-code",
 			mimeTypes: []
-			// mimeTypes: ["application/vnd.wolfram.mathematica.package"]
 		},
 		Audio: {
 			icon: "fa-file-audio",
