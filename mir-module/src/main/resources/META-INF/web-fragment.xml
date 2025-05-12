@@ -107,6 +107,20 @@
     <url-pattern>/servlets/MCRDFGThumbnail/*</url-pattern>
   </servlet-mapping>
 
+  <servlet>
+    <servlet-name>MimeTypeIconMappingConfigHelper</servlet-name>
+    <servlet-class>org.mycore.frontend.servlets.MCRConfigHelperServlet</servlet-class>
+    <init-param>
+      <param-name>Properties</param-name>
+      <param-value>MIR.Mimetype.IconMapping.*</param-value>
+    </init-param>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>MimeTypeIconMappingConfigHelper</servlet-name>
+    <url-pattern>/mime-type-icons.json</url-pattern>
+  </servlet-mapping>
+
+
   <filter>
     <filter-name>MCRAccessKeyFilter</filter-name>
     <filter-class>org.mycore.mcr.acl.accesskey.frontend.filter.MCRAccessKeyFilter</filter-class>
