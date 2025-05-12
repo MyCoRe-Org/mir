@@ -1,31 +1,4 @@
-import { OrcidExportModalHandler } from './orcid/orcid-export-modal-handler';
-import { OrcidApiClientFactory } from './orcid/orcid-utils';
-import { LangServiceFactory } from './utils/i18n';
-import { getElementByIdOrThrow } from './utils/ui';
-
-let orcidExportModalHandler: OrcidExportModalHandler | null = null;
-
-const initializeExportModalHandler = (): void => {
-  orcidExportModalHandler = new OrcidExportModalHandler({
-    modalEl: getElementByIdOrThrow('exportToOrcidModal')!,
-    workClient: OrcidApiClientFactory.getWorkService(),
-    userClient: OrcidApiClientFactory.getUserService(),
-    langService: LangServiceFactory.getLangService(),
-    uiElements: {
-      exportBtn: getElementByIdOrThrow<HTMLButtonElement>('exportToOrcidBtn'),
-      orcidSelect:
-        getElementByIdOrThrow<HTMLSelectElement>('orcidProfileSelect'),
-      alertDiv: getElementByIdOrThrow<HTMLDivElement>('alertDiv'),
-    },
-  });
-};
-
-const getOrcidExportModalHandler = (): OrcidExportModalHandler => {
-  if (!orcidExportModalHandler) {
-    initializeExportModalHandler();
-  }
-  return orcidExportModalHandler!;
-};
+import { getOrcidExportModalHandler } from './orcid/orcid-export-modal-handler.helper';
 
 const appendMenuButton = (): void => {
   const MENU_SELECTOR = 'div#mir-edit-div ul.dropdown-menu';
