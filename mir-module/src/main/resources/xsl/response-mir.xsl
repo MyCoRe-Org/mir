@@ -29,11 +29,14 @@
 
   <xsl:variable name="maxScore" select="//result[@name='response'][1]/@maxScore" />
 
+  <xsl:variable name="user" select="document('user:current')/user"/>
+  <xsl:variable name="isGuest" select="$user/@name='guest'"/>
+
   <xsl:variable name="currentUserIdsXml">
     <xsl:choose>
-      <xsl:when test="$orcidIntegrationEnabled">
+      <xsl:when test="$orcidIntegrationEnabled and not($isGuest)">
         <xsl:call-template name="extractUserIdsFromUserAttributes">
-          <xsl:with-param name="userAttributes" select="document('user:current')/user/attributes"/>
+          <xsl:with-param name="userAttributes" select="$user/attributes"/>
         </xsl:call-template>
       </xsl:when>
       <xsl:otherwise/>
@@ -43,9 +46,9 @@
 
   <xsl:variable name="currentUserOrcidsXml">
     <xsl:choose>
-      <xsl:when test="$orcidIntegrationEnabled">
+      <xsl:when test="$orcidIntegrationEnabled and not($isGuest)">
         <xsl:call-template name="extractOrcidsFromUserAttributes">
-          <xsl:with-param name="userAttributes" select="document('user:current')/user/attributes"/>
+          <xsl:with-param name="userAttributes" select="$user/attributes"/>
         </xsl:call-template>
       </xsl:when>
       <xsl:otherwise/>
@@ -496,7 +499,8 @@
 
     </div>
     <xsl:if test="$orcidIntegrationEnabled">
-      <script type="module" src="{$WebApplicationBaseURL}js/mir/orcid-result-list.js"/>
+      <xsl:call-template name="printExportToOrcidModal" />
+      <script type="module" src="{$WebApplicationBaseURL}js/mir/orcid-result-list.js" />
     </xsl:if>
   </xsl:template>
 
@@ -624,7 +628,7 @@
 
 <!-- hit options -->
           <xsl:choose>
-            <xsl:when test="acl:checkPermission($identifier,'writedb')">
+            <xsl:when test="not($isGuest)">
               <div class="hit_options float-end">
                 <div class="btn-group">
                   <a data-bs-toggle="dropdown" class="btn btn-secondary dropdown-toggle" href="#">
@@ -640,7 +644,7 @@
                       </xsl:call-template>
                     </li>
                         <!-- direct link to editor -->
-                    <xsl:if test="acl:checkPermission($identifier,'writedb')">
+                    <xsl:if test="document(concat('checkPermission:', $identifier, ':writedb'))/boolean='true'">
                       <li>
                         <xsl:variable name="editURL">
                           <xsl:call-template name="mods.getObjectEditURL">
@@ -668,6 +672,13 @@
                         </a>
                       </li>
                     </xsl:if>
+                    <xsl:if test="$orcidIntegrationEnabled and $hasCurrentUserMatchingTrustedIds and count($currentUserOrcids) &gt; 0">
+                      <li>
+                        <a class="hit_option dropdown-item open-export-orcid-modal" data-object-id="{$identifier}">
+                          <xsl:value-of select="document('i18n:mir.orcid.publication.export.action.trigger')"/>
+                        </a>
+                      </li>
+                    </xsl:if>
                   </ul>
                 </div>
               </div>
@@ -681,6 +692,7 @@
               </div>
             </xsl:otherwise>
           </xsl:choose>
+          
 
 
         </div><!-- end col -->
@@ -748,7 +760,7 @@
                         test="$displayDerivate/str[@name='iviewFile'] or translate(str:tokenize($displayDerivate/str[@name='derivateMaindoc'],'.')[position()=last()],'PDF','pdf') = 'pdf'">
                   <div class="hit_icon">
                     <xsl:choose>
-                      <xsl:when test="not(mcrxsl:isCurrentUserGuestUser())">
+                      <xsl:when test="not($isGuest)">
                         <xsl:attribute name="data-iiif-jwt">
                           <xsl:value-of select="concat($WebApplicationBaseURL, 'api/iiif/image/v2/thumbnail/', $identifier,'/full/!300,300/0/default.jpg')"/>
                         </xsl:attribute>

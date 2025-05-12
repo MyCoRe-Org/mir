@@ -4,6 +4,7 @@ import {
   OrcidWorkStatus,
 } from '@jsr/mycore__js-common/orcid';
 import { OrcidApiClientFactory } from './orcid/orcid-utils.js';
+import { getOrcidExportModalHandler } from './orcid/orcid-export-modal-handler.helper';
 import { LangServiceFactory } from './utils/i18n.js';
 import { getBaseUrl } from './utils/config.js';
 
@@ -92,4 +93,21 @@ const setupStatusHandler = async (): Promise<void> => {
   );
 };
 
-document.addEventListener('DOMContentLoaded', setupStatusHandler);
+const setupExportModalHandler = (): void => {
+  const OPEN_MODAL_SELECTOR = '.open-export-orcid-modal';
+  document.querySelectorAll<HTMLLIElement>(OPEN_MODAL_SELECTOR).forEach(el => {
+    el.addEventListener('click', (): void => {
+      try {
+        const { objectId } = el.dataset;
+        if (objectId) getOrcidExportModalHandler().open(objectId);
+      } catch (error) {
+        console.error('Error opening ORCID modal:', error);
+      }
+    });
+  });
+};
+
+document.addEventListener('DOMContentLoaded', () => {
+  setupStatusHandler();
+  setupExportModalHandler();
+});
