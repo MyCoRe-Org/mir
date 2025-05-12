@@ -1984,27 +1984,21 @@
                 </xed:bind>
                 <ul class="autocomplete-list dropdown-menu w-100" id="suggestions"></ul>
               </div>
-              <mir:help-pmud help-text="{i18n:mir.editor.fundingReference.awardTitle.help}" />
+              <mir:help-pmud help-text="{i18n:mir.editor.fundingReference.awardTitle.help}" pmud="true" />
             </div>
             <mir:textfield
               xpath="awardNumber"
               label="mir.editor.fundingReference.awardNumber"
               help-text="{i18n:mir.editor.fundingReference.awardNumber.help}"
             />
+            <mir:textfield
+              xpath="funderName"
+              label="mir.editor.fundingReference.funderName"
+              help-text="{i18n:mir.editor.fundingReference.funderName.help}"
+            />
             <div class="mir-form-group row">
               <label class="col-md-3 col-form-label text-end form-label">
-                <xed:output i18n="mir.editor.fundingReference.funderName" />
-              </label>
-              <div class="col-md-6">
-                <xed:bind xpath="funderName">
-                  <input type="text" class="form-control" />
-                </xed:bind>
-              </div>
-              <mir:help-pmud help-text="{i18n:mir.editor.fundingReference.funderName.help}" pmud="true" />
-            </div>
-            <div class="mir-form-group row">
-              <label class="col-md-3 col-form-label text-end form-label">
-                <xed:output i18n="mir.editor.fundingReference.identifier" />
+                <xed:output i18n="mir.editor.fundingReference.funderIdentifier" />
               </label>
               <div class="col-md-6">
                 <xed:bind xpath="funderIdentifier">
@@ -2016,19 +2010,19 @@
                             <xed:output i18n="mir.select" />
                           </option>
                           <option value="crossref">
-                            <xed:output i18n="mir.editor.fundingReference.identifier.crossref" />
+                            <xed:output i18n="mir.editor.fundingReference.funderIdentifier.crossref" />
                           </option>
                           <option value="grid">
-                            <xed:output i18n="mir.editor.fundingReference.identifier.grid" />
+                            <xed:output i18n="mir.editor.fundingReference.funderIdentifier.grid" />
                           </option>
                           <option value="isni">
-                            <xed:output i18n="mir.editor.fundingReference.identifier.isni" />
+                            <xed:output i18n="mir.editor.fundingReference.funderIdentifier.isni" />
                           </option>
                           <option value="ror">
-                            <xed:output i18n="mir.editor.fundingReference.identifier.ror" />
+                            <xed:output i18n="mir.editor.fundingReference.funderIdentifier.ror" />
                           </option>
                           <option value="other">
-                            <xed:output i18n="mir.editor.fundingReference.identifier.other" />
+                            <xed:output i18n="mir.editor.fundingReference.funderIdentifier.other" />
                           </option>
                         </select>
                       </xed:bind>
@@ -2039,7 +2033,7 @@
                   </div>
                 </xed:bind>
               </div>
-              <mir:help-pmud help-text="{i18n:mir.editor.fundingReference.identifier.help}" />
+              <mir:help-pmud help-text="{i18n:mir.editor.fundingReference.funderIdentifier.help}" />
             </div>
           </div>
         </xed:repeat>
