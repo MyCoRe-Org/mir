@@ -33,7 +33,8 @@
 		},
 		Code: {
 			icon: "fa-file-code",
-			mimeTypes: ["application/vnd.wolfram.mathematica.package"]
+			mimeTypes: []
+			// mimeTypes: ["application/vnd.wolfram.mathematica.package"]
 		},
 		Audio: {
 			icon: "fa-file-audio",
@@ -69,17 +70,26 @@
 	$(document).ready(function() {
 
 		/**
-		 * Loads the MIME type to icon mapping from the backend.
+		 * Loads MIME type to icon group mapping using semantic keys like "PDF", "Code", etc.
+		 * from a servlet-generated JSON config (via MCRConfigHelperServlet).
 		 *
-		 * Falls back to default mapping (`fileIcons`) if the request fails.
-		 * * @async
-		 *  * @function loadMimetypeMapping
-		 *  * @returns {Promise<Object>} Resolves to a valid mapping object.
-		 *  * @throws Will re-throw on network or response errors.
-		 *  */
+		 * Expected JSON structure:
+		 * {
+		 *   "MIR.Mimetype.IconMapping.Code": "application/vnd.wolfram.mathematica.package",
+		 *   "MIR.Mimetype.IconMapping.PDF": "application/pdf,text/pdf"
+		 * }
+		 *
+		 * The key (after MIR.Mimetype.IconMapping.) is matched (case-insensitive) to a group in `fileIcons`.
+		 * Each value is a comma-separated list of MIME types assigned to the group.
+		 *
+		 * Falls back to default fileIcons if loading fails or mapping is invalid.
+		 *
+		 * @async
+		 * @returns {Promise<Object>} Mapping with mimeTypes filled per icon group.
+		 */
 		async function loadMimetypeMapping() {
 			try {
-				const response = await fetch(webApplicationBaseURL + "rsc/mimetypeMappingList/get", {
+				const response = await fetch(webApplicationBaseURL + "mime-type-icons.json", {
 					method: "GET",
 					headers: {
 						"Accept": "application/json",
@@ -91,9 +101,36 @@
 					throw new Error(`HTTP error! status: ${response.status}`);
 				}
 
-				return await response.json();
+				const json = await response.json();
+				// Clone the fileIcons to avoid mutating the original reference
+				const updatedMapping = structuredClone(fileIcons);
+
+				for (const [key, value] of Object.entries(json)) {
+					// Extract the group key from the property name
+					const match = key.match(/MIR\.Mimetype\.IconMapping\.(.+)/);
+					if (!match || typeof value !== "string") {
+						console.warn(`Skipping invalid entry: ${key}: ${value}`);
+						continue;
+					}
+
+					const groupKey = match[1].toLowerCase(); // Normalize for case-insensitive comparison
+					const mimeTypes = value.split(",").map(s => s.trim()).filter(Boolean);
+
+					// Find matching key in fileIcons
+					const fileIconsEntryKey = Object.keys(fileIcons).find(
+						k => k.toLowerCase() === groupKey
+					);
+
+					if (fileIconsEntryKey) {
+						updatedMapping[fileIconsEntryKey].mimeTypes.push(...mimeTypes);
+					} else {
+						console.warn(`No matching group in fileIcons for semantic key: ${groupKey}`);
+					}
+				}
+
+				return updatedMapping;
 			} catch (error) {
-				console.error('Error loading mimetype mapping:', error);
+				console.error("Error loading MIME type mapping:", error);
 				throw error;
 			}
 		}
