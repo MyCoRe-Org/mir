@@ -33,26 +33,20 @@
   <xsl:variable name="isGuest" select="$user/@name='guest'"/>
 
   <xsl:variable name="currentUserIdsXml">
-    <xsl:choose>
-      <xsl:when test="$orcidIntegrationEnabled and not($isGuest)">
-        <xsl:call-template name="extractUserIdsFromUserAttributes">
-          <xsl:with-param name="userAttributes" select="$user/attributes"/>
-        </xsl:call-template>
-      </xsl:when>
-      <xsl:otherwise/>
-    </xsl:choose>
+    <xsl:if test="$orcidIntegrationEnabled and not($isGuest)">
+      <xsl:call-template name="extractUserIdsFromUserAttributes">
+        <xsl:with-param name="userAttributes" select="$user/attributes"/>
+      </xsl:call-template>
+    </xsl:if>
   </xsl:variable>
   <xsl:variable name="currentUserIds" select="exsl:node-set($currentUserIdsXml)/str"/>
 
   <xsl:variable name="currentUserOrcidsXml">
-    <xsl:choose>
-      <xsl:when test="$orcidIntegrationEnabled and not($isGuest)">
-        <xsl:call-template name="extractOrcidsFromUserAttributes">
-          <xsl:with-param name="userAttributes" select="$user/attributes"/>
-        </xsl:call-template>
-      </xsl:when>
-      <xsl:otherwise/>
-    </xsl:choose>
+    <xsl:if test="$orcidIntegrationEnabled and not($isGuest)">
+      <xsl:call-template name="extractOrcidsFromUserAttributes">
+        <xsl:with-param name="userAttributes" select="$user/attributes"/>
+      </xsl:call-template>
+    </xsl:if>
   </xsl:variable>
   <xsl:variable name="currentUserOrcids" select="exsl:node-set($currentUserOrcidsXml)/str"/>
 
@@ -541,19 +535,18 @@
         </xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
-
     <xsl:variable name="currentUserMatchingTrustedIdsXml">
-      <xsl:choose>
-        <xsl:when test="$orcidIntegrationEnabled">
-          <xsl:call-template name="getMatchingTrustedIds">
-            <xsl:with-param name="idsA" select="$currentUserIds"/>
-            <xsl:with-param name="idsB" select="arr[@name='mods.nameIdentifier']/str"/>
-          </xsl:call-template>
-        </xsl:when>
-        <xsl:otherwise/>
-      </xsl:choose>
+      <xsl:if test="$orcidIntegrationEnabled">
+        <xsl:call-template name="getMatchingTrustedIds">
+          <xsl:with-param name="idsA" select="$currentUserIds"/>
+          <xsl:with-param name="idsB" select="arr[@name='mods.nameIdentifier']/str"/>
+        </xsl:call-template>
+      </xsl:if>
     </xsl:variable>
-    <xsl:variable name="hasCurrentUserMatchingTrustedIds" select="count(exsl:node-set($currentUserMatchingTrustedIdsXml)/str) &gt; 0"/>
+    <xsl:variable
+      name="hasCurrentUserMatchingTrustedIds"
+      select="boolean(exsl:node-set($currentUserMatchingTrustedIdsXml)/str)"
+    />
 
     <!-- generate browsing url -->
     <xsl:variable name="href" select="concat($proxyBaseURL,$solrParams)" />
@@ -672,9 +665,22 @@
                         </a>
                       </li>
                     </xsl:if>
-                    <xsl:if test="$orcidIntegrationEnabled and $hasCurrentUserMatchingTrustedIds and count($currentUserOrcids) &gt; 0">
+                    <xsl:if test="$orcidIntegrationEnabled">
                       <li>
-                        <a class="hit_option dropdown-item open-export-orcid-modal" data-object-id="{$identifier}">
+                        <a data-object-id="{$identifier}">
+                          <xsl:choose>
+                            <!-- TODO check if user has at least one linked credential -->
+                            <xsl:when test="$hasCurrentUserMatchingTrustedIds and count($currentUserOrcids) &gt; 0">
+                              <xsl:attribute name="class">
+                                <xsl:value-of select="'hit_option dropdown-item open-export-orcid-modal'" />
+                              </xsl:attribute>
+                            </xsl:when>
+                            <xsl:otherwise>
+                              <xsl:attribute name="class">
+                                <xsl:value-of select="'hit_option dropdown-item open-export-orcid-modal disabled'" />
+                              </xsl:attribute>
+                            </xsl:otherwise>
+                          </xsl:choose>
                           <xsl:value-of select="document('i18n:mir.orcid.publication.export.action.trigger')"/>
                         </a>
                       </li>
@@ -815,6 +821,7 @@
             <div class="hit_tnd_content">
               <xsl:apply-imports/>
               <xsl:if test="$orcidIntegrationEnabled and $hasCurrentUserMatchingTrustedIds and count($currentUserOrcids) &gt; 0">
+                <!-- TODO provide all orcids? -->
                 <div class="orcid-status" data-object-id="{$identifier}" data-orcid="{$currentUserOrcids[1]}"/>
               </xsl:if>
             </div>
