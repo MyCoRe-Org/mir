@@ -1987,11 +1987,13 @@
               <mir:help-pmud help-text="{i18n:mir.editor.fundingReference.awardTitle.help}" pmud="true" />
             </div>
             <mir:textfield
+              class="award-number-input"
               xpath="awardNumber"
               label="mir.editor.fundingReference.awardNumber"
               help-text="{i18n:mir.editor.fundingReference.awardNumber.help}"
             />
             <mir:textfield
+              class="funder-name-input"
               xpath="funderName"
               label="mir.editor.fundingReference.funderName"
               help-text="{i18n:mir.editor.fundingReference.funderName.help}"
@@ -2078,24 +2080,53 @@
       }
 
       function buildItemText(item) {
-        return item;
+        return item.title;
       }
 
-      function fetchSuggestions(query) {
-        return new Promise((resolve) => {
-          setTimeout(() => {
-            const data = [
-              "Apfel", "Banane", "Birne", "Brombeere", "Avocado", "Ananas", "Aprikose"
-            ].filter(item => item.toLowerCase().startsWith(query.toLowerCase()));
-            resolve(data); // Asynchron zurückgeben
-          }, 500);
+      async function fetchSuggestions(name) {
+        const response = await fetch('http://api.openaire.eu/search/projects?funder=EC&amp;name=' + name + '&amp;format=json');
+        if (!response.ok) {
+          return;
+        }
+        const result = await response.json();
+        const resultSize = result.response.header.size.$;
+        if (resultSize === 0) {
+          return [];
+        }
+        const results = result.response.results.result;
+        const items = [];
+        results.forEach(r => {
+          const metadata = r.metadata['oaf:entity']['oaf:project'];
+          console.log(metadata);
+          const awardNumber = metadata.code.$;
+          const awardUri = 'https://cordis.europa.eu/project/id/' + awardNumber
+          const title = metadata.title.$;
+          const fundingTree = metadata.fundingtree;
+          if (!fundingTree) {
+            return;
+          }
+          const fundingInfo = Array.isArray(fundingTree) ? fundingTree[0] : fundingTree;
+          const funderName = fundingInfo.funder.name.$;
+          const funderShortName = fundingInfo.funder.shortname.$;
+          items.push({
+            awardNumber,
+            awardUri,
+            funderName,
+            funderShortName,
+            title,
+          })
         });
+        console.log(items);
+        return items;
       }
 
       document.addEventListener('DOMContentLoaded', function () {
-        document.querySelectorAll('.award-title-container input').forEach(input => {
+        document.querySelectorAll('.mir-funding-reference-container').forEach(div => {
+          const input = div.querySelector('.award-title-container input');
           setupAutocomplete(input, fetchSuggestions, buildItemText, (item) => {
-            input.value = item
+            input.value = item.title;
+            div.querySelector('.award-number-input input').value = item.awardNumber;
+            div.querySelector('.funder-name-input input').value = item.funderName;
           });
         });
       });
