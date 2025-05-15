@@ -2103,7 +2103,6 @@
         const items = [];
         results.forEach(r => {
           const metadata = r.metadata['oaf:entity']['oaf:project'];
-          console.log(metadata);
           const awardNumber = metadata.code.$;
           const awardUri = 'https://cordis.europa.eu/project/id/' + awardNumber
           const title = metadata.title.$;
@@ -2128,8 +2127,10 @@
           funderId = funderId.substring(index + 2);
 
           items.push({
-            awardNumber,
-            awardUri,
+            award: {
+              uri: 'https://cordis.europa.eu/project/id/' + awardNumber,
+              number: awardNumber,
+            },
             funderName,
             funderShortName,
             title,
@@ -2139,7 +2140,6 @@
             },
           })
         });
-        console.log(items);
         return items;
       }
 
@@ -2147,9 +2147,8 @@
         document.querySelectorAll('.mir-funding-reference-container').forEach(div => {
           const input = div.querySelector('.award-title-container input');
           setupAutocomplete(input, fetchSuggestions, buildItemText, (item) => {
-            console.log(item);
             input.value = item.title;
-            div.querySelector('.award-number input').value = item.awardNumber;
+            div.querySelector('.award-number input').value = item.award.number;
             div.querySelector('.funder-name input').value = item.funderName;
             div.querySelector('.funder-id-type').value = item.funderId.type;
             div.querySelector('.funder-id-value').value = item.funderId.value;
