@@ -30,7 +30,7 @@
 
       <div class="row mir-form-group">
         <label for="genre" class="col-sm-3 col-lg-2 control-label form-label">
-          <text i18n="component.mods.genre" />
+          Publikationstyp
         </label>
         <div class="col-sm-7 col-md-5 col-lg-4">
           <select id="genre" class="form-control form-select" name="genre" size="1">
@@ -40,7 +40,7 @@
 
       <div class="row mir-form-group">
         <label for="host"  class="col-sm-3 col-lg-2 control-label form-label">
-          <text i18n="mir.select.host" />
+          erschienen in:
         </label>
         <div class="col-sm-7 col-md-5 col-lg-4">
           <select id="host" class="form-control form-select" name="host" size="1">
@@ -109,7 +109,7 @@
 
       <div class="row mir-form-group">
         <label for="genre" class="col-sm-3 col-lg-2 control-label form-label">
-          <text i18n="component.mods.genre" />
+          Type of the publication
         </label>
         <div class="col-sm-7 col-md-5 col-lg-4">
           <select id="genre" class="form-control form-select" name="genre" size="1">
@@ -119,7 +119,7 @@
 
       <div class="row mir-form-group">
         <label for="host"  class="col-sm-3 col-lg-2 control-label form-label">
-          <text i18n="mir.select.host" />
+          appears in:
         </label>
         <div class="col-sm-7 col-md-5 col-lg-4">
           <select id="host" class="form-control form-select" name="host" size="1">
