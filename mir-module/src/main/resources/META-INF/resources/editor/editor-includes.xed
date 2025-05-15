@@ -938,7 +938,7 @@
             <xed:output i18n="mir.date.issued.range" />
           </label>
           <div class="col-md-6 center-vertical">
-            <mir:dateRangeInput id="{@label}_date" xpath="mods:originInfo[@eventType='publication']/mods:dateIssued[@encoding='w3cdtf']" class="datetimepicker mainDate"
+            <mir:dateRangeInput xpath="mods:originInfo[@eventType='publication']/mods:dateIssued[@encoding='w3cdtf']" class="datetimepicker mainDate"
               placeholder="{i18n:mir.placeholder.date}" type="publication" startsWithDateTime="false" showDateTimeOption="false"/>
             <span class="fas fa-chevron-down expand-item" title="{i18n:mir.help.expand}" aria-hidden="true"></span>
           </div>
@@ -1745,6 +1745,7 @@
       </legend>
       <xed:repeat xpath="mods:abstract" min="1" max="3">
         <div class="mir-fieldset-content">
+          <xed:bind xpath="@xml:lang" initially="de">
           <div class="mir-form-group row">
             <xed:bind xpath="@xml:lang" initially="de">
               <label for="{xed:generate-id()}_lang" class="col-md-3 col-form-label text-end form-label">
@@ -1756,6 +1757,7 @@
               <mir:help-pmud help-text="{i18n:mir.help.abstract.language}" pmud="true" />
           </xed:bind>
           </div>
+        </xed:bind>
           <mir:textfield xpath="@xlink:href" label="mir.placeholder.abstract.link" help-text="{i18n:mir.help.abstract.aslink}" placeholder="{i18n:mir.placeholder.abstract.link}" />
           <mir:htmlArea xpath="." label="mir.abstract.ortext" help-text="{i18n:mir.help.abstract.ortext}" rows="5" />
         </div>
@@ -1771,7 +1773,7 @@
   <xed:template id="geographicAndCartographics">
     <xed:repeat xpath="mods:subjectGEO" min="1" max="10">
       <div class="mir-form-group row {$xed-validation-marker}">
-        <label for="{xed:generate-id()}_geographicAndCartographics" class="col-md-3 col-form-label text-end form-label">
+        <label id="search_form" for="{xed:generate-id()}_geographicAndCartographics" class="col-md-3 col-form-label text-end form-label">
           <xed:output i18n="mir.geographic" />
         </label>
         <div class="col-md-6">
