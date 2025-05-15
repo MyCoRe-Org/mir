@@ -1987,13 +1987,19 @@
               <mir:help-pmud help-text="{i18n:mir.editor.fundingReference.awardTitle.help}" pmud="true" />
             </div>
             <mir:textfield
-              class="award-number-input"
+              class="award-number"
               xpath="awardNumber"
               label="mir.editor.fundingReference.awardNumber"
               help-text="{i18n:mir.editor.fundingReference.awardNumber.help}"
             />
             <mir:textfield
-              class="funder-name-input"
+              class="award-uri"
+              xpath="awardURI"
+              label="mir.editor.fundingReference.awardUri"
+              help-text="{i18n:mir.editor.fundingReference.awardUri.help}"
+            />
+            <mir:textfield
+              class="funder-name"
               xpath="funderName"
               label="mir.editor.fundingReference.funderName"
               help-text="{i18n:mir.editor.fundingReference.funderName.help}"
@@ -2007,7 +2013,7 @@
                   <div class="row">
                     <div class="col-md-4">
                       <xed:bind xpath="@funderIdentifierType">
-                        <select class="form-control form-control-inline form-select">
+                        <select class="form-control form-control-inline form-select funder-id-type">
                           <option value="">
                             <xed:output i18n="mir.select" />
                           </option>
@@ -2030,7 +2036,7 @@
                       </xed:bind>
                     </div>
                     <div class="col-md-8 ps-0">
-                      <input type="text" class="form-control" />
+                      <input type="text" class="form-control funder-id-value" />
                     </div>
                   </div>
                 </xed:bind>
@@ -2108,12 +2114,29 @@
           const fundingInfo = Array.isArray(fundingTree) ? fundingTree[0] : fundingTree;
           const funderName = fundingInfo.funder.name.$;
           const funderShortName = fundingInfo.funder.shortname.$;
+
+          let funderId = '';
+          if (fundingInfo.funding_level_2) {
+            funderId = fundingInfo.funding_level_2.id.$;
+          } else if (fundingInfo.funding_level_1) {
+            funderId = fundingInfo.funding_level_1.id.$;
+          } else {
+            funderId = fundingInfo.funding_level_0.id.$;
+          }
+
+          const index = funderId.indexOf("::");
+          funderId = funderId.substring(index + 2);
+
           items.push({
             awardNumber,
             awardUri,
             funderName,
             funderShortName,
             title,
+            funderId: {
+              type: 'other',
+              value: funderId,
+            },
           })
         });
         console.log(items);
@@ -2124,9 +2147,12 @@
         document.querySelectorAll('.mir-funding-reference-container').forEach(div => {
           const input = div.querySelector('.award-title-container input');
           setupAutocomplete(input, fetchSuggestions, buildItemText, (item) => {
+            console.log(item);
             input.value = item.title;
-            div.querySelector('.award-number-input input').value = item.awardNumber;
-            div.querySelector('.funder-name-input input').value = item.funderName;
+            div.querySelector('.award-number input').value = item.awardNumber;
+            div.querySelector('.funder-name input').value = item.funderName;
+            div.querySelector('.funder-id-type').value = item.funderId.type;
+            div.querySelector('.funder-id-value').value = item.funderId.value;
           });
         });
       });
