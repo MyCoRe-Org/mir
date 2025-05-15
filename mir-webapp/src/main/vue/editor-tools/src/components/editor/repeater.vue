@@ -28,6 +28,7 @@
                 :title="props.upTitle"
                 :class="`btn btn-sm btn-secondary${upEnabled? '':' disabled'}`"
                 type="button"
+                aria-label="up botton"
                 v-on:click.prevent="upClicked()">
             <i class="fas fa-arrow-up fa-fw"/>
         </button>
@@ -35,6 +36,7 @@
                 :title="props.downTitle"
                 :class="`btn btn-sm btn-secondary${downEnabled? '':' disabled'}`"
                 type="button"
+                aria-label="down button"
                 v-on:click.prevent="downClicked()">
             <i class="fas fa-arrow-down fa-fw"/>
         </button>

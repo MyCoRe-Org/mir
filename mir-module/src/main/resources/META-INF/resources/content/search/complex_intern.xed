@@ -43,7 +43,7 @@
                     <div class="mir-form-group row">
                       <div class="col-md-3">
                         <xed:bind xpath="@field">
-                          <select aria-label="select title" class="form-control form-select">
+                          <select aria-label="sselect search ident" class="form-control form-select">
                             <option value="mods.title">
                               <xed:output i18n="editor.search.mir.title" />
                             </option>
@@ -61,7 +61,7 @@
                       </div>
                       <div class="col-md-2">
                         <xed:bind xpath="@operator">
-                          <select aria-label="select condition" class="form-control form-select">
+                          <select aria-label="select serch operator" class="form-control form-select">
                             <option value="contains">
                               <xed:output i18n="editor.search.contains" />
                             </option>
@@ -77,7 +77,7 @@
                       <div class="col-md-7 row">
                         <div class="col-md-8">
                           <xed:bind xpath="@value">
-                            <input type="text" class="form-control" aria-label="condition input"/>
+                            <input type="text" class="form-control" aria-label="input field"/>
                           </xed:bind>
                         </div>
                         <div class="btn-group col-md-4">

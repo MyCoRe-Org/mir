@@ -202,7 +202,7 @@
     <div class="date-format" data-format="simple">
       <div class="date-simple {$hiddenclasssimple} input-group mb-1">
         <xed:bind xpath="{$xpathSimple}">
-          <input id="{@label}_date" type="text" class="form-control {$timeClass}" autocomplete="off">
+          <input id="{@label}_date" aria-labelledby="_date" type="text" class="form-control {$timeClass}" autocomplete="off">
             <xsl:copy-of select="@placeholder" />
           </input>
         </xed:bind>
@@ -556,21 +556,21 @@
   <xsl:template match="mir:insitut.repeated">
     <xsl:variable name="xed-val-marker" > {$xed-validation-marker} </xsl:variable>
     <xed:repeat xpath="mods:name[@type='corporate'][@authorityURI='{$institutesURI}']" min="{@min}" max="{@max}">
+      <xed:bind xpath="@valueURIxEditor">
+      <xsl:variable name="select_id" select="concat(@label,'{xed:generate-id()}')" />
       <div class="mir-form-group row {@class} {$xed-val-marker}">
-        <label or="select institute**TODO**2" class="col-md-3 col-form-label text-end form-label">
+        <label for="{$select_id}" class="col-md-3 col-form-label text-end form-label">
           <xed:output i18n="{@label}" />
           :
         </label>
         <div class="col-md-6">
           <xed:bind xpath="mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']" initially="his" /><!--  Host institution [his] -->
-          <xed:bind xpath="@valueURIxEditor">
-            <select class="form-control form-control-inline mir-form__js-select--large form-select">
+            <select id="{$select_id}" class="form-control form-control-inline mir-form__js-select--large form-select">
               <option value="">
                 <xed:output i18n="mir.select.optional" />
               </option>
               <xed:include uri="xslStyle:items2options:classification:editor:-1:children:mir_institutes" />
             </select>
-          </xed:bind>
         </div>
         <div class="col-md-3">
           <xsl:if test="string-length(@help-text) &gt; 0">
@@ -579,6 +579,7 @@
           <xsl:call-template name="mir-pmud" />
         </div>
       </div>
+    </xed:bind>
     </xed:repeat>
   </xsl:template>
 
