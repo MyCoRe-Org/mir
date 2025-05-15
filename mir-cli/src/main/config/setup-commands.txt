@@ -1,23 +1,23 @@
 reload solr configuration main in core main
 reload solr configuration classification in core classification
-load classification from url http://mycore.de/classifications/XMetaDissPlusThesisLevel.xml
-load classification from url http://mycore.de/classifications/derivate_types.xml
-load classification from url http://mycore.de/classifications/diniPublType.xml
-load classification from url http://www.mycore.org/classifications/marcrelator.xml
-load classification from url http://www.mycore.org/classifications/marcgt.xml
-load classification from url http://www.mycore.org/classifications/mcr-roles.xml
-load classification from url http://www.mycore.org/classifications/mir_access.xml
-load classification from url http://www.mycore.org/classifications/mir_filetype.xml
-load classification from url http://www.mycore.org/classifications/mir_genres.xml
-load classification from url http://www.mycore.org/classifications/mir_institutes.xml
-load classification from url http://www.mycore.org/classifications/mir_licenses.xml
-load classification from url http://www.mycore.org/classifications/rfc5646.xml
-load classification from url http://www.mycore.org/classifications/sdnb.xml
-load classification from url http://www.mycore.org/classifications/state.xml
-load classification from url http://www.mycore.org/classifications/typeOfResource.xml
-load classification from url http://www.mycore.org/classifications/nameIdentifier.xml
-load classification from url http://www.mycore.org/classifications/noteTypes.xml
-load classification from url http://www.mycore.org/classifications/identifier.xml
+load classification from url https://mycore.de/classifications/XMetaDissPlusThesisLevel.xml
+load classification from url https://mycore.de/classifications/derivate_types.xml
+load classification from url https://mycore.de/classifications/diniPublType.xml
+load classification from url https://www.mycore.org/classifications/marcrelator.xml
+load classification from url https://www.mycore.org/classifications/marcgt.xml
+load classification from url https://www.mycore.org/classifications/mcr-roles.xml
+load classification from url https://www.mycore.org/classifications/mir_access.xml
+load classification from url https://www.mycore.org/classifications/mir_filetype.xml
+load classification from url https://www.mycore.org/classifications/mir_genres.xml
+load classification from url https://www.mycore.org/classifications/mir_institutes.xml
+load classification from url https://www.mycore.org/classifications/mir_licenses.xml
+load classification from url https://www.mycore.org/classifications/rfc5646.xml
+load classification from url https://www.mycore.org/classifications/sdnb.xml
+load classification from url https://www.mycore.org/classifications/state.xml
+load classification from url https://www.mycore.org/classifications/typeOfResource.xml
+load classification from url https://www.mycore.org/classifications/nameIdentifier.xml
+load classification from url https://www.mycore.org/classifications/noteTypes.xml
+load classification from url https://www.mycore.org/classifications/identifier.xml
 init superuser
 process ${app.home}/config/acl/defaultrules-commands.txt
 process ${app.home}/config/acl/webacl-commands.txt

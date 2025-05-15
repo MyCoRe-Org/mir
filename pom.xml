@@ -44,7 +44,7 @@
     <java.target.version>11</java.target.version>
     <jetty.version>9.4.24.v20191120</jetty.version>
     <maven.compiler.arg>-Werror</maven.compiler.arg>
-    <mycore.version>2020.06.3-SNAPSHOT</mycore.version>
+    <mycore.version>2020.06.3</mycore.version>
     <node.version>v12.16.3</node.version>
     <selenium.version>3.141.59</selenium.version>
     <site.suffix>2020.06.x</site.suffix>
