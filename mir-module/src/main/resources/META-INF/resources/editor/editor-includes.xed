@@ -1986,7 +1986,6 @@
               </div>
               <mir:help-pmud help-text="{i18n:mir.editor.fundingReference.awardTitle.help}" pmud="true" />
             </div>
-
             <div class="mir-form-group row">
               <label class="col-md-3 col-form-label text-end form-label">
                 <xed:output i18n="mir.editor.fundingReference.awardNumber" />
@@ -1995,11 +1994,11 @@
                 <xed:bind xpath="awardNumber">
                   <div class="row">
                     <div class="col-md-4">
-                      <input type="test" class="form-control award-number" />
+                      <input type="text" class="form-control award-number" />
                     </div>
                     <div class="col-md-8 ps-0">
                       <xed:bind xpath="@awardURI">
-                        <input type="text" class="form-control award-uri" placeholder="{i18n:mir.editor.fundingReference.awardUri}"/>
+                        <input type="text" class="form-control award-uri" placeholder="{i18n:mir.editor.fundingReference.awardUri}" />
                       </xed:bind>
                     </div>
                   </div>
@@ -2007,21 +2006,28 @@
               </div>
               <mir:help-pmud help-text="{i18n:mir.editor.fundingReference.awardNumber.help}" />
             </div>
-            <mir:textfield
-              class="funder-name"
-              xpath="funderName"
-              label="mir.editor.fundingReference.funderName"
-              help-text="{i18n:mir.editor.fundingReference.funderName.help}"
-            />
+            <div class="mir-form-group row">
+              <label class="col-md-3 col-form-label text-end form-label">
+                <xed:output i18n="mir.editor.fundingReference.funderName" />
+              </label>
+              <xed:bind xpath="funderName">
+                <div class="col-md-6 {$xed-validation-marker}">
+                  <input type="text" class="form-control funder-name"/>
+                  <xed:validate relevant-if="../awardNumber!='' or ../awardNumber/@awardURI='' or ../awardTitle!='' or ../funderType!=''"
+                    required="true" i18n="mir.editor.fundingReference.funderName.validation" display="global" />
+                </div>
+              </xed:bind>
+              <mir:help-pmud help-text="{i18n:mir.editor.fundingReference.funderName.help}" />
+            </div>
             <div class="mir-form-group row">
               <label class="col-md-3 col-form-label text-end form-label">
                 <xed:output i18n="mir.editor.fundingReference.funderIdentifier" />
               </label>
-              <div class="col-md-6">
-                <xed:bind xpath="funderIdentifier">
+              <xed:bind xpath="funderIdentifier">
+                <div class="col-md-6">
                   <div class="row">
-                    <div class="col-md-4">
-                      <xed:bind xpath="@funderIdentifierType">
+                    <xed:bind xpath="@funderIdentifierType">
+                      <div class="col-md-4 {$xed-validation-marker}">
                         <select class="form-control form-control-inline form-select funder-id-type">
                           <option value="">
                             <xed:output i18n="mir.select" />
@@ -2042,14 +2048,18 @@
                             <xed:output i18n="mir.editor.fundingReference.funderIdentifier.other" />
                           </option>
                         </select>
-                      </xed:bind>
-                    </div>
-                    <div class="col-md-8 ps-0">
+                        <xed:validate relevant-if="..!=''" required="true"
+                          i18n="mir.editor.fundingReference.funderIdentifier.validation" display="global" />
+                      </div>
+                    </xed:bind>
+                    <div class="col-md-8 ps-0 {$xed-validation-marker}">
                       <input type="text" class="form-control funder-id-value" />
+                      <xed:validate relevant-if="@funderIdentifierType!=''" required="true"
+                        i18n="mir.editor.fundingReference.funderIdentifier.validation" display="global" />
                     </div>
                   </div>
-                </xed:bind>
-              </div>
+                </div>
+              </xed:bind>
               <mir:help-pmud help-text="{i18n:mir.editor.fundingReference.funderIdentifier.help}" />
             </div>
           </div>
@@ -2157,7 +2167,7 @@
           const input = div.querySelector('.award-title-container input');
           setupAutocomplete(input, fetchSuggestions, buildItemText, (item) => {
             input.value = item.title;
-            div.querySelector('.funder-name input').value = item.funderName;
+            div.querySelector('.funder-name').value = item.funderName;
             div.querySelector('.award-number').value = item.award.number;
             div.querySelector('.award-uri').value = item.award.uri;
             div.querySelector('.funder-id-type').value = item.funderId.type;
