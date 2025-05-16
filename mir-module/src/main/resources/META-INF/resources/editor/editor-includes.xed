@@ -1980,24 +1980,33 @@
               </label>
               <div class="col-md-6">
                 <xed:bind xpath="awardTitle">
-                  <input class="form-control" autocomplete="off" />
+                  <input type="text" class="form-control" autocomplete="off" />
                 </xed:bind>
                 <ul class="autocomplete-list dropdown-menu w-100" id="suggestions"></ul>
               </div>
               <mir:help-pmud help-text="{i18n:mir.editor.fundingReference.awardTitle.help}" pmud="true" />
             </div>
-            <mir:textfield
-              class="award-number"
-              xpath="awardNumber"
-              label="mir.editor.fundingReference.awardNumber"
-              help-text="{i18n:mir.editor.fundingReference.awardNumber.help}"
-            />
-            <mir:textfield
-              class="award-uri"
-              xpath="awardURI"
-              label="mir.editor.fundingReference.awardUri"
-              help-text="{i18n:mir.editor.fundingReference.awardUri.help}"
-            />
+
+            <div class="mir-form-group row">
+              <label class="col-md-3 col-form-label text-end form-label">
+                <xed:output i18n="mir.editor.fundingReference.awardNumber" />
+              </label>
+              <div class="col-md-6">
+                <xed:bind xpath="awardNumber">
+                  <div class="row">
+                    <div class="col-md-4">
+                      <input type="test" class="form-control award-number" />
+                    </div>
+                    <div class="col-md-8 ps-0">
+                      <xed:bind xpath="@awardURI">
+                        <input type="text" class="form-control award-uri" placeholder="{i18n:mir.editor.fundingReference.awardUri}"/>
+                      </xed:bind>
+                    </div>
+                  </div>
+                </xed:bind>
+              </div>
+              <mir:help-pmud help-text="{i18n:mir.editor.fundingReference.awardNumber.help}" />
+            </div>
             <mir:textfield
               class="funder-name"
               xpath="funderName"
@@ -2065,7 +2074,7 @@
           const data = await fetchData(val);
           data.forEach(match => {
             const item = document.createElement('li');
-            item.classList.add('dropdown-item');
+            item.classList.add('dropdown-item', 'text-wrap');
             item.textContent = buildItemText(match);
             item.addEventListener("click", () => {
               dropdownContainer.style.display = 'none';
@@ -2148,8 +2157,9 @@
           const input = div.querySelector('.award-title-container input');
           setupAutocomplete(input, fetchSuggestions, buildItemText, (item) => {
             input.value = item.title;
-            div.querySelector('.award-number input').value = item.award.number;
             div.querySelector('.funder-name input').value = item.funderName;
+            div.querySelector('.award-number').value = item.award.number;
+            div.querySelector('.award-uri').value = item.award.uri;
             div.querySelector('.funder-id-type').value = item.funderId.type;
             div.querySelector('.funder-id-value').value = item.funderId.value;
           });
@@ -2467,6 +2477,7 @@
     <xed:cleanup-rule xpath="//mods:accessCondition[@type='restriction on access']" relevant-if="string-length(text()) &gt; 0" />
     <xed:cleanup-rule xpath="//mods:accessCondition[@type='use and reproduction']" relevant-if="string-length(text()) &gt; 0" />
     <xed:cleanup-rule xpath="//mods:extension[@displayLabel='characteristics']" relevant-if="(string-length(chars/@year) &gt; 0) or (string-length(chars/@refereed) &gt; 0)" />
+    <xed:cleanup-rule xpath="//mods:extension[@type='datacite-funding']" relevant-if="*" />
     <xed:cleanup-rule xpath="//structure/parents" relevant-if="false()" />
     <xed:cleanup-rule xpath="//mods:dateIssued" relevant-if="@encoding='w3cdtf' and string-length(text()) &gt; 0" />
     <xed:cleanup-rule xpath="//mods:relatedItem/mods:location|//mods:relatedItem/mods:genre" relevant-if="string-length(../@xlink:href)=0" />
