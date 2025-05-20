@@ -4,7 +4,7 @@
   <parent>
     <groupId>org.mycore</groupId>
     <artifactId>mycore-parent</artifactId>
-    <version>53</version>
+    <version>57-SNAPSHOT</version>
   </parent>
   <groupId>org.mycore.mir</groupId>
   <artifactId>mir-parent</artifactId>
@@ -42,8 +42,11 @@
     <changes.version>2023.06.3</changes.version>
     <java.target.version>17</java.target.version>
     <jetty.version>12.0.0</jetty.version>
+    <maven-pmd-plugin.version>3.21.2</maven-pmd-plugin.version>
     <maven.compiler.arg>-Werror</maven.compiler.arg>
     <mycore.version>2023.06.3-SNAPSHOT</mycore.version>
+    <node.version>v16.19.1</node.version>
+    <pmd.version>6.55.0</pmd.version>
     <selenium.version>4.3.0</selenium.version>
     <site.suffix />
     <solr-runner.solrMirrorURL>https://archive.apache.org/dist/lucene/solr/</solr-runner.solrMirrorURL>
@@ -170,8 +173,9 @@
       <snapshots>
         <enabled>true</enabled>
       </snapshots>
-      <id>ossrh</id>
-      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+      <id>central-portal-snapshots</id>
+      <name>Central Portal Snapshots</name>
+      <url>https://central.sonatype.com/repository/maven-snapshots/</url>
     </repository>
     <repository>
       <snapshots>
