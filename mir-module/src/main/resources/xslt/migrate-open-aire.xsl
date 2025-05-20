@@ -30,9 +30,7 @@
         <fundingReferences>
           <fundingReference>
             <funderName>European Commission</funderName>
-            <funderIdentifier funderIdentifierType="Crossref Funder ID">
-              https://doi.org/10.13039/501100000780
-            </funderIdentifier>
+            <funderIdentifier funderIdentifierType="Crossref Funder ID">https://doi.org/10.13039/501100000780</funderIdentifier>
             <awardNumber awardURI="{concat('https://cordis.europa.eu/project/id/', $awardNumber)}">
               <xsl:value-of select="$awardNumber" />
             </awardNumber>
