@@ -3,6 +3,7 @@
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:mods="http://www.loc.gov/mods/v3"
   xmlns:encoder="xalan://java.net.URLEncoder"
+  xmlns:exsl="http://exslt.org/common" 
   xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
   xmlns:str="http://exslt.org/strings"
   xmlns:exslt="http://exslt.org/common"
@@ -14,17 +15,40 @@
   exclude-result-prefixes="i18n mods str exslt mcr acl mcrxsl basket encoder decoder">
 
   <xsl:import href="xslImport:badges" />
+  <xsl:include href="resource:xsl/mir-orcid-utils.xsl"/>
   <xsl:include href="resource:xsl/csl-export-gui.xsl" />
   <xsl:include href="resource:xsl/response-facets.xsl"/>
   <xsl:include href="resource:xsl/response-mir-utils.xsl" />
 
   <xsl:param name="UserAgent" />
   <xsl:param name="MIR.testEnvironment" />
-  <xsl:param name="MCR.ORCID.OAuth.ClientSecret" select="''" />
   <xsl:param name="MIR.Solr.Secondary.Search.RequestHandler.List" select="'find'" />
   <xsl:param name="RequestURL" />
+  <xsl:param name="MCR.ORCID2.OAuth.ClientSecret" select="''" />
+  <xsl:param name="orcidIntegrationEnabled" select="string-length($MCR.ORCID2.OAuth.ClientSecret) &gt; 0"/>
 
   <xsl:variable name="maxScore" select="//result[@name='response'][1]/@maxScore" />
+
+  <xsl:variable name="user" select="document('user:current')/user"/>
+  <xsl:variable name="isGuest" select="$user/@name='guest'"/>
+
+  <xsl:variable name="currentUserIdsXml">
+    <xsl:if test="$orcidIntegrationEnabled and not($isGuest)">
+      <xsl:call-template name="extractUserIdsFromUserAttributes">
+        <xsl:with-param name="userAttributes" select="$user/attributes"/>
+      </xsl:call-template>
+    </xsl:if>
+  </xsl:variable>
+  <xsl:variable name="currentUserIds" select="exsl:node-set($currentUserIdsXml)/str"/>
+
+  <xsl:variable name="currentUserOrcidsXml">
+    <xsl:if test="$orcidIntegrationEnabled and not($isGuest)">
+      <xsl:call-template name="extractOrcidsFromUserAttributes">
+        <xsl:with-param name="userAttributes" select="$user/attributes"/>
+      </xsl:call-template>
+    </xsl:if>
+  </xsl:variable>
+  <xsl:variable name="currentUserOrcids" select="exsl:node-set($currentUserOrcidsXml)/str"/>
 
   <xsl:template match="/response/result|lst[@name='grouped']/lst[@name='returnId']" priority="10">
     <xsl:variable name="ResultPages">
@@ -468,8 +492,9 @@
       </div>
 
     </div>
-    <xsl:if test="string-length($MCR.ORCID.OAuth.ClientSecret) &gt; 0">
-      <script src="{$WebApplicationBaseURL}js/mir/mycore2orcid.js" />
+    <xsl:if test="$orcidIntegrationEnabled">
+      <xsl:call-template name="printExportToOrcidModal" />
+      <script type="module" src="{$WebApplicationBaseURL}js/mir/orcid-result-list.js" />
     </xsl:if>
   </xsl:template>
 
@@ -510,6 +535,18 @@
         </xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
+    <xsl:variable name="currentUserMatchingTrustedIdsXml">
+      <xsl:if test="$orcidIntegrationEnabled">
+        <xsl:call-template name="getMatchingTrustedIds">
+          <xsl:with-param name="idsA" select="$currentUserIds"/>
+          <xsl:with-param name="idsB" select="arr[@name='mods.nameIdentifier']/str"/>
+        </xsl:call-template>
+      </xsl:if>
+    </xsl:variable>
+    <xsl:variable
+      name="hasCurrentUserMatchingTrustedIds"
+      select="boolean(exsl:node-set($currentUserMatchingTrustedIdsXml)/str)"
+    />
 
     <!-- generate browsing url -->
     <xsl:variable name="href" select="concat($proxyBaseURL,$solrParams)" />
@@ -584,7 +621,7 @@
 
 <!-- hit options -->
           <xsl:choose>
-            <xsl:when test="acl:checkPermission($identifier,'writedb')">
+            <xsl:when test="not($isGuest)">
               <div class="hit_options float-end">
                 <div class="btn-group">
                   <a data-bs-toggle="dropdown" class="btn btn-secondary dropdown-toggle" href="#">
@@ -600,7 +637,7 @@
                       </xsl:call-template>
                     </li>
                         <!-- direct link to editor -->
-                    <xsl:if test="acl:checkPermission($identifier,'writedb')">
+                    <xsl:if test="document(concat('checkPermission:', $identifier, ':writedb'))/boolean='true'">
                       <li>
                         <xsl:variable name="editURL">
                           <xsl:call-template name="mods.getObjectEditURL">
@@ -628,6 +665,26 @@
                         </a>
                       </li>
                     </xsl:if>
+                    <xsl:if test="$orcidIntegrationEnabled">
+                      <li>
+                        <a data-object-id="{$identifier}">
+                          <xsl:choose>
+                            <!-- TODO check if user has at least one linked credential -->
+                            <xsl:when test="$hasCurrentUserMatchingTrustedIds and count($currentUserOrcids) &gt; 0">
+                              <xsl:attribute name="class">
+                                <xsl:value-of select="'hit_option dropdown-item open-export-orcid-modal'" />
+                              </xsl:attribute>
+                            </xsl:when>
+                            <xsl:otherwise>
+                              <xsl:attribute name="class">
+                                <xsl:value-of select="'hit_option dropdown-item open-export-orcid-modal disabled'" />
+                              </xsl:attribute>
+                            </xsl:otherwise>
+                          </xsl:choose>
+                          <xsl:value-of select="document('i18n:mir.orcid.publication.export.action.trigger')"/>
+                        </a>
+                      </li>
+                    </xsl:if>
                   </ul>
                 </div>
               </div>
@@ -641,6 +698,7 @@
               </div>
             </xsl:otherwise>
           </xsl:choose>
+          
 
 
         </div><!-- end col -->
@@ -708,7 +766,7 @@
                         test="$displayDerivate/str[@name='iviewFile'] or translate(str:tokenize($displayDerivate/str[@name='derivateMaindoc'],'.')[position()=last()],'PDF','pdf') = 'pdf'">
                   <div class="hit_icon">
                     <xsl:choose>
-                      <xsl:when test="not(mcrxsl:isCurrentUserGuestUser())">
+                      <xsl:when test="not($isGuest)">
                         <xsl:attribute name="data-iiif-jwt">
                           <xsl:value-of select="concat($WebApplicationBaseURL, 'api/iiif/image/v2/thumbnail/', $identifier,'/full/!300,300/0/default.jpg')"/>
                         </xsl:attribute>
@@ -762,8 +820,9 @@
           <div class="hit_tnd_container">
             <div class="hit_tnd_content">
               <xsl:apply-imports/>
-              <xsl:if test="string-length($MCR.ORCID.OAuth.ClientSecret) &gt; 0">
-                <div class="orcid-status" data-id="{$identifier}" />
+              <xsl:if test="$orcidIntegrationEnabled and $hasCurrentUserMatchingTrustedIds and count($currentUserOrcids) &gt; 0">
+                <!-- TODO provide all orcids? -->
+                <div class="orcid-status" data-object-id="{$identifier}" data-orcid="{$currentUserOrcids[1]}"/>
               </xsl:if>
             </div>
           </div>
@@ -938,11 +997,6 @@
               </xsl:for-each>
             </div>
           </xsl:if>
-
-          <xsl:if test="string-length($MCR.ORCID.OAuth.ClientSecret) &gt; 0">
-            <div class="orcid-publish" data-id="{$identifier}" />
-          </xsl:if>
-
         </div><!-- end hit col -->
       </div><!-- end hit body -->
     </div><!-- end hit item -->
