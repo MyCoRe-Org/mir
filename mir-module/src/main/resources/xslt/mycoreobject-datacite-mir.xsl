@@ -717,16 +717,10 @@
   </xsl:template>
 
   <!-- ========== funding (0-n) ========== -->
-
   <xsl:template name="fundingReference">
-    <xsl:if test="mods:identifier[@type='project'][contains(text(), 'FP7')]">
+    <xsl:if test="mods:extension[@type='datacite-funding']">
       <fundingReferences>
-        <fundingReference>
-          <funderName>European Commission</funderName>
-          <awardNumber>
-            <xsl:value-of select="mods:identifier[@type='project'][contains(text(), 'FP7')]" />
-          </awardNumber>
-        </fundingReference>
+        <xsl:copy-of select="mods:extension[@type='datacite-funding']/resource/fundingReferences/*" />
       </fundingReferences>
     </xsl:if>
   </xsl:template>
