@@ -1996,15 +1996,15 @@
       <legend class="mir-fieldset-legend">
         <xed:output i18n="mir.editor.fundingReference" />
       </legend>
-      <xed:bind xpath="mods:extension[@type='datacite-funding']/resource[@xsi:schemaLocation='http://datacite.org/schema/kernel-4 http://schema.datacite.org/meta/kernel-4.3/metadata.xsd']/fundingReferences">
-        <xed:repeat xpath="fundingReference">
+      <xed:bind xpath="mods:extension[@type='datacite-funding']/datacite:fundingReferences" xmlns:datacite="http://datacite.org/schema/kernel-4">
+        <xed:repeat xpath="datacite:fundingReference">
           <div class="mir-fieldset-content mir-funding-reference-container">
             <div class="mir-form-group row">
               <label class="col-md-3 col-form-label text-end form-label">
                 <xed:output i18n="mir.editor.fundingReference.awardTitle" />
               </label>
               <div class="col-md-6">
-                <xed:bind xpath="awardTitle">
+                <xed:bind xpath="datacite:awardTitle">
                   <input type="text" class="form-control award-title" autocomplete="off" />
                 </xed:bind>
               </div>
@@ -2015,7 +2015,7 @@
                 <xed:output i18n="mir.editor.fundingReference.awardNumber" />
               </label>
               <div class="col-md-6">
-                <xed:bind xpath="awardNumber">
+                <xed:bind xpath="datacite:awardNumber">
                   <div class="row">
                     <div class="col-md-4">
                       <input type="text" class="form-control award-number" />
@@ -2034,10 +2034,10 @@
               <label class="col-md-3 col-form-label text-end form-label">
                 <xed:output i18n="mir.editor.fundingReference.funderName" />
               </label>
-              <xed:bind xpath="funderName">
+              <xed:bind xpath="datacite:funderName">
                 <div class="col-md-6 {$xed-validation-marker}">
                   <input type="text" class="form-control funder-name" autocomplete="off" />
-                  <xed:validate relevant-if="../awardNumber!='' or ../awardNumber/@awardURI!='' or ../awardTitle!='' or ../funderType!=''"
+                  <xed:validate relevant-if="../datacite:awardNumber!='' or ../datacite:awardNumber/@awardURI!='' or ../datacite:awardTitle!='' or ../datacite:funderType!=''"
                     required="true" i18n="mir.editor.fundingReference.funderName.validation" display="global" />
                 </div>
               </xed:bind>
@@ -2047,7 +2047,7 @@
               <label class="col-md-3 col-form-label text-end form-label">
                 <xed:output i18n="mir.editor.fundingReference.funderIdentifier" />
               </label>
-              <xed:bind xpath="funderIdentifier">
+              <xed:bind xpath="datacite:funderIdentifier">
                 <div class="col-md-6">
                   <div class="row">
                     <xed:bind xpath="@funderIdentifierType">
