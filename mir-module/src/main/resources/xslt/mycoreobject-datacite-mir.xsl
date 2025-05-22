@@ -12,7 +12,7 @@
                 xmlns:fn="http://www.w3.org/2005/xpath-functions"
                 xmlns:mcrmods="http://www.mycore.de/xslt/mods"
                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                xmlns="http://datacite.org/schema/kernel-4"
+                xmlns:datacite="http://datacite.org/schema/kernel-4"
                 exclude-result-prefixes="xsl fn xlink mods">
 
   <xsl:include href="utils/mods-utils.xsl" />
@@ -178,7 +178,7 @@
   <!-- ========== titles (1-n) ========== -->
 
   <xsl:template name="titles">
-    <titles>
+    <datacite:titles>
       <xsl:choose>
         <xsl:when test="mods:titleInfo">
           <xsl:apply-templates select="mods:titleInfo[not(@altFormat)]" />
@@ -189,7 +189,7 @@
           </title>
         </xsl:otherwise>
       </xsl:choose>
-    </titles>
+    </datacite:titles>
   </xsl:template>
 
   <xsl:template match="mods:titleInfo">
@@ -719,9 +719,7 @@
   <!-- ========== funding (0-n) ========== -->
   <xsl:template name="fundingReference">
     <xsl:if test="mods:extension[@type='datacite-funding']">
-      <fundingReferences>
-        <xsl:copy-of select="mods:extension[@type='datacite-funding']/resource/fundingReferences/*" />
-      </fundingReferences>
+      <xsl:copy-of select="mods:extension[@type='datacite-funding']/datacite:fundingReferences" copy-namespaces="no" />
     </xsl:if>
   </xsl:template>
 
