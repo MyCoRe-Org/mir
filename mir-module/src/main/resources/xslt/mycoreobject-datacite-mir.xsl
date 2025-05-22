@@ -12,13 +12,11 @@
                 xmlns:fn="http://www.w3.org/2005/xpath-functions"
                 xmlns:mcrmods="http://www.mycore.de/xslt/mods"
                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                xmlns="http://datacite.org/schema/kernel-4"
-                exclude-result-prefixes="xsl fn xlink mods">
+                xmlns:datacite="http://datacite.org/schema/kernel-4"
+                exclude-result-prefixes="xsl fn xlink mods mcrmods">
 
   <xsl:include href="utils/mods-utils.xsl" />
   <xsl:include href="functions/mods.xsl" />
-
-  <xsl:output method="xml" encoding="UTF-8" indent="yes" />
 
   <xsl:param name="WebApplicationBaseURL" />
 
@@ -44,31 +42,31 @@
   </xsl:template>
 
   <xsl:template match="mods:mods">
-    <resource xsi:schemaLocation="{$schemaLocation}">
-      <xsl:call-template name="identifier" />
-      <xsl:call-template name="creators" />
-      <xsl:call-template name="titles" />
-      <xsl:call-template name="publisher" />
-      <xsl:call-template name="publicationYear" />
-      <xsl:call-template name="subjects" />
-      <xsl:call-template name="contributors" />
-      <xsl:call-template name="dates" />
-      <xsl:call-template name="language" />
-      <xsl:call-template name="resourceType" />
-      <xsl:call-template name="alternateIdentifiers" />
-      <xsl:call-template name="relatedIdentifiers" />
-      <xsl:call-template name="rights" />
-      <xsl:call-template name="descriptions" />
-      <xsl:call-template name="fundingReference" />
-    </resource>
+    <datacite:resource xsi:schemaLocation="{$schemaLocation}">
+      <xsl:call-template name="datacite-identifier" />
+      <xsl:call-template name="datacite-creators" />
+      <xsl:call-template name="datacite-titles" />
+      <xsl:call-template name="datacite-publisher" />
+      <xsl:call-template name="datacite-publicationYear" />
+      <xsl:call-template name="datacite-subjects" />
+      <xsl:call-template name="datacite-contributors" />
+      <xsl:call-template name="datacite-dates" />
+      <xsl:call-template name="datacite-language" />
+      <xsl:call-template name="datacite-resourceType" />
+      <xsl:call-template name="datacite-alternateIdentifiers" />
+      <xsl:call-template name="datacite-relatedIdentifiers" />
+      <xsl:call-template name="datacite-rights" />
+      <xsl:call-template name="datacite-descriptions" />
+      <xsl:call-template name="datacite-fundingReference" />
+    </datacite:resource>
   </xsl:template>
 
   <!-- ========== identifier (1) ========== -->
 
-  <xsl:template name="identifier">
-    <identifier identifierType="DOI">
+  <xsl:template name="datacite-identifier">
+    <datacite:identifier identifierType="DOI">
       <xsl:apply-templates select="mods:identifier[@type='doi'][1]" />
-    </identifier>
+    </datacite:identifier>
   </xsl:template>
 
   <xsl:template match="mods:identifier[@type='doi' and starts-with(text(),'doi:')]">
@@ -81,36 +79,36 @@
 
   <!-- ========== creators (1-n) ========== -->
 
-  <xsl:template name="creators">
-    <creators>
+  <xsl:template name="datacite-creators">
+    <datacite:creators>
       <xsl:variable name="creatorRoles" select="$marcrelator//category[@ID='cre']/descendant-or-self::category" />
       <xsl:choose>
         <xsl:when test="mods:name[$creatorRoles/@ID=mods:role/mods:roleTerm]">
           <xsl:apply-templates select="mods:name[$creatorRoles/@ID=mods:role/mods:roleTerm]" mode="creator"/>
         </xsl:when>
         <xsl:otherwise>
-          <creator>
-            <creatorName>
+          <datacite:creator>
+            <datacite:creatorName>
               <xsl:value-of select="$MCR.DOI.DataCite.MissingCreator" />
-            </creatorName>
-          </creator>
+            </datacite:creatorName>
+          </datacite:creator>
         </xsl:otherwise>
       </xsl:choose>
-    </creators>
+    </datacite:creators>
   </xsl:template>
 
   <xsl:template match="mods:name" mode="creator">
-    <creator>
-      <creatorName>
+    <datacite:creator>
+      <datacite:creatorName>
         <xsl:apply-templates select="@type" />
         <xsl:call-template name="name" />
-      </creatorName>
+      </datacite:creatorName>
 
       <xsl:apply-templates select="mods:namePart[@type='given'][1]" />
       <xsl:apply-templates select="mods:namePart[@type='family'][1]" />
       <xsl:apply-templates select="mods:nameIdentifier" />
       <xsl:apply-templates select="mods:affiliation" />
-    </creator>
+    </datacite:creator>
   </xsl:template>
 
   <xsl:template name="name">
@@ -149,55 +147,55 @@
   </xsl:template>
 
   <xsl:template match="mods:namePart[@type='given']">
-    <givenName>
+    <datacite:givenName>
       <xsl:value-of select="text()" />
-    </givenName>
+    </datacite:givenName>
   </xsl:template>
 
   <xsl:template match="mods:namePart[@type='family']">
-    <familyName>
+    <datacite:familyName>
       <xsl:value-of select="text()" />
-    </familyName>
+    </datacite:familyName>
   </xsl:template>
 
   <xsl:template match="mods:nameIdentifier">
-    <nameIdentifier nameIdentifierScheme="{fn:upper-case(@type)}">
+    <datacite:nameIdentifier nameIdentifierScheme="{fn:upper-case(@type)}">
       <xsl:if test="@type='orcid'">
         <xsl:attribute name="schemeURI">http://orcid.org/</xsl:attribute>
       </xsl:if>
       <xsl:value-of select="text()" />
-    </nameIdentifier>
+    </datacite:nameIdentifier>
   </xsl:template>
 
   <xsl:template match="mods:affiliation">
-    <affiliation>
+    <datacite:affiliation>
       <xsl:value-of select="text()" />
-    </affiliation>
+    </datacite:affiliation>
   </xsl:template>
 
   <!-- ========== titles (1-n) ========== -->
 
-  <xsl:template name="titles">
-    <titles>
+  <xsl:template name="datacite-titles">
+    <datacite:titles>
       <xsl:choose>
         <xsl:when test="mods:titleInfo">
           <xsl:apply-templates select="mods:titleInfo[not(@altFormat)]" />
         </xsl:when>
         <xsl:otherwise>
-          <title>
+          <datacite:title>
             <xsl:value-of select="$MCR.DOI.DataCite.MissingTitle" />
-          </title>
+          </datacite:title>
         </xsl:otherwise>
       </xsl:choose>
-    </titles>
+    </datacite:titles>
   </xsl:template>
 
   <xsl:template match="mods:titleInfo">
-    <title>
+    <datacite:title>
       <xsl:apply-templates select="@type" />
       <xsl:copy-of select="@xml:lang" />
       <xsl:apply-templates select="." mode="text" />
-    </title>
+    </datacite:title>
   </xsl:template>
 
   <xsl:template match="mods:titleInfo/@type">
@@ -240,8 +238,8 @@
 
   <!-- ========== publisher (1) ========== -->
 
-  <xsl:template name="publisher">
-    <publisher>
+  <xsl:template name="datacite-publisher">
+    <datacite:publisher>
       <xsl:variable name="publisherRoles" select="$marcrelator//category[@ID='pbl']/descendant-or-self::category" />
       <xsl:choose>
         <xsl:when test="mods:originInfo[not(@eventType) or @eventType='publication']/mods:publisher">
@@ -271,14 +269,14 @@
           <xsl:value-of select="$MCR.DOI.HostingInstitution" />
         </xsl:otherwise>
       </xsl:choose>
-    </publisher>
+    </datacite:publisher>
   </xsl:template>
 
   <!-- ========== publicationYear (1) ========== -->
-  <xsl:template name="publicationYear">
-    <publicationYear>
+  <xsl:template name="datacite-publicationYear">
+    <datacite:publicationYear>
       <xsl:apply-templates select="." mode="publicationYear" />
-    </publicationYear>
+    </datacite:publicationYear>
   </xsl:template>
 
   <xsl:template mode="publicationYear" match="mods:*">
@@ -315,36 +313,36 @@
 
   <!-- ========== contributors (0-n) ========== -->
 
-  <xsl:template name="contributors">
+  <xsl:template name="datacite-contributors">
     <xsl:variable name="contributorRoles" select="$marcrelator//category[@ID='ctb']/descendant-or-self::category" />
-    <contributors>
-      <xsl:call-template name="hostingInstitution" />
+    <datacite:contributors>
+      <xsl:call-template name="datacite-hostingInstitution" />
       <xsl:apply-templates select="mods:name[$contributorRoles/@ID=mods:role/mods:roleTerm/text()]" mode="contributor" />
-    </contributors>
+    </datacite:contributors>
   </xsl:template>
 
-  <xsl:template name="hostingInstitution">
-    <contributor contributorType="HostingInstitution">
-      <contributorName>
+  <xsl:template name="datacite-hostingInstitution">
+    <datacite:contributor contributorType="HostingInstitution">
+      <datacite:contributorName>
         <xsl:value-of select="$MCR.DOI.HostingInstitution" />
-      </contributorName>
-    </contributor>
+      </datacite:contributorName>
+    </datacite:contributor>
   </xsl:template>
 
   <xsl:template mode="contributor" match="mods:name">
-    <contributor>
+    <datacite:contributor>
       <xsl:apply-templates select="mods:role/mods:roleTerm[@type='code' and @authority='marcrelator']" mode="contributorType"/>
 
-      <contributorName>
+      <datacite:contributorName>
         <xsl:apply-templates select="@type" />
         <xsl:call-template name="name" />
-      </contributorName>
+      </datacite:contributorName>
 
       <xsl:apply-templates select="mods:namePart[@type='given'][1]" />
       <xsl:apply-templates select="mods:namePart[@type='family'][1]" />
       <xsl:apply-templates select="mods:nameIdentifier" />
       <xsl:apply-templates select="mods:affiliation" />
-    </contributor>
+    </datacite:contributor>
   </xsl:template>
 
   <xsl:template mode="contributorType" match="mods:roleTerm">
@@ -389,26 +387,26 @@
 
   <!-- ========== subjects (0-n)========== -->
 
-  <xsl:template name="subjects">
+  <xsl:template name="datacite-subjects">
     <xsl:if test="mods:subject[mods:topic] or mods:classification">
-      <subjects>
+      <datacite:subjects>
         <xsl:apply-templates select="mods:subject/mods:topic" />
         <xsl:apply-templates select="mods:classification[@authority='sdnb' or @authority='ddc']" />
-      </subjects>
+      </datacite:subjects>
     </xsl:if>
   </xsl:template>
 
   <xsl:template match="mods:subject/mods:topic">
-    <subject>
+    <datacite:subject>
       <xsl:value-of select="text()" />
-    </subject>
+    </datacite:subject>
   </xsl:template>
 
   <xsl:template match="mods:classification">
     <xsl:if test="@authority">
-      <subject subjectScheme="{@authority}">
+      <datacite:subject subjectScheme="{@authority}">
         <xsl:value-of select="text()" />
-      </subject>
+      </datacite:subject>
     </xsl:if>
 
     <xsl:variable name="schemeURI" select="@authorityURI" />
@@ -420,7 +418,7 @@
       <xsl:choose>
         <xsl:when test="starts-with(@xml:lang,'x-')" />
         <xsl:otherwise>
-          <subject>
+          <datacite:subject>
             <xsl:if test="schemeURI">
               <xsl:attribute name="schemeURI">
                 <xsl:value-of select="$schemeURI" />
@@ -433,7 +431,7 @@
             </xsl:if>
             <xsl:copy-of select="@xml:lang" />
             <xsl:value-of select="@text" />
-          </subject>
+          </datacite:subject>
         </xsl:otherwise>
       </xsl:choose>
     </xsl:for-each>
@@ -441,68 +439,68 @@
 
   <!-- ========== dates (0-n) ========== -->
 
-  <xsl:template name="dates">
+  <xsl:template name="datacite-dates">
     <xsl:if test="mods:originInfo[not(@eventType) or @eventType='publication'][mods:dateCreated or mods:dateIssued or mods:dateModified or mods:dateOther]">
-      <dates>
+      <datacite:dates>
         <xsl:for-each select="mods:originInfo[not(@eventType) or @eventType='publication']">
           <xsl:apply-templates select="mods:dateCreated" />
           <xsl:apply-templates select="mods:dateIssued" />
           <xsl:apply-templates select="mods:dateModified" />
           <xsl:apply-templates select="mods:dateOther" />
         </xsl:for-each>
-      </dates>
+      </datacite:dates>
     </xsl:if>
   </xsl:template>
 
   <xsl:template match="mods:dateIssued[@encoding='w3cdtf']">
-    <date dateType="Issued">
+    <datacite:date dateType="Issued">
       <xsl:value-of select="text()" />
-    </date>
+    </datacite:date>
   </xsl:template>
 
   <xsl:template match="mods:dateCreated[@encoding='w3cdtf']">
-    <date dateType="Created">
+    <datacite:date dateType="Created">
       <xsl:value-of select="text()" />
-    </date>
+    </datacite:date>
   </xsl:template>
 
   <xsl:template match="mods:dateModified[@encoding='w3cdtf']">
-    <date dateType="Updated">
+    <datacite:date dateType="Updated">
       <xsl:value-of select="text()" />
-    </date>
+    </datacite:date>
   </xsl:template>
 
   <xsl:template match="mods:dateOther[@type='accepted' and @encoding='w3cdtf']">
-    <date dateType="Accepted">
+    <datacite:date dateType="Accepted">
       <xsl:value-of select="text()" />
-    </date>
+    </datacite:date>
   </xsl:template>
 
   <xsl:template match="mods:dateOther[@type='submitted' and @encoding='w3cdtf']">
-    <date dateType="Submitted">
+    <datacite:date dateType="Submitted">
       <xsl:value-of select="text()" />
-    </date>
+    </datacite:date>
   </xsl:template>
 
   <xsl:template match="mods:dateOther[@encoding='w3cdtf']">
-    <date dateType="Other">
+    <datacite:date dateType="Other">
       <xsl:value-of select="text()" />
-    </date>
+    </datacite:date>
   </xsl:template>
 
   <!-- ========== language (0-1) ========== -->
 
-  <xsl:template name="language">
+  <xsl:template name="datacite-language">
     <xsl:for-each select="mods:language[1]/mods:languageTerm[@authority='rfc5646'][@type='code']">
-      <language>
+      <datacite:language>
         <xsl:value-of select="." />
-      </language>
+      </datacite:language>
     </xsl:for-each>
   </xsl:template>
 
   <!-- ========== resourceType (1) ========== -->
 
-  <xsl:template name="resourceType">
+  <xsl:template name="datacite-resourceType">
     <xsl:variable name="resourceTypeGeneral">
       <xsl:choose>
         <xsl:when test="$mods-type='research_data'">
@@ -519,36 +517,36 @@
         </xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
-    <resourceType>
+    <datacite:resourceType>
       <xsl:attribute name="resourceTypeGeneral">
         <xsl:value-of select="$resourceTypeGeneral" />
       </xsl:attribute>
       <xsl:value-of select="$mods-type" />
-    </resourceType>
+    </datacite:resourceType>
   </xsl:template>
 
   <!-- ========== alternateIdentifiers (0-n) ========== -->
 
-  <xsl:template name="alternateIdentifiers">
-    <alternateIdentifiers>
+  <xsl:template name="datacite-alternateIdentifiers">
+    <datacite:alternateIdentifiers>
       <xsl:apply-templates select="mods:identifier[@type='urn']" />
       <xsl:apply-templates select="ancestor::mycoreobject/@ID" />
-    </alternateIdentifiers>
+    </datacite:alternateIdentifiers>
   </xsl:template>
 
   <xsl:template match="mods:identifier[not(@type='doi')]">
-    <alternateIdentifier alternateIdentifierType="{fn:upper-case(@type)}">
+    <datacite:alternateIdentifier alternateIdentifierType="{fn:upper-case(@type)}">
       <xsl:value-of select="." />
-    </alternateIdentifier>
+    </datacite:alternateIdentifier>
   </xsl:template>
 
   <xsl:template match="mycoreobject/@ID">
-    <alternateIdentifier alternateIdentifierType="URL">
+    <datacite:alternateIdentifier alternateIdentifierType="URL">
       <xsl:value-of select="concat($WebApplicationBaseURL,'receive/',.)" />
-    </alternateIdentifier>
-    <alternateIdentifier alternateIdentifierType="MyCoRe">
+    </datacite:alternateIdentifier>
+    <datacite:alternateIdentifier alternateIdentifierType="MyCoRe">
       <xsl:value-of select="." />
-    </alternateIdentifier>
+    </datacite:alternateIdentifier>
   </xsl:template>
 
   <!-- ========== relatedIdentifiers (0-n) ========== -->
@@ -556,43 +554,43 @@
   <xsl:variable name="supportedRelationTypes">host series original otherVersion otherFormat references isReferencedBy preceding succeeding reviewOf</xsl:variable>
   <xsl:variable name="supportedRelationIDs">doi urn issn isbn</xsl:variable>
 
-  <xsl:template name="relatedIdentifiers">
-    <relatedIdentifiers>
+  <xsl:template name="datacite-relatedIdentifiers">
+    <datacite:relatedIdentifiers>
       <xsl:call-template name="linkToMetadata" />
       <xsl:apply-templates select="mods:relatedItem[contains($supportedRelationTypes,@type)]" />
-    </relatedIdentifiers>
+    </datacite:relatedIdentifiers>
   </xsl:template>
 
   <xsl:variable name="modsScheme">https://www.loc.gov/standards/mods/v3/mods-3-7.xsd</xsl:variable>
 
   <xsl:template name="linkToMetadata">
-    <relatedIdentifier relatedIdentifierType="URL" relationType="HasMetadata" relatedMetadataScheme="mods" schemeURI="{$modsScheme}">
+    <datacite:relatedIdentifier relatedIdentifierType="URL" relationType="HasMetadata" relatedMetadataScheme="mods" schemeURI="{$modsScheme}">
       <xsl:value-of select="concat($WebApplicationBaseURL,'receive/',ancestor::mycoreobject/@ID,'?XSL.Transformer=mods')" />
-    </relatedIdentifier>
+    </datacite:relatedIdentifier>
   </xsl:template>
 
   <xsl:template match="mods:relatedItem">
     <xsl:apply-templates select="mods:identifier[contains($supportedRelationIDs,@type)]" mode="related" />
     <xsl:if test="@xlink:href">
-      <xsl:call-template name="relatedLink" />
+      <xsl:call-template name="datacite-relatedLink" />
     </xsl:if>
   </xsl:template>
 
-  <xsl:template name="relatedLink">
+  <xsl:template name="datacite-relatedLink">
     <!-- TODO: make relationType dependent from related item type,
                see https://support.datacite.org/docs/schema-optional-properties-v41#122-relationtype
                for details -->
-    <relatedIdentifier relatedIdentifierType="URL" relationType="References">
+    <datacite:relatedIdentifier relatedIdentifierType="URL" relationType="References">
       <xsl:apply-templates select="@type" />
       <xsl:value-of select="concat($WebApplicationBaseURL,'receive/',@xlink:href)" />
-    </relatedIdentifier>
+    </datacite:relatedIdentifier>
   </xsl:template>
 
   <xsl:template match="mods:identifier" mode="related">
-    <relatedIdentifier relatedIdentifierType="{fn:upper-case(@type)}">
+    <datacite:relatedIdentifier relatedIdentifierType="{fn:upper-case(@type)}">
       <xsl:apply-templates select="../@type" />
       <xsl:value-of select="text()" />
-    </relatedIdentifier>
+    </datacite:relatedIdentifier>
   </xsl:template>
 
   <xsl:template match="mods:relatedItem/@type">
@@ -615,9 +613,9 @@
 
   <!-- ========== rights (0-n) ========== -->
 
-  <xsl:template name="rights">
+  <xsl:template name="datacite-rights">
     <xsl:if test="mods:accessCondition[@type='use and reproduction']">
-      <rightsList>
+      <datacite:rightsList>
         <xsl:for-each select="mods:accessCondition[@type='use and reproduction']">
           <xsl:variable name="license_id" select="substring-after(@xlink:href,'#')" />
           <xsl:variable name="licenses" select="document('classification:metadata:-1:children:mir_licenses')" />
@@ -628,7 +626,7 @@
               <!-- prefer english label, but only if one exists at all -->
               <xsl:when test="not(@xml:lang='en') and ../label[@xml:lang='en']" />
               <xsl:otherwise>
-                <rights>
+                <datacite:rights>
                   <xsl:copy-of select="@xml:lang" />
                   <xsl:for-each select="../url/@xlink:href">
                     <xsl:attribute name="rightsURI">
@@ -648,38 +646,38 @@
                       <xsl:value-of select="@description" />
                     </xsl:otherwise>
                   </xsl:choose>
-                </rights>
+                </datacite:rights>
               </xsl:otherwise>
             </xsl:choose>
           </xsl:for-each>
         </xsl:for-each>
-      </rightsList>
+      </datacite:rightsList>
     </xsl:if>
   </xsl:template>
 
   <!-- ========== descriptions (0-n) ========== -->
 
-  <xsl:template name="descriptions">
+  <xsl:template name="datacite-descriptions">
     <xsl:if test="mods:abstract|mods:relatedItem[@type='host']|mods:relatedItem[@type='series']">
-      <descriptions>
+      <datacite:descriptions>
         <xsl:apply-templates select="mods:abstract[not(@altFormat)]" />
         <xsl:apply-templates select="mods:relatedItem[@type='host']" mode="seriesInfo" />
         <xsl:apply-templates select="mods:relatedItem[@type='series']" mode="seriesInfo" />
-      </descriptions>
+      </datacite:descriptions>
     </xsl:if>
   </xsl:template>
 
   <xsl:template match="mods:abstract">
-    <description descriptionType="Abstract">
+    <datacite:description descriptionType="Abstract">
       <xsl:copy-of select="@xml:lang" />
       <xsl:value-of select="text()" />
-    </description>
+    </datacite:description>
   </xsl:template>
 
   <xsl:template match="mods:relatedItem" mode="seriesInfo">
-    <description descriptionType="SeriesInformation">
+    <datacite:description descriptionType="SeriesInformation">
       <xsl:apply-templates select="." mode="seriesText" />
-    </description>
+    </datacite:description>
   </xsl:template>
 
   <xsl:template match="mods:relatedItem" mode="seriesText">
@@ -718,16 +716,16 @@
 
   <!-- ========== funding (0-n) ========== -->
 
-  <xsl:template name="fundingReference">
+  <xsl:template name="datacite-fundingReference">
     <xsl:if test="mods:identifier[@type='project'][contains(text(), 'FP7')]">
-      <fundingReferences>
-        <fundingReference>
-          <funderName>European Commission</funderName>
-          <awardNumber>
+      <datacite:fundingReferences>
+        <datacite:fundingReference>
+          <datacite:funderName>European Commission</datacite:funderName>
+          <datacite:awardNumber>
             <xsl:value-of select="mods:identifier[@type='project'][contains(text(), 'FP7')]" />
-          </awardNumber>
-        </fundingReference>
-      </fundingReferences>
+          </datacite:awardNumber>
+        </datacite:fundingReference>
+      </datacite:fundingReferences>
     </xsl:if>
   </xsl:template>
 
