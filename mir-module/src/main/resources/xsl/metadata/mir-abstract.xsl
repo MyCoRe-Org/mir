@@ -12,6 +12,7 @@
 
   <xsl:import  href="xslImport:modsmeta:metadata/mir-abstract.xsl" />
   <xsl:include href="resource:xsl/mir-utils.xsl" />
+  <xsl:include href="resource:xsl/badges/mir-badges-entry-point.xsl" />
   <xsl:param name="MIR.Layout.Abstract.Type.Classification"/>
   <xsl:param name="RequestURL"/>
   <xsl:variable name="objectID" select="/mycoreobject/@ID" />
@@ -24,23 +25,8 @@
 
     <!-- badges -->
     <div id="mir-abstract-badges">
-
-      <xsl:variable name="revision">
-        <xsl:call-template name="UrlGetParam">
-          <xsl:with-param name="url" select="$RequestURL" />
-          <xsl:with-param name="par" select="'r'" />
-        </xsl:call-template>
-      </xsl:variable>
-
       <div id="badges">
-        <xsl:choose>
-          <xsl:when test="string-length($revision) &gt; 0">
-            <xsl:copy-of select="document(concat('xslStyle:badges/mir-badges-entry-point:notnull:mcrobject:', $objectID, '?r=', $revision))"/>
-          </xsl:when>
-          <xsl:otherwise>
-            <xsl:copy-of select="document(concat('xslStyle:badges/mir-badges-entry-point:notnull:solr:q=id%3A', $objectID))"/>
-          </xsl:otherwise>
-        </xsl:choose>
+        <xsl:apply-templates select="mycoreobject" mode="mycoreobject-badge"/>
       </div><!-- end: badges -->
     </div><!-- end: badgets structure -->
 
