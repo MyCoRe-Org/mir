@@ -867,7 +867,7 @@
 <!-- hit type -->
       <div class="hit_tnd_container">
         <div class="hit_tnd_content">
-          <xsl:copy-of select="document(concat('xslStyle:badges/mir-badges-solr:notnull:solr:q=id%3A', $objID))" />
+          <xsl:copy-of select="document(concat('xslStyle:badges/mir-badges-entry-point:notnull:solr:q=id%3A', $objID))" />
         </div>
       </div>
 
