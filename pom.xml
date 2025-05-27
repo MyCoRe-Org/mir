@@ -22,7 +22,7 @@
     <connection>scm:git:https://github.com/MyCoRe-Org/mir.git</connection>
     <developerConnection>scm:git:https://github.com/MyCoRe-Org/mir.git</developerConnection>
     <url>https://github.com/MyCoRe-Org/mir/tree/main</url>
-    <tag>HEAD</tag>
+    <tag>2025.06.x</tag>
   </scm>
   <properties>
     <cargo.container.zipUrlInstaller.downloadDir>${settings.localRepository}/../cargo/containers</cargo.container.zipUrlInstaller.downloadDir>
