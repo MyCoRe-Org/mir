@@ -251,42 +251,6 @@ $hover_darken: 20%;
       .hit_tnd_container {
       }
       .hit_tnd_content {
-          overflow:hidden;
-          > div {
-            float:left;
-	        &:nth-child(n+1) {
-		      margin-left: 5px;
-	        }
-          }
-      }
-      .hit_date {
-        color: $dark_neutral;
-      }
-      .hit_type {
-        color: $dark_neutral;
-      }
-      .hit_state {
-        color: $white;
-        .mir-published {
-          background-color: $success;
-        }
-        .mir-submitted,
-        .mir-new,
-        .mir-imported {
-          background-color: $warning;
-        }
-        .mir-review {
-          background-color: $primary;
-        }
-        .mir-blocked {
-          background-color: $danger;
-        }
-        .mir-deleted {
-          background-color: $secondary;
-        }
-        span {
-          background-color: $secondary;
-        }
       }
       .hit_title {
         font-size: 20px;

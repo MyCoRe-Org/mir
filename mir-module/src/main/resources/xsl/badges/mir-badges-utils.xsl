@@ -4,17 +4,18 @@
   <xsl:param name="CurrentLang"/>
   <xsl:param name="ServletsBaseURL"/>
   <xsl:param name="WebApplicationBaseURL"/>
+  <xsl:param name="isCurrentUserGuest" select="document('callJava:org.mycore.common.xml.MCRXMLFunctions:isCurrentUserGuestUser') = 'true'"/>
 
   <xsl:template name="output-badge">
-    <xsl:param name="of-type"/>
-    <xsl:param name="badge-type" select="'badge-info'"/>
+    <xsl:param name="class"/>
+    <xsl:param name="badge-type" select="'bg-info'"/>
     <xsl:param name="label"/>
     <xsl:param name="link"/>
     <xsl:param name="link-class"/>
     <xsl:param name="tooltip"/>
     <xsl:param name="icon-class"/>
 
-    <span class="mr-1 {$of-type}">
+    <div class="{$class}">
       <xsl:if test="$tooltip">
         <xsl:attribute name="data-toggle">
           <xsl:value-of select="'tooltip'"/>
@@ -43,7 +44,7 @@
           </span>
         </xsl:otherwise>
       </xsl:choose>
-    </span>
+    </div>
 
   </xsl:template>
 </xsl:stylesheet>
