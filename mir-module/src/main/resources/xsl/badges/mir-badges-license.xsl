@@ -11,6 +11,7 @@
 
   <xsl:template match="doc" mode="badge">
     <xsl:apply-imports/>
+    <!-- TODO include solr request field -->
     <xsl:if test="arr[@name='category.top']/str[contains(text(), 'mir_licenses:')]">
       <xsl:variable name="accessConditionClass" select="arr[@name='category.top']/str[contains(text(), 'mir_licenses:')][last()]"/>
       <xsl:variable name="accessCondition">
@@ -32,7 +33,7 @@
       </xsl:variable>
 
       <xsl:call-template name="output-badge">
-        <xsl:with-param name="class" select="'mir-license-badge'"/>
+        <xsl:with-param name="class" select="'mir-badge-license'"/>
         <xsl:with-param name="badge-type" select="'bg-primary'"/>
         <xsl:with-param name="label" select="$label"/>
         <xsl:with-param name="link"  select="concat($ServletsBaseURL, 'solr/find?condQuery=*&amp;fq=category:%22', $accessConditionClass, '%22')"/>

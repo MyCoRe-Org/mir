@@ -10,6 +10,7 @@
 
   <xsl:template match="doc" mode="badge">
     <xsl:apply-imports/>
+    <!-- TODO include solr request field -->
     <xsl:if test="str[@name='mods.dateIssued'] or str[@name='mods.dateIssued.host']">
       <xsl:variable name="date">
         <xsl:choose>
@@ -31,7 +32,7 @@
       <xsl:variable name="label" select="document(concat('callJava:org.mycore.common.xml.MCRXMLFunctions:formatISODate:', $date, ':', $format, ':', $CurrentLang))"/>
 
       <xsl:call-template name="output-badge">
-        <xsl:with-param name="class" select="'mir-date-badge'"/>
+        <xsl:with-param name="class" select="'mir-badge-date'"/>
         <xsl:with-param name="badge-type" select="'bg-primary'"/>
         <xsl:with-param name="label" select="$label"/>
         <xsl:with-param name="link" select="concat($ServletsBaseURL, 'solr/find?condQuery=*&amp;fq=mods.dateIssued:%22', $date, '%22')"/>

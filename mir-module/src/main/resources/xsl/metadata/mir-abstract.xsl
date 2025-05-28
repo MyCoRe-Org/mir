@@ -23,7 +23,7 @@
     <xsl:variable name="mods" select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods" />
 
     <div id="mir-abstract-badges" class="mir-badge-container">
-      <xsl:apply-templates select="document(concat('solr:q=id%3A', $objectID))/response/result/doc" mode="badge"/>
+      <xsl:apply-templates select="document(concat('xslStyle:mycoreobject-solrdocument:mcrobject:', $objectID))/add" mode="badge"/>
     </div>
 
     <!-- headline -->

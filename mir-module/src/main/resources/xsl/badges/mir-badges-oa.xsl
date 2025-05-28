@@ -17,7 +17,7 @@
     <xsl:apply-imports/>
 
     <xsl:call-template name="render-oa-badge">
-      <xsl:with-param name="isOpenAccess" select="bool[@name='worldReadableComplete']='true'"/>
+      <xsl:with-param name="isOpenAccess" select="bool[@name='worldReadableComplete']='true' or field[@name='worldReadableComplete']='true'"/>
     </xsl:call-template>
   </xsl:template>
 
@@ -46,7 +46,7 @@
     </xsl:variable>
 
     <xsl:call-template name="output-badge">
-      <xsl:with-param name="class" select="'mir-oa-badge'"/>
+      <xsl:with-param name="class" select="'mir-badge-oa'"/>
       <xsl:with-param name="tooltip" select="document(concat('i18n:mir.response.openAccess.', $isOpenAccess))/i18n/text()"/>
       <xsl:with-param name="badge-type" select="$badge-type"/>
       <xsl:with-param name="icon-class" select="$icon-class"/>

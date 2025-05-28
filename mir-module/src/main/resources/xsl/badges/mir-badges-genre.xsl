@@ -11,11 +11,12 @@
 
   <xsl:template match="doc" mode="badge">
     <xsl:apply-imports/>
+        <!-- TODO include solr request field -->
     <xsl:choose>
       <xsl:when test="arr[@name='mods.genre']">
         <xsl:for-each select="arr[@name='mods.genre']/str">
           <xsl:call-template name="output-badge">
-            <xsl:with-param name="class" select="'mir-genre-badge'"/>
+            <xsl:with-param name="class" select="'mir-badge-genre'"/>
             <xsl:with-param name="badge-type" select="'bg-primary'"/>
             <xsl:with-param name="label" select="document(concat('callJava:org.mycore.common.xml.MCRXMLFunctions:getDisplayName:mir_genres:', .))"/>
             <xsl:with-param name="link"  select="concat($ServletsBaseURL, 'solr/find?condQuery=*&amp;fq=category.top:%22mir_genres:', ., '%22')"/>
@@ -25,7 +26,7 @@
       </xsl:when>
       <xsl:otherwise>
         <xsl:call-template name="output-badge">
-          <xsl:with-param name="class" select="'mir-genre-badge'"/>
+          <xsl:with-param name="class" select="'mir-badge-genre'"/>
           <xsl:with-param name="badge-type" select="'bg-primary'"/>
           <xsl:with-param name="label" select="document('callJava:org.mycore.common.xml.MCRXMLFunctions:getDisplayName:mir_genres:article')"/>
           <xsl:with-param name="tooltip" select="$tooltip-genre"/>
