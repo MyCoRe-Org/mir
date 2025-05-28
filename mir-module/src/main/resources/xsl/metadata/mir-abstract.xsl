@@ -9,10 +9,9 @@
   xmlns:exslt="http://exslt.org/common"
   exclude-result-prefixes="i18n mods xlink mcrxsl xalan exslt"
 >
-
-  <xsl:import  href="xslImport:modsmeta:metadata/mir-abstract.xsl" />
+  <xsl:import href="xslImport:modsmeta:metadata/mir-abstract.xsl" />
+  <xsl:import href="xslImport:badges"/>
   <xsl:include href="resource:xsl/mir-utils.xsl" />
-  <xsl:include href="resource:xsl/badges/mir-badges-entry-point.xsl" />
   <xsl:param name="MIR.Layout.Abstract.Type.Classification"/>
   <xsl:param name="RequestURL"/>
   <xsl:variable name="objectID" select="/mycoreobject/@ID" />
@@ -23,12 +22,9 @@
 
     <xsl:variable name="mods" select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods" />
 
-    <!-- badges -->
-    <div id="mir-abstract-badges">
-      <div id="badges">
-        <xsl:apply-templates select="mycoreobject" mode="mycoreobject-badge"/>
-      </div><!-- end: badges -->
-    </div><!-- end: badgets structure -->
+    <div id="mir-abstract-badges" class="mir-badge-container">
+      <xsl:apply-templates select="document(concat('solr:q=id%3A', $objectID))/response/result/doc" mode="badge"/>
+    </div>
 
     <!-- headline -->
     <div id="mir-abstract-title">
