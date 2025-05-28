@@ -23,6 +23,7 @@
                 xmlns:exslt="http://exslt.org/common"
                 extension-element-prefixes="ex exslt"
 >
+  <xsl:import href="xslImport:badges"/>
   <xsl:include href="mir-accesskey-utils.xsl" />
 
   <xsl:param name="MIR.registerDOI" select="''" />
@@ -866,8 +867,8 @@
 
 <!-- hit type -->
       <div class="hit_tnd_container">
-        <div class="hit_tnd_content">
-          <xsl:copy-of select="document(concat('xslStyle:badges/mir-badges-entry-point:notnull:solr:q=id%3A', $objID))" />
+        <div class="hit_tnd_content mir-badge-container">
+          <xsl:apply-templates select="document(concat('solr:q=id%3A', $objID))/response/result/doc" mode="badge"/>
         </div>
       </div>
 

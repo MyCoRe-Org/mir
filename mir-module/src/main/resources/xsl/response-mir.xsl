@@ -760,8 +760,8 @@
 
 <!-- hit type -->
           <div class="hit_tnd_container">
-            <div class="hit_tnd_content">
-              <xsl:apply-imports/>
+            <div class="hit_tnd_content mir-badge-container">
+              <xsl:apply-templates select="." mode="badge"/>
               <xsl:if test="string-length($MCR.ORCID.OAuth.ClientSecret) &gt; 0">
                 <div class="orcid-status" data-id="{$identifier}" />
               </xsl:if>
