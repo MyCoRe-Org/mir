@@ -4,98 +4,43 @@
                 exclude-result-prefixes="mods">
 
   <xsl:import href="xslImport:badges:badges/mir-badges-date.xsl"/>
-  <xsl:include href="resource:xsl/badges/mir-badges-style-template.xsl"/>
+  <xsl:include href="resource:xsl/badges/mir-badges-utils.xsl"/>
 
-  <xsl:variable name="tooltip-date" select="document('i18n:mir.date.published')/i18n/text()"/>
-
-  <xsl:template match="doc" mode="resultList">
+  <xsl:template match="doc" mode="badge">
     <xsl:apply-imports/>
 
-    <xsl:if test="str[@name='mods.dateIssued'] or str[@name='mods.dateIssued.host']">
-      <xsl:variable name="date">
-        <xsl:choose>
-          <xsl:when test="str[@name='mods.dateIssued']">
-            <xsl:value-of select="str[@name='mods.dateIssued']"/>
-          </xsl:when>
-          <xsl:otherwise>
-            <xsl:value-of select="str[@name='mods.dateIssued.host']"/>
-          </xsl:otherwise>
-        </xsl:choose>
-      </xsl:variable>
-
-      <xsl:variable name="format">
-        <xsl:call-template name="get-dateformat">
-          <xsl:with-param name="date" select="$date"/>
+    <xsl:choose>
+      <xsl:when test="str[@name='mods.dateIssued'] or str[@name='mods.dateIssued.host']">
+        <xsl:call-template name="output-date-badge">
+          <xsl:with-param name="date" select="str[@name='mods.dateIssued'] | str[@name='mods.dateIssued.host']"/>
         </xsl:call-template>
-      </xsl:variable>
-
-      <xsl:variable name="label" select="document(concat('callJava:org.mycore.common.xml.MCRXMLFunctions:formatISODate:', $date, ':', $format, ':', $CurrentLang))"/>
-
-      <xsl:call-template name="output-badge">
-        <xsl:with-param name="of-type" select="'hit_date'"/>
-        <xsl:with-param name="badge-type" select="'badge-primary'"/>
-        <xsl:with-param name="label" select="$label"/>
-        <xsl:with-param name="link" select="concat($ServletsBaseURL, 'solr/find?condQuery=*&amp;fq=mods.dateIssued:%22', $date, '%22')"/>
-        <xsl:with-param name="link-class" select="'date_published'"/>
-        <xsl:with-param name="tooltip" select="$tooltip-date"/>
-      </xsl:call-template>
-    </xsl:if>
+      </xsl:when>
+      <xsl:when test="field[@name='mods.dateIssued'] or field[@name='mods.dateIssued.host']">
+        <xsl:call-template name="output-date-badge">
+          <xsl:with-param name="date" select="field[@name='mods.dateIssued'] | field[@name='mods.dateIssued.host']"/>
+        </xsl:call-template>
+      </xsl:when>
+    </xsl:choose>
   </xsl:template>
 
-  <xsl:template match="mycoreobject" mode="mycoreobject-badge">
-    <xsl:apply-imports/>
-
-    <!-- as of mycore/../xsl/mods-solr.xsl -->
-    <xsl:variable name="dateIssued">
-      <xsl:for-each select="//mods:mods/mods:originInfo[not(@eventType) or @eventType='publication']/mods:dateIssued[@encoding='w3cdtf']">
-        <xsl:sort data-type="number" select="count(ancestor::mods:originInfo[not(@eventType) or @eventType='publication'])"/>
-        <xsl:if test="position() = 1">
-          <xsl:value-of select="."/>
-        </xsl:if>
-      </xsl:for-each>
-    </xsl:variable>
-
-    <!-- as of mycore/../xsl/mods-solr.xsl -->
-    <xsl:variable name="dateIssued.host">
-      <xsl:for-each select="//mods:mods/mods:relatedItem[@type='host']">
-        <xsl:for-each select="mods:originInfo[not(@eventType) or @eventType='publication']/mods:dateIssued">
-          <xsl:sort data-type="number" select="count(ancestor::mods:originInfo[not(@eventType) or @eventType='publication'])"/>
-          <xsl:if test="position() = 1">
-            <xsl:value-of select="."/>
-          </xsl:if>
-        </xsl:for-each>
-      </xsl:for-each>
-    </xsl:variable>
-
-    <xsl:variable name="date">
-      <xsl:choose>
-        <xsl:when test="$dateIssued">
-          <xsl:value-of select="$dateIssued"/>
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:value-of select="$dateIssued.host"/>
-        </xsl:otherwise>
-      </xsl:choose>
-    </xsl:variable>
-
-    <xsl:if test="string-length($date) &gt; 0">
-      <xsl:variable name="format">
-        <xsl:call-template name="get-dateformat">
-          <xsl:with-param name="date" select="$date"/>
-        </xsl:call-template>
-      </xsl:variable>
-
-      <xsl:variable name="label" select="document(concat('callJava:org.mycore.common.xml.MCRXMLFunctions:formatISODate:', $date, ':', $format, ':', $CurrentLang))"/>
-
-      <xsl:call-template name="output-badge">
-        <xsl:with-param name="of-type" select="'hit_date'"/>
-        <xsl:with-param name="badge-type" select="'badge-primary'"/>
-        <xsl:with-param name="label" select="$label"/>
-        <xsl:with-param name="link" select="concat($ServletsBaseURL, 'solr/find?condQuery=*&amp;fq=mods.dateIssued:%22', $date, '%22')"/>
-        <xsl:with-param name="link-class" select="'date_published'"/>
-        <xsl:with-param name="tooltip" select="$tooltip-date"/>
+  <xsl:template name="output-date-badge">
+    <xsl:param name="date"/>
+    <xsl:variable name="format">
+      <xsl:call-template name="get-dateformat">
+        <xsl:with-param name="date" select="$date"/>
       </xsl:call-template>
-    </xsl:if>
+    </xsl:variable>
+
+    <xsl:variable name="label" select="document(concat('callJava:org.mycore.common.xml.MCRXMLFunctions:formatISODate:', $date, ':', $format, ':', $CurrentLang))"/>
+
+    <xsl:call-template name="output-badge">
+      <xsl:with-param name="class" select="'mir-badge-date'"/>
+      <xsl:with-param name="badge-type" select="'bg-primary'"/>
+      <xsl:with-param name="label" select="$label"/>
+      <xsl:with-param name="link" select="concat($ServletsBaseURL, 'solr/find?condQuery=*&amp;fq=mods.dateIssued:%22', $date, '%22')"/>
+      <xsl:with-param name="link-class" select="'date_published'"/>
+      <xsl:with-param name="tooltip" select="document('i18n:mir.date.published')/i18n/text()"/>
+    </xsl:call-template>
   </xsl:template>
 
   <xsl:template name="get-dateformat">
