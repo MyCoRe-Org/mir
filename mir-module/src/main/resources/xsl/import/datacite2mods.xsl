@@ -41,8 +41,6 @@
         </mods:titleInfo>
     </xsl:template>
 
-    <xsl:template match="creator"/>
-
     <xsl:template match="creator[contains(creatorName,',')]">
         <mods:name type="personal">
             <xsl:apply-templates select="creatorName" />
@@ -53,6 +51,21 @@
             <xsl:apply-templates select="affiliation" />
         </mods:name>
     </xsl:template>
+
+    <!-- Fallback template when creatorName does not contain a comma -->
+    <xsl:template match="creator">
+        <mods:name type="personal">
+            <mods:displayForm>
+                <xsl:value-of select="creatorName"/>
+            </mods:displayForm>
+            <mods:role>
+                <mods:roleTerm authority="marcrelator" type="code">aut</mods:roleTerm>
+            </mods:role>
+            <xsl:apply-templates select="nameIdentifier[@nameIdentifierScheme='ORCID']" />
+            <xsl:apply-templates select="affiliation" />
+        </mods:name>
+    </xsl:template>
+
 
     <xsl:template match="creatorName">
         <mods:namePart type="family">
