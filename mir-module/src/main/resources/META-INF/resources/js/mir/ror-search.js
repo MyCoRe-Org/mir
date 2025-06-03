@@ -13,6 +13,11 @@ $(document).ready(async function () {
     /** Selector for affiliation input fields */
     const affiliationSelectSelector = '.mir-select-affiliation';
 
+    // Exit early if no relevant XEditor input is present
+    if ($(affiliationSelectSelector).length === 0) {
+        return;
+    }
+
     /** i18n translation keys used for Select2 messages */
     const errorKeyMessages = [
         "mir.add.more.text.placeholder",
