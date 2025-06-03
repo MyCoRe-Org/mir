@@ -169,10 +169,25 @@
     </nameIdentifier>
   </xsl:template>
 
+  <!-- Template for affiliation according to Datacite version 4.4 -->
   <xsl:template match="mods:affiliation">
-    <affiliation>
-      <xsl:value-of select="text()" />
-    </affiliation>
+    <!-- Process only if authorityURI is "https://ror.org/" and there is a value -->
+    <xsl:if test="normalize-space(@authorityURI) and @authorityURI = 'https://ror.org/' and normalize-space(text()) != ''">
+      <affiliation>
+        <!-- Add affiliationIdentifier if valueURI exists -->
+        <xsl:if test="@valueURI">
+          <xsl:attribute name="affiliationIdentifier">
+            <xsl:value-of select="@valueURI"/>
+          </xsl:attribute>
+        </xsl:if>
+        <!-- affiliationIdentifierScheme is always "ROR" -->
+        <xsl:attribute name="affiliationIdentifierScheme">ROR</xsl:attribute>
+        <!-- schemeURI is "https://ror.org/" (since it's validated in the condition) -->
+        <xsl:attribute name="schemeURI">https://ror.org/</xsl:attribute>
+        <!-- Add the main affiliation text -->
+        <xsl:value-of select="normalize-space(text())"/>
+      </affiliation>
+    </xsl:if>
   </xsl:template>
 
   <!-- ========== titles (1-n) ========== -->
