@@ -220,10 +220,6 @@
     </dependency>
     <dependency>
       <groupId>org.mycore</groupId>
-      <artifactId>mycore-orcid2</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.mycore</groupId>
       <artifactId>mycore-packer</artifactId>
     </dependency>
     <dependency>
@@ -283,6 +279,11 @@
     <dependency>
       <groupId>org.mycore</groupId>
       <artifactId>mycore-ifs</artifactId>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.mycore</groupId>
+      <artifactId>mycore-orcid2</artifactId>
       <scope>runtime</scope>
     </dependency>
     <dependency>
