@@ -13,7 +13,7 @@
 
     <xsl:output method="xml" encoding="UTF-8" indent="yes" xalan:indent-amount="2" />
 
-    <xsl:include href="copynodes.xsl" />
+    <xsl:include href="resource:xsl/copynodes.xsl" />
 
     <xsl:variable name="orcidRegex" select="'[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{3}[0-9,X]'"/>
     <xsl:variable name="mir_licences" select="document('classification:metadata:-1:children:mir_licenses')"/>
@@ -51,6 +51,21 @@
             <xsl:apply-templates select="affiliation" />
         </mods:name>
     </xsl:template>
+
+    <!-- Fallback template when creatorName does not contain a comma -->
+    <xsl:template match="creator">
+        <mods:name type="personal">
+            <mods:displayForm>
+                <xsl:value-of select="creatorName"/>
+            </mods:displayForm>
+            <mods:role>
+                <mods:roleTerm authority="marcrelator" type="code">aut</mods:roleTerm>
+            </mods:role>
+            <xsl:apply-templates select="nameIdentifier[@nameIdentifierScheme='ORCID']" />
+            <xsl:apply-templates select="affiliation" />
+        </mods:name>
+    </xsl:template>
+
 
     <xsl:template match="creatorName">
         <mods:namePart type="family">
