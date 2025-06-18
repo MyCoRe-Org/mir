@@ -36,8 +36,7 @@
   <xsl:template name="output-genre-badge">
     <xsl:param name="genre"/>
     <xsl:call-template name="output-badge">
-      <xsl:with-param name="class" select="'mir-badge-genre'"/>
-      <xsl:with-param name="badge-type" select="'bg-primary'"/>
+      <xsl:with-param name="class" select="concat('mir-badge-genre-',$genre)"/>
       <xsl:with-param name="label" select="document(concat('callJava:org.mycore.common.xml.MCRXMLFunctions:getDisplayName:mir_genres:', $genre))"/>
       <xsl:with-param name="link"  select="concat($ServletsBaseURL, 'solr/find?condQuery=*&amp;fq=category.top:%22mir_genres:', $genre, '%22')"/>
       <xsl:with-param name="tooltip" select="substring-before(document('i18n:component.mods.genre')/i18n/text(), ':')"/>

@@ -8,43 +8,39 @@
 
   <xsl:template name="output-badge">
     <xsl:param name="class"/>
-    <xsl:param name="badge-type" select="'bg-info'"/>
     <xsl:param name="label"/>
     <xsl:param name="link"/>
-    <xsl:param name="link-class"/>
     <xsl:param name="tooltip"/>
     <xsl:param name="icon-class"/>
 
-    <div class="{$class}">
-      <xsl:if test="$tooltip">
-        <xsl:attribute name="data-toggle">
-          <xsl:value-of select="'tooltip'"/>
-        </xsl:attribute>
+    <xsl:if test="$tooltip">
+      <xsl:attribute name="data-toggle">
+        <xsl:value-of select="'tooltip'"/>
+      </xsl:attribute>
 
-        <xsl:attribute name="title">
-          <xsl:value-of select="$tooltip"/>
-        </xsl:attribute>
-      </xsl:if>
+      <xsl:attribute name="title">
+        <xsl:value-of select="$tooltip"/>
+      </xsl:attribute>
+    </xsl:if>
 
-      <xsl:choose>
-        <xsl:when test="$link">
-          <a class="badge {$badge-type} {$link-class}" href="{$link}">
-            <xsl:if test="$icon-class">
-              <i class="{$icon-class}"/>
-            </xsl:if>
-            <xsl:value-of select="$label"/>
-          </a>
-        </xsl:when>
-        <xsl:otherwise>
-          <span class="badge {$badge-type} {$link-class}">
-            <xsl:if test="$icon-class">
-              <i class="{$icon-class}"/>
-            </xsl:if>
-            <xsl:value-of select="$label"/>
-          </span>
-        </xsl:otherwise>
-      </xsl:choose>
-    </div>
+    <xsl:choose>
+      <xsl:when test="$link">
+        <a class="badge {$class}" href="{$link}">
+          <xsl:if test="$icon-class">
+            <i class="{$icon-class}"/>
+          </xsl:if>
+          <xsl:value-of select="$label"/>
+        </a>
+      </xsl:when>
+      <xsl:otherwise>
+        <span class="badge {$class}">
+          <xsl:if test="$icon-class">
+            <i class="{$icon-class}"/>
+          </xsl:if>
+          <xsl:value-of select="$label"/>
+        </span>
+      </xsl:otherwise>
+    </xsl:choose>
 
   </xsl:template>
 </xsl:stylesheet>

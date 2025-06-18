@@ -43,11 +43,9 @@
       </xsl:choose>
     </xsl:variable>
     <xsl:call-template name="output-badge">
-      <xsl:with-param name="class" select="'mir-badge-license'"/>
-      <xsl:with-param name="badge-type" select="'bg-primary'"/>
+      <xsl:with-param name="class" select="concat('mir-badge-license-', $accessCondition)"/>
       <xsl:with-param name="label" select="$label"/>
       <xsl:with-param name="link"  select="concat($ServletsBaseURL, 'solr/find?condQuery=*&amp;fq=category:%22', $accessConditionClass, '%22')"/>
-      <xsl:with-param name="link-class" select="'access_condition'"/>
       <xsl:with-param name="tooltip" select="document('i18n:mir.rights')/i18n/text()"/>
     </xsl:call-template>
   </xsl:template>

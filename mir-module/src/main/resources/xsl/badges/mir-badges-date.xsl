@@ -35,9 +35,9 @@
 
     <xsl:call-template name="output-badge">
       <xsl:with-param name="class" select="'mir-badge-date'"/>
-      <xsl:with-param name="badge-type" select="'bg-primary'"/>
       <xsl:with-param name="label" select="$label"/>
       <xsl:with-param name="link" select="concat($ServletsBaseURL, 'solr/find?condQuery=*&amp;fq=mods.dateIssued:%22', $date, '%22')"/>
+      <!-- TODO relevant? -->
       <xsl:with-param name="link-class" select="'date_published'"/>
       <xsl:with-param name="tooltip" select="document('i18n:mir.date.published')/i18n/text()"/>
     </xsl:call-template>

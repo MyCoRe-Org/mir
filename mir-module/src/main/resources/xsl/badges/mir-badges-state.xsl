@@ -18,8 +18,7 @@
     <xsl:param name="stateValue" select="*[@name ='state'][1]"/>
     <xsl:variable name="labelTextNative" select="document(concat('callJava:org.mycore.common.xml.MCRXMLFunctions:getDisplayName:state:', $stateValue))"/>
     <xsl:call-template name="output-badge">
-      <xsl:with-param name="class" select="'mir-badge-state'"/>
-      <xsl:with-param name="badge-type" select="concat('text-white mir-', $stateValue)"/>
+      <xsl:with-param name="class" select="concat('mir-badge-state-', $stateValue)"/>
       <xsl:with-param name="label" select="document(concat('callJava:org.apache.commons.lang3.StringUtils:capitalize:', $labelTextNative))"/>
       <xsl:with-param name="tooltip" select="document('i18n:component.mods.metaData.dictionary.status')/i18n/text()"/>
     </xsl:call-template>
