@@ -12,20 +12,17 @@
     <xsl:param name="link"/>
     <xsl:param name="tooltip"/>
     <xsl:param name="icon-class"/>
-
-    <xsl:if test="$tooltip">
-      <xsl:attribute name="data-toggle">
-        <xsl:value-of select="'tooltip'"/>
-      </xsl:attribute>
-
-      <xsl:attribute name="title">
-        <xsl:value-of select="$tooltip"/>
-      </xsl:attribute>
-    </xsl:if>
-
     <xsl:choose>
       <xsl:when test="$link">
         <a class="badge {$class}" href="{$link}">
+          <xsl:if test="$tooltip">
+            <xsl:attribute name="data-toggle">
+              <xsl:value-of select="'tooltip'"/>
+            </xsl:attribute>
+            <xsl:attribute name="title">
+              <xsl:value-of select="$tooltip"/>
+            </xsl:attribute>
+          </xsl:if>
           <xsl:if test="$icon-class">
             <i class="{$icon-class}"/>
           </xsl:if>
@@ -34,6 +31,14 @@
       </xsl:when>
       <xsl:otherwise>
         <span class="badge {$class}">
+          <xsl:if test="$tooltip">
+            <xsl:attribute name="data-toggle">
+              <xsl:value-of select="'tooltip'"/>
+            </xsl:attribute>
+            <xsl:attribute name="title">
+              <xsl:value-of select="$tooltip"/>
+            </xsl:attribute>
+          </xsl:if>
           <xsl:if test="$icon-class">
             <i class="{$icon-class}"/>
           </xsl:if>
