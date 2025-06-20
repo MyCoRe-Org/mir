@@ -191,7 +191,6 @@
             <h3><xsl:value-of select="i18n:translate('browse.person.searchPerson')" /></h3>
 
             <form class="form-inline"
-                  role="form"
                   id="index_search_form"
                   method="get"
                   action="{$proxyBaseURL}">

@@ -150,9 +150,9 @@
         <div class="col-2">
           <h4>Netzwerke</h4>
           <ul class="social_links">
-            <li><a href="#"><button type="button" class="social_icons social_icon_fb" aria-label="Facebook"></button>Facebook</a></li>
-            <li><a href="#"><button type="button" class="social_icons social_icon_tw" aria-label="Twitter"></button>Twitter</a></li>
-            <li><a href="#"><button type="button" class="social_icons social_icon_gg" aria-label="Google+"></button>Google+</a></li>
+            <li><button type="button" aria-label="Facebook" class="social_icons social_icon_fb" onclick="window.open('https://facebook.com', '_blank')">Facebook</button></li>
+            <li><button type="button" aria-label="Twitter" class="social_icons social_icon_tw" onclick="window.open('https://twitter.com', '_blank')">Twitter</button></li>
+            <li><button type="button" aria-label="Google+" class="social_icons social_icon_gg" onclick="window.open('https://plus.google.com', '_blank')">Google+</button></li>
           </ul>
         </div>
         <div class="col-2">

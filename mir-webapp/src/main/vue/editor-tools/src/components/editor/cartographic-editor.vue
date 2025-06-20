@@ -1,8 +1,11 @@
 <template>
   <div>
         <array-repeater v-model="cartographics.scale" default-content="">
+            <template #addButton>
+                <button class="btn btn-sm btn-secondary" @click="cartographics.scale.push('')">Add Scale</button><!--**TODO i18n-->
+            </template>
             <template #label="content">
-                <label :for="content.object ? `${id}scale${content.index}`:null">{{ i18n["mir.editor.subject.cartographics.editor.scale"] }}</label>
+                <label  v-if="content.object !== undefined && content.object !== null" :for="`${id}scale${content.index}`">{{ i18n["mir.editor.subject.cartographics.editor.scale"] }}</label>
             </template>
 
             <template #displayContent="content">
@@ -17,8 +20,11 @@
             </template>
         </array-repeater>
         <array-repeater v-model="cartographics.coordinates" default-content="">
+            <template #addButton>
+                <button class="btn btn-sm btn-secondary" @click="cartographics.coordinates.push('')">Add coordinates</button> <!--**TODO i18n-->
+            </template>
             <template #label="content">
-                <label :for="content.object ? `${id}coordinates${content.index}`:null"> {{ i18n["mir.editor.subject.cartographics.editor.coordinates"] }}</label>
+                <label v-if="content.object !== undefined && content.object !== null" :for=" `${id}coordinates${content.index}`"> {{ i18n["mir.editor.subject.cartographics.editor.coordinates"] }}</label>
             </template>
 
             <template #displayContent="content">
@@ -35,10 +41,10 @@
         <div class="row mt-2">
             <div class="col-12">
                 <div class="btn-group btn-group-sm">
-                    <button class="btn btn-secondary" aria-label="Plus Button" @click.prevent="addPolygon">
+                    <button class="btn btn-secondary" aria-label="add Polygon" @click.prevent="addPolygon">
                         <i class="fas fa-plus"></i> {{ i18n["mir.editor.subject.cartographics.editor.add.polygon"] }}
                     </button>
-                    <button class="btn btn-secondary" aria-label="Plus Button" @click.prevent="addPoint">
+                    <button class="btn btn-secondary" aria-label="add Point" @click.prevent="addPoint">
                         <i class="fas fa-plus"></i> {{ i18n["mir.editor.subject.cartographics.editor.add.point"] }}
                     </button>
                 </div>

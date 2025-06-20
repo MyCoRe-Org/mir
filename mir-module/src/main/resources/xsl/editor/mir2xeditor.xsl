@@ -394,7 +394,10 @@
     <xed:repeat xpath="mods:name[@type='personal' or not(@type) or (@type='corporate' and not(@authorityURI='{$institutesURI}'))][mods:role/mods:roleTerm[@type='code'][@authority='marcrelator']='{@role}']" min="1" max="100">
       <xed:bind xpath="@type" initially="personal"/>
       <fieldset class="personExtended_box">
-        <legend class="mir-fieldset-legend hiddenDetail">
+        <legend class="mir-fieldset-legend hiddenDetail d-flex justify-content-between align-items-center">
+        <xed:output i18n="{@label}" />
+        <span class="fas fa-chevron-down expand-item" title="{i18n:translate('mir.help.expand')}" data-target=".personExtended-container" role="button" tabindex="0" style="cursor: pointer;" aria-hidden="true"></span>
+        </legend>
           <xed:bind xpath="mods:displayForm"> <!-- Move down to get the "required" validation right -->
             <div class="mir-form-group row {@class} {$xed-val-marker}">
               <xed:bind xpath=".."> <!-- Move up again after validation marker is set -->
@@ -417,7 +420,6 @@
               <xsl:call-template name="mir-required" />
             </div>
           </xed:bind>
-        </legend>
         <div class="mir-fieldset-content personExtended-container d-none">
           <xed:include ref="nameType" />
           <xed:include ref="namePart.repeated" />
@@ -439,7 +441,7 @@
       <xed:bind xpath="mods:displayForm"> <!-- Move down to get the "required" validation right -->
         <div class="mir-form-group row {@class} {$xed-val-marker}">
           <xed:bind xpath=".."> <!-- Move up again after validation marker is set -->
-            <label id="personLabel-" for="personLabel-1-1-" class="col-md-3 col-form-label text-end form-label">
+            <label for="personLabel-1-1-" class="col-md-3 col-form-label text-end form-label">
               <xed:output i18n="{@label}" />
             </label>
             <div class="col-md-6">
@@ -465,13 +467,15 @@
     <xed:repeat xpath="mods:name[@type='personal'  or not(@type) or (@type='corporate' and not(@authorityURI='{$institutesURI}'))]" min="1" max="100">
       <xed:bind xpath="@type" initially="personal"/>
       <fieldset class="personExtended_box">
-        <legend class="mir-fieldset-legend hiddenDetail">
+        <legend class="mir-fieldset-legend hiddenDetail d-flex justify-content-between align-items-center">
+          <span>Autor:in **TODO i18n for legend</span>
+        </legend>
           <xed:bind xpath="mods:displayForm"> <!-- Move down to get the "required" validation right -->
             <div class="mir-form-group row {@class} {$xed-val-marker}">
               <xed:bind xpath=".."> <!-- Move up again after validation marker is set -->
                 <div class="col-md-3" style="text-align:right; font-weight:bold;">
                   <xed:bind xpath="mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']" initially="aut">
-                    <select aria-label="Select role"  id="personLabel-" class="form-control form-control-inline roleSelect form-select">
+                    <select aria-label="Select role" class="form-control form-control-inline roleSelect form-select">
                       <xsl:apply-templates select="*" />
                     </select>
                   </xed:bind>
@@ -489,8 +493,7 @@
                 <xsl:call-template name="mir-required" />
               </xed:bind>
             </div>
-         </xed:bind>
-        </legend>
+         </xed:bind>        
         <div class="mir-fieldset-content personExtended-container d-none">
           <xed:include ref="nameType" />
           <xed:include ref="namePart.repeated" />

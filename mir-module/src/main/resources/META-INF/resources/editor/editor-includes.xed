@@ -38,7 +38,7 @@
     <input type="hidden" name="XSL.Status.Style" value="success" />
   </xed:template>
 
-  <xed:template id="genre.base">   
+  <xed:template id="genre.base">
     <label for="{xed:generate-id()}" class="col-md-3 col-form-label text-end form-label">
       <xed:output i18n="component.mods.genre" />
     </label>
@@ -302,14 +302,13 @@
       <xed:repeat xpath="mods:titleInfo" min="1" max="6">
         <div class="mir-fieldset-content">
           <div class="mir-form-group row">
-            <xed:bind xpath="mods:nonSort"><label for="{xed:generate-id()}" class="col-md-3 col-form-label text-end form-label">
+            <xed:bind xpath="mods:nonSort">
+            <label for="{xed:generate-id()}_der" class="col-md-3 col-form-label text-end form-label">
               <xed:output i18n="mir.title.nonSort" />
             </label></xed:bind><!-- **TODO einrücken-->
             <div class="col-md-6">
               <div class="form-inline controls">
-                <xed:bind xpath="mods:nonSort">
-                  <input id="{xed:generate-id()}" type="text" size="9" class="form-control form-control-inline" placeholder="Der/Die/Das" />
-                </xed:bind>
+                  <input id="{xed:generate-id()}_der" type="text" size="9" class="form-control form-control-inline" placeholder="Der/Die/Das" />
                 <xed:bind xpath="@xml:lang" initially="de">
                   <xed:include ref="lang.list" />
                 </xed:bind>
@@ -334,6 +333,7 @@
                 </xed:bind>
               </div>
             </div>
+          </xed:bind>
             <mir:help-pmud help-text="{i18n:mir.help.title.complex}" pmud="true" />
           </div>
           <mir:textarea xpath="mods:title" rows="2" label="mir.title" help-text="{i18n:mir.help.title}" />
@@ -655,22 +655,22 @@
   <xed:template id="authorSpecification.repeated">
     <xed:repeat xpath="mods:role/mods:roleTerm[@authorityURI='https://www.mycore.de/classifications/author_roles']" min="1">
       <div class="mir-form-group row authorSpecification">
-        <xed:bind xpath="@valueURIxEditor"><label for="{xed:generate-id()}" class="col-md-3 col-form-label text-end form-label">
+        <xed:bind xpath="@valueURIxEditor">
+          <label for="{xed:generate-id()}_authorSpecification" class="col-md-3 col-form-label text-end form-label">
           <xed:output i18n="mir.editor.person.authorSpecification" />
         </label> </xed:bind> <!--**TODO einrücken-->     
         <div class="col-md-6">
           <div class="controls">
-            <xed:bind xpath="@valueURIxEditor">
-              <select id="{xed:generate-id()}" class="form-control form-control-inline form-select">
+              <select id="{xed:generate-id()}_authorSpecification" class="form-control form-control-inline form-select">
                 <option value="">
                   <xed:output i18n="mir.select.optional" />
                 </option>
                 <xed:include uri="xslStyle:items2options:classification:editor:-1:children:author_roles" />
               </select>
-            </xed:bind>
           </div>
         </div>
         <mir:help-pmud help-text="{i18n:mir.help.authorSpecification}" pmud="true" />
+            </xed:bind>
       </div>
     </xed:repeat>
   </xed:template>
@@ -934,7 +934,12 @@
 
   <xed:template id="date.range.extended.datetimepicker">
     <fieldset class="dateExtended_box">
-      <legend class="mir-fieldset-legend hiddenDetail">
+      <legend class="mir-fieldset-legend hiddenDetail d-flex justify-content-between align-items-center">
+        <span>
+          **TODO i18n <xed:output i18n="mir.date.issued.range" />
+        </span>
+      </legend>
+      
         <div class="mir-form-group row datetimepicker {$xed-validation-marker}">
           <label for="{@label}_date" class="col-md-3 col-form-label text-end form-label">
             <xed:output i18n="mir.date.issued.range" />
@@ -946,7 +951,6 @@
           </div>
           <mir:help-pmud help-text="{i18n:mir.help.date.issued.10}" pmud="false" />
         </div>
-      </legend>
       <div class="mir-fieldset-content dateExtended-container d-none">
         <mir:dateRange xpath="mods:originInfo[@eventType='creation']/mods:dateCreated[@encoding='w3cdtf']" help-text="{i18n:mir.help.date.created.range}"
           class="datetimepicker" placeholder="{i18n:mir.placeholder.date}" label="mir.date.created.range" />
@@ -1360,6 +1364,7 @@
   <xed:template id="host.pages">
     <xed:bind xpath="mods:part/mods:extent[@unit='pages']/mods:list">
     <div class="mir-form-group row mir-modspart">
+      <xed:bind xpath="mods:part/mods:extent[@unit='pages']/mods:list">
       <label for="{xed:generate-id()}_host_pages" class="col-md-3 col-form-label text-end form-label">
         <xed:output i18n="mir.pages" />:
       </label>
@@ -1368,6 +1373,7 @@
             <input id="{xed:generate-id()}_host_pages" type="text" size="20" class="form-control form-control-inline" />
         </div>
       </div>
+    </xed:bind>
       <mir:help-pmud help-text="{i18n:mir.help.host.pages}" />
     </div>
   </xed:bind>
@@ -1376,15 +1382,17 @@
   <xed:template id="host.order">
     <xed:bind xpath="mods:part/@order">
     <div class="mir-form-group row mir-modspart">
-      <label for="{xed:generate-id()}_host_order" class="col-md-3 col-form-label text-end form-label">
-        <xed:output i18n="mir.order" />:
-      </label>
-      <div class="col-md-6">
-        <div class="form-inline">
+      <xed:bind xpath="mods:part/@order">
+        <label for="{xed:generate-id()}_host_order" class="col-md-3 col-form-label text-end form-label">
+          <xed:output i18n="mir.order" />:
+        </label>
+        <div class="col-md-6">
+          <div class="form-inline">
             <input id="{xed:generate-id()}_host_order" type="text" size="20" class="form-control form-control-inline {$xed-validation-marker}" />
+          </div>
         </div>
-      </div>
-      <mir:help-pmud help-text="{i18n:mir.help.host.order}" />
+        <mir:help-pmud help-text="{i18n:mir.help.host.order}" />
+      </xed:bind>
     </div>
   </xed:bind>
   </xed:template>
@@ -1401,22 +1409,23 @@
     <xed:repeat xpath="mods:language" max="5">
       <xed:bind xpath="mods:languageTerm[@authority='rfc5646'][@type='code']" initially="de">
       <div class="mir-form-group row {$xed-validation-marker}">
-        <label for="{concat(xed:generate-id(), '_lang')}" class="col-md-3 col-form-label text-end form-label">
-          <xed:output i18n="mir.language" />
-        </label>
-        <div class="col-md-6">          
+        <xed:bind xpath="mods:languageTerm[@authority='rfc5646'][@type='code']" initially="de">
+          <label for="{xed:generate-id()}_lang" class="col-md-3 col-form-label text-end form-label">
+            <xed:output i18n="mir.language" />
+          </label>
+          <div class="col-md-6">
             <div class="controls">
               <xed:include ref="lang.list"/>
             </div>
-        </div>
-        <mir:help-pmud help-text="{i18n:mir.help.language}" pmud="true" />
-      </div>      
-    </xed:bind>
+          </div>
+          <mir:help-pmud help-text="{i18n:mir.help.language}" pmud="true" />
+        </xed:bind>
+      </div>
     </xed:repeat>
   </xed:template>
 
   <xed:template id="lang.list">
-    <select id="{concat(xed:generate-id(), '_lang')}" aria-label="Select a language" class="form-control form-control-inline lang-select form-select" data-dlang="{$MCR.Metadata.DefaultLang}" data-langs="{$MCR.Metadata.Languages}">
+    <select id="{xed:generate-id()}_lang" aria-label="Select a language" class="form-control form-control-inline lang-select form-select" data-dlang="{$MCR.Metadata.DefaultLang}" data-langs="{$MCR.Metadata.Languages}">
       <xed:choose>
         <xed:when test="string-length(.) &gt; 0">
           <option value="{.}" selected="">
@@ -1557,27 +1566,27 @@
   </xed:template>
 
   <xed:template id="institutes">
-    <xed:load-resource name="mir_institutes" uri="classification:metadata:-1:children:mir_institutes" />
-    <xed:bind xpath="mods:name[@type='corporate'][@authorityURI=$mir_institutes/label[@xml:lang='x-uri']/@text]">
-    <xed:bind xpath="mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']" initially="his" /><!--  Host institution [his] -->
-    <xed:bind xpath="@valueURIxEditor">
-      <div class="mir-form-group row">
-        <label for="{xed:generate-id()}" class="col-md-3 col-form-label text-right">
+    <div class="mir-form-group row">
+        <xed:load-resource name="mir_institutes" uri="classification:metadata:-1:children:mir_institutes" />
+        <xed:bind xpath="mods:name[@type='corporate'][@authorityURI=$mir_institutes/label[@xml:lang='x-uri']/@text]">
+        <xed:bind xpath="mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']" initially="his" /><!--  Host institution [his] -->
+        <xed:bind xpath="@valueURIxEditor">
+        <label for="{xed:generate-id()}_institutes" class="col-md-3 col-form-label text-end form-label">
           <xed:output i18n="mir.institution" />
           :
         </label>
         <div class="col-md-6">
-          <select id="{xed:generate-id()}" class="form-control form-control-inline mir-form__js-select--large">
+          <select id="{xed:generate-id()}_institutes" class="form-control form-control-inline mir-form__js-select--large form-select">
             <option value="">
               <xed:output i18n="mir.select.optional" />
             </option>
             <xed:include uri="xslStyle:items2options:classification:editor:-1:children:mir_institutes" />
           </select>
-        </div>
-        <mir:help-pmud help-text="{i18n:mir.help.institutes}" />
       </div>
-    </xed:bind>
-    </xed:bind>  
+      <mir:help-pmud help-text="{i18n:mir.help.institutes}" />
+          </xed:bind>
+        </xed:bind>
+    </div>
   </xed:template>
 
   <xed:template id="institutes.repeat">
@@ -1746,13 +1755,15 @@
         <div class="mir-fieldset-content">
           <xed:bind xpath="@xml:lang" initially="de">
           <div class="mir-form-group row">
-            <label for="{concat(xed:generate-id(), '_lang')}" class="col-md-3 col-form-label text-end form-label">
-              <xed:output i18n="mir.abstract.in" />
-            </label>
-            <div class="col-md-6">
+            <xed:bind xpath="@xml:lang" initially="de">
+              <label for="{xed:generate-id()}_lang" class="col-md-3 col-form-label text-end form-label">
+                <xed:output i18n="mir.abstract.in" />
+              </label>
+              <div class="col-md-6">
                 <xed:include ref="lang.list" />
-            </div>
-            <mir:help-pmud help-text="{i18n:mir.help.abstract.language}" pmud="true" />
+              </div>
+              <mir:help-pmud help-text="{i18n:mir.help.abstract.language}" pmud="true" />
+          </xed:bind>
           </div>
         </xed:bind>
           <mir:textfield xpath="@xlink:href" label="mir.placeholder.abstract.link" help-text="{i18n:mir.help.abstract.aslink}" placeholder="{i18n:mir.placeholder.abstract.link}" />
@@ -1770,12 +1781,12 @@
   <xed:template id="geographicAndCartographics">
     <xed:repeat xpath="mods:subjectGEO" min="1" max="10">
       <div class="mir-form-group row {$xed-validation-marker}">
-        <label id="search_form" for="{xed:generate-id()}_geographicAndCartographics" class="col-md-3 col-form-label text-end form-label">
+        <label for="{xed:generate-id()}_geographicAndCartographics" class="col-md-3 col-form-label text-end form-label">
           <xed:output i18n="mir.geographic" />
         </label>
         <div class="col-md-6">
-          <input id="{xed:generate-id()}_geographicAndCartographics" type="hidden" class="subjectXML"/>
-          <div class="editorToolsApp" data-searchable="Geographic" data-editor="Geographic,Cartographic" data-search-filter-default="Geographic" data-admin="geographicPair" data-required="false"> </div>
+          <input type="hidden" class="subjectXML"/>
+          <div data-input-id="{xed:generate-id()}_geographicAndCartographics" class="editorToolsApp" data-searchable="Geographic" data-editor="Geographic,Cartographic" data-search-filter-default="Geographic" data-admin="geographicPair" data-required="false"> </div>
         </div>
         <mir:help-pmud help-text="{i18n:mir.help.cartographics.place}" pmud="true"/>
       </div>
@@ -1786,12 +1797,12 @@
   <xed:template id="geographic">
     <xed:repeat xpath="mods:subjectGEO" min="1" max="10">
       <div class="mir-form-group row {$xed-validation-marker}">
-        <label for="_geographic" class="col-md-3 col-form-label text-end form-label">
+        <label for="{xed:generate-id()}__geographic" class="col-md-3 col-form-label text-end form-label">
           <xed:output i18n="mir.geographic" />
         </label>
         <div class="col-md-6">
-          <input id="_geographic" type="hidden" class="subjectXML"/>
-          <div id="_geographic" class="editorToolsApp" data-searchable="Geographic" data-editor="Geographic" data-search-filter-default="Geographic" data-admin="false" data-required="false"> </div>
+          <input type="hidden" class="subjectXML"/>
+          <div data-input-id="{xed:generate-id()}_geographic" class="editorToolsApp" data-searchable="Geographic" data-editor="Geographic" data-search-filter-default="Geographic" data-admin="false" data-required="false"> </div>
         </div>
         <mir:help-pmud help-text="{i18n:mir.help.cartographics.place}" pmud="true"/>
       </div>
@@ -1802,12 +1813,12 @@
   <xed:template id="geographic.complex">
     <xed:repeat xpath="mods:subjectGEO" min="1" max="10">
       <div class="mir-form-group row {$xed-validation-marker}">
-        <label for="geographic_complex" class="col-md-3 col-form-label text-end form-label">
+        <label for="{xed:generate-id()}_geographic_complex" class="col-md-3 col-form-label text-end form-label">
           <xed:output i18n="mir.geographic" />
         </label>
         <div class="col-md-6">
-          <input id="geographic_complex" type="hidden" class="subjectXML"/>
-          <div id="geographic_complex" class="editorToolsApp" data-searchable="Geographic" data-editor="Geographic" data-search-filter-default="Geographic" data-admin="false" data-required="false"> </div>
+          <input type="hidden" class="subjectXML"/>
+          <div data-input-id="{xed:generate-id()}_geographic_complex" class="editorToolsApp" data-searchable="Geographic" data-editor="Geographic" data-search-filter-default="Geographic" data-admin="false" data-required="false"> </div>
         </div>
         <mir:help-pmud help-text="{i18n:mir.help.cartographics.place}" pmud="true"/>
       </div>
@@ -1818,12 +1829,12 @@
   <xed:template id="cartographics">
     <xed:bind xpath="mods:subjectGEO">
       <div class="mir-form-group row {$xed-validation-marker}">
-        <label for="_cartographics" class="col-md-3 col-form-label text-end form-label">
+        <label for="{xed:generate-id()}_cartographics" class="col-md-3 col-form-label text-end form-label">
           <xed:output i18n="mir.cartographics.coordinates" />
         </label>
         <div class="col-md-6">
-          <input id="_cartographics" type="hidden" class="subjectXML"/>
-          <div id="_cartographics" class="editorToolsApp" data-searchable="" data-editor="Cartographics" data-search-filter-default="" data-admin="false" data-required="false"> </div>
+          <input type="hidden" class="subjectXML"/>
+          <div data-input-id="{xed:generate-id()}_cartographics" class="editorToolsApp" data-searchable="" data-editor="Cartographics" data-search-filter-default="" data-admin="false" data-required="false"> </div>
         </div>
         <mir:help-pmud help-text="{i18n:mir.help.cartographics.coordinates}" pmud="false"/>
       </div>
@@ -1834,12 +1845,12 @@
   <xed:template id="cartographics.repeat">
     <xed:repeat xpath="mods:subjectGEO" min="1" max="10">
       <div class="mir-form-group row {$xed-validation-marker}">
-        <label for="cartographics_repeat" class="col-md-3 col-form-label text-end form-label">
+        <label for="{xed:generate-id()}_cartographics_repeat" class="col-md-3 col-form-label text-end form-label">
           <xed:output i18n="mir.cartographics.coordinates" />
         </label>
         <div class="col-md-6">
           <input type="hidden" class="subjectXML"/>
-          <div id="cartographics_repeat" class="editorToolsApp" data-searchable="" data-editor="Cartographics" data-search-filter-default="" data-admin="false" data-required="false"> </div>
+          <div data-input-id="{xed:generate-id()}_cartographics_repeat" class="editorToolsApp" data-searchable="" data-editor="Cartographics" data-search-filter-default="" data-admin="false" data-required="false"> </div>
         </div>
         <mir:help-pmud help-text="{i18n:mir.help.cartographics.coordinates}" pmud="true"/>
       </div>
@@ -1850,12 +1861,12 @@
   <xed:template id="subject.simple">
     <xed:repeat xpath="mods:subjectXML" min="1" max="{$MIR.Editor.repeat.max.subject.simple}">
       <div class="mir-form-group row {$xed-validation-marker}">
-        <label id="search_form" for="search_form" class="col-md-3 col-form-label text-end form-label">
+        <label for="{xed:generate-id()}_subject_simple" class="col-md-3 col-form-label text-end form-label">
           <xed:output i18n="mir.subject.topic"/>
         </label>
         <div class="col-md-6">
-          <input id="subject.simple" type="hidden" class="subjectXML"/>
-          <div id="subject_simple" class="editorToolsApp" data-searchable="*" data-editor="*" data-search-filter-default="Topic" data-admin="false" data-required="false"> </div>
+          <input type="hidden" class="subjectXML"/>
+          <div data-input-id="{xed:generate-id()}_subject_simple" class="editorToolsApp" data-searchable="*" data-editor="*" data-search-filter-default="Topic" data-admin="false" data-required="false"> </div>
         </div>
         <mir:help-pmud help-text="{i18n:mir.help.subject.topic}" pmud="true"/>
       </div>
@@ -1866,12 +1877,12 @@
   <xed:template id="subject.simple.required">
     <xed:repeat xpath="mods:subjectXML" min="1" max="{$MIR.Editor.repeat.max.subject.simple.required}">
       <div class="mir-form-group row {$xed-validation-marker}">
-        <label for="subject_simple_required" class="col-md-3 col-form-label text-end form-label">
+        <label for="{xed:generate-id()}_subject_simple_required" class="col-md-3 col-form-label text-end form-label">
           <xed:output i18n="mir.subject.topic"/>
         </label>
         <div class="col-md-6">
           <input type="hidden" class="subjectXML"/>
-          <div id="subject_simple_required" class="editorToolsApp" data-searchable="*" data-editor="*" data-search-filter-default="Topic" data-admin="false" data-required="true"> </div>
+          <div data-input-id="{xed:generate-id()}_subject_simple_required" class="editorToolsApp" data-searchable="*" data-editor="*" data-search-filter-default="Topic" data-admin="false" data-required="true"> </div>
         </div>
         <mir:help-pmud help-text="{i18n:mir.help.subject.topic}" pmud="true"/>
       </div>
@@ -1882,12 +1893,12 @@
   <xed:template id="subject.complex.required">
     <xed:repeat xpath="mods:subjectXML" min="1" max="10">
       <div class="mir-form-group row {$xed-validation-marker}">
-        <label id="search_form" for="subject_complex_required" class="col-md-3 col-form-label text-end form-label">
+        <label for="{xed:generate-id()}_subject_complex_required" class="col-md-3 col-form-label text-end form-label">
           <xed:output i18n="mir.subject.topic.complex "/>
         </label>
         <div class="col-md-6">
-          <input id="subject_complex_required" type="hidden" class="subjectXML"/>
-          <div class="editorToolsApp" data-searchable="*" data-editor="*" data-search-filter-default="*" data-admin="true" data-required="true"> </div>
+          <input type="hidden" class="subjectXML"/>
+          <div data-input-id="{xed:generate-id()}_subject_complex_required" class="editorToolsApp" data-searchable="*" data-editor="*" data-search-filter-default="*" data-admin="true" data-required="true"> </div>
         </div>
         <mir:help-pmud help-text="{i18n:mir.help.subject.topic.complex}" pmud="true"/>
       </div>
@@ -1898,12 +1909,12 @@
   <xed:template id="subject.complex">
     <xed:repeat xpath="mods:subjectXML" min="1" max="10">
       <div class="mir-form-group row {$xed-validation-marker}">
-        <label id="search_form" for="subject_complex" class="col-md-3 col-form-label text-end form-label">
+        <label for="{xed:generate-id()}_subject_complex" class="col-md-3 col-form-label text-end form-label">
           <xed:output i18n="mir.subject.topic.complex"/>
         </label>
         <div class="col-md-6">
-          <input id="subject_complex" type="hidden" class="subjectXML"/>
-          <div class="editorToolsApp" data-searchable="*" data-editor="*" data-search-filter-default="*" data-admin="true" data-required="false"> </div>
+          <input type="hidden" class="subjectXML"/>
+          <div data-input-id="{xed:generate-id()}_subject_complex" class="editorToolsApp" data-searchable="*" data-editor="*" data-search-filter-default="*" data-admin="true" data-required="false"> </div>
         </div>
         <mir:help-pmud help-text="{i18n:mir.help.subject.topic.complex}" pmud="true"/>
       </div>
@@ -1933,7 +1944,7 @@
         <mir:help-pmud help-text="{i18n:mir.help.classification}" pmud="true" />
       </div>
     </xed:repeat>
-    <script type="text/javascript" src="{$WebApplicationBaseURL}js/mir/classification-modal-select.min.js"></script>
+    <script src="{$WebApplicationBaseURL}js/mir/classification-modal-select.min.js"></script>
   </xed:template>
 
   <xed:template id="modal.body">
@@ -1947,7 +1958,7 @@
           </div>
           <div class="modal-body">
             <div id="modal-searchInput" class="d-flex flex-row-reverse mb-2">
-              <button class="btn btn-primary" aria-label="Search"> 
+              <button class="btn btn-primary" aria-label="Search">
                 <span class="fas fa-search form-control-feedback" />
               </button>
               <input type="text" aria-label="Suche in den Publikationen" placeholder="Suche in den Publikationen" class="form-control" autocomplete="off"/>
@@ -1986,7 +1997,7 @@
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-body">
-            <textarea aria-label="Aria for modal input **TODO**i18n" name="" rows="10" cols="76"></textarea>
+            <textarea aria-label="Aria for modal input **TODO**i18n" name=" " rows="10" cols="76"></textarea>
           </div>
         </div>
       </div>
@@ -2039,19 +2050,19 @@
         <div class="mir-fieldset-content">
           <div class="mir-form-group row">
             <xed:bind xpath="@type">
-            <label for="{concat(xed:generate-id(), '_comment_complex')}" class="col-md-3 col-form-label text-end form-label">
-              <xed:output i18n="mir.comment.type" />
-            </label>
-            <div class="col-md-6">
-                <select id="{concat(xed:generate-id(), '_comment_complex')}" class="form-control form-select">
+              <label for="{xed:generate-id()}_comment_complex" class="col-md-3 col-form-label text-end form-label">
+                <xed:output i18n="mir.comment.type" />
+              </label>
+              <div class="col-md-6">
+                <select id="{xed:generate-id()}_comment_complex" class="form-control form-select">
                     <option value="">
                       <xed:output i18n="mir.select"/>
                     </option>
                     <xed:include uri="xslStyle:items2options,convertClassificationOptions:classification:editor:-1:children:noteTypes" />
                 </select>
-            </div>
-            <mir:help-pmud help-text="{i18n:mir.help.comment.type}" pmud="true" />
-          </xed:bind >
+              </div>
+              </xed:bind >
+              <mir:help-pmud help-text="{i18n:mir.help.comment.type}" pmud="true" />
           </div>
           <mir:textarea xpath="." label="mir.comment" help-text="{i18n:mir.help.comment}" rows="3" />
         </div>

@@ -748,7 +748,7 @@
                 </xsl:when>
                 <!-- when there is no content derivate then use disabled icon -->
                 <xsl:when test="string-length($derivid)=0">
-                  <img class="hit_icon" src="{$WebApplicationBaseURL}images/icons/icon_common_disabled.png"/>
+                  <img alt="" class="hit_icon" src="{$WebApplicationBaseURL}images/icons/icon_common_disabled.png"/>
                 </xsl:when>
                 <xsl:otherwise>
                   <div class="hit_icon"
@@ -873,7 +873,7 @@
                     </a>
                   </xsl:when>
                   <xsl:otherwise>
-                    <a href="{$ServletsBaseURL}solr/mods_nameIdentifier?q=mods.name:&quot;{$author_name}&quot;&amp;owner=createdby:{$owner}" title="Suche nach allen Publikationen">
+                    <a href="{$ServletsBaseURL}solr/mods_nameIdentifier?q=mods.name:&quot;{encoder:encode($author_name, 'UTF-8')}&quot;&amp;owner=createdby:{$owner}" title="Suche nach allen Publikationen">
                       <xsl:value-of select="$author_name" />
                     </a>
                   </xsl:otherwise>
@@ -1169,7 +1169,7 @@
             <xsl:value-of select="i18n:translate('mir.response.button.filter')" />
             <span class="caret" />
           </button>
-          <div class="dropdown-menu dropdown-menu-end stopAutoclose col-md-12 mir-date-arrowTop" role="menu">
+          <div class="dropdown-menu dropdown-menu-end stopAutoclose col-md-12 mir-date-arrowTop">
             <div class="container-fluid">
               <div class="col-md-12 mir-form-group">
                 <select aria-label="select operator" class="form-control form-select">

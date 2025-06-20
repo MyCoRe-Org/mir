@@ -93,7 +93,6 @@
                 class="modal fade"
                 tabindex="-1"
                 role="dialog"
-                aria-labelledby="modal frame"
                 aria-hidden="true">
               <div
                   class="modal-dialog modal-lg modal-xl"
