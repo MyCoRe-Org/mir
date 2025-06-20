@@ -9,26 +9,37 @@
   xmlns:exslt="http://exslt.org/common"
   exclude-result-prefixes="i18n mods xlink mcrxsl xalan exslt"
 >
-
-  <xsl:import  href="xslImport:modsmeta:metadata/mir-abstract.xsl" />
+  <xsl:import href="xslImport:modsmeta:metadata/mir-abstract.xsl" />
+  <xsl:import href="xslImport:badges"/>
+  <xsl:import href="resource:xsl/coreFunctions.xsl"/>
   <xsl:include href="resource:xsl/mir-utils.xsl" />
-  <xsl:include href="resource:xsl/badges/mir-badges-entry-point.xsl" />
   <xsl:param name="MIR.Layout.Abstract.Type.Classification"/>
   <xsl:param name="RequestURL"/>
   <xsl:variable name="objectID" select="/mycoreobject/@ID" />
   <xsl:variable name="modsPart" select="concat('mods.part.', $objectID)" />
   <xsl:variable name="nbsp" select="'&#xa0;'"/>
 
+  <xsl:variable name="revision">
+    <xsl:call-template name="UrlGetParam">
+      <xsl:with-param name="url" select="$RequestURL" />
+      <xsl:with-param name="par" select="'r'" />
+    </xsl:call-template>
+  </xsl:variable>
+
   <xsl:template match="/">
 
     <xsl:variable name="mods" select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods" />
 
-    <!-- badges -->
-    <div id="mir-abstract-badges">
-      <div id="badges">
-        <xsl:apply-templates select="mycoreobject" mode="mycoreobject-badge"/>
-      </div><!-- end: badges -->
-    </div><!-- end: badgets structure -->
+    <div id="mir-abstract-badges" class="mir-badge-container">
+      <xsl:choose>
+        <xsl:when test="string-length($revision) &gt; 0">
+          <xsl:apply-templates select="document(concat('xslStyle:mycoreobject-solrdocument:mcrobject:', $objectID, '?r=', $revision))/add/doc" mode="badge"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:apply-templates select="document(concat('solr:q=id%3A', $objectID))" mode="badge"/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </div>
 
     <!-- headline -->
     <div id="mir-abstract-title">

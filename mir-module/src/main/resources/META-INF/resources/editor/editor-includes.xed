@@ -584,7 +584,7 @@
       </xed:bind>
       <xed:bind xpath="mods:displayForm">
         <input type="hidden"/>
-        <div class="nameSearchApp" define-own-identifier="false">
+        <div class="nameSearchApp" define-own-identifier="true">
         </div>
       </xed:bind>
       <xed:repeat xpath="mods:nameIdentifier" min="10" max="10">
@@ -617,8 +617,7 @@
     <div class="search-person">
       <xed:bind xpath="mods:displayForm">
         <input type="hidden"/>
-        <div class="nameSearchApp">
-          <ns define-own-identifier="false"/>
+        <div class="nameSearchApp" define-own-identifier="true">
         </div>
       </xed:bind>
       <xed:repeat xpath="mods:nameIdentifier" min="10" max="10">
@@ -2335,7 +2334,9 @@
     <link href="{$WebApplicationBaseURL}vue/editor-tools/editor-tools.css" rel="stylesheet"/>
     <script>
       document.querySelectorAll(".nameSearchApp").forEach(function (element) {
-        Vue.createApp(nameSearch).mount(element);
+      Vue.createApp(nameSearch, {
+      defineOwnIdentifier : element.getAttribute("define-own-identifier") === "true"
+      }).mount(element);
       });
 
       document.querySelectorAll(".editorToolsApp").forEach(function (element) {
