@@ -4,7 +4,7 @@
       <div ref="input" class="input-group">
         <input :id="`personLabel-${nameLocatorString}`" ref="searchBox" v-model="model.search"
                :placeholder="model.personPlaceholder"
-               aria-labelledby="personLabel-"
+               aria-label="search person"
                class="form-control" type="text"               
                v-on:keydown.enter.prevent="startSearch()">
         <button ref="identifierOpenButton" class="btn btn-secondary"
