@@ -1773,7 +1773,7 @@
   <xed:template id="geographicAndCartographics">
     <xed:repeat xpath="mods:subjectGEO" min="1" max="10">
       <div class="mir-form-group row {$xed-validation-marker}">
-        <label id="search_form" for="{xed:generate-id()}_geographicAndCartographics" class="col-md-3 col-form-label text-end form-label">
+        <label for="{xed:generate-id()}_geographicAndCartographics" class="col-md-3 col-form-label text-end form-label">
           <xed:output i18n="mir.geographic" />
         </label>
         <div class="col-md-6">
