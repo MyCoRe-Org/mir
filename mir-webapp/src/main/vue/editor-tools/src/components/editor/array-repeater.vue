@@ -35,12 +35,22 @@
                 </div>
 
                 <div class="offset-7 col-2">
+                     <!--**TODO button ist hier redundant, kann entfernt werden -->
                     <button :class="`btn btn-sm btn-secondary`"
                             type="button"
                             aria-label="Plus Button"
                             v-on:click.prevent="addChild(0)">
                         <i class="fas fa-plus"/>
                     </button>
+                    <slot name="addButton">
+                        <button class="btn btn-sm btn-secondary"
+                                type="button"
+                                aria-label="Add"
+                                @click.prevent="addChild(0)">
+                          <i class="fas fa-plus"></i>
+                        </button>
+                    </slot>
+                  
                 </div>
             </div>
         </div>
@@ -64,6 +74,7 @@ const emit = defineEmits(['update:modelValue', 'addDefault']);
 const slots = defineSlots<{
     label: { object?: any, index: number }
     displayContent: { object: any, index: number },
+    addButton: {}
 
 }>();
 
