@@ -7,9 +7,9 @@ public class MIRClassificationMapper {
 
     /**
      * This Method maps the old SDNB Classification, pre 2003, to the new SDNB Classification using the DNB provided PDF
-     *
+     * <p>
      * http://www.dnb.de/SharedDocs/Downloads/DE/DNB/service/ddcSachgruppenDNBKonkordanzNeuAlt.pdf
-     *
+     * <p>
      * state: 01.01.2011
      *
      */
@@ -256,9 +256,9 @@ public class MIRClassificationMapper {
     /**
      *
      * This Class maps the DDC Classification to the SDNB Classification using the DNB provided PDF
-     *
+     * <p>
      * http://www.dnb.de/SharedDocs/Downloads/DE/DNB/service/ddcSachgruppenDNB.html
-     *
+     * <p>
      * state: 01.01.2011
      *
      */

@@ -10,9 +10,9 @@ public class MIRClassificationMapperTest extends MCRJPATestCase {
 
     /**
      * This Test tests all cases for mapping old SDNB to new SDNB provided by the DNB
-     *
+     * <p>
      * http://www.dnb.de/SharedDocs/Downloads/DE/DNB/service/ddcSachgruppenDNBKonkordanzNeuAlt.pdf
-     *
+     * <p>
      * state: 01.01.2011
      */
     @Test
@@ -92,9 +92,9 @@ public class MIRClassificationMapperTest extends MCRJPATestCase {
 
     /**
      * This Test tests all spacial cases for mapping DDC to SDNB provided by the DNB
-     *
+     * <p>
      * http://www.dnb.de/SharedDocs/Downloads/DE/DNB/service/ddcSachgruppenDNB.html
-     *
+     * <p>
      * state: 01.01.2011
      */
     @Test
