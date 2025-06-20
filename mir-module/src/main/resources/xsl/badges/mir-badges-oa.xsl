@@ -15,16 +15,6 @@
   <xsl:template name="output-oa-badge">
     <xsl:param name="isOpenAccess"/>
 
-    <xsl:variable name="badge-type">
-      <xsl:choose>
-        <xsl:when test="$isOpenAccess">
-          <xsl:value-of select="'bg-success'"/>
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:value-of select="'bg-warning'"/>
-        </xsl:otherwise>
-      </xsl:choose>
-    </xsl:variable>
     <xsl:variable name="icon-class">
       <xsl:choose>
         <xsl:when test="$isOpenAccess">
@@ -37,9 +27,8 @@
     </xsl:variable>
 
     <xsl:call-template name="output-badge">
-      <xsl:with-param name="class" select="'mir-badge-oa'"/>
+      <xsl:with-param name="class" select="concat('mir-badge-oa-', $isOpenAccess)"/>
       <xsl:with-param name="tooltip" select="document(concat('i18n:mir.response.openAccess.', $isOpenAccess))/i18n/text()"/>
-      <xsl:with-param name="badge-type" select="$badge-type"/>
       <xsl:with-param name="icon-class" select="$icon-class"/>
     </xsl:call-template>
   </xsl:template>
