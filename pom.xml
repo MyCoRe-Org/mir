@@ -409,7 +409,7 @@
       <dependency>
         <groupId>org.mycore</groupId>
         <artifactId>mycore-meta</artifactId>
-        <version>2025.06.0</version>
+        <version>${mycore.version}</version>
         <type>pom</type>
         <exclusions>
           <exclusion>
