@@ -37,6 +37,7 @@
                 <div class="offset-7 col-2">
                     <button :class="`btn btn-sm btn-secondary`"
                             type="button"
+                            aria-label="Plus Button"
                             v-on:click.prevent="addChild(0)">
                         <i class="fas fa-plus"/>
                     </button>

@@ -35,10 +35,10 @@
         <div class="row mt-2">
             <div class="col-12">
                 <div class="btn-group btn-group-sm">
-                    <button class="btn btn-secondary" @click.prevent="addPolygon">
+                    <button class="btn btn-secondary" aria-label="Plus Button" @click.prevent="addPolygon">
                         <i class="fas fa-plus"></i> {{ i18n["mir.editor.subject.cartographics.editor.add.polygon"] }}
                     </button>
-                    <button class="btn btn-secondary" @click.prevent="addPoint">
+                    <button class="btn btn-secondary" aria-label="Plus Button" @click.prevent="addPoint">
                         <i class="fas fa-plus"></i> {{ i18n["mir.editor.subject.cartographics.editor.add.point"] }}
                     </button>
                 </div>

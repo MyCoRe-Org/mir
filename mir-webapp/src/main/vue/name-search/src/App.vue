@@ -4,7 +4,8 @@
       <div ref="input" class="input-group">
         <input :id="`personLabel-${nameLocatorString}`" ref="searchBox" v-model="model.search"
                :placeholder="model.personPlaceholder"
-               class="form-control" type="text"
+               aria-labelledby="personLabel-"
+               class="form-control" type="text"               
                v-on:keydown.enter.prevent="startSearch()">
         <button ref="identifierOpenButton" class="btn btn-secondary"
                 v-on:click.prevent="currentIdentifierClicked()">
@@ -25,7 +26,7 @@
           <template v-if="defineOwnIdentifier">
             <div class="mir-form-group row">
               <div class="col-4">
-                <select v-model="model.currentOwnIdentifierType" class="form-control  form-select">
+                <select aria-label="Select role" v-model="model.currentOwnIdentifierType" class="form-control  form-select">
                   <option selected="selected" value="">{{ model.selectLabel }}</option>
                   <option v-for="identifierType in model.possibleIdentifierTypes" :key="identifierType.value" :value="identifierType.value">
                     {{ identifierType.label }}
@@ -36,7 +37,7 @@
                 <input v-model="model.currentOwnIdentifierValue" class="form-control" type="text"/>
               </div>
               <div class="col-2">
-                <button :title="model.addLabel" class="btn btn-secondary" v-on:click.prevent="addOwnIdentifier()">
+                <button :title="model.addLabel" class="btn btn-secondary" aria-label="Plus Button" v-on:click.prevent="addOwnIdentifier()">
                   <span class="fas fa-plus-circle"> </span>
                 </button>
               </div>
@@ -474,7 +475,7 @@ const closeDrops = () => {
 }
 
 .identifier-count {
-  font-size: 0.6em;
+  font-size: 0.9em;
   margin-left: 4px;
   vertical-align: bottom;
 }
