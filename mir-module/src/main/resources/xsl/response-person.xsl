@@ -216,7 +216,7 @@
               </xsl:variable>
 
               <div class="mir-form-group">
-                <label class="sr-only form-label" for="index_search">Gesuchte Zeichen</label>
+                <label  for="index_search" class="sr-only form-label">Gesuchte Zeichen</label>
                 <input value="{$search_value}"
                        name="terms.regex"
                        class="search_text_gray focus_form_field form-control"

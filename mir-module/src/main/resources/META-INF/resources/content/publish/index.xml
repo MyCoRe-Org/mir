@@ -58,7 +58,7 @@
 
       <div class="row mir-form-group">
         <div class="col-sm-3 col-lg-2 control-label">
-          <select name="type" class="form-control form-select">
+          <select aria-label="Andere Datenquelle auswählen" name="type" class="form-control form-select">
             <option value="doi">DOI</option>
             <option value="scopus">Scopus-ID</option>
             <option value="pubmed">PubMed-ID</option>
@@ -70,7 +70,7 @@
           </select>
         </div>
         <div class="col-sm-7 col-md-5 col-lg-4">
-          <input class="form-control" type="text" name="modsId" />
+          <input aria-label="Eingabefeld für mods ID" class="form-control" type="text" name="modsId" />
         </div>
       </div>
 
@@ -137,7 +137,7 @@
 
       <div class="row mir-form-group">
         <div class="col-sm-3 col-lg-2 control-label">
-          <select name="type" class="form-control form-select">
+          <select aria-label="select a mods typ" name="type" class="form-control form-select">
             <option value="doi">DOI</option>
             <option value="scopus">Scopus-ID</option>
             <option value="pubmed">PubMed-ID</option>
@@ -149,7 +149,7 @@
           </select>
         </div>
         <div class="col-sm-7 col-md-5 col-lg-4">
-          <input class="form-control" type="text" name="modsId" />
+          <input aria-label="input field for mods ID" class="form-control" type="text" name="modsId" />
         </div>
       </div>
 

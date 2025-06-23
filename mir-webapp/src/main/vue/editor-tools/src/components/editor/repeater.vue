@@ -4,6 +4,7 @@
                 :title="props.editTitle"
                 :class="`btn btn-sm btn-secondary${editEnabled? '':' disabled'}${editPressed? ' active':''}`"
                 type="button"
+                aria-label="edit button"
                 v-on:click.prevent="editClicked()">
             <i class="fas fa-edit fa-fw"/>
         </button>
@@ -11,6 +12,7 @@
                 :title="props.plusTitle"
                 :class="`btn btn-sm btn-secondary${plusEnabled? '':' disabled'}`"
                 type="button"
+                aria-label="Plus Button"
                 v-on:click.prevent="plusClicked()">
             <i class="fas fa-plus fa-fw"/>
         </button>
@@ -18,6 +20,7 @@
                 :title="props.minusTitle"
                 :class="`btn btn-sm btn-secondary${minusEnabled? '':' disabled'}`"
                 type="button"
+                aria-label="Minus Button"
                 v-on:click.prevent="minusClicked()">
             <i class="fas fa-minus fa-fw"/>
         </button>

@@ -56,7 +56,7 @@
             </xsl:choose>
             <div class="input-group mb-3">
               <div class="input-group-append">
-                <button type="submit" class="btn btn-primary">
+                <button type="submit"  aria-label="Search" class="btn btn-primary">
                   <i class="fas fa-search"></i>
                 </button>
               </div>
@@ -110,9 +110,9 @@
         <div class="col-2">
           <h4>Netzwerke</h4>
           <ul class="social_links">
-            <li><a href="#"><button type="button" class="social_icons social_icon_fb"></button>Facebook</a></li>
-            <li><a href="#"><button type="button" class="social_icons social_icon_tw"></button>Twitter</a></li>
-            <li><a href="#"><button type="button" class="social_icons social_icon_gg"></button>Google+</a></li>
+            <li><a href="#"><button type="button" class="social_icons social_icon_fb" aria-label="Facebook"></button>Facebook</a></li>
+            <li><a href="#"><button type="button" class="social_icons social_icon_tw" aria-label="Twitter"></button>Twitter</a></li>
+            <li><a href="#"><button type="button" class="social_icons social_icon_gg" aria-label="Google+"></button>Google+</a></li>
           </ul>
         </div>
         <div class="col-2">

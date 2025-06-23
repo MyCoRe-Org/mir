@@ -20,11 +20,11 @@
       <xed:bind xpath="/raw">
 
         <div class="mir-form-group">
-          <label class="col-md-10 control-label form-label" for="raw">
+          <label for="_{$id}" class="col-md-10 control-label form-label">
             <xed:output value="$id" />
           </label>
           <div class="col-md-10">
-            <textarea class="form-control" rows="30" />
+            <textarea id="_{$id}" class="form-control" rows="30" />
           </div>
         </div>
 

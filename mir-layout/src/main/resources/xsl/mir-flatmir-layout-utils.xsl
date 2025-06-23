@@ -103,7 +103,7 @@
                 </xsl:when>
               </xsl:choose>
 
-              <button type="submit" class="btn btn-primary my-2 my-sm-0">
+              <button type="submit" aria-label="Search" class="btn btn-primary my-2 my-sm-0">
                 <i class="fas fa-search"></i>
               </button>
             </form>
@@ -150,9 +150,9 @@
         <div class="col-2">
           <h4>Netzwerke</h4>
           <ul class="social_links">
-            <li><a href="#"><button type="button" class="social_icons social_icon_fb"></button>Facebook</a></li>
-            <li><a href="#"><button type="button" class="social_icons social_icon_tw"></button>Twitter</a></li>
-            <li><a href="#"><button type="button" class="social_icons social_icon_gg"></button>Google+</a></li>
+            <li><a href="#"><button type="button" class="social_icons social_icon_fb" aria-label="Facebook"></button>Facebook</a></li>
+            <li><a href="#"><button type="button" class="social_icons social_icon_tw" aria-label="Twitter"></button>Twitter</a></li>
+            <li><a href="#"><button type="button" class="social_icons social_icon_gg" aria-label="Google+"></button>Google+</a></li>
           </ul>
         </div>
         <div class="col-2">

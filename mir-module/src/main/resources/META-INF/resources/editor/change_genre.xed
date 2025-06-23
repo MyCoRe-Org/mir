@@ -16,11 +16,11 @@
       <xed:bind xpath="/mycoreobject/metadata/def.modsContainer[@class='MCRMetaXML']/modsContainer/mods:mods">
         <xed:bind xpath="mods:genre[@type='intern']/@mcr:categId">
           <div class="mir-form-group">
-            <label class="col-md-3 control-label form-label">
+            <label for="mir_genres" class="col-md-3 control-label form-label">
               <xed:output i18n="component.mods.metaData.dictionary.genre" />
             </label>
             <div class="col-md-6">
-              <select class="form-control form-control-inline form-select">
+              <select  id="mir_genres" class="form-control form-control-inline form-select">
                 <xed:include uri="xslStyle:items2options:classification:editorComplete:1:children:mir_genres" />
               </select>
             </div>
