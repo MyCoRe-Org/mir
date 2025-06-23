@@ -105,7 +105,7 @@
                 </xsl:when>
               </xsl:choose>
 
-              <button type="submit" class="btn btn-primary my-2 my-sm-0">
+              <button type="submit" aria-label="Search" class="btn btn-primary my-2 my-sm-0">
                 <i class="fas fa-search"></i>
               </button>
             </form>

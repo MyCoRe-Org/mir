@@ -171,7 +171,7 @@
                   </label>
                   <div class="col-md-4">
                     <xed:bind xpath="@name">
-                      <select class="form-control form-select">
+                      <select id="inputSortBy" class="form-control form-select">
                         <option value="mods.dateIssued">
                           <xed:output i18n="component.mods.metaData.dictionary.dateIssued" />
                         </option>
