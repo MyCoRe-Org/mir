@@ -15,7 +15,7 @@ services:
       - ${DB_PORT}:5432
   solr:
     container_name: ${NAME}-solr
-    image: mycoreorg/mir-solr:2023.06.x
+    image: mycoreorg/mir-solr:2025.06.x
     restart: unless-stopped
     volumes:
       - ${SOLR_DATA}:/var/solr/data
@@ -23,7 +23,7 @@ services:
       - ${SOLR_HTTP}:8983
   mir:
     container_name: ${NAME}-mir
-    image: mycoreorg/mir:2023.06.x
+    image: mycoreorg/mir:2025.06.x
     restart: unless-stopped
     environment:
       - APP_CONTEXT=${APP_CONTEXT}
