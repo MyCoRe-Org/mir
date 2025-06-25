@@ -86,7 +86,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             }
         });
 
-        // Reset selection on initial load if no valid option selected
+        // Reset selection to an initial load if no valid option selected
         $(affiliationSelectSelector).each(function () {
             const selectedText = $(this).find("option:selected").text().trim();
             if (selectedText === "" || selectedText === " ()") {
