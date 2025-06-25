@@ -676,8 +676,44 @@
   </xed:template>
 
   <xed:template id="person.affiliation">
+    <!-- affiliation without authorityURI -->
     <mir:textfield repeat="true" xpath="mods:affiliation[not(@authorityURI)]" help-text="{i18n:mir.help.affiliation}" label="mir.affiliation" />
-    <mir:textfield repeat="true" xpath="mods:affiliation[@authorityURI='https://ror.org/']" help-text="{i18n:mir.help.affiliation.ror}" label="mir.affiliation.ror" id="mir-ror-input"/>
+
+    <!-- affiliation with authorityURI https://ror.org/ -->
+    <xed:repeat xpath="mods:affiliation[@authorityURI='https://ror.org/']" min="1" max="10">
+      <div class="form-group row">
+        <label class="col-md-3 col-form-label text-right">
+          <xed:output i18n="mir.affiliation.with.ror.id.label"/>
+        </label>
+
+        <div class="col-md-6">
+          <xed:bind xpath=".">
+            <select class="form-control mir-select-searchable mir-select-affiliation"
+                    data-placeholder="{i18n:mir.affiliation.with.ror.id.placeholder}">
+
+              <xed:choose>
+                <xed:when test="string-length(@valueURI) &gt; 0">
+                  <option>
+                    <xsl:attribute name="value">
+                      <xsl:value-of select="concat(., ' (', @valueURI, ')')"/>
+                    </xsl:attribute>
+                    <xed:output value="."/>
+                  </option>
+                </xed:when>
+                <xed:otherwise>
+                  <option>
+                    <xed:output value="."/>
+                  </option>
+                </xed:otherwise>
+              </xed:choose>
+
+            </select>
+          </xed:bind>
+
+        </div>
+        <mir:help-pmud help-text="{i18n:mir.help.affiliation.with.ror.id}" pmud="true"/>
+      </div>
+    </xed:repeat>
   </xed:template>
 
   <xed:template id="nameIdentifier.repeated">
