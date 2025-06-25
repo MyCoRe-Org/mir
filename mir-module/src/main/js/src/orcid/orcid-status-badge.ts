@@ -8,24 +8,21 @@ export class OrcidStatusBadge {
   private workClient: OrcidWorkApiClient;
   private userStatus: OrcidUserStatus;
   private translate: (key: string) => Promise<string>;
-  private baseUrl: string;
 
   constructor(
     workClient: OrcidWorkApiClient,
     userStatus: OrcidUserStatus,
-    translate: (key: string) => Promise<string>,
-    baseUrl: string
+    translate: (key: string) => Promise<string>
   ) {
     this.workClient = workClient;
     this.userStatus = userStatus;
     this.translate = translate;
-    this.baseUrl = baseUrl;
   }
 
-  public async render(div: HTMLDivElement): Promise<void> {
-    const { objectId } = div.dataset;
+  public async render(span: HTMLSpanElement): Promise<void> {
+    const { objectId } = span.dataset;
     if (!objectId) {
-      console.error('ORCID status div is missing data attributes:', { div });
+      console.error('ORCID status div is missing data attributes:', { span });
       return;
     }
 
@@ -52,8 +49,7 @@ export class OrcidStatusBadge {
         );
 
         if (this.checkIsInOrcidProfile(workStatus)) {
-          const statusElement = await this.createStatusElement(true);
-          div.appendChild(statusElement);
+          await this.finalizeBadge(span, true);
           return;
         } else {
           checkedOrcids.add(orcid);
@@ -64,48 +60,30 @@ export class OrcidStatusBadge {
         );
       }
     }
-    const statusElement = await this.createStatusElement(false);
-    div.appendChild(statusElement);
+    await this.finalizeBadge(span, false);
   }
 
   private checkIsInOrcidProfile(workStatus: OrcidWorkStatus): boolean {
     return !!(workStatus.own ?? workStatus.other?.length);
   }
 
-  private createOrcidIcon(): HTMLImageElement {
-    const icon = document.createElement('img');
-    icon.alt = 'ORCID iD';
-    icon.classList.add('orcid-icon');
-    icon.src = `${this.baseUrl}images/orcid_icon.svg`;
-    return icon;
-  }
-
-  private createThumbsElement(up: boolean): HTMLSpanElement {
-    const el = document.createElement('span');
-    el.classList.add(
-      'far',
-      `fa-thumbs-${up ? 'up' : 'down'}`,
-      `orcid-in-profile-${up}`
-    );
-    return el;
-  }
-
-  private async createStatusElement(
+  private async finalizeBadge(
+    span: HTMLSpanElement,
     isInOrcidProfile: boolean
-  ): Promise<HTMLSpanElement> {
-    const span = document.createElement('span');
-    span.classList.add('orcid-info');
-
-    const icon = this.createOrcidIcon();
-    span.appendChild(icon);
-
+  ): Promise<void> {
+    span.classList.remove('mir-badge-orcid-in-profile');
     const label = await this.translate(
       `mir.orcid.publication.badge.inProfile.${isInOrcidProfile}`
     );
-    span.title = label;
-    span.setAttribute('aria-label', label);
-
-    span.appendChild(this.createThumbsElement(isInOrcidProfile));
-    return span;
+    if (isInOrcidProfile) {
+      span.classList.add('mir-badge-orcid-in-profile-true');
+    } else {
+      span.classList.add('mir-badge-orcid-in-profile-false');
+    }
+    const textEl = span.querySelector('.mir-orcid-badge-in-profile-text');
+    if (textEl) {
+      textEl.innerHTML = label;
+    }
+    // TODO add tooltip related orcid to badge
   }
 }

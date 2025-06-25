@@ -1,9 +1,8 @@
 import { OrcidStatusBadge } from './orcid-status-badge';
 import { OrcidApiClientFactory } from './orcid-utils';
-import { getBaseUrl } from '../utils/config.js';
 import { LangServiceFactory } from '../utils/i18n.js';
 
-const DEFAULT_STATUS_BADGE_SELECTOR = 'div.mir-badge-orcid';
+const DEFAULT_STATUS_BADGE_SELECTOR = 'span.mir-badge-orcid-in-profile';
 
 export const setupStatusBadges = async (
   elements = document.querySelectorAll<HTMLDivElement>(
@@ -13,17 +12,11 @@ export const setupStatusBadges = async (
     OrcidApiClientFactory.getUserService().getUserStatus(),
   workClientGetter = () => OrcidApiClientFactory.getWorkService(),
   translate = (key: string) =>
-    LangServiceFactory.getLangService().translate(key),
-  baseUrl = getBaseUrl().toString()
+    LangServiceFactory.getLangService().translate(key)
 ): Promise<void> => {
   if (!elements.length) return;
   const userStatus = await userStatusGetter();
-  const badge = new OrcidStatusBadge(
-    workClientGetter(),
-    userStatus,
-    translate,
-    baseUrl
-  );
+  const badge = new OrcidStatusBadge(workClientGetter(), userStatus, translate);
 
   await Promise.all(
     Array.from(elements).map(div =>

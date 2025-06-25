@@ -5,7 +5,6 @@
 
   <xsl:import href="xslImport:badges:badges/mir-badges-orcid.xsl"/>
   <xsl:import href="resource:xsl/orcid/mir-orcid-user.xsl"/>
-  <xsl:include href="resource:xsl/badges/mir-badges-utils.xsl"/>
   <xsl:include href="resource:/xsl/orcid/mir-orcid-work.xsl"/>
 
   <xsl:template match="doc" mode="badge">
@@ -26,7 +25,12 @@
 
       <xsl:if test="boolean($currentUserMatchingTrustedIds)">
         <xsl:variable name="objectId" select="string((str[@name='id'] | field[@name='id'])[1])"/>
-        <div class="mir-badge-orcid" data-object-id="{$objectId}"/>
+        <span class="badge mir-badge-orcid-in-profile" data-object-id="{$objectId}">
+          <i class="fa-brands fa-orcid"></i>
+          <span class="mir-orcid-badge-in-profile-text">
+            <xsl:value-of select="document('i18n:mir.orcid.publication.badge.inProfile.loading')/i18n/text()"/>
+          </span>
+        </span>
       </xsl:if>
     </xsl:if>
   </xsl:template>
