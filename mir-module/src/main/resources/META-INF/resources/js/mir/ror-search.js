@@ -2,7 +2,7 @@
  * Initializes ROR-based affiliation autocomplete with Select2
  * in XEditor forms, with i18n support and fallback messages.
  */
-$(document).ready(async function () {
+document.addEventListener("DOMContentLoaded", async function () {
 
     const RORSearch = {
         baseURL: "https://api.ror.org/",
@@ -33,7 +33,7 @@ $(document).ready(async function () {
     };
 
     const errorKeyMessagesList = new ErrorKeyMessageBuilder(RORSearch.currentLanguage,
-      RORSearch.webApplicationBaseURL);
+        RORSearch.webApplicationBaseURL);
 
     /**
      * Loads required translation keys and initializes the Select2 widget
@@ -61,9 +61,9 @@ $(document).ready(async function () {
                     const query = params.term.trim();
                     // Special handling for GRID IDs
                     if (/^grid\.\d+\.\d+$/.test(query)) {
-                        return { query: `"${query}"` };
+                        return {query: `"${query}"`};
                     }
-                    return { query };
+                    return {query};
                 },
                 processResults: function (data) {
                     return {
@@ -80,12 +80,9 @@ $(document).ready(async function () {
             },
             minimumInputLength: 1,
             language: {
-                inputTooShort: () => translationHelper.
-                getTranslationWithFallback("mir.add.more.text.placeholder", defaultMessages),
-                noResults: () => translationHelper.
-                getTranslationWithFallback("mir.editor.subject.search.result.empty", defaultMessages),
-                searching: () => translationHelper.
-                getTranslationWithFallback("mir.searching.placeholder", defaultMessages),
+                inputTooShort: () => translationHelper.getTranslationWithFallback("mir.add.more.text.placeholder", defaultMessages),
+                noResults: () => translationHelper.getTranslationWithFallback("mir.editor.subject.search.result.empty", defaultMessages),
+                searching: () => translationHelper.getTranslationWithFallback("mir.searching.placeholder", defaultMessages),
             }
         });
 
@@ -219,8 +216,8 @@ class ErrorKeyMessageBuilder {
      */
     getTranslationWithFallback(key, fallbackMap) {
         return this.isTranslationReady(key)
-          ? this.getTranslation(key)
-          : fallbackMap[key] || '';
+            ? this.getTranslation(key)
+            : fallbackMap[key] || '';
     }
 }
 
