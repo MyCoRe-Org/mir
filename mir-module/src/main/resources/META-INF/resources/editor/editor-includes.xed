@@ -711,7 +711,7 @@
           </xed:bind>
 
         </div>
-        <mir:help-pmud help-text="{i18n:refodat.help.affiliation.with.ror.id}" pmud="true"/>
+        <mir:help-pmud help-text="{i18n:mir.help.affiliation.with.ror.id}" pmud="true"/>
       </div>
     </xed:repeat>
   </xed:template>
