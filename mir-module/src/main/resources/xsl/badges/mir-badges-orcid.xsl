@@ -27,7 +27,7 @@
         <xsl:variable name="objectId" select="string((str[@name='id'] | field[@name='id'])[1])"/>
         <span class="badge mir-badge-orcid-in-profile" data-object-id="{$objectId}">
           <i class="fa-brands fa-orcid"></i>
-          <span class="mir-orcid-badge-in-profile-text">
+          <span class="mir-badge-orcid-in-profile-text">
             <xsl:value-of select="document('i18n:mir.orcid.publication.badge.inProfile.loading')/i18n/text()"/>
           </span>
         </span>

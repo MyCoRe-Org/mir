@@ -4,19 +4,22 @@ import {
   OrcidWorkStatus,
 } from '@jsr/mycore__js-common/orcid';
 
+export const ORCID_BADGE_BASE_CLASS = 'mir-badge-orcid-in-profile';
+const I18N_PREFIX = 'mir.orcid.publication.badge.inProfile.';
+
 export class OrcidStatusBadge {
   private workClient: OrcidWorkApiClient;
   private userStatus: OrcidUserStatus;
-  private translate: (key: string) => Promise<string>;
+  private getTranslations: (prefix: string) => Promise<Record<string, string>>;
 
   constructor(
     workClient: OrcidWorkApiClient,
     userStatus: OrcidUserStatus,
-    translate: (key: string) => Promise<string>
+    getTranslations: (prefix: string) => Promise<Record<string, string>>
   ) {
     this.workClient = workClient;
     this.userStatus = userStatus;
-    this.translate = translate;
+    this.getTranslations = getTranslations;
   }
 
   public async render(span: HTMLSpanElement): Promise<void> {
@@ -71,19 +74,19 @@ export class OrcidStatusBadge {
     span: HTMLSpanElement,
     isInOrcidProfile: boolean
   ): Promise<void> {
-    span.classList.remove('mir-badge-orcid-in-profile');
-    const label = await this.translate(
-      `mir.orcid.publication.badge.inProfile.${isInOrcidProfile}`
+    span.classList.remove(ORCID_BADGE_BASE_CLASS);
+    const translations = await this.getTranslations(
+      `${I18N_PREFIX}${isInOrcidProfile}*`
     );
-    if (isInOrcidProfile) {
-      span.classList.add('mir-badge-orcid-in-profile-true');
-    } else {
-      span.classList.add('mir-badge-orcid-in-profile-false');
-    }
-    const textEl = span.querySelector('.mir-orcid-badge-in-profile-text');
+    span.classList.add(`${ORCID_BADGE_BASE_CLASS}-${isInOrcidProfile}`);
+    const textEl = span.querySelector(`.${ORCID_BADGE_BASE_CLASS}-text`);
     if (textEl) {
-      textEl.innerHTML = label;
+      textEl.innerHTML = translations[`${I18N_PREFIX}${isInOrcidProfile}`];
     }
-    // TODO add tooltip related orcid to badge
+    span.setAttribute('data-bs-toggle', 'tooltip');
+    span.setAttribute(
+      'title',
+      translations[`${I18N_PREFIX}${isInOrcidProfile}.tooltip`]
+    );
   }
 }

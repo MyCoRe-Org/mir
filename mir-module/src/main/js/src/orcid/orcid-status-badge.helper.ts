@@ -1,8 +1,9 @@
-import { OrcidStatusBadge } from './orcid-status-badge';
+import { Tooltip } from 'bootstrap';
+import { OrcidStatusBadge, ORCID_BADGE_BASE_CLASS } from './orcid-status-badge';
 import { OrcidApiClientFactory } from './orcid-utils';
 import { LangServiceFactory } from '../utils/i18n.js';
 
-const DEFAULT_STATUS_BADGE_SELECTOR = 'span.mir-badge-orcid-in-profile';
+const DEFAULT_STATUS_BADGE_SELECTOR = `span.${ORCID_BADGE_BASE_CLASS}`;
 
 export const setupStatusBadges = async (
   elements = document.querySelectorAll<HTMLDivElement>(
@@ -11,13 +12,16 @@ export const setupStatusBadges = async (
   userStatusGetter = () =>
     OrcidApiClientFactory.getUserService().getUserStatus(),
   workClientGetter = () => OrcidApiClientFactory.getWorkService(),
-  translate = (key: string) =>
-    LangServiceFactory.getLangService().translate(key)
+  getTranslations = (prefix: string) =>
+    LangServiceFactory.getLangService().getTranslations(prefix)
 ): Promise<void> => {
   if (!elements.length) return;
   const userStatus = await userStatusGetter();
-  const badge = new OrcidStatusBadge(workClientGetter(), userStatus, translate);
-
+  const badge = new OrcidStatusBadge(
+    workClientGetter(),
+    userStatus,
+    getTranslations
+  );
   await Promise.all(
     Array.from(elements).map(div =>
       badge.render(div).catch(err => {
@@ -25,4 +29,11 @@ export const setupStatusBadges = async (
       })
     )
   );
+  document
+    .querySelectorAll(
+      `span[class*="${ORCID_BADGE_BASE_CLASS}"][data-bs-toggle="tooltip"]`
+    )
+    .forEach(el => {
+      new Tooltip(el);
+    });
 };
