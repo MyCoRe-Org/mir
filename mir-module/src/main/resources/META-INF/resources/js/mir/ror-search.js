@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         "mir.searching.placeholder": "Searching..."
     };
 
-    const errorKeyMessagesList = new ErrorKeyMessageBuilder(RORSearch.currentLanguage,
+    const errorKeyMessagesList = new MIRErrorKeyMessageBuilder(RORSearch.currentLanguage,
         RORSearch.webApplicationBaseURL);
 
     /**
@@ -47,7 +47,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     /**
      * Initialize Select2 for affiliation field using ROR search.
      *
-     * @param {ErrorKeyMessageBuilder} translationHelper - Instance of translation helper with loaded translations.
+     * @param {MIRErrorKeyMessageBuilder} translationHelper - Instance of translation helper with loaded translations.
      */
     function initializeSelect2(translationHelper) {
         if ($(affiliationSelectSelector).length === 0) return;
@@ -102,9 +102,9 @@ document.addEventListener("DOMContentLoaded", async function () {
  * A helper class for managing translation keys and their resolved values,
  * especially useful in asynchronous UI contexts like Select2.
  */
-class ErrorKeyMessageBuilder {
+class MIRErrorKeyMessageBuilder {
     /**
-     * Constructs a new ErrorKeyMessageBuilder instance.
+     * Constructs a new MIRErrorKeyMessageBuilder instance.
      * @param {string} language - The current language code (e.g., "en", "de").
      * @param {string} baseURL - The base URL of the web application.
      */
