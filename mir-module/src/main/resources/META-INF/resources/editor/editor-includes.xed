@@ -2042,7 +2042,7 @@
               <xed:bind xpath="datacite:awardTitle">
                 <div class="col-md-6 {$xed-validation-marker}">
                   <input type="text" class="form-control award-title" autocomplete="off"/>
-                  <xed:validate relevant-if="../datacite:awardNumber" required="true"
+                  <xed:validate relevant-if="string-length(../datacite:awardNumber)&gt;0" required="true"
                     i18n="mir.editor.fundingReference.awardTitle.validation" display="global"/>
                 </div>
               </xed:bind>
@@ -2075,7 +2075,7 @@
               <xed:bind xpath="datacite:funderName">
                 <div class="col-md-6 {$xed-validation-marker}">
                   <input type="text" class="form-control funder-name" autocomplete="off"/>
-                  <xed:validate relevant-if="../datacite:awardNumber or ../datacite:awardNumber/@awardURI or ../datacite:awardTitle or ../datacite:funderType"
+                  <xed:validate relevant-if="string-length(../datacite:awardNumber)&gt;0 or string-length(../datacite:awardNumber/@awardURI)&gt;0 or string-length(../datacite:awardTitle)&gt;0 or string-length(../datacite:funderIdentifier)&gt;0"
                     required="true" i18n="mir.editor.fundingReference.funderName.validation" display="global"/>
                 </div>
               </xed:bind>
@@ -2110,13 +2110,13 @@
                             <xed:output i18n="mir.editor.fundingReference.funderIdentifier.other"/>
                           </option>
                         </select>
-                        <xed:validate relevant-if=".." required="true"
+                        <xed:validate relevant-if="string-length(..)&gt;0" required="true"
                           i18n="mir.editor.fundingReference.funderIdentifier.validation" display="global"/>
                       </div>
                     </xed:bind>
                     <div class="col-md-8 ps-0 {$xed-validation-marker}">
                       <input type="text" class="form-control funder-id-value" />
-                      <xed:validate relevant-if="@funderIdentifierType" required="true"
+                      <xed:validate relevant-if="string-length(@funderIdentifierType)&gt;0" required="true"
                         i18n="mir.editor.fundingReference.funderIdentifier.validation" display="global"/>
                     </div>
                   </div>
