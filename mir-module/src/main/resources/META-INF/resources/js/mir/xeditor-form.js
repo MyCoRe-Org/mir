@@ -1,7 +1,6 @@
-$(document).ready(function() {
+$(document).ready(function () {
 
     select2()
-      .then(() => console.info("select2 applied"))
       .then(() => $('.mir-select-searchable').on('select2:open', function (e) {
             $(".select2-container--default .select2-results > .select2-results__options")[0].style = "max-height:400px";
         })
