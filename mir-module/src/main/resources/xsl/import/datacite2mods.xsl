@@ -87,50 +87,42 @@
 
     <!-- Template for affiliation according to Datacite version 4.4  -->
     <xsl:template match="affiliation">
-        <xsl:choose>
-            <xsl:when test="normalize-space(text()) and normalize-space(@affiliationIdentifierScheme)">
-                <mods:affiliation>
-                    <!-- Set valueURI if affiliationIdentifier exists and is not empty -->
-                    <xsl:if test="@affiliationIdentifier and normalize-space(@affiliationIdentifier)">
-                        <xsl:attribute name="valueURI">
-                            <xsl:value-of select="@affiliationIdentifier"/>
-                        </xsl:attribute>
-                    </xsl:if>
+        <xsl:if test="normalize-space(text()) and normalize-space(@affiliationIdentifierScheme)">
+            <mods:affiliation>
+                <!-- Set valueURI if affiliationIdentifier exists and is not empty -->
+                <xsl:if test="@affiliationIdentifier and normalize-space(@affiliationIdentifier)">
+                    <xsl:attribute name="valueURI">
+                        <xsl:value-of select="@affiliationIdentifier"/>
+                    </xsl:attribute>
+                </xsl:if>
 
+                <!-- If schemeURI exists and is not empty, use it as authorityURI -->
+                <xsl:if test="normalize-space(@schemeURI)">
+                    <xsl:attribute name="authorityURI">
+                        <xsl:value-of select="@schemeURI"/>
+                    </xsl:attribute>
+                </xsl:if>
+
+                <!-- If schemeURI is missing or empty, use predefined values for ROR, ISNI, GRID -->
+                <xsl:if test="(not(@schemeURI) or not(normalize-space(@schemeURI)))">
                     <xsl:choose>
-                        <!-- If schemeURI exists and is not empty, use it as authorityURI -->
-                        <xsl:when test="normalize-space(@schemeURI)">
-                            <xsl:attribute name="authorityURI">
-                                <xsl:value-of select="@schemeURI"/>
-                            </xsl:attribute>
+                        <xsl:when test="@affiliationIdentifierScheme = 'ROR'">
+                            <xsl:attribute name="authorityURI">https://ror.org/</xsl:attribute>
                         </xsl:when>
-                        <!-- If schemeURI is missing or empty, use predefined values for ROR, ISNI, GRID -->
-                        <xsl:otherwise>
-                            <xsl:choose>
-                                <xsl:when test="@affiliationIdentifierScheme = 'ROR'">
-                                    <xsl:attribute name="authorityURI">https://ror.org/</xsl:attribute>
-                                </xsl:when>
-                                <xsl:when test="@affiliationIdentifierScheme = 'ISNI'">
-                                    <xsl:attribute name="authorityURI">https://isni.org/</xsl:attribute>
-                                </xsl:when>
-                                <xsl:when test="@affiliationIdentifierScheme = 'GRID'">
-                                    <xsl:attribute name="authorityURI">https://grid.ac/</xsl:attribute>
-                                </xsl:when>
-                            </xsl:choose>
-                        </xsl:otherwise>
+                        <xsl:when test="@affiliationIdentifierScheme = 'ISNI'">
+                            <xsl:attribute name="authorityURI">https://isni.org/</xsl:attribute>
+                        </xsl:when>
+                        <xsl:when test="@affiliationIdentifierScheme = 'GRID'">
+                            <xsl:attribute name="authorityURI">https://grid.ac/</xsl:attribute>
+                        </xsl:when>
                     </xsl:choose>
-                    <!-- Output the text content of affiliation -->
-                    <xsl:value-of select="normalize-space(text())"/>
-                </mods:affiliation>
-            </xsl:when>
-            <xsl:otherwise>
-                <affiliation>
-                    <xsl:value-of select="normalize-space(text())"/>
-                </affiliation>
-            </xsl:otherwise>
-        </xsl:choose>
-    </xsl:template>
+                </xsl:if>
 
+                <!-- Output the text content of affiliation -->
+                <xsl:value-of select="normalize-space(text())"/>
+            </mods:affiliation>
+        </xsl:if>
+    </xsl:template>
 
     <xsl:template match="publisher">
         <mods:publisher>
