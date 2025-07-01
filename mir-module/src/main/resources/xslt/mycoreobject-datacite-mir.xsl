@@ -191,7 +191,7 @@
           <xsl:value-of select="$affiliation"/>
         </affiliation>
       </xsl:when>
-      <xsl:when test="not(@authorityURI = 'https://ror.org/') and fn:string-length($affiliation) &gt; 0">
+      <xsl:when test="fn:string-length($affiliation) &gt; 0">
         <affiliation>
           <xsl:value-of select="$affiliation"/>
         </affiliation>
