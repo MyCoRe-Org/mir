@@ -97,28 +97,28 @@
                         </xsl:attribute>
                     </xsl:if>
 
-                    <!-- If schemeURI exists and is not empty, use it as authorityURI -->
-                    <xsl:if test="normalize-space(@schemeURI)">
-                        <xsl:attribute name="authorityURI">
-                            <xsl:value-of select="@schemeURI"/>
-                        </xsl:attribute>
-                    </xsl:if>
-
-                    <!-- If schemeURI is missing or empty, use predefined values for ROR, ISNI, GRID -->
-                    <xsl:if test="(not(@schemeURI) or not(normalize-space(@schemeURI)))">
-                        <xsl:choose>
-                            <xsl:when test="@affiliationIdentifierScheme = 'ROR'">
-                                <xsl:attribute name="authorityURI">https://ror.org/</xsl:attribute>
-                            </xsl:when>
-                            <xsl:when test="@affiliationIdentifierScheme = 'ISNI'">
-                                <xsl:attribute name="authorityURI">https://isni.org/</xsl:attribute>
-                            </xsl:when>
-                            <xsl:when test="@affiliationIdentifierScheme = 'GRID'">
-                                <xsl:attribute name="authorityURI">https://grid.ac/</xsl:attribute>
-                            </xsl:when>
-                        </xsl:choose>
-                    </xsl:if>
-
+                    <xsl:choose>
+                        <!-- If schemeURI exists and is not empty, use it as authorityURI -->
+                        <xsl:when test="normalize-space(@schemeURI)">
+                            <xsl:attribute name="authorityURI">
+                                <xsl:value-of select="@schemeURI"/>
+                            </xsl:attribute>
+                        </xsl:when>
+                        <!-- If schemeURI is missing or empty, use predefined values for ROR, ISNI, GRID -->
+                        <xsl:otherwise>
+                            <xsl:choose>
+                                <xsl:when test="@affiliationIdentifierScheme = 'ROR'">
+                                    <xsl:attribute name="authorityURI">https://ror.org/</xsl:attribute>
+                                </xsl:when>
+                                <xsl:when test="@affiliationIdentifierScheme = 'ISNI'">
+                                    <xsl:attribute name="authorityURI">https://isni.org/</xsl:attribute>
+                                </xsl:when>
+                                <xsl:when test="@affiliationIdentifierScheme = 'GRID'">
+                                    <xsl:attribute name="authorityURI">https://grid.ac/</xsl:attribute>
+                                </xsl:when>
+                            </xsl:choose>
+                        </xsl:otherwise>
+                    </xsl:choose>
                     <!-- Output the text content of affiliation -->
                     <xsl:value-of select="normalize-space(text())"/>
                 </mods:affiliation>
