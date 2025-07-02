@@ -101,7 +101,7 @@
                     <xsl:choose>
                         <xsl:when test="normalize-space(@schemeURI)">
                             <xsl:attribute name="authorityURI">
-                                <xsl:value-of select="@schemeURI"/>
+                                <xsl:value-of select="normalize-space(@schemeURI)"/>
                             </xsl:attribute>
                         </xsl:when>
                         <!-- If schemeURI is missing or empty, use predefined values for ROR, ISNI, GRID -->
