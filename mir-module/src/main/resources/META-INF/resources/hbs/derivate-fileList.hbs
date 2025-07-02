@@ -20,10 +20,10 @@
           <td class="file_preview col-1 text-center text-nowrap">
               {{#is type "file"}}
                 {{#contains "pdf|ps" extension}}
-                  <span class="fas {{getFileIcon extension}}" data-toggle="tooltip"
+                  <span class="fas {{getFileIcon contentType}}" data-toggle="tooltip"
                               data-placement="right" data-html="true" data-title='&lt;img src="{{../serverBaseURL}}img/pdfthumb/{{../mycorederivate}}{{path}}?centerThumb=no"&gt;'></span>
                 {{else}}
-                  <span class="fas {{getFileIcon extension}}" title="{{getFileLabel extension}}" aria-hidden="true"></span>
+                  <span class="fas {{getFileIcon contentType}}" title="{{getFileLabel contentType}}" aria-hidden="true"></span>
                 {{/contains}}
               {{else}}
                 <span class="fas fa-folder" aria-hidden="true"></span>
