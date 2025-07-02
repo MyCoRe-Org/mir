@@ -17,7 +17,7 @@
         <xsl:for-each select="arr[@name='mods.genre']/str">
           <xsl:call-template name="output-badge">
             <xsl:with-param name="of-type" select="'hit_type'"/>
-            <xsl:with-param name="badge-type" select="'badge-primary'"/>
+            <xsl:with-param name="badge-type" select="'badge-info'"/>
             <xsl:with-param name="label" select="document(concat('callJava:org.mycore.common.xml.MCRXMLFunctions:getDisplayName:mir_genres:', .))"/>
             <xsl:with-param name="link"  select="concat($ServletsBaseURL, 'solr/find?condQuery=*&amp;fq=category.top:%22mir_genres:', ., '%22')"/>
             <xsl:with-param name="tooltip" select="$tooltip-genre"/>
@@ -27,7 +27,7 @@
       <xsl:otherwise>
         <xsl:call-template name="output-badge">
           <xsl:with-param name="of-type" select="'hit_type'"/>
-          <xsl:with-param name="badge-type" select="'badge-primary'"/>
+          <xsl:with-param name="badge-type" select="'badge-info'"/>
           <xsl:with-param name="label" select="document('callJava:org.mycore.common.xml.MCRXMLFunctions:getDisplayName:mir_genres:article')"/>
           <xsl:with-param name="tooltip" select="$tooltip-genre"/>
         </xsl:call-template>
@@ -46,7 +46,7 @@
 
       <xsl:call-template name="output-badge">
         <xsl:with-param name="of-type" select="'hit_type'"/>
-        <xsl:with-param name="badge-type" select="'badge-primary'"/>
+        <xsl:with-param name="badge-type" select="'badge-info'"/>
         <xsl:with-param name="label" select="document(concat('callJava:org.mycore.common.xml.MCRXMLFunctions:getDisplayName:', $class, ':', $categid))"/>
         <xsl:with-param name="link"  select="concat($ServletsBaseURL, 'solr/find?condQuery=*&amp;fq=category.top:%22', $class, ':', $categid, '%22')"/>
         <xsl:with-param name="tooltip" select="$tooltip-genre"/>
