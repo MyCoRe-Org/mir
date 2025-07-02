@@ -155,8 +155,77 @@
     </mods:nameIdentifier>
   </xsl:template>
 
-  <xsl:template match="mods:affiliation[@authorityURI='https://ror.org/']">
-    <mods:affiliation authorityURI="{@authorityURI}" valueURI="{.}"/>
+  <xsl:template match="mods:affiliation">
+    <xsl:variable name="fullValue" select="."/>
+
+    <xsl:choose>
+      <!-- Case when affiliation contains a ROR URL -->
+      <xsl:when test="contains($fullValue, 'ror.org/')">
+        <!-- Extract name (everything before the opening parenthesis of the ROR URL) -->
+        <xsl:variable name="beforeROR" select="substring-before($fullValue, '(http')"/>
+        <xsl:variable name="name">
+          <xsl:choose>
+            <xsl:when test="$beforeROR != ''">
+              <xsl:value-of select="normalize-space($beforeROR)"/>
+            </xsl:when>
+            <xsl:otherwise>
+              <!-- If there's nothing before the ROR URL, use the part after as name -->
+              <xsl:value-of select="normalize-space(substring-before($fullValue, ')'))"/>
+            </xsl:otherwise>
+          </xsl:choose>
+        </xsl:variable>
+
+        <!-- Extract ROR URL -->
+        <xsl:variable name="rorURL">
+          <xsl:call-template name="extractRORURL">
+            <xsl:with-param name="text" select="$fullValue"/>
+          </xsl:call-template>
+        </xsl:variable>
+
+        <mods:affiliation authorityURI="https://ror.org/">
+          <xsl:if test="$rorURL != ''">
+            <xsl:attribute name="valueURI">
+              <xsl:value-of select="$rorURL"/>
+            </xsl:attribute>
+          </xsl:if>
+          <xsl:value-of select="$name"/>
+        </mods:affiliation>
+      </xsl:when>
+
+      <!-- Case when affiliation is just plain text without ROR URL -->
+      <xsl:otherwise>
+        <mods:affiliation>
+          <xsl:value-of select="$fullValue"/>
+        </mods:affiliation>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
+  <!-- Helper template to extract ROR URL -->
+  <xsl:template name="extractRORURL">
+    <xsl:param name="text"/>
+
+    <!-- Find the start of http(s) -->
+    <xsl:variable name="afterOpenParen" select="substring-after($text, '(')"/>
+    <xsl:variable name="httpPos">
+      <xsl:choose>
+        <xsl:when test="contains($afterOpenParen, 'http://ror.org/')">
+          <xsl:value-of select="'http://ror.org/'"/>
+        </xsl:when>
+        <xsl:when test="contains($afterOpenParen, 'https://ror.org/')">
+          <xsl:value-of select="'https://ror.org/'"/>
+        </xsl:when>
+        <xsl:otherwise/>
+      </xsl:choose>
+    </xsl:variable>
+
+    <xsl:if test="$httpPos != ''">
+      <xsl:variable name="afterHTTP" select="substring-after($afterOpenParen, $httpPos)"/>
+      <xsl:variable name="rorID" select="substring-before($afterHTTP, ')')"/>
+      <xsl:if test="$rorID != ''">
+        <xsl:value-of select="concat($httpPos, $rorID)"/>
+      </xsl:if>
+    </xsl:if>
   </xsl:template>
 
   <!-- Copy content of mods:accessCondtition to mods:classification to enable classification support (see MIR-161) -->
