@@ -93,7 +93,7 @@
                     <!-- Set valueURI if affiliationIdentifier exists and is not empty -->
                     <xsl:if test="@affiliationIdentifier and normalize-space(@affiliationIdentifier)">
                         <xsl:attribute name="valueURI">
-                            <xsl:value-of select="@affiliationIdentifier"/>
+                            <xsl:value-of select="normalize-space(@affiliationIdentifier)"/>
                         </xsl:attribute>
                     </xsl:if>
 
@@ -105,7 +105,7 @@
                             </xsl:attribute>
                         </xsl:when>
                         <!-- If schemeURI is missing or empty, use predefined values for ROR, ISNI, GRID -->
-                        <xsl:when test="not(normalize-space(@schemeURI))">
+                        <xsl:otherwise>
                             <xsl:choose>
                                 <xsl:when test="@affiliationIdentifierScheme = 'ROR'">
                                     <xsl:attribute name="authorityURI">https://ror.org/</xsl:attribute>
@@ -117,7 +117,7 @@
                                     <xsl:attribute name="authorityURI">https://grid.ac/</xsl:attribute>
                                 </xsl:when>
                             </xsl:choose>
-                        </xsl:when>
+                        </xsl:otherwise>
                     </xsl:choose>
                     <!-- Output the text content of affiliation -->
                     <xsl:value-of select="normalize-space(text())"/>
