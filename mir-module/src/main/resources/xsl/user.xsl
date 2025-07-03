@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!-- XSL to display data of a login user -->
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xalan="http://xml.apache.org/xalan"
+                xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions"
+                xmlns:acl="xalan://org.mycore.access.MCRAccessManager"
+                xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
+                xmlns:const="xalan://org.mycore.user2.MCRUser2Constants"
+                exclude-result-prefixes="xsl xalan i18n acl const mcrxsl">
 
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xalan="http://xml.apache.org/xalan" xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions"
-  xmlns:acl="xalan://org.mycore.access.MCRAccessManager" xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation" xmlns:const="xalan://org.mycore.user2.MCRUser2Constants"
-  exclude-result-prefixes="xsl xalan i18n acl const mcrxsl"
->
-
+  <xsl:import href="xslImport:userExtentionsBase"/>
   <xsl:include href="MyCoReLayout.xsl" />
 
   <xsl:variable name="PageID" select="'show-user'" />
@@ -30,6 +32,8 @@
   <xsl:variable name="owns" select="document(concat('user:getOwnedUsers:',$uid))/owns" />
 
   <xsl:template match="user" mode="actions">
+    <xsl:apply-imports/>
+
     <xsl:variable name="isCurrentUser" select="$CurrentUser = $uid" />
     <xsl:if test="(string-length($step) = 0) or ($step = 'changedPassword')">
       <xsl:variable name="isUserAdmin" select="acl:checkPermission(const:getUserAdminPermission())" />
@@ -253,21 +257,9 @@
                 </td>
               </tr>
             </xsl:if>
-            <xsl:if test="attributes/attribute[@name='id_orcid']" >
-              <tr class="d-flex">
-                <th class="col-md-3">
-                  <xsl:value-of select="i18n:translate('user.profile.id.orcid')" />
-                  <xsl:text>:</xsl:text>
-                </th>
-                <td class="col-md-9">
-                  <xsl:variable name="url" select="concat($MCR.ORCID.LinkURL,attributes/attribute[@name='id_orcid']/@value)" />
-                  <a href="{$url}">
-                    <img alt="ORCID iD" src="{$WebApplicationBaseURL}images/orcid_icon.svg" class="orcid-icon" />
-                    <xsl:value-of select="$url" />
-                  </a>
-                </td>
-              </tr>
-            </xsl:if>
+
+            <xsl:apply-templates select="." mode="user-important-attributes"/>
+
             <xsl:if test="$fullDetails">
               <tr class="d-flex">
                 <th class="col-md-3">
@@ -440,6 +432,25 @@
         <xsl:value-of select="concat(i18n:translate('component.user2.admin.userDisplay'), ' ', /user/@name)"/>
       </xsl:otherwise>
     </xsl:choose>
+  </xsl:template>
+
+  <xsl:template match="user" mode="user-important-attributes">
+    <xsl:if test="attributes/attribute[@name='id_orcid']">
+      <tr class="d-flex">
+        <th class="col-md-3">
+          <xsl:value-of select="i18n:translate('user.profile.id.orcid')"/>
+          <xsl:text>:</xsl:text>
+        </th>
+        <td class="col-md-9">
+          <xsl:variable name="url" select="concat($MCR.ORCID.LinkURL,attributes/attribute[@name='id_orcid']/@value)"/>
+          <a href="{$url}">
+            <img alt="ORCID iD" src="{$WebApplicationBaseURL}images/orcid_icon.svg" class="orcid-icon"/>
+            <xsl:value-of select="$url"/>
+          </a>
+        </td>
+      </tr>
+    </xsl:if>
+    <xsl:apply-imports/>
   </xsl:template>
 
 </xsl:stylesheet>
