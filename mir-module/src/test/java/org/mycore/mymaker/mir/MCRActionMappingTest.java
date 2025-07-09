@@ -29,8 +29,6 @@ import org.junit.Test;
 import org.mycore.common.MCRJPATestCase;
 import org.mycore.wfc.actionmapping.MCRActionMappingsManager;
 
-import jakarta.xml.bind.JAXBException;
-
 /**
  * @author Thomas Scheffler (yagee)
  *
@@ -38,7 +36,7 @@ import jakarta.xml.bind.JAXBException;
 public class MCRActionMappingTest extends MCRJPATestCase {
 
     @Test
-    public final void test() throws TransformerException, JAXBException {
+    public final void test() throws Exception {
         MCRActionMappingsManager.getActionMappings();
     }
 
