@@ -1,4 +1,25 @@
-$(document).ready(function() {
+$(document).ready(function () {
+
+    select2()
+      .then(() => $('.mir-select-searchable').on('select2:open', function (e) {
+            $(".select2-container--default .select2-results > .select2-results__options")[0].style = "max-height:400px";
+        })
+      )
+      .catch(Error => {
+          console.warn("select2 is not available")
+      });
+
+    /**
+     * Initializes select2 on the webpage for elements with class attribute 'mir-select-searchable'.
+     * */
+    async function select2() {
+        if (typeof jQuery.fn.select2 === "function") {
+            $(".mir-select-searchable").select2();
+        } else {
+            throw new Error("select2 not available");
+        }
+    }
+
 
     function pickDatePickerFormatAndAdd(elm, clockBtn) {
         if (moment($(elm).val(), "YYYY-MM-DD", true).isValid()){

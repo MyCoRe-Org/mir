@@ -171,8 +171,8 @@
   </xsl:template>
 
   <xsl:template match="mods:affiliation[@authorityURI='https://ror.org/'][@valueURI]">
-    <mods:affiliation authorityURI="{@authorityURI}">
-      <xsl:value-of select="@valueURI"/>
+    <mods:affiliation authorityURI="{@authorityURI}" valueURI="{@valueURI}">
+      <xsl:value-of select="concat(., ' (', @valueURI, ')')"/>
     </mods:affiliation>
   </xsl:template>
 

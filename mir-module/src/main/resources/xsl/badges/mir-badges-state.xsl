@@ -13,7 +13,7 @@
       <xsl:variable name="label-text-native" select="document(concat('callJava:org.mycore.common.xml.MCRXMLFunctions:getDisplayName:state:', str[@name='state']))"/>
 
       <xsl:call-template name="output-badge">
-        <xsl:with-param name="of-type" select="'doc_state'"/>
+        <xsl:with-param name="of-type" select="'hit_state'"/>
         <xsl:with-param name="badge-type" select="concat('text-white mir-', str[@name='state'])"/>
         <xsl:with-param name="label" select="document(concat('callJava:org.apache.commons.lang3.StringUtils:capitalize:', $label-text-native))"/>
         <xsl:with-param name="tooltip" select="$tooltip-state"/>
