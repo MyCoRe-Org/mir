@@ -4,7 +4,7 @@
   <parent>
     <groupId>org.mycore.mir</groupId>
     <artifactId>mir-parent</artifactId>
-    <version>2024.06.1-SNAPSHOT</version>
+    <version>2024.06.1</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
   <artifactId>mir-wizard</artifactId>
