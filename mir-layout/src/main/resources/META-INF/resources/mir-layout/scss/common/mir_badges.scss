@@ -1,14 +1,19 @@
 .mir-badge-container {
   display: flex;
   flex-wrap: wrap; 
-  gap: 5px;
+  gap: 0.2em;
   .badge {
     color: $white;
     background-color: $primary;
+    display: inline-flex;
   }
 
   [class*="mir-badge-genre-"] {
     background-color: $info;
+  }
+
+  [class*="mir-badge-orcid-in-profile"] {
+    gap: 0.3em;
   }
 
   .mir-badge-state-published {
