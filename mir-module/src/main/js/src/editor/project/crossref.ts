@@ -1,4 +1,4 @@
-import { FunderInfo } from './types';
+import { Funder } from './types';
 
 type FunderItem = {
   name: string;
@@ -32,19 +32,22 @@ async function fetchFunderData(
   return (await response.json()) as FunderResponse;
 }
 
-function parseFunderResponse(data: FunderResponse): FunderInfo[] {
+function parseFunderResponse(data: FunderResponse): Funder[] {
   const items = data.message.items;
   if (!items.length) return [];
   return data.message.items.map(item => ({
     name: item.name,
-    uri: item.uri,
+    id: {
+      type: 'Crossref Funder ID',
+      value: item.uri,
+    },
   }));
 }
 
 export async function fetchFunder(
   name: string,
   signal: AbortSignal
-): Promise<FunderInfo[]> {
+): Promise<Funder[]> {
   if (!name.trim()) return [];
   const data = await fetchFunderData(name, signal);
   return parseFunderResponse(data);

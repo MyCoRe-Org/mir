@@ -948,7 +948,7 @@
     <xsl:for-each select="datacite:fundingReferences/datacite:fundingReference">
       <tr>
         <td valign="top" class="metaname">
-          <xsl:value-of select="i18n:translate('mir.funding')"/>
+          <xsl:value-of select="i18n:translate('mir.project')"/>
         </td>
         <td class="metavalue">
           <xsl:value-of select="datacite:funderName"/>
