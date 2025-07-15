@@ -6,7 +6,7 @@ export default defineConfig({
   build: {
     rollupOptions: {
       input: {
-        'editor-funding': 'src/editor/funding/entry.ts',
+        'editor-project': 'src/editor/project/entry.ts',
       },
       output: {
         entryFileNames: '[name].js',

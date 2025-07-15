@@ -1,4 +1,4 @@
-import { Award, Funder, Funding } from './types';
+import { Project, Funder } from './types';
 
 type OpenAIREMetadata = {
   fundingtree?:
@@ -127,10 +127,10 @@ function getFunder(funderId: string, fallbackName: string): Funder {
   };
 }
 
-function getAward(metadata: OpenAIREMetadata): Award {
+function getProject(metadata: OpenAIREMetadata): Project {
   return {
     title: metadata.title?.$ ?? 'Untitled',
-    number: metadata.code?.$ ?? 'Unknown',
+    id: metadata.code?.$ ?? 'Unknown',
   };
 }
 
@@ -146,13 +146,13 @@ function normalizeFundingtree(
 const API_URL = 'https://api.openaire.eu/search/projects';
 const DEFAULT_RESULT_SIZE = 5;
 
-export async function fetchFunding(
-  name: string,
+export async function fetchProjectByTitle(
+  title: string,
   signal: AbortSignal
-): Promise<Funding[]> {
+): Promise<Project[]> {
   const response = await fetch(
     `${API_URL}?name=${encodeURIComponent(
-      name
+      title
     )}&format=json&size=${DEFAULT_RESULT_SIZE}`,
     { signal }
   );
@@ -165,7 +165,7 @@ export async function fetchFunding(
   const results: OpenAIREAPIResponseItem[] =
     data?.response?.results?.result ?? [];
 
-  const items: Funding[] = [];
+  const items: Project[] = [];
   for (const result of results) {
     const metadata = result.metadata['oaf:entity']['oaf:project'];
     const fundingtrees = normalizeFundingtree(metadata.fundingtree);
@@ -174,11 +174,11 @@ export async function fetchFunding(
       const funderName = tree.funder?.name?.$;
       if (!funderId || !funderName) continue;
       const funder = getFunder(funderId, funderName);
-      const award = getAward(metadata);
+      const project = getProject(metadata);
       if (funderId === OpenAIREFunderId.EC) {
-        award.uri = `https://cordis.europa.eu/project/id/${award.number}`;
+        project.uri = `https://cordis.europa.eu/project/id/${project.id}`;
       }
-      items.push({ funder, award });
+      items.push({ ...project, funder });
     }
   }
 
