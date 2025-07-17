@@ -659,7 +659,7 @@
                   <!-- no link to no derivate -->
                 </xsl:when>
 
-                <xsl:when test="not(acl:checkPermissionForReadingDerivate($derivid))">
+                <xsl:when test="not(acl:checkDerivateDisplayPermission($derivid))">
                   <!-- no link if we can not read -->
                 </xsl:when>
 
