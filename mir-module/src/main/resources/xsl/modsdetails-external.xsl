@@ -437,12 +437,6 @@
     <xsl:variable name="adminEditURL">
       <xsl:value-of select="actionmapping:getURLforID('update-admin',$id,true())" xmlns:actionmapping="xalan://org.mycore.wfc.actionmapping.MCRURLRetriever" />
     </xsl:variable>
-    <xsl:variable name="editURL_allMods">
-      <xsl:call-template name="mods.getObjectEditURL">
-        <xsl:with-param name="id" select="$id" />
-        <xsl:with-param name="layout" select="'all'" />
-      </xsl:call-template>
-    </xsl:variable>
     <xsl:variable name="copyURL">
       <xsl:value-of select="actionmapping:getURLforID('create-copy',$id,true())" xmlns:actionmapping="xalan://org.mycore.wfc.actionmapping.MCRURLRetriever" />
     </xsl:variable>
@@ -615,9 +609,11 @@
                   </xsl:choose>
                 </li>
               </xsl:if>
-              <xsl:if test="string-length($editURL_allMods) &gt; 0">
-                <li class="mir-action-item mir-action-item-edit-xml">
-                  <a href="{$editURL_allMods}" class="dropdown-item">
+
+              <xsl:variable name="edit-all-mods-url" select="actionmapping:getURLforID('update-xml', $id, true())" xmlns:actionmapping="xalan://org.mycore.wfc.actionmapping.MCRURLRetriever"/>
+              <xsl:if test="string-length($edit-all-mods-url) &gt; 0">
+                <li>
+                  <a href="{$edit-all-mods-url}{$id}" class="dropdown-item">
                     <xsl:value-of select="i18n:translate('component.mods.object.editAllModsXML')" />
                   </a>
                 </li>
