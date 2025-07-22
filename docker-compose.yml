@@ -37,7 +37,7 @@ services:
       - XMX=${MIR_XMX}
       - XMS=${MIR_XMS}
       - MIR_OPTS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:8295
-      - FIX_FILE_SYSTEM_RIGHTS=false
+      - FIX_FILE_SYSTEM_RIGHTS=true
     volumes:
       - ${MIR_HOME}:/mcr/home/
       - ${MIR_DATA}:/mcr/data/
