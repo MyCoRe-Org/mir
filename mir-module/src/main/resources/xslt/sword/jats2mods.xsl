@@ -191,7 +191,7 @@
   <xsl:template match="title-group">
     <mods:titleInfo>
       <xsl:apply-templates select="article-title" />
-      <xsl:apply-templates select="subtitle" />
+      <xsl:apply-templates select="subtitle[1]" />
     </mods:titleInfo>
     <xsl:apply-templates select="trans-title-group" />
   </xsl:template>
@@ -222,7 +222,7 @@
   <xsl:template match="trans-title-group">
     <mods:titleInfo type="translated">
       <xsl:apply-templates select="trans-title" />
-      <xsl:apply-templates select="trans-subtitle" />
+      <xsl:apply-templates select="trans-subtitle[1]" />
     </mods:titleInfo>
   </xsl:template>
 
