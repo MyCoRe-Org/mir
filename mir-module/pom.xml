@@ -98,25 +98,25 @@
             </configuration>
           </execution>
           <execution>
-            <id>yarn-install-js</id>
+            <id>yarn-install-ts</id>
             <goals>
               <goal>yarn</goal>
             </goals>
             <phase>process-resources</phase>
             <configuration>
               <arguments>install</arguments>
-              <workingDirectory>src/main/js</workingDirectory>
+              <workingDirectory>src/main/ts</workingDirectory>
             </configuration>
           </execution>
           <execution>
-            <id>yarn-build-js</id>
+            <id>yarn-build-ts</id>
             <goals>
               <goal>yarn</goal>
             </goals>
             <phase>process-resources</phase>
             <configuration>
               <arguments>build</arguments>
-              <workingDirectory>src/main/js</workingDirectory>
+              <workingDirectory>src/main/ts</workingDirectory>
             </configuration>
           </execution>
         </executions>
