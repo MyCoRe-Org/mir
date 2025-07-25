@@ -681,8 +681,8 @@
 
     <!-- affiliation with authorityURI https://ror.org/ -->
     <xed:repeat xpath="mods:affiliation[@authorityURI='https://ror.org/']" min="1" max="10">
-      <div class="form-group row">
-        <label class="col-md-3 col-form-label text-right">
+      <div class="mir-form-group row">
+        <label class="col-md-3 col-form-label text-end">
           <xed:output i18n="mir.affiliation.with.ror.id.label"/>
         </label>
 
