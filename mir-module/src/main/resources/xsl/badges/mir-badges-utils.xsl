@@ -16,7 +16,7 @@
       <xsl:when test="$link">
         <a class="badge {$class}" href="{$link}">
           <xsl:if test="$tooltip">
-            <xsl:attribute name="data-toggle">
+            <xsl:attribute name="data-bs-toggle">
               <xsl:value-of select="'tooltip'"/>
             </xsl:attribute>
             <xsl:attribute name="title">
@@ -32,7 +32,7 @@
       <xsl:otherwise>
         <span class="badge {$class}">
           <xsl:if test="$tooltip">
-            <xsl:attribute name="data-toggle">
+            <xsl:attribute name="data-bs-toggle">
               <xsl:value-of select="'tooltip'"/>
             </xsl:attribute>
             <xsl:attribute name="title">
