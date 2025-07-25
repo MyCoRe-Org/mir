@@ -11,7 +11,7 @@
   <xsl:output method="html" indent="yes" omit-xml-declaration="yes" media-type="text/html"
     version="5" />
   <xsl:strip-space elements="*" />
-  <xsl:include href="resource:xsl/mir-cosmol-layout-utils.xsl"/>
+  <xsl:include href="xslStyle:i18n:resource:xsl/mir-cosmol-layout-utils.xsl" />
   <xsl:param name="MIR.DefaultLayout.CSS" />
   <xsl:param name="MIR.CustomLayout.CSS" select="''" />
   <xsl:param name="MIR.CustomLayout.JS" select="''" />

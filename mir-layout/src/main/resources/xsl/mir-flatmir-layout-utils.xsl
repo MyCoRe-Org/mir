@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0"
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-    xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
     xmlns:mcrver="xalan://org.mycore.common.MCRCoreVersion"
     xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions"
-    exclude-result-prefixes="i18n mcrver mcrxsl">
+    xmlns:i18ntr="http://www.mycore.org/i18n"
+    exclude-result-prefixes="mcrver mcrxsl i18ntr">
 
   <xsl:import href="resource:xsl/layout/mir-common-layout.xsl" />
 
@@ -68,7 +68,7 @@
               role="search">
               <input
                 name="condQuery"
-                placeholder="{i18n:translate('mir.navsearch.placeholder')}"
+                placeholder="|code:mir.navsearch.placeholder|"
                 class="form-control mr-sm-2 search-query"
                 id="searchInput"
                 type="text"

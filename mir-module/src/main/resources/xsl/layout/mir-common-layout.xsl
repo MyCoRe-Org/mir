@@ -3,8 +3,8 @@
   xmlns:basket="xalan://org.mycore.frontend.basket.MCRBasketManager" xmlns:mcr="http://www.mycore.org/" xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
   xmlns:actionmapping="xalan://org.mycore.wfc.actionmapping.MCRURLRetriever" xmlns:mcrver="xalan://org.mycore.common.MCRCoreVersion"
   xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions" xmlns:layoutUtils="xalan:///org.mycore.frontend.MCRLayoutUtilities"
-  xmlns:exslt="http://exslt.org/common"
-  exclude-result-prefixes="layoutUtils xlink basket actionmapping mcr mcrver mcrxsl i18n exslt">
+  xmlns:exslt="http://exslt.org/common" xmlns:i18ntr="http://www.mycore.org/i18n"
+  exclude-result-prefixes="layoutUtils xlink basket actionmapping mcr mcrver mcrxsl i18n exslt i18ntr">
   <xsl:strip-space elements="*" />
   <xsl:param name="CurrentLang" select="'de'" />
   <xsl:param name="CurrentUser" />
@@ -46,7 +46,7 @@
       <xsl:when test="mcrxsl:isCurrentUserGuestUser()">
         <li class="nav-item">
           <a id="loginURL" class="nav-link" href="{$loginURL}">
-            <xsl:value-of select="i18n:translate('component.userlogin.button.login')" />
+            <i18ntr:code>component.userlogin.button.login</i18ntr:code>
           </a>
         </li>
       </xsl:when>
@@ -86,7 +86,7 @@
 <!--         <label xml:lang="en">German</label> -->
 <!--       </language> -->
       <li class="nav-item dropdown mir-lang">
-        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" title="{i18n:translate('mir.language.change')}">
+        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" title="|code:mir.language.change|">
           <xsl:value-of select="$curLang/language/@xmlCode" />
           <span class="caret" />
         </a>
@@ -231,12 +231,8 @@
     <xsl:variable name="entryCount" select="count($basket/entry)" />
     <xsl:variable name="basketTitle">
       <xsl:choose>
-        <xsl:when test="$entryCount = 0">
-          <xsl:value-of select="i18n:translate('basket.numEntries.none')" disable-output-escaping="yes" />
-        </xsl:when>
-        <xsl:when test="$entryCount = 1">
-          <xsl:value-of select="i18n:translate('basket.numEntries.one')" disable-output-escaping="yes" />
-        </xsl:when>
+        <xsl:when test="$entryCount = 0">|code:basket.numEntries.none|</xsl:when>
+        <xsl:when test="$entryCount = 1">|code:basket.numEntries.one|</xsl:when>
         <xsl:otherwise>
           <xsl:value-of select="i18n:translate('basket.numEntries.many',$entryCount)" disable-output-escaping="yes" />
         </xsl:otherwise>
@@ -253,7 +249,7 @@
       <ul class="dropdown-menu" role="menu">
         <li>
           <a href="{$ServletsBaseURL}MCRBasketServlet{$HttpSession}?type={$basket/@type}&amp;action=show" class="dropdown-item">
-            <xsl:value-of select="i18n:translate('basket.open')" />
+            <i18ntr:code>basket.open</i18ntr:code>
           </a>
         </li>
       </ul>
@@ -307,7 +303,9 @@
             </xsl:attribute>
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">×</span></button>
-            <span aria-hidden="true"><xsl:value-of select="i18n:translate($XSL.Status.Message)" /></span>
+            <span aria-hidden="true">
+              <i18ntr:code><xsl:value-of select="$XSL.Status.Message" /></i18ntr:code>
+            </span>
           </div>
         </div>
       </div>
