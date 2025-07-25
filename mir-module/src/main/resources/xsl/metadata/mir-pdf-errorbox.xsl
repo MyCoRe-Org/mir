@@ -106,7 +106,7 @@
                         <p class="card-text">
                             <xsl:value-of select="i18n:translate('pdf.error.runtimeerror.message')"/>
                         </p>
-                        <p class="card-text font-italic">
+                        <p class="card-text fst-italic">
                             <xsl:value-of select="i18n:translate('mir.error.finalLine')"/>
                         </p>
                     </div>
@@ -233,7 +233,7 @@
             <li class="alert alert-info" role="alert">
                 <xsl:value-of select="$exception/message/@message"/>
             </li>
-            <li class="text-primary font-italic" style="font-size: 1em;">
+            <li class="text-primary fst-italic" style="font-size: 1em;">
                 <xsl:value-of select="$exception/class/@name"/>
             </li>
             <xsl:call-template name="render-exception-details">
@@ -272,7 +272,7 @@
             <li class="alert alert-info" role="alert">
                 <xsl:value-of select="$exception/cause/exception/message/@message"/>
             </li>
-            <li class="text-primary font-italic" style="font-size: 1em;">
+            <li class="text-primary fst-italic" style="font-size: 1em;">
                 <xsl:value-of select="$exception/cause/exception/class/@name"/>
             </li>
             <xsl:call-template name="render-exception-details">
@@ -285,7 +285,7 @@
             <li class="alert alert-info" role="alert">
                 <xsl:value-of select="$exception/suppressed/exception/message/@message"/>
             </li>
-            <li class="text-primary font-italic" style="font-size: 1em;">
+            <li class="text-primary fst-italic" style="font-size: 1em;">
                 <xsl:value-of select="$exception/suppressed/exception/class/@name"/>
             </li>
             <p>Suppressed:</p>
