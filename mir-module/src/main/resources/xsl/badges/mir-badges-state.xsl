@@ -7,11 +7,14 @@
   <xsl:template match="doc" mode="badge">
     <xsl:apply-imports/>
 
-    <xsl:if test="not($isCurrentUserGuest)">
-      <xsl:call-template name="output-state-badge">
-        <xsl:with-param name="stateValue" select="(str[@name ='state'] | field[@name ='state'])[1]"/>
-      </xsl:call-template>
+    <xsl:if test="(str[@name ='state'] | field[@name ='state'])[1]">
+      <xsl:if test="not($isCurrentUserGuest)">
+        <xsl:call-template name="output-state-badge">
+          <xsl:with-param name="stateValue" select="(str[@name ='state'] | field[@name ='state'])[1]"/>
+        </xsl:call-template>
+      </xsl:if>
     </xsl:if>
+    
   </xsl:template>
 
   <xsl:template name="output-state-badge">
