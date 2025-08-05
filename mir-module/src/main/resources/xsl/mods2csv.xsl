@@ -2,7 +2,7 @@
 <xsl:stylesheet version="1.0" xmlns:mods="http://www.loc.gov/mods/v3" xmlns:xalan="http://xml.apache.org/xalan" xmlns:xlink="http://www.w3.org/1999/xlink"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation" exclude-result-prefixes="xalan i18n">
   <xsl:param name="CurrentLang" />
-
+  <xsl:include href="import/helperTemplates.xsl" />
   <xsl:output
     encoding="UTF-8"
     media-type="text/csv"
@@ -43,7 +43,9 @@
         <xsl:if test="position()!=1">
           <xsl:value-of select="'; '" />
         </xsl:if>
-        <xsl:apply-templates select="." mode="printName" />
+        <xsl:call-template name="printAuthorName">
+          <xsl:with-param name="node" select="mods:name" />
+        </xsl:call-template>
       </xsl:for-each>
     <xsl:text>&quot;;</xsl:text>
 
@@ -53,7 +55,9 @@
         <xsl:if test="position()!=1">
           <xsl:value-of select="'; '" />
         </xsl:if>
-        <xsl:apply-templates select="." mode="printName" />
+        <xsl:call-template name="printAuthorName">
+          <xsl:with-param name="node" select="mods:name" />
+        </xsl:call-template>
       </xsl:for-each>
     <xsl:text>&quot;;</xsl:text>
 
@@ -63,7 +67,9 @@
         <xsl:if test="position()!=1">
           <xsl:value-of select="'; '" />
         </xsl:if>
-        <xsl:apply-templates select="." mode="printName" />
+        <xsl:call-template name="printAuthorName">
+          <xsl:with-param name="node" select="mods:name" />
+        </xsl:call-template>
       </xsl:for-each>
     <xsl:text>&quot;;</xsl:text>
 
@@ -78,7 +84,9 @@
         <xsl:if test="position()!=1">
           <xsl:value-of select="'; '" />
         </xsl:if>
-        <xsl:apply-templates select="." mode="printName" />
+        <xsl:call-template name="printAuthorName">
+          <xsl:with-param name="node" select="mods:name" />
+        </xsl:call-template>
       </xsl:for-each>
     <xsl:text>&quot;;</xsl:text>
 
@@ -231,27 +239,7 @@
      </xsl:choose>
   </xsl:template>
 
-  <!-- copied from modsmetadata.xsl -->
-  <xsl:template match="mods:name" mode="printName">
-    <xsl:choose>
-      <xsl:when test="mods:namePart">
-        <xsl:choose>
-          <xsl:when test="mods:namePart[@type='given'] and mods:namePart[@type='family']">
-            <xsl:value-of select="concat(mods:namePart[@type='family'], ', ',mods:namePart[@type='given'])" />
-          </xsl:when>
-          <xsl:otherwise>
-            <xsl:value-of select="mods:namePart" />
-          </xsl:otherwise>
-        </xsl:choose>
-      </xsl:when>
-      <xsl:when test="mods:displayForm">
-        <xsl:value-of select="mods:displayForm" />
-      </xsl:when>
-      <xsl:otherwise>
-        <xsl:value-of select="." />
-      </xsl:otherwise>
-    </xsl:choose>
-  </xsl:template>
+
 
   <xsl:template match="mods:extent" mode="printExtent">
     <xsl:choose>
