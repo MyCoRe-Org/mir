@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { defineConfig } from 'vite';
 import externalGlobals from 'rollup-plugin-external-globals';
 import eslint from 'vite-plugin-eslint';
@@ -12,6 +13,7 @@ export default defineConfig({
   build: {
     rollupOptions: {
       input: {
+        'editor-project': 'src/editor/project/entry.ts',
         'orcid-user': 'src/orcid-user.ts',
         'orcid-result-list': 'src/orcid-result-list.ts',
         'orcid-metadata': 'src/orcid-metadata.ts',
