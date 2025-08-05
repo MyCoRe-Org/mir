@@ -139,9 +139,8 @@ public class MIRMigration202006Utils {
                 derivateTypeId.getId()
         );
 
-        object.getStructure().getDerivates().forEach(derivateLink -> {
+        MCRMetadataManager.getDerivateIds(objectId).forEach(derivateId -> {
 
-            MCRObjectID derivateId = MCRObjectID.getInstance(derivateLink.getXLinkHref());
             MCRDerivate derivate = MCRMetadataManager.retrieveMCRDerivate(derivateId);
 
             if (derivate.getLabel() != null && !derivate.getLabel().isEmpty()) {
