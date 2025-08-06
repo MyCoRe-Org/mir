@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import { defineConfig } from 'vite';
 import externalGlobals from 'rollup-plugin-external-globals';
 import eslint from 'vite-plugin-eslint';
