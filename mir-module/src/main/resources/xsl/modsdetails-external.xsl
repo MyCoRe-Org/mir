@@ -11,7 +11,6 @@
                 xmlns:mods="http://www.loc.gov/mods/v3"
                 xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions"
                 xmlns:str="http://exslt.org/strings"
-                xmlns:string="xalan://java.lang.String"
                 xmlns:encoder="xalan://java.net.URLEncoder"
                 xmlns:acl="xalan://org.mycore.access.MCRAccessManager"
                 xmlns:imageware="org.mycore.mir.imageware.MIRImageWarePacker"
@@ -21,7 +20,8 @@
                 exclude-result-prefixes="basket xalan xlink mcr i18n mods mcrmods mcrxsl str encoder acl imageware pi piUtil iview2"
                 xmlns:ex="http://exslt.org/dates-and-times"
                 xmlns:exslt="http://exslt.org/common"
-                extension-element-prefixes="ex exslt"
+                xmlns:datacite="http://datacite.org/schema/kernel-4"
+                extension-element-prefixes="ex exslt datacite"
 >
   <xsl:import href="xslImport:badges"/>
   <xsl:include href="mir-accesskey-utils.xsl" />
@@ -937,70 +937,40 @@
 
   </xsl:template>
 
-  <!--  info:eu-repo/grantAgreement/EC/FP7/324387/EU/Risk Management Software System for SMEs in the Construction Industry/RIMACON -->
-  <!--   Projektname: Risk Management Software System for SMEs in the Const -->
-  <!--   Projekt-Akronym: RIMACON -->
-  <!--   Grant-ID: 324387 -->
-  <!--   Programm-ID: FP7 -->
-  <!--   Organisations-ID: EC -->
-  <xsl:template match="mods:identifier[@type='open-aire']" mode="openaire">
-    <xsl:variable name="project-details">
-      <xsl:call-template name="Tokenizer"><!-- use split function from mycore-base/coreFunctions.xsl -->
-        <xsl:with-param name="string" select="." />
-        <xsl:with-param name="delimiter" select="'/'" />
-      </xsl:call-template>
-    </xsl:variable>
-
-    <xsl:if test="string-length(exslt:node-set($project-details)/token[position() = 7]) &gt; 0">
+  <!-- TODO validation award title and number -->
+  <xsl:template match="mods:extension[@type='datacite-funding']" mode="funding">
+    <xsl:for-each select="datacite:fundingReferences/datacite:fundingReference">
       <tr>
         <td valign="top" class="metaname">
-          <xsl:value-of select="i18n:translate('mir.project.name')" />
+          <xsl:value-of select="i18n:translate('mir.project')"/>
         </td>
         <td class="metavalue">
-          <xsl:value-of select="exslt:node-set($project-details)/token[position() = 7]" />
+          <xsl:value-of select="datacite:funderName"/>
+          <xsl:if test="datacite:awardTitle or datacite:awardNumber">
+            <br/>
+            <xsl:if test="datacite:awardTitle">
+              <i>
+                <xsl:value-of select="datacite:awardTitle"/>
+              </i>
+            </xsl:if>
+            <xsl:if test="datacite:awardNumber">
+              <xsl:text> [</xsl:text>
+              <xsl:choose>
+                <xsl:when test="datacite:awardNumber/@awardURI">
+                  <a target="_blank" href="{datacite:awardNumber/@awardURI}">
+                    <xsl:value-of select="datacite:awardNumber"/>
+                  </a>
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:value-of select="datacite:awardNumber"/>
+                </xsl:otherwise>
+              </xsl:choose>
+              <xsl:text>]</xsl:text>
+            </xsl:if>
+          </xsl:if>
         </td>
       </tr>
-    </xsl:if>
-    <xsl:if test="string-length(exslt:node-set($project-details)/token[position() = 8]) &gt; 0">
-      <tr>
-        <td valign="top" class="metaname">
-          <xsl:value-of select="i18n:translate('mir.project.acronym')" />
-        </td>
-        <td class="metavalue">
-          <xsl:value-of select="exslt:node-set($project-details)/token[position() = 8]" />
-        </td>
-      </tr>
-    </xsl:if>
-    <xsl:if test="string-length(exslt:node-set($project-details)/token[position() = 5]) &gt; 0">
-      <tr>
-        <td valign="top" class="metaname">
-          <xsl:value-of select="concat(i18n:translate('mir.project.grantID'),':')" />
-        </td>
-        <td class="metavalue">
-          <xsl:value-of select="string:replaceAll(string(exslt:node-set($project-details)/token[position() = 5]),'%2F','/')" />
-        </td>
-      </tr>
-    </xsl:if>
-    <xsl:if test="string-length(exslt:node-set($project-details)/token[position() = 4]) &gt; 0">
-      <tr>
-        <td valign="top" class="metaname">
-          <xsl:value-of select="concat(i18n:translate('mir.project.sponsor.programmID'),':')" />
-        </td>
-        <td class="metavalue">
-          <xsl:value-of select="exslt:node-set($project-details)/token[position() = 4]" />
-        </td>
-      </tr>
-    </xsl:if>
-    <xsl:if test="string-length(exslt:node-set($project-details)/token[position() = 3]) &gt; 0">
-      <tr>
-        <td valign="top" class="metaname">
-          <xsl:value-of select="concat(i18n:translate('mir.project.sponsor.organisationID'),':')" />
-        </td>
-        <td class="metavalue">
-          <xsl:value-of select="exslt:node-set($project-details)/token[position() = 3]" />
-        </td>
-      </tr>
-    </xsl:if>
+    </xsl:for-each>
   </xsl:template>
 
 </xsl:stylesheet>
