@@ -795,33 +795,24 @@
   const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]');
   const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl, {html:true}));
 
-  /* =================
-  /   go back to top
-  /  ================= */
-  // create html code for button
-  var back_to_top_button = ['<button class="btn back-to-top"><i class="fas fa-chevron-circle-up"></i></button>'].join("");
-  // add button to page
-  $("#page").append(back_to_top_button);
-  // hide button
-  $(".back-to-top").hide();
-  // on scroll
-  $(function () {
-    $(window).scroll(function () {
-      // if scrolled down
-      if ($(this).scrollTop() > 100) {
-        $('.back-to-top').fadeIn();
-      } else {
-        $('.back-to-top').fadeOut();
-      }
-    });
-  });
-  // click button
-  $('.back-to-top').click(function () {
-    $('body,html').animate({
-      scrollTop: 0
-    }, 800);
-    return false;
-  });
-  /* end: go back to top */
-
 })(jQuery);
+
+// Back to top button functionality
+(() => {
+    const btns = document.getElementsByClassName('back-to-top');
+    if (btns.length == 0) return;
+
+    const topAnchor = document.getElementById('top');
+    if (!topAnchor) {
+        console.warn('No top anchor found for back to top button functionality.');
+        return;
+    }
+
+    const toggle = (show) => btns[0].classList.toggle('is-visible', show);
+
+    const io = new IntersectionObserver(
+        (e) => toggle(!e.at(-1).isIntersecting),
+        {rootMargin: '100px 0px 0px 0px', delay: 1000}
+    );
+    io.observe(topAnchor);
+})();
