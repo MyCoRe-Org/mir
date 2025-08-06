@@ -83,7 +83,7 @@
                             <div class="mir-affiliation-ror">
                                 <a href="https://ror.org/" alt="ROR logo">
                                     <img src="{$WebApplicationBaseURL}images/ror/ror-icon-rgb-transparent.svg"
-                                         class="pr-1 mir-ror-logo"/>
+                                         class="pe-1 mir-ror-logo"/>
                                 </a>
                                 <a class="mir-ror-link" href="{@valueURI}">
                                     <xsl:value-of select="@valueURI"/>

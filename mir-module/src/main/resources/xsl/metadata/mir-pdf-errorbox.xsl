@@ -106,7 +106,7 @@
                         <p class="card-text">
                             <xsl:value-of select="i18n:translate('pdf.error.runtimeerror.message')"/>
                         </p>
-                        <p class="card-text font-italic">
+                        <p class="card-text fst-italic">
                             <xsl:value-of select="i18n:translate('mir.error.finalLine')"/>
                         </p>
                     </div>
@@ -140,7 +140,7 @@
         <div id="{$derivate}{$uniqueFileId}" class="font-weight-bold d-flex list-group list-group-root">
             <a onclick="$('#{$derivate}{$uniqueFileId}cbButton').toggleClass('fa-chevron-right fa-chevron-down');"
                data-toggle="collapse" href="#collapse{$derivate}{$uniqueFileId}"
-               class="text-left d-flex flex-md-row flex-grow-1 list-group-item align-items-center">
+               class="text-start d-flex flex-md-row flex-grow-1 list-group-item align-items-center">
                 <i id="{$derivate}{$uniqueFileId}cbButton" class="fa fa-chevron-right ml-auto mr-1"/>
                 <span class="flex-grow-1 font-weight-bold text-break">
                     <xsl:value-of select="$name"/>
@@ -206,7 +206,7 @@
         <xsl:param name="uniqueName" select="'uniqueStacktraceName'"/>
         <a onclick="$('#{$uniqueName}stacktracecbButton').toggleClass('fa-chevron-right fa-chevron-down');"
            data-toggle="collapse" href="#collapse{$uniqueName}stacktrace"
-           class="text-left text-dark d-flex flex-md-row flex-grow-1 list-group-item align-items-center"
+           class="text-start text-dark d-flex flex-md-row flex-grow-1 list-group-item align-items-center"
            style="text-decoration: none;">
             <i id="{$uniqueName}stacktracecbButton" class="fa fa-chevron-right ml-auto mr-1"></i>
             <span class="flex-grow-1 font-weight-bold text-break">
@@ -229,11 +229,11 @@
 
         <xsl:variable name="currentId" select="generate-id($exception)"/>
 
-        <ul class="list-unstyled pl-3" id="{$currentId}">
+        <ul class="list-unstyled ps-3" id="{$currentId}">
             <li class="alert alert-info" role="alert">
                 <xsl:value-of select="$exception/message/@message"/>
             </li>
-            <li class="text-primary font-italic" style="font-size: 1em;">
+            <li class="text-primary fst-italic" style="font-size: 1em;">
                 <xsl:value-of select="$exception/class/@name"/>
             </li>
             <xsl:call-template name="render-exception-details">
@@ -272,7 +272,7 @@
             <li class="alert alert-info" role="alert">
                 <xsl:value-of select="$exception/cause/exception/message/@message"/>
             </li>
-            <li class="text-primary font-italic" style="font-size: 1em;">
+            <li class="text-primary fst-italic" style="font-size: 1em;">
                 <xsl:value-of select="$exception/cause/exception/class/@name"/>
             </li>
             <xsl:call-template name="render-exception-details">
@@ -285,7 +285,7 @@
             <li class="alert alert-info" role="alert">
                 <xsl:value-of select="$exception/suppressed/exception/message/@message"/>
             </li>
-            <li class="text-primary font-italic" style="font-size: 1em;">
+            <li class="text-primary fst-italic" style="font-size: 1em;">
                 <xsl:value-of select="$exception/suppressed/exception/class/@name"/>
             </li>
             <p>Suppressed:</p>

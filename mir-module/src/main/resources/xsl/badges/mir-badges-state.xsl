@@ -7,19 +7,22 @@
   <xsl:template match="doc" mode="badge">
     <xsl:apply-imports/>
 
-    <xsl:if test="not($isCurrentUserGuest)">
-      <xsl:call-template name="output-state-badge">
-        <xsl:with-param name="stateValue" select="(str[@name ='state'] | field[@name ='state'])[1]"/>
-      </xsl:call-template>
+    <xsl:if test="(str[@name ='state'] | field[@name ='state'])[1]">
+      <xsl:if test="not($isCurrentUserGuest)">
+        <xsl:call-template name="output-state-badge">
+          <xsl:with-param name="stateValue" select="(str[@name ='state'] | field[@name ='state'])[1]"/>
+        </xsl:call-template>
+      </xsl:if>
     </xsl:if>
+    
   </xsl:template>
 
   <xsl:template name="output-state-badge">
     <xsl:param name="stateValue" select="*[@name ='state'][1]"/>
-    <xsl:variable name="labelTextNative" select="document(concat('callJava:org.mycore.common.xml.MCRXMLFunctions:getDisplayName:state:', $stateValue))"/>
+    <xsl:variable name="labelTextNative" select="document(concat('notnull:callJava:org.mycore.common.xml.MCRXMLFunctions:getDisplayName:state:', $stateValue))"/>
     <xsl:call-template name="output-badge">
       <xsl:with-param name="class" select="concat('mir-badge-state-', $stateValue)"/>
-      <xsl:with-param name="label" select="document(concat('callJava:org.apache.commons.lang3.StringUtils:capitalize:', $labelTextNative))"/>
+      <xsl:with-param name="label" select="document(concat('notnull:callJava:org.apache.commons.lang3.StringUtils:capitalize:', $labelTextNative))"/>
       <xsl:with-param name="tooltip" select="document('i18n:component.mods.metaData.dictionary.status')/i18n/text()"/>
     </xsl:call-template>
   </xsl:template>

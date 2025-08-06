@@ -30,11 +30,14 @@
               {{/is}}
           </td>
           {{#isNot type "directory"}}
-            {{#contains "mp4" extension}}
+            {{#is "mp4" extension}}
               <td class="file_name file_video col-6">
                 <a data-deriid="{{../mycorederivate}}" data-name="{{name}}" href="{{href}}">
                   {{name}}
                 </a>
+                <div class="file_md5 hidden">
+                  <span class="file_md5_label">{{getI18n "mir.derivate.file.MD5"}}</span> {{md5}}
+                </div>
               </td>
             {{else}}
               <td class="file_name col-6">
@@ -45,7 +48,7 @@
                   <span class="file_md5_label">{{getI18n "mir.derivate.file.MD5"}}</span> {{md5}}
                 </div>
               </td>
-            {{/contains}}
+            {{/is}}
           {{else}}
             <td class="file_name derivate_folder col-6">
               <a data-path="{{path}}" href="#">

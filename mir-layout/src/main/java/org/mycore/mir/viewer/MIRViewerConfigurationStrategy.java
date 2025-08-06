@@ -43,8 +43,10 @@ public class MIRViewerConfigurationStrategy extends MCRViewerDefaultConfiguratio
                 configuration.setProperty("chapter.showOnStart", false);
             } else {
                 // Default JS
-                String defaultJsUrl = MCRFrontendUtil.getBaseURL() + "assets/bootstrap/js/bootstrap.min.js";
+                String defaultJsUrl = MCRFrontendUtil.getBaseURL() + "assets/bootstrap/js/bootstrap.bundle.min.js";
                 configuration.addScript(defaultJsUrl, false);
+
+                configuration.addCSS(MCRFrontendUtil.getBaseURL() + "assets/font-awesome/css/all.min.css");
             }
         }
 

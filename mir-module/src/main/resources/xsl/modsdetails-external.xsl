@@ -753,12 +753,6 @@
                   <xsl:value-of select="i18n:translate('component.mods.metaData.options.updateDerivateName')" />
                 </a>
               </li>
-              <li>
-                <!-- Link to toggle to show/hide md5 sum -->
-                <a href="#" class="option dropdown-item toggleMD5Link">
-                  <xsl:value-of select="i18n:translate('component.mods.metaData.options.MD5.show')" />
-                </a>
-              </li>
             </xsl:if>
             <xsl:if test="key('rights', $deriv)/@write and iview2:getSupportedMainFile($deriv) and normalize-space($MIR.METSEditor.enable)='true'">
               <li>
