@@ -615,7 +615,7 @@
 
 				Handlebars.registerHelper("getFileIcon", function(ext) {
 					for ( var label in fileIcons) {
-						if (label != "_default" && fileIcons[label].extensions.indexOf(ext.toLowerCase()) != -1)
+						if (label != "_default" && fileIcons[label].extensions.split("|").includes(ext.toLowerCase()))
 							return fileIcons[label].icon;
 					}
 
@@ -623,7 +623,7 @@
 				});
 				Handlebars.registerHelper("getFileLabel", function(ext) {
 					for ( var label in fileIcons) {
-						if (label != "_default" && fileIcons[label].extensions.indexOf(ext.toLowerCase()) != -1)
+						if (label != "_default" && fileIcons[label].extensions.split("|").includes(ext.toLowerCase()))
 							return label;
 					}
 
