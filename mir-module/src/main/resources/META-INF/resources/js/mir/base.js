@@ -801,12 +801,24 @@
 (() => {
     const btns = document.getElementsByClassName('back-to-top');
     if (btns.length == 0) return;
-
+    const isReduced = window.matchMedia(`(prefers-reduced-motion: reduce)`) === true ||
+        window.matchMedia(`(prefers-reduced-motion: reduce)`).matches === true;
     const topAnchor = document.getElementById('top');
     if (!topAnchor) {
         console.warn('No top anchor found for back to top button functionality.');
         return;
     }
+
+    btns[0].onclick = (e) => {
+        //get position of the top anchor
+        const topAnchorPosition = topAnchor.getBoundingClientRect().top + window.scrollY;
+        if (isReduced) {
+            window.scrollTo(0, topAnchorPosition);
+        } else {
+            window.scrollTo({top: topAnchorPosition, behavior: 'smooth'});
+        }
+        e.preventDefault();
+    };
 
     const toggle = (show) => btns[0].classList.toggle('is-visible', show);
 
