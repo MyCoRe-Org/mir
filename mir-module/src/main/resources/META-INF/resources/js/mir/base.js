@@ -800,9 +800,8 @@
 // Back to top button functionality
 (() => {
     const btns = document.getElementsByClassName('back-to-top');
-    if (btns.length == 0) return;
-    const isReduced = window.matchMedia(`(prefers-reduced-motion: reduce)`) === true ||
-        window.matchMedia(`(prefers-reduced-motion: reduce)`).matches === true;
+    if (btns.length === 0) return;
+    const isReduced = window.matchMedia(`(prefers-reduced-motion: reduce)`).matches === true;
     const topAnchor = document.getElementById('top');
     if (!topAnchor) {
         console.warn('No top anchor found for back to top button functionality.');
