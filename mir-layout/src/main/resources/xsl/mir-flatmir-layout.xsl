@@ -67,6 +67,7 @@
 
         <section>
           <div class="container" id="page">
+            <a id="top" />
             <div id="main_content">
               <xsl:call-template name="print.writeProtectionMessage" />
               <xsl:call-template name="print.statusMessage" />
@@ -93,6 +94,9 @@
               </xsl:choose>
             </div>
           </div>
+          <a href="#top" class="btn back-to-top" aria-label="{i18n:translate('mir.backToTop.label')}">
+            <i class="fas fa-chevron-circle-up" aria-hidden="true" />
+          </a>
         </section>
 
         <footer class="flatmir-footer">
