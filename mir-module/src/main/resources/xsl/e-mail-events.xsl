@@ -121,7 +121,7 @@
           <xsl:if test="position()!=1">
             <xsl:value-of select="', '" />
           </xsl:if>
-          <xsl:call-template name="printAuthorName">
+          <xsl:call-template name="printPersonName">
             <xsl:with-param name="node" select="mods:name" />
           </xsl:call-template>
         </xsl:for-each>

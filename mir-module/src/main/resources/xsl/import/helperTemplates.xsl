@@ -3,7 +3,7 @@
                 xmlns:mods="http://www.loc.gov/mods/v3"
                 exclude-result-prefixes="mods">
     <!-- Names -->
-    <xsl:template name="printAuthorName">
+    <xsl:template name="printPersonName">
         <xsl:param name="node" />
         <xsl:choose>
             <xsl:when test="$node/mods:namePart">
