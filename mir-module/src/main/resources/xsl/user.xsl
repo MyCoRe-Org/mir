@@ -7,6 +7,8 @@
   exclude-result-prefixes="xsl xalan i18n acl const mcrxsl"
 >
 
+  <xsl:import href="xslImport:userProfileActionsBase"/>
+  <xsl:import href="xslImport:userProfileAttributesBase"/>
   <xsl:include href="MyCoReLayout.xsl" />
   <xsl:include href="resource:xsl/orcid/mir-orcid.xsl"/>
   <xsl:include href="resource:xsl/orcid/mir-orcid-user-ui.xsl"/>
@@ -35,49 +37,6 @@
     </xsl:if>
   </xsl:variable>
   <xsl:variable name="owns" select="document(concat('user:getOwnedUsers:',$uid))/owns" />
-
-  <xsl:template match="user" mode="actions">
-    <xsl:variable name="isCurrentUser" select="$CurrentUser = $uid" />
-    <xsl:if test="(string-length($step) = 0) or ($step = 'changedPassword')">
-      <xsl:variable name="isUserAdmin" select="acl:checkPermission(const:getUserAdminPermission())" />
-      <xsl:choose>
-        <xsl:when test="$isUserAdmin">
-          <a class="btn btn-secondary" href="{$WebApplicationBaseURL}authorization/change-user.xed?action=save&amp;id={$uid}">
-            <xsl:value-of select="i18n:translate('component.user2.admin.changedata')" />
-          </a>
-        </xsl:when>
-        <xsl:when test="not($isCurrentUser)">
-          <a class="btn btn-secondary" href="{$WebApplicationBaseURL}authorization/change-read-user.xed?action=save&amp;id={$uid}">
-            <xsl:value-of select="i18n:translate('component.user2.admin.changedata')" />
-          </a>
-        </xsl:when>
-        <xsl:when test="$isCurrentUser and not(/user/@locked = 'true')">
-          <a class="btn btn-secondary" href="{$WebApplicationBaseURL}authorization/change-current-user.xed?action=saveCurrentUser">
-            <xsl:value-of select="i18n:translate('component.user2.admin.changedata')" />
-          </a>
-        </xsl:when>
-      </xsl:choose>
-      <xsl:if test="/user/@realm = 'local' and (not($isCurrentUser) or not(/user/@locked = 'true'))">
-        <xsl:choose>
-          <xsl:when test="$isCurrentUser">
-            <a class="btn btn-secondary" href="{$WebApplicationBaseURL}authorization/change-password.xed?action=password">
-              <xsl:value-of select="i18n:translate('component.user2.admin.changepw')" />
-            </a>
-          </xsl:when>
-          <xsl:otherwise>
-            <a class="btn btn-secondary" href="{$WebApplicationBaseURL}authorization/change-password.xed?action=password&amp;id={$uid}">
-              <xsl:value-of select="i18n:translate('component.user2.admin.changepw')" />
-            </a>
-          </xsl:otherwise>
-        </xsl:choose>
-      </xsl:if>
-      <xsl:if test="$isUserAdmin and not($isCurrentUser)">
-        <a class="btn btn-danger" href="{$ServletsBaseURL}MCRUserServlet?action=show&amp;id={$uid}&amp;XSL.step=confirmDelete">
-          <xsl:value-of select="i18n:translate('component.user2.admin.userDeleteYes')" />
-        </a>
-      </xsl:if>
-    </xsl:if>
-  </xsl:template>
 
   <xsl:template match="user">
     <xsl:variable name="isUserAdmin" select="acl:checkPermission(const:getUserAdminPermission())" />
@@ -257,6 +216,9 @@
                 </td>
               </tr>
             </xsl:if>
+
+            <xsl:apply-templates select="." mode="user-important-attributes" />
+
             <xsl:if test="attributes/attribute[@name='id_orcid']" >
               <tr class="d-flex">
                 <th class="col-md-3">
