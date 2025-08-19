@@ -69,7 +69,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             results: data.items.map(function (item) {
               let displayName;
               item.names.forEach(function (name) {
-                if (name.types.includes("ror_display") || name.types.includes("label")) {
+                if (name.types.includes("ror_display")) {
                   displayName = name.value;
                   return;
                 }
