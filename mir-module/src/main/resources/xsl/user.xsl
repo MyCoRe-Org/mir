@@ -219,21 +219,6 @@
 
             <xsl:apply-templates select="." mode="user-important-attributes" />
 
-            <xsl:if test="attributes/attribute[@name='id_orcid']" >
-              <tr class="d-flex">
-                <th class="col-md-3">
-                  <xsl:value-of select="i18n:translate('user.profile.id.orcid')" />
-                  <xsl:text>:</xsl:text>
-                </th>
-                <td class="col-md-9">
-                  <xsl:variable name="url" select="concat($MCR.ORCID2.BaseURL, '/', attributes/attribute[@name='id_orcid']/@value)" />
-                  <a href="{$url}">
-                    <img alt="ORCID iD" src="{$WebApplicationBaseURL}images/orcid_icon.svg" class="orcid-icon" />
-                    <xsl:value-of select="$url" />
-                  </a>
-                </td>
-              </tr>
-            </xsl:if>
             <xsl:if test="$fullDetails">
               <tr class="d-flex">
                 <th class="col-md-3">
