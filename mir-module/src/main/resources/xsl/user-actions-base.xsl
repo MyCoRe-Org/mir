@@ -2,9 +2,8 @@
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xalan="http://xml.apache.org/xalan"
                 xmlns:acl="xalan://org.mycore.access.MCRAccessManager"
-                xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
                 xmlns:const="xalan://org.mycore.user2.MCRUser2Constants"
-                exclude-result-prefixes="xsl xalan i18n acl const">
+                exclude-result-prefixes="xsl xalan acl const">
 
   <xsl:import href="xslImport:userProfileActionsBase:user-actions-base.xsl"/>
 
@@ -20,19 +19,19 @@
         <xsl:when test="$isUserAdmin">
           <a class="btn btn-secondary"
              href="{$WebApplicationBaseURL}authorization/change-user.xed?action=save&amp;id={$uid}">
-            <xsl:value-of select="i18n:translate('component.user2.admin.changedata')"/>
+            <xsl:value-of select="document('i18n:component.user2.admin.changedata')/i18n/text()"/>
           </a>
         </xsl:when>
         <xsl:when test="not($isCurrentUser)">
           <a class="btn btn-secondary"
              href="{$WebApplicationBaseURL}authorization/change-read-user.xed?action=save&amp;id={$uid}">
-            <xsl:value-of select="i18n:translate('component.user2.admin.changedata')"/>
+            <xsl:value-of select="document('i18n:component.user2.admin.changedata')/i18n/text()"/>
           </a>
         </xsl:when>
         <xsl:when test="$isCurrentUser and not(/user/@locked = 'true')">
           <a class="btn btn-secondary"
              href="{$WebApplicationBaseURL}authorization/change-current-user.xed?action=saveCurrentUser">
-            <xsl:value-of select="i18n:translate('component.user2.admin.changedata')"/>
+            <xsl:value-of select="document('i18n:component.user2.admin.changedata')/i18n/text()"/>
           </a>
         </xsl:when>
       </xsl:choose>
@@ -41,13 +40,13 @@
           <xsl:when test="$isCurrentUser">
             <a class="btn btn-secondary"
                href="{$WebApplicationBaseURL}authorization/change-password.xed?action=password">
-              <xsl:value-of select="i18n:translate('component.user2.admin.changepw')"/>
+              <xsl:value-of select="document('i18n:component.user2.admin.changepw')/i18n/text()"/>
             </a>
           </xsl:when>
           <xsl:otherwise>
             <a class="btn btn-secondary"
                href="{$WebApplicationBaseURL}authorization/change-password.xed?action=password&amp;id={$uid}">
-              <xsl:value-of select="i18n:translate('component.user2.admin.changepw')"/>
+              <xsl:value-of select="document('i18n:component.user2.admin.changepw')/i18n/text()"/>
             </a>
           </xsl:otherwise>
         </xsl:choose>
@@ -55,7 +54,7 @@
       <xsl:if test="$isUserAdmin and not($isCurrentUser)">
         <a class="btn btn-danger"
            href="{$ServletsBaseURL}MCRUserServlet?action=show&amp;id={$uid}&amp;XSL.step=confirmDelete">
-          <xsl:value-of select="i18n:translate('component.user2.admin.userDeleteYes')"/>
+          <xsl:value-of select="document('i18n:component.user2.admin.userDeleteYes')/i18n/text()"/>
         </a>
       </xsl:if>
     </xsl:if>
