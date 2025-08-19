@@ -1,9 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-                xmlns:xalan="http://xml.apache.org/xalan"
-                xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
-                exclude-result-prefixes="xsl xalan i18n">
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" exclude-result-prefixes="xsl">
 
   <xsl:import href="xslImport:userProfileActionsBase:user-attributes-important-base"/>
 
@@ -14,7 +10,7 @@
     <xsl:if test="attributes/attribute[@name='id_orcid']">
       <tr class="d-flex">
         <th class="col-md-3">
-          <xsl:value-of select="i18n:translate('user.profile.id.orcid')"/>
+          <xsl:value-of select="document('i18n:user.profile.id.orcid')/i18n/text()"/>
           <xsl:text>:</xsl:text>
         </th>
         <td class="col-md-9">
