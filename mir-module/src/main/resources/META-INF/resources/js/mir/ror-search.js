@@ -4,7 +4,7 @@
  */
 document.addEventListener("DOMContentLoaded", async function () {
   const RORSearch = {
-    baseURL: "https://api.ror.org/",
+    baseURL: "https://api.ror.org/v2/",
     currentLanguage: window?.currentLang,
     webApplicationBaseURL: window?.webApplicationBaseURL,
   };
