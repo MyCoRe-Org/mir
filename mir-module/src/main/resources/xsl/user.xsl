@@ -7,8 +7,8 @@
   exclude-result-prefixes="xsl xalan i18n acl const mcrxsl"
 >
 
-  <xsl:import href="xslImport:userProfileActionsBase"/>
-  <xsl:import href="xslImport:userProfileAttributesBase"/>
+  <xsl:import href="xslImport:userProfileActions"/>
+  <xsl:import href="xslImport:userProfileAttributeExtensions"/>
   <xsl:include href="MyCoReLayout.xsl" />
   <xsl:include href="resource:xsl/orcid/mir-orcid.xsl"/>
   <xsl:include href="resource:xsl/orcid/mir-orcid-user-ui.xsl"/>
