@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xalan="http://xml.apache.org/xalan"
-                xmlns:acl="xalan://org.mycore.access.MCRAccessManager"
-                xmlns:const="xalan://org.mycore.user2.MCRUser2Constants"
-                exclude-result-prefixes="xsl xalan acl const">
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" exclude-result-prefixes="xsl">
 
   <xsl:import href="xslImport:userProfileActionsBase:user-actions-base.xsl"/>
 
@@ -14,7 +11,8 @@
     <xsl:variable name="isCurrentUser" select="$CurrentUser = $uid"/>
 
     <xsl:if test="(string-length($step) = 0) or ($step = 'changedPassword')">
-      <xsl:variable name="isUserAdmin" select="acl:checkPermission(const:getUserAdminPermission())"/>
+      <xsl:variable name="isUserAdmin" select="document('checkPermission:POOLPRIVILEGE:administrate-users')/boolean = 'true'"/>
+
       <xsl:choose>
         <xsl:when test="$isUserAdmin">
           <a class="btn btn-secondary"
