@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" exclude-result-prefixes="xsl">
 
-  <xsl:import href="xslImport:userProfileActionsBase:user-attributes-important-base.xsl"/>
+  <xsl:import href="xslImport:userProfileAttributeExtensions:user-attribute-extensions-default.xsl"/>
 
   <xsl:param name="MCR.ORCID.LinkURL"/>
   <xsl:param name="WebApplicationBaseURL"/>
 
   <xsl:template match="user" mode="user-important-attributes">
+    <xsl:apply-imports />
+
     <xsl:if test="attributes/attribute[@name='id_orcid']">
       <tr class="d-flex">
         <th class="col-md-3">
