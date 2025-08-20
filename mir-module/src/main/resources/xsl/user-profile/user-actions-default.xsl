@@ -2,7 +2,7 @@
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" exclude-result-prefixes="xsl">
 
-  <xsl:import href="xslImport:userProfileActions:user-actions-default.xsl"/>
+  <xsl:import href="xslImport:userProfileActions:user-profile/user-actions-default.xsl"/>
 
   <xsl:param name="CurrentUser"/>
   <xsl:param name="WebApplicationBaseURL"/>
