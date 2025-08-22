@@ -1,5 +1,8 @@
 package org.mycore.mir.migration;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+
 import java.io.IOException;
 
 import org.jdom2.Document;
@@ -8,11 +11,11 @@ import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
 import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
-import org.junit.Assert;
-import org.junit.Test;
-import org.mycore.common.MCRTestCase;
+import org.junit.jupiter.api.Test;
+import org.mycore.test.MyCoReTest;
 
-public class MIRMigration202006UtilsTest extends MCRTestCase {
+@MyCoReTest
+public class MIRMigration202006UtilsTest {
 
     @Test
     public void testEscaped() throws JDOMException, IOException {
@@ -28,8 +31,8 @@ public class MIRMigration202006UtilsTest extends MCRTestCase {
         String before = title.getText();
         MIRMigration202006Utils.fixHTML(new XMLOutputter(Format.getRawFormat()), title);
         String after = title.getText();
-        Assert.assertNotEquals(before, after);
-        Assert.assertEquals("Structural Basis for Complex Formation between Human IRSp53 and the "
+        assertNotEquals(before, after);
+        assertEquals("Structural Basis for Complex Formation between Human IRSp53 and the "
             + "Translocated Intimin Receptor Tir of Enterohaemorrhagic <i>E. coli</i> &amp; Structural "
             + "Characterisation of Amorfrutins Bound to PPAR gamma", after);
     }
@@ -49,6 +52,6 @@ public class MIRMigration202006UtilsTest extends MCRTestCase {
         String before = xout.outputString(abstrct.getContent());
         MIRMigration202006Utils.fixHTML(new XMLOutputter(Format.getRawFormat()), abstrct);
         String after = abstrct.getText();
-        Assert.assertEquals(before, after);
+        assertEquals(before, after);
     }
 }

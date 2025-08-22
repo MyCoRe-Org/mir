@@ -1,9 +1,8 @@
 package org.mycore.mir.authorization;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assume.assumeTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.lang.reflect.Field;
 import java.net.URL;
@@ -16,17 +15,15 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assumptions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mycore.access.MCRAccessManager;
 import org.mycore.access.mcrimpl.MCRAccessControlSystem;
 import org.mycore.access.mcrimpl.MCRAccessStore;
 import org.mycore.access.mcrimpl.MCRRuleStore;
-import org.mycore.backend.jpa.access.MCRJPAAccessStore;
-import org.mycore.backend.jpa.access.MCRJPARuleStore;
-import org.mycore.common.MCRJPATestCase;
 import org.mycore.common.MCRSessionMgr;
 import org.mycore.common.MCRSystemUserInformation;
 import org.mycore.common.config.MCRConfiguration2;
@@ -40,26 +37,31 @@ import org.mycore.frontend.cli.MCRCommandLineInterface;
 import org.mycore.frontend.cli.MCRCommandManager;
 import org.mycore.mcr.acl.accesskey.dto.MCRAccessKeyDto;
 import org.mycore.mcr.acl.accesskey.service.MCRAccessKeyServiceFactory;
+import org.mycore.resource.MCRResourceHelper;
+import org.mycore.test.MCRJPAExtension;
+import org.mycore.test.MyCoReTest;
 import org.mycore.user2.MCRUser;
 import org.mycore.user2.MCRUserManager;
 
-public class MIRStrategyTest extends MCRJPATestCase {
+@MyCoReTest
+@ExtendWith(MCRJPAExtension.class)
+public class MIRStrategyTest {
 
     MIRStrategy strategy;
 
     Path localTestDirectory;
 
-    @Override
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
+        setTestProperties();
         strategy = new MIRStrategy();
         Path mirCliSrcMainPath = MCRConfiguration2.getOrThrow("app.home", Paths::get);
         final Path defaultRulesFile = mirCliSrcMainPath
             .resolve("config")
             .resolve("acl")
             .resolve("defaultrules-commands.txt");
-        final URL mirAccessURL = getResourceAsURL("class/mir_access.xml");
+        final URL mirAccessURL =
+            MCRResourceHelper.getResourceUrl(MIRStrategyTest.class.getSimpleName() + "/class/mir_access.xml");
         if ("file".equals(mirAccessURL.getProtocol())) {
             localTestDirectory = Paths.get(mirAccessURL.toURI()).getParent().getParent();
         }
@@ -89,8 +91,7 @@ public class MIRStrategyTest extends MCRJPATestCase {
         }
     }
 
-    @Override
-    @After
+    @AfterEach
     public void tearDown() throws Exception {
         final Collection<String> allControlledIDs = MCRAccessManager.requireRulesInterface().getAllControlledIDs();
         allControlledIDs.stream()
@@ -103,27 +104,21 @@ public class MIRStrategyTest extends MCRJPATestCase {
         assertEquals(0, MCRAccessStore.obtainInstance().getDistinctStringIDs().size());
         assertEquals(0, MCRRuleStore.obtainInstance().retrieveAllIDs().size());
         ACLResetter.resetIDTable();
-        super.tearDown();
     }
 
-    @Override
-    protected Map<String, String> getTestProperties() {
-        final Map<String, String> testProperties = super.getTestProperties();
-        testProperties.put("MCR.ACL.AccessKey.Strategy.AllowedObjectTypes", "mods,derivate");
+    protected void setTestProperties() {
+        MCRConfiguration2.set("MCR.ACL.AccessKey.Strategy.AllowedObjectTypes", "mods,derivate");
         Path mirCliSrcMainPath = Paths.get("..", "mir-cli", "src", "main").toAbsolutePath().normalize();
-        testProperties.putAll(Map.ofEntries(
-            Map.entry("app.home", mirCliSrcMainPath.toString()),
-            Map.entry("acl-description.admins", "administrators only"),
-            Map.entry("acl-description.all", "always allowed"),
-            Map.entry("acl-description.editors", "administrators and editors"),
-            Map.entry("acl-description.guests", "guests only"),
-            Map.entry("acl-description.guests-and-submitters", "guests and submitters"),
-            Map.entry("acl-description.never", "never allowed"),
-            Map.entry("acl-description.not-logged-in", "not logged-in"),
-            Map.entry("acl-description.require-login", "require login"),
-            Map.entry("acl-description.submitters", "submitters, editors and administrators")));
-
-        return testProperties;
+        MCRConfiguration2.set("app.home", mirCliSrcMainPath.toString());
+        MCRConfiguration2.set("acl-description.admins", "administrators only");
+        MCRConfiguration2.set("acl-description.all", "always allowed");
+        MCRConfiguration2.set("acl-description.editors", "administrators and editors");
+        MCRConfiguration2.set("acl-description.guests", "guests only");
+        MCRConfiguration2.set("acl-description.guests-and-submitters", "guests and submitters");
+        MCRConfiguration2.set("acl-description.never", "never allowed");
+        MCRConfiguration2.set("acl-description.not-logged-in", "not logged-in");
+        MCRConfiguration2.set("acl-description.require-login", "require login");
+        MCRConfiguration2.set("acl-description.submitters", "submitters, editors and administrators");
     }
 
     @Test
@@ -166,8 +161,7 @@ public class MIRStrategyTest extends MCRJPATestCase {
         assertTrue(strategy.checkPermission(mir_mods_00004711.toString(), MCRAccessManager.PERMISSION_READ));
         assertFalse(strategy.checkPermission(mir_mods_00004711.toString(), MCRAccessManager.PERMISSION_WRITE));
         assertTrue(strategy.checkPermission(mir_derivate_00004711.toString(), MCRAccessManager.PERMISSION_READ));
-        Assert
-            .assertFalse(strategy.checkPermission(mir_derivate_00004711.toString(), MCRAccessManager.PERMISSION_WRITE));
+        assertFalse(strategy.checkPermission(mir_derivate_00004711.toString(), MCRAccessManager.PERMISSION_WRITE));
 
         final MCRAccessKeyDto accessKeyRead = new MCRAccessKeyDto();
         accessKeyRead.setSecret("mySecret");
@@ -186,8 +180,7 @@ public class MIRStrategyTest extends MCRJPATestCase {
         categLinkService.setLinks(ref, List.of(MCRCategoryID.ofString("mir_access:accessKey")));
 
         assertFalse(strategy.checkPermission(mir_mods_00004711.toString(), MCRAccessManager.PERMISSION_READ));
-        Assert
-            .assertFalse(strategy.checkPermission(mir_derivate_00004711.toString(), MCRAccessManager.PERMISSION_READ));
+        assertFalse(strategy.checkPermission(mir_derivate_00004711.toString(), MCRAccessManager.PERMISSION_READ));
 
         //Give user read access-token
         MCRAccessKeyServiceFactory.getAccessKeyUserService()
@@ -197,8 +190,7 @@ public class MIRStrategyTest extends MCRJPATestCase {
 
         assertFalse(strategy.checkPermission(mir_mods_00004711.toString(), MCRAccessManager.PERMISSION_WRITE));
         assertTrue(strategy.checkPermission(mir_derivate_00004711.toString(), MCRAccessManager.PERMISSION_READ));
-        Assert
-            .assertFalse(strategy.checkPermission(mir_derivate_00004711.toString(), MCRAccessManager.PERMISSION_WRITE));
+        assertFalse(strategy.checkPermission(mir_derivate_00004711.toString(), MCRAccessManager.PERMISSION_WRITE));
         assertFalse(strategy.checkPermission(mir_mods_00004711.toString(), MCRAccessManager.PERMISSION_DELETE));
         assertTrue(strategy.checkPermission(mir_mods_00004711.toString(), MCRAccessManager.PERMISSION_VIEW));
         assertTrue(strategy.checkPermission(mir_mods_00004711.toString(), MCRAccessManager.PERMISSION_PREVIEW));
@@ -211,8 +203,7 @@ public class MIRStrategyTest extends MCRJPATestCase {
 
         assertTrue(strategy.checkPermission(mir_mods_00004711.toString(), MCRAccessManager.PERMISSION_WRITE));
         assertTrue(strategy.checkPermission(mir_derivate_00004711.toString(), MCRAccessManager.PERMISSION_READ));
-        Assert
-            .assertTrue(strategy.checkPermission(mir_derivate_00004711.toString(), MCRAccessManager.PERMISSION_WRITE));
+        assertTrue(strategy.checkPermission(mir_derivate_00004711.toString(), MCRAccessManager.PERMISSION_WRITE));
         assertFalse(strategy.checkPermission(mir_mods_00004711.toString(), MCRAccessManager.PERMISSION_DELETE));
         assertTrue(strategy.checkPermission(mir_mods_00004711.toString(), MCRAccessManager.PERMISSION_VIEW));
         assertTrue(strategy.checkPermission(mir_mods_00004711.toString(), MCRAccessManager.PERMISSION_PREVIEW));
@@ -223,8 +214,7 @@ public class MIRStrategyTest extends MCRJPATestCase {
         assertTrue(strategy.checkPermission(mir_mods_00004711.toString(), MCRAccessManager.PERMISSION_WRITE));
         System.err.println("Foo");
         assertTrue(strategy.checkPermission(mir_derivate_00004711.toString(), MCRAccessManager.PERMISSION_READ));
-        Assert
-            .assertTrue(strategy.checkPermission(mir_derivate_00004711.toString(), MCRAccessManager.PERMISSION_WRITE));
+        assertTrue(strategy.checkPermission(mir_derivate_00004711.toString(), MCRAccessManager.PERMISSION_WRITE));
         assertFalse(strategy.checkPermission(mir_mods_00004711.toString(), MCRAccessManager.PERMISSION_DELETE));
         assertTrue(strategy.checkPermission(mir_mods_00004711.toString(), MCRAccessManager.PERMISSION_VIEW));
         assertTrue(strategy.checkPermission(mir_mods_00004711.toString(), MCRAccessManager.PERMISSION_PREVIEW));
@@ -243,7 +233,7 @@ public class MIRStrategyTest extends MCRJPATestCase {
     }
 
     private void requireLocalTestFiles() {
-        assumeTrue("Local test files not available.", localTestDirectory != null);
+        Assumptions.assumeTrue(localTestDirectory != null, "Local test files not available.");
     }
 
     private static class ACLResetter {

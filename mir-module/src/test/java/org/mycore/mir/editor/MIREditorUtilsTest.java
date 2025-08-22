@@ -1,16 +1,24 @@
 package org.mycore.mir.editor;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.junit.Assert;
-import org.junit.Test;
-import org.mycore.common.MCRTestCase;
+import org.junit.jupiter.api.Test;
+import org.mycore.common.MCRTestConfiguration;
+import org.mycore.common.MCRTestProperty;
+import org.mycore.test.MyCoReTest;
 
-import java.util.Map;
-
-public class MIREditorUtilsTest extends MCRTestCase {
+@MyCoReTest
+@MCRTestConfiguration(properties = {
+    @MCRTestProperty(key = "MIR.Editor.HTML.Elements", string = "h1[id];a[id,href,title];p i")
+})
+public class MIREditorUtilsTest {
 
     @Test
     public void getCleanDocument() {
@@ -39,30 +47,22 @@ public class MIREditorUtilsTest extends MCRTestCase {
         final Elements p = body.getElementsByTag("p");
         final Elements i = body.getElementsByTag("i");
 
-        Assert.assertEquals("Element test1 should be present", "h1", test1.tagName());
+        assertEquals("h1", test1.tagName(), "Element test1 should be present");
 
-        Assert.assertEquals("Element test2 should be present", "a", test2.tagName());
-        Assert.assertTrue("Attribute href with http is allowed", test2.hasAttr("href"));
-        Assert.assertTrue("Attribute title is allowed", test2.hasAttr("title"));
+        assertEquals("a", test2.tagName(), "Element test2 should be present");
+        assertTrue(test2.hasAttr("href"), "Attribute href with http is allowed");
+        assertTrue(test2.hasAttr("title"), "Attribute title is allowed");
 
-        Assert.assertNull("Element test3 should not be present", test3);
+        assertNull(test3, "Element test3 should not be present");
 
-        Assert.assertEquals("Element test4 should be present", "a", test4.tagName());
-        Assert.assertFalse("If an attribute is href then only http and https is allowed", test4.hasAttr("href"));
+        assertEquals("a", test4.tagName(), "Element test4 should be present");
+        assertFalse(test4.hasAttr("href"), "If an attribute is href then only http and https is allowed");
 
-        Assert.assertEquals("Element test5 should be present", "a", test5.tagName());
-        Assert.assertFalse("Onmouseover is not allowed", test5.hasAttr("onmouseover"));
+        assertEquals("a", test5.tagName(), "Element test5 should be present");
+        assertFalse(test5.hasAttr("onmouseover"), "Onmouseover is not allowed");
 
-        Assert.assertEquals("Element p should be present", 1, p.size());
-        Assert.assertEquals("Element i should be present", 1, i.size());
+        assertEquals(1, p.size(), "Element p should be present");
+        assertEquals(1, i.size(), "Element i should be present");
     }
 
-    @Override
-    protected Map<String, String> getTestProperties() {
-        final Map<String, String> testProperties = super.getTestProperties();
-
-        testProperties.put("MIR.Editor.HTML.Elements", "h1[id];a[id,href,title];p i");
-
-        return testProperties;
-    }
 }

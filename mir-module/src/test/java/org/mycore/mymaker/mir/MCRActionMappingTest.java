@@ -23,20 +23,22 @@
 
 package org.mycore.mymaker.mir;
 
-import javax.xml.transform.TransformerException;
-
-import org.junit.Test;
-import org.mycore.common.MCRJPATestCase;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mycore.test.MCRJPAExtension;
+import org.mycore.test.MyCoReTest;
 import org.mycore.wfc.actionmapping.MCRActionMappingsManager;
 
 /**
  * @author Thomas Scheffler (yagee)
  *
  */
-public class MCRActionMappingTest extends MCRJPATestCase {
+@MyCoReTest
+@ExtendWith(MCRJPAExtension.class)
+public class MCRActionMappingTest {
 
     @Test
-    public final void test() throws Exception {
+    final void test() throws Exception {
         MCRActionMappingsManager.getActionMappings();
     }
 
