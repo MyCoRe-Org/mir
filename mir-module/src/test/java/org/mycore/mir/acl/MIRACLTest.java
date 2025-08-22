@@ -18,21 +18,21 @@
 
 package org.mycore.mir.acl;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-
-import org.junit.Assert;
+import org.junit.jupiter.api.BeforeEach;
 import org.mycore.access.facts.MCRFactsAccessSystem;
 import org.mycore.access.facts.fact.MCRStringFact;
 import org.mycore.access.facts.model.MCRFact;
-import org.mycore.common.MCRStoreTestCase;
 import org.mycore.common.config.MCRConfiguration2;
 
-public class MIRACLTest extends MCRStoreTestCase {
+public abstract class MIRACLTest {
 
     MCRFactsAccessSystem accessSystem;
 
@@ -44,9 +44,9 @@ public class MIRACLTest extends MCRStoreTestCase {
         //Configurator.setLevel(LogManager.getLogger(MCRFactsAccessSystem.class).getName(), Level.INFO);
     }
 
-    @Override
-    public void setUp() throws Exception {
-        super.setUp();
+    @BeforeEach
+    public void setUp() {
+        setTestProperties();
         accessSystem = MCRConfiguration2.getInstanceOfOrThrow(MCRFactsAccessSystem.class, "MCR.Access.Class");
     }
 
@@ -55,11 +55,10 @@ public class MIRACLTest extends MCRStoreTestCase {
             Arrays.stream(userRole).map(role -> new MCRStringFact("role", role)).collect(Collectors.toList()));
 
         if (shouldBeAbleToRead) {
-            Assert.assertTrue(String.join(",", userRole) + " should be able to open the webpage " + webpageURL,
-                hasPermission);
+            assertTrue(hasPermission, String.join(",", userRole) + " should be able to open the webpage " + webpageURL);
         } else {
-            Assert.assertFalse(String.join(",", userRole) + " should not be able to open the webpage " + webpageURL,
-                hasPermission);
+            assertFalse(hasPermission,
+                String.join(",", userRole) + " should not be able to open the webpage " + webpageURL);
         }
     }
 
@@ -68,9 +67,9 @@ public class MIRACLTest extends MCRStoreTestCase {
             Arrays.stream(userRole).map(role -> new MCRStringFact("role", role)).collect(Collectors.toList()));
 
         if (shouldBeAbleToRead) {
-            Assert.assertTrue(String.join(",", userRole) + " should be able to read the id " + id, hasPermission);
+            assertTrue(hasPermission, String.join(",", userRole) + " should be able to read the id " + id);
         } else {
-            Assert.assertFalse(String.join(",", userRole) + " should not be able to read the id " + id, hasPermission);
+            assertFalse(hasPermission, String.join(",", userRole) + " should not be able to read the id " + id);
         }
     }
 
@@ -98,9 +97,9 @@ public class MIRACLTest extends MCRStoreTestCase {
         boolean hasPermission = accessSystem.checkPermission(null, action, facts);
 
         if (shouldBeAbleTo) {
-            Assert.assertTrue(user + " should be able to " + action, hasPermission);
+            assertTrue(hasPermission, user + " should be able to " + action);
         } else {
-            Assert.assertFalse(user + " should not be able to " + action, hasPermission);
+            assertFalse(hasPermission, user + " should not be able to " + action);
         }
     }
 
@@ -130,9 +129,9 @@ public class MIRACLTest extends MCRStoreTestCase {
         boolean hasPermission = accessSystem.checkPermission(id, action, facts);
 
         if (shouldBeAbleTo) {
-            Assert.assertTrue(user + " should be able to " + action + " the id " + id, hasPermission);
+            assertTrue(hasPermission, user + " should be able to " + action + " the id " + id);
         } else {
-            Assert.assertFalse(user + " should not be able to " + action + " the id " + id, hasPermission);
+            assertFalse(hasPermission, user + " should not be able to " + action + " the id " + id);
         }
     }
 
@@ -149,65 +148,62 @@ public class MIRACLTest extends MCRStoreTestCase {
         testReadWriteObject(user, creator, status, id, shouldBeAbleToReadWrite, read, role, embargo, false, false);
     }
 
-    @Override
-    protected Map<String, String> getTestProperties() {
-        Map<String, String> testProperties = super.getTestProperties();
+    private void setTestProperties() {
 
-        testProperties.put("MCR.Metadata.Type.mods", "true");
-        testProperties.put("MCR.Metadata.Type.derivate", "true");
+        MCRConfiguration2.set("MCR.Metadata.Type.mods", "true");
+        MCRConfiguration2.set("MCR.Metadata.Type.derivate", "true");
 
-        testProperties.put("MCR.Access.Facts.Condition.and",
+        MCRConfiguration2.set("MCR.Access.Facts.Condition.and",
             "org.mycore.access.facts.condition.combined.MCRAndCondition");
-        testProperties.put("MCR.Access.Facts.Condition.or",
+        MCRConfiguration2.set("MCR.Access.Facts.Condition.or",
             "org.mycore.access.facts.condition.combined.MCROrCondition");
-        testProperties.put("MCR.Access.Facts.Condition.not",
+        MCRConfiguration2.set("MCR.Access.Facts.Condition.not",
             "org.mycore.access.facts.condition.combined.MCRNotCondition");
-        testProperties.put("MCR.Access.Facts.Condition.id",
+        MCRConfiguration2.set("MCR.Access.Facts.Condition.id",
             "org.mycore.access.facts.condition.fact.MCRStringCondition");
-        testProperties.put("MCR.Access.Facts.Condition.target",
+        MCRConfiguration2.set("MCR.Access.Facts.Condition.target",
             "org.mycore.access.facts.condition.fact.MCRStringCondition");
-        testProperties.put("MCR.Access.Facts.Condition.action",
+        MCRConfiguration2.set("MCR.Access.Facts.Condition.action",
             "org.mycore.access.facts.condition.fact.MCRStringCondition");
-        testProperties.put("MCR.Access.Facts.Condition.user",
+        MCRConfiguration2.set("MCR.Access.Facts.Condition.user",
             "org.mycore.access.facts.condition.fact.MCRUserCondition");
-        testProperties.put("MCR.Access.Facts.Condition.role",
+        MCRConfiguration2.set("MCR.Access.Facts.Condition.role",
             "org.mycore.access.facts.condition.fact.MCRRoleCondition");
-        testProperties.put("MCR.Access.Facts.Condition.ip", "org.mycore.access.facts.condition.fact.MCRIPCondition");
-        testProperties.put("MCR.Access.Facts.Condition.status",
+        MCRConfiguration2.set("MCR.Access.Facts.Condition.ip", "org.mycore.access.facts.condition.fact.MCRIPCondition");
+        MCRConfiguration2.set("MCR.Access.Facts.Condition.status",
             "org.mycore.access.facts.condition.fact.MCRStateCondition");
-        testProperties.put("MCR.Access.Facts.Condition.createdby",
+        MCRConfiguration2.set("MCR.Access.Facts.Condition.createdby",
             "org.mycore.access.facts.condition.fact.MCRCreatedByCondition");
-        testProperties.put("MCR.Access.Facts.Condition.regex",
+        MCRConfiguration2.set("MCR.Access.Facts.Condition.regex",
             "org.mycore.access.facts.condition.fact.MCRRegExCondition");
-        testProperties.put("MCR.Access.Facts.Condition.category",
+        MCRConfiguration2.set("MCR.Access.Facts.Condition.category",
             "org.mycore.access.facts.condition.fact.MCRCategoryCondition");
-        testProperties.put("MCR.Access.Facts.Condition.collection",
+        MCRConfiguration2.set("MCR.Access.Facts.Condition.collection",
             "org.mycore.mods.access.facts.condition.MCRMODSCollectionCondition");
-        testProperties.put("MCR.Access.Facts.Condition.genre",
+        MCRConfiguration2.set("MCR.Access.Facts.Condition.genre",
             "org.mycore.mods.access.facts.condition.MCRMODSGenreCondition");
-        testProperties.put("MCR.Access.Facts.Condition.embargo",
+        MCRConfiguration2.set("MCR.Access.Facts.Condition.embargo",
             "org.mycore.mods.access.facts.condition.MCRMODSEmbargoCondition");
 
-        testProperties.put("MCR.URIResolver.ModuleResolver.property", "org.mycore.common.xml.MCRPropertiesResolver");
-        testProperties.put("MCR.LayoutService.TransformerFactoryClass", "net.sf.saxon.TransformerFactoryImpl");
-        testProperties.put("MCR.ContentTransformer.rules-helper.Class",
+        MCRConfiguration2.set("MCR.URIResolver.ModuleResolver.property", "org.mycore.common.xml.MCRPropertiesResolver");
+        MCRConfiguration2.set("MCR.LayoutService.TransformerFactoryClass", "net.sf.saxon.TransformerFactoryImpl");
+        MCRConfiguration2.set("MCR.ContentTransformer.rules-helper.Class",
             "org.mycore.common.content.transformer.MCRXSLTransformer");
-        testProperties.put("MCR.ContentTransformer.rules-helper.TransformerFactoryClass",
+        MCRConfiguration2.set("MCR.ContentTransformer.rules-helper.TransformerFactoryClass",
             "net.sf.saxon.TransformerFactoryImpl");
-        testProperties.put("MCR.ContentTransformer.rules-helper.Stylesheet", "xslt/rules-helper.xsl");
+        MCRConfiguration2.set("MCR.ContentTransformer.rules-helper.Stylesheet", "xslt/rules-helper.xsl");
 
-        testProperties.put("MCR.Access.Strategy.Class", "org.mycore.access.facts.MCRFactsAccessSystem");
-        testProperties.put("MCR.Access.Class", "org.mycore.access.facts.MCRFactsAccessSystem");
+        MCRConfiguration2.set("MCR.Access.Strategy.Class", "org.mycore.access.facts.MCRFactsAccessSystem");
+        MCRConfiguration2.set("MCR.Access.Class", "org.mycore.access.facts.MCRFactsAccessSystem");
 
-        testProperties.put("MCR.Access.RulesURI", "xslTransform:rules-helper:resource:rules/rules.xml");
-        testProperties.put("MIR.Rules.Solr.Protected.RequestHandler", "find,select");
-        testProperties.put("MIR.Rules.ClassificationEditor.EditableClasses",
+        MCRConfiguration2.set("MCR.Access.RulesURI", "xslTransform:rules-helper:resource:rules/rules.xml");
+        MCRConfiguration2.set("MIR.Rules.Solr.Protected.RequestHandler", "find,select");
+        MCRConfiguration2.set("MIR.Rules.ClassificationEditor.EditableClasses",
             "crossrefTypes,dctermsDCMIType,ddc,derivate_types,diniPublType,diniVersion,identifier,itunes-podcast,marcgt,marcrelator,mcr-roles,mir_access,mir_filetype,mir_genres,mir_institutes,mir_licenses,mir_rights,nameIdentifier,noteTypes,rfc4646,rfc5646,schemaOrg,sdnb,state,typeOfResource,XMetaDissPlusThesisLevel");
 
-        testProperties.put("MCR.Access.Facts.Condition.ip-from-institution",
+        MCRConfiguration2.set("MCR.Access.Facts.Condition.ip-from-institution",
             "org.mycore.access.facts.condition.fact.MCRIPCondition");
-        testProperties.put("MCR.Access.Facts.Condition.ip-from-institution.IP", "127.0.0.1/255.255.255.255");
+        MCRConfiguration2.set("MCR.Access.Facts.Condition.ip-from-institution.IP", "127.0.0.1/255.255.255.255");
 
-        return testProperties;
     }
 }

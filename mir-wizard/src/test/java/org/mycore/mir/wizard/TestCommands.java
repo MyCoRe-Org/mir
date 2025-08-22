@@ -22,7 +22,7 @@
  */
 package org.mycore.mir.wizard;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Collection;
 import java.util.stream.Collectors;
@@ -30,33 +30,39 @@ import java.util.stream.Collectors;
 import org.jdom2.Element;
 import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
-import org.junit.Test;
-import org.mycore.common.MCRJPATestCase;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mycore.common.MCRStreamUtils;
 import org.mycore.common.xml.MCRURIResolver;
 import org.mycore.mir.wizard.command.MIRWizardMCRCommand;
+import org.mycore.test.MCRJPAExtension;
+import org.mycore.test.MCRJPATestHelper;
+import org.mycore.test.MyCoReTest;
 
 /**
  * @author René Adler (eagle)
  *
  */
-public class TestCommands extends MCRJPATestCase {
+@MyCoReTest
+@ExtendWith(MCRJPAExtension.class)
+public class TestCommands {
 
     @Test
     public void testLoadClassifications() throws Exception {
         MIRWizardCommandChain chain = new MIRWizardCommandChain();
         MIRWizardMCRCommand loadClassifications = new MIRWizardMCRCommand("load.classifications");
-        loadClassifications.setInputXML(MCRURIResolver.obtainInstance().resolve("resource:setup/classifications-wizard-commands.xml"));
+        loadClassifications
+            .setInputXML(MCRURIResolver.obtainInstance().resolve("resource:setup/classifications-wizard-commands.xml"));
         chain.addCommand(loadClassifications);
 
-        endTransaction();
+        MCRJPATestHelper.endTransaction();
         chain.execute(null);
 
         MIRWizardCommandResult result = chain.getCommands().getFirst().getResult();
 
         new XMLOutputter(Format.getPrettyFormat()).output(result.getResult(), System.out);
 
-        assertTrue(toMessage(result.getResult()), result.isSuccess());
+        assertTrue(result.isSuccess(), toMessage(result.getResult()));
     }
 
     @Test
@@ -64,7 +70,8 @@ public class TestCommands extends MCRJPATestCase {
         MIRWizardCommandChain chain = new MIRWizardCommandChain();
 
         MIRWizardMCRCommand importACLs = new MIRWizardMCRCommand("import.acls");
-        importACLs.setInputXML(MCRURIResolver.obtainInstance().resolve("resource:setup/defaultrules-wizard-commands.xml"));
+        importACLs
+            .setInputXML(MCRURIResolver.obtainInstance().resolve("resource:setup/defaultrules-wizard-commands.xml"));
         chain.addCommand(importACLs);
 
         MIRWizardMCRCommand importWebACLs = new MIRWizardMCRCommand("import.webacls");
@@ -73,17 +80,17 @@ public class TestCommands extends MCRJPATestCase {
 
         MIRWizardMCRCommand importRestApiACLs = new MIRWizardMCRCommand("import.restapiacls");
         importRestApiACLs
-                .setInputXML(MCRURIResolver.obtainInstance().resolve("resource:setup/restapiacl-wizard-commands.xml"));
+            .setInputXML(MCRURIResolver.obtainInstance().resolve("resource:setup/restapiacl-wizard-commands.xml"));
         chain.addCommand(importRestApiACLs);
 
-        endTransaction();
+        MCRJPATestHelper.endTransaction();
         chain.execute(null);
 
         MIRWizardCommandResult result = chain.getCommands().getFirst().getResult();
 
         new XMLOutputter(Format.getPrettyFormat()).output(result.getResult(), System.out);
 
-        assertTrue(toMessage(result.getResult()), result.isSuccess());
+        assertTrue(result.isSuccess(), toMessage(result.getResult()));
     }
 
     private static String toMessage(Element result) {
