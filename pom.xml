@@ -44,7 +44,7 @@
     <java.target.version>17</java.target.version>
     <jetty.version>11.0.15</jetty.version>
     <maven.compiler.arg>-Werror</maven.compiler.arg>
-    <mycore.version>2022.06.3</mycore.version>
+    <mycore.version>2022.06.4-SNAPSHOT</mycore.version>
     <selenium.version>4.3.0</selenium.version>
     <site.suffix />
     <solr-runner.solrMirrorURL>https://archive.apache.org/dist/lucene/solr/</solr-runner.solrMirrorURL>
