@@ -4,7 +4,7 @@
  */
 document.addEventListener("DOMContentLoaded", async function () {
   const RORSearch = {
-    baseURL: "https://api.ror.org/",
+    baseURL: "https://api.ror.org/v2/",
     currentLanguage: window?.currentLang,
     webApplicationBaseURL: window?.webApplicationBaseURL,
   };
@@ -67,9 +67,17 @@ document.addEventListener("DOMContentLoaded", async function () {
         processResults: function (data) {
           return {
             results: data.items.map(function (item) {
+              let displayName;
+              item.names.forEach(function (name) {
+                if (name.types.includes("ror_display")) {
+                  displayName = name.value;
+                  return;
+                }
+              });
+
               return {
-                id: `${item.name} (${item.id ?? 'unknown'})`,
-                text: `${item.name} (${item.id ?? 'unknown'})`,
+                id: `${displayName} (${item.id ?? 'unknown'})`,
+                text: `${displayName} (${item.id ?? 'unknown'})`,
                 ror_id: item.id ?? null
               };
             })
