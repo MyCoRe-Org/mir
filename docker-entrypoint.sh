@@ -121,8 +121,8 @@ function setDockerValues() {
       setOrAddProperty "MCR.JPA.URL" "${JDBC_URL}"
     fi
 
-    if [ -n "${HIBERNATE_SCHEMA}" ]; then
-      setOrAddProperty "MCR.JPA.DefaultSchema" "${HIBERNATE_SCHEMA}"
+    if [ -n "${JDBC_SCHEMA}" ]; then
+      setOrAddProperty "MCR.JPA.DefaultSchema" "${JDBC_SCHEMA}"
     fi
 
     if [ -n "${SOLR_ADMIN_USER}" ]; then
