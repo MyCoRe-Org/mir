@@ -25,9 +25,9 @@
     visibility: hidden;
     pointer-events: none;
     transition:
-            opacity .2s ease,
-            transform .2s ease,
-            visibility 0s linear .2s;
+      opacity .2s ease,
+      transform .2s ease,
+      visibility 0s linear .2s;
   }
 
   /* Visible state (toggled via JS) */
@@ -37,9 +37,9 @@
     visibility: visible;
     pointer-events: auto;
     transition:
-            opacity .2s ease,
-            transform .2s ease,
-            visibility 0s;
+      opacity .2s ease,
+      transform .2s ease,
+      visibility 0s;
   }
 
   .back-to-top:hover { filter: brightness(1.05); }
@@ -48,7 +48,6 @@
   @media (prefers-reduced-motion: reduce) {
     .back-to-top { transition: none; }
   }
-
 
   // adds hover and focus effects for buttons and links with badge class
   a,

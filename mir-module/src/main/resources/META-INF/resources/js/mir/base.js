@@ -799,12 +799,12 @@
 
 // Back to top button functionality
 (() => {
-    const btns = document.getElementsByClassName('back-to-top');
+    const btns = document.getElementsByClassName("back-to-top");
     if (btns.length === 0) return;
-    const isReduced = window.matchMedia(`(prefers-reduced-motion: reduce)`).matches === true;
-    const topAnchor = document.getElementById('top');
+    const isReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches === true;
+    const topAnchor = document.getElementById("top");
     if (!topAnchor) {
-        console.warn('No top anchor found for back to top button functionality.');
+        console.warn("No top anchor found for back to top button functionality.");
         return;
     }
 
@@ -814,16 +814,16 @@
         if (isReduced) {
             window.scrollTo(0, topAnchorPosition);
         } else {
-            window.scrollTo({top: topAnchorPosition, behavior: 'smooth'});
+            window.scrollTo({top: topAnchorPosition, behavior: "smooth"});
         }
         e.preventDefault();
     };
 
-    const toggle = (show) => btns[0].classList.toggle('is-visible', show);
+    const toggle = (show) => btns[0].classList.toggle("is-visible", show);
 
     const io = new IntersectionObserver(
         (e) => toggle(!e.at(-1).isIntersecting),
-        {rootMargin: '100px 0px 0px 0px', delay: 1000}
+        {rootMargin: "100px 0px 0px 0px"}
     );
     io.observe(topAnchor);
 })();
