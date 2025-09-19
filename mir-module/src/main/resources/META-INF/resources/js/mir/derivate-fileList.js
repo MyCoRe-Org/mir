@@ -455,6 +455,10 @@
 			let start = ((page || 1) - 1) * numPerPage;
 			let end = start + numPerPage;
 
+			if (end > children.length) {
+				end = children.length;
+			}
+
 			return pageCount > 1 ? pagination = {
 				numPerPage : numPerPage,
 				pageCount : pageCount,
