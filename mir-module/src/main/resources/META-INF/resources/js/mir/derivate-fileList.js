@@ -453,18 +453,13 @@
 		function buildPagination(children) {
 			let pageCount = Math.floor(children.length / numPerPage) + (children.length % numPerPage != 0 ? 1 : 0);
 			let start = ((page || 1) - 1) * numPerPage;
-			let end = start + numPerPage;
-
-			if (end > children.length) {
-				end = children.length;
-			}
 
 			return pageCount > 1 ? pagination = {
 				numPerPage : numPerPage,
 				pageCount : pageCount,
 				page : page || 1,
 				start : start + 1,
-				end : end,
+				end : Math.min((start + numPerPage), children.length),
 				total : children.length
 			} : undefined;
 		}
