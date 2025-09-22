@@ -30,24 +30,33 @@ export class RorSearchProvider implements SearchProvider {
     }
 
     async searchPerson(searchTerm: string) {
-        const responsePromise = await fetch(`https://api.ror.org/organizations?query=${encodeURIComponent(searchTerm)}`);
+        const responsePromise = await fetch(`https://api.ror.org/v2/organizations?query=${encodeURIComponent(searchTerm)}`);
         const json = await responsePromise.json();
 
         const result: NameSearchResult[] = [];
 
         for (const itemIndex in json.items) {
             const item = json.items[itemIndex];
+
+            let displayName = "";
+            for (let n of item.names) {
+                if (n.types.includes("ror_display")) {
+                    displayName = n.value;
+                    break;
+                }
+            }
+
             const searchResult: NameSearchResult = {
                 metadata: [],
-                identifier: [{type: "ror", value: item.id.substr("https://ror.org/".length)}],
-                displayForm: item.name,
+                identifier: [{type: "ror", value: item.id.substring("https://ror.org/".length)}],
+                displayForm: displayName,
                 id: uuid(),
                 person: false
             };
 
             for (const type in item.external_ids) {
-                if ("preferred" in item.external_ids[type] && item.external_ids[type].peferred != null) {
-                    searchResult.identifier.push({type, value: item.external_ids[type].peferred});
+                if ("preferred" in item.external_ids[type] && item.external_ids[type].preferred != null) {
+                    searchResult.identifier.push({type, value: item.external_ids[type].preferred});
                 } else {
                     if ("all" in item.external_ids[type]) {
                         if (item.external_ids[type].all instanceof Array) {
@@ -65,24 +74,34 @@ export class RorSearchProvider implements SearchProvider {
                 }
             }
 
+            let refs: string[] = [];
+            let wikipediaURL = null;
 
-            if ("links" in item && item.links.length > 0) {
+            for (let l of item.links) {
+                if (l.type !== "wikipedia") {
+                    refs.push(l.value);
+                } else {
+                    wikipediaURL = l.value;
+                }
+            }
+
+            if (refs.length > 0) {
                 searchResult.metadata.push(
                     {
                         id: uuid(),
                         label: await i18n("mir.editor.person.link"),
-                        value: item.links.join(", ")
+                        value: refs.join(", ")
                     });
             }
 
-            if ("wikipedia_url" in item && item.wikipedia_url.length > 0) {
+            if (wikipediaURL != null && wikipediaURL.length > 0) {
                 searchResult.metadata.push(
                     {
                         id: uuid(),
                         label: await i18n("mir.editor.person.wikipedia"),
-                        value: item.wikipedia_url
+                        value: wikipediaURL
                     }
-                )
+                );
             }
 
             result.push(searchResult);
