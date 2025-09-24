@@ -327,11 +327,15 @@
 
     // modify empty search
     // add * as value for an empty search to get results
-    $(".searchfield_box").submit(function() {
-      if ( $("input.search-query").val() == "" ) {
-        $("input.search-query").val("*");
-      }
-    });
+        $(".searchfield_box").submit(function() {
+            let input = $("input.search-query").val();
+            if (input === "") {
+                $("input.search-query").val("*");
+            } else {
+                input = input.replace(/[^\w\s]/gi, " ");
+                $("input.search-query").val(input);
+            }
+        });
 
     // search person index
     // makes sure the query ends with .* on submit
