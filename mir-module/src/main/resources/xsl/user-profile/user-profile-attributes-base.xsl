@@ -3,5 +3,7 @@
 
   <xsl:import href="xslImport:userProfileAttributes:user-profile/user-profile-attributes-base.xsl"/>
 
+  <xsl:template match="user" mode="user-attributes"/>
   <xsl:template match="user" mode="user-important-attributes"/>
+  <xsl:template match="user" mode="user-owner-and-roles"/>
 </xsl:stylesheet>
