@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-                xmlns:acl="xalan://org.mycore.access.MCRAccessManager"
-                xmlns:const="xalan://org.mycore.user2.MCRUser2Constants"
-                exclude-result-prefixes="acl const xsl">
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" exclude-result-prefixes="xsl">
 
   <xsl:import href="xslImport:userProfileAttributes:user-profile/user-profile-owners-and-roles.xsl"/>
 
@@ -13,7 +10,7 @@
   <xsl:template match="user" mode="user-owner-and-roles">
     <xsl:apply-imports/>
 
-    <xsl:variable name="isUserAdmin" select="acl:checkPermission(const:getUserAdminPermission())"/>
+    <xsl:variable name="isUserAdmin" select="document('notnull:checkPermission:checkPermission:administrate-users')"/>
     <xsl:variable name="fullDetails" select="$isUserAdmin or not($MIR.User.ShowSimpleDetailsOnly='true')"/>
 
     <xsl:if test="$fullDetails">
