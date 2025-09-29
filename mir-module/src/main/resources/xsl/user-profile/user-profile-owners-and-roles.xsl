@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:acl="xalan://org.mycore.access.MCRAccessManager"
-                xmlns:const="xalan://org.mycore.user2.MCRUser2Constants" exclude-result-prefixes="acl const xsl">
+                xmlns:const="xalan://org.mycore.user2.MCRUser2Constants"
+                exclude-result-prefixes="acl const xsl">
 
   <xsl:import href="xslImport:userProfileAttributes:user-profile/user-profile-owners-and-roles.xsl"/>
 
