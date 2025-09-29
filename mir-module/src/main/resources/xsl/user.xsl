@@ -203,55 +203,7 @@
 
             <xsl:apply-templates select="." mode="user-important-attributes" />
 
-            <xsl:if test="$fullDetails">
-              <tr class="d-flex">
-                <th class="col-md-3">
-                  <xsl:value-of select="i18n:translate('component.user2.admin.owner')" />
-                </th>
-                <td class="col-md-9">
-                  <xsl:apply-templates select="owner" mode="link" />
-                  <xsl:if test="count(owner)=0">
-                    <xsl:value-of select="i18n:translate('component.user2.admin.userIndependent')" />
-                  </xsl:if>
-                </td>
-              </tr>
-            </xsl:if>
-            <xsl:if test="$fullDetails">
-              <tr class="d-flex">
-                <th class="col-md-3">
-                  <xsl:value-of select="i18n:translate('component.user2.admin.roles')" />
-                </th>
-                <td class="col-md-9">
-                  <xsl:for-each select="roles/role">
-                    <xsl:value-of select="@name" />
-                    <xsl:variable name="lang">
-                      <xsl:call-template name="selectPresentLang">
-                        <xsl:with-param name="nodes" select="label" />
-                      </xsl:call-template>
-                    </xsl:variable>
-                    <xsl:value-of select="concat(' [',label[lang($lang)]/@text,']')" />
-                    <xsl:if test="position() != last()">
-                      <br />
-                    </xsl:if>
-                  </xsl:for-each>
-                </td>
-              </tr>
-            </xsl:if>
-            <xsl:if test="$fullDetails">
-              <tr class="d-flex">
-                <th class="col-md-3">
-                  <xsl:value-of select="i18n:translate('component.user2.admin.userOwns')" />
-                </th>
-                <td class="col-md-9">
-                  <xsl:for-each select="$owns/user">
-                    <xsl:apply-templates select="." mode="link" />
-                    <xsl:if test="position() != last()">
-                      <br />
-                    </xsl:if>
-                  </xsl:for-each>
-                </td>
-              </tr>
-            </xsl:if>
+            <xsl:apply-templates select="." mode="user-owner-and-roles" />
           </table>
         </div>
         <xsl:if test="$isOrcidEnabled">

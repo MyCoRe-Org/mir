@@ -12,8 +12,7 @@
     <xsl:if test="attributes/attribute[@name='id_orcid']">
       <tr class="d-flex">
         <th class="col-md-3">
-          <xsl:value-of select="document('i18n:user.profile.id.orcid')/i18n/text()"/>
-          <xsl:text>:</xsl:text>
+          <xsl:value-of select="concat(document('i18n:user.profile.id.orcid')/i18n/text(), ': ')"/>
         </th>
         <td class="col-md-9">
           <xsl:variable name="url" select="concat($MCR.ORCID.LinkURL,attributes/attribute[@name='id_orcid']/@value)"/>
