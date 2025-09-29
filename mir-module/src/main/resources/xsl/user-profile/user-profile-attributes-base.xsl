@@ -4,6 +4,4 @@
   <xsl:import href="xslImport:userProfileAttributes:user-profile/user-profile-attributes-base.xsl"/>
 
   <xsl:template match="user" mode="user-important-attributes"/>
-
-
 </xsl:stylesheet>

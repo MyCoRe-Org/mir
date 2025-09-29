@@ -197,24 +197,8 @@
                   </xsl:choose>
                 </td>
               </tr>
-              <tr class="d-flex">
-                <th class="col-md-3">
-                  <xsl:value-of select="i18n:translate('component.user2.admin.user.attributes')" />
-                </th>
-                <td class="col-md-9">
-                  <dl>
-                    <!-- filter orcid attributes -->
-                    <xsl:for-each select="attributes/attribute[not(@name='id_orcid' or starts-with(@name, 'orcid_credential_') or  starts-with(@name, 'orcid_user_properties_'))]">
-                      <dt>
-                        <xsl:value-of select="@name" />
-                      </dt>
-                      <dd>
-                        <xsl:value-of select="@value" />
-                      </dd>
-                    </xsl:for-each>
-                  </dl>
-                </td>
-              </tr>
+
+              <xsl:apply-templates select="." mode="user-attributes" />
             </xsl:if>
 
             <xsl:apply-templates select="." mode="user-important-attributes" />
