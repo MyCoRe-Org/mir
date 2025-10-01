@@ -3,7 +3,12 @@
 
   <xsl:import href="xslImport:userProfileAttributes:user-profile/user-profile-attributes-base.xsl"/>
 
+  <xsl:param name="MIR.User.ShowSimpleDetailsOnly"/>
+  <xsl:param name="WebApplicationBaseURL"/>
+
+  <xsl:variable name="isUserAdmin" select="document('notnull:checkPermission:checkPermission:administrate-users')"/>
+  <xsl:variable name="fullDetails" select="$isUserAdmin or not($MIR.User.ShowSimpleDetailsOnly='true')"/>
+
   <xsl:template match="user" mode="user-attributes"/>
-  <xsl:template match="user" mode="user-important-attributes"/>
-  <xsl:template match="user" mode="user-owner-and-roles"/>
+
 </xsl:stylesheet>

@@ -2,9 +2,13 @@
 
 <!-- XSL to display data of a login user -->
 
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xalan="http://xml.apache.org/xalan" xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions"
-  xmlns:acl="xalan://org.mycore.access.MCRAccessManager" xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation" xmlns:const="xalan://org.mycore.user2.MCRUser2Constants"
-  exclude-result-prefixes="xsl xalan i18n acl const mcrxsl"
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+                xmlns:xalan="http://xml.apache.org/xalan"
+                xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions"
+                xmlns:acl="xalan://org.mycore.access.MCRAccessManager"
+                xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
+                xmlns:const="xalan://org.mycore.user2.MCRUser2Constants"
+                exclude-result-prefixes="xsl xalan i18n acl const mcrxsl"
 >
 
   <xsl:import href="xslImport:userProfileActions"/>
@@ -197,13 +201,9 @@
                   </xsl:choose>
                 </td>
               </tr>
-
-              <xsl:apply-templates select="." mode="user-attributes" />
             </xsl:if>
 
-            <xsl:apply-templates select="." mode="user-important-attributes" />
-
-            <xsl:apply-templates select="." mode="user-owner-and-roles" />
+            <xsl:apply-templates select="." mode="user-attributes" />
           </table>
         </div>
         <xsl:if test="$isOrcidEnabled">

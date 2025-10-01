@@ -3,15 +3,8 @@
 
   <xsl:import href="xslImport:userProfileAttributes:user-profile/user-profile-owners-and-roles.xsl"/>
 
-  <xsl:param name="MCR.ORCID.LinkURL"/>
-  <xsl:param name="MIR.User.ShowSimpleDetailsOnly"/>
-  <xsl:param name="WebApplicationBaseURL"/>
-
-  <xsl:template match="user" mode="user-owner-and-roles">
+  <xsl:template match="user" mode="user-attributes">
     <xsl:apply-imports/>
-
-    <xsl:variable name="isUserAdmin" select="document('notnull:checkPermission:checkPermission:administrate-users')"/>
-    <xsl:variable name="fullDetails" select="$isUserAdmin or not($MIR.User.ShowSimpleDetailsOnly='true')"/>
 
     <xsl:if test="$fullDetails">
       <tr class="d-flex">

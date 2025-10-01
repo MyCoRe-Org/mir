@@ -4,9 +4,8 @@
   <xsl:import href="xslImport:userProfileAttributes:user-profile/user-profile-attributes-orcid.xsl"/>
 
   <xsl:param name="MCR.ORCID.LinkURL"/>
-  <xsl:param name="WebApplicationBaseURL"/>
 
-  <xsl:template match="user" mode="user-important-attributes">
+  <xsl:template match="user" mode="user-attributes">
     <xsl:apply-imports />
 
     <xsl:if test="attributes/attribute[@name='id_orcid']">
