@@ -51,10 +51,10 @@
       <xsl:variable name="label">
         <xsl:choose>
           <xsl:when test="contains($accessCondition, 'rights_reserved')">
-            <xsl:value-of select="document('component.mods.metaData.dictionary.rightsReserved')/i18n/text()"/>
+            <xsl:value-of select="document('i18n:component.mods.metaData.dictionary.rightsReserved')/i18n/text()"/>
           </xsl:when>
           <xsl:when test="contains($accessCondition, 'oa_nlz')">
-            <xsl:value-of select="document('component.mods.metaData.dictionary.oa_nlz.short')/i18n/text()"/>
+            <xsl:value-of select="document('i18n:component.mods.metaData.dictionary.oa_nlz.short')/i18n/text()"/>
           </xsl:when>
           <xsl:otherwise>
             <xsl:value-of select="document(concat('callJava:org.mycore.common.xml.MCRXMLFunctions:getDisplayName:mir_licenses:', $accessCondition))"/>
