@@ -65,6 +65,7 @@
 
         <section>
           <div class="container" id="page">
+            <a id="top" />
             <div id="main_content" class="row">
 
               <div id="side_nav_column" class="col-12 col-lg-3">
@@ -110,6 +111,9 @@
               </div>
             </div>
           </div>
+          <a href="#top" class="btn back-to-top" aria-label="{i18n:translate('mir.backToTop.label')}">
+            <i class="fas fa-chevron-circle-up" aria-hidden="true" />
+          </a>
         </section>
 
         <footer class="flatmir-footer">

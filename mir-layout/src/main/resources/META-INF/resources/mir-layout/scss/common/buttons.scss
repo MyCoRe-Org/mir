@@ -19,6 +19,34 @@
     background-color: white;
     padding: 0;
     line-height: 0;
+
+    opacity: 0;
+    transform: translateY(8px);
+    visibility: hidden;
+    pointer-events: none;
+    transition:
+      opacity .2s ease,
+      transform .2s ease,
+      visibility 0s linear .2s;
+  }
+
+  /* Visible state (toggled via JS) */
+  .back-to-top.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+    visibility: visible;
+    pointer-events: auto;
+    transition:
+      opacity .2s ease,
+      transform .2s ease,
+      visibility 0s;
+  }
+
+  .back-to-top:hover { filter: brightness(1.05); }
+
+  /* Respect reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .back-to-top { transition: none; }
   }
 
   // adds hover and focus effects for buttons and links with badge class
