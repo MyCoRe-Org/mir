@@ -16,5 +16,5 @@ tinymce.init({
     entity_encoding: "raw",
     valid_elements: JSON.parse(window["MIR.WebConfig.Editor.TinyMCE.HTML.Elements"] || "{}"),
     convert_urls: false,
-    verify_html: false
+    verify_html: true
 });
