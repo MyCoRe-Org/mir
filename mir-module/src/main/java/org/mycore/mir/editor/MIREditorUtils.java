@@ -61,9 +61,9 @@ public class MIREditorUtils {
     protected static Safelist getSafeList() {
         final Safelist elementSafelist = Safelist.none();
 
-        String[] allowedElements = MCRConfiguration2.getOrThrow("MIR.Editor.HTML.Elements", s -> s.split(";"));
+        String[] allowedElements = MCRConfiguration2.getOrThrow("MIR.Editor.HTML.AllowedElements", s -> s.split(","));
         Stream.of(allowedElements).forEach(content -> {
-            StringTokenizer st = new StringTokenizer(content, "[ ],", true);
+            StringTokenizer st = new StringTokenizer(content, "[|],", true);
 
             List<String> attributes = new ArrayList<>();
             List<String> elements = new ArrayList<>();
@@ -76,12 +76,6 @@ public class MIREditorUtils {
                 final String token = st.nextToken();
 
                 switch (token) {
-                    case " ":
-                        if (!attrOptStarted && currentElement.length() > 0) {
-                            elements.add(currentElement.toString());
-                            currentElement = new StringBuilder();
-                        }
-                        break;
                     case "[":
                         attrOptStarted = true;
                         break;
@@ -93,7 +87,7 @@ public class MIREditorUtils {
                         }
                         attrOptStarted = false;
                         break;
-                    case ",":
+                    case "|":
                         if (attrOptStarted) {
                             final String attribute = currentAttribute.toString();
                             attributes.add(attribute);
@@ -109,12 +103,12 @@ public class MIREditorUtils {
                         break;
                 }
             }
-            if (currentElement.length() > 0) {
+            if (!currentElement.isEmpty()) {
                 elements.add(currentElement.toString());
             }
             elements.forEach(tagName -> {
                 elementSafelist.addTags(tagName);
-                if (attributes.size() > 0) {
+                if (!attributes.isEmpty()) {
                     attributes.forEach(attr -> {
                         elementSafelist.addAttributes(tagName, attr);
                         if (Objects.equals(attr, "href")) {

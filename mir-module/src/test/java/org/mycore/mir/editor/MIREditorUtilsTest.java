@@ -16,7 +16,7 @@ import org.mycore.test.MyCoReTest;
 
 @MyCoReTest
 @MCRTestConfiguration(properties = {
-    @MCRTestProperty(key = "MIR.Editor.HTML.Elements", string = "h1[id];a[id,href,title];p i")
+    @MCRTestProperty(key = "MIR.Editor.HTML.AllowedElements", string = "h1[id],a[id|href|title],p,i")
 })
 public class MIREditorUtilsTest {
 
