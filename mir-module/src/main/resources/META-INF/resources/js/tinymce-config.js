@@ -14,7 +14,7 @@ tinymce.init({
         " alignleft aligncenter alignright alignjustify | bullist numlist | table | hr",
     toolbar_mode: "wrap",
     entity_encoding: "raw",
-    valid_elements: JSON.parse(window["MIR.WebConfig.Editor.TinyMCE.HTML.Elements"] || "{}"),
+    valid_elements: window["MIR.WebConfig.Editor.TinyMCE.ValidElements"] || "",
     convert_urls: false,
-    verify_html: false
+    verify_html: true
 });
