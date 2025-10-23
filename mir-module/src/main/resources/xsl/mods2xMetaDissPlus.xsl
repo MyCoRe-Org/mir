@@ -821,13 +821,13 @@
   </xsl:template>
 
   <xsl:template name="ddb_identifier">
-    <xsl:if test="mods:identifier[@type='doi'] and mods:identifier[@type='urn' and starts-with(text(), 'urn:nbn')]">
+    <xsl:if test="$mods/mods:identifier[@type='doi'] and $mods/mods:identifier[@type='urn' and starts-with(text(), 'urn:nbn')]">
       <!-- URN is given and favourite identifier for DNB -->
       <ddb:identifier ddb:type="DOI">
         <xsl:apply-templates select="$mods" mode="preferredDOI" />
       </ddb:identifier>
     </xsl:if>
-    <xsl:for-each select="mods:identifier[@type='isbn']">
+    <xsl:for-each select="$mods/mods:identifier[@type='isbn']">
       <ddb:identifier ddb:type="ISBN">
         <xsl:value-of select="."/>
       </ddb:identifier>

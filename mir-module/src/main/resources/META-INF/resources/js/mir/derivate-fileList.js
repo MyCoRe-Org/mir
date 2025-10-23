@@ -269,8 +269,8 @@
 				success : function(data) {
 					data.mainDoc = mainDoc;
 					data.serverBaseURL = webApplicationBaseURL;
-					data.permWrite = aclWriteDB == "true";
-					data.permDelete = aclDeleteDB == "true";
+					data.permWrite = aclWriteDB === "true";
+					data.permDelete = aclDeleteDB === "true";
 
 					setPath("/");
 					data.pagination = buildPagination(data.children);
@@ -451,17 +451,15 @@
 		}
 
 		function buildPagination(children) {
-			var pageCount = Math.floor(children.length / numPerPage) + (children.length % numPerPage != 0 ? 1 : 0);
-			var start = ((page || 1) - 1) * numPerPage;
-			var end = start + numPerPage;
-			(end > children.length) && (end = children.length);
+			let pageCount = Math.floor(children.length / numPerPage) + (children.length % numPerPage != 0 ? 1 : 0);
+			let start = ((page || 1) - 1) * numPerPage;
 
 			return pageCount > 1 ? pagination = {
 				numPerPage : numPerPage,
 				pageCount : pageCount,
 				page : page || 1,
 				start : start + 1,
-				end : end,
+				end : Math.min((start + numPerPage), children.length),
 				total : children.length
 			} : undefined;
 		}
@@ -562,7 +560,7 @@
 				aclWriteDB = $(list).attr("data-writedb");
 				aclDeleteDB = $(list).attr("data-deletedb");
 				urn = $(list).attr("data-urn");
-				numPerPage = $(list).attr("data-numperpage") || 10;
+				numPerPage = Number.isInteger($(list).attr("data-numperpage")) ? parseInt($(list).attr("data-numperpage"), 10) : 10;
 
 				$(fileBox).on("click", ".derivate_folder > a", function(evt) {
 					evt.preventDefault();
