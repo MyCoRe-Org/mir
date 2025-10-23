@@ -2,11 +2,17 @@
 
 <!-- XSL to display data of a login user -->
 
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xalan="http://xml.apache.org/xalan" xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions"
-  xmlns:acl="xalan://org.mycore.access.MCRAccessManager" xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation" xmlns:const="xalan://org.mycore.user2.MCRUser2Constants"
-  exclude-result-prefixes="xsl xalan i18n acl const mcrxsl"
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+                xmlns:xalan="http://xml.apache.org/xalan"
+                xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions"
+                xmlns:acl="xalan://org.mycore.access.MCRAccessManager"
+                xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
+                xmlns:const="xalan://org.mycore.user2.MCRUser2Constants"
+                exclude-result-prefixes="xsl xalan i18n acl const mcrxsl"
 >
 
+  <xsl:import href="xslImport:userProfileActions"/>
+  <xsl:import href="xslImport:userProfileAttributes"/>
   <xsl:include href="MyCoReLayout.xsl" />
   <xsl:include href="resource:xsl/orcid/mir-orcid.xsl"/>
   <xsl:include href="resource:xsl/orcid/mir-orcid-user-ui.xsl"/>
@@ -35,49 +41,6 @@
     </xsl:if>
   </xsl:variable>
   <xsl:variable name="owns" select="document(concat('user:getOwnedUsers:',$uid))/owns" />
-
-  <xsl:template match="user" mode="actions">
-    <xsl:variable name="isCurrentUser" select="$CurrentUser = $uid" />
-    <xsl:if test="(string-length($step) = 0) or ($step = 'changedPassword')">
-      <xsl:variable name="isUserAdmin" select="acl:checkPermission(const:getUserAdminPermission())" />
-      <xsl:choose>
-        <xsl:when test="$isUserAdmin">
-          <a class="btn btn-secondary" href="{$WebApplicationBaseURL}authorization/change-user.xed?action=save&amp;id={$uid}">
-            <xsl:value-of select="i18n:translate('component.user2.admin.changedata')" />
-          </a>
-        </xsl:when>
-        <xsl:when test="not($isCurrentUser)">
-          <a class="btn btn-secondary" href="{$WebApplicationBaseURL}authorization/change-read-user.xed?action=save&amp;id={$uid}">
-            <xsl:value-of select="i18n:translate('component.user2.admin.changedata')" />
-          </a>
-        </xsl:when>
-        <xsl:when test="$isCurrentUser and not(/user/@locked = 'true')">
-          <a class="btn btn-secondary" href="{$WebApplicationBaseURL}authorization/change-current-user.xed?action=saveCurrentUser">
-            <xsl:value-of select="i18n:translate('component.user2.admin.changedata')" />
-          </a>
-        </xsl:when>
-      </xsl:choose>
-      <xsl:if test="/user/@realm = 'local' and (not($isCurrentUser) or not(/user/@locked = 'true'))">
-        <xsl:choose>
-          <xsl:when test="$isCurrentUser">
-            <a class="btn btn-secondary" href="{$WebApplicationBaseURL}authorization/change-password.xed?action=password">
-              <xsl:value-of select="i18n:translate('component.user2.admin.changepw')" />
-            </a>
-          </xsl:when>
-          <xsl:otherwise>
-            <a class="btn btn-secondary" href="{$WebApplicationBaseURL}authorization/change-password.xed?action=password&amp;id={$uid}">
-              <xsl:value-of select="i18n:translate('component.user2.admin.changepw')" />
-            </a>
-          </xsl:otherwise>
-        </xsl:choose>
-      </xsl:if>
-      <xsl:if test="$isUserAdmin and not($isCurrentUser)">
-        <a class="btn btn-danger" href="{$ServletsBaseURL}MCRUserServlet?action=show&amp;id={$uid}&amp;XSL.step=confirmDelete">
-          <xsl:value-of select="i18n:translate('component.user2.admin.userDeleteYes')" />
-        </a>
-      </xsl:if>
-    </xsl:if>
-  </xsl:template>
 
   <xsl:template match="user">
     <xsl:variable name="isUserAdmin" select="acl:checkPermission(const:getUserAdminPermission())" />
@@ -238,89 +201,9 @@
                   </xsl:choose>
                 </td>
               </tr>
-              <tr class="d-flex">
-                <th class="col-md-3">
-                  <xsl:value-of select="i18n:translate('component.user2.admin.user.attributes')" />
-                </th>
-                <td class="col-md-9">
-                  <dl>
-                    <!-- filter orcid attributes -->
-                    <xsl:for-each select="attributes/attribute[not(@name='id_orcid' or starts-with(@name, 'orcid_credential_') or  starts-with(@name, 'orcid_user_properties_'))]">
-                      <dt>
-                        <xsl:value-of select="@name" />
-                      </dt>
-                      <dd>
-                        <xsl:value-of select="@value" />
-                      </dd>
-                    </xsl:for-each>
-                  </dl>
-                </td>
-              </tr>
             </xsl:if>
-            <xsl:if test="attributes/attribute[@name='id_orcid']" >
-              <tr class="d-flex">
-                <th class="col-md-3">
-                  <xsl:value-of select="i18n:translate('user.profile.id.orcid')" />
-                  <xsl:text>:</xsl:text>
-                </th>
-                <td class="col-md-9">
-                  <xsl:variable name="url" select="concat($MCR.ORCID2.BaseURL, '/', attributes/attribute[@name='id_orcid']/@value)" />
-                  <a href="{$url}">
-                    <img alt="ORCID iD" src="{$WebApplicationBaseURL}images/orcid_icon.svg" class="orcid-icon" />
-                    <xsl:value-of select="$url" />
-                  </a>
-                </td>
-              </tr>
-            </xsl:if>
-            <xsl:if test="$fullDetails">
-              <tr class="d-flex">
-                <th class="col-md-3">
-                  <xsl:value-of select="i18n:translate('component.user2.admin.owner')" />
-                </th>
-                <td class="col-md-9">
-                  <xsl:apply-templates select="owner" mode="link" />
-                  <xsl:if test="count(owner)=0">
-                    <xsl:value-of select="i18n:translate('component.user2.admin.userIndependent')" />
-                  </xsl:if>
-                </td>
-              </tr>
-            </xsl:if>
-            <xsl:if test="$fullDetails">
-              <tr class="d-flex">
-                <th class="col-md-3">
-                  <xsl:value-of select="i18n:translate('component.user2.admin.roles')" />
-                </th>
-                <td class="col-md-9">
-                  <xsl:for-each select="roles/role">
-                    <xsl:value-of select="@name" />
-                    <xsl:variable name="lang">
-                      <xsl:call-template name="selectPresentLang">
-                        <xsl:with-param name="nodes" select="label" />
-                      </xsl:call-template>
-                    </xsl:variable>
-                    <xsl:value-of select="concat(' [',label[lang($lang)]/@text,']')" />
-                    <xsl:if test="position() != last()">
-                      <br />
-                    </xsl:if>
-                  </xsl:for-each>
-                </td>
-              </tr>
-            </xsl:if>
-            <xsl:if test="$fullDetails">
-              <tr class="d-flex">
-                <th class="col-md-3">
-                  <xsl:value-of select="i18n:translate('component.user2.admin.userOwns')" />
-                </th>
-                <td class="col-md-9">
-                  <xsl:for-each select="$owns/user">
-                    <xsl:apply-templates select="." mode="link" />
-                    <xsl:if test="position() != last()">
-                      <br />
-                    </xsl:if>
-                  </xsl:for-each>
-                </td>
-              </tr>
-            </xsl:if>
+
+            <xsl:apply-templates select="." mode="user-attributes" />
           </table>
         </div>
         <xsl:if test="$isOrcidEnabled">
