@@ -90,6 +90,7 @@ The docker container has its own install script which uses the environment varia
 | XMS                      | 1g                  | The value of the -Xms parameter for Tomcat.                                                                                                                                                                                                                                          |
 | FIX_FILE_SYSTEM_RIGHTS   | false               | If true the file system rights of the mounted volumes get corrected to be owned by the right user.                                                                                                                                                                                   |
 | MIR_OPTS                 |                     | Additional options which will be passed as JAVA_OPTS to the tomcat process                                                                                                                                                                                                           |
+| Property.&lt;property name&gt;|                | Variables beginning with `Properties.` are automatically recognized and added to mycore.properties, e.g., `Properties.MyProperty=Value`.                                                                                                                                             |
 
 ### Mount Points
 
