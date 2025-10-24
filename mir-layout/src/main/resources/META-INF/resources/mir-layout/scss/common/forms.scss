@@ -248,11 +248,11 @@ span.topicExtended-container input.topic_gnd, span.geographicExtended-container 
   margin-bottom: 40px;
 }
 
-.mcr-invalid .cke_contents {
+.mcr-invalid .tox {
     border: 1px solid $danger;
 }
 
-.mcr-valid .cke_contents {
+.mcr-valid .tox {
     border: 1px solid $success;
 }
 
