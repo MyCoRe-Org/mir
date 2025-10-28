@@ -6,7 +6,7 @@
   <xsl:param name="MIR.User.ShowSimpleDetailsOnly"/>
   <xsl:param name="WebApplicationBaseURL"/>
 
-  <xsl:variable name="isUserAdmin" select="document('notnull:checkPermission:administrate-users')"/>
+  <xsl:variable name="isUserAdmin" select="document('notnull:checkPermission:administrate-users')/boolean = 'true'"/>
   <xsl:variable name="fullDetails" select="$isUserAdmin or not($MIR.User.ShowSimpleDetailsOnly='true')"/>
 
   <xsl:template match="user" mode="user-attributes"/>
