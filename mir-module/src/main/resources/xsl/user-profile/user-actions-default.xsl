@@ -13,8 +13,6 @@
     <xsl:variable name="isCurrentUser" select="$CurrentUser = $uid"/>
 
     <xsl:if test="(string-length($step) = 0) or ($step = 'changedPassword')">
-      <xsl:variable name="isUserAdmin" select="document('checkPermission:POOLPRIVILEGE:administrate-users')/boolean = 'true'"/>
-
       <xsl:choose>
         <xsl:when test="$isUserAdmin">
           <a class="btn btn-secondary"
