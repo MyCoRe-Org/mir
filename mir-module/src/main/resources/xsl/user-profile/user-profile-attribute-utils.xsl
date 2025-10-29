@@ -2,13 +2,6 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" exclude-result-prefixes="xsl">
 
   <xsl:template match="user|owner" mode="link">
-    <xsl:variable name="uid">
-      <xsl:value-of select="@name"/>
-      <xsl:if test="not ( @realm = 'local' )">
-        <xsl:text>@</xsl:text>
-        <xsl:value-of select="@realm"/>
-      </xsl:if>
-    </xsl:variable>
     <a href="MCRUserServlet?action=show&amp;id={$uid}">
       <xsl:apply-templates select="." mode="name"/>
     </a>
