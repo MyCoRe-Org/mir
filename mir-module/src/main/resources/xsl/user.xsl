@@ -13,6 +13,7 @@
 
   <xsl:import href="xslImport:userProfileActions"/>
   <xsl:import href="xslImport:userProfileAttributes"/>
+
   <xsl:include href="MyCoReLayout.xsl" />
   <xsl:include href="resource:xsl/orcid/mir-orcid.xsl"/>
   <xsl:include href="resource:xsl/orcid/mir-orcid-user-ui.xsl"/>
@@ -26,12 +27,15 @@
     <xsl:call-template name="user-display-name"/>
   </xsl:variable>
 
+  <xsl:variable name="isUserAdmin" select="document('notnull:checkPermission:administrate-users')/boolean = 'true'"/>
+  <xsl:variable name="fullDetails" select="$isUserAdmin or not($MIR.User.ShowSimpleDetailsOnly='true')"/>
+
   <xsl:param name="step" />
   <xsl:param name="MCR.ORCID2.OAuth.Scope"/>
   <xsl:param name="MCR.ORCID2.BaseURL"/>
   <xsl:param name="MIR.ORCID.InfoURL"/>
-
   <xsl:param name="MIR.User.ShowSimpleDetailsOnly" select="'false'" />
+  <xsl:param name="WebApplicationBaseURL"/>
 
   <xsl:variable name="uid">
     <xsl:value-of select="/user/@name" />
