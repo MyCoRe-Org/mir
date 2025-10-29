@@ -4,12 +4,8 @@
 
   <xsl:import href="xslImport:userProfileActions:user-profile/user-actions-default.xsl"/>
 
-  <xsl:param name="CurrentUser"/>
-
   <xsl:template match="user" mode="actions">
     <xsl:apply-imports />
-
-    <xsl:variable name="isCurrentUser" select="$CurrentUser = $uid"/>
 
     <xsl:if test="(string-length($step) = 0) or ($step = 'changedPassword')">
       <xsl:choose>

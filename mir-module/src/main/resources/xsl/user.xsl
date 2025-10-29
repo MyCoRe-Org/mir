@@ -27,9 +27,11 @@
     <xsl:call-template name="user-display-name"/>
   </xsl:variable>
 
+  <xsl:variable name="isCurrentUser" select="$CurrentUser = $uid"/>
   <xsl:variable name="isUserAdmin" select="document('notnull:checkPermission:administrate-users')/boolean = 'true'"/>
   <xsl:variable name="fullDetails" select="$isUserAdmin or not($MIR.User.ShowSimpleDetailsOnly='true')"/>
 
+  <xsl:param name="CurrentUser"/>
   <xsl:param name="step" />
   <xsl:param name="MCR.ORCID2.OAuth.Scope"/>
   <xsl:param name="MCR.ORCID2.BaseURL"/>
