@@ -106,103 +106,6 @@
       <div class="section" id="sectionlast">
         <div class="table-responsive">
           <table class="user table">
-            <tr class="d-flex">
-              <th class="col-md-3">
-                <xsl:value-of select="i18n:translate('component.user2.admin.userAccount')" />
-              </th>
-              <td class="col-md-9">
-                <xsl:apply-templates select="." mode="name" />
-              </td>
-            </tr>
-            <xsl:if test="$fullDetails or string-length(password/@hint) &gt; 0">
-              <tr class="d-flex">
-                <th class="col-md-3">
-                  <xsl:value-of select="i18n:translate('component.user2.admin.passwordHint')" />
-                </th>
-                <td class="col-md-9">
-                  <xsl:value-of select="password/@hint" />
-                </td>
-              </tr>
-            </xsl:if>
-            <tr class="d-flex">
-              <th class="col-md-3">
-                <xsl:value-of select="i18n:translate('component.user2.admin.user.lastLogin')" />
-              </th>
-              <td class="col-md-9">
-                <xsl:call-template name="formatISODate">
-                  <xsl:with-param name="date" select="lastLogin" />
-                  <xsl:with-param name="format" select="i18n:translate('component.user2.metaData.dateTime')" />
-                </xsl:call-template>
-              </td>
-            </tr>
-            <xsl:if test="$fullDetails or string-length(validUntil) &gt; 0">
-              <tr class="d-flex">
-                <th class="col-md-3">
-                  <xsl:value-of select="i18n:translate('component.user2.admin.user.validUntil')" />
-                </th>
-                <td class="col-md-9">
-                  <xsl:call-template name="formatISODate">
-                    <xsl:with-param name="date" select="validUntil" />
-                    <xsl:with-param name="format" select="i18n:translate('component.user2.metaData.dateTime')" />
-                  </xsl:call-template>
-                </td>
-              </tr>
-            </xsl:if>
-            <tr class="d-flex">
-              <th class="col-md-3">
-                <xsl:value-of select="i18n:translate('component.user2.admin.user.name')" />
-              </th>
-              <td class="col-md-9">
-                <xsl:value-of select="realName" />
-              </td>
-            </tr>
-            <xsl:if test="eMail">
-              <tr class="d-flex">
-                <th class="col-md-3">
-                  <xsl:value-of select="i18n:translate('component.user2.admin.user.email')" />
-                </th>
-                <td class="col-md-9">
-                  <a href="mailto:{eMail}">
-                    <xsl:value-of select="eMail" />
-                  </a>
-                </td>
-              </tr>
-            </xsl:if>
-            <xsl:if test="$fullDetails">
-              <tr class="d-flex">
-                <th class="col-md-3">
-                  <xsl:value-of select="i18n:translate('component.user2.admin.user.locked')" />
-                </th>
-                <td class="col-md-9">
-                  <xsl:choose>
-                    <xsl:when test="@locked='true'">
-                      <xsl:value-of select="i18n:translate('component.user2.admin.user.locked.true')" />
-                    </xsl:when>
-                    <xsl:otherwise>
-                      <xsl:value-of select="i18n:translate('component.user2.admin.user.locked.false')" />
-                    </xsl:otherwise>
-                  </xsl:choose>
-                </td>
-              </tr>
-            </xsl:if>
-            <xsl:if test="$fullDetails">
-              <tr class="d-flex">
-                <th class="col-md-3">
-                  <xsl:value-of select="concat(i18n:translate('component.user2.admin.user.disabled'), ':')" />
-                </th>
-                <td class="col-md-9">
-                  <xsl:choose>
-                    <xsl:when test="@disabled='true'">
-                      <xsl:value-of select="i18n:translate('component.user2.admin.user.disabled.true')" />
-                    </xsl:when>
-                    <xsl:otherwise>
-                      <xsl:value-of select="i18n:translate('component.user2.admin.user.disabled.false')" />
-                    </xsl:otherwise>
-                  </xsl:choose>
-                </td>
-              </tr>
-            </xsl:if>
-
             <xsl:apply-templates select="." mode="user-attributes" />
           </table>
         </div>
@@ -212,26 +115,6 @@
         </xsl:if>
       </div>
     </div>
-  </xsl:template>
-
-  <xsl:template match="user|owner" mode="link">
-    <xsl:variable name="uid">
-      <xsl:value-of select="@name" />
-      <xsl:if test="not ( @realm = 'local' )">
-        <xsl:text>@</xsl:text>
-        <xsl:value-of select="@realm" />
-      </xsl:if>
-    </xsl:variable>
-    <a href="MCRUserServlet?action=show&amp;id={$uid}">
-      <xsl:apply-templates select="." mode="name" />
-    </a>
-  </xsl:template>
-
-  <xsl:template match="user|owner" mode="name">
-    <xsl:value-of select="@name" />
-    <xsl:text> [</xsl:text>
-    <xsl:value-of select="@realm" />
-    <xsl:text>]</xsl:text>
   </xsl:template>
 
   <xsl:template name="orcid">
