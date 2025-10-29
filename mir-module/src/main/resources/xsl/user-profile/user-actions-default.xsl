@@ -5,7 +5,6 @@
   <xsl:import href="xslImport:userProfileActions:user-profile/user-actions-default.xsl"/>
 
   <xsl:param name="CurrentUser"/>
-  <xsl:param name="WebApplicationBaseURL"/>
 
   <xsl:template match="user" mode="actions">
     <xsl:apply-imports />
