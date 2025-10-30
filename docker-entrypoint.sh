@@ -204,6 +204,14 @@ function setDockerValues() {
       setOrAddProperty "$complete_key" "$value"
     done
 
+    # iterate over all environment variables prefixed with Property. and add them to the mycore.properties
+    for var in $(env | grep -E "^Property."); do
+      key=$(echo $var | cut -d'=' -f1 | sed 's/Property.//g')
+      value=$(echo $var | cut -d'=' -f2)
+
+      setOrAddProperty "$key" "$value"
+    done
+
     rm -f "${PERSISTENCE_XML}"
 }
 

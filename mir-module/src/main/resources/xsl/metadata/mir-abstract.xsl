@@ -105,13 +105,13 @@
 
         <xsl:choose>
           <xsl:when test="count($abstracts/mods:abstract) &gt; 1">
-            <xsl:variable name="first-abstract-in-current-lang-node" select="$abstracts/mods:abstract[@xml:lang=$CurrentLang][1]"/>
+            <xsl:variable name="first-abstract-in-current-lang-node-id" select="generate-id($abstracts/mods:abstract[@xml:lang=$CurrentLang][1])"/>
             <xsl:variable name="first-abstract-in-current-lang-position">
               <xsl:for-each select="$abstracts/mods:abstract">
                 <xsl:sort select="@type"/>
                 <xsl:sort select="@xml:lang"/>
 
-                <xsl:if test=".= $first-abstract-in-current-lang-node">
+                <xsl:if test="generate-id(.)=$first-abstract-in-current-lang-node-id">
                   <xsl:value-of select="position()"/>
                 </xsl:if>
               </xsl:for-each>
