@@ -441,7 +441,7 @@
   <xed:template id="genres.research_data">
     <xed:include ref="title" />
     <xed:include ref="research.data.person.repeated" />
-    <xed:include ref="openAIRE" />
+    <xed:include ref="project.repeated"/>
     <xed:include ref="research.data.date.repeated" />
     <xed:include ref="type.of.resource" />
     <xed:include ref="language" />
