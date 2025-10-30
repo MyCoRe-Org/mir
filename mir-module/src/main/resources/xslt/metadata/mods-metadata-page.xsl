@@ -22,6 +22,7 @@
   <xsl:param name="MIR.Layout.Display.Div"/>
 
   <xsl:param name="MIR.CanonicalBaseURL" />
+  <xsl:param name="MIR.Metadata.Admindata.ShowRealUserName"/>
 
   <xsl:param name="WebApplicationBaseURL"/>
   <xsl:param name="CurrentLang"/>
@@ -262,7 +263,25 @@
           </td>
           <td class="user">
             <xsl:if test="@user">
-              <xsl:value-of select="@user"/>
+              <xsl:choose>
+                <xsl:when test="$MIR.Metadata.Admindata.ShowRealUserName = 'true'">
+                  <xsl:variable name="realName" select="document(concat('notnull:user:', @user))/user/realName"/>
+                  <xsl:choose>
+                    <xsl:when test="string-length($realName) &gt; 0">
+                      <xsl:attribute name="title">
+                        <xsl:value-of select="@user"/>
+                      </xsl:attribute>
+                      <xsl:value-of select="$realName"/>
+                    </xsl:when>
+                    <xsl:otherwise>
+                      <xsl:value-of select="@user"/>
+                    </xsl:otherwise>
+                  </xsl:choose>
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:value-of select="@user"/>
+                </xsl:otherwise>
+              </xsl:choose>
             </xsl:if>
           </td>
         </tr>
