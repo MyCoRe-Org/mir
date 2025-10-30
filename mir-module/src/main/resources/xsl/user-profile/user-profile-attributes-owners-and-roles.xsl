@@ -19,6 +19,7 @@
         </td>
       </tr>
     </xsl:if>
+
     <xsl:if test="$fullDetails">
       <tr class="d-flex">
         <th class="col-md-3">
@@ -40,6 +41,7 @@
         </td>
       </tr>
     </xsl:if>
+
     <xsl:if test="$fullDetails">
       <tr class="d-flex">
         <th class="col-md-3">
@@ -57,4 +59,9 @@
     </xsl:if>
   </xsl:template>
 
+  <xsl:template match="user|owner" mode="link">
+    <a href="MCRUserServlet?action=show&amp;id={$uid}">
+      <xsl:apply-templates select="." mode="name"/>
+    </a>
+  </xsl:template>
 </xsl:stylesheet>
