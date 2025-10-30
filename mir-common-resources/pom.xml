@@ -4,7 +4,7 @@
   <parent>
     <groupId>org.mycore.mir</groupId>
     <artifactId>mir-parent</artifactId>
-    <version>2025.12.0-SNAPSHOT</version>
+    <version>2026.06.0-SNAPSHOT</version>
   </parent>
   <artifactId>mir-common-resources</artifactId>
   <name>MIR: Common Resources</name>
