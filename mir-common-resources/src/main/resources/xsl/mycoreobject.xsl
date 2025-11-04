@@ -354,13 +354,13 @@
             <span class="user">
               <xsl:choose>
                 <xsl:when test="$MIR.Metadata.Admindata.ShowRealUserName = 'true'">
-                  <xsl:variable name="realName" select="document(concat('notnull:user:', @user))/user/realName"/>
+                  <xsl:variable name="resolved-user" select="document(concat('notnull:user:', @user))/user"/>
                   <xsl:choose>
-                    <xsl:when test="string-length($realName) &gt; 0">
+                    <xsl:when test="string-length($resolved-user/realName) &gt; 0">
                       <xsl:attribute name="title">
-                        <xsl:value-of select="@user"/>
+                        <xsl:value-of select="concat($resolved-user/@name,'@', $resolved-user/@realm)"/>
                       </xsl:attribute>
-                      <xsl:value-of select="$realName"/>
+                      <xsl:value-of select="$resolved-user/realName"/>
                     </xsl:when>
                     <xsl:otherwise>
                       <xsl:value-of select="@user"/>
