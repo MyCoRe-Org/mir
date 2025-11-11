@@ -18,6 +18,7 @@
   -->
 
 <or xmlns:rh="https://mycore.org/rule-helper">
+    <rh:include href="rules-access-key.xml" rule-helper="true"/>
     <rh:include href="rules-webpage.xml" rule-helper="true"/>
     <rh:include href="rules-objects.xml" rule-helper="true"/>
     <rh:include href="rules-editor.xml" rule-helper="true"/>

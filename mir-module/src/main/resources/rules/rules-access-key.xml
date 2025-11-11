@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<or xmlns:rh="https://mycore.org/rule-helper">
+    <and>
+        <action>manage-access-key</action>
+        <or>
+            <role>editor</role>
+            <role>administrator</role>
+        </or>
+    </and>
+</or>

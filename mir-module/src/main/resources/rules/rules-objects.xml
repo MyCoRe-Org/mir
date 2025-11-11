@@ -31,6 +31,8 @@
                 <or>
                     <action>create-mods</action>
                     <action>create-derivate</action>
+                    <action>manage-access-key-read</action>
+                    <action>manage-access-key-write</action>
                 </or>
                 <or>
                     <role>editor</role>
@@ -42,6 +44,8 @@
             <and>
                 <action>read</action>
                 <or>
+                    <has-user-access-key/>
+                    <has-session-access-key>
                     <and>
                         <status>published</status>
                         <or>
