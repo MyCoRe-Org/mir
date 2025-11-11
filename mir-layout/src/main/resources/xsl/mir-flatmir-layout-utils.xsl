@@ -39,7 +39,7 @@
               class="navbar-toggler"
               type="button"
               data-bs-toggle="collapse"
-              data-target="#mir-main-nav-collapse-box"
+              data-bs-target="#mir-main-nav-collapse-box"
               aria-controls="mir-main-nav-collapse-box"
               aria-expanded="false"
               aria-label="Toggle navigation">
