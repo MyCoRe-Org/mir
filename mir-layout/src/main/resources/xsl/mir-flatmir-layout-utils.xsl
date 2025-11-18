@@ -158,9 +158,9 @@
         <div class="col-2">
           <h4>Layout based on</h4>
           <ul class="internal_links">
-            <li><a href="{$WebApplicationBaseURL}mir-layout/template/flatmir.xml">flatmir</a></li>
-            <li><a href="http://getbootstrap.com/">Bootstrap</a></li>
-            <li><a href="http://bootswatch.com/">Bootswatch</a></li>
+            <li><a class="dropdown-item" href="{$WebApplicationBaseURL}mir-layout/template/flatmir.xml">flatmir</a></li>
+            <li><a class="dropdown-item" href="http://getbootstrap.com/">Bootstrap</a></li>
+            <li><a class="dropdown-item" href="http://bootswatch.com/">Bootswatch</a></li>
           </ul>
         </div>
       </div>

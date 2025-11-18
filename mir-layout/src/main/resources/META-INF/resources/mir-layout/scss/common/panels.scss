@@ -20,4 +20,9 @@
 }
 .flatmir-footer a {
     color:                      $gray-100;
+    &:hover,
+    &:focus {
+      color:                  white;
+      text-decoration:          underline;
+    }
 }
