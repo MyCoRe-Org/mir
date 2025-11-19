@@ -20,8 +20,7 @@
         </nav>
       </div>
       <div id="project_logo_box">
-        <a href="{concat($WebApplicationBaseURL,substring($loaded_navigation_xml/@hrefStartingPage,2))}"
-           class="text-decoration-none">
+        <a href="{concat($WebApplicationBaseURL,substring($loaded_navigation_xml/@hrefStartingPage,2))}">
           <span id="logo_mir">mir</span>
           <span id="logo_modul">mycore</span>
           <span id="logo_slogan">mods institutional repository</span>
