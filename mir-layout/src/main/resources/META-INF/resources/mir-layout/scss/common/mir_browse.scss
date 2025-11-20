@@ -89,9 +89,6 @@ ul.cbList li:last-child {
 ul.cbList li:nth-child(odd) {
     background-color: #eee;
 }
-ul.cbList li a {
-    text-decoration: none;
-}
 ul.cbList li a:first-child {
     color: #aaa;
 }
@@ -103,9 +100,6 @@ ul span.cbNum {
 /* second+ level */
 ul.cbList ul {
     padding: 0 0 0 0px;
-}
-ul.cbList li li a {
-    color: $link_color;
 }
 ul.cbList li li {
     margin: 1px 0 0 0;
