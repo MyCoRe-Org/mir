@@ -141,11 +141,11 @@
             <a onclick="$('#{$derivate}{$uniqueFileId}cbButton').toggleClass('fa-chevron-right fa-chevron-down');"
                data-toggle="collapse" href="#collapse{$derivate}{$uniqueFileId}"
                class="text-start d-flex flex-md-row flex-grow-1 list-group-item align-items-center">
-                <i id="{$derivate}{$uniqueFileId}cbButton" class="fa fa-chevron-right ml-auto mr-1"/>
+                <i id="{$derivate}{$uniqueFileId}cbButton" class="fa fa-chevron-rightms-auto me-1"/>
                 <span class="flex-grow-1 font-weight-bold text-break">
                     <xsl:value-of select="$name"/>
                 </span>
-                <span class="badge badge-{$badgecolor} badge-pill align-self-center">
+                <span class="badge bg-{$badgecolor} rounded-pill align-self-center">
                     <xsl:choose>
                         <xsl:when test="$badgecolor = 'warning'">!</xsl:when>
                         <xsl:otherwise>
@@ -208,7 +208,7 @@
            data-toggle="collapse" href="#collapse{$uniqueName}stacktrace"
            class="text-start text-dark d-flex flex-md-row flex-grow-1 list-group-item align-items-center"
            style="text-decoration: none;">
-            <i id="{$uniqueName}stacktracecbButton" class="fa fa-chevron-right ml-auto mr-1"></i>
+            <i id="{$uniqueName}stacktracecbButton" class="fa fa-chevron-rightms-auto me-1"></i>
             <span class="flex-grow-1 font-weight-bold text-break">
                 <xsl:value-of select="'Stack trace'"/>
             </span>

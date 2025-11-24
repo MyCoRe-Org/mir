@@ -4,18 +4,18 @@
       <a v-if="props.titleInfo.valueURI"
          :href="props.titleInfo.valueURI"
          target="_blank">
-        <span v-for="title in props.titleInfo.title" class="mr-1">{{ title }}</span>
-        <span v-for="subtitle in props.titleInfo.subTitle" class="mr-1">{{ subtitle }}</span>
-        <span v-for="partNumber in props.titleInfo.partNumber" class="mr-1">{{ partNumber }}</span>
-        <span v-for="partName in props.titleInfo.partName" class="mr-1">{{ partName }}</span>
-        <span v-for="nonSort in props.titleInfo.nonSort" class="mr-1">{{ nonSort }}</span>
+        <span v-for="title in props.titleInfo.title" class="me-1">{{ title }}</span>
+        <span v-for="subtitle in props.titleInfo.subTitle" class="me-1">{{ subtitle }}</span>
+        <span v-for="partNumber in props.titleInfo.partNumber" class="me-1">{{ partNumber }}</span>
+        <span v-for="partName in props.titleInfo.partName" class="me-1">{{ partName }}</span>
+        <span v-for="nonSort in props.titleInfo.nonSort" class="me-1">{{ nonSort }}</span>
       </a>
       <span v-else>
-        <span v-for="title in props.titleInfo.title" class="mr-1">{{ title }}</span>
-        <span v-for="subtitle in props.titleInfo.subTitle" class="mr-1">{{ subtitle }}</span>
-        <span v-for="partNumber in props.titleInfo.partNumber" class="mr-1">{{ partNumber }}</span>
-        <span v-for="partName in props.titleInfo.partName" class="mr-1">{{ partName }}</span>
-        <span v-for="nonSort in props.titleInfo.nonSort" class="mr-1">{{ nonSort }}</span>
+        <span v-for="title in props.titleInfo.title" class="me-1">{{ title }}</span>
+        <span v-for="subtitle in props.titleInfo.subTitle" class="me-1">{{ subtitle }}</span>
+        <span v-for="partNumber in props.titleInfo.partNumber" class="me-1">{{ partNumber }}</span>
+        <span v-for="partName in props.titleInfo.partName" class="me-1">{{ partName }}</span>
+        <span v-for="nonSort in props.titleInfo.nonSort" class="me-1">{{ nonSort }}</span>
       </span>
       <box-popover v-if="props.mode == 'editor'" :title="i18n['mir.details.popover.title']">
           <dl>
