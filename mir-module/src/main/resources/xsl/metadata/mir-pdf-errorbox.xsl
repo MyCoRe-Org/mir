@@ -139,7 +139,7 @@
         <xsl:variable name="uniqueFileId" select="generate-id(.)"/>
         <div id="{$derivate}{$uniqueFileId}" class="font-weight-bold d-flex list-group list-group-root">
             <a onclick="$('#{$derivate}{$uniqueFileId}cbButton').toggleClass('fa-chevron-right fa-chevron-down');"
-               data-toggle="collapse" href="#collapse{$derivate}{$uniqueFileId}"
+               data-bs-toggle="collapse" href="#collapse{$derivate}{$uniqueFileId}"
                class="text-start d-flex flex-md-row flex-grow-1 list-group-item align-items-center">
                 <i id="{$derivate}{$uniqueFileId}cbButton" class="fa fa-chevron-right ms-auto me-1"/>
                 <span class="flex-grow-1 font-weight-bold text-break">
@@ -205,7 +205,7 @@
     <xsl:template match="exceptions">
         <xsl:param name="uniqueName" select="'uniqueStacktraceName'"/>
         <a onclick="$('#{$uniqueName}stacktracecbButton').toggleClass('fa-chevron-right fa-chevron-down');"
-           data-toggle="collapse" href="#collapse{$uniqueName}stacktrace"
+           data-bs-toggle="collapse" href="#collapse{$uniqueName}stacktrace"
            class="text-start text-dark d-flex flex-md-row flex-grow-1 list-group-item align-items-center"
            style="text-decoration: none;">
             <i id="{$uniqueName}stacktracecbButton" class="fa fa-chevron-right ms-auto me-1"></i>
