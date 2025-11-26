@@ -349,7 +349,7 @@
 
   <xsl:template name="hostingInstitution">
     <contributor contributorType="HostingInstitution">
-      <contributorName>
+      <contributorName nameType="Organizational">
         <xsl:value-of select="$MCR.DOI.HostingInstitution" />
       </contributorName>
     </contributor>
