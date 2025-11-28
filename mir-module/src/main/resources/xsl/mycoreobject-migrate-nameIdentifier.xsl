@@ -16,7 +16,7 @@
           <xsl:when test="starts-with(@authorityURI, 'http://www.viaf.org/')">
             <xsl:copy>
               <xsl:apply-templates select="@* | *"/>
-              <mods:nameIdentifier type="viaf" typeURI="'http://www.viaf.org/"><xsl:value-of select="substring-after(@valueURI, 'http://www.viaf.org/')" /></mods:nameIdentifier>
+              <mods:nameIdentifier type="viaf" typeURI="http://www.viaf.org/"><xsl:value-of select="substring-after(@valueURI, 'http://www.viaf.org/')" /></mods:nameIdentifier>
             </xsl:copy>
           </xsl:when>
           <xsl:otherwise>
