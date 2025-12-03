@@ -13,7 +13,6 @@
 
   <xsl:param name="UserAgent" />
   <xsl:param name="MIR.DFGViewer.enable" select="'false'" />
-  <xsl:param name="MIR.Viewer.DisableDerivateType" select="''" />
   <xsl:param name="MCR.Viewer.PDFCreatorURI" />
   <xsl:param name="MCR.Viewer.PDFCreatorStyle" />
   <xsl:param name="MCR.Viewer.PDFCreatorFormatString" />
@@ -21,7 +20,7 @@
   <xsl:param name="WebApplicationBaseURL" />
 
   <xsl:template match="/">
-    <xsl:if test="mycoreobject/structure/derobjects/derobject[not(contains($MIR.Viewer.DisableDerivateType,classification/@categid ))]">
+    <xsl:if test="mycoreobject/structure/derobjects/derobject[mcrxml:isDerivateDisplayEnabled(@xlink:href, 'show-file-viewer')]">
       <div id="mir-viewer">
         <xsl:variable name="viewerNodesTmp">
           <xsl:if test="count(mycoreobject/structure/derobjects/derobject[key('rights', @xlink:href)/@read]) > 0">
@@ -31,7 +30,7 @@
                   <xsl:value-of select="mcri18n:translate('metaData.preview')" />
                 </h3>
                 <!-- show one viewer for each derivate -->
-                <xsl:for-each select="mycoreobject/structure/derobjects/derobject[key('rights', @xlink:href)/@read and not(contains($MIR.Viewer.DisableDerivateType,classification/@categid ))]">
+                <xsl:for-each select="mycoreobject/structure/derobjects/derobject[key('rights', @xlink:href)/@read and mcrxml:isDerivateDisplayEnabled(@xlink:href, 'show-file-viewer')]">
                   <xsl:call-template name="createViewer" />
                 </xsl:for-each>
               </div>
