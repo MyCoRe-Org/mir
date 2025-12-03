@@ -27,6 +27,7 @@ import org.mycore.backend.jpa.access.MCRACCESS_;
 import org.mycore.common.MCRCache;
 import org.mycore.common.MCRException;
 import org.mycore.common.config.MCRConfiguration2;
+import org.mycore.common.xml.MCRXMLFunctions;
 import org.mycore.datamodel.classifications2.MCRCategLinkReference;
 import org.mycore.datamodel.classifications2.MCRCategLinkService;
 import org.mycore.datamodel.classifications2.MCRCategoryID;
@@ -162,11 +163,12 @@ public class MIRStrategy implements MCRAccessCheckStrategy {
             return OBJECT_BASE_STRATEGY.checkPermission(permissionId, permission);
         }
 
-        // 1. check if the object has a assigned identifier
+        // 1. exported derivates for objects with registered PI can not be modified (unless user has special permission)
         if (MCRAccessManager.PERMISSION_WRITE.equalsIgnoreCase(permission) ||
             MCRAccessManager.PERMISSION_DELETE.equalsIgnoreCase(permission)) {
             final boolean hasRegisteredPI = hasRegisteredPI(objectId);
-            if (hasRegisteredPI && !canEditPI()) {
+            final boolean isExported = MCRXMLFunctions.isDerivateDisplayEnabled(derivateId.toString(), "export");
+            if (hasRegisteredPI && isExported && !canEditPI()) {
                 return false;
             }
         }

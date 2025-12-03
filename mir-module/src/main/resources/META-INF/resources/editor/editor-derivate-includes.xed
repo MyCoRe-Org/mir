@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 
-<xed:template xmlns:xed="http://www.mycore.de/xeditor" xmlns:mir="http://www.mycore.de/mir">
+<xed:template xmlns:xed="http://www.mycore.de/xeditor" xmlns:mir="http://www.mycore.de/mir"
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+
+  <xsl:param name="MIR.Editor.Derivate.EditableIntentServiceFlags" select="en"/>
 
   <xed:template id="in.out">
     <xed:source uri="notnull:checkPermissionChain:{$derivateid}:writedb:xslStyle:editor/derivate2xeditor:mcrobject:{$derivateid}" />
@@ -50,6 +53,76 @@
         </div>
       </div>
     </xed:bind>
+  </xed:template>
+
+  <xed:template id="flags">
+    <div class="mir-form-group row">
+      <label class="col-md-3 col-form-label text-end d-inline form-label">
+        <xed:output i18n="mir.flags"/>
+      </label>
+      <div class="col-md-2">
+        <xed:bind xpath="service/servflags/servflag[@type='intent-show-file-viewer']">
+          <xed:choose>
+            <xed:when test="xed:call-java('org.mycore.access.MCRAccessManager','checkPermission',$derivateid,'manage-intent-show-file-viewer')">
+              <select class="form-control form-control-inline form-select">
+                <xed:include ref="flags_options"/>
+              </select>
+            </xed:when>
+            <xed:otherwise>
+              <select class="form-control form-control-inline form-select" disabled="disabled">
+                <xed:include ref="flags_options"/>
+              </select>
+            </xed:otherwise>
+          </xed:choose>
+        </xed:bind>
+      </div>
+      <div class="col-md-2">
+        <xed:bind xpath="service/servflags/servflag[@type='intent-show-file-area']">
+          <xed:choose>
+            <xed:when test="xed:call-java('org.mycore.access.MCRAccessManager','checkPermission',$derivateid,'manage-intent-show-file-area')">
+              <select class="form-control form-control-inline form-select">
+                <xed:include ref="flags_options"/>
+              </select>
+            </xed:when>
+            <xed:otherwise>
+              <select class="form-control form-control-inline form-select" disabled="disabled">
+                <xed:include ref="flags_options"/>
+              </select>
+            </xed:otherwise>
+          </xed:choose>
+        </xed:bind>
+      </div>
+      <div class="col-md-2">
+        <xed:bind xpath="service/servflags/servflag[@type='intent-export']">
+          <xed:choose>
+            <xed:when test="xed:call-java('org.mycore.access.MCRAccessManager','checkPermission',$derivateid,'manage-intent-export')">
+              <select class="form-control form-control-inline form-select">
+                <xed:include ref="flags_options"/>
+              </select>
+            </xed:when>
+            <xed:otherwise>
+              <select class="form-control form-control-inline form-select" disabled="disabled">
+                <xed:include ref="flags_options"/>
+              </select>
+            </xed:otherwise>
+          </xed:choose>
+        </xed:bind>
+      </div>
+      <mir:help-pmud help-text="{i18n:mir.help.derivate.flags}" pmud="false" />
+    </div>
+    <xed:cleanup-rule xpath="//service/servflags/servflag[starts-with(@type,'intent-')]" relevant-if="string-length(text()) &gt; 0"/>
+  </xed:template>
+
+  <xed:template id="flags_options">
+    <option value="">
+      <xed:output i18n="mir.flags.intent.default"/>
+    </option>
+    <option value="false">
+      <xed:output i18n="component.viewer.modal.no"/>
+    </option>
+    <option value="true">
+      <xed:output i18n="component.viewer.modal.yes"/>
+    </option>
   </xed:template>
 
   <xed:template id="title_repeat">

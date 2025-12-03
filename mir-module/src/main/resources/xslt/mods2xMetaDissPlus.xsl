@@ -8,6 +8,7 @@
   xmlns:dini="http://www.d-nb.de/standards/xmetadissplus/type/"
   xmlns:fn="http://www.w3.org/2005/xpath-functions"
   xmlns:mcracl="http://www.mycore.de/xslt/acl"
+  xmlns:mcrderivate="http://www.mycore.de/xslt/derivate"
   xmlns:mcri18n="http://www.mycore.de/xslt/i18n"
   xmlns:mcrpi="http://www.mycore.de/xslt/pi"
   xmlns:mods="http://www.loc.gov/mods/v3"
@@ -18,7 +19,7 @@
   xmlns:xMetaDiss="http://www.d-nb.de/standards/xmetadissplus/"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  exclude-result-prefixes="cc cmd dc dcterms ddb dini fn mcracl mcri18n mcrpi mods pc thesis urn xlink xsl"
+  exclude-result-prefixes="cc cmd dc dcterms ddb dini fn mcracl mcrderivate mcri18n mcrpi mods pc thesis urn xlink xsl"
   xsi:schemaLocation="http://www.d-nb.de/standards/xmetadissplus/ http://files.dnb.de/standards/xmetadissplus/xmetadissplus.xsd">
 
   <xsl:output method="xml" encoding="UTF-8" />
@@ -94,7 +95,7 @@
   </xsl:variable>
   
   <xsl:variable name="ifs">
-    <xsl:for-each select="mycoreobject/structure/derobjects/derobject[mcracl:check-permission(@xlink:href, 'read')]">
+    <xsl:for-each select="mycoreobject/structure/derobjects/derobject[mcracl:check-permission(@xlink:href, 'read') and mcrderivate:is-display-enabled(@xlink:href, 'export')]">
       <der id="{@xlink:href}">
         <xsl:copy-of select="document(concat('xslStyle:mcr_directory-recursive:ifs:',@xlink:href,'/'))" />
       </der>

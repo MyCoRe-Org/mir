@@ -2,12 +2,13 @@
 <xsl:stylesheet version="3.0"
   xmlns:dc="http://purl.org/dc/elements/1.1/"
   xmlns:mcracl="http://www.mycore.de/xslt/acl"
+  xmlns:mcrderivate="http://www.mycore.de/xslt/derivate"
   xmlns:mods="http://www.loc.gov/mods/v3"
   xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/"
   xmlns:xlink="http://www.w3.org/1999/xlink"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  exclude-result-prefixes="mcracl mods xlink xsl">
+  exclude-result-prefixes="mcracl mcrderivate mods xlink xsl">
 
   <xsl:include href="resource:xslt/default-parameters.xsl" />
   <xsl:include href="xslInclude:functions" />
@@ -18,7 +19,7 @@
   <xsl:template match="mycoreobject" mode="metadata">
 
   <xsl:variable name="ifs">
-    <xsl:for-each select="structure/derobjects/derobject[mcracl:check-permission(@xlink:href, 'read')]">
+    <xsl:for-each select="structure/derobjects/derobject[mcracl:check-permission(@xlink:href, 'read') and mcrderivate:is-display-enabled(@xlink:href, 'export')]">
       <der id="{@xlink:href}">
         <xsl:copy-of select="document(concat('xslStyle:mcr_directory-recursive:ifs:',@xlink:href,'/'))" />
       </der>

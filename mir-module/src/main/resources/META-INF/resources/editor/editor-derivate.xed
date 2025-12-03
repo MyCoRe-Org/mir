@@ -27,6 +27,10 @@
                              ref="derivate_types"/>
                 <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-derivate-includes.xed"
                              ref="mir_access"/>
+                <xed:if test="$MIR.Editor.Derivate.EditableIntentServiceFlags != 'false'">
+                  <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-derivate-includes.xed"
+                               ref="flags"/>
+                </xed:if>
                 <xed:include uri="webapp:editor/editor-derivate-includes.xed" ref="cancel.submit"/>
               </div>
             </xed:bind>
