@@ -180,7 +180,8 @@ Replaced data-toggle="popover" by data-bs-toggle="popover"
 Replaced data-toggle="button" by data-bs-toggle="button"
 Replaced data-toggle="modal" by data-bs-toggle="modal"
 
-collapse-next ist ein eigener Griff. Umbenennen? data-mcr-toggle?
+collapse-next ist ein eigener Wert mit eigener Funktion.
+Umbenannt nach: data-mcr-toggle
 
 Die Bibliothek (node modules) myclabs enthält noch bs4 code.
 

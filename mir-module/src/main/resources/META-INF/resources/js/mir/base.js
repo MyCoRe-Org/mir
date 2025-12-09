@@ -587,7 +587,7 @@
     });
 
     //colapse the next element
-    $('[data-toggle=collapse-next]').click(function() {
+    $('[data-mcr-toggle=collapse-next]').click(function() {
       $(this).next().collapse('toggle');
     });
 
