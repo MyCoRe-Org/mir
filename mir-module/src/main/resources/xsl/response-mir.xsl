@@ -6,12 +6,11 @@
   xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
   xmlns:str="http://exslt.org/strings"
   xmlns:exslt="http://exslt.org/common"
-  xmlns:mcr="xalan://org.mycore.common.xml.MCRXMLFunctions"
   xmlns:acl="xalan://org.mycore.access.MCRAccessManager"
   xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions"
   xmlns:basket="xalan://org.mycore.frontend.basket.MCRBasketManager"
   xmlns:decoder="xalan://java.net.URLDecoder"
-  exclude-result-prefixes="i18n mods str exslt mcr acl mcrxsl basket encoder decoder">
+  exclude-result-prefixes="i18n mods str exslt acl mcrxsl basket encoder decoder">
 
   <xsl:import href="xslImport:badges" />
   <xsl:import href="resource:xsl/orcid/mir-orcid-user.xsl"/>
@@ -690,7 +689,7 @@
                   <xsl:value-of select="concat($WebApplicationBaseURL, 'rsc/viewer/', $derivid,'/', $derivate/str[@name='iviewFile'])"/>
                 </xsl:when>
                 <xsl:when test="translate(str:tokenize($derivate/str[@name='derivateMaindoc'],'.')[position()=last()],'PDF','pdf') = 'pdf'">
-                  <xsl:variable name="filePath" select="concat($derivate/str[@name='id'],'/',mcr:encodeURIPath($derivate/str[@name='derivateMaindoc']))"/>
+                  <xsl:variable name="filePath" select="concat($derivate/str[@name='id'],'/',mcrxsl:encodeURIPath($derivate/str[@name='derivateMaindoc']))"/>
                   <xsl:choose>
                     <xsl:when test="mcrxsl:isMobileDevice($UserAgent)">
                       <!-- for mobile users just show the file link -->

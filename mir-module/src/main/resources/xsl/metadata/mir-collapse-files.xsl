@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-                xmlns:mcr="xalan://org.mycore.common.xml.MCRXMLFunctions"
+                xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions"
                 xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
                 xmlns:mods="http://www.loc.gov/mods/v3"
                 xmlns:xlink="http://www.w3.org/1999/xlink"
                 xmlns:acl="xalan://org.mycore.access.MCRAccessManager"
                 xmlns:embargo="xalan://org.mycore.mods.MCRMODSEmbargoUtils"
                 xmlns:piUtil="xalan://org.mycore.pi.frontend.MCRIdentifierXSLUtils"
-                exclude-result-prefixes="i18n mcr mods acl xlink embargo piUtil"
+                exclude-result-prefixes="i18n mcrxsl mods acl xlink embargo piUtil"
 >
   <xsl:import href="xslImport:modsmeta:metadata/mir-collapse-files.xsl" />
   <xsl:param name="MIR.NotFullAccessInfo.Genres" />
@@ -71,7 +71,7 @@
                                   <xsl:value-of select="$derivateXML//titles/title[@xml:lang=$CurrentLang]" />
                                 </xsl:when>
                                 <xsl:when test="string-length($derivateType)!=0">
-                                  <xsl:value-of select="mcr:getDisplayName('derivate_types',$derivateType)" />
+                                  <xsl:value-of select="mcrxsl:getDisplayName('derivate_types',$derivateType)" />
                                 </xsl:when>
                                 <xsl:otherwise>
                                   <xsl:value-of select="i18n:translate('metadata.files.file')" />

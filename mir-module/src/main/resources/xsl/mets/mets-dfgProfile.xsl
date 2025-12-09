@@ -1,8 +1,7 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xlink="http://www.w3.org/1999/xlink"
                 xmlns:mets="http://www.loc.gov/METS/"
                 xmlns:mods="http://www.loc.gov/mods/v3" xmlns:xalan="http://xml.apache.org/xalan"
-                xmlns:mcr="xalan://org.mycore.common.xml.MCRXMLFunctions"
-                exclude-result-prefixes="mcr" version="1.0">
+                exclude-result-prefixes="" version="1.0">
   <xsl:include href="mets-iview.xsl" />
   <xsl:include href="mets-amd.xsl" />
   <xsl:include href="mods-enhancer.xsl" />

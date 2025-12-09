@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:mcr="xalan://org.mycore.common.xml.MCRXMLFunctions"
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation" xmlns:mods="http://www.loc.gov/mods/v3" xmlns:xlink="http://www.w3.org/1999/xlink"
   xmlns:FilenameUtils="xalan://org.apache.commons.io.FilenameUtils" xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions"
   xmlns:iview2="xalan://org.mycore.iview2.frontend.MCRIView2XSLFunctions" xmlns:media="xalan://org.mycore.media.frontend.MCRXMLFunctions"
   xmlns:mcrsolr="xalan://org.mycore.solr.MCRXMLFunctions" xmlns:mcrsolru="xalan://org.mycore.solr.MCRSolrUtils" xmlns:xalan="http://xml.apache.org/xalan"
-  xmlns:encoder="xalan://java.net.URLEncoder" exclude-result-prefixes="xalan i18n mcr media mods xlink FilenameUtils iview2 mcrxsl mcrsolr mcrsolru encoder">
+  xmlns:encoder="xalan://java.net.URLEncoder" exclude-result-prefixes="xalan i18n media mods xlink FilenameUtils iview2 mcrxsl mcrsolr mcrsolru encoder">
   <xsl:import href="xslImport:modsmeta:metadata/mir-video.js.xsl" />
   <xsl:param name="UserAgent" />
 
@@ -132,7 +132,7 @@
     <xsl:choose>
       <xsl:when test="$fileMimeType = 'video/mp4'">
         <option data-file-extension="{$lowercaseExtension}" data-audio="false"
-                data-is-main-doc="{mcr:getMainDocName($derivateID)=$filePath}">
+                data-is-main-doc="{mcrxsl:getMainDocName($derivateID)=$filePath}">
           <xsl:attribute name="data-sources">
             <xsl:for-each select="$sources">
               <xsl:value-of select="concat(@type, ',', @src, ';')" />
@@ -144,7 +144,7 @@
       <xsl:otherwise>
         <option data-file-extension="{$lowercaseExtension}" data-mime-type="{$fileMimeType}"
           data-src="{concat($ServletsBaseURL, 'MCRFileNodeServlet/', $derivateID, '/', $filePath)}" data-audio="true"
-          data-is-main-doc="{mcr:getMainDocName($derivateID)=$filePath}">
+          data-is-main-doc="{mcrxsl:getMainDocName($derivateID)=$filePath}">
           <xsl:value-of select="$fileName" />
         </option>
       </xsl:otherwise>
