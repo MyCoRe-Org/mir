@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-                xmlns:mcr="xalan://org.mycore.common.xml.MCRXMLFunctions"
                 xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation" xmlns:mods="http://www.loc.gov/mods/v3"
                 xmlns:xlink="http://www.w3.org/1999/xlink"
                 xmlns:FilenameUtils="xalan://org.apache.commons.io.FilenameUtils"
@@ -9,7 +8,7 @@
                 xmlns:iview2xsl="xalan://org.mycore.iview2.frontend.MCRIView2XSLFunctionsAdapter"
                 xmlns:embargo="xalan://org.mycore.mods.MCRMODSEmbargoUtils"
                 xmlns:xalan="http://xml.apache.org/xalan"
-                exclude-result-prefixes="xalan i18n mcr mods xlink FilenameUtils iview2 iview2xsl mcrxsl embargo">
+                exclude-result-prefixes="xalan i18n mods xlink FilenameUtils iview2 iview2xsl mcrxsl embargo">
   <xsl:import href="xslImport:modsmeta:metadata/mir-viewer.xsl" />
   <xsl:param name="UserAgent" />
   <xsl:param name="MIR.DFGViewer.enable" select="'false'" />

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:mcr="xalan://org.mycore.common.xml.MCRXMLFunctions"
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation" xmlns:mods="http://www.loc.gov/mods/v3" xmlns:xlink="http://www.w3.org/1999/xlink"
-  exclude-result-prefixes="i18n mcr mods xlink">
+  exclude-result-prefixes="i18n mods xlink">
   <xsl:import href="xslImport:modsmeta:metadata/mir-share.xsl" />
   <xsl:template match="/">
     <xsl:variable name="objId" select="mycoreobject/@ID" />
