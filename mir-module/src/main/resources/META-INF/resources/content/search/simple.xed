@@ -17,7 +17,7 @@
   <section xml:lang="all" xmlns:xed="http://www.mycore.de/xeditor" xmlns:mir="http://www.mycore.de/mir"
       i18n="component.mods.editor.search.simple.pagetitle">
 
-    <xed:form class="form-horizontal" role="form">
+    <xed:form class="form-horizontal">
       <xed:cleanup-rule xpath="//condition" relevant-if="(string-length(@value) &gt; 0) or value[string-length(text()) &gt; 0 ]" />
       <xed:cleanup-rule xpath="//boolean" relevant-if="boolean|condition" />
       <xed:cleanup-rule xpath="//condition[@selectable='true']" relevant-if="@id = ../selectCondition/@keep" />

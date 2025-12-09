@@ -12,7 +12,7 @@
   </section>
 
   <section xml:lang="all">
-    <xed:form class="form-horizontal" role="form" xmlns:xed="http://www.mycore.de/xeditor" xmlns:mir="http://www.mycore.de/mir">
+    <xed:form class="form-horizontal" xmlns:xed="http://www.mycore.de/xeditor" xmlns:mir="http://www.mycore.de/mir">
       <xed:bind xpath="wizard">
         <xed:choose>
           <xed:when test="$action = 'login'">

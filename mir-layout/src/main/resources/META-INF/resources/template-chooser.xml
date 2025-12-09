@@ -4,7 +4,7 @@
   <section xml:lang="de" title="Layout wechseln">
     <h1>Template Chooser</h1>
     <div class="row">
-      <form role="form" method="post" name="templateChooser" class="form-horizontal col-sm-5">
+      <form method="post" name="templateChooser" class="form-horizontal col-sm-5">
         <div class="form-group">
           <label for="layout" class="col-sm-6 control-label">Layout β</label>
           <div class="col-sm-6">
@@ -65,7 +65,7 @@
       }
     ]]>
     </style>
-    <script type="text/javascript">
+    <script>
     <![CDATA[
       "use strict";
       (function($) {

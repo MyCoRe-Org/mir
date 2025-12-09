@@ -11,7 +11,6 @@
 
     <form id="submit_publication"
           class="form-horizontal"
-          role="form"
           method="get"
           action="../../editor/editor-dynamic.xed">
 
@@ -30,7 +29,7 @@
 
       <div class="row mir-form-group">
         <label for="genre" class="col-sm-3 col-lg-2 control-label form-label">
-          <text i18n="component.mods.genre" />
+          Publikationstyp
         </label>
         <div class="col-sm-7 col-md-5 col-lg-4">
           <select id="genre" class="form-control form-select" name="genre" size="1">
@@ -40,7 +39,7 @@
 
       <div class="row mir-form-group">
         <label for="host"  class="col-sm-3 col-lg-2 control-label form-label">
-          <text i18n="mir.select.host" />
+          erschienen in:
         </label>
         <div class="col-sm-7 col-md-5 col-lg-4">
           <select id="host" class="form-control form-select" name="host" size="1">
@@ -58,7 +57,7 @@
 
       <div class="row mir-form-group">
         <div class="col-sm-3 col-lg-2 control-label">
-          <select name="type" class="form-control form-select">
+          <select aria-label="Andere Datenquelle auswählen" name="type" class="form-control form-select">
             <option value="doi">DOI</option>
             <option value="scopus">Scopus-ID</option>
             <option value="pubmed">PubMed-ID</option>
@@ -70,7 +69,7 @@
           </select>
         </div>
         <div class="col-sm-7 col-md-5 col-lg-4">
-          <input class="form-control" type="text" name="modsId" />
+          <input aria-label="Eingabefeld für mods ID" class="form-control" type="text" name="modsId" />
         </div>
       </div>
 
@@ -89,7 +88,6 @@
 
     <form id="submit_publication"
           class="form-horizontal"
-          role="form"
           method="get"
           action="../../editor/editor-dynamic.xed">
 
@@ -109,7 +107,7 @@
 
       <div class="row mir-form-group">
         <label for="genre" class="col-sm-3 col-lg-2 control-label form-label">
-          <text i18n="component.mods.genre" />
+          Type of the publication
         </label>
         <div class="col-sm-7 col-md-5 col-lg-4">
           <select id="genre" class="form-control form-select" name="genre" size="1">
@@ -119,7 +117,7 @@
 
       <div class="row mir-form-group">
         <label for="host"  class="col-sm-3 col-lg-2 control-label form-label">
-          <text i18n="mir.select.host" />
+          appears in:
         </label>
         <div class="col-sm-7 col-md-5 col-lg-4">
           <select id="host" class="form-control form-select" name="host" size="1">
@@ -137,7 +135,7 @@
 
       <div class="row mir-form-group">
         <div class="col-sm-3 col-lg-2 control-label">
-          <select name="type" class="form-control form-select">
+          <select aria-label="select a mods typ" name="type" class="form-control form-select">
             <option value="doi">DOI</option>
             <option value="scopus">Scopus-ID</option>
             <option value="pubmed">PubMed-ID</option>
@@ -149,7 +147,7 @@
           </select>
         </div>
         <div class="col-sm-7 col-md-5 col-lg-4">
-          <input class="form-control" type="text" name="modsId" />
+          <input aria-label="input field for mods ID" class="form-control" type="text" name="modsId" />
         </div>
       </div>
 

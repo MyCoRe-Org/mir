@@ -359,12 +359,13 @@ $(document).ready(function () {
      }
 
     $("body").on("click", ".expand-item", function () {
-         if($(this).attr("data-target")){
-             $(this).closest(".mir-form-group").next($(this).attr("data-target")).toggleClass("d-none");
-         }
-         else {
-             $(this).closest("legend").toggleClass("hiddenDetail").next().toggleClass("d-none");
-         }
+        const $this = $(this);
+        const $fieldset = $this.closest("fieldset");
+        const $target = $fieldset.find(".mir-fieldset-content, .personExtended-container, .dateExtended-container").first();
+
+        if ($target.length) {
+          $target.toggleClass("d-none");
+        }
          if($(this).hasClass("fa-chevron-down")) {
              $(this).removeClass("fa-chevron-down");
              $(this).addClass("fa-chevron-up");

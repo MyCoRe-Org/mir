@@ -24,7 +24,7 @@
   <xed:template id="captcha">
     <xed:if test="string-length($MIR.ReCaptcha.site.key) &gt; 0">
       <script src='https://www.google.com/recaptcha/api.js' />
-      <script type="text/javascript">
+      <script>
       <![CDATA[
           var verifyCallback = function(response) {
             $('#my-g-recaptcha-response').val(response);

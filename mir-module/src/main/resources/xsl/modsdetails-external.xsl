@@ -723,7 +723,7 @@
             <button type="button" class="btn btn-secondary modal-pi-cancel" data-bs-dismiss="modal">
               <xsl:value-of select="i18n:translate('component.pi.register.modal.abort')" />
             </button>
-            <button type="button" class="btn btn-danger" id="modal-pi-add"
+            <button type="button" class="btn btn-danger" id="modal-pi-add" aria-label="Register new PI"
                     data-i18n="component.pi.register.">
             </button>
           </div>
@@ -862,7 +862,7 @@
           <!-- no derivate -->
           <xsl:otherwise>
             <!-- show default icon -->
-            <img class="hit_icon" src="{$WebApplicationBaseURL}images/icons/icon_common_disabled.png" />
+            <img alt="" class="hit_icon" src="{$WebApplicationBaseURL}images/icons/icon_common_disabled.png" />
           </xsl:otherwise>
         </xsl:choose>
       </div>

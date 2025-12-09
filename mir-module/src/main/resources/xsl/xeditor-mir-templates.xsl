@@ -375,7 +375,7 @@
             </xsl:if>
             <xsl:apply-templates select="." mode="inputOptions" />
           </input>
-          <label class="form-check-label form-label" for="{$gId}">
+          <label for="{$gId}" class="form-check-label form-label">
             <xsl:if test="string-length(@i18n) &gt; 0">
               <xed:output i18n="{@i18n}" />
             </xsl:if>
