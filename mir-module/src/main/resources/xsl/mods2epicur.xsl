@@ -19,7 +19,7 @@
   <xsl:param name="WebApplicationBaseURL" select="''" />
 
   <xsl:variable name="ifsTemp" xmlns="">
-    <xsl:for-each select="mycoreobject/structure/derobjects/derobject[acl:checkDerivateDisplayPermission(@xlink:href)]">
+    <xsl:for-each select="mycoreobject/structure/derobjects/derobject[acl:checkDerivateContentPermission(@xlink:href, 'read')]">
       <der id="{@xlink:href}">
         <xsl:copy-of select="document(concat('xslStyle:mcr_directory-recursive:ifs:',@xlink:href,'/'))" />
       </der>
