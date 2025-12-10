@@ -65,18 +65,21 @@
     padding-left: 12px
   }
 
-  // all the elements that should have no underline by default
-  .hit_title,
-  .hit_author,
-  .hit_source,
-  .single_hit_option,
-  .names,
-  .internal_links,
-  .social_links {
-    a {
-      text-decoration: none;
+  a {
+    text-underline-offset: .2rem;
+  }
+
+  // links in running texts has a underline
+  p {
+    a:not(.btn):not(.badge) {
+      text-decoration: underline dotted;
+      &:hover,
+      &:focus {
+        text-decoration: underline solid;
+      }
     }
   }
+
   .internal_links {
     list-style: none;
     margin: 0;

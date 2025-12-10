@@ -1048,7 +1048,7 @@
     <xsl:param name="i18nKey" />
     <div class="card">
       <xsl:variable name="classiDocument" select="document(concat('xslStyle:items2options:classification:editor:-1:children:',$classId))" />
-      <div class="card-header" data-toggle="collapse-next">
+      <div class="card-header" data-mcr-toggle="collapse-next">
         <h3 class="card-title">
           <xsl:value-of select="i18n:translate($i18nKey)" />
         </h3>
@@ -1137,7 +1137,7 @@
 
   <xsl:template name="print.dateFilter">
     <div class="card mir-search-options-date">
-      <div class="card-header" data-toggle="collapse-next">
+      <div class="card-header" data-mcr-toggle="collapse-next">
         <h3 class="card-title">
           <xsl:value-of select="i18n:translate('component.mods.metaData.dictionary.dateIssued')" />
         </h3>
