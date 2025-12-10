@@ -21,7 +21,7 @@
 <xsl:template match="mycoreobject" mode="metadata">
 
   <xsl:variable name="ifsTemp">
-    <xsl:for-each select="structure/derobjects/derobject[acl:checkDerivateDisplayPermission(@xlink:href)]">
+    <xsl:for-each select="structure/derobjects/derobject[acl:checkDerivateContentPermission(@xlink:href, 'read')]">
       <der id="{@xlink:href}">
         <xsl:copy-of select="document(concat('xslStyle:mcr_directory-recursive:ifs:',@xlink:href,'/'))" />
       </der>
