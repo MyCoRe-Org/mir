@@ -4,7 +4,7 @@
   <parent>
     <groupId>org.mycore.mir</groupId>
     <artifactId>mir-parent</artifactId>
-    <version>2024.06.2</version>
+    <version>2024.06.3-SNAPSHOT</version>
   </parent>
   <artifactId>mir-module</artifactId>
   <name>MIR: Application Module</name>
