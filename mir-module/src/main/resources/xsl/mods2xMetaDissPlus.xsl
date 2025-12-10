@@ -105,10 +105,14 @@
   </xsl:variable>
   
   <xsl:variable name="ifsTemp">
-    <xsl:for-each select="mycoreobject/structure/derobjects/derobject[mcrxsl:isDisplayedEnabledDerivate(@xlink:href)]">
-      <der id="{@xlink:href}">
-        <xsl:copy-of select="document(concat('xslStyle:mcr_directory-recursive:ifs:',@xlink:href,'/'))" />
-      </der>
+    <xsl:for-each select="mycoreobject/structure/derobjects/derobject[acl:checkDerivateContentPermission(@xlink:href, 'read')]">
+      <xsl:variable name="derivateType" select="classification[@classid='derivate_types']/@categid" />
+      <xsl:variable name="derivateHidden" select="document(concat('classification:metadata:0:children:derivate_types:',$derivateType))//category/label[lang('x-hidden')]/@text='true'" />
+      <xsl:if test="not($derivateHidden)">
+        <der id="{@xlink:href}">
+          <xsl:copy-of select="document(concat('xslStyle:mcr_directory-recursive:ifs:',@xlink:href,'/'))" />
+        </der>
+      </xsl:if>
     </xsl:for-each>
   </xsl:variable>
   <xsl:variable name="ifs" select="xalan:nodeset($ifsTemp)" />

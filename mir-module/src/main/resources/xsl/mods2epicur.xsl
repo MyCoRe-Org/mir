@@ -8,9 +8,9 @@
   xmlns:xlink="http://www.w3.org/1999/xlink"
   xmlns:urn="http://www.ddb.de/standards/urn"
   xmlns:mods="http://www.loc.gov/mods/v3"
-  xmlns:mcr="xalan://org.mycore.common.xml.MCRXMLFunctions"
+  xmlns:acl="xalan://org.mycore.access.MCRAccessManager"
   xmlns:xalan="http://xml.apache.org/xalan"
-  exclude-result-prefixes="xalan xsl mods mcr">
+  exclude-result-prefixes="xalan xsl mods acl">
 
   <xsl:output method="xml" encoding="UTF-8" />
   <xsl:include href="mods2record.xsl" />
@@ -19,10 +19,14 @@
   <xsl:param name="WebApplicationBaseURL" select="''" />
 
   <xsl:variable name="ifsTemp" xmlns="">
-    <xsl:for-each select="mycoreobject/structure/derobjects/derobject[mcr:isDisplayedEnabledDerivate(@xlink:href)]">
-      <der id="{@xlink:href}">
-        <xsl:copy-of select="document(concat('xslStyle:mcr_directory-recursive:ifs:',@xlink:href,'/'))" />
-      </der>
+    <xsl:for-each select="mycoreobject/structure/derobjects/derobject[acl:checkDerivateContentPermission(@xlink:href, 'read')]">
+      <xsl:variable name="derivateType" select="classification[@classid='derivate_types']/@categid" />
+      <xsl:variable name="derivateExported" select="not(document(concat('classification:metadata:0:children:derivate_types:',$derivateType))//category/label[lang('x-export')]/@text='false')" />
+      <xsl:if test="$derivateExported">
+        <der id="{@xlink:href}">
+          <xsl:copy-of select="document(concat('xslStyle:mcr_directory-recursive:ifs:',@xlink:href,'/'))" />
+        </der>
+      </xsl:if>
     </xsl:for-each>
   </xsl:variable>
   <xsl:variable name="ifs" select="xalan:nodeset($ifsTemp)" />

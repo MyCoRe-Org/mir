@@ -13,6 +13,9 @@ import java.util.stream.Stream;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.jdom2.filter.Filters;
+import org.jdom2.xpath.XPathExpression;
+import org.jdom2.xpath.XPathFactory;
 import org.mycore.access.MCRAccessInterface;
 import org.mycore.access.MCRAccessManager;
 import org.mycore.access.strategies.MCRAccessCheckStrategy;
@@ -24,8 +27,10 @@ import org.mycore.backend.jpa.access.MCRACCESS;
 import org.mycore.backend.jpa.access.MCRACCESSPK_;
 import org.mycore.backend.jpa.access.MCRACCESS_;
 import org.mycore.common.MCRCache;
+import org.mycore.common.MCRConstants;
 import org.mycore.common.MCRException;
 import org.mycore.common.config.MCRConfiguration2;
+import org.mycore.common.xml.MCRURIResolver;
 import org.mycore.datamodel.classifications2.MCRCategLinkReference;
 import org.mycore.datamodel.classifications2.MCRCategLinkService;
 import org.mycore.datamodel.classifications2.MCRCategLinkServiceFactory;
@@ -167,7 +172,28 @@ public class MIRStrategy implements MCRAccessCheckStrategy {
             MCRAccessManager.PERMISSION_DELETE.equalsIgnoreCase(permission)) {
             final boolean hasRegisteredPI = hasRegisteredPI(objectId);
             if (hasRegisteredPI && !canEditPI()) {
-                return false;
+
+                XPathFactory xpathFactory = XPathFactory.instance();
+                XPathExpression<Boolean> exportedXpath = xpathFactory
+                    .compile(".//category/label[lang('x-export')]/@text='false'",
+                        Filters.fboolean(), null, MCRConstants.XML_NAMESPACE);
+
+                // allow modification of hidden derivates even after a PI has been registered
+                boolean hidden = MCRMetadataManager.retrieveMCRDerivate(derivateId)
+                    .getDerivate()
+                    .getClassifications()
+                    .stream()
+                    .filter(classification -> classification.getClassId().equals("derivate_types"))
+                    .map(classification -> MCRURIResolver.obtainInstance()
+                        .resolve("classification:metadata:0:children:derivate_types:" + classification.getCategId()))
+                    .map(derivateTypeElement -> exportedXpath.evaluate(derivateTypeElement).get(0))
+                    .findAny()
+                    .orElse(false);
+
+                if (!hidden) {
+                    return false;
+                }
+
             }
         }
 

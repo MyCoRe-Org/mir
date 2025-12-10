@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <xsl:stylesheet version="1.0"
-  xmlns:oai="http://www.openarchives.org/OAI/2.0/"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:mods="http://www.loc.gov/mods/v3"
   xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/"
   xmlns:dc="http://purl.org/dc/elements/1.1/"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xmlns:xlink="http://www.w3.org/1999/xlink"
-  xmlns:mcr="xalan://org.mycore.common.xml.MCRXMLFunctions"
+  xmlns:acl="xalan://org.mycore.access.MCRAccessManager"
   xmlns:xalan="http://xml.apache.org/xalan"
-  exclude-result-prefixes="xalan xsl xlink mods mcr"
+  exclude-result-prefixes="xalan xsl xlink mods acl"
 >
 
   <xsl:param name="ServletsBaseURL" select="''" />
@@ -22,10 +21,14 @@
 <xsl:template match="mycoreobject" mode="metadata">
 
   <xsl:variable name="ifsTemp">
-    <xsl:for-each select="structure/derobjects/derobject[mcr:isDisplayedEnabledDerivate(@xlink:href)]">
-      <der id="{@xlink:href}">
-        <xsl:copy-of select="document(concat('xslStyle:mcr_directory-recursive:ifs:',@xlink:href,'/'))" />
-      </der>
+    <xsl:for-each select="structure/derobjects/derobject[acl:checkDerivateContentPermission(@xlink:href, 'read')]">
+      <xsl:variable name="derivateType" select="classification[@classid='derivate_types']/@categid" />
+      <xsl:variable name="derivateExported" select="not(document(concat('classification:metadata:0:children:derivate_types:',$derivateType))//category/label[lang('x-export')]/@text='false')" />
+      <xsl:if test="$derivateExported">
+        <der id="{@xlink:href}">
+          <xsl:copy-of select="document(concat('xslStyle:mcr_directory-recursive:ifs:',@xlink:href,'/'))" />
+        </der>
+      </xsl:if>
     </xsl:for-each>
   </xsl:variable>
   <xsl:variable name="ifs" select="xalan:nodeset($ifsTemp)" />
