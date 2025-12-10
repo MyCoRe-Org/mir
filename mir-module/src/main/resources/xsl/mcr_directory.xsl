@@ -9,6 +9,8 @@
   <xsl:variable name="PageTitle" select="i18n:translate('metadata.files.file')" />
 
   <xsl:variable name="mainUri" select="/mcr_directory/uri" />
+  <xsl:variable name="ownerId" select="/mcr_directory/ownerID" />
+  <xsl:variable name="path" select="/mcr_directory/path" />
 
   <xsl:template match="/mcr_directory">
     <head>
@@ -46,7 +48,7 @@
     <col>
       <a>
         <xsl:attribute name="href">
-          <xsl:value-of select="substring-after(uri, $mainUri)" />
+          <xsl:value-of select="concat($WebApplicationBaseURL, mcrxml:encodeURIPath(concat('servlets/MCRFileNodeServlet/', $ownerId, $path, name/text())))" />
         </xsl:attribute>
         <xsl:value-of select="name" />
       </a>
