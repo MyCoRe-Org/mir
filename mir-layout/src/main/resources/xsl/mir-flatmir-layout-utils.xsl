@@ -20,8 +20,7 @@
         </nav>
       </div>
       <div id="project_logo_box">
-        <a href="{concat($WebApplicationBaseURL,substring($loaded_navigation_xml/@hrefStartingPage,2))}"
-           class="text-decoration-none">
+        <a href="{concat($WebApplicationBaseURL,substring($loaded_navigation_xml/@hrefStartingPage,2))}">
           <span id="logo_mir">mir</span>
           <span id="logo_modul">mycore</span>
           <span id="logo_slogan">mods institutional repository</span>
@@ -39,7 +38,7 @@
               class="navbar-toggler"
               type="button"
               data-bs-toggle="collapse"
-              data-target="#mir-main-nav-collapse-box"
+              data-bs-target="#mir-main-nav-collapse-box"
               aria-controls="mir-main-nav-collapse-box"
               aria-expanded="false"
               aria-label="Toggle navigation">
@@ -151,16 +150,15 @@
           <h4>Netzwerke</h4>
           <ul class="social_links">
             <li><a href="#"><button type="button" class="social_icons social_icon_fb"></button>Facebook</a></li>
-            <li><a href="#"><button type="button" class="social_icons social_icon_tw"></button>Twitter</a></li>
-            <li><a href="#"><button type="button" class="social_icons social_icon_gg"></button>Google+</a></li>
+            <li><a href="#"><button type="button" class="social_icons social_icon_x"></button>X</a></li>
           </ul>
         </div>
         <div class="col-2">
           <h4>Layout based on</h4>
           <ul class="internal_links">
-            <li><a href="{$WebApplicationBaseURL}mir-layout/template/flatmir.xml">flatmir</a></li>
-            <li><a href="http://getbootstrap.com/">Bootstrap</a></li>
-            <li><a href="http://bootswatch.com/">Bootswatch</a></li>
+            <li><a class="dropdown-item" href="{$WebApplicationBaseURL}mir-layout/template/flatmir.xml">flatmir</a></li>
+            <li><a class="dropdown-item" href="http://getbootstrap.com/">Bootstrap</a></li>
+            <li><a class="dropdown-item" href="http://bootswatch.com/">Bootswatch</a></li>
           </ul>
         </div>
       </div>

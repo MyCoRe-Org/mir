@@ -40,7 +40,7 @@
       <when condition="(group = admin) or (group = editor)" url="/servlets/MCRLockServlet?url=/editor/editor-admins.xed" />
     </action>
     <action action="update-xml">
-      <when condition="(group = admin)" url="/servlets/MCRLockServlet?url=/editor/editor-xml.xed" />
+      <when condition="(group = admin)" url="/modules/webtools/texteditor/objects/" />
     </action>
   </collection>
   <collection name="lecture">

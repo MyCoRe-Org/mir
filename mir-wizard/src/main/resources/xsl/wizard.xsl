@@ -93,10 +93,10 @@
           <div class="modal-content">
 
             <div class="modal-header">
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" />
               <h4 class="modal-title" id="confirmTitle">
                 <xsl:value-of select="i18n:translate('component.mir.wizard.shutdownServer.confirmTitle')" />
               </h4>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" />
             </div>
 
             <div class="modal-body">
@@ -117,7 +117,7 @@
         </div>
       </div>
       <br />
-      <a class="btn btn-primary float-end" data-bs-toggle="modal" data-target="#confirm-shutdown" href="#">
+      <a class="btn btn-primary float-end" data-bs-toggle="modal" data-bs-target="#confirm-shutdown" href="#">
         <xsl:value-of select="i18n:translate('component.mir.wizard.shutdownServer')" />
       </a>
       <br />

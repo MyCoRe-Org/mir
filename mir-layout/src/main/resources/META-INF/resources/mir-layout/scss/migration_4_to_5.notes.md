@@ -94,16 +94,13 @@ Replaced lighten() and darken() calls.
 
 - Links are underlined by default (not just on hover), unless they’re part of specific components.
 
-Added class "text-decoration-none" to logo section.
+Changed default by setting variables in flatmir.
 
-Added rules for footer menu.
+$link-decoration:       none !default;
+$link-hover-decoration: underline !default;
 
-    .internal_links,
-    .social_links {
-      a {
-        text-decoration: none;
-      }
-    }
+Defined link behaviour in a styleguide.
+See: https://mycore.atlassian.net/browse/MIR-1504
 
 ## RTL
 
@@ -183,7 +180,8 @@ Replaced data-toggle="popover" by data-bs-toggle="popover"
 Replaced data-toggle="button" by data-bs-toggle="button"
 Replaced data-toggle="modal" by data-bs-toggle="modal"
 
-collapse-next ist ein eigener Griff. Umbenennen? data-mcr-toggle?
+collapse-next ist ein eigener Wert mit eigener Funktion.
+Umbenannt nach: data-mcr-toggle
 
 Die Bibliothek (node modules) myclabs enthält noch bs4 code.
 

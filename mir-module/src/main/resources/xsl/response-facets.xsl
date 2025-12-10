@@ -73,7 +73,7 @@
 
         <!-- name of facet -->
         <div class="card {$facet_name}">
-          <div class="card-header" data-toggle="collapse-next">
+          <div class="card-header" data-mcr-toggle="collapse-next">
             <h3 class="card-title">
               <xsl:choose>
                 <xsl:when test="i18n:exists(concat('mir.response.facet.', $facet_name, '.title'))">

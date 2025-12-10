@@ -22,6 +22,7 @@
   <xsl:param name="previousObjectHost" />
   <xsl:param name="nextObject" />
   <xsl:param name="nextObjectHost" />
+  <xsl:param name="MIR.Metadata.Admindata.ShowRealUserName"/>
 
   <xsl:template match="/mycoreobject" priority="0">
     <!-- Here put in dynamic resultlist -->
@@ -351,7 +352,25 @@
           <xsl:value-of select="' '" />
           <xsl:if test="@user">
             <span class="user">
-              <xsl:value-of select="@user" />
+              <xsl:choose>
+                <xsl:when test="$MIR.Metadata.Admindata.ShowRealUserName = 'true'">
+                  <xsl:variable name="resolved-user" select="document(concat('notnull:user:', @user))/user"/>
+                  <xsl:choose>
+                    <xsl:when test="string-length($resolved-user/realName) &gt; 0">
+                      <xsl:attribute name="title">
+                        <xsl:value-of select="concat($resolved-user/@name,'@', $resolved-user/@realm)"/>
+                      </xsl:attribute>
+                      <xsl:value-of select="$resolved-user/realName"/>
+                    </xsl:when>
+                    <xsl:otherwise>
+                      <xsl:value-of select="@user"/>
+                    </xsl:otherwise>
+                  </xsl:choose>
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:value-of select="@user"/>
+                </xsl:otherwise>
+              </xsl:choose>
             </span>
             <xsl:value-of select="' '" />
           </xsl:if>

@@ -143,7 +143,7 @@
 
     <xsl:variable name="display-name">
       <xsl:choose>
-        <xsl:when test="$user/user/realName and $MIR.Metadata.Admindata.ShowRealUserName='true'">
+        <xsl:when test="string-length($user/user/realName) &gt; 0 and $MIR.Metadata.Admindata.ShowRealUserName='true'">
           <xsl:value-of select="$user/user/realName"/>
         </xsl:when>
         <xsl:otherwise>
@@ -159,7 +159,7 @@
       </td>
 
       <td class="metavalue">
-        <xsl:if test="$user/user/realName">
+        <xsl:if test="string-length($user/user/realName) &gt; 0">
           <xsl:attribute name="title">
             <xsl:value-of select="$userid-with-realm"/>
           </xsl:attribute>
