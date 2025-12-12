@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  xmlns:mcr="xalan://org.mycore.common.xml.MCRXMLFunctions"
   xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
   xmlns:mods="http://www.loc.gov/mods/v3"
   xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -9,7 +8,7 @@
   xmlns:exslt="http://exslt.org/common"
   xmlns:piUtil="xalan://org.mycore.pi.frontend.MCRIdentifierXSLUtils"
   xmlns:csl="http://purl.org/net/xbiblio/csl"
-  exclude-result-prefixes="i18n mcr mods xlink cmd exslt piUtil csl"
+  exclude-result-prefixes="i18n mods xlink cmd exslt piUtil csl"
 >
   <xsl:import href="xslImport:modsmeta:metadata/mir-citation.xsl" />
   <xsl:include href="mods-dc-meta.xsl"/>

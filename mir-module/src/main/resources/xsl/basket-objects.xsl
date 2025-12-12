@@ -9,10 +9,9 @@
   xmlns:encoder="xalan://java.net.URLEncoder"
   xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
   xmlns:str="http://exslt.org/strings"
-  xmlns:mcr="xalan://org.mycore.common.xml.MCRXMLFunctions"
   xmlns:acl="xalan://org.mycore.access.MCRAccessManager"
   xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions"
-  exclude-result-prefixes="xlink xalan i18n mods str mcr acl mcrxsl encoder">
+  exclude-result-prefixes="xlink xalan i18n mods str acl mcrxsl encoder">
 
 
   <xsl:import href="resource:xsl/orcid/mir-orcid.xsl"/>

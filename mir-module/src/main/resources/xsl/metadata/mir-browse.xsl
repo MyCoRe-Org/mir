@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xlink="http://www.w3.org/1999/xlink"
-  xmlns:mcr="http://www.mycore.org/" xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation" xmlns:encoder="xalan://java.net.URLEncoder"
-  exclude-result-prefixes="xlink mcr i18n xsl encoder">
+  xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation" xmlns:encoder="xalan://java.net.URLEncoder"
+  exclude-result-prefixes="xlink i18n xsl encoder">
   <xsl:import href="xslImport:modsmeta:metadata/mir-browse.xsl" />
   <xsl:include href="response-utils.xsl" />
   <xsl:include href="response-mir-utils.xsl" />

@@ -2,9 +2,9 @@
   <!-- ============================================== -->
   <!-- $Revision$ $Date$ -->
   <!-- ============================================== -->
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:mcr="http://www.mycore.org/"
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xlink="http://www.w3.org/1999/xlink"
   xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation" xmlns:mcrver="xalan://org.mycore.common.MCRCoreVersion" xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions"
-  exclude-result-prefixes="xlink mcr mcrver mcrxsl i18n"
+  exclude-result-prefixes="xlink mcrver mcrxsl i18n"
 >
   <xsl:output method="html" doctype-system="about:legacy-compat" indent="yes" omit-xml-declaration="yes" media-type="text/html" version="5" />
   <xsl:strip-space elements="*" />

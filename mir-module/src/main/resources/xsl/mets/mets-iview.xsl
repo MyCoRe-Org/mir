@@ -4,9 +4,8 @@
   xmlns:mets="http://www.loc.gov/METS/"
   xmlns:mods="http://www.loc.gov/mods/v3"
   xmlns:xalan="http://xml.apache.org/xalan"
-  xmlns:mcr="xalan://org.mycore.common.xml.MCRXMLFunctions"
   xmlns:encoder="xalan://java.net.URLEncoder"
-  exclude-result-prefixes="mcr encoder"
+  exclude-result-prefixes="encoder"
   version="1.0">
   <xsl:output method="xml" encoding="utf-8" />
   <xsl:param name="MCR.Module-iview2.SupportedContentTypes" />
