@@ -10,6 +10,8 @@
   <command file="resource:setup/acl/grant-all.xml" describedBy="always allowed">update permission read for id default_mods with rule {file} described by {describedBy}</command>
   <command file="resource:setup/acl/grant-editors.xml" describedBy="administrators and editors">update permission writedb for id default_mods with rule {file} described by {describedBy}</command>
   <command file="resource:setup/acl/grant-admin.xml" describedBy="administrators only">update permission deletedb for id default_mods with rule {file} described by {describedBy}</command>
+  <command file="resource:setup/acl/grant-editors.xml" describedBy="administrators and editors">update permission writedb for id default_derivate with rule {file} described by {describedBy}</command>
+  <command file="resource:setup/acl/grant-admin.xml" describedBy="administrators only">update permission deletedb for id default_derivate with rule {file} described by {describedBy}</command>
   <command file="resource:setup/acl/grant-all.xml" describedBy="always allowed">update permission view-derivate for id default_mods with rule {file} described by {describedBy}</command>
   <command file="resource:setup/acl/grant-editors.xml" describedBy="administrators and editors">update permission addurn for id default_derivate with rule {file} described by {describedBy}</command>
   <command file="resource:setup/acl/require-login.xml" describedBy="require login">update permission read for id derivate:mir_access:intern with rule {file} described by {describedBy}</command>
