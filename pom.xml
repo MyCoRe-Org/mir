@@ -65,7 +65,7 @@
         <plugin>
           <groupId>org.mycore.plugins</groupId>
           <artifactId>solr-runner-maven-plugin</artifactId>
-          <version>1.4</version>
+          <version>1.5</version>
           <configuration>
             <solrMirrorURL>${solr-runner.solrMirrorURL}</solrMirrorURL>
             <solrVersionString>${solr-runner.solrVersionString}</solrVersionString>
