@@ -52,7 +52,7 @@
             </xsl:choose>
         </xsl:variable>
 
-        <xsl:variable name="affiliation" select="mods:affiliation/text()" />
+        <xsl:variable name="affiliation" select="mods:affiliation[not(@*)]" />
         <xsl:variable name="affiliation-ror" select="mods:affiliation[contains(@authorityURI, '//ror.org')]" />
         <xsl:variable name="personNodeId" select="generate-id(.)"/>
         <xsl:variable name="personName"><xsl:apply-templates select="." mode="nameString"/></xsl:variable>
@@ -72,12 +72,16 @@
                         </dd>
                     </xsl:for-each>
                   </xsl:if>
-                  <xsl:if test="string-length($affiliation) &gt; 0 or $affiliation-ror">
+                  <xsl:if test="count($affiliation) &gt; 0 or $affiliation-ror">
                       <dt>
                         <xsl:value-of select="i18n:translate('mir.affiliation')"/>
                       </dt>
+                      <xsl:for-each select="$affiliation">
+                        <dd>
+                          <xsl:value-of select="text()"/>
+                        </dd>
+                      </xsl:for-each>
                       <dd>
-                        <xsl:value-of select="$affiliation"/>
                         <xsl:for-each select="mods:affiliation[contains(@authorityURI, '//ror.org')][@valueURI]">
                             <xsl:sort select="@valueURI"/>
                             <div class="mir-affiliation-ror">
