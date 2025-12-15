@@ -9,7 +9,7 @@
                 version="1.0"
                 exclude-result-prefixes="i18n mcrxml str xalan encoder mods"
 >
-
+    <xsl:param name="CurrentLang"/>
 
     <xsl:template match="mods:name" mode="mirNameLink">
         <xsl:variable name="nameIds">
@@ -76,13 +76,14 @@
                       <dt>
                         <xsl:value-of select="i18n:translate('mir.affiliation')"/>
                       </dt>
-                      <xsl:for-each select="$affiliation">
-                        <dd>
-                          <xsl:value-of select="text()"/>
-                        </dd>
-                      </xsl:for-each>
                       <dd>
-                        <xsl:for-each select="mods:affiliation[contains(@authorityURI, '//ror.org')][@valueURI]">
+                        <xsl:for-each select="$affiliation">
+                          <div class="mir-affiliation-plain" lang="{$CurrentLang}">
+                            <xsl:value-of select="text()"/>
+                          </div>
+                        </xsl:for-each>
+
+                        <xsl:for-each select="$affiliation-ror[@valueURI]">
                             <xsl:sort select="@valueURI"/>
                             <div class="mir-affiliation-ror">
                                 <a href="https://ror.org/" alt="ROR logo">
