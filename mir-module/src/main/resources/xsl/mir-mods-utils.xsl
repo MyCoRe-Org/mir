@@ -9,7 +9,7 @@
                 version="1.0"
                 exclude-result-prefixes="i18n mcrxml str xalan encoder mods"
 >
-
+    <xsl:param name="CurrentLang"/>
 
     <xsl:template match="mods:name" mode="mirNameLink">
         <xsl:variable name="nameIds">
@@ -52,7 +52,7 @@
             </xsl:choose>
         </xsl:variable>
 
-        <xsl:variable name="affiliation" select="mods:affiliation/text()" />
+        <xsl:variable name="affiliation" select="mods:affiliation[not(@*)]" />
         <xsl:variable name="affiliation-ror" select="mods:affiliation[contains(@authorityURI, '//ror.org')]" />
         <xsl:variable name="personNodeId" select="generate-id(.)"/>
         <xsl:variable name="personName"><xsl:apply-templates select="." mode="nameString"/></xsl:variable>
@@ -72,13 +72,18 @@
                         </dd>
                     </xsl:for-each>
                   </xsl:if>
-                  <xsl:if test="string-length($affiliation) &gt; 0 or $affiliation-ror">
+                  <xsl:if test="count($affiliation) &gt; 0 or $affiliation-ror">
                       <dt>
                         <xsl:value-of select="i18n:translate('mir.affiliation')"/>
                       </dt>
                       <dd>
-                        <xsl:value-of select="$affiliation"/>
-                        <xsl:for-each select="mods:affiliation[contains(@authorityURI, '//ror.org')][@valueURI]">
+                        <xsl:for-each select="$affiliation">
+                          <div class="mir-affiliation-plain" lang="{$CurrentLang}">
+                            <xsl:value-of select="text()"/>
+                          </div>
+                        </xsl:for-each>
+
+                        <xsl:for-each select="$affiliation-ror[@valueURI]">
                             <xsl:sort select="@valueURI"/>
                             <div class="mir-affiliation-ror">
                                 <a href="https://ror.org/" alt="ROR logo">
