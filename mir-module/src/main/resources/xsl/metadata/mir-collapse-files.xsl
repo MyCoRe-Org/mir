@@ -59,71 +59,75 @@
                 <xsl:variable name="derId" select="@xlink:href" />
                 <xsl:variable name="derivateXML" select="document(concat('mcrobject:',$derId))" />
                 <xsl:variable name="derivateType" select="$derivateXML/mycorederivate/derivate/classifications/classification[@classid='derivate_types']/@categid" />
-                <div id="files{@xlink:href}" class="file_box">
-                  <div class="row header">
-                    <div class="col-12">
-                      <div class="headline">
-                        <div class="title">
-                          <a class="btn btn-primary btn-sm file_toggle dropdown-toggle" data-bs-toggle="collapse" href="#collapse{@xlink:href}" aria-expanded="false" aria-controls="collapse{@xlink:href}">
-                            <span>
-                              <xsl:choose>
-                                <xsl:when test="$derivateXML//titles/title[@xml:lang=$CurrentLang]">
-                                  <xsl:value-of select="$derivateXML//titles/title[@xml:lang=$CurrentLang]" />
-                                </xsl:when>
-                                <xsl:when test="string-length($derivateType)!=0">
-                                  <xsl:value-of select="mcr:getDisplayName('derivate_types',$derivateType)" />
-                                </xsl:when>
-                                <xsl:otherwise>
-                                  <xsl:value-of select="i18n:translate('metadata.files.file')" />
-                                </xsl:otherwise>
-                              </xsl:choose>
-                            </span>
-                            <xsl:if test="position() > 1">
-                              <span class="set_number">
-                                <xsl:value-of select="position()" />
+                <xsl:variable name="derivateDisplayed" select="not(document(concat('classification:metadata:0:children:derivate_types:',$derivateType))//category/label[lang('x-display')]/@text='false')" />
+
+                <xsl:if test="$derivateDisplayed or key('rights', $derId)/@write">
+                  <div id="files{@xlink:href}" class="file_box">
+                    <div class="row header">
+                      <div class="col-12">
+                        <div class="headline">
+                          <div class="title">
+                            <a class="btn btn-primary btn-sm file_toggle dropdown-toggle" data-bs-toggle="collapse" href="#collapse{@xlink:href}" aria-expanded="false" aria-controls="collapse{@xlink:href}">
+                              <span>
+                                <xsl:choose>
+                                  <xsl:when test="$derivateXML//titles/title[@xml:lang=$CurrentLang]">
+                                    <xsl:value-of select="$derivateXML//titles/title[@xml:lang=$CurrentLang]" />
+                                  </xsl:when>
+                                  <xsl:when test="string-length($derivateType)!=0">
+                                    <xsl:value-of select="mcr:getDisplayName('derivate_types',$derivateType)" />
+                                  </xsl:when>
+                                  <xsl:otherwise>
+                                    <xsl:value-of select="i18n:translate('metadata.files.file')" />
+                                  </xsl:otherwise>
+                                </xsl:choose>
                               </span>
-                            </xsl:if>
-                          </a>
+                              <xsl:if test="position() > 1">
+                                <span class="set_number">
+                                  <xsl:value-of select="position()" />
+                                </span>
+                              </xsl:if>
+                            </a>
+                          </div>
+                          <xsl:apply-templates select="." mode="derivateActions">
+                            <xsl:with-param name="deriv" select="@xlink:href" />
+                            <xsl:with-param name="parentObjID" select="$objID" />
+                            </xsl:apply-templates>
+                          <div class="clearfix" />
                         </div>
-                        <xsl:apply-templates select="." mode="derivateActions">
-                          <xsl:with-param name="deriv" select="@xlink:href" />
-                          <xsl:with-param name="parentObjID" select="$objID" />
-                          </xsl:apply-templates>
-                        <div class="clearfix" />
                       </div>
                     </div>
+                    <xsl:choose>
+                      <xsl:when test="key('rights', @xlink:href)/@read">
+                        <xsl:variable name="maindoc" select="$derivateXML/mycorederivate/derivate/internals/internal/@maindoc" />
+                        <div class="file_box_files" data-objID="{$objID}" data-deriID="{$derId}" data-mainDoc="{$maindoc}" data-writedb="{acl:checkPermission($derId,'writedb')}" data-deletedb="{acl:checkPermission($derId,'deletedb')}" data-numperpage="{$MIR.FileBrowser.FilesPerPage}">
+                          <xsl:if test="acl:checkPermission($derId,'read')">
+                            <xsl:attribute name="data-jwt">
+                              <xsl:value-of select="'required'" />
+                            </xsl:attribute>
+                          </xsl:if>
+                          <div class="filelist-loading">
+                            <div class="bounce1"></div>
+                            <div class="bounce2"></div>
+                            <div class="bounce3"></div>
+                          </div>
+                        </div>
+                        <noscript>
+                          <br />
+                          <a href="{$ServletsBaseURL}MCRFileNodeServlet/{$derId}/">
+                            <xsl:value-of select="i18n:translate('metadata.files.toDerivate')" />
+                          </a>
+                        </noscript>
+                      </xsl:when>
+                      <xsl:otherwise>
+                        <div id="collapse{@xlink:href}" class="row body collapse in show">
+                          <div class="col-12">
+                            <xsl:value-of select="i18n:translate('mir.derivate.no_access')" />
+                          </div>
+                        </div>
+                      </xsl:otherwise>
+                    </xsl:choose>
                   </div>
-                  <xsl:choose>
-                    <xsl:when test="key('rights', @xlink:href)/@read">
-                      <xsl:variable name="maindoc" select="$derivateXML/mycorederivate/derivate/internals/internal/@maindoc" />
-                      <div class="file_box_files" data-objID="{$objID}" data-deriID="{$derId}" data-mainDoc="{$maindoc}" data-writedb="{acl:checkPermission($derId,'writedb')}" data-deletedb="{acl:checkPermission($derId,'deletedb')}" data-numperpage="{$MIR.FileBrowser.FilesPerPage}">
-                        <xsl:if test="acl:checkPermission($derId,'read')">
-                          <xsl:attribute name="data-jwt">
-                            <xsl:value-of select="'required'" />
-                          </xsl:attribute>
-                        </xsl:if>
-                        <div class="filelist-loading">
-                          <div class="bounce1"></div>
-                          <div class="bounce2"></div>
-                          <div class="bounce3"></div>
-                        </div>
-                      </div>
-                      <noscript>
-                        <br />
-                        <a href="{$ServletsBaseURL}MCRFileNodeServlet/{$derId}/">
-                          <xsl:value-of select="i18n:translate('metadata.files.toDerivate')" />
-                        </a>
-                      </noscript>
-                    </xsl:when>
-                    <xsl:otherwise>
-                      <div id="collapse{@xlink:href}" class="row body collapse in show">
-                        <div class="col-12">
-                          <xsl:value-of select="i18n:translate('mir.derivate.no_access')" />
-                        </div>
-                      </div>
-                    </xsl:otherwise>
-                  </xsl:choose>
-                </div>
+                </xsl:if>
               </xsl:for-each>
             </xsl:otherwise>
           </xsl:choose>
