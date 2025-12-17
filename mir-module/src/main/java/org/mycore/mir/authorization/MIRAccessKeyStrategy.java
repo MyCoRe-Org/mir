@@ -9,7 +9,8 @@ import org.mycore.access.strategies.MCRAccessCheckStrategy;
 import org.mycore.datamodel.metadata.MCRObjectID;
 import org.mycore.mcr.acl.accesskey.config.MCRAccessKeyConfig;
 import org.mycore.mcr.acl.accesskey.dto.MCRAccessKeyDto;
-import org.mycore.mcr.acl.accesskey.service.MCRAccessKeyServiceFactory;
+import org.mycore.mcr.acl.accesskey.service.MCRAccessKeySessionService;
+import org.mycore.mcr.acl.accesskey.service.MCRAccessKeyUserService;
 
 /**
  * Strategy class for checking access permissions on objects based on access keys.
@@ -62,8 +63,7 @@ public class MIRAccessKeyStrategy implements MCRAccessCheckStrategy {
     }
 
     private boolean checkSessionHasValidAccessKey(String objectId, String permission) {
-        final MCRAccessKeyDto accessKey
-            = MCRAccessKeyServiceFactory.getAccessKeySessionService().findActiveAccessKey(objectId);
+        final MCRAccessKeyDto accessKey = MCRAccessKeySessionService.obtainInstance().findActiveAccessKey(objectId);
         if (accessKey != null) {
             LOGGER.debug("Found match in access key strategy for {} on {} in session.", permission,
                 objectId);
@@ -73,8 +73,7 @@ public class MIRAccessKeyStrategy implements MCRAccessCheckStrategy {
     }
 
     private boolean checkUserHasValidAccessKey(String objectId, String permission) {
-        final MCRAccessKeyDto accessKey
-            = MCRAccessKeyServiceFactory.getAccessKeyUserService().findActiveAccessKey(objectId);
+        final MCRAccessKeyDto accessKey = MCRAccessKeyUserService.obtainInstance().findActiveAccessKey(objectId);
         if (accessKey != null) {
             LOGGER.debug("Found match in access key strategy for {} on {} in user attributes.", permission,
                 objectId);

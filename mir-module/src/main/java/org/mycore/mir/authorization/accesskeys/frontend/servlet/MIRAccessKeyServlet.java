@@ -31,7 +31,8 @@ import org.mycore.frontend.servlets.MCRServlet;
 import org.mycore.frontend.servlets.MCRServletJob;
 import org.mycore.mcr.acl.accesskey.config.MCRAccessKeyConfig;
 import org.mycore.mcr.acl.accesskey.exception.MCRAccessKeyException;
-import org.mycore.mcr.acl.accesskey.service.MCRAccessKeyServiceFactory;
+import org.mycore.mcr.acl.accesskey.service.MCRAccessKeySessionService;
+import org.mycore.mcr.acl.accesskey.service.MCRAccessKeyUserService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -77,9 +78,9 @@ public class MIRAccessKeyServlet extends MCRServlet {
         }
         try {
             if (isGuest) {
-                MCRAccessKeyServiceFactory.getAccessKeySessionService().activateAccessKey(objId, value);
+                MCRAccessKeySessionService.obtainInstance().activateAccessKey(objId, value);
             } else {
-                MCRAccessKeyServiceFactory.getAccessKeyUserService().activateAccessKey(objId, value);
+                MCRAccessKeyUserService.obtainInstance().activateAccessKey(objId, value);
             }
         } catch (MCRAccessKeyException e) {
             res.sendError(HttpServletResponse.SC_BAD_REQUEST, "Access key is unknown or not allowed.");
