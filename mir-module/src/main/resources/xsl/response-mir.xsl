@@ -1047,7 +1047,7 @@
     <xsl:param name="classId" />
     <xsl:param name="i18nKey" />
     <div class="card">
-      <xsl:variable name="classiDocument" select="document(concat('xslStyle:items2options:classification:editor:-1:children:',$classId))" />
+      <xsl:variable name="classiDocument" select="document(concat('xslStyle:items2options#xslt:classification:editor:-1:children:',$classId))" />
       <div class="card-header" data-mcr-toggle="collapse-next">
         <h3 class="card-title">
           <xsl:value-of select="i18n:translate($i18nKey)" />
