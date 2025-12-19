@@ -1508,7 +1508,6 @@
             <option value="">
               <xed:output i18n="mir.select" />
             </option>
-            <!-- TODO check -->
             <xed:include uri="xslStyle:license-filter,items2options?genre={$genre_intern}#xslt:classification:editor:-1:children:mir_licenses" />
           </select>
         </div>
