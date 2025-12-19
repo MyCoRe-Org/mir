@@ -1467,8 +1467,7 @@
           <div class="controls">
             <xed:bind xpath="@mcr:categId">
               <select class="form-control form-control-inline form-select">
-                <xed:include uri="xslStyle:items2options#xslt:classification:editorComplete:1:children:typeOfResource"
-                />
+                <xed:include uri="xslStyle:items2options#xslt:classification:editorComplete:1:children:typeOfResource" />
               </select>
             </xed:bind>
           </div>
