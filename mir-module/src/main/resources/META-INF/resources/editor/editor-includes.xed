@@ -48,7 +48,7 @@
           <option value="">
             <xed:output i18n="mir.select" />
           </option>
-          <xed:include uri="xslStyle:items2options:classification:editor:-1:children:mir_genres" />
+          <xed:include uri="xslStyle:items2options#xslt:classification:editor:-1:children:mir_genres" />
         </select>
       </div>
     </div>
@@ -125,7 +125,7 @@
         <div class="col-md-6">
           <div class="controls">
             <select class="form-control form-control-inline form-select">
-              <xed:include uri="xslStyle:items2options:classification:editor:-1:children:state" />
+              <xed:include uri="xslStyle:items2options#xslt:classification:editor:-1:children:state" />
             </select>
           </div>
         </div>
@@ -521,7 +521,7 @@
     <xed:bind xpath="mods:name[@type='personal'][mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']='aut']" />
     <xed:bind xpath="mods:name[@type='personal'][mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']='rev']" />
     <mir:person.repeated help-text="{i18n:mir.help.thesis.advisor.reviewer}">
-      <xed:include uri="xslStyle:items2options:classification:editor:-1:children:marcrelator" />
+      <xed:include uri="xslStyle:items2options#xslt:classification:editor:-1:children:marcrelator" />
     </mir:person.repeated>
   </xed:template>
 
@@ -561,19 +561,19 @@
 
   <xed:template id="name.repeated">
     <mir:person.repeated help-text="{i18n:mir.help.name.repeated}">
-      <xed:include uri="xslStyle:items2options:classification:editor:-1:children:marcrelator" />
+      <xed:include uri="xslStyle:items2options#xslt:classification:editor:-1:children:marcrelator" />
     </mir:person.repeated>
   </xed:template>
 
   <xed:template id="name.extended.repeated">
     <mir:person.extended.repeated help-text="{i18n:mir.help.name.repeated}">
-      <xed:include uri="xslStyle:items2options:classification:editor:-1:children:marcrelator" />
+      <xed:include uri="xslStyle:items2options#xslt:classification:editor:-1:children:marcrelator" />
     </mir:person.extended.repeated>
   </xed:template>
 
   <xed:template id="name.extended.full.repeated">
     <mir:person.extended.repeated help-text="{i18n:mir.help.name.repeated}" authorSpecification="true">
-      <xed:include uri="xslStyle:items2options:classification:editor:-1:children:marcrelator" />
+      <xed:include uri="xslStyle:items2options#xslt:classification:editor:-1:children:marcrelator" />
     </mir:person.extended.repeated>
   </xed:template>
 
@@ -665,7 +665,7 @@
                 <option value="">
                   <xed:output i18n="mir.select.optional" />
                 </option>
-                <xed:include uri="xslStyle:items2options:classification:editor:-1:children:author_roles" />
+                <xed:include uri="xslStyle:items2options#xslt:classification:editor:-1:children:author_roles" />
               </select>
             </xed:bind>
           </div>
@@ -722,7 +722,7 @@
         <xed:bind xpath="@type" name="type">
           <div class="col-md-3">
             <select class="form-control nameIdentifierType form-select" style="text-align:right; font-weight:bold;">
-              <xed:include uri="xslStyle:items2options:classification:editor:-1:children:nameIdentifier" />
+              <xed:include uri="xslStyle:items2options#xslt:classification:editor:-1:children:nameIdentifier" />
               <xed:load-resource name="identifier" uri="classification:metadata:-1:children:nameIdentifier" />
               <xed:if test="not($identifier//category[@ID=$type]) and not($type='')">
                 <option value="{$type}" selected="">
@@ -1087,7 +1087,7 @@
         <div class="col-md-3" style="text-align:right; font-weight:bold;">
           <xed:bind xpath="@type" name="type">
             <select class="form-control identifierSelect form-select">
-              <xed:include uri="xslStyle:items2options:classification:editor:-1:children:identifier" />
+              <xed:include uri="xslStyle:items2options#xslt:classification:editor:-1:children:identifier" />
               <xed:load-resource name="identifier" uri="classification:metadata:-1:children:identifier" />
               <xed:if test="not($identifier//category[@ID=$type]) and not($type='')">
                 <option value="{$type}" selected="">
@@ -1322,7 +1322,7 @@
         </label>
         <div class="col-md-6">
           <select class="form-control form-control-inline form-select">
-            <xed:include uri="xslStyle:items2options:classification:editor:-1:children:mir_filetype" />
+            <xed:include uri="xslStyle:items2options#xslt:classification:editor:-1:children:mir_filetype" />
           </select>
         </div>
         <mir:help-pmud help-text="{i18n:mir.help.physical.description.form}" />
@@ -1435,7 +1435,7 @@
 <!-- fix XEditor crash -->
 <!--   <xed:template id="lang.list.addon"> -->
 <!--     <select class="form-control form-control-inline input-group-addon form-select"> -->
-<!--       <xed:include uri="xslStyle:items2options:classification:editor:-1:children:rfc5646" /> -->
+<!--       <xed:include uri="xslStyle:items2options#xslt:classification:editor:-1:children:rfc5646" /> -->
 <!--     </select> -->
 <!--   </xed:template> -->
 
@@ -1448,7 +1448,7 @@
         <div class="col-md-6">
           <div class="controls">
             <select class="form-control form-control-inline form-select">
-              <xed:include uri="xslStyle:items2options:classification:editorComplete:1:children:typeOfResource" />
+              <xed:include uri="xslStyle:items2options#xslt:classification:editorComplete:1:children:typeOfResource" />
             </select>
           </div>
         </div>
@@ -1467,7 +1467,7 @@
           <div class="controls">
             <xed:bind xpath="@mcr:categId">
               <select class="form-control form-control-inline form-select">
-                <xed:include uri="xslStyle:items2options:classification:editorComplete:1:children:typeOfResource" />
+                <xed:include uri="xslStyle:items2options#xslt:classification:editorComplete:1:children:typeOfResource" />
               </select>
             </xed:bind>
           </div>
@@ -1507,7 +1507,7 @@
             <option value="">
               <xed:output i18n="mir.select" />
             </option>
-            <xed:include uri="xslStyle:license-filter,items2options?genre={$genre_intern}:classification:editor:-1:children:mir_licenses" />
+            <xed:include uri="xslStyle:license-filter,items2options?genre={$genre_intern}#xslt:classification:editor:-1:children:mir_licenses" />
           </select>
         </div>
         <mir:help-pmud help-text="{i18n:mir.help.rights}" />
@@ -1529,7 +1529,7 @@
             <option value="">
               <xed:output i18n="mir.select.optional" />
             </option>
-            <xed:include uri="xslStyle:items2options:classification:editor:-1:children:mir_access" />
+            <xed:include uri="xslStyle:items2options#xslt:classification:editor:-1:children:mir_access" />
           </select>
         </div>
         <mir:help-pmud help-text="{i18n:mir.help.access}" />
@@ -1571,7 +1571,7 @@
               <option value="">
                 <xed:output i18n="mir.select.optional" />
               </option>
-              <xed:include uri="xslStyle:items2options:classification:editor:-1:children:mir_institutes" />
+              <xed:include uri="xslStyle:items2options#xslt:classification:editor:-1:children:mir_institutes" />
             </select>
           </xed:bind>
         </xed:bind>
@@ -1662,7 +1662,7 @@
             <option value="">
               <xed:output i18n="mir.select" />
             </option>
-            <xed:include uri="xslStyle:items2options:classification:editor:-1:children:SDNB" />
+            <xed:include uri="xslStyle:items2options#xslt:classification:editor:-1:children:SDNB" />
           </select>
         </div>
         <mir:help-pmud help-text="{i18n:mir.help.sdnb}" />
@@ -1684,7 +1684,7 @@
             <option value="">
               <xed:output i18n="mir.select" />
             </option>
-            <xed:include uri="xslStyle:items2options:classification:editor:-1:children:SDNB" />
+            <xed:include uri="xslStyle:items2options#xslt:classification:editor:-1:children:SDNB" />
           </select>
         </div>
         <mir:help-pmud help-text="{i18n:mir.help.sdnb}" pmud="true" />
@@ -2152,7 +2152,7 @@
                     <option value="">
                       <xed:output i18n="mir.select"/>
                     </option>
-                    <xed:include uri="xslStyle:items2options,convertClassificationOptions:classification:editor:-1:children:noteTypes" />
+                    <xed:include uri="xslStyle:items2options,fix-classification-options#xslt:classification:editor:-1:children:noteTypes" />
                 </select>
               </xed:bind >
             </div>
@@ -2242,7 +2242,7 @@
             <div class="col-md-3">
               <xed:bind xpath="@otherType">
                 <select class="form-control form-select">
-                  <xed:include uri="xslStyle:items2options:classification:editor:-1:children:mir_relateditem" />
+                  <xed:include uri="xslStyle:items2options#xslt:classification:editor:-1:children:mir_relateditem" />
                 </select>
               </xed:bind>
             </div>
