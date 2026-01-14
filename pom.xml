@@ -4,7 +4,7 @@
   <parent>
     <groupId>org.mycore</groupId>
     <artifactId>mycore-parent</artifactId>
-    <version>58</version>
+    <version>59-SNAPSHOT</version>
   </parent>
   <groupId>org.mycore.mir</groupId>
   <artifactId>mir-parent</artifactId>
@@ -41,18 +41,18 @@
     <!-- until snapshot matches released version (required for 'mvn changes:changes-check') -->
     <changes.version>2025.02</changes.version>
     <java.target.version>21</java.target.version>
-    <jetty.version>12.0.14</jetty.version>
+    <jetty.version>12.1.6</jetty.version>
     <maven.compiler.arg>-Werror</maven.compiler.arg>
     <mycore.version>2026.06.0-SNAPSHOT</mycore.version>
     <pmd.failOnViolation>true</pmd.failOnViolation>
     <pmd.version>7.11.0</pmd.version>
     <selenium.version>4.23.0</selenium.version>
     <site.suffix />
-    <solr-runner.solrVersionString>9.8.1</solr-runner.solrVersionString>
+    <solr-runner.solrVersionString>9.10.0</solr-runner.solrVersionString>
     <sortpom.sortDeps>scope,groupId,artifactId</sortpom.sortDeps>
     <sortpom.sortFile>https://gist.githubusercontent.com/yagee-de/dfd3698c1b49173dbf251f74eb6a9297/raw/406460c088ff3cb6354e4ae6b40535e6f841607d/mycore_sort.xml</sortpom.sortFile>
     <sortpom.sortProps>true</sortpom.sortProps>
-    <tomcat.version>10.1.31</tomcat.version>
+    <tomcat.version>11.0.15</tomcat.version>
   </properties>
   <build>
     <pluginManagement>
