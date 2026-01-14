@@ -38,7 +38,7 @@ import org.mycore.datamodel.metadata.MCRMetaClassification;
 import org.mycore.datamodel.metadata.MCRMetadataManager;
 import org.mycore.datamodel.metadata.MCRObject;
 import org.mycore.datamodel.metadata.MCRObjectID;
-import org.mycore.frontend.cli.MCRObjectCommands;
+import org.mycore.frontend.cli.MCRBasicCommands;
 import org.mycore.frontend.cli.annotation.MCRCommand;
 import org.mycore.frontend.cli.annotation.MCRCommandGroup;
 import org.mycore.mir.editor.MIREditorUtils;
@@ -256,7 +256,7 @@ public class MIRMigration202006Utils {
             }
         }).collect(Collectors.toList());
 
-        MCRObjectCommands.setSelectedObjectIDs(objectsToMigrate);
+        MCRBasicCommands.setSelectedValues(objectsToMigrate);
     }
 
     @MCRCommand(
