@@ -113,7 +113,7 @@ The path `/var/solr/data` should be mounted, it contains all persistent data.
 There is an [example docker-compose.yml](docker-compose.yml) which can be used for local development. 
 The ports and other settings can be changed in the [.env file](.env). You can use the commands:
 ```shell
-mvn clean install -Pdev -Dtomcat clean install && docker-compose up --build
+mvn clean install -Pdev -Dtomcat && docker-compose up --build
 ```
 
 There is another [example docker-compose.prod.yml](docker-compose.prod.yml) which uses prebuild images which are stored at [dockerhub](https://hub.docker.com/u/mycoreorg). 
