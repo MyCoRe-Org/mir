@@ -1,4 +1,4 @@
-FROM tomcat:10-jdk21-temurin-jammy
+FROM tomcat:11-jdk21-temurin-jammy
 RUN groupadd -r mcr -g 501 && \
     useradd -d /home/mcr -u 501 -m -s /bin/bash -g mcr mcr
 WORKDIR /usr/local/tomcat/
