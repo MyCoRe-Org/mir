@@ -682,13 +682,13 @@
     <!-- affiliation with authorityURI https://ror.org/ -->
     <xed:repeat xpath="mods:affiliation[@authorityURI='https://ror.org/']" min="1" max="10">
       <div class="mir-form-group row">
-        <label class="col-md-3 col-form-label text-end">
+        <label for="ror_id" class="col-md-3 col-form-label text-end">
           <xed:output i18n="mir.affiliation.with.ror.id.label"/>
         </label>
 
         <div class="col-md-6">
           <xed:bind xpath=".">
-            <select class="form-control mir-select-searchable mir-select-affiliation"
+            <select id="ror_id" class="form-control mir-select-searchable mir-select-affiliation"
                     data-placeholder="{i18n:mir.affiliation.with.ror.id.placeholder}">
 
               <xed:choose>
