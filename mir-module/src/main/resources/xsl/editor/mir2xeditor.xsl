@@ -559,7 +559,8 @@
   <xsl:template match="mir:insitut.repeated">
     <xsl:variable name="xed-val-marker" > {$xed-validation-marker} </xsl:variable>
     <xed:repeat xpath="mods:name[@type='corporate'][@authorityURI='{$institutesURI}']" min="{@min}" max="{@max}">
-      <xed:bind xpath="@valueURIxEditor">
+      <xed:bind xpath=".">
+      <xed:bind xpath="@valueURIxEditor"/>
       <xsl:variable name="select_id" select="concat(@label,'{xed:generate-id()}')" />
       <div class="mir-form-group row {@class} {$xed-val-marker}">
         <label for="{$select_id}" class="col-md-3 col-form-label text-end form-label">
