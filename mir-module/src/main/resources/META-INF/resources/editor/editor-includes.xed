@@ -678,7 +678,7 @@
   <xed:template id="person.affiliation">
     <xed:repeat xpath="mods:affiliation" min="1" max="10">
       <div class="mir-form-group row mir-affiliation-container">
-        <label class="col-md-3 col-form-label text-end">
+        <label for="{xed:generate-id()}_affiliation" class="col-md-3 col-form-label text-end">
           <xed:output i18n="mir.affiliation" />
         </label>
         <div class="col-md-6">
@@ -686,6 +686,7 @@
             <xed:bind xpath=".">
               <div class="input-group">
                 <input
+                  id="{xed:generate-id()}_affiliation"
                   type="text"
                   class="form-control"
                   autocomplete="off"
