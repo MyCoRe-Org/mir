@@ -55,30 +55,28 @@
     </xsl:param>
     <xsl:choose>
       <xsl:when test="string-length($url ) &gt; 0">
-        <xsl:variable name="itemClasses">
-          <xsl:choose>
-            <xsl:when test="item">
-              <xsl:value-of select="'dropdown-submenu'" />
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:if test="$active">
-                <xsl:value-of select="'active'" />
-              </xsl:if>
-            </xsl:otherwise>
-          </xsl:choose>
+        <xsl:variable name="listItemClass">
+          <xsl:text>mir-list-item</xsl:text>
+          <xsl:if test="item">
+            <xsl:text> dropdown-submenu</xsl:text>
+          </xsl:if>
+          <xsl:if test="$active">
+            <xsl:text> active</xsl:text>
+          </xsl:if>
         </xsl:variable>
-        <li>
-          <xsl:attribute name="class">
-            <xsl:copy-of select="$itemClasses" />
-          </xsl:attribute>
-          <a href="{$url}" class="dropdown-item">
+        <li class="{$listItemClass}">
+          <xsl:variable name="itemClass">
+            <xsl:text>dropdown-item</xsl:text>
+            <xsl:if test="item">
+              <xsl:text> submenu dropdown-toggle</xsl:text>
+            </xsl:if>
+            <xsl:if test="$active">
+              <xsl:text> active</xsl:text>
+            </xsl:if>
+          </xsl:variable>
+          <a href="{$url}" class="{$itemClass}">
             <xsl:if test="@target">
               <xsl:copy-of select="@target" />
-            </xsl:if>
-            <xsl:if test="item">
-              <xsl:attribute name="class">
-                <xsl:value-of select="'submenu dropdown-toggle dropdown-item'" />
-              </xsl:attribute>
             </xsl:if>
             <xsl:apply-templates select="." mode="linkText" />
           </a>
@@ -154,4 +152,65 @@
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
+
+
+  <xsl:template name="mir.generate_single_menu_entry">
+    <xsl:param name="menuID" />
+    <xsl:variable name="menuItem" select="$loaded_navigation_xml/menu[@id=$menuID]/item" />
+    <li class="nav-item">
+      <xsl:variable name="activeClass">
+        <xsl:choose>
+          <xsl:when test="$menuItem/@href = $browserAddress">
+            <xsl:text>active</xsl:text>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:text>not-active</xsl:text>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:variable>
+      <xsl:variable name="fullUrl">
+        <xsl:call-template name="mir.resolveFullUrl">
+          <xsl:with-param name="link" select="$menuItem/@href" />
+        </xsl:call-template>
+      </xsl:variable>
+      <a id="{$menuID}" href="{$fullUrl}" class="nav-link {$activeClass}">
+        <xsl:apply-templates select="$menuItem" mode="linkText" />
+      </a>
+    </li>
+  </xsl:template>
+
+  <xsl:template name="mir.resolveFullUrl">
+    <xsl:param name="link" />
+    <xsl:param name="appBaseUrl" select="$WebApplicationBaseURL" />
+    <xsl:choose>
+      <xsl:when test="starts-with($link,'http:')
+                      or starts-with($link,'https:')
+                      or starts-with($link,'mailto:')
+                      or starts-with($link,'ftp:')">
+        <xsl:value-of select="$link" />
+      </xsl:when>
+      <xsl:when test="starts-with($link,'/')">
+        <xsl:choose>
+          <xsl:when test="substring($appBaseUrl, string-length($appBaseUrl), 1) = '/'">
+            <xsl:value-of
+              select="concat(substring($appBaseUrl, 1, string-length($appBaseUrl) - 1), $link)" />
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:value-of select="concat($appBaseUrl, $link)" />
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:choose>
+          <xsl:when test="substring($appBaseUrl, string-length($appBaseUrl), 1) = '/'">
+            <xsl:value-of select="concat($appBaseUrl, $link)" />
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:value-of select="concat($appBaseUrl, '/', $link)" />
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
 </xsl:stylesheet>
