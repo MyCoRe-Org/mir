@@ -96,27 +96,27 @@
                   <mir:template name="selectInput"
                     xpath="condition[@field='category.top'][1]/@value" id="inputInst1"
                     i18n="editor.search.mir.institute" tooltip="editor.search.mir.institute.tooltip"
-                    uri="xslStyle:items2options:classification:editorComplete:-1:children:mir_institutes" />
+                    uri="xslStyle:items2options#xslt:classification:editorComplete:-1:children:mir_institutes" />
                   <!-- DNB Sachgruppe -->
                   <mir:template name="selectInput"
                     xpath="condition[@field='category.top'][2]/@value" id="inputSDNB1"
                     i18n="editor.search.mir.sdnb" tooltip="editor.search.mir.sdnb.tooltip"
-                    uri="xslStyle:items2options:classification:editorComplete:-1:children:SDNB" />
+                    uri="xslStyle:items2options#xslt:classification:editorComplete:-1:children:SDNB" />
                   <!-- Genre -->
                   <mir:template name="selectInput"
                     xpath="condition[@field='category.top'][3]/@value" id="inputGenre1"
                     i18n="editor.search.mir.genre" tooltip="editor.search.genre.tooltip"
-                    uri="xslStyle:items2options?allSelectable=true:classification:editorComplete:-1:children:mir_genres" />
+                    uri="xslStyle:items2options?allSelectable=true#xslt:classification:editorComplete:-1:children:mir_genres" />
                   <!-- Licenses -->
                   <mir:template name="selectInput"
                     xpath="condition[@field='category.top'][4]/@value" id="inputLicense1"
                     i18n="editor.search.mir.license" tooltip="editor.search.license.tooltip"
-                    uri="xslStyle:items2options:classification:editorComplete:-1:children:mir_licenses" />
+                    uri="xslStyle:items2options#xslt:classification:editorComplete:-1:children:mir_licenses" />
                   <!-- Status -->
                   <mir:template name="selectInput"
                     xpath="condition[@field='state']/@value" id="inputStatus1"
                     i18n="editor.search.status" tooltip="editor.search.status.tooltip"
-                    uri="xslStyle:items2options:classification:editor:-1:children:state" />
+                    uri="xslStyle:items2options#xslt:classification:editor:-1:children:state" />
                   <!-- Datum -->
                   <div class="mir-form-group row">
                     <xed:bind xpath="condition[@field='mods.dateIssued']">

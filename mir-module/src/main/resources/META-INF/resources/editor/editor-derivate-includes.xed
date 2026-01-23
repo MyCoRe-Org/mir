@@ -27,7 +27,7 @@
             <option value="">
               <xed:output i18n="mir.select" />
             </option>
-            <xed:include uri="xslStyle:items2options:classification:editorComplete:1:children:derivate_types"/>
+            <xed:include uri="xslStyle:items2options#xslt:classification:editorComplete:1:children:derivate_types" />
           </select>
         </div>
       </div>
@@ -45,7 +45,7 @@
             <option value="">
               <xed:output i18n="mir.select" />
             </option>
-            <xed:include uri="xslStyle:items2options:classification:editorComplete:1:children:mir_access"/>
+            <xed:include uri="xslStyle:items2options#xslt:classification:editorComplete:1:children:mir_access" />
           </select>
         </div>
       </div>

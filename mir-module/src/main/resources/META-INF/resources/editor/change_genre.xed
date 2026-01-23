@@ -21,7 +21,7 @@
             </label>
             <div class="col-md-6">
               <select class="form-control form-control-inline form-select">
-                <xed:include uri="xslStyle:items2options:classification:editorComplete:1:children:mir_genres" />
+                <xed:include uri="xslStyle:items2options#xslt:classification:editorComplete:1:children:mir_genres" />
               </select>
             </div>
           </div>
