@@ -25,7 +25,6 @@
                 <role>admin</role>
             </or>
             <or>
-                <regex>webpage:/editor/editor-xml.xed.*</regex>
                 <regex>webpage:/editor/editor-admins.xed.*</regex>
                 <regex>webpage:/editor/editor-derivate.xed.*</regex>
                 <regex>webpage:/editor/editor-dynamic.xed.*</regex>
