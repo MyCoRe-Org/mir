@@ -148,7 +148,7 @@
   </xsl:template>
 
   <xsl:template name="originInfo">
-    <mods:originInfo>
+    <mods:originInfo eventType="publication">
       <xsl:apply-templates select="issued" />
       <xsl:apply-templates select="publisher" />
     </mods:originInfo>
