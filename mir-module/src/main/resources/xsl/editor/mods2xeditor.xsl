@@ -100,6 +100,9 @@
     <xsl:copy>
       <xsl:apply-templates select="@*" />
       <xsl:choose>
+        <xsl:when test="@type='conference'">
+          <!-- Do nothing: displayForm should not be added -->
+        </xsl:when>
         <xsl:when test="mods:namePart and not(mods:namePart[@type='family']) and not(mods:namePart[@type='given']) and not(mods:displayForm)">
           <mods:displayForm>
             <xsl:for-each select="mods:namePart">
