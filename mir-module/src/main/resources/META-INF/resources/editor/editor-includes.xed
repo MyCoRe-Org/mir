@@ -2039,62 +2039,62 @@
       <xed:bind xpath="mods:extension[@type='datacite-funding']/datacite:fundingReferences" xmlns:datacite="http://datacite.org/schema/kernel-4">
         <xed:repeat xpath="datacite:fundingReference">
           <div class="mir-fieldset-content mir-editor-project-container">
-            <div class="mir-form-group row">
-              <label class="col-md-3 col-form-label text-end form-label">
-                <xed:output i18n="mir.editor.project.title"/>
-              </label>
-              <xed:bind xpath="datacite:awardTitle">
-                <div class="col-md-6 {$xed-validation-marker}">
-                  <input type="text" class="form-control project-title" autocomplete="off"/>
-                  <xed:validate relevant-if="string-length(../datacite:awardNumber)&gt;0" required="true"
-                    i18n="mir.editor.project.title.validation" display="global"/>
-                </div>
-              </xed:bind>
-              <mir:help-pmud help-text="{i18n:mir.editor.project.title.help}" pmud="true"/>
-            </div>
-            <div class="mir-form-group row">
-              <label class="col-md-3 col-form-label text-end form-label">
-                <xed:output i18n="mir.editor.project.id"/>
-              </label>
-              <div class="col-md-6">
-                <xed:bind xpath="datacite:awardNumber">
+            <xed:bind xpath="datacite:awardTitle">
+              <div class="mir-form-group row">
+                <label for="{xed:generate-id()}_project-title" class="col-md-3 col-form-label text-end form-label">
+                  <xed:output i18n="mir.editor.project.title"/>
+                </label>
+                  <div class="col-md-6 {$xed-validation-marker}">
+                    <input id="{xed:generate-id()}_project-title" type="text" class="form-control project-title" autocomplete="off"/>
+                    <xed:validate relevant-if="string-length(../datacite:awardNumber)&gt;0" required="true"
+                      i18n="mir.editor.project.title.validation" display="global"/>
+                  </div>
+                <mir:help-pmud help-text="{i18n:mir.editor.project.title.help}" pmud="true"/>
+              </div>
+            </xed:bind>
+            <xed:bind xpath="datacite:awardNumber">
+              <div class="mir-form-group row">
+                <label for="{xed:generate-id()}_project-id" class="col-md-3 col-form-label text-end form-label">
+                  <xed:output i18n="mir.editor.project.id"/>
+                </label>
+                <div class="col-md-6">
                   <div class="row">
                     <div class="col-md-4">
-                      <input type="text" class="form-control project-id"/>
+                      <input id="{xed:generate-id()}_project-id" type="text" class="form-control project-id"/>
                     </div>
                     <div class="col-md-8 ps-0">
                       <xed:bind xpath="@awardURI">
-                        <input type="text" class="form-control project-uri" placeholder="{i18n:mir.editor.project.uri}"/>
+                        <input aria-label="project uri" type="text" class="form-control project-uri" placeholder="{i18n:mir.editor.project.uri}"/>
                       </xed:bind>
                     </div>
                   </div>
-                </xed:bind>
+                </div>
+                <mir:help-pmud help-text="{i18n:mir.editor.project.id.help}"/>
               </div>
-              <mir:help-pmud help-text="{i18n:mir.editor.project.id.help}"/>
-            </div>
-            <div class="mir-form-group row">
-              <label class="col-md-3 col-form-label text-end form-label">
-                <xed:output i18n="mir.editor.project.funder.name"/>
-              </label>
-              <xed:bind xpath="datacite:funderName">
+            </xed:bind>
+            <xed:bind xpath="datacite:funderName">
+              <div class="mir-form-group row">
+                <label for="{xed:generate-id()}_funder-name" class="col-md-3 col-form-label text-end form-label">
+                  <xed:output i18n="mir.editor.project.funder.name"/>
+                </label>
                 <div class="col-md-6 {$xed-validation-marker}">
-                  <input type="text" class="form-control funder-name" autocomplete="off"/>
+                  <input id="{xed:generate-id()}_funder-name" type="text" class="form-control funder-name" autocomplete="off"/>
                   <xed:validate relevant-if="string-length(../datacite:awardNumber)&gt;0 or string-length(../datacite:awardNumber/@awardURI)&gt;0 or string-length(../datacite:awardTitle)&gt;0 or string-length(../datacite:funderIdentifier)&gt;0"
                     required="true" i18n="mir.editor.project.funder.name.validation" display="global"/>
                 </div>
-              </xed:bind>
-              <mir:help-pmud help-text="{i18n:mir.editor.project.funder.name.help}"/>
-            </div>
-            <div class="mir-form-group row">
-              <label class="col-md-3 col-form-label text-end form-label">
-                <xed:output i18n="mir.editor.project.funder.id"/>
-              </label>
-              <xed:bind xpath="datacite:funderIdentifier">
+                <mir:help-pmud help-text="{i18n:mir.editor.project.funder.name.help}"/>
+              </div>
+            </xed:bind>
+            <xed:bind xpath="datacite:funderIdentifier">
+              <div class="mir-form-group row">
+                <label for="{xed:generate-id()}_funder-value" class="col-md-3 col-form-label text-end form-label">
+                  <xed:output i18n="mir.editor.project.funder.id"/>
+                </label>
                 <div class="col-md-6">
                   <div class="row">
                     <xed:bind xpath="@funderIdentifierType">
                       <div class="col-md-4 {$xed-validation-marker}">
-                        <select class="form-control form-control-inline form-select funder-id-type">
+                        <select aria-label="select funder type" class="form-control form-control-inline form-select funder-id-type">
                           <option value="">
                             <xed:output i18n="mir.select"/>
                           </option>
@@ -2119,15 +2119,15 @@
                       </div>
                     </xed:bind>
                     <div class="col-md-8 ps-0 {$xed-validation-marker}">
-                      <input type="text" class="form-control funder-id-value" />
+                      <input id="{xed:generate-id()}_funder-value" type="text" class="form-control funder-id-value" />
                       <xed:validate relevant-if="string-length(@funderIdentifierType)&gt;0" required="true"
                         i18n="mir.editor.project.funder.id.validation" display="global"/>
                     </div>
                   </div>
                 </div>
-              </xed:bind>
-              <mir:help-pmud help-text="{i18n:mir.editor.project.funder.id.help}"/>
-            </div>
+                <mir:help-pmud help-text="{i18n:mir.editor.project.funder.id.help}"/>
+              </div>
+            </xed:bind>
           </div>
         </xed:repeat>
       </xed:bind>
