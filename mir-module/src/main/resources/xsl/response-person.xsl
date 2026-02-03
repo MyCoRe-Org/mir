@@ -191,7 +191,6 @@
             <h3><xsl:value-of select="i18n:translate('browse.person.searchPerson')" /></h3>
 
             <form class="form-inline"
-                  role="form"
                   id="index_search_form"
                   method="get"
                   action="{$proxyBaseURL}">
@@ -216,7 +215,7 @@
               </xsl:variable>
 
               <div class="mir-form-group">
-                <label class="sr-only form-label" for="index_search">Gesuchte Zeichen</label>
+                <label  for="index_search" class="sr-only form-label">Gesuchte Zeichen</label>
                 <input value="{$search_value}"
                        name="terms.regex"
                        class="search_text_gray focus_form_field form-control"

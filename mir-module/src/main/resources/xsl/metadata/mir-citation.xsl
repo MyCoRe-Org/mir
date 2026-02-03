@@ -123,7 +123,7 @@
               <xsl:with-param name="delimiter" select="','" />
             </xsl:call-template>
           </xsl:variable>
-          <select class="form-control input-sm form-select" id="mir-csl-cite"
+          <select aria-label="select Citation style" class="form-control input-sm form-select" id="mir-csl-cite"
                   data-default-selected="{$MIR.defaultCitationStyle}"
                   data-object-id="{/mycoreobject/@ID}">
             <xsl:for-each select="exslt:node-set($cite-styles)/token">
@@ -274,7 +274,6 @@
       class="modal fade"
       tabindex="-1"
       role="dialog"
-      aria-labelledby="modal frame"
       aria-hidden="true">
       <div class="modal-dialog modal-lg modal-xl" role="document">
         <div class="modal-content">
@@ -409,7 +408,7 @@
           <span class="fas fa-copy mir_copy_identifier" data-bs-toggle="tooltip" data-placement="left" aria-hidden="true" title="Copy Identifier"
             data-org-title="Copy Identifier"></span>
         </div>
-        <input type="text" class="d-none mir_identifier_hidden_input" value="{$id}"></input>
+        <input aria-label="Identifier to copy" type="text" class="d-none mir_identifier_hidden_input" value="{$id}"></input>
       </div>
     </xsl:if>
   </xsl:template>

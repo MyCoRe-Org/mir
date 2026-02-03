@@ -165,7 +165,7 @@
 
     <div id="{$id}_wrapper" class="datatable card">
       <div class="card-head clearfix">
-        <form id="{$id}_form" class="row form-inline" role="form">
+        <form id="{$id}_form" class="row form-inline">
           <!-- build hidden values -->
           <xsl:call-template name="dataTableFormValues" />
 

@@ -17,7 +17,7 @@
       </xsl:if>
         <xsl:apply-templates select="." mode="linkText" />
       </a>
-      <ul class="dropdown-menu" role="menu" aria-labelledby="{$menuId}">
+      <ul class="dropdown-menu" aria-labelledby="{$menuId}">
         <xsl:apply-templates select="item|group" />
       </ul>
     </li>
@@ -83,7 +83,7 @@
             <xsl:apply-templates select="." mode="linkText" />
           </a>
           <xsl:if test="item">
-            <ul class="dropdown-menu" role="menu">
+            <ul class="dropdown-menu">
               <xsl:apply-templates select="item" />
             </ul>
           </xsl:if>

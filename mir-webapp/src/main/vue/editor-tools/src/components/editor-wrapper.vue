@@ -61,10 +61,10 @@
                             <div class="modal-body">
                                 <div class="row mb-2">
                                     <div class="col-3">
-                                        <label>{{ i18n["mir.editor.subject.custom.modal.type"] }}</label>
+                                        <label :for="selectId">{{ i18n["mir.editor.subject.custom.modal.type"] }}</label>
                                     </div>
                                     <div class="col-7">
-                                        <select v-model="model.custom.type" class="form-control form-control-sm custom-type-select form-select">
+                                        <select :id="selectId" v-model="model.custom.type" class="form-control form-control-sm custom-type-select form-select">
                                             <option v-for="type in possibleTypeList"
                                                     :value="type">
                                                 {{ i18n["mir.editor.subject.custom.modal.type."+type] }}
@@ -146,6 +146,7 @@ import GeographicEditor from "@/components/editor/geographic-editor.vue";
 import CartographicsEditor from "@/components/editor/cartographic-editor.vue";
 import {provideTranslations} from "@/api/I18N";
 
+const selectId = ref('');
 const model = reactive({
     settings: undefined as EditorSettings | undefined,
     subject: undefined as Subject | undefined,
@@ -246,6 +247,7 @@ onMounted(() => {
             });
         }
     }
+    selectId.value = 'custom_typ_select-' + Math.random().toString(36).substring(2, 9);
 });
 const searchSubmitted = async (searchTerm: string) => {
     const jq = (window as any).$;
@@ -284,6 +286,7 @@ const searchEnabled = computed(()=>{
    }
 });
 
+const idForAccessibility = computed(()=>{return Date.now(); });
 // used to display the 'add cartographics button'
 const showCartographics = computed(() => {
     const isPair = model.settings?.admin == 'geographicPair' && possibleTypeList.value.includes('Cartographics');

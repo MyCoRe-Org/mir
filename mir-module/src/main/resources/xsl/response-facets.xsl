@@ -190,16 +190,17 @@
       </xsl:variable>
 
       <li data-fq="{$fqResponseValue}">
-        <div class="form-check" onclick="location.href='{$queryURL}';">
-          <input type="checkbox" class="form-check-input">
+        <xsl:variable name="uniqueID" select="concat('response_value',generate-id())" />
+        <div class="form-check">
+          <input id="{$uniqueID}" type="checkbox" class="form-check-input" onchange="location.href='{$queryURL}';">
             <xsl:if test="
               /response/lst[@name='responseHeader']/lst[@name='params']/str[@name='fq' and text() = $fqResponseValue] |
               /response/lst[@name='responseHeader']/lst[@name='params']/arr[@name='fq']/str[text() = $fqResponseValue]">
               <xsl:attribute name="checked">true</xsl:attribute>
             </xsl:if>
           </input>
-
-          <label class="form-check-label form-label">
+            <!--{xed:generate-id()}-->
+          <label for="{$uniqueID}" class="form-check-label form-label">
             <span class="title">
               <xsl:call-template name="label">
                 <xsl:with-param name="parameterValues" select="$parameterValues"/>

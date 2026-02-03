@@ -16,7 +16,7 @@
 
   <section xml:lang="all" xmlns:xed="http://www.mycore.de/xeditor"  xmlns:mir="http://www.mycore.de/mir"
            i18n="component.mods.editor.search.complex.pagetitle">
-    <xed:form class="form-horizontal" role="form">
+    <xed:form class="form-horizontal">
       <xed:cleanup-rule xpath="//condition" relevant-if="(string-length(@value) &gt; 0) or value[string-length(text()) &gt; 0 ]" />
       <xed:cleanup-rule xpath="//boolean" relevant-if="boolean|condition" />
       <xed:cleanup-rule xpath="//condition[@selectable='true']" relevant-if="@id = ../selectCondition/@keep" />
@@ -39,7 +39,7 @@
                   <div class="mir-form-group row">
                     <div class="col-md-3">
                       <xed:bind xpath="@field">
-                        <select class="form-control form-select">
+                        <select aria-label="select search ident" class="form-control form-select">
                           <option value="mods.title">
                             <xed:output i18n="editor.search.mir.title" />
                           </option>
@@ -57,7 +57,7 @@
                     </div>
                     <div class="col-md-2">
                       <xed:bind xpath="@operator">
-                        <select class="form-control form-select">
+                        <select aria-label="select serch operator" class="form-control form-select">
                           <option value="contains">
                             <xed:output i18n="editor.search.contains" />
                           </option>
@@ -73,7 +73,7 @@
                     <div class="col-md-7 row">
                       <div class="col-md-8">
                         <xed:bind xpath="@value">
-                          <input type="text" class="form-control" />
+                          <input aria-label="input field" type="text" class="form-control" />
                         </xed:bind>
                       </div>
                       <div class="btn-group col-md-4">
@@ -116,7 +116,7 @@
                     </label>
                     <div class="col-md-2">
                       <xed:bind xpath="@operator">
-                        <select class="form-control form-select">
+                        <select aria-label="select operator" class="form-control form-select">
                           <option value="=">=</option>
                           <option value="&gt;">&gt;</option>
                           <option value="&gt;=">&gt;=</option>
@@ -171,7 +171,7 @@
                   </label>
                   <div class="col-md-4">
                     <xed:bind xpath="@name">
-                      <select class="form-control form-select">
+                      <select id="inputSortBy" class="form-control form-select">
                         <option value="mods.dateIssued">
                           <xed:output i18n="component.mods.metaData.dictionary.dateIssued" />
                         </option>
@@ -183,7 +183,7 @@
                   </div>
                   <div class="col-md-3">
                     <xed:bind xpath="@order">
-                      <select class="form-control form-select">
+                      <select aria-label="select order" class="form-control form-select">
                         <option value="descending">
                           <xed:output i18n="editor.search.descending" />
                         </option>
