@@ -15,13 +15,16 @@ $h3-font-size:                1rem !default;
 // Brand colors
 // -------------------------
 $brand-success:      #6EBA6B !default;
-$brand-info:         #4B8FBC !default;
+$brand-info:         #3D7BA4 !default;
+$brand-info-20:      #21435A !default;
 $brand-warning:      #F39C12 !default;
 
 // Links
 // -------------------------
-$link-color:         $brand-info !default;
-$link-hover-color:   $brand-info !default;
+$link-color:            $brand-info !default;
+$link-hover-color:      $brand-info-20 !default;
+$link-decoration:       none !default;
+$link-hover-decoration: underline !default;
 
 // Navbar
 // -------------------------

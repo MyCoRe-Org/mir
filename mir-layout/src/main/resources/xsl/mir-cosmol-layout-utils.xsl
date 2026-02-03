@@ -111,8 +111,7 @@
           <h4>Netzwerke</h4>
           <ul class="social_links">
             <li><button type="button" aria-label="Facebook" class="social_icons social_icon_fb" onclick="window.open('https://facebook.com', '_blank')">Twitter</button></li>
-            <li><button type="button" aria-label="Twitter" class="social_icons social_icon_tw" onclick="window.open('https://twitter.com', '_blank')">Twitter</button></li>
-            <li><button type="button" aria-label="Google+" class="social_icons social_icon_gg" onclick="window.open('https://plus.google.com', '_blank')">Google+</button></li>
+            <li><button type="button" aria-label="X" class="social_icons social_icon_x" onclick="window.open('https://twitter.com', '_blank')">X</button></li>
           </ul>
         </div>
         <div class="col-2">

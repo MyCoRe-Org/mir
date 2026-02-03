@@ -13,12 +13,14 @@
                 xmlns:mcrmods="http://www.mycore.de/xslt/mods"
                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                 xmlns="http://datacite.org/schema/kernel-4"
-                exclude-result-prefixes="xsl fn xlink mods">
+                xmlns:datacite="http://datacite.org/schema/kernel-4"
+                exclude-result-prefixes="xsl fn xlink mods mcrmods datacite">
 
   <xsl:include href="utils/mods-utils.xsl" />
   <xsl:include href="functions/mods.xsl" />
 
   <xsl:output method="xml" encoding="UTF-8" indent="yes" />
+  <xsl:mode name="strip-to-default-ns" on-no-match="shallow-copy"/>
 
   <xsl:param name="WebApplicationBaseURL" />
 
@@ -59,7 +61,7 @@
       <xsl:call-template name="relatedIdentifiers" />
       <xsl:call-template name="rights" />
       <xsl:call-template name="descriptions" />
-      <xsl:call-template name="fundingReference" />
+      <xsl:call-template name="fundingReferences"/>
     </resource>
   </xsl:template>
 
@@ -349,7 +351,7 @@
 
   <xsl:template name="hostingInstitution">
     <contributor contributorType="HostingInstitution">
-      <contributorName>
+      <contributorName nameType="Organizational">
         <xsl:value-of select="$MCR.DOI.HostingInstitution" />
       </contributorName>
     </contributor>
@@ -741,18 +743,21 @@
   </xsl:template>
 
   <!-- ========== funding (0-n) ========== -->
-
-  <xsl:template name="fundingReference">
-    <xsl:if test="mods:identifier[@type='project'][contains(text(), 'FP7')]">
-      <fundingReferences>
-        <fundingReference>
-          <funderName>European Commission</funderName>
-          <awardNumber>
-            <xsl:value-of select="mods:identifier[@type='project'][contains(text(), 'FP7')]" />
-          </awardNumber>
-        </fundingReference>
-      </fundingReferences>
+  <xsl:template name="fundingReferences">
+    <xsl:if test="mods:extension[@type='datacite-funding']">
+      <xsl:apply-templates select="mods:extension[@type='datacite-funding']/datacite:fundingReferences" mode="strip-to-default-ns"/>
     </xsl:if>
+  </xsl:template>
+
+  <!-- strip elements to datacite ns -->
+  <xsl:template match="*" mode="strip-to-default-ns">
+    <xsl:element name="{local-name()}">
+      <xsl:apply-templates select="@* | node()" mode="strip-to-default-ns"/>
+    </xsl:element>
+  </xsl:template>
+
+  <xsl:template match="@* | text() | comment() | processing-instruction()" mode="strip-to-default-ns">
+    <xsl:copy/>
   </xsl:template>
 
   <!-- ========== ignore the rest ========== -->

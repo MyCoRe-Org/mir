@@ -485,6 +485,13 @@
 
     $('.confirm_deletion').confirm();
 
+
+    $(".searchfield_box").submit(function () {
+      let input = $("input.search-query").val();
+      input = input.replace(/[^\w\s]/gi, " ");
+      $("input.search-query").val(input);
+    });
+
     // search person index
     // makes sure the query ends with .* on submit
     $("#index_search_form").submit( function () {
@@ -587,7 +594,7 @@
     });
 
     //colapse the next element
-    $('[data-toggle=collapse-next]').click(function() {
+    $('[data-mcr-toggle=collapse-next]').click(function() {
       $(this).next().collapse('toggle');
     });
 

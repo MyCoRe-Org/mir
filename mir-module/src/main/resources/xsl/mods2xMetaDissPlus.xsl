@@ -105,7 +105,7 @@
   </xsl:variable>
   
   <xsl:variable name="ifsTemp">
-    <xsl:for-each select="mycoreobject/structure/derobjects/derobject[mcrxsl:isDisplayedEnabledDerivate(@xlink:href)]">
+    <xsl:for-each select="mycoreobject/structure/derobjects/derobject[acl:checkDerivateContentPermission(@xlink:href, 'read')]">
       <der id="{@xlink:href}">
         <xsl:copy-of select="document(concat('xslStyle:mcr_directory-recursive:ifs:',@xlink:href,'/'))" />
       </der>
@@ -427,6 +427,9 @@
       <xsl:attribute name="lang">
         <xsl:value-of select="$lang" />
       </xsl:attribute>
+      <xsl:if test="./mods:nonSort">
+        <xsl:value-of select="concat(./mods:nonSort, ' ')" />
+      </xsl:if>
       <xsl:value-of select="$mainTitle/mods:title" />
       <!-- <xsl:if test="$mainTitle/mods:subTitle">
         <xsl:value-of select="concat(' : ',$mainTitle/mods:subTitle)" />
@@ -452,6 +455,9 @@
               <xsl:with-param name="lang_code" select="./@xml:lang" />
             </xsl:call-template>
           </xsl:attribute>
+          <xsl:if test="./mods:nonSort">
+            <xsl:value-of select="concat(./mods:nonSort, ' ')" />
+          </xsl:if>
           <xsl:value-of select="./mods:title" />
           <!-- <xsl:if test="./mods:subTitle">
             <xsl:value-of select="concat(' : ',./mods:subTitle)" />

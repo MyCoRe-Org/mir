@@ -6,8 +6,8 @@
 <!-- $Revision: 1.21 $ $Date: 2007-11-12 09:37:14 $ -->
 <!-- ============================================== -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xlink="http://www.w3.org/1999/xlink"
-  xmlns:mcr="http://www.mycore.org/" xmlns:acl="xalan://org.mycore.access.MCRAccessManager" xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
-  xmlns:xalan="http://xml.apache.org/xalan" exclude-result-prefixes="xlink mcr xalan i18n acl">
+  xmlns:acl="xalan://org.mycore.access.MCRAccessManager" xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
+  xmlns:xalan="http://xml.apache.org/xalan" exclude-result-prefixes="xlink xalan i18n acl">
   &html-output;
   <xsl:include href="MyCoReLayout.xsl" />
   <!-- include custom templates for supported objecttypes -->

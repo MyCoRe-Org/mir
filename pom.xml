@@ -4,7 +4,7 @@
   <parent>
     <groupId>org.mycore</groupId>
     <artifactId>mycore-parent</artifactId>
-    <version>58-SNAPSHOT</version>
+    <version>58</version>
   </parent>
   <groupId>org.mycore.mir</groupId>
   <artifactId>mir-parent</artifactId>
@@ -65,7 +65,7 @@
         <plugin>
           <groupId>org.mycore.plugins</groupId>
           <artifactId>solr-runner-maven-plugin</artifactId>
-          <version>1.4</version>
+          <version>1.5</version>
           <configuration>
             <solrMirrorURL>${solr-runner.solrMirrorURL}</solrMirrorURL>
             <solrVersionString>${solr-runner.solrVersionString}</solrVersionString>

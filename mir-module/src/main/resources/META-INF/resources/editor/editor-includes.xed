@@ -1997,6 +1997,7 @@
     </div>
   </xed:template>
 
+  <!-- TODO outdated -->
   <xed:template id="openAIRE">
     <fieldset id="open-aire_box">
       <legend class="mir-fieldset-legend">
@@ -2028,6 +2029,110 @@
       </div>
     </fieldset>
     <script type="text/javascript" src="{$WebApplicationBaseURL}js/mir/openaire.min.js" />
+  </xed:template>
+
+  <xed:template id="project.repeated">
+    <fieldset>
+      <legend class="mir-fieldset-legend">
+        <xed:output i18n="mir.editor.project"/>
+      </legend>
+      <xed:bind xpath="mods:extension[@type='datacite-funding']/datacite:fundingReferences" xmlns:datacite="http://datacite.org/schema/kernel-4">
+        <xed:repeat xpath="datacite:fundingReference">
+          <div class="mir-fieldset-content mir-editor-project-container">
+            <div class="mir-form-group row">
+              <label class="col-md-3 col-form-label text-end form-label">
+                <xed:output i18n="mir.editor.project.title"/>
+              </label>
+              <xed:bind xpath="datacite:awardTitle">
+                <div class="col-md-6 {$xed-validation-marker}">
+                  <input type="text" class="form-control project-title" autocomplete="off"/>
+                  <xed:validate relevant-if="string-length(../datacite:awardNumber)&gt;0" required="true"
+                    i18n="mir.editor.project.title.validation" display="global"/>
+                </div>
+              </xed:bind>
+              <mir:help-pmud help-text="{i18n:mir.editor.project.title.help}" pmud="true"/>
+            </div>
+            <div class="mir-form-group row">
+              <label class="col-md-3 col-form-label text-end form-label">
+                <xed:output i18n="mir.editor.project.id"/>
+              </label>
+              <div class="col-md-6">
+                <xed:bind xpath="datacite:awardNumber">
+                  <div class="row">
+                    <div class="col-md-4">
+                      <input type="text" class="form-control project-id"/>
+                    </div>
+                    <div class="col-md-8 ps-0">
+                      <xed:bind xpath="@awardURI">
+                        <input type="text" class="form-control project-uri" placeholder="{i18n:mir.editor.project.uri}"/>
+                      </xed:bind>
+                    </div>
+                  </div>
+                </xed:bind>
+              </div>
+              <mir:help-pmud help-text="{i18n:mir.editor.project.id.help}"/>
+            </div>
+            <div class="mir-form-group row">
+              <label class="col-md-3 col-form-label text-end form-label">
+                <xed:output i18n="mir.editor.project.funder.name"/>
+              </label>
+              <xed:bind xpath="datacite:funderName">
+                <div class="col-md-6 {$xed-validation-marker}">
+                  <input type="text" class="form-control funder-name" autocomplete="off"/>
+                  <xed:validate relevant-if="string-length(../datacite:awardNumber)&gt;0 or string-length(../datacite:awardNumber/@awardURI)&gt;0 or string-length(../datacite:awardTitle)&gt;0 or string-length(../datacite:funderIdentifier)&gt;0"
+                    required="true" i18n="mir.editor.project.funder.name.validation" display="global"/>
+                </div>
+              </xed:bind>
+              <mir:help-pmud help-text="{i18n:mir.editor.project.funder.name.help}"/>
+            </div>
+            <div class="mir-form-group row">
+              <label class="col-md-3 col-form-label text-end form-label">
+                <xed:output i18n="mir.editor.project.funder.id"/>
+              </label>
+              <xed:bind xpath="datacite:funderIdentifier">
+                <div class="col-md-6">
+                  <div class="row">
+                    <xed:bind xpath="@funderIdentifierType">
+                      <div class="col-md-4 {$xed-validation-marker}">
+                        <select class="form-control form-control-inline form-select funder-id-type">
+                          <option value="">
+                            <xed:output i18n="mir.select"/>
+                          </option>
+                          <option value="Crossref Funder ID">
+                            <xed:output i18n="mir.editor.project.funder.id.crossref"/>
+                          </option>
+                          <option value="GRID">
+                            <xed:output i18n="mir.editor.project.funder.id.grid"/>
+                          </option>
+                          <option value="ISNI">
+                            <xed:output i18n="mir.editor.project.funder.id.isni"/>
+                          </option>
+                          <option value="ROR">
+                            <xed:output i18n="mir.editor.project.funder.id.ror"/>
+                          </option>
+                          <option value="Other">
+                            <xed:output i18n="mir.editor.project.funder.id.other"/>
+                          </option>
+                        </select>
+                        <xed:validate relevant-if="string-length(..)&gt;0" required="true"
+                          i18n="mir.editor.project.funder.id.validation" display="global"/>
+                      </div>
+                    </xed:bind>
+                    <div class="col-md-8 ps-0 {$xed-validation-marker}">
+                      <input type="text" class="form-control funder-id-value" />
+                      <xed:validate relevant-if="string-length(@funderIdentifierType)&gt;0" required="true"
+                        i18n="mir.editor.project.funder.id.validation" display="global"/>
+                    </div>
+                  </div>
+                </div>
+              </xed:bind>
+              <mir:help-pmud help-text="{i18n:mir.editor.project.funder.id.help}"/>
+            </div>
+          </div>
+        </xed:repeat>
+      </xed:bind>
+    </fieldset>
+    <script type="module" src="{$WebApplicationBaseURL}js/mir/editor-project.js"/>
   </xed:template>
 
   <xed:template id="comment">
@@ -2339,6 +2444,7 @@
     <xed:cleanup-rule xpath="//mods:accessCondition[@type='restriction on access']" relevant-if="string-length(text()) &gt; 0" />
     <xed:cleanup-rule xpath="//mods:accessCondition[@type='use and reproduction']" relevant-if="string-length(text()) &gt; 0" />
     <xed:cleanup-rule xpath="//mods:extension[@displayLabel='characteristics']" relevant-if="(string-length(chars/@year) &gt; 0) or (string-length(chars/@refereed) &gt; 0)" />
+    <xed:cleanup-rule xpath="//mods:extension[@type='datacite-funding']" relevant-if="*" />
     <xed:cleanup-rule xpath="//structure/parents" relevant-if="false()" />
     <xed:cleanup-rule xpath="//mods:dateIssued" relevant-if="@encoding='w3cdtf' and string-length(text()) &gt; 0" />
     <xed:cleanup-rule xpath="//mods:relatedItem/mods:location|//mods:relatedItem/mods:genre" relevant-if="string-length(../@xlink:href)=0" />
