@@ -573,7 +573,7 @@
               <option value="">
                 <xed:output i18n="mir.select.optional" />
               </option>
-              <xed:include uri="xslStyle:items2options:classification:editor:-1:children:mir_institutes" />
+              <xed:include uri="xslStyle:items2options#xslt:classification:editor:-1:children:mir_institutes" />
             </select>
         </div>
         <div class="col-md-3">
