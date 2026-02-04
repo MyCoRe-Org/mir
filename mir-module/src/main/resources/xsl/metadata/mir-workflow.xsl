@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
+                xmlns:mcrxml="xalan://org.mycore.common.xml.MCRXMLFunctions"
                 xmlns:exslt="http://exslt.org/common"
                 xmlns:mods="http://www.loc.gov/mods/v3"
-                version="1.0" exclude-result-prefixes="i18n exslt">
+                version="1.0" exclude-result-prefixes="i18n exslt mcrxml">
 
   <xsl:import href="xslImport:modsmeta:metadata/mir-workflow.xsl"/>
   <xsl:import href="xslImport:mirworkflow:metadata/mir-workflow.xsl"/>
@@ -33,17 +34,17 @@
         <xsl:choose>
           <xsl:when test="$currentStatus='submitted'">
             <xsl:choose>
+              <xsl:when test="mcrxml:isCurrentUserInRole('editor') or mcrxml:isCurrentUserInRole('admin')">
+                <xsl:apply-templates mode="editorSubmitted"/>
+              </xsl:when>
               <xsl:when test="$CurrentUser=$creator">
                 <xsl:apply-templates mode="creatorSubmitted"/>
-              </xsl:when>
-              <xsl:when test="key('rights', mycoreobject/@ID)/@write">
-                <xsl:apply-templates mode="editorSubmitted"/>
               </xsl:when>
             </xsl:choose>
           </xsl:when>
           <xsl:when test="$currentStatus='review'">
             <xsl:choose>
-              <xsl:when test="key('rights', mycoreobject/@ID)/@write">
+              <xsl:when test="mcrxml:isCurrentUserInRole('editor') or mcrxml:isCurrentUserInRole('admin')">
                 <xsl:apply-templates mode="editorReview"/>
               </xsl:when>
               <xsl:when test="$CurrentUser=$creator">
@@ -116,6 +117,9 @@
         <xsl:with-param name="content" select="exslt:node-set($message)"/>
         <xsl:with-param name="heading" select="''"/>
       </xsl:call-template>
+      <xsl:if test="normalize-space($MIR.Workflow.PDFValidation)='true'">
+        <xsl:apply-templates select="." mode="displayPdfError"/>
+      </xsl:if>
     </xsl:if>
   </xsl:template>
 
