@@ -2,6 +2,12 @@
 // Navbar
 // --------------------------------------------------
 
+  .nav-link {
+    &.active {
+      font-weight: 600;
+    }
+  }
+
   // overwrite bootwatch flatly settings
   // for link colors in navbars
   // was set to $success before
@@ -30,7 +36,8 @@
     .navbar-nav {
       .nav-link {
         color: $navbar-dark-color;
-        @include hover-focus() {
+        &:hover,
+        &:focus {
           color: $navbar-dark-hover-color !important;
         }
       }
@@ -46,7 +53,8 @@
     .navbar-nav {
       .nav-link {
         color: $navbar-light-color;
-        @include hover-focus() {
+        &:hover,
+        &:focus {
           color: $navbar-light-hover-color !important;
         }
       }
