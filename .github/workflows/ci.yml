@@ -61,7 +61,7 @@ jobs:
         export FIREFOX_BIN=$(which firefox)
         export SELENIUM_BROWSER=firefox
 
-        mvn -B -P!standard-with-extra-repos -U -Djetty -e clean install
+        mvn -B -P!standard-with-extra-repos -U -Dtomcat -e clean install
         mvn -P!standard-with-extra-repos -B javadoc:javadoc javadoc:test-javadoc -T1C
     - name: Login to Docker Hub
       if: contains('refs/heads/2022.06.x refs/heads/2023.06.x refs/heads/2024.06.x refs/heads/2025.06.x refs/heads/2025.12.x refs/heads/main', github.ref) && github.event_name=='push' && success()
