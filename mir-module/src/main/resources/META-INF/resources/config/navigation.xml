@@ -3,14 +3,14 @@
   <menu id="main" dir="/content/main">
     <label xml:lang="de">Hauptmenü</label>
     <label xml:lang="en">Main menu</label>
-  </menu>
-  <menu id="brand" dir="/content/brand">
-    <label xml:lang="de">MIR-Menü</label>
-    <label xml:lang="en">MIR menu</label>
     <item href="/content/index.xml" type="intern">
       <label xml:lang="de">Start</label>
       <label xml:lang="en">Start</label>
     </item>
+  </menu>
+  <menu id="brand" dir="/content/brand">
+    <label xml:lang="de">MIR-Menü</label>
+    <label xml:lang="en">MIR menu</label>
     <item href="/content/brand/impressum.xml" type="intern">
       <label xml:lang="de">Impressum</label>
       <label xml:lang="en">Impressum</label>
@@ -25,7 +25,6 @@
     <label xml:lang="en">Footer menu</label>
   </menu>
   <menu id="search">
-    <!-- search menu  -->
     <label xml:lang="de">Suche</label>
     <label xml:lang="en">Search</label>
     <item href="/content/search/simple.xed" type="intern">
@@ -48,26 +47,25 @@
       <label xml:lang="de">expert</label>
       <label xml:lang="en">expert</label>
     </item>
-  </menu>
-  <menu id="browse">
-  <!-- search menu  -->
-    <label xml:lang="de">Blättern</label>
-    <label xml:lang="en">Browse</label>
-    <item href="/content/browse/institutes.xml" type="intern">
-      <label xml:lang="de">Einrichtungen</label>
-      <label xml:lang="en">Institutions</label>
-    </item>
-    <item href="/content/browse/genres.xml" type="intern">
-      <label xml:lang="de">Dokumenttypen</label>
-      <label xml:lang="en">Genres</label>
-    </item>
-    <item href="/content/browse/sdnb.xml" type="intern">
-      <label xml:lang="de">Sachgruppen</label>
-      <label xml:lang="en">SNDB</label>
-    </item>
-    <item href="/servlets/MCRActionMappingServlet/personindex/browse" type="extern">
-      <label xml:lang="de">Personen</label>
-      <label xml:lang="en">Persons</label>
+    <item id="browse" href="/content/browse/" type="intern">
+      <label xml:lang="de">Blättern</label>
+      <label xml:lang="en">Browse</label>
+      <item href="/content/browse/institutes.xml" type="intern">
+        <label xml:lang="de">Einrichtungen</label>
+        <label xml:lang="en">Institutions</label>
+      </item>
+      <item href="/content/browse/genres.xml" type="intern">
+        <label xml:lang="de">Dokumenttypen</label>
+        <label xml:lang="en">Genres</label>
+      </item>
+      <item href="/content/browse/sdnb.xml" type="intern">
+        <label xml:lang="de">Sachgruppen</label>
+        <label xml:lang="en">SNDB</label>
+      </item>
+      <item href="/servlets/MCRActionMappingServlet/personindex/browse" type="extern">
+        <label xml:lang="de">Personen</label>
+        <label xml:lang="en">Persons</label>
+      </item>
     </item>
   </menu>
   <menu id="publish" dir="/content/publish">
