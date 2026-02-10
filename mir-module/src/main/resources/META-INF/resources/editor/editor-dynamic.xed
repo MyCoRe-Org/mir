@@ -5,7 +5,7 @@
   <section title="Create MODS document" xml:lang="en"/>
   <section xml:lang="all">
 
-  <xed:form xmlns:xed="http://www.mycore.de/xeditor" xmlns:cmd="http://www.cdlib.org/inside/diglib/copyrightMD" method="post" role="form" class="form-horizontal" id="dynamic_editor">
+  <xed:form xmlns:xed="http://www.mycore.de/xeditor" xmlns:cmd="http://www.cdlib.org/inside/diglib/copyrightMD" method="post" class="form-horizontal" id="dynamic_editor">
 
     <xed:preload uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-includes.xed" />
     <xed:preload uri="webapp:editor/editor-genres.xed" />
@@ -40,11 +40,13 @@
         <xed:include ref="failed-validation-messages" />
 
         <fieldset>
+          <legend style="display: none;">Submission form<!-- **TODO*i18n*--></legend>
           <xed:include ref="genres.{$genre_intern}" />
         </fieldset>
 
         <xed:if test="not($host='standalone')">
           <fieldset class="mir-relatedItem">
+            <legend style="display: none;"><xed:output i18n="mir.form.editor.dynamic.partof" /></legend>
             <div class="col-md-12 mir-relatedItem-head">
               <xed:output i18n="mir.form.editor.dynamic.partof" />
               <xed:output value="concat($mir_genres//category[@ID=$host]/label[lang($CurrentLang)]/@text,':')" />
@@ -61,6 +63,7 @@
               <xed:if test="contains($mir_genres//category[@ID=$host]/label[lang('x-hosts')]/@text,'series')">
                 <xed:bind xpath="mods:relatedItem[(@type='host')][1]">
                   <fieldset class="mir-relatedItem">
+                    <legend style="display: none;"><xed:output i18n="mir.form.editor.dynamic.partof" /></legend>
                     <div class="col-md-12 mir-relatedItem-head">
                       <xed:output i18n="mir.form.editor.dynamic.partof" />
                       <xed:output value="concat($mir_genres//category[@ID='series']/label[lang($CurrentLang)]/@text,':')" />

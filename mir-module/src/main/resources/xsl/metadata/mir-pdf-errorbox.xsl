@@ -204,7 +204,7 @@
 
     <xsl:template match="exceptions">
         <xsl:param name="uniqueName" select="'uniqueStacktraceName'"/>
-        <a onclick="$('#{$uniqueName}stacktracecbButton').toggleClass('fa-chevron-right fa-chevron-down');"
+        <a aria-label="toogle {$uniqueName}" onclick="$('#{$uniqueName}stacktracecbButton').toggleClass('fa-chevron-right fa-chevron-down');"
            data-bs-toggle="collapse" href="#collapse{$uniqueName}stacktrace"
            class="text-start text-dark d-flex flex-md-row flex-grow-1 list-group-item align-items-center"
            style="text-decoration: none;">

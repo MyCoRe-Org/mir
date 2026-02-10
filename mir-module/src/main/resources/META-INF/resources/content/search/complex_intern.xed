@@ -16,7 +16,7 @@
 
  <section xml:lang="all" xmlns:xed="http://www.mycore.de/xeditor" xmlns:mir="http://www.mycore.de/mir"
           i18n="component.mods.editor.search.complex.pagetitle">
-    <xed:form class="form-horizontal" role="form">
+    <xed:form class="form-horizontal">
       <xed:cleanup-rule xpath="//condition" relevant-if="(string-length(@value) &gt; 0) or value[string-length(text()) &gt; 0 ]" />
       <xed:cleanup-rule xpath="//boolean" relevant-if="boolean|condition" />
       <xed:cleanup-rule xpath="//condition[@selectable='true']" relevant-if="@id = ../selectCondition/@keep" />
@@ -43,7 +43,7 @@
                     <div class="mir-form-group row">
                       <div class="col-md-3">
                         <xed:bind xpath="@field">
-                          <select class="form-control form-select">
+                          <select aria-label="sselect search ident" class="form-control form-select">
                             <option value="mods.title">
                               <xed:output i18n="editor.search.mir.title" />
                             </option>
@@ -61,7 +61,7 @@
                       </div>
                       <div class="col-md-2">
                         <xed:bind xpath="@operator">
-                          <select class="form-control form-select">
+                          <select aria-label="select serch operator" class="form-control form-select">
                             <option value="contains">
                               <xed:output i18n="editor.search.contains" />
                             </option>
@@ -77,7 +77,7 @@
                       <div class="col-md-7 row">
                         <div class="col-md-8">
                           <xed:bind xpath="@value">
-                            <input type="text" class="form-control" />
+                            <input type="text" class="form-control" aria-label="input field"/>
                           </xed:bind>
                         </div>
                         <div class="btn-group col-md-4">
@@ -90,31 +90,31 @@
                   </xed:repeat>
                   <!-- Identifier -->
                   <mir:template name="textInput"
-                    xpath="condition[@field='id,isbn,mods.identifier']/@value" id="inputIdentifier1"
+                    xpath="condition[@field='id,isbn,mods.identifier']/@value" id="{xed:generate-id()}_inputIdentifier1"
                     i18n="editor.search.mir.identifier" tooltip="editor.search.mir.identifier.tooltip" />
                   <!-- Institution -->
                   <mir:template name="selectInput"
-                    xpath="condition[@field='category.top'][1]/@value" id="inputInst1"
+                    xpath="condition[@field='category.top'][1]/@value" id="{xed:generate-id()}_inputInst1"
                     i18n="editor.search.mir.institute" tooltip="editor.search.mir.institute.tooltip"
                     uri="xslStyle:items2options#xslt:classification:editorComplete:-1:children:mir_institutes" />
                   <!-- DNB Sachgruppe -->
                   <mir:template name="selectInput"
-                    xpath="condition[@field='category.top'][2]/@value" id="inputSDNB1"
+                    xpath="condition[@field='category.top'][2]/@value" id="{xed:generate-id()}_inputSDNB1"
                     i18n="editor.search.mir.sdnb" tooltip="editor.search.mir.sdnb.tooltip"
                     uri="xslStyle:items2options#xslt:classification:editorComplete:-1:children:SDNB" />
                   <!-- Genre -->
                   <mir:template name="selectInput"
-                    xpath="condition[@field='category.top'][3]/@value" id="inputGenre1"
+                    xpath="condition[@field='category.top'][3]/@value" id="{xed:generate-id()}_inputGenre1"
                     i18n="editor.search.mir.genre" tooltip="editor.search.genre.tooltip"
                     uri="xslStyle:items2options?allSelectable=true#xslt:classification:editorComplete:-1:children:mir_genres" />
                   <!-- Licenses -->
                   <mir:template name="selectInput"
-                    xpath="condition[@field='category.top'][4]/@value" id="inputLicense1"
+                    xpath="condition[@field='category.top'][4]/@value" id="{xed:generate-id()}_inputLicense1"
                     i18n="editor.search.mir.license" tooltip="editor.search.license.tooltip"
                     uri="xslStyle:items2options#xslt:classification:editorComplete:-1:children:mir_licenses" />
                   <!-- Status -->
                   <mir:template name="selectInput"
-                    xpath="condition[@field='state']/@value" id="inputStatus1"
+                    xpath="condition[@field='state']/@value" id="{xed:generate-id()}_inputStatus1"
                     i18n="editor.search.status" tooltip="editor.search.status.tooltip"
                     uri="xslStyle:items2options#xslt:classification:editor:-1:children:state" />
                   <!-- Datum -->
@@ -125,7 +125,7 @@
                       </label>
                       <div class="col-md-2">
                         <xed:bind xpath="@operator">
-                          <select class="form-control form-select">
+                          <select aria-label="select an operator" class="form-control form-select">
                             <option value="=">=</option>
                             <option value="&gt;">&gt;</option>
                             <option value="&gt;=">&gt;=</option>
@@ -205,12 +205,12 @@
             <xed:bind xpath="sortBy/field">
               <div class="mir-form-group row col-12">
                 <div class="offset-md-3 col-md-9 row">
-                  <label for="Connect1" class="col-md-2" style="padding-left:0">
+                  <label for="connect2" class="col-md-2" style="padding-left:0">
                     <xed:output i18n="editor.search.sortby" />
                   </label>
                   <div class="col-md-4">
                     <xed:bind xpath="@name">
-                      <select class="form-control form-select">
+                      <select id="connect2" class="form-control form-select">
                         <option value="mods.dateIssued">
                           <xed:output i18n="component.mods.metaData.dictionary.dateIssued" />
                         </option>
@@ -222,7 +222,7 @@
                   </div>
                   <div class="col-md-3">
                     <xed:bind xpath="@order">
-                      <select class="form-control form-select">
+                      <select aria-label="descending" class="form-control form-select">
                         <option value="descending">
                           <xed:output i18n="editor.search.descending" />
                         </option>
@@ -241,7 +241,7 @@
           <div class="card-footer clearfix">
             <div class="float-end">
               <mir:template name="submitButton" i18n="editor.search.search"
-                target="servlet_MCRQLSearchServlet" order="primary-button"/>
+                target="servlet_MCRQLSearchServlet"/>
             </div>
           </div>
         </div>

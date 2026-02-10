@@ -356,10 +356,10 @@
                 <xsl:variable name="preparedCurrentQryFromLastRequest"
                               select="translate($decodedCurrentQryFromLastRequest, '&quot;', '')" />
                 <!-- Input element for the second search -->
-                <input class="form-control" id="qry" placeholder="{i18n:translate('mir.placeholder.response.search')}"
+                <input aria-label="{i18n:translate('mir.placeholder.response.search')}" class="form-control" id="qry" placeholder="{i18n:translate('mir.placeholder.response.search')}"
                        type="text" value="{$preparedCurrentQryFromLastRequest}" />
 
-                <button class="btn btn-primary" type="submit">
+                <button aria-label="Search button" class="btn btn-primary" type="submit">
                   <span class="fas fa-search"></span>
                   <xsl:value-of select="i18n:translate('editor.search.search')"/>
                 </button>
@@ -395,7 +395,7 @@
             <input type="hidden" name="uri" value="{concat('mcrobject:',$docID)}" />
           </xsl:for-each>
           <xsl:variable name="buttonDefaultClasses" select="'basket_button btn btn-primary form-control'" />
-          <button type="submit" tabindex="1" value="add">
+          <button type="submit" tabindex="1" aria-label="Plus Button" value="add">
             <xsl:choose>
               <xsl:when test="count($idNodes)=0">
                 <xsl:attribute name="disabled">disabled</xsl:attribute>
@@ -747,7 +747,7 @@
                 </xsl:when>
                 <!-- when there is no content derivate then use disabled icon -->
                 <xsl:when test="string-length($derivid)=0">
-                  <img class="hit_icon" src="{$WebApplicationBaseURL}images/icons/icon_common_disabled.png"/>
+                  <img alt="" class="hit_icon" src="{$WebApplicationBaseURL}images/icons/icon_common_disabled.png"/>
                 </xsl:when>
                 <xsl:otherwise>
                   <div class="hit_icon"
@@ -872,7 +872,7 @@
                     </a>
                   </xsl:when>
                   <xsl:otherwise>
-                    <a href="{$ServletsBaseURL}solr/mods_nameIdentifier?q=mods.name:&quot;{$author_name}&quot;&amp;owner=createdby:{$owner}" title="Suche nach allen Publikationen">
+                    <a href="{$ServletsBaseURL}solr/mods_nameIdentifier?q=mods.name:&quot;{encoder:encode($author_name, 'UTF-8')}&quot;&amp;owner=createdby:{$owner}" title="Suche nach allen Publikationen">
                       <xsl:value-of select="$author_name" />
                     </a>
                   </xsl:otherwise>
@@ -1066,7 +1066,7 @@
             <xsl:value-of select="i18n:translate('mir.response.button.filter')" />
             <span class="caret" />
           </button>
-          <ul class="dropdown-menu dropdown-menu-end" role="menu" style="max-height: 500px; overflow-y: scroll;">
+          <ul class="dropdown-menu dropdown-menu-end" style="max-height: 500px; overflow-y: scroll;">
             <xsl:apply-templates select="$classiDocument/select/option" mode="calculate_option_notselected">
               <xsl:with-param name="classId" select="$classId" />
             </xsl:apply-templates>
@@ -1168,10 +1168,10 @@
             <xsl:value-of select="i18n:translate('mir.response.button.filter')" />
             <span class="caret" />
           </button>
-          <div class="dropdown-menu dropdown-menu-end stopAutoclose col-md-12 mir-date-arrowTop" role="menu">
+          <div class="dropdown-menu dropdown-menu-end stopAutoclose col-md-12 mir-date-arrowTop">
             <div class="container-fluid">
               <div class="col-md-12 mir-form-group">
-                <select class="form-control form-select">
+                <select aria-label="select operator" class="form-control form-select">
                   <option value="=">=</option>
                   <option value="&gt;">&gt;</option>
                   <option value="&gt;=">&gt;=</option>
@@ -1181,17 +1181,17 @@
               </div>
               <div class="col-md-12 mir-form-group dateContainer">
                 <div class="col-md-4">
-                  <input class="form-control" placeholder="DD" type="number" min="1" max="31" style="padding: 0.4em" />
+                  <input aria-label="Day" class="form-control" placeholder="DD" type="number" min="1" max="31" style="padding: 0.4em" />
                 </div>
                 <div class="col-md-4">
-                  <input class="form-control" placeholder="MM" type="number" min="1" max="12" style="padding: 0.4em" />
+                  <input aria-label="Month" class="form-control" placeholder="MM" type="number" min="1" max="12" style="padding: 0.4em" />
                 </div>
                 <div class="col-md-4">
-                  <input class="form-control" placeholder="YYYY" type="number" min="1000" max="2050" style="padding: 0.1em" />
+                  <input aria-label="Year" class="form-control" placeholder="YYYY" type="number" min="1000" max="2050" style="padding: 0.1em" />
                 </div>
               </div>
               <div class="col-md-12 mir-form-group">
-                <input id="dateSearch" type="button" class="btn btn-secondary form-control" value="Go!" />
+                <input aria-label="input for search date" id="dateSearch" type="button" class="btn btn-secondary form-control" value="Go!" />
               </div>
             </div>
           </div>

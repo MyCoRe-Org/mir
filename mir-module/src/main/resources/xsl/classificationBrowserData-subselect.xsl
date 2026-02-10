@@ -31,7 +31,7 @@
         <li>
           <xsl:choose>
             <xsl:when test="@children = 'true'">
-              <a href="#" id="cbButton_{$id}" onclick="toogle('{@id}','{$folder.closed}','{$folder.open}');"><i class="{$folder.closed}" id="cbButton_{$id}" /></a>
+              <a href="#" aria-label="toogle {$id}" id="cbButton_{$id}" onclick="toogle('toogle','{$folder.closed}','{$folder.open}');"><i class="{$folder.closed}" id="cbButton_{$id}" /></a>
             </xsl:when>
             <xsl:otherwise>
               <i class="{$folder.leaf}" id="cbButton_{$id}" />
