@@ -443,6 +443,12 @@
         <version>1.2</version>
         <scope>runtime</scope>
       </dependency>
+      <dependency>
+        <groupId>org.mycore</groupId>
+        <artifactId>xalan-legacy-module</artifactId>
+        <version>1.0-SNAPSHOT</version>
+        <scope>runtime</scope>
+      </dependency>
     </dependencies>
   </dependencyManagement>
   <developers>
