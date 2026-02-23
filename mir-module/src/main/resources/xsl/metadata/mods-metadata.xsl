@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0"
-    xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-    xmlns:mods="http://www.loc.gov/mods/v3"
-    xmlns:mcrmods="xalan://org.mycore.mods.classification.MCRMODSClassificationSupport"
-    xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions"
-    xmlns:xlink="http://www.w3.org/1999/xlink"
-    xmlns:encoder="xalan://java.net.URLEncoder"
-    xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
-    exclude-result-prefixes=" i18n mods mcrmods mcrxsl xlink encoder">
+  xmlns:encoder="xalan://java.net.URLEncoder"
+  xmlns:mcri18n="xalan://org.mycore.services.i18n.MCRTranslation"
+  xmlns:mcrmodsclass="xalan://org.mycore.mods.classification.MCRMODSClassificationSupport"
+  xmlns:mcrxml="xalan://org.mycore.common.xml.MCRXMLFunctions"
+  xmlns:mods="http://www.loc.gov/mods/v3"
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  exclude-result-prefixes="encoder mcri18n mcrmodsclass mcrxml mods xsl">
+
   <xsl:import href="xslImport:modsmeta" />
   <xsl:include href="layout/mir-layout-utils.xsl" />
   <xsl:include href="mods-utils.xsl" />
@@ -40,7 +40,7 @@
             </xsl:when>
             <xsl:when test="$docState='blocked' or $docState='deleted'">
               <xsl:call-template name="printMirMessage">
-                <xsl:with-param name="title" select="i18n:translate(concat('mir.error.', $docState))" />
+                <xsl:with-param name="title" select="mcri18n:translate(concat('mir.error.', $docState))" />
                 <xsl:with-param name="msg">
                   <xsl:if test="//mods:note[@type='admin']">
                     <xsl:for-each select="//mods:note[@type='admin']">
@@ -52,7 +52,7 @@
                   <xsl:if test="$hitsPrecending/int[@name='matches'] &gt; 0">
                     <xsl:call-template name="listRelatedItems">
                       <xsl:with-param name="hits" select="$hitsPrecending" />
-                      <xsl:with-param name="label" select="i18n:translate('mir.metadata.succeedingVersion')" />
+                      <xsl:with-param name="label" select="mcri18n:translate('mir.metadata.succeedingVersion')" />
                     </xsl:call-template>
                   </xsl:if>
                 </xsl:with-param>
@@ -115,10 +115,10 @@
     <xsl:variable name="classlink">
       <xsl:choose>
         <xsl:when test="$parent=true()">
-          <xsl:value-of select="mcrmods:getClassCategParentLink($node)" />
+          <xsl:value-of select="mcrmodsclass:getClassCategParentLink($node)" />
         </xsl:when>
         <xsl:otherwise>
-          <xsl:value-of select="mcrmods:getClassCategLink($node)" />
+          <xsl:value-of select="mcrmodsclass:getClassCategLink($node)" />
         </xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
@@ -138,7 +138,7 @@
           <!-- check for relatedItem containing mycoreobject ID dependent on current user using solr query on field mods.relatedItem -->
           <xsl:variable name="state">
             <xsl:choose>
-              <xsl:when test="mcrxsl:isCurrentUserInRole('admin') or mcrxsl:isCurrentUserInRole('editor')">
+              <xsl:when test="mcrxml:isCurrentUserInRole('admin') or mcrxml:isCurrentUserInRole('editor')">
                 <xsl:text>state:*</xsl:text>
               </xsl:when>
               <xsl:otherwise>

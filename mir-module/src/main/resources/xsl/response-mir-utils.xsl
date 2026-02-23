@@ -1,6 +1,9 @@
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
-  xmlns:encoder="xalan://java.net.URLEncoder" exclude-result-prefixes="xsl i18n encoder"
->
+<?xml version="1.0" encoding="UTF-8"?>
+<xsl:stylesheet version="1.0"
+  xmlns:encoder="xalan://java.net.URLEncoder"
+  xmlns:mcri18n="xalan://org.mycore.services.i18n.MCRTranslation"
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  exclude-result-prefixes="encoder mcri18n xsl">
 
   <xsl:include href="resource:xsl/mir-utils.xsl" />
 
@@ -14,8 +17,8 @@
     <xsl:param name="page" />
     <xsl:param name="pages" />
 
-    <xsl:variable name="label.previousHit" select="i18n:translate(concat($i18nprefix, '.previous'), $page - 1)" />
-    <xsl:variable name="label.nextHit" select="i18n:translate(concat($i18nprefix, '.next'), $page + 1)" />
+    <xsl:variable name="label.previousHit" select="mcri18n:translate(concat($i18nprefix, '.previous'), $page - 1)" />
+    <xsl:variable name="label.nextHit" select="mcri18n:translate(concat($i18nprefix, '.next'), $page + 1)" />
 
     <div id="{$id}" class="row {$class}">
       <xsl:if test="$page &gt; 1">
@@ -42,7 +45,7 @@
             <xsl:text> offset-md-5</xsl:text>
           </xsl:if>
         </xsl:attribute>
-        <a title="{i18n:translate(concat($i18nprefix, '.back'))}">
+        <a title="{mcri18n:translate(concat($i18nprefix, '.back'))}">
           <xsl:variable name="origRows" select="lst[@name='responseHeader']/lst[@name='params']/str[@name='origrows']" />
           <xsl:variable name="newStart" select="$start - ($start mod $origRows)" />
           <xsl:attribute name="href">
@@ -61,7 +64,7 @@
           <span class="fas fa-chevron-up" />
         </a>
         <xsl:text>&#160;</xsl:text>
-        <xsl:value-of select="i18n:translate(concat($i18nprefix, '.entriesInfo'), concat($page, ';', $pages))" />
+        <xsl:value-of select="mcri18n:translate(concat($i18nprefix, '.entriesInfo'), concat($page, ';', $pages))" />
       </div>
       <xsl:if test="$page &lt; $pages">
         <xsl:variable name="link">
@@ -129,10 +132,10 @@
     <xsl:param name="page" />
     <xsl:param name="pages" />
 
-    <xsl:variable name="label.firstPage" select="i18n:translate(concat($i18nprefix, '.first'), 1)" />
-    <xsl:variable name="label.lastPage" select="i18n:translate(concat($i18nprefix, '.last'), $pages)" />
-    <xsl:variable name="label.previousPage" select="i18n:translate(concat($i18nprefix, '.previous'), $page - 1)" />
-    <xsl:variable name="label.nextPage" select="i18n:translate(concat($i18nprefix, '.next'), $page + 1)" />
+    <xsl:variable name="label.firstPage" select="mcri18n:translate(concat($i18nprefix, '.first'), 1)" />
+    <xsl:variable name="label.lastPage" select="mcri18n:translate(concat($i18nprefix, '.last'), $pages)" />
+    <xsl:variable name="label.previousPage" select="mcri18n:translate(concat($i18nprefix, '.previous'), $page - 1)" />
+    <xsl:variable name="label.nextPage" select="mcri18n:translate(concat($i18nprefix, '.next'), $page + 1)" />
 
     <ul id="{$id}-paginate" class="pagination {$class} d-inline-flex">
       <li class="page-item">

@@ -1,16 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<xsl:stylesheet 
-  version="1.0"
+<xsl:stylesheet version="1.0"
   xmlns="http://www.openarchives.org/OAI/2.0/"
+  xmlns:mcracl="xalan://org.mycore.access.MCRAccessManager"
+  xmlns:mods="http://www.loc.gov/mods/v3"
+  xmlns:urn="http://www.ddb.de/standards/urn"
+  xmlns:xalan="http://xml.apache.org/xalan"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xmlns:xlink="http://www.w3.org/1999/xlink"
-  xmlns:urn="http://www.ddb.de/standards/urn"
-  xmlns:mods="http://www.loc.gov/mods/v3"
-  xmlns:acl="xalan://org.mycore.access.MCRAccessManager"
-  xmlns:xalan="http://xml.apache.org/xalan"
-  exclude-result-prefixes="xalan xsl mods acl">
+  exclude-result-prefixes="mcracl mods xalan xsl">
 
   <xsl:output method="xml" encoding="UTF-8" />
   <xsl:include href="mods2record.xsl" />
@@ -19,7 +17,7 @@
   <xsl:param name="WebApplicationBaseURL" select="''" />
 
   <xsl:variable name="ifsTemp" xmlns="">
-    <xsl:for-each select="mycoreobject/structure/derobjects/derobject[acl:checkDerivateContentPermission(@xlink:href, 'read')]">
+    <xsl:for-each select="mycoreobject/structure/derobjects/derobject[mcracl:checkDerivateContentPermission(@xlink:href, 'read')]">
       <der id="{@xlink:href}">
         <xsl:copy-of select="document(concat('xslStyle:mcr_directory-recursive:ifs:',@xlink:href,'/'))" />
       </der>

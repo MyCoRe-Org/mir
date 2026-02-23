@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<xsl:stylesheet version="1.0" 
-  xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<xsl:stylesheet version="1.0"
+  xmlns:mcrpages="xalan://org.mycore.mods.MCRMODSPagesHelper"
   xmlns:mods="http://www.loc.gov/mods/v3"
   xmlns:xalan="http://xml.apache.org/xalan"
-  exclude-result-prefixes="xsl xalan">  
-  
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  exclude-result-prefixes="mcrpages xalan xsl">
+
   <xsl:include href="copynodes.xsl" />
 
   <xsl:template match="@xsi:schemaLocation" />
@@ -81,7 +81,7 @@
   </xsl:template>
   
   <xsl:template match="mods:extent[@unit='page']">
-    <xsl:copy-of xmlns:pages="xalan://org.mycore.mods.MCRMODSPagesHelper" select="pages:buildExtentPagesNodeSet(string(mods:start/text()))" />
+    <xsl:copy-of select="mcrpages:buildExtentPagesNodeSet(string(mods:start/text()))" />
   </xsl:template>
 
 </xsl:stylesheet>

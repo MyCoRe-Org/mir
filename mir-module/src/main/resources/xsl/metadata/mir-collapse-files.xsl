@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0"
-                xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-                xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions"
-                xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
-                xmlns:mods="http://www.loc.gov/mods/v3"
-                xmlns:xlink="http://www.w3.org/1999/xlink"
-                xmlns:acl="xalan://org.mycore.access.MCRAccessManager"
-                xmlns:embargo="xalan://org.mycore.mods.MCRMODSEmbargoUtils"
-                xmlns:piUtil="xalan://org.mycore.pi.frontend.MCRIdentifierXSLUtils"
-                exclude-result-prefixes="i18n mcrxsl mods acl xlink embargo piUtil"
->
+  xmlns:encoder="xalan://java.net.URLEncoder"
+  xmlns:mcracl="xalan://org.mycore.access.MCRAccessManager"
+  xmlns:mcrembargoutils="xalan://org.mycore.mods.MCRMODSEmbargoUtils"
+  xmlns:mcri18n="xalan://org.mycore.services.i18n.MCRTranslation"
+  xmlns:mcrxml="xalan://org.mycore.common.xml.MCRXMLFunctions"
+  xmlns:mods="http://www.loc.gov/mods/v3"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  exclude-result-prefixes="encoder mcracl mcrembargoutils mcri18n mcrxml mods xlink xsl">
+
   <xsl:import href="xslImport:modsmeta:metadata/mir-collapse-files.xsl" />
   <xsl:param name="MIR.NotFullAccessInfo.Genres" />
   <xsl:param name="MIR.FileBrowser.FilesPerPage" />
   <xsl:template match="/">
-    <xsl:variable xmlns:encoder="xalan://java.net.URLEncoder" name="loginURL"
+    <xsl:variable name="loginURL"
       select="concat( $ServletsBaseURL, 'MCRLoginServlet?url=', encoder:encode( string( $RequestURL ) ) )" />
 
     <xsl:choose>
@@ -25,23 +25,23 @@
             <xsl:when test="mycoreobject/structure/derobjects/derobject and not(mycoreobject/structure/derobjects/derobject[key('rights', @xlink:href)/@read])">
               <div id="mir-access-restricted">
                 <h3>
-                  <xsl:value-of select="i18n:translate('metadata.files.file')" />
+                  <xsl:value-of select="mcri18n:translate('metadata.files.file')" />
                 </h3>
                 <div class="alert alert-warning" role="alert">
-                  <xsl:variable name="embargoDate" select="embargo:getEmbargo(mycoreobject/@ID)" />
+                  <xsl:variable name="embargoDate" select="mcrembargoutils:getEmbargo(mycoreobject/@ID)" />
                   <xsl:choose>
                     <xsl:when test="string-length($embargoDate)&gt;0">
                       <!-- embargo is active for guest user -->
-                      <xsl:value-of select="i18n:translate('component.mods.metaData.dictionary.accessCondition.embargo.available',$embargoDate)" />
+                      <xsl:value-of select="mcri18n:translate('component.mods.metaData.dictionary.accessCondition.embargo.available',$embargoDate)" />
                     </xsl:when>
                     <xsl:when test="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:accessCondition[@type='restriction on access'][substring-after(@xlink:href,'#')='intern']">
-                      <xsl:value-of disable-output-escaping="yes" select="i18n:translate('mir.derivate.no_access.intern',$loginURL)" />
+                      <xsl:value-of disable-output-escaping="yes" select="mcri18n:translate('mir.derivate.no_access.intern',$loginURL)" />
                     </xsl:when>
                     <xsl:when test="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:accessCondition[@type='restriction on access'][substring-after(@xlink:href,'#')='ipAddressRange']">
-                      <xsl:value-of select="i18n:translate('mir.derivate.no_access.ipAddressRange')" />
+                      <xsl:value-of select="mcri18n:translate('mir.derivate.no_access.ipAddressRange')" />
                     </xsl:when>
                     <xsl:otherwise>
-                      <xsl:value-of select="i18n:translate('mir.derivate.no_access')" />
+                      <xsl:value-of select="mcri18n:translate('mir.derivate.no_access')" />
                     </xsl:otherwise>
                   </xsl:choose>
                 </div>
@@ -51,7 +51,7 @@
               <xsl:if test="contains($MIR.NotFullAccessInfo.Genres, $mods-type)">
                 <xsl:if test="count(mycoreobject/structure/derobjects/derobject) &gt; count(mycoreobject/structure/derobjects/derobject[key('rights', @xlink:href)/@read])">
                   <div class="alert alert-warning" role="alert">
-                    <xsl:value-of select="i18n:translate('mir.derivate.not_full_access')" />
+                    <xsl:value-of select="mcri18n:translate('mir.derivate.not_full_access')" />
                   </div>
                 </xsl:if>
               </xsl:if>
@@ -71,10 +71,10 @@
                                   <xsl:value-of select="$derivateXML//titles/title[@xml:lang=$CurrentLang]" />
                                 </xsl:when>
                                 <xsl:when test="string-length($derivateType)!=0">
-                                  <xsl:value-of select="mcrxsl:getDisplayName('derivate_types',$derivateType)" />
+                                  <xsl:value-of select="mcrxml:getDisplayName('derivate_types',$derivateType)" />
                                 </xsl:when>
                                 <xsl:otherwise>
-                                  <xsl:value-of select="i18n:translate('metadata.files.file')" />
+                                  <xsl:value-of select="mcri18n:translate('metadata.files.file')" />
                                 </xsl:otherwise>
                               </xsl:choose>
                             </span>
@@ -96,8 +96,8 @@
                   <xsl:choose>
                     <xsl:when test="key('rights', @xlink:href)/@read">
                       <xsl:variable name="maindoc" select="$derivateXML/mycorederivate/derivate/internals/internal/@maindoc" />
-                      <div class="file_box_files" data-objID="{$objID}" data-deriID="{$derId}" data-mainDoc="{$maindoc}" data-writedb="{acl:checkPermission($derId,'writedb')}" data-deletedb="{acl:checkPermission($derId,'deletedb')}" data-numperpage="{$MIR.FileBrowser.FilesPerPage}">
-                        <xsl:if test="acl:checkPermission($derId,'read')">
+                      <div class="file_box_files" data-objID="{$objID}" data-deriID="{$derId}" data-mainDoc="{$maindoc}" data-writedb="{mcracl:checkPermission($derId,'writedb')}" data-deletedb="{mcracl:checkPermission($derId,'deletedb')}" data-numperpage="{$MIR.FileBrowser.FilesPerPage}">
+                        <xsl:if test="mcracl:checkPermission($derId,'read')">
                           <xsl:attribute name="data-jwt">
                             <xsl:value-of select="'required'" />
                           </xsl:attribute>
@@ -111,14 +111,14 @@
                       <noscript>
                         <br />
                         <a href="{$ServletsBaseURL}MCRFileNodeServlet/{$derId}/">
-                          <xsl:value-of select="i18n:translate('metadata.files.toDerivate')" />
+                          <xsl:value-of select="mcri18n:translate('metadata.files.toDerivate')" />
                         </a>
                       </noscript>
                     </xsl:when>
                     <xsl:otherwise>
                       <div id="collapse{@xlink:href}" class="row body collapse in show">
                         <div class="col-12">
-                          <xsl:value-of select="i18n:translate('mir.derivate.no_access')" />
+                          <xsl:value-of select="mcri18n:translate('mir.derivate.no_access')" />
                         </div>
                       </div>
                     </xsl:otherwise>

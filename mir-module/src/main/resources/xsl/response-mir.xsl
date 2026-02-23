@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0"
-  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  xmlns:mods="http://www.loc.gov/mods/v3"
-  xmlns:encoder="xalan://java.net.URLEncoder"
-  xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
-  xmlns:str="http://exslt.org/strings"
-  xmlns:exslt="http://exslt.org/common"
-  xmlns:acl="xalan://org.mycore.access.MCRAccessManager"
-  xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions"
-  xmlns:basket="xalan://org.mycore.frontend.basket.MCRBasketManager"
   xmlns:decoder="xalan://java.net.URLDecoder"
-  exclude-result-prefixes="i18n mods str exslt acl mcrxsl basket encoder decoder">
+  xmlns:encoder="xalan://java.net.URLEncoder"
+  xmlns:exslt="http://exslt.org/common"
+  xmlns:mcracl="xalan://org.mycore.access.MCRAccessManager"
+  xmlns:mcractionmapping="xalan://org.mycore.wfc.actionmapping.MCRURLRetriever"
+  xmlns:mcrbasket="xalan://org.mycore.frontend.basket.MCRBasketManager"
+  xmlns:mcri18n="xalan://org.mycore.services.i18n.MCRTranslation"
+  xmlns:mcrxml="xalan://org.mycore.common.xml.MCRXMLFunctions"
+  xmlns:str="http://exslt.org/strings"
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  exclude-result-prefixes="decoder encoder exslt mcracl mcractionmapping mcrbasket mcri18n mcrxml str">
 
   <xsl:import href="xslImport:badges" />
   <xsl:import href="resource:xsl/orcid/mir-orcid-user.xsl"/>
@@ -47,13 +47,13 @@
         <h1>
           <xsl:choose>
             <xsl:when test="$hits=0">
-              <xsl:value-of select="i18n:translate('results.noObject')" />
+              <xsl:value-of select="mcri18n:translate('results.noObject')" />
             </xsl:when>
             <xsl:when test="$hits=1">
-              <xsl:value-of select="i18n:translate('results.oneObject')" />
+              <xsl:value-of select="mcri18n:translate('results.oneObject')" />
             </xsl:when>
             <xsl:otherwise>
-              <xsl:value-of select="i18n:translate('results.nObjects',$hits)" />
+              <xsl:value-of select="mcri18n:translate('results.nObjects',$hits)" />
             </xsl:otherwise>
           </xsl:choose>
         </h1>
@@ -180,25 +180,25 @@
                   <span id="select_mods_label">
                     <xsl:choose>
                       <xsl:when test="$initialSelectMods = 'mods.title'">
-                        <xsl:value-of select="i18n:translate('mir.dropdown.title')"/>
+                        <xsl:value-of select="mcri18n:translate('mir.dropdown.title')"/>
                       </xsl:when>
                       <xsl:when test="$initialSelectMods = 'mods.author'">
-                        <xsl:value-of select="i18n:translate('mir.dropdown.author')"/>
+                        <xsl:value-of select="mcri18n:translate('mir.dropdown.author')"/>
                       </xsl:when>
                       <xsl:when test="$initialSelectMods = 'mods.name.top'">
-                        <xsl:value-of select="i18n:translate('mir.dropdown.name')"/>
+                        <xsl:value-of select="mcri18n:translate('mir.dropdown.name')"/>
                       </xsl:when>
                       <xsl:when test="$initialSelectMods = 'mods.nameIdentifier'">
-                        <xsl:value-of select="i18n:translate('mir.dropdown.nameIdentifier')"/>
+                        <xsl:value-of select="mcri18n:translate('mir.dropdown.nameIdentifier')"/>
                       </xsl:when>
                       <xsl:when test="$initialSelectMods = 'allMeta'">
-                        <xsl:value-of select="i18n:translate('mir.dropdown.allMeta')"/>
+                        <xsl:value-of select="mcri18n:translate('mir.dropdown.allMeta')"/>
                       </xsl:when>
                       <xsl:when test="$initialSelectMods = 'content'">
-                        <xsl:value-of select="i18n:translate('mir.dropdown.content')"/>
+                        <xsl:value-of select="mcri18n:translate('mir.dropdown.content')"/>
                       </xsl:when>
                       <xsl:otherwise>
-                        <xsl:value-of select="i18n:translate('mir.dropdown.all')"/>
+                        <xsl:value-of select="mcri18n:translate('mir.dropdown.all')"/>
                       </xsl:otherwise>
                     </xsl:choose>
 
@@ -208,37 +208,37 @@
                 <ul class="dropdown-menu select_mods_type">
                   <li>
                     <a href="#" value="all" class="dropdown-item">
-                      <xsl:value-of select="i18n:translate('mir.dropdown.all')"/>
+                      <xsl:value-of select="mcri18n:translate('mir.dropdown.all')"/>
                     </a>
                   </li>
                   <li>
                     <a href="#" value="mods.title" class="dropdown-item">
-                      <xsl:value-of select="i18n:translate('mir.dropdown.title')"/>
+                      <xsl:value-of select="mcri18n:translate('mir.dropdown.title')"/>
                     </a>
                   </li>
                   <li>
                     <a href="#" value="mods.author" class="dropdown-item">
-                      <xsl:value-of select="i18n:translate('mir.dropdown.author')"/>
+                      <xsl:value-of select="mcri18n:translate('mir.dropdown.author')"/>
                     </a>
                   </li>
                   <li>
                     <a href="#" value="mods.name.top" class="dropdown-item">
-                      <xsl:value-of select="i18n:translate('mir.dropdown.name')"/>
+                      <xsl:value-of select="mcri18n:translate('mir.dropdown.name')"/>
                     </a>
                   </li>
                   <li>
                     <a href="#" value="mods.nameIdentifier" class="dropdown-item">
-                      <xsl:value-of select="i18n:translate('mir.dropdown.nameIdentifier')"/>
+                      <xsl:value-of select="mcri18n:translate('mir.dropdown.nameIdentifier')"/>
                     </a>
                   </li>
                   <li>
                     <a href="#" value="allMeta" class="dropdown-item">
-                      <xsl:value-of select="i18n:translate('mir.dropdown.allMeta')"/>
+                      <xsl:value-of select="mcri18n:translate('mir.dropdown.allMeta')"/>
                     </a>
                   </li>
                   <li>
                     <a href="#" value="content" class="dropdown-item">
-                      <xsl:value-of select="i18n:translate('mir.dropdown.content')"/>
+                      <xsl:value-of select="mcri18n:translate('mir.dropdown.content')"/>
                     </a>
                   </li>
                 </ul>
@@ -356,12 +356,12 @@
                 <xsl:variable name="preparedCurrentQryFromLastRequest"
                               select="translate($decodedCurrentQryFromLastRequest, '&quot;', '')" />
                 <!-- Input element for the second search -->
-                <input class="form-control" id="qry" placeholder="{i18n:translate('mir.placeholder.response.search')}"
+                <input class="form-control" id="qry" placeholder="{mcri18n:translate('mir.placeholder.response.search')}"
                        type="text" value="{$preparedCurrentQryFromLastRequest}" />
 
                 <button class="btn btn-primary" type="submit">
                   <span class="fas fa-search"></span>
-                  <xsl:value-of select="i18n:translate('editor.search.search')"/>
+                  <xsl:value-of select="mcri18n:translate('editor.search.search')"/>
                 </button>
               </div>
             </form>
@@ -407,7 +407,7 @@
             </xsl:choose>
             <i class="fas fa-plus"></i>
             <xsl:text> </xsl:text>
-            <xsl:value-of select="i18n:translate('basket.add.searchpage')" />
+            <xsl:value-of select="mcri18n:translate('basket.add.searchpage')" />
           </button>
         </form>
       </div>
@@ -501,7 +501,7 @@
         </xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
-    <xsl:variable name="mods-genre-i18n" select="mcrxsl:getDisplayName('mir_genres',$mods-genre)" />
+    <xsl:variable name="mods-genre-i18n" select="mcrxml:getDisplayName('mir_genres',$mods-genre)" />
     <xsl:variable name="hitItemClass">
       <xsl:choose>
         <xsl:when test="$hitNumberOnPage mod 2 = 1">
@@ -525,7 +525,7 @@
       <xsl:value-of select="concat($href, '&amp;start=',$startPosition, '&amp;fl=id&amp;rows=1&amp;origrows=', $rows, '&amp;XSL.Style=browse', $q)"/>
     </xsl:variable>
     <xsl:variable name="hitHref">
-      <xsl:value-of select="mcrxsl:regexp($completeHref, '&amp;XSL.Transformer=response-resultlist', '')"/>
+      <xsl:value-of select="mcrxml:regexp($completeHref, '&amp;XSL.Transformer=response-resultlist', '')"/>
     </xsl:variable>
 
     <!-- derivate variables -->
@@ -565,7 +565,7 @@
           <xsl:variable name="score" select="float[@name='score']" />
           <xsl:if test="$score &gt; 0 and $maxScore &gt; 0">
             <xsl:variable name="relevance" select="($score div $maxScore) * 100" />
-            <div class="hit_stars_5 hit_stars" title="{i18n:translate('mir.response.relevance')}: {$relevance}%">
+            <div class="hit_stars_5 hit_stars" title="{mcri18n:translate('mir.response.relevance')}: {$relevance}%">
               <xsl:if test="$relevance &gt; 0">
                 <div class="hit_star_1 hit_star"></div>
               </xsl:if>
@@ -591,7 +591,7 @@
                 <div class="btn-group">
                   <a data-bs-toggle="dropdown" class="btn btn-secondary dropdown-toggle" href="#">
                     <i class="fas fa-cog"></i>
-                    <xsl:value-of select="concat(' ',i18n:translate('mir.actions'))" />
+                    <xsl:value-of select="concat(' ',mcri18n:translate('mir.actions'))" />
                     <span class="caret"></span>
                   </a>
                   <ul class="dropdown-menu dropdown-menu-end">
@@ -617,14 +617,14 @@
                                     <xsl:value-of select="$editURL" />
                                   </xsl:attribute>
                               <span class="fas fa-pencil-alt"></span>
-                              <xsl:value-of select="i18n:translate('object.editObject')" />
+                              <xsl:value-of select="mcri18n:translate('object.editObject')" />
                             </xsl:when>
                             <xsl:otherwise>
                               <xsl:attribute name="href">
                                     <xsl:value-of select="'#'" />
                                   </xsl:attribute>
                               <span class="fas fa-pencil-alt"></span>
-                              <xsl:value-of select="i18n:translate('object.locked')" />
+                              <xsl:value-of select="mcri18n:translate('object.locked')" />
                             </xsl:otherwise>
                           </xsl:choose>
                         </a>
@@ -681,7 +681,7 @@
                   <!-- no link to no derivate -->
                 </xsl:when>
 
-                <xsl:when test="not(acl:checkDerivateDisplayPermission($derivid))">
+                <xsl:when test="not(mcracl:checkDerivateDisplayPermission($derivid))">
                   <!-- no link if we can not read -->
                 </xsl:when>
 
@@ -689,9 +689,9 @@
                   <xsl:value-of select="concat($WebApplicationBaseURL, 'rsc/viewer/', $derivid,'/', $derivate/str[@name='iviewFile'])"/>
                 </xsl:when>
                 <xsl:when test="translate(str:tokenize($derivate/str[@name='derivateMaindoc'],'.')[position()=last()],'PDF','pdf') = 'pdf'">
-                  <xsl:variable name="filePath" select="concat($derivate/str[@name='id'],'/',mcrxsl:encodeURIPath($derivate/str[@name='derivateMaindoc']))"/>
+                  <xsl:variable name="filePath" select="concat($derivate/str[@name='id'],'/',mcrxml:encodeURIPath($derivate/str[@name='derivateMaindoc']))"/>
                   <xsl:choose>
-                    <xsl:when test="mcrxsl:isMobileDevice($UserAgent)">
+                    <xsl:when test="mcrxml:isMobileDevice($UserAgent)">
                       <!-- for mobile users just show the file link -->
                       <xsl:value-of select="$derivifs"/>
                     </xsl:when>
@@ -941,7 +941,7 @@
                     <xsl:value-of select="concat($place,': ')" />
                   </xsl:when>
                   <xsl:otherwise>
-                    <xsl:value-of select="concat(i18n:translate('component.mods.metaData.dictionary.published'),': ')" />
+                    <xsl:value-of select="concat(mcri18n:translate('component.mods.metaData.dictionary.published'),': ')" />
                   </xsl:otherwise>
                 </xsl:choose>
               </span>
@@ -991,27 +991,27 @@
     <xsl:param name="layout" select="'$'" />
     <xsl:param name="collection" select="''" />
     <xsl:choose>
-      <xsl:when test="mcrxsl:resourceAvailable('actionmappings.xml')">
+      <xsl:when test="mcrxml:resourceAvailable('actionmappings.xml')">
       <!-- URL mapping enabled -->
         <xsl:variable name="url">
           <xsl:choose>
             <xsl:when test="string-length($collection) &gt; 0">
               <xsl:choose>
                 <xsl:when test="$layout = 'all'">
-                  <xsl:value-of select="actionmapping:getURLforCollection('update-xml',$collection,true())" xmlns:actionmapping="xalan://org.mycore.wfc.actionmapping.MCRURLRetriever" />
+                  <xsl:value-of select="mcractionmapping:getURLforCollection('update-xml',$collection,true())" />
                 </xsl:when>
                 <xsl:otherwise>
-                  <xsl:value-of select="actionmapping:getURLforCollection('update',$collection,true())" xmlns:actionmapping="xalan://org.mycore.wfc.actionmapping.MCRURLRetriever" />
+                  <xsl:value-of select="mcractionmapping:getURLforCollection('update',$collection,true())" />
                 </xsl:otherwise>
               </xsl:choose>
             </xsl:when>
             <xsl:otherwise>
               <xsl:choose>
                 <xsl:when test="$layout = 'all'">
-                  <xsl:value-of select="actionmapping:getURLforID('update-xml',$id,true())" xmlns:actionmapping="xalan://org.mycore.wfc.actionmapping.MCRURLRetriever" />
+                  <xsl:value-of select="mcractionmapping:getURLforID('update-xml',$id,true())" />
                 </xsl:when>
                 <xsl:otherwise>
-                  <xsl:value-of select="actionmapping:getURLforID('update',$id,true())" xmlns:actionmapping="xalan://org.mycore.wfc.actionmapping.MCRURLRetriever" />
+                  <xsl:value-of select="mcractionmapping:getURLforID('update',$id,true())" />
                 </xsl:otherwise>
               </xsl:choose>
             </xsl:otherwise>
@@ -1049,7 +1049,7 @@
       <xsl:variable name="classiDocument" select="document(concat('xslStyle:items2options#xslt:classification:editor:-1:children:',$classId))" />
       <div class="card-header" data-mcr-toggle="collapse-next">
         <h3 class="card-title">
-          <xsl:value-of select="i18n:translate($i18nKey)" />
+          <xsl:value-of select="mcri18n:translate($i18nKey)" />
         </h3>
       </div>
       <div class="card-body collapse show">
@@ -1063,7 +1063,7 @@
         <div class="dropdown">
           <button class="btn btn-secondary dropdown-toggle col-12" type="button" data-bs-toggle="dropdown">
             <!--Filter-->
-            <xsl:value-of select="i18n:translate('mir.response.button.filter')" />
+            <xsl:value-of select="mcri18n:translate('mir.response.button.filter')" />
             <span class="caret" />
           </button>
           <ul class="dropdown-menu dropdown-menu-end" role="menu" style="max-height: 500px; overflow-y: scroll;">
@@ -1094,7 +1094,7 @@
       </xsl:variable>
       <li>
         <xsl:call-template name="print.hyperLink">
-          <xsl:with-param name="href" select="mcrxsl:regexp($filterHref,'(&amp;|%26)(start=)[0-9]*', '')" />
+          <xsl:with-param name="href" select="mcrxml:regexp($filterHref,'(&amp;|%26)(start=)[0-9]*', '')" />
           <xsl:with-param name="text" select="@title" />
           <xsl:with-param name="class" select="'dropdown-item'" />
         </xsl:call-template>
@@ -1110,7 +1110,7 @@
     <xsl:if test="contains($RequestURL, $complete)">
       <xsl:variable name="filterHref">
         <xsl:value-of
-          select="mcrxsl:regexp(concat(substring-before($RequestURL, $complete), substring-after($RequestURL, $complete)), '(&amp;|%26)(start=)[0-9]*', '')" />
+          select="mcrxml:regexp(concat(substring-before($RequestURL, $complete), substring-after($RequestURL, $complete)), '(&amp;|%26)(start=)[0-9]*', '')" />
       </xsl:variable>
       <xsl:call-template name="print.hyperLink">
         <xsl:with-param name="href" select="$filterHref" />
@@ -1138,7 +1138,7 @@
     <div class="card mir-search-options-date">
       <div class="card-header" data-mcr-toggle="collapse-next">
         <h3 class="card-title">
-          <xsl:value-of select="i18n:translate('component.mods.metaData.dictionary.dateIssued')" />
+          <xsl:value-of select="mcri18n:translate('component.mods.metaData.dictionary.dateIssued')" />
         </h3>
       </div>
       <div class="card-body collapse show">
@@ -1165,7 +1165,7 @@
         <div class="dropdown">
           <button class="btn btn-secondary dropdown-toggle col-12" type="button" data-bs-toggle="dropdown">
             <!--Filter-->
-            <xsl:value-of select="i18n:translate('mir.response.button.filter')" />
+            <xsl:value-of select="mcri18n:translate('mir.response.button.filter')" />
             <span class="caret" />
           </button>
           <div class="dropdown-menu dropdown-menu-end stopAutoclose col-md-12 mir-date-arrowTop" role="menu">
@@ -1216,14 +1216,14 @@
     </xsl:variable>
 
     <xsl:choose>
-      <xsl:when test="basket:contains('objects',$identifier)">
+      <xsl:when test="mcrbasket:contains('objects',$identifier)">
         <!-- remove from basket -->
         <a
           class="hit_option remove_from_basket {$dropdownclass}"
           href="{$ServletsBaseURL}MCRBasketServlet?type=objects&amp;action=remove&amp;id={$identifier}&amp;redirect=referer"
           title="" >
           <span class="fas fa-bookmark"></span>&#160;
-          <xsl:value-of select="i18n:translate('basket.remove')" />
+          <xsl:value-of select="mcri18n:translate('basket.remove')" />
         </a>
       </xsl:when>
       <xsl:otherwise>
@@ -1233,7 +1233,7 @@
           href="{$ServletsBaseURL}MCRBasketServlet?type=objects&amp;action=add&amp;id={$identifier}&amp;uri=mcrobject:{$identifier}&amp;redirect=referer"
           title="" >
           <span class="fas fa-bookmark"></span>&#160;
-          <xsl:value-of select="i18n:translate('basket.add')" />
+          <xsl:value-of select="mcri18n:translate('basket.add')" />
         </a>
       </xsl:otherwise>
     </xsl:choose>

@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
-  xmlns:exslt="http://exslt.org/common" xmlns:mods="http://www.loc.gov/mods/v3" exclude-result-prefixes="exslt i18n mods">
+<xsl:stylesheet version="1.0"
+  xmlns:exslt="http://exslt.org/common"
+  xmlns:mcri18n="xalan://org.mycore.services.i18n.MCRTranslation"
+  xmlns:mods="http://www.loc.gov/mods/v3"
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  exclude-result-prefixes="exslt mcri18n mods">
+
   <xsl:import href="xslImport:modsmeta:metadata/mir-export.xsl" />
   <xsl:param name="MCR.Export.Transformers" />
   <xsl:template match="/">

@@ -1,7 +1,10 @@
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xlink="http://www.w3.org/1999/xlink"
-                xmlns:mets="http://www.loc.gov/METS/"
-                xmlns:mods="http://www.loc.gov/mods/v3" xmlns:xalan="http://xml.apache.org/xalan"
-                exclude-result-prefixes="" version="1.0">
+<?xml version="1.0" encoding="UTF-8"?>
+<xsl:stylesheet version="1.0"
+  xmlns:mets="http://www.loc.gov/METS/"
+  xmlns:xalan="http://xml.apache.org/xalan"
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  exclude-result-prefixes="">
+
   <xsl:include href="mets-iview.xsl" />
   <xsl:include href="mets-amd.xsl" />
   <xsl:include href="mods-enhancer.xsl" />
@@ -19,10 +22,9 @@
         <xsl:apply-templates mode="mods2mods" />
   </xsl:template>
 
-  <xsl:template match="mycoreobject" priority="0" mode="fallBackEntity"
-                xmlns:mir="http://www.mycore.de/mir/ns/mods-entities">
+  <xsl:template match="mycoreobject" priority="0" mode="fallBackEntity">
     <!-- TODO: add configurable template
-    <mir:entity type="owner" xlink:type="extended" xlink:title="xxx">
+    <mir:entity type="owner" xlink:type="extended" xlink:title="xxx" xmlns:mir="http://www.mycore.de/mir/ns/mods-entities">>
       <mir:site xlink:type="locator" xlink:href="#" />
       <mir:logo xlink:type="resource" xlink:href="#" />
       <mir:full-logo xlink:type="resource" xlink:href="#" />

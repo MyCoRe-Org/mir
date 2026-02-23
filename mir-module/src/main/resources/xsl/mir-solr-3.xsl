@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="3.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-                xmlns:mods="http://www.loc.gov/mods/v3"
-                xmlns:mcrmods="http://www.mycore.de/xslt/mods"
-                xmlns:mcri18n="http://www.mycore.de/xslt/i18n"
-                xmlns:mcrstring="http://www.mycore.de/xslt/stringutils"
-                xmlns:xlink="http://www.w3.org/1999/xlink"
-                exclude-result-prefixes="mods xlink"
->
+<xsl:stylesheet version="3.0"
+  xmlns:mcri18n="http://www.mycore.de/xslt/i18n"
+  xmlns:mcrmods="http://www.mycore.de/xslt/mods"
+  xmlns:mcrstringutils="http://www.mycore.de/xslt/stringutils"
+  xmlns:mods="http://www.loc.gov/mods/v3"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  exclude-result-prefixes="mods xlink">
+
   <xsl:import href="xslImport:solr-document-3:mir-solr-3.xsl"/>
   <!-- <xsl:include href="resource:xsl/utils/mods-utils-3.xsl"/> -->
 
@@ -164,12 +165,12 @@
     </xsl:for-each>
     <xsl:for-each select="mods:abstract[not(@altFormat)][1]">
       <field name="mods.abstract.result">
-        <xsl:value-of select="mcrstring:shorten(text(),300)" />
+        <xsl:value-of select="mcrstringutils:shorten(text(),300)" />
       </field>
     </xsl:for-each>
     <xsl:for-each select="mods:abstract[not(@altFormat)][@xml:lang]">
       <field name="mods.abstract.result.{@xml:lang}">
-        <xsl:value-of select="mcrstring:shorten(text(),300)" />
+        <xsl:value-of select="mcrstringutils:shorten(text(),300)" />
       </field>
     </xsl:for-each>
     <xsl:for-each select="mods:relatedItem[@xlink:href]">

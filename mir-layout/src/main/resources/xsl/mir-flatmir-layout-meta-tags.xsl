@@ -3,4 +3,5 @@
 
   <!-- Overwrite stylesheet and template in your application module to add custom meta elements -->
   <xsl:template name="mir-flatmir-layout-meta-tags"/>
+
 </xsl:stylesheet>

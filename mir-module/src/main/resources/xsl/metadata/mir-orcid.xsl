@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0"
-  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  xmlns:exsl="http://exslt.org/common"
+  xmlns:exslt="http://exslt.org/common"
   xmlns:mods="http://www.loc.gov/mods/v3"
-  extension-element-prefixes="exsl"
-  exclude-result-prefixes="mods">
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  exclude-result-prefixes="mods"
+  extension-element-prefixes="exslt">
 
   <xsl:import href="xslImport:modsmeta:metadata/mir-orcid.xsl"/>
   <xsl:include href="resource:xsl/orcid/mir-orcid-export-ui.xsl"/>
@@ -22,7 +22,7 @@
         <xsl:variable name="nameIdsXml">
           <xsl:call-template name="extract-name-ids-from-current-object"/>
         </xsl:variable>
-        <xsl:variable name="nameIds" select="exsl:node-set($nameIdsXml)/str"/>
+        <xsl:variable name="nameIds" select="exslt:node-set($nameIdsXml)/str"/>
         <xsl:variable name="currentUserHasTrustedMatchingId">
           <xsl:call-template name="check-current-user-has-trusted-matching-id">
             <xsl:with-param name="nameIds" select="$nameIds"/>

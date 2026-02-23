@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xlink="http://www.w3.org/1999/xlink"
-  xmlns:basket="xalan://org.mycore.frontend.basket.MCRBasketManager" xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
-  xmlns:actionmapping="xalan://org.mycore.wfc.actionmapping.MCRURLRetriever" xmlns:mcrver="xalan://org.mycore.common.MCRCoreVersion"
-  xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions" xmlns:layoutUtils="xalan:///org.mycore.frontend.MCRLayoutUtilities"
+<xsl:stylesheet version="1.0"
+  xmlns:encoder="xalan://java.net.URLEncoder"
   xmlns:exslt="http://exslt.org/common"
-  exclude-result-prefixes="layoutUtils xlink basket actionmapping mcrver mcrxsl i18n exslt">
+  xmlns:mcrbasket="xalan://org.mycore.frontend.basket.MCRBasketManager"
+  xmlns:mcri18n="xalan://org.mycore.services.i18n.MCRTranslation"
+  xmlns:mcrlayoututils="xalan:///org.mycore.frontend.MCRLayoutUtilities"
+  xmlns:mcrxml="xalan://org.mycore.common.xml.MCRXMLFunctions"
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  exclude-result-prefixes="encoder exslt mcrbasket mcri18n mcrlayoututils mcrxml">
+
   <xsl:strip-space elements="*" />
   <xsl:param name="CurrentLang" select="'de'" />
   <xsl:param name="CurrentUser" />
@@ -23,7 +27,7 @@
   <xsl:include href="layout/mir-layout-utils.xsl" />
   <xsl:include href="resource:xsl/layout/mir-navigation.xsl" />
   <xsl:include href="resource:xsl/mir-utils.xsl" />
-  <xsl:variable name="loaded_navigation_xml" select="layoutUtils:getPersonalNavigation()/navigation" />
+  <xsl:variable name="loaded_navigation_xml" select="mcrlayoututils:getPersonalNavigation()/navigation" />
   <xsl:variable name="browserAddress">
     <xsl:call-template name="getBrowserAddress" />
   </xsl:variable>
@@ -36,21 +40,21 @@
         <xsl:value-of select="'true'" />
       </xsl:when>
       <xsl:otherwise>
-        <xsl:copy-of select="layoutUtils:readAccess($browserAddress)" />
+        <xsl:copy-of select="mcrlayoututils:readAccess($browserAddress)" />
       </xsl:otherwise>
     </xsl:choose>
   </xsl:variable>
 
 
   <xsl:template name="mir.loginMenu">
-    <xsl:variable xmlns:encoder="xalan://java.net.URLEncoder" name="loginURL"
+    <xsl:variable name="loginURL"
       select="concat( $ServletsBaseURL, 'MCRLoginServlet?url=', encoder:encode( string( $RequestURL ) ) )" />
     <xsl:choose>
-      <xsl:when test="contains($RequestURL, 'MCRLoginServlet') and mcrxsl:isCurrentUserGuestUser()"></xsl:when>
-      <xsl:when test="mcrxsl:isCurrentUserGuestUser()">
+      <xsl:when test="contains($RequestURL, 'MCRLoginServlet') and mcrxml:isCurrentUserGuestUser()"></xsl:when>
+      <xsl:when test="mcrxml:isCurrentUserGuestUser()">
         <li class="nav-item">
           <a id="loginURL" class="nav-link" href="{$loginURL}">
-            <xsl:value-of select="i18n:translate('component.userlogin.button.login')" />
+            <xsl:value-of select="mcri18n:translate('component.userlogin.button.login')" />
           </a>
         </li>
       </xsl:when>
@@ -107,13 +111,13 @@
 <!--         <label xml:lang="en">German</label> -->
 <!--       </language> -->
       <li class="nav-item dropdown mir-lang">
-        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" title="{i18n:translate('mir.language.change')}">
+        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" title="{mcri18n:translate('mir.language.change')}">
           <xsl:value-of select="$curLang/language/@xmlCode" />
           <span class="caret" />
         </a>
         <ul class="dropdown-menu language-menu" role="menu">
           <xsl:for-each select="$langToken">
-            <xsl:variable name="lang"><xsl:value-of select="mcrxsl:trim(.)" /></xsl:variable>
+            <xsl:variable name="lang"><xsl:value-of select="mcrxml:trim(.)" /></xsl:variable>
             <xsl:if test="$lang!='' and $CurrentLang!=$lang">
               <xsl:variable name="langDef" select="document(concat('language:',$lang))" />
               <li>
@@ -242,13 +246,13 @@
     <xsl:variable name="basketTitle">
       <xsl:choose>
         <xsl:when test="$entryCount = 0">
-          <xsl:value-of select="i18n:translate('basket.numEntries.none')" disable-output-escaping="yes" />
+          <xsl:value-of select="mcri18n:translate('basket.numEntries.none')" disable-output-escaping="yes" />
         </xsl:when>
         <xsl:when test="$entryCount = 1">
-          <xsl:value-of select="i18n:translate('basket.numEntries.one')" disable-output-escaping="yes" />
+          <xsl:value-of select="mcri18n:translate('basket.numEntries.one')" disable-output-escaping="yes" />
         </xsl:when>
         <xsl:otherwise>
-          <xsl:value-of select="i18n:translate('basket.numEntries.many',$entryCount)" disable-output-escaping="yes" />
+          <xsl:value-of select="mcri18n:translate('basket.numEntries.many',$entryCount)" disable-output-escaping="yes" />
         </xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
@@ -263,7 +267,7 @@
       <ul class="dropdown-menu" role="menu">
         <li>
           <a href="{$ServletsBaseURL}MCRBasketServlet?type={$basket/@type}&amp;action=show" class="dropdown-item">
-            <xsl:value-of select="i18n:translate('basket.open')" />
+            <xsl:value-of select="mcri18n:translate('basket.open')" />
           </a>
         </li>
       </ul>
@@ -317,7 +321,7 @@
               alert alert-dismissible fade show
             </xsl:attribute>
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            <span aria-hidden="true"><xsl:value-of select="i18n:translate($XSL.Status.Message)" /></span>
+            <span aria-hidden="true"><xsl:value-of select="mcri18n:translate($XSL.Status.Message)" /></span>
           </div>
         </div>
       </div>

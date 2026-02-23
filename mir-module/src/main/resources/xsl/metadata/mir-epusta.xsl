@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
-  xmlns:ex="http://exslt.org/dates-and-times" exclude-result-prefixes="i18n ex">
+<xsl:stylesheet version="1.0"
+  xmlns:dt="http://exslt.org/dates-and-times"
+  xmlns:mcri18n="xalan://org.mycore.services.i18n.MCRTranslation"
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  exclude-result-prefixes="dt mcri18n">
 
   <xsl:import href="xslImport:modsmeta:metadata/mir-epusta.xsl" />
 
@@ -11,46 +14,46 @@
   <xsl:template match="/">
     <xsl:if test="$MIR.ePuSta = 'show'">
       <xsl:variable name="ID" select="/mycoreobject/@ID" />
-      <xsl:variable name="now" select="ex:date-time()"/>
+      <xsl:variable name="now" select="dt:date-time()"/>
       <xsl:variable name="now-1year">
         <xsl:choose>
-          <xsl:when test="ex:monthInYear($now) = 2 and ex:dayInMonth($now) = 29">
-            <xsl:value-of select="concat(ex:year($now)-1,'-02-28')" />
+          <xsl:when test="dt:monthInYear($now) = 2 and dt:dayInMonth($now) = 29">
+            <xsl:value-of select="concat(dt:year($now)-1,'-02-28')" />
           </xsl:when>
-          <xsl:when test="ex:monthInYear($now) &gt; 9 and ex:dayInMonth($now) &gt; 9">
-            <xsl:value-of select="concat(ex:year($now)-1,'-',ex:monthInYear($now),'-',ex:dayInMonth($now))" />
+          <xsl:when test="dt:monthInYear($now) &gt; 9 and dt:dayInMonth($now) &gt; 9">
+            <xsl:value-of select="concat(dt:year($now)-1,'-',dt:monthInYear($now),'-',dt:dayInMonth($now))" />
           </xsl:when>
-          <xsl:when test="ex:monthInYear($now) &gt; 9 ">
-            <xsl:value-of select="concat(ex:year($now)-1,'-',ex:monthInYear($now),'-0',ex:dayInMonth($now))" />
+          <xsl:when test="dt:monthInYear($now) &gt; 9 ">
+            <xsl:value-of select="concat(dt:year($now)-1,'-',dt:monthInYear($now),'-0',dt:dayInMonth($now))" />
           </xsl:when>
-          <xsl:when test="ex:dayInMonth($now) &gt; 9">
-            <xsl:value-of select="concat(ex:year($now)-1,'-0',ex:monthInYear($now),'-',ex:dayInMonth($now))" />
+          <xsl:when test="dt:dayInMonth($now) &gt; 9">
+            <xsl:value-of select="concat(dt:year($now)-1,'-0',dt:monthInYear($now),'-',dt:dayInMonth($now))" />
           </xsl:when>
           <xsl:otherwise>
-            <xsl:value-of select="concat(ex:year($now)-1,'-0',ex:monthInYear($now),'-0',ex:dayInMonth($now))" />
+            <xsl:value-of select="concat(dt:year($now)-1,'-0',dt:monthInYear($now),'-0',dt:dayInMonth($now))" />
           </xsl:otherwise>
         </xsl:choose>
       </xsl:variable>
       <xsl:variable name="from" select="$now-1year" />
-      <xsl:variable name="until" select="ex:format-date($now,'yyyy-MM-dd')" />
+      <xsl:variable name="until" select="dt:format-date($now,'yyyy-MM-dd')" />
       <xsl:variable name="objID" select="mycoreobject/@ID" />
       <div id="mir-epusta">
         <div class="card">
           <div class="card-header d-flex justify-content-between align-items-center">
             <h3 class="card-title">
-              <xsl:value-of select="i18n:translate('mir.epusta.panelheading')" />
+              <xsl:value-of select="mcri18n:translate('mir.epusta.panelheading')" />
             </h3>
             <img src="{$WebApplicationBaseURL}images/epusta/epustalogo_small.png" class="mir-epusta-logo" />
           </div>
           <div class="card-body">
             <span>
               <strong>
-                <xsl:value-of select="concat(i18n:translate('mir.epusta.total'),':')" />
+                <xsl:value-of select="concat(mcri18n:translate('mir.epusta.total'),':')" />
               </strong>
             </span>
             <div class="row">
               <div class="col-md-7 col-sm-9 col-6 text-end">
-                <xsl:value-of select="i18n:translate('mir.epusta.counter.fulltext')" />
+                <xsl:value-of select="mcri18n:translate('mir.epusta.counter.fulltext')" />
               </div>
               <div
                   data-epustaelementtype="ePuStaInline"
@@ -61,7 +64,7 @@
             </div>
             <div class="row">
               <div class="col-md-7 col-sm-9 col-6 text-end">
-                <xsl:value-of select="i18n:translate('mir.epusta.counter.abstract')" />
+                <xsl:value-of select="mcri18n:translate('mir.epusta.counter.abstract')" />
               </div>
               <div
                   data-epustaelementtype="ePuStaInline"
@@ -72,12 +75,12 @@
             </div>
             <span>
               <strong>
-                <xsl:value-of select="concat(i18n:translate('mir.epusta.last12Month'),':')" />
+                <xsl:value-of select="concat(mcri18n:translate('mir.epusta.last12Month'),':')" />
               </strong>
             </span>
             <div class="row">
               <div class="col-md-7 col-sm-9 col-6 text-end">
-                <xsl:value-of select="i18n:translate('mir.epusta.counter.fulltext')" />
+                <xsl:value-of select="mcri18n:translate('mir.epusta.counter.fulltext')" />
               </div>
               <div
                   data-epustaelementtype="ePuStaInline"
@@ -89,7 +92,7 @@
             </div>
             <div class="row">
               <div class="col-md-7 col-sm-9 col-6 text-end">
-                <xsl:value-of select="i18n:translate('mir.epusta.counter.abstract')" />
+                <xsl:value-of select="mcri18n:translate('mir.epusta.counter.abstract')" />
               </div>
               <div data-epustaelementtype="ePuStaInline"
                    data-epustaproviderurl="{$MIR.ePuSta.GraphProviderURL}"
@@ -100,7 +103,7 @@
             </div>
             <div class="text-end">
               <a href="#" data-bs-toggle="modal" data-target="#epustaGraphModal">
-                <xsl:value-of select="i18n:translate('mir.epusta.open')" />
+                <xsl:value-of select="mcri18n:translate('mir.epusta.open')" />
               </a>
             </div>
             <div
@@ -114,7 +117,7 @@
                 <div class="modal-content">
                   <div class="modal-header">
                     <h4 class="modal-title " id="epustaGraphTitel">
-                      <xsl:value-of select="i18n:translate('mir.epusta.panelheading')" />
+                      <xsl:value-of select="mcri18n:translate('mir.epusta.panelheading')" />
                     </h4>
                     <button
                       type="button"

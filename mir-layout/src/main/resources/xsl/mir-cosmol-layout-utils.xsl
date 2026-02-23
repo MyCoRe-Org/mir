@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0"
-    xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-    xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
-    xmlns:mcrver="xalan://org.mycore.common.MCRCoreVersion"
-    xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions"
-    exclude-result-prefixes="i18n mcrver mcrxsl">
+  xmlns:mcri18n="xalan://org.mycore.services.i18n.MCRTranslation"
+  xmlns:mcrversion="xalan://org.mycore.common.MCRCoreVersion"
+  xmlns:mcrxml="xalan://org.mycore.common.xml.MCRXMLFunctions"
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  exclude-result-prefixes="mcri18n mcrversion mcrxml xsl">
 
   <xsl:import href="resource:xsl/layout/mir-common-layout.xsl" />
 
@@ -40,7 +40,7 @@
           <div class="input-group">
             <input
               name="condQuery"
-              placeholder="{i18n:translate('mir.navsearch.placeholder')}"
+              placeholder="{mcri18n:translate('mir.navsearch.placeholder')}"
               class="form-control search-query"
               id="searchInput"
               type="text"
@@ -50,7 +50,7 @@
               <xsl:when test="contains($isSearchAllowedForCurrentUser, 'true')">
                 <input name="owner" type="hidden" value="createdby:*" />
               </xsl:when>
-              <xsl:when test="not(mcrxsl:isCurrentUserGuestUser())">
+              <xsl:when test="not(mcrxml:isCurrentUserGuestUser())">
                 <input name="owner" type="hidden" value="createdby:{$CurrentUser}" />
               </xsl:when>
             </xsl:choose>
@@ -127,7 +127,7 @@
   </xsl:template>
 
   <xsl:template name="mir.powered_by">
-    <xsl:variable name="mcr_version" select="concat('MyCoRe ',mcrver:getCompleteVersion())" />
+    <xsl:variable name="mcr_version" select="concat('MyCoRe ',mcrversion:getCompleteVersion())" />
     <div id="powered_by">
       <a href="http://www.mycore.de">
         <img src="{$WebApplicationBaseURL}mir-layout/images/mycore_logo_small_invert.png" title="{$mcr_version}" alt="powered by MyCoRe" />

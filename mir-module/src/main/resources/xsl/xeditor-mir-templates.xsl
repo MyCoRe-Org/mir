@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xalan="http://xml.apache.org/xalan"
-  xmlns:xed="http://www.mycore.de/xeditor" xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation" xmlns:mir="http://www.mycore.de/mir"
-  exclude-result-prefixes="xsl xalan i18n mir"
->
+<xsl:stylesheet version="1.0"
+  xmlns:mcri18n="xalan://org.mycore.services.i18n.MCRTranslation"
+  xmlns:mir="http://www.mycore.de/mir"
+  xmlns:xalan="http://xml.apache.org/xalan"
+  xmlns:xed="http://www.mycore.de/xeditor"
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  exclude-result-prefixes="mcri18n mir xalan xsl">
 
   <xsl:include href="copynodes.xsl" />
 

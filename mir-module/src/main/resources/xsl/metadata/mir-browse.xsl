@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xlink="http://www.w3.org/1999/xlink"
-  xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation" xmlns:encoder="xalan://java.net.URLEncoder"
-  exclude-result-prefixes="xlink i18n xsl encoder">
+<xsl:stylesheet version="1.0"
+  xmlns:encoder="xalan://java.net.URLEncoder"
+  xmlns:mcri18n="xalan://org.mycore.services.i18n.MCRTranslation"
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  exclude-result-prefixes="encoder mcri18n xsl">
+
   <xsl:import href="xslImport:modsmeta:metadata/mir-browse.xsl" />
   <xsl:include href="response-utils.xsl" />
   <xsl:include href="response-mir-utils.xsl" />
@@ -64,7 +67,7 @@
       <xsl:variable name="staticUrl" select="concat($WebApplicationBaseURL, 'receive/', $objId)" />
       <div id="permalink">
         <span class="linklabel">
-          <xsl:value-of select="concat(i18n:translate('component.solr.searchresult.objectlink'), ' : ')" />
+          <xsl:value-of select="concat(mcri18n:translate('component.solr.searchresult.objectlink'), ' : ')" />
         </span>
         <span class="linktext">
           <xsl:variable name="linkToDocument">
@@ -87,7 +90,7 @@
           .join("&amp;")
           var originalPage = {title: document.title, url: document.location.toString()};
           var url = search.length>1?pageurl+search:pageurl;
-          window.history.replaceState({path: url},&quot; <xsl:value-of select="i18n:translate('component.solr.searchresult.resultList')" /> &quot;,url);
+          window.history.replaceState({path: url},&quot; <xsl:value-of select="mcri18n:translate('component.solr.searchresult.resultList')" /> &quot;,url);
           document.getElementById(&quot;permalink&quot;).style.display = &quot;none&quot;;
           window.onbeforeunload = function(){
             window.history.replaceState({path:originalPage.url}, originalPage.title, originalPage.url);

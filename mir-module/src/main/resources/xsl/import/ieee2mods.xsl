@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <xsl:stylesheet version="1.0"
-  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:mods="http://www.loc.gov/mods/v3"
   xmlns:xalan="http://xml.apache.org/xalan"
-  xmlns:datacite="http://datacite.org/schema/kernel-2.2"
-  exclude-result-prefixes="xsl xalan datacite">
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  exclude-result-prefixes="xalan xsl">
 
 <!-- http://ieeexplore.ieee.org/gateway/ipsSearch.jsp?an=4731412 -->
 

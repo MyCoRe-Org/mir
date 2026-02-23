@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns="http://www.loc.gov/mods/v3"
-                xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/"
-                xmlns:sru_dc="info:srw/schema/1/dc-schema" xmlns:xlink="http://www.w3.org/1999/xlink"
-                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" exclude-result-prefixes="sru_dc oai_dc dc"
-                version="1.0">
+<xsl:stylesheet version="1.0"
+  xmlns="http://www.loc.gov/mods/v3"
+  xmlns:dc="http://purl.org/dc/elements/1.1/"
+  xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/"
+  xmlns:srw_dc="info:srw/schema/1/dc-schema"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  exclude-result-prefixes="dc oai_dc srw_dc">
   <!--
         Version 1.2 2015-01-23 ws
         Updated URIs to include xslts
@@ -49,11 +52,11 @@
   <xsl:template match="*[not(node())]" priority="2" />
   <!-- strip empty DC elements that are output by tools like ContentDM -->
   <xsl:template match="/">
-    <xsl:if test="sru_dc:dcCollection">
-      <xsl:apply-templates select="sru_dc:dcCollection" />
+    <xsl:if test="srw_dc:dcCollection">
+      <xsl:apply-templates select="srw_dc:dcCollection" />
     </xsl:if>
-    <xsl:if test="sru_dc:dc">
-      <xsl:apply-templates select="sru_dc:dc" />
+    <xsl:if test="srw_dc:dc">
+      <xsl:apply-templates select="srw_dc:dc" />
     </xsl:if>
     <xsl:if test="oai_dc:dc">
       <xsl:apply-templates />
@@ -65,16 +68,16 @@
       </mods>
     </xsl:if>
   </xsl:template>
-  <xsl:template match="sru_dc:dcCollection">
+  <xsl:template match="srw_dc:dcCollection">
     <modsCollection xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-5.xsd">
-      <xsl:apply-templates select="sru_dc:dc">
+      <xsl:apply-templates select="srw_dc:dc">
         <xsl:with-param name="dcCollection">
           <xsl:text>true</xsl:text>
         </xsl:with-param>
       </xsl:apply-templates>
     </modsCollection>
   </xsl:template>
-  <xsl:template match="sru_dc:dc">
+  <xsl:template match="srw_dc:dc">
     <xsl:param name="dcCollection" />
     <xsl:choose>
       <xsl:when test="$dcCollection = 'true'">

@@ -17,11 +17,13 @@
   ~ along with MyCoRe.  If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<xsl:stylesheet version="3.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-                xmlns:fn="http://www.w3.org/2005/xpath-functions"
-                xmlns:mods="http://www.loc.gov/mods/v3"
-                xmlns:xlink="http://www.w3.org/1999/xlink"
->
+<xsl:stylesheet version="3.0"
+  xmlns:fn="http://www.w3.org/2005/xpath-functions"
+  xmlns:mods="http://www.loc.gov/mods/v3"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  exclude-result-prefixes="">
+
   <xsl:template match="mods:accessCondition[@xlink:href][1]" mode="extension">
     <fn:array key="license">
       <xsl:for-each select="../mods:accessCondition[@xlink:href]">

@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- ============================================== -->
-<!-- $Revision: 1.4 $ $Date: 2007-04-04 11:32:08 $ -->
-<!-- ============================================== -->
+<xsl:stylesheet version="1.0"
+  xmlns:mcracl="xalan://org.mycore.access.MCRAccessManager"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  exclude-result-prefixes="mcracl">
 
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xmlns:acl="xalan://org.mycore.access.MCRAccessManager" exclude-result-prefixes="acl">
   <xsl:include href="mycoreobject.xsl" />
   <!-- overwrite xsl:output of generatePage.xsl -->
   <xsl:output method="xml" encoding="UTF-8" media-type="application/xml" doctype-public="MCRXML" doctype-system="mycoreobject.dtd"/>
@@ -32,7 +31,7 @@
         <xsl:copy />
       </xsl:for-each>
       <!-- check the WRITEDB permission -->
-      <xsl:if test="not(@ID) or acl:checkPermission(@ID,'writedb')">
+      <xsl:if test="not(@ID) or mcracl:checkPermission(@ID,'writedb')">
         <xsl:if test="structure/parents/parent">
           <structure>
             <parents class="MCRMetaLinkID">

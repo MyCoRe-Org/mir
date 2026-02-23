@@ -1,16 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- ============================================== -->
-<!-- $Revision$ $Date$ -->
-<!-- ============================================== -->
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-                xmlns:xlink="http://www.w3.org/1999/xlink"
-                xmlns:acl="xalan://org.mycore.access.MCRAccessManager"
-                xmlns:mets="http://www.loc.gov/METS/"
-                xmlns:mods="http://www.loc.gov/mods/v3" xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
-                xmlns:xalan="http://xml.apache.org/xalan"
-                xmlns:mcrxml="xalan://org.mycore.common.xml.MCRXMLFunctions"
-                xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-                exclude-result-prefixes="xalan i18n acl mcrxml">
+<xsl:stylesheet version="1.0"
+  xmlns:mcrxml="xalan://org.mycore.common.xml.MCRXMLFunctions"
+  xmlns:mets="http://www.loc.gov/METS/"
+  xmlns:mods="http://www.loc.gov/mods/v3"
+  xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+  xmlns:xalan="http://xml.apache.org/xalan"
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  exclude-result-prefixes="mcrxml xalan">
 
   <xsl:param name="WebApplicationBaseURL" />
   <xsl:param name="objectID" />

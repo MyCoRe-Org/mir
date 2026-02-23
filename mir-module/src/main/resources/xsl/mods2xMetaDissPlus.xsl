@@ -1,36 +1,27 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<!-- ============================================== -->
-<!-- $Revision: 1.8 $ $Date: 2007-04-20 15:18:23 $ -->
-<!-- ============================================== -->
-<xsl:stylesheet 
-  version="1.0"
-  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  xmlns:xlink="http://www.w3.org/1999/xlink"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xmlns:exslt="http://exslt.org/common"
-  xmlns:mods="http://www.loc.gov/mods/v3"
-  xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions"
-  xmlns:acl="xalan://org.mycore.access.MCRAccessManager"
-  xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
-  xmlns:piUtil="xalan://org.mycore.pi.frontend.MCRIdentifierXSLUtils"
-  xmlns:xalan="http://xml.apache.org/xalan"
-
-  xmlns:cmd="http://www.cdlib.org/inside/diglib/copyrightMD"
-  xmlns:gndo="http://d-nb.info/standards/elementset/gnd#"
-  xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-  xmlns:xMetaDiss="http://www.d-nb.de/standards/xmetadissplus/"
+<xsl:stylesheet version="1.0"
   xmlns:cc="http://www.d-nb.de/standards/cc/"
+  xmlns:cmd="http://www.cdlib.org/inside/diglib/copyrightMD"
   xmlns:dc="http://purl.org/dc/elements/1.1/"
-  xmlns:dcmitype="http://purl.org/dc/dcmitype/"
   xmlns:dcterms="http://purl.org/dc/terms/"
+  xmlns:ddb="http://www.d-nb.de/standards/ddb/"
+  xmlns:dini="http://www.d-nb.de/standards/xmetadissplus/type/"
+  xmlns:exslt="http://exslt.org/common"
+  xmlns:mcracl="xalan://org.mycore.access.MCRAccessManager"
+  xmlns:mcri18n="xalan://org.mycore.services.i18n.MCRTranslation"
+  xmlns:mcrpiutil="xalan://org.mycore.pi.frontend.MCRIdentifierXSLUtils"
+  xmlns:mcrxml="xalan://org.mycore.common.xml.MCRXMLFunctions"
+  xmlns:mods="http://www.loc.gov/mods/v3"
   xmlns:pc="http://www.d-nb.de/standards/pc/"
   xmlns:urn="http://www.d-nb.de/standards/urn/"
   xmlns:thesis="http://www.ndltd.org/standards/metadata/etdms/1.0/"
-  xmlns:ddb="http://www.d-nb.de/standards/ddb/"
-  xmlns:dini="http://www.d-nb.de/standards/xmetadissplus/type/"
-
-  exclude-result-prefixes="xalan mcrxsl piUtil cc dc dcmitype dcterms pc urn thesis ddb dini xlink exslt mods i18n xsl gndo rdf cmd"
-  xsi:schemaLocation="http://www.d-nb.de/standards/xmetadissplus/  http://files.dnb.de/standards/xmetadissplus/xmetadissplus.xsd">
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  xmlns:xMetaDiss="http://www.d-nb.de/standards/xmetadissplus/"
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:xalan="http://xml.apache.org/xalan"
+  exclude-result-prefixes="cc cmd dc dcterms ddb dini exslt mcri18n mcrpiutil mcrxml mods pc thesis urn xalan xlink xsl"
+  xsi:schemaLocation="http://www.d-nb.de/standards/xmetadissplus/ http://files.dnb.de/standards/xmetadissplus/xmetadissplus.xsd">
 
   <xsl:output method="xml" encoding="UTF-8" />
 
@@ -105,7 +96,7 @@
   </xsl:variable>
   
   <xsl:variable name="ifsTemp">
-    <xsl:for-each select="mycoreobject/structure/derobjects/derobject[acl:checkDerivateContentPermission(@xlink:href, 'read')]">
+    <xsl:for-each select="mycoreobject/structure/derobjects/derobject[mcracl:checkDerivateContentPermission(@xlink:href, 'read')]">
       <der id="{@xlink:href}">
         <xsl:copy-of select="document(concat('xslStyle:mcr_directory-recursive:ifs:',@xlink:href,'/'))" />
       </der>
@@ -842,7 +833,7 @@
 
   <xsl:template mode="preferredURN" match="mods:mods">
     <xsl:variable name="unmanagedURN"
-                  select="mods:identifier[@type='urn' and starts-with(text(), 'urn:nbn') and not(piUtil:isManagedPI(text(), /mycoreobject/@ID))]" />
+                  select="mods:identifier[@type='urn' and starts-with(text(), 'urn:nbn') and not(mcrpiutil:isManagedPI(text(), /mycoreobject/@ID))]" />
     <xsl:choose>
       <xsl:when test="$unmanagedURN">
         <xsl:value-of select="$unmanagedURN[1]" />
@@ -855,7 +846,7 @@
 
   <xsl:template mode="preferredDOI" match="mods:mods">
     <xsl:variable name="unmanagedDOI"
-                  select="mods:identifier[@type='doi' and not(piUtil:isManagedPI(text(), /mycoreobject/@ID))]" />
+                  select="mods:identifier[@type='doi' and not(mcrpiutil:isManagedPI(text(), /mycoreobject/@ID))]" />
     <xsl:choose>
       <xsl:when test="$unmanagedDOI">
         <xsl:value-of select="$unmanagedDOI[1]" />
@@ -1017,7 +1008,7 @@
             <xsl:if test="$firstPeriodical/mods:part/mods:detail[@type='issue']">
               <xsl:value-of
                 select="concat(
-                  i18n:translate('component.mods.metaData.dictionary.issue'),
+                  mcri18n:translate('component.mods.metaData.dictionary.issue'),
                   ' ',
                   normalize-space($firstPeriodical/mods:part/mods:detail[@type='issue']))" />
             </xsl:if>
@@ -1120,7 +1111,7 @@
             <xsl:variable name="filePath" select="substring-after(substring-after($uri, ':'), ':')" />
             <!-- DNB requires ASCII-only URLs -->
             <xsl:value-of select="concat($ServletsBaseURL,'MCRFileNodeServlet/', $derId,
-             mcrxsl:encodeURIPath(mcrxsl:decodeURIPath($filePath), true()))" />
+             mcrxml:encodeURIPath(mcrxml:decodeURIPath($filePath), true()))" />
           </xsl:when>
           <xsl:otherwise>
             <xsl:choose>
@@ -1163,7 +1154,7 @@
   <xsl:template name="rights">
     <xsl:param name="derivateID" />
     <xsl:choose>
-      <xsl:when test="acl:checkPermission($derivateID,'read') and $MIR.xMetaDissPlus.rights.rightsReserved2free = 'true' ">
+      <xsl:when test="mcracl:checkPermission($derivateID,'read') and $MIR.xMetaDissPlus.rights.rightsReserved2free = 'true' ">
         <ddb:rights ddb:kind="free" />
       </xsl:when>
       <xsl:otherwise>
@@ -1192,7 +1183,7 @@
     <xsl:param name="derivateID" />
     <xsl:variable name="mods" select="metadata/def.modsContainer/modsContainer/mods:mods" />
     <xsl:choose>
-      <xsl:when test="acl:checkPermission($derivateID,'read')">
+      <xsl:when test="mcracl:checkPermission($derivateID,'read')">
         <ddb:licence ddb:licenceType="access">OA</ddb:licence>
       </xsl:when>
       <xsl:otherwise>

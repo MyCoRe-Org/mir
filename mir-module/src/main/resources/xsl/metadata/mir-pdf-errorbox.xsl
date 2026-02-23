@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-                xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
-                xmlns:xlink="http://www.w3.org/1999/xlink"
-                xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions"
-                xmlns:xalan="http://xml.apache.org/xalan"
-                version="1.0" exclude-result-prefixes="i18n mcrxsl">
+<xsl:stylesheet version="1.0"
+  xmlns:mcri18n="xalan://org.mycore.services.i18n.MCRTranslation"
+  xmlns:mcrxml="xalan://org.mycore.common.xml.MCRXMLFunctions"
+  xmlns:xalan="http://xml.apache.org/xalan"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  exclude-result-prefixes="mcri18n mcrxml xsl">
 
     <xsl:param name="ServletsBaseURL"/>
-
 
     <xsl:template match="mycoreobject" mode="displayPdfError">
         <xsl:variable name="errorMessages">
@@ -16,7 +16,7 @@
         <xsl:if test="string-length(normalize-space($errorMessages)) >0">
             <xsl:variable name="couldNotBeValidated">
                 <xsl:choose>
-                    <xsl:when test="contains($errorMessages,i18n:translate('pdf.errorbox.validationerror.message'))">
+                    <xsl:when test="contains($errorMessages,mcri18n:translate('pdf.errorbox.validationerror.message'))">
                         <xsl:value-of select="'true'"/>
                     </xsl:when>
                     <xsl:otherwise>
@@ -26,7 +26,7 @@
             </xsl:variable>
             <xsl:variable name="containsValidationError">
                 <xsl:choose>
-                    <xsl:when test="contains($errorMessages,i18n:translate('pdf.errorbox.clause'))">
+                    <xsl:when test="contains($errorMessages,mcri18n:translate('pdf.errorbox.clause'))">
                         <xsl:value-of select="'true'"/>
                     </xsl:when>
                     <xsl:otherwise>
@@ -36,7 +36,7 @@
             </xsl:variable>
             <xsl:variable name="CaughtException">
                 <xsl:choose>
-                    <xsl:when test="contains($errorMessages,i18n:translate('pdf.error.runtimeerror.message'))">
+                    <xsl:when test="contains($errorMessages,mcri18n:translate('pdf.error.runtimeerror.message'))">
                         <xsl:value-of select="'true'"/>
                     </xsl:when>
                     <xsl:otherwise>
@@ -61,10 +61,10 @@
                         <div class="card-header bg-danger text-white">
                             <div class="list-group list-group-root well p-3">
                                 <p class="h5">
-                                    <xsl:value-of select="i18n:translate('pdf.errorbox.warning.heading')"/>
+                                    <xsl:value-of select="mcri18n:translate('pdf.errorbox.warning.heading')"/>
                                 </p>
                                 <p>
-                                    <xsl:value-of select="i18n:translate('pdf.errorbox.warning.message')"/>
+                                    <xsl:value-of select="mcri18n:translate('pdf.errorbox.warning.message')"/>
                                 </p>
                             </div>
                         </div>
@@ -77,10 +77,10 @@
                     <div class="card-header bg-success text-white mb-3">
                         <div class="list-group list-group-root well p-3">
                             <p class="h5">
-                                <xsl:value-of select="i18n:translate('pdf.errorbox.success.heading')"/>
+                                <xsl:value-of select="mcri18n:translate('pdf.errorbox.success.heading')"/>
                             </p>
                             <p>
-                                <xsl:value-of select="i18n:translate('pdf.errorbox.success.message')"/>
+                                <xsl:value-of select="mcri18n:translate('pdf.errorbox.success.message')"/>
                             </p>
                         </div>
                     </div>
@@ -104,10 +104,10 @@
                     </div>
                     <div class="card-body">
                         <p class="card-text">
-                            <xsl:value-of select="i18n:translate('pdf.error.runtimeerror.message')"/>
+                            <xsl:value-of select="mcri18n:translate('pdf.error.runtimeerror.message')"/>
                         </p>
                         <p class="card-text fst-italic">
-                            <xsl:value-of select="i18n:translate('mir.error.finalLine')"/>
+                            <xsl:value-of select="mcri18n:translate('mir.error.finalLine')"/>
                         </p>
                     </div>
                 </div>
@@ -162,14 +162,14 @@
                         <xsl:apply-templates select="failed" mode="displayValidationError"/>
                         <span class="flex-grow-1 col-xl-8 align-items-center">
                             <p class="text-danger mb-2">
-                                <xsl:value-of select="i18n:translate('pdf.errorbox.validationerror.message')"/>
+                                <xsl:value-of select="mcri18n:translate('pdf.errorbox.validationerror.message')"/>
                             </p>
                         </span>
                     </xsl:when>
                     <xsl:otherwise>
                         <p class="flex-grow-1 col-xl-8 align-items-center">
                             <span class="text-muted pdf-term">
-                                <xsl:value-of select="concat(i18n:translate('pdf.errorbox.conformity.level'), ': ')"/>
+                                <xsl:value-of select="concat(mcri18n:translate('pdf.errorbox.conformity.level'), ': ')"/>
                             </span>
                             <span class="pdf-value">
                                 <xsl:value-of select="concat('PDF/A-', @flavour)"/>
@@ -179,11 +179,11 @@
                 </xsl:choose>
 
                 <xsl:variable name="downloadLink"
-                              select="concat($ServletsBaseURL, 'MCRFileNodeServlet/', $derivate, '/', mcrxsl:encodeURIPath(@name))"/>
+                              select="concat($ServletsBaseURL, 'MCRFileNodeServlet/', $derivate, '/', mcrxml:encodeURIPath(@name))"/>
                 <div class="w-100 d-flex align-self-center justify-content-center">
                     <a role="button" href="{$downloadLink}" target="_blank"
                        class="btn btn-primary d-flex justify-content-center align-items-center w-100 py-2">
-                        <xsl:value-of select="concat(i18n:translate('pdf.errorbox.button.download'), ' ')"/>
+                        <xsl:value-of select="concat(mcri18n:translate('pdf.errorbox.button.download'), ' ')"/>
                         <i class="fas fa-download ms-2"/>
                     </a>
                 </div>
@@ -300,19 +300,19 @@
         <li class="list-group-item d-flex flex-column flex-xl-row flex-grow-1 text-break">
             <p class="flex-grow-1 col-xl-8 align-items-center">
                 <span class="text-muted pdf-term">
-                    <xsl:value-of select="concat(i18n:translate('pdf.errorbox.specification'),': ')"/>
+                    <xsl:value-of select="concat(mcri18n:translate('pdf.errorbox.specification'),': ')"/>
                 </span>
                 <span class="pdf-value">
                     <xsl:value-of select="concat(' ', @specification, ' ')"/>
                 </span>
                 <span class="text-muted pdf-term">
-                    <xsl:value-of select="concat(i18n:translate('pdf.errorbox.clause'),': ')"/>
+                    <xsl:value-of select="concat(mcri18n:translate('pdf.errorbox.clause'),': ')"/>
                 </span>
                 <span class="pdf-value">
                     <xsl:value-of select="concat(' ', @clause, ' ')"/>
                 </span>
                 <span class="text-muted pdf-term">
-                    <xsl:value-of select="concat(i18n:translate('pdf.errorbox.test'),': ')"/>
+                    <xsl:value-of select="concat(mcri18n:translate('pdf.errorbox.test'),': ')"/>
                 </span>
                 <span class="pdf-value">
                     <xsl:value-of select="concat(' ', @testNumber, ' ')"/>
@@ -323,14 +323,14 @@
                     <div class="w-100 d-flex align-self-center justify-content-center">
                         <a role="button" href="{@Link}" target="_blank"
                            class="btn btn-info col d-flex justify-content-center align-items-center w-100 py-2">
-                            <xsl:value-of select="concat(i18n:translate('pdf.errorbox.button.info'),' ')"/>
+                            <xsl:value-of select="concat(mcri18n:translate('pdf.errorbox.button.info'),' ')"/>
                             <i class="fas fa-external-link-alt ms-2"></i>
                         </a>
                     </div>
                 </xsl:when>
                 <xsl:otherwise>
                     <div class="text-center alert alert-danger col" role="alert">
-                        <xsl:value-of select="i18n:translate('pdf.errorbox.unknown.error')"/>
+                        <xsl:value-of select="mcri18n:translate('pdf.errorbox.unknown.error')"/>
                     </div>
                 </xsl:otherwise>
             </xsl:choose>
@@ -340,7 +340,7 @@
     <xsl:template match="failed" mode="displayValidationError">
         <span class="flex-grow-1 col-xl-8 align-items-center">
             <p class="text-danger mb-2">
-                <xsl:value-of select="i18n:translate('pdf.errorbox.validationerror.message')"/>
+                <xsl:value-of select="mcri18n:translate('pdf.errorbox.validationerror.message')"/>
             </p>
         </span>
     </xsl:template>

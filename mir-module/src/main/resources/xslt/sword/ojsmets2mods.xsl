@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="3.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-    xmlns:xs="http://www.w3.org/2001/XMLSchema"
-    xmlns:fn="http://www.w3.org/2005/xpath-functions"
-    xmlns:mods="http://www.loc.gov/mods/v3"
-    xmlns:xlink="http://www.w3.org/1999/xlink"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:epdcx="http://purl.org/eprint/epdcx/2006-11-16/"
-    exclude-result-prefixes="xs fn epdcx">
+<xsl:stylesheet version="3.0"
+  xmlns:epdcx="http://purl.org/eprint/epdcx/2006-11-16/"
+  xmlns:mods="http://www.loc.gov/mods/v3"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  exclude-result-prefixes="epdcx">
     
     <xsl:output method="xml"
         version="1.0"

@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:mods="http://www.loc.gov/mods/v3" xmlns:mcrxml="xalan://org.mycore.common.xml.MCRXMLFunctions"
-  xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation" xmlns:xalan="http://xml.apache.org/xalan" xmlns:xlink="http://www.w3.org/1999/xlink"
-  exclude-result-prefixes="mods xlink"
->
+<xsl:stylesheet version="1.0"
+  xmlns:mcri18n="xalan://org.mycore.services.i18n.MCRTranslation"
+  xmlns:mcrmodsclass="xalan://org.mycore.mods.classification.MCRMODSClassificationSupport" 
+  xmlns:mcrxml="xalan://org.mycore.common.xml.MCRXMLFunctions"
+  xmlns:mods="http://www.loc.gov/mods/v3"
+  xmlns:xalan="http://xml.apache.org/xalan"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  exclude-result-prefixes="mcrmodsclass mods xlink">
+
   <xsl:import href="xslImport:solr-document:mir-solr.xsl" />
   <xsl:include href="mods-utils.xsl" />
 
@@ -21,7 +27,7 @@
   <xsl:template match="mods:mods" mode="mir">
     <xsl:param name="status" />
     <xsl:for-each select="mods:name[@type='corporate' and @authorityURI]">
-      <xsl:variable name="uri" xmlns:mcrmods="xalan://org.mycore.mods.classification.MCRMODSClassificationSupport" select="mcrmods:getClassCategParentLink(.)" />
+      <xsl:variable name="uri" select="mcrmodsclass:getClassCategParentLink(.)" />
       <xsl:if test="string-length($uri) &gt; 0">
         <xsl:variable name="classdoc" select="document($uri)" />
         <xsl:for-each select="$classdoc//category">
@@ -191,7 +197,7 @@
                     <xsl:value-of select="mods:part/mods:detail[@type='issue']/mods:caption" />
                   </xsl:when>
                   <xsl:otherwise>
-                    <xsl:value-of select="i18n:translate('component.mods.metaData.dictionary.issue')" />
+                    <xsl:value-of select="mcri18n:translate('component.mods.metaData.dictionary.issue')" />
                   </xsl:otherwise>
                 </xsl:choose>
               </xsl:variable>

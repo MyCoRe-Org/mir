@@ -1,8 +1,9 @@
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-                xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
-                xmlns:mods="http://www.loc.gov/mods/v3"
-                xmlns:xlink="http://www.w3.org/1999/xlink"
-                exclude-result-prefixes="xlink i18n mods">
+<?xml version="1.0" encoding="UTF-8"?>
+<xsl:stylesheet version="1.0"
+  xmlns:mcri18n="xalan://org.mycore.services.i18n.MCRTranslation"
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  exclude-result-prefixes="mcri18n">
+
   <xsl:import href="xslImport:modsmeta:metadata/mir-file-upload.xsl"/>
 
   <xsl:template match="/">
@@ -21,7 +22,7 @@
           </xsl:choose>
           <div class="card-body">
             <i class="fas fa-upload"></i>
-            <xsl:value-of disable-output-escaping="yes" select="concat(' ', i18n:translate('mir.upload.drop.derivate'))"/>
+            <xsl:value-of disable-output-escaping="yes" select="concat(' ', mcri18n:translate('mir.upload.drop.derivate'))"/>
           </div>  
         </div>
         <script>

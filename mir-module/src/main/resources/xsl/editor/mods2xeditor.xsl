@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:mods="http://www.loc.gov/mods/v3"
-                xmlns:mcrmods="xalan://org.mycore.mods.classification.MCRMODSClassificationSupport" xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
-                xmlns:mirmapper="xalan://org.mycore.mir.impexp.MIRClassificationMapper" xmlns:mirdateconverter="xalan://org.mycore.mir.date.MIRDateConverter"
-                xmlns:mirvalidationhelper="xalan://org.mycore.mir.validation.MIRValidationHelper"
-                xmlns:piUtil="xalan://org.mycore.pi.frontend.MCRIdentifierXSLUtils"
-                xmlns:editorUtils="xalan://org.mycore.mir.editor.MIREditorUtils"
-                exclude-result-prefixes="mcrmods xlink mirmapper i18n mirdateconverter mirvalidationhelper piUtil editorUtils" version="1.0"
->
+<xsl:stylesheet version="1.0"
+  xmlns:mcri18n="xalan://org.mycore.services.i18n.MCRTranslation"
+  xmlns:mcrmodsclass="xalan://org.mycore.mods.classification.MCRMODSClassificationSupport"
+  xmlns:mirdateconverter="xalan://org.mycore.mir.date.MIRDateConverter"
+  xmlns:mireditorutils="xalan://org.mycore.mir.editor.MIREditorUtils"
+  xmlns:mirmapper="xalan://org.mycore.mir.impexp.MIRClassificationMapper"
+  xmlns:mcrpiutil="xalan://org.mycore.pi.frontend.MCRIdentifierXSLUtils"
+  xmlns:mirvalidationhelper="xalan://org.mycore.mir.validation.MIRValidationHelper"
+  xmlns:mods="http://www.loc.gov/mods/v3"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  exclude-result-prefixes="mcri18n mcrmodsclass mireditorutils mirdateconverter mirmapper mcrpiutil mirvalidationhelper xlink">
 
   <xsl:include href="copynodes.xsl" />
   <xsl:include href="editor/mods-node-utils.xsl" />
@@ -38,7 +42,7 @@
     <xsl:choose>
       <xsl:when test="$geoCount &gt; 0 and $geoCount = count(mods:*)">
         <mods:subjectGEO>
-          <xsl:copy-of select="editorUtils:xmlAsString(.)" />
+          <xsl:copy-of select="mireditorutils:xmlAsString(.)" />
         </mods:subjectGEO>
       </xsl:when>
       <xsl:otherwise>
@@ -48,7 +52,7 @@
               <xsl:value-of select="@xml:lang" />
             </xsl:attribute>
           </xsl:if>
-          <xsl:copy-of select="editorUtils:xmlAsString(.)" />
+          <xsl:copy-of select="mireditorutils:xmlAsString(.)" />
         </mods:subjectXML>
       </xsl:otherwise>
     </xsl:choose>
@@ -190,7 +194,7 @@
     </mods:openAireID>
   </xsl:template>
 
-  <xsl:template match="mods:identifier[piUtil:isManagedPI(text(), /mycoreobject/@ID)]">
+  <xsl:template match="mods:identifier[mcrpiutil:isManagedPI(text(), /mycoreobject/@ID)]">
     <mods:identifierManaged>
       <xsl:apply-templates select="@*" />
       <xsl:value-of select="text()" />
@@ -200,14 +204,14 @@
   <!-- to @categId -->
   <xsl:template match="mods:classification[@generator='user selected']">
     <xsl:copy>
-      <xsl:variable name="classNodes" select="mcrmods:getMCRClassNodes(.)" />
+      <xsl:variable name="classNodes" select="mcrmodsclass:getMCRClassNodes(.)" />
       <xsl:apply-templates select="$classNodes/@*|@*|node()" />
     </xsl:copy>
   </xsl:template>
 
   <xsl:template match="mods:typeOfResource">
     <xsl:copy>
-      <xsl:variable name="classNodes" select="mcrmods:getMCRClassNodes(.)" />
+      <xsl:variable name="classNodes" select="mcrmodsclass:getMCRClassNodes(.)" />
       <xsl:apply-templates select="$classNodes/@*|@*" />
     </xsl:copy>
   </xsl:template>
@@ -298,7 +302,7 @@
   </xsl:template>
 
   <xsl:template match="mods:start">
-    <xsl:value-of select="i18n:translate('mir.pages.abbreviated.multiple')" />
+    <xsl:value-of select="mcri18n:translate('mir.pages.abbreviated.multiple')" />
     <xsl:text> </xsl:text>
     <xsl:value-of select="text()" />
   </xsl:template>
@@ -312,14 +316,14 @@
     <xsl:text> (</xsl:text>
     <xsl:value-of select="text()" />
     <xsl:text> </xsl:text>
-    <xsl:value-of select="i18n:translate('mir.pages')" />
+    <xsl:value-of select="mcri18n:translate('mir.pages')" />
     <xsl:text>)</xsl:text>
   </xsl:template>
 
   <xsl:template match="mods:total">
     <xsl:value-of select="text()" />
     <xsl:text> </xsl:text>
-    <xsl:value-of select="i18n:translate('mir.pages')" />
+    <xsl:value-of select="mcri18n:translate('mir.pages')" />
   </xsl:template>
 
   <xsl:template match="mods:list">

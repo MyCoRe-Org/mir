@@ -1,14 +1,15 @@
-<?xml version="1.0" encoding="utf-8"?>
-<xsl:stylesheet version="1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xmlns:mods="http://www.loc.gov/mods/v3"
+<?xml version="1.0" encoding="UTF-8"?>
+<xsl:stylesheet version="1.0"
   xmlns:dc="http://purl.org/dc/elements/1.1/"
-  xmlns:srw_dc="info:srw/schema/1/dc-schema"
+  xmlns:mcrmodsclass="xalan://org.mycore.mods.classification.MCRMODSClassificationSupport"
+  xmlns:mcrxml="xalan://org.mycore.common.xml.MCRXMLFunctions"
+  xmlns:mods="http://www.loc.gov/mods/v3"
   xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/"
-  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  xmlns:srw_dc="info:srw/schema/1/dc-schema"
   xmlns:xlink="http://www.w3.org/1999/xlink"
-  xmlns:mcrmods="xalan://org.mycore.mods.classification.MCRMODSClassificationSupport"
-  xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions"
-  exclude-result-prefixes="xsl mods mcrmods mcrxsl xlink srw_dc">
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  exclude-result-prefixes="mcrmodsclass mcrxml mods srw_dc xlink xsl">
 
   <!-- xmlns:opf="http://www.idpf.org/2007/opf" -->
 
@@ -165,7 +166,7 @@
 
   <xsl:template match="mods:classification" mode="dc">
 
-    <xsl:variable name="classlink" select="mcrmods:getClassCategLink(.)" />
+    <xsl:variable name="classlink" select="mcrmodsclass:getClassCategLink(.)" />
 
     <dc:subject>
     <xsl:choose>
@@ -482,7 +483,7 @@
           <xsl:apply-templates select="." mode="oa_nlz" />
         </xsl:when>
         <xsl:otherwise>
-          <xsl:value-of select="mcrxsl:getDisplayName('mir_licenses',$trimmed)" />
+          <xsl:value-of select="mcrxml:getDisplayName('mir_licenses',$trimmed)" />
         </xsl:otherwise>
       </xsl:choose>
     </dc:rights>

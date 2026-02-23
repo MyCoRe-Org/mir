@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-                xmlns:encoder="xalan://java.net.URLEncoder"
-                exclude-result-prefixes="encoder">
+<xsl:stylesheet version="1.0"
+  xmlns:encoder="xalan://java.net.URLEncoder"
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  exclude-result-prefixes="encoder">
 
   <xsl:param name="MIR.TableOfContents.MaxResults" select="'1000'" />
   <xsl:param name="MIR.TableOfContents.LevelLimit" select="'100'" />

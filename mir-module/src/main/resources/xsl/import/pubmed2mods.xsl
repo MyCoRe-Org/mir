@@ -4,10 +4,11 @@
 <!-- http://www.ebi.ac.uk/europepmc/webservices/rest/search/resulttype=core&query=ext_id:26063869 -->
 
 <xsl:stylesheet version="1.0"
-  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  xmlns:xalan="http://xml.apache.org/xalan"
+  xmlns:mcrpages="xalan://org.mycore.mods.MCRMODSPagesHelper"
   xmlns:mods="http://www.loc.gov/mods/v3"
-  exclude-result-prefixes="xsl mods xalan">
+  xmlns:xalan="http://xml.apache.org/xalan"
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  exclude-result-prefixes="mcrpages mods xalan xsl">
 
   <xsl:output method="xml" encoding="UTF-8" indent="yes" xalan:indent-amount="2" />
 
@@ -149,7 +150,7 @@
   </xsl:template>
 
   <xsl:template match="result/pageInfo" mode="part">
-    <xsl:copy-of xmlns:pages="xalan://org.mycore.mods.MCRMODSPagesHelper" select="pages:buildExtentPagesNodeSet(text())" />
+    <xsl:copy-of select="mcrpages:buildExtentPagesNodeSet(text())" />
   </xsl:template>
 
   <xsl:template match="abstractText">

@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0"
-  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
-  xmlns:xlink="http://www.w3.org/1999/xlink"
+  xmlns:encoder="xalan://java.net.URLEncoder"
+  xmlns:mcri18n="xalan://org.mycore.services.i18n.MCRTranslation"
+  xmlns:mcrxml="xalan://org.mycore.common.xml.MCRXMLFunctions"
   xmlns:mods="http://www.loc.gov/mods/v3"
-  xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions"
   xmlns:xalan="http://xml.apache.org/xalan"
-  xmlns:exslt="http://exslt.org/common"
-  exclude-result-prefixes="i18n mods xlink mcrxsl xalan exslt"
->
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  exclude-result-prefixes="encoder mcri18n mcrxml mods xalan xsl">
+
   <xsl:import href="xslImport:modsmeta:metadata/mir-abstract.xsl" />
   <xsl:import href="xslImport:badges"/>
   <xsl:import href="resource:xsl/coreFunctions.xsl"/>
@@ -75,7 +74,7 @@
                 </xsl:if>
                 <xsl:apply-templates select="." mode="mirNameLink" />
                 <xsl:text> </xsl:text>
-                <xsl:value-of select="i18n:translate('mir.abstract.editor')" />
+                <xsl:value-of select="mcri18n:translate('mir.abstract.editor')" />
                 <xsl:if test="mods:etal">
                   <em>et.al.</em>
                 </xsl:if>
@@ -126,7 +125,7 @@
                   <xsl:variable name="tabName">
                     <xsl:choose>
                       <xsl:when test="@type and $MIR.Layout.Abstract.Type.Classification">
-                        <xsl:value-of select="mcrxsl:getDisplayName($MIR.Layout.Abstract.Type.Classification, @type)"/>
+                        <xsl:value-of select="mcrxml:getDisplayName($MIR.Layout.Abstract.Type.Classification, @type)"/>
                       </xsl:when>
                       <xsl:when test="@xml:lang">
                         <xsl:value-of
@@ -192,11 +191,11 @@
                 </xsl:for-each>
                 <div id="mir-abstract-overlay">
                   <a href="#" class="readless d-none" title="read less">
-                    <xsl:value-of select="i18n:translate('mir.abstract.readless')" />
+                    <xsl:value-of select="mcri18n:translate('mir.abstract.readless')" />
                   </a>
                   <div class="mir-abstract-overlay-tran readmore d-none"></div>
                   <a href="#" class="readmore d-none" title="read more">
-                    <xsl:value-of select="i18n:translate('mir.abstract.readmore')" />
+                    <xsl:value-of select="mcri18n:translate('mir.abstract.readmore')" />
                   </a>
                 </div>
               </div>
@@ -219,11 +218,11 @@
               </div>
               <div id="mir-abstract-overlay">
                 <a href="#" class="readless d-none" title="read less">
-                  <xsl:value-of select="i18n:translate('mir.abstract.readless')" />
+                  <xsl:value-of select="mcri18n:translate('mir.abstract.readless')" />
                 </a>
                 <div class="mir-abstract-overlay-tran readmore d-none"></div>
                 <a href="#" class="readmore d-none" title="read more">
-                  <xsl:value-of select="i18n:translate('mir.abstract.readmore')" />
+                  <xsl:value-of select="mcri18n:translate('mir.abstract.readmore')" />
                 </a>
               </div>
             </div>
@@ -234,7 +233,7 @@
       <!-- check for relatedItem containing mycoreobject ID dependent on current user using solr query on field mods.relatedItem -->
       <xsl:variable name="state">
         <xsl:choose>
-          <xsl:when test="mcrxsl:isCurrentUserInRole('admin') or mcrxsl:isCurrentUserInRole('editor')">
+          <xsl:when test="mcrxml:isCurrentUserInRole('admin') or mcrxml:isCurrentUserInRole('editor')">
             state:*
           </xsl:when>
           <xsl:otherwise>
@@ -246,22 +245,22 @@
 
       <xsl:call-template name="findRelatedItems">
         <xsl:with-param name="query" select="concat('mods.relatedItem.references:', $objectID, ' AND (', $state, ')')"/>
-        <xsl:with-param name="label" select="i18n:translate('mir.metadata.isReferencedBy')"/>
+        <xsl:with-param name="label" select="mcri18n:translate('mir.metadata.isReferencedBy')"/>
       </xsl:call-template>
 
       <xsl:call-template name="findRelatedItems">
         <xsl:with-param name="query" select="concat('mods.relatedItem.preceding:', $objectID, ' AND (', $state, ')')"/>
-        <xsl:with-param name="label" select="i18n:translate('mir.metadata.succeeding')"/>
+        <xsl:with-param name="label" select="mcri18n:translate('mir.metadata.succeeding')"/>
       </xsl:call-template>
 
       <xsl:call-template name="findRelatedItems">
         <xsl:with-param name="query" select="concat('mods.relatedItem.original:', $objectID, ' AND (', $state, ')')"/>
-        <xsl:with-param name="label" select="i18n:translate('mir.metadata.otherVersion')"/>
+        <xsl:with-param name="label" select="mcri18n:translate('mir.metadata.otherVersion')"/>
       </xsl:call-template>
 
       <xsl:call-template name="findRelatedItems">
         <xsl:with-param name="query" select="concat('mods.relatedItem.reviewOf:', $objectID, ' AND (', $state, ')')"/>
-        <xsl:with-param name="label" select="i18n:translate('mir.metadata.review')"/>
+        <xsl:with-param name="label" select="mcri18n:translate('mir.metadata.review')"/>
       </xsl:call-template>
 
     </div><!-- end: authors, description, children -->
@@ -273,7 +272,7 @@
     <xsl:param name="query"/>
     <xsl:param name="label"/>
 
-    <xsl:variable name="hitsSortList" xmlns:encoder="xalan://java.net.URLEncoder"
+    <xsl:variable name="hitsSortList"
                   select="document(concat('solr:q=',encoder:encode($query), '&amp;rows=1000&amp;sort=mods.part.order.', $objectID, '%20desc,mods.dateIssued%20desc,%20mods.dateIssued.host%20desc,',  $modsPart, '%20desc,%20mods.title.main%20desc&amp;group=true&amp;group.limit=1000&amp;group.field=mods.yearIssued'))/response/lst[@name='grouped']/lst[@name='mods.yearIssued']" />
     <xsl:if test="$hitsSortList/int[@name='matches'] &gt; 0">
         <xsl:call-template name="listRelatedItems">
@@ -291,8 +290,8 @@
       <xsl:if
               test="$hits/arr[@name='groups']/lst/result/@numFound &gt; 0 and not($hits/arr[@name='groups']/lst/null/@name='groupValue') and count($hits/arr[@name='groups']/lst) &gt; 1"
       >
-        <a id="mir_relatedItem_showAll" class="float-end" href="#"><xsl:value-of select="i18n:translate('mir.abstract.showGroups')" /></a>
-        <a id="mir_relatedItem_hideAll" class="float-end" href="#"><xsl:value-of select="i18n:translate('mir.abstract.hideGroups')" /></a>
+        <a id="mir_relatedItem_showAll" class="float-end" href="#"><xsl:value-of select="mcri18n:translate('mir.abstract.showGroups')" /></a>
+        <a id="mir_relatedItem_hideAll" class="float-end" href="#"><xsl:value-of select="mcri18n:translate('mir.abstract.hideGroups')" /></a>
       </xsl:if>
     </h3>
     <xsl:choose>

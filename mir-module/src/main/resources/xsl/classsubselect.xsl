@@ -3,11 +3,15 @@
   <!ENTITY html-output SYSTEM "xsl/xsl-output-html.fragment">
 ]>
 
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xlink="http://www.w3.org/1999/xlink"
-  xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation" xmlns:encoder="xalan://java.net.URLEncoder" exclude-result-prefixes="xlink encoder">
+<xsl:stylesheet version="1.0"
+  xmlns:encoder="xalan://java.net.URLEncoder"
+  xmlns:mcri18n="xalan://org.mycore.services.i18n.MCRTranslation"
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  exclude-result-prefixes="encoder">
+
   &html-output;
-  <xsl:variable name="Navigation.title" select="i18n:translate('subselect.category.title')" />
-  <xsl:variable name="MainTitle" select="i18n:translate('common.titles.mainTitle')" />
+  <xsl:variable name="Navigation.title" select="mcri18n:translate('subselect.category.title')" />
+  <xsl:variable name="MainTitle" select="mcri18n:translate('common.titles.mainTitle')" />
   <xsl:variable name="PageTitle" select="$Navigation.title" />
 
 <!-- ========== Subselect Parameter ========== -->
@@ -45,7 +49,7 @@
     </xsl:variable>
 
     <a href="{$cancelURL}" class="btn btn-warning">
-      <xsl:value-of select="i18n:translate('subselect.category.cancel')" />
+      <xsl:value-of select="mcri18n:translate('subselect.category.cancel')" />
     </a>
     <xsl:call-template name="mcrClassificationBrowser">
       <xsl:with-param name="classification" select="$classid" />

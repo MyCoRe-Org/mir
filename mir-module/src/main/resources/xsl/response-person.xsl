@@ -3,13 +3,13 @@
   <!ENTITY html-output SYSTEM "xsl/xsl-output-html.fragment">
 ]>
 <xsl:stylesheet version="1.0"
-  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:encoder="xalan://java.net.URLEncoder"
-  xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
+  xmlns:mcri18n="xalan://org.mycore.services.i18n.MCRTranslation"
+  xmlns:mcrxml="xalan://org.mycore.common.xml.MCRXMLFunctions"
   xmlns:xalan="http://xml.apache.org/xalan"
-  xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions"
-  xmlns:str="http://exslt.org/strings"
-  exclude-result-prefixes="xalan i18n encoder str mcrxsl">
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  exclude-result-prefixes="encoder mcri18n mcrxml xalan xsl">
+
   &html-output;
   <xsl:include href="MyCoReLayout.xsl" />
   <xsl:include href="response-utils.xsl" />
@@ -21,7 +21,7 @@
   <xsl:decimal-format name="european" decimal-separator=',' grouping-separator='.' />
 
   <xsl:variable name="PageTitle">
-    <xsl:value-of select="i18n:translate('component.solr.searchresult.resultList')" />
+    <xsl:value-of select="mcri18n:translate('component.solr.searchresult.resultList')" />
   </xsl:variable>
   <xsl:variable name="numFound">
     <xsl:choose>
@@ -37,13 +37,13 @@
   <xsl:variable name="resultsText">
     <xsl:choose>
       <xsl:when test="$numFound=0">
-        <xsl:value-of select="i18n:translate('pindex.noObject')" />
+        <xsl:value-of select="mcri18n:translate('pindex.noObject')" />
       </xsl:when>
       <xsl:when test="$numFound=1">
-        <xsl:value-of select="i18n:translate('pindex.oneObject')" />
+        <xsl:value-of select="mcri18n:translate('pindex.oneObject')" />
       </xsl:when>
       <xsl:otherwise>
-        <xsl:value-of select="i18n:translate('pindex.nObjects',format-number($numFound, '###.###', 'european'))" />
+        <xsl:value-of select="mcri18n:translate('pindex.nObjects',format-number($numFound, '###.###', 'european'))" />
       </xsl:otherwise>
     </xsl:choose>
   </xsl:variable>
@@ -145,7 +145,7 @@
 
         <div class="row">
           <div class="col-md-4">
-            <h2><xsl:value-of select="i18n:translate('browse.person.foundPersons')" /></h2>
+            <h2><xsl:value-of select="mcri18n:translate('browse.person.foundPersons')" /></h2>
 
             <xsl:choose>
               <xsl:when test="lst[@name='terms']/lst[@name='mods.pindexname']/int or
@@ -153,7 +153,7 @@
                 <!-- show results -->
                 <ul id="resultList">
                   <xsl:choose>
-                    <xsl:when test="mcrxsl:isCurrentUserInRole('editor') or mcrxsl:isCurrentUserInRole('admin')">
+                    <xsl:when test="mcrxml:isCurrentUserInRole('editor') or mcrxml:isCurrentUserInRole('admin')">
                       <xsl:apply-templates select="lst[@name='terms']/lst[@name='mods.pindexname']" />
                     </xsl:when>
                     <xsl:otherwise>
@@ -163,13 +163,13 @@
                 </ul>
               </xsl:when>
               <xsl:otherwise>
-                <p><xsl:value-of select="i18n:translate('browse.person.personNotFound')" /></p>
+                <p><xsl:value-of select="mcri18n:translate('browse.person.personNotFound')" /></p>
               </xsl:otherwise>
             </xsl:choose>
           </div>
 
           <div class="col-md-4">
-            <h3><xsl:value-of select="i18n:translate('browse.person.firstLetter')" /></h3>
+            <h3><xsl:value-of select="mcri18n:translate('browse.person.firstLetter')" /></h3>
             <ul class="names">
               <xsl:for-each select="xalan:nodeset($a2z)/*">
                 <li>
@@ -188,7 +188,7 @@
           </div>
 
           <div class="col-md-4">
-            <h3><xsl:value-of select="i18n:translate('browse.person.searchPerson')" /></h3>
+            <h3><xsl:value-of select="mcri18n:translate('browse.person.searchPerson')" /></h3>
 
             <form class="form-inline"
                   role="form"
@@ -212,7 +212,7 @@
               </xsl:variable>
 
               <xsl:variable name="placeholder">
-                <xsl:value-of select="i18n:translate('browse.person.searchplaceholder')" />
+                <xsl:value-of select="mcri18n:translate('browse.person.searchplaceholder')" />
               </xsl:variable>
 
               <div class="mir-form-group">
@@ -228,7 +228,7 @@
                      class="btn btn-secondary search_button"
                      value="Suchen"
                      tabindex="1">
-                <xsl:value-of select="i18n:translate('button.search')" />
+                <xsl:value-of select="mcri18n:translate('button.search')" />
               </button>
             </form>
           </div>

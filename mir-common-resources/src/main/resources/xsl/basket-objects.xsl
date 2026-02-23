@@ -1,21 +1,18 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-
-<!-- Renders the output of MCRBasketServlet -->
-
-<xsl:stylesheet version="1.0" 
-  xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
-  xmlns:xlink="http://www.w3.org/1999/xlink"
+<xsl:stylesheet version="1.0"
+  xmlns:mcri18n="xalan://org.mycore.services.i18n.MCRTranslation"
   xmlns:xalan="http://xml.apache.org/xalan"
-  xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation" 
-  exclude-result-prefixes="xlink xalan i18n">
-  
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  exclude-result-prefixes="mcri18n xalan xlink">
+
   <xsl:include href="MyCoReLayout.xsl" />
 
   <!-- include custom templates for supported objecttypes -->
   <xsl:include href="xslInclude:objectTypes"/>
 
   <xsl:variable name="Type" select="'document'" />
-  <xsl:variable name="MainTitle" select="i18n:translate(concat('basket.title.',/basket/@type))" />
+  <xsl:variable name="MainTitle" select="mcri18n:translate(concat('basket.title.',/basket/@type))" />
   <xsl:variable name="PageTitle" select="$MainTitle" />
 
   <xsl:template match="/basket">
@@ -28,19 +25,19 @@
       <p>
         <xsl:choose>
           <xsl:when test="count(entry) = 0">
-            <xsl:value-of select="i18n:translate('basket.numEntries.none')" />
+            <xsl:value-of select="mcri18n:translate('basket.numEntries.none')" />
           </xsl:when>
           <xsl:when test="count(entry) = 1">
-            <xsl:value-of select="i18n:translate('basket.numEntries.one')" />
+            <xsl:value-of select="mcri18n:translate('basket.numEntries.one')" />
           </xsl:when>
           <xsl:otherwise>
-            <xsl:value-of select="i18n:translate('basket.numEntries.many',count(*))" />
+            <xsl:value-of select="mcri18n:translate('basket.numEntries.many',count(*))" />
           </xsl:otherwise>
         </xsl:choose>
       </p>
       <xsl:if test="entry">
         <a href="MCRBasketServlet?type={@type}&amp;action=clear">
-          <xsl:value-of select="i18n:translate('basket.clear')" />
+          <xsl:value-of select="mcri18n:translate('basket.clear')" />
         </a>
       </xsl:if>
     </div>
@@ -102,7 +99,7 @@
     <xsl:choose>
       <xsl:when test="$condition">
         <a href="MCRBasketServlet?action={$action}&amp;type={/basket/@type}&amp;id={@id}">
-          <img alt="{i18n:translate(concat('basket.button.',$action))}" src="{$WebApplicationBaseURL}images/pmud-{$image}.png" />
+          <img alt="{mcri18n:translate(concat('basket.button.',$action))}" src="{$WebApplicationBaseURL}images/pmud-{$image}.png" />
         </a>
       </xsl:when>
       <xsl:otherwise>

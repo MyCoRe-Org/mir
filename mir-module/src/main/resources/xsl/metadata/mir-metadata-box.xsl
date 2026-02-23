@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xlink="http://www.w3.org/1999/xlink"
-  xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation" xmlns:mods="http://www.loc.gov/mods/v3" xmlns:xalan="http://xml.apache.org/xalan"
-  xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions"
-  exclude-result-prefixes="i18n mods xlink xalan mcrxsl">
+<xsl:stylesheet version="1.0"
+  xmlns:mcri18n="xalan://org.mycore.services.i18n.MCRTranslation"
+  xmlns:mcrxml="xalan://org.mycore.common.xml.MCRXMLFunctions"
+  xmlns:mods="http://www.loc.gov/mods/v3"
+  xmlns:xalan="http://xml.apache.org/xalan"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  exclude-result-prefixes="mcri18n mcrxml mods xalan xlink xsl">
+
   <xsl:import href="xslImport:modsmeta:metadata/mir-metadata-box.xsl" />
   <xsl:include href="modsmetadata.xsl" />
   <xsl:include href="mir-mods-utils.xsl" />
@@ -32,7 +37,7 @@
                       <xsl:value-of select="@displayLabel" />
                     </xsl:when>
                     <xsl:otherwise>
-                      <xsl:value-of select="i18n:translate(concat('mir.title.type.', @type))" />
+                      <xsl:value-of select="mcri18n:translate(concat('mir.title.type.', @type))" />
                     </xsl:otherwise>
                   </xsl:choose>
                   <xsl:text>:</xsl:text>
@@ -50,7 +55,7 @@
                     </xsl:apply-templates>
                     <xsl:if test="@type='translated'">
                       <xsl:text> (</xsl:text>
-                      <xsl:value-of select="mcrxsl:getDisplayName('rfc5646',@xml:lang)" />
+                      <xsl:value-of select="mcrxml:getDisplayName('rfc5646',@xml:lang)" />
                       <xsl:text>)</xsl:text>
                     </xsl:if>
                   </xsl:for-each>
@@ -60,7 +65,7 @@
 
             <xsl:call-template name="printMetaDate.mods">
               <xsl:with-param name="nodes" select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:name[@type='conference']/mods:namePart[not(@type)]" />
-              <xsl:with-param name="label" select="i18n:translate('component.mods.metaData.dictionary.conference.title')" />
+              <xsl:with-param name="label" select="mcri18n:translate('component.mods.metaData.dictionary.conference.title')" />
             </xsl:call-template>
 
 
@@ -92,7 +97,7 @@
                         </xsl:when>
                         <xsl:when test="mods:role/mods:roleTerm[@authority='marcrelator']">
                           <xsl:value-of
-                            select="concat(i18n:translate(concat('component.mods.metaData.dictionary.',mods:role/mods:roleTerm[@authority='marcrelator'])),':')" />
+                            select="concat(mcri18n:translate(concat('component.mods.metaData.dictionary.',mods:role/mods:roleTerm[@authority='marcrelator'])),':')" />
                         </xsl:when>
                       </xsl:choose>
                     </td>
@@ -116,7 +121,7 @@
               <xsl:if test="./structure/parents/parent/@xlink:href">
                 <xsl:call-template name="printMetaDate.mods.relatedItem">
                   <xsl:with-param name="parentID" select="./structure/parents/parent/@xlink:href" />
-                  <xsl:with-param name="label" select="i18n:translate('component.mods.metaData.dictionary.confpubIn')" />
+                  <xsl:with-param name="label" select="mcri18n:translate('component.mods.metaData.dictionary.confpubIn')" />
                 </xsl:call-template>
               </xsl:if>
             </xsl:for-each>
@@ -127,13 +132,13 @@
                     <xsl:value-of select="@displayLabel"/>
                   </xsl:when>
                   <xsl:when test="@type">
-                    <xsl:value-of select="i18n:translate(concat('mir.relatedItem.', @type))"/>
+                    <xsl:value-of select="mcri18n:translate(concat('mir.relatedItem.', @type))"/>
                   </xsl:when>
                   <xsl:when test="@otherType">
-                    <xsl:value-of select="i18n:translate(concat('mir.relatedItem.', @otherType))"/>
+                    <xsl:value-of select="mcri18n:translate(concat('mir.relatedItem.', @otherType))"/>
                   </xsl:when>
                   <xsl:otherwise>
-                    <xsl:value-of select="i18n:translate('mir.relatedItem')"/>
+                    <xsl:value-of select="mcri18n:translate('mir.relatedItem')"/>
                   </xsl:otherwise>
                 </xsl:choose>
               </xsl:variable>
@@ -154,11 +159,11 @@
             </xsl:for-each>
             <xsl:call-template name="printMetaDate.mods">
               <xsl:with-param name="nodes" select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:relatedItem[@type='host']/mods:part/mods:detail[@type='volume']/mods:number" />
-              <xsl:with-param name="label" select="i18n:translate('component.mods.metaData.dictionary.volume.article')" />
+              <xsl:with-param name="label" select="mcri18n:translate('component.mods.metaData.dictionary.volume.article')" />
             </xsl:call-template>
             <xsl:call-template name="printMetaDate.mods">
               <xsl:with-param name="nodes" select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:relatedItem[@type='host']/mods:part/mods:detail[@type='issue']/mods:number" />
-              <xsl:with-param name="label" select="i18n:translate('mir.details.issue')" />
+              <xsl:with-param name="label" select="mcri18n:translate('mir.details.issue')" />
             </xsl:call-template>
             <xsl:call-template name="printMetaDate.mods">
               <xsl:with-param name="nodes" select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:originInfo/mods:edition" />
@@ -167,15 +172,15 @@
               mode="present" />
             <xsl:apply-templates select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:originInfo[@eventType='creation']/mods:dateOther[@type='submitted']"
               mode="present">
-              <xsl:with-param name="label" select="i18n:translate('component.mods.metaData.dictionary.dateSubmitted')" />
+              <xsl:with-param name="label" select="mcri18n:translate('component.mods.metaData.dictionary.dateSubmitted')" />
             </xsl:apply-templates>
             <xsl:apply-templates select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:originInfo[@eventType='creation']/mods:dateOther[@type='accepted']"
               mode="present">
-              <xsl:with-param name="label" select="i18n:translate('component.mods.metaData.dictionary.dateAccepted')" />
+              <xsl:with-param name="label" select="mcri18n:translate('component.mods.metaData.dictionary.dateAccepted')" />
             </xsl:apply-templates>
             <xsl:apply-templates select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:originInfo[@eventType='review']/mods:dateOther[@type='reviewed']"
               mode="present">
-                <xsl:with-param name="label" select="i18n:translate('component.mods.metaData.dictionary.dateReviewed')" />
+                <xsl:with-param name="label" select="mcri18n:translate('component.mods.metaData.dictionary.dateReviewed')" />
             </xsl:apply-templates>
             <xsl:apply-templates select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:originInfo[@eventType='collection']/mods:dateCaptured"
               mode="present" />
@@ -193,7 +198,7 @@
             <xsl:for-each select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:identifier[@type='issn']">
                 <tr>
                     <td class="metaname" valign="top">
-                        <xsl:value-of select="i18n:translate('mir.identifier.issn')" />
+                        <xsl:value-of select="mcri18n:translate('mir.identifier.issn')" />
                     </td>
                     <td class="metavalue">
                         <xsl:value-of select="."/>
@@ -204,7 +209,7 @@
             <xsl:for-each select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:typeOfResource">
               <tr>
                 <td class="metaname" valign="top">
-                  <xsl:value-of select="concat(i18n:translate('component.mods.metaData.dictionary.typeOfResource'),':')" />
+                  <xsl:value-of select="concat(mcri18n:translate('component.mods.metaData.dictionary.typeOfResource'),':')" />
                 </td>
                 <td class="metavalue">
                   <xsl:value-of select="document(concat('classification:metadata:0:children:typeOfResource:', translate(./text(),' ','_')))//category/label[@xml:lang=$CurrentLang]/@text"/>
@@ -223,7 +228,7 @@
             <xsl:call-template name="printMetaDate.mods">
               <xsl:with-param name="nodes"
                 select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:originInfo[@eventType='creation']/mods:place/mods:placeTerm[not(@authority='marccountry')]" />
-              <xsl:with-param name="label" select="i18n:translate('component.mods.metaData.dictionary.placeTerm.creation')" />
+              <xsl:with-param name="label" select="mcri18n:translate('component.mods.metaData.dictionary.placeTerm.creation')" />
             </xsl:call-template>
             <xsl:call-template name="printMetaDate.mods">
               <xsl:with-param name="nodes" select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:originInfo[not(@eventType) or @eventType='publication']/mods:publisher" />
@@ -232,7 +237,7 @@
                 <xsl:with-param name="nodes"
                                 select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:originInfo[@eventType='creation']/mods:publisher"/>
                 <xsl:with-param name="label"
-                                select="i18n:translate('component.mods.metaData.dictionary.publisher.creation')"/>
+                                select="mcri18n:translate('component.mods.metaData.dictionary.publisher.creation')"/>
             </xsl:call-template>
             <!--
               <xsl:call-template name="printMetaDate.mods">
@@ -250,7 +255,7 @@
                 <xsl:for-each select="mods:cartographics/mods:coordinates">
                     <tr>
                         <td class="metaname" valign="top">
-                            <xsl:value-of select="i18n:translate('mir.cartographics.coordinates')"/>
+                            <xsl:value-of select="mcri18n:translate('mir.cartographics.coordinates')"/>
                         </td>
                         <td class="metavalue">
                             <xsl:call-template name="displayCoordinates"/>
@@ -263,7 +268,7 @@
             <xsl:if test="count(mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:subject[not((count(mods:geographic)&gt;0 or count(mods:cartographics)&gt;0) and (count(mods:geographic) + count(mods:cartographics)) = count(mods:*))])&gt;0">
                 <tr>
                     <td class="metaname" valign="top">
-                        <xsl:value-of select="concat(i18n:translate('component.mods.metaData.dictionary.subject'),':')"/>
+                        <xsl:value-of select="concat(mcri18n:translate('component.mods.metaData.dictionary.subject'),':')"/>
                     </td>
                     <td class="metavalue">
                         <xsl:for-each
@@ -293,7 +298,7 @@
             <xsl:call-template name="printMetaDate.mods">
                 <xsl:with-param name="nodes"
                                 select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:location/mods:shelfLocator"/>
-                <xsl:with-param name="label" select="i18n:translate('mir.shelfmark')"/>
+                <xsl:with-param name="label" select="mcri18n:translate('mir.shelfmark')"/>
             </xsl:call-template>
             <xsl:apply-templates mode="present"
                                  select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:name[@type='corporate'][@ID or @authorityURI=$institutesURI]"/>
@@ -303,7 +308,7 @@
                 <xsl:choose>
                     <xsl:when test="@type">
                         <xsl:variable name="myURI"
-                                      select="concat('classification:metadata:0:children:noteTypes:',mcrxsl:regexp(@type,' ', '_'))"/>
+                                      select="concat('classification:metadata:0:children:noteTypes:',mcrxml:regexp(@type,' ', '_'))"/>
                         <xsl:variable name="x-access">
                             <xsl:value-of select="document($myURI)//label[@xml:lang='x-access']/@text"/>
                         </xsl:variable>
@@ -362,11 +367,11 @@
             <xsl:with-param name="boxContent">
                 <dl>
                     <dt>
-                        <xsl:value-of select="i18n:translate('mir.details.popover.type')"/>
+                        <xsl:value-of select="mcri18n:translate('mir.details.popover.type')"/>
                     </dt>
                     <dd>
                         <i class="fas fa-map-location-dot me-2"> </i>
-                        <xsl:value-of select="i18n:translate('mir.details.popover.type.geographic')"/>
+                        <xsl:value-of select="mcri18n:translate('mir.details.popover.type.geographic')"/>
                     </dd>
                 </dl>
             </xsl:with-param>
@@ -393,11 +398,11 @@
             <xsl:with-param name="boxContent">
                 <dl>
                     <dt>
-                        <xsl:value-of select="i18n:translate('mir.details.popover.type')"/>
+                        <xsl:value-of select="mcri18n:translate('mir.details.popover.type')"/>
                     </dt>
                     <dd>
                         <i class="fas fa-tag me-2"> </i>
-                        <xsl:value-of select="i18n:translate('mir.details.popover.type.topic')"/>
+                        <xsl:value-of select="mcri18n:translate('mir.details.popover.type.topic')"/>
                     </dd>
                 </dl>
             </xsl:with-param>
@@ -424,7 +429,7 @@
             <xsl:with-param name="boxContent">
                 <dl>
                     <dt>
-                        <xsl:value-of select="i18n:translate('mir.details.popover.type')"/>
+                        <xsl:value-of select="mcri18n:translate('mir.details.popover.type')"/>
                     </dt>
                     <dd>
                         <xsl:choose>
@@ -441,7 +446,7 @@
                                 <i class="fas fa-people-line me-2"> </i>
                             </xsl:when>
                         </xsl:choose>
-                        <xsl:value-of select="i18n:translate(concat('mir.details.popover.type.', @type))"/>
+                        <xsl:value-of select="mcri18n:translate(concat('mir.details.popover.type.', @type))"/>
                     </dd>
                     <xsl:if test="count($nameIdentifiers) &gt; 0">
                         <xsl:for-each select="$nameIdentifiers">
@@ -457,7 +462,7 @@
                     </xsl:if>
                     <xsl:if test="string-length($affiliation) &gt; 0">
                         <dt>
-                            <xsl:value-of select="i18n:translate('mir.affiliation')"/>
+                            <xsl:value-of select="mcri18n:translate('mir.affiliation')"/>
                         </dt>
                         <dd>
                             <xsl:value-of select="$affiliation"/>
@@ -492,11 +497,11 @@
             <xsl:with-param name="boxContent">
                 <dl>
                     <dt>
-                        <xsl:value-of select="i18n:translate('mir.details.popover.type')"/>
+                        <xsl:value-of select="mcri18n:translate('mir.details.popover.type')"/>
                     </dt>
                     <dd>
                         <i class="fa fa-newspaper me-2"> </i>
-                        <xsl:value-of select="i18n:translate('mir.details.popover.type.titleInfo')"/>
+                        <xsl:value-of select="mcri18n:translate('mir.details.popover.type.titleInfo')"/>
                     </dd>
                 </dl>
             </xsl:with-param>
@@ -525,7 +530,7 @@
             <xsl:copy-of select="$boxContent"/>
         </div>
 
-        <a id="{$boxId}" class="boxPopover" title="{i18n:translate('mir.details.popover.title')}">
+        <a id="{$boxId}" class="boxPopover" title="{mcri18n:translate('mir.details.popover.title')}">
             <span class="fa fa-info-circle"/>
         </a>
     </xsl:template>

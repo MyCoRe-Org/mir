@@ -1,7 +1,10 @@
-<?xml version="1.0"?>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:str="http://exslt.org/strings" extension-element-prefixes="str">
+<?xml version="1.0" encoding="UTF-8"?>
+<xsl:stylesheet version="1.0"
+  xmlns:str="http://exslt.org/strings"
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  extension-element-prefixes="str">
 
-  <xsl:template name="str:tokenize">
+<xsl:template name="str:tokenize">
     <xsl:param name="string" select="''" />
     <xsl:param name="delimiters" select="' &#x9;&#xA;'" />
     <xsl:choose>

@@ -2,12 +2,12 @@
 
 <!-- See https://unpaywall.org/data-format -->
 
-<xsl:stylesheet version="1.0" 
-  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  xmlns:xalan="http://xml.apache.org/xalan"
+<xsl:stylesheet version="1.0"
   xmlns:mods="http://www.loc.gov/mods/v3"
+  xmlns:xalan="http://xml.apache.org/xalan"
   xmlns:xlink="http://www.w3.org/1999/xlink"
-  exclude-result-prefixes="xsl xalan xlink">
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  exclude-result-prefixes="xalan xlink xsl">
 
   <xsl:output method="xml" />
 
