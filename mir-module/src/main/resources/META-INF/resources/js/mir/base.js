@@ -485,11 +485,12 @@
 
     $('.confirm_deletion').confirm();
 
-
-    $(".searchfield_box").submit(function() {
-      if ( $("input.search-query").val() == "" ) {
-        $("input.search-query").val("*");
-      }
+    $(".searchfield_box form").submit(function() {
+      $("input").each(function(i,elem) {
+          if($(elem).prop("value").length==0) {
+              $(elem).prop("disabled", "disabled");
+          }
+      });
     });
 
     // search person index
