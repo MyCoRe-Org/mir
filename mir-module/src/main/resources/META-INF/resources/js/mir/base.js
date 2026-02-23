@@ -486,10 +486,10 @@
     $('.confirm_deletion').confirm();
 
 
-    $(".searchfield_box").submit(function () {
-      let input = $("input.search-query").val();
-      input = input.replace(/[^\w\s]/gi, " ");
-      $("input.search-query").val(input);
+    $(".searchfield_box").submit(function() {
+      if ( $("input.search-query").val() == "" ) {
+        $("input.search-query").val("*");
+      }
     });
 
     // search person index
