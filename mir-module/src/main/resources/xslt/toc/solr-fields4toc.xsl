@@ -8,7 +8,7 @@
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   exclude-result-prefixes="mods xlink">
 
-  <xsl:import href="xslImport:solr-document-3:toc/solr-fields4toc-3.xsl" />
+  <xsl:import href="xslImport:solr-document-3:toc/solr-fields4toc.xsl" />
 
   <xsl:param name="MIR.TableOfContents.RolesToDisplay" select="'cre aut edt trl ive ivr hnr'" />
 
