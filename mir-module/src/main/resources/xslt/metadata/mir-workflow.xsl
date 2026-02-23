@@ -8,7 +8,7 @@
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   exclude-result-prefixes="#all">
 
-  <xsl:import href="xslImport:modsmeta:metadata/mir-workflow.xsl"/>
+<xsl:import href="xslImport:modsmeta:metadata/mir-workflow.xsl"/>
   <xsl:import href="xslImport:mirworkflow:metadata/mir-workflow.xsl"/>
   <xsl:import href="mir-pdf-errorbox.xsl"/>
   <xsl:param name="layout" select="'$'"/>
