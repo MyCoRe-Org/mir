@@ -143,15 +143,6 @@ public class MIRImageWarePacker extends MCRPacker {
         return Optional.empty();
     }
 
-    // used in mycoreobject-migrate-ppn.xsl
-    public static final String detectPPN(String objectIDString) {
-        MCRObjectID objectID = MCRObjectID.getInstance(objectIDString);
-        MCRObject mcrObject = MCRMetadataManager.retrieveMCRObject(objectID);
-        String defaultPPNDB = MCRPackerJobAction.getConfiguration("ImageWare").get(DEFAULT_PPN_DB_CONFIGURATION_KEY);
-        String ppn = detectPPN(mcrObject, defaultPPNDB).orElse("");
-        return ppn;
-    }
-
     // used in modsdetails-external.xsl
     public static final boolean displayPackerButton(String objectIDString, String packerId) {
         MCRObjectID objectID = MCRObjectID.getInstance(objectIDString);
