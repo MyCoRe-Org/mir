@@ -6,9 +6,9 @@
   <xsl:output method="html" encoding="UTF-8" omit-xml-declaration="yes" />
   <xsl:param name="WebApplicationBaseURL" />
   <xsl:param name="ServletsBaseURL" />
-  <xsl:include href="response-utils.xsl" />
-  <xsl:include href="response-mir.xsl" />
-  <xsl:include href="layout-utils.xsl" />
+  <xsl:include href="resource:xsl/response-utils.xsl" />
+  <xsl:include href="resource:xsl/response-mir.xsl" />
+  <xsl:include href="resource:xsl/layout-utils.xsl" />
   <xsl:variable name="PageTitle">
     <xsl:value-of select="''" />
   </xsl:variable>

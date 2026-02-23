@@ -9,7 +9,7 @@
   <xsl:variable name="write" select="'writedb'" />
   <xsl:variable name="delete" select="'deletedb'" />
 
-  <xsl:include href="coreFunctions.xsl"/>
+  <xsl:include href="resource:xsl/coreFunctions.xsl"/>
   
   <xsl:template match="/mycoreobject">
     <xsl:copy>

@@ -15,5 +15,5 @@
       <xsl:value-of select="mcri18n:translate('selfRegistration.step.created.info', user/eMail)" disable-output-escaping="yes" />
     </p>
   </xsl:template>
-  <xsl:include href="MyCoReLayout.xsl" />
+  <xsl:include href="resource:xsl/MyCoReLayout.xsl" />
 </xsl:stylesheet>

@@ -9,8 +9,8 @@
   exclude-result-prefixes="mcri18n mcrxml mods xalan xlink xsl">
 
   <xsl:import href="xslImport:modsmeta:metadata/mir-metadata-box.xsl" />
-  <xsl:include href="modsmetadata.xsl" />
-  <xsl:include href="mir-mods-utils.xsl" />
+  <xsl:include href="resource:xsl/modsmetadata.xsl" />
+  <xsl:include href="resource:xsl/mir-mods-utils.xsl" />
   <!-- copied from http://www.loc.gov/standards/mods/v3/MODS3-4_HTML_XSLT1-0.xsl -->
 
   <xsl:key use="@type" name="title-by-type" match="//mods:mods/mods:titleInfo" />

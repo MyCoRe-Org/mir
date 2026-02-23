@@ -4,7 +4,7 @@
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   exclude-result-prefixes="mcri18n">
 
-  <xsl:import href="layout/mir-layout-utils.xsl" />
+  <xsl:import href="resource:layout/mir-layout-utils.xsl" />
 
   <xsl:variable name="Type" select="'document'" />
 
@@ -69,5 +69,5 @@
     <xsl:call-template name="mir.printNotLoggedIn" />
   </xsl:template>
 
-  <xsl:include href="MyCoReLayout.xsl" />
+  <xsl:include href="resource:xsl/MyCoReLayout.xsl" />
 </xsl:stylesheet>

@@ -27,7 +27,7 @@
   <xsl:template match="/">
 
     <!-- Transform toc-layouts.xml to SOLR parameters to get a TOC via JSON facet API-->
-    <xsl:variable name="tocLayouts" select="document('xslStyle:toc/toc-layouts2solr-json-facet-query:resource:toc-layouts.xml')/*" />
+    <xsl:variable name="tocLayouts" select="document('xslStyle:toc/toc-layouts2solr-json-facet-query#xsl:resource:toc-layouts.xml')/*" />
 
     <!-- get preferred ID of toc layout to use from URL parameter of service flag -->
     <xsl:variable name="preferredLayoutID">
@@ -76,7 +76,7 @@
 
     <!-- First transform SOLR facet response to simpler XML... -->
     <xsl:variable name="prepURI">
-      <xsl:text>xslStyle:toc/solr-facets2toc</xsl:text>
+      <xsl:text>xslStyle:toc/solr-facets2toc#xsl</xsl:text>
       <xsl:text>?tocLayoutID=</xsl:text><xsl:value-of select="$layoutID" />
       <xsl:text>:</xsl:text>
       <xsl:value-of select="$solrURI" />
@@ -84,7 +84,7 @@
 
     <!-- ... then render to HTML -->
     <xsl:variable name="htmlURI">
-      <xsl:text>notnull:xslStyle:toc/render-toc:</xsl:text>
+      <xsl:text>notnull:xslStyle:toc/render-toc#xsl:</xsl:text>
       <xsl:value-of select="$prepURI" />
     </xsl:variable>
 

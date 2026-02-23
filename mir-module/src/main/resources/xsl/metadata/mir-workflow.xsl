@@ -22,7 +22,7 @@
   <xsl:key use="@id" name="rights" match="/mycoreobject/rights/right"/>
   <xsl:variable name="id" select="/mycoreobject/@ID"/>
 
-  <xsl:include href="workflow-util.xsl"/>
+  <xsl:include href="resource:xsl/workflow-util.xsl"/>
 
 
   <xsl:template match="/">

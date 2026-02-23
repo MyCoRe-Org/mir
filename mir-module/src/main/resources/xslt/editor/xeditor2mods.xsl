@@ -11,10 +11,10 @@
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   exclude-result-prefixes="exslt mcr mcrid mcrmodsclass mcrpages mcrxml xlink">
 
-  <xsl:include href="copynodes.xsl" />
-  <xsl:include href="editor/mods-node-utils.xsl" />
-  <xsl:include href="mods-utils.xsl" />
-  <xsl:include href="coreFunctions.xsl" />
+  <xsl:include href="resource:xsl/copynodes.xsl" />
+  <xsl:include href="resource:xsl/editor/mods-node-utils.xsl" />
+  <xsl:include href="resource:xsl/mods-utils.xsl" />
+  <xsl:include href="resource:xsl/coreFunctions.xsl" />
 
   <xsl:param name="MIR.PPN.DatabaseList" select="'gvk'" />
   <xsl:param name="MCR.Metadata.ObjectID.NumberPattern" select="00000000" />

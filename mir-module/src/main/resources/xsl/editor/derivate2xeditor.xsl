@@ -5,7 +5,7 @@
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   exclude-result-prefixes="mcri18n mir xsl">
 
-  <xsl:include href="copynodes.xsl"/>
+  <xsl:include href="resource:xsl/copynodes.xsl"/>
 
   <xsl:template match="classification[@classid and @categid]">
     <classification><xsl:value-of select="@classid"/>:<xsl:value-of select="@categid"/></classification>

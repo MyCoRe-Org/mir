@@ -6,7 +6,7 @@
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   exclude-result-prefixes="mcri18n mir xsl">
 
-  <xsl:include href="copynodes.xsl" />
+  <xsl:include href="resource:xsl/copynodes.xsl" />
   <xsl:variable name="institutesURI">
     <xsl:choose>
       <xsl:when test="string-length(document('classification:metadata:0:children:mir_institutes')/mycoreclass/label[lang('x-uri')]/@text) &gt; 0">

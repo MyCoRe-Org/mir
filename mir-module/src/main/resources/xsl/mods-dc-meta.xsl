@@ -8,8 +8,8 @@
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   exclude-result-prefixes="dc dcterms mods xalan xlink xsl">
 
-  <xsl:include href="mods-utils.xsl" />
-  <xsl:include href="mods2dc-mode-dc.xsl" />
+  <xsl:include href="resource:xsl/mods-utils.xsl" />
+  <xsl:include href="resource:xsl/mods2dc-mode-dc.xsl" />
 
   <xsl:template match="mods:mods" mode="dc-meta">
     <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/" />

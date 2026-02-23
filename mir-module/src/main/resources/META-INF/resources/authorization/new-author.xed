@@ -46,11 +46,11 @@
           </div>
           <div class="card-body">
             <xed:include uri="webapp:editor/editor-includes.xed" ref="failed-validation-messages" />
-            <xed:include uri="xslStyle:user-xeditor-templates:webapp:authorization/new-author-includes.xed" ref="userAccount" />
-            <xed:include uri="xslStyle:user-xeditor-templates:webapp:authorization/new-author-includes.xed" ref="realName" />
-            <xed:include uri="xslStyle:user-xeditor-templates:webapp:authorization/new-author-includes.xed" ref="email" />
-            <xed:include uri="xslStyle:user-xeditor-templates:webapp:authorization/user-editor.xed" ref="passwords" />
-            <xed:include uri="xslStyle:user-xeditor-templates:webapp:authorization/new-author-includes.xed" ref="captcha" />
+            <xed:include uri="xslStyle:user-xeditor-templates#xsl:webapp:authorization/new-author-includes.xed" ref="userAccount" />
+            <xed:include uri="xslStyle:user-xeditor-templates#xsl:webapp:authorization/new-author-includes.xed" ref="realName" />
+            <xed:include uri="xslStyle:user-xeditor-templates#xsl:webapp:authorization/new-author-includes.xed" ref="email" />
+            <xed:include uri="xslStyle:user-xeditor-templates#xsl:webapp:authorization/user-editor.xed" ref="passwords" />
+            <xed:include uri="xslStyle:user-xeditor-templates#xsl:webapp:authorization/new-author-includes.xed" ref="captcha" />
 
             <xed:validate display="global" xpath="/user/@name"
               test="not(xed:call-java('org.mycore.mir.authorization.MirSelfRegistrationServlet', 'userExists', /user))">
@@ -64,7 +64,7 @@
           </div>
           <div class="card-footer clearfix">
             <div class="float-end">
-              <xed:include uri="xslStyle:user-xeditor-templates:webapp:authorization/new-author-includes.xed" ref="buttons" />
+              <xed:include uri="xslStyle:user-xeditor-templates#xsl:webapp:authorization/new-author-includes.xed" ref="buttons" />
             </div>
           </div>
         </div>

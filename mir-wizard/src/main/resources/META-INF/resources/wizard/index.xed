@@ -106,7 +106,7 @@
               </legend>
               <xed:bind xpath="database">
                 <mir:template name="selectInput" xpath="driver" id="dbType" i18n="component.mir.wizard.db.type" i18n.error="component.mir.wizard.db.type.required"
-                  required="true" uri="xslStyle:dbtypes2options:resource:setup/dbtypes.xml" />
+                  required="true" uri="xslStyle:dbtypes2options#xsl:resource:setup/dbtypes.xml" />
                 <mir:template name="textInput" xpath="url" id="dbURL" i18n="component.mir.wizard.db.url" i18n.error="component.mir.wizard.db.url.required"
                   required="true" />
                 <mir:template name="textInput" xpath="username" id="dbUsername" i18n="component.mir.wizard.db.username" />

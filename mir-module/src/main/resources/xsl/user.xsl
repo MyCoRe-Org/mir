@@ -10,7 +10,7 @@
   <xsl:import href="xslImport:userProfileActions"/>
   <xsl:import href="xslImport:userProfileAttributes"/>
 
-  <xsl:include href="MyCoReLayout.xsl" />
+  <xsl:include href="resource:xsl/MyCoReLayout.xsl" />
   <xsl:include href="resource:xsl/orcid/mir-orcid.xsl"/>
   <xsl:include href="resource:xsl/orcid/mir-orcid-user-ui.xsl"/>
 

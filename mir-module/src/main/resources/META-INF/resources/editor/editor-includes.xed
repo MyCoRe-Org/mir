@@ -8,18 +8,18 @@
   <xsl:param name="MCR.Metadata.Languages" select="en"/>
 
   <xed:template id="in.out">
-    <xed:source uri="xslStyle:import/remove-genres,import/mods2mycoreobject,editor/mods2xeditor:enrich:import:buildxml:_rootName_=mods:mods&amp;mods:identifier={$modsId}&amp;mods:identifier/@type={$type}" />
-    <xed:source uri="xslStyle:RDF-mods-journal,editor/mods2xeditor:http://ld.zdb-services.de/data/{$zdbid}.rdf" />
-    <xed:source uri="xslStyle:mycoreobject-editor,editor/mods2xeditor:mcrobject:{$id}" />
-    <xed:source uri="xslStyle:mycoreobject-copyof,editor/mods2xeditor:mcrobject:{$copyofid}" />
-    <xed:source uri="xslStyle:mods-addPreceding,mycoreobject-copyof,editor/mods2xeditor:mcrobject:{$oldVersion}" />
-    <xed:source uri="xslStyle:as{$relatedItemType},editor/mods2xeditor:mcrobject:{$relatedItemId}" />
+    <xed:source uri="xslStyle:import/remove-genres,import/mods2mycoreobject,editor/mods2xeditor#xsl:enrich:import:buildxml:_rootName_=mods:mods&amp;mods:identifier={$modsId}&amp;mods:identifier/@type={$type}" />
+    <xed:source uri="xslStyle:RDF-mods-journal,editor/mods2xeditor#xsl:http://ld.zdb-services.de/data/{$zdbid}.rdf" />
+    <xed:source uri="xslStyle:mycoreobject-editor,editor/mods2xeditor#xsl:mcrobject:{$id}" />
+    <xed:source uri="xslStyle:mycoreobject-copyof,editor/mods2xeditor#xsl:mcrobject:{$copyofid}" />
+    <xed:source uri="xslStyle:mods-addPreceding,mycoreobject-copyof,editor/mods2xeditor#xsl:mcrobject:{$oldVersion}" />
+    <xed:source uri="xslStyle:as{$relatedItemType},editor/mods2xeditor#xsl:mcrobject:{$relatedItemId}" />
 
     <xed:cancel
       url="../servlets/MCRLockServlet?action=unlock&amp;id={$id}&amp;url=/receive/{$id}?XSL.Status.Message=mir.editstatus.canceled&amp;XSL.Status.Style=danger" />
     <xed:cancel url="{$cancelUrl}?XSL.Status.Message=mir.editstatus.canceled&amp;XSL.Status.Style=danger" />
     <xed:cancel url="../index.html?XSL.Status.Message=mir.editstatus.canceled&amp;XSL.Status.Style=danger" />
-    <xed:post-processor class="org.mycore.mir.editor.MIRPostProcessor" xsl="editor/xeditor2mods.xsl" />
+    <xed:post-processor class="org.mycore.mir.editor.MIRPostProcessor" xsl="editor/xeditor2mods.xsl" transformer="xalan" />
   </xed:template>
 
   <xed:template id="mycore.common">
@@ -104,7 +104,7 @@
                 <option value="">
                   <xed:output i18n="mir.select.optional" />
                 </option>
-                <xed:include uri="xslStyle:toc/toc-layouts2options:resource:toc-layouts.xml" />
+                <xed:include uri="xslStyle:toc/toc-layouts2options#xsl:resource:toc-layouts.xml" />
               </select>
             </div>
           </div>

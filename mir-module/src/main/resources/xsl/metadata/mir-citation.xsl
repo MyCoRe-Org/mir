@@ -11,9 +11,9 @@
   exclude-result-prefixes="cmd csl exslt mcri18n mcrpiutil mods xlink">
 
   <xsl:import href="xslImport:modsmeta:metadata/mir-citation.xsl" />
-  <xsl:include href="mods-dc-meta.xsl"/>
-  <xsl:include href="mods-seo-meta.xsl"/>
-  <xsl:include href="mods-highwire.xsl" />
+  <xsl:include href="resource:xsl/mods-dc-meta.xsl"/>
+  <xsl:include href="resource:xsl/mods-seo-meta.xsl"/>
+  <xsl:include href="resource:xsl/mods-highwire.xsl" />
   <xsl:param name="MCR.URN.Resolver.MasterURL" select="''" />
   <xsl:param name="MCR.DOI.Resolver.MasterURL" select="''" />
   <xsl:param name="MIR.citationStyles" select="''" />

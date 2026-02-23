@@ -5,8 +5,8 @@
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   exclude-result-prefixes="encoder xalan xsl">
 
-  <xsl:include href="coreFunctions.xsl" />
-  <xsl:include href="copynodes.xsl" />
+  <xsl:include href="resource:xsl/coreFunctions.xsl" />
+  <xsl:include href="resource:xsl/copynodes.xsl" />
   <xsl:param name="RequestURL" />
 
   <!-- ========== XED Subselect detection ========== -->

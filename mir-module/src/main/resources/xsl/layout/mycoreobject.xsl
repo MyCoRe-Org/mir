@@ -11,7 +11,7 @@
   exclude-result-prefixes="mcracl mcri18n xalan xlink">
 
   &html-output;
-  <xsl:include href="MyCoReLayout.xsl" />
+  <xsl:include href="resource:xsl/MyCoReLayout.xsl" />
   <!-- include custom templates for supported objecttypes -->
   <xsl:include href="xslInclude:objectTypes"/>
   <xsl:variable name="PageTitle">

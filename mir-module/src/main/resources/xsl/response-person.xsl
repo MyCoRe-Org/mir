@@ -11,8 +11,8 @@
   exclude-result-prefixes="encoder mcri18n mcrxml xalan xsl">
 
   &html-output;
-  <xsl:include href="MyCoReLayout.xsl" />
-  <xsl:include href="response-utils.xsl" />
+  <xsl:include href="resource:xsl/MyCoReLayout.xsl" />
+  <xsl:include href="resource:xsl/response-utils.xsl" />
   <xsl:include href="xslInclude:solrResponse" />
 
   <xsl:param name="WebApplicationBaseURL" />

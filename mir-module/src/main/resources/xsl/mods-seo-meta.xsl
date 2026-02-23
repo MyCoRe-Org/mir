@@ -7,7 +7,7 @@
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   exclude-result-prefixes="mcrxml mods xalan xlink xsl">
 
-    <xsl:include href="mods-utils.xsl"/>
+    <xsl:include href="resource:xsl/mods-utils.xsl"/>
 
     <xsl:param name="CurrentLang" />
 

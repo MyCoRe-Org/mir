@@ -22,7 +22,7 @@
   extension-element-prefixes="dt exslt datacite">
 
   <xsl:import href="xslImport:badges"/>
-  <xsl:include href="mir-accesskey-utils.xsl" />
+  <xsl:include href="resource:xsl/mir-accesskey-utils.xsl" />
 
   <xsl:param name="MIR.registerDOI" select="''" />
   <xsl:param name="MIR.registerURN" select="'true'" />
@@ -36,9 +36,9 @@
   <xsl:param name="RequestURL"/>
   <xsl:param name="MIR.Strategy.EditPIRoles" />
 
-  <xsl:include href="workflow-util.xsl" />
-  <xsl:include href="mir-mods-utils.xsl" />
-  <xsl:include href="mir-utils.xsl" />
+  <xsl:include href="resource:xsl/workflow-util.xsl" />
+  <xsl:include href="resource:xsl/mir-mods-utils.xsl" />
+  <xsl:include href="resource:xsl/mir-utils.xsl" />
 
   <!-- do nothing for display parent -->
   <xsl:template match="/mycoreobject" mode="parent" priority="1">

@@ -12,7 +12,7 @@
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   exclude-result-prefixes="mcri18n mcrmodsclass mireditorutils mirdateconverter mirmapper mcrpiutil mirvalidationhelper xlink">
 
-  <xsl:include href="copynodes.xsl" />
+  <xsl:include href="resource:xsl/copynodes.xsl" />
   <xsl:include href="editor/mods-node-utils.xsl" />
 
   <xsl:param name="WebApplicationBaseURL" />

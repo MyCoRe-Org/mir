@@ -11,7 +11,7 @@
       <xed:choose>
         <xed:when test="xed:call-java('org.mycore.access.MCRAccessManager', 'checkPermission', $derivateid,'writedb')">
           <xed:include uri="webapp:editor/editor-derivate-includes.xed" ref="in.out"/>
-          <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-derivate-includes.xed" ref="javascript"/>
+          <xed:include uri="xslStyle:editor/mir2xeditor#xsl:webapp:editor/editor-derivate-includes.xed" ref="javascript"/>
           <div class="panel panel-default">
             <xed:bind xpath="/mycorederivate">
               <div class="panel-heading">
@@ -20,12 +20,12 @@
                 </h1>
               </div>
               <div class="panel-body">
-                <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-derivate-includes.xed"
+                <xed:include uri="xslStyle:editor/mir2xeditor#xsl:webapp:editor/editor-derivate-includes.xed"
                              ref="title_repeat"/>
-                <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-derivate-includes.xed" ref="order"/>
-                <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-derivate-includes.xed"
+                <xed:include uri="xslStyle:editor/mir2xeditor#xsl:webapp:editor/editor-derivate-includes.xed" ref="order"/>
+                <xed:include uri="xslStyle:editor/mir2xeditor#xsl:webapp:editor/editor-derivate-includes.xed"
                              ref="derivate_types"/>
-                <xed:include uri="xslStyle:editor/mir2xeditor:webapp:editor/editor-derivate-includes.xed"
+                <xed:include uri="xslStyle:editor/mir2xeditor#xsl:webapp:editor/editor-derivate-includes.xed"
                              ref="mir_access"/>
                 <xed:include uri="webapp:editor/editor-derivate-includes.xed" ref="cancel.submit"/>
               </div>
