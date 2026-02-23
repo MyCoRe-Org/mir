@@ -427,8 +427,8 @@
       <xsl:attribute name="lang">
         <xsl:value-of select="$lang" />
       </xsl:attribute>
-      <xsl:if test="./mods:nonSort">
-        <xsl:value-of select="concat(./mods:nonSort, ' ')" />
+      <xsl:if test="$mainTitle/mods:nonSort">
+        <xsl:value-of select="concat($mainTitle/mods:nonSort, ' ')" />
       </xsl:if>
       <xsl:value-of select="$mainTitle/mods:title" />
       <!-- <xsl:if test="$mainTitle/mods:subTitle">
