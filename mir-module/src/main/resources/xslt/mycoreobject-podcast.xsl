@@ -1,14 +1,15 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="2.0"
-                xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-                xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd"
-                xmlns:mods="http://www.loc.gov/mods/v3"
-                xmlns:mcrmods="http://www.mycore.de/xslt/mods"
-                xmlns:xlink="http://www.w3.org/1999/xlink"
-                xmlns:fn="http://www.w3.org/2005/xpath-functions"
-                xmlns:xs="http://www.w3.org/2001/XMLSchema"
-                xmlns:pc="http://www.mycore.de/xslt/mir/podcast"
-                exclude-result-prefixes="mods fn xs mcrmods xlink">
+  xmlns:fn="http://www.w3.org/2005/xpath-functions"
+  xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd"
+  xmlns:mcrmods="http://www.mycore.de/xslt/mods"
+  xmlns:mods="http://www.loc.gov/mods/v3"
+  xmlns:pc="http://www.mycore.de/xslt/mir/podcast"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  exclude-result-prefixes="fn mcrmods mods xlink xs">
+
   <xsl:output cdata-section-elements="description" method="xml" />
   <xsl:param name="WebApplicationBaseURL" required="yes" />
   <xsl:param name="MCR.ContentTransformer.mycoreobject-podcast.Owner.Name" required="yes" />

@@ -2,12 +2,14 @@
 <!DOCTYPE xsl:stylesheet [
   <!ENTITY html-output SYSTEM "xsl/xsl-output-html.fragment">
 ]>
-<!-- ============================================== -->
-<!-- $Revision: 1.21 $ $Date: 2007-11-12 09:37:14 $ -->
-<!-- ============================================== -->
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xlink="http://www.w3.org/1999/xlink"
-  xmlns:acl="xalan://org.mycore.access.MCRAccessManager" xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
-  xmlns:xalan="http://xml.apache.org/xalan" exclude-result-prefixes="xlink xalan i18n acl">
+<xsl:stylesheet version="1.0"
+  xmlns:mcracl="xalan://org.mycore.access.MCRAccessManager"
+  xmlns:mcri18n="xalan://org.mycore.services.i18n.MCRTranslation"
+  xmlns:xalan="http://xml.apache.org/xalan"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  exclude-result-prefixes="mcracl mcri18n xalan xlink">
+
   &html-output;
   <xsl:include href="MyCoReLayout.xsl" />
   <!-- include custom templates for supported objecttypes -->
@@ -29,20 +31,20 @@
     <xsl:apply-templates select="." mode="parent" />
     <xsl:call-template name="resultsub" />
     <xsl:choose>
-      <xsl:when test="acl:checkPermission(/mycoreobject/@ID,'read')">
+      <xsl:when test="mcracl:checkPermission(/mycoreobject/@ID,'read')">
         <!-- if access granted: print metadata -->
         <xsl:apply-templates select="." mode="present" />
         <!-- IE Fix for padding and border -->
         <hr />
       </xsl:when>
       <xsl:otherwise>
-        <xsl:value-of select="i18n:translate('metaData.accessDenied')" />
+        <xsl:value-of select="mcri18n:translate('metaData.accessDenied')" />
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
 
   <xsl:template match="/mycoreobject" mode="pageTitle" priority="0">
-    <xsl:value-of select="i18n:translate('metaData.pageTitle')" />
+    <xsl:value-of select="mcri18n:translate('metaData.pageTitle')" />
   </xsl:template>
 
   <xsl:template match="/mycoreobject" mode="parent" priority="0">
@@ -66,7 +68,7 @@
 
   <xsl:template match="/mycoreobject" mode="present" priority="0">
     <xsl:variable name="objectType" select="substring-before(substring-after(@ID,'_'),'_')" />
-    <xsl:value-of select="i18n:translate('metaData.noTemplate')" />
+    <xsl:value-of select="mcri18n:translate('metaData.noTemplate')" />
     <form method="get" style="padding:20px;background-color:yellow">
       <fieldset>
         <legend>Automatisches Erzeugen von Vorlagen</legend>
@@ -203,11 +205,11 @@
       &#160;kB) &#160;&#160;
       <xsl:variable name="ziplink" select="concat($ServletsBaseURL,'MCRZipServlet?id=',$derivid)" />
       <a class="linkButton" href="{$ziplink}">
-        <xsl:value-of select="i18n:translate('buttons.zipGen')" />
+        <xsl:value-of select="mcri18n:translate('buttons.zipGen')" />
       </a>
       &#160;
       <a href="{$derivdir}">
-        <xsl:value-of select="i18n:translate('buttons.details')" />
+        <xsl:value-of select="mcri18n:translate('buttons.details')" />
       </a>
     </div>
   </xsl:template>
@@ -215,7 +217,7 @@
   <!-- External link from Derivate ********************************* -->
   <xsl:template match="externals">
     <div class="derivateHeading">
-      <xsl:value-of select="i18n:translate('metaData.link')" />
+      <xsl:value-of select="mcri18n:translate('metaData.link')" />
     </div>
     <div class="derivate">
       <xsl:call-template name="webLink">
@@ -339,14 +341,14 @@
           </xsl:if>
           <xsl:if test="@action">
             <span class="action">
-              <xsl:value-of select="i18n:translate(concat('metaData.versions.action.',@action))" />
+              <xsl:value-of select="mcri18n:translate(concat('metaData.versions.action.',@action))" />
             </span>
             <xsl:value-of select="' '" />
           </xsl:if>
           <span class="@date">
             <xsl:call-template name="formatISODate">
               <xsl:with-param name="date" select="@date" />
-              <xsl:with-param name="format" select="i18n:translate('metaData.dateTime')" />
+              <xsl:with-param name="format" select="mcri18n:translate('metaData.dateTime')" />
             </xsl:call-template>
           </span>
           <xsl:value-of select="' '" />

@@ -1,17 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation" xmlns:mods="http://www.loc.gov/mods/v3" xmlns:xlink="http://www.w3.org/1999/xlink"
-  xmlns:FilenameUtils="xalan://org.apache.commons.io.FilenameUtils" xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions"
-  xmlns:iview2="xalan://org.mycore.iview2.frontend.MCRIView2XSLFunctions" xmlns:media="xalan://org.mycore.media.frontend.MCRXMLFunctions"
-  xmlns:mcrsolr="xalan://org.mycore.solr.MCRXMLFunctions" xmlns:mcrsolru="xalan://org.mycore.solr.MCRSolrUtils" xmlns:xalan="http://xml.apache.org/xalan"
-  xmlns:encoder="xalan://java.net.URLEncoder" exclude-result-prefixes="xalan i18n media mods xlink FilenameUtils iview2 mcrxsl mcrsolr mcrsolru encoder">
+<xsl:stylesheet version="1.0"
+  xmlns:encoder="xalan://java.net.URLEncoder"
+  xmlns:filenameutil="xalan://org.apache.commons.io.FilenameUtils"
+  xmlns:mcrmedia="xalan://org.mycore.media.frontend.MCRXMLFunctions"
+  xmlns:mcrsolr="xalan://org.mycore.solr.MCRXMLFunctions"
+  xmlns:mcrsolrutils="xalan://org.mycore.solr.MCRSolrUtils"
+  xmlns:mcrxml="xalan://org.mycore.common.xml.MCRXMLFunctions"
+  xmlns:xalan="http://xml.apache.org/xalan"
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  exclude-result-prefixes="encoder filenameutil mcrmedia mcrsolr mcrsolrutils mcrxml xalan xsl">
+
   <xsl:import href="xslImport:modsmeta:metadata/mir-video.js.xsl" />
+
   <xsl:param name="UserAgent" />
 
   <xsl:template match="/">
     <!-- MIR-339 solr query if there is any "mp4" file in this object? -->
     <xsl:variable name="solrQuery"
-      select="concat('+(stream_content_type:video/mp4 OR stream_content_type:audio/mpeg OR stream_content_type:audio/x-wav) +returnId:',mcrsolru:escapeSearchValue(mycoreobject/@ID))" />
+      select="concat('+(stream_content_type:video/mp4 OR stream_content_type:audio/mpeg OR stream_content_type:audio/x-wav) +returnId:',mcrsolrutils:escapeSearchValue(mycoreobject/@ID))" />
     <xsl:if test="mcrsolr:getNumFound($solrQuery) &gt; 0">
       <xsl:variable name="completeQuery"
         select="concat('solr:q=', encoder:encode($solrQuery), '&amp;group=true&amp;group.field=derivateID&amp;group.limit=999')" />
@@ -123,16 +129,16 @@
     <xsl:variable name="fileName" select="str[@name='fileName']" />
 
     <xsl:variable name="lowercaseExtension"
-      select="translate(FilenameUtils:getExtension($fileName), 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')" />
+      select="translate(filenameutil:getExtension($fileName), 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')" />
 
     <xsl:comment>
       call sources
     </xsl:comment>
-    <xsl:variable name="sources" select="media:getSources($derivateID, $filePath, $UserAgent)" />
+    <xsl:variable name="sources" select="mcrmedia:getSources($derivateID, $filePath, $UserAgent)" />
     <xsl:choose>
       <xsl:when test="$fileMimeType = 'video/mp4'">
         <option data-file-extension="{$lowercaseExtension}" data-audio="false"
-                data-is-main-doc="{mcrxsl:getMainDocName($derivateID)=$filePath}">
+                data-is-main-doc="{mcrxml:getMainDocName($derivateID)=$filePath}">
           <xsl:attribute name="data-sources">
             <xsl:for-each select="$sources">
               <xsl:value-of select="concat(@type, ',', @src, ';')" />
@@ -144,7 +150,7 @@
       <xsl:otherwise>
         <option data-file-extension="{$lowercaseExtension}" data-mime-type="{$fileMimeType}"
           data-src="{concat($ServletsBaseURL, 'MCRFileNodeServlet/', $derivateID, '/', $filePath)}" data-audio="true"
-          data-is-main-doc="{mcrxsl:getMainDocName($derivateID)=$filePath}">
+          data-is-main-doc="{mcrxml:getMainDocName($derivateID)=$filePath}">
           <xsl:value-of select="$fileName" />
         </option>
       </xsl:otherwise>

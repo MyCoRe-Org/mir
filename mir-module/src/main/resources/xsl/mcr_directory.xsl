@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
-  xmlns:mcrxml="xalan://org.mycore.common.xml.MCRXMLFunctions" xmlns:utils="xalan://org.mycore.common.MCRUtils" exclude-result-prefixes="i18n mcrxml utils"
->
+<xsl:stylesheet version="1.0"
+  xmlns:mcri18n="xalan://org.mycore.services.i18n.MCRTranslation"
+  xmlns:mcrutils="xalan://org.mycore.common.MCRUtils"
+  xmlns:mcrxml="xalan://org.mycore.common.xml.MCRXMLFunctions"
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  exclude-result-prefixes="mcri18n mcrutils mcrxml">
 
   <xsl:include href="MyCoReLayout.xsl" />
   <xsl:include href="datatable.xsl" />
 
-  <xsl:variable name="PageTitle" select="i18n:translate('metadata.files.file')" />
+  <xsl:variable name="PageTitle" select="mcri18n:translate('metadata.files.file')" />
 
   <xsl:variable name="mainUri" select="/mcr_directory/uri" />
   <xsl:variable name="ownerId" select="/mcr_directory/ownerID" />
@@ -18,11 +21,11 @@
     </head>
 
     <h2>
-      <xsl:value-of select="i18n:translate('metadata.files.file')" />
+      <xsl:value-of select="mcri18n:translate('metadata.files.file')" />
     </h2>
     <p>
       <a href="{$WebApplicationBaseURL}receive/{mcrxml:getMCRObjectID(string(ownerID))}">
-        <xsl:value-of select="i18n:translate('metadata.files.backToObject')" />
+        <xsl:value-of select="mcri18n:translate('metadata.files.backToObject')" />
       </a>
     </p>
 
@@ -34,13 +37,13 @@
 
   <xsl:template mode="dataTableHeader" match="children">
     <col sortBy="name">
-      <xsl:value-of select="i18n:translate('metadata.files.name')" />
+      <xsl:value-of select="mcri18n:translate('metadata.files.name')" />
     </col>
     <col style="width: 12%">
-      <xsl:value-of select="i18n:translate('metadata.files.date')" />
+      <xsl:value-of select="mcri18n:translate('metadata.files.date')" />
     </col>
     <col sortBy="size" sortType="number" style="width: 8%">
-      <xsl:value-of select="i18n:translate('metadata.files.size')" />
+      <xsl:value-of select="mcri18n:translate('metadata.files.size')" />
     </col>
   </xsl:template>
 
@@ -57,7 +60,7 @@
       <xsl:value-of select="mcrxml:formatISODate(string(date[@type='lastModified']), 'dd.MM.yyyy', 'de')" />
     </col>
     <col align="right">
-      <xsl:value-of select="utils:getSizeFormatted(number(size))" />
+      <xsl:value-of select="mcrutils:getSizeFormatted(number(size))" />
     </col>
   </xsl:template>
 

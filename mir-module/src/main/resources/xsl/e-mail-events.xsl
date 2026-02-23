@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:mcrmods="xalan://org.mycore.mods.classification.MCRMODSClassificationSupport"
-  xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:acl="xalan://org.mycore.access.MCRAccessManager"
-  xmlns:mods="http://www.loc.gov/mods/v3" xmlns:str="http://exslt.org/strings" exclude-result-prefixes="acl mcrxsl mcrmods mods xlink str">
+<xsl:stylesheet version="1.0"
+  xmlns:mcrmodsclass="xalan://org.mycore.mods.classification.MCRMODSClassificationSupport"
+  xmlns:mcrxml="xalan://org.mycore.common.xml.MCRXMLFunctions"
+  xmlns:mods="http://www.loc.gov/mods/v3"
+  xmlns:str="http://exslt.org/strings"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  exclude-result-prefixes="mcrmodsclass mcrxml mods str xlink xsl">
+
   <xsl:param name="action" />
   <xsl:param name="CurrentUser" />
   <xsl:param name="DefaultLang" />
@@ -13,7 +19,7 @@
   <xsl:param name="MCR.mir-module.sendEditorMailToCurrentAuthor" />
   <xsl:variable name="newline" select="'&#xA;'" />
   <xsl:variable name="categories" select="document('classification:metadata:1:children:mir_institutes')/mycoreclass/categories" />
-  <xsl:variable name="institutemember" select="$categories/category[mcrxsl:isCurrentUserInRole(concat('mir_institutes:',@ID))]" />
+  <xsl:variable name="institutemember" select="$categories/category[mcrxml:isCurrentUserInRole(concat('mir_institutes:',@ID))]" />
 
   <xsl:template match="/">
     <xsl:message>
@@ -30,7 +36,7 @@
 
   <xsl:template match="mycoreobject" mode="email">
     <xsl:choose>
-      <xsl:when test="not(mcrxsl:isCurrentUserInRole('editor') or mcrxsl:isCurrentUserInRole('admin')) and mcrxsl:isCurrentUserInRole('submitter') and ($action='create')">
+      <xsl:when test="not(mcrxml:isCurrentUserInRole('editor') or mcrxml:isCurrentUserInRole('admin')) and mcrxml:isCurrentUserInRole('submitter') and ($action='create')">
         <!-- SEND EMAIL -->
         <xsl:apply-templates select="." mode="mailReceiver" />
         <subject>
@@ -67,7 +73,7 @@
               <xsl:value-of select="'Do not send mail as action is not create.'" />
             </xsl:message>
           </xsl:when>
-          <xsl:when test="not(mcrxsl:isCurrentUserInRole('submitter'))">
+          <xsl:when test="not(mcrxml:isCurrentUserInRole('submitter'))">
             <xsl:message>
               <xsl:value-of select="concat('Do not send mail as current user ',$CurrentUser, ' is not in group creator.')" />
             </xsl:message>
@@ -196,7 +202,7 @@
   </xsl:template>
 
   <xsl:template match="*" mode="printModsClassInfo">
-    <xsl:variable name="classlink" select="mcrmods:getClassCategLink(.)" />
+    <xsl:variable name="classlink" select="mcrmodsclass:getClassCategLink(.)" />
     <xsl:choose>
       <xsl:when test="string-length($classlink) &gt; 0">
         <xsl:for-each select="document($classlink)/mycoreclass/categories/category">

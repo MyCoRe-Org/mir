@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xed="http://www.mycore.de/xeditor"
-  xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation" xmlns:mir="http://www.mycore.de/mir"
-  exclude-result-prefixes="xsl mir i18n">
-
+<xsl:stylesheet version="1.0"
+  xmlns:mcri18n="xalan://org.mycore.services.i18n.MCRTranslation"
+  xmlns:mir="http://www.mycore.de/mir"
+  xmlns:xed="http://www.mycore.de/xeditor"
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  exclude-result-prefixes="mcri18n mir xsl">
 
   <xsl:include href="copynodes.xsl" />
   <xsl:variable name="institutesURI">
@@ -53,7 +54,7 @@
   <xsl:template name="mir-required">
     <xsl:if test="@required='true'">
       <xed:validate required="true" display="global">
-        <xsl:value-of select="i18n:translate(@required-i18n)" />
+        <xsl:value-of select="mcri18n:translate(@required-i18n)" />
       </xed:validate>
     </xsl:if>
   </xsl:template>
@@ -61,7 +62,7 @@
   <xsl:template name="mir-required-relItem">
     <xsl:if test="@required='true'">
       <xed:validate required="true" relevant-if="../../@xlink:href=''" display="global">
-        <xsl:value-of select="i18n:translate(@required-i18n)" />
+        <xsl:value-of select="mcri18n:translate(@required-i18n)" />
       </xed:validate>
     </xsl:if>
   </xsl:template>
@@ -237,18 +238,18 @@
       <ul class="dropdown-menu dropdown-menu-end" role="menu">
         <li>
           <a href="#" class="date-simpleOption dropdown-item">
-            <xsl:value-of select="i18n:translate('mir.date.specification')" />
+            <xsl:value-of select="mcri18n:translate('mir.date.specification')" />
           </a>
         </li>
         <li>
           <a href="#" class="date-rangeOption dropdown-item">
-            <xsl:value-of select="i18n:translate('mir.date.period')" />
+            <xsl:value-of select="mcri18n:translate('mir.date.period')" />
           </a>
         </li>
         <xsl:if test="$showDateTimeOption='true'">
         <li>
           <a href="#" class="date-timeOption dropdown-item">
-            <xsl:value-of select="i18n:translate('mir.date.datetime')" />
+            <xsl:value-of select="mcri18n:translate('mir.date.datetime')" />
           </a>
         </li>
         </xsl:if>
@@ -400,7 +401,7 @@
                   <div class="controls">
                     <xed:include ref="person.fields.noHidden" />
                   </div>
-                  <span class="fas fa-chevron-down expand-item" title="{i18n:translate('mir.help.expand')}" aria-hidden="true"></span>
+                  <span class="fas fa-chevron-down expand-item" title="{mcri18n:translate('mir.help.expand')}" aria-hidden="true"></span>
                 </div>
                 <div class="col-md-3">
                   <xsl:if test="string-length(@help-text) &gt; 0">
@@ -473,7 +474,7 @@
                 </div>
                 <div class="col-md-6 center-vertical">
                   <xed:include ref="person.fields.noHidden" />
-                  <span class="fas fa-chevron-down expand-item" title="{i18n:translate('mir.help.expand')}" aria-hidden="true"></span>
+                  <span class="fas fa-chevron-down expand-item" title="{mcri18n:translate('mir.help.expand')}" aria-hidden="true"></span>
                 </div>
                 <div class="col-md-3">
                   <xsl:if test="string-length(@help-text) &gt; 0">
@@ -592,7 +593,7 @@
                 <div class="search-geographic-extended">
                   <xed:include ref="geographic.input" />
                 </div>
-                <span class="fas fa-chevron-down expand-item" data-target=".geographicExtended-container" title="{i18n:translate('mir.help.expand')}" aria-hidden="true"></span>
+                <span class="fas fa-chevron-down expand-item" data-target=".geographicExtended-container" title="{mcri18n:translate('mir.help.expand')}" aria-hidden="true"></span>
               </div>
             </xsl:when>
             <xsl:otherwise>
@@ -630,7 +631,7 @@
                 <div class="search-topic-extended">
                   <xed:include ref="topic.input" />
                 </div>
-                <span class="fas fa-chevron-down expand-item" data-target=".topicExtended-container" title="{i18n:translate('mir.help.expand')}" aria-hidden="true"></span>
+                <span class="fas fa-chevron-down expand-item" data-target=".topicExtended-container" title="{mcri18n:translate('mir.help.expand')}" aria-hidden="true"></span>
               </div>
             </xsl:when>
             <xsl:otherwise>

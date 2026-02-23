@@ -1,14 +1,13 @@
-<?xml version="1.0" encoding="utf-8"?>
-  <!-- ============================================== -->
-  <!-- $Revision$ $Date$ -->
-  <!-- ============================================== -->
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
-  exclude-result-prefixes="i18n xlink"
->
+<?xml version="1.0" encoding="UTF-8"?>
+<xsl:stylesheet version="1.0"
+  xmlns:mcri18n="xalan://org.mycore.services.i18n.MCRTranslation"
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  exclude-result-prefixes="mcri18n">
+
   <xsl:include href="MyCoReLayout.xsl" />
   <xsl:strip-space elements="*" />
 
-  <xsl:variable name="PageTitle" select="i18n:translate('component.mir.wizard.title')" />
+  <xsl:variable name="PageTitle" select="mcri18n:translate('component.mir.wizard.title')" />
 
   <xsl:template match="wizard">
     <head>
@@ -39,37 +38,37 @@
           <legend>
             <xsl:choose>
               <xsl:when test="name() = 'download'">
-                <xsl:value-of select="i18n:translate('component.mir.wizard.downloaded.lib', @lib)" />
+                <xsl:value-of select="mcri18n:translate('component.mir.wizard.downloaded.lib', @lib)" />
               </xsl:when>
               <xsl:when test="name() = 'init.database'">
-                <xsl:value-of select="i18n:translate('component.mir.wizard.initDatabase')" />
+                <xsl:value-of select="mcri18n:translate('component.mir.wizard.initDatabase')" />
               </xsl:when>
               <xsl:when test="name() = 'init.superuser'">
-                <xsl:value-of select="i18n:translate('component.mir.wizard.initSuperuser')" />
+                <xsl:value-of select="mcri18n:translate('component.mir.wizard.initSuperuser')" />
               </xsl:when>
               <xsl:when test="name() = 'load.classifications'">
-                <xsl:value-of select="i18n:translate('component.mir.wizard.loadClassifications')" />
+                <xsl:value-of select="mcri18n:translate('component.mir.wizard.loadClassifications')" />
               </xsl:when>
               <xsl:when test="name() = 'import.acls'">
-                <xsl:value-of select="i18n:translate('component.mir.wizard.importACLs')" />
+                <xsl:value-of select="mcri18n:translate('component.mir.wizard.importACLs')" />
               </xsl:when>
               <xsl:when test="name() = 'import.webacls'">
-                <xsl:value-of select="i18n:translate('component.mir.wizard.importWebACLs')" />
+                <xsl:value-of select="mcri18n:translate('component.mir.wizard.importWebACLs')" />
               </xsl:when>
               <xsl:when test="name() = 'import.restapiacls'">
-                <xsl:value-of select="i18n:translate('component.mir.wizard.importRestApiACLs')" />
+                <xsl:value-of select="mcri18n:translate('component.mir.wizard.importRestApiACLs')" />
               </xsl:when>
               <xsl:when test="name() = 'solr'">
-                <xsl:value-of select="i18n:translate('component.mir.wizard.installSolrHome')" />
+                <xsl:value-of select="mcri18n:translate('component.mir.wizard.installSolrHome')" />
               </xsl:when>
               <xsl:otherwise>
                 <xsl:if test="@file">
-                  <xsl:value-of select="i18n:translate('component.mir.wizard.generated.file', name(.))" />
+                  <xsl:value-of select="mcri18n:translate('component.mir.wizard.generated.file', name(.))" />
                 </xsl:if>
               </xsl:otherwise>
             </xsl:choose>
             <span class="float-end badge {$statusClass}">
-              <xsl:value-of select="i18n:translate(concat('component.mir.wizard.status.', @success))" />
+              <xsl:value-of select="mcri18n:translate(concat('component.mir.wizard.status.', @success))" />
             </span>
           </legend>
           <xsl:choose>
@@ -94,23 +93,23 @@
 
             <div class="modal-header">
               <h4 class="modal-title" id="confirmTitle">
-                <xsl:value-of select="i18n:translate('component.mir.wizard.shutdownServer.confirmTitle')" />
+                <xsl:value-of select="mcri18n:translate('component.mir.wizard.shutdownServer.confirmTitle')" />
               </h4>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" />
             </div>
 
             <div class="modal-body">
               <p>
-                <xsl:value-of select="i18n:translate('component.mir.wizard.shutdownServer.confirmMessage')" />
+                <xsl:value-of select="mcri18n:translate('component.mir.wizard.shutdownServer.confirmMessage')" />
               </p>
             </div>
 
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                <xsl:value-of select="i18n:translate('component.mir.wizard.cancel')" />
+                <xsl:value-of select="mcri18n:translate('component.mir.wizard.cancel')" />
               </button>
               <a href="{$ServletsBaseURL}MIRWizardServlet/shutdown" class="btn btn-danger danger">
-                <xsl:value-of select="i18n:translate('component.mir.wizard.shutdownServer')" />
+                <xsl:value-of select="mcri18n:translate('component.mir.wizard.shutdownServer')" />
               </a>
             </div>
           </div>
@@ -118,7 +117,7 @@
       </div>
       <br />
       <a class="btn btn-primary float-end" data-bs-toggle="modal" data-bs-target="#confirm-shutdown" href="#">
-        <xsl:value-of select="i18n:translate('component.mir.wizard.shutdownServer')" />
+        <xsl:value-of select="mcri18n:translate('component.mir.wizard.shutdownServer')" />
       </a>
       <br />
     </xsl:if>

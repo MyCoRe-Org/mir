@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <xsl:stylesheet version="1.0"
-  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  xmlns:mcri18n="xalan://org.mycore.services.i18n.MCRTranslation"
   xmlns:xalan="http://xml.apache.org/xalan"
-  xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
-  exclude-result-prefixes="xsl xalan i18n">
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  exclude-result-prefixes="mcri18n xalan xsl">
 
   <xsl:param name="MIR.TableOfContents.HideTrivialLevel" />
   <xsl:param name="WebApplicationBaseURL" />
@@ -20,16 +19,16 @@
       <div id="toc" class="detail_block">
         <div class="detail_block">
           <h3>
-            <xsl:value-of select="i18n:translate('mir.metadata.content')"/>
+            <xsl:value-of select="mcri18n:translate('mir.metadata.content')"/>
 
             <!-- links to expand/collapse all toc levels at once -->
             <xsl:if test="count(//item) &gt; 1">
               <span class="float-end" style="font-size:smaller;">
                 <a id="tocShowAll" href="#">
-                  <xsl:value-of select="i18n:translate('mir.abstract.showGroups')" />
+                  <xsl:value-of select="mcri18n:translate('mir.abstract.showGroups')" />
                 </a>
                 <a id="tocHideAll" href="#" style="display:none;">
-                  <xsl:value-of select="i18n:translate('mir.abstract.hideGroups')" />
+                  <xsl:value-of select="mcri18n:translate('mir.abstract.hideGroups')" />
                 </a>
               </span>
             </xsl:if>

@@ -1,15 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<!-- XSL to display data of a login user -->
-
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-                xmlns:xalan="http://xml.apache.org/xalan"
-                xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions"
-                xmlns:acl="xalan://org.mycore.access.MCRAccessManager"
-                xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
-                xmlns:const="xalan://org.mycore.user2.MCRUser2Constants"
-                exclude-result-prefixes="xsl xalan i18n acl const mcrxsl"
->
+<xsl:stylesheet version="1.0"
+  xmlns:mcracl="xalan://org.mycore.access.MCRAccessManager"
+  xmlns:mcri18n="xalan://org.mycore.services.i18n.MCRTranslation"
+  xmlns:mcruserconstants="xalan://org.mycore.user2.MCRUser2Constants"
+  xmlns:xalan="http://xml.apache.org/xalan"
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  exclude-result-prefixes="mcracl mcri18n mcruserconstants xalan xsl">
 
   <xsl:import href="xslImport:userProfileActions"/>
   <xsl:import href="xslImport:userProfileAttributes"/>
@@ -45,7 +41,7 @@
   <xsl:variable name="owns" select="document(concat('user:getOwnedUsers:',$uid))/owns" />
 
   <xsl:template match="user">
-    <xsl:variable name="isUserAdmin" select="acl:checkPermission(const:getUserAdminPermission())" />
+    <xsl:variable name="isUserAdmin" select="mcracl:checkPermission(mcruserconstants:getUserAdminPermission())" />
     <xsl:variable name="fullDetails" select="$isUserAdmin or not($MIR.User.ShowSimpleDetailsOnly='true')" />
     <div class="user-details">
       <div id="buttons" class="btn-group float-end">
@@ -59,16 +55,16 @@
         <div class="section alert alert-danger">
           <p>
             <strong>
-              <xsl:value-of select="i18n:translate('component.user2.admin.userDeleteRequest')" />
+              <xsl:value-of select="mcri18n:translate('component.user2.admin.userDeleteRequest')" />
             </strong>
             <br />
-            <xsl:value-of select="i18n:translate('component.user2.admin.userDeleteExplain')" />
+            <xsl:value-of select="mcri18n:translate('component.user2.admin.userDeleteExplain')" />
             <br />
             <xsl:if test="$owns/user">
               <strong>
-                <xsl:value-of select="i18n:translate('component.user2.admin.userDeleteExplainRead1')" />
+                <xsl:value-of select="mcri18n:translate('component.user2.admin.userDeleteExplainRead1')" />
                 <xsl:value-of select="count($owns/user)" />
-                <xsl:value-of select="i18n:translate('component.user2.admin.userDeleteExplainRead2')" />
+                <xsl:value-of select="mcri18n:translate('component.user2.admin.userDeleteExplainRead2')" />
               </strong>
             </xsl:if>
           </p>
@@ -76,12 +72,12 @@
             <input name="action" value="delete" type="hidden" />
             <input name="id" value="{$uid}" type="hidden" />
             <input name="XSL.step" value="deleted" type="hidden" />
-            <input value="{i18n:translate('component.user2.button.deleteYes')}" class="btn btn-danger" type="submit" />
+            <input value="{mcri18n:translate('component.user2.button.deleteYes')}" class="btn btn-danger" type="submit" />
           </form>
           <form method="get" action="MCRUserServlet">
             <input name="action" value="show" type="hidden" />
             <input name="id" value="{$uid}" type="hidden" />
-            <input value="{i18n:translate('component.user2.button.cancelNo')}" class="btn btn-secondary" type="submit" />
+            <input value="{mcri18n:translate('component.user2.button.cancelNo')}" class="btn btn-secondary" type="submit" />
           </form>
         </div>
       </xsl:if>
@@ -90,7 +86,7 @@
           <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" />
           <p>
             <strong>
-              <xsl:value-of select="i18n:translate('component.user2.admin.userDeleteConfirm')" />
+              <xsl:value-of select="mcri18n:translate('component.user2.admin.userDeleteConfirm')" />
             </strong>
           </p>
         </div>
@@ -100,7 +96,7 @@
           <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" />
           <p>
             <strong>
-              <xsl:value-of select="i18n:translate('component.user2.admin.passwordChangeConfirm')" />
+              <xsl:value-of select="mcri18n:translate('component.user2.admin.passwordChangeConfirm')" />
             </strong>
           </p>
         </div>
@@ -186,10 +182,10 @@
   <xsl:template name="user-display-name">
     <xsl:choose>
       <xsl:when test="/user/realName">
-        <xsl:value-of select="concat(i18n:translate('component.user2.admin.userDisplay'), ' ', /user/realName)"/>
+        <xsl:value-of select="concat(mcri18n:translate('component.user2.admin.userDisplay'), ' ', /user/realName)"/>
       </xsl:when>
       <xsl:otherwise>
-        <xsl:value-of select="concat(i18n:translate('component.user2.admin.userDisplay'), ' ', /user/@name)"/>
+        <xsl:value-of select="concat(mcri18n:translate('component.user2.admin.userDisplay'), ' ', /user/@name)"/>
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>

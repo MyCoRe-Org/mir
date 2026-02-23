@@ -1,12 +1,13 @@
-<?xml version="1.0" encoding="utf-8"?>
-<xsl:stylesheet xmlns:mods="http://www.loc.gov/mods/v3"
-                xmlns:mets="http://www.loc.gov/METS/" xmlns:ds="https://dissem.in/deposit/terms/"
-                xmlns:xlink="http://www.w3.org/1999/xlink"
-                xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-                xmlns:xalan="http://xml.apache.org/xalan"
-                xmlns:langDetect="xalan://org.mycore.common.MCRLanguageDetector"
-                version="1.0"
-                exclude-result-prefixes="mods xalan langDetect ds mets">
+<?xml version="1.0" encoding="UTF-8"?>
+<xsl:stylesheet  version="1.0"
+  xmlns:ds="https://dissem.in/deposit/terms/"
+  xmlns:mcrlangdetect="xalan://org.mycore.common.MCRLanguageDetector"
+  xmlns:mets="http://www.loc.gov/METS/"
+  xmlns:mods="http://www.loc.gov/mods/v3"
+  xmlns:xalan="http://xml.apache.org/xalan"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  exclude-result-prefixes="ds mcrlangdetect mets mods xalan">
 
   <xsl:param name="MIR.Dissemin.Note.Type.Note" select="'dissemin'"/>
   <xsl:param name="MIR.Dissemin.Note.Type.Affiliation" select="'affiliation'"/>
@@ -151,7 +152,7 @@
       <xsl:attribute name="type" namespace="http://www.w3.org/1999/xlink">simple</xsl:attribute>
       <!-- Try to detect the language with the MCRLanguageDetector -->
       <xsl:if test="count(mods:title)&gt;0">
-        <xsl:variable name="detected" select="langDetect:detectLanguage(mods:title/text())"/>
+        <xsl:variable name="detected" select="mcrlangdetect:detectLanguage(mods:title/text())"/>
         <xsl:if test="string-length($detected)&gt;0">
           <xsl:attribute name="lang" namespace="http://www.w3.org/XML/1998/namespace">
             <xsl:value-of select="$detected"/>

@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-                xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
-                xmlns:exslt="http://exslt.org/common"
-                version="1.0" exclude-result-prefixes="i18n exslt">
+<xsl:stylesheet version="1.0"
+  xmlns:exslt="http://exslt.org/common"
+  xmlns:mcri18n="xalan://org.mycore.services.i18n.MCRTranslation"
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  exclude-result-prefixes="exslt mcri18n">
 
   <xsl:template name="listStatusChangeOptions">
     <xsl:param name="class"/>
@@ -24,8 +25,8 @@
         <xsl:variable name="newStatus" select="text()"/>
         <li>
           <a class="{$class}" href="{$ServletsBaseURL}MIRStateServlet?newState={$newStatus}&amp;id={$id}"
-             title="{i18n:translate(concat('mir.workflow.state.', $currentStatus, '2', $newStatus,'.message'))}">
-            <xsl:value-of select="i18n:translate(concat('mir.workflow.state.', $currentStatus, '2', $newStatus))"/>
+             title="{mcri18n:translate(concat('mir.workflow.state.', $currentStatus, '2', $newStatus,'.message'))}">
+            <xsl:value-of select="mcri18n:translate(concat('mir.workflow.state.', $currentStatus, '2', $newStatus))"/>
           </a>
         </li>
       </xsl:for-each>

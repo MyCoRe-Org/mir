@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-                xmlns:xlink="http://www.w3.org/1999/xlink"
-                xmlns:encoder="xalan://xalan://java.net.URLEncoder"
-                xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation" xmlns:mods="http://www.loc.gov/mods/v3"
-                xmlns:mcracl="xalan://org.mycore.access.MCRAccessManager"
-                xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions"
-                exclude-result-prefixes="encoder i18n mcracl mods xlink mcrxsl">
+<xsl:stylesheet version="1.0"
+  xmlns:encoder="xalan://java.net.URLEncoder"
+  xmlns:mcracl="xalan://org.mycore.access.MCRAccessManager"
+  xmlns:mcri18n="xalan://org.mycore.services.i18n.MCRTranslation"
+  xmlns:mcrxml="xalan://org.mycore.common.xml.MCRXMLFunctions"
+  xmlns:mods="http://www.loc.gov/mods/v3"
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  exclude-result-prefixes="encoder mcracl mcri18n mcrxml mods">
+
   <xsl:import href="xslImport:modsmeta:metadata/mir-admindata-box.xsl"/>
   <xsl:param name="WebApplicationBaseURL"/>
   <xsl:param name="MIR.Metadata.Admindata.ShowRealUserName"/>
@@ -14,14 +16,14 @@
     <div id="mir-admindata">
       <div id="system_box" class="detailbox">
         <h4 id="system_switch" class="block_switch">
-          <xsl:value-of select="i18n:translate('component.mods.metaData.dictionary.systembox')"/>
+          <xsl:value-of select="mcri18n:translate('component.mods.metaData.dictionary.systembox')"/>
         </h4>
         <div id="system_content" class="block_content">
           <table class="metaData">
             <!--*** publication status ************************************* -->
             <tr>
               <td class="metaname">
-                <xsl:value-of select="concat(i18n:translate('component.mods.metaData.dictionary.status'),':')"/>
+                <xsl:value-of select="concat(mcri18n:translate('component.mods.metaData.dictionary.status'),':')"/>
               </td>
               <td class="metavalue">
                 <xsl:call-template name="printClass">
@@ -31,12 +33,12 @@
             </tr>
             <xsl:call-template name="printMetaDate">
               <xsl:with-param select="mycoreobject/service/servdates/servdate[@type='createdate']" name="nodes"/>
-              <xsl:with-param select="i18n:translate('metaData.createdAt')" name="label"/>
+              <xsl:with-param select="mcri18n:translate('metaData.createdAt')" name="label"/>
             </xsl:call-template>
 
             <xsl:call-template name="print-user-info">
               <xsl:with-param name="user" select="document(concat('notnull:user:', mycoreobject/service/servflags/servflag[@type='createdby']))"/>
-              <xsl:with-param name="label" select="i18n:translate('mir.metaData.detailBox.by')"/>
+              <xsl:with-param name="label" select="mcri18n:translate('mir.metaData.detailBox.by')"/>
             </xsl:call-template>
             <xsl:for-each select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:note">
               <xsl:variable name="noteType">
@@ -50,7 +52,7 @@
                 </xsl:choose>
               </xsl:variable>
               <xsl:variable name="myURI"
-                            select="concat('classification:metadata:0:children:noteTypes:', mcrxsl:regexp($noteType,' ', '_'))"/>
+                            select="concat('classification:metadata:0:children:noteTypes:', mcrxml:regexp($noteType,' ', '_'))"/>
               <xsl:variable name="x-access">
                 <xsl:value-of select="document($myURI)//label[@xml:lang='x-access']/@text"/>
               </xsl:variable>
@@ -67,16 +69,16 @@
             <!--*** Last Modified ************************************* -->
             <xsl:call-template name="printMetaDate">
               <xsl:with-param select="mycoreobject/service/servdates/servdate[@type='modifydate']" name="nodes"/>
-              <xsl:with-param select="i18n:translate('metaData.lastChanged')" name="label"/>
+              <xsl:with-param select="mcri18n:translate('metaData.lastChanged')" name="label"/>
             </xsl:call-template>
             <xsl:call-template name="print-user-info">
               <xsl:with-param name="user" select="document(concat('notnull:user:', mycoreobject/service/servflags/servflag[@type='modifiedby']))"/>
-              <xsl:with-param name="label" select="i18n:translate('mir.metaData.detailBox.by')"/>
+              <xsl:with-param name="label" select="mcri18n:translate('mir.metaData.detailBox.by')"/>
             </xsl:call-template>
             <!--*** MyCoRe-ID and intern ID *************************** -->
             <tr>
               <td class="metaname">
-                <xsl:value-of select="concat(i18n:translate('metaData.ID'),':')"/>
+                <xsl:value-of select="concat(mcri18n:translate('metaData.ID'),':')"/>
               </td>
               <td class="metavalue">
                 <xsl:value-of select="mycoreobject/@ID"/>
@@ -86,13 +88,13 @@
               <xsl:with-param
                 select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:identifier[@type='intern']"
                 name="nodes"/>
-              <xsl:with-param select="i18n:translate('component.mods.metaData.dictionary.identifier.intern')"
+              <xsl:with-param select="mcri18n:translate('component.mods.metaData.dictionary.identifier.intern')"
                               name="label"/>
             </xsl:call-template>
 
             <tr>
               <td class="metaname">
-                <xsl:value-of select="i18n:translate('metadata.versionInfo.version')"/>
+                <xsl:value-of select="mcri18n:translate('metadata.versionInfo.version')"/>
                 <xsl:text>:</xsl:text>
               </td>
               <td class="metavalue">
@@ -118,14 +120,14 @@
                         <xsl:value-of select="count($verinfo/versions/version)"/>
                       </xsl:when>
                       <xsl:otherwise>
-                        <xsl:value-of select="i18n:translate('metadata.versionInfo.inProgress')"/>
+                        <xsl:value-of select="mcri18n:translate('metadata.versionInfo.inProgress')"/>
                       </xsl:otherwise>
                     </xsl:choose>
                   </xsl:otherwise>
                 </xsl:choose>
                 <br/>
                 <a id="historyStarter" style="cursor: pointer">
-                  <xsl:value-of select="i18n:translate('metadata.versionInfo.startLabel')"/>
+                  <xsl:value-of select="mcri18n:translate('metadata.versionInfo.startLabel')"/>
                 </a>
               </td>
             </tr>

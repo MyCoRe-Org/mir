@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation" xmlns:encoder="xalan://java.net.URLEncoder"
-  exclude-result-prefixes="i18n encoder">
+<xsl:stylesheet version="1.0"
+  xmlns:encoder="xalan://java.net.URLEncoder"
+  xmlns:mcri18n="xalan://org.mycore.services.i18n.MCRTranslation"
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  exclude-result-prefixes="encoder mcri18n">
 
   <xsl:include href="../layout-utils.xsl" />
   <xsl:include href="../mir-accesskey-utils.xsl" />
@@ -34,7 +36,7 @@
   <xsl:template name="displayLogin">
     <xsl:variable name="loginURL" select="concat($ServletsBaseURL, 'MCRLoginServlet?url=', encoder:encode(string($RequestURL)))" />
     <br></br>
-    <xsl:value-of disable-output-escaping="yes" select="i18n:translate('mir.loginRequiredInfo', $loginURL)" />
+    <xsl:value-of disable-output-escaping="yes" select="mcri18n:translate('mir.loginRequiredInfo', $loginURL)" />
   </xsl:template>
 
   <xsl:template name="displaySetAccessKey">
@@ -42,11 +44,11 @@
     <xsl:variable name="loginURL" select="concat($WebApplicationBaseURL, 'accesskey/set.xed', '?objId=', $objectId, '&amp;url=', encoder:encode(string($RequestURL)))" />
     <br/>
 
-    <xsl:value-of select="concat(i18n:translate('mir.accesskey.setInfo.leading'), ' ')" />
+    <xsl:value-of select="concat(mcri18n:translate('mir.accesskey.setInfo.leading'), ' ')" />
     <a href="{$loginURL}">
-      <xsl:value-of select="i18n:translate('mir.accesskey.setInfo.link')"/>
+      <xsl:value-of select="mcri18n:translate('mir.accesskey.setInfo.link')"/>
     </a>
-    <xsl:value-of select="concat(' ', i18n:translate('mir.accesskey.setInfo.trailing'))" />
+    <xsl:value-of select="concat(' ', mcri18n:translate('mir.accesskey.setInfo.trailing'))" />
   </xsl:template>
 
   <xsl:template name="mir.printNotLoggedIn">
@@ -56,10 +58,10 @@
     <xsl:param name="isUserGuest" select="document('userobjectrights:isCurrentUserGuestUser:')/boolean" />
     <div class="alert alert-danger">
       <h1>
-        <xsl:value-of select="i18n:translate('mir.error.headline.401')" />
+        <xsl:value-of select="mcri18n:translate('mir.error.headline.401')" />
       </h1>
       <p>
-        <xsl:value-of disable-output-escaping="yes" select="i18n:translate('mir.error.codes.401')" />
+        <xsl:value-of disable-output-escaping="yes" select="mcri18n:translate('mir.error.codes.401')" />
         <xsl:if test="$isUserGuest='true'">
           <xsl:call-template name="displayLogin" />
         </xsl:if>

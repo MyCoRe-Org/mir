@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0" 
-  xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
-  xmlns:acl="xalan://org.mycore.access.MCRAccessManager"
-  xmlns:xlink="http://www.w3.org/1999/xlink" 
-  exclude-result-prefixes="acl"
->
+<xsl:stylesheet version="1.0"
+  xmlns:mcracl="xalan://org.mycore.access.MCRAccessManager"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  exclude-result-prefixes="mcracl">
+
   <xsl:variable name="read" select="'read'" />
   <xsl:variable name="write" select="'writedb'" />
   <xsl:variable name="delete" select="'deletedb'" />
@@ -14,7 +14,7 @@
   <xsl:template match="/mycoreobject">
     <xsl:copy>
       <xsl:copy-of select="@*|node()" />
-      <xsl:variable name="parentReadable" select="acl:checkPermission(@ID, $read)" />
+      <xsl:variable name="parentReadable" select="mcracl:checkPermission(@ID, $read)" />
       <rights>
         <xsl:for-each select="@ID|structure/*/*[not(local-name() = 'child')]/@xlink:href">
           <xsl:call-template name="check-rights">
@@ -42,11 +42,11 @@
 
   <xsl:template name="check-default-rights">
     <xsl:param name="id" />
-    <xsl:if test="acl:checkPermission($id,$read)">
+    <xsl:if test="mcracl:checkPermission($id,$read)">
       <xsl:attribute name="read" />
-      <xsl:if test="acl:checkPermission($id,$write)">
+      <xsl:if test="mcracl:checkPermission($id,$write)">
         <xsl:attribute name="write" />
-        <xsl:if test="acl:checkPermission($id,$delete)">
+        <xsl:if test="mcracl:checkPermission($id,$delete)">
           <xsl:attribute name="delete" />
         </xsl:if>
       </xsl:if>

@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:mods="http://www.loc.gov/mods/v3" xmlns:mcrxml="xalan://org.mycore.common.xml.MCRXMLFunctions"
-  xmlns:strutils="xalan://org.apache.commons.lang.StringEscapeUtils" exclude-result-prefixes="mcrxml strutils" version="1.0"
->
+<xsl:stylesheet version="1.0"
+  xmlns:mcrxml="xalan://org.mycore.common.xml.MCRXMLFunctions"
+  xmlns:mods="http://www.loc.gov/mods/v3"
+  xmlns:strutils="xalan://org.apache.commons.lang.StringEscapeUtils"
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  exclude-result-prefixes="mcrxml strutils">
   
   <!-- 
    - Applys a nodeset with given namespace (default: 'mods') to given maximal depth.

@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet xmlns:mods="http://www.loc.gov/mods/v3" xmlns:xalan="http://xml.apache.org/xalan"
-                xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-                version="1.0" exclude-result-prefixes="xalan"
->
+<xsl:stylesheet version="1.0"
+  xmlns:mods="http://www.loc.gov/mods/v3"
+  xmlns:xalan="http://xml.apache.org/xalan"
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  exclude-result-prefixes="xalan">
+
   <xsl:param name="MCR.DOI.Resolver.MasterURL" select="''" />
   <xsl:param name="MCR.URN.Resolver.MasterURL" select="''" />
 

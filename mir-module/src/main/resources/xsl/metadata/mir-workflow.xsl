@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-                xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
-                xmlns:mcrxml="xalan://org.mycore.common.xml.MCRXMLFunctions"
-                xmlns:exslt="http://exslt.org/common"
-                xmlns:mods="http://www.loc.gov/mods/v3"
-                version="1.0" exclude-result-prefixes="i18n exslt mcrxml">
+<xsl:stylesheet version="1.0"
+  xmlns:exslt="http://exslt.org/common"
+  xmlns:mcractionmapping="xalan://org.mycore.wfc.actionmapping.MCRURLRetriever"
+  xmlns:mcri18n="xalan://org.mycore.services.i18n.MCRTranslation"
+  xmlns:mcrxml="xalan://org.mycore.common.xml.MCRXMLFunctions"
+  xmlns:mods="http://www.loc.gov/mods/v3"
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  exclude-result-prefixes="exslt mcractionmapping mcri18n mcrxml">
 
-  <xsl:import href="xslImport:modsmeta:metadata/mir-workflow.xsl"/>
+<xsl:import href="xslImport:modsmeta:metadata/mir-workflow.xsl"/>
   <xsl:import href="xslImport:mirworkflow:metadata/mir-workflow.xsl"/>
   <xsl:import href="mir-pdf-errorbox.xsl"/>
   <xsl:param name="layout" select="'$'"/>
@@ -78,11 +80,11 @@
       </xsl:variable>
       <xsl:variable name="message">
         <p>
-          <xsl:value-of select="i18n:translate('mir.workflow.creator.submitted')"/>
+          <xsl:value-of select="mcri18n:translate('mir.workflow.creator.submitted')"/>
           <ul>
             <li>
               <a href="{$editURL}">
-                <xsl:value-of select="i18n:translate('object.editObject')"/>
+                <xsl:value-of select="mcri18n:translate('object.editObject')"/>
               </a>
             </li>
             <xsl:apply-templates select="." mode="creatorSubmittedAdd" />
@@ -91,7 +93,7 @@
                 <li>
                   <a href="#">
                     <xsl:attribute name="onclick">document.querySelector('[data-upload-object]').scrollIntoView({behavior: 'smooth', block: 'center', inline: 'nearest'}); return false;</xsl:attribute>
-                    <xsl:value-of select="i18n:translate('mir.workflow.creator.submitted.require.derivate')"/>
+                    <xsl:value-of select="mcri18n:translate('mir.workflow.creator.submitted.require.derivate')"/>
                   </a>
                 </li>
               </xsl:when>
@@ -106,7 +108,7 @@
                             select="/mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:relatedItem/mods:identifier[@type='issn']/text()"/>
               <xsl:if test="string-length($issn)&gt;0">
                 <li data-sherpainfo-issn="{$issn}">
-                  <xsl:value-of select="i18n:translate('mir.workflow.sherpa.loading')" /><span class="spinner-grow spinner-grow-sm" role="status"></span>
+                  <xsl:value-of select="mcri18n:translate('mir.workflow.sherpa.loading')" /><span class="spinner-grow spinner-grow-sm" role="status"></span>
                 </li>
               </xsl:if>
             </xsl:if>
@@ -148,7 +150,7 @@
     </xsl:if>
     <xsl:variable name="message">
       <p>
-        <xsl:value-of select="i18n:translate('mir.workflow.creator.review')"/>
+        <xsl:value-of select="mcri18n:translate('mir.workflow.creator.review')"/>
       </p>
     </xsl:variable>
     <xsl:call-template name="buildLayout">
@@ -171,11 +173,11 @@
       </xsl:variable>
       <xsl:variable name="message">
         <p>
-          <xsl:value-of select="i18n:translate('mir.workflow.editor.review')"/>
+          <xsl:value-of select="mcri18n:translate('mir.workflow.editor.review')"/>
           <ul>
             <li>
               <a href="{$editURL}">
-                <xsl:value-of select="i18n:translate('object.editObject')"/>
+                <xsl:value-of select="mcri18n:translate('object.editObject')"/>
               </a>
             </li>
             <xsl:apply-templates select="." mode="editorReviewAdd" />
@@ -196,8 +198,7 @@
     <xsl:template name="getEditURL">
         <xsl:param name="id"/>
         <xsl:variable name="adminEditURL">
-            <xsl:value-of xmlns:actionmapping="xalan://org.mycore.wfc.actionmapping.MCRURLRetriever"
-                          select="actionmapping:getURLforID('update-admin',$id,true())"/>
+            <xsl:value-of select="mcractionmapping:getURLforID('update-admin',$id,true())"/>
         </xsl:variable>
         <xsl:variable name="normalEditURL">
             <xsl:call-template name="mods.getObjectEditURL">

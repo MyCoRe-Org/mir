@@ -1,12 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-  <!-- ============================================== -->
-  <!-- $Revision$ $Date$ -->
-  <!-- ============================================== -->
+<?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0"
-  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  xmlns:mcri18n="xalan://org.mycore.services.i18n.MCRTranslation"
   xmlns:xlink="http://www.w3.org/1999/xlink"
-  xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
-  exclude-result-prefixes="xlink i18n">
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  exclude-result-prefixes="mcri18n xlink">
 
   <xsl:output method="html" indent="yes" omit-xml-declaration="yes" media-type="text/html"
     version="5" />
@@ -54,9 +51,9 @@
           <xsl:call-template name="mir.header" />
           <noscript>
             <div class="mir-no-script alert alert-warning text-center" style="border-radius: 0;">
-              <xsl:value-of select="i18n:translate('mir.noScript.text')" />&#160;
+              <xsl:value-of select="mcri18n:translate('mir.noScript.text')" />&#160;
               <a href="http://www.enable-javascript.com/de/" target="_blank">
-                <xsl:value-of select="i18n:translate('mir.noScript.link')" />
+                <xsl:value-of select="mcri18n:translate('mir.noScript.link')" />
               </a>
               .
             </div>
@@ -94,7 +91,7 @@
                         <div class="col-12">
                           <ul itemprop="breadcrumb" class="breadcrumb">
                             <li class="breadcrumb-item">
-                              <a class="navtrail" href="{$WebApplicationBaseURL}"><xsl:value-of select="i18n:translate('mir.breadcrumb.home')" /></a>
+                              <a class="navtrail" href="{$WebApplicationBaseURL}"><xsl:value-of select="mcri18n:translate('mir.breadcrumb.home')" /></a>
                             </li>
                             <xsl:copy-of select="breadcrumb/ul[@class='breadcrumb']/*" />
                           </ul>
@@ -111,7 +108,7 @@
               </div>
             </div>
           </div>
-          <a href="#top" class="btn back-to-top" aria-label="{i18n:translate('mir.backToTop.label')}">
+          <a href="#top" class="btn back-to-top" aria-label="{mcri18n:translate('mir.backToTop.label')}">
             <i class="fas fa-chevron-circle-up" aria-hidden="true" />
           </a>
         </section>
@@ -132,9 +129,9 @@
           $( document ).ready(function() {
             $('.overtext').tooltip();
             $.confirm.options = {
-              title: "<xsl:value-of select="i18n:translate('mir.confirm.title')" />",
-              confirmButton: "<xsl:value-of select="i18n:translate('mir.confirm.confirmButton')" />",
-              cancelButton: "<xsl:value-of select="i18n:translate('mir.confirm.cancelButton')" />",
+              title: "<xsl:value-of select="mcri18n:translate('mir.confirm.title')" />",
+              confirmButton: "<xsl:value-of select="mcri18n:translate('mir.confirm.confirmButton')" />",
+              cancelButton: "<xsl:value-of select="mcri18n:translate('mir.confirm.cancelButton')" />",
               post: false,
               confirmButtonClass: "btn-danger",
               cancelButtonClass: "btn-secondary",

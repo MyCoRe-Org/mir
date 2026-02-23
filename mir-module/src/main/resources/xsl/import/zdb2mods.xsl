@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<xsl:stylesheet version="1.0" 
-  xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
-  xmlns:mods="http://www.loc.gov/mods/v3"
-  xmlns:xalan="http://xml.apache.org/xalan"
-  xmlns:java="http://xml.apache.org/xalan/java"
-  xmlns:srw="http://www.loc.gov/zing/srw/"
+<xsl:stylesheet version="1.0"
   xmlns:marc="http://www.loc.gov/MARC21/slim"
-  exclude-result-prefixes="xsl xalan java">
+  xmlns:mods="http://www.loc.gov/mods/v3"
+  xmlns:srw="http://www.loc.gov/zing/srw/"
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  exclude-result-prefixes="xsl">
   
   <xsl:template match="srw:searchRetrieveResponse">
     <xsl:apply-templates select="srw:records/srw:record[1]/srw:recordData/marc:record" />

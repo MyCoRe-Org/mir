@@ -3,11 +3,11 @@
 <!--xslStyle:import/simplify-json-xml:xslTransform:json2xml:https://api.crossref.org/works/10.1038/ncomms11620 -->
 
 <xsl:stylesheet version="1.0"
-  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  xmlns:mcrpages="xalan://org.mycore.mods.MCRMODSPagesHelper"
   xmlns:mods="http://www.loc.gov/mods/v3"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xmlns:xalan="http://xml.apache.org/xalan"
-  exclude-result-prefixes="xsl xsi xalan">
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  exclude-result-prefixes="mcrpages xalan xsl">
 
   <xsl:output method="xml" encoding="UTF-8" indent="yes" xalan:indent-amount="2" />
 
@@ -144,7 +144,7 @@
   </xsl:template>
 
   <xsl:template match="page">
-    <xsl:copy-of xmlns:pages="xalan://org.mycore.mods.MCRMODSPagesHelper" select="pages:buildExtentPagesNodeSet(text())" />
+    <xsl:copy-of select="mcrpages:buildExtentPagesNodeSet(text())" />
   </xsl:template>
 
   <xsl:template name="originInfo">

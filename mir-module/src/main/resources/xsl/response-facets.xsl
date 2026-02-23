@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-                xmlns:encoder="xalan://java.net.URLEncoder"
-                xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
-                xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions"
-                xmlns:xalan="http://xml.apache.org/xalan"
-                xmlns:fn="http://www.w3.org/2005/xpath-functions"
-                xmlns:str="http://exslt.org/strings"
-                exclude-result-prefixes="i18n mcrxsl encoder xalan fn str">
+<xsl:stylesheet version="1.0"
+  xmlns:decoder="xalan://java.net.URLDecoder"
+  xmlns:encoder="xalan://java.net.URLEncoder"
+  xmlns:mcri18n="xalan://org.mycore.services.i18n.MCRTranslation"
+  xmlns:mcrxml="xalan://org.mycore.common.xml.MCRXMLFunctions"
+  xmlns:str="http://exslt.org/strings"
+  xmlns:xalan="http://xml.apache.org/xalan"
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  exclude-result-prefixes="decoder encoder mcri18n mcrxml str xalan xsl">
 
   <xsl:param name="CurrentLang"/>
   <xsl:param name="RequestURL"/>
@@ -25,7 +26,7 @@
       <xsl:variable name="rolesProperty">
         <xsl:value-of select="$facetProperties/properties/entry[@key=concat('MIR.Response.Facet.', $facet_name, '.Roles')]"/>
       </xsl:variable>
-      <xsl:variable name="hasRole" select="string-length($rolesProperty)=0 or count(str:tokenize($rolesProperty,',')[mcrxsl:isCurrentUserInRole(.)])!=0"/>
+      <xsl:variable name="hasRole" select="string-length($rolesProperty)=0 or count(str:tokenize($rolesProperty,',')[mcrxml:isCurrentUserInRole(.)])!=0"/>
 
       <xsl:if test="$isEnabled and $hasRole and self::node()[@name=$facet_name]/int">
 
@@ -76,8 +77,8 @@
           <div class="card-header" data-mcr-toggle="collapse-next">
             <h3 class="card-title">
               <xsl:choose>
-                <xsl:when test="i18n:exists(concat('mir.response.facet.', $facet_name, '.title'))">
-                  <xsl:value-of select="i18n:translate(concat('mir.response.facet.', $facet_name, '.title'))"/>
+                <xsl:when test="mcri18n:exists(concat('mir.response.facet.', $facet_name, '.title'))">
+                  <xsl:value-of select="mcri18n:translate(concat('mir.response.facet.', $facet_name, '.title'))"/>
                 </xsl:when>
                 <xsl:otherwise>
                   <xsl:variable name="classification" select="document(concat('notnull:classification:metadata:0:children:', $classId))"/>
@@ -150,7 +151,7 @@
       </xsl:variable>
       <xsl:variable name="fqFragment" select="concat('fq=',$fqValue)"/>
       <xsl:variable name="fqFragmentEncoded" select="concat('fq=',encoder:encode($fqResponseValue, 'UTF-8'))"/>
-      <xsl:variable name="queryWithoutStart" select="mcrxsl:regexp($RequestURL, '(&amp;|%26)(start=)[0-9]*', '')"/>
+      <xsl:variable name="queryWithoutStart" select="mcrxml:regexp($RequestURL, '(&amp;|%26)(start=)[0-9]*', '')"/>
 
       <xsl:variable name="queryURL">
         <xsl:choose>
@@ -230,7 +231,7 @@
             <xsl:with-param name="par" select="concat('facet.label.',@name)" />
           </xsl:call-template>
         </xsl:variable>
-        <xsl:variable name="parameterValue" xmlns:decoder="xalan://java.net.URLDecoder" select="decoder:decode($encodedParameterValue, 'UTF-8')"/>
+        <xsl:variable name="parameterValue" select="decoder:decode($encodedParameterValue, 'UTF-8')"/>
         <xsl:choose>
           <xsl:when test="string-length($parameterValue)!=0">
             <xsl:value-of select="$parameterValue"/>
@@ -246,15 +247,15 @@
         </xsl:choose>
       </xsl:when>
       <xsl:when
-          test="$categoryClassValues = true() and mcrxsl:isCategoryID(substring-before(@name, ':'), substring-after(@name, ':'))">
+          test="$categoryClassValues = true() and mcrxml:isCategoryID(substring-before(@name, ':'), substring-after(@name, ':'))">
         <xsl:value-of
-            select="mcrxsl:getDisplayName(substring-before(@name, ':'), substring-after(@name, ':'))"/>
+            select="mcrxml:getDisplayName(substring-before(@name, ':'), substring-after(@name, ':'))"/>
       </xsl:when>
-      <xsl:when test="mcrxsl:isCategoryID($classId, @name)">
-        <xsl:value-of select="mcrxsl:getDisplayName($classId, @name)"/>
+      <xsl:when test="mcrxml:isCategoryID($classId, @name)">
+        <xsl:value-of select="mcrxml:getDisplayName($classId, @name)"/>
       </xsl:when>
-      <xsl:when test="i18n:exists(concat('mir.response.facet.' ,$facet_name, '.value.', @name))">
-        <xsl:value-of select="i18n:translate(concat('mir.response.facet.' ,$facet_name, '.value.', @name))"
+      <xsl:when test="mcri18n:exists(concat('mir.response.facet.' ,$facet_name, '.value.', @name))">
+        <xsl:value-of select="mcri18n:translate(concat('mir.response.facet.' ,$facet_name, '.value.', @name))"
                       disable-output-escaping="yes"/>
       </xsl:when>
       <xsl:otherwise>

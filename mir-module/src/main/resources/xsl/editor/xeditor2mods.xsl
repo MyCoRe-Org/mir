@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:mcr="http://www.mycore.org/" xmlns:xlink="http://www.w3.org/1999/xlink"
-  xmlns:mods="http://www.loc.gov/mods/v3" xmlns:mcrmods="xalan://org.mycore.mods.classification.MCRMODSClassificationSupport" xmlns:mcrxml="xalan://org.mycore.common.xml.MCRXMLFunctions"
-  xmlns:mcrdataurl="xalan://org.mycore.datamodel.common.MCRDataURL" xmlns:mcrid="xalan://org.mycore.datamodel.metadata.MCRObjectID" xmlns:exslt="http://exslt.org/common"
-  exclude-result-prefixes="mcrmods mcrid xlink mcr mcrxml mcrdataurl exslt" version="1.0"
->
+<xsl:stylesheet version="1.0"
+  xmlns:exslt="http://exslt.org/common"
+  xmlns:mcr="http://www.mycore.org/"
+  xmlns:mcrid="xalan://org.mycore.datamodel.metadata.MCRObjectID"
+  xmlns:mcrmodsclass="xalan://org.mycore.mods.classification.MCRMODSClassificationSupport"
+  xmlns:mcrpages="xalan://org.mycore.mods.MCRMODSPagesHelper"
+  xmlns:mcrxml="xalan://org.mycore.common.xml.MCRXMLFunctions"
+  xmlns:mods="http://www.loc.gov/mods/v3"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  exclude-result-prefixes="exslt mcr mcrid mcrmodsclass mcrpages mcrxml xlink">
 
   <xsl:include href="copynodes.xsl" />
   <xsl:include href="editor/mods-node-utils.xsl" />
@@ -268,7 +274,7 @@
   <xsl:template match="@mcr:categId" />
   <xsl:template match="*[@mcr:categId]">
     <xsl:element name="{name()}">
-      <xsl:variable name="classNodes" select="mcrmods:getClassNodes(.)" />
+      <xsl:variable name="classNodes" select="mcrmodsclass:getClassNodes(.)" />
       <xsl:apply-templates select='$classNodes/@*|@*|node()|$classNodes/node()' />
     </xsl:element>
   </xsl:template>
@@ -340,8 +346,8 @@
   </xsl:template>
 
   <!-- In editor, all variants of page numbers are edited in a single text field -->
-  <xsl:template match="mods:part/mods:extent[@unit='pages']" xmlns:pages="xalan://org.mycore.mods.MCRMODSPagesHelper">
-    <xsl:copy-of select="pages:buildExtentPagesNodeSet(mods:list/text())" />
+  <xsl:template match="mods:part/mods:extent[@unit='pages']">
+    <xsl:copy-of select="mcrpages:buildExtentPagesNodeSet(mods:list/text())" />
   </xsl:template>
 
   <xsl:template match="mods:subject/mods:topic[contains(text(), ';')]">

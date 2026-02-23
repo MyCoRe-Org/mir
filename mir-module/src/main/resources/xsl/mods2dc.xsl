@@ -1,16 +1,17 @@
-<?xml version="1.0" encoding="utf-8"?>
-<xsl:stylesheet version="1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xmlns:mods="http://www.loc.gov/mods/v3"
+<?xml version="1.0" encoding="UTF-8"?>
+<xsl:stylesheet version="1.0"
   xmlns:dc="http://purl.org/dc/elements/1.1/"
-  xmlns:srw_dc="info:srw/schema/1/dc-schema"
-  xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/"
-  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  xmlns:xlink="http://www.w3.org/1999/xlink"
-  xmlns:mcrmods="xalan://org.mycore.mods.classification.MCRMODSClassificationSupport"
-  xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions"
-  xmlns:str="http://exslt.org/strings"
   xmlns:exslt="http://exslt.org/common"
-  exclude-result-prefixes="xsl mods mcrmods mcrxsl xlink srw_dc str exslt">
+  xmlns:mcrmodsclass="xalan://org.mycore.mods.classification.MCRMODSClassificationSupport"
+  xmlns:mcrxml="xalan://org.mycore.common.xml.MCRXMLFunctions"
+  xmlns:mods="http://www.loc.gov/mods/v3"
+  xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/"
+  xmlns:srw_dc="info:srw/schema/1/dc-schema"
+  xmlns:str="http://exslt.org/strings"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  exclude-result-prefixes="exslt mcrmodsclass mcrxml mods srw_dc str xlink xsl">
 
   <!-- xmlns:opf="http://www.idpf.org/2007/opf" -->
 
@@ -215,7 +216,7 @@
       <xsl:choose>
         <xsl:when test="string-length($authorityURI)&gt;0">
           <xsl:if test="not(exslt:node-set($ignoredClassificationAuthorityURIs)/uri[text()=$authorityURI])">
-            <xsl:variable name="classlink" select="mcrmods:getClassCategLink(.)" />
+            <xsl:variable name="classlink" select="mcrmodsclass:getClassCategLink(.)" />
             <xsl:value-of select="document($classlink)/mycoreclass/categories/category/label/@text"/>
           </xsl:if>
         </xsl:when>
@@ -519,7 +520,7 @@
   </xsl:template>
 
   <xsl:template match="mods:accessCondition[@type='use and reproduction' or @type='restriction on access']">
-    <xsl:variable name="licenseURI" select="mcrmods:getClassCategLink(.)" />
+    <xsl:variable name="licenseURI" select="mcrmodsclass:getClassCategLink(.)" />
     <xsl:choose>
       <xsl:when test="string-length($licenseURI) &gt; 0">
         <xsl:variable name="license" select="document($licenseURI)" />
@@ -533,7 +534,7 @@
               <xsl:value-of select="$license//category/label[lang('en')]/@text" />
             </xsl:when>
             <xsl:otherwise>
-              <xsl:value-of select="mcrxsl:getDisplayName($license/mycoreclass/@ID, $license//category/@ID)" />
+              <xsl:value-of select="mcrxml:getDisplayName($license/mycoreclass/@ID, $license//category/@ID)" />
             </xsl:otherwise>
           </xsl:choose>
         </dc:rights>
@@ -549,7 +550,7 @@
   <xsl:template match="mods:mods" mode="eu-repo-accessRights">
     <xsl:param name="objId" />
     <xsl:choose>
-      <xsl:when test="mcrxsl:isWorldReadableComplete($objId)">
+      <xsl:when test="mcrxml:isWorldReadableComplete($objId)">
         <dc:rights>
           <xsl:text>info:eu-repo/semantics/openAccess</xsl:text>
         </dc:rights>

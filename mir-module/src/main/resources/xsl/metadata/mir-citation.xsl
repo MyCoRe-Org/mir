@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0"
-  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
-  xmlns:mods="http://www.loc.gov/mods/v3"
-  xmlns:xlink="http://www.w3.org/1999/xlink"
+  xmlns:csl="http://purl.org/net/xbiblio/csl"
   xmlns:cmd="http://www.cdlib.org/inside/diglib/copyrightMD"
   xmlns:exslt="http://exslt.org/common"
-  xmlns:piUtil="xalan://org.mycore.pi.frontend.MCRIdentifierXSLUtils"
-  xmlns:csl="http://purl.org/net/xbiblio/csl"
-  exclude-result-prefixes="i18n mods xlink cmd exslt piUtil csl"
->
+  xmlns:mcri18n="xalan://org.mycore.services.i18n.MCRTranslation"
+  xmlns:mcrpiutil="xalan://org.mycore.pi.frontend.MCRIdentifierXSLUtils"
+  xmlns:mods="http://www.loc.gov/mods/v3"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  exclude-result-prefixes="csl cmd exslt mcri18n mcrpiutil mods xlink">
+
   <xsl:import href="xslImport:modsmeta:metadata/mir-citation.xsl" />
   <xsl:include href="mods-dc-meta.xsl"/>
   <xsl:include href="mods-seo-meta.xsl"/>
@@ -35,7 +35,7 @@
       <xsl:apply-templates select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods" mode="seo-meta" />
     </citation_meta>
 
-    <xsl:variable name="piServiceInformation" select="piUtil:getPIServiceInformation(mycoreobject/@ID)" />
+    <xsl:variable name="piServiceInformation" select="mcrpiutil:getPIServiceInformation(mycoreobject/@ID)" />
     <xsl:variable name="mods" select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods" />
 
     <div id="mir-citation">
@@ -64,7 +64,7 @@
              data-button-style="{$MIR.shariff.buttonstyle}"
              data-orientation="horizontal"
              data-mail-body="{$shariffURL}"
-             data-mail-subject="{i18n:translate('mir.shariff.subject')}: {$modsTitle}"
+             data-mail-subject="{mcri18n:translate('mir.shariff.subject')}: {$modsTitle}"
              data-mail-url="mailto:"
              data-services="{$MIR.shariff.services}"
              data-url="{$shariffURL}"
@@ -113,7 +113,7 @@
       <div id="citation-style">
         <span>
           <strong>
-            <xsl:value-of select="i18n:translate('mir.citationStyle')" />
+            <xsl:value-of select="mcri18n:translate('mir.citationStyle')" />
           </strong>
         </span>
         <xsl:if test="string-length($MIR.citationStyles) &gt; 0">
@@ -147,7 +147,7 @@
         </xsl:if>
         <div id="citation-text" class="d-none">
         </div>
-        <div id="citation-alert" class="alert alert-danger d-none"><xsl:value-of select="i18n:translate('mir.citationAlert')" /></div>
+        <div id="citation-alert" class="alert alert-danger d-none"><xsl:value-of select="mcri18n:translate('mir.citationAlert')" /></div>
       </div>
 
       <p id="cite_link_box">
@@ -158,8 +158,8 @@
               <xsl:value-of select="$doi" />
             </a>
             <br />
-            <a id="copy_cite_link" class="btn btn-info btn-sm" href="#" title="{i18n:translate('mir.citationLink.title')}">
-              <xsl:value-of select="i18n:translate('mir.citationLink')" />
+            <a id="copy_cite_link" class="btn btn-info btn-sm" href="#" title="{mcri18n:translate('mir.citationLink.title')}">
+              <xsl:value-of select="mcri18n:translate('mir.citationLink')" />
             </a>
           </xsl:when>
           <xsl:when test="$piServiceInformation[@type='dnbUrn'][@inscribed='true']">
@@ -168,13 +168,13 @@
               <xsl:value-of select="$urn" />
             </a>
             <br />
-            <a id="copy_cite_link" class="btn btn-info btn-sm" href="#" title="{i18n:translate('mir.citationLink.title')}">
-              <xsl:value-of select="i18n:translate('mir.citationLink')" />
+            <a id="copy_cite_link" class="btn btn-info btn-sm" href="#" title="{mcri18n:translate('mir.citationLink.title')}">
+              <xsl:value-of select="mcri18n:translate('mir.citationLink')" />
             </a>
           </xsl:when>
           <xsl:otherwise>
             <a id="copy_cite_link" href="#" class="btn btn-info btn-sm">
-              <xsl:value-of select="i18n:translate('mir.citationLink')" />
+              <xsl:value-of select="mcri18n:translate('mir.citationLink')" />
             </a>
           </xsl:otherwise>
         </xsl:choose>
@@ -188,7 +188,7 @@
         <xsl:if test="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:accessCondition[@type='copyrightMD']">
           <p>
             <strong>
-              <xsl:value-of select="i18n:translate('mir.rightsHolder')" />
+              <xsl:value-of select="mcri18n:translate('mir.rightsHolder')" />
             </strong>
             <xsl:text> </xsl:text>
             <xsl:value-of select="//mods:accessCondition[@type='copyrightMD']/cmd:copyright/cmd:rights.holder/cmd:name" />
@@ -197,7 +197,7 @@
         <xsl:if test="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:accessCondition[@type='use and reproduction']">
           <p>
             <strong>
-              <xsl:value-of select="i18n:translate('mir.useAndReproduction')" />
+              <xsl:value-of select="mcri18n:translate('mir.useAndReproduction')" />
             </strong>
             <br />
             <xsl:variable name="trimmed"
@@ -280,7 +280,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <h4 class="modal-title" id="modalFrame-title">
-              <xsl:value-of select="i18n:translate('mir.citationLink')" />
+              <xsl:value-of select="mcri18n:translate('mir.citationLink')" />
             </h4>
             <button
               type="button"
@@ -332,7 +332,7 @@
     <xsl:if test="string-length($dateIssued) &gt; 0">
       <xsl:call-template name="formatISODate">
         <xsl:with-param name="date" select="$dateIssued" />
-        <xsl:with-param name="format" select="i18n:translate('metaData.dateYear')" />
+        <xsl:with-param name="format" select="mcri18n:translate('metaData.dateYear')" />
       </xsl:call-template>
     </xsl:if>
   </xsl:template>

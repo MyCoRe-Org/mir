@@ -3,13 +3,12 @@
 <!-- https://data.datacite.org/application/vnd.datacite.datacite+xml/10.5524/100005 -->
 
 <xsl:stylesheet version="1.0"
-    xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-    xmlns:mods="http://www.loc.gov/mods/v3"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:xalan="http://xml.apache.org/xalan"
-    xmlns:mcrxml="xalan://org.mycore.common.xml.MCRXMLFunctions"
-    xmlns:xlink="http://www.w3.org/1999/xlink"
-    exclude-result-prefixes="mcrxml xsl xsi xlink xalan">
+  xmlns:mcrxml="xalan://org.mycore.common.xml.MCRXMLFunctions"
+  xmlns:mods="http://www.loc.gov/mods/v3"
+  xmlns:xalan="http://xml.apache.org/xalan"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  exclude-result-prefixes="mcrxml xalan xlink xsl">
 
     <xsl:output method="xml" encoding="UTF-8" indent="yes" xalan:indent-amount="2" />
 

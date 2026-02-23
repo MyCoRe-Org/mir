@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0"
-  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:exslt="http://exslt.org/common"
-  extension-element-prefixes="exslt"
-  exclude-result-prefixes="xsl">
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  exclude-result-prefixes="xsl"
+  extension-element-prefixes="exslt">
 
   <!-- include Tokenizer template -->
   <xsl:import href="resource:xsl/coreFunctions.xsl"/>

@@ -17,14 +17,15 @@
   ~  along with MyCoRe.  If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-                xmlns:fn="http://www.w3.org/2005/xpath-functions"
-                xmlns:rh="https://mycore.org/rule-helper"
-                version="3.0">
+<xsl:stylesheet version="3.0"
+  xmlns:fn="http://www.w3.org/2005/xpath-functions"
+  xmlns:mcrrh="https://mycore.org/rule-helper"
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  exclude-result-prefixes="">
 
     <xsl:mode on-no-match="shallow-copy"/>
 
-    <xsl:template match="rh:include">
+    <xsl:template match="mcrrh:include">
         <xsl:choose>
             <xsl:when test="@href">
                 <xsl:comment>Included file: <xsl:value-of select="@href" /></xsl:comment>
@@ -44,7 +45,7 @@
     </xsl:template>
 
 
-    <xsl:template match="rh:each-property">
+    <xsl:template match="mcrrh:each-property">
         <xsl:variable name="propertyName" select="@property"/>
         <xsl:variable name="separator">
             <xsl:choose>
@@ -86,7 +87,7 @@
         </xsl:copy>
     </xsl:template>
 
-    <xsl:template match="rh:each-property-replace" mode="replaceProperty">
+    <xsl:template match="mcrrh:each-property-replace" mode="replaceProperty">
         <xsl:param name="value"/>
         <xsl:param name="name"/>
 

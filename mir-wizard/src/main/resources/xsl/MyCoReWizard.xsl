@@ -2,21 +2,20 @@
 <!DOCTYPE xsl:stylesheet [
   <!ENTITY html-output SYSTEM "xsl/xsl-output-html.fragment">
 ]>
+<xsl:stylesheet version="1.0"
+  xmlns:mcri18n="xalan://org.mycore.services.i18n.MCRTranslation"
+  xmlns:xalan="http://xml.apache.org/xalan"
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  exclude-result-prefixes="mcri18n xalan">
 
-<!-- ============================================== -->
-<!-- $Revision$ $Date$ -->
-<!-- ============================================== -->
-
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xlink="http://www.w3.org/1999/xlink"
-  xmlns:xalan="http://xml.apache.org/xalan" xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation" exclude-result-prefixes="xlink xalan i18n">
   &html-output;
-  
+
   <xsl:include href="MyCoReLayout.xsl" />
 
   <xsl:variable name="PageTitle">
     <xsl:choose>
       <xsl:when test="/MyCoReWizard/section/@i18n">
-        <xsl:value-of select="i18n:translate(/MyCoReWizard/section/@i18n)" />
+        <xsl:value-of select="mcri18n:translate(/MyCoReWizard/section/@i18n)" />
       </xsl:when>
       <xsl:otherwise>
         <xsl:choose>
@@ -71,7 +70,7 @@
   <!-- =============================================================================== -->
 
   <xsl:template match="i18n">
-    <xsl:value-of select="i18n:translate(@key)" />
+    <xsl:value-of select="mcri18n:translate(@key)" />
   </xsl:template>
 
   <!-- =============================================================================== -->

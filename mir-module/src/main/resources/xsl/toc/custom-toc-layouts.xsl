@@ -4,11 +4,10 @@
 <!-- Default templates may be overwritten by higher priority custom templates -->
 
 <xsl:stylesheet version="1.0"
-  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  xmlns:mcri18n="xalan://org.mycore.services.i18n.MCRTranslation"
   xmlns:xalan="http://xml.apache.org/xalan"
-  xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
-  exclude-result-prefixes="xalan i18n"
->
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  exclude-result-prefixes="mcri18n xalan">
 
   <xsl:param name="CurrentLang" select="'de'" />
 
@@ -64,7 +63,7 @@
        ==================== -->
 
   <xsl:template match="level[@field='mir.toc.series.volume']/item" mode="label" priority="1">
-    <xsl:value-of select="i18n:translate('mir.details.volume.series')" />
+    <xsl:value-of select="mcri18n:translate('mir.details.volume.series')" />
     <xsl:text> </xsl:text>
     <xsl:value-of select="@value" />
     <xsl:apply-templates select="doc" />
@@ -79,7 +78,7 @@
        ==================== -->
 
   <xsl:template match="level[@field='mir.toc.host.volume']/item" mode="label" priority="1">
-    <xsl:value-of select="i18n:translate('mir.details.volume.journal')" />
+    <xsl:value-of select="mcri18n:translate('mir.details.volume.journal')" />
     <xsl:text> </xsl:text>
     <xsl:value-of select="@value" />
     <xsl:for-each select="doc/field[@name='mods.yearIssued']">
@@ -99,7 +98,7 @@
        ==================== -->
 
   <xsl:template match="level[@field='mir.toc.host.issue']/item" mode="label" priority="1">
-    <xsl:value-of select="i18n:translate('mir.details.issue')" />
+    <xsl:value-of select="mcri18n:translate('mir.details.issue')" />
     <xsl:text> </xsl:text>
     <xsl:value-of select="@value" />
     <xsl:apply-templates select="doc" />
@@ -181,15 +180,15 @@
       </xsl:attribute>
       <xsl:choose>
         <xsl:when test="field[@name='mir.toc.series.volume.top']">
-          <xsl:value-of select="i18n:translate('mir.details.volume.series')" />
+          <xsl:value-of select="mcri18n:translate('mir.details.volume.series')" />
           <xsl:value-of select="concat(' ',field[@name='mir.toc.series.volume.top'],': ')" />
         </xsl:when>
         <xsl:when test="field[@name='mir.toc.host.volume.top']">
-          <xsl:value-of select="i18n:translate('mir.details.volume.journal')" />
+          <xsl:value-of select="mcri18n:translate('mir.details.volume.journal')" />
           <xsl:value-of select="concat(' ',field[@name='mir.toc.host.volume.top'],': ')" />
         </xsl:when>
         <xsl:when test="field[@name='mir.toc.host.issue.top']">
-          <xsl:value-of select="i18n:translate('mir.details.issue')" />
+          <xsl:value-of select="mcri18n:translate('mir.details.issue')" />
           <xsl:value-of select="concat(' ',field[@name='mir.toc.host.issue.top'],': ')" />
         </xsl:when>
         <xsl:when test="field[@name='mir.toc.host.articleNumber.top']">
@@ -235,7 +234,7 @@
             <xsl:value-of select="concat(' ', $class)"/>
           </xsl:if>
         </xsl:attribute>
-        <xsl:value-of select="i18n:translate('mir.pages.abbreviated.single')" />
+        <xsl:value-of select="mcri18n:translate('mir.pages.abbreviated.single')" />
         <xsl:text> </xsl:text>
         <xsl:value-of select="." />
       </div>

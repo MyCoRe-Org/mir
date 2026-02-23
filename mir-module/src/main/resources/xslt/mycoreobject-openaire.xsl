@@ -6,11 +6,10 @@
   xmlns:dc="http://purl.org/dc/elements/1.1/"
   xmlns:mods="http://www.loc.gov/mods/v3"
   xmlns:openaire_utils="http://www.mycore.de/xslt/openaire_utils"
-  xmlns:xlink="http://www.w3.org/1999/xlink"
   xmlns:xs="http://www.w3.org/2001/XMLSchema"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  exclude-result-prefixes="mods openaire_utils xlink xs xsl array">
+  exclude-result-prefixes="array mods openaire_utils xs xsl">
 
   <xsl:import href="resource:/xslt/mycoreobject-datacite-mir.xsl"/>
   <xsl:output method="xml" indent="yes" encoding="UTF-8"/>

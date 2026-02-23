@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-                xmlns:mcri18n="http://www.mycore.de/xslt/i18n"
-                xmlns:mcrproperty="http://www.mycore.de/xslt/property"
-                xmlns:mcracl="http://www.mycore.de/xslt/acl"
-                exclude-result-prefixes="mcracl mcri18n mcrproperty"
-                version="3.0">
+<xsl:stylesheet version="3.0"
+  xmlns:mcracl="http://www.mycore.de/xslt/acl"
+  xmlns:mcri18n="http://www.mycore.de/xslt/i18n"
+  xmlns:mcrproperty="http://www.mycore.de/xslt/property"
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  exclude-result-prefixes="mcracl mcri18n mcrproperty">
 
   <xsl:include href="resource:xslt/functions/i18n.xsl" />
   <xsl:include href="resource:xslt/functions/property.xsl" />

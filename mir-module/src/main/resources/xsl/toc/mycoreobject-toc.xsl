@@ -13,13 +13,11 @@
 -->
 
 <xsl:stylesheet version="1.0"
-  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions"
   xmlns:encoder="xalan://java.net.URLEncoder"
-  xmlns:mods="http://www.loc.gov/mods/v3"
+  xmlns:mcrxml="xalan://org.mycore.common.xml.MCRXMLFunctions"
   xmlns:xalan="http://xml.apache.org/xalan"
-  xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
-  exclude-result-prefixes="mcrxsl encoder mods xalan i18n">
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  exclude-result-prefixes="encoder mcrxml xalan xsl">
 
   <xsl:import href="xslImport:modsmeta:toc/mycoreobject-toc.xsl" />
 
@@ -63,8 +61,8 @@
       <xsl:text> AND (</xsl:text>
       <xsl:text>state:</xsl:text>
       <xsl:choose>
-        <xsl:when test="mcrxsl:isCurrentUserInRole('admin')">*</xsl:when>
-        <xsl:when test="mcrxsl:isCurrentUserInRole('editor')">*</xsl:when>
+        <xsl:when test="mcrxml:isCurrentUserInRole('admin')">*</xsl:when>
+        <xsl:when test="mcrxml:isCurrentUserInRole('editor')">*</xsl:when>
         <xsl:otherwise>published OR createdby:<xsl:value-of select="$CurrentUser" /></xsl:otherwise>
       </xsl:choose>
       <xsl:text>)</xsl:text>

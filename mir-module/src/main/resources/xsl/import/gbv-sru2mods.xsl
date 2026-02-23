@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<xsl:stylesheet version="1.0" 
-  xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
+<xsl:stylesheet version="1.0"
   xmlns:mods="http://www.loc.gov/mods/v3"
-  xmlns:xalan="http://xml.apache.org/xalan"
   xmlns:srw="http://www.loc.gov/zing/srw/"
-  exclude-result-prefixes="xsl xalan srw">  
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  exclude-result-prefixes="srw xsl">
 
   <xsl:template match="/srw:searchRetrieveResponse">
     <xsl:copy-of select="srw:records/srw:record[1]/srw:recordData/mods:mods" />

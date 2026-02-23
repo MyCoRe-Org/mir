@@ -1,18 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Renders the output of MCRBasketServlet -->
-<xsl:stylesheet
-  version="1.0"
-  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  xmlns:xlink="http://www.w3.org/1999/xlink"
+<?xml version="1.0" encoding="UTF-8"?>
+<xsl:stylesheet version="1.0"
+  xmlns:mcri18n="xalan://org.mycore.services.i18n.MCRTranslation"
   xmlns:xalan="http://xml.apache.org/xalan"
-  xmlns:mods="http://www.loc.gov/mods/v3"
-  xmlns:encoder="xalan://java.net.URLEncoder"
-  xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
-  xmlns:str="http://exslt.org/strings"
-  xmlns:acl="xalan://org.mycore.access.MCRAccessManager"
-  xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions"
-  exclude-result-prefixes="xlink xalan i18n mods str acl mcrxsl encoder">
-
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  exclude-result-prefixes="mcri18n xalan xsl">
 
   <xsl:import href="resource:xsl/orcid/mir-orcid.xsl"/>
   <xsl:include href="MyCoReLayout.xsl" />
@@ -23,7 +14,7 @@
   <xsl:include href="csl-export-gui.xsl" />
 
   <xsl:variable name="Type" select="'mods'" />
-  <xsl:variable name="PageTitle" select="i18n:translate(concat('basket.title.',/basket/@type))" />
+  <xsl:variable name="PageTitle" select="mcri18n:translate(concat('basket.title.',/basket/@type))" />
 
   <xsl:template match="/basket">
     <div id="basket">
@@ -31,7 +22,7 @@
         <xsl:call-template name="options" />
       </div>
       <h2>
-        <xsl:value-of select="i18n:translate(concat('basket.title.',/basket/@type))" />
+        <xsl:value-of select="mcri18n:translate(concat('basket.title.',/basket/@type))" />
       </h2>
       <xsl:call-template name="basketNumEntries" />
       <xsl:call-template name="export-csl" />
@@ -60,13 +51,13 @@
     <p class="lead">
       <xsl:choose>
         <xsl:when test="count(entry) = 0">
-          <xsl:value-of select="i18n:translate('basket.numEntries.none')" disable-output-escaping="yes" />
+          <xsl:value-of select="mcri18n:translate('basket.numEntries.none')" disable-output-escaping="yes" />
         </xsl:when>
         <xsl:when test="count(entry) = 1">
-          <xsl:value-of select="i18n:translate('basket.numEntries.one')" disable-output-escaping="yes" />
+          <xsl:value-of select="mcri18n:translate('basket.numEntries.one')" disable-output-escaping="yes" />
         </xsl:when>
         <xsl:otherwise>
-          <xsl:value-of select="i18n:translate('basket.numEntries.many',count(*))" disable-output-escaping="yes" />
+          <xsl:value-of select="mcri18n:translate('basket.numEntries.many',count(*))" disable-output-escaping="yes" />
         </xsl:otherwise>
       </xsl:choose>
     </p>
@@ -171,12 +162,12 @@
     <xsl:choose>
       <xsl:when test="$condition">
         <a href="MCRBasketServlet?action={$action}&amp;type={/basket/@type}&amp;id={@id}" class="btn btn-small {$class}"
-          title="{i18n:translate(concat('basket.button.',$action))}">
+          title="{mcri18n:translate(concat('basket.button.',$action))}">
           <i class="fas fa-{$icon}"></i>
         </a>
       </xsl:when>
       <xsl:otherwise>
-        <a href="#" class="btn btn-small btn-secondary disabled" title="{i18n:translate(concat('basket.button.',$action))}">
+        <a href="#" class="btn btn-small btn-secondary disabled" title="{mcri18n:translate(concat('basket.button.',$action))}">
           <i class="fas fa-{$icon}"></i>
         </a>
       </xsl:otherwise>
@@ -186,7 +177,7 @@
   <xsl:template name="options">
     <a href="{$ServletsBaseURL}MCRBasketServlet?type={@type}&amp;action=clear&amp;redirect=referer" class="btn btn-danger btn-sm">
       <span class="fas fa-trash-alt me-1"></span>
-      <xsl:value-of select="i18n:translate('basket.clear')" />
+      <xsl:value-of select="mcri18n:translate('basket.clear')" />
     </a>
   </xsl:template>
 

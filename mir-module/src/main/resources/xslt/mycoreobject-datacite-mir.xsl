@@ -6,15 +6,15 @@
  ====================================================================== -->
 
 <xsl:stylesheet version="3.0"
-                xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-                xmlns:xlink="http://www.w3.org/1999/xlink"
-                xmlns:mods="http://www.loc.gov/mods/v3"
-                xmlns:fn="http://www.w3.org/2005/xpath-functions"
-                xmlns:mcrmods="http://www.mycore.de/xslt/mods"
-                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                xmlns="http://datacite.org/schema/kernel-4"
-                xmlns:datacite="http://datacite.org/schema/kernel-4"
-                exclude-result-prefixes="xsl fn xlink mods mcrmods datacite">
+  xmlns="http://datacite.org/schema/kernel-4"
+  xmlns:datacite="http://datacite.org/schema/kernel-4"
+  xmlns:fn="http://www.w3.org/2005/xpath-functions"
+  xmlns:mcrmods="http://www.mycore.de/xslt/mods"
+  xmlns:mods="http://www.loc.gov/mods/v3"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  exclude-result-prefixes="datacite fn mcrmods mods xlink xsl">
 
   <xsl:include href="utils/mods-utils.xsl" />
   <xsl:include href="functions/mods.xsl" />

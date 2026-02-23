@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-                xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation" xmlns:mods="http://www.loc.gov/mods/v3"
-                xmlns:xlink="http://www.w3.org/1999/xlink"
-                xmlns:FilenameUtils="xalan://org.apache.commons.io.FilenameUtils"
-                xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions"
-                xmlns:iview2="xalan://org.mycore.iview2.services.MCRIView2Tools"
-                xmlns:iview2xsl="xalan://org.mycore.iview2.frontend.MCRIView2XSLFunctionsAdapter"
-                xmlns:embargo="xalan://org.mycore.mods.MCRMODSEmbargoUtils"
-                xmlns:xalan="http://xml.apache.org/xalan"
-                exclude-result-prefixes="xalan i18n mods xlink FilenameUtils iview2 iview2xsl mcrxsl embargo">
+<xsl:stylesheet version="1.0"
+  xmlns:mcri18n="xalan://org.mycore.services.i18n.MCRTranslation"
+  xmlns:mcriview2="xalan://org.mycore.iview2.frontend.MCRIView2XSLFunctionsAdapter"
+  xmlns:mcriview2tool="xalan://org.mycore.iview2.services.MCRIView2Tools"
+  xmlns:mcrxml="xalan://org.mycore.common.xml.MCRXMLFunctions"
+  xmlns:xalan="http://xml.apache.org/xalan"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  exclude-result-prefixes="mcri18n mcriview2 mcriview2tool mcrxml xalan xlink xsl">
+
   <xsl:import href="xslImport:modsmeta:metadata/mir-viewer.xsl" />
+
   <xsl:param name="UserAgent" />
   <xsl:param name="MIR.DFGViewer.enable" select="'false'" />
   <xsl:param name="MIR.Viewer.DisableDerivateType" select="''" />
@@ -27,7 +28,7 @@
             <div class="row mir-preview">
               <div class="col-md-12">
                 <h3 class="mir-viewer">
-                  <xsl:value-of select="i18n:translate('metaData.preview')" />
+                  <xsl:value-of select="mcri18n:translate('metaData.preview')" />
                 </h3>
                 <!-- show one viewer for each derivate -->
                 <xsl:for-each select="mycoreobject/structure/derobjects/derobject[key('rights', @xlink:href)/@read and not(contains($MIR.Viewer.DisableDerivateType,classification/@categid ))]">
@@ -51,7 +52,7 @@
   <xsl:template name="createViewer">
     <xsl:variable name="derId" select="@xlink:href" />
     <xsl:variable name="mainFile">
-        <xsl:variable name="mainDocName" select="mcrxsl:getMainDocName($derId)" />
+        <xsl:variable name="mainDocName" select="mcrxml:getMainDocName($derId)" />
       <xsl:choose>
         <xsl:when test="starts-with($mainDocName, '/')">
           <xsl:value-of select="$mainDocName" />
@@ -65,9 +66,9 @@
 
 
     <xsl:choose>
-      <xsl:when test="iview2:getSupportedMainFile($derId)">
+      <xsl:when test="mcriview2tool:getSupportedMainFile($derId)">
         <xsl:choose>
-          <xsl:when test="iview2:isCompletelyTiled($derId)">
+          <xsl:when test="mcriview2tool:isCompletelyTiled($derId)">
             <!-- The file will be displayed with mets -->
 
             <xsl:call-template name="createViewerContainer">
@@ -82,12 +83,12 @@
           </xsl:when>
           <xsl:otherwise>
             <div class="card card-body bg-light no-viewer">
-              <xsl:value-of select="i18n:translate('metaData.previewInProcessing', $derId)" />
+              <xsl:value-of select="mcri18n:translate('metaData.previewInProcessing', $derId)" />
             </div>
           </xsl:otherwise>
         </xsl:choose>
       </xsl:when>
-      <xsl:when test="mcrxsl:getMimeType($mainFile) = 'application/pdf' and not(mcrxsl:isMobileDevice($UserAgent))">
+      <xsl:when test="mcrxml:getMimeType($mainFile) = 'application/pdf' and not(mcrxml:isMobileDevice($UserAgent))">
         <xsl:call-template name="createViewerContainer">
           <xsl:with-param name="viewerId" select="$viewerId" />
           <xsl:with-param name="viewerType" select="'pdf'" />
@@ -131,7 +132,7 @@
   <xsl:template name="loadViewer">
     <xsl:param name="derivate" />
     <xsl:param name="file" />
-    <script src="{$WebApplicationBaseURL}rsc/viewer/{$derivate}{mcrxsl:encodeURIPath($file)}?embedded=true&amp;XSL.Style=js">
+    <script src="{$WebApplicationBaseURL}rsc/viewer/{$derivate}{mcrxml:encodeURIPath($file)}?embedded=true&amp;XSL.Style=js">
     </script>
   </xsl:template>
 
@@ -144,7 +145,7 @@
     <div data-viewer="{$viewerId}" class="viewer {$viewerType}">
     </div>
 
-    <xsl:if test="$MIR.DFGViewer.enable='true' and  iview2xsl:hasMETSFile($derId)">
+    <xsl:if test="$MIR.DFGViewer.enable='true' and  mcriview2:hasMETSFile($derId)">
       <div class="row">
         <div id="mir-dfgViewer" class="float-end">
           <a title="im DFG-Viewer anzeigen"

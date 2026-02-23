@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-
 <xsl:stylesheet version="1.0" 
-  xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
-  xmlns:mods="http://www.loc.gov/mods/v3"
-  xmlns:xalan="http://xml.apache.org/xalan"
   xmlns:java="http://xml.apache.org/xalan/java"
-  xmlns:oai="http://www.openarchives.org/OAI/2.0/"
   xmlns:mab="http://www.ddb.de/professionell/mabxml/mabxml-1.xsd"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  exclude-result-prefixes="xsl xalan java oai mab">
+  xmlns:mods="http://www.loc.gov/mods/v3"
+  xmlns:oai="http://www.openarchives.org/OAI/2.0/"
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  exclude-result-prefixes="java mab oai xsl">
 
   <xsl:template match="/oai:OAI-PMH">
     <xsl:apply-templates select="oai:ListRecords/oai:record[1]/oai:metadata/mab:record" />

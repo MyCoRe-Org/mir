@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-                xmlns:xalan="http://xml.apache.org/xalan"
-                xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
-                xmlns:mcrxml="xalan://org.mycore.common.xml.MCRXMLFunctions"
-                xmlns:str="http://exslt.org/strings"
-                xmlns:mods="http://www.loc.gov/mods/v3"
-                xmlns:encoder="xalan://java.net.URLEncoder"
-                version="1.0"
-                exclude-result-prefixes="i18n mcrxml str xalan encoder mods"
->
+<xsl:stylesheet version="1.0"
+  xmlns:encoder="xalan://java.net.URLEncoder"
+  xmlns:mcri18n="xalan://org.mycore.services.i18n.MCRTranslation"
+  xmlns:mcrxml="xalan://org.mycore.common.xml.MCRXMLFunctions"
+  xmlns:mods="http://www.loc.gov/mods/v3"
+  xmlns:xalan="http://xml.apache.org/xalan"
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  exclude-result-prefixes="encoder mcri18n mcrxml mods xalan">
+
     <xsl:param name="CurrentLang"/>
 
     <xsl:template match="mods:name" mode="mirNameLink">
@@ -74,7 +73,7 @@
                   </xsl:if>
                   <xsl:if test="count($affiliation) &gt; 0 or $affiliation-ror">
                       <dt>
-                        <xsl:value-of select="i18n:translate('mir.affiliation')"/>
+                        <xsl:value-of select="mcri18n:translate('mir.affiliation')"/>
                       </dt>
                       <dd>
                         <xsl:for-each select="$affiliation">
@@ -103,7 +102,7 @@
         <a href="{concat($ServletsBaseURL,'solr/mods_nameIdentifier?q=',encoder:encode($query),'&amp;owner=',encoder:encode(concat('createdby:',$owner)))}"><xsl:value-of select="$personName" /></a>
         <xsl:if test="count($nameIdentifiers) &gt; 0 or string-length($affiliation) &gt; 0">
             <!-- class personPopover triggers the javascript popover code -->
-            <a id="{$personNodeId}" class="personPopover" title="{i18n:translate('mir.details.personpopover.title')}">
+            <a id="{$personNodeId}" class="personPopover" title="{mcri18n:translate('mir.details.personpopover.title')}">
                 <span class="fa fa-info-circle"/>
             </a>
         </xsl:if>

@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<!-- ====================================================================== -->
-<!-- $Revision$ $Date$ -->
-<!-- ====================================================================== -->
-
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xalan="http://xml.apache.org/xalan" xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
-  xmlns:str="http://exslt.org/strings" exclude-result-prefixes="xsl xalan i18n str"
->
+<xsl:stylesheet version="1.0"
+  xmlns:decoder="xalan://java.net.URLDecoder"
+  xmlns:mcri18n="xalan://org.mycore.services.i18n.MCRTranslation"
+  xmlns:str="http://exslt.org/strings"
+  xmlns:xalan="http://xml.apache.org/xalan"
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  exclude-result-prefixes="decoder mcri18n str xalan xsl">
 
   <xsl:include href="str.tokenize.xsl" />
 
@@ -85,7 +84,7 @@
     <xsl:text>10,25,50,100</xsl:text>
   </xsl:variable>
 
-  <xsl:template name="getParam" xmlns:decoder="xalan://java.net.URLDecoder">
+  <xsl:template name="getParam">
     <xsl:param name="par" />
     <xsl:param name="default" select="''" />
 
@@ -186,7 +185,7 @@
               <div class="mir-form-group no-margin" id="{$id}_filter">
                 <label>
                   <span class="fas fa-filter" aria-hidden="true" />
-                  <xsl:value-of select="i18n:translate(concat($i18nprefix, '.filter'))" />
+                  <xsl:value-of select="mcri18n:translate(concat($i18nprefix, '.filter'))" />
                   <xsl:text disable-output-escaping="yes">&amp;nbsp;</xsl:text>
                   <input class="form-control input-sm" type="search" name="Filter">
                     <xsl:attribute name="value">
@@ -231,7 +230,7 @@
                   </xsl:for-each>
                 </select>
                 <xsl:text disable-output-escaping="yes">&amp;nbsp;</xsl:text>
-                <xsl:value-of select="i18n:translate(concat($i18nprefix, '.lengthMenu'))" />
+                <xsl:value-of select="mcri18n:translate(concat($i18nprefix, '.lengthMenu'))" />
                 <noscript>
                   <input class="btn" type="submit" name="Ok" value="Ok" />
                 </noscript>
@@ -248,7 +247,7 @@
             <xsl:when test="number($end) = 0">
               <tr class="odd" align="center">
                 <td colspan="{$dataTableHeaderColCount}">
-                  <xsl:value-of select="i18n:translate(concat($i18nprefix, '.noItemFound'))" />
+                  <xsl:value-of select="mcri18n:translate(concat($i18nprefix, '.noItemFound'))" />
                 </td>
               </tr>
             </xsl:when>
@@ -267,7 +266,7 @@
           <xsl:if test="$pages &gt; 1">
             <xsl:attribute name="class">d-none d-sm-block</xsl:attribute>
           </xsl:if>
-          <xsl:value-of select="i18n:translate(concat($i18nprefix, '.filterInfo'), concat($start, ';', $end, ';', $total))" />
+          <xsl:value-of select="mcri18n:translate(concat($i18nprefix, '.filterInfo'), concat($start, ';', $end, ';', $total))" />
         </span>
         <xsl:if test="$pages &gt; 1">
           <xsl:call-template name="dataTablePaginate">
@@ -444,7 +443,7 @@
                 </xsl:attribute>
               <xsl:text disable-output-escaping="yes">&amp;laquo;</xsl:text>
               <span class="sr-only">
-                <xsl:value-of select="i18n:translate(concat($i18nprefix, '.first'))" />
+                <xsl:value-of select="mcri18n:translate(concat($i18nprefix, '.first'))" />
               </span>
             </a>
           </xsl:when>
@@ -453,7 +452,7 @@
             <span>
               <xsl:text disable-output-escaping="yes">&amp;laquo;</xsl:text>
               <span class="sr-only">
-                <xsl:value-of select="i18n:translate(concat($i18nprefix, '.first'))" />
+                <xsl:value-of select="mcri18n:translate(concat($i18nprefix, '.first'))" />
               </span>
             </span>
           </xsl:otherwise>
@@ -470,7 +469,7 @@
                 </xsl:attribute>
               <xsl:text disable-output-escaping="yes">&amp;lsaquo;</xsl:text>
               <span class="sr-only">
-                <xsl:value-of select="i18n:translate(concat($i18nprefix, '.previous'))" />
+                <xsl:value-of select="mcri18n:translate(concat($i18nprefix, '.previous'))" />
               </span>
             </a>
           </xsl:when>
@@ -479,7 +478,7 @@
             <span>
               <xsl:text disable-output-escaping="yes">&amp;lsaquo;</xsl:text>
               <span class="sr-only">
-                <xsl:value-of select="i18n:translate(concat($i18nprefix, '.previous'))" />
+                <xsl:value-of select="mcri18n:translate(concat($i18nprefix, '.previous'))" />
               </span>
             </span>
           </xsl:otherwise>
@@ -536,7 +535,7 @@
                 </xsl:attribute>
               <xsl:text disable-output-escaping="yes">&amp;rsaquo;</xsl:text>
               <span class="sr-only">
-                <xsl:value-of select="i18n:translate(concat($i18nprefix, '.next'))" />
+                <xsl:value-of select="mcri18n:translate(concat($i18nprefix, '.next'))" />
               </span>
             </a>
           </xsl:when>
@@ -545,7 +544,7 @@
             <span>
               <xsl:text disable-output-escaping="yes">&amp;rsaquo;</xsl:text>
               <span class="sr-only">
-                <xsl:value-of select="i18n:translate(concat($i18nprefix, '.next'))" />
+                <xsl:value-of select="mcri18n:translate(concat($i18nprefix, '.next'))" />
               </span>
             </span>
           </xsl:otherwise>
@@ -562,7 +561,7 @@
               </xsl:attribute>
               <xsl:text disable-output-escaping="yes">&amp;raquo;</xsl:text>
               <span class="sr-only">
-                <xsl:value-of select="i18n:translate(concat($i18nprefix, '.last'))" />
+                <xsl:value-of select="mcri18n:translate(concat($i18nprefix, '.last'))" />
               </span>
             </a>
           </xsl:when>
@@ -571,7 +570,7 @@
             <span>
               <xsl:text disable-output-escaping="yes">&amp;raquo;</xsl:text>
               <span class="sr-only">
-                <xsl:value-of select="i18n:translate(concat($i18nprefix, '.last'))" />
+                <xsl:value-of select="mcri18n:translate(concat($i18nprefix, '.last'))" />
               </span>
             </span>
           </xsl:otherwise>
