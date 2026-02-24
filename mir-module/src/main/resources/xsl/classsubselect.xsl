@@ -64,6 +64,6 @@
 
   </xsl:template>
 
-  <xsl:include href="MyCoReLayout.xsl" />
-  <xsl:include href="classificationBrowser.xsl" />
+  <xsl:include href="resource:xsl/MyCoReLayout.xsl" />
+  <xsl:include href="resource:xsl/classificationBrowser.xsl" />
 </xsl:stylesheet>

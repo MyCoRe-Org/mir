@@ -6,8 +6,8 @@
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   exclude-result-prefixes="mcri18n mcrutils mcrxml">
 
-  <xsl:include href="MyCoReLayout.xsl" />
-  <xsl:include href="datatable.xsl" />
+  <xsl:include href="resource:xsl/MyCoReLayout.xsl" />
+  <xsl:include href="resource:xsl/datatable.xsl" />
 
   <xsl:variable name="PageTitle" select="mcri18n:translate('metadata.files.file')" />
 

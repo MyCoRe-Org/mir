@@ -5,7 +5,7 @@
   exclude-result-prefixes="mcracl">
 
   <xsl:output method="xml" encoding="UTF-8" />
-  <xsl:include href="copynodes.xsl" />
+  <xsl:include href="resource:xsl/copynodes.xsl" />
   <xsl:include href="xslInclude:mycoreobjectXML" />
 
   <xsl:template match="mycoreobject">

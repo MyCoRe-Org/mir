@@ -6,12 +6,12 @@
   exclude-result-prefixes="mcri18n xalan xsl">
 
   <xsl:import href="resource:xsl/orcid/mir-orcid.xsl"/>
-  <xsl:include href="MyCoReLayout.xsl" />
+  <xsl:include href="resource:xsl/MyCoReLayout.xsl" />
 
   <!-- include custom templates for supported objecttypes -->
   <xsl:include href="xslInclude:objectTypes" />
 
-  <xsl:include href="csl-export-gui.xsl" />
+  <xsl:include href="resource:xsl/csl-export-gui.xsl" />
 
   <xsl:variable name="Type" select="'mods'" />
   <xsl:variable name="PageTitle" select="mcri18n:translate(concat('basket.title.',/basket/@type))" />

@@ -6,8 +6,8 @@
   exclude-result-prefixes="encoder mcri18n xsl">
 
   <xsl:import href="xslImport:modsmeta:metadata/mir-browse.xsl" />
-  <xsl:include href="response-utils.xsl" />
-  <xsl:include href="response-mir-utils.xsl" />
+  <xsl:include href="resource:xsl/response-utils.xsl" />
+  <xsl:include href="resource:xsl/response-mir-utils.xsl" />
   <xsl:template match="/">
     <xsl:apply-templates select="/mycoreobject/response" />
     <xsl:apply-imports />

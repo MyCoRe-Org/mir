@@ -5,9 +5,9 @@
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   exclude-result-prefixes="">
 
-  <xsl:include href="mets-iview.xsl" />
-  <xsl:include href="mets-amd.xsl" />
-  <xsl:include href="mods-enhancer.xsl" />
+  <xsl:include href="resource:xsl/mets/mets-iview.xsl" />
+  <xsl:include href="resource:xsl/mets/mets-amd.xsl" />
+  <xsl:include href="resource:xsl/mods-enhancer.xsl" />
 
   <xsl:output method="xml" encoding="utf-8" />
   <xsl:param name="MCR.Module-iview2.SupportedContentTypes" />

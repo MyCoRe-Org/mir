@@ -51,5 +51,5 @@
       <br/>
     </p>
   </xsl:template>
-  <xsl:include href="MyCoReLayout.xsl"/>
+  <xsl:include href="resource:xsl/MyCoReLayout.xsl"/>
 </xsl:stylesheet>

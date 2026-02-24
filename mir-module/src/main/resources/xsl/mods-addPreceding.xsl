@@ -7,7 +7,7 @@
 
   <!-- used as editor preprocessing which copies the object removes all related items and add´s the copied object as preceding object-->
 
-  <xsl:include href="copynodes.xsl" />
+  <xsl:include href="resource:xsl/copynodes.xsl" />
 
   <xsl:template match="mods:mods">
     <mods:mods>

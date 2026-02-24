@@ -24,7 +24,7 @@
   <xsl:param name="mcruser" select="document('user:current')/user"/>
   <xsl:param name="MIR.Layout.usermenu.realname.enabled" select="'false'"/>
 
-  <xsl:include href="layout/mir-layout-utils.xsl" />
+  <xsl:include href="resource:xsl/layout/mir-layout-utils.xsl" />
   <xsl:include href="resource:xsl/layout/mir-navigation.xsl" />
   <xsl:include href="resource:xsl/mir-utils.xsl" />
   <xsl:variable name="loaded_navigation_xml" select="mcrlayoututils:getPersonalNavigation()/navigation" />

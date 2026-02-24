@@ -5,8 +5,8 @@
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   exclude-result-prefixes="mcri18n xalan">
   
-  <xsl:include href="MyCoReLayout.xsl" />
-  <xsl:include href="classificationBrowser.xsl" />
+  <xsl:include href="resource:xsl/MyCoReLayout.xsl" />
+  <xsl:include href="resource:xsl/classificationBrowser.xsl" />
   
   <xsl:variable name="Navigation.title" select="mcri18n:translate('mir.classification.select')" />
   <xsl:variable name="MainTitle" select="mcri18n:translate('mir.classification')" />

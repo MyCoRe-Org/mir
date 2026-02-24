@@ -10,7 +10,7 @@
   exclude-result-prefixes="mcrmodsclass mods xlink">
 
   <xsl:import href="xslImport:solr-document:mir-solr.xsl" />
-  <xsl:include href="mods-utils.xsl" />
+  <xsl:include href="resource:xsl/mods-utils.xsl" />
 
   <xsl:template match="mycoreobject[contains(@ID,'_mods_')]">
     <xsl:variable name="status" select="mcrxml:isInCategory(@ID,'state:published')" />

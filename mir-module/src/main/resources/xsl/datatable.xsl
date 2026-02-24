@@ -7,7 +7,7 @@
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   exclude-result-prefixes="decoder mcri18n str xalan xsl">
 
-  <xsl:include href="str.tokenize.xsl" />
+  <xsl:include href="resource:xsl/str.tokenize.xsl" />
 
   <xsl:param name="SortBy" select="''" />
   <xsl:param name="SortOrder" select="''" />

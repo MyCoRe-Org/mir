@@ -11,7 +11,7 @@
   exclude-result-prefixes="mcracl mods xalan xsl">
 
   <xsl:output method="xml" encoding="UTF-8" />
-  <xsl:include href="mods2record.xsl" />
+  <xsl:include href="resource:xsl/mods2record.xsl" />
 
   <xsl:param name="ServletsBaseURL" select="''" />
   <xsl:param name="WebApplicationBaseURL" select="''" />
@@ -19,7 +19,7 @@
   <xsl:variable name="ifsTemp" xmlns="">
     <xsl:for-each select="mycoreobject/structure/derobjects/derobject[mcracl:checkDerivateContentPermission(@xlink:href, 'read')]">
       <der id="{@xlink:href}">
-        <xsl:copy-of select="document(concat('xslStyle:mcr_directory-recursive:ifs:',@xlink:href,'/'))" />
+        <xsl:copy-of select="document(concat('xslStyle:mcr_directory-recursive#xsl:ifs:',@xlink:href,'/'))" />
       </der>
     </xsl:for-each>
   </xsl:variable>

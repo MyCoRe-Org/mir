@@ -4,5 +4,5 @@
   <xsl:param name="ThumbnailBaseURL" select="concat($ServletsBaseURL,'MCRDFGThumbnail/')" />
   <xsl:param name="ImageBaseURL" select="concat($ServletsBaseURL,'MCRDFGServlet/')"/>
   <xsl:param name="copyFileGrp" select="emptyNodeList" />
-  <xsl:include href="mets-dfgProfile.xsl" />
+  <xsl:include href="resource:xsl/mets/mets-dfgProfile.xsl" />
 </xsl:stylesheet>

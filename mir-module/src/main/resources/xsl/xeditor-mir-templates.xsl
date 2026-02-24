@@ -7,7 +7,7 @@
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   exclude-result-prefixes="mcri18n mir xalan xsl">
 
-  <xsl:include href="copynodes.xsl" />
+  <xsl:include href="resource:xsl/copynodes.xsl" />
 
   <xsl:param name="MIR.Layout.inputSize" />
   <xsl:param name="MIR.Layout.inputWidth" />

@@ -32,7 +32,7 @@
     <div id="mir-abstract-badges" class="mir-badge-container">
       <xsl:choose>
         <xsl:when test="string-length($revision) &gt; 0">
-          <xsl:apply-templates select="document(concat('xslStyle:mycoreobject-solrdocument:mcrobject:', $objectID, '?r=', $revision))/add/doc" mode="badge"/>
+          <xsl:apply-templates select="document(concat('xslStyle:mycoreobject-solrdocument#xsl:mcrobject:', $objectID, '?r=', $revision))/add/doc" mode="badge"/>
         </xsl:when>
         <xsl:otherwise>
           <xsl:apply-templates select="document(concat('solr:q=id%3A', $objectID))" mode="badge"/>
