@@ -8,7 +8,7 @@
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   exclude-result-prefixes="mods xlink">
 
-  <xsl:import href="xslImport:solr-document-3:mir-solr.xsl"/>
+  <xsl:import href="xslImport:solr-document:mir-solr.xsl"/>
   <!-- <xsl:include href="resource:xsl/utils/mods-utils-3.xsl"/> -->
 
   <!-- <xsl:include href="functions/mods.xsl"/>-->
