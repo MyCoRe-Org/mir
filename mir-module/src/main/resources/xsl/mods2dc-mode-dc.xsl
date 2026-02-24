@@ -7,8 +7,8 @@
   xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/"
   xmlns:srw_dc="info:srw/schema/1/dc-schema"
   xmlns:xlink="http://www.w3.org/1999/xlink"
-  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   exclude-result-prefixes="mcrmodsclass mcrxml mods srw_dc xlink xsl">
 
   <!-- xmlns:opf="http://www.idpf.org/2007/opf" -->

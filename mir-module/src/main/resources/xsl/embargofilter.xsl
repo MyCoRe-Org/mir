@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0"
-  xmlns:exslt="http://exslt.org/common"
   xmlns:dt="http://exslt.org/dates-and-times"
+  xmlns:exslt="http://exslt.org/common"
+  xmlns:mcracl="xalan://org.mycore.access.MCRAccessManager"
   xmlns:mcri18n="xalan://org.mycore.services.i18n.MCRTranslation"
   xmlns:mcrxml="xalan://org.mycore.common.xml.MCRXMLFunctions"
-  xmlns:mcracl="xalan://org.mycore.access.MCRAccessManager"
   xmlns:mods="http://www.loc.gov/mods/v3"
   xmlns:xlink="http://www.w3.org/1999/xlink"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
