@@ -4,7 +4,7 @@
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   exclude-result-prefixes="mcri18n">
 
-  <xsl:import href="resource:layout/mir-layout-utils.xsl" />
+  <xsl:import href="resource:xsl/layout/mir-layout-utils.xsl" />
 
   <xsl:variable name="Type" select="'document'" />
 
