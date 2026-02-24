@@ -121,6 +121,31 @@
           </execution>
         </executions>
       </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>3.1.0</version>
+        <executions>
+          <execution>
+            <id>validate-xsl</id>
+            <goals>
+              <goal>java</goal>
+            </goals>
+            <phase>validate</phase>
+            <configuration>
+              <mainClass>net.sf.saxon.Transform</mainClass>
+              <arguments>
+                <argument>-s:${project.basedir}/src/main/resources/validator/empty.xml</argument>
+                <argument>-xsl:${project.basedir}/src/main/resources/validator/validate-xsl.xsl</argument>
+                <argument>-it:main</argument>
+                <argument>-ea</argument>
+                <argument>-t</argument>
+                <argument>dir=${project.basedir}/src/main/resources/xsl</argument>
+              </arguments>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
   </build>
   <dependencies>
