@@ -9,6 +9,7 @@ ENV APP_CONTEXT="mir" \
  MCR_CONFIG_DIR="/mcr/home/" \
  MCR_DATA_DIR="/mcr/data/" \
  MCR_LOG_DIR="/mcr/logs/" \
+ MCR_OVERRIDE_DIR="/mcr/override/" \
  SOLR_CORE="mir" \
  SOLR_CLASSIFICATION_CORE="mir-classifications" \
  XMX="1g" \

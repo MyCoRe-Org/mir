@@ -38,6 +38,8 @@ services:
     container_name: ${NAME}-mir
     build: ./
     restart: unless-stopped
+    env_file:
+      - .env
     environment:
       - APP_CONTEXT=${APP_CONTEXT}
       - JDBC_NAME=${DB_USER}
@@ -59,10 +61,12 @@ services:
       - XMS=${MIR_XMS}
       - MIR_OPTS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:8295
       - FIX_FILE_SYSTEM_RIGHTS=true
+      - DEVELOPER_MODE=${DEVELOPER_MODE}
     volumes:
       - ${MIR_HOME}:/mcr/home/
       - ${MIR_DATA}:/mcr/data/
       - ${MIR_LOGS}:/mcr/logs/
+      - ${MIR_OVERRIDE}:/mcr/override/
     depends_on:
       - db
       - solr

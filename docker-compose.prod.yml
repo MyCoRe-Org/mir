@@ -25,6 +25,8 @@ services:
     container_name: ${NAME}-mir
     image: mycoreorg/mir:2025.06.x
     restart: unless-stopped
+    env_file:
+      - .env
     environment:
       - APP_CONTEXT=${APP_CONTEXT}
       - JDBC_NAME=${DB_USER}
@@ -37,6 +39,7 @@ services:
       - XMX=${MIR_XMX}
       - XMS=${MIR_XMS}
       - FIX_FILE_SYSTEM_RIGHTS=false
+      - DEVELOPER_MODE=false
     volumes:
       - ${MIR_HOME}:/mcr/home/
       - ${MIR_DATA}:/mcr/data/
