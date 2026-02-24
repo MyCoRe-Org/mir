@@ -19,7 +19,7 @@
   <xsl:variable name="ifs" xmlns="">
     <xsl:for-each select="mycoreobject/structure/derobjects/derobject[mcracl:check-permission(@xlink:href, 'read') and mcrderivate:is-display-enabled(@xlink:href, 'export')]">
       <der id="{@xlink:href}">
-        <xsl:copy-of select="document(concat('xslStyle:mcr_directory-recursive:ifs:',@xlink:href,'/'))" />
+        <xsl:copy-of select="document(concat('xslStyle:mcr_directory-recursive#xsl:ifs:',@xlink:href,'/'))" />
       </der>
     </xsl:for-each>
   </xsl:variable>
