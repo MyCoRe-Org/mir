@@ -4,7 +4,7 @@
   xmlns:exslt="http://exslt.org/common"
   xmlns:mcrbasket="xalan://org.mycore.frontend.basket.MCRBasketManager"
   xmlns:mcri18n="xalan://org.mycore.services.i18n.MCRTranslation"
-  xmlns:mcrlayoututils="xalan:///org.mycore.frontend.MCRLayoutUtilities"
+  xmlns:mcrlayoututils="xalan://org.mycore.frontend.MCRLayoutUtilities"
   xmlns:mcrxml="xalan://org.mycore.common.xml.MCRXMLFunctions"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   exclude-result-prefixes="encoder exslt mcrbasket mcri18n mcrlayoututils mcrxml">

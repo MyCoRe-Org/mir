@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0"
-  xmlns:csl="http://purl.org/net/xbiblio/csl"
   xmlns:cmd="http://www.cdlib.org/inside/diglib/copyrightMD"
+  xmlns:csl="http://purl.org/net/xbiblio/csl"
   xmlns:exslt="http://exslt.org/common"
   xmlns:mcri18n="xalan://org.mycore.services.i18n.MCRTranslation"
   xmlns:mcrpiutil="xalan://org.mycore.pi.frontend.MCRIdentifierXSLUtils"
   xmlns:mods="http://www.loc.gov/mods/v3"
   xmlns:xlink="http://www.w3.org/1999/xlink"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  exclude-result-prefixes="csl cmd exslt mcri18n mcrpiutil mods xlink">
+  exclude-result-prefixes="cmd csl exslt mcri18n mcrpiutil mods xlink">
 
   <xsl:import href="xslImport:modsmeta:metadata/mir-citation.xsl" />
   <xsl:include href="mods-dc-meta.xsl"/>

@@ -13,14 +13,14 @@
   xmlns:mcrxml="xalan://org.mycore.common.xml.MCRXMLFunctions"
   xmlns:mods="http://www.loc.gov/mods/v3"
   xmlns:pc="http://www.d-nb.de/standards/pc/"
-  xmlns:urn="http://www.d-nb.de/standards/urn/"
   xmlns:thesis="http://www.ndltd.org/standards/metadata/etdms/1.0/"
+  xmlns:urn="http://www.d-nb.de/standards/urn/"
+  xmlns:xalan="http://xml.apache.org/xalan"
   xmlns:xlink="http://www.w3.org/1999/xlink"
   xmlns:xMetaDiss="http://www.d-nb.de/standards/xmetadissplus/"
-  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xmlns:xalan="http://xml.apache.org/xalan"
-  exclude-result-prefixes="cc cmd dc dcterms ddb dini exslt mcri18n mcrpiutil mcrxml mods pc thesis urn xalan xlink xsl"
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  exclude-result-prefixes="cc cmd dc dcterms ddb dini exslt mcracl mcri18n mcrpiutil mcrxml mods pc thesis urn xalan xlink xsl"
   xsi:schemaLocation="http://www.d-nb.de/standards/xmetadissplus/ http://files.dnb.de/standards/xmetadissplus/xmetadissplus.xsd">
 
   <xsl:output method="xml" encoding="UTF-8" />

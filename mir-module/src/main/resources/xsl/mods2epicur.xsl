@@ -6,8 +6,8 @@
   xmlns:urn="http://www.ddb.de/standards/urn"
   xmlns:xalan="http://xml.apache.org/xalan"
   xmlns:xlink="http://www.w3.org/1999/xlink"
-  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   exclude-result-prefixes="mcracl mods xalan xsl">
 
   <xsl:output method="xml" encoding="UTF-8" />

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0" 
   xmlns:java="http://xml.apache.org/xalan/java"
   xmlns:mab="http://www.ddb.de/professionell/mabxml/mabxml-1.xsd"
@@ -116,7 +116,7 @@
     </mods:note>
   </xsl:template>
 
-  <!-- RDA: Dissertation, Universität Duisburg-Essen, 2015 -->
+  <!-- RDA: Dissertation, UniversitÃ¤t Duisburg-Essen, 2015 -->
   <xsl:template match="mab:datafield[@tag='520']">
     <mods:note>
       <xsl:for-each select="mab:subfield[contains('bcd',@code)]">

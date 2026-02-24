@@ -5,7 +5,7 @@
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   exclude-result-prefixes="mcri18n xlink">
 
-<xsl:variable name="PageTitle" select="mcri18n:translate('selfRegistration.step.created.title')" />
+  <xsl:variable name="PageTitle" select="mcri18n:translate('selfRegistration.step.created.title')" />
 
   <xsl:template match="/new-author-created">
     <h1>

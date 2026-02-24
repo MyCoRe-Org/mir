@@ -6,7 +6,7 @@
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   exclude-result-prefixes="mcri18n mcrversion mcrxml xsl">
 
-<xsl:import href="resource:xsl/layout/mir-common-layout.xsl" />
+  <xsl:import href="resource:xsl/layout/mir-common-layout.xsl" />
 
   <xsl:template name="mir.navigation">
 

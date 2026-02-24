@@ -4,7 +4,7 @@
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   extension-element-prefixes="str">
 
-<xsl:template name="str:tokenize">
+  <xsl:template name="str:tokenize">
     <xsl:param name="string" select="''" />
     <xsl:param name="delimiters" select="' &#x9;&#xA;'" />
     <xsl:choose>

@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+<xsl:stylesheet version="1.0"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+
   <xsl:template match="mycoreobject">
-    <mycoreobject xmlns:xlink="http://www.w3.org/1999/xlink" >
+    <mycoreobject>
       <metadata>
         <def.modsContainer class="MCRMetaXML" heritable="false" notinherit="true">
           <modsContainer inherited="0">
@@ -15,4 +18,5 @@
       </metadata>    
     </mycoreobject>
   </xsl:template>
+
 </xsl:stylesheet>
