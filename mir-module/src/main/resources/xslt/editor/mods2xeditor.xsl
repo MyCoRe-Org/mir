@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0"
-  xmlns:mcri18n="xalan://org.mycore.services.i18n.MCRTranslation"
+  xmlns:mcri18n="http://www.mycore.de/xslt/i18n"
   xmlns:mcrmodsclass="xalan://org.mycore.mods.classification.MCRMODSClassificationSupport"
   xmlns:mirdateconverter="xalan://org.mycore.mir.date.MIRDateConverter"
   xmlns:mireditorutils="xalan://org.mycore.mir.editor.MIREditorUtils"
