@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0"
-  xmlns:mcri18n="xalan://org.mycore.services.i18n.MCRTranslation"
+  xmlns:mcri18n="http://www.mycore.de/xslt/i18n"
   xmlns:mir="http://www.mycore.de/mir"
-  xmlns:xalan="http://xml.apache.org/xalan"
   xmlns:xed="http://www.mycore.de/xeditor"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  exclude-result-prefixes="mcri18n mir xalan xsl">
+  exclude-result-prefixes="mcri18n mir xsl">
 
   <xsl:include href="resource:xsl/copynodes.xsl" />
 
