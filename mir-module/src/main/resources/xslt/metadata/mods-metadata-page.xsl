@@ -6,9 +6,8 @@
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   exclude-result-prefixes="mcracl mcri18n mcrproperty">
 
-  <xsl:include href="resource:xslt/functions/i18n.xsl" />
-  <xsl:include href="resource:xslt/functions/property.xsl" />
-  <xsl:include href="resource:xslt/functions/acl.xsl" />
+  <xsl:include href="resource:xslt/default-parameters.xsl" />
+  <xsl:include href="xslInclude:functions" />
 
   <xsl:param name="MIR.Layout.Top"/>
   <xsl:param name="MIR.Layout.End"/>
@@ -23,9 +22,6 @@
 
   <xsl:param name="MIR.CanonicalBaseURL" />
   <xsl:param name="MIR.Metadata.Admindata.ShowRealUserName"/>
-
-  <xsl:param name="WebApplicationBaseURL"/>
-  <xsl:param name="CurrentLang"/>
 
   <xsl:variable name="canViewSystembox" select="mcracl:check-permission(site/@ID, 'read-history')"/>
 
