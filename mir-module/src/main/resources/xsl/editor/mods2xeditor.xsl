@@ -13,7 +13,7 @@
   exclude-result-prefixes="mcri18n mcrmodsclass mireditorutils mirdateconverter mirmapper mcrpiutil mirvalidationhelper xlink">
 
   <xsl:include href="resource:xsl/copynodes.xsl" />
-  <xsl:include href="editor/mods-node-utils.xsl" />
+  <xsl:include href="resource:xsl/editor/mods-node-utils.xsl" />
 
   <xsl:param name="WebApplicationBaseURL" />
   <xsl:param name="MIR.PPN.DatabaseList" select="'gvk'" />
