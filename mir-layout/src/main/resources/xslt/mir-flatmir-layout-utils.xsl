@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0"
-  xmlns:mcri18n="xalan://org.mycore.services.i18n.MCRTranslation"
-  xmlns:mcrversion="xalan://org.mycore.common.MCRCoreVersion"
-  xmlns:mcrxml="xalan://org.mycore.common.xml.MCRXMLFunctions"
+<xsl:stylesheet version="3.0"
+  xmlns:mcracl="http://www.mycore.de/xslt/acl"
+  xmlns:mcri18n="http://www.mycore.de/xslt/i18n"
+  xmlns:mcrversion="http://www.mycore.de/xslt/mcrversion"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  exclude-result-prefixes="mcri18n mcrversion mcrxml xsl">
+  exclude-result-prefixes="#all">
 
-  <xsl:import href="resource:xsl/layout/mir-common-layout.xsl" />
+  <xsl:import href="resource:xslt/layout/mir-common-layout.xsl" />
 
   <xsl:template name="mir.navigation">
 
@@ -100,7 +100,7 @@
                 <xsl:when test="contains($isSearchAllowedForCurrentUser, 'true')">
                   <input name="owner" type="hidden" value="createdby:*" />
                 </xsl:when>
-                <xsl:when test="not(mcrxml:isCurrentUserGuestUser())">
+                <xsl:when test="not(mcracl:is-current-user-guest-user())">
                   <input name="owner" type="hidden" value="createdby:{$CurrentUser}" />
                 </xsl:when>
               </xsl:choose>
@@ -169,7 +169,7 @@
   </xsl:template>
 
   <xsl:template name="mir.powered_by">
-    <xsl:variable name="mcr_version" select="concat('MyCoRe ',mcrversion:getCompleteVersion())" />
+    <xsl:variable name="mcr_version" select="concat('MyCoRe ',mcrversion:complete-version())" />
     <div id="powered_by">
       <a href="http://www.mycore.de">
         <img src="{$WebApplicationBaseURL}mir-layout/images/mycore_logo_small_invert.png" title="{$mcr_version}" alt="powered by MyCoRe" />
