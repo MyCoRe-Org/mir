@@ -1,21 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0"
+<xsl:stylesheet version="3.0"
   xmlns:dc="http://purl.org/dc/elements/1.1/"
-  xmlns:exslt="http://exslt.org/common"
-  xmlns:mcrmodsclass="xalan://org.mycore.mods.classification.MCRMODSClassificationSupport"
-  xmlns:mcrxml="xalan://org.mycore.common.xml.MCRXMLFunctions"
+  xmlns:fn="http://www.w3.org/2005/xpath-functions"
+  xmlns:mcrclassification="http://www.mycore.de/xslt/classification"
+  xmlns:mcrmods="http://www.mycore.de/xslt/mods"
   xmlns:mods="http://www.loc.gov/mods/v3"
   xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/"
   xmlns:srw_dc="info:srw/schema/1/dc-schema"
-  xmlns:str="http://exslt.org/strings"
   xmlns:xlink="http://www.w3.org/1999/xlink"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  exclude-result-prefixes="exslt mcrmodsclass mcrxml mods srw_dc str xlink xsl">
+  exclude-result-prefixes="fn mcrclassification mcrmods mods srw_dc xlink xsl">
 
   <!-- xmlns:opf="http://www.idpf.org/2007/opf" -->
 
-  <xsl:param name="WebApplicationBaseURL" select="''" />
+  <xsl:include href="resource:xslt/default-parameters.xsl" />
+  <xsl:include href="xslInclude:functions" />
+
   <xsl:param name="MCR.URN.Resolver.MasterURL" select="''" />
   <xsl:param name="MCR.DOI.Resolver.MasterURL" select="''" />
   <!--
@@ -67,7 +68,7 @@
   </xsl:variable>
 
   <xsl:param name="MIR.dc.ignoredClassificationIds" select="'diniPublType2022'" />
-  <xsl:variable name="ignoredClassificationIds" select="str:tokenize($MIR.dc.ignoredClassificationIds,',')" />
+  <xsl:variable name="ignoredClassificationIds" select="fn:tokenize($MIR.dc.ignoredClassificationIds,',')" />
   <xsl:variable name="ignoredClassificationAuthorityURIs">
     <xsl:for-each select="$ignoredClassificationIds">
       <uri>
@@ -206,7 +207,7 @@
 
   <xsl:template match="mods:classification[@authorityURI=$diniPublTypeAuthorityURI]">
     <dc:type>
-      <xsl:value-of select="concat('doc-type:',substring-after(@valueURI,'#'))" />
+      <xsl:value-of select="concat('doc-type:',substring-after(@valueURI, '#'))" />
     </dc:type>
   </xsl:template>
 
@@ -214,10 +215,9 @@
     <xsl:variable name="authorityURI" select="@authorityURI" />
     <xsl:variable name="subject">
       <xsl:choose>
-        <xsl:when test="string-length($authorityURI)&gt;0">
-          <xsl:if test="not(exslt:node-set($ignoredClassificationAuthorityURIs)/uri[text()=$authorityURI])">
-            <xsl:variable name="classlink" select="mcrmodsclass:getClassCategLink(.)" />
-            <xsl:value-of select="document($classlink)/mycoreclass/categories/category/label/@text"/>
+        <xsl:when test="string-length($authorityURI) &gt; 0">
+          <xsl:if test="not($ignoredClassificationAuthorityURIs/uri = $authorityURI)">
+            <xsl:value-of select="mcrclassification:current-label-text(mcrmods:to-category(.))"/>
           </xsl:if>
         </xsl:when>
         <xsl:when test="@valueURI"><xsl:value-of select="substring-after(@valueURI, '#')"/></xsl:when>
@@ -520,11 +520,10 @@
   </xsl:template>
 
   <xsl:template match="mods:accessCondition[@type='use and reproduction' or @type='restriction on access']">
-    <xsl:variable name="licenseURI" select="mcrmodsclass:getClassCategLink(.)" />
+    <xsl:variable name="license" select="mcrmods:to-category(.)"/>
     <xsl:choose>
-      <xsl:when test="string-length($licenseURI) &gt; 0">
-        <xsl:variable name="license" select="document($licenseURI)" />
-        <xsl:variable name="licenseLink" select="$license//category/url/@xlink:href" />
+      <xsl:when test="$license">
+        <xsl:variable name="licenseLink" select="$license//url/@xlink:href" />
         <dc:rights>
           <xsl:choose>
             <xsl:when test="string-length($licenseLink) &gt; 0">
@@ -534,7 +533,7 @@
               <xsl:value-of select="$license//category/label[lang('en')]/@text" />
             </xsl:when>
             <xsl:otherwise>
-              <xsl:value-of select="mcrxml:getDisplayName($license/mycoreclass/@ID, $license//category/@ID)" />
+              <xsl:value-of select="mcrclassification:current-label-text($license)" />
             </xsl:otherwise>
           </xsl:choose>
         </dc:rights>
@@ -550,7 +549,7 @@
   <xsl:template match="mods:mods" mode="eu-repo-accessRights">
     <xsl:param name="objId" />
     <xsl:choose>
-      <xsl:when test="mcrxml:isWorldReadableComplete($objId)">
+      <xsl:when test="document(concat('userobjectrights:isWorldReadable:',$objId))/boolean = 'true'">
         <dc:rights>
           <xsl:text>info:eu-repo/semantics/openAccess</xsl:text>
         </dc:rights>
