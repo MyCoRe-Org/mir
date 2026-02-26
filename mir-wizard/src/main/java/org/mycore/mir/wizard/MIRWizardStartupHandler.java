@@ -159,7 +159,7 @@ public class MIRWizardStartupHandler implements MCRStartupHandler.AutoExecutable
             }
 
             String wizStylesheet = MCRConfiguration2.getString("MIR.Wizard.LayoutStylesheet")
-                .orElse("xsl/mir-wizard-layout.xsl");
+                .orElse("xslt/mir-wizard-layout.xsl");
             MCRConfiguration2.set("MCR.LayoutTransformerFactory.Default.Stylesheets", wizStylesheet);
             //disable ACL system
             //store for later use...

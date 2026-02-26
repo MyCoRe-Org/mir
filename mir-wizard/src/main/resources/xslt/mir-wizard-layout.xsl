@@ -1,17 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0"
-  xmlns:mcrversion="xalan://org.mycore.common.MCRCoreVersion"
+<xsl:stylesheet version="3.0"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  exclude-result-prefixes="mcrversion xsl">
+  xmlns:mcrproperty="http://www.mycore.de/xslt/property"
+  xmlns:mcrversion="http://www.mycore.de/xslt/version"
+  exclude-result-prefixes="#all">
 
   <xsl:output method="html" doctype-system="about:legacy-compat" indent="yes" omit-xml-declaration="yes" media-type="text/html" version="5" />
   <xsl:strip-space elements="*" />
 
-  <xsl:include href="layout-utils.xsl" />
-
-  <xsl:param name="CurrentLang" select="'de'" />
-  <xsl:param name="MIR.DefaultLayout.CSS" />
-  <xsl:param name="MIR.Layout.Theme" />
+  <xsl:include href="resource:xslt/default-parameters.xsl" />
+  <xsl:include href="xslInclude:functions" />
 
   <xsl:variable name="PageTitle" select="/*/@title" />
 
@@ -27,7 +25,7 @@
         </xsl:comment>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link href="{$WebApplicationBaseURL}assets/font-awesome/css/all.min.css" rel="stylesheet" />
-        <link href="{$WebApplicationBaseURL}rsc/sass/mir-layout/scss/{$MIR.Layout.Theme}-{$MIR.DefaultLayout.CSS}.css" rel="stylesheet" />
+        <link href="{$WebApplicationBaseURL}rsc/sass/mir-layout/scss/{mcrproperty:one('MIR.Layout.Theme')}-{mcrproperty:one('MIR.DefaultLayout.CSS'}.css" rel="stylesheet" />
 
         <script type="text/javascript" src="{$WebApplicationBaseURL}assets/jquery/jquery.min.js"></script>
         <script type="text/javascript" src="{$WebApplicationBaseURL}assets/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -48,7 +46,7 @@
           <div class="container">
             <div class="row">
               <div class="col-md-8">
-                <xsl:value-of select="concat('MyCoRe ',mcrversion:getCompleteVersion())" />
+                <xsl:value-of select="concat('MyCoRe ', mcrversion:complete-version())" />
                 <p>
                   Layout based on
                   <a href="http://getbootstrap.com/">Bootstrap</a>
