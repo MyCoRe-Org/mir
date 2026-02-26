@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0"
-  xmlns:mcri18n="xalan://org.mycore.services.i18n.MCRTranslation"
+<xsl:stylesheet version="3.0"
+  xmlns:mcri18n="http://www.mycore.de/xslt/i18n"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  exclude-result-prefixes="mcri18n">
+  exclude-result-prefixes="#all">
 
-  <xsl:param name="DefaultLang"/>
-  <xsl:param name="WebApplicationBaseURL"/>
-  <xsl:param name="ServletsBaseURL"/>
+  <xsl:include href="resource:xslt/default-parameters.xsl" />
+  <xsl:include href="xslInclude:functions" />
+
   <xsl:param name="MCR.mir-module.MailSender"/>
   <xsl:param name="MCR.NameOfProject"/>
+
   <xsl:variable name="newline" select="'&#xA;'"/>
 
   <xsl:template match="/">
@@ -27,24 +28,32 @@
     <subject>
       <xsl:choose>
         <xsl:when test="@disabled='false'">
-          <xsl:value-of select="mcri18n:translate('selfRegistration.step.disableUserChanged.email.user.enabled.subject')"/>
+          <xsl:value-of select="
+            mcri18n:translate('selfRegistration.step.disableUserChanged.email.user.enabled.subject')
+          " />
         </xsl:when>
         <xsl:otherwise>
-          <xsl:value-of select="mcri18n:translate('selfRegistration.step.disableUserChanged.email.user.disabled.subject')"/>
+          <xsl:value-of select="
+            mcri18n:translate('selfRegistration.step.disableUserChanged.email.user.disabled.subject')
+          " />
         </xsl:otherwise>
       </xsl:choose>
     </subject>
     <body>
-      <xsl:value-of select="mcri18n:translate('selfRegistration.user.contacting')"/>
+      <xsl:value-of select="mcri18n:translate('selfRegistration.user.contacting')" />
       <xsl:value-of select="$newline" />
       <xsl:value-of select="$newline"/>
 
       <xsl:choose>
         <xsl:when test="@disabled='false'">
-          <xsl:value-of select="mcri18n:translate('selfRegistration.step.disableUserChanged.email.user.enabled.info')"/>
+          <xsl:value-of select="
+            mcri18n:translate('selfRegistration.step.disableUserChanged.email.user.enabled.info')
+          "/>
         </xsl:when>
         <xsl:otherwise>
-          <xsl:value-of select="mcri18n:translate('selfRegistration.step.disableUserChanged.email.user.disabled.info')"/>
+          <xsl:value-of select="
+            mcri18n:translate('selfRegistration.step.disableUserChanged.email.user.disabled.info')
+          " />
         </xsl:otherwise>
       </xsl:choose>
       <xsl:value-of select="$newline"/>
@@ -66,11 +75,10 @@
         <xsl:value-of select="concat($ServletsBaseURL,'MCRUserServlet?action=show&amp;id=',@name,'@',@realm,$newline)"/>
         <xsl:value-of select="$newline"/>
       </xsl:if>
-
-
       <xsl:value-of select="$newline" />
       <xsl:value-of select="mcri18n:translate('selfRegistration.user.goodbye', $MCR.NameOfProject)"/>
       <xsl:value-of select="$newline" />
     </body>
   </xsl:template>
+
 </xsl:stylesheet>

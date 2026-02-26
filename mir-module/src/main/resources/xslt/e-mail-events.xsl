@@ -1,25 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0"
-  xmlns:mcrmodsclass="xalan://org.mycore.mods.classification.MCRMODSClassificationSupport"
-  xmlns:mcrxml="xalan://org.mycore.common.xml.MCRXMLFunctions"
+<xsl:stylesheet version="3.0"
+  xmlns:mcrmods="http://www.mycore.de/xslt/mods"
   xmlns:mods="http://www.loc.gov/mods/v3"
   xmlns:str="http://exslt.org/strings"
   xmlns:xlink="http://www.w3.org/1999/xlink"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  exclude-result-prefixes="mcrmodsclass mcrxml mods str xlink xsl">
+  exclude-result-prefixes="#all">
+
+  <xsl:include href="resource:xslt/default-parameters.xsl" />
+  <xsl:include href="xslInclude:functions" />
 
   <xsl:param name="action" />
-  <xsl:param name="CurrentUser" />
-  <xsl:param name="DefaultLang" />
   <xsl:param name="type" />
-  <xsl:param name="WebApplicationBaseURL" />
-  <xsl:param name="ServletsBaseURL" />
   <xsl:param name="MCR.mir-module.EditorMail" />
   <xsl:param name="MCR.mir-module.MailSender" />
   <xsl:param name="MCR.mir-module.sendEditorMailToCurrentAuthor" />
+
   <xsl:variable name="newline" select="'&#xA;'" />
   <xsl:variable name="categories" select="document('classification:metadata:1:children:mir_institutes')/mycoreclass/categories" />
-  <xsl:variable name="institutemember" select="$categories/category[mcrxml:isCurrentUserInRole(concat('mir_institutes:',@ID))]" />
+  <xsl:variable name="institute-member" select="
+    $categories/category[document(concat('userobjectrights:isCurrentUserInRole:mir_institutes', @ID))/boolean='true']
+  " />
 
   <xsl:template match="/">
     <xsl:message>
@@ -35,8 +36,21 @@
   </xsl:template>
 
   <xsl:template match="mycoreobject" mode="email">
+    <xsl:variable name="is-current-user-admin" select="
+      document('userobjectrights:isCurrentUserInRole:admin')/boolean='true'
+    " />
+    <xsl:variable name="is-current-user-editor" select="
+      document('userobjectrights:isCurrentUserInRole:editor')/boolean='true'
+    " />
+    <xsl:variable name="is-current-user-submitter" select="
+      document('userobjectrights:isCurrentUserInRole:submitter')/boolean='true'
+    " />
     <xsl:choose>
-      <xsl:when test="not(mcrxml:isCurrentUserInRole('editor') or mcrxml:isCurrentUserInRole('admin')) and mcrxml:isCurrentUserInRole('submitter') and ($action='create')">
+      <xsl:when test="
+        not($is-current-user-editor or $is-current-user-admin)
+        and $is-current-user-submitter
+        and ($action='create')
+      ">
         <!-- SEND EMAIL -->
         <xsl:apply-templates select="." mode="mailReceiver" />
         <subject>
@@ -73,7 +87,7 @@
               <xsl:value-of select="'Do not send mail as action is not create.'" />
             </xsl:message>
           </xsl:when>
-          <xsl:when test="not(mcrxml:isCurrentUserInRole('submitter'))">
+          <xsl:when test="not($is-current-user-submitter)">
             <xsl:message>
               <xsl:value-of select="concat('Do not send mail as current user ',$CurrentUser, ' is not in group creator.')" />
             </xsl:message>
@@ -94,7 +108,7 @@
 
   <xsl:template match="user" mode="output">
     <xsl:variable name="instNames">
-      <xsl:for-each select="$institutemember">
+      <xsl:for-each select="$institute-member">
         <xsl:variable name="selectLang">
           <xsl:call-template name="selectDefaultLang">
             <xsl:with-param name="nodes" select="./label" />
@@ -147,7 +161,7 @@
         <xsl:value-of select="$user/user/eMail"/>
       </to>
     </xsl:if>
-    <xsl:for-each select="$institutemember">
+    <xsl:for-each select="$institute-member">
       <xsl:choose>
         <xsl:when test="./@ID='Other'">
           <to>mir-test@trash-mail.com</to>
@@ -173,7 +187,7 @@
     <xsl:variable name="categurl">
       <xsl:if test="url">
         <xsl:choose>
-            <!-- MCRObjectID should not contain a ':' so it must be an external link then -->
+          <!-- MCRObjectID should not contain a ':' so it must be an external link then -->
           <xsl:when test="contains(url/@xlink:href,':')">
             <xsl:value-of select="url/@xlink:href" />
           </xsl:when>
@@ -202,12 +216,10 @@
   </xsl:template>
 
   <xsl:template match="*" mode="printModsClassInfo">
-    <xsl:variable name="classlink" select="mcrmodsclass:getClassCategLink(.)" />
+    <xsl:variable name="category" select="mcrmods:to-category(.)" />
     <xsl:choose>
-      <xsl:when test="string-length($classlink) &gt; 0">
-        <xsl:for-each select="document($classlink)/mycoreclass/categories/category">
-          <xsl:apply-templates select="." mode="printModsClassInfo" />
-        </xsl:for-each>
+      <xsl:when test="$category">
+        <xsl:apply-templates select="$category" mode="printModsClassInfo" />
       </xsl:when>
       <xsl:otherwise>
         <xsl:choose>
@@ -237,7 +249,7 @@
     <xsl:value-of select="concat(' (',@valueURI,')')" />
   </xsl:template>
 
-<!-- Names -->
+  <!-- Names -->
   <xsl:template match="mods:name" mode="printName">
     <xsl:choose>
       <xsl:when test="mods:namePart">
