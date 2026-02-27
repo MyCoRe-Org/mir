@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="3.0"
-  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:mcrproperty="http://www.mycore.de/xslt/property"
   xmlns:mcrversion="http://www.mycore.de/xslt/version"
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   exclude-result-prefixes="#all">
 
   <xsl:output method="html" doctype-system="about:legacy-compat" indent="yes" omit-xml-declaration="yes" media-type="text/html" version="5" />
@@ -25,7 +25,7 @@
         </xsl:comment>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link href="{$WebApplicationBaseURL}assets/font-awesome/css/all.min.css" rel="stylesheet" />
-        <link href="{$WebApplicationBaseURL}rsc/sass/mir-layout/scss/{mcrproperty:one('MIR.Layout.Theme')}-{mcrproperty:one('MIR.DefaultLayout.CSS'}.css" rel="stylesheet" />
+        <link href="{$WebApplicationBaseURL}rsc/sass/mir-layout/scss/{mcrproperty:one('MIR.Layout.Theme')}-{mcrproperty:one('MIR.DefaultLayout.CSS')}.css" rel="stylesheet" />
 
         <script type="text/javascript" src="{$WebApplicationBaseURL}assets/jquery/jquery.min.js"></script>
         <script type="text/javascript" src="{$WebApplicationBaseURL}assets/bootstrap/js/bootstrap.bundle.min.js"></script>
