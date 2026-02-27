@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="3.0"
+  xmlns:fn="http://www.w3.org/2005/xpath-functions"
   xmlns:mcrmods="http://www.mycore.de/xslt/mods"
   xmlns:mods="http://www.loc.gov/mods/v3"
-  xmlns:str="http://exslt.org/strings"
   xmlns:xlink="http://www.w3.org/1999/xlink"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   exclude-result-prefixes="#all">
@@ -151,7 +151,7 @@
 
   <xsl:template match="mycoreobject" mode="mailReceiver">
     <xsl:if test="string-length($MCR.mir-module.EditorMail)&gt;0">
-      <xsl:for-each select="str:tokenize($MCR.mir-module.EditorMail,',')" >
+      <xsl:for-each select="fn:tokenize($MCR.mir-module.EditorMail,',')" >
         <to> <xsl:value-of select="." /> </to>
       </xsl:for-each>
     </xsl:if>
