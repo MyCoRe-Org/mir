@@ -132,8 +132,13 @@
 
   <xsl:template match="mycoreobject" mode="output">
     <xsl:if test="./metadata/def.modsContainer/modsContainer/mods:mods/mods:titleInfo/mods:title">
-      <xsl:value-of
-        select="concat('Titel           : ',./metadata/def.modsContainer/modsContainer/mods:mods/mods:titleInfo/mods:title[1],$newline)" />
+      <xsl:value-of select="
+        concat(
+          'Titel           : ',
+          (./metadata/def.modsContainer/modsContainer/mods:mods/mods:titleInfo/mods:title)[1],
+          $newline
+        )
+      " />
     </xsl:if>
     <xsl:if test="./metadata/def.modsContainer/modsContainer/mods:mods/mods:name[mods:role/mods:roleTerm='aut']">
       <xsl:variable name="authors">
