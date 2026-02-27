@@ -62,20 +62,6 @@
     </xsl:choose>
   </xsl:template>
 
-  <!--
-    - nodeset with plain text content
-    -->
-  <xsl:template match="*" mode="asPlainTextNode">
-    <xsl:copy>
-      <xsl:apply-templates select="@*" />
-      <xsl:apply-templates mode="asPlainTextNode" />
-    </xsl:copy>
-  </xsl:template>
-
-  <xsl:template match="text()" mode="asPlainTextNode">
-    <xsl:value-of select="strutils:stripHtml(.)" />
-  </xsl:template>
-  
   <!-- 
     - nodeset to string serializer
     -->

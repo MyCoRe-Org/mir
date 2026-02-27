@@ -12,9 +12,9 @@
   exclude-result-prefixes="exslt mcr mcrid mcrmodsclass mcrpages mcrxml xlink">
 
   <xsl:include href="resource:xsl/copynodes.xsl" />
-  <xsl:include href="resource:xsl/editor/mods-node-utils.xsl" />
-  <xsl:include href="resource:xsl/mods-utils.xsl" />
-  <xsl:include href="resource:xsl/coreFunctions.xsl" />
+  <xsl:include href="resource:xslt/editor/mods-node-utils.xsl" />
+  <xsl:include href="resource:xslt/mods-utils.xsl" />
+  <xsl:include href="resource:xslt/coreFunctions.xsl" />
 
   <xsl:param name="MIR.PPN.DatabaseList" select="'gvk'" />
   <xsl:param name="MCR.Metadata.ObjectID.NumberPattern" select="00000000" />
@@ -51,56 +51,6 @@
       <xsl:apply-templates select="node()" />
     </xsl:copy>
   </xsl:template>
-  <!--
-  <xsl:template match="mods:titleInfo|mods:abstract">
-    <xsl:choose>
-      <xsl:when test="mcrxml:isHtml(mods:nonSort/text()) or mcrxml:isHtml(mods:title/text()) or mcrxml:isHtml(mods:subTitle/text()) or mcrxml:isHtml(text())">
-        <xsl:variable name="altRepGroup" select="generate-id(.)" />
-        <xsl:copy>
-          <xsl:attribute name="altRepGroup">
-            <xsl:value-of select="$altRepGroup" />
-          </xsl:attribute>
-          <xsl:apply-templates select="@*" />
-          <xsl:apply-templates mode="asPlainTextNode" />
-        </xsl:copy>
-        <xsl:element name="{name(.)}" namespace="{namespace-uri()}">
-          <xsl:variable name="content">
-            <xsl:apply-templates select="." mode="asXmlNode">
-              <xsl:with-param name="ns" select="''" />
-              <xsl:with-param name="serialize" select="false()" />
-              <xsl:with-param name="levels">
-                <xsl:choose>
-                  <xsl:when test="name() = 'mods:titleInfo'">
-                    <xsl:value-of select="2" />
-                  </xsl:when>
-                  <xsl:otherwise>
-                    <xsl:value-of select="1" />
-                  </xsl:otherwise>
-                </xsl:choose>
-              </xsl:with-param>
-            </xsl:apply-templates>
-          </xsl:variable>
-          <xsl:attribute name="altRepGroup">
-            <xsl:value-of select="$altRepGroup" />
-          </xsl:attribute>
-          <xsl:attribute name="altFormat">
-            <xsl:value-of select="mcrdataurl:build($content, 'base64', 'text/xml', 'utf-8')" />
-          </xsl:attribute>
-          <xsl:attribute name="contentType">
-            <xsl:value-of select="'text/xml'" />
-          </xsl:attribute>
-          <xsl:apply-templates select="@*" />
-        </xsl:element>
-      </xsl:when>
-      <xsl:otherwise>
-        <xsl:copy>
-          <xsl:apply-templates select="@*" />
-          <xsl:apply-templates />
-        </xsl:copy>
-      </xsl:otherwise>
-    </xsl:choose>
-  </xsl:template>
-  -->
 
   <!-- convert date-time with timezone to UTC -->
   <xsl:template match="mods:*[@encoding='w3cdtf' and contains(text(), 'T') and substring(text(), string-length(text())) != 'Z']">
