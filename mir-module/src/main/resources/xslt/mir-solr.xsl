@@ -165,12 +165,12 @@
     </xsl:for-each>
     <xsl:for-each select="mods:abstract[not(@altFormat)][1]">
       <field name="mods.abstract.result">
-        <xsl:value-of select="mcrstringutils:shorten(text(),300)" />
+        <xsl:value-of select="mcrstringutils:shorten(string(.),300)" />
       </field>
     </xsl:for-each>
     <xsl:for-each select="mods:abstract[not(@altFormat)][@xml:lang]">
       <field name="mods.abstract.result.{@xml:lang}">
-        <xsl:value-of select="mcrstringutils:shorten(text(),300)" />
+        <xsl:value-of select="mcrstringutils:shorten(string(.),300)" />
       </field>
     </xsl:for-each>
     <xsl:for-each select="mods:relatedItem[@xlink:href]">
