@@ -1,35 +1,33 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0"
+<xsl:stylesheet version="3.0"
   xmlns:cc="http://www.d-nb.de/standards/cc/"
   xmlns:cmd="http://www.cdlib.org/inside/diglib/copyrightMD"
   xmlns:dc="http://purl.org/dc/elements/1.1/"
   xmlns:dcterms="http://purl.org/dc/terms/"
   xmlns:ddb="http://www.d-nb.de/standards/ddb/"
   xmlns:dini="http://www.d-nb.de/standards/xmetadissplus/type/"
-  xmlns:exslt="http://exslt.org/common"
-  xmlns:mcracl="xalan://org.mycore.access.MCRAccessManager"
-  xmlns:mcri18n="xalan://org.mycore.services.i18n.MCRTranslation"
-  xmlns:mcrpiutil="xalan://org.mycore.pi.frontend.MCRIdentifierXSLUtils"
-  xmlns:mcrxml="xalan://org.mycore.common.xml.MCRXMLFunctions"
+  xmlns:fn="http://www.w3.org/2005/xpath-functions"
+  xmlns:mcracl="http://www.mycore.de/xslt/acl"
+  xmlns:mcri18n="http://www.mycore.de/xslt/i18n"
+  xmlns:mcrpi="http://www.mycore.de/xslt/pi"
   xmlns:mods="http://www.loc.gov/mods/v3"
   xmlns:pc="http://www.d-nb.de/standards/pc/"
   xmlns:thesis="http://www.ndltd.org/standards/metadata/etdms/1.0/"
   xmlns:urn="http://www.d-nb.de/standards/urn/"
-  xmlns:xalan="http://xml.apache.org/xalan"
   xmlns:xlink="http://www.w3.org/1999/xlink"
   xmlns:xMetaDiss="http://www.d-nb.de/standards/xmetadissplus/"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  exclude-result-prefixes="cc cmd dc dcterms ddb dini exslt mcracl mcri18n mcrpiutil mcrxml mods pc thesis urn xalan xlink xsl"
+  exclude-result-prefixes="cc cmd dc dcterms ddb dini fn mcracl mcri18n mcrpi mods pc thesis urn xlink xsl"
   xsi:schemaLocation="http://www.d-nb.de/standards/xmetadissplus/ http://files.dnb.de/standards/xmetadissplus/xmetadissplus.xsd">
 
   <xsl:output method="xml" encoding="UTF-8" />
+  
+  <xsl:include href="resource:xslt/default-parameters.xsl" />
+  <xsl:include href="xslInclude:functions" />
+  <xsl:include href="resource:xslt/mods2record.xsl" />
+  <xsl:include href="resource:xslt/utils/mods-utils.xsl" />
 
-  <xsl:include href="resource:xsl/mods2record.xsl" />
-  <xsl:include href="resource:xsl/mods-utils.xsl" />
-
-  <xsl:param name="ServletsBaseURL" select="''" />
-  <xsl:param name="WebApplicationBaseURL" select="''" />
   <xsl:param name="MCR.OAIDataProvider.RepositoryPublisherName" select="''" />
   <xsl:param name="MCR.OAIDataProvider.RepositoryPublisherPlace" select="''" />
   <xsl:param name="MCR.OAIDataProvider.RepositoryPublisherAddress" select="''" />
@@ -95,30 +93,27 @@
     </xsl:choose>
   </xsl:variable>
   
-  <xsl:variable name="ifsTemp">
-    <xsl:for-each select="mycoreobject/structure/derobjects/derobject[mcracl:checkDerivateContentPermission(@xlink:href, 'read')]">
+  <xsl:variable name="ifs">
+    <xsl:for-each select="mycoreobject/structure/derobjects/derobject[mcracl:check-permission(@xlink:href, 'read')]">
       <der id="{@xlink:href}">
-        <xsl:copy-of select="document(concat('xslStyle:mcr_directory-recursive#xsl:ifs:',@xlink:href,'/'))" />
+        <xsl:copy-of select="document(concat('xslStyle:mcr_directory-recursive:ifs:',@xlink:href,'/'))" />
       </der>
     </xsl:for-each>
   </xsl:variable>
-  <xsl:variable name="ifs" select="xalan:nodeset($ifsTemp)" />
 
-  <xsl:variable name="repositoryPublisherTmp">
+  <xsl:variable name="repositoryPublisher">
     <xsl:call-template name="repositoryPublisher" /> 
   </xsl:variable>
-  <xsl:variable name="repositoryPublisher" select="exslt:node-set($repositoryPublisherTmp)"/>
   
-  <xsl:variable name="publisherTmp">
+  <xsl:variable name="publisher">
     <xsl:call-template name="publisher"/>
   </xsl:variable>
-  <xsl:variable name="publisher" select="exslt:node-set($publisherTmp)"/>
   
   <xsl:variable name="degree">
     <xsl:call-template name="degree" /> 
   </xsl:variable>
   
-  <xsl:variable name="mods_periodicalTmp">
+  <xsl:variable name="mods_periodical">
     <xsl:choose>
       <xsl:when test="$mods/mods:relatedItem[(@type='host' and (contains(mods:genre/@valueURI,'#journal') or contains(mods:genre/@valueURI,'#series'))) or @type='series']">
         <xsl:copy-of select="$mods/mods:relatedItem[(@type='host' and (contains(mods:genre/@valueURI,'#journal') or contains(mods:genre/@valueURI,'#series'))) or @type='series']"/>
@@ -128,7 +123,6 @@
       </xsl:when>
     </xsl:choose>
   </xsl:variable>
-  <xsl:variable name="mods_periodical" select="exslt:node-set($mods_periodicalTmp)"/>
 
   <xsl:template match="mycoreobject" mode="metadata">
     <xsl:text disable-output-escaping="yes">
@@ -671,7 +665,7 @@
         <xsl:variable name="place" select="$cat/label[@xml:lang='x-place']/@text" />
         <xsl:choose>
           <xsl:when test="$place">
-            <xsl:variable name="placeSet" select="xalan:tokenize(string($place),'|')" />
+            <xsl:variable name="placeSet" select="tokenize(string($place),'|')" />
             <xsl:variable name="address">
               <xsl:choose>
                 <xsl:when test="$placeSet[3]">
@@ -832,8 +826,7 @@
   </xsl:template>
 
   <xsl:template mode="preferredURN" match="mods:mods">
-    <xsl:variable name="unmanagedURN"
-                  select="mods:identifier[@type='urn' and starts-with(text(), 'urn:nbn') and not(mcrpiutil:isManagedPI(text(), /mycoreobject/@ID))]" />
+    <xsl:variable name="unmanagedURN" select="mods:identifier[@type='urn' and starts-with(., 'urn:nbn') and not(mcrpi:is-managed-pi(text(), /mycoreobject/@ID))]"/>
     <xsl:choose>
       <xsl:when test="$unmanagedURN">
         <xsl:value-of select="$unmanagedURN[1]" />
@@ -845,8 +838,7 @@
   </xsl:template>
 
   <xsl:template mode="preferredDOI" match="mods:mods">
-    <xsl:variable name="unmanagedDOI"
-                  select="mods:identifier[@type='doi' and not(mcrpiutil:isManagedPI(text(), /mycoreobject/@ID))]" />
+    <xsl:variable name="unmanagedDOI" select="mods:identifier[@type='doi' and not(mcrpi:is-managed-pi(text(), /mycoreobject/@ID))]"/>
     <xsl:choose>
       <xsl:when test="$unmanagedDOI">
         <xsl:value-of select="$unmanagedDOI[1]" />
@@ -879,11 +871,11 @@
   <xsl:template name="relatedItem2source" >      
     <xsl:for-each select="$mods/mods:relatedItem[@type='host' or @type='series']">
       <xsl:variable name="hosttitel" select="mods:titleInfo/mods:title" />
-      <xsl:variable name="issue" select="mods:part/mods:detail[@type='issue']/mods:number" />
-      <xsl:variable name="volume" select="mods:part/mods:detail[@type='volume']/mods:number" />
-      <xsl:variable name="startPage" select="mods:part/mods:extent[@unit='pages']/mods:start" />
-      <xsl:variable name="endPage" select="mods:part/mods:extent[@unit='pages']/mods:end" />
-      <xsl:variable name="issn" select="mods:identifier[@type='issn']" />
+      <xsl:variable name="issue" select="(mods:part/mods:detail[@type='issue']/mods:number)[1]" />
+      <xsl:variable name="volume" select="(mods:part/mods:detail[@type='volume']/mods:number)[1]" />
+      <xsl:variable name="startPage" select="(mods:part/mods:extent[@unit='pages']/mods:start)[1]" />
+      <xsl:variable name="endPage" select="(mods:part/mods:extent[@unit='pages']/mods:end)[1]" />
+      <xsl:variable name="issn" select="(mods:identifier[@type='issn'])[1]" />
       <xsl:variable name="volume2">
         <xsl:if test="string-length($volume) &gt; 0">
           <xsl:value-of select="concat('(',$volume,')')" />
@@ -1079,7 +1071,7 @@
               </xsl:when>
               <xsl:otherwise>
                 <xsl:comment>value of dc:publisher</xsl:comment>
-                <xsl:copy-of select="xalan:nodeset($repositoryPublisher)/dc:publisher/cc:universityOrInstitution/*" />
+                <xsl:copy-of select="$repositoryPublisher/dc:publisher/cc:universityOrInstitution/*" />
               </xsl:otherwise>
             </xsl:choose>
           </cc:universityOrInstitution>
@@ -1110,8 +1102,7 @@
             <xsl:variable name="derId" select="substring-before(substring-after($uri,':/'), ':')" />
             <xsl:variable name="filePath" select="substring-after(substring-after($uri, ':'), ':')" />
             <!-- DNB requires ASCII-only URLs -->
-            <xsl:value-of select="concat($ServletsBaseURL,'MCRFileNodeServlet/', $derId,
-             mcrxml:encodeURIPath(mcrxml:decodeURIPath($filePath), true()))" />
+            <xsl:value-of select="concat($ServletsBaseURL,'MCRFileNodeServlet/', $derId, fn:iri-to-uri($filePath))" />
           </xsl:when>
           <xsl:otherwise>
             <xsl:choose>
@@ -1154,7 +1145,7 @@
   <xsl:template name="rights">
     <xsl:param name="derivateID" />
     <xsl:choose>
-      <xsl:when test="mcracl:checkPermission($derivateID,'read') and $MIR.xMetaDissPlus.rights.rightsReserved2free = 'true' ">
+      <xsl:when test="mcracl:check-permission($derivateID,'read') and $MIR.xMetaDissPlus.rights.rightsReserved2free = 'true' ">
         <ddb:rights ddb:kind="free" />
       </xsl:when>
       <xsl:otherwise>
@@ -1183,7 +1174,7 @@
     <xsl:param name="derivateID" />
     <xsl:variable name="mods" select="metadata/def.modsContainer/modsContainer/mods:mods" />
     <xsl:choose>
-      <xsl:when test="mcracl:checkPermission($derivateID,'read')">
+      <xsl:when test="mcracl:check-permission($derivateID,'read')">
         <ddb:licence ddb:licenceType="access">OA</ddb:licence>
       </xsl:when>
       <xsl:otherwise>
