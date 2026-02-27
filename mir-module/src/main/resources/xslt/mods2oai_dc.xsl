@@ -1,31 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0"
+<xsl:stylesheet version="3.0"
   xmlns:dc="http://purl.org/dc/elements/1.1/"
-  xmlns:mcracl="xalan://org.mycore.access.MCRAccessManager"
+  xmlns:mcracl="http://www.mycore.de/xslt/acl"
   xmlns:mods="http://www.loc.gov/mods/v3"
   xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/"
-  xmlns:xalan="http://xml.apache.org/xalan"
   xmlns:xlink="http://www.w3.org/1999/xlink"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  exclude-result-prefixes="mcracl mods xalan xlink xsl">
+  exclude-result-prefixes="mcracl mods xlink xsl">
 
-  <xsl:param name="ServletsBaseURL" select="''" />
+  <xsl:include href="resource:xslt/default-parameters.xsl" />
+  <xsl:include href="xslInclude:functions" />
+  <xsl:include href="resource:xslt/includes/mods2dc.xsl" />
+  <xsl:include href="resource:xslt/mods2record.xsl" />
+  <xsl:include href="resource:xslt/utils/mods-utils.xsl" />
 
-  <xsl:include href="resource:xsl/mods2dc.xsl" />
-  <xsl:include href="resource:xsl/mods2record.xsl" />
-  <xsl:include href="resource:xsl/mods-utils.xsl" />
+  <xsl:template match="mycoreobject" mode="metadata">
 
-<xsl:template match="mycoreobject" mode="metadata">
-
-  <xsl:variable name="ifsTemp">
-    <xsl:for-each select="structure/derobjects/derobject[mcracl:checkDerivateContentPermission(@xlink:href, 'read')]">
+  <xsl:variable name="ifs">
+    <xsl:for-each select="structure/derobjects/derobject[mcracl:check-permission(@xlink:href, 'read')]">
       <der id="{@xlink:href}">
-        <xsl:copy-of select="document(concat('xslStyle:mcr_directory-recursive#xsl:ifs:',@xlink:href,'/'))" />
+        <xsl:copy-of select="document(concat('xslStyle:mcr_directory-recursive:ifs:',@xlink:href,'/'))" />
       </der>
     </xsl:for-each>
   </xsl:variable>
-  <xsl:variable name="ifs" select="xalan:nodeset($ifsTemp)" />
 
   <xsl:variable name="objId" select="@ID" />
 
