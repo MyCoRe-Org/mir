@@ -8,6 +8,9 @@
 
   <xsl:include href="resource:xsl/copynodes.xsl" />
 
+  <xsl:include href="default-parameters.xsl" />
+  <xsl:include href="xslInclude:functions" />
+
   <xsl:variable name="institutesURI">
     <xsl:choose>
       <xsl:when test="string-length(document('classification:metadata:0:children:mir_institutes')/mycoreclass/label[lang('x-uri')]/@text) &gt; 0">
