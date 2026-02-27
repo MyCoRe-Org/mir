@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="2.0"
-  xmlns:mcri18n="xalan://org.mycore.services.i18n.MCRTranslation"
+<xsl:stylesheet version="3.0"
+  xmlns:mcri18n="http://www.mycore.de/xslt/i18n"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  exclude-result-prefixes="mcri18n">
+  exclude-result-prefixes="#all">
 
-  <xsl:param name="DefaultLang"/>
-  <xsl:param name="WebApplicationBaseURL"/>
-  <xsl:param name="ServletsBaseURL"/>
+  <xsl:include href="resource:xslt/default-parameters.xsl" />
+  <xsl:include href="xslInclude:functions" />
+
   <xsl:param name="MCR.mir-module.NewUserMail"/>
   <xsl:param name="MCR.mir-module.MailSender"/>
   <xsl:param name="MIR.SelfRegistration.EmailVerification.setDisabled"/>
   <xsl:param name="MIR.SelfRegistration.DisabledStatus.UnlockViaAdminLink"/>
+
   <xsl:variable name="newline" select="'&#xA;'"/>
 
   <xsl:template match="/">
@@ -27,7 +28,9 @@
       <xsl:value-of select="$MCR.mir-module.NewUserMail"/>
     </to>
     <subject>
-      <xsl:value-of select="mcri18n:translate('selfRegistration.step.verified.email.admin.subject', concat(@name,' (',@realm,')'))"/>
+      <xsl:value-of select="
+        mcri18n:translate('selfRegistration.step.verified.email.admin.subject', concat(@name,' (',@realm,')'))
+      " />
     </subject>
     <body>
       <xsl:value-of select="mcri18n:translate('selfRegistration.step.verified.email.admin.info')"/>
@@ -50,22 +53,47 @@
       <xsl:value-of select="$newline"/>
 
       <xsl:choose>
-        <xsl:when
-          test="($MIR.SelfRegistration.EmailVerification.setDisabled = 'true' or  $MIR.SelfRegistration.EmailVerification.setDisabled = 'TRUE')
-                  and ($MIR.SelfRegistration.DisabledStatus.UnlockViaAdminLink = 'false' or $MIR.SelfRegistration.DisabledStatus.UnlockViaAdminLink = 'FALSE')">
+        <xsl:when test="
+          (
+            $MIR.SelfRegistration.EmailVerification.setDisabled = 'true'
+            or  $MIR.SelfRegistration.EmailVerification.setDisabled = 'TRUE'
+          )
+          and (
+            $MIR.SelfRegistration.DisabledStatus.UnlockViaAdminLink = 'false'
+            or $MIR.SelfRegistration.DisabledStatus.UnlockViaAdminLink = 'FALSE'
+          )
+        ">
           <xsl:value-of select="mcri18n:translate('selfRegistration.step.verified.email.admin.info.forDisabled')"/>
           <xsl:value-of select="$newline"/>
         </xsl:when>
-        <xsl:when
-          test="($MIR.SelfRegistration.EmailVerification.setDisabled = 'true' or  $MIR.SelfRegistration.EmailVerification.setDisabled = 'TRUE')
-                  and ($MIR.SelfRegistration.DisabledStatus.UnlockViaAdminLink = 'true' or $MIR.SelfRegistration.DisabledStatus.UnlockViaAdminLink = 'TRUE')">
-          <xsl:value-of select="mcri18n:translate('selfRegistration.step.verified.email.admin.info.forDisabled.UnlockViaAdminLink')"/>
+        <xsl:when test="
+          (
+            $MIR.SelfRegistration.EmailVerification.setDisabled = 'true'
+            or  $MIR.SelfRegistration.EmailVerification.setDisabled = 'TRUE'
+          )
+          and (
+            $MIR.SelfRegistration.DisabledStatus.UnlockViaAdminLink = 'true'
+            or $MIR.SelfRegistration.DisabledStatus.UnlockViaAdminLink = 'TRUE'
+          )
+        ">
+          <xsl:value-of select="
+            mcri18n:translate('selfRegistration.step.verified.email.admin.info.forDisabled.UnlockViaAdminLink')
+          "/>
           <xsl:value-of select="$newline" />
-          <xsl:value-of
-            select="concat($ServletsBaseURL, 'MirSelfRegistrationServlet?action=changeDisableUserStatus&amp;user=', @name, '&amp;realm=',@realm, '&amp;disabled=false')" />
+          <xsl:value-of select="
+            concat(
+              $ServletsBaseURL,
+              'MirSelfRegistrationServlet?action=changeDisableUserStatus&amp;user=',
+              @name,
+              '&amp;realm=',
+              @realm,
+              '&amp;disabled=false'
+            )
+          " />
           <xsl:value-of select="$newline" />
         </xsl:when>
       </xsl:choose>
     </body>
   </xsl:template>
+
 </xsl:stylesheet>
