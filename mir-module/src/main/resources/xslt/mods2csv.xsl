@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0"
+<xsl:stylesheet version="3.0"
   xmlns:mods="http://www.loc.gov/mods/v3"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  exclude-result-prefixes="">
+  exclude-result-prefixes="#all">
 
   <xsl:param name="CurrentLang" />
 
@@ -32,12 +32,12 @@
   <xsl:template name="convertToCsv">
     <!-- Titel --><!-- TODO: [@type!='translated' and @transliteration!='text/html'] -->
     <xsl:call-template name="convertStringToCsv">
-      <xsl:with-param name="cstring" select="mods:titleInfo/mods:title" />
+      <xsl:with-param name="cstring" select="(mods:titleInfo/mods:title)[1]" />
     </xsl:call-template>
 
     <!-- Nebensachtitel --><!-- TODO: [@type!='translated' and @transliteration!='text/html'] -->
     <xsl:call-template name="convertStringToCsv">
-      <xsl:with-param name="cstring" select="mods:titleInfo/mods:subTitle" />
+      <xsl:with-param name="cstring" select="(mods:titleInfo/mods:subTitle)[1]" />
     </xsl:call-template>
 
     <!-- Autoren -->
@@ -72,7 +72,7 @@
 
     <!-- Titel des Elternelementes -->
     <xsl:call-template name="convertStringToCsv">
-      <xsl:with-param name="cstring" select="mods:relatedItem[@type='host']/mods:titleInfo/mods:title" />
+      <xsl:with-param name="cstring" select="(mods:relatedItem[@type='host']/mods:titleInfo/mods:title)[1]" />
     </xsl:call-template>
 
     <!-- Autoren  des Elternelementes - XPath prüfen! -->
@@ -87,17 +87,17 @@
 
     <!-- Konferenz -->
     <xsl:call-template name="convertStringToCsv">
-      <xsl:with-param name="cstring" select=".//mods:name[@type='conference']/mods:namePart[not(@type)]" />
+      <xsl:with-param name="cstring" select="(.//mods:name[@type='conference']/mods:namePart[not(@type)])[1]" />
     </xsl:call-template>
 
     <!-- Konferenz-Zeitraum -->
     <xsl:call-template name="convertStringToCsv">
-      <xsl:with-param name="cstring" select=".//mods:name[@type='conference']/mods:namePart[@type='date']" />
+      <xsl:with-param name="cstring" select="(.//mods:name[@type='conference']/mods:namePart[@type='date'])[1]" />
     </xsl:call-template>
 
     <!-- Veranstaltungsort -->
     <xsl:call-template name="convertStringToCsv">
-      <xsl:with-param name="cstring" select=".//mods:name[@type='conference']/mods:affiliation" />
+      <xsl:with-param name="cstring" select="(.//mods:name[@type='conference']/mods:affiliation)[1]" />
     </xsl:call-template>
 
     <!-- Genre -->
@@ -142,44 +142,44 @@
 
     <!-- Bandangaben -->
     <xsl:call-template name="convertStringToCsv">
-      <xsl:with-param name="cstring" select="mods:relatedItem[@type='host']/mods:part/mods:detail[@type='volume']" />
+      <xsl:with-param name="cstring" select="(mods:relatedItem[@type='host']/mods:part/mods:detail[@type='volume'])[1]" />
     </xsl:call-template>
 
     <!-- Identifier (ISSN,ISBN,URL?) -->
     <xsl:call-template name="convertStringToCsv">
-      <xsl:with-param name="cstring" select="mods:relatedItem[@type='host']/mods:identifier[@type='issn' or @type='isbn']" />
+      <xsl:with-param name="cstring" select="(mods:relatedItem[@type='host']/mods:identifier[@type='issn' or @type='isbn'])[1]" />
     </xsl:call-template>
 
     <!-- URN --><!-- only show own urn, not of host -->
     <xsl:call-template name="convertStringToCsv">
-      <xsl:with-param name="cstring" select=".//mods:identifier[@type='urn']" />
+      <xsl:with-param name="cstring" select="(.//mods:identifier[@type='urn'])[1]" />
     </xsl:call-template>
 
     <!-- DOI --><!-- only show own urn, not of host -->
     <xsl:call-template name="convertStringToCsv">
-      <xsl:with-param name="cstring" select=".//mods:identifier[@type='doi']" />
+      <xsl:with-param name="cstring" select="(.//mods:identifier[@type='doi'])[1]" />
     </xsl:call-template>
 
     <!-- Verlag -->
     <xsl:call-template name="convertStringToCsv">
-      <xsl:with-param name="cstring" select=".//mods:originInfo/mods:publisher" />
+      <xsl:with-param name="cstring" select="(.//mods:originInfo/mods:publisher)[1]" />
     </xsl:call-template>
 
     <!-- Verlagsort -->
     <xsl:call-template name="convertStringToCsv">
-      <xsl:with-param name="cstring" select=".//mods:originInfo/mods:place/mods:placeTerm[@type='text']" />
+      <xsl:with-param name="cstring" select="(.//mods:originInfo/mods:place/mods:placeTerm[@type='text'])[1]" />
     </xsl:call-template>
 
     <!-- Jahr der Veröffentlichung -->
     <xsl:choose>
       <xsl:when test="mods:originInfo/mods:dateIssued">
         <xsl:call-template name="convertStringToCsv">
-          <xsl:with-param name="cstring" select="mods:originInfo/mods:dateIssued" />
+          <xsl:with-param name="cstring" select="(mods:originInfo/mods:dateIssued)[1]" />
         </xsl:call-template>
       </xsl:when>
       <xsl:otherwise>
         <xsl:call-template name="convertStringToCsv">
-          <xsl:with-param name="cstring" select="mods:relatedItem[@type='host']/mods:originInfo/mods:dateIssued" />
+          <xsl:with-param name="cstring" select="(mods:relatedItem[@type='host']/mods:originInfo/mods:dateIssued)[1]" />
         </xsl:call-template>
       </xsl:otherwise>
     </xsl:choose>
