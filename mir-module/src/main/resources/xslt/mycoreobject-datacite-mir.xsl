@@ -16,13 +16,10 @@
   xmlns:xlink="http://www.w3.org/1999/xlink"
   exclude-result-prefixes="datacite fn mcrmods mods xlink xsl">
 
-  <xsl:include href="utils/mods-utils.xsl" />
-  <xsl:include href="functions/mods.xsl" />
+  <xsl:include href="resource:xslt/utils/mods-utils.xsl" />
 
   <xsl:output method="xml" encoding="UTF-8" indent="yes" />
   <xsl:mode name="strip-to-default-ns" on-no-match="shallow-copy"/>
-
-  <xsl:param name="WebApplicationBaseURL" />
 
   <xsl:param name="MCR.Metadata.DefaultLang" />
 
