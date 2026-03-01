@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0"
+<xsl:stylesheet version="3.0"
   xmlns:mods="http://www.loc.gov/mods/v3"
-  xmlns:xalan="http://xml.apache.org/xalan"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  exclude-result-prefixes="xalan">
+  exclude-result-prefixes="mods xsl">
 
   <xsl:param name="MCR.DOI.Resolver.MasterURL" select="''" />
   <xsl:param name="MCR.URN.Resolver.MasterURL" select="''" />
@@ -38,8 +37,7 @@
         </xsl:for-each>
       </lines>
     </xsl:variable>
-    <xsl:variable name="allPicaLines" select="xalan:nodeset($all)" />
-    <xsl:apply-templates select="$allPicaLines/lines/line" mode="sorted">
+    <xsl:apply-templates select="$all/lines/line" mode="sorted">
       <xsl:sort select="text()" />
     </xsl:apply-templates>
 
@@ -133,7 +131,7 @@
         </xsl:when>
       </xsl:choose>
       <xsl:if test="../mods:name[@type='personal']/mods:displayForm">
-        <xsl:value-of select="concat('  [', ../mods:name[@type='personal']/mods:displayForm[1], ']')" />
+        <xsl:value-of select="concat('  [', (../mods:name[@type='personal']/mods:displayForm)[1], ']')" />
       </xsl:if>
     </line>
   </xsl:template>
