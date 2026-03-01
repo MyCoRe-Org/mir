@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="2.0"
+<xsl:stylesheet version="3.0"
   xmlns:marc="http://www.loc.gov/MARC21/slim"
   xmlns:mcrmods="http://www.mycore.de/xslt/mods"
   xmlns:mirmarc="http://www.mycore.de/xslt/mirmarc"

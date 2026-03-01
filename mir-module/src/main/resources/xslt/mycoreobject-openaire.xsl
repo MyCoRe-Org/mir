@@ -11,7 +11,10 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   exclude-result-prefixes="array mods openaire_utils xs xsl">
 
-  <xsl:import href="resource:/xslt/mycoreobject-datacite-mir.xsl"/>
+  <xsl:include href="resource:xslt/default-parameters.xsl" />
+  <xsl:include href="xslInclude:functions" />
+  <xsl:import href="resource:xslt/mycoreobject-datacite-mir.xsl"/>
+
   <xsl:output method="xml" indent="yes" encoding="UTF-8"/>
 
   <xsl:param name="MIR.OpenAIRE.ResourceType.Literature.MODSTypes"/>
