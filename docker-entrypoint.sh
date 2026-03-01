@@ -23,6 +23,7 @@ if [ "$EUID" -eq 0 ]
       fixDirectoryRights "$MCR_CONFIG_DIR" "mcr"
       fixDirectoryRights "$MCR_DATA_DIR" "mcr"
       fixDirectoryRights "$MCR_LOG_DIR" "mcr"
+      fixDirectoryRights "$MCR_OVERRIDE_DIR" "mcr"
     fi
     exec gosu mcr "$0"
     exit 0;
@@ -211,6 +212,15 @@ function setDockerValues() {
 
       setOrAddProperty "$key" "$value"
     done
+
+    # set developer mode properties in developermode
+    if [ "$DEVELOPER_MODE" = "true" ]; then
+      setOrAddProperty "MCR.Developer.Resource.Override" "/mcr/override/"
+      setOrAddProperty "MCR.LayoutService.LastModifiedCheckPeriod" "0"
+      setOrAddProperty "MCR.UseXSLTemplateCache" "false"
+      setOrAddProperty "MCR.SASS.DeveloperMode" "true"
+      setOrAddProperty "MCR.CLI.Classes.Internal" "%MCR.CLI.Classes.Internal%,org.mycore.frontend.cli.MCRDeveloperCommands"
+    fi
 
     rm -f "${PERSISTENCE_XML}"
 }
