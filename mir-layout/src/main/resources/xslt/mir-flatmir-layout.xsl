@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0"
-  xmlns:mcri18n="xalan://org.mycore.services.i18n.MCRTranslation"
-  xmlns:xlink="http://www.w3.org/1999/xlink"
+<xsl:stylesheet version="3.0"
+  xmlns:mcri18n="http://www.mycore.de/xslt/i18n"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  exclude-result-prefixes="mcri18n xlink">
+  exclude-result-prefixes="#all">
 
-  <xsl:output method="html" indent="yes" omit-xml-declaration="yes" media-type="text/html"
-    version="5" />
+  <xsl:output method="html" indent="yes" media-type="text/html" version="5" />
   <xsl:strip-space elements="*" />
-  <xsl:include href="resource:xsl/mir-cosmol-layout-utils.xsl"/>
+  <xsl:include href="resource:xslt/default-parameters.xsl" />
+  <xsl:include href="xslInclude:functions" />
+
+  <xsl:include href="resource:xslt/mir-flatmir-layout-utils.xsl"/>
+  <xsl:include href="resource:xslt/mir-flatmir-layout-meta-tags.xsl"/>
   <xsl:param name="MIR.DefaultLayout.CSS" />
   <xsl:param name="MIR.CustomLayout.CSS" select="''" />
   <xsl:param name="MIR.CustomLayout.JS" select="''" />
@@ -22,6 +24,7 @@
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+        <xsl:call-template name="mir-flatmir-layout-meta-tags"/>
         <title>
           <xsl:value-of select="$PageTitle" />
         </title>
@@ -30,7 +33,6 @@
         <script src="{$WebApplicationBaseURL}mir-layout/assets/jquery/plugins/jquery-migrate/jquery-migrate.min.js"></script>
         <xsl:copy-of select="head/*" />
         <link href="{$WebApplicationBaseURL}rsc/sass/mir-layout/scss/{$MIR.Layout.Theme}-{$MIR.DefaultLayout.CSS}.css" rel="stylesheet" />
-        <script type="text/javascript" src ="{$WebApplicationBaseURL}mir-layout/js/cosmol.js"></script>
         <xsl:if test="string-length($MIR.CustomLayout.CSS) &gt; 0">
           <link href="{$WebApplicationBaseURL}css/{$MIR.CustomLayout.CSS}" rel="stylesheet" />
         </xsl:if>
@@ -48,7 +50,7 @@
         </xsl:if>
 
         <header>
-          <xsl:call-template name="mir.header" />
+          <xsl:call-template name="mir.navigation" />
           <noscript>
             <div class="mir-no-script alert alert-warning text-center" style="border-radius: 0;">
               <xsl:value-of select="mcri18n:translate('mir.noScript.text')" />&#160;
@@ -60,52 +62,37 @@
           </noscript>
         </header>
 
+        <xsl:call-template name="mir.jumbotwo" />
+
         <section>
           <div class="container" id="page">
             <a id="top" />
-            <div id="main_content" class="row">
+            <div id="main_content">
+              <xsl:call-template name="print.writeProtectionMessage" />
+              <xsl:call-template name="print.statusMessage" />
 
-              <div id="side_nav_column" class="col-12 col-lg-3">
-                <xsl:call-template name="mir.navigation" />
-              </div>
-
-              <div id="main_content_column" class="col-12 col-lg-9">
-
-                <div class="button_box">
-                  <button
-                    class="btn btn-sm mir-navbar-toggle"
-                    type="button"
-                    aria-controls="side_nav_column"
-                    aria-expanded="false"
-                    aria-label="Toggle navigation">
-                    <i class="fas fa-bars mir-menu-icon"></i>
-                  </button>
-                </div>
-
-                <xsl:call-template name="print.writeProtectionMessage" />
-                <xsl:call-template name="print.statusMessage" />
-                <xsl:choose>
-                  <xsl:when test="$readAccess='true'">
-                    <xsl:if test="breadcrumb/ul[@class='breadcrumb']">
-                      <div class="row detail_row bread_plus">
-                        <div class="col-12">
-                          <ul itemprop="breadcrumb" class="breadcrumb">
-                            <li class="breadcrumb-item">
-                              <a class="navtrail" href="{$WebApplicationBaseURL}"><xsl:value-of select="mcri18n:translate('mir.breadcrumb.home')" /></a>
-                            </li>
-                            <xsl:copy-of select="breadcrumb/ul[@class='breadcrumb']/*" />
-                          </ul>
-                        </div>
+              <xsl:choose>
+                <xsl:when test="$readAccess='true'">
+                  <xsl:if test="breadcrumb/ul[@class='breadcrumb']">
+                    <div class="row detail_row bread_plus">
+                      <div class="col-12">
+                        <ul itemprop="breadcrumb" class="breadcrumb">
+                          <li class="breadcrumb-item">
+                            <a class="navtrail" href="{$WebApplicationBaseURL}"><xsl:value-of select="mcri18n:translate('mir.breadcrumb.home')" /></a>
+                          </li>
+                          <xsl:copy-of select="breadcrumb/ul[@class='breadcrumb']/*" />
+                        </ul>
                       </div>
-                    </xsl:if>
-                    <xsl:call-template name="mir.jumbotwo" />
-                    <xsl:copy-of select="*[not(name()='head')][not(name()='breadcrumb')] " />
-                  </xsl:when>
-                  <xsl:otherwise>
-                    <xsl:call-template name="printNotLoggedIn" />
-                  </xsl:otherwise>
-                </xsl:choose>
-              </div>
+                    </div>
+                  </xsl:if>
+                  <xsl:copy-of select="*[not(name()='head')][not(name()='breadcrumb')] " />
+                </xsl:when>
+                <xsl:otherwise>
+                  <div class="alert alert-danger">
+                    <xsl:value-of select="mcri18n:translate('webpage.notLoggedIn')" disable-output-escaping="yes" />
+                  </div>
+                </xsl:otherwise>
+              </xsl:choose>
             </div>
           </div>
           <a href="#top" class="btn back-to-top" aria-label="{mcri18n:translate('mir.backToTop.label')}">
