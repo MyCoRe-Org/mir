@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0"
+<xsl:stylesheet version="3.0"
+  xmlns:mcri18n="http://www.mycore.de/xslt/i18n"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  exclude-result-prefixes="xsl">
+  exclude-result-prefixes="#all">
 
-  <xsl:import href="resource:xsl/user-profile/user-profile-attribute-utils.xsl"/>
+  <xsl:import href="resource:xslt/user-profile/user-profile-attribute-utils.xsl"/>
   <xsl:import href="xslImport:userProfileAttributes:user-profile/user-profile-attributes-defaults.xsl"/>
 
   <xsl:template match="user" mode="user-attributes">
@@ -34,10 +35,8 @@
         <xsl:value-of select="document('i18n:component.user2.admin.user.lastLogin')/i18n/text()"/>
       </th>
       <td class="col-md-9">
-        <xsl:call-template name="formatISODate">
-          <xsl:with-param name="date" select="lastLogin"/>
-          <xsl:with-param name="format" select="document('i18n:component.user2.metaData.dateTime')/i18n/text()"/>
-        </xsl:call-template>
+        <xsl:value-of
+          select="format-dateTime(lastLogin, mcri18n:translate('component.user2.metaData.dateTime.xsl3'))"/>
       </td>
     </tr>
 
@@ -47,10 +46,8 @@
           <xsl:value-of select="document('i18n:component.user2.admin.user.validUntil')/i18n/text()"/>
         </th>
         <td class="col-md-9">
-          <xsl:call-template name="formatISODate">
-            <xsl:with-param name="date" select="validUntil"/>
-            <xsl:with-param name="format" select="document('i18n:component.user2.metaData.dateTime')/i18n/text()"/>
-          </xsl:call-template>
+          <xsl:value-of
+            select="format-dateTime(validUntil, mcri18n:translate('component.user2.metaData.dateTime.xsl3'))"/>
         </td>
       </tr>
     </xsl:if>
