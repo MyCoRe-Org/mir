@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0"
+<xsl:stylesheet version="3.0"
+  xmlns:mcri18n="http://www.mycore.de/xslt/i18n"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  exclude-result-prefixes="xsl">
+  exclude-result-prefixes="#all">
 
-  <xsl:import href="resource:xsl/user-profile/user-profile-attribute-utils.xsl"/>
+  <xsl:import href="resource:xslt/user-profile/user-profile-attribute-utils.xsl"/>
   <xsl:import href="xslImport:userProfileAttributes:user-profile/user-profile-attributes-owners-and-roles.xsl"/>
 
   <xsl:template match="user" mode="user-attributes">
@@ -31,11 +32,7 @@
         <td class="col-md-9">
           <xsl:for-each select="roles/role">
             <xsl:value-of select="@name"/>
-            <xsl:variable name="lang">
-              <xsl:call-template name="selectPresentLang">
-                <xsl:with-param name="nodes" select="label"/>
-              </xsl:call-template>
-            </xsl:variable>
+            <xsl:variable name="lang" select="mcri18n:select-present-lang(label)" />
             <xsl:value-of select="concat(' [',label[lang($lang)]/@text,']')"/>
             <xsl:if test="position() != last()">
               <br/>

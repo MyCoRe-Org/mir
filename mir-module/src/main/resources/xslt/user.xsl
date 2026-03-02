@@ -1,36 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0"
-  xmlns:mcracl="xalan://org.mycore.access.MCRAccessManager"
-  xmlns:mcri18n="xalan://org.mycore.services.i18n.MCRTranslation"
-  xmlns:mcruserconstants="xalan://org.mycore.user2.MCRUser2Constants"
-  xmlns:xalan="http://xml.apache.org/xalan"
+<xsl:stylesheet version="3.0"
+  xmlns:mcracl="http://www.mycore.de/xslt/acl"
+  xmlns:mcri18n="http://www.mycore.de/xslt/i18n"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  exclude-result-prefixes="mcracl mcri18n mcruserconstants xalan xsl">
+  exclude-result-prefixes="#all">
+
+  <xsl:include href="resource:xslt/MyCoReLayout.xsl"/>
 
   <xsl:import href="xslImport:userProfileActions"/>
   <xsl:import href="xslImport:userProfileAttributes"/>
 
-  <xsl:include href="resource:xsl/MyCoReLayout.xsl" />
-  <xsl:include href="resource:xsl/orcid/mir-orcid.xsl"/>
-  <xsl:include href="resource:xsl/orcid/mir-orcid-user-ui.xsl"/>
-
-  <xsl:param name="CurrentUser"/>
+  <xsl:include href="resource:xslt/orcid/mir-orcid.xsl"/>
+  <xsl:include href="resource:xslt/orcid/mir-orcid-user-ui.xsl"/>
   <xsl:param name="MCR.ORCID2.BaseURL"/>
-  <xsl:param name="MCR.ORCID2.OAuth.ClientSecret" select="''"/>
   <xsl:param name="MCR.ORCID2.OAuth.Scope"/>
   <xsl:param name="MIR.ORCID.InfoURL"/>
+
   <xsl:param name="MIR.User.ShowSimpleDetailsOnly" select="'false'" />
-  <xsl:param name="WebApplicationBaseURL"/>
   <xsl:param name="step" />
 
-  <xsl:variable name="isOrcidEnabled" select="string-length($MCR.ORCID2.OAuth.ClientSecret) &gt; 0"/>
+  <xsl:variable name="isUserAdmin" select="mcracl:check-permission('' ,'administrate-users')" />
+  <xsl:variable name="fullDetails" select="$isUserAdmin or not($MIR.User.ShowSimpleDetailsOnly='true')" />
+
   <xsl:variable name="PageID" select="'show-user'" />
   <xsl:variable name="PageTitle">
     <xsl:call-template name="user-display-name"/>
   </xsl:variable>
   <xsl:variable name="isCurrentUser" select="$CurrentUser = $uid"/>
-  <xsl:variable name="isUserAdmin" select="document('notnull:checkPermission:administrate-users')/boolean = 'true'"/>
-  <xsl:variable name="fullDetails" select="$isUserAdmin or not($MIR.User.ShowSimpleDetailsOnly='true')"/>
   <xsl:variable name="uid">
     <xsl:value-of select="/user/@name" />
     <xsl:if test="not ( /user/@realm = 'local' )">
@@ -41,8 +37,6 @@
   <xsl:variable name="owns" select="document(concat('user:getOwnedUsers:',$uid))/owns" />
 
   <xsl:template match="user">
-    <xsl:variable name="isUserAdmin" select="mcracl:checkPermission(mcruserconstants:getUserAdminPermission())" />
-    <xsl:variable name="fullDetails" select="$isUserAdmin or not($MIR.User.ShowSimpleDetailsOnly='true')" />
     <div class="user-details">
       <div id="buttons" class="btn-group float-end">
         <xsl:apply-templates select="." mode="actions" />
