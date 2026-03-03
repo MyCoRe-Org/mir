@@ -5,7 +5,7 @@
         <td class="file_preview col-1 text-center text-nowrap">
           <span class="fas fa-folder" aria-hidden="true"></span>
         </td>
-        <td class="file_name derivate_folder col-6">
+        <td class="file_name derivate_folder col">
           <a data-path="{{getParent path}}/" href="#">..</a>
         </td>
       </tr>
@@ -50,7 +50,7 @@
               </td>
             {{/is}}
           {{else}}
-            <td class="file_name derivate_folder col-6">
+            <td class="file_name derivate_folder col">
               <a data-path="{{path}}" href="#">
                 {{name}}
               </a>
