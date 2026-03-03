@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0"
-  xmlns:mcrxml="xalan://org.mycore.common.xml.MCRXMLFunctions"
   xmlns:mods="http://www.loc.gov/mods/v3"
-  xmlns:strutils="xalan://org.apache.commons.lang.StringEscapeUtils"
+  xmlns:strutils="http://www.mycore.de/xslt/strutils"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  exclude-result-prefixes="mcrxml strutils">
+  exclude-result-prefixes="mods strutils">
   
   <!-- 
    - Applys a nodeset with given namespace (default: 'mods') to given maximal depth.
@@ -63,20 +62,6 @@
     </xsl:choose>
   </xsl:template>
 
-  <!--
-    - nodeset with plain text content
-    -->
-  <xsl:template match="*" mode="asPlainTextNode">
-    <xsl:copy>
-      <xsl:apply-templates select="@*" />
-      <xsl:apply-templates mode="asPlainTextNode" />
-    </xsl:copy>
-  </xsl:template>
-
-  <xsl:template match="text()" mode="asPlainTextNode">
-    <xsl:value-of select="mcrxml:stripHtml(.)" />
-  </xsl:template>
-  
   <!-- 
     - nodeset to string serializer
     -->
