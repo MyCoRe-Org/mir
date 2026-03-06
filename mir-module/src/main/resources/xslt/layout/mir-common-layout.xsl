@@ -3,7 +3,7 @@
   xmlns:mcracl="http://www.mycore.de/xslt/acl"
   xmlns:mcri18n="http://www.mycore.de/xslt/i18n"
   xmlns:mcrlayoututils="http://www.mycore.de/xslt/layoututils"
-  xmlns:mcrstring="http://www.mycore.de/xslt/stringutils"
+  xmlns:mcrstringutils="http://www.mycore.de/xslt/stringutils"
   xmlns:mcrurl="http://www.mycore.de/xslt/url"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   exclude-result-prefixes="#all">
@@ -104,7 +104,7 @@
         </a>
         <ul class="dropdown-menu language-menu" role="menu">
           <xsl:for-each select="$availableLanguages">
-            <xsl:variable name="lang"><xsl:value-of select="mcrstring:trim(.)" /></xsl:variable>
+            <xsl:variable name="lang"><xsl:value-of select="mcrstringutils:trim(.)" /></xsl:variable>
             <xsl:if test="$lang!='' and $CurrentLang!=$lang">
               <xsl:variable name="langDef" select="document(concat('language:',$lang))" />
               <li>

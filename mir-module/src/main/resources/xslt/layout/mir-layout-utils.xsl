@@ -4,7 +4,7 @@
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   exclude-result-prefixes="#all">
 
-  <xsl:include href="../mir-accesskey-utils.xsl" />
+  <xsl:include href="resource:xslt/mir-accesskey-utils.xsl" />
 
   <xsl:template name="extractObjectIdFromRequestURL">
     <xsl:choose>
