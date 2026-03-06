@@ -3,7 +3,7 @@ package org.mycore.mir.sword2;
 import java.util.Arrays;
 import java.util.List;
 
-import org.apache.solr.client.solrj.SolrQuery;
+import org.apache.solr.client.solrj.request.SolrQuery;
 import org.mycore.sword.application.MCRSwordAuthHandler;
 import org.mycore.sword.application.MCRSwordCollectionProvider;
 import org.mycore.sword.application.MCRSwordDefaultAuthHandler;
