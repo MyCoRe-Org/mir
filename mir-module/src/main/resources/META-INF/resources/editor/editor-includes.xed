@@ -19,7 +19,7 @@
       url="../servlets/MCRLockServlet?action=unlock&amp;id={$id}&amp;url=/receive/{$id}?XSL.Status.Message=mir.editstatus.canceled&amp;XSL.Status.Style=danger" />
     <xed:cancel url="{$cancelUrl}?XSL.Status.Message=mir.editstatus.canceled&amp;XSL.Status.Style=danger" />
     <xed:cancel url="../index.html?XSL.Status.Message=mir.editstatus.canceled&amp;XSL.Status.Style=danger" />
-    <xed:post-processor class="org.mycore.mir.editor.MIRPostProcessor" xsl="editor/xeditor2mods.xsl" transformer="xalan" />
+    <xed:post-processor class="org.mycore.mir.editor.MIRPostProcessor" xsl="editor/xeditor2mods.xsl" />
   </xed:template>
 
   <xed:template id="mycore.common">
