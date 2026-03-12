@@ -4,7 +4,6 @@
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   exclude-result-prefixes="mcri18n">
 
-  <xsl:include href="MyCoReLayout.xsl" />
   <xsl:strip-space elements="*" />
 
   <xsl:variable name="PageTitle" select="mcri18n:translate('component.mir.wizard.title')" />

@@ -38,7 +38,7 @@
             </fieldset>
           </xed:when>
           <xed:otherwise>
-            <xed:post-processor xsl="wizard-postprocessor.xsl" />
+            <xed:post-processor xsl="wizard-postprocessor.xsl" transformer="xalan" />
 
             <xed:bind xpath="mcr-properties">
               <fieldset>
