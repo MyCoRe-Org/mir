@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="3.0"
   xmlns:mcrproperty="http://www.mycore.de/xslt/property"
-  xmlns:mcrversion="http://www.mycore.de/xslt/version"
+  xmlns:mcrversion="http://www.mycore.de/xslt/mcrversion"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   exclude-result-prefixes="#all">
 

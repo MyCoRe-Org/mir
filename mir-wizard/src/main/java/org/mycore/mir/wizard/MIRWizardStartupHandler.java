@@ -158,9 +158,6 @@ public class MIRWizardStartupHandler implements MCRStartupHandler.AutoExecutable
                 LOGGER.info("Couldn't map " + WIZARD_SERVLET_NAME + "!");
             }
 
-            String wizStylesheet = MCRConfiguration2.getString("MIR.Wizard.LayoutStylesheet")
-                .orElse("xslt/mir-wizard-layout.xsl");
-            MCRConfiguration2.set("MCR.LayoutTransformerFactory.Default.Stylesheets", wizStylesheet);
             //disable ACL system
             //store for later use...
             servletContext.setAttribute(ACCESS_CLASS, MCRConfiguration2.getString(ACCESS_CLASS).orElse(null));
