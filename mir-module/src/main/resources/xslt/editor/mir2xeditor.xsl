@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0"
-  xmlns:mcri18n="xalan://org.mycore.services.i18n.MCRTranslation"
+<xsl:stylesheet version="3.0"
+  xmlns:mcri18n="http://www.mycore.de/xslt/i18n"
   xmlns:mir="http://www.mycore.de/mir"
   xmlns:xed="http://www.mycore.de/xeditor"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  exclude-result-prefixes="mcri18n mir xsl">
+  exclude-result-prefixes="#all">
 
-  <xsl:include href="resource:xsl/copynodes.xsl" />
+  <xsl:mode on-no-match="shallow-copy" />
+
+  <xsl:include href="default-parameters.xsl" />
+  <xsl:include href="xslInclude:functions" />
+
   <xsl:variable name="institutesURI">
     <xsl:choose>
       <xsl:when test="string-length(document('classification:metadata:0:children:mir_institutes')/mycoreclass/label[lang('x-uri')]/@text) &gt; 0">

@@ -1,20 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0"
-  xmlns:exslt="http://exslt.org/common"
+<xsl:stylesheet version="3.0"
   xmlns:mcr="http://www.mycore.org/"
-  xmlns:mcrid="xalan://org.mycore.datamodel.metadata.MCRObjectID"
-  xmlns:mcrmodsclass="xalan://org.mycore.mods.classification.MCRMODSClassificationSupport"
-  xmlns:mcrpages="xalan://org.mycore.mods.MCRMODSPagesHelper"
-  xmlns:mcrxml="xalan://org.mycore.common.xml.MCRXMLFunctions"
+  xmlns:mirdateconverter="http://www.mycore.de/xslt/mirdateconverter"
+  xmlns:mireditorutils="http://www.mycore.de/xslt/mireditorutils"
+  xmlns:mirmapper="http://www.mycore.de/xslt/mirmapper"
+  xmlns:mcrstringutils="http://www.mycore.de/xslt/stringutils"
   xmlns:mods="http://www.loc.gov/mods/v3"
   xmlns:xlink="http://www.w3.org/1999/xlink"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  exclude-result-prefixes="exslt mcr mcrid mcrmodsclass mcrpages mcrxml xlink">
+  exclude-result-prefixes="#all">
 
-  <xsl:include href="resource:xsl/copynodes.xsl" />
-  <xsl:include href="resource:xsl/editor/mods-node-utils.xsl" />
-  <xsl:include href="resource:xsl/mods-utils.xsl" />
-  <xsl:include href="resource:xsl/coreFunctions.xsl" />
+  <xsl:mode on-no-match="shallow-copy" />
+
+  <xsl:include href="resource:xslt/default-parameters.xsl" />
+  <xsl:include href="xslInclude:functions" />
+  <xsl:include href="resource:xslt/editor/mods-node-utils.xsl" />
+  <xsl:include href="resource:xslt/utils/mods-utils.xsl" />
 
   <xsl:param name="MIR.PPN.DatabaseList" select="'gvk'" />
   <xsl:param name="MCR.Metadata.ObjectID.NumberPattern" select="00000000" />
@@ -23,7 +24,7 @@
     <xsl:copy>
       <xsl:variable name="hostItem"
         select="../metadata/def.modsContainer/modsContainer/mods:mods/mods:relatedItem[@type='host'
-                    and @xlink:href and mcrid:isValid(@xlink:href)
+                    and @xlink:href and mireditorutils:is-valid-object-id(@xlink:href)
                     and not($MCR.Metadata.ObjectID.NumberPattern=substring(@xlink:href, string-length(@xlink:href) - string-length($MCR.Metadata.ObjectID.NumberPattern) + 1))]/@xlink:href" />
       <xsl:if test="$hostItem">
         <parents class="MCRMetaLinkID">
@@ -39,7 +40,7 @@
       <xsl:apply-templates select="@*" />
       <xsl:variable name="hostItem"
         select="metadata/def.modsContainer/modsContainer/mods:mods/mods:relatedItem[@type='host'
-                    and @xlink:href and mcrid:isValid(@xlink:href)
+                    and @xlink:href and mireditorutils:is-valid-object-id(@xlink:href)
                     and not($MCR.Metadata.ObjectID.NumberPattern=substring(@xlink:href, string-length(@xlink:href) - string-length($MCR.Metadata.ObjectID.NumberPattern) + 1))]/@xlink:href" />
       <xsl:if test="$hostItem">
         <structure>
@@ -51,66 +52,12 @@
       <xsl:apply-templates select="node()" />
     </xsl:copy>
   </xsl:template>
-  <!--
-  <xsl:template match="mods:titleInfo|mods:abstract">
-    <xsl:choose>
-      <xsl:when test="mcrxml:isHtml(mods:nonSort/text()) or mcrxml:isHtml(mods:title/text()) or mcrxml:isHtml(mods:subTitle/text()) or mcrxml:isHtml(text())">
-        <xsl:variable name="altRepGroup" select="generate-id(.)" />
-        <xsl:copy>
-          <xsl:attribute name="altRepGroup">
-            <xsl:value-of select="$altRepGroup" />
-          </xsl:attribute>
-          <xsl:apply-templates select="@*" />
-          <xsl:apply-templates mode="asPlainTextNode" />
-        </xsl:copy>
-        <xsl:element name="{name(.)}" namespace="{namespace-uri()}">
-          <xsl:variable name="content">
-            <xsl:apply-templates select="." mode="asXmlNode">
-              <xsl:with-param name="ns" select="''" />
-              <xsl:with-param name="serialize" select="false()" />
-              <xsl:with-param name="levels">
-                <xsl:choose>
-                  <xsl:when test="name() = 'mods:titleInfo'">
-                    <xsl:value-of select="2" />
-                  </xsl:when>
-                  <xsl:otherwise>
-                    <xsl:value-of select="1" />
-                  </xsl:otherwise>
-                </xsl:choose>
-              </xsl:with-param>
-            </xsl:apply-templates>
-          </xsl:variable>
-          <xsl:attribute name="altRepGroup">
-            <xsl:value-of select="$altRepGroup" />
-          </xsl:attribute>
-          <xsl:attribute name="altFormat">
-            <xsl:value-of select="mcrdataurl:build($content, 'base64', 'text/xml', 'utf-8')" />
-          </xsl:attribute>
-          <xsl:attribute name="contentType">
-            <xsl:value-of select="'text/xml'" />
-          </xsl:attribute>
-          <xsl:apply-templates select="@*" />
-        </xsl:element>
-      </xsl:when>
-      <xsl:otherwise>
-        <xsl:copy>
-          <xsl:apply-templates select="@*" />
-          <xsl:apply-templates />
-        </xsl:copy>
-      </xsl:otherwise>
-    </xsl:choose>
-  </xsl:template>
-  -->
 
   <!-- convert date-time with timezone to UTC -->
   <xsl:template match="mods:*[@encoding='w3cdtf' and contains(text(), 'T') and substring(text(), string-length(text())) != 'Z']">
     <xsl:copy>
       <xsl:copy-of select="@*" />
-      <xsl:variable name="apos">'</xsl:variable>
-      <xsl:variable name="w3ctf-date-time" select="text()" />
-      <xsl:variable name="simple-date-format" select="concat('yyyy-MM-dd',$apos,'T',$apos,'HH:mm:ssX')" />
-      <xsl:variable name="iso-8601-format" select="'UUUU-MM-DDThh:mm:ssTZD'" />
-      <xsl:value-of select="mcrxml:getISODate($w3ctf-date-time, $simple-date-format, $iso-8601-format)" />
+      <xsl:value-of select="mirdateconverter:normalize-w3cdtf-to-utc(text())" />
     </xsl:copy>
   </xsl:template>
 
@@ -272,11 +219,42 @@
   </xsl:template>
 
   <xsl:template match="@mcr:categId" />
+  
+  <xsl:template match="mods:classification[@mcr:categId]" priority="2">
+    <xsl:variable name="classid" select="mirmapper:classid(@mcr:categId)" />
+    <xsl:variable name="categid" select="mirmapper:categid(@mcr:categId)" />
+    <xsl:variable name="classURI" select="mirmapper:class-uri($classid)" />
+    <mods:classification generator="user selected">
+      <xsl:copy-of select="@*[not(namespace-uri() = 'http://www.mycore.org/' and local-name() = 'categId')
+                               and not(local-name() = ('generator', 'authorityURI', 'valueURI'))]" />
+      <xsl:if test="$classURI">
+        <xsl:attribute name="authorityURI" select="$classURI" />
+        <xsl:attribute name="valueURI" select="concat($classURI, '#', $categid)" />
+      </xsl:if>
+      <xsl:value-of select="$categid" />
+    </mods:classification>
+  </xsl:template>
+
+  <xsl:template match="mods:typeOfResource[@mcr:categId]" priority="2">
+    <mods:typeOfResource>
+      <xsl:copy-of select="@*[not(namespace-uri() = 'http://www.mycore.org/' and local-name() = 'categId')]" />
+      <xsl:value-of select="replace(mirmapper:categid(@mcr:categId), '_', ' ')" />
+    </mods:typeOfResource>
+  </xsl:template>
+
   <xsl:template match="*[@mcr:categId]">
-    <xsl:element name="{name()}">
-      <xsl:variable name="classNodes" select="mcrmodsclass:getClassNodes(.)" />
-      <xsl:apply-templates select='$classNodes/@*|@*|node()|$classNodes/node()' />
-    </xsl:element>
+    <xsl:variable name="classid" select="mirmapper:classid(@mcr:categId)" />
+    <xsl:variable name="categid" select="mirmapper:categid(@mcr:categId)" />
+    <xsl:variable name="classURI" select="mirmapper:class-uri($classid)" />
+    <xsl:copy>
+      <xsl:copy-of select="@*[not(namespace-uri() = 'http://www.mycore.org/' and local-name() = 'categId')
+                               and not($classURI and local-name() = ('authorityURI', 'valueURI'))]" />
+      <xsl:if test="$classURI">
+        <xsl:attribute name="authorityURI" select="$classURI" />
+        <xsl:attribute name="valueURI" select="concat($classURI, '#', $categid)" />
+      </xsl:if>
+      <xsl:apply-templates select="node()" />
+    </xsl:copy>
   </xsl:template>
 
   <xsl:template match="mods:openAireID">
@@ -309,7 +287,7 @@
       </xsl:if>
       <xsl:choose>
         <xsl:when test="@simpleEditor">
-          <xsl:apply-templates select="node()[name()!='mods:namePart']" />
+          <xsl:apply-templates select="node()[not(self::mods:namePart)]" />
         </xsl:when>
         <xsl:otherwise>
           <xsl:apply-templates />
@@ -347,20 +325,15 @@
 
   <!-- In editor, all variants of page numbers are edited in a single text field -->
   <xsl:template match="mods:part/mods:extent[@unit='pages']">
-    <xsl:copy-of select="mcrpages:buildExtentPagesNodeSet(mods:list/text())" />
+    <xsl:copy-of select="mireditorutils:build-extent-pages(mods:list/text())" />
   </xsl:template>
 
   <xsl:template match="mods:subject/mods:topic[contains(text(), ';')]">
-    <xsl:variable name="topic">
-      <xsl:call-template name="Tokenizer"><!-- use split function from mycore-base/coreFunctions.xsl -->
-        <xsl:with-param name="string" select="." />
-        <xsl:with-param name="delimiter" select="';'" />
-      </xsl:call-template>
-    </xsl:variable>
-    <xsl:for-each select="exslt:node-set($topic)/token">
-      <xsl:if test="mcrxml:trim(.) != ''">
+    <xsl:for-each select="tokenize(., ';')">
+      <xsl:variable name="topic" select="mcrstringutils:trim(.)" />
+      <xsl:if test="$topic != ''">
         <mods:topic>
-          <xsl:value-of select="." />
+          <xsl:value-of select="$topic" />
         </mods:topic>
       </xsl:if>
     </xsl:for-each>
