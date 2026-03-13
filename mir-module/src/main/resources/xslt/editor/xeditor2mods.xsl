@@ -220,7 +220,7 @@
 
   <xsl:template match="@mcr:categId" />
   
-  <xsl:template match="mods:classification[@mcr:categId]">
+  <xsl:template match="mods:classification[@mcr:categId]" priority="2">
     <xsl:variable name="classid" select="mirmapper:classid(@mcr:categId)" />
     <xsl:variable name="categid" select="mirmapper:categid(@mcr:categId)" />
     <xsl:variable name="classURI" select="mirmapper:class-uri($classid)" />
@@ -235,7 +235,7 @@
     </mods:classification>
   </xsl:template>
 
-  <xsl:template match="mods:typeOfResource[@mcr:categId]">
+  <xsl:template match="mods:typeOfResource[@mcr:categId]" priority="2">
     <mods:typeOfResource>
       <xsl:copy-of select="@*[not(namespace-uri() = 'http://www.mycore.org/' and local-name() = 'categId')]" />
       <xsl:value-of select="replace(mirmapper:categid(@mcr:categId), '_', ' ')" />

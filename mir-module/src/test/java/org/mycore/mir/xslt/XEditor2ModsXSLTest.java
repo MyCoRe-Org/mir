@@ -60,6 +60,30 @@ public class XEditor2ModsXSLTest extends MIRXSLTFunctionTestCase {
     }
 
     @Test
+    void testRebuildsTypeOfResourceTextFromEditorCategoryBinding() throws Exception {
+        Element typeOfResource = new Element("typeOfResource", MODS_NAMESPACE);
+        typeOfResource.setAttribute("categId", "typeOfResource:still_image", MCR_NAMESPACE);
+
+        Element mods = new Element("mods", MODS_NAMESPACE).addContent(typeOfResource);
+        Element modsContainer = new Element("modsContainer").addContent(mods);
+        Element defModsContainer = new Element("def.modsContainer").addContent(modsContainer);
+        Element metadata = new Element("metadata").addContent(defModsContainer);
+        Element mycoreobject = new Element("mycoreobject").addContent(metadata);
+
+        Document result = transformDocument(new Document(mycoreobject), XSL, Map.of());
+
+        Element savedTypeOfResource = result.getRootElement()
+            .getChild("metadata")
+            .getChild("def.modsContainer")
+            .getChild("modsContainer")
+            .getChild("mods", MODS_NAMESPACE)
+            .getChild("typeOfResource", MODS_NAMESPACE);
+
+        assertEquals("still image", savedTypeOfResource.getTextNormalize());
+        assertNull(savedTypeOfResource.getAttribute("categId", MCR_NAMESPACE));
+    }
+
+    @Test
     void testRejectsMalformedHostObjectIdWhenBuildingStructure() throws Exception {
         Element relatedItem = new Element("relatedItem", MODS_NAMESPACE);
         relatedItem.setAttribute("type", "host");
