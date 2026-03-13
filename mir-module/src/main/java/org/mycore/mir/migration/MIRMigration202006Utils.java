@@ -63,7 +63,7 @@ public class MIRMigration202006Utils {
         if (!MCRCategoryDAOFactory.obtainInstance().exist(categoryID)) {
             throw new MCRException("Category " + categoryID + " does not exist!");
         }
-        final MCRXMLMetadataManager mcrxmlMetadataManager = MCRXMLMetadataManager.getInstance();
+        final MCRXMLMetadataManager mcrxmlMetadataManager = MCRXMLMetadataManager.obtainInstance();
         final List<String> derivates = mcrxmlMetadataManager.listIDsOfType("derivate");
         return derivates.stream()
             .map(MCRObjectID::getInstance)
@@ -103,7 +103,7 @@ public class MIRMigration202006Utils {
             help = "executes 'harmonize derivates' command for all objects."
     )
     public static List<String> harmonizeDerivatesGenre() {
-        TreeSet<String> ids = new TreeSet<>(MCRXMLMetadataManager.getInstance().listIDsOfType("mods"));
+        TreeSet<String> ids = new TreeSet<>(MCRXMLMetadataManager.obtainInstance().listIDsOfType("mods"));
         ArrayList<String> commands = new ArrayList<>(ids.size());
         for (String id : ids) {
             commands.add("harmonize derivates for object " + id);
@@ -180,7 +180,7 @@ public class MIRMigration202006Utils {
             help = "executes 'generate static content' command for all objects."
     )
     public static List<String> generateStaticContent() {
-        TreeSet<String> ids = new TreeSet<>(MCRXMLMetadataManager.getInstance().listIDsOfType("mods"));
+        TreeSet<String> ids = new TreeSet<>(MCRXMLMetadataManager.obtainInstance().listIDsOfType("mods"));
         ArrayList<String> commands = new ArrayList<>(ids.size());
         for (String id : ids) {
             commands.add("generate static content for object " + id);
@@ -218,7 +218,7 @@ public class MIRMigration202006Utils {
         syntax = "select objects which need titleInfo or abstract migration",
         help = "select objects which need titleInfo or abstract migration")
     public static void selectObjectWhichNeedMigration() {
-        final List<String> objectIds = MCRXMLMetadataManager.getInstance().listIDsOfType("mods");
+        final List<String> objectIds = MCRXMLMetadataManager.obtainInstance().listIDsOfType("mods");
         final MIRUnescapeResolver unescapeResolver = new MIRUnescapeResolver();
 
         final List<String> objectsToMigrate = objectIds.stream().filter((mycoreObject) -> {
