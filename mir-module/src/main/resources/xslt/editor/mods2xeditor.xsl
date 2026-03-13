@@ -1,21 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0"
+<xsl:stylesheet version="3.0"
+  xmlns:mcr="http://www.mycore.org/"
   xmlns:mcri18n="http://www.mycore.de/xslt/i18n"
-  xmlns:mcrmodsclass="xalan://org.mycore.mods.classification.MCRMODSClassificationSupport"
-  xmlns:mirdateconverter="xalan://org.mycore.mir.date.MIRDateConverter"
-  xmlns:mireditorutils="xalan://org.mycore.mir.editor.MIREditorUtils"
-  xmlns:mirmapper="xalan://org.mycore.mir.impexp.MIRClassificationMapper"
-  xmlns:mcrpiutil="xalan://org.mycore.pi.frontend.MCRIdentifierXSLUtils"
-  xmlns:mirvalidationhelper="xalan://org.mycore.mir.validation.MIRValidationHelper"
+  xmlns:mirdateconverter="http://www.mycore.de/xslt/mirdateconverter"
+  xmlns:mireditorutils="http://www.mycore.de/xslt/mireditorutils"
+  xmlns:mirmapper="http://www.mycore.de/xslt/mirmapper"
+  xmlns:mirvalidationhelper="http://www.mycore.de/xslt/mirvalidationhelper"
+  xmlns:mcrmods="http://www.mycore.de/xslt/mods"
+  xmlns:mcrpi="http://www.mycore.de/xslt/pi"
   xmlns:mods="http://www.loc.gov/mods/v3"
   xmlns:xlink="http://www.w3.org/1999/xlink"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  exclude-result-prefixes="mcri18n mcrmodsclass mireditorutils mirdateconverter mirmapper mcrpiutil mirvalidationhelper xlink">
+  exclude-result-prefixes="#all">
 
-  <xsl:include href="resource:xsl/copynodes.xsl" />
-  <xsl:include href="resource:xsl/editor/mods-node-utils.xsl" />
+  <xsl:mode on-no-match="shallow-copy" />
 
-  <xsl:param name="WebApplicationBaseURL" />
+  <xsl:include href="resource:xslt/default-parameters.xsl" />
+  <xsl:include href="xslInclude:functions" />
+  <xsl:include href="resource:xslt/editor/mods-node-utils.xsl" />
+
   <xsl:param name="MIR.PPN.DatabaseList" select="'gvk'" />
 
   <xsl:variable name="marcrelator" select="document('classification:metadata:-1:children:marcrelator')" />
@@ -42,7 +45,7 @@
     <xsl:choose>
       <xsl:when test="$geoCount &gt; 0 and $geoCount = count(mods:*)">
         <mods:subjectGEO>
-          <xsl:copy-of select="mireditorutils:xmlAsString(.)" />
+          <xsl:value-of select="mireditorutils:serialize-node(.)" />
         </mods:subjectGEO>
       </xsl:when>
       <xsl:otherwise>
@@ -52,7 +55,7 @@
               <xsl:value-of select="@xml:lang" />
             </xsl:attribute>
           </xsl:if>
-          <xsl:copy-of select="mireditorutils:xmlAsString(.)" />
+          <xsl:value-of select="mireditorutils:serialize-node(.)" />
         </mods:subjectXML>
       </xsl:otherwise>
     </xsl:choose>
@@ -96,7 +99,7 @@
       <xsl:attribute name="encoding">
         <xsl:text>w3cdtf</xsl:text>
       </xsl:attribute>
-      <xsl:value-of select="mirdateconverter:convertDate(.,@encoding)"/>
+      <xsl:value-of select="mirdateconverter:convert-date(., @encoding)"/>
     </xsl:copy>
   </xsl:template>
 
@@ -194,25 +197,30 @@
     </mods:openAireID>
   </xsl:template>
 
-  <xsl:template match="mods:identifier[mcrpiutil:isManagedPI(text(), /mycoreobject/@ID)]">
+  <xsl:template match="mods:identifier[mcrpi:is-managed-pi(text(), string(/mycoreobject/@ID))]">
     <mods:identifierManaged>
       <xsl:apply-templates select="@*" />
       <xsl:value-of select="text()" />
     </mods:identifierManaged>
   </xsl:template>
 
-  <!-- to @categId -->
+  <!-- to @mcr:categId -->
   <xsl:template match="mods:classification[@generator='user selected']">
     <xsl:copy>
-      <xsl:variable name="classNodes" select="mcrmodsclass:getMCRClassNodes(.)" />
-      <xsl:apply-templates select="$classNodes/@*|@*|node()" />
+      <xsl:copy-of select="@*" />
+      <xsl:if test="mcrmods:to-category(.)/@ID">
+        <xsl:attribute name="mcr:categId" select="mcrmods:to-category(.)/@ID" />
+      </xsl:if>
+      <xsl:apply-templates select="node()" />
     </xsl:copy>
   </xsl:template>
 
   <xsl:template match="mods:typeOfResource">
     <xsl:copy>
-      <xsl:variable name="classNodes" select="mcrmodsclass:getMCRClassNodes(.)" />
-      <xsl:apply-templates select="$classNodes/@*|@*" />
+      <xsl:copy-of select="@*" />
+      <xsl:if test="mcrmods:to-category(.)/@ID">
+        <xsl:attribute name="mcr:categId" select="mcrmods:to-category(.)/@ID" />
+      </xsl:if>
     </xsl:copy>
   </xsl:template>
 
