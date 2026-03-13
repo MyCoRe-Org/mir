@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0"
+<xsl:stylesheet version="3.0"
+  xmlns:mirstrutils="http://www.mycore.de/xslt/mirstrutils"
   xmlns:mods="http://www.loc.gov/mods/v3"
-  xmlns:strutils="http://www.mycore.de/xslt/strutils"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  exclude-result-prefixes="mods strutils">
+  exclude-result-prefixes="#all">
   
   <!-- 
    - Applys a nodeset with given namespace (default: 'mods') to given maximal depth.
@@ -54,10 +54,10 @@
 
     <xsl:choose>
       <xsl:when test="$serialize">
-        <xsl:value-of select="strutils:unescapeXml(strutils:unescapeHtml(.))" disable-output-escaping="no" />
+        <xsl:value-of select="mirstrutils:unescape-xml(mirstrutils:unescape-html(.))" disable-output-escaping="no" />
       </xsl:when>
       <xsl:otherwise>
-        <xsl:value-of select="strutils:escapeXml(.)" disable-output-escaping="yes" />
+        <xsl:value-of select="mirstrutils:escape-xml(.)" disable-output-escaping="yes" />
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
@@ -92,6 +92,6 @@
   </xsl:template>
 
   <xsl:template match="text()" mode="serialize">
-    <xsl:value-of select="strutils:unescapeXml(.)" disable-output-escaping="yes" />
+    <xsl:value-of select="mirstrutils:unescape-xml(.)" disable-output-escaping="yes" />
   </xsl:template>
 </xsl:stylesheet>

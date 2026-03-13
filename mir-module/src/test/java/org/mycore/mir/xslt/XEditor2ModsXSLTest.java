@@ -34,15 +34,7 @@ public class XEditor2ModsXSLTest extends MIRXSLTFunctionTestCase {
         genre.setAttribute("type", "intern");
         genre.setAttribute("categId", "MIRTestClassification:alpha", MCR_NAMESPACE);
 
-        Element mods = new Element("mods", MODS_NAMESPACE);
-        mods.addContent(genre);
-
-        Element modsContainer = new Element("modsContainer").addContent(mods);
-        Element defModsContainer = new Element("def.modsContainer").addContent(modsContainer);
-        Element metadata = new Element("metadata").addContent(defModsContainer);
-        Element mycoreobject = new Element("mycoreobject").addContent(metadata);
-
-        Document result = transformDocument(new Document(mycoreobject), XSL, Map.of());
+        Document result = transformDocument(createMyCoReObject(genre), XSL, Map.of());
 
         Element savedGenre = result.getRootElement()
             .getChild("metadata")
@@ -64,13 +56,7 @@ public class XEditor2ModsXSLTest extends MIRXSLTFunctionTestCase {
         Element typeOfResource = new Element("typeOfResource", MODS_NAMESPACE);
         typeOfResource.setAttribute("categId", "typeOfResource:still_image", MCR_NAMESPACE);
 
-        Element mods = new Element("mods", MODS_NAMESPACE).addContent(typeOfResource);
-        Element modsContainer = new Element("modsContainer").addContent(mods);
-        Element defModsContainer = new Element("def.modsContainer").addContent(modsContainer);
-        Element metadata = new Element("metadata").addContent(defModsContainer);
-        Element mycoreobject = new Element("mycoreobject").addContent(metadata);
-
-        Document result = transformDocument(new Document(mycoreobject), XSL, Map.of());
+        Document result = transformDocument(createMyCoReObject(typeOfResource), XSL, Map.of());
 
         Element savedTypeOfResource = result.getRootElement()
             .getChild("metadata")
@@ -89,16 +75,20 @@ public class XEditor2ModsXSLTest extends MIRXSLTFunctionTestCase {
         relatedItem.setAttribute("type", "host");
         relatedItem.setAttribute("href", "mir_mods_foo", XLINK_NAMESPACE);
 
-        Element mods = new Element("mods", MODS_NAMESPACE).addContent(relatedItem);
+        Document mycoreobject = createMyCoReObject(relatedItem);
+        mycoreobject.getRootElement().setAttribute("ID", "mir_mods_00000001");
+
+        Document result = transformDocument(mycoreobject, XSL, Map.of());
+
+        assertNull(result.getRootElement().getChild("structure"));
+    }
+
+    private Document createMyCoReObject(Element modsChild) {
+        Element mods = new Element("mods", MODS_NAMESPACE).addContent(modsChild);
         Element modsContainer = new Element("modsContainer").addContent(mods);
         Element defModsContainer = new Element("def.modsContainer").addContent(modsContainer);
         Element metadata = new Element("metadata").addContent(defModsContainer);
-        Element mycoreobject = new Element("mycoreobject");
-        mycoreobject.setAttribute("ID", "mir_mods_00000001");
-        mycoreobject.addContent(metadata);
-
-        Document result = transformDocument(new Document(mycoreobject), XSL, Map.of());
-
-        assertNull(result.getRootElement().getChild("structure"));
+        Element mycoreobject = new Element("mycoreobject").addContent(metadata);
+        return new Document(mycoreobject);
     }
 }

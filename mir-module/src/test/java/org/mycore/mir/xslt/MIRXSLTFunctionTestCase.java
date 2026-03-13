@@ -45,4 +45,8 @@ public abstract class MIRXSLTFunctionTestCase {
         throws Exception {
         return transformRoot(xsl, rootName, xml, parameters).getRootElement().getTextNormalize();
     }
+
+    protected String resultRawText(String xsl, String rootName, Map<String, Object> parameters) throws Exception {
+        return transformRoot(xsl, rootName, parameters).getRootElement().getText();
+    }
 }
