@@ -242,6 +242,21 @@
     </mods:typeOfResource>
   </xsl:template>
 
+  <xsl:template match="*[@mcr:categId]">
+    <xsl:variable name="classid" select="mirmapper:classid(@mcr:categId)" />
+    <xsl:variable name="categid" select="mirmapper:categid(@mcr:categId)" />
+    <xsl:variable name="classURI" select="mirmapper:class-uri($classid)" />
+    <xsl:copy>
+      <xsl:copy-of select="@*[not(namespace-uri() = 'http://www.mycore.org/' and local-name() = 'categId')
+                               and not($classURI and local-name() = ('authorityURI', 'valueURI'))]" />
+      <xsl:if test="$classURI">
+        <xsl:attribute name="authorityURI" select="$classURI" />
+        <xsl:attribute name="valueURI" select="concat($classURI, '#', $categid)" />
+      </xsl:if>
+      <xsl:apply-templates select="node()" />
+    </xsl:copy>
+  </xsl:template>
+
   <xsl:template match="mods:openAireID">
     <mods:identifier type="open-aire">
       <xsl:value-of select="." />

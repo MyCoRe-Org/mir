@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="3.0"
+  xmlns:mcrproperty="http://www.mycore.de/xslt/property"
   xmlns:mireditorutils="http://www.mycore.de/xslt/mireditorutils"
   xmlns:mods="http://www.loc.gov/mods/v3"
   xmlns:xs="http://www.w3.org/2001/XMLSchema"
@@ -14,7 +15,13 @@
   <xsl:function name="mireditorutils:is-valid-object-id" as="xs:boolean">
     <xsl:param name="value" as="xs:string?" />
     <xsl:variable name="normalized" select="normalize-space($value)" />
-    <xsl:sequence select="$normalized != '' and not(contains($normalized, ':')) and count(tokenize($normalized, '_')) = 3" />
+    <xsl:variable name="matches-pattern"
+      select="string-length($normalized) le 64
+              and matches($normalized, '^[A-Za-z][A-Za-z0-9]*_[A-Za-z0-9]+_[0-9]+$')" />
+    <xsl:variable name="type"
+      select="if ($matches-pattern) then lower-case(tokenize($normalized, '_')[2]) else ''" />
+    <xsl:sequence
+      select="$matches-pattern and mcrproperty:one(concat('MCR.Metadata.Type.', $type)) = 'true'" />
   </xsl:function>
 
   <xsl:function name="mireditorutils:build-extent-pages" as="element(mods:extent)">

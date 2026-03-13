@@ -33,6 +33,10 @@ public abstract class MIRXSLTFunctionTestCase {
         return transform(prepareTestDocument(rootName, xml), xsl, parameters);
     }
 
+    protected Document transformDocument(Document xml, String xsl, Map<String, Object> parameters) throws Exception {
+        return transform(xml, xsl, parameters);
+    }
+
     protected String resultText(String xsl, String rootName, Map<String, Object> parameters) throws Exception {
         return transformRoot(xsl, rootName, parameters).getRootElement().getTextNormalize();
     }

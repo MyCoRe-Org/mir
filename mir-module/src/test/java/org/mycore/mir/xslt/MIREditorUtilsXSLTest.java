@@ -27,6 +27,8 @@ public class MIREditorUtilsXSLTest extends MIRXSLTFunctionTestCase {
     @Test
     void testIsValidObjectId() throws Exception {
         assertEquals("true", resultText(XSL, "test-is-valid-object-id", Map.of("value", "mir_mods_00000001")));
+        assertEquals("false", resultText(XSL, "test-is-valid-object-id", Map.of("value", "mir_mods_foo")));
+        assertEquals("false", resultText(XSL, "test-is-valid-object-id", Map.of("value", "mir_unknown_00000001")));
         assertEquals("false", resultText(XSL, "test-is-valid-object-id", Map.of("value", "mir:mods_00000001")));
         assertEquals("false", resultText(XSL, "test-is-valid-object-id", Map.of("value", "mir_mods")));
         assertEquals("false", resultText(XSL, "test-is-valid-object-id", Map.of("value", "")));
