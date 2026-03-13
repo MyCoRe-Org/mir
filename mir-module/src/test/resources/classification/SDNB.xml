@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mycoreclass xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:noNamespaceSchemaLocation="MCRClassification.xsd"
+             ID="SDNB">
+  <label xml:lang="x-uri" text="http://www.mycore.org/classifications/SDNB" />
+  <categories>
+    <category ID="000">
+      <label xml:lang="en" text="General" />
+    </category>
+    <category ID="621.3">
+      <label xml:lang="en" text="Electrical engineering" />
+    </category>
+    <category ID="K">
+      <label xml:lang="en" text="Children" />
+    </category>
+  </categories>
+</mycoreclass>

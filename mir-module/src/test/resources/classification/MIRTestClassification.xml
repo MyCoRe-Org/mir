@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mycoreclass xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:noNamespaceSchemaLocation="MCRClassification.xsd"
+             ID="MIRTestClassification">
+  <label xml:lang="x-uri" text="http://www.mycore.org/classifications/MIRTestClassification" />
+  <categories>
+    <category ID="alpha">
+      <label xml:lang="en" text="alpha" />
+    </category>
+  </categories>
+</mycoreclass>

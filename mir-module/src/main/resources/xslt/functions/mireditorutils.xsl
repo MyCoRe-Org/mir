@@ -23,7 +23,8 @@
     <xsl:choose>
       <xsl:when test="matches($value, '^(?:[sSpP]{1,2}\.?\s*)?([A-Za-z0-9.]+)\s*-\s*([A-Za-z0-9.-]+)\.?$')">
         <xsl:variable name="start" select="replace($value, '^(?:[sSpP]{1,2}\.?\s*)?([A-Za-z0-9.]+)\s*-\s*([A-Za-z0-9.-]+)\.?$', '$1')" />
-        <xsl:variable name="end" select="replace($value, '^(?:[sSpP]{1,2}\.?\s*)?([A-Za-z0-9.]+)\s*-\s*([A-Za-z0-9.-]+)\.?$', '$2')" />
+        <xsl:variable name="end"
+          select="replace(replace($value, '^(?:[sSpP]{1,2}\.?\s*)?([A-Za-z0-9.]+)\s*-\s*([A-Za-z0-9.-]+)\.?$', '$2'), '\.$', '')" />
         <mods:extent unit="pages">
           <mods:start><xsl:value-of select="$start" /></mods:start>
           <mods:end><xsl:value-of select="mireditorutils:complete-end-page($start, $end)" /></mods:end>

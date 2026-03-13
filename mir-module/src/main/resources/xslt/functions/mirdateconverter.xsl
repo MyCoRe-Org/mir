@@ -48,11 +48,38 @@
   <xsl:function name="mirdateconverter:convert-iso8601" as="xs:string">
     <xsl:param name="value" as="xs:string" />
     <xsl:choose>
+      <xsl:when test="matches($value, '^\d{1,2}$')">
+        <xsl:sequence select="concat('20', format-number(number($value), '00'))" />
+      </xsl:when>
+      <xsl:when test="matches($value, '^\d{4}$')">
+        <xsl:sequence select="$value" />
+      </xsl:when>
+      <xsl:when test="matches($value, '^\d{4}-\d{1,2}$')">
+        <xsl:sequence select="replace($value, '^(\d{4})-(\d{1,2})$', concat('$1-', format-number(number(replace($value, '^\d{4}-(\d{1,2})$', '$1')), '00')))" />
+      </xsl:when>
+      <xsl:when test="matches($value, '^\d{4}-\d{2}$')">
+        <xsl:sequence select="$value" />
+      </xsl:when>
+      <xsl:when test="matches($value, '^\d{4}-\d{2}-\d{2}$')">
+        <xsl:sequence select="$value" />
+      </xsl:when>
+      <xsl:when test="matches($value, '^\d{8}$')">
+        <xsl:sequence select="replace($value, '^(\d{4})(\d{2})(\d{2})$', '$1-$2-$3')" />
+      </xsl:when>
+      <xsl:when test="matches($value, '^\d{8}T\d{2}$')">
+        <xsl:sequence select="replace($value, '^(\d{4})(\d{2})(\d{2})T(\d{2})$', '$1-$2-$3T$4:00:00')" />
+      </xsl:when>
       <xsl:when test="matches($value, '^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$')">
         <xsl:sequence select="$value" />
       </xsl:when>
+      <xsl:when test="matches($value, '^\d{8}T\d{2}:\d{2}:\d{2}$')">
+        <xsl:sequence select="replace($value, '^(\d{4})(\d{2})(\d{2})T(\d{2}):(\d{2}):(\d{2})$', '$1-$2-$3T$4:$5:$6')" />
+      </xsl:when>
       <xsl:when test="matches($value, '^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$')">
         <xsl:sequence select="concat($value, ':00')" />
+      </xsl:when>
+      <xsl:when test="matches($value, '^\d{8}T\d{2}:\d{2}$')">
+        <xsl:sequence select="replace($value, '^(\d{4})(\d{2})(\d{2})T(\d{2}):(\d{2})$', '$1-$2-$3T$4:$5:00')" />
       </xsl:when>
       <xsl:when test="matches($value, '^\d{4}-\d{2}-\d{2}T\d{2}$')">
         <xsl:sequence select="concat($value, ':00:00')" />
@@ -72,9 +99,6 @@
       <xsl:when test="matches($value, '^\d{8}T\d{2}$')">
         <xsl:sequence select="replace($value, '^(\d{4})(\d{2})(\d{2})T(\d{2})$', '$1-$2-$3T$4:00:00')" />
       </xsl:when>
-      <xsl:when test="matches($value, '^\d{8}$')">
-        <xsl:sequence select="replace($value, '^(\d{4})(\d{2})(\d{2})$', '$1-$2-$3')" />
-      </xsl:when>
       <xsl:otherwise>
         <xsl:sequence select="$value" />
       </xsl:otherwise>
@@ -84,20 +108,35 @@
   <xsl:function name="mirdateconverter:convert-marc" as="xs:string">
     <xsl:param name="value" as="xs:string" />
     <xsl:choose>
-      <xsl:when test="matches($value, '^\d{14}$')">
-        <xsl:sequence select="replace($value, '^(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})$', '$1-$2-$3T$4:$5:$6')" />
+      <xsl:when test="matches($value, '^\d{1,2}$')">
+        <xsl:sequence select="concat('20', format-number(number($value), '00'))" />
       </xsl:when>
-      <xsl:when test="matches($value, '^\d{12}$')">
-        <xsl:sequence select="replace($value, '^(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})$', '$1-$2-$3T$4:$5:00')" />
+      <xsl:when test="matches($value, '^\d{4}$')">
+        <xsl:sequence select="$value" />
       </xsl:when>
-      <xsl:when test="matches($value, '^\d{10}$')">
-        <xsl:sequence select="replace($value, '^(\d{4})(\d{2})(\d{2})(\d{2})$', '$1-$2-$3T$4:00:00')" />
+      <xsl:when test="matches($value, '^\d{6}$')">
+        <xsl:sequence select="replace($value, '^(\d{4})(\d{2})$', '$1-$2')" />
       </xsl:when>
       <xsl:when test="matches($value, '^\d{8}$')">
         <xsl:sequence select="replace($value, '^(\d{4})(\d{2})(\d{2})$', '$1-$2-$3')" />
       </xsl:when>
-      <xsl:when test="matches($value, '^\d{6}$')">
-        <xsl:sequence select="replace($value, '^(\d{4})(\d{2})$', '$1-$2')" />
+      <xsl:when test="matches($value, '^\d{8}T\d{2}$')">
+        <xsl:sequence select="replace($value, '^(\d{4})(\d{2})(\d{2})T(\d{2})$', '$1-$2-$3T$4:00:00')" />
+      </xsl:when>
+      <xsl:when test="matches($value, '^\d{14}$')">
+        <xsl:sequence select="replace($value, '^(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})$', '$1-$2-$3T$4:$5:$6')" />
+      </xsl:when>
+      <xsl:when test="matches($value, '^\d{8}T\d{6}$')">
+        <xsl:sequence select="replace($value, '^(\d{4})(\d{2})(\d{2})T(\d{2})(\d{2})(\d{2})$', '$1-$2-$3T$4:$5:$6')" />
+      </xsl:when>
+      <xsl:when test="matches($value, '^\d{12}$')">
+        <xsl:sequence select="replace($value, '^(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})$', '$1-$2-$3T$4:$5:00')" />
+      </xsl:when>
+      <xsl:when test="matches($value, '^\d{8}T\d{4}$')">
+        <xsl:sequence select="replace($value, '^(\d{4})(\d{2})(\d{2})T(\d{2})(\d{2})$', '$1-$2-$3T$4:$5:00')" />
+      </xsl:when>
+      <xsl:when test="matches($value, '^\d{10}$')">
+        <xsl:sequence select="replace($value, '^(\d{4})(\d{2})(\d{2})(\d{2})$', '$1-$2-$3T$4:00:00')" />
       </xsl:when>
       <xsl:otherwise>
         <xsl:sequence select="$value" />
