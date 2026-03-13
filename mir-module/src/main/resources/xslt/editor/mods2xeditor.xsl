@@ -206,20 +206,22 @@
 
   <!-- to @mcr:categId -->
   <xsl:template match="mods:classification[@generator='user selected']">
+    <xsl:variable name="category-id" select="mcrmods:to-category(.)/@ID" />
     <xsl:copy>
       <xsl:copy-of select="@*" />
-      <xsl:if test="mcrmods:to-category(.)/@ID">
-        <xsl:attribute name="mcr:categId" select="mcrmods:to-category(.)/@ID" />
+      <xsl:if test="$category-id">
+        <xsl:attribute name="mcr:categId" select="$category-id" />
       </xsl:if>
       <xsl:apply-templates select="node()" />
     </xsl:copy>
   </xsl:template>
 
   <xsl:template match="mods:typeOfResource">
+    <xsl:variable name="category-id" select="mcrmods:to-category(.)/@ID" />
     <xsl:copy>
       <xsl:copy-of select="@*" />
-      <xsl:if test="mcrmods:to-category(.)/@ID">
-        <xsl:attribute name="mcr:categId" select="mcrmods:to-category(.)/@ID" />
+      <xsl:if test="$category-id">
+        <xsl:attribute name="mcr:categId" select="$category-id" />
       </xsl:if>
     </xsl:copy>
   </xsl:template>
