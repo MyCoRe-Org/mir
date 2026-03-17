@@ -52,7 +52,7 @@ public class MIRClassificationServlet extends MCRServlet {
     private Collection<Element> getRoleElements() {
         MCRCategoryDAO categoryDao = MCRCategoryDAOFactory.obtainInstance();
         List<MCRCategory> allClassi = categoryDao.getRootCategories();
-        ArrayList<Element> list = new ArrayList<Element>(allClassi.size());
+        ArrayList<Element> list = new ArrayList<>(allClassi.size());
         for (MCRCategory category : allClassi) {
             if (MCRAccessManager.checkPermission(category.getId().toString(), MCRAccessManager.PERMISSION_READ)) {
                 Element role = new Element("classification");

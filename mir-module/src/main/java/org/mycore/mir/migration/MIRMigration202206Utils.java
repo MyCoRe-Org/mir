@@ -61,9 +61,8 @@ public class MIRMigration202206Utils {
         HashSet<String> labelLanguages = getAllRegularLabelLanguagesPresentInCategory(rootCategory, new HashSet<>());
 
         AtomicBoolean update = new AtomicBoolean(false);
-        mcrModsWrapper.getElements("mods:name").forEach(name -> {
-            fixModsName(NAME_IDENTIFIER, rootID, labelLanguages, update, name);
-        });
+        mcrModsWrapper.getElements("mods:name")
+            .forEach(name -> fixModsName(NAME_IDENTIFIER, rootID, labelLanguages, update, name));
 
         if (update.get() && !dry) {
             LOGGER.info("Save updated object: " + mcrObjectID);
@@ -73,9 +72,9 @@ public class MIRMigration202206Utils {
 
     private static void fixModsName(String classification, MCRCategoryID rootID, HashSet<String> labelLanguages,
         AtomicBoolean update, Element name) {
-        name.getChildren(NAME_IDENTIFIER, MCRConstants.MODS_NAMESPACE).forEach(nameIdentifier -> {
-            fixModsNameIdentifier(classification, rootID, labelLanguages, update, nameIdentifier);
-        });
+        name.getChildren(NAME_IDENTIFIER, MCRConstants.MODS_NAMESPACE)
+            .forEach(nameIdentifier -> fixModsNameIdentifier(classification, rootID, labelLanguages, update,
+                nameIdentifier));
     }
 
     private static void fixModsNameIdentifier(String classification, MCRCategoryID rootID,

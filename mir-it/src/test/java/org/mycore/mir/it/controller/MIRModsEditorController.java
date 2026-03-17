@@ -96,7 +96,7 @@ public class MIRModsEditorController extends MIREditorController {
         nameElement.click();
 
         driver.waitAndFindElements(By.xpath(".//ul[contains(@class,'typeahead')]/li/a")).stream()
-            .filter(e -> e.getText().contains(fullName)).limit(1).forEach(e -> e.click());
+            .filter(e -> e.getText().contains(fullName)).limit(1).forEach(WebElement::click);
     }
 
     public void setTitle(String title) {

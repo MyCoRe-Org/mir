@@ -3,6 +3,7 @@
  */
 package org.mycore.mir.authorization;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -295,9 +296,7 @@ public class MIRStrategy implements MCRAccessCheckStrategy {
             .map(s -> s.substring((objectType + ":").length()))
             .map(MCRCategoryID::ofString)
             .filter(c -> accessClasses.contains(c.getRootID()))
-            .sorted((c1, c2) -> {
-                return accessClasses.indexOf(c1.getRootID()) - accessClasses.indexOf(c2.getRootID());
-            })
+            .sorted(Comparator.comparingInt(c -> accessClasses.indexOf(c.getRootID())))
             .collect(Collectors.toList());
     }
 

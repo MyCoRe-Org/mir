@@ -40,7 +40,7 @@ public class MIRWizardCommandChain {
     private boolean success = true;
 
     public MIRWizardCommandChain() {
-        setCommands(new ArrayList<MIRWizardCommand>());
+        setCommands(new ArrayList<>());
     }
 
     public List<MIRWizardCommand> getCommands() {

@@ -77,7 +77,7 @@ public class MIRMigration202006Utils {
             .filter(
                 der -> "false".equals(der.getRootElement().getChild("derivate").getAttributeValue("display", "true")))
             .map(MCRDerivate::new)
-            .peek(der -> addContentIfNeeded(der))
+            .peek(MIRMigration202006Utils::addContentIfNeeded)
             .map(der -> getMigrationCommand(der, categoryID))
             .collect(Collectors.toList());
     }
@@ -298,9 +298,7 @@ public class MIRMigration202006Utils {
                         .map(en -> Optional.ofNullable(titleInfo.getChild(en, MCRConstants.MODS_NAMESPACE))
                             .orElse(titleInfo.getChild(en)))
                         .filter(Objects::nonNull)
-                        .forEach(child -> {
-                            fixHTML(xout, child);
-                        });
+                        .forEach(child -> fixHTML(xout, child));
                     embedDocumentAsAltFormat(domOutputter, element, decodedDocument);
                 } catch (JDOMException | IOException | TransformerException e) {
                     throw new MCRException("Error while building document!", e);

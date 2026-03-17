@@ -69,7 +69,7 @@ public class MIROwnerStrategy implements MCRAccessCheckStrategy {
     private static final Pattern TYPE_PATTERN = Pattern.compile("[^_]*_([^_]*)_*");
 
     private static LoadingCache<MCRObjectID, String> CREATOR_CACHE = CacheBuilder.newBuilder().weakKeys()
-        .maximumSize(5000).build(new CacheLoader<MCRObjectID, String>() {
+        .maximumSize(5000).build(new CacheLoader<>() {
 
             @Override
             public String load(MCRObjectID mcrObjectID) throws Exception {

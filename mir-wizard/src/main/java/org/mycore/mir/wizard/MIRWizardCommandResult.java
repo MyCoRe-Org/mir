@@ -50,7 +50,7 @@ public class MIRWizardCommandResult {
 
     private boolean success;
 
-    private Map<String, String> attributes = new HashMap<String, String>();
+    private Map<String, String> attributes = new HashMap<>();
 
     private Element result;
 
