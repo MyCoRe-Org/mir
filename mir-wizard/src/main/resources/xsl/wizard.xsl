@@ -4,19 +4,22 @@
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   exclude-result-prefixes="mcri18n">
 
-  <xsl:strip-space elements="*" />
+  <xsl:param name="WebApplicationBaseURL" />
+  <xsl:param name="ServletsBaseURL" />
 
   <xsl:variable name="PageTitle" select="mcri18n:translate('component.mir.wizard.title')" />
 
   <xsl:template match="wizard">
-    <head>
-      <link rel="stylesheet" href="{$WebApplicationBaseURL}mir-wizard/assets/highlightjs/css/default.css" />
-      <script src="{$WebApplicationBaseURL}mir-wizard/assets/highlightjs/js/highlight.js"></script>
-    </head>
-    <xsl:apply-templates />
-    <script type="text/javascript">
-      hljs.initHighlightingOnLoad();
-    </script>
+    <site title="{$PageTitle}">
+      <head>
+        <link rel="stylesheet" href="{$WebApplicationBaseURL}mir-wizard/assets/highlightjs/css/default.css" />
+        <script src="{$WebApplicationBaseURL}mir-wizard/assets/highlightjs/js/highlight.js"></script>
+      </head>
+      <xsl:apply-templates />
+      <script type="text/javascript">
+        hljs.initHighlightingOnLoad();
+      </script>
+    </site>
   </xsl:template>
 
   <xsl:template match="results">

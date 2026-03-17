@@ -45,48 +45,130 @@
                 <legend>
                   <xed:output i18n="component.mir.wizard.solr.title" />
                 </legend>
-                <mir:template name="textInput" xpath="property[@name='MCR.Solr.ServerURL']" id="solrURL"
-                  default="http://localhost:8983" i18n="component.mir.wizard.solr.url" i18n.error="component.mir.wizard.solr.url.required"
-                  required="true" />
-                <mir:template name="textInput" xpath="property[@name='MCR.Solr.Core.main.Name']" id="solrMainCore"
-                  i18n="component.mir.wizard.solr.mainCore" />
-                <mir:template name="textInput" xpath="property[@name='MCR.Solr.Core.classification.Name']" id="solrClassificationCore"
-                  i18n="component.mir.wizard.solr.classificationCore" />
+                <!-- Connection mode selection -->
                 <xed:bind xpath="../solr">
-                  <mir:template name="checkboxList" xpath="createCores">
+                  <mir:template name="radioList" xpath="mode" id="solrMode"
+                    i18n="component.mir.wizard.solr.mode" initially="standalone" inline="true">
+                    <option i18n="component.mir.wizard.solr.mode.standalone" value="standalone" />
+                    <option i18n="component.mir.wizard.solr.mode.cloudUrl" value="cloud-url" />
+                    <option i18n="component.mir.wizard.solr.mode.cloudZk" value="cloud-zk" />
+                  </mir:template>
+
+                  <!-- Solr URL (standalone + cloud-url) -->
+                  <mir:template id="solrServerUrl" name="textInput" xpath="serverUrl"
+                    default="http://localhost:8983"
+                    i18n="component.mir.wizard.solr.url"
+                    i18n.error="component.mir.wizard.solr.url.required"
+                    tooltip="component.mir.wizard.solr.url.tooltip" />
+
+                  <!-- ZooKeeper (cloud-zk only) -->
+                  <mir:template id="solrZkUrl" name="textInput" xpath="zkUrl"
+                    i18n="component.mir.wizard.solr.zkUrl"
+                    i18n.error="component.mir.wizard.solr.zkUrl.required"
+                    tooltip="component.mir.wizard.solr.zkUrl.tooltip" />
+                  <mir:template id="solrZkChroot" name="textInput" xpath="zkChroot"
+                    i18n="component.mir.wizard.solr.zkChroot"
+                    tooltip="component.mir.wizard.solr.zkChroot.tooltip" />
+                </xed:bind>
+
+                <!-- Standalone: Core names -->
+                <mir:template id="solrMainCore" name="textInput"
+                  xpath="property[@name='MCR.Solr.IndexManager.Index.main.CoreName']"
+                  default="mir" i18n="component.mir.wizard.solr.mainCore"
+                  tooltip="component.mir.wizard.solr.mainCore.tooltip" />
+                <mir:template id="solrClassificationCore" name="textInput"
+                  xpath="property[@name='MCR.Solr.IndexManager.Index.classification.CoreName']"
+                  default="mir-classifications" i18n="component.mir.wizard.solr.classificationCore"
+                  tooltip="component.mir.wizard.solr.classificationCore.tooltip" />
+
+                <!-- Cloud: Collection names and configset templates -->
+                <mir:template id="solrMainCollection" name="textInput"
+                  xpath="property[@name='MCR.Solr.IndexManager.Index.main.CollectionName']"
+                  default="mir" i18n="component.mir.wizard.solr.mainCore"
+                  tooltip="component.mir.wizard.solr.mainCollection.tooltip" />
+                <mir:template id="solrClassificationCollection" name="textInput"
+                  xpath="property[@name='MCR.Solr.IndexManager.Index.classification.CollectionName']"
+                  default="mir-classifications" i18n="component.mir.wizard.solr.classificationCore"
+                  tooltip="component.mir.wizard.solr.classificationCollection.tooltip" />
+                <!-- Create collections (cloud only) -->
+                <xed:bind xpath="../solr">
+                  <mir:template id="createCores" name="checkboxList" xpath="createCores">
                     <option i18n="component.mir.wizard.solr.createCores" value="true" />
                   </mir:template>
                 </xed:bind>
+
+                <!-- SolrCloud collection options (only when createCores is checked) -->
+                <div id="solrCloudCreationOptions" style="display:none">
+                  <mir:template id="solrMainNumShards" name="textInput"
+                    xpath="property[@name='MCR.Solr.IndexManager.Index.main.NumShards']"
+                    i18n="component.mir.wizard.solr.main.numShards"
+                    tooltip="component.mir.wizard.solr.numShards.tooltip" />
+                  <mir:template id="solrMainNumNrtReplicas" name="textInput"
+                    xpath="property[@name='MCR.Solr.IndexManager.Index.main.NumNrtReplicas']"
+                    i18n="component.mir.wizard.solr.main.numNrtReplicas"
+                    tooltip="component.mir.wizard.solr.numNrtReplicas.tooltip" />
+                  <mir:template id="solrMainNumTlogReplicas" name="textInput"
+                    xpath="property[@name='MCR.Solr.IndexManager.Index.main.NumTlogReplicas']"
+                    i18n="component.mir.wizard.solr.main.numTlogReplicas"
+                    tooltip="component.mir.wizard.solr.numTlogReplicas.tooltip" />
+                  <mir:template id="solrMainNumPullReplicas" name="textInput"
+                    xpath="property[@name='MCR.Solr.IndexManager.Index.main.NumPullReplicas']"
+                    i18n="component.mir.wizard.solr.main.numPullReplicas"
+                    tooltip="component.mir.wizard.solr.numPullReplicas.tooltip" />
+                  <mir:template id="solrClassificationNumShards" name="textInput"
+                    xpath="property[@name='MCR.Solr.IndexManager.Index.classification.NumShards']"
+                    i18n="component.mir.wizard.solr.classification.numShards"
+                    tooltip="component.mir.wizard.solr.numShards.tooltip" />
+                  <mir:template id="solrClassificationNumNrtReplicas" name="textInput"
+                    xpath="property[@name='MCR.Solr.IndexManager.Index.classification.NumNrtReplicas']"
+                    i18n="component.mir.wizard.solr.classification.numNrtReplicas"
+                    tooltip="component.mir.wizard.solr.numNrtReplicas.tooltip" />
+                  <mir:template id="solrClassificationNumTlogReplicas" name="textInput"
+                    xpath="property[@name='MCR.Solr.IndexManager.Index.classification.NumTlogReplicas']"
+                    i18n="component.mir.wizard.solr.classification.numTlogReplicas"
+                    tooltip="component.mir.wizard.solr.numTlogReplicas.tooltip" />
+                  <mir:template id="solrClassificationNumPullReplicas" name="textInput"
+                    xpath="property[@name='MCR.Solr.IndexManager.Index.classification.NumPullReplicas']"
+                    i18n="component.mir.wizard.solr.classification.numPullReplicas"
+                    tooltip="component.mir.wizard.solr.numPullReplicas.tooltip" />
+                </div>
 
                 <mir:template id="adminUserEnabled" name="checkboxList" xpath="property[@name='MCR.Solr.Server.Auth.Admin.Class']">
                   <option i18n="component.mir.wizard.solr.adminUserEnabled" value="org.mycore.solr.auth.MCRSolrPropertyBasicAuthenticator" />
                 </mir:template>
                 <mir:template id="solrAdminUsername" name="textInput" xpath="property[@name='MCR.Solr.Server.Auth.Admin.Username']"
-                  i18n="component.mir.wizard.solr.admin.username" />
+                  i18n="component.mir.wizard.solr.admin.username"
+                  tooltip="component.mir.wizard.solr.admin.username.tooltip" />
                 <mir:template id="solrAdminPassword" name="passwordInput" xpath="property[@name='MCR.Solr.Server.Auth.Admin.Password']"
-                  i18n="component.mir.wizard.solr.admin.password" />
+                  i18n="component.mir.wizard.solr.admin.password"
+                  tooltip="component.mir.wizard.solr.admin.password.tooltip" />
 
                 <mir:template id="indexUserEnabled" name="checkboxList" xpath="property[@name='MCR.Solr.Server.Auth.Index.Class']">
                   <option i18n="component.mir.wizard.solr.indexUserEnabled" value="org.mycore.solr.auth.MCRSolrPropertyBasicAuthenticator" />
                 </mir:template>
                 <mir:template id="solrIndexUsername" name="textInput" xpath="property[@name='MCR.Solr.Server.Auth.Index.Username']"
-                  i18n="component.mir.wizard.solr.index.username" />
+                  i18n="component.mir.wizard.solr.index.username"
+                  tooltip="component.mir.wizard.solr.index.username.tooltip" />
                 <mir:template id="solrIndexPassword" name="passwordInput" xpath="property[@name='MCR.Solr.Server.Auth.Index.Password']"
-                  i18n="component.mir.wizard.solr.index.password" />
+                  i18n="component.mir.wizard.solr.index.password"
+                  tooltip="component.mir.wizard.solr.index.password.tooltip" />
 
                 <mir:template id="searchUserEnabled" name="checkboxList" xpath="property[@name='MCR.Solr.Server.Auth.Search.Class']">
                   <option i18n="component.mir.wizard.solr.searchUserEnabled" value="org.mycore.solr.auth.MCRSolrPropertyBasicAuthenticator" />
                 </mir:template>
                 <mir:template id="solrSearchUsername" name="textInput" xpath="property[@name='MCR.Solr.Server.Auth.Search.Username']"
-                  i18n="component.mir.wizard.solr.search.username" />
+                  i18n="component.mir.wizard.solr.search.username"
+                  tooltip="component.mir.wizard.solr.search.username.tooltip" />
                 <mir:template id="solrSearchPassword" name="passwordInput" xpath="property[@name='MCR.Solr.Server.Auth.Search.Password']"
-                  i18n="component.mir.wizard.solr.search.password" />
+                  i18n="component.mir.wizard.solr.search.password"
+                  tooltip="component.mir.wizard.solr.search.password.tooltip" />
 
                 <mir:template id="tikaServer" name="checkboxList" xpath="property[@name='MCR.Solr.FileIndexStrategy']">
                   <option i18n="component.mir.wizard.solr.useTika" value="org.mycore.solr.index.file.tika.MCRTikaSolrFileStrategy" />
                 </mir:template>
                 <mir:template id="tikaServerURL" name="textInput" xpath="property[@name='MCR.Solr.Tika.ServerURL']"
-                              i18n="component.mir.wizard.solr.tikaUrl" />
+                  i18n="component.mir.wizard.solr.tikaUrl"
+                  tooltip="component.mir.wizard.solr.tikaUrl.tooltip" />
 
               </fieldset>
               <fieldset>

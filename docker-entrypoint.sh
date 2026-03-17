@@ -23,7 +23,6 @@ if [ "$EUID" -eq 0 ]
       fixDirectoryRights "$MCR_CONFIG_DIR" "mcr"
       fixDirectoryRights "$MCR_DATA_DIR" "mcr"
       fixDirectoryRights "$MCR_LOG_DIR" "mcr"
-      fixDirectoryRights "$MCR_OVERRIDE_DIR" "mcr"
     fi
     exec gosu mcr "$0"
     exit 0;
@@ -94,16 +93,71 @@ function setOrAddProperty() {
 function setDockerValues() {
     echo "Set Docker Values to Config!"
 
-    if [ -n "${SOLR_URL}" ]; then
-      setOrAddProperty "MCR.Solr.ServerURL" "${SOLR_URL}"
-    fi
-
-    if [ -n "${SOLR_CORE}" ]; then
-      setOrAddProperty "MCR.Solr.Core.main.Name" "${SOLR_CORE}"
-    fi
-
-    if [ -n "${SOLR_CLASSIFICATION_CORE}" ]; then
-      setOrAddProperty "MCR.Solr.Core.classification.Name" "${SOLR_CLASSIFICATION_CORE}"
+    if [[ "$ENABLE_SOLR_CLOUD" == "true" ]]; then
+      # SolrCloud mode
+      if [ -n "${SOLR_ZK_HOST}" ]; then
+        # Connect via ZooKeeper
+        setOrAddProperty "MCR.Solr.IndexManager.Index.main.Class" "org.mycore.solr.cloud.collection.MCRConfigurableSolrCloudCollection"
+        setOrAddProperty "MCR.Solr.IndexManager.Index.main.ZkUrls" "${SOLR_ZK_HOST}"
+        setOrAddProperty "MCR.Solr.IndexManager.Index.classification.Class" "org.mycore.solr.cloud.collection.MCRConfigurableSolrCloudCollection"
+        setOrAddProperty "MCR.Solr.IndexManager.Index.classification.ZkUrls" "${SOLR_ZK_HOST}"
+        if [ -n "${SOLR_ZK_CHROOT}" ]; then
+          setOrAddProperty "MCR.Solr.IndexManager.Index.main.ZkChroot" "${SOLR_ZK_CHROOT}"
+          setOrAddProperty "MCR.Solr.IndexManager.Index.classification.ZkChroot" "${SOLR_ZK_CHROOT}"
+        fi
+      elif [ -n "${SOLR_URL}" ]; then
+        # Connect via Solr HTTP URL
+        setOrAddProperty "MCR.Solr.IndexManager.Index.main.Class" "org.mycore.solr.cloud.collection.MCRConfigurableSolrCloudCollection"
+        setOrAddProperty "MCR.Solr.IndexManager.Index.main.SolrUrls" "${SOLR_URL}"
+        setOrAddProperty "MCR.Solr.IndexManager.Index.classification.Class" "org.mycore.solr.cloud.collection.MCRConfigurableSolrCloudCollection"
+        setOrAddProperty "MCR.Solr.IndexManager.Index.classification.SolrUrls" "${SOLR_URL}"
+      fi
+      if [ -n "${SOLR_CORE}" ]; then
+        setOrAddProperty "MCR.Solr.IndexManager.Index.main.CollectionName" "${SOLR_CORE}"
+        setOrAddProperty "MCR.Solr.IndexManager.Index.main.ConfigSetTemplate" "${SOLR_MAIN_CONFIGSET:-mycore_main}"
+      fi
+      if [ -n "${SOLR_CLASSIFICATION_CORE}" ]; then
+        setOrAddProperty "MCR.Solr.IndexManager.Index.classification.CollectionName" "${SOLR_CLASSIFICATION_CORE}"
+        setOrAddProperty "MCR.Solr.IndexManager.Index.classification.ConfigSetTemplate" "${SOLR_CLASSIFICATION_CONFIGSET:-mycore_classification}"
+      fi
+      if [ -n "${SOLR_CORE_NUM_SHARDS}" ]; then
+        setOrAddProperty "MCR.Solr.IndexManager.Index.main.NumShards" "${SOLR_CORE_NUM_SHARDS}"
+      fi
+      if [ -n "${SOLR_CORE_NUM_NRT_REPLICAS}" ]; then
+        setOrAddProperty "MCR.Solr.IndexManager.Index.main.NumNrtReplicas" "${SOLR_CORE_NUM_NRT_REPLICAS}"
+      fi
+      if [ -n "${SOLR_CORE_NUM_TLOG_REPLICAS}" ]; then
+        setOrAddProperty "MCR.Solr.IndexManager.Index.main.NumTlogReplicas" "${SOLR_CORE_NUM_TLOG_REPLICAS}"
+      fi
+      if [ -n "${SOLR_CORE_NUM_PULL_REPLICAS}" ]; then
+        setOrAddProperty "MCR.Solr.IndexManager.Index.main.NumPullReplicas" "${SOLR_CORE_NUM_PULL_REPLICAS}"
+      fi
+      if [ -n "${SOLR_CLASSIFICATION_CORE_NUM_SHARDS}" ]; then
+        setOrAddProperty "MCR.Solr.IndexManager.Index.classification.NumShards" "${SOLR_CLASSIFICATION_CORE_NUM_SHARDS}"
+      fi
+      if [ -n "${SOLR_CLASSIFICATION_CORE_NUM_NRT_REPLICAS}" ]; then
+        setOrAddProperty "MCR.Solr.IndexManager.Index.classification.NumNrtReplicas" "${SOLR_CLASSIFICATION_CORE_NUM_NRT_REPLICAS}"
+      fi
+      if [ -n "${SOLR_CLASSIFICATION_CORE_NUM_TLOG_REPLICAS}" ]; then
+        setOrAddProperty "MCR.Solr.IndexManager.Index.classification.NumTlogReplicas" "${SOLR_CLASSIFICATION_CORE_NUM_TLOG_REPLICAS}"
+      fi
+      if [ -n "${SOLR_CLASSIFICATION_CORE_NUM_PULL_REPLICAS}" ]; then
+        setOrAddProperty "MCR.Solr.IndexManager.Index.classification.NumPullReplicas" "${SOLR_CLASSIFICATION_CORE_NUM_PULL_REPLICAS}"
+      fi
+    else
+      # Standalone mode
+      if [ -n "${SOLR_URL}" ]; then
+        setOrAddProperty "MCR.Solr.IndexManager.Index.main.Class" "org.mycore.solr.standalone.core.MCRConfigurableSolrCore"
+        setOrAddProperty "MCR.Solr.IndexManager.Index.main.SolrUrl" "${SOLR_URL}"
+        setOrAddProperty "MCR.Solr.IndexManager.Index.classification.Class" "org.mycore.solr.standalone.core.MCRConfigurableSolrCore"
+        setOrAddProperty "MCR.Solr.IndexManager.Index.classification.SolrUrl" "${SOLR_URL}"
+      fi
+      if [ -n "${SOLR_CORE}" ]; then
+        setOrAddProperty "MCR.Solr.IndexManager.Index.main.CoreName" "${SOLR_CORE}"
+      fi
+      if [ -n "${SOLR_CLASSIFICATION_CORE}" ]; then
+        setOrAddProperty "MCR.Solr.IndexManager.Index.classification.CoreName" "${SOLR_CLASSIFICATION_CORE}"
+      fi
     fi
 
     if [ -n "${JDBC_NAME}" ]; then
@@ -212,15 +266,6 @@ function setDockerValues() {
 
       setOrAddProperty "$key" "$value"
     done
-
-    # set developer mode properties in developermode
-    if [ "$DEVELOPER_MODE" = "true" ]; then
-      setOrAddProperty "MCR.Developer.Resource.Override" "/mcr/override/"
-      setOrAddProperty "MCR.LayoutService.LastModifiedCheckPeriod" "0"
-      setOrAddProperty "MCR.UseXSLTemplateCache" "false"
-      setOrAddProperty "MCR.SASS.DeveloperMode" "true"
-      setOrAddProperty "MCR.CLI.Classes.Internal" "%MCR.CLI.Classes.Internal%,org.mycore.frontend.cli.MCRDeveloperCommands"
-    fi
 
     rm -f "${PERSISTENCE_XML}"
 }

@@ -28,6 +28,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jdom2.Element;
 import org.mycore.mir.wizard.MIRWizardCommand;
+import org.mycore.solr.MCRSolrIndexManager;
 import org.mycore.solr.commands.MCRSolrCloudCommands;
 import org.mycore.solr.commands.MCRSolrCoreAdminCommands;
 
@@ -65,6 +66,8 @@ public class MIRWizardSolr extends MIRWizardCommand {
                     .map(input -> input.getChild("solr"))
                     .map(input -> input.getChild("createCores"))
                     .filter(input -> input.getTextTrim().equals("true"));
+
+            MCRSolrIndexManager.reloadInstance();
 
             if (createCores.isPresent()) {
                 MCRSolrCloudCommands.uploadLocalConfig(DEFAULT_CORE);
