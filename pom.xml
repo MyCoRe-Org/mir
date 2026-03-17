@@ -40,12 +40,12 @@
     <changelog.since>2024-12-18</changelog.since>
     <!-- until snapshot matches released version (required for 'mvn changes:changes-check') -->
     <changes.version>2025.02</changes.version>
-    <java.target.version>21</java.target.version>
+    <java.target.version>25</java.target.version>
     <jetty.version>12.1.6</jetty.version>
     <maven.compiler.arg>-Werror</maven.compiler.arg>
     <mycore.version>2026.06.0-SNAPSHOT</mycore.version>
     <pmd.failOnViolation>true</pmd.failOnViolation>
-    <pmd.version>7.11.0</pmd.version>
+    <pmd.version>7.16.0</pmd.version>
     <selenium.version>4.23.0</selenium.version>
     <site.suffix />
     <solr-runner.solrVersionString>9.10.1</solr-runner.solrVersionString>

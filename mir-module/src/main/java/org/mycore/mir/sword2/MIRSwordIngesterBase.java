@@ -125,14 +125,11 @@ public abstract class MIRSwordIngesterBase implements MCRSwordIngester {
     public Document buildDCDocument(Map<String, List<String>> dublinCoreMetadata) {
         final Element dcRootElement = new Element("dc");
         final Document dc = new Document(dcRootElement);
-        dublinCoreMetadata.entrySet().forEach(dcElementValueEntry -> {
-            final String elemenName = dcElementValueEntry.getKey();
-            dcElementValueEntry.getValue().forEach(value -> {
-                final Element dcElement = new Element(elemenName, DC_NAMESPACE);
-                dcElement.setText(value);
-                dcRootElement.addContent(dcElement);
-            });
-        });
+        dublinCoreMetadata.forEach((elemenName, value1) -> value1.forEach(value -> {
+            final Element dcElement = new Element(elemenName, DC_NAMESPACE);
+            dcElement.setText(value);
+            dcRootElement.addContent(dcElement);
+        }));
         return dc;
     }
 }

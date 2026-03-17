@@ -70,7 +70,7 @@ public class MIRWizardStartupHandler implements MCRStartupHandler.AutoExecutable
     private static final String WIZARD_FILTER_CLASS = MIRWizardRequestFilter.class.getName();
 
     static void outputLoginToken(ServletContext servletContext) {
-        final StringBuffer sb = new StringBuffer();
+        final StringBuilder sb = new StringBuilder();
 
         final String line = "=".repeat(80);
         sb.append("\n\n")

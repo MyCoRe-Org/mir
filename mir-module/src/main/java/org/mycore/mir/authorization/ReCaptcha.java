@@ -106,7 +106,7 @@ public class ReCaptcha {
             final Gson gson = new Gson();
             final ReCaptchaResult rcResult = gson.fromJson(json, ReCaptchaResult.class);
 
-            return Boolean.valueOf(rcResult.success);
+            return rcResult.success;
         } catch (final IOException | InterruptedException e) {
             LOGGER.warn("ReCaptcha response could not be verified!", e);
             return Boolean.FALSE;

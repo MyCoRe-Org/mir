@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 import java.util.function.Consumer;
@@ -125,7 +126,7 @@ public class MIRImageWarePacker extends MCRPacker {
                     return null;
                 }
             })
-            .filter(o -> o != null)
+            .filter(Objects::nonNull)
             .collect(Collectors.toList());
 
         for (URI possiblePPNURI : possiblePPNURIs) {

@@ -74,9 +74,7 @@ public class MIRSwordMetadataProvider extends MCRSwordMetadataProvider {
 
         elementList.stream()
             .filter(dcElement -> dcElement.getText().trim().length() > 0)
-            .forEach(dcElement -> {
-                receipt.addDublinCore(dcElement.getName(), dcElement.getText().trim());
-            });
+            .forEach(dcElement -> receipt.addDublinCore(dcElement.getName(), dcElement.getText().trim()));
 
         MCRSwordUtil.addDatesToEntry(receipt.getWrappedEntry(), object);
     }

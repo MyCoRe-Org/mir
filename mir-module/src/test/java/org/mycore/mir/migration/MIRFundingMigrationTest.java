@@ -48,7 +48,7 @@ public class MIRFundingMigrationTest {
         assertNull(identifierElement);
         final List<Element> fundingReferenceElements = wrapper.getElements(FUNDING_REFERENCE_XPATH);
         assertEquals(1, fundingReferenceElements.size());
-        final Element fundingReferenceElement = fundingReferenceElements.get(0);
+        final Element fundingReferenceElement = fundingReferenceElements.getFirst();
         final Element awardTitleElement = fundingReferenceElement.getChild("awardTitle");
         assertNotNull(awardTitleElement);
         assertEquals(AWARD_TITLE, awardTitleElement.getText());
