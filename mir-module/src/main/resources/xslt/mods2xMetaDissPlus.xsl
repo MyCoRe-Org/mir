@@ -328,12 +328,12 @@
     <xsl:call-template name="ddb_identifier" />
     <!-- Zugriffsrechte für das Archivobjekt -->
     <xsl:call-template name="rights">
-      <xsl:with-param name="derivateID" select="structure/derobjects/derobject/@xlink:href" />
+      <xsl:with-param name="derivateID" select="(structure/derobjects/derobject/@xlink:href)[1]" />
     </xsl:call-template>
     <!-- Lizenzangaben und Rechtehinweise für das Originalobjekt -->
     <xsl:if test="not(contains($MIR.xMetaDissPlus.disabledTemplates,'license'))">
       <xsl:call-template name="license">
-        <xsl:with-param name="derivateID" select="structure/derobjects/derobject/@xlink:href" />
+        <xsl:with-param name="derivateID" select="(structure/derobjects/derobject/@xlink:href)[1]" />
       </xsl:call-template>
     </xsl:if>
   </xsl:template>
