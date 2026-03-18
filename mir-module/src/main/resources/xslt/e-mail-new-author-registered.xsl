@@ -28,7 +28,7 @@
     </to>
     <subject>
       <xsl:value-of select="
-        mcri18n:translate('selfRegistration.step.created.email.admin.subject', concat(@name,' (',@realm,')'))
+        mcri18n:translate-with-params('selfRegistration.step.created.email.admin.subject', concat(@name,' (',@realm,')'))
       " />
     </subject>
     <body>
