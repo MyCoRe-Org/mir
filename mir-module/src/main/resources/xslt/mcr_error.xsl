@@ -1,30 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0"
-  xmlns:mcri18n="xalan://org.mycore.services.i18n.MCRTranslation"
+<xsl:stylesheet version="3.0"
+  xmlns:mcri18n="http://www.mycore.de/xslt/i18n"
+  xmlns:mirstrutils="http://www.mycore.de/xslt/mirstrutils"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  exclude-result-prefixes="mcri18n">
+  exclude-result-prefixes="#all">
 
-  <xsl:import href="resource:xsl/layout/mir-layout-utils.xsl" />
+  <xsl:include href="resource:xslt/layout/mir-layout-utils.xsl" />
+  <xsl:include href="resource:xslt/MyCoReLayout.xsl" />
 
-  <xsl:variable name="Type" select="'document'" />
-
-  <xsl:variable name="PageTitle" select="mcri18n:translate('titles.pageTitle.error',concat(' ',/mcr_error/@HttpError))" />
+  <xsl:variable
+    name="PageTitle"
+    select="mcri18n:translate-with-params('titles.pageTitle.error', concat(' ', /mcr_error/@HttpError))" />
 
   <xsl:template match="/mcr_error">
     <div class="jumbotron text-center">
       <h1>
-        <xsl:value-of select="mcri18n:translate('mir.error.headline',/mcr_error/@HttpError)" />
+        <xsl:value-of select="mcri18n:translate-with-params('mir.error.headline', @HttpError)" />
       </h1>
       <h2>
         <xsl:value-of select="mcri18n:translate('mir.error.subheadline')" />
       </h2>
       <p class="lead">
-        <xsl:value-of disable-output-escaping="yes"
-          select="mcri18n:translate(concat('mir.error.codes.',/mcr_error/@HttpError),/mcr_error/@requestURI)" />
+        <xsl:copy-of
+          select="
+            parse-xml-fragment(
+              mcri18n:translate-with-params(
+                concat('mir.error.codes.', @HttpError),
+                mirstrutils:escape-xml(string(@requestURI))
+              )
+            )/node()" />
       </p>
       <xsl:choose>
-        <xsl:when test="@errorServlet and string-length(text()) &gt; 1 or exception">
-          <xsl:if test="@errorServlet and string-length(text()) &gt; 1">
+        <xsl:when test="(@errorServlet and string-length(text()) gt 1) or exception">
+          <xsl:if test="@errorServlet and string-length(text()) gt 1">
             <div class="alert alert-info" role="alert">
               <xsl:attribute name="title">
                 <xsl:value-of select="mcri18n:translate('mir.error.message')" />
@@ -39,7 +48,7 @@
               <div class="card-header bg-danger">
                 <xsl:value-of select="concat(mcri18n:translate('error.stackTrace'),' :')" />
               </div>
-              <div class="card-body">
+              <div class="card-body text-start">
                 <xsl:for-each select="exception/trace">
                   <pre style="font-size:0.8em;">
                     <xsl:value-of select="." />
@@ -65,9 +74,18 @@
     </div>
   </xsl:template>
 
-  <xsl:template match="/mcr_error[contains('401|403', @HttpError)]">
+  <xsl:template match="/mcr_error[@HttpError = ('401', '403')]">
     <xsl:call-template name="mir.printNotLoggedIn" />
   </xsl:template>
 
-  <xsl:include href="resource:xsl/MyCoReLayout.xsl" />
+  <xsl:template name="lf2br">
+    <xsl:param name="string" as="xs:string" />
+
+    <xsl:for-each select="tokenize($string, '\r?\n')">
+      <xsl:value-of select="." />
+      <xsl:if test="position() ne last()">
+        <br />
+      </xsl:if>
+    </xsl:for-each>
+  </xsl:template>
 </xsl:stylesheet>
