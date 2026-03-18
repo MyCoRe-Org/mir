@@ -229,13 +229,13 @@
     <xsl:variable name="basketTitle">
       <xsl:choose>
         <xsl:when test="$entryCount = 0">
-          <xsl:value-of select="mcri18n:translate('basket.numEntries.none')" disable-output-escaping="yes" />
+          <xsl:copy-of select="parse-xml-fragment(mcri18n:translate('basket.numEntries.none'))/node()" />
         </xsl:when>
         <xsl:when test="$entryCount = 1">
-          <xsl:value-of select="mcri18n:translate('basket.numEntries.one')" disable-output-escaping="yes" />
+          <xsl:copy-of select="parse-xml-fragment(mcri18n:translate('basket.numEntries.one'))/node()" />
         </xsl:when>
         <xsl:otherwise>
-          <xsl:value-of select="mcri18n:translate-with-params('basket.numEntries.many',$entryCount)" disable-output-escaping="yes" />
+          <xsl:copy-of select="parse-xml-fragment(mcri18n:translate-with-params('basket.numEntries.many',$entryCount))/node()" />
         </xsl:otherwise>
       </xsl:choose>
     </xsl:variable>

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="3.0"
   xmlns:mcri18n="http://www.mycore.de/xslt/i18n"
+  xmlns:mirstrutils="http://www.mycore.de/xslt/mirstrutils"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   exclude-result-prefixes="#all">
 
@@ -31,7 +32,11 @@
   <xsl:template name="displayLogin">
     <xsl:variable name="loginURL" select="concat($ServletsBaseURL, 'MCRLoginServlet?url=', encode-for-uri(string($RequestURL)))" />
     <br></br>
-    <xsl:value-of disable-output-escaping="yes" select="mcri18n:translate-with-params('mir.loginRequiredInfo', $loginURL)" />
+    <xsl:copy-of
+      select="
+        parse-xml-fragment(
+          mcri18n:translate-with-params('mir.loginRequiredInfo', mirstrutils:escape-xml($loginURL))
+        )/node()" />
   </xsl:template>
 
   <xsl:template name="displaySetAccessKey">
@@ -56,7 +61,7 @@
         <xsl:value-of select="mcri18n:translate('mir.error.headline.401')" />
       </h1>
       <p>
-        <xsl:value-of disable-output-escaping="yes" select="mcri18n:translate('mir.error.codes.401')" />
+        <xsl:copy-of select="parse-xml-fragment(mcri18n:translate('mir.error.codes.401'))/node()" />
         <xsl:if test="$isUserGuest='true'">
           <xsl:call-template name="displayLogin" />
         </xsl:if>
