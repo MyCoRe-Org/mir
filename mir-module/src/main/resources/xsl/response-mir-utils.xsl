@@ -149,7 +149,7 @@
                   <xsl:with-param name="numPerPage" select="$numPerPage" />
                 </xsl:call-template>
               </xsl:attribute>
-              <xsl:text disable-output-escaping="yes">&amp;laquo;</xsl:text>
+              <xsl:text>«</xsl:text>
               <span class="sr-only">
                 <xsl:value-of select="$label.firstPage" />
               </span>
@@ -158,7 +158,7 @@
           <xsl:otherwise>
             <xsl:attribute name="class">page-item disabled</xsl:attribute>
             <a class="page-link"><span>
-              <xsl:text disable-output-escaping="yes">&amp;laquo;</xsl:text>
+              <xsl:text>«</xsl:text>
               <span class="sr-only">
                 <xsl:value-of select="$label.firstPage" />
               </span>
@@ -177,7 +177,7 @@
                     <xsl:with-param name="numPerPage" select="$numPerPage" />
                   </xsl:call-template>
                 </xsl:attribute>
-              <xsl:text disable-output-escaping="yes">&amp;lsaquo;</xsl:text>
+              <xsl:text>‹</xsl:text>
               <span class="sr-only">
                 <xsl:value-of select="$label.previousPage" />
               </span>
@@ -186,7 +186,7 @@
           <xsl:otherwise>
             <xsl:attribute name="class">page-item disabled</xsl:attribute>
             <a class="page-link"><span>
-              <xsl:text disable-output-escaping="yes">&amp;lsaquo;</xsl:text>
+              <xsl:text>‹</xsl:text>
               <span class="sr-only">
                 <xsl:value-of select="$label.previousPage" />
               </span>
@@ -249,7 +249,7 @@
                   <xsl:with-param name="numPerPage" select="$numPerPage" />
                 </xsl:call-template>
               </xsl:attribute>
-              <xsl:text disable-output-escaping="yes">&amp;rsaquo;</xsl:text>
+              <xsl:text>›</xsl:text>
               <span class="sr-only">
                 <xsl:value-of select="$label.nextPage" />
               </span>
@@ -258,7 +258,7 @@
           <xsl:otherwise>
             <xsl:attribute name="class">page-item disabled</xsl:attribute>
             <a class="page-link"><span>
-              <xsl:text disable-output-escaping="yes">&amp;rsaquo;</xsl:text>
+              <xsl:text>›</xsl:text>
               <span class="sr-only">
                 <xsl:value-of select="$label.nextPage" />
               </span>
@@ -277,7 +277,7 @@
                   <xsl:with-param name="numPerPage" select="$numPerPage" />
                 </xsl:call-template>
               </xsl:attribute>
-              <xsl:text disable-output-escaping="yes">&amp;raquo;</xsl:text>
+              <xsl:text>»</xsl:text>
               <span class="sr-only">
                 <xsl:value-of select="$label.lastPage" />
               </span>
@@ -286,7 +286,7 @@
           <xsl:otherwise>
             <xsl:attribute name="class">page-item disabled</xsl:attribute>
             <a class="page-link"><span>
-              <xsl:text disable-output-escaping="yes">&amp;raquo;</xsl:text>
+              <xsl:text>»</xsl:text>
               <span class="sr-only">
                 <xsl:value-of select="$label.lastPage" />
               </span>
