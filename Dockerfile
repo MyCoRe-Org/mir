@@ -19,7 +19,7 @@ COPY --chown=root:root docker-entrypoint.sh /usr/local/bin/mir.sh
 RUN set -eux; \
     chmod 555 /usr/local/bin/mir.sh; \
 	apt-get update; \
-	apt-get install -y gosu; \
+	apt-get install -y gosu curl; \
 	rm -rf /var/lib/apt/lists/*;
 RUN chmod +x /usr/local/bin/mir.sh  && \
     rm -rf /usr/local/tomcat/webapps/* && \
