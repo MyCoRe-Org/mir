@@ -97,66 +97,66 @@ function setDockerValues() {
       # SolrCloud mode
       if [ -n "${SOLR_ZK_HOST}" ]; then
         # Connect via ZooKeeper
-        setOrAddProperty "MCR.Solr.IndexManager.Index.main.Class" "org.mycore.solr.cloud.collection.MCRConfigurableSolrCloudCollection"
-        setOrAddProperty "MCR.Solr.IndexManager.Index.main.ZkUrls" "${SOLR_ZK_HOST}"
-        setOrAddProperty "MCR.Solr.IndexManager.Index.classification.Class" "org.mycore.solr.cloud.collection.MCRConfigurableSolrCloudCollection"
-        setOrAddProperty "MCR.Solr.IndexManager.Index.classification.ZkUrls" "${SOLR_ZK_HOST}"
+        setOrAddProperty "MCR.Solr.IndexRegistry.Index.main.Class" "org.mycore.solr.cloud.collection.MCRConfigurableSolrCloudCollection"
+        setOrAddProperty "MCR.Solr.IndexRegistry.Index.main.ZkUrls" "${SOLR_ZK_HOST}"
+        setOrAddProperty "MCR.Solr.IndexRegistry.Index.classification.Class" "org.mycore.solr.cloud.collection.MCRConfigurableSolrCloudCollection"
+        setOrAddProperty "MCR.Solr.IndexRegistry.Index.classification.ZkUrls" "${SOLR_ZK_HOST}"
         if [ -n "${SOLR_ZK_CHROOT}" ]; then
-          setOrAddProperty "MCR.Solr.IndexManager.Index.main.ZkChroot" "${SOLR_ZK_CHROOT}"
-          setOrAddProperty "MCR.Solr.IndexManager.Index.classification.ZkChroot" "${SOLR_ZK_CHROOT}"
+          setOrAddProperty "MCR.Solr.IndexRegistry.Index.main.ZkChroot" "${SOLR_ZK_CHROOT}"
+          setOrAddProperty "MCR.Solr.IndexRegistry.Index.classification.ZkChroot" "${SOLR_ZK_CHROOT}"
         fi
       elif [ -n "${SOLR_URL}" ]; then
         # Connect via Solr HTTP URL
-        setOrAddProperty "MCR.Solr.IndexManager.Index.main.Class" "org.mycore.solr.cloud.collection.MCRConfigurableSolrCloudCollection"
-        setOrAddProperty "MCR.Solr.IndexManager.Index.main.SolrUrls" "${SOLR_URL}"
-        setOrAddProperty "MCR.Solr.IndexManager.Index.classification.Class" "org.mycore.solr.cloud.collection.MCRConfigurableSolrCloudCollection"
-        setOrAddProperty "MCR.Solr.IndexManager.Index.classification.SolrUrls" "${SOLR_URL}"
+        setOrAddProperty "MCR.Solr.IndexRegistry.Index.main.Class" "org.mycore.solr.cloud.collection.MCRConfigurableSolrCloudCollection"
+        setOrAddProperty "MCR.Solr.IndexRegistry.Index.main.SolrUrls" "${SOLR_URL}"
+        setOrAddProperty "MCR.Solr.IndexRegistry.Index.classification.Class" "org.mycore.solr.cloud.collection.MCRConfigurableSolrCloudCollection"
+        setOrAddProperty "MCR.Solr.IndexRegistry.Index.classification.SolrUrls" "${SOLR_URL}"
       fi
       if [ -n "${SOLR_CORE}" ]; then
-        setOrAddProperty "MCR.Solr.IndexManager.Index.main.CollectionName" "${SOLR_CORE}"
-        setOrAddProperty "MCR.Solr.IndexManager.Index.main.ConfigSetTemplate" "${SOLR_MAIN_CONFIGSET:-mycore_main}"
+        setOrAddProperty "MCR.Solr.IndexRegistry.Index.main.CollectionName" "${SOLR_CORE}"
+        setOrAddProperty "MCR.Solr.IndexRegistry.Index.main.ConfigSetTemplate" "${SOLR_MAIN_CONFIGSET:-mycore_main}"
       fi
       if [ -n "${SOLR_CLASSIFICATION_CORE}" ]; then
-        setOrAddProperty "MCR.Solr.IndexManager.Index.classification.CollectionName" "${SOLR_CLASSIFICATION_CORE}"
-        setOrAddProperty "MCR.Solr.IndexManager.Index.classification.ConfigSetTemplate" "${SOLR_CLASSIFICATION_CONFIGSET:-mycore_classification}"
+        setOrAddProperty "MCR.Solr.IndexRegistry.Index.classification.CollectionName" "${SOLR_CLASSIFICATION_CORE}"
+        setOrAddProperty "MCR.Solr.IndexRegistry.Index.classification.ConfigSetTemplate" "${SOLR_CLASSIFICATION_CONFIGSET:-mycore_classification}"
       fi
       if [ -n "${SOLR_CORE_NUM_SHARDS}" ]; then
-        setOrAddProperty "MCR.Solr.IndexManager.Index.main.NumShards" "${SOLR_CORE_NUM_SHARDS}"
+        setOrAddProperty "MCR.Solr.IndexRegistry.Index.main.NumShards" "${SOLR_CORE_NUM_SHARDS}"
       fi
       if [ -n "${SOLR_CORE_NUM_NRT_REPLICAS}" ]; then
-        setOrAddProperty "MCR.Solr.IndexManager.Index.main.NumNrtReplicas" "${SOLR_CORE_NUM_NRT_REPLICAS}"
+        setOrAddProperty "MCR.Solr.IndexRegistry.Index.main.NumNrtReplicas" "${SOLR_CORE_NUM_NRT_REPLICAS}"
       fi
       if [ -n "${SOLR_CORE_NUM_TLOG_REPLICAS}" ]; then
-        setOrAddProperty "MCR.Solr.IndexManager.Index.main.NumTlogReplicas" "${SOLR_CORE_NUM_TLOG_REPLICAS}"
+        setOrAddProperty "MCR.Solr.IndexRegistry.Index.main.NumTlogReplicas" "${SOLR_CORE_NUM_TLOG_REPLICAS}"
       fi
       if [ -n "${SOLR_CORE_NUM_PULL_REPLICAS}" ]; then
-        setOrAddProperty "MCR.Solr.IndexManager.Index.main.NumPullReplicas" "${SOLR_CORE_NUM_PULL_REPLICAS}"
+        setOrAddProperty "MCR.Solr.IndexRegistry.Index.main.NumPullReplicas" "${SOLR_CORE_NUM_PULL_REPLICAS}"
       fi
       if [ -n "${SOLR_CLASSIFICATION_CORE_NUM_SHARDS}" ]; then
-        setOrAddProperty "MCR.Solr.IndexManager.Index.classification.NumShards" "${SOLR_CLASSIFICATION_CORE_NUM_SHARDS}"
+        setOrAddProperty "MCR.Solr.IndexRegistry.Index.classification.NumShards" "${SOLR_CLASSIFICATION_CORE_NUM_SHARDS}"
       fi
       if [ -n "${SOLR_CLASSIFICATION_CORE_NUM_NRT_REPLICAS}" ]; then
-        setOrAddProperty "MCR.Solr.IndexManager.Index.classification.NumNrtReplicas" "${SOLR_CLASSIFICATION_CORE_NUM_NRT_REPLICAS}"
+        setOrAddProperty "MCR.Solr.IndexRegistry.Index.classification.NumNrtReplicas" "${SOLR_CLASSIFICATION_CORE_NUM_NRT_REPLICAS}"
       fi
       if [ -n "${SOLR_CLASSIFICATION_CORE_NUM_TLOG_REPLICAS}" ]; then
-        setOrAddProperty "MCR.Solr.IndexManager.Index.classification.NumTlogReplicas" "${SOLR_CLASSIFICATION_CORE_NUM_TLOG_REPLICAS}"
+        setOrAddProperty "MCR.Solr.IndexRegistry.Index.classification.NumTlogReplicas" "${SOLR_CLASSIFICATION_CORE_NUM_TLOG_REPLICAS}"
       fi
       if [ -n "${SOLR_CLASSIFICATION_CORE_NUM_PULL_REPLICAS}" ]; then
-        setOrAddProperty "MCR.Solr.IndexManager.Index.classification.NumPullReplicas" "${SOLR_CLASSIFICATION_CORE_NUM_PULL_REPLICAS}"
+        setOrAddProperty "MCR.Solr.IndexRegistry.Index.classification.NumPullReplicas" "${SOLR_CLASSIFICATION_CORE_NUM_PULL_REPLICAS}"
       fi
     else
       # Standalone mode
       if [ -n "${SOLR_URL}" ]; then
-        setOrAddProperty "MCR.Solr.IndexManager.Index.main.Class" "org.mycore.solr.standalone.core.MCRConfigurableSolrCore"
-        setOrAddProperty "MCR.Solr.IndexManager.Index.main.SolrUrl" "${SOLR_URL}"
-        setOrAddProperty "MCR.Solr.IndexManager.Index.classification.Class" "org.mycore.solr.standalone.core.MCRConfigurableSolrCore"
-        setOrAddProperty "MCR.Solr.IndexManager.Index.classification.SolrUrl" "${SOLR_URL}"
+        setOrAddProperty "MCR.Solr.IndexRegistry.Index.main.Class" "org.mycore.solr.standalone.core.MCRConfigurableSolrCore"
+        setOrAddProperty "MCR.Solr.IndexRegistry.Index.main.SolrUrl" "${SOLR_URL}"
+        setOrAddProperty "MCR.Solr.IndexRegistry.Index.classification.Class" "org.mycore.solr.standalone.core.MCRConfigurableSolrCore"
+        setOrAddProperty "MCR.Solr.IndexRegistry.Index.classification.SolrUrl" "${SOLR_URL}"
       fi
       if [ -n "${SOLR_CORE}" ]; then
-        setOrAddProperty "MCR.Solr.IndexManager.Index.main.CoreName" "${SOLR_CORE}"
+        setOrAddProperty "MCR.Solr.IndexRegistry.Index.main.CoreName" "${SOLR_CORE}"
       fi
       if [ -n "${SOLR_CLASSIFICATION_CORE}" ]; then
-        setOrAddProperty "MCR.Solr.IndexManager.Index.classification.CoreName" "${SOLR_CLASSIFICATION_CORE}"
+        setOrAddProperty "MCR.Solr.IndexRegistry.Index.classification.CoreName" "${SOLR_CLASSIFICATION_CORE}"
       fi
     fi
 
