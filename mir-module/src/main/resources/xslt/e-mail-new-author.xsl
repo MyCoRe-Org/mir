@@ -72,7 +72,7 @@
         </xsl:when>
       </xsl:choose>
       <xsl:value-of select="$newline" />
-      <xsl:value-of select="mcri18n:translate('selfRegistration.user.goodbye', $MCR.NameOfProject)"/>
+      <xsl:value-of select="mcri18n:translate-with-params('selfRegistration.user.goodbye', $MCR.NameOfProject)"/>
       <xsl:value-of select="$newline" />
     </body>
   </xsl:template>
