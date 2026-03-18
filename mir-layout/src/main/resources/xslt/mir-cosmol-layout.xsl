@@ -104,7 +104,7 @@
                   </xsl:when>
                   <xsl:otherwise>
                     <div class="alert alert-danger">
-                      <xsl:value-of select="mcri18n:translate('webpage.notLoggedIn')" disable-output-escaping="yes" />
+                      <xsl:copy-of select="parse-xml-fragment(mcri18n:translate('webpage.notLoggedIn'))/node()" />
                     </div>
                   </xsl:otherwise>
                 </xsl:choose>
