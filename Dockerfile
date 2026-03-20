@@ -12,6 +12,8 @@ ENV APP_CONTEXT="mir" \
  MCR_OVERRIDE_DIR="/mcr/override/" \
  SOLR_CORE="mir" \
  SOLR_CLASSIFICATION_CORE="mir-classifications" \
+ SOLR_MAIN_CONFIGSET="mycore_main" \
+ SOLR_CLASSIFICATION_CONFIGSET="mycore_classification" \
  XMX="1g" \
  XMS="1g"
 COPY --from=regreb/bibutils --chown=mcr:mcr /usr/local/bin/* /usr/local/bin/

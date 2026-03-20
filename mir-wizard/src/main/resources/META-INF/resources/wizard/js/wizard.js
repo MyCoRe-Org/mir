@@ -80,7 +80,9 @@ jQuery(document).ready(function() {
 	 *
 	 * Description: Initialize all Bootstrap Tooltips.
 	 */
-	$('*[data-bs-toggle="tooltip"]').tooltip();
+	document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(function(el) {
+		new bootstrap.Tooltip(el);
+	});
 
 	const formGroupSelector = '.mir-form-group.row';
 
@@ -91,9 +93,26 @@ jQuery(document).ready(function() {
 	 * @returns {void}
 	 */
 	const setFormGroupVisible = (containedElementID, visible) => {
-			document.querySelector(`#${containedElementID}`)
-				.closest(formGroupSelector).style.display = visible ? '' : 'none';
+		const el = document.querySelector(`#${containedElementID}`);
+		if (!el) return;
+		const group = el.closest(formGroupSelector);
+		if (!group) return;
+		group.style.display = visible ? '' : 'none';
 	};
+
+	const updateCreateCoresForms = () => {
+		const createCoresCheckbox = document.getElementById('createCores');
+		const solrCloudCreationOptions = document.getElementById('solrCloudCreationOptions');
+		if (solrCloudCreationOptions) {
+			solrCloudCreationOptions.style.display = (createCoresCheckbox && createCoresCheckbox.checked) ? '' : 'none';
+		}
+	};
+
+	document.addEventListener('change', function(e) {
+		if (e.target && e.target.id === 'createCores') {
+			updateCreateCoresForms();
+		}
+	});
 
 	const adminAuthCheckbox = document.getElementById('adminUserEnabled');
 	const indexAuthCheckbox = document.getElementById('indexUserEnabled');
@@ -142,5 +161,44 @@ jQuery(document).ready(function() {
 	});
 
 	updateTikaServerForms();
+
+	// Solr mode handling
+	const modeStandaloneRadio = document.getElementById('solrMode-standalone');
+	const modeCloudUrlRadio = document.getElementById('solrMode-cloud-url');
+	const modeCloudZkRadio = document.getElementById('solrMode-cloud-zk');
+
+	const getCurrentSolrMode = () => {
+		if (modeCloudUrlRadio?.checked) return 'cloud-url';
+		if (modeCloudZkRadio?.checked) return 'cloud-zk';
+		return 'standalone';
+	};
+
+	const updateSolrMode = () => {
+		const mode = getCurrentSolrMode();
+		const isStandalone = mode === 'standalone';
+		const isCloudZk = mode === 'cloud-zk';
+		const isCloud = !isStandalone;
+
+		setFormGroupVisible('solrServerUrl', !isCloudZk);
+		setFormGroupVisible('solrZkUrl', isCloudZk);
+		setFormGroupVisible('solrZkChroot', isCloudZk);
+		setFormGroupVisible('solrMainCore', isStandalone);
+		setFormGroupVisible('solrClassificationCore', isStandalone);
+		setFormGroupVisible('solrMainCollection', isCloud);
+		setFormGroupVisible('solrClassificationCollection', isCloud);
+		setFormGroupVisible('createCores', isCloud);
+		if (!isCloud) {
+			const solrCloudCreationOptions = document.getElementById('solrCloudCreationOptions');
+			if (solrCloudCreationOptions) solrCloudCreationOptions.style.display = 'none';
+		} else {
+			updateCreateCoresForms();
+		}
+	};
+
+	[modeStandaloneRadio, modeCloudUrlRadio, modeCloudZkRadio].forEach(radio => {
+		if (radio) radio.addEventListener('change', updateSolrMode);
+	});
+
+	updateSolrMode();
 
 });
