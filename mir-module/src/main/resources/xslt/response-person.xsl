@@ -2,23 +2,18 @@
 <!DOCTYPE xsl:stylesheet [
   <!ENTITY html-output SYSTEM "xsl/xsl-output-html.fragment">
 ]>
-<xsl:stylesheet version="1.0"
-  xmlns:encoder="xalan://java.net.URLEncoder"
-  xmlns:mcri18n="xalan://org.mycore.services.i18n.MCRTranslation"
-  xmlns:mcrxml="xalan://org.mycore.common.xml.MCRXMLFunctions"
-  xmlns:xalan="http://xml.apache.org/xalan"
+<xsl:stylesheet version="3.0"
+  xmlns:mcracl="http://www.mycore.de/xslt/acl"
+  xmlns:mcri18n="http://www.mycore.de/xslt/i18n"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  exclude-result-prefixes="encoder mcri18n mcrxml xalan xsl">
+  exclude-result-prefixes="#all">
 
   &html-output;
-  <xsl:include href="resource:xsl/MyCoReLayout.xsl" />
-  <xsl:include href="resource:xsl/response-utils.xsl" />
+  <xsl:include href="resource:xslt/MyCoReLayout.xsl" />
+  <xsl:include href="resource:xslt/solr/response/response-utils.xsl" />
   <xsl:include href="xslInclude:solrResponse" />
 
-  <xsl:param name="WebApplicationBaseURL" />
-  <xsl:param name="MCR.Results.FetchHit" />
-
-  <xsl:decimal-format name="european" decimal-separator=',' grouping-separator='.' />
+  <xsl:decimal-format name="european" decimal-separator="," grouping-separator="." />
 
   <xsl:variable name="PageTitle">
     <xsl:value-of select="mcri18n:translate('component.solr.searchresult.resultList')" />
@@ -43,19 +38,18 @@
         <xsl:value-of select="mcri18n:translate('pindex.oneObject')" />
       </xsl:when>
       <xsl:otherwise>
-        <xsl:value-of select="mcri18n:translate('pindex.nObjects',format-number($numFound, '###.###', 'european'))" />
+        <xsl:value-of
+          select="mcri18n:translate-with-params('pindex.nObjects', format-number($numFound, '###.###', 'european'))" />
       </xsl:otherwise>
     </xsl:choose>
   </xsl:variable>
 
-  <xsl:variable name="query" select="/response/lst[@name='responseHeader']/lst[@name='params']/str[@name='terms.regex']" />
+  <xsl:variable name="termsRegex" select="/response/lst[@name='responseHeader']/lst[@name='params']/str[@name='terms.regex']" />
 
-  <!-- retain the original query parameters, for attaching them to a url -->
-  <xsl:variable name="params">
+  <xsl:variable name="retainedParams">
     <xsl:for-each select="./response/lst[@name='responseHeader']/lst[@name='params']/str[not(@name='start' or @name='rows')]">
-      <!-- parameterName=parameterValue -->
-      <xsl:value-of select="concat(@name,'=', encoder:encode(., 'UTF-8'))" />
-      <xsl:if test="not (position() = last())">
+      <xsl:value-of select="concat(@name, '=', replace(encode-for-uri(string(.)), '%20', '+'))" />
+      <xsl:if test="not(position() = last())">
         <xsl:value-of select="'&amp;'" />
       </xsl:if>
     </xsl:for-each>
@@ -82,15 +76,18 @@
         <xsl:when test="string-length($nameIdentifierAndType) &gt; 0">
           <xsl:variable name="nameIdentifier" select="substring-after($nameIdentifierAndType, ':')" />
           <xsl:variable name="nameIdentifierType" select="substring-before($nameIdentifierAndType, ':')" />
-          <xsl:variable name="classi" select="document(concat('classification:metadata:all:children:','nameIdentifier',':',$nameIdentifierType))/mycoreclass/categories/category[@ID=$nameIdentifierType]" />
+          <xsl:variable name="classi"
+            select="document(concat('classification:metadata:all:children:', 'nameIdentifier', ':', $nameIdentifierType))/mycoreclass/categories/category[@ID=$nameIdentifierType]" />
           <xsl:variable name="uri" select="$classi/label[@xml:lang='x-uri']/@text" />
           <xsl:variable name="idType" select="$classi/label[@xml:lang='de']/@text" />
           <xsl:variable name="nameQuery" select="concat('mods.nameIdentifier:', $nameIdentifierType, '\:', $nameIdentifier)" />
           <li>
-            <a href="{$ServletsBaseURL}solr/mods_nameIdentifier?q={encoder:encode($nameQuery)}&amp;owner=createdby:{$owner}" title="Suche nach allen Publikationen">
+            <a
+              href="{$ServletsBaseURL}solr/mods_nameIdentifier?q={replace(encode-for-uri($nameQuery), '%20', '+')}&amp;owner=createdby:{$owner}"
+              title="Suche nach allen Publikationen">
               <xsl:value-of select="$linkText" />
             </a>
-            <xsl:text>&#160;</xsl:text><!-- add whitespace here -->
+            <xsl:text>&#160;</xsl:text>
             <a href="{$uri}{$nameIdentifier}" title="Link zu {$idType}">
               <sup>
                 <xsl:value-of select="$idType" />
@@ -100,7 +97,8 @@
         </xsl:when>
         <xsl:otherwise>
           <li>
-            <a href="{$ServletsBaseURL}solr/mods_nameIdentifier?q=mods.name:&quot;{$linkText}&quot;&amp;owner=createdby:{$owner}" title="Suche nach allen Publikationen">
+            <a href="{$ServletsBaseURL}solr/mods_nameIdentifier?q=mods.name:&quot;{$linkText}&quot;&amp;owner=createdby:{$owner}"
+              title="Suche nach allen Publikationen">
               <xsl:value-of select="$linkText" />
             </a>
           </li>
@@ -150,10 +148,9 @@
             <xsl:choose>
               <xsl:when test="lst[@name='terms']/lst[@name='mods.pindexname']/int or
                               lst[@name='terms']/lst[@name='mods.pindexname.published']/int">
-                <!-- show results -->
                 <ul id="resultList">
                   <xsl:choose>
-                    <xsl:when test="mcrxml:isCurrentUserInRole('editor') or mcrxml:isCurrentUserInRole('admin')">
+                    <xsl:when test="mcracl:is-current-user-in-role('editor') or mcracl:is-current-user-in-role('admin')">
                       <xsl:apply-templates select="lst[@name='terms']/lst[@name='mods.pindexname']" />
                     </xsl:when>
                     <xsl:otherwise>
@@ -171,12 +168,12 @@
           <div class="col-md-4">
             <h3><xsl:value-of select="mcri18n:translate('browse.person.firstLetter')" /></h3>
             <ul class="names">
-              <xsl:for-each select="xalan:nodeset($a2z)/*">
+              <xsl:for-each select="$a2z/*">
                 <li>
-                  <xsl:if test="$query = @search">
+                  <xsl:if test="$termsRegex = @search">
                     <xsl:attribute name="class">active</xsl:attribute>
                   </xsl:if>
-                  <a href="{concat($proxyBaseURL,'?XSL.Style=person&amp;terms.regex=',@search)}">
+                  <a href="{concat($proxyBaseURL, '?XSL.Style=person&amp;terms.regex=', @search)}">
                     <xsl:value-of select="name()" />
                   </a>
                   <xsl:if test="position() != last()">
@@ -202,11 +199,11 @@
 
               <xsl:variable name="search_value">
                 <xsl:choose>
-                  <xsl:when test="xalan:nodeset($a2z)/*[@search=$query]">
+                  <xsl:when test="$a2z/*[@search=$termsRegex]">
                     <xsl:value-of select="''" />
                   </xsl:when>
                   <xsl:otherwise>
-                    <xsl:value-of select="$query" />
+                    <xsl:value-of select="$termsRegex" />
                   </xsl:otherwise>
                 </xsl:choose>
               </xsl:variable>
