@@ -19,19 +19,15 @@ public class MIRWebCLIITCase extends MIRITBase {
     }
 
     @Test
-    public void testWebCLIStartup() {
+    public void testWebCLIStartup() throws InterruptedException {
         MCRWebdriverWrapper driver = getDriver();
 
         driver.waitAndFindElement(By.xpath(".//strong[contains(text(), 'administrator')]")).click();
         driver.waitAndFindElement(By.xpath(".//a[contains(text(), 'WebCLI')]")).click();
         String mainWindowHandle = driver.getWindowHandle();
-        driver.waitAndFindElement(By.xpath(".//input[contains(@onclick, 'WebCLI')]")).click();
+        driver.waitAndFindElement(By.id("launchButton")).click();
 
-        String webcliWindowHandle = driver.getWindowHandles()
-            .stream()
-            .filter(h -> !h.equals(mainWindowHandle))
-            .findFirst()
-            .orElseThrow(() -> new RuntimeException("Could not find webcli window!"));
+        String webcliWindowHandle = waitForAdditionalWindow(driver, mainWindowHandle);
 
         MCRWebdriverWrapper cliDriver = new MCRWebdriverWrapper(
             (RemoteWebDriver) driver.switchTo().window(webcliWindowHandle), 3000);
@@ -43,5 +39,21 @@ public class MIRWebCLIITCase extends MIRITBase {
         cliDriver.close();
         driver.switchTo().window(mainWindowHandle);
 
+    }
+
+    private String waitForAdditionalWindow(MCRWebdriverWrapper driver, String mainWindowHandle)
+        throws InterruptedException {
+        for (int attempt = 0; attempt < 40; attempt++) {
+            String webcliWindowHandle = driver.getWindowHandles()
+                .stream()
+                .filter(h -> !h.equals(mainWindowHandle))
+                .findFirst()
+                .orElse(null);
+            if (webcliWindowHandle != null) {
+                return webcliWindowHandle;
+            }
+            Thread.sleep(250);
+        }
+        throw new RuntimeException("Could not find webcli window!");
     }
 }

@@ -40,14 +40,9 @@ public class MIRSearchTestDataLoader {
             webDriverWrapper.waitAndFindElement(By.xpath(".//strong[contains(text(), 'administrator')]")).click();
             webDriverWrapper.waitAndFindElement(By.xpath(".//a[contains(text(), 'WebCLI')]")).click();
             String mainWindowHandle = webDriverWrapper.getWindowHandle();
-            webDriverWrapper.waitAndFindElement(By.xpath(".//input[contains(@onclick, 'WebCLI')]")).click();
-            //webDriverWrapper.waitAndFindElement(By.xpath(".//input[contains(@onclick, 'window.open')]")).click();
+            webDriverWrapper.waitAndFindElement(By.id("launchButton")).click();
 
-            String webcliWindowHandle = webDriverWrapper.getWindowHandles()
-                .stream()
-                .filter(h -> !h.equals(mainWindowHandle))
-                .findFirst()
-                .orElseThrow(() -> new RuntimeException("Could not find webcli window!"));
+            String webcliWindowHandle = waitForAdditionalWindow(webDriverWrapper, mainWindowHandle);
 
             MCRWebdriverWrapper cliDriver = new MCRWebdriverWrapper(
                 (RemoteWebDriver) webDriverWrapper.switchTo().window(webcliWindowHandle), 3000);
@@ -70,6 +65,22 @@ public class MIRSearchTestDataLoader {
             webDriverWrapper.switchTo().window(mainWindowHandle);
 
         }
+    }
+
+    private static String waitForAdditionalWindow(MCRWebdriverWrapper webDriverWrapper, String mainWindowHandle)
+        throws InterruptedException {
+        for (int attempt = 0; attempt < 40; attempt++) {
+            String webcliWindowHandle = webDriverWrapper.getWindowHandles()
+                .stream()
+                .filter(h -> !h.equals(mainWindowHandle))
+                .findFirst()
+                .orElse(null);
+            if (webcliWindowHandle != null) {
+                return webcliWindowHandle;
+            }
+            Thread.sleep(250);
+        }
+        throw new RuntimeException("Could not find webcli window!");
     }
 
     private static String extractTestData() throws IOException {
