@@ -1,29 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0"
-  xmlns:decoder="xalan://java.net.URLDecoder"
-  xmlns:encoder="xalan://java.net.URLEncoder"
-  xmlns:exslt="http://exslt.org/common"
-  xmlns:mcracl="xalan://org.mycore.access.MCRAccessManager"
-  xmlns:mcractionmapping="xalan://org.mycore.wfc.actionmapping.MCRURLRetriever"
-  xmlns:mcrbasket="xalan://org.mycore.frontend.basket.MCRBasketManager"
-  xmlns:mcri18n="xalan://org.mycore.services.i18n.MCRTranslation"
-  xmlns:mcrxml="xalan://org.mycore.common.xml.MCRXMLFunctions"
-  xmlns:str="http://exslt.org/strings"
+<xsl:stylesheet version="3.0"
+  xmlns:mcracl="http://www.mycore.de/xslt/acl"
+  xmlns:mcractionmapping="http://www.mycore.de/xslt/actionmapping"
+  xmlns:mcrclassification="http://www.mycore.de/xslt/classification"
+  xmlns:mcri18n="http://www.mycore.de/xslt/i18n"
+  xmlns:mcrlayoututils="http://www.mycore.de/xslt/layoututils"
+  xmlns:mcrurl="http://www.mycore.de/xslt/url"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  exclude-result-prefixes="decoder encoder exslt mcracl mcractionmapping mcrbasket mcri18n mcrxml str">
+  exclude-result-prefixes="#all">
 
   <xsl:import href="xslImport:badges" />
-  <xsl:import href="resource:xsl/orcid/mir-orcid-user.xsl"/>
-  <xsl:include href="resource:xsl/orcid/mir-orcid-export-ui.xsl"/>
-  <xsl:include href="resource:xsl/orcid/mir-orcid-work.xsl"/>
-  <xsl:include href="resource:xsl/csl-export-gui.xsl" />
-  <xsl:include href="resource:xsl/response-facets.xsl"/>
-  <xsl:include href="resource:xsl/response-mir-utils.xsl" />
+  <xsl:import href="resource:xslt/orcid/mir-orcid-user.xsl"/>
+  <xsl:include href="resource:xslt/layout/mir-layout-utils.xsl" />
+  <xsl:include href="resource:xslt/orcid/mir-orcid-export-ui.xsl"/>
+  <xsl:include href="resource:xslt/orcid/mir-orcid-work.xsl"/>
+  <xsl:include href="resource:xslt/csl-export-gui.xsl" />
+  <xsl:include href="resource:xslt/response-facets.xsl"/>
+  <xsl:include href="resource:xslt/response-mir-utils.xsl" />
 
-  <xsl:param name="UserAgent" />
   <xsl:param name="MIR.testEnvironment" />
   <xsl:param name="MIR.Solr.Secondary.Search.RequestHandler.List" select="'find'" />
-  <xsl:param name="RequestURL" />
 
   <xsl:variable name="maxScore" select="//result[@name='response'][1]/@maxScore" />
 
@@ -53,7 +49,7 @@
               <xsl:value-of select="mcri18n:translate('results.oneObject')" />
             </xsl:when>
             <xsl:otherwise>
-              <xsl:value-of select="mcri18n:translate('results.nObjects',$hits)" />
+              <xsl:value-of select="mcri18n:translate-with-params('results.nObjects',$hits)" />
             </xsl:otherwise>
           </xsl:choose>
         </h1>
@@ -67,7 +63,7 @@
         <!-- check which SOLR RequestHandler is used, if the value is from the list of the -->
         <!-- $MIR.Solr.Secondary.Search.RequestHandler.List, then it shows the form with secondary search -->
         <xsl:variable name="isSolrSearchRequest">
-          <xsl:for-each select="str:tokenize($MIR.Solr.Secondary.Search.RequestHandler.List, ',')">
+          <xsl:for-each select="tokenize($MIR.Solr.Secondary.Search.RequestHandler.List, ',') ! normalize-space(.)[. != '']">
             <xsl:variable name="handlerPattern" select="concat('/servlets/solr/', .)"/>
             <xsl:if test="contains($RequestURL, $handlerPattern)">
               <xsl:variable name="afterHandler" select="substring-after($RequestURL, $handlerPattern)"/>
@@ -285,9 +281,8 @@
                   </xsl:choose>
                 </xsl:variable>
 
-                <!-- Decode the current query -->
-                <xsl:variable name="decodedCurrentQryFromLastRequest"
-                              select="decoder:decode($currentQryFromLastRequest, 'UTF-8')" />
+                <xsl:variable name="currentQryFromLastRequestValue"
+                              select="string($currentQryFromLastRequest)" />
 
                 <!-- Get a type of the last request -->
                 <xsl:variable name="lastTypeRequest">
@@ -334,9 +329,9 @@
                           <xsl:when test="$initialCondQuery = '*' or $initialCondQuery = ''">
                             <xsl:value-of select="'*'" />
                           </xsl:when>
-                          <!-- Otherwise, concatenate $initialCondQuery, ' AND ' and $decodedCurrentQryFromLastRequest -->
+                          <!-- Otherwise, concatenate $initialCondQuery, ' AND ' and the current query value -->
                           <xsl:otherwise>
-                            <xsl:value-of select="concat($initialCondQuery, ' AND ', $decodedCurrentQryFromLastRequest)" />
+                            <xsl:value-of select="concat($initialCondQuery, ' AND ', $currentQryFromLastRequestValue)" />
                           </xsl:otherwise>
                         </xsl:choose>
                       </xsl:when>
@@ -354,7 +349,7 @@
 
                 <!-- Preparing the current query for the input field (remove all quotes) -->
                 <xsl:variable name="preparedCurrentQryFromLastRequest"
-                              select="translate($decodedCurrentQryFromLastRequest, '&quot;', '')" />
+                              select="translate($currentQryFromLastRequestValue, '&quot;', '')" />
                 <!-- Input element for the second search -->
                 <input class="form-control" id="qry" placeholder="{mcri18n:translate('mir.placeholder.response.search')}"
                        type="text" value="{$preparedCurrentQryFromLastRequest}" />
@@ -501,7 +496,8 @@
         </xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
-    <xsl:variable name="mods-genre-i18n" select="mcrxml:getDisplayName('mir_genres',$mods-genre)" />
+    <xsl:variable name="mods-genre-i18n"
+      select="mcrclassification:current-label-text(mcrclassification:category('mir_genres', $mods-genre))" />
     <xsl:variable name="hitItemClass">
       <xsl:choose>
         <xsl:when test="$hitNumberOnPage mod 2 = 1">
@@ -525,7 +521,7 @@
       <xsl:value-of select="concat($href, '&amp;start=',$startPosition, '&amp;fl=id&amp;rows=1&amp;origrows=', $rows, '&amp;XSL.Style=browse', $q)"/>
     </xsl:variable>
     <xsl:variable name="hitHref">
-      <xsl:value-of select="mcrxml:regexp($completeHref, '&amp;XSL.Transformer=response-resultlist', '')"/>
+      <xsl:value-of select="replace($completeHref, '&amp;XSL.Transformer=response-resultlist', '')"/>
     </xsl:variable>
 
     <!-- derivate variables -->
@@ -681,17 +677,23 @@
                   <!-- no link to no derivate -->
                 </xsl:when>
 
-                <xsl:when test="not(mcracl:checkDerivateDisplayPermission($derivid))">
+                <xsl:when test="not(mcracl:check-permission($derivid, 'read') or
+                 mcracl:check-permission($derivid, 'view'))">
                   <!-- no link if we can not read -->
                 </xsl:when>
 
                 <xsl:when test="$derivate/str[@name='iviewFile']">
                   <xsl:value-of select="concat($WebApplicationBaseURL, 'rsc/viewer/', $derivid,'/', $derivate/str[@name='iviewFile'])"/>
                 </xsl:when>
-                <xsl:when test="translate(str:tokenize($derivate/str[@name='derivateMaindoc'],'.')[position()=last()],'PDF','pdf') = 'pdf'">
-                  <xsl:variable name="filePath" select="concat($derivate/str[@name='id'],'/',mcrxml:encodeURIPath($derivate/str[@name='derivateMaindoc']))"/>
+                <xsl:when test="translate(tokenize(string(($derivate/str[@name='derivateMaindoc'])[1]), '\.')[last()],'PDF','pdf') = 'pdf'">
+                  <xsl:variable name="filePath"
+                    select="concat(
+                      $derivate/str[@name='id'],
+                      '/',
+                      string-join(tokenize(string(($derivate/str[@name='derivateMaindoc'])[1]), '/') ! encode-for-uri(.), '/')
+                    )"/>
                   <xsl:choose>
-                    <xsl:when test="mcrxml:isMobileDevice($UserAgent)">
+                    <xsl:when test="mcrlayoututils:is-mobile-device($UserAgent)">
                       <!-- for mobile users just show the file link -->
                       <xsl:value-of select="$derivifs"/>
                     </xsl:when>
@@ -727,7 +729,7 @@
               <xsl:choose>
                 <!-- when the thumbnail derivate has pdf as maindoc or a iviewFile, then use the iiif api -->
                 <xsl:when
-                        test="$displayDerivate/str[@name='iviewFile'] or translate(str:tokenize($displayDerivate/str[@name='derivateMaindoc'],'.')[position()=last()],'PDF','pdf') = 'pdf'">
+                        test="$displayDerivate/str[@name='iviewFile'] or translate(tokenize(string(($displayDerivate/str[@name='derivateMaindoc'])[1]), '\.')[last()],'PDF','pdf') = 'pdf'">
                   <div class="hit_icon">
                     <xsl:choose>
                       <xsl:when test="not($isGuestUser)">
@@ -834,7 +836,7 @@
                   </xsl:when>
                 </xsl:choose>
               </xsl:variable>
-              <xsl:for-each select="exslt:node-set($nameList)/arr/str[position() &lt;= 3]">
+              <xsl:for-each select="$nameList/arr/str[position() &lt;= 3]">
                 <xsl:if test="position()!=1">
                   <xsl:value-of select="' / '" />
                 </xsl:if>
@@ -859,7 +861,7 @@
                     <xsl:variable name="idType" select="$classi/label[@xml:lang='de']/@text" />
                     <xsl:variable name="nameQuery" select="concat('mods.nameIdentifier:', $nameIdentifierType, '\:', $nameIdentifier)" />
                     <a
-                      href="{$ServletsBaseURL}solr/mods_nameIdentifier?q={encoder:encode($nameQuery)}&amp;owner=createdby:{$owner}"
+                      href="{$ServletsBaseURL}solr/mods_nameIdentifier?q={replace(encode-for-uri($nameQuery), '%20', '+')}&amp;owner=createdby:{$owner}"
                       title="Suche nach allen Publikationen"
                     >
                       <xsl:value-of select="$author_name" />
@@ -878,7 +880,7 @@
                   </xsl:otherwise>
                 </xsl:choose>
               </xsl:for-each>
-              <xsl:if test="count(exslt:node-set($nameList)/arr/str) &gt; 3">
+              <xsl:if test="count($nameList/arr/str) &gt; 3">
                 <xsl:value-of select="' / et.al.'" />
               </xsl:if>
             </div>
@@ -991,27 +993,27 @@
     <xsl:param name="layout" select="'$'" />
     <xsl:param name="collection" select="''" />
     <xsl:choose>
-      <xsl:when test="mcrxml:resourceAvailable('actionmappings.xml')">
+      <xsl:when test="doc-available('resource:actionmappings.xml')">
       <!-- URL mapping enabled -->
         <xsl:variable name="url">
           <xsl:choose>
             <xsl:when test="string-length($collection) &gt; 0">
               <xsl:choose>
                 <xsl:when test="$layout = 'all'">
-                  <xsl:value-of select="mcractionmapping:getURLforCollection('update-xml',$collection,true())" />
+                  <xsl:value-of select="mcractionmapping:get-url-for-collection('update-xml',$collection,true())" />
                 </xsl:when>
                 <xsl:otherwise>
-                  <xsl:value-of select="mcractionmapping:getURLforCollection('update',$collection,true())" />
+                  <xsl:value-of select="mcractionmapping:get-url-for-collection('update',$collection,true())" />
                 </xsl:otherwise>
               </xsl:choose>
             </xsl:when>
             <xsl:otherwise>
               <xsl:choose>
                 <xsl:when test="$layout = 'all'">
-                  <xsl:value-of select="mcractionmapping:getURLforID('update-xml',$id,true())" />
+                  <xsl:value-of select="mcractionmapping:get-url-for-id('update-xml',$id,true())" />
                 </xsl:when>
                 <xsl:otherwise>
-                  <xsl:value-of select="mcractionmapping:getURLforID('update',$id,true())" />
+                  <xsl:value-of select="mcractionmapping:get-url-for-id('update',$id,true())" />
                 </xsl:otherwise>
               </xsl:choose>
             </xsl:otherwise>
@@ -1020,11 +1022,7 @@
         <xsl:choose>
           <xsl:when test="string-length($url)=0" />
           <xsl:otherwise>
-            <xsl:call-template name="UrlSetParam">
-              <xsl:with-param name="url" select="$url" />
-              <xsl:with-param name="par" select="'id'" />
-              <xsl:with-param name="value" select="$id" />
-            </xsl:call-template>
+            <xsl:value-of select="mcrurl:set-param($url, 'id', $id)" />
           </xsl:otherwise>
         </xsl:choose>
       </xsl:when>
@@ -1046,7 +1044,7 @@
     <xsl:param name="classId" />
     <xsl:param name="i18nKey" />
     <div class="card">
-      <xsl:variable name="classiDocument" select="document(concat('xslStyle:items2options#xslt:classification:editor:-1:children:',$classId))" />
+      <xsl:variable name="classiDocument" select="document(concat('xslStyle:items2options:classification:editor:-1:children:',$classId))" />
       <div class="card-header" data-mcr-toggle="collapse-next">
         <h3 class="card-title">
           <xsl:value-of select="mcri18n:translate($i18nKey)" />
@@ -1094,7 +1092,7 @@
       </xsl:variable>
       <li>
         <xsl:call-template name="print.hyperLink">
-          <xsl:with-param name="href" select="mcrxml:regexp($filterHref,'(&amp;|%26)(start=)[0-9]*', '')" />
+          <xsl:with-param name="href" select="replace($filterHref,'(&amp;|%26)(start=)[0-9]*', '')" />
           <xsl:with-param name="text" select="@title" />
           <xsl:with-param name="class" select="'dropdown-item'" />
         </xsl:call-template>
@@ -1110,7 +1108,7 @@
     <xsl:if test="contains($RequestURL, $complete)">
       <xsl:variable name="filterHref">
         <xsl:value-of
-          select="mcrxml:regexp(concat(substring-before($RequestURL, $complete), substring-after($RequestURL, $complete)), '(&amp;|%26)(start=)[0-9]*', '')" />
+          select="replace(concat(substring-before($RequestURL, $complete), substring-after($RequestURL, $complete)), '(&amp;|%26)(start=)[0-9]*', '')" />
       </xsl:variable>
       <xsl:call-template name="print.hyperLink">
         <xsl:with-param name="href" select="$filterHref" />
@@ -1216,7 +1214,7 @@
     </xsl:variable>
 
     <xsl:choose>
-      <xsl:when test="mcrbasket:contains('objects',$identifier)">
+      <xsl:when test="exists(document(concat('basket:object:', $identifier))/entry/@uri)">
         <!-- remove from basket -->
         <a
           class="hit_option remove_from_basket {$dropdownclass}"

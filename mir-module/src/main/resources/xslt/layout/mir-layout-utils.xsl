@@ -1,11 +1,61 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="3.0"
+  xmlns:mcracl="http://www.mycore.de/xslt/acl"
   xmlns:mcri18n="http://www.mycore.de/xslt/i18n"
   xmlns:mirstrutils="http://www.mycore.de/xslt/mirstrutils"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   exclude-result-prefixes="#all">
 
   <xsl:include href="resource:xslt/mir-accesskey-utils.xsl" />
+
+  <xsl:template name="objectLink">
+    <xsl:param name="obj_id" />
+    <xsl:param name="mcrobj" />
+
+    <xsl:choose>
+      <xsl:when test="$mcrobj">
+        <xsl:variable name="resolved_obj_id" select="$mcrobj/@ID" />
+        <xsl:choose>
+          <xsl:when test="mcracl:check-permission($resolved_obj_id,'read')">
+            <a href="{$WebApplicationBaseURL}receive/{$resolved_obj_id}">
+              <xsl:attribute name="title">
+                <xsl:apply-templates select="$mcrobj" mode="fulltitle" />
+              </xsl:attribute>
+              <xsl:apply-templates select="$mcrobj" mode="resulttitle" />
+            </a>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:variable name="LoginURL"
+              select="concat($ServletsBaseURL, 'MCRLoginServlet?url=', encode-for-uri(string($RequestURL)))" />
+            <xsl:apply-templates select="$mcrobj" mode="resulttitle" />
+            <xsl:text>&#160;</xsl:text>
+            <a href="{$LoginURL}">
+              <img src="{concat($WebApplicationBaseURL,'images/paper_lock.gif')}" />
+            </a>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:when>
+      <xsl:when test="string-length($obj_id)&gt;0">
+        <xsl:variable name="resolved_mcrobj" select="document(concat('mcrobject:',$obj_id))/mycoreobject" />
+        <xsl:choose>
+          <xsl:when test="mcracl:check-permission($obj_id,'read')">
+            <a href="{$WebApplicationBaseURL}receive/{$obj_id}">
+              <xsl:apply-templates select="$resolved_mcrobj" mode="resulttitle" />
+            </a>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:variable name="LoginURL"
+              select="concat($ServletsBaseURL, 'MCRLoginServlet?url=', encode-for-uri(string($RequestURL)))" />
+            <xsl:apply-templates select="$resolved_mcrobj" mode="resulttitle" />
+            <xsl:text>&#160;</xsl:text>
+            <a href="{$LoginURL}">
+              <img src="{concat($WebApplicationBaseURL,'images/paper_lock.gif')}" />
+            </a>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:when>
+    </xsl:choose>
+  </xsl:template>
 
   <xsl:template name="extractObjectIdFromRequestURL">
     <xsl:choose>
