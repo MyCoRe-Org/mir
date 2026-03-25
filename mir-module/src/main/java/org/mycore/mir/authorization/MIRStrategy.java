@@ -29,7 +29,6 @@ import org.mycore.common.MCRException;
 import org.mycore.common.config.MCRConfiguration2;
 import org.mycore.datamodel.classifications2.MCRCategLinkReference;
 import org.mycore.datamodel.classifications2.MCRCategLinkService;
-import org.mycore.datamodel.classifications2.MCRCategLinkServiceFactory;
 import org.mycore.datamodel.classifications2.MCRCategoryID;
 import org.mycore.datamodel.metadata.MCRMetadataManager;
 import org.mycore.datamodel.metadata.MCRObjectID;
@@ -92,7 +91,7 @@ public class MIRStrategy implements MCRAccessCheckStrategy {
             .map(MCRConfiguration2::splitValue)
             .orElseGet(() -> Stream.of("mir_access"))
             .collect(Collectors.toList());
-        linkService = MCRCategLinkServiceFactory.obtainInstance();
+        linkService = MCRCategLinkService.obtainInstance();
         accessImpl = MCRAccessManager.getAccessImpl();
     }
 

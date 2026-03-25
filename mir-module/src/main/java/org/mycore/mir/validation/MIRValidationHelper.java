@@ -16,14 +16,13 @@ import org.jdom2.input.SAXBuilder;
 import org.mycore.common.MCRException;
 import org.mycore.common.config.MCRConfiguration2;
 import org.mycore.datamodel.classifications2.MCRCategoryDAO;
-import org.mycore.datamodel.classifications2.MCRCategoryDAOFactory;
 import org.mycore.datamodel.classifications2.MCRCategoryID;
 import org.mycore.mir.impexp.MIRClassificationMapper;
 
 public class MIRValidationHelper {
 
     public static String validateSDNB(String sdnb) {
-        MCRCategoryDAO dao = MCRCategoryDAOFactory.obtainInstance();
+        MCRCategoryDAO dao = MCRCategoryDAO.obtainInstance();
         if (dao.exist(new MCRCategoryID("SDNB", sdnb))) {
             return sdnb;
         }

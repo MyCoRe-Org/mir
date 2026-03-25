@@ -33,7 +33,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.solr.common.SolrInputDocument;
 import org.mycore.datamodel.classifications2.MCRCategLinkReference;
-import org.mycore.datamodel.classifications2.MCRCategLinkServiceFactory;
+import org.mycore.datamodel.classifications2.MCRCategLinkService;
 import org.mycore.datamodel.classifications2.MCRCategoryID;
 import org.mycore.datamodel.metadata.MCRObjectID;
 import org.mycore.solr.index.file.MCRSolrPathDocumentFactory;
@@ -65,7 +65,7 @@ public class MirPathDocumentFactory extends MCRSolrPathDocumentFactory {
 
     protected MCRCategoryID getStatus(MCRObjectID objId) {
         MCRCategLinkReference reference = new MCRCategLinkReference(objId);
-        Collection<MCRCategoryID> linkedCategories = MCRCategLinkServiceFactory.obtainInstance().getLinksFromReference(
+        Collection<MCRCategoryID> linkedCategories = MCRCategLinkService.obtainInstance().getLinksFromReference(
             reference);
         for (MCRCategoryID categId : linkedCategories) {
             LOGGER.info("Checking " + categId);

@@ -13,7 +13,7 @@ import org.jdom2.Element;
 import org.mycore.common.MCRConstants;
 import org.mycore.common.MCRException;
 import org.mycore.datamodel.classifications2.MCRCategory;
-import org.mycore.datamodel.classifications2.MCRCategoryDAOFactory;
+import org.mycore.datamodel.classifications2.MCRCategoryDAO;
 import org.mycore.datamodel.classifications2.MCRCategoryID;
 import org.mycore.datamodel.classifications2.MCRLabel;
 import org.mycore.datamodel.metadata.MCRMetadataManager;
@@ -57,7 +57,7 @@ public class MIRMigration202206Utils {
         MCRMODSWrapper mcrModsWrapper = new MCRMODSWrapper(mcrObject);
 
         MCRCategoryID rootID = new MCRCategoryID(NAME_IDENTIFIER);
-        MCRCategory rootCategory = MCRCategoryDAOFactory.obtainInstance().getCategory(rootID, -1);
+        MCRCategory rootCategory = MCRCategoryDAO.obtainInstance().getCategory(rootID, -1);
         HashSet<String> labelLanguages = getAllRegularLabelLanguagesPresentInCategory(rootCategory, new HashSet<>());
 
         AtomicBoolean update = new AtomicBoolean(false);
@@ -85,7 +85,7 @@ public class MIRMigration202206Utils {
         }
 
         MCRCategoryID id = new MCRCategoryID(classification, type);
-        if (MCRCategoryDAOFactory.obtainInstance().exist(id)) {
+        if (MCRCategoryDAO.obtainInstance().exist(id)) {
             return;
         }
 
@@ -93,7 +93,7 @@ public class MIRMigration202206Utils {
             + " check if label match!");
 
         Set<MCRCategory> foundCategoryByLabel = labelLanguages.stream()
-            .map(lang -> MCRCategoryDAOFactory.obtainInstance().getCategoriesByLabel(rootID, lang, type))
+            .map(lang -> MCRCategoryDAO.obtainInstance().getCategoriesByLabel(rootID, lang, type))
             .flatMap(Collection::stream)
             .collect(Collectors.toCollection(HashSet::new));
 

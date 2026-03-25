@@ -11,7 +11,6 @@ import org.mycore.access.MCRAccessManager;
 import org.mycore.common.content.MCRJDOMContent;
 import org.mycore.datamodel.classifications2.MCRCategory;
 import org.mycore.datamodel.classifications2.MCRCategoryDAO;
-import org.mycore.datamodel.classifications2.MCRCategoryDAOFactory;
 import org.mycore.datamodel.classifications2.MCRCategoryID;
 import org.mycore.datamodel.classifications2.MCRLabel;
 import org.mycore.frontend.servlets.MCRServlet;
@@ -50,7 +49,7 @@ public class MIRClassificationServlet extends MCRServlet {
     }
 
     private Collection<Element> getRoleElements() {
-        MCRCategoryDAO categoryDao = MCRCategoryDAOFactory.obtainInstance();
+        MCRCategoryDAO categoryDao = MCRCategoryDAO.obtainInstance();
         List<MCRCategory> allClassi = categoryDao.getRootCategories();
         ArrayList<Element> list = new ArrayList<>(allClassi.size());
         for (MCRCategory category : allClassi) {
