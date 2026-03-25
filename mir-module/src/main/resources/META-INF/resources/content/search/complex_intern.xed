@@ -37,14 +37,14 @@
               <xed:repeat xpath="boolean[@operator='and']">
                 <div class="jumbotron col-md-10">
                   <xed:repeat
-                    xpath="condition[contains(',mods.title,mods.author,mods.name,allMeta,', concat(',',@field,','))]"
+                    xpath="condition[starts-with(@field, 'mods.title') or @field='mods.author' or @field='mods.name' or starts-with(@field, 'allMeta')]"
                     method="clone">
                     <!-- Title -->
                     <div class="mir-form-group row">
                       <div class="col-md-3">
                         <xed:bind xpath="@field">
                           <select class="form-control form-select">
-                            <option value="mods.title">
+                            <option value="mods.title,mods.title.lang.de,mods.title.lang.en,mods.title.lang.es,mods.title.lang.fr,mods.title.lang.it,mods.title.lang.ru,mods.title.lang.ru.latin,mods.title.lang.tr">
                               <xed:output i18n="editor.search.mir.title" />
                             </option>
                             <option value="mods.author">
@@ -53,7 +53,7 @@
                             <option value="mods.name">
                               <xed:output i18n="editor.search.mir.name" />
                             </option>
-                            <option value="allMeta">
+                            <option value="allMeta,mods.abstract.lang.de,mods.abstract.lang.en,mods.abstract.lang.es,mods.abstract.lang.fr,mods.abstract.lang.it,mods.abstract.lang.ru,mods.abstract.lang.ru.latin,mods.abstract.lang.tr,mods.subject.lang.de,mods.subject.lang.en,mods.subject.lang.es,mods.subject.lang.fr,mods.subject.lang.it,mods.subject.lang.ru,mods.subject.lang.ru.latin,mods.subject.lang.tr">
                               <xed:output i18n="editor.search.mir.metadata" />
                             </option>
                           </select>

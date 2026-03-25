@@ -24,7 +24,15 @@ public class MIRSearchTestDataLoader {
     private static final String TEST_FOLDER_NAME = "testFiles/";
 
     // TODO: read from property
-    private static final List<String> FILE_NAMES = Stream.of("mir_mods_00010000.xml").collect(Collectors.toList());
+    private static final List<String> FILE_NAMES = Stream.of(
+        "mir_mods_00010000.xml",
+        "mir_mods_00010001.xml",
+        "mir_mods_00010002.xml",
+        "mir_mods_00010003.xml",
+        "mir_mods_00010004.xml",
+        "mir_mods_00010005.xml",
+        "mir_mods_00010006.xml",
+        "mir_mods_00010007.xml").collect(Collectors.toList());
 
     public void lazyLoadData(MCRWebdriverWrapper webDriverWrapper) throws IOException, InterruptedException {
         if (!loaded) {

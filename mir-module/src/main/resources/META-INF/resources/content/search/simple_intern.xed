@@ -36,11 +36,11 @@
 
             <xed:bind xpath="conditions/boolean[@operator='and']">
             <!-- Title -->
-              <mir:template name="textInput" xpath="condition[@field='mods.title']/@value" id="inputTitle1" i18n="editor.search.mir.title" tooltip="editor.search.mir.title.tooltip" />
+              <mir:template name="textInput" xpath="condition[@field='mods.title,mods.title.lang.de,mods.title.lang.en,mods.title.lang.es,mods.title.lang.fr,mods.title.lang.it,mods.title.lang.ru,mods.title.lang.ru.latin,mods.title.lang.tr']/@value" id="inputTitle1" i18n="editor.search.mir.title" tooltip="editor.search.mir.title.tooltip" />
             <!-- Name -->
               <mir:template name="textInput" xpath="condition[@field='mods.name']/@value" id="inputName1" i18n="editor.search.mir.name" tooltip="editor.search.mir.name.tooltip" />
             <!-- Metadata -->
-              <mir:template name="textInput" xpath="condition[@field='allMeta']/@value" id="inputMeta1" i18n="editor.search.metadata" tooltip="editor.search.metadata.tooltip" />
+              <mir:template name="textInput" xpath="condition[@field='allMeta,mods.abstract.lang.de,mods.abstract.lang.en,mods.abstract.lang.es,mods.abstract.lang.fr,mods.abstract.lang.it,mods.abstract.lang.ru,mods.abstract.lang.ru.latin,mods.abstract.lang.tr,mods.subject.lang.de,mods.subject.lang.en,mods.subject.lang.es,mods.subject.lang.fr,mods.subject.lang.it,mods.subject.lang.ru,mods.subject.lang.ru.latin,mods.subject.lang.tr']/@value" id="inputMeta1" i18n="editor.search.metadata" tooltip="editor.search.metadata.tooltip" />
             <!-- Content -->
               <mir:template name="textInput" xpath="condition[@field='content']/@value" id="inputContent1" i18n="editor.search.derivate" tooltip="editor.search.derivate.tooltip" />
             <!-- Institution -->
