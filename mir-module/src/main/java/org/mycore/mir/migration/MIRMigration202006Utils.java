@@ -29,7 +29,7 @@ import org.jsoup.nodes.Entities;
 import org.mycore.access.MCRAccessException;
 import org.mycore.common.MCRConstants;
 import org.mycore.common.MCRException;
-import org.mycore.datamodel.classifications2.MCRCategoryDAOFactory;
+import org.mycore.datamodel.classifications2.MCRCategoryDAO;
 import org.mycore.datamodel.classifications2.MCRCategoryID;
 import org.mycore.datamodel.common.MCRDataURL;
 import org.mycore.datamodel.common.MCRXMLMetadataManager;
@@ -60,7 +60,7 @@ public class MIRMigration202006Utils {
         help = "link derivates with @display=false to the given category {0}, e.g. mir_access:intern")
     public static List<String> migrateDerivateDisplay(String targetCategory) {
         MCRCategoryID categoryID = MCRCategoryID.ofString(targetCategory);
-        if (!MCRCategoryDAOFactory.obtainInstance().exist(categoryID)) {
+        if (!MCRCategoryDAO.obtainInstance().exist(categoryID)) {
             throw new MCRException("Category " + categoryID + " does not exist!");
         }
         final MCRXMLMetadataManager mcrxmlMetadataManager = MCRXMLMetadataManager.obtainInstance();
@@ -127,7 +127,7 @@ public class MIRMigration202006Utils {
         MCRObject object = MCRMetadataManager.retrieveMCRObject(objectId);
 
         MCRCategoryID derivateTypeId = new MCRCategoryID("derivate_types", "content");
-        if (!MCRCategoryDAOFactory.obtainInstance().exist(derivateTypeId)) {
+        if (!MCRCategoryDAO.obtainInstance().exist(derivateTypeId)) {
             throw new MCRException("Derivate type with id " + derivateTypeId + " does not exist");
         }
 

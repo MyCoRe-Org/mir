@@ -29,7 +29,6 @@ import org.mycore.common.MCRSystemUserInformation;
 import org.mycore.common.config.MCRConfiguration2;
 import org.mycore.datamodel.classifications2.MCRCategLinkReference;
 import org.mycore.datamodel.classifications2.MCRCategLinkService;
-import org.mycore.datamodel.classifications2.MCRCategLinkServiceFactory;
 import org.mycore.datamodel.classifications2.MCRCategoryID;
 import org.mycore.datamodel.common.MCRLinkTableManager;
 import org.mycore.datamodel.metadata.MCRObjectID;
@@ -176,7 +175,7 @@ public class MIRStrategyTest {
         accessKeyWrite.setReference(mir_mods_00004711.toString());
         MCRAccessKeyService.obtainInstance().addAccessKey(accessKeyWrite);
 
-        final MCRCategLinkService categLinkService = MCRCategLinkServiceFactory.obtainInstance();
+        final MCRCategLinkService categLinkService = MCRCategLinkService.obtainInstance();
         MCRCategLinkReference ref = new MCRCategLinkReference(mir_mods_00004711);
         categLinkService.setLinks(ref, List.of(MCRCategoryID.ofString("mir_access:accessKey")));
 

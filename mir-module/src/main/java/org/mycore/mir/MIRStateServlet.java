@@ -7,7 +7,6 @@ import java.util.Optional;
 import org.mycore.access.MCRAccessManager;
 import org.mycore.datamodel.classifications2.MCRCategory;
 import org.mycore.datamodel.classifications2.MCRCategoryDAO;
-import org.mycore.datamodel.classifications2.MCRCategoryDAOFactory;
 import org.mycore.datamodel.classifications2.MCRCategoryID;
 import org.mycore.datamodel.classifications2.MCRLabel;
 import org.mycore.datamodel.metadata.MCRMetadataManager;
@@ -54,7 +53,7 @@ public class MIRStateServlet extends MCRServlet {
         final MCRObject object = MCRMetadataManager.retrieveMCRObject(objectID);
         final MCRCategoryID state = object.getService().getState();
 
-        final MCRCategoryDAO instance = MCRCategoryDAOFactory.obtainInstance();
+        final MCRCategoryDAO instance = MCRCategoryDAO.obtainInstance();
         final MCRCategory category = instance.getCategory(state, -1);
         final Optional<MCRLabel> label = category.getLabel(X_NEXT_LANGUAGE);
         final boolean present = label
