@@ -936,11 +936,11 @@
                   </xsl:otherwise>
                 </xsl:choose>
               </xsl:variable>
-              <xsl:variable name="place" select="arr[@name='mods.place']/str" />
+              <xsl:variable name="place" select="arr[@name='mods.place']/str[string-length(.) gt 0]" />
               <span class="label_publisher">
                 <xsl:choose>
-                  <xsl:when test="string-length($place) &gt; 0">
-                    <xsl:value-of select="concat($place,': ')" />
+                  <xsl:when test="$place">
+                    <xsl:value-of select="concat($place[1],': ')" />
                   </xsl:when>
                   <xsl:otherwise>
                     <xsl:value-of select="concat(mcri18n:translate('component.mods.metaData.dictionary.published'),': ')" />
