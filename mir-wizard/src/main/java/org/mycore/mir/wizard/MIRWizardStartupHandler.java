@@ -24,6 +24,7 @@ package org.mycore.mir.wizard;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.Duration;
 import java.util.EnumSet;
 import java.util.Locale;
 import java.util.UUID;
@@ -38,6 +39,7 @@ import org.mycore.access.strategies.MCRObjectIDStrategy;
 import org.mycore.common.config.MCRConfiguration2;
 import org.mycore.common.config.MCRConfigurationDir;
 import org.mycore.common.events.MCRStartupHandler;
+import org.mycore.mcr.cronjob.MCRCronjobManager;
 
 import jakarta.servlet.DispatcherType;
 import jakarta.servlet.FilterRegistration.Dynamic;
@@ -136,6 +138,9 @@ public class MIRWizardStartupHandler implements MCRStartupHandler.AutoExecutable
                 }
             }
 
+            LOGGER.info("Disabling MyCoRe Cron Jobs");
+            MCRCronjobManager.getInstance().prepareClose();
+
             servletContext.setAttribute(MCRStartupHandler.HALT_ON_ERROR, Boolean.toString(false));
 
             LOGGER.info("Register " + WIZARD_FILTER_NAME + "...");
@@ -158,6 +163,8 @@ public class MIRWizardStartupHandler implements MCRStartupHandler.AutoExecutable
                 LOGGER.info("Couldn't map " + WIZARD_SERVLET_NAME + "!");
             }
 
+            String wizStylesheet = MCRConfiguration2.getStringOrThrow("MIR.Wizard.LayoutStylesheet");
+            MCRConfiguration2.set("MCR.LayoutTransformerFactory.Default.Stylesheets", wizStylesheet);
             //disable ACL system
             //store for later use...
             servletContext.setAttribute(ACCESS_CLASS, MCRConfiguration2.getString(ACCESS_CLASS).orElse(null));
@@ -166,11 +173,23 @@ public class MIRWizardStartupHandler implements MCRStartupHandler.AutoExecutable
             MCRConfiguration2.set(ACCESS_CLASS, MCRAccessBaseImpl.class.getName());
             MCRConfiguration2.set(ACCESS_STRATEGY_CLASS, MCRObjectIDStrategy.class.getName());
 
-            //generate UUID as login token
-            final String token = UUID.randomUUID().toString();
-            servletContext.setAttribute(LOGIN_TOKEN, token);
+            Thread.ofVirtual()
+                .name("login-token")
+                .start(() -> {
+                    //generate UUID as login token
+                    final String token = UUID.randomUUID().toString();
+                    servletContext.setAttribute(LOGIN_TOKEN, token);
 
-            outputLoginToken(servletContext);
+                    //wait for a few seconds to put the token at the end of the log output
+                    try {
+                        Thread.sleep(Duration.ofSeconds(4));
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
+                        return;
+                    }
+
+                    outputLoginToken(servletContext);
+                });
         }
     }
 
