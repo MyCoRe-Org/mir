@@ -54,12 +54,12 @@
       <!-- Add Class properties based on mode -->
       <xsl:choose>
         <xsl:when test="$isStandalone">
-          <property name="MCR.Solr.IndexManager.Index.main.Class">org.mycore.solr.standalone.core.MCRConfigurableSolrCore</property>
-          <property name="MCR.Solr.IndexManager.Index.classification.Class">org.mycore.solr.standalone.core.MCRConfigurableSolrCore</property>
+          <property name="MCR.Solr.IndexRegistry.Index.main.Class">org.mycore.solr.standalone.core.MCRConfigurableSolrCore</property>
+          <property name="MCR.Solr.IndexRegistry.Index.classification.Class">org.mycore.solr.standalone.core.MCRConfigurableSolrCore</property>
         </xsl:when>
         <xsl:otherwise>
-          <property name="MCR.Solr.IndexManager.Index.main.Class">org.mycore.solr.cloud.collection.MCRConfigurableSolrCloudCollection</property>
-          <property name="MCR.Solr.IndexManager.Index.classification.Class">org.mycore.solr.cloud.collection.MCRConfigurableSolrCloudCollection</property>
+          <property name="MCR.Solr.IndexRegistry.Index.main.Class">org.mycore.solr.cloud.collection.MCRConfigurableSolrCloudCollection</property>
+          <property name="MCR.Solr.IndexRegistry.Index.classification.Class">org.mycore.solr.cloud.collection.MCRConfigurableSolrCloudCollection</property>
         </xsl:otherwise>
       </xsl:choose>
 
@@ -67,26 +67,24 @@
       <xsl:choose>
         <xsl:when test="$isStandalone">
           <xsl:if test="string-length($serverUrl) &gt; 0">
-            <property name="MCR.Solr.ServerURL"><xsl:value-of select="$serverUrl" /></property>
-            <property name="MCR.Solr.IndexManager.Index.main.SolrUrl"><xsl:value-of select="$serverUrl" /></property>
-            <property name="MCR.Solr.IndexManager.Index.classification.SolrUrl"><xsl:value-of select="$serverUrl" /></property>
+            <property name="MCR.Solr.IndexRegistry.Index.main.SolrUrl"><xsl:value-of select="$serverUrl" /></property>
+            <property name="MCR.Solr.IndexRegistry.Index.classification.SolrUrl"><xsl:value-of select="$serverUrl" /></property>
           </xsl:if>
         </xsl:when>
         <xsl:when test="$mode = 'cloud-url'">
           <xsl:if test="string-length($serverUrl) &gt; 0">
-            <property name="MCR.Solr.ServerURL"><xsl:value-of select="$serverUrl" /></property>
-            <property name="MCR.Solr.IndexManager.Index.main.SolrUrls"><xsl:value-of select="$serverUrl" /></property>
-            <property name="MCR.Solr.IndexManager.Index.classification.SolrUrls"><xsl:value-of select="$serverUrl" /></property>
+            <property name="MCR.Solr.IndexRegistry.Index.main.SolrUrls"><xsl:value-of select="$serverUrl" /></property>
+            <property name="MCR.Solr.IndexRegistry.Index.classification.SolrUrls"><xsl:value-of select="$serverUrl" /></property>
           </xsl:if>
         </xsl:when>
         <xsl:when test="$isCloudZk">
           <xsl:if test="string-length($zkUrl) &gt; 0">
-            <property name="MCR.Solr.IndexManager.Index.main.ZkUrls"><xsl:value-of select="$zkUrl" /></property>
-            <property name="MCR.Solr.IndexManager.Index.classification.ZkUrls"><xsl:value-of select="$zkUrl" /></property>
+            <property name="MCR.Solr.IndexRegistry.Index.main.ZkUrls"><xsl:value-of select="$zkUrl" /></property>
+            <property name="MCR.Solr.IndexRegistry.Index.classification.ZkUrls"><xsl:value-of select="$zkUrl" /></property>
           </xsl:if>
           <xsl:if test="string-length($zkChroot) &gt; 0">
-            <property name="MCR.Solr.IndexManager.Index.main.ZkChroot"><xsl:value-of select="$zkChroot" /></property>
-            <property name="MCR.Solr.IndexManager.Index.classification.ZkChroot"><xsl:value-of select="$zkChroot" /></property>
+            <property name="MCR.Solr.IndexRegistry.Index.main.ZkChroot"><xsl:value-of select="$zkChroot" /></property>
+            <property name="MCR.Solr.IndexRegistry.Index.classification.ZkChroot"><xsl:value-of select="$zkChroot" /></property>
           </xsl:if>
         </xsl:when>
       </xsl:choose>
