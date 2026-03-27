@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="3.0"
+  xmlns:mcracl="http://www.mycore.de/xslt/acl"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   exclude-result-prefixes="#all">
 
-  <xsl:param name="CurrentLang"/>
-  <xsl:param name="ServletsBaseURL"/>
-  <xsl:param name="WebApplicationBaseURL"/>
-  <xsl:param name="isCurrentUserGuest" select="document('userobjectrights:isCurrentUserGuestUser:')/boolean = 'true'"/>
+  <xsl:param name="isCurrentUserGuest" select="mcracl:is-current-user-in-role('guest')"/>
 
   <xsl:template name="output-badge">
     <xsl:param name="class"/>

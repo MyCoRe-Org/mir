@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="3.0"
+  xmlns:mcri18n="http://www.mycore.de/xslt/i18n"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   exclude-result-prefixes="#all">
 
@@ -30,7 +31,7 @@
 
     <xsl:call-template name="output-badge">
       <xsl:with-param name="class" select="concat('mir-badge-oa-', $isOpenAccess)"/>
-      <xsl:with-param name="tooltip" select="document(concat('i18n:mir.response.openAccess.', $isOpenAccess))/i18n/text()"/>
+      <xsl:with-param name="tooltip" select="mcri18n:translate(concat('mir.response.openAccess.', $isOpenAccess))"/>
       <xsl:with-param name="icon-class" select="$icon-class"/>
     </xsl:call-template>
   </xsl:template>
