@@ -1,15 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0"
-  xmlns:mcrxml="xalan://org.mycore.common.xml.MCRXMLFunctions"
+<xsl:stylesheet version="3.0"
+  xmlns:mcrclassification="http://www.mycore.de/xslt/classification"
   xmlns:mets="http://www.loc.gov/METS/"
   xmlns:mods="http://www.loc.gov/mods/v3"
   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-  xmlns:xalan="http://xml.apache.org/xalan"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  exclude-result-prefixes="mcrxml xalan">
+  exclude-result-prefixes="#all">
 
-  <xsl:param name="WebApplicationBaseURL" />
-  <xsl:param name="objectID" />
   <xsl:param name="license" select="'CC-BY-NC-SA'" />
   <xsl:param name="MIR.DFGViewer.DV.Owner" select="''" />
   <xsl:param name="MIR.DFGViewer.DV.OwnerLogo" select="''" />
@@ -33,12 +31,11 @@
 
     <xsl:variable name="derivateOwnerId">
       <xsl:choose>
-        <!-- it is derivate -->
         <xsl:when test="$derobject">
-          <xsl:value-of select="mcrxml:getMCRObjectID($derobject)" />
+          <xsl:value-of
+            select="(document(concat('mcrobject:', $derobject))/mycorederivate/derivate/linkmetas/linkmeta/@xlink:href, $objectID)[1]" />
         </xsl:when>
         <xsl:otherwise>
-          <!--it is a regular mcrobj -->
           <xsl:value-of select="$mcrobject" />
         </xsl:otherwise>
       </xsl:choose>
@@ -53,17 +50,20 @@
         <mets:mdWrap MIMETYPE="text/xml" MDTYPE="OTHER" OTHERMDTYPE="DVRIGHTS">
           <mets:xmlData>
             <dv:rights xmlns:dv="http://dfg-viewer.de/">
-              <!-- owner name -->
               <dv:owner><xsl:value-of select="$MIR.DFGViewer.DV.Owner" /></dv:owner>
               <dv:ownerLogo><xsl:value-of select="$MIR.DFGViewer.DV.OwnerLogo" /></dv:ownerLogo>
               <dv:ownerSiteURL><xsl:value-of select="$MIR.DFGViewer.DV.OwnerSiteURL" /></dv:ownerSiteURL>
-              <dv:ownerContact/>
+              <dv:ownerContact />
               <dv:license>
                 <xsl:choose>
                   <xsl:when test="$entity/mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:accessCondition[@type='use and reproduction']">
-                    <xsl:variable name="licenseClass" select="'mir_licenses'" />
-                    <xsl:variable name="licenseId" select="substring-after($entity/mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:accessCondition[@type='use and reproduction']/@xlink-href, '#')" />
-                    <xsl:value-of select="mcrxml:getDisplayName($licenseClass, $licenseId)" />
+                    <xsl:variable name="licenseId"
+                      select="substring-after($entity/mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:accessCondition[@type='use and reproduction']/@xlink:href, '#')" />
+                    <xsl:value-of
+                      select="(
+                        mcrclassification:label-text($CurrentLang, mcrclassification:category('mir_licenses', $licenseId)),
+                        mcrclassification:label-text($DefaultLang, mcrclassification:category('mir_licenses', $licenseId))
+                      )[1]" />
                   </xsl:when>
                   <xsl:otherwise>
                     <xsl:value-of select="$license" />
@@ -74,31 +74,28 @@
           </mets:xmlData>
         </mets:mdWrap>
       </mets:rightsMD>
-      <mets:digiprovMD>
-        <xsl:attribute name="ID">
-            <xsl:value-of select="concat('digiprovMD',$sectionID)" />
-          </xsl:attribute>
+      <mets:digiprovMD ID="{concat('digiprovMD', $sectionID)}">
         <mets:mdWrap MIMETYPE="text/xml" MDTYPE="OTHER" OTHERMDTYPE="DVLINKS">
           <mets:xmlData>
             <dv:links xmlns:dv="http://dfg-viewer.de/">
               <xsl:variable name="ppn"
-                            select="substring-after($entity/mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:identifier[@type='uri'], ':ppn:')" />
+                select="substring-after($entity/mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:identifier[@type='uri'], ':ppn:')" />
               <xsl:if test="$ppn">
                 <dv:reference>
                   <xsl:variable name="catalogURL"
-                                select="concat(substring-before($MIR.DFGViewer.DV.OPAC.CATALOG.URL, '{PPN}'), $ppn , substring-after($MIR.DFGViewer.DV.OPAC.CATALOG.URL, '{PPN}'))" />
+                    select="concat(substring-before($MIR.DFGViewer.DV.OPAC.CATALOG.URL, '{PPN}'), $ppn, substring-after($MIR.DFGViewer.DV.OPAC.CATALOG.URL, '{PPN}'))" />
                   <xsl:variable name="uriResolved"
-                                select="document(concat($catalogURL,'?format=xml'))//rdf:Description[@rdf:about=normalize-space($catalogURL)]/*[local-name() = 'page']/@rdf:resource" />
+                    select="document(concat($catalogURL, '?format=xml'))//rdf:Description[@rdf:about=normalize-space($catalogURL)]/*[local-name()='page']/@rdf:resource" />
                   <xsl:value-of select="$uriResolved" />
                 </dv:reference>
               </xsl:if>
               <dv:presentation>
                 <xsl:choose>
                   <xsl:when test="$mcrobject">
-                    <xsl:value-of select="concat($WebApplicationBaseURL,'receive/',$mcrobject)" />
+                    <xsl:value-of select="concat($WebApplicationBaseURL, 'receive/', $mcrobject)" />
                   </xsl:when>
                   <xsl:when test="$derobject">
-                    <xsl:value-of select="concat($WebApplicationBaseURL,'receive/',mcrxml:getMCRObjectID($derobject))" />
+                    <xsl:value-of select="concat($WebApplicationBaseURL, 'receive/', $derivateOwnerId)" />
                   </xsl:when>
                 </xsl:choose>
               </dv:presentation>
