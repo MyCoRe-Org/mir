@@ -11,7 +11,7 @@
     select="/mets:mets/mets:fileSec/mets:fileGrp[
       @USE='MASTER' and
       mets:file/mets:FLocat/@LOCTYPE='URL' and
-      not(contains(mets:file/mets:FLocat/@xlink:href, '://'))
+      not(mets:file/mets:FLocat[contains(@xlink:href, '://')])
     ]" />
 
   <xsl:template match="@* | node()">
