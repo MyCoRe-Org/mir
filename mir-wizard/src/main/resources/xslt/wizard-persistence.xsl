@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0"
-  xmlns:xalan="http://xml.apache.org/xalan"
+<xsl:stylesheet version="3.0"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  exclude-result-prefixes="xalan xsl">
+  exclude-result-prefixes="#all">
 
   <xsl:output method="xml" media-type="text/xml" encoding="UTF-8" indent="yes" omit-xml-declaration="no" />
 
@@ -23,7 +22,6 @@
   </xsl:template>
 
   <xsl:template match="*" mode="template">
-
     <xsl:choose>
       <xsl:when test="name() = 'persistence-unit'">
         <xsl:copy>
@@ -34,21 +32,21 @@
       <xsl:when test="name() = 'property'">
         <xsl:choose>
           <xsl:when test="@name = 'hibernate.default_schema'">
-            <xsl:if test="string-length(xalan:nodeset($cfg)//extra_properties//property[@name='schema']) &gt; 0">
+            <xsl:if test="string-length($cfg//extra_properties//property[@name='schema']) &gt; 0">
               <xsl:copy>
                 <xsl:copy-of select="@*[name() != 'value']" />
                 <xsl:attribute name="value">
-                  <xsl:value-of select="xalan:nodeset($cfg)//extra_properties//property[@name='schema']" />
+                  <xsl:value-of select="$cfg//extra_properties//property[@name='schema']" />
                 </xsl:attribute>
               </xsl:copy>
             </xsl:if>
           </xsl:when>
           <xsl:when test="@name = 'hibernate.default_catalog'">
-            <xsl:if test="string-length(xalan:nodeset($cfg)//extra_properties//property[@name='catalog']) &gt; 0">
+            <xsl:if test="string-length($cfg//extra_properties//property[@name='catalog']) &gt; 0">
               <xsl:copy>
                 <xsl:copy-of select="@*[name() != 'value']" />
                 <xsl:attribute name="value">
-                  <xsl:value-of select="xalan:nodeset($cfg)//extra_properties//property[@name='catalog']" />
+                  <xsl:value-of select="$cfg//extra_properties//property[@name='catalog']" />
                 </xsl:attribute>
               </xsl:copy>
             </xsl:if>
@@ -59,22 +57,22 @@
               <xsl:attribute name="value">
                 <xsl:choose>
                   <xsl:when test="@name = 'jakarta.persistence.jdbc.driver'">
-                    <xsl:value-of select="xalan:nodeset($cfg)//driver" />
+                    <xsl:value-of select="$cfg//driver" />
                   </xsl:when>
                   <xsl:when test="@name = 'jakarta.persistence.jdbc.url'">
-                    <xsl:value-of select="xalan:nodeset($cfg)//url" />
+                    <xsl:value-of select="$cfg//url" />
                   </xsl:when>
                   <xsl:when test="@name = 'jakarta.persistence.jdbc.user'">
-                    <xsl:value-of select="xalan:nodeset($cfg)//username" />
+                    <xsl:value-of select="$cfg//username" />
                   </xsl:when>
                   <xsl:when test="@name = 'jakarta.persistence.jdbc.password'">
-                    <xsl:value-of select="xalan:nodeset($cfg)//password" />
+                    <xsl:value-of select="$cfg//password" />
                   </xsl:when>
                   <xsl:when test="@name = 'hibernate.default_schema'">
-                    <xsl:value-of select="xalan:nodeset($cfg)//extra_properties//property[@name='schema']" />
+                    <xsl:value-of select="$cfg//extra_properties//property[@name='schema']" />
                   </xsl:when>
                   <xsl:when test="@name = 'hibernate.default_catalog'">
-                    <xsl:value-of select="xalan:nodeset($cfg)//extra_properties//property[@name='catalog']" />
+                    <xsl:value-of select="$cfg//extra_properties//property[@name='catalog']" />
                   </xsl:when>
                   <xsl:otherwise>
                     <xsl:value-of select="@value" />
