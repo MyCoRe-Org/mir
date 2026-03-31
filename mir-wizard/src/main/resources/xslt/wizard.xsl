@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0"
-  xmlns:mcri18n="xalan://org.mycore.services.i18n.MCRTranslation"
+<xsl:stylesheet version="3.0"
+  xmlns:mcri18n="http://www.mycore.de/xslt/i18n"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  exclude-result-prefixes="mcri18n">
+  exclude-result-prefixes="#all">
 
-  <xsl:param name="WebApplicationBaseURL" />
-  <xsl:param name="ServletsBaseURL" />
+  <xsl:include href="resource:xslt/default-parameters.xsl" />
+  <xsl:include href="xslInclude:functions" />
 
   <xsl:variable name="PageTitle" select="mcri18n:translate('component.mir.wizard.title')" />
 
@@ -40,7 +40,8 @@
           <legend>
             <xsl:choose>
               <xsl:when test="name() = 'download'">
-                <xsl:value-of select="mcri18n:translate('component.mir.wizard.downloaded.lib', @lib)" />
+                <xsl:value-of
+                  select="mcri18n:translate-with-params('component.mir.wizard.downloaded.lib', string(@lib))" />
               </xsl:when>
               <xsl:when test="name() = 'init.database'">
                 <xsl:value-of select="mcri18n:translate('component.mir.wizard.initDatabase')" />
@@ -65,7 +66,7 @@
               </xsl:when>
               <xsl:otherwise>
                 <xsl:if test="@file">
-                  <xsl:value-of select="mcri18n:translate('component.mir.wizard.generated.file', name(.))" />
+                  <xsl:value-of select="mcri18n:translate-with-params('component.mir.wizard.generated.file', name(.))" />
                 </xsl:if>
               </xsl:otherwise>
             </xsl:choose>

@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0"
-  xmlns:xalan="http://xml.apache.org/xalan"
+<xsl:stylesheet version="3.0"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  exclude-result-prefixes="xalan xsl">
+  exclude-result-prefixes="#all">
 
   <xsl:output method="xml" media-type="text/xml" encoding="UTF-8" indent="yes" omit-xml-declaration="no" />
 
@@ -24,9 +23,9 @@
     <xsl:copy>
       <xsl:choose>
         <xsl:when test="name() = 'persistence-unit-defaults'">
-          <xsl:if test="xalan:nodeset($cfg)//extra_properties//property[contains('schema|catalog', @name)]">
-            <xsl:for-each select="xalan:nodeset($cfg)//extra_properties//property[contains('schema|catalog', @name)]">
-              <xsl:element name="{@name}" xmlns="http://xmlns.jcp.org/xml/ns/persistence">
+          <xsl:if test="$cfg//extra_properties//property[contains('schema|catalog', @name)]">
+            <xsl:for-each select="$cfg//extra_properties//property[contains('schema|catalog', @name)]">
+              <xsl:element name="{@name}" namespace="http://xmlns.jcp.org/xml/ns/persistence">
                 <xsl:value-of select="." />
               </xsl:element>
             </xsl:for-each>
