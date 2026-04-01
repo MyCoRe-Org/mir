@@ -29,7 +29,7 @@
               <div class="col-4">
                 <select v-model="model.currentOwnIdentifierType" class="form-control ">
                   <option selected="selected" value="">{{ model.selectLabel }}</option>
-                  <option v-for="identifierType in model.possibleIdentifierTypes" :key="identifierType.value" :value="identifierType.value">
+                  <option v-for="identifierType in model.possibleIdentifierTypes.toLowerCase()" :key="identifierType.value" :value="identifierType.value">
                     {{ identifierType.label }}
                   </option>
                 </select>
@@ -48,7 +48,7 @@
           <div v-for="identifier in model.currentIdentifier" :key="`${identifier.type}-${identifier.value}`"
                v-on:click.prevent="removeIdentifier(identifier)"
                class="identifier">
-            <identifier-display :type="identifier.type" :value="identifier.value"/>
+            <IdentifierDisplay :type="identifier.type" :value="identifier.value"/>
             <i class="identifier-remover fas fa-minus-circle text-info" v-on:click="addIdentifier(identifier)"></i>
           </div>
 
@@ -94,7 +94,7 @@
                         <div class="col-12">
                             <div v-for="identifier in searchResult.identifier" :key="`${identifier.type}-${identifier.value}`"
                                  class="identifier">
-                                <identifier-display :type="identifier.type" :value="identifier.value"/>
+                                <IdentifierDisplay :type="identifier.type" :value="identifier.value" />
                                 <i :title="model.addLabel"
                                    class="identifier-add fas fa-plus-circle text-info"
                                    v-on:click="addIdentifier(identifier, $event)"></i>
@@ -260,7 +260,7 @@ const initializeXEditorConnection = async () => {
 
 const convertCategory = (categ: any) => {
     return {
-        value: (categ.ID as string).toLowerCase(),
+        value: (categ.ID as string),
         label: findLabel(categ)
     }
 }
@@ -355,9 +355,9 @@ const addIdentifier = async (identifier: Identifier, event?: MouseEvent) => {
         await animation.finished;
     }
 
-    if (model.currentIdentifier.filter((id: any) => id.type == identifier.type && id.value == identifier.value).length == 0) {
-        model.currentIdentifier.push(identifier);
-    }
+  const normType = (model.possibleIdentifierTypes.find(t => t.value?.toLowerCase() === identifier.type?.toLowerCase())?.value) || identifier.type;
+  if (model.currentIdentifier.filter((id: any) => id.type?.toLowerCase() === normType.toLowerCase() && id.value === identifier.value).length == 0)
+    model.currentIdentifier.push({ ...identifier, type: normType });
 }
 
 const animateElementToElement = (from: HTMLElement, to: HTMLElement): Animation => {

@@ -66,7 +66,7 @@
                             <xsl:value-of select="@label"/>
                         </dt>
                         <dd>
-                            <a href="{@uri}{@id}">
+                            <a href="{@uri}{translate(@id, ' ', '')}">
                                 <xsl:value-of select="@id"/>
                             </a>
                         </dd>
