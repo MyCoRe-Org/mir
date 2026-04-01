@@ -163,7 +163,7 @@
                   i18n="component.mir.wizard.solr.search.password"
                   tooltip="component.mir.wizard.solr.search.password.tooltip" />
 
-                <mir:template id="tikaServer" name="checkboxList" xpath="property[@name='MCR.Solr.FileIndexStrategy']">
+                <mir:template id="tikaServer" name="checkboxList" xpath="property[@name='MCR.Solr.FileIndexStrategy.Class']">
                   <option i18n="component.mir.wizard.solr.useTika" value="org.mycore.solr.index.file.tika.MCRTikaSolrFileStrategy" />
                 </mir:template>
                 <mir:template id="tikaServerURL" name="textInput" xpath="property[@name='MCR.Solr.Tika.ServerURL']"

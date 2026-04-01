@@ -153,36 +153,37 @@ public abstract class MIRACLTest {
         MCRConfiguration2.set("MCR.Metadata.Type.mods", "true");
         MCRConfiguration2.set("MCR.Metadata.Type.derivate", "true");
 
-        MCRConfiguration2.set("MCR.Access.Facts.Condition.and",
+        MCRConfiguration2.set("MCR.Access.Facts.Condition.and.Class",
             "org.mycore.access.facts.condition.combined.MCRAndCondition");
-        MCRConfiguration2.set("MCR.Access.Facts.Condition.or",
+        MCRConfiguration2.set("MCR.Access.Facts.Condition.or.Class",
             "org.mycore.access.facts.condition.combined.MCROrCondition");
-        MCRConfiguration2.set("MCR.Access.Facts.Condition.not",
+        MCRConfiguration2.set("MCR.Access.Facts.Condition.not.Class",
             "org.mycore.access.facts.condition.combined.MCRNotCondition");
-        MCRConfiguration2.set("MCR.Access.Facts.Condition.id",
+        MCRConfiguration2.set("MCR.Access.Facts.Condition.id.Class",
             "org.mycore.access.facts.condition.fact.MCRStringCondition");
-        MCRConfiguration2.set("MCR.Access.Facts.Condition.target",
+        MCRConfiguration2.set("MCR.Access.Facts.Condition.target.Class",
             "org.mycore.access.facts.condition.fact.MCRStringCondition");
-        MCRConfiguration2.set("MCR.Access.Facts.Condition.action",
+        MCRConfiguration2.set("MCR.Access.Facts.Condition.action.Class",
             "org.mycore.access.facts.condition.fact.MCRStringCondition");
-        MCRConfiguration2.set("MCR.Access.Facts.Condition.user",
+        MCRConfiguration2.set("MCR.Access.Facts.Condition.user.Class",
             "org.mycore.access.facts.condition.fact.MCRUserCondition");
-        MCRConfiguration2.set("MCR.Access.Facts.Condition.role",
+        MCRConfiguration2.set("MCR.Access.Facts.Condition.role.Class",
             "org.mycore.access.facts.condition.fact.MCRRoleCondition");
-        MCRConfiguration2.set("MCR.Access.Facts.Condition.ip", "org.mycore.access.facts.condition.fact.MCRIPCondition");
-        MCRConfiguration2.set("MCR.Access.Facts.Condition.status",
+        MCRConfiguration2.set("MCR.Access.Facts.Condition.ip.Class",
+            "org.mycore.access.facts.condition.fact.MCRIPCondition");
+        MCRConfiguration2.set("MCR.Access.Facts.Condition.status.Class",
             "org.mycore.access.facts.condition.fact.MCRStateCondition");
-        MCRConfiguration2.set("MCR.Access.Facts.Condition.createdby",
+        MCRConfiguration2.set("MCR.Access.Facts.Condition.createdby.Class",
             "org.mycore.access.facts.condition.fact.MCRCreatedByCondition");
-        MCRConfiguration2.set("MCR.Access.Facts.Condition.regex",
+        MCRConfiguration2.set("MCR.Access.Facts.Condition.regex.Class",
             "org.mycore.access.facts.condition.fact.MCRRegExCondition");
-        MCRConfiguration2.set("MCR.Access.Facts.Condition.category",
+        MCRConfiguration2.set("MCR.Access.Facts.Condition.category.Class",
             "org.mycore.access.facts.condition.fact.MCRCategoryCondition");
-        MCRConfiguration2.set("MCR.Access.Facts.Condition.collection",
+        MCRConfiguration2.set("MCR.Access.Facts.Condition.collection.Class",
             "org.mycore.mods.access.facts.condition.MCRMODSCollectionCondition");
-        MCRConfiguration2.set("MCR.Access.Facts.Condition.genre",
+        MCRConfiguration2.set("MCR.Access.Facts.Condition.genre.Class",
             "org.mycore.mods.access.facts.condition.MCRMODSGenreCondition");
-        MCRConfiguration2.set("MCR.Access.Facts.Condition.embargo",
+        MCRConfiguration2.set("MCR.Access.Facts.Condition.embargo.Class",
             "org.mycore.mods.access.facts.condition.MCRMODSEmbargoCondition");
 
         MCRConfiguration2.set("MCR.URIResolver.ModuleResolver.property", "org.mycore.common.xml.MCRPropertiesResolver");
