@@ -214,10 +214,10 @@ function setDockerValues() {
 
     if [ -n "${TIKASERVER_URL}" ]; then
       setOrAddProperty "MCR.Solr.Tika.ServerURL" "${TIKASERVER_URL}"
-      setOrAddProperty "MCR.Solr.FileIndexStrategy" "org.mycore.solr.index.file.tika.MCRTikaSolrFileStrategy"
+      setOrAddProperty "MCR.Solr.FileIndexStrategy.Class" "org.mycore.solr.index.file.tika.MCRTikaSolrFileStrategy"
     else
       setOrAddProperty "MCR.Solr.Tika.ServerURL"
-      setOrAddProperty "MCR.Solr.FileIndexStrategy"
+      setOrAddProperty "MCR.Solr.FileIndexStrategy.Class"
     fi
 
     setOrAddProperty "MCR.JPA.Hbm2ddlAuto" "update"
