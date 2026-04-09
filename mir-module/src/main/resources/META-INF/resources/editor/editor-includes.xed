@@ -939,7 +939,6 @@
           **TODO i18n <xed:output i18n="mir.date.issued.range" />
         </span>
       </legend>
-      
         <div class="mir-form-group row datetimepicker {$xed-validation-marker}">
           <label for="{@label}_date" class="col-md-3 col-form-label text-end form-label">
             <xed:output i18n="mir.date.issued.range" />
