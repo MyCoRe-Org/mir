@@ -400,8 +400,7 @@
       <xed:bind xpath="@type" initially="personal"/>
       <fieldset class="personExtended_box">
         <legend class="mir-fieldset-legend hiddenDetail d-flex justify-content-between align-items-center">
-        <xed:output i18n="{@label}" />
-        <span class="fas fa-chevron-down expand-item" title="{i18n:translate('mir.help.expand')}" data-target=".personExtended-container" role="button" tabindex="0" style="cursor: pointer;" aria-hidden="true"></span>
+          <xed:output i18n="{@label}" />
         </legend>
           <xed:bind xpath="mods:displayForm"> <!-- Move down to get the "required" validation right -->
             <div class="mir-form-group row {@class} {$xed-val-marker}">
@@ -474,7 +473,7 @@
       <xed:bind xpath="@type" initially="personal"/>
       <fieldset class="personExtended_box">
         <legend class="mir-fieldset-legend hiddenDetail d-flex justify-content-between align-items-center">
-          <span>Autor:in **TODO i18n for legend</span>
+           <span>Autor:in **TODO i18n for legend</span>
         </legend>
           <xed:bind xpath="mods:displayForm"> <!-- Move down to get the "required" validation right -->
             <div class="mir-form-group row {@class} {$xed-val-marker}">
@@ -499,7 +498,7 @@
                 <xsl:call-template name="mir-required" />
               </xed:bind>
             </div>
-         </xed:bind>        
+         </xed:bind>
         <div class="mir-fieldset-content personExtended-container d-none">
           <xed:include ref="nameType" />
           <xed:include ref="namePart.repeated" />
@@ -542,7 +541,7 @@
           <xed:bind xpath=".."> <!-- Move up again after validation marker is set -->
             <div class="col-md-3" style="text-align:right; font-weight:bold;">
               <xed:bind xpath="mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']" initially="aut">
-                <select  aria-label="select role **TODO**" class="form-control form-control-inline form-select">
+                <select aria-label="select role **TODO**" class="form-control form-control-inline form-select">
                   <xsl:apply-templates select="*" />
                 </select>
               </xed:bind>
@@ -567,30 +566,30 @@
     <xsl:variable name="xed-val-marker" > {$xed-validation-marker} </xsl:variable>
     <xed:repeat xpath="mods:name[@type='corporate'][@authorityURI='{$institutesURI}']" min="{@min}" max="{@max}">
       <xed:bind xpath=".">
-      <xed:bind xpath="@valueURIxEditor"/>
-      <xsl:variable name="select_id" select="concat(@label,'{xed:generate-id()}')" />
-      <div class="mir-form-group row {@class} {$xed-val-marker}">
-        <label for="{$select_id}" class="col-md-3 col-form-label text-end form-label">
-          <xed:output i18n="{@label}" />
-          :
-        </label>
-        <div class="col-md-6">
-          <xed:bind xpath="mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']" initially="his" /><!--  Host institution [his] -->
+        <xed:bind xpath="@valueURIxEditor"/>
+        <xsl:variable name="select_id" select="concat(@label,'{xed:generate-id()}')" />
+        <div class="mir-form-group row {@class} {$xed-val-marker}">
+          <label for="{$select_id}" class="col-md-3 col-form-label text-end form-label">
+            <xed:output i18n="{@label}" />
+            :
+          </label>
+          <div class="col-md-6">
+            <xed:bind xpath="mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']" initially="his" /><!--  Host institution [his] -->
             <select id="{$select_id}" class="form-control form-control-inline mir-form__js-select--large form-select">
               <option value="">
                 <xed:output i18n="mir.select.optional" />
               </option>
-              <xed:include uri="xslStyle:items2options#xslt:classification:editor:-1:children:mir_institutes" />
+                <xed:include uri="xslStyle:items2options#xslt:classification:editor:-1:children:mir_institutes" />
             </select>
+          </div>
+          <div class="col-md-3">
+            <xsl:if test="string-length(@help-text) &gt; 0">
+              <xsl:call-template name="mir-helpbutton" />
+            </xsl:if>
+            <xsl:call-template name="mir-pmud" />
+          </div>
         </div>
-        <div class="col-md-3">
-          <xsl:if test="string-length(@help-text) &gt; 0">
-            <xsl:call-template name="mir-helpbutton" />
-          </xsl:if>
-          <xsl:call-template name="mir-pmud" />
-        </div>
-      </div>
-    </xed:bind>
+      </xed:bind>
     </xed:repeat>
   </xsl:template>
 
@@ -600,7 +599,7 @@
           <input type="hidden" />
         </xed:bind>
         <div class="mir-form-group row {@class}">
-          <label for="geographic_input" class="col-md-3 col-form-label text-end form-label"><!--**TODO check where this label is used-->
+          <label for="geographic_input" class="col-md-3 col-form-label text-end form-label">
             <xed:output i18n="{@label}" />
           </label>
           <xsl:choose>
