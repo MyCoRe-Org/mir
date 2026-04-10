@@ -60,10 +60,7 @@
                     <xsl:variable name="licenseId"
                       select="substring-after($entity/mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:accessCondition[@type='use and reproduction']/@xlink:href, '#')" />
                     <xsl:value-of
-                      select="(
-                        mcrclassification:label-text($CurrentLang, mcrclassification:category('mir_licenses', $licenseId)),
-                        mcrclassification:label-text($DefaultLang, mcrclassification:category('mir_licenses', $licenseId))
-                      )[1]" />
+                      select="mcrclassification:current-label-text(mcrclassification:category('mir_licenses', $licenseId))" />
                   </xsl:when>
                   <xsl:otherwise>
                     <xsl:value-of select="$license" />
