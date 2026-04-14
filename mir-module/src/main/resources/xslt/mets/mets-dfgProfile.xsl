@@ -1,25 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0"
+<xsl:stylesheet version="3.0"
   xmlns:mets="http://www.loc.gov/METS/"
-  xmlns:xalan="http://xml.apache.org/xalan"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  exclude-result-prefixes="">
+  exclude-result-prefixes="#all">
 
-  <xsl:include href="resource:xsl/mets/mets-iview.xsl" />
-  <xsl:include href="resource:xsl/mets/mets-amd.xsl" />
-  <xsl:include href="resource:xsl/mods-enhancer.xsl" />
+  <xsl:include href="resource:xslt/mets/mets-iview.xsl" />
+  <xsl:include href="resource:xslt/mets/mets-amd.xsl" />
+  <xsl:include href="resource:xslt/utils/mods-enhancer.xsl" />
 
-  <xsl:output method="xml" encoding="utf-8" />
-  <xsl:param name="MCR.Module-iview2.SupportedContentTypes" />
-  <xsl:param name="ServletsBaseURL" />
-  <xsl:param name="WebApplicationBaseURL" />
-  <xsl:param name="derivateID" />
-  <xsl:param name="objectID" />
-
-  <xsl:variable name="sourcedoc" select="document(concat('mcrobject:',$objectID))" />
+  <xsl:variable name="sourcedoc" select="document(concat('mcrobject:', $objectID))" />
 
   <xsl:template match="/mycoreobject" priority="0" mode="metsmeta" xmlns:mods="http://www.loc.gov/mods/v3">
-        <xsl:apply-templates mode="mods2mods" />
+    <xsl:apply-templates mode="mods2mods" />
   </xsl:template>
 
   <xsl:template match="mycoreobject" priority="0" mode="fallBackEntity">
@@ -57,15 +49,15 @@
     <mets:mets>
       <xsl:if test="not(mets:dmdSec)">
         <xsl:variable name="emptyDMDSec">
-          <mets:dmdSec ID="dmd_{$derivateID}"/>
+          <mets:dmdSec ID="dmd_{$derivateID}" />
         </xsl:variable>
-        <xsl:apply-templates select="xalan:nodeset($emptyDMDSec)" />
+        <xsl:apply-templates select="$emptyDMDSec/mets:dmdSec" />
       </xsl:if>
       <xsl:if test="not(mets:amdSec)">
-        <xsl:variable name="emptryAMDSec">
+        <xsl:variable name="emptyAMDSec">
           <mets:amdSec />
         </xsl:variable>
-        <xsl:apply-templates select="xalan:nodeset($emptryAMDSec)" />
+        <xsl:apply-templates select="$emptyAMDSec/mets:amdSec" />
       </xsl:if>
       <xsl:apply-templates />
     </mets:mets>
@@ -75,20 +67,20 @@
     <mets:dmdSec ID="dmd_{$derivateID}">
       <mets:mdWrap MDTYPE="MODS">
         <mets:xmlData>
-            <xsl:apply-templates mode="metsmeta" select="$sourcedoc/mycoreobject" />
-            <!-- TODO: add configurable template
-            <mods:extension>
-              <mir:entities xmlns:mir="http://www.mycore.de/mir/ns/mods-entities">
-                <mir:entity type="operator" xlink:type="extended"
-                              xlink:title="xxx">
-                  <mir:site xlink:type="locator" xlink:href="#" />
-                  <mir:logo xlink:type="resource" xlink:href="{$logoBaseUrl}xxx.svg" />
-                  <mir:full-logo xlink:type="resource" xlink:href="{$logoBaseUrl}xxx.svg" />
-                </mir:entity>
-                <xsl:apply-templates mode="entities" select="$sourcedoc/mycoreobject" />
-              </mir:entities>
-            </mods:extension>
-            -->
+          <xsl:apply-templates mode="metsmeta" select="$sourcedoc/mycoreobject" />
+          <!-- TODO: add configurable template
+          <mods:extension>
+            <mir:entities xmlns:mir="http://www.mycore.de/mir/ns/mods-entities">
+              <mir:entity type="operator" xlink:type="extended"
+                            xlink:title="xxx">
+                <mir:site xlink:type="locator" xlink:href="#" />
+                <mir:logo xlink:type="resource" xlink:href="{$logoBaseUrl}xxx.svg" />
+                <mir:full-logo xlink:type="resource" xlink:href="{$logoBaseUrl}xxx.svg" />
+              </mir:entity>
+              <xsl:apply-templates mode="entities" select="$sourcedoc/mycoreobject" />
+            </mir:entities>
+          </mods:extension>
+          -->
         </mets:xmlData>
       </mets:mdWrap>
     </mets:dmdSec>
