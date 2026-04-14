@@ -10,13 +10,11 @@
     border: none;
     margin: 0;
     padding: 0;
-    float: right;
 
     // navigation container
     nav
     {
-        padding-left: 0px;                          // align to left
-        padding-right: 0px;                          // align to right
+        padding: 0;
 
         // right menu
         ul.float-end > li {
