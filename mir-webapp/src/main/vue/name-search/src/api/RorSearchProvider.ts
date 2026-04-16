@@ -57,11 +57,11 @@ export class RorSearchProvider implements SearchProvider {
             for (const extIdObj of item.external_ids) {
                 const idType = extIdObj.type;
                 if (extIdObj.preferred) {
-                    searchResult.identifier.push({ type: idType, value: extIdObj.preferred });
+                    searchResult.identifier.push({ type: idType, value: idType === "isni" ? extIdObj.preferred.replace(/\s+/g, "") : extIdObj.preferred });
                 } else if (extIdObj.all) {
                     const allValues = Array.isArray(extIdObj.all) ? extIdObj.all : [extIdObj.all];
                     for (const val of allValues) {
-                        searchResult.identifier.push({ type: idType, value: val });
+                        searchResult.identifier.push({ type: idType, value: idType === "isni" ? val.replace(/\s+/g, "") : val });
                     }
                 }
             }

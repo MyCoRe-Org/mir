@@ -49,7 +49,7 @@
             </div>
             <hr/>
           </template>
-          <div v-for="identifier in model.currentIdentifier" :key="`${identifier.type}-${identifier.value}`"
+          <div v-for="identifier in model.currentIdentifier.filter(id => isAllowedIdentifierType(id.type))" :key="`${identifier.type}-${identifier.value}`"
                v-on:click.prevent="removeIdentifier(identifier)"
                class="identifier">
             <IdentifierDisplay :type="identifier.type" :value="identifier.value"/>
@@ -96,7 +96,7 @@
                     </div>
                     <div class="row">
                         <div class="col-12">
-                            <div v-for="identifier in searchResult.identifier" :key="`${identifier.type}-${identifier.value}`"
+                          <div v-for="identifier in searchResult.identifier.filter(id => isAllowedIdentifierType(id.type))" :key="`${identifier.type}-${identifier.value}`"
                                  class="identifier">
                                 <IdentifierDisplay :type="identifier.type" :value="identifier.value" />
                                 <i :title="model.addLabel"
@@ -182,6 +182,11 @@ const isDevMode = () => {
 const nameLocatorString = computed(() => {
   return model.nameLocator?.modsIndex + "-" + model.nameLocator?.nameIndex + "-" + (model.nameLocator?.relatedItemIndex || '');
 })
+const isAllowedIdentifierType = (type: string) => {
+  return model.possibleIdentifierTypes
+      .map(t => t.value.toLowerCase())
+      .includes(type?.toLowerCase());
+}
 
 watch(() => model.currentIdentifier, (val) => {
     if (!isDevMode() && model.nameLocator !== undefined) {
@@ -359,7 +364,7 @@ const addIdentifier = async (identifier: Identifier, event?: MouseEvent) => {
         await animation.finished;
     }
 
-  const normType = (model.possibleIdentifierTypes.find(t => t.value?.toLowerCase() === identifier.type?.toLowerCase())?.value) || identifier.type;
+  const normType = (model.possibleIdentifierTypes.find(t => t.value?.toLowerCase() === identifier.type?.toLowerCase())?.value);
   if (model.currentIdentifier.filter((id: any) => id.type?.toLowerCase() === normType.toLowerCase() && id.value === identifier.value).length == 0)
     model.currentIdentifier.push({ ...identifier, type: normType });
 }
