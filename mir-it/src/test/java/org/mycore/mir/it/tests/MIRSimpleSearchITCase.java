@@ -15,6 +15,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.mycore.mir.it.controller.MIRSearchController;
+import org.mycore.mir.it.controller.MIRUserController;
 import org.mycore.mir.it.model.MIRSearchTestDataLoader;
 import org.mycore.mir.it.model.MIRSimpleSearchFormContent;
 import org.openqa.selenium.By;
@@ -44,8 +45,11 @@ public class MIRSimpleSearchITCase extends MIRITBase {
     public final void init() throws IOException, InterruptedException {
         MIRSearchTestDataLoader searchTestDataLoader = new MIRSearchTestDataLoader();
         searchTestDataLoader.lazyLoadData(getDriver());
-        // navigate to start page so the "Suche" nav link is available
-        getDriver().get(getAPPUrlString());
+
+        String appURL = getAPPUrlString();
+        MIRUserController userController = new MIRUserController(getDriver(), appURL);
+        userController.logoutIfLoggedIn();
+        userController.loginAs(MIRUserController.ADMIN_LOGIN, MIRUserController.ADMIN_PASSWD);
     }
 
     @Test
