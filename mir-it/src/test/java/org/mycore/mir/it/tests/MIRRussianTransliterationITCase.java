@@ -38,6 +38,8 @@ public class MIRRussianTransliterationITCase extends MIRITBase {
     public final void init() throws IOException, InterruptedException {
         MIRSearchTestDataLoader searchTestDataLoader = new MIRSearchTestDataLoader();
         searchTestDataLoader.lazyLoadData(getDriver());
+        // navigate to start page so the "Suche" nav link is available
+        getDriver().get(getAPPUrlString());
     }
 
     /**
