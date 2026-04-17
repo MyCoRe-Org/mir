@@ -29,6 +29,19 @@ export class RorSearchProvider implements SearchProvider {
         }
     }
 
+    normalizeIdentifierValue(type: string, value: string): string {
+        if (!value) {
+            return value;
+        }
+
+        switch (type?.toLowerCase()) {
+            case "isni":
+                return value.replace(/\s+/g, "");
+            default:
+                return value;
+        }
+    }
+
     async searchPerson(searchTerm: string) {
         const responsePromise = await fetch(`https://api.ror.org/v2/organizations?query=${encodeURIComponent(searchTerm)}`);
         const json = await responsePromise.json();
@@ -57,11 +70,17 @@ export class RorSearchProvider implements SearchProvider {
             for (const extIdObj of item.external_ids) {
                 const idType = extIdObj.type;
                 if (extIdObj.preferred) {
-                    searchResult.identifier.push({ type: idType, value: idType === "isni" ? extIdObj.preferred.replace(/\s+/g, "") : extIdObj.preferred });
+                    searchResult.identifier.push({
+                        type: idType,
+                        value: this.normalizeIdentifierValue(idType, extIdObj.preferred)
+                    });
                 } else if (extIdObj.all) {
                     const allValues = Array.isArray(extIdObj.all) ? extIdObj.all : [extIdObj.all];
                     for (const val of allValues) {
-                        searchResult.identifier.push({ type: idType, value: idType === "isni" ? val.replace(/\s+/g, "") : val });
+                        searchResult.identifier.push({
+                            type: idType,
+                            value: this.normalizeIdentifierValue(idType, val)
+                        });
                     }
                 }
             }
