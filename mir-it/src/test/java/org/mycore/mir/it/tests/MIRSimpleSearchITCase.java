@@ -41,7 +41,7 @@ public class MIRSimpleSearchITCase extends MIRITBase {
     }
 
     @Before
-    public final void ini() throws IOException, InterruptedException {
+    public final void init() throws IOException, InterruptedException {
         MIRSearchTestDataLoader searchTestDataLoader = new MIRSearchTestDataLoader();
         searchTestDataLoader.lazyLoadData(getDriver());
         // navigate to start page so the "Suche" nav link is available
