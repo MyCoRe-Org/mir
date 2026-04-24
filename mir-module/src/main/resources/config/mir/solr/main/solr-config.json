@@ -19,7 +19,7 @@
           "objectType:mods",
           "state:published OR {!v=$owner}"
         ],
-        "qf1": "id^100 mods.gnd^100 mods.identifier^100 isbn^100 mods.title^80 mods.author^40 mods.publisher^30 mods.name^30 mods.abstract^10 mods.place^5 allMeta^0.002",
+        "qf1": "id^100 mods.gnd^100 mods.identifier^100 isbn^100 mods.title^80 mods.title.lang.de^80 mods.title.lang.en^80 mods.title.lang.es^80 mods.title.lang.fr^80 mods.title.lang.it^80 mods.title.lang.ru^80 mods.title.lang.ru.latin^80 mods.title.lang.tr^80 mods.author^40 mods.publisher^30 mods.name^30 mods.abstract^10 mods.abstract.lang.de^10 mods.abstract.lang.en^10 mods.abstract.lang.es^10 mods.abstract.lang.fr^10 mods.abstract.lang.it^10 mods.abstract.lang.ru^10 mods.abstract.lang.ru.latin^10 mods.abstract.lang.tr^10 mods.subject.lang.de^5 mods.subject.lang.en^5 mods.subject.lang.es^5 mods.subject.lang.fr^5 mods.subject.lang.it^5 mods.subject.lang.ru^5 mods.subject.lang.ru.latin^5 mods.subject.lang.tr^5 mods.place^5 allMeta^0.002",
         "facet": "true",
         "facet.field": [
           "mods.genre",

@@ -2,7 +2,7 @@
   <conditions format="xml">
     <boolean operator="and">
       <boolean operator="and">
-          <condition field="mods.title" operator="contains" />
+          <condition field="mods.title,mods.title.lang.de,mods.title.lang.en,mods.title.lang.es,mods.title.lang.fr,mods.title.lang.it,mods.title.lang.ru,mods.title.lang.ru.latin,mods.title.lang.tr" operator="contains" />
           <condition field="mods.author" operator="contains" />
           <condition field="id,isbn,mods.identifier" operator="=" />
           <condition field="category.top" operator="=" />
