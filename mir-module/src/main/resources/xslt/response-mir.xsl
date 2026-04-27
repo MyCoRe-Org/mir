@@ -20,6 +20,7 @@
 
   <xsl:param name="MIR.testEnvironment" />
   <xsl:param name="MIR.Solr.Secondary.Search.RequestHandler.List" select="'find'" />
+  <xsl:param name="MIR.Thumbnail.IIIF.Resolution" select="'!300,300'" />
 
   <xsl:variable name="maxScore" select="//result[@name='response'][1]/@maxScore" />
 
@@ -734,14 +735,14 @@
                     <xsl:choose>
                       <xsl:when test="not($isGuestUser)">
                         <xsl:attribute name="data-iiif-jwt">
-                          <xsl:value-of select="concat($WebApplicationBaseURL, 'api/iiif/image/v2/thumbnail/', $identifier,'/full/!300,300/0/default.jpg')"/>
+                          <xsl:value-of select="concat($WebApplicationBaseURL, 'api/iiif/image/v2/thumbnail/', $identifier,'/full/', $MIR.Thumbnail.IIIF.Resolution, '/0/default.jpg')"/>
                         </xsl:attribute>
                       </xsl:when>
                       <xsl:otherwise>
                         <xsl:attribute name="style">
                           <xsl:variable name="apos">'</xsl:variable>
                           <xsl:value-of
-                                  select="concat('background-image: url(', $apos, $WebApplicationBaseURL, 'api/iiif/image/v2/thumbnail/', $identifier, '/full/!300,300/0/default.jpg',$apos,')')"/>
+                                  select="concat('background-image: url(', $apos, $WebApplicationBaseURL, 'api/iiif/image/v2/thumbnail/', $identifier, '/full/', $MIR.Thumbnail.IIIF.Resolution, '/0/default.jpg',$apos,')')"/>
                         </xsl:attribute>
                       </xsl:otherwise>
                     </xsl:choose>
