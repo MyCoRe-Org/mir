@@ -92,6 +92,8 @@ $(document).ready(function () {
             setDatePickerStartView(this, 1);
         }).on("hide", function() {
             restoreDatePickerValue(this);
+        }).on("clearDate", function() {
+            clearDatePickerValue(this);
         });
         var datePickerData = datePicker.data().datepicker;
         if (datePickerData && datePickerData.picker) {
@@ -99,6 +101,9 @@ $(document).ready(function () {
                 $(elm).attr(DATE_PICKER_FORMAT_ATTRIBUTE, DATE_FORMAT_DAY);
                 $(elm).removeAttr(DATE_PICKER_VALUE_ATTRIBUTE);
                 setDatePickerStartView(elm, 0);
+            });
+            datePickerData.picker.on("click", ".clear", function() {
+                clearDatePickerValue(elm);
             });
         }
         if (clockIsActivated) {
@@ -121,6 +126,12 @@ $(document).ready(function () {
         if (!$(elm).val() && value && (format === DATE_FORMAT_YEAR || format === DATE_FORMAT_MONTH)) {
             $(elm).val(value);
         }
+    }
+
+    function clearDatePickerValue(elm) {
+        $(elm).val("");
+        $(elm).removeAttr(DATE_PICKER_VALUE_ATTRIBUTE);
+        $(elm).removeAttr(DATE_PICKER_FORMAT_ATTRIBUTE);
     }
 
     function updateDatePicker(elm, clockBtn) {
