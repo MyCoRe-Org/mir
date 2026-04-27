@@ -35,6 +35,7 @@
   <xsl:param name="MCR.Module-iview2.SupportedContentTypes"/>
   <xsl:param name="RequestURL"/>
   <xsl:param name="MIR.Strategy.EditPIRoles" />
+  <xsl:param name="MIR.Thumbnail.IIIF.Resolution" select="'!300,300'" />
 
   <xsl:include href="resource:xsl/workflow-util.xsl" />
   <xsl:include href="resource:xsl/mir-mods-utils.xsl" />
@@ -826,14 +827,14 @@
                 <xsl:choose>
                   <xsl:when test="not(mcrxml:isCurrentUserGuestUser())">
                     <xsl:attribute name="data-iiif-jwt">
-                      <xsl:value-of select="concat($WebApplicationBaseURL, 'api/iiif/image/v2/thumbnail/', $objID,'/full/!300,300/0/default.jpg')"/>
+                      <xsl:value-of select="concat($WebApplicationBaseURL, 'api/iiif/image/v2/thumbnail/', $objID,'/full/', $MIR.Thumbnail.IIIF.Resolution, '/0/default.jpg')"/>
                     </xsl:attribute>
                   </xsl:when>
                   <xsl:otherwise>
                     <xsl:attribute name="style">
                       <xsl:variable name="apos">'</xsl:variable>
                       <xsl:value-of
-                              select="concat('background-image: url(', $apos, $WebApplicationBaseURL, 'api/iiif/image/v2/thumbnail/', $objID, '/full/!300,300/0/default.jpg',$apos,')')"/>
+                              select="concat('background-image: url(', $apos, $WebApplicationBaseURL, 'api/iiif/image/v2/thumbnail/', $objID, '/full/', $MIR.Thumbnail.IIIF.Resolution, '/0/default.jpg',$apos,')')"/>
                     </xsl:attribute>
                   </xsl:otherwise>
                 </xsl:choose>
