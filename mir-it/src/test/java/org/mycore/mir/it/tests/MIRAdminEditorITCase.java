@@ -88,6 +88,7 @@ public class MIRAdminEditorITCase extends MIRITBase {
         driver.waitAndFindElement(MCRBy.partialText(MIRTestData.AUTHOR));
         driver.waitAndFindElement(MCRBy.partialText(MIRTestData.AUTHOR_2));
         driver.waitAndFindElement(MCRBy.partialText(MIRTestData.CONFERENCE));
+        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.ISSUE_DATE));
 
         //driver.waitAndFindElement(MCRBy.partialText(MIRTestData.AIRE_PROJECT_NAME));
         //driver.waitAndFindElement(MCRBy.partialText(MIRTestData.AIRE_ACRONYM));
