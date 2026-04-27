@@ -21,29 +21,50 @@ $(document).ready(function () {
     }
 
 
+    var DATE_FORMAT_DAY = "YYYY-MM-DD";
+    var DATE_FORMAT_MONTH = "YYYY-MM";
+    var DATE_FORMAT_YEAR = "YYYY";
+    var DATE_PICKER_FORMAT_ATTRIBUTE = "data-mir-datepicker-format";
+    var DATE_PICKER_VALUE_ATTRIBUTE = "data-mir-datepicker-value";
+
+    function getDatePickerFormat(value) {
+        if (moment(value, DATE_FORMAT_DAY, true).isValid()){
+            return DATE_FORMAT_DAY;
+        }
+        if (moment(value, DATE_FORMAT_MONTH, true).isValid()){
+            return DATE_FORMAT_MONTH;
+        }
+        if (moment(value, DATE_FORMAT_YEAR, true).isValid()){
+            return DATE_FORMAT_YEAR;
+        }
+        return DATE_FORMAT_DAY;
+    }
+
     function pickDatePickerFormatAndAdd(elm, clockBtn) {
-        if (moment($(elm).val(), "YYYY-MM-DD", true).isValid()){
-            addDatePicker(elm, 0, clockBtn);
+        if (moment($(elm).val(), DATE_FORMAT_DAY, true).isValid()){
+            addDatePicker(elm, 0, clockBtn, DATE_FORMAT_DAY);
         }
         else {
-            if (moment($(elm).val(), "YYYY-MM", true).isValid()){
-                addDatePicker(elm, 1, clockBtn);
+            if (moment($(elm).val(), DATE_FORMAT_MONTH, true).isValid()){
+                addDatePicker(elm, 1, clockBtn, DATE_FORMAT_MONTH);
             }
             else {
-                addDatePicker(elm, 2, clockBtn);
+                addDatePicker(elm, 2, clockBtn, getDatePickerFormat($(elm).val()));
             }
         }
     }
 
     function addDatePicker(elm, startView, clockIsActivated, format) {
-        $(elm).datepicker({
+        $(elm).attr(DATE_PICKER_FORMAT_ATTRIBUTE, format);
+        var datePicker = $(elm).datepicker({
             format: {
                 toDisplay: function (date, format, language) {
                     var d = moment(date);
-                    return d.format("YYYY-MM-DD");
+                    return d.format($(elm).attr(DATE_PICKER_FORMAT_ATTRIBUTE) || DATE_FORMAT_DAY);
                 },
                 toValue: function (date, format, language) {
-                    var d = moment.utc(date, ["YYYY-MM-DD", "YYYY-MM", "YYYY"]);
+                    $(elm).attr(DATE_PICKER_FORMAT_ATTRIBUTE, getDatePickerFormat(date));
+                    var d = moment.utc(date, [DATE_FORMAT_DAY, DATE_FORMAT_MONTH, DATE_FORMAT_YEAR]);
                     return d.startOf('day').toDate();
                 }
             },
@@ -58,15 +79,59 @@ $(document).ready(function () {
             maxViewMode: 4,
             daysOfWeekHighlighted: "0"
         }).on("changeYear", function(e) {
-            $(this).val(moment(e.date).format("YYYY"))
+            var year = moment(e.date).format(DATE_FORMAT_YEAR);
+            $(this).attr(DATE_PICKER_FORMAT_ATTRIBUTE, DATE_FORMAT_YEAR);
+            $(this).attr(DATE_PICKER_VALUE_ATTRIBUTE, year);
+            $(this).val(year);
+            setDatePickerStartView(this, 2);
         }).on("changeMonth", function(e) {
-            $(this).val(moment(e.date).format("YYYY-MM"));
+            var month = moment(e.date).format(DATE_FORMAT_MONTH);
+            $(this).attr(DATE_PICKER_FORMAT_ATTRIBUTE, DATE_FORMAT_MONTH);
+            $(this).attr(DATE_PICKER_VALUE_ATTRIBUTE, month);
+            $(this).val(month);
+            setDatePickerStartView(this, 1);
+        }).on("hide", function() {
+            restoreDatePickerValue(this);
+        }).on("clearDate", function() {
+            clearDatePickerValue(this);
         });
+        var datePickerData = datePicker.data().datepicker;
+        if (datePickerData && datePickerData.picker) {
+            datePickerData.picker.on("mousedown", ".day:not(.disabled), .today", function() {
+                $(elm).attr(DATE_PICKER_FORMAT_ATTRIBUTE, DATE_FORMAT_DAY);
+                $(elm).removeAttr(DATE_PICKER_VALUE_ATTRIBUTE);
+                setDatePickerStartView(elm, 0);
+            });
+            datePickerData.picker.on("click", ".clear", function() {
+                clearDatePickerValue(elm);
+            });
+        }
         if (clockIsActivated) {
             $(elm).timepicker({
                 pattern: "YYYY-MM-DDTHH:mm:ssZ"
             });
         }
+    }
+
+    function setDatePickerStartView(elm, startView) {
+        var datePickerData = $(elm).data().datepicker;
+        if (datePickerData && datePickerData.o) {
+            datePickerData.o.startView = startView;
+        }
+    }
+
+    function restoreDatePickerValue(elm) {
+        var format = $(elm).attr(DATE_PICKER_FORMAT_ATTRIBUTE);
+        var value = $(elm).attr(DATE_PICKER_VALUE_ATTRIBUTE);
+        if (!$(elm).val() && value && (format === DATE_FORMAT_YEAR || format === DATE_FORMAT_MONTH)) {
+            $(elm).val(value);
+        }
+    }
+
+    function clearDatePickerValue(elm) {
+        $(elm).val("");
+        $(elm).removeAttr(DATE_PICKER_VALUE_ATTRIBUTE);
+        $(elm).removeAttr(DATE_PICKER_FORMAT_ATTRIBUTE);
     }
 
     function updateDatePicker(elm, clockBtn) {

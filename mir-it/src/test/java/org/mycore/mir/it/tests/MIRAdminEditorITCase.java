@@ -88,6 +88,7 @@ public class MIRAdminEditorITCase extends MIRITBase {
         driver.waitAndFindElement(MCRBy.partialText(MIRTestData.AUTHOR));
         driver.waitAndFindElement(MCRBy.partialText(MIRTestData.AUTHOR_2));
         driver.waitAndFindElement(MCRBy.partialText(MIRTestData.CONFERENCE));
+        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.ISSUE_DATE));
 
         //driver.waitAndFindElement(MCRBy.partialText(MIRTestData.AIRE_PROJECT_NAME));
         //driver.waitAndFindElement(MCRBy.partialText(MIRTestData.AIRE_ACRONYM));
@@ -126,6 +127,7 @@ public class MIRAdminEditorITCase extends MIRITBase {
 
         editorController.setAuthors(Stream.of(MIRTestData.AUTHOR, MIRTestData.AUTHOR_2).collect(Collectors.toList()));
         editorController.setConference(MIRTestData.CONFERENCE);
+        editorController.setIssueDate(MIRTestData.ISSUE_DATE);
         // editorController.setOpenAIRE(MIRTestData.AIRE_AUTOCOMPLE, MIRTestData.AIRE_PROJECT_NAME);
         List identifierList = Stream.of(new AbstractMap.SimpleEntry(MIRIdentifier.doi, MIRTestData.DOI),
             new AbstractMap.SimpleEntry(MIRIdentifier.urn, MIRTestData.URN),
