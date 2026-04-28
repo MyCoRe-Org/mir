@@ -17,7 +17,7 @@
     <xsl:variable name="standaloneFormats">
       <xsl:value-of select="string-join($transformers ! substring-before(., ':'), ',')" />
     </xsl:variable>
-    <script type="text/javascript">
+    <script>
       window["MCR.Export.StandaloneFormats"] = &quot;<xsl:value-of select="$standaloneFormats"/>&quot;;
       window["MCR.Export.CSL.Rows"] = &quot;<xsl:value-of select="$MCR.Export.CSL.Rows"/>&quot;;
       window["MCR.Export.Standalone.Rows"] = &quot;<xsl:value-of select="$MCR.Export.Standalone.Rows"/>&quot;;
