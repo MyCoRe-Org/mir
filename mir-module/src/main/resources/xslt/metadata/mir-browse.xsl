@@ -79,7 +79,7 @@
       </div>
 
       <!-- change url in browser -->
-      <script type="text/javascript">
+      <script>
         <xsl:value-of select="concat('var pageurl = &quot;', $staticUrl, '&quot;;')" />
         if(typeof window.history.replaceState == &quot;function&quot;){
           var passthrough = "passthrough.";

@@ -27,8 +27,8 @@
         <link href="{$WebApplicationBaseURL}assets/font-awesome/css/all.min.css" rel="stylesheet" />
         <link href="{$WebApplicationBaseURL}rsc/sass/mir-layout/scss/{mcrproperty:one('MIR.Layout.Theme')}-{mcrproperty:one('MIR.DefaultLayout.CSS')}.css" rel="stylesheet" />
 
-        <script type="text/javascript" src="{$WebApplicationBaseURL}assets/jquery/jquery.min.js"></script>
-        <script type="text/javascript" src="{$WebApplicationBaseURL}assets/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <script src="{$WebApplicationBaseURL}assets/jquery/jquery.min.js"></script>
+        <script src="{$WebApplicationBaseURL}assets/bootstrap/js/bootstrap.bundle.min.js"></script>
         <xsl:copy-of select="head/*" />
       </head>
 
