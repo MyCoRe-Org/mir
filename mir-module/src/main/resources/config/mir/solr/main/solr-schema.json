@@ -249,5 +249,50 @@
         "stored": true,
         "multiValued": false
     }
+  },
+  {
+    "add-field": {
+      "name": "funding_funder_name",
+      "type": "string",
+      "indexed": true,
+      "stored": true,
+      "multiValued": true
+    }
+  },
+  {
+    "add-field": {
+      "name": "funding_funder_identifier",
+      "type": "string",
+      "indexed": true,
+      "stored": true,
+      "multiValued": true
+    }
+  },
+  {
+    "add-field": {
+      "name": "funding_award_title",
+      "type": "string",
+      "indexed": true,
+      "stored": true,
+      "multiValued": true
+    }
+  },
+  {
+    "add-field": {
+      "name": "funding_award_number",
+      "type": "string",
+      "indexed": true,
+      "stored": true,
+      "multiValued": true
+    }
+  },
+  {
+    "add-field": {
+      "name": "funding_award_uri",
+      "type": "string",
+      "indexed": true,
+      "stored": true,
+      "multiValued": true
+    }
   }
 ]

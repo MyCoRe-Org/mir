@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="3.0"
+  xmlns:datacite="http://datacite.org/schema/kernel-4"
   xmlns:mcri18n="http://www.mycore.de/xslt/i18n"
   xmlns:mcrmods="http://www.mycore.de/xslt/mods"
   xmlns:mcrstringutils="http://www.mycore.de/xslt/stringutils"
@@ -223,6 +224,34 @@
           <xsl:value-of select="normalize-space(mods:part/mods:detail[@type='volume']/mods:number)" />
         </field>
       </xsl:if>
+    </xsl:for-each>
+    <xsl:for-each select="mods:extension[@type='datacite-funding']/datacite:fundingReferences/datacite:fundingReference">
+      <xsl:for-each select="datacite:funderName">
+        <field name="funding_funder_name">
+          <xsl:value-of select="."/>
+        </field>
+      </xsl:for-each>
+      <xsl:for-each select="datacite:funderIdentifier">
+        <field name="funding_funder_identifier">
+          <xsl:variable name="funderIdentifierType" select="if (@funderIdentifierType='Crossref Funder ID') then 'crossref' else lower-case(@funderIdentifierType)"/>
+          <xsl:value-of select="concat($funderIdentifierType, ':', .)"/>
+        </field>
+      </xsl:for-each>
+      <xsl:for-each select="datacite:awardTitle">
+        <field name="funding_award_title">
+          <xsl:value-of select="."/>
+        </field>
+      </xsl:for-each>
+      <xsl:for-each select="datacite:awardNumber">
+        <field name="funding_award_number">
+          <xsl:value-of select="."/>
+        </field>
+        <xsl:for-each select="@awardURI">
+          <field name="funding_award_uri">
+            <xsl:value-of select="."/>
+          </field>
+        </xsl:for-each>
+      </xsl:for-each>
     </xsl:for-each>
   </xsl:template>
 
