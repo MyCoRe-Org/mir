@@ -2027,7 +2027,7 @@
         </xed:bind>
       </div>
     </fieldset>
-    <script type="text/javascript" src="{$WebApplicationBaseURL}js/mir/openaire.min.js" />
+    <script src="{$WebApplicationBaseURL}js/mir/openaire.min.js" />
   </xed:template>
 
   <xed:template id="project.repeated">
@@ -2229,7 +2229,7 @@
           <xed:include ref="host.order" />
         </div>
       </xed:repeat>
-      <script src="{$WebApplicationBaseURL}js/mir/relatedItem-modal.min.js" type="text/javascript"></script>
+      <script src="{$WebApplicationBaseURL}js/mir/relatedItem-modal.min.js"></script>
       <xed:validate xpath="//mods:relatedItem[@xlink:href!='']" test="(@type!='isReferencedBy')" i18n="mir.validation.relatedItem" display="global" />
     </fieldset>
   </xed:template>
@@ -2262,7 +2262,7 @@
           </div>
         </div>
       </xed:repeat>
-      <script src="{$WebApplicationBaseURL}js/mir/relatedItem-modal.min.js" type="text/javascript"></script>
+      <script src="{$WebApplicationBaseURL}js/mir/relatedItem-modal.min.js"></script>
     </fieldset>
   </xed:template>
 
@@ -2453,25 +2453,23 @@
 
   <xed:template id="javascript">
     <mir:editorConfig/>
-    <script type="text/javascript" src="{$WebApplicationBaseURL}js/jquery.search-entity.min.js"></script>
-    <script src="{$WebApplicationBaseURL}assets/jquery/plugins/typeahead/bloodhound.min.js" type="text/javascript"></script>
-    <script src="{$WebApplicationBaseURL}assets/jquery/plugins/bootstrap3-typeahead/bootstrap3-typeahead.min.js" type="text/javascript"></script>
-    <script src="{$WebApplicationBaseURL}js/mir/relatedItem-autocomplete.min.js" type="text/javascript"></script>
-    <script src="{$WebApplicationBaseURL}js/mir/item-autocomplete.js" type="text/javascript"></script>
+    <script src="{$WebApplicationBaseURL}js/jquery.search-entity.min.js"></script>
+    <script src="{$WebApplicationBaseURL}assets/jquery/plugins/typeahead/bloodhound.min.js"></script>
+    <script src="{$WebApplicationBaseURL}assets/jquery/plugins/bootstrap3-typeahead/bootstrap3-typeahead.min.js"></script>
+    <script src="{$WebApplicationBaseURL}js/mir/relatedItem-autocomplete.min.js"></script>
+    <script src="{$WebApplicationBaseURL}js/mir/item-autocomplete.js"></script>
     <link href="{$WebApplicationBaseURL}assets/bootstrap-datepicker/css/bootstrap-datepicker.css" rel="stylesheet"/>
-    <script type="text/javascript"
-            src="{$WebApplicationBaseURL}assets/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
-    <script type="text/javascript"
-            src="{$WebApplicationBaseURL}assets/bootstrap-datepicker/locales/bootstrap-datepicker.de.min.js"></script>
-    <script type="text/javascript" src="{$WebApplicationBaseURL}assets/moment/min/moment.min.js"></script>
-    <script type="text/javascript" src="{$WebApplicationBaseURL}js/mir/xeditor-form.min.js"></script>
-    <script type="text/javascript" src="{$WebApplicationBaseURL}js/mir/bootstrap-datepicker-timepicker/bootstrap-datepicker-timepicker.js"></script>
-    <script type="text/javascript" src="{$WebApplicationBaseURL}js/mir/bootstrap-datepicker-timepicker/bootstrap-datepicker-timepicker.de.js"></script>
-    <script type="text/javascript" src="{$WebApplicationBaseURL}assets/tinymce/tinymce.js"></script>
-    <script type="text/javascript" src="{$WebApplicationBaseURL}assets/tinymce/config.js"></script>
+    <script src="{$WebApplicationBaseURL}assets/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
+    <script src="{$WebApplicationBaseURL}assets/bootstrap-datepicker/locales/bootstrap-datepicker.de.min.js"></script>
+    <script src="{$WebApplicationBaseURL}assets/moment/min/moment.min.js"></script>
+    <script src="{$WebApplicationBaseURL}js/mir/xeditor-form.min.js"></script>
+    <script src="{$WebApplicationBaseURL}js/mir/bootstrap-datepicker-timepicker/bootstrap-datepicker-timepicker.js"></script>
+    <script src="{$WebApplicationBaseURL}js/mir/bootstrap-datepicker-timepicker/bootstrap-datepicker-timepicker.de.js"></script>
+    <script src="{$WebApplicationBaseURL}assets/tinymce/tinymce.js"></script>
+    <script src="{$WebApplicationBaseURL}assets/tinymce/config.js"></script>
     <link rel="stylesheet" type="text/css" href="{$WebApplicationBaseURL}assets/select2/css/select2.min.css"/>
-    <script type="text/javascript" src="{$WebApplicationBaseURL}assets/select2/js/select2.min.js"/>
-    <script type="text/javascript" src="{$WebApplicationBaseURL}assets/select2/js/i18n/{$MCR.Metadata.DefaultLang}.js"/>
+    <script src="{$WebApplicationBaseURL}assets/select2/js/select2.min.js"/>
+    <script src="{$WebApplicationBaseURL}assets/select2/js/i18n/{$MCR.Metadata.DefaultLang}.js"/>
     <script src="{$WebApplicationBaseURL}assets/vue/vue.runtime.global.prod.js"/>
     <script src="{$WebApplicationBaseURL}vue/name-search/nameSearch.umd.min.js"/>
     <script src="{$WebApplicationBaseURL}vue/editor-tools/editor-tools.umd.min.js"/>
