@@ -4,6 +4,8 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
+  <xsl:output method="xml" indent="yes" encoding="UTF-8" omit-xml-declaration="no" />
+
   <xsl:mode on-no-match="shallow-copy" />
 
   <xsl:template match="mods:mods/mods:identifier[@type='open-aire']">
@@ -25,21 +27,21 @@
   <xsl:template name="create-ec-funding">
     <xsl:param name="awardNumber" />
     <xsl:param name="awardTitle" />
-    <mods:extension type='datacite-funding'>
-      <resource xsi:schemaLocation="http://datacite.org/schema/kernel-4 http://schema.datacite.org/meta/kernel-4.3/metadata.xsd">
-        <fundingReferences>
-          <fundingReference>
-            <funderName>European Commission</funderName>
-            <funderIdentifier funderIdentifierType="Crossref Funder ID">https://doi.org/10.13039/501100000780</funderIdentifier>
-            <awardNumber awardURI="{concat('https://cordis.europa.eu/project/id/', $awardNumber)}">
-              <xsl:value-of select="$awardNumber" />
-            </awardNumber>
-            <awardTitle>
-              <xsl:value-of select="$awardTitle" />
-            </awardTitle>
-          </fundingReference>
-        </fundingReferences>
-      </resource>
+    <mods:extension type="datacite-funding">
+      <datacite:fundingReferences
+        xmlns:datacite="http://datacite.org/schema/kernel-4"
+        xsi:schemaLocation="http://datacite.org/schema/kernel-4 http://schema.datacite.org/meta/kernel-4.3/metadata.xsd">
+        <datacite:fundingReference>
+          <datacite:funderName>European Commission</datacite:funderName>
+          <datacite:funderIdentifier funderIdentifierType="Crossref Funder ID">https://doi.org/10.13039/501100000780</datacite:funderIdentifier>
+          <datacite:awardNumber awardURI="{concat('https://cordis.europa.eu/project/id/', $awardNumber)}">
+            <xsl:value-of select="$awardNumber" />
+          </datacite:awardNumber>
+          <datacite:awardTitle>
+            <xsl:value-of select="$awardTitle" />
+          </datacite:awardTitle>
+        </datacite:fundingReference>
+      </datacite:fundingReferences>
     </mods:extension>
   </xsl:template>
   
