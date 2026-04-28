@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mycoreobject ID="test_mods_00000001"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="datamodel-mods.xsd">
+  <def.modsContainer class="MCRMetaXML" heritable="false" notinherit="true">
+    <modsContainer inherited="0">
+      <mods:mods xmlns:mods="http://www.loc.gov/mods/v3">
+        <mods:titleInfo xml:lang="en" xlink:type="simple">
+          <mods:title>Success</mods:title>
+        </mods:titleInfo>
+        <mods:extension type="datacite-funding">
+          <datacite:fundingReferences
+            xmlns:datacite="http://datacite.org/schema/kernel-4"
+            xsi:schemaLocation="http://datacite.org/schema/kernel-4 http://schema.datacite.org/meta/kernel-4.3/metadata.xsd">
+            <datacite:fundingReference>
+              <datacite:funderName>European Commission</datacite:funderName>
+              <datacite:funderIdentifier funderIdentifierType="Crossref Funder ID">
+                https://doi.org/10.13039/501100000780
+              </datacite:funderIdentifier>
+              <datacite:awardNumber awardURI="https://cordis.europa.eu/project/id/862695">862695</datacite:awardNumber>
+              <datacite:awardTitle>
+                Towards climate-smart sustainable management of agricultural soils
+              </datacite:awardTitle>
+            </datacite:fundingReference>
+          </datacite:fundingReferences>
+        </mods:extension>
+      </mods:mods>
+    </modsContainer>
+  </def.modsContainer>
+</mycoreobject>
