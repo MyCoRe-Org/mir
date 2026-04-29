@@ -70,6 +70,7 @@
         <section>
           <div class="container" id="page">
             <div id="main_content">
+              <xsl:call-template name="print.maintenanceMessage" />
               <xsl:call-template name="print.writeProtectionMessage" />
               <xsl:call-template name="print.statusMessage" />
 
