@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.apache.solr.client.solrj.SolrServerException;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -70,6 +71,32 @@ public class MIRUploadITCase extends MIRITBase {
         driver.navigate().to(receiveURL);
         requireFileLinkPresent(fileName);
 
+    }
+
+    @Test
+    public final void testAudioUploadShowsMirPlayer() throws IOException, InterruptedException, SolrServerException {
+        driver.waitUntilPageIsLoaded("MODS-Dokument erstellen");
+        fillEditorDefault();
+        editorController.setAccessConditions(MIRAccess.public_);
+        editorController.save();
+
+        driver.waitUntilPageIsLoaded(MIRTitleType.mainTitle.getValue());
+        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.SAVE_SUCCESS));
+        driver.waitAndFindElement(MCRBy.partialLinkText("Aktionen"),
+            ExpectedConditions::elementToBeClickable).click();
+        driver.waitAndFindElement(MCRBy.partialLinkText("Hinzufügen eines Dateibereichs"),
+            ExpectedConditions::elementToBeClickable).click();
+
+        long indexVersionBeforeUpload = getSolrIndexVersion(Core.main);
+        File upload = uploadController.createAudioTestFile();
+        uploadController.uploadFile(upload);
+        waitForIndexVersionChange(Core.main, indexVersionBeforeUpload);
+        driver.navigate().refresh();
+        driver.waitUntilPageIsLoaded(MIRTitleType.mainTitle.getValue());
+
+        String fileName = upload.getName();
+        requireFileLinkPresent(fileName);
+        Assert.assertTrue("AV player should be present for uploaded file " + fileName, waitForAvPlayer("wav"));
     }
 
     @Test
@@ -192,6 +219,36 @@ public class MIRUploadITCase extends MIRITBase {
         WebElement element = driver.waitAndFindElement(MCRBy.partialLinkText(fileName));
         Assert.assertNotNull("Element should be Present!", element);
         return element;
+    }
+
+    private boolean waitForAvPlayer(String fileExtension) {
+        By playerSelector = By.cssSelector("div.mir-player");
+        By chooserSelector = By.id("videoChooser");
+        By fileOptionSelector = By.cssSelector("#videoChooser option[data-file-extension='" + fileExtension + "']");
+        By audioPlayerSelector = By.id("player_audio");
+        long deadline = System.currentTimeMillis() + 45_000;
+
+        while (System.currentTimeMillis() < deadline) {
+            boolean hasPlayer = !driver.findElements(playerSelector).isEmpty();
+            boolean hasChooser = !driver.findElements(chooserSelector).isEmpty();
+            boolean hasFileOption = !driver.findElements(fileOptionSelector).isEmpty();
+            boolean hasAudioPlayer = !driver.findElements(audioPlayerSelector).isEmpty();
+
+            if (hasPlayer && hasChooser && hasFileOption && hasAudioPlayer) {
+                return true;
+            }
+
+            driver.navigate().refresh();
+            driver.waitUntilPageIsLoaded(MIRTitleType.mainTitle.getValue());
+
+            try {
+                Thread.sleep(1_000);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                throw new IllegalStateException("Interrupted while waiting for AV player to appear.", e);
+            }
+        }
+        return false;
     }
 
     private void fillEditorDefault() {

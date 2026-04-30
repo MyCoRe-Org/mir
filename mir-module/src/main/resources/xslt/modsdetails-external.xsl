@@ -14,7 +14,7 @@
   extension-element-prefixes="datacite">
 
   <xsl:import href="xslImport:badges"/>
-  <xsl:include href="resource:xsl/mir-accesskey-utils.xsl" />
+  <xsl:include href="resource:xslt/mir-accesskey-utils.xsl" />
 
   <xsl:param name="MIR.registerDOI" select="''" />
   <xsl:param name="MIR.registerURN" select="'true'" />
@@ -624,7 +624,7 @@
                 <xsl:value-of select="$accessedit" />
               </xsl:message -->
               <!-- actionmapping.xml must be available for this functionality -->
-              <xsl:if test="string-length($child-layout) &gt; 0 and $accessedit and string(document('org.mycore.common.xml.MCRXMLFunctions:resourceAvailable:actionmappings.xml'))='true'">
+              <xsl:if test="string-length($child-layout) &gt; 0 and $accessedit and doc-available('resource:actionmappings.xml')">
 
                 <xsl:variable name="url">
                   <xsl:value-of select="mcractionmapping:get-url-for-id('create-child',$id,true())"  />
@@ -632,7 +632,7 @@
 
                 <xsl:choose>
                   <xsl:when test="not(contains($url, 'editor-dynamic.xed')) and $mods-type != 'series'">
-                    <xsl:for-each select="tokenize($child-layout,'|')">
+                    <xsl:for-each select="tokenize($child-layout, '\|')">
                       <li>
                         <a href="{$url}?relatedItemId={$id}&amp;relatedItemType=host&amp;genre={.}" class="dropdown-item">
                           <xsl:value-of select="mcrclassification:current-label-text(mcrclassification:category('mir_genres',.))" />
@@ -641,7 +641,7 @@
                     </xsl:for-each>
                   </xsl:when>
                   <xsl:when test="not(contains($url, 'editor-dynamic.xed')) and $mods-type = 'series'">
-                    <xsl:for-each select="tokenize($child-layout,'|')">
+                    <xsl:for-each select="tokenize($child-layout, '\|')">
                       <li>
                         <a href="{$url}?relatedItemId={$id}&amp;relatedItemType=series&amp;genre={.}" class="dropdown-item">
                           <xsl:value-of select="mcrclassification:current-label-text(mcrclassification:category('mir_genres',.))" />
@@ -650,7 +650,7 @@
                     </xsl:for-each>
                   </xsl:when>
                   <xsl:when test="contains($url, 'editor-dynamic.xed') and $mods-type = 'lecture'">
-                    <xsl:for-each select="tokenize($child-layout,'|')">
+                    <xsl:for-each select="tokenize($child-layout, '\|')">
                       <li>
                         <a href="{$url}?relatedItemId={$id}&amp;relatedItemType=series&amp;genre={.}&amp;host={$mods-type}" class="dropdown-item">
                           <xsl:value-of select="mcrclassification:current-label-text(mcrclassification:category('mir_genres',.))" />
@@ -659,7 +659,7 @@
                     </xsl:for-each>
                   </xsl:when>
                   <xsl:otherwise>
-                    <xsl:for-each select="tokenize($child-layout,'|')">
+                    <xsl:for-each select="tokenize($child-layout, '\|')">
                       <li>
                         <a href="{$url}?relatedItemId={$id}&amp;relatedItemType=host&amp;genre={.}" class="dropdown-item">
                           <xsl:value-of select="mcrclassification:current-label-text(mcrclassification:category('mir_genres',.))" />

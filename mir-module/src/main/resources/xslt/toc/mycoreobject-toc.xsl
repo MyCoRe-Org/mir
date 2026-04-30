@@ -18,6 +18,7 @@
   exclude-result-prefixes="#all">
 
   <xsl:import href="xslImport:modsmeta:toc/mycoreobject-toc.xsl" />
+  <xsl:include href="xslInclude:functions" />
 
   <xsl:param name="TOC.Debug" />
   <xsl:param name="TOC.LayoutID" />
@@ -25,7 +26,8 @@
   <xsl:template match="/">
 
     <!-- Transform toc-layouts.xml to SOLR parameters to get a TOC via JSON facet API-->
-    <xsl:variable name="tocLayouts" select="document('xslStyle:toc/toc-layouts2solr-json-facet-query#xsl:resource:toc-layouts.xml')/*" />
+    <xsl:variable name="tocLayouts"
+      select="document('xslStyle:toc/toc-layouts2solr-json-facet-query?xslStyleFlavor=xsl:resource:toc-layouts.xml')/*" />
 
     <!-- get preferred ID of toc layout to use from URL parameter of service flag -->
     <xsl:variable name="preferredLayoutID">
@@ -73,18 +75,17 @@
     </xsl:variable>
 
     <!-- First transform SOLR facet response to simpler XML... -->
-    <xsl:variable name="prepURI">
-      <xsl:text>xslStyle:toc/solr-facets2toc#xsl</xsl:text>
-      <xsl:text>?tocLayoutID=</xsl:text><xsl:value-of select="$layoutID" />
-      <xsl:text>:</xsl:text>
-      <xsl:value-of select="$solrURI" />
-    </xsl:variable>
+    <xsl:variable name="prepURI"
+      select="concat(
+        'xslStyle:toc/solr-facets2toc?tocLayoutID=',
+        encode-for-uri(normalize-space($layoutID)),
+        '&amp;xslStyleFlavor=xsl:',
+        $solrURI
+      )" />
 
     <!-- ... then render to HTML -->
-    <xsl:variable name="htmlURI">
-      <xsl:text>notnull:xslStyle:toc/render-toc#xsl:</xsl:text>
-      <xsl:value-of select="$prepURI" />
-    </xsl:variable>
+    <xsl:variable name="htmlURI"
+      select="concat('notnull:xslStyle:toc/render-toc?xslStyleFlavor=xsl:', $prepURI)" />
 
     <xsl:if test="$TOC.Debug='true'">
       <div id="toc" class="detail_block mt-4 mb-4">

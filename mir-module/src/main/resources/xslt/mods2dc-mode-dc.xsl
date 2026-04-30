@@ -86,7 +86,7 @@
   </xsl:template>
 
   <!-- Paul Borchert remove interna-->
-    <xsl:template match="*[@xlink:href!='']" mode="dc">
+  <xsl:template match="*[@xlink:href!=''][not(self::mods:accessCondition)]" mode="dc">
     </xsl:template>
     <xsl:template match="mods:name[@ID!='']" mode="dc">
     </xsl:template>
@@ -170,7 +170,7 @@
 
     <dc:subject>
     <xsl:choose>
-      <xsl:when test="exists($mycoreclass)"><xsl:value-of select="document($mycoreclass)/categories/category/label/@text"/></xsl:when>
+      <xsl:when test="exists($mycoreclass)"><xsl:value-of select="$mycoreclass/categories/category/label/@text"/></xsl:when>
       <xsl:when test="@valueURI"><xsl:value-of select="substring-after(@valueURI, '#')"/></xsl:when>
       <xsl:when test="@value"><xsl:value-of select="@value"/></xsl:when>
       <xsl:otherwise><xsl:value-of select="."/></xsl:otherwise>

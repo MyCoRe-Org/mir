@@ -9,7 +9,7 @@
   <xsl:param name="WebApplicationBaseURL" />
 
   <!-- custom layouts of level items and publications -->
-  <xsl:include href="toc/custom-toc-layouts.xsl" />
+  <xsl:include href="custom-toc-layouts.xsl" />
 
   <xsl:include href="resource:xsl/coreFunctions.xsl" />
 

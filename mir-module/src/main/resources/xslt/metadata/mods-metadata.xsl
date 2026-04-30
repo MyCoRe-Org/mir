@@ -117,16 +117,16 @@
     <xsl:variable name="mycoreclass">
       <xsl:choose>
         <xsl:when test="$parent=true()">
-          <xsl:value-of select="mcrmods:to-mycoreclass($node,'parent')" />
+          <xsl:copy-of select="mcrmods:to-mycoreclass($node,'parent')" />
         </xsl:when>
         <xsl:otherwise>
-          <xsl:value-of select="mcrmods:to-mycoreclass($node, 'single')" />
+          <xsl:copy-of select="mcrmods:to-mycoreclass($node, 'single')" />
         </xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
     <xsl:choose>
-      <xsl:when test="exists($mycoreclass)">
-        <xsl:for-each select="$mycoreclass/categories/category">
+      <xsl:when test="$mycoreclass/mycoreclass">
+        <xsl:for-each select="$mycoreclass/mycoreclass/categories/category">
           <xsl:variable name="classText">
             <xsl:variable name="selectLang" select="mcri18n:select-lang(./label)"/>
             <xsl:variable name="lang" select="mcri18n:select-present-lang(./label)" />

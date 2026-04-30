@@ -551,7 +551,7 @@
     <xsl:param name="layout" select="'$'" />
     <xsl:param name="collection" select="''" />
     <xsl:choose>
-      <xsl:when test="string(document('org.mycore.common.xml.MCRXMLFunctions:resourceAvailable:actionmappings.xml'))='true'">
+      <xsl:when test="doc-available('resource:actionmappings.xml')">
         <!-- URL mapping enabled -->
         <xsl:variable name="url">
           <xsl:choose>

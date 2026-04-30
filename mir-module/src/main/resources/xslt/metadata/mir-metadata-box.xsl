@@ -307,7 +307,7 @@
                 <xsl:choose>
                     <xsl:when test="@type">
                         <xsl:variable name="myURI"
-                                      select="concat('classification:metadata:0:children:noteTypes:',matches(@type,' ', '_'))"/>
+                                      select="concat('classification:metadata:0:children:noteTypes:', replace(normalize-space(@type), ' ', '_'))"/>
                         <xsl:variable name="x-access">
                             <xsl:value-of select="document($myURI)//label[@xml:lang='x-access']/@text"/>
                         </xsl:variable>

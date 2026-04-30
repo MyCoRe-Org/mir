@@ -109,6 +109,10 @@
                 </xsl:if>
               </xsl:for-each>
             </xsl:variable>
+            <xsl:variable name="first-abstract-in-current-lang-position-string"
+                          select="normalize-space($first-abstract-in-current-lang-position)"/>
+            <xsl:variable name="has-abstract-in-current-lang"
+                          select="string-length($first-abstract-in-current-lang-position-string) &gt; 0"/>
 
             <div id="mir-abstract-tabs">
               <ul class="nav nav-tabs justify-content-end" role="tablist">
@@ -134,11 +138,11 @@
                   <li class="nav-item">
                     <a class="nav-link" href="#tab{position()}" role="tab" data-bs-toggle="tab">
                       <xsl:choose>
-                        <xsl:when test="$first-abstract-in-current-lang-position = position()">
-                          <xsl:attribute name="class">active nav-link</xsl:attribute>
+                        <xsl:when test="$has-abstract-in-current-lang and $first-abstract-in-current-lang-position-string = string(position())">
+                        <xsl:attribute name="class">active nav-link</xsl:attribute>
                         </xsl:when>
                         <xsl:otherwise>
-                          <xsl:if test="position() = 1 and not($first-abstract-in-current-lang-position &gt;0)">
+                          <xsl:if test="position() = 1 and not($has-abstract-in-current-lang)">
                             <xsl:attribute name="class">active nav-link</xsl:attribute>
                           </xsl:if>
                         </xsl:otherwise>
@@ -167,11 +171,11 @@
                       </xsl:attribute>
                     </xsl:if>
                     <xsl:choose>
-                      <xsl:when test="$first-abstract-in-current-lang-position = position()">
+                      <xsl:when test="$has-abstract-in-current-lang and $first-abstract-in-current-lang-position-string = string(position())">
                           <xsl:attribute name="class">tab-pane ellipsis ellipsis-text active</xsl:attribute>
                       </xsl:when>
                       <xsl:otherwise>
-                        <xsl:if test="position() = 1 and not($first-abstract-in-current-lang-position &gt;0)">
+                        <xsl:if test="position() = 1 and not($has-abstract-in-current-lang)">
                           <xsl:attribute name="class">tab-pane ellipsis ellipsis-text active</xsl:attribute>
                         </xsl:if>
                       </xsl:otherwise>

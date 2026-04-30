@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="3.0"
   xmlns:mcri18n="http://www.mycore.de/xslt/i18n"
+  xmlns:mcriview2="http://www.mycore.de/xslt/iview2"
+  xmlns:mcrderivate="http://www.mycore.de/xslt/derivate"
   xmlns:mcrlayoututils="http://www.mycore.de/xslt/layoututils"
   xmlns:xlink="http://www.w3.org/1999/xlink"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -10,6 +12,7 @@
 
   <xsl:param name="UserAgent" />
   <xsl:param name="MIR.DFGViewer.enable" select="'false'" />
+  <xsl:param name="MIR.Viewer.DisableDerivateType" select="''" />
   <xsl:param name="MCR.Viewer.PDFCreatorURI" />
   <xsl:param name="MCR.Viewer.PDFCreatorStyle" />
   <xsl:param name="MCR.Viewer.PDFCreatorFormatString" />
@@ -17,7 +20,11 @@
   <xsl:param name="WebApplicationBaseURL" />
 
   <xsl:template match="/">
-    <xsl:if test="mycoreobject/structure/derobjects/derobject[mcrxml:isDerivateDisplayEnabled(@xlink:href, 'show-file-viewer')]">
+    <xsl:if test="mycoreobject/structure/derobjects/derobject[
+      mcrderivate:is-display-enabled(@xlink:href, 'show-file-viewer')
+      and
+      not(some $categid in classification/@categid satisfies contains($MIR.Viewer.DisableDerivateType, string($categid)))
+    ]">
       <div id="mir-viewer">
         <xsl:variable name="viewerNodesTmp">
           <xsl:if test="count(mycoreobject/structure/derobjects/derobject[key('rights', @xlink:href)/@read]) > 0">
@@ -27,7 +34,11 @@
                   <xsl:value-of select="mcri18n:translate('metaData.preview')" />
                 </h3>
                 <!-- show one viewer for each derivate -->
-                <xsl:for-each select="mycoreobject/structure/derobjects/derobject[key('rights', @xlink:href)/@read and mcrxml:isDerivateDisplayEnabled(@xlink:href, 'show-file-viewer')]">
+                <xsl:for-each select="mycoreobject/structure/derobjects/derobject[
+                  key('rights', @xlink:href)/@read
+                  and mcrderivate:is-display-enabled(@xlink:href, 'show-file-viewer')
+                  and not(some $categid in classification/@categid satisfies contains($MIR.Viewer.DisableDerivateType, string($categid)))
+                ]">
                   <xsl:call-template name="createViewer" />
                 </xsl:for-each>
               </div>
@@ -64,7 +75,7 @@
     <xsl:choose>
       <xsl:when test="string(document(concat('callJava:org.mycore.iview2.services.MCRIView2Tools:getSupportedMainFile:',$derId)))">
         <xsl:choose>
-          <xsl:when test="string(document(concat('callJava:org.mycore.iview2.services.MCRIView2Tools:mcriview2tool:',$derId)))">
+          <xsl:when test="mcriview2:is-completely-tiled($derId)">
             <!-- The file will be displayed with mets -->
 
             <xsl:call-template name="createViewerContainer">

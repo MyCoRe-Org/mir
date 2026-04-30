@@ -176,10 +176,10 @@
         <xsl:value-of select="$normalized"/>
       </xsl:when>
       <xsl:when test="matches($normalized, '^\d{4}-\d{2}$')">
-        <xsl:value-of select="$normalized"/>
+        <xsl:value-of select="format-date(xs:date($normalized), mcri18n:translate('mir.xsl3.formate.yearMonth'))"/>
       </xsl:when>
       <xsl:when test="matches($normalized, '^\d{4}-\d{2}-\d{2}$')">
-        <xsl:value-of select="format-date(xs:date($normalized), '[Y0001]-[M01]-[D01]')"/>
+        <xsl:value-of select="format-date(xs:date($normalized), mcri18n:translate('mir.xsl3.formate.date'))"/>
       </xsl:when>
       <xsl:otherwise>
         <xsl:value-of select="$normalized"/>
@@ -221,22 +221,16 @@
   </xsl:template>
 
   <xsl:template match="*" mode="printModsClassInfo">
-    <xsl:variable name="classlink" select="mcrmods:to-mycoreclass(.,'single')" />
+    <xsl:variable name="category" select="mcrmods:to-category(.)" />
     <xsl:choose>
-      <xsl:when test="string-length($classlink) &gt; 0">
-        <xsl:for-each select="document($classlink)/categories/category">
-          <xsl:apply-templates select="." mode="printModsClassInfo" />
-        </xsl:for-each>
+      <xsl:when test="$category">
+        <xsl:apply-templates select="$category" mode="printModsClassInfo" />
+      </xsl:when>
+      <xsl:when test="@valueURI">
+        <xsl:apply-templates select="." mode="hrefLink" />
       </xsl:when>
       <xsl:otherwise>
-        <xsl:choose>
-          <xsl:when test="@valueURI">
-            <xsl:apply-templates select="." mode="hrefLink" />
-          </xsl:when>
-          <xsl:otherwise>
-            <xsl:value-of select="text()" />
-          </xsl:otherwise>
-        </xsl:choose>
+        <xsl:value-of select="text()" />
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
@@ -500,10 +494,10 @@
       <xsl:choose>
         <xsl:when test="@valueURI">
           <!-- derived from printModsClassInfo template -->
-          <xsl:variable name="classlink" select="mcrmods:to-mycoreclass(.,'parent')" />
+          <xsl:variable name="class" select="mcrmods:to-mycoreclass(.,'parent')" />
           <xsl:choose>
-            <xsl:when test="string-length($classlink) &gt; 0">
-              <xsl:for-each select="document($classlink)//category[position()=1 or position()=last()]">
+            <xsl:when test="$class">
+              <xsl:for-each select="$class//category[position()=1 or position()=last()]">
                 <xsl:if test="position() > 1">
                   <xsl:value-of select="', '" />
                 </xsl:if>
