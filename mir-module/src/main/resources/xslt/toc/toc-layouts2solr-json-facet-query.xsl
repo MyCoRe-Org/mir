@@ -1,12 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0"
-  xmlns:encoder="xalan://java.net.URLEncoder"
+<xsl:stylesheet version="3.0"
+  xmlns:mirtoc="http://www.mycore.de/mir/xslt/toc"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  exclude-result-prefixes="encoder">
+  exclude-result-prefixes="#all">
 
   <xsl:param name="MIR.TableOfContents.MaxResults" select="'1000'" />
   <xsl:param name="MIR.TableOfContents.LevelLimit" select="'100'" />
   <xsl:param name="MIR.TableOfContents.FieldsUsed" select="'*'" />
+
+  <xsl:function name="mirtoc:encode-query-param" as="xs:string"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xsl:param name="value" as="xs:string" />
+    <xsl:sequence select="replace(replace(encode-for-uri($value), '%20', '+'), '%2A', '*')" />
+  </xsl:function>
 
   <xsl:template match="/toc-layouts">
     <xsl:copy>
@@ -19,7 +25,7 @@
     <xsl:copy>
       <xsl:copy-of select="@*" />
       <xsl:text>&amp;fl=</xsl:text>
-      <xsl:value-of select="encoder:encode($MIR.TableOfContents.FieldsUsed,'UTF-8')" />
+      <xsl:value-of select="mirtoc:encode-query-param($MIR.TableOfContents.FieldsUsed)" />
       <xsl:text>&amp;rows=</xsl:text>
       <xsl:value-of select="$MIR.TableOfContents.MaxResults" />
       <xsl:text>&amp;sort=</xsl:text>
@@ -31,9 +37,9 @@
         <xsl:value-of select="@expanded" />
         <xsl:if test="@displayField">
           <xsl:text>&amp;toc.</xsl:text>
-          <xsl:value-of select="@field"/>
+          <xsl:value-of select="@field" />
           <xsl:text>.displayField=</xsl:text>
-          <xsl:value-of select="@displayField"/>
+          <xsl:value-of select="@displayField" />
         </xsl:if>
       </xsl:for-each>
       <xsl:text>&amp;json.facet=</xsl:text>
@@ -43,13 +49,13 @@
         <xsl:apply-templates select="level" mode="json" />
         <xsl:text>}</xsl:text>
       </xsl:variable>
-      <xsl:value-of select="encoder:encode($json.facet,'UTF-8')" />
+      <xsl:value-of select="mirtoc:encode-query-param($json.facet)" />
     </xsl:copy>
   </xsl:template>
 
   <!-- build solr param for sort order of returned documents -->
   <xsl:template match="*" mode="sort">
-    <xsl:value-of select="concat(@field,'+',@order)" />
+    <xsl:value-of select="concat(@field, '+', @order)" />
     <xsl:if test="position() != last()">,</xsl:if>
   </xsl:template>
 
@@ -60,7 +66,7 @@
     <xsl:if test="level">
       <xsl:text>,domain:{filter:"</xsl:text> <!-- exclude all ids that will occur at any sub-level -->
       <xsl:for-each select="descendant::level">
-        <xsl:value-of select="concat('-',@field,':[* TO *]')" />
+        <xsl:value-of select="concat('-', @field, ':[* TO *]')" />
         <xsl:if test="level">
           <xsl:value-of select="' AND '" />
         </xsl:if>
@@ -84,8 +90,8 @@
         <xsl:value-of select="$MIR.TableOfContents.LevelLimit" />
       </xsl:otherwise>
     </xsl:choose>
-    <xsl:value-of select="concat(',field:',@field)" />
-    <xsl:value-of select="concat(',sort:{index:',@order,'}')" />
+    <xsl:value-of select="concat(',field:', @field)" />
+    <xsl:value-of select="concat(',sort:{index:', @order, '}')" />
     <xsl:text>,facet:{</xsl:text>
     <xsl:call-template name="publications.json" />
     <xsl:apply-templates select="level" mode="json" />

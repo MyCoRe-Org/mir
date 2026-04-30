@@ -104,7 +104,7 @@
                 <option value="">
                   <xed:output i18n="mir.select.optional" />
                 </option>
-                <xed:include uri="xslStyle:toc/toc-layouts2options#xsl:resource:toc-layouts.xml" />
+                <xed:include uri="xslStyle:toc/toc-layouts2options:resource:toc-layouts.xml" />
               </select>
             </div>
           </div>

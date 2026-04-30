@@ -1,17 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0"
-  xmlns:mcri18n="xalan://org.mycore.services.i18n.MCRTranslation"
-  xmlns:xalan="http://xml.apache.org/xalan"
+<xsl:stylesheet version="3.0"
+  xmlns:mcri18n="http://www.mycore.de/xslt/i18n"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  exclude-result-prefixes="mcri18n xalan xsl">
+  exclude-result-prefixes="#all">
+
+  <xsl:include href="resource:xslt/default-parameters.xsl" />
 
   <xsl:param name="MIR.TableOfContents.HideTrivialLevel" />
-  <xsl:param name="WebApplicationBaseURL" />
 
   <!-- custom layouts of level items and publications -->
   <xsl:include href="custom-toc-layouts.xsl" />
-
-  <xsl:include href="resource:xsl/coreFunctions.xsl" />
 
   <xsl:template match="toc">
     <!-- show table of contents only if the response returned any documents -->
@@ -19,7 +17,7 @@
       <div id="toc" class="detail_block">
         <div class="detail_block">
           <h3>
-            <xsl:value-of select="mcri18n:translate('mir.metadata.content')"/>
+            <xsl:value-of select="mcri18n:translate('mir.metadata.content')" />
 
             <!-- links to expand/collapse all toc levels at once -->
             <xsl:if test="count(//item) &gt; 1">
@@ -45,7 +43,7 @@
   </xsl:template>
 
   <!-- if at top level, there is only one group, without deeper levels, just show publications -->
-  <xsl:template match="toc[$MIR.TableOfContents.HideTrivialLevel='true']/level[count(item)=1][item[not(level)][publications]]" priority="1">
+  <xsl:template match="toc[$MIR.TableOfContents.HideTrivialLevel = 'true']/level[count(item) = 1][item[not(level)][publications]]" priority="1">
     <xsl:apply-templates select="item/publications" />
   </xsl:template>
 
@@ -58,9 +56,11 @@
 
         <xsl:variable name="expanded">
           <xsl:choose>
-            <xsl:when test="(../@expanded='first') and (position()=1)">true</xsl:when>
-            <xsl:when test="../@expanded='first'">false</xsl:when>
-            <xsl:otherwise><xsl:value-of select="../@expanded" /></xsl:otherwise>
+            <xsl:when test="(../@expanded = 'first') and (position() = 1)">true</xsl:when>
+            <xsl:when test="../@expanded = 'first'">false</xsl:when>
+            <xsl:otherwise>
+              <xsl:value-of select="../@expanded" />
+            </xsl:otherwise>
           </xsl:choose>
         </xsl:variable>
 
@@ -72,7 +72,7 @@
               <a href="#{$id}" data-bs-toggle="collapse" aria-expanded="{$expanded}" aria-controls="{$id}">
                 <xsl:attribute name="class">
                   <xsl:choose>
-                    <xsl:when test="$expanded='false'">mir-toc-section-toggle collapsed</xsl:when>
+                    <xsl:when test="$expanded = 'false'">mir-toc-section-toggle collapsed</xsl:when>
                     <xsl:otherwise>mir-toc-section-toggle</xsl:otherwise>
                   </xsl:choose>
                 </xsl:attribute>
@@ -80,7 +80,7 @@
                   <xsl:attribute name="class">
                     <xsl:text>toggle-collapse fas fa-fw </xsl:text>
                     <xsl:choose>
-                      <xsl:when test="$expanded='true'">fa-chevron-down</xsl:when>
+                      <xsl:when test="$expanded = 'true'">fa-chevron-down</xsl:when>
                       <xsl:otherwise>fa-chevron-right</xsl:otherwise>
                     </xsl:choose>
                   </xsl:attribute>
@@ -100,7 +100,7 @@
             <div id="{$id}">
               <xsl:attribute name="class">
                 <xsl:text>mir-toc-section-content below collapse </xsl:text>
-                <xsl:if test="$expanded='true'"> show</xsl:if>
+                <xsl:if test="$expanded = 'true'"> show</xsl:if>
               </xsl:attribute>
               <xsl:apply-templates select="level|publications" />
             </div>

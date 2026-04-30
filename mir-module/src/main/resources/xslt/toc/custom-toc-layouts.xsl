@@ -3,13 +3,11 @@
 <!-- Custom table of contents layouts to display levels and publications -->
 <!-- Default templates may be overwritten by higher priority custom templates -->
 
-<xsl:stylesheet version="1.0"
-  xmlns:mcri18n="xalan://org.mycore.services.i18n.MCRTranslation"
-  xmlns:xalan="http://xml.apache.org/xalan"
+<xsl:stylesheet version="3.0"
+  xmlns:mcri18n="http://www.mycore.de/xslt/i18n"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  exclude-result-prefixes="mcri18n xalan">
-
-  <xsl:param name="CurrentLang" select="'de'" />
+  exclude-result-prefixes="#all">
 
   <!-- ====================
        level default:
@@ -175,28 +173,28 @@
       <xsl:attribute name="class">
         <xsl:text>mir-toc-section-title</xsl:text>
         <xsl:if test="string-length($class) &gt; 0">
-          <xsl:value-of select="concat(' ', $class)"/>
+          <xsl:value-of select="concat(' ', $class)" />
         </xsl:if>
       </xsl:attribute>
       <xsl:choose>
         <xsl:when test="field[@name='mir.toc.series.volume.top']">
           <xsl:value-of select="mcri18n:translate('mir.details.volume.series')" />
-          <xsl:value-of select="concat(' ',field[@name='mir.toc.series.volume.top'],': ')" />
+          <xsl:value-of select="concat(' ', field[@name='mir.toc.series.volume.top'], ': ')" />
         </xsl:when>
         <xsl:when test="field[@name='mir.toc.host.volume.top']">
           <xsl:value-of select="mcri18n:translate('mir.details.volume.journal')" />
-          <xsl:value-of select="concat(' ',field[@name='mir.toc.host.volume.top'],': ')" />
+          <xsl:value-of select="concat(' ', field[@name='mir.toc.host.volume.top'], ': ')" />
         </xsl:when>
         <xsl:when test="field[@name='mir.toc.host.issue.top']">
           <xsl:value-of select="mcri18n:translate('mir.details.issue')" />
-          <xsl:value-of select="concat(' ',field[@name='mir.toc.host.issue.top'],': ')" />
+          <xsl:value-of select="concat(' ', field[@name='mir.toc.host.issue.top'], ': ')" />
         </xsl:when>
         <xsl:when test="field[@name='mir.toc.host.articleNumber.top']">
-          <xsl:value-of select="concat('#',field[@name='mir.toc.host.articleNumber.top'],': ')" />
+          <xsl:value-of select="concat('#', field[@name='mir.toc.host.articleNumber.top'], ': ')" />
         </xsl:when>
       </xsl:choose>
       <a href="{$WebApplicationBaseURL}receive/{@id}">
-      <xsl:value-of select="field[@name='mir.toc.title']" />
+        <xsl:value-of select="field[@name='mir.toc.title']" />
       </a>
     </h4>
   </xsl:template>
@@ -204,7 +202,7 @@
   <!-- ========== authors ========== -->
 
   <xsl:template name="toc.authors">
-    <xsl:param name="class" select="''"/>
+    <xsl:param name="class" select="''" />
 
     <!-- if no authors, then no div too-->
     <xsl:for-each select="field[@name='mir.toc.authors']">
@@ -212,7 +210,7 @@
         <xsl:attribute name="class">
           <xsl:text>mir-toc-section-author</xsl:text>
           <xsl:if test="string-length($class) &gt; 0">
-            <xsl:value-of select="concat(' ', $class)"/>
+            <xsl:value-of select="concat(' ', $class)" />
           </xsl:if>
         </xsl:attribute>
         <xsl:value-of select="." />
@@ -226,12 +224,12 @@
     <xsl:param name="class" select="''" />
 
     <!-- if no page, then no div too-->
-    <xsl:for-each select="field[starts-with(@name,'mir.toc.host.page')]">
+    <xsl:for-each select="field[starts-with(@name, 'mir.toc.host.page')]">
       <div>
         <xsl:attribute name="class">
           <xsl:text>mir-toc-section-page</xsl:text>
           <xsl:if test="string-length($class) &gt; 0">
-            <xsl:value-of select="concat(' ', $class)"/>
+            <xsl:value-of select="concat(' ', $class)" />
           </xsl:if>
         </xsl:attribute>
         <xsl:value-of select="mcri18n:translate('mir.pages.abbreviated.single')" />
@@ -250,21 +248,19 @@
       <xsl:attribute name="class">
         <xsl:text>mir-toc-section-date</xsl:text>
         <xsl:if test="string-length($class) &gt; 0">
-          <xsl:value-of select="concat(' ', $class)"/>
+          <xsl:value-of select="concat(' ', $class)" />
         </xsl:if>
       </xsl:attribute>
       <xsl:for-each select="field[@name='mods.dateIssued'][1]">
-        <xsl:call-template name="formatISODate">
-          <xsl:with-param name="date" select="." />
-          <xsl:with-param name="format">
-            <xsl:choose>
-              <xsl:when test="$CurrentLang='de'">dd.MM.</xsl:when>
-              <xsl:otherwise>MM-dd</xsl:otherwise>
-            </xsl:choose>
-          </xsl:with-param>
-        </xsl:call-template>
+        <xsl:value-of
+          select="
+            if (. castable as xs:date) then
+              format-date(xs:date(.), if ($CurrentLang = 'de') then '[D01].[M01].' else '[M01]-[D01]')
+            else
+              .
+          " />
       </xsl:for-each>
     </div>
   </xsl:template>
 
- </xsl:stylesheet>
+</xsl:stylesheet>
