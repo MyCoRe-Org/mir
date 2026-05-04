@@ -562,7 +562,7 @@
 				aclWriteDB = $(list).attr("data-writedb");
 				aclDeleteDB = $(list).attr("data-deletedb");
 				urn = $(list).attr("data-urn");
-				numPerPage = $(list).attr("data-numperpage") || 10;
+				numPerPage = parseInt($(list).attr("data-numperpage"), 10) || 10;
 
 				$(fileBox).on("click", ".derivate_folder > a", function(evt) {
 					evt.preventDefault();
