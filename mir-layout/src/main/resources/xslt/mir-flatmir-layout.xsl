@@ -68,6 +68,7 @@
           <div class="container" id="page">
             <a id="top" />
             <div id="main_content">
+              <xsl:call-template name="print.maintenanceMessage" />
               <xsl:call-template name="print.writeProtectionMessage" />
               <xsl:call-template name="print.statusMessage" />
 
