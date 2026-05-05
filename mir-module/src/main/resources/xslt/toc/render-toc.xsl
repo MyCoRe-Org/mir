@@ -5,6 +5,7 @@
   exclude-result-prefixes="#all">
 
   <xsl:include href="resource:xslt/default-parameters.xsl" />
+  <xsl:include href="xslInclude:functions" />
 
   <xsl:param name="MIR.TableOfContents.HideTrivialLevel" />
 

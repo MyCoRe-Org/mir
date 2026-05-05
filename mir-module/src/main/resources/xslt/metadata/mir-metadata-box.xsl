@@ -8,7 +8,6 @@
   exclude-result-prefixes="#all">
 
   <xsl:import href="xslImport:modsmeta:metadata/mir-metadata-box.xsl" />
-  <xsl:include href="resource:xslt/modsmetadata.xsl" />
   <xsl:include href="resource:xslt/mir-mods-utils.xsl" />
   <!-- copied from http://www.loc.gov/standards/mods/v3/MODS3-4_HTML_XSLT1-0.xsl -->
 

@@ -18,7 +18,6 @@
   exclude-result-prefixes="#all">
 
   <xsl:import href="xslImport:modsmeta:toc/mycoreobject-toc.xsl" />
-  <xsl:include href="xslInclude:functions" />
 
   <xsl:param name="TOC.Debug" />
   <xsl:param name="TOC.LayoutID" />
