@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="3.0"
+  xmlns:mcri18n="http://www.mycore.de/xslt/i18n"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   exclude-result-prefixes="#all">
 
@@ -29,7 +30,7 @@
         <span class="badge mir-badge-orcid-in-profile" data-object-id="{$objectId}">
           <i class="fa-brands fa-orcid"></i>
           <span class="mir-badge-orcid-in-profile-text">
-            <xsl:value-of select="document('i18n:mir.orcid.publication.badge.inProfile.loading')/i18n/text()"/>
+            <xsl:value-of select="mcri18n:translate('mir.orcid.publication.badge.inProfile.loading')"/>
           </span>
         </span>
       </xsl:if>

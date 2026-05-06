@@ -89,6 +89,8 @@
             <xsl:when
                     test="$mimeType='audio/mpeg' or
                             $mimeType='audio/x-wav' or
+                            $mimeType='audio/vnd.wave' or
+                            $mimeType='audio/wav' or
                             $mimeType='audio/m4a' or
                             $mimeType='audio/x-ms-wma'">
                 <xsl:value-of select="concat($baseURL,'images/svg_icons/download_audio.svg')"/>

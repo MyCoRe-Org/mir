@@ -23,6 +23,9 @@
     <it.host>127.0.0.1</it.host>
     <maven.deploy.skip>true</maven.deploy.skip>
     <maven.install.skip>true</maven.install.skip>
+    <mir.cli.archive>${project.basedir}/../mir-cli/target/mir-cli-${project.version}.tar.gz</mir.cli.archive>
+    <mir.module.jar>${project.basedir}/../mir-module/target/mir-module-${project.version}.jar</mir.module.jar>
+    <mir.webapp.war>${project.basedir}/../mir-webapp/target/mir-${project.version}.war</mir.webapp.war>
     <solr.home>${MCR.Home.Integration}/solr-home</solr.home>
     <solr.port>9108</solr.port>
   </properties>
@@ -53,23 +56,6 @@
         <artifactId>maven-dependency-plugin</artifactId>
         <executions>
           <execution>
-            <id>unpack-cli</id>
-            <goals>
-              <goal>unpack</goal>
-            </goals>
-            <phase>pre-integration-test</phase>
-            <configuration>
-              <artifactItems>
-                <artifactItem>
-                  <groupId>${project.groupId}</groupId>
-                  <artifactId>mir-cli</artifactId>
-                  <version>${project.version}</version>
-                  <type>tar.gz</type>
-                </artifactItem>
-              </artifactItems>
-            </configuration>
-          </execution>
-          <execution>
             <id>copy-test-libs</id>
             <goals>
               <goal>copy</goal>
@@ -86,24 +72,71 @@
               </artifactItems>
             </configuration>
           </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <executions>
           <execution>
-            <id>copy-war</id>
+            <id>stage-local-it-artifacts</id>
             <goals>
-              <goal>copy</goal>
+              <goal>run</goal>
             </goals>
             <phase>pre-integration-test</phase>
             <configuration>
-              <artifactItems>
-                <artifactItem>
-                  <groupId>${project.groupId}</groupId>
-                  <artifactId>mir-webapp</artifactId>
-                  <version>${project.version}</version>
-                  <type>war</type>
-                  <destFileName>mir.war</destFileName>
-                </artifactItem>
-              </artifactItems>
-              <outputDirectory>${project.build.directory}/war</outputDirectory>
-              <overWriteSnapshots>true</overWriteSnapshots>
+              <target>
+                <available file="${mir.module.jar}" property="mir.module.exists" />
+                <available file="${mir.cli.archive}" property="mir.cli.exists" />
+                <available file="${mir.webapp.war}" property="mir.webapp.exists" />
+
+                <fail message="Missing ${mir.module.jar}. Build mir-module first or run mvn -pl mir-it -am verify." unless="mir.module.exists" />
+                <fail message="Missing ${mir.cli.archive}. Build mir-cli first or run mvn -pl mir-it -am verify." unless="mir.cli.exists" />
+                <fail message="Missing ${mir.webapp.war}. Build mir-webapp first or run mvn -pl mir-it -am verify." unless="mir.webapp.exists" />
+
+                <condition property="mir.module.current">
+                  <and>
+                    <available file="${mir.module.jar}" />
+                    <uptodate targetfile="${mir.module.jar}">
+                      <srcfiles dir="${project.basedir}/../mir-module">
+                        <include name="pom.xml" />
+                        <include name="package.json" />
+                        <include name="Gruntfile.js" />
+                        <include name="src/main/**" />
+                      </srcfiles>
+                    </uptodate>
+                  </and>
+                </condition>
+                <condition property="mir.cli.current">
+                  <and>
+                    <available file="${mir.cli.archive}" />
+                    <available file="${mir.module.jar}" />
+                    <uptodate srcfile="${mir.module.jar}" targetfile="${mir.cli.archive}" />
+                  </and>
+                </condition>
+                <condition property="mir.webapp.current">
+                  <and>
+                    <available file="${mir.webapp.war}" />
+                    <available file="${mir.module.jar}" />
+                    <uptodate srcfile="${mir.module.jar}" targetfile="${mir.webapp.war}" />
+                  </and>
+                </condition>
+
+                <fail message="Stale ${mir.module.jar}. Rebuild mir-module after source changes or run mvn -pl mir-it -am verify." unless="mir.module.current" />
+                <fail message="Stale ${mir.cli.archive}. Rebuild mir-cli after mir-module changes or run mvn -pl mir-it -am verify." unless="mir.cli.current" />
+                <fail message="Stale ${mir.webapp.war}. Rebuild mir-webapp after mir-module changes or run mvn -pl mir-it -am verify." unless="mir.webapp.current" />
+
+                <mkdir dir="${project.build.directory}/dependency" />
+                <mkdir dir="${project.build.directory}/war" />
+                <copy file="${mir.cli.archive}" overwrite="true" tofile="${project.build.directory}/dependency/mir-cli-${project.version}.tar.gz" />
+                <untar compression="gzip" dest="${project.build.directory}/dependency" src="${project.build.directory}/dependency/mir-cli-${project.version}.tar.gz" />
+                <chmod perm="755">
+                  <fileset dir="${project.build.directory}/dependency/mir-cli-${project.version}/bin">
+                    <include name="*.sh" />
+                  </fileset>
+                </chmod>
+                <copy file="${mir.webapp.war}" overwrite="true" tofile="${project.build.directory}/war/mir.war" />
+              </target>
             </configuration>
           </execution>
         </executions>
@@ -201,8 +234,7 @@
             <configuration>
               <deployables>
                 <deployable>
-                  <groupId>${project.groupId}</groupId>
-                  <artifactId>mir-webapp</artifactId>
+                  <location>${project.build.directory}/war/mir.war</location>
                   <type>war</type>
                   <properties>
                     <context>/${MCR.AppName}</context>

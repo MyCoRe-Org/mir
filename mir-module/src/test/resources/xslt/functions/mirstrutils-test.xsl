@@ -26,5 +26,4 @@
       <xsl:value-of select="mirstrutils:unescape-html($value)" />
     </result>
   </xsl:template>
-
 </xsl:stylesheet>

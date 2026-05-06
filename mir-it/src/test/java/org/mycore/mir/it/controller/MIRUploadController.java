@@ -23,8 +23,13 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 
 import javax.imageio.ImageIO;
+import javax.sound.sampled.AudioFileFormat;
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.stream.Collectors;
@@ -56,6 +61,19 @@ public class MIRUploadController extends MIRTestController {
             graphics.fillRect((i + 1) * 124, 124, 124, 124);
         }
         ImageIO.write(testImage, "tiff", testFile);
+        return testFile;
+    }
+
+    public File createAudioTestFile() throws IOException {
+        File testFile = File.createTempFile("upload", "mir_test.wav");
+        AudioFormat format = new AudioFormat(44_100, 16, 1, true, false);
+        byte[] audioData = new byte[(int) format.getFrameRate() * format.getFrameSize()];
+
+        try (AudioInputStream stream = new AudioInputStream(new ByteArrayInputStream(audioData), format,
+            audioData.length / format.getFrameSize())) {
+            AudioSystem.write(stream, AudioFileFormat.Type.WAVE, testFile);
+        }
+
         return testFile;
     }
 

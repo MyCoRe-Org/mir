@@ -66,7 +66,7 @@
         </a>
         <xsl:text>&#160;</xsl:text>
         <xsl:value-of
-          select="mcri18n:translate-with-params(concat($i18nprefix, '.entriesInfo'), concat($page, ';', $pages))" />
+          select="mcri18n:translate-with-params(concat($i18nprefix, '.entriesInfo'), ($page, $pages))" />
       </div>
       <xsl:if test="$page &lt; $pages">
         <xsl:variable name="link">

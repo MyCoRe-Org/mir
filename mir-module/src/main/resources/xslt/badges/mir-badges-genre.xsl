@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="3.0"
   xmlns:mcrclassification="http://www.mycore.de/xslt/classification"
-  xmlns:mods="http://www.loc.gov/mods/v3"
-  xmlns:xlink="http://www.w3.org/1999/xlink"
+  xmlns:mcri18n="http://www.mycore.de/xslt/i18n"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   exclude-result-prefixes="#all">
 
@@ -41,7 +40,7 @@
       <xsl:with-param name="class" select="concat('mir-badge-genre-', $genre)"/>
       <xsl:with-param name="label" select="mcrclassification:current-label-text(mcrclassification:category('mir_genres', $genre))"/>
       <xsl:with-param name="link"  select="concat($ServletsBaseURL, 'solr/find?condQuery=*&amp;fq=category.top:%22mir_genres:', $genre, '%22')"/>
-      <xsl:with-param name="tooltip" select="substring-before(document('i18n:component.mods.genre')/i18n/text(), ':')"/>
+      <xsl:with-param name="tooltip" select="substring-before(mcri18n:translate('component.mods.genre'), ':')"/>
     </xsl:call-template>
   </xsl:template>
 

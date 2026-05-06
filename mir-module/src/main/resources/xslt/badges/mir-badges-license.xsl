@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="3.0"
   xmlns:mcrclassification="http://www.mycore.de/xslt/classification"
-  xmlns:mods="http://www.loc.gov/mods/v3"
-  xmlns:xlink="http://www.w3.org/1999/xlink"
+  xmlns:mcri18n="http://www.mycore.de/xslt/i18n"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   exclude-result-prefixes="#all">
 
@@ -32,10 +31,10 @@
     <xsl:variable name="label">
       <xsl:choose>
         <xsl:when test="contains($accessCondition, 'rights_reserved')">
-          <xsl:value-of select="document('i18n:component.mods.metaData.dictionary.rightsReserved')/i18n/text()"/>
+          <xsl:value-of select="mcri18n:translate('component.mods.metaData.dictionary.rightsReserved')"/>
         </xsl:when>
         <xsl:when test="contains($accessCondition, 'oa_nlz')">
-          <xsl:value-of select="document('i18n:component.mods.metaData.dictionary.oa_nlz.short')/i18n/text()"/>
+          <xsl:value-of select="mcri18n:translate('component.mods.metaData.dictionary.oa_nlz.short')"/>
         </xsl:when>
         <xsl:otherwise>
           <xsl:value-of select="mcrclassification:current-label-text(mcrclassification:category('mir_licenses', $accessCondition))"/>
@@ -46,7 +45,7 @@
       <xsl:with-param name="class" select="concat('mir-badge-license-', $accessCondition)"/>
       <xsl:with-param name="label" select="$label"/>
       <xsl:with-param name="link"  select="concat($ServletsBaseURL, 'solr/find?condQuery=*&amp;fq=category:%22', $accessConditionClass, '%22')"/>
-      <xsl:with-param name="tooltip" select="document('i18n:mir.rights')/i18n/text()"/>
+      <xsl:with-param name="tooltip" select="mcri18n:translate('mir.rights')"/>
     </xsl:call-template>
   </xsl:template>
 

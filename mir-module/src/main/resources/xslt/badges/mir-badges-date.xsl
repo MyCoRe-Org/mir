@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="3.0"
   xmlns:mirdateconverter="http://www.mycore.de/xslt/mirdateconverter"
-  xmlns:mods="http://www.loc.gov/mods/v3"
+  xmlns:mcri18n="http://www.mycore.de/xslt/i18n"
   xmlns:xs="http://www.w3.org/2001/XMLSchema"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   exclude-result-prefixes="#all">
@@ -38,7 +38,7 @@
       <xsl:with-param name="class" select="'mir-badge-date'"/>
       <xsl:with-param name="label" select="$label"/>
       <xsl:with-param name="link" select="concat($ServletsBaseURL, 'solr/find?condQuery=*&amp;fq=mods.dateIssued:%22', string(($date)[1]), '%22')"/>
-      <xsl:with-param name="tooltip" select="document('i18n:mir.date.published')/i18n/text()"/>
+      <xsl:with-param name="tooltip" select="mcri18n:translate('mir.date.published')"/>
     </xsl:call-template>
   </xsl:template>
 
@@ -54,10 +54,10 @@
         <xsl:value-of select="$normalized"/>
       </xsl:when>
       <xsl:when test="matches($normalized, '^\d{4}-\d{2}-\d{2}$')">
-        <xsl:value-of select="format-date(xs:date($normalized), '[Y0001]-[M01]-[D01]')"/>
+        <xsl:value-of select="format-date(xs:date($normalized), mcri18n:translate('metaData.dateYearMonthDay.xsl3'))"/>
       </xsl:when>
       <xsl:when test="$normalized castable as xs:dateTime">
-        <xsl:value-of select="format-dateTime(xs:dateTime($normalized), '[Y0001]-[M01]-[D01] [H01]:[m01]')"/>
+        <xsl:value-of select="format-dateTime(xs:dateTime($normalized), mcri18n:translate('metaData.dateTime.xsl3'))"/>
       </xsl:when>
       <xsl:otherwise>
         <xsl:value-of select="$normalized"/>
