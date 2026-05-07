@@ -23,7 +23,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.Select;
 
 public class MIRModsEditorController extends MIREditorController {
@@ -388,10 +387,6 @@ public class MIRModsEditorController extends MIREditorController {
                 waitForAnimationFinish();
             });
         }
-    }
-    public void clickOutside() {
-        Actions action = new Actions(driver);
-        action.moveByOffset(1, 1).click().build().perform();
     }
 
     private void waitForResults() {

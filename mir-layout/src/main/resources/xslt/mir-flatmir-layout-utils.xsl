@@ -10,21 +10,21 @@
 
   <xsl:template name="mir.navigation">
 
-    <div id="header_box" class="clearfix container">
-      <div id="options_nav_box" class="mir-prop-nav">
-        <nav>
-          <ul class="navbar-nav ms-auto flex-row">
-            <xsl:call-template name="mir.loginMenu" />
-            <xsl:call-template name="mir.languageMenu" />
-          </ul>
-        </nav>
-      </div>
+    <div id="header_box" class="container">
       <div id="project_logo_box">
         <a href="{concat($WebApplicationBaseURL,substring($loaded_navigation_xml/@hrefStartingPage,2))}">
           <span id="logo_mir">mir</span>
           <span id="logo_modul">mycore</span>
           <span id="logo_slogan">mods institutional repository</span>
         </a>
+      </div>
+      <div id="options_nav_box" class="mir-prop-nav">
+        <nav class="navbar navbar-light navbar-expand-sm">
+          <ul class="navbar-nav">
+            <xsl:call-template name="mir.loginMenu" />
+            <xsl:call-template name="mir.languageMenu" />
+          </ul>
+        </nav>
       </div>
     </div>
 

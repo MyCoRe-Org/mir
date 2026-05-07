@@ -43,7 +43,6 @@
     <xsl:variable name="loginURL"
       select="concat( $ServletsBaseURL, 'MCRLoginServlet?url=', encode-for-uri( string( $RequestURL ) ) )" />
     <xsl:choose>
-      <xsl:when test="contains($RequestURL, 'MCRLoginServlet') and mcracl:is-current-user-guest-user()"></xsl:when>
       <xsl:when test="mcracl:is-current-user-guest-user()">
         <li class="nav-item">
           <a id="loginURL" class="nav-link" href="{$loginURL}">
