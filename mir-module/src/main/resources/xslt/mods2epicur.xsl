@@ -74,14 +74,14 @@
       <xsl:when test="$filenumber = 0" />
       <xsl:when test="$filenumber = 1">
         <resource xmlns="urn:nbn:de:1111-2004033116">
-          <xsl:variable name="uri" select="mcr_directory/children//child[@type='file']/uri" />
-          <xsl:variable name="derId" select="substring-before(substring-after($uri,':/'), ':')" />
-          <xsl:variable name="filePath" select="substring-after(substring-after($uri, ':'), ':')" />
+          <xsl:variable name="ifsFileChild" select="mcr_directory/children//child[@type='file']" />
           <identifier scheme="url">
-            <xsl:value-of select="concat($ServletsBaseURL,'MCRFileNodeServlet/',$derId,$filePath)" />
+            <xsl:call-template name="buildURLOfFile">
+              <xsl:with-param name="ifsFileChild" select="$ifsFileChild" />
+            </xsl:call-template>
           </identifier>
           <format scheme="imt">
-            <xsl:value-of select="$uri/../contentType" />
+            <xsl:value-of select="$ifsFileChild/contentType" />
           </format>
         </resource>
       </xsl:when>
@@ -96,6 +96,18 @@
         </resource>
       </xsl:otherwise>
     </xsl:choose>
+  </xsl:template>
+
+  <xsl:template name="buildURLOfFile">
+    <xsl:param name="ifsFileChild" />
+    <xsl:variable name="derId" select="substring-before(substring-after($ifsFileChild/uri,':/'), ':')" />
+    <xsl:variable name="filePath">
+      <xsl:for-each select="$ifsFileChild/ancestor::child[@type='directory']">
+        <xsl:value-of select="concat('/', encode-for-uri(name))" />
+      </xsl:for-each>
+      <xsl:value-of select="concat('/', encode-for-uri($ifsFileChild/name))" />
+    </xsl:variable>
+    <xsl:value-of select="concat($ServletsBaseURL,'MCRFileNodeServlet/',$derId,$filePath)" />
   </xsl:template>
 
 </xsl:stylesheet>
