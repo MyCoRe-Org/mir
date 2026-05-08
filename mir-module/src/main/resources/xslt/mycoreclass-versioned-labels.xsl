@@ -1,10 +1,9 @@
 <xsl:stylesheet version="1.0"
+                xmlns:mcri18n="http://www.mycore.de/xslt/i18n"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-                xmlns:xalan="http://xml.apache.org/xalan"
-                xmlns:i18n="xalan://org.mycore.services.i18n.MCRTranslation"
-                exclude-result-prefixes="xalan i18n">
+                exclude-result-prefixes="#all">
 
-  <xsl:include href="copynodes.xsl" />
+  <xsl:mode on-no-match="shallow-copy"/>
 
   <xsl:template match="mycoreclass">
     <mycoreclass xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="MCRClassification.xsd">
@@ -34,7 +33,7 @@
       <xsl:when test="$lang='en'">until</xsl:when>
       <xsl:when test="$lang='de'">bis</xsl:when>
       <xsl:otherwise>
-        <xsl:value-of select="i18n:translate('ubo.classification.versioning.until')" />
+        <xsl:value-of select="mcri18n:translate('ubo.classification.versioning.until')" />
       </xsl:otherwise>
     </xsl:choose>
     <xsl:text> </xsl:text>
