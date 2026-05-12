@@ -87,7 +87,7 @@
       </xsl:if>
     </div>
 
-    <script type="text/javascript">
+    <script>
       <![CDATA[
         $(document).ready(function() {
           var replaceUrlParam = function(url, paramName, paramValue) {

@@ -22,11 +22,11 @@
   <xed:template id="derivate_types">
     <xed:bind xpath="derivate/classifications[@class='MCRMetaClassification'][@heritable='false']/classification[contains(text(), 'derivate_types:')]">
       <div class="mir-form-group row">
-        <label class="col-md-3 col-form-label text-end d-inline form-label">
+        <label for="derivate__types" class="col-md-3 col-form-label text-end d-inline form-label">
           <xed:output i18n="mir.derivate.type"/>
         </label>
         <div class="col-md-6">
-          <select class="form-control form-control-inline form-select">
+          <select id="derivate__types" class="form-control form-control-inline form-select">
             <option value="">
               <xed:output i18n="mir.select" />
             </option>
@@ -40,11 +40,11 @@
   <xed:template id="mir_access">
     <xed:bind xpath="derivate/classifications[@class='MCRMetaClassification'][@heritable='false']/classification[contains(text(), 'mir_access:')]">
       <div class="mir-form-group row">
-        <label class="col-md-3 col-form-label text-end d-inline form-label">
+        <label for="mir__access" class="col-md-3 col-form-label text-end d-inline form-label">
           <xed:output i18n="mir.access"/>
         </label>
         <div class="col-md-6">
-          <select class="form-control form-control-inline form-select">
+          <select id="mir__access" class="form-control form-control-inline form-select">
             <option value="">
               <xed:output i18n="mir.select" />
             </option>
@@ -128,7 +128,7 @@
   <xed:template id="title_repeat">
     <xed:repeat xpath="derivate/titles[@class='MCRMetaLangText'][@heritable='false'][1]/title">
       <div class="mir-form-group row">
-        <label class="col-md-3 col-form-label text-end d-inline form-label">
+        <label for="title_repeat_TODO" class="col-md-3 col-form-label text-end d-inline form-label">
           <xed:output i18n="mir.title"/>
         </label>
         <div class="col-md-2">
@@ -140,7 +140,7 @@
         </div>
         <div class="col-md-4">
           <xed:bind xpath=".">
-            <input class="form-control" type="text" />
+            <input id="title_repeat_TODO" class="form-control" type="text" />
           </xed:bind>
         </div>
         <mir:help-pmud help-text="{i18n:mir.help.derivate.title}" pmud="true"  />
@@ -172,11 +172,11 @@
   <xed:template id="debug.cancel.submit">
     <div class="mir-form-group row" id="editor-buttons">
       <div class="offset-md-2 col-md-6">
-        <button type="submit" class="btn btn-secondary" xed:target="debug">Debug</button>
-        <button type="submit" class="btn btn-secondary" xed:target="cancel">
+        <button aria-label="debug" type="submit" class="btn btn-secondary" xed:target="debug">Debug</button>
+        <button aria-label="cancel" type="submit" class="btn btn-secondary" xed:target="cancel">
           <xed:output i18n="button.cancel" />
         </button>
-        <button type="submit" class="btn btn-primary" xed:target="servlet" xed:href="UpdateDerivateServlet">
+        <button aria-label="save" type="submit" class="btn btn-primary" xed:target="servlet" xed:href="UpdateDerivateServlet">
           <xed:output i18n="button.save" />
         </button>
       </div>
@@ -207,21 +207,21 @@
 
 
   <xed:template id="javascript">
-    <script type="text/javascript" src="{$WebApplicationBaseURL}js/jquery.search-entity.min.js"></script>
-    <script src="{$WebApplicationBaseURL}assets/jquery/plugins/typeahead/bloodhound.min.js" type="text/javascript"></script>
-    <script src="{$WebApplicationBaseURL}assets/jquery/plugins/bootstrap3-typeahead/bootstrap3-typeahead.min.js" type="text/javascript"></script>
-    <script src="{$WebApplicationBaseURL}js/mir/relatedItem-autocomplete.min.js" type="text/javascript"></script>
-    <script src="{$WebApplicationBaseURL}js/mir/item-autocomplete.js" type="text/javascript"></script>
+    <script src="{$WebApplicationBaseURL}js/jquery.search-entity.min.js"></script>
+    <script src="{$WebApplicationBaseURL}assets/jquery/plugins/typeahead/bloodhound.min.js"></script>
+    <script src="{$WebApplicationBaseURL}assets/jquery/plugins/bootstrap3-typeahead/bootstrap3-typeahead.min.js"></script>
+    <script src="{$WebApplicationBaseURL}js/mir/relatedItem-autocomplete.min.js"></script>
+    <script src="{$WebApplicationBaseURL}js/mir/item-autocomplete.js"></script>
     <link href="{$WebApplicationBaseURL}assets/bootstrap-datepicker/css/bootstrap-datepicker.css" rel="stylesheet" />
-    <script type="text/javascript" src="{$WebApplicationBaseURL}assets/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
-    <script type="text/javascript" src="{$WebApplicationBaseURL}assets/bootstrap-datepicker/locales/bootstrap-datepicker.de.min.js"></script>
-    <script type="text/javascript" src="{$WebApplicationBaseURL}assets/moment/min/moment.min.js"></script>
-    <script type="text/javascript" src="{$WebApplicationBaseURL}js/mir/xeditor-form.min.js"></script>
-    <script type="text/javascript" src="{$WebApplicationBaseURL}js/mir/bootstrap-datepicker-timepicker/bootstrap-datepicker-timepicker.js"></script>
-    <script type="text/javascript" src="{$WebApplicationBaseURL}js/mir/bootstrap-datepicker-timepicker/bootstrap-datepicker-timepicker.de.js"></script>
+    <script src="{$WebApplicationBaseURL}assets/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
+    <script src="{$WebApplicationBaseURL}assets/bootstrap-datepicker/locales/bootstrap-datepicker.de.min.js"></script>
+    <script src="{$WebApplicationBaseURL}assets/moment/min/moment.min.js"></script>
+    <script src="{$WebApplicationBaseURL}js/mir/xeditor-form.min.js"></script>
+    <script src="{$WebApplicationBaseURL}js/mir/bootstrap-datepicker-timepicker/bootstrap-datepicker-timepicker.js"></script>
+    <script src="{$WebApplicationBaseURL}js/mir/bootstrap-datepicker-timepicker/bootstrap-datepicker-timepicker.de.js"></script>
     <link rel="stylesheet" type="text/css" href="{$WebApplicationBaseURL}assets/select2/css/select2.min.css" />
-    <script type="text/javascript" src="{$WebApplicationBaseURL}assets/select2/js/select2.min.js" />
-    <script type="text/javascript" src="{$WebApplicationBaseURL}assets/select2/js/i18n/{$MCR.Metadata.DefaultLang}.js" />
+    <script src="{$WebApplicationBaseURL}assets/select2/js/select2.min.js" />
+    <script src="{$WebApplicationBaseURL}assets/select2/js/i18n/{$MCR.Metadata.DefaultLang}.js" />
   </xed:template>
 
 </xed:template>
