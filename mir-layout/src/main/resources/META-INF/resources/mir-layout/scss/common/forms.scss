@@ -322,3 +322,47 @@ TODO: migrate see https://getbootstrap.com/docs/4.0/migration/ strg+f Grid break
 #main_content .select2-selection__arrow {
   top: 8px;
 }
+
+.mir-affiliation-picker {
+  .input-group input[type="text"] {
+    border-start-end-radius: $border-radius !important;
+    border-end-end-radius: $border-radius !important;
+  }
+
+  .affiliation-badge-slot {
+    display: none;
+    border-left: none;
+    border-radius: 0 $border-radius $border-radius 0;
+    padding: 0.25rem;
+  }
+
+  [data-badge] {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    cursor: pointer;
+  }
+
+  &.is-locked {
+    .input-group input[type="text"] {
+      border-start-end-radius: 0 !important;
+      border-end-end-radius: 0 !important;
+    }
+
+    input[type="text"] {
+      background-color: $body-secondary-bg;
+      border-right: none;
+      cursor: default;
+
+      &:focus {
+        box-shadow: none;
+        border-color: $border-color;
+      }
+    }
+
+    .affiliation-badge-slot {
+      display: flex;
+      background-color: $body-secondary-bg;
+    }
+  }
+}

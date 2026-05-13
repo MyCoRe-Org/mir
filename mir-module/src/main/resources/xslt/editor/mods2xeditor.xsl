@@ -180,12 +180,6 @@
     </xsl:copy>
   </xsl:template>
 
-  <xsl:template match="mods:affiliation[@authorityURI='https://ror.org/'][@valueURI]">
-    <mods:affiliation authorityURI="{@authorityURI}" valueURI="{@valueURI}">
-      <xsl:value-of select="concat(., ' (', @valueURI, ')')"/>
-    </mods:affiliation>
-  </xsl:template>
-
   <!-- Remove this mods:classification entry, will be created again while saving using mods:accessCondtition (see MIR-161) -->
   <xsl:template match="mods:classification[@authority='accessRestriction']">
     <!-- do nothing -->

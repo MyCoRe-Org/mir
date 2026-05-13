@@ -3,6 +3,7 @@ export type AutocompleteOptions<T> = {
   getDisplayText: (item: T) => string;
   onItemSelected: (item: T) => void;
   debounceMs?: number;
+  container?: HTMLElement;
 };
 
 const DEFAULT_DEBOUNCE_MS = 300;
@@ -28,9 +29,8 @@ export class Autocomplete<T> {
     this.dropdown = document.createElement('ul');
     this.dropdown.classList.add('dropdown-menu', 'position-absolute');
     this.dropdown.style.display = 'none';
-    this.dropdown.style.width = `${input.offsetWidth}px`;
 
-    const parent = input.parentElement;
+    const parent = options.container ?? input.parentElement;
     if (!parent) throw new Error('Input must have a parent element.');
     this.parent = parent;
     this.parent.appendChild(this.dropdown);
@@ -55,9 +55,9 @@ export class Autocomplete<T> {
       const signal = this.currentAbortController.signal;
 
       try {
-        this.performFetch(query, signal);
+        await this.performFetch(query, signal);
       } catch (error) {
-        if (error instanceof DOMException && error.name === 'AbortError') {
+        if (signal.aborted) {
           return;
         }
         if (error instanceof Error) {
@@ -92,6 +92,11 @@ export class Autocomplete<T> {
     signal: AbortSignal
   ): Promise<void> {
     const items = await this.fetchData(query, signal);
+    if (signal.aborted) return;
+
+    const width = this.input.getBoundingClientRect().width;
+    this.dropdown.style.width = `${width}px`;
+
     items.forEach(item => {
       const li = document.createElement('li');
       li.classList.add('dropdown-item', 'text-wrap');

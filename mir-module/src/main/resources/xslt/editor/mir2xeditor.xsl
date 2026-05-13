@@ -425,6 +425,7 @@
         </div>
       </fieldset>
     </xed:repeat>
+    <script type="module" src="{$WebApplicationBaseURL}js/mir/editor-name.js"/>
   </xsl:template>
 
   <xsl:template match="mir:role.repeated">
@@ -520,6 +521,7 @@
       handleRoleSelect($(e.currentTarget));
     });
     </script>
+    <script type="module" src="{$WebApplicationBaseURL}js/mir/editor-name.js"/>
   </xsl:template>
 
   <xsl:template match="mir:person.repeated">

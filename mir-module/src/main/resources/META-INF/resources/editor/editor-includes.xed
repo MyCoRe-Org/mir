@@ -676,42 +676,34 @@
   </xed:template>
 
   <xed:template id="person.affiliation">
-    <!-- affiliation without authorityURI -->
-    <mir:textfield repeat="true" xpath="mods:affiliation[not(@authorityURI)]" help-text="{i18n:mir.help.affiliation}" label="mir.affiliation" />
-
-    <!-- affiliation with authorityURI https://ror.org/ -->
-    <xed:repeat xpath="mods:affiliation[@authorityURI='https://ror.org/']" min="1" max="10">
-      <div class="mir-form-group row">
+    <xed:repeat xpath="mods:affiliation" min="1" max="10">
+      <div class="mir-form-group row mir-affiliation-container">
         <label class="col-md-3 col-form-label text-end">
-          <xed:output i18n="mir.affiliation.with.ror.id.label"/>
+          <xed:output i18n="mir.affiliation" />
         </label>
-
         <div class="col-md-6">
-          <xed:bind xpath=".">
-            <select class="form-control mir-select-searchable mir-select-affiliation"
-                    data-placeholder="{i18n:mir.affiliation.with.ror.id.placeholder}">
-
-              <xed:choose>
-                <xed:when test="string-length(@valueURI) &gt; 0">
-                  <option>
-                    <xsl:attribute name="value">
-                      <xsl:value-of select="concat(., ' (', @valueURI, ')')"/>
-                    </xsl:attribute>
-                    <xed:output value="."/>
-                  </option>
-                </xed:when>
-                <xed:otherwise>
-                  <option>
-                    <xed:output value="."/>
-                  </option>
-                </xed:otherwise>
-              </xed:choose>
-
-            </select>
-          </xed:bind>
-
+          <div class="mir-affiliation-picker">
+            <xed:bind xpath=".">
+              <div class="input-group">
+                <input
+                  type="text"
+                  class="form-control"
+                  autocomplete="off"
+                  placeholder="{i18n:mir.affiliation.placeholder}" />
+                <span class="affiliation-badge-slot input-group-text">
+                  <span data-badge="" class="badge text-bg-primary">
+                    <span data-badge-label="" />
+                    <span class="far fa-times-circle" />
+                  </span>
+                </span>
+              </div>
+            </xed:bind>
+            <xed:bind xpath="@valueURI">
+              <input type="hidden" />
+            </xed:bind>
+          </div>
         </div>
-        <mir:help-pmud help-text="{i18n:mir.help.affiliation.with.ror.id}" pmud="true"/>
+        <mir:help-pmud help-text="{i18n:mir.help.affiliation}" pmud="true" />
       </div>
     </xed:repeat>
   </xed:template>
