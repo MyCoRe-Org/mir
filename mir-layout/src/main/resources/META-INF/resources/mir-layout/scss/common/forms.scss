@@ -353,6 +353,11 @@ TODO: migrate see https://getbootstrap.com/docs/4.0/migration/ strg+f Grid break
       background-color: $body-secondary-bg;
       border-right: none;
       cursor: default;
+
+      &:focus {
+        box-shadow: none;
+        border-color: var(--bs-border-color);
+      }
     }
 
     .affiliation-badge-slot {
