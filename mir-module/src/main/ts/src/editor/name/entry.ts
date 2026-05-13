@@ -32,6 +32,7 @@ function setupAffiliationPicker(container: Element): void {
     (container as HTMLElement).classList.remove('is-locked');
     textInput!.readOnly = false;
     textInput!.focus();
+    textInput!.select();
   }
 
   const initialValue = idInput.value
