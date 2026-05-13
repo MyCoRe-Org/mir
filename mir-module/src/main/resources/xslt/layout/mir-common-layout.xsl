@@ -20,7 +20,7 @@
   <xsl:param name="MCR.Metadata.Languages" select="'de'" />
   <xsl:param name="mcruser" select="document('user:current')/user"/>
   <xsl:param name="MIR.Layout.usermenu.realname.enabled" select="'false'"/>
-  <xsl:param name="MIR.Maintenance.File" select="'/mcr/data/maintenance.xml'"/>
+  <xsl:param name="MIR.Maintenance.File" />
 
   <xsl:include href="resource:xslt/layout/mir-layout-utils.xsl" />
   <xsl:include href="resource:xslt/layout/mir-navigation.xsl" />
@@ -303,14 +303,17 @@
   </xsl:template>
 
   <xsl:template name="print.maintenanceMessage">
-    <xsl:variable name="maintenance" select="document(concat('notnull:file:', $MIR.Maintenance.File))"/>
-    <xsl:if test="string-length($maintenance/message) &gt; 0">
-      <div class="maintenance">
-        <div class="maintenance__content alert alert-warning" role="alert">
-          <xsl:value-of select="$maintenance/message"/>
+    <xsl:if test="string-length($MIR.Maintenance.File) &gt; 0">
+      <xsl:variable name="maintenance" select="document(concat('notnull:file:', $MIR.Maintenance.File))"/>
+      <xsl:if test="string-length($maintenance/message) &gt; 0">
+        <div class="maintenance">
+          <div class="maintenance__content alert alert-warning" role="alert">
+            <xsl:value-of select="$maintenance/message"/>
+          </div>
         </div>
-      </div>
+      </xsl:if>
     </xsl:if>
+
   </xsl:template>
 
 </xsl:stylesheet>
