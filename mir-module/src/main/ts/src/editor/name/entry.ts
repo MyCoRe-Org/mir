@@ -2,47 +2,48 @@ import { Autocomplete } from '../../autocomplete';
 import { Affiliation } from './affiliation/types';
 import { fetchAffiliation } from './affiliation/ror';
 
-function setupAffiliationPicker(container: Element): void {
+function setupAffiliationPicker(container: HTMLElement): void {
   const textInput =
     container.querySelector<HTMLInputElement>('input[type="text"]');
-  const idInput = container.querySelector<HTMLInputElement>(
+  const hiddenInput = container.querySelector<HTMLInputElement>(
     'input[type="hidden"]'
   );
   const badge = container.querySelector<HTMLElement>('[data-badge]');
   const badgeLabel = container.querySelector<HTMLElement>('[data-badge-label]');
 
-  if (!textInput || !idInput) {
+  if (!textInput || !hiddenInput) {
     console.error('affiliation-picker: text and hidden id inputs are required');
     return;
   }
 
+  const nameInput = textInput!;
+  const idInput = hiddenInput!;
+
   function setAffiliation(item: Affiliation) {
-    textInput!.value = item.name;
-    idInput!.value = item.id;
+    nameInput.value = item.name;
+    idInput.value = item.id;
     if (badgeLabel) {
       badgeLabel.textContent = 'ROR';
       badgeLabel.title = item.id;
     }
-    (container as HTMLElement).classList.add('is-locked');
-    textInput!.readOnly = true;
+    container.classList.add('is-locked');
+    nameInput.readOnly = true;
   }
 
   function clearAffiliation() {
-    idInput!.value = '';
-    (container as HTMLElement).classList.remove('is-locked');
-    textInput!.readOnly = false;
-    textInput!.focus();
-    textInput!.select();
+    idInput.value = '';
+    container.classList.remove('is-locked');
+    nameInput.readOnly = false;
+    nameInput.focus();
+    nameInput.select();
   }
 
-  const initialValue = idInput.value
-    ? ({ id: idInput.value, name: textInput.value } as Affiliation)
-    : undefined;
+  if (idInput.value) {
+    setAffiliation({ id: idInput.value, name: nameInput.value });
+  }
 
-  if (initialValue) setAffiliation(initialValue);
-
-  new Autocomplete<Affiliation>(textInput, {
-    container: container as HTMLElement,
+  new Autocomplete<Affiliation>(nameInput, {
+    container: container,
     fetchData: fetchAffiliation,
     getDisplayText: item => item.name,
     onItemSelected: setAffiliation,
@@ -51,10 +52,10 @@ function setupAffiliationPicker(container: Element): void {
   badge?.addEventListener('click', clearAffiliation);
 }
 
-export function initAffiliationPicker(): void {
+function initAffiliationPicker(): void {
   document
     .querySelectorAll('.personExtended-container .mir-affiliation-picker')
-    .forEach(setupAffiliationPicker);
+    .forEach(el => setupAffiliationPicker(el as HTMLElement));
 }
 
 document.addEventListener('DOMContentLoaded', initAffiliationPicker);
