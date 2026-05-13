@@ -687,13 +687,13 @@
               <div class="input-group">
                 <input
                   type="text"
-                  class="form-control rounded-end"
+                  class="form-control"
                   autocomplete="off"
                   placeholder="{i18n:mir.affiliation.placeholder}" />
-                <span data-badge-slot="" class="input-group-text p-1 border-start-0 rounded-end d-none">
-                  <span class="badge text-bg-primary d-flex align-items-center gap-1">
+                <span data-badge-slot="" class="input-group-text">
+                  <span data-badge="" class="badge text-bg-primary">
                     <span data-badge-label="" />
-                    <span data-badge-clear="" class="far fa-times-circle" />
+                    <span class="far fa-times-circle" />
                   </span>
                 </span>
               </div>

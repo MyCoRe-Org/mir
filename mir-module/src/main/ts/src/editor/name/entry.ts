@@ -8,10 +8,8 @@ function setupAffiliationPicker(container: Element): void {
   const idInput = container.querySelector<HTMLInputElement>(
     'input[type="hidden"]'
   );
-  const badgeSlot = container.querySelector<HTMLElement>('[data-badge-slot]');
+  const badge = container.querySelector<HTMLElement>('[data-badge]');
   const badgeLabel = container.querySelector<HTMLElement>('[data-badge-label]');
-  const clearBtn =
-    container.querySelector<HTMLButtonElement>('[data-badge-clear]');
 
   if (!textInput || !idInput) {
     console.error('affiliation-picker: text and hidden id inputs are required');
@@ -25,12 +23,15 @@ function setupAffiliationPicker(container: Element): void {
       badgeLabel.textContent = 'ROR';
       badgeLabel.title = item.id;
     }
-    if (badgeSlot) {
-      badgeSlot.classList.remove('d-none');
-      textInput!.classList.remove('rounded-end');
-      textInput!.classList.add('border-end-0');
-    }
+    (container as HTMLElement).classList.add('is-locked');
     textInput!.readOnly = true;
+  }
+
+  function clearAffiliation() {
+    idInput!.value = '';
+    (container as HTMLElement).classList.remove('is-locked');
+    textInput!.readOnly = false;
+    textInput!.focus();
   }
 
   const initialValue = idInput.value
@@ -46,16 +47,7 @@ function setupAffiliationPicker(container: Element): void {
     onItemSelected: setAffiliation,
   });
 
-  clearBtn?.addEventListener('click', () => {
-    idInput.value = '';
-    if (badgeSlot) {
-      badgeSlot.classList.add('d-none');
-      textInput.classList.remove('border-end-0');
-      textInput.classList.add('rounded-end');
-    }
-    textInput.readOnly = false;
-    textInput.focus();
-  });
+  badge?.addEventListener('click', clearAffiliation);
 }
 
 export function initAffiliationPicker(): void {
