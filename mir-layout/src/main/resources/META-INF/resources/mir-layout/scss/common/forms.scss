@@ -329,7 +329,7 @@ TODO: migrate see https://getbootstrap.com/docs/4.0/migration/ strg+f Grid break
     border-end-end-radius: var(--bs-border-radius) !important;
   }
 
-  [data-badge-slot] {
+  .affiliation-badge-slot {
     display: none;
     border-left: none;
     border-radius: 0 var(--bs-border-radius) var(--bs-border-radius) 0;
@@ -355,7 +355,7 @@ TODO: migrate see https://getbootstrap.com/docs/4.0/migration/ strg+f Grid break
       cursor: default;
     }
 
-    [data-badge-slot] {
+    .affiliation-badge-slot {
       display: flex;
       background-color: $body-secondary-bg;
     }

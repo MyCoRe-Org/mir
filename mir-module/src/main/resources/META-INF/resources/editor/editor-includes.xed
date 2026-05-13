@@ -690,7 +690,7 @@
                   class="form-control"
                   autocomplete="off"
                   placeholder="{i18n:mir.affiliation.placeholder}" />
-                <span data-badge-slot="" class="input-group-text">
+                <span class="affiliation-badge-slot input-group-text">
                   <span data-badge="" class="badge text-bg-primary">
                     <span data-badge-label="" />
                     <span class="far fa-times-circle" />
