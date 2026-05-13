@@ -23,7 +23,7 @@ function setupAffiliationPicker(container: Element): void {
     idInput!.value = item.id;
     if (badgeLabel) {
       badgeLabel.textContent = 'ROR';
-      badgeLabel.title = `${item.name} (${item.id})`;
+      badgeLabel.title = item.id;
     }
     if (badgeSlot) {
       badgeSlot.classList.remove('d-none');
