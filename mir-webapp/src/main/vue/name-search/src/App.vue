@@ -50,7 +50,7 @@
             </div>
             <hr/>
           </template>
-          <div v-for="identifier in model.currentIdentifier.filter(id => isAllowedIdentifierType(id.type))" :key="`${identifier.type}-${identifier.value}`"
+          <div v-for="identifier in model.currentIdentifier" :key="`${identifier.type}-${identifier.value}`"
                v-on:click.prevent="removeIdentifier(identifier)"
                class="identifier">
             <IdentifierDisplay :type="identifier.type" :value="identifier.value"/>
@@ -389,6 +389,9 @@ const addIdentifier = async (identifier: Identifier, event?: MouseEvent) => {
     }
 
   const normType = normalizeType(identifier.type);
+  if (!isAllowedIdentifierType(normType)) {
+    return;
+  }
   if (
       !model.currentIdentifier.some(
           (id: any) => id.type?.toLowerCase() === normType.toLowerCase()
