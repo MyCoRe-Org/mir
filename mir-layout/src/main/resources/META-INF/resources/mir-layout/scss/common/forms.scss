@@ -325,14 +325,14 @@ TODO: migrate see https://getbootstrap.com/docs/4.0/migration/ strg+f Grid break
 
 .mir-affiliation-picker {
   .input-group input[type="text"] {
-    border-start-end-radius: var(--bs-border-radius) !important;
-    border-end-end-radius: var(--bs-border-radius) !important;
+    border-start-end-radius: $border-radius !important;
+    border-end-end-radius: $border-radius !important;
   }
 
   .affiliation-badge-slot {
     display: none;
     border-left: none;
-    border-radius: 0 var(--bs-border-radius) var(--bs-border-radius) 0;
+    border-radius: 0 $border-radius $border-radius 0;
     padding: 0.25rem;
   }
 
@@ -356,7 +356,7 @@ TODO: migrate see https://getbootstrap.com/docs/4.0/migration/ strg+f Grid break
 
       &:focus {
         box-shadow: none;
-        border-color: var(--bs-border-color);
+        border-color: $border-color;
       }
     }
 
