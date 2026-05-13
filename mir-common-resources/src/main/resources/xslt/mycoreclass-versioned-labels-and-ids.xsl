@@ -1,4 +1,5 @@
-<xsl:stylesheet version="1.0" 
+<?xml version="1.0" encoding="UTF-8"?>
+<xsl:stylesheet version="3.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 exclude-result-prefixes="#all">
 
@@ -32,10 +33,12 @@
     
     <xsl:variable name="date" select="translate(ancestor::valid[@*[name()=$fromUntil]][1]/@*[name()=$fromUntil],'-','')" />
 
+    <xsl:variable name="dateNumber" select="number($date)" />
+
     <xsl:variable name="id" select="." />
     
-    <xsl:variable name="numEarlierFrom" select="count(key('categories',$id)[translate(ancestor::valid[@from][1]/@from,'-','') &lt; $date])" />
-    <xsl:variable name="numEarlierUntil" select="count(key('categories',$id)[translate(ancestor::valid[@until][1]/@until,'-','') &lt; $date])" />
+    <xsl:variable name="numEarlierFrom" select="count(key('categories',$id)[number(translate(ancestor::valid[@from][1]/@from,'-','')) &lt; $dateNumber])" />
+    <xsl:variable name="numEarlierUntil" select="count(key('categories',$id)[number(translate(ancestor::valid[@until][1]/@until,'-','')) &lt; $dateNumber])" />
     
     <xsl:variable name="numEarlier" select="$numEarlierFrom + $numEarlierUntil" />
 

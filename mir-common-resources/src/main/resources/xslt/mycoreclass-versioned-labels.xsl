@@ -1,7 +1,11 @@
-<xsl:stylesheet version="1.0"
+<?xml version="1.0" encoding="UTF-8"?>
+<xsl:stylesheet version="3.0"
                 xmlns:mcri18n="http://www.mycore.de/xslt/i18n"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 exclude-result-prefixes="#all">
+
+  <xsl:include href="resource:xslt/default-parameters.xsl" />
+  <xsl:include href="xslInclude:functions" />
 
   <xsl:mode on-no-match="shallow-copy"/>
 
@@ -33,7 +37,7 @@
       <xsl:when test="$lang='en'">until</xsl:when>
       <xsl:when test="$lang='de'">bis</xsl:when>
       <xsl:otherwise>
-        <xsl:value-of select="mcri18n:translate('ubo.classification.versioning.until')" />
+        <xsl:value-of select="mcri18n:translate('mir.classification.versioning.until')" />
       </xsl:otherwise>
     </xsl:choose>
     <xsl:text> </xsl:text>
