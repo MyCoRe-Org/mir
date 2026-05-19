@@ -740,18 +740,6 @@
         });
     }
 
-    function trimPPNUrl(ppnUrl) {
-        if (ppnUrl) {
-            try {
-                let url = new URL(ppnUrl);
-                return (url && url.protocol + "//" + url.host + url.pathname) || ppnUrl;
-            } catch (e) {
-                console.error(e);
-            }
-        }
-        return ppnUrl;
-    }
-
   function dotdotdotCallback(isTruncated, originalContent) {
     if (!isTruncated) {
       $("a.readmore", this).remove();
