@@ -17,7 +17,6 @@
 <xsl:stylesheet version="3.0"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:mods="http://www.loc.gov/mods/v3"
-  xmlns:xlink="http://www.w3.org/1999/xlink"
   exclude-result-prefixes="#all"
 >
 
@@ -27,26 +26,6 @@
     <xsl:apply-templates select="mods:originInfo" mode="highwire" />
     <xsl:apply-templates select="mods:identifier" mode="highwire" />
     <xsl:apply-templates select="mods:relatedItem" mode="highwire" />
-  </xsl:template>
-
-  <xsl:template match="derobject" mode="highwire">
-    <xsl:variable name="derivateType" select="classification[@classid='derivate_types']/@categid" />
-    <xsl:variable name="derivateExported" select="not(document(concat('classification:metadata:0:children:derivate_types:',$derivateType))//category/label[lang('x-export')]/@text='false')" />
-    <xsl:if test="$derivateExported">
-      <xsl:variable name="derivate" select="document(concat('mcrobject:',@xlink:href))" />
-      <xsl:variable name="nonShortversion" select="$derivate//derivate[@embargoShortVersion='false']" />
-      <xsl:if test="$nonShortversion">
-        <meta name="citation_pdf_url">
-          <xsl:attribute name="content">
-            <xsl:value-of select="$WebApplicationBaseURL" />
-            <xsl:value-of select="'servlets/MCRFileNodeServlet/'" />
-            <xsl:value-of select="$derivate/mycorederivate/@ID" />
-            <xsl:value-of select="'/'" />
-            <xsl:value-of select="$nonShortversion//internals/internal/@maindoc" />
-          </xsl:attribute>
-        </meta>
-      </xsl:if>
-    </xsl:if>
   </xsl:template>
 
   <!-- ========== citation_title ========== -->
@@ -132,28 +111,6 @@
         </xsl:choose>
       </xsl:attribute>
       </meta>
-      <meta name="author">
-        <xsl:attribute name="content">
-          <xsl:choose>
-            <xsl:when test="mods:namePart[@type='family']">
-              <xsl:value-of select="mods:namePart[@type='family']" />
-              <xsl:for-each select="mods:namePart[@type='given']">
-                <xsl:text>, </xsl:text>
-                <xsl:value-of select="." />
-              </xsl:for-each>
-            </xsl:when>
-            <xsl:when test="mods:namePart">
-              <xsl:value-of select="mods:namePart" />
-            </xsl:when>
-            <xsl:when test="mods:displayForm">
-              <xsl:value-of select="mods:displayForm" />
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:value-of select="text()|*" />
-            </xsl:otherwise>
-          </xsl:choose>
-        </xsl:attribute>
-      </meta>
     </xsl:if>
   </xsl:template>
 
@@ -162,22 +119,9 @@
   <xsl:template match="mods:originInfo[@eventType='publication' and mods:dateIssued]" mode="highwire">
     <!-- MCR-2322: only use dateIssued on event 'publication' to generated 'citation_publication_date' and do not
     generate metatag just to have it. Messes up relationship with Google Scholar! -->
-      <meta name="citation_publication_date">
+    <meta name="citation_publication_date">
       <xsl:attribute name="content">
         <xsl:apply-templates select="mods:dateIssued" mode="highwire" />
-      </xsl:attribute>
-    </meta>
-  </xsl:template>
-
-  <xsl:template match="mods:originInfo[@eventType='distribution' and mods:dateOther[@type='published']]" mode="highwire">
-    <meta name="citation_online_date">
-      <xsl:attribute name="content">
-        <xsl:apply-templates select="mods:dateOther[@type='published']" mode="highwire" />
-      </xsl:attribute>
-    </meta>
-    <meta name="citation_date">
-      <xsl:attribute name="content">
-        <xsl:apply-templates select="mods:dateOther[@type='published']" mode="highwire" />
       </xsl:attribute>
     </meta>
   </xsl:template>
