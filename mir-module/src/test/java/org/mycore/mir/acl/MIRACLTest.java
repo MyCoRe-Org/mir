@@ -186,7 +186,7 @@ public abstract class MIRACLTest {
         MCRConfiguration2.set("MCR.Access.Facts.Condition.embargo.Class",
             "org.mycore.mods.access.facts.condition.MCRMODSEmbargoCondition");
 
-        MCRConfiguration2.set("MCR.URIResolver.ModuleResolver.property", "org.mycore.common.xml.MCRPropertiesResolver");
+        MCRConfiguration2.set("MCR.URIResolver.ModuleResolver.property.Class", "org.mycore.common.xml.MCRPropertiesResolver");
         MCRConfiguration2.set("MCR.LayoutService.TransformerFactoryClass", "net.sf.saxon.TransformerFactoryImpl");
         MCRConfiguration2.set("MCR.ContentTransformer.rules-helper.Class",
             "org.mycore.common.content.transformer.MCRXSLTransformer");
