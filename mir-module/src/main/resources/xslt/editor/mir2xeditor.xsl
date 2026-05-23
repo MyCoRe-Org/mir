@@ -473,7 +473,7 @@
       <xed:bind xpath="@type" initially="personal"/>
       <fieldset class="personExtended_box">
         <legend class="mir-fieldset-legend hiddenDetail d-flex justify-content-between align-items-center">
-           <span>Autor:in **TODO i18n for legend</span>
+           <span><xsl:value-of select="mcri18n:translate('mir.nameType.personal')" /></span>
         </legend>
           <xed:bind xpath="mods:displayForm"> <!-- Move down to get the "required" validation right -->
             <div class="mir-form-group row {@class} {$xed-val-marker}">
@@ -541,7 +541,8 @@
           <xed:bind xpath=".."> <!-- Move up again after validation marker is set -->
             <div class="col-md-3" style="text-align:right; font-weight:bold;">
               <xed:bind xpath="mods:role/mods:roleTerm[@authority='marcrelator'][@type='code']" initially="aut">
-                <select aria-label="select role **TODO**" class="form-control form-control-inline form-select">
+                <!-- TODO: aria-label -->
+                <select aria-label="select role" class="form-control form-control-inline form-select">
                   <xsl:apply-templates select="*" />
                 </select>
               </xed:bind>

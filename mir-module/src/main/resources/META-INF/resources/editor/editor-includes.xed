@@ -929,11 +929,12 @@
     <fieldset class="dateExtended_box">
       <legend class="mir-fieldset-legend hiddenDetail d-flex justify-content-between align-items-center">
         <span>
-          **TODO i18n <xed:output i18n="mir.date.issued.range" />
+          <xed:output i18n="mir.date.issued.range" />
         </span>
       </legend>
         <div class="mir-form-group row datetimepicker {$xed-validation-marker}">
           <label for="{@label}_date" class="col-md-3 col-form-label text-end form-label">
+            <!-- TODO: i18n -->
             <xed:output i18n="mir.date.issued.range" />
           </label>
           <div class="col-md-6 center-vertical">
@@ -1202,7 +1203,7 @@
             </div>
             <mir:help-pmud help-text="{i18n:mir.help.link.title}" pmud="true" />
           </div>
-          <mir:textfield xpath="mods:location/mods:url[@access='raw object']" label="mir.placeholder.abstract.link" help-text="{i18n:mir.help.link.raw_object}" placeholder="{i18n:mir.placeholder.abstract.link}" />
+          <mir:textfield xpath="mods:location/mods:url[@access='raw object']" label="mir.abstract.aslink" help-text="{i18n:mir.help.link.raw_object}" placeholder="{i18n:mir.placeholder.abstract.link}" />
         </div>
       </fieldset>
     </xed:repeat>
@@ -1217,7 +1218,8 @@
       <div class="mir-form-group row">
         <div class="col-md-3">
           <xed:bind xpath="@access">
-            <select id="link_repeated" aria-label="select form for link **TODO_i18n**" class="form-control form-select" style="text-align:right; font-weight:bold;">
+            <!-- TODO: i18n -->
+            <select id="link_repeated" aria-label="select form for link" class="form-control form-select" style="text-align:right; font-weight:bold;">
               <option value="">
                 <xed:output i18n="mir.link" />
               </option>
@@ -1726,7 +1728,7 @@
             </div>
             <mir:help-pmud help-text="{i18n:mir.help.abstract.language}" pmud="true" />
           </div>
-          <mir:textfield xpath="@xlink:href" label="mir.placeholder.abstract.link" placeholder="{i18n:mir.placeholder.abstract.link}" />
+          <mir:textfield xpath="@xlink:href" label="mir.abstract.aslink" placeholder="{i18n:mir.placeholder.abstract.link}" />
           <mir:textarea xpath="." label="mir.abstract.ortext" rows="5" />
         </div>
       </xed:repeat>
@@ -1751,7 +1753,7 @@
               <mir:help-pmud help-text="{i18n:mir.help.abstract.language}" pmud="true" />
           </xed:bind>
           </div>
-          <mir:textfield xpath="@xlink:href" label="mir.placeholder.abstract.link" help-text="{i18n:mir.help.abstract.aslink}" placeholder="{i18n:mir.placeholder.abstract.link}" />
+          <mir:textfield xpath="@xlink:href" label="mir.abstract.aslink" help-text="{i18n:mir.help.abstract.aslink}" placeholder="{i18n:mir.placeholder.abstract.link}" />
           <mir:htmlArea xpath="." label="mir.abstract.ortext" help-text="{i18n:mir.help.abstract.ortext}" rows="5" />
         </div>
       </xed:repeat>
@@ -1982,7 +1984,8 @@
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-body">
-            <textarea aria-label="Aria for modal input **TODO**i18n" name=" " rows="10" cols="76"></textarea>
+            <!-- TODO: i18n -->
+            <textarea aria-label="Aria for modal input" name=" " rows="10" cols="76"></textarea>
           </div>
         </div>
       </div>
@@ -2160,7 +2163,7 @@
     </fieldset>
   </xed:template>
 
-  <!--//finds all documents, even if they are not published yet-->
+  <!-- finds all documents, even if they are not published yet -->
   <xed:template id="related.item.search.of.all.items">
     <fieldset>
       <legend class="mir-fieldset-legend">Related Item</legend><!-- TODO: i18n -->

@@ -875,7 +875,7 @@
                     </a>
                   </xsl:when>
                   <xsl:otherwise>
-                    <a href="{$ServletsBaseURL}solr/mods_nameIdentifier?q=mods.name:&quot;{encoder:encode($author_name, 'UTF-8')}&quot;&amp;owner=createdby:{$owner}" title="Suche nach allen Publikationen">
+                    <a href="{$ServletsBaseURL}solr/mods_nameIdentifier?q=mods.name:&quot;{$author_name}&quot;&amp;owner=createdby:{$owner}" title="Suche nach allen Publikationen">
                       <xsl:value-of select="$author_name" />
                     </a>
                   </xsl:otherwise>

@@ -128,7 +128,7 @@
   <xed:template id="title_repeat">
     <xed:repeat xpath="derivate/titles[@class='MCRMetaLangText'][@heritable='false'][1]/title">
       <div class="mir-form-group row">
-        <label for="title_repeat_TODO" class="col-md-3 col-form-label text-end d-inline form-label">
+        <label for="mir__title_repeat" class="col-md-3 col-form-label text-end d-inline form-label">
           <xed:output i18n="mir.title"/>
         </label>
         <div class="col-md-2">
@@ -140,10 +140,10 @@
         </div>
         <div class="col-md-4">
           <xed:bind xpath=".">
-            <input id="title_repeat_TODO" class="form-control" type="text" />
+            <input id="mir__title_repeat" class="form-control" type="text" />
           </xed:bind>
         </div>
-        <mir:help-pmud help-text="{i18n:mir.help.derivate.title}" pmud="true"  />
+        <mir:help-pmud help-text="{i18n:mir.help.derivate.title}" pmud="true" />
       </div>
     </xed:repeat>
   </xed:template>

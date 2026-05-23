@@ -40,13 +40,14 @@
         <xed:include ref="failed-validation-messages" />
 
         <fieldset>
-          <legend style="display: none;">Submission form<!-- **TODO*i18n*--></legend>
+          <!-- TODO: i18n -->
+          <legend class="d-none">Submission form</legend>
           <xed:include ref="genres.{$genre_intern}" />
         </fieldset>
 
         <xed:if test="not($host='standalone')">
           <fieldset class="mir-relatedItem">
-            <legend style="display: none;"><xed:output i18n="mir.form.editor.dynamic.partof" /></legend>
+            <legend class="d-none"><xed:output i18n="mir.form.editor.dynamic.partof" /></legend>
             <div class="col-md-12 mir-relatedItem-head">
               <xed:output i18n="mir.form.editor.dynamic.partof" />
               <xed:output value="concat($mir_genres//category[@ID=$host]/label[lang($CurrentLang)]/@text,':')" />
@@ -63,7 +64,7 @@
               <xed:if test="contains($mir_genres//category[@ID=$host]/label[lang('x-hosts')]/@text,'series')">
                 <xed:bind xpath="mods:relatedItem[(@type='host')][1]">
                   <fieldset class="mir-relatedItem">
-                    <legend style="display: none;"><xed:output i18n="mir.form.editor.dynamic.partof" /></legend>
+                    <legend class="d-none"><xed:output i18n="mir.form.editor.dynamic.partof" /></legend>
                     <div class="col-md-12 mir-relatedItem-head">
                       <xed:output i18n="mir.form.editor.dynamic.partof" />
                       <xed:output value="concat($mir_genres//category[@ID='series']/label[lang($CurrentLang)]/@text,':')" />
