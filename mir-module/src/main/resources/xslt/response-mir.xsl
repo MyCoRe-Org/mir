@@ -352,7 +352,7 @@
                 <xsl:variable name="preparedCurrentQryFromLastRequest"
                               select="translate($currentQryFromLastRequestValue, '&quot;', '')" />
                 <!-- Input element for the second search -->
-                <input aria-label="{i18n:translate('mir.placeholder.response.search')}" class="form-control" id="qry" placeholder="{mcri18n:translate('mir.placeholder.response.search')}"
+                <input aria-label="{mcri18n:translate('mir.placeholder.response.search')}" class="form-control" id="qry" placeholder="{mcri18n:translate('mir.placeholder.response.search')}"
                        type="text" value="{$preparedCurrentQryFromLastRequest}" />
 
                 <button aria-label="Search button" class="btn btn-primary" type="submit">
