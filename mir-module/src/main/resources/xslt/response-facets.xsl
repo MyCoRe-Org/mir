@@ -183,8 +183,9 @@
       </xsl:variable>
 
       <li data-fq="{$fqResponseValue}">
-        <div class="form-check" onclick="location.href='{$queryURL}';">
-          <input type="checkbox" class="form-check-input">
+        <xsl:variable name="facetCheckboxId" select="concat('facet-', generate-id())" />
+        <div class="form-check">
+          <input id="{$facetCheckboxId}" type="checkbox" class="form-check-input" onchange="location.href='{$queryURL}';">
             <xsl:if test="
               /response/lst[@name='responseHeader']/lst[@name='params']/str[@name='fq' and text() = $fqResponseValue] |
               /response/lst[@name='responseHeader']/lst[@name='params']/arr[@name='fq']/str[text() = $fqResponseValue]">
@@ -192,7 +193,7 @@
             </xsl:if>
           </input>
 
-          <label class="form-check-label form-label">
+          <label for="{$facetCheckboxId}" class="form-check-label form-label">
             <span class="title">
               <xsl:call-template name="label">
                 <xsl:with-param name="parameterValues" select="$parameterValues"/>

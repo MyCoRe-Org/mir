@@ -18,7 +18,7 @@
       </xsl:if>
         <xsl:apply-templates select="." mode="linkText" />
       </a>
-      <ul class="dropdown-menu" role="menu" aria-labelledby="{$menuId}">
+      <ul class="dropdown-menu" aria-labelledby="{$menuId}">
         <xsl:apply-templates select="item|group" />
       </ul>
     </li>
@@ -27,15 +27,15 @@
   <xsl:template match="/navigation//group[@id and item]">
     <xsl:param name="rootNode" select="." />
     <xsl:if test="name(preceding-sibling::*[1])='item'">
-      <li role="presentation" class="dropdown-divider" />
+      <li class="dropdown-divider" />
     </xsl:if>
     <xsl:if test="label">
-      <li role="presentation" class="dropdown-header">
+      <li class="dropdown-header">
         <xsl:apply-templates select="." mode="linkText" />
       </li>
     </xsl:if>
     <xsl:apply-templates />
-    <li role="presentation" class="dropdown-divider" />
+    <li class="dropdown-divider" />
   </xsl:template>
 
   <xsl:template match="/navigation//item[@href]">
@@ -82,7 +82,7 @@
             <xsl:apply-templates select="." mode="linkText" />
           </a>
           <xsl:if test="item">
-            <ul class="dropdown-menu" role="menu">
+            <ul class="dropdown-menu">
               <xsl:apply-templates select="item" />
             </ul>
           </xsl:if>

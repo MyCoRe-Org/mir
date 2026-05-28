@@ -44,7 +44,7 @@
               class="form-control search-query"
               id="searchInput"
               type="text"
-              aria-label="Search"
+              aria-label="{mcri18n:translate('mir.navsearch.placeholder')}"
               aria-describedby="" />
             <xsl:choose>
               <xsl:when test="contains($isSearchAllowedForCurrentUser, 'true')">
@@ -56,7 +56,7 @@
             </xsl:choose>
             <div class="input-group mb-3">
               <div class="input-group-append">
-                <button type="submit" class="btn btn-primary">
+                <button type="submit" aria-label="{mcri18n:translate('editor.search.search')}" class="btn btn-primary">
                   <i class="fas fa-search"></i>
                 </button>
               </div>

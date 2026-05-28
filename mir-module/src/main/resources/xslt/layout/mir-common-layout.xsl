@@ -81,7 +81,7 @@
             </strong>
             <span class="caret" />
           </a>
-          <ul class="dropdown-menu" role="menu">
+          <ul class="dropdown-menu">
             <xsl:apply-templates select="$loaded_navigation_xml/menu[@id='user']/*" />
           </ul>
         </li>
@@ -102,7 +102,7 @@
           <xsl:value-of select="$curLang/language/@xmlCode" />
           <span class="caret" />
         </a>
-        <ul class="dropdown-menu language-menu" role="menu">
+        <ul class="dropdown-menu language-menu">
           <xsl:for-each select="$availableLanguages">
             <xsl:variable name="lang"><xsl:value-of select="mcrstringutils:trim(.)" /></xsl:variable>
             <xsl:if test="$lang!='' and $CurrentLang!=$lang">
@@ -247,7 +247,7 @@
           <xsl:value-of select="$entryCount" />
         </sup>
       </a>
-      <ul class="dropdown-menu" role="menu">
+      <ul class="dropdown-menu">
         <li>
           <a href="{$ServletsBaseURL}MCRBasketServlet?type={$basket/@type}&amp;action=show" class="dropdown-item">
             <xsl:value-of select="mcri18n:translate('basket.open')" />

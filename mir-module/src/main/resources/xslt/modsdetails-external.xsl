@@ -688,7 +688,7 @@
           <!-- no derivate -->
           <xsl:otherwise>
             <!-- show default icon -->
-            <img class="hit_icon" src="{$WebApplicationBaseURL}images/icons/icon_common_disabled.png" />
+            <img alt="" class="hit_icon" src="{$WebApplicationBaseURL}images/icons/icon_common_disabled.png" />
           </xsl:otherwise>
         </xsl:choose>
       </div>
