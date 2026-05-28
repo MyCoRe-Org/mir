@@ -155,11 +155,9 @@
     <xsl:if test="$MIR.DFGViewer.enable='true' and document(concat('org.mycore.iview2.frontend.MCRIView2XSLFunctionsAdapter:hasMETSFile:',$derId))">
       <div class="row">
         <div id="mir-dfgViewer" class="float-end">
-          <a title="{mcri18n:translate('metaData.dfgViewerShow')}"
+          <a title="{mcri18n:translate('metaData.dfgViewer')}"
              href="{$WebApplicationBaseURL}servlets/MCRDFGLinkServlet?deriv={$derId}">
-            <xsl:value-of select="mcri18n:translate('metaData.dfgViewerPre')" />
-            <img src="{$WebApplicationBaseURL}images/logo-dfg.png" />
-            <xsl:value-of select="mcri18n:translate('metaData.dfgViewerPost')" />
+            <xsl:value-of select="mcri18n:translate('metaData.dfgViewer')" />
           </a>
         </div>
       </div>
