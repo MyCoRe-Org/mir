@@ -43,7 +43,7 @@ import jakarta.ws.rs.core.Response;
 public class MCRSherpaProxyResource {
 
     private static final Logger LOGGER = LogManager.getLogger();
-    public static final String MIR_SHERPA_CONFIG_KEY = "MIR.Sherpa";
+    public static final String MIR_SHERPA_CONFIG_KEY = "MIR.Sherpa.Class";
 
     @Path("retrieve/{type}/")
     @Produces(MediaType.APPLICATION_JSON)

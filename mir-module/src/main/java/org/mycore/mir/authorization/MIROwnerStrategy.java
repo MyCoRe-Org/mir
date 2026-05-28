@@ -54,7 +54,7 @@ public class MIROwnerStrategy implements MCRAccessCheckStrategy {
     private static final String CONFIG_PREFIX = "MIR.OwnerStrategy.";
 
     private static final MCRAccessCheckStrategy BASE_STRATEGY = MCRConfiguration2.getInstanceOfOrThrow(
-        MCRAccessCheckStrategy.class, CONFIG_PREFIX + "FallbackClass");
+        MCRAccessCheckStrategy.class, CONFIG_PREFIX + "Fallback.Class");
 
     private static final List<String> OBJECT_TYPES = MCRConfiguration2.getString(CONFIG_PREFIX + "ObjectTypes")
         .stream()
