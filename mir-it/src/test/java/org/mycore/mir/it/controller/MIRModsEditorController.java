@@ -197,13 +197,15 @@ public class MIRModsEditorController extends MIREditorController {
         if (langs.size() > 0) {
             if (langs.size() > 1) {
                 IntStream.range(1, langs.size()).forEach((n) -> clickRepeaterAndWait("mods:language",
-                    ".//span[contains(@id, 'modslanguage" + (n + 1) + "/modslanguageTerm')]"));
+                    ".//select[contains(@name, 'mods:language[" + (n + 1) + "]/mods:languageTerm')]"));
             }
 
             IntStream.range(0, langs.size()).forEach(i -> {
-                String xp = "modslanguage" + (i + 1) + "/modslanguageTerm";
+                String selectXP = "mods:language[" + (i + 1) + "]/mods:languageTerm";
                 MIRLanguage currentLang = langs.get(i);
-                driver.waitAndFindElement(By.xpath(".//span[contains(@id, '" + xp + "')]")).click();
+                String langSelectID = driver.waitAndFindElement(
+                    By.xpath(".//select[contains(@name, '" + selectXP + "')]")).getAttribute("id");
+                driver.waitAndFindElement(By.xpath(".//span[contains(@id, '" + langSelectID + "')]")).click();
                 driver.waitAndFindElement(By.className("select2-search__field")).clear();
                 driver.waitAndFindElement(By.className("select2-search__field")).sendKeys(currentLang.getValue());
                 StaleElementReferenceException e;
