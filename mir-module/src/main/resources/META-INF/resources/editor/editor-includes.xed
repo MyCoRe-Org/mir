@@ -1979,7 +1979,7 @@
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-body">
-            <textarea aria-label="{i18n:mir.aria.modal.name.input}" rows="10" cols="76"></textarea>
+            <textarea name="" aria-label="{i18n:mir.aria.modal.name.input}" rows="10" cols="76"></textarea>
           </div>
         </div>
       </div>
