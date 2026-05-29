@@ -27,7 +27,7 @@ import org.apache.logging.log4j.Logger;
 import org.jdom2.Element;
 import org.mycore.common.MCRSessionMgr;
 import org.mycore.common.config.MCRConfigurationDir;
-import org.mycore.common.xml.MCRURIResolver;
+import org.mycore.common.xsl.uriresolver.MCRURIResolver;
 import org.mycore.frontend.servlets.MCRServlet;
 
 import java.io.File;

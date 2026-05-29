@@ -33,7 +33,7 @@ import org.jdom2.output.XMLOutputter;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mycore.common.MCRStreamUtils;
-import org.mycore.common.xml.MCRURIResolver;
+import org.mycore.common.xsl.uriresolver.MCRURIResolver;
 import org.mycore.mir.wizard.command.MIRWizardMCRCommand;
 import org.mycore.test.MCRJPAExtension;
 import org.mycore.test.MCRJPATestHelper;
