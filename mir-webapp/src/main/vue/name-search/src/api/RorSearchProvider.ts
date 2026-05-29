@@ -29,6 +29,19 @@ export class RorSearchProvider implements SearchProvider {
         }
     }
 
+    normalizeIdentifierValue(type: string, value: string): string {
+        if (!value) {
+            return value;
+        }
+
+        switch (type?.toLowerCase()) {
+            case "isni":
+                return value.replace(/\s+/g, "");
+            default:
+                return value;
+        }
+    }
+
     async searchPerson(searchTerm: string) {
         const responsePromise = await fetch(`https://api.ror.org/v2/organizations?query=${encodeURIComponent(searchTerm)}`);
         const json = await responsePromise.json();
@@ -54,22 +67,20 @@ export class RorSearchProvider implements SearchProvider {
                 person: false
             };
 
-            for (const type in item.external_ids) {
-                if ("preferred" in item.external_ids[type] && item.external_ids[type].preferred != null) {
-                    searchResult.identifier.push({type, value: item.external_ids[type].preferred});
-                } else {
-                    if ("all" in item.external_ids[type]) {
-                        if (item.external_ids[type].all instanceof Array) {
-                            for (const index in item.external_ids[type].all) {
-                                searchResult.identifier.push({
-                                    type, value: item.external_ids[type].all[index]
-                                });
-                            }
-                        } else if (typeof item.external_ids[type].all == "string" && item.external_ids[type].all.length > 0) {
-                            searchResult.identifier.push({
-                                type, value: item.external_ids[type].all
-                            });
-                        }
+            for (const extIdObj of item.external_ids) {
+                const idType = extIdObj.type;
+                if (extIdObj.preferred) {
+                    searchResult.identifier.push({
+                        type: idType,
+                        value: this.normalizeIdentifierValue(idType, extIdObj.preferred)
+                    });
+                } else if (extIdObj.all) {
+                    const allValues = Array.isArray(extIdObj.all) ? extIdObj.all : [extIdObj.all];
+                    for (const val of allValues) {
+                        searchResult.identifier.push({
+                            type: idType,
+                            value: this.normalizeIdentifierValue(idType, val)
+                        });
                     }
                 }
             }
