@@ -74,12 +74,12 @@
       <xsl:if test="//mods:mods/mods:identifier[@type='doi'] and ($MIR.altmetrics = 'show' or $MIR.plumx = 'show')">
         <div id="mir-metric-badges" class="row">
           <xsl:if test="$MIR.altmetrics = 'show'">
-            <script type='text/javascript' src='https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js'></script>
+            <script type='text/javascript' src='https://embed.altmetric.com/assets/embed.js'></script>
             <xsl:choose>
               <xsl:when test="$MIR.plumx = 'show'">
-                <!-- use altmeltrics badge -->
+                <!-- use altmetrics badge -->
                 <div class="col-6">
-                  <div data-badge-type="1" data-badge-popover="right" data-doi="{//mods:mods/mods:identifier[@type='doi']}" data-hide-no-mentions="{$MIR.altmetrics.hide}" class="altmetric-embed"></div>
+                  <div data-badge-popover="right" data-doi="{//mods:mods/mods:identifier[@type='doi']}" data-hide-no-mentions="{$MIR.altmetrics.hide}" class="altmetric-embed"></div>
                 </div>
               </xsl:when>
               <xsl:otherwise>
