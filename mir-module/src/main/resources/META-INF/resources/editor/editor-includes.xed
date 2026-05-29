@@ -93,14 +93,14 @@
   <!-- ========== table of contents ========== -->
   <xed:template id="toc-layout">
     <div class="mir-form-group row">
-      <label id="tocLayoutLabel-{xed:generate-id()}" class="col-md-3 col-form-label text-end form-label">
+      <label id="tocLayoutLabel" class="col-md-3 col-form-label text-end form-label">
         <xed:output i18n="component.mods.metaData.dictionary.tocLayout" />:
       </label>
       <xed:bind xpath="../../../../service">
         <xed:bind xpath="servflags[@class='MCRMetaLangText']/servflag[@type='tocLayout']">
           <div class="col-md-6">
             <div class="controls">
-              <select aria-labelledby="tocLayoutLabel-{xed:generate-id(../../../../..)}" class="form-control form-control-inline form-select">
+              <select aria-labelledby="tocLayoutLabel" class="form-control form-control-inline form-select">
                 <option value="">
                   <xed:output i18n="mir.select.optional" />
                 </option>
@@ -118,13 +118,13 @@
 
   <xed:template id="status">
     <div class="mir-form-group row">
-      <label id="statusLabel-{xed:generate-id()}" class="col-md-3 col-form-label text-end form-label">
+      <label id="statusLabel" class="col-md-3 col-form-label text-end form-label">
         <xed:output i18n="component.mods.metaData.dictionary.status" />
       </label>
       <xed:bind xpath="servstates[@class='MCRMetaClassification']/servstate[@classid='state']/@categid" initially="{$MIR.Editor.Default.State}">
         <div class="col-md-6">
           <div class="controls">
-            <select aria-labelledby="statusLabel-{xed:generate-id(../../..)}" class="form-control form-control-inline form-select">
+            <select aria-labelledby="statusLabel" class="form-control form-control-inline form-select">
               <xed:include uri="xslStyle:items2options:classification:editor:-1:children:state" />
             </select>
           </div>
