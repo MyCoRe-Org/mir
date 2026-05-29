@@ -74,12 +74,6 @@
             e.preventDefault();
           });
 
-        $(".mir_metadata a.ppn").each(function () {
-            if ($(this).attr('href').indexOf(":ppn:") > -1) {
-                resolvePPN($(this));
-            }
-        });
-
         if(window.location.search.indexOf("XSL.Status") > -1) {
             let paramString = window.location.search.substring(1);
             let newParamString = "";
@@ -743,37 +737,6 @@
         }).fail(function () {
             console.log("Can not get i18nKey: " + i18nKey);
             $(currentElm).html(i18nKey);
-        });
-    }
-
-    function trimPPNUrl(ppnUrl) {
-        if (ppnUrl) {
-            try {
-                let url = new URL(ppnUrl);
-                return (url && url.protocol + "//" + url.host + url.pathname) || ppnUrl;
-            } catch (e) {
-                console.error(e);
-            }
-        }
-        return ppnUrl;
-    }
-
-    function resolvePPN(element) {
-        $.ajax({
-            url: "https://daia.gbv.de/?id=" + trimPPNUrl($(element).attr("href")) + "&format=json",
-            type: "GET",
-            dataType: "json",
-            success: function(data) {
-                if (data.document !== undefined && data.document.length > 0 && data.document[0].href !== undefined) {
-                    $(element).attr("href", data.document[0].href)
-                }
-                else {
-                    console.warn("Can not resolve PPN: " +  $(element).text());
-                }
-            },
-            error: function(error) {
-                console.warn("Can not resolve PPN: " +  $(element).text());
-            }
         });
     }
 

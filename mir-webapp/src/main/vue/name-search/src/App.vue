@@ -27,9 +27,14 @@
           <template v-if="defineOwnIdentifier">
             <div class="form-group row">
               <div class="col-4">
-                <select v-model="model.currentOwnIdentifierType" class="form-control ">
-                  <option selected="selected" value="">{{ model.selectLabel }}</option>
-                  <option v-for="identifierType in model.possibleIdentifierTypes" :key="identifierType.value" :value="identifierType.value">
+                <select v-model="model.currentOwnIdentifierType" class="form-control">
+                  <option value="">{{ model.selectLabel }}</option>
+                  <option
+                      v-for="identifierType in model.possibleIdentifierTypes"
+                      :key="identifierType.value"
+                      :value="identifierType.value.toLowerCase()"
+                      :disabled="hasType(identifierType.value)"
+                  >
                     {{ identifierType.label }}
                   </option>
                 </select>
@@ -48,7 +53,7 @@
           <div v-for="identifier in model.currentIdentifier" :key="`${identifier.type}-${identifier.value}`"
                v-on:click.prevent="removeIdentifier(identifier)"
                class="identifier">
-            <identifier-display :type="identifier.type" :value="identifier.value"/>
+            <IdentifierDisplay :type="identifier.type" :value="identifier.value"/>
             <i class="identifier-remover fas fa-minus-circle text-info" v-on:click="addIdentifier(identifier)"></i>
           </div>
 
@@ -92,12 +97,16 @@
                     </div>
                     <div class="row">
                         <div class="col-12">
-                            <div v-for="identifier in searchResult.identifier" :key="`${identifier.type}-${identifier.value}`"
+                          <div v-for="identifier in searchResult.identifier.filter(id => isAllowedIdentifierType(id.type))" :key="`${identifier.type}-${identifier.value}`"
                                  class="identifier">
-                                <identifier-display :type="identifier.type" :value="identifier.value"/>
-                                <i :title="model.addLabel"
-                                   class="identifier-add fas fa-plus-circle text-info"
-                                   v-on:click="addIdentifier(identifier, $event)"></i>
+                              <IdentifierDisplay :type="identifier.type" :value="identifier.value"/>
+                              <i
+                                  :title="hasType(identifier.type) ? 'Already added' : model.addLabel"
+                                  class="identifier-add fas fa-plus-circle"
+                                  :class="hasType(identifier.type) ? 'text-muted disabled' : 'text-info'"
+                                  :style="hasType(identifier.type) ? 'pointer-events: none; opacity: 0.4;' : ''"
+                                  v-on:click="addIdentifier(identifier, $event)"
+                              ></i>
                             </div>
                         </div>
                     </div>
@@ -178,6 +187,11 @@ const isDevMode = () => {
 const nameLocatorString = computed(() => {
   return model.nameLocator?.modsIndex + "-" + model.nameLocator?.nameIndex + "-" + (model.nameLocator?.relatedItemIndex || '');
 })
+const isAllowedIdentifierType = (type: string) => {
+  return model.possibleIdentifierTypes
+      .map(t => t.value.toLowerCase())
+      .includes(type?.toLowerCase());
+}
 
 watch(() => model.currentIdentifier, (val) => {
     if (!isDevMode() && model.nameLocator !== undefined) {
@@ -229,7 +243,12 @@ const loadIdentifierTypeClass = async () => {
         }
     }
 }
-
+const hasType = (type: string) => {
+  const norm = normalizeType(type);
+  return model.currentIdentifier.some(
+      (id: any) => id.type?.toLowerCase() === norm.toLowerCase()
+  );
+};
 const loadLanguage = async () => {
     model.personPlaceholder = `${await i18n("mir.namePart.family")}, ${await i18n("mir.namePart.given")}`;
     [
@@ -257,10 +276,13 @@ const initializeXEditorConnection = async () => {
         model.isPerson = retrieveIsPerson(model.nameLocator);
     }
 }
-
+const normalizeType = (raw: string): string => {
+  const canonical = model.possibleIdentifierTypes.find(t => t.value.toLowerCase() === raw?.toLowerCase());
+  return canonical?.value ?? raw;
+}
 const convertCategory = (categ: any) => {
     return {
-        value: (categ.ID as string).toLowerCase(),
+        value: (categ.ID as string),
         label: findLabel(categ)
     }
 }
@@ -277,12 +299,23 @@ const findLabel = (categ: any) => {
 }
 
 const addOwnIdentifier = () => {
-    if (model.currentOwnIdentifierType != "" && model.currentOwnIdentifierValue != "") {
-        const identifier: Identifier = {type: model.currentOwnIdentifierType, value: model.currentOwnIdentifierValue};
-        model.currentIdentifier.push(identifier);
-        model.currentOwnIdentifierValue = "";
-        model.currentOwnIdentifierType = "";
+  if (
+      model.currentOwnIdentifierType != "" &&
+      model.currentOwnIdentifierValue != ""
+  ) {
+    const type = normalizeType(model.currentOwnIdentifierType);
+    const value = model.currentOwnIdentifierValue;
+
+    const exists = model.currentIdentifier.some(
+        (id: any) => id.type?.toLowerCase() === type.toLowerCase()
+    );
+    if (!exists) {
+      const identifier: Identifier = {type, value};
+      model.currentIdentifier.push(identifier);
     }
+    model.currentOwnIdentifierValue = "";
+    model.currentOwnIdentifierType = "";
+  }
 }
 
 const currentResults = computed(() => {
@@ -355,10 +388,18 @@ const addIdentifier = async (identifier: Identifier, event?: MouseEvent) => {
         await animation.finished;
     }
 
-    if (model.currentIdentifier.filter((id: any) => id.type == identifier.type && id.value == identifier.value).length == 0) {
-        model.currentIdentifier.push(identifier);
-    }
-}
+  const normType = normalizeType(identifier.type);
+  if (!isAllowedIdentifierType(normType)) {
+    return;
+  }
+  if (
+      !model.currentIdentifier.some(
+          (id: any) => id.type?.toLowerCase() === normType.toLowerCase()
+      )
+  ) {
+    model.currentIdentifier.push({...identifier, type: normType});
+  }
+};
 
 const animateElementToElement = (from: HTMLElement, to: HTMLElement): Animation => {
     const yMove = -1 * (from.getBoundingClientRect().y - to.getBoundingClientRect().y);
