@@ -40,12 +40,17 @@
   </xsl:template>
 
   <xsl:template match="item/doc">
-    <xsl:for-each select="field[@name='mir.toc.title']">
-      <xsl:text>: </xsl:text>
-      <a href="{$WebApplicationBaseURL}receive/{../@id}">
-        <xsl:value-of select="." />
-      </a>
-    </xsl:for-each>
+    <xsl:text>: </xsl:text>
+    <a href="{$WebApplicationBaseURL}receive/{@id}">
+      <xsl:choose>
+        <xsl:when test="string-length(field[@name='mir.toc.title']) &gt; 0">
+          <xsl:value-of select="field[@name='mir.toc.title']" />
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="field[@name='search_result_link_text']" />
+        </xsl:otherwise>
+      </xsl:choose>
+    </a>
     <xsl:for-each select="field[@name='mir.toc.authors']">
       <br />
       <xsl:value-of select="." />
@@ -194,7 +199,14 @@
         </xsl:when>
       </xsl:choose>
       <a href="{$WebApplicationBaseURL}receive/{@id}">
-        <xsl:value-of select="field[@name='mir.toc.title']" />
+        <xsl:choose>
+          <xsl:when test="string-length(field[@name='mir.toc.title']) &gt; 0">
+            <xsl:value-of select="field[@name='mir.toc.title']" />
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:value-of select="field[@name='search_result_link_text']" />
+          </xsl:otherwise>
+        </xsl:choose>
       </a>
     </h4>
   </xsl:template>

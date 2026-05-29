@@ -36,7 +36,7 @@
             </xsl:call-template>
 
             <xsl:call-template name="print-user-info">
-              <xsl:with-param name="user" select="document(concat('notnull:user:', mycoreobject/service/servflags/servflag[@type='createdby']))"/>
+              <xsl:with-param name="userid" select="mycoreobject/service/servflags/servflag[@type='createdby']"/>
               <xsl:with-param name="label" select="mcri18n:translate('mir.metaData.detailBox.by')"/>
             </xsl:call-template>
             <xsl:for-each select="mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:note">
@@ -71,7 +71,7 @@
               <xsl:with-param select="mcri18n:translate('metaData.lastChanged')" name="label"/>
             </xsl:call-template>
             <xsl:call-template name="print-user-info">
-              <xsl:with-param name="user" select="document(concat('notnull:user:', mycoreobject/service/servflags/servflag[@type='modifiedby']))"/>
+              <xsl:with-param name="userid" select="mycoreobject/service/servflags/servflag[@type='modifiedby']"/>
               <xsl:with-param name="label" select="mcri18n:translate('mir.metaData.detailBox.by')"/>
             </xsl:call-template>
             <!--*** MyCoRe-ID and intern ID *************************** -->
@@ -134,9 +134,12 @@
   </xsl:template>
 
   <xsl:template name="print-user-info">
-    <xsl:param name="user"/>
+    <xsl:param name="userid"/>
     <xsl:param name="label"/>
-
+    
+    <xsl:variable name="user" select="document(concat('notnull:user:', $userid))"/>
+    <xsl:variable name="userNotFound" select="count($user/user)=0"/>
+        
     <xsl:variable name="display-name">
       <xsl:choose>
         <xsl:when test="string-length($user/user/realName) &gt; 0 and $MIR.Metadata.Admindata.ShowRealUserName='true'">
@@ -162,6 +165,9 @@
         </xsl:if>
 
         <xsl:choose>
+          <xsl:when test="$userNotFound">
+            <span class="not_found"><xsl:value-of select="$userid"/></span>
+          </xsl:when>
           <xsl:when test="mcracl:check-permission('POOLPRIVILEGE', 'administrate-users')">
             <a href="{$WebApplicationBaseURL}servlets/MCRUserServlet?action=show&amp;id={encode-for-uri($userid-with-realm)}">
               <xsl:value-of select="$display-name"/>
