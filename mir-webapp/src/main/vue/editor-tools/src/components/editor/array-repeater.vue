@@ -37,6 +37,8 @@
                 <div class="offset-7 col-2">
                     <button :class="`btn btn-sm btn-secondary`"
                             type="button"
+                            :title="i18n['mir.editor.repeater.plus']"
+                            :aria-label="i18n['mir.editor.repeater.plus']"
                             v-on:click.prevent="addChild(0)">
                         <i class="fas fa-plus"/>
                     </button>
@@ -50,6 +52,11 @@
 <script setup lang="ts">
 import {reactive, watch} from "vue";
 import repeater from "@/components/editor/repeater.vue";
+import {provideTranslations} from "@/api/I18N";
+
+const i18n = provideTranslations([
+    "mir.editor.repeater.plus",
+]);
 
 interface Props {
     defaultContent: any,

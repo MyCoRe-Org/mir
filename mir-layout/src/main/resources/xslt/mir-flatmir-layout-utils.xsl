@@ -81,7 +81,7 @@
                 class="form-control me-sm-2 search-query"
                 id="searchInput"
                 type="text"
-                aria-label="Search" />
+                aria-label="{mcri18n:translate('mir.navsearch.placeholder')}" />
 
               <input type="hidden" id="initialCondQueryMirFlatmirLayout" name="initialCondQuery">
                 <xsl:attribute name="value">
@@ -105,7 +105,7 @@
                 </xsl:when>
               </xsl:choose>
 
-              <button type="submit" class="btn btn-primary my-2 my-sm-0">
+              <button type="submit" aria-label="{mcri18n:translate('editor.search.search')}" class="btn btn-primary my-2 my-sm-0">
                 <i class="fas fa-search"></i>
               </button>
             </form>

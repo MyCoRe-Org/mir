@@ -29,6 +29,7 @@
 
         <div class="col-7">
             <classification-select v-model="topic.lang"
+                                   :id="id+'language'"
                                    :empty-label="i18n['mir.editor.subject.editor.language.choose']"
                                    :url="`${webApplicationBaseURL}api/v2/classifications/rfc5646`"/>
         </div>

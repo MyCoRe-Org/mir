@@ -31,7 +31,7 @@
         <script src="{$WebApplicationBaseURL}mir-layout/assets/jquery/plugins/jquery-migrate/jquery-migrate.min.js"></script>
         <xsl:copy-of select="head/*" />
         <link href="{$WebApplicationBaseURL}rsc/sass/mir-layout/scss/{$MIR.Layout.Theme}-{$MIR.DefaultLayout.CSS}.css" rel="stylesheet" />
-        <script type="text/javascript" src ="{$WebApplicationBaseURL}mir-layout/js/cosmol.js"></script>
+        <script src ="{$WebApplicationBaseURL}mir-layout/js/cosmol.js"></script>
         <xsl:if test="string-length($MIR.CustomLayout.CSS) &gt; 0">
           <link href="{$WebApplicationBaseURL}css/{$MIR.CustomLayout.CSS}" rel="stylesheet" />
         </xsl:if>
@@ -53,7 +53,7 @@
           <noscript>
             <div class="mir-no-script alert alert-warning text-center" style="border-radius: 0;">
               <xsl:value-of select="mcri18n:translate('mir.noScript.text')" />&#160;
-              <a href="http://www.enable-javascript.com/de/" target="_blank">
+              <a href="https://www.enable-javascript.com/de/" target="_blank" rel="noopener noreferrer">
                 <xsl:value-of select="mcri18n:translate('mir.noScript.link')" />
               </a>
               .

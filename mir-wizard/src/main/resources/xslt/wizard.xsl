@@ -16,7 +16,7 @@
         <script src="{$WebApplicationBaseURL}mir-wizard/assets/highlightjs/js/highlight.js"></script>
       </head>
       <xsl:apply-templates />
-      <script type="text/javascript">
+      <script>
         hljs.initHighlightingOnLoad();
       </script>
     </site>
