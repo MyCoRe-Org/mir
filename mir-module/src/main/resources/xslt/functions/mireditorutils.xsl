@@ -21,7 +21,7 @@
     <xsl:variable name="type"
       select="if ($matches-pattern) then lower-case(tokenize($normalized, '_')[2]) else ''" />
     <xsl:sequence
-      select="$matches-pattern and mcrproperty:one(concat('MCR.Metadata.Type.', $type)) = 'true'" />
+      select="$matches-pattern and mcrproperty:get(concat('MCR.Metadata.Type.', $type)) = 'true'" />
   </xsl:function>
 
   <xsl:function name="mireditorutils:build-extent-pages" as="element(mods:extent)">
