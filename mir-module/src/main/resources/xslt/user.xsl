@@ -162,7 +162,7 @@
           <p>
             <xsl:value-of select="mcri18n:translate('mir.orcid.user.integration.status.unlinked.details')" />
           </p>
-          <xsl:variable name="scope" select="mcrproperty:one('MCR.ORCID2.OAuth.ClientSecret')" />
+          <xsl:variable name="scope" select="mcrproperty:get('MCR.ORCID2.OAuth.ClientSecret')" />
           <xsl:if test="$scope">
             <xsl:call-template name="render-orcid-oauth-scope-description-list">
               <xsl:with-param name="scope" select="$scope" />
@@ -175,7 +175,7 @@
           <br />
         </xsl:otherwise>
       </xsl:choose>
-      <xsl:variable name="info-url" select="mcrproperty:one('MIR.ORCID.InfoURL')" />
+      <xsl:variable name="info-url" select="mcrproperty:get('MIR.ORCID.InfoURL')" />
       <xsl:if test="$info-url">
         <a href="{$info-url}">
           <xsl:value-of select="mcri18n:translate('mir.orcid.user.integration.action.learnMore')" />

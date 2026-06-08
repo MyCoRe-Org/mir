@@ -14,12 +14,12 @@
   </xsl:function>
 
   <xsl:param name="access-key-object-types" select="
-    tokenize(mcrproperty:one('MCR.ACL.AccessKey.Strategy.AllowedObjectTypes'), ',')
+    tokenize(mcrproperty:get('MCR.ACL.AccessKey.Strategy.AllowedObjectTypes'), ',')
       ! normalize-space(.)[. != '']
   " />
 
   <xsl:param name="access-key-session-permissions" select="
-    tokenize(mcrproperty:one('MCR.ACL.AccessKey.Strategy.AllowedSessionPermissionTypes'), ',')
+    tokenize(mcrproperty:get('MCR.ACL.AccessKey.Strategy.AllowedSessionPermissionTypes'), ',')
       ! normalize-space(.)[. != '']
   " />
 

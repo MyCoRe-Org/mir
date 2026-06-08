@@ -8,14 +8,14 @@
   exclude-result-prefixes="#all">
 
   <xsl:function name="mirorcidutil:is-orcid-enabled" as="xs:boolean">
-    <xsl:sequence select="mcrproperty:one('MCR.ORCID2.OAuth.ClientSecret') != ''" />
+    <xsl:sequence select="mcrproperty:get('MCR.ORCID2.OAuth.ClientSecret') != ''" />
   </xsl:function>
 
   <xsl:function name="mirorcidutil:is-publishable-state" as="xs:boolean">
     <xsl:param name="state" as="xs:string" />
 
     <xsl:variable name="publish-states" select="
-      tokenize(mcrproperty:one('MCR.ORCID2.Work.PublishStates'), ',') ! normalize-space(.)[. != '']
+      tokenize(mcrproperty:get('MCR.ORCID2.Work.PublishStates'), ',') ! normalize-space(.)[. != '']
     " />
 
     <xsl:sequence select="$publish-states[. = $state] => exists()" />
@@ -42,7 +42,7 @@
 
   <xsl:function name="mirorcidutil:get-trusted-name-id-types" as="xs:string*">
     <xsl:sequence select="
-      tokenize(mcrproperty:one('MCR.ORCID2.User.TrustedNameIdentifierTypes'), ',') ! normalize-space(.)[. != '']
+      tokenize(mcrproperty:get('MCR.ORCID2.User.TrustedNameIdentifierTypes'), ',') ! normalize-space(.)[. != '']
     " />
   </xsl:function>
 

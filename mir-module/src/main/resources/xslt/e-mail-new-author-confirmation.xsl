@@ -11,16 +11,16 @@
   <xsl:variable name="i18n-prefix" select="'selfRegistration.step.verified.email.admin.'" />
   <xsl:variable name="newline" select="'&#xA;'" />
   <xsl:variable name="email-verification" select="
-    lower-case(mcrproperty:one('MIR.SelfRegistration.EmailVerification.setDisabled')) = 'false'
+    lower-case(mcrproperty:get('MIR.SelfRegistration.EmailVerification.setDisabled')) = 'false'
   " />
   <xsl:variable name="unlock-via-admin-link" select="
-    lower-case(mcrproperty:one('MIR.SelfRegistration.DisabledStatus.UnlockViaAdminLink')) = 'true'
+    lower-case(mcrproperty:get('MIR.SelfRegistration.DisabledStatus.UnlockViaAdminLink')) = 'true'
   " />
 
   <xsl:template match="/">
     <email>
       <from>
-        <xsl:value-of select="mcrproperty:one('MCR.mir-module.MailSender')" />
+        <xsl:value-of select="mcrproperty:get('MCR.mir-module.MailSender')" />
       </from>
       <xsl:apply-templates select="/*" mode="email" />
     </email>
@@ -28,7 +28,7 @@
 
   <xsl:template match="user" mode="email">
     <to>
-      <xsl:value-of select="mcrproperty:one('MCR.mir-module.NewUserMail')" />
+      <xsl:value-of select="mcrproperty:get('MCR.mir-module.NewUserMail')" />
     </to>
     <xsl:variable name="name" select="@name || ' (' || @realm || ')'" />
     <subject>
