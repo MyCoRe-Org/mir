@@ -2,7 +2,7 @@
 <!DOCTYPE MyCoReWebPage>
 <MyCoReWebPage>
   <section xml:lang="all" i18n="mir.accesskey">
-    <xed:form class="accessKey form-horizontal" role="form" xmlns:xed="http://www.mycore.de/xeditor" xmlns:mir="http://www.mycore.de/mir">
+    <xed:form class="accessKey form-horizontal" xmlns:xed="http://www.mycore.de/xeditor" xmlns:mir="http://www.mycore.de/mir">
       <xed:cancel url="{$url}" />
       <xed:cancel url="{$WebApplicationBaseURL}receive/{$objId}" />
 

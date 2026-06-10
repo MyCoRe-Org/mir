@@ -90,7 +90,6 @@
                 class="modal fade"
                 tabindex="-1"
                 role="dialog"
-                aria-labelledby="modal frame"
                 aria-hidden="true">
               <div
                   class="modal-dialog modal-lg modal-xl"
@@ -151,8 +150,8 @@
               <xsl:if
                   test="$originalContent/div[@id=$boxID]/table[@class='mir-metadata']//*[contains(@class,'openstreetmap-container')]">
                 <link rel="stylesheet" type="text/css" href="{$WebApplicationBaseURL}assets/openlayers/ol.css"/>
-                <script type="text/javascript" src="{$WebApplicationBaseURL}assets/openlayers/ol.js"/>
-                <script type="text/javascript" src="{$WebApplicationBaseURL}js/mir/geo-coords.min.js"></script>
+                <script src="{$WebApplicationBaseURL}assets/openlayers/ol.js"/>
+                <script src="{$WebApplicationBaseURL}js/mir/geo-coords.min.js"></script>
               </xsl:if>
             </div>
           </xsl:when>

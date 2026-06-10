@@ -18,7 +18,7 @@
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h5>{{ i18n["mir.editor.subject.search.modal.title"] }}</h5>
-                                <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button" @click.prevent>
+                                <button :aria-label="i18n['mir.editor.subject.search.modal.close']" class="btn-close" data-bs-dismiss="modal" type="button" @click.prevent>
                                 </button>
                             </div>
                             <div class="modal-body">
@@ -54,17 +54,17 @@
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h5>{{ i18n["mir.editor.subject.custom.modal.title"] }}</h5>
-                              <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button" @click.prevent>
+                              <button :aria-label="i18n['mir.editor.subject.custom.modal.close']" class="btn-close" data-bs-dismiss="modal" type="button" @click.prevent>
                               </button>
                             </div>
 
                             <div class="modal-body">
                                 <div class="row mb-2">
                                     <div class="col-3">
-                                        <label>{{ i18n["mir.editor.subject.custom.modal.type"] }}</label>
+                                        <label :for="customTypeSelectId">{{ i18n["mir.editor.subject.custom.modal.type"] }}</label>
                                     </div>
                                     <div class="col-7">
-                                        <select v-model="model.custom.type" class="form-control form-control-sm custom-type-select form-select">
+                                        <select :id="customTypeSelectId" v-model="model.custom.type" class="form-control form-control-sm custom-type-select form-select">
                                             <option v-for="type in possibleTypeList"
                                                     :value="type">
                                                 {{ i18n["mir.editor.subject.custom.modal.type."+type] }}
@@ -145,6 +145,8 @@ import TitleInfoEditor from "@/components/editor/title-info-editor.vue";
 import GeographicEditor from "@/components/editor/geographic-editor.vue";
 import CartographicsEditor from "@/components/editor/cartographic-editor.vue";
 import {provideTranslations} from "@/api/I18N";
+
+const customTypeSelectId = `mir-custom-type-select-${Math.random().toString(36).slice(2, 9)}`;
 
 const model = reactive({
     settings: undefined as EditorSettings | undefined,

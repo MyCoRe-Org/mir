@@ -353,10 +353,11 @@
                               select="translate($currentQryFromLastRequestValue, '&quot;', '')" />
                 <!-- Input element for the second search -->
                 <input class="form-control" id="qry" placeholder="{mcri18n:translate('mir.placeholder.response.search')}"
+                       aria-label="{mcri18n:translate('mir.placeholder.response.search')}"
                        type="text" value="{$preparedCurrentQryFromLastRequest}" />
 
                 <button class="btn btn-primary" type="submit">
-                  <span class="fas fa-search"></span>
+                  <span class="fas fa-search" aria-hidden="true"></span>
                   <xsl:value-of select="mcri18n:translate('editor.search.search')"/>
                 </button>
               </div>
@@ -750,7 +751,7 @@
                 </xsl:when>
                 <!-- when there is no content derivate then use disabled icon -->
                 <xsl:when test="string-length($derivid)=0">
-                  <img class="hit_icon" src="{$WebApplicationBaseURL}images/icons/icon_common_disabled.png"/>
+                  <img alt="" class="hit_icon" src="{$WebApplicationBaseURL}images/icons/icon_common_disabled.png"/>
                 </xsl:when>
                 <xsl:otherwise>
                   <div class="hit_icon"
@@ -1065,7 +1066,7 @@
             <xsl:value-of select="mcri18n:translate('mir.response.button.filter')" />
             <span class="caret" />
           </button>
-          <ul class="dropdown-menu dropdown-menu-end" role="menu" style="max-height: 500px; overflow-y: scroll;">
+          <ul class="dropdown-menu dropdown-menu-end" style="max-height: 500px; overflow-y: scroll;">
             <xsl:apply-templates select="$classiDocument/select/option" mode="calculate_option_notselected">
               <xsl:with-param name="classId" select="$classId" />
             </xsl:apply-templates>
@@ -1167,10 +1168,10 @@
             <xsl:value-of select="mcri18n:translate('mir.response.button.filter')" />
             <span class="caret" />
           </button>
-          <div class="dropdown-menu dropdown-menu-end stopAutoclose col-md-12 mir-date-arrowTop" role="menu">
+          <div class="dropdown-menu dropdown-menu-end stopAutoclose col-md-12 mir-date-arrowTop">
             <div class="container-fluid">
               <div class="col-md-12 mir-form-group">
-                <select class="form-control form-select">
+                <select aria-label="{mcri18n:translate('mir.aria.date.operator')}" class="form-control form-select">
                   <option value="=">=</option>
                   <option value="&gt;">&gt;</option>
                   <option value="&gt;=">&gt;=</option>
@@ -1180,17 +1181,17 @@
               </div>
               <div class="col-md-12 mir-form-group dateContainer">
                 <div class="col-md-4">
-                  <input class="form-control" placeholder="DD" type="number" min="1" max="31" style="padding: 0.4em" />
+                  <input aria-label="{mcri18n:translate('mir.aria.date.day')}" class="form-control" placeholder="DD" type="number" min="1" max="31" style="padding: 0.4em" />
                 </div>
                 <div class="col-md-4">
-                  <input class="form-control" placeholder="MM" type="number" min="1" max="12" style="padding: 0.4em" />
+                  <input aria-label="{mcri18n:translate('mir.aria.date.month')}" class="form-control" placeholder="MM" type="number" min="1" max="12" style="padding: 0.4em" />
                 </div>
                 <div class="col-md-4">
-                  <input class="form-control" placeholder="YYYY" type="number" min="1000" max="2050" style="padding: 0.1em" />
+                  <input aria-label="{mcri18n:translate('mir.aria.date.year')}" class="form-control" placeholder="YYYY" type="number" min="1000" max="2050" style="padding: 0.1em" />
                 </div>
               </div>
               <div class="col-md-12 mir-form-group">
-                <input id="dateSearch" type="button" class="btn btn-secondary form-control" value="Go!" />
+                <input aria-label="{mcri18n:translate('mir.aria.date.search')}" id="dateSearch" type="button" class="btn btn-secondary form-control" value="Go!" />
               </div>
             </div>
           </div>

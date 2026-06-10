@@ -38,11 +38,11 @@
 
   <xsl:template match="mir:textfield.nobind">
     <div class="mir-form-group row">
-      <label class="col-md-3 col-form-label text-end form-label">
+      <label for="{@id}{{xed:generate-id()}}" class="col-md-3 col-form-label text-end form-label">
         <xed:output i18n="{@label}" />
       </label>
       <div class="col-md-6 {@divClass}">
-        <input id="{@id}" type="text" class="form-control {@inputClass}" name="">
+        <input id="{@id}{{xed:generate-id()}}" type="text" class="form-control {@inputClass}" name="">
           <xsl:copy-of select="@placeholder" />
           <xsl:copy-of select="@autocomplete" />
         </input>
@@ -72,13 +72,13 @@
   </xsl:template>
 
   <xsl:template name="mir-textfield">
-    <label class="col-md-3 col-form-label text-end form-label">
+    <label for="{@id}{{xed:generate-id()}}" class="col-md-3 col-form-label text-end form-label">
       <xsl:if test="@label">
         <xed:output i18n="{@label}" />
       </xsl:if>
     </label>
     <div class="col-md-6">
-      <input id="{@id}" type="text" class="form-control">
+      <input id="{@id}{{xed:generate-id()}}" type="text" class="form-control">
         <xsl:copy-of select="@placeholder" />
       </input>
     </div>
@@ -239,7 +239,7 @@
     <xsl:param name="showDateTimeOption" select="'false'" />
     <div class="date-selectFormat">
       <button class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown"><span class="caret"></span><span class="sr-only">Toggle Dropdown</span></button>
-      <ul class="dropdown-menu dropdown-menu-end" role="menu">
+      <ul class="dropdown-menu dropdown-menu-end">
         <li>
           <a href="#" class="date-simpleOption dropdown-item">
             <xsl:value-of select="mcri18n:translate('mir.date.specification')" />
@@ -267,21 +267,21 @@
       <xsl:when test="@repeat = 'true'">
         <xed:repeat xpath="{@xpath}" min="{@min}" max="{@max}">
           <div class="mir-form-group row {@class} {$xed-val-marker}">
-            <label class="col-md-3 col-form-label text-end form-label">
+            <label for="{@id}{{xed:generate-id()}}" class="col-md-3 col-form-label text-end form-label">
               <xed:output i18n="{@label}" />
             </label>
             <div class="col-md-6">
               <xsl:choose>
                 <xsl:when test="@bind" >
                   <xed:bind xpath="{@bind}" >
-                    <textarea class="form-control">
+                    <textarea id="{@id}{{xed:generate-id()}}" class="form-control">
                       <xsl:copy-of select="@rows" />
                       <xsl:copy-of select="@placeholder" />
                     </textarea>
                   </xed:bind>
                 </xsl:when>
                 <xsl:otherwise>
-                  <textarea class="form-control tinymce">
+                  <textarea id="{@id}{{xed:generate-id()}}" class="form-control tinymce">
                     <xsl:copy-of select="@rows" />
                     <xsl:copy-of select="@placeholder" />
                   </textarea>
@@ -301,11 +301,11 @@
       <xsl:otherwise>
         <xed:bind xpath="{@xpath}">
           <div class="mir-form-group row {@class} {$xed-val-marker}">
-            <label class="col-md-3 col-form-label text-end form-label">
+            <label for="{@id}{{xed:generate-id()}}" class="col-md-3 col-form-label text-end form-label">
               <xed:output i18n="{@label}" />
             </label>
             <div class="col-md-6">
-              <textarea class="form-control tinymce">
+              <textarea id="{@id}{{xed:generate-id()}}" class="form-control tinymce">
                 <xsl:copy-of select="@rows" />
                 <xsl:copy-of select="@placeholder" />
               </textarea>
@@ -331,21 +331,21 @@
       <xsl:when test="@repeat = 'true'">
         <xed:repeat xpath="{@xpath}" min="{@min}" max="{@max}">
           <div class="mir-form-group row {@class} {$xed-val-marker}">
-            <label class="col-md-3 col-form-label text-end form-label">
+            <label for="{@id}{{xed:generate-id()}}" class="col-md-3 col-form-label text-end form-label">
               <xed:output i18n="{@label}" />
             </label>
             <div class="col-md-6">
             <xsl:choose>
               <xsl:when test="@bind" >
                 <xed:bind xpath="{@bind}" >
-                  <textarea class="form-control">
+                  <textarea id="{@id}{{xed:generate-id()}}" class="form-control">
                     <xsl:copy-of select="@rows" />
                     <xsl:copy-of select="@placeholder" />
                   </textarea>
                 </xed:bind>
               </xsl:when>
               <xsl:otherwise>
-                <textarea class="form-control">
+                <textarea id="{@id}{{xed:generate-id()}}" class="form-control">
                   <xsl:copy-of select="@rows" />
                   <xsl:copy-of select="@placeholder" />
                 </textarea>
@@ -365,11 +365,11 @@
       <xsl:otherwise>
         <xed:bind xpath="{@xpath}">
           <div class="mir-form-group row {@class} {$xed-val-marker}">
-            <label class="col-md-3 col-form-label text-end form-label">
+            <label for="{@id}{{xed:generate-id()}}" class="col-md-3 col-form-label text-end form-label">
               <xed:output i18n="{@label}" />
             </label>
             <div class="col-md-6">
-              <textarea class="form-control">
+              <textarea id="{@id}{{xed:generate-id()}}" class="form-control">
                 <xsl:copy-of select="@rows" />
                 <xsl:copy-of select="@placeholder" />
               </textarea>
@@ -696,12 +696,12 @@
     <xed:bind xpath="{@xpath}">
       <xsl:variable name="xed-val-marker" > {$xed-validation-marker} </xsl:variable>
       <div class="mir-form-group row {@class} {$xed-val-marker}">
-        <label class="col-md-3 col-form-label text-end form-label">
+        <label for="{@id}{{xed:generate-id()}}" class="col-md-3 col-form-label text-end form-label">
           <xed:output i18n="{@label}" />
         </label>
         <div class="col-md-6">
           <div class="input-group">
-            <input class="form-control relItemsearch" data-searchengine="{@searchengine}" data-genre="{@genre}"
+            <input id="{@id}{{xed:generate-id()}}" class="form-control relItemsearch" data-searchengine="{@searchengine}" data-genre="{@genre}"
                    data-valuexpath="//mods:mods/{@xpath}" data-provide="typeahead" type="text" autocomplete="off"
                    placeholder="{@placeholder}" />
             <span class="input-group-addon searchbadge"> </span>
@@ -723,11 +723,11 @@
   <xsl:template match="mir:itemsearch">
     <xed:bind xpath="{@xpath}">
       <div class="mir-form-group row">
-        <label class="col-md-3 col-form-label text-end form-label">
+        <label for="{@id}{{xed:generate-id()}}" class="col-md-3 col-form-label text-end form-label">
           <xed:output i18n="{@label}" />
         </label>
         <div class="col-md-6">
-          <input class="form-control itemsearch" data-searchengine="{@searchengine}" data-genre="{@genre}"
+          <input id="{@id}{{xed:generate-id()}}" class="form-control itemsearch" data-searchengine="{@searchengine}" data-genre="{@genre}"
                  data-provide="typeahead" type="text" autocomplete="off"
                  placeholder="{@placeholder}"/>
         </div>

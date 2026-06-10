@@ -124,6 +124,13 @@ public class MIRDeepGreepIngester extends MIRSwordIngesterBase {
                         });
                     }
                     MCRMetadataManager.update(derivate);
+                    try {
+                        Files.delete(dgZip);
+                    } catch (IOException ex) {
+                        if (LOGGER.isInfoEnabled()) {
+                            LOGGER.info("Failed to delete temp file " + dgZip.toAbsolutePath(), ex);
+                        }
+                    }
                     return newObjectId;
                 } catch (JDOMException | MCRAccessException e) {
                     throw new SwordServerException("Error while creating mods", e);

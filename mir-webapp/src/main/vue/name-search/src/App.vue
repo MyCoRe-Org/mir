@@ -4,9 +4,11 @@
       <div ref="input" class="input-group">
         <input :id="`personLabel-${nameLocatorString}`" ref="searchBox" v-model="model.search"
                :placeholder="model.personPlaceholder"
+               :aria-label="model.personPlaceholder"
                class="form-control" type="text"
                v-on:keydown.enter.prevent="startSearch()">
         <button ref="identifierOpenButton" class="btn btn-secondary"
+                :aria-label="model.selectLabel"
                 v-on:click.prevent="currentIdentifierClicked()">
           <i class="fas fa-address-card"></i>
           <span class="identifier-count">{{ model.currentIdentifier.length }}</span>
@@ -25,7 +27,7 @@
           <template v-if="defineOwnIdentifier">
             <div class="mir-form-group row">
               <div class="col-4">
-                <select v-model="model.currentOwnIdentifierType" class="form-control form-select">
+                <select v-model="model.currentOwnIdentifierType" :aria-label="model.selectLabel" class="form-control form-select">
                   <option value="">{{ model.selectLabel }}</option>
                   <option
                       v-for="identifierType in model.possibleIdentifierTypes"
@@ -38,10 +40,10 @@
                 </select>
               </div>
               <div class="col-6">
-                <input v-model="model.currentOwnIdentifierValue" class="form-control" type="text"/>
+                <input v-model="model.currentOwnIdentifierValue" :aria-label="model.selectLabel" class="form-control" type="text"/>
               </div>
               <div class="col-2">
-                <button :title="model.addLabel" class="btn btn-secondary" v-on:click.prevent="addOwnIdentifier()">
+                <button :title="model.addLabel" :aria-label="model.addLabel" class="btn btn-secondary" v-on:click.prevent="addOwnIdentifier()">
                   <span class="fas fa-plus-circle"> </span>
                 </button>
               </div>

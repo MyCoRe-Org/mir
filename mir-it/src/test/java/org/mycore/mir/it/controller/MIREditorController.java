@@ -106,11 +106,10 @@ public abstract class MIREditorController extends MIRTestController {
     }
 
     protected void setLang(String baseXP, String lang) {
-        driver.waitAndFindElement(By.xpath(".//span[contains(@id, '"
-            + baseXP.replace(":", "")
-                .replace("[", "")
-                .replace("]", "")
-            + "@xmllang" + "')]"))
+        WebElement el = driver.waitAndFindElement(
+            By.xpath(".//select[contains(@name, '" + baseXP + "@xml:lang')]"));
+        String langSelectID = el.getAttribute("id");
+        driver.waitAndFindElement(By.xpath(".//span[contains(@id, '" + langSelectID + "')]"))
             .click();
         driver.waitAndFindElement(By.className("select2-search__field")).clear();
         driver.waitAndFindElement(By.className("select2-search__field")).sendKeys(lang);

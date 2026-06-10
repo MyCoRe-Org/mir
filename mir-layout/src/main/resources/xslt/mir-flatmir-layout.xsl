@@ -54,7 +54,7 @@
           <noscript>
             <div class="mir-no-script alert alert-warning text-center" style="border-radius: 0;">
               <xsl:value-of select="mcri18n:translate('mir.noScript.text')" />&#160;
-              <a href="http://www.enable-javascript.com/de/" target="_blank">
+              <a href="https://www.enable-javascript.com/de/" target="_blank" rel="noopener noreferrer">
                 <xsl:value-of select="mcri18n:translate('mir.noScript.link')" />
               </a>
               .

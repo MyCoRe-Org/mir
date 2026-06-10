@@ -7,7 +7,7 @@
   <section title="Edit Derivate" xml:lang="en"/>
 
   <section xml:lang="all">
-    <xed:form method="post" role="form" class="form-horizontal" id="derivate_editor" xmlns:xed="http://www.mycore.de/xeditor">
+    <xed:form method="post" class="form-horizontal" id="derivate_editor" xmlns:xed="http://www.mycore.de/xeditor">
       <xed:choose>
         <xed:when test="xed:call-java('org.mycore.access.MCRAccessManager', 'checkPermission', $derivateid,'writedb')">
           <xed:include uri="webapp:editor/editor-derivate-includes.xed" ref="in.out"/>

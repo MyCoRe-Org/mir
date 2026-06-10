@@ -21,8 +21,9 @@
     </mods:mods>
   </xsl:template>
 
-  <xsl:template match="mods:relatedItem">
-    <!-- remove all related item -->
+  <xsl:template match="mods:relatedItem[@type='preceding']">
+    <!-- remove existing preceding relations only; the previous version is added as the new
+         preceding object above. All other related items (host, series, ...) are kept (MIR-1590). -->
   </xsl:template>
 
 </xsl:stylesheet>

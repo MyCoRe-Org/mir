@@ -117,6 +117,7 @@
         <xsl:if test="string-length($MIR.citationStyles) &gt; 0">
           <xsl:variable name="cite-styles" select="tokenize($MIR.citationStyles, ',')" />
           <select class="form-control input-sm form-select" id="mir-csl-cite"
+                  aria-label="{mcri18n:translate('mir.citationStyle')}"
                   data-default-selected="{$MIR.defaultCitationStyle}"
                   data-object-id="{/mycoreobject/@ID}">
             <xsl:for-each select="$cite-styles">
@@ -267,7 +268,6 @@
       class="modal fade"
       tabindex="-1"
       role="dialog"
-      aria-labelledby="modal frame"
       aria-hidden="true">
       <div class="modal-dialog modal-lg modal-xl" role="document">
         <div class="modal-content">
@@ -399,7 +399,7 @@
           <span class="fas fa-copy mir_copy_identifier" data-bs-toggle="tooltip" data-placement="left" aria-hidden="true" title="Copy Identifier"
             data-org-title="Copy Identifier"></span>
         </div>
-        <input type="text" class="d-none mir_identifier_hidden_input" value="{$id}"></input>
+        <input aria-hidden="true" tabindex="-1" type="text" class="d-none mir_identifier_hidden_input" value="{$id}"></input>
       </div>
     </xsl:if>
   </xsl:template>
