@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:mods="http://www.loc.gov/mods/v3"
-                exclude-result-prefixes="mods">
+                xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions"
+                exclude-result-prefixes="mods mcrxsl">
 
   <xsl:import href="xslImport:badges:badges/mir-badges-date.xsl"/>
   <xsl:include href="resource:xsl/badges/mir-badges-style-template.xsl"/>
@@ -29,7 +30,10 @@
         </xsl:call-template>
       </xsl:variable>
 
-      <xsl:variable name="label" select="document(concat('callJava:org.mycore.common.xml.MCRXMLFunctions:formatISODate:', $date, ':', $format, ':', $CurrentLang))"/>
+      <!-- $date and $format may contain ':' (e.g. time pattern HH:mm:ss from metaData.dateTime),
+           which collides with the callJava argument separator; URL-encode them so MCRFunctionResolver
+           (URLDecoder.decode) restores the original values. On XSL3 migration replace with encode-for-uri(). -->
+      <xsl:variable name="label" select="document(concat('callJava:org.mycore.common.xml.MCRXMLFunctions:formatISODate:', mcrxsl:encodeURL($date, 'UTF-8'), ':', mcrxsl:encodeURL($format, 'UTF-8'), ':', $CurrentLang))"/>
 
       <xsl:call-template name="output-badge">
         <xsl:with-param name="of-type" select="'hit_date'"/>
@@ -85,7 +89,10 @@
         </xsl:call-template>
       </xsl:variable>
 
-      <xsl:variable name="label" select="document(concat('callJava:org.mycore.common.xml.MCRXMLFunctions:formatISODate:', $date, ':', $format, ':', $CurrentLang))"/>
+      <!-- $date and $format may contain ':' (e.g. time pattern HH:mm:ss from metaData.dateTime),
+           which collides with the callJava argument separator; URL-encode them so MCRFunctionResolver
+           (URLDecoder.decode) restores the original values. On XSL3 migration replace with encode-for-uri(). -->
+      <xsl:variable name="label" select="document(concat('callJava:org.mycore.common.xml.MCRXMLFunctions:formatISODate:', mcrxsl:encodeURL($date, 'UTF-8'), ':', mcrxsl:encodeURL($format, 'UTF-8'), ':', $CurrentLang))"/>
 
       <xsl:call-template name="output-badge">
         <xsl:with-param name="of-type" select="'hit_date'"/>
