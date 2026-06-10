@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:mods="http://www.loc.gov/mods/v3"
-                exclude-result-prefixes="mods">
+                xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions"
+                exclude-result-prefixes="mods mcrxsl">
 
   <xsl:import href="xslImport:badges:badges/mir-badges-date.xsl"/>
   <xsl:include href="resource:xsl/badges/mir-badges-utils.xsl"/>
@@ -31,7 +32,7 @@
       </xsl:call-template>
     </xsl:variable>
 
-    <xsl:variable name="label" select="document(concat('callJava:org.mycore.common.xml.MCRXMLFunctions:formatISODate:', $date, ':', $format, ':', $CurrentLang))"/>
+    <xsl:variable name="label" select="document(concat('callJava:org.mycore.common.xml.MCRXMLFunctions:formatISODate:', mcrxsl:encodeURL($date, 'UTF-8'), ':', mcrxsl:encodeURL($format, 'UTF-8'), ':', $CurrentLang))"/>
 
     <xsl:call-template name="output-badge">
       <xsl:with-param name="class" select="'mir-badge-date'"/>
