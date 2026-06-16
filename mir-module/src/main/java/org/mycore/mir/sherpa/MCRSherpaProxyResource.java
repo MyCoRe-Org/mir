@@ -18,13 +18,14 @@
 
 package org.mycore.mir.sherpa;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
+import java.net.URLEncoder;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 
 import org.apache.logging.log4j.LogManager;
@@ -48,10 +49,10 @@ public class MCRSherpaProxyResource {
     @Path("retrieve/{type}/")
     @Produces(MediaType.APPLICATION_JSON)
     @GET
-    public Response retrieve(@PathParam("type") String type, @QueryParam("filter") String filter){
+    public Response retrieve(@PathParam("type") String type, @QueryParam("filter") String filter) {
         Optional<MCRSherpaConfig> configOpt = MCRConfiguration2.getSingleInstanceOf(MIR_SHERPA_CONFIG_KEY);
 
-        if(configOpt.isEmpty()){
+        if (configOpt.isEmpty()) {
             LOGGER.error("MIR.Sherpa property is not set!");
             return Response.serverError().build();
         }
@@ -61,21 +62,36 @@ public class MCRSherpaProxyResource {
         String apiKey = sherpaConfig.getApiKey();
         String apiUrl = sherpaConfig.getApiUrl();
 
-        String urlStr = apiUrl + "cgi/retrieve/?item-type=" + type + "&api-key=" + apiKey + "&format=Json";
-        if(filter!=null){
-            urlStr+="&filter="+filter;
+        StringBuilder query = new StringBuilder("item-type=")
+            .append(URLEncoder.encode(type, StandardCharsets.UTF_8))
+            .append("&format=Json");
+        if (filter != null) {
+            query.append("&filter=").append(URLEncoder.encode(filter, StandardCharsets.UTF_8));
         }
+        String urlStr = apiUrl + "?" + query;
         try {
-            URL url = new URI(urlStr).toURL();
-            try (InputStream is = url.openStream(); ByteArrayOutputStream bos = new ByteArrayOutputStream()) {
-                is.transferTo(bos);
-                return Response.ok(bos.toByteArray()).build();
-            } catch (IOException e) {
-                LOGGER.error("Error while performing request!", e);
+            HttpRequest request = HttpRequest.newBuilder(new URI(urlStr))
+                .header("x-api-key", apiKey)
+                .header("Accept", "application/json")
+                .GET()
+                .build();
+            HttpResponse<byte[]> response = HttpClient.newHttpClient()
+                .send(request, HttpResponse.BodyHandlers.ofByteArray());
+            int status = response.statusCode();
+            if (status < 200 || status >= 300) {
+                LOGGER.error("Open Policy Finder API returned HTTP status {}", status);
                 return Response.serverError().build();
             }
-        } catch (MalformedURLException | URISyntaxException e) {
+            return Response.ok(response.body()).build();
+        } catch (URISyntaxException e) {
             LOGGER.error("Error while building URL " + urlStr, e);
+            return Response.serverError().build();
+        } catch (IOException e) {
+            LOGGER.error("Error while performing request!", e);
+            return Response.serverError().build();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            LOGGER.error("Interrupted while performing request!", e);
             return Response.serverError().build();
         }
     }
