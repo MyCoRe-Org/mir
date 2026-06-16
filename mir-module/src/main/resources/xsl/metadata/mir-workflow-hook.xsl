@@ -7,3 +7,4 @@
   <xsl:template match="mycoreobject" mode="editorReviewAdd"/>
 
 </xsl:stylesheet>
+
