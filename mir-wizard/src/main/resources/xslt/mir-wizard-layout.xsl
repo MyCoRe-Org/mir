@@ -5,7 +5,8 @@
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   exclude-result-prefixes="#all">
 
-  <xsl:output method="html" doctype-system="about:legacy-compat" indent="yes" omit-xml-declaration="yes" media-type="text/html" version="5" />
+  <xsl:import href="resource:xslt/output-html.xsl" />
+
   <xsl:strip-space elements="*" />
 
   <xsl:include href="resource:xslt/default-parameters.xsl" />
