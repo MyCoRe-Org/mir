@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0"
+<xsl:stylesheet version="3.0"
   xmlns:mcri18n="http://www.mycore.de/xslt/i18n"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  exclude-result-prefixes="mcri18n">
+  exclude-result-prefixes="#all">
 
   <xsl:import href="resource:xslt/orcid/mir-orcid.xsl" />
 
@@ -10,8 +11,8 @@
   <xsl:include href="resource:xslt/csl-export-gui.xsl" />
   <xsl:include href="xslInclude:objectTypes" />
 
-  <xsl:variable name="PageTitle" select="mcri18n:translate(concat('basket.title.', /basket/@type))" />
-  <xsl:variable name="Type" select="'mods'" />
+  <xsl:variable name="PageTitle" select="mcri18n:translate('basket.title.' || /basket/@type)" />
+  <xsl:variable name="basket-url" select=" $ServletsBaseURL || 'MCRBasketServlet?type=' || /basket/@type "/>
 
   <xsl:template match="/basket">
     <div id="basket">
@@ -31,30 +32,26 @@
   </xsl:template>
 
   <xsl:template name="export-csl">
-    <div class="row result_export">
-      <div class="col-12">
-        <xsl:if test="count(entry) &gt; 0">
+    <xsl:if test="entry">
+      <div class="row result_export">
+        <div class="col-12">
           <xsl:call-template name="exportGUI">
             <xsl:with-param name="type" select="'basket'" />
           </xsl:call-template>
-        </xsl:if>
+        </div>
       </div>
-    </div>
+    </xsl:if>
   </xsl:template>
 
   <xsl:template name="basketNumEntries">
     <p class="lead">
-      <xsl:choose>
-        <xsl:when test="count(entry) = 0">
-          <xsl:value-of select="mcri18n:translate('basket.numEntries.none')" disable-output-escaping="yes" />
-        </xsl:when>
-        <xsl:when test="count(entry) = 1">
-          <xsl:value-of select="mcri18n:translate('basket.numEntries.one')" disable-output-escaping="yes" />
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:value-of select="mcri18n:translate('basket.numEntries.many', count(*))" disable-output-escaping="yes" />
-        </xsl:otherwise>
-      </xsl:choose>
+      <xsl:variable name="message" select="
+        if (empty(entry)) then mcri18n:translate('basket.numEntries.none')
+        else if (empty(entry[2])) then mcri18n:translate('basket.numEntries.one')
+        else mcri18n:translate-with-params('basket.numEntries.many', count(entry))
+      " />
+
+      <xsl:value-of select="$message" disable-output-escaping="yes" />
     </p>
   </xsl:template>
 
@@ -69,12 +66,13 @@
   </xsl:template>
 
   <xsl:template match="entry">
-    <xsl:variable name="hitNumberOnPage" select="count(preceding-sibling::*[name() = name(.)]) + 1" />
+    <xsl:variable name="hits" select="count(preceding-sibling::*[name() = name(.)]) + 1" />
+
     <div class="hit_item">
       <div class="row hit_item_head">
         <div class="col-12">
           <div class="hit_counter">
-            <xsl:value-of select="$hitNumberOnPage" />
+            <xsl:value-of select="$hits" />
           </div>
           <div class="hit_options float-end">
             <div class="btn-group">
@@ -86,8 +84,8 @@
       <div class="row hit_item_body">
         <div class="col-12">
           <xsl:choose>
-            <xsl:when test="*[not(name()='comment')]">
-              <xsl:apply-templates  mode="basketContent" select="*[not(name()='comment')]" />
+            <xsl:when test="*[not(name() = 'comment')]">
+              <xsl:apply-templates mode="basketContent" select="*[not(name() = 'comment')]" />
             </xsl:when>
             <xsl:otherwise>
               <xsl:apply-templates mode="basketContent" select="document(@uri)/*" />
@@ -100,18 +98,19 @@
   </xsl:template>
 
   <xsl:template match="entry" mode="basketButtonsUpDownDelete">
-    <xsl:variable name="notFirst" select="count(preceding-sibling::entry) &gt; 0" />
-    <xsl:variable name="notLast" select="count(following-sibling::entry) &gt; 0" />
+    <xsl:variable name="has-previous" select="exists(preceding-sibling::entry)" />
+    <xsl:variable name="has-next" select="exists(following-sibling::entry)" />
+
     <div class="btn-group">
       <xsl:apply-templates select="." mode="button">
         <xsl:with-param name="action" select="'up'" />
         <xsl:with-param name="icon" select="'arrow-up'" />
-        <xsl:with-param name="condition" select="$notFirst" />
+        <xsl:with-param name="condition" select="$has-previous" />
       </xsl:apply-templates>
       <xsl:apply-templates select="." mode="button">
         <xsl:with-param name="action" select="'down'" />
         <xsl:with-param name="icon" select="'arrow-down'" />
-        <xsl:with-param name="condition" select="$notLast" />
+        <xsl:with-param name="condition" select="$has-next" />
       </xsl:apply-templates>
       <xsl:apply-templates select="." mode="button">
         <xsl:with-param name="action" select="'remove'" />
@@ -126,29 +125,28 @@
     <xsl:param name="icon" select="'question-circle'" />
     <xsl:param name="class" select="'btn-secondary'" />
     <xsl:param name="condition" select="true()" />
-    <xsl:choose>
-      <xsl:when test="$condition">
-        <a
-          href="MCRBasketServlet?action={$action}&amp;type={/basket/@type}&amp;id={@id}"
-          class="btn btn-small {$class}"
-          title="{mcri18n:translate(concat('basket.button.', $action))}">
-          <i class="fas fa-{$icon}"></i>
-        </a>
-      </xsl:when>
-      <xsl:otherwise>
-        <a
-          href="#"
-          class="btn btn-small btn-secondary disabled"
-          title="{mcri18n:translate(concat('basket.button.', $action))}">
-          <i class="fas fa-{$icon}"></i>
-        </a>
-      </xsl:otherwise>
-    </xsl:choose>
+
+    <xsl:variable name="attrs" as="map(xs:string, xs:string)" select="
+      if ($condition) then map {
+        'href'  : $basket-url || '&amp;action=' || $action || '&amp;id=' || @id,
+        'class' : 'btn btn-small ' || $class
+      } else map {
+        'href'  : '#',
+        'class' : 'btn btn-small btn-secondary disabled'
+      }
+    "/>
+
+    <a
+      href="{$attrs?href}"
+      class="{$attrs?class}"
+      title="{mcri18n:translate('basket.button.' || $action)}">
+      <i class="fas fa-{$icon}"></i>
+    </a>
   </xsl:template>
 
   <xsl:template name="options">
     <a
-      href="{$ServletsBaseURL}MCRBasketServlet?type={@type}&amp;action=clear&amp;redirect=referer"
+      href="{$basket-url}&amp;action=clear&amp;redirect=referer"
       class="btn btn-danger btn-sm">
       <span class="fas fa-trash-alt me-1"></span>
       <xsl:value-of select="mcri18n:translate('basket.clear')" />
