@@ -3,6 +3,7 @@
   xmlns:mcracl="http://www.mycore.de/xslt/acl"
   xmlns:mcri18n="http://www.mycore.de/xslt/i18n"
   xmlns:mirstrutils="http://www.mycore.de/xslt/mirstrutils"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   exclude-result-prefixes="#all">
 
@@ -102,31 +103,33 @@
   </xsl:template>
 
   <xsl:template name="mir.printNotLoggedIn">
-    <xsl:param name="objectId">
+    <xsl:param name="objectId" as="xs:string">
       <xsl:call-template name="extractObjectIdFromRequestURL" />
     </xsl:param>
-    <xsl:param name="isUserGuest" select="document('userobjectrights:isCurrentUserGuestUser:')/boolean" />
+    <xsl:param name="isUserGuest" as="xs:boolean" select="
+      document('userobjectrights:isCurrentUserGuestUser:')/boolean = 'true'
+    " />
     <div class="alert alert-danger">
       <h1>
         <xsl:value-of select="mcri18n:translate('mir.error.headline.401')" />
       </h1>
       <p>
         <xsl:copy-of select="parse-xml-fragment(mcri18n:translate('mir.error.codes.401'))/node()" />
-        <xsl:if test="$isUserGuest='true'">
+        <xsl:if test="$isUserGuest">
           <xsl:call-template name="displayLogin" />
         </xsl:if>
-        <xsl:variable name="typeId">
+        <xsl:variable name="typeId" as="xs:string">
           <xsl:call-template name="getTypeId">
             <xsl:with-param name="objectId" select="$objectId" />
           </xsl:call-template>
         </xsl:variable>
         <xsl:if test="$typeId != '' and $isAccessKeyEnabled">
-          <xsl:variable name="isSetAllowed">
+          <xsl:variable name="isSetAllowed" as="xs:string">
             <xsl:call-template name="isCurrentUserAllowedToSetAccessKey">
               <xsl:with-param name="typeId" select="$typeId" />
             </xsl:call-template>
           </xsl:variable>
-          <xsl:if test="$isSetAllowed='true'">
+          <xsl:if test="$isSetAllowed = 'true'">
             <xsl:call-template name="displaySetAccessKey">
               <xsl:with-param name="objectId" select="$objectId" />
             </xsl:call-template>
