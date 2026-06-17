@@ -120,7 +120,7 @@
             <xsl:with-param name="objectId" select="$objectId" />
           </xsl:call-template>
         </xsl:variable>
-        <xsl:if test="$typeId!='' and $isAccessKeyEnabled='true'">
+        <xsl:if test="$typeId != '' and $isAccessKeyEnabled">
           <xsl:variable name="isSetAllowed">
             <xsl:call-template name="isCurrentUserAllowedToSetAccessKey">
               <xsl:with-param name="typeId" select="$typeId" />
