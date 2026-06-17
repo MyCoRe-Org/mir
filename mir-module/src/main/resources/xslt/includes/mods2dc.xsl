@@ -9,8 +9,10 @@
   xmlns:srw_dc="info:srw/schema/1/dc-schema"
   xmlns:xlink="http://www.w3.org/1999/xlink"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  xmlns:mcrmir="http://www.mycore.org/mir/functions"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  exclude-result-prefixes="fn mcrclassification mcrmods mods srw_dc xlink xsl">
+  exclude-result-prefixes="fn mcrclassification mcrmir mcrmods mods srw_dc xlink xs xsl">
 
   <!-- xmlns:opf="http://www.idpf.org/2007/opf" -->
 
@@ -77,6 +79,19 @@
 
   <xsl:variable name="marcrelator" select="document('classification:metadata:-1:children:marcrelator')" />
 
+  <!-- MIR-1595: shared genre -> dc:type value, used by the genre template (DC and OAI export). -->
+  <xsl:function name="mcrmir:genre-type" as="xs:string?">
+    <xsl:param name="genre" as="element()" />
+    <xsl:choose>
+      <xsl:when test="$genre/@authority = ('dct', 'marcgt')">
+        <xsl:sequence select="string($genre)" />
+      </xsl:when>
+      <xsl:when test="contains($genre/@valueURI, '#')">
+        <xsl:sequence select="substring-after($genre/@valueURI, '#')" />
+      </xsl:when>
+    </xsl:choose>
+  </xsl:function>
+
   <xsl:template match="/">
 
     <xsl:variable name="objId" select="mods:mods/@ID" />
@@ -108,7 +123,10 @@
             <dc:identifier>
               <xsl:value-of select="concat($WebApplicationBaseURL, 'receive/', $objId)"></xsl:value-of>
             </dc:identifier>
-            <xsl:apply-templates select="mods:identifier[not(@type='doi')][not(@type='urn')]" />
+            <!-- MIR-1595: drop the enhancer-added receive URL identifier (already emitted explicitly above) -->
+            <xsl:apply-templates
+              select="mods:identifier[not(@type='doi')][not(@type='urn')]
+                      [not(normalize-space(.) = concat($WebApplicationBaseURL, 'receive/', $objId))]" />
             <xsl:apply-templates select="mods:location" />
             <xsl:apply-templates select="mods:classification" />
             <xsl:apply-templates select="mods:subject" />
@@ -356,24 +374,16 @@
   <xsl:template match="mods:temporal[@point!='start' and @point!='end']  ">
     <xsl:value-of select="."/>
   </xsl:template>
+
+  <!-- MIR-1595: genre -> dc:type, de-duplicated per distinct value
+       (the intern genre and the mapped marcgt genre can resolve to the same type) -->
   <xsl:template match="mods:genre">
-    <xsl:choose>
-      <xsl:when test="@authority='dct'">
-        <dc:type>
-          <xsl:value-of select="."/>
-        </dc:type>
-      </xsl:when>
-      <xsl:when test="@authority='marcgt'">
-        <dc:type>
-          <xsl:value-of select="."/>
-        </dc:type>
-      </xsl:when>
-      <xsl:when test="contains(@valueURI,'#')">
-        <dc:type>
-          <xsl:value-of select="substring-after(@valueURI,'#')"/>
-        </dc:type>
-      </xsl:when>
-    </xsl:choose>
+    <xsl:variable name="type" select="mcrmir:genre-type(.)" />
+    <xsl:if test="exists($type) and not($type = (preceding-sibling::mods:genre ! mcrmir:genre-type(.)))">
+      <dc:type>
+        <xsl:value-of select="$type" />
+      </dc:type>
+    </xsl:if>
   </xsl:template>
 
   <xsl:template match="mods:typeOfResource">
