@@ -7,7 +7,7 @@
                 version="1.0" exclude-result-prefixes="i18n exslt mcrxml">
 
   <xsl:import href="xslImport:modsmeta:metadata/mir-workflow.xsl"/>
-  <xsl:import href="xslImport:mirworkflow:metadata/mir-workflow.xsl"/>
+  <xsl:import href="xslImport:mirworkflow"/>
   <xsl:import href="mir-pdf-errorbox.xsl"/>
   <xsl:param name="layout" select="'$'"/>
   <xsl:param name="MIR.Workflow.Box" select="'false'"/>
@@ -214,12 +214,6 @@
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
-    <xsl:template match="mycoreobject" mode="creatorSubmittedAdd" priority="10">
-  </xsl:template>
-
-  <xsl:template match="mycoreobject" mode="editorReviewAdd" priority="10">
-  </xsl:template>
-
 
   <xsl:template name="buildLayout" priority="10">
     <xsl:param name="heading"/>
