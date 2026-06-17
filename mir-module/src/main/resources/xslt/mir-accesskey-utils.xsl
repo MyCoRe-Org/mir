@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="3.0"
+  xmlns:mcracl="http://www.mycore.de/xslt/acl"
   xmlns:xs="http://www.w3.org/2001/XMLSchema"
-  xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  exclude-result-prefixes="#all">
 
   <xsl:param name="MCR.ACL.AccessKey.Strategy.AllowedObjectTypes" />
   <xsl:param name="MCR.ACL.AccessKey.Strategy.AllowedSessionPermissionTypes" />
@@ -13,10 +15,8 @@
   <xsl:param name="isAccessKeyEnabled" select="$isAccessKeyForDerivateEnabled or $isAccessKeyForModsEnabled" />
 
   <xsl:template name="isCurrentUserAllowedToSetAccessKey">
-    <xsl:param name="typeId" as="xs:string" />
-    <xsl:param name="isUserGuest" as="xs:boolean" select="
-      document('userobjectrights:isCurrentUserGuestUser:')/boolean = 'true'
-    " />
+    <xsl:param name="typeId" as="xs:string" select="''" />
+    <xsl:param name="isUserGuest" as="xs:boolean" select="mcracl:is-current-user-guest-user()" />
 
     <xsl:variable name="isAllowed" as="xs:boolean" select="
       if ($typeId = '') then $isAccessKeyEnabled

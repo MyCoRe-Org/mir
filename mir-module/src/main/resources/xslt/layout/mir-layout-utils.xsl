@@ -106,16 +106,14 @@
     <xsl:param name="objectId" as="xs:string">
       <xsl:call-template name="extractObjectIdFromRequestURL" />
     </xsl:param>
-    <xsl:param name="isUserGuest" as="xs:boolean" select="
-      document('userobjectrights:isCurrentUserGuestUser:')/boolean = 'true'
-    " />
+
     <div class="alert alert-danger">
       <h1>
         <xsl:value-of select="mcri18n:translate('mir.error.headline.401')" />
       </h1>
       <p>
         <xsl:copy-of select="parse-xml-fragment(mcri18n:translate('mir.error.codes.401'))/node()" />
-        <xsl:if test="$isUserGuest">
+        <xsl:if test="mcracl:is-current-user-guest-user()">
           <xsl:call-template name="displayLogin" />
         </xsl:if>
         <xsl:variable name="typeId" as="xs:string">
