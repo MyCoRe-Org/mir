@@ -16,7 +16,7 @@
 
         <ul class="col-12 nav nav-tabs mb-1">
             <li class="nav-item" v-for="resultGroup in props.searchResultGroup" :key="resultGroup.groupId">
-                <a href="#" @click.prevent :class="`nav-link${model.currentGroupId==resultGroup.groupId?' active':''}`">
+          <a href="#" @click.prevent="model.currentGroupId = resultGroup.groupId" :class="`nav-link${model.currentGroupId==resultGroup.groupId?' active':''}`">
                     {{ resultGroup.title }} </a>
             </li>
         </ul>
