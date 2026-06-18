@@ -2,12 +2,10 @@
 <xsl:stylesheet version="3.0"
   xmlns:mcracl="http://www.mycore.de/xslt/acl"
   xmlns:mcri18n="http://www.mycore.de/xslt/i18n"
+  xmlns:miraccesskeyutil="http://www.mycore.de/xslt/miraccesskeyutil"
   xmlns:mirstrutils="http://www.mycore.de/xslt/mirstrutils"
-  xmlns:xs="http://www.w3.org/2001/XMLSchema"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   exclude-result-prefixes="#all">
-
-  <xsl:include href="resource:xslt/mir-accesskey-utils.xsl" />
 
   <xsl:template name="objectLink">
     <xsl:param name="obj_id" />
@@ -58,28 +56,6 @@
     </xsl:choose>
   </xsl:template>
 
-  <xsl:template name="extractObjectIdFromRequestURL">
-    <xsl:choose>
-      <xsl:when test="contains($RequestURL, '/receive/')">
-        <xsl:variable name="id" select="substring-after($RequestURL,'/receive/')" />
-        <xsl:choose>
-          <xsl:when test="contains($id, ';')">
-            <xsl:value-of select="substring-before($id, ';')" />
-          </xsl:when>
-          <xsl:when test="contains($id, '?')">
-            <xsl:value-of select="substring-before($id, '?')" />
-          </xsl:when>
-          <xsl:otherwise>
-            <xsl:value-of select="$id" />
-          </xsl:otherwise>
-        </xsl:choose>
-      </xsl:when>
-      <xsl:otherwise>
-        <xsl:value-of select="''" />
-      </xsl:otherwise>
-    </xsl:choose>
-  </xsl:template>
-
   <xsl:template name="displayLogin">
     <xsl:variable name="loginURL" select="concat($ServletsBaseURL, 'MCRLoginServlet?url=', encode-for-uri(string($RequestURL)))" />
     <br></br>
@@ -90,23 +66,7 @@
         )/node()" />
   </xsl:template>
 
-  <xsl:template name="displaySetAccessKey">
-    <xsl:param name="objectId" />
-    <xsl:variable name="loginURL" select="concat($WebApplicationBaseURL, 'accesskey/set.xed', '?objId=', $objectId, '&amp;url=', encode-for-uri(string($RequestURL)))" />
-    <br/>
-
-    <xsl:value-of select="concat(mcri18n:translate('mir.accesskey.setInfo.leading'), ' ')" />
-    <a href="{$loginURL}">
-      <xsl:value-of select="mcri18n:translate('mir.accesskey.setInfo.link')"/>
-    </a>
-    <xsl:value-of select="concat(' ', mcri18n:translate('mir.accesskey.setInfo.trailing'))" />
-  </xsl:template>
-
   <xsl:template name="mir.printNotLoggedIn">
-    <xsl:param name="objectId" as="xs:string">
-      <xsl:call-template name="extractObjectIdFromRequestURL" />
-    </xsl:param>
-
     <div class="alert alert-danger">
       <h1>
         <xsl:value-of select="mcri18n:translate('mir.error.headline.401')" />
@@ -116,40 +76,16 @@
         <xsl:if test="mcracl:is-current-user-guest-user()">
           <xsl:call-template name="displayLogin" />
         </xsl:if>
-        <xsl:variable name="typeId" as="xs:string">
-          <xsl:call-template name="getTypeId">
-            <xsl:with-param name="objectId" select="$objectId" />
+
+        <xsl:variable name="object-id" select="miraccesskeyutil:get-object-id-from-url($RequestURL)" />
+        <xsl:if test="$object-id != '' and miraccesskeyutil:can-current-user-redeem-access-key($object-id)">
+          <br />
+          <xsl:call-template name="display-set-access-key">
+            <xsl:with-param name="reference" select="$object-id" />
           </xsl:call-template>
-        </xsl:variable>
-        <xsl:if test="$typeId != '' and $isAccessKeyEnabled">
-          <xsl:variable name="isSetAllowed" as="xs:string">
-            <xsl:call-template name="isCurrentUserAllowedToSetAccessKey">
-              <xsl:with-param name="typeId" select="$typeId" />
-            </xsl:call-template>
-          </xsl:variable>
-          <xsl:if test="$isSetAllowed = 'true'">
-            <xsl:call-template name="displaySetAccessKey">
-              <xsl:with-param name="objectId" select="$objectId" />
-            </xsl:call-template>
-          </xsl:if>
         </xsl:if>
       </p>
     </div>
-  </xsl:template>
-
-  <xsl:template name="getTypeId">
-    <xsl:param name="objectId" />
-    <xsl:choose>
-      <xsl:when test="contains($objectId, '_derivate_')">
-        <xsl:value-of select="'derivate'" />
-      </xsl:when>
-      <xsl:when test="contains($objectId, '_mods')">
-        <xsl:value-of select="'mods'" />
-      </xsl:when>
-      <xsl:otherwise>
-        <xsl:value-of select="''" />
-      </xsl:otherwise>
-    </xsl:choose>
   </xsl:template>
 
   <xsl:template name="print.writeProtectionMessage">
@@ -162,6 +98,20 @@
         </strong>
       </div>
     </xsl:if>
+  </xsl:template>
+
+  <xsl:template name="display-set-access-key">
+    <xsl:param name="reference" />
+
+    <xsl:variable name="set-access-key-url" select="
+      concat($WebApplicationBaseURL, 'accesskey/set.xed', '?objId=', $reference, '&amp;url=', encode-for-uri(string($RequestURL)))
+    " />
+
+    <xsl:value-of select="concat(mcri18n:translate('mir.accesskey.setInfo.leading'), ' ')" />
+    <a href="{$set-access-key-url}">
+      <xsl:value-of select="mcri18n:translate('mir.accesskey.setInfo.link')" />
+    </a>
+    <xsl:value-of select="concat(' ', mcri18n:translate('mir.accesskey.setInfo.trailing'))" />
   </xsl:template>
 
 </xsl:stylesheet>
