@@ -129,14 +129,13 @@
 </template>
 
 <script lang="ts" setup>
-import {computed, onMounted, reactive, ref, watch} from "vue";
+import {computed, onMounted, reactive, ref, watch, inject} from "vue";
 import {Cartographics, Geographic, Name, Subject, TitleInfo, Topic} from "@/api/Subject";
 import subjectEditor from "@/components/editor/subject-editor.vue";
 import searchForm from "@/components/search/search-form.vue";
 import SearchResultList, {SearchResultGroup} from "@/components/search/search-result-list.vue";
-import SearchSettings from "@/components/search/search-settings.vue";
 import {SearchSettings as SearchSettingsModel} from "@/api/search/SearchSettings";
-import {LobidSearchProvider} from "@/api/search/LobidSearchProvider";
+import {SearchProviders, ensureProvidersLoaded, registerProvider} from "@/api/search/SearchProviderRegistry";
 import {SearchResult} from "@/api/search/SearchProvider";
 import {EditorSettings, possibleTypes, retrieveSettings, retrieveSubject, storeSubject} from "@/api/XEditorConnector";
 import TopicEditor from "@/components/editor/topic-editor.vue";
@@ -208,17 +207,26 @@ watch(()=>model.subject, (newValue) => {
     }
 }, {deep: true});
 
-watch( () => model.searchOptions, (newValue) => {
+watch( () => model.searchOptions, () => {
     search();
 }, {deep: true});
 
-onMounted(() => {
-    if(rootEl.value) {
-        model.subject = retrieveSubject(rootEl.value);
-        model.settings = retrieveSettings(rootEl.value);
-
-        const filter = model.settings?.searchFilterDefault || [];
-        const searchable = model.settings.searchable || [];
+onMounted(async () => {
+  if (rootEl.value) {
+    model.subject = retrieveSubject(rootEl.value);
+    const injectedSettings = inject<EditorSettings>("editorSettings");
+    const settings = injectedSettings || retrieveSettings(rootEl.value);
+    model.settings = settings;
+    if (settings?.providers && settings.providers.length > 0) {
+      settings.providers.forEach((providerConfig) => {
+        if (!SearchProviders[providerConfig.id]) {
+          registerProvider(providerConfig);
+        }
+      });
+      await ensureProvidersLoaded();
+    }
+    const filter = settings?.searchFilterDefault || [];
+    const searchable = settings?.searchable || [];
 
         model.searchOptions.searchConference = filter.includes("Conference") && searchable.includes("Conference");
         model.searchOptions.searchFamily = filter.includes("Family") && searchable.includes("Family");
@@ -258,15 +266,38 @@ const searchSubmitted = async (searchTerm: string) => {
 }
 
 const search = async () => {
-    const searchProvider = new LobidSearchProvider();
-    const result = await searchProvider.search(model.searchTerm, model.searchOptions);
-    model.searchResultGroup = [{
-        groupId: "lobid",
-        title: "Lobid",
-        results: result
-    }];
+  if (!model.settings?.providers) return;
+  model.searching = true;
+
+  try {
+    await ensureProvidersLoaded();
+
+    model.searchResultGroup = await Promise.all(
+        model.settings.providers.map(async (providerConfig) => {
+          const providerInstance = SearchProviders[providerConfig.id] || SearchProviders[providerConfig.type];
+          if (!providerInstance) {
+            return { groupId: providerConfig.id, title: providerConfig.id, results: [] };
+          }
+
+          const results = await providerInstance.search(
+              model.searchTerm,
+              model.searchOptions
+          );
+
+          return {
+            groupId: providerConfig.id,
+            title: providerConfig.id,
+            results: results || []
+          };
+        })
+    );
+  } catch (e) {
+    console.error("Search failed", e);
+    model.searchResultGroup = [];
+  } finally {
     model.searching = false;
-}
+  }
+};
 
 // used to make the search form not editable
 const searchEnabled = computed(()=>{
