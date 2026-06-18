@@ -34,6 +34,19 @@ export const retrieveSubject = (root: HTMLElement): Subject => {
 
 };
 
+export interface ProviderConfigDetails {
+    authorityName?: string;
+    baseUrl: string;
+    vocabulary?: string;
+    [key: string]: string | undefined;
+}
+
+export interface ProviderConfig {
+    id: string;
+    type: string;
+    config: ProviderConfigDetails;
+}
+
 export interface EditorSettings {
     /**
      * List of types which facet should be enabled in the search.
@@ -62,6 +75,11 @@ export interface EditorSettings {
      * a warning.
      */
     required: boolean|string[],
+
+    /**
+     * List of search providers.
+     */
+    providers: ProviderConfig[];
 }
 
 export const possibleTypes = ["Topic", "Geographic" , "Institution" , "Person" , "Family" , "Conference" , "TitleInfo" , "Cartographics"];
@@ -71,7 +89,8 @@ export const retrieveSettings = (root: HTMLElement): EditorSettings => {
     if(input instanceof Element){
         const settings:EditorSettings = {
             searchable: [],
-            editor: []
+            editor: [],
+            providers: []
         } as any;
 
 
@@ -162,6 +181,52 @@ export const retrieveSettings = (root: HTMLElement): EditorSettings => {
             });
         }
 
+
+        if (input instanceof HTMLElement) {
+            const dataset = input.dataset;
+            const providersMap: Record<string, Record<string, string>> = {};
+
+            Object.keys(dataset).forEach((key) => {
+                const match = key.match(/^provider([A-Z][a-z0-9]*)(.*)$/);
+                if (!match) return;
+
+                const providerId = match[1].toLowerCase();
+                let propName = match[2] ? match[2].charAt(0).toLowerCase() + match[2].slice(1) : "enabled";
+
+                if (propName === "baseurl") propName = "baseUrl";
+                if (propName === "authorityname") propName = "authorityName";
+
+                providersMap[providerId] ??= {};
+                providersMap[providerId][propName] = dataset[key] || "";
+            });
+
+            settings.providers = Object.entries(providersMap)
+                .filter(([_, props]) => props.enabled === "true")
+                .map(([id, props]) => ({
+                    id,
+                    type: props.type || id,
+                    config: {
+                        baseUrl: props.baseUrl || "",
+                        authorityName: props.authorityName || props.authority,
+                        vocabulary: props.vocabulary,
+                        ...props
+                    }
+                }));
+        }
+
+        // Fallback to lobid,
+        if (settings.providers.length === 0) {
+            settings.providers = [
+                {
+                    id: "lobid",
+                    type: "lobid",
+                    config: {
+                        authorityName: "gnd",
+                        baseUrl: "https://lobid.org/gnd/search",
+                    },
+                },
+            ];
+        }
 
         console.log(settings);
         return settings
