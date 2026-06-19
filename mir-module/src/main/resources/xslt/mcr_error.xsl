@@ -13,7 +13,7 @@
     name="PageTitle"
     select="mcri18n:translate-with-params('titles.pageTitle.error', concat(' ', /mcr_error/@HttpError))" />
 
-  <xsl:template match="/mcr_error">
+  <xsl:template match="/mcr_error" priority="0">
     <div class="jumbotron text-center">
       <h1>
         <xsl:value-of select="mcri18n:translate-with-params('mir.error.headline', @HttpError)" />
@@ -32,8 +32,8 @@
             )/node()" />
       </p>
       <xsl:choose>
-        <xsl:when test="(@errorServlet and string-length(text()) gt 1) or exception">
-          <xsl:if test="@errorServlet and string-length(text()) gt 1">
+        <xsl:when test="(string(@errorServlet) = 'true' and string-length(text()) gt 1) or exists(exception)">
+          <xsl:if test="string(@errorServlet) = 'true' and string-length(text()) gt 1">
             <div class="alert alert-info" role="alert">
               <xsl:attribute name="title">
                 <xsl:value-of select="mcri18n:translate('mir.error.message')" />
@@ -43,7 +43,7 @@
               </xsl:call-template>
             </div>
           </xsl:if>
-          <xsl:if test="exception">
+          <xsl:if test="exists(exception)">
             <div class="card">
               <div class="card-header bg-danger">
                 <xsl:value-of select="concat(mcri18n:translate('error.stackTrace'),' :')" />
@@ -74,7 +74,7 @@
     </div>
   </xsl:template>
 
-  <xsl:template match="/mcr_error[@HttpError = ('401', '403')]">
+  <xsl:template match="/mcr_error[@HttpError = ('401', '403')]" priority="1">
     <xsl:call-template name="mir.printNotLoggedIn" />
   </xsl:template>
 
