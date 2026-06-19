@@ -26,10 +26,14 @@
     <div id="mir-abstract-badges" class="mir-badge-container">
       <xsl:choose>
         <xsl:when test="string-length($revision) &gt; 0">
-          <xsl:apply-templates select="document(concat('xslStyle:mycoreobject-solrdocument:mcrobject:', $objectID, '?r=', $revision))/add/doc" mode="badge"/>
+          <xsl:apply-templates mode="badge" select="
+            document(
+              concat('xslStyle:solr/indexing/mycoreobject-solrdocument:mcrobject:', $objectID, '?r=', $revision)
+            )/add/doc
+          " />
         </xsl:when>
         <xsl:otherwise>
-          <xsl:apply-templates select="document(concat('solr:q=id%3A', $objectID))" mode="badge"/>
+          <xsl:apply-templates mode="badge" select="document(concat('solr:q=id%3A', $objectID))" />
         </xsl:otherwise>
       </xsl:choose>
     </div>

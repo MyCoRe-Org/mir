@@ -7,10 +7,12 @@
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   exclude-result-prefixes="#all">
 
+  <xsl:import href="xslImport:modsmeta" />
+
   <xsl:include href="resource:xslt/default-parameters.xsl" />
   <xsl:include href="xslInclude:functions" />
-  
-  <xsl:import href="xslImport:modsmeta" />
+  <xsl:include href="xslInclude:components-3" />
+
   <xsl:include href="resource:xslt/layout/mir-layout-utils.xsl" />
   <xsl:include href="resource:xslt/utils/mods-utils.xsl" />
   <xsl:include href="resource:xslt/mir-mods-utils.xsl" />

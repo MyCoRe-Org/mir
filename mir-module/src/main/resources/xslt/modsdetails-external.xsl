@@ -13,8 +13,9 @@
   exclude-result-prefixes="#all"
   extension-element-prefixes="datacite">
 
-  <xsl:include href="resource:xslt/mir-accesskey-utils.xsl" />
+  <xsl:import href="xslImport:badges" />
 
+  <xsl:param name="MCR.Users.Superuser.UserName" />
   <xsl:param name="MIR.registerDOI" select="''" />
   <xsl:param name="MIR.registerURN" select="'true'" />
   <xsl:param name="MIR.METSEditor.enable" select="'false'" />
@@ -24,11 +25,11 @@
   <xsl:param name="MIR.ImageWare.Enabled" />
   <xsl:param name="MIR.Workflow.Menu" select="'false'" />
   <xsl:param name="MCR.Module-iview2.SupportedContentTypes"/>
-  <xsl:param name="RequestURL"/>
   <xsl:param name="MIR.Strategy.EditPIRoles" />
   <xsl:param name="MIR.Thumbnail.IIIF.Resolution" select="'!300,300'" />
 
   <xsl:include href="resource:xslt/workflow-util.xsl" />
+  <xsl:include href="resource:xslt/mir-accesskey-utils.xsl" />
   <xsl:include href="resource:xslt/mir-mods-utils.xsl" />
   <xsl:include href="resource:xslt/mir-utils.xsl" />
 
@@ -469,10 +470,11 @@
                 <xsl:variable name="url">
                   <xsl:value-of select="mcractionmapping:get-url-for-id('create-child',$id,true())"  />
                 </xsl:variable>
+                <xsl:variable name="genres" select="tokenize($child-layout, '\|')[normalize-space()]"/>
 
                 <xsl:choose>
                   <xsl:when test="not(contains($url, 'editor-dynamic.xed')) and $mods-type != 'series'">
-                    <xsl:for-each select="tokenize($child-layout, '\|')">
+                    <xsl:for-each select="$genres">
                       <li>
                         <a href="{$url}?relatedItemId={$id}&amp;relatedItemType=host&amp;genre={.}" class="dropdown-item">
                           <xsl:value-of select="mcrclassification:current-label-text(mcrclassification:category('mir_genres',.))" />
@@ -481,7 +483,7 @@
                     </xsl:for-each>
                   </xsl:when>
                   <xsl:when test="not(contains($url, 'editor-dynamic.xed')) and $mods-type = 'series'">
-                    <xsl:for-each select="tokenize($child-layout, '\|')">
+                    <xsl:for-each select="$genres">
                       <li>
                         <a href="{$url}?relatedItemId={$id}&amp;relatedItemType=series&amp;genre={.}" class="dropdown-item">
                           <xsl:value-of select="mcrclassification:current-label-text(mcrclassification:category('mir_genres',.))" />
@@ -490,7 +492,7 @@
                     </xsl:for-each>
                   </xsl:when>
                   <xsl:when test="contains($url, 'editor-dynamic.xed') and $mods-type = 'lecture'">
-                    <xsl:for-each select="tokenize($child-layout, '\|')">
+                    <xsl:for-each select="$genres">
                       <li>
                         <a href="{$url}?relatedItemId={$id}&amp;relatedItemType=series&amp;genre={.}&amp;host={$mods-type}" class="dropdown-item">
                           <xsl:value-of select="mcrclassification:current-label-text(mcrclassification:category('mir_genres',.))" />
@@ -499,7 +501,7 @@
                     </xsl:for-each>
                   </xsl:when>
                   <xsl:otherwise>
-                    <xsl:for-each select="tokenize($child-layout, '\|')">
+                    <xsl:for-each select="$genres">
                       <li>
                         <a href="{$url}?relatedItemId={$id}&amp;relatedItemType=host&amp;genre={.}" class="dropdown-item">
                           <xsl:value-of select="mcrclassification:current-label-text(mcrclassification:category('mir_genres',.))" />
@@ -731,14 +733,16 @@
 
 <!-- hit abstract -->
       <div class="hit_abstract">
-        <xsl:choose>
-          <xsl:when test="mods:abstract[not(@altFormat)][@xml:lang=$CurrentLang]">
-            <xsl:value-of select="mcrstringutils:shorten(mods:abstract[not(@altFormat)][@xml:lang=$CurrentLang],300)"/>
-          </xsl:when>
-          <xsl:otherwise>
-            <xsl:value-of select="mcrstringutils:shorten(mods:abstract[not(@altFormat)],300)"/>
-          </xsl:otherwise>
-        </xsl:choose>
+        <xsl:if test="mods:abstract[not(@altFormat)]">
+          <xsl:choose>
+            <xsl:when test="mods:abstract[not(@altFormat)][@xml:lang=$CurrentLang]">
+              <xsl:value-of select="mcrstringutils:shorten(mods:abstract[not(@altFormat)][@xml:lang=$CurrentLang][1],300)"/>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:value-of select="mcrstringutils:shorten(mods:abstract[not(@altFormat)][1],300)"/>
+            </xsl:otherwise>
+          </xsl:choose>
+        </xsl:if>
       </div>
 
 <!-- hit publisher -->

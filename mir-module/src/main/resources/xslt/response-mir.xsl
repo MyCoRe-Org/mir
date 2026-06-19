@@ -6,14 +6,13 @@
   xmlns:mcri18n="http://www.mycore.de/xslt/i18n"
   xmlns:mcrlayoututils="http://www.mycore.de/xslt/layoututils"
   xmlns:mcrurl="http://www.mycore.de/xslt/url"
+  xmlns:mirorcidutil="http://www.mycore.de/xslt/mirorcidutil"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   exclude-result-prefixes="#all">
 
   <xsl:import href="xslImport:badges" />
-  <xsl:import href="resource:xslt/orcid/mir-orcid-user.xsl"/>
   <xsl:include href="resource:xslt/layout/mir-layout-utils.xsl" />
   <xsl:include href="resource:xslt/orcid/mir-orcid-export-ui.xsl"/>
-  <xsl:include href="resource:xslt/orcid/mir-orcid-work.xsl"/>
   <xsl:include href="resource:xslt/csl-export-gui.xsl" />
   <xsl:include href="resource:xslt/response-facets.xsl"/>
   <xsl:include href="resource:xslt/response-mir-utils.xsl" />
@@ -466,9 +465,9 @@
       </div>
 
     </div>
-    <xsl:if test="$isOrcidEnabled">
-      <xsl:call-template name="render-export-to-orcid-modal"/>
-      <script type="module" src="{$WebApplicationBaseURL}js/mir/orcid-result-list.js"/>
+    <xsl:if test="mirorcidutil:is-orcid-enabled()">
+      <xsl:call-template name="render-export-to-orcid-modal" />
+      <script type="module" src="{$WebApplicationBaseURL}js/mir/orcid-result-list.js" />
     </xsl:if>
   </xsl:template>
 
@@ -584,7 +583,7 @@
 
 <!-- hit options -->
           <xsl:choose>
-            <xsl:when test="not($isGuestUser)">
+            <xsl:when test="not(mcracl:is-current-user-guest-user())">
               <div class="hit_options float-end">
                 <div class="btn-group">
                   <a data-bs-toggle="dropdown" class="btn btn-secondary dropdown-toggle" href="#">
@@ -628,22 +627,18 @@
                         </a>
                       </li>
                     </xsl:if>
-                    <xsl:if test="$isOrcidEnabled">
+                    <xsl:if test="mirorcidutil:is-orcid-enabled()">
                       <li>
-                        <xsl:variable name="currentUserHasTrustedMatchingId">
-                          <xsl:call-template name="check-current-user-has-trusted-matching-id">
-                            <xsl:with-param name="nameIds" select="arr[@name='mods.nameIdentifier']/str"/>
-                          </xsl:call-template>
-                        </xsl:variable>
-                        <xsl:variable name="isPublishable">
-                          <xsl:call-template name="check-state-is-publishable">
-                            <xsl:with-param name="state" select="str[@name='state']"/>
-                          </xsl:call-template>
-                        </xsl:variable>
+                        <xsl:variable name="current-user" select="document('user:current')/user" />
+                        <xsl:variable name="object-name-ids" select="arr[@name='mods.nameIdentifier']/str/string()" />
+
                         <xsl:call-template name="render-export-to-orcid-menu-item">
-                          <xsl:with-param name="objectId" select="$identifier"/>
-                          <xsl:with-param name="disabled"
-                            select="$isPublishable='false' or $currentUserHasTrustedMatchingId='false' or not($hasLinkedOrcidCredential)"/>
+                          <xsl:with-param name="object-id" select="$identifier" />
+                          <xsl:with-param name="disabled" select="
+                            not(mirorcidutil:is-publishable-state(str[@name='state']))
+                            or not(mirorcidutil:has-trusted-matching-id($current-user, $object-name-ids))
+                            or not(mirorcidutil:has-orcid-credential($current-user))
+                          " />
                         </xsl:call-template>
                       </li>
                     </xsl:if>
@@ -734,7 +729,7 @@
                         test="$displayDerivate/str[@name='iviewFile'] or translate(tokenize(string(($displayDerivate/str[@name='derivateMaindoc'])[1]), '\.')[last()],'PDF','pdf') = 'pdf'">
                   <div class="hit_icon">
                     <xsl:choose>
-                      <xsl:when test="not($isGuestUser)">
+                      <xsl:when test="not(mcracl:is-current-user-guest-user())">
                         <xsl:attribute name="data-iiif-jwt">
                           <xsl:value-of select="concat($WebApplicationBaseURL, 'api/iiif/image/v2/thumbnail/', $identifier,'/full/', $MIR.Thumbnail.IIIF.Resolution, '/0/default.jpg')"/>
                         </xsl:attribute>

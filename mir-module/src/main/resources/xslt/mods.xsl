@@ -8,13 +8,12 @@
   xmlns:xlink="http://www.w3.org/1999/xlink"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   exclude-result-prefixes="#all" >
-  
-  <xsl:param name="MCR.Users.Superuser.UserName" />
+
   <xsl:include href="utils/mods-utils.xsl" />
   <xsl:include href="mods2html.xsl" />
   <xsl:include href="modsmetadata.xsl" />
 
-  <xsl:include href="basket.xsl" />
+  <xsl:include href="resource:xslt/basket.xsl" />
 
   <xsl:include href="modshitlist-external.xsl" />  <!-- for external usage in application module -->
   <xsl:include href="modsdetails-external.xsl" />  <!-- for external usage in application module -->

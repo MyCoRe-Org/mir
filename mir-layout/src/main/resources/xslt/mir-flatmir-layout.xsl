@@ -4,7 +4,8 @@
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   exclude-result-prefixes="#all">
 
-  <xsl:output method="html" indent="yes" media-type="text/html" version="5" />
+  <xsl:import href="resource:xslt/output-html.xsl" />
+
   <xsl:strip-space elements="*" />
   <xsl:include href="resource:xslt/default-parameters.xsl" />
   <xsl:include href="xslInclude:functions" />
@@ -19,7 +20,6 @@
   <xsl:variable name="PageTitle" select="/*/@title" />
 
   <xsl:template match="/site">
-    <xsl:text disable-output-escaping='yes'>&lt;!DOCTYPE html&gt;</xsl:text>
     <html lang="{$CurrentLang}" class="no-js">
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />

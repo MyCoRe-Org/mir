@@ -13,7 +13,6 @@
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   exclude-result-prefixes="#all" >
 
-  <xsl:include href="xslInclude:components-3" />
   <xsl:include href="modsmetadata-legacy.xsl" />
 
   <xsl:param name="MCR.Handle.Resolver.MasterURL" />
