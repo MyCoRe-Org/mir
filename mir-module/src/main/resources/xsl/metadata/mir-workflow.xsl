@@ -164,32 +164,32 @@
         Nutzer editor
         Dokument review
       </xsl:message>
-      <xsl:variable name="editURL">
-          <xsl:call-template name="getEditURL">
-            <xsl:with-param name="id" select="$id" />
-          </xsl:call-template>
-      </xsl:variable>
-      <xsl:variable name="message">
-        <p>
-          <xsl:value-of select="i18n:translate('mir.workflow.editor.review')"/>
-          <ul>
-            <li>
-              <a href="{$editURL}">
-                <xsl:value-of select="i18n:translate('object.editObject')"/>
-              </a>
-            </li>
-            <xsl:apply-templates select="." mode="editorReviewAdd" />
-            <xsl:call-template name="listStatusChangeOptions">
-              <xsl:with-param name="class" select="''"/>
-            </xsl:call-template>
-          </ul>
-        </p>
-      </xsl:variable>
-      <xsl:call-template name="buildLayout">
-        <xsl:with-param name="content" select="exslt:node-set($message)"/>
-        <xsl:with-param name="heading" select="''"/>
-      </xsl:call-template>
     </xsl:if>
+    <xsl:variable name="editURL">
+      <xsl:call-template name="getEditURL">
+        <xsl:with-param name="id" select="$id" />
+      </xsl:call-template>
+    </xsl:variable>
+    <xsl:variable name="message">
+      <p>
+        <xsl:value-of select="i18n:translate('mir.workflow.editor.review')" />
+        <ul>
+          <li>
+            <a href="{$editURL}">
+              <xsl:value-of select="i18n:translate('object.editObject')" />
+            </a>
+          </li>
+          <xsl:apply-templates select="." mode="editorReviewAdd" />
+          <xsl:call-template name="listStatusChangeOptions">
+            <xsl:with-param name="class" select="''" />
+          </xsl:call-template>
+        </ul>
+      </p>
+    </xsl:variable>
+    <xsl:call-template name="buildLayout">
+      <xsl:with-param name="content" select="exslt:node-set($message)" />
+      <xsl:with-param name="heading" select="''" />
+    </xsl:call-template>
   </xsl:template>
 
 
