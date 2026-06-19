@@ -8,6 +8,11 @@
                 <target>webpage</target>
                 <id>webpage:/modules/webtools/processing</id>
             </and>
+            <!-- manage all processes page -->
+            <and>
+                <target>webpage</target>
+                <id>webpage:/jobqueue</id>
+            </and>
         </or>
         <role>admin</role>
     </and>
