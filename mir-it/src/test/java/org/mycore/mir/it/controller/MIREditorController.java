@@ -2,13 +2,16 @@ package org.mycore.mir.it.controller;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.junit.Assert;
 import org.mycore.common.selenium.drivers.MCRWebdriverWrapper;
 import org.mycore.common.selenium.util.MCRBy;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 public abstract class MIREditorController extends MIRTestController {
@@ -20,12 +23,22 @@ public abstract class MIREditorController extends MIRTestController {
     }
 
     protected void setInputText(String childElementName, String text) {
-        driver.waitAndFindElement(
-            By.xpath(".//input[contains(@name,'" + childElementName + "') and contains(@type, 'text')]")).clear();
-        driver
-            .waitAndFindElement(
-                By.xpath(".//input[contains(@name,'" + childElementName + "') and contains(@type, 'text')]"))
-            .sendKeys(text);
+        WebElement input = driver.waitAndFindElement(
+            By.xpath(".//input[contains(@name,'" + childElementName + "') and contains(@type, 'text')]"));
+        Assert.assertTrue("Input is hidden: " + childElementName, input.isDisplayed());
+        input.clear();
+        input.click();
+        input.sendKeys(text);
+        clickOutside();
+        driver.waitFor(webDriver -> inputHasNoFocus(input));
+
+        Assert.assertEquals("Input value changed after blur: " + childElementName, text,
+            input.getDomProperty("value"));
+    }
+
+    protected boolean inputHasNoFocus(WebElement input) {
+        Object activeElement = ((JavascriptExecutor) driver).executeScript("return document.activeElement;");
+        return !input.equals(activeElement);
     }
 
     protected void setTextAreaText(String childElementName, String text) {
@@ -111,4 +124,8 @@ public abstract class MIREditorController extends MIRTestController {
         } while (e != null);
     }
 
+    public void clickOutside() {
+        Actions action = new Actions(driver);
+        action.moveByOffset(1, 1).click().build().perform();
+    }
 }
