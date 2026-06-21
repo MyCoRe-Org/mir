@@ -26,8 +26,7 @@
             </a>
           </xsl:when>
           <xsl:otherwise>
-            <xsl:variable name="LoginURL"
-              select="concat($ServletsBaseURL, 'MCRLoginServlet?url=', encode-for-uri(string($RequestURL)))" />
+            <xsl:variable name="LoginURL" select="$LoginDetourURL" />
             <xsl:apply-templates select="$mcrobj" mode="resulttitle" />
             <xsl:text>&#160;</xsl:text>
             <a href="{$LoginURL}">
@@ -45,8 +44,7 @@
             </a>
           </xsl:when>
           <xsl:otherwise>
-            <xsl:variable name="LoginURL"
-              select="concat($ServletsBaseURL, 'MCRLoginServlet?url=', encode-for-uri(string($RequestURL)))" />
+            <xsl:variable name="LoginURL" select="$LoginDetourURL" />
             <xsl:apply-templates select="$resolved_mcrobj" mode="resulttitle" />
             <xsl:text>&#160;</xsl:text>
             <a href="{$LoginURL}">
@@ -81,7 +79,7 @@
   </xsl:template>
 
   <xsl:template name="displayLogin">
-    <xsl:variable name="loginURL" select="concat($ServletsBaseURL, 'MCRLoginServlet?url=', encode-for-uri(string($RequestURL)))" />
+    <xsl:variable name="loginURL" select="$LoginDetourURL" />
     <br></br>
     <xsl:copy-of
       select="
