@@ -268,7 +268,7 @@
           <xsl:choose>
             <xsl:when test="not($accessedit) and mcracl:is-current-user-in-role('guest')">
               <li class="mir-action-item">
-                <a href="{concat($ServletsBaseURL, 'MCRLoginServlet?url=', encode-for-uri(string($RequestURL)))}" class="dropdown-item">
+                <a href="{$LoginDetourURL}" class="dropdown-item">
                   <xsl:value-of select="mcri18n:translate('mir.actions.noaccess')" />
                 </a>
               </li>
@@ -276,7 +276,7 @@
             <xsl:otherwise>
               <xsl:if test="not($accessedit or $accessdelete)">
                 <li class="mir-action-item">
-                  <a href="{concat($ServletsBaseURL, 'MCRLoginServlet?url=', encode-for-uri(string($RequestURL)))}" class="dropdown-item">
+                  <a href="{$LoginDetourURL}" class="dropdown-item">
                     <xsl:value-of select="mcri18n:translate('mir.actions.norights')" />
                   </a>
                 </li>

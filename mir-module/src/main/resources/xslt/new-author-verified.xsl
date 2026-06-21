@@ -26,7 +26,7 @@
             <xsl:value-of select="user/eMail" />
           </b>
           <xsl:value-of select="' ' || mcri18n:translate($i18n-prefix || 'user.info.2')" />
-          <a href="{$ServletsBaseURL || 'MCRLoginServlet?url=' || $WebApplicationBaseURL || 'content/index.xml'}">
+          <a href="{$LoginURL || '?url=' || encode-for-uri($WebApplicationBaseURL || 'content/index.xml')}">
             <xsl:value-of select="' ' || mcri18n:translate($i18n-prefix || 'user.info.3')" />
           </a>
           <xsl:value-of select="mcri18n:translate($i18n-prefix || 'user.info.4')" />
