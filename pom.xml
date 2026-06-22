@@ -73,7 +73,7 @@
             <solrVersionString>${solr-runner.solrVersionString}</solrVersionString>
             <cloudMode>true</cloudMode>
             <verbose>true</verbose>
-            <additionalParams>-Dsolr.config.lib.enabled=true</additionalParams>
+            <additionalParams>-Dsolr.modules=analysis-extras</additionalParams>
           </configuration>
         </plugin>
       </plugins>
