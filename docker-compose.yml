@@ -28,6 +28,7 @@ services:
       - SOLR_SEARCH_PASSWORD=${SOLR_SEARCH_PASSWORD}
       - SOLR_INDEX_USER=${SOLR_INDEX_USER}
       - SOLR_INDEX_PASSWORD=${SOLR_INDEX_PASSWORD}
+      - SOLR_MODULES=analysis-extras
   tika:
     container_name: ${NAME}-tika
     image: apache/tika:2.9.2.1-full
