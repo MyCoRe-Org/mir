@@ -27,7 +27,7 @@
   <xsl:include href="resource:xslt/mir-utils.xsl" />
   <xsl:variable name="loaded_navigation_xml" select="mcrlayoututils:get-personal-navigation()/navigation" />
   <xsl:variable name="browserAddress" select="mcrlayoututils:get-browser-address($loaded_navigation_xml,.)" />
-  <xsl:variable name="whiteList" select="concat($ServletsBaseURL,'MCRLoginServlet')" />
+  <xsl:variable name="whiteList" select="$LoginURL" />
   <xsl:variable name="readAccess">
     <xsl:choose>
       <xsl:when test="starts-with($RequestURL, $whiteList)">
@@ -41,8 +41,7 @@
 
 
   <xsl:template name="mir.loginMenu">
-    <xsl:variable name="loginURL"
-      select="concat( $ServletsBaseURL, 'MCRLoginServlet?url=', encode-for-uri( string( $RequestURL ) ) )" />
+    <xsl:variable name="loginURL" select="$LoginDetourURL" />
     <xsl:choose>
       <xsl:when test="mcracl:is-current-user-guest-user()">
         <li class="nav-item">

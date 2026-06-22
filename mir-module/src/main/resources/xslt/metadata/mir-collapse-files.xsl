@@ -13,8 +13,7 @@
   <xsl:param name="MIR.NotFullAccessInfo.Genres" />
   <xsl:param name="MIR.FileBrowser.FilesPerPage" />
   <xsl:template match="/">
-    <xsl:variable name="loginURL"
-      select="concat( $ServletsBaseURL, 'MCRLoginServlet?url=', encode-for-uri( string( $RequestURL ) ) )" />
+    <xsl:variable name="loginURL" select="$LoginDetourURL" />
 
     <xsl:choose>
       <xsl:when test="key('rights', mycoreobject/@ID)/@read or key('rights', mycoreobject/structure/derobjects/derobject/@xlink:href)/@accKeyEnabled">

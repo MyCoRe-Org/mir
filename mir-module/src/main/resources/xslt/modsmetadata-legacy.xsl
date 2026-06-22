@@ -202,8 +202,7 @@
           </xsl:when>
           <xsl:otherwise>
             <!-- Build Login URL for LoginServlet -->
-            <xsl:variable name="LoginURL"
-              select="concat( $ServletsBaseURL, 'MCRLoginServlet?url=', encode-for-uri( string( $RequestURL ) ) )" />
+            <xsl:variable name="LoginURL" select="$LoginDetourURL" />
             <xsl:apply-templates select="$mcrobj" mode="resulttitle" />
             &#160;
             <a href="{$LoginURL}">
@@ -223,8 +222,7 @@
           </xsl:when>
           <xsl:otherwise>
             <!-- Build Login URL for LoginServlet -->
-            <xsl:variable name="LoginURL"
-              select="concat( $ServletsBaseURL, 'MCRLoginServlet?url=', encode-for-uri( string( $RequestURL ) ) )" />
+            <xsl:variable name="LoginURL" select="$LoginDetourURL" />
             <xsl:apply-templates select="$mcrobj" mode="resulttitle" />
             &#160;
             <a href="{$LoginURL}">

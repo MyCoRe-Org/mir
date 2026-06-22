@@ -34,7 +34,7 @@
   </xsl:template>
 
   <xsl:template name="displayLogin">
-    <xsl:variable name="loginURL" select="concat($ServletsBaseURL, 'MCRLoginServlet?url=', encoder:encode(string($RequestURL)))" />
+    <xsl:variable name="loginURL" select="$LoginDetourURL" />
     <br></br>
     <xsl:value-of disable-output-escaping="yes" select="mcri18n:translate('mir.loginRequiredInfo', $loginURL)" />
   </xsl:template>
