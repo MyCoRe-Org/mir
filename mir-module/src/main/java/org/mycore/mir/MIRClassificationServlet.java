@@ -1,13 +1,33 @@
+/*
+ * This file is part of ***  M y C o R e  ***
+ * See https://www.mycore.de/ for details.
+ *
+ * MyCoRe is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * MyCoRe is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with MyCoRe.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package org.mycore.mir;
 
 import java.io.Serial;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
-import org.jdom2.Document;
 import org.jdom2.Element;
+import org.mycore.access.MCRAccessException;
 import org.mycore.access.MCRAccessManager;
+import org.mycore.access.MCRMissingPermissionException;
 import org.mycore.common.content.MCRJDOMContent;
 import org.mycore.datamodel.classifications2.MCRCategory;
 import org.mycore.datamodel.classifications2.MCRCategoryDAO;
@@ -24,28 +44,24 @@ public class MIRClassificationServlet extends MCRServlet {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    private static final String LAYOUT_ELEMENT_KEY = MIRClassificationServlet.class.getName() + ".layoutElement";
+    private static final String REQUIRED_PERMISSION = MCRAccessManager.PERMISSION_READ;
 
     @Override
-    public void init() {
-        //MIR-220 fixed formatting
-    }
-
-    @Override
-    protected void think(MCRServletJob job) throws Exception {
+    protected void doGetPost(MCRServletJob job) throws Exception {
         HttpServletRequest request = job.getRequest();
         String action = getProperty(request, "action");
-        if ("chooseCategory".equals(action)) {
-            chooseCategory(request);
-        } else {
-            chooseClassiRoot(request);
+        try {
+            Element result = "chooseCategory".equals(action) ? chooseCategory(request) : chooseClassiRoot(request);
+            getLayoutService().doLayout(job.getRequest(), job.getResponse(), new MCRJDOMContent(result));
+        } catch (MCRAccessException e) {
+            job.getResponse().sendError(403, e.getMessage());
         }
     }
 
-    private void chooseClassiRoot(HttpServletRequest request) {
+    private Element chooseClassiRoot(HttpServletRequest request) {
         Element rootElement = getRootElement(request);
         rootElement.addContent(getRoleElements());
-        request.setAttribute(LAYOUT_ELEMENT_KEY, new Document(rootElement));
+        return rootElement;
     }
 
     private Collection<Element> getRoleElements() {
@@ -53,7 +69,7 @@ public class MIRClassificationServlet extends MCRServlet {
         List<MCRCategory> allClassi = categoryDao.getRootCategories();
         ArrayList<Element> list = new ArrayList<>(allClassi.size());
         for (MCRCategory category : allClassi) {
-            if (MCRAccessManager.checkPermission(category.getId().toString(), MCRAccessManager.PERMISSION_READ)) {
+            if (MCRAccessManager.checkPermission(category.getId().toString(), REQUIRED_PERMISSION)) {
                 Element role = new Element("classification");
                 role.setAttribute("authority", category.getId().toString());
                 category.getCurrentLabel().map(MCRLabel::getText).ifPresent(role::setText);
@@ -65,38 +81,26 @@ public class MIRClassificationServlet extends MCRServlet {
 
     private static Element getRootElement(HttpServletRequest request) {
         Element rootElement = new Element("classifications");
-        rootElement.setAttribute("queryParams", request.getQueryString());
+        Optional.ofNullable(request.getQueryString()).ifPresent(s -> rootElement.setAttribute("queryParams", s));
         return rootElement;
     }
 
-    private static void chooseCategory(HttpServletRequest request) {
-        MCRCategoryID categoryID;
-        String categID = getProperty(request, "categID");
-        if (MCRAccessManager.checkPermission(categID, MCRAccessManager.PERMISSION_READ)) {
-            if (categID != null) {
-                categoryID = MCRCategoryID.ofString(categID);
-            } else {
+    private Element chooseCategory(HttpServletRequest request) throws MCRMissingPermissionException {
+        MCRCategoryID categoryID =
+            Optional.ofNullable(getProperty(request, "categoryId")).map(MCRCategoryID::ofString).orElseGet(() -> {
                 String rootID = getProperty(request, "classID");
-                categoryID = (rootID == null) ? new MCRCategoryID(MCRUser2Constants.getRoleRootId())
-                    : new MCRCategoryID(rootID);
-            }
-            Element rootElement = getRootElement(request);
-            rootElement.setAttribute("classID", categoryID.getRootID());
-            if (!categoryID.isRoot()) {
-                rootElement.setAttribute("categID", categoryID.getId());
-            }
-            request.setAttribute(LAYOUT_ELEMENT_KEY, new Document(rootElement));
+                return (rootID == null) ? new MCRCategoryID(MCRUser2Constants.getRoleRootId())
+                                        : new MCRCategoryID(rootID);
+            });
+        if (!MCRAccessManager.checkPermission(categoryID.getId(), REQUIRED_PERMISSION)) {
+            throw new MCRMissingPermissionException("chooseCategory", categoryID.toString(), REQUIRED_PERMISSION);
         }
-    }
-
-    @Override
-    protected void render(MCRServletJob job, Exception ex) throws Exception {
-        if (ex != null) {
-            //do not handle error here
-            throw ex;
+        Element rootElement = getRootElement(request);
+        rootElement.setAttribute("classID", categoryID.getRootID());
+        if (!categoryID.isRoot()) {
+            rootElement.setAttribute("categID", categoryID.getId());
         }
-        getLayoutService().doLayout(job.getRequest(), job.getResponse(),
-            new MCRJDOMContent((Document) job.getRequest().getAttribute(LAYOUT_ELEMENT_KEY)));
+        return rootElement;
     }
 
 }
