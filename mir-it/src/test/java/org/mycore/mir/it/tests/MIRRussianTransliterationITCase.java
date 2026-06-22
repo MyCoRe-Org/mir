@@ -61,6 +61,51 @@ public class MIRRussianTransliterationITCase extends MIRITBase {
     }
 
     /**
+     * Tests that Russian stemming still works when searching with Latin transliteration.
+     * The document title contains the inflected Cyrillic word "библиотек". Searching for
+     * the transliterated nominative form "biblioteka" should only match when stemming is
+     * applied before transliteration.
+     */
+    @Test
+    public void testTitleSearchWithLatinCharactersAndRussianStemming() {
+        MIRSearchController searchController = new MIRSearchController(getDriver(), getAPPUrlString());
+        searchController.setTitle("biblioteka");
+
+        List<String> foundIds = collectResultIds();
+
+        Assert.assertTrue(
+            "Searching for 'biblioteka' (Latin nominative) should find Russian document " + RUSSIAN_DOC_ID
+                + " via Russian stemming before transliteration (found: " + String.join(",", foundIds) + ")",
+            foundIds.contains(RUSSIAN_DOC_ID));
+    }
+
+    /**
+     * Tests that Russian stopwords are removed before transliteration.
+     * The fixture contains the Russian stopword "и" as an individual token in the subject.
+     * Searching for its Latin transliteration "i" should not find the Russian document when
+     * stopword removal runs on Cyrillic tokens first.
+     */
+    @Test
+    public void testMetadataSearchWithLatinStopwordDoesNotMatch() {
+        MIRSearchController searchController = new MIRSearchController(getDriver(), getAPPUrlString());
+
+        List<MIRComplexSearchQuery> queries = List.of(
+            new MIRComplexSearchQuery(MIRSearchFieldCondition.enthält, "i",
+                MIRSearchField.Metadaten));
+
+        searchController.complexSearchBy(queries, null, null, null,
+            null, null, null, null, null);
+
+        List<String> foundIds = collectResultIds();
+
+        Assert.assertFalse(
+            "Searching for Russian stopword 'i' (Latin transliteration of 'и') should not find "
+                + RUSSIAN_DOC_ID + " when stopwords are removed before transliteration (found: "
+                + String.join(",", foundIds) + ")",
+            foundIds.contains(RUSSIAN_DOC_ID));
+    }
+
+    /**
      * Tests that a Russian abstract can be found using Latin transliteration.
      * The document abstract contains "Управление". The ICU Any-Latin transliteration
      * produces "upravlenie". Note: RussianLightStemFilterFactory only operates on Cyrillic,
@@ -87,7 +132,7 @@ public class MIRRussianTransliterationITCase extends MIRITBase {
     }
 
     private List<String> collectResultIds() {
-        return getDriver().waitAndFindElements(By.xpath(".//input[@name='id']"))
+        return getDriver().findElements(By.xpath(".//input[@name='id']"))
             .stream()
             .map(v -> Optional.ofNullable(v.getDomProperty("value"))
                 .orElseGet(() -> v.getDomAttribute("value")))
