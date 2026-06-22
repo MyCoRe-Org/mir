@@ -1,0 +1,197 @@
+{
+  "items": [
+    {
+      "type_phrases": [
+        {
+          "language": "en",
+          "phrase": "Journal",
+          "value": "journal"
+        }
+      ],
+      "listed_in_doaj": "no",
+      "id": 5,
+      "issns": [
+        {
+          "type": "print",
+          "type_phrases": [
+            {
+              "value": "print",
+              "phrase": "Print",
+              "language": "en"
+            }
+          ],
+          "issn": "1178-9905"
+        },
+        {
+          "type_phrases": [
+            {
+              "phrase": "Electronic",
+              "language": "en",
+              "value": "electronic"
+            }
+          ],
+          "type": "electronic",
+          "issn": "1178-9913"
+        }
+      ],
+      "type": "journal",
+      "url": "https://www.mapress.com/zs/",
+      "system_metadata": {
+        "id": 5,
+        "uri": "https://v2.sherpa.ac.uk/id/publication/5",
+        "date_modified": "2025-08-18 14:16:34",
+        "date_created": "2010-06-30 17:47:50",
+        "publicly_visible": "yes",
+        "publicly_visible_phrases": [
+          {
+            "phrase": "Yes",
+            "language": "en",
+            "value": "yes"
+          }
+        ]
+      },
+      "publishers": [
+        {
+          "relationship_type_phrases": [
+            {
+              "value": "commercial_publisher",
+              "language": "en",
+              "phrase": "Commercial Publisher"
+            }
+          ],
+          "publisher": {
+            "id": 284,
+            "uri": "https://v2.sherpa.ac.uk/id/publisher/284",
+            "country_phrases": [
+              {
+                "value": "nz",
+                "phrase": "New Zealand",
+                "language": "en"
+              }
+            ],
+            "name": [
+              {
+                "language": "en",
+                "language_phrases": [
+                  {
+                    "value": "en",
+                    "language": "en",
+                    "phrase": "English"
+                  }
+                ],
+                "name": "Magnolia Press"
+              }
+            ],
+            "url": "https://www.mapress.com/",
+            "publication_count": 5,
+            "country": "nz"
+          },
+          "relationship_type": "commercial_publisher"
+        }
+      ],
+      "listed_in_doaj_phrases": [
+        {
+          "value": "no",
+          "language": "en",
+          "phrase": "No"
+        }
+      ],
+      "title": [
+        {
+          "language_phrases": [
+            {
+              "language": "en",
+              "phrase": "English",
+              "value": "en"
+            }
+          ],
+          "title": "Zoosymposia",
+          "language": "en"
+        }
+      ],
+      "publisher_policy": [
+        {
+          "urls": [
+            {
+              "description": "Open Access Purchase",
+              "url": "https://store.mapress.com/author-service/51-open-access.html"
+            },
+            {
+              "description": "Open access fee (Example)",
+              "url": "https://www.mapress.com/zs/forauthors"
+            }
+          ],
+          "internal_moniker": "CC BY-NC (Hybrid) pub version only",
+          "permitted_oa": [
+            {
+              "article_version_phrases": [
+                {
+                  "value": "published",
+                  "language": "en",
+                  "phrase": "Published"
+                }
+              ],
+              "id": 891,
+              "additional_oa_fee": "yes",
+              "conditions": [
+                "Publisher source must be acknowledged with citation"
+              ],
+              "license": [
+                {
+                  "license": "cc_by_nc",
+                  "version": "4.0",
+                  "license_phrases": [
+                    {
+                      "phrase": "CC BY-NC",
+                      "language": "en",
+                      "value": "cc_by_nc"
+                    }
+                  ]
+                }
+              ],
+              "article_version": [
+                "published"
+              ],
+              "location": {
+                "location_phrases": [
+                  {
+                    "language": "en",
+                    "phrase": "Non-Commercial Website",
+                    "value": "non_commercial_website"
+                  },
+                  {
+                    "phrase": "Journal Website",
+                    "language": "en",
+                    "value": "this_journal"
+                  }
+                ],
+                "location": [
+                  "non_commercial_website",
+                  "this_journal"
+                ]
+              },
+              "additional_oa_fee_phrases": [
+                {
+                  "value": "yes",
+                  "language": "en",
+                  "phrase": "Yes"
+                }
+              ]
+            }
+          ],
+          "publication_count": 5,
+          "open_access_prohibited_phrases": [
+            {
+              "phrase": "No",
+              "language": "en",
+              "value": "no"
+            }
+          ],
+          "uri": "https://v2.sherpa.ac.uk/id/publisher_policy/284",
+          "id": 284,
+          "open_access_prohibited": "no"
+        }
+      ]
+    }
+  ]
+}
