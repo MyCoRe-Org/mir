@@ -78,7 +78,7 @@
     <xsl:param name="properties"/>
 
     <xsl:variable name="originalContent" select="."/>
-    <xsl:variable name="icons" select="mcrproperty:all('MIR.Layout.Display.Panel.Icon')" />
+    <xsl:variable name="icons" select="mcrproperty:map('MIR.Layout.Display.Panel.Icon')" />
     <xsl:for-each select="tokenize($properties, ',')">
       <xsl:variable name="boxID" select="normalize-space(.)"/>
       <xsl:if test="count($originalContent/div[@id=$boxID])&gt;=1">
@@ -172,7 +172,7 @@
               <xsl:copy-of select="$originalContent/div[@id=$boxID]/@*[local-name()!='id' and local-name()!='class']"/>
               <div class="card-header">
                 <h3 class="card-title">
-                  <xsl:variable name="icon" select="$icons/entry[@key=concat('MIR.Layout.Display.Panel.Icon.', $boxID)]" />
+                  <xsl:variable name="icon" select="$icons(concat('MIR.Layout.Display.Panel.Icon.', $boxID))" />
                   <xsl:if test="$icon">
                     <i class="{$icon/text()}" style="margin-right:1ex;" aria-hidden="true" />
                   </xsl:if>
