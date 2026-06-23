@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0"
-  xmlns:mcri18n="xalan://org.mycore.services.i18n.MCRTranslation"
-  xmlns:mcrutils="xalan://org.mycore.common.MCRUtils"
-  xmlns:mcrxml="xalan://org.mycore.common.xml.MCRXMLFunctions"
+<xsl:stylesheet version="3.0"
+  xmlns:mcrderivate="http://www.mycore.de/xslt/derivate"
+  xmlns:mcri18n="http://www.mycore.de/xslt/i18n"
+  xmlns:mcrstringutils="http://www.mycore.de/xslt/stringutils"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  exclude-result-prefixes="mcri18n mcrutils mcrxml">
+  exclude-result-prefixes="#all">
 
-  <xsl:include href="resource:xsl/MyCoReLayout.xsl" />
-  <xsl:include href="resource:xsl/datatable.xsl" />
+  <xsl:include href="resource:xslt/MyCoReLayout.xsl" />
+  <xsl:include href="resource:xslt/datatable.xsl" />
 
-  <xsl:variable name="PageTitle" select="mcri18n:translate('metadata.files.file')" />
+  <xsl:param name="i18n-prefix" select="'metadata.files.'" />
+
+  <xsl:variable name="PageTitle" select="mcri18n:translate($i18n-prefix || 'file')" />
 
   <xsl:variable name="mainUri" select="/mcr_directory/uri" />
   <xsl:variable name="ownerId" select="/mcr_directory/ownerID" />
@@ -19,48 +21,43 @@
     <head>
       <meta name="robots" content="noindex, follow" />
     </head>
-
     <h2>
-      <xsl:value-of select="mcri18n:translate('metadata.files.file')" />
+      <xsl:value-of select="$PageTitle" />
     </h2>
     <p>
-      <a href="{$WebApplicationBaseURL}receive/{mcrxml:getMCRObjectID(string(ownerID))}">
-        <xsl:value-of select="mcri18n:translate('metadata.files.backToObject')" />
+      <a href="{$WebApplicationBaseURL}receive/{mcrderivate:get-owner-id($ownerId)}">
+        <xsl:value-of select="mcri18n:translate($i18n-prefix || 'backToObject')" />
       </a>
     </p>
-
     <xsl:apply-templates mode="dataTable" select="children">
       <xsl:with-param name="id" select="'files'" />
-      <xsl:with-param name="disableFilter" select="true()"></xsl:with-param>
+      <xsl:with-param name="disableFilter" select="true()" />
     </xsl:apply-templates>
   </xsl:template>
 
   <xsl:template mode="dataTableHeader" match="children">
     <col sortBy="name">
-      <xsl:value-of select="mcri18n:translate('metadata.files.name')" />
+      <xsl:value-of select="mcri18n:translate($i18n-prefix || 'name')" />
     </col>
     <col style="width: 12%">
-      <xsl:value-of select="mcri18n:translate('metadata.files.date')" />
+      <xsl:value-of select="mcri18n:translate($i18n-prefix || 'date')" />
     </col>
     <col sortBy="size" sortType="number" style="width: 8%">
-      <xsl:value-of select="mcri18n:translate('metadata.files.size')" />
+      <xsl:value-of select="mcri18n:translate($i18n-prefix || 'size')" />
     </col>
   </xsl:template>
 
   <xsl:template mode="dataTableRow" match="child">
     <col>
-      <a>
-        <xsl:attribute name="href">
-          <xsl:value-of select="concat($WebApplicationBaseURL, mcrxml:encodeURIPath(concat('servlets/MCRFileNodeServlet/', $ownerId, $path, name/text())))" />
-        </xsl:attribute>
+      <a href="{concat($ServletsBaseURL, encode-for-uri(concat('MCRFileNodeServlet/', $ownerId, $path, name/text())))}">
         <xsl:value-of select="name" />
       </a>
     </col>
     <col>
-      <xsl:value-of select="mcrxml:formatISODate(string(date[@type='lastModified']), 'dd.MM.yyyy', 'de')" />
+      <xsl:value-of select="format-dateTime(date[@type='lastModified'], mcri18n:translate('metaData.date.xsl3'))" />
     </col>
     <col align="right">
-      <xsl:value-of select="mcrutils:getSizeFormatted(number(size))" />
+      <xsl:value-of select="mcrstringutils:pretty-filesize(size)" />
     </col>
   </xsl:template>
 
