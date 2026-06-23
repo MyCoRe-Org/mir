@@ -1,19 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0"
-  xmlns:mcri18n="xalan://org.mycore.services.i18n.MCRTranslation"
-  xmlns:xlink="http://www.w3.org/1999/xlink"
+<xsl:stylesheet version="3.0"
+  xmlns:mcri18n="http://www.mycore.de/xslt/i18n"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  exclude-result-prefixes="mcri18n xlink">
+  exclude-result-prefixes="#all">
 
-  <xsl:variable name="PageTitle" select="mcri18n:translate('selfRegistration.step.created.title')" />
+  <xsl:include href="resource:xslt/MyCoReLayout.xsl" />
+
+  <xsl:param name="i18n-prefix" select="'selfRegistration.step.created.'" />
+
+  <xsl:variable name="PageTitle" select="mcri18n:translate($i18n-prefix || 'title')" />
 
   <xsl:template match="/new-author-created">
     <h1>
-      <xsl:value-of select="mcri18n:translate('selfRegistration.step.created.title')" />
+      <xsl:value-of select="$PageTitle" />
     </h1>
     <p>
-      <xsl:value-of select="mcri18n:translate('selfRegistration.step.created.info', user/eMail)" disable-output-escaping="yes" />
+      <xsl:value-of select="mcri18n:translate($i18n-prefix || 'info.1') || ' '" />
+      <b>
+        <xsl:value-of select="user/eMail" />
+      </b>
+      <xsl:value-of select="' ' || mcri18n:translate($i18n-prefix || 'info.2')" />
+      <br />
+      <xsl:value-of select="mcri18n:translate($i18n-prefix || 'info.3')" />
     </p>
   </xsl:template>
-  <xsl:include href="resource:xsl/MyCoReLayout.xsl" />
+
 </xsl:stylesheet>
