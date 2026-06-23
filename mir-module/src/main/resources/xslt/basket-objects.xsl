@@ -6,6 +6,7 @@
   exclude-result-prefixes="#all">
 
   <xsl:import href="resource:xslt/orcid/mir-orcid.xsl" />
+  <xsl:import href="xslImport:badges" />
 
   <xsl:include href="resource:xslt/MyCoReLayout.xsl" />
   <xsl:include href="resource:xslt/csl-export-gui.xsl" />
