@@ -1,55 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0"
-  xmlns:mcri18n="xalan://org.mycore.services.i18n.MCRTranslation"
+<xsl:stylesheet version="3.0"
+  xmlns:mcri18n="http://www.mycore.de/xslt/i18n"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  exclude-result-prefixes="mcri18n">
+  exclude-result-prefixes="#all">
 
-  <xsl:param name="ServletsBaseURL"/>
-  <xsl:variable name="PageTitle" select="mcri18n:translate('selfRegistration.step.disableUserChanged.title')"/>
+  <xsl:include href="resource:xslt/MyCoReLayout.xsl" />
+
+  <xsl:param name="i18n-prefix" select="'selfRegistration.step.disableUserChanged.'" />
+
+  <xsl:variable name="PageTitle" select="mcri18n:translate($i18n-prefix || 'title')" />
 
   <xsl:template match="/disable-user-status-changed">
-    <xsl:apply-templates/>
+    <xsl:apply-templates />
   </xsl:template>
 
   <xsl:template match="user">
     <h1>
-      <xsl:choose>
-        <xsl:when test="@disabled='false'">
-          <xsl:value-of select="mcri18n:translate('selfRegistration.step.disableUserChanged.info.enabled')"/>
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:value-of select="mcri18n:translate('selfRegistration.step.disableUserChanged.info.disabled')"/>
-        </xsl:otherwise>
-      </xsl:choose>
+      <xsl:value-of select="$PageTitle" />
     </h1>
-
     <p>
-      <!-- User ID -->
-      <xsl:value-of select="mcri18n:translate('selfRegistration.step.disableUserChanged.email.user.info.userId')"/>
-      <xsl:value-of select="concat(@name,' (',@realm,')')"/>
-      <br/>
-      <!-- Name -->
+      <xsl:value-of select="mcri18n:translate($i18n-prefix || 'email.user.info.userId')" />
+      <xsl:value-of select="@name || ' (' || @realm || ')'" />
+      <br />
       <xsl:if test="realName">
-        <xsl:value-of select="mcri18n:translate('selfRegistration.step.disableUserChanged.email.user.info.name')"/>
-        <xsl:value-of select="realName"/>
-        <br/>
+        <xsl:value-of select="mcri18n:translate($i18n-prefix || 'email.user.info.name')" />
+        <xsl:value-of select="realName" />
+        <br />
       </xsl:if>
-      <!-- Email -->
       <xsl:if test="eMail">
-        <xsl:value-of select="mcri18n:translate('selfRegistration.step.disableUserChanged.email.user.info.mail')"/>
-        <xsl:value-of select="eMail"/>
-        <br/>
+        <xsl:value-of select="mcri18n:translate($i18n-prefix || 'email.user.info.mail')" />
+        <xsl:value-of select="eMail" />
+        <br />
       </xsl:if>
-      <!-- Link -->
-      <xsl:value-of select="mcri18n:translate('selfRegistration.step.disableUserChanged.email.user.info.link')"/>
-      <xsl:element name="a">
-        <xsl:attribute name="href">
-          <xsl:value-of select="concat($ServletsBaseURL,'MCRUserServlet?action=show&amp;id=',@name,'@',@realm)"/>
-        </xsl:attribute>
-        <xsl:value-of select="concat($ServletsBaseURL,'MCRUserServlet?action=show&amp;id=',@name,'@',@realm)"/>
-      </xsl:element>
-      <br/>
+      <xsl:value-of select="mcri18n:translate($i18n-prefix || 'email.user.info.link')" />
+      <xsl:variable name="url" select="
+        $ServletsBaseURL || 'MCRUserServlet?action=show&amp;id=' || @name || '@' || @realm
+      " />
+      <a href="{$url}">
+        <xsl:value-of select="$url" />
+      </a>
+      <br />
     </p>
   </xsl:template>
-  <xsl:include href="resource:xsl/MyCoReLayout.xsl"/>
+
 </xsl:stylesheet>
