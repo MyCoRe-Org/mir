@@ -477,7 +477,7 @@
     // editor fix (to many tables)
     $('table.editorPanel td:has(table)').css('padding', '0');
 
-    $('.confirm_deletion').confirm();
+    MIRConfirm.bind('.confirm_deletion');
 
     $(".searchfield_box form").submit(function() {
       $("input").each(function(i,elem) {

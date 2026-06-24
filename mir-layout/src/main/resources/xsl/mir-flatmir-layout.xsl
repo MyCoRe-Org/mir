@@ -105,12 +105,12 @@
           if (jQuery.fn.button){jQuery.fn.btn = jQuery.fn.button.noConflict();}
         </script>
         <script src="{$WebApplicationBaseURL}assets/bootstrap/js/bootstrap.bundle.min.js"></script>
-        <script src="{$WebApplicationBaseURL}assets/jquery/plugins/jquery-confirm/jquery.confirm.min.js"></script>
+        <script src="{$WebApplicationBaseURL}js/mir/confirm.js"></script>
         <script src="{$WebApplicationBaseURL}js/mir/base.min.js"></script>
         <script>
           $( document ).ready(function() {
             $('.overtext').tooltip();
-            $.confirm.options = {
+            MIRConfirm.options = {
               title: "<xsl:value-of select="i18n:translate('mir.confirm.title')" />",
               confirmButton: "<xsl:value-of select="i18n:translate('mir.confirm.confirmButton')" />",
               cancelButton: "<xsl:value-of select="i18n:translate('mir.confirm.cancelButton')" />",
