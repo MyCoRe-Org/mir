@@ -1,109 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0"
-  xmlns:decoder="xalan://java.net.URLDecoder"
-  xmlns:mcri18n="xalan://org.mycore.services.i18n.MCRTranslation"
-  xmlns:str="http://exslt.org/strings"
-  xmlns:xalan="http://xml.apache.org/xalan"
+<xsl:stylesheet version="3.0"
+  xmlns:mcri18n="http://www.mycore.de/xslt/i18n"
+  xmlns:mcrurl="http://www.mycore.de/xslt/url"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  exclude-result-prefixes="decoder mcri18n str xalan xsl">
+  exclude-result-prefixes="#all">
 
-  <xsl:include href="resource:xsl/str.tokenize.xsl" />
-
-  <xsl:param name="SortBy" select="''" />
-  <xsl:param name="SortOrder" select="''" />
-  <xsl:param name="SortType" select="'text'" />
-  <xsl:param name="numPerPage" select="10" />
-  <xsl:param name="Page" select="1" />
-  <xsl:param name="Filter" />
+  <xsl:mode on-no-match="shallow-copy" />
 
   <xsl:variable name="headerCols">
     <xsl:apply-templates mode="dataTableHeader" select="." />
   </xsl:variable>
 
+  <xsl:variable name="defaultPage" select="1" />
   <xsl:variable name="defaultNumPerPage" select="10" />
   <xsl:variable name="defaultSortBy">
-    <xsl:value-of
-      select="xalan:nodeset($headerCols)/col[(position() = 1) and (string-length(@sortOrder) &gt; 0)]/@sortBy|xalan:nodeset($headerCols)/th[(position() = 1) and (string-length(@sortOrder) &gt; 0)]/@sortBy" />
+    <xsl:value-of select="($headerCols/(col|th))[1][@sortOrder != '']/@sortBy" />
   </xsl:variable>
   <xsl:variable name="defaultSortOrder">
-    <xsl:value-of select="xalan:nodeset($headerCols)/col[1]/@sortOrder|xalan:nodeset($headerCols)/th[1]/@sortOrder" />
+    <xsl:value-of select="($headerCols/(col|th))[1]/@sortOrder" />
   </xsl:variable>
 
-  <xsl:variable name="SortBy">
-    <xsl:call-template name="getParam">
-      <xsl:with-param name="par" select="'SortBy'" />
-      <xsl:with-param name="default" select="$defaultSortBy" />
-    </xsl:call-template>
-  </xsl:variable>
-  <xsl:variable name="SortOrder">
-    <xsl:call-template name="getParam">
-      <xsl:with-param name="par" select="'SortOrder'" />
-      <xsl:with-param name="default" select="$defaultSortOrder" />
-    </xsl:call-template>
-  </xsl:variable>
-  <xsl:variable name="SortType">
-    <xsl:variable name="sortType">
-      <xsl:call-template name="getParam">
-        <xsl:with-param name="par" select="'SortType'" />
-      </xsl:call-template>
-    </xsl:variable>
-    <xsl:variable name="type">
-      <xsl:value-of select="xalan:nodeset($headerCols)/col[1]/@sortType|xalan:nodeset($headerCols)/th[1]/@sortType" />
-    </xsl:variable>
-    <xsl:choose>
-      <xsl:when test="(string-length($sortType) = 0) and (string-length($type) &gt; 0)">
-        <xsl:value-of select="$type" />
-      </xsl:when>
-      <xsl:when test="string-length($sortType) &gt; 0">
-        <xsl:value-of select="$sortType" />
-      </xsl:when>
-      <xsl:otherwise>
-        <xsl:text>text</xsl:text>
-      </xsl:otherwise>
-    </xsl:choose>
-  </xsl:variable>
-  <xsl:variable name="numPerPage">
-    <xsl:call-template name="getParam">
-      <xsl:with-param name="par" select="'numPerPage'" />
-      <xsl:with-param name="default" select="$defaultNumPerPage" />
-    </xsl:call-template>
-  </xsl:variable>
-  <xsl:variable name="Filter">
-    <xsl:call-template name="getParam">
-      <xsl:with-param name="par" select="'Filter'" />
-    </xsl:call-template>
-  </xsl:variable>
-  <xsl:variable name="Page">
-    <xsl:call-template name="getParam">
-      <xsl:with-param name="par" select="'Page'" />
-      <xsl:with-param name="default" select="1" />
-    </xsl:call-template>
-  </xsl:variable>
+  <xsl:variable name="SortBy" select="(mcrurl:get-param($RequestURL, 'SortBy')[. != ''], $defaultSortBy)[1]" />
+  <xsl:variable name="SortOrder" select="(mcrurl:get-param($RequestURL, 'SortOrder')[. != ''], $defaultSortOrder)[1]" />
+  <xsl:variable name="SortType" select="
+    let $sortType := mcrurl:get-param($RequestURL, 'SortType'),
+        $type := string(($headerCols/(col|th))[1]/@sortType)
+    return if ($sortType != '') then $sortType
+           else if ($type != '') then $type
+           else 'text'
+  " />
 
-  <xsl:variable name="dataTableNumPerPageList">
-    <xsl:text>10,25,50,100</xsl:text>
-  </xsl:variable>
+  <xsl:variable name="numPerPage" select="
+    xs:integer((mcrurl:get-param($RequestURL, 'numPerPage')[. != ''], $defaultNumPerPage)[1])
+  " />
+  <xsl:variable name="Filter" select="mcrurl:get-param($RequestURL, 'Filter')" />
+  <xsl:variable name="Page" select="xs:integer((mcrurl:get-param($RequestURL, 'Page')[. != ''], $defaultPage)[1])" />
 
-  <xsl:template name="getParam">
-    <xsl:param name="par" />
-    <xsl:param name="default" select="''" />
-
-    <xsl:variable name="urlParam">
-      <xsl:call-template name="UrlGetParam">
-        <xsl:with-param name="url" select="$RequestURL" />
-        <xsl:with-param name="par" select="$par" />
-      </xsl:call-template>
-    </xsl:variable>
-
-    <xsl:choose>
-      <xsl:when test="string-length($urlParam) &gt; 0">
-        <xsl:value-of select="decoder:decode(string($urlParam), 'UTF-8')" />
-      </xsl:when>
-      <xsl:otherwise>
-        <xsl:value-of select="$default" />
-      </xsl:otherwise>
-    </xsl:choose>
-  </xsl:template>
+  <xsl:variable name="dataTableNumPerPageList" select="(10, 25, 50, 100)" />
 
   <xsl:template mode="dataTable" match="*">
     <xsl:param name="id" select="'dataTable'" />
@@ -112,55 +46,19 @@
 
     <!-- get total records from root element or count -->
     <xsl:variable name="nativeLimit" select="string-length(@total) &gt; 0" />
-    <xsl:variable name="total">
-      <xsl:choose>
-        <xsl:when test="string-length(@total) &gt; 0">
-          <xsl:value-of select="number(@total)" />
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:value-of select="count(./*)" />
-        </xsl:otherwise>
-      </xsl:choose>
-    </xsl:variable>
-    <xsl:variable name="pages">
-      <xsl:variable name="p">
-        <xsl:value-of select="ceiling($total div number($numPerPage))" />
-      </xsl:variable>
-      <xsl:choose>
-        <xsl:when test="($p * number($numPerPage)) &lt; $total">
-          <xsl:value-of select="$p + 1" />
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:value-of select="$p" />
-        </xsl:otherwise>
-      </xsl:choose>
-    </xsl:variable>
-    <xsl:variable name="end">
-      <xsl:choose>
-        <xsl:when test="(number($Page) * number($numPerPage)) &gt; $total">
-          <xsl:value-of select="$total" />
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:value-of select="(number($Page) * number($numPerPage))" />
-        </xsl:otherwise>
-      </xsl:choose>
-    </xsl:variable>
-    <xsl:variable name="start">
-      <xsl:choose>
-        <xsl:when test="$total = 0">
-          <xsl:value-of select="0" />
-        </xsl:when>
-        <xsl:when test="$Page &gt; $pages">
-          <xsl:value-of select="1" />
-        </xsl:when>
-        <xsl:when test="$end = 0">
-          <xsl:value-of select="$end" />
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:value-of select="((number($Page) - 1) * number($numPerPage)) + 1" />
-        </xsl:otherwise>
-      </xsl:choose>
-    </xsl:variable>
+    <xsl:variable name="total" select="if (@total != '') then xs:integer(@total) else count(./*)" />
+    <xsl:variable name="pages" select="xs:integer(ceiling($total div $numPerPage))" />
+    <xsl:variable name="end" select="
+      xs:integer(if (($Page * $numPerPage) gt $total) then $total else ($Page * $numPerPage))
+    " />
+    <xsl:variable name="start" select="
+      xs:integer(
+        if ($total = 0) then 0
+        else if ($Page gt $pages) then 1
+        else if ($end = 0) then $end
+        else (($Page - 1) * $numPerPage) + 1
+      )
+    " />
 
     <div id="{$id}_wrapper" class="datatable card">
       <div class="card-head clearfix">
@@ -168,16 +66,7 @@
           <!-- build hidden values -->
           <xsl:call-template name="dataTableFormValues" />
 
-          <xsl:variable name="colWidth">
-            <xsl:choose>
-              <xsl:when test="$disableFilter = false()">
-                <xsl:value-of select="6" />
-              </xsl:when>
-              <xsl:otherwise>
-                <xsl:value-of select="12" />
-              </xsl:otherwise>
-            </xsl:choose>
-          </xsl:variable>
+          <xsl:variable name="colWidth" select="if (not($disableFilter)) then 6 else 12" />
 
           <xsl:if test="$disableFilter = false()">
             <!-- entries filter -->
@@ -185,7 +74,7 @@
               <div class="mir-form-group no-margin" id="{$id}_filter">
                 <label>
                   <span class="fas fa-filter" aria-hidden="true" />
-                  <xsl:value-of select="mcri18n:translate(concat($i18nprefix, '.filter'))" />
+                  <xsl:value-of select="mcri18n:translate($i18nprefix || '.filter')" />
                   <xsl:text>&#160;</xsl:text>
                   <input class="form-control input-sm" type="search" name="Filter">
                     <xsl:attribute name="value">
@@ -214,23 +103,14 @@
             <div id="{$id}_length" class="mir-form-group float-end no-margin form-select">
               <label>
                 <select class="form-control form-select input-sm" name="numPerPage" size="1" onchange="this.form.submit()">
-                  <xsl:variable name="tokens">
-                    <xsl:call-template name="str:tokenize">
-                      <xsl:with-param name="string" select="$dataTableNumPerPageList" />
-                      <xsl:with-param name="delimiters" select="','" />
-                    </xsl:call-template>
-                  </xsl:variable>
-                  <xsl:for-each select="xalan:nodeset($tokens)/token">
-                    <option value="{.}">
-                      <xsl:if test="$numPerPage = .">
-                        <xsl:attribute name="selected"><xsl:text>selected</xsl:text></xsl:attribute>
-                      </xsl:if>
+                  <xsl:for-each select="$dataTableNumPerPageList">
+                    <option value="{.}" selected="{if (. = $numPerPage) then 'selected' else ''}">
                       <xsl:value-of select="." />
                     </option>
                   </xsl:for-each>
                 </select>
                 <xsl:text>&#160;</xsl:text>
-                <xsl:value-of select="mcri18n:translate(concat($i18nprefix, '.lengthMenu'))" />
+                <xsl:value-of select="mcri18n:translate($i18nprefix || '.lengthMenu')" />
                 <noscript>
                   <input class="btn" type="submit" name="Ok" value="Ok" />
                 </noscript>
@@ -244,10 +124,10 @@
         <table class="table table-striped" id="{$id}">
           <xsl:call-template name="dataTableHeader" />
           <xsl:choose>
-            <xsl:when test="number($end) = 0">
+            <xsl:when test="$end = 0">
               <tr class="odd" align="center">
                 <td colspan="{$dataTableHeaderColCount}">
-                  <xsl:value-of select="mcri18n:translate(concat($i18nprefix, '.noItemFound'))" />
+                  <xsl:value-of select="mcri18n:translate($i18nprefix || '.noItemFound')" />
                 </td>
               </tr>
             </xsl:when>
@@ -266,7 +146,8 @@
           <xsl:if test="$pages &gt; 1">
             <xsl:attribute name="class">d-none d-sm-block</xsl:attribute>
           </xsl:if>
-          <xsl:value-of select="mcri18n:translate(concat($i18nprefix, '.filterInfo'), concat($start, ';', $end, ';', $total))" />
+          <xsl:variable name="i18n-params" select="(string($start), string($end), string($total))" />
+          <xsl:value-of select="mcri18n:translate-with-params($i18nprefix || '.filterInfo', $i18n-params)" />
         </span>
         <xsl:if test="$pages &gt; 1">
           <xsl:call-template name="dataTablePaginate">
@@ -282,7 +163,7 @@
   <xsl:template name="dataTableHeader">
     <thead>
       <tr>
-        <xsl:for-each select="xalan:nodeset($headerCols)/col|xalan:nodeset($headerCols)/th">
+        <xsl:for-each select="$headerCols/(col|th)">
           <xsl:variable name="sortOrderAfter">
             <xsl:choose>
               <xsl:when test="($SortBy = @sortBy) and ($SortOrder = 'asc')">
@@ -345,27 +226,17 @@
 
   <xsl:template name="dataTableBody">
     <xsl:param name="nativeLimit" select="false" />
-    <xsl:param name="start" />
-    <xsl:param name="end" />
+    <xsl:param name="start" as="xs:integer" />
+    <xsl:param name="end" as="xs:integer" />
 
     <xsl:variable name="sortedCol" select="$dataTableSortedCol" />
 
     <tbody>
-      <xsl:variable name="sortOrder">
-        <xsl:choose>
-          <xsl:when test="$SortOrder = 'desc'">
-            <xsl:text>descending</xsl:text>
-          </xsl:when>
-          <xsl:otherwise>
-            <xsl:text>ascending</xsl:text>
-          </xsl:otherwise>
-        </xsl:choose>
-      </xsl:variable>
-
       <xsl:for-each select="./*">
         <xsl:sort
           select="*[name() = $SortBy]|@*[name() = $SortBy]|text()[$SortBy = 'text()']|descendant-or-self::*[name() = $SortBy]|descendant-or-self::*//@*[name() = $SortBy]"
-          order="{$sortOrder}" data-type="{$SortType}" />
+          order="{if ($SortOrder = 'desc') then 'descending' else 'ascending'}"
+          data-type="{$SortType}" />
 
         <xsl:if test="((position() &gt;= $start) and (position() &lt;= $end)) or ($nativeLimit)">
           <xsl:variable name="trClass">
@@ -384,7 +255,7 @@
 
           <xsl:variable name="row">
             <xsl:choose>
-              <xsl:when test="count(xalan:nodeset($drow)/row|xalan:nodeset($drow)/tr) &gt; 0">
+              <xsl:when test="$drow/(row|tr)">
                 <xsl:copy-of select="$drow" />
               </xsl:when>
               <xsl:otherwise>
@@ -395,13 +266,11 @@
             </xsl:choose>
           </xsl:variable>
 
-          <xsl:for-each select="xalan:nodeset($row)/row|xalan:nodeset($row)/tr">
+          <xsl:for-each select="$row/(row|tr)">
             <tr class="{$trClass}">
               <!-- extra css class for row -->
               <xsl:if test="./class">
-                <xsl:attribute name="class">
-                  <xsl:value-of select="concat($trClass, ' ', ./class)" />
-                </xsl:attribute>
+                <xsl:attribute name="class" select="$trClass || ' ' || ./class" />
               </xsl:if>
               <xsl:apply-templates select="@*" />
               <xsl:for-each select="./col|./td">
@@ -413,8 +282,8 @@
                 <td>
                   <xsl:if test="string-length($tdClass) &gt; 0">
                     <xsl:attribute name="class">
-                    <xsl:value-of select="$tdClass" />
-                  </xsl:attribute>
+                      <xsl:value-of select="$tdClass" />
+                    </xsl:attribute>
                   </xsl:if>
                   <xsl:apply-templates select="@*|node()" />
                 </td>
@@ -427,14 +296,14 @@
   </xsl:template>
 
   <xsl:template name="dataTablePaginate">
-    <xsl:param name="id" select="'dataTable'" />
-    <xsl:param name="i18nprefix" select="'dataTable'" />
-    <xsl:param name="pages" />
+    <xsl:param name="id" as="xs:string" select="'dataTable'" />
+    <xsl:param name="i18nprefix" as="xs:string" select="'dataTable'" />
+    <xsl:param name="pages" as="xs:integer" />
 
     <ul id="{$id}_paginate" class="pagination pagination-sm float-end no-margin">
       <li>
         <xsl:choose>
-          <xsl:when test="number($Page) &gt; 1">
+          <xsl:when test="$Page &gt; 1">
             <a tabindex="0" id="{$id}_first">
               <xsl:attribute name="href">
                   <xsl:call-template name="dataTableQuerystring">
@@ -443,7 +312,7 @@
                 </xsl:attribute>
               <xsl:text>«</xsl:text>
               <span class="sr-only">
-                <xsl:value-of select="mcri18n:translate(concat($i18nprefix, '.first'))" />
+                <xsl:value-of select="mcri18n:translate($i18nprefix || '.first')" />
               </span>
             </a>
           </xsl:when>
@@ -452,7 +321,7 @@
             <span>
               <xsl:text>«</xsl:text>
               <span class="sr-only">
-                <xsl:value-of select="mcri18n:translate(concat($i18nprefix, '.first'))" />
+                <xsl:value-of select="mcri18n:translate($i18nprefix || '.first')" />
               </span>
             </span>
           </xsl:otherwise>
@@ -460,7 +329,7 @@
       </li>
       <li>
         <xsl:choose>
-          <xsl:when test="number($Page) &gt; 1">
+          <xsl:when test="$Page &gt; 1">
             <a tabindex="0" id="{$id}_previous">
               <xsl:attribute name="href">
                   <xsl:call-template name="dataTableQuerystring">
@@ -469,7 +338,7 @@
                 </xsl:attribute>
               <xsl:text>‹</xsl:text>
               <span class="sr-only">
-                <xsl:value-of select="mcri18n:translate(concat($i18nprefix, '.previous'))" />
+                <xsl:value-of select="mcri18n:translate($i18nprefix || '.previous')" />
               </span>
             </a>
           </xsl:when>
@@ -478,7 +347,7 @@
             <span>
               <xsl:text>‹</xsl:text>
               <span class="sr-only">
-                <xsl:value-of select="mcri18n:translate(concat($i18nprefix, '.previous'))" />
+                <xsl:value-of select="mcri18n:translate($i18nprefix || '.previous')" />
               </span>
             </span>
           </xsl:otherwise>
@@ -486,37 +355,19 @@
       </li>
 
       <!-- variable can be used to change numbers of Page entries to display -->
-      <xsl:variable name="paginateMaxEntries" select="5" />
-      <xsl:variable name="paginateBackCount" select="ceiling(($paginateMaxEntries - 1) div 2)" />
-      <xsl:variable name="paginatePrevCount" select="$paginateMaxEntries - ceiling($paginateMaxEntries div 2)" />
-
-      <xsl:variable name="paginateStart">
-        <xsl:choose>
-          <xsl:when test="((number($Page) - $paginateBackCount) &lt;= 1) or ($pages &lt; $paginateMaxEntries)">
-            <xsl:value-of select="1" />
-          </xsl:when>
-          <xsl:when test="(number($Page) + $paginatePrevCount) &gt; $pages">
-            <xsl:value-of select="number($Page) - $paginateBackCount - ((number($Page) + $paginatePrevCount) - $pages)" />
-          </xsl:when>
-          <xsl:otherwise>
-            <xsl:value-of select="number($Page) - $paginateBackCount" />
-          </xsl:otherwise>
-        </xsl:choose>
-      </xsl:variable>
-
-      <xsl:variable name="paginateEnd">
-        <xsl:choose>
-          <xsl:when test="((number($Page) + $paginatePrevCount) &gt;= $pages) or ($pages &lt; $paginateMaxEntries)">
-            <xsl:value-of select="$pages" />
-          </xsl:when>
-          <xsl:when test="(number($Page) + $paginatePrevCount) &lt; $paginateMaxEntries">
-            <xsl:value-of select="$paginateMaxEntries" />
-          </xsl:when>
-          <xsl:otherwise>
-            <xsl:value-of select="number($Page) + $paginatePrevCount" />
-          </xsl:otherwise>
-        </xsl:choose>
-      </xsl:variable>
+      <xsl:variable name="paginateMaxEntries" as="xs:integer" select="5" />
+      <xsl:variable name="paginateBackCount" select="xs:integer(ceiling(($paginateMaxEntries - 1) div 2))" />
+      <xsl:variable name="paginatePrevCount" select="xs:integer($paginateMaxEntries - ceiling($paginateMaxEntries div 2))" />
+      <xsl:variable name="paginateStart" select="
+        if (($Page - $paginateBackCount) le 1 or $pages lt $paginateMaxEntries) then 1
+        else if (($Page + $paginatePrevCount) gt $pages) then $Page - $paginateBackCount - (($Page + $paginatePrevCount) - $pages)
+        else $Page - $paginateBackCount
+      " />
+      <xsl:variable name="paginateEnd" select="
+        if (($Page + $paginatePrevCount) ge $pages or $pages lt $paginateMaxEntries) then $pages
+        else if (($Page + $paginatePrevCount) lt $paginateMaxEntries) then $paginateMaxEntries
+        else $Page + $paginatePrevCount
+      " />
 
       <xsl:call-template name="dataTablePaginateEntries">
         <xsl:with-param name="pages" select="$pages" />
@@ -526,7 +377,7 @@
 
       <li>
         <xsl:choose>
-          <xsl:when test="number($Page) &lt; $pages">
+          <xsl:when test="$Page &lt; $pages">
             <a tabindex="0" id="{$id}_next">
               <xsl:attribute name="href">
                   <xsl:call-template name="dataTableQuerystring">
@@ -535,7 +386,7 @@
                 </xsl:attribute>
               <xsl:text>›</xsl:text>
               <span class="sr-only">
-                <xsl:value-of select="mcri18n:translate(concat($i18nprefix, '.next'))" />
+                <xsl:value-of select="mcri18n:translate($i18nprefix || '.next')" />
               </span>
             </a>
           </xsl:when>
@@ -544,7 +395,7 @@
             <span>
               <xsl:text>›</xsl:text>
               <span class="sr-only">
-                <xsl:value-of select="mcri18n:translate(concat($i18nprefix, '.next'))" />
+                <xsl:value-of select="mcri18n:translate($i18nprefix || '.next')" />
               </span>
             </span>
           </xsl:otherwise>
@@ -552,7 +403,7 @@
       </li>
       <li>
         <xsl:choose>
-          <xsl:when test="number($Page) &lt; $pages">
+          <xsl:when test="$Page &lt; $pages">
             <a tabindex="0" id="{$id}_last">
               <xsl:attribute name="href">
                 <xsl:call-template name="dataTableQuerystring">
@@ -561,7 +412,7 @@
               </xsl:attribute>
               <xsl:text>»</xsl:text>
               <span class="sr-only">
-                <xsl:value-of select="mcri18n:translate(concat($i18nprefix, '.last'))" />
+                <xsl:value-of select="mcri18n:translate($i18nprefix || '.last')" />
               </span>
             </a>
           </xsl:when>
@@ -570,7 +421,7 @@
             <span>
               <xsl:text>»</xsl:text>
               <span class="sr-only">
-                <xsl:value-of select="mcri18n:translate(concat($i18nprefix, '.last'))" />
+                <xsl:value-of select="mcri18n:translate($i18nprefix || '.last')" />
               </span>
             </span>
           </xsl:otherwise>
@@ -580,18 +431,18 @@
   </xsl:template>
 
   <xsl:template name="dataTablePaginateEntries">
-    <xsl:param name="pages" />
-    <xsl:param name="paginateStart" />
-    <xsl:param name="paginateEnd" />
+    <xsl:param name="pages" as="xs:integer" />
+    <xsl:param name="paginateStart" as="xs:integer" />
+    <xsl:param name="paginateEnd" as="xs:integer" />
 
-    <xsl:if test="$paginateStart = number($Page)">
+    <xsl:if test="$paginateStart = $Page">
       <li class="active">
         <span>
           <xsl:value-of select="$paginateStart" />
         </span>
       </li>
     </xsl:if>
-    <xsl:if test="$paginateStart != number($Page)">
+    <xsl:if test="$paginateStart != $Page">
       <li>
         <a tabindex="0">
           <xsl:attribute name="href">
@@ -615,28 +466,9 @@
 
   <!-- Helper Variables/Functions -->
 
-  <xsl:variable name="dataTableHeaderColCount">
-    <xsl:value-of select="count(xalan:nodeset($headerCols)/col|xalan:nodeset($headerCols)/th)" />
-  </xsl:variable>
+  <xsl:variable name="dataTableHeaderColCount" select="count($headerCols/(col|th))" />
 
-  <xsl:variable name="dataTableSortedCol">
-    <xsl:variable name="pos">
-      <xsl:for-each select="xalan:nodeset($headerCols)/col|xalan:nodeset($headerCols)/th">
-        <xsl:if test="$SortBy = @sortBy">
-          <xsl:value-of select="position()" />
-        </xsl:if>
-      </xsl:for-each>
-    </xsl:variable>
-
-    <xsl:choose>
-      <xsl:when test="$pos">
-        <xsl:value-of select="$pos" />
-      </xsl:when>
-      <xsl:otherwise>
-        <xsl:text>0</xsl:text>
-      </xsl:otherwise>
-    </xsl:choose>
-  </xsl:variable>
+  <xsl:variable name="dataTableSortedCol" select="(index-of($headerCols/(col|th)/@sortBy, $SortBy), 0)[1]" />
 
   <xsl:template name="dataTableQuerystring">
     <xsl:param name="sortBy" select="$SortBy" />
@@ -646,49 +478,12 @@
     <xsl:param name="page" select="$Page" />
     <xsl:param name="filter" select="$Filter" />
 
-    <xsl:variable name="url1">
-      <xsl:call-template name="UrlSetParam">
-        <xsl:with-param name="url" select="$RequestURL" />
-        <xsl:with-param name="par" select="'SortBy'" />
-        <xsl:with-param name="value" select="$sortBy" />
-      </xsl:call-template>
-    </xsl:variable>
-    <xsl:variable name="url2">
-      <xsl:call-template name="UrlSetParam">
-        <xsl:with-param name="url" select="$url1" />
-        <xsl:with-param name="par" select="'SortOrder'" />
-        <xsl:with-param name="value" select="$sortOrder" />
-      </xsl:call-template>
-    </xsl:variable>
-    <xsl:variable name="url3">
-      <xsl:call-template name="UrlSetParam">
-        <xsl:with-param name="url" select="$url2" />
-        <xsl:with-param name="par" select="'SortType'" />
-        <xsl:with-param name="value" select="$sortType" />
-      </xsl:call-template>
-    </xsl:variable>
-    <xsl:variable name="url4">
-      <xsl:call-template name="UrlSetParam">
-        <xsl:with-param name="url" select="$url3" />
-        <xsl:with-param name="par" select="'numPerPage'" />
-        <xsl:with-param name="value" select="$perPage" />
-      </xsl:call-template>
-    </xsl:variable>
-    <xsl:variable name="url5">
-      <xsl:call-template name="UrlSetParam">
-        <xsl:with-param name="url" select="$url4" />
-        <xsl:with-param name="par" select="'Page'" />
-        <xsl:with-param name="value" select="$page" />
-      </xsl:call-template>
-    </xsl:variable>
-    <xsl:variable name="url6">
-      <xsl:call-template name="UrlSetParam">
-        <xsl:with-param name="url" select="$url5" />
-        <xsl:with-param name="par" select="'Filter'" />
-        <xsl:with-param name="value" select="$filter" />
-      </xsl:call-template>
-    </xsl:variable>
-
+    <xsl:variable name="url1" select="mcrurl:set-param($RequestURL, 'SortBy', $sortBy)" />
+    <xsl:variable name="url2" select="mcrurl:set-param($url1, 'SortOrder', $sortOrder)" />
+    <xsl:variable name="url3" select="mcrurl:set-param($url2, 'SortType', $sortType)" />
+    <xsl:variable name="url4" select="mcrurl:set-param($url3, 'numPerPage', $perPage)" />
+    <xsl:variable name="url5" select="mcrurl:set-param($url4, 'Page', $page)" />
+    <xsl:variable name="url6" select="mcrurl:set-param($url5, 'Filter', $filter)" />
     <xsl:value-of select="$url6" />
   </xsl:template>
 
@@ -696,26 +491,13 @@
     <xsl:param name="sortBy" select="$SortBy" />
     <xsl:param name="sortOrder" select="$SortOrder" />
     <xsl:param name="sortType" select="$SortType" />
-    <xsl:param name="page" select="1" />
+    <xsl:param name="page" select="1" as="xs:integer" />
 
-    <xsl:variable name="queryString">
-      <xsl:choose>
-        <xsl:when test="contains($RequestURL,'?')">
-          <xsl:value-of select="substring-after($RequestURL,'?')" />
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:value-of select="$RequestURL" />
-        </xsl:otherwise>
-      </xsl:choose>
-    </xsl:variable>
+    <xsl:variable name="queryString" select="
+      if (contains($RequestURL, '?')) then substring-after($RequestURL, '?') else $RequestURL
+    " />
 
-    <xsl:variable name="params">
-      <xsl:call-template name="str:tokenize">
-        <xsl:with-param name="string" select="$queryString" />
-        <xsl:with-param name="delimiters" select="'&amp;'" />
-      </xsl:call-template>
-    </xsl:variable>
-    <xsl:for-each select="xalan:nodeset($params)/token">
+    <xsl:for-each select="tokenize($queryString, '&amp;')">
       <xsl:variable name="name" select="substring-before(., '=')" />
       <xsl:variable name="value" select="substring-after(., '=')" />
 
@@ -728,12 +510,6 @@
     <input type="hidden" name="SortOrder" value="{$sortOrder}" />
     <input type="hidden" name="SortType" value="{$sortType}" />
     <input type="hidden" name="Page" value="{$page}" />
-  </xsl:template>
-
-  <xsl:template match='@*|node()'>
-    <xsl:copy>
-      <xsl:apply-templates select='@*|node()' />
-    </xsl:copy>
   </xsl:template>
 
 </xsl:stylesheet>
