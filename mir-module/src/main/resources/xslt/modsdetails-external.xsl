@@ -13,8 +13,6 @@
   exclude-result-prefixes="#all"
   extension-element-prefixes="datacite">
 
-  <xsl:import href="xslImport:badges" />
-
   <xsl:param name="MCR.Users.Superuser.UserName" />
   <xsl:param name="MIR.registerDOI" select="''" />
   <xsl:param name="MIR.registerURN" select="'true'" />
