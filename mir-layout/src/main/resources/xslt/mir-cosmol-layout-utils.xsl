@@ -130,7 +130,7 @@
     <xsl:variable name="mcr_version" select="concat('MyCoRe ',mcrversion:complete-version())" />
     <div id="powered_by">
       <a href="http://www.mycore.de">
-        <img src="{$WebApplicationBaseURL}mir-layout/images/mycore_logo_small_invert.png" title="{$mcr_version}" alt="powered by MyCoRe" />
+        <img src="{$WebApplicationBaseURL}mir-layout/images/logo-mycore-white.svg" title="{$mcr_version}" alt="powered by MyCoRe" />
       </a>
     </div>
   </xsl:template>
