@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0"
+<xsl:stylesheet version="3.0"
   xmlns:fn="http://www.w3.org/2005/xpath-functions"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  exclude-result-prefixes="fn xsl">
+  exclude-result-prefixes="#all">
 
   <xsl:output method="xml" />
   
