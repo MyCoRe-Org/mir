@@ -7,11 +7,8 @@
   xmlns:ce="http://www.elsevier.com/xml/ani/common"
   xmlns:mods="http://www.loc.gov/mods/v3"
   xmlns:scopus="http://www.elsevier.com/xml/svapi/abstract/dtd"
-  xmlns:xalan="http://xml.apache.org/xalan"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   exclude-result-prefixes="">
-
-  <xsl:output method="xml" encoding="UTF-8" indent="yes" xalan:indent-amount="2" />
 
   <xsl:template match="scopus:abstracts-retrieval-response">
     <mods:mods>
