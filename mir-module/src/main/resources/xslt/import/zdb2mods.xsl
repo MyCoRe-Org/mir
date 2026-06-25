@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0"
+<xsl:stylesheet version="3.0"
   xmlns:marc="http://www.loc.gov/MARC21/slim"
   xmlns:mods="http://www.loc.gov/mods/v3"
   xmlns:srw="http://www.loc.gov/zing/srw/"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  exclude-result-prefixes="xsl">
+  exclude-result-prefixes="#all">
   
   <xsl:template match="srw:searchRetrieveResponse">
     <xsl:apply-templates select="srw:records/srw:record[1]/srw:recordData/marc:record" />
@@ -63,14 +63,22 @@
     <xsl:variable name="normalizedDate" select="translate(.,'()[]','')"/>
     <xsl:choose>
       <xsl:when test="translate($normalizedDate, '123456789', '000000000') = '0000-00-00'">
-        <mods:dateIssued encoding="w3cdtf"><xsl:value-of select="$normalizedDate"/></mods:dateIssued>
+        <mods:dateIssued encoding="w3cdtf">
+          <xsl:value-of select="$normalizedDate"/>
+        </mods:dateIssued>
       </xsl:when>
       <xsl:when test="translate($normalizedDate, '123456789', '000000000') = '0000-'">
-        <mods:dateIssued encoding="w3cdtf" point="start"><xsl:value-of select="substring-before($normalizedDate, '-')"/></mods:dateIssued>
+        <mods:dateIssued encoding="w3cdtf" point="start">
+          <xsl:value-of select="substring-before($normalizedDate, '-')"/>
+        </mods:dateIssued>
       </xsl:when>
       <xsl:when test="translate($normalizedDate, '123456789', '000000000') = '0000-0000'">
-        <mods:dateIssued encoding="w3cdtf" point="start"><xsl:value-of select="substring-before($normalizedDate, '-')"/></mods:dateIssued>
-        <mods:dateIssued encoding="w3cdtf" point="end"><xsl:value-of select="substring-after($normalizedDate, '-')"/></mods:dateIssued>
+        <mods:dateIssued encoding="w3cdtf" point="start">
+          <xsl:value-of select="substring-before($normalizedDate, '-')"/>
+        </mods:dateIssued>
+        <mods:dateIssued encoding="w3cdtf" point="end">
+          <xsl:value-of select="substring-after($normalizedDate, '-')"/>
+        </mods:dateIssued>
       </xsl:when>
     </xsl:choose>
   </xsl:template>
@@ -84,8 +92,8 @@
   <xsl:template match="marc:datafield[@tag='041']">
     <mods:language>
       <mods:languageTerm type="code" authority="rfc5646">
-        <xsl:variable name="given" select="translate(marc:subfield[@code='a'],'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')" />
-        <xsl:value-of select="document('classification:metadata:-1:children:rfc5646')/mycoreclass/categories/category[@ID=$given or label[translate(@text,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')=$given]][1]/@ID" />
+        <xsl:variable name="given" select="lower-case(marc:subfield[@code='a'])" />
+        <xsl:value-of select="document('classification:metadata:-1:children:rfc5646')/mycoreclass/categories/category[@ID=$given or label[lower-case(@text)=$given]][1]/@ID" />
       </mods:languageTerm>
     </mods:language>
   </xsl:template>
