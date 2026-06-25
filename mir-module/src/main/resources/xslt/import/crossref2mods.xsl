@@ -2,14 +2,14 @@
 
 <!--xslStyle:import/simplify-json-xml#xsl:xslTransform:json2xml:https://api.crossref.org/works/10.1038/ncomms11620 -->
 
-<xsl:stylesheet version="1.0"
-  xmlns:mcrpages="xalan://org.mycore.mods.MCRMODSPagesHelper"
+<xsl:stylesheet version="3.0"
+  xmlns:mcrmods="http://www.mycore.de/xslt/mods"
   xmlns:mods="http://www.loc.gov/mods/v3"
-  xmlns:xalan="http://xml.apache.org/xalan"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  exclude-result-prefixes="mcrpages xalan xsl">
+  exclude-result-prefixes="#all">
 
-  <xsl:output method="xml" encoding="UTF-8" indent="yes" xalan:indent-amount="2" />
+  <xsl:include href="resource:xslt/default-parameters.xsl" />
+  <xsl:include href="xslInclude:functions" />
 
   <xsl:template match="/entry">
     <xsl:apply-templates select="message" />
@@ -144,7 +144,7 @@
   </xsl:template>
 
   <xsl:template match="page">
-    <xsl:copy-of select="mcrpages:buildExtentPagesNodeSet(text())" />
+    <xsl:sequence select="mcrmods:pages-to-extent(string(.))" />
   </xsl:template>
 
   <xsl:template name="originInfo">
