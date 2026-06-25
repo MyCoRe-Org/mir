@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0"
+<xsl:stylesheet version="3.0"
   xmlns:mods="http://www.loc.gov/mods/v3"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  exclude-result-prefixes="mods">
+  exclude-result-prefixes="#all">
 
   <xsl:template match="/OpenURLResponseXML">
     <mods:mods>
