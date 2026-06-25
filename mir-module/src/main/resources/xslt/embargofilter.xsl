@@ -19,7 +19,7 @@
       <xsl:for-each select="derobject">
         <xsl:variable name="derivate-id" select="@xlink:href" />
         <xsl:variable name="current-user-can-read-derivate" as="xs:boolean" select="
-          mcracl:check-permission($derivate-id, 'read') or mcracl:check-permission($derivate-id, 'preview')
+          mcracl:check-permission($derivate-id, 'read') or mcracl:check-permission($derivate-id, 'view')
         " />
         <xsl:if test="$current-user-can-read-derivate or not($current-user-is-guest)">
           <xsl:choose>
