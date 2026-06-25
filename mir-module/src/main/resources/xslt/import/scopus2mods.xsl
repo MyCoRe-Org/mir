@@ -3,12 +3,12 @@
 <!-- Converts Scopus abstracts-retrieval-response format to MODS -->
 <!-- http://api.elsevier.com/content/abstract/scopus_id/84946429507?apikey=... -->
 
-<xsl:stylesheet version="1.0"
+<xsl:stylesheet version="3.0"
   xmlns:ce="http://www.elsevier.com/xml/ani/common"
   xmlns:mods="http://www.loc.gov/mods/v3"
   xmlns:scopus="http://www.elsevier.com/xml/svapi/abstract/dtd"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  exclude-result-prefixes="">
+  exclude-result-prefixes="#all">
 
   <xsl:template match="scopus:abstracts-retrieval-response">
     <mods:mods>
