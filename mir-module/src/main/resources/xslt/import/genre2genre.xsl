@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0"
+<xsl:stylesheet version="3.0"
   xmlns:mods="http://www.loc.gov/mods/v3"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  exclude-result-prefixes="mods xsl">
+  exclude-result-prefixes="#all">
 
-  <xsl:include href="resource:xsl/copynodes.xsl" />
+  <xsl:mode on-no-match="shallow-copy" />
 
   <xsl:template match="mods:mods|mods:relatedItem">
     <xsl:copy>
@@ -42,7 +42,7 @@
   </xsl:template>
 
   <xsl:template match="mods:mods/mods:genre">
-    <xsl:variable name="genre" select="normalize-space(translate(text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'))" />
+    <xsl:variable name="genre" select="lower-case(normalize-space(.))" />
     <xsl:choose>
       <xsl:when test="$genre='trade journal'">journal</xsl:when>
       <xsl:when test="$genre='journal'">journal</xsl:when>
@@ -109,8 +109,8 @@
   </xsl:template>
 
   <xsl:template match="mods:relatedItem[@type='host']/mods:genre">
-    <xsl:variable name="child_genre" select="normalize-space(translate(../../mods:genre[1],'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'))" />
-    <xsl:variable name="genre" select="normalize-space(translate(text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'))" />
+    <xsl:variable name="child_genre" select="lower-case(normalize-space(../../mods:genre[1]))" />
+    <xsl:variable name="genre" select="lower-case(normalize-space(.))" />
     <xsl:choose>
       <xsl:when test="$child_genre='conference'">proceedings</xsl:when>
       <xsl:when test="$child_genre='conferences'">proceedings</xsl:when>
