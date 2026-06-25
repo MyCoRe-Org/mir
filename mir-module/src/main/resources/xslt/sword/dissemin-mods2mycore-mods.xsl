@@ -86,7 +86,7 @@
     <xsl:variable name="licenseID" as="xs:string?" select="(
       $licenseClass/.//category[url/@xlink:href=$licenceURL]/@ID,
       $licenseClass/.//category[@ID=$licenceTransmitID]/@ID
-    )[1] "/>
+    )[1]" />
     <!--select="$licenseClass/.//category[url/@xlink:href=$licenceURL]//>  -->
     <xsl:choose>
       <xsl:when test="$licenseID">
