@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0" 
-  xmlns:java="http://xml.apache.org/xalan/java"
+<xsl:stylesheet version="3.0"
   xmlns:mab="http://www.ddb.de/professionell/mabxml/mabxml-1.xsd"
   xmlns:mods="http://www.loc.gov/mods/v3"
   xmlns:oai="http://www.openarchives.org/OAI/2.0/"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  exclude-result-prefixes="java mab oai xsl">
+  exclude-result-prefixes="#all">
 
   <xsl:template match="/oai:OAI-PMH">
     <xsl:apply-templates select="oai:ListRecords/oai:record[1]/oai:metadata/mab:record" />
@@ -158,10 +157,9 @@
           </xsl:call-template>
         </xsl:when>
         <xsl:when test="../mab:subfield[@code='v']"> <!-- RDA -->
-          <xsl:variable name="volume" select="java:java.lang.String.new(../mab:subfield[@code='v']/text())" />
           <xsl:call-template name="series.volume">
             <xsl:with-param name="series" select="text()" />
-            <xsl:with-param name="volume" select="normalize-space(java:replaceAll($volume,'Band ',''))" />
+            <xsl:with-param name="volume" select="normalize-space(replace(../mab:subfield[@code='v'], 'Band ', ''))" />
           </xsl:call-template>
         </xsl:when>
         <xsl:otherwise>
