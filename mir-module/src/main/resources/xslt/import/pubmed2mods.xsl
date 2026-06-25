@@ -3,14 +3,14 @@
 <!-- Converts PubMed core format to MODS -->
 <!-- http://www.ebi.ac.uk/europepmc/webservices/rest/search/resulttype=core&query=ext_id:26063869 -->
 
-<xsl:stylesheet version="1.0"
-  xmlns:mcrpages="xalan://org.mycore.mods.MCRMODSPagesHelper"
+<xsl:stylesheet version="3.0"
+  xmlns:mcrmods="http://www.mycore.de/xslt/mods"
   xmlns:mods="http://www.loc.gov/mods/v3"
-  xmlns:xalan="http://xml.apache.org/xalan"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  exclude-result-prefixes="mcrpages mods xalan xsl">
+  exclude-result-prefixes="#all">
 
-  <xsl:output method="xml" encoding="UTF-8" indent="yes" xalan:indent-amount="2" />
+  <xsl:include href="resource:xslt/default-parameters.xsl" />
+  <xsl:include href="xslInclude:functions" />
 
   <xsl:template match="/responseWrapper">
     <mods:mods>
@@ -150,7 +150,7 @@
   </xsl:template>
 
   <xsl:template match="result/pageInfo" mode="part">
-    <xsl:copy-of select="mcrpages:buildExtentPagesNodeSet(text())" />
+    <xsl:sequence select="mcrmods:pages-to-extent(string(.))" />
   </xsl:template>
 
   <xsl:template match="abstractText">
