@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0"
-  xmlns:mcrpages="xalan://org.mycore.mods.MCRMODSPagesHelper"
+<xsl:stylesheet version="3.0"
+  xmlns:mcrmods="http://www.mycore.de/xslt/mods"
   xmlns:mods="http://www.loc.gov/mods/v3"
-  xmlns:xalan="http://xml.apache.org/xalan"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  exclude-result-prefixes="mcrpages xalan xsl">
+  exclude-result-prefixes="#all">
 
-  <xsl:include href="resource:xsl/copynodes.xsl" />
+  <xsl:mode on-no-match="shallow-copy" />
+
+  <xsl:include href="resource:xslt/default-parameters.xsl" />
+  <xsl:include href="xslInclude:functions" />
 
   <xsl:template match="@xsi:schemaLocation" />
   <xsl:template match="mods:mods/@version" />
@@ -56,8 +58,8 @@
 
   <xsl:template match="mods:languageTerm">
     <!-- Find language with matching label in any language, or with matching ID in any supported code schema -->
-    <xsl:variable name="given" select="translate(text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')" />
-    <xsl:for-each select="document('classification:metadata:-1:children:rfc5646')/mycoreclass/categories/category[@ID=$given or label[translate(@text,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')=$given]][1]">
+    <xsl:variable name="given" select="lower-case(text())" />
+    <xsl:for-each select="document('classification:metadata:-1:children:rfc5646')/mycoreclass/categories/category[@ID=$given or label[lower-case(@text)=$given]][1]">
       <mods:languageTerm authority="rfc5646" type="code">
         <xsl:value-of select="@ID" />
       </mods:languageTerm>
@@ -79,9 +81,9 @@
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
-  
+
   <xsl:template match="mods:extent[@unit='page']">
-    <xsl:copy-of select="mcrpages:buildExtentPagesNodeSet(string(mods:start/text()))" />
+    <xsl:sequence select="mcrmods:pages-to-extent(string(mods:start))" />
   </xsl:template>
 
 </xsl:stylesheet>
