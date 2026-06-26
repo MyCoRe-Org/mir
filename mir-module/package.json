@@ -25,7 +25,6 @@
         "jquery.dotdotdot": "1.7.4",
         "jquery.placeholder": "https://github.com/matoilic/jquery.placeholder.git",
         "moment": "2.29.4",
-        "myclabs.jquery.confirm": "2.7.0",
         "openlayers": "4.6.4",
         "popper.js": "^2.0.0-next.1",
         "select2": "^4.0.13",
