@@ -407,7 +407,7 @@
 			}
 			$(fileBox).append(fileList);
 			mycore.upload.enable($(fileBox)[0]);
-			$('.confirm_deletion').confirm();
+			MIRConfirm.bind('.confirm_deletion');
 			$('.rename').click(function (e) {
 				let href = $(this).attr("href");
 				let hrefURL = new URL(href);

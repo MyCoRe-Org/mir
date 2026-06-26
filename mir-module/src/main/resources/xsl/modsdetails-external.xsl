@@ -634,7 +634,8 @@
                 <xsl:value-of select="$accessedit" />
               </xsl:message -->
               <!-- actionmapping.xml must be available for this functionality -->
-              <xsl:if test="string-length($child-layout) &gt; 0 and $accessedit and mcrxsl:resourceAvailable('actionmappings.xml')">
+
+              <xsl:if test="string-length($child-layout) &gt; 0 and acl:checkPermission('create-mods') and mcrxsl:resourceAvailable('actionmappings.xml')">
 
                 <xsl:variable name="url">
                   <xsl:value-of select="actionmapping:getURLforID('create-child',$id,true())" xmlns:actionmapping="xalan://org.mycore.wfc.actionmapping.MCRURLRetriever" />
