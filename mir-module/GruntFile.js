@@ -29,7 +29,6 @@ module.exports = function(grunt) {
 
           'jquery' : 'jquery/dist',
 
-          'jquery/plugins/jquery-confirm' : 'myclabs.jquery.confirm/jquery.confirm.min.js',
           'jquery/plugins/jquery-placeholder' : 'jquery.placeholder/jquery.placeholder.min.js',
           'jquery/plugins/typeahead' : 'typeahead.js/dist/bloodhound.min.js',
           'jquery/plugins/bootstrap3-typeahead' : 'bootstrap-3-typeahead/bootstrap3-typeahead.min.js',

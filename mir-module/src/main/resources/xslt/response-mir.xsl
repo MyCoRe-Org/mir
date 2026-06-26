@@ -674,8 +674,7 @@
                   <!-- no link to no derivate -->
                 </xsl:when>
 
-                <xsl:when test="not(mcracl:check-permission($derivid, 'read') or
-                 mcracl:check-permission($derivid, 'view'))">
+                <xsl:when test="not(mcracl:check-permission($derivid, 'read'))">
                   <!-- no link if we can not read -->
                 </xsl:when>
 

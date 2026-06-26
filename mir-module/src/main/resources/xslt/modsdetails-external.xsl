@@ -426,7 +426,7 @@
                 <xsl:value-of select="$accessedit" />
               </xsl:message -->
               <!-- actionmapping.xml must be available for this functionality -->
-              <xsl:if test="string-length($child-layout) &gt; 0 and $accessedit and doc-available('resource:actionmappings.xml')">
+              <xsl:if test="string-length($child-layout) &gt; 0 and mcracl:check-permission('', 'create-mods') and doc-available('resource:actionmappings.xml')">
 
                 <xsl:variable name="url">
                   <xsl:value-of select="mcractionmapping:get-url-for-id('create-child',$id,true())"  />
