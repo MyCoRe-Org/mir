@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0"
+<xsl:stylesheet version="3.0"
   xmlns:mods="http://www.loc.gov/mods/v3"
-  xmlns:xalan="http://xml.apache.org/xalan"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  exclude-result-prefixes="xalan xsl">
+  exclude-result-prefixes="#all">
 
 <!-- http://ieeexplore.ieee.org/gateway/ipsSearch.jsp?an=4731412 -->
 
@@ -53,24 +52,14 @@
       </mods:role>
     </mods:name>
   </xsl:template>
-  
+
   <xsl:template match="full_name">
+    <xsl:variable name="tokens" select="tokenize(., ' ')" />
     <mods:namePart type="given">
-      <xsl:for-each select="xalan:tokenize(.,' ')">
-        <xsl:if test="position() != last()">
-          <xsl:if test="position() &gt; 1">
-            <xsl:text> </xsl:text>
-          </xsl:if>
-          <xsl:value-of select="." />
-        </xsl:if>
-      </xsl:for-each>
+      <xsl:value-of select="string-join($tokens[position() != last()], ' ')" />
     </mods:namePart>
     <mods:namePart type="family">
-      <xsl:for-each select="xalan:tokenize(.,' ')">
-        <xsl:if test="position() = last()">
-          <xsl:value-of select="." />
-        </xsl:if>
-      </xsl:for-each>
+      <xsl:value-of select="$tokens[last()]" />
     </mods:namePart>
   </xsl:template>
 

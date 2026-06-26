@@ -2,12 +2,11 @@
 
 <!-- See https://unpaywall.org/data-format -->
 
-<xsl:stylesheet version="1.0"
+<xsl:stylesheet version="3.0"
   xmlns:mods="http://www.loc.gov/mods/v3"
-  xmlns:xalan="http://xml.apache.org/xalan"
   xmlns:xlink="http://www.w3.org/1999/xlink"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  exclude-result-prefixes="xalan xlink xsl">
+  exclude-result-prefixes="#all">
 
   <xsl:output method="xml" />
 
@@ -174,7 +173,7 @@
   </xsl:template>
   
   <xsl:template match="journal_issns">
-    <xsl:for-each select="xalan:tokenize(text(),',')">
+    <xsl:for-each select="tokenize(text(), ',')">
       <mods:identifier type="issn">
         <xsl:value-of select="." />
       </mods:identifier>

@@ -2,17 +2,13 @@
 
 <!-- https://data.datacite.org/application/vnd.datacite.datacite+xml/10.5524/100005 -->
 
-<xsl:stylesheet version="1.0"
-  xmlns:mcrxml="xalan://org.mycore.common.xml.MCRXMLFunctions"
+<xsl:stylesheet version="3.0"
   xmlns:mods="http://www.loc.gov/mods/v3"
-  xmlns:xalan="http://xml.apache.org/xalan"
   xmlns:xlink="http://www.w3.org/1999/xlink"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  exclude-result-prefixes="mcrxml xalan xlink xsl">
+  exclude-result-prefixes="#all">
 
-    <xsl:output method="xml" encoding="UTF-8" indent="yes" xalan:indent-amount="2" />
-
-    <xsl:include href="resource:xsl/copynodes.xsl" />
+    <xsl:mode on-no-match="shallow-copy" />
 
     <xsl:variable name="orcidRegex" select="'[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{3}[0-9,X]'"/>
     <xsl:variable name="mir_licences" select="document('classification:metadata:-1:children:mir_licenses')"/>
@@ -76,12 +72,13 @@
     </xsl:template>
 
     <xsl:template match="nameIdentifier">
-        <xsl:variable name="orcid" select="mcrxml:getMatchingString(text(), $orcidRegex)"/>
-        <xsl:if test="string-length($orcid) = 19">
-            <mods:nameIdentifier type="orcid">
-                <xsl:value-of select="$orcid"/>
-            </mods:nameIdentifier>
-        </xsl:if>
+        <xsl:analyze-string select="text()" regex="{$orcidRegex}">
+            <xsl:matching-substring>
+                <mods:nameIdentifier type="orcid">
+                    <xsl:value-of select="."/>
+                </mods:nameIdentifier>
+            </xsl:matching-substring>
+        </xsl:analyze-string>
     </xsl:template>
 
     <!-- Template for affiliation according to Datacite version 4.4  -->
