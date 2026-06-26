@@ -1,7 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <or xmlns:rh="https://mycore.org/rule-helper">
     <and>
-        <action>use-processable</action>
+        <or>
+            <action>use-processable</action>
+            <!-- manage active processes page -->
+            <and>
+                <target>webpage</target>
+                <id>webpage:/modules/webtools/processing</id>
+            </and>
+        </or>
         <role>admin</role>
     </and>
 </or>
