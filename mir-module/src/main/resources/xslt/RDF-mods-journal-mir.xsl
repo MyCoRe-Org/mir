@@ -5,8 +5,8 @@
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   exclude-result-prefixes="rdf">
 
-  <xsl:variable name="baseURI" select="document('classification:metadata:-1:children:mir_genres')/mycoreclass/label[@xml:lang='x-uri']/@text" />
   <xsl:template match="@rdf:type" priority="2">
+    <xsl:variable name="baseURI" select="document('classification:metadata:-1:children:mir_genres')/mycoreclass/label[@xml:lang='x-uri']/@text" />
     <xsl:choose>
       <xsl:when test="@rdf:resource='http://purl.org/ontology/bibo/Periodical'">
         <mods:genre authorityURI="{$baseURI}" valueURI="{$baseURI}#journal" type="intern" />
@@ -22,4 +22,5 @@
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
+
 </xsl:stylesheet>
