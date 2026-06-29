@@ -7,13 +7,13 @@
   xmlns:mcri18n="http://www.mycore.de/xslt/i18n"
   xmlns:mcrpi="http://www.mycore.de/xslt/pi"
   xmlns:mcrstringutils="http://www.mycore.de/xslt/stringutils"
+  xmlns:miraccesskeyutil="http://www.mycore.de/xslt/miraccesskeyutil"
   xmlns:mods="http://www.loc.gov/mods/v3"
   xmlns:xlink="http://www.w3.org/1999/xlink"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   exclude-result-prefixes="#all"
   extension-element-prefixes="datacite">
-
-  <xsl:import href="xslImport:badges" />
 
   <xsl:param name="MCR.Users.Superuser.UserName" />
   <xsl:param name="MIR.registerDOI" select="''" />
@@ -29,7 +29,6 @@
   <xsl:param name="MIR.Thumbnail.IIIF.Resolution" select="'!300,300'" />
 
   <xsl:include href="resource:xslt/workflow-util.xsl" />
-  <xsl:include href="resource:xslt/mir-accesskey-utils.xsl" />
   <xsl:include href="resource:xslt/mir-mods-utils.xsl" />
   <xsl:include href="resource:xslt/mir-utils.xsl" />
 
@@ -207,45 +206,6 @@
 
   </xsl:template>
 
-  <xsl:template name="checkAccessKeyManagePermissionsForCurrentUser">
-    <xsl:param name="reference" />
-    <xsl:param name="permissionsToCheck">
-      <perm>read</perm>
-      <perm>writedb</perm>
-    </xsl:param>
-    <xsl:variable name="availablePermissions"
-      select="$permissionsToCheck/perm[mcracl:check-permission($reference,concat('manage-access-key-',.))]" />
-    <xsl:choose>
-      <xsl:when test="count($availablePermissions) &gt; 0">
-         <xsl:for-each select="$availablePermissions">
-           <xsl:value-of select="." />
-           <xsl:if test="position() != last()">,</xsl:if>
-        </xsl:for-each>
-      </xsl:when>
-      <xsl:otherwise>
-        <xsl:value-of select="''" />
-      </xsl:otherwise>
-    </xsl:choose>
-  </xsl:template>
-
-  <xsl:template name="printManageAccessKeysMenuItem">
-    <xsl:param name="objectId"/>
-    <xsl:variable name="availableAccessKeyManagePermissions">
-      <xsl:call-template name="checkAccessKeyManagePermissionsForCurrentUser">
-        <xsl:with-param name="reference" select="$objectId" />
-      </xsl:call-template>
-    </xsl:variable>
-    <xsl:if test="string-length($availableAccessKeyManagePermissions) &gt; 0">
-      <li class="mir-action-item mir-action-item-manage-access-key">
-        <a role="menuitem" tabindex="-1" class="dropdown-item"
-           href="{$WebApplicationBaseURL}access-key-manager/{$objectId}?availablePermissions={$availableAccessKeyManagePermissions}"
-        >
-          <xsl:value-of select="mcri18n:translate('mir.accesskey.manage')" />
-        </a>
-      </li>
-    </xsl:if>
-  </xsl:template>
-
   <xsl:template match="/mycoreobject[contains(@ID,'_mods_')]" mode="objectActions" priority="2">
     <xsl:param name="id" select="./@ID" />
     <xsl:param name="accessedit" select="key('rights', $id)/@write" />
@@ -320,6 +280,7 @@
                     <xsl:value-of select="mcri18n:translate('mir.actions.norights')" />
                   </a>
                 </li>
+
               </xsl:if>
               <xsl:if test="$accessedit">
                 <xsl:choose>
@@ -465,7 +426,7 @@
                 <xsl:value-of select="$accessedit" />
               </xsl:message -->
               <!-- actionmapping.xml must be available for this functionality -->
-              <xsl:if test="string-length($child-layout) &gt; 0 and $accessedit and doc-available('resource:actionmappings.xml')">
+              <xsl:if test="string-length($child-layout) &gt; 0 and mcracl:check-permission('', 'create-mods') and doc-available('resource:actionmappings.xml')">
 
                 <xsl:variable name="url">
                   <xsl:value-of select="mcractionmapping:get-url-for-id('create-child',$id,true())"  />
@@ -511,23 +472,18 @@
                   </xsl:otherwise>
                 </xsl:choose>
               </xsl:if>
-              <xsl:if test="$isAccessKeyForModsEnabled">
-                <xsl:call-template name="printManageAccessKeysMenuItem">
-                  <xsl:with-param name="objectId" select="$id"/>
+              <xsl:if test="miraccesskeyutil:is-access-key-allowed($id)">
+                <xsl:call-template name="print-manage-access-keys-menu-item">
+                  <xsl:with-param name="reference" select="$id" />
                 </xsl:call-template>
               </xsl:if>
             </xsl:otherwise>
           </xsl:choose>
           <xsl:if test="not($accessedit or $accessdelete)">
-            <xsl:variable name="isUserAllowedToSetAccessKey">
-              <xsl:call-template name="isCurrentUserAllowedToSetAccessKey" />
-            </xsl:variable>
-            <xsl:if test="$isUserAllowedToSetAccessKey='true'">
-              <li class="mir-action-item mir-action-item-activate-access-key">
-                <a role="menuitem" tabindex="-1" href="{$WebApplicationBaseURL}accesskey/set.xed?objId={@ID}&amp;url={encode-for-uri(string($RequestURL))}" class="dropdown-item">
-                  <xsl:value-of select="mcri18n:translate('mir.accesskey.setOnUser')" />
-                </a>
-              </li>
+            <xsl:if test="miraccesskeyutil:can-current-user-redeem-access-key($id)">
+              <xsl:call-template name="print-set-access-key-menu-item">
+                <xsl:with-param name="reference" select="$id" />
+              </xsl:call-template>
             </xsl:if>
           </xsl:if>
         </ul>
@@ -624,15 +580,50 @@
                 </a>
               </li>
             </xsl:if>
-            <xsl:if test="$isAccessKeyForDerivateEnabled">
-              <xsl:call-template name="printManageAccessKeysMenuItem">
-                <xsl:with-param name="objectId" select="$deriv"/>
+            <xsl:if test="miraccesskeyutil:is-access-key-allowed($deriv)">
+              <xsl:call-template name="print-manage-access-keys-menu-item">
+                <xsl:with-param name="reference" select="$deriv"/>
               </xsl:call-template>
             </xsl:if>
           </ul>
         </div>
       </div>
     </xsl:if>
+  </xsl:template>
+
+  <xsl:template name="print-manage-access-keys-menu-item">
+    <xsl:param name="reference" as="xs:string" />
+
+    <xsl:variable name="available-permissions" select="
+      miraccesskeyutil:get-manageable-permissions($reference, ('read', 'writedb'))
+    " />
+    <xsl:if test="exists($available-permissions)">
+      <li class="mir-action-item mir-action-item-manage-access-key">
+        <xsl:variable name="permissions" select="string-join($available-permissions, ',')" />
+        <a
+          role="menuitem"
+          tabindex="-1"
+          class="dropdown-item"
+          href="{$WebApplicationBaseURL}access-key-manager/{$reference}?availablePermissions={$permissions}"
+        >
+          <xsl:value-of select="mcri18n:translate('mir.accesskey.manage')" />
+        </a>
+      </li>
+    </xsl:if>
+  </xsl:template>
+
+  <xsl:template name="print-set-access-key-menu-item">
+    <xsl:param name="reference" as="xs:string" />
+
+    <li class="mir-action-item mir-action-item-activate-access-key">
+      <a
+        role="menuitem"
+        tabindex="-1"
+        href="{$WebApplicationBaseURL}accesskey/set.xed?objId={$reference}&amp;url={encode-for-uri(string($RequestURL))}"
+        class="dropdown-item">
+        <xsl:value-of select="mcri18n:translate('mir.accesskey.setOnUser')" />
+      </a>
+    </li>
   </xsl:template>
 
   <xsl:template match="/mycoreobject[contains(@ID,'_mods_')]" mode="basketContent" priority="1">

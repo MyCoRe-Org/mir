@@ -117,14 +117,16 @@
     <xsl:param name="owner" />
 
     <xsl:variable name="mycoreclass">
-      <xsl:choose>
-        <xsl:when test="$parent=true()">
-          <xsl:copy-of select="mcrmods:to-mycoreclass($node,'parent')" />
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:copy-of select="mcrmods:to-mycoreclass($node, 'single')" />
-        </xsl:otherwise>
-      </xsl:choose>
+      <xsl:if test="$node">
+        <xsl:choose>
+          <xsl:when test="$parent=true()">
+            <xsl:copy-of select="mcrmods:to-mycoreclass($node,'parent')" />
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:copy-of select="mcrmods:to-mycoreclass($node, 'single')" />
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:if>
     </xsl:variable>
     <xsl:choose>
       <xsl:when test="$mycoreclass/mycoreclass">

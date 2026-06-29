@@ -12,7 +12,7 @@
           </mods:titleInfo>
           <mods:abstract xml:lang="ru">Управление научными публикациями требует новых цифровых инструментов</mods:abstract>
           <mods:subject xlink:type="simple">
-            <mods:topic xml:lang="ru">Библиотечные науки</mods:topic>
+            <mods:topic xml:lang="ru">Библиотечные науки и архивы</mods:topic>
           </mods:subject>
           <mods:name type="personal" xlink:type="simple">
             <mods:displayForm>Иванов, Алексей</mods:displayForm>

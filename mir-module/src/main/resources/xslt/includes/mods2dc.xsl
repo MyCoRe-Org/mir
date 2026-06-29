@@ -220,6 +220,12 @@
     </dc:subject>
   </xsl:template>
 
+  <xsl:template match="mods:classification[@authorityURI='http://schema.org/']">
+    <dc:type>
+      <xsl:value-of select="@valueURI" />
+    </dc:type>
+  </xsl:template>
+
   <xsl:template match="mods:classification[@authorityURI=$diniPublTypeAuthorityURI]">
     <dc:type>
       <xsl:value-of select="concat('doc-type:',substring-after(@valueURI, '#'))" />

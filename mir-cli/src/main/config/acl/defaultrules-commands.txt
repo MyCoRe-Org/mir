@@ -14,6 +14,13 @@ update permission view-derivate for id default_mods with rulefile ${app.home}/co
 update permission addurn for id default_derivate with rulefile ${app.home}/config/acl/grant-editors.xml described by ${acl-description.editors}
 update permission read for id derivate:mir_access:intern with rulefile ${app.home}/config/acl/require-login.xml described by ${acl-description.require-login}
 update permission read for id derivate:mir_access:unlimited with rulefile ${app.home}/config/acl/grant-all.xml described by ${acl-description.all}
+update permission view for id derivate:mir_access:unlimited with rulefile ${app.home}/config/acl/grant-all.xml described by ${acl-description.all}
+
+# deny unprivileged access to the content of blocked or deleted objects (MIR-1613)
+update permission read for id derivate:state:blocked with rulefile ${app.home}/config/acl/grant-editors.xml described by ${acl-description.editors}
+update permission view for id derivate:state:blocked with rulefile ${app.home}/config/acl/grant-editors.xml described by ${acl-description.editors}
+update permission read for id derivate:state:deleted with rulefile ${app.home}/config/acl/grant-editors.xml described by ${acl-description.editors}
+update permission view for id derivate:state:deleted with rulefile ${app.home}/config/acl/grant-editors.xml described by ${acl-description.editors}
 
 update permission writedb for id mir_genres with rulefile ${app.home}/config/acl/grant-admin.xml described by ${acl-description.admins}
 update permission writedb for id mir_institutes with rulefile ${app.home}/config/acl/grant-admin.xml described by ${acl-description.admins}

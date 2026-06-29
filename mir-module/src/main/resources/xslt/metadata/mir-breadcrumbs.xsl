@@ -21,14 +21,16 @@
     </xsl:variable>
     <div id="mir-breadcrumb">
       <ul class="breadcrumb">
-        <li class="breadcrumb-item">
-          <xsl:call-template name="categorySearchLink">
-            <xsl:with-param name="class" select="'navtrail'" />
-            <xsl:with-param name="node" select="$mods/mods:genre[@type='intern']"/>
-            <xsl:with-param name="parent" select="true()" />
-            <xsl:with-param name="owner"  select="$owner" />
-          </xsl:call-template>
-        </li>
+        <xsl:if test="$mods/mods:genre[@type='intern']">
+          <li class="breadcrumb-item">
+            <xsl:call-template name="categorySearchLink">
+              <xsl:with-param name="class" select="'navtrail'" />
+              <xsl:with-param name="node" select="$mods/mods:genre[@type='intern']"/>
+              <xsl:with-param name="parent" select="true()" />
+              <xsl:with-param name="owner"  select="$owner" />
+            </xsl:call-template>
+          </li>
+        </xsl:if>
         <li class="breadcrumb-item active">
           <xsl:variable name="completeTitle">
             <xsl:apply-templates select="$mods" mode="mods.title" />

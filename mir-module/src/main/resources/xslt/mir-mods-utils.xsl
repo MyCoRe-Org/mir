@@ -3,6 +3,7 @@
   xmlns:mcracl="http://www.mycore.de/xslt/acl"
   xmlns:mcri18n="http://www.mycore.de/xslt/i18n"
   xmlns:mods="http://www.loc.gov/mods/v3"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   exclude-result-prefixes="#all">
 
@@ -47,11 +48,10 @@
             </xsl:choose>
         </xsl:variable>
 
-        <xsl:variable name="affiliation" select="mods:affiliation[not(@*)]" />
-        <xsl:variable name="affiliation-ror" select="mods:affiliation[contains(@authorityURI, '//ror.org')]" />
+        <xsl:variable name="affiliations" select="mods:affiliation" />
         <xsl:variable name="personNodeId" select="generate-id(.)"/>
         <xsl:variable name="personName"><xsl:apply-templates select="." mode="nameString"/></xsl:variable>
-        <xsl:if test="count($nameIdentifiers) &gt; 0 or string-length($affiliation) &gt; 0">
+        <xsl:if test="$nameIdentifiers or $affiliations">
             <!-- This content will be inserted as popover-->
             <div id="{$personNodeId}-content" class="d-none">
                 <dl>
@@ -67,40 +67,52 @@
                         </dd>
                     </xsl:for-each>
                   </xsl:if>
-                  <xsl:if test="count($affiliation) &gt; 0 or $affiliation-ror">
-                      <dt>
-                        <xsl:value-of select="mcri18n:translate('mir.affiliation')"/>
-                      </dt>
-                      <dd>
-                        <xsl:for-each select="$affiliation">
-                          <div class="mir-affiliation-plain" lang="{$CurrentLang}">
-                            <xsl:value-of select="text()"/>
-                          </div>
-                        </xsl:for-each>
-
-                        <xsl:for-each select="$affiliation-ror[@valueURI]">
-                            <xsl:sort select="@valueURI"/>
-                            <div class="mir-affiliation-ror">
-                                <a href="https://ror.org/" alt="ROR logo">
-                                    <img src="{$WebApplicationBaseURL}images/ror/ror-icon-rgb-transparent.svg"
-                                         class="pe-1 mir-ror-logo"/>
-                                </a>
-                                <a class="mir-ror-link" href="{@valueURI}">
-                                    <xsl:value-of select="@valueURI"/>
-                                </a>
-                            </div>
-                        </xsl:for-each>
-                      </dd>
-                  </xsl:if>
+                  <xsl:apply-templates select="$affiliations">
+                    <xsl:sort select="boolean(@authority)" data-type="number" order="ascending" />
+                    <xsl:sort select="@valueURI" data-type="text" order="ascending" />
+                  </xsl:apply-templates>
                 </dl>
             </div>
         </xsl:if>
         <a href="{concat($ServletsBaseURL,'solr/mods_nameIdentifier?q=',encode-for-uri($query),'&amp;owner=',encode-for-uri(concat('createdby:',$owner)))}"><xsl:value-of select="$personName" /></a>
-        <xsl:if test="count($nameIdentifiers) &gt; 0 or string-length($affiliation) &gt; 0">
+        <xsl:if test="$nameIdentifiers or $affiliations">
             <!-- class personPopover triggers the javascript popover code -->
             <a id="{$personNodeId}" class="personPopover" title="{mcri18n:translate('mir.details.personpopover.title')}">
                 <span class="fa fa-info-circle"/>
             </a>
         </xsl:if>
     </xsl:template>
+
+  <xsl:template match="mods:affiliation[not(@*)]">
+    <div class="mir-affiliation-plain">
+      <xsl:value-of select="." />
+    </div>
+  </xsl:template>
+
+  <xsl:template match="mods:affiliation[@authority='ROR']">
+    <xsl:call-template name="display-affiliation">
+      <xsl:with-param name="logo-uri" select="$WebApplicationBaseURL || 'images/ror/ror-icon-rgb-transparent.svg'" />
+    </xsl:call-template>
+  </xsl:template>
+
+  <xsl:template match="mods:affiliation">
+    <xsl:call-template name="display-affiliation" />
+  </xsl:template>
+
+  <xsl:template name="display-affiliation">
+    <xsl:param name="logo-uri" as="xs:string" select="''" />
+
+    <xsl:variable name="type" select="lower-case(@authority)" />
+    <div class="mir-affiliation-{$type}">
+      <xsl:if test="$logo-uri != ''">
+        <a href="{@authorityURI}">
+          <img src="{$logo-uri}" class="pe-1 mir-{$type}-logo" alt="{@authority} logo" />
+        </a>
+      </xsl:if>
+      <a class="mir-{$type}-link" href="{@valueURI}">
+        <xsl:value-of select="@valueURI" />
+      </a>
+    </div>
+  </xsl:template>
+
 </xsl:stylesheet>

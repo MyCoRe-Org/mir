@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="3.0"
   xmlns:mcri18n="http://www.mycore.de/xslt/i18n"
+  xmlns:mirorcidutil="http://www.mycore.de/xslt/mirorcidutil"
   xmlns:xs="http://www.w3.org/2001/XMLSchema"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   exclude-result-prefixes="#all">
 
-  <xsl:import href="resource:xslt/orcid/mir-orcid.xsl" />
+  <xsl:import href="xslImport:badges" />
 
   <xsl:include href="resource:xslt/MyCoReLayout.xsl" />
   <xsl:include href="resource:xslt/csl-export-gui.xsl" />
@@ -26,7 +27,7 @@
       <xsl:call-template name="export-csl" />
       <xsl:call-template name="basketEntries" />
     </div>
-    <xsl:if test="$isOrcidEnabled">
+    <xsl:if test="mirorcidutil:is-orcid-enabled()">
       <script type="module" src="{$WebApplicationBaseURL}js/mir/orcid-basket.js" />
     </xsl:if>
   </xsl:template>
