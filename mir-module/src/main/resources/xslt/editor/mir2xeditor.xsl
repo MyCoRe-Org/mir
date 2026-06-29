@@ -8,7 +8,7 @@
 
   <xsl:mode on-no-match="shallow-copy" />
 
-  <xsl:include href="default-parameters.xsl" />
+  <xsl:include href="resource:xslt/default-parameters.xsl" />
   <xsl:include href="xslInclude:functions" />
 
   <xsl:variable name="institutesURI">
