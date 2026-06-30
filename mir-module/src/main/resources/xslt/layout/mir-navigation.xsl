@@ -66,9 +66,6 @@
           </xsl:if>
         </xsl:variable>
         <li class="{$listItemClass}">
-          <span><xsl:value-of select="$browserAddress"/></span>
-          <span><xsl:value-of select="$RequestURL"/></span>
-
           <xsl:variable name="itemClass">
             <xsl:text>dropdown-item</xsl:text>
             <xsl:if test="item">
