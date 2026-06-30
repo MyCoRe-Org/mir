@@ -8,6 +8,7 @@
   <xsl:param name="MCR.Metadata.Languages" select="en"/>
 
   <xed:template id="in.out">
+    <xed:source uri="xslTransform:mods2xeditor:notnull:session:{$sessionKey}" />
     <xed:source uri="xslTransform:import2xeditor:notnull:enrich:import:buildxml:_rootName_=mods:mods&amp;mods:identifier={$modsId}&amp;mods:identifier/@type={$type}" />
     <xed:source uri="xslTransform:zdb-rdf2xeditor:notnull:http://ld.zdb-services.de/data/{$zdbid}.rdf" />
     <xed:source uri="xslTransform:mycoreobject2xeditor:notnull:mcrobject:{$id}" />

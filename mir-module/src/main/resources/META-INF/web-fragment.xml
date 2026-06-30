@@ -42,6 +42,15 @@
   </servlet-mapping>
 
   <servlet>
+    <servlet-name>MIRImportServlet</servlet-name>
+    <servlet-class>org.mycore.mir.importer.MIRImportServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>MIRImportServlet</servlet-name>
+    <url-pattern>/servlets/MIRImportServlet</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
     <servlet-name>MIRAccessKeyServlet</servlet-name>
     <servlet-class>org.mycore.mir.authorization.accesskeys.frontend.servlet.MIRAccessKeyServlet</servlet-class>
   </servlet>
