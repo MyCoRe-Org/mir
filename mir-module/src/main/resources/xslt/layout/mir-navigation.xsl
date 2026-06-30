@@ -39,7 +39,7 @@
   </xsl:template>
 
   <xsl:template match="/navigation//item[@href]">
-    <xsl:param name="active" select="descendant-or-self::item[@href = $browserAddress ]" />
+    <xsl:param name="active" select="descendant-or-self::item[@href = $browserAddress] or (contains($RequestURL, '/authorization/change-password.xed?action=password') and descendant-or-self::item[@href = '/servlets/MCRUserServlet?action=changeMyPassword'])" />
     <xsl:param name="url">
       <xsl:choose>
         <xsl:when test="contains(@href,'change-current-user.xed?action=saveCurrentUser') and $currentUser/user/@locked='true'">
@@ -66,6 +66,9 @@
           </xsl:if>
         </xsl:variable>
         <li class="{$listItemClass}">
+          <span><xsl:value-of select="$browserAddress"/></span>
+          <span><xsl:value-of select="$RequestURL"/></span>
+
           <xsl:variable name="itemClass">
             <xsl:text>dropdown-item</xsl:text>
             <xsl:if test="item">
