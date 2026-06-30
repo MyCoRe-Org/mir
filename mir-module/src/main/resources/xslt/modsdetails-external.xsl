@@ -234,7 +234,7 @@
     <xsl:variable name="basketType" select="'objects'" />
     <div class="btn-group d-flex">
       <xsl:choose>
-        <xsl:when test="document(concat('callJava:org.mycore.frontend.basket.MCRBasketManager:contains:',$basketType,':',/mycoreobject/@ID))">
+        <xsl:when test="exists(document(concat('basket:', $basketType, ':', /mycoreobject/@ID))/entry/@uri)">
           <a class="btn btn-primary btn-sm w-100"
              href="{$ServletsBaseURL}MCRBasketServlet?type={$basketType}&amp;action=remove&amp;redirect={encode-for-uri($RequestURL)}&amp;id={/mycoreobject/@ID}">
             <i class="fas fa-minus">
@@ -626,7 +626,7 @@
     </li>
   </xsl:template>
 
-  <xsl:template match="/mycoreobject[contains(@ID,'_mods_')]" mode="basketContent" priority="1">
+  <xsl:template match="mycoreobject[contains(@ID,'_mods_')]" mode="basketContent" priority="1">
     <xsl:variable name="objID" select="@ID" />
     <xsl:variable name="mods-type">
       <xsl:apply-templates select="." mode="mods-type" />

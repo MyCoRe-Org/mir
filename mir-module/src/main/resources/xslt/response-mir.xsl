@@ -1210,7 +1210,7 @@
     </xsl:variable>
 
     <xsl:choose>
-      <xsl:when test="exists(document(concat('basket:object:', $identifier))/entry/@uri)">
+      <xsl:when test="exists(document(concat('basket:objects:', $identifier))/entry/@uri)">
         <!-- remove from basket -->
         <a
           class="hit_option remove_from_basket {$dropdownclass}"
