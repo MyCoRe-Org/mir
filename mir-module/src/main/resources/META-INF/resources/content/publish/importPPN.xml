@@ -12,7 +12,9 @@
     <form id="submit_publication_ppn"
           class="form-horizontal"
           method="get"
-          action="../../editor/editor-admins.xed">
+          action="../../servlets/MIRImportServlet">
+
+      <input type="hidden" name="editor" value="editor-admins" />
 
 
         <h2>Publizieren (PPN Import)</h2>
@@ -53,7 +55,9 @@
     <form id="submit_publication_ppn"
           class="form-horizontal"
           method="get"
-          action="../../editor/editor-admins.xed">
+          action="../../servlets/MIRImportServlet">
+
+      <input type="hidden" name="editor" value="editor-admins" />
 
 
       <h2>Publish (PPN Import)</h2>
