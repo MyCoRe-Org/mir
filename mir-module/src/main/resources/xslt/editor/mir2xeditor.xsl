@@ -8,7 +8,7 @@
 
   <xsl:mode on-no-match="shallow-copy" />
 
-  <xsl:include href="default-parameters.xsl" />
+  <xsl:include href="resource:xslt/default-parameters.xsl" />
   <xsl:include href="xslInclude:functions" />
 
   <xsl:variable name="institutesURI">
@@ -570,7 +570,7 @@
               <option value="">
                 <xed:output i18n="mir.select.optional" />
               </option>
-              <xed:include uri="xslStyle:items2options#xslt:classification:editor:-1:children:mir_institutes" />
+              <xed:include uri="xslStyle:items2options:classification:editor:-1:children:mir_institutes" />
             </select>
           </xed:bind>
         </div>
