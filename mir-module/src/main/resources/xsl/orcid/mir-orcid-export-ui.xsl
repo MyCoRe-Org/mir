@@ -22,7 +22,7 @@
               <label for="orcidProfileSelect">
                 <xsl:value-of select="document('i18n:mir.orcid.publication.export.description')"/>
               </label>   
-              <select class="form-control mt-1" id="orcidProfileSelect">
+              <select class="form-select mt-1" id="orcidProfileSelect">
                 <option value="" selected="selected">
                   <xsl:value-of select="document('i18n:mir.select')"/>
                 </option>
