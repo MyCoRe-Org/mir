@@ -42,11 +42,23 @@
               <xsl:call-template name="printMirMessage">
                 <xsl:with-param name="title" select="i18n:translate(concat('mir.error.', $docState))" />
                 <xsl:with-param name="msg">
-                  <xsl:if test="//mods:note[@type='admin']">
-                    <xsl:for-each select="//mods:note[@type='admin']">
-                      <xsl:value-of select="." />
-                    </xsl:for-each>
-                  </xsl:if>
+                  <xsl:choose>
+                    <xsl:when test="$docState='deleted' and //mods:mods/mods:note[@type='deletion']">
+                      <xsl:for-each select="//mods:mods/mods:note[@type='deletion']">
+                        <xsl:value-of select="." />
+                      </xsl:for-each>
+                    </xsl:when>
+                    <xsl:when test="$docState='blocked' and //mods:mods/mods:note[@type='restriction']">
+                      <xsl:for-each select="//mods:mods/mods:note[@type='restriction']">
+                        <xsl:value-of select="." />
+                      </xsl:for-each>
+                    </xsl:when>
+                    <xsl:when test="//mods:mods/mods:note[@type='admin']">
+                      <xsl:for-each select="//mods:mods/mods:note[@type='admin']">
+                        <xsl:value-of select="." />
+                      </xsl:for-each>
+                    </xsl:when>
+                  </xsl:choose>
                   <xsl:variable name="hitsPrecending"
                                 select="document(concat('solr:q=',encoder:encode(concat('mods.relatedItem.preceding:', mycoreobject/@ID)), '&amp;rows=1000&amp;sort=mods.dateIssued desc,mods.dateIssued.host desc,mods.title.main desc&amp;group=true&amp;group.limit=100&amp;group.field=mods.yearIssued'))/response/lst[@name='grouped']/lst[@name='mods.yearIssued']" />
                   <xsl:if test="$hitsPrecending/int[@name='matches'] &gt; 0">
