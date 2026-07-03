@@ -8,7 +8,7 @@
   </parent>
   <groupId>org.mycore.mir</groupId>
   <artifactId>mir-parent</artifactId>
-  <version>2026.06.0</version>
+  <version>2026.06.1-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>MIR</name>
   <description>MyCoRe/MODS Institutional Repository</description>
@@ -43,7 +43,7 @@
     <java.target.version>25</java.target.version>
     <jetty.version>12.1.6</jetty.version>
     <maven.compiler.arg>-Werror</maven.compiler.arg>
-    <mycore.version>2026.06.0</mycore.version>
+    <mycore.version>2026.06.1-SNAPSHOT</mycore.version>
     <node.version>v22.22.2</node.version>
     <pmd.failOnViolation>true</pmd.failOnViolation>
     <pmd.version>7.16.0</pmd.version>
