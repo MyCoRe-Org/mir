@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!--xslStyle:import/simplify-json-xml#xsl:xslTransform:json2xml:https://api.crossref.org/works/10.1038/ncomms11620 -->
+<!--xslStyle:import/simplify-json-xml:xslTransform:json2xml:https://api.crossref.org/works/10.1038/ncomms11620 -->
 
 <xsl:stylesheet version="3.0"
   xmlns:mcrmods="http://www.mycore.de/xslt/mods"

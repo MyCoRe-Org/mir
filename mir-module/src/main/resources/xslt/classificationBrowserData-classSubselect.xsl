@@ -5,7 +5,7 @@
 
   <xsl:output method="xml" omit-xml-declaration="yes" />
 
-  <xsl:include href="default-parameters.xsl" />
+  <xsl:include href="resource:xslt/default-parameters.xsl" />
   <xsl:include href="xslInclude:functions" />
 
   <xsl:template match="/classificationBrowserData">
