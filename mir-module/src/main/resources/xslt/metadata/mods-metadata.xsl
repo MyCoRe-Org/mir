@@ -57,11 +57,6 @@
                         <xsl:value-of select="." />
                       </xsl:for-each>
                     </xsl:when>
-                    <xsl:when test="//mods:mods/mods:note[@type='admin']">
-                      <xsl:for-each select="//mods:mods/mods:note[@type='admin']">
-                        <xsl:value-of select="." />
-                      </xsl:for-each>
-                    </xsl:when>
                   </xsl:choose>
                   <xsl:variable name="hitsPrecending"
                                 select="document(concat('solr:q=',encode-for-uri(concat('mods.relatedItem.preceding:', mycoreobject/@ID)), '&amp;rows=1000&amp;sort=mods.dateIssued%20desc,mods.dateIssued.host%20desc,mods.title.main%20desc&amp;group=true&amp;group.limit=100&amp;group.field=mods.yearIssued'))/response/lst[@name='grouped']/lst[@name='mods.yearIssued']" />
