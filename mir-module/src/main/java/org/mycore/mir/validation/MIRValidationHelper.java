@@ -82,7 +82,7 @@ public class MIRValidationHelper {
         for (Element childElement : subjectElement.getChildren()) {
             String elementName = childElement.getName();
             switch (elementName) {
-            case "topic", "geographic", "place" -> {
+            case "topic", "geographic", "place", "temporal" -> {
                 if (childElement.getText().trim().isEmpty()) {
                     return false;
                 }
