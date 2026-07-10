@@ -5,7 +5,7 @@
 
   <xsl:template match="/">
     <xsl:variable name="ID" select="/mycoreobject/@ID" />
-    <xsl:variable name="verinfo" select="document(concat('versioninfo:', $ID))" />
+    <xsl:variable name="verinfo" select="document(concat('notnull:versioninfo:', $ID))" />
     <xsl:copy-of select="$verinfo" />
   </xsl:template>
 
