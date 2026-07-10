@@ -306,7 +306,7 @@
               <xed:output i18n="mir.title.nonSort" />
             </label>
             <div class="col-md-6">
-              <div class="form-inline controls">
+              <div class="d-flex gap-1 align-items-center controls">
                 <xed:bind xpath="mods:nonSort">
                   <input type="text" size="9" class="form-control form-control-inline" placeholder="Der/Die/Das" />
                 </xed:bind>
@@ -1363,11 +1363,9 @@
         <xed:output i18n="mir.pages" />:
       </label>
       <div class="col-md-6">
-        <div class="form-inline">
-          <xed:bind xpath="mods:part/mods:extent[@unit='pages']/mods:list">
-            <input type="text" size="20" class="form-control form-control-inline" />
-          </xed:bind>
-        </div>
+        <xed:bind xpath="mods:part/mods:extent[@unit='pages']/mods:list">
+          <input type="text" size="20" class="form-control form-control-inline" />
+        </xed:bind>
       </div>
       <mir:help-pmud help-text="{i18n:mir.help.host.pages}" />
     </div>
@@ -1379,11 +1377,9 @@
         <xed:output i18n="mir.order" />:
       </label>
       <div class="col-md-6">
-        <div class="form-inline">
-          <xed:bind xpath="mods:part/@order">
-            <input type="text" size="20" class="form-control form-control-inline {$xed-validation-marker}" />
-          </xed:bind>
-        </div>
+       <xed:bind xpath="mods:part/@order">
+          <input type="text" size="20" class="form-control form-control-inline {$xed-validation-marker}" />
+        </xed:bind>
       </div>
       <mir:help-pmud help-text="{i18n:mir.help.host.order}" />
     </div>
@@ -1911,31 +1907,6 @@
     </xed:repeat>
   </xed:template>
 
-
-  <xed:template id="classification">
-    <xed:repeat xpath="mods:classification[@generator='user selected']" min="1" max="10">
-      <div class="mir-form-group row">
-        <label class="col-md-3 col-form-label text-end form-label">
-          <xed:output i18n="mir.classification" />
-        </label>
-        <div class="col-md-6">
-          <div class="form-inline">
-            <input type="button" class="form-control mir-classification-select" value="{i18n:mir.classification.select}" />
-            <xed:bind xpath="@displayLabel">
-              <input type="hidden" />
-            </xed:bind>
-            <xed:bind xpath="@mcr:categId">
-              <input type="hidden" />
-            </xed:bind>
-            <span class="mir-span"></span>
-          </div>
-        </div>
-        <mir:help-pmud help-text="{i18n:mir.help.classification}" pmud="true" />
-      </div>
-    </xed:repeat>
-    <script type="text/javascript" src="{$WebApplicationBaseURL}js/mir/classification-modal-select.min.js"></script>
-  </xed:template>
-
   <xed:template id="modal.body">
     <div id="modalFrame" class="modal fade" tabindex="-1" role="dialog">
       <div class="modal-dialog modal-lg modal-xl" role="document">
@@ -2100,7 +2071,7 @@
               </xed:bind>
             </div>
             <div class="col-md-6">
-              <div class="controls form-inline">
+              <div class="controls d-flex gap-2 align-items-center">
                 <input type="button" class="form-control mir-relatedItem-select" data-fq="-id:{$id}" value="{i18n:mir.editing.related.select}" />
                 <span />
                 <xed:bind xpath="@xlink:href">
@@ -2142,7 +2113,7 @@
               </xed:bind>
             </div>
             <div class="col-md-6">
-              <div class="controls form-inline">
+              <div class="controls d-flex gap-2 align-items-center">
                 <input type="button" class="form-control mir-relatedItem-select" data-fq="-id:{$id}" value="{i18n:mir.editing.related.select}" />
                 <span />
                 <xed:bind xpath="@xlink:href">
