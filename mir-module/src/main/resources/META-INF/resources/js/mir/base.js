@@ -21,14 +21,14 @@
         }
 
         function loadImages(token) {
-            $("[" + iiifSearchSelector + "]").each(function (i, div) {
-                let url = div.getAttribute(iiifSearchSelector);
+            $("[" + iiifSearchSelector + "]").each(function (i, img) {
+                let url = img.getAttribute(iiifSearchSelector);
                 var xhr = new XMLHttpRequest();
                 xhr.onreadystatechange = function () {
                     if (this.readyState === 4 && this.status === 200) {
                         //console.log(this.response, typeof this.response);
                         var url = window.URL || window.webkitURL;
-                        div.style.backgroundImage = "url(\"" + url.createObjectURL(this.response) + "\")";
+                        img.src = url.createObjectURL(this.response);
                     }
                 }
                 xhr.open('GET', url);
