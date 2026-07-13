@@ -234,13 +234,18 @@ $hover_darken: 20%;
         }
       }
       .hit_icon {
-        height: 100px;
+        width: 100%;
+        aspect-ratio: 1 / 1.4;
         background-color: #EDEDED;
-        background-position: center center;
-        background-size: 100% auto;
-        background-repeat: no-repeat;
         border: 1px solid $light_neutral;
         border-bottom-left-radius: 25px;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        img {
+          width: 100%;
+          height: auto;
+        }
       }
       .hit_icon_overlay {
         position: absolute;

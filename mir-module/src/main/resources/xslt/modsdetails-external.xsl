@@ -648,25 +648,30 @@
           <xsl:choose>
             <xsl:when test="contains($MCR.Module-iview2.SupportedContentTypes, $contentType) or $contentType ='application/pdf'">
               <div class="hit_icon">
-                <xsl:choose>
-                  <xsl:when test="not(mcracl:is-current-user-in-role('guest'))">
-                    <xsl:attribute name="data-iiif-jwt">
-                      <xsl:value-of select="concat($WebApplicationBaseURL, 'api/iiif/image/v2/thumbnail/', $objID,'/full/', $MIR.Thumbnail.IIIF.Resolution, '/0/default.jpg')"/>
-                    </xsl:attribute>
-                  </xsl:when>
-                  <xsl:otherwise>
-                    <xsl:attribute name="style">
-                      <xsl:variable name="apos">'</xsl:variable>
-                      <xsl:value-of
-                              select="concat('background-image: url(', $apos, $WebApplicationBaseURL, 'api/iiif/image/v2/thumbnail/', $objID, '/full/', $MIR.Thumbnail.IIIF.Resolution, '/0/default.jpg',$apos,')')"/>
-                    </xsl:attribute>
-                  </xsl:otherwise>
-                </xsl:choose>
+                <img>
+                  <xsl:variable name="hitIconSrc" select="concat($WebApplicationBaseURL, 'api/iiif/image/v2/thumbnail/', $identifier, '/full/', $MIR.Thumbnail.IIIF.Resolution, '/0/default.jpg')"/>
+                  <xsl:choose>
+                    <xsl:when test="not(mcracl:is-current-user-in-role('guest'))">
+                      <xsl:attribute name="src">
+                        <xsl:value-of select="concat($WebApplicationBaseURL, 'images/icons/icon_common_disabled.png')"/>
+                      </xsl:attribute>
+                      <xsl:attribute name="data-iiif-jwt">
+                        <xsl:value-of select="$hitIconSrc"/>
+                      </xsl:attribute>
+                    </xsl:when>
+                    <xsl:otherwise>
+                      <xsl:attribute name="src">
+                        <xsl:value-of select="$hitIconSrc"/>
+                      </xsl:attribute>
+                    </xsl:otherwise>
+                  </xsl:choose>
+                </img>
               </div>
             </xsl:when>
             <xsl:otherwise>
-              <div class="hit_icon"
-                   style="background-image: url('{$WebApplicationBaseURL}images/icons/icon_common.png');"/>
+              <div class="hit_icon">
+                <img src="{$WebApplicationBaseURL}images/icons/icon_common.png"/>
+              </div>
               <!-- if not, then the content type decides a icon -->
               <xsl:variable name="iconLink">
                 <xsl:call-template name="iconLink">
