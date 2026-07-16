@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <commands>
-  <command file="resource:setup/acl/grant-editors.xml" describedBy="administrators and editors">
+  <command file="resource:setup/acl/grant-editors.xml" describedBy="editor and administrator">
     update permission read for id
     webpage:/servlets/MCRActionMappingServlet/expert/search with
     rule {file} described by {describedBy}
@@ -10,12 +10,12 @@
     webpage:/content/search/simple.xed with
     rule {file} described by {describedBy}
   </command>
-  <command file="resource:setup/acl/grant-editors.xml" describedBy="administrators and editors">
+  <command file="resource:setup/acl/grant-editors.xml" describedBy="editor and administrator">
     update permission read for id
     webpage:/content/search/simple_intern.xed with
     rule {file} described by {describedBy}
   </command>
-  <command file="resource:setup/acl/grant-editors.xml" describedBy="administrators and editors">
+  <command file="resource:setup/acl/grant-editors.xml" describedBy="editor and administrator">
     update permission read for id
     webpage:/search/search-expert.xed with
     rule {file} described by {describedBy}
@@ -25,7 +25,7 @@
     webpage:/content/search/complex.xed with
     rule {file} described by {describedBy}
   </command>
-  <command file="resource:setup/acl/grant-editors.xml" describedBy="administrators and editors">
+  <command file="resource:setup/acl/grant-editors.xml" describedBy="editor and administrator">
     update permission read for id
     webpage:/content/search/complex_intern.xed with
     rule {file} described by {describedBy}
@@ -35,17 +35,17 @@
     webpage:/authorization/new-user.xed?action=save with
     rule {file} described by {describedBy}
   </command>
-  <command file="resource:setup/acl/grant-submitter.xml" describedBy="submitters, editors and administrators">
+  <command file="resource:setup/acl/grant-submitter.xml" describedBy="submitter, editor and administrator">
     update permission read for id
     webpage:/content/publish/index.xml with
     rule {file} described by {describedBy}
   </command>
-  <command file="resource:setup/acl/grant-editors.xml" describedBy="administrators and editors">
+  <command file="resource:setup/acl/grant-editors.xml" describedBy="editor and administrator">
     update permission read for id
     webpage:/editor/editor-admins.xed with
     rule {file} described by {describedBy}
   </command>
-  <command file="resource:setup/acl/not-logged-in.xml" describedBy="not logged in">
+  <command file="resource:setup/acl/not-logged-in.xml" describedBy="guests only">
     update permission read for id
     webpage:/authorization/new-author.xed?action=save with
     rule {file} described by {describedBy}
@@ -90,7 +90,7 @@
     webpage:/modules/wcms2/wcms2.xml?XSL.useMT=false with
     rule {file} described by {describedBy}
   </command>
-  <command file="resource:setup/acl/grant-editors.xml" describedBy="administrators and editors">
+  <command file="resource:setup/acl/grant-editors.xml" describedBy="editor and administrator">
     update permission read for id
     webpage:/content/publish/importPPN.xml with
     rule {file} described by {describedBy}
@@ -135,7 +135,7 @@
     webpage:/authorization/change-current-user.xed?action=saveCurrentUser with
     rule {file} described by {describedBy}
   </command>
-  <command file="resource:setup/acl/grant-submitter.xml" describedBy="submitters, editors and administrators">
+  <command file="resource:setup/acl/grant-submitter.xml" describedBy="submitter, editor and administrator">
     update permission read for id
     webpage:/servlets/solr/select?q=createdby:{CurrentUser}&amp;fq=objectType:mods with
     rule {file} described by {describedBy}
