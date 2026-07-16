@@ -112,13 +112,13 @@ public class MIRStrategyTest {
         MCRConfiguration2.set("app.home", mirCliSrcMainPath.toString());
         MCRConfiguration2.set("acl-description.admins", "administrators only");
         MCRConfiguration2.set("acl-description.all", "always allowed");
-        MCRConfiguration2.set("acl-description.editors", "administrators and editors");
+        MCRConfiguration2.set("acl-description.editors", "editor and administrator");
         MCRConfiguration2.set("acl-description.guests", "guests only");
         MCRConfiguration2.set("acl-description.guests-and-submitters", "guests and submitters");
         MCRConfiguration2.set("acl-description.never", "never allowed");
         MCRConfiguration2.set("acl-description.not-logged-in", "not logged-in");
         MCRConfiguration2.set("acl-description.require-login", "require login");
-        MCRConfiguration2.set("acl-description.submitters", "submitters, editors and administrators");
+        MCRConfiguration2.set("acl-description.submitters", "submitter, editor and administrator");
     }
 
     @Test

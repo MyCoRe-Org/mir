@@ -14,13 +14,13 @@
     <MCR.AppName>mir</MCR.AppName>
     <acl-description.admins>administrators only</acl-description.admins>
     <acl-description.all>always allowed</acl-description.all>
-    <acl-description.editors>administrators and editors</acl-description.editors>
+    <acl-description.editors>editor and administrator</acl-description.editors>
     <acl-description.guests>guests only</acl-description.guests>
     <acl-description.guests-and-submitters>guests and submitters</acl-description.guests-and-submitters>
     <acl-description.never>never allowed</acl-description.never>
     <acl-description.not-logged-in>not logged-in</acl-description.not-logged-in>
     <acl-description.require-login>require login</acl-description.require-login>
-    <acl-description.submitters>submitters, editors and administrators</acl-description.submitters>
+    <acl-description.submitters>submitter, editor and administrator</acl-description.submitters>
     <cli.cmd />
   </properties>
   <build>
