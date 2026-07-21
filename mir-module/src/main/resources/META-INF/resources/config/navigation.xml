@@ -153,7 +153,7 @@
         <label xml:lang="en">WCMS</label>
       </item>
     </group>
-    <item href="/servlets/logout?url=../content/index.xml" type="intern">
+    <item href="/servlets/logout?url={WebApplicationBaseURLEncoded}content/index.xml" type="intern">
       <label xml:lang="de">Abmelden</label>
       <label xml:lang="en">Logout</label>
     </item>
