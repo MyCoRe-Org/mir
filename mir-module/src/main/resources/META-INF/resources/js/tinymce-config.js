@@ -10,8 +10,7 @@ tinymce.init({
         "searchreplace", "table", "visualblocks", "wordcount"
     ],
     menubar: false,
-    toolbar: "undo redo | styles | bold italic underline | remove | code | indent outdent |" +
-        " alignleft aligncenter alignright alignjustify | bullist numlist | table | hr",
+    toolbar: window["MIR.WebConfig.Editor.TinyMCE.Toolbar"] || "",
     toolbar_mode: "wrap",
     entity_encoding: "raw",
     valid_elements: window["MIR.WebConfig.Editor.TinyMCE.AllowedElements"] || "",
