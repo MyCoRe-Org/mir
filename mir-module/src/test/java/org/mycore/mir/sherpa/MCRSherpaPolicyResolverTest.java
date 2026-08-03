@@ -19,8 +19,14 @@
 package org.mycore.mir.sherpa;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.zip.GZIPOutputStream;
 
 import org.jdom2.Element;
 import org.junit.jupiter.api.Test;
@@ -29,10 +35,7 @@ class MCRSherpaPolicyResolverTest {
 
     @Test
     void parseExtractsPermittedOa() throws Exception {
-        String json = new String(
-            getClass().getResourceAsStream("/MCRSherpaPolicyResolverTest/example.json").readAllBytes(),
-            StandardCharsets.UTF_8);
-        Element sherpa = new MCRSherpaPolicyResolver().parse(json, "1178-9905");
+        Element sherpa = new MCRSherpaPolicyResolver().parse(readResource("example.json"), "1178-9905");
 
         assertEquals("1178-9905", sherpa.getAttributeValue("issn"));
         Element item = sherpa.getChild("item");
@@ -45,5 +48,44 @@ class MCRSherpaPolicyResolverTest {
         assertEquals("non_commercial_website", permitted.getChild("location").getChildText("value"));
         assertEquals("yes", permitted.getChildText("additionalFee"));
         assertEquals("CC BY-NC", permitted.getChild("license").getChildText("value"));
+    }
+
+    @Test
+    void parseKeepsPolicyWithoutPermittedOa() throws Exception {
+        Element sherpa = new MCRSherpaPolicyResolver().parse(readResource("oa-prohibited.json"), "2731-0582");
+
+        Element item = sherpa.getChild("item");
+        assertNotNull(item, "policies without permitted OA routes have to be kept");
+        assertEquals("Journal of Closed Access", item.getChildText("title"));
+
+        Element policy = item.getChild("publisherPolicy");
+        assertEquals("yes", policy.getChildText("openAccessProhibited"));
+        assertEquals("Copyright and Permissions", policy.getChildText("policyURL"));
+        assertEquals("https://example.org/journal/copyright", policy.getChild("policyURL").getAttributeValue("href"));
+        assertTrue(policy.getChildren("permittedOA").isEmpty());
+    }
+
+    @Test
+    void decodeBodyHandlesGzip() throws Exception {
+        String json = readResource("example.json");
+        ByteArrayOutputStream compressed = new ByteArrayOutputStream();
+        try (GZIPOutputStream gzip = new GZIPOutputStream(compressed)) {
+            gzip.write(json.getBytes(StandardCharsets.UTF_8));
+        }
+        byte[] plain = json.getBytes(StandardCharsets.UTF_8);
+
+        assertEquals(json, MCRSherpaPolicyResolver.decodeBody(compressed.toByteArray(), "gzip"));
+        // the API compresses even without an announced Content-Encoding
+        assertEquals(json, MCRSherpaPolicyResolver.decodeBody(compressed.toByteArray(), null));
+        assertEquals(json, MCRSherpaPolicyResolver.decodeBody(plain, null));
+        assertEquals(json, MCRSherpaPolicyResolver.decodeBody(plain, "identity"));
+    }
+
+    private static String readResource(String name) throws IOException {
+        String path = "/MCRSherpaPolicyResolverTest/" + name;
+        try (InputStream resource = MCRSherpaPolicyResolverTest.class.getResourceAsStream(path)) {
+            assertNotNull(resource, "Missing test resource " + path);
+            return new String(resource.readAllBytes(), StandardCharsets.UTF_8);
+        }
     }
 }

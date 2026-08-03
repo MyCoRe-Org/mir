@@ -1,0 +1,56 @@
+{
+  "items": [
+    {
+      "id": 42,
+      "type": "journal",
+      "url": "https://example.org/journal/",
+      "system_metadata": {
+        "id": 42,
+        "uri": "https://v2.sherpa.ac.uk/id/publication/42"
+      },
+      "publishers": [
+        {
+          "relationship_type": "commercial_publisher",
+          "publisher": {
+            "id": 99,
+            "uri": "https://v2.sherpa.ac.uk/id/publisher/99",
+            "name": [
+              {
+                "language": "en",
+                "name": "Example Press"
+              }
+            ]
+          }
+        }
+      ],
+      "title": [
+        {
+          "language": "en",
+          "title": "Journal of Closed Access"
+        }
+      ],
+      "publisher_policy": [
+        {
+          "id": 99,
+          "uri": "https://v2.sherpa.ac.uk/id/publisher_policy/99",
+          "internal_moniker": "Default Policy",
+          "open_access_prohibited": "yes",
+          "open_access_prohibited_phrases": [
+            {
+              "value": "yes",
+              "language": "en",
+              "phrase": "Yes"
+            }
+          ],
+          "urls": [
+            {
+              "description": "Copyright and Permissions",
+              "url": "https://example.org/journal/copyright"
+            }
+          ],
+          "permitted_oa": []
+        }
+      ]
+    }
+  ]
+}

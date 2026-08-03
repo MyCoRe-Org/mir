@@ -18,7 +18,9 @@
 
 package org.mycore.mir.sherpa;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.net.URLEncoder;
 import java.net.http.HttpClient;
@@ -26,9 +28,13 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
+import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
+import java.util.concurrent.Executors;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.stream.Stream;
+import java.util.zip.GZIPInputStream;
 
 import javax.xml.transform.Source;
 import javax.xml.transform.TransformerException;
@@ -40,6 +46,7 @@ import org.jdom2.Element;
 import org.jdom2.transform.JDOMSource;
 import org.mycore.common.MCRCache;
 import org.mycore.common.config.MCRConfiguration2;
+import org.mycore.services.http.MCRHttpUtils;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -57,9 +64,11 @@ import com.google.gson.JsonParser;
  * <ul>
  *   <li>{@code MIR.Sherpa.API.URL} - base URL of the Open Policy Finder API</li>
  *   <li>{@code MIR.Sherpa.API.Key} - API key; if unset, the resolver returns an empty result</li>
- *   <li>{@code MIR.Sherpa.API.TimeoutSeconds} - connect and request timeout in seconds</li>
+ *   <li>{@code MIR.Sherpa.API.TimeoutSeconds} - connect and request timeout in seconds; the connect timeout is
+ *       read once when the shared HTTP client is created</li>
  *   <li>{@code MIR.Sherpa.API.Limit} - maximum number of items requested from the API</li>
  *   <li>{@code MIR.Sherpa.API.Cache.Size} - number of parsed results kept in memory</li>
+ *   <li>{@code MIR.Sherpa.API.Cache.ErrorSeconds} - how long a failed lookup is reused before it is retried</li>
  * </ul>
  */
 public class MCRSherpaPolicyResolver implements URIResolver {
@@ -78,6 +87,8 @@ public class MCRSherpaPolicyResolver implements URIResolver {
 
     private static final String CONFIG_CACHE_SIZE = "MIR.Sherpa.API.Cache.Size";
 
+    private static final String CONFIG_CACHE_ERROR_SECONDS = "MIR.Sherpa.API.Cache.ErrorSeconds";
+
     private static final String DEFAULT_BASE_URL = "https://api.openpolicyfinder.jisc.ac.uk/retrieve";
 
     private static final int DEFAULT_TIMEOUT_SECONDS = 5;
@@ -86,7 +97,12 @@ public class MCRSherpaPolicyResolver implements URIResolver {
 
     private static final int DEFAULT_CACHE_SIZE = 1024;
 
-    private static final ReentrantLock CACHE_LOCK = new ReentrantLock();
+    private static final int DEFAULT_CACHE_ERROR_SECONDS = 60;
+
+    private static final int CACHE_LOCK_COUNT = 16;
+
+    private static final List<ReentrantLock> CACHE_LOCKS =
+        Stream.generate(ReentrantLock::new).limit(CACHE_LOCK_COUNT).toList();
 
     @Override
     public Source resolve(String href, String base) throws TransformerException {
@@ -102,21 +118,45 @@ public class MCRSherpaPolicyResolver implements URIResolver {
 
     private Element resolveCachedPolicy(String issn) {
         MCRCache<String, Element> policyCache = policyCache();
-        Element cached = policyCache.get(issn);
+        Element cached = lookup(policyCache, issn);
         if (cached != null) {
             return cached;
         }
-        CACHE_LOCK.lock();
+        ReentrantLock lock = cacheLock(issn);
+        lock.lock();
         try {
-            cached = policyCache.get(issn);
+            cached = lookup(policyCache, issn);
             if (cached == null) {
                 cached = resolvePolicy(issn);
                 policyCache.put(issn, cached);
             }
             return cached;
         } finally {
-            CACHE_LOCK.unlock();
+            lock.unlock();
         }
+    }
+
+    /**
+     * Returns the cached result for the given ISSN or {@code null} if there is none. Results of failed lookups are
+     * only reused for {@link #CONFIG_CACHE_ERROR_SECONDS} seconds so that a temporary outage of the Open Policy
+     * Finder API does not disable the policy box until the application is restarted.
+     */
+    private static Element lookup(MCRCache<String, Element> policyCache, String issn) {
+        Element cached = policyCache.get(issn);
+        if (cached == null || cached.getAttribute("empty") == null) {
+            return cached;
+        }
+        int errorSeconds = MCRConfiguration2.getInt(CONFIG_CACHE_ERROR_SECONDS).orElse(DEFAULT_CACHE_ERROR_SECONDS);
+        return policyCache.getIfUpToDate(issn,
+            System.currentTimeMillis() - Duration.ofSeconds(errorSeconds).toMillis());
+    }
+
+    /**
+     * Returns the lock guarding the cache entry of the given ISSN. Locks are striped by ISSN so that a slow request
+     * for one journal does not block the lookup of another one.
+     */
+    private static ReentrantLock cacheLock(String issn) {
+        return CACHE_LOCKS.get(Math.floorMod(issn.hashCode(), CACHE_LOCK_COUNT));
     }
 
     private Element resolvePolicy(String issn) {
@@ -141,23 +181,43 @@ public class MCRSherpaPolicyResolver implements URIResolver {
     }
 
     private String fetch(String issn, String apiKey) throws IOException, InterruptedException {
-        int timeoutSeconds = MCRConfiguration2.getInt(CONFIG_TIMEOUT).orElse(DEFAULT_TIMEOUT_SECONDS);
-        HttpClient client = HttpClient.newBuilder()
-            .connectTimeout(Duration.ofSeconds(timeoutSeconds))
-            .build();
-        HttpRequest request = HttpRequest.newBuilder(buildUri(issn))
-            .timeout(Duration.ofSeconds(timeoutSeconds))
+        HttpRequest request = MCRHttpUtils.getRequestBuilder()
+            .uri(buildUri(issn))
+            .timeout(Duration.ofSeconds(timeoutSeconds()))
             .header("x-api-key", apiKey)
             .header("Accept", "application/json")
+            .header("Accept-Encoding", "gzip")
             .GET()
             .build();
-        HttpResponse<String> response =
-            client.send(request, HttpResponse.BodyHandlers.ofString(StandardCharsets.UTF_8));
+        HttpResponse<byte[]> response = httpClient().send(request, HttpResponse.BodyHandlers.ofByteArray());
         int status = response.statusCode();
         if (status < 200 || status >= 300) {
             throw new IOException("Open Policy Finder returned HTTP status " + status);
         }
-        return response.body();
+        return decodeBody(response.body(), response.headers().firstValue("Content-Encoding").orElse(null));
+    }
+
+    /**
+     * Returns the response body as string. The Open Policy Finder API answers with a gzip compressed body even if the
+     * client does not announce support for it, and {@link HttpClient} never decompresses a response on its own.
+     *
+     * @param body the raw response body
+     * @param contentEncoding the value of the {@code Content-Encoding} response header, may be {@code null}
+     */
+    static String decodeBody(byte[] body, String contentEncoding) throws IOException {
+        if (!isCompressed(body, contentEncoding)) {
+            return new String(body, StandardCharsets.UTF_8);
+        }
+        try (InputStream stream = new GZIPInputStream(new ByteArrayInputStream(body))) {
+            return new String(stream.readAllBytes(), StandardCharsets.UTF_8);
+        }
+    }
+
+    private static boolean isCompressed(byte[] body, String contentEncoding) {
+        if (contentEncoding == null) {
+            return body.length > 1 && (body[0] & 0xFF) == 0x1F && (body[1] & 0xFF) == 0x8B;
+        }
+        return contentEncoding.toLowerCase(Locale.ROOT).contains("gzip");
     }
 
     private URI buildUri(String issn) {
@@ -200,7 +260,7 @@ public class MCRSherpaPolicyResolver implements URIResolver {
                 continue;
             }
             Element policy = buildPolicy(policyElement.getAsJsonObject());
-            if (!policy.getChildren("permittedOA").isEmpty()) {
+            if (!policy.getChildren().isEmpty()) {
                 item.addContent(policy);
             }
         }
@@ -402,6 +462,14 @@ public class MCRSherpaPolicyResolver implements URIResolver {
         return CacheHolder.POLICY_CACHE;
     }
 
+    private static int timeoutSeconds() {
+        return MCRConfiguration2.getInt(CONFIG_TIMEOUT).orElse(DEFAULT_TIMEOUT_SECONDS);
+    }
+
+    private static HttpClient httpClient() {
+        return ClientHolder.HTTP_CLIENT;
+    }
+
     private static String encode(String value) {
         return URLEncoder.encode(value, StandardCharsets.UTF_8);
     }
@@ -414,5 +482,16 @@ public class MCRSherpaPolicyResolver implements URIResolver {
 
         private static final MCRCache<String, Element> POLICY_CACHE = new MCRCache<>(cacheSize(),
             "Open Policy Finder policies");
+    }
+
+    private static final class ClientHolder {
+
+        // MCRHttpUtils.getHttpClient() is not used here because it builds a new client per call and ignores
+        // MIR.Sherpa.API.TimeoutSeconds for the connect timeout
+        private static final HttpClient HTTP_CLIENT = HttpClient.newBuilder()
+            .connectTimeout(Duration.ofSeconds(timeoutSeconds()))
+            .followRedirects(HttpClient.Redirect.NEVER)
+            .executor(Executors.newVirtualThreadPerTaskExecutor())
+            .build();
     }
 }

@@ -8,13 +8,15 @@
 
   <xsl:import href="xslImport:mirworkflow:metadata/mir-sherpa-workflow.xsl"/>
 
-  <xsl:template match="mycoreobject" mode="creatorSubmittedAdd" priority="20">
+  <xsl:template match="mycoreobject" mode="creatorSubmittedAdd">
+    <xsl:apply-imports/>
     <xsl:call-template name="mir.sherpa.workflow-for-object"/>
   </xsl:template>
 
   <xsl:template name="mir.sherpa.workflow-for-object">
+    <xsl:variable name="mods" select="metadata/def.modsContainer/modsContainer/mods:mods"/>
     <xsl:variable name="hostWithISSN"
-                  select="metadata/def.modsContainer/modsContainer/mods:mods/mods:relatedItem[@type='host'][mods:identifier[@type='issn']][1]"/>
+                  select="$mods/mods:relatedItem[@type='host'][mods:identifier[@type='issn']][1]"/>
     <xsl:choose>
       <xsl:when test="$hostWithISSN">
         <xsl:call-template name="mir.sherpa.workflow-item">
@@ -22,12 +24,12 @@
         </xsl:call-template>
       </xsl:when>
       <xsl:otherwise>
-        <xsl:variable name="hostHref"
-                      select="metadata/def.modsContainer/modsContainer/mods:mods/mods:relatedItem[@type='host'][@xlink:href][1]/@xlink:href"/>
+        <xsl:variable name="hostHref" select="$mods/mods:relatedItem[@type='host'][@xlink:href][1]/@xlink:href"/>
         <xsl:if test="string-length($hostHref) &gt; 0">
           <xsl:variable name="hostObject" select="document(concat('mcrobject:', $hostHref))"/>
-          <xsl:variable name="hostIssn"
-                        select="normalize-space($hostObject/mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:identifier[@type='issn'][1])"/>
+          <xsl:variable name="hostMods"
+                        select="$hostObject/mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods"/>
+          <xsl:variable name="hostIssn" select="normalize-space($hostMods/mods:identifier[@type='issn'][1])"/>
           <xsl:if test="string-length($hostIssn) &gt; 0">
             <xsl:call-template name="mir.sherpa.workflow-item">
               <xsl:with-param name="issn" select="$hostIssn"/>
@@ -41,7 +43,7 @@
   <xsl:template name="mir.sherpa.workflow-item">
     <xsl:param name="issn"/>
     <xsl:variable name="sherpa" select="document(concat('sherpa-policy:', $issn))/sherpa"/>
-    <xsl:if test="$sherpa/item/publisherPolicy/permittedOA">
+    <xsl:if test="$sherpa/item[1]/publisherPolicy">
       <xsl:variable name="modalId" select="concat('mir-sherpa-workflow-modal-', generate-id($sherpa/item[1]))"/>
       <li class="mir-sherpa-workflow">
         <button class="btn btn-link p-0 align-baseline" type="button" data-bs-toggle="modal"
@@ -111,12 +113,19 @@
         </dd>
       </xsl:if>
     </dl>
+    <xsl:if test="publisherPolicy/permittedOA">
+      <xsl:call-template name="mir.sherpa.routes"/>
+    </xsl:if>
+  </xsl:template>
+
+  <xsl:template name="mir.sherpa.routes">
     <div class="mir-sherpa-routes mt-3">
       <ul class="nav nav-tabs" role="tablist">
         <xsl:for-each select="publisherPolicy/permittedOA">
           <xsl:variable name="tabId" select="concat('mir-sherpa-tab-', generate-id())"/>
           <li class="nav-item" role="presentation">
-            <a href="#{$tabId}" role="tab" data-bs-toggle="tab" aria-controls="{$tabId}">
+            <a id="{concat($tabId, '-trigger')}" href="#{$tabId}" role="tab" data-bs-toggle="tab"
+               aria-controls="{$tabId}">
               <xsl:attribute name="class">
                 <xsl:text>nav-link</xsl:text>
                 <xsl:if test="position() = 1"><xsl:text> active</xsl:text></xsl:if>
@@ -135,68 +144,68 @@
         </xsl:for-each>
       </ul>
       <div class="tab-content border-start border-end border-bottom p-3">
-      <xsl:for-each select="publisherPolicy/permittedOA">
-        <xsl:variable name="tabId" select="concat('mir-sherpa-tab-', generate-id())"/>
-        <div id="{$tabId}" role="tabpanel">
-          <xsl:attribute name="class">
-            <xsl:text>tab-pane fade</xsl:text>
-            <xsl:if test="position() = 1"><xsl:text> show active</xsl:text></xsl:if>
-          </xsl:attribute>
-        <div class="mir-sherpa-route">
-          <dl class="mir-sherpa-route-summary mb-2">
-            <xsl:call-template name="mir.sherpa.values-row">
-              <xsl:with-param name="label" select="mcri18n:translate('mir.workflow.sherpa.articleVersion')"/>
-              <xsl:with-param name="values" select="articleVersion/value"/>
-            </xsl:call-template>
-            <xsl:call-template name="mir.sherpa.values-row">
-              <xsl:with-param name="label" select="mcri18n:translate('mir.workflow.sherpa.location')"/>
-              <xsl:with-param name="values" select="location/value"/>
-            </xsl:call-template>
-            <xsl:if test="embargo">
-              <dt><xsl:value-of select="mcri18n:translate('mir.workflow.sherpa.embargo')"/></dt>
-              <dd><xsl:call-template name="mir.sherpa.embargo-text"/></dd>
-            </xsl:if>
-            <xsl:if test="license/value">
-              <dt><xsl:value-of select="mcri18n:translate('mir.workflow.sherpa.license')"/></dt>
-              <dd>
-                <xsl:for-each select="license/value">
-                  <xsl:value-of select="."/>
-                  <xsl:if test="position() != last()">, </xsl:if>
-                </xsl:for-each>
-              </dd>
-            </xsl:if>
-            <xsl:if test="additionalFee">
-              <dt><xsl:value-of select="mcri18n:translate('mir.workflow.sherpa.additionalFee')"/></dt>
-              <dd>
-                <xsl:call-template name="mir.sherpa.value">
-                  <xsl:with-param name="value" select="additionalFee"/>
+        <xsl:for-each select="publisherPolicy/permittedOA">
+          <xsl:variable name="tabId" select="concat('mir-sherpa-tab-', generate-id())"/>
+          <div id="{$tabId}" role="tabpanel" tabindex="0" aria-labelledby="{concat($tabId, '-trigger')}">
+            <xsl:attribute name="class">
+              <xsl:text>tab-pane fade</xsl:text>
+              <xsl:if test="position() = 1"><xsl:text> show active</xsl:text></xsl:if>
+            </xsl:attribute>
+            <div class="mir-sherpa-route">
+              <dl class="mir-sherpa-route-summary mb-2">
+                <xsl:call-template name="mir.sherpa.values-row">
+                  <xsl:with-param name="label" select="mcri18n:translate('mir.workflow.sherpa.articleVersion')"/>
+                  <xsl:with-param name="values" select="articleVersion/value"/>
                 </xsl:call-template>
-              </dd>
-            </xsl:if>
-            <xsl:call-template name="mir.sherpa.values-row">
-              <xsl:with-param name="label" select="mcri18n:translate('mir.workflow.sherpa.prerequisites')"/>
-              <xsl:with-param name="values" select="prerequisites/value"/>
-            </xsl:call-template>
-            <xsl:if test="conditions/condition">
-              <dt><xsl:value-of select="mcri18n:translate('mir.workflow.sherpa.conditions')"/></dt>
-              <dd>
-                <span class="text-muted">
-                  <xsl:value-of select="mcri18n:translate('mir.workflow.sherpa.originalText')"/>: </span>
-                <ul class="mir-sherpa-conditions mb-0">
-                  <xsl:for-each select="conditions/condition">
-                    <li><xsl:value-of select="."/></li>
-                  </xsl:for-each>
-                </ul>
-              </dd>
-            </xsl:if>
-            <xsl:if test="publicNotes">
-              <dt><xsl:value-of select="mcri18n:translate('mir.workflow.sherpa.publicNotes')"/></dt>
-              <dd><xsl:value-of select="publicNotes"/></dd>
-            </xsl:if>
-          </dl>
-        </div>
-        </div>
-      </xsl:for-each>
+                <xsl:call-template name="mir.sherpa.values-row">
+                  <xsl:with-param name="label" select="mcri18n:translate('mir.workflow.sherpa.location')"/>
+                  <xsl:with-param name="values" select="location/value"/>
+                </xsl:call-template>
+                <xsl:if test="embargo">
+                  <dt><xsl:value-of select="mcri18n:translate('mir.workflow.sherpa.embargo')"/></dt>
+                  <dd><xsl:call-template name="mir.sherpa.embargo-text"/></dd>
+                </xsl:if>
+                <xsl:if test="license/value">
+                  <dt><xsl:value-of select="mcri18n:translate('mir.workflow.sherpa.license')"/></dt>
+                  <dd>
+                    <xsl:for-each select="license/value">
+                      <xsl:value-of select="."/>
+                      <xsl:if test="position() != last()">, </xsl:if>
+                    </xsl:for-each>
+                  </dd>
+                </xsl:if>
+                <xsl:if test="additionalFee">
+                  <dt><xsl:value-of select="mcri18n:translate('mir.workflow.sherpa.additionalFee')"/></dt>
+                  <dd>
+                    <xsl:call-template name="mir.sherpa.value">
+                      <xsl:with-param name="value" select="additionalFee"/>
+                    </xsl:call-template>
+                  </dd>
+                </xsl:if>
+                <xsl:call-template name="mir.sherpa.values-row">
+                  <xsl:with-param name="label" select="mcri18n:translate('mir.workflow.sherpa.prerequisites')"/>
+                  <xsl:with-param name="values" select="prerequisites/value"/>
+                </xsl:call-template>
+                <xsl:if test="conditions/condition">
+                  <dt><xsl:value-of select="mcri18n:translate('mir.workflow.sherpa.conditions')"/></dt>
+                  <dd>
+                    <span class="text-muted">
+                      <xsl:value-of select="mcri18n:translate('mir.workflow.sherpa.originalText')"/>: </span>
+                    <ul class="mir-sherpa-conditions mb-0">
+                      <xsl:for-each select="conditions/condition">
+                        <li><xsl:value-of select="."/></li>
+                      </xsl:for-each>
+                    </ul>
+                  </dd>
+                </xsl:if>
+                <xsl:if test="publicNotes">
+                  <dt><xsl:value-of select="mcri18n:translate('mir.workflow.sherpa.publicNotes')"/></dt>
+                  <dd><xsl:value-of select="publicNotes"/></dd>
+                </xsl:if>
+              </dl>
+            </div>
+          </div>
+        </xsl:for-each>
       </div>
     </div>
   </xsl:template>
