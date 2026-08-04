@@ -17,6 +17,7 @@
     <axiom.version>1.2.14</axiom.version>
     <cargo.jvmargs>-DMCR.AppName=${MCR.AppName}</cargo.jvmargs>
     <cargo.start.jvmargs>${cargo.jvmargs}</cargo.start.jvmargs>
+    <node.version>v22.22.2</node.version>
     <solr.coreName>mir</solr.coreName>
     <solr.data.dir>${mir.solr.data.dir}</solr.data.dir>
     <solr.home>${mir.solr.home}</solr.home>

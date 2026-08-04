@@ -49,7 +49,9 @@
                 <ol-map :loadTilesWhileAnimating="true" :loadTilesWhileInteracting="true" style="height:400px">
 
                     <ol-view ref="view"
+                             :center="transform(centerOfCoords, 'EPSG:4326', 'EPSG:3857')"
                              projection="EPSG:3857"
+                             :zoom="0"
                     />
 
                     <ol-tile-layer>
@@ -58,9 +60,9 @@
 
                     <ol-vector-layer>
                         <ol-source-vector>
-                            <ol-draw-interaction v-if="!!model.searchType" :type="model.searchType" @drawend="drawEnd">
+                            <ol-interaction-draw v-if="!!model.searchType" :type="model.searchType" @drawend="drawEnd">
 
-                            </ol-draw-interaction>
+                            </ol-interaction-draw>
 
                         </ol-source-vector>
                         <ol-source-vector>
@@ -104,7 +106,7 @@ const {OlStyle, OlStyleStroke} = Styles;
 const { OlGeomMultiPolygon } = Geometries;
 const {OlTileLayer, OlVectorLayer} = Layers;
 const {OlSourceOSM, OlSourceVector} = Sources;
-const {OlDrawInteraction} = Interactions;
+const {OlInteractionDraw} = Interactions;
 
 
 
