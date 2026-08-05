@@ -12,12 +12,12 @@ jobs:
 
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
       with:
         submodules: recursive
 
     - name: Set up JDK
-      uses: actions/setup-java@v4
+      uses: actions/setup-java@v5
       with:
         java-version: 17
         distribution: temurin
@@ -36,7 +36,7 @@ jobs:
 
     - name: Fetch Bibutils cache
       id: bibutils-cache
-      uses: actions/cache@v4
+      uses: actions/cache@v5
       with:
         path: ~/bibutils
         key: ${{ env.BIBUTILS_VERSION }}
@@ -80,7 +80,7 @@ jobs:
         docker push mycoreorg/mir-solr:${GITHUB_REF_NAME}-${BUILD_START}
     - name: Upload logs on build failure
       if: failure()
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v6
       with:
         name: test-results
         path: |
