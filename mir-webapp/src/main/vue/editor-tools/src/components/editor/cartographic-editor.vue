@@ -49,7 +49,9 @@
                 <ol-map :loadTilesWhileAnimating="true" :loadTilesWhileInteracting="true" style="height:400px">
 
                     <ol-view ref="view"
+                             :center="[0, 0]"
                              projection="EPSG:3857"
+                             :zoom="0"
                     />
 
                     <ol-tile-layer>
