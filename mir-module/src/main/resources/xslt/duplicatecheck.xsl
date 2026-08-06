@@ -25,6 +25,8 @@
         <xsl:value-of select="mcri18n:translate('mir.import.dedup.intro')" />
       </p>
 
+      <xsl:apply-templates select="imported" />
+
       <!-- mirror the markup of the search result list (response-mir.xsl) so the same css applies -->
       <div class="row result_body">
         <div class="col-12 result_list">
@@ -54,11 +56,36 @@
 
       <div class="mt-4 d-flex justify-content-end">
         <a class="btn btn-secondary me-2" href="{@cancelURL}">
-          <xsl:value-of select="mcri18n:translate('button.cancel')" />
+          <xsl:value-of select="mcri18n:translate('mir.import.dedup.cancel')" />
         </a>
         <a class="btn btn-primary" href="{@continueURL}">
           <xsl:value-of select="mcri18n:translate('mir.import.dedup.continue')" />
         </a>
+      </div>
+    </div>
+  </xsl:template>
+
+  <!-- what is being imported: only known from the identifier the user submitted, the object itself is
+       not stored yet and therefore cannot be displayed like the possible duplicates below -->
+  <xsl:template match="imported">
+    <div class="alert alert-info" role="alert">
+      <div>
+        <xsl:value-of select="mcri18n:translate('mir.import.dedup.imported')" />
+      </div>
+      <xsl:if test="@title">
+        <div class="fw-bold">
+          <xsl:value-of select="@title" />
+        </div>
+      </xsl:if>
+      <div>
+        <xsl:if test="@identifierType">
+          <xsl:variable name="identifierKey" select="concat('mir.identifier.', @identifierType)" />
+          <xsl:value-of select="if (mcri18n:exists($identifierKey))
+                                then mcri18n:translate($identifierKey)
+                                else concat(upper-case(@identifierType), ':')" />
+          <xsl:text> </xsl:text>
+        </xsl:if>
+        <xsl:value-of select="@identifier" />
       </div>
     </div>
   </xsl:template>
