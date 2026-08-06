@@ -29,12 +29,15 @@ import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.jdom2.Document;
 import org.jdom2.Element;
 import org.mycore.common.MCRSessionMgr;
 import org.mycore.common.config.MCRConfiguration2;
 import org.mycore.common.content.MCRJDOMContent;
 import org.mycore.common.xsl.uriresolver.MCRURIResolver;
 import org.mycore.datamodel.metadata.MCRObject;
+import org.mycore.datamodel.metadata.MCRObjectService;
+import org.mycore.dedup.MCRDeDupNoDuplicateFlagEventHandler;
 import org.mycore.mods.MCRMODSWrapper;
 import org.mycore.frontend.MCRFrontendUtil;
 import org.mycore.frontend.servlets.MCRServlet;
@@ -57,7 +60,10 @@ import jakarta.servlet.http.HttpServletResponse;
  *   <li>if none are found, redirects straight to the editor, loading the cached object from the
  *       session ({@code session:{key}}),</li>
  *   <li>otherwise renders a confirmation page listing the possible duplicates. Only when the user
- *       explicitly confirms that none of them is a duplicate the editor is opened.</li>
+ *       explicitly confirms that none of them is a duplicate the editor is opened. The confirmation is
+ *       recorded in the cached object as one service flag per confirmed object id, so that
+ *       {@link MCRDeDupNoDuplicateFlagEventHandler} can turn those flags into permanent no-duplicate
+ *       markings once the object is stored and has an id of its own.</li>
  * </ol>
  * If no identifier is given (the user only chose a publication type) the servlet transparently
  * forwards to the editor, so the import check only applies to actual imports.
@@ -71,6 +77,13 @@ public class MIRImportServlet extends MCRServlet {
 
     /** Prefix of the session key the imported object is cached under. */
     public static final String SESSION_KEY_PREFIX = "mir.import.";
+
+    /**
+     * Prefix of the session key the ids of the presented duplicates are cached under. Deliberately no
+     * sub key of {@link #SESSION_KEY_PREFIX}, so that the dedup resolver, which expects an object below
+     * that prefix, can never be pointed at this list.
+     */
+    private static final String DUPLICATES_SESSION_KEY_PREFIX = "mir.importDuplicates.";
 
     private static final String DEFAULT_EDITOR = "editor-dynamic";
 
@@ -87,10 +100,14 @@ public class MIRImportServlet extends MCRServlet {
         // Phase 2: the user confirmed that none of the possible duplicates is a real duplicate.
         if (Boolean.parseBoolean(request.getParameter("confirmed"))) {
             String sessionKey = request.getParameter("sessionKey");
-            if (sessionKey == null || MCRSessionMgr.getCurrentSession().get(sessionKey) == null) {
+            Element cached = sessionKey != null && sessionKey.startsWith(SESSION_KEY_PREFIX)
+                ? (Element) MCRSessionMgr.getCurrentSession().get(sessionKey)
+                : null;
+            if (cached == null) {
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Unknown or expired import session key");
                 return;
             }
+            markAsNoDuplicates(sessionKey.substring(SESSION_KEY_PREFIX.length()), cached);
             response.sendRedirect(response.encodeRedirectURL(editorURL(baseURL, editor, sessionKey, genre, host)));
             return;
         }
@@ -106,22 +123,66 @@ public class MIRImportServlet extends MCRServlet {
 
         // Phase 1: build the imported object and cache it in the session.
         Element object = buildImportedObject(modsId.trim(), type);
-        String sessionKey = SESSION_KEY_PREFIX + UUID.randomUUID();
+        String importId = UUID.randomUUID().toString();
+        String sessionKey = SESSION_KEY_PREFIX + importId;
         MCRSessionMgr.getCurrentSession().put(sessionKey, object);
         LOGGER.info("Cached imported object under session key {}", sessionKey);
 
-        List<Element> duplicates = MCRURIResolver.obtainInstance()
+        List<String> duplicateIds = MCRURIResolver.obtainInstance()
             .resolve("dedup:duplicates-for-session:" + sessionKey)
-            .getChildren("duplicate");
+            .getChildren("duplicate")
+            .stream()
+            .map(duplicate -> duplicate.getAttributeValue("id"))
+            .distinct()
+            .toList();
 
-        if (duplicates.isEmpty()) {
+        if (duplicateIds.isEmpty()) {
             response.sendRedirect(response.encodeRedirectURL(editorURL(baseURL, editor, sessionKey, genre, host)));
             return;
         }
 
-        LOGGER.info("Found {} possible duplicate(s) for imported object, asking for confirmation", duplicates.size());
-        Element page = buildConfirmationPage(baseURL, editor, sessionKey, genre, host, duplicates);
+        // Remember what the user gets to see, so that the confirmation does not have to be taken from the
+        // request: only objects presented by this server may end up as no-duplicate markings.
+        MCRSessionMgr.getCurrentSession().put(DUPLICATES_SESSION_KEY_PREFIX + importId, duplicateIds);
+
+        LOGGER.info("Found {} possible duplicate(s) for imported object, asking for confirmation", duplicateIds.size());
+        Element page = buildConfirmationPage(baseURL, editor, sessionKey, genre, host, duplicateIds);
         getLayoutService().doLayout(request, response, new MCRJDOMContent(page));
+    }
+
+    /**
+     * Records the confirmation of the user in the cached object: every object presented as a possible
+     * duplicate is added as a service flag of the type configured by
+     * {@link MCRDeDupNoDuplicateFlagEventHandler#FLAG_TYPE_PROPERTY}. The ids are taken from the session,
+     * not from the request, so that only objects this servlet has actually shown can be marked. The flags
+     * travel through the editor, which keeps the service part of the object untouched, and are evaluated
+     * by {@link MCRDeDupNoDuplicateFlagEventHandler} when the object is stored.
+     */
+    private static void markAsNoDuplicates(String importId, Element cached) {
+        String duplicatesSessionKey = DUPLICATES_SESSION_KEY_PREFIX + importId;
+        List<String> objectIds = presentedDuplicates(duplicatesSessionKey);
+        if (objectIds.isEmpty()) {
+            return;
+        }
+
+        String flagType = MCRConfiguration2.getStringOrThrow(MCRDeDupNoDuplicateFlagEventHandler.FLAG_TYPE_PROPERTY);
+        MCRObject object = new MCRObject(new Document(cached.clone()));
+        MCRObjectService service = object.getService();
+        List<String> alreadyFlagged = service.getFlags(flagType);
+        objectIds.stream()
+            .filter(id -> !alreadyFlagged.contains(id))
+            .forEach(id -> service.addFlag(flagType, id));
+
+        MCRSessionMgr.getCurrentSession().put(SESSION_KEY_PREFIX + importId, object.createXML().detachRootElement());
+        MCRSessionMgr.getCurrentSession().deleteObject(duplicatesSessionKey);
+        LOGGER.info("Marked {} as no duplicates of the object imported under {}", objectIds,
+            SESSION_KEY_PREFIX + importId);
+    }
+
+    @SuppressWarnings("unchecked")
+    private static List<String> presentedDuplicates(String duplicatesSessionKey) {
+        Object cached = MCRSessionMgr.getCurrentSession().get(duplicatesSessionKey);
+        return cached == null ? List.of() : (List<String>) cached;
     }
 
     /**
@@ -150,7 +211,7 @@ public class MIRImportServlet extends MCRServlet {
     }
 
     private Element buildConfirmationPage(String baseURL, String editor, String sessionKey, String genre, String host,
-        List<Element> duplicates) {
+        List<String> objectIds) {
         Map<String, String> continueParams = new LinkedHashMap<>();
         continueParams.put("confirmed", "true");
         continueParams.put("sessionKey", sessionKey);
@@ -164,10 +225,7 @@ public class MIRImportServlet extends MCRServlet {
         Element page = new Element("duplicatecheck");
         page.setAttribute("continueURL", url(baseURL + "servlets/MIRImportServlet", continueParams));
         page.setAttribute("cancelURL", baseURL + "content/publish/index.xml");
-        duplicates.stream()
-            .map(duplicate -> duplicate.getAttributeValue("id"))
-            .distinct()
-            .forEach(id -> page.addContent(new Element("object").setAttribute("id", id)));
+        objectIds.forEach(id -> page.addContent(new Element("object").setAttribute("id", id)));
         return page;
     }
 
