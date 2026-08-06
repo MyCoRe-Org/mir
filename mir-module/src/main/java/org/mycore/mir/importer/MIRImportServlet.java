@@ -146,7 +146,8 @@ public class MIRImportServlet extends MCRServlet {
         MCRSessionMgr.getCurrentSession().put(DUPLICATES_SESSION_KEY_PREFIX + importId, duplicateIds);
 
         LOGGER.info("Found {} possible duplicate(s) for imported object, asking for confirmation", duplicateIds.size());
-        Element page = buildConfirmationPage(baseURL, editor, sessionKey, genre, host, duplicateIds);
+        Element page = buildConfirmationPage(baseURL, editor, sessionKey, genre, host, duplicateIds,
+            describeImport(object, modsId.trim(), type));
         getLayoutService().doLayout(request, response, new MCRJDOMContent(page));
     }
 
@@ -210,8 +211,27 @@ public class MIRImportServlet extends MCRServlet {
         return url(baseURL + "editor/" + editor + ".xed", params);
     }
 
+    /**
+     * Describes the publication that is about to be imported, so that the confirmation page can show what
+     * the check is about. Without it the page comes out of nowhere for the user, who only sees possible
+     * duplicates but not the import that triggered them.
+     */
+    private static Element describeImport(Element object, String modsId, String type) {
+        Element imported = new Element("imported");
+        imported.setAttribute("identifier", modsId);
+        if (type != null && !type.isBlank()) {
+            imported.setAttribute("identifierType", type);
+        }
+        String title = new MCRMODSWrapper(new MCRObject(new Document(object.clone())))
+            .getElementValue("mods:titleInfo/mods:title");
+        if (title != null && !title.isBlank()) {
+            imported.setAttribute("title", title);
+        }
+        return imported;
+    }
+
     private Element buildConfirmationPage(String baseURL, String editor, String sessionKey, String genre, String host,
-        List<String> objectIds) {
+        List<String> objectIds, Element imported) {
         Map<String, String> continueParams = new LinkedHashMap<>();
         continueParams.put("confirmed", "true");
         continueParams.put("sessionKey", sessionKey);
@@ -225,6 +245,7 @@ public class MIRImportServlet extends MCRServlet {
         Element page = new Element("duplicatecheck");
         page.setAttribute("continueURL", url(baseURL + "servlets/MIRImportServlet", continueParams));
         page.setAttribute("cancelURL", baseURL + "content/publish/index.xml");
+        page.addContent(imported);
         objectIds.forEach(id -> page.addContent(new Element("object").setAttribute("id", id)));
         return page;
     }
