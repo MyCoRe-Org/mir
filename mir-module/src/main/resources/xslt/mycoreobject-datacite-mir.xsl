@@ -734,7 +734,7 @@
     <xsl:value-of select="mods:end" />
   </xsl:template>
 
-  <xsl:template match="mods:extent[@unit='pages' and (mods:start|mods:list)]">
+  <xsl:template match="mods:extent[@unit='pages' and not(mods:end) and (mods:start|mods:list)]">
     <xsl:text>, p. </xsl:text>
     <xsl:value-of select="mods:start|mods:list" />
   </xsl:template>
