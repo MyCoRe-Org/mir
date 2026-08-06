@@ -29,4 +29,5 @@
     <rh:include href="rules-sessions.xml" rule-helper="true"/>
     <rh:include href="rules-processing.xml" rule-helper="true"/>
     <rh:include href="rules-restapi.xml" rule-helper="true"/>
+    <rh:include href="rules-dedup.xml" rule-helper="true"/>
 </or>
