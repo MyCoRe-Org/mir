@@ -42,6 +42,7 @@
     <changes.version>2025.02</changes.version>
     <java.target.version>25</java.target.version>
     <jetty.version>12.1.6</jetty.version>
+    <junit.version>6.1.2</junit.version>
     <maven.compiler.arg>-Werror</maven.compiler.arg>
     <mycore.version>2026.06.1-SNAPSHOT</mycore.version>
     <node.version>v22.22.2</node.version>
@@ -364,6 +365,13 @@
   </profiles>
   <dependencyManagement>
     <dependencies>
+      <dependency>
+        <groupId>org.junit</groupId>
+        <artifactId>junit-bom</artifactId>
+        <version>${junit.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
       <dependency>
         <groupId>org.mycore</groupId>
         <artifactId>mycore-bom</artifactId>
