@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:mods="http://www.loc.gov/mods/v3" xmlns:mcrxml="xalan://org.mycore.common.xml.MCRXMLFunctions"
-  xmlns:strutils="xalan://org.apache.commons.lang.StringEscapeUtils" exclude-result-prefixes="mcrxml strutils" version="1.0"
+  xmlns:strutils="xalan://org.apache.commons.text.StringEscapeUtils" exclude-result-prefixes="mcrxml strutils" version="1.0"
 >
   
   <!-- 
@@ -52,10 +52,10 @@
 
     <xsl:choose>
       <xsl:when test="$serialize">
-        <xsl:value-of select="strutils:unescapeXml(strutils:unescapeHtml(.))" disable-output-escaping="no" />
+        <xsl:value-of select="strutils:unescapeXml(strutils:unescapeHtml4(.))" disable-output-escaping="no" />
       </xsl:when>
       <xsl:otherwise>
-        <xsl:value-of select="strutils:escapeXml(.)" disable-output-escaping="yes" />
+        <xsl:value-of select="strutils:escapeXml10(.)" disable-output-escaping="yes" />
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
