@@ -165,8 +165,8 @@ const convertCoords = (coordStr: string): number[][] => {
 const calculateBoundingBox = (coords: number[][]): number[] => {
     let minX = Number.MAX_VALUE;
     let minY = Number.MAX_VALUE;
-    let maxX = Number.MIN_VALUE;
-    let maxY = Number.MIN_VALUE;
+    let maxX = -Number.MAX_VALUE;
+    let maxY = -Number.MAX_VALUE;
     coords.forEach(coord => {
         minX = Math.min(minX, coord[0]);
         minY = Math.min(minY, coord[1]);
@@ -179,8 +179,8 @@ const calculateBoundingBox = (coords: number[][]): number[] => {
 const combineBoundingBox = (boundingBoxes: number[][]): number[] => {
     let minX = Number.MAX_VALUE;
     let minY = Number.MAX_VALUE;
-    let maxX = Number.MIN_VALUE;
-    let maxY = Number.MIN_VALUE;
+    let maxX = -Number.MAX_VALUE;
+    let maxY = -Number.MAX_VALUE;
     boundingBoxes.forEach(boundingBox => {
         minX = Math.min(minX, boundingBox[0]);
         minY = Math.min(minY, boundingBox[1]);

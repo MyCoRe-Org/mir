@@ -49,7 +49,9 @@
                 <ol-map :loadTilesWhileAnimating="true" :loadTilesWhileInteracting="true" style="height:400px">
 
                     <ol-view ref="view"
+                             :center="[0, 0]"
                              projection="EPSG:3857"
+                             :zoom="0"
                     />
 
                     <ol-tile-layer>
@@ -58,9 +60,9 @@
 
                     <ol-vector-layer>
                         <ol-source-vector>
-                            <ol-draw-interaction v-if="!!model.searchType" :type="model.searchType" @drawend="drawEnd">
+                            <ol-interaction-draw v-if="!!model.searchType" :type="model.searchType" @drawend="drawEnd">
 
-                            </ol-draw-interaction>
+                            </ol-interaction-draw>
 
                         </ol-source-vector>
                         <ol-source-vector>
@@ -104,7 +106,7 @@ const {OlStyle, OlStyleStroke} = Styles;
 const { OlGeomMultiPolygon } = Geometries;
 const {OlTileLayer, OlVectorLayer} = Layers;
 const {OlSourceOSM, OlSourceVector} = Sources;
-const {OlDrawInteraction} = Interactions;
+const {OlInteractionDraw} = Interactions;
 
 
 
@@ -177,21 +179,6 @@ const drawEnd = (e:DrawEvent)=> {
 
 }
 
-const centerOfCoords = computed(()=>{
-    const bboxes = cartographics.value.coordinates?.map(coordPairs => {
-        return convertCoords(coordPairs);
-    }).map(coords => {
-        return calculateBoundingBox(coords);
-    });
-
-    if(!bboxes || bboxes.length === 0){
-        return [0,0];
-    } else {
-        return getCenterOfBoundingBox(combineBoundingBox(bboxes));
-    }
-});
-
-
 const convertedTransformedCoords = computed(()=>{
     return cartographics.value.coordinates?.map(coordPairs => {
         return convertCoords(coordPairs).map(coordPair => {
@@ -207,40 +194,6 @@ const convertCoords = (coordStr: string): number[][] => {
         const coordPair = coordPairStr.trim().split(" ");
         return [parseFloat(coordPair[0]), parseFloat(coordPair[1])];
     });
-}
-
-const calculateBoundingBox = (coords: number[][]): number[] => {
-    let minX = Number.MAX_VALUE;
-    let minY = Number.MAX_VALUE;
-    let maxX = Number.MIN_VALUE;
-    let maxY = Number.MIN_VALUE;
-    coords.forEach(coord => {
-        minX = Math.min(minX, coord[0]);
-        minY = Math.min(minY, coord[1]);
-        maxX = Math.max(maxX, coord[0]);
-        maxY = Math.max(maxY, coord[1]);
-    });
-    return [minX, minY, maxX, maxY];
-}
-
-const combineBoundingBox = (boundingBoxes: number[][]): number[] => {
-    let minX = Number.MAX_VALUE;
-    let minY = Number.MAX_VALUE;
-    let maxX = Number.MIN_VALUE;
-    let maxY = Number.MIN_VALUE;
-    boundingBoxes.forEach(boundingBox => {
-        minX = Math.min(minX, boundingBox[0]);
-        minY = Math.min(minY, boundingBox[1]);
-        maxX = Math.max(maxX, boundingBox[2]);
-        maxY = Math.max(maxY, boundingBox[3]);
-    });
-    return [minX, minY, maxX, maxY];
-}
-
-const getCenterOfBoundingBox = (boundingBox: number[]): number[] => {
-    const centerX = (boundingBox[0] + boundingBox[2]) / 2;
-    const centerY = (boundingBox[1] + boundingBox[3]) / 2;
-    return [centerX, centerY];
 }
 
 watch(cartographics, (value) => {
