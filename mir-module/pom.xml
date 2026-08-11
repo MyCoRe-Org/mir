@@ -84,7 +84,10 @@
             </goals>
             <phase>process-resources</phase>
             <configuration>
-              <arguments>install</arguments>
+              <!-- openlayers 4.x runs install/postinstall hooks that fetch and extract ~40 MB
+                   (Closure Compiler over plain HTTP) via tar/decompress-zip. None of it is used
+                   by the Grunt build or shipped in the WAR. -->
+              <arguments>install --ignore-scripts</arguments>
             </configuration>
           </execution>
           <execution>

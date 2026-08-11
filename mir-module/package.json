@@ -29,7 +29,7 @@
         "popper.js": "^2.0.0-next.1",
         "select2": "^4.0.13",
         "typeahead.js": "0.11.1",
-        "video.js": "7.14.3"
+        "video.js": "8.23.9"
     },
     "dependencies": {
         "tinymce": "^7.9.3",
