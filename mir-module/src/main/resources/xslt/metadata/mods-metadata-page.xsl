@@ -78,7 +78,7 @@
     <xsl:param name="properties"/>
 
     <xsl:variable name="originalContent" select="."/>
-    <xsl:variable name="icons" select="mcrproperty:get-sub-properties('MIR.Layout.Display.Panel.Icon')" />
+    <xsl:variable name="icons" select="mcrproperty:get-subproperties('MIR.Layout.Display.Panel.Icon')" />
     <xsl:for-each select="tokenize($properties, ',')">
       <xsl:variable name="boxID" select="normalize-space(.)"/>
       <xsl:if test="count($originalContent/div[@id=$boxID])&gt;=1">
