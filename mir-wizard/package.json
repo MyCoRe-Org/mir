@@ -13,9 +13,9 @@
     },
     "engineStrict": true,
     "devDependencies": {
+        "@highlightjs/cdn-assets": "11.11.1",
         "grunt": "^1.5.3",
         "grunt-cli": "^1.2.0",
-        "grunt-npmcopy": "^0.1.0",
-        "highlight.js": "9.15.6"
+        "grunt-npmcopy": "^0.1.0"
     }
 }

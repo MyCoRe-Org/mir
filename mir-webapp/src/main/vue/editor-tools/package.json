@@ -17,6 +17,9 @@
     "vue": "^3.5.0",
     "vue3-openlayers": "^12.2.2"
   },
+  "resolutions": {
+    "@babel/runtime": "^7.28.4"
+  },
   "devDependencies": {
     "@types/jest": "^27.0.1",
     "@typescript-eslint/eslint-plugin": "^5.4.0",
