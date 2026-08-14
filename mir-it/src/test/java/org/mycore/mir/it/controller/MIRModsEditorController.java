@@ -12,7 +12,6 @@ import org.mycore.mir.it.model.MIRAccess;
 import org.mycore.mir.it.model.MIRDNBClassification;
 import org.mycore.mir.it.model.MIRGenre;
 import org.mycore.mir.it.model.MIRIdentifier;
-import org.mycore.mir.it.model.MIRInstitutes;
 import org.mycore.mir.it.model.MIRLanguage;
 import org.mycore.mir.it.model.MIRLicense;
 import org.mycore.mir.it.model.MIRStatus;
@@ -222,10 +221,10 @@ public class MIRModsEditorController extends MIREditorController {
         }
     }
 
-    public void setInstitution(MIRInstitutes institution) {
+    public void setInstitution(String institutionValue) {
         new Select(driver.waitAndFindElement(
-            By.xpath(".//select[contains(@name, 'mods:name') and option/@value='" + institution.getValue() + "']")))
-                .selectByValue(institution.getValue());
+            By.xpath(".//select[contains(@name, 'mods:name') and option/@value='" + institutionValue + "']")))
+                .selectByValue(institutionValue);
     }
 
     public void setStatus(MIRStatus status) {
@@ -342,14 +341,18 @@ public class MIRModsEditorController extends MIREditorController {
     }
 
     public void setClassifications(List<MIRDNBClassification> classifications) {
+        setClassifications(classifications, 0);
+    }
+
+    public void setClassifications(List<MIRDNBClassification> classifications, int offset) {
         if (classifications.size() > 0) {
             if (classifications.size() > 1) {
                 IntStream.range(1, classifications.size()).forEach((n) -> clickRepeaterAndWait("mods:classification",
-                    ".//select[contains(@name, 'mods:classification[" + (n + 1) + "]')]"));
+                    ".//select[contains(@name, 'mods:classification[" + (n + 1 + offset) + "]')]"));
             }
 
             IntStream.range(0, classifications.size()).forEach(i -> {
-                String xp = "mods:classification[" + (i + 1) + "]";
+                String xp = "mods:classification[" + (i + 1 + offset) + "]";
                 MIRDNBClassification classification = classifications.get(i);
                 new Select(driver.waitAndFindElement(By.xpath(".//select[contains(@name, '" + xp + "')]")))
                     .selectByValue(classification.getValue());

@@ -1,7 +1,6 @@
 package org.mycore.mir.it.controller;
 
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import org.mycore.common.config.MCRConfiguration2;
@@ -33,8 +32,7 @@ public class MIRSearchController extends MIRTestController {
 
     public void simpleSearchBy(String title, String author, String metadata, String files,
         MIRInstitutes mirInstitute, MIRStatus status) {
-        driver.waitAndFindElement(MCRBy.partialLinkText("Suche")).click();
-        driver.waitAndFindElement(MCRBy.partialLinkText("einfach")).click();
+        openSimpleSearchForm();
 
         setTitle(title);
 
@@ -157,8 +155,7 @@ public class MIRSearchController extends MIRTestController {
 
     public void setTitle(String title) {
         if (title != null) {
-            driver.waitAndFindElement(MCRBy.partialLinkText("Suche")).click();
-            driver.waitAndFindElement(MCRBy.partialLinkText("einfach")).click();
+            openSimpleSearchForm();
             driver.waitAndFindElement(By.id("inputTitle1")).sendKeys(title);
             search();
         }
@@ -166,18 +163,16 @@ public class MIRSearchController extends MIRTestController {
 
     public void setAuthor(String author) {
         if (author != null) {
-            driver.waitAndFindElement(MCRBy.partialLinkText("Suche")).click();
-            driver.waitAndFindElement(MCRBy.partialLinkText("einfach")).click();
+            openSimpleSearchForm();
             driver.waitAndFindElement(By.id("inputName1")).sendKeys(author);
             search();
         }
     }
 
     public void complexSearchBy(List<MIRComplexSearchQuery> complexSearchQueries, String identifier,
-        MIRInstitutes mirInstitute,
+        String mirInstitute,
         String classification, String type, String license, MIRStatus status, String date, String content) {
-        driver.waitAndFindElement(MCRBy.partialLinkText("Suche")).click();
-        driver.waitAndFindElement(MCRBy.partialLinkText("komplex")).click();
+        openComplexSearchForm();
 
         if (complexSearchQueries.size() > 0 && complexSearchQueries.size() > 1) {
             IntStream.range(1, complexSearchQueries.size()).forEach((n) -> clickRepeaterAndWait(
@@ -215,7 +210,7 @@ public class MIRSearchController extends MIRTestController {
 
         if (mirInstitute != null) {
             new Select(driver.waitAndFindElement(By.id("inputInst1")))
-                .selectByValue("mir_institutes:" + mirInstitute.getValue());
+                .selectByValue("mir_institutes:" + mirInstitute);
         }
 
         if (classification != null) {
@@ -329,6 +324,16 @@ public class MIRSearchController extends MIRTestController {
     private void clickRepeaterAndWait(String fieldToWaitFor) {
         clickRepeater();
         driver.waitAndFindElement(By.xpath(fieldToWaitFor));
+    }
+
+    protected void openSimpleSearchForm() {
+        driver.waitAndFindElement(MCRBy.partialLinkText("Suche")).click();
+        driver.waitAndFindElement(MCRBy.partialLinkText("einfach")).click();
+    }
+
+    protected void openComplexSearchForm() {
+        driver.waitAndFindElement(MCRBy.partialLinkText("Suche")).click();
+        driver.waitAndFindElement(MCRBy.partialLinkText("komplex")).click();
     }
 
 }
