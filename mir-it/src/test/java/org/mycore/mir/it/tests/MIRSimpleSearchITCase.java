@@ -1,14 +1,6 @@
 package org.mycore.mir.it.tests;
 
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
+import com.google.gson.Gson;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,8 +10,14 @@ import org.mycore.mir.it.controller.MIRSearchController;
 import org.mycore.mir.it.model.MIRSearchTestDataLoader;
 import org.mycore.mir.it.model.MIRSimpleSearchFormContent;
 import org.openqa.selenium.By;
-
-import com.google.gson.Gson;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @RunWith(Parameterized.class)
 public class MIRSimpleSearchITCase extends MIRITBase {
@@ -42,14 +40,12 @@ public class MIRSimpleSearchITCase extends MIRITBase {
 
     @Before
     public final void ini() throws IOException, InterruptedException {
-        MIRSearchTestDataLoader searchTestDataLoader = new MIRSearchTestDataLoader();
-        searchTestDataLoader.lazyLoadData(getDriver());
-
+        createSearchTestDataLoader().lazyLoadData(getDriver());
     }
 
     @Test
     public void testForm() {
-        MIRSearchController searchController = new MIRSearchController(getDriver(), getAPPUrlString());
+        MIRSearchController searchController = controllerFactory.createSearchController(getDriver(), getAPPUrlString());
 
         if (parsed.getTitle() != null) {
             searchController.setTitle(parsed.getTitle());
@@ -86,7 +82,6 @@ public class MIRSimpleSearchITCase extends MIRITBase {
         ids.forEach(id -> Assert
             .assertTrue("List should contain: " + id + " [" + foundIds.stream().collect(Collectors.joining(",")) + "]",
                 foundIds.contains(id)));
-
     }
 
     /**
@@ -104,4 +99,9 @@ public class MIRSimpleSearchITCase extends MIRITBase {
 
         // return null;
     }
+
+    protected MIRSearchTestDataLoader createSearchTestDataLoader() {
+        return new MIRSearchTestDataLoader();
+    }
+
 }

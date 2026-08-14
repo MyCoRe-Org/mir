@@ -13,8 +13,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mycore.common.selenium.util.MCRBy;
-import org.mycore.mir.it.controller.MIRModsEditorController;
-import org.mycore.mir.it.controller.MIRPublishEditorController;
 import org.mycore.mir.it.controller.MIRUserController;
 import org.mycore.mir.it.model.MIRAbstract;
 import org.mycore.mir.it.model.MIRDNBClassification;
@@ -35,10 +33,6 @@ public class MIRAuthorEditorITCase extends MIRITBase {
 
     @Before
     public final void init() {
-        String appURL = getAPPUrlString();
-        userController = new MIRUserController(getDriver(), appURL);
-        publishEditorController = new MIRPublishEditorController(getDriver(), appURL);
-        editorController = new MIRModsEditorController(getDriver(), appURL);
         userController.logoutIfLoggedIn();
         userController.loginAs(MIRUserController.ADMIN_LOGIN, MIRUserController.ADMIN_PASSWD);
         userController.createUser(SUBMITTER_USER_NAME, SUBMITTER_USER_PASSWORD, null, null, "submitter");
@@ -51,7 +45,7 @@ public class MIRAuthorEditorITCase extends MIRITBase {
         publishEditorController.open(() -> Assert.assertTrue(publishEditorController.isPublishOpened()));
         publishEditorController.selectType(MIRGenre.article, null);
         publishEditorController.submit();
-        driver.waitUntilPageIsLoaded("MODS-Dokument erstellen");
+        driver.waitUntilPageIsLoaded(getPageTitle());
         editorController.save();
 
         assertBaseValidation();
@@ -63,7 +57,7 @@ public class MIRAuthorEditorITCase extends MIRITBase {
         publishEditorController.selectType(MIRGenre.article, null);
         publishEditorController.submit();
 
-        driver.waitUntilPageIsLoaded("MODS-Dokument erstellen");
+        driver.waitUntilPageIsLoaded(getPageTitle());
         refPublicationCommon(true);
 
         editorController.save();
@@ -79,7 +73,7 @@ public class MIRAuthorEditorITCase extends MIRITBase {
         publishEditorController.selectType(MIRGenre.report, null);
         publishEditorController.submit();
 
-        driver.waitUntilPageIsLoaded("MODS-Dokument erstellen");
+        driver.waitUntilPageIsLoaded(getPageTitle());
         refReportCommon();
 
         editorController.save();
@@ -94,7 +88,7 @@ public class MIRAuthorEditorITCase extends MIRITBase {
         publishEditorController.selectType(MIRGenre.article, MIRHost.journal);
         publishEditorController.submit();
 
-        driver.waitUntilPageIsLoaded("MODS-Dokument erstellen");
+        driver.waitUntilPageIsLoaded(getPageTitle());
         editorController.setTitle(MIRTestData.TITLE);
         editorController.setSubTitle(MIRTestData.SUB_TITLE);
         editorController.setAuthor(MIRTestData.AUTHOR);
@@ -169,7 +163,7 @@ public class MIRAuthorEditorITCase extends MIRITBase {
         publishEditorController.selectType(MIRGenre.collection, null);
         publishEditorController.submit();
 
-        driver.waitUntilPageIsLoaded("MODS-Dokument erstellen");
+        driver.waitUntilPageIsLoaded(getPageTitle());
         editorController.setTitle(MIRTestData.TITLE);
         editorController.setSubTitle(MIRTestData.SUB_TITLE);
         refAuthorRepeated();
@@ -190,7 +184,7 @@ public class MIRAuthorEditorITCase extends MIRITBase {
         publishEditorController.selectType(MIRGenre.proceedings, null);
         publishEditorController.submit();
 
-        driver.waitUntilPageIsLoaded("MODS-Dokument erstellen");
+        driver.waitUntilPageIsLoaded(getPageTitle());
         editorController.setTitle(MIRTestData.TITLE);
         editorController.setSubTitle(MIRTestData.SUB_TITLE);
         refConference();
@@ -213,14 +207,14 @@ public class MIRAuthorEditorITCase extends MIRITBase {
         publishEditorController.selectType(MIRGenre.teaching_material, null);
         publishEditorController.submit();
 
-        driver.waitUntilPageIsLoaded("MODS-Dokument erstellen");
+        driver.waitUntilPageIsLoaded(getPageTitle());
         editorController.setTitleAndTranslation(MIRTestData.TITLE, MIRTestData.SUB_TITLE, MIRTestData.EN_TITLE,
             MIRTestData.EN_SUB_TITLE, MIRLanguage.english);
         refAuthorRepeated();
         editorController.setDateCreated(MIRTestData.CREATION_DATE);
         editorController.setTypeOfResources(
             Stream.of(MIRTypeOfResource.text, MIRTypeOfResource.moving_image).collect(Collectors.toList()));
-        editorController.setInstitution(MIRInstitutes.Universität_in_Deutschland);
+        editorController.setInstitution(institutionTestValue());
         editorController.setLanguages(Stream.of(MIRLanguage.german, MIRLanguage.english).collect(Collectors.toList()));
         refSNDBRepeat();
         editorController.setTopics(Stream.of(MIRTestData.TOPIC1, MIRTestData.TOPIC2).collect(Collectors.toList()));
@@ -238,7 +232,7 @@ public class MIRAuthorEditorITCase extends MIRITBase {
         refAuthorRepeatedValidation();
         driver.waitAndFindElement(MCRBy.partialText(MIRTestData.VALIDATION_CREATION_DATE));
 
-        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.VALIDATION_UNI_GER));
+        driver.waitAndFindElement(MCRBy.partialText(institutionValidationText()));
         driver.waitAndFindElement(MCRBy.partialText(MIRTestData.VALIDATION_INFORMATIK));
         driver.waitAndFindElement(MCRBy.partialText(MIRTestData.VALIDATION_BIBLIOGRAPHIEN));
         driver.waitAndFindElement(
@@ -261,7 +255,7 @@ public class MIRAuthorEditorITCase extends MIRITBase {
         publishEditorController.selectType(MIRGenre.journal, null);
         publishEditorController.submit();
 
-        driver.waitUntilPageIsLoaded("MODS-Dokument erstellen");
+        driver.waitUntilPageIsLoaded(getPageTitle());
         editorController.setTitle(MIRTestData.TITLE);
         refJournalCommon();
         editorController.save();
@@ -307,7 +301,7 @@ public class MIRAuthorEditorITCase extends MIRITBase {
         driver.waitAndFindElement(MCRBy.partialText(MIRTestData.AUTHOR));
         driver.waitAndFindElement(MCRBy.partialText(MIRTestData.ISSUE_DATE));
 
-        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.VALIDATION_UNI_GER));
+        driver.waitAndFindElement(MCRBy.partialText(institutionValidationText()));
         driver.waitAndFindElement(MCRBy.partialText(MIRTestData.URN));
         driver.waitAndFindElement(MCRBy.partialText(MIRTestData.DOI));
         driver.waitAndFindElement(MCRBy.partialText(MIRTestData.ABSTRACT));
@@ -385,7 +379,7 @@ public class MIRAuthorEditorITCase extends MIRITBase {
         driver.waitAndFindElement(MCRBy.partialText(MIRTestData.DOI));
         driver.waitAndFindElement(MCRBy.partialText(MIRTestData.SIGNATURE));
         driver.waitAndFindElement(MCRBy.partialText(MIRTestData.ABSTRACT));
-        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.VALIDATION_UNI_GER));
+        driver.waitAndFindElement(MCRBy.partialText(institutionValidationText()));
         driver.waitAndFindElement(MCRBy.partialText(MIRTestData.VALIDATION_INFORMATIK));
         driver.waitAndFindElement(MCRBy.partialText(MIRTestData.VALIDATION_BIBLIOGRAPHIEN));
 
@@ -415,7 +409,7 @@ public class MIRAuthorEditorITCase extends MIRITBase {
         refShelfMark();
         refAbstractSimple();
         editorController.setAccessConditions(MIRLicense.cc_by_40);
-        editorController.setInstitution(MIRInstitutes.Universität_in_Deutschland);
+        editorController.setInstitution(institutionTestValue());
         refComment();
     }
 
@@ -457,13 +451,25 @@ public class MIRAuthorEditorITCase extends MIRITBase {
         refSNDBRepeat();
         refAbstractSimple();
         editorController.setAccessConditions(MIRLicense.cc_by_40);
-        editorController.setInstitution(MIRInstitutes.Universität_in_Deutschland);
+        editorController.setInstitution(institutionTestValue());
         refComment();
     }
 
     private void refAuthorRepeatedValidation() {
         driver.waitAndFindElement(MCRBy.partialText(MIRTestData.AUTHOR));
         driver.waitAndFindElement(MCRBy.partialText(MIRTestData.AUTHOR_2));
+    }
+
+    protected String institutionTestValue() {
+        return MIRInstitutes.Universität_in_Deutschland.getValue();
+    }
+
+    protected String institutionValidationText() {
+        return MIRTestData.VALIDATION_UNI_GER;
+    }
+
+    protected String getPageTitle(){
+        return "MODS-Dokument erstellen";
     }
 
     @After

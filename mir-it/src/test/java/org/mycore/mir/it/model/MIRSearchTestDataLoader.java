@@ -32,13 +32,12 @@ public class MIRSearchTestDataLoader {
             loaded = true;
 
             String appURL = MIRITBase.getAPPUrlString();
-            MIRUserController userController = new MIRUserController(webDriverWrapper, appURL);
+            MIRUserController userController = createUserController(webDriverWrapper, appURL);
 
             userController.logoutIfLoggedIn();
             userController.loginAs(MIRUserController.ADMIN_LOGIN, MIRUserController.ADMIN_PASSWD);
 
-            webDriverWrapper.waitAndFindElement(By.xpath(".//strong[contains(text(), 'administrator')]")).click();
-            webDriverWrapper.waitAndFindElement(By.xpath(".//a[contains(text(), 'WebCLI')]")).click();
+            openWebCLI(webDriverWrapper);
             String mainWindowHandle = webDriverWrapper.getWindowHandle();
             webDriverWrapper.waitAndFindElement(By.xpath(".//input[contains(@onclick, 'WebCLI')]")).click();
             //webDriverWrapper.waitAndFindElement(By.xpath(".//input[contains(@onclick, 'window.open')]")).click();
@@ -72,10 +71,10 @@ public class MIRSearchTestDataLoader {
         }
     }
 
-    private static String extractTestData() throws IOException {
+    private String extractTestData() throws IOException {
         Path testFolder = Files.createTempDirectory("test_mods");
 
-        FILE_NAMES.forEach((fileName) -> {
+        getFileNames().forEach((fileName) -> {
             try (InputStream stream = MIRUserController.class.getClassLoader()
                 .getResourceAsStream(TEST_FOLDER_NAME + fileName)) {
                 Path targetPath = testFolder.resolve(fileName);
@@ -87,5 +86,18 @@ public class MIRSearchTestDataLoader {
         });
 
         return testFolder.toAbsolutePath().toString();
+    }
+
+    protected MIRUserController createUserController(MCRWebdriverWrapper webDriverWrapper, String appURL) {
+        return new MIRUserController(webDriverWrapper, appURL);
+    }
+
+    protected void openWebCLI(MCRWebdriverWrapper webDriverWrapper) {
+        webDriverWrapper.waitAndFindElement(By.xpath(".//strong[contains(text(), 'administrator')]")).click();
+        webDriverWrapper.waitAndFindElement(By.xpath(".//a[contains(text(), 'WebCLI')]")).click();
+    }
+
+    protected List<String> getFileNames() {
+        return FILE_NAMES;
     }
 }

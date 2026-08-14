@@ -1,10 +1,5 @@
 package org.mycore.mir.it.tests;
 
-import java.io.Closeable;
-import java.io.IOException;
-import java.time.Clock;
-import java.time.Duration;
-
 import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpJdkSolrClient;
@@ -13,26 +8,40 @@ import org.apache.solr.client.solrj.response.LukeResponse;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.mycore.common.MCRException;
 import org.mycore.common.selenium.MCRSeleniumTestBase;
+import org.mycore.mir.it.controller.MIRControllerFactory;
 import org.mycore.mir.it.controller.MIRModsEditorController;
 import org.mycore.mir.it.controller.MIRPublishEditorController;
 import org.mycore.mir.it.controller.MIRUserController;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Sleeper;
+import java.io.Closeable;
+import java.io.IOException;
+import java.time.Clock;
+import java.time.Duration;
 
 public class MIRITBase extends MCRSeleniumTestBase {
-    MIRUserController userController;
 
-    MIRPublishEditorController publishEditorController;
+    protected MIRControllerFactory controllerFactory;
 
-    MIRModsEditorController editorController;
+    protected MIRUserController userController;
+
+    protected MIRPublishEditorController publishEditorController;
+
+    protected MIRModsEditorController editorController;
 
     private static SolrClient SOLR_CLIENT;
 
+    protected MIRControllerFactory createControllerFactory() {
+        return new MIRControllerFactory();
+    }
+
     protected static enum Core {
-        main("mir"), classifications("mir-classifications");
+        main(System.getProperty("mcr.it.solr.core.main", "mir")),
+        classifications(System.getProperty("mcr.it.solr.core.classifications", "mir-classifications"));
 
         private final String coreName;
 
@@ -43,6 +52,15 @@ public class MIRITBase extends MCRSeleniumTestBase {
         String getCoreName() {
             return coreName;
         }
+    }
+
+    @Before
+    public final void initMIRControllers() {
+        String appURL = getAPPUrlString();
+        controllerFactory = createControllerFactory();
+        userController = controllerFactory.createUserController(driver, appURL);
+        publishEditorController = controllerFactory.createPublishEditorController(driver, appURL);
+        editorController = controllerFactory.createModsEditorController(driver, appURL);
     }
 
     @BeforeClass

@@ -14,8 +14,6 @@ import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 import org.mycore.common.selenium.util.MCRBy;
-import org.mycore.mir.it.controller.MIRModsEditorController;
-import org.mycore.mir.it.controller.MIRPublishEditorController;
 import org.mycore.mir.it.controller.MIRSearchController;
 import org.mycore.mir.it.controller.MIRUserController;
 import org.mycore.mir.it.model.MIRAbstract;
@@ -38,16 +36,12 @@ public class MIRAdminEditorITCase extends MIRITBase {
 
     @Before
     public final void init() {
-        String appURL = getAPPUrlString();
-        userController = new MIRUserController(getDriver(), appURL);
-        publishEditorController = new MIRPublishEditorController(getDriver(), appURL);
-        editorController = new MIRModsEditorController(getDriver(), appURL);
         userController.logoutIfLoggedIn();
         userController.loginAs(MIRUserController.ADMIN_LOGIN, MIRUserController.ADMIN_PASSWD);
         publishEditorController.openAdmin(() -> {
         });
-        simpleSearchController = new MIRSearchController(driver, appURL);
-        driver.waitUntilPageIsLoaded("MODS-Dokument erstellen");
+        simpleSearchController = controllerFactory.createSearchController(getDriver(), getAPPUrlString());
+        driver.waitUntilPageIsLoaded(getPageTitle());
     }
 
     @Test
@@ -152,4 +146,7 @@ public class MIRAdminEditorITCase extends MIRITBase {
             Stream.of(MIRDNBClassification._004, MIRDNBClassification._010).collect(Collectors.toList()));
     }
 
+    protected String getPageTitle(){
+        return "MODS-Dokument erstellen";
+    }
 }
