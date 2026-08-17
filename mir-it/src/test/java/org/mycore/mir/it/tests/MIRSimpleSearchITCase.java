@@ -1,6 +1,14 @@
 package org.mycore.mir.it.tests;
 
-import com.google.gson.Gson;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -10,14 +18,8 @@ import org.mycore.mir.it.controller.MIRSearchController;
 import org.mycore.mir.it.model.MIRSearchTestDataLoader;
 import org.mycore.mir.it.model.MIRSimpleSearchFormContent;
 import org.openqa.selenium.By;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+
+import com.google.gson.Gson;
 
 @RunWith(Parameterized.class)
 public class MIRSimpleSearchITCase extends MIRITBase {

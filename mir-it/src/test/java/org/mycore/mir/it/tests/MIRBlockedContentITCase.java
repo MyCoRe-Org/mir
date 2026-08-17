@@ -1,5 +1,14 @@
 package org.mycore.mir.it.tests;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -16,14 +25,6 @@ import org.mycore.mir.it.model.MIRTitleType;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import java.io.File;
-import java.io.IOException;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * Regression test for MIR-1613: the content (files) of a blocked or deleted object must not be

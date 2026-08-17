@@ -1,5 +1,10 @@
 package org.mycore.mir.it.tests;
 
+import java.io.Closeable;
+import java.io.IOException;
+import java.time.Clock;
+import java.time.Duration;
+
 import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpJdkSolrClient;
@@ -18,10 +23,6 @@ import org.mycore.mir.it.controller.MIRPublishEditorController;
 import org.mycore.mir.it.controller.MIRUserController;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Sleeper;
-import java.io.Closeable;
-import java.io.IOException;
-import java.time.Clock;
-import java.time.Duration;
 
 public class MIRITBase extends MCRSeleniumTestBase {
 
