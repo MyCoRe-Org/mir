@@ -9,12 +9,19 @@
   <xsl:template match="doc" mode="resultList">
     <xsl:apply-imports/>
 
-    <xsl:if test="document('callJava:org.mycore.common.xml.MCRXMLFunctions:isCurrentUserGuestUser') = 'false'">
-      <xsl:variable name="label-text-native" select="document(concat('callJava:org.mycore.common.xml.MCRXMLFunctions:getDisplayName:state:', str[@name='state']))"/>
+    <xsl:variable name="state" select="str[@name='state']" />
+    <xsl:variable name="is-guest" select="
+      document('callJava:org.mycore.common.xml.MCRXMLFunctions:isCurrentUserGuestUser') = 'true'
+    " />
+
+    <xsl:if test="string-length($state) &gt; 0 and not($is-guest)">
+      <xsl:variable name="label-text-native" select="
+        document(concat('callJava:org.mycore.common.xml.MCRXMLFunctions:getDisplayName:state:', $state))
+      " />
 
       <xsl:call-template name="output-badge">
         <xsl:with-param name="of-type" select="'hit_state'"/>
-        <xsl:with-param name="badge-type" select="concat('text-white mir-', str[@name='state'])"/>
+        <xsl:with-param name="badge-type" select="concat('text-white mir-', $state)" />
         <xsl:with-param name="label" select="document(concat('callJava:org.apache.commons.lang3.StringUtils:capitalize:', $label-text-native))"/>
         <xsl:with-param name="tooltip" select="$tooltip-state"/>
       </xsl:call-template>
