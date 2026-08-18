@@ -1,6 +1,6 @@
 package org.mycore.mir.it.model;
 
-public enum MIRInstitutes {
+public enum MIRInstitutes implements MIRSampleInstitutes {
     Universität_in_Deutschland("Unis"),
     Universität_Jena("Unis.Jena"),
     IBM("Firma.IBM");
@@ -8,10 +8,10 @@ public enum MIRInstitutes {
     private String value;
 
     MIRInstitutes(String value) {
-
         this.value = value;
     }
 
+    @Override
     public String getValue() {
         return value;
     }

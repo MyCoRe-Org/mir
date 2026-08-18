@@ -22,6 +22,7 @@ import org.mycore.mir.it.model.MIRIdentifier;
 import org.mycore.mir.it.model.MIRInstitutes;
 import org.mycore.mir.it.model.MIRLanguage;
 import org.mycore.mir.it.model.MIRLicense;
+import org.mycore.mir.it.model.MIRSampleInstitutes;
 import org.mycore.mir.it.model.MIRTypeOfResource;
 import org.openqa.selenium.By;
 
@@ -460,16 +461,16 @@ public class MIRAuthorEditorITCase extends MIRITBase {
         driver.waitAndFindElement(MCRBy.partialText(MIRTestData.AUTHOR_2));
     }
 
-    protected String institutionTestValue() {
-        return MIRInstitutes.Universität_in_Deutschland.getValue();
+    protected String getPageTitle(){
+        return "MODS-Dokument erstellen";
+    }
+
+    protected MIRSampleInstitutes institutionTestValue() {
+        return MIRInstitutes.Universität_in_Deutschland;
     }
 
     protected String institutionValidationText() {
         return MIRTestData.VALIDATION_UNI_GER;
-    }
-
-    protected String getPageTitle(){
-        return "MODS-Dokument erstellen";
     }
 
     @After

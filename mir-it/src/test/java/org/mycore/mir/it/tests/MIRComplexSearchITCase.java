@@ -11,7 +11,6 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.apache.solr.client.solrj.SolrServerException;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -27,6 +26,7 @@ import org.mycore.mir.it.model.MIRIdentifier;
 import org.mycore.mir.it.model.MIRInstitutes;
 import org.mycore.mir.it.model.MIRLanguage;
 import org.mycore.mir.it.model.MIRLicense;
+import org.mycore.mir.it.model.MIRSampleInstitutes;
 import org.mycore.mir.it.model.MIRSearchField;
 import org.mycore.mir.it.model.MIRSearchFieldCondition;
 import org.mycore.mir.it.model.MIRStatus;
@@ -40,7 +40,7 @@ public class MIRComplexSearchITCase extends MIRITBase {
     private static boolean CREATED = false;
 
     @Before
-    public final void init() throws IOException, SolrServerException, InterruptedException {
+    public final void init() throws IOException{
         userController.logoutIfLoggedIn();
         userController.loginAs(MIRUserController.ADMIN_LOGIN, MIRUserController.ADMIN_PASSWD);
         searchController = controllerFactory.createSearchController(getDriver(), getAPPUrlString());
@@ -239,7 +239,8 @@ public class MIRComplexSearchITCase extends MIRITBase {
         return "MODS-Dokument erstellen";
     }
 
-    protected String institutionTestValue() {
-        return MIRInstitutes.Universität_in_Deutschland.getValue();
+    protected MIRSampleInstitutes institutionTestValue() {
+        return MIRInstitutes.Universität_in_Deutschland;
     }
+
 }

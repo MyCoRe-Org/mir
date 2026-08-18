@@ -14,6 +14,7 @@ import org.mycore.mir.it.model.MIRGenre;
 import org.mycore.mir.it.model.MIRIdentifier;
 import org.mycore.mir.it.model.MIRLanguage;
 import org.mycore.mir.it.model.MIRLicense;
+import org.mycore.mir.it.model.MIRSampleInstitutes;
 import org.mycore.mir.it.model.MIRStatus;
 import org.mycore.mir.it.model.MIRTitleInfo;
 import org.mycore.mir.it.model.MIRTypeOfResource;
@@ -221,10 +222,10 @@ public class MIRModsEditorController extends MIREditorController {
         }
     }
 
-    public void setInstitution(String institutionValue) {
+    public void setInstitution(MIRSampleInstitutes institution) {
         new Select(driver.waitAndFindElement(
-            By.xpath(".//select[contains(@name, 'mods:name') and option/@value='" + institutionValue + "']")))
-                .selectByValue(institutionValue);
+            By.xpath(".//select[contains(@name, 'mods:name') and option/@value='" + institution.getValue() + "']")))
+                .selectByValue(institution.getValue());
     }
 
     public void setStatus(MIRStatus status) {
