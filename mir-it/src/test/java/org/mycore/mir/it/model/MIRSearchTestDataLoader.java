@@ -11,6 +11,7 @@ import java.util.stream.Stream;
 
 import org.mycore.common.config.MCRConfigurationException;
 import org.mycore.common.selenium.drivers.MCRWebdriverWrapper;
+import org.mycore.mir.it.controller.MIRControllerFactory;
 import org.mycore.mir.it.controller.MIRUserController;
 import org.mycore.mir.it.tests.MIRITBase;
 import org.openqa.selenium.By;
@@ -19,6 +20,8 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 
 public class MIRSearchTestDataLoader {
 
+    private final MIRControllerFactory controllerFactory;
+
     private static boolean loaded = false;
 
     private static final String TEST_FOLDER_NAME = "testFiles/";
@@ -26,13 +29,17 @@ public class MIRSearchTestDataLoader {
     // TODO: read from property
     private static final List<String> FILE_NAMES = Stream.of("mir_mods_00010000.xml").collect(Collectors.toList());
 
+    public MIRSearchTestDataLoader(MIRControllerFactory controllerFactory){
+        this.controllerFactory = controllerFactory;
+    }
+
     public void lazyLoadData(MCRWebdriverWrapper webDriverWrapper) throws IOException, InterruptedException {
         if (!loaded) {
 
             loaded = true;
 
             String appURL = MIRITBase.getAPPUrlString();
-            MIRUserController userController = createUserController(webDriverWrapper, appURL);
+            MIRUserController userController = controllerFactory.createUserController(webDriverWrapper, appURL);
 
             userController.logoutIfLoggedIn();
             userController.loginAs(MIRUserController.ADMIN_LOGIN, MIRUserController.ADMIN_PASSWD);
@@ -86,10 +93,6 @@ public class MIRSearchTestDataLoader {
         });
 
         return testFolder.toAbsolutePath().toString();
-    }
-
-    protected MIRUserController createUserController(MCRWebdriverWrapper webDriverWrapper, String appURL) {
-        return new MIRUserController(webDriverWrapper, appURL);
     }
 
     protected void openWebCLI(MCRWebdriverWrapper webDriverWrapper) {

@@ -103,7 +103,7 @@ public class MIRSimpleSearchITCase extends MIRITBase {
     }
 
     protected MIRSearchTestDataLoader createSearchTestDataLoader() {
-        return new MIRSearchTestDataLoader();
+        return new MIRSearchTestDataLoader(controllerFactory);
     }
 
 }
