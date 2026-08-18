@@ -101,13 +101,14 @@ public class MIRUserController {
         driver.findElement(By.name("pwd")).clear();
         driver.findElement(By.name("pwd")).sendKeys(password);
         driver.findElement(By.name("LoginSubmit")).click();
-        CheckCurrentUser(user);
+        checkCurrentUser(user);
     }
 
     public void openUserMenu(){
         driver.findElement(By.id("currentUser")).click();
     }
-    public void CheckCurrentUser(String user){
+
+    public void checkCurrentUser(String user){
         assertEqualsIgnoreCase(user, driver.findElement(By.xpath("//a[@id='currentUser']")).getText());
     }
 
