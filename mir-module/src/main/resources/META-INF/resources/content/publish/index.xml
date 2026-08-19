@@ -12,7 +12,9 @@
     <form id="submit_publication"
           class="form-horizontal"
           method="get"
-          action="../../editor/editor-dynamic.xed">
+          action="../../servlets/MIRImportServlet">
+
+      <input type="hidden" name="editor" value="editor-dynamic" />
 
 
       <div class="row">
@@ -89,7 +91,9 @@
     <form id="submit_publication"
           class="form-horizontal"
           method="get"
-          action="../../editor/editor-dynamic.xed">
+          action="../../servlets/MIRImportServlet">
+
+      <input type="hidden" name="editor" value="editor-dynamic" />
 
 
       <div class="row">

@@ -18,16 +18,19 @@
   -->
 
 <or xmlns:rh="https://mycore.org/rule-helper">
-    <rh:include href="rules-webpage.xml" rule-helper="true"/>
-    <rh:include href="rules-objects.xml" rule-helper="true"/>
-    <rh:include href="rules-editor.xml" rule-helper="true"/>
-    <rh:include href="rules-solr.xml" rule-helper="true"/>
-    <rh:include href="rules-classes.xml" rule-helper="true"/>
-    <rh:include href="rules-wcms.xml" rule-helper="true"/>
-    <rh:include href="rules-administrate-users.xml" rule-helper="true"/>
-    <rh:include href="rules-cli.xml" rule-helper="true"/>
-    <rh:include href="rules-sessions.xml" rule-helper="true"/>
-    <rh:include href="rules-processing.xml" rule-helper="true"/>
-    <rh:include href="rules-restapi.xml" rule-helper="true"/>
-    <rh:include href="rules-dedup.xml" rule-helper="true"/>
+    <and>
+        <or>
+            <!-- permission checked by MCRDeDupVueServlet and the dedup REST API -->
+            <action>manage-deduplication</action>
+            <!-- duplicate management page, also controls the navigation entry -->
+            <and>
+                <target>webpage</target>
+                <regex>webpage:/dedup/.*</regex>
+            </and>
+        </or>
+        <or>
+            <role>admin</role>
+            <role>editor</role>
+        </or>
+    </and>
 </or>
