@@ -239,8 +239,8 @@ public class MIRComplexSearchITCase extends MIRITBase {
         return "MODS-Dokument erstellen";
     }
 
-    protected MIRSampleInstitutes institutionTestValue() {
-        return MIRInstitutes.Universität_in_Deutschland;
+    protected MIRInstitutes institutionTestValue() {
+        return MIRSampleInstitutes.Universität_in_Deutschland;
     }
 
 }

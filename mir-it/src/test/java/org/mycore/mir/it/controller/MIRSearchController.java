@@ -7,7 +7,7 @@ import org.mycore.common.config.MCRConfiguration2;
 import org.mycore.common.selenium.drivers.MCRWebdriverWrapper;
 import org.mycore.common.selenium.util.MCRBy;
 import org.mycore.mir.it.model.MIRComplexSearchQuery;
-import org.mycore.mir.it.model.MIRSampleInstitutes;
+import org.mycore.mir.it.model.MIRInstitutes;
 import org.mycore.mir.it.model.MIRSearchField;
 import org.mycore.mir.it.model.MIRSearchFieldCondition;
 import org.mycore.mir.it.model.MIRStatus;
@@ -26,12 +26,12 @@ public class MIRSearchController extends MIRTestController {
         super(driver, baseURL);
     }
 
-    public void simpleSearchBy(String title, String name, String metadata, String files, MIRSampleInstitutes mirInstitute) {
+    public void simpleSearchBy(String title, String name, String metadata, String files, MIRInstitutes mirInstitute) {
         simpleSearchBy(title, name, metadata, files, mirInstitute, null);
     }
 
     public void simpleSearchBy(String title, String author, String metadata, String files,
-        MIRSampleInstitutes mirInstitute, MIRStatus status) {
+        MIRInstitutes mirInstitute, MIRStatus status) {
         openSimpleSearchForm();
 
         setTitle(title);
@@ -55,7 +55,7 @@ public class MIRSearchController extends MIRTestController {
         }
     }
 
-    public void setInstitute(MIRSampleInstitutes mirInstitute) {
+    public void setInstitute(MIRInstitutes mirInstitute) {
         if (mirInstitute != null) {
             new Select(driver.waitAndFindElement(By.id("inputInst1")))
                 .selectByValue("mir_institutes:" + mirInstitute.getValue());
@@ -170,7 +170,7 @@ public class MIRSearchController extends MIRTestController {
     }
 
     public void complexSearchBy(List<MIRComplexSearchQuery> complexSearchQueries, String identifier,
-        MIRSampleInstitutes mirInstitute,
+        MIRInstitutes mirInstitute,
         String classification, String type, String license, MIRStatus status, String date, String content) {
         openComplexSearchForm();
 

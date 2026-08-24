@@ -12,9 +12,9 @@ import org.mycore.mir.it.model.MIRAccess;
 import org.mycore.mir.it.model.MIRDNBClassification;
 import org.mycore.mir.it.model.MIRGenre;
 import org.mycore.mir.it.model.MIRIdentifier;
+import org.mycore.mir.it.model.MIRInstitutes;
 import org.mycore.mir.it.model.MIRLanguage;
 import org.mycore.mir.it.model.MIRLicense;
-import org.mycore.mir.it.model.MIRSampleInstitutes;
 import org.mycore.mir.it.model.MIRStatus;
 import org.mycore.mir.it.model.MIRTitleInfo;
 import org.mycore.mir.it.model.MIRTypeOfResource;
@@ -222,7 +222,7 @@ public class MIRModsEditorController extends MIREditorController {
         }
     }
 
-    public void setInstitution(MIRSampleInstitutes institution) {
+    public void setInstitution(MIRInstitutes institution) {
         new Select(driver.waitAndFindElement(
             By.xpath(".//select[contains(@name, 'mods:name') and option/@value='" + institution.getValue() + "']")))
                 .selectByValue(institution.getValue());
