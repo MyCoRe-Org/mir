@@ -42,12 +42,12 @@ public class MIRSimpleSearchITCase extends MIRITBase {
 
     @Before
     public final void ini() throws IOException, InterruptedException {
-        createSearchTestDataLoader().lazyLoadData(getDriver());
+        createSearchTestDataLoader().lazyLoadData();
     }
 
     @Test
     public void testForm() {
-        MIRSearchController searchController = controllerFactory.createSearchController(getDriver(), getAPPUrlString());
+        MIRSearchController searchController = controllerFactory.createSearchController();
 
         if (parsed.getTitle() != null) {
             searchController.setTitle(parsed.getTitle());

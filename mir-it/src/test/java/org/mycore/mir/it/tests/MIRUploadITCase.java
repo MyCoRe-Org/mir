@@ -32,8 +32,7 @@ public class MIRUploadITCase extends MIRITBase {
 
     @Before
     public final void init() {
-        String appURL = getAPPUrlString();
-        uploadController = controllerFactory.createUploadController(getDriver(), appURL);
+        uploadController = controllerFactory.createUploadController();
         userController.logoutIfLoggedIn();
         userController.loginAs(MIRUserController.ADMIN_LOGIN, MIRUserController.ADMIN_PASSWD);
         publishEditorController.openAdmin(() -> {

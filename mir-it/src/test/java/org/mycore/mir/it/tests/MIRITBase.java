@@ -17,6 +17,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.mycore.common.MCRException;
 import org.mycore.common.selenium.MCRSeleniumTestBase;
+import org.mycore.common.selenium.drivers.MCRWebdriverWrapper;
 import org.mycore.mir.it.controller.MIRControllerFactory;
 import org.mycore.mir.it.controller.MIRModsEditorController;
 import org.mycore.mir.it.controller.MIRPublishEditorController;
@@ -36,8 +37,8 @@ public class MIRITBase extends MCRSeleniumTestBase {
 
     private static SolrClient SOLR_CLIENT;
 
-    protected MIRControllerFactory createControllerFactory() {
-        return new MIRControllerFactory();
+    protected MIRControllerFactory createControllerFactory(MCRWebdriverWrapper driver, String appURL) {
+        return new MIRControllerFactory(driver, appURL);
     }
 
     protected static enum Core {
@@ -58,10 +59,10 @@ public class MIRITBase extends MCRSeleniumTestBase {
     @Before
     public final void initMIRControllers() {
         String appURL = getAPPUrlString();
-        controllerFactory = createControllerFactory();
-        userController = controllerFactory.createUserController(driver, appURL);
-        publishEditorController = controllerFactory.createPublishEditorController(driver, appURL);
-        editorController = controllerFactory.createModsEditorController(driver, appURL);
+        controllerFactory = createControllerFactory(driver, appURL);
+        userController = controllerFactory.createUserController();
+        publishEditorController = controllerFactory.createPublishEditorController();
+        editorController = controllerFactory.createModsEditorController();
     }
 
     @BeforeClass

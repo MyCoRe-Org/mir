@@ -40,7 +40,7 @@ public class MIRAdminEditorITCase extends MIRITBase {
         userController.loginAs(MIRUserController.ADMIN_LOGIN, MIRUserController.ADMIN_PASSWD);
         publishEditorController.openAdmin(() -> {
         });
-        simpleSearchController = controllerFactory.createSearchController(getDriver(), getAPPUrlString());
+        simpleSearchController = controllerFactory.createSearchController();
         driver.waitUntilPageIsLoaded(getPageTitle());
     }
 

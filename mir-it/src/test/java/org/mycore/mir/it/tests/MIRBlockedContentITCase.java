@@ -46,7 +46,7 @@ public class MIRBlockedContentITCase extends MIRITBase {
 
     @Before
     public final void init() {
-        uploadController = controllerFactory.createUploadController(getDriver(), getAPPUrlString());
+        uploadController = controllerFactory.createUploadController();
         userController.logoutIfLoggedIn();
         userController.loginAs(MIRUserController.ADMIN_LOGIN, MIRUserController.ADMIN_PASSWD);
         userController.createUser(SUBMITTER_USER_NAME, SUBMITTER_USER_PASSWORD, null, null, "submitter");

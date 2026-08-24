@@ -43,7 +43,7 @@ public class MIRComplexSearchITCase extends MIRITBase {
     public final void init() throws IOException{
         userController.logoutIfLoggedIn();
         userController.loginAs(MIRUserController.ADMIN_LOGIN, MIRUserController.ADMIN_PASSWD);
-        searchController = controllerFactory.createSearchController(getDriver(), getAPPUrlString());
+        searchController = controllerFactory.createSearchController();
 
         if (!CREATED) {
             createDocument();
