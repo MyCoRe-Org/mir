@@ -185,54 +185,6 @@
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
-
-  <xsl:template name="objectLink">
-    <!-- specify either one of them -->
-    <xsl:param name="obj_id" />
-    <xsl:param name="mcrobj" />
-    <xsl:choose>
-      <xsl:when test="$mcrobj">
-        <xsl:variable name="obj_id" select="$mcrobj/@ID" />
-        <xsl:choose>
-          <xsl:when test="mcracl:check-permission($obj_id,'read')">
-            <a href="{$WebApplicationBaseURL}receive/{$obj_id}">
-              <xsl:attribute name="title"><xsl:apply-templates select="$mcrobj" mode="fulltitle" /></xsl:attribute>
-              <xsl:apply-templates select="$mcrobj" mode="resulttitle" />
-            </a>
-          </xsl:when>
-          <xsl:otherwise>
-            <!-- Build Login URL for LoginServlet -->
-            <xsl:variable name="LoginURL" select="$LoginDetourURL" />
-            <xsl:apply-templates select="$mcrobj" mode="resulttitle" />
-            &#160;
-            <a href="{$LoginURL}">
-              <img src="{concat($WebApplicationBaseURL,'images/paper_lock.gif')}" />
-            </a>
-          </xsl:otherwise>
-        </xsl:choose>
-      </xsl:when>
-      <xsl:when test="string-length($obj_id)&gt;0">
-        <!-- handle old way which may cause a double parsing of mcrobject: -->
-        <xsl:variable name="mcrobj" select="document(concat('mcrobject:',$obj_id))/mycoreobject" />
-        <xsl:choose>
-          <xsl:when test="mcracl:check-permission($obj_id,'read')">
-            <a href="{$WebApplicationBaseURL}receive/{$obj_id}">
-              <xsl:apply-templates select="$mcrobj" mode="resulttitle" />
-            </a>
-          </xsl:when>
-          <xsl:otherwise>
-            <!-- Build Login URL for LoginServlet -->
-            <xsl:variable name="LoginURL" select="$LoginDetourURL" />
-            <xsl:apply-templates select="$mcrobj" mode="resulttitle" />
-            &#160;
-            <a href="{$LoginURL}">
-              <img src="{concat($WebApplicationBaseURL,'images/paper_lock.gif')}" />
-            </a>
-          </xsl:otherwise>
-        </xsl:choose>
-      </xsl:when>
-    </xsl:choose>
-  </xsl:template>
   
   <xsl:template name="printHistoryDate">
     <xsl:param name="nodes" />

@@ -9,6 +9,8 @@
 
   <xsl:import href="xslImport:modsmeta:metadata/mir-admindata-box.xsl"/>
 
+  <xsl:include href="resource:xslt/modsmetadata-legacy.xsl" />
+
   <xsl:param name="MIR.Metadata.Admindata.ShowRealUserName"/>
   <xsl:template match="/">
     <xsl:variable name="ID" select="/mycoreobject/@ID"/>
