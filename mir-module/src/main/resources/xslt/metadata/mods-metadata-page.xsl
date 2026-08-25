@@ -21,7 +21,6 @@
   <xsl:param name="MIR.Layout.Display.Div"/>
 
   <xsl:param name="MIR.CanonicalBaseURL" />
-  <xsl:param name="MIR.Metadata.Admindata.ShowRealUserName"/>
 
   <xsl:variable name="canViewSystembox" select="mcracl:check-permission(site/@ID, 'read-history')"/>
 
@@ -132,28 +131,30 @@
                 </div>
                 <div class="card-body">
                   <!-- Start: ADMINMETADATA -->
-                  <xsl:apply-templates select="$originalContent/div[@id=$boxID]" mode="newMetadata"/>
+                  <xsl:copy-of select="$originalContent/div[@id=$boxID]/dl" />
                   <!-- End: ADMINMETADATA -->
                 </div>
               </div>
             </xsl:if>
           </xsl:when>
           <xsl:when test="$boxID='mir-metadata'">
-            <div class="mir_metadata">
-              <h3>
-                <xsl:value-of
-                    select="mcri18n:translate('component.mods.metaData.dictionary.categorybox')"/>
-              </h3>
-              <!-- Start: METADATA -->
-              <xsl:apply-templates select="$originalContent/div[@id=$boxID]" mode="newMetadata"/>
-              <!-- End: METADATA -->
-              <xsl:if
-                  test="$originalContent/div[@id=$boxID]/table[@class='mir-metadata']//*[contains(@class,'openstreetmap-container')]">
-                <link rel="stylesheet" type="text/css" href="{$WebApplicationBaseURL}assets/openlayers/ol.css"/>
-                <script src="{$WebApplicationBaseURL}assets/openlayers/ol.js"/>
-                <script src="{$WebApplicationBaseURL}js/mir/geo-coords.min.js"></script>
-              </xsl:if>
-            </div>
+            <xsl:if test="$originalContent/div[@id=$boxID]">
+              <div class="mir_metadata">
+                <h3>
+                  <xsl:value-of
+                      select="mcri18n:translate('component.mods.metaData.dictionary.categorybox')"/>
+                </h3>
+                <!-- Start: METADATA -->
+                <xsl:copy-of select="$originalContent/div[@id=$boxID]/dl" />
+                <!-- End: METADATA -->
+                <xsl:if
+                    test="$originalContent/div[@id=$boxID]//*[contains(@class,'openstreetmap-container')]">
+                  <link rel="stylesheet" type="text/css" href="{$WebApplicationBaseURL}assets/openlayers/ol.css"/>
+                  <script src="{$WebApplicationBaseURL}assets/openlayers/ol.js"/>
+                  <script src="{$WebApplicationBaseURL}js/mir/geo-coords.min.js"></script>
+                </xsl:if>
+              </div>
+            </xsl:if>
           </xsl:when>
           <xsl:when test="$boxID='mir-abstract-plus'">
             <div class="detail_block">
@@ -259,7 +260,7 @@
           <td class="user">
             <xsl:if test="@user">
               <xsl:choose>
-                <xsl:when test="$MIR.Metadata.Admindata.ShowRealUserName = 'true'">
+                <xsl:when test="mcrproperty:get('MIR.AdmindataBox.ShowRealUserName') = 'true'">
                   <xsl:variable name="resolved-user" select="document(concat('notnull:user:', @user))/user"/>
                   <xsl:choose>
                     <xsl:when test="string-length($resolved-user/realName) &gt; 0">
@@ -283,33 +284,5 @@
       </xsl:for-each>
     </table>
   </xsl:template>
-
-  <!-- this is spooky ; TODO: Replace-->
-  <xsl:template match="div[@id='mir-metadata']" mode="newMetadata">
-    <dl>
-      <xsl:apply-templates select="table[@class='mir-metadata']/tr" mode="newMetadata"/>
-    </dl>
-  </xsl:template>
-  <xsl:template match="div[@id='mir-admindata']" mode="newMetadata">
-    <dl>
-      <xsl:apply-templates select=".//div[@id='system_box']/div[@id='system_content']/table/tr" mode="newMetadata"/>
-    </dl>
-  </xsl:template>
-  <xsl:template match="td[@class='metaname']" mode="newMetadata" priority="2">
-    <dt>
-      <xsl:copy-of select="node()|*"/>
-    </dt>
-  </xsl:template>
-  <xsl:template match="td[@class='metavalue']" mode="newMetadata" priority="2">
-    <dd>
-      <xsl:if test="@title">
-        <xsl:attribute name="title">
-          <xsl:value-of select="@title"/>
-        </xsl:attribute>
-      </xsl:if>
-      <xsl:copy-of select="node()|*"/>
-    </dd>
-  </xsl:template>
-
 
 </xsl:stylesheet>

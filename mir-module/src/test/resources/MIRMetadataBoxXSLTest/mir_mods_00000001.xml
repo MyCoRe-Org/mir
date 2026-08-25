@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mycoreobject ID="mir_mods_00000001" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <structure />
+  <metadata>
+    <def.modsContainer class="MCRMetaXML">
+      <modsContainer inherited="0">
+        <mods:mods xmlns:mods="http://www.loc.gov/mods/v3">
+          <mods:titleInfo type="alternative">
+            <mods:title>Alternative Title</mods:title>
+          </mods:titleInfo>
+          <mods:name type="conference">
+            <mods:namePart>Conference 2024</mods:namePart>
+          </mods:name>
+          <mods:name type="personal">
+            <mods:namePart type="family">Doe</mods:namePart>
+            <mods:namePart type="given">Jane</mods:namePart>
+            <mods:role>
+              <mods:roleTerm type="text">Supervisor</mods:roleTerm>
+            </mods:role>
+          </mods:name>
+          <mods:relatedItem type="series">
+            <mods:titleInfo>
+              <mods:title>Series</mods:title>
+            </mods:titleInfo>
+            <mods:part>
+              <mods:detail type="volume">
+                <mods:number>3</mods:number>
+              </mods:detail>
+            </mods:part>
+          </mods:relatedItem>
+          <mods:originInfo eventType="publication">
+            <mods:dateIssued encoding="w3cdtf">2020-05</mods:dateIssued>
+          </mods:originInfo>
+          <mods:identifier type="doi">10.1234/abc</mods:identifier>
+          <mods:identifier type="uri">http://uri.gbv.de/document/gvk:ppn:12345</mods:identifier>
+          <mods:identifier type="intern">intern-42</mods:identifier>
+          <mods:language>
+            <mods:languageTerm authority="rfc5646" type="code">de</mods:languageTerm>
+          </mods:language>
+          <mods:typeOfResource>text</mods:typeOfResource>
+          <mods:subject>
+            <mods:topic>Metadata</mods:topic>
+            <mods:name type="personal">
+              <mods:namePart type="family">Roe</mods:namePart>
+              <mods:namePart type="given">Richard</mods:namePart>
+              <mods:affiliation>University A</mods:affiliation>
+              <mods:affiliation>University B</mods:affiliation>
+            </mods:name>
+          </mods:subject>
+          <mods:location>
+            <mods:physicalLocation authority="gnd" valueURI="https://d-nb.info/gnd/123">Library</mods:physicalLocation>
+          </mods:location>
+          <mods:note>Admin note
+second line</mods:note>
+          <mods:note type="public">Public note</mods:note>
+        </mods:mods>
+      </modsContainer>
+    </def.modsContainer>
+  </metadata>
+  <service>
+    <servdates class="MCRMetaISO8601Date">
+      <servdate type="createdate" inherited="0">2024-03-01T10:15:30.123Z</servdate>
+      <servdate type="modifydate" inherited="0">2025-01-02T08:00:00.000Z</servdate>
+    </servdates>
+    <servflags class="MCRMetaLangText">
+      <servflag type="createdby" inherited="0" form="plain">creator</servflag>
+      <servflag type="modifiedby" inherited="0" form="plain">modifier</servflag>
+    </servflags>
+    <servstates class="MCRMetaClassification">
+      <servstate inherited="0" classid="state" categid="published" />
+    </servstates>
+  </service>
+</mycoreobject>
