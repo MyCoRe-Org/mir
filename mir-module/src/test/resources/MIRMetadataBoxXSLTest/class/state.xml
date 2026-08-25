@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mycoreclass xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:noNamespaceSchemaLocation="MCRClassification.xsd"
+             ID="state">
+  <label xml:lang="x-uri" text="http://www.mycore.org/classifications/state" />
+  <label xml:lang="en" text="state" />
+  <categories>
+    <category ID="published">
+      <label xml:lang="en" text="published" />
+    </category>
+  </categories>
+</mycoreclass>
