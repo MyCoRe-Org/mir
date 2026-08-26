@@ -10,9 +10,9 @@
 
   <xsl:template match="/">
     <div id="mir-metadata">
-      <table class="mir-metadata">
+      <dl>
         <xsl:apply-templates mode="display-metadata" select="mycoreobject" />
-      </table>
+      </dl>
     </div>
 
     <xsl:apply-imports/>

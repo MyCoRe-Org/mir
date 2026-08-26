@@ -44,22 +44,20 @@
 
     <xsl:if test="exists($value)">
       <xsl:variable name="resolved-label" select="
-        if ($label) then $label
-        else if ($label-key) then mcri18n:translate($label-key)
-        else error(xs:QName('err:missing-label'), 'meta-row: label or label-key required')
-      " />
+      if ($label) then $label
+      else if ($label-key) then mcri18n:translate($label-key)
+      else error(xs:QName('err:missing-label'), 'meta-row: label or label-key required')
+    " />
 
-      <tr>
-        <td class="metaname" valign="top">
-          <xsl:value-of select="$resolved-label" />
-        </td>
-        <td class="metavalue">
-          <xsl:if test="$value-property">
-            <xsl:attribute name="property" select="$value-property" />
-          </xsl:if>
-          <xsl:copy-of select="$value" />
-        </td>
-      </tr>
+      <dt class="metaname">
+        <xsl:value-of select="$resolved-label" />
+      </dt>
+      <dd class="metavalue">
+        <xsl:if test="$value-property">
+          <xsl:attribute name="property" select="$value-property" />
+        </xsl:if>
+        <xsl:copy-of select="$value" />
+      </dd>
     </xsl:if>
   </xsl:template>
 
