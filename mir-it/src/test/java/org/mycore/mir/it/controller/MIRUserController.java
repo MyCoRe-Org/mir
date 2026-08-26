@@ -38,8 +38,8 @@ public class MIRUserController {
     public void createUser(String user, String password, String name, String mail, Runnable assertion,
         String... roles) {
         String currentUrl = driver.getCurrentUrl();
-        driver.findElement(By.id("currentUser")).click();
-        driver.findElement(By.linkText("Nutzer anlegen")).click();
+        driver.waitAndFindElement(By.id("currentUser")).click();
+        driver.waitAndFindElement(By.linkText("Nutzer anlegen")).click();
         for (int i = 0; i < roles.length; i++) {
             if (i > 0) {
                 //append a role
@@ -56,18 +56,18 @@ public class MIRUserController {
             driver.waitAndFindElement(By.id("rmcr-roles_" + roles[i])).click();
         }
         driver.waitAndFindElement(By.id("userName")).clear();
-        driver.findElement(By.id("userName")).sendKeys(user);
-        driver.findElement(By.id("password")).clear();
-        driver.findElement(By.id("password")).sendKeys(password);
-        driver.findElement(By.id("password2")).clear();
-        driver.findElement(By.id("password2")).sendKeys(password);
+        driver.waitAndFindElement(By.id("userName")).sendKeys(user);
+        driver.waitAndFindElement(By.id("password")).clear();
+        driver.waitAndFindElement(By.id("password")).sendKeys(password);
+        driver.waitAndFindElement(By.id("password2")).clear();
+        driver.waitAndFindElement(By.id("password2")).sendKeys(password);
 
         if (name != null) {
-            driver.findElement(By.id("realNameInput")).sendKeys(name);
+            driver.waitAndFindElement(By.id("realNameInput")).sendKeys(name);
         }
 
         if (mail != null) {
-            driver.findElement(By.id("emailInput")).sendKeys(mail);
+            driver.waitAndFindElement(By.id("emailInput")).sendKeys(mail);
         }
 
         driver.waitAndFindElement(By.name("_xed_submit_servlet:MCRUserServlet")).click();
@@ -78,12 +78,12 @@ public class MIRUserController {
 
     public void deleteUser(String user) {
         String currentUrl = driver.getCurrentUrl();
-        driver.findElement(By.id("currentUser")).click();
-        driver.findElement(By.linkText("Nutzerverwaltung")).click();
+        driver.waitAndFindElement(By.id("currentUser")).click();
+        driver.waitAndFindElement(By.linkText("Nutzerverwaltung")).click();
         By nameSearchField = By.name("search");
         driver.waitAndFindElement(nameSearchField).clear();
-        driver.findElement(nameSearchField).sendKeys(user);
-        driver.findElement(By.linkText(user)).click();
+        driver.waitAndFindElement(nameSearchField).sendKeys(user);
+        driver.waitAndFindElement(By.linkText(user)).click();
         driver.waitAndFindElement(By.linkText("Nutzer löschen")).click();
         driver.waitAndFindElement(By.cssSelector("input.btn.btn-danger")).click();
         assertEquals("Die Nutzerkennung wurde mitsamt allen Rollenzugehörigkeiten gelöscht.",
@@ -96,12 +96,12 @@ public class MIRUserController {
         driver.waitAndFindElement(By.id("loginURL")).click();
 
         driver.waitFor(ExpectedConditions.titleContains("Anmelden mit lokaler Nutzerkennung"));
-        driver.findElement(By.name("uid")).clear();
-        driver.findElement(By.name("uid")).sendKeys(user);
-        driver.findElement(By.name("pwd")).clear();
-        driver.findElement(By.name("pwd")).sendKeys(password);
-        driver.findElement(By.name("LoginSubmit")).click();
-        assertEqualsIgnoreCase(user, driver.findElement(By.xpath("//a[@id='currentUser']")).getText());
+        driver.waitAndFindElement(By.name("uid")).clear();
+        driver.waitAndFindElement(By.name("uid")).sendKeys(user);
+        driver.waitAndFindElement(By.name("pwd")).clear();
+        driver.waitAndFindElement(By.name("pwd")).sendKeys(password);
+        driver.waitAndFindElement(By.name("LoginSubmit")).click();
+        assertEqualsIgnoreCase(user, driver.waitAndFindElement(By.xpath("//a[@id='currentUser']")).getText());
     }
 
     @Test
@@ -115,8 +115,9 @@ public class MIRUserController {
     public void goToStart() {
         driver.get(baseURL + "/content/index.xml");
         driver.waitFor(ExpectedConditions.titleContains("Willkommen bei MIR!"));
-        assertFalse("Access to start page should not be restricted", driver.findElement(By.tagName("body")).getText()
-            .matches("^[\\s\\S]*Zugriff verweigert[\\s\\S]*$"));
+        assertFalse("Access to start page should not be restricted",
+            driver.waitAndFindElement(By.tagName("body")).getText()
+                .matches("^[\\s\\S]*Zugriff verweigert[\\s\\S]*$"));
     }
 
     protected void assertEqualsIgnoreCase(String expected, String actual) {
@@ -133,18 +134,20 @@ public class MIRUserController {
 
     public void assertValidationErrorVisible() {
         driver.waitAndFindElement(By.xpath("//input[@name='/user/@name']"));
-        driver.findElement(By.xpath(".//span[contains(@class,'fa-exclamation-triangle')]"));
+        driver.waitAndFindElement(By.xpath(".//span[contains(@class,'fa-exclamation-triangle')]"));
     }
 
     public void logOff() {
         driver.waitAndFindElement(By.xpath("//a[@id='currentUser']")).click();
-        driver.findElement(MCRBy.partialLinkText("Abmelden")).click();
+        driver.waitAndFindElement(MCRBy.partialLinkText("Abmelden")).click();
         assertEqualsIgnoreCase("Anmelden", driver.waitAndFindElement(By.id("loginURL")).getText());
     }
 
     public boolean isLoggedIn() {
         driver.waitAndFindElement(By.id("logo_modul"));
         try {
+            // the header is fully rendered once 'logo_modul' is there, so a missing 'currentUser' means
+            // "not logged in" and must not be waited for
             driver.findElement(By.id("currentUser"));
         } catch (NoSuchElementException e) {
             return false;

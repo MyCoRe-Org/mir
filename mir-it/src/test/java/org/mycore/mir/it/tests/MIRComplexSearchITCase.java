@@ -44,7 +44,7 @@ public class MIRComplexSearchITCase extends MIRITBase {
     private static boolean CREATED = false;
 
     @Before
-    public final void init() throws IOException, SolrServerException, InterruptedException {
+    public final void init() throws IOException, SolrServerException {
         String appURL = getAPPUrlString();
         MIRUserController userController = new MIRUserController(getDriver(), appURL);
         userController.logoutIfLoggedIn();
@@ -56,24 +56,6 @@ public class MIRComplexSearchITCase extends MIRITBase {
 
         if (!CREATED) {
             createDocument();
-
-            /* HttpSolrClient solrClient = new HttpSolrClient.Builder("http://localhost:9108/solr/mir").build();
-            solrClient.optimize();
-            boolean found;
-            long timeout = System.currentTimeMillis();
-            do {
-                SolrDocument doc = MCRSolrSearchUtils.first(solrClient, "id:ifs\\:*test*.txt");
-                found = doc != null;
-                if (!found) {
-                    if (System.currentTimeMillis() - timeout > 20000) {
-                        //don't want to run this multiple times
-                        CREATED = true;
-                        Assert.fail(
-                            "Unable to index documents. Cannot find 'Test' in solr after 20 seconds.");
-                    }
-                    Thread.sleep(100);
-                }
-            } while (!found);*/
             CREATED = true;
         }
     }

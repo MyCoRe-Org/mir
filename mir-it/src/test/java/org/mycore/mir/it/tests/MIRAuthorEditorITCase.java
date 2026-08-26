@@ -141,26 +141,26 @@ public class MIRAuthorEditorITCase extends MIRITBase {
         saveSuccessValidation();
 
         // look for entered metadata
-        driver.findElement(MCRBy.partialText(MIRTestData.TITLE));
-        driver.findElement(MCRBy.partialText(MIRTestData.SUB_TITLE));
-        driver.findElement(MCRBy.partialText(MIRTestData.AUTHOR));
-        driver.findElement(MCRBy.partialText(MIRTestData.ABSTRACT));
+        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.TITLE));
+        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.SUB_TITLE));
+        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.AUTHOR));
+        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.ABSTRACT));
         //driver.waitAndFindElement(MCRBy.partialText(MIRTestData.NOTE));
-        driver.findElement(MCRBy.partialText(MIRTestData.ISSUE_DATE));
-        driver.findElement(MCRBy.partialText(MIRTestData.VOLUME));
-        driver.findElement(MCRBy.partialText(MIRTestData.NUMBER));
+        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.ISSUE_DATE));
+        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.VOLUME));
+        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.NUMBER));
         // TODO: enable validation for license
         //driver.waitAndFindElement(MCRBy.partialText(MIRLicense.cc_by_40.getValue()));
 
-        driver.findElement(MCRBy.partialText(MIRTestData.URN));
-        driver.findElement(MCRBy.partialText(MIRTestData.DOI));
+        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.URN));
+        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.DOI));
 
         editorController.clickAndWaitForPageLoad(MCRBy.partialLinkText(MIRTestData.RELATED_TITLE));
 
         // look for parent article
-        driver.findElement(MCRBy.partialText(MIRTestData.RELATED_TITLE));
-        driver.findElement(MCRBy.partialText(MIRTestData.SIGNATURE));
-        driver.findElement(MCRBy.partialText(MIRTestData.ISSN));
+        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.RELATED_TITLE));
+        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.SIGNATURE));
+        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.ISSN));
     }
 
     @Test

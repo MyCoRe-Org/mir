@@ -19,6 +19,8 @@
 package org.mycore.mir.it.controller;
 
 import org.mycore.common.selenium.drivers.MCRWebdriverWrapper;
+import org.mycore.common.selenium.util.MCRExpectedConditions;
+import org.mycore.common.selenium.util.MCRExpectedConditions.DocumentReadyState;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 
@@ -31,6 +33,11 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class MIRUploadController extends MIRTestController {
+
+    /**
+     * Marker set on <code>window</code> before the upload starts; it is gone once the upload widget reloaded the page.
+     */
+    private static final String UPLOAD_MARKER = "mir-it-upload";
 
     public MIRUploadController(MCRWebdriverWrapper driver, String baseURL) {
         super(driver, baseURL);
@@ -59,15 +66,23 @@ public class MIRUploadController extends MIRTestController {
         return testFile;
     }
 
-    public void uploadFile(File upload) throws InterruptedException {
+    /**
+     * Uploads the given file and returns after the upload was committed.
+     * <p>
+     * <code>upload-gui.js</code> reloads the page itself once the last commit completed
+     * (<code>handleCommitCompleted</code>), so a marker on <code>window</code> that does not survive that reload is
+     * the post condition of the upload.
+     */
+    public void uploadFile(File upload) {
         String path = upload.getAbsolutePath();
 
         JavascriptExecutor js = driver;
-        js.executeScript("window['mcr-testing']=true;");
+        js.executeScript("window['mcr-testing']=true; window['" + UPLOAD_MARKER + "']=true;");
         driver.waitAndFindElement(By.xpath(".//a[@class='mcr-upload-show']")).click();
         driver.waitAndFindElement(By.xpath(".//input[@id='mcr-testing-file-input']")).sendKeys(path);
-        Thread.sleep(10000);
-        driver.navigate().refresh();
+        driver.waitFor(webDriver -> Boolean.TRUE.equals(((JavascriptExecutor) webDriver)
+            .executeScript("return window['" + UPLOAD_MARKER + "'] !== true;")));
+        driver.waitFor(MCRExpectedConditions.documentReadyState(DocumentReadyState.complete));
     }
 
 }
