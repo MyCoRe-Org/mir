@@ -7,7 +7,6 @@ import org.mycore.mir.it.model.MIRHost;
 import org.openqa.selenium.By;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 
 public class MIRPublishEditorController {
@@ -38,13 +37,22 @@ public class MIRPublishEditorController {
     }
 
     public void selectType(MIRGenre genre, MIRHost host) {
-        Select genreSelect = new Select(driver.waitAndFindElement(By.id("genre")));
-        genreSelect.selectByValue(genre.getValue());
+        selectByValue("genre", genre.getValue());
 
         if (host != null) {
-            Select hostSelect = new Select(driver.waitAndFindElement(By.id("host")));
-            hostSelect.selectByValue(host.getValue());
+            selectByValue("host", host.getValue());
         }
+    }
+
+    /**
+     * Selects the option with the given value in the select with the given id.
+     * <p>
+     * Waits for the option and not only for the select: both are part of the page currently being loaded, so the
+     * select element can already be present while its options have not been parsed yet.
+     */
+    private void selectByValue(String selectId, String value) {
+        driver.waitAndFindElement(By.xpath(".//select[@id='" + selectId + "']/option[@value='" + value + "']"));
+        new Select(driver.waitAndFindElement(By.id(selectId))).selectByValue(value);
     }
 
     public void submit() {
@@ -55,7 +63,8 @@ public class MIRPublishEditorController {
 
     public boolean isPublishOpened() {
         try {
-            driver.waitFor(ExpectedConditions.titleContains("Publizieren"));
+            // the title alone is set long before the form is parsed, so the ready state is part of the condition
+            driver.waitUntilPageIsLoaded("Publizieren");
         } catch (TimeoutException e) {
             return false;
         }

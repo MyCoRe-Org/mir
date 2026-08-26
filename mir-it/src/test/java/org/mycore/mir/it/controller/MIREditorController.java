@@ -59,7 +59,7 @@ public abstract class MIREditorController extends MIRTestController {
 
         // Switch to the iframe, click on the body, and send the text
         driver.switchTo().frame(iframe);
-        WebElement body = driver.findElement(By.tagName("body"));
+        WebElement body = driver.waitAndFindElement(By.tagName("body"));
         body.click();
         body.clear();
         body.sendKeys(text);

@@ -23,11 +23,17 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 
 public class MIRModsEditorController extends MIREditorController {
 
     private static final Logger LOGGER = LogManager.getLogger();
+
+    /**
+     * Name of the search provider whose first hit is applied by {@link #searchAndApplyPerson(String, String)}.
+     */
+    private static final String LOBID_PROVIDER = "Lobid";
 
     public MIRModsEditorController(MCRWebdriverWrapper driver, String baseURL) {
         super(driver, baseURL);
@@ -79,21 +85,15 @@ public class MIRModsEditorController extends MIREditorController {
     }
 
     public void setOpenAIRE(String searchTrigger, String fullName) {
-        WebElement nameElement = driver.waitAndFindElement(By.id("name"));// name should be changed in future
-        try { /// fixme: get it to work without sleep
-            Thread.sleep(2000);
-            nameElement.clear();
-            Thread.sleep(2000);
-            nameElement.click();
-            Thread.sleep(2000);
-            nameElement.sendKeys(searchTrigger);
-            Thread.sleep(2000);
-            nameElement.sendKeys(Keys.SPACE);
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-        }
+        WebElement nameElement = driver.waitAndFindElement(By.id("name"), ExpectedConditions::elementToBeClickable);
+        // name should be changed in future
+        nameElement.clear();
+        nameElement.click();
+        nameElement.sendKeys(searchTrigger);
+        nameElement.sendKeys(Keys.SPACE);
         nameElement.click();
 
+        // waitAndFindElements polls until the typeahead rendered its suggestions
         driver.waitAndFindElements(By.xpath(".//ul[contains(@class,'typeahead')]/li/a")).stream()
             .filter(e -> e.getText().contains(fullName)).limit(1).forEach(e -> e.click());
     }
@@ -287,9 +287,10 @@ public class MIRModsEditorController extends MIREditorController {
                     By.xpath(appBaseXPath + "//input[contains(@id, 'topic') and contains(@class, 'form-control')]"));
                 topicInput.clear();
                 topicInput.sendKeys(topics.get(i));
-                waitForAnimationFinish();
-                driver.waitAndFindElement(By.xpath(appBaseXPath + "//button[contains(@class, 'custom-add')]"))
-                    .click();
+                // the add button is bound to the validity of the entered subject, so it enables itself
+                // as soon as the editor tools app accepted the input
+                driver.waitAndFindElement(By.xpath(appBaseXPath + "//button[contains(@class, 'custom-add')]"),
+                    ExpectedConditions::elementToBeClickable).click();
             });
         }
     }
@@ -335,9 +336,10 @@ public class MIRModsEditorController extends MIREditorController {
                 topicInput.sendKeys(coordinates);
             }
 
-            waitForAnimationFinish();
-            driver.waitAndFindElement(By.xpath(appBaseXPath + "//button[contains(@class, 'custom-add')]"))
-                .click();
+            // the add button is bound to the validity of the entered subject, so it enables itself
+            // as soon as the editor tools app accepted the input
+            driver.waitAndFindElement(By.xpath(appBaseXPath + "//button[contains(@class, 'custom-add')]"),
+                ExpectedConditions::elementToBeClickable).click();
         });
     }
 
@@ -369,57 +371,57 @@ public class MIRModsEditorController extends MIREditorController {
             }
 
             IntStream.range(0, names.size()).forEach(i -> {
-                String name = names.get(i);
                 String inputPath = ".//input[contains(@id,'personLabel-1-" + (i + 1 + fieldOffset) + "')]";
-                WebElement inputElement = driver.waitAndFindElement(By.xpath(inputPath));
-                inputElement.sendKeys(name);
-                driver.waitAndFindElement(By.xpath(inputPath + "/.././/button[contains(text(), 'Suchen')]")).click();
-                waitForResults();
-                driver
-                    .waitAndFindElement(By.xpath(
-                        inputPath + "/../../.././/a[contains(text(),'Lobid') and not(contains(@class, 'disabled'))]"))
-                    .click();
-                waitForAnimationFinish();
-                driver.waitAndFindElement(By.xpath(inputPath + "/../../.././/i[contains(@class,'applyPerson')]"))
-                        .click();
-                waitForAnimationFinish();
-                clickOutside();
-                waitForAnimationFinish();
+                searchAndApplyPerson(inputPath, names.get(i));
             });
         }
     }
 
-    private void waitForResults() {
-        try {
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    private void waitForAnimationFinish() {
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     public void setAuthor(String name) {
-        String inputPath = ".//input[contains(@id,'personLabel-')]";
+        searchAndApplyPerson(".//input[contains(@id,'personLabel-')]", name);
+    }
+
+    /**
+     * Types <code>name</code> into the name search app addressed by <code>inputPath</code>, runs the search and
+     * applies the first hit of the Lobid provider.
+     * <p>
+     * Every step waits for the state the name search app (<code>mir-webapp/src/main/vue/name-search</code>)
+     * reaches when it is done:
+     * <ul>
+     *   <li>the provider tab carries the CSS class <code>disabled</code> while the provider is still searching and
+     *       while it has no hits, so it becomes clickable exactly when results are rendered,</li>
+     *   <li><code>applyName()</code> writes the display form of the chosen hit into the search input only after the
+     *       animations it awaits have finished, so the input value is the post condition of applying a person,</li>
+     *   <li>clicking outside closes the result card, so its disappearance is the post condition of the blur.</li>
+     * </ul>
+     */
+    private void searchAndApplyPerson(String inputPath, String name) {
+        String appPath = inputPath + "/../../..";
+        String lobidTabPath = appPath + "//a[contains(text(),'" + LOBID_PROVIDER + "')";
+
         driver.waitAndFindElement(By.xpath(inputPath)).sendKeys(name);
         driver.waitAndFindElement(By.xpath(inputPath + "/.././/button[contains(text(), 'Suchen')]")).click();
-        this.waitForResults();
-        driver
-            .waitAndFindElement(
-                By.xpath(inputPath + "/../../.././/a[contains(text(),'Lobid')  and not(contains(@class, 'disabled'))]"))
-                .click();
-        waitForAnimationFinish();
-        driver.waitAndFindElement(By.xpath(".//i[contains(@class,'applyPerson')][1]"))
-            .click();
-        waitForAnimationFinish();
+
+        // the provider tab keeps the class 'disabled' while the provider is searching and while it has no hits
+        driver.waitAndFindElement(By.xpath(lobidTabPath + " and not(contains(@class, 'disabled'))]"),
+            ExpectedConditions::elementToBeClickable).click();
+        // 'active' is bound to the selected provider, so it marks the render that shows this provider's hits
+        driver.waitAndFindElement(By.xpath(lobidTabPath + " and contains(@class, 'active')]"));
+
+        WebElement applyPerson = driver.waitAndFindElement(
+            By.xpath(appPath + "//i[contains(@class,'applyPerson')]"), ExpectedConditions::elementToBeClickable);
+        String displayForm = driver
+            .waitAndFindElement(applyPerson, By.xpath("./../..//span[contains(@class,'result-title')]"))
+            .getText();
+        applyPerson.click();
+        // applyName() copies the display form of the chosen hit into the search input, but only after the
+        // animations it awaits have finished
+        driver.waitFor(webDriver -> displayForm.equals(
+            webDriver.findElement(By.xpath(inputPath)).getDomProperty("value")));
+
         clickOutside();
-        waitForAnimationFinish();
+        driver.waitFor(ExpectedConditions.invisibilityOfElementLocated(
+            By.xpath(appPath + "//div[contains(@class,'search-completion')]")));
     }
 
     public void setAccessConditions(MIRLicense ac) {
