@@ -21,8 +21,6 @@
     <cargo.servlet.port>9107</cargo.servlet.port>
     <failsafe.arg />
     <it.host>127.0.0.1</it.host>
-    <maven.deploy.skip>true</maven.deploy.skip>
-    <maven.install.skip>true</maven.install.skip>
     <solr.home>${MCR.Home.Integration}/solr-home</solr.home>
     <solr.port>9108</solr.port>
   </properties>
@@ -51,7 +49,6 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
-        <version>3.5.0</version>
         <executions>
           <execution>
             <goals>
