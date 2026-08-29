@@ -166,32 +166,25 @@
     </xsl:variable>
     
     <xsl:choose>
-      <xsl:when test="$is_hosted_periodical='true'">
-        <!-- A periodocal part published at the repository should handled as periodical Part. -->
-        <xsl:call-template name="XMDP_Document">
-          <xsl:with-param name="documentType" select="$type"/>
-          <xsl:with-param name="documentPublisher" select="$repositoryPublisher"/> 
-          <xsl:with-param name="periodicalAsPartOf" select="'true'"/>
-        </xsl:call-template> 
-      </xsl:when>
       <xsl:when test="($type = 'article' or $type = 'contributionToPeriodical' or $type='contributionToPeriodical ') and $is_hosted_periodical='false' 
                        and ($publisher/dc:publisher/cc:universityOrInstitution/cc:name and $publisher/dc:publisher/cc:universityOrInstitution/cc:place) ">
-        <!-- A periodocal part not published at the repository should handled like a monograph. FormatDoc XMDP (2020) Kap. 0.8 S.5 und Kap.5.2 S.53 -->
+        <!-- A periodical part not published at the repository should handled like a monograph. FormatDoc XMDP (2020) Kap. 0.8 S.5 und Kap.5.2 S.53 -->
         <xsl:call-template name="XMDP_Document">
           <xsl:with-param name="documentType" select="$type"/>
           <!-- <xsl:with-param name="documentPublisher" select="$publisher"/>  -->
           <xsl:with-param name="documentPublisher" select="$repositoryPublisher"/> 
-          <xsl:with-param name="periodicalAsPartOf" select="'false'"/>
+          <xsl:with-param name="periodicalAsPartOf" select="$is_hosted_periodical"/>
         </xsl:call-template> 
       </xsl:when>
-      <xsl:when test="($type = 'doctoralThesis' or $type = 'bachelorThesis' or $type = 'masterThesis') 
-                       and ($publisher/dc:publisher/cc:universityOrInstitution/cc:name and $publisher/dc:publisher/cc:universityOrInstitution/cc:place) ">
+      <!-- TODO: x-xmdp-type auswerten statt harte codiert vergleichen -->
+      <xsl:when test="($type = 'doctoralThesis' or $type = 'bachelorThesis' or $type = 'masterThesis')
+                       and ($publisher/dc:publisher/cc:universityOrInstitution/cc:name and $publisher/dc:publisher/cc:universityOrInstitution/cc:place) "> <!-- TODO: Kriterium für Verlagspublikation muss ein anderes sein, Klassifikation? -->
         <!-- A thesis published by an publishing company should handled like a monograph. FormatDoc XMDP (2020) Kap.3.2. S.27 ; Kap.1.2 S.10-->
         <xsl:call-template name="XMDP_Document">
-          <xsl:with-param name="documentType" select="'book'"/>
+          <xsl:with-param name="documentType" select="'book'"/> <!-- TODO: Fallunterscheidung abhängig von Verlagspublikation ('Book') oder nicht ($type) -->
           <!-- <xsl:with-param name="documentPublisher" select="$publisher"/> -->
-          <xsl:with-param name="documentPublisher" select="$repositoryPublisher"/>
-          <xsl:with-param name="periodicalAsPartOf" select="'false'"/>
+          <xsl:with-param name="documentPublisher" select="$repositoryPublisher"/> <!-- TODO: mit DNB klären: müsste ggf. Univerlag sein? -->
+          <xsl:with-param name="periodicalAsPartOf" select="$is_hosted_periodical"/>
         </xsl:call-template> 
       </xsl:when>
       <xsl:when test="$type = 'doctoralThesis' and ($mods/mods:originInfo[@eventType='creation']/mods:dateOther[@type='accepted'] and $degree)">
@@ -199,7 +192,7 @@
         <xsl:call-template name="XMDP_Document">
           <xsl:with-param name="documentType" select="$type"/>
           <xsl:with-param name="documentPublisher" select="$repositoryPublisher"/>
-          <xsl:with-param name="periodicalAsPartOf" select="'false'"/>
+          <xsl:with-param name="periodicalAsPartOf" select="$is_hosted_periodical"/>
         </xsl:call-template> 
       </xsl:when>
       <xsl:when test="$type = 'bachelorThesis' or $type = 'masterThesis'">
@@ -207,7 +200,7 @@
         <xsl:call-template name="XMDP_Document">
           <xsl:with-param name="documentType" select="$type"/>
           <xsl:with-param name="documentPublisher" select="$repositoryPublisher"/> 
-          <xsl:with-param name="periodicalAsPartOf" select="'false'"/>
+          <xsl:with-param name="periodicalAsPartOf" select="$is_hosted_periodical"/>
         </xsl:call-template> 
       </xsl:when>
       <xsl:when test="$publisher/dc:publisher/cc:universityOrInstitution/cc:name and $publisher/dc:publisher/cc:universityOrInstitution/cc:place">
@@ -216,7 +209,7 @@
           <xsl:with-param name="documentType" select="$type"/>
           <!-- <xsl:with-param name="documentPublisher" select="$publisher"/> -->
           <xsl:with-param name="documentPublisher" select="$repositoryPublisher"/>
-          <xsl:with-param name="periodicalAsPartOf" select="'false'"/>
+          <xsl:with-param name="periodicalAsPartOf" select="$is_hosted_periodical"/>
         </xsl:call-template> 
       </xsl:when>
       <xsl:otherwise>
@@ -224,7 +217,7 @@
         <xsl:call-template name="XMDP_Document">
           <xsl:with-param name="documentType" select="$type"/>
           <xsl:with-param name="documentPublisher" select="$repositoryPublisher"/>
-          <xsl:with-param name="periodicalAsPartOf" select="'false'"/>
+          <xsl:with-param name="periodicalAsPartOf" select="$is_hosted_periodical"/>
         </xsl:call-template> 
       </xsl:otherwise>
     </xsl:choose>
@@ -282,7 +275,7 @@
     <xsl:if test="not(contains($MIR.xMetaDissPlus.disabledTemplates,'abstract'))">
       <xsl:call-template name="abstract" />
     </xsl:if>
-    <!-- Verlag/Verlegende Stelle und Verlagsort -->
+    <!-- Verbreitende Stelle / Repositorybetreiber und Ort -->
     <xsl:copy-of select="$documentPublisher"/>
     <!-- Beteiligte Personen und und Beteiligte Organisationen(Autorenschaft) -->
     <xsl:call-template name="contributor" />
