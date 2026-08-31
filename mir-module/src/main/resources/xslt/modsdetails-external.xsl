@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="3.0"
-  xmlns:datacite="http://datacite.org/schema/kernel-4"
   xmlns:mcracl="http://www.mycore.de/xslt/acl"
   xmlns:mcractionmapping="http://www.mycore.de/xslt/actionmapping"
   xmlns:mcrclassification="http://www.mycore.de/xslt/classification"
@@ -12,8 +11,7 @@
   xmlns:xlink="http://www.w3.org/1999/xlink"
   xmlns:xs="http://www.w3.org/2001/XMLSchema"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  exclude-result-prefixes="#all"
-  extension-element-prefixes="datacite">
+  exclude-result-prefixes="#all">
 
   <xsl:param name="MCR.Users.Superuser.UserName" />
   <xsl:param name="MIR.registerDOI" select="''" />
@@ -762,42 +760,6 @@
       </xsl:if>
     </xsl:for-each>
 
-  </xsl:template>
-
-  <!-- TODO validation award title and number -->
-  <xsl:template match="mods:extension[@type='datacite-funding']" mode="funding">
-    <xsl:for-each select="datacite:fundingReferences/datacite:fundingReference">
-      <tr>
-        <td valign="top" class="metaname">
-          <xsl:value-of select="mcri18n:translate('mir.project')"/>
-        </td>
-        <td class="metavalue">
-          <xsl:value-of select="datacite:funderName"/>
-          <xsl:if test="datacite:awardTitle or datacite:awardNumber">
-            <br/>
-            <xsl:if test="datacite:awardTitle">
-              <i>
-                <xsl:value-of select="datacite:awardTitle"/>
-              </i>
-            </xsl:if>
-            <xsl:if test="datacite:awardNumber">
-              <xsl:text> [</xsl:text>
-              <xsl:choose>
-                <xsl:when test="datacite:awardNumber/@awardURI">
-                  <a target="_blank" href="{datacite:awardNumber/@awardURI}">
-                    <xsl:value-of select="datacite:awardNumber"/>
-                  </a>
-                </xsl:when>
-                <xsl:otherwise>
-                  <xsl:value-of select="datacite:awardNumber"/>
-                </xsl:otherwise>
-              </xsl:choose>
-              <xsl:text>]</xsl:text>
-            </xsl:if>
-          </xsl:if>
-        </td>
-      </tr>
-    </xsl:for-each>
   </xsl:template>
 
 </xsl:stylesheet>
