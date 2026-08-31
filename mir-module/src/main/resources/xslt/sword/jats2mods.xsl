@@ -14,7 +14,9 @@
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:xlink="http://www.w3.org/1999/xlink"
   xmlns:mods="http://www.loc.gov/mods/v3"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  xmlns:mml="http://www.w3.org/1998/Math/MathML"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  exclude-result-prefixes="mml">
 
   <xsl:output method="xml" encoding="UTF-8" indent="yes"/>
 
@@ -428,6 +430,9 @@
       <xsl:apply-templates select="*|text()" />
     </mods:abstract>
   </xsl:template>
+
+  <xsl:template match="abstract//alternatives/tex-math[../mml:math]
+                     | trans-abstract//alternatives/tex-math[../mml:math]" />
 
   <xsl:template match="kwd-group/kwd">
     <mods:subject>
