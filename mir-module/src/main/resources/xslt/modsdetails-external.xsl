@@ -31,6 +31,7 @@
   <xsl:include href="resource:xslt/workflow-util.xsl" />
   <xsl:include href="resource:xslt/mir-mods-utils.xsl" />
   <xsl:include href="resource:xslt/mir-utils.xsl" />
+  <xsl:include href="resource:xslt/layout/mir-layout-utils.xsl" />
 
   <!-- do nothing for display parent -->
   <xsl:template match="/mycoreobject" mode="parent" priority="1">
