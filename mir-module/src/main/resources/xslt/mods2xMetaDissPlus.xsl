@@ -26,7 +26,6 @@
   
   <xsl:include href="resource:xslt/default-parameters.xsl" />
   <xsl:include href="xslInclude:functions" />
-  <xsl:include href="resource:xslt/mods2record.xsl" />
   <xsl:include href="resource:xslt/utils/mods-utils.xsl" />
 
   <xsl:param name="MCR.OAIDataProvider.RepositoryPublisherName" select="''" />
@@ -125,7 +124,7 @@
     </xsl:choose>
   </xsl:variable>
 
-  <xsl:template match="mycoreobject" mode="metadata">
+  <xsl:template match="mycoreobject">
     <xsl:text disable-output-escaping="yes">
       &#60;xMetaDiss:xMetaDiss xmlns:xMetaDiss=&quot;http://www.d-nb.de/standards/xmetadissplus/&quot;
                                xmlns:cc=&quot;http://www.d-nb.de/standards/cc/&quot;

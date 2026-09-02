@@ -13,10 +13,9 @@
   <xsl:include href="resource:xslt/default-parameters.xsl" />
   <xsl:include href="xslInclude:functions" />
   <xsl:include href="resource:xslt/includes/mods2dc.xsl" />
-  <xsl:include href="resource:xslt/mods2record.xsl" />
   <xsl:include href="resource:xslt/utils/mods-utils.xsl" />
 
-  <xsl:template match="mycoreobject" mode="metadata">
+  <xsl:template match="mycoreobject">
 
   <xsl:variable name="ifs">
     <xsl:for-each select="structure/derobjects/derobject[mcracl:check-permission(@xlink:href, 'read') and mcrderivate:is-display-enabled(@xlink:href, 'export')]">
