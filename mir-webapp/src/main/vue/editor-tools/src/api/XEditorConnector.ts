@@ -35,15 +35,18 @@ export const retrieveSubject = (root: HTMLElement): Subject => {
 };
 
 export interface ProviderConfigDetails {
-    authorityName?: string;
+    authorityName: string;
+    label?: string;
     baseUrl: string;
     vocabulary?: string;
+    displayedProperties?: string;
     [key: string]: string | undefined;
 }
 
 export interface ProviderConfig {
     id: string;
     type: string;
+    label:string
     config: ProviderConfigDetails;
 }
 
@@ -83,6 +86,17 @@ export interface EditorSettings {
 }
 
 export const possibleTypes = ["Topic", "Geographic" , "Institution" , "Person" , "Family" , "Conference" , "TitleInfo" , "Cartographics"];
+
+const KNOWN_PROVIDER_PROPERTY_SUFFIXES = [
+    "enabled",
+    "type",
+    "label",
+    "baseurl",
+    "authorityname",
+    "authority",
+    "vocabulary",
+    "keys",
+].sort((a, b) => b.length - a.length);
 
 export const retrieveSettings = (root: HTMLElement): EditorSettings => {
     const input = root.parentElement;
@@ -132,7 +146,7 @@ export const retrieveSettings = (root: HTMLElement): EditorSettings => {
         } else {
             settings.required = requiredStr.split(",");
             settings.required = settings.required.filter((value, index, array) => {
-               const includes = possibleTypes.includes(value);
+                const includes = possibleTypes.includes(value);
                 if(!includes){
                     console.warn(`Unknown type ${value} in required list`);
                 }
@@ -147,12 +161,12 @@ export const retrieveSettings = (root: HTMLElement): EditorSettings => {
             settings.editor = settings.editor
                 .filter(value => value.trim().length >0 )
                 .filter((value, index, array) => {
-                const includes = possibleTypes.includes(value);
-                if(!includes){
-                    console.warn(`Unknown type ${value} in editor list`);
-                }
-                return includes;
-            });
+                    const includes = possibleTypes.includes(value);
+                    if(!includes){
+                        console.warn(`Unknown type ${value} in editor list`);
+                    }
+                    return includes;
+                });
         }
 
         if(searchable == "*"){
@@ -183,35 +197,71 @@ export const retrieveSettings = (root: HTMLElement): EditorSettings => {
 
 
         if (input instanceof HTMLElement) {
-            const dataset = input.dataset;
             const providersMap: Record<string, Record<string, string>> = {};
 
-            Object.keys(dataset).forEach((key) => {
-                const match = key.match(/^provider([A-Z][a-z0-9]*)(.*)$/);
-                if (!match) return;
+            for (const attr of input.attributes) {
+                if (!attr.name.startsWith("data-provider-")) continue;
+                const remainder = attr.name.substring("data-provider-".length);
 
-                const providerId = match[1].toLowerCase();
-                let propName = match[2] ? match[2].charAt(0).toLowerCase() + match[2].slice(1) : "enabled";
+                const matchedSuffix = KNOWN_PROVIDER_PROPERTY_SUFFIXES.find(
+                    suffix => remainder === suffix || remainder.endsWith(`-${suffix}`)
+                );
 
+                if (!matchedSuffix) {
+                    console.warn(`Unknown provider property in attribute "${attr.name}", skipping. Add it to KNOWN_PROVIDER_PROPERTY_SUFFIXES if this is intentional.`);
+                    continue;
+                }
+
+                const providerId = remainder === matchedSuffix
+                    ? ""
+                    : remainder.slice(0, remainder.length - matchedSuffix.length - 1);
+
+                if (!providerId) {
+                    console.warn(`Attribute "${attr.name}" has no provider id, skipping.`);
+                    continue;
+                }
+
+                let propName = matchedSuffix.replace(/-([a-z])/g, (_, char) => char.toUpperCase());
                 if (propName === "baseurl") propName = "baseUrl";
                 if (propName === "authorityname") propName = "authorityName";
 
                 providersMap[providerId] ??= {};
-                providersMap[providerId][propName] = dataset[key] || "";
-            });
+                providersMap[providerId][propName] = attr.value;
+            }
 
             settings.providers = Object.entries(providersMap)
                 .filter(([_, props]) => props.enabled === "true")
-                .map(([id, props]) => ({
-                    id,
-                    type: props.type || id,
-                    config: {
-                        baseUrl: props.baseUrl || "",
-                        authorityName: props.authorityName || props.authority,
-                        vocabulary: props.vocabulary,
-                        ...props
+                .map(([baseId, props]) => {
+                    const { enabled, type, label, baseUrl, authorityName, authority, vocabulary, ...restConfig } = props;
+
+                    const resolvedAuthority = authorityName || authority || "";
+                    const specificSuffix = vocabulary || resolvedAuthority;
+
+                    const cleanSuffix = specificSuffix.replace(/[^a-zA-Z]/g, "");
+                    const uniqueId = cleanSuffix ? `${baseId}_${cleanSuffix}` : baseId;
+
+                    if (!baseUrl) {
+                        console.error(`Search provider "${uniqueId}" has no baseUrl configured, provider is discarded.`);
+                        return null;
                     }
-                }));
+                    if (!resolvedAuthority) {
+                        console.error(`Search provider "${uniqueId}" has no authorityName configured, provider is discarded.`);
+                        return null;
+                    }
+
+                    return {
+                        id: uniqueId,
+                        type: type || baseId,
+                        label: label || uniqueId,
+                        config: {
+                            baseUrl,
+                            authorityName: resolvedAuthority,
+                            ...(vocabulary ? { vocabulary } : {}),
+                            ...restConfig
+                        }
+                    };
+                })
+                .filter((provider): provider is ProviderConfig => provider !== null);
         }
 
         // Fallback to lobid,
@@ -220,6 +270,7 @@ export const retrieveSettings = (root: HTMLElement): EditorSettings => {
                 {
                     id: "lobid",
                     type: "lobid",
+                    label: "Lobid",
                     config: {
                         authorityName: "gnd",
                         baseUrl: "https://lobid.org/gnd/search",
@@ -228,7 +279,6 @@ export const retrieveSettings = (root: HTMLElement): EditorSettings => {
             ];
         }
 
-        console.log(settings);
         return settings
     }
     throw new Error("Could not find subjectXML input");
