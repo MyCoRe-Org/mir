@@ -175,13 +175,21 @@ const openSearchSettings = () => {
     emit("openSearchSettings");
 }
 
-watch(()=>props.searchResultGroup, (newValue) => {
-    const isGroupPresent = newValue.filter(g => g.groupId === model.currentGroupId)[0];
-    if (!isGroupPresent) {
-        model.currentGroupId = newValue[0].groupId;
-    }
+watch(() => props.searchResultGroup, (newValue) => {
+  if (newValue.length === 0) {
+    model.currentGroupId = undefined;
+    return;
+  }
+
+  const isGroupPresent = newValue.some(
+      (group) => group.groupId === model.currentGroupId
+  );
+
+  if (!isGroupPresent) {
+    model.currentGroupId = newValue[0].groupId;
+  }
 }, {
-    deep: true
+  deep: true
 });
 
 const currentGroup = computed(() => {

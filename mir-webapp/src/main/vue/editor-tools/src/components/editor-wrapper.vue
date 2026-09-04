@@ -129,7 +129,7 @@
 </template>
 
 <script lang="ts" setup>
-import {computed, onMounted, reactive, ref, watch, inject} from "vue";
+import {computed, onMounted, reactive, ref, watch} from "vue";
 import {Cartographics, Geographic, Name, Subject, TitleInfo, Topic} from "@/api/Subject";
 import subjectEditor from "@/components/editor/subject-editor.vue";
 import searchForm from "@/components/search/search-form.vue";
@@ -207,23 +207,28 @@ watch(()=>model.subject, (newValue) => {
     }
 }, {deep: true});
 
-watch( () => model.searchOptions, () => {
+watch(() => model.searchOptions, () => {
     search();
 }, {deep: true});
 
 onMounted(async () => {
-  if (rootEl.value) {
-    model.subject = retrieveSubject(rootEl.value);
-    const injectedSettings = inject<EditorSettings>("editorSettings");
-    const settings = injectedSettings || retrieveSettings(rootEl.value);
+    if(rootEl.value) {
+        model.subject = retrieveSubject(rootEl.value);
+    const settings = retrieveSettings(rootEl.value);
     model.settings = settings;
     if (settings?.providers && settings.providers.length > 0) {
       settings.providers.forEach((providerConfig) => {
-        if (!SearchProviders[providerConfig.id]) {
+        try {
           registerProvider(providerConfig);
+        } catch (e) {
+          console.error(`Could not register provider "${providerConfig.id}"`, e);
         }
       });
-      await ensureProvidersLoaded();
+      try {
+        await ensureProvidersLoaded();
+      } catch (e) {
+        console.error("Could not load all search providers", e);
+      }
     }
     const filter = settings?.searchFilterDefault || [];
     const searchable = settings?.searchable || [];
@@ -266,7 +271,10 @@ const searchSubmitted = async (searchTerm: string) => {
 }
 
 const search = async () => {
-  if (!model.settings?.providers) return;
+  if (!model.settings?.providers) {
+    model.searching = false;
+    return;
+  }
   model.searching = true;
 
   try {
@@ -276,7 +284,7 @@ const search = async () => {
         model.settings.providers.map(async (providerConfig) => {
           const providerInstance = SearchProviders[providerConfig.id] || SearchProviders[providerConfig.type];
           if (!providerInstance) {
-            return { groupId: providerConfig.id, title: providerConfig.id, results: [] };
+            return {groupId: providerConfig.id, title: providerConfig.label, results: []};
           }
 
           const results = await providerInstance.search(
@@ -286,7 +294,7 @@ const search = async () => {
 
           return {
             groupId: providerConfig.id,
-            title: providerConfig.id,
+            title: providerConfig.label,
             results: results || []
           };
         })
@@ -296,7 +304,7 @@ const search = async () => {
     model.searchResultGroup = [];
   } finally {
     model.searching = false;
-  }
+}
 };
 
 // used to make the search form not editable
