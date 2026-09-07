@@ -516,7 +516,7 @@
   <!-- ========== language (0-1) ========== -->
 
   <xsl:template name="language">
-    <xsl:for-each select="mods:language[1]/mods:languageTerm[@authority='rfc5646'][@type='code']">
+    <xsl:for-each select="(mods:language/mods:languageTerm[@authority='rfc5646'][@type='code'])[1]">
       <language>
         <xsl:value-of select="." />
       </language>
