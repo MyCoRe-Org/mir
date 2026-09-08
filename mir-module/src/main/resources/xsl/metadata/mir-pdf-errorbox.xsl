@@ -4,122 +4,129 @@
                 xmlns:xlink="http://www.w3.org/1999/xlink"
                 xmlns:mcrxsl="xalan://org.mycore.common.xml.MCRXMLFunctions"
                 xmlns:xalan="http://xml.apache.org/xalan"
-                version="1.0" exclude-result-prefixes="i18n mcrxsl">
+                version="1.0" exclude-result-prefixes="i18n mcrxsl xalan xlink">
 
     <xsl:param name="ServletsBaseURL"/>
+    <xsl:param name="WebApplicationBaseURL"/>
 
 
     <xsl:template match="mycoreobject" mode="displayPdfError">
-        <xsl:variable name="errorMessages">
-            <xsl:apply-templates select="structure/derobjects/derobject" mode="displayPdfError"/>
+        <!-- the reports are read, never produced, here: PDF/A validation runs asynchronously -->
+        <xsl:variable name="reportsFragment">
+            <xsl:for-each select="structure/derobjects/derobject">
+                <xsl:variable name="derivateID" select="@xlink:href"/>
+                <xsl:variable name="result" select="document(concat('catchEx:pdfAReport:', $derivateID))"/>
+                <xsl:choose>
+                    <xsl:when test="$result/derivate">
+                        <xsl:copy-of select="$result/derivate"/>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <error id="{$derivateID}">
+                            <xsl:value-of select="$result"/>
+                        </error>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </xsl:for-each>
         </xsl:variable>
-        <xsl:if test="string-length(normalize-space($errorMessages)) >0">
-            <xsl:variable name="couldNotBeValidated">
-                <xsl:choose>
-                    <xsl:when test="contains($errorMessages,i18n:translate('pdf.errorbox.validationerror.message'))">
-                        <xsl:value-of select="'true'"/>
-                    </xsl:when>
-                    <xsl:otherwise>
-                        <xsl:value-of select="'false'"/>
-                    </xsl:otherwise>
-                </xsl:choose>
-            </xsl:variable>
-            <xsl:variable name="containsValidationError">
-                <xsl:choose>
-                    <xsl:when test="contains($errorMessages,i18n:translate('pdf.errorbox.clause'))">
-                        <xsl:value-of select="'true'"/>
-                    </xsl:when>
-                    <xsl:otherwise>
-                        <xsl:value-of select="'false'"/>
-                    </xsl:otherwise>
-                </xsl:choose>
-            </xsl:variable>
-            <xsl:variable name="CaughtException">
-                <xsl:choose>
-                    <xsl:when test="contains($errorMessages,i18n:translate('pdf.error.runtimeerror.message'))">
-                        <xsl:value-of select="'true'"/>
-                    </xsl:when>
-                    <xsl:otherwise>
-                        <xsl:value-of select="'false'"/>
-                    </xsl:otherwise>
-                </xsl:choose>
-            </xsl:variable>
-            <xsl:variable name="validationWasSuccessfull">
-                <xsl:choose>
-                    <xsl:when test="$couldNotBeValidated='false' and $containsValidationError='false' and $CaughtException='false'">
-                        <xsl:value-of select="'true'"/>
-                    </xsl:when>
-                    <xsl:otherwise>
-                        <xsl:value-of select="'false'"/>
-                    </xsl:otherwise>
-                </xsl:choose>
-            </xsl:variable>
+        <xsl:variable name="reports" select="xalan:nodeset($reportsFragment)"/>
+        <xsl:variable name="files" select="$reports/derivate/file"/>
+        <xsl:variable name="pending" select="$files[@status = 'pending']"/>
+        <xsl:variable name="invalid" select="$files[@flavour = 'Validation Error' or failed]"/>
 
-            <xsl:choose>
-                <xsl:when test="$validationWasSuccessfull='false' and $CaughtException='false'">
-                    <div class="container pdf-validation mb-3 px-0" id="accordion">
-                        <div class="card-header bg-danger text-white">
-                            <div class="list-group list-group-root well p-3">
-                                <p class="h5">
-                                    <xsl:value-of select="i18n:translate('pdf.errorbox.warning.heading')"/>
-                                </p>
-                                <p>
-                                    <xsl:value-of select="i18n:translate('pdf.errorbox.warning.message')"/>
-                                </p>
-                            </div>
-                        </div>
-                        <div class="card-body border-left border-right border-bottom">
-                            <xsl:copy-of select="$errorMessages"/>
-                        </div>
-                    </div>
-                </xsl:when>
-                <xsl:when test="$validationWasSuccessfull='true'">
-                    <div class="card-header bg-success text-white mb-3">
+        <xsl:if test="$files or $reports/error">
+        <div id="mir-pdfa-validation">
+        <xsl:choose>
+            <xsl:when test="$reports/error">
+                <xsl:apply-templates select="$reports/error" mode="displayPdfError"/>
+            </xsl:when>
+            <xsl:when test="$invalid">
+                <div class="container pdf-validation mb-3 px-0" id="accordion">
+                    <div class="card-header bg-danger text-white">
                         <div class="list-group list-group-root well p-3">
                             <p class="h5">
-                                <xsl:value-of select="i18n:translate('pdf.errorbox.success.heading')"/>
+                                <xsl:value-of select="i18n:translate('pdf.errorbox.warning.heading')"/>
                             </p>
                             <p>
-                                <xsl:value-of select="i18n:translate('pdf.errorbox.success.message')"/>
+                                <xsl:value-of select="i18n:translate('pdf.errorbox.warning.message')"/>
                             </p>
+                            <xsl:if test="$pending">
+                                <p class="mb-0 pdfa-status">
+                                    <xsl:value-of select="i18n:translate('pdf.errorbox.pending.message')"/>
+                                </p>
+                                <xsl:call-template name="pdfError.refreshButton"/>
+                            </xsl:if>
                         </div>
                     </div>
-                </xsl:when>
-                <xsl:otherwise> <xsl:copy-of select="$errorMessages"/></xsl:otherwise>
-            </xsl:choose>
-        </xsl:if>
-    </xsl:template>
-
-    <xsl:template match="structure/derobjects/derobject" mode="displayPdfError">
-        <xsl:variable name="derivateID" select="@xlink:href"/>
-        <xsl:variable name="result" select="document(concat('catchEx:pdfAValidator:', $derivateID))"/>
-            <xsl:choose>
-            <xsl:when test="not(normalize-space($result))">
-                <xsl:apply-templates select="$result/derivate/file" mode="displayPdfError"/>
-            </xsl:when>
-            <xsl:otherwise>
-                <div class="card text-white bg-danger mb-3 pdfa-runtime-exception">
-                    <div class="card-header">
-                        <xsl:value-of select="concat($derivateID,': ',$result)"/>
+                    <div class="card-body border-left border-right border-bottom">
+                        <xsl:apply-templates select="$files" mode="displayPdfError"/>
                     </div>
-                    <div class="card-body">
-                        <p class="card-text">
-                            <xsl:value-of select="i18n:translate('pdf.error.runtimeerror.message')"/>
+                </div>
+            </xsl:when>
+            <xsl:when test="$pending">
+                <div class="container pdf-validation mb-3 px-0" id="accordion">
+                    <div class="card-header bg-secondary pdfa-status">
+                        <div class="list-group list-group-root well p-3">
+                            <p class="h5">
+                                <xsl:value-of select="i18n:translate('pdf.errorbox.pending.heading')"/>
+                            </p>
+                            <p class="mb-0">
+                                <xsl:value-of select="i18n:translate('pdf.errorbox.pending.message')"/>
+                            </p>
+                            <xsl:call-template name="pdfError.refreshButton"/>
+                        </div>
+                    </div>
+                    <div class="card-body border-left border-right border-bottom">
+                        <xsl:apply-templates select="$files" mode="displayPdfError"/>
+                    </div>
+                </div>
+            </xsl:when>
+            <xsl:when test="$files">
+                <div class="card-header bg-success text-white mb-3">
+                    <div class="list-group list-group-root well p-3">
+                        <p class="h5">
+                            <xsl:value-of select="i18n:translate('pdf.errorbox.success.heading')"/>
                         </p>
-                        <p class="card-text fst-italic">
-                            <xsl:value-of select="i18n:translate('mir.error.finalLine')"/>
+                        <p>
+                            <xsl:value-of select="i18n:translate('pdf.errorbox.success.message')"/>
                         </p>
                     </div>
                 </div>
-
-            </xsl:otherwise>
-            </xsl:choose>
+            </xsl:when>
+        </xsl:choose>
+        </div>
+        <xsl:if test="$pending">
+            <script src="{$WebApplicationBaseURL}js/mir/pdfa-status.js"/>
+        </xsl:if>
+        </xsl:if>
     </xsl:template>
 
+    <!-- the page is only revalidated against the object, so a finished report needs a cache bypassing reload -->
+    <xsl:template name="pdfError.refreshButton">
+        <button type="button" class="btn btn-sm btn-outline-dark mt-2" data-pdfa-refresh="">
+            <xsl:value-of select="concat(i18n:translate('pdf.errorbox.pending.refresh'), ' ')"/>
+            <i class="fas fa-sync-alt ms-1"/>
+        </button>
+    </xsl:template>
 
+    <xsl:template match="error" mode="displayPdfError">
+        <div class="card text-white bg-danger mb-3 pdfa-runtime-exception">
+            <div class="card-header">
+                <xsl:value-of select="concat(@id, ': ', .)"/>
+            </div>
+            <div class="card-body">
+                <p class="card-text">
+                    <xsl:value-of select="i18n:translate('pdf.error.runtimeerror.message')"/>
+                </p>
+                <p class="card-text fst-italic">
+                    <xsl:value-of select="i18n:translate('mir.error.finalLine')"/>
+                </p>
+            </div>
+        </div>
+    </xsl:template>
 
     <xsl:template match="file" mode="displayPdfError">
         <xsl:variable name="ValidationError" select="@flavour = 'Validation Error'"/>
+        <xsl:variable name="Pending" select="@status = 'pending'"/>
 
         <xsl:variable name="derivate" select="../@id"/>
         <xsl:variable name="name">
@@ -130,6 +137,7 @@
 
         <xsl:variable name="badgecolor">
             <xsl:choose>
+                <xsl:when test="$Pending">secondary</xsl:when>
                 <xsl:when test="$ValidationError">warning</xsl:when>
                 <xsl:when test="failed">danger</xsl:when>
                 <xsl:otherwise>success</xsl:otherwise>
@@ -147,6 +155,9 @@
                 </span>
                 <span class="badge bg-{$badgecolor} rounded-pill align-self-center">
                     <xsl:choose>
+                        <xsl:when test="$Pending">
+                            <i class="fas fa-hourglass-half"/>
+                        </xsl:when>
                         <xsl:when test="$badgecolor = 'warning'">!</xsl:when>
                         <xsl:otherwise>
                             <xsl:value-of select="count(failed)"/>
@@ -158,6 +169,13 @@
         <ul class="list-group collapse" id="collapse{$derivate}{$uniqueFileId}">
             <li class="list-group-item d-flex flex-column flex-xl-row flex-grow-2 text-break">
                 <xsl:choose>
+                    <xsl:when test="$Pending">
+                        <span class="flex-grow-1 col-xl-8 align-items-center pdfa-status">
+                            <p class="text-muted mb-2">
+                                <xsl:value-of select="i18n:translate('pdf.errorbox.pending.file')"/>
+                            </p>
+                        </span>
+                    </xsl:when>
                     <xsl:when test="$ValidationError">
                         <xsl:apply-templates select="failed" mode="displayValidationError"/>
                         <span class="flex-grow-1 col-xl-8 align-items-center">
