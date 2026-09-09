@@ -818,7 +818,10 @@
       <td valign="top" class="metaname">
         <xsl:choose>
           <xsl:when test="@access">
-            <xsl:value-of select="concat(mcri18n:translate(concat('component.mods.metaData.dictionary.url.',matches(@access,' ','_'))),':')" />
+            <xsl:variable name="i18n-key" select="
+              concat('component.mods.metaData.dictionary.url.', replace(@access, ' ', '_'))
+            " />
+            <xsl:value-of select="concat(mcri18n:translate($i18n-key), ':')" />
           </xsl:when>
           <xsl:otherwise>
             <xsl:value-of select="concat(mcri18n:translate('component.mods.metaData.dictionary.url'),':')" />
