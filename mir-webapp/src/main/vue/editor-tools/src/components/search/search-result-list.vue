@@ -16,7 +16,7 @@
 
         <ul class="col-12 nav nav-tabs mb-1">
             <li class="nav-item" v-for="resultGroup in props.searchResultGroup" :key="resultGroup.groupId">
-                <a href="#" @click.prevent :class="`nav-link${model.currentGroupId==resultGroup.groupId?' active':''}`">
+          <a href="#" @click.prevent="model.currentGroupId = resultGroup.groupId" :class="`nav-link${model.currentGroupId==resultGroup.groupId?' active':''}`">
                     {{ resultGroup.title }} </a>
             </li>
         </ul>
@@ -175,13 +175,21 @@ const openSearchSettings = () => {
     emit("openSearchSettings");
 }
 
-watch(()=>props.searchResultGroup, (newValue) => {
-    const isGroupPresent = newValue.filter(g => g.groupId === model.currentGroupId)[0];
-    if (!isGroupPresent) {
-        model.currentGroupId = newValue[0].groupId;
-    }
+watch(() => props.searchResultGroup, (newValue) => {
+  if (newValue.length === 0) {
+    model.currentGroupId = undefined;
+    return;
+  }
+
+  const isGroupPresent = newValue.some(
+      (group) => group.groupId === model.currentGroupId
+  );
+
+  if (!isGroupPresent) {
+    model.currentGroupId = newValue[0].groupId;
+  }
 }, {
-    deep: true
+  deep: true
 });
 
 const currentGroup = computed(() => {
