@@ -1,74 +1,42 @@
 import {LobidSearchProvider} from "@/api/search/LobidSearchProvider";
 import {DanteSearchProvider} from "@/api/search/DanteSearchProvider";
+import {SearchProvider} from "@/api/search/SearchProvider";
 
-export const SearchProviders: Record<string, any> = {};
+export type SearchProviderConstructor = new (config: any) => SearchProvider;
 
-const pendingPromises: Promise<void>[] = [];
+export const SearchProviderClasses: Record<string, SearchProviderConstructor> = {
+    lobid: LobidSearchProvider,
+    dante: DanteSearchProvider,
+};
 
-export function instantiateProvider(item: { id: string; type: string; config: any }) {
-    try {
-        const authorityName = item.config?.authorityName;
-        if (!authorityName) {
-            console.error(`[MIR] Missing required "authorityName" for provider type: "${item.type}" (ID: "${item.id}"). Provider discarded.`);
-            return;
-        }
-
-        switch (item.type) {
-            case "lobid": {
-                SearchProviders[item.id] = new LobidSearchProvider(item.config);
-                break;
-            }
-            case "dante": {
-                SearchProviders[item.id] = new DanteSearchProvider(item.config);
-                break;
-            }
-            default: {
-                const win = typeof window !== "undefined" ? (window as any) : {};
-                const CustomProviderClass = win.SearchProviderRegistry?.[item.type];
-
-                if (CustomProviderClass) {
-                    SearchProviders[item.id] = new CustomProviderClass(item.config);
-                } else {
-                    console.warn(`[MIR] Unknown search provider type: "${item.type}" for ID "${item.id}".`);
-                }
-                break;
-            }
-        }
-    } catch (error) {
-        console.error(`[MIR] Failed to instantiate search provider type: "${item.type}" for ID "${item.id}".`, error);
-    }
-}
-
-export function registerProvider(item: { id: string; type: string; config: any }) {
-    instantiateProvider(item);
-    const promise = Promise.resolve();
-    pendingPromises.push(promise);
-    return promise;
-}
-
-export async function ensureProvidersLoaded() {
-    await Promise.all(pendingPromises);
-}
 
 declare global {
     interface Window {
-        MIRPendingProviders?: Array<any> & { push: (item: any) => number };
-        SearchProviderRegistry?: Record<string, new (config: any) => any>;
+        SearchProviderRegistry?: Record<string, SearchProviderConstructor>;
     }
 }
 
 if (typeof window !== "undefined") {
-    const win = window as Window;
-    const queue = (win.MIRPendingProviders || []) as Array<any> & { push: (item: any) => number };
+    window.SearchProviderRegistry = {
+        ...SearchProviderClasses,
+        ...(window.SearchProviderRegistry || {}),
+    };
+}
 
-    if (Array.isArray(queue)) {
-        queue.forEach(registerProvider);
+
+export function createProviderInstance(type: string, config: any): SearchProvider | null {
+    const win = typeof window !== "undefined" ? window : undefined;
+    const ProviderClass = win?.SearchProviderRegistry?.[type] || SearchProviderClasses[type];
+
+    if (!ProviderClass) {
+        console.warn(`[MIR] Unknown search provider type: "${type}".`);
+        return null;
     }
 
-    queue.push = (item: any) => {
-        registerProvider(item);
-        return queue.length;
-    };
-
-    win.MIRPendingProviders = queue;
+    try {
+        return new ProviderClass(config);
+    } catch (error) {
+        console.error(`[MIR] Failed to instantiate search provider type: "${type}".`, error);
+        return null;
+    }
 }
