@@ -34,20 +34,12 @@ export const retrieveSubject = (root: HTMLElement): Subject => {
 
 };
 
-export interface ProviderConfigDetails {
-    authorityName: string;
-    label?: string;
-    baseUrl: string;
-    vocabulary?: string;
-    displayedProperties?: string;
-    [key: string]: string | undefined;
-}
 
 export interface ProviderConfig {
     id: string;
     type: string;
-    label:string
-    config: ProviderConfigDetails;
+    label: string;
+    config: Record<string, string>;
 }
 
 export interface EditorSettings {
@@ -86,17 +78,6 @@ export interface EditorSettings {
 }
 
 export const possibleTypes = ["Topic", "Geographic" , "Institution" , "Person" , "Family" , "Conference" , "TitleInfo" , "Cartographics"];
-
-const KNOWN_PROVIDER_PROPERTY_SUFFIXES = [
-    "enabled",
-    "type",
-    "label",
-    "baseurl",
-    "authorityname",
-    "authority",
-    "vocabulary",
-    "keys",
-].sort((a, b) => b.length - a.length);
 
 export const retrieveSettings = (root: HTMLElement): EditorSettings => {
     const input = root.parentElement;
@@ -203,27 +184,16 @@ export const retrieveSettings = (root: HTMLElement): EditorSettings => {
                 if (!attr.name.startsWith("data-provider-")) continue;
                 const remainder = attr.name.substring("data-provider-".length);
 
-                const matchedSuffix = KNOWN_PROVIDER_PROPERTY_SUFFIXES.find(
-                    suffix => remainder === suffix || remainder.endsWith(`-${suffix}`)
-                );
 
-                if (!matchedSuffix) {
-                    console.warn(`Unknown provider property in attribute "${attr.name}", skipping. Add it to KNOWN_PROVIDER_PROPERTY_SUFFIXES if this is intentional.`);
+                const separatorIndex = remainder.indexOf("-");
+                if (separatorIndex <= 0 || separatorIndex === remainder.length - 1) {
+                    console.warn(`Attribute "${attr.name}" does not match data-provider-<id>-<property>, skipping.`);
                     continue;
                 }
 
-                const providerId = remainder === matchedSuffix
-                    ? ""
-                    : remainder.slice(0, remainder.length - matchedSuffix.length - 1);
-
-                if (!providerId) {
-                    console.warn(`Attribute "${attr.name}" has no provider id, skipping.`);
-                    continue;
-                }
-
-                let propName = matchedSuffix.replace(/-([a-z])/g, (_, char) => char.toUpperCase());
-                if (propName === "baseurl") propName = "baseUrl";
-                if (propName === "authorityname") propName = "authorityName";
+                const providerId = remainder.substring(0, separatorIndex);
+                const propertyPart = remainder.substring(separatorIndex + 1);
+                const propName = propertyPart.replace(/-([a-z0-9])/g, (_, char) => char.toUpperCase());
 
                 providersMap[providerId] ??= {};
                 providersMap[providerId][propName] = attr.value;
@@ -231,40 +201,19 @@ export const retrieveSettings = (root: HTMLElement): EditorSettings => {
 
             settings.providers = Object.entries(providersMap)
                 .filter(([_, props]) => props.enabled === "true")
-                .map(([baseId, props]) => {
-                    const { enabled, type, label, baseUrl, authorityName, authority, vocabulary, ...restConfig } = props;
-
-                    const resolvedAuthority = authorityName || authority || "";
-                    const specificSuffix = vocabulary || resolvedAuthority;
-
-                    const cleanSuffix = specificSuffix.replace(/[^a-zA-Z]/g, "");
-                    const uniqueId = cleanSuffix ? `${baseId}_${cleanSuffix}` : baseId;
-
-                    if (!baseUrl) {
-                        console.error(`Search provider "${uniqueId}" has no baseUrl configured, provider is discarded.`);
-                        return null;
-                    }
-                    if (!resolvedAuthority) {
-                        console.error(`Search provider "${uniqueId}" has no authorityName configured, provider is discarded.`);
-                        return null;
-                    }
+                .map(([id, props]) => {
+                    const {enabled, type, label, ...config} = props;
 
                     return {
-                        id: uniqueId,
-                        type: type || baseId,
-                        label: label || uniqueId,
-                        config: {
-                            baseUrl,
-                            authorityName: resolvedAuthority,
-                            ...(vocabulary ? { vocabulary } : {}),
-                            ...restConfig
-                        }
+                        id,
+                        type: type || id,
+                        label: label || id,
+                        config
                     };
-                })
-                .filter((provider): provider is ProviderConfig => provider !== null);
+                });
         }
 
-        // Fallback to lobid,
+        // Fallback to lobid
         if (settings.providers.length === 0) {
             settings.providers = [
                 {
@@ -272,7 +221,6 @@ export const retrieveSettings = (root: HTMLElement): EditorSettings => {
                     type: "lobid",
                     label: "Lobid",
                     config: {
-                        authorityName: "gnd",
                         baseUrl: "https://lobid.org/gnd/search",
                     },
                 },

@@ -1,12 +1,32 @@
-import { SearchSettings } from "@/api/search/SearchSettings";
-import {Topic } from "@/api/Subject";
-import {SearchProvider,SearchResult, SearchResultInfo} from "@/api/search/SearchProvider";
+import {SearchSettings} from "@/api/search/SearchSettings";
+import {Topic} from "@/api/Subject";
+import {SearchProvider, SearchResult, SearchResultInfo} from "@/api/search/SearchProvider";
 import {i18n} from "@/api/I18N";
 
 export class DanteSearchProvider extends SearchProvider {
 
+    private readonly baseUrl: string;
+    private readonly vocabulary: string;
+    private readonly keys: string[];
+
+    constructor(config: { baseUrl?: string; vocabulary?: string; keys?: string }) {
+        super();
+        if (!config?.baseUrl) {
+            throw new Error("DanteSearchProvider requires a baseUrl.");
+        }
+        if (!config?.vocabulary) {
+            throw new Error("DanteSearchProvider requires a vocabulary.");
+        }
+        this.baseUrl = config.baseUrl;
+        this.vocabulary = config.vocabulary;
+        this.keys = (config.keys || "")
+            .split(",")
+            .map(key => key.trim())
+            .filter(key => key.length > 0);
+    }
+
     async search(searchTerm: string, settings: SearchSettings): Promise<Array<SearchResult>> {
-        if (!settings || !settings.searchTopic || !this.baseUrl) {
+        if (!settings || !settings.searchTopic) {
             return [];
         }
 
@@ -25,17 +45,17 @@ export class DanteSearchProvider extends SearchProvider {
             const limitedJson = json.slice(0, 30);
 
             for (const concept of limitedJson) {
-                const label = concept.prefLabel?.de || concept.prefLabel?.en || concept.uri;
+                const label = this.extractLabel(concept);
 
                 const topic: Topic = {
                     type: "Topic",
                     text: label,
                     valueURI: concept.uri,
-                    authority: this.authorityName
+                    authority: "dante"
                 };
 
                 const info: Array<SearchResultInfo> = [
-                    { id: this.generateID(), label: "URI", type: "url", value: concept.uri }
+                    {id: this.generateID(), label: "URI", type: "url", value: concept.uri}
                 ];
 
                 for (const key of this.keys) {
@@ -54,7 +74,6 @@ export class DanteSearchProvider extends SearchProvider {
                     } catch {
                         // Fallback
                     }
-
                     if (!translatedLabel || translatedLabel === translationKey || translatedLabel.startsWith("???")) {
                         continue;
                     }
@@ -78,6 +97,18 @@ export class DanteSearchProvider extends SearchProvider {
         }
 
         return results;
+    }
+
+    private extractLabel(concept: any): string {
+        const rawPrefLabel = concept.prefLabel;
+        if (!rawPrefLabel) {
+            return concept.uri;
+        }
+        if (typeof rawPrefLabel === "object") {
+            const firstVal = rawPrefLabel.de || rawPrefLabel.en || Object.values(rawPrefLabel)[0];
+            return (Array.isArray(firstVal) ? firstVal[0] : firstVal) || concept.uri;
+        }
+        return rawPrefLabel;
     }
 
     private formatPropertyValue(value: any): string {
