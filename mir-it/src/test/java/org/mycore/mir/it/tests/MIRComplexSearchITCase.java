@@ -72,7 +72,7 @@ public class MIRComplexSearchITCase extends MIRITBase {
     protected void createDocument() throws IOException {
         publishEditorController.openAdmin(() -> {
         });
-        driver.waitUntilPageIsLoaded(getPageTitle());
+        driver.waitUntilPageIsLoaded("MODS-Dokument erstellen");
         editorController.setStatus(MIRStatus.gesperrt);
         editorController.setGenres(Collections.singletonList(MIRGenre.article));
         editorController.setTitleInfo(Stream.of(
@@ -234,9 +234,6 @@ public class MIRComplexSearchITCase extends MIRITBase {
             // this is good
 
         }
-    }
-    protected String getPageTitle(){
-        return "MODS-Dokument erstellen";
     }
 
     protected MIRInstitutes institutionTestValue() {

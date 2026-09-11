@@ -41,7 +41,7 @@ public class MIRAdminEditorITCase extends MIRITBase {
         publishEditorController.openAdmin(() -> {
         });
         simpleSearchController = controllerFactory.createSearchController();
-        driver.waitUntilPageIsLoaded(getPageTitle());
+        driver.waitUntilPageIsLoaded("MODS-Dokument erstellen");
     }
 
     @Test
@@ -144,9 +144,5 @@ public class MIRAdminEditorITCase extends MIRITBase {
         editorController.setGeoPair(MIRTestData.GEOGRAPHIC_PLACE, MIRTestData.COORDINATES);
         editorController.setClassifications(
             Stream.of(MIRDNBClassification._004, MIRDNBClassification._010).collect(Collectors.toList()));
-    }
-
-    protected String getPageTitle(){
-        return "MODS-Dokument erstellen";
     }
 }
