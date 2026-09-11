@@ -105,7 +105,12 @@ public class MIRUserController {
     }
 
     public void openUserMenu(){
-        driver.findElement(By.id("currentUser")).click();
+        driver.waitAndFindElement(By.id("currentUser")).click();
+    }
+
+    public void openWebCLI() {
+        openUserMenu();
+        driver.waitAndFindElement(By.xpath(".//a[contains(text(), 'WebCLI')]")).click();
     }
 
     public void checkCurrentUser(String user){

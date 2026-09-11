@@ -42,7 +42,7 @@ public class MIRSearchTestDataLoader {
             userController.logoutIfLoggedIn();
             userController.loginAs(MIRUserController.ADMIN_LOGIN, MIRUserController.ADMIN_PASSWD);
 
-            openWebCLI(webDriverWrapper);
+            userController.openWebCLI();
             String mainWindowHandle = webDriverWrapper.getWindowHandle();
             webDriverWrapper.waitAndFindElement(By.xpath(".//input[contains(@onclick, 'WebCLI')]")).click();
             //webDriverWrapper.waitAndFindElement(By.xpath(".//input[contains(@onclick, 'window.open')]")).click();
@@ -91,11 +91,6 @@ public class MIRSearchTestDataLoader {
         });
 
         return testFolder.toAbsolutePath().toString();
-    }
-
-    protected void openWebCLI(MCRWebdriverWrapper webDriverWrapper) {
-        webDriverWrapper.waitAndFindElement(By.xpath(".//strong[contains(text(), 'administrator')]")).click();
-        webDriverWrapper.waitAndFindElement(By.xpath(".//a[contains(text(), 'WebCLI')]")).click();
     }
 
     protected List<String> getFileNames() {
