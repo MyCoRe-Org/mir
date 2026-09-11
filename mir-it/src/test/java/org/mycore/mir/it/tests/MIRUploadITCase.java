@@ -11,8 +11,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mycore.common.selenium.util.MCRBy;
-import org.mycore.mir.it.controller.MIRModsEditorController;
-import org.mycore.mir.it.controller.MIRPublishEditorController;
 import org.mycore.mir.it.controller.MIRUploadController;
 import org.mycore.mir.it.controller.MIRUserController;
 import org.mycore.mir.it.model.MIRAccess;
@@ -34,11 +32,7 @@ public class MIRUploadITCase extends MIRITBase {
 
     @Before
     public final void init() {
-        String appURL = getAPPUrlString();
-        userController = new MIRUserController(getDriver(), appURL);
-        publishEditorController = new MIRPublishEditorController(getDriver(), appURL);
-        uploadController = new MIRUploadController(getDriver(), appURL);
-        editorController = new MIRModsEditorController(getDriver(), appURL);
+        uploadController = controllerFactory.createUploadController();
         userController.logoutIfLoggedIn();
         userController.loginAs(MIRUserController.ADMIN_LOGIN, MIRUserController.ADMIN_PASSWD);
         publishEditorController.openAdmin(() -> {

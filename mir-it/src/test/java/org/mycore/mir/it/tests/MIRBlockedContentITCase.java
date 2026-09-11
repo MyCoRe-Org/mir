@@ -14,8 +14,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mycore.common.selenium.util.MCRBy;
-import org.mycore.mir.it.controller.MIRModsEditorController;
-import org.mycore.mir.it.controller.MIRPublishEditorController;
 import org.mycore.mir.it.controller.MIRUploadController;
 import org.mycore.mir.it.controller.MIRUserController;
 import org.mycore.mir.it.model.MIRAccess;
@@ -48,11 +46,7 @@ public class MIRBlockedContentITCase extends MIRITBase {
 
     @Before
     public final void init() {
-        String appURL = getAPPUrlString();
-        userController = new MIRUserController(getDriver(), appURL);
-        publishEditorController = new MIRPublishEditorController(getDriver(), appURL);
-        editorController = new MIRModsEditorController(getDriver(), appURL);
-        uploadController = new MIRUploadController(getDriver(), appURL);
+        uploadController = controllerFactory.createUploadController();
         userController.logoutIfLoggedIn();
         userController.loginAs(MIRUserController.ADMIN_LOGIN, MIRUserController.ADMIN_PASSWD);
         userController.createUser(SUBMITTER_USER_NAME, SUBMITTER_USER_PASSWORD, null, null, "submitter");
@@ -139,11 +133,12 @@ public class MIRBlockedContentITCase extends MIRITBase {
         // once a derivate exists there are several "Aktionen" dropdowns, so open the one whose menu
         // actually contains the admin editor link; select via the "dropdown-toggle" class so the test
         // works regardless of the Bootstrap version (data-toggle in BS4 vs. data-bs-toggle in BS5)
+        String linkText = getAdminEditorLinkText();
         driver.waitAndFindElement(By.xpath(".//a[contains(@class, 'dropdown-toggle')]"
-            + "[following-sibling::ul[.//a[contains(normalize-space(.), 'Bearbeiten im Admin-Editor')]]]"),
-            ExpectedConditions::elementToBeClickable).click();
-        driver.waitAndFindElement(MCRBy.partialLinkText("Bearbeiten im Admin-Editor"),
-            ExpectedConditions::elementToBeClickable).click();
+                        + "[following-sibling::ul[.//a[contains(normalize-space(.), '" + linkText + "')]]]"),
+                ExpectedConditions::elementToBeClickable).click();
+        driver.waitAndFindElement(MCRBy.partialLinkText(linkText),
+                ExpectedConditions::elementToBeClickable).click();
     }
 
     private String getFileNodeServletURL(String receiveURL, String fileName) {
@@ -161,6 +156,10 @@ public class MIRBlockedContentITCase extends MIRITBase {
             .build();
         HttpRequest request = HttpRequest.newBuilder(URI.create(url)).GET().build();
         return client.send(request, HttpResponse.BodyHandlers.discarding()).statusCode();
+    }
+
+    protected String getAdminEditorLinkText() {
+        return "Bearbeiten im Admin-Editor";
     }
 
     @After
