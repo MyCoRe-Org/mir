@@ -10,12 +10,12 @@ public class MIRSimpleSearchFormContent {
 
     private String files;
 
-    private MIRSampleInstitutes institute;
+    private MIRInstitutes institute;
 
     private MIRStatus status;
 
     public MIRSimpleSearchFormContent(String title, String author, String metadata, String files,
-        MIRSampleInstitutes institute, MIRStatus status) {
+        MIRInstitutes institute, MIRStatus status) {
         this.title = title;
         this.author = author;
         this.metadata = metadata;
@@ -56,11 +56,11 @@ public class MIRSimpleSearchFormContent {
         this.files = files;
     }
 
-    public MIRSampleInstitutes getInstitute() {
+    public MIRInstitutes getInstitute() {
         return institute;
     }
 
-    public void setInstitute(MIRSampleInstitutes institute) {
+    public void setInstitute(MIRInstitutes institute) {
         this.institute = institute;
     }
 
