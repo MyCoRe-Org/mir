@@ -39,12 +39,14 @@ import org.mycore.mcr.acl.accesskey.service.MCRAccessKeyService;
 import org.mycore.mcr.acl.accesskey.service.MCRAccessKeyUserService;
 import org.mycore.resource.MCRResourceHelper;
 import org.mycore.test.MCRJPAExtension;
+import org.mycore.test.MCRMetadataExtension;
 import org.mycore.test.MyCoReTest;
 import org.mycore.user2.MCRUser;
 import org.mycore.user2.MCRUserManager;
 
 @MyCoReTest
 @ExtendWith(MCRJPAExtension.class)
+@ExtendWith(MCRMetadataExtension.class)
 public class MIRStrategyTest {
 
     MIRStrategy strategy;
