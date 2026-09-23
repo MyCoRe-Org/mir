@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="3.0"
+  xmlns:mcracl="http://www.mycore.de/xslt/acl"
   xmlns:mcrderivate="http://www.mycore.de/xslt/derivate"
+  xmlns:mcriview2="http://www.mycore.de/xslt/iview2"
   xmlns:mcrmedia="http://www.mycore.de/xslt/media"
   xmlns:mcrsolr="http://www.mycore.de/xslt/solr"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -9,6 +11,7 @@
   <xsl:import href="xslImport:modsmeta:metadata/mir-video.js.xsl" />
 
   <xsl:param name="UserAgent" />
+  <xsl:param name="MIR.VideoPoster.IIIF.Resolution" select="'!1280,720'" />
 
   <xsl:template match="/">
     <!-- MIR-339 solr query if there is any "mp4" file in this object? -->
@@ -136,6 +139,10 @@
               <xsl:value-of select="concat(@type, ',', @src, ';')" />
             </xsl:for-each>
           </xsl:attribute>
+          <xsl:call-template name="addPosterAttribute">
+            <xsl:with-param name="derivateID" select="$derivateID" />
+            <xsl:with-param name="filePath" select="$filePath" />
+          </xsl:call-template>
           <xsl:value-of select="$fileName" />
         </option>
       </xsl:when>
@@ -147,5 +154,30 @@
         </option>
       </xsl:otherwise>
     </xsl:choose>
+  </xsl:template>
+
+  <!--
+    Adds the iView image that was generated from a video frame as player poster. The image is only requested if the
+    video file is already tiled. As the IIIF API does not share the session of the metadata page, logged in users
+    need a JWT, which the player script obtains before it loads the poster.
+  -->
+  <xsl:template name="addPosterAttribute">
+    <xsl:param name="derivateID" />
+    <xsl:param name="filePath" />
+
+    <xsl:if test="mcriview2:has-tiles($derivateID, concat('/', $filePath))">
+      <xsl:variable name="posterURL"
+        select="concat($WebApplicationBaseURL, 'api/iiif/image/v2/Iview/',
+          encode-for-uri(concat($derivateID, '/', $filePath)), '/full/',
+          $MIR.VideoPoster.IIIF.Resolution, '/0/default.jpg')" />
+      <xsl:choose>
+        <xsl:when test="mcracl:is-current-user-guest-user()">
+          <xsl:attribute name="data-poster" select="$posterURL" />
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:attribute name="data-poster-jwt" select="$posterURL" />
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:if>
   </xsl:template>
 </xsl:stylesheet>

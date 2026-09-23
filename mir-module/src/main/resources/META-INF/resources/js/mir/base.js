@@ -1,34 +1,42 @@
 (function ($) {
     $(document).ready(function () {
         const iiifSearchSelector = "data-iiif-jwt";
+        let iiifTokenRequest = null;
 
-        if ($("[" + iiifSearchSelector + "]").length > 0) {
-            $.ajax({
-                url: webApplicationBaseURL + "rsc/jwt",
-                type: "GET",
-                traditional: true,
-                dataType: "json",
-                success: function (data) {
-                    if (data.login_success) {
-                        loadImages(data);
-                    }
-                },
-                error: function (resp, title, message) {
-                    console.log(resp);
-                    console.log("Token request failed.");
-                }
-            });
+        // the token is requested at most once and shared by all IIIF images of the page
+        function getIiifToken() {
+            if (iiifTokenRequest === null) {
+                iiifTokenRequest = new Promise(function (resolve) {
+                    $.ajax({
+                        url: webApplicationBaseURL + "rsc/jwt",
+                        type: "GET",
+                        traditional: true,
+                        dataType: "json",
+                        success: function (data) {
+                            resolve(data.login_success ? data : null);
+                        },
+                        error: function (resp, title, message) {
+                            console.log(resp);
+                            console.log("Token request failed.");
+                            resolve(null);
+                        }
+                    });
+                });
+            }
+            return iiifTokenRequest;
         }
 
-        function loadImages(token) {
-            $("[" + iiifSearchSelector + "]").each(function (i, img) {
-                let url = img.getAttribute(iiifSearchSelector);
+        // loads an IIIF image with the token of the logged in user and passes a blob URL to the callback
+        function loadIiifImage(url, callback) {
+            getIiifToken().then(function (token) {
+                if (token === null) {
+                    return;
+                }
                 var xhr = new XMLHttpRequest();
                 xhr.onreadystatechange = function () {
                     if (this.readyState === 4 && this.status === 200) {
-                        //console.log(this.response, typeof this.response);
-                        var url = window.URL || window.webkitURL;
-                        img.src = url.createObjectURL(this.response);
+                        var urlFactory = window.URL || window.webkitURL;
+                        callback(urlFactory.createObjectURL(this.response));
                     }
                 }
                 xhr.open('GET', url);
@@ -37,6 +45,12 @@
                 xhr.send();
             });
         }
+
+        $("[" + iiifSearchSelector + "]").each(function (i, img) {
+            loadIiifImage(img.getAttribute(iiifSearchSelector), function (objectUrl) {
+                img.src = objectUrl;
+            });
+        });
 
         document.querySelectorAll(".personPopover, .boxPopover").forEach(function (popoverElement) {
             let id = popoverElement.getAttribute("id");
@@ -119,6 +133,52 @@
         };
 
         var sourceCache = {};
+        var posterCache = {};
+
+        // the iView image generated from a video frame is used as poster of the selected file
+        var applyPoster = function (player, currentOption) {
+            if (typeof player === "undefined") {
+                return;
+            }
+            var lookupKey = currentOption.parent().index() + "_" + currentOption.index();
+            // the poster is only applied once the image is known to load, otherwise a failing
+            // request would cover the video with an empty box instead of showing its first frame
+            var showPoster = function (url) {
+                // the image may have loaded after another file has been selected
+                if (videoChooserElement.find(":selected").is(currentOption)) {
+                    player.poster(url);
+                }
+            };
+
+            player.poster("");
+            // let the poster of the newly selected file reappear
+            player.hasStarted(false);
+
+            if (lookupKey in posterCache) {
+                showPoster(posterCache[lookupKey]);
+                return;
+            }
+
+            var poster = currentOption.attr("data-poster");
+            var posterJwt = currentOption.attr("data-poster-jwt");
+
+            if (typeof poster !== "undefined") {
+                var image = new Image();
+                image.onload = function () {
+                    posterCache[lookupKey] = poster;
+                    showPoster(poster);
+                };
+                image.onerror = function () {
+                    console.log("Could not load video poster " + poster);
+                };
+                image.src = poster;
+            } else if (typeof posterJwt !== "undefined") {
+                loadIiifImage(posterJwt, function (objectUrl) {
+                    posterCache[lookupKey] = objectUrl;
+                    showPoster(objectUrl);
+                });
+            }
+        };
 
         var getVideo = function (currentOption) {
             var src = currentOption.attr("data-src");
@@ -197,6 +257,10 @@
 
 
             playerToShow.src(sourceArr);
+
+            if (!isAudio) {
+                applyPoster(playerToShow, currentOption);
+            }
 
         });
 
