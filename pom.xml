@@ -321,8 +321,9 @@
     <profile>
       <id>tomcat</id>
       <activation>
+        <!-- default container: active unless -Djetty is given -->
         <property>
-          <name>tomcat</name>
+          <name>!jetty</name>
         </property>
       </activation>
       <properties>
