@@ -35,10 +35,9 @@
 
         <xsl:if test="$files or $reports/error">
         <div id="mir-pdfa-validation">
+        <!-- a failed report lookup must not hide the derivates that could be read -->
+        <xsl:apply-templates select="$reports/error" mode="displayPdfError"/>
         <xsl:choose>
-            <xsl:when test="$reports/error">
-                <xsl:apply-templates select="$reports/error" mode="displayPdfError"/>
-            </xsl:when>
             <xsl:when test="$invalid">
                 <div class="container pdf-validation mb-3 px-0" id="accordion">
                     <div class="card-header bg-danger text-white">
