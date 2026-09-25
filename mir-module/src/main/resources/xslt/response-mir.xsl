@@ -21,7 +21,7 @@
   <xsl:param name="MIR.Solr.Secondary.Search.RequestHandler.List" select="'find'" />
   <xsl:param name="MIR.Thumbnail.IIIF.Resolution" select="'!300,300'" />
 
-  <xsl:variable name="maxScore" select="//result[@name='response'][1]/@maxScore" />
+  <xsl:variable name="maxScore" select="./response/result[@name='response'][1]/@maxScore" />
 
   <xsl:template match="/response/result|lst[@name='grouped']/lst[@name='returnId']" priority="10">
     <xsl:variable name="ResultPages">
