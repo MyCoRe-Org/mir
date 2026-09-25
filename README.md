@@ -24,7 +24,7 @@ This guide addresses developers. Thats why you run it in 'dev' profile!
    - Install Solr with the command: `mvn -Pdev solr-runner:copyHome`
    - Run Solr with the command: `mvn -Pdev solr-runner:start`
  - To start up a servlet container as a development environment go back to `mir` folder
-   - Run `mvn install -am -pl mir-webapp && mvn -Pdev -Dtomcat org.codehaus.cargo:cargo-maven3-plugin:run -pl mir-webapp`
+   - Run `mvn install -am -pl mir-webapp && mvn -Pdev org.codehaus.cargo:cargo-maven3-plugin:run -pl mir-webapp`
    - Open `http://localhost:8291/mir` in your browser
  - To perform the guided initial configuration
    - Use the login token from the server log to continue
@@ -118,7 +118,7 @@ The path `/var/solr/data` should be mounted, it contains all persistent data.
 There is an [example docker-compose.yml](docker-compose.yml) which can be used for local development. 
 The ports and other settings can be changed in the [.env file](.env). You can use the commands:
 ```shell
-mvn clean install -Pdev -Dtomcat && docker compose up --build
+mvn clean install -Pdev && docker compose up --build
 ```
 
 There is another [example docker-compose.prod.yml](docker-compose.prod.yml) which uses prebuild images which are stored at [dockerhub](https://hub.docker.com/u/mycoreorg). 
