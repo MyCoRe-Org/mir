@@ -2,9 +2,11 @@ import {SearchSettings} from "@/api/search/SearchSettings";
 import {
     Cartographics,
     Genre,
-    Geographic, GeographicCode,
+    Geographic,
+    GeographicCode,
     HierarchicalGeographic,
-    Name, Occupation,
+    Name,
+    Occupation,
     Temporal,
     TitleInfo,
     Topic
@@ -12,6 +14,10 @@ import {
 
 export abstract class SearchProvider {
     abstract search(searchTerm: string, settings: SearchSettings): Promise<Array<SearchResult>>;
+
+    protected generateID(): string {
+        return Math.random().toString(16).slice(2);
+    }
 }
 
 export interface SearchResultInfo {
@@ -22,7 +28,7 @@ export interface SearchResultInfo {
 }
 
 export interface SearchResult {
-    id: string
+    id: string;
     result: Topic | Geographic | Temporal | TitleInfo | Name | Genre | HierarchicalGeographic | Cartographics | GeographicCode | Occupation;
     info: Array<SearchResultInfo>;
 }
