@@ -12,12 +12,12 @@
 
   <xsl:template match="wizard">
     <head>
-      <link rel="stylesheet" href="{$WebApplicationBaseURL}mir-wizard/assets/highlightjs/css/default.css" />
-      <script src="{$WebApplicationBaseURL}mir-wizard/assets/highlightjs/js/highlight.js"></script>
+      <link rel="stylesheet" href="{$WebApplicationBaseURL}mir-wizard/assets/highlightjs/css/default.min.css" />
+      <script src="{$WebApplicationBaseURL}mir-wizard/assets/highlightjs/js/highlight.min.js"></script>
     </head>
     <xsl:apply-templates />
     <script type="text/javascript">
-      hljs.initHighlightingOnLoad();
+      hljs.highlightAll();
     </script>
   </xsl:template>
 
@@ -78,6 +78,19 @@
             <xsl:otherwise>
               <pre class="pre-scrollable">
                 <code>
+                  <!-- declare the language explicitly; highlight.js auto-detection misreads
+                       SQL as SCSS and Java stack traces as C#. Only the known content types
+                       are named, everything else falls back to plaintext. On failure a block
+                       holds an exception rather than its expected content. -->
+                  <xsl:attribute name="class">
+                    <xsl:choose>
+                      <xsl:when test="not(@success = 'true')">language-plaintext</xsl:when>
+                      <xsl:when test="name() = 'mycore.properties'
+                                      or name() = 'persistence.properties'">language-ini</xsl:when>
+                      <xsl:when test="name() = 'init.database'">language-sql</xsl:when>
+                      <xsl:otherwise>language-plaintext</xsl:otherwise>
+                    </xsl:choose>
+                  </xsl:attribute>
                   <xsl:apply-templates select="result" />
                 </code>
               </pre>

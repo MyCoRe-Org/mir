@@ -17,8 +17,8 @@ module.exports = function(grunt) {
 					destPrefix : '<%=globalConfig.assetsDirectory%>/'
 				},
 				files : {
-					'highlightjs/css' : 'highlight.js/styles',
-					'highlightjs/js' : 'highlight.js/lib/highlight.js'
+					'highlightjs/css' : '@highlightjs/cdn-assets/styles',
+					'highlightjs/js' : '@highlightjs/cdn-assets/highlight.min.js'
 				},
 			}
 		}
