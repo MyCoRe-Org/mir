@@ -1859,7 +1859,7 @@
         </div>
         <mir:help-pmud help-text="{i18n:mir.help.subject.topic}" pmud="true"/>
       </div>
-      <xed:validate class="org.mycore.mir.validation.MIRValidationHelper" method="validateSubject" display="global" i18n="mir.validation.subject.simple" />
+      <xed:validate class="org.mycore.mir.validation.MIRValidationHelper" method="validateSubject" display="global" i18n="mir.validation.subject.empty" />
     </xed:repeat>
   </xed:template>
 
@@ -1907,7 +1907,7 @@
         </div>
         <mir:help-pmud help-text="{i18n:mir.help.subject.topic.complex}" pmud="true"/>
       </div>
-      <xed:validate class="org.mycore.mir.validation.MIRValidationHelper" method="validateSubject" display="global" i18n="mir.validation.subject.admin" />
+      <xed:validate class="org.mycore.mir.validation.MIRValidationHelper" method="validateSubject" display="global" i18n="mir.validation.subject.empty" />
     </xed:repeat>
   </xed:template>
 
