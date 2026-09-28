@@ -92,7 +92,7 @@ public class MIRImportServlet extends MCRServlet {
         HttpServletRequest request = job.getRequest();
         HttpServletResponse response = job.getResponse();
 
-        String editor = orDefault(request.getParameter("editor"), DEFAULT_EDITOR);
+        String editor = defaultIfBlank(request.getParameter("editor"), DEFAULT_EDITOR);
         String genre = request.getParameter("genre");
         String host = request.getParameter("host");
         String baseURL = MCRFrontendUtil.getBaseURL(request);
@@ -100,14 +100,14 @@ public class MIRImportServlet extends MCRServlet {
         // Phase 2: the user confirmed that none of the possible duplicates is a real duplicate.
         if (Boolean.parseBoolean(request.getParameter("confirmed"))) {
             String sessionKey = request.getParameter("sessionKey");
-            Element cached = sessionKey != null && sessionKey.startsWith(SESSION_KEY_PREFIX)
+            Element cachedMcrObject = sessionKey != null && sessionKey.startsWith(SESSION_KEY_PREFIX)
                 ? (Element) MCRSessionMgr.getCurrentSession().get(sessionKey)
                 : null;
-            if (cached == null) {
+            if (cachedMcrObject == null) {
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Unknown or expired import session key");
                 return;
             }
-            markAsNoDuplicates(sessionKey.substring(SESSION_KEY_PREFIX.length()), cached);
+            markAsNoDuplicates(sessionKey.substring(SESSION_KEY_PREFIX.length()), cachedMcrObject);
             response.sendRedirect(response.encodeRedirectURL(editorURL(baseURL, editor, sessionKey, genre, host)));
             return;
         }
@@ -141,8 +141,8 @@ public class MIRImportServlet extends MCRServlet {
             return;
         }
 
-        // Remember what the user gets to see, so that the confirmation does not have to be taken from the
-        // request: only objects presented by this server may end up as no-duplicate markings.
+        // Store the ids of the presented duplicates in the session. On confirmation only these ids are
+        // marked as no duplicates; ids from the request are never trusted.
         MCRSessionMgr.getCurrentSession().put(DUPLICATES_SESSION_KEY_PREFIX + importId, duplicateIds);
 
         LOGGER.info("Found {} possible duplicate(s) for imported object, asking for confirmation", duplicateIds.size());
@@ -158,8 +158,11 @@ public class MIRImportServlet extends MCRServlet {
      * not from the request, so that only objects this servlet has actually shown can be marked. The flags
      * travel through the editor, which keeps the service part of the object untouched, and are evaluated
      * by {@link MCRDeDupNoDuplicateFlagEventHandler} when the object is stored.
+     *
+     * @param importId the id of the import, i.e. the session key of the cached object without its prefix
+     * @param cachedMcrObject the imported {@code mycoreobject} cached in the session
      */
-    private static void markAsNoDuplicates(String importId, Element cached) {
+    private static void markAsNoDuplicates(String importId, Element cachedMcrObject) {
         String duplicatesSessionKey = DUPLICATES_SESSION_KEY_PREFIX + importId;
         List<String> objectIds = presentedDuplicates(duplicatesSessionKey);
         if (objectIds.isEmpty()) {
@@ -167,7 +170,7 @@ public class MIRImportServlet extends MCRServlet {
         }
 
         String flagType = MCRConfiguration2.getStringOrThrow(MCRDeDupNoDuplicateFlagEventHandler.FLAG_TYPE_PROPERTY);
-        MCRObject object = new MCRObject(new Document(cached.clone()));
+        MCRObject object = new MCRObject(new Document(cachedMcrObject.clone()));
         MCRObjectService service = object.getService();
         List<String> alreadyFlagged = service.getFlags(flagType);
         objectIds.stream()
@@ -182,8 +185,8 @@ public class MIRImportServlet extends MCRServlet {
 
     @SuppressWarnings("unchecked")
     private static List<String> presentedDuplicates(String duplicatesSessionKey) {
-        Object cached = MCRSessionMgr.getCurrentSession().get(duplicatesSessionKey);
-        return cached == null ? List.of() : (List<String>) cached;
+        Object duplicateIds = MCRSessionMgr.getCurrentSession().get(duplicatesSessionKey);
+        return duplicateIds == null ? List.of() : (List<String>) duplicateIds;
     }
 
     /**
@@ -196,7 +199,7 @@ public class MIRImportServlet extends MCRServlet {
         String uri = "xslStyle:import/remove-genres:"
             + "enrich:import:buildxml:_rootName_=mods:mods"
             + "&mods:identifier=" + modsId
-            + "&mods:identifier/@type=" + orDefault(type, "");
+            + "&mods:identifier/@type=" + defaultIfBlank(type, "");
         Element mods = MCRURIResolver.obtainInstance().resolve(uri);
         String projectId = MCRConfiguration2.getString("MIR.projectid.default").orElse("mir");
         MCRObject object = MCRMODSWrapper.wrapMODSDocument(mods.clone(), projectId);
@@ -258,7 +261,7 @@ public class MIRImportServlet extends MCRServlet {
         return query.isEmpty() ? base : base + '?' + query;
     }
 
-    private static String orDefault(String value, String fallback) {
+    private static String defaultIfBlank(String value, String fallback) {
         return value == null || value.isBlank() ? fallback : value;
     }
 }
