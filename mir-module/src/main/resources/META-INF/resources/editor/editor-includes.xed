@@ -1865,7 +1865,7 @@
 
   <xed:template id="subject.simple.required">
     <xed:repeat xpath="mods:subjectXML" min="1" max="{$MIR.Editor.repeat.max.subject.simple.required}">
-      <div class="form-group row {$xed-validation-marker}">
+      <div class="form-group row {$xed-validation-marker} required">
         <label class="col-md-3 col-form-label text-right">
           <xed:output i18n="mir.subject.topic"/>
         </label>
@@ -1881,7 +1881,7 @@
 
   <xed:template id="subject.complex.required">
     <xed:repeat xpath="mods:subjectXML" min="1" max="10">
-      <div class="form-group row {$xed-validation-marker}">
+      <div class="form-group row {$xed-validation-marker} required">
         <label class="col-md-3 col-form-label text-right">
           <xed:output i18n="mir.subject.topic.complex "/>
         </label>
