@@ -32,7 +32,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.mycore.access.strategies.MCRAccessCheckStrategy;
 import org.mycore.common.MCRSessionMgr;
-import org.mycore.common.MCRSystemUserInformation;
+import org.mycore.common.MCRSessionUtils;
 import org.mycore.common.MCRUserInformation;
 import org.mycore.common.config.MCRConfiguration2;
 import org.mycore.datamodel.common.MCRAbstractMetadataVersion;
@@ -109,7 +109,7 @@ public class MIROwnerStrategy implements MCRAccessCheckStrategy {
             try {
                 mcrObjectId = MCRObjectID.getInstance(id);
                 MCRUserInformation currentUser = MCRSessionMgr.getCurrentSession().getUserInformation();
-                if (!currentUser.equals(MCRSystemUserInformation.GUEST)
+                if (!MCRSessionUtils.isGuest(currentUser)
                     && isCurrentUserCreator(mcrObjectId, currentUser)) {
                     return true;
                 }
