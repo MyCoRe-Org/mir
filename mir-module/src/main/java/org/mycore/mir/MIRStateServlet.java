@@ -3,6 +3,8 @@ package org.mycore.mir;
 import java.util.Arrays;
 import java.util.Optional;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.mycore.access.MCRAccessManager;
 import org.mycore.datamodel.classifications2.MCRCategory;
 import org.mycore.datamodel.classifications2.MCRCategoryDAO;
@@ -16,11 +18,16 @@ import org.mycore.frontend.MCRFrontendUtil;
 import org.mycore.frontend.servlets.MCRServlet;
 import org.mycore.frontend.servlets.MCRServletJob;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 public class MIRStateServlet extends MCRServlet {
 
     protected static final String X_NEXT_LANGUAGE = "x-next";
+
+    protected static final String REDIRECT_URL_PARAMETER = "url";
+
+    private static final Logger LOGGER = LogManager.getLogger();
 
     @Override
     protected void doGetPost(MCRServletJob job) throws Exception {
@@ -73,6 +80,27 @@ public class MIRStateServlet extends MCRServlet {
 
         object.getService().setState(newStateCategory);
         MCRMetadataManager.update(object);
-        job.getResponse().sendRedirect(MCRFrontendUtil.getBaseURL(job.getRequest()) + "receive/" + objectID.toString());
+        job.getResponse().sendRedirect(getRedirectURL(job.getRequest(), objectID));
+    }
+
+    /**
+     * Returns the URL passed by the {@link #REDIRECT_URL_PARAMETER} parameter if it is a safe redirect,
+     * or the start page if it is unsafe. Without the parameter, returns the URL of the object, or the start page
+     * if the new state revokes the read permission.
+     */
+    private static String getRedirectURL(HttpServletRequest request, MCRObjectID objectID) {
+        String baseURL = MCRFrontendUtil.getBaseURL(request);
+        String url = request.getParameter(REDIRECT_URL_PARAMETER);
+        if (url != null && !url.isBlank()) {
+            if (MCRFrontendUtil.isSafeRedirect(url)) {
+                return url;
+            }
+            LOGGER.warn("Ignoring unsafe redirect url: {}", url);
+            return baseURL;
+        }
+        if (!MCRAccessManager.checkPermission(objectID, MCRAccessManager.PERMISSION_READ)) {
+            return baseURL;
+        }
+        return baseURL + "receive/" + objectID.toString();
     }
 }
