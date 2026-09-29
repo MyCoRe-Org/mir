@@ -52,7 +52,7 @@ export class LobidSearchProvider extends SearchProvider {
 
         const filterQueryComponent = "&filter=" + encodeURIComponent(filterQuery);
         const url = "https://lobid.org/gnd/search?q=" + encodeURIComponent(searchTerm) +
-            filterQueryComponent + "&format=json&json=suggest&size=30";
+            filterQueryComponent + "&format=json&size=30";
 
         const response = await fetch(url);
         const json = await response.json();
