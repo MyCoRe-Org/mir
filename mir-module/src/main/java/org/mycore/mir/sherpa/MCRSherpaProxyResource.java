@@ -18,7 +18,9 @@
 
 package org.mycore.mir.sherpa;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
@@ -27,6 +29,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 import java.util.Optional;
+import java.util.zip.GZIPInputStream;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -73,6 +76,7 @@ public class MCRSherpaProxyResource {
             HttpRequest request = HttpRequest.newBuilder(new URI(urlStr))
                 .header("x-api-key", apiKey)
                 .header("Accept", "application/json")
+                .header("Accept-Encoding", "gzip")
                 .GET()
                 .build();
             HttpResponse<byte[]> response = HttpClient.newHttpClient()
@@ -82,7 +86,7 @@ public class MCRSherpaProxyResource {
                 LOGGER.error("Open Policy Finder API returned HTTP status {}", status);
                 return Response.serverError().build();
             }
-            return Response.ok(response.body()).build();
+            return Response.ok(decodeBody(response.body())).build();
         } catch (URISyntaxException e) {
             LOGGER.error("Error while building URL " + urlStr, e);
             return Response.serverError().build();
@@ -94,6 +98,26 @@ public class MCRSherpaProxyResource {
             LOGGER.error("Interrupted while performing request!", e);
             return Response.serverError().build();
         }
+    }
+
+    /**
+     * Returns the response body as string. The request announces gzip support, but {@link HttpClient} never
+     * decompresses a response on its own, so a compressed body has to be decoded here. Compression is detected by
+     * the gzip magic bytes instead of the {@code Content-Encoding} header, which may not match the actual body.
+     *
+     * @param body the raw response body
+     */
+    private static String decodeBody(byte[] body) throws IOException {
+        if (!isGzip(body)) {
+            return new String(body, StandardCharsets.UTF_8);
+        }
+        try (InputStream stream = new GZIPInputStream(new ByteArrayInputStream(body))) {
+            return new String(stream.readAllBytes(), StandardCharsets.UTF_8);
+        }
+    }
+
+    private static boolean isGzip(byte[] body) {
+        return body.length > 1 && (body[0] & 0xFF) == 0x1F && (body[1] & 0xFF) == 0x8B;
     }
 
 }
