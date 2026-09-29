@@ -24,8 +24,7 @@ import java.io.Serial;
 
 import org.jdom2.Document;
 import org.jdom2.Element;
-import org.mycore.common.MCRSessionMgr;
-import org.mycore.common.MCRSystemUserInformation;
+import org.mycore.common.MCRSessionUtils;
 import org.mycore.datamodel.metadata.MCRObjectID;
 import org.mycore.frontend.servlets.MCRServlet;
 import org.mycore.frontend.servlets.MCRServletJob;
@@ -55,7 +54,7 @@ public class MIRAccessKeyServlet extends MCRServlet {
     protected void doGetPost(MCRServletJob job) throws Exception {
         final HttpServletRequest req = job.getRequest();
         final HttpServletResponse res = job.getResponse();
-        final boolean isGuest = checkCurrentUserIsGuest();
+        final boolean isGuest = MCRSessionUtils.isCurrentUserGuest();
         if (isGuest && MCRAccessKeyConfig.getAllowedSessionPermissionTypes().isEmpty()) {
             res.sendError(HttpServletResponse.SC_FORBIDDEN, "Access can only be granted to personalized users");
             return;
@@ -87,11 +86,6 @@ public class MIRAccessKeyServlet extends MCRServlet {
             return;
         }
         res.sendRedirect(getReturnURL(req));
-    }
-
-    private static boolean checkCurrentUserIsGuest() {
-        return MCRSessionMgr.getCurrentSession().getUserInformation().getUserID()
-            .equals(MCRSystemUserInformation.GUEST.getUserID());
     }
 
     private static String getReturnURL(HttpServletRequest req) {
