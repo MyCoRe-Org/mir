@@ -1883,7 +1883,7 @@
     <xed:repeat xpath="mods:subjectXML" min="1" max="10">
       <div class="form-group row {$xed-validation-marker} required">
         <label class="col-md-3 col-form-label text-right">
-          <xed:output i18n="mir.subject.topic.complex "/>
+          <xed:output i18n="mir.subject.topic.complex"/>
         </label>
         <div class="col-md-6">
           <input type="hidden" class="subjectXML"/>
