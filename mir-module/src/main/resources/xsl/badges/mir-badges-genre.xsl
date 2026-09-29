@@ -2,7 +2,8 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:mods="http://www.loc.gov/mods/v3"
                 xmlns:xlink="http://www.w3.org/1999/xlink"
-                exclude-result-prefixes="mods xlink">
+                xmlns:mcrmods="xalan://org.mycore.mods.classification.MCRMODSClassificationSupport"
+                exclude-result-prefixes="mods xlink mcrmods">
 
   <xsl:import href="xslImport:badges:badges/mir-badges-genre.xsl"/>
   <xsl:include href="resource:xsl/badges/mir-badges-style-template.xsl"/>
@@ -40,17 +41,22 @@
     <xsl:apply-imports/>
 
     <xsl:for-each select="//mods:mods/mods:genre[@type='kindof']|//mods:mods/mods:genre[@type='intern']">
-      <xsl:variable name="class" select="substring-after(@authorityURI, '/classifications/')"/>
-      <xsl:variable name="categid" select="substring-after(@valueURI, '#')"/>
+      <xsl:variable name="classlink" select="mcrmods:getClassCategLink(.)"/>
 
+      <xsl:if test="string-length($classlink) &gt; 0">
+        <xsl:for-each select="document($classlink)/mycoreclass">
+          <xsl:variable name="class" select="@ID"/>
+          <xsl:variable name="categid" select="categories/category/@ID"/>
 
-      <xsl:call-template name="output-badge">
-        <xsl:with-param name="of-type" select="'hit_type'"/>
-        <xsl:with-param name="badge-type" select="'badge-info'"/>
-        <xsl:with-param name="label" select="document(concat('callJava:org.mycore.common.xml.MCRXMLFunctions:getDisplayName:', $class, ':', $categid))"/>
-        <xsl:with-param name="link"  select="concat($ServletsBaseURL, 'solr/find?condQuery=*&amp;fq=category.top:%22', $class, ':', $categid, '%22')"/>
-        <xsl:with-param name="tooltip" select="$tooltip-genre"/>
-      </xsl:call-template>
+          <xsl:call-template name="output-badge">
+            <xsl:with-param name="of-type" select="'hit_type'"/>
+            <xsl:with-param name="badge-type" select="'badge-info'"/>
+            <xsl:with-param name="label" select="document(concat('callJava:org.mycore.common.xml.MCRXMLFunctions:getDisplayName:', $class, ':', $categid))"/>
+            <xsl:with-param name="link"  select="concat($ServletsBaseURL, 'solr/find?condQuery=*&amp;fq=category.top:%22', $class, ':', $categid, '%22')"/>
+            <xsl:with-param name="tooltip" select="$tooltip-genre"/>
+          </xsl:call-template>
+        </xsl:for-each>
+      </xsl:if>
     </xsl:for-each>
   </xsl:template>
 </xsl:stylesheet>
