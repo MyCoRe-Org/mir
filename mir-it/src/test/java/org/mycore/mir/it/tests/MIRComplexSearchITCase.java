@@ -11,15 +11,12 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.apache.solr.client.solrj.SolrServerException;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.mycore.common.selenium.util.MCRBy;
 import org.mycore.common.selenium.util.MCRExpectedConditions;
-import org.mycore.mir.it.controller.MIRModsEditorController;
-import org.mycore.mir.it.controller.MIRPublishEditorController;
 import org.mycore.mir.it.controller.MIRSearchController;
 import org.mycore.mir.it.controller.MIRUserController;
 import org.mycore.mir.it.model.MIRComplexSearchQuery;
@@ -29,6 +26,7 @@ import org.mycore.mir.it.model.MIRIdentifier;
 import org.mycore.mir.it.model.MIRInstitutes;
 import org.mycore.mir.it.model.MIRLanguage;
 import org.mycore.mir.it.model.MIRLicense;
+import org.mycore.mir.it.model.MIRSampleInstitutes;
 import org.mycore.mir.it.model.MIRSearchField;
 import org.mycore.mir.it.model.MIRSearchFieldCondition;
 import org.mycore.mir.it.model.MIRStatus;
@@ -39,20 +37,13 @@ import org.openqa.selenium.NoSuchElementException;
 public class MIRComplexSearchITCase extends MIRITBase {
     private MIRSearchController searchController;
 
-    private MIRPublishEditorController publishEditorController;
-
     private static boolean CREATED = false;
 
     @Before
-    public final void init() throws IOException, SolrServerException, InterruptedException {
-        String appURL = getAPPUrlString();
-        MIRUserController userController = new MIRUserController(getDriver(), appURL);
+    public final void init() throws IOException{
         userController.logoutIfLoggedIn();
         userController.loginAs(MIRUserController.ADMIN_LOGIN, MIRUserController.ADMIN_PASSWD);
-
-        publishEditorController = new MIRPublishEditorController(getDriver(), appURL);
-        editorController = new MIRModsEditorController(getDriver(), appURL);
-        searchController = new MIRSearchController(driver, appURL);
+        searchController = controllerFactory.createSearchController();
 
         if (!CREATED) {
             createDocument();
@@ -78,7 +69,7 @@ public class MIRComplexSearchITCase extends MIRITBase {
         }
     }
 
-    private void createDocument() throws IOException {
+    protected void createDocument() throws IOException {
         publishEditorController.openAdmin(() -> {
         });
         driver.waitUntilPageIsLoaded("MODS-Dokument erstellen");
@@ -89,7 +80,7 @@ public class MIRComplexSearchITCase extends MIRITBase {
                 MIRTestData.SUB_TITLE))
             .collect(Collectors.toList()));
         editorController.setAuthor(MIRTestData.AUTHOR_2);
-        editorController.setInstitution(MIRInstitutes.Universität_in_Deutschland);
+        editorController.setInstitution(institutionTestValue());
         editorController.setPublisher(MIRTestData.SIGNATURE);
         Map.Entry<MIRIdentifier, String> identifierStringMap = new AbstractMap.SimpleEntry<>(MIRIdentifier.doi,
             "10.1000/182");
@@ -138,7 +129,7 @@ public class MIRComplexSearchITCase extends MIRITBase {
 
     @Test
     public final void searchBymirInstitute() {
-        searchController.complexSearchBy(Collections.emptyList(), null, MIRInstitutes.Universität_in_Deutschland,
+        searchController.complexSearchBy(Collections.emptyList(), null, institutionTestValue(),
             null, null, null, null, null, null);
 
         try {
@@ -243,6 +234,10 @@ public class MIRComplexSearchITCase extends MIRITBase {
             // this is good
 
         }
+    }
+
+    protected MIRInstitutes institutionTestValue() {
+        return MIRSampleInstitutes.Universität_in_Deutschland;
     }
 
 }

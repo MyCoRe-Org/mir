@@ -11,13 +11,15 @@ import java.util.stream.Stream;
 
 import org.mycore.common.config.MCRConfigurationException;
 import org.mycore.common.selenium.drivers.MCRWebdriverWrapper;
+import org.mycore.mir.it.controller.MIRControllerFactory;
 import org.mycore.mir.it.controller.MIRUserController;
-import org.mycore.mir.it.tests.MIRITBase;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 public class MIRSearchTestDataLoader {
+
+    private final MIRControllerFactory controllerFactory;
 
     private static boolean loaded = false;
 
@@ -26,19 +28,21 @@ public class MIRSearchTestDataLoader {
     // TODO: read from property
     private static final List<String> FILE_NAMES = Stream.of("mir_mods_00010000.xml").collect(Collectors.toList());
 
-    public void lazyLoadData(MCRWebdriverWrapper webDriverWrapper) throws IOException, InterruptedException {
+    public MIRSearchTestDataLoader(MIRControllerFactory controllerFactory){
+        this.controllerFactory = controllerFactory;
+    }
+
+    public void lazyLoadData() throws IOException, InterruptedException {
         if (!loaded) {
 
             loaded = true;
-
-            String appURL = MIRITBase.getAPPUrlString();
-            MIRUserController userController = new MIRUserController(webDriverWrapper, appURL);
+            MCRWebdriverWrapper webDriverWrapper = controllerFactory.getDriver();
+            MIRUserController userController = controllerFactory.createUserController();
 
             userController.logoutIfLoggedIn();
             userController.loginAs(MIRUserController.ADMIN_LOGIN, MIRUserController.ADMIN_PASSWD);
 
-            webDriverWrapper.waitAndFindElement(By.xpath(".//strong[contains(text(), 'administrator')]")).click();
-            webDriverWrapper.waitAndFindElement(By.xpath(".//a[contains(text(), 'WebCLI')]")).click();
+            userController.openWebCLI();
             String mainWindowHandle = webDriverWrapper.getWindowHandle();
             webDriverWrapper.waitAndFindElement(By.xpath(".//input[contains(@onclick, 'WebCLI')]")).click();
             //webDriverWrapper.waitAndFindElement(By.xpath(".//input[contains(@onclick, 'window.open')]")).click();
@@ -72,10 +76,10 @@ public class MIRSearchTestDataLoader {
         }
     }
 
-    private static String extractTestData() throws IOException {
+    private String extractTestData() throws IOException {
         Path testFolder = Files.createTempDirectory("test_mods");
 
-        FILE_NAMES.forEach((fileName) -> {
+        getFileNames().forEach((fileName) -> {
             try (InputStream stream = MIRUserController.class.getClassLoader()
                 .getResourceAsStream(TEST_FOLDER_NAME + fileName)) {
                 Path targetPath = testFolder.resolve(fileName);
@@ -87,5 +91,9 @@ public class MIRSearchTestDataLoader {
         });
 
         return testFolder.toAbsolutePath().toString();
+    }
+
+    protected List<String> getFileNames() {
+        return FILE_NAMES;
     }
 }

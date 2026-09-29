@@ -22,9 +22,9 @@ public class MIRUserController {
 
     public static final String ADMIN_LOGIN = "administrator";
 
-    String baseURL;
+    protected String baseURL;
 
-    MCRWebdriverWrapper driver;
+    protected MCRWebdriverWrapper driver;
 
     public MIRUserController(MCRWebdriverWrapper driver, String baseURL) {
         this.driver = driver;
@@ -38,7 +38,7 @@ public class MIRUserController {
     public void createUser(String user, String password, String name, String mail, Runnable assertion,
         String... roles) {
         String currentUrl = driver.getCurrentUrl();
-        driver.findElement(By.id("currentUser")).click();
+        openUserMenu();
         driver.findElement(By.linkText("Nutzer anlegen")).click();
         for (int i = 0; i < roles.length; i++) {
             if (i > 0) {
@@ -78,7 +78,7 @@ public class MIRUserController {
 
     public void deleteUser(String user) {
         String currentUrl = driver.getCurrentUrl();
-        driver.findElement(By.id("currentUser")).click();
+        openUserMenu();
         driver.findElement(By.linkText("Nutzerverwaltung")).click();
         By nameSearchField = By.name("search");
         driver.waitAndFindElement(nameSearchField).clear();
@@ -101,7 +101,24 @@ public class MIRUserController {
         driver.findElement(By.name("pwd")).clear();
         driver.findElement(By.name("pwd")).sendKeys(password);
         driver.findElement(By.name("LoginSubmit")).click();
+        checkCurrentUser(user);
+    }
+
+    public void openUserMenu(){
+        driver.waitAndFindElement(By.id("currentUser")).click();
+    }
+
+    public void openWebCLI() {
+        openUserMenu();
+        driver.waitAndFindElement(By.xpath(".//a[contains(text(), 'WebCLI')]")).click();
+    }
+
+    public void checkCurrentUser(String user){
         assertEqualsIgnoreCase(user, driver.findElement(By.xpath("//a[@id='currentUser']")).getText());
+    }
+
+    public String getPageTitle(){
+        return "Willkommen bei MIR!";
     }
 
     @Test
@@ -114,7 +131,7 @@ public class MIRUserController {
     @Test
     public void goToStart() {
         driver.get(baseURL + "/content/index.xml");
-        driver.waitFor(ExpectedConditions.titleContains("Willkommen bei MIR!"));
+        driver.waitFor(ExpectedConditions.titleContains(getPageTitle()));
         assertFalse("Access to start page should not be restricted", driver.findElement(By.tagName("body")).getText()
             .matches("^[\\s\\S]*Zugriff verweigert[\\s\\S]*$"));
     }

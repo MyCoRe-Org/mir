@@ -13,8 +13,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mycore.common.selenium.util.MCRBy;
-import org.mycore.mir.it.controller.MIRModsEditorController;
-import org.mycore.mir.it.controller.MIRPublishEditorController;
 import org.mycore.mir.it.controller.MIRUserController;
 import org.mycore.mir.it.model.MIRAbstract;
 import org.mycore.mir.it.model.MIRDNBClassification;
@@ -24,6 +22,7 @@ import org.mycore.mir.it.model.MIRIdentifier;
 import org.mycore.mir.it.model.MIRInstitutes;
 import org.mycore.mir.it.model.MIRLanguage;
 import org.mycore.mir.it.model.MIRLicense;
+import org.mycore.mir.it.model.MIRSampleInstitutes;
 import org.mycore.mir.it.model.MIRTypeOfResource;
 import org.openqa.selenium.By;
 
@@ -35,10 +34,6 @@ public class MIRAuthorEditorITCase extends MIRITBase {
 
     @Before
     public final void init() {
-        String appURL = getAPPUrlString();
-        userController = new MIRUserController(getDriver(), appURL);
-        publishEditorController = new MIRPublishEditorController(getDriver(), appURL);
-        editorController = new MIRModsEditorController(getDriver(), appURL);
         userController.logoutIfLoggedIn();
         userController.loginAs(MIRUserController.ADMIN_LOGIN, MIRUserController.ADMIN_PASSWD);
         userController.createUser(SUBMITTER_USER_NAME, SUBMITTER_USER_PASSWORD, null, null, "submitter");
@@ -220,7 +215,7 @@ public class MIRAuthorEditorITCase extends MIRITBase {
         editorController.setDateCreated(MIRTestData.CREATION_DATE);
         editorController.setTypeOfResources(
             Stream.of(MIRTypeOfResource.text, MIRTypeOfResource.moving_image).collect(Collectors.toList()));
-        editorController.setInstitution(MIRInstitutes.Universität_in_Deutschland);
+        editorController.setInstitution(institutionTestValue());
         editorController.setLanguages(Stream.of(MIRLanguage.german, MIRLanguage.english).collect(Collectors.toList()));
         refSNDBRepeat();
         editorController.setTopics(Stream.of(MIRTestData.TOPIC1, MIRTestData.TOPIC2).collect(Collectors.toList()));
@@ -238,7 +233,7 @@ public class MIRAuthorEditorITCase extends MIRITBase {
         refAuthorRepeatedValidation();
         driver.waitAndFindElement(MCRBy.partialText(MIRTestData.VALIDATION_CREATION_DATE));
 
-        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.VALIDATION_UNI_GER));
+        driver.waitAndFindElement(MCRBy.partialText(institutionValidationText()));
         driver.waitAndFindElement(MCRBy.partialText(MIRTestData.VALIDATION_INFORMATIK));
         driver.waitAndFindElement(MCRBy.partialText(MIRTestData.VALIDATION_BIBLIOGRAPHIEN));
         driver.waitAndFindElement(
@@ -307,7 +302,7 @@ public class MIRAuthorEditorITCase extends MIRITBase {
         driver.waitAndFindElement(MCRBy.partialText(MIRTestData.AUTHOR));
         driver.waitAndFindElement(MCRBy.partialText(MIRTestData.ISSUE_DATE));
 
-        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.VALIDATION_UNI_GER));
+        driver.waitAndFindElement(MCRBy.partialText(institutionValidationText()));
         driver.waitAndFindElement(MCRBy.partialText(MIRTestData.URN));
         driver.waitAndFindElement(MCRBy.partialText(MIRTestData.DOI));
         driver.waitAndFindElement(MCRBy.partialText(MIRTestData.ABSTRACT));
@@ -385,7 +380,7 @@ public class MIRAuthorEditorITCase extends MIRITBase {
         driver.waitAndFindElement(MCRBy.partialText(MIRTestData.DOI));
         driver.waitAndFindElement(MCRBy.partialText(MIRTestData.SIGNATURE));
         driver.waitAndFindElement(MCRBy.partialText(MIRTestData.ABSTRACT));
-        driver.waitAndFindElement(MCRBy.partialText(MIRTestData.VALIDATION_UNI_GER));
+        driver.waitAndFindElement(MCRBy.partialText(institutionValidationText()));
         driver.waitAndFindElement(MCRBy.partialText(MIRTestData.VALIDATION_INFORMATIK));
         driver.waitAndFindElement(MCRBy.partialText(MIRTestData.VALIDATION_BIBLIOGRAPHIEN));
 
@@ -415,7 +410,7 @@ public class MIRAuthorEditorITCase extends MIRITBase {
         refShelfMark();
         refAbstractSimple();
         editorController.setAccessConditions(MIRLicense.cc_by_40);
-        editorController.setInstitution(MIRInstitutes.Universität_in_Deutschland);
+        editorController.setInstitution(institutionTestValue());
         refComment();
     }
 
@@ -457,13 +452,21 @@ public class MIRAuthorEditorITCase extends MIRITBase {
         refSNDBRepeat();
         refAbstractSimple();
         editorController.setAccessConditions(MIRLicense.cc_by_40);
-        editorController.setInstitution(MIRInstitutes.Universität_in_Deutschland);
+        editorController.setInstitution(institutionTestValue());
         refComment();
     }
 
     private void refAuthorRepeatedValidation() {
         driver.waitAndFindElement(MCRBy.partialText(MIRTestData.AUTHOR));
         driver.waitAndFindElement(MCRBy.partialText(MIRTestData.AUTHOR_2));
+    }
+
+    protected MIRInstitutes institutionTestValue() {
+        return MIRSampleInstitutes.Universität_in_Deutschland;
+    }
+
+    protected String institutionValidationText() {
+        return MIRTestData.VALIDATION_UNI_GER;
     }
 
     @After

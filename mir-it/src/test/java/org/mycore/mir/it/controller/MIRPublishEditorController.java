@@ -12,9 +12,9 @@ import org.openqa.selenium.support.ui.Select;
 
 public class MIRPublishEditorController {
 
-    String baseURL;
+    protected String baseURL;
 
-    MCRWebdriverWrapper driver;
+    protected MCRWebdriverWrapper driver;
 
     public MIRPublishEditorController(MCRWebdriverWrapper driver, String baseURL) {
         this.driver = driver;

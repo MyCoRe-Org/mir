@@ -13,9 +13,12 @@ import org.apache.solr.client.solrj.response.LukeResponse;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.mycore.common.MCRException;
 import org.mycore.common.selenium.MCRSeleniumTestBase;
+import org.mycore.common.selenium.drivers.MCRWebdriverWrapper;
+import org.mycore.mir.it.controller.MIRControllerFactory;
 import org.mycore.mir.it.controller.MIRModsEditorController;
 import org.mycore.mir.it.controller.MIRPublishEditorController;
 import org.mycore.mir.it.controller.MIRUserController;
@@ -23,16 +26,24 @@ import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Sleeper;
 
 public class MIRITBase extends MCRSeleniumTestBase {
-    MIRUserController userController;
 
-    MIRPublishEditorController publishEditorController;
+    protected MIRControllerFactory controllerFactory;
 
-    MIRModsEditorController editorController;
+    protected MIRUserController userController;
+
+    protected MIRPublishEditorController publishEditorController;
+
+    protected MIRModsEditorController editorController;
 
     private static SolrClient SOLR_CLIENT;
 
+    protected MIRControllerFactory createControllerFactory(MCRWebdriverWrapper driver, String appURL) {
+        return new MIRControllerFactory(driver, appURL);
+    }
+
     protected static enum Core {
-        main("mir"), classifications("mir-classifications");
+        main(System.getProperty("mcr.it.solr.core.main", "mir")),
+        classifications(System.getProperty("mcr.it.solr.core.classifications", "mir-classifications"));
 
         private final String coreName;
 
@@ -43,6 +54,15 @@ public class MIRITBase extends MCRSeleniumTestBase {
         String getCoreName() {
             return coreName;
         }
+    }
+
+    @Before
+    public final void initMIRControllers() {
+        String appURL = getAPPUrlString();
+        controllerFactory = createControllerFactory(driver, appURL);
+        userController = controllerFactory.createUserController();
+        publishEditorController = controllerFactory.createPublishEditorController();
+        editorController = controllerFactory.createModsEditorController();
     }
 
     @BeforeClass
