@@ -38,7 +38,7 @@ services:
       - SOLR_CLASSIFICATION_CORE=mir-classifications
       - XMX=${MIR_XMX}
       - XMS=${MIR_XMS}
-      - FIX_FILE_SYSTEM_RIGHTS=false
+      - FIX_FILE_SYSTEM_RIGHTS=true
       - DEVELOPER_MODE=false
     volumes:
       - ${MIR_HOME}:/mcr/home/

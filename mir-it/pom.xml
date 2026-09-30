@@ -21,8 +21,6 @@
     <cargo.servlet.port>9107</cargo.servlet.port>
     <failsafe.arg />
     <it.host>127.0.0.1</it.host>
-    <maven.deploy.skip>true</maven.deploy.skip>
-    <maven.install.skip>true</maven.install.skip>
     <mir.cli.archive>${project.basedir}/../mir-cli/target/mir-cli-${project.version}.tar.gz</mir.cli.archive>
     <mir.module.jar>${project.basedir}/../mir-module/target/mir-module-${project.version}.jar</mir.module.jar>
     <mir.webapp.war>${project.basedir}/../mir-webapp/target/mir-${project.version}.war</mir.webapp.war>
@@ -48,6 +46,17 @@
                 </fileset>
               </filesets>
             </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <executions>
+          <execution>
+            <goals>
+              <goal>test-jar</goal>
+            </goals>
           </execution>
         </executions>
       </plugin>

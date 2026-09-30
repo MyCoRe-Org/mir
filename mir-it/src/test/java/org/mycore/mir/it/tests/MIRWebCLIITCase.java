@@ -11,19 +11,15 @@ public class MIRWebCLIITCase extends MIRITBase {
 
     @Before
     public final void init() {
-        String appURL = getAPPUrlString();
-        userController = new MIRUserController(getDriver(), appURL);
-
         userController.logoutIfLoggedIn();
         userController.loginAs(MIRUserController.ADMIN_LOGIN, MIRUserController.ADMIN_PASSWD);
     }
 
     @Test
-    public void testWebCLIStartup() throws InterruptedException {
+    public void testWebCLIStartup() {
         MCRWebdriverWrapper driver = getDriver();
 
-        driver.waitAndFindElement(By.xpath(".//strong[contains(text(), 'administrator')]")).click();
-        driver.waitAndFindElement(By.xpath(".//a[contains(text(), 'WebCLI')]")).click();
+        userController.openWebCLI();
         String mainWindowHandle = driver.getWindowHandle();
         driver.waitAndFindElement(By.id("launchButton")).click();
 
@@ -39,21 +35,5 @@ public class MIRWebCLIITCase extends MIRITBase {
         cliDriver.close();
         driver.switchTo().window(mainWindowHandle);
 
-    }
-
-    private String waitForAdditionalWindow(MCRWebdriverWrapper driver, String mainWindowHandle)
-        throws InterruptedException {
-        for (int attempt = 0; attempt < 40; attempt++) {
-            String webcliWindowHandle = driver.getWindowHandles()
-                .stream()
-                .filter(h -> !h.equals(mainWindowHandle))
-                .findFirst()
-                .orElse(null);
-            if (webcliWindowHandle != null) {
-                return webcliWindowHandle;
-            }
-            Thread.sleep(250);
-        }
-        throw new RuntimeException("Could not find webcli window!");
     }
 }

@@ -85,8 +85,7 @@ public class MIRLanguageSearchITCase extends MIRITBase {
 
     @Before
     public final void init() throws IOException, InterruptedException {
-        MIRSearchTestDataLoader searchTestDataLoader = new MIRSearchTestDataLoader();
-        searchTestDataLoader.lazyLoadData(getDriver());
+        new MIRSearchTestDataLoader(controllerFactory).lazyLoadData();
         // navigate to start page so the "Suche" nav link is available
         getDriver().get(getAPPUrlString());
     }

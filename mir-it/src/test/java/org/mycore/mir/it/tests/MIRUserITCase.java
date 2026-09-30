@@ -5,7 +5,6 @@ package org.mycore.mir.it.tests;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.mycore.common.selenium.MCRSeleniumTestBase;
 import org.mycore.mir.it.controller.MIRUserController;
 
 /**
@@ -15,9 +14,6 @@ public class MIRUserITCase extends MIRITBase {
 
     @Before
     public final void init() {
-        String appURL = getAPPUrlString();
-        userController = new MIRUserController(getDriver(), appURL);
-
         userController.goToStart();
         if (userController.isLoggedIn()) {
             userController.logOff();
