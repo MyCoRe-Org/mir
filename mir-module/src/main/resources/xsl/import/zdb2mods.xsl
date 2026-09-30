@@ -99,7 +99,7 @@
     </mods:classification>
   </xsl:template>
 
-  <xsl:template match="marc:datafield[@tag='856']">
+  <xsl:template match="marc:datafield[@tag='856'][1]">
     <mods:location>
       <xsl:for-each select="../marc:datafield[@tag='856']">
         <mods:url><xsl:value-of select="marc:subfield[@code='u']"/></mods:url>
