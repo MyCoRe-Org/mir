@@ -48,26 +48,28 @@ export class LobidSearchProvider extends SearchProvider {
 
     async search(searchTerm: string, settings: SearchSettings): Promise<Array<SearchResult>> {
         const result: Array<SearchResult> = [];
-
         const filterQuery = this.settingsToQuery(settings);
         if (filterQuery.trim().length === 0) {
             return [];
         }
-
         const filterQueryComponent = "&filter=" + encodeURIComponent(filterQuery);
-        const url = this.baseUrl + "?q=" + encodeURIComponent(searchTerm) +
-            filterQueryComponent + "&format=json&size=30";
-
-        const response = await fetch(url);
-        const json = await response.json();
-
-        for (const member of json.member) {
-            const memberResult = await this.handleMember(member);
-            if (memberResult != null) {
-                result.push(memberResult);
+        const url = this.baseUrl + "?q=" + encodeURIComponent(searchTerm) + filterQueryComponent + "&format=json&size=30";
+        try {
+            const response = await fetch(url);
+            if (!response.ok) {
+                console.error(`Request failed: ${response.status} ${response.statusText}`);
+                return [];
             }
+            const json = await response.json();
+            for (const member of json.member) {
+                const memberResult = await this.handleMember(member);
+                if (memberResult != null) {
+                    result.push(memberResult);
+                }
+            }
+        } catch (e) {
+            console.error("Error fetching or parsing search results:", e);
         }
-
         return result;
     }
 

@@ -273,26 +273,45 @@ const search = async () => {
     model.searching = false;
     return;
   }
+
   model.searching = true;
 
   try {
     model.searchResultGroup = await Promise.all(
         model.settings.providers.map(async (providerConfig) => {
           const providerInstance = providerInstances[providerConfig.id];
+
           if (!providerInstance) {
-            return {groupId: providerConfig.id, title: providerConfig.label, results: []};
+            return {
+              groupId: providerConfig.id,
+              title: providerConfig.label,
+              results: []
+            };
           }
 
-          const results = await providerInstance.search(
-              model.searchTerm,
-              model.searchOptions
-          );
+          try {
+            const results = await providerInstance.search(
+                model.searchTerm,
+                model.searchOptions
+            );
 
-          return {
-            groupId: providerConfig.id,
-            title: providerConfig.label,
-            results: results || []
-          };
+            return {
+              groupId: providerConfig.id,
+              title: providerConfig.label,
+              results: results || []
+            };
+          } catch (e) {
+            console.error(
+                `Search failed for provider ${providerConfig.id}`,
+                e
+            );
+
+            return {
+              groupId: providerConfig.id,
+              title: providerConfig.label,
+              results: []
+            };
+          }
         })
     );
   } catch (e) {
