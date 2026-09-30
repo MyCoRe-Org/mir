@@ -16,11 +16,16 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.mycore.mir.it.controller.MIRSearchController;
 import org.mycore.mir.it.controller.MIRUserController;
+import org.mycore.mir.it.model.MIRInstitutes;
+import org.mycore.mir.it.model.MIRSampleInstitutes;
 import org.mycore.mir.it.model.MIRSearchTestDataLoader;
 import org.mycore.mir.it.model.MIRSimpleSearchFormContent;
 import org.openqa.selenium.By;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonParseException;
 
 @RunWith(Parameterized.class)
 public class MIRSimpleSearchITCase extends MIRITBase {
@@ -42,19 +47,16 @@ public class MIRSimpleSearchITCase extends MIRITBase {
     }
 
     @Before
-    public final void init() throws IOException, InterruptedException {
-        MIRSearchTestDataLoader searchTestDataLoader = new MIRSearchTestDataLoader();
-        searchTestDataLoader.lazyLoadData(getDriver());
+    public final void init() throws IOException {
+        createSearchTestDataLoader().lazyLoadData();
 
-        String appURL = getAPPUrlString();
-        MIRUserController userController = new MIRUserController(getDriver(), appURL);
         userController.logoutIfLoggedIn();
         userController.loginAs(MIRUserController.ADMIN_LOGIN, MIRUserController.ADMIN_PASSWD);
     }
 
     @Test
     public void testForm() {
-        MIRSearchController searchController = new MIRSearchController(getDriver(), getAPPUrlString());
+        MIRSearchController searchController = controllerFactory.createSearchController();
 
         if (parsed.getTitle() != null) {
             searchController.setTitle(parsed.getTitle());
@@ -91,7 +93,6 @@ public class MIRSimpleSearchITCase extends MIRITBase {
         ids.forEach(id -> Assert
             .assertTrue("List should contain: " + id + " [" + foundIds.stream().collect(Collectors.joining(",")) + "]",
                 foundIds.contains(id)));
-
     }
 
     /**
@@ -103,10 +104,33 @@ public class MIRSimpleSearchITCase extends MIRITBase {
     private MIRSimpleSearchFormContent parseJsonFile(String jsonFile) throws IOException {
         try (InputStreamReader inputStreamReader = new InputStreamReader(
             getClass().getClassLoader().getResourceAsStream(jsonFile))) {
-            Gson gson = new Gson();
-            return gson.fromJson(inputStreamReader, MIRSimpleSearchFormContent.class);
+            return createGson().fromJson(inputStreamReader, MIRSimpleSearchFormContent.class);
         }
 
         // return null;
     }
+
+    protected MIRInstitutes[] institutes() {
+        return MIRSampleInstitutes.values();
+    }
+
+    /**
+     * {@link MIRInstitutes} is an interface, which Gson cannot instantiate on its own
+     */
+    private Gson createGson() {
+        JsonDeserializer<MIRInstitutes> instituteDeserializer = (json, type, context) -> {
+            String value = json.getAsString();
+            return Arrays.stream(institutes())
+                .filter(institute -> value.equals(institute.getValue()))
+                .findFirst()
+                .orElseThrow(() -> new JsonParseException("Unknown institute '" + value + "', known institutes are: "
+                    + Arrays.stream(institutes()).map(MIRInstitutes::getValue).collect(Collectors.joining(", "))));
+        };
+        return new GsonBuilder().registerTypeAdapter(MIRInstitutes.class, instituteDeserializer).create();
+    }
+
+    protected MIRSearchTestDataLoader createSearchTestDataLoader() {
+        return new MIRSearchTestDataLoader(controllerFactory);
+    }
+
 }

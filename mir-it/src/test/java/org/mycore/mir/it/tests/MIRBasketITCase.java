@@ -34,8 +34,7 @@ public class MIRBasketITCase extends MIRITBase {
 
     @Before
     public final void init() throws IOException, InterruptedException {
-        MIRSearchTestDataLoader searchTestDataLoader = new MIRSearchTestDataLoader();
-        searchTestDataLoader.lazyLoadData(getDriver());
+        new MIRSearchTestDataLoader(controllerFactory).lazyLoadData();
 
         String appURL = getAPPUrlString();
         MIRUserController userController = new MIRUserController(getDriver(), appURL);

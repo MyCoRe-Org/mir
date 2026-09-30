@@ -19,7 +19,7 @@ public class MIRTestController {
     }
 
     public void clickAndWaitForPageLoad(By linkRef) {
-        WebElement link = driver.findElement(linkRef);
+        WebElement link = driver.waitAndFindElement(linkRef);
         link.click();
         driver.waitFor(ExpectedConditions.and(
             ExpectedConditions.stalenessOf(link),
