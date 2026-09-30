@@ -51,7 +51,7 @@ export class DanteSearchProvider extends SearchProvider {
                     type: "Topic",
                     text: label,
                     valueURI: concept.uri,
-                    authority: "dante"
+                    authority: this.extractAuthority(concept.uri)
                 };
 
                 const info: Array<SearchResultInfo> = [
@@ -131,5 +131,9 @@ export class DanteSearchProvider extends SearchProvider {
         }
 
         return String(value);
+    }
+    private extractAuthority(uri: string): string {
+        const match = uri.match(/\/terminology\/([^/]+)\//);
+        return match?.[1] || this.vocabulary;
     }
 }
