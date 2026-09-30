@@ -13,9 +13,11 @@ import org.mycore.common.config.MCRConfigurationException;
 import org.mycore.common.selenium.drivers.MCRWebdriverWrapper;
 import org.mycore.mir.it.controller.MIRControllerFactory;
 import org.mycore.mir.it.controller.MIRUserController;
+import org.mycore.mir.it.tests.MIRITBase;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
 public class MIRSearchTestDataLoader {
 
@@ -25,6 +27,23 @@ public class MIRSearchTestDataLoader {
 
     private static final String TEST_FOLDER_NAME = "testFiles/";
 
+    /**
+     * Solr query matching all objects of {@link #FILE_NAMES}.
+     */
+    private static final String TEST_DATA_QUERY = "id:mir_mods_0001000*";
+
+    /**
+     * An entry of the WebCLI command menu; it is rendered from the list of known commands the WebCLI requests
+     * after connecting.
+     */
+    private static final String COMMAND_MENU_ENTRY_XPATH =
+        ".//div[@webcli-commands]//li[contains(@class, 'dropdown-submenu')]";
+
+    /**
+     * Timeout of the WebCLI driver, in seconds.
+     */
+    private static final int CLI_TIMEOUT_SECONDS = 30;
+
     // TODO: read from property
     private static final List<String> FILE_NAMES = Stream.of("mir_mods_00010000.xml").collect(Collectors.toList());
 
@@ -32,7 +51,7 @@ public class MIRSearchTestDataLoader {
         this.controllerFactory = controllerFactory;
     }
 
-    public void lazyLoadData() throws IOException, InterruptedException {
+    public void lazyLoadData() throws IOException {
         if (!loaded) {
 
             loaded = true;
@@ -45,35 +64,49 @@ public class MIRSearchTestDataLoader {
             userController.openWebCLI();
             String mainWindowHandle = webDriverWrapper.getWindowHandle();
             webDriverWrapper.waitAndFindElement(By.xpath(".//input[contains(@onclick, 'WebCLI')]")).click();
-            //webDriverWrapper.waitAndFindElement(By.xpath(".//input[contains(@onclick, 'window.open')]")).click();
 
-            String webcliWindowHandle = webDriverWrapper.getWindowHandles()
-                .stream()
-                .filter(h -> !h.equals(mainWindowHandle))
-                .findFirst()
-                .orElseThrow(() -> new RuntimeException("Could not find webcli window!"));
+            String webcliWindowHandle = MIRITBase.waitForAdditionalWindow(webDriverWrapper, mainWindowHandle);
 
             MCRWebdriverWrapper cliDriver = new MCRWebdriverWrapper(
-                (RemoteWebDriver) webDriverWrapper.switchTo().window(webcliWindowHandle), 3000);
+                (RemoteWebDriver) webDriverWrapper.switchTo().window(webcliWindowHandle), CLI_TIMEOUT_SECONDS);
 
-            WebElement commandInput = cliDriver
-                .waitAndFindElement(By.xpath(".//input[contains(@placeholder,'Command')]"));
-            commandInput
-                .sendKeys("load all objects from directory " + extractTestData());
-            Thread.sleep(500);
-            cliDriver.waitAndFindElement(By.xpath(".//button[contains(text(), 'Execute')]")).click();
-            Thread.sleep(5000);
-            commandInput
-                .sendKeys("optimize solr index in core main");
-            Thread.sleep(500);
-            cliDriver.waitAndFindElement(By.xpath(".//button[contains(text(), 'Execute')]")).click();
-            Thread.sleep(1000);
-            /*cliDriver.waitAndFindElement(
-                By.xpath(".//*[contains(text(), '" + "load all objects from directory " + extractTestData() + "')]"));*/
+            execute(cliDriver, "load all objects from directory " + extractTestData());
+            execute(cliDriver, "optimize solr index in core main");
+
+            // the WebCLI runs its command queue on the server, so the documents showing up in the index is the
+            // post condition the search tests depend on - not anything the WebCLI page renders
+            MIRITBase.waitForMainIndexDocuments(TEST_DATA_QUERY, FILE_NAMES.size());
+
             cliDriver.close();
             webDriverWrapper.switchTo().window(mainWindowHandle);
 
         }
+    }
+
+    /**
+     * Enters a command into the WebCLI input and executes it.
+     * <p>
+     * Two conditions have to hold before the command may be submitted:
+     * <ul>
+     *   <li>the WebCLI must have received its list of known commands. It requests that list only after its
+     *       WebSocket opened, and the server initializes <code>MCRWebCLIContainer.knownCommands</code> while
+     *       answering. A command submitted earlier fails server side with a <code>NullPointerException</code> and
+     *       the session is closed, so the rendered command menu is a precondition for executing anything.</li>
+     *   <li>the input must reflect the command, because the WebCLI keeps its own model of the input and only
+     *       queues what that model holds.</li>
+     * </ul>
+     */
+    private static void execute(MCRWebdriverWrapper cliDriver, String command) {
+        cliDriver.waitAndFindElement(By.xpath(COMMAND_MENU_ENTRY_XPATH));
+
+        WebElement commandInput = cliDriver
+            .waitAndFindElement(By.xpath(".//input[contains(@placeholder,'Command')]"),
+                ExpectedConditions::elementToBeClickable);
+        commandInput.clear();
+        commandInput.sendKeys(command);
+        cliDriver.waitFor(webDriver -> command.equals(commandInput.getDomProperty("value")));
+        cliDriver.waitAndFindElement(By.xpath(".//button[contains(text(), 'Execute')]"),
+            ExpectedConditions::elementToBeClickable).click();
     }
 
     private String extractTestData() throws IOException {

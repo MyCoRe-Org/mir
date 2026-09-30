@@ -6,10 +6,13 @@ import java.time.Clock;
 import java.time.Duration;
 
 import org.apache.solr.client.solrj.SolrClient;
+import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpJdkSolrClient;
 import org.apache.solr.client.solrj.request.LukeRequest;
+import org.apache.solr.client.solrj.request.QueryRequest;
 import org.apache.solr.client.solrj.response.LukeResponse;
+import org.apache.solr.client.solrj.response.QueryResponse;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -34,6 +37,10 @@ public class MIRITBase extends MCRSeleniumTestBase {
     protected MIRPublishEditorController publishEditorController;
 
     protected MIRModsEditorController editorController;
+
+    private static final String SOLR_USER = "admin";
+
+    private static final String SOLR_PASSWD = "alleswirdgut";
 
     private static SolrClient SOLR_CLIENT;
 
@@ -87,7 +94,7 @@ public class MIRITBase extends MCRSeleniumTestBase {
 
     protected static LukeResponse getLukeResponse(Core core) throws IOException, SolrServerException {
         LukeRequest request = new LukeRequest();
-        request.setBasicAuthCredentials("admin", "alleswirdgut");
+        request.setBasicAuthCredentials(SOLR_USER, SOLR_PASSWD);
         request.setNumTerms(0);
         request.setShowSchema(false);
         final LukeResponse lukeResponse = request.process(SOLR_CLIENT, core.getCoreName());
@@ -97,6 +104,48 @@ public class MIRITBase extends MCRSeleniumTestBase {
     protected static long getSolrIndexVersion(Core core) throws IOException, SolrServerException {
         final LukeResponse lukeResponseBefore = getLukeResponse(core);
         return (Long) lukeResponseBefore.getIndexInfo().get("version");
+    }
+
+    /**
+     * Waits until at least <code>expectedCount</code> documents match <code>query</code> in the given core. Use
+     * this whenever a test has to see the result of an asynchronous index update.
+     */
+    protected static void waitForDocuments(Core core, String query, long expectedCount) {
+        SolrWait wait = new SolrWait(core, 180, 250);
+        final long start = System.currentTimeMillis();
+        wait.until(solrCore -> {
+            SolrQuery solrQuery = new SolrQuery(query);
+            solrQuery.setRows(0);
+            QueryRequest request = new QueryRequest(solrQuery);
+            request.setBasicAuthCredentials(SOLR_USER, SOLR_PASSWD);
+            try {
+                QueryResponse response = request.process(SOLR_CLIENT, solrCore.getCoreName());
+                return response.getResults().getNumFound() >= expectedCount;
+            } catch (IOException | SolrServerException e) {
+                System.err.println(e.getMessage());
+                return false;
+            }
+        });
+        System.err.println("Waited " + (System.currentTimeMillis() - start) + "ms for '" + query + "'.");
+    }
+
+    /**
+     * Waits until a window other than <code>mainWindowHandle</code> is open and returns its handle. Used to pick up
+     * the WebCLI window, which is opened by the application in a new window.
+     */
+    public static String waitForAdditionalWindow(MCRWebdriverWrapper driver, String mainWindowHandle) {
+        return driver.waitFor(() -> driver.getWindowHandles()
+            .stream()
+            .filter(handle -> !handle.equals(mainWindowHandle))
+            .findFirst()
+            .orElse(null));
+    }
+
+    /**
+     * Package independent shortcut for {@link #waitForDocuments(Core, String, long)} on the main core.
+     */
+    public static void waitForMainIndexDocuments(String query, long expectedCount) {
+        waitForDocuments(Core.main, query, expectedCount);
     }
 
     protected static void waitForIndexVersionChange(Core core, long beforeVersion) {
