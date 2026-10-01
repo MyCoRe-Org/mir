@@ -249,5 +249,62 @@
         "stored": true,
         "multiValued": false
     }
+  },
+  {
+    "add-field-type": {
+      "name": "mir.nameIdentifier.id",
+      "class": "solr.TextField",
+      "indexAnalyzer": {
+        "tokenizer": {
+          "class": "solr.KeywordTokenizerFactory"
+        },
+        "filters": [
+          {
+            "class": "solr.TrimFilterFactory"
+          },
+          {
+            "class": "solr.LowerCaseFilterFactory"
+          },
+          {
+            "class": "solr.PatternCaptureGroupFilterFactory",
+            "pattern": "^.*[:/](.+)$",
+            "preserve_original": "true"
+          }
+        ]
+      },
+      "queryAnalyzer": {
+        "tokenizer": {
+          "class": "solr.KeywordTokenizerFactory"
+        },
+        "filters": [
+          {
+            "class": "solr.TrimFilterFactory"
+          },
+          {
+            "class": "solr.PatternReplaceFilterFactory",
+            "pattern": "^https?://.*/",
+            "replacement": ""
+          },
+          {
+            "class": "solr.LowerCaseFilterFactory"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "add-field": {
+      "name": "mods.nameIdentifier.id",
+      "type": "mir.nameIdentifier.id",
+      "indexed": true,
+      "stored": false,
+      "multiValued": true
+    }
+  },
+  {
+    "add-copy-field": {
+      "source": "mods.nameIdentifier",
+      "dest": "mods.nameIdentifier.id"
+    }
   }
 ]
