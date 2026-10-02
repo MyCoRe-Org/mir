@@ -12,6 +12,7 @@ export default defineConfig({
   build: {
     rollupOptions: {
       input: {
+        'editor-alias': 'src/editor/alias/entry.ts',
         'editor-name': 'src/editor/name/entry.ts',
         'editor-project': 'src/editor/project/entry.ts',
         'orcid-user': 'src/orcid-user.ts',

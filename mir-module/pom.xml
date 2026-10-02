@@ -10,7 +10,10 @@
   <name>MIR: Application Module</name>
   <description>Contains all files and classes for a Institutional Repository</description>
   <properties>
+    <argLine />
     <grunt.projectBase>${basedir}</grunt.projectBase>
+    <net.bytebuddy.experimental>true</net.bytebuddy.experimental>
+    <net.bytebuddy.processor>CLASS_FILE_API_FIRST</net.bytebuddy.processor>
     <template.assetsdir>${project.build.directory}/classes/META-INF/resources/assets</template.assetsdir>
   </properties>
   <build>
@@ -123,6 +126,27 @@
             </configuration>
           </execution>
         </executions>
+      </plugin>
+      <plugin>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <executions>
+          <execution>
+            <goals>
+              <goal>properties</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <argLine>@{argLine} -javaagent:${org.mockito:mockito-core:jar} -Xshare:off</argLine>
+          <systemPropertyVariables>
+            <!-- required for mockito on JDK 25+ -->
+            <net.bytebuddy.experimental>${net.bytebuddy.experimental}</net.bytebuddy.experimental>
+            <net.bytebuddy.processor>${net.bytebuddy.processor}</net.bytebuddy.processor>
+          </systemPropertyVariables>
+        </configuration>
       </plugin>
     </plugins>
   </build>
@@ -309,6 +333,11 @@
     <dependency>
       <groupId>org.junit.vintage</groupId>
       <artifactId>junit-vintage-engine</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-core</artifactId>
       <scope>test</scope>
     </dependency>
   </dependencies>
