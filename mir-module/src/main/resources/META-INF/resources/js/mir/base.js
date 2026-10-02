@@ -384,7 +384,14 @@
                     enableButton(secondSearchFormSubmitButtonElement);
                 }
             } else {
-                const filterQuery = selectModsValue + ':' + preparingQueryStringForSolr(queryText);
+                const preparedQueryText = preparingQueryStringForSolr(queryText);
+                let filterQuery = selectModsValue + ':' + preparedQueryText;
+                if (selectModsValue === 'mods.nameIdentifier' && preparedQueryText) {
+                    // Search in both fields for backward compatibility: mods.nameIdentifier.id (also matches the
+                    // plain value without type prefix) only exists with the updated Solr schema. Without it, the
+                    // exact search in mods.nameIdentifier still works. See also response-mir.xsl.
+                    filterQuery += ' OR mods.nameIdentifier.id:' + preparedQueryText;
+                }
                 $(fqElement).attr('value', filterQuery);
                 $(condQuery).attr('value', initialCondQueryValue);
                 if (eventType === 'selectMods') {
