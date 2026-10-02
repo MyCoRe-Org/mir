@@ -55,6 +55,8 @@ git submodule deinit --all
     `rngd -r /dev/urandom`
  1. Can't export using bibtex button on metadata page  
     install [bibutils](https://sourceforge.net/projects/bibutils/)
+ 1. Videos on the metadata page have no poster image  
+    install [FFmpeg](https://ffmpeg.org/), `ffmpeg` and `ffprobe` have to be on the `PATH`
  1. How can I use MyCoRe command line interface (not WebCLI)?  
     `mir-cli/target/appassembler/bin/mir.sh`  
     Set `JAVA_OPTS` environment variable to `-DMCR.DataPrefix=dev` before running.

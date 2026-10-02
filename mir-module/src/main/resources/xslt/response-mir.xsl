@@ -4,6 +4,7 @@
   xmlns:mcractionmapping="http://www.mycore.de/xslt/actionmapping"
   xmlns:mcrclassification="http://www.mycore.de/xslt/classification"
   xmlns:mcri18n="http://www.mycore.de/xslt/i18n"
+  xmlns:mcriview2="http://www.mycore.de/xslt/iview2"
   xmlns:mcrlayoututils="http://www.mycore.de/xslt/layoututils"
   xmlns:mcrurl="http://www.mycore.de/xslt/url"
   xmlns:mirorcidutil="http://www.mycore.de/xslt/mirorcidutil"
@@ -719,13 +720,19 @@
               </xsl:choose>
             </xsl:variable>
             <xsl:variable name="displayDerivate" select="$derivates[str[@name='id'] = $displayDerivateID]"/>
+            <xsl:variable name="displayMaindoc" select="string(($displayDerivate/str[@name='derivateMaindoc'])[1])"/>
+            <!-- files that iView does not support may still be tiled, e.g. a frame generated from a video -->
+            <xsl:variable name="displayHasTiles"
+              select="if (string-length($displayDerivateID) &gt; 0 and string-length($displayMaindoc) &gt; 0)
+                then mcriview2:has-tiles(string($displayDerivateID), concat('/', $displayMaindoc))
+                else false()"/>
 
             <!-- produces the thumbnail html-->
             <xsl:variable name="imageElement">
               <xsl:choose>
-                <!-- when the thumbnail derivate has pdf as maindoc or a iviewFile, then use the iiif api -->
+                <!-- when the thumbnail derivate has pdf as maindoc, a iviewFile or tiles, then use the iiif api -->
                 <xsl:when
-                        test="$displayDerivate/str[@name='iviewFile'] or translate(tokenize(string(($displayDerivate/str[@name='derivateMaindoc'])[1]), '\.')[last()],'PDF','pdf') = 'pdf'">
+                        test="$displayDerivate/str[@name='iviewFile'] or translate(tokenize($displayMaindoc, '\.')[last()],'PDF','pdf') = 'pdf' or $displayHasTiles">
                   <div class="hit_icon">
                     <img>
                       <xsl:variable name="hitIconSrc" select="concat($WebApplicationBaseURL, 'api/iiif/image/v2/thumbnail/', $identifier, '/full/', $MIR.Thumbnail.IIIF.Resolution, '/0/default.jpg')"/>
