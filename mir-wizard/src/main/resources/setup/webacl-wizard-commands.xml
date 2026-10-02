@@ -115,6 +115,11 @@
     webpage:/jobqueue with
     rule {file} described by {describedBy}
   </command>
+  <command file="resource:setup/acl/grant-editors.xml" describedBy="editor and administrator">
+    update permission read for id
+    webpage:/dedup/ with
+    rule {file} described by {describedBy}
+  </command>
   <command file="resource:setup/acl/grant-admin.xml" describedBy="administrators only">
     update permission read for id
     webpage:/authorization/change-password.xed with
