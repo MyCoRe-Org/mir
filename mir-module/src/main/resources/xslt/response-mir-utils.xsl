@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="3.0"
   xmlns:mcri18n="http://www.mycore.de/xslt/i18n"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   exclude-result-prefixes="#all">
 
@@ -198,7 +199,7 @@
         </xsl:choose>
       </li>
 
-      <xsl:variable name="paginateStart">
+      <xsl:variable name="paginateStart" as="xs:integer">
         <xsl:call-template name="paginateStart">
           <xsl:with-param name="maxEntries" select="$maxEntries" />
           <xsl:with-param name="page" select="$page" />
@@ -206,7 +207,7 @@
         </xsl:call-template>
       </xsl:variable>
 
-      <xsl:variable name="paginateEnd">
+      <xsl:variable name="paginateEnd" as="xs:integer">
         <xsl:call-template name="paginateEnd">
           <xsl:with-param name="maxEntries" select="$maxEntries" />
           <xsl:with-param name="page" select="$page" />
@@ -214,7 +215,7 @@
         </xsl:call-template>
       </xsl:variable>
 
-      <xsl:variable name="paginateStart-mobile">
+      <xsl:variable name="paginateStart-mobile" as="xs:integer">
         <xsl:call-template name="paginateStart">
           <xsl:with-param name="maxEntries" select="$maxEntries-mobile" />
           <xsl:with-param name="page" select="$page" />
@@ -222,7 +223,7 @@
         </xsl:call-template>
       </xsl:variable>
 
-      <xsl:variable name="paginateEnd-mobile">
+      <xsl:variable name="paginateEnd-mobile" as="xs:integer">
         <xsl:call-template name="paginateEnd">
           <xsl:with-param name="maxEntries" select="$maxEntries-mobile" />
           <xsl:with-param name="page" select="$page" />

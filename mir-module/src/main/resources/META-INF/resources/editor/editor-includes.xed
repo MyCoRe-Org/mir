@@ -1848,13 +1848,13 @@
         </div>
         <mir:help-pmud help-text="{i18n:mir.help.subject.topic}" pmud="true"/>
       </div>
-      <xed:validate class="org.mycore.mir.validation.MIRValidationHelper" method="validateSubject" display="global" i18n="mir.validation.subject.simple" />
+      <xed:validate class="org.mycore.mir.validation.MIRValidationHelper" method="validateSubject" display="global" i18n="mir.validation.subject.empty" />
     </xed:repeat>
   </xed:template>
 
   <xed:template id="subject.simple.required">
     <xed:repeat xpath="mods:subjectXML" min="1" max="{$MIR.Editor.repeat.max.subject.simple.required}">
-      <div class="mir-form-group row {$xed-validation-marker}">
+      <div class="mir-form-group row required {$xed-validation-marker}">
         <label class="col-md-3 col-form-label text-end form-label">
           <xed:output i18n="mir.subject.topic"/>
         </label>
@@ -1864,15 +1864,15 @@
         </div>
         <mir:help-pmud help-text="{i18n:mir.help.subject.topic}" pmud="true"/>
       </div>
-      <xed:validate class="org.mycore.mir.validation.MIRValidationHelper" method="validateSubjectRequired" display="global" i18n="mir.validation.subject.simple.required" />
+      <xed:validate class="org.mycore.mir.validation.MIRValidationHelper" method="validateSubjectRequired" display="global" i18n="mir.validation.subject.required" />
     </xed:repeat>
   </xed:template>
 
   <xed:template id="subject.complex.required">
     <xed:repeat xpath="mods:subjectXML" min="1" max="10">
-      <div class="mir-form-group row {$xed-validation-marker}">
+      <div class="mir-form-group row required {$xed-validation-marker}">
         <label class="col-md-3 col-form-label text-end form-label">
-          <xed:output i18n="mir.subject.topic.complex "/>
+          <xed:output i18n="mir.subject.topic.complex"/>
         </label>
         <div class="col-md-6">
           <input type="hidden" class="subjectXML"/>
@@ -1880,7 +1880,7 @@
         </div>
         <mir:help-pmud help-text="{i18n:mir.help.subject.topic.complex}" pmud="true"/>
       </div>
-      <xed:validate class="org.mycore.mir.validation.MIRValidationHelper" method="validateSubject" display="global" i18n="mir.validation.subject.admin" />
+      <xed:validate class="org.mycore.mir.validation.MIRValidationHelper" method="validateSubjectRequired" display="global" i18n="mir.validation.subject.required" />
     </xed:repeat>
   </xed:template>
 
@@ -1896,7 +1896,7 @@
         </div>
         <mir:help-pmud help-text="{i18n:mir.help.subject.topic.complex}" pmud="true"/>
       </div>
-      <xed:validate class="org.mycore.mir.validation.MIRValidationHelper" method="validateSubject" display="global" i18n="mir.validation.subject.admin" />
+      <xed:validate class="org.mycore.mir.validation.MIRValidationHelper" method="validateSubject" display="global" i18n="mir.validation.subject.empty" />
     </xed:repeat>
   </xed:template>
 
