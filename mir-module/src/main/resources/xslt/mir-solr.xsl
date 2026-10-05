@@ -4,12 +4,14 @@
   xmlns:mcri18n="http://www.mycore.de/xslt/i18n"
   xmlns:mcrmods="http://www.mycore.de/xslt/mods"
   xmlns:mcrstringutils="http://www.mycore.de/xslt/stringutils"
+  xmlns:mirmods="http://www.mycore.de/xslt/mirmods"
   xmlns:mods="http://www.loc.gov/mods/v3"
   xmlns:xlink="http://www.w3.org/1999/xlink"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   exclude-result-prefixes="mods xlink">
 
   <xsl:import href="xslImport:solr-document:mir-solr.xsl"/>
+  <xsl:include href="resource:xslt/functions/mirmods.xsl" />
   <!-- <xsl:include href="resource:xsl/utils/mods-utils-3.xsl"/> -->
 
   <!-- <xsl:include href="functions/mods.xsl"/>-->
@@ -26,6 +28,11 @@
     <field name="hasFiles">
       <xsl:value-of select="count(structure/derobjects/derobject)&gt;0" />
     </field>
+    <xsl:for-each select="distinct-values(metadata/def.modsContainer/modsContainer/mods:mods ! mirmods:root-ids(.))">
+      <field name="series.root">
+        <xsl:value-of select="." />
+      </field>
+    </xsl:for-each>
   </xsl:template>
 
   <xsl:template match="mods:mods" mode="mir">

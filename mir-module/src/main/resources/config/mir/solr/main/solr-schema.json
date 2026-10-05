@@ -294,5 +294,14 @@
       "stored": true,
       "multiValued": true
     }
+  },
+  {
+    "add-field": {
+      "name": "series.root",
+      "type": "string",
+      "indexed": true,
+      "stored": true,
+      "multiValued": true
+    }
   }
 ]
