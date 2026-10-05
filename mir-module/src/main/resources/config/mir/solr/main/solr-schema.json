@@ -376,5 +376,14 @@
       "source": "mods.nameIdentifier",
       "dest": "mods.nameIdentifier.id"
     }
+  },
+  {
+    "add-field": {
+      "name": "series.root",
+      "type": "string",
+      "indexed": true,
+      "stored": true,
+      "multiValued": true
+    }
   }
 ]
