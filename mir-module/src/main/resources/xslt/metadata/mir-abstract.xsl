@@ -265,6 +265,16 @@
         <xsl:with-param name="label" select="mcri18n:translate('mir.metadata.review')"/>
       </xsl:call-template>
 
+      <xsl:call-template name="findRelatedItems">
+        <xsl:with-param name="query" select="concat('mods.relatedItem.otherVersion:', $objectID, ' AND (', $state, ')')"/>
+        <xsl:with-param name="label" select="mcri18n:translate('mir.metadata.otherVersion')"/>
+      </xsl:call-template>
+
+      <xsl:call-template name="findRelatedItems">
+        <xsl:with-param name="query" select="concat('mods.relatedItem.otherFormat:', $objectID, ' AND (', $state, ')')"/>
+        <xsl:with-param name="label" select="mcri18n:translate('mir.metadata.otherFormat')"/>
+      </xsl:call-template>
+
     </div><!-- end: authors, description, children -->
 
     <xsl:apply-imports />
