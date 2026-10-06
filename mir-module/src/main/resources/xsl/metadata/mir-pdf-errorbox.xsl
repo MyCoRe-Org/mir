@@ -32,11 +32,25 @@
         <xsl:variable name="files" select="$reports/derivate/file"/>
         <xsl:variable name="pending" select="$files[@status = 'pending']"/>
         <xsl:variable name="invalid" select="$files[@flavour = 'Validation Error' or failed]"/>
+        <!-- PDF files are present, but the job producing their reports is not activated in MyCoRe -->
+        <xsl:variable name="deactivated" select="$reports/derivate[@activated = 'false']"/>
 
-        <xsl:if test="$files or $reports/error">
+        <xsl:if test="$files or $reports/error or $deactivated">
         <div id="mir-pdfa-validation">
         <!-- a failed report lookup must not hide the derivates that could be read -->
         <xsl:apply-templates select="$reports/error" mode="displayPdfError"/>
+        <xsl:if test="$deactivated">
+            <div class="card-header bg-warning mb-3 pdfa-deactivated">
+                <div class="list-group list-group-root well p-3">
+                    <p class="h5">
+                        <xsl:value-of select="i18n:translate('pdf.errorbox.deactivated.heading')"/>
+                    </p>
+                    <p class="mb-0">
+                        <xsl:value-of select="i18n:translate('pdf.errorbox.deactivated.message')"/>
+                    </p>
+                </div>
+            </div>
+        </xsl:if>
         <xsl:choose>
             <xsl:when test="$invalid">
                 <div class="container pdf-validation mb-3 px-0" id="accordion">
