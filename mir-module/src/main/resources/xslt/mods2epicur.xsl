@@ -23,6 +23,8 @@
     </xsl:for-each>
   </xsl:variable>
 
+  <xsl:variable name="objectID" select="mycoreobject/@ID" />
+
   <xsl:template match="mycoreobject">
     <epicur xsi:schemaLocation="urn:nbn:de:1111-2004033116 http://www.persistent-identifier.de/xepicur/version1.0/xepicur.xsd" xmlns="urn:nbn:de:1111-2004033116"
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
@@ -87,7 +89,8 @@
       <xsl:otherwise>
         <resource xmlns="urn:nbn:de:1111-2004033116">
           <identifier scheme="url" target="transfer">
-            <xsl:value-of select="concat($ServletsBaseURL,'MCRZipServlet/',@id)" />
+            <xsl:value-of select="concat($WebApplicationBaseURL,'api/v2/objects/',$objectID,
+              '/derivates/',@id,'/archive/zip')" />
           </identifier>
           <format scheme="imt">
             <xsl:value-of select="'application/zip'" />
@@ -106,7 +109,8 @@
       </xsl:for-each>
       <xsl:value-of select="concat('/', encode-for-uri($ifsFileChild/name))" />
     </xsl:variable>
-    <xsl:value-of select="concat($ServletsBaseURL,'MCRFileNodeServlet/',$derId,$filePath)" />
+    <xsl:value-of select="concat($WebApplicationBaseURL,'api/v2/objects/',$objectID,
+      '/derivates/',$derId,'/contents',$filePath)" />
   </xsl:template>
 
 </xsl:stylesheet>

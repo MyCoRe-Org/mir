@@ -50,9 +50,11 @@
                                   select="/mycoreobject/structure/derobjects/derobject[fn:contains(maindoc/text(), '.pdf')]"/>
                     <fn:string key="pdf_url">
                         <xsl:value-of select="concat($WebApplicationBaseURL,
-                        'servlets/MCRFileNodeServlet/',
+                        'api/v2/objects/',
+                        /mycoreobject/@ID,
+                        '/derivates/',
                         $derivate/@xlink:href,
-                        '/',
+                        '/contents/',
                         $derivate/maindoc/text())"/>
                     </fn:string>
                 </xsl:if>
