@@ -98,6 +98,10 @@
                 <!-- we dont need that here -->
                 <regex>webpage:/rsc/ACLE/start.*</regex>
             </not>
+            <not>
+                <!-- duplicate management is handled somewhere else -->
+                <regex>webpage:/dedup/.*</regex>
+            </not>
         </and>
     </and>
 </or>
