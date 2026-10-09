@@ -83,7 +83,7 @@ public class MIRSearchTestDataLoader {
 
             // the WebCLI runs its command queue on the server, so the documents showing up in the index is the
             // post condition the search tests depend on - not anything the WebCLI page renders
-            MIRITBase.waitForMainIndexDocuments(TEST_DATA_QUERY, FILE_NAMES.size());
+            MIRITBase.waitForMainIndexDocuments(getTestDataQuery(), getFileNames().size());
 
             cliDriver.close();
             webDriverWrapper.switchTo().window(mainWindowHandle);
@@ -136,5 +136,9 @@ public class MIRSearchTestDataLoader {
 
     protected List<String> getFileNames() {
         return FILE_NAMES;
+    }
+
+    protected String getTestDataQuery() {
+        return TEST_DATA_QUERY;
     }
 }
