@@ -31,9 +31,9 @@ import org.jdom2.Document;
 import org.jdom2.Element;
 import org.mycore.common.MCRMailer;
 import org.mycore.common.MCRSessionMgr;
+import org.mycore.common.MCRSessionUtils;
 import org.mycore.common.config.MCRConfiguration2;
 import org.mycore.common.content.MCRJDOMContent;
-import org.mycore.common.xml.MCRXMLFunctions;
 import org.mycore.frontend.MCRFrontendUtil;
 import org.mycore.frontend.servlets.MCRServlet;
 import org.mycore.frontend.servlets.MCRServletJob;
@@ -338,7 +338,7 @@ public class MirSelfRegistrationServlet extends MCRServlet {
     private Map.Entry<Integer, String> isCurrentUserInRole(List<String> roles) {
         if (roles != null && !roles.isEmpty()) {
             for (String role : roles) {
-                if (MCRXMLFunctions.isCurrentUserInRole(role)) {
+                if (MCRSessionUtils.isCurrentUserInRole(role)) {
                     return Map.entry(0, "");
                 }
             }
