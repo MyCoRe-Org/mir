@@ -294,5 +294,30 @@
       "stored": true,
       "multiValued": true
     }
+  },
+  {
+    "add-field-type": {
+      "name": "mir.alias.string_ci",
+      "class": "solr.TextField",
+      "analyzer": {
+        "tokenizer": {
+          "class": "solr.KeywordTokenizerFactory"
+        },
+        "filters": [
+          {
+            "class": "solr.LowerCaseFilterFactory"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "add-field": {
+      "name": "alias",
+      "type": "mir.alias.string_ci",
+      "indexed": true,
+      "stored": true,
+      "multiValued": false
+    }
   }
 ]

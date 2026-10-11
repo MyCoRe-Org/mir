@@ -3,6 +3,7 @@
   xmlns:datacite="http://datacite.org/schema/kernel-4"
   xmlns:mcri18n="http://www.mycore.de/xslt/i18n"
   xmlns:mcrmods="http://www.mycore.de/xslt/mods"
+  xmlns:mcrproperty="http://www.mycore.de/xslt/property"
   xmlns:mcrstringutils="http://www.mycore.de/xslt/stringutils"
   xmlns:mods="http://www.loc.gov/mods/v3"
   xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -26,6 +27,13 @@
     <field name="hasFiles">
       <xsl:value-of select="count(structure/derobjects/derobject)&gt;0" />
     </field>
+    <xsl:if test="lower-case(mcrproperty:get('MIR.Alias.Enabled')) = 'true'">
+      <xsl:for-each select="service/servflags/servflag[@type='alias'][string-length(normalize-space()) &gt; 0][1]">
+        <field name="alias">
+          <xsl:value-of select="normalize-space()" />
+        </field>
+      </xsl:for-each>
+    </xsl:if>
   </xsl:template>
 
   <xsl:template match="mods:mods" mode="mir">
