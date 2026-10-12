@@ -6,11 +6,11 @@
   <xsl:param name="MIR.Editor.Derivate.EditableIntentServiceFlags" select="en"/>
 
   <xed:template id="in.out">
-    <xed:source uri="notnull:checkPermissionChain:{$derivateid}:writedb:xslStyle:editor/derivate2xeditor:mcrobject:{$derivateid}" />
+    <xed:source uri="notnull:checkPermissionChain:{$derivateid}:writedb:xslTransform:derivate2xeditor:notnull:mcrobject:{$derivateid}" />
     <xed:cancel url="/receive/{$objectid}" />
     <xed:cancel url="{$cancelUrl}" />
     <xed:cancel url="../index.html" />
-    <xed:post-processor xsl="editor/xeditor2derivate.xsl" />
+    <xed:post-processor contentTransformer="xeditor2derivate" />
   </xed:template>
 
   <xed:template id="order">
