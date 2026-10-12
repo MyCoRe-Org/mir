@@ -19,7 +19,7 @@ import org.mycore.test.MyCoReTest;
 @ExtendWith(MCRJPAExtension.class)
 public class XEditor2ModsXSLTest extends MIRXSLTFunctionTestCase {
 
-    private static final String XSL = "/xslt/editor/xeditor2mods.xsl";
+    private static final String XSL = "/xslt/mir/editor/xeditor2mods.xsl";
     private static final Namespace MCR_NAMESPACE = Namespace.getNamespace("mcr", "http://www.mycore.org/");
     private static final Namespace XLINK_NAMESPACE = Namespace.getNamespace("xlink", "http://www.w3.org/1999/xlink");
 

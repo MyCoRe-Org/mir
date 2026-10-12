@@ -10,7 +10,7 @@ import org.mycore.test.MyCoReTest;
 @MyCoReTest
 public class MIRDateConverterXSLTest extends MIRXSLTFunctionTestCase {
 
-    private static final String XSL = "/xslt/functions/mirdateconverter-test.xsl";
+    private static final String XSL = "/xslt/mir/functions/mirdateconverter-test.xsl";
 
     @Test
     void testConvertIso8601ToW3CDTF() throws Exception {
