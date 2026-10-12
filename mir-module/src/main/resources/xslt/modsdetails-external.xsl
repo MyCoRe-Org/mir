@@ -302,11 +302,6 @@
                         <xsl:with-param name="class" select="'dropdown-item'"/>
                       </xsl:call-template>
                     </xsl:if>
-                    <!-- li> does not work atm
-                      <a href="{$WebApplicationBaseURL}editor/change_genre.xed?id={$id}">
-                        <xsl:value-of select="i18n:translate('object.editGenre')" />
-                      </a>
-                    </li -->
                   </xsl:when>
                   <xsl:otherwise>
                     <li class="dropdown-item">
