@@ -24,21 +24,27 @@ export class LobidSearchProvider extends SearchProvider {
         if (settings.searchPersons) {
             query.push("type:Person");
         }
+
         if (settings.searchInstitution) {
             query.push("type:CorporateBody");
         }
+
         if (settings.searchConference) {
             query.push("type:ConferenceOrEvent");
         }
+
         if (settings.searchPlace) {
             query.push("type:PlaceOrGeographicName");
         }
+
         if (settings.searchTopic) {
             query.push("type:SubjectHeading");
         }
+
         if (settings.searchTitle) {
             query.push("type:Work");
         }
+
         if (settings.searchFamily) {
             query.push("type:Family");
         }
@@ -48,10 +54,12 @@ export class LobidSearchProvider extends SearchProvider {
 
     async search(searchTerm: string, settings: SearchSettings): Promise<Array<SearchResult>> {
         const result: Array<SearchResult> = [];
+
         const filterQuery = this.settingsToQuery(settings);
-        if (filterQuery.trim().length === 0) {
+        if(filterQuery.trim().length === 0){
             return [];
         }
+
         const filterQueryComponent = "&filter=" + encodeURIComponent(filterQuery);
         const url = this.baseUrl + "?q=" + encodeURIComponent(searchTerm) + filterQueryComponent + "&format=json&size=30";
         try {
@@ -70,6 +78,8 @@ export class LobidSearchProvider extends SearchProvider {
         } catch (e) {
             console.error("Error fetching or parsing search results:", e);
         }
+
+
         return result;
     }
 
@@ -77,21 +87,27 @@ export class LobidSearchProvider extends SearchProvider {
         if (member.type.indexOf("CorporateBody") > -1) {
             return await this.handleCorporateBody(member);
         }
+
         if (member.type.indexOf("Person") > -1) {
             return await this.handlePerson(member);
         }
+
         if (member.type.indexOf("Family") > -1) {
             return await this.handleFamily(member);
         }
+
         if (member.type.indexOf("ConferenceOrEvent") > -1) {
             return await this.handleConference(member);
         }
+
         if (member.type.indexOf("PlaceOrGeographicName") > -1) {
             return await this.handlePlace(member);
         }
+
         if (member.type.indexOf("SubjectHeading") > -1) {
             return await this.handleTopic(member);
         }
+
         if (member.type.indexOf("Work") > -1) {
             return await this.handleTitle(member);
         }
@@ -148,6 +164,7 @@ export class LobidSearchProvider extends SearchProvider {
             valueURI: member.id,
             authority: "gnd"
         };
+
 
         const searchResult = {
             id: member.id,
@@ -226,7 +243,7 @@ export class LobidSearchProvider extends SearchProvider {
     protected async addWebsiteIfPresent(member: any, info: Array<SearchResultInfo>) {
         if ("homepage" in member) {
             const urls = (member.homepage as { id: string; label: string }[]).map(hp => hp.id);
-            for (let i = 0; i < urls.length; i++) {
+            for (let i = 0; i < urls.length; i++){
                 const url: string = urls[i];
                 info.push({
                     id: this.generateID(),
@@ -259,7 +276,7 @@ export class LobidSearchProvider extends SearchProvider {
         return conference;
     }
 
-    protected async handlePlace(member: any) {
+   protected async handlePlace(member: any) {
         const result: Geographic = {
             "type": "Geographic",
             text: member.preferredName,
@@ -276,7 +293,7 @@ export class LobidSearchProvider extends SearchProvider {
         await this.addWebsiteIfPresent(member, searchResult.info);
         await this.addVariantName(member, searchResult.info);
 
-        if ("biographicalOrHistoricalInformation" in member && member.biographicalOrHistoricalInformation.length > 0) {
+        if("biographicalOrHistoricalInformation" in member && member.biographicalOrHistoricalInformation.length > 0){
             for (const bio of member.biographicalOrHistoricalInformation) {
                 searchResult.info.push({
                     id: this.generateID(),
@@ -286,6 +303,7 @@ export class LobidSearchProvider extends SearchProvider {
                 });
             }
         }
+
 
         await this.addGNDLink(member, searchResult.info);
 
@@ -309,7 +327,7 @@ export class LobidSearchProvider extends SearchProvider {
 
     protected async handleFamily(member: any) {
         const handlePerson = await this.handlePerson(member);
-        if (handlePerson == null) {
+        if(handlePerson == null) {
             return null;
         }
 
@@ -330,6 +348,8 @@ export class LobidSearchProvider extends SearchProvider {
             valueURI: member.id
         }
 
+
+
         const searchResult = {
             id: this.generateID(),
             result,
@@ -338,6 +358,8 @@ export class LobidSearchProvider extends SearchProvider {
 
         await this.addVariantName(member, searchResult.info);
         await this.addWebsiteIfPresent(member, searchResult.info);
+
+
 
         return searchResult;
     }

@@ -181,15 +181,15 @@ watch(() => props.searchResultGroup, (newValue) => {
     return;
   }
 
-  const isGroupPresent = newValue.some(
+    const isGroupPresent = newValue.some(
       (group) => group.groupId === model.currentGroupId
   );
 
-  if (!isGroupPresent) {
-    model.currentGroupId = newValue[0].groupId;
-  }
+    if (!isGroupPresent) {
+        model.currentGroupId = newValue[0].groupId;
+    }
 }, {
-  deep: true
+    deep: true
 });
 
 const currentGroup = computed(() => {
