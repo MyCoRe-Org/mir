@@ -36,7 +36,7 @@ import org.mycore.test.MyCoReTest;
 @ExtendWith(MCRJPAExtension.class)
 @MCRTestConfiguration(properties = {
     @MCRTestProperty(key = "MCR.URIResolver.xslImports.modsmeta",
-        string = "metadata/test/modsmeta-test-base.xsl,mir/object/boxes/mir-metadata-box.xsl,mir/object/boxes/mir-admindata-box.xsl")
+        string = "metadata/test/modsmeta-test-base.xsl,mir/object-page/boxes/metadata.xsl,mir/object-page/boxes/admindata.xsl")
 })
 public class MIRMetadataBoxXSLTest extends MIRXSLTFunctionTestCase {
 

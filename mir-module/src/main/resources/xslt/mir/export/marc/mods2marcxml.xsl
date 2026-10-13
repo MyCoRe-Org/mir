@@ -16,7 +16,7 @@
     MODS v3 to MARC21Slim transformation  	ntra 2/20/04
   -->
 
-  <xsl:include href="resource:xslt/mir/export/marc/MARC21slimUtils.xsl" />
+  <xsl:include href="resource:xslt/mir/export/marc/slim-utils.xsl" />
   <xsl:include href="resource:xslt/functions/mods.xsl" />
 
   <xsl:output method="xml" indent="yes" encoding="UTF-8" />
