@@ -234,7 +234,7 @@
      </xsl:choose>
   </xsl:template>
 
-  <!-- copied from modsmetadata.xsl -->
+  <!-- copied from mods/metadata-templates.xsl -->
   <xsl:template match="mods:name" mode="printName">
     <xsl:choose>
       <xsl:when test="mods:namePart">
