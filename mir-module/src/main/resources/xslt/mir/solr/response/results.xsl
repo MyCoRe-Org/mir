@@ -7,12 +7,12 @@
   xmlns:mcrlayoututils="http://www.mycore.de/xslt/layoututils"
   xmlns:mcrurl="http://www.mycore.de/xslt/url"
   xmlns:mirorcidutil="http://www.mycore.de/xslt/mirorcidutil"
-  xmlns:mirseriespanel="http://www.mycore.de/xslt/mirseriespanel"
+  xmlns:mirguidancepanel="http://www.mycore.de/xslt/mirguidancepanel"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   exclude-result-prefixes="#all">
 
   <xsl:import href="xslImport:badges" />
-  <xsl:import href="resource:xslt/series-panel/mir-series-panel.xsl" />
+  <xsl:import href="resource:xslt/guidance-panel/mir-guidance-panel.xsl" />
   <xsl:include href="resource:xslt/mir/layout/utils.xsl" />
   <xsl:include href="resource:xslt/mir/orcid/export.xsl"/>
   <xsl:include href="resource:xslt/csl-export-gui.xsl" />
@@ -452,10 +452,11 @@
           </div>
         </div>
 
-        <xsl:if test="mirseriespanel:is-enabled()">
-          <xsl:for-each select="/response/lst[@name='responseHeader']/lst[@name='params']/str[@name='q'][starts-with(., 'series.root:')]">
-            <xsl:call-template name="render-series-panels">
-              <xsl:with-param name="object-id" select="substring-after(., 'series.root:')" />
+        <xsl:if test="mirguidancepanel:is-enabled()">
+          <xsl:for-each select="/response/lst[@name='responseHeader']/lst[@name='params']
+            /str[@name='q'][starts-with(., 'mods.relatedItem.root:')]">
+            <xsl:call-template name="render-guidance-panels">
+              <xsl:with-param name="object-id" select="substring-after(., 'mods.relatedItem.root:')" />
             </xsl:call-template>
           </xsl:for-each>
         </xsl:if>
