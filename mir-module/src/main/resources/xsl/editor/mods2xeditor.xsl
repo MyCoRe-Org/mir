@@ -132,7 +132,7 @@
     </xsl:copy>
   </xsl:template>
 
-  <xsl:template match="mods:namePart[not(@type)]">
+  <xsl:template match="mods:name/mods:namePart[not(@type)]">
     <xsl:copy>
       <xsl:attribute name="type">other</xsl:attribute>
       <xsl:apply-templates select="@*|node()" />

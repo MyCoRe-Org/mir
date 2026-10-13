@@ -125,7 +125,7 @@
       </xsl:when>
       <xsl:otherwise>
         <xsl:for-each
-                select="mcrmods:to-mycoreclass(., 'parent')/mycoreclass//category[position()=1 or position()=last()]">
+                select="mcrmods:to-mycoreclass(., 'parent')//category[position()=1 or position()=last()]">
           <xsl:if test="position() = 1">
             <xsl:copy-of select="@xml:lang"/>
           </xsl:if>
@@ -438,19 +438,19 @@
     <xsl:variable name="schemeURI" select="@authorityURI" />
     <xsl:variable name="valueURI" select="@valueURI" />
 
-    <xsl:variable name="classif"   select="mcrmods:to-mycoreclass(., 'parent')/mycoreclass" />
+    <xsl:variable name="classif"   select="mcrmods:to-mycoreclass(., 'parent')" />
 
-    <xsl:for-each select="$classif//category[position() = last()]/label">
+    <xsl:for-each select="($classif//category)[last()]/label">
       <xsl:choose>
         <xsl:when test="starts-with(@xml:lang,'x-')" />
         <xsl:otherwise>
           <subject>
-            <xsl:if test="schemeURI">
+            <xsl:if test="$schemeURI">
               <xsl:attribute name="schemeURI">
                 <xsl:value-of select="$schemeURI" />
               </xsl:attribute>
             </xsl:if>
-            <xsl:if test="valueURI">
+            <xsl:if test="$valueURI">
               <xsl:attribute name="valueURI">
                 <xsl:value-of select="$valueURI" />
               </xsl:attribute>
@@ -535,7 +535,7 @@
         <xsl:when test="$mods-type='software'">
           <xsl:value-of select="'Software'" />
         </xsl:when>
-        <xsl:when test="mods-type='grouping'">
+        <xsl:when test="$mods-type='grouping'">
           <xsl:value-of select="'Collection'" />
         </xsl:when>
         <xsl:otherwise>
