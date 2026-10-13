@@ -32,7 +32,7 @@
         </generator>
       </xsl:if>
       <docs>https://www.rssboard.org/rss-specification</docs>
-      <xsl:variable name="query" select="concat('solr:q=', encode-for-uri(concat('series.root:', @ID)),
+      <xsl:variable name="query" select="concat('solr:q=', encode-for-uri(concat('mods.relatedItem.root:', @ID)),
         '&amp;fl=id&amp;rows=20&amp;sort=', encode-for-uri('mods.dateIssued desc,mods.dateIssued.host desc'))" />
       <!-- the Solr query does not check permissions, so only readable objects are listed -->
       <xsl:for-each select="document($query)/response/result/doc/str[@name = 'id'][mcracl:check-permission(., 'read')]">
@@ -88,8 +88,8 @@
   <!-- RFC 822 date as required by RSS, e.g. Mon, 05 Oct 2026 12:00:00 +0200 -->
   <xsl:template match="servdate">
     <pubDate>
-      <xsl:value-of
-        select="format-dateTime(xs:dateTime(.), '[FNn,3-3], [D01] [MNn,3-3] [Y0001] [H01]:[m01]:[s01] [Z0000]', 'en', (), ())" />
+      <xsl:value-of select="format-dateTime(xs:dateTime(.),
+        '[FNn,3-3], [D01] [MNn,3-3] [Y0001] [H01]:[m01]:[s01] [Z0000]', 'en', (), ())" />
     </pubDate>
   </xsl:template>
 

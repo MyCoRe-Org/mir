@@ -29,7 +29,7 @@
       <xsl:value-of select="count(structure/derobjects/derobject)&gt;0" />
     </field>
     <xsl:for-each select="distinct-values(metadata/def.modsContainer/modsContainer/mods:mods ! mirmods:root-ids(.))">
-      <field name="series.root">
+      <field name="mods.relatedItem.root">
         <xsl:value-of select="." />
       </field>
     </xsl:for-each>

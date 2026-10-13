@@ -297,7 +297,7 @@
   },
   {
     "add-field": {
-      "name": "series.root",
+      "name": "mods.relatedItem.root",
       "type": "string",
       "indexed": true,
       "stored": true,
