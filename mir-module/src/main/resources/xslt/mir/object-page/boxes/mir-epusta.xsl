@@ -4,7 +4,7 @@
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   exclude-result-prefixes="#all">
 
-  <xsl:import href="xslImport:modsmeta:mir/object/boxes/mir-epusta.xsl" />
+  <xsl:import href="xslImport:modsmeta:mir/object-page/boxes/mir-epusta.xsl" />
 
   <xsl:param name="MIR.ePuSta" select="'hide'" />
   <xsl:param name="MIR.ePuSta.Prefix" />

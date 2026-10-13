@@ -6,7 +6,7 @@
                 xmlns:xlink="http://www.w3.org/1999/xlink"
                 exclude-result-prefixes="#all">
 
-  <xsl:import href="xslImport:mirworkflow:mir/object/boxes/workflow/mir-sherpa-workflow.xsl"/>
+  <xsl:import href="xslImport:mirworkflow:mir/object-page/boxes/workflow/mir-sherpa-workflow.xsl"/>
 
   <xsl:template match="mycoreobject" mode="creatorSubmittedAdd">
     <xsl:apply-imports/>

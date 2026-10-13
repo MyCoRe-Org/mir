@@ -5,7 +5,7 @@
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   exclude-result-prefixes="#all">
 
-  <xsl:import href="xslImport:modsmeta:mir/object/boxes/mir-export.xsl" />
+  <xsl:import href="xslImport:modsmeta:mir/object-page/boxes/mir-export.xsl" />
   <xsl:param name="MCR.Export.Transformers" />
   <xsl:template match="/">
     <xsl:variable name="objectId" select="/mycoreobject/@ID" />

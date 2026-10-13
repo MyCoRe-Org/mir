@@ -9,7 +9,7 @@
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   exclude-result-prefixes="#all">
 
-  <xsl:import href="xslImport:modsmeta:mir/object/boxes/mir-collapse-files.xsl" />
+  <xsl:import href="xslImport:modsmeta:mir/object-page/boxes/mir-collapse-files.xsl" />
   <xsl:param name="MIR.NotFullAccessInfo.Genres" />
   <xsl:param name="MIR.FileBrowser.FilesPerPage" />
   <xsl:template match="/">
