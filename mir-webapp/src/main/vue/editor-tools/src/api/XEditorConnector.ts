@@ -127,7 +127,7 @@ export const retrieveSettings = (root: HTMLElement): EditorSettings => {
         } else {
             settings.required = requiredStr.split(",");
             settings.required = settings.required.filter((value, index, array) => {
-                const includes = possibleTypes.includes(value);
+               const includes = possibleTypes.includes(value);
                 if(!includes){
                     console.warn(`Unknown type ${value} in required list`);
                 }
@@ -142,12 +142,12 @@ export const retrieveSettings = (root: HTMLElement): EditorSettings => {
             settings.editor = settings.editor
                 .filter(value => value.trim().length >0 )
                 .filter((value, index, array) => {
-                    const includes = possibleTypes.includes(value);
-                    if(!includes){
-                        console.warn(`Unknown type ${value} in editor list`);
-                    }
-                    return includes;
-                });
+                const includes = possibleTypes.includes(value);
+                if(!includes){
+                    console.warn(`Unknown type ${value} in editor list`);
+                }
+                return includes;
+            });
         }
 
         if(searchable == "*"){
@@ -226,7 +226,6 @@ export const retrieveSettings = (root: HTMLElement): EditorSettings => {
                 },
             ];
         }
-
         return settings
     }
     throw new Error("Could not find subjectXML input");
