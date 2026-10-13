@@ -8,7 +8,7 @@
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   exclude-result-prefixes="#all">
 
-  <xsl:import href="xslImport:modsmeta:mir/object/boxes/workflow/mir-workflow.xsl"/>
+  <xsl:import href="xslImport:modsmeta:mir/object-page/boxes/workflow/mir-workflow.xsl"/>
   <xsl:import href="xslImport:mirworkflow"/>
   <xsl:import href="mir-pdf-errorbox.xsl"/>
   <xsl:param name="layout" select="'$'"/>
@@ -21,7 +21,7 @@
   <xsl:key use="@id" name="rights" match="/mycoreobject/rights/right"/>
   <xsl:variable name="id" select="/mycoreobject/@ID"/>
 
-  <xsl:include href="resource:xslt/mir/object/boxes/workflow/workflow-util.xsl"/>
+  <xsl:include href="resource:xslt/mir/object-page/boxes/workflow/workflow-util.xsl"/>
 
 
   <xsl:template match="/">

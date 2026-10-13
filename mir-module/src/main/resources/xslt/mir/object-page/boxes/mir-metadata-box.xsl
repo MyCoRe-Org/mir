@@ -7,7 +7,7 @@
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   exclude-result-prefixes="#all">
 
-  <xsl:import href="xslImport:modsmeta:mir/object/boxes/mir-metadata-box.xsl" />
+  <xsl:import href="xslImport:modsmeta:mir/object-page/boxes/mir-metadata-box.xsl" />
   <xsl:include href="resource:xslt/mir/mods/mir-mods-utils.xsl" />
   <!-- copied from http://www.loc.gov/standards/mods/v3/MODS3-4_HTML_XSLT1-0.xsl -->
 

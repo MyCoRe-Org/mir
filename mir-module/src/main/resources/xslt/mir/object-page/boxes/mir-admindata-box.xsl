@@ -7,7 +7,7 @@
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   exclude-result-prefixes="#all">
 
-  <xsl:import href="xslImport:modsmeta:mir/object/boxes/mir-admindata-box.xsl"/>
+  <xsl:import href="xslImport:modsmeta:mir/object-page/boxes/mir-admindata-box.xsl"/>
 
   <xsl:param name="MIR.Metadata.Admindata.ShowRealUserName"/>
   <xsl:template match="/">

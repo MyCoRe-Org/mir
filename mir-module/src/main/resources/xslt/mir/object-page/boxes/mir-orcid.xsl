@@ -5,7 +5,7 @@
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   exclude-result-prefixes="#all">
 
-  <xsl:import href="xslImport:modsmeta:mir/object/boxes/mir-orcid.xsl" />
+  <xsl:import href="xslImport:modsmeta:mir/object-page/boxes/mir-orcid.xsl" />
   <xsl:include href="resource:xslt/mir/orcid/mir-orcid-export-ui.xsl" />
 
   <xsl:template match="/">

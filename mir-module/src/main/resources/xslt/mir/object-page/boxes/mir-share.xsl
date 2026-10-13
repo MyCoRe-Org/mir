@@ -3,7 +3,7 @@
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   exclude-result-prefixes="#all">
 
-  <xsl:import href="xslImport:modsmeta:mir/object/boxes/mir-share.xsl" />
+  <xsl:import href="xslImport:modsmeta:mir/object-page/boxes/mir-share.xsl" />
   <xsl:template match="/">
     <xsl:variable name="objId" select="mycoreobject/@ID" />
     <div id="mir-share">

@@ -8,7 +8,7 @@
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   exclude-result-prefixes="#all">
 
-  <xsl:import href="xslImport:modsmeta:mir/object/boxes/mir-viewer.xsl" />
+  <xsl:import href="xslImport:modsmeta:mir/object-page/boxes/mir-viewer.xsl" />
 
   <xsl:param name="UserAgent" />
   <xsl:param name="MIR.DFGViewer.enable" select="'false'" />
