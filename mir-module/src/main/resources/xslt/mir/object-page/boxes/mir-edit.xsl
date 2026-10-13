@@ -4,7 +4,7 @@
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   exclude-result-prefixes="#all">
 
-  <xsl:import href="xslImport:modsmeta:mir/object/boxes/mir-edit.xsl" />
+  <xsl:import href="xslImport:modsmeta:mir/object-page/boxes/mir-edit.xsl" />
   <!-- TODO: resolve dependencies -->
   <xsl:include href="resource:xslt/mir/mods/mods.xsl" />
   <xsl:template match="/">

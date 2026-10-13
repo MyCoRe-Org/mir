@@ -8,7 +8,7 @@
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   exclude-result-prefixes="#all">
 
-  <xsl:import href="xslImport:modsmeta:mir/object/boxes/mir-abstract.xsl" />
+  <xsl:import href="xslImport:modsmeta:mir/object-page/boxes/mir-abstract.xsl" />
   <xsl:import href="xslImport:badges"/>
   <xsl:include href="resource:xslt/mir/utils/mir-utils.xsl" />
   <xsl:param name="MIR.Layout.Abstract.Type.Classification"/>

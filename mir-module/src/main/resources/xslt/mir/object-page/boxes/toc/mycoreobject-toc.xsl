@@ -17,7 +17,7 @@
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   exclude-result-prefixes="#all">
 
-  <xsl:import href="xslImport:modsmeta:mir/object/boxes/toc/mycoreobject-toc.xsl" />
+  <xsl:import href="xslImport:modsmeta:mir/object-page/boxes/toc/mycoreobject-toc.xsl" />
 
   <xsl:param name="TOC.Debug" />
   <xsl:param name="TOC.LayoutID" />

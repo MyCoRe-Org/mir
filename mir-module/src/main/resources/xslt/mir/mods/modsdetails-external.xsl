@@ -28,7 +28,7 @@
   <xsl:param name="MIR.Strategy.EditPIRoles" />
   <xsl:param name="MIR.Thumbnail.IIIF.Resolution" select="'!300,300'" />
 
-  <xsl:include href="resource:xslt/mir/object/boxes/workflow/workflow-util.xsl" />
+  <xsl:include href="resource:xslt/mir/object-page/boxes/workflow/workflow-util.xsl" />
   <xsl:include href="resource:xslt/mir/mods/mir-mods-utils.xsl" />
   <xsl:include href="resource:xslt/mir/utils/mir-utils.xsl" />
   <xsl:include href="resource:xslt/mir/layout/mir-layout-utils.xsl" />

@@ -4,7 +4,7 @@
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   exclude-result-prefixes="#all">
 
-  <xsl:import href="xslImport:modsmeta:mir/object/boxes/mir-browse.xsl" />
+  <xsl:import href="xslImport:modsmeta:mir/object-page/boxes/mir-browse.xsl" />
   <xsl:include href="resource:xslt/solr/response/response-utils.xsl" />
   <xsl:include href="resource:xslt/mir/solr/response/response-mir-utils.xsl" />
   <xsl:template match="/">

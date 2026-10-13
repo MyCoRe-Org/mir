@@ -9,10 +9,10 @@
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   exclude-result-prefixes="#all">
 
-  <xsl:import href="xslImport:modsmeta:mir/object/boxes/mir-citation.xsl" />
-  <xsl:include href="resource:xslt/mir/object/head/mods-dc-meta.xsl"/>
-  <xsl:include href="resource:xslt/mir/object/head/mods-seo-meta.xsl"/>
-  <xsl:include href="resource:xslt/mir/object/head/mods-highwire.xsl" />
+  <xsl:import href="xslImport:modsmeta:mir/object-page/boxes/mir-citation.xsl" />
+  <xsl:include href="resource:xslt/mir/object-page/head/mods-dc-meta.xsl"/>
+  <xsl:include href="resource:xslt/mir/object-page/head/mods-seo-meta.xsl"/>
+  <xsl:include href="resource:xslt/mir/object-page/head/mods-highwire.xsl" />
   
   <xsl:param name="MIR.citationStyles" select="''" />
   <xsl:param name="MIR.defaultCitationStyle" select="''" />

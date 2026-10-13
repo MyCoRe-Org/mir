@@ -7,7 +7,7 @@
   exclude-result-prefixes="#all">
 
   <xsl:include href="resource:xslt/MyCoReLayout.xsl" />
-  <xsl:include href="resource:xslt/mir/derivate/datatable.xsl" />
+  <xsl:include href="resource:xslt/mir/derivate-page/datatable.xsl" />
 
   <xsl:param name="i18n-prefix" select="'metadata.files.'" />
 
