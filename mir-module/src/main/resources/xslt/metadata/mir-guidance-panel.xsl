@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="3.0"
   xmlns:mirmods="http://www.mycore.de/xslt/mirmods"
-  xmlns:mirseriespanel="http://www.mycore.de/xslt/mirseriespanel"
+  xmlns:mirguidancepanel="http://www.mycore.de/xslt/mirguidancepanel"
   xmlns:mods="http://www.loc.gov/mods/v3"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   exclude-result-prefixes="#all">
 
-  <xsl:import href="xslImport:modsmeta:metadata/mir-series-panel.xsl" />
-  <xsl:import href="resource:xslt/series-panel/mir-series-panel.xsl" />
+  <xsl:import href="xslImport:modsmeta:metadata/mir-guidance-panel.xsl" />
+  <xsl:import href="resource:xslt/guidance-panel/mir-guidance-panel.xsl" />
   <xsl:include href="resource:xslt/functions/mirmods.xsl" />
 
   <xsl:template match="/">
-    <xsl:if test="mirseriespanel:is-enabled()">
+    <xsl:if test="mirguidancepanel:is-enabled()">
       <xsl:variable name="root-ids" select="distinct-values(
         mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods ! mirmods:root-ids(.))" />
-      <div id="mir-series-panel">
+      <div id="mir-guidance-panel">
         <xsl:for-each select="if (exists($root-ids)) then $root-ids else string(mycoreobject/@ID)">
-          <xsl:call-template name="render-series-panels">
+          <xsl:call-template name="render-guidance-panels">
             <xsl:with-param name="object-id" select="." />
           </xsl:call-template>
         </xsl:for-each>
