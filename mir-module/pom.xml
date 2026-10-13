@@ -207,15 +207,15 @@
     </dependency>
     <dependency>
       <groupId>org.mycore</groupId>
+      <artifactId>mycore-dedup</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.mycore</groupId>
       <artifactId>mycore-jobqueue</artifactId>
     </dependency>
     <dependency>
       <groupId>org.mycore</groupId>
       <artifactId>mycore-mods</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.mycore</groupId>
-      <artifactId>mycore-dedup</artifactId>
     </dependency>
     <dependency>
       <groupId>org.mycore</groupId>
