@@ -150,6 +150,9 @@ const customTypeSelectId = `mir-custom-type-select-${Math.random().toString(36).
 
 const providerInstances: Record<string, SearchProvider> = {};
 
+const PROVIDER_TIMEOUT_MS = 10000;
+let searchCounter = 0;
+
 const model = reactive({
     settings: undefined as EditorSettings | undefined,
     subject: undefined as Subject | undefined,
@@ -221,12 +224,12 @@ onMounted(() => {
         model.settings = settings;
 
     for (const providerConfig of settings.providers) {
-      console.log("providerConfig", providerConfig);
       const instance = createProviderInstance(providerConfig.type, providerConfig.config);
       if (instance) {
         providerInstances[providerConfig.id] = instance;
       }
     }
+    settings.providers = settings.providers.filter(p => providerInstances[p.id]);
 
         const filter = settings?.searchFilterDefault || [];
         const searchable = settings?.searchable || [];
@@ -268,7 +271,17 @@ const searchSubmitted = async (searchTerm: string) => {
     await search();
 }
 
+const withTimeout = <T>(promise: Promise<T>, ms: number, providerId: string): Promise<T> => {
+  let timer: ReturnType<typeof setTimeout>;
+  const timeout = new Promise<never>((_, reject) => {
+    timer = setTimeout(() => reject(new Error(`Provider ${providerId} timed out after ${ms} ms`)), ms);
+  });
+  return Promise.race([promise, timeout]).finally(() => clearTimeout(timer));
+};
+
 const search = async () => {
+  const searchId = ++searchCounter;
+
   if (!model.settings?.providers) {
     model.searching = false;
     return;
@@ -276,41 +289,44 @@ const search = async () => {
 
   model.searching = true;
 
+  model.searchResultGroup = model.settings.providers.map(providerConfig => ({
+    groupId: providerConfig.id,
+    title: providerConfig.label,
+    results: []
+  }));
+
   try {
-    model.searchResultGroup = await Promise.all(
+    await Promise.all(
         model.settings.providers.map(async (providerConfig) => {
           const providerInstance = providerInstances[providerConfig.id];
 
           if (!providerInstance) {
-            return {
-              groupId: providerConfig.id,
-              title: providerConfig.label,
-              results: []
-            };
+            return;
           }
 
           try {
-            const results = await providerInstance.search(
-                model.searchTerm,
-                model.searchOptions
+            const results = await withTimeout(
+                providerInstance.search(
+                    model.searchTerm,
+                    model.searchOptions
+                ),
+                PROVIDER_TIMEOUT_MS,
+                providerConfig.id
             );
 
-            return {
-              groupId: providerConfig.id,
-              title: providerConfig.label,
-              results: results || []
-            };
+            if (searchId !== searchCounter) {
+              return;
+            }
+
+            const group = model.searchResultGroup.find(g => g.groupId === providerConfig.id);
+            if (group) {
+              group.results = results || [];
+            }
           } catch (e) {
             console.error(
                 `Search failed for provider ${providerConfig.id}`,
                 e
             );
-
-            return {
-              groupId: providerConfig.id,
-              title: providerConfig.label,
-              results: []
-            };
           }
         })
     );
@@ -318,7 +334,9 @@ const search = async () => {
     console.error("Search failed", e);
     model.searchResultGroup = [];
   } finally {
-    model.searching = false;
+    if (searchId === searchCounter) {
+      model.searching = false;
+    }
   }
 };
 

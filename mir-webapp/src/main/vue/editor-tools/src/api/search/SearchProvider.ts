@@ -2,11 +2,9 @@ import {SearchSettings} from "@/api/search/SearchSettings";
 import {
     Cartographics,
     Genre,
-    Geographic,
-    GeographicCode,
+    Geographic, GeographicCode,
     HierarchicalGeographic,
-    Name,
-    Occupation,
+    Name, Occupation,
     Temporal,
     TitleInfo,
     Topic
