@@ -7,10 +7,12 @@
   xmlns:mcrlayoututils="http://www.mycore.de/xslt/layoututils"
   xmlns:mcrurl="http://www.mycore.de/xslt/url"
   xmlns:mirorcidutil="http://www.mycore.de/xslt/mirorcidutil"
+  xmlns:mirguidancepanel="http://www.mycore.de/xslt/mirguidancepanel"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   exclude-result-prefixes="#all">
 
   <xsl:import href="xslImport:badges" />
+  <xsl:import href="resource:xslt/guidance-panel/mir-guidance-panel.xsl" />
   <xsl:include href="resource:xslt/layout/mir-layout-utils.xsl" />
   <xsl:include href="resource:xslt/orcid/mir-orcid-export-ui.xsl"/>
   <xsl:include href="resource:xslt/csl-export-gui.xsl" />
@@ -447,6 +449,15 @@
             </xsl:if>
           </div>
         </div>
+
+        <xsl:if test="mirguidancepanel:is-enabled()">
+          <xsl:for-each select="/response/lst[@name='responseHeader']/lst[@name='params']
+            /str[@name='q'][starts-with(., 'mods.relatedItem.root:')]">
+            <xsl:call-template name="render-guidance-panels">
+              <xsl:with-param name="object-id" select="substring-after(., 'mods.relatedItem.root:')" />
+            </xsl:call-template>
+          </xsl:for-each>
+        </xsl:if>
 
         <!-- Dynamic facets -->
         <xsl:call-template name="facets" />
