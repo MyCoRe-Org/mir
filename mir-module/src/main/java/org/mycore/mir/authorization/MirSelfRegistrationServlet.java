@@ -138,8 +138,9 @@ public class MirSelfRegistrationServlet extends MCRServlet {
         final boolean userExists = MCRUserManager.exists(user.getUserID(), user.getRealm().getID());
         if (!userExists) {
             try {
-                MCRMailer.sendMail(MCRUserTransformer.buildExportableSafeXML(user), "e-mail-new-author");
-                MCRMailer.sendMail(MCRUserTransformer.buildExportableSafeXML(user), "e-mail-new-author-registered");
+                MCRMailer.sendMailWithTransformer(MCRUserTransformer.buildExportableSafeXML(user), "e-mail-new-author");
+                MCRMailer.sendMailWithTransformer(MCRUserTransformer.buildExportableSafeXML(user),
+                    "e-mail-new-author-registered");
             } catch (final Exception ex) {
                 LOGGER.error(ex);
                 res.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, errorMsg("mailError"));
@@ -208,7 +209,7 @@ public class MirSelfRegistrationServlet extends MCRServlet {
                                 && !DEFAULT_EMAIL_VERIFICATION_DISABLED_STATUS.isEmpty()
                                 && Boolean.parseBoolean(DEFAULT_EMAIL_VERIFICATION_DISABLED_STATUS)) {
                             try {
-                                MCRMailer.sendMail(MCRUserTransformer.buildExportableSafeXML(user),
+                                MCRMailer.sendMailWithTransformer(MCRUserTransformer.buildExportableSafeXML(user),
                                         "e-mail-new-author-confirmation");
                             } catch (final Exception ex) {
                                 LOGGER.error(ex);
@@ -259,7 +260,7 @@ public class MirSelfRegistrationServlet extends MCRServlet {
                             if (user.getEMail() != null && !user.getEMail().trim().isEmpty()) {
                                 // email the user about the change of status "Disable user"
                                 try {
-                                    MCRMailer.sendMail(MCRUserTransformer.buildExportableSafeXML(user),
+                                    MCRMailer.sendMailWithTransformer(MCRUserTransformer.buildExportableSafeXML(user),
                                         "e-mail-disable-user-status-changed");
                                 } catch (final Exception ex) {
                                     LOGGER.error(ex);

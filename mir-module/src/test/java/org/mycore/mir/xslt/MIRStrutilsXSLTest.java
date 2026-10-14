@@ -10,7 +10,7 @@ import org.mycore.test.MyCoReTest;
 @MyCoReTest
 public class MIRStrutilsXSLTest extends MIRXSLTFunctionTestCase {
 
-    private static final String XSL = "/xslt/functions/mirstrutils-test.xsl";
+    private static final String XSL = "/xslt/mir/functions/mirstrutils-test.xsl";
 
     @Test
     void testEscapeXml() throws Exception {
