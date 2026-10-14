@@ -7,6 +7,7 @@ export class DanteSearchProvider extends SearchProvider {
 
     private readonly baseUrl: string;
     private readonly vocabulary: string;
+    private readonly vocabularies: Set<string>;
     private readonly keys: string[];
 
     constructor(config: { baseUrl?: string; vocabulary?: string; keys?: string }) {
@@ -19,6 +20,15 @@ export class DanteSearchProvider extends SearchProvider {
         }
         this.baseUrl = config.baseUrl;
         this.vocabulary = config.vocabulary;
+        this.vocabularies = new Set(
+            config.vocabulary
+                .split("|")
+                .map(voc => voc.trim())
+                .filter(voc => voc.length > 0)
+        );
+        if (this.vocabularies.size === 0) {
+            throw new Error("DanteSearchProvider requires a vocabulary.");
+        }
         this.keys = (config.keys || "")
             .split(",")
             .map(key => key.trim())
@@ -43,40 +53,52 @@ export class DanteSearchProvider extends SearchProvider {
 
             const json = await response.json();
             const limitedJson = json.slice(0, 30);
+            const uriLabel: string = (await this.translate("mir.editor.subject.provider.uri")) ?? "URI";
+
+            const keyLabels = new Map<string, string>();
+            await Promise.all(
+                this.keys
+                    .filter(key => key !== "uri")
+                    .map(async key => {
+                        const label = await this.translate(`mir.editor.subject.provider.${key}`);
+                        if (label) {
+                            keyLabels.set(key, label);
+                        }
+                    })
+            );
 
             for (const concept of limitedJson) {
+                if (!concept || typeof concept.uri !== "string" || concept.uri.length === 0) {
+                    continue;
+                }
+
+                const authority = this.extractAuthority(concept);
+                if (authority === null) {
+                    continue;
+                }
+
                 const label = this.extractLabel(concept);
 
                 const topic: Topic = {
                     type: "Topic",
                     text: label,
                     valueURI: concept.uri,
-                    authority: this.extractAuthority(concept.uri)
+                    authority
                 };
 
                 const info: Array<SearchResultInfo> = [
-                    {id: this.generateID(), label: "URI", type: "url", value: concept.uri}
+                    {id: this.generateID(), label: uriLabel, type: "url", value: concept.uri}
                 ];
 
                 for (const key of this.keys) {
-                    if (key === "uri") continue;
+                    const translatedLabel = keyLabels.get(key);
+                    if (!translatedLabel) continue;
 
                     const value = concept[key];
                     if (value === null || value === undefined || value === "null") continue;
 
                     const formattedValue = this.formatPropertyValue(value);
                     if (!formattedValue || formattedValue === "[object Object]") continue;
-
-                    const translationKey = `mir.topic.provider.${key}`;
-                    let translatedLabel: string | undefined;
-                    try {
-                        translatedLabel = await i18n(translationKey);
-                    } catch {
-                        // Fallback
-                    }
-                    if (!translatedLabel || translatedLabel === translationKey || translatedLabel.startsWith("???")) {
-                        continue;
-                    }
 
                     info.push({
                         id: this.generateID(),
@@ -99,13 +121,43 @@ export class DanteSearchProvider extends SearchProvider {
         return results;
     }
 
+
+    private async translate(key: string, fallback?: string): Promise<string | undefined> {
+        try {
+            const translated = await i18n(key);
+            if (translated && translated !== key && !translated.startsWith("???")) {
+                return translated;
+            }
+        } catch {
+            // Fallback
+        }
+        return fallback;
+    }
+
+
+    private extractAuthority(concept: any): string | null {
+        const notation = concept?.inScheme?.[0]?.notation;
+        const voc = Array.isArray(notation) ? notation[0] : notation;
+        if (typeof voc !== "string" || !this.vocabularies.has(voc)) {
+            return null;
+        }
+        return voc;
+    }
+
     private extractLabel(concept: any): string {
         const rawPrefLabel = concept.prefLabel;
         if (!rawPrefLabel) {
             return concept.uri;
         }
         if (typeof rawPrefLabel === "object") {
-            const firstVal = rawPrefLabel.de || rawPrefLabel.en || Object.values(rawPrefLabel)[0];
+            const currentLang = (window as any).currentLang || "en";
+
+            const firstVal =
+                rawPrefLabel[currentLang] ||
+                rawPrefLabel.en ||
+                rawPrefLabel.de ||
+                Object.values(rawPrefLabel)[0];
+
             return (Array.isArray(firstVal) ? firstVal[0] : firstVal) || concept.uri;
         }
         return rawPrefLabel;
@@ -131,9 +183,5 @@ export class DanteSearchProvider extends SearchProvider {
         }
 
         return String(value);
-    }
-    private extractAuthority(uri: string): string {
-        const match = uri.match(/\/terminology\/([^/]+)\//);
-        return match?.[1] || this.vocabulary;
     }
 }
