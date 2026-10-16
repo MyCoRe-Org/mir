@@ -51,7 +51,7 @@ export class LobidSearchProvider extends SearchProvider {
         }
 
         const filterQueryComponent = "&filter=" + encodeURIComponent(filterQuery);
-        const url = "https://lobid.org/gnd/search?q=" + encodeURIComponent(searchTerm) +
+        const url = (window as any).lobidGNDSearchURL + "?q=" + encodeURIComponent(searchTerm) +
             filterQueryComponent + "&format=json&size=30";
 
         const response = await fetch(url);

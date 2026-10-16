@@ -60,7 +60,7 @@
       baseURI : "https://d-nb.info/gnd/",
       person: {
         enabled: true,
-        url: "https://lobid.org/gnd/search",
+        url: window.lobidGNDSearchURL,
         data: function (input) {
           return {
             q: input,
@@ -90,7 +90,7 @@
       },
       organisation: {
         enabled: true,
-        url: "https://lobid.org/gnd/search",
+        url: window.lobidGNDSearchURL,
         data: function (input) {
           return {
             q: input,
@@ -120,7 +120,7 @@
       },
       both: {
         enabled: true,
-        url: "https://lobid.org/gnd/search",
+        url: window.lobidGNDSearchURL,
         data: function (input) {
           return {
             q: input,
@@ -158,7 +158,7 @@
       },
       topic: {
         enabled: true,
-        url: "https://lobid.org/gnd/search",
+        url: window.lobidGNDSearchURL,
         data: function (input) {
           return {
             q: input,
@@ -185,7 +185,7 @@
       },
       geographic: {
         enabled: true,
-        url: "https://lobid.org/gnd/search",
+        url: window.lobidGNDSearchURL,
         data: function (input) {
           return {
             q: input,
