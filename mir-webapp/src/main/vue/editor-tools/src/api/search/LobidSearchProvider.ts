@@ -5,6 +5,8 @@ import {i18n} from "@/api/I18N";
 
 const VIAF_ID_PREFIX_1 = "http://viaf.org/viaf/";
 const VIAF_ID_PREFIX_2 = "https://viaf.org/viaf/";
+// fallback if an (overwritten) layout does not set lobidGNDSearchURL from MIR.Lobid.GND.Search.URL
+const DEFAULT_LOBID_GND_SEARCH_URL = "https://lobid.org/gnd/search";
 
 export class LobidSearchProvider extends SearchProvider {
 
@@ -51,7 +53,8 @@ export class LobidSearchProvider extends SearchProvider {
         }
 
         const filterQueryComponent = "&filter=" + encodeURIComponent(filterQuery);
-        const url = (window as any).lobidGNDSearchURL + "?q=" + encodeURIComponent(searchTerm) +
+        const baseURL = (window as any).lobidGNDSearchURL || DEFAULT_LOBID_GND_SEARCH_URL;
+        const url = baseURL + "?q=" + encodeURIComponent(searchTerm) +
             filterQueryComponent + "&format=json&size=30";
 
         const response = await fetch(url);

@@ -25,6 +25,8 @@ import {i18n} from "@/api/I18N";
 const VIAF_ID_PREFIX_1 = "http://viaf.org/viaf/";
 const VIAF_ID_PREFIX_2 = "https://viaf.org/viaf/";
 const ORCID_ID_PREFIX = "https://orcid.org/";
+// fallback if an (overwritten) layout does not set lobidGNDSearchURL from MIR.Lobid.GND.Search.URL
+const DEFAULT_LOBID_GND_SEARCH_URL = "https://lobid.org/gnd/search";
 
 export class LobidSearchProvider implements SearchProvider {
 
@@ -37,7 +39,8 @@ export class LobidSearchProvider implements SearchProvider {
     }
 
     async searchPerson(searchTerm: string): Promise<NameSearchResult[]> {
-        const url = `${(window as any).lobidGNDSearchURL}?filter=type:DifferentiatedPerson%20OR%20type:CorporateBody&format=json&q=${encodeURIComponent(searchTerm)}&size=30`;
+        const baseURL = (window as any).lobidGNDSearchURL || DEFAULT_LOBID_GND_SEARCH_URL;
+        const url = `${baseURL}?filter=type:DifferentiatedPerson%20OR%20type:CorporateBody&format=json&q=${encodeURIComponent(searchTerm)}&size=30`;
         const response = await fetch(url);
         const json = await response.json()
         const result: NameSearchResult[] = [];
