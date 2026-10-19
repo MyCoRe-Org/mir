@@ -90,7 +90,7 @@
         <resource xmlns="urn:nbn:de:1111-2004033116">
           <identifier scheme="url" target="transfer">
             <xsl:value-of select="concat($WebApplicationBaseURL,'api/v2/objects/',$objectID,
-              '/derivates/',@id,'/archive/zip')" />
+              '/derivates/',@id,'/contents.zip')" />
           </identifier>
           <format scheme="imt">
             <xsl:value-of select="'application/zip'" />
