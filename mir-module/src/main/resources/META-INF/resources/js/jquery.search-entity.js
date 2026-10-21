@@ -55,12 +55,15 @@
 
   SearchEntity.LABEL_CLEANUP = /\s[\(]?[0-9-]+[\)]?/g;
 
+  // fallback if an (overwritten) layout does not set lobidGNDSearchURL from MIR.Lobid.GND.Search.URL
+  SearchEntity.LOBID_GND_SEARCH_URL = window.lobidGNDSearchURL || "https://lobid.org/gnd/search";
+
   SearchEntity.TYPES = {
     GND : {
       baseURI : "https://d-nb.info/gnd/",
       person: {
         enabled: true,
-        url: "https://lobid.org/gnd/search",
+        url: SearchEntity.LOBID_GND_SEARCH_URL,
         data: function (input) {
           return {
             q: input,
@@ -90,7 +93,7 @@
       },
       organisation: {
         enabled: true,
-        url: "https://lobid.org/gnd/search",
+        url: SearchEntity.LOBID_GND_SEARCH_URL,
         data: function (input) {
           return {
             q: input,
@@ -120,7 +123,7 @@
       },
       both: {
         enabled: true,
-        url: "https://lobid.org/gnd/search",
+        url: SearchEntity.LOBID_GND_SEARCH_URL,
         data: function (input) {
           return {
             q: input,
@@ -158,7 +161,7 @@
       },
       topic: {
         enabled: true,
-        url: "https://lobid.org/gnd/search",
+        url: SearchEntity.LOBID_GND_SEARCH_URL,
         data: function (input) {
           return {
             q: input,
@@ -185,7 +188,7 @@
       },
       geographic: {
         enabled: true,
-        url: "https://lobid.org/gnd/search",
+        url: SearchEntity.LOBID_GND_SEARCH_URL,
         data: function (input) {
           return {
             q: input,
