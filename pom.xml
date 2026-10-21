@@ -76,6 +76,11 @@
             <additionalParams>-Dsolr.config.lib.enabled=true</additionalParams>
           </configuration>
         </plugin>
+        <plugin>
+          <groupId>org.eclipse.transformer</groupId>
+          <artifactId>transformer-maven-plugin</artifactId>
+          <version>1.0.0</version>
+        </plugin>
       </plugins>
     </pluginManagement>
     <plugins>

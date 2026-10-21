@@ -44,6 +44,8 @@ public class MIRITBase extends MCRSeleniumTestBase {
 
     private static SolrClient SOLR_CLIENT;
 
+    private static MIRLobidStub LOBID_STUB;
+
     protected MIRControllerFactory createControllerFactory(MCRWebdriverWrapper driver, String appURL) {
         return new MIRControllerFactory(driver, appURL);
     }
@@ -78,6 +80,20 @@ public class MIRITBase extends MCRSeleniumTestBase {
         final String baseSolrUrl = String.format("http://localhost:%d/solr/", solrPort);
         SOLR_CLIENT = new HttpJdkSolrClient.Builder(baseSolrUrl)
             .build();
+    }
+
+    @BeforeClass
+    public static void startLobidStub() throws IOException {
+        int lobidPort = Integer.parseInt(System.getProperty("lobid.port"));
+        LOBID_STUB = MIRLobidStub.start(System.getProperty("HostName"), lobidPort);
+    }
+
+    @AfterClass
+    public static void stopLobidStub() {
+        if (LOBID_STUB != null) {
+            LOBID_STUB.stop();
+        }
+        LOBID_STUB = null;
     }
 
     @AfterClass
