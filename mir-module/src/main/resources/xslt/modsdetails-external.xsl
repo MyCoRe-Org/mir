@@ -13,6 +13,8 @@
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   exclude-result-prefixes="#all">
 
+  <xsl:import href="resource:xslt/metadata/metadata-box/mods/shared/classification-link.xsl" />
+
   <xsl:param name="MCR.Users.Superuser.UserName" />
   <xsl:param name="MIR.registerDOI" select="''" />
   <xsl:param name="MIR.registerURN" select="'true'" />
@@ -198,7 +200,7 @@
       </li>
       <xsl:if test="./metadata/def.modsContainer/modsContainer/mods:mods/mods:genre[@type='kindof']">
         <li>
-          <xsl:apply-templates select="./metadata/def.modsContainer/modsContainer/mods:mods/mods:genre[@type='kindof']" mode="printModsClassInfo" />
+          <xsl:apply-templates select="./metadata/def.modsContainer/modsContainer/mods:mods/mods:genre[@type='kindof']" mode="classification" />
         </li>
       </xsl:if>
     </ul>
