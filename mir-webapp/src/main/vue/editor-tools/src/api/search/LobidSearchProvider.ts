@@ -52,12 +52,14 @@ export class LobidSearchProvider extends SearchProvider {
             return [];
         }
 
-        const filterQueryComponent = "&filter=" + encodeURIComponent(filterQuery);
-        const baseURL = (window as any).lobidGNDSearchURL || DEFAULT_LOBID_GND_SEARCH_URL;
-        const url = baseURL + "?q=" + encodeURIComponent(searchTerm) +
-            filterQueryComponent + "&format=json&size=30";
+        // the configured URL may already contain query parameters (e.g. a proxy), so append instead of concatenating
+        const url = new URL((window as any).lobidGNDSearchURL || DEFAULT_LOBID_GND_SEARCH_URL);
+        url.searchParams.append("q", searchTerm);
+        url.searchParams.append("filter", filterQuery);
+        url.searchParams.append("format", "json");
+        url.searchParams.append("size", "30");
 
-        const response = await fetch(url);
+        const response = await fetch(url.toString());
         const json = await response.json();
 
         for (const member of json.member) {

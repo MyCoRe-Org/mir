@@ -39,9 +39,13 @@ export class LobidSearchProvider implements SearchProvider {
     }
 
     async searchPerson(searchTerm: string): Promise<NameSearchResult[]> {
-        const baseURL = (window as any).lobidGNDSearchURL || DEFAULT_LOBID_GND_SEARCH_URL;
-        const url = `${baseURL}?filter=type:DifferentiatedPerson%20OR%20type:CorporateBody&format=json&q=${encodeURIComponent(searchTerm)}&size=30`;
-        const response = await fetch(url);
+        // the configured URL may already contain query parameters (e.g. a proxy), so append instead of concatenating
+        const url = new URL((window as any).lobidGNDSearchURL || DEFAULT_LOBID_GND_SEARCH_URL);
+        url.searchParams.append("filter", "type:DifferentiatedPerson OR type:CorporateBody");
+        url.searchParams.append("format", "json");
+        url.searchParams.append("q", searchTerm);
+        url.searchParams.append("size", "30");
+        const response = await fetch(url.toString());
         const json = await response.json()
         const result: NameSearchResult[] = [];
 
