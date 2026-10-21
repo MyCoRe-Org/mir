@@ -33,11 +33,13 @@ import org.mycore.datamodel.metadata.MCRObjectID;
 import org.mycore.mods.MCRMODSWrapper;
 
 /**
- * Collects the alias paths of objects along their <code>mods:relatedItem</code>, e.g.
+ * Collects the alias paths of objects along their <code>mods:relatedItem</code> of type host or series, e.g.
  * <code>oa/journal/volume-1</code> for a volume with the alias <code>volume-1</code> in a journal with the
  * alias <code>oa/journal</code>. This is the reverse of {@link MIRAliasResolver}.
  */
 public class MIRAliasPathCollector {
+
+    private static final Set<String> PARENT_TYPES = Set.of("host", "series");
 
     /**
      * @param objectIds the objects to start with, e.g. the related items selected in the editor
@@ -91,6 +93,7 @@ public class MIRAliasPathCollector {
         MCRObject object = MCRMetadataManager.retrieveMCRObject(id);
         String alias = object.getService().getFlags("alias").stream().findFirst().orElse("").trim();
         List<String> relatedIds = new MCRMODSWrapper(object).getLinkedRelatedItems().stream()
+            .filter(relatedItem -> PARENT_TYPES.contains(relatedItem.getAttributeValue("type")))
             .map(relatedItem -> relatedItem.getAttributeValue("href", MCRConstants.XLINK_NAMESPACE))
             .filter(MCRObjectID::isValid)
             .toList();

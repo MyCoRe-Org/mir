@@ -2,13 +2,23 @@ import { getBaseUrl } from '../../utils/config';
 
 const RELATED_ITEM_SELECTOR = '.mir-related-item-search';
 const REFRESH_DELAY = 300;
+const PARENT_TYPES = ['host', 'series'];
 
 function getRelatedItemIds(): string[] {
   return Array.from(
-    document.querySelectorAll<HTMLInputElement>(
-      `${RELATED_ITEM_SELECTOR} input[name$='@xlink:href']`
-    )
+    document.querySelectorAll<HTMLElement>(RELATED_ITEM_SELECTOR)
   )
+    .filter(item =>
+      PARENT_TYPES.includes(
+        item.querySelector<HTMLSelectElement>("select[name*='/@type']")
+          ?.value ?? ''
+      )
+    )
+    .flatMap(item =>
+      Array.from(
+        item.querySelectorAll<HTMLInputElement>("input[name$='@xlink:href']")
+      )
+    )
     .map(input => input.value)
     .filter(id => id.includes('_mods_'));
 }
@@ -90,6 +100,7 @@ function setupAliasUrls(container: HTMLElement): void {
       subtree: true,
       characterData: true,
     });
+    element.addEventListener('change', scheduleRefresh);
   });
 
   // scheduled as well, because the related item modal also updates the spans on page load

@@ -22,7 +22,11 @@ import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.mycore.datamodel.metadata.MCRMetadataManager;
 import org.mycore.datamodel.metadata.MCRObjectID;
 import org.mycore.datamodel.niofs.MCRPath;
@@ -33,13 +37,15 @@ import org.mycore.datamodel.niofs.MCRPath;
  * An alias path consists of
  * <ol>
  *   <li>the alias of a root object, which may contain slashes itself,</li>
- *   <li>any number of aliases of objects that refer to the previous object via <code>mods:relatedItem</code>,</li>
+ *   <li>any number of aliases of objects that refer to the previous object as host or series,</li>
  *   <li>optionally the name of a file in a derivate of the last object.</li>
  * </ol>
  * Aliases are compared case-insensitively, file names case-sensitively.
  * The aliases are looked up via {@link MIRAliasSolrIndex}.
  */
 public class MIRAliasResolver {
+
+    private static final Logger LOGGER = LogManager.getLogger();
 
     private final MIRAliasSolrIndex index;
 
@@ -56,7 +62,7 @@ public class MIRAliasResolver {
         // the root alias may contain slashes, so try the longest candidate first: "a/b/c", "a/b", "a"
         for (int length = segments.size(); length > 0; length--) {
             String rootAlias = String.join("/", segments.subList(0, length));
-            Optional<String> rootObjectId = index.findObjectId(rootAlias);
+            Optional<String> rootObjectId = findRootObjectId(rootAlias);
             if (rootObjectId.isEmpty()) {
                 continue;
             }
@@ -67,6 +73,29 @@ public class MIRAliasResolver {
             }
         }
         return Optional.empty();
+    }
+
+    /**
+     * Objects whose host or series has an alias are only reachable via the alias of their parent, so they are
+     * skipped if the alias is ambiguous. A unique alias is used in any case.
+     */
+    private Optional<String> findRootObjectId(String alias) {
+        List<MIRAliasSolrIndex.AliasedObject> objects = index.findObjects(alias);
+        if (objects.size() <= 1) {
+            return objects.stream().findFirst().map(MIRAliasSolrIndex.AliasedObject::objectId);
+        }
+        Set<String> parentsWithAlias = index.findIdsWithAlias(objects.stream()
+            .flatMap(object -> object.parentIds().stream())
+            .collect(Collectors.toSet()));
+        List<String> rootIds = objects.stream()
+            .filter(object -> object.parentIds().stream().noneMatch(parentsWithAlias::contains))
+            .map(MIRAliasSolrIndex.AliasedObject::objectId)
+            .sorted()
+            .toList();
+        if (rootIds.size() > 1) {
+            LOGGER.error("Alias {} is ambiguous, found root objects {}, using {}.", alias, rootIds, rootIds.getFirst());
+        }
+        return rootIds.stream().findFirst();
     }
 
     /**
