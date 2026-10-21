@@ -19,6 +19,7 @@
 package org.mycore.mir.alias;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.anyCollection;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
@@ -26,10 +27,12 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -58,18 +61,30 @@ public class MIRAliasResolverTest {
 
         MIRAliasSolrIndex index = mock(MIRAliasSolrIndex.class);
         // Solr indexes the alias lowercase, so the lookup is case-insensitive
-        when(index.findObjectId(anyString())).thenAnswer(invocation -> aliases.entrySet().stream()
+        when(index.findObjects(anyString())).thenAnswer(invocation -> aliases.entrySet().stream()
             .filter(entry -> entry.getValue().equalsIgnoreCase(invocation.getArgument(0)))
-            .map(Map.Entry::getKey)
-            .findFirst());
+            .map(entry -> aliasedObject(entry.getKey()))
+            .toList());
         when(index.findRelatedObjects(anyString())).thenAnswer(invocation -> relatedObjects
             .getOrDefault(invocation.<String>getArgument(0), List.of()).stream()
-            .map(id -> new MIRAliasSolrIndex.AliasedObject(id, aliases.get(id)))
+            .map(this::aliasedObject)
             .toList());
+        when(index.findIdsWithAlias(anyCollection())).thenAnswer(invocation -> invocation
+            .<Collection<String>>getArgument(0).stream()
+            .filter(aliases::containsKey)
+            .collect(Collectors.toSet()));
 
         resolver = spy(new MIRAliasResolver(index));
         doReturn(Optional.empty()).when(resolver).findDerivate(anyString(), anyString());
         doReturn(Optional.of(DERIVATE)).when(resolver).findDerivate(ARTICLE, "Article.PDF");
+    }
+
+    private MIRAliasSolrIndex.AliasedObject aliasedObject(String objectId) {
+        List<String> parentIds = relatedObjects.entrySet().stream()
+            .filter(entry -> entry.getValue().contains(objectId))
+            .map(Map.Entry::getKey)
+            .toList();
+        return new MIRAliasSolrIndex.AliasedObject(objectId, aliases.get(objectId), parentIds);
     }
 
     private void addObject(String objectId, String alias, String relatedTo) {
@@ -143,5 +158,33 @@ public class MIRAliasResolverTest {
         assertEquals(Optional.empty(), resolver.resolve(""));
         assertEquals(Optional.empty(), resolver.resolve("/"));
         assertEquals(Optional.empty(), resolver.resolve("/unknown"));
+    }
+
+    @Test
+    public void resolveAmbiguousAliasPrefersRoot() {
+        addObject("mir_mods_00000010", "oa/journal", VOLUME);
+        assertEquals(object(JOURNAL), resolver.resolve("/oa/journal"));
+    }
+
+    @Test
+    public void resolveUniqueAliasOfNonRoot() {
+        assertEquals(object(ARTICLE), resolver.resolve("/article"));
+    }
+
+    @Test
+    public void resolveAmbiguousAliasWithoutRoot() {
+        String volume2 = "mir_mods_00000011";
+        addObject(volume2, "volume-2", JOURNAL);
+        String article2 = "mir_mods_00000012";
+        addObject(article2, "article", volume2);
+        assertEquals(Optional.empty(), resolver.resolve("/article"));
+        assertEquals(object(article2), resolver.resolve("/oa/journal/volume-2/article"));
+    }
+
+    @Test
+    public void resolveAmbiguousRootsUsesFirstId() {
+        addObject("mir_mods_00000021", "dup", null);
+        addObject("mir_mods_00000020", "dup", null);
+        assertEquals(object("mir_mods_00000020"), resolver.resolve("/dup"));
     }
 }
