@@ -23,12 +23,12 @@
       </xsl:otherwise>
     </xsl:choose>
 
-    <xsl:if test="mods:nameIdentifier/@type">
+    <xsl:for-each select="mods:nameIdentifier[@type]">
       <xsl:call-template name="name-identifier-link">
-        <xsl:with-param name="identifier" select="string(mods:nameIdentifier)" />
-        <xsl:with-param name="identifier-type" select="mods:nameIdentifier/@type" />
+        <xsl:with-param name="identifier" select="string(.)" />
+        <xsl:with-param name="identifier-type" select="string(@type)" />
       </xsl:call-template>
-    </xsl:if>
+    </xsl:for-each>
   </xsl:template>
 
   <xsl:template match="mods:name" mode="name-value">
