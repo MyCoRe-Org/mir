@@ -1,0 +1,29 @@
+{
+  "totalItems": 1,
+  "member": [
+    {
+      "id": "https://d-nb.info/gnd/1073411249",
+      "type": [
+        "DifferentiatedPerson",
+        "Person",
+        "AuthorityResource"
+      ],
+      "gndIdentifier": "1073411249",
+      "preferredName": "Mustermann, Hans",
+      "gender": [
+        {
+          "id": "https://d-nb.info/standards/vocab/gnd/gender#notKnown",
+          "label": "Unbekannt"
+        }
+      ],
+      "sameAs": [
+        {
+          "id": "http://viaf.org/viaf/316519396"
+        },
+        {
+          "id": "https://d-nb.info/gnd/1073411249/about"
+        }
+      ]
+    }
+  ]
+}

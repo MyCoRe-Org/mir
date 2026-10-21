@@ -21,6 +21,7 @@
     <cargo.servlet.port>9107</cargo.servlet.port>
     <failsafe.arg />
     <it.host>127.0.0.1</it.host>
+    <lobid.port>9109</lobid.port>
     <maven.deploy.skip>true</maven.deploy.skip>
     <maven.install.skip>true</maven.install.skip>
     <solr.home>${MCR.Home.Integration}/solr-home</solr.home>
@@ -249,6 +250,7 @@
             <ResultFolder>${project.build.directory}/failsafe-reports/</ResultFolder>
             <java.awt.headless>true</java.awt.headless>
             <solr.port>${solr.port}</solr.port>
+            <lobid.port>${lobid.port}</lobid.port>
           </systemPropertyVariables>
           <trimStackTrace>false</trimStackTrace>
         </configuration>

@@ -144,6 +144,12 @@
             <!-- Extract part after ':' ('%3A') if $fq is not empty or null -->
             <xsl:variable name="filterQueryValue">
               <xsl:choose>
+                <!-- nameIdentifier search queries mods.nameIdentifier OR mods.nameIdentifier.id (see base.js).
+                     Both fields are searched for backward compatibility, because mods.nameIdentifier.id only
+                     exists with the updated Solr schema. Only the first part is shown in the search field. -->
+                <xsl:when test="contains($fq, ' OR mods.nameIdentifier.id:')">
+                  <xsl:value-of select="substring-after(substring-before($fq, ' OR mods.nameIdentifier.id:'), ':')" />
+                </xsl:when>
                 <xsl:when test="$fq">
                   <xsl:value-of select="substring-after($fq, ':')" />
                 </xsl:when>
