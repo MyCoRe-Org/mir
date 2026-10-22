@@ -29,8 +29,8 @@
 
         <div class="col-md-8 col-sm-12">
             <ol v-if="currentGroup" class="list-group list-group-flush">
-                <li class="list-group-item" v-if="currentGroup.results.length==0">
-                    {{ i18n["mir.editor.subject.search.result.empty"] }}
+              <li class="list-group-item" v-if="!currentGroup.loading && currentGroup.results.length==0">
+                {{ i18n["mir.editor.subject.search.result.empty"] }}
                 </li>
                 <li class="list-group-item" v-for="result in currentGroup.results" :key="result.id">
                     <div class="row">
@@ -133,7 +133,8 @@ export interface SearchResultListProps {
 export interface SearchResultGroup {
     groupId: string,
     title: string,
-    results: SearchResult[]
+    results: SearchResult[],
+    loading?: boolean
 }
 
 const props = defineProps<SearchResultListProps>();

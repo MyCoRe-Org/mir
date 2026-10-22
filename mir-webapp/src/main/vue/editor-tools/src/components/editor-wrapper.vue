@@ -292,13 +292,15 @@ const search = async () => {
   model.searchResultGroup = model.settings.providers.map(providerConfig => ({
     groupId: providerConfig.id,
     title: providerConfig.label,
-    results: []
+    results: [],
+    loading: true
   }));
 
   try {
     await Promise.all(
         model.settings.providers.map(async (providerConfig) => {
           const providerInstance = providerInstances[providerConfig.id];
+          const group = model.searchResultGroup.find(g => g.groupId === providerConfig.id);
 
           if (!providerInstance) {
             return;
@@ -318,7 +320,6 @@ const search = async () => {
               return;
             }
 
-            const group = model.searchResultGroup.find(g => g.groupId === providerConfig.id);
             if (group) {
               group.results = results || [];
             }
@@ -327,6 +328,10 @@ const search = async () => {
                 `Search failed for provider ${providerConfig.id}`,
                 e
             );
+          } finally {
+            if (group) {
+              group.loading = false;
+            }
           }
         })
     );
