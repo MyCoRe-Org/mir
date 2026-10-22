@@ -4,8 +4,7 @@
   xmlns:mirobject="http://www.mycore.de/xslt/mirobject"
   xmlns:mods="http://www.loc.gov/mods/v3"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  exclude-result-prefixes="#all"
-  extension-element-prefixes="datacite">
+  exclude-result-prefixes="#all">
 
   <xsl:template match="field[@name='funding']" mode="metadata-box-field">
     <xsl:param name="object" as="element(mycoreobject)" />
