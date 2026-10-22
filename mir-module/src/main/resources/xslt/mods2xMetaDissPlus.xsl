@@ -532,12 +532,12 @@
             </pc:foreName>
             <xsl:apply-templates select="mods:namePart[@type='family']" mode="pc-person" />
           </xsl:when>
-          <xsl:when test="contains(mods:displayForm, ',')">
+          <xsl:when test="contains(mods:displayForm[1], ',')">
             <pc:foreName>
-              <xsl:value-of select="normalize-space(substring-after(mods:displayForm,','))" />
+              <xsl:value-of select="normalize-space(substring-after(mods:displayForm[1], ','))" />
             </pc:foreName>
             <pc:surName>
-              <xsl:value-of select="normalize-space(substring-before(mods:displayForm,','))" />
+              <xsl:value-of select="normalize-space(substring-before(mods:displayForm[1], ','))" />
             </pc:surName>
           </xsl:when>
           <xsl:otherwise>
@@ -660,7 +660,7 @@
   <xsl:template name="repositoryPublisher">
     <xsl:choose>
       <xsl:when test="$mods/mods:name[mods:role/mods:roleTerm/text()='his' and @valueURI]">
-        <xsl:variable name="insti" select="substring-after($mods/mods:name[mods:role/mods:roleTerm/text()='his' and @valueURI]/@valueURI, '#')" />
+        <xsl:variable name="insti" select="substring-after(($mods/mods:name[mods:role/mods:roleTerm/text()='his' and @valueURI]/@valueURI)[1], '#')" />
         <xsl:variable name="myURI" select="concat('classification:metadata:0:parents:mir_institutes:',$insti)" />
         <xsl:variable name="cat" select="document($myURI)//category[@ID=$insti]/ancestor-or-self::category[label[lang('x-place')]][1]" />
         <xsl:variable name="place" select="$cat/label[@xml:lang='x-place']/@text" />

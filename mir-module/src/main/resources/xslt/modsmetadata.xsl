@@ -339,7 +339,7 @@
                     </xsl:when>
                     <xsl:when test="mods:role/mods:roleTerm[@authority='marcrelator']">
                       <xsl:value-of
-                        select="concat(mcri18n:translate(concat('component.mods.metaData.dictionary.',mods:role/mods:roleTerm[@authority='marcrelator'])),':')" />
+                        select="concat(mcri18n:translate(concat('component.mods.metaData.dictionary.', (mods:role/mods:roleTerm[@authority='marcrelator'])[1])), ':')" />
                     </xsl:when>
                     <xsl:otherwise>
                       <xsl:value-of select="concat(mcri18n:translate('component.mods.metaData.dictionary.name'),':')" />
@@ -511,7 +511,7 @@
         <xsl:when test="mods:namePart">
           <xsl:choose>
             <xsl:when test="mods:namePart[@type='given'] and mods:namePart[@type='family']">
-              <xsl:value-of select="concat(mods:namePart[@type='family'], ', ',mods:namePart[@type='given'])" />
+              <xsl:value-of select="concat(mods:namePart[@type='family'][1], ', ', mods:namePart[@type='given'][1])" />
             </xsl:when>
             <xsl:otherwise>
               <xsl:value-of select="mods:namePart" />
@@ -577,7 +577,7 @@
           </xsl:when>
           <xsl:when test="mods:role/mods:roleTerm[@authority='marcrelator']">
             <xsl:value-of
-              select="concat(mcri18n:translate(concat('component.mods.metaData.dictionary.',mods:role/mods:roleTerm[@authority='marcrelator'])),':')" />
+              select="concat(mcri18n:translate(concat('component.mods.metaData.dictionary.', (mods:role/mods:roleTerm[@authority='marcrelator'])[1])), ':')" />
           </xsl:when>
           <xsl:otherwise>
             <xsl:value-of select="concat(mcri18n:translate('component.mods.metaData.dictionary.name'),':')" />
@@ -625,7 +625,7 @@
       <td valign="top" class="metaname">
         <xsl:choose>
           <xsl:when test="mods:role/mods:roleTerm[@type='code' and @authority='marcrelator']">
-            <xsl:value-of select="concat(mcri18n:translate(concat('component.mods.metaData.dictionary.institution.', mods:role/mods:roleTerm[@type='code' and @authority='marcrelator'], '.label')),':')" />
+            <xsl:value-of select="concat(mcri18n:translate(concat('component.mods.metaData.dictionary.institution.', (mods:role/mods:roleTerm[@type='code' and @authority='marcrelator'])[1], '.label')), ':')" />
           </xsl:when>
           <xsl:otherwise>
             <xsl:value-of select="concat(mcri18n:translate('component.mods.metaData.dictionary.institution.label'),':')" />

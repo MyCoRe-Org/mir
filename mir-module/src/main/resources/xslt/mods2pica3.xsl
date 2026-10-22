@@ -229,7 +229,7 @@
       <xsl:choose>
         <xsl:when test="mods:namePart[@type='family']">
           <xsl:text>3110  </xsl:text> <!--If you place the elemnet directly under die <line> it will create an empty 3110 tag -->
-          <xsl:value-of select="concat(mods:namePart[@type='family'], ', ', mods:namePart[@type='given'])" />
+          <xsl:value-of select="concat(mods:namePart[@type='family'][1], ', ', mods:namePart[@type='given'][1])" />
         </xsl:when>
         <xsl:when test="mods:namePart[not(@type='family')]">
           <xsl:text>3110  </xsl:text>
