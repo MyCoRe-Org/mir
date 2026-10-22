@@ -407,7 +407,7 @@
   <xsl:template match="mods:originInfo/mods:publisher" mode="pica3">
     <line>
       <xsl:text>4030  </xsl:text>
-      <xsl:value-of select="concat(../mods:place/mods:placeTerm[@type='text'], '$n', text())" />
+      <xsl:value-of select="concat((../mods:place/mods:placeTerm[@type='text'])[1], '$n', text())" />
     </line>
   </xsl:template>
 
