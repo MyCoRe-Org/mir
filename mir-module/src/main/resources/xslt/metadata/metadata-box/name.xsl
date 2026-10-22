@@ -24,11 +24,11 @@
       and mods:role/mods:roleTerm
     ]" />
     <xsl:for-each-group select="$relevant-names" group-by="
-      string((mods:role/mods:roleTerm[@type='code'], mods:role/mods:roleTerm)[1])
+      for $role in mods:role[mods:roleTerm] return local:role-key($role)
     ">
       <!-- check if 'aut' and 'edt' show 'edt', otherwise 'edt' is already shown in abstract-box -->
       <xsl:if test="not(current-grouping-key() = 'edt' and not($names/mods:role/mods:roleTerm = 'aut'))">
-        <xsl:variable name="role-term" select="mods:role/mods:roleTerm" />
+        <xsl:variable name="role-term" select="mods:role[local:role-key(.) = current-grouping-key()][1]/mods:roleTerm" />
         <xsl:call-template name="meta-row">
           <xsl:with-param name="label">
             <xsl:choose>
@@ -61,6 +61,12 @@
       </xsl:if>
     </xsl:for-each-group>
   </xsl:template>
+
+  <xsl:function name="local:role-key" as="xs:string">
+    <xsl:param name="role" as="element(mods:role)" />
+
+    <xsl:sequence select="string(($role/mods:roleTerm[@type='code'], $role/mods:roleTerm)[1])" />
+  </xsl:function>
 
   <xsl:function name="local:role-code-label" as="xs:string?">
     <xsl:param name="roleTerm" as="element(mods:roleTerm)" />
