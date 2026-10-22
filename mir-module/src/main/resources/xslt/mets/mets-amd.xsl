@@ -76,7 +76,7 @@
           <mets:xmlData>
             <dv:links xmlns:dv="http://dfg-viewer.de/">
               <xsl:variable name="ppn"
-                select="substring-after($entity/mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:identifier[@type='uri'], ':ppn:')" />
+                select="substring-after(($entity/mycoreobject/metadata/def.modsContainer/modsContainer/mods:mods/mods:identifier[@type='uri'][contains(., ':ppn:')])[1], ':ppn:')" />
               <xsl:if test="$ppn">
                 <dv:reference>
                   <xsl:variable name="catalogURL"

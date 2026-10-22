@@ -45,10 +45,10 @@
         <xsl:variable name="shariffURL">
           <xsl:choose>
             <xsl:when test="$piServiceInformation[@type='doi'][@inscribed='true']">
-              <xsl:value-of select="concat($MCR.DOI.Resolver.MasterURL, //mods:mods/mods:identifier[@type='doi'])" />
+              <xsl:value-of select="concat($MCR.DOI.Resolver.MasterURL, (//mods:mods/mods:identifier[@type='doi'])[1])" />
             </xsl:when>
             <xsl:when test="$piServiceInformation[@type='dnbUrn'][@inscribed='true']">
-              <xsl:value-of select="concat($MCR.URN.Resolver.MasterURL, //mods:mods/mods:identifier[@type='urn'])"/>
+              <xsl:value-of select="concat($MCR.URN.Resolver.MasterURL, (//mods:mods/mods:identifier[@type='urn'])[1])"/>
             </xsl:when>
             <xsl:otherwise>
               <xsl:value-of select="concat($WebApplicationBaseURL, 'receive/', //mycoreobject/@ID)" />
