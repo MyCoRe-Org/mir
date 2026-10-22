@@ -51,7 +51,7 @@
                       <xsl:with-param name="withSubtitle" select="true()" />
                       <xsl:with-param name="position" select="string(position())" />
                     </xsl:apply-templates>
-                    <xsl:if test="@type='translated'">
+                    <xsl:if test="@type='translated' and @xml:lang">
                       <xsl:text> (</xsl:text>
                       <xsl:value-of select="mcrclassification:current-label-text(mcrclassification:category('rfc5646',@xml:lang))" />
                       <xsl:text>)</xsl:text>
