@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mycoreclass xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:noNamespaceSchemaLocation="MCRClassification.xsd"
+             ID="identifier">
+  <label xml:lang="x-uri" text="http://www.mycore.org/classifications/identifier" />
+  <label xml:lang="en" text="identifier" />
+  <categories>
+    <category ID="doi">
+      <label xml:lang="en" text="DOI" />
+    </category>
+    <category ID="uri">
+      <label xml:lang="en" text="URI" />
+    </category>
+    <category ID="intern">
+      <label xml:lang="en" text="Intern" />
+    </category>
+  </categories>
+</mycoreclass>

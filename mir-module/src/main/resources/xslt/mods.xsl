@@ -11,7 +11,6 @@
 
   <xsl:include href="utils/mods-utils.xsl" />
   <xsl:include href="mods2html.xsl" />
-  <xsl:include href="modsmetadata.xsl" />
 
   <xsl:include href="resource:xslt/basket.xsl" />
 
