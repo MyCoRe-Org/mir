@@ -73,7 +73,7 @@
       <xsl:with-param name="content">
         <xsl:apply-templates select="." mode="local:text" />
       </xsl:with-param>
-      <xsl:with-param name="href" select="@valueURI" />
+      <xsl:with-param name="href" select="@valueURI[../@authority or ../@authorityURI]" />
     </xsl:call-template>
 
     <xsl:call-template name="info">
@@ -99,7 +99,7 @@
       <xsl:with-param name="content">
         <xsl:call-template name="coordinates" />
       </xsl:with-param>
-      <xsl:with-param name="href" select="@valueURI" />
+      <xsl:with-param name="href" select="@valueURI[../@authority or ../@authorityURI]" />
     </xsl:call-template>
   </xsl:template>
 
