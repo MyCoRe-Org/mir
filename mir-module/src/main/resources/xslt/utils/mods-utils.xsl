@@ -528,7 +528,7 @@
       <xsl:choose>
         <xsl:when test="mods:displayForm">
           <xsl:if test="$MCR.MODS.Utils.addTermsOfAddressToDisplayForm='true' and not($queryable) and mods:namePart[@type='termsOfAddress']">
-            <xsl:value-of select="concat(mods:namePart[@type='termsOfAddress'], ' ')" />
+            <xsl:value-of select="concat(mods:namePart[@type='termsOfAddress'][1], ' ')" />
           </xsl:if>
           <xsl:value-of select="mods:displayForm" />
         </xsl:when>
@@ -546,14 +546,14 @@
         </xsl:when>
         <xsl:otherwise>
           <xsl:if test="not($queryable) and mods:namePart[@type='termsOfAddress']">
-            <xsl:value-of select="concat(mods:namePart[@type='termsOfAddress'], ' ')" />
+            <xsl:value-of select="concat(mods:namePart[@type='termsOfAddress'][1], ' ')" />
           </xsl:if>
           <xsl:value-of select="mods:namePart[@type='family']" />
           <xsl:if test="mods:namePart[@type='given']">
-            <xsl:value-of select="concat(', ',mods:namePart[@type='given'])" />
+            <xsl:value-of select="concat(', ', mods:namePart[@type='given'][1])" />
           </xsl:if>
           <xsl:if test="not($queryable) and mods:namePart[@type='date']">
-            <xsl:value-of select="concat(' (',mods:namePart[@type='date'],')')" />
+            <xsl:value-of select="concat(' (', mods:namePart[@type='date'][1], ')')" />
           </xsl:if>
         </xsl:otherwise>
       </xsl:choose>

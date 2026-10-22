@@ -95,7 +95,7 @@
                         </xsl:when>
                         <xsl:when test="mods:role/mods:roleTerm[@authority='marcrelator']">
                           <xsl:value-of
-                            select="concat(mcri18n:translate(concat('component.mods.metaData.dictionary.',mods:role/mods:roleTerm[@authority='marcrelator'])),':')" />
+                            select="concat(mcri18n:translate(concat('component.mods.metaData.dictionary.', (mods:role/mods:roleTerm[@authority='marcrelator'])[1])), ':')" />
                         </xsl:when>
                       </xsl:choose>
                     </td>
