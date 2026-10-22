@@ -4,6 +4,7 @@
 
 <xsl:stylesheet version="3.0"
   xmlns:mcrmods="http://www.mycore.de/xslt/mods"
+  xmlns:mircrossrefutils="http://www.mycore.de/xslt/mircrossrefutils"
   xmlns:mods="http://www.loc.gov/mods/v3"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   exclude-result-prefixes="#all">
@@ -25,6 +26,7 @@
       <xsl:call-template name="originInfo" />
       <xsl:apply-templates select="DOI" />
       <xsl:apply-templates select="isbn-type[../type='book']/entry/value" />
+      <xsl:apply-templates select="abstract" />
     </mods:mods>
   </xsl:template>
 
@@ -164,6 +166,10 @@
     <mods:publisher>
       <xsl:value-of select="text()" />
     </mods:publisher>
+  </xsl:template>
+
+  <xsl:template match="abstract">
+    <xsl:copy-of select="mircrossrefutils:convert-jats-abstract(text())"/>
   </xsl:template>
 
 </xsl:stylesheet>
