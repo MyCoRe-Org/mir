@@ -53,7 +53,7 @@
       <xsl:when test="matches($normalized, '^\d{4}-\d{2}$')">
         <xsl:value-of select="$normalized"/>
       </xsl:when>
-      <xsl:when test="matches($normalized, '^\d{4}-\d{2}-\d{2}$')">
+      <xsl:when test="matches($normalized, '^\d{4}-\d{2}-\d{2}$') and $normalized castable as xs:date">
         <xsl:value-of select="format-date(xs:date($normalized), mcri18n:translate('metaData.dateYearMonthDay.xsl3'))"/>
       </xsl:when>
       <xsl:when test="$normalized castable as xs:dateTime">

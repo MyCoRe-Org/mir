@@ -174,10 +174,10 @@
       <xsl:when test="matches($normalized, '^\d{4}$')">
         <xsl:value-of select="$normalized"/>
       </xsl:when>
-      <xsl:when test="matches($normalized, '^\d{4}-\d{2}$')">
-        <xsl:value-of select="format-date(xs:date($normalized), mcri18n:translate('mir.xsl3.formate.yearMonth'))"/>
+      <xsl:when test="matches($normalized, '^\d{4}-\d{2}$') and ($normalized || '-01') castable as xs:date">
+        <xsl:value-of select="format-date(xs:date($normalized || '-01'), mcri18n:translate('mir.xsl3.formate.yearMonth'))"/>
       </xsl:when>
-      <xsl:when test="matches($normalized, '^\d{4}-\d{2}-\d{2}$')">
+      <xsl:when test="matches($normalized, '^\d{4}-\d{2}-\d{2}$') and $normalized castable as xs:date">
         <xsl:value-of select="format-date(xs:date($normalized), mcri18n:translate('mir.xsl3.formate.date'))"/>
       </xsl:when>
       <xsl:otherwise>
