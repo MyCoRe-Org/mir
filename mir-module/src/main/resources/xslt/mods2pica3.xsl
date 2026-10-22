@@ -19,16 +19,16 @@
         </line>
         <xsl:for-each select="mods:mods">
           <xsl:choose>
-            <xsl:when test="contains(mods:identifier[@type='uri']/text(),'ppn:')">
+            <xsl:when test="mods:identifier[@type='uri'][contains(., 'ppn:')]">
               <line>
                 <xsl:text>0100  </xsl:text>
-                <xsl:value-of select="substring-after(mods:identifier[@type='uri']/text(), 'ppn:')" />
+                <xsl:value-of select="substring-after(mods:identifier[@type='uri'][contains(., 'ppn:')][1], 'ppn:')" />
               </line>
             </xsl:when>
             <xsl:when test="mods:recordInfo/mods:recordIdentifier[contains(@source, 'DE-601')]">
               <line>
                 <xsl:text>0100  </xsl:text>
-                <xsl:value-of select="mods:recordInfo/mods:recordIdentifier[contains(@source, 'DE-601')]" />
+                <xsl:value-of select="(mods:recordInfo/mods:recordIdentifier[contains(@source, 'DE-601')])[1]" />
               </line>
             </xsl:when>
           </xsl:choose>
