@@ -1006,7 +1006,7 @@
                   normalize-space($firstPeriodical/mods:part/mods:detail[@type='issue']))" />
             </xsl:if>
             <xsl:if test="$mods/mods:originInfo[@eventType='publication']/mods:dateIssued[@encoding='w3cdtf']">
-              <xsl:value-of select="concat(' (',$mods/mods:originInfo[@eventType='publication']/mods:dateIssued[@encoding='w3cdtf'],')')" />
+              <xsl:value-of select="concat(' (', ($mods/mods:originInfo[@eventType='publication']/mods:dateIssued[@encoding='w3cdtf'])[1], ')')" />
             </xsl:if>
           </xsl:variable>
           <xsl:choose>
@@ -1033,7 +1033,7 @@
               <xsl:value-of select="$firstPeriodical/mods:part/mods:detail[@type='volume']/mods:number" />
             </xsl:if>
             <xsl:if test="$mods/mods:originInfo[@eventType='publication']/mods:dateIssued[@encoding='w3cdtf']">
-              <xsl:value-of select="concat(' (',$mods/mods:originInfo[@eventType='publication']/mods:dateIssued[@encoding='w3cdtf'],')')" />
+              <xsl:value-of select="concat(' (', ($mods/mods:originInfo[@eventType='publication']/mods:dateIssued[@encoding='w3cdtf'])[1], ')')" />
             </xsl:if>
           </dcterms:isPartOf>
           <xsl:if test="$firstPeriodical/mods:identifier[@type='issn']">
