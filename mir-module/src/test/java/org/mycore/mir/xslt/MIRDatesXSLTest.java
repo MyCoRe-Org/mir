@@ -18,4 +18,10 @@ public class MIRDatesXSLTest extends MIRXSLTFunctionTestCase {
         assertEquals("2017", resultText(XSL, "test-format", Map.of("value", "17")));
         assertEquals("unknown", resultText(XSL, "test-format", Map.of("value", "unknown")));
     }
+
+    @Test
+    void testFormatInvalidDate() throws Exception {
+        assertEquals("2019-13", resultText(XSL, "test-format", Map.of("value", "2019-13")));
+        assertEquals("2020-02-30", resultText(XSL, "test-format", Map.of("value", "2020-02-30")));
+    }
 }

@@ -25,7 +25,7 @@
     <xsl:variable name="normalized" select="mirdateconverter:convert-date($date, 'ISO8601')" />
 
     <xsl:sequence select="
-      if (matches($normalized, '^\d{4}-\d{2}-\d{2}$'))
+      if (matches($normalized, '^\d{4}-\d{2}-\d{2}$') and $normalized castable as xs:date)
       then format-date(xs:date($normalized), mcri18n:translate('metaData.dateYearMonthDay.xsl3'))
       else if ($normalized castable as xs:dateTime)
       then format-dateTime(xs:dateTime($normalized), mcri18n:translate('metaData.dateTime.xsl3'))

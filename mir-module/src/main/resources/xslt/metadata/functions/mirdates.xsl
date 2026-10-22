@@ -15,9 +15,9 @@
     <xsl:sequence select="
       if (matches($normalized, '^\d{4}$'))
       then $normalized
-      else if (matches($normalized, '^\d{4}-\d{2}$'))
+      else if (matches($normalized, '^\d{4}-\d{2}$') and ($normalized || '-01') castable as xs:date)
       then format-date(xs:date($normalized || '-01'), mcri18n:translate('mir.xsl3.formate.yearMonth'))
-      else if (matches($normalized, '^\d{4}-\d{2}-\d{2}$'))
+      else if (matches($normalized, '^\d{4}-\d{2}-\d{2}$') and $normalized castable as xs:date)
       then format-date(xs:date($normalized), mcri18n:translate('mir.xsl3.formate.date'))
       else $normalized
     " />
