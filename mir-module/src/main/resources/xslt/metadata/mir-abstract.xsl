@@ -379,7 +379,7 @@
       </xsl:when>
       <xsl:when test="$asHTML and $hasAlternateFormat and (string-length(@altFormat) &gt; 0)">
         <xsl:variable name="alternateContent"
-                      select="document(concat('unescape-html-content:',..//mods:titleInfo[(@altRepGroup = $altRepGroup) and (string-length(@altFormat) &gt; 0)]/@altFormat))/*[local-name()='titleInfo']" />
+                      select="document(concat('unescape-html-content:', (..//mods:titleInfo[(@altRepGroup = $altRepGroup) and (string-length(@altFormat) &gt; 0)]/@altFormat)[1]))/*[local-name()='titleInfo']" />
 
         <xsl:if test="$alternateContent/nonSort">
           <xsl:copy-of select="$alternateContent/nonSort/node()" />
